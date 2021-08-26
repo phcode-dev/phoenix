@@ -897,7 +897,7 @@ define("thirdparty/smart-auto-complete/jquery.smart_autocomplete", function(){})
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -1225,7 +1225,7 @@ define('utils/Async',['require','exports','module'],function (require, exports, 
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -6667,7 +6667,7 @@ define("thirdparty/jstree_pre1.0_fix_1/jquery.jstree", function(){});
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -6844,7 +6844,7 @@ define('preferences/PreferenceStorage',['require','exports','module','preference
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -6972,7 +6972,7 @@ define('preferences/PreferencesManager',['require','exports','module','preferenc
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -7215,7 +7215,7 @@ define('command/CommandManager',['require','exports','module'],function (require
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -7319,7 +7319,7 @@ define('command/Commands',['require','exports','module'],function (require, expo
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -7812,7 +7812,7 @@ define('command/KeyBindingManager',['require','exports','module','command/Comman
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -8041,7 +8041,7 @@ define('widgets/Dialogs',['require','exports','module','command/KeyBindingManage
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -8563,7 +8563,7 @@ define('utils/PerfUtils',['require','exports','module'],function (require, expor
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -8608,7 +8608,7 @@ define('nls/strings',['require','exports','module'],function (require, exports, 
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -8820,7 +8820,7 @@ define('nls/root/strings',{
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -8859,7 +8859,7 @@ define('strings',['require','exports','module','i18n!nls/strings'],function (req
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -8990,7 +8990,7 @@ define('utils/StringUtils',['require','exports','module'],function (require, exp
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -9255,7 +9255,7 @@ define('file/FileUtils',['require','exports','module','file/NativeFileSystem','u
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -9745,7 +9745,7 @@ define('language/HTMLUtils',['require','exports','module'],function (require, ex
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -9871,7 +9871,7 @@ define('widgets/PopUpManager',['require','exports','module','editor/EditorManage
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -10204,7 +10204,7 @@ define('utils/ViewUtils',['require','exports','module'],function (require, expor
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -10644,7 +10644,7 @@ define('editor/CodeHintManager',['require','exports','module','language/HTMLUtil
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -10825,7 +10825,7 @@ define('document/TextRange',['require','exports','module'],function (require, ex
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -11889,7 +11889,7 @@ define('editor/Editor',['require','exports','module','editor/EditorManager','edi
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -12001,7 +12001,7 @@ define('editor/InlineWidget',['require','exports','module','editor/EditorManager
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -15950,7 +15950,7 @@ define("thirdparty/CodeMirror2/mode/markdown/markdown", function(){});
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -16102,7 +16102,7 @@ define('editor/EditorUtils',['require','exports','module','thirdparty/path-utils
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -16670,7 +16670,7 @@ define('editor/EditorManager',['require','exports','module','file/FileUtils','co
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -17721,7 +17721,7 @@ define('command/Menus',['require','exports','module','command/Commands','command
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -17942,7 +17942,7 @@ define('project/FileViewController',['require','exports','module','document/Docu
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -18908,7 +18908,7 @@ define('project/ProjectManager',['require','exports','module','thirdparty/jstree
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -19997,7 +19997,7 @@ define('document/DocumentManager',['require','exports','module','file/NativeFile
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20128,7 +20128,7 @@ define('utils/NativeApp',['require','exports','module','utils/Async'],function (
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20455,7 +20455,7 @@ define('LiveDevelopment/Inspector/Inspector',['require','exports','module'],func
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20580,7 +20580,7 @@ define('LiveDevelopment/Agents/RemoteAgent',['require','exports','module','LiveD
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20841,7 +20841,7 @@ define('LiveDevelopment/Agents/DOMHelpers',['require','exports','module'],functi
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21365,7 +21365,7 @@ define('LiveDevelopment/Agents/DOMNode',['require','exports','module','LiveDevel
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21688,7 +21688,7 @@ define('LiveDevelopment/Agents/DOMAgent',['require','exports','module','LiveDeve
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21811,7 +21811,7 @@ define('LiveDevelopment/Agents/HighlightAgent',['require','exports','module','Li
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21937,7 +21937,7 @@ define('LiveDevelopment/Documents/HTMLDocument',['require','exports','module','L
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22059,7 +22059,7 @@ define('LiveDevelopment/Agents/CSSAgent',['require','exports','module','thirdpar
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22275,7 +22275,7 @@ define('LiveDevelopment/Documents/CSSDocument',['require','exports','module','Li
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22424,7 +22424,7 @@ define('LiveDevelopment/Agents/ScriptAgent',['require','exports','module','LiveD
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22544,7 +22544,7 @@ define('LiveDevelopment/Documents/JSDocument',['require','exports','module','Liv
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22637,7 +22637,7 @@ define('LiveDevelopment/Agents/ConsoleAgent',['require','exports','module','Live
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22718,7 +22718,7 @@ define('LiveDevelopment/Agents/NetworkAgent',['require','exports','module','Live
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22932,7 +22932,7 @@ define('LiveDevelopment/Agents/GotoAgent',['require','exports','module','LiveDev
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23045,7 +23045,7 @@ define('LiveDevelopment/Agents/EditAgent',['require','exports','module','LiveDev
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23565,7 +23565,7 @@ define('LiveDevelopment/LiveDevelopment',['require','exports','module','document
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23747,7 +23747,7 @@ define('LiveDevelopment/main',['require','exports','module','document/DocumentMa
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24157,7 +24157,7 @@ define('project/FileIndexManager',['require','exports','module','file/NativeFile
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24716,7 +24716,7 @@ define('language/CSSUtils',['require','exports','module','utils/Async','document
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25238,7 +25238,7 @@ define('editor/MultiRangeInlineEditor',['require','exports','module','document/T
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25374,7 +25374,7 @@ define('editor/CSSInlineEditor',['require','exports','module','language/CSSUtils
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25504,7 +25504,7 @@ define('document/ChangedDocumentTracker',['require','exports','module','document
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25933,7 +25933,7 @@ define('language/JSUtils',['require','exports','module','utils/Async','document/
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26307,7 +26307,7 @@ define('project/WorkingSetView',['require','exports','module','document/Document
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27127,7 +27127,7 @@ define('document/DocumentCommandHandlers',['require','exports','module','thirdpa
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27545,7 +27545,7 @@ define('project/FileSyncManager',['require','exports','module','project/ProjectM
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34560,7 +34560,7 @@ define("thirdparty/jslint/jslint", function(){});
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34776,7 +34776,7 @@ define('language/JSLintUtils',['require','exports','module','thirdparty/path-uti
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35663,7 +35663,7 @@ define('text!htmlContent/main-view.html',[],function () { return '<!-- \n  Modif
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35884,7 +35884,7 @@ define('utils/ExtensionLoader',['require','exports','module','file/NativeFileSys
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36140,7 +36140,7 @@ define('text!buildNumber.json',[],function () { return '{\n    "buildNumber": 10
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36485,7 +36485,7 @@ define('utils/UpdateNotification',['require','exports','module','widgets/Dialogs
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36578,7 +36578,7 @@ define('utils/UrlParams',['require','exports','module'],function (require, expor
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36853,7 +36853,7 @@ define('editor/EditorCommandHandlers',['require','exports','module','command/Com
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37121,7 +37121,7 @@ define('debug/DebugCommandHandlers',['require','exports','module','command/Comma
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37255,7 +37255,7 @@ define('view/ViewCommandHandlers',['require','exports','module','command/Command
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37582,7 +37582,7 @@ define('search/FindInFiles',['require','exports','module','utils/Async','command
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37836,7 +37836,7 @@ define('search/FindReplace',['require','exports','module','command/CommandManage
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37906,7 +37906,7 @@ define('utils/ExtensionUtils',['require','exports','module'],function (require, 
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37959,7 +37959,7 @@ define('utils/ShellAPI',['require','exports','module','command/CommandManager'],
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -39221,7 +39221,7 @@ define("thirdparty/smart-auto-complete/jquery.smart_autocomplete", function(){})
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -39549,7 +39549,7 @@ define('utils/Async',['require','exports','module'],function (require, exports, 
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -44991,7 +44991,7 @@ define("thirdparty/jstree_pre1.0_fix_1/jquery.jstree", function(){});
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45168,7 +45168,7 @@ define('preferences/PreferenceStorage',['require','exports','module','preference
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45296,7 +45296,7 @@ define('preferences/PreferencesManager',['require','exports','module','preferenc
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45539,7 +45539,7 @@ define('command/CommandManager',['require','exports','module'],function (require
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45643,7 +45643,7 @@ define('command/Commands',['require','exports','module'],function (require, expo
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -46136,7 +46136,7 @@ define('command/KeyBindingManager',['require','exports','module','command/Comman
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -46365,7 +46365,7 @@ define('widgets/Dialogs',['require','exports','module','command/KeyBindingManage
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -46887,7 +46887,7 @@ define('utils/PerfUtils',['require','exports','module'],function (require, expor
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -46932,7 +46932,7 @@ define('nls/strings',['require','exports','module'],function (require, exports, 
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -47144,7 +47144,7 @@ define('nls/root/strings',{
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -47183,7 +47183,7 @@ define('strings',['require','exports','module','i18n!nls/strings'],function (req
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -47314,7 +47314,7 @@ define('utils/StringUtils',['require','exports','module'],function (require, exp
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -47579,7 +47579,7 @@ define('file/FileUtils',['require','exports','module','file/NativeFileSystem','u
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -48069,7 +48069,7 @@ define('language/HTMLUtils',['require','exports','module'],function (require, ex
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -48195,7 +48195,7 @@ define('widgets/PopUpManager',['require','exports','module','editor/EditorManage
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -48528,7 +48528,7 @@ define('utils/ViewUtils',['require','exports','module'],function (require, expor
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -48968,7 +48968,7 @@ define('editor/CodeHintManager',['require','exports','module','language/HTMLUtil
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -49149,7 +49149,7 @@ define('document/TextRange',['require','exports','module'],function (require, ex
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -50213,7 +50213,7 @@ define('editor/Editor',['require','exports','module','editor/EditorManager','edi
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -50325,7 +50325,7 @@ define('editor/InlineWidget',['require','exports','module','editor/EditorManager
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -54274,7 +54274,7 @@ define("thirdparty/CodeMirror2/mode/markdown/markdown", function(){});
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -54426,7 +54426,7 @@ define('editor/EditorUtils',['require','exports','module','thirdparty/path-utils
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -54994,7 +54994,7 @@ define('editor/EditorManager',['require','exports','module','file/FileUtils','co
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -56045,7 +56045,7 @@ define('command/Menus',['require','exports','module','command/Commands','command
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -56266,7 +56266,7 @@ define('project/FileViewController',['require','exports','module','document/Docu
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -57232,7 +57232,7 @@ define('project/ProjectManager',['require','exports','module','thirdparty/jstree
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -58321,7 +58321,7 @@ define('document/DocumentManager',['require','exports','module','file/NativeFile
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -58452,7 +58452,7 @@ define('utils/NativeApp',['require','exports','module','utils/Async'],function (
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -58779,7 +58779,7 @@ define('LiveDevelopment/Inspector/Inspector',['require','exports','module'],func
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -58904,7 +58904,7 @@ define('LiveDevelopment/Agents/RemoteAgent',['require','exports','module','LiveD
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -59165,7 +59165,7 @@ define('LiveDevelopment/Agents/DOMHelpers',['require','exports','module'],functi
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -59689,7 +59689,7 @@ define('LiveDevelopment/Agents/DOMNode',['require','exports','module','LiveDevel
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60012,7 +60012,7 @@ define('LiveDevelopment/Agents/DOMAgent',['require','exports','module','LiveDeve
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60135,7 +60135,7 @@ define('LiveDevelopment/Agents/HighlightAgent',['require','exports','module','Li
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60261,7 +60261,7 @@ define('LiveDevelopment/Documents/HTMLDocument',['require','exports','module','L
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60383,7 +60383,7 @@ define('LiveDevelopment/Agents/CSSAgent',['require','exports','module','thirdpar
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60599,7 +60599,7 @@ define('LiveDevelopment/Documents/CSSDocument',['require','exports','module','Li
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60748,7 +60748,7 @@ define('LiveDevelopment/Agents/ScriptAgent',['require','exports','module','LiveD
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60868,7 +60868,7 @@ define('LiveDevelopment/Documents/JSDocument',['require','exports','module','Liv
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60961,7 +60961,7 @@ define('LiveDevelopment/Agents/ConsoleAgent',['require','exports','module','Live
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -61042,7 +61042,7 @@ define('LiveDevelopment/Agents/NetworkAgent',['require','exports','module','Live
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -61256,7 +61256,7 @@ define('LiveDevelopment/Agents/GotoAgent',['require','exports','module','LiveDev
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -61369,7 +61369,7 @@ define('LiveDevelopment/Agents/EditAgent',['require','exports','module','LiveDev
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -61889,7 +61889,7 @@ define('LiveDevelopment/LiveDevelopment',['require','exports','module','document
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -62071,7 +62071,7 @@ define('LiveDevelopment/main',['require','exports','module','document/DocumentMa
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -62481,7 +62481,7 @@ define('project/FileIndexManager',['require','exports','module','file/NativeFile
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -63040,7 +63040,7 @@ define('language/CSSUtils',['require','exports','module','utils/Async','document
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -63562,7 +63562,7 @@ define('editor/MultiRangeInlineEditor',['require','exports','module','document/T
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -63698,7 +63698,7 @@ define('editor/CSSInlineEditor',['require','exports','module','language/CSSUtils
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -63828,7 +63828,7 @@ define('document/ChangedDocumentTracker',['require','exports','module','document
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -64257,7 +64257,7 @@ define('language/JSUtils',['require','exports','module','utils/Async','document/
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -64631,7 +64631,7 @@ define('project/WorkingSetView',['require','exports','module','document/Document
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -65451,7 +65451,7 @@ define('document/DocumentCommandHandlers',['require','exports','module','thirdpa
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -65869,7 +65869,7 @@ define('project/FileSyncManager',['require','exports','module','project/ProjectM
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -72884,7 +72884,7 @@ define("thirdparty/jslint/jslint", function(){});
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -73100,7 +73100,7 @@ define('language/JSLintUtils',['require','exports','module','thirdparty/path-uti
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -73987,7 +73987,7 @@ define('text!htmlContent/main-view.html',[],function () { return '<!-- \n  Modif
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -74208,7 +74208,7 @@ define('utils/ExtensionLoader',['require','exports','module','file/NativeFileSys
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -74464,7 +74464,7 @@ define('text!buildNumber.json',[],function () { return '{\n    "buildNumber": 10
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -74809,7 +74809,7 @@ define('utils/UpdateNotification',['require','exports','module','widgets/Dialogs
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -74902,7 +74902,7 @@ define('utils/UrlParams',['require','exports','module'],function (require, expor
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -75177,7 +75177,7 @@ define('editor/EditorCommandHandlers',['require','exports','module','command/Com
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -75445,7 +75445,7 @@ define('debug/DebugCommandHandlers',['require','exports','module','command/Comma
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -75579,7 +75579,7 @@ define('view/ViewCommandHandlers',['require','exports','module','command/Command
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -75906,7 +75906,7 @@ define('search/FindInFiles',['require','exports','module','utils/Async','command
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -76160,7 +76160,7 @@ define('search/FindReplace',['require','exports','module','command/CommandManage
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -76230,7 +76230,7 @@ define('utils/ExtensionUtils',['require','exports','module'],function (require, 
 
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -76283,7 +76283,7 @@ define('utils/ShellAPI',['require','exports','module','command/CommandManager'],
 });
 /*
  *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved. All rights reserved.
+ *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
