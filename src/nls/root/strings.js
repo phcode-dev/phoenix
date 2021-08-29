@@ -468,7 +468,7 @@ define({
     "CLOSE": "Close",
     "ABOUT_TEXT_LINE1": "Release {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
     "ABOUT_TEXT_BUILD_TIMESTAMP": "build timestamp: ",
-    "ABOUT_TEXT_LINE3": "Based on the brackets Open source software by Adobe: <a href='https://github.com/adobe/brackets/'>https://github.com/adobe/brackets</a> . ",
+    "ABOUT_TEXT_LINE3": "Based on the Brackets Open source software by Adobe: <a href='https://github.com/adobe/brackets/'>https://github.com/adobe/brackets</a> . ",
     "ABOUT_TEXT_LINE4": "Documentation and source at <a href='https://github.com/aicore/phoenix/'>https://github.com/aicore/phoenix/</a>",
     "ABOUT_TEXT_LINE5": "Made with \u2764 and JavaScript by:",
     "ABOUT_TEXT_LINE6": "Lots of people (but we're having trouble loading that data right now).",

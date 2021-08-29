@@ -2,8 +2,11 @@
 
 Phoenix is a modern open-source and free code editor for the web, built for the browser. - under construction.
 
+## Status
+Phoenix is in alpha and is under active development.
+
 ## Building Phoenix
-* Require widows for builds in the port window
+* Require widows for builds in the port window.
 * Have brackets installed in windows
 * use nodejs version for windows less than node v6.10
 * run `npm install --force`
