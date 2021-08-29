@@ -1054,6 +1054,10 @@ define(function (require, exports, module) {
     }
 
 
+    function openFolderPlaceholder(){
+        window.alert("Opening a local folder is in development. Support coming by september 2021.");
+    }
+
     /**
      * Open a new project. Currently, Brackets must always have a project open, so
      * this method handles both closing the current project and opening a new project.
@@ -1315,7 +1319,7 @@ define(function (require, exports, module) {
     EventDispatcher.on_duringInit(MainViewManager, "currentFileChange", _currentFileChange);
 
     // Commands
-    CommandManager.register(Strings.CMD_OPEN_FOLDER,      Commands.FILE_OPEN_FOLDER,      openProject);
+    CommandManager.register(Strings.CMD_OPEN_FOLDER,      Commands.FILE_OPEN_FOLDER,      openFolderPlaceholder);
     CommandManager.register(Strings.CMD_PROJECT_SETTINGS, Commands.FILE_PROJECT_SETTINGS, _projectSettings);
     CommandManager.register(Strings.CMD_FILE_REFRESH,     Commands.FILE_REFRESH,          refreshFileTree);
 
