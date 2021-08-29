@@ -306,6 +306,8 @@ define(function (require, exports, module) {
      * Show a dialog that allows the user to browse and manage extensions.
      */
     function _showDialog() {
+        window.alert("coming soon: extensions support.");
+
         var dialog,
             $dlg,
             views   = [],
