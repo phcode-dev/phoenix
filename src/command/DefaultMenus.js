@@ -190,27 +190,27 @@ define(function (require, exports, module) {
          * Help menu
          */
         menu = Menus.addMenu(Strings.HELP_MENU, Menus.AppMenuBar.HELP_MENU);
-        menu.addMenuItem(Commands.HELP_CHECK_FOR_UPDATE);
-
-        menu.addMenuDivider();
-        if (brackets.config.how_to_use_url) {
-            menu.addMenuItem(Commands.HELP_HOW_TO_USE_BRACKETS);
-        }
+        // menu.addMenuItem(Commands.HELP_CHECK_FOR_UPDATE);
+        //
+        // menu.addMenuDivider();
+        // if (brackets.config.how_to_use_url) {
+        //     menu.addMenuItem(Commands.HELP_HOW_TO_USE_BRACKETS);
+        // }
         if (brackets.config.support_url) {
             menu.addMenuItem(Commands.HELP_SUPPORT);
         }
         if (brackets.config.suggest_feature_url) {
             menu.addMenuItem(Commands.HELP_SUGGEST);
         }
-        if (brackets.config.release_notes_url) {
-            menu.addMenuItem(Commands.HELP_RELEASE_NOTES);
-        }
+        // if (brackets.config.release_notes_url) {
+        //     menu.addMenuItem(Commands.HELP_RELEASE_NOTES);
+        // }
         if (brackets.config.get_involved_url) {
             menu.addMenuItem(Commands.HELP_GET_INVOLVED);
         }
 
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.HELP_SHOW_EXT_FOLDER);
+        // menu.addMenuDivider();
+        // menu.addMenuItem(Commands.HELP_SHOW_EXT_FOLDER);
 
         var hasAboutItem = true;
 
