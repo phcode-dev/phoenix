@@ -1,7 +1,7 @@
 {
-    "title": "Brackets Dark",
+    "title": "Phoenix Dark",
     "name": "dark-theme",
-    "description": "Built-in dark theme for Brackets",
+    "description": "Built-in dark theme for Phoenix",
     "version": "0.42.0",
     "author": "Miguel Castillo <mahchagnu@gmail.com>",
     "engines": {
