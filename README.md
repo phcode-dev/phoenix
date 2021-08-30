@@ -18,17 +18,17 @@ Phoenix is in early alpha.  Please subscribe to our [notification list](https://
 
 ## Status
 Phoenix is in alpha and is under active development.
-* Phoenix Alpha development status can be found in: https://github.com/aicore/phoenix/issues/11
+* [Phoenix Alpha development status](https://github.com/aicore/phoenix/issues/11).
 
 ## Contributing/ Feedback
-* Get in touch with our community: https://github.com/aicore/phoenix/discussions
-* Request a new feature: https://github.com/aicore/phoenix/discussions/categories/ideas
-* Discord community: https://discord.gg/TwgBFCjVBd
-* Raise issues: https://github.com/aicore/phoenix/issues
-* Contribute: https://github.com/aicore/phoenix
+* [Get in touch with our community](https://github.com/aicore/phoenix/discussions).
+* [Request a new feature](https://github.com/aicore/phoenix/discussions/categories/ideas)
+* [Join our Discord community](https://discord.gg/TwgBFCjVBd)
+* [Raise issues](https://github.com/aicore/phoenix/issues)
+* [Contribute](https://github.com/aicore/phoenix)
 
 ## Building Phoenix
-Repository: https://github.com/aicore/phoenix
+[Source Repository](https://github.com/aicore/phoenix) 
 
 * Require widows for builds in the port window.
 * Have brackets installed in windows
