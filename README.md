@@ -5,16 +5,15 @@ Phoenix is a modern open-source and free code editor for the web, built for the 
 
 Phoenix is in early alpha.  Please subscribe to our [notification list](https://core.ai/) to get notified when Phoenix goes live. 
 
-## Screenshot
 ![Phoenix](./phoenix.png)
 
 ## Tenets
-1. Targeted for web development- js, html and CSS enjoy special status.
-2. Phoenix core will work from a static web server.
+1. Targeted for web development. Js, html and CSS enjoy special status.
+2. Light-weight editor.
 3. Extension support maintaining full compatibility with Brackets extensions (except brackets-node extensions).
-4. Do as much as possible in the browser.
-5. Support for pluggable remote back-ends. 
-6. Uncompromised local development experience.
+4. Uncompromised local development experience.
+5. Support for pluggable remote back-ends.
+6. Phoenix core will work from a static web server.
 
 ## Status
 Phoenix is in alpha and is under active development.
