@@ -81,16 +81,17 @@ module.exports = {
         "ArrayBuffer": false,
         "Uint32Array": false,
         "WebSocket": false,
-        "XMLHttpRequest": false
+        "XMLHttpRequest": false,
+        "quiet": true
     },
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",
         "ecmaFeatures": {
-          "arrowFunctions": true,
-          "binaryLiterals": true,
-          "blockBindings": true,
-          "classes": true
+            "arrowFunctions": true,
+            "binaryLiterals": true,
+            "blockBindings": true,
+            "classes": true
         }
-    },
+    }
 };
