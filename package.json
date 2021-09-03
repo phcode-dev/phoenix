@@ -15,8 +15,13 @@
     "dependencies": {
     },
     "devDependencies": {
+        "eslint" : "^7.32.0"
     },
     "scripts": {
+        "eslint": "npm run lint",
+        "eslint:fix": "npm run lint:fix",
+        "lint": "eslint src test",
+        "lint:fix": "eslint --fix src test"
     },
     "licenses": [
         {
