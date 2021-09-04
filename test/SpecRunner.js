@@ -440,5 +440,5 @@ define(function (require, exports, module) {
         brackets.testing = { nodeConnection: _nodeConnection };
     }
 
-    connectToTestDomain();
+    init();
 });
