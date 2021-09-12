@@ -7199,11 +7199,16 @@ function _mountHandle(handleToMount) {
   });
 }
 
-function mountNativeFolder(context, callback) {
+function mountNativeFolder(context, optionalDirHandle, callback) {
+  if (!callback) {
+    callback = optionalDirHandle;
+    optionalDirHandle = null;
+  }
+
   var mountedPath = null;
   var error = null;
   refreshMountPoints(context).then(function () {
-    return window.showDirectoryPicker();
+    return optionalDirHandle || window.showDirectoryPicker();
   }).then(function (directoryHandle) {
     return _mountHandle(directoryHandle);
   }).then(function (mountPath) {
@@ -7297,36 +7302,80 @@ function _findLeafNode2() {
   return _findLeafNode2.apply(this, arguments);
 }
 
-function _verifyOrRequestPermission(fileHandle, callback) {
-  var options = {
-    mode: 'readwrite'
-  }; // Check if permission was already granted. If so, return true.
+function _verifyOrRequestPermission(_x5, _x6) {
+  return _verifyOrRequestPermission2.apply(this, arguments);
+}
 
-  fileHandle.queryPermission(options).then(function (status) {
-    if (status === 'granted') {
-      callback(true);
-    } else {
-      fileHandle.requestPermission(options).then(function (status) {
-        if (status === 'granted') {
-          callback(true);
-        } else {
-          callback(false);
+function _verifyOrRequestPermission2() {
+  _verifyOrRequestPermission2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(fileHandle, callback) {
+    var options, status;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            options = {
+              mode: 'readwrite'
+            }; // Check if permission was already granted. If so, return true.
+
+            _context2.prev = 1;
+            _context2.next = 4;
+            return fileHandle.queryPermission(options);
+
+          case 4:
+            status = _context2.sent;
+
+            if (!(status === 'granted')) {
+              _context2.next = 8;
+              break;
+            }
+
+            callback(true);
+            return _context2.abrupt("return");
+
+          case 8:
+            _context2.next = 10;
+            return fileHandle.requestPermission(options);
+
+          case 10:
+            status = _context2.sent;
+
+            if (status === 'granted') {
+              callback(true);
+            } else {
+              callback(false);
+            }
+
+            _context2.next = 17;
+            break;
+
+          case 14:
+            _context2.prev = 14;
+            _context2.t0 = _context2["catch"](1);
+            callback(false);
+
+          case 17:
+          case "end":
+            return _context2.stop();
         }
-      });
-    }
-  }).catch(function () {
-    callback(false);
-  });
+      }
+    }, _callee2, null, [[1, 14]]);
+  }));
+  return _verifyOrRequestPermission2.apply(this, arguments);
 }
 
 function _getHandleFromPath(normalisedPath, callback) {
   var pathNodes = normalisedPath.split('/');
 
   if (pathNodes.length < 3 || pathNodes[0] !== '' || pathNodes[1] !== 'mnt') {
-    throw new Errors.EINVAL('Cannot operate on path ' + normalisedPath);
+    callback(new Errors.EINVAL('Cannot operate on path ' + normalisedPath));
   }
 
   var mountPoint = currentMounts[pathNodes[2]];
+
+  if (!mountPoint) {
+    callback(new Errors.ENOENT('Path does not exist: ', normalisedPath));
+    return;
+  }
 
   _verifyOrRequestPermission(mountPoint, function (permitted) {
     if (permitted) {
@@ -7337,40 +7386,40 @@ function _getHandleFromPath(normalisedPath, callback) {
   });
 }
 
-function listDir(_x5, _x6) {
+function listDir(_x7, _x8) {
   return _listDir.apply(this, arguments);
 } // Usual arguments are (context, callback)
 
 
 function _listDir() {
-  _listDir = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(handle, callback) {
+  _listDir = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(handle, callback) {
     var dirEntryNames, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, _value2, _value3, key;
 
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
             dirEntryNames = [];
             _iteratorNormalCompletion = true;
             _didIteratorError = false;
-            _context2.prev = 3;
+            _context3.prev = 3;
             _iterator = _asyncIterator(handle.entries());
 
           case 5:
-            _context2.next = 7;
+            _context3.next = 7;
             return _iterator.next();
 
           case 7:
-            _step = _context2.sent;
+            _step = _context3.sent;
             _iteratorNormalCompletion = _step.done;
-            _context2.next = 11;
+            _context3.next = 11;
             return _step.value;
 
           case 11:
-            _value = _context2.sent;
+            _value = _context3.sent;
 
             if (_iteratorNormalCompletion) {
-              _context2.next = 18;
+              _context3.next = 18;
               break;
             }
 
@@ -7379,56 +7428,56 @@ function _listDir() {
 
           case 15:
             _iteratorNormalCompletion = true;
-            _context2.next = 5;
+            _context3.next = 5;
             break;
 
           case 18:
-            _context2.next = 24;
+            _context3.next = 24;
             break;
 
           case 20:
-            _context2.prev = 20;
-            _context2.t0 = _context2["catch"](3);
+            _context3.prev = 20;
+            _context3.t0 = _context3["catch"](3);
             _didIteratorError = true;
-            _iteratorError = _context2.t0;
+            _iteratorError = _context3.t0;
 
           case 24:
-            _context2.prev = 24;
-            _context2.prev = 25;
+            _context3.prev = 24;
+            _context3.prev = 25;
 
             if (!(!_iteratorNormalCompletion && _iterator.return != null)) {
-              _context2.next = 29;
+              _context3.next = 29;
               break;
             }
 
-            _context2.next = 29;
+            _context3.next = 29;
             return _iterator.return();
 
           case 29:
-            _context2.prev = 29;
+            _context3.prev = 29;
 
             if (!_didIteratorError) {
-              _context2.next = 32;
+              _context3.next = 32;
               break;
             }
 
             throw _iteratorError;
 
           case 32:
-            return _context2.finish(29);
+            return _context3.finish(29);
 
           case 33:
-            return _context2.finish(24);
+            return _context3.finish(24);
 
           case 34:
             callback(null, dirEntryNames);
 
           case 35:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2, null, [[3, 20, 24, 34], [25,, 29, 33]]);
+    }, _callee3, null, [[3, 20, 24, 34], [25,, 29, 33]]);
   }));
   return _listDir.apply(this, arguments);
 }
@@ -7580,11 +7629,71 @@ function readdir(context, path, options, callback) {
 
 function read() {
   throw new Errors.ENOSYS('Filer native fs function not yet supported.');
-} // (context, path, options, callback)
+}
 
+function _getFileContents(_x9, _x10, _x11) {
+  return _getFileContents2.apply(this, arguments);
+}
 
-function readFile() {
-  throw new Errors.ENOSYS('Filer native fs function not yet supported.');
+function _getFileContents2() {
+  _getFileContents2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(fileHandle, encoding, callback) {
+    var file, blob, buffer, decoded_string;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            encoding = encoding || 'utf-8';
+            _context4.prev = 1;
+            _context4.next = 4;
+            return fileHandle.getFile();
+
+          case 4:
+            file = _context4.sent;
+            _context4.t0 = Blob;
+            _context4.next = 8;
+            return file.text();
+
+          case 8:
+            _context4.t1 = _context4.sent;
+            _context4.t2 = [_context4.t1];
+            blob = new _context4.t0(_context4.t2);
+            _context4.next = 13;
+            return new Response(blob).arrayBuffer();
+
+          case 13:
+            buffer = _context4.sent;
+            decoded_string = new TextDecoder(encoding).decode(buffer);
+            callback(null, decoded_string);
+            _context4.next = 21;
+            break;
+
+          case 18:
+            _context4.prev = 18;
+            _context4.t3 = _context4["catch"](1);
+            callback(_context4.t3);
+
+          case 21:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[1, 18]]);
+  }));
+  return _getFileContents2.apply(this, arguments);
+}
+
+function readFile(context, path, options, callback) {
+  path = normalize(path);
+
+  _getHandleFromPath(path, function (err, handle) {
+    if (err) {
+      callback(err);
+    } else if (handle.kind === Constants.KIND_DIRECTORY) {
+      callback(new Errors.EISDIR('Path is a directory.'));
+    } else {
+      _getFileContents(handle, options.encoding, callback);
+    }
+  });
 } // (context, path, callback)
 
 
@@ -7646,11 +7755,74 @@ function unlink() {
 
 function utimes() {
   throw new Errors.ENOSYS('Filer native fs function not yet supported.');
-} // (context, path, data, options, callback)
+}
 
+function _writeFileWithName(_x12, _x13, _x14, _x15, _x16) {
+  return _writeFileWithName2.apply(this, arguments);
+}
 
-function writeFile() {
-  throw new Errors.ENOSYS('Filer native fs function not yet supported.');
+function _writeFileWithName2() {
+  _writeFileWithName2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(paretDirHandle, fileName, encoding, data, callback) {
+    var newFileHandle, writable;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            encoding = encoding || 'utf-8';
+            _context5.prev = 1;
+            _context5.next = 4;
+            return paretDirHandle.getFileHandle(fileName, {
+              create: true
+            });
+
+          case 4:
+            newFileHandle = _context5.sent;
+            _context5.next = 7;
+            return newFileHandle.createWritable();
+
+          case 7:
+            writable = _context5.sent;
+            _context5.next = 10;
+            return writable.write(data);
+
+          case 10:
+            _context5.next = 12;
+            return writable.close();
+
+          case 12:
+            callback(null);
+            _context5.next = 18;
+            break;
+
+          case 15:
+            _context5.prev = 15;
+            _context5.t0 = _context5["catch"](1);
+            callback(_context5.t0);
+
+          case 18:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[1, 15]]);
+  }));
+  return _writeFileWithName2.apply(this, arguments);
+}
+
+function writeFile(context, path, data, options, callback) {
+  path = normalize(path);
+  var dirname = Path.dirname(path);
+  var fileName = Path.basename(path);
+
+  _getHandleFromPath(dirname, function (err, handle) {
+    if (err) {
+      callback(err);
+    } else if (handle.kind === Constants.KIND_FILE) {
+      callback(new Errors.ENOTDIR('Parent path is not a directory.'));
+    } else {
+      _writeFileWithName(handle, fileName, options.encoding, data, callback);
+    }
+  });
 } // (context, fd, buffer, offset, length, position, callback)
 
 
@@ -9672,6 +9844,10 @@ function readFile(context, path, options, callback) {
     return callback(new Errors.EINVAL('flags is not valid', path));
   }
 
+  if (nativeImpl.isMountSubPath(path)) {
+    return nativeImpl.readFile(context, path, options, callback);
+  }
+
   open_file(context, path, flags, function (err, fileNode) {
     if (err) {
       return callback(err);
@@ -9708,8 +9884,8 @@ function readFile(context, path, options, callback) {
 
         var data;
 
-        if (options.encoding === 'utf8') {
-          data = buffer.toString('utf8');
+        if (options.encoding === 'utf8' || options.encoding === 'utf16') {
+          data = buffer.toString(options.encoding);
         } else {
           data = buffer;
         }
@@ -9758,6 +9934,10 @@ function writeFile(context, path, data, options, callback) {
     } else {
       data = Buffer.from(data || '', options.encoding || 'utf8');
     }
+  }
+
+  if (nativeImpl.isMountSubPath(path)) {
+    return nativeImpl.writeFile(context, path, data, options, callback);
   }
 
   open_file(context, path, flags, function (err, fileNode) {
@@ -10315,7 +10495,7 @@ function ftruncate(context, fd, length, callback) {
  */
 
 
-function mountNativeFolder(context, callback) {
+function mountNativeFolder(context, optionalDirHandle, callback) {
   mkdir(context, nativeImpl.MOUNT_POINT_ROOT, function (err) {
     // create /mnt folder if it doesnt exist
     if (err && !(err instanceof Errors.EEXIST)) {
@@ -10323,7 +10503,7 @@ function mountNativeFolder(context, callback) {
       return;
     }
 
-    nativeImpl.mountNativeFolder(context, callback);
+    nativeImpl.mountNativeFolder(context, optionalDirHandle, callback);
   });
 }
 
