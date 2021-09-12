@@ -216,7 +216,8 @@ define(function (require, exports, module) {
      * @param {function(?string, Array.<string>=)} callback
      */
     function showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback) {
-        appshell.fs.showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, _wrap(callback));
+        // TODO: handle more cases relating to multiple selection ans stuff.
+        appshell.fs.mountNativeFolder(_wrap(callback));
     }
 
     /**
@@ -253,7 +254,7 @@ define(function (require, exports, module) {
                     mtime: stats.mtime,
                     size: stats.size,
                     realPath: stats.realPath,
-                    hash: stats.mtime.getTime()
+                    hash: stats.mtime? stats.mtime.getTime() : null
                 };
 
                 var fsStats = new FileSystemStats(options);
