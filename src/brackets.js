@@ -22,7 +22,11 @@
  *
  */
 
-/*global jQuery */
+// jshint ignore: start
+/*eslint-env es6*/
+/*eslint no-console: 0*/
+/*eslint strict: ["error", "global"]*/
+/*global jQuery,fs */
 
 // TODO: (issue #264) break out the definition of brackets into a separate module from the application controller logic
 
