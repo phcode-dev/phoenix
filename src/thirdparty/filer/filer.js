@@ -7579,11 +7579,58 @@ function lseek() {
 
 function lstat() {
   throw new Errors.ENOSYS('Filer native fs function not yet supported.');
-} // (context, path, mode, callback)
+}
 
+function _mkdir(_x9, _x10, _x11) {
+  return _mkdir2.apply(this, arguments);
+}
 
-function mkdir() {
-  throw new Errors.ENOSYS('Filer native fs function not yet supported.');
+function _mkdir2() {
+  _mkdir2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(paretDirHandle, dirName, callback) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            _context4.next = 3;
+            return paretDirHandle.getDirectoryHandle(dirName, {
+              create: true
+            });
+
+          case 3:
+            callback(null);
+            _context4.next = 9;
+            break;
+
+          case 6:
+            _context4.prev = 6;
+            _context4.t0 = _context4["catch"](0);
+            callback(new Errors.EIO('Filer native fs function not yet supported.', _context4.t0));
+
+          case 9:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[0, 6]]);
+  }));
+  return _mkdir2.apply(this, arguments);
+}
+
+function mkdir(context, path, mode, callback) {
+  path = normalize(path);
+  var dirname = Path.dirname(path);
+  var subdirName = Path.basename(path);
+
+  _getHandleFromPath(dirname, function (err, handle) {
+    if (err) {
+      callback(err);
+    } else if (handle.kind === Constants.KIND_FILE) {
+      callback(new Errors.ENOTDIR('Parent path is not a directory.'));
+    } else {
+      _mkdir(handle, subdirName, callback);
+    }
+  });
 } // (context, prefix, options, callback)
 
 
@@ -7631,53 +7678,53 @@ function read() {
   throw new Errors.ENOSYS('Filer native fs function not yet supported.');
 }
 
-function _getFileContents(_x9, _x10, _x11) {
+function _getFileContents(_x12, _x13, _x14) {
   return _getFileContents2.apply(this, arguments);
 }
 
 function _getFileContents2() {
-  _getFileContents2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(fileHandle, encoding, callback) {
+  _getFileContents2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(fileHandle, encoding, callback) {
     var file, blob, buffer, decoded_string;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
             encoding = encoding || 'utf-8';
-            _context4.prev = 1;
-            _context4.next = 4;
+            _context5.prev = 1;
+            _context5.next = 4;
             return fileHandle.getFile();
 
           case 4:
-            file = _context4.sent;
-            _context4.t0 = Blob;
-            _context4.next = 8;
+            file = _context5.sent;
+            _context5.t0 = Blob;
+            _context5.next = 8;
             return file.text();
 
           case 8:
-            _context4.t1 = _context4.sent;
-            _context4.t2 = [_context4.t1];
-            blob = new _context4.t0(_context4.t2);
-            _context4.next = 13;
+            _context5.t1 = _context5.sent;
+            _context5.t2 = [_context5.t1];
+            blob = new _context5.t0(_context5.t2);
+            _context5.next = 13;
             return new Response(blob).arrayBuffer();
 
           case 13:
-            buffer = _context4.sent;
+            buffer = _context5.sent;
             decoded_string = new TextDecoder(encoding).decode(buffer);
             callback(null, decoded_string);
-            _context4.next = 21;
+            _context5.next = 21;
             break;
 
           case 18:
-            _context4.prev = 18;
-            _context4.t3 = _context4["catch"](1);
-            callback(_context4.t3);
+            _context5.prev = 18;
+            _context5.t3 = _context5["catch"](1);
+            callback(_context5.t3);
 
           case 21:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4, null, [[1, 18]]);
+    }, _callee5, null, [[1, 18]]);
   }));
   return _getFileContents2.apply(this, arguments);
 }
@@ -7757,54 +7804,54 @@ function utimes() {
   throw new Errors.ENOSYS('Filer native fs function not yet supported.');
 }
 
-function _writeFileWithName(_x12, _x13, _x14, _x15, _x16) {
+function _writeFileWithName(_x15, _x16, _x17, _x18, _x19) {
   return _writeFileWithName2.apply(this, arguments);
 }
 
 function _writeFileWithName2() {
-  _writeFileWithName2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(paretDirHandle, fileName, encoding, data, callback) {
+  _writeFileWithName2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(paretDirHandle, fileName, encoding, data, callback) {
     var newFileHandle, writable;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
             encoding = encoding || 'utf-8';
-            _context5.prev = 1;
-            _context5.next = 4;
+            _context6.prev = 1;
+            _context6.next = 4;
             return paretDirHandle.getFileHandle(fileName, {
               create: true
             });
 
           case 4:
-            newFileHandle = _context5.sent;
-            _context5.next = 7;
+            newFileHandle = _context6.sent;
+            _context6.next = 7;
             return newFileHandle.createWritable();
 
           case 7:
-            writable = _context5.sent;
-            _context5.next = 10;
+            writable = _context6.sent;
+            _context6.next = 10;
             return writable.write(data);
 
           case 10:
-            _context5.next = 12;
+            _context6.next = 12;
             return writable.close();
 
           case 12:
             callback(null);
-            _context5.next = 18;
+            _context6.next = 18;
             break;
 
           case 15:
-            _context5.prev = 15;
-            _context5.t0 = _context5["catch"](1);
-            callback(_context5.t0);
+            _context6.prev = 15;
+            _context6.t0 = _context6["catch"](1);
+            callback(_context6.t0);
 
           case 18:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, null, [[1, 15]]);
+    }, _callee6, null, [[1, 15]]);
   }));
   return _writeFileWithName2.apply(this, arguments);
 }
@@ -9726,6 +9773,10 @@ function mkdir(context, path, mode, callback) {
   } else {
     mode = validateAndMaskMode(mode, FULL_READ_WRITE_EXEC_PERMISSIONS, callback);
     if (!mode) return;
+  }
+
+  if (nativeImpl.isMountSubPath(path)) {
+    return nativeImpl.mkdir(context, path, mode, callback);
   }
 
   make_directory(context, path, callback);
