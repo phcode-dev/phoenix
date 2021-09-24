@@ -24,6 +24,8 @@
 
 /*global less */
 
+//jshint ignore: start
+
 /**
  * ExtensionUtils defines utility methods for implementing extensions.
  */
@@ -43,7 +45,12 @@ define(function (require, exports, module) {
      * @return {!HTMLStyleElement} The generated HTML node
      **/
     function addEmbeddedStyleSheet(css) {
-        return $("<style>").text(css).appendTo("head")[0];
+        try {
+            return $("<style>").text(css).appendTo("head")[0];
+        }
+        catch(err){
+            return "Invalid Style";
+        }
     }
 
     /**
@@ -59,16 +66,20 @@ define(function (require, exports, module) {
             rel: "stylesheet",
             href: url
         };
+        try {
+            var $link = $("<link/>").attr(attributes);
 
-        var $link = $("<link/>").attr(attributes);
+            if (deferred) {
+                $link.on('load', deferred.resolve).on('error', deferred.reject);
+            }
 
-        if (deferred) {
-            $link.on('load', deferred.resolve).on('error', deferred.reject);
+            $link.appendTo("head");
+
+            return $link[0];
         }
-
-        $link.appendTo("head");
-
-        return $link[0];
+        catch{
+            return "MIME Type Error";
+        }
     }
 
     /**
@@ -80,8 +91,14 @@ define(function (require, exports, module) {
      *                    or when it's absolute path on other platforms
      */
     function isAbsolutePathOrUrl(pathOrUrl) {
-        return brackets.platform === "win" ? PathUtils.isAbsoluteUrl(pathOrUrl) : FileSystem.isAbsolutePath(pathOrUrl);
+        try {
+            return brackets.platform === "win" ? PathUtils.isAbsoluteUrl(pathOrUrl) : FileSystem.isAbsolutePath(pathOrUrl);
+        }
+        catch(err){
+            return "path not resolved";
+        }
     }
+
 
     /**
      * Parses LESS code and returns a promise that resolves with plain CSS code.
@@ -95,37 +112,42 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved with CSS code if the LESS code can be parsed
      */
     function parseLessCode(code, url) {
-        var result = new $.Deferred(),
-            options;
+        try {
+            var result = new $.Deferred(),
+                options;
 
-        if (url) {
-            var dir = url.slice(0, url.lastIndexOf("/") + 1);
+            if (url) {
+                var dir = url.slice(0, url.lastIndexOf("/") + 1);
 
-            options = {
-                filename: url,
-                rootpath: dir
-            };
-
-            if (isAbsolutePathOrUrl(url)) {
-                options.currentFileInfo = {
-                    currentDirectory: dir,
-                    entryPath: dir,
+                options = {
                     filename: url,
-                    rootFilename: url,
                     rootpath: dir
                 };
+
+                if (isAbsolutePathOrUrl(url)) {
+                    options.currentFileInfo = {
+                        currentDirectory: dir,
+                        entryPath: dir,
+                        filename: url,
+                        rootFilename: url,
+                        rootpath: dir
+                    };
+                }
             }
+
+            less.render(code, options, function onParse(err, tree) {
+                if (err) {
+                    result.reject(err);
+                } else {
+                    result.resolve(tree.css);
+                }
+            });
+
+            return result.promise();
         }
-
-        less.render(code, options, function onParse(err, tree) {
-            if (err) {
-                result.reject(err);
-            } else {
-                result.resolve(tree.css);
-            }
-        });
-
-        return result.promise();
+        catch(err){
+            return "code not rendered";
+        }
     }
 
     /**
@@ -136,12 +158,18 @@ define(function (require, exports, module) {
      * @return {!string} The path to the module's folder
      **/
     function getModulePath(module, path) {
-        var modulePath = module.uri.substr(0, module.uri.lastIndexOf("/") + 1);
-        if (path) {
-            modulePath += path;
+        try{
+            var modulePath = module.uri.substr(0, module.uri.lastIndexOf("/") + 1);
+            if (path) {
+                modulePath += path;
+            }
+            return modulePath;
+        }
+        catch(err){
+            console.error("undefined path");
+            return "path undefined";
         }
 
-        return modulePath;
     }
 
     /**
@@ -152,7 +180,12 @@ define(function (require, exports, module) {
      * @return {!string} The URL to the module's folder
      **/
     function getModuleUrl(module, path) {
-        return encodeURI(getModulePath(module, path));
+        try {
+            return encodeURI(getModulePath(module, path));
+        }
+        catch(err){
+            return "url undefined";
+        }
     }
 
     /**
@@ -165,10 +198,14 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved with the contents of the requested file
      **/
     function loadFile(module, path) {
-        var url     = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path),
-            promise = $.get(url);
-
-        return promise;
+        try {
+            var url = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path);
+            var promise = $.get(url);
+            return promise;
+        }
+        catch(err){
+            return null;
+        }
     }
 
     /**
