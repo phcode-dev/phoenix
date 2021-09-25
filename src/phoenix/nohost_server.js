@@ -23,7 +23,6 @@
 
 // jshint ignore: start
 /*global navigator*/
-/*eslint-env es6*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
@@ -114,10 +113,8 @@ function showInstallPromotion() {
         console.log(`User response to the install prompt: ${outcome}`);
         // We've used the prompt, and can't use it again, throw it away
         deferredPrompt = null;
-      });
-      setTimeout(() => {
-          window.document.body.appendChild(btn);
-      }, 2000);
+    });
+    setTimeout(() => {window.document.body.appendChild(btn);}, 2000);
 }
 
 function hideInstallPromotion() {

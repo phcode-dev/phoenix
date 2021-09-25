@@ -8,6 +8,7 @@ src/extensions/disabled/**
 src/**/*-min.js
 src/**/*.min.js
 src/nohost-sw.js
+src/service-worker.js
 
 test/perf/*-files/**/*.js
 test/spec/*-files/**/*.js
