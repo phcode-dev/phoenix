@@ -22,35 +22,19 @@
  */
 
 // jshint ignore: start
-/*global Filer*/
+/*global fs, Phoenix, process*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
+/* jshint ignore:start */
 
-
-/** Setup phoenix shell components
- *
- * This module should be functionally as light weight as possible with minimal deps as it is a shell component.
- * **/
-import init from "./init_vfs.js";
-import ERR_CODES from "./errno.js";
-
-let Phoenix = {};
-
-window.Phoenix = Phoenix;
-
-init(Phoenix, Filer);
-
-Phoenix.app = {
-    getNodeState: function (cbfn){
-        cbfn(new Error('Node cannot be run in phoenix browser mode'));
-    },
-    openURLInDefaultBrowser: function (url){
-        window.open(url);
-    },
-    getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
-    ERR_CODES: ERR_CODES
+const Constants = {
+    MOUNT_DEVICE_NAME: 'nativeFsAccess',
+    KIND_FILE: 'file',
+    KIND_DIRECTORY: 'directory',
+    NODE_TYPE_FILE: 'FILE',
+    NODE_TYPE_DIRECTORY: 'DIRECTORY',
+    IDB_RW_TYPE: 'readwrite',
+    MOUNT_POINT_ROOT: '/mnt'
 };
 
-if(!window.appshell){
-    window.appshell = Phoenix;
-}
+export default Constants;
