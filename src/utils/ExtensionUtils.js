@@ -36,7 +36,8 @@ define(function (require, exports, module) {
         FileSystem         = require("filesystem/FileSystem"),
         FileUtils          = require("file/FileUtils"),
         PathUtils          = require("thirdparty/path-utils/path-utils"),
-        PreferencesManager = require("preferences/PreferencesManager");
+        PreferencesManager = require("preferences/PreferencesManager"),
+        GetUtils            = require("utils/GetUtils");
 
     /**
      * Appends a <style> tag to the document's head.
@@ -45,12 +46,7 @@ define(function (require, exports, module) {
      * @return {!HTMLStyleElement} The generated HTML node
      **/
     function addEmbeddedStyleSheet(css) {
-        try {
-            return $("<style>").text(css).appendTo("head")[0];
-        }
-        catch(err){
-            return "Invalid Style";
-        }
+        return $("<style>").text(css).appendTo("head")[0];
     }
 
     /**
@@ -66,7 +62,6 @@ define(function (require, exports, module) {
             rel: "stylesheet",
             href: url
         };
-        try {
             var $link = $("<link/>").attr(attributes);
 
             if (deferred) {
@@ -76,10 +71,7 @@ define(function (require, exports, module) {
             $link.appendTo("head");
 
             return $link[0];
-        }
-        catch{
-            return "MIME Type Error";
-        }
+
     }
 
     /**
@@ -91,12 +83,7 @@ define(function (require, exports, module) {
      *                    or when it's absolute path on other platforms
      */
     function isAbsolutePathOrUrl(pathOrUrl) {
-        try {
-            return brackets.platform === "win" ? PathUtils.isAbsoluteUrl(pathOrUrl) : FileSystem.isAbsolutePath(pathOrUrl);
-        }
-        catch(err){
-            return "path not resolved";
-        }
+        return brackets.platform === "win" ? PathUtils.isAbsoluteUrl(pathOrUrl) : FileSystem.isAbsolutePath(pathOrUrl);
     }
 
 
@@ -112,7 +99,6 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved with CSS code if the LESS code can be parsed
      */
     function parseLessCode(code, url) {
-        try {
             var result = new $.Deferred(),
                 options;
 
@@ -144,10 +130,7 @@ define(function (require, exports, module) {
             });
 
             return result.promise();
-        }
-        catch(err){
-            return "code not rendered";
-        }
+
     }
 
     /**
@@ -158,17 +141,11 @@ define(function (require, exports, module) {
      * @return {!string} The path to the module's folder
      **/
     function getModulePath(module, path) {
-        try{
-            var modulePath = module.uri.substr(0, module.uri.lastIndexOf("/") + 1);
-            if (path) {
-                modulePath += path;
-            }
-            return modulePath;
+        var modulePath = module.uri.substr(0, module.uri.lastIndexOf("/") + 1);
+        if (path) {
+            modulePath += path;
         }
-        catch(err){
-            console.error("undefined path");
-            return "path undefined";
-        }
+        return modulePath;
 
     }
 
@@ -180,12 +157,7 @@ define(function (require, exports, module) {
      * @return {!string} The URL to the module's folder
      **/
     function getModuleUrl(module, path) {
-        try {
-            return encodeURI(getModulePath(module, path));
-        }
-        catch(err){
-            return "url undefined";
-        }
+        return encodeURI(getModulePath(module, path));
     }
 
     /**
@@ -198,14 +170,10 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved with the contents of the requested file
      **/
     function loadFile(module, path) {
-        try {
             var url = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path);
             var promise = $.get(url);
             return promise;
-        }
-        catch(err){
-            return null;
-        }
+
     }
 
     /**
@@ -327,6 +295,7 @@ define(function (require, exports, module) {
     function _loadDefaultExtensionMetadata(baseExtensionUrl, extensionName) {
         var packageJSONFile = baseExtensionUrl + "/package.json";
         var result = new $.Deferred();
+        /*
         var json = {
             name: extensionName
         };
@@ -346,7 +315,9 @@ define(function (require, exports, module) {
             json.disabled = disabled;
             result.resolve(json);
         });
-
+        */
+        let json = GetUtils.getFile(packageJSONFile,extensionName,baseExtensionUrl);
+        result.resolve(json);
         return result.promise();
     }
 
