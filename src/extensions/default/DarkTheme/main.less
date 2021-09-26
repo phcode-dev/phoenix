@@ -41,11 +41,6 @@
 
 /* Code Styling */
 
-.CodeMirror, .CodeMirror-scroll {
-    background-color: @background;
-    color: @foreground;
-}
-
 .CodeMirror-focused .CodeMirror-activeline-background {
     background: #2f2f2f;
 }
@@ -129,6 +124,9 @@
     other than a vanilla .CodeMirror)
  */
 .CodeMirror {
+    background-color: @background;
+    color: @foreground;
+
     .CodeMirror {
         background: transparent;
     }
