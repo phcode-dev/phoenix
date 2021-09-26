@@ -107,7 +107,7 @@ async function _getFileContents(fileHandle, encoding, callback) {
     }
 }
 
-function _validate_file_options(options, enc, fileMode){
+function _validateFileOptions(options, enc, fileMode){
     if(!options) {
         options = { encoding: enc, flag: fileMode };
     } else if(typeof options === 'function') {
@@ -122,7 +122,7 @@ function readFile(path, options, callback) {
     path = window.path.normalize(path);
 
     callback = arguments[arguments.length - 1];
-    options = _validate_file_options(options, null, 'r');
+    options = _validateFileOptions(options, null, 'r');
 
     Mounts.getHandleFromPath(path, (err, handle) => {
         if(err){
@@ -167,7 +167,7 @@ async function _writeFileWithName(paretDirHandle, fileName, encoding, data, call
 
 function writeFile (path, data, options, callback) {
     callback = arguments[arguments.length - 1];
-    options = _validate_file_options(options, 'utf8', 'w');
+    options = _validateFileOptions(options, 'utf8', 'w');
     if(!buffer.Buffer.isBuffer(data)) {
         if(typeof data === 'number') {
             data = '' + data;
@@ -175,8 +175,7 @@ function writeFile (path, data, options, callback) {
         data = data || '';
         if(typeof data !== 'string') {
             data = buffer.Buffer.from(data.toString());
-        }
-        else {
+        } else {
             data = buffer.Buffer.from(data || '', options.encoding || 'utf8');
         }
     }
