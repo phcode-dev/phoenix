@@ -53,6 +53,27 @@ function Stats(path, fileNode, devName) {
     this.name = window.path.basename(path);
 }
 
+Stats.prototype.isFile = function() {
+    return this.type === Constants.NODE_TYPE_FILE;
+};
+
+Stats.prototype.isDirectory = function() {
+    return this.type === Constants.NODE_TYPE_DIRECTORY;
+};
+
+Stats.prototype.isSymbolicLink = function() {
+    return this.type === Constants.NODE_TYPE_SYMBOLIC_LINK;
+};
+
+// These will always be false in Filer.
+Stats.prototype.isSocket          =
+    Stats.prototype.isFIFO            =
+        Stats.prototype.isCharacterDevice =
+            Stats.prototype.isBlockDevice     =
+                function() {
+                    return false;
+                };
+
 function _getType(handle) {
     switch (handle.kind) {
     case Constants.KIND_FILE: return Constants.NODE_TYPE_FILE;

@@ -22,13 +22,14 @@
  */
 
 // jshint ignore: start
-/*global fs, Phoenix, process*/
+/*global process*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
 import {Errors} from "./errno.js";
 import NativeFS from "./fslib_native.js";
 import Constants from "./constants.js";
+import Mounts from "./fslib_mounts.js";
 
 let filerLib = null;
 
@@ -73,28 +74,48 @@ function _ensure_mount_directory() {
 
 const fileSystemLib = {
     mountNativeFolder: async function (...args) {
-        NativeFS.mountNativeFolder(...args);
+        return NativeFS.mountNativeFolder(...args);
     },
-    readdir: function (...args) {
-        filerLib.fs.readdir(...args);
+    readdir: function (...args) { // (path, options, callback)
+        let path = args[0];
+        if(Mounts.isMountSubPath(path)) {
+            return NativeFS.readdir(...args);
+        }
+        return filerLib.fs.readdir(...args);
     },
-    stat: function (...args) {
-        filerLib.fs.stat(...args);
+    stat: function (...args) { // (path, callback)
+        let path = args[0];
+        if(Mounts.isMountSubPath(path)) {
+            return NativeFS.stat(...args);
+        }
+        return filerLib.fs.stat(...args);
     },
-    readFile: function (...args) {
-        filerLib.fs.readFile(...args);
+    readFile: function (...args) { // (path, options, callback)
+        let path = args[0];
+        if(Mounts.isMountSubPath(path)) {
+            return NativeFS.readFile(...args);
+        }
+        return filerLib.fs.readFile(...args);
     },
-    writeFile: function (...args) {
-        filerLib.fs.writeFile(...args);
+    writeFile: function (...args) { // (path, data, options, callback)
+        let path = args[0];
+        if(Mounts.isMountSubPath(path)) {
+            return NativeFS.writeFile(...args);
+        }
+        return filerLib.fs.writeFile(...args);
     },
-    mkdir: function (...args) {
-        filerLib.fs.mkdir(...args);
+    mkdir: function (...args) { // (path, mode, callback)
+        let path = args[0];
+        if(Mounts.isMountSubPath(path)) {
+            return NativeFS.mkdir(...args);
+        }
+        return filerLib.fs.mkdir(...args);
     },
     rename: function (...args) {
-        filerLib.fs.rename(...args);
+        return filerLib.fs.rename(...args);
     },
     unlink: function (...args) {
-        filerLib.fs.unlink(...args);
+        return filerLib.fs.unlink(...args);
     },
     showSaveDialog: function () {
         throw new Errors.ENOSYS('Phoenix fs showSaveDialog function not yet supported.');
