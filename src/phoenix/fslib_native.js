@@ -22,7 +22,7 @@
  */
 
 // jshint ignore: start
-/*global Blob, Response, TextDecoder*/
+/*global Blob, Response, TextDecoder, buffer*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
@@ -51,7 +51,11 @@ async function _mkdir(paretDirHandle, dirName, callback) {
 }
 
 
-function mkdir(context, path, mode, callback) {
+function mkdir(path, mode, callback) {
+    if (arguments.length < 4) {
+        callback = mode;
+    }
+
     path = window.path.normalize(path);
     let dirname= window.path.dirname(path);
     let subdirName= window.path.basename(path);
@@ -67,7 +71,7 @@ function mkdir(context, path, mode, callback) {
 }
 
 
-function readdir(context, path, options, callback) {
+function readdir(path, options, callback) {
     path = window.path.normalize(path);
     if (typeof options !== 'function') {
         throw new Errors.ENOSYS('Filer readdir options are not yet supported');
@@ -103,8 +107,23 @@ async function _getFileContents(fileHandle, encoding, callback) {
     }
 }
 
-function readFile(context, path, options, callback) {
+function _validate_file_options(options, enc, fileMode){
+    if(!options) {
+        options = { encoding: enc, flag: fileMode };
+    } else if(typeof options === 'function') {
+        options = { encoding: enc, flag: fileMode };
+    } else if(typeof options === 'string') {
+        options = { encoding: options, flag: fileMode };
+    }
+    return options;
+}
+
+function readFile(path, options, callback) {
     path = window.path.normalize(path);
+
+    callback = arguments[arguments.length - 1];
+    options = _validate_file_options(options, null, 'r');
+
     Mounts.getHandleFromPath(path, (err, handle) => {
         if(err){
             callback(err);
@@ -117,7 +136,7 @@ function readFile(context, path, options, callback) {
 }
 
 
-function stat(context, path, callback) {
+function stat(path, callback) {
     path = window.path.normalize(path);
     Mounts.getHandleFromPath(path, (err, handle) => {
         if(err){
@@ -146,7 +165,22 @@ async function _writeFileWithName(paretDirHandle, fileName, encoding, data, call
     }
 }
 
-function writeFile (context, path, data, options, callback) {
+function writeFile (path, data, options, callback) {
+    callback = arguments[arguments.length - 1];
+    options = _validate_file_options(options, 'utf8', 'w');
+    if(!buffer.Buffer.isBuffer(data)) {
+        if(typeof data === 'number') {
+            data = '' + data;
+        }
+        data = data || '';
+        if(typeof data !== 'string') {
+            data = buffer.Buffer.from(data.toString());
+        }
+        else {
+            data = buffer.Buffer.from(data || '', options.encoding || 'utf8');
+        }
+    }
+
     path = window.path.normalize(path);
     let dirname= window.path.dirname(path);
     let fileName= window.path.basename(path);
@@ -171,7 +205,12 @@ function refreshMountPoints() {
 
 const NativeFS = {
     mountNativeFolder,
-    refreshMountPoints
+    refreshMountPoints,
+    mkdir,
+    readdir,
+    stat,
+    readFile,
+    writeFile
 };
 
 export default NativeFS;
