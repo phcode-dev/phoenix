@@ -84,8 +84,11 @@ module.exports = {
         "XMLHttpRequest": false,
         "quiet": true
     },
+    "env":{
+        "es6": true
+    },
     "parserOptions": {
-        "ecmaVersion": 6,
+        "ecmaVersion": 9,
         "sourceType": "module",
         "ecmaFeatures": {
             "arrowFunctions": true,

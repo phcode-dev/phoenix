@@ -24,11 +24,10 @@
 
 // jshint ignore: start
 /*global fs, Phoenix, process*/
-/*eslint-env es6*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
-
+import initFsLib from "./fslib.js";
 
 /** Setup virtual file system. This happens before any code of phoenix is loaded.
  * The virtual file system is rooted at /
@@ -137,67 +136,14 @@ const _createDefaultProject = function (vfs) {
     });
 };
 
-// Adds recursive dir creation support to fs.mkdirs()
-const _patchFSLib = function(fsLib, pathLib) {
-    /**
-     * Offers functionality similar to mkdir -p
-     *
-     * Asynchronous operation. No arguments other than a possible exception
-     * are given to the completion callback.
-     */
-    function mkdir_p (path, mode, callback, position) {
-        const osSep = '/';
-        const parts = pathLib.normalize(path).split(osSep);
-
-        mode = mode || process.umask();
-        position = position || 0;
-
-        if (position >= parts.length) {
-            return callback();
-        }
-
-        var directory = parts.slice(0, position + 1).join(osSep) || osSep;
-        fsLib.stat(directory, function(err) {
-            if (err === null) {
-                mkdir_p(path, mode, callback, position + 1);
-            } else {
-                fsLib.mkdir(directory, mode, function (err) {
-                    if (err && err.code !== 'EEXIST') {
-                        return callback(err);
-                    } else {
-                        mkdir_p(path, mode, callback, position + 1);
-                    }
-                });
-            }
-        });
-    }
-
-    fsLib.mkdirs = function (path, mode, recursive, callback) {
-        if (typeof recursive !== 'boolean') {
-            callback = recursive;
-            recursive = false;
-        }
-
-        if (typeof callback !== 'function') {
-            callback = function () {};
-        }
-
-        if (!recursive) {
-            fsLib.mkdir(path, mode, callback);
-        } else {
-            mkdir_p(path, mode, callback);
-        }
-    };
-};
-
-
 export default function init(Phoenix, FilerLib) {
     if(!FilerLib || !Phoenix){
         alertError(_FS_ERROR_MESSAGE);
     }
 
-    _patchFSLib(FilerLib.fs, FilerLib.path);
-    const vfs = _setupVFS(Phoenix, FilerLib.fs, FilerLib.path);
+    initFsLib(Phoenix, FilerLib);
+
+    const vfs = _setupVFS(Phoenix, window.fs, window.path);
     _createAppDirs(vfs);
     _createDefaultProject(vfs);
 }
