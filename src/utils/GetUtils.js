@@ -24,11 +24,11 @@
 
 //jshint ignore: start
 
-define(function(require,exports,module){
+define(function (require, exports, module) {
    //write xmlhttprequest instead of $.get();
     var PreferencesManager = require("preferences/PreferencesManager");
 
-    function getFile(file,extensionName,baseExtensionUrl) {
+    function getFile(file, extensionName, baseExtensionUrl) {
         const xhttp = new XMLHttpRequest();
         var json = {
             name: extensionName
@@ -48,11 +48,11 @@ define(function(require,exports,module){
             }
             json.disabled = disabled;
 
-        }
+        };
         xhttp.open("GET", file, true);
         xhttp.send();
-
         return json;
     }
     exports.getFile = getFile;
 });
+

@@ -31,13 +31,11 @@
  */
 define(function (require, exports, module) {
 
-
-    var Async              = require("utils/Async"),
-        FileSystem         = require("filesystem/FileSystem"),
-        FileUtils          = require("file/FileUtils"),
-        PathUtils          = require("thirdparty/path-utils/path-utils"),
-        PreferencesManager = require("preferences/PreferencesManager"),
-        GetUtils            = require("utils/GetUtils");
+    const Async      = require("utils/Async"),
+          FileSystem = require("filesystem/FileSystem"),
+          FileUtils  = require("file/FileUtils"),
+          PathUtils  = require("thirdparty/path-utils/path-utils"),
+          GetUtils   = require("utils/GetUtils");
 
     /**
      * Appends a <style> tag to the document's head.
@@ -62,16 +60,12 @@ define(function (require, exports, module) {
             rel: "stylesheet",
             href: url
         };
-            var $link = $("<link/>").attr(attributes);
-
-            if (deferred) {
-                $link.on('load', deferred.resolve).on('error', deferred.reject);
-            }
-
-            $link.appendTo("head");
-
-            return $link[0];
-
+        var $link = $("<link/>").attr(attributes);
+        if (deferred) {
+            $link.on('load', deferred.resolve).on('error', deferred.reject);
+        }
+        $link.appendTo("head");
+        return $link[0];
     }
 
     /**
@@ -99,37 +93,37 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved with CSS code if the LESS code can be parsed
      */
     function parseLessCode(code, url) {
-            var result = new $.Deferred(),
-                options;
+        var result = new $.Deferred(),
+            options;
 
-            if (url) {
-                var dir = url.slice(0, url.lastIndexOf("/") + 1);
+        if (url) {
+            var dir = url.slice(0, url.lastIndexOf("/") + 1);
 
-                options = {
+            options = {
+                filename: url,
+                rootpath: dir
+            };
+
+            if (isAbsolutePathOrUrl(url)) {
+                options.currentFileInfo = {
+                    currentDirectory: dir,
+                    entryPath: dir,
                     filename: url,
+                    rootFilename: url,
                     rootpath: dir
                 };
-
-                if (isAbsolutePathOrUrl(url)) {
-                    options.currentFileInfo = {
-                        currentDirectory: dir,
-                        entryPath: dir,
-                        filename: url,
-                        rootFilename: url,
-                        rootpath: dir
-                    };
-                }
             }
+        }
 
-            less.render(code, options, function onParse(err, tree) {
-                if (err) {
-                    result.reject(err);
-                } else {
-                    result.resolve(tree.css);
-                }
-            });
+        less.render(code, options, function onParse(err, tree) {
+            if (err) {
+                result.reject(err);
+            } else {
+                result.resolve(tree.css);
+            }
+        });
 
-            return result.promise();
+        return result.promise();
 
     }
 
@@ -170,10 +164,9 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved with the contents of the requested file
      **/
     function loadFile(module, path) {
-            var url = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path);
-            var promise = $.get(url);
-            return promise;
-
+        var url = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path);
+        var promise = $.get(url);
+        return promise;
     }
 
     /**
@@ -316,7 +309,7 @@ define(function (require, exports, module) {
             result.resolve(json);
         });
         */
-        let json = GetUtils.getFile(packageJSONFile,extensionName,baseExtensionUrl);
+        let json = GetUtils.getFile(packageJSONFile, extensionName, baseExtensionUrl);
         result.resolve(json);
         return result.promise();
     }
