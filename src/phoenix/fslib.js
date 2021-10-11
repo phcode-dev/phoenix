@@ -32,6 +32,7 @@ import Constants from "./constants.js";
 import Mounts from "./fslib_mounts.js";
 
 let filerLib = null;
+let filerShell = null;
 
 /**
  * Offers functionality similar to mkdir -p
@@ -114,8 +115,8 @@ const fileSystemLib = {
     rename: function (...args) {
         return filerLib.fs.rename(...args);
     },
-    unlink: function (...args) {
-        return filerLib.fs.unlink(...args);
+    unlink: function (path, cb) {
+        return filerShell.rm(path, { recursive: true }, cb);
     },
     showSaveDialog: function () {
         throw new Errors.ENOSYS('Phoenix fs showSaveDialog function not yet supported.');
@@ -146,6 +147,7 @@ const fileSystemLib = {
 
 export default function initFsLib(Phoenix, FilerLib) {
     filerLib = FilerLib;
+    filerShell = new filerLib.fs.Shell();
     window.path = FilerLib.path;
     window.fs = fileSystemLib;
 
