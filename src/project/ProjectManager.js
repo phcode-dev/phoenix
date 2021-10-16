@@ -1142,7 +1142,7 @@ define(function (require, exports, module) {
     function deleteItem(entry) {
         var result = new $.Deferred();
 
-        entry.moveToTrash(function (err) {
+        entry.unlink(function (err) {
             if (!err) {
                 DocumentManager.notifyPathDeleted(entry.fullPath);
                 result.resolve();

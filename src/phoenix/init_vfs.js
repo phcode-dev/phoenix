@@ -53,6 +53,15 @@ function _setupVFS(Phoenix, fsLib, pathLib){
                 cb();
             });
         },
+        exists: function (path, cb) {
+            fs.stat(path, function (err, stats){
+                if (stats && !err) {
+                    cb(true);
+                } else {
+                    cb(false);
+                }
+            });
+        },
         fs: fsLib,
         path: pathLib,
         getFsEncoding: _getFsEncoding
@@ -126,12 +135,16 @@ const _SAMPLE_HTML = `<!DOCTYPE html>
 const _createDefaultProject = function (vfs) {
     // Create phoenix app dirs
     // Create Phoenix default project if it doesnt exist
-    vfs.ensureExistsDir(vfs.getDefaultProjectDir(), errorCb);
-    let projectDir = vfs.getDefaultProjectDir();
-    let indexFile = vfs.path.normalize(`${projectDir}/index.html`);
-    vfs.fs.stat(indexFile, function (err){
-        if (err && err.code === 'ENOENT') {
-            fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', errorCb);
+    vfs.exists(vfs.getDefaultProjectDir(), (exists)=>{
+        if(!exists){
+            vfs.ensureExistsDir(vfs.getDefaultProjectDir(), errorCb);
+            let projectDir = vfs.getDefaultProjectDir();
+            let indexFile = vfs.path.normalize(`${projectDir}/index.html`);
+            vfs.fs.stat(indexFile, function (err){
+                if (err && err.code === 'ENOENT') {
+                    fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', errorCb);
+                }
+            });
         }
     });
 };
