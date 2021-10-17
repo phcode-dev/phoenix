@@ -194,6 +194,15 @@ function writeFile (path, data, options, callback) {
     });
 }
 
+async function _deleteEntry(dirHandle, entryNameToDelete, callback, recursive=true){
+    try {
+        await dirHandle.removeEntry(entryNameToDelete, { recursive: recursive });
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+}
+
 async function unlink(path, callback) {
     path = window.path.normalize(path);
     let dirPath= window.path.dirname(path);
@@ -202,12 +211,7 @@ async function unlink(path, callback) {
         if(err){
             callback(err);
         } else {
-            try {
-                await dirHandle.removeEntry(baseName, { recursive: true });
-                callback();
-            } catch (err) {
-                callback(err);
-            }
+            _deleteEntry(dirHandle, baseName, callback);
         }
     });
 }
