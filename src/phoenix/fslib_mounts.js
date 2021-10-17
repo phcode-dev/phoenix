@@ -271,6 +271,18 @@ function getHandleFromPath(normalisedPath, callback) {
     });
 }
 
+async function getHandleFromPathIfPresent(normalisedPath) {
+    return new Promise(resolve => {
+        getHandleFromPath(normalisedPath, (err, handle) =>{
+            if(err) {
+                resolve(null);
+            } else {
+                resolve(handle);
+            }
+        });
+    });
+}
+
 function getMountPoints() {
     return MountPointsStore.getMountPoints();
 }
@@ -287,7 +299,8 @@ const Mounts = {
     isMountSubPath,
     getHandleFromPath,
     getMountPoints,
-    refreshMountPoints
+    refreshMountPoints,
+    getHandleFromPathIfPresent
 };
 
 export default Mounts;
