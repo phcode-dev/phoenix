@@ -194,6 +194,28 @@ function writeFile (path, data, options, callback) {
     });
 }
 
+async function _deleteEntry(dirHandle, entryNameToDelete, callback, recursive=true){
+    try {
+        await dirHandle.removeEntry(entryNameToDelete, { recursive: recursive });
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+}
+
+async function unlink(path, callback) {
+    path = window.path.normalize(path);
+    let dirPath= window.path.dirname(path);
+    let baseName= window.path.basename(path);
+    Mounts.getHandleFromPath(dirPath, async (err, dirHandle) => {
+        if(err){
+            callback(err);
+        } else {
+            _deleteEntry(dirHandle, baseName, callback);
+        }
+    });
+}
+
 function mountNativeFolder(...args) {
     Mounts.mountNativeFolder(...args);
 }
@@ -209,7 +231,8 @@ const NativeFS = {
     readdir,
     stat,
     readFile,
-    writeFile
+    writeFile,
+    unlink
 };
 
 export default NativeFS;

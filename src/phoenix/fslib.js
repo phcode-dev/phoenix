@@ -116,6 +116,11 @@ const fileSystemLib = {
         return filerLib.fs.rename(...args);
     },
     unlink: function (path, cb) {
+        if(Mounts.isMountPath(path)) {
+            throw new Errors.EPERM('Mount root directory cannot be deleted.');
+        } else if(Mounts.isMountSubPath(path)) {
+            return NativeFS.unlink(path, cb);
+        }
         return filerShell.rm(path, { recursive: true }, cb);
     },
     showSaveDialog: function () {
