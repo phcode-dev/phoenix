@@ -194,6 +194,24 @@ function writeFile (path, data, options, callback) {
     });
 }
 
+async function unlink(path, callback) {
+    path = window.path.normalize(path);
+    let dirPath= window.path.dirname(path);
+    let baseName= window.path.basename(path);
+    Mounts.getHandleFromPath(dirPath, async (err, dirHandle) => {
+        if(err){
+            callback(err);
+        } else {
+            try {
+                await dirHandle.removeEntry(baseName, { recursive: true });
+                callback();
+            } catch (err) {
+                callback(err);
+            }
+        }
+    });
+}
+
 function mountNativeFolder(...args) {
     Mounts.mountNativeFolder(...args);
 }
@@ -209,7 +227,8 @@ const NativeFS = {
     readdir,
     stat,
     readFile,
-    writeFile
+    writeFile,
+    unlink
 };
 
 export default NativeFS;
