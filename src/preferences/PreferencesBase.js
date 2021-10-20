@@ -182,7 +182,7 @@ define(function (require, exports, module) {
                         if (createIfMissing) {
                             // Unreadable file is also unwritable -- delete so get recreated
                             if (recreateIfInvalid && (err === FileSystemError.NOT_READABLE || err === FileSystemError.UNSUPPORTED_ENCODING)) {
-                                appshell.fs.moveToTrash(path, function (err) {
+                                appshell.fs.unlink(path, function (err) {
                                     if (err) {
                                         console.log("Cannot move unreadable preferences file " + path + " to trash!!");
                                     } else {
@@ -208,7 +208,7 @@ define(function (require, exports, module) {
                         } catch (e) {
                             if (recreateIfInvalid) {
                                 // JSON parsing error -- recreate the preferences file
-                                appshell.fs.moveToTrash(path, function (err) {
+                                appshell.fs.unlink(path, function (err) {
                                     if (err) {
                                         console.log("Cannot move unparseable preferences file " + path + " to trash!!");
                                     } else {

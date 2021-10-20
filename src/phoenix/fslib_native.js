@@ -194,6 +194,76 @@ function writeFile (path, data, options, callback) {
     });
 }
 
+async function _deleteEntry(dirHandle, entryNameToDelete, callback, recursive=true){
+    try {
+        await dirHandle.removeEntry(entryNameToDelete, { recursive: recursive });
+        callback();
+    } catch (err) {
+        callback(err);
+    }
+}
+
+async function unlink(path, callback) {
+    path = window.path.normalize(path);
+    let dirPath= window.path.dirname(path);
+    let baseName= window.path.basename(path);
+    Mounts.getHandleFromPath(dirPath, async (err, dirHandle) => {
+        if(err){
+            callback(err);
+        } else {
+            _deleteEntry(dirHandle, baseName, callback);
+        }
+    });
+}
+
+async function _getDestinationFileHandle(dst, srcFileName) {
+    return new Promise(async (resolve, reject) => {
+        dst = window.path.normalize(dst);
+        let dirPath= window.path.dirname(dst);
+        let dstFileName= window.path.basename(dst);
+        let dstHandle = await Mounts.getHandleFromPathIfPresent(dst);
+        let dstParentHandle = await Mounts.getHandleFromPathIfPresent(dirPath);
+        if (dstHandle && dstHandle.kind === Constants.KIND_FILE) {
+            reject(new Errors.EEXIST(`Copy file destination already exists: ${dst}`));
+        } else if (dstHandle && dstHandle.kind === Constants.KIND_DIRECTORY) {
+            const fileHandle = await dstHandle.getFileHandle(srcFileName, {create: true});
+            resolve(fileHandle);
+        } else if (!dstHandle && dstParentHandle && dstParentHandle.kind === Constants.KIND_DIRECTORY) {
+            const fileHandle = await dstParentHandle.getFileHandle(dstFileName, {create: true});
+            resolve(fileHandle);
+        } else {
+            reject(new Errors.ENOENT(`Copy destination doesnt exist: ${dst}`));
+        }
+    });
+}
+
+async function _copyFile(srcFileHandle, dst, srcFileName, callback) {
+    try {
+        let dstHandle = await _getDestinationFileHandle(dst, srcFileName);
+        const srcFile = await srcFileHandle.getFile();
+        const srcStream = await srcFile.stream();
+        const writable = await dstHandle.createWritable();
+        await srcStream.pipeTo(writable);
+        callback();
+    } catch (e) {
+        callback(e);
+    }
+}
+
+async function copyFile(src, dst, callback) {
+    let srcFile = window.path.normalize(src);
+    let srcFileName= window.path.basename(srcFile);
+    Mounts.getHandleFromPath(srcFile, async (err, srcHandle) => {
+        if(err){
+            callback(err);
+        } else if (srcHandle.kind === Constants.KIND_DIRECTORY) {
+            callback(new Errors.EISDIR(`Copy file cannot copy directory: ${srcFile}`));
+        } else {
+            _copyFile(srcHandle, dst, srcFileName, callback);
+        }
+    });
+}
+
 function mountNativeFolder(...args) {
     Mounts.mountNativeFolder(...args);
 }
@@ -209,7 +279,9 @@ const NativeFS = {
     readdir,
     stat,
     readFile,
-    writeFile
+    writeFile,
+    unlink,
+    copyFile
 };
 
 export default NativeFS;
