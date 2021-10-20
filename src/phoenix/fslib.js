@@ -123,9 +123,9 @@ const fileSystemLib = {
         }
         return filerShell.rm(path, { recursive: true }, cb);
     },
-    copyFile: function (src, dst, callback) {
+    copy: function (src, dst, callback) {
         if(Mounts.isMountSubPath(src) && Mounts.isMountSubPath(dst)) {
-            return NativeFS.copyFile(src, dst, callback);
+            return NativeFS.copy(src, dst, callback);
         }
         throw new Errors.ENOSYS('Phoenix fs copy on filer or across filer and native not yet supported');
     },
