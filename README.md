@@ -3,7 +3,9 @@
 Phoenix is a modern open-source and free code editor for the web, built for the browser.
 
 
-Phoenix is in early alpha.  Please subscribe to our [notification list](https://core.ai/) to get notified when Phoenix goes live. 
+Phoenix is in early alpha.  
+* **Test out development build of phoenix by visiting this URL:** [**http://phoenix.core.ai/src**](http://phoenix.core.ai/src) 
+* Please subscribe to our [notification list](https://core.ai/) to get notified when Phoenix goes live. 
 
 ![Phoenix](./phoenix.png)
 
