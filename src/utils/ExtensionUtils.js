@@ -23,6 +23,7 @@
  */
 
 /*global less */
+// jshint ignore: start
 
 /**
  * ExtensionUtils defines utility methods for implementing extensions.
