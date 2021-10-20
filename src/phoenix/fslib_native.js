@@ -328,6 +328,18 @@ async function copy(src, dst, callback, recursive = true) {
     });
 }
 
+async function rename(oldPath, newPath, cb) {
+    copy(oldPath, newPath, err => {
+        if(err) {
+            cb(err);
+        } else {
+            setTimeout(()=>{
+                unlink(oldPath, cb);
+            }, 0);
+        }
+    });
+}
+
 function mountNativeFolder(...args) {
     Mounts.mountNativeFolder(...args);
 }
@@ -345,7 +357,8 @@ const NativeFS = {
     readFile,
     writeFile,
     unlink,
-    copy
+    copy,
+    rename
 };
 
 export default NativeFS;

@@ -112,8 +112,13 @@ const fileSystemLib = {
         }
         return filerLib.fs.mkdir(...args);
     },
-    rename: function (...args) {
-        return filerLib.fs.rename(...args);
+    rename: function (oldPath, newPath, cb) {
+        if(Mounts.isMountPath(oldPath) || Mounts.isMountPath(newPath)) {
+            throw new Errors.EPERM('Mount root directory cannot be deleted.');
+        } else if(Mounts.isMountSubPath(oldPath) && Mounts.isMountSubPath(newPath)) {
+            return NativeFS.rename(oldPath, newPath, cb);
+        }
+        return filerLib.fs.rename(oldPath, newPath, cb);
     },
     unlink: function (path, cb) {
         if(Mounts.isMountPath(path)) {
