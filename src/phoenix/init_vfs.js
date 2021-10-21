@@ -123,12 +123,14 @@ const _createAppDirs = function (vfs) {
 const _SAMPLE_HTML = `<!DOCTYPE html>
 <html>
     <head>
-        <title>Page Title</title>
+        <title>Phoenix Editor for the web</title>
     </head>
  
     <body>
-        <h1>This is a Heading</h1>
-        <p>This is a paragraph.</p>
+        <h1>Welcome to Phoenix</h1>
+        <p> Phoenix is in alpha and is under active development.</p>
+        <p> Use Google Chrome/ Microsoft Edge/ Opera browser for opening projects in your system using the 
+         [File Menu > Open Folder] Option or by pressing Ctrl+Shift+O/ cmd+shift+O shortcut</p>
     </body>
 </html>`;
 
