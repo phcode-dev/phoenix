@@ -230,7 +230,7 @@ async function _findLeafNode(currentNode, pathArray, currentIndex, callback) {
 
 async function _verifyOrRequestPermission(fileHandle, callback) {
     const options = {
-        mode: 'readwrite'
+        mode: 'read'
     };
 
     // Check if permission was already granted. If so, return true.
