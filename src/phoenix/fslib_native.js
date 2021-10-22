@@ -32,21 +32,30 @@ import Constants from "./constants.js";
 import Utils from "./utils.js";
 
 
-async function listDir(handle, callback) {
+async function _listDir(handle, callback) {
     let dirEntryNames = [];
     for await (const [key] of handle.entries()) {
         dirEntryNames.push(key);
     }
-    callback(null, dirEntryNames);
+    if(callback){
+        callback(null, dirEntryNames);
+    }
+    return dirEntryNames;
 }
 
 
 async function _mkdir(paretDirHandle, dirName, callback) {
     try {
-        await paretDirHandle.getDirectoryHandle(dirName, { create: true });
-        callback(null);
+        let childDirHandle = await paretDirHandle.getDirectoryHandle(dirName, { create: true });
+        if(callback){
+            callback(null);
+        }
+        return childDirHandle;
     } catch (e) {
-        callback(new Errors.EIO('Filer native fs function not yet supported.', e));
+        if(callback){
+            callback(new Errors.EIO('Filer native fs function not yet supported.', e));
+        }
+        throw new Errors.EIO('Filer native fs function not yet supported.', e);
     }
 }
 
@@ -88,7 +97,7 @@ function readdir(path, options, callback) {
             } else if (handle.kind === Constants.KIND_FILE) {
                 callback(new Errors.ENOTDIR('Path is not a directory.'));
             }else {
-                listDir(handle, callback);
+                _listDir(handle, callback);
             }
         });
     }
@@ -216,20 +225,35 @@ async function unlink(path, callback) {
     });
 }
 
-async function _getDestinationFileHandle(dst, srcFileName) {
+async function _getDestinationHandle(dst, srcBaseName, handleKindToCreate) {
     return new Promise(async (resolve, reject) => {
         dst = window.path.normalize(dst);
         let dirPath= window.path.dirname(dst);
-        let dstFileName= window.path.basename(dst);
+        let dstBaseName= window.path.basename(dst);
         let dstHandle = await Mounts.getHandleFromPathIfPresent(dst);
         let dstParentHandle = await Mounts.getHandleFromPathIfPresent(dirPath);
         if (dstHandle && dstHandle.kind === Constants.KIND_FILE) {
-            reject(new Errors.EEXIST(`Copy file destination already exists: ${dst}`));
-        } else if (dstHandle && dstHandle.kind === Constants.KIND_DIRECTORY) {
-            const fileHandle = await dstHandle.getFileHandle(srcFileName, {create: true});
+            reject(new Errors.EEXIST(`Destination file already exists: ${dst}`));
+        } else if (dstHandle && dstHandle.kind === Constants.KIND_DIRECTORY
+            && handleKindToCreate === Constants.KIND_FILE) {
+            const fileHandle = await dstHandle.getFileHandle(srcBaseName, {create: true});
             resolve(fileHandle);
-        } else if (!dstHandle && dstParentHandle && dstParentHandle.kind === Constants.KIND_DIRECTORY) {
-            const fileHandle = await dstParentHandle.getFileHandle(dstFileName, {create: true});
+        } else if (dstHandle && dstHandle.kind === Constants.KIND_DIRECTORY
+            && handleKindToCreate === Constants.KIND_DIRECTORY) {
+            let dstChildHandle = await Mounts.getHandleFromPathIfPresent(`${dst}/${srcBaseName}`);
+            if(dstChildHandle){
+                reject(new Errors.EEXIST(`Copy destination already exists: ${dst}/${srcBaseName}`));
+                return;
+            }
+            const directoryHandle = await dstHandle.getDirectoryHandle(srcBaseName, {create: true});
+            resolve(directoryHandle);
+        } else if (!dstHandle && dstParentHandle && dstParentHandle.kind === Constants.KIND_DIRECTORY
+            && handleKindToCreate === Constants.KIND_FILE) {
+            const fileHandle = await dstParentHandle.getFileHandle(dstBaseName, {create: true});
+            resolve(fileHandle);
+        } else if (!dstHandle && dstParentHandle && dstParentHandle.kind === Constants.KIND_DIRECTORY
+            && handleKindToCreate === Constants.KIND_DIRECTORY) {
+            const fileHandle = await dstParentHandle.getDirectoryHandle(dstBaseName, {create: true});
             resolve(fileHandle);
         } else {
             reject(new Errors.ENOENT(`Copy destination doesnt exist: ${dst}`));
@@ -237,29 +261,81 @@ async function _getDestinationFileHandle(dst, srcFileName) {
     });
 }
 
-async function _copyFile(srcFileHandle, dst, srcFileName, callback) {
+async function _copyFileFromHandles(srcFileHandle, dstHandle, optionalName) {
+    // TODO Add retry mechanisms when copying large folders
     try {
-        let dstHandle = await _getDestinationFileHandle(dst, srcFileName);
+        if(optionalName){
+            dstHandle = await dstHandle.getFileHandle(optionalName, {create: true});
+        }
         const srcFile = await srcFileHandle.getFile();
         const srcStream = await srcFile.stream();
         const writable = await dstHandle.createWritable();
         await srcStream.pipeTo(writable);
+    } catch (e) {
+        console.error(`Error while copying ${dstHandle.name}/${optionalName} : ${e}`);
+        throw e;
+    }
+}
+
+async function _copyFileWithHandle(srcFileHandle, dst, srcFileName, callback) {
+    try {
+        let dstHandle = await _getDestinationHandle(dst, srcFileName, Constants.KIND_FILE);
+        await _copyFileFromHandles(srcFileHandle, dstHandle);
         callback();
     } catch (e) {
         callback(e);
     }
 }
 
-async function copyFile(src, dst, callback) {
+async function _treeCopy(srcFolderHandle, dstFolderHandle, recursive) {
+    let allDonePromises = [];
+    for await (const [key, srcHandle] of srcFolderHandle.entries()) {
+        if (srcHandle.kind === Constants.KIND_FILE) {
+            allDonePromises.push(_copyFileFromHandles(srcHandle, dstFolderHandle, key));
+        } else if (srcHandle.kind === Constants.KIND_DIRECTORY) {
+            const childDirHandle = await _mkdir(dstFolderHandle, key);
+            if(recursive && childDirHandle){
+                allDonePromises.push(_treeCopy(srcHandle, childDirHandle, recursive));
+            }
+        }
+    }
+    await Promise.all(allDonePromises);
+}
+
+async function _copyFolderWithHandle(srcFolderHandle, dst, srcFileName, callback, recursive) {
+    try {
+        let dstFolderHandle = await _getDestinationHandle(dst, srcFileName, Constants.KIND_DIRECTORY);
+        await _treeCopy(srcFolderHandle, dstFolderHandle, recursive);
+        callback();
+    } catch (e) {
+        callback(e);
+    }
+}
+
+async function copy(src, dst, callback, recursive = true) {
     let srcFile = window.path.normalize(src);
     let srcFileName= window.path.basename(srcFile);
     Mounts.getHandleFromPath(srcFile, async (err, srcHandle) => {
         if(err){
             callback(err);
+        } else if (srcHandle.kind === Constants.KIND_FILE) {
+            return _copyFileWithHandle(srcHandle, dst, srcFileName, callback);
         } else if (srcHandle.kind === Constants.KIND_DIRECTORY) {
-            callback(new Errors.EISDIR(`Copy file cannot copy directory: ${srcFile}`));
+            return _copyFolderWithHandle(srcHandle, dst, srcFileName, callback, recursive);
         } else {
-            _copyFile(srcHandle, dst, srcFileName, callback);
+            callback(new Errors.EIO(`Cannot copy src: ${srcFile}`));
+        }
+    });
+}
+
+async function rename(oldPath, newPath, cb) {
+    copy(oldPath, newPath, err => {
+        if(err) {
+            cb(err);
+        } else {
+            setTimeout(()=>{
+                unlink(oldPath, cb);
+            }, 0);
         }
     });
 }
@@ -281,7 +357,8 @@ const NativeFS = {
     readFile,
     writeFile,
     unlink,
-    copyFile
+    copy,
+    rename
 };
 
 export default NativeFS;

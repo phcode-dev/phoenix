@@ -112,8 +112,13 @@ const fileSystemLib = {
         }
         return filerLib.fs.mkdir(...args);
     },
-    rename: function (...args) {
-        return filerLib.fs.rename(...args);
+    rename: function (oldPath, newPath, cb) {
+        if(Mounts.isMountPath(oldPath) || Mounts.isMountPath(newPath)) {
+            throw new Errors.EPERM('Mount root directory cannot be deleted.');
+        } else if(Mounts.isMountSubPath(oldPath) && Mounts.isMountSubPath(newPath)) {
+            return NativeFS.rename(oldPath, newPath, cb);
+        }
+        return filerLib.fs.rename(oldPath, newPath, cb);
     },
     unlink: function (path, cb) {
         if(Mounts.isMountPath(path)) {
@@ -123,9 +128,9 @@ const fileSystemLib = {
         }
         return filerShell.rm(path, { recursive: true }, cb);
     },
-    copyFile: function (src, dst, callback) {
+    copy: function (src, dst, callback) {
         if(Mounts.isMountSubPath(src) && Mounts.isMountSubPath(dst)) {
-            return NativeFS.copyFile(src, dst, callback);
+            return NativeFS.copy(src, dst, callback);
         }
         throw new Errors.ENOSYS('Phoenix fs copy on filer or across filer and native not yet supported');
     },
