@@ -30,6 +30,7 @@ import {Errors} from "./errno.js";
 import NativeFS from "./fslib_native.js";
 import Constants from "./constants.js";
 import Mounts from "./fslib_mounts.js";
+import FsWatch from "./fslib_watch.js";
 
 let filerLib = null;
 let filerShell = null;
@@ -137,8 +138,14 @@ const fileSystemLib = {
     showSaveDialog: function () {
         throw new Errors.ENOSYS('Phoenix fs showSaveDialog function not yet supported.');
     },
-    watch: function () {
-        throw new Errors.ENOSYS('Phoenix fs watch function not yet supported.');
+    watch: function (...args) {
+        return FsWatch.watch(...args);
+    },
+    unwatch: function (...args) {
+        return FsWatch.unwatch(...args);
+    },
+    unwatchAll: function (...args) {
+        return FsWatch.unwatchAll(...args);
     },
     moveToTrash: function () {
         throw new Errors.ENOSYS('Phoenix fs moveToTrash function not yet supported.');
