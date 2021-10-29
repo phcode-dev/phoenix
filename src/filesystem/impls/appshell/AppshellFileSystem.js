@@ -31,8 +31,7 @@ define(function (require, exports, module) {
 
     var FileUtils           = require("file/FileUtils"),
         FileSystemStats     = require("filesystem/FileSystemStats"),
-        FileSystemError     = require("filesystem/FileSystemError"),
-        NodeDomain          = require("utils/NodeDomain");
+        FileSystemError     = require("filesystem/FileSystemError");
 
     /**
      * @const
@@ -61,20 +60,6 @@ define(function (require, exports, module) {
      */
     var _pendingChanges = {};
 
-    var _bracketsPath   = FileUtils.getNativeBracketsDirectoryPath(),
-        _modulePath     = FileUtils.getNativeModuleDirectoryPath(module),
-        _nodePath       = "node/FileWatcherDomain",
-        _domainPath     = [_bracketsPath, _modulePath, _nodePath].join("/"),
-        _nodeDomain     = new NodeDomain("fileWatcher", _domainPath);
-
-
-    // If the connection closes, notify the FileSystem that watchers have gone offline.
-    _nodeDomain.connection.on("close", function (event, promise) {
-        if (_offlineCallback) {
-            _offlineCallback();
-        }
-    });
-
     /**
      * Enqueue a file change event for eventual reporting back to the FileSystem.
      *
@@ -99,16 +84,15 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Event handler for the Node fileWatcher domain's change event.
+     * Event handler for file system change event
      *
-     * @param {jQuery.Event} The underlying change event
      * @param {string} event The type of the event: "changed", "created" or "deleted"
      * @param {string} parentDirPath The path to the directory holding entry that has changed
      * @param {string=} entryName The name of the file/directory that has changed
      * @param {object} statsObj Object that can be used to construct FileSystemStats
      * @private
      */
-    function _fileWatcherChange(evt, event, parentDirPath, entryName, statsObj) {
+    function _fileWatcherChangeHandler(event, parentDirPath, entryName, statsObj) {
         var change;
         switch (event) {
         case "changed":
@@ -130,9 +114,6 @@ define(function (require, exports, module) {
             console.error("Unexpected 'change' event:", event);
         }
     }
-
-    // Setup the change handler. This only needs to happen once.
-    _nodeDomain.on("change", _fileWatcherChange);
 
     /**
      * Convert appshell error codes to FileSystemError values.
@@ -562,23 +543,9 @@ define(function (require, exports, module) {
      * @param {function(?string)=} callback
      */
     function watchPath(path, ignored, callback) {
-        console.log('Watch path: ', path);
+        console.log('Watch path: ', path, ignored);
         path = _normalise_path(path);
-        callback(FileSystemError.NOT_SUPPORTED);
-        return;
-        // TODO: Phoenix. file watch fix.
-        // appshell.fs.watch(path, function (err, isNetworkDrive) {
-        //     if (err || isNetworkDrive) {
-        //         if (isNetworkDrive) {
-        //             callback(FileSystemError.NETWORK_DRIVE_NOT_SUPPORTED);
-        //         } else {
-        //             callback(FileSystemError.UNKNOWN);
-        //         }
-        //         return;
-        //     }
-        //     _nodeDomain.exec("watchPath", path, ignored)
-        //         .then(callback, callback);
-        // });
+        appshell.fs.watch(path, ignored, _fileWatcherChangeHandler, callback);
     }
     /**
      * Stop providing change notifications for the file or directory at the
@@ -594,8 +561,7 @@ define(function (require, exports, module) {
     function unwatchPath(path, ignored, callback) {
         console.log('unwatch path: ', path);
         path = _normalise_path(path);
-        _nodeDomain.exec("unwatchPath", path)
-            .then(callback, callback);
+        appshell.fs.unwatch(path, callback);
     }
 
     /**
@@ -606,8 +572,7 @@ define(function (require, exports, module) {
      * @param {function(?string)=} callback
      */
     function unwatchAll(callback) {
-        _nodeDomain.exec("unwatchAll")
-            .then(callback, callback);
+        appshell.fs.unwatchAll(callback);
     }
 
 

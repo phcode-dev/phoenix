@@ -30,6 +30,7 @@ import {Errors} from "./errno.js";
 import NativeFS from "./fslib_native.js";
 import Constants from "./constants.js";
 import Mounts from "./fslib_mounts.js";
+import FsWatch from "./fslib_watch.js";
 
 let filerLib = null;
 let filerShell = null;
@@ -121,12 +122,21 @@ const fileSystemLib = {
         return filerLib.fs.rename(oldPath, newPath, cb);
     },
     unlink: function (path, cb) {
+        function callbackInterceptor(...args) {
+            let err = args.length >= 1 ? args[0] : null;
+            if(!err){
+                FsWatch.reportUnlinkEvent(path);
+            }
+            if(cb){
+                cb(...args);
+            }
+        }
         if(Mounts.isMountPath(path)) {
             throw new Errors.EPERM('Mount root directory cannot be deleted.');
         } else if(Mounts.isMountSubPath(path)) {
-            return NativeFS.unlink(path, cb);
+            return NativeFS.unlink(path, callbackInterceptor);
         }
-        return filerShell.rm(path, { recursive: true }, cb);
+        return filerShell.rm(path, { recursive: true }, callbackInterceptor);
     },
     copy: function (src, dst, callback) {
         if(Mounts.isMountSubPath(src) && Mounts.isMountSubPath(dst)) {
@@ -137,8 +147,14 @@ const fileSystemLib = {
     showSaveDialog: function () {
         throw new Errors.ENOSYS('Phoenix fs showSaveDialog function not yet supported.');
     },
-    watch: function () {
-        throw new Errors.ENOSYS('Phoenix fs watch function not yet supported.');
+    watch: function (...args) {
+        return FsWatch.watch(...args);
+    },
+    unwatch: function (...args) {
+        return FsWatch.unwatch(...args);
+    },
+    unwatchAll: function (...args) {
+        return FsWatch.unwatchAll(...args);
     },
     moveToTrash: function () {
         throw new Errors.ENOSYS('Phoenix fs moveToTrash function not yet supported.');
