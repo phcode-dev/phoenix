@@ -32,6 +32,9 @@ let _watchListeners = [];
 let _globmatch = null;
 
 const WATCH_EVENT_NOTIFICATION = 'PHOENIX_WATCH_EVENT_NOTIFICATION';
+// const WATCH_EVENT_CREATED = 'created';
+const WATCH_EVENT_DELETED = 'deleted';
+// const WATCH_EVENT_CHANGED = 'changed';
 
 function _setupBroadcastChannel() {
     if(_channel){
@@ -80,7 +83,7 @@ function _processFsWatchEvent(event) {
         if(listener.callback
             && _isSameOrSubDirectory(listener.path, event.path)
             && !_isAnIgnoredPath(event.path, listener.ignoreGlobList)){
-            listener.callback(event.path, event.eventName);
+            listener.callback(event.event, event.parentDirPath, event.entryName, event.statsObj);
         }
     }
 }
@@ -103,6 +106,20 @@ function watch(path, ignoreGlobList, changeCallback, callback) {
     callback();
 }
 
+function reportUnlinkEvent(path) {
+    let pathLib = window.path;
+    path = pathLib.normalize(path);
+    let event = {
+        event: WATCH_EVENT_DELETED,
+        parentDirPath: pathLib.dirname(path),
+        entryName: pathLib.basename(path),
+        path: path,
+        statsObj: null
+    };
+    console.log('watcher unlinked event: ', event);
+    _processFsWatchEvent(event);
+}
+
 function unwatch(path, callback) {
     _watchListeners = _watchListeners.filter(function (item) {
         return item.path !== path;
@@ -120,7 +137,8 @@ _listenToExternalFsWatchEvents();
 const FsWatch = {
     watch,
     unwatch,
-    unwatchAll
+    unwatchAll,
+    reportUnlinkEvent
 };
 
 export default FsWatch;

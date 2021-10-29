@@ -122,12 +122,21 @@ const fileSystemLib = {
         return filerLib.fs.rename(oldPath, newPath, cb);
     },
     unlink: function (path, cb) {
+        function callbackInterceptor(...args) {
+            let err = args.length >= 1 ? args[0] : null;
+            if(!err){
+                FsWatch.reportUnlinkEvent(path);
+            }
+            if(cb){
+                cb(...args);
+            }
+        }
         if(Mounts.isMountPath(path)) {
             throw new Errors.EPERM('Mount root directory cannot be deleted.');
         } else if(Mounts.isMountSubPath(path)) {
-            return NativeFS.unlink(path, cb);
+            return NativeFS.unlink(path, callbackInterceptor);
         }
-        return filerShell.rm(path, { recursive: true }, cb);
+        return filerShell.rm(path, { recursive: true }, callbackInterceptor);
     },
     copy: function (src, dst, callback) {
         if(Mounts.isMountSubPath(src) && Mounts.isMountSubPath(dst)) {
