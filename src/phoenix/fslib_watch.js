@@ -34,7 +34,7 @@ let _globmatch = null;
 const WATCH_EVENT_NOTIFICATION = 'PHOENIX_WATCH_EVENT_NOTIFICATION';
 // const WATCH_EVENT_CREATED = 'created';
 const WATCH_EVENT_DELETED = 'deleted';
-// const WATCH_EVENT_CHANGED = 'changed';
+const WATCH_EVENT_CHANGED = 'changed';
 
 function _setupBroadcastChannel() {
     if(_channel){
@@ -77,13 +77,15 @@ function _isSameOrSubDirectory(parent, child) {
 }
 
 // event{ path, eventName}
-function _processFsWatchEvent(event) {
-    _broadcastWatchEvent(event);
+function _processFsWatchEvent(event, broadcast=true) {
+    if(broadcast){
+        _broadcastWatchEvent(event);
+    }
     for (const listener of _watchListeners){
         if(listener.callback
             && _isSameOrSubDirectory(listener.path, event.path)
             && !_isAnIgnoredPath(event.path, listener.ignoreGlobList)){
-            listener.callback(event.event, event.parentDirPath, event.entryName, event.statsObj);
+            listener.callback(event.event, event.parentDirPath, event.entryName, event.path);
         }
     }
 }
@@ -91,7 +93,7 @@ function _processFsWatchEvent(event) {
 function _listenToExternalFsWatchEvents() {
     _setupBroadcastChannel();
     _channel.onmessage = async function(event) {
-        _processFsWatchEvent(event);
+        _processFsWatchEvent(event.data, false);
     };
 }
 
@@ -113,10 +115,20 @@ function reportUnlinkEvent(path) {
         event: WATCH_EVENT_DELETED,
         parentDirPath: pathLib.dirname(path),
         entryName: pathLib.basename(path),
-        path: path,
-        statsObj: null
+        path: path
     };
-    console.log('watcher unlinked event: ', event);
+    _processFsWatchEvent(event);
+}
+
+function reportChangeEvent(path) {
+    let pathLib = window.path;
+    path = pathLib.normalize(path);
+    let event = {
+        event: WATCH_EVENT_CHANGED,
+        parentDirPath: pathLib.dirname(path),
+        entryName: pathLib.basename(path),
+        path: path
+    };
     _processFsWatchEvent(event);
 }
 
@@ -138,7 +150,8 @@ const FsWatch = {
     watch,
     unwatch,
     unwatchAll,
-    reportUnlinkEvent
+    reportUnlinkEvent,
+    reportChangeEvent
 };
 
 export default FsWatch;

@@ -73,6 +73,14 @@ function _ensure_mount_directory() {
     NativeFS.refreshMountPoints();
 }
 
+function _getFirstFunctionIndex(argsArray) {
+    for(let i=0; i<argsArray.length; i++){
+        if (typeof argsArray[i] === 'function') {
+            return i;
+        }
+    }
+    return -1;
+}
 
 const fileSystemLib = {
     mountNativeFolder: async function (...args) {
@@ -101,6 +109,21 @@ const fileSystemLib = {
     },
     writeFile: function (...args) { // (path, data, options, callback)
         let path = args[0];
+        function callbackInterceptor(...interceptedArgs) {
+            let err = interceptedArgs.length >= 1 ? interceptedArgs[0] : null;
+            if(!err){
+                FsWatch.reportChangeEvent(path);
+            }
+            if(args.originalCallback){
+                args.originalCallback(...interceptedArgs);
+            }
+        }
+        let callbackIndex = _getFirstFunctionIndex(args);
+        if(callbackIndex !== -1) {
+            args.originalCallback = args[callbackIndex];
+            args[callbackIndex] = callbackInterceptor;
+        }
+
         if(Mounts.isMountSubPath(path)) {
             return NativeFS.writeFile(...args);
         }
