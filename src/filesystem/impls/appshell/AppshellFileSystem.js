@@ -89,21 +89,16 @@ define(function (require, exports, module) {
      * @param {string} event The type of the event: "changed", "created" or "deleted"
      * @param {string} parentDirPath The path to the directory holding entry that has changed
      * @param {string=} entryName The name of the file/directory that has changed
-     * @param {object} statsObj Object that can be used to construct FileSystemStats
+     * * @param {string=} fullPath The full path that has changed
      * @private
      */
-    function _fileWatcherChangeHandler(event, parentDirPath, entryName, statsObj) {
-        var change;
+    function _fileWatcherChangeHandler(event, parentDirPath, entryName, fullPath) {
         switch (event) {
         case "changed":
-            // an existing file/directory was modified; stats are passed if available
-            var fsStats;
-            if (statsObj) {
-                fsStats = new FileSystemStats(statsObj);
-            } else {
-                console.warn("FileWatcherDomain was expected to deliver stats for changed event!");
-            }
-            _enqueueChange(parentDirPath + entryName, fsStats);
+            stat(fullPath, (err, newStat) => {
+                // fire change event irrespective of error. if err, stat will be null.
+                _enqueueChange(fullPath, newStat);
+            });
             break;
         case "created":
         case "deleted":
