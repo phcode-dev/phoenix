@@ -34,6 +34,7 @@ import Constants from "./constants.js";
 const MOUNT_POINT_CHANGED_NOTIFICATION = 'PHOENIX_MOUNT_POINT_CHANGED_NOTIFICATION';
 
 let MAX_NUM_MOUNTS = 1000000;
+let _channel = null;
 
 /**
  * Check if the given path is a subpath of the '/mnt' folder.
@@ -65,24 +66,26 @@ function isMountPath(path) {
 }
 
 
-function _broadcastMountPointChanged() {
+function _setupBroadcastChannel() {
+    if(_channel){
+        return;
+    }
     if(typeof BroadcastChannel === 'undefined'){
         /* eslint no-console: 0 */
         console.warn('window.BroadcastChannel not supported. Mount point changes wont reflect across tabs.');
         return;
     }
-    const channel = new BroadcastChannel(MOUNT_POINT_CHANGED_NOTIFICATION);
-    channel.postMessage(MOUNT_POINT_CHANGED_NOTIFICATION);
+    _channel = new BroadcastChannel(MOUNT_POINT_CHANGED_NOTIFICATION);
+}
+
+function _broadcastMountPointChanged() {
+    _setupBroadcastChannel();
+    _channel.postMessage(MOUNT_POINT_CHANGED_NOTIFICATION);
 }
 
 function _listenToMountPointChanges () {
-    if(typeof BroadcastChannel === 'undefined'){
-        /* eslint no-console: 0 */
-        console.warn('window.BroadcastChannel not supported. Mount point changes wont reflect across tabs.');
-        return;
-    }
-    const channel = new BroadcastChannel(MOUNT_POINT_CHANGED_NOTIFICATION);
-    channel.onmessage = async function(event) {
+    _setupBroadcastChannel();
+    _channel.onmessage = async function(event) {
         if(event.data === MOUNT_POINT_CHANGED_NOTIFICATION) {
             await MountPointsStore.refreshMountPoints();
         }
