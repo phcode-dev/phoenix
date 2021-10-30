@@ -131,18 +131,44 @@ const fileSystemLib = {
     },
     mkdir: function (...args) { // (path, mode, callback)
         let path = args[0];
+        function callbackInterceptor(...interceptedArgs) {
+            let err = interceptedArgs.length >= 1 ? interceptedArgs[0] : null;
+            if(!err){
+                FsWatch.reportCreateEvent(path);
+            }
+            if(args.originalCallback){
+                args.originalCallback(...interceptedArgs);
+            }
+        }
+        let callbackIndex = _getFirstFunctionIndex(args);
+        if(callbackIndex !== -1) {
+            args.originalCallback = args[callbackIndex];
+            args[callbackIndex] = callbackInterceptor;
+        }
+
         if(Mounts.isMountSubPath(path)) {
             return NativeFS.mkdir(...args);
         }
         return filerLib.fs.mkdir(...args);
     },
     rename: function (oldPath, newPath, cb) {
+        function callbackInterceptor(...args) {
+            let err = args.length >= 1 ? args[0] : null;
+            if(!err){
+                FsWatch.reportUnlinkEvent(oldPath);
+                FsWatch.reportCreateEvent(newPath);
+            }
+            if(cb){
+                cb(...args);
+            }
+        }
+
         if(Mounts.isMountPath(oldPath) || Mounts.isMountPath(newPath)) {
             throw new Errors.EPERM('Mount root directory cannot be deleted.');
         } else if(Mounts.isMountSubPath(oldPath) && Mounts.isMountSubPath(newPath)) {
-            return NativeFS.rename(oldPath, newPath, cb);
+            return NativeFS.rename(oldPath, newPath, callbackInterceptor);
         }
-        return filerLib.fs.rename(oldPath, newPath, cb);
+        return filerLib.fs.rename(oldPath, newPath, callbackInterceptor);
     },
     unlink: function (path, cb) {
         function callbackInterceptor(...args) {
@@ -154,6 +180,7 @@ const fileSystemLib = {
                 cb(...args);
             }
         }
+
         if(Mounts.isMountPath(path)) {
             throw new Errors.EPERM('Mount root directory cannot be deleted.');
         } else if(Mounts.isMountSubPath(path)) {
@@ -161,9 +188,19 @@ const fileSystemLib = {
         }
         return filerShell.rm(path, { recursive: true }, callbackInterceptor);
     },
-    copy: function (src, dst, callback) {
+    copy: function (src, dst, cb) {
+        function callbackInterceptor(...args) {
+            let err = args.length >= 1 ? args[0] : null;
+            if(!err){
+                FsWatch.reportCreateEvent(dst);
+            }
+            if(cb){
+                cb(...args);
+            }
+        }
+
         if(Mounts.isMountSubPath(src) && Mounts.isMountSubPath(dst)) {
-            return NativeFS.copy(src, dst, callback);
+            return NativeFS.copy(src, dst, callbackInterceptor);
         }
         throw new Errors.ENOSYS('Phoenix fs copy on filer or across filer and native not yet supported');
     },
