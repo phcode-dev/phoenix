@@ -32,7 +32,7 @@ let _watchListeners = [];
 let _globmatch = null;
 
 const WATCH_EVENT_NOTIFICATION = 'PHOENIX_WATCH_EVENT_NOTIFICATION';
-// const WATCH_EVENT_CREATED = 'created';
+const WATCH_EVENT_CREATED = 'created';
 const WATCH_EVENT_DELETED = 'deleted';
 const WATCH_EVENT_CHANGED = 'changed';
 
@@ -93,6 +93,7 @@ function _processFsWatchEvent(event, broadcast=true) {
 function _listenToExternalFsWatchEvents() {
     _setupBroadcastChannel();
     _channel.onmessage = async function(event) {
+        console.log("External fs watch event: ", event.data);
         _processFsWatchEvent(event.data, false);
     };
 }
@@ -108,28 +109,28 @@ function watch(path, ignoreGlobList, changeCallback, callback) {
     callback();
 }
 
-function reportUnlinkEvent(path) {
+function _triggerEvent(path, eventType) {
     let pathLib = window.path;
     path = pathLib.normalize(path);
     let event = {
-        event: WATCH_EVENT_DELETED,
-        parentDirPath: pathLib.dirname(path),
+        event: eventType,
+        parentDirPath: `${pathLib.dirname(path)}/`,
         entryName: pathLib.basename(path),
         path: path
     };
     _processFsWatchEvent(event);
 }
 
+function reportUnlinkEvent(path) {
+    _triggerEvent(path, WATCH_EVENT_DELETED);
+}
+
 function reportChangeEvent(path) {
-    let pathLib = window.path;
-    path = pathLib.normalize(path);
-    let event = {
-        event: WATCH_EVENT_CHANGED,
-        parentDirPath: pathLib.dirname(path),
-        entryName: pathLib.basename(path),
-        path: path
-    };
-    _processFsWatchEvent(event);
+    _triggerEvent(path, WATCH_EVENT_CHANGED);
+}
+
+function reportCreateEvent(path) {
+    _triggerEvent(path, WATCH_EVENT_CREATED);
 }
 
 function unwatch(path, callback) {
@@ -151,7 +152,8 @@ const FsWatch = {
     unwatch,
     unwatchAll,
     reportUnlinkEvent,
-    reportChangeEvent
+    reportChangeEvent,
+    reportCreateEvent
 };
 
 export default FsWatch;
