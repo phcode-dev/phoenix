@@ -1722,6 +1722,12 @@ define(function (require, exports, module) {
     var isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
     if (!isTestWindow) {
         window.onbeforeunload = function(e) {
+            PreferencesManager.setViewState("windowClosingTime", new Date().getTime(), {}, false);
+            _handleWindowGoingAway(null, closeSuccess=>{
+                console.log('close success: ', closeSuccess);
+            }, closeFail=>{
+                console.log('close success: ', closeFail);
+            });
             var openDocs = DocumentManager.getAllOpenDocuments();
 
             // Detect any unsaved changes
@@ -1735,7 +1741,6 @@ define(function (require, exports, module) {
                     return Strings.WINDOW_UNLOAD_WARNING_WITH_UNSAVED_CHANGES;
                 }
                 return Strings.WINDOW_UNLOAD_WARNING;
-
             }
         };
     }
