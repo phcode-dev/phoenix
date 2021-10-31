@@ -368,7 +368,6 @@ define(function (require, exports, module) {
          * Send matching mouseDown events to the action creator as a setContext action.
          */
         handleMouseDown: function (e) {
-            console.log(e);
             e.stopPropagation();
             if (e.button === RIGHT_MOUSE_BUTTON ||
                     (this.props.platform === "mac" && e.button === LEFT_MOUSE_BUTTON && e.ctrlKey)) {
