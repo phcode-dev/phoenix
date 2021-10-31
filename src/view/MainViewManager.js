@@ -22,6 +22,8 @@
  *
  */
 
+// jshint ignore: start
+
 /**
  * MainViewManager manages the arrangement of all open panes as well as provides the controller
  * logic behind all views in the MainView (e.g. ensuring that a file doesn't appear in 2 lists)
@@ -692,6 +694,23 @@ define(function (require, exports, module) {
         }
 
         return info.paneId;
+    }
+
+    /**
+     * View states are only saved once every second max.
+     * @type {boolean}
+     * @private
+     */
+    let _viewStateSaveScheduled = false;
+    function _scheduleViewStateSave() {
+        function _saveViewStateAndResetScheduler() {
+            _saveViewState();
+            _viewStateSaveScheduled = false;
+        }
+        if(!_viewStateSaveScheduled){
+            _viewStateSaveScheduled = true;
+            window.setTimeout(_saveViewStateAndResetScheduler, 1000);
+        }
     }
 
     /**
@@ -1632,6 +1651,9 @@ define(function (require, exports, module) {
         //  get an event handler for workspace events and we don't listen
         //  to the event before we've been initialized
         WorkspaceManager.on("workspaceUpdateLayout", _updateLayout);
+
+        exports.on("currentFileChange", _scheduleViewStateSave);
+        exports.on("paneLayoutChange", _scheduleViewStateSave);
 
         // Listen to key Alt-W to toggle between panes
         CommandManager.register(Strings.CMD_SWITCH_PANE_FOCUS, Commands.CMD_SWITCH_PANE_FOCUS, switchPaneFocus);
