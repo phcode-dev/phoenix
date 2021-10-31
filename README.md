@@ -46,4 +46,4 @@ Phoenix is in alpha and is under active development.
 ## License
 Copyright (c) Core.ai. All rights reserved.
 
-Licensed under the MIT license.
+Licensed under the AGPL license.
