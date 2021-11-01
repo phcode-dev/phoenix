@@ -98,14 +98,29 @@ function readdir(path, options, callback) {
     }
 }
 
+function _getDecodedString(buffer, encoding) {
+    try {
+        return new TextDecoder(encoding).decode(buffer);
+    } catch (e) {
+        return null;
+    }
+}
+
 async function _getFileContents(fileHandle, encoding, callback) {
     encoding = encoding || 'utf-8';
     try {
         let file = await fileHandle.getFile();
-        let blob = new Blob([await file.text()]);
-        let buffer = await new Response(blob).arrayBuffer();
-        let decoded_string = new TextDecoder(encoding).decode(buffer);
-        callback(null, decoded_string);
+        let buffer = await file.arrayBuffer();
+        if(encoding === BYTE_ARRAY_ENCODING) {
+            callback(null, buffer, encoding);
+            return;
+        }
+        let decodedString = _getDecodedString(buffer, encoding);
+        if(decodedString){
+            callback(null, decodedString, encoding);
+        } else {
+            callback(new Errors.EIO(`Encoding ${encoding} no supported`));
+        }
     } catch (e) {
         callback(e);
     }
@@ -343,6 +358,8 @@ function refreshMountPoints() {
     Mounts.refreshMountPoints();
 }
 
+const BYTE_ARRAY_ENCODING = 'byte-array';
+
 const NativeFS = {
     mountNativeFolder,
     refreshMountPoints,
@@ -353,7 +370,8 @@ const NativeFS = {
     writeFile,
     unlink,
     copy,
-    rename
+    rename,
+    BYTE_ARRAY_ENCODING
 };
 
 export default NativeFS;
