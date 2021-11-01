@@ -22,6 +22,8 @@
  *
  */
 
+// jshint ignore: start
+
 define(function (require, exports, module) {
 
 
@@ -39,6 +41,17 @@ define(function (require, exports, module) {
 
     var _viewers = {};
 
+    function _imageToDataURI(file, cb) {
+        file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
+            var base64 = btoa(
+                new Uint8Array(content)
+                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            var dataURL="data:image/png;base64," + base64;
+            cb(null, dataURL);
+        });
+    }
+
     /**
      * ImageView objects are constructed when an image is opened
      * @see {@link Pane} for more information about where ImageViews are rendered
@@ -49,9 +62,7 @@ define(function (require, exports, module) {
      */
     function ImageView(file, $container) {
         this.file = file;
-        this.$el = $(Mustache.render(ImageViewTemplate, {fullPath: file.encodedPath || 'file:///' + FileUtils.encodeFilePath(file.fullPath),
-            now: new Date().valueOf()}));
-
+        this.$el = $(Mustache.render(ImageViewTemplate, {fullPath: '' , now: ''}));
         $container.append(this.$el);
 
         this._naturalWidth = 0;
@@ -78,6 +89,11 @@ define(function (require, exports, module) {
         this.$imagePreview.on("load", _.bind(this._onImageLoaded, this));
 
         _viewers[file.fullPath] = this;
+
+        let that = this;
+        _imageToDataURI(file, (err, dataURL) => {
+            that.$imagePreview[0].src = dataURL;
+        });
     }
 
     /**

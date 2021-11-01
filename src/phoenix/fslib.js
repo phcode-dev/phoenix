@@ -229,7 +229,8 @@ const fileSystemLib = {
         } else {
             mkdir_p(fileSystemLib, path, mode, callback);
         }
-    }
+    },
+    BYTE_ARRAY_ENCODING: NativeFS.BYTE_ARRAY_ENCODING
 };
 
 export default function initFsLib(Phoenix, FilerLib) {

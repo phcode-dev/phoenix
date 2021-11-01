@@ -90,7 +90,7 @@ const _getFsEncoding = function (encoding){
     case "ISO8859-1":
         return "ISO8859-1";
     }
-    return undefined;
+    return encoding;
 };
 
 
