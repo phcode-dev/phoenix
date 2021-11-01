@@ -1,7 +1,7 @@
 /*
  * GNU AGPL-3.0 License
  *
- * Modified work Copyright (c) 2021 - present Core.ai
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
