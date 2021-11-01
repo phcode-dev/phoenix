@@ -47,7 +47,7 @@ define(function (require, exports, module) {
                 new Uint8Array(content)
                     .reduce((data, byte) => data + String.fromCharCode(byte), '')
             );
-            var dataURL="data:image/png;base64," + base64;
+            var dataURL="data:image;base64," + base64;
             cb(null, dataURL);
         });
     }
