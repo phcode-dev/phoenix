@@ -1,7 +1,7 @@
 /*
  * GNU AGPL-3.0 License
  *
- * Modified work Copyright (c) 2021 - present Core.ai
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Copyright (c) 2012-2015 Rod Vagg (@rvagg)
  * Based on : https://github.com/rvagg/node-errno
  *
