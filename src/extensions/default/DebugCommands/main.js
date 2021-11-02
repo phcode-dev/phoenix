@@ -100,7 +100,7 @@ define(function (require, exports, module) {
     // Implements the 'Run Tests' menu to bring up the Jasmine unit test window
     var _testWindow = null;
     function _runUnitTests(spec) {
-        var queryString = spec ? "?spec=" + spec : "";
+        var queryString = spec ? "?spec=" + spec : "?suite=unit";
         if (_testWindow && !_testWindow.closed) {
             if (_testWindow.location.search !== queryString) {
                 _testWindow.location.href = "../test/SpecRunner.html" + queryString;
@@ -108,7 +108,7 @@ define(function (require, exports, module) {
                 _testWindow.location.reload(true);
             }
         } else {
-            _testWindow = window.open("../test/SpecRunner.html" + queryString, "brackets-test", "width=" + $(window).width() + ",height=" + $(window).height());
+            _testWindow = window.open("../test/SpecRunner.html" + queryString);
             _testWindow.location.reload(true); // if it had been opened earlier, force a reload because it will be cached
         }
     }
@@ -226,26 +226,6 @@ define(function (require, exports, module) {
                 $select = $dialog.find("select");
 
                 $select.on("change", setLanguage).val(curLocale);
-            }
-        });
-    }
-
-    function enableRunTestsMenuItem() {
-        if (brackets.inBrowser) {
-            return;
-        }
-
-        // Check for the SpecRunner.html file
-        var file = FileSystem.getFileForPath(
-            FileUtils.getNativeBracketsDirectoryPath() + "/../test/SpecRunner.html"
-        );
-
-        file.exists(function (err, exists) {
-            if (!err && exists) {
-                // If the SpecRunner.html file exists, enable the menu item.
-                // (menu item is already disabled, so no need to disable if the
-                // file doesn't exist).
-                CommandManager.get(DEBUG_RUN_UNIT_TESTS).setEnabled(true);
             }
         });
     }
@@ -761,8 +741,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,        DEBUG_NEW_BRACKETS_WINDOW,      handleNewBracketsWindow);
 
     // Start with the "Run Tests" item disabled. It will be enabled later if the test file can be found.
-    CommandManager.register(Strings.CMD_RUN_UNIT_TESTS,       DEBUG_RUN_UNIT_TESTS,         _runUnitTests)
-        .setEnabled(false);
+    CommandManager.register(Strings.CMD_RUN_UNIT_TESTS,       DEBUG_RUN_UNIT_TESTS,         _runUnitTests);
 
     CommandManager.register(Strings.CMD_SHOW_PERF_DATA,            DEBUG_SHOW_PERF_DATA,            handleShowPerfData);
 
@@ -780,7 +759,6 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
 
-    enableRunTestsMenuItem();
     toggleErrorNotification(PreferencesManager.get(DEBUG_SHOW_ERRORS_IN_STATUS_BAR));
 
     PreferencesManager.on("change", DEBUG_SHOW_ERRORS_IN_STATUS_BAR, function () {
