@@ -489,7 +489,7 @@ define(function (require, exports, module) {
         var language = LanguageManager.getLanguageForExtension(ext);
         var id = language && language.getId();
         var isImage = id === "image" || id === "svg";
-        var loadFromDisk = false;
+        var loadFromDisk = null;
 
         // Use this URL if this is an absolute URL and either points to a
         // filename with a known image extension, or lacks an extension (e.g.,
@@ -500,11 +500,11 @@ define(function (require, exports, module) {
         }
         // Use this filename if this is a path with a known image extension.
         else if (!hasProtocol && isImage) {
-            imgPath = path.normalize(FileUtils.getDirectoryPath(docPath) + tokenString);
-            loadFromDisk = true;
+            imgPath = '';
+            loadFromDisk = path.normalize(FileUtils.getDirectoryPath(docPath) + tokenString);
         }
 
-        if (!imgPath) {
+        if (!loadFromDisk && !imgPath) {
             return null;
         }
 
@@ -557,7 +557,7 @@ define(function (require, exports, module) {
 
         var showHandler = function () {
             if(loadFromDisk){
-                var imageFile = FileSystem.getFileForPath(imgPath);
+                var imageFile = FileSystem.getFileForPath(loadFromDisk);
                 _imageToDataURI(imageFile, function (err, dataURL){
                     showHandlerWithImageURL(dataURL);
                 });
