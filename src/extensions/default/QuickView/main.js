@@ -1,24 +1,21 @@
 /*
- *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
+ * GNU AGPL-3.0 License
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
 
@@ -35,6 +32,7 @@ define(function (require, exports, module) {
         EditorManager       = brackets.getModule("editor/EditorManager"),
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         FileUtils           = brackets.getModule("file/FileUtils"),
+        FileSystem          = brackets.getModule("filesystem/FileSystem"),
         Menus               = brackets.getModule("command/Menus"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         LanguageManager     = brackets.getModule("language/LanguageManager"),
@@ -488,6 +486,7 @@ define(function (require, exports, module) {
         var language = LanguageManager.getLanguageForExtension(ext);
         var id = language && language.getId();
         var isImage = id === "image" || id === "svg";
+        var loadFromDisk = null;
 
         // Use this URL if this is an absolute URL and either points to a
         // filename with a known image extension, or lacks an extension (e.g.,
@@ -498,10 +497,11 @@ define(function (require, exports, module) {
         }
         // Use this filename if this is a path with a known image extension.
         else if (!hasProtocol && isImage) {
-            imgPath = "file:///" + FileUtils.getDirectoryPath(docPath) + tokenString;
+            imgPath = '';
+            loadFromDisk = path.normalize(FileUtils.getDirectoryPath(docPath) + tokenString);
         }
 
-        if (!imgPath) {
+        if (!loadFromDisk && !imgPath) {
             return null;
         }
 
@@ -519,22 +519,48 @@ define(function (require, exports, module) {
         var coord = cm.charCoords(sPos);
         var xpos = (cm.charCoords(ePos).left - coord.left) / 2 + coord.left;
 
-        var showHandler = function () {
+        function showHandlerWithImageURL(imageURL) {
             // Hide the preview container until the image is loaded.
             $previewContainer.hide();
+            var img = $previewContainer.find(".image-preview > img");
+            if(imageURL){
+                img[0].src = imageURL;
+            }
 
-            $previewContainer.find(".image-preview > img").on("load", function () {
+            img.on("load", function () {
                 $previewContent
                     .append("<div class='img-size'>" +
-                                this.naturalWidth + " &times; " + this.naturalHeight + " " + Strings.UNIT_PIXELS +
-                            "</div>"
-                        );
+                        this.naturalWidth + " &times; " + this.naturalHeight + " " + Strings.UNIT_PIXELS +
+                        "</div>"
+                    );
                 $previewContainer.show();
                 positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
             }).on("error", function (e) {
                 e.preventDefault();
                 hidePreview();
             });
+        };
+
+        function _imageToDataURI(file, cb) {
+            file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
+                var base64 = btoa(
+                    new Uint8Array(content)
+                        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                );
+                var dataURL="data:image;base64," + base64;
+                cb(null, dataURL);
+            });
+        }
+
+        var showHandler = function () {
+            if(loadFromDisk){
+                var imageFile = FileSystem.getFileForPath(loadFromDisk);
+                _imageToDataURI(imageFile, function (err, dataURL){
+                    showHandlerWithImageURL(dataURL);
+                });
+            } else {
+                showHandlerWithImageURL();
+            }
         };
 
         return {

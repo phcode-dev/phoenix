@@ -1,24 +1,21 @@
 /*
- *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
+ * GNU AGPL-3.0 License
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
 
@@ -94,7 +91,8 @@ define(function (require, exports, module) {
     /**
      * Read a file.
      *
-     * @param {Object=} options Currently unused.
+     * @param {Object=} options properties {encoding: 'one of format supported here:
+     * https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/encoding'}
      * @param {function (?string, string=, FileSystemStats=)} callback Callback that is passed the
      *              FileSystemError string or the file's contents and its stats.
      */
@@ -104,13 +102,15 @@ define(function (require, exports, module) {
             options = {};
             options.encoding = this._encoding;
         }
-        options.encoding = this._encoding || "utf8";
+        if(!options.encoding){
+            options.encoding = "utf8";
+        }
 
         // We don't need to check isWatched() here because contents are only saved
         // for watched files. Note that we need to explicitly test this._contents
         // for a default value; otherwise it could be the empty string, which is
         // falsey.
-        if (this._contents !== null && this._stat) {
+        if (this._contents !== null && this._stat && options.encoding === this._encoding) {
             callback(null, this._contents, this._encoding, this._stat);
             return;
         }
@@ -146,7 +146,8 @@ define(function (require, exports, module) {
      * Write a file.
      *
      * @param {string} data Data to write.
-     * @param {object=} options Currently unused.
+     * @param {Object=} options properties {encoding: 'one of format supported here:
+     * https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/encoding'}
      * @param {function (?string, FileSystemStats=)=} callback Callback that is passed the
      *              FileSystemError string or the file's new stats.
      */
@@ -168,7 +169,7 @@ define(function (require, exports, module) {
             options.expectedContents = this._contents;
         }
         if (!options.encoding) {
-            options.encoding = this._encoding || "utf8";
+            options.encoding = "utf8";
         }
         options.preserveBOM = this._preserveBOM;
 

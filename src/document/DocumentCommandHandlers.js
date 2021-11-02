@@ -1,27 +1,25 @@
 /*
- *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+ * GNU AGPL-3.0 License
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
 
+// jshint ignore: start
 /*jslint regexp: true */
 
 define(function (require, exports, module) {
@@ -52,7 +50,6 @@ define(function (require, exports, module) {
         PreferencesManager  = require("preferences/PreferencesManager"),
         PerfUtils           = require("utils/PerfUtils"),
         KeyEvent            = require("utils/KeyEvent"),
-        Inspector           = require("LiveDevelopment/Inspector/Inspector"),
         Menus               = require("command/Menus"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         StatusBar           = require("widgets/StatusBar"),
@@ -1634,48 +1631,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Disables Brackets' cache via the remote debugging protocol.
-     * @return {$.Promise} A jQuery promise that will be resolved when the cache is disabled and be rejected in any other case
-     */
-    function _disableCache() {
-        var result = new $.Deferred();
-
-        if (brackets.inBrowser) {
-            result.resolve();
-        } else {
-            brackets.app.getRemoteDebuggingPort(function (err, port){
-                if ((!err) && port && port > 0) {
-                    Inspector.getDebuggableWindows("127.0.0.1", port)
-                        .fail(result.reject)
-                        .done(function (response) {
-                            var page = response[0];
-                            if (!page || !page.webSocketDebuggerUrl) {
-                                result.reject();
-                                return;
-                            }
-                            var _socket = new WebSocket(page.webSocketDebuggerUrl);
-                            // Disable the cache
-                            _socket.onopen = function _onConnect() {
-                                _socket.send(JSON.stringify({ id: 1, method: "Network.setCacheDisabled", params: { "cacheDisabled": true } }));
-                            };
-                            // The first message will be the confirmation => disconnected to allow remote debugging of Brackets
-                            _socket.onmessage = function _onMessage(e) {
-                                _socket.close();
-                                result.resolve();
-                            };
-                            // In case of an error
-                            _socket.onerror = result.reject;
-                        });
-                } else {
-                    result.reject();
-                }
-            });
-        }
-
-        return result.promise();
-    }
-
-    /**
     * Does a full reload of the browser window
     * @param {string} href The url to reload into the window
     */
@@ -1695,24 +1650,21 @@ define(function (require, exports, module) {
                 console.error(ex);
             }
 
-            // Disable the cache to make reloads work
-            _disableCache().always(function () {
-                // Remove all menus to assure every part of Brackets is reloaded
-                _.forEach(Menus.getAllMenus(), function (value, key) {
-                    Menus.removeMenu(key);
-                });
-
-                // If there's a fragment in both URLs, setting location.href won't actually reload
-                var fragment = href.indexOf("#");
-                if (fragment !== -1) {
-                    href = href.substr(0, fragment);
-                }
-
-                // Defer for a more successful reload - issue #11539
-                setTimeout(function () {
-                    window.location.href = href;
-                }, 1000);
+            // Remove all menus to assure every part of Brackets is reloaded
+            _.forEach(Menus.getAllMenus(), function (value, key) {
+                Menus.removeMenu(key);
             });
+
+            // If there's a fragment in both URLs, setting location.href won't actually reload
+            var fragment = href.indexOf("#");
+            if (fragment !== -1) {
+                href = href.substr(0, fragment);
+            }
+
+            // Defer for a more successful reload - issue #11539
+            window.setTimeout(function () {
+                window.location.href = href;
+            }, 1000);
         }).fail(function () {
             _isReloading = false;
         });
@@ -1767,6 +1719,12 @@ define(function (require, exports, module) {
     var isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
     if (!isTestWindow) {
         window.onbeforeunload = function(e) {
+            PreferencesManager.setViewState("windowClosingTime", new Date().getTime(), {}, false);
+            _handleWindowGoingAway(null, closeSuccess=>{
+                console.log('close success: ', closeSuccess);
+            }, closeFail=>{
+                console.log('close success: ', closeFail);
+            });
             var openDocs = DocumentManager.getAllOpenDocuments();
 
             // Detect any unsaved changes
@@ -1780,7 +1738,6 @@ define(function (require, exports, module) {
                     return Strings.WINDOW_UNLOAD_WARNING_WITH_UNSAVED_CHANGES;
                 }
                 return Strings.WINDOW_UNLOAD_WARNING;
-
             }
         };
     }

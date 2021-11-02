@@ -161,7 +161,14 @@ define(function (require, exports, module) {
         }
 
         var newFilePath = newFile.fullPath,
-            newLanguageId = LanguageManager.getLanguageForPath(newFilePath).getId();
+            newLanguage = LanguageManager.getLanguageForPath(newFilePath),
+            newLanguageId = newLanguage.getId();
+
+        if (newLanguage.isBinary()) {
+            CommandManager.get(Commands.CMD_FIND_ALL_REFERENCES).setEnabled(false);
+            return;
+        }
+
         setMenuItemStateForLanguage(newLanguageId);
 
         DocumentManager.getDocumentForPath(newFilePath)
