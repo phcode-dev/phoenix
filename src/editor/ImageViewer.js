@@ -40,7 +40,7 @@ define(function (require, exports, module) {
 
     function _imageToDataURI(file, cb) {
         file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
-            var base64 = btoa(
+            var base64 = window.btoa(
                 new Uint8Array(content)
                     .reduce((data, byte) => data + String.fromCharCode(byte), '')
             );
