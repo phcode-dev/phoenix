@@ -94,11 +94,6 @@ define(function (require, exports, module) {
                 var testFiles = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
                 waitsForDone(SpecRunnerUtils.copy(testFiles, baseDir), "copy temp files");
             });
-            runs(function () {
-                // Pre-test setup - set permissions on special directories
-                waitsForDone(SpecRunnerUtils.chmod(baseDir + "/cant_read_here", "222"), "set permission");
-                waitsForDone(SpecRunnerUtils.chmod(baseDir + "/cant_write_here", "444"), "set permission");
-            });
         });
 
         afterEach(function () {
