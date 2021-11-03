@@ -91,26 +91,6 @@ define(function (require, exports, module) {
     }
 
 
-    /**
-     * Set permissions on a path
-     * @param {!string} path Path to change permissions on
-     * @param {!string} mode New mode as an octal string
-     * @return {$.Promise} Resolved when permissions are set or rejected if an error occurs
-     */
-    function chmod(path, mode) {
-        var deferred = new $.Deferred();
-
-        brackets.fs.chmod(path, parseInt(mode, 8), function (err) {
-            if (err) {
-                deferred.reject(err);
-            } else {
-                deferred.resolve();
-            }
-        });
-
-        return deferred.promise();
-    }
-
     function testDomain() {
         return brackets.testing.nodeConnection.domains.testing;
     }
@@ -282,7 +262,7 @@ define(function (require, exports, module) {
                 FileSystem.resolve(entry, function (err, item) {
                     if (!err) {
                         // Change permissions if the directory exists
-                        chmod(entry, "777").then(deferred.resolve, deferred.reject);
+                        deferred.resolve();
                     } else {
                         if (err === FileSystemError.NOT_FOUND) {
                             // Resolve the promise since the folder to reset doesn't exist
@@ -1385,8 +1365,6 @@ define(function (require, exports, module) {
     exports.TEST_PREFERENCES_KEY            = TEST_PREFERENCES_KEY;
     exports.EDITOR_USE_TABS                 = EDITOR_USE_TABS;
     exports.EDITOR_SPACE_UNITS              = EDITOR_SPACE_UNITS;
-
-    exports.chmod                           = chmod;
     exports.remove                          = remove;
     exports.copy                            = copy;
     exports.rename                          = rename;
