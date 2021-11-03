@@ -23,8 +23,9 @@
         "lint": "eslint --quiet src test",
         "lint:fix": "eslint --quiet --fix src test",
         "prepare": "husky install",
-        "test": "eslint",
-        "build": ""
+        "test": "",
+        "buildonly": "",
+        "build": "npm run lint && npm run buildonly && npm run test"
     },
     "licenses": [
         {
