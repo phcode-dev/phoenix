@@ -12,16 +12,19 @@
         "branch": "",
         "SHA": ""
     },
-    "dependencies": {
-    },
     "devDependencies": {
-        "eslint": "^7.32.0"
+        "eslint": "^7.32.0",
+        "git-commit-msg-linter": "^3.2.8",
+        "husky": "^7.0.4"
     },
     "scripts": {
         "eslint": "npm run lint",
         "eslint:fix": "npm run lint:fix",
         "lint": "eslint --quiet src test",
-        "lint:fix": "eslint --quiet --fix src test"
+        "lint:fix": "eslint --quiet --fix src test",
+        "prepare": "husky install",
+        "test": "eslint",
+        "build": ""
     },
     "licenses": [
         {
