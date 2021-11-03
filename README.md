@@ -2,6 +2,9 @@
 
 Phoenix is a modern open-source and free code editor for the web, built for the browser.
 
+<a href="https://www.npmjs.com/package/git-commit-msg-linter">
+  <img src="https://badgen.net/badge/git-commit-msg-linter/3.0.0/green" alt="commit msg linted by git-commit-msg-linter" />
+</a>
 
 Phoenix is in early alpha.  
 * **Test out development build of phoenix by visiting this URL:** [**http://phoenix.core.ai/src**](http://phoenix.core.ai/src) 
