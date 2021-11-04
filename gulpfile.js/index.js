@@ -1,12 +1,12 @@
 /* eslint-env node */
 
-const { series } = require('gulp');
+const del = require('del');
+const { src, dest, series } = require('gulp');
 
 // The `clean` function is not exported so it can be considered a private task.
 // It can still be used within the `series()` composition.
-function clean(cb) {
-    // body omitted
-    cb();
+function cleanAll() {
+    return del(['node_modules', 'dist']);
 }
 
 // The `build` function is exported so it is public and can be run with the `gulp` command.
@@ -17,4 +17,5 @@ function build(cb) {
 }
 
 exports.build = build;
-exports.default = series(clean, build);
+exports.clean = series(cleanAll);
+exports.default = series(build);
