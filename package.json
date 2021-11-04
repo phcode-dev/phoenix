@@ -12,9 +12,13 @@
         "branch": "",
         "SHA": ""
     },
+    "dependencies": {
+
+    },
     "devDependencies": {
         "eslint": "^7.32.0",
         "git-commit-msg-linter": "^3.2.8",
+        "gulp": "^4.0.2",
         "husky": "^7.0.4"
     },
     "scripts": {
@@ -24,7 +28,7 @@
         "lint:fix": "eslint --quiet --fix src test",
         "prepare": "husky install",
         "test": "",
-        "buildonly": "",
+        "buildonly": "gulp build",
         "build": "npm run lint && npm run buildonly && npm run test"
     },
     "licenses": [
