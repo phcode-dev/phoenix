@@ -12,10 +12,8 @@
         "branch": "",
         "SHA": ""
     },
-    "dependencies": {
-
-    },
     "devDependencies": {
+        "del": "^6.0.0",
         "eslint": "^7.32.0",
         "git-commit-msg-linter": "^3.2.8",
         "gulp": "^4.0.2",
@@ -29,7 +27,8 @@
         "prepare": "husky install",
         "test": "",
         "buildonly": "gulp build",
-        "build": "npm run lint && npm run buildonly && npm run test"
+        "build": "npm run lint && npm run buildonly && npm run test",
+        "clean": "gulp clean"
     },
     "licenses": [
         {

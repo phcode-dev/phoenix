@@ -34,10 +34,9 @@ Phoenix is in alpha and is under active development.
 ## Building Phoenix
 [Source Repository](https://github.com/aicore/phoenix) 
 
-* Require widows for builds in the port window.
-* Have brackets installed in windows
-* use nodejs version for windows less than node v6.10
-* run `npm install --force`
+* run `npm install`
+* To build after npm install: `npm run build`
+* clean: `npm run clean`
 * Use a web server and navigate in browser to `src/index.html`
 
 ## Acknowledgements
