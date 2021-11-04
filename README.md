@@ -39,10 +39,15 @@ Phoenix is in alpha and is under active development.
 * clean: `npm run clean`
 
 ## Running phoenix
-* run `npm run srve` in the terminal.
+* run `npm run serve` in the terminal.
   * NB: To test Phoenix from an external mobile or machine, use `npm run serveExternal` instead of `serve`   
 * Use chrome/edge browser to navigate to [http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
 
+## Building Release artifacts
+
+* run `npm install`
+* To build the release artifacts: `npm run release`
+* The release artifacts to host will be in `dist` folder.
 
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).
