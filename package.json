@@ -12,17 +12,31 @@
         "branch": "",
         "SHA": ""
     },
-    "dependencies": {
-        "idb": "^6.1.4"
-    },
     "devDependencies": {
-        "eslint": "^7.32.0"
+        "del": "^6.0.0",
+        "eslint": "^7.32.0",
+        "git-commit-msg-linter": "^3.2.8",
+        "gulp": "^4.0.2",
+        "gulp-concat": "^2.6.1",
+        "gulp-uglify": "^3.0.2",
+        "gulp-webserver": "^0.9.1",
+        "husky": "^7.0.4",
+        "readable-stream": "^3.6.0"
     },
     "scripts": {
         "eslint": "npm run lint",
         "eslint:fix": "npm run lint:fix",
         "lint": "eslint --quiet src test",
-        "lint:fix": "eslint --quiet --fix src test"
+        "lint:fix": "eslint --quiet --fix src test",
+        "prepare": "husky install",
+        "test": "",
+        "buildonly": "gulp build",
+        "build": "npm run lint && npm run buildonly && npm run test",
+        "clean": "gulp clean",
+        "reset": "gulp reset",
+        "release": "gulp release",
+        "serve": "gulp serve",
+        "serveExternal": "gulp serveExternal"
     },
     "licenses": [
         {

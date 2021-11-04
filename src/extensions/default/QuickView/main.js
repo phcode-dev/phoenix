@@ -498,7 +498,7 @@ define(function (require, exports, module) {
         // Use this filename if this is a path with a known image extension.
         else if (!hasProtocol && isImage) {
             imgPath = '';
-            loadFromDisk = path.normalize(FileUtils.getDirectoryPath(docPath) + tokenString);
+            loadFromDisk = window.path.normalize(FileUtils.getDirectoryPath(docPath) + tokenString);
         }
 
         if (!loadFromDisk && !imgPath) {
@@ -543,7 +543,7 @@ define(function (require, exports, module) {
 
         function _imageToDataURI(file, cb) {
             file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
-                var base64 = btoa(
+                var base64 = window.btoa(
                     new Uint8Array(content)
                         .reduce((data, byte) => data + String.fromCharCode(byte), '')
                 );
