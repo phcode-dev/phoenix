@@ -37,7 +37,12 @@ Phoenix is in alpha and is under active development.
 * run `npm install`
 * To build after npm install: `npm run build`
 * clean: `npm run clean`
-* Use a web server and navigate in browser to `src/index.html`
+
+## Running phoenix
+* run `npm run srve` in the terminal.
+  * NB: To test Phoenix from an external mobile or machine, use `npm run serveExternal` instead of `serve`   
+* Use chrome/edge browser to navigate to [http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
+
 
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).

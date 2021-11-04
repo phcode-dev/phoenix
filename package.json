@@ -17,6 +17,7 @@
         "eslint": "^7.32.0",
         "git-commit-msg-linter": "^3.2.8",
         "gulp": "^4.0.2",
+        "gulp-webserver": "^0.9.1",
         "husky": "^7.0.4"
     },
     "scripts": {
@@ -28,7 +29,9 @@
         "test": "",
         "buildonly": "gulp build",
         "build": "npm run lint && npm run buildonly && npm run test",
-        "clean": "gulp clean"
+        "clean": "gulp clean",
+        "serve": "gulp serve",
+        "serveExternal": "gulp serveExternal"
     },
     "licenses": [
         {
