@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="<%= baseUrl %>">
+        <link rel="stylesheet" href = "<%= themeUrl %>">
+    </head>
+    <body onload="document.body.scrollTop = <%= scrollTop %>">
+        <%= bodyText %>
+        <script>
+            // Set scrollTop as soon as the body is parsed. This help with flicker when
+            // the onload event is delayed until images are loaded.
+            document.body.scrollTop = <%= scrollTop %>;
+        </script>
+    </body>
+</html>
