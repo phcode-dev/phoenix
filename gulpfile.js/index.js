@@ -1,21 +1,40 @@
 /* eslint-env node */
 
 const del = require('del');
+var webserver = require('gulp-webserver');
 const { src, dest, series } = require('gulp');
 
-// The `clean` function is not exported so it can be considered a private task.
-// It can still be used within the `series()` composition.
 function cleanAll() {
     return del(['node_modules', 'dist']);
 }
 
-// The `build` function is exported so it is public and can be run with the `gulp` command.
-// It can also be used within the `series()` composition.
 function build(cb) {
     // body omitted
     cb();
 }
 
+function serve() {
+    src('.')
+        .pipe(webserver({
+            livereload: false,
+            directoryListing: true,
+            open: true
+        }));
+}
+
+function serveExternal() {
+    src('.')
+        .pipe(webserver({
+            host: '0.0.0.0',
+            livereload: false,
+            directoryListing: true,
+            open: true
+        }));
+}
+
+
 exports.build = build;
 exports.clean = series(cleanAll);
+exports.serve = series(build, serve);
+exports.serveExternal = series(build, serveExternal);
 exports.default = series(build);
