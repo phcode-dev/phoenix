@@ -45,16 +45,8 @@
         });
     </script>
 
-    <!-- Warn about failed cross origin requests in Chrome -->
-    <script type="application/javascript" src="xorigin.js"></script>
-
     <link rel="stylesheet" type="text/css" href="thirdparty/CodeMirror/lib/codemirror.css">
-    <!--(if target dev)><!-->
     <link rel="stylesheet/less" type="text/css" href="styles/brackets.less">
-    <!--<!(endif)-->
-    <!--(if target dist)>
-    <link rel="stylesheet" type="text/css" href="styles/brackets.min.css">
-    <!--<!(endif)-->
 
     <!-- JavaScript -->
 
@@ -67,13 +59,16 @@
     <script src="thirdparty/Buffer/buffer-min.js"></script>
     <!-- endbuild -->
 
-    <!--build:js phoenix.min.js -->
+
     <!-- Import the phoenix browser virtual file system -->
     <script src="phoenix/shell.js" type="module"></script>
     <script src="phoenix/nohost_server.js" type="module"></script>
+
+    <!--build:js utils.min.js -->
+    <!-- Warn about failed cross origin requests in Chrome -->
+    <script type="application/javascript" src="xorigin.js"></script>
     <!-- endbuild -->
 
-    <link rel= "manifest" href= "manifest.json" />
 </head>
 <body>
 
@@ -86,10 +81,9 @@
 <!-- All other scripts are loaded through require. -->
 <!-- build:js main.js -->
 <script src="thirdparty/requirejs/require.js" data-main="main"></script>
-<!-- endbuild -->
-
 <!-- Verify that all dependencies are loaded. -->
 <script src="dependencies.js"></script>
+<!-- endbuild -->
 
 </body>
 </html>
