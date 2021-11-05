@@ -65,6 +65,7 @@ define(function (require, exports, module) {
     // Load modules for later use
     require("language/CodeInspection");
     require("thirdparty/lodash");
+    require("thirdparty/jszip");
     require("editor/CodeHintManager");
     require("utils/Global");
     require("command/Menus");
@@ -413,29 +414,23 @@ define(function (require, exports, module) {
         }, true);
     }
 
-    function connectToTestDomain() {
-        var _nodeConnectionDeferred = new $.Deferred(),
-            _nodeConnection = new NodeConnection();
-
-        _nodeConnection.connect(true).then(function () {
-            var domainPath = FileUtils.getNativeBracketsDirectoryPath() + "/" + FileUtils.getNativeModuleDirectoryPath(module) + "/../test/node/TestingDomain";
-
-            _nodeConnection.loadDomains(domainPath, true)
-                .then(init, function () {
-                    // Failed to connect
-                    console.error("[SpecRunner] Failed to connect to node", arguments);
-
-                    var container = $('<div class="container-fluid">');
-                    container.append('<div class="alert alert-error">Failed to connect to Node</div>');
-
-                    $(window.document.body).append(container);
+    function setupAndRunTests() {
+        var JSZip = require("thirdparty/jszip");
+        window.JSZipUtils.getBinaryContent('spec/test_folders.zip', function(err, data) {
+            if(err) {
+                alert("Could not create test files in phoenix virtual fs. Some tests may fail");
+                init();
+            } else {
+                // TODO extract all test files https://stuk.github.io/jszip/documentation/examples.html
+                JSZip.loadAsync(data).then(function (zip) {
+                    zip.file("LiveDevelopment-test-files/static-project-5/sub/sub2/index.html")
+                        .async("string").then(async function (data) {
+                            console.log(data);
+                            init();});
                 });
+            }
         });
-
-        Async.withTimeout(_nodeConnectionDeferred.promise(), NODE_CONNECTION_TIMEOUT);
-
-        brackets.testing = { nodeConnection: _nodeConnection };
     }
 
-    init();
+    setupAndRunTests();
 });

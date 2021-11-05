@@ -10,13 +10,21 @@ const uglify = require('gulp-uglify');
 const gulpIf = require('gulp-if');
 // Requires the gulp-cssnano plugin for minifying css files
 const cssnano = require('gulp-cssnano');
+const mergeStream =   require('merge-stream');
+const zip = require('gulp-zip');
+const rename = require("gulp-rename");
 
 function cleanDist() {
     return del(['dist']);
 }
 
 function cleanAll() {
-    return del(['node_modules', 'dist']);
+    return del([
+        'node_modules',
+        'dist',
+        // Test artifacts
+        'test/spec/test_folders.zip'
+    ]);
 }
 
 /**
@@ -40,12 +48,23 @@ function release() {
         .pipe(dest('dist'));
 }
 
-function build(cb) {
-    cb();
+/**
+ * Add thirdparty libs copied to gitignore except the licence file.
+ * @returns {Promise<PassThrough>}
+ */
+async function copyThirdPartyLibs(){
+    return mergeStream(
+        // jszip
+        src(['node_modules/jszip/dist/jszip.js'])
+            .pipe(dest('src/thirdparty')),
+        src(['node_modules/jszip/LICENSE.markdown'])
+            .pipe(rename("jsZip.markdown"))
+            .pipe(dest('src/thirdparty/licences/'))
+    );
 }
 
 function serve() {
-    src('.')
+    return src('.')
         .pipe(webserver({
             livereload: false,
             directoryListing: true,
@@ -54,7 +73,7 @@ function serve() {
 }
 
 function serveExternal() {
-    src('.')
+    return src('.')
         .pipe(webserver({
             host: '0.0.0.0',
             livereload: false,
@@ -63,11 +82,20 @@ function serveExternal() {
         }));
 }
 
+function zipTestFiles() {
+    return src([
+        'test/**',
+        '!test/thirdparty/**'])
+        .pipe(zip('test_folders.zip'))
+        .pipe(dest('test/'));
+}
 
-exports.build = build;
+
+exports.build = series(copyThirdPartyLibs);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
-exports.release = series(cleanDist, build, release);
-exports.serve = series(build, serve);
-exports.serveExternal = series(build, serveExternal);
-exports.default = series(build);
+exports.release = series(cleanDist, exports.build, release);
+exports.serve = series(exports.build, serve);
+exports.test = series(zipTestFiles);
+exports.serveExternal = series(exports.build, serveExternal);
+exports.default = series(exports.build);
