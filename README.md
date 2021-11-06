@@ -49,6 +49,14 @@ Phoenix is in alpha and is under active development.
 * To build the release artifacts: `npm run release`
 * The release artifacts to host will be in `dist` folder.
 
+## Running tests
+* run `npm run test` in the terminal.
+  * NB: this will setup all the required files for test 
+* Use chrome/edge browser to navigate to Phoenix[http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
+* In Phoenix Menu, select `Debug > run Tests` To open the test runner.
+* Run tests as required. 
+  * NB: To reset test data files, click on `reset and reload tests` option in the test runner.  
+
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).
 * Inspired by previous work from the [Mozilla Thimble](https://github.com/mozilla/thimble.mozilla.org) project to port brackets to the web. https://github.com/mozilla/brackets
