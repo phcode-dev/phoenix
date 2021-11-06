@@ -46,6 +46,10 @@ require.config({
     }
 });
 
+const EXTRACT_TEST_ASSETS_KEY = 'EXTRACT_TEST_ASSETS_KEY';
+const EXTRACT = 'EXTRACT';
+const DONT_EXTRACT = 'DONT_EXTRACT';
+
 define(function (require, exports, module) {
 
 
@@ -176,6 +180,7 @@ define(function (require, exports, module) {
         }
 
         $("#reload").click(function () {
+            localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, EXTRACT);
             window.location.reload(true);
         });
 
@@ -414,22 +419,70 @@ define(function (require, exports, module) {
         }, true);
     }
 
-    function setupAndRunTests() {
-        var JSZip = require("thirdparty/jszip");
-        window.JSZipUtils.getBinaryContent('spec/test_folders.zip', function(err, data) {
-            if(err) {
-                alert("Could not create test files in phoenix virtual fs. Some tests may fail");
-                init();
+    function _showLoading(show) {
+        if(show){
+            document.getElementById('loading').style='';
+        } else {
+            document.getElementById('loading').setAttribute('style', 'display: none;');
+        }
+    }
+
+    function _copyZippedItemToFS(path, item) {
+        return new Promise((resolve, reject) =>{
+            let destPath = `/test/${path}`;
+            if(item.dir){
+                window.fs.mkdirs(destPath, '777', true, (err)=>{
+                    if(err){
+                        reject();
+                    } else {
+                        resolve(destPath);
+                    }
+                });
             } else {
-                // TODO extract all test files https://stuk.github.io/jszip/documentation/examples.html
-                JSZip.loadAsync(data).then(function (zip) {
-                    zip.file("LiveDevelopment-test-files/static-project-5/sub/sub2/index.html")
-                        .async("string").then(async function (data) {
-                            console.log(data);
-                            init();});
+                item.async("string").then(function (data) {
+                    window.fs.writeFile(destPath, data, writeErr=>{
+                        if(writeErr){
+                            reject(writeErr);
+                        } else {
+                            resolve(destPath);
+                        }
+                    });
+                }).catch(error=>{
+                    reject(error);
                 });
             }
         });
+    }
+
+    function setupAndRunTests() {
+        let shouldExtract = localStorage.getItem(EXTRACT_TEST_ASSETS_KEY);
+        if(shouldExtract === EXTRACT || shouldExtract === null) {
+            _showLoading(true);
+            let JSZip = require("thirdparty/jszip");
+            window.JSZipUtils.getBinaryContent('test_folders.zip', function(err, data) {
+                if(err) {
+                    alert("Could not create test files in phoenix virtual fs. Some tests may fail");
+                    _showLoading(false);
+                    init();
+                } else {
+                    JSZip.loadAsync(data).then(function (zip) {
+                        let keys = Object.keys(zip.files);
+                        let allPromises=[];
+                        for (let i = 0; i < keys.length; i++) {
+                            let path = keys[i];
+                            allPromises.push(_copyZippedItemToFS(path, zip.files[path]));
+                        }
+                        Promise.all(allPromises).then(()=>{
+                            localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, DONT_EXTRACT);
+                            _showLoading(false);
+                            init();
+                        });
+                    });
+                }
+            });
+        } else {
+            init();
+        }
     }
 
     setupAndRunTests();
