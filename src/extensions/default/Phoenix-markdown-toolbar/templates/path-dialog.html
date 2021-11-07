@@ -1,0 +1,20 @@
+<div class="modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{dialogTitle}}</h1>
+    </div>
+    <div class="modal-body">
+        <div class="dialog-message">
+            {{textTitle}}
+            <input type="text" class="input-text" placeholder="{{textPlaceholder}}" value="{{textInit}}">
+            <br/>
+            {{pathTitle}}
+            <input type="text" class="input-path" placeholder="{{pathPlaceholder}}" value="{{pathInit}}">
+            <button id="choose-file" class="btn no-focus octicon octicon-file-directory" 
+                    style="vertical-align: top; margin-top: 0px;" tabindex="-1" title="{{Strings.SELECT_FILE}}"></button>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="dialog-button btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
+        <button class="dialog-button btn primary" data-button-id="ok">{{Strings.OK}}</button>
+    </div>
+</div>
