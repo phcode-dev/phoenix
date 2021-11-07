@@ -36,7 +36,6 @@ Phoenix is in alpha and is under active development.
 
 * run `npm install`
 * To build after npm install: `npm run build`
-* clean: `npm run clean`
 
 ## Running phoenix
 * run `npm run serve` in the terminal.
@@ -48,6 +47,18 @@ Phoenix is in alpha and is under active development.
 * run `npm install`
 * To build the release artifacts: `npm run release`
 * The release artifacts to host will be in `dist` folder.
+
+## Running tests
+* run `npm run test` in the terminal.
+  * NB: this will setup all the required files for test 
+* Use chrome/edge browser to navigate to Phoenix[http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
+* In Phoenix Menu, select `Debug > run Tests` To open the test runner.
+* Run tests as required. 
+  * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
+
+## Clean and reset builds
+* clean builds only: `npm run clean`
+* Reset everything including node modules: `npm run reset`
 
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).

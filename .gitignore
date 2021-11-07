@@ -12,6 +12,9 @@ Thumbs.db
 /src/JSUtils/node_modules
 /src/JSUtils/node/node_modules
 
+# Thirdparty libs
+/src/thirdparty/jszip.js
+
 # ignore files copied from node_modules to src/thirdparty
 # https://github.com/aicore/phoenix/issues/10
 
@@ -40,6 +43,7 @@ Thumbs.db
 # unit test working directory
 /test/results
 /test/temp
+test/test_folders.zip
 
 # Netbeans
 /nbproject
