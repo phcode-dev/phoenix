@@ -2,7 +2,7 @@
 /*global define */
 
 define(function (require, exports, module) {
-    "use strict";
+
 
     var MATCH_NONBLANK = /\S/;
 

@@ -46,6 +46,10 @@ require.config({
     }
 });
 
+const EXTRACT_TEST_ASSETS_KEY = 'EXTRACT_TEST_ASSETS_KEY';
+const EXTRACT = 'EXTRACT';
+const DONT_EXTRACT = 'DONT_EXTRACT';
+
 define(function (require, exports, module) {
 
 
@@ -65,6 +69,7 @@ define(function (require, exports, module) {
     // Load modules for later use
     require("language/CodeInspection");
     require("thirdparty/lodash");
+    require("thirdparty/jszip");
     require("editor/CodeHintManager");
     require("utils/Global");
     require("command/Menus");
@@ -175,6 +180,7 @@ define(function (require, exports, module) {
         }
 
         $("#reload").click(function () {
+            localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, EXTRACT);
             window.location.reload(true);
         });
 
@@ -413,29 +419,72 @@ define(function (require, exports, module) {
         }, true);
     }
 
-    function connectToTestDomain() {
-        var _nodeConnectionDeferred = new $.Deferred(),
-            _nodeConnection = new NodeConnection();
-
-        _nodeConnection.connect(true).then(function () {
-            var domainPath = FileUtils.getNativeBracketsDirectoryPath() + "/" + FileUtils.getNativeModuleDirectoryPath(module) + "/../test/node/TestingDomain";
-
-            _nodeConnection.loadDomains(domainPath, true)
-                .then(init, function () {
-                    // Failed to connect
-                    console.error("[SpecRunner] Failed to connect to node", arguments);
-
-                    var container = $('<div class="container-fluid">');
-                    container.append('<div class="alert alert-error">Failed to connect to Node</div>');
-
-                    $(window.document.body).append(container);
-                });
-        });
-
-        Async.withTimeout(_nodeConnectionDeferred.promise(), NODE_CONNECTION_TIMEOUT);
-
-        brackets.testing = { nodeConnection: _nodeConnection };
+    function _showLoading(show) {
+        if(show){
+            document.getElementById('loading').style='';
+        } else {
+            document.getElementById('loading').setAttribute('style', 'display: none;');
+        }
     }
 
-    init();
+    function _copyZippedItemToFS(path, item) {
+        return new Promise((resolve, reject) =>{
+            let destPath = `/test/${path}`;
+            if(item.dir){
+                window.fs.mkdirs(destPath, '777', true, (err)=>{
+                    if(err){
+                        reject();
+                    } else {
+                        resolve(destPath);
+                    }
+                });
+            } else {
+                item.async("string").then(function (data) {
+                    window.fs.writeFile(destPath, data, writeErr=>{
+                        if(writeErr){
+                            reject(writeErr);
+                        } else {
+                            resolve(destPath);
+                        }
+                    });
+                }).catch(error=>{
+                    reject(error);
+                });
+            }
+        });
+    }
+
+    function setupAndRunTests() {
+        let shouldExtract = localStorage.getItem(EXTRACT_TEST_ASSETS_KEY);
+        if(shouldExtract === EXTRACT || shouldExtract === null) {
+            _showLoading(true);
+            let JSZip = require("thirdparty/jszip");
+            window.JSZipUtils.getBinaryContent('test_folders.zip', function(err, data) {
+                if(err) {
+                    alert("Please run 'npm run test' before starting this test. " +
+                        "Could not create test files in phoenix virtual fs. Some tests may fail");
+                    _showLoading(false);
+                    init();
+                } else {
+                    JSZip.loadAsync(data).then(function (zip) {
+                        let keys = Object.keys(zip.files);
+                        let allPromises=[];
+                        for (let i = 0; i < keys.length; i++) {
+                            let path = keys[i];
+                            allPromises.push(_copyZippedItemToFS(path, zip.files[path]));
+                        }
+                        Promise.all(allPromises).then(()=>{
+                            localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, DONT_EXTRACT);
+                            _showLoading(false);
+                            init();
+                        });
+                    });
+                }
+            });
+        } else {
+            init();
+        }
+    }
+
+    setupAndRunTests();
 });

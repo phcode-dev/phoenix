@@ -24,7 +24,6 @@
 /*global define, brackets, $, window, _hideSettings */
 
 define(function (require, exports, module) {
-    "use strict";
 
     // Brackets modules
     var AppInit             = brackets.getModule("utils/AppInit"),

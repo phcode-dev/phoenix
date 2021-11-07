@@ -2,7 +2,7 @@
 /*global define, brackets */
 
 define(function (require, exports, module) {
-    "use strict";
+
 
     var Dialogs    = brackets.getModule("widgets/Dialogs"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),

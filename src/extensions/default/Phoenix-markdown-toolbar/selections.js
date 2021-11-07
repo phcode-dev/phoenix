@@ -2,7 +2,7 @@
 /*global define */
 
 define(function (require, exports, module) {
-    "use strict";
+
 
     /**
      * Perform the provided action on every selection

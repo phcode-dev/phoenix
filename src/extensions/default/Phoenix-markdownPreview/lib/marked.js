@@ -3,8 +3,14 @@
  * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
  * https://github.com/chjj/marked
  */
+//jshint: no-start
+;
 
-;(function() {
+function global() {
+
+}
+
+(function() {
 
 /**
  * Block-Level Grammar
@@ -305,6 +311,7 @@ Lexer.prototype.token = function(src, top, bq) {
 
         // Outdent whatever the
         // list item contains. Hacky.
+        // eslint-disable-next-line no-bitwise
         if (~item.indexOf('\n ')) {
           space -= item.length;
           item = !this.options.pedantic
@@ -328,7 +335,7 @@ Lexer.prototype.token = function(src, top, bq) {
         loose = next || /\n\n(?!\s*$)/.test(item);
         if (i !== l - 1) {
           next = item.charAt(item.length - 1) === '\n';
-          if (!loose) loose = next;
+          if (!loose) {loose = next;}
         }
 
         this.tokens.push({
@@ -519,7 +526,7 @@ function InlineLexer(links, options) {
   this.options = options || marked.defaults;
   this.links = links;
   this.rules = inline.normal;
-  this.renderer = this.options.renderer || new Renderer;
+  this.renderer = this.options.renderer || new Renderer();
   this.renderer.options = this.options;
 
   if (!this.links) {
@@ -709,7 +716,7 @@ InlineLexer.prototype.outputLink = function(cap, link) {
  */
 
 InlineLexer.prototype.smartypants = function(text) {
-  if (!this.options.smartypants) return text;
+  if (!this.options.smartypants) {return text;}
   return text
     // em-dashes
     .replace(/--/g, '\u2014')
@@ -868,6 +875,7 @@ Renderer.prototype.link = function(href, title, text) {
     } catch (e) {
       return '';
     }
+    // eslint-disable-next-line no-script-url
     if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0) {
       return '';
     }
@@ -897,7 +905,7 @@ function Parser(options) {
   this.tokens = [];
   this.token = null;
   this.options = options || marked.defaults;
-  this.options.renderer = this.options.renderer || new Renderer;
+  this.options.renderer = this.options.renderer || new Renderer();
   this.renderer = this.options.renderer;
   this.renderer.options = this.options;
 }
@@ -1085,7 +1093,7 @@ function escape(html, encode) {
 function unescape(html) {
   return html.replace(/&([#\w]+);/g, function(_, n) {
     n = n.toLowerCase();
-    if (n === 'colon') return ':';
+    if (n === 'colon') {return ':';}
     if (n.charAt(0) === '#') {
       return n.charAt(1) === 'x'
         ? String.fromCharCode(parseInt(n.substring(2), 16))
@@ -1099,7 +1107,7 @@ function replace(regex, opt) {
   regex = regex.source;
   opt = opt || '';
   return function self(name, val) {
-    if (!name) return new RegExp(regex, opt);
+    if (!name) {return new RegExp(regex, opt);}
     val = val.source || val;
     val = val.replace(/(^|[^\[])\^/g, '$1');
     regex = regex.replace(name, val);
@@ -1147,7 +1155,7 @@ function marked(src, opt, callback) {
       , i = 0;
 
     try {
-      tokens = Lexer.lex(src, opt)
+      tokens = Lexer.lex(src, opt);
     } catch (e) {
       return callback(e);
     }
@@ -1181,15 +1189,16 @@ function marked(src, opt, callback) {
 
     delete opt.highlight;
 
-    if (!pending) return done();
+    if (!pending) {return done();}
 
     for (; i < tokens.length; i++) {
+      // eslint-disable-next-line no-loop-func
       (function(token) {
         if (token.type !== 'code') {
           return --pending || done();
         }
         return highlight(token.text, token.lang, function(err, code) {
-          if (err) return done(err);
+          if (err) {return done(err);}
           if (code == null || code === token.text) {
             return --pending || done();
           }
@@ -1197,13 +1206,13 @@ function marked(src, opt, callback) {
           token.escaped = true;
           --pending || done();
         });
-      })(tokens[i]);
+      }(tokens[i]));
     }
 
     return;
   }
   try {
-    if (opt) opt = merge({}, marked.defaults, opt);
+    if (opt) {opt = merge({}, marked.defaults, opt);}
     return Parser.parse(Lexer.lex(src, opt), opt);
   } catch (e) {
     e.message += '\nPlease report this to https://github.com/chjj/marked.';
@@ -1238,7 +1247,7 @@ marked.defaults = {
   langPrefix: 'lang-',
   smartypants: false,
   headerPrefix: '',
-  renderer: new Renderer,
+  renderer: new Renderer(),
   xhtml: false
 };
 
@@ -1260,6 +1269,7 @@ marked.inlineLexer = InlineLexer.output;
 marked.parse = marked;
 
 if (typeof module !== 'undefined' && typeof exports === 'object') {
+  // eslint-disable-next-line no-undef
   module.exports = marked;
 } else if (typeof define === 'function' && define.amd) {
   define(function() { return marked; });
@@ -1268,5 +1278,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }
 
 }).call(function() {
+  // eslint-disable-next-line no-invalid-this
   return this || (typeof window !== 'undefined' ? window : global);
 }());
