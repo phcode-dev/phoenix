@@ -29,5 +29,7 @@
   "SVGCodeHints",
   "UrlCodeHints",
   "DarkTheme",
-  "LightTheme"
+  "LightTheme",
+  "Phoenix-markdownPreview",
+  "Phoenix-markdown-toolbar"
 ]
