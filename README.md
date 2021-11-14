@@ -2,8 +2,20 @@
 
 Phoenix is a modern open-source and free code editor for the web, built for the browser.
 
+#### Code Guardian
+<a href="https://sonarcloud.io/summary/new_code?id=aicore_phoenix">
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=alert_status" alt="Sonar code quality check" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=security_rating" alt="Security rating" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=vulnerabilities" alt="vulnerabilities" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=coverage" alt="Code Coverage" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=bugs" alt="Code Bugs" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=reliability_rating" alt="Reliability Rating" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=sqale_rating" alt="Maintainability Rating" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=ncloc" alt="Lines of Code" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=sqale_index" alt="Technical debt" />
+</a>
 <a href="https://www.npmjs.com/package/git-commit-msg-linter">
-  <img src="https://badgen.net/badge/git-commit-msg-linter/3.0.0/green" alt="commit msg linted by git-commit-msg-linter" />
+  </p><img src="https://badgen.net/badge/git-commit-msg-linter/3.0.0/green" alt="commit msg linted by git-commit-msg-linter" />
 </a>
 
 Phoenix is in early alpha.  
