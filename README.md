@@ -2,6 +2,21 @@
 
 Phoenix is a modern open-source and free code editor for the web, built for the browser.
 
+#### Code Guardian
+<a href="https://sonarcloud.io/summary/new_code?id=aicore_phoenix">
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=alert_status" alt="Sonar code quality check" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=security_rating" alt="Security rating" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=vulnerabilities" alt="vulnerabilities" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=coverage" alt="Code Coverage" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=bugs" alt="Code Bugs" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=reliability_rating" alt="Reliability Rating" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=sqale_rating" alt="Maintainability Rating" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=ncloc" alt="Lines of Code" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=sqale_index" alt="Technical debt" />
+</a>
+<a href="https://www.npmjs.com/package/git-commit-msg-linter">
+  </p><img src="https://badgen.net/badge/git-commit-msg-linter/3.0.0/green" alt="commit msg linted by git-commit-msg-linter" />
+</a>
 
 Phoenix is in early alpha.  
 * **Test out development build of phoenix by visiting this URL:** [**http://phoenix.core.ai/src**](http://phoenix.core.ai/src) 
@@ -31,11 +46,31 @@ Phoenix is in alpha and is under active development.
 ## Building Phoenix
 [Source Repository](https://github.com/aicore/phoenix) 
 
-* Require widows for builds in the port window.
-* Have brackets installed in windows
-* use nodejs version for windows less than node v6.10
-* run `npm install --force`
-* Use a web server and navigate in browser to `src/index.html`
+* run `npm install`
+* To build after npm install: `npm run build`
+
+## Running phoenix
+* run `npm run serve` in the terminal.
+  * NB: To test Phoenix from an external mobile or machine, use `npm run serveExternal` instead of `serve`   
+* Use chrome/edge browser to navigate to [http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
+
+## Building Release artifacts
+
+* run `npm install`
+* To build the release artifacts: `npm run release`
+* The release artifacts to host will be in `dist` folder.
+
+## Running tests
+* run `npm run test` in the terminal.
+  * NB: this will setup all the required files for test 
+* Use chrome/edge browser to navigate to Phoenix[http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
+* In Phoenix Menu, select `Debug > run Tests` To open the test runner.
+* Run tests as required. 
+  * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
+
+## Clean and reset builds
+* clean builds only: `npm run clean`
+* Reset everything including node modules: `npm run reset`
 
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).

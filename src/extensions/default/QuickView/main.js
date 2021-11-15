@@ -1,24 +1,21 @@
 /*
- *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
+ * GNU AGPL-3.0 License
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
 
@@ -489,7 +486,7 @@ define(function (require, exports, module) {
         var language = LanguageManager.getLanguageForExtension(ext);
         var id = language && language.getId();
         var isImage = id === "image" || id === "svg";
-        var loadFromDisk = false;
+        var loadFromDisk = null;
 
         // Use this URL if this is an absolute URL and either points to a
         // filename with a known image extension, or lacks an extension (e.g.,
@@ -500,11 +497,11 @@ define(function (require, exports, module) {
         }
         // Use this filename if this is a path with a known image extension.
         else if (!hasProtocol && isImage) {
-            imgPath = path.normalize(FileUtils.getDirectoryPath(docPath) + tokenString);
-            loadFromDisk = true;
+            imgPath = '';
+            loadFromDisk = window.path.normalize(FileUtils.getDirectoryPath(docPath) + tokenString);
         }
 
-        if (!imgPath) {
+        if (!loadFromDisk && !imgPath) {
             return null;
         }
 
@@ -546,7 +543,7 @@ define(function (require, exports, module) {
 
         function _imageToDataURI(file, cb) {
             file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
-                var base64 = btoa(
+                var base64 = window.btoa(
                     new Uint8Array(content)
                         .reduce((data, byte) => data + String.fromCharCode(byte), '')
                 );
@@ -557,7 +554,7 @@ define(function (require, exports, module) {
 
         var showHandler = function () {
             if(loadFromDisk){
-                var imageFile = FileSystem.getFileForPath(imgPath);
+                var imageFile = FileSystem.getFileForPath(loadFromDisk);
                 _imageToDataURI(imageFile, function (err, dataURL){
                     showHandlerWithImageURL(dataURL);
                 });

@@ -1,0 +1,12 @@
+{
+    "name": "gruehle.markdown-preview",
+    "title": "Markdown Preview",
+    "description": "Live preview of markdown documents",
+    "homepage": "https://github.com/gruehle/MarkdownPreview",
+    "version": "1.0.11",
+    "author": "Glenn Ruehle <gruehle@gmail.com> (http://github.com/gruehle)",
+    "license": "MIT",
+    "engines": {
+        "brackets": ">=1.1"
+    }
+}

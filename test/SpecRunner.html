@@ -27,12 +27,9 @@
 <head>
   <title>Jasmine Spec Runner</title>
 
-  <link href="thirdparty/bootstrap2/css/bootstrap.min.css" rel="stylesheet">
-  <link href="thirdparty/bootstrap2/css/bootstrap-responsive.min.css" rel="stylesheet">
-  <link href="BootstrapReporterView.css" rel="stylesheet">
-
   <script type="text/javascript">
     //brackets.app.showDeveloperTools();
+    console.warn('Make sure to run this following command before starting tests : npm run test ');
   </script>
 
   <!-- Import the phoenix browser virtual file system -->
@@ -42,15 +39,18 @@
   <script src="../src/phoenix/shell.js" type="module"></script>
   <script src="../src/phoenix/nohost_server.js" type="module"></script>
 
-  <script src="thirdparty/jasmine-core/jasmine.js"></script>
+  <link href="thirdparty/bootstrap2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="thirdparty/bootstrap2/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="BootstrapReporterView.css" rel="stylesheet">
+
   <!-- Pre-load third party scripts that cannot be async loaded. -->
   <!-- Keep in sync with Gruntfile.js jasmine vendor dependencies -->
   <script src="../src/thirdparty/jquery-2.1.3.min.js"></script>
   <script src="../src/thirdparty/less.min.js"></script>
   <script src="thirdparty/bootstrap2/js/bootstrap.min.js"></script>
 
-  <!-- All other scripts are loaded through require. -->
-  <script src="../src/thirdparty/requirejs/require.js" data-main="SpecRunner"></script>
+  <script src="thirdparty/jasmine-core/jasmine.js"></script>
+  <script type="text/javascript" src="../src/thirdparty/jszip-utils.js"></script>
 
 </head>
 
@@ -73,13 +73,19 @@
               <li><a id="mainview"    href="?suite=mainview">Main&nbsp;View</a></li>
               <li><a id="performance" href="?suite=performance">Performance</a></li>
               <li><a id="extension" href="?suite=extension">Extensions</a></li>
-              <li><a id="reload" href="#">Reload</a></li>
+              <li><a id="reload" href="#">Reset and Reload Tests</a></li>
               <li><a id="show-dev-tools" href="#">Show&nbsp;Developer&nbsp;Tools</a></li>
             </ul>
           </div>
         </div>
       </div>
     </div>
+    <div id="loading" style="display: none;">
+      Please run <code>npm run test</code> before starting tests at least once or if you are facing issues.
+      </p>Extracting test files .... <img src="../src/styles/images/throbber.gif" alt=".......">
+    </div>
     <div id="mock-main-view" style="position:absolute; height:1000px; width:1000px; left:-10000px; top:-10000px;"></div>
+    <!-- All other scripts are loaded through require. -->
+    <script src="../src/thirdparty/requirejs/require.js" data-main="SpecRunner"></script>
 </body>
 </html>

@@ -1,24 +1,21 @@
 /*
- *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+ * GNU AGPL-3.0 License
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
 
@@ -103,7 +100,7 @@ define(function (require, exports, module) {
     // Implements the 'Run Tests' menu to bring up the Jasmine unit test window
     var _testWindow = null;
     function _runUnitTests(spec) {
-        var queryString = spec ? "?spec=" + spec : "";
+        var queryString = spec ? "?spec=" + spec : "?suite=unit";
         if (_testWindow && !_testWindow.closed) {
             if (_testWindow.location.search !== queryString) {
                 _testWindow.location.href = "../test/SpecRunner.html" + queryString;
@@ -111,7 +108,7 @@ define(function (require, exports, module) {
                 _testWindow.location.reload(true);
             }
         } else {
-            _testWindow = window.open("../test/SpecRunner.html" + queryString, "brackets-test", "width=" + $(window).width() + ",height=" + $(window).height());
+            _testWindow = window.open("../test/SpecRunner.html" + queryString);
             _testWindow.location.reload(true); // if it had been opened earlier, force a reload because it will be cached
         }
     }
@@ -229,26 +226,6 @@ define(function (require, exports, module) {
                 $select = $dialog.find("select");
 
                 $select.on("change", setLanguage).val(curLocale);
-            }
-        });
-    }
-
-    function enableRunTestsMenuItem() {
-        if (brackets.inBrowser) {
-            return;
-        }
-
-        // Check for the SpecRunner.html file
-        var file = FileSystem.getFileForPath(
-            FileUtils.getNativeBracketsDirectoryPath() + "/../test/SpecRunner.html"
-        );
-
-        file.exists(function (err, exists) {
-            if (!err && exists) {
-                // If the SpecRunner.html file exists, enable the menu item.
-                // (menu item is already disabled, so no need to disable if the
-                // file doesn't exist).
-                CommandManager.get(DEBUG_RUN_UNIT_TESTS).setEnabled(true);
             }
         });
     }
@@ -764,8 +741,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,        DEBUG_NEW_BRACKETS_WINDOW,      handleNewBracketsWindow);
 
     // Start with the "Run Tests" item disabled. It will be enabled later if the test file can be found.
-    CommandManager.register(Strings.CMD_RUN_UNIT_TESTS,       DEBUG_RUN_UNIT_TESTS,         _runUnitTests)
-        .setEnabled(false);
+    CommandManager.register(Strings.CMD_RUN_UNIT_TESTS,       DEBUG_RUN_UNIT_TESTS,         _runUnitTests);
 
     CommandManager.register(Strings.CMD_SHOW_PERF_DATA,            DEBUG_SHOW_PERF_DATA,            handleShowPerfData);
 
@@ -783,7 +759,6 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
 
-    enableRunTestsMenuItem();
     toggleErrorNotification(PreferencesManager.get(DEBUG_SHOW_ERRORS_IN_STATUS_BAR));
 
     PreferencesManager.on("change", DEBUG_SHOW_ERRORS_IN_STATUS_BAR, function () {

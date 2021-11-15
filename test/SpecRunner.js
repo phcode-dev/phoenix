@@ -1,24 +1,21 @@
 /*
- *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+ * GNU AGPL-3.0 License
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
 
@@ -49,6 +46,10 @@ require.config({
     }
 });
 
+const EXTRACT_TEST_ASSETS_KEY = 'EXTRACT_TEST_ASSETS_KEY';
+const EXTRACT = 'EXTRACT';
+const DONT_EXTRACT = 'DONT_EXTRACT';
+
 define(function (require, exports, module) {
 
 
@@ -68,6 +69,7 @@ define(function (require, exports, module) {
     // Load modules for later use
     require("language/CodeInspection");
     require("thirdparty/lodash");
+    require("thirdparty/jszip");
     require("editor/CodeHintManager");
     require("utils/Global");
     require("command/Menus");
@@ -178,6 +180,7 @@ define(function (require, exports, module) {
         }
 
         $("#reload").click(function () {
+            localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, EXTRACT);
             window.location.reload(true);
         });
 
@@ -416,29 +419,72 @@ define(function (require, exports, module) {
         }, true);
     }
 
-    function connectToTestDomain() {
-        var _nodeConnectionDeferred = new $.Deferred(),
-            _nodeConnection = new NodeConnection();
-
-        _nodeConnection.connect(true).then(function () {
-            var domainPath = FileUtils.getNativeBracketsDirectoryPath() + "/" + FileUtils.getNativeModuleDirectoryPath(module) + "/../test/node/TestingDomain";
-
-            _nodeConnection.loadDomains(domainPath, true)
-                .then(init, function () {
-                    // Failed to connect
-                    console.error("[SpecRunner] Failed to connect to node", arguments);
-
-                    var container = $('<div class="container-fluid">');
-                    container.append('<div class="alert alert-error">Failed to connect to Node</div>');
-
-                    $(window.document.body).append(container);
-                });
-        });
-
-        Async.withTimeout(_nodeConnectionDeferred.promise(), NODE_CONNECTION_TIMEOUT);
-
-        brackets.testing = { nodeConnection: _nodeConnection };
+    function _showLoading(show) {
+        if(show){
+            document.getElementById('loading').style='';
+        } else {
+            document.getElementById('loading').setAttribute('style', 'display: none;');
+        }
     }
 
-    init();
+    function _copyZippedItemToFS(path, item) {
+        return new Promise((resolve, reject) =>{
+            let destPath = `/test/${path}`;
+            if(item.dir){
+                window.fs.mkdirs(destPath, '777', true, (err)=>{
+                    if(err){
+                        reject();
+                    } else {
+                        resolve(destPath);
+                    }
+                });
+            } else {
+                item.async("string").then(function (data) {
+                    window.fs.writeFile(destPath, data, writeErr=>{
+                        if(writeErr){
+                            reject(writeErr);
+                        } else {
+                            resolve(destPath);
+                        }
+                    });
+                }).catch(error=>{
+                    reject(error);
+                });
+            }
+        });
+    }
+
+    function setupAndRunTests() {
+        let shouldExtract = localStorage.getItem(EXTRACT_TEST_ASSETS_KEY);
+        if(shouldExtract === EXTRACT || shouldExtract === null) {
+            _showLoading(true);
+            let JSZip = require("thirdparty/jszip");
+            window.JSZipUtils.getBinaryContent('test_folders.zip', function(err, data) {
+                if(err) {
+                    alert("Please run 'npm run test' before starting this test. " +
+                        "Could not create test files in phoenix virtual fs. Some tests may fail");
+                    _showLoading(false);
+                    init();
+                } else {
+                    JSZip.loadAsync(data).then(function (zip) {
+                        let keys = Object.keys(zip.files);
+                        let allPromises=[];
+                        for (let i = 0; i < keys.length; i++) {
+                            let path = keys[i];
+                            allPromises.push(_copyZippedItemToFS(path, zip.files[path]));
+                        }
+                        Promise.all(allPromises).then(()=>{
+                            localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, DONT_EXTRACT);
+                            _showLoading(false);
+                            init();
+                        });
+                    });
+                }
+            });
+        } else {
+            init();
+        }
+    }
+
+    setupAndRunTests();
 });

@@ -1,24 +1,21 @@
 /*
- *  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- *  Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+ * GNU AGPL-3.0 License
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
 
@@ -653,9 +650,9 @@ define({
     "HEALTH_DATA_NOTIFICATION": "Health Report Preferences",
     "HEALTH_FIRST_POPUP_TITLE": "{APP_NAME} Health Report",
     "HEALTH_DATA_DO_TRACK": "Share pseudonymous information on how I use {APP_NAME}",
-    "HEALTH_DATA_NOTIFICATION_MESSAGE": "In order to improve {APP_NAME}, we periodically send limited, <strong>pseudonymous</strong> statistics to Adobe about how you use {APP_NAME}. This information helps prioritize features, find bugs, and spot usability issues.<br><br>You can see your data or choose not to share data by selecting <strong>Help > Health Report</strong>.<br><br><a href='https://github.com/adobe/brackets/wiki/Project-Health-Data'>Learn more about {APP_NAME} Health Report</a>",
+    "HEALTH_DATA_NOTIFICATION_MESSAGE": "In order to improve {APP_NAME}, we periodically send limited, <strong>pseudonymous</strong> statistics to core.ai about how you use {APP_NAME}. This information helps prioritize features, find bugs, and spot usability issues while guarding your privacy.<br><br>You can see your data or choose not to share data by selecting <strong>Help > Health Report</strong>.<br><br>",
     "HEALTH_DATA_PREVIEW": "{APP_NAME} Health Report",
-    "HEALTH_DATA_PREVIEW_INTRO": "<p>In order to improve {APP_NAME}, we periodically send limited, <strong>pseudonymous</strong> statistics to Adobe about how you use {APP_NAME}. This information helps prioritize features, find bugs, and spot usability issues. <a href='https://github.com/adobe/brackets/wiki/Project-Health-Data'>Learn more about {APP_NAME} Health Report</a> and how it benefits the {APP_NAME} community while protecting your privacy.</p><p>Below is a preview of the data that will be sent in your next Health Report <em>if</em> it is enabled.</p>",
+    "HEALTH_DATA_PREVIEW_INTRO": "<p>In order to improve {APP_NAME}, we periodically send limited, <strong>pseudonymous</strong> statistics to core.ai about how you use {APP_NAME}. This information helps prioritize features, find bugs, and spot usability issues. </p><p>Below is a preview of the data that will be sent in your next Health Report <em>if</em> it is enabled.</p>",
 
     // extensions/default/InlineTimingFunctionEditor
     "INLINE_TIMING_EDITOR_TIME": "Time",

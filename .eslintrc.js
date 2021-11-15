@@ -85,7 +85,8 @@ module.exports = {
         "quiet": true
     },
     "env":{
-        "es6": true
+        "es6": true,
+        "browser": true
     },
     "parserOptions": {
         "ecmaVersion": 9,

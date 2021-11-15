@@ -1,0 +1,26 @@
+name: Phoenix build verification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main ]
+
+jobs:
+  build-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Npm Install
+        run: |
+          npm install
+      - name: eslint using npm run eslint
+        run: |
+          npm run lint
+      - name: building Phoenix with npm run buildonly
+        run: |
+          npm run buildonly
+      - name: Testing Phoenix with npm run test
+        run: |
+          npm run test
