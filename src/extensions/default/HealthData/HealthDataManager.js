@@ -42,7 +42,10 @@ define(function (require, exports, module) {
         ONE_HOUR            = 60 * ONE_MINUTE,
         FIRST_LAUNCH_SEND_DELAY = FIVE_MINUTES,
         timeoutVar,
-        gaInitComplete = false,
+        STATUS_UNINITIALIZED = 1,
+        STATUS_INITIALIZED = 2,
+        STATUS_LOADING = 3,
+        gaInitStatus = STATUS_UNINITIALIZED,
         sentAnalyticsDataMap = new Map();
 
     prefs.definePreference("healthDataTracking", "boolean", true, {
@@ -50,20 +53,34 @@ define(function (require, exports, module) {
     });
 
     function _initGoogleAnalytics() {
-        if(gaInitComplete){
+        if(gaInitStatus === STATUS_INITIALIZED || gaInitStatus === STATUS_LOADING){
             return;
         }
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function(){window.dataLayer.push(arguments);};
-        gtag('js', new Date());
 
-        gtag('config', brackets.config.googleAnalyticsID, {
-            'page_title' : 'Phoenix editor',
-            'page_path': '/index.html',
-            'page_location': window.location.origin
-        });
+        gaInitStatus = STATUS_LOADING;
 
-        gaInitComplete = true;
+        // Load google analytics scripts
+        let script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.onerror = function() {
+            gaInitStatus = STATUS_UNINITIALIZED;
+        };
+        script.onload = function(){
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function(){window.dataLayer.push(arguments);};
+            gtag('js', new Date());
+
+            gtag('config', brackets.config.googleAnalyticsID, {
+                'page_title': 'Phoenix editor',
+                'page_path': '/index.html',
+                'page_location': window.location.origin
+            });
+
+            gaInitStatus = STATUS_INITIALIZED;
+        };
+        script.src = 'https://www.googletagmanager.com/gtag/js?' + brackets.config.googleAnalyticsID;
+        document.getElementsByTagName('head')[0].appendChild(script);
     }
 
     // Dont load google analytics at startup to unblock require sync load.
