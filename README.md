@@ -3,6 +3,8 @@
 Phoenix is a modern open-source and free code editor for the web, built for the browser.
 
 #### Code Guardian
+[![Phoenix build verification](https://github.com/aicore/phoenix/actions/workflows/build_verify.yml/badge.svg)](https://github.com/aicore/phoenix/actions/workflows/build_verify.yml)
+
 <a href="https://sonarcloud.io/summary/new_code?id=aicore_phoenix">
   <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=alert_status" alt="Sonar code quality check" />
   <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=security_rating" alt="Security rating" />
