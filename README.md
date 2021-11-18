@@ -56,6 +56,11 @@ Phoenix is in alpha and is under active development.
   * NB: To test Phoenix from an external mobile or machine, use `npm run serveExternal` instead of `serve`   
 * Use chrome/edge browser to navigate to [http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
 
+## IDE Setup
+SonarLint static code analysis checker is not yet available as a Brackets
+extension. Use sonarLint plugin for webstorm or any of the available
+IDEs from this link before raising a pull request: https://www.sonarlint.org/
+
 ## Building Release artifacts
 
 * run `npm install`
