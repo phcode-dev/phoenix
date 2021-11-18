@@ -30,6 +30,7 @@ import init from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
 
 let Phoenix = {};
+let startTime = Date.now();
 
 window.Phoenix = Phoenix;
 
@@ -43,7 +44,10 @@ Phoenix.app = {
         window.open(url);
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
-    ERR_CODES: ERR_CODES
+    ERR_CODES: ERR_CODES,
+    getElapsedMilliseconds: function () {
+        return Date.now() - startTime; // milliseconds elapsed since app start
+    }
 };
 
 if(!window.appshell){
