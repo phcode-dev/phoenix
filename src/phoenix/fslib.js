@@ -182,6 +182,10 @@ const fileSystemLib = {
         } else if(Mounts.isMountSubPath(path)) {
             return NativeFS.unlink(path, callbackInterceptor);
         }
+        if (typeof path !== 'string') {
+            callbackInterceptor(new Errors.EINVAL('Invalid arguments.'));
+            return;
+        }
         return filerShell.rm(path, { recursive: true }, callbackInterceptor);
     },
     copy: function (src, dst, cb) {
@@ -236,7 +240,10 @@ const fileSystemLib = {
         }
     },
     BYTE_ARRAY_ENCODING: NativeFS.BYTE_ARRAY_ENCODING,
-    ERR_NOT_FOUND: ERR_CODES.ERROR_CODES.ENOENT
+    ERR_NOT_FOUND: ERR_CODES.ERROR_CODES.ENOENT,
+    ERR_EISDIR: ERR_CODES.ERROR_CODES.EISDIR,
+    ERR_EINVAL: ERR_CODES.ERROR_CODES.EINVAL,
+    ERR_FILE_EXISTS: ERR_CODES.ERROR_CODES.EEXIST
 };
 
 export default function initFsLib(Phoenix, FilerLib) {

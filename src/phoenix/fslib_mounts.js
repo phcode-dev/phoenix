@@ -36,6 +36,9 @@ let _channel = null;
  * @param path
  */
 function isMountSubPath(path) {
+    if (typeof path !== 'string') {
+        return false;
+    }
     let mntSubPathStart = '/mnt/';
     if (path) {
         path = window.path.normalize(path);
@@ -51,6 +54,9 @@ function isMountSubPath(path) {
  * @param path
  */
 function isMountPath(path) {
+    if (typeof path !== 'string') {
+        return false;
+    }
     if (path) {
         path = window.path.normalize(path);
         if (path === Constants.MOUNT_POINT_ROOT) {
