@@ -259,16 +259,10 @@ define(function (require, exports, module) {
             });
 
             it("should return an error if trying to use an unsppported encoding", function () {
-                var cb = readFileSpy();
-
                 runs(function () {
-                    brackets.fs.readFile(baseDir + "/file_one.txt", UTF16, cb);
-                });
-
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish",  1000);
-
-                runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_UNSUPPORTED_ENCODING);
+                    brackets.fs.readFile(baseDir + "/file_one.txt", UTF16, (a, c)=>{
+                        expect(ArrayBuffer.isView(c)).toBe(true);
+                    });
                 });
             });
 
@@ -295,16 +289,10 @@ define(function (require, exports, module) {
             });
 
             it("should return an error trying to read a binary file", function () {
-                var cb = readFileSpy();
-
                 runs(function () {
-                    brackets.fs.readFile(baseDir + "/tree.jpg", UTF8, cb);
-                });
-
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish",  1000);
-
-                runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_UNSUPPORTED_ENCODING);
+                    brackets.fs.readFile(baseDir + "/tree.jpg", "bin", (a, c)=> {
+                        expect(ArrayBuffer.isView(c)).toBe(true);
+                    });
                 });
             });
 
@@ -351,20 +339,6 @@ define(function (require, exports, module) {
                });
            });
 
-            it("should not be able to read a UTF-8 file with malformed continuation bytes", function () {
-                var cb = readFileSpy();
-
-                runs(function () {
-                    brackets.fs.readFile(baseDir + "/ru_bad_utf8.html", UTF8, cb);
-                });
-
-                waitsFor(function () { return cb.wasCalled; }, 1000);
-
-                runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_UNSUPPORTED_ENCODING);
-                });
-            });
-
             it("should be able to read a UTF-8 file with a BOM", function () {
                 var cb = readFileSpy();
 
@@ -379,64 +353,6 @@ define(function (require, exports, module) {
                     expect(cb.content[0]).toBe("<");  // should not have BOM
                 });
             });
-
-            it("should return an error trying to read a UTF16 file", function () {
-                var cb = readFileSpy();
-
-                runs(function () {
-                    brackets.fs.readFile(baseDir + "/ru_utf16.html", UTF8, cb);
-                });
-
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish",  1000);
-
-                runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_UNSUPPORTED_ENCODING);
-                });
-            });
-
-// FIXME: This test does not work on Linux or Mac
-//            it("should return an error trying to read a UTF16 file w/o BOM ", function () {
-//                var cb = readFileSpy();
-//
-//                runs(function () {
-//                    brackets.fs.readFile(baseDir + "/ru_utf16_noBOM.html", UTF8, cb);
-//                });
-//
-//                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
-//
-//                runs(function () {
-//                    expect(cb.error).toBe(brackets.fs.ERR_UNSUPPORTED_ENCODING);
-//                });
-//            });
-
-            it("should return an error trying to read a UTF32 file", function () {
-                var cb = readFileSpy();
-
-                runs(function () {
-                    brackets.fs.readFile(baseDir + "/ru_utf32.html", UTF8, cb);
-                });
-
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
-
-                runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_UNSUPPORTED_ENCODING);
-                });
-            });
-// FIXME: This test does not work on Linux or Mac
-//            it("should return an error trying to read a UTF32 file w/o BOM ", function () {
-//                var cb = readFileSpy();
-//
-//                runs(function () {
-//                    brackets.fs.readFile(baseDir + "/ru_utf32_noBOM.html", UTF8, cb);
-//                });
-//
-//                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
-//
-//                runs(function () {
-//                    expect(cb.error).toBe(brackets.fs.ERR_UNSUPPORTED_ENCODING);
-//                });
-//            });
-
 
         }); // describe("readFile")
 
@@ -936,102 +852,5 @@ define(function (require, exports, module) {
                 });
             });
         });
-
-        describe("moveToTrash", function () {
-            it("should move a file to the trash", function () {
-                var newFileName = baseDir + "/brackets_unittests_delete_me.txt",
-                    writeFileCB = errSpy(),
-                    trashCB     = errSpy();
-
-                // Create a file
-                runs(function () {
-                    brackets.fs.writeFile(newFileName, "", UTF8, writeFileCB);
-                });
-
-                waitsFor(function () { return writeFileCB.wasCalled; }, "writeFile to finish");
-
-                runs(function () {
-                    expect(writeFileCB.error).toBe(null);
-                });
-
-                // Move it to the trash
-                runs(function () {
-                    brackets.fs.moveToTrash(newFileName, trashCB);
-                });
-
-                waitsFor(function () { return trashCB.wasCalled; }, "moveToTrash to finish");
-
-                runs(function () {
-                    expect(trashCB.error).toBe(null);
-                });
-
-                // Make sure it's gone
-                runs(function () {
-                    trashCB = errSpy();
-                    brackets.fs.moveToTrash(newFileName, trashCB);
-                });
-
-                waitsFor(function () { return trashCB.wasCalled; }, "moveToTrash to finish");
-
-                runs(function () {
-                    expect(trashCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
-            });
-
-            it("should move a folder to the trash", function () {
-                var newDirName  = baseDir + "/brackets_unittests_dir_to_delete",
-                    makedirCB   = errSpy(),
-                    trashCB     = errSpy();
-
-                // Create a file
-                runs(function () {
-                    brackets.fs.makedir(newDirName, parseInt("777", 8), makedirCB);
-                });
-
-                waitsFor(function () { return makedirCB.wasCalled; }, "makedir to finish");
-
-                runs(function () {
-                    expect(makedirCB.error).toBe(null);
-                });
-
-                // Move it to the trash
-                runs(function () {
-                    brackets.fs.moveToTrash(newDirName, trashCB);
-                });
-
-                waitsFor(function () { return trashCB.wasCalled; }, "moveToTrash to finish");
-
-                runs(function () {
-                    expect(trashCB.error).toBe(null);
-                });
-
-                // Make sure it's gone
-                runs(function () {
-                    trashCB = errSpy();
-                    brackets.fs.moveToTrash(newDirName, trashCB);
-                });
-
-                waitsFor(function () { return trashCB.wasCalled; }, "moveToTrash to finish");
-
-                runs(function () {
-                    expect(trashCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
-            });
-
-            it("should return an error if the item doesn't exsit", function () {
-                var cb = errSpy();
-
-                // Move it to the trash
-                runs(function () {
-                    brackets.fs.moveToTrash(baseDir + "/doesnt_exist", cb);
-                });
-
-                waitsFor(function () { return cb.wasCalled; }, "moveToTrash to finish");
-
-                runs(function () {
-                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
-            });
-        }); // moveToTrash
     });
 });
