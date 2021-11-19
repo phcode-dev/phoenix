@@ -40,10 +40,10 @@ async function _stat(path) {
     });
 }
 
-async function _mrdir(path) {
+async function _mrdirIfNotPresent(path) {
     return new Promise(async (resolve, reject) => {
         fs.mkdir(path, async (err) => {
-            err?
+            err && err.code !== ERROR_CODES.EEXIST?
                 reject(err):
                 resolve();
         });
@@ -89,7 +89,7 @@ async function _copyFile(srcFile, dst) {
             await _copyFileContents(srcFile, dstFilePath);
             return;
         } else {
-            throw new Errors.EIO(`Cannot create destination file: ${dst}`);
+            throw new Errors.EIO(`_copyFile Cannot create destination file: ${dst}`);
         }
     }
 
@@ -98,9 +98,9 @@ async function _copyFile(srcFile, dst) {
         let dstFilePath =`${dst}/${srcFileName}`;
         await _copyFileContents(srcFile, dstFilePath);
     } else if(dstStat && dstStat.isFile()){
-        throw new Errors.EEXIST(`Destination file already exists: ${dst}`);
+        throw new Errors.EEXIST(`_copyFile Destination file already exists: ${dst}`);
     } else {
-        throw new Errors.EIO(`Cannot copy file, unknown destination: ${srcFile} to ${dst}`);
+        throw new Errors.EIO(`_copyFile Cannot copy file, unknown destination: ${srcFile} to ${dst}`);
     }
 }
 
@@ -113,7 +113,7 @@ async function _copyTree(src, dst) {
         if(srcStat.isFile()){
             await _copyFileContents(entryPath, dstPath);
         } else { //dir
-            await _mrdir(dstPath);
+            await _mrdirIfNotPresent(dstPath);
             await _copyTree(entryPath, dstPath);
         }
     }
@@ -145,7 +145,7 @@ async function copy(src, dst, callback, recursive = true) {
             callback();
         }
     } catch (e) {
-        callback(new Errors.EIO(`${e}: Cannot copy src: ${src}to ${dst}`));
+        callback(new Errors.EIO(`${e}: Cannot copy src: ${src} to ${dst}`));
     }
 }
 
