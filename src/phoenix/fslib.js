@@ -45,7 +45,7 @@ function mkdir_p (fsLib, path, mode, callback, position) {
     position = position || 0;
 
     if (position >= parts.length) {
-        return callback();
+        return callback(null);
     }
 
     var directory = parts.slice(0, position + 1).join(osSep) || osSep;
@@ -245,6 +245,8 @@ const fileSystemLib = {
     ERR_EINVAL: ERR_CODES.ERROR_CODES.EINVAL,
     ERR_FILE_EXISTS: ERR_CODES.ERROR_CODES.EEXIST
 };
+
+fileSystemLib.copyFile = fileSystemLib.copy;
 
 export default function initFsLib(Phoenix, FilerLib) {
     filerLib = FilerLib;

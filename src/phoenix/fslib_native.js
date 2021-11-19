@@ -215,7 +215,7 @@ function writeFile (path, data, options, callback) {
 async function _deleteEntry(dirHandle, entryNameToDelete, callback, recursive=true){
     try {
         await dirHandle.removeEntry(entryNameToDelete, { recursive: recursive });
-        callback();
+        callback(null);
     } catch (err) {
         callback(err);
     }
@@ -290,7 +290,7 @@ async function _copyFileWithHandle(srcFileHandle, dst, srcFileName, callback) {
     try {
         let dstHandle = await _getDestinationHandleForCopy(dst, srcFileName, Constants.KIND_FILE);
         await _copyFileFromHandles(srcFileHandle, dstHandle);
-        callback();
+        callback(null);
     } catch (e) {
         callback(e);
     }
@@ -315,7 +315,7 @@ async function _copyFolderWithHandle(srcFolderHandle, dst, srcFileName, callback
     try {
         let dstFolderHandle = await _getDestinationHandleForCopy(dst, srcFileName, Constants.KIND_DIRECTORY);
         await _treeCopy(srcFolderHandle, dstFolderHandle, recursive);
-        callback();
+        callback(null);
     } catch (e) {
         callback(e);
     }
