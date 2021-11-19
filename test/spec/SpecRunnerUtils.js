@@ -90,11 +90,6 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
-
-    function testDomain() {
-        return brackets.testing.nodeConnection.domains.testing;
-    }
-
     /**
      * Remove a directory (recursively) or file
      *
@@ -102,7 +97,15 @@ define(function (require, exports, module) {
      * @return {$.Promise} Resolved when the path is removed, rejected if there was a problem
      */
     function remove(path) {
-        return testDomain().remove(path);
+        var result = new $.Deferred();
+        window.fs.unlink(path, (err)=>{
+            if (!err) {
+                result.resolve();
+            } else {
+                result.reject(err);
+            }
+        });
+        return result.promise();
     }
 
     /**
@@ -113,7 +116,15 @@ define(function (require, exports, module) {
      * @return {$.Promise} Resolved when the path is copied, rejected if there was a problem
      */
     function copy(src, dest) {
-        return testDomain().copy(src, dest);
+        var result = new $.Deferred();
+        window.fs.copy(src, dest, err => {
+            if (!err) {
+                result.resolve();
+            } else {
+                result.reject(err);
+            }
+        });
+        return result.promise();
     }
 
     /**
@@ -121,7 +132,15 @@ define(function (require, exports, module) {
      * @return {$.Promise} Resolved when the path is rename, rejected if there was a problem
      */
     function rename(src, dest) {
-        return testDomain().rename(src, dest);
+        var result = new $.Deferred();
+        window.fs.rename(src, dest, err => {
+            if (!err) {
+                result.resolve();
+            } else {
+                result.reject(err);
+            }
+        });
+        return result.promise();
     }
 
     /**

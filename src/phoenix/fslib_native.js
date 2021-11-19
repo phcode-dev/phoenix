@@ -161,10 +161,10 @@ function stat(path, callback) {
         if(err){
             callback(err);
         } else {
-            Utils.createStatObject(path, handle).then(stat => {
-                callback(null, stat);
-            }).catch( err => {
-                callback(err);
+            Utils.createStatObject(path, handle).then(pathStat => {
+                callback(null, pathStat);
+            }).catch( error => {
+                callback(error);
             });
         }
     });
@@ -172,7 +172,6 @@ function stat(path, callback) {
 
 
 async function _writeFileWithName(paretDirHandle, fileName, encoding, data, callback) {
-    encoding = encoding || 'utf-8';
     try {
         const newFileHandle = await paretDirHandle.getFileHandle(fileName, { create: true });
         const writable = await newFileHandle.createWritable();
@@ -235,7 +234,7 @@ async function unlink(path, callback) {
     });
 }
 
-async function _getDestinationHandle(dst, srcBaseName, handleKindToCreate) {
+async function _getDestinationHandleForCopy(dst, srcBaseName, handleKindToCreate) {
     return new Promise(async (resolve, reject) => {
         dst = window.path.normalize(dst);
         let dirPath= window.path.dirname(dst);
@@ -289,7 +288,7 @@ async function _copyFileFromHandles(srcFileHandle, dstHandle, optionalName) {
 
 async function _copyFileWithHandle(srcFileHandle, dst, srcFileName, callback) {
     try {
-        let dstHandle = await _getDestinationHandle(dst, srcFileName, Constants.KIND_FILE);
+        let dstHandle = await _getDestinationHandleForCopy(dst, srcFileName, Constants.KIND_FILE);
         await _copyFileFromHandles(srcFileHandle, dstHandle);
         callback();
     } catch (e) {
@@ -314,7 +313,7 @@ async function _treeCopy(srcFolderHandle, dstFolderHandle, recursive) {
 
 async function _copyFolderWithHandle(srcFolderHandle, dst, srcFileName, callback, recursive) {
     try {
-        let dstFolderHandle = await _getDestinationHandle(dst, srcFileName, Constants.KIND_DIRECTORY);
+        let dstFolderHandle = await _getDestinationHandleForCopy(dst, srcFileName, Constants.KIND_DIRECTORY);
         await _treeCopy(srcFolderHandle, dstFolderHandle, recursive);
         callback();
     } catch (e) {
