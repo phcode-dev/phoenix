@@ -139,7 +139,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
 
                 runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
 
@@ -219,7 +219,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
 
                 runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
 
@@ -266,7 +266,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
 
                 runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
 
@@ -590,7 +590,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return statCB.wasCalled; },  "stat to finish", 1000);
 
                 runs(function () {
-                    expect(statCB.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
 
@@ -604,7 +604,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return cb.wasCalled; },  "unlink to finish",  1000);
 
                 runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
 
@@ -670,7 +670,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return statCB.wasCalled; }, 1000, "stat to finish");
 
                 runs(function () {
-                    expect(statCB.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
         }); // describe("unlink")
@@ -747,7 +747,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
                 runs(function () {
-                    expect(statCB.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
 
                 runs(function () {
@@ -800,7 +800,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
                 runs(function () {
-                    expect(statCB.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
 
                 runs(function () {
@@ -885,7 +885,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
                 runs(function () {
-                    expect(statCB.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
 
                 // make the copy
@@ -987,7 +987,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return trashCB.wasCalled; }, "moveToTrash to finish");
 
                 runs(function () {
-                    expect(trashCB.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(trashCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
 
@@ -1027,7 +1027,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return trashCB.wasCalled; }, "moveToTrash to finish");
 
                 runs(function () {
-                    expect(trashCB.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(trashCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
 
@@ -1042,7 +1042,7 @@ define(function (require, exports, module) {
                 waitsFor(function () { return cb.wasCalled; }, "moveToTrash to finish");
 
                 runs(function () {
-                    expect(cb.error).toBe(brackets.fs.ERR_NOT_FOUND);
+                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
                 });
             });
         }); // moveToTrash
