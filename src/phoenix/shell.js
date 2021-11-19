@@ -44,6 +44,7 @@ Phoenix.app = {
         window.open(url);
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
+    getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,
     ERR_CODES: ERR_CODES,
     getElapsedMilliseconds: function () {
         return Date.now() - startTime; // milliseconds elapsed since app start

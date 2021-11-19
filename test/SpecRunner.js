@@ -19,7 +19,7 @@
  *
  */
 
-/*global beforeEach, afterEach, beforeFirst, afterLast, jasmine */
+/*global beforeEach, afterEach, beforeFirst, afterLast, jasmine, Filer */
 
 // Set the baseUrl to brackets/src
 require.config({
@@ -439,8 +439,8 @@ define(function (require, exports, module) {
                     }
                 });
             } else {
-                item.async("string").then(function (data) {
-                    window.fs.writeFile(destPath, data, writeErr=>{
+                item.async("uint8array").then(function (data) {
+                    window.fs.writeFile(destPath, Filer.Buffer.from(data), writeErr=>{
                         if(writeErr){
                             reject(writeErr);
                         } else {
