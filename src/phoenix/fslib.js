@@ -21,7 +21,7 @@
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
-import {Errors} from "./errno.js";
+import ERR_CODES, {Errors} from "./errno.js";
 import NativeFS from "./fslib_native.js";
 import Constants from "./constants.js";
 import Mounts from "./fslib_mounts.js";
@@ -235,7 +235,8 @@ const fileSystemLib = {
             mkdir_p(fileSystemLib, path, mode, callback);
         }
     },
-    BYTE_ARRAY_ENCODING: NativeFS.BYTE_ARRAY_ENCODING
+    BYTE_ARRAY_ENCODING: NativeFS.BYTE_ARRAY_ENCODING,
+    ERR_NOT_FOUND: ERR_CODES.ERROR_CODES.ENOENT
 };
 
 export default function initFsLib(Phoenix, FilerLib) {
