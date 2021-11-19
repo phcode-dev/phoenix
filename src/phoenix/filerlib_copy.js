@@ -85,7 +85,7 @@ async function _copyFile(srcFile, dst) {
         let dstFileName= window.path.basename(dst);
         dstStat = await _stat(parentDir);
         if(dstStat && dstStat.isDirectory()){
-            let dstFilePath =`${dst}/${dstFileName}`;
+            let dstFilePath =`${parentDir}/${dstFileName}`;
             await _copyFileContents(srcFile, dstFilePath);
             return;
         } else {
@@ -139,10 +139,10 @@ async function copy(src, dst, callback, recursive = true) {
         }
         if (srcStat.isFile()) {
             await _copyFile(src, dst);
-            callback();
+            callback(null);
         } else if (srcStat.isDirectory()) {
             await _copyFolder(src, dst);
-            callback();
+            callback(null);
         }
     } catch (e) {
         callback(new Errors.EIO(`${e}: Cannot copy src: ${src} to ${dst}`));

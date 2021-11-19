@@ -848,7 +848,8 @@ define(function (require, exports, module) {
                     copyName     = baseDir + "/file_one_copy.txt",
                     copyCB       = errSpy(),
                     unlinkCB     = errSpy(),
-                    statCB       = statSpy();
+                    statCB       = statSpy(),
+                    statCBsrc    =statSpy();
 
                 complete = false;
 
@@ -861,6 +862,17 @@ define(function (require, exports, module) {
 
                 runs(function () {
                     expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                });
+
+                // Verify src file exist
+                runs(function () {
+                    brackets.fs.stat(fileName, statCBsrc);
+                });
+
+                waitsFor(function () { return statCBsrc.wasCalled; }, "stat to finish", 1000);
+
+                runs(function () {
+                    expect(statCBsrc.error).toBe(null);
                 });
 
                 // make the copy
