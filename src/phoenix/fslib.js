@@ -26,6 +26,7 @@ import NativeFS from "./fslib_native.js";
 import Constants from "./constants.js";
 import Mounts from "./fslib_mounts.js";
 import FsWatch from "./fslib_watch.js";
+import filerCopy from "./filerlib_copy.js";
 
 let filerLib = null;
 let filerShell = null;
@@ -52,9 +53,9 @@ function mkdir_p (fsLib, path, mode, callback, position) {
         if (err === null) {
             mkdir_p(fsLib, path, mode, callback, position + 1);
         } else {
-            fsLib.mkdir(directory, mode, function (err) {
-                if (err && err.code !== 'EEXIST') {
-                    return callback(err);
+            fsLib.mkdir(directory, mode, function (error) {
+                if (error && error.code !== 'EEXIST') {
+                    return callback(error);
                 } else {
                     mkdir_p(fsLib, path, mode, callback, position + 1);
                 }
@@ -196,8 +197,10 @@ const fileSystemLib = {
 
         if(Mounts.isMountSubPath(src) && Mounts.isMountSubPath(dst)) {
             return NativeFS.copy(src, dst, callbackInterceptor);
+        } else if(!Mounts.isMountSubPath(src) && !Mounts.isMountSubPath(dst)) {
+            return filerCopy(src, dst, callbackInterceptor);
         }
-        throw new Errors.ENOSYS('Phoenix fs copy on filer or across filer and native not yet supported');
+        throw new Errors.ENOSYS('Phoenix fs copy across filer and native not yet supported');
     },
     showSaveDialog: function () {
         throw new Errors.ENOSYS('Phoenix fs showSaveDialog function not yet supported.');
@@ -221,7 +224,9 @@ const fileSystemLib = {
         }
 
         if (typeof callback !== 'function') {
-            callback = function () {};
+            callback = function () {
+                // Do Nothing
+            };
         }
 
         if (!recursive) {
