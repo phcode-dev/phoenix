@@ -545,8 +545,8 @@ define(function (require, exports, module) {
 
             // setup extension loading in the test window
             params.put("extensions", _doLoadExtensions ?
-                        "default,dev," + ExtensionLoader.getUserExtensionPath() :
-                        "default");
+                        "dev," + ExtensionLoader.getUserExtensionPath() :
+                        "");
 
             // disable update check in test windows
             params.put("skipUpdateCheck", true);
