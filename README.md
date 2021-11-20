@@ -75,6 +75,18 @@ IDEs from this link before raising a pull request: https://www.sonarlint.org/
 * Run tests as required. 
   * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
 
+## Browsing the virtual file system
+To view/edit the files in the browser virtual file system, open the developer console
+and execute the below js code
+```javascript
+ProjectManager  = require("project/ProjectManager")
+ProjectManager.openProject("/fs")
+```
+Where `/fs` is the folder in the file system to browse. You can now browse the files
+in the phoenix file tree.
+
+NB: Mounting root folder `/` is not advised if you have mounted large local native folders. 
+
 ## Clean and reset builds
 * clean builds only: `npm run clean`
 * Reset everything including node modules: `npm run reset`
