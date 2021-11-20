@@ -1,5 +1,6 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define, brackets */
+//jshint-ignore:no-start
 
 define(function (require, exports, module) {
 
@@ -8,7 +9,6 @@ define(function (require, exports, module) {
         EditorManager      = brackets.getModule("editor/EditorManager"),
         ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
         KeyBindingManager  = brackets.getModule("command/KeyBindingManager"),
-        Menus              = brackets.getModule("command/Menus"),
         ModalBar           = brackets.getModule("widgets/ModalBar").ModalBar,
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager");
@@ -23,6 +23,7 @@ define(function (require, exports, module) {
     var toolBar = null,
         barShouldShow = false,
         cmdToolbar = null;
+    var $icon;
 
     function registerCallbacks(toolBar) {
         var root = toolBar.getRoot();
@@ -127,7 +128,7 @@ define(function (require, exports, module) {
         }
     }
 
-    prefs.definePreference("showOnStartup", "boolean", false, {
+    prefs.definePreference("showOnStartup", "boolean", true, {
         description: Strings.DESCRIPTION_SHOW_ON_STARTUP
     });
 
@@ -152,8 +153,8 @@ define(function (require, exports, module) {
         REFLOW_COMMAND_ID = "alanhohn.markdownreflow";
     
     cmdToolbar = CommandManager.register(Strings.MENU_TOOLBAR, BAR_COMMAND_ID, toggleBar);
-    var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
-    menu.addMenuItem(BAR_COMMAND_ID, "Ctrl-Shift-T");
+    //var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
+    //menu.addMenuItem(BAR_COMMAND_ID, "Ctrl-Shift-T");
 
     CommandManager.register(Strings.HINT_H1, H1_COMMAND_ID, Handler.h1);
     CommandManager.register(Strings.HINT_H2, H2_COMMAND_ID, Handler.h2);
@@ -185,12 +186,16 @@ define(function (require, exports, module) {
     KeyBindingManager.addBinding(PARAGRAPH_COMMAND_ID, KeyboardPrefs.paragraph);
     KeyBindingManager.addBinding(REFLOW_COMMAND_ID, KeyboardPrefs.reflow);
 
+
+
     ExtensionUtils.loadStyleSheet(module, "styles/styles.css");
     ExtensionUtils.loadStyleSheet(module, "styles/octicons.css");
-    
+
     if (prefs.get("showOnStartup")) {
         barShouldShow = true;
     }
+
+
 
     activeEditorChangeHandler(null, EditorManager.getActiveEditor(), null);
     EditorManager.on("activeEditorChange", activeEditorChangeHandler);

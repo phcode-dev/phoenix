@@ -334,6 +334,7 @@ define(function (require, exports, module) {
     ExtensionUtils.loadStyleSheet(module, "styles/MarkdownPreview.css");
 
     // Add toolbar icon
+
     $icon = $("<a>")
         .attr({
             id: "markdown-preview-icon",
@@ -345,13 +346,15 @@ define(function (require, exports, module) {
         .click(_toggleVisibility)
         .appendTo($("#main-toolbar .buttons"));
 
+
+
     // Add a document change handler
     MainViewManager.on("currentFileChange", _currentDocChangedHandler);
 
-    viewMenu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
+   // viewMenu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
     toggleCmd = CommandManager.register("Markdown Preview", "toggleMarkdownPreview", _toggleVisibility);
 
-    viewMenu.addMenuItem(toggleCmd);
+    //viewMenu.addMenuItem(toggleCmd);
 
     toggleCmd.setChecked(realVisibility);
     toggleCmd.setEnabled(realVisibility);
