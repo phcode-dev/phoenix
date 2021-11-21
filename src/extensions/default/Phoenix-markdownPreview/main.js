@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         NativeApp           = brackets.getModule("utils/NativeApp"),
         DocumentManager     = brackets.getModule("document/DocumentManager"),
         EditorManager       = brackets.getModule("editor/EditorManager"),
+        Editor              = brackets.getModule("editor/Editor"),
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         FileUtils           = brackets.getModule("file/FileUtils"),
         MainViewManager     = brackets.getModule("view/MainViewManager"),
@@ -252,16 +253,25 @@ define(function (require, exports, module) {
         }
 
         realVisibility = isVisible;
+        var editor = $(" #editor-holder");
+
         if (isVisible) {
             if (!panel) {
                 $panel = $(panelHTML);
                 $iframe = $panel.find("#panel-markdown-preview-frame");
 
                 panel = WorkspaceManager.createBottomPanel("markdown-preview-panel", $panel);
+
                 $panel.on("panelResizeUpdate", function (e, newSize) {
                     $iframe.attr("height", newSize);
                 });
+
+
+                //$panel.setHeight(800);
+                $panel.css("height", "82%");
                 $iframe.attr("height", $panel.height());
+
+                $panel.css("overflow","hidden");
 
                 window.setTimeout(_resizeIframe);
 
@@ -277,14 +287,27 @@ define(function (require, exports, module) {
                 $iframe.hide();
             }
             _loadDoc(DocumentManager.getCurrentDocument());
+            editor.css("display", "none");
+
             $icon.toggleClass("active");
+           // Editor.setVisible(false, false);
+
             panel.show();
+
         } else {
             $icon.toggleClass("active");
+            //Editor.setVisible(true, false);
             panel.hide();
+            //fixing height of pane
+            editor.css("display", "block");
+            var editorPane = $(" #editor-holder ").find(".view-pane").find(".pane-content");
+            editorPane.css("height", "100%");
+            var codemirror = $(" #editor-holder ").find(".view-pane").find(".pane-content").children().eq(1);
+            codemirror.css("height", "100%");
             $iframe.hide();
         }
     }
+
 
     function _currentDocChangedHandler() {
         var doc = DocumentManager.getCurrentDocument(),
@@ -307,11 +330,13 @@ define(function (require, exports, module) {
             currentEditor.on("scroll", _editorScroll);
             $icon.css({display: "block"});
             _setPanelVisibility(visible);
+
             toggleCmd.setEnabled(true);
             _loadDoc(doc);
         } else {
             $icon.css({display: "none"});
             toggleCmd.setEnabled(false);
+
             _setPanelVisibility(false);
         }
     }
@@ -368,4 +393,6 @@ define(function (require, exports, module) {
     // Listen for resize events
     WorkspaceManager.on("workspaceUpdateLayout", _resizeIframe);
     $("#sidebar").on("panelCollapsed panelExpanded panelResizeUpdate", _resizeIframe);
+
+
 });

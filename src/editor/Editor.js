@@ -309,6 +309,7 @@ define(function (require, exports, module) {
      *
      * @constructor
      *
+     *
      * @param {!Document} document
      * @param {!boolean} makeMasterEditor  If true, this Editor will set itself as the (secret) "master"
      *          Editor for the Document. If false, this Editor will attach to the Document as a "slave"/
@@ -2160,6 +2161,7 @@ define(function (require, exports, module) {
      * @param {boolean} refresh true (default) to refresh the editor, false to skip refreshing it
      */
     Editor.prototype.setVisible = function (show, refresh) {
+        console.log("editor"+ " " + show);
         this.$el.css("display", (show ? "" : "none"));
         this.notifyVisibilityChange(show, refresh);
     };
