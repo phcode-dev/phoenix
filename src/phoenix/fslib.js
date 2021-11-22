@@ -21,11 +21,12 @@
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
-import {Errors} from "./errno.js";
+import ERR_CODES, {Errors} from "./errno.js";
 import NativeFS from "./fslib_native.js";
 import Constants from "./constants.js";
 import Mounts from "./fslib_mounts.js";
 import FsWatch from "./fslib_watch.js";
+import filerCopy from "./filerlib_copy.js";
 
 let filerLib = null;
 let filerShell = null;
@@ -44,7 +45,7 @@ function mkdir_p (fsLib, path, mode, callback, position) {
     position = position || 0;
 
     if (position >= parts.length) {
-        return callback();
+        return callback(null);
     }
 
     var directory = parts.slice(0, position + 1).join(osSep) || osSep;
@@ -52,9 +53,9 @@ function mkdir_p (fsLib, path, mode, callback, position) {
         if (err === null) {
             mkdir_p(fsLib, path, mode, callback, position + 1);
         } else {
-            fsLib.mkdir(directory, mode, function (err) {
-                if (err && err.code !== 'EEXIST') {
-                    return callback(err);
+            fsLib.mkdir(directory, mode, function (error) {
+                if (error && error.code !== 'EEXIST') {
+                    return callback(error);
                 } else {
                     mkdir_p(fsLib, path, mode, callback, position + 1);
                 }
@@ -181,6 +182,10 @@ const fileSystemLib = {
         } else if(Mounts.isMountSubPath(path)) {
             return NativeFS.unlink(path, callbackInterceptor);
         }
+        if (typeof path !== 'string') {
+            callbackInterceptor(new Errors.EINVAL('Invalid arguments.'));
+            return;
+        }
         return filerShell.rm(path, { recursive: true }, callbackInterceptor);
     },
     copy: function (src, dst, cb) {
@@ -196,8 +201,10 @@ const fileSystemLib = {
 
         if(Mounts.isMountSubPath(src) && Mounts.isMountSubPath(dst)) {
             return NativeFS.copy(src, dst, callbackInterceptor);
+        } else if(!Mounts.isMountSubPath(src) && !Mounts.isMountSubPath(dst)) {
+            return filerCopy(src, dst, callbackInterceptor);
         }
-        throw new Errors.ENOSYS('Phoenix fs copy on filer or across filer and native not yet supported');
+        throw new Errors.ENOSYS('Phoenix fs copy across filer and native not yet supported');
     },
     showSaveDialog: function () {
         throw new Errors.ENOSYS('Phoenix fs showSaveDialog function not yet supported.');
@@ -221,7 +228,9 @@ const fileSystemLib = {
         }
 
         if (typeof callback !== 'function') {
-            callback = function () {};
+            callback = function () {
+                // Do Nothing
+            };
         }
 
         if (!recursive) {
@@ -230,8 +239,14 @@ const fileSystemLib = {
             mkdir_p(fileSystemLib, path, mode, callback);
         }
     },
-    BYTE_ARRAY_ENCODING: NativeFS.BYTE_ARRAY_ENCODING
+    BYTE_ARRAY_ENCODING: NativeFS.BYTE_ARRAY_ENCODING,
+    ERR_NOT_FOUND: ERR_CODES.ERROR_CODES.ENOENT,
+    ERR_EISDIR: ERR_CODES.ERROR_CODES.EISDIR,
+    ERR_EINVAL: ERR_CODES.ERROR_CODES.EINVAL,
+    ERR_FILE_EXISTS: ERR_CODES.ERROR_CODES.EEXIST
 };
+
+fileSystemLib.copyFile = fileSystemLib.copy;
 
 export default function initFsLib(Phoenix, FilerLib) {
     filerLib = FilerLib;

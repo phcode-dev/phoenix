@@ -498,6 +498,8 @@ define(function (require, exports, module) {
                     getUserExtensionPath(),
                     getDevExtensionPath()
                 ];
+            } else {
+                paths = [];
             }
         }
 

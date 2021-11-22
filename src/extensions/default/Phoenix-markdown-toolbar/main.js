@@ -202,6 +202,7 @@ define(function (require, exports, module) {
     activeEditorChangeHandler(null, EditorManager.getActiveEditor(), null);
     EditorManager.on("activeEditorChange", activeEditorChangeHandler);
 
+    //fix: fixed intiial code editor screen dimensions on showing the toolbar by default
     var editor = $(" #editor-holder");
     editor.css("display", "block");
     editor.css("height","82%");

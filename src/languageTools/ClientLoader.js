@@ -171,7 +171,7 @@ define(function (require, exports, module) {
             console.error("ClientInfo domain could not be loaded: ", err);
         });
     }
-    initDomainAndHandleNodeCrash();
+    //initDomainAndHandleNodeCrash();
 
 
     exports.initiateLanguageClient = initiateLanguageClient;

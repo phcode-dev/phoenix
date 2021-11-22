@@ -30,6 +30,7 @@
   "UrlCodeHints",
   "DarkTheme",
   "LightTheme",
-  "Phoenix-markdown-toolbar",
-  "Phoenix-markdownPreview"
+  "HealthData",
+  "Phoenix-markdownPreview",
+  "Phoenix-markdown-toolbar"
 ]
