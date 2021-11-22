@@ -3,6 +3,8 @@
 Phoenix is a modern open-source and free code editor for the web, built for the browser.
 
 #### Code Guardian
+[![Phoenix build verification](https://github.com/aicore/phoenix/actions/workflows/build_verify.yml/badge.svg)](https://github.com/aicore/phoenix/actions/workflows/build_verify.yml)
+
 <a href="https://sonarcloud.io/summary/new_code?id=aicore_phoenix">
   <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=alert_status" alt="Sonar code quality check" />
   <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=security_rating" alt="Security rating" />
@@ -54,6 +56,11 @@ Phoenix is in alpha and is under active development.
   * NB: To test Phoenix from an external mobile or machine, use `npm run serveExternal` instead of `serve`   
 * Use chrome/edge browser to navigate to [http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
 
+## IDE Setup
+SonarLint static code analysis checker is not yet available as a Brackets
+extension. Use sonarLint plugin for webstorm or any of the available
+IDEs from this link before raising a pull request: https://www.sonarlint.org/
+
 ## Building Release artifacts
 
 * run `npm install`
@@ -67,6 +74,18 @@ Phoenix is in alpha and is under active development.
 * In Phoenix Menu, select `Debug > run Tests` To open the test runner.
 * Run tests as required. 
   * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
+
+## Browsing the virtual file system
+To view/edit the files in the browser virtual file system, open the developer console
+and execute the below js code
+```javascript
+ProjectManager  = require("project/ProjectManager")
+ProjectManager.openProject("/fs")
+```
+Where `/fs` is the folder in the file system to browse. You can now browse the files
+in the phoenix file tree.
+
+NB: Mounting root folder `/` is not advised if you have mounted large local native folders. 
 
 ## Clean and reset builds
 * clean builds only: `npm run clean`

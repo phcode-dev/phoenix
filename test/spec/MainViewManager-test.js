@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeEach, afterEach, it, runs, expect, waitsForDone, spyOn, jasmine */
+/*global describe, beforeEach, beforeFirst, afterEach, afterLast, it, runs, expect, waitsForDone, spyOn, jasmine */
 
 define(function (require, exports, module) {
 
@@ -46,7 +46,7 @@ define(function (require, exports, module) {
             return FileSystem.getFileForPath(testPath + "/" + name);
         };
 
-        beforeEach(function () {
+        beforeFirst(function () {
             runs(function () {
                 SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
                     SpecRunnerUtils.loadProjectInTestWindow(testPath);
@@ -69,7 +69,13 @@ define(function (require, exports, module) {
             });
         });
 
-        afterEach(function () {
+        beforeEach(function () {
+            runs(function () {
+                SpecRunnerUtils.reloadWindow();
+            });
+        });
+
+        afterLast(function () {
             MainViewManager._closeAll(MainViewManager.ALL_PANES);
             testWindow              = null;
             CommandManager          = null;
