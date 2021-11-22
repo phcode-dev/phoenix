@@ -48,7 +48,7 @@ define(function (require, exports, module) {
         NativeApp           = brackets.getModule("utils/NativeApp"),
         DocumentManager     = brackets.getModule("document/DocumentManager"),
         EditorManager       = brackets.getModule("editor/EditorManager"),
-        Editor              = brackets.getModule("editor/Editor"),
+
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         FileUtils           = brackets.getModule("file/FileUtils"),
         MainViewManager     = brackets.getModule("view/MainViewManager"),
@@ -56,7 +56,6 @@ define(function (require, exports, module) {
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         WorkspaceManager    = brackets.getModule("view/WorkspaceManager"),
         CommandManager      = brackets.getModule("command/CommandManager"),
-        Menus               = brackets.getModule("command/Menus"),
         _                   = brackets.getModule("thirdparty/lodash");
 
     // Templates
@@ -78,7 +77,6 @@ define(function (require, exports, module) {
     var currentDoc,
         currentEditor,
         panel,
-        viewMenu,
         toggleCmd,
         visible = false,
         realVisibility = false;
@@ -285,8 +283,6 @@ define(function (require, exports, module) {
                 });
 
 
-                //$panel.setHeight(800);
-                $panel.css("height", "82%");
                 $iframe.attr("height", $panel.height());
 
                 $panel.css("overflow","hidden");
@@ -308,13 +304,11 @@ define(function (require, exports, module) {
             editor.css("display", "none");
 
             $icon.toggleClass("active");
-           // Editor.setVisible(false, false);
 
             panel.show();
 
         } else {
             $icon.toggleClass("active");
-            //Editor.setVisible(true, false);
             panel.hide();
             //fixing height of pane
             editor.css("display", "block");
@@ -394,11 +388,7 @@ define(function (require, exports, module) {
     // Add a document change handler
     MainViewManager.on("currentFileChange", _currentDocChangedHandler);
 
-   // viewMenu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
     toggleCmd = CommandManager.register("Markdown Preview", "toggleMarkdownPreview", _toggleVisibility);
-
-    //viewMenu.addMenuItem(toggleCmd);
-
     toggleCmd.setChecked(realVisibility);
     toggleCmd.setEnabled(realVisibility);
 
