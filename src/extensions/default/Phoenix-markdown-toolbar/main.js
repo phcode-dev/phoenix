@@ -114,6 +114,7 @@ define(function (require, exports, module) {
 
     function activeEditorChangeHandler(event, activeEditor, previousEditor) {
         var mode = null;
+
         if (activeEditor && activeEditor.document) {
             mode = activeEditor._getModeFromDocument();
         }
@@ -156,6 +157,7 @@ define(function (require, exports, module) {
     //var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
     //menu.addMenuItem(BAR_COMMAND_ID, "Ctrl-Shift-T");
 
+
     CommandManager.register(Strings.HINT_H1, H1_COMMAND_ID, Handler.h1);
     CommandManager.register(Strings.HINT_H2, H2_COMMAND_ID, Handler.h2);
     CommandManager.register(Strings.HINT_H3, H3_COMMAND_ID, Handler.h3);
@@ -192,12 +194,21 @@ define(function (require, exports, module) {
     ExtensionUtils.loadStyleSheet(module, "styles/octicons.css");
 
     if (prefs.get("showOnStartup")) {
+
         barShouldShow = true;
+
     }
-
-
 
     activeEditorChangeHandler(null, EditorManager.getActiveEditor(), null);
     EditorManager.on("activeEditorChange", activeEditorChangeHandler);
+
+    var editor = $(" #editor-holder");
+    editor.css("display", "block");
+    editor.css("height","82%");
+    var editorPane = $(" #editor-holder ").find(".view-pane").find(".pane-content");
+    editorPane.css("height", "100%");
+    var codemirror = $(" #editor-holder ").find(".view-pane").find(".pane-content").children().eq(1);
+    codemirror.css("height", "100%");
+    console.log("started");
 
 });
