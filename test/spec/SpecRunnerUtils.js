@@ -90,11 +90,6 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
-
-    function testDomain() {
-        return brackets.testing.nodeConnection.domains.testing;
-    }
-
     /**
      * Remove a directory (recursively) or file
      *
@@ -102,7 +97,15 @@ define(function (require, exports, module) {
      * @return {$.Promise} Resolved when the path is removed, rejected if there was a problem
      */
     function remove(path) {
-        return testDomain().remove(path);
+        var result = new $.Deferred();
+        window.fs.unlink(path, (err)=>{
+            if (!err) {
+                result.resolve();
+            } else {
+                result.reject(err);
+            }
+        });
+        return result.promise();
     }
 
     /**
@@ -113,7 +116,15 @@ define(function (require, exports, module) {
      * @return {$.Promise} Resolved when the path is copied, rejected if there was a problem
      */
     function copy(src, dest) {
-        return testDomain().copy(src, dest);
+        var result = new $.Deferred();
+        window.fs.copy(src, dest, err => {
+            if (!err) {
+                result.resolve();
+            } else {
+                result.reject(err);
+            }
+        });
+        return result.promise();
     }
 
     /**
@@ -121,7 +132,15 @@ define(function (require, exports, module) {
      * @return {$.Promise} Resolved when the path is rename, rejected if there was a problem
      */
     function rename(src, dest) {
-        return testDomain().rename(src, dest);
+        var result = new $.Deferred();
+        window.fs.rename(src, dest, err => {
+            if (!err) {
+                result.resolve();
+            } else {
+                result.reject(err);
+            }
+        });
+        return result.promise();
     }
 
     /**
@@ -526,8 +545,8 @@ define(function (require, exports, module) {
 
             // setup extension loading in the test window
             params.put("extensions", _doLoadExtensions ?
-                        "default,dev," + ExtensionLoader.getUserExtensionPath() :
-                        "default");
+                        "dev," + ExtensionLoader.getUserExtensionPath() :
+                        "");
 
             // disable update check in test windows
             params.put("skipUpdateCheck", true);
@@ -605,6 +624,33 @@ define(function (require, exports, module) {
             // callback allows specs to query the testWindow before they run
             callback.call(spec, _testWindow);
         });
+    }
+    function reloadWindow() {
+        runs(function () {
+            //we need to mark the documents as not dirty before we close
+            //or the window will stay open prompting to save
+            var openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
+            openDocs.forEach(function resetDoc(doc) {
+                if (doc.isDirty) {
+                    //just refresh it back to it's current text. This will mark it
+                    //clean to save
+                    doc.refreshText(doc.getText(), doc.diskTimestamp);
+                }
+            });
+            let savedHref = _testWindow.location.href;
+            _testWindow.location.href = "";
+            _testWindow.brackets.test.doneLoading = false;
+            _testWindow.location.href = savedHref;
+        });
+
+        // FIXME (issue #249): Need an event or something a little more reliable...
+        waitsFor(
+            function isBracketsDoneLoading() {
+                return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
+            },
+            "brackets.test.doneLoading",
+            10000
+        );
     }
 
     function closeTestWindow() {
@@ -1383,6 +1429,7 @@ define(function (require, exports, module) {
     exports.createMockEditor                = createMockEditor;
     exports.createMockPane                  = createMockPane;
     exports.createTestWindowAndRun          = createTestWindowAndRun;
+    exports.reloadWindow                    = reloadWindow;
     exports.closeTestWindow                 = closeTestWindow;
     exports.clickDialogButton               = clickDialogButton;
     exports.destroyMockEditor               = destroyMockEditor;

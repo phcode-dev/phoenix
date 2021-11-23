@@ -1,4 +1,22 @@
 /*
+ * GNU AGPL-3.0 License
+ *
+ * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
  * Copyright (c) 2012 Glenn Ruehle
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -30,6 +48,7 @@ define(function (require, exports, module) {
         NativeApp           = brackets.getModule("utils/NativeApp"),
         DocumentManager     = brackets.getModule("document/DocumentManager"),
         EditorManager       = brackets.getModule("editor/EditorManager"),
+
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         FileUtils           = brackets.getModule("file/FileUtils"),
         MainViewManager     = brackets.getModule("view/MainViewManager"),
@@ -37,7 +56,6 @@ define(function (require, exports, module) {
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         WorkspaceManager    = brackets.getModule("view/WorkspaceManager"),
         CommandManager      = brackets.getModule("command/CommandManager"),
-        Menus               = brackets.getModule("command/Menus"),
         _                   = brackets.getModule("thirdparty/lodash");
 
     // Templates
@@ -59,7 +77,6 @@ define(function (require, exports, module) {
     var currentDoc,
         currentEditor,
         panel,
-        viewMenu,
         toggleCmd,
         visible = false,
         realVisibility = false;
@@ -252,16 +269,23 @@ define(function (require, exports, module) {
         }
 
         realVisibility = isVisible;
+        var editor = $(" #editor-holder");
+
         if (isVisible) {
             if (!panel) {
                 $panel = $(panelHTML);
                 $iframe = $panel.find("#panel-markdown-preview-frame");
 
                 panel = WorkspaceManager.createBottomPanel("markdown-preview-panel", $panel);
+
                 $panel.on("panelResizeUpdate", function (e, newSize) {
                     $iframe.attr("height", newSize);
                 });
+
+
                 $iframe.attr("height", $panel.height());
+
+                $panel.css("overflow","hidden");
 
                 window.setTimeout(_resizeIframe);
 
@@ -277,14 +301,25 @@ define(function (require, exports, module) {
                 $iframe.hide();
             }
             _loadDoc(DocumentManager.getCurrentDocument());
+            editor.css("display", "none");
+
             $icon.toggleClass("active");
+
             panel.show();
+
         } else {
             $icon.toggleClass("active");
             panel.hide();
+            //fixing height of pane
+            editor.css("display", "block");
+            var editorPane = $(" #editor-holder ").find(".view-pane").find(".pane-content");
+            editorPane.css("height", "100%");
+            var codemirror = $(" #editor-holder ").find(".view-pane").find(".pane-content").children().eq(1);
+            codemirror.css("height", "100%");
             $iframe.hide();
         }
     }
+
 
     function _currentDocChangedHandler() {
         var doc = DocumentManager.getCurrentDocument(),
@@ -307,11 +342,13 @@ define(function (require, exports, module) {
             currentEditor.on("scroll", _editorScroll);
             $icon.css({display: "block"});
             _setPanelVisibility(visible);
+
             toggleCmd.setEnabled(true);
             _loadDoc(doc);
         } else {
             $icon.css({display: "none"});
             toggleCmd.setEnabled(false);
+
             _setPanelVisibility(false);
         }
     }
@@ -334,6 +371,7 @@ define(function (require, exports, module) {
     ExtensionUtils.loadStyleSheet(module, "styles/MarkdownPreview.css");
 
     // Add toolbar icon
+
     $icon = $("<a>")
         .attr({
             id: "markdown-preview-icon",
@@ -345,14 +383,12 @@ define(function (require, exports, module) {
         .click(_toggleVisibility)
         .appendTo($("#main-toolbar .buttons"));
 
+
+
     // Add a document change handler
     MainViewManager.on("currentFileChange", _currentDocChangedHandler);
 
-    viewMenu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
     toggleCmd = CommandManager.register("Markdown Preview", "toggleMarkdownPreview", _toggleVisibility);
-
-    viewMenu.addMenuItem(toggleCmd);
-
     toggleCmd.setChecked(realVisibility);
     toggleCmd.setEnabled(realVisibility);
 
@@ -365,4 +401,6 @@ define(function (require, exports, module) {
     // Listen for resize events
     WorkspaceManager.on("workspaceUpdateLayout", _resizeIframe);
     $("#sidebar").on("panelCollapsed panelExpanded panelResizeUpdate", _resizeIframe);
+
+
 });
