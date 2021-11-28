@@ -37,7 +37,8 @@ require.config({
     map: {
         "*": {
             "thirdparty/CodeMirror2": "thirdparty/CodeMirror",
-            "thirdparty/preact": "preact-compat"
+            "thirdparty/preact": "preact-compat",
+            "view/PanelManager": "view/WorkspaceManager"  // For extension compatibility
         }
     }
 });
