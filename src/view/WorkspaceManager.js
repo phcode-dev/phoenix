@@ -76,7 +76,9 @@ define(function (require, exports, module) {
 
         $editorHolder.siblings().each(function (i, elem) {
             var $elem = $(elem);
+
             if ($elem.css("display") !== "none" && $elem.css("position") !== "absolute") {
+
                 availableHt -= $elem.outerHeight();
             }
         });

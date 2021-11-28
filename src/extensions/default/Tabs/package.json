@@ -1,0 +1,33 @@
+{
+    "name": "custom-work-for-brackets",
+    "title": "Tabs - Custom Working",
+    "description": "Adds toolbar it include buttons show/hide with tabs of active documents on the top of the editor.",
+    "version": "4.0.1",
+    "homepage": "https://github.com/DH3ALEJANDRO/custom-work-for-brackets",
+    "author": "Avril Alejandro",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DH3ALEJANDRO/custom-work-for-brackets.git"
+    },
+    "categories": ["general", "tabs", "working", "custom", "toolbar", "sidebar", "document", "panel"],
+    "keywords": ["avril", "tabs", "work", "custom", "working", "toolbar", "sidebar", "document", "panel", "file"],
+    "engines": {
+        "brackets": ">=0.44.0"
+    },
+    "files": [
+        "package.json",
+        "main.js",
+        "style.min.css"
+    ],
+    "i18n": ["en", "es", "pl"],
+    "package-i18n": {
+        "es": {
+            "description": "Añade barra de herramientas que incluye botones de mostrar/ocultar con pestañas de documentos activos en la parte superior del editor.",
+            "title": "Pestañas - Trabajando Comodamente"
+        },
+        "pl": {
+            "description": "Dodaje pasek narzędzi, który dołącza przyciski pokaż/ukryj z kartami aktywnych doumentów na górze edytora.",
+            "title": "Karty - Praca Spersonalizowana"
+        }
+    }
+}

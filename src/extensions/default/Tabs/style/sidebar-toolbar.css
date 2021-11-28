@@ -1,0 +1,86 @@
+.avril-parent-work {
+    /*background: #5d5f60 #3C3F41 #4f5053 #3f424a;*/
+    position: relative!important;
+    white-space: nowrap;
+    z-index: 999;
+    top: 0;
+    left: 0;
+}
+.todoFunction{
+    width: 100%;
+    overflow: hidden!important;
+}
+.avril-parent-work, .avril-parent-work #working-set-list-container {
+    background: #333639;
+}
+.avril-parent-work, .todoFunction, .avril-tabs-work li, .open-files-container ul, .avril-tabs-work div {
+    height: 26px;
+}
+.open-files-container{
+    overflow: hidden!important;
+}
+.avril-tabs-work{
+    position: absolute;
+    overflow: hidden!important;
+    top: 0;
+    left: 24px;
+    right: 49px;
+}
+/*.avril-tabs-work li:first-child{
+    margin-right: 0px;
+}*/
+.avril-tabs-work li{
+    display: inline-block;
+    /*margin-right: -4px;*/
+    margin-right: 0px;
+    padding: 0 26px 0 6px;
+    vertical-align: top;
+    transition: 0.8s;
+}
+.avril-tabs-work li:hover{
+    background: #310c0f;
+    cursor: pointer;
+}
+#working-set-list-container>div:last-child ul {
+    padding-bottom: 0;
+}
+.open-files-container ul {
+    margin: 2px 0 0 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    vertical-align: middle;
+    position: relative!important;
+    top: 0;
+    margin: 0;
+}
+.open-files-container ul::-webkit-scrollbar{
+    height: 0.000001px!important;
+}
+.avril-tabs-work ul li.selected{
+    background: #26282a!important;
+}
+.gt-tabs li.selected a {
+    color: #fff;
+}
+.avril-tabs-work li.selected a .extension {
+    color: #adb9bd;
+}
+.avril-tabs-work .open-files-container a {
+    margin-left: 4px;
+    line-height: 20px;
+}
+.file-status-icon.dirty:before{
+    line-height: 1.1em;
+    color: white;
+}
+.file-status-icon.can-close:before {
+    line-height: 1.3em;
+    color: white;
+}
+.file-status-icon {
+    left: auto;
+    right: 2px;
+}
+.avril-parent-work .scroller-shadow{
+    display: none!important;
+}

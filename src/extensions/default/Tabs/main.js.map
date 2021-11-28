@@ -1,0 +1,278 @@
+/*global define, brackets, $, scrolledBar, startOp, cloneListMenu, hidenormalizeEditor*/
+define(function (require, exports, module) {
+    "use strict";
+    var AppInit = brackets.getModule("utils/AppInit"),
+        ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
+        Resizer = brackets.getModule("utils/Resizer"),
+        EditorManager = brackets.getModule("editor/EditorManager"),
+        SidebarView = brackets.getModule("project/SidebarView"),
+        MainViewManager = brackets.getModule("view/MainViewManager"),
+        WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
+        ProjectManager = brackets.getModule("project/ProjectManager"),
+        Dialogs = brackets.getModule("widgets/Dialogs"),
+        PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
+        prefs = PreferencesManager.getExtensionPrefs("customToolbar"),
+        alerted = "it is possible that a similar extension to this is interfering with the operation <br> Please uninstall the extensions similar to this.",
+        COMMAND_ID = "fjkgsd.avril",
+        prefKey = 'red',
+        $sidebar = $("#sidebar"),
+        $mainToolbar = $('#main-toolbar');
+    ExtensionUtils.loadStyleSheet(module, "style.min.css");
+    var inputNoneOne = '<input type="hidden" value="15" class="avril-custom-val">';
+    var inputNoneTwo = '<input type="hidden" value="15" class="avril-custom-val">';
+    var fullbbkscreen = '<div class="disInWork btn-sidebar-bks btn-alt-quiet" id="fullScreenSidebar-avril"></div>';
+    //var onePane = '<div id="workOnePane"></div>';
+    //var twoPane = '<div id="workTwoPane"></div>';
+    var avrilTabs = '<div class="disInWork avril-tabs-work"></div>';
+    var boxworklist = '<div id="workfile-avril"><span></span></div>';
+    //var boxOtherPanel = '<div id="boxOtherPanel"></div>';
+    var anotherPanel = '<div id="anotherPanel" class="disInWork btn-another-panel btn-alt-quiet">⇓</div>';
+    var allWorkingFiles = '<div class="disInWork all-workfile btn-alt-quiet" title="Show worklist">≡</div>';
+    var mainToolbarV = '<div id="fullmainToolbar-avril" class="disInWork btn-mainToolbar-bks btn-alt-quiet" title="Hide toolBar">»</div>';
+    var allHTMLs = inputNoneOne + inputNoneTwo + fullbbkscreen + avrilTabs + anotherPanel + allWorkingFiles + mainToolbarV;
+    //var AllTabWork = '<div class="AllTabWork">' + allHTMLs + '</div>' + boxworklist + boxOtherPanel;
+    var AllTabWork = '<div class="AllTabWork">' + allHTMLs + '</div>' + boxworklist;
+    //var Sortable           = require("./sortable");
+    //require("./sortable");
+
+    function scrolledBar(ulItemWork, vl, opwd, nmb) {
+        var avalue = $(vl).eq(nmb);
+        var n = parseInt(avalue.val(), 10);
+        var amousewheel = function (e) {
+            e = window.event || e;
+            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+            var j = parseInt(avalue.val(), 10);
+            var lgo = (delta < 0) ? n + j : j - n;
+            var sizepach = ulItemWork[0].scrollWidth - $(opwd).eq(nmb).width();
+            var ttlgo = (lgo > sizepach) ? sizepach : (lgo < 0) ? 0 : lgo;
+            avalue.val(ttlgo);
+            var z = avalue.val();
+            $(this).scrollLeft(z);
+            e.preventDefault();
+        };
+        ulItemWork.on("mousewheel", amousewheel);
+    }
+
+    function showTabs() {
+        var parentAvril = $('<div>', {
+            'class': 'avril-parent-work',
+            'html': AllTabWork
+        }).insertBefore($('#editor-holder'));
+        $(".working-set-splitview-btn").appendTo($(".AllTabWork"));
+        $(".working-set-option-btn").appendTo($(".AllTabWork"));
+        $('#working-set-list-container').appendTo($('.avril-tabs-work'));
+        scrolledBar($('#working-set-list-first-pane ul'), $('.avril-custom-val'), $('.open-files-container'), 0);
+        scrolledBar($('#working-set-list-second-pane ul'), $('.avril-custom-val'), $('.open-files-container'), 1);
+    }
+
+    function showDropDown() {
+        var $workfileAvril = $('#workfile-avril');
+        $workfileAvril.hide();
+        $('.all-workfile').click(function (event) {
+            event.stopPropagation();
+            cloneListMenu();
+            $workfileAvril.toggle('fast');
+        });
+    }
+
+    function cloneListMenu() {
+        $('#workfile-avril').children().remove();
+        var items = $('<ul>', {
+            'id': "workSortable",
+            'class': "list-group"
+        }).appendTo('#workfile-avril');
+        var scondPaneWorkingV = $(".avril-tabs-work #working-set-list-second-pane");
+        if (scondPaneWorkingV.length) {
+            $('.working-set-header-title').eq(0).clone().appendTo("#workSortable");
+            $('.avril-tabs-work #working-set-list-first-pane ul').children().clone(true, true).appendTo("#workSortable");
+            $('.working-set-header-title').eq(1).clone().appendTo("#workSortable");
+            $('.avril-tabs-work #working-set-list-second-pane ul').children().clone(true, true).appendTo("#workSortable");
+            //$cloneList = abCLONE[1].outerHTML;
+        } else if (!(scondPaneWorkingV.length)) {
+            $('.avril-tabs-work #working-set-list-first-pane ul').children().clone(true, true).appendTo("#workSortable");
+        }
+        $('#workfile-avril').click(hidenormalizeEditor);
+    }
+
+    function hidenormalizeEditor() {
+            if ($("#workfile-avril").is(":visible")) {
+                $('#workfile-avril').hide();
+                $('#workfile-avril').children().remove();
+            }
+        }
+        /*function sortableWork(){
+            //$("#working-set-list-first-pane ul").unbind("dragenter dragove drop end start add");
+            var list = document.getElementById("sortableOneWork");
+            window.setTimeout(function(){
+                Sortable.create(list, {
+                    ghostClass: "ghost",
+                    group: "omega"
+                });
+            }, 200);
+            //cursor: -webkit-grabbing;
+        }
+        $("#sortableOneWork").on("dragenter dragove end start add dragover drop mousemove.wsvdragging", function(e){
+            console.log(e.type);
+        });*/
+    function workingSetViewPane() {
+        $("#working-set-list-first-pane ul").attr("id", "sortableOneWork");
+        $("#working-set-list-second-pane ul").attr("id", "sortableTwoWork");
+        if (MainViewManager.getPaneCount() === 2) {
+            $('#working-set-list-first-pane').addClass("CtmWorkFirstPane");
+            $("#working-set-list-second-pane").addClass("CtmWorkSecondPane");
+            if($("#first-pane").width() === $("#second-pane").width()){
+                $(".avril-tabs-work").attr("data-orientation", "HORIZONTAL");
+            } else {
+                $(".avril-tabs-work").attr("data-orientation", "VERTICAL");
+            }
+        }
+        if ($(".CtmWorkFirstPane").length && $(".CtmWorkSecondPane").length) {
+            //console.log(PreferencesManager.getViewState("mainView.state").orientation);
+            if($(".avril-tabs-work").attr("data-orientation")==="HORIZONTAL" && $("#editor-holder").hasClass("split-horizontal")){
+                $(".CtmWorkFirstPane").css("width", Math.abs($("#first-pane").width()/2 - 78));
+                $(".CtmWorkSecondPane").css("width", Math.abs($("#second-pane").width()/2 - 50));
+                //console.log("horizontal");
+            } else {
+                $(".CtmWorkFirstPane").css("width", Math.abs($("#first-pane").width() - 78));
+                $(".CtmWorkSecondPane").css("width", Math.abs($("#second-pane").width() - 50));
+                //console.log("vertical");
+            }
+        } else if (MainViewManager.getPaneCount() === 1) {
+            $('#working-set-list-first-pane').removeClass("CtmWorkFirstPane");
+            $('#working-set-list-first-pane').css("width", "");
+            $(".avril-tabs-work").removeAttr("data-orientation");
+        }
+        //$("#anotherPanel").attr("title", "panel : " + $(".working-set-header-title").eq(1).html());
+        //alert(MainViewManager.getActivePaneId());
+        //alert(MainViewManager.getPaneIdList());
+        //sortableWork();
+    }
+    MainViewManager
+        .on("currentFileChange", function (e) {
+            //console.log(e);
+            workingSetViewPane();
+            hidenormalizeEditor();
+        })
+        .on("paneLayoutChange", function (e, o) {
+            workingSetViewPane(o);
+            hidenormalizeEditor();
+        })
+        .on("activePaneChange", workingSetViewPane);
+    $('#editor-holder').on("panelResizeUpdate", workingSetViewPane);
+    window.onresize = workingSetViewPane;
+    /*
+    panelResizeStart: When the resize starts. Passed the new size.
+    panelResizeUpdate: When the resize gets updated. Passed the new size.
+    panelResizeEnd: When the resize ends. Passed the final size.
+    panelCollapsed: When the panel gets collapsed (or hidden). Passed the last size before collapse. May occur without any resize events.
+    panelExpanded: When the panel gets expanded (or shown). Passed the initial size. May occur without any resize events.
+    */
+    function startOpsb() {
+        Resizer.toggle($sidebar);
+    }
+
+    function startOpmt() {
+        prefs.set(prefKey, !prefs.get(prefKey));
+        prefs.save();
+    }
+    prefs.definePreference(prefKey, 'boolean', 'true').on('change', function () {
+        var $content = $('.content');
+        //var booly = ($content.css('right')==='0px')?true:false;
+        var booly = prefs.get(prefKey);
+        if (booly) {
+            $mainToolbar.show('fast');
+        } else {
+            $mainToolbar.hide('fast');
+        }
+        var boocon = (booly) ? 30 : 0;
+        var htmlboo = (booly) ? ('»') : ('«');
+        var titlteboo = (booly) ? ('Hide toolBar') : ('Show toolBar');
+        $content.animate({
+            right: boocon
+        }, 'fast', function () {
+            $('#fullmainToolbar-avril').html(htmlboo).attr('title', titlteboo);
+        });
+    });
+
+    function addHTMLsb() {
+        var $sideView = $('#fullScreenSidebar-avril');
+        if (SidebarView.isVisible()) {
+            $sideView.html('←').attr('title', 'Hide Sidebar').css('color', '#37b1ac');
+        } else {
+            $sideView.html('→').attr('title', 'Show Sidebar');
+        }
+        $sidebar.on("panelCollapsed", function () {
+            workingSetViewPane();
+            $sideView.html('→').attr('title', 'Show Sidebar');
+            if ($sideView.css('color')) {
+                $sideView.removeAttr('style');
+            }
+        });
+        $sidebar.on("panelExpanded", function () {
+            workingSetViewPane();
+            $sideView.html('←').attr('title', 'Hide Sidebar').css('color', '#37b1ac');
+        });
+    }
+
+    function detected() {
+        window.setTimeout(function () {
+            // collapse plugin
+            var one = $('.content .working-file-tabs-container').length, //Brackets Working File Tabs
+                two = $('#editor-holder #ext-documents').length, //Documents Toolbar
+                tre = $('.content .gt-tabs').length, //Brackets File Tabs
+                fou = $('#status-bar .extension-toolbar').length, //Extensions Toolbar Reposition
+                oneC = "<br> Brackets Working File Tabs",
+                twoC = "<br> Documents Toolbar",
+                treC = "<br> Brackets File Tabs",
+                fouC = "<br> Extensions Toolbar Reposition",
+                coll = function () {
+                    if (one && !two && !tre && !fou) {
+                        return oneC;
+                    } else if (two && !one && !tre && !fou) {
+                        return twoC;
+                    } else if (tre && !two && !one && !fou) {
+                        return treC;
+                    } else if (fou && !one && !two && !tre) {
+                        return fouC;
+                    } else if (one && two && !tre && !fou) {
+                        return [oneC, twoC];
+                    } else if (one && tre && !two && !fou) {
+                        return [oneC, treC];
+                    } else if (one && fou && !two && !fou) {
+                        return [oneC, fouC];
+
+                    } else if (two && tre && !one && !fou) {
+                        return [twoC, treC];
+                    } else if (two && fou && !one && !tre) {
+                        return [twoC, fouC];
+                    } else if (tre && fou && !one && !two) {
+                        return [oneC, twoC];
+
+                    } else if (one && two && tre && !fou) {
+                        return [oneC, twoC, treC];
+                    } else if (one && two && fou && !tre) {
+                        return [oneC, twoC, fouC];
+                    } else if (one && tre && fou && !two) {
+                        return [oneC, treC, fouC];
+
+                    } else if (one && two && tre && fou) {
+                        return [oneC, twoC, treC, fouC];
+                    }
+                },
+                colls = coll();
+            if (one || two || tre || fou) {
+                Dialogs.showModalDialog(COMMAND_ID, 'Tabs - Custom Working', alerted + '<br>' + colls);
+            }
+        }, 2000);
+    }
+    var displayAll = function () {
+        showTabs();
+        showDropDown();
+        $('#fullScreenSidebar-avril').click(startOpsb);
+        $('#fullmainToolbar-avril').click(startOpmt);
+        addHTMLsb();
+    };
+    AppInit.appReady(displayAll);
+    AppInit.extensionsLoaded(detected);
+});
+//AppMenuBar
