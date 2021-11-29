@@ -126,8 +126,8 @@ define(function (require, exports, module) {
         });
         marks.sort(function (mark1, mark2) {
             return (mark1.range.from.line === mark2.range.from.line ?
-                    mark1.range.from.ch - mark2.range.from.ch :
-                    mark1.range.from.line - mark2.range.from.line);
+                mark1.range.from.ch - mark2.range.from.ch :
+                mark1.range.from.line - mark2.range.from.line);
         });
 
         return marks;

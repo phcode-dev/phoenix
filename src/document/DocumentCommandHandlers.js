@@ -488,8 +488,8 @@ define(function (require, exports, module) {
 
                     // setCursorPos expects line/column numbers as 0-origin, so we subtract 1
                     EditorManager.getCurrentFullEditor().setCursorPos(fileInfo.line - 1,
-                                                                      fileInfo.column - 1,
-                                                                      true);
+                        fileInfo.column - 1,
+                        true);
                 }
 
                 result.resolve(file);
@@ -610,7 +610,7 @@ define(function (require, exports, module) {
         } else {
             var path = dir.fullPath + suggestedName,
                 entry = isFolder ? FileSystem.getDirectoryForPath(path)
-                                 : FileSystem.getFileForPath(path);
+                    : FileSystem.getFileForPath(path);
 
             entry.exists(function (err, exists) {
                 if (err || exists) {
@@ -1108,7 +1108,7 @@ define(function (require, exports, module) {
                         });
                     return savePromise;
                 }
-                    // workingset entry that was never actually opened - ignore
+                // workingset entry that was never actually opened - ignore
                 filesAfterSave.push(file);
                 return (new $.Deferred()).resolve().promise();
 
@@ -1395,7 +1395,7 @@ define(function (require, exports, module) {
      */
     function handleFileCloseAll(commandData) {
         return _closeList(MainViewManager.getAllOpenFiles(),
-                                    (commandData && commandData.promptOnly), (commandData && commandData._forceClose));
+            (commandData && commandData.promptOnly), (commandData && commandData._forceClose));
     }
 
 

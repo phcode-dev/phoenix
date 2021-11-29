@@ -316,10 +316,10 @@ define(function (require, exports, module) {
             FindInFiles.doReplace(resultsClone, replaceText, { forceFilesOpen: forceFilesOpen, isRegexp: isRegexp })
                 .fail(function (errors) {
                     var message = Strings.REPLACE_IN_FILES_ERRORS + FileUtils.makeDialogFileList(
-                            errors.map(function (errorInfo) {
-                                return ProjectManager.makeProjectRelativeIfPossible(errorInfo.item);
-                            })
-                        );
+                        errors.map(function (errorInfo) {
+                            return ProjectManager.makeProjectRelativeIfPossible(errorInfo.item);
+                        })
+                    );
 
                     Dialogs.showModalDialog(
                         DefaultDialogs.DIALOG_ID_ERROR,

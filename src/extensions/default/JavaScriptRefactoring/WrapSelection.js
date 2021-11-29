@@ -106,7 +106,7 @@ define(function (require, exports, module) {
     }
 
 
-     //Wrap selected statements in try catch block
+    //Wrap selected statements in try catch block
     function wrapInTryCatch() {
         _wrapSelectedStatements(TRY_CATCH, Strings.ERROR_TRY_CATCH);
     }
@@ -193,8 +193,8 @@ define(function (require, exports, module) {
             bodyStatements = funcExprNode.body.body[0],
             params;
 
-            // If there is nothing in function body, then get the text b/w curly braces
-            // In this case, We will update params only as per Arrow function expression
+        // If there is nothing in function body, then get the text b/w curly braces
+        // In this case, We will update params only as per Arrow function expression
         if (!bodyStatements) {
             bodyStatements = funcExprNode.body;
         }
@@ -210,14 +210,14 @@ define(function (require, exports, module) {
         if (noOfStatements === 1) {
             current.document.batchOperation(function() {
                 (numberOfParams === 1 && !treatAsManyParam) ?  current.replaceTextFromTemplate(ARROW_FUNCTION, params, locPos.fullFunctionScope, "oneParamOneStament") :
-                current.replaceTextFromTemplate(ARROW_FUNCTION, params, locPos.fullFunctionScope, "manyParamOneStament");
+                    current.replaceTextFromTemplate(ARROW_FUNCTION, params, locPos.fullFunctionScope, "manyParamOneStament");
 
             });
         } else {
             current.document.batchOperation(function() {
                 (numberOfParams === 1 && !treatAsManyParam) ?  current.replaceTextFromTemplate(ARROW_FUNCTION, {params: param},
-                locPos.functionsDeclOnly, "oneParamManyStament") :
-                current.replaceTextFromTemplate(ARROW_FUNCTION, {params: param.join(", ")}, locPos.functionsDeclOnly, "manyParamManyStament");
+                    locPos.functionsDeclOnly, "oneParamManyStament") :
+                    current.replaceTextFromTemplate(ARROW_FUNCTION, {params: param.join(", ")}, locPos.functionsDeclOnly, "manyParamManyStament");
             });
         }
 
@@ -294,7 +294,7 @@ define(function (require, exports, module) {
         var getSetPos;
         if (isLastNode) {
             getSetPos = current.document.adjustPosForChange(propertyEndPos, commaString.split("\n"),
-                                                            propertyEndPos, propertyEndPos);
+                propertyEndPos, propertyEndPos);
         } else {
             getSetPos = propertyEndPos;
         }

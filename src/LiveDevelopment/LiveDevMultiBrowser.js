@@ -452,10 +452,10 @@ define(function (require, exports, module) {
                 _server = null;
             }
         }
-    //TODO: implement closeWindow together with launchers.
-//        if (doCloseWindow) {
-//
-//        }
+        //TODO: implement closeWindow together with launchers.
+        //        if (doCloseWindow) {
+        //
+        //        }
         _setStatus(STATUS_INACTIVE, reason || "explicit_close");
     }
 
@@ -507,7 +507,7 @@ define(function (require, exports, module) {
     }
 
 
-     /**
+    /**
      * Launches the given URL in the default browser.
      * @param {string} url
      * TODO: launchers for multiple browsers

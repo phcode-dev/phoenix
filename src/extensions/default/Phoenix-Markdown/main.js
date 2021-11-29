@@ -171,10 +171,10 @@ define(function (require, exports, module) {
 
                 // Assemble the HTML source
                 var htmlSource = _.template(previewHTML)({
-                    baseUrl    : baseUrl,
-                    themeUrl   : require.toUrl("./themes/" + _prefs.get("theme") + ".css"),
-                    scrollTop  : scrollPos,
-                    bodyText   : bodyText
+                    baseUrl: baseUrl,
+                    themeUrl: require.toUrl("./themes/" + _prefs.get("theme") + ".css"),
+                    scrollTop: scrollPos,
+                    bodyText: bodyText
                 });
                 $iframe.attr("srcdoc", htmlSource);
 
@@ -297,7 +297,7 @@ define(function (require, exports, module) {
 
                 $iframe.attr("height", $panel.height());
 
-                $panel.css("overflow","hidden");
+                $panel.css("overflow", "hidden");
 
                 window.setTimeout(_resizeIframe);
 
@@ -544,9 +544,9 @@ define(function (require, exports, module) {
     //TODO: update the code in workspace manager to handle code editor height adjustment in initial rendering
     WorkspaceManager.recomputeLayout(true);
     //editor height gets adjusted after any operation including toggling, resizing
-    editor.css("height","80%");     //temporary height fix
+    editor.css("height", "82%");     //temporary height fix
 
-    editor.css("overflow","hidden");
+    editor.css("overflow", "hidden");
 
     var editorPane = $(" #editor-holder ").find(".view-pane").find(".pane-content");
     editorPane.css("height", "100%");

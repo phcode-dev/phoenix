@@ -359,7 +359,7 @@ define(function (require, exports, module) {
             latestInfo.isLatestVersion = true;
             return latestInfo;
         }
-            // Look at earlier versions (skipping very latest version since we already checked it)
+        // Look at earlier versions (skipping very latest version since we already checked it)
         for (i--; i >= 0; i--) {
             var compatInfo = getCompatibilityInfoForVersion(entry.versions[i], apiVersion);
             if (compatInfo.isCompatible) {
@@ -369,7 +369,7 @@ define(function (require, exports, module) {
             }
         }
 
-            // No version is compatible, so just return info for the latest version
+        // No version is compatible, so just return info for the latest version
         return latestInfo;
 
     }

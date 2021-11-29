@@ -51,7 +51,7 @@ define(function (require, exports, module) {
      */
     var _extensions = Immutable.Map();
 
-     /**
+    /**
      * @private
      * @type {string}
      *
@@ -560,7 +560,7 @@ define(function (require, exports, module) {
                         FileUtils.shouldOpenInExternalApplication(
                             FileUtils.getFileExtension(this.myPath()).toLowerCase()
                         )
-                    ) {
+                ) {
                     doNotOpen = true;
                 }
                 this.props.actions.setSelected(this.myPath(), doNotOpen);
@@ -601,8 +601,8 @@ define(function (require, exports, module) {
                     this.clearTimer();
                 }
                 if (FileUtils.shouldOpenInExternalApplication(
-                        FileUtils.getFileExtension(this.myPath()).toLowerCase()
-                      )) {
+                    FileUtils.getFileExtension(this.myPath()).toLowerCase()
+                )) {
                     this.props.actions.openWithExternalApplication(this.myPath());
                     return;
                 }
@@ -1274,7 +1274,7 @@ define(function (require, exports, module) {
             platform: platform,
             forceRender: forceRender
         }),
-              element);
+        element);
     }
 
     /**

@@ -897,10 +897,10 @@ define({
     "CMD_FIND_DOCUMENT_SYMBOLS": "ドキュメント記号を検索",
     "CMD_FIND_PROJECT_SYMBOLS": "プロジェクト記号を検索",
 
-   // Remote debugging enabled
+    // Remote debugging enabled
     "REMOTE_DEBUGGING_ENABLED": "次のローカルホストでリモートデバッグが有効になりました。localhost:",
 
-   // Remote debugging port argument is invalid
+    // Remote debugging port argument is invalid
     "REMOTE_DEBUGGING_PORT_INVALID": "ポート {0} でリモートデバッグを有効にできません。ポート番号は、{1} から {2} の間で指定してください。",
 
     //Associate File Type to External App

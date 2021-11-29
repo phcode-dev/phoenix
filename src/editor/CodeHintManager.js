@@ -400,7 +400,7 @@ define(function (require, exports, module) {
                      (deferredHints && deferredHints.state() === "pending"))) {
                 return true;
             }
-                // the editor has changed
+            // the editor has changed
             _endSession();
 
         }

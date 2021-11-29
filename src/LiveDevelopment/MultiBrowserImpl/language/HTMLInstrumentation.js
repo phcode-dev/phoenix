@@ -110,8 +110,8 @@ define(function (require, exports, module) {
         });
         marks.sort(function (mark1, mark2) {
             return (mark1.range.from.line === mark2.range.from.line ?
-                    mark1.range.from.ch - mark2.range.from.ch :
-                    mark1.range.from.line - mark2.range.from.line);
+                mark1.range.from.ch - mark2.range.from.ch :
+                mark1.range.from.line - mark2.range.from.line);
         });
 
         return marks;
@@ -676,11 +676,11 @@ define(function (require, exports, module) {
         if (!_cachedValues.hasOwnProperty(doc.file.fullPath)) {
             // TODO: this doesn't seem to be correct any more. The DOM should never be "dirty" (i.e., out of sync
             // with the editor) unless the doc is invalid.
-//            $(doc).on("change.htmlInstrumentation", function () {
-//                if (_cachedValues[doc.file.fullPath]) {
-//                    _cachedValues[doc.file.fullPath].dirty = true;
-//                }
-//            });
+            //            $(doc).on("change.htmlInstrumentation", function () {
+            //                if (_cachedValues[doc.file.fullPath]) {
+            //                    _cachedValues[doc.file.fullPath].dirty = true;
+            //                }
+            //            });
 
             // Assign to cache, but don't set a value yet
             _cachedValues[doc.file.fullPath] = null;

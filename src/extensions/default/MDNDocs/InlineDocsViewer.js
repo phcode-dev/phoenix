@@ -151,11 +151,11 @@ define(function (require, exports, module) {
             break;
         case KeyEvent.DOM_VK_DOWN:
             scrollPos = Math.min(scroller.scrollHeight - scroller.clientHeight,
-                                 scrollPos + SCROLL_LINE_HEIGHT);
+                scrollPos + SCROLL_LINE_HEIGHT);
             break;
         case KeyEvent.DOM_VK_PAGE_DOWN:
             scrollPos = Math.min(scroller.scrollHeight - scroller.clientHeight,
-                                 scrollPos + scroller.clientHeight);
+                scrollPos + scroller.clientHeight);
             break;
         default:
             // Ignore other keys

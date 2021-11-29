@@ -114,7 +114,7 @@ function parsePersonString(obj) {
         return result;
 
     }
-        // obj is not a string, so return as is
+    // obj is not a string, so return as is
     return obj;
 
 }

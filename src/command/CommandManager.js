@@ -19,7 +19,7 @@
  *
  */
 
- /**
+/**
   * Manages global application commands that can be called from menu items, key bindings, or subparts
   * of the application.
   *

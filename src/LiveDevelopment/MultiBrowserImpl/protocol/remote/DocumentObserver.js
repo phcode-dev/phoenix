@@ -106,14 +106,14 @@
      */
     var CSS = {
 
-            /**
+        /**
             * Maintains a map of stylesheets loaded thorugh @import rules and their parents.
             * Populated by extractImports, consumed by notifyImportsAdded / notifyImportsRemoved.
             * @type {
             */
         stylesheets: {},
 
-            /**
+        /**
              * Check the stylesheet that was just added be really loaded
              * to be able to extract potential import-ed stylesheets.
              * It invokes notifyStylesheetAdded once the sheet is loaded.
@@ -123,26 +123,26 @@
             var self = this;
 
 
-                // Inspect CSSRules for @imports:
-                // styleSheet obejct is required to scan CSSImportRules but
-                // browsers differ on the implementation of MutationObserver interface.
-                // Webkit triggers notifications before stylesheets are loaded,
-                // Firefox does it after loading.
-                // There are also differences on when 'load' event is triggered for
-                // the 'link' nodes. Webkit triggers it before stylesheet is loaded.
-                // Some references to check:
-                //      http://www.phpied.com/when-is-a-stylesheet-really-loaded/
-                //      http://stackoverflow.com/questions/17747616/webkit-dynamically-created-stylesheet-when-does-it-really-load
-                //        http://stackoverflow.com/questions/11425209/are-dom-mutation-observers-slower-than-dom-mutation-events
-                //
-                // TODO: This is just a temporary 'cross-browser' solution, it needs optimization.
+            // Inspect CSSRules for @imports:
+            // styleSheet obejct is required to scan CSSImportRules but
+            // browsers differ on the implementation of MutationObserver interface.
+            // Webkit triggers notifications before stylesheets are loaded,
+            // Firefox does it after loading.
+            // There are also differences on when 'load' event is triggered for
+            // the 'link' nodes. Webkit triggers it before stylesheet is loaded.
+            // Some references to check:
+            //      http://www.phpied.com/when-is-a-stylesheet-really-loaded/
+            //      http://stackoverflow.com/questions/17747616/webkit-dynamically-created-stylesheet-when-does-it-really-load
+            //        http://stackoverflow.com/questions/11425209/are-dom-mutation-observers-slower-than-dom-mutation-events
+            //
+            // TODO: This is just a temporary 'cross-browser' solution, it needs optimization.
             var loadInterval = setInterval(function () {
                 var i;
                 for (i = 0; i < window.document.styleSheets.length; i++) {
                     if (window.document.styleSheets[i].href === href) {
-                            //clear interval
+                        //clear interval
                         clearInterval(loadInterval);
-                            // notify stylesheets added
+                        // notify stylesheets added
                         self.notifyStylesheetAdded(href);
                         break;
                     }
@@ -151,15 +151,15 @@
         },
 
         onStylesheetRemoved: function (url) {
-                // get style node created when setting new text for stylesheet.
+            // get style node created when setting new text for stylesheet.
             var s = window.document.getElementById(url);
-                // remove
+            // remove
             if (s && s.parentNode && s.parentNode.removeChild) {
                 s.parentNode.removeChild(s);
             }
         },
 
-            /**
+        /**
              * Send a notification for the stylesheet added and
              * its import-ed styleshets based on document.stylesheets diff
              * from previous status. It also updates stylesheets status.
@@ -189,7 +189,7 @@
             this.stylesheets = newStatus;
         },
 
-            /**
+        /**
              * Send a notification for the removed stylesheet and
              * its import-ed styleshets based on document.stylesheets diff
              * from previous status. It also updates stylesheets status.
@@ -207,7 +207,7 @@
             Object.keys(current).forEach(function (v, i) {
                 if (!newStatus[v]) {
                     removed[v] = current[v];
-                        // remove node created by setStylesheetText if any
+                    // remove node created by setStylesheetText if any
                     self.onStylesheetRemoved(current[v]);
                 }
             });

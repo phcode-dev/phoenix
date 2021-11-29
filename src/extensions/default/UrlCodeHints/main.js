@@ -702,7 +702,7 @@ define(function (require, exports, module) {
             return false;
 
         }
-            // If closing quote and/or paren are added, move the cursor to where it would have been
+        // If closing quote and/or paren are added, move the cursor to where it would have been
         moveLen = ((this.info.openingQuote && !hasClosingQuote) ? 1 : 0) + (!hasClosingParen ? 1 : 0);
         if (moveLen > 0) {
             this.editor.setCursorPos(start.line, start.ch + completion.length);

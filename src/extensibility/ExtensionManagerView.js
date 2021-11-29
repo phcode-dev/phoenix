@@ -141,8 +141,8 @@ define(function (require, exports, module) {
         }
 
         $element.data("toggle-desc", showFull ? "trunc-desc" : "expand-desc")
-                .attr("title", linkTitle)
-                .prev(".ext-full-description").text(description);
+            .attr("title", linkTitle)
+            .prev(".ext-full-description").text(description);
     };
 
     /**
@@ -294,24 +294,24 @@ define(function (require, exports, module) {
                     }
                     return { name: LocalizationUtils.getLocalizedLabel(value), locale: value };
                 })
-                .sort(function (lang1, lang2) {
+                    .sort(function (lang1, lang2) {
                     // List users language first
-                    var locales         = [lang1.locale, lang2.locale],
-                        userLangIndex   = locales.indexOf(lang);
-                    if (userLangIndex > -1) {
-                        return userLangIndex;
-                    }
-                    userLangIndex = locales.indexOf(shortLang);
-                    if (userLangIndex > -1) {
-                        return userLangIndex;
-                    }
+                        var locales         = [lang1.locale, lang2.locale],
+                            userLangIndex   = locales.indexOf(lang);
+                        if (userLangIndex > -1) {
+                            return userLangIndex;
+                        }
+                        userLangIndex = locales.indexOf(shortLang);
+                        if (userLangIndex > -1) {
+                            return userLangIndex;
+                        }
 
-                    return lang1.name.localeCompare(lang2.name);
-                })
-                .map(function (value) {
-                    return value.name;
-                })
-                .join(", ");
+                        return lang1.name.localeCompare(lang2.name);
+                    })
+                    .map(function (value) {
+                        return value.name;
+                    })
+                    .join(", ");
             context.translatedLangs = StringUtils.format(Strings.EXTENSION_TRANSLATED_LANGS, context.translatedLangs);
 
             // If the selected language is System Default, match both the short (2-char) language code

@@ -31,13 +31,13 @@ var ExtensionsDomain = require("../ExtensionManagerDomain"),
     path             = require("path");
 
 var testFilesDirectory = path.join(path.dirname(module.filename),
-                                    "..",   // node
-                                    "..",   // extensibility
-                                    "..",   // src
-                                    "..",   // brackets
-                                    "test",
-                                    "spec",
-                                    "extension-test-files"),
+        "..",   // node
+        "..",   // extensibility
+        "..",   // src
+        "..",   // brackets
+        "test",
+        "spec",
+        "extension-test-files"),
     installParent      = path.join(path.dirname(module.filename), "extensions"),
     installDirectory   = path.join(installParent, "good"),
     disabledDirectory  = path.join(installParent, "disabled"),
@@ -179,13 +179,13 @@ describe("Package Installation", function () {
     // do anything with the file before validation.
     it("should fail for missing package", function (done) {
         ExtensionsDomain._cmdInstall(path.join(testFilesDirectory, "NOT A PACKAGE"),
-                                     installDirectory, standardOptions, function (err, result) {
-                                         expect(err).toBeNull();
-                                         var errors = result.errors;
-                                         expect(errors.length).toEqual(1);
-                                         expect(errors[0][0]).toEqual("NOT_FOUND_ERR");
-                                         done();
-                                     });
+            installDirectory, standardOptions, function (err, result) {
+                expect(err).toBeNull();
+                var errors = result.errors;
+                expect(errors.length).toEqual(1);
+                expect(errors[0][0]).toEqual("NOT_FOUND_ERR");
+                done();
+            });
     });
 
     it("should not install by default if the same version is already installed", function (done) {

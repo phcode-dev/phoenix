@@ -619,7 +619,7 @@ define(function (require, exports, module) {
             // cubic-bezier()
             return match.slice(1, 5);
         }
-            // handle special cases of cubic-bezier calls
+        // handle special cases of cubic-bezier calls
         switch (match[0]) {
         case "linear":
             return [ "0", "0", "1", "1" ];

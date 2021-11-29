@@ -157,7 +157,7 @@ define(function (require, exports, module) {
             if (state.matchIndex !== -1) {
                 // Convert to 1-based by adding one before showing the index.
                 findBar.showFindCount(StringUtils.format(Strings.FIND_MATCH_INDEX,
-                                                        state.matchIndex + 1, state.resultSet.length));
+                    state.matchIndex + 1, state.resultSet.length));
             }
         }
     }
@@ -422,7 +422,7 @@ define(function (require, exports, module) {
                 // Update match index indicators - only possible if we have resultSet saved (missing if FIND_MAX_FILE_SIZE threshold hit)
                 if (state.resultSet.length) {
                     _updateFindBarWithMatchInfo(state,
-                                                {from: nextMatch.start, to: nextMatch.end}, searchBackwards);
+                        {from: nextMatch.start, to: nextMatch.end}, searchBackwards);
                     // Update current-tickmark indicator - only if highlighting enabled (disabled if FIND_HIGHLIGHT_MAX threshold hit)
                     if (state.marked.length) {
                         ScrollTrackMarkers.markCurrent(state.matchIndex);  // _updateFindBarWithMatchInfo() has updated this index
@@ -436,7 +436,7 @@ define(function (require, exports, module) {
                     // If highlighting disabled, apply both match AND current-match styles for correct appearance
                     var curentMatchClassName = state.marked.length ? "searching-current-match" : "CodeMirror-searching searching-current-match";
                     state.markedCurrent = cm.markText(nextMatch.start, nextMatch.end,
-                         { className: curentMatchClassName, startStyle: "searching-first", endStyle: "searching-last" });
+                        { className: curentMatchClassName, startStyle: "searching-first", endStyle: "searching-last" });
                 }
             } else {
                 cm.setCursor(editor.getCursorPos());  // collapses selection, keeping cursor in place to avoid scrolling
@@ -532,7 +532,7 @@ define(function (require, exports, module) {
 
                     state.resultSet.forEach(function (result) {
                         state.marked.push(cm.markText(result.from, result.to,
-                             { className: "CodeMirror-searching", startStyle: "searching-first", endStyle: "searching-last" }));
+                            { className: "CodeMirror-searching", startStyle: "searching-first", endStyle: "searching-last" }));
                     });
                     var scrollTrackPositions = state.resultSet.map(function (result) {
                         return result.from;

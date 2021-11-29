@@ -119,7 +119,7 @@ define(function (require, exports, module) {
     }
 
     function _keydownCaptureListener(keyEvent) {
-         // Escape key or Alt key (Windows-only)
+        // Escape key or Alt key (Windows-only)
         if (keyEvent.keyCode !== KeyEvent.DOM_VK_ESCAPE &&
                 !(keyEvent.keyCode === KeyEvent.DOM_VK_ALT && brackets.platform === "win")) {
             return;

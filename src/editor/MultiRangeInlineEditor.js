@@ -776,7 +776,7 @@ define(function (require, exports, module) {
 
         // Size the widget height to the max between the editor/message content and the related ranges list
         var widgetHeight = Math.max(this.$related.height(),
-                                    this.$header.outerHeight() +
+            this.$header.outerHeight() +
                                         (this._selectedRangeIndex === -1 ? this.$messageDiv.outerHeight() : this.$editorHolder.height()));
 
         if (widgetHeight) {

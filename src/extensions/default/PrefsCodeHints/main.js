@@ -151,8 +151,8 @@ define(function (require, exports, module) {
                 $hintItem.data("type", token.type);
                 if (token.description) {
                     $hintItem.append($("<span>")
-                                        .addClass("hint-description")
-                                        .text(token.description));
+                        .addClass("hint-description")
+                        .text(token.description));
                 }
             }
             return $hintItem;

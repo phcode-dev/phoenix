@@ -24,19 +24,19 @@ define(function (require, exports, module) {
 
     //default preference values
     prefs.definePreference("enabled", "boolean", true,
-                           {name: ENABLE_CODE_FOLDING, description: Strings.DESCRIPTION_CODE_FOLDING_ENABLED});
+        {name: ENABLE_CODE_FOLDING, description: Strings.DESCRIPTION_CODE_FOLDING_ENABLED});
     prefs.definePreference("minFoldSize", "number", 2,
-                           {name: MIN_FOLD_SIZE, description: Strings.DESCRIPTION_CODE_FOLDING_MIN_FOLD_SIZE});
+        {name: MIN_FOLD_SIZE, description: Strings.DESCRIPTION_CODE_FOLDING_MIN_FOLD_SIZE});
     prefs.definePreference("saveFoldStates", "boolean", true,
-                           {name: SAVE_FOLD_STATES, description: Strings.DESCRIPTION_CODE_FOLDING_SAVE_FOLD_STATES});
+        {name: SAVE_FOLD_STATES, description: Strings.DESCRIPTION_CODE_FOLDING_SAVE_FOLD_STATES});
     prefs.definePreference("alwaysUseIndentFold", "boolean", false,
-                           {name: ALWAYS_USE_INDENT_FOLD, description: Strings.DESCRIPTION_CODE_FOLDING_ALWAY_USE_INDENT_FOLD});
+        {name: ALWAYS_USE_INDENT_FOLD, description: Strings.DESCRIPTION_CODE_FOLDING_ALWAY_USE_INDENT_FOLD});
     prefs.definePreference("hideUntilMouseover", "boolean", false,
-                           {name: HIDE_FOLD_BUTTONS, description: Strings.DESCRIPTION_CODE_FOLDING_HIDE_UNTIL_MOUSEOVER});
+        {name: HIDE_FOLD_BUTTONS, description: Strings.DESCRIPTION_CODE_FOLDING_HIDE_UNTIL_MOUSEOVER});
     prefs.definePreference("maxFoldLevel", "number", 2,
-                           {name: MAX_FOLD_LEVEL, description: Strings.DESCRIPTION_CODE_FOLDING_MAX_FOLD_LEVEL});
+        {name: MAX_FOLD_LEVEL, description: Strings.DESCRIPTION_CODE_FOLDING_MAX_FOLD_LEVEL});
     prefs.definePreference("makeSelectionsFoldable", "boolean", true,
-                           {name: MAKE_SELECTIONS_FOLDABLE, description: Strings.DESCRIPTION_CODE_FOLDING_MAKE_SELECTIONS_FOLDABLE});
+        {name: MAKE_SELECTIONS_FOLDABLE, description: Strings.DESCRIPTION_CODE_FOLDING_MAKE_SELECTIONS_FOLDABLE});
 
     PreferencesManager.stateManager.definePreference(FOLDS_PREF_KEY, "object", {});
 
@@ -68,7 +68,7 @@ define(function (require, exports, module) {
         if (!folds) {
             return;
         }
-         //transform the folds into objects with from and to properties
+        //transform the folds into objects with from and to properties
         var ranges = {}, obj;
         Object.keys(folds).forEach(function (line) {
             obj = folds[line];

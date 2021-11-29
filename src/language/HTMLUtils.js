@@ -34,7 +34,7 @@ define(function (require, exports, module) {
     // Regular expression for token types with "tag" prefixed
     var tagPrefixedRegExp = /^tag/;
 
-   /**
+    /**
      * @private
      * Sometimes as attr values are getting typed, if the quotes aren't balanced yet
      * some extra 'non attribute value' text gets included in the token. This attempts
@@ -366,13 +366,13 @@ define(function (require, exports, module) {
                 // with the original pos. We can't use the current ctx since we need to
                 // use it to scan backwards if we don't find an equal sign here.
                 // Comment out this block to fix issue #1510.
-//                if (testToken.string.length > 0 && testToken.string.charAt(0) !== ">") {
-//                    tempCtx = TokenUtils.getInitialContext(editor._codeMirror, pos);
-//                    if (TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, tempCtx) && tempCtx.token.string === "=") {
-//                        // Return an empty tag info since we're between an atribute name and the equal sign.
-//                        return createTagInfo();
-//                    }
-//                }
+                //                if (testToken.string.length > 0 && testToken.string.charAt(0) !== ">") {
+                //                    tempCtx = TokenUtils.getInitialContext(editor._codeMirror, pos);
+                //                    if (TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, tempCtx) && tempCtx.token.string === "=") {
+                //                        // Return an empty tag info since we're between an atribute name and the equal sign.
+                //                        return createTagInfo();
+                //                    }
+                //                }
 
                 // next, see what's before pos
                 if (!TokenUtils.movePrevToken(ctx)) {

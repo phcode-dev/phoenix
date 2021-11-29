@@ -113,10 +113,10 @@ define(function (require, exports, module) {
 
         return CommandManager
             .execute(Commands.FILE_OPEN,
-            {   fullPath: contextData.path,
-                paneId: targetPaneId
-            }
-                )
+                {   fullPath: contextData.path,
+                    paneId: targetPaneId
+                }
+            )
             .done(function () {
                 if (contextData.cursor) {
                     activeEditor = EditorManager.getActiveEditor();
@@ -256,7 +256,7 @@ define(function (require, exports, module) {
                 if (entryIndex >= 0) {
                     return true;
                 }
-                    // Process this for active pane id
+                // Process this for active pane id
                 value.paneId = MainViewManager.getActivePaneId();
 
             }

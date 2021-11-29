@@ -460,7 +460,7 @@ define(function (require, exports, module) {
         });
     }
 
-     /**
+    /**
      * @private
      * sends all changed documents that we have tracked to node
      */
@@ -711,7 +711,7 @@ define(function (require, exports, module) {
     _fileNameChangeHandler = function (event, oldName, newName) {
         var resultsChanged = false;
 
-            // Update the search results
+        // Update the search results
         _.forEach(searchModel.results, function (item, fullPath) {
             if (fullPath.indexOf(oldName) === 0) {
                 // node search : inform node about the rename

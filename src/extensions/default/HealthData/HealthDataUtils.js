@@ -41,7 +41,7 @@ define(function (require, exports, module) {
         var userInstalledExtensions = [];
         _.forEach(extensions, function (extension, extensionId) {
             if (extension && extension.installInfo && extension.installInfo.locationType === ExtensionManager.LOCATION_USER && extension.registryInfo) {
-                userInstalledExtensions.push({"name" : extensionId, "version" : extension.installInfo.metadata.version});
+                userInstalledExtensions.push({"name": extensionId, "version": extension.installInfo.metadata.version});
             }
         });
 

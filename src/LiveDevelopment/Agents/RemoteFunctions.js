@@ -66,7 +66,7 @@ function RemoteFunctions(config, remoteWSPort) {
             // Mac
             return event.metaKey;
         }
-            // Windows
+        // Windows
         return event.ctrlKey;
 
     }
@@ -406,10 +406,10 @@ function RemoteFunctions(config, remoteWSPort) {
                     arr[i]["transform"] = "none";
                     var el = window.document.createElement("div"),
                         styles = Object.assign(
-                        {},
-                        config,
-                        arr[i]
-                    );
+                            {},
+                            config,
+                            arr[i]
+                        );
 
                     _setStyleValues(styles, el.style);
 

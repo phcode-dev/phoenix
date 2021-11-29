@@ -448,7 +448,7 @@ define(function (require, exports, module) {
 
                 function initJSCodeHints() {
                     var extensionRequire = testWindow.brackets.getModule("utils/ExtensionLoader").
-                                getRequireContextForExtension("JavaScriptCodeHints");
+                        getRequireContextForExtension("JavaScriptCodeHints");
                     JSCodeHints = extensionRequire("main");
                     ParameterHintProvider = extensionRequire("ParameterHintsProvider").JSParameterHintsProvider();
                 }

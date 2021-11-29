@@ -59,8 +59,8 @@ define(function (require, exports, module) {
         Dialogs.addLinkTooltips($firstLaunchPopup);
 
         $firstLaunchPopup.appendTo("body").hide()
-                         .css("top", popupTop)
-                         .find(".healthdata-popup-close-button").click(function () {
+            .css("top", popupTop)
+            .find(".healthdata-popup-close-button").click(function () {
                 closeCallout();
                 MainViewManager.focusActivePane();
                 result.resolve();

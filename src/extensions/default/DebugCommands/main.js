@@ -61,7 +61,7 @@ define(function (require, exports, module) {
      */
     var DEBUG_MENU = "debug-menu";
 
-     /**
+    /**
       * Debug commands IDs
       * @enum {string}
       */
@@ -327,7 +327,7 @@ define(function (require, exports, module) {
 
     }
 
-   /*
+    /*
     * This method tries to deduce the preference type
     * based on various parameters like objects initial
     * value, object type, object's type property.
@@ -415,7 +415,7 @@ define(function (require, exports, module) {
         return false;
     }
 
-   /*
+    /*
     * This method tries to match between initial objects
     * and key objects and then aggregates objects from both
     * the properties.
@@ -713,11 +713,11 @@ define(function (require, exports, module) {
                 _loadDefaultPrefs(fullPath, result);
             } else {
                 FileUtils.writeText(file, "", true)
-                        .done(function () {
-                            _loadDefaultPrefs(fullPath, result);
-                        }).fail(function () {
-                            result.reject();
-                        });
+                    .done(function () {
+                        _loadDefaultPrefs(fullPath, result);
+                    }).fail(function () {
+                        result.reject();
+                    });
             }
         });
 

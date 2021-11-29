@@ -60,7 +60,7 @@ define(function (require, exports, module) {
             // Enable menu options when no file is present in active pane
             enable = !file || (file.constructor.name !== "RemoteFile");
 
-            // Enable or disable commands based on whether the file is a remoteFile or not.
+        // Enable or disable commands based on whether the file is a remoteFile or not.
         cMenuItems.forEach(function (item) {
             CommandManager.get(item).setEnabled(enable);
         });

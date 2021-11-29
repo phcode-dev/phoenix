@@ -68,7 +68,7 @@ define(function (require, exports, module) {
             }
         }
     }
-    
+
     function _findParagraphStart(editor, fromLine) {
         var curLine = fromLine;
         while (curLine > 0) {
@@ -165,7 +165,7 @@ define(function (require, exports, module) {
             _makeLineParagraph(editor, cursor.line);
         }
     };
-    
+
     exports.reflow = function (editor) {
         var maxLength = prefs.get("maxLength");
         if (editor.hasSelection()) {

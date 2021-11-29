@@ -183,7 +183,7 @@ define(function (require, exports, module) {
     exports.code = function () {
         handleSelectionButton("`", "");
     };
-  
+
     exports.image = function () {
         var editor = EditorManager.getActiveEditor();
         if (!check(editor)) {
@@ -191,7 +191,7 @@ define(function (require, exports, module) {
         }
         Dialogs.image(editor);
     };
-    
+
     exports.link = function () {
         var editor = EditorManager.getActiveEditor();
         if (!check(editor)) {
@@ -211,7 +211,7 @@ define(function (require, exports, module) {
     exports.quote = function () {
         handleLineButton(MATCH_QUOTE, MATCH_LIST, null, "> ");
     };
-    
+
     exports.codeblock = function () {
         var editor = EditorManager.getActiveEditor();
         if (!check(editor)) {
@@ -227,7 +227,7 @@ define(function (require, exports, module) {
         }
         Paragraphs.paragraph(editor);
     };
-    
+
     exports.reflow = function () {
         var editor = EditorManager.getActiveEditor();
         if (!check(editor)) {

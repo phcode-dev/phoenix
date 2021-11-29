@@ -590,7 +590,7 @@ define(function (require, exports, module) {
         // Insert menu item
         var $relativeElement = this._getRelativeMenuItem(relativeID, position);
         _insertInList($("li#" + StringUtils.jQueryIdEscape(this.id) + " > ul.dropdown-menu"),
-                      $menuItem, position, $relativeElement);
+            $menuItem, position, $relativeElement);
 
 
         // Initialize MenuItem state
@@ -751,7 +751,7 @@ define(function (require, exports, module) {
         // Insert menu item
         var $relativeElement = this._getRelativeMenuItem(relativeID, position);
         _insertInList($("li#" + StringUtils.jQueryIdEscape(this.id) + " > ul.dropdown-menu"),
-        $menuItem, position, $relativeElement);
+            $menuItem, position, $relativeElement);
 
         return menu;
     };
@@ -1178,7 +1178,7 @@ define(function (require, exports, module) {
 
         // open the context menu at final location
         $menuAnchor.addClass("open")
-                   .css({"left": posLeft, "top": posTop});
+            .css({"left": posLeft, "top": posTop});
     };
 
 

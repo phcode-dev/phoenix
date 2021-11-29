@@ -77,23 +77,23 @@ define(function (require, exports, module) {
         }
 
         var dlg = Dialogs.showModalDialog(
-            DefaultDialogs.DIALOG_ID_CHANGE_EXTENSIONS,
-            Strings.CHANGE_AND_RELOAD_TITLE,
-            Strings.CHANGE_AND_RELOAD_MESSAGE,
-            [
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
-                    id: Dialogs.DIALOG_BTN_CANCEL,
-                    text: Strings.CANCEL
-                },
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id: Dialogs.DIALOG_BTN_OK,
-                    text: buttonLabel
-                }
-            ],
-            false
-        ),
+                DefaultDialogs.DIALOG_ID_CHANGE_EXTENSIONS,
+                Strings.CHANGE_AND_RELOAD_TITLE,
+                Strings.CHANGE_AND_RELOAD_MESSAGE,
+                [
+                    {
+                        className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                        id: Dialogs.DIALOG_BTN_CANCEL,
+                        text: Strings.CANCEL
+                    },
+                    {
+                        className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                        id: Dialogs.DIALOG_BTN_OK,
+                        text: buttonLabel
+                    }
+                ],
+                false
+            ),
             $dlg = dlg.getElement();
 
         $dlg.one("buttonClick", function (e, buttonId) {

@@ -909,7 +909,7 @@ function checkInterfaceAndReInit() {
     }
 }
 
- /**
+/**
  * Initialize the test domain with commands and events related to find in files.
  * @param {DomainManager} domainManager The DomainManager for the TernNodeDomain
  */

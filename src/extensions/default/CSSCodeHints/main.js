@@ -76,7 +76,7 @@ define(function (require, exports, module) {
 
             return text;
         }
-            // css file, just return the text
+        // css file, just return the text
         return this.editor.document.getText();
 
     };

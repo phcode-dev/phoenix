@@ -152,8 +152,8 @@ define(function (require, exports, module) {
 
         if (prefs) {
             this._excludedDirectories = settingsToRegExp(prefs["excluded-directories"],
-                                                         BASE_EXCLUDED_DIRECTORIES,
-                                                         DEFAULT_EXCLUDED_DIRECTORIES);
+                BASE_EXCLUDED_DIRECTORIES,
+                DEFAULT_EXCLUDED_DIRECTORIES);
             this._excludedFiles = settingsToRegExp(prefs["excluded-files"],
                 BASE_EXCLUDED_FILES);
             this._maxFileCount = prefs["max-file-count"];

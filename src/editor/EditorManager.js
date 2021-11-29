@@ -133,7 +133,7 @@ define(function (require, exports, module) {
     }
 
 
-	/**
+    /**
      * Editor focus handler to change the currently active editor
      * @private
      * @param {?Editor} current - the editor that will be the active editor

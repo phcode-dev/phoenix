@@ -49,104 +49,104 @@ function _constructParamsAndRelay(relay, type, params) {
     case ToolingInfo.LANGUAGE_SERVICE.CUSTOM_REQUEST:
         return sendCustomRequest(relay, params.type, params.params);
     case ToolingInfo.LANGUAGE_SERVICE.CUSTOM_NOTIFICATION:
-        {
-            sendCustomNotification(relay, params.type, params.params);
-            break;
-        }
+    {
+        sendCustomNotification(relay, params.type, params.params);
+        break;
+    }
     case ToolingInfo.SERVICE_REQUESTS.SHOW_SELECT_MESSAGE:
     case ToolingInfo.SERVICE_REQUESTS.REGISTRATION_REQUEST:
     case ToolingInfo.SERVICE_REQUESTS.UNREGISTRATION_REQUEST:
     case ToolingInfo.SERVICE_REQUESTS.PROJECT_FOLDERS_REQUEST:
-        {
-            _params = {
-                type: type,
-                params: params
-            };
-            return relay(_params);
-        }
+    {
+        _params = {
+            type: type,
+            params: params
+        };
+        return relay(_params);
+    }
     case ToolingInfo.SERVICE_NOTIFICATIONS.SHOW_MESSAGE:
     case ToolingInfo.SERVICE_NOTIFICATIONS.LOG_MESSAGE:
     case ToolingInfo.SERVICE_NOTIFICATIONS.TELEMETRY:
     case ToolingInfo.SERVICE_NOTIFICATIONS.DIAGNOSTICS:
-        {
-            _params = {
-                type: type,
-                params: params
-            };
-            relay(_params);
-            break;
-        }
+    {
+        _params = {
+            type: type,
+            params: params
+        };
+        relay(_params);
+        break;
+    }
     case ToolingInfo.SYNCHRONIZE_EVENTS.DOCUMENT_OPENED:
-        {
-            _params = _params || {
-                textDocument: {
-                    uri: Utils.pathToUri(params.filePath),
-                    languageId: params.languageId,
-                    version: 1,
-                    text: params.fileContent
-                }
-            };
-            didOpenTextDocument(relay, _params);
-            break;
-        }
-    case ToolingInfo.SYNCHRONIZE_EVENTS.DOCUMENT_CHANGED:
-        {
-            _params = _params || {
-                textDocument: {
-                    uri: Utils.pathToUri(params.filePath),
-                    version: 1
-                },
-                contentChanges: [{
-                    text: params.fileContent
-                }]
-            };
-            didChangeTextDocument(relay, _params);
-            break;
-        }
-    case ToolingInfo.SYNCHRONIZE_EVENTS.DOCUMENT_SAVED:
-        {
-            if (!_params) {
-                _params = {
-                    textDocument: {
-                        uri: Utils.pathToUri(params.filePath)
-                    }
-                };
-
-                if (params.fileContent) {
-                    _params['text'] = params.fileContent;
-                }
+    {
+        _params = _params || {
+            textDocument: {
+                uri: Utils.pathToUri(params.filePath),
+                languageId: params.languageId,
+                version: 1,
+                text: params.fileContent
             }
-            didSaveTextDocument(relay, _params);
-            break;
-        }
-    case ToolingInfo.SYNCHRONIZE_EVENTS.DOCUMENT_CLOSED:
-        {
-            _params = _params || {
+        };
+        didOpenTextDocument(relay, _params);
+        break;
+    }
+    case ToolingInfo.SYNCHRONIZE_EVENTS.DOCUMENT_CHANGED:
+    {
+        _params = _params || {
+            textDocument: {
+                uri: Utils.pathToUri(params.filePath),
+                version: 1
+            },
+            contentChanges: [{
+                text: params.fileContent
+            }]
+        };
+        didChangeTextDocument(relay, _params);
+        break;
+    }
+    case ToolingInfo.SYNCHRONIZE_EVENTS.DOCUMENT_SAVED:
+    {
+        if (!_params) {
+            _params = {
                 textDocument: {
                     uri: Utils.pathToUri(params.filePath)
                 }
             };
 
-            didCloseTextDocument(relay, _params);
-            break;
+            if (params.fileContent) {
+                _params['text'] = params.fileContent;
+            }
         }
+        didSaveTextDocument(relay, _params);
+        break;
+    }
+    case ToolingInfo.SYNCHRONIZE_EVENTS.DOCUMENT_CLOSED:
+    {
+        _params = _params || {
+            textDocument: {
+                uri: Utils.pathToUri(params.filePath)
+            }
+        };
+
+        didCloseTextDocument(relay, _params);
+        break;
+    }
     case ToolingInfo.SYNCHRONIZE_EVENTS.PROJECT_FOLDERS_CHANGED:
-        {
-            var foldersAdded = params.foldersAdded || [],
-                foldersRemoved = params.foldersRemoved || [];
+    {
+        var foldersAdded = params.foldersAdded || [],
+            foldersRemoved = params.foldersRemoved || [];
 
-            foldersAdded = Utils.convertToWorkspaceFolders(foldersAdded);
-            foldersRemoved = Utils.convertToWorkspaceFolders(foldersRemoved);
+        foldersAdded = Utils.convertToWorkspaceFolders(foldersAdded);
+        foldersRemoved = Utils.convertToWorkspaceFolders(foldersRemoved);
 
-            _params = _params || {
-                event: {
-                    added: foldersAdded,
-                    removed: foldersRemoved
-                }
-            };
-            didChangeWorkspaceFolders(relay, _params);
-            break;
-        }
+        _params = _params || {
+            event: {
+                added: foldersAdded,
+                removed: foldersRemoved
+            }
+        };
+        didChangeWorkspaceFolders(relay, _params);
+        break;
+    }
     case ToolingInfo.FEATURES.CODE_HINTS:
         handler = completion;
     case ToolingInfo.FEATURES.PARAMETER_HINTS:
@@ -156,53 +156,53 @@ function _constructParamsAndRelay(relay, type, params) {
     case ToolingInfo.FEATURES.JUMP_TO_DEFINITION:
         handler = handler || gotoDefinition;
     case ToolingInfo.FEATURES.JUMP_TO_IMPL:
-        {
-            handler = handler || gotoImplementation;
-            _params = _params || {
-                textDocument: {
-                    uri: Utils.pathToUri(params.filePath)
-                },
-                position: Utils.convertToLSPPosition(params.cursorPos)
-            };
+    {
+        handler = handler || gotoImplementation;
+        _params = _params || {
+            textDocument: {
+                uri: Utils.pathToUri(params.filePath)
+            },
+            position: Utils.convertToLSPPosition(params.cursorPos)
+        };
 
-            return handler(relay, _params);
-        }
+        return handler(relay, _params);
+    }
     case ToolingInfo.FEATURES.CODE_HINT_INFO:
-        {
-            return completionItemResolve(relay, params);
-        }
+    {
+        return completionItemResolve(relay, params);
+    }
     case ToolingInfo.FEATURES.FIND_REFERENCES:
-        {
-            _params = _params || {
-                textDocument: {
-                    uri: Utils.pathToUri(params.filePath)
-                },
-                position: Utils.convertToLSPPosition(params.cursorPos),
-                context: {
-                    includeDeclaration: params.includeDeclaration
-                }
-            };
+    {
+        _params = _params || {
+            textDocument: {
+                uri: Utils.pathToUri(params.filePath)
+            },
+            position: Utils.convertToLSPPosition(params.cursorPos),
+            context: {
+                includeDeclaration: params.includeDeclaration
+            }
+        };
 
-            return findReferences(relay, _params);
-        }
+        return findReferences(relay, _params);
+    }
     case ToolingInfo.FEATURES.DOCUMENT_SYMBOLS:
-        {
-            _params = _params || {
-                textDocument: {
-                    uri: Utils.pathToUri(params.filePath)
-                }
-            };
+    {
+        _params = _params || {
+            textDocument: {
+                uri: Utils.pathToUri(params.filePath)
+            }
+        };
 
-            return documentSymbol(relay, _params);
-        }
+        return documentSymbol(relay, _params);
+    }
     case ToolingInfo.FEATURES.PROJECT_SYMBOLS:
-        {
-            _params = _params || {
-                query: params.query
-            };
+    {
+        _params = _params || {
+            query: params.query
+        };
 
-            return workspaceSymbol(relay, _params);
-        }
+        return workspaceSymbol(relay, _params);
+    }
     }
 }
 

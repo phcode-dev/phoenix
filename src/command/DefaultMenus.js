@@ -312,11 +312,11 @@ define(function (require, exports, module) {
 
                 if (editor) {
                     //if (!editor.hasSelection()) {
-                        // Prevent menu from overlapping text by moving it down a little
-                        // Temporarily backout this change for now to help mitigate issue #1111,
-                        // which only happens if mouse is not over context menu. Better fix
-                        // requires change to bootstrap, which is too risky for now.
-                        //e.pageY += 6;
+                    // Prevent menu from overlapping text by moving it down a little
+                    // Temporarily backout this change for now to help mitigate issue #1111,
+                    // which only happens if mouse is not over context menu. Better fix
+                    // requires change to bootstrap, which is too risky for now.
+                    //e.pageY += 6;
                     //}
 
                     // Inline text editors have a different context menu (safe to assume it's not some other

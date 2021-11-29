@@ -83,11 +83,11 @@ define(function (require, exports, module) {
                     // whole match
                     return dollars.substr(1) + (match[0] || "");
                 }
-                    // now we're sure index is an integer, so we can parse it
+                // now we're sure index is an integer, so we can parse it
                 var parsedIndex = parseInt(index, 10);
                 if (parsedIndex !== 0) { // handle $n or $nn, but don't handle $0 or $00
-                        // slice the first dollar (but leave any others to get unescaped below) and return the
-                        // the corresponding match
+                    // slice the first dollar (but leave any others to get unescaped below) and return the
+                    // the corresponding match
                     return dollars.substr(1) + (match[parsedIndex] || "");
                 }
 
@@ -332,7 +332,7 @@ define(function (require, exports, module) {
         return {valid: true, queryExpr: queryExpr};
     }
 
-     /**
+    /**
      * Prioritizes the open file and then the working set files to the starting of the list of files
      * @param {Array.<*>} files An array of file paths or file objects to sort
      * @param {?string} firstFile If specified, the path to the file that should be sorted to the top.

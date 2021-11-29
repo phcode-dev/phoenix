@@ -59,7 +59,7 @@ define(function (require, exports, module) {
      */
     function ImageView(file, $container) {
         this.file = file;
-        this.$el = $(Mustache.render(ImageViewTemplate, {fullPath: '' , now: ''}));
+        this.$el = $(Mustache.render(ImageViewTemplate, {fullPath: '', now: ''}));
         $container.append(this.$el);
 
         this._naturalWidth = 0;
@@ -145,9 +145,9 @@ define(function (require, exports, module) {
                 }
                 var dimensionAndSize = dimensionString + sizeString;
                 self.$imageData.html(dimensionAndSize)
-                        .attr("title", dimensionAndSize
-                                    .replace("&times;", "x")
-                                    .replace("&mdash;", "-"));
+                    .attr("title", dimensionAndSize
+                        .replace("&times;", "x")
+                        .replace("&mdash;", "-"));
             }
         });
 
@@ -158,7 +158,7 @@ define(function (require, exports, module) {
         this.$imageGuides.hide();
 
         this.$image.on("mousemove.ImageView", ".image-preview", _.bind(this._showImageTip, this))
-                   .on("mouseleave.ImageView", ".image-preview", _.bind(this._hideImageTip, this));
+            .on("mouseleave.ImageView", ".image-preview", _.bind(this._hideImageTip, this));
 
         this._updateScale();
     };

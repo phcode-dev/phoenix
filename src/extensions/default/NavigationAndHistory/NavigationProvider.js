@@ -51,14 +51,14 @@ define(function (require, exports, module) {
     var NAV_FRAME_CAPTURE_LATENCY = 2000,
         MAX_NAV_FRAMES_COUNT = 30;
 
-   /**
+    /**
     * Contains list of most recently known cursor positions.
     * @private
     * @type {Array.<Object>}
     */
     var jumpBackwardStack = [];
 
-   /**
+    /**
     * Contains list of most recently traversed cursor positions using NAVIGATION_JUMP_BACK command.
     * @private
     * @type {Array.<Object>}
@@ -71,7 +71,7 @@ define(function (require, exports, module) {
         commandJumpBack,
         commandJumpFwd;
 
-   /**
+    /**
     * Function to check if there are any navigatable frame backward.
     * @private
     */
@@ -80,7 +80,7 @@ define(function (require, exports, module) {
             || (!jumpForwardStack.length && jumpBackwardStack.length > 1);
     }
 
-   /**
+    /**
     * Function to enable/disable navigation command based on cursor positions availability.
     * @private
     */
@@ -89,7 +89,7 @@ define(function (require, exports, module) {
         commandJumpFwd.setEnabled(jumpForwardStack.length > 0);
     }
 
-   /**
+    /**
     * Function to check existence of a file entry, validity of markers
     * @private
     */
@@ -125,7 +125,7 @@ define(function (require, exports, module) {
         return deferred.promise();
     }
 
-   /**
+    /**
     * Prototype to capture a navigation frame and it's various data/functional attributues
     */
     function NavigationFrame(editor, selectionObj) {
@@ -140,7 +140,7 @@ define(function (require, exports, module) {
         this._createMarkers(selectionObj.ranges);
     }
 
-   /**
+    /**
     * Lifecycle event handler of the editor for which this frame is captured
     */
     NavigationFrame.prototype._handleEditorDestroy = function (editor) {
@@ -173,7 +173,7 @@ define(function (require, exports, module) {
         return this.filePath === file._path ? this._hash === file._hash : true;
     };
 
-   /**
+    /**
     * Function to create CM TextMarkers for the navigated positions/selections.
     * This logic is required to ensure that the captured navigation positions
     * stay valid and contextual even when the actual document text mutates.
@@ -204,7 +204,7 @@ define(function (require, exports, module) {
         }
     };
 
-   /**
+    /**
     * Function to actually convert the CM markers to CM positions which can be used to
     * set selections or cursor positions in Editor.
     */
@@ -240,7 +240,7 @@ define(function (require, exports, module) {
         }
     };
 
-   /**
+    /**
     * Function to clean up the markers in cm
     */
     NavigationFrame.prototype._clearMarkers = function () {
@@ -265,7 +265,7 @@ define(function (require, exports, module) {
         return this.selections.length;
     };
 
-   /**
+    /**
     * Function to actually navigate to the position(file,selections) captured in this frame
     */
     NavigationFrame.prototype.goTo = function () {
@@ -289,7 +289,7 @@ define(function (require, exports, module) {
     };
 
 
-   /**
+    /**
     * Function to capture a non-zero set of selections as a navigation frame.
     * The assumptions behind capturing a frame as a navigation frame are :
     *
@@ -331,7 +331,7 @@ define(function (require, exports, module) {
         }
     }
 
-   /**
+    /**
     * Command handler to navigate backward
     */
     function _navigateBack() {
@@ -368,7 +368,7 @@ define(function (require, exports, module) {
         }
     }
 
-   /**
+    /**
     * Command handler to navigate forward
     */
     function _navigateForward() {
@@ -402,7 +402,7 @@ define(function (require, exports, module) {
 
     }
 
-   /**
+    /**
     * Function to initialize navigation menu items.
     * @private
     */
@@ -412,7 +412,7 @@ define(function (require, exports, module) {
         menu.addMenuItem(NAVIGATION_JUMP_FWD, "", Menus.AFTER, NAVIGATION_JUMP_BACK);
     }
 
-   /**
+    /**
     * Function to initialize navigation commands and it's keyboard shortcuts.
     * @private
     */
@@ -428,7 +428,7 @@ define(function (require, exports, module) {
         _initNavigationMenuItems();
     }
 
-   /**
+    /**
     * Function to request a navigation frame creation explicitly.
     * @private
     */

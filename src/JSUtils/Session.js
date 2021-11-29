@@ -309,8 +309,8 @@ define(function (require, exports, module) {
         if (token && token.string === ".") {
             return cursor;
         }
-            // If something has been typed like 'foo.b' then we have to look back 2 tokens
-            // to get past the 'b' token
+        // If something has been typed like 'foo.b' then we have to look back 2 tokens
+        // to get past the 'b' token
         token = this._getPreviousToken(cursor);
         if (token && token.string === ".") {
             return cursor;
@@ -778,7 +778,7 @@ define(function (require, exports, module) {
 
             return text;
         }
-            // Javascript file, just return the text
+        // Javascript file, just return the text
         return this.editor.document.getText();
 
     };

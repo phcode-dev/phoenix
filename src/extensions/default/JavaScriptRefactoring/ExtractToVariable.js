@@ -232,7 +232,7 @@ define(function(require, exports, module) {
         var selection = editor.getSelection(),
             doc       = editor.document,
             retObj    = RefactoringUtils.normalizeText(editor.getSelectedText(), editor.indexFromPos(selection.start),
-                        editor.indexFromPos(selection.end), true),
+                editor.indexFromPos(selection.end), true),
             text      = retObj.text,
             start     = retObj.start,
             end       = retObj.end,

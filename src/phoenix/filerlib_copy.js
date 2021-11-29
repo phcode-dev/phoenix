@@ -88,9 +88,9 @@ async function _copyFile(srcFile, dst) {
             let dstFilePath =`${parentDir}/${dstFileName}`;
             await _copyFileContents(srcFile, dstFilePath);
             return;
-        } else {
-            throw new Errors.EIO(`_copyFile Cannot create destination file: ${dst}`);
         }
+        throw new Errors.EIO(`_copyFile Cannot create destination file: ${dst}`);
+
     }
 
     let srcFileName= window.path.basename(srcFile);

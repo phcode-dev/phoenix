@@ -424,8 +424,8 @@ define(function (require, exports, module) {
 
         for (queryCounter = 0; queryCounter < query.length; queryCounter++) {
             matchList = _generateMatchList(query.substring(queryCounter),
-                                     str, originalQuery.substring(queryCounter),
-                                     originalStr, specials, startingSpecial);
+                str, originalQuery.substring(queryCounter),
+                originalStr, specials, startingSpecial);
 
             // if we've got a match *or* there are no segments in this string, we're done
             if (matchList || startingSpecial === 0) {
@@ -472,10 +472,10 @@ define(function (require, exports, module) {
             if (result.remainder) {
                 // Scan with the remainder only through the beginning of the last segment
                 var remainderMatchList = _generateMatchList(result.remainder,
-                                              compareLower.substring(0, lastSegmentStart),
-                                              result.originalRemainder,
-                                              originalStr.substring(0, lastSegmentStart),
-                                              specials.slice(0, lastSegmentSpecialsIndex), 0);
+                    compareLower.substring(0, lastSegmentStart),
+                    result.originalRemainder,
+                    originalStr.substring(0, lastSegmentStart),
+                    specials.slice(0, lastSegmentSpecialsIndex), 0);
 
                 if (remainderMatchList) {
                     // add the new matched ranges to the beginning of the set of ranges we had
@@ -810,7 +810,7 @@ define(function (require, exports, module) {
         if (options.segmentedSearch) {
             lastSegmentStart = special.specials[special.lastSegmentSpecialsIndex];
             matchList = _wholeStringSearch(queryLower, compareLower, query, str, special.specials,
-                              special.lastSegmentSpecialsIndex);
+                special.lastSegmentSpecialsIndex);
         } else {
             lastSegmentStart = 0;
             matchList = _generateMatchList(queryLower, compareLower, query, str, special.specials, 0);

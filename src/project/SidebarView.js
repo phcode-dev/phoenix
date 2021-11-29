@@ -140,7 +140,7 @@ define(function (require, exports, module) {
 
         // SplitView Icon
         $splitViewMenu.removeClass(ICON_CLASSES.join(" "))
-                      .addClass(ICON_CLASSES[spriteIndex]);
+            .addClass(ICON_CLASSES[spriteIndex]);
 
         // SplitView Menu
         _cmdSplitNone.setChecked(spriteIndex === 0);

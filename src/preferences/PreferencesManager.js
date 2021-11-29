@@ -196,8 +196,8 @@ define(function (require, exports, module) {
             ctx.language = currentLanguageId;
         }
         ctx.scopeOrder = _includeProjectScope(ctx.path) ?
-                        scopeOrderWithProject :
-                        scopeOrderWithoutProject;
+            scopeOrderWithProject :
+            scopeOrderWithoutProject;
         return ctx;
     }
 
@@ -222,7 +222,7 @@ define(function (require, exports, module) {
         currentFilename = newFilename;
         _toggleProjectScope();
         PreferencesImpl.manager.signalContextChanged(_buildContext(oldFilename, currentLanguageId),
-                                                     _buildContext(newFilename, currentLanguageId));
+            _buildContext(newFilename, currentLanguageId));
     }
 
     /**
@@ -240,7 +240,7 @@ define(function (require, exports, module) {
         }
         currentLanguageId = newLanguageId;
         PreferencesImpl.manager.signalContextChanged(_buildContext(currentFilename, oldLanguageId),
-                                                     _buildContext(currentFilename, newLanguageId));
+            _buildContext(currentFilename, newLanguageId));
     }
 
 

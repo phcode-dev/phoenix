@@ -31,7 +31,7 @@ define(function (require, exports, module) {
         StringMatch         = brackets.getModule("utils/StringMatch");
 
 
-   /**
+    /**
     * FileLocation class
     * @constructor
     * @param {string} fullPath

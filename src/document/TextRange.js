@@ -140,8 +140,8 @@ define(function (require, exports, module) {
         var numAdded = change.text.length - (change.to.line - change.from.line + 1);
         var result = {hasChanged: false, hasContentChanged: false};
 
-            // This logic is so simple because we've already excluded all cases where the change
-            // crosses the range boundaries
+        // This logic is so simple because we've already excluded all cases where the change
+        // crosses the range boundaries
         if (numAdded !== 0) {
             if (change.to.line < this.startLine) {
                 this.startLine += numAdded;
@@ -153,12 +153,12 @@ define(function (require, exports, module) {
             }
         }
         if (change.from.line >= this.startLine && change.from.line <= this.endLine) {
-                // Since we know the change doesn't cross the range boundary, as long as the
-                // start of the change is within the range, we know the content changed.
+            // Since we know the change doesn't cross the range boundary, as long as the
+            // start of the change is within the range, we know the content changed.
             result.hasContentChanged = true;
         }
 
-            // console.log("Now " + this);
+        // console.log("Now " + this);
 
         return result;
 

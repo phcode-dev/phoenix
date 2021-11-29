@@ -149,7 +149,7 @@ define(function (require, exports, module) {
 
         //FIXME: #7 prevents the page to be reloaded when editing JS files.
         //       Temporarily disabling this code to make JS editing work.
-//      this._detachFromEditor();
+        //      this._detachFromEditor();
 
         if (newActive && newActive.document === this.doc) {
             this._attachToEditor(newActive);

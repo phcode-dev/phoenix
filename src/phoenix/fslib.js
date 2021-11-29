@@ -56,9 +56,9 @@ function mkdir_p (fsLib, path, mode, callback, position) {
             fsLib.mkdir(directory, mode, function (error) {
                 if (error && error.code !== 'EEXIST') {
                     return callback(error);
-                } else {
-                    mkdir_p(fsLib, path, mode, callback, position + 1);
                 }
+                mkdir_p(fsLib, path, mode, callback, position + 1);
+
             });
         }
     });

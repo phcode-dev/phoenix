@@ -258,7 +258,7 @@ define(function (require, exports, module) {
         case STATE_CLOSED:
             $(window.document.body).off(".installDialog");
 
-           // Only resolve as successful if we actually installed something.
+            // Only resolve as successful if we actually installed something.
             Dialogs.cancelModalDialogIfOpen("install-extension-dialog");
             if (prevState === STATE_INSTALLED || prevState === STATE_NEEDS_UPDATE ||
                     prevState === STATE_OVERWRITE_CONFIRMED) {

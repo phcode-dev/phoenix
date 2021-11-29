@@ -115,7 +115,7 @@ define(function (require, exports, module) {
         this.$hintMenu =
             $("<li class='dropdown codehint-menu'></li>")
                 .append($("<a href='#' class='dropdown-toggle' data-toggle='dropdown'></a>")
-                        .hide())
+                    .hide())
                 .append("<ul class='dropdown-menu'></ul>");
 
         this._keydownHook = this._keydownHook.bind(this);

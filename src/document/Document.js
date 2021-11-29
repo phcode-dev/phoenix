@@ -305,7 +305,7 @@ define(function (require, exports, module) {
             return codeMirrorText;
 
         }
-            // Optimized path that doesn't require creating master editor
+        // Optimized path that doesn't require creating master editor
         if (useOriginalLineEndings) {
             return this._text;
         }

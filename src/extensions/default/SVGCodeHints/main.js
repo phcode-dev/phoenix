@@ -291,7 +291,7 @@ define(function (require, exports, module) {
                 this.editor.setCursorPos(start.line, start.ch + completion.length - 1);
                 return true;
             }
-                // We don't append ="" again, just replace the attribute token.
+            // We don't append ="" again, just replace the attribute token.
             start.ch = tagInfo.token.start;
             end.ch = tagInfo.token.end;
             this.editor.document.replaceRange(completion, start, end);

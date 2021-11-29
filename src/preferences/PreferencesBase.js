@@ -543,8 +543,8 @@ define(function (require, exports, module) {
             _.each(this._layers, function (layer) {
                 if (data[layer.key] && oldContext[layer.key] !== newContext[layer.key]) {
                     var changesInLayer = layer.contextChanged(data[layer.key],
-                                                              oldContext,
-                                                              newContext);
+                        oldContext,
+                        newContext);
                     if (changesInLayer) {
                         changes.push(changesInLayer);
                     }
@@ -847,12 +847,12 @@ define(function (require, exports, module) {
      * by [EditorConfig](http://editorconfig.org/). In usage, it looks something like this
      * (switching to single line comments because the glob interferes with the multiline comment):
      */
-//    "path": {
-//        "src/thirdparty/CodeMirror/**/*.js": {
-//            "spaceUnits": 2,
-//            "linting.enabled": false
-//        }
-//    }
+    //    "path": {
+    //        "src/thirdparty/CodeMirror/**/*.js": {
+    //            "spaceUnits": 2,
+    //            "linting.enabled": false
+    //        }
+    //    }
 
     /**
      * There can be multiple paths and they are each checked in turn. The first that matches the
@@ -998,9 +998,9 @@ define(function (require, exports, module) {
          */
         contextChanged: function (data, oldContext, newContext) {
             var newGlob = _findMatchingGlob(data,
-                              FileUtils.getRelativeFilename(this.prefFilePath, newContext[this.key])),
+                    FileUtils.getRelativeFilename(this.prefFilePath, newContext[this.key])),
                 oldGlob = _findMatchingGlob(data,
-                              FileUtils.getRelativeFilename(this.prefFilePath, oldContext[this.key]));
+                    FileUtils.getRelativeFilename(this.prefFilePath, oldContext[this.key]));
 
             if (newGlob === oldGlob) {
                 return;

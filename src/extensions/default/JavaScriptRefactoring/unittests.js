@@ -333,14 +333,14 @@ define(function (require, exports, module) {
 
                 _waitForRefactoring(prevDocLength, function() {
                     expect(testDoc.getRange({line: 109, ch: 0}, {line: 114, ch: 2}))
-                    .toBe(
-                        "var extracted1 = class {\n"          +
+                        .toBe(
+                            "var extracted1 = class {\n"          +
                         "    constructor (height, width) {\n" +
                         "        this.a = height;\n"          +
                         "        this.b = width;\n"           +
                         "    }\n"                            +
                         "};"
-                    );
+                        );
                     expect(testDoc.getLine(115)).toBe("x = extracted1;");
                 });
             });

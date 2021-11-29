@@ -186,13 +186,13 @@ define(function (require, exports, module) {
         $.ajax({
             url: this.fullPath
         })
-        .done(function (data) {
-            self._contents = data;
-            callback(null, data, self._encoding, self._stat);
-        })
-        .fail(function (e) {
-            callback(FileSystemError.NOT_FOUND);
-        });
+            .done(function (data) {
+                self._contents = data;
+                callback(null, data, self._encoding, self._stat);
+            })
+            .fail(function (e) {
+                callback(FileSystemError.NOT_FOUND);
+            });
     };
 
     /**

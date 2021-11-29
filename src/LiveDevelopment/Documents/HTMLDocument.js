@@ -331,21 +331,21 @@ define(function HTMLDocumentModule(require, exports, module) {
             });
         }
 
-//        var marker = HTMLInstrumentation._getMarkerAtDocumentPos(
-//            this.editor,
-//            editor.getCursorPos()
-//        );
-//
-//        if (marker && marker.tagID) {
-//            var range   = marker.find(),
-//                text    = marker.doc.getRange(range.from, range.to);
-//
-//            // HACK maintain ID
-//            text = text.replace(">", " data-brackets-id='" + marker.tagID + "'>");
-//
-//            // FIXME incorrectly replaces body elements with content only, missing body element
-//            RemoteAgent.remoteElement(marker.tagID).replaceWith(text);
-//        }
+        //        var marker = HTMLInstrumentation._getMarkerAtDocumentPos(
+        //            this.editor,
+        //            editor.getCursorPos()
+        //        );
+        //
+        //        if (marker && marker.tagID) {
+        //            var range   = marker.find(),
+        //                text    = marker.doc.getRange(range.from, range.to);
+        //
+        //            // HACK maintain ID
+        //            text = text.replace(">", " data-brackets-id='" + marker.tagID + "'>");
+        //
+        //            // FIXME incorrectly replaces body elements with content only, missing body element
+        //            RemoteAgent.remoteElement(marker.tagID).replaceWith(text);
+        //        }
 
         // if (!this.editor) {
         //     return;

@@ -221,7 +221,7 @@ define(function (require, exports, module) {
                     return this.height(newSize);
 
                 }
-                    // calling the function as a setter
+                // calling the function as a setter
                 var parentSize = parentSizeFunction.apply($parent),
                     percentage,
                     prop;

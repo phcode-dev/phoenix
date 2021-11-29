@@ -260,7 +260,7 @@ function _cmdInstall(packagePath, destinationDirectory, options, callback, pCall
         if (validationResult.metadata && validationResult.metadata.engines &&
                 validationResult.metadata.engines.brackets) {
             var compatible = semver.satisfies(options.apiVersion,
-                                              validationResult.metadata.engines.brackets);
+                validationResult.metadata.engines.brackets);
             if (!compatible) {
                 installDirectory = path.join(options.disabledDirectory, extensionName);
                 validationResult.installationStatus = Statuses.DISABLED;
@@ -398,30 +398,30 @@ function _cmdDownloadFile(downloadId, url, proxy, callback, pCallback) {
         encoding: null,
         proxy: proxy
     },
-        // Note: we could use the traditional "response"/"data"/"end" events too if we wanted to stream data
-        // incrementally, limit download size, etc. - but the simple callback is good enough for our needs.
-        function (error, response, body) {
-            if (error) {
-                // Usually means we never got a response - server is down, no DNS entry, etc.
-                _endDownload(downloadId, Errors.NO_SERVER_RESPONSE);
-                return;
-            }
-            if (response.statusCode !== 200) {
-                _endDownload(downloadId, [Errors.BAD_HTTP_STATUS, response.statusCode]);
-                return;
-            }
+    // Note: we could use the traditional "response"/"data"/"end" events too if we wanted to stream data
+    // incrementally, limit download size, etc. - but the simple callback is good enough for our needs.
+    function (error, response, body) {
+        if (error) {
+            // Usually means we never got a response - server is down, no DNS entry, etc.
+            _endDownload(downloadId, Errors.NO_SERVER_RESPONSE);
+            return;
+        }
+        if (response.statusCode !== 200) {
+            _endDownload(downloadId, [Errors.BAD_HTTP_STATUS, response.statusCode]);
+            return;
+        }
 
-            var stream = temp.createWriteStream("brackets");
-            if (!stream) {
-                _endDownload(downloadId, Errors.CANNOT_WRITE_TEMP);
-                return;
-            }
-            pendingDownloads[downloadId].localPath = stream.path;
-            pendingDownloads[downloadId].outStream = stream;
+        var stream = temp.createWriteStream("brackets");
+        if (!stream) {
+            _endDownload(downloadId, Errors.CANNOT_WRITE_TEMP);
+            return;
+        }
+        pendingDownloads[downloadId].localPath = stream.path;
+        pendingDownloads[downloadId].outStream = stream;
 
-            stream.write(body);
-            _endDownload(downloadId);
-        });
+        stream.write(body);
+        _endDownload(downloadId);
+    });
 
     pendingDownloads[downloadId] = { request: req, callback: callback };
 }

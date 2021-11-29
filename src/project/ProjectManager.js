@@ -185,8 +185,8 @@ define(function (require, exports, module) {
                 _showErrorDialog(ERR_TYPE_INVALID_FILENAME, isFolder, ProjectModel._invalidChars);
             } else {
                 var errString = error === FileSystemError.NOT_WRITABLE ?
-                        Strings.NO_MODIFICATION_ALLOWED_ERR :
-                        StringUtils.format(Strings.GENERIC_ERROR, error);
+                    Strings.NO_MODIFICATION_ALLOWED_ERR :
+                    StringUtils.format(Strings.GENERIC_ERROR, error);
 
                 _showErrorDialog(ERR_TYPE_CREATE, isFolder, errString, name).getPromise();
             }
@@ -708,7 +708,7 @@ define(function (require, exports, module) {
      */
     function addWelcomeProjectPath(path) {
         var welcomeProjects = ProjectModel._addWelcomeProjectPath(path,
-                                                                 PreferencesManager.getViewState("welcomeProjects"));
+            PreferencesManager.getViewState("welcomeProjects"));
         PreferencesManager.setViewState("welcomeProjects", welcomeProjects);
     }
 

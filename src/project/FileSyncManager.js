@@ -473,10 +473,10 @@ define(function (require, exports, module) {
                                         }
                                     });
                             });
-                            // Note: if any auto-reloads failed, we silently ignore (after logging to console)
-                            // and we still continue onto phase 4 and try to process those files anyway.
-                            // (We'll retry the auto-reloads next time window is activated... and evenually
-                            // we'll also be double checking before each Save).
+                        // Note: if any auto-reloads failed, we silently ignore (after logging to console)
+                        // and we still continue onto phase 4 and try to process those files anyway.
+                        // (We'll retry the auto-reloads next time window is activated... and evenually
+                        // we'll also be double checking before each Save).
                     });
             }).fail(function () {
                 // Unable to fetch timestamps for some reason - silently ignore (after logging to console)

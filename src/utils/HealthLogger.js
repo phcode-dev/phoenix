@@ -180,10 +180,10 @@ define(function (require, exports, module) {
 
 
         sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_OPEN + language._name,
-                            commonStrings.USAGE,
-                            commonStrings.FILE_OPEN,
-                            language._name.toLowerCase()
-                         );
+            commonStrings.USAGE,
+            commonStrings.FILE_OPEN,
+            language._name.toLowerCase()
+        );
 
     }
 
@@ -199,10 +199,10 @@ define(function (require, exports, module) {
         }
         var fileType = docToSave.language ? docToSave.language._name : "";
         sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_SAVE + fileType,
-                            commonStrings.USAGE,
-                            commonStrings.FILE_SAVE,
-                            fileType.toLowerCase()
-                         );
+            commonStrings.USAGE,
+            commonStrings.FILE_SAVE,
+            fileType.toLowerCase()
+        );
     }
 
     /**
@@ -250,11 +250,11 @@ define(function (require, exports, module) {
             }
 
             sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_CLOSE + language._name + subType,
-                                commonStrings.USAGE,
-                                commonStrings.FILE_CLOSE,
-                                language._name.toLowerCase(),
-                                subType
-                             );
+                commonStrings.USAGE,
+                commonStrings.FILE_CLOSE,
+                language._name.toLowerCase(),
+                subType
+            );
         }
 
         file.stat(function(err, fileStat) {
@@ -301,7 +301,7 @@ define(function (require, exports, module) {
         setHealthDataLog("searchDetails", searchDetails);
     }
 
-     /**
+    /**
      * Notifies the HealthData extension to send Analytics Data to server
      * @param{Object} eventParams Event Data to be sent to Analytics Server
      */

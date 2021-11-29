@@ -298,15 +298,15 @@ define(function (require, exports, module) {
             // if we don't have any metadata for the extension
             // we should still create an empty one, so we can attach
             // disabled property on it in case it's disabled
-            var disabled;
-            var defaultDisabled = PreferencesManager.get("extensions.default.disabled");
-            if (Array.isArray(defaultDisabled) && defaultDisabled.indexOf(extensionName) !== -1) {
-                console.warn("Default extension has been disabled on startup: " + baseExtensionUrl);
-                disabled = true;
-            }
-            json.disabled = disabled;
-            result.resolve(json);
-        });
+                var disabled;
+                var defaultDisabled = PreferencesManager.get("extensions.default.disabled");
+                if (Array.isArray(defaultDisabled) && defaultDisabled.indexOf(extensionName) !== -1) {
+                    console.warn("Default extension has been disabled on startup: " + baseExtensionUrl);
+                    disabled = true;
+                }
+                json.disabled = disabled;
+                result.resolve(json);
+            });
 
         return result.promise();
     }

@@ -144,7 +144,7 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
-     /**
+    /**
      * @private
      * Handles when a connection is made to the live development protocol handler.
      * Injects the RemoteFunctions script in order to provide highlighting and live DOM editing functionality.
@@ -272,7 +272,7 @@ define(function (require, exports, module) {
         );
     }
 
-     /**
+    /**
      * Protocol method. Rretrieves the content of a given stylesheet (for unit testing)
      * @param {number|Array.<number>} clients A client ID or array of client IDs that should navigate to the given URL.
      * @param {string} url Absolute URL that identifies the stylesheet.

@@ -218,7 +218,7 @@ define({
     "ERROR_TIMINGQUICKEDIT_INVALIDSYNTAX": "CSS Timing Function Quick Edit: syntax onjuist",
     "ERROR_JSQUICKEDIT_FUNCTIONNOTFOUND": "JS Quick Edit: plaats cursor in functienaam.",
 
-     // Quick Docs
+    // Quick Docs
     "ERROR_QUICK_DOCS_PROVIDER_NOT_FOUND": "Geen snelle documentatie beschikbaar voor huidige cursorpositie.",
 
     /**

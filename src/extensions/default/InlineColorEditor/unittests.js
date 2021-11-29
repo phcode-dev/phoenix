@@ -376,9 +376,9 @@ define(function (require, exports, module) {
              */
             function makeUI(initialColor, callback, swatches, hide) {
                 colorEditor = new ColorEditor($(window.document.body),
-                                              initialColor,
-                                              callback || function () { },
-                                              swatches || defaultSwatches);
+                    initialColor,
+                    callback || function () { },
+                    swatches || defaultSwatches);
                 if (hide !== false) {
                     colorEditor.getRootElement().css("display", "none");
                 }

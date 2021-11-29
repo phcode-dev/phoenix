@@ -713,11 +713,11 @@ define(function (require, exports, module) {
      *                          be empty.
      */
     FileSystem.prototype.showOpenDialog = function (allowMultipleSelection,
-                            chooseDirectories,
-                            title,
-                            initialPath,
-                            fileTypes,
-                            callback) {
+        chooseDirectories,
+        title,
+        initialPath,
+        fileTypes,
+        callback) {
 
         this._impl.showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback);
     };

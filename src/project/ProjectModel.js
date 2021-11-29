@@ -788,7 +788,7 @@ define(function (require, exports, module) {
         var currentContext = this._selections.context;
         this._selections.context = path;
         this._viewModel.moveMarker("context", this.makeProjectRelativeIfPossible(currentContext),
-                                   this.makeProjectRelativeIfPossible(path));
+            this.makeProjectRelativeIfPossible(path));
     };
 
     /**
@@ -1125,16 +1125,16 @@ define(function (require, exports, module) {
         var self = this;
         return Async.doSequentially(nodesByDepth, function (toOpenPaths) {
             return Async.doInParallel(
-                    toOpenPaths,
-                    function (path) {
-                        return self._getDirectoryContents(path).then(function (contents) {
-                            var relative = self.makeProjectRelativeIfPossible(path);
-                            self._viewModel.setDirectoryContents(relative, contents);
-                            self._viewModel.setDirectoryOpen(relative, true);
-                        });
-                    },
-                    false
-                );
+                toOpenPaths,
+                function (path) {
+                    return self._getDirectoryContents(path).then(function (contents) {
+                        var relative = self.makeProjectRelativeIfPossible(path);
+                        self._viewModel.setDirectoryContents(relative, contents);
+                        self._viewModel.setDirectoryOpen(relative, true);
+                    });
+                },
+                false
+            );
         });
 
     };

@@ -95,7 +95,7 @@ define(function (require, exports, module) {
         this.$menu =
             $("<li class='dropdown inlinemenu-menu'></li>")
                 .append($("<a href='#' class='dropdown-toggle' data-toggle='dropdown'></a>")
-                        .hide())
+                    .hide())
                 .append("<ul class='dropdown-menu'>" +
                             "<li class='inlinemenu-header'>" +
                                 "<a>" + menuText + "</a>" +

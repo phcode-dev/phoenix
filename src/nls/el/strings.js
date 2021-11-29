@@ -472,7 +472,7 @@ define({
     "HEALTH_DATA_PREVIEW_INTRO": "<p>Προκειμένου να βελτιώσουμε το {APP_NAME}, στέλνουμε περιοδικά περιορισμένα, <strong>ανώνυμα</strong> στατιστικά στοιχεία στην Adobe σχετικά με το πώς χρησιμοποιείς το {APP_NAME}. Αυτές οι πληροφορίες βοηθάνε στην καταχώρηση προτεραιοτήτων στα χαρακτηριστικά,στην εύρεση σφαλμάτων και στον εντοπισμό προβλημάτων χρηστικότητας. <a href='https://github.com/adobe/brackets/wiki/Health-Data'>Μάθε περισσότερα για το {APP_NAME} Health Report</a> και πόσο ωφελεί την κοινότητα του {APP_NAME} προστατεύοντας παράλληλα την ιδιωτικότητα σου..</p><p>Παρακάτω βλέπεις μια προεπισκόπηση των δεδομένων που θα σταλούν στο επόμενο Health Report <em>εφόσον</em> είναι ενεργοποιημένο.</p>",
 
 
-     // extensions/default/InlineTimingFunctionEditor
+    // extensions/default/InlineTimingFunctionEditor
     "INLINE_TIMING_EDITOR_TIME": "Χρόνος",
     "INLINE_TIMING_EDITOR_PROGRESSION": "Πρόοδος",
 

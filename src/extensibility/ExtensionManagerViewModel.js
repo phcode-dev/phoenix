@@ -40,7 +40,7 @@ define(function (require, exports, module) {
      * doing it for each search call.
      */
     var _searchFields = [["metadata", "name"], ["metadata", "title"], ["metadata", "description"],
-                         ["metadata", "author", "name"], ["metadata", "keywords"], ["owner"]];
+        ["metadata", "author", "name"], ["metadata", "keywords"], ["owner"]];
     /**
      * The base model for the ExtensionManagerView. Keeps track of the extensions that are currently visible
      * and manages sorting/filtering them. Must be disposed with dispose() when done.

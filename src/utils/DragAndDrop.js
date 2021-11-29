@@ -1,4 +1,4 @@
- /*
+/*
  * GNU AGPL-3.0 License
  *
  * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
@@ -112,7 +112,7 @@ define(function (require, exports, module) {
                     }
 
                     CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN,
-                                           {fullPath: path, silent: true})
+                        {fullPath: path, silent: true})
                         .done(function () {
                             result.resolve();
                         })

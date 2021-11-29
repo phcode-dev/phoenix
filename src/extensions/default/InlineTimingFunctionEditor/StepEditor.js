@@ -374,7 +374,7 @@ define(function (require, exports, module) {
                 timing: match[2] || "end"
             };
         }
-            // handle special cases of steps functions
+        // handle special cases of steps functions
         switch (match[0]) {
         case "step-start":
             return { count: 1, timing: "start" };

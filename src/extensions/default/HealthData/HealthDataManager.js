@@ -68,7 +68,7 @@ define(function (require, exports, module) {
         };
         script.onload = function(){
             window.dataLayer = window.dataLayer || [];
-            window.gtag = function(){window.dataLayer.push(arguments);};
+            window.gtag = function(){ window.dataLayer.push(arguments); };
             gtag('js', new Date());
 
             gtag('config', brackets.config.googleAnalyticsID, {
@@ -265,9 +265,9 @@ define(function (require, exports, module) {
     CommandManager.register("Sends health data and Analytics data for testing purpose", "sendHealthData", function() {
         if (brackets.config.environment === "stage") {
             return checkHealthDataSend(true);
-        } else {
-            return $.Deferred().reject().promise();
         }
+        return $.Deferred().reject().promise();
+
     });
 
     prefs.on("change", "healthDataTracking", function () {

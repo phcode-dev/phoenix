@@ -897,10 +897,10 @@ define({
     "CMD_FIND_DOCUMENT_SYMBOLS": "Rechercher des symboles de document",
     "CMD_FIND_PROJECT_SYMBOLS": "Rechercher des symboles de projet",
 
-   // Remote debugging enabled
+    // Remote debugging enabled
     "REMOTE_DEBUGGING_ENABLED": "Débogage à distance activé sur localhost:",
 
-   // Remote debugging port argument is invalid
+    // Remote debugging port argument is invalid
     "REMOTE_DEBUGGING_PORT_INVALID": "Impossible d’activer le débogage à distance sur le port {0}. Les numéros de port doivent être compris entre {1} et {2}.",
 
     //Associate File Type to External App

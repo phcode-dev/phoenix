@@ -31,13 +31,13 @@ var rewire           = require("rewire"),
     temp             = require("temp");
 
 var testFilesDirectory = path.join(path.dirname(module.filename),
-                                    "..",   // node
-                                    "..",   // extensibility
-                                    "..",   // src
-                                    "..",   // brackets
-                                    "test",
-                                    "spec",
-                                    "extension-test-files");
+    "..",   // node
+    "..",   // extensibility
+    "..",   // src
+    "..",   // brackets
+    "test",
+    "spec",
+    "extension-test-files");
 
 var basicValidExtension    = path.join(testFilesDirectory, "basic-valid-extension.zip"),
     basicValidExtension2   = path.join(testFilesDirectory, "basic-valid-extension-2.0.zip"),

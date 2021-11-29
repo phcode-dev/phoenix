@@ -323,8 +323,8 @@ define(function (require, exports, module) {
                 // If we're at an attribute value, check if it's an attribute name that has hintable values.
                 if (this.tagInfo.attr.name) {
                     var hints = this._getValueHintsForAttr({queryStr: query},
-                                                           this.tagInfo.tagName,
-                                                           this.tagInfo.attr.name);
+                        this.tagInfo.tagName,
+                        this.tagInfo.attr.name);
                     if (hints instanceof Array) {
                         // If we got synchronous hints, check if we have something we'll actually use
                         var i, foundPrefix = false;

@@ -450,9 +450,9 @@ define(function (require, exports, module) {
                 this._logError(token);
                 return null;
             }
-                // Manually compute the position of the end of the text (we can't rely on the
-                // tokenizer for this since it may not get to the very end)
-                // TODO: should probably make the tokenizer get to the end...
+            // Manually compute the position of the end of the text (we can't rely on the
+            // tokenizer for this since it may not get to the very end)
+            // TODO: should probably make the tokenizer get to the end...
             var lines = this.text.split("\n"),
                 lastPos = {line: lines.length - 1, ch: lines[lines.length - 1].length};
             while (stack.length) {

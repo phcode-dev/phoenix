@@ -206,7 +206,7 @@ define(function (require, exports, module) {
                     (relaxed && watchedRoot.status === WatchedRoot.STARTING)) {
                 return filterResult;
             }
-                // We had a watched root, but it's no longer active, so it must now be invalid.
+            // We had a watched root, but it's no longer active, so it must now be invalid.
             this._watchedRoot = undefined;
             this._watchedRootFilterResult = false;
             this._clearCachedData();
