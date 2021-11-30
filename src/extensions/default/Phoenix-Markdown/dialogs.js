@@ -61,7 +61,7 @@ define(function (require, exports, module) {
         }
         return relapath + dirname.slice(basePath.length + 1) + basename;
     }
-    
+
     function getRelativeFile(basePath, cb) {
         FileSystem.showOpenDialog(false, false, "Select file", null, null, function (err, files) {
             if (files && files[0]) {
@@ -71,7 +71,7 @@ define(function (require, exports, module) {
             }
         });
     }
-    
+
     function displayPathDialog(editor, templateVars, fn) {
         var selection = editor.getSelection();
         templateVars.textInit = editor.document.getRange(selection.start, selection.end);
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
             }
         });
     }
-    
+
     exports.image = function (editor) {
         var templateVars = {
             Strings: Strings,
@@ -107,7 +107,7 @@ define(function (require, exports, module) {
             editor.document.replaceRange(imageString, selection.start, selection.end, "+mdbar");
         });
     };
-    
+
     exports.link = function (editor) {
         var templateVars = {
             Strings: Strings,

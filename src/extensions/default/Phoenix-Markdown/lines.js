@@ -59,7 +59,7 @@ define(function (require, exports, module) {
         for (i = 0; i < selections.length; i++) {
             var j, start = selections[i].start.line;
             var end = (selections[i].end.ch === 0
-                    ? selections[i].end.line : selections[i].end.line + 1);
+                ? selections[i].end.line : selections[i].end.line + 1);
             for (j = start; j < end; j++) {
                 var line = editor.document.getLine(j);
                 if (MATCH_NONBLANK.test(line)) {
