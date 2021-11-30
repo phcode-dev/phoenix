@@ -70,7 +70,7 @@ define(function (require, exports, module) {
         var startMatch = '';
         if (start.ch >= matchLength) {
             var preStart = {line: start.line,
-                         ch: start.ch - matchLength};
+                ch: start.ch - matchLength};
             startMatch = editor.document.getRange(preStart, start);
         }
         var postEnd = {line: end.line, ch: end.ch + matchLength};
