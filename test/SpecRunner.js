@@ -62,7 +62,6 @@ define(function (require, exports, module) {
         FileUtils               = require("file/FileUtils"),
         UrlParams               = require("utils/UrlParams").UrlParams,
         UnitTestReporter        = require("test/UnitTestReporter").UnitTestReporter,
-        NodeConnection          = require("utils/NodeConnection"),
         BootstrapReporterView   = require("test/BootstrapReporterView").BootstrapReporterView,
         NativeApp               = require("utils/NativeApp");
 
@@ -125,19 +124,15 @@ define(function (require, exports, module) {
         _writeResults   = new $.Deferred(),
         resultsPath;
 
-    /**
-     * @const
-     * Amount of time to wait before automatically rejecting the connection
-     * deferred. If we hit this timeout, we'll never have a node connection
-     * for the installer in this run of Brackets.
-     */
-    var NODE_CONNECTION_TIMEOUT = 30000; // 30 seconds - TODO: share with StaticServer?
-
     // parse URL parameters
     params.parse();
     resultsPath = params.get("resultsPath");
 
-    function _loadExtensionTests() {
+    function _loadExtensionTests(suitesToTest) {
+        let isExtensionSuiteSelected = (suitesToTest.indexOf("extension") >= 0);
+        if(!isExtensionSuiteSelected){
+            return new $.Deferred().resolve();
+        }
         // augment jasmine to identify extension unit tests
         var addSuite = jasmine.Runner.prototype.addSuite;
         jasmine.Runner.prototype.addSuite = function (suite) {
@@ -216,8 +211,8 @@ define(function (require, exports, module) {
                     .done(function () {
                         _writeResults.resolve();
                     })
-                    .fail(function (err) {
-                        _writeResults.reject(err);
+                    .fail(function (writeErr) {
+                        _writeResults.reject(writeErr);
                     });
             }
         });
@@ -228,11 +223,11 @@ define(function (require, exports, module) {
      * "resultsPath" URL parameter exists. Does not overwrite existing file.
      *
      * @param {!$.Event} event
-     * @param {!UnitTestReporter} reporter
+     * @param {!UnitTestReporter} loaclReporter
      */
-    function _runnerEndHandler(event, reporter) {
+    function _runnerEndHandler(event, loaclReporter) {
         if (resultsPath && resultsPath.substr(-5) === ".json") {
-            writeResults(resultsPath, reporter.toJSON());
+            writeResults(resultsPath, loaclReporter.toJSON());
         }
 
         _writeResults.always(function () { brackets.app.quit(); });
