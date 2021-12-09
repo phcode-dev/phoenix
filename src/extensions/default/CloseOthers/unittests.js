@@ -21,7 +21,7 @@
 
 /*global describe, it, expect, beforeEach, afterEach, runs, waitsForDone, spyOn */
 
-define(function (require, exports, module) {
+define(["spec/SpecRunnerUtils", "file/FileUtils"],function (require, exports, module) {
 
 
     var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),

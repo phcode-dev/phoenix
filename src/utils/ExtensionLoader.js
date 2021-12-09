@@ -224,7 +224,7 @@ define(function (require, exports, module) {
         };
 
         // Read optional requirejs-config.json
-        var promise = _mergeConfig(extensionConfig).then(function (mergedConfig) {
+        return _mergeConfig(extensionConfig).then(function (mergedConfig) {
             // Create new RequireJS context and load extension entry point
             var extensionRequire = brackets.libRequire.config(mergedConfig),
                 extensionRequireDeferred = new $.Deferred();
@@ -281,8 +281,6 @@ define(function (require, exports, module) {
                 console.log(err.stack);
             }
         });
-
-        return promise;
     }
 
     /**
@@ -333,9 +331,40 @@ define(function (require, exports, module) {
      * @param {!string} entryPoint, name of the main js file to load
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
+    function _testExtensionByURL(name, config, entryPoint) {
+        var result = new $.Deferred();
+
+        try{
+            var extensionRequire = brackets.libRequire.config({
+                context: name,
+                baseUrl: config.baseUrl,
+                paths: $.extend({}, config.paths, globalPaths)
+            });
+
+            extensionRequire([entryPoint], function () {
+                result.resolve();
+            });
+        } catch (e) {
+            console.log("require error: ", e);
+        }
+
+        return result.promise();
+    }
+
+    /**
+     * Runs unit tests for the extension that lives at baseUrl into its own Require.js context
+     *
+     * @param {!string} name, used to identify the extension
+     * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension
+     * @param {!string} entryPoint, name of the main js file to load
+     * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
+     */
     function testExtension(name, config, entryPoint) {
         var result = new $.Deferred(),
             extensionPath = config.baseUrl + "/" + entryPoint + ".js";
+        if(extensionPath.startsWith("http://") || extensionPath.startsWith("https://")) {
+            return _testExtensionByURL(name, config, entryPoint);
+        }
 
         FileSystem.resolve(extensionPath, function (err, entry) {
             if (!err && entry.isFile) {
@@ -475,6 +504,43 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Runs unit test for the extension that lives at baseUrl into its own Require.js context
+     *
+     * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
+     */
+    function testAllDefaultExtensions() {
+        const extensionPath = getDefaultExtensionPath();
+        const bracketsPath = FileUtils.getNativeBracketsDirectoryPath();
+        const href = window.location.href;
+        const baseUrl = href.substring(0, href.lastIndexOf("/"));
+        const srcBaseUrl = new URL(baseUrl + '/../src').href;
+        const extensionsToLoadURL = srcBaseUrl + extensionPath + "/DefaultExtensions.json";
+        var result = new $.Deferred();
+
+        $.get(extensionsToLoadURL).done(function (extensionNames) {
+            for (let extensionName of extensionNames){
+                console.log("Testing default extension: ", extensionName);
+                var extConfig = {
+                    basePath: 'extensions/default',
+                    baseUrl: new URL(srcBaseUrl + extensionPath + "/" + extensionName).href,
+                    paths: {
+                        "perf": bracketsPath + "/perf",
+                        "spec": bracketsPath + "/spec"
+                    }
+                };
+                _testExtensionByURL(extensionName, extConfig, 'unittests');
+            }
+            result.resolve();
+        })
+            .fail(function (err) {
+                console.error("[Extension] Error -- could not read default extension list from" + extensionsToLoadURL);
+                result.reject();
+            });
+
+        return result.promise();
+    }
+
+    /**
      * Load extensions.
      *
      * @param {?Array.<string>} A list containing references to extension source
@@ -549,4 +615,5 @@ define(function (require, exports, module) {
     exports.testExtension = testExtension;
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;
     exports.testAllExtensionsInNativeDirectory = testAllExtensionsInNativeDirectory;
+    exports.testAllDefaultExtensions = testAllDefaultExtensions;
 });

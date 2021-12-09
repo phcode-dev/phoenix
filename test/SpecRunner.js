@@ -166,7 +166,11 @@ define(function (require, exports, module) {
                 extensionPath = bracketsPath + "/extensions/" + dir;
             }
 
-            return ExtensionLoader.testAllExtensionsInNativeDirectory(extensionPath);
+            if(dir === "default"){
+                return ExtensionLoader.testAllDefaultExtensions();
+            } else {
+                return ExtensionLoader.testAllExtensionsInNativeDirectory(extensionPath);
+            }
         });
     }
 
