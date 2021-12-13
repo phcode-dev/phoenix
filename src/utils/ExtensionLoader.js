@@ -230,7 +230,12 @@ define(function (require, exports, module) {
                 extensionRequireDeferred = new $.Deferred();
 
             contexts[name] = extensionRequire;
-            extensionRequire([entryPoint], extensionRequireDeferred.resolve, extensionRequireDeferred.reject);
+            if(mergedConfig.baseUrl.startsWith('/')){
+                extensionRequire(["../../../../../src/thirdparty/requirejs/extension-loader!"+entryPoint],
+                    extensionRequireDeferred.resolve, extensionRequireDeferred.reject);
+            } else {
+                extensionRequire([entryPoint], extensionRequireDeferred.resolve, extensionRequireDeferred.reject);
+            }
 
             return extensionRequireDeferred.promise();
         }).then(function (module) {
