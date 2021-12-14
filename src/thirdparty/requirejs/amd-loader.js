@@ -96,6 +96,8 @@ define(function() {
             if (_err) {
                 callback(_err);
             } else {
+                // add sourcemap
+                _data = _data + `\n//# sourceURL=${new URL(path, window.location.href)}`;
                 callback(_data);
             }
         });

@@ -24,7 +24,9 @@ define(['./amd-loader'], function(amdLoader) {
 
         // Replace sub-dependencies require's using this plugin, except if they are listed in require.config.cjs2config.globalRequire.
         source = source.replace(cjsRequireRegExp, function (match, dep) {
-            return ' require("' + (globalRequire.includes(dep) ? '' : 'extension-loader!') + dep + '")';
+            return ' require("' + (globalRequire.includes(dep) ?
+                '' :
+                'extension-loader!') + dep + '")';
         });
         callback(source);
     });
