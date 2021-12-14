@@ -148,7 +148,13 @@ define(function (require, exports, module) {
 
         // Optional JSON config for require.js
         $.get(extensionConfigFile).done(function (extensionConfig) {
+            if(!extensionConfig){
+                extensionConfig = {};
+            }
             try {
+                if(!extensionConfig.paths){
+                    extensionConfig.paths = {};
+                }
                 // baseConfig.paths properties will override any extension config paths
                 _.extend(extensionConfig.paths, baseConfig.paths);
 
@@ -185,6 +191,9 @@ define(function (require, exports, module) {
         FileUtils.readAsText(extensionConfigFile).done(function (text) {
             try {
                 var extensionConfig = JSON.parse(text);
+                if(!extensionConfig.paths){
+                    extensionConfig.paths = {};
+                }
 
                 // baseConfig.paths properties will override any extension config paths
                 _.extend(extensionConfig.paths, baseConfig.paths);
@@ -231,7 +240,7 @@ define(function (require, exports, module) {
 
             contexts[name] = extensionRequire;
             if(mergedConfig.baseUrl.startsWith('/')){
-                extensionRequire(["../../../../../src/thirdparty/requirejs/extension-loader!"+entryPoint],
+                extensionRequire(["extension-loader!"+entryPoint],
                     extensionRequireDeferred.resolve, extensionRequireDeferred.reject);
             } else {
                 extensionRequire([entryPoint], extensionRequireDeferred.resolve, extensionRequireDeferred.reject);
