@@ -205,6 +205,7 @@ define(function (require, exports, module) {
                         })
                         .fail(result.reject);
                 } else {
+                    // fix css load
                     var deferred = new $.Deferred(),
                         link = addLinkedStyleSheet(url, deferred);
 

@@ -140,31 +140,19 @@ define(function (require, exports, module) {
             addSuite.call(this, suite);
         };
 
-        var bracketsPath = FileUtils.getNativeBracketsDirectoryPath(),
-            paths = ["default"];
+        let paths = ["default"];
 
         // load dev and user extensions only when running the extension test suite
         if (selectedSuites.indexOf("extension") >= 0) {
             paths.push("dev");
-            paths.push(ExtensionLoader.getUserExtensionPath());
+            paths.push("user");
         }
 
-        // This returns path to test folder, so convert to src
-        bracketsPath = bracketsPath.replace(/\/test$/, "/src");
-
         return Async.doInParallel(paths, function (dir) {
-            var extensionPath = dir;
-
-            // If the item has "/" in it, assume it is a full path. Otherwise, load
-            // from our source path + "/extensions/".
-            if (dir.indexOf("/") === -1) {
-                extensionPath = bracketsPath + "/extensions/" + dir;
-            }
-
             if(dir === "default"){
                 return ExtensionLoader.testAllDefaultExtensions();
             } else {
-                return ExtensionLoader.testAllExtensionsInNativeDirectory(extensionPath);
+                return ExtensionLoader.testAllExtensionsInNativeDirectory(dir);
             }
         });
     }
