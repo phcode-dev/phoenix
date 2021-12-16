@@ -28,7 +28,7 @@ define(function (require, exports, module) {
         FileUtils       = brackets.getModule("file/FileUtils");
 
     describe("JSLint", function () {
-        var testFolder = FileUtils.getNativeModuleDirectoryPath(module) + "/unittest-files/",
+        var testFolder = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
             testWindow,
             $,
             brackets,
