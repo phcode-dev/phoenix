@@ -53,7 +53,7 @@ function serverInstall() {
 if ('serviceWorker' in navigator) {
     console.log(window.location.href);
 
-    const wb = new Workbox(`nohost-sw.js?route=${getRoute()}`);
+    const wb = new Workbox(`virtual-server-main.js?route=${getRoute()}`);
     // for debug, use this URL`nohost-sw.js?debug&route=${basePath}/phoenix/vfs`
 
     // Wait on the server to be fully ready to handle routing requests
