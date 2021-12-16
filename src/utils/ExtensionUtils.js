@@ -166,21 +166,12 @@ define(function (require, exports, module) {
         var url     = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path);
         let result = new $.Deferred();
 
-        if(module.uri && module.uri.startsWith('/fs/app/extensions/')){
-            FileSystem.getFileForPath(url).read(function (err, content) {
-                if(!err){
-                    result.resolve(content, url);
-                } else {
-                    result.reject(err);
-                }
-            });
-        } else {
-            $.get(url)
-                .done(function (content) {
-                    result.resolve(content, url);
-                })
-                .fail(result.reject);
-        }
+        $.get(url)
+            .done(function (content) {
+                result.resolve(content, url);
+            })
+            .fail(result.reject);
+
         return result;
     }
 
