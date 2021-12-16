@@ -637,7 +637,8 @@ define(function (require, exports, module) {
             if (params.get("reloadWithoutUserExts") !== "true") {
                 paths = [
                     getUserExtensionPath(),
-                    getDevExtensionPath()
+                    getDevExtensionPath(),
+                    "default"
                 ];
             } else {
                 paths = [];
@@ -661,10 +662,12 @@ define(function (require, exports, module) {
         var disabledExtensionPath = extensionPath.replace(/\/user$/, "/disabled");
         FileSystem.getDirectoryForPath(disabledExtensionPath).create();
 
-        loadAllDefaultExtensions();
-
         var promise = Async.doInParallel(paths, function (extPath) {
-            return loadAllExtensionsInNativeDirectory(extPath);
+            if(extPath === "default"){
+                return loadAllDefaultExtensions();
+            } else {
+                return loadAllExtensionsInNativeDirectory(extPath);
+            }
         }, false);
 
         promise.always(function () {
