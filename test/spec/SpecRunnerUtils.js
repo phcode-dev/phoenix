@@ -34,7 +34,6 @@ define(function (require, exports, module) {
         FileSystemError     = require("filesystem/FileSystemError"),
         FileSystem          = require("filesystem/FileSystem"),
         WorkspaceManager    = require("view/WorkspaceManager"),
-        ExtensionLoader     = require("utils/ExtensionLoader"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         LanguageManager     = require("language/LanguageManager");
 
@@ -545,7 +544,7 @@ define(function (require, exports, module) {
 
             // setup extension loading in the test window
             params.put("extensions", _doLoadExtensions ?
-                        "dev," + ExtensionLoader.getUserExtensionPath() :
+                        "" :// TODO: change this to dev,user for loading vfs extension tests
                         "");
 
             // disable update check in test windows
