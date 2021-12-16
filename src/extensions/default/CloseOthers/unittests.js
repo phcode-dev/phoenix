@@ -34,7 +34,7 @@ define(function (require, exports, module) {
         FileSystem;
 
     describe("CloseOthers", function () {
-        var testPath = SpecRunnerUtils.getTestPath("/spec/CodeInspection-test-files/"),
+        var testPath = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
             testWindow,
             $,
             docSelectIndex,
