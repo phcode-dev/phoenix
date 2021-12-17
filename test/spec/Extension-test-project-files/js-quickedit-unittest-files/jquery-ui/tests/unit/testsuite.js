@@ -3,11 +3,11 @@
 window.TestHelpers = {};
 
 function includeStyle( url ) {
-	document.write( "<link rel='stylesheet' href='../../../" + url + "'>" );
+	document.write( "<link rel='stylesheet' href=" + url + "'../../..'>" );
 }
 
 function includeScript( url ) {
-	document.write( "<script src='../../../" + url + "'></script>" );
+	document.write( "<script src=" + url + "'../../..'></script>" );
 }
 
 QUnit.config.urlConfig.push( "min" );

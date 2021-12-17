@@ -2,7 +2,7 @@ module.exports = function( grunt ) {
 
 grunt.registerTask( "testswarm", function( commit, configFile ) {
 	var test,
-		testswarm = require( "testswarm" ),
+		testswarm = require( "test/spec/Extension-test-project-files/js-quickedit-unittest-files/jquery-ui/build/tasks/testswarm" ),
 		config = grunt.file.readJSON( configFile ).jqueryui,
 		testBase = "http://swarm.jquery.org/git/jquery-ui/" + commit + "/tests/unit/",
 		testUrls = [],
