@@ -34,8 +34,8 @@ define(function (require, exports, module) {
         Strings             = brackets.getModule("strings"),
         UnitTestReporter    = brackets.getModule("test/UnitTestReporter");
 
-    var extensionPath = FileUtils.getNativeModuleDirectoryPath(module),
-        testPath = extensionPath + "/unittest-files/syntax",
+    var extensionPath = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
+        testPath = extensionPath + "/js-quickedit-unittest-files/syntax",
         tempPath = SpecRunnerUtils.getTempDirectory(),
         testWindow,
         initInlineTest;
@@ -533,7 +533,7 @@ define(function (require, exports, module) {
 
             this.category = "performance";
 
-            var testPath = extensionPath + "/unittest-files/jquery-ui";
+            var testPath = extensionPath + "/js-quickedit-unittest-files/jquery-ui";
 
             beforeEach(function () {
                 SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
