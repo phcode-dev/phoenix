@@ -28,8 +28,6 @@ define(function (require, exports, module) {
         EditorManager,          // loaded from brackets.test
         PerfUtils,              // loaded from brackets.test
         JSUtils,                // loaded from brackets.test
-
-        FileUtils           = brackets.getModule("file/FileUtils"),
         SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils"),
         Strings             = brackets.getModule("strings"),
         UnitTestReporter    = brackets.getModule("test/UnitTestReporter");
