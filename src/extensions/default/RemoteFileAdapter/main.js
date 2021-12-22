@@ -23,7 +23,6 @@ define(function (require, exports, module) {
 
 
     var AppInit         = brackets.getModule("utils/AppInit"),
-        FileSystem      = brackets.getModule("filesystem/FileSystem"),
         QuickOpen       = brackets.getModule("search/QuickOpen"),
         PathUtils       = brackets.getModule("thirdparty/path-utils/path-utils"),
         CommandManager  = brackets.getModule("command/CommandManager"),
@@ -31,8 +30,7 @@ define(function (require, exports, module) {
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         WorkingSetView = brackets.getModule("project/WorkingSetView"),
         MainViewManager = brackets.getModule("view/MainViewManager"),
-        Menus           = brackets.getModule("command/Menus"),
-        RemoteFile      = require("RemoteFile");
+        Menus           = brackets.getModule("command/Menus");
 
     var HTTP_PROTOCOL = "http:",
         HTTPS_PROTOCOL = "https:";
@@ -71,18 +69,6 @@ define(function (require, exports, module) {
         Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).on("beforeContextMenuOpen", _setMenuItemsVisible);
         MainViewManager.on("currentFileChange", _setMenuItemsVisible);
 
-        var protocolAdapter = {
-            priority: 0, // Default priority
-            fileImpl: RemoteFile,
-            canRead: function (filePath) {
-                return true; // Always claim true, we are the default adpaters
-            }
-        };
-
-        // Register the custom object as HTTP and HTTPS protocol adapter
-        FileSystem.registerProtocolAdapter(HTTP_PROTOCOL, protocolAdapter);
-        FileSystem.registerProtocolAdapter(HTTPS_PROTOCOL, protocolAdapter);
-
         // Register as quick open plugin for file URI's having HTTP:|HTTPS: protocol
         QuickOpen.addQuickOpenPlugin(
             {
@@ -96,7 +82,8 @@ define(function (require, exports, module) {
                     return [HTTP_PROTOCOL, HTTPS_PROTOCOL].indexOf(protocol) !== -1;
                 },
                 itemFocus: function (query) {
-                }, // no op
+                    // no op
+                },
                 itemSelect: function () {
                     CommandManager.execute(Commands.FILE_OPEN, {fullPath: arguments[0]});
                 }
