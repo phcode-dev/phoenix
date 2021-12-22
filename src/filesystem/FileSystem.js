@@ -91,6 +91,7 @@ define(function (require, exports, module) {
         File            = require("filesystem/File"),
         FileIndex       = require("filesystem/FileIndex"),
         FileSystemError = require("filesystem/FileSystemError"),
+        RemoteFile      = require("filesystem/RemoteFile"),
         WatchedRoot     = require("filesystem/WatchedRoot"),
         EventDispatcher = require("utils/EventDispatcher"),
         PathUtils       = require("thirdparty/path-utils/path-utils"),
@@ -1099,4 +1100,20 @@ define(function (require, exports, module) {
 
     // Initialize the singleton instance
     _instance.init(require("fileSystemImpl"));
+
+    // attach remote file handlers
+    var HTTP_PROTOCOL = "http:",
+        HTTPS_PROTOCOL = "https:";
+
+    var protocolAdapter = {
+        priority: 0, // Default priority
+        fileImpl: RemoteFile,
+        canRead: function (filePath) {
+            return true; // Always claim true, we are the default adpaters
+        }
+    };
+
+    // Register the custom object as HTTP and HTTPS protocol adapter
+    registerProtocolAdapter(HTTP_PROTOCOL, protocolAdapter);
+    registerProtocolAdapter(HTTPS_PROTOCOL, protocolAdapter);
 });

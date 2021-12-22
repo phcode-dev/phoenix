@@ -22,8 +22,8 @@
 define(function (require, exports, module) {
 
 
-    var FileSystemError = brackets.getModule("filesystem/FileSystemError"),
-        FileSystemStats = brackets.getModule("filesystem/FileSystemStats");
+    var FileSystemError = require("filesystem/FileSystemError"),
+        FileSystemStats = require("filesystem/FileSystemStats");
 
     var SESSION_START_TIME = new Date();
 
@@ -164,18 +164,43 @@ define(function (require, exports, module) {
         // no-op
     };
 
+    function _remoteRead(url, encoding, successCB, errorCB) {
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", url, true);
+        xmlhttp.responseType = "arraybuffer";
+
+        xmlhttp.onload = function(oEvent) {
+            var arrayBuffer = xmlhttp.response;
+
+            // if you want to access the bytes:
+            var byteArray = new Uint8Array(arrayBuffer);
+
+            try {
+                successCB(new TextDecoder(encoding).decode(byteArray));
+            } catch (err) {
+                errorCB(err);
+            }
+        };
+
+        xmlhttp.onerror = function (err) {
+            errorCB(err);
+        };
+        xmlhttp.send();
+    }
+
     /**
      * Reads a remote file.
      *
      * @param {Object=} options Currently unused.
-     * @param {function (?string, string=, FileSystemStats=)} callback Callback that is passed the
+     * @param {function (err?, ?string, string=, FileSystemStats=)} callback Callback that is passed the
      *              FileSystemError string or the file's contents and its stats.
      */
     RemoteFile.prototype.read = function (options, callback) {
         if (typeof (options) === "function") {
             callback = options;
+            options = {};
         }
-        this._encoding = "utf8";
+        this._encoding = options.encoding || "utf8";
 
         if (this._contents !== null && this._stat) {
             callback(null, this._contents, this._encoding, this._stat);
@@ -183,14 +208,10 @@ define(function (require, exports, module) {
         }
 
         var self = this;
-        $.ajax({
-            url: this.fullPath
-        })
-        .done(function (data) {
+        _remoteRead(this.fullPath, this._encoding, function (data) {
             self._contents = data;
             callback(null, data, self._encoding, self._stat);
-        })
-        .fail(function (e) {
+        }, function (e) {
             callback(FileSystemError.NOT_FOUND);
         });
     };
