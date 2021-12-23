@@ -70,9 +70,24 @@ define(function (require, exports, module) {
         if(pathVector.length>BLOB_STRING_LOCATION+1 && pathVector[BLOB_STRING_LOCATION] === "blob"){
             // Github blob URL of the form https://github.com/brackets-cont/brackets/blob/master/.gitignore
             // transform to https://raw.githubusercontent.com/brackets-cont/brackets/master/.gitignore
-            pathVector.splice(BLOB_STRING_LOCATION,1)
+            pathVector.splice(BLOB_STRING_LOCATION,1);
             let newPath = pathVector.join("/");
-            return `https://raw.githubusercontent.com/${newPath}`;
+            return `https://raw.githubusercontent.com${newPath}`;
+        }
+
+        return urlObject.href;
+    }
+
+    function _getGitLabRawURL(urlObject) {
+        // Gitlab does not specify CORS, so this wont work in phoenix, but will work in brackets for now
+        let pathVector = urlObject.pathname.split("/");
+        let BLOB_STRING_LOCATION = 4;
+        if(pathVector.length>BLOB_STRING_LOCATION+1 && pathVector[BLOB_STRING_LOCATION] === "blob"){
+            // GitLab blob URL of the form https://gitlab.com/gitlab-org/gitlab-foss/-/blob/master/.codeclimate.yml
+            // transform to https://gitlab.com/gitlab-org/gitlab-foss/-/raw/master/.codeclimate.yml
+            pathVector[BLOB_STRING_LOCATION] = "raw";
+            let newPath = pathVector.join("/");
+            return `https://gitlab.com${newPath}`;
         }
 
         return urlObject.href;
@@ -89,6 +104,7 @@ define(function (require, exports, module) {
         let urlObject = new URL(url);
         switch (urlObject.hostname) {
         case "github.com": return _getGitHubRawURL(urlObject);
+        case "gitlab.com": return _getGitLabRawURL(urlObject);
         default: return url;
         }
     }
@@ -114,7 +130,6 @@ define(function (require, exports, module) {
                     // no op
                 },
                 itemSelect: function () {
-                    console.log("loading url: ", arguments[0]);
                     CommandManager.execute(Commands.FILE_OPEN, {fullPath: _getRawURL(arguments[0])});
                 }
             }
