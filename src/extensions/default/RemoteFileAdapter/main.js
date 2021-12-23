@@ -64,6 +64,35 @@ define(function (require, exports, module) {
         });
     }
 
+    function _getGitHubRawURL(urlObject) {
+        let pathVector = urlObject.pathname.split("/");
+        let BLOB_STRING_LOCATION = 3;
+        if(pathVector.length>BLOB_STRING_LOCATION+1 && pathVector[BLOB_STRING_LOCATION] === "blob"){
+            // Github blob URL of the form https://github.com/brackets-cont/brackets/blob/master/.gitignore
+            // transform to https://raw.githubusercontent.com/brackets-cont/brackets/master/.gitignore
+            pathVector.splice(BLOB_STRING_LOCATION,1)
+            let newPath = pathVector.join("/");
+            return `https://raw.githubusercontent.com/${newPath}`;
+        }
+
+        return urlObject.href;
+    }
+
+    /**
+     * Checks the URL to see if it is from known code URL sites(Eg. Github) and transforms
+     * it into URLs to fetch raw code.
+     * @param url
+     * @private
+     * @return code URL if transformed, else returns the arg URL as is
+     */
+    function _getRawURL(url) {
+        let urlObject = new URL(url);
+        switch (urlObject.hostname) {
+        case "github.com": return _getGitHubRawURL(urlObject);
+        default: return url;
+        }
+    }
+
     AppInit.htmlReady(function () {
 
         Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).on("beforeContextMenuOpen", _setMenuItemsVisible);
@@ -85,7 +114,8 @@ define(function (require, exports, module) {
                     // no op
                 },
                 itemSelect: function () {
-                    CommandManager.execute(Commands.FILE_OPEN, {fullPath: arguments[0]});
+                    console.log("loading url: ", arguments[0]);
+                    CommandManager.execute(Commands.FILE_OPEN, {fullPath: _getRawURL(arguments[0])});
                 }
             }
         );
