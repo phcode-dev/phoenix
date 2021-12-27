@@ -281,26 +281,23 @@ define(function (require, exports, module) {
         }
 
         realVisibility = isVisible;
-        var editor = $(" #editor-holder");
 
         if (isVisible) {
             if (!panel) {
                 $panel = $(panelHTML);
                 $iframe = $panel.find("#panel-markdown-preview-frame");
 
-                panel = WorkspaceManager.createBottomPanel("markdown-preview-panel", $panel);
-
+                panel = WorkspaceManager.createBottomPanel("markdown-preview-panel", $panel, 650);
                 $panel.on("panelResizeUpdate", function (e, newSize) {
                     $iframe.attr("height", newSize);
                 });
 
-
                 $iframe.attr("height", $panel.height());
 
                 $panel.css("overflow", "hidden");
-
                 window.setTimeout(_resizeIframe);
 
+                WorkspaceManager.recomputeLayout(false);
                 $settingsToggle = $("#markdown-settings-toggle")
                     .click(function (e) {
                         if ($settings) {
@@ -311,10 +308,10 @@ define(function (require, exports, module) {
                     });
 
                 $iframe.hide();
-            }
-            _loadDoc(DocumentManager.getCurrentDocument());
-            editor.css("display", "none");
 
+            }
+
+            _loadDoc(DocumentManager.getCurrentDocument());
             $icon.toggleClass("active");
 
             panel.show();
@@ -322,12 +319,7 @@ define(function (require, exports, module) {
         } else {
             $icon.toggleClass("active");
             panel.hide();
-            //fixing height of pane
-            editor.css("display", "block");
-            var editorPane = $(" #editor-holder ").find(".view-pane").find(".pane-content");
-            editorPane.css("height", "100%");
-            var codemirror = $(" #editor-holder ").find(".view-pane").find(".pane-content").children().eq(1);
-            codemirror.css("height", "100%");
+
             $iframe.hide();
         }
     }
@@ -428,6 +420,7 @@ define(function (require, exports, module) {
         root.on("click", "#markdown-reflow", function () {
             Handler.reflow();
         });
+
     }
 
     function showBar() {
@@ -436,6 +429,7 @@ define(function (require, exports, module) {
                 Strings: Strings
             };
             toolBar = new ModalBar(Mustache.render(_markdownBarTemplate, templateVars), false, false);
+
             registerCallbacks(toolBar);
             cmdToolbar.setChecked(true);
 
@@ -530,8 +524,6 @@ define(function (require, exports, module) {
     KeyBindingManager.addBinding(PARAGRAPH_COMMAND_ID, KeyboardPrefs.paragraph);
     KeyBindingManager.addBinding(REFLOW_COMMAND_ID, KeyboardPrefs.reflow);
 
-
-
     ExtensionUtils.loadStyleSheet(module, "styles/styles.css");
     ExtensionUtils.loadStyleSheet(module, "styles/octicons.css");
     barShouldShow = true;
@@ -539,19 +531,6 @@ define(function (require, exports, module) {
     activeEditorChangeHandler(null, EditorManager.getActiveEditor(), null);
     EditorManager.on("activeEditorChange", activeEditorChangeHandler);
 
-    var editor = $(" #editor-holder");
-    editor.css("display", "block");
-    //TODO: update the code in workspace manager to handle code editor height adjustment in initial rendering
-    WorkspaceManager.recomputeLayout(true);
-    //editor height gets adjusted after any operation including toggling, resizing
-    editor.css("height", "82%");     //temporary height fix
-
-    editor.css("overflow", "hidden");
-
-    var editorPane = $(" #editor-holder ").find(".view-pane").find(".pane-content");
-    editorPane.css("height", "100%");
-    var codemirror = $(" #editor-holder ").find(".view-pane").find(".pane-content").children().eq(1);
-    codemirror.css("height", "100%");
 
     // Debounce event callback to avoid excess overhead
     // Update preview 300 ms ofter document change
@@ -594,6 +573,7 @@ define(function (require, exports, module) {
     // Listen for resize events
     WorkspaceManager.on("workspaceUpdateLayout", _resizeIframe);
     $("#sidebar").on("panelCollapsed panelExpanded panelResizeUpdate", _resizeIframe);
+
 
 });
 
