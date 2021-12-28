@@ -625,9 +625,7 @@ define({
     "CMD_SWITCH_LANGUAGE": "Switch Language",
     "CMD_RUN_UNIT_TESTS": "Run Tests",
     "CMD_SHOW_PERF_DATA": "Show Performance Data",
-    "CMD_ENABLE_NODE_DEBUGGER": "Enable Node Debugger",
-    "CMD_LOG_NODE_STATE": "Log Node State to Console",
-    "CMD_RESTART_NODE": "Restart Node",
+    "CMD_ENABLE_LOGGING": "Enable detailed logs",
     "CMD_SHOW_ERRORS_IN_STATUS_BAR": "Show Errors in Status Bar",
     "CMD_OPEN_BRACKETS_SOURCE": "Open {APP_NAME} Source",
 

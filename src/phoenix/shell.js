@@ -56,14 +56,25 @@ if(!window.appshell){
 }
 
 // logger setup
-const urlParams = new URLSearchParams(window.location.search);
-const logToConsoleOverride = urlParams.get('logToConsole');
-const logToConsolePref = localStorage.getItem("logToConsole");
-
-if((logToConsoleOverride && logToConsoleOverride.toLowerCase() === 'false')
-    || (!logToConsoleOverride && !logToConsolePref)
-    || (logToConsolePref && logToConsolePref.toLowerCase() === 'false')){
-    console.info = console.log = function () {
-        // swallow log events
-    };
+function swallowLogs() {
+    // Do nothing
 }
+const savedLoggingFn = console.log;
+const savedInfoFn = console.info;
+
+window.setupLogging = function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const logToConsoleOverride = urlParams.get('logToConsole');
+    const logToConsolePref = localStorage.getItem("logToConsole");
+    if((logToConsoleOverride && logToConsoleOverride.toLowerCase() === 'true')
+        || (logToConsolePref && logToConsolePref.toLowerCase() === 'true' && !logToConsoleOverride)){
+        console.log= savedLoggingFn;
+        console.info= savedInfoFn;
+        return true;
+    } else {
+        console.info = console.log = swallowLogs;
+        return false;
+    }
+};
+
+window.setupLogging();
