@@ -41,6 +41,7 @@ define(function (require, exports, module) {
         WorkingSetView         = brackets.getModule("project/WorkingSetView"),
         ExtensionManager       = brackets.getModule("extensibility/ExtensionManager"),
         Mustache               = brackets.getModule("thirdparty/mustache/mustache"),
+        Locales                = brackets.getModule("nls/strings"),
         ErrorNotification      = require("ErrorNotification"),
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
@@ -161,65 +162,58 @@ define(function (require, exports, module) {
     }
 
     function handleSwitchLanguage() {
-        var stringsPath = FileUtils.getNativeBracketsDirectoryPath() + "/nls";
+        const supportedLocales = Object.keys(Locales);
 
-        FileSystem.getDirectoryForPath(stringsPath).getContents(function (err, entries) {
-            if (!err) {
-                var $dialog,
-                    $submit,
-                    $select,
-                    locale,
-                    curLocale = (brackets.isLocaleDefault() ? null : brackets.getLocale()),
-                    languages = [];
+        var $dialog,
+            $submit,
+            $select,
+            locale,
+            curLocale = (brackets.isLocaleDefault() ? null : brackets.getLocale()),
+            languages = [];
 
-                var setLanguage = function (event) {
-                    locale = $select.val();
-                    $submit.prop("disabled", locale === (curLocale || ""));
-                };
+        var setLanguage = function (event) {
+            locale = $select.val();
+            $submit.prop("disabled", locale === (curLocale || ""));
+        };
 
-                // inspect all children of dirEntry
-                entries.forEach(function (entry) {
-                    if (entry.isDirectory) {
-                        var match = entry.name.match(/^([a-z]{2})(-[a-z]{2})?$/);
+        for(let supportedLocale of supportedLocales){
+            var match = supportedLocale.match(/^([a-z]{2})(-[a-z]{2})?$/);
 
-                        if (match) {
-                            var language = entry.name,
-                                label = match[1];
+            if (match) {
+                var language = supportedLocale,
+                    label = match[1];
 
-                            if (match[2]) {
-                                label += match[2].toUpperCase();
-                            }
+                if (match[2]) {
+                    label += match[2].toUpperCase();
+                }
 
-                            languages.push({label: LocalizationUtils.getLocalizedLabel(label), language: language});
-                        }
-                    }
-                });
-                // add English (US), which is the root folder and should be sorted as well
-                languages.push({label: LocalizationUtils.getLocalizedLabel("en"),  language: "en"});
+                languages.push({label: LocalizationUtils.getLocalizedLabel(label), language: language});
+            }
+        }
+        // add English (US), which is the root folder and should be sorted as well
+        languages.push({label: LocalizationUtils.getLocalizedLabel("en"),  language: "en"});
 
-                // sort the languages via their display name
-                languages.sort(function (lang1, lang2) {
-                    return lang1.label.localeCompare(lang2.label);
-                });
+        // sort the languages via their display name
+        languages.sort(function (lang1, lang2) {
+            return lang1.label.localeCompare(lang2.label);
+        });
 
-                // add system default (which is placed on the very top)
-                languages.unshift({label: Strings.LANGUAGE_SYSTEM_DEFAULT, language: null});
+        // add system default (which is placed on the very top)
+        languages.unshift({label: Strings.LANGUAGE_SYSTEM_DEFAULT, language: null});
 
-                var template = Mustache.render(LanguageDialogTemplate, {languages: languages, Strings: Strings});
-                Dialogs.showModalDialogUsingTemplate(template).done(function (id) {
-                    if (id === Dialogs.DIALOG_BTN_OK && locale !== curLocale) {
-                        brackets.setLocale(locale);
-                        CommandManager.execute(Commands.APP_RELOAD);
-                    }
-                });
-
-                $dialog = $(".switch-language.instance");
-                $submit = $dialog.find(".dialog-button[data-button-id='" + Dialogs.DIALOG_BTN_OK + "']");
-                $select = $dialog.find("select");
-
-                $select.on("change", setLanguage).val(curLocale);
+        var template = Mustache.render(LanguageDialogTemplate, {languages: languages, Strings: Strings});
+        Dialogs.showModalDialogUsingTemplate(template).done(function (id) {
+            if (id === Dialogs.DIALOG_BTN_OK && locale !== curLocale) {
+                brackets.setLocale(locale);
+                CommandManager.execute(Commands.APP_RELOAD);
             }
         });
+
+        $dialog = $(".switch-language.instance");
+        $submit = $dialog.find(".dialog-button[data-button-id='" + Dialogs.DIALOG_BTN_OK + "']");
+        $select = $dialog.find("select");
+
+        $select.on("change", setLanguage).val(curLocale);
     }
 
     function toggleErrorNotification(bool) {
