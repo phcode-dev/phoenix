@@ -625,7 +625,7 @@ define({
     "CMD_SWITCH_LANGUAGE": "Switch Language",
     "CMD_RUN_UNIT_TESTS": "Run Tests",
     "CMD_SHOW_PERF_DATA": "Show Performance Data",
-    "CMD_ENABLE_LOGGING": "Enable detailed logs",
+    "CMD_ENABLE_LOGGING": "Enable Detailed Logs",
     "CMD_SHOW_ERRORS_IN_STATUS_BAR": "Show Errors in Status Bar",
     "CMD_OPEN_BRACKETS_SOURCE": "Open {APP_NAME} Source",
 
