@@ -42,7 +42,6 @@ define(function (require, exports, module) {
         ExtensionManager       = brackets.getModule("extensibility/ExtensionManager"),
         Mustache               = brackets.getModule("thirdparty/mustache/mustache"),
         ErrorNotification      = require("ErrorNotification"),
-        NodeDebugUtils         = require("NodeDebugUtils"),
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
 
@@ -72,9 +71,7 @@ define(function (require, exports, module) {
         DEBUG_RELOAD_WITHOUT_USER_EXTS        = "debug.reloadWithoutUserExts",
         DEBUG_NEW_BRACKETS_WINDOW             = "debug.newBracketsWindow",
         DEBUG_SWITCH_LANGUAGE                 = "debug.switchLanguage",
-        DEBUG_ENABLE_NODE_DEBUGGER            = "debug.enableNodeDebugger",
-        DEBUG_LOG_NODE_STATE                  = "debug.logNodeState",
-        DEBUG_RESTART_NODE                    = "debug.restartNode",
+        DEBUG_ENABLE_LOGGING                  = "debug.enableLogging",
         DEBUG_SHOW_ERRORS_IN_STATUS_BAR       = "debug.showErrorsInStatusBar",
         DEBUG_OPEN_BRACKETS_SOURCE            = "debug.openBracketsSource",
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
@@ -725,6 +722,22 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    function _updateLogToConsoleMenuItemChecked() {
+        const isLogging = window.setupLogging();
+        CommandManager.get(DEBUG_ENABLE_LOGGING).setChecked(isLogging);
+    }
+
+    function _handleLogging() {
+        let logToConsolePref = localStorage.getItem("logToConsole") || "false";
+        if(logToConsolePref.toLowerCase() === 'true'){
+            logToConsolePref = 'false';
+        } else {
+            logToConsolePref = 'true';
+        }
+        localStorage.setItem("logToConsole", logToConsolePref);
+        _updateLogToConsoleMenuItemChecked();
+    }
+
     ExtensionManager.on("statusChange", function (id) {
         // Seems like an extension(s) got installed.
         // Need to recompute the default prefs.
@@ -753,9 +766,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_SHOW_ERRORS_IN_STATUS_BAR, DEBUG_SHOW_ERRORS_IN_STATUS_BAR, toggleErrorNotification);
 
     // Node-related Commands
-    CommandManager.register(Strings.CMD_ENABLE_NODE_DEBUGGER, DEBUG_ENABLE_NODE_DEBUGGER,   NodeDebugUtils.enableDebugger);
-    CommandManager.register(Strings.CMD_LOG_NODE_STATE,       DEBUG_LOG_NODE_STATE,         NodeDebugUtils.logNodeState);
-    CommandManager.register(Strings.CMD_RESTART_NODE,         DEBUG_RESTART_NODE,           NodeDebugUtils.restartNode);
+    CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
 
@@ -780,13 +791,12 @@ define(function (require, exports, module) {
     menu.addMenuItem(DEBUG_SHOW_PERF_DATA);
     menu.addMenuItem(DEBUG_OPEN_BRACKETS_SOURCE);
     menu.addMenuDivider();
-    menu.addMenuItem(DEBUG_ENABLE_NODE_DEBUGGER);
-    menu.addMenuItem(DEBUG_LOG_NODE_STATE);
-    menu.addMenuItem(DEBUG_RESTART_NODE);
+    menu.addMenuItem(DEBUG_ENABLE_LOGGING);
     menu.addMenuItem(DEBUG_SHOW_ERRORS_IN_STATUS_BAR);
     menu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW); // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
     menu.addMenuItem(Commands.FILE_OPEN_KEYMAP);      // this command is defined in core, but exposed only in Debug menu for now
 
+    _updateLogToConsoleMenuItemChecked();
     // exposed for convenience, but not official API
     exports._runUnitTests = _runUnitTests;
 });
