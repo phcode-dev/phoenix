@@ -1,13 +1,4 @@
 {
-    "showDeveloperTools":  [
-        {
-            "key": "F12"
-        },
-        {
-            "key": "Cmd-Opt-I",
-            "platform": "mac"
-        }
-    ],
     "refreshWindow":  [
         {
             "key": "F5"
