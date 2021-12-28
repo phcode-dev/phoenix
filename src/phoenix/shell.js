@@ -54,3 +54,16 @@ Phoenix.app = {
 if(!window.appshell){
     window.appshell = Phoenix;
 }
+
+// logger setup
+const urlParams = new URLSearchParams(window.location.search);
+const logToConsoleOverride = urlParams.get('logToConsole');
+const logToConsolePref = localStorage.getItem("logToConsole");
+
+if((logToConsoleOverride && logToConsoleOverride.toLowerCase() === 'false')
+    || (!logToConsoleOverride && !logToConsolePref)
+    || (logToConsolePref && logToConsolePref.toLowerCase() === 'false')){
+    console.info = console.log = function () {
+        // swallow log events
+    };
+}
