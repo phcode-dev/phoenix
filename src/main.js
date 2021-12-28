@@ -64,7 +64,7 @@ if (window.location.search.indexOf("testEnvironment") > -1) {
      * extension).
      */
     require.config({
-        locale: window.localStorage.getItem("locale") || (typeof (brackets) !== "undefined" ? brackets.app.language : window.navigator.language)
+        locale: window.localStorage.getItem("locale") || window.navigator.language
     });
 }
 
