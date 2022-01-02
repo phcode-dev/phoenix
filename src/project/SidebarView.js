@@ -47,7 +47,6 @@ define(function (require, exports, module) {
     // These vars are initialized by the htmlReady handler
     // below since they refer to DOM elements
     var $sidebar,
-        $gearMenu,
         $splitViewMenu,
         $projectTitle,
         $projectFilesContainer,
@@ -178,7 +177,6 @@ define(function (require, exports, module) {
     // Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
         $sidebar                  = $("#sidebar");
-        $gearMenu                 = $sidebar.find(".working-set-option-btn");
         $splitViewMenu            = $sidebar.find(".working-set-splitview-btn");
         $projectTitle             = $sidebar.find("#project-title");
         $projectFilesContainer    = $sidebar.find("#project-files-container");
@@ -241,7 +239,6 @@ define(function (require, exports, module) {
         _updateUIStates();
 
         // Tooltips
-        $gearMenu.attr("title", Strings.GEAR_MENU_TOOLTIP);
         $splitViewMenu.attr("title", Strings.GEAR_MENU_TOOLTIP);
     });
 

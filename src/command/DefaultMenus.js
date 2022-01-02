@@ -236,13 +236,6 @@ define(function (require, exports, module) {
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_CLOSE);
 
-        var workingset_configuration_menu = Menus.registerContextMenu(Menus.ContextMenuIds.WORKING_SET_CONFIG_MENU);
-        workingset_configuration_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_ADDED);
-        workingset_configuration_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_NAME);
-        workingset_configuration_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_TYPE);
-        workingset_configuration_menu.addMenuDivider();
-        workingset_configuration_menu.addMenuItem(Commands.CMD_WORKING_SORT_TOGGLE_AUTO);
-
         var splitview_menu = Menus.registerContextMenu(Menus.ContextMenuIds.SPLITVIEW_MENU);
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_NONE);
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_VERTICAL);
@@ -330,9 +323,6 @@ define(function (require, exports, module) {
         $("#project-files-container").on("contextmenu", function (e) {
             project_cmenu.open(e);
         });
-
-        // Dropdown menu for workspace sorting
-        Menus.ContextMenu.assignContextMenuToSelector(".working-set-option-btn", workingset_configuration_menu);
 
         // Dropdown menu for view splitting
         Menus.ContextMenu.assignContextMenuToSelector(".working-set-splitview-btn", splitview_menu);
