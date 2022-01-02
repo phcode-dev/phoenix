@@ -76,8 +76,7 @@ define(function (require, exports, module) {
     * @private
     */
     function _hasNavBackFrames() {
-        return (jumpForwardStack.length > 0 && jumpBackwardStack.length > 0)
-            || (!jumpForwardStack.length && jumpBackwardStack.length > 1);
+        return (jumpBackwardStack.length > 0);
     }
 
     function _hasNavForwardFrames() {
@@ -560,6 +559,7 @@ define(function (require, exports, module) {
             console.log("back");
             _navigateBack();
         }
+        MainViewManager.focusActivePane();
     }
 
     function _navigateForwardClicked() {
@@ -567,6 +567,7 @@ define(function (require, exports, module) {
             console.log("forward");
             _navigateForward();
         }
+        MainViewManager.focusActivePane();
     }
 
     function _updateNavButtons() {
