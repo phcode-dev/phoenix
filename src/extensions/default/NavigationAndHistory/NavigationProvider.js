@@ -80,13 +80,17 @@ define(function (require, exports, module) {
             || (!jumpForwardStack.length && jumpBackwardStack.length > 1);
     }
 
+    function _hasNavForwardFrames() {
+        return jumpForwardStack.length > 0;
+    }
+
    /**
     * Function to enable/disable navigation command based on cursor positions availability.
     * @private
     */
     function _validateNavigationCmds() {
         commandJumpBack.setEnabled(_hasNavBackFrames());
-        commandJumpFwd.setEnabled(jumpForwardStack.length > 0);
+        commandJumpFwd.setEnabled(_hasNavForwardFrames());
     }
 
    /**
@@ -551,9 +555,45 @@ define(function (require, exports, module) {
         });
     }
 
+    function _navigateBackClicked() {
+        if(_hasNavBackFrames()){
+            console.log("back");
+            _navigateBack();
+        }
+    }
+
+    function _navigateForwardClicked() {
+        if(_hasNavForwardFrames()){
+            console.log("forward");
+            _navigateForward();
+        }
+    }
+
+    function _updateNavButtons() {
+        // Disbale the buttons if we cant nav back or forward
+    }
+
+    function _setupNavigationButtons() {
+        let $sidebar = $("#sidebar");
+        $sidebar.prepend("<div id=\"navBackButton\" class=\"nav-back-btn btn-alt-quiet\"></div>\n" +
+            "            <div id=\"navForwardButton\" class=\"nav-forward-btn btn-alt-quiet\"></div>");
+        let $navback = $sidebar.find("#navBackButton"),
+            $navForward = $sidebar.find("#navForwardButton");
+
+        $navback.on("click", function () {
+            _navigateBackClicked();
+        });
+
+        $navForward.on("click", function () {
+            _navigateForwardClicked();
+        });
+    }
+
+
     function init() {
         _initNavigationCommands();
         _initHandlers();
+        _setupNavigationButtons();
     }
 
     exports.init = init;
