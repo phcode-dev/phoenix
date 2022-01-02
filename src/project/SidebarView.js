@@ -111,14 +111,19 @@ define(function (require, exports, module) {
      * @private
      */
     function _updateWorkingSetState() {
+        let enabled = false;
+
         if (MainViewManager.getPaneCount() === 1 &&
                 MainViewManager.getWorkingSetSize(MainViewManager.ACTIVE_PANE) === 0) {
             $workingSetViewsContainer.hide();
-            $gearMenu.hide();
         } else {
             $workingSetViewsContainer.show();
-            $gearMenu.show();
+            enabled = true;
         }
+        CommandManager.get(Commands.CMD_WORKINGSET_SORT_BY_ADDED).setEnabled(enabled);
+        CommandManager.get(Commands.CMD_WORKINGSET_SORT_BY_NAME).setEnabled(enabled);
+        CommandManager.get(Commands.CMD_WORKINGSET_SORT_BY_TYPE).setEnabled(enabled);
+        CommandManager.get(Commands.CMD_WORKING_SORT_TOGGLE_AUTO).setEnabled(enabled);
     }
 
     /**
@@ -237,7 +242,7 @@ define(function (require, exports, module) {
 
         // Tooltips
         $gearMenu.attr("title", Strings.GEAR_MENU_TOOLTIP);
-        $splitViewMenu.attr("title", Strings.SPLITVIEW_MENU_TOOLTIP);
+        $splitViewMenu.attr("title", Strings.GEAR_MENU_TOOLTIP);
     });
 
     ProjectManager.on("projectOpen", _updateProjectTitle);
