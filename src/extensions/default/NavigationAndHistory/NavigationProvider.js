@@ -581,6 +581,9 @@ define(function (require, exports, module) {
         let $navback = $sidebar.find("#navBackButton"),
             $navForward = $sidebar.find("#navForwardButton");
 
+        $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
+        $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
+
         $navback.on("click", function () {
             _navigateBackClicked();
         });
