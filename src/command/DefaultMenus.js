@@ -247,6 +247,12 @@ define(function (require, exports, module) {
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_NONE);
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_VERTICAL);
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_HORIZONTAL);
+        splitview_menu.addMenuDivider();
+        splitview_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_ADDED);
+        splitview_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_NAME);
+        splitview_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_TYPE);
+        splitview_menu.addMenuDivider();
+        splitview_menu.addMenuItem(Commands.CMD_WORKING_SORT_TOGGLE_AUTO);
 
         var project_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.PROJECT_MENU);
         project_cmenu.addMenuItem(Commands.FILE_NEW);
