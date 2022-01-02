@@ -436,6 +436,10 @@ define({
     "CMD_SHOW_IN_OS": "Show in OS",
     "CMD_SWITCH_PANE_FOCUS": "Switch Pane Focus",
 
+    // Debug menu commands
+    "CMD_OPEN_VFS": "Open Virtual File System",
+    "CMD_OPEN_VIRTUAL_SERVER": "Open Virtual Server",
+
     // Help menu commands
     "HELP_MENU": "Help",
     "CMD_CHECK_FOR_UPDATE": "Check for Updates",

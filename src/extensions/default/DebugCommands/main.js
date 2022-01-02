@@ -42,6 +42,7 @@ define(function (require, exports, module) {
         ExtensionManager       = brackets.getModule("extensibility/ExtensionManager"),
         Mustache               = brackets.getModule("thirdparty/mustache/mustache"),
         Locales                = brackets.getModule("nls/strings"),
+        ProjectManager         = brackets.getModule("project/ProjectManager"),
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
 
@@ -71,6 +72,8 @@ define(function (require, exports, module) {
         DEBUG_NEW_BRACKETS_WINDOW             = "debug.newBracketsWindow",
         DEBUG_SWITCH_LANGUAGE                 = "debug.switchLanguage",
         DEBUG_ENABLE_LOGGING                  = "debug.enableLogging",
+        DEBUG_OPEN_VFS                        = "debug.openVFS",
+        DEBUG_OPEN_VIRTUAL_SERVER             = "debug.openVirtualServer",
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
 
     // define a preference to turn off opening preferences in split-view.
@@ -701,6 +704,14 @@ define(function (require, exports, module) {
         recomputeDefaultPrefs = true;
     });
 
+    function _openVFS() {
+        ProjectManager.openProject("/");
+    }
+
+    function _openVirtualServer() {
+        window.open(window.fsServerUrl);
+    }
+
     /* Register all the command handlers */
     CommandManager.register(Strings.CMD_REFRESH_WINDOW,             DEBUG_REFRESH_WINDOW,           handleReload);
     CommandManager.register(Strings.CMD_RELOAD_WITHOUT_USER_EXTS,   DEBUG_RELOAD_WITHOUT_USER_EXTS, handleReloadWithoutUserExts);
@@ -713,8 +724,9 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_SWITCH_LANGUAGE,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage);
 
-    // Node-related Commands
     CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
+    CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
+    CommandManager.register(Strings.CMD_OPEN_VIRTUAL_SERVER, DEBUG_OPEN_VIRTUAL_SERVER,   _openVirtualServer);
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
     /*
@@ -731,6 +743,9 @@ define(function (require, exports, module) {
     menu.addMenuItem(DEBUG_SHOW_PERF_DATA);
     menu.addMenuDivider();
     menu.addMenuItem(DEBUG_ENABLE_LOGGING);
+    menu.addMenuItem(DEBUG_OPEN_VFS);
+    menu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER);
+    menu.addMenuDivider();
     menu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW); // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
     menu.addMenuItem(Commands.FILE_OPEN_KEYMAP);      // this command is defined in core, but exposed only in Debug menu for now
 
