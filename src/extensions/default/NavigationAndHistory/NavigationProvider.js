@@ -570,6 +570,10 @@ define(function (require, exports, module) {
         MainViewManager.focusActivePane();
     }
 
+    function _showInFileTreeClicked() {
+        CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+    }
+
     function _updateNavButtons() {
         // Disbale the buttons if we cant nav back or forward
     }
@@ -577,12 +581,15 @@ define(function (require, exports, module) {
     function _setupNavigationButtons() {
         let $sidebar = $("#sidebar");
         $sidebar.prepend("<div id=\"navBackButton\" class=\"nav-back-btn btn-alt-quiet\"></div>\n" +
-            "            <div id=\"navForwardButton\" class=\"nav-forward-btn btn-alt-quiet\"></div>");
+            "            <div id=\"navForwardButton\" class=\"nav-forward-btn btn-alt-quiet\"></div>\n" +
+            "            <div id=\"showInfileTree\" class=\"show-in-file-tree-btn btn-alt-quiet\"></div>");
         let $navback = $sidebar.find("#navBackButton"),
-            $navForward = $sidebar.find("#navForwardButton");
+            $navForward = $sidebar.find("#navForwardButton"),
+            $showInTree = $sidebar.find("#showInfileTree");
 
         $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
         $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
+        $showInTree.attr("title", Strings.CMD_SHOW_IN_TREE);
 
         $navback.on("click", function () {
             _navigateBackClicked();
@@ -590,6 +597,10 @@ define(function (require, exports, module) {
 
         $navForward.on("click", function () {
             _navigateForwardClicked();
+        });
+
+        $showInTree.on("click", function () {
+            _showInFileTreeClicked();
         });
     }
 
