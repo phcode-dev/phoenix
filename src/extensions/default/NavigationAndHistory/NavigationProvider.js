@@ -51,6 +51,9 @@ define(function (require, exports, module) {
     var NAV_FRAME_CAPTURE_LATENCY = 2000,
         MAX_NAV_FRAMES_COUNT = 30;
 
+    let $navback = null,
+        $navForward = null;
+
    /**
     * Contains list of most recently known cursor positions.
     * @private
@@ -83,6 +86,22 @@ define(function (require, exports, module) {
         return jumpForwardStack.length > 0;
     }
 
+    function _setEnableBackNavButton(enabled) {
+        if(enabled){
+            $navback.removeClass('nav-back-btn-disabled').addClass('nav-back-btn');
+        } else {
+            $navback.removeClass('nav-back-btn').addClass('nav-back-btn-disabled');
+        }
+    }
+
+    function _setEnableForwardNavButton(enabled) {
+        if(enabled){
+            $navForward.removeClass('nav-forward-btn-disabled').addClass('nav-forward-btn');
+        } else {
+            $navForward.removeClass('nav-forward-btn').addClass('nav-forward-btn-disabled');
+        }
+    }
+
    /**
     * Function to enable/disable navigation command based on cursor positions availability.
     * @private
@@ -90,6 +109,8 @@ define(function (require, exports, module) {
     function _validateNavigationCmds() {
         commandJumpBack.setEnabled(_hasNavBackFrames());
         commandJumpFwd.setEnabled(_hasNavForwardFrames());
+        _setEnableBackNavButton(_hasNavBackFrames());
+        _setEnableForwardNavButton(_hasNavForwardFrames());
     }
 
    /**
@@ -325,6 +346,11 @@ define(function (require, exports, module) {
                 }
 
                 currentEditPos = new NavigationFrame(event.target, selectionObj);
+                let lastBack = jumpBackwardStack.pop();
+                if(lastBack!== currentEditPos){
+                    // make sure that we don't push in duplicates
+                    jumpBackwardStack.push(lastBack);
+                }
                 jumpBackwardStack.push(currentEditPos);
                 _validateNavigationCmds();
                 activePosNotSynced = false;
@@ -338,29 +364,21 @@ define(function (require, exports, module) {
     * Command handler to navigate backward
     */
     function _navigateBack() {
-        if (!jumpForwardStack.length) {
-            if (activePosNotSynced) {
-                currentEditPos = new NavigationFrame(EditorManager.getCurrentFullEditor(), {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
-                jumpForwardStack.push(currentEditPos);
-            }
-        }
-
-        var navFrame = jumpBackwardStack.pop();
+        let navFrame = jumpBackwardStack.pop();
+        currentEditPos = new NavigationFrame(EditorManager.getCurrentFullEditor(),
+            {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
 
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
-        if (navFrame && navFrame === currentEditPos) {
-            jumpForwardStack.push(navFrame);
-            _validateNavigationCmds();
-            CommandManager.execute(NAVIGATION_JUMP_BACK);
-            return;
+        while (navFrame && navFrame === currentEditPos) {
+            navFrame = jumpBackwardStack.pop();
         }
 
         if (navFrame) {
             // We will check for the file existence now, if it doesn't exist we will jump back again
             // but discard the popped frame as invalid.
             _validateFrame(navFrame).done(function () {
-                jumpForwardStack.push(navFrame);
+                jumpForwardStack.push(currentEditPos);
                 navFrame.goTo();
                 currentEditPos = navFrame;
             }).fail(function () {
@@ -368,6 +386,8 @@ define(function (require, exports, module) {
             }).always(function () {
                 _validateNavigationCmds();
             });
+        } else {
+            jumpBackwardStack.push(currentEditPos);
         }
     }
 
@@ -375,7 +395,9 @@ define(function (require, exports, module) {
     * Command handler to navigate forward
     */
     function _navigateForward() {
-        var navFrame = jumpForwardStack.pop();
+        let navFrame = jumpForwardStack.pop();
+        currentEditPos = new NavigationFrame(EditorManager.getCurrentFullEditor(),
+           {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
 
         if (!navFrame) {
             return;
@@ -383,26 +405,24 @@ define(function (require, exports, module) {
 
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
-        if (navFrame === currentEditPos) {
-            jumpBackwardStack.push(navFrame);
-            _validateNavigationCmds();
-            CommandManager.execute(NAVIGATION_JUMP_FWD);
-            return;
+        while (navFrame === currentEditPos) {
+            navFrame = jumpForwardStack.pop();
         }
 
-        // We will check for the file existence now, if it doesn't exist we will jump back again
-        // but discard the popped frame as invalid.
-        _validateFrame(navFrame).done(function () {
-            jumpBackwardStack.push(navFrame);
-            navFrame.goTo();
-            currentEditPos = navFrame;
-        }).fail(function () {
-            _validateNavigationCmds();
-            CommandManager.execute(NAVIGATION_JUMP_FWD);
-        }).always(function () {
-            _validateNavigationCmds();
-        });
-
+        if(navFrame){
+            // We will check for the file existence now, if it doesn't exist we will jump back again
+            // but discard the popped frame as invalid.
+            _validateFrame(navFrame).done(function () {
+                jumpBackwardStack.push(currentEditPos);
+                navFrame.goTo();
+                currentEditPos = navFrame;
+            }).fail(function () {
+                _validateNavigationCmds();
+                CommandManager.execute(NAVIGATION_JUMP_FWD);
+            }).always(function () {
+                _validateNavigationCmds();
+            });
+        }
     }
 
    /**
@@ -559,6 +579,7 @@ define(function (require, exports, module) {
             console.log("back");
             _navigateBack();
         }
+        _validateNavigationCmds();
         MainViewManager.focusActivePane();
     }
 
@@ -567,6 +588,7 @@ define(function (require, exports, module) {
             console.log("forward");
             _navigateForward();
         }
+        _validateNavigationCmds();
         MainViewManager.focusActivePane();
     }
 
@@ -574,18 +596,15 @@ define(function (require, exports, module) {
         CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
     }
 
-    function _updateNavButtons() {
-        // Disbale the buttons if we cant nav back or forward
-    }
-
     function _setupNavigationButtons() {
         let $sidebar = $("#sidebar");
         $sidebar.prepend("<div id=\"navBackButton\" class=\"nav-back-btn btn-alt-quiet\"></div>\n" +
             "            <div id=\"navForwardButton\" class=\"nav-forward-btn btn-alt-quiet\"></div>\n" +
             "            <div id=\"showInfileTree\" class=\"show-in-file-tree-btn btn-alt-quiet\"></div>");
-        let $navback = $sidebar.find("#navBackButton"),
-            $navForward = $sidebar.find("#navForwardButton"),
-            $showInTree = $sidebar.find("#showInfileTree");
+        let $showInTree = $sidebar.find("#showInfileTree");
+        $navback = $sidebar.find("#navBackButton");
+        $navForward = $sidebar.find("#navForwardButton");
+
 
         $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
         $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
