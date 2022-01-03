@@ -49,7 +49,7 @@ define(function (require, exports, module) {
 
     // The latency time to capture an explicit cursor movement as a navigation frame
     var NAV_FRAME_CAPTURE_LATENCY = 2000,
-        MAX_NAV_FRAMES_COUNT = 30;
+        MAX_NAV_FRAMES_COUNT = 50;
 
     let $navback = null,
         $navForward = null;
@@ -330,6 +330,7 @@ define(function (require, exports, module) {
         }
         // Reset forward navigation stack if we are capturing a new event
         jumpForwardStack = [];
+       _validateNavigationCmds();
         if (captureTimer) {
             window.clearTimeout(captureTimer);
             captureTimer = null;
