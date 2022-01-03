@@ -348,7 +348,7 @@ define(function (require, exports, module) {
 
                 currentEditPos = new NavigationFrame(event.target, selectionObj);
                 let lastBack = jumpBackwardStack.pop();
-                if(lastBack!== currentEditPos){
+                if(lastBack && lastBack!== currentEditPos){
                     // make sure that we don't push in duplicates
                     jumpBackwardStack.push(lastBack);
                 }
