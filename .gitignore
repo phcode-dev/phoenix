@@ -13,7 +13,9 @@ Thumbs.db
 /src/JSUtils/node/node_modules
 
 # Thirdparty libs
+/src/thirdparty/licences
 /src/thirdparty/jszip.js
+/src/thirdparty/underscore-min.js
 
 # ignore files copied from node_modules to src/thirdparty
 # https://github.com/aicore/phoenix/issues/10
