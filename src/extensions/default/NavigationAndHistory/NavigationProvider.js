@@ -402,7 +402,7 @@ define(function (require, exports, module) {
    /**
     * Command handler to navigate backward
     */
-    function _navigateBack() {
+    function _navigateBack(skipCurrentFile) {
         let navFrame = jumpBackwardStack.pop();
         currentEditPos = new NavigationFrame(EditorManager.getCurrentFullEditor(),
             {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
@@ -412,7 +412,8 @@ define(function (require, exports, module) {
         while (navFrame && navFrame === currentEditPos
         ||(navFrame && navFrame.filePath === currentEditPos.filePath
             && _isSimilarSelection(navFrame.selections, currentEditPos.selections)
-            && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditPos.bookMarkIds))) {
+            && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditPos.bookMarkIds))
+        ||(skipCurrentFile && navFrame && navFrame.filePath === currentEditPos.filePath)) {
             navFrame = jumpBackwardStack.pop();
         }
 
@@ -436,7 +437,7 @@ define(function (require, exports, module) {
    /**
     * Command handler to navigate forward
     */
-    function _navigateForward() {
+    function _navigateForward(skipCurrentFile) {
         let navFrame = jumpForwardStack.pop();
         currentEditPos = new NavigationFrame(EditorManager.getCurrentFullEditor(),
            {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
@@ -450,7 +451,8 @@ define(function (require, exports, module) {
         while (navFrame === currentEditPos
         ||(navFrame && navFrame.filePath === currentEditPos.filePath
             && _isSimilarSelection(navFrame.selections ,currentEditPos.selections)
-            && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditPos.bookMarkIds))) {
+            && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditPos.bookMarkIds))
+        ||(skipCurrentFile && navFrame && navFrame.filePath === currentEditPos.filePath)) {
             navFrame = jumpForwardStack.pop();
         }
 
@@ -614,17 +616,17 @@ define(function (require, exports, module) {
         });
     }
 
-    function _navigateBackClicked() {
+    function _navigateBackClicked(evt) {
         if(_hasNavBackFrames()){
-            _navigateBack();
+            _navigateBack(evt.shiftKey);
         }
         _validateNavigationCmds();
         MainViewManager.focusActivePane();
     }
 
-    function _navigateForwardClicked() {
+    function _navigateForwardClicked(evt) {
         if(_hasNavForwardFrames()){
-            _navigateForward();
+            _navigateForward(evt.shiftKey);
         }
         _validateNavigationCmds();
         MainViewManager.focusActivePane();
@@ -648,17 +650,11 @@ define(function (require, exports, module) {
         $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
         $showInTree.attr("title", Strings.CMD_SHOW_IN_TREE);
 
-        $navback.on("click", function () {
-            _navigateBackClicked();
-        });
+        $navback.on("click", _navigateBackClicked);
 
-        $navForward.on("click", function () {
-            _navigateForwardClicked();
-        });
+        $navForward.on("click", _navigateForwardClicked);
 
-        $showInTree.on("click", function () {
-            _showInFileTreeClicked();
-        });
+        $showInTree.on("click", _showInFileTreeClicked);
     }
 
 
