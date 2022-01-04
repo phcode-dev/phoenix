@@ -48,7 +48,8 @@ define(function (require, exports, module) {
     var MAX_NAV_FRAMES_COUNT = 50;
 
     let $navback = null,
-        $navForward = null;
+        $navForward = null,
+        $searchNav = null;
 
    /**
     * Contains list of most recently known cursor positions.
@@ -636,25 +637,32 @@ define(function (require, exports, module) {
         CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
     }
 
+    function _findInFiles() {
+        CommandManager.execute(Commands.CMD_FIND_IN_FILES);
+    }
+
     function _setupNavigationButtons() {
         let $sidebar = $("#sidebar");
         $sidebar.prepend("<div id=\"navBackButton\" class=\"nav-back-btn btn-alt-quiet\"></div>\n" +
             "            <div id=\"navForwardButton\" class=\"nav-forward-btn btn-alt-quiet\"></div>\n" +
-            "            <div id=\"showInfileTree\" class=\"show-in-file-tree-btn btn-alt-quiet\"></div>");
+            "            <div id=\"showInfileTree\" class=\"show-in-file-tree-btn btn-alt-quiet\"></div>"+
+            "            <div id=\"searchNav\" class=\"search-nav-btn btn-alt-quiet\"></div>");
         let $showInTree = $sidebar.find("#showInfileTree");
         $navback = $sidebar.find("#navBackButton");
         $navForward = $sidebar.find("#navForwardButton");
+        $searchNav = $sidebar.find("#searchNav");
+        //CMD_FIND_IN_FILES
 
 
         $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
         $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
         $showInTree.attr("title", Strings.CMD_SHOW_IN_TREE);
+        $searchNav.attr("title", Strings.CMD_FIND_IN_FILES);
 
         $navback.on("click", _navigateBackClicked);
-
         $navForward.on("click", _navigateForwardClicked);
-
         $showInTree.on("click", _showInFileTreeClicked);
+        $searchNav.on("click", _findInFiles);
     }
 
 
