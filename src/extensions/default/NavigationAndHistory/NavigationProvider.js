@@ -18,7 +18,7 @@
  * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
-
+/*global _ */
 /**
  * Manages Editor navigation history to aid back/fwd movement between the edit positions
  * in the active project context. The navigation history is purely in-memory and not
@@ -48,8 +48,7 @@ define(function (require, exports, module) {
         NAVIGATION_JUMP_FWD       = "navigation.jump.fwd";
 
     // The latency time to capture an explicit cursor movement as a navigation frame
-    var NAV_FRAME_CAPTURE_LATENCY = 2000,
-        MAX_NAV_FRAMES_COUNT = 50;
+    var MAX_NAV_FRAMES_COUNT = 50;
 
     let $navback = null,
         $navForward = null;
@@ -68,7 +67,6 @@ define(function (require, exports, module) {
     */
     var jumpForwardStack = [],
         activePosNotSynced = false,
-        captureTimer = null,
         currentEditPos = null,
         jumpInProgress = false,
         commandJumpBack,
@@ -323,7 +321,7 @@ define(function (require, exports, module) {
     *
     * @private
     */
-    function _recordJumpDef(event, selectionObj) {
+    function _recordJumpDef(event, selectionObj, force) {
         // Don't capture frames if we are navigating or document text is being refreshed(fileSync in progress)
         if (jumpInProgress || (event.target && event.target.document._refreshInProgress)) {
             return;
@@ -331,14 +329,10 @@ define(function (require, exports, module) {
         // Reset forward navigation stack if we are capturing a new event
         jumpForwardStack = [];
        _validateNavigationCmds();
-        if (captureTimer) {
-            window.clearTimeout(captureTimer);
-            captureTimer = null;
-        }
 
         // Ensure cursor activity has not happened because of arrow keys or edit
         if (selectionObj.origin !== "+move" && (!window.event || window.event.type !== "input")) {
-            captureTimer = window.setTimeout(function () {
+            let _recordCurrentPos = function () {
                 // Check if we have reached MAX_NAV_FRAMES_COUNT
                 // If yes, control overflow
                 if (jumpBackwardStack.length === MAX_NAV_FRAMES_COUNT) {
@@ -355,7 +349,11 @@ define(function (require, exports, module) {
                 jumpBackwardStack.push(currentEditPos);
                 _validateNavigationCmds();
                 activePosNotSynced = false;
-            }, NAV_FRAME_CAPTURE_LATENCY);
+            };
+            if(force || window.event.type === 'mousedown'){
+                // We should record nav history immediately is the user changes currently active doc by clicking files
+                _recordCurrentPos();
+            }
         } else {
             activePosNotSynced = true;
         }
@@ -371,7 +369,8 @@ define(function (require, exports, module) {
 
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
-        while (navFrame && navFrame === currentEditPos) {
+        while (navFrame && navFrame === currentEditPos
+        ||(navFrame.filePath === currentEditPos.filePath && _.isEqual(navFrame.selections ,currentEditPos.selections))) {
             navFrame = jumpBackwardStack.pop();
         }
 
@@ -406,7 +405,8 @@ define(function (require, exports, module) {
 
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
-        while (navFrame === currentEditPos) {
+        while (navFrame === currentEditPos
+        ||(navFrame.filePath === currentEditPos.filePath && _.isEqual(navFrame.selections ,currentEditPos.selections))) {
             navFrame = jumpForwardStack.pop();
         }
 
@@ -450,17 +450,6 @@ define(function (require, exports, module) {
         KeyBindingManager.addBinding(NAVIGATION_JUMP_BACK, KeyboardPrefs[NAVIGATION_JUMP_BACK]);
         KeyBindingManager.addBinding(NAVIGATION_JUMP_FWD, KeyboardPrefs[NAVIGATION_JUMP_FWD]);
         _initNavigationMenuItems();
-    }
-
-   /**
-    * Function to request a navigation frame creation explicitly.
-    * @private
-    */
-    function _captureFrame(editor) {
-        // Capture the active position now if it was not captured earlier
-        if ((activePosNotSynced || !jumpBackwardStack.length) && !jumpInProgress) {
-            jumpBackwardStack.push(new NavigationFrame(editor, {ranges: editor._codeMirror.listSelections()}));
-        }
     }
 
     /**
@@ -510,15 +499,15 @@ define(function (require, exports, module) {
     * Handles explicit content reset for a document caused by external changes
     * @private
     */
-    function _handleExternalChange(evt, doc) {
-        if (doc) {
-            _removeBackwardFramesForFile(doc.file);
-            _removeForwardFramesForFile(doc.file);
+    function _removeFileFromStack(file) {
+        if (file) {
+            _removeBackwardFramesForFile(file);
+            _removeForwardFramesForFile(file);
             _validateNavigationCmds();
         }
     }
 
-    function _handleProjectOpen() {
+    function _clearStacks() {
         jumpBackwardStack = [];
         jumpForwardStack = [];
     }
@@ -538,20 +527,30 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Function to request a navigation frame creation explicitly. Resets forward stack
+     * @private
+     */
+    function _captureBackFrame(editor) {
+        _recordJumpDef({target: editor},
+            {ranges: editor._codeMirror.listSelections()},
+            true);
+    }
+
+    /**
      * Handle Active Editor change to update navigation information
      * @private
      */
     function _handleActiveEditorChange(event, current, previous) {
         if (previous && previous._paneId) { // Handle only full editors
-            previous.off("beforeSelectionChange", _recordJumpDef);
-            _captureFrame(previous);
+            //previous.off("beforeSelectionChange", _recordJumpDef);
+            _captureBackFrame(previous);
             _validateNavigationCmds();
         }
 
         if (current && current._paneId) { // Handle only full editors
             activePosNotSynced = true;
-            current.off("beforeSelectionChange", _recordJumpDef);
-            current.on("beforeSelectionChange", _recordJumpDef);
+            //current.off("beforeSelectionChange", _recordJumpDef);
+            //current.on("beforeSelectionChange", _recordJumpDef);
             current.off("beforeDestroy", _handleEditorCleanup);
             current.on("beforeDestroy", _handleEditorCleanup);
         }
@@ -559,19 +558,18 @@ define(function (require, exports, module) {
 
     function _initHandlers() {
         EditorManager.on("activeEditorChange", _handleActiveEditorChange);
-        ProjectManager.on("projectOpen", _handleProjectOpen);
+        ProjectManager.on("projectOpen", _clearStacks);
         EditorManager.on("_fullEditorCreatedForDocument", function (event, document, editor) {
-            _handleExternalChange(event, {file: document.file});
             _reinstateMarkers(editor, jumpBackwardStack);
             _reinstateMarkers(editor, jumpForwardStack);
         });
         FileSystem.on("change", function (event, entry) {
             if (entry) {
-                _handleExternalChange(event, {file: entry});
+                _removeFileFromStack(entry);
             }
         });
         Document.on("_documentRefreshed", function (event, doc) {
-            _handleExternalChange(event, {file: doc.file});
+            //_removeFileFromStack(doc.file);
         });
     }
 
