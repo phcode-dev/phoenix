@@ -29,11 +29,8 @@ define(function (require, exports, module) {
 
     var Strings                 = brackets.getModule("strings"),
         MainViewManager         = brackets.getModule("view/MainViewManager"),
-        Document                = brackets.getModule("document/Document"),
         DocumentManager         = brackets.getModule("document/DocumentManager"),
-        DocumentCommandHandlers = brackets.getModule("document/DocumentCommandHandlers"),
         EditorManager           = brackets.getModule("editor/EditorManager"),
-        Editor                  = brackets.getModule("editor/Editor"),
         ProjectManager          = brackets.getModule("project/ProjectManager"),
         CommandManager          = brackets.getModule("command/CommandManager"),
         Commands                = brackets.getModule("command/Commands"),
@@ -157,7 +154,7 @@ define(function (require, exports, module) {
         this.paneId = editor._paneId;
         this._hash = editor.document.file._hash;
         this.uId = (new Date()).getTime();
-        this.selections = [];
+        this.selections = selectionObj.ranges || [];
         this.bookMarkIds = [];
         this._createMarkers(selectionObj.ranges);
     }
@@ -370,7 +367,9 @@ define(function (require, exports, module) {
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
         while (navFrame && navFrame === currentEditPos
-        ||(navFrame.filePath === currentEditPos.filePath && _.isEqual(navFrame.selections ,currentEditPos.selections))) {
+        ||(navFrame && navFrame.filePath === currentEditPos.filePath
+            && _.isEqual(navFrame.selections ,currentEditPos.selections)
+            && navFrame.bookMarkIds.length === currentEditPos.bookMarkIds.length)) {
             navFrame = jumpBackwardStack.pop();
         }
 
@@ -406,7 +405,9 @@ define(function (require, exports, module) {
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
         while (navFrame === currentEditPos
-        ||(navFrame.filePath === currentEditPos.filePath && _.isEqual(navFrame.selections ,currentEditPos.selections))) {
+        ||(navFrame && navFrame.filePath === currentEditPos.filePath
+            && _.isEqual(navFrame.selections ,currentEditPos.selections)
+            && navFrame.bookMarkIds.length === currentEditPos.bookMarkIds.length)) {
             navFrame = jumpForwardStack.pop();
         }
 
@@ -542,15 +543,15 @@ define(function (require, exports, module) {
      */
     function _handleActiveEditorChange(event, current, previous) {
         if (previous && previous._paneId) { // Handle only full editors
-            //previous.off("beforeSelectionChange", _recordJumpDef);
+            previous.off("beforeSelectionChange", _recordJumpDef);
             _captureBackFrame(previous);
             _validateNavigationCmds();
         }
 
         if (current && current._paneId) { // Handle only full editors
             activePosNotSynced = true;
-            //current.off("beforeSelectionChange", _recordJumpDef);
-            //current.on("beforeSelectionChange", _recordJumpDef);
+            current.off("beforeSelectionChange", _recordJumpDef);
+            current.on("beforeSelectionChange", _recordJumpDef);
             current.off("beforeDestroy", _handleEditorCleanup);
             current.on("beforeDestroy", _handleEditorCleanup);
         }
@@ -568,14 +569,10 @@ define(function (require, exports, module) {
                 _removeFileFromStack(entry);
             }
         });
-        Document.on("_documentRefreshed", function (event, doc) {
-            //_removeFileFromStack(doc.file);
-        });
     }
 
     function _navigateBackClicked() {
         if(_hasNavBackFrames()){
-            console.log("back");
             _navigateBack();
         }
         _validateNavigationCmds();
@@ -584,7 +581,6 @@ define(function (require, exports, module) {
 
     function _navigateForwardClicked() {
         if(_hasNavForwardFrames()){
-            console.log("forward");
             _navigateForward();
         }
         _validateNavigationCmds();
