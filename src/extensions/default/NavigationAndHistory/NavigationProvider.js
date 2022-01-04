@@ -347,7 +347,7 @@ define(function (require, exports, module) {
                 _validateNavigationCmds();
                 activePosNotSynced = false;
             };
-            if(force || window.event.type === 'mousedown'){
+            if(force || window.event.type === 'mousedown' || event.type === "beforeSelectionChange"){
                 // We should record nav history immediately is the user changes currently active doc by clicking files
                 _recordCurrentPos();
             }
@@ -356,8 +356,18 @@ define(function (require, exports, module) {
         }
     }
 
-    function _isRangerOverlap(x1, x2, y1, y2) {
-        return x1 <= y2 && y1 <= x2;
+    function _isRangerOverlap(prevStart, prevEnd, curStart, curEnd) {
+        if(prevStart>prevEnd){
+            let temp = prevStart;
+            prevStart = prevEnd;
+            prevEnd = temp;
+        }
+        if(curStart>curEnd){
+            let temp = curStart;
+            curStart = curEnd;
+            curEnd = temp;
+        }
+        return prevStart <= curEnd && curStart <= prevEnd;
     }
 
     function _isSimilarSelection(prev, current) {
@@ -365,17 +375,16 @@ define(function (require, exports, module) {
             return true;
         }
         if(prev.length === current.length && current.length === 1){
-            if(!prev[0].anchor) {debugger;}
             let startPrev = prev[0].anchor || prev[0].start,
                 endPrev = prev[0].head || prev[0].end,
                 startCur = current[0].anchor || current[0].start,
                 endCur = current[0].head || current[0].end;
-            let pc1= startPrev.ch, pl1= startPrev.line,
-                pc2= endPrev.ch, pl2= endPrev.line,
-                cc1= startCur.ch, cl1= startCur.line,
-                cc2= endCur.ch, cl2= endCur.line;
-            if(_isRangerOverlap(pl1, pl2, cl1, cl2)
-                && _isRangerOverlap(pc1, pc2, cc1, cc2)){
+            let psc= startPrev.ch, psl= startPrev.line,
+                pec= endPrev.ch, pel= endPrev.line,
+                csc= startCur.ch, csl= startCur.line,
+                cec= endCur.ch, cel= endCur.line;
+            if(_isRangerOverlap(psl, pel, csl, cel)
+                && _isRangerOverlap(psc, pec, csc, cec)){
                 return true;
             }
         }
