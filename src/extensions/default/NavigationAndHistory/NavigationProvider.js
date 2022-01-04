@@ -356,6 +356,40 @@ define(function (require, exports, module) {
         }
     }
 
+    function _isRangerOverlap(x1, x2, y1, y2) {
+        return x1 <= y2 && y1 <= x2;
+    }
+
+    function _isSimilarSelection(prev, current) {
+        if(_.isEqual(prev, current)){
+            return true;
+        }
+        if(prev.length === current.length && current.length === 1){
+            if(!prev[0].anchor) {debugger;}
+            let startPrev = prev[0].anchor || prev[0].start,
+                endPrev = prev[0].head || prev[0].end,
+                startCur = current[0].anchor || current[0].start,
+                endCur = current[0].head || current[0].end;
+            let pc1= startPrev.ch, pl1= startPrev.line,
+                pc2= endPrev.ch, pl2= endPrev.line,
+                cc1= startCur.ch, cl1= startCur.line,
+                cc2= endCur.ch, cl2= endCur.line;
+            if(_isRangerOverlap(pl1, pl2, cl1, cl2)
+                && _isRangerOverlap(pc1, pc2, cc1, cc2)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function _isSimilarBookmarks(prev, current) {
+        if(current.length === 0 && prev.length >= 1){
+            // on the same file, if there is no present book mark, then its as good as no book mark
+            return true;
+        }
+        return prev.length === current.length;
+    }
+
    /**
     * Command handler to navigate backward
     */
@@ -368,8 +402,8 @@ define(function (require, exports, module) {
         // if true, jump again
         while (navFrame && navFrame === currentEditPos
         ||(navFrame && navFrame.filePath === currentEditPos.filePath
-            && _.isEqual(navFrame.selections ,currentEditPos.selections)
-            && navFrame.bookMarkIds.length === currentEditPos.bookMarkIds.length)) {
+            && _isSimilarSelection(navFrame.selections, currentEditPos.selections)
+            && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditPos.bookMarkIds))) {
             navFrame = jumpBackwardStack.pop();
         }
 
@@ -406,8 +440,8 @@ define(function (require, exports, module) {
         // if true, jump again
         while (navFrame === currentEditPos
         ||(navFrame && navFrame.filePath === currentEditPos.filePath
-            && _.isEqual(navFrame.selections ,currentEditPos.selections)
-            && navFrame.bookMarkIds.length === currentEditPos.bookMarkIds.length)) {
+            && _isSimilarSelection(navFrame.selections ,currentEditPos.selections)
+            && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditPos.bookMarkIds))) {
             navFrame = jumpForwardStack.pop();
         }
 
