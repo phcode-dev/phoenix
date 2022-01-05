@@ -348,7 +348,7 @@ define(function (require, exports, module) {
                 _validateNavigationCmds();
                 activePosNotSynced = false;
             };
-            if(force || window.event.type === 'mousedown' || event.type === "beforeSelectionChange"){
+            if(force || (event && event.type === 'mousedown') || (event && event.type === "beforeSelectionChange")){
                 // We should record nav history immediately is the user changes currently active doc by clicking files
                 _recordCurrentPos();
             }
@@ -619,7 +619,7 @@ define(function (require, exports, module) {
 
     function _navigateBackClicked(evt) {
         if(_hasNavBackFrames()){
-            _navigateBack(evt.shiftKey);
+            _navigateBack(evt.shiftKey || (evt.type === "contextmenu"));
         }
         _validateNavigationCmds();
         MainViewManager.focusActivePane();
@@ -627,7 +627,7 @@ define(function (require, exports, module) {
 
     function _navigateForwardClicked(evt) {
         if(_hasNavForwardFrames()){
-            _navigateForward(evt.shiftKey);
+            _navigateForward(evt.shiftKey || (evt.type === "contextmenu"));
         }
         _validateNavigationCmds();
         MainViewManager.focusActivePane();
@@ -661,6 +661,8 @@ define(function (require, exports, module) {
 
         $navback.on("click", _navigateBackClicked);
         $navForward.on("click", _navigateForwardClicked);
+        $("#navBackButton").contextmenu(_navigateBackClicked);
+        $("#navForwardButton").contextmenu(_navigateForwardClicked);
         $showInTree.on("click", _showInFileTreeClicked);
         $searchNav.on("click", _findInFiles);
     }
