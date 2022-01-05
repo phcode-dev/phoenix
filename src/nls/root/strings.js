@@ -436,6 +436,10 @@ define({
     "CMD_SHOW_IN_OS": "Show in OS",
     "CMD_SWITCH_PANE_FOCUS": "Switch Pane Focus",
 
+    // Debug menu commands
+    "CMD_OPEN_VFS": "Open Virtual File System",
+    "CMD_OPEN_VIRTUAL_SERVER": "Open Virtual Server",
+
     // Help menu commands
     "HELP_MENU": "Help",
     "CMD_CHECK_FOR_UPDATE": "Check for Updates",
@@ -625,10 +629,7 @@ define({
     "CMD_SWITCH_LANGUAGE": "Switch Language",
     "CMD_RUN_UNIT_TESTS": "Run Tests",
     "CMD_SHOW_PERF_DATA": "Show Performance Data",
-    "CMD_ENABLE_NODE_DEBUGGER": "Enable Node Debugger",
-    "CMD_LOG_NODE_STATE": "Log Node State to Console",
-    "CMD_RESTART_NODE": "Restart Node",
-    "CMD_SHOW_ERRORS_IN_STATUS_BAR": "Show Errors in Status Bar",
+    "CMD_ENABLE_LOGGING": "Enable Detailed Logs",
     "CMD_OPEN_BRACKETS_SOURCE": "Open {APP_NAME} Source",
 
     "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Command Line Shortcut",

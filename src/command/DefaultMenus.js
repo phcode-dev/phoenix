@@ -66,7 +66,7 @@ define(function (require, exports, module) {
          */
         var menu;
         menu = Menus.addMenu(Strings.FILE_MENU, Menus.AppMenuBar.FILE_MENU);
-        menu.addMenuItem(Commands.FILE_NEW_UNTITLED);
+        menu.addMenuItem(Commands.FILE_NEW);
         menu.addMenuItem(Commands.FILE_NEW_FOLDER);
         menu.addMenuItem(Commands.FILE_OPEN_FOLDER);
         menu.addMenuItem(Commands.FILE_CLOSE);
@@ -187,27 +187,15 @@ define(function (require, exports, module) {
          * Help menu
          */
         menu = Menus.addMenu(Strings.HELP_MENU, Menus.AppMenuBar.HELP_MENU);
-        // menu.addMenuItem(Commands.HELP_CHECK_FOR_UPDATE);
-        //
-        // menu.addMenuDivider();
-        // if (brackets.config.how_to_use_url) {
-        //     menu.addMenuItem(Commands.HELP_HOW_TO_USE_BRACKETS);
-        // }
         if (brackets.config.support_url) {
             menu.addMenuItem(Commands.HELP_SUPPORT);
         }
         if (brackets.config.suggest_feature_url) {
             menu.addMenuItem(Commands.HELP_SUGGEST);
         }
-        // if (brackets.config.release_notes_url) {
-        //     menu.addMenuItem(Commands.HELP_RELEASE_NOTES);
-        // }
         if (brackets.config.get_involved_url) {
             menu.addMenuItem(Commands.HELP_GET_INVOLVED);
         }
-
-        // menu.addMenuDivider();
-        // menu.addMenuItem(Commands.HELP_SHOW_EXT_FOLDER);
 
         var hasAboutItem = true;
 
@@ -223,7 +211,7 @@ define(function (require, exports, module) {
         if (brackets.config.twitter_url) {
             menu.addMenuItem(Commands.HELP_TWITTER);
         }
-        // supress redundant about menu item in mac shell
+        menu.addMenuDivider();
         if (hasAboutItem) {
             menu.addMenuItem(Commands.HELP_ABOUT);
         }
@@ -248,17 +236,16 @@ define(function (require, exports, module) {
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_CLOSE);
 
-        var workingset_configuration_menu = Menus.registerContextMenu(Menus.ContextMenuIds.WORKING_SET_CONFIG_MENU);
-        workingset_configuration_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_ADDED);
-        workingset_configuration_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_NAME);
-        workingset_configuration_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_TYPE);
-        workingset_configuration_menu.addMenuDivider();
-        workingset_configuration_menu.addMenuItem(Commands.CMD_WORKING_SORT_TOGGLE_AUTO);
-
         var splitview_menu = Menus.registerContextMenu(Menus.ContextMenuIds.SPLITVIEW_MENU);
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_NONE);
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_VERTICAL);
         splitview_menu.addMenuItem(Commands.CMD_SPLITVIEW_HORIZONTAL);
+        splitview_menu.addMenuDivider();
+        splitview_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_ADDED);
+        splitview_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_NAME);
+        splitview_menu.addMenuItem(Commands.CMD_WORKINGSET_SORT_BY_TYPE);
+        splitview_menu.addMenuDivider();
+        splitview_menu.addMenuItem(Commands.CMD_WORKING_SORT_TOGGLE_AUTO);
 
         var project_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.PROJECT_MENU);
         project_cmenu.addMenuItem(Commands.FILE_NEW);
@@ -336,9 +323,6 @@ define(function (require, exports, module) {
         $("#project-files-container").on("contextmenu", function (e) {
             project_cmenu.open(e);
         });
-
-        // Dropdown menu for workspace sorting
-        Menus.ContextMenu.assignContextMenuToSelector(".working-set-option-btn", workingset_configuration_menu);
 
         // Dropdown menu for view splitting
         Menus.ContextMenu.assignContextMenuToSelector(".working-set-splitview-btn", splitview_menu);

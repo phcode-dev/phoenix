@@ -23,7 +23,6 @@ define(function (require, exports, module) {
 
 
     var AppInit         = brackets.getModule("utils/AppInit"),
-        FileSystem      = brackets.getModule("filesystem/FileSystem"),
         QuickOpen       = brackets.getModule("search/QuickOpen"),
         PathUtils       = brackets.getModule("thirdparty/path-utils/path-utils"),
         CommandManager  = brackets.getModule("command/CommandManager"),
@@ -31,8 +30,7 @@ define(function (require, exports, module) {
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         WorkingSetView = brackets.getModule("project/WorkingSetView"),
         MainViewManager = brackets.getModule("view/MainViewManager"),
-        Menus           = brackets.getModule("command/Menus"),
-        RemoteFile      = require("RemoteFile");
+        Menus           = brackets.getModule("command/Menus");
 
     var HTTP_PROTOCOL = "http:",
         HTTPS_PROTOCOL = "https:";
@@ -66,22 +64,55 @@ define(function (require, exports, module) {
         });
     }
 
+    function _getGitHubRawURL(urlObject) {
+        let pathVector = urlObject.pathname.split("/");
+        let BLOB_STRING_LOCATION = 3;
+        if(pathVector.length>BLOB_STRING_LOCATION+1 && pathVector[BLOB_STRING_LOCATION] === "blob"){
+            // Github blob URL of the form https://github.com/brackets-cont/brackets/blob/master/.gitignore
+            // transform to https://raw.githubusercontent.com/brackets-cont/brackets/master/.gitignore
+            pathVector.splice(BLOB_STRING_LOCATION,1);
+            let newPath = pathVector.join("/");
+            return `https://raw.githubusercontent.com${newPath}`;
+        }
+
+        return urlObject.href;
+    }
+
+    function _getGitLabRawURL(urlObject) {
+        // Gitlab does not specify CORS, so this wont work in phoenix, but will work in brackets for now
+        let pathVector = urlObject.pathname.split("/");
+        let BLOB_STRING_LOCATION = 4;
+        if(pathVector.length>BLOB_STRING_LOCATION+1 && pathVector[BLOB_STRING_LOCATION] === "blob"){
+            // GitLab blob URL of the form https://gitlab.com/gitlab-org/gitlab-foss/-/blob/master/.codeclimate.yml
+            // transform to https://gitlab.com/gitlab-org/gitlab-foss/-/raw/master/.codeclimate.yml
+            pathVector[BLOB_STRING_LOCATION] = "raw";
+            let newPath = pathVector.join("/");
+            return `https://gitlab.com${newPath}`;
+        }
+
+        return urlObject.href;
+    }
+
+    /**
+     * Checks the URL to see if it is from known code URL sites(Eg. Github) and transforms
+     * it into URLs to fetch raw code.
+     * @param url
+     * @private
+     * @return code URL if transformed, else returns the arg URL as is
+     */
+    function _getRawURL(url) {
+        let urlObject = new URL(url);
+        switch (urlObject.hostname) {
+        case "github.com": return _getGitHubRawURL(urlObject);
+        case "gitlab.com": return _getGitLabRawURL(urlObject);
+        default: return url;
+        }
+    }
+
     AppInit.htmlReady(function () {
 
         Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).on("beforeContextMenuOpen", _setMenuItemsVisible);
         MainViewManager.on("currentFileChange", _setMenuItemsVisible);
-
-        var protocolAdapter = {
-            priority: 0, // Default priority
-            fileImpl: RemoteFile,
-            canRead: function (filePath) {
-                return true; // Always claim true, we are the default adpaters
-            }
-        };
-
-        // Register the custom object as HTTP and HTTPS protocol adapter
-        FileSystem.registerProtocolAdapter(HTTP_PROTOCOL, protocolAdapter);
-        FileSystem.registerProtocolAdapter(HTTPS_PROTOCOL, protocolAdapter);
 
         // Register as quick open plugin for file URI's having HTTP:|HTTPS: protocol
         QuickOpen.addQuickOpenPlugin(
@@ -96,9 +127,10 @@ define(function (require, exports, module) {
                     return [HTTP_PROTOCOL, HTTPS_PROTOCOL].indexOf(protocol) !== -1;
                 },
                 itemFocus: function (query) {
-                }, // no op
+                    // no op
+                },
                 itemSelect: function () {
-                    CommandManager.execute(Commands.FILE_OPEN, {fullPath: arguments[0]});
+                    CommandManager.execute(Commands.FILE_OPEN, {fullPath: _getRawURL(arguments[0])});
                 }
             }
         );

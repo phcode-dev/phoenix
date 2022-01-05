@@ -89,8 +89,15 @@ define(function (require, exports, module) {
     /**
      * Returns the full path to the development extensions directory.
      */
+    function getExtensionPath() {
+        return pathLib.normalize(brackets.app.getApplicationSupportDirectory() + "/extensions");
+    }
+
+    /**
+     * Returns the full path to the development extensions directory.
+     */
     function getDevExtensionPath() {
-        return pathLib.normalize(brackets.app.getApplicationSupportDirectory() + "/extensions/dev");
+        return getExtensionPath() + "/dev";
     }
 
     /**
@@ -101,7 +108,7 @@ define(function (require, exports, module) {
      */
     function getUserExtensionPath() {
         if (brackets.app.getApplicationSupportDirectory) {
-            return pathLib.normalize(brackets.app.getApplicationSupportDirectory() + "/extensions/user");
+            return getExtensionPath()+ "/user";
         }
 
         return null;
@@ -148,7 +155,13 @@ define(function (require, exports, module) {
 
         // Optional JSON config for require.js
         $.get(extensionConfigFile).done(function (extensionConfig) {
+            if(!extensionConfig){
+                extensionConfig = {};
+            }
             try {
+                if(!extensionConfig.paths){
+                    extensionConfig.paths = {};
+                }
                 // baseConfig.paths properties will override any extension config paths
                 _.extend(extensionConfig.paths, baseConfig.paths);
 
@@ -185,6 +198,9 @@ define(function (require, exports, module) {
         FileUtils.readAsText(extensionConfigFile).done(function (text) {
             try {
                 var extensionConfig = JSON.parse(text);
+                if(!extensionConfig.paths){
+                    extensionConfig.paths = {};
+                }
 
                 // baseConfig.paths properties will override any extension config paths
                 _.extend(extensionConfig.paths, baseConfig.paths);
@@ -224,13 +240,18 @@ define(function (require, exports, module) {
         };
 
         // Read optional requirejs-config.json
-        var promise = _mergeConfig(extensionConfig).then(function (mergedConfig) {
+        return _mergeConfig(extensionConfig).then(function (mergedConfig) {
             // Create new RequireJS context and load extension entry point
             var extensionRequire = brackets.libRequire.config(mergedConfig),
                 extensionRequireDeferred = new $.Deferred();
 
             contexts[name] = extensionRequire;
-            extensionRequire([entryPoint], extensionRequireDeferred.resolve, extensionRequireDeferred.reject);
+            if(mergedConfig.baseUrl.startsWith('/')){
+                extensionRequire(["extension-loader!"+entryPoint],
+                    extensionRequireDeferred.resolve, extensionRequireDeferred.reject);
+            } else {
+                extensionRequire([entryPoint], extensionRequireDeferred.resolve, extensionRequireDeferred.reject);
+            }
 
             return extensionRequireDeferred.promise();
         }).then(function (module) {
@@ -281,8 +302,6 @@ define(function (require, exports, module) {
                 console.log(err.stack);
             }
         });
-
-        return promise;
     }
 
     /**
@@ -333,9 +352,46 @@ define(function (require, exports, module) {
      * @param {!string} entryPoint, name of the main js file to load
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
+    function _testExtensionByURL(name, config, entryPoint) {
+        var result = new $.Deferred();
+
+        try{
+            var extensionRequire = brackets.libRequire.config({
+                context: name,
+                baseUrl: config.baseUrl,
+                paths: $.extend({}, config.paths, globalPaths)
+            });
+
+            extensionRequire([entryPoint], function () {
+                console.log("Test extension loaded: ", name);
+                result.resolve();
+            }, function (err) {
+                // Something went wrong while loading extension
+                console.log("Unit tests not found for:", name, err);
+                result.reject();
+            });
+        } catch (e) {
+            console.error("Test extension load failed: ", name, e);
+            result.resolve();
+        }
+
+        return result.promise();
+    }
+
+    /**
+     * Runs unit tests for the extension that lives at baseUrl into its own Require.js context
+     *
+     * @param {!string} name, used to identify the extension
+     * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension
+     * @param {!string} entryPoint, name of the main js file to load
+     * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
+     */
     function testExtension(name, config, entryPoint) {
         var result = new $.Deferred(),
             extensionPath = config.baseUrl + "/" + entryPoint + ".js";
+        if(extensionPath.startsWith("http://") || extensionPath.startsWith("https://")) {
+            return _testExtensionByURL(name, config, entryPoint);
+        }
 
         FileSystem.resolve(extensionPath, function (err, entry) {
             if (!err && entry.isFile) {
@@ -391,9 +447,11 @@ define(function (require, exports, module) {
 
                 Async.doInParallel(extensions, function (item) {
                     var extConfig = {
-                        baseUrl: config.baseUrl + "/" + item,
+                        // we load extensions in virtual file system from our virtual server URL
+                        baseUrl: window.fsServerUrl + config.baseUrl + "/" + item,
                         paths: config.paths
                     };
+                    console.log("Loading Extension from virtual fs: ", extConfig);
                     return processExtension(item, extConfig, entryPoint);
                 }).always(function () {
                     // Always resolve the promise even if some extensions had errors
@@ -461,17 +519,100 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
     function testAllExtensionsInNativeDirectory(directory) {
-        var bracketsPath = FileUtils.getNativeBracketsDirectoryPath(),
+        var result = new $.Deferred();
+        var virtualServerURL = window.fsServerUrl,
+            extensionsDir = getExtensionPath() + "/" + directory,
             config = {
-                baseUrl: directory
+                baseUrl: virtualServerURL + extensionsDir
             };
 
         config.paths = {
-            "perf": bracketsPath + "/perf",
-            "spec": bracketsPath + "/spec"
+            "perf": virtualServerURL + "/test/perf",
+            "spec": virtualServerURL + "/test/spec"
         };
 
-        return _loadAll(directory, config, "unittests", testExtension);
+        FileSystem.getDirectoryForPath(extensionsDir).getContents(function (err, contents) {
+            if (!err) {
+                var i,
+                    extensions = [];
+
+                for (i = 0; i < contents.length; i++) {
+                    if (contents[i].isDirectory) {
+                        // FUTURE (JRB): read package.json instead of just using the entrypoint "main".
+                        // Also, load sub-extensions defined in package.json.
+                        extensions.push(contents[i].name);
+                    }
+                }
+
+                if (extensions.length === 0) {
+                    result.resolve();
+                    return;
+                }
+
+                Async.doInParallel(extensions, function (extensionName) {
+                    let loadResult = new $.Deferred();
+                    var extConfig = {
+                        // we load extensions in virtual file system from our virtual server URL
+                        basePath: 'extensions/default',
+                        baseUrl: config.baseUrl + "/" + extensionName,
+                        paths: config.paths
+                    };
+                    console.log("Loading Extension Test from virtual fs: ", extConfig);
+                    _testExtensionByURL(extensionName, extConfig, 'unittests').always(function () {
+                        // Always resolve the promise even if some extensions had errors
+                        console.log("lc", extensionName);
+                        loadResult.resolve();
+                    });
+                    return loadResult.promise();
+                }).always(function () {
+                    // Always resolve the promise even if some extensions had errors
+                    result.resolve();
+                });
+            } else {
+                console.error("[Extension Load Test] Error -- could not read native directory: " + directory);
+                result.reject();
+            }
+        });
+
+        return result.promise();
+    }
+
+    /**
+     * Runs unit test for the extension that lives at baseUrl into its own Require.js context
+     *
+     * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
+     */
+    function testAllDefaultExtensions() {
+        const extensionPath = getDefaultExtensionPath();
+        const bracketsPath = FileUtils.getNativeBracketsDirectoryPath();
+        const href = window.location.href;
+        const baseUrl = href.substring(0, href.lastIndexOf("/"));
+        const srcBaseUrl = new URL(baseUrl + '/../src').href;
+        const extensionsToLoadURL = srcBaseUrl + extensionPath + "/DefaultExtensions.json";
+        var result = new $.Deferred();
+
+        $.get(extensionsToLoadURL).done(function (extensionNames) {
+            for (let extensionName of extensionNames){
+                console.log("Testing default extension: ", extensionName);
+                var extConfig = {
+                    basePath: 'extensions/default',
+                    baseUrl: new URL(srcBaseUrl + extensionPath + "/" + extensionName).href,
+                    paths: {
+                        "perf": bracketsPath + "/perf",
+                        "spec": bracketsPath + "/spec"
+                    }
+                };
+                _testExtensionByURL(extensionName, extConfig, 'unittests');
+            }
+            result.resolve();
+        })
+            .fail(function (err) {
+                console.error("[Extension Load Test] Error -- could not read default extension list from"
+                    + extensionsToLoadURL);
+                result.reject();
+            });
+
+        return result.promise();
     }
 
     /**
@@ -496,8 +637,11 @@ define(function (require, exports, module) {
             if (params.get("reloadWithoutUserExts") !== "true") {
                 paths = [
                     getUserExtensionPath(),
-                    getDevExtensionPath()
+                    getDevExtensionPath(),
+                    "default"
                 ];
+            } else {
+                paths = [];
             }
         }
 
@@ -518,10 +662,12 @@ define(function (require, exports, module) {
         var disabledExtensionPath = extensionPath.replace(/\/user$/, "/disabled");
         FileSystem.getDirectoryForPath(disabledExtensionPath).create();
 
-        loadAllDefaultExtensions();
-
-        var promise = Async.doSequentially(paths, function (extensionPath) {
-            return loadAllExtensionsInNativeDirectory(extensionPath);
+        var promise = Async.doInParallel(paths, function (extPath) {
+            if(extPath === "default"){
+                return loadAllDefaultExtensions();
+            } else {
+                return loadAllExtensionsInNativeDirectory(extPath);
+            }
         }, false);
 
         promise.always(function () {
@@ -547,4 +693,5 @@ define(function (require, exports, module) {
     exports.testExtension = testExtension;
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;
     exports.testAllExtensionsInNativeDirectory = testAllExtensionsInNativeDirectory;
+    exports.testAllDefaultExtensions = testAllDefaultExtensions;
 });

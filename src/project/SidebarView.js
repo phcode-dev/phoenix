@@ -47,7 +47,6 @@ define(function (require, exports, module) {
     // These vars are initialized by the htmlReady handler
     // below since they refer to DOM elements
     var $sidebar,
-        $gearMenu,
         $splitViewMenu,
         $projectTitle,
         $projectFilesContainer,
@@ -111,14 +110,19 @@ define(function (require, exports, module) {
      * @private
      */
     function _updateWorkingSetState() {
+        let enabled = false;
+
         if (MainViewManager.getPaneCount() === 1 &&
                 MainViewManager.getWorkingSetSize(MainViewManager.ACTIVE_PANE) === 0) {
             $workingSetViewsContainer.hide();
-            $gearMenu.hide();
         } else {
             $workingSetViewsContainer.show();
-            $gearMenu.show();
+            enabled = true;
         }
+        CommandManager.get(Commands.CMD_WORKINGSET_SORT_BY_ADDED).setEnabled(enabled);
+        CommandManager.get(Commands.CMD_WORKINGSET_SORT_BY_NAME).setEnabled(enabled);
+        CommandManager.get(Commands.CMD_WORKINGSET_SORT_BY_TYPE).setEnabled(enabled);
+        CommandManager.get(Commands.CMD_WORKING_SORT_TOGGLE_AUTO).setEnabled(enabled);
     }
 
     /**
@@ -127,7 +131,6 @@ define(function (require, exports, module) {
      */
     function _updateUIStates() {
         var spriteIndex,
-            ICON_CLASSES = ["splitview-icon-none", "splitview-icon-vertical", "splitview-icon-horizontal"],
             layoutScheme = MainViewManager.getLayoutScheme();
 
         if (layoutScheme.columns > 1) {
@@ -137,10 +140,6 @@ define(function (require, exports, module) {
         } else {
             spriteIndex = 0;
         }
-
-        // SplitView Icon
-        $splitViewMenu.removeClass(ICON_CLASSES.join(" "))
-                      .addClass(ICON_CLASSES[spriteIndex]);
 
         // SplitView Menu
         _cmdSplitNone.setChecked(spriteIndex === 0);
@@ -178,7 +177,6 @@ define(function (require, exports, module) {
     // Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
         $sidebar                  = $("#sidebar");
-        $gearMenu                 = $sidebar.find(".working-set-option-btn");
         $splitViewMenu            = $sidebar.find(".working-set-splitview-btn");
         $projectTitle             = $sidebar.find("#project-title");
         $projectFilesContainer    = $sidebar.find("#project-files-container");
@@ -241,8 +239,7 @@ define(function (require, exports, module) {
         _updateUIStates();
 
         // Tooltips
-        $gearMenu.attr("title", Strings.GEAR_MENU_TOOLTIP);
-        $splitViewMenu.attr("title", Strings.SPLITVIEW_MENU_TOOLTIP);
+        $splitViewMenu.attr("title", Strings.GEAR_MENU_TOOLTIP);
     });
 
     ProjectManager.on("projectOpen", _updateProjectTitle);

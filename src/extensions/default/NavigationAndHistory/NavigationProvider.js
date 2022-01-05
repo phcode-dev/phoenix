@@ -18,7 +18,7 @@
  * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
-
+/*global _ */
 /**
  * Manages Editor navigation history to aid back/fwd movement between the edit positions
  * in the active project context. The navigation history is purely in-memory and not
@@ -29,11 +29,8 @@ define(function (require, exports, module) {
 
     var Strings                 = brackets.getModule("strings"),
         MainViewManager         = brackets.getModule("view/MainViewManager"),
-        Document                = brackets.getModule("document/Document"),
         DocumentManager         = brackets.getModule("document/DocumentManager"),
-        DocumentCommandHandlers = brackets.getModule("document/DocumentCommandHandlers"),
         EditorManager           = brackets.getModule("editor/EditorManager"),
-        Editor                  = brackets.getModule("editor/Editor"),
         ProjectManager          = brackets.getModule("project/ProjectManager"),
         CommandManager          = brackets.getModule("command/CommandManager"),
         Commands                = brackets.getModule("command/Commands"),
@@ -48,8 +45,11 @@ define(function (require, exports, module) {
         NAVIGATION_JUMP_FWD       = "navigation.jump.fwd";
 
     // The latency time to capture an explicit cursor movement as a navigation frame
-    var NAV_FRAME_CAPTURE_LATENCY = 2000,
-        MAX_NAV_FRAMES_COUNT = 30;
+    var MAX_NAV_FRAMES_COUNT = 50;
+
+    let $navback = null,
+        $navForward = null,
+        $searchNav = null;
 
    /**
     * Contains list of most recently known cursor positions.
@@ -65,7 +65,6 @@ define(function (require, exports, module) {
     */
     var jumpForwardStack = [],
         activePosNotSynced = false,
-        captureTimer = null,
         currentEditPos = null,
         jumpInProgress = false,
         commandJumpBack,
@@ -76,8 +75,27 @@ define(function (require, exports, module) {
     * @private
     */
     function _hasNavBackFrames() {
-        return (jumpForwardStack.length > 0 && jumpBackwardStack.length > 0)
-            || (!jumpForwardStack.length && jumpBackwardStack.length > 1);
+        return (jumpBackwardStack.length > 0);
+    }
+
+    function _hasNavForwardFrames() {
+        return jumpForwardStack.length > 0;
+    }
+
+    function _setEnableBackNavButton(enabled) {
+        if(enabled){
+            $navback.removeClass('nav-back-btn-disabled').addClass('nav-back-btn');
+        } else {
+            $navback.removeClass('nav-back-btn').addClass('nav-back-btn-disabled');
+        }
+    }
+
+    function _setEnableForwardNavButton(enabled) {
+        if(enabled){
+            $navForward.removeClass('nav-forward-btn-disabled').addClass('nav-forward-btn');
+        } else {
+            $navForward.removeClass('nav-forward-btn').addClass('nav-forward-btn-disabled');
+        }
     }
 
    /**
@@ -86,7 +104,9 @@ define(function (require, exports, module) {
     */
     function _validateNavigationCmds() {
         commandJumpBack.setEnabled(_hasNavBackFrames());
-        commandJumpFwd.setEnabled(jumpForwardStack.length > 0);
+        commandJumpFwd.setEnabled(_hasNavForwardFrames());
+        _setEnableBackNavButton(_hasNavBackFrames());
+        _setEnableForwardNavButton(_hasNavForwardFrames());
     }
 
    /**
@@ -135,7 +155,7 @@ define(function (require, exports, module) {
         this.paneId = editor._paneId;
         this._hash = editor.document.file._hash;
         this.uId = (new Date()).getTime();
-        this.selections = [];
+        this.selections = selectionObj.ranges || [];
         this.bookMarkIds = [];
         this._createMarkers(selectionObj.ranges);
     }
@@ -299,21 +319,18 @@ define(function (require, exports, module) {
     *
     * @private
     */
-    function _recordJumpDef(event, selectionObj) {
+    function _recordJumpDef(event, selectionObj, force) {
         // Don't capture frames if we are navigating or document text is being refreshed(fileSync in progress)
         if (jumpInProgress || (event.target && event.target.document._refreshInProgress)) {
             return;
         }
         // Reset forward navigation stack if we are capturing a new event
         jumpForwardStack = [];
-        if (captureTimer) {
-            window.clearTimeout(captureTimer);
-            captureTimer = null;
-        }
+       _validateNavigationCmds();
 
         // Ensure cursor activity has not happened because of arrow keys or edit
         if (selectionObj.origin !== "+move" && (!window.event || window.event.type !== "input")) {
-            captureTimer = window.setTimeout(function () {
+            let _recordCurrentPos = function () {
                 // Check if we have reached MAX_NAV_FRAMES_COUNT
                 // If yes, control overflow
                 if (jumpBackwardStack.length === MAX_NAV_FRAMES_COUNT) {
@@ -322,42 +339,90 @@ define(function (require, exports, module) {
                 }
 
                 currentEditPos = new NavigationFrame(event.target, selectionObj);
+                let lastBack = jumpBackwardStack.pop();
+                if(lastBack && lastBack!== currentEditPos){
+                    // make sure that we don't push in duplicates
+                    jumpBackwardStack.push(lastBack);
+                }
                 jumpBackwardStack.push(currentEditPos);
                 _validateNavigationCmds();
                 activePosNotSynced = false;
-            }, NAV_FRAME_CAPTURE_LATENCY);
+            };
+            if(force || (event && event.type === 'mousedown') || (event && event.type === "beforeSelectionChange")){
+                // We should record nav history immediately is the user changes currently active doc by clicking files
+                _recordCurrentPos();
+            }
         } else {
             activePosNotSynced = true;
         }
     }
 
+    function _isRangerOverlap(prevStart, prevEnd, curStart, curEnd) {
+        if(prevStart>prevEnd){
+            let temp = prevStart;
+            prevStart = prevEnd;
+            prevEnd = temp;
+        }
+        if(curStart>curEnd){
+            let temp = curStart;
+            curStart = curEnd;
+            curEnd = temp;
+        }
+        return prevStart <= curEnd && curStart <= prevEnd;
+    }
+
+    function _isSimilarSelection(prev, current) {
+        if(_.isEqual(prev, current)){
+            return true;
+        }
+        if(prev.length === current.length && current.length === 1){
+            let startPrev = prev[0].anchor || prev[0].start,
+                endPrev = prev[0].head || prev[0].end,
+                startCur = current[0].anchor || current[0].start,
+                endCur = current[0].head || current[0].end;
+            let psc= startPrev.ch, psl= startPrev.line,
+                pec= endPrev.ch, pel= endPrev.line,
+                csc= startCur.ch, csl= startCur.line,
+                cec= endCur.ch, cel= endCur.line;
+            if(_isRangerOverlap(psl, pel, csl, cel)
+                && _isRangerOverlap(psc, pec, csc, cec)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function _isSimilarBookmarks(prev, current) {
+        if(current.length === 0 && prev.length >= 1){
+            // on the same file, if there is no present book mark, then its as good as no book mark
+            return true;
+        }
+        return prev.length === current.length;
+    }
+
    /**
     * Command handler to navigate backward
     */
-    function _navigateBack() {
-        if (!jumpForwardStack.length) {
-            if (activePosNotSynced) {
-                currentEditPos = new NavigationFrame(EditorManager.getCurrentFullEditor(), {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
-                jumpForwardStack.push(currentEditPos);
-            }
-        }
-
-        var navFrame = jumpBackwardStack.pop();
+    function _navigateBack(skipCurrentFile) {
+        let navFrame = jumpBackwardStack.pop();
+        currentEditPos = new NavigationFrame(EditorManager.getCurrentFullEditor(),
+            {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
 
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
-        if (navFrame && navFrame === currentEditPos) {
-            jumpForwardStack.push(navFrame);
-            _validateNavigationCmds();
-            CommandManager.execute(NAVIGATION_JUMP_BACK);
-            return;
+        while (navFrame && navFrame === currentEditPos
+        ||(navFrame && navFrame.filePath === currentEditPos.filePath
+            && _isSimilarSelection(navFrame.selections, currentEditPos.selections)
+            && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditPos.bookMarkIds))
+        ||(skipCurrentFile && navFrame && navFrame.filePath === currentEditPos.filePath)) {
+            navFrame = jumpBackwardStack.pop();
         }
 
         if (navFrame) {
             // We will check for the file existence now, if it doesn't exist we will jump back again
             // but discard the popped frame as invalid.
             _validateFrame(navFrame).done(function () {
-                jumpForwardStack.push(navFrame);
+                jumpForwardStack.push(currentEditPos);
                 navFrame.goTo();
                 currentEditPos = navFrame;
             }).fail(function () {
@@ -365,14 +430,18 @@ define(function (require, exports, module) {
             }).always(function () {
                 _validateNavigationCmds();
             });
+        } else {
+            jumpBackwardStack.push(currentEditPos);
         }
     }
 
    /**
     * Command handler to navigate forward
     */
-    function _navigateForward() {
-        var navFrame = jumpForwardStack.pop();
+    function _navigateForward(skipCurrentFile) {
+        let navFrame = jumpForwardStack.pop();
+        currentEditPos = new NavigationFrame(EditorManager.getCurrentFullEditor(),
+           {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
 
         if (!navFrame) {
             return;
@@ -380,26 +449,28 @@ define(function (require, exports, module) {
 
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
-        if (navFrame === currentEditPos) {
-            jumpBackwardStack.push(navFrame);
-            _validateNavigationCmds();
-            CommandManager.execute(NAVIGATION_JUMP_FWD);
-            return;
+        while (navFrame === currentEditPos
+        ||(navFrame && navFrame.filePath === currentEditPos.filePath
+            && _isSimilarSelection(navFrame.selections ,currentEditPos.selections)
+            && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditPos.bookMarkIds))
+        ||(skipCurrentFile && navFrame && navFrame.filePath === currentEditPos.filePath)) {
+            navFrame = jumpForwardStack.pop();
         }
 
-        // We will check for the file existence now, if it doesn't exist we will jump back again
-        // but discard the popped frame as invalid.
-        _validateFrame(navFrame).done(function () {
-            jumpBackwardStack.push(navFrame);
-            navFrame.goTo();
-            currentEditPos = navFrame;
-        }).fail(function () {
-            _validateNavigationCmds();
-            CommandManager.execute(NAVIGATION_JUMP_FWD);
-        }).always(function () {
-            _validateNavigationCmds();
-        });
-
+        if(navFrame){
+            // We will check for the file existence now, if it doesn't exist we will jump back again
+            // but discard the popped frame as invalid.
+            _validateFrame(navFrame).done(function () {
+                jumpBackwardStack.push(currentEditPos);
+                navFrame.goTo();
+                currentEditPos = navFrame;
+            }).fail(function () {
+                _validateNavigationCmds();
+                CommandManager.execute(NAVIGATION_JUMP_FWD);
+            }).always(function () {
+                _validateNavigationCmds();
+            });
+        }
     }
 
    /**
@@ -426,17 +497,6 @@ define(function (require, exports, module) {
         KeyBindingManager.addBinding(NAVIGATION_JUMP_BACK, KeyboardPrefs[NAVIGATION_JUMP_BACK]);
         KeyBindingManager.addBinding(NAVIGATION_JUMP_FWD, KeyboardPrefs[NAVIGATION_JUMP_FWD]);
         _initNavigationMenuItems();
-    }
-
-   /**
-    * Function to request a navigation frame creation explicitly.
-    * @private
-    */
-    function _captureFrame(editor) {
-        // Capture the active position now if it was not captured earlier
-        if ((activePosNotSynced || !jumpBackwardStack.length) && !jumpInProgress) {
-            jumpBackwardStack.push(new NavigationFrame(editor, {ranges: editor._codeMirror.listSelections()}));
-        }
     }
 
     /**
@@ -486,15 +546,15 @@ define(function (require, exports, module) {
     * Handles explicit content reset for a document caused by external changes
     * @private
     */
-    function _handleExternalChange(evt, doc) {
-        if (doc) {
-            _removeBackwardFramesForFile(doc.file);
-            _removeForwardFramesForFile(doc.file);
+    function _removeFileFromStack(file) {
+        if (file) {
+            _removeBackwardFramesForFile(file);
+            _removeForwardFramesForFile(file);
             _validateNavigationCmds();
         }
     }
 
-    function _handleProjectOpen() {
+    function _clearStacks() {
         jumpBackwardStack = [];
         jumpForwardStack = [];
     }
@@ -514,13 +574,23 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Function to request a navigation frame creation explicitly. Resets forward stack
+     * @private
+     */
+    function _captureBackFrame(editor) {
+        _recordJumpDef({target: editor},
+            {ranges: editor._codeMirror.listSelections()},
+            true);
+    }
+
+    /**
      * Handle Active Editor change to update navigation information
      * @private
      */
     function _handleActiveEditorChange(event, current, previous) {
         if (previous && previous._paneId) { // Handle only full editors
             previous.off("beforeSelectionChange", _recordJumpDef);
-            _captureFrame(previous);
+            _captureBackFrame(previous);
             _validateNavigationCmds();
         }
 
@@ -535,25 +605,73 @@ define(function (require, exports, module) {
 
     function _initHandlers() {
         EditorManager.on("activeEditorChange", _handleActiveEditorChange);
-        ProjectManager.on("projectOpen", _handleProjectOpen);
+        ProjectManager.on("projectOpen", _clearStacks);
         EditorManager.on("_fullEditorCreatedForDocument", function (event, document, editor) {
-            _handleExternalChange(event, {file: document.file});
             _reinstateMarkers(editor, jumpBackwardStack);
             _reinstateMarkers(editor, jumpForwardStack);
         });
         FileSystem.on("change", function (event, entry) {
             if (entry) {
-                _handleExternalChange(event, {file: entry});
+                _removeFileFromStack(entry);
             }
         });
-        Document.on("_documentRefreshed", function (event, doc) {
-            _handleExternalChange(event, {file: doc.file});
-        });
     }
+
+    function _navigateBackClicked(evt) {
+        if(_hasNavBackFrames()){
+            _navigateBack(evt.shiftKey || (evt.type === "contextmenu"));
+        }
+        _validateNavigationCmds();
+        MainViewManager.focusActivePane();
+    }
+
+    function _navigateForwardClicked(evt) {
+        if(_hasNavForwardFrames()){
+            _navigateForward(evt.shiftKey || (evt.type === "contextmenu"));
+        }
+        _validateNavigationCmds();
+        MainViewManager.focusActivePane();
+    }
+
+    function _showInFileTreeClicked() {
+        CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+    }
+
+    function _findInFiles() {
+        CommandManager.execute(Commands.CMD_FIND_IN_FILES);
+    }
+
+    function _setupNavigationButtons() {
+        let $sidebar = $("#sidebar");
+        $sidebar.prepend("<div id=\"navBackButton\" class=\"nav-back-btn btn-alt-quiet\"></div>\n" +
+            "            <div id=\"navForwardButton\" class=\"nav-forward-btn btn-alt-quiet\"></div>\n" +
+            "            <div id=\"showInfileTree\" class=\"show-in-file-tree-btn btn-alt-quiet\"></div>"+
+            "            <div id=\"searchNav\" class=\"search-nav-btn btn-alt-quiet\"></div>");
+        let $showInTree = $sidebar.find("#showInfileTree");
+        $navback = $sidebar.find("#navBackButton");
+        $navForward = $sidebar.find("#navForwardButton");
+        $searchNav = $sidebar.find("#searchNav");
+        //CMD_FIND_IN_FILES
+
+
+        $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
+        $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
+        $showInTree.attr("title", Strings.CMD_SHOW_IN_TREE);
+        $searchNav.attr("title", Strings.CMD_FIND_IN_FILES);
+
+        $navback.on("click", _navigateBackClicked);
+        $navForward.on("click", _navigateForwardClicked);
+        $("#navBackButton").contextmenu(_navigateBackClicked);
+        $("#navForwardButton").contextmenu(_navigateForwardClicked);
+        $showInTree.on("click", _showInFileTreeClicked);
+        $searchNav.on("click", _findInFiles);
+    }
+
 
     function init() {
         _initNavigationCommands();
         _initHandlers();
+        _setupNavigationButtons();
     }
 
     exports.init = init;

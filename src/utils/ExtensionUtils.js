@@ -163,10 +163,16 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved with the contents of the requested file
      **/
     function loadFile(module, path) {
-        var url     = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path),
-            promise = $.get(url);
+        var url     = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path);
+        let result = new $.Deferred();
 
-        return promise;
+        $.get(url)
+            .done(function (content) {
+                result.resolve(content, url);
+            })
+            .fail(result.reject);
+
+        return result;
     }
 
     /**
@@ -180,8 +186,8 @@ define(function (require, exports, module) {
         var result = new $.Deferred();
 
         loadFile(module, path)
-            .done(function (content) {
-                var url = this.url;
+            .done(function (content, URL) {
+                var url = URL || this.url;
 
                 if (url.slice(-5) === ".less") {
                     parseLessCode(content, url)
@@ -190,6 +196,7 @@ define(function (require, exports, module) {
                         })
                         .fail(result.reject);
                 } else {
+                    // fix css load
                     var deferred = new $.Deferred(),
                         link = addLinkedStyleSheet(url, deferred);
 

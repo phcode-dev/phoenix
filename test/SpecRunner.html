@@ -23,7 +23,7 @@
   DEALINGS IN THE SOFTWARE.
 -->
 
-<html>
+<html lang="en">
 <head>
   <title>Jasmine Spec Runner</title>
 
@@ -37,7 +37,7 @@
   <script src="../src/thirdparty/filer/filer.min.js"></script>
   <script src="../src/thirdparty/Buffer/buffer-min.js"></script>
   <script src="../src/phoenix/shell.js" type="module"></script>
-  <script src="../src/phoenix/nohost_server.js" type="module"></script>
+  <script src="virtual-server-loader.js" type="module"></script>
 
   <link href="thirdparty/bootstrap2/css/bootstrap.min.css" rel="stylesheet">
   <link href="thirdparty/bootstrap2/css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -46,6 +46,7 @@
   <!-- Pre-load third party scripts that cannot be async loaded. -->
   <!-- Keep in sync with Gruntfile.js jasmine vendor dependencies -->
   <script src="../src/thirdparty/jquery-2.1.3.min.js"></script>
+  <script src="../src/thirdparty/underscore-min.js"></script>
   <script src="../src/thirdparty/less.min.js"></script>
   <script src="thirdparty/bootstrap2/js/bootstrap.min.js"></script>
 

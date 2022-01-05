@@ -40,6 +40,7 @@ function _setupVFS(Phoenix, fsLib, pathLib){
         getLocalDir: () => '/fs/local/',
         getTrashDir: () => '/fs/trash/',
         getDefaultProjectDir: () => '/fs/local/default project/',
+        getUserDocumentsDirectory: () => '/fs/local/Documents/',
         ensureExistsDir: function (path, cb) {
             fs.mkdir(path, function(err) {
                 if (err && err.code !== 'EEXIST') {

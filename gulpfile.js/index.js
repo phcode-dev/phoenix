@@ -59,6 +59,12 @@ async function copyThirdPartyLibs(){
             .pipe(dest('src/thirdparty')),
         src(['node_modules/jszip/LICENSE.markdown'])
             .pipe(rename("jsZip.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
+        // underscore
+        src(['node_modules/underscore/underscore-min.js'])
+            .pipe(dest('src/thirdparty')),
+        src(['node_modules/underscore/LICENSE'])
+            .pipe(rename("underscore.markdown"))
             .pipe(dest('src/thirdparty/licences/'))
     );
 }

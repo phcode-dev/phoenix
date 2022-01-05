@@ -4,12 +4,11 @@
  * @date 01/08/2015 18:34
  */
 
-/*global describe, beforeEach, afterEach, it, expect, runs, waitsForDone, waitsFor*/
+/*global describe, beforeFirst, beforeEach, afterEach, afterLast, it, expect, runs, waitsForDone, waitsFor*/
 
 define(function (require, exports, module) {
 
-    var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
-        FileUtils = brackets.getModule("file/FileUtils");
+    var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
 
     describe("Code Folding", function () {
         var testWindow,
@@ -23,8 +22,7 @@ define(function (require, exports, module) {
             gutterName = "CodeMirror-foldgutter",
             foldMarkerOpen = gutterName + "-open",
             foldMarkerClosed = gutterName + "-folded";
-        var extensionPath = FileUtils.getNativeModuleDirectoryPath(module),
-            testDocumentDirectory = extensionPath + "/unittest-files/",
+        var testDocumentDirectory = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
             // The line numbers referenced below are dependent on the files in /unittest-files directory.
             // Remember to update the numbers if the files change.
             testFilesSpec = {
@@ -80,7 +78,7 @@ define(function (require, exports, module) {
         /**
          * Sets up the test window and loads the test project
          */
-        function setup() {
+        function setupWindow() {
             runs(function () {
                 SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
                     testWindow = w;
@@ -92,7 +90,12 @@ define(function (require, exports, module) {
                     prefs = PreferencesManager.getExtensionPrefs("code-folding");
                 }, {hasNativeMenus: true});
             });
+        }
 
+        /**
+         * Sets up the test window and loads the test project
+         */
+        function setup() {
             runs(function () {
                 //setPreference("saveFoldStates", false);
                 SpecRunnerUtils.loadProjectInTestWindow(testDocumentDirectory);
@@ -242,11 +245,12 @@ define(function (require, exports, module) {
             }, "Fold markers now visible in gutter", 500);
         }
 
-        beforeEach(function () {
+        beforeFirst(function () {
+            setupWindow();
             setup();
         });
 
-        afterEach(function () {
+        afterLast(function () {
             testWindow.closeAllFiles();
             tearDown();
         });

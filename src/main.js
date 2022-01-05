@@ -32,12 +32,17 @@ require.config({
         // implementations (e.g. cloud-based storage).
         "fileSystemImpl": "filesystem/impls/appshell/AppshellFileSystem",
         "preact-compat": "thirdparty/preact-compat/preact-compat.min",
-        "preact": "thirdparty/preact/preact"
+        "preact": "thirdparty/preact/preact",
+
+        // Extension loader plugins
+        "extension-loader": "thirdparty/requirejs/extension-loader",
+        "amd-loader": "thirdparty/requirejs/amd-loader"
     },
     map: {
         "*": {
             "thirdparty/CodeMirror2": "thirdparty/CodeMirror",
-            "thirdparty/preact": "preact-compat"
+            "thirdparty/preact": "preact-compat",
+            "view/PanelManager": "view/WorkspaceManager"  // For extension compatibility
         }
     }
 });
@@ -59,7 +64,7 @@ if (window.location.search.indexOf("testEnvironment") > -1) {
      * extension).
      */
     require.config({
-        locale: window.localStorage.getItem("locale") || (typeof (brackets) !== "undefined" ? brackets.app.language : window.navigator.language)
+        locale: window.localStorage.getItem("locale") || window.navigator.language
     });
 }
 

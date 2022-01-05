@@ -41,8 +41,8 @@ define(function (require, exports, module) {
         WorkingSetView         = brackets.getModule("project/WorkingSetView"),
         ExtensionManager       = brackets.getModule("extensibility/ExtensionManager"),
         Mustache               = brackets.getModule("thirdparty/mustache/mustache"),
-        ErrorNotification      = require("ErrorNotification"),
-        NodeDebugUtils         = require("NodeDebugUtils"),
+        Locales                = brackets.getModule("nls/strings"),
+        ProjectManager         = brackets.getModule("project/ProjectManager"),
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
 
@@ -66,17 +66,14 @@ define(function (require, exports, module) {
       * @enum {string}
       */
     var DEBUG_REFRESH_WINDOW                  = "debug.refreshWindow", // string must MATCH string in native code (brackets_extensions)
-        DEBUG_SHOW_DEVELOPER_TOOLS            = "debug.showDeveloperTools",
         DEBUG_RUN_UNIT_TESTS                  = "debug.runUnitTests",
         DEBUG_SHOW_PERF_DATA                  = "debug.showPerfData",
         DEBUG_RELOAD_WITHOUT_USER_EXTS        = "debug.reloadWithoutUserExts",
         DEBUG_NEW_BRACKETS_WINDOW             = "debug.newBracketsWindow",
         DEBUG_SWITCH_LANGUAGE                 = "debug.switchLanguage",
-        DEBUG_ENABLE_NODE_DEBUGGER            = "debug.enableNodeDebugger",
-        DEBUG_LOG_NODE_STATE                  = "debug.logNodeState",
-        DEBUG_RESTART_NODE                    = "debug.restartNode",
-        DEBUG_SHOW_ERRORS_IN_STATUS_BAR       = "debug.showErrorsInStatusBar",
-        DEBUG_OPEN_BRACKETS_SOURCE            = "debug.openBracketsSource",
+        DEBUG_ENABLE_LOGGING                  = "debug.enableLogging",
+        DEBUG_OPEN_VFS                        = "debug.openVFS",
+        DEBUG_OPEN_VIRTUAL_SERVER             = "debug.openVirtualServer",
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
 
     // define a preference to turn off opening preferences in split-view.
@@ -88,14 +85,6 @@ define(function (require, exports, module) {
     prefs.definePreference("openUserPrefsInSecondPane",   "boolean", true, {
         description: Strings.DESCRIPTION_OPEN_USER_PREFS_IN_SECOND_PANE
     });
-
-    PreferencesManager.definePreference(DEBUG_SHOW_ERRORS_IN_STATUS_BAR, "boolean", false, {
-        description: Strings.DESCRIPTION_SHOW_ERRORS_IN_STATUS_BAR
-    });
-
-    function handleShowDeveloperTools() {
-        brackets.app.showDeveloperTools();
-    }
 
     // Implements the 'Run Tests' menu to bring up the Jasmine unit test window
     var _testWindow = null;
@@ -169,90 +158,58 @@ define(function (require, exports, module) {
     }
 
     function handleSwitchLanguage() {
-        var stringsPath = FileUtils.getNativeBracketsDirectoryPath() + "/nls";
+        const supportedLocales = Object.keys(Locales);
 
-        FileSystem.getDirectoryForPath(stringsPath).getContents(function (err, entries) {
-            if (!err) {
-                var $dialog,
-                    $submit,
-                    $select,
-                    locale,
-                    curLocale = (brackets.isLocaleDefault() ? null : brackets.getLocale()),
-                    languages = [];
+        var $dialog,
+            $submit,
+            $select,
+            locale,
+            curLocale = (brackets.isLocaleDefault() ? null : brackets.getLocale()),
+            languages = [];
 
-                var setLanguage = function (event) {
-                    locale = $select.val();
-                    $submit.prop("disabled", locale === (curLocale || ""));
-                };
+        var setLanguage = function (event) {
+            locale = $select.val();
+            $submit.prop("disabled", locale === (curLocale || ""));
+        };
 
-                // inspect all children of dirEntry
-                entries.forEach(function (entry) {
-                    if (entry.isDirectory) {
-                        var match = entry.name.match(/^([a-z]{2})(-[a-z]{2})?$/);
+        for(let supportedLocale of supportedLocales){
+            var match = supportedLocale.match(/^([a-z]{2})(-[a-z]{2})?$/);
 
-                        if (match) {
-                            var language = entry.name,
-                                label = match[1];
+            if (match) {
+                var language = supportedLocale,
+                    label = match[1];
 
-                            if (match[2]) {
-                                label += match[2].toUpperCase();
-                            }
+                if (match[2]) {
+                    label += match[2].toUpperCase();
+                }
 
-                            languages.push({label: LocalizationUtils.getLocalizedLabel(label), language: language});
-                        }
-                    }
-                });
-                // add English (US), which is the root folder and should be sorted as well
-                languages.push({label: LocalizationUtils.getLocalizedLabel("en"),  language: "en"});
+                languages.push({label: LocalizationUtils.getLocalizedLabel(label), language: language});
+            }
+        }
+        // add English (US), which is the root folder and should be sorted as well
+        languages.push({label: LocalizationUtils.getLocalizedLabel("en"),  language: "en"});
 
-                // sort the languages via their display name
-                languages.sort(function (lang1, lang2) {
-                    return lang1.label.localeCompare(lang2.label);
-                });
+        // sort the languages via their display name
+        languages.sort(function (lang1, lang2) {
+            return lang1.label.localeCompare(lang2.label);
+        });
 
-                // add system default (which is placed on the very top)
-                languages.unshift({label: Strings.LANGUAGE_SYSTEM_DEFAULT, language: null});
+        // add system default (which is placed on the very top)
+        languages.unshift({label: Strings.LANGUAGE_SYSTEM_DEFAULT, language: null});
 
-                var template = Mustache.render(LanguageDialogTemplate, {languages: languages, Strings: Strings});
-                Dialogs.showModalDialogUsingTemplate(template).done(function (id) {
-                    if (id === Dialogs.DIALOG_BTN_OK && locale !== curLocale) {
-                        brackets.setLocale(locale);
-                        CommandManager.execute(Commands.APP_RELOAD);
-                    }
-                });
-
-                $dialog = $(".switch-language.instance");
-                $submit = $dialog.find(".dialog-button[data-button-id='" + Dialogs.DIALOG_BTN_OK + "']");
-                $select = $dialog.find("select");
-
-                $select.on("change", setLanguage).val(curLocale);
+        var template = Mustache.render(LanguageDialogTemplate, {languages: languages, Strings: Strings});
+        Dialogs.showModalDialogUsingTemplate(template).done(function (id) {
+            if (id === Dialogs.DIALOG_BTN_OK && locale !== curLocale) {
+                brackets.setLocale(locale);
+                CommandManager.execute(Commands.APP_RELOAD);
             }
         });
-    }
 
-    function toggleErrorNotification(bool) {
-        var val,
-            oldPref = !!PreferencesManager.get(DEBUG_SHOW_ERRORS_IN_STATUS_BAR);
+        $dialog = $(".switch-language.instance");
+        $submit = $dialog.find(".dialog-button[data-button-id='" + Dialogs.DIALOG_BTN_OK + "']");
+        $select = $dialog.find("select");
 
-        if (bool === undefined) {
-            val = !oldPref;
-        } else {
-            val = !!bool;
-        }
-
-        ErrorNotification.toggle(val);
-
-        // update menu
-        CommandManager.get(DEBUG_SHOW_ERRORS_IN_STATUS_BAR).setChecked(val);
-        if (val !== oldPref) {
-            PreferencesManager.set(DEBUG_SHOW_ERRORS_IN_STATUS_BAR, val);
-        }
-    }
-
-    function handleOpenBracketsSource() {
-        // Brackets source dir w/o the trailing src/ folder
-        var dir = FileUtils.getNativeBracketsDirectoryPath().replace(/\/[^\/]+$/, "/");
-        brackets.app.showOSFolder(dir);
+        $select.on("change", setLanguage).val(curLocale);
     }
 
     function _openPrefFilesInSplitView(prefsPath, defaultPrefsPath, deferredPromise) {
@@ -725,17 +682,37 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    function _updateLogToConsoleMenuItemChecked() {
+        const isLogging = window.setupLogging();
+        CommandManager.get(DEBUG_ENABLE_LOGGING).setChecked(isLogging);
+    }
+
+    function _handleLogging() {
+        let logToConsolePref = localStorage.getItem("logToConsole") || "false";
+        if(logToConsolePref.toLowerCase() === 'true'){
+            logToConsolePref = 'false';
+        } else {
+            logToConsolePref = 'true';
+        }
+        localStorage.setItem("logToConsole", logToConsolePref);
+        _updateLogToConsoleMenuItemChecked();
+    }
+
     ExtensionManager.on("statusChange", function (id) {
         // Seems like an extension(s) got installed.
         // Need to recompute the default prefs.
         recomputeDefaultPrefs = true;
     });
 
-    /* Register all the command handlers */
+    function _openVFS() {
+        ProjectManager.openProject("/");
+    }
 
-    // Show Developer Tools (optionally enabled)
-    CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS,             DEBUG_SHOW_DEVELOPER_TOOLS,     handleShowDeveloperTools)
-        .setEnabled(!!brackets.app.showDeveloperTools);
+    function _openVirtualServer() {
+        window.open(window.fsServerUrl);
+    }
+
+    /* Register all the command handlers */
     CommandManager.register(Strings.CMD_REFRESH_WINDOW,             DEBUG_REFRESH_WINDOW,           handleReload);
     CommandManager.register(Strings.CMD_RELOAD_WITHOUT_USER_EXTS,   DEBUG_RELOAD_WITHOUT_USER_EXTS, handleReloadWithoutUserExts);
     CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,        DEBUG_NEW_BRACKETS_WINDOW,      handleNewBracketsWindow);
@@ -745,31 +722,17 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_SHOW_PERF_DATA,            DEBUG_SHOW_PERF_DATA,            handleShowPerfData);
 
-    // Open Brackets Source (optionally enabled)
-    CommandManager.register(Strings.CMD_OPEN_BRACKETS_SOURCE,      DEBUG_OPEN_BRACKETS_SOURCE,      handleOpenBracketsSource)
-        .setEnabled(!StringUtils.endsWith(decodeURI(window.location.pathname), "/www/index.html"));
-
     CommandManager.register(Strings.CMD_SWITCH_LANGUAGE,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage);
-    CommandManager.register(Strings.CMD_SHOW_ERRORS_IN_STATUS_BAR, DEBUG_SHOW_ERRORS_IN_STATUS_BAR, toggleErrorNotification);
 
-    // Node-related Commands
-    CommandManager.register(Strings.CMD_ENABLE_NODE_DEBUGGER, DEBUG_ENABLE_NODE_DEBUGGER,   NodeDebugUtils.enableDebugger);
-    CommandManager.register(Strings.CMD_LOG_NODE_STATE,       DEBUG_LOG_NODE_STATE,         NodeDebugUtils.logNodeState);
-    CommandManager.register(Strings.CMD_RESTART_NODE,         DEBUG_RESTART_NODE,           NodeDebugUtils.restartNode);
+    CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
+    CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
+    CommandManager.register(Strings.CMD_OPEN_VIRTUAL_SERVER, DEBUG_OPEN_VIRTUAL_SERVER,   _openVirtualServer);
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
-
-    toggleErrorNotification(PreferencesManager.get(DEBUG_SHOW_ERRORS_IN_STATUS_BAR));
-
-    PreferencesManager.on("change", DEBUG_SHOW_ERRORS_IN_STATUS_BAR, function () {
-        toggleErrorNotification(PreferencesManager.get(DEBUG_SHOW_ERRORS_IN_STATUS_BAR));
-    });
-
     /*
      * Debug menu
      */
     var menu = Menus.addMenu(Strings.DEBUG_MENU, DEBUG_MENU, Menus.BEFORE, Menus.AppMenuBar.HELP_MENU);
-    menu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
     menu.addMenuItem(DEBUG_REFRESH_WINDOW, KeyboardPrefs.refreshWindow);
     menu.addMenuItem(DEBUG_RELOAD_WITHOUT_USER_EXTS, KeyboardPrefs.reloadWithoutUserExts);
     menu.addMenuItem(DEBUG_NEW_BRACKETS_WINDOW);
@@ -778,15 +741,15 @@ define(function (require, exports, module) {
     menu.addMenuDivider();
     menu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
     menu.addMenuItem(DEBUG_SHOW_PERF_DATA);
-    menu.addMenuItem(DEBUG_OPEN_BRACKETS_SOURCE);
     menu.addMenuDivider();
-    menu.addMenuItem(DEBUG_ENABLE_NODE_DEBUGGER);
-    menu.addMenuItem(DEBUG_LOG_NODE_STATE);
-    menu.addMenuItem(DEBUG_RESTART_NODE);
-    menu.addMenuItem(DEBUG_SHOW_ERRORS_IN_STATUS_BAR);
+    menu.addMenuItem(DEBUG_ENABLE_LOGGING);
+    menu.addMenuItem(DEBUG_OPEN_VFS);
+    menu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER);
+    menu.addMenuDivider();
     menu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW); // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
     menu.addMenuItem(Commands.FILE_OPEN_KEYMAP);      // this command is defined in core, but exposed only in Debug menu for now
 
+    _updateLogToConsoleMenuItemChecked();
     // exposed for convenience, but not official API
     exports._runUnitTests = _runUnitTests;
 });

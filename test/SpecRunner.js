@@ -19,7 +19,7 @@
  *
  */
 
-/*global beforeEach, afterEach, beforeFirst, afterLast, jasmine */
+/*global beforeEach, afterEach, beforeFirst, afterLast, jasmine, Filer */
 
 // Set the baseUrl to brackets/src
 require.config({
@@ -62,7 +62,6 @@ define(function (require, exports, module) {
         FileUtils               = require("file/FileUtils"),
         UrlParams               = require("utils/UrlParams").UrlParams,
         UnitTestReporter        = require("test/UnitTestReporter").UnitTestReporter,
-        NodeConnection          = require("utils/NodeConnection"),
         BootstrapReporterView   = require("test/BootstrapReporterView").BootstrapReporterView,
         NativeApp               = require("utils/NativeApp");
 
@@ -125,19 +124,15 @@ define(function (require, exports, module) {
         _writeResults   = new $.Deferred(),
         resultsPath;
 
-    /**
-     * @const
-     * Amount of time to wait before automatically rejecting the connection
-     * deferred. If we hit this timeout, we'll never have a node connection
-     * for the installer in this run of Brackets.
-     */
-    var NODE_CONNECTION_TIMEOUT = 30000; // 30 seconds - TODO: share with StaticServer?
-
     // parse URL parameters
     params.parse();
     resultsPath = params.get("resultsPath");
 
-    function _loadExtensionTests() {
+    function _loadExtensionTests(suitesToTest) {
+        let isExtensionSuiteSelected = (suitesToTest.indexOf("extension") >= 0);
+        if(!isExtensionSuiteSelected){
+            return new $.Deferred().resolve();
+        }
         // augment jasmine to identify extension unit tests
         var addSuite = jasmine.Runner.prototype.addSuite;
         jasmine.Runner.prototype.addSuite = function (suite) {
@@ -145,28 +140,20 @@ define(function (require, exports, module) {
             addSuite.call(this, suite);
         };
 
-        var bracketsPath = FileUtils.getNativeBracketsDirectoryPath(),
-            paths = ["default"];
+        let paths = ["default"];
 
         // load dev and user extensions only when running the extension test suite
         if (selectedSuites.indexOf("extension") >= 0) {
             paths.push("dev");
-            paths.push(ExtensionLoader.getUserExtensionPath());
+            paths.push("user");
         }
 
-        // This returns path to test folder, so convert to src
-        bracketsPath = bracketsPath.replace(/\/test$/, "/src");
-
         return Async.doInParallel(paths, function (dir) {
-            var extensionPath = dir;
-
-            // If the item has "/" in it, assume it is a full path. Otherwise, load
-            // from our source path + "/extensions/".
-            if (dir.indexOf("/") === -1) {
-                extensionPath = bracketsPath + "/extensions/" + dir;
+            if(dir === "default"){
+                return ExtensionLoader.testAllDefaultExtensions();
+            } else {
+                return ExtensionLoader.testAllExtensionsInNativeDirectory(dir);
             }
-
-            return ExtensionLoader.testAllExtensionsInNativeDirectory(extensionPath);
         });
     }
 
@@ -212,8 +199,8 @@ define(function (require, exports, module) {
                     .done(function () {
                         _writeResults.resolve();
                     })
-                    .fail(function (err) {
-                        _writeResults.reject(err);
+                    .fail(function (writeErr) {
+                        _writeResults.reject(writeErr);
                     });
             }
         });
@@ -224,11 +211,11 @@ define(function (require, exports, module) {
      * "resultsPath" URL parameter exists. Does not overwrite existing file.
      *
      * @param {!$.Event} event
-     * @param {!UnitTestReporter} reporter
+     * @param {!UnitTestReporter} loaclReporter
      */
-    function _runnerEndHandler(event, reporter) {
+    function _runnerEndHandler(event, loaclReporter) {
         if (resultsPath && resultsPath.substr(-5) === ".json") {
-            writeResults(resultsPath, reporter.toJSON());
+            writeResults(resultsPath, loaclReporter.toJSON());
         }
 
         _writeResults.always(function () { brackets.app.quit(); });
@@ -439,8 +426,8 @@ define(function (require, exports, module) {
                     }
                 });
             } else {
-                item.async("string").then(function (data) {
-                    window.fs.writeFile(destPath, data, writeErr=>{
+                item.async("uint8array").then(function (data) {
+                    window.fs.writeFile(destPath, Filer.Buffer.from(data), writeErr=>{
                         if(writeErr){
                             reject(writeErr);
                         } else {

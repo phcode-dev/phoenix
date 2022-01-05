@@ -75,24 +75,6 @@ define(function (require, exports, module) {
                 PreferencesManager = null;
             });
 
-            it("should send data to server when opted in", function () {
-                var baseTime = Date.now();
-                PreferencesManager.setViewState("nextHealthDataSendTime", baseTime);
-                PreferencesManager.setViewState("healthDataNotificationShown", true);
-                var promise = HealthDataManager.checkHealthDataSend();
-                waitsForDone(promise, "Send Data to Server", 4000);
-                expect(PreferencesManager.getViewState("nextHealthDataSendTime")).toBeGreaterOrEqualTo(baseTime + ONE_DAY);
-            });
-
-            it("should not send data right away on first launch", function () {
-                var baseTime = Date.now();
-                PreferencesManager.setViewState("nextHealthDataSendTime", null);
-                PreferencesManager.setViewState("healthDataNotificationShown", true);
-                var promise = HealthDataManager.checkHealthDataSend();
-                waitsForFail(promise, "Send Data to Server", 4000);
-                expect(PreferencesManager.getViewState("nextHealthDataSendTime")).toBeGreaterOrEqualTo(baseTime + FIRST_LAUNCH_SEND_DELAY);
-            });
-
             it("should not send data to server when opted out", function () {
                 PreferencesManager.setViewState("nextHealthDataSendTime", Date.now());
                 prefs.set("healthDataTracking", false);
