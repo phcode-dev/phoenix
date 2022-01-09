@@ -13,9 +13,10 @@
         "SHA": ""
     },
     "devDependencies": {
+        "@commitlint/cli": "^16.0.2",
+        "@commitlint/config-conventional": "^16.0.0",
         "del": "^6.0.0",
         "eslint": "^7.32.0",
-        "git-commit-msg-linter": "^3.2.8",
         "gulp": "^4.0.2",
         "gulp-concat": "^2.6.1",
         "gulp-cssnano": "^2.1.3",
