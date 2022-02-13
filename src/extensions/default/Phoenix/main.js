@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         let surveyMonkey = function(t,e,s,o){
             // script as given by surevey monkey
             var n,a,c;
-            t.SMCX=t.SMCX||[],e.getElementById(o)||(n=e.getElementsByTagName(s),a=n[n.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=o,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgdwFlTpaQhrYTJNQLdbwJd7pfIpdamVfSxCdC_2Bcj5ebY9.js",a.parentNode.insertBefore(c,a));
+            t.SMCX=t.SMCX||[],e.getElementById(o)||(n=e.getElementsByTagName(s),a=n[n.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=o,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgdwFlTpaQhrYTJNQLdbwJd7pfIpdamVfSxCdC_2Bcj5ebY9.js",a.parentNode.insertBefore(c,a)); //NOSONAR
         };
         surveyMonkey(window, document, "script", "smcx-sdk");
     }
