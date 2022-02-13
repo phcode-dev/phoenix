@@ -21,20 +21,29 @@
 
 define(function (require, exports, module) {
 
-    const TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC = 30;
-    let AppInit                 = brackets.getModule("utils/AppInit");
+    const TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC = 1,
+        SHOWN_VERSION='v1'; // If you like to show the same survey again, just increase the version number to v2...
+    let AppInit     = brackets.getModule("utils/AppInit"),
+        Dialogs     = brackets.getModule("widgets/Dialogs"),
+        Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
+        SurveyTemplate     = require("text!survey-template.html"),
+        Strings            = brackets.getModule("strings");
 
 
     function _showSurvey() {
-        let surveyMonkey = function(t,e,s,o){
-            // script as given by surevey monkey
-            var n,a,c;
-            t.SMCX=t.SMCX||[],e.getElementById(o)||(n=e.getElementsByTagName(s),a=n[n.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=o,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgdwFlTpaQhrYTJNQLdbwJd7pfIpdamVfSxCdC_2Bcj5ebY9.js",a.parentNode.insertBefore(c,a)); //NOSONAR
+        var templateVars = {
+            Strings: Strings,
+            surveyURL: "https://s.surveyplanet.com/6208d1eccd51c561fc8e59ca"
         };
-        surveyMonkey(window, document, "script", "smcx-sdk");
+        let isShown = localStorage.getItem(templateVars.surveyURL) === SHOWN_VERSION;
+        if(!isShown){
+            Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
+            localStorage.setItem(templateVars.surveyURL, SHOWN_VERSION);
+        }
     }
 
     AppInit.appReady(function () {
-        setTimeout(_showSurvey, TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC * 1000);
+        // TODO: Disabling till survey is live.
+        // setTimeout(_showSurvey, TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC * 1000);
     });
 });
