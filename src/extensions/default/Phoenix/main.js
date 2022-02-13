@@ -21,7 +21,7 @@
 
 define(function (require, exports, module) {
 
-    const TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC = 1,
+    const TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC = 30,
         SHOWN_VERSION='v1'; // If you like to show the same survey again, just increase the version number to v2...
     let AppInit     = brackets.getModule("utils/AppInit"),
         Dialogs     = brackets.getModule("widgets/Dialogs"),
@@ -44,6 +44,6 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         // TODO: Disabling till survey is live.
-        // setTimeout(_showSurvey, TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC * 1000);
+        //setTimeout(_showSurvey, TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC * 1000);
     });
 });
