@@ -54,6 +54,13 @@ define(function (require, exports, module) {
      */
     var $editorHolder;
 
+
+    /**
+     * The "#main-toolbay": to the right side holding plugin panels and icons
+     * @type {jQueryObject}
+     */
+    var $mainToolbar;
+
     /**
      * A map from panel ID's to all reated panels
      */
@@ -97,6 +104,8 @@ define(function (require, exports, module) {
                 $elem.data("maxsize", editorAreaHeight + $elem.outerHeight());
             }
         });
+
+        $mainToolbar.data("maxsize", window.innerWidth*.75);
     }
 
 
@@ -271,10 +280,14 @@ define(function (require, exports, module) {
     AppInit.htmlReady(function () {
         $windowContent = $(".content");
         $editorHolder = $("#editor-holder");
+        $mainToolbar = $("#main-toolbar");
 
         // Sidebar is a special case: it isn't a Panel, and is not created dynamically. Need to explicitly
         // listen for resize here.
         listenToResize($("#sidebar"));
+
+        Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, 30,
+            true, undefined, true, undefined, $(".content"));
     });
 
     /* Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor() */

@@ -188,12 +188,17 @@ define(function (require, exports, module) {
      * @param {?boolean} createdByWorkspaceManager For internal use only
      * @param {?boolean} usePercentages Maintain the size of the element as a percentage of its parent
      *                          the default is to maintain the size of the element in pixels
+     * @param {?string} forceRight CSS selector indicating element whose 'right' should be locked to the
+     *                          the resizable element's size (useful for siblings laid out to the left of
+     *                          the element). Must lie in element's parent's subtree.
      * @param {?boolean} _attachToParent Attaches the resizer element to parent of the element rather than
      *                          to element itself. Attach the resizer to the parent *ONLY* if element has the
      *                          same offset as parent otherwise the resizer will be incorrectly positioned.
      *                          FOR INTERNAL USE ONLY
      */
-    function makeResizable(element, direction, position, minSize, collapsible, forceLeft, createdByWorkspaceManager, usePercentages, _attachToParent) {
+    function makeResizable(element, direction, position, minSize, collapsible,
+                           forceLeft, createdByWorkspaceManager, usePercentages,
+                           forceRight, _attachToParent) {
         var $resizer            = $('<div class="' + direction + '-resizer"></div>'),
             $element            = $(element),
             $parent             = $element.parent(),
@@ -273,6 +278,8 @@ define(function (require, exports, module) {
         function adjustSibling(size) {
             if (forceLeft !== undefined) {
                 $(forceLeft, $parent).css("left", size);
+            } else if (forceRight !== undefined) {
+                $(forceRight, $parent).css("right", size);
             }
         }
 
