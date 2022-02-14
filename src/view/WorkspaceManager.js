@@ -285,15 +285,17 @@ define(function (require, exports, module) {
         // Sidebar is a special case: it isn't a Panel, and is not created dynamically. Need to explicitly
         // listen for resize here.
         listenToResize($("#sidebar"));
+        listenToResize($("#main-toolbar"));
 
         Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, 30,
             true, undefined, true, undefined, $(".content"));
     });
 
     /* Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor() */
-    function _setMockDOM($mockWindowContent, $mockEditorHolder) {
+    function _setMockDOM($mockWindowContent, $mockEditorHolder, $mockMainToolbar) {
         $windowContent = $mockWindowContent;
         $editorHolder = $mockEditorHolder;
+        $mainToolbar = $mockMainToolbar;
     }
 
     /* Add this as a capture handler so we're guaranteed to run it before the editor does its own
