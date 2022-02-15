@@ -197,11 +197,18 @@ a:focus {
     .plugin-panel{
         width: 100%;
         height: 100%;
-        background-color: #3C3F41;
+        background-color: @dark-bc-sidebar-bg;
+    }
+
+    #plugin-icons-bar {
+        position: absolute;
+        right: 0px;
+        background-color: @main-toolbar-background-color;
+        height: 100%;
     }
 
     .selected-button{
-        background-color: #3C3F41 !important;
+        background-color: @dark-bc-sidebar-bg !important;
         margin-left: 2px !important;
         margin-right: 0px !important;
     }
