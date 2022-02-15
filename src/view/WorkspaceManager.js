@@ -35,12 +35,14 @@ define(function (require, exports, module) {
 
     var AppInit                 = require("utils/AppInit"),
         EventDispatcher         = require("utils/EventDispatcher"),
-        Resizer                 = require("utils/Resizer");
+        Resizer                 = require("utils/Resizer"),
+        PluginPanelManager      = require("view/PluginPanelManager");
 
     //constants
-    var EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
+    const EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
         EVENT_WORKSPACE_PANEL_SHOWN    = "workspacePanelShown",
-        EVENT_WORKSPACE_PANEL_HIDDEN   = "workspacePanelHidden";
+        EVENT_WORKSPACE_PANEL_HIDDEN   = "workspacePanelHidden",
+        MAIN_TOOLBAR_WIDTH = 30;
 
     /**
      * The ".content" vertical stack (editor + all header/footer panels)
@@ -285,10 +287,23 @@ define(function (require, exports, module) {
         // Sidebar is a special case: it isn't a Panel, and is not created dynamically. Need to explicitly
         // listen for resize here.
         listenToResize($("#sidebar"));
+
+        PluginPanelManager.init();
         listenToResize($("#main-toolbar"));
 
-        Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, 30,
-            true, undefined, true, undefined, $(".content"));
+        PluginPanelManager.on(PluginPanelManager.EVENT_PLUGIN_PANEL_SHOW, ()=>{
+            Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, MAIN_TOOLBAR_WIDTH,
+                true, undefined, true, undefined, $(".content"));
+            recomputeLayout(true);
+        });
+        PluginPanelManager.on(PluginPanelManager.EVENT_PLUGIN_PANEL_HIDE, ()=>{
+            $mainToolbar.css('width', MAIN_TOOLBAR_WIDTH);
+            $windowContent.css('right', MAIN_TOOLBAR_WIDTH);
+            recomputeLayout(true);
+            Resizer.removeSizable($mainToolbar[0]);
+        });
+
+        PluginPanelManager.showPluginPanel();
     });
 
     /* Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor() */
