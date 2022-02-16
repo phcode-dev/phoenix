@@ -41,8 +41,7 @@ define(function (require, exports, module) {
     //constants
     const EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
         EVENT_WORKSPACE_PANEL_SHOWN    = "workspacePanelShown",
-        EVENT_WORKSPACE_PANEL_HIDDEN   = "workspacePanelHidden",
-        MAIN_TOOLBAR_WIDTH = 30;
+        EVENT_WORKSPACE_PANEL_HIDDEN   = "workspacePanelHidden";
 
     /**
      * The ".content" vertical stack (editor + all header/footer panels)
@@ -290,20 +289,6 @@ define(function (require, exports, module) {
 
         PluginPanelManager.init();
         listenToResize($("#main-toolbar"));
-
-        PluginPanelManager.on(PluginPanelManager.EVENT_PLUGIN_PANEL_SHOW, ()=>{
-            Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, MAIN_TOOLBAR_WIDTH,
-                true, undefined, true, undefined, $(".content"));
-            recomputeLayout(true);
-        });
-        PluginPanelManager.on(PluginPanelManager.EVENT_PLUGIN_PANEL_HIDE, ()=>{
-            $mainToolbar.css('width', MAIN_TOOLBAR_WIDTH);
-            $windowContent.css('right', MAIN_TOOLBAR_WIDTH);
-            recomputeLayout(true);
-            Resizer.removeSizable($mainToolbar[0]);
-        });
-
-        PluginPanelManager.showPluginPanel();
     });
 
     /* Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor() */

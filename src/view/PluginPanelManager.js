@@ -24,8 +24,11 @@
 
 define(function (require, exports, module) {
 
-    const EventDispatcher     = require("utils/EventDispatcher"),
-          CommandManager      = require("command/CommandManager");
+    const EventDispatcher = require("utils/EventDispatcher"),
+        Resizer = require("utils/Resizer"),
+        WorkspaceManager = require("view/WorkspaceManager");
+
+    const PLUGIN_ID_PANEL_MAP = {};
 
     /**
      * The "#main-toolbar": to the right side holding plugin panels and icons
@@ -39,15 +42,23 @@ define(function (require, exports, module) {
      */
     let $mainPluginPanel;
 
-    const EVENT_PLUGIN_PANEL_SHOW = "plugin-panel-show-event",
-        EVENT_PLUGIN_PANEL_HIDE = "plugin-panel-hide-event";
+    /**
+     * The ".content" vertical stack (editor + all header/footer panels)
+     * @type {jQueryObject}
+     */
+    var $windowContent;
+
+    const EVENT_PLUGIN_PANEL_SHOWN = "plugin-panel-shown-event",
+        EVENT_PLUGIN_PANEL_HIDDEN = "plugin-panel-hidden-event",
+        MAIN_TOOLBAR_WIDTH = 30;
 
     /**
      * Creates a new resizable plugin panel associated with the given toolbar icon. Panel is initially invisible.
      * The panel's size & visibility are automatically saved & restored. Only one panel can be associated with a
      * toolbar icon.
      *
-     * @param {!string} id  Unique id for this panel. Use package-style naming, e.g. "myextension.panelname"
+     * @param {!string} id  Unique id for this panel. Use package-style naming, e.g. "myextension.panelname". will
+     *      overwrite an existing panel id if present.
      * @param {!jQueryObject} $panel  DOM content to use as the panel. Need not be in the document yet. Must have an id
      *      attribute, for use as a preferences key.
      * @param {number=} minSize  Minimum height of panel in px.
@@ -56,18 +67,39 @@ define(function (require, exports, module) {
      * @return {!Panel}
      */
     function createPluginPanel(id, $panel, minSize, $toolbarIcon) {
+        if(!$toolbarIcon){
+            throw new Error("invalid $toolbarIcon provided to create createPluginPanel");
+        }
+
+        $mainPluginPanel.appendChild($panel);
+
+        // The api for plugin panel manager should be very close to bottom panel to allow eazy migration
+        // TODO: make all plugin panel apis private? and just reuse api in workspace manager. Will help eazy
+        // migration to plugin panel.
+        // panelIDMap[id] = new Panel($panel, minSize);
+        // panelIDMap[id].panelID = id;
+        //
+        // return panelIDMap[id];
     }
 
     function showPluginPanel(id) {
-        exports.trigger(EVENT_PLUGIN_PANEL_SHOW);
+        Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, MAIN_TOOLBAR_WIDTH,
+            true, undefined, true, undefined, $(".content"));
+        WorkspaceManager.recomputeLayout(true);
+        exports.trigger(EVENT_PLUGIN_PANEL_SHOWN, id);
     }
 
     function hidePluginPanel(id) {
-        exports.trigger(EVENT_PLUGIN_PANEL_HIDE);
+        $mainToolbar.css('width', MAIN_TOOLBAR_WIDTH);
+        $windowContent.css('right', MAIN_TOOLBAR_WIDTH);
+        WorkspaceManager.recomputeLayout(true);
+        Resizer.removeSizable($mainToolbar[0]);
+        exports.trigger(EVENT_PLUGIN_PANEL_HIDDEN, id);
     }
 
     function init() {
         $mainToolbar = $("#main-toolbar");
+        $windowContent = $(".content");
         $mainPluginPanel = $("#main-plugin-panel");
     }
 
@@ -80,6 +112,6 @@ define(function (require, exports, module) {
     exports.showPluginPanel = showPluginPanel;
     exports.hidePluginPanel = hidePluginPanel;
     // public events
-    exports.EVENT_PLUGIN_PANEL_SHOW = EVENT_PLUGIN_PANEL_SHOW;
-    exports.EVENT_PLUGIN_PANEL_HIDE = EVENT_PLUGIN_PANEL_HIDE;
+    exports.EVENT_PLUGIN_PANEL_SHOWN = EVENT_PLUGIN_PANEL_SHOWN;
+    exports.EVENT_PLUGIN_PANEL_HIDDEN = EVENT_PLUGIN_PANEL_HIDDEN;
 });
