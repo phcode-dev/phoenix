@@ -19,31 +19,18 @@
  *
  */
 
+/*global fs, Phoenix, process*/
+/*eslint no-console: 0*/
+/*eslint strict: ["error", "global"]*/
+/* jshint ignore:start */
+
 define(function (require, exports, module) {
-
-    const TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC = 30,
-        SHOWN_VERSION='v1'; // If you like to show the same survey again, just increase the version number to v2...
-    let AppInit     = brackets.getModule("utils/AppInit"),
-        Dialogs     = brackets.getModule("widgets/Dialogs"),
-        Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
-        SurveyTemplate     = require("text!survey-template.html"),
-        Strings            = brackets.getModule("strings");
-
-
-    function _showSurvey() {
-        var templateVars = {
-            Strings: Strings,
-            surveyURL: "https://s.surveyplanet.com/6208d1eccd51c561fc8e59ca"
-        };
-        let isShown = localStorage.getItem(templateVars.surveyURL) === SHOWN_VERSION;
-        if(!isShown){
-            Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
-            localStorage.setItem(templateVars.surveyURL, SHOWN_VERSION);
-        }
-    }
+    let Survey       = require("survey"),
+        serverSync   = require("serverSync"),
+        AppInit      = brackets.getModule("utils/AppInit");
 
     AppInit.appReady(function () {
-        // TODO: Disabling till survey is live.
-        //setTimeout(_showSurvey, TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC * 1000);
+        Survey.init();
+        serverSync.init();
     });
 });

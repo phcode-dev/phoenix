@@ -77,6 +77,14 @@ define(function (require, exports, module) {
     // See #10115
     require("command/DefaultMenus");
 
+    const EVENT_PROJECT_BEFORE_CLOSE = "beforeProjectClose",
+        EVENT_PROJECT_CLOSE = "projectClose",
+        EVENT_PROJECT_OPEN = "projectOpen",
+        EVENT_PROJECT_REFRESH = "projectRefresh",
+        EVENT_CONTENT_CHANGED = "contentChanged",
+        EVENT_PROJECT_FILE_CHANGED = "projectFileChanged",
+        EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed";
+
     /**
      * @private
      * Filename to use for project settings files.
@@ -920,7 +928,7 @@ define(function (require, exports, module) {
 
             // About to close current project (if any)
             if (model.projectRoot) {
-                exports.trigger("beforeProjectClose", model.projectRoot);
+                exports.trigger(EVENT_PROJECT_BEFORE_CLOSE, model.projectRoot);
             }
 
             // close all the old files
@@ -931,7 +939,7 @@ define(function (require, exports, module) {
                 if (model.projectRoot) {
                     LanguageManager._resetPathLanguageOverrides();
                     PreferencesManager._reloadUserPrefs(model.projectRoot);
-                    exports.trigger("projectClose", model.projectRoot);
+                    exports.trigger(EVENT_PROJECT_CLOSE, model.projectRoot);
                 }
 
                 startLoad.resolve();
@@ -981,10 +989,10 @@ define(function (require, exports, module) {
 
                             if (projectRootChanged) {
                                 // Allow asynchronous event handlers to finish before resolving result by collecting promises from them
-                                exports.trigger("projectOpen", model.projectRoot);
+                                exports.trigger(EVENT_PROJECT_OPEN, model.projectRoot);
                                 result.resolve();
                             } else {
-                                exports.trigger("projectRefresh", model.projectRoot);
+                                exports.trigger(EVENT_PROJECT_REFRESH, model.projectRoot);
                                 result.resolve();
                             }
                             PerfUtils.addMeasurement(perfTimerName);
@@ -1199,6 +1207,7 @@ define(function (require, exports, module) {
                 DocumentManager.notifyPathDeleted(file.fullPath);
             });
         }
+        exports.trigger(EVENT_PROJECT_FILE_CHANGED, entry, added, removed);
     };
 
     /**
@@ -1209,6 +1218,7 @@ define(function (require, exports, module) {
         // Tell the document manager about the name change. This will update
         // all of the model information and send notification to all views
         DocumentManager.notifyPathNameChanged(oldName, newName);
+        exports.trigger(EVENT_PROJECT_FILE_RENAMED, oldName, newName);
     };
 
     /**
@@ -1248,8 +1258,8 @@ define(function (require, exports, module) {
             }
         });
 
-        $("#working-set-list-container").on("contentChanged", function () {
-            $projectTreeContainer.trigger("contentChanged");
+        $("#working-set-list-container").on(EVENT_CONTENT_CHANGED, function () {
+            $projectTreeContainer.trigger(EVENT_CONTENT_CHANGED);
         });
 
         Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).on("beforeContextMenuOpen", function () {
@@ -1302,8 +1312,8 @@ define(function (require, exports, module) {
     // Init default project path to welcome project
     PreferencesManager.stateManager.definePreference("projectPath", "string", _getWelcomeProjectPath());
 
-    exports.on("projectOpen", _reloadProjectPreferencesScope);
-    exports.on("projectOpen", _saveProjectPath);
+    exports.on(EVENT_PROJECT_OPEN, _reloadProjectPreferencesScope);
+    exports.on(EVENT_PROJECT_OPEN, _saveProjectPath);
     exports.on("beforeAppClose", _unwatchProjectRoot);
 
     // Due to circular dependencies, not safe to call on() directly for other modules' events
@@ -1502,4 +1512,14 @@ define(function (require, exports, module) {
     exports.addIconProvider               = addIconProvider;
     exports.addClassesProvider            = addClassesProvider;
     exports.rerenderTree                  = rerenderTree;
+
+    // public events
+    exports.EVENT_PROJECT_BEFORE_CLOSE = EVENT_PROJECT_BEFORE_CLOSE;
+    exports.EVENT_PROJECT_CLOSE = EVENT_PROJECT_CLOSE;
+    exports.EVENT_PROJECT_OPEN = EVENT_PROJECT_OPEN;
+    exports.EVENT_PROJECT_REFRESH = EVENT_PROJECT_REFRESH;
+    exports.EVENT_CONTENT_CHANGED = EVENT_CONTENT_CHANGED;
+    exports.EVENT_PROJECT_FILE_CHANGED = EVENT_PROJECT_FILE_CHANGED;
+    exports.EVENT_PROJECT_FILE_RENAMED = EVENT_PROJECT_FILE_RENAMED;
+
 });
