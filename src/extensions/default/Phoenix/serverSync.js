@@ -19,7 +19,7 @@
  *
  */
 
-/*global fs, Phoenix, process*/
+/*global fs, Phoenix, path*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
@@ -32,14 +32,64 @@ define(function (require, exports, module) {
     let syncRoot = "";
     let $icon;
     let published = false;
+    let publishURL = "http://localhost:3000/upload";
+
+    function _uploadFile(filePath, blob, resolve, reject) {
+        let uploadFormData = new FormData();
+        let projectRoot = path.dirname(syncRoot);
+        let relativePath = path.relative(projectRoot, filePath);
+        let fileName = path.basename(filePath);
+        uploadFormData.append("path", path.dirname(relativePath));
+        uploadFormData.append("files", blob, fileName);
+        $.ajax({
+            url: publishURL,
+            type: "POST",
+            data: uploadFormData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(r) {
+                resolve();
+            },
+            error: function(r) {
+                reject();
+            }
+        });
+    }
+
+    function _readAndUploadFile(file) {
+        return new Promise((resolve, reject)=>{
+            file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
+                if (err){
+                    reject(err);
+                    return;
+                }
+                let blob = new Blob([content], {type:"application/octet-stream"});
+                _uploadFile(file.fullPath, blob, resolve, reject);
+                resolve(blob);
+            });
+        });
+    }
+
+    function _uploadFiles(fileList, doneCB) {
+        for(let file of fileList){
+            _readAndUploadFile(file);
+        }
+        doneCB();
+    }
 
     function _startSync() {
         _setSyncInProgress();
-        let newSyncRoot = ProjectManager.getProjectRoot().fullPath;
-        if(newSyncRoot !== syncRoot){
-            syncRoot = newSyncRoot;
+        let newSyncRoot = ProjectManager.getProjectRoot();
+        let newSyncPath = newSyncRoot.fullPath;
+        if(newSyncPath !== syncRoot){
+            syncRoot = newSyncPath;
+            ProjectManager.getAllFiles().then((files)=>{
+                _uploadFiles(files, ()=>{
+                    _setSyncComplete();
+                });
+            });
         }
-        _setSyncComplete();
     }
 
     function _projectOpened() {
