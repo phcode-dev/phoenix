@@ -32,14 +32,24 @@ define(function (require, exports, module) {
     let syncRoot = "";
     let $icon;
     let published = false;
+    let userContext = "";
     let publishURL = "http://localhost:3000/upload";
+    const USER_CONTEXT = "publish.userContext";
+
+    function _setupUserContext() {
+        userContext = localStorage.getItem(USER_CONTEXT);
+        if(!userContext){
+            userContext = crypto.randomUUID().split("-")[0];
+            localStorage.setItem(USER_CONTEXT, userContext);
+        }
+    }
 
     function _uploadFile(filePath, blob, resolve, reject) {
         let uploadFormData = new FormData();
         let projectRoot = path.dirname(syncRoot);
         let relativePath = path.relative(projectRoot, filePath);
         let fileName = path.basename(filePath);
-        uploadFormData.append("path", path.dirname(relativePath));
+        uploadFormData.append("path", `${userContext}/${path.dirname(relativePath)}`);
         uploadFormData.append("files", blob, fileName);
         $.ajax({
             url: publishURL,
@@ -66,16 +76,18 @@ define(function (require, exports, module) {
                 }
                 let blob = new Blob([content], {type:"application/octet-stream"});
                 _uploadFile(file.fullPath, blob, resolve, reject);
-                resolve(blob);
             });
         });
     }
 
     function _uploadFiles(fileList, doneCB) {
+        let allPromises = [];
         for(let file of fileList){
-            _readAndUploadFile(file);
+            allPromises.push(_readAndUploadFile(file));
         }
-        doneCB();
+        Promise.all(allPromises).then(()=>{
+            doneCB();
+        });
     }
 
     function _startSync() {
@@ -97,11 +109,11 @@ define(function (require, exports, module) {
     }
 
     function _projectFileChanged(target, entry, added, removed) {
-        console.log("sync: ", entry, added, removed);
+        console.log("sync: change", entry, added, removed);
     }
 
     function _projectFileRenamed(target, oldName, newName) {
-        console.log("sync: ", oldName, newName);
+        console.log("sync: rename", oldName, newName);
     }
 
     function _setSyncInProgress() {
@@ -134,6 +146,7 @@ define(function (require, exports, module) {
 
     exports.init = function () {
         _addToolbarIcon();
+        _setupUserContext();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_RENAMED, _projectFileRenamed);
