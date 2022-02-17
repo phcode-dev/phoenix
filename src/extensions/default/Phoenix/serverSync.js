@@ -27,6 +27,7 @@
 define(function (require, exports, module) {
 
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
+        DocumentManager     = brackets.getModule("document/DocumentManager"),
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         Dialogs             = brackets.getModule("widgets/Dialogs"),
         Strings            = brackets.getModule("strings"),
@@ -42,6 +43,7 @@ define(function (require, exports, module) {
     let projectSyncStarted = false;
     let projectSyncCompleted = false;
     let tab = null;
+    let previewURL;
 
     function _setupUserContext() {
         userContext = localStorage.getItem(USER_CONTEXT);
@@ -141,6 +143,7 @@ define(function (require, exports, module) {
         syncEnabled = false;
         projectSyncStarted = false;
         projectSyncCompleted = false;
+        previewURL = null;
     }
 
     function _projectFileChanged(target, entry, added, removed) {
@@ -202,14 +205,32 @@ define(function (require, exports, module) {
             });
     }
 
+    function _isPreviewableFile(path) {
+        return true;
+    }
+
     function _loadPreview() {
-        let url = _getProjectPublishedURL();
+        let projectRootUrl = _getProjectPublishedURL();
+        let currentDocument = DocumentManager.getCurrentDocument();
+        let currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+        if(currentFile){
+            let fullPath = currentFile.fullPath;
+            let projectRoot = ProjectManager.getProjectRoot().fullPath;
+            let relativePath = path.relative(projectRoot, fullPath);
+            if(_isPreviewableFile(relativePath)){
+                previewURL = `${projectRootUrl}/${relativePath}`;
+            }
+        }
+
+        if(!previewURL){
+            previewURL = projectRootUrl;
+        }
         if(!tab || tab.closed){
-            tab = open(url);
+            tab = open(previewURL);
         }
         else {
             tab.close();
-            tab = open(url);
+            tab = open(previewURL);
         }
     }
 
