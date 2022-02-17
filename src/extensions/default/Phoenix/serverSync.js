@@ -146,12 +146,42 @@ define(function (require, exports, module) {
         previewURL = null;
     }
 
-    function _projectFileChanged(target, entry, added, removed) {
-        console.log("sync: change", entry, added, removed);
+    async function _collectFiles(dirEntry) {
+        let allFiles = [];
+        return new Promise((resolve, reject)=>{
+            dirEntry.getContents(async (err,fsEntries)=>{
+                if(err){
+                    reject(err);
+                }
+                for(let fsEntry of fsEntries){
+                    if(fsEntry.isDirectory){
+                        let contentFiles = await _collectFiles(fsEntry);
+                        allFiles.push(...contentFiles);
+                    } else {
+                        allFiles.push(fsEntry);
+                    }
+                }
+            });
+            resolve(allFiles);
+        });
     }
 
-    function _projectFileRenamed(target, oldName, newName) {
-        console.log("sync: rename", oldName, newName);
+    async function _projectFileChanged(target, entry, added, removed) {
+        if(!syncEnabled){
+            return;
+        }
+        if(entry){
+            let fileList = [];
+            if(entry.isDirectory){
+                fileList = await _collectFiles(entry);
+            } else {
+                fileList = [entry];
+            }
+            _setSyncInProgress();
+            _uploadFiles(fileList, ()=>{
+                _setSyncComplete();
+            });
+        }
     }
 
     function _setSyncInProgress() {
@@ -263,7 +293,6 @@ define(function (require, exports, module) {
         _setupUserContext();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_RENAMED, _projectFileRenamed);
     };
 
     ExtensionUtils.loadStyleSheet(module, "styles.css");
