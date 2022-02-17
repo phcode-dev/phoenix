@@ -27,14 +27,21 @@
 define(function (require, exports, module) {
 
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
-        ExtensionUtils      = brackets.getModule("utils/ExtensionUtils");
+        ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
+        Dialogs             = brackets.getModule("widgets/Dialogs"),
+        Strings            = brackets.getModule("strings"),
+        DefaultDialogs      = brackets.getModule("widgets/DefaultDialogs");
 
     let syncRoot = "";
     let $icon;
-    let published = false;
     let userContext = "";
-    let publishURL = "http://localhost:3000/upload";
+    let publishURL = "http://localhost:3000";
     const USER_CONTEXT = "publish.userContext";
+    let ongoingSyncCount = 0;
+    let syncEnabled = false;
+    let projectSyncStarted = false;
+    let projectSyncCompleted = false;
+    let tab = null;
 
     function _setupUserContext() {
         userContext = localStorage.getItem(USER_CONTEXT);
@@ -42,6 +49,11 @@ define(function (require, exports, module) {
             userContext = crypto.randomUUID().split("-")[0];
             localStorage.setItem(USER_CONTEXT, userContext);
         }
+    }
+
+    function _getProjectPublishedURL() {
+        let projectName = ProjectManager.getProjectRoot().name;
+        return `${publishURL}/${userContext}/${projectName}`;
     }
 
     function _uploadFile(filePath, blob, resolve, reject) {
@@ -52,7 +64,7 @@ define(function (require, exports, module) {
         uploadFormData.append("path", `${userContext}/${path.dirname(relativePath)}`);
         uploadFormData.append("files", blob, fileName);
         $.ajax({
-            url: publishURL,
+            url: publishURL + '/upload',
             type: "POST",
             data: uploadFormData,
             cache: false,
@@ -90,14 +102,35 @@ define(function (require, exports, module) {
         });
     }
 
-    function _startSync() {
+    function _startSync(doneCb) {
+        if(!syncEnabled){
+            return;
+        }
+        projectSyncStarted = true;
+        projectSyncCompleted = false;
         _setSyncInProgress();
         let newSyncRoot = ProjectManager.getProjectRoot();
         let newSyncPath = newSyncRoot.fullPath;
         if(newSyncPath !== syncRoot){
             syncRoot = newSyncPath;
             ProjectManager.getAllFiles().then((files)=>{
+                if(files.length > 500){
+                    Dialogs.showModalDialog(
+                        DefaultDialogs.DIALOG_ID_ERROR,
+                        'Cannot publish large project',
+                        'Since phoenix is still in alpha, we have not yet enabled sync of projects with >500 files'
+                    );
+                    _setSyncComplete();
+                    if(doneCb){
+                        doneCb();
+                    }
+                    return;
+                }
                 _uploadFiles(files, ()=>{
+                    projectSyncCompleted = true;
+                    if(doneCb){
+                        doneCb();
+                    }
                     _setSyncComplete();
                 });
             });
@@ -105,7 +138,9 @@ define(function (require, exports, module) {
     }
 
     function _projectOpened() {
-        _startSync();
+        syncEnabled = false;
+        projectSyncStarted = false;
+        projectSyncCompleted = false;
     }
 
     function _projectFileChanged(target, entry, added, removed) {
@@ -117,7 +152,7 @@ define(function (require, exports, module) {
     }
 
     function _setSyncInProgress() {
-        published = false;
+        ongoingSyncCount = ongoingSyncCount+1;
         $icon.attr({
             class: "syncing",
             title: "Sync in progress for preview..."
@@ -125,11 +160,57 @@ define(function (require, exports, module) {
     }
 
     function _setSyncComplete() {
-        published = true;
-        $icon.attr({
-            class: "ready-to-preview",
-            title: "Click to view published page"
-        });
+        ongoingSyncCount = ongoingSyncCount-1;
+        if(ongoingSyncCount ===0){
+            $icon.attr({
+                class: "preview",
+                title: "Click to view published page"
+            });
+        }
+    }
+
+    function _showPublishConsentDialogue() {
+        if(projectSyncStarted){
+            return;
+        }
+        Dialogs.showModalDialog(
+            DefaultDialogs.DIALOG_ID_INFO,
+            "Publish website?",
+            `Quickly preview changes and share your website with others. Phoenix can publish this website for you at 
+             <a href="${_getProjectPublishedURL()}">${_getProjectPublishedURL()}</a>.
+             The files you edit and save will be instantly published. Do you wish to publish your website?`,
+            [
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                    id: Dialogs.DIALOG_BTN_CANCEL,
+                    text: Strings.CANCEL
+                },
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                    id: Dialogs.DIALOG_BTN_OK,
+                    text: 'publish'
+                }
+            ]
+        )
+            .done(function (id) {
+                if (id === Dialogs.DIALOG_BTN_OK) {
+                    syncEnabled = true;
+                    _startSync(()=>{
+                        _loadPreview();
+                    });
+                }
+            });
+    }
+
+    function _loadPreview() {
+        let url = _getProjectPublishedURL();
+        if(!tab || tab.closed){
+            tab = open(url);
+        }
+        else {
+            tab.close();
+            tab = open(url);
+        }
     }
 
     function _addToolbarIcon() {
@@ -138,10 +219,17 @@ define(function (require, exports, module) {
             .attr({
                 id: syncButtonID,
                 href: "#",
-                class: "syncing",
-                title: "Publishing for preview..."
+                class: "preview",
+                title: "Click to publish site."
             })
             .appendTo($("#main-toolbar .buttons"));
+        $icon.on('click', ()=>{
+            if(projectSyncCompleted){
+                _loadPreview();
+                return;
+            }
+            _showPublishConsentDialogue();
+        });
     }
 
     exports.init = function () {
@@ -150,7 +238,6 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_RENAMED, _projectFileRenamed);
-        _startSync();
     };
 
     ExtensionUtils.loadStyleSheet(module, "styles.css");
