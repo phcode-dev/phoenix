@@ -205,8 +205,13 @@ define(function (require, exports, module) {
             });
     }
 
-    function _isPreviewableFile(path) {
-        return true;
+    function _isPreviewableFile(filePath) {
+        let pathSplit = filePath.split('.');
+        let extension = pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : null;
+        if(['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf', 'xml'].includes(extension.toLowerCase())){
+            return true;
+        }
+        return false;
     }
 
     function _loadPreview() {
