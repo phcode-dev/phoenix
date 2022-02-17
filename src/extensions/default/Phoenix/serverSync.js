@@ -36,7 +36,7 @@ define(function (require, exports, module) {
     let syncRoot = "";
     let $icon;
     let userContext = "";
-    let publishURL = "http://localhost:3000";
+    let publishURL = "https://singleclick.site";
     const USER_CONTEXT = "publish.userContext";
     let ongoingSyncCount = 0;
     let syncEnabled = false;
