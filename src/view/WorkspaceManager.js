@@ -35,10 +35,11 @@ define(function (require, exports, module) {
 
     var AppInit                 = require("utils/AppInit"),
         EventDispatcher         = require("utils/EventDispatcher"),
-        Resizer                 = require("utils/Resizer");
+        Resizer                 = require("utils/Resizer"),
+        PluginPanelManager      = require("view/PluginPanelManager");
 
     //constants
-    var EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
+    const EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
         EVENT_WORKSPACE_PANEL_SHOWN    = "workspacePanelShown",
         EVENT_WORKSPACE_PANEL_HIDDEN   = "workspacePanelHidden";
 
@@ -53,6 +54,13 @@ define(function (require, exports, module) {
      * @type {jQueryObject}
      */
     var $editorHolder;
+
+
+    /**
+     * The "#main-toolbay": to the right side holding plugin panels and icons
+     * @type {jQueryObject}
+     */
+    var $mainToolbar;
 
     /**
      * A map from panel ID's to all reated panels
@@ -97,6 +105,8 @@ define(function (require, exports, module) {
                 $elem.data("maxsize", editorAreaHeight + $elem.outerHeight());
             }
         });
+
+        $mainToolbar.data("maxsize", window.innerWidth*.75);
     }
 
 
@@ -271,16 +281,21 @@ define(function (require, exports, module) {
     AppInit.htmlReady(function () {
         $windowContent = $(".content");
         $editorHolder = $("#editor-holder");
+        $mainToolbar = $("#main-toolbar");
 
         // Sidebar is a special case: it isn't a Panel, and is not created dynamically. Need to explicitly
         // listen for resize here.
         listenToResize($("#sidebar"));
+
+        PluginPanelManager.init();
+        listenToResize($("#main-toolbar"));
     });
 
     /* Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor() */
-    function _setMockDOM($mockWindowContent, $mockEditorHolder) {
+    function _setMockDOM($mockWindowContent, $mockEditorHolder, $mockMainToolbar) {
         $windowContent = $mockWindowContent;
         $editorHolder = $mockEditorHolder;
+        $mainToolbar = $mockMainToolbar;
     }
 
     /* Add this as a capture handler so we're guaranteed to run it before the editor does its own

@@ -48,6 +48,7 @@ Phoenix is in alpha and is under active development.
 ## Building Phoenix
 [Source Repository](https://github.com/aicore/phoenix) 
 
+* Install gulp globally once.  `npm install -g gulp-cli` (use **sudo** in *nix systems)
 * run `npm install`
 * To build after npm install: `npm run build`
 
@@ -76,16 +77,8 @@ IDEs from this link before raising a pull request: https://www.sonarlint.org/
   * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
 
 ## Browsing the virtual file system
-To view/edit the files in the browser virtual file system, open the developer console
-and execute the below js code
-```javascript
-ProjectManager  = require("project/ProjectManager")
-ProjectManager.openProject("/fs")
-```
-Where `/fs` is the folder in the file system to browse. You can now browse the files
-in the phoenix file tree.
-
-NB: Mounting root folder `/` is not advised if you have mounted large local native folders. 
+To view/edit the files in the browser virtual file system in Phoenix:
+`debug menu> Open Virtual File System`
 
 ## Clean and reset builds
 * clean builds only: `npm run clean`
