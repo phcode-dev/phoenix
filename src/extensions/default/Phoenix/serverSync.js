@@ -53,9 +53,9 @@ define(function (require, exports, module) {
         }
     }
 
-    function _getProjectPublishedURL() {
+    function _getProjectPreviewURL() {
         let projectName = ProjectManager.getProjectRoot().name;
-        return `${publishURL}/${userContext}/${projectName}`;
+        return `${publishURL}/p/${userContext}/${projectName}`;
     }
 
     function _uploadFile(filePath, blob, resolve, reject) {
@@ -210,7 +210,7 @@ define(function (require, exports, module) {
             DefaultDialogs.DIALOG_ID_INFO,
             "Publish website?",
             `Quickly preview changes and share your website with others. Phoenix can publish this website for you at 
-             <a href="${_getProjectPublishedURL()}">${_getProjectPublishedURL()}</a>.
+             <a href="${_getProjectPreviewURL()}">${_getProjectPreviewURL()}</a>.
              The files you edit and save will be instantly published. Do you wish to publish your website?`,
             [
                 {
@@ -245,7 +245,7 @@ define(function (require, exports, module) {
     }
 
     function _loadPreview() {
-        let projectRootUrl = _getProjectPublishedURL();
+        let projectRootUrl = _getProjectPreviewURL();
         let currentDocument = DocumentManager.getCurrentDocument();
         let currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
         if(currentFile){
