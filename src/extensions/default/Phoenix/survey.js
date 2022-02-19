@@ -42,7 +42,6 @@ define(function (require, exports, module) {
     }
 
     exports.init = function () {
-        // TODO: Disabling till survey is live.
-        //setTimeout(_showSurvey, TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC * 1000);
+        setTimeout(_showSurvey, TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC * 1000);
     };
 });
