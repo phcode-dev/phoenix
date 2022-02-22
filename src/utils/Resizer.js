@@ -54,6 +54,12 @@ define(function (require, exports, module) {
     // Minimum size (height or width) for autodiscovered resizable panels
     var DEFAULT_MIN_SIZE = 100;
 
+    const EVENT_PANEL_COLLAPSED = 'panelCollapsed',
+        EVENT_PANEL_EXPANDED = 'panelExpanded',
+        EVENT_PANEL_RESIZE_START = 'panelResizeStart',
+        EVENT_PANEL_RESIZE_UPDATE = 'panelResizeUpdate',
+        EVENT_PANEL_RESIZE_END = 'panelResizeEnd';
+
     // Load dependent modules
     var AppInit                 = require("utils/AppInit"),
         EventDispatcher         = require("utils/EventDispatcher"),
@@ -342,7 +348,7 @@ define(function (require, exports, module) {
 
             adjustSibling(elementSize);
 
-            $element.trigger("panelExpanded", [elementSize]);
+            $element.trigger(EVENT_PANEL_EXPANDED, [elementSize]);
             PreferencesManager.setViewState(elementID, elementPrefs, null, isResizing);
         });
 
@@ -364,7 +370,7 @@ define(function (require, exports, module) {
 
             adjustSibling(0);
 
-            $element.trigger("panelCollapsed", [elementSize]);
+            $element.trigger(EVENT_PANEL_COLLAPSED, [elementSize]);
             PreferencesManager.setViewState(elementID, elementPrefs, null, isResizing);
         });
 
@@ -410,7 +416,7 @@ define(function (require, exports, module) {
                             // Trigger resizeStarted just before the first successful resize update
                             if (!resizeStarted) {
                                 resizeStarted = true;
-                                $element.trigger("panelResizeStart", newSize);
+                                $element.trigger(EVENT_PANEL_RESIZE_START, newSize);
                             }
 
                             // Resize the main element to the new size. If there is a content element,
@@ -418,7 +424,7 @@ define(function (require, exports, module) {
                             resizeElement(newSize, (newSize - baseSize));
                             adjustSibling(newSize);
 
-                            $element.trigger("panelResizeUpdate", [newSize]);
+                            $element.trigger(EVENT_PANEL_RESIZE_UPDATE, [newSize]);
                         }
                     } else if (newSize > 10) {
                         elementSizeFunction.apply($element, [newSize]);
@@ -427,7 +433,7 @@ define(function (require, exports, module) {
                         // Trigger resizeStarted after expanding the element if it was previously collapsed
                         if (!resizeStarted) {
                             resizeStarted = true;
-                            $element.trigger("panelResizeStart", newSize);
+                            $element.trigger(EVENT_PANEL_RESIZE_START, newSize);
                         }
                     }
                 }
@@ -487,7 +493,7 @@ define(function (require, exports, module) {
                     isResizing = false;
 
                     if (resizeStarted) {
-                        $element.trigger("panelResizeEnd", [elementSize]);
+                        $element.trigger(EVENT_PANEL_RESIZE_END, [elementSize]);
                     }
 
                     // We wait 300ms to remove the resizer container to capture a mousedown
@@ -540,9 +546,9 @@ define(function (require, exports, module) {
             $sideBar.width(sideBarMaxSize);
             resyncSizer($sideBar);
             $(".content").css("left", $sideBar.width());
-            $sideBar.trigger("panelResizeStart", $sideBar.width());
-            $sideBar.trigger("panelResizeUpdate", [$sideBar.width()]);
-            $sideBar.trigger("panelResizeEnd", [$sideBar.width()]);
+            $sideBar.trigger(EVENT_PANEL_RESIZE_START, $sideBar.width());
+            $sideBar.trigger(EVENT_PANEL_RESIZE_UPDATE, [$sideBar.width()]);
+            $sideBar.trigger(EVENT_PANEL_RESIZE_END, [$sideBar.width()]);
         }
     }
 
@@ -626,4 +632,11 @@ define(function (require, exports, module) {
     exports.POSITION_RIGHT       = POSITION_RIGHT;
     exports.POSITION_BOTTOM      = POSITION_BOTTOM;
     exports.POSITION_LEFT        = POSITION_LEFT;
+
+    // events
+    exports.EVENT_PANEL_COLLAPSED = EVENT_PANEL_COLLAPSED;
+    exports.EVENT_PANEL_EXPANDED = EVENT_PANEL_EXPANDED;
+    exports.EVENT_PANEL_RESIZE_START = EVENT_PANEL_RESIZE_START;
+    exports.EVENT_PANEL_RESIZE_UPDATE = EVENT_PANEL_RESIZE_UPDATE;
+    exports.EVENT_PANEL_RESIZE_END = EVENT_PANEL_RESIZE_END;
 });

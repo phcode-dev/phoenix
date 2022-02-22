@@ -36,7 +36,8 @@ define(function (require, exports, module) {
     var AppInit                 = require("utils/AppInit"),
         EventDispatcher         = require("utils/EventDispatcher"),
         Resizer                 = require("utils/Resizer"),
-        PluginPanelManager      = require("view/PluginPanelManager");
+        PluginPanelManager      = require("view/PluginPanelManager"),
+        PanelView                   = require("view/PanelView");
 
     //constants
     const EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
@@ -167,62 +168,6 @@ define(function (require, exports, module) {
 
 
     /**
-     * Represents a panel below the editor area (a child of ".content").
-     * @constructor
-     * @param {!jQueryObject} $panel  The entire panel, including any chrome, already in the DOM.
-     * @param {number=} minSize  Minimum height of panel in px.
-     */
-    function Panel($panel, minSize) {
-        this.$panel = $panel;
-
-        Resizer.makeResizable($panel[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP, minSize, false, undefined, true);
-        listenToResize($panel);
-    }
-
-    /**
-     * Dom node holding the rendered panel
-     * @type {jQueryObject}
-     */
-    Panel.prototype.$panel = null;
-
-    /**
-     * Determines if the panel is visible
-     * @return {boolean} true if visible, false if not
-     */
-    Panel.prototype.isVisible = function () {
-        return this.$panel.is(":visible");
-    };
-
-    /**
-     * Shows the panel
-     */
-    Panel.prototype.show = function () {
-        Resizer.show(this.$panel[0]);
-        exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, this.panelID);
-    };
-
-    /**
-     * Hides the panel
-     */
-    Panel.prototype.hide = function () {
-        Resizer.hide(this.$panel[0]);
-        exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, this.panelID);
-    };
-
-    /**
-     * Sets the panel's visibility state
-     * @param {boolean} visible true to show, false to hide
-     */
-    Panel.prototype.setVisible = function (visible) {
-        if (visible) {
-            this.show();
-        } else {
-            this.hide();
-        }
-    };
-
-
-    /**
      * Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.
      * The panel's size & visibility are automatically saved & restored as a view-state preference.
      *
@@ -237,10 +182,14 @@ define(function (require, exports, module) {
         $panel.hide();
         updateResizeLimits();  // initialize panel's max size
 
-        panelIDMap[id] = new Panel($panel, minSize);
-        panelIDMap[id].panelID = id;
+        let bottomPanel = new PanelView.Panel($panel, id);
+        panelIDMap[id] = bottomPanel;
 
-        return panelIDMap[id];
+        Resizer.makeResizable($panel[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP, minSize,
+            false, undefined, true);
+        listenToResize($panel);
+
+        return bottomPanel;
     }
 
     /**
@@ -305,6 +254,13 @@ define(function (require, exports, module) {
 
 
     EventDispatcher.makeEventDispatcher(exports);
+
+    PanelView.on(PanelView.EVENT_PANEL_SHOWN, (event, panelID)=>{
+        exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
+    });
+    PanelView.on(PanelView.EVENT_PANEL_HIDDEN, (event, panelID)=>{
+        exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
+    });
 
     // Define public API
     exports.createBottomPanel               = createBottomPanel;
