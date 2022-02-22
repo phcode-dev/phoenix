@@ -202,10 +202,12 @@ define(function (require, exports, module) {
     }
 
     function _resizeIframe() {
-        if (visible && $iframe) {
-            var iframeWidth = panel.$panel.innerWidth();
-            $iframe.attr("width", iframeWidth + "px");
-        }
+        // if (visible && $iframe) {
+        //     let iframeWidth = panel.$panel.innerWidth();
+        //     $iframe.attr("width", iframeWidth + "px");
+        //     let iframeHeight = panel.$panel.innerHeight();
+        //     $iframe.attr("height", iframeHeight + "px");
+        // }
     }
 
     function _updateSettings() {
@@ -287,12 +289,12 @@ define(function (require, exports, module) {
                 $panel = $(panelHTML);
                 $iframe = $panel.find("#panel-markdown-preview-frame");
 
-                panel = WorkspaceManager.createBottomPanel("markdown-preview-panel", $panel, 300);
+                panel = WorkspaceManager.createPluginPanel("markdown-preview-panel", $panel, 300, $icon);
                 $panel.on("panelResizeUpdate", function (e, newSize) {
-                    $iframe.attr("height", newSize);
+                    //$iframe.attr("height", $panel.height());
                 });
 
-                $iframe.attr("height", $panel.height());
+                //$iframe.attr("height", $panel.height());
 
                 $panel.css("overflow", "hidden");
                 window.setTimeout(_resizeIframe);

@@ -36,8 +36,8 @@ define(function (require, exports, module) {
     var AppInit                 = require("utils/AppInit"),
         EventDispatcher         = require("utils/EventDispatcher"),
         Resizer                 = require("utils/Resizer"),
-        PluginPanelManager      = require("view/PluginPanelManager"),
-        PanelView                   = require("view/PanelView");
+        PluginPanelView         = require("view/PluginPanelView"),
+        PanelView               = require("view/PanelView");
 
     //constants
     const EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
@@ -62,6 +62,18 @@ define(function (require, exports, module) {
      * @type {jQueryObject}
      */
     var $mainToolbar;
+
+    /**
+     * The "#main-plugin-panel": The plugin panel main container
+     * @type {jQueryObject}
+     */
+    let $mainPluginPanel;
+
+    /**
+     * The "#plugin-icons-bar": holding all the plugin icons
+     * @type {jQueryObject}
+     */
+    let $pluginIconsBar;
 
     /**
      * A map from panel ID's to all reated panels
@@ -119,9 +131,12 @@ define(function (require, exports, module) {
      */
     function triggerUpdateLayout(refreshHint) {
         // Find how much space is left for the editor
-        var editorAreaHeight = calcAvailableHeight();
+        let editorAreaHeight = calcAvailableHeight();
 
         $editorHolder.height(editorAreaHeight);  // affects size of "not-editor" placeholder as well
+
+        let pluginPanelWidth = $mainToolbar.width() - $pluginIconsBar.width();
+        $mainPluginPanel.width(pluginPanelWidth);
 
         // Resize editor to fill the space
         exports.trigger(EVENT_WORKSPACE_UPDATE_LAYOUT, editorAreaHeight, refreshHint);
@@ -193,6 +208,33 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Creates a new resizable plugin panel associated with the given toolbar icon. Panel is initially invisible.
+     * The panel's size & visibility are automatically saved & restored. Only one panel can be associated with a
+     * toolbar icon.
+     *
+     * @param {!string} id  Unique id for this panel. Use package-style naming, e.g. "myextension.panelname". will
+     *      overwrite an existing panel id if present.
+     * @param {!jQueryObject} $panel  DOM content to use as the panel. Need not be in the document yet. Must have an id
+     *      attribute, for use as a preferences key.
+     * @param {number=} minSize  Minimum height of panel in px.
+     * @param {!jQueryObject} $toolbarIcon An icon that should be present in main-toolbar to associate this panel to.
+     *      The panel will be shown only if the icon is visible on the toolbar and the user clicks on the icon.
+     * @return {!Panel}
+     */
+    function createPluginPanel(id, $panel, minSize, $toolbarIcon) {
+        if(!$toolbarIcon){
+            throw new Error("invalid $toolbarIcon provided to create createPluginPanel");
+        }
+
+        $mainPluginPanel[0].appendChild($panel[0]);
+
+        let pluginPanel = new PluginPanelView.Panel($panel, id, $toolbarIcon);
+        panelIDMap[id] = pluginPanel;
+
+        return pluginPanel;
+    }
+
+    /**
      * Returns an array of all panel ID's
      * @returns {Array} List of ID's of all bottom panels
      */
@@ -231,12 +273,12 @@ define(function (require, exports, module) {
         $windowContent = $(".content");
         $editorHolder = $("#editor-holder");
         $mainToolbar = $("#main-toolbar");
+        $mainPluginPanel = $("#main-plugin-panel");
+        $pluginIconsBar = $("#plugin-icons-bar");
 
         // Sidebar is a special case: it isn't a Panel, and is not created dynamically. Need to explicitly
         // listen for resize here.
         listenToResize($("#sidebar"));
-
-        PluginPanelManager.init();
         listenToResize($("#main-toolbar"));
     });
 
@@ -262,8 +304,20 @@ define(function (require, exports, module) {
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
     });
 
+    PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_SHOWN, (event, panelID, minWidth)=>{
+        Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, minWidth,
+            true, undefined, true, undefined, $windowContent);
+        recomputeLayout(true);
+        exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
+    });
+    PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_HIDDEN, (event, panelID)=>{
+        Resizer.removeSizable($mainToolbar[0]);
+        recomputeLayout(true);
+        exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
+    });
     // Define public API
     exports.createBottomPanel               = createBottomPanel;
+    exports.createPluginPanel               = createPluginPanel;
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;
