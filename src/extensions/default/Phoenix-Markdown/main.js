@@ -287,7 +287,7 @@ define(function (require, exports, module) {
                 $panel = $(panelHTML);
                 $iframe = $panel.find("#panel-markdown-preview-frame");
 
-                panel = WorkspaceManager.createBottomPanel("markdown-preview-panel", $panel, 650);
+                panel = WorkspaceManager.createBottomPanel("markdown-preview-panel", $panel, 300);
                 $panel.on("panelResizeUpdate", function (e, newSize) {
                     $iframe.attr("height", newSize);
                 });
