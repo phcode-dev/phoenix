@@ -35,7 +35,8 @@ define(function (require, exports, module) {
             MainViewManager._edit(MainViewManager.ACTIVE_PANE, testDoc);
             testEditor = testDoc._masterEditor;
             $root = $(testEditor.getRootElement());
-            WorkspaceManager._setMockDOM($("#mock-main-view"),  $root.parent(), $("#mock-main-toolbar-view"));
+            WorkspaceManager._setMockDOM($("#mock-main-view"),  $root.parent(), $("#mock-main-toolbar-view"),
+                $("#mock-main-plugin-panel"), $("#mock-main-plugin-icons-bar"));
         });
 
         afterEach(function () {
@@ -44,7 +45,8 @@ define(function (require, exports, module) {
             testEditor = null;
             testDoc = null;
             $root = null;
-            WorkspaceManager._setMockDOM(undefined, undefined, undefined);
+            WorkspaceManager._setMockDOM(undefined, undefined,
+                undefined, undefined, undefined);
         });
 
         // force cases
