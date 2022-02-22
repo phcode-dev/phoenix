@@ -283,10 +283,12 @@ define(function (require, exports, module) {
     });
 
     /* Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor() */
-    function _setMockDOM($mockWindowContent, $mockEditorHolder, $mockMainToolbar) {
+    function _setMockDOM($mockWindowContent, $mockEditorHolder, $mockMainToolbar, $mockMainPluginPanel, $mockPluginIconsBar) {
         $windowContent = $mockWindowContent;
         $editorHolder = $mockEditorHolder;
         $mainToolbar = $mockMainToolbar;
+        $mainPluginPanel = $mockMainPluginPanel;
+        $pluginIconsBar = $mockPluginIconsBar;
     }
 
     /* Add this as a capture handler so we're guaranteed to run it before the editor does its own
