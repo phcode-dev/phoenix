@@ -68,6 +68,7 @@ define(function (require, exports, module) {
      */
     Panel.prototype.show = function () {
         this.$toolbarIcon.addClass("selected-button");
+        this.$panel.show();
         exports.trigger(EVENT_PLUGIN_PANEL_SHOWN, this.panelID, this.minWidth);
     };
 
@@ -78,6 +79,7 @@ define(function (require, exports, module) {
         this.$mainToolbar.css('width', MAIN_TOOLBAR_WIDTH);
         this.$windowContent.css('right', MAIN_TOOLBAR_WIDTH);
         this.$toolbarIcon.removeClass("selected-button");
+        this.$panel.hide();
         exports.trigger(EVENT_PLUGIN_PANEL_HIDDEN, this.panelID);
     };
 

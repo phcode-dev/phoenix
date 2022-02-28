@@ -309,6 +309,7 @@ define(function (require, exports, module) {
     PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_SHOWN, (event, panelID, minWidth)=>{
         Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, minWidth,
             false, undefined, true, undefined, $windowContent);
+        Resizer.show($mainToolbar[0]);
         recomputeLayout(true);
         exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
     });
