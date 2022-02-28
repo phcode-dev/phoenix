@@ -279,8 +279,9 @@ define(function (require, exports, module) {
             if (!panel) {
                 $panel = $(panelHTML);
                 $iframe = $panel.find("#panel-markdown-preview-frame");
+                let minSize = window.innerWidth/3;
 
-                panel = WorkspaceManager.createPluginPanel("markdown-preview-panel", $panel, 300, $icon);
+                panel = WorkspaceManager.createPluginPanel("markdown-preview-panel", $panel, minSize, $icon);
 
                 WorkspaceManager.recomputeLayout(false);
                 $settingsToggle = $("#markdown-settings-toggle")
