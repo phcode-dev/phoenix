@@ -201,15 +201,6 @@ define(function (require, exports, module) {
         _loadDoc(e.target, true);
     }
 
-    function _resizeIframe() {
-        // if (visible && $iframe) {
-        //     let iframeWidth = panel.$panel.innerWidth();
-        //     $iframe.attr("width", iframeWidth + "px");
-        //     let iframeHeight = panel.$panel.innerHeight();
-        //     $iframe.attr("height", iframeHeight + "px");
-        // }
-    }
-
     function _updateSettings() {
         // Format
         var useGFM = _prefs.get("useGFM");
@@ -290,14 +281,6 @@ define(function (require, exports, module) {
                 $iframe = $panel.find("#panel-markdown-preview-frame");
 
                 panel = WorkspaceManager.createPluginPanel("markdown-preview-panel", $panel, 300, $icon);
-                $panel.on("panelResizeUpdate", function (e, newSize) {
-                    //$iframe.attr("height", $panel.height());
-                });
-
-                //$iframe.attr("height", $panel.height());
-
-                $panel.css("overflow", "hidden");
-                window.setTimeout(_resizeIframe);
 
                 WorkspaceManager.recomputeLayout(false);
                 $settingsToggle = $("#markdown-settings-toggle")
@@ -538,7 +521,7 @@ define(function (require, exports, module) {
     // Update preview 300 ms ofter document change
     // Sync scroll 1ms after document scroll (just enough to ensure
     // the document scroll isn't blocked).
-    _documentChange = _.debounce(_documentChange, 300);
+    _documentChange = _.debounce(_documentChange, 30);
     _editorScroll = _.debounce(_editorScroll, 1);
 
     // Insert CSS for this extension
@@ -571,12 +554,6 @@ define(function (require, exports, module) {
     AppInit.appReady(function () {
         _currentDocChangedHandler();
     });
-
-    // Listen for resize events
-    WorkspaceManager.on("workspaceUpdateLayout", _resizeIframe);
-    $("#sidebar").on("panelCollapsed panelExpanded panelResizeUpdate", _resizeIframe);
-
-
 });
 
 
