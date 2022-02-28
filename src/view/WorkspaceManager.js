@@ -228,7 +228,7 @@ define(function (require, exports, module) {
 
         $mainPluginPanel[0].appendChild($panel[0]);
 
-        let pluginPanel = new PluginPanelView.Panel($panel, id, $toolbarIcon);
+        let pluginPanel = new PluginPanelView.Panel($panel, id, $toolbarIcon, minSize);
         panelIDMap[id] = pluginPanel;
 
         return pluginPanel;
@@ -308,7 +308,7 @@ define(function (require, exports, module) {
 
     PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_SHOWN, (event, panelID, minWidth)=>{
         Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, minWidth,
-            true, undefined, true, undefined, $windowContent);
+            false, undefined, true, undefined, $windowContent);
         recomputeLayout(true);
         exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
     });

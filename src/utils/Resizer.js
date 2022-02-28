@@ -323,7 +323,7 @@ define(function (require, exports, module) {
 
         $element.data("show", function () {
             var elementOffset   = $element.offset(),
-                elementSize     = elementSizeFunction.apply($element) || elementPrefs.size,
+                elementSize     = elementSizeFunction.apply($element) || elementPrefs.size || minSize,
                 contentSize     = contentSizeFunction.apply($resizableElement) || elementPrefs.contentSize;
 
             // Resize the element before showing it again. If the panel was collapsed by dragging
