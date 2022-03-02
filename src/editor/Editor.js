@@ -172,7 +172,7 @@ define(function (require, exports, module) {
             }
         }
     });
-    PreferencesManager.definePreference(DRAG_DROP,          "boolean", false, {
+    PreferencesManager.definePreference(DRAG_DROP,          "boolean", true, {
         description: Strings.DESCRIPTION_DRAG_DROP_TEXT
     });
     PreferencesManager.definePreference(HIGHLIGHT_MATCHES,  "boolean", false, {
