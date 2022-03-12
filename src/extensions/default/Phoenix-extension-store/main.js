@@ -58,32 +58,10 @@ define(function (require, exports, module) {
 
     // Other vars
     var panel,
-        toggleCmd,
-        visible = false,
-        realVisibility = false;
+        toggleCmd;
 
     function _setPanelVisibility(isVisible) {
-        if (isVisible === realVisibility) {
-            return;
-        }
-
-        realVisibility = isVisible;
-
         if (isVisible) {
-            if (!panel) {
-                $panel = $(panelHTML);
-                $iframe = $panel.find("#panel-extension-store-frame");
-                $iframe[0].onload = function () {
-                    $iframe.attr('srcdoc', null);
-                };
-                $iframe.attr('src', brackets.config.extension_store_url);
-                let minSize = window.innerWidth/3;
-
-                panel = WorkspaceManager.createPluginPanel("extension-panel", $panel, minSize, $icon);
-
-                WorkspaceManager.recomputeLayout(false);
-            }
-
             $icon.toggleClass("active");
 
             panel.show();
@@ -95,7 +73,7 @@ define(function (require, exports, module) {
     }
 
     function _toggleVisibility() {
-        visible = !visible;
+        let visible = !panel.isVisible();
         _setPanelVisibility(visible);
 
         toggleCmd.setChecked(visible);
@@ -104,12 +82,25 @@ define(function (require, exports, module) {
     ExtensionUtils.loadStyleSheet(module, "extension-store.css");
     // todo: replace with extension manager dialogue command
     toggleCmd = CommandManager.register("Extensions Panel", "toggleExtensionsPanel", _toggleVisibility);
-    toggleCmd.setChecked(realVisibility);
-    toggleCmd.setEnabled(realVisibility);
 
-    AppInit.appReady(function () {
+    function _createExtensionPanel() {
         $icon = $("#toolbar-extension-manager");
         $icon.click(_toggleVisibility);
+        $panel = $(panelHTML);
+        $iframe = $panel.find("#panel-extension-store-frame");
+        $iframe[0].onload = function () {
+            $iframe.attr('srcdoc', null);
+        };
+        $iframe.attr('src', brackets.config.extension_store_url);
+        let minSize = window.innerWidth/3;
+
+        panel = WorkspaceManager.createPluginPanel("extension-panel", $panel, minSize, $icon);
+
+        WorkspaceManager.recomputeLayout(false);
+    }
+
+    AppInit.appReady(function () {
+        _createExtensionPanel();
     });
 });
 

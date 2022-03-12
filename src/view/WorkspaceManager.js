@@ -231,6 +231,7 @@ define(function (require, exports, module) {
 
         let pluginPanel = new PluginPanelView.Panel($panel, id, $toolbarIcon, minSize);
         panelIDMap[id] = pluginPanel;
+        pluginPanel.hide();
 
         return pluginPanel;
     }
