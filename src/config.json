@@ -17,6 +17,7 @@
         "extension_listing_url": "",
         "extension_registry": "https://s3.amazonaws.com/extend.brackets/registry.json",
         "extension_url": "https://s3.amazonaws.com/extend.brackets/{0}/{0}-{1}.zip",
+        "extension_store_url"        : "https://store.core.ai/src/",
         "linting.enabled_by_default": true,
         "build_timestamp": "",
         "googleAnalyticsID": "G-P4HJFPDB76",

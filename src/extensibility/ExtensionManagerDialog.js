@@ -604,7 +604,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_EXTENSION_MANAGER, Commands.FILE_EXTENSION_MANAGER, _showDialog);
 
     AppInit.appReady(function () {
-        $("#toolbar-extension-manager").click(_showDialog);
+        //$("#toolbar-extension-manager").click(_showDialog);
     });
 
     // Unit tests
