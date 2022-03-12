@@ -26,8 +26,7 @@ define(function (require, exports, module) {
 
     const EventDispatcher = require("utils/EventDispatcher"),
         EVENT_PLUGIN_PANEL_SHOWN = "plugin-panel-shown-event",
-        EVENT_PLUGIN_PANEL_HIDDEN = "plugin-panel-hidden-event",
-        MAIN_TOOLBAR_WIDTH = 30;
+        EVENT_PLUGIN_PANEL_HIDDEN = "plugin-panel-hidden-event";
 
     /**
      * Represents a panel below the editor area (a child of ".content").
@@ -44,8 +43,6 @@ define(function (require, exports, module) {
         this.panelID = id;
         this.$toolbarIcon = $toolbarIcon;
         this.minWidth = minWidth;
-        this.$mainToolbar = $("#main-toolbar");
-        this.$windowContent = $(".content");
         this.$mainPluginPanel = $("#main-plugin-panel");
     }
 
@@ -69,15 +66,13 @@ define(function (require, exports, module) {
     Panel.prototype.show = function () {
         this.$toolbarIcon.addClass("selected-button");
         this.$panel.show();
-        exports.trigger(EVENT_PLUGIN_PANEL_SHOWN, this.panelID, this.minWidth);
+        exports.trigger(EVENT_PLUGIN_PANEL_SHOWN, this.panelID);
     };
 
     /**
      * Hides the panel
      */
     Panel.prototype.hide = function () {
-        this.$mainToolbar.css('width', MAIN_TOOLBAR_WIDTH);
-        this.$windowContent.css('right', MAIN_TOOLBAR_WIDTH);
         this.$toolbarIcon.removeClass("selected-button");
         this.$panel.hide();
         exports.trigger(EVENT_PLUGIN_PANEL_HIDDEN, this.panelID);

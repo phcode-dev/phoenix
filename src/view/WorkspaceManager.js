@@ -42,7 +42,8 @@ define(function (require, exports, module) {
     //constants
     const EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
         EVENT_WORKSPACE_PANEL_SHOWN    = "workspacePanelShown",
-        EVENT_WORKSPACE_PANEL_HIDDEN   = "workspacePanelHidden";
+        EVENT_WORKSPACE_PANEL_HIDDEN   = "workspacePanelHidden",
+        MAIN_TOOLBAR_WIDTH = 30;
 
     /**
      * The ".content" vertical stack (editor + all header/footer panels)
@@ -306,16 +307,40 @@ define(function (require, exports, module) {
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
     });
 
-    PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_SHOWN, (event, panelID, minWidth)=>{
-        Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT, minWidth,
-            false, undefined, true, undefined, $windowContent);
+    let currentlyShownPanel = null,
+        panelShowInProgress = false;
+
+    function _showPluginSidePanel(panelID) {
+        let panelBeingShown = getPanelForID(panelID);
+        Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT,
+            panelBeingShown.minWidth, false, undefined, true, undefined, $windowContent);
         Resizer.show($mainToolbar[0]);
         recomputeLayout(true);
-        exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
-    });
-    PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_HIDDEN, (event, panelID)=>{
+    }
+
+    function _hidePluginSidePanel() {
+        $mainToolbar.css('width', MAIN_TOOLBAR_WIDTH);
+        $windowContent.css('right', MAIN_TOOLBAR_WIDTH);
         Resizer.removeSizable($mainToolbar[0]);
         recomputeLayout(true);
+    }
+
+    PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_SHOWN, (event, panelID)=>{
+        panelShowInProgress = true;
+        _showPluginSidePanel(panelID);
+        if(currentlyShownPanel){
+            currentlyShownPanel.hide();
+        }
+        currentlyShownPanel = getPanelForID(panelID);
+        exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
+        panelShowInProgress = false;
+    });
+
+    PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_HIDDEN, (event, panelID)=>{
+        if(!panelShowInProgress){
+            _hidePluginSidePanel();
+            currentlyShownPanel = null;
+        }
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
     });
     // Define public API
