@@ -189,9 +189,6 @@ define(function (require, exports, module) {
                     if (!isReload) {
                         _editorScroll();
                     }
-
-                    // Make sure iframe is showing
-                    $iframe.show();
                 });
             }
         }
@@ -276,27 +273,6 @@ define(function (require, exports, module) {
         realVisibility = isVisible;
 
         if (isVisible) {
-            if (!panel) {
-                $panel = $(panelHTML);
-                $iframe = $panel.find("#panel-markdown-preview-frame");
-                let minSize = window.innerWidth/3;
-
-                panel = WorkspaceManager.createPluginPanel("markdown-preview-panel", $panel, minSize, $icon);
-
-                WorkspaceManager.recomputeLayout(false);
-                $settingsToggle = $("#markdown-settings-toggle")
-                    .click(function (e) {
-                        if ($settings) {
-                            _hideSettings();
-                        } else {
-                            _showSettings(e);
-                        }
-                    });
-
-                $iframe.hide();
-
-            }
-
             _loadDoc(DocumentManager.getCurrentDocument());
             $icon.toggleClass("active");
 
@@ -305,8 +281,6 @@ define(function (require, exports, module) {
         } else {
             $icon.toggleClass("active");
             panel.hide();
-
-            $iframe.hide();
         }
     }
 
@@ -550,9 +524,28 @@ define(function (require, exports, module) {
     toggleCmd.setChecked(realVisibility);
     toggleCmd.setEnabled(realVisibility);
 
+    function _createPanel() {
+        $panel = $(panelHTML);
+        $iframe = $panel.find("#panel-markdown-preview-frame");
+        let minSize = window.innerWidth/3;
+
+        panel = WorkspaceManager.createPluginPanel("markdown-preview-panel", $panel, minSize, $icon);
+
+        WorkspaceManager.recomputeLayout(false);
+        $settingsToggle = $("#markdown-settings-toggle")
+            .click(function (e) {
+                if ($settings) {
+                    _hideSettings();
+                } else {
+                    _showSettings(e);
+                }
+            });
+    }
+
     // currentDocumentChange is *not* called for the initial document. Use
     // appReady() to set initial state.
     AppInit.appReady(function () {
+        _createPanel();
         _currentDocChangedHandler();
     });
 });
