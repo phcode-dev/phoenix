@@ -1,0 +1,9 @@
+#panel-live-preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#panel-live-preview-frame {
+    border: none;
+}
