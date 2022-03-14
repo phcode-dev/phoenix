@@ -73,6 +73,7 @@ define(function (require, exports, module) {
     }
 
     function _toggleVisibility() {
+        alert("extension support coming soon");
         let visible = !panel.isVisible();
         _setPanelVisibility(visible);
 
