@@ -211,10 +211,10 @@ define(function (require, exports, module) {
         }
         Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_INFO,
-            "Publish website?",
+            "Publish and Share website?",
             `Quickly preview changes and share your website with others. Phoenix can publish this website for you at 
              <a href="${_getProjectPreviewURL()}">${_getProjectPreviewURL()}</a>.
-             The files you edit and save will be instantly published. Do you wish to publish your website?`,
+             The files you edit and save will be instantly published. Do you wish to publish and share your website?`,
             [
                 {
                     className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
@@ -282,7 +282,7 @@ define(function (require, exports, module) {
                 id: syncButtonID,
                 href: "#",
                 class: "preview",
-                title: "Click to publish site."
+                title: "Click to publish and share this site."
             })
             .appendTo($("#main-toolbar .buttons"));
         $icon.on('click', ()=>{
@@ -296,7 +296,8 @@ define(function (require, exports, module) {
     }
 
     setInterval(()=>{
-        // periodically check
+        // periodically check if the preview tab is manually closed by user. We do this by light polling as
+        // we cannot attach an onTabClosed event to the tab.
         if(previewInProgress && (!tab || tab.closed)){
             previewInProgress = false;
         }
