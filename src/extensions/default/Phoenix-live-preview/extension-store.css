@@ -1,9 +1,24 @@
+:root {
+    --toolbar-height: 30px;
+}
+
 #panel-live-preview {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-#panel-live-preview-frame {
-    border: none;
+.frame-container {
+    display: flex;
+    width: 100%;
+    height: calc(100% - var(--toolbar-height));
+}
+
+.plugin-toolbar {
+    height: var(--toolbar-height);
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
 }
