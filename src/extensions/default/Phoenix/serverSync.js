@@ -28,6 +28,7 @@ define(function (require, exports, module) {
 
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
         DocumentManager     = brackets.getModule("document/DocumentManager"),
+        EditorManager       = brackets.getModule("editor/EditorManager"),
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         Dialogs             = brackets.getModule("widgets/Dialogs"),
         Strings            = brackets.getModule("strings"),
@@ -44,6 +45,7 @@ define(function (require, exports, module) {
     let projectSyncCompleted = false;
     let tab = null;
     let previewURL;
+    let previewInProgress = false;
 
     function _setupUserContext() {
         userContext = localStorage.getItem(USER_CONTEXT);
@@ -230,6 +232,7 @@ define(function (require, exports, module) {
                 if (id === Dialogs.DIALOG_BTN_OK) {
                     syncEnabled = true;
                     _startSync(()=>{
+                        previewInProgress = true;
                         _loadPreview();
                     });
                 }
@@ -246,6 +249,9 @@ define(function (require, exports, module) {
     }
 
     function _loadPreview() {
+        if(!previewInProgress){
+            return;
+        }
         let projectRootUrl = _getProjectPreviewURL();
         let currentDocument = DocumentManager.getCurrentDocument();
         let currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
@@ -281,6 +287,7 @@ define(function (require, exports, module) {
             .appendTo($("#main-toolbar .buttons"));
         $icon.on('click', ()=>{
             if(projectSyncCompleted){
+                previewInProgress = true;
                 _loadPreview();
                 return;
             }
@@ -288,11 +295,19 @@ define(function (require, exports, module) {
         });
     }
 
+    setInterval(()=>{
+        // periodically check
+        if(previewInProgress && (!tab || tab.closed)){
+            previewInProgress = false;
+        }
+    }, 500);
+
     exports.init = function () {
         _addToolbarIcon();
         _setupUserContext();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
+        EditorManager.on("activeEditorChange", _loadPreview);
     };
 
     ExtensionUtils.loadStyleSheet(module, "styles.css");
