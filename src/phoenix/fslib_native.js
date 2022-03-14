@@ -116,7 +116,7 @@ async function _getFileContents(fileHandle, encoding, callback) {
             return;
         }
         let decodedString = _getDecodedString(buffer, encoding);
-        if(decodedString){
+        if(decodedString !== null){
             callback(null, decodedString, encoding);
         } else {
             callback(new Errors.EIO(`Encoding ${encoding} no supported`));
