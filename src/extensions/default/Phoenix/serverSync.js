@@ -180,6 +180,7 @@ define(function (require, exports, module) {
             _setSyncInProgress();
             _uploadFiles(fileList, ()=>{
                 _setSyncComplete();
+                _loadPreview();
             });
         }
     }
@@ -264,8 +265,7 @@ define(function (require, exports, module) {
             tab = open(previewURL);
         }
         else {
-            tab.close();
-            tab = open(previewURL);
+            tab.location = previewURL;
         }
     }
 
