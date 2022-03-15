@@ -36,76 +36,41 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global define, brackets */
+/*global define, brackets, fs, Phoenix, path */
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
-    let ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
-        WorkspaceManager   = brackets.getModule("view/WorkspaceManager"),
-        AppInit            = brackets.getModule("utils/AppInit"),
-        ProjectManager          = brackets.getModule("project/ProjectManager"),
-        EditorManager       = brackets.getModule("editor/EditorManager"),
-        utils = require('utils');
+    const ProjectManager          = brackets.getModule("project/ProjectManager"),
+        DocumentManager     = brackets.getModule("document/DocumentManager");
 
-
-    // Templates
-    var panelHTML       = require("text!panel.html");
-    ExtensionUtils.loadStyleSheet(module, "extension-store.css");
-
-    // jQuery objects
-    var $icon,
-        $iframe,
-        $panel;
-
-    // Other vars
-    var panel,
-        toggleCmd;
-
-    function _setPanelVisibility(isVisible) {
-        if (isVisible) {
-            $icon.toggleClass("active");
-
-            panel.show();
-
-        } else {
-            $icon.toggleClass("active");
-            panel.hide();
+    function _isPreviewableFile(filePath) {
+        let pathSplit = filePath.split('.');
+        let extension = pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : null;
+        if(['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf'].includes(extension.toLowerCase())){
+            return true;
         }
+        return false;
     }
 
-    function _toggleVisibility() {
-        let visible = !panel.isVisible();
-        _setPanelVisibility(visible);
+    function getPreviewURL() {
+        let projectRootName = ProjectManager.getProjectRoot().fullPath;
+        let projectRootUrl = `${window.fsServerUrl}${projectRootName}`;
+        let currentDocument = DocumentManager.getCurrentDocument();
+        let currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+        let previewUrl = `${projectRootUrl}index.html`;
+        if(currentFile){
+            let fullPath = currentFile.fullPath;
+            if(_isPreviewableFile(fullPath)){
+                let projectRoot = ProjectManager.getProjectRoot().fullPath;
+                let relativePath = path.relative(projectRoot, fullPath);
+                previewUrl = `${projectRootUrl}${relativePath}`;
+            }
+        }
 
-        toggleCmd.setChecked(visible);
+        return previewUrl;
     }
 
-    function _createExtensionPanel() {
-        $icon = $("#toolbar-go-live");
-        $icon.click(_toggleVisibility);
-        $panel = $(panelHTML);
-        $iframe = $panel.find("#panel-live-preview-frame");
-        $iframe[0].onload = function () {
-            $iframe.attr('srcdoc', null);
-        };
-        $iframe.attr('src', utils.getPreviewURL());
-        let minSize = window.innerWidth/3;
-
-        panel = WorkspaceManager.createPluginPanel("live-preview-panel", $panel, minSize, $icon);
-
-        WorkspaceManager.recomputeLayout(false);
-    }
-
-    function _loadPreview() {
-        $iframe.attr('src', utils.getPreviewURL());
-    }
-
-    AppInit.appReady(function () {
-        _createExtensionPanel();
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _loadPreview);
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _loadPreview);
-        EditorManager.on("activeEditorChange", _loadPreview);
-    });
+    exports.getPreviewURL = getPreviewURL;
 });
 
 
