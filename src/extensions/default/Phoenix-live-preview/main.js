@@ -58,8 +58,7 @@ define(function (require, exports, module) {
         $panel;
 
     // Other vars
-    var panel,
-        toggleCmd;
+    var panel;
 
     function _setPanelVisibility(isVisible) {
         if (isVisible) {
@@ -76,8 +75,6 @@ define(function (require, exports, module) {
     function _toggleVisibility() {
         let visible = !panel.isVisible();
         _setPanelVisibility(visible);
-
-        toggleCmd.setChecked(visible);
     }
 
     function _createExtensionPanel() {
