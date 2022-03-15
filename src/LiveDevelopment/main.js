@@ -226,9 +226,10 @@ define(function main(require, exports, module) {
     function _setupGoLiveButton() {
         if (!_$btnGoLive) {
             _$btnGoLive = $("#toolbar-go-live");
-            _$btnGoLive.click(function onGoLive() {
-                _handleGoLiveCommand();
-            });
+            // Phoenix disable old live preivew
+            // _$btnGoLive.click(function onGoLive() {
+            //     _handleGoLiveCommand();
+            // });
         }
         LiveDevImpl.on("statusChange", function statusChange(event, status, reason) {
             // status starts at -1 (error), so add one when looking up name and style
