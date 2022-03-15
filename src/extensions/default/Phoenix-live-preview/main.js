@@ -94,7 +94,9 @@ define(function (require, exports, module) {
     }
 
     function _loadPreview() {
-        $iframe.attr('src', utils.getPreviewURL());
+        if(panel.isVisible()){
+            $iframe.attr('src', utils.getPreviewURL());
+        }
     }
 
     AppInit.appReady(function () {
@@ -102,6 +104,10 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _loadPreview);
         EditorManager.on("activeEditorChange", _loadPreview);
+        // We always show the live preview panel on startup
+        setTimeout(()=>{
+            _setPanelVisibility(true);
+        }, 1000);
     });
 });
 
