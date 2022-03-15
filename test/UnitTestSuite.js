@@ -41,6 +41,7 @@ define(function (require, exports, module) {
     require("spec/EditorManager-test");
     require("spec/EventDispatcher-test");
     require("spec/ExtensionInstallation-test");
+    require("spec/ExtensionInterface-test");
     require("spec/ExtensionLoader-test");
     require("spec/ExtensionManager-test");
     require("spec/ExtensionUtils-test");
