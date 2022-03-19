@@ -37,7 +37,7 @@ define(function (require, exports, module) {
     let syncRoot = "";
     let $icon;
     let userContext = "";
-    let publishURL = "https://singleclick.site";
+    let publishURL = "https://phcode.site";
     const USER_CONTEXT = "publish.userContext";
     let ongoingSyncCount = 0;
     let syncEnabled = false;
