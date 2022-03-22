@@ -19,20 +19,22 @@
  *
  */
 
-/*global fs, Phoenix, process*/
-/*eslint no-console: 0*/
-/*eslint strict: ["error", "global"]*/
-/* jshint ignore:start */
-
 define(function (require, exports, module) {
-    let Survey       = require("survey"),
-        serverSync   = require("serverSync"),
-        newProject   = require("new-project"),
-        AppInit      = brackets.getModule("utils/AppInit");
+    let Dialogs     = brackets.getModule("widgets/Dialogs"),
+        Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
+        newProjectTemplate     = require("text!new-project-template.html"),
+        Strings            = brackets.getModule("strings");
 
-    AppInit.appReady(function () {
-        Survey.init();
-        serverSync.init();
-        newProject.init();
-    });
+
+    function _showNewProjectDialogue() {
+        var templateVars = {
+            Strings: Strings,
+            newProjectURL: "/assets/new-project/code-editor.html"
+        };
+        //Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars));
+    }
+
+    exports.init = function () {
+        _showNewProjectDialogue();
+    };
 });
