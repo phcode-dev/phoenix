@@ -32,7 +32,7 @@ define(function (require, exports, module) {
     function _showNewProjectDialogue() {
         var templateVars = {
             Strings: Strings,
-            newProjectURL: "/assets/new-project/code-editor.html"
+            newProjectURL: `${window.location.href}/assets/new-project/code-editor.html`
         };
         Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars));
     }
