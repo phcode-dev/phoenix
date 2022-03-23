@@ -44,9 +44,13 @@ define(function (require, exports, module) {
 
     var CommandManager     = brackets.getModule("command/CommandManager"),
         ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
+        FeatureGate        = brackets.getModule("utils/FeatureGate"),
         WorkspaceManager   = brackets.getModule("view/WorkspaceManager"),
         AppInit            = brackets.getModule("utils/AppInit");
 
+    const FEATURE_NEW_EXTENSION_STORE = 'newExtensionStore';
+
+    FeatureGate.registerFeatureGate(FEATURE_NEW_EXTENSION_STORE, false);
 
     // Templates
     var panelHTML       = require("text!panel.html");
@@ -86,6 +90,7 @@ define(function (require, exports, module) {
 
     function _createExtensionPanel() {
         $icon = $("#toolbar-extension-manager");
+        $icon.removeClass("hidden-element");
         $icon.click(_toggleVisibility);
         $panel = $(panelHTML);
         $iframe = $panel.find("#panel-extension-store-frame");
@@ -101,6 +106,9 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
+        if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_EXTENSION_STORE)){
+            return;
+        }
         _createExtensionPanel();
     });
 });
