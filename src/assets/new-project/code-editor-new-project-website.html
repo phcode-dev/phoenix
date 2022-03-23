@@ -18,12 +18,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
           rel="stylesheet">
+    <script type="text/javascript">
+        function urlInputKeyUp() {
+            let currentUrl = document.getElementById("bigFrame").src;
+            let inputUrl = document.getElementById("urlInput").value;
+            if(inputUrl && inputUrl !== currentUrl){
+                document.getElementById("littleFrame").src = inputUrl;
+                document.getElementById("bigFrame").src = inputUrl;
+            }
+        }
+    </script>
 </head>
 <body id="top">
 <div class="code-editor-card">
     <div class="project-top d-flex align-items-center justify-content-between">
         <div class="editor-left d-flex align-items-center">
-            <a href="#" class="back-btn">
+            <a href="code-editor.html" class="back-btn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11V13ZM5 12L4.29289 11.2929C3.90237 11.6834 3.90237 12.3166 4.29289 12.7071L5 12ZM11.2929 19.7071C11.6834 20.0976 12.3166 20.0976 12.7071 19.7071C13.0976 19.3166 13.0976 18.6834 12.7071 18.2929L11.2929 19.7071ZM12.7071 5.70711C13.0976 5.31658 13.0976 4.68342 12.7071 4.29289C12.3166 3.90237 11.6834 3.90237 11.2929 4.29289L12.7071 5.70711ZM19 11H5V13H19V11ZM12.7071 18.2929L5.70711 11.2929L4.29289 12.7071L11.2929 19.7071L12.7071 18.2929ZM5.70711 12.7071L12.7071 5.70711L11.2929 4.29289L4.29289 11.2929L5.70711 12.7071Z"
                           fill="white"/>
@@ -50,8 +60,8 @@
     <div class="website-main-content">
         <div class="website-detail d-flex align-items-center">
             <span>Enter website URL :</span>
-            <input type="text" name="web-url" value="https://core.ai"/>
-            <button class="create-btn">Create Project</button>
+            <input id="urlInput" type="text" name="web-url" onkeyup="urlInputKeyUp()" value="https://core.ai"/>
+            <button class="create-btn" >Create Project</button>
         </div>
         <div class="website-detail d-flex align-items-center">
             <span>Project Name :</span>
@@ -71,7 +81,7 @@
                         </svg>
 
                     </a>
-                    <div id="inline" style="background:#2E3031" class="lity-hide">
+                    <div id="inline" style="background:#2E3031; height: 100%" class="lity-hide">
                         <div class="lity-header d-flex align-items-center justify-content-between">
                             <h5>
                                 Preview
@@ -89,12 +99,12 @@
                             </button>
                         </div>
                         <div class="big-preview">
-                            <img src="images/image-big.png" alt="image" class="img-fluid"/>
+                            <iframe id="bigFrame" style="border: 0px; width: 100%; height: 100%" src="https://core.ai" class="img-fluid"></iframe>
                         </div>
                     </div>
                 </div>
                 <div class="preview-image">
-                    <img src="images/image.png" alt="image" class="img-fluid"/>
+                    <iframe id="littleFrame" style="border: 0px; width: 100%; height: 100%" src="https://core.ai" class="img-fluid"></iframe>
                 </div>
             </div>
         </div>

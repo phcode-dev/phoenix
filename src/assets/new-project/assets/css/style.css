@@ -884,7 +884,7 @@ img {
 .preview-box {
     background: #2E3031;
     border-radius: 5px;
-    width: 368px;
+    width: 100%;
     height: 280px;
     margin: auto;
     margin-top: 30px;
@@ -966,8 +966,6 @@ img {
 }
 
 .big-preview {
-
-    height: calc(100vh - 50px);
-
+    height: calc(100% - 50px);
     padding: 0px 15px 15px;
 }
