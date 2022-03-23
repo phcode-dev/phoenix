@@ -20,11 +20,14 @@
  */
 
 define(function (require, exports, module) {
-    let Dialogs     = brackets.getModule("widgets/Dialogs"),
-        Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
-        newProjectTemplate     = require("text!new-project-template.html"),
-        Strings            = brackets.getModule("strings");
+    let Dialogs = brackets.getModule("widgets/Dialogs"),
+        Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        FeatureGate = brackets.getModule("utils/FeatureGate"),
+        newProjectTemplate = require("text!new-project-template.html"),
+        Strings = brackets.getModule("strings");
+    const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue';
 
+    FeatureGate.registerFeatureGate(FEATURE_NEW_PROJECT_DIALOGUE, false);
 
     function _showNewProjectDialogue() {
         var templateVars = {
@@ -35,6 +38,9 @@ define(function (require, exports, module) {
     }
 
     exports.init = function () {
+        if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_PROJECT_DIALOGUE)){
+            return;
+        }
         _showNewProjectDialogue();
     };
 });
