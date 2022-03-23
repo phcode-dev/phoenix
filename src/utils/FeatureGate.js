@@ -22,8 +22,7 @@
 // jshint ignore: start
 
 /**
- * Check if certain features are enabled or disabled. This can be used to selectively enable
- * work in progress features during development. Dev feature!!!: Not intended for production use by users.
+ * Check if certain features are enabled or disabled. This can be used to selectively enable features.
  * See <doc link here for more details on how to use this API>
  */
 define(function (require, exports, module) {
