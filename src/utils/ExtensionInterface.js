@@ -24,6 +24,7 @@
 
 /**
  * ExtensionInterface defines utility methods for communicating between extensions safely.
+ * See <doc link here for more details on how to use this API>
  */
 define(function (require, exports, module) {
     const EVENT_EXTENSION_INTERFACE_REGISTERED = "extensionInterfaceRegistered";
@@ -57,7 +58,7 @@ define(function (require, exports, module) {
      * @param extensionInterfaceName
      * @return {Promise}
      */
-    function awaitGetExtensionInterface(extensionInterfaceName) {
+    function waitAndGetExtensionInterface(extensionInterfaceName) {
         return new Promise((resolve, reject)=>{
             let registrationEventHandler = function (event, registeredInterfaceName, interfaceObj) {
                 if(registeredInterfaceName === extensionInterfaceName){
@@ -72,7 +73,7 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
     // Public API
     exports.registerExtensionInterface = registerExtensionInterface;
-    exports.awaitGetExtensionInterface = awaitGetExtensionInterface;
+    exports.waitAndGetExtensionInterface = waitAndGetExtensionInterface;
     exports.isExistsExtensionInterface = isExistsExtensionInterface;
     // Events
     exports.EVENT_EXTENSION_INTERFACE_REGISTERED = EVENT_EXTENSION_INTERFACE_REGISTERED;

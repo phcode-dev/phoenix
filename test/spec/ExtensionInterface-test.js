@@ -51,7 +51,7 @@ define(function (require, exports, module) {
         it("should await and get the extension interface", function () {
             const INTERFACE_2 = "int2";
             let extensionInterface = null;
-            ExtensionInterface.awaitGetExtensionInterface(INTERFACE_2).then((interfaceObj)=>{
+            ExtensionInterface.waitAndGetExtensionInterface(INTERFACE_2).then((interfaceObj)=>{
                 extensionInterface = interfaceObj;
             });
 
