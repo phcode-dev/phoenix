@@ -55,6 +55,7 @@ define(function (require, exports, module) {
             expect(FeatureGate.isFeatureEnabled(FEATURENAME)).toEqual(false);
             localStorage.setItem(STORAGE_KEY, "invalidValueWillHonorDefaultValue");
             expect(FeatureGate.isFeatureEnabled(FEATURENAME)).toEqual(true);
+            localStorage.removeItem(STORAGE_KEY);
         });
     });
 });
