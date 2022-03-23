@@ -26,10 +26,10 @@
         "gulp-useref": "^5.0.0",
         "gulp-webserver": "^0.9.1",
         "gulp-zip": "^5.1.0",
+        "http-server": "14.1.0",
         "husky": "^7.0.4",
         "merge-stream": "^2.0.0",
-        "readable-stream": "^3.6.0",
-        "node-static": "0.7.11"
+        "readable-stream": "^3.6.0"
     },
     "scripts": {
         "eslint": "npm run lint",
@@ -43,8 +43,8 @@
         "clean": "gulp clean",
         "reset": "gulp reset",
         "release": "gulp release",
-        "serve": "static src -p 8000 -c false",
-        "serveExternal": "static src -p 8000 -a 0.0.0.0 -c false"
+        "serve": "http-server src -p 8000 -c-1",
+        "serveExternal": "static src -p 8000 -a 0.0.0.0 -c-1"
     },
     "licenses": [
         {
