@@ -1,8 +1,7 @@
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
- * Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -51,7 +50,7 @@ define(function (require, exports, module) {
         it("should await and get the extension interface", function () {
             const INTERFACE_2 = "int2";
             let extensionInterface = null;
-            ExtensionInterface.awaitGetExtensionInterface(INTERFACE_2).then((interfaceObj)=>{
+            ExtensionInterface.waitAndGetExtensionInterface(INTERFACE_2).then((interfaceObj)=>{
                 extensionInterface = interfaceObj;
             });
 
