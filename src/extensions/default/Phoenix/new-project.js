@@ -31,7 +31,7 @@ define(function (require, exports, module) {
             Strings: Strings,
             newProjectURL: "/assets/new-project/code-editor.html"
         };
-        //Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars));
+        Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars));
     }
 
     exports.init = function () {
