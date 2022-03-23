@@ -1,5 +1,6 @@
 **/node_modules/**/*.js
 src/thirdparty/**
+src/assets/new-project/assets/thirdparty/**
 src/widgets/bootstrap-*.js
 src/extensions/**/unittest-files/**/*.js
 src/extensions/**/thirdparty/**/*.js
