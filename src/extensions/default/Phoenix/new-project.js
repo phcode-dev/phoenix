@@ -27,6 +27,7 @@ define(function (require, exports, module) {
         Strings = brackets.getModule("strings");
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue';
 
+    // TODO: change default enabled to true to ship this feature.
     FeatureGate.registerFeatureGate(FEATURE_NEW_PROJECT_DIALOGUE, false);
 
     function _showNewProjectDialogue() {
