@@ -39,30 +39,16 @@
 /*global define, brackets */
 //jshint-ignore:no-start
 
-define(function (require, exports, module) {
+define(['require', 'exports', 'module', 'thirdParty/standalone', 'thirdParty/parser-graphql'],
+    function (require, exports, module, prettier, graphQLPlugin) {
+        const plugins = [graphQLPlugin];
 
-    const ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        FeatureGate = brackets.getModule("utils/FeatureGate"),
-        AppInit = brackets.getModule("utils/AppInit"),
-        PrettyGraphQl = require("PrettyGraphQl");
-
-    const FEATURE_PRETTIER = 'Phoenix-Prettier';
-    FeatureGate.registerFeatureGate(FEATURE_PRETTIER, false);
-
-    ExtensionUtils.loadStyleSheet(module, "prettier.css");
-
-    function _createExtensionStatusBarIcon() {
-        // create prettier ui elements here.
-    }
-
-    AppInit.appReady(function () {
-        console.log(PrettyGraphQl.prettify("type Query { hello: String }"));
-
-        if (!FeatureGate.isFeatureEnabled(FEATURE_PRETTIER)) {
-            return;
-        }
-        _createExtensionStatusBarIcon();
+        exports.prettify = function (code) {
+            return prettier.format(code, {
+                parser: "graphql",
+                plugins
+            });
+        };
     });
-});
 
 
