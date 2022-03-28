@@ -38,25 +38,48 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define, brackets */
 //jshint-ignore:no-start
+/**
+ * This module beautifies HTML/JS/other language code with the help of prettier plugin
+ * See https://prettier.io/docs/en/api.html for how to use prettier API and other docs
+ * To test variour prettier options, See https://prettier.io/playground/
+ */
 
-define(function (require, exports, module) {
+define(['require', 'exports', 'module', 'thirdParty/standalone', 'thirdParty/parser-graphql',
+    'thirdParty/parser-html'],
+    function (require, exports, module, prettier, graphQLPlugin, htmlPlugin) {
 
     const ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         FeatureGate = brackets.getModule("utils/FeatureGate"),
-        AppInit = brackets.getModule("utils/AppInit"),
-        PrettyGraphQl = require("PrettyGraphQl");
+        AppInit = brackets.getModule("utils/AppInit");
 
     const FEATURE_PRETTIER = 'Phoenix-Prettier';
     FeatureGate.registerFeatureGate(FEATURE_PRETTIER, false);
 
     ExtensionUtils.loadStyleSheet(module, "prettier.css");
 
+    const plugins = [graphQLPlugin, htmlPlugin ];
+    const _graphQL = function (code) {
+        return prettier.format(code, {
+            parser: "graphql",
+            plugins
+        });
+    };
+
+    const _html = function (code) {
+        return prettier.format(code, {
+            parser: "html",
+            plugins
+        });
+    };
     function _createExtensionStatusBarIcon() {
         // create prettier ui elements here.
     }
 
     AppInit.appReady(function () {
-        console.log(PrettyGraphQl.prettify("type Query { hello: String }"));
+        console.log(_graphQL("type Query { hello: String }"));
+        console.log(_html("<!DOCTYPE html>\n" +
+            "<HTML CLASS=\"no-js mY-ClAsS\"><HEAD><META CHARSET=\"utf-8\">" +
+            "<TITLE>My tITlE</TITLE><META NAME=\"description\" content=\"My CoNtEnT\"></HEAD></HTML>"));
 
         if (!FeatureGate.isFeatureEnabled(FEATURE_PRETTIER)) {
             return;

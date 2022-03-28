@@ -51,7 +51,8 @@ define(function (require, exports, module) {
         PathUtils      = require("thirdparty/path-utils/path-utils");
 
     // default async initExtension timeout
-    var INIT_EXTENSION_TIMEOUT = 10000;
+    var EXTENSION_LOAD_TIMOUT_SECONDS = 60,
+        INIT_EXTENSION_TIMEOUT = EXTENSION_LOAD_TIMOUT_SECONDS * 1000;
 
     var _init       = false,
         _extensions = {},
@@ -236,7 +237,8 @@ define(function (require, exports, module) {
             context: name,
             baseUrl: config.baseUrl,
             paths: globalPaths,
-            locale: brackets.getLocale()
+            locale: brackets.getLocale(),
+            waitSeconds: EXTENSION_LOAD_TIMOUT_SECONDS
         };
 
         // Read optional requirejs-config.json
@@ -359,7 +361,8 @@ define(function (require, exports, module) {
             var extensionRequire = brackets.libRequire.config({
                 context: name,
                 baseUrl: config.baseUrl,
-                paths: $.extend({}, config.paths, globalPaths)
+                paths: $.extend({}, config.paths, globalPaths),
+                waitSeconds: EXTENSION_LOAD_TIMOUT_SECONDS
             });
 
             extensionRequire([entryPoint], function () {
