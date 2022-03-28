@@ -898,7 +898,7 @@ define("thirdparty/smart-auto-complete/jquery.smart_autocomplete", function(){})
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -1223,7 +1223,7 @@ define('utils/Async',['require','exports','module'],function (require, exports, 
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -6662,7 +6662,7 @@ define("thirdparty/jstree_pre1.0_fix_1/jquery.jstree", function(){});
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -6836,7 +6836,7 @@ define('preferences/PreferenceStorage',['require','exports','module','preference
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -6961,7 +6961,7 @@ define('preferences/PreferencesManager',['require','exports','module','preferenc
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -7201,7 +7201,7 @@ define('command/CommandManager',['require','exports','module'],function (require
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -7302,7 +7302,7 @@ define('command/Commands',['require','exports','module'],function (require, expo
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -7792,7 +7792,7 @@ define('command/KeyBindingManager',['require','exports','module','command/Comman
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -8018,7 +8018,7 @@ define('widgets/Dialogs',['require','exports','module','command/KeyBindingManage
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -8537,7 +8537,7 @@ define('utils/PerfUtils',['require','exports','module'],function (require, expor
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -8579,7 +8579,7 @@ define('nls/strings',['require','exports','module'],function (require, exports, 
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -8788,7 +8788,7 @@ define('nls/root/strings',{
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -8824,7 +8824,7 @@ define('strings',['require','exports','module','i18n!nls/strings'],function (req
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -8952,7 +8952,7 @@ define('utils/StringUtils',['require','exports','module'],function (require, exp
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -9214,7 +9214,7 @@ define('file/FileUtils',['require','exports','module','file/NativeFileSystem','u
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -9701,7 +9701,7 @@ define('language/HTMLUtils',['require','exports','module'],function (require, ex
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -9824,7 +9824,7 @@ define('widgets/PopUpManager',['require','exports','module','editor/EditorManage
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -10154,7 +10154,7 @@ define('utils/ViewUtils',['require','exports','module'],function (require, expor
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -10591,7 +10591,7 @@ define('editor/CodeHintManager',['require','exports','module','language/HTMLUtil
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -10769,7 +10769,7 @@ define('document/TextRange',['require','exports','module'],function (require, ex
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -11830,7 +11830,7 @@ define('editor/Editor',['require','exports','module','editor/EditorManager','edi
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -11939,7 +11939,7 @@ define('editor/InlineWidget',['require','exports','module','editor/EditorManager
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -15885,7 +15885,7 @@ define("thirdparty/CodeMirror2/mode/markdown/markdown", function(){});
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -16034,7 +16034,7 @@ define('editor/EditorUtils',['require','exports','module','thirdparty/path-utils
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -16599,7 +16599,7 @@ define('editor/EditorManager',['require','exports','module','file/FileUtils','co
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -17647,7 +17647,7 @@ define('command/Menus',['require','exports','module','command/Commands','command
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -17865,7 +17865,7 @@ define('project/FileViewController',['require','exports','module','document/Docu
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -18828,7 +18828,7 @@ define('project/ProjectManager',['require','exports','module','thirdparty/jstree
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -19914,7 +19914,7 @@ define('document/DocumentManager',['require','exports','module','file/NativeFile
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -20042,7 +20042,7 @@ define('utils/NativeApp',['require','exports','module','utils/Async'],function (
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -20366,7 +20366,7 @@ define('LiveDevelopment/Inspector/Inspector',['require','exports','module'],func
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -20488,7 +20488,7 @@ define('LiveDevelopment/Agents/RemoteAgent',['require','exports','module','LiveD
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -20746,7 +20746,7 @@ define('LiveDevelopment/Agents/DOMHelpers',['require','exports','module'],functi
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -21267,7 +21267,7 @@ define('LiveDevelopment/Agents/DOMNode',['require','exports','module','LiveDevel
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -21587,7 +21587,7 @@ define('LiveDevelopment/Agents/DOMAgent',['require','exports','module','LiveDeve
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -21707,7 +21707,7 @@ define('LiveDevelopment/Agents/HighlightAgent',['require','exports','module','Li
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -21830,7 +21830,7 @@ define('LiveDevelopment/Documents/HTMLDocument',['require','exports','module','L
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -21949,7 +21949,7 @@ define('LiveDevelopment/Agents/CSSAgent',['require','exports','module','thirdpar
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -22162,7 +22162,7 @@ define('LiveDevelopment/Documents/CSSDocument',['require','exports','module','Li
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -22308,7 +22308,7 @@ define('LiveDevelopment/Agents/ScriptAgent',['require','exports','module','LiveD
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -22425,7 +22425,7 @@ define('LiveDevelopment/Documents/JSDocument',['require','exports','module','Liv
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -22515,7 +22515,7 @@ define('LiveDevelopment/Agents/ConsoleAgent',['require','exports','module','Live
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -22593,7 +22593,7 @@ define('LiveDevelopment/Agents/NetworkAgent',['require','exports','module','Live
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -22804,7 +22804,7 @@ define('LiveDevelopment/Agents/GotoAgent',['require','exports','module','LiveDev
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -22914,7 +22914,7 @@ define('LiveDevelopment/Agents/EditAgent',['require','exports','module','LiveDev
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -23431,7 +23431,7 @@ define('LiveDevelopment/LiveDevelopment',['require','exports','module','document
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -23610,7 +23610,7 @@ define('LiveDevelopment/main',['require','exports','module','document/DocumentMa
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -24017,7 +24017,7 @@ define('project/FileIndexManager',['require','exports','module','file/NativeFile
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -24573,7 +24573,7 @@ define('language/CSSUtils',['require','exports','module','utils/Async','document
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -25092,7 +25092,7 @@ define('editor/MultiRangeInlineEditor',['require','exports','module','document/T
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -25225,7 +25225,7 @@ define('editor/CSSInlineEditor',['require','exports','module','language/CSSUtils
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -25352,7 +25352,7 @@ define('document/ChangedDocumentTracker',['require','exports','module','document
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -25778,7 +25778,7 @@ define('language/JSUtils',['require','exports','module','utils/Async','document/
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -26149,7 +26149,7 @@ define('project/WorkingSetView',['require','exports','module','document/Document
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -26966,7 +26966,7 @@ define('document/DocumentCommandHandlers',['require','exports','module','thirdpa
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -27381,7 +27381,7 @@ define('project/FileSyncManager',['require','exports','module','project/ProjectM
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -34393,7 +34393,7 @@ define("thirdparty/jslint/jslint", function(){});
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -34606,7 +34606,7 @@ define('language/JSLintUtils',['require','exports','module','thirdparty/path-uti
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -35485,12 +35485,12 @@ define('search/QuickOpen',['require','exports','module','project/FileIndexManage
     });
 }());
 
-define('text!htmlContent/main-view.html',[],function () { return '<!-- \n  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.\n Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.\n   \n  Permission is hereby granted, free of charge, to any person obtaining a\n  copy of this software and associated documentation files (the "Software"), \n  to deal in the Software without restriction, including without limitation \n  the rights to use, copy, modify, merge, publish, distribute, sublicense, \n  and/or sell copies of the Software, and to permit persons to whom the \n  Software is furnished to do so, subject to the following conditions:\n   \n  The above copyright notice and this permission notice shall be included in\n  all copies or substantial portions of the Software.\n   \n  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, \n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER \n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING \n  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER \n  DEALINGS IN THE SOFTWARE.\n-->\n\n\n<!--\n    This is the HTML for the body tag of index.html. It is loaded dynamically by the \n    htmlContentLoad module and localized using a combination of mustache.js and i18n.js.\n\n    LOCALIZATION NOTE:\n    All display text for this file must use templating so the text can be localized.\n    \n    English text goes in src/nls/root/strings.js. All other translations go in the strings.js file for\n    the specific local in the nls folder. If a translation is missing for a specific key English\n    is used as a fallback\n\n    Strings should be referenced using the double brackets syntax.\n    Example: {{keyname}}. Note, all strings are HTML escaped unless the form \n    {{&keyname}} is used.\n\n-->\n\n<!-- Main UI -->\n    <div class="main-view">\n        <div id="sidebar-resizer"></div>\n        <div id="sidebar" class="sidebar quiet-scrollbars">\n            <!-- Left-hand \'Project panel\' -->\n            <div id="projects" class="panel">\n                <div id="project-header"></div>\n                <div id="file-section">\n                    <div id="open-files-container">\n                        <!-- This will contain a dynamically generated <ul> at runtime -->\n                        <ul>\n                        </ul>\n                    </div>\n                \n                    <div id="project-files-header" class="project-file-header-area">\n                        <span id="project-title" class="title"></span>\n                    </div>\n                    <div id="project-files-container">\n                    <!-- This will contain a dynamically generated <ul> hierarchy at runtime -->\n                    </div>\n                </div>\n            </div>\n        </div>\n        \n        <!-- Right-hand content: toolbar, editor, bottom panels -->\n        <div class="content">\n            <!-- Toolbar containing menus, filename, and icons -->\n            <div id="main-toolbar" class="toolbar">\n                <!-- Menu bar -->\n                <ul class="nav" data-dropdown="dropdown">\n                </ul>\n                \n                <!-- Toolbar -->\n                <div class="buttons">\n                    <span id="update-notification" title="{{UPDATE_NOTIFICATION_TOOLTIP}}"></span>\n\n                    <span class="experimental-label">{{EXPERIMENTAL_BUILD}}</span>\n                    \n                    <a href="#" id="toolbar-go-live"></a> <!-- tooltip for this is set in JS -->\n                    \n                    <span id="gold-star" title="No JSLint errors - good job!">\n                        &#9733;\n                    </span>\n                </div>\n                \n                <!-- Filename label -->\n                <div class="title-wrapper">\n                    <span class="title"></span>&nbsp;<span class=\'dirty-dot\' style="visibility:hidden;">•</span>\n                </div>\n            </div>\n            \n            <div id="editor-holder">\n                <div id="not-editor">\n                    <div id="not-editor-content">[&nbsp;&nbsp;]</div>\n                </div>\n            </div>\n            \n            <div id="jslint-results" class="bottom-panel">\n                <div class="toolbar simple-toolbar-layout">\n                    <div class="title">{{JSLINT_ERRORS}}</div>\n                </div>\n                <div class="table-container"></div>\n            </div>\n            <div id="search-results" class="bottom-panel">\n                <div class="toolbar simple-toolbar-layout">\n                    <div class="title">{{SEARCH_RESULTS}}</div>\n                    <div class="title" id="search-result-summary"></div>\n                    <a href="#" class="close">&times;</a>\n                </div>\n                <div class="table-container"></div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Modal Windows -->\n    <div class="error-dialog template modal hide">\n        <div class="modal-header">\n            <a href="#" class="close">&times;</a>\n            <h1 class="dialog-title">Error</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{OK}}</a>\n        </div>\n    </div>\n    <div class="save-close-dialog template modal hide">\n        <div class="modal-header">\n            <a href="#" class="close">&times;</a>\n            <h1 class="dialog-title">{{SAVE_CHANGES}}</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{DONT_SAVE}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{SAVE}}</a>\n            <a href="#" class="dialog-button btn" data-button-id="cancel">{{CANCEL}}</a>\n        </div>\n    </div>\n    <div class="ext-changed-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{RELOAD_FROM_DISK}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="cancel">{{KEEP_CHANGES_IN_EDITOR}}</a>\n        </div>\n    </div>\n    <div class="ext-deleted-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{CLOSE_DONT_SAVE}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="cancel">{{KEEP_CHANGES_IN_EDITOR}}</a>\n        </div>\n    </div>\n    <div class="live-development-error-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="cancel">{{CANCEL}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{RELAUNCH_CHROME}}</a>\n        </div>\n    </div>\n    <div class="about-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">{{ABOUT}}</h1>\n        </div>\n        <div class="modal-body">\n            <img class="about-icon" src="styles/images/brackets_icon.svg">\n            <div class="about-text">\n                <h2>{{BRACKETS}}</h2>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE1}} <span id="about-build-number"><!-- populated programmatically --></span></p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE2}}</p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE3}}<span class="non-clickble-link">http://www.adobe.com/go/thirdparty/</span>{{ABOUT_TEXT_LINE4}}</p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE5}}<span class="non-clickble-link">https://github.com/adobe/brackets/</span></p>\n            </div>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{CLOSE}}</a>\n        </div>\n    </div>\n    <div class="update-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">{{UPDATE_AVAILABLE_TITLE}}</h1>\n        </div>\n        <div class="modal-body">\n            <img class="update-icon" src="styles/images/update_large_icon.svg">\n            <div class="update-text">\n                <p class="dialog-message">{{UPDATE_MESSAGE}}</p>\n                <div class="update-info">\n                </div>\n            </div>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="cancel">{{CANCEL}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="download">{{GET_IT_NOW}}</a>\n        </div>\n    </div>\n    <div id="context-menu-bar">\n        <ul data-dropdown="dropdown"></ul>\n    </div>\n    <div id="codehint-menu-bar">\n        <ul data-dropdown="dropdown"></ul>\n    </div>';});
+define('text!htmlContent/main-view.html',[],function () { return '<!-- \n  Copyright (c) 2021 - present core.ai . All rights reserved.\n Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.\n   \n  Permission is hereby granted, free of charge, to any person obtaining a\n  copy of this software and associated documentation files (the "Software"), \n  to deal in the Software without restriction, including without limitation \n  the rights to use, copy, modify, merge, publish, distribute, sublicense, \n  and/or sell copies of the Software, and to permit persons to whom the \n  Software is furnished to do so, subject to the following conditions:\n   \n  The above copyright notice and this permission notice shall be included in\n  all copies or substantial portions of the Software.\n   \n  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, \n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER \n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING \n  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER \n  DEALINGS IN THE SOFTWARE.\n-->\n\n\n<!--\n    This is the HTML for the body tag of index.html. It is loaded dynamically by the \n    htmlContentLoad module and localized using a combination of mustache.js and i18n.js.\n\n    LOCALIZATION NOTE:\n    All display text for this file must use templating so the text can be localized.\n    \n    English text goes in src/nls/root/strings.js. All other translations go in the strings.js file for\n    the specific local in the nls folder. If a translation is missing for a specific key English\n    is used as a fallback\n\n    Strings should be referenced using the double brackets syntax.\n    Example: {{keyname}}. Note, all strings are HTML escaped unless the form \n    {{&keyname}} is used.\n\n-->\n\n<!-- Main UI -->\n    <div class="main-view">\n        <div id="sidebar-resizer"></div>\n        <div id="sidebar" class="sidebar quiet-scrollbars">\n            <!-- Left-hand \'Project panel\' -->\n            <div id="projects" class="panel">\n                <div id="project-header"></div>\n                <div id="file-section">\n                    <div id="open-files-container">\n                        <!-- This will contain a dynamically generated <ul> at runtime -->\n                        <ul>\n                        </ul>\n                    </div>\n                \n                    <div id="project-files-header" class="project-file-header-area">\n                        <span id="project-title" class="title"></span>\n                    </div>\n                    <div id="project-files-container">\n                    <!-- This will contain a dynamically generated <ul> hierarchy at runtime -->\n                    </div>\n                </div>\n            </div>\n        </div>\n        \n        <!-- Right-hand content: toolbar, editor, bottom panels -->\n        <div class="content">\n            <!-- Toolbar containing menus, filename, and icons -->\n            <div id="main-toolbar" class="toolbar">\n                <!-- Menu bar -->\n                <ul class="nav" data-dropdown="dropdown">\n                </ul>\n                \n                <!-- Toolbar -->\n                <div class="buttons">\n                    <span id="update-notification" title="{{UPDATE_NOTIFICATION_TOOLTIP}}"></span>\n\n                    <span class="experimental-label">{{EXPERIMENTAL_BUILD}}</span>\n                    \n                    <a href="#" id="toolbar-go-live"></a> <!-- tooltip for this is set in JS -->\n                    \n                    <span id="gold-star" title="No JSLint errors - good job!">\n                        &#9733;\n                    </span>\n                </div>\n                \n                <!-- Filename label -->\n                <div class="title-wrapper">\n                    <span class="title"></span>&nbsp;<span class=\'dirty-dot\' style="visibility:hidden;">•</span>\n                </div>\n            </div>\n            \n            <div id="editor-holder">\n                <div id="not-editor">\n                    <div id="not-editor-content">[&nbsp;&nbsp;]</div>\n                </div>\n            </div>\n            \n            <div id="jslint-results" class="bottom-panel">\n                <div class="toolbar simple-toolbar-layout">\n                    <div class="title">{{JSLINT_ERRORS}}</div>\n                </div>\n                <div class="table-container"></div>\n            </div>\n            <div id="search-results" class="bottom-panel">\n                <div class="toolbar simple-toolbar-layout">\n                    <div class="title">{{SEARCH_RESULTS}}</div>\n                    <div class="title" id="search-result-summary"></div>\n                    <a href="#" class="close">&times;</a>\n                </div>\n                <div class="table-container"></div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Modal Windows -->\n    <div class="error-dialog template modal hide">\n        <div class="modal-header">\n            <a href="#" class="close">&times;</a>\n            <h1 class="dialog-title">Error</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{OK}}</a>\n        </div>\n    </div>\n    <div class="save-close-dialog template modal hide">\n        <div class="modal-header">\n            <a href="#" class="close">&times;</a>\n            <h1 class="dialog-title">{{SAVE_CHANGES}}</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{DONT_SAVE}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{SAVE}}</a>\n            <a href="#" class="dialog-button btn" data-button-id="cancel">{{CANCEL}}</a>\n        </div>\n    </div>\n    <div class="ext-changed-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{RELOAD_FROM_DISK}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="cancel">{{KEEP_CHANGES_IN_EDITOR}}</a>\n        </div>\n    </div>\n    <div class="ext-deleted-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{CLOSE_DONT_SAVE}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="cancel">{{KEEP_CHANGES_IN_EDITOR}}</a>\n        </div>\n    </div>\n    <div class="live-development-error-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="cancel">{{CANCEL}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{RELAUNCH_CHROME}}</a>\n        </div>\n    </div>\n    <div class="about-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">{{ABOUT}}</h1>\n        </div>\n        <div class="modal-body">\n            <img class="about-icon" src="styles/images/brackets_icon.svg">\n            <div class="about-text">\n                <h2>{{BRACKETS}}</h2>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE1}} <span id="about-build-number"><!-- populated programmatically --></span></p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE2}}</p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE3}}<span class="non-clickble-link">http://www.adobe.com/go/thirdparty/</span>{{ABOUT_TEXT_LINE4}}</p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE5}}<span class="non-clickble-link">https://github.com/adobe/brackets/</span></p>\n            </div>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{CLOSE}}</a>\n        </div>\n    </div>\n    <div class="update-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">{{UPDATE_AVAILABLE_TITLE}}</h1>\n        </div>\n        <div class="modal-body">\n            <img class="update-icon" src="styles/images/update_large_icon.svg">\n            <div class="update-text">\n                <p class="dialog-message">{{UPDATE_MESSAGE}}</p>\n                <div class="update-info">\n                </div>\n            </div>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="cancel">{{CANCEL}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="download">{{GET_IT_NOW}}</a>\n        </div>\n    </div>\n    <div id="context-menu-bar">\n        <ul data-dropdown="dropdown"></ul>\n    </div>\n    <div id="codehint-menu-bar">\n        <ul data-dropdown="dropdown"></ul>\n    </div>';});
 
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -35708,7 +35708,7 @@ define('utils/ExtensionLoader',['require','exports','module','file/NativeFileSys
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -35961,7 +35961,7 @@ define('text!buildNumber.json',[],function () { return '{\n    "buildNumber": 10
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -36303,7 +36303,7 @@ define('utils/UpdateNotification',['require','exports','module','widgets/Dialogs
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -36393,7 +36393,7 @@ define('utils/UrlParams',['require','exports','module'],function (require, expor
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -36665,7 +36665,7 @@ define('editor/EditorCommandHandlers',['require','exports','module','command/Com
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -36930,7 +36930,7 @@ define('debug/DebugCommandHandlers',['require','exports','module','command/Comma
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -37061,7 +37061,7 @@ define('view/ViewCommandHandlers',['require','exports','module','command/Command
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -37385,7 +37385,7 @@ define('search/FindInFiles',['require','exports','module','utils/Async','command
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -37636,7 +37636,7 @@ define('search/FindReplace',['require','exports','module','command/CommandManage
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -37703,7 +37703,7 @@ define('utils/ExtensionUtils',['require','exports','module'],function (require, 
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -37753,7 +37753,7 @@ define('utils/ShellAPI',['require','exports','module','command/CommandManager'],
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -39012,7 +39012,7 @@ define("thirdparty/smart-auto-complete/jquery.smart_autocomplete", function(){})
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -39337,7 +39337,7 @@ define('utils/Async',['require','exports','module'],function (require, exports, 
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -44776,7 +44776,7 @@ define("thirdparty/jstree_pre1.0_fix_1/jquery.jstree", function(){});
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -44950,7 +44950,7 @@ define('preferences/PreferenceStorage',['require','exports','module','preference
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -45075,7 +45075,7 @@ define('preferences/PreferencesManager',['require','exports','module','preferenc
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -45315,7 +45315,7 @@ define('command/CommandManager',['require','exports','module'],function (require
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -45416,7 +45416,7 @@ define('command/Commands',['require','exports','module'],function (require, expo
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -45906,7 +45906,7 @@ define('command/KeyBindingManager',['require','exports','module','command/Comman
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -46132,7 +46132,7 @@ define('widgets/Dialogs',['require','exports','module','command/KeyBindingManage
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -46651,7 +46651,7 @@ define('utils/PerfUtils',['require','exports','module'],function (require, expor
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -46693,7 +46693,7 @@ define('nls/strings',['require','exports','module'],function (require, exports, 
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -46902,7 +46902,7 @@ define('nls/root/strings',{
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -46938,7 +46938,7 @@ define('strings',['require','exports','module','i18n!nls/strings'],function (req
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -47066,7 +47066,7 @@ define('utils/StringUtils',['require','exports','module'],function (require, exp
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -47328,7 +47328,7 @@ define('file/FileUtils',['require','exports','module','file/NativeFileSystem','u
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -47815,7 +47815,7 @@ define('language/HTMLUtils',['require','exports','module'],function (require, ex
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -47938,7 +47938,7 @@ define('widgets/PopUpManager',['require','exports','module','editor/EditorManage
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -48268,7 +48268,7 @@ define('utils/ViewUtils',['require','exports','module'],function (require, expor
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -48705,7 +48705,7 @@ define('editor/CodeHintManager',['require','exports','module','language/HTMLUtil
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -48883,7 +48883,7 @@ define('document/TextRange',['require','exports','module'],function (require, ex
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -49944,7 +49944,7 @@ define('editor/Editor',['require','exports','module','editor/EditorManager','edi
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -50053,7 +50053,7 @@ define('editor/InlineWidget',['require','exports','module','editor/EditorManager
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -53999,7 +53999,7 @@ define("thirdparty/CodeMirror2/mode/markdown/markdown", function(){});
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -54148,7 +54148,7 @@ define('editor/EditorUtils',['require','exports','module','thirdparty/path-utils
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -54713,7 +54713,7 @@ define('editor/EditorManager',['require','exports','module','file/FileUtils','co
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -55761,7 +55761,7 @@ define('command/Menus',['require','exports','module','command/Commands','command
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -55979,7 +55979,7 @@ define('project/FileViewController',['require','exports','module','document/Docu
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -56942,7 +56942,7 @@ define('project/ProjectManager',['require','exports','module','thirdparty/jstree
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -58028,7 +58028,7 @@ define('document/DocumentManager',['require','exports','module','file/NativeFile
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -58156,7 +58156,7 @@ define('utils/NativeApp',['require','exports','module','utils/Async'],function (
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -58480,7 +58480,7 @@ define('LiveDevelopment/Inspector/Inspector',['require','exports','module'],func
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -58602,7 +58602,7 @@ define('LiveDevelopment/Agents/RemoteAgent',['require','exports','module','LiveD
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -58860,7 +58860,7 @@ define('LiveDevelopment/Agents/DOMHelpers',['require','exports','module'],functi
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -59381,7 +59381,7 @@ define('LiveDevelopment/Agents/DOMNode',['require','exports','module','LiveDevel
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -59701,7 +59701,7 @@ define('LiveDevelopment/Agents/DOMAgent',['require','exports','module','LiveDeve
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -59821,7 +59821,7 @@ define('LiveDevelopment/Agents/HighlightAgent',['require','exports','module','Li
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -59944,7 +59944,7 @@ define('LiveDevelopment/Documents/HTMLDocument',['require','exports','module','L
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -60063,7 +60063,7 @@ define('LiveDevelopment/Agents/CSSAgent',['require','exports','module','thirdpar
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -60276,7 +60276,7 @@ define('LiveDevelopment/Documents/CSSDocument',['require','exports','module','Li
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -60422,7 +60422,7 @@ define('LiveDevelopment/Agents/ScriptAgent',['require','exports','module','LiveD
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -60539,7 +60539,7 @@ define('LiveDevelopment/Documents/JSDocument',['require','exports','module','Liv
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -60629,7 +60629,7 @@ define('LiveDevelopment/Agents/ConsoleAgent',['require','exports','module','Live
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -60707,7 +60707,7 @@ define('LiveDevelopment/Agents/NetworkAgent',['require','exports','module','Live
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -60918,7 +60918,7 @@ define('LiveDevelopment/Agents/GotoAgent',['require','exports','module','LiveDev
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -61028,7 +61028,7 @@ define('LiveDevelopment/Agents/EditAgent',['require','exports','module','LiveDev
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -61545,7 +61545,7 @@ define('LiveDevelopment/LiveDevelopment',['require','exports','module','document
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -61724,7 +61724,7 @@ define('LiveDevelopment/main',['require','exports','module','document/DocumentMa
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -62131,7 +62131,7 @@ define('project/FileIndexManager',['require','exports','module','file/NativeFile
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -62687,7 +62687,7 @@ define('language/CSSUtils',['require','exports','module','utils/Async','document
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -63206,7 +63206,7 @@ define('editor/MultiRangeInlineEditor',['require','exports','module','document/T
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -63339,7 +63339,7 @@ define('editor/CSSInlineEditor',['require','exports','module','language/CSSUtils
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -63466,7 +63466,7 @@ define('document/ChangedDocumentTracker',['require','exports','module','document
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -63892,7 +63892,7 @@ define('language/JSUtils',['require','exports','module','utils/Async','document/
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -64263,7 +64263,7 @@ define('project/WorkingSetView',['require','exports','module','document/Document
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -65080,7 +65080,7 @@ define('document/DocumentCommandHandlers',['require','exports','module','thirdpa
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -65495,7 +65495,7 @@ define('project/FileSyncManager',['require','exports','module','project/ProjectM
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -72507,7 +72507,7 @@ define("thirdparty/jslint/jslint", function(){});
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -72720,7 +72720,7 @@ define('language/JSLintUtils',['require','exports','module','thirdparty/path-uti
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -73599,12 +73599,12 @@ define('search/QuickOpen',['require','exports','module','project/FileIndexManage
     });
 }());
 
-define('text!htmlContent/main-view.html',[],function () { return '<!-- \n  Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.\n   Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.\n   \n  Permission is hereby granted, free of charge, to any person obtaining a\n  copy of this software and associated documentation files (the "Software"), \n  to deal in the Software without restriction, including without limitation \n  the rights to use, copy, modify, merge, publish, distribute, sublicense, \n  and/or sell copies of the Software, and to permit persons to whom the \n  Software is furnished to do so, subject to the following conditions:\n   \n  The above copyright notice and this permission notice shall be included in\n  all copies or substantial portions of the Software.\n   \n  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, \n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER \n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING \n  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER \n  DEALINGS IN THE SOFTWARE.\n-->\n\n\n<!--\n    This is the HTML for the body tag of index.html. It is loaded dynamically by the \n    htmlContentLoad module and localized using a combination of mustache.js and i18n.js.\n\n    LOCALIZATION NOTE:\n    All display text for this file must use templating so the text can be localized.\n    \n    English text goes in src/nls/root/strings.js. All other translations go in the strings.js file for\n    the specific local in the nls folder. If a translation is missing for a specific key English\n    is used as a fallback\n\n    Strings should be referenced using the double brackets syntax.\n    Example: {{keyname}}. Note, all strings are HTML escaped unless the form \n    {{&keyname}} is used.\n\n-->\n\n<!-- Main UI -->\n    <div class="main-view">\n        <div id="sidebar-resizer"></div>\n        <div id="sidebar" class="sidebar quiet-scrollbars">\n            <!-- Left-hand \'Project panel\' -->\n            <div id="projects" class="panel">\n                <div id="project-header"></div>\n                <div id="file-section">\n                    <div id="open-files-container">\n                        <!-- This will contain a dynamically generated <ul> at runtime -->\n                        <ul>\n                        </ul>\n                    </div>\n                \n                    <div id="project-files-header" class="project-file-header-area">\n                        <span id="project-title" class="title"></span>\n                    </div>\n                    <div id="project-files-container">\n                    <!-- This will contain a dynamically generated <ul> hierarchy at runtime -->\n                    </div>\n                </div>\n            </div>\n        </div>\n        \n        <!-- Right-hand content: toolbar, editor, bottom panels -->\n        <div class="content">\n            <!-- Toolbar containing menus, filename, and icons -->\n            <div id="main-toolbar" class="toolbar">\n                <!-- Menu bar -->\n                <ul class="nav" data-dropdown="dropdown">\n                </ul>\n                \n                <!-- Toolbar -->\n                <div class="buttons">\n                    <span id="update-notification" title="{{UPDATE_NOTIFICATION_TOOLTIP}}"></span>\n\n                    <span class="experimental-label">{{EXPERIMENTAL_BUILD}}</span>\n                    \n                    <a href="#" id="toolbar-go-live"></a> <!-- tooltip for this is set in JS -->\n                    \n                    <span id="gold-star" title="No JSLint errors - good job!">\n                        &#9733;\n                    </span>\n                </div>\n                \n                <!-- Filename label -->\n                <div class="title-wrapper">\n                    <span class="title"></span>&nbsp;<span class=\'dirty-dot\' style="visibility:hidden;">•</span>\n                </div>\n            </div>\n            \n            <div id="editor-holder">\n                <div id="not-editor">\n                    <div id="not-editor-content">[&nbsp;&nbsp;]</div>\n                </div>\n            </div>\n            \n            <div id="jslint-results" class="bottom-panel">\n                <div class="toolbar simple-toolbar-layout">\n                    <div class="title">{{JSLINT_ERRORS}}</div>\n                </div>\n                <div class="table-container"></div>\n            </div>\n            <div id="search-results" class="bottom-panel">\n                <div class="toolbar simple-toolbar-layout">\n                    <div class="title">{{SEARCH_RESULTS}}</div>\n                    <div class="title" id="search-result-summary"></div>\n                    <a href="#" class="close">&times;</a>\n                </div>\n                <div class="table-container"></div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Modal Windows -->\n    <div class="error-dialog template modal hide">\n        <div class="modal-header">\n            <a href="#" class="close">&times;</a>\n            <h1 class="dialog-title">Error</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{OK}}</a>\n        </div>\n    </div>\n    <div class="save-close-dialog template modal hide">\n        <div class="modal-header">\n            <a href="#" class="close">&times;</a>\n            <h1 class="dialog-title">{{SAVE_CHANGES}}</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{DONT_SAVE}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{SAVE}}</a>\n            <a href="#" class="dialog-button btn" data-button-id="cancel">{{CANCEL}}</a>\n        </div>\n    </div>\n    <div class="ext-changed-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{RELOAD_FROM_DISK}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="cancel">{{KEEP_CHANGES_IN_EDITOR}}</a>\n        </div>\n    </div>\n    <div class="ext-deleted-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{CLOSE_DONT_SAVE}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="cancel">{{KEEP_CHANGES_IN_EDITOR}}</a>\n        </div>\n    </div>\n    <div class="live-development-error-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="cancel">{{CANCEL}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{RELAUNCH_CHROME}}</a>\n        </div>\n    </div>\n    <div class="about-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">{{ABOUT}}</h1>\n        </div>\n        <div class="modal-body">\n            <img class="about-icon" src="styles/images/brackets_icon.svg">\n            <div class="about-text">\n                <h2>{{BRACKETS}}</h2>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE1}} <span id="about-build-number"><!-- populated programmatically --></span></p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE2}}</p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE3}}<span class="non-clickble-link">http://www.adobe.com/go/thirdparty/</span>{{ABOUT_TEXT_LINE4}}</p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE5}}<span class="non-clickble-link">https://github.com/adobe/brackets/</span></p>\n            </div>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{CLOSE}}</a>\n        </div>\n    </div>\n    <div class="update-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">{{UPDATE_AVAILABLE_TITLE}}</h1>\n        </div>\n        <div class="modal-body">\n            <img class="update-icon" src="styles/images/update_large_icon.svg">\n            <div class="update-text">\n                <p class="dialog-message">{{UPDATE_MESSAGE}}</p>\n                <div class="update-info">\n                </div>\n            </div>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="cancel">{{CANCEL}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="download">{{GET_IT_NOW}}</a>\n        </div>\n    </div>\n    <div id="context-menu-bar">\n        <ul data-dropdown="dropdown"></ul>\n    </div>\n    <div id="codehint-menu-bar">\n        <ul data-dropdown="dropdown"></ul>\n    </div>';});
+define('text!htmlContent/main-view.html',[],function () { return '<!-- \n  Copyright (c) 2021 - present core.ai . All rights reserved.\n   Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.\n   \n  Permission is hereby granted, free of charge, to any person obtaining a\n  copy of this software and associated documentation files (the "Software"), \n  to deal in the Software without restriction, including without limitation \n  the rights to use, copy, modify, merge, publish, distribute, sublicense, \n  and/or sell copies of the Software, and to permit persons to whom the \n  Software is furnished to do so, subject to the following conditions:\n   \n  The above copyright notice and this permission notice shall be included in\n  all copies or substantial portions of the Software.\n   \n  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, \n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER \n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING \n  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER \n  DEALINGS IN THE SOFTWARE.\n-->\n\n\n<!--\n    This is the HTML for the body tag of index.html. It is loaded dynamically by the \n    htmlContentLoad module and localized using a combination of mustache.js and i18n.js.\n\n    LOCALIZATION NOTE:\n    All display text for this file must use templating so the text can be localized.\n    \n    English text goes in src/nls/root/strings.js. All other translations go in the strings.js file for\n    the specific local in the nls folder. If a translation is missing for a specific key English\n    is used as a fallback\n\n    Strings should be referenced using the double brackets syntax.\n    Example: {{keyname}}. Note, all strings are HTML escaped unless the form \n    {{&keyname}} is used.\n\n-->\n\n<!-- Main UI -->\n    <div class="main-view">\n        <div id="sidebar-resizer"></div>\n        <div id="sidebar" class="sidebar quiet-scrollbars">\n            <!-- Left-hand \'Project panel\' -->\n            <div id="projects" class="panel">\n                <div id="project-header"></div>\n                <div id="file-section">\n                    <div id="open-files-container">\n                        <!-- This will contain a dynamically generated <ul> at runtime -->\n                        <ul>\n                        </ul>\n                    </div>\n                \n                    <div id="project-files-header" class="project-file-header-area">\n                        <span id="project-title" class="title"></span>\n                    </div>\n                    <div id="project-files-container">\n                    <!-- This will contain a dynamically generated <ul> hierarchy at runtime -->\n                    </div>\n                </div>\n            </div>\n        </div>\n        \n        <!-- Right-hand content: toolbar, editor, bottom panels -->\n        <div class="content">\n            <!-- Toolbar containing menus, filename, and icons -->\n            <div id="main-toolbar" class="toolbar">\n                <!-- Menu bar -->\n                <ul class="nav" data-dropdown="dropdown">\n                </ul>\n                \n                <!-- Toolbar -->\n                <div class="buttons">\n                    <span id="update-notification" title="{{UPDATE_NOTIFICATION_TOOLTIP}}"></span>\n\n                    <span class="experimental-label">{{EXPERIMENTAL_BUILD}}</span>\n                    \n                    <a href="#" id="toolbar-go-live"></a> <!-- tooltip for this is set in JS -->\n                    \n                    <span id="gold-star" title="No JSLint errors - good job!">\n                        &#9733;\n                    </span>\n                </div>\n                \n                <!-- Filename label -->\n                <div class="title-wrapper">\n                    <span class="title"></span>&nbsp;<span class=\'dirty-dot\' style="visibility:hidden;">•</span>\n                </div>\n            </div>\n            \n            <div id="editor-holder">\n                <div id="not-editor">\n                    <div id="not-editor-content">[&nbsp;&nbsp;]</div>\n                </div>\n            </div>\n            \n            <div id="jslint-results" class="bottom-panel">\n                <div class="toolbar simple-toolbar-layout">\n                    <div class="title">{{JSLINT_ERRORS}}</div>\n                </div>\n                <div class="table-container"></div>\n            </div>\n            <div id="search-results" class="bottom-panel">\n                <div class="toolbar simple-toolbar-layout">\n                    <div class="title">{{SEARCH_RESULTS}}</div>\n                    <div class="title" id="search-result-summary"></div>\n                    <a href="#" class="close">&times;</a>\n                </div>\n                <div class="table-container"></div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Modal Windows -->\n    <div class="error-dialog template modal hide">\n        <div class="modal-header">\n            <a href="#" class="close">&times;</a>\n            <h1 class="dialog-title">Error</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{OK}}</a>\n        </div>\n    </div>\n    <div class="save-close-dialog template modal hide">\n        <div class="modal-header">\n            <a href="#" class="close">&times;</a>\n            <h1 class="dialog-title">{{SAVE_CHANGES}}</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{DONT_SAVE}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{SAVE}}</a>\n            <a href="#" class="dialog-button btn" data-button-id="cancel">{{CANCEL}}</a>\n        </div>\n    </div>\n    <div class="ext-changed-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{RELOAD_FROM_DISK}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="cancel">{{KEEP_CHANGES_IN_EDITOR}}</a>\n        </div>\n    </div>\n    <div class="ext-deleted-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="dontsave">{{CLOSE_DONT_SAVE}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="cancel">{{KEEP_CHANGES_IN_EDITOR}}</a>\n        </div>\n    </div>\n    <div class="live-development-error-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">Title goes here</h1>\n        </div>\n        <div class="modal-body">\n            <p class="dialog-message">Message goes here</p>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="cancel">{{CANCEL}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{RELAUNCH_CHROME}}</a>\n        </div>\n    </div>\n    <div class="about-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">{{ABOUT}}</h1>\n        </div>\n        <div class="modal-body">\n            <img class="about-icon" src="styles/images/brackets_icon.svg">\n            <div class="about-text">\n                <h2>{{BRACKETS}}</h2>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE1}} <span id="about-build-number"><!-- populated programmatically --></span></p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE2}}</p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE3}}<span class="non-clickble-link">http://www.adobe.com/go/thirdparty/</span>{{ABOUT_TEXT_LINE4}}</p>\n                <p class="dialog-message">{{ABOUT_TEXT_LINE5}}<span class="non-clickble-link">https://github.com/adobe/brackets/</span></p>\n            </div>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn primary" data-button-id="ok">{{CLOSE}}</a>\n        </div>\n    </div>\n    <div class="update-dialog template modal hide">\n        <div class="modal-header">\n            <h1 class="dialog-title">{{UPDATE_AVAILABLE_TITLE}}</h1>\n        </div>\n        <div class="modal-body">\n            <img class="update-icon" src="styles/images/update_large_icon.svg">\n            <div class="update-text">\n                <p class="dialog-message">{{UPDATE_MESSAGE}}</p>\n                <div class="update-info">\n                </div>\n            </div>\n        </div>\n        <div class="modal-footer">\n            <a href="#" class="dialog-button btn left" data-button-id="cancel">{{CANCEL}}</a>\n            <a href="#" class="dialog-button btn primary" data-button-id="download">{{GET_IT_NOW}}</a>\n        </div>\n    </div>\n    <div id="context-menu-bar">\n        <ul data-dropdown="dropdown"></ul>\n    </div>\n    <div id="codehint-menu-bar">\n        <ul data-dropdown="dropdown"></ul>\n    </div>';});
 
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -73822,7 +73822,7 @@ define('utils/ExtensionLoader',['require','exports','module','file/NativeFileSys
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -74075,7 +74075,7 @@ define('text!buildNumber.json',[],function () { return '{\n    "buildNumber": 10
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -74417,7 +74417,7 @@ define('utils/UpdateNotification',['require','exports','module','widgets/Dialogs
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -74507,7 +74507,7 @@ define('utils/UrlParams',['require','exports','module'],function (require, expor
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -74779,7 +74779,7 @@ define('editor/EditorCommandHandlers',['require','exports','module','command/Com
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -75044,7 +75044,7 @@ define('debug/DebugCommandHandlers',['require','exports','module','command/Comma
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -75175,7 +75175,7 @@ define('view/ViewCommandHandlers',['require','exports','module','command/Command
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -75499,7 +75499,7 @@ define('search/FindInFiles',['require','exports','module','utils/Async','command
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -75750,7 +75750,7 @@ define('search/FindReplace',['require','exports','module','command/CommandManage
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -75817,7 +75817,7 @@ define('utils/ExtensionUtils',['require','exports','module'],function (require, 
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -75867,7 +75867,7 @@ define('utils/ShellAPI',['require','exports','module','command/CommandManager'],
 /*
  * GNU AGPL-3.0 License
  *
- * Modified Work Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
