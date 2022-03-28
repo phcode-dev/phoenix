@@ -65,6 +65,12 @@ async function copyThirdPartyLibs(){
             .pipe(dest('src/thirdparty')),
         src(['node_modules/underscore/LICENSE'])
             .pipe(rename("underscore.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
+        // prettier
+        src(['node_modules/prettier/*.js'])
+            .pipe(dest('src/extensions/default/Phoenix-prettier/thirdParty')),
+        src(['node_modules/prettier/LICENSE'])
+            .pipe(rename("prettier.markdown"))
             .pipe(dest('src/thirdparty/licences/'))
     );
 }
