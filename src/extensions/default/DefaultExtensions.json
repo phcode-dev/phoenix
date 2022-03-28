@@ -34,5 +34,6 @@
   "HealthData",
   "Phoenix-extension-store",
   "Phoenix-live-preview",
-  "Phoenix-Markdown"
+  "Phoenix-Markdown",
+  "Phoenix-prettier"
 ]

@@ -42,74 +42,24 @@
 define(function (require, exports, module) {
 
 
-    var CommandManager     = brackets.getModule("command/CommandManager"),
-        ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
+    var ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
         FeatureGate        = brackets.getModule("utils/FeatureGate"),
-        WorkspaceManager   = brackets.getModule("view/WorkspaceManager"),
         AppInit            = brackets.getModule("utils/AppInit");
 
-    const FEATURE_NEW_EXTENSION_STORE = 'newExtensionStore';
+    const FEATURE_PRETTIER = 'Phoenix-Prettier';
 
-    FeatureGate.registerFeatureGate(FEATURE_NEW_EXTENSION_STORE, false);
+    FeatureGate.registerFeatureGate(FEATURE_PRETTIER, false);
+    ExtensionUtils.loadStyleSheet(module, "prettier.css");
 
-    // Templates
-    var panelHTML       = require("text!panel.html");
-
-    // jQuery objects
-    var $icon,
-        $iframe,
-        $panel;
-
-    // Other vars
-    var panel,
-        toggleCmd;
-
-    function _setPanelVisibility(isVisible) {
-        if (isVisible) {
-            $icon.toggleClass("active");
-
-            panel.show();
-
-        } else {
-            $icon.toggleClass("active");
-            panel.hide();
-        }
-    }
-
-    function _toggleVisibility() {
-        alert("extension support coming soon");
-        let visible = !panel.isVisible();
-        _setPanelVisibility(visible);
-
-        toggleCmd.setChecked(visible);
-    }
-
-    ExtensionUtils.loadStyleSheet(module, "extension-store.css");
-    // todo: replace with extension manager dialogue command
-    toggleCmd = CommandManager.register("Extensions Panel", "toggleExtensionsPanel", _toggleVisibility);
-
-    function _createExtensionPanel() {
-        $icon = $("#toolbar-extension-manager");
-        $icon.removeClass("hidden-element");
-        $icon.click(_toggleVisibility);
-        $panel = $(panelHTML);
-        $iframe = $panel.find("#panel-extension-store-frame");
-        $iframe[0].onload = function () {
-            $iframe.attr('srcdoc', null);
-        };
-        $iframe.attr('src', brackets.config.extension_store_url);
-        let minSize = window.innerWidth/3;
-
-        panel = WorkspaceManager.createPluginPanel("extension-panel", $panel, minSize, $icon);
-
-        WorkspaceManager.recomputeLayout(false);
+    function _createExtensionStatusBarIcon() {
+        // create prettier ui elements here.
     }
 
     AppInit.appReady(function () {
-        if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_EXTENSION_STORE)){
+        if(!FeatureGate.isFeatureEnabled(FEATURE_PRETTIER)){
             return;
         }
-        _createExtensionPanel();
+        _createExtensionStatusBarIcon();
     });
 });
 
