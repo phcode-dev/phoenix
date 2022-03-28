@@ -44,7 +44,8 @@ require.config({
             "thirdparty/preact": "preact-compat",
             "view/PanelManager": "view/WorkspaceManager"  // For extension compatibility
         }
-    }
+    },
+    waitSeconds: 60
 });
 
 if (window.location.search.indexOf("testEnvironment") > -1) {
