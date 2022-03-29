@@ -84,7 +84,7 @@ const fileSystemLib = {
     },
     readdir: function (...args) { // (path, options, callback)
         let path = args[0];
-        if(Mounts.isMountSubPath(path)) {
+        if(Mounts.isMountPath(path) || Mounts.isMountSubPath(path)) {
             return NativeFS.readdir(...args);
         }
         return filerLib.fs.readdir(...args);
