@@ -93,16 +93,43 @@ define(function (require, exports, module) {
         WorkspaceManager.recomputeLayout(false);
     }
 
-    function _loadPreview() {
+    let savedScrollPositions = {};
+    function _loadPreview(force) {
         if(panel.isVisible()){
-            $iframe.attr('src', utils.getPreviewURL());
+            let scrollX = $iframe[0].contentWindow.scrollX;
+            let scrollY = $iframe[0].contentWindow.scrollY;
+            let currentSrc = $iframe[0].src;
+            savedScrollPositions[currentSrc] = {
+                scrollX: scrollX,
+                scrollY: scrollY
+            };
+            let newSrc = encodeURI(utils.getPreviewURL());
+            $iframe[0].onload = function () {
+                if(currentSrc === newSrc){
+                    $iframe[0].contentWindow.scrollTo(scrollX, scrollY);
+                } else {
+                    let savedPositions = savedScrollPositions[newSrc];
+                    if(savedPositions){
+                        $iframe[0].contentWindow.scrollTo(savedPositions.scrollX, savedPositions.scrollY);
+                    }
+                }
+            };
+            if(currentSrc !== newSrc || force){
+                $iframe.attr('src', utils.getPreviewURL());
+            }
+        }
+    }
+
+    function _projectFileChanges(evt, changedFile) {
+        if(changedFile.fullPath !== '/fs/app/state.json'){
+            _loadPreview(true);
         }
     }
 
     AppInit.appReady(function () {
         _createExtensionPanel();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _loadPreview);
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _loadPreview);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
         EditorManager.on("activeEditorChange", _loadPreview);
         // We always show the live preview panel on startup
         setTimeout(()=>{
