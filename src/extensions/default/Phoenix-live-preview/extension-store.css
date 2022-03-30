@@ -8,6 +8,10 @@
     height: 100%;
 }
 
+#panel-live-preview-frame{
+    background-color: white;
+}
+
 .frame-container {
     display: flex;
     width: 100%;
