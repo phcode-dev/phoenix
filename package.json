@@ -53,6 +53,7 @@
         }
     ],
     "dependencies": {
+        "@phcode/fs": "^1.0.4",
         "jszip": "^3.7.1",
         "prettier": "^2.6.1",
         "underscore": "^1.13.2"

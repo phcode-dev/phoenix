@@ -70,9 +70,11 @@ window.setupLogging = function () {
         || (logToConsolePref && logToConsolePref.toLowerCase() === 'true' && !logToConsoleOverride)){
         console.log= savedLoggingFn;
         console.info= savedInfoFn;
+        window.logToConsolePref = 'true';
         return true;
     } else {
         console.info = console.log = swallowLogs;
+        window.logToConsolePref = 'false';
         return false;
     }
 };
