@@ -110,12 +110,23 @@ window.scriptObserver = new MutationObserver(callback);
 // Start observing the target node for configured mutations
 window.scriptObserver.observe(mainScripts, config);
 
+window.onerror = function (msg, url, line) {
+    console.error("Caught Critical error from: "
+        + url + ":" + line + " message: " + msg);
+    return true; // same as preventDefault
+};
+
 define(function (require) {
 
 
     // Load compatibility shims--these need to load early, be careful moving this
     require(["utils/Compatibility"], function () {
         // Load the brackets module. This is a self-running module that loads and runs the entire application.
-        require(["brackets"]);
+        try{
+            require(["brackets"]);
+        } catch (e) {
+            console.error('Critical error when loading brackets. Trying to reload again.');
+            window.location.reload();
+        }
     });
 });
