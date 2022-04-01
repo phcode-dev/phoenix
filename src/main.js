@@ -69,6 +69,47 @@ if (window.location.search.indexOf("testEnvironment") > -1) {
     });
 }
 
+// splash screen updates for initial install which could take time, or slow networks.
+let trackedScriptCount = 0;
+function _setSplashScreenStatusUpdate(message) {
+    let splashScreenFrame = document.getElementById("splash-screen-frame");
+    if(!splashScreenFrame){
+        if(!window.debugModeLogs){
+            // If not in debug mode & splash screen isn't there, we don't need to observe dom script update status
+            // to improve performance.
+            window.scriptObserver.disconnect();
+            console.log('startup Watcher: Disconnected script load watcher.');
+        }
+        return false;
+    }
+    let displayBtn = splashScreenFrame.contentDocument.getElementById("load-status-display-btn");
+    console.log("splashScreen message: ", message);
+    displayBtn.textContent = message;
+    return true;
+}
+
+// Callback function to execute when mutations are observed
+const callback = function(mutationsList) {
+    for(const mutation of mutationsList) {
+        if (mutation.type === 'childList' && mutation.addedNodes.length >0 && mutation.addedNodes[0].src) {
+            trackedScriptCount++;
+            let scriptAddedSplit = mutation.addedNodes[0].src.split("/");
+            if(scriptAddedSplit.length > 0){
+                _setSplashScreenStatusUpdate(
+                    `Loading (${trackedScriptCount}) ${scriptAddedSplit[scriptAddedSplit.length-1]}`);
+                console.log('startup Watcher: A script has been added or removed.', mutation.addedNodes[0].src);
+            }
+        }
+    }
+};
+const mainScripts = document.getElementById('main-scripts-head');
+const config = { childList: true};
+// Create an observer instance linked to the callback function
+window.scriptObserver = new MutationObserver(callback);
+
+// Start observing the target node for configured mutations
+window.scriptObserver.observe(mainScripts, config);
+
 define(function (require) {
 
 
