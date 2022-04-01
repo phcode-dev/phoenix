@@ -247,6 +247,9 @@ define(function (require, exports, module) {
             brackets.test.doneLoading = true;
         });
     }
+    function _removePhoenixLoadingOverlay() {
+        document.getElementById('phoenix-loading-splash-screen-overlay').remove();
+    }
 
     /**
      * Setup Brackets
@@ -323,6 +326,7 @@ define(function (require, exports, module) {
                     deferred.always(function () {
                         // Signal that Brackets is loaded
                         AppInit._dispatchReady(AppInit.APP_READY);
+                        _removePhoenixLoadingOverlay();
 
                         PerfUtils.addMeasurement("Application Startup");
 
@@ -397,7 +401,7 @@ define(function (require, exports, module) {
 
 
         // Localize MainViewHTML and inject into <BODY> tag
-        $("body").html(Mustache.render(MainViewHTML, { shouldAddAA: (brackets.platform === "mac"), Strings: Strings }));
+        $("body").append(Mustache.render(MainViewHTML, { shouldAddAA: (brackets.platform === "mac"), Strings: Strings }));
 
         // Update title
         $("title").text(brackets.config.app_title);

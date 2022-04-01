@@ -57,9 +57,36 @@
     <!-- Warn about failed cross origin requests in Chrome -->
     <script type="application/javascript" src="xorigin.js"></script>
     <!-- endbuild -->
+    <script>
+        function _loadPhoenixAfterSplashScreen() {
+            var loadJS = function(url, implementationCode, location, dataMainValue){
+                //url is URL of external file, implementationCode is the code
+                //to be called from the file, location is the location to
+                //insert the <script> element
+
+                var scriptTag = document.createElement('script');
+                if(dataMainValue){
+                    scriptTag.setAttribute('data-main', dataMainValue);
+                }
+                scriptTag.onload = implementationCode;
+                scriptTag.onreadystatechange = implementationCode;
+                scriptTag.src = url;
+
+                location.appendChild(scriptTag);
+            };
+            function _requireDone() {
+                loadJS('verify-dependencies-loaded.js', null, document.body);
+            }
+            loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
+        }
+    </script>
 
 </head>
-<body>
+<body onload="_loadPhoenixAfterSplashScreen()">
+<div id="phoenix-loading-splash-screen-overlay">
+    <iframe style="width: 100%; height: 100%;border: none" seamless="true"
+            src="assets/phoenix-splash"></iframe>
+</div>
 
 <!-- HTML content is dynamically loaded and rendered by brackets.js.
      Any modules that depend on or modify HTML during load should
@@ -67,12 +94,6 @@
      "htmlReady" (e.g. AppInit.htmlReady(handler)) before touching the DOM.
 -->
 
-<!-- All other scripts are loaded through require. -->
-<!-- build:js main.js -->
-<script src="thirdparty/requirejs/require.js" data-main="main"></script>
-<!-- Verify that all dependencies are loaded. -->
-<script src="dependencies.js"></script>
-<!-- endbuild -->
 
 </body>
 </html>
