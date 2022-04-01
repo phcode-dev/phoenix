@@ -79,6 +79,7 @@ define(function (require, exports, module) {
 
     const EVENT_PROJECT_BEFORE_CLOSE = "beforeProjectClose",
         EVENT_PROJECT_CLOSE = "projectClose",
+        EVENT_PROJECT_OPEN_FAILED = "projectFileOpenFailed",
         EVENT_PROJECT_OPEN = "projectOpen",
         EVENT_PROJECT_REFRESH = "projectRefresh",
         EVENT_CONTENT_CHANGED = "contentChanged",
@@ -998,7 +999,8 @@ define(function (require, exports, module) {
                             PerfUtils.addMeasurement(perfTimerName);
                         });
                     } else {
-                        console.log("error loading project");
+                        console.error("error loading project");
+                        exports.trigger(EVENT_PROJECT_OPEN_FAILED, rootPath);
                         _showErrorDialog(ERR_TYPE_LOADING_PROJECT_NATIVE, true, err || FileSystemError.NOT_FOUND, rootPath)
                             .done(function () {
                                 // Reset _projectRoot to null so that the following _loadProject call won't
@@ -1521,5 +1523,5 @@ define(function (require, exports, module) {
     exports.EVENT_CONTENT_CHANGED = EVENT_CONTENT_CHANGED;
     exports.EVENT_PROJECT_FILE_CHANGED = EVENT_PROJECT_FILE_CHANGED;
     exports.EVENT_PROJECT_FILE_RENAMED = EVENT_PROJECT_FILE_RENAMED;
-
+    exports.EVENT_PROJECT_OPEN_FAILED = EVENT_PROJECT_OPEN_FAILED;
 });

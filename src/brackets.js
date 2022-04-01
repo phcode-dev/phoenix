@@ -251,6 +251,11 @@ define(function (require, exports, module) {
         });
     }
 
+    ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN_FAILED, function () {
+        // when project load fails, Phoenix shown a failure dialogue. Drop splash screen for the user to see it.
+        _removePhoenixLoadingOverlay();
+    });
+
     /**
      * Setup Brackets
      */
