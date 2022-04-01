@@ -29,13 +29,21 @@ import Utils from "./utils.js";
 
 async function _listDir(handle, callback) {
     let dirEntryNames = [];
-    for await (const [key] of handle.entries()) {
-        dirEntryNames.push(key);
+    try {
+        for await (const [key] of handle.entries()) {
+            dirEntryNames.push(key);
+        }
+        if(callback){
+            callback(null, dirEntryNames);
+        }
+        return dirEntryNames;
+    } catch (e) {
+        if(e.code === e.NOT_FOUND_ERR){
+            callback(new Errors.ENOENT(`Dir does not exist ${handle.name}`, e));
+        } else {
+            callback(new Errors.EIO(`Phoenix fs could not read directory ${handle.name}`, e));
+        }
     }
-    if(callback){
-        callback(null, dirEntryNames);
-    }
-    return dirEntryNames;
 }
 
 

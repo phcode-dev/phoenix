@@ -201,8 +201,29 @@ function mountNativeFolder(optionalDirHandle, callback) {
         });
 }
 
+async function _verifyDirNodeCanBeRead(handle) {
+    try {
+        if(handle.kind === Constants.KIND_DIRECTORY){
+            let entries = handle.entries();
+            await entries.next();
+        }
+        return null;
+    } catch (e) {
+        if(e.code === e.NOT_FOUND_ERR){
+            return new Errors.ENOENT(`Dir does not exist ${handle.name}`, e);
+        } else {
+            return new Errors.EIO(`Phoenix fs could not read directory ${handle.name}`, e);
+        }
+    }
+}
+
 async function _findLeafNode(currentNode, pathArray, currentIndex, callback) {
     let pathLength = pathArray.length;
+    let error = await _verifyDirNodeCanBeRead(currentNode);
+    if(error){
+        callback(error);
+        return;
+    }
     if(currentIndex === pathLength) {
         callback(null, currentNode);
     } else {
