@@ -32,11 +32,7 @@ require.config({
         // implementations (e.g. cloud-based storage).
         "fileSystemImpl": "filesystem/impls/appshell/AppshellFileSystem",
         "preact-compat": "thirdparty/preact-compat/preact-compat.min",
-        "preact": "thirdparty/preact/preact",
-
-        // Extension loader plugins
-        "extension-loader": "thirdparty/requirejs/extension-loader",
-        "amd-loader": "thirdparty/requirejs/amd-loader"
+        "preact": "thirdparty/preact/preact"
     },
     map: {
         "*": {
@@ -83,7 +79,6 @@ function _setSplashScreenStatusUpdate(message) {
         return false;
     }
     let displayBtn = splashScreenFrame.contentDocument.getElementById("load-status-display-btn");
-    console.log("splashScreen message: ", message);
     displayBtn.textContent = message;
     return true;
 }
@@ -97,7 +92,6 @@ const callback = function(mutationsList) {
             if(scriptAddedSplit.length > 0){
                 _setSplashScreenStatusUpdate(
                     `Loading (${trackedScriptCount}) ${scriptAddedSplit[scriptAddedSplit.length-1]}`);
-                console.log('startup Watcher: A script has been added or removed.', mutation.addedNodes[0].src);
             }
         }
     }

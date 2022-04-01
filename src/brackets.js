@@ -293,42 +293,40 @@ define(function (require, exports, module) {
             var extensionPathOverride = params.get("extensions");  // used by unit tests
             var extensionLoaderPromise = ExtensionLoader.init(extensionPathOverride ? extensionPathOverride.split(",") : null);
 
-            // Load the initial project after extensions have loaded
-            extensionLoaderPromise.always(function () {
-               // Signal that extensions are loaded
-                AppInit._dispatchReady(AppInit.EXTENSIONS_LOADED);
+            // Finish UI initialization
+            ViewCommandHandlers.restoreFontSize();
+            var initialProjectPath = ProjectManager.getInitialProjectPath();
+            ProjectManager.openProject(initialProjectPath).always(function () {
+                _initTest();
 
-                // Finish UI initialization
-                ViewCommandHandlers.restoreFontSize();
-                var initialProjectPath = ProjectManager.getInitialProjectPath();
-                ProjectManager.openProject(initialProjectPath).always(function () {
-                    _initTest();
+                // If this is the first launch, and we have an index.html file in the project folder (which should be
+                // the samples folder on first launch), open it automatically. (We explicitly check for the
+                // samples folder in case this is the first time we're launching Brackets after upgrading from
+                // an old version that might not have set the "afterFirstLaunch" pref.)
+                var deferred = new $.Deferred();
 
-                    // If this is the first launch, and we have an index.html file in the project folder (which should be
-                    // the samples folder on first launch), open it automatically. (We explicitly check for the
-                    // samples folder in case this is the first time we're launching Brackets after upgrading from
-                    // an old version that might not have set the "afterFirstLaunch" pref.)
-                    var deferred = new $.Deferred();
-
-                    if (!params.get("skipSampleProjectLoad") && !PreferencesManager.getViewState("afterFirstLaunch")) {
-                        PreferencesManager.setViewState("afterFirstLaunch", "true");
-                        if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
-                            FileSystem.resolve(initialProjectPath + "index.html", function (err, file) {
-                                if (!err) {
-                                    var promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
-                                    promise.then(deferred.resolve, deferred.reject);
-                                } else {
-                                    deferred.reject();
-                                }
-                            });
-                        } else {
-                            deferred.resolve();
-                        }
+                if (!params.get("skipSampleProjectLoad") && !PreferencesManager.getViewState("afterFirstLaunch")) {
+                    PreferencesManager.setViewState("afterFirstLaunch", "true");
+                    if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
+                        FileSystem.resolve(initialProjectPath + "index.html", function (err, file) {
+                            if (!err) {
+                                var promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
+                                promise.then(deferred.resolve, deferred.reject);
+                            } else {
+                                deferred.reject();
+                            }
+                        });
                     } else {
                         deferred.resolve();
                     }
+                } else {
+                    deferred.resolve();
+                }
 
-                    deferred.always(function () {
+                deferred.always(function () {
+                    extensionLoaderPromise.always(function () {
+                        // Signal that extensions are loaded
+                        AppInit._dispatchReady(AppInit.EXTENSIONS_LOADED);
                         // Signal that Brackets is loaded
                         AppInit._dispatchReady(AppInit.APP_READY);
                         _removePhoenixLoadingOverlay();
@@ -356,16 +354,15 @@ define(function (require, exports, module) {
                                     });
                                 });
                         }
-
                     });
-
-                    // See if any startup files were passed to the application
-                    if (brackets.app.getPendingFilesToOpen) {
-                        brackets.app.getPendingFilesToOpen(function (err, paths) {
-                            DragAndDrop.openDroppedFiles(paths);
-                        });
-                    }
                 });
+
+                // See if any startup files were passed to the application
+                if (brackets.app.getPendingFilesToOpen) {
+                    brackets.app.getPendingFilesToOpen(function (err, paths) {
+                        DragAndDrop.openDroppedFiles(paths);
+                    });
+                }
             });
         });
 
