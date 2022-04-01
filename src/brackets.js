@@ -37,6 +37,9 @@
  */
 define(function (require, exports, module) {
 
+    function _removePhoenixLoadingOverlay() {
+        document.getElementById('phoenix-loading-splash-screen-overlay').remove();
+    }
 
     // Load dependent non-module scripts
     require("widgets/bootstrap-dropdown");
@@ -246,9 +249,6 @@ define(function (require, exports, module) {
         AppInit.appReady(function () {
             brackets.test.doneLoading = true;
         });
-    }
-    function _removePhoenixLoadingOverlay() {
-        document.getElementById('phoenix-loading-splash-screen-overlay').remove();
     }
 
     /**

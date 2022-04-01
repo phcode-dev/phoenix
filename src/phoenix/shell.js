@@ -71,10 +71,12 @@ window.setupLogging = function () {
         console.log= savedLoggingFn;
         console.info= savedInfoFn;
         window.logToConsolePref = 'true';
+        window.debugModeLogs = true;
         return true;
     } else {
         console.info = console.log = swallowLogs;
         window.logToConsolePref = 'false';
+        window.debugModeLogs = false;
         return false;
     }
 };
