@@ -1770,34 +1770,34 @@ define(function (require, exports, module) {
          * @return {Promise} Resolved when the preferences are done saving.
          */
         save: function () {
-            if (this._saveInProgress) {
-                if (!this._nextSaveDeferred) {
-                    this._nextSaveDeferred = new $.Deferred();
+            let that = this;
+            if (that._saveInProgress) {
+                if (!that._nextSaveDeferred) {
+                    that._nextSaveDeferred = new $.Deferred();
                 }
-                return this._nextSaveDeferred.promise();
+                return that._nextSaveDeferred.promise();
             }
 
-            var deferred = this._nextSaveDeferred || (new $.Deferred());
+            var deferred = that._nextSaveDeferred || (new $.Deferred());
             this._saveInProgress = true;
             this._nextSaveDeferred = null;
 
-            Async.doInParallel(_.values(this._scopes), function (scope) {
+            Async.doInParallel(_.values(that._scopes), function (scope) {
                 if (scope) {
                     return scope.save();
                 }
                 return (new $.Deferred()).resolve().promise();
 
-            }.bind(this))
-                .then(function () {
-                    this._saveInProgress = false;
-                    if (this._nextSaveDeferred) {
-                        this.save();
-                    }
-                    deferred.resolve();
-                }.bind(this))
-                .fail(function (err) {
-                    deferred.reject(err);
-                });
+            }).then(function () {
+                that._saveInProgress = false;
+                if (that._nextSaveDeferred) {
+                    that.save();
+                }
+                deferred.resolve();
+            }).fail(function (err) {
+                that._saveInProgress = false;
+                deferred.reject(err);
+            });
 
             return deferred.promise();
         },

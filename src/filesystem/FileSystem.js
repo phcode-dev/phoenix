@@ -448,6 +448,13 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Will never remove the given file from index. Useful if you want to always hold cache the file.
+     */
+    FileSystem.prototype.alwaysIndex = function (filePath) {
+        this._index.doNotRemoveFromIndex(filePath);
+    };
+
+    /**
      * Returns true if the given path should be automatically added to the index & watch list when one of its ancestors
      * is a watch-root. (Files are added automatically when the watch-root is first established, or later when a new
      * directory is created and its children enumerated).
@@ -1064,6 +1071,7 @@ define(function (require, exports, module) {
     exports.watch = _wrap(FileSystem.prototype.watch);
     exports.unwatch = _wrap(FileSystem.prototype.unwatch);
     exports.clearAllCaches = _wrap(FileSystem.prototype.clearAllCaches);
+    exports.alwaysIndex = _wrap(FileSystem.prototype.alwaysIndex);
 
     // Static public utility methods
     exports.isAbsolutePath = FileSystem.isAbsolutePath;

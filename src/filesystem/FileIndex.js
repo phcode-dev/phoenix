@@ -34,6 +34,7 @@ define(function (require, exports, module) {
      */
     function FileIndex() {
         this._index = {};
+        this._doNotRemoveItems = {};
     }
 
     /**
@@ -43,11 +44,21 @@ define(function (require, exports, module) {
      */
     FileIndex.prototype._index = null;
 
+    FileIndex.prototype._doNotRemoveItems = null;
+
     /**
      * Clear the file index cache.
      */
     FileIndex.prototype.clear = function () {
         this._index = {};
+        this._doNotRemoveItems = {};
+    };
+
+    /**
+     * Will prevent the file from being removed from index. However, it is reset when index is cleared.
+     */
+    FileIndex.prototype.doNotRemoveFromIndex = function (filePath) {
+        this._doNotRemoveItems[filePath] = true;
     };
 
     /**
@@ -80,6 +91,9 @@ define(function (require, exports, module) {
     FileIndex.prototype.removeEntry = function (entry) {
         var path = entry.fullPath,
             property;
+        if(this._doNotRemoveItems[path]){
+            return;
+        }
 
         function replaceMember(property) {
             var member = entry[property];

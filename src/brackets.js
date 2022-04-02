@@ -262,15 +262,6 @@ define(function (require, exports, module) {
     function _onReady() {
         PerfUtils.addMeasurement("window.document Ready");
 
-        // Let the user know Brackets doesn't run in a web browser yet
-        if (brackets.inBrowser) {
-            Dialogs.showModalDialog(
-                DefaultDialogs.DIALOG_ID_ERROR,
-                Strings.ERROR_IN_BROWSER_TITLE,
-                Strings.ERROR_IN_BROWSER
-            );
-        }
-
         // Use quiet scrollbars if we aren't on Lion. If we're on Lion, only
         // use native scroll bars when the mouse is not plugged in or when
         // using the "Always" scroll bar setting.
@@ -295,74 +286,75 @@ define(function (require, exports, module) {
 
             // Finish UI initialization
             ViewCommandHandlers.restoreFontSize();
-            var initialProjectPath = ProjectManager.getInitialProjectPath();
-            ProjectManager.openProject(initialProjectPath).always(function () {
-                _initTest();
+            ProjectManager.getStartupProjectPath().then((initialProjectPath)=>{
+                ProjectManager.openProject(initialProjectPath).always(function () {
+                    _initTest();
 
-                // If this is the first launch, and we have an index.html file in the project folder (which should be
-                // the samples folder on first launch), open it automatically. (We explicitly check for the
-                // samples folder in case this is the first time we're launching Brackets after upgrading from
-                // an old version that might not have set the "afterFirstLaunch" pref.)
-                var deferred = new $.Deferred();
+                    // If this is the first launch, and we have an index.html file in the project folder (which should be
+                    // the samples folder on first launch), open it automatically. (We explicitly check for the
+                    // samples folder in case this is the first time we're launching Brackets after upgrading from
+                    // an old version that might not have set the "afterFirstLaunch" pref.)
+                    var deferred = new $.Deferred();
 
-                if (!params.get("skipSampleProjectLoad") && !PreferencesManager.getViewState("afterFirstLaunch")) {
-                    PreferencesManager.setViewState("afterFirstLaunch", "true");
-                    if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
-                        FileSystem.resolve(initialProjectPath + "index.html", function (err, file) {
-                            if (!err) {
-                                var promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
-                                promise.then(deferred.resolve, deferred.reject);
-                            } else {
-                                deferred.reject();
-                            }
-                        });
+                    if (!params.get("skipSampleProjectLoad") && !PreferencesManager.getViewState("afterFirstLaunch")) {
+                        PreferencesManager.setViewState("afterFirstLaunch", "true");
+                        if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
+                            FileSystem.resolve(initialProjectPath + "index.html", function (err, file) {
+                                if (!err) {
+                                    var promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
+                                    promise.then(deferred.resolve, deferred.reject);
+                                } else {
+                                    deferred.reject();
+                                }
+                            });
+                        } else {
+                            deferred.resolve();
+                        }
                     } else {
                         deferred.resolve();
                     }
-                } else {
-                    deferred.resolve();
-                }
 
-                deferred.always(function () {
-                    extensionLoaderPromise.always(function () {
-                        // Signal that extensions are loaded
-                        AppInit._dispatchReady(AppInit.EXTENSIONS_LOADED);
-                        // Signal that Brackets is loaded
-                        AppInit._dispatchReady(AppInit.APP_READY);
-                        _removePhoenixLoadingOverlay();
+                    deferred.always(function () {
+                        extensionLoaderPromise.always(function () {
+                            // Signal that extensions are loaded
+                            AppInit._dispatchReady(AppInit.EXTENSIONS_LOADED);
+                            // Signal that Brackets is loaded
+                            AppInit._dispatchReady(AppInit.APP_READY);
+                            _removePhoenixLoadingOverlay();
 
-                        PerfUtils.addMeasurement("Application Startup");
+                            PerfUtils.addMeasurement("Application Startup");
 
-                        if (PreferencesManager._isUserScopeCorrupt()) {
-                            var userPrefFullPath = PreferencesManager.getUserPrefFile();
-                            // user scope can get corrupt only if the file exists, is readable,
-                            // but malformed. no need to check for its existance.
-                            var info = MainViewManager.findInAllWorkingSets(userPrefFullPath);
-                            var paneId;
-                            if (info.length) {
-                                paneId = info[0].paneId;
-                            }
-                            FileViewController.openFileAndAddToWorkingSet(userPrefFullPath, paneId)
-                                .done(function () {
-                                    Dialogs.showModalDialog(
-                                        DefaultDialogs.DIALOG_ID_ERROR,
-                                        Strings.ERROR_PREFS_CORRUPT_TITLE,
-                                        Strings.ERROR_PREFS_CORRUPT
-                                    ).done(function () {
-                                        // give the focus back to the editor with the pref file
-                                        MainViewManager.focusActivePane();
+                            if (PreferencesManager._isUserScopeCorrupt()) {
+                                var userPrefFullPath = PreferencesManager.getUserPrefFile();
+                                // user scope can get corrupt only if the file exists, is readable,
+                                // but malformed. no need to check for its existance.
+                                var info = MainViewManager.findInAllWorkingSets(userPrefFullPath);
+                                var paneId;
+                                if (info.length) {
+                                    paneId = info[0].paneId;
+                                }
+                                FileViewController.openFileAndAddToWorkingSet(userPrefFullPath, paneId)
+                                    .done(function () {
+                                        Dialogs.showModalDialog(
+                                            DefaultDialogs.DIALOG_ID_ERROR,
+                                            Strings.ERROR_PREFS_CORRUPT_TITLE,
+                                            Strings.ERROR_PREFS_CORRUPT
+                                        ).done(function () {
+                                            // give the focus back to the editor with the pref file
+                                            MainViewManager.focusActivePane();
+                                        });
                                     });
-                                });
-                        }
+                            }
+                        });
                     });
-                });
 
-                // See if any startup files were passed to the application
-                if (brackets.app.getPendingFilesToOpen) {
-                    brackets.app.getPendingFilesToOpen(function (err, paths) {
-                        DragAndDrop.openDroppedFiles(paths);
-                    });
-                }
+                    // See if any startup files were passed to the application
+                    if (brackets.app.getPendingFilesToOpen) {
+                        brackets.app.getPendingFilesToOpen(function (err, paths) {
+                            DragAndDrop.openDroppedFiles(paths);
+                        });
+                    }
+                });
             });
         });
 

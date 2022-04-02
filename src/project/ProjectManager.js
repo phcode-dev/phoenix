@@ -717,7 +717,7 @@ define(function (require, exports, module) {
      */
     function addWelcomeProjectPath(path) {
         var welcomeProjects = ProjectModel._addWelcomeProjectPath(path,
-                                                                 PreferencesManager.getViewState("welcomeProjects"));
+            PreferencesManager.getViewState("welcomeProjects"));
         PreferencesManager.setViewState("welcomeProjects", welcomeProjects);
     }
 
@@ -792,11 +792,29 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @deprecated use getStartupProjectPath instead. Can be removed anytime after 2-Apr-2023.
      * Initial project path is stored in prefs, which defaults to the welcome project on
      * first launch.
      */
     function getInitialProjectPath() {
         return updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
+    }
+
+    /**
+     * Initial project path is stored in prefs, which defaults to the welcome project on
+     * first launch.
+     */
+    async function getStartupProjectPath() {
+        return new Promise((resolve)=>{
+            let startupProjectPath = updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
+            FileSystem.getDirectoryForPath(startupProjectPath).exists((err, exists)=>{
+                if(exists){
+                    resolve(startupProjectPath);
+                } else {
+                    resolve(_getWelcomeProjectPath());
+                }
+            });
+        });
     }
 
     /**
@@ -1501,6 +1519,7 @@ define(function (require, exports, module) {
     exports.getSelectedItem               = getSelectedItem;
     exports.getContext                    = getContext;
     exports.getInitialProjectPath         = getInitialProjectPath;
+    exports.getStartupProjectPath         = getStartupProjectPath;
     exports.isWelcomeProjectPath          = isWelcomeProjectPath;
     exports.updateWelcomeProjectPath      = updateWelcomeProjectPath;
     exports.createNewItem                 = createNewItem;
