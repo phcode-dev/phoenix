@@ -1105,16 +1105,10 @@ define(function (require, exports, module) {
                 } else {
                     // Pop up a folder browse dialog
                     FileSystem.showOpenDialog(false, true, Strings.CHOOSE_FOLDER, model.projectRoot.fullPath, null, function (err, files) {
-                        if (!err) {
-                            // If length == 0, user canceled the dialog; length should never be > 1
-                            if (files.length > 0) {
-                                // Load the new project into the folder tree
-                                _loadProject(files[0]).then(result.resolve, result.reject);
-                            } else {
-                                result.reject();
-                            }
+                        if (!err && files.length > 0) {
+                            // Load the new project into the folder tree
+                            _loadProject(files[0]).then(result.resolve, result.reject);
                         } else {
-                            _showErrorDialog(ERR_TYPE_OPEN_DIALOG, null, err);
                             result.reject();
                         }
                     });
