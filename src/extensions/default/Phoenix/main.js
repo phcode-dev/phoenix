@@ -28,9 +28,28 @@ define(function (require, exports, module) {
     let Survey       = require("survey"),
         serverSync   = require("serverSync"),
         newProject   = require("new-project"),
-        AppInit      = brackets.getModule("utils/AppInit");
+        AppInit      = brackets.getModule("utils/AppInit"),
+        Strings      = brackets.getModule("strings");
+
+    let $icon;
+
+    function _addToolbarIcon() {
+        const helpButtonID = "help-button";
+        $icon = $("<a>")
+            .attr({
+                id: helpButtonID,
+                href: "#",
+                class: "help",
+                title: Strings.CMD_SUPPORT
+            })
+            .appendTo($("#main-toolbar .bottom-buttons"));
+        $icon.on('click', ()=>{
+            window.open(brackets.config.support_url);
+        });
+    }
 
     AppInit.appReady(function () {
+        _addToolbarIcon();
         Survey.init();
         serverSync.init();
         newProject.init();
