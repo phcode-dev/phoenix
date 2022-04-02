@@ -19,6 +19,8 @@
  *
  */
 
+/*globals path*/
+
 /**
  * Generates the fully configured preferences systems used throughout Brackets. This is intended
  * to be essentially private implementation that can be overridden for tests.
@@ -28,13 +30,14 @@ define(function (require, exports, module) {
 
     var PreferencesBase = require("./PreferencesBase"),
         Async           = require("utils/Async"),
+        FileSystem      = require("filesystem/FileSystem"),
 
         // The SETTINGS_FILENAME is used with a preceding "." within user projects
         SETTINGS_FILENAME = "brackets.json",
         STATE_FILENAME    = "state.json",
 
         // User-level preferences
-        userPrefFile = brackets.app.getApplicationSupportDirectory() + "/" + SETTINGS_FILENAME;
+        userPrefFile = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + SETTINGS_FILENAME);
 
     /**
      * A deferred object which is used to indicate PreferenceManager readiness during the start-up.
@@ -111,7 +114,8 @@ define(function (require, exports, module) {
     // "State" is stored like preferences but it is not generally intended to be user-editable.
     // It's for more internal, implicit things like window size, working set, etc.
     var stateManager = new PreferencesBase.PreferencesSystem();
-    var userStateFile = brackets.app.getApplicationSupportDirectory() + "/" + STATE_FILENAME;
+    var userStateFile = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + STATE_FILENAME);
+    FileSystem.alwaysIndex(userStateFile);
     var smUserScope = new PreferencesBase.Scope(new PreferencesBase.FileStorage(userStateFile, true, true));
     var stateProjectLayer = new PreferencesBase.ProjectLayer();
     smUserScope.addLayer(stateProjectLayer);
@@ -121,7 +125,7 @@ define(function (require, exports, module) {
     // Listen for times where we might be unwatching a root that contains one of the user-level prefs files,
     // and force a re-read of the file in order to ensure we can write to it later (see #7300).
     function _reloadUserPrefs(rootDir) {
-        var prefsDir = brackets.app.getApplicationSupportDirectory() + "/";
+        var prefsDir = path.normalize(brackets.app.getApplicationSupportDirectory() + "/");
         if (prefsDir.indexOf(rootDir.fullPath) === 0) {
             manager.fileChanged(userPrefFile);
             stateManager.fileChanged(userStateFile);

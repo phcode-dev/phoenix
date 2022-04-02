@@ -19,6 +19,7 @@
  *
  */
 
+/*globals path*/
 /*jslint regexp: true */
 /*unittests: KeyBindingManager */
 
@@ -47,7 +48,7 @@ define(function (require, exports, module) {
     var KeyboardPrefs       = JSON.parse(require("text!base-config/keyboard.json"));
 
     var KEYMAP_FILENAME     = "keymap.json",
-        _userKeyMapFilePath = brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME;
+        _userKeyMapFilePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME);
 
     /**
      * @private
@@ -283,7 +284,7 @@ define(function (require, exports, module) {
         _customKeyMapCache = {};
         _commandMap = {};
         _globalKeydownHooks = [];
-        _userKeyMapFilePath = brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME;
+        _userKeyMapFilePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME);
     }
 
     /**
@@ -1282,7 +1283,7 @@ define(function (require, exports, module) {
      */
     function _getUserKeyMapFilePath() {
         if (window.isBracketsTestWindow) {
-            return brackets.app.getApplicationSupportDirectory() + "/_test_/" + KEYMAP_FILENAME;
+            return path.normalize(brackets.app.getApplicationSupportDirectory() + "/_test_/" + KEYMAP_FILENAME);
         }
         return _userKeyMapFilePath;
     }

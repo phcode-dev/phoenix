@@ -19,6 +19,7 @@
  *
  */
 
+/*globals path*/
 /*jslint regexp: true */
 
 define(function (require, exports, module) {
@@ -53,7 +54,7 @@ define(function (require, exports, module) {
         SUPPORTED_PREFERENCE_TYPES   = ["number", "boolean", "string", "array", "object"];
 
     var recomputeDefaultPrefs        = true,
-        defaultPreferencesFullPath   = brackets.app.getApplicationSupportDirectory() + "/" + DEFAULT_PREFERENCES_FILENAME;
+        defaultPreferencesFullPath   = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + DEFAULT_PREFERENCES_FILENAME);
 
     /**
      * Brackets Application Menu Constant
