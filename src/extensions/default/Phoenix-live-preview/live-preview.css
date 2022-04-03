@@ -20,9 +20,27 @@
 
 .plugin-toolbar {
     height: var(--toolbar-height);
-    color: whitesmoke;
+    color: #a0a0a0;
     display: flex;
     justify-content: center;
     align-content: center;
     flex-direction: column;
+}
+
+.toolbar-button {
+    background-color: transparent;
+    width:28px;
+    height: 22px;
+}
+
+.open-icon {
+    background: url("./images/sprites.svg#open-icon") center no-repeat;
+}
+
+.pin-icon {
+    background: url("./images/sprites.svg#pinned-icon") center no-repeat;
+}
+
+.unpin-icon {
+    background: url("./images/sprites.svg#unpinned-icon") center no-repeat;
 }

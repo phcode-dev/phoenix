@@ -51,16 +51,18 @@ define(function (require, exports, module) {
 
 
     // Templates
-    var panelHTML       = require("text!panel.html");
-    ExtensionUtils.loadStyleSheet(module, "extension-store.css");
+    let panelHTML       = require("text!panel.html");
+    ExtensionUtils.loadStyleSheet(module, "live-preview.css");
 
     // jQuery objects
-    var $icon,
+    let $icon,
         $iframe,
-        $panel;
+        $panel,
+        $pinUrlBtn;
 
     // Other vars
-    var panel;
+    let panel,
+        urlPinned;
 
     function _setPanelVisibility(isVisible) {
         if (isVisible) {
@@ -77,6 +79,17 @@ define(function (require, exports, module) {
     function _toggleVisibility() {
         let visible = !panel.isVisible();
         _setPanelVisibility(visible);
+    }
+
+    function _togglePinUrl() {
+        let pinStatus = $pinUrlBtn.hasClass('pin-icon');
+        if(pinStatus){
+            $pinUrlBtn.removeClass('pin-icon').addClass('unpin-icon');
+        } else {
+            $pinUrlBtn.removeClass('unpin-icon').addClass('pin-icon');
+        }
+        urlPinned = !pinStatus;
+        _loadPreview();
     }
 
     function _setTitle(fileName) {
@@ -97,6 +110,7 @@ define(function (require, exports, module) {
         $icon.click(_toggleVisibility);
         $panel = $(Mustache.render(panelHTML, templateVars));
         $iframe = $panel.find("#panel-live-preview-frame");
+        $pinUrlBtn = $panel.find("#pinURLButton");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
@@ -107,6 +121,7 @@ define(function (require, exports, module) {
 
         WorkspaceManager.recomputeLayout(false);
         _setTitle(previewDetails.filePath);
+        $pinUrlBtn.click(_togglePinUrl);
     }
 
     let savedScrollPositions = {};
@@ -122,7 +137,7 @@ define(function (require, exports, module) {
             // panel-live-preview-title
             let previewDetails = await utils.getPreviewDetails();
             let newSrc = currentSrc;
-            if (previewDetails.URL) {
+            if (!urlPinned && previewDetails.URL) {
                 newSrc = encodeURI(previewDetails.URL);
                 _setTitle(previewDetails.filePath);
             }
