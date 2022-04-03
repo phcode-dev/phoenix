@@ -58,11 +58,13 @@ define(function (require, exports, module) {
     let $icon,
         $iframe,
         $panel,
-        $pinUrlBtn;
+        $pinUrlBtn,
+        $livePreviewPopBtn;
 
     // Other vars
     let panel,
-        urlPinned;
+        urlPinned,
+        tab = null;
 
     function _setPanelVisibility(isVisible) {
         if (isVisible) {
@@ -92,6 +94,13 @@ define(function (require, exports, module) {
         _loadPreview();
     }
 
+    function _popoutLivePreview() {
+        if(!tab || tab.closed){
+            tab = open();
+        }
+        _loadPreview(true);
+    }
+
     function _setTitle(fileName) {
         let message = Strings.LIVE_DEV_SELECT_FILE_TO_PREVIEW;
         if(fileName){
@@ -111,6 +120,7 @@ define(function (require, exports, module) {
         $panel = $(Mustache.render(panelHTML, templateVars));
         $iframe = $panel.find("#panel-live-preview-frame");
         $pinUrlBtn = $panel.find("#pinURLButton");
+        $livePreviewPopBtn = $panel.find("#livePreviewPopoutButton");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
@@ -122,11 +132,12 @@ define(function (require, exports, module) {
         WorkspaceManager.recomputeLayout(false);
         _setTitle(previewDetails.filePath);
         $pinUrlBtn.click(_togglePinUrl);
+        $livePreviewPopBtn.click(_popoutLivePreview);
     }
 
     let savedScrollPositions = {};
     async function _loadPreview(force) {
-        if(panel.isVisible()){
+        if(panel.isVisible() || (tab && !tab.closed)){
             let scrollX = $iframe[0].contentWindow.scrollX;
             let scrollY = $iframe[0].contentWindow.scrollY;
             let currentSrc = $iframe[0].src;
@@ -153,6 +164,9 @@ define(function (require, exports, module) {
             };
             if(currentSrc !== newSrc || force){
                 $iframe.attr('src', newSrc);
+                if(tab && !tab.closed){
+                    tab.location = newSrc;
+                }
             }
         }
     }
