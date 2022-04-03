@@ -59,6 +59,12 @@
     <!-- endbuild -->
     <script>
         function _loadPhoenixAfterSplashScreen() {
+            if(location.href.endsWith("index.html")){
+                console.log("Redirecting to root dir for phoenix paths to work properly.");
+                let currentUrl = location.href;
+                let lastIndex = currentUrl.lastIndexOf("index.html");
+                location.href = currentUrl.substring(0, lastIndex);
+            }
             var loadJS = function(url, implementationCode, location, dataMainValue){
                 //url is URL of external file, implementationCode is the code
                 //to be called from the file, location is the location to
