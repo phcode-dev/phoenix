@@ -121,7 +121,11 @@ define(function (require, exports, module) {
             };
             // panel-live-preview-title
             let previewDetails = await utils.getPreviewDetails();
-            let newSrc = encodeURI(previewDetails.URL);
+            let newSrc = currentSrc;
+            if (previewDetails.URL) {
+                newSrc = encodeURI(previewDetails.URL);
+                _setTitle(previewDetails.filePath);
+            }
             $iframe[0].onload = function () {
                 if(currentSrc === newSrc){
                     $iframe[0].contentWindow.scrollTo(scrollX, scrollY);
@@ -133,8 +137,7 @@ define(function (require, exports, module) {
                 }
             };
             if(currentSrc !== newSrc || force){
-                $iframe.attr('src', previewDetails.URL);
-                _setTitle(previewDetails.filePath);
+                $iframe.attr('src', newSrc);
             }
         }
     }

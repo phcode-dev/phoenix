@@ -77,6 +77,11 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Finds out a {URL,filePath} to live preview from the project. Will return and empty object if the current
+     * file is not previewable.
+     * @return {Promise<*>}
+     */
     async function getPreviewDetails() {
         return new Promise(async (resolve)=>{
             const projectRoot = ProjectManager.getProjectRoot().fullPath;
@@ -91,6 +96,8 @@ define(function (require, exports, module) {
                         URL: `${projectRootUrl}${relativePath}`,
                         filePath: relativePath
                     });
+                } else {
+                    resolve({}); // not a previewable file
                 }
             }
             resolve(await _getDefaultPreviewDetails());
