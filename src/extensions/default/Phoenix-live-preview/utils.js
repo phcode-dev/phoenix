@@ -41,7 +41,8 @@
 
 define(function (require, exports, module) {
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
-        DocumentManager     = brackets.getModule("document/DocumentManager");
+        DocumentManager     = brackets.getModule("document/DocumentManager"),
+        FileSystem         = brackets.getModule("filesystem/FileSystem");
 
     function _isPreviewableFile(filePath) {
         let pathSplit = filePath.split('.');
@@ -52,25 +53,51 @@ define(function (require, exports, module) {
         return false;
     }
 
-    function getPreviewURL() {
-        let projectRootName = ProjectManager.getProjectRoot().fullPath;
-        let projectRootUrl = `${window.fsServerUrl}${projectRootName}`;
-        let currentDocument = DocumentManager.getCurrentDocument();
-        let currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
-        let previewUrl = `${projectRootUrl}index.html`;
-        if(currentFile){
-            let fullPath = currentFile.fullPath;
-            if(_isPreviewableFile(fullPath)){
-                let projectRoot = ProjectManager.getProjectRoot().fullPath;
-                let relativePath = path.relative(projectRoot, fullPath);
-                previewUrl = `${projectRootUrl}${relativePath}`;
-            }
-        }
-
-        return previewUrl;
+    function _getNoPreviewURL(){
+        return `${window.location.href}assets/phoenix-splash/no-preview.html`;
     }
 
-    exports.getPreviewURL = getPreviewURL;
+    async function _getDefaultPreviewDetails() {
+        return new Promise(async (resolve)=>{
+            let projectRoot = ProjectManager.getProjectRoot().fullPath;
+            const projectRootUrl = `${window.fsServerUrl}${projectRoot}`;
+            let indexFiles = ['index.html', "index.htm"];
+            for(let indexFile of indexFiles){
+                let file = FileSystem.getFileForPath(`${projectRoot}${indexFile}`);
+                if(await file.existsAsync()){
+                    const relativePath = path.relative(projectRoot, file.fullPath);
+                    resolve({
+                        URL: `${projectRootUrl}${relativePath}`,
+                        filePath: relativePath
+                    });
+                    return;
+                }
+            }
+            resolve({URL: _getNoPreviewURL()});
+        });
+    }
+
+    async function getPreviewDetails() {
+        return new Promise(async (resolve)=>{
+            const projectRoot = ProjectManager.getProjectRoot().fullPath;
+            const projectRootUrl = `${window.fsServerUrl}${projectRoot}`;
+            const currentDocument = DocumentManager.getCurrentDocument();
+            const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+            if(currentFile){
+                let fullPath = currentFile.fullPath;
+                if(_isPreviewableFile(fullPath)){
+                    const relativePath = path.relative(projectRoot, fullPath);
+                    resolve({
+                        URL: `${projectRootUrl}${relativePath}`,
+                        filePath: relativePath
+                    });
+                }
+            }
+            resolve(await _getDefaultPreviewDetails());
+        });
+    }
+
+    exports.getPreviewDetails = getPreviewDetails;
 });
 
 

@@ -43,8 +43,8 @@ define(function (require, exports, module) {
     let ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
         WorkspaceManager   = brackets.getModule("view/WorkspaceManager"),
         AppInit            = brackets.getModule("utils/AppInit"),
-        ProjectManager          = brackets.getModule("project/ProjectManager"),
-        EditorManager       = brackets.getModule("editor/EditorManager"),
+        ProjectManager     = brackets.getModule("project/ProjectManager"),
+        EditorManager      = brackets.getModule("editor/EditorManager"),
         utils = require('utils');
 
 
@@ -77,7 +77,8 @@ define(function (require, exports, module) {
         _setPanelVisibility(visible);
     }
 
-    function _createExtensionPanel() {
+    async function _createExtensionPanel() {
+        const PANEL_MIN_SIZE = 50;
         $icon = $("#toolbar-go-live");
         $icon.click(_toggleVisibility);
         $panel = $(panelHTML);
@@ -85,16 +86,16 @@ define(function (require, exports, module) {
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
-        $iframe.attr('src', utils.getPreviewURL());
-        let minSize = window.innerWidth/3;
+        let previewDetails = await utils.getPreviewDetails();
+        $iframe.attr('src', previewDetails.URL);
 
-        panel = WorkspaceManager.createPluginPanel("live-preview-panel", $panel, minSize, $icon);
+        panel = WorkspaceManager.createPluginPanel("live-preview-panel", $panel, PANEL_MIN_SIZE, $icon);
 
         WorkspaceManager.recomputeLayout(false);
     }
 
     let savedScrollPositions = {};
-    function _loadPreview(force) {
+    async function _loadPreview(force) {
         if(panel.isVisible()){
             let scrollX = $iframe[0].contentWindow.scrollX;
             let scrollY = $iframe[0].contentWindow.scrollY;
@@ -103,7 +104,9 @@ define(function (require, exports, module) {
                 scrollX: scrollX,
                 scrollY: scrollY
             };
-            let newSrc = encodeURI(utils.getPreviewURL());
+            // panel-live-preview-title
+            let previewDetails = await utils.getPreviewDetails();
+            let newSrc = encodeURI(previewDetails.URL);
             $iframe[0].onload = function () {
                 if(currentSrc === newSrc){
                     $iframe[0].contentWindow.scrollTo(scrollX, scrollY);
@@ -115,13 +118,15 @@ define(function (require, exports, module) {
                 }
             };
             if(currentSrc !== newSrc || force){
-                $iframe.attr('src', utils.getPreviewURL());
+                $iframe.attr('src', previewDetails.URL);
             }
         }
     }
 
     function _projectFileChanges(evt, changedFile) {
         if(changedFile.fullPath !== '/fs/app/state.json'){
+            // we are getting this change event somehow.
+            // bug, investigate why we get this change event as a project file change.
             _loadPreview(true);
         }
     }
@@ -131,9 +136,13 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
         EditorManager.on("activeEditorChange", _loadPreview);
-        // We always show the live preview panel on startup
-        setTimeout(()=>{
-            _setPanelVisibility(true);
+        // We always show the live preview panel on startup if there is a preview file
+        setTimeout(async ()=>{
+            let previewDetails = await utils.getPreviewDetails();
+            if(previewDetails.filePath){
+                // only show if there is some file to preview and not the default no-preview preview on startup
+                _setPanelVisibility(true);
+            }
         }, 1000);
     });
 });

@@ -298,6 +298,23 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Async version of exists API. Returns true or false if the entry exists. or error rejects.
+     */
+    FileSystemEntry.prototype.existsAsync = async function () {
+        let that = this;
+        return new Promise((resolve, reject)=>{
+            that.exists((err, exists)=>{
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(exists);
+                }
+            });
+        });
+
+    };
+
+    /**
      * Returns the stats for the entry.
      *
      * @param {function (?string, FileSystemStats=)} callback Callback with a
