@@ -45,6 +45,8 @@ define(function (require, exports, module) {
         AppInit            = brackets.getModule("utils/AppInit"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         EditorManager      = brackets.getModule("editor/EditorManager"),
+        Strings            = brackets.getModule("strings"),
+        Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         utils = require('utils');
 
 
@@ -77,11 +79,23 @@ define(function (require, exports, module) {
         _setPanelVisibility(visible);
     }
 
+    function _setTitle(fileName) {
+        let message = Strings.LIVE_DEV_SELECT_FILE_TO_PREVIEW;
+        if(fileName){
+            message = `${fileName} - ${Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC}`;
+        }
+        document.getElementById("panel-live-preview-title").textContent = `${message}`;
+    }
+
     async function _createExtensionPanel() {
+        let templateVars = {
+            Strings: Strings,
+            livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC
+        };
         const PANEL_MIN_SIZE = 50;
         $icon = $("#toolbar-go-live");
         $icon.click(_toggleVisibility);
-        $panel = $(panelHTML);
+        $panel = $(Mustache.render(panelHTML, templateVars));
         $iframe = $panel.find("#panel-live-preview-frame");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
@@ -92,6 +106,7 @@ define(function (require, exports, module) {
         panel = WorkspaceManager.createPluginPanel("live-preview-panel", $panel, PANEL_MIN_SIZE, $icon);
 
         WorkspaceManager.recomputeLayout(false);
+        _setTitle(previewDetails.filePath);
     }
 
     let savedScrollPositions = {};
@@ -119,6 +134,7 @@ define(function (require, exports, module) {
             };
             if(currentSrc !== newSrc || force){
                 $iframe.attr('src', previewDetails.URL);
+                _setTitle(previewDetails.filePath);
             }
         }
     }
