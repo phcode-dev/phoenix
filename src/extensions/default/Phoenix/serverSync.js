@@ -148,8 +148,8 @@ define(function (require, exports, module) {
         previewURL = null;
     }
 
+    let allChangedFiles = [];
     async function _collectFiles(dirEntry) {
-        let allFiles = [];
         return new Promise((resolve, reject)=>{
             dirEntry.getContents(async (err,fsEntries)=>{
                 if(err){
@@ -158,13 +158,13 @@ define(function (require, exports, module) {
                 for(let fsEntry of fsEntries){
                     if(fsEntry.isDirectory){
                         let contentFiles = await _collectFiles(fsEntry);
-                        allFiles.push(...contentFiles);
+                        allChangedFiles.push(...contentFiles);
                     } else {
-                        allFiles.push(fsEntry);
+                        allChangedFiles.push(fsEntry);
                     }
                 }
             });
-            resolve(allFiles);
+            resolve(allChangedFiles);
         });
     }
 
@@ -173,17 +173,11 @@ define(function (require, exports, module) {
             return;
         }
         if(entry){
-            let fileList = [];
             if(entry.isDirectory){
-                fileList = await _collectFiles(entry);
+                await _collectFiles(entry);
             } else {
-                fileList = [entry];
+                allChangedFiles.push(entry);
             }
-            _setSyncInProgress();
-            _uploadFiles(fileList, ()=>{
-                _setSyncComplete();
-                _loadPreview();
-            });
         }
     }
 
@@ -288,8 +282,11 @@ define(function (require, exports, module) {
         $icon.on('click', ()=>{
             if(projectSyncCompleted){
                 previewInProgress = true;
-                _loadPreview();
-                return;
+                _setSyncInProgress();
+                _uploadFiles(allChangedFiles, ()=>{
+                    _setSyncComplete();
+                    _loadPreview();
+                });
             }
             _showPublishConsentDialogue();
         });
