@@ -179,11 +179,18 @@ define(function (require, exports, module) {
         }
     }
 
+    function _projectOpened() {
+        if(urlPinned){
+            _togglePinUrl();
+        }
+    }
+
     AppInit.appReady(function () {
         _createExtensionPanel();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
         EditorManager.on("activeEditorChange", _loadPreview);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         // We always show the live preview panel on startup if there is a preview file
         setTimeout(async ()=>{
             let previewDetails = await utils.getPreviewDetails();
