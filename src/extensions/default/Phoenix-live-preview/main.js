@@ -41,6 +41,9 @@
 
 define(function (require, exports, module) {
     let ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
+        CommandManager     = brackets.getModule("command/CommandManager"),
+        Commands           = brackets.getModule("command/Commands"),
+        Menus              = brackets.getModule("command/Menus"),
         WorkspaceManager   = brackets.getModule("view/WorkspaceManager"),
         AppInit            = brackets.getModule("utils/AppInit"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
@@ -191,6 +194,11 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
         EditorManager.on("activeEditorChange", _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
+        CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
+            _toggleVisibility();
+        });
+        let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
+        fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "", Menus.BEFORE, Commands.FILE_PROJECT_SETTINGS);
         // We always show the live preview panel on startup if there is a preview file
         setTimeout(async ()=>{
             let previewDetails = await utils.getPreviewDetails();
