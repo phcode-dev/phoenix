@@ -121,6 +121,7 @@ define({
     "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Initializing\u2026",
     "LIVE_DEV_STATUS_TIP_CONNECTED": "Disconnect Live Preview",
     "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview (save file to refresh)",
+    "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Select File To Live Preview",
     "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (not updating due to syntax error)",
 
     "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
