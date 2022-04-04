@@ -119,7 +119,10 @@ define(function (require, exports, module) {
     async function _createExtensionPanel() {
         let templateVars = {
             Strings: Strings,
-            livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC
+            livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
+            clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
+            clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
+            clickToPinUnpin: Strings.LIVE_DEV_CLICK_TO_PIN_UNPIN
         };
         const PANEL_MIN_SIZE = 50;
         $icon = $("#toolbar-go-live");
