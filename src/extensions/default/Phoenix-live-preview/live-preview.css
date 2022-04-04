@@ -44,3 +44,7 @@
 .unpin-icon {
     background: url("./images/sprites.svg#unpinned-icon") center no-repeat;
 }
+
+.reload-icon {
+    background: url("./images/sprites.svg#reload-icon") center no-repeat;
+}
