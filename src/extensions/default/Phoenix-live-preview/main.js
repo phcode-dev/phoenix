@@ -146,7 +146,7 @@ define(function (require, exports, module) {
         if(panel.isVisible() || (tab && !tab.closed)){
             let scrollX = $iframe[0].contentWindow.scrollX;
             let scrollY = $iframe[0].contentWindow.scrollY;
-            let currentSrc = $iframe[0].src;
+            let currentSrc = $iframe[0].src || utils.getNoPreviewURL();
             savedScrollPositions[currentSrc] = {
                 scrollX: scrollX,
                 scrollY: scrollY
@@ -189,12 +189,12 @@ define(function (require, exports, module) {
         if(urlPinned){
             _togglePinUrl();
         }
-        if(!panel.isVisible()){
-            return;
-        }
         $iframe[0].src = utils.getNoPreviewURL();
         if(tab && !tab.closed){
             tab.location = utils.getNoPreviewURL();
+        }
+        if(!panel.isVisible()){
+            return;
         }
         _loadPreview(true);
     }
