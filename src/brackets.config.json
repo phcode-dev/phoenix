@@ -3,7 +3,7 @@
     {
         "app_title": "Phoenix",
         "app_name_about": "Phoenix",
-        "about_icon"                 : "styles/images/brackets_icon.svg",
+        "about_icon"                 : "styles/images/phoenix-icon.svg",
         "how_to_use_url"             : "https://github.com/adobe/brackets/wiki/How-to-Use-Brackets",
         "support_url"                : "https://github.com/aicore/phoenix/discussions",
         "suggest_feature_url"        : "https://github.com/aicore/phoenix/discussions/categories/ideas",
