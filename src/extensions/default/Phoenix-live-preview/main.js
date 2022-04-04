@@ -62,7 +62,8 @@ define(function (require, exports, module) {
         $iframe,
         $panel,
         $pinUrlBtn,
-        $livePreviewPopBtn;
+        $livePreviewPopBtn,
+        $reloadBtn;
 
     // Other vars
     let panel,
@@ -126,6 +127,7 @@ define(function (require, exports, module) {
         $panel = $(Mustache.render(panelHTML, templateVars));
         $iframe = $panel.find("#panel-live-preview-frame");
         $pinUrlBtn = $panel.find("#pinURLButton");
+        $reloadBtn = $panel.find("#reloadButton");
         $livePreviewPopBtn = $panel.find("#livePreviewPopoutButton");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
@@ -139,6 +141,9 @@ define(function (require, exports, module) {
         _setTitle(previewDetails.filePath);
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
+        $reloadBtn.click(()=>{
+            _loadPreview(true);
+        });
     }
 
     let savedScrollPositions = {};
