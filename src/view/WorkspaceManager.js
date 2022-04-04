@@ -220,16 +220,18 @@ define(function (require, exports, module) {
      * @param {number=} minSize  Minimum height of panel in px.
      * @param {!jQueryObject} $toolbarIcon An icon that should be present in main-toolbar to associate this panel to.
      *      The panel will be shown only if the icon is visible on the toolbar and the user clicks on the icon.
+     * @param {?number=} initialSize  Optional Initial size of panel in px. If not given, panel will use minsize
+     *      or current size.
      * @return {!Panel}
      */
-    function createPluginPanel(id, $panel, minSize, $toolbarIcon) {
+    function createPluginPanel(id, $panel, minSize, $toolbarIcon, initialSize) {
         if(!$toolbarIcon){
             throw new Error("invalid $toolbarIcon provided to create createPluginPanel");
         }
 
         $mainPluginPanel[0].appendChild($panel[0]);
 
-        let pluginPanel = new PluginPanelView.Panel($panel, id, $toolbarIcon, minSize);
+        let pluginPanel = new PluginPanelView.Panel($panel, id, $toolbarIcon, minSize, initialSize);
         panelIDMap[id] = pluginPanel;
         pluginPanel.hide();
 
@@ -309,12 +311,23 @@ define(function (require, exports, module) {
     });
 
     let currentlyShownPanel = null,
-        panelShowInProgress = false;
+        panelShowInProgress = false,
+        initialSizeSetOnce = {};
+
+    function _getInitialSize(panel) {
+        let setOnce = initialSizeSetOnce[panel.panelID];
+        if(setOnce){
+            return undefined; // we haev lalready set the initial size once, let resizer figure out size to apply now.
+        }
+        initialSizeSetOnce[panel.panelID] = true;
+        return panel.initialSize;
+    }
 
     function _showPluginSidePanel(panelID) {
         let panelBeingShown = getPanelForID(panelID);
         Resizer.makeResizable($mainToolbar, Resizer.DIRECTION_HORIZONTAL, Resizer.POSITION_LEFT,
-            panelBeingShown.minWidth, false, undefined, true, undefined, $windowContent);
+            panelBeingShown.minWidth, false, undefined, true,
+            undefined, $windowContent, undefined, _getInitialSize(panelBeingShown));
         Resizer.show($mainToolbar[0]);
         recomputeLayout(true);
     }

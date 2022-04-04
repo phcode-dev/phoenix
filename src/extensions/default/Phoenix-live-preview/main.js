@@ -125,6 +125,7 @@ define(function (require, exports, module) {
             clickToPinUnpin: Strings.LIVE_DEV_CLICK_TO_PIN_UNPIN
         };
         const PANEL_MIN_SIZE = 50;
+        const INITIAL_PANEL_SIZE = screen.width/3;
         $icon = $("#toolbar-go-live");
         $icon.click(_toggleVisibility);
         $panel = $(Mustache.render(panelHTML, templateVars));
@@ -138,7 +139,8 @@ define(function (require, exports, module) {
         let previewDetails = await utils.getPreviewDetails();
         $iframe.attr('src', previewDetails.URL);
 
-        panel = WorkspaceManager.createPluginPanel("live-preview-panel", $panel, PANEL_MIN_SIZE, $icon);
+        panel = WorkspaceManager.createPluginPanel("live-preview-panel", $panel,
+            PANEL_MIN_SIZE, $icon, INITIAL_PANEL_SIZE);
 
         WorkspaceManager.recomputeLayout(false);
         _setTitle(previewDetails.filePath);

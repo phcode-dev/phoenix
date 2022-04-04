@@ -201,10 +201,12 @@ define(function (require, exports, module) {
      *                          to element itself. Attach the resizer to the parent *ONLY* if element has the
      *                          same offset as parent otherwise the resizer will be incorrectly positioned.
      *                          FOR INTERNAL USE ONLY
+     * @param {?number=} initialSize  Optional Initial size of panel in px. If not given, panel will use minsize
+     *      or current size.
      */
     function makeResizable(element, direction, position, minSize, collapsible,
                            forceLeft, createdByWorkspaceManager, usePercentages,
-                           forceRight, _attachToParent) {
+                           forceRight, _attachToParent, initialSize) {
         var $resizer            = $('<div class="' + direction + '-resizer"></div>'),
             $element            = $(element),
             $parent             = $element.parent(),
@@ -325,6 +327,9 @@ define(function (require, exports, module) {
             var elementOffset   = $element.offset(),
                 elementSize     = elementSizeFunction.apply($element) || elementPrefs.size,
                 contentSize     = contentSizeFunction.apply($resizableElement) || elementPrefs.contentSize;
+            if(initialSize){
+                elementSize = elementPrefs.size || initialSize;
+            }
             if(elementSize<minSize){
                 elementSize = minSize;
             }
