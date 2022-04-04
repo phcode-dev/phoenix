@@ -311,7 +311,7 @@ define(function (require, exports, module) {
                     cmenu.open({pageX: 0, pageY: 0});
 
                     // checks that all the relevant items are disabled
-                    var notVisible = [Commands.FILE_RENAME, Commands.NAVIGATE_SHOW_IN_FILE_TREE, Commands.NAVIGATE_SHOW_IN_OS];
+                    var notVisible = [Commands.FILE_RENAME, Commands.NAVIGATE_SHOW_IN_FILE_TREE];
                     notVisible.forEach(function (item) { expect(CommandManager.get(item).getEnabled()).toBe(false); });
 
                     //close menu and new file
@@ -344,7 +344,7 @@ define(function (require, exports, module) {
                     cmenu.open({pageX: 0, pageY: 0});
 
                     // checks that all the items are enabled
-                    var visible = [Commands.FILE_SAVE, Commands.FILE_SAVE_AS, Commands.FILE_RENAME, Commands.NAVIGATE_SHOW_IN_FILE_TREE, Commands.NAVIGATE_SHOW_IN_OS, Commands.CMD_FIND_IN_SUBTREE, Commands.CMD_REPLACE_IN_SUBTREE, Commands.FILE_CLOSE];
+                    var visible = [Commands.FILE_SAVE, Commands.FILE_SAVE_AS, Commands.FILE_RENAME, Commands.NAVIGATE_SHOW_IN_FILE_TREE, Commands.CMD_FIND_IN_SUBTREE, Commands.CMD_REPLACE_IN_SUBTREE, Commands.FILE_CLOSE];
                     visible.forEach(function (item) { expect(CommandManager.get(item).getEnabled()).toBe(true); });
                 });
             });
