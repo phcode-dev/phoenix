@@ -37,13 +37,16 @@ define(function (require, exports, module) {
      * @param {!jQueryObject} $toolbarIcon An icon that should be present in main-toolbar to associate this panel to.
      *      The panel will be shown only if the icon is visible on the toolbar and the user clicks on the icon.
      * @param {number=} minWidth  Minimum width of panel in px.
+     * @param {?number=} initialSize  Optional Initial size of panel in px. If not given, panel will use minsize
+     *      or current size.
      */
-    function Panel($panel, id, $toolbarIcon, minWidth) {
+    function Panel($panel, id, $toolbarIcon, minWidth, initialSize) {
         this.$panel = $panel;
         this.panelID = id;
         this.$toolbarIcon = $toolbarIcon;
         this.minWidth = minWidth;
         this.$mainPluginPanel = $("#main-plugin-panel");
+        this.initialSize = initialSize;
     }
 
     /**
