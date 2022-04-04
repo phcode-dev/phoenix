@@ -55,7 +55,7 @@ define(function (require, exports, module) {
                 if (err) {
                     return err;
                 }
-                _setContextMenuItemsVisible(isPresent, [Commands.FILE_RENAME, Commands.NAVIGATE_SHOW_IN_FILE_TREE, Commands.NAVIGATE_SHOW_IN_OS]);
+                _setContextMenuItemsVisible(isPresent, [Commands.FILE_RENAME, Commands.NAVIGATE_SHOW_IN_FILE_TREE]);
             });
         }
     }
@@ -228,7 +228,6 @@ define(function (require, exports, module) {
         workingset_cmenu.addMenuItem(Commands.FILE_SAVE_AS);
         workingset_cmenu.addMenuItem(Commands.FILE_RENAME);
         workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
-        workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.CMD_FIND_IN_SUBTREE);
         workingset_cmenu.addMenuItem(Commands.CMD_REPLACE_IN_SUBTREE);
@@ -251,7 +250,6 @@ define(function (require, exports, module) {
         project_cmenu.addMenuItem(Commands.FILE_NEW_FOLDER);
         project_cmenu.addMenuItem(Commands.FILE_RENAME);
         project_cmenu.addMenuItem(Commands.FILE_DELETE);
-        project_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
         project_cmenu.addMenuDivider();
         project_cmenu.addMenuItem(Commands.CMD_FIND_IN_SUBTREE);
         project_cmenu.addMenuItem(Commands.CMD_REPLACE_IN_SUBTREE);

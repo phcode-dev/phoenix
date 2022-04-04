@@ -1618,18 +1618,6 @@ define(function (require, exports, module) {
             });
     }
 
-    /** Show the selected sidebar (tree or workingset) item in Finder/Explorer */
-    function handleShowInOS() {
-        var entry = ProjectManager.getSelectedItem();
-        if (entry) {
-            brackets.app.showOSFolder(entry.fullPath, function (err) {
-                if (err) {
-                    console.error("Error showing '" + entry.fullPath + "' in OS folder:", err);
-                }
-            });
-        }
-    }
-
     /**
     * Does a full reload of the browser window
     * @param {string} href The url to reload into the window
@@ -1769,13 +1757,9 @@ define(function (require, exports, module) {
     exports._parseDecoratedPath = _parseDecoratedPath;
 
     // Set some command strings
-    var quitString  = Strings.CMD_QUIT,
-        showInOS    = Strings.CMD_SHOW_IN_OS;
+    var quitString  = Strings.CMD_QUIT;
     if (brackets.platform === "win") {
         quitString  = Strings.CMD_EXIT;
-        showInOS    = Strings.CMD_SHOW_IN_EXPLORER;
-    } else if (brackets.platform === "mac") {
-        showInOS    = Strings.CMD_SHOW_IN_FINDER;
     }
 
     // Define public API
@@ -1814,7 +1798,6 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_PREV_DOC_LIST_ORDER,         Commands.NAVIGATE_PREV_DOC_LIST_ORDER,   handleGoPrevDocListOrder);
 
     // Special Commands
-    CommandManager.register(showInOS,                                Commands.NAVIGATE_SHOW_IN_OS,            handleShowInOS);
     CommandManager.register(quitString,                              Commands.FILE_QUIT,                      handleFileQuit);
     CommandManager.register(Strings.CMD_SHOW_IN_TREE,                Commands.NAVIGATE_SHOW_IN_FILE_TREE,     handleShowInTree);
 
