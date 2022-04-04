@@ -61,6 +61,7 @@ define(function (require, exports, module) {
     }
 
     function _uploadFile(filePath, blob, resolve, reject) {
+        console.log('Uploading file for preview: ', filePath);
         let uploadFormData = new FormData();
         let projectRoot = path.dirname(syncRoot);
         let relativePath = path.relative(projectRoot, filePath);
@@ -85,6 +86,11 @@ define(function (require, exports, module) {
 
     function _readAndUploadFile(file) {
         return new Promise((resolve, reject)=>{
+            if(file.fullPath === '/fs/app/state.json'){
+                // somehow we get these changes as project file changes too. don't sync state file
+                resolve();
+                return;
+            }
             file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
                 if (err){
                     reject(err);
@@ -283,7 +289,9 @@ define(function (require, exports, module) {
             if(projectSyncCompleted){
                 previewInProgress = true;
                 _setSyncInProgress();
-                _uploadFiles(allChangedFiles, ()=>{
+                let uniqueFilesToUpload = [...new Set(allChangedFiles)];
+                allChangedFiles = [];
+                _uploadFiles(uniqueFilesToUpload, ()=>{
                     _setSyncComplete();
                     _loadPreview();
                 });

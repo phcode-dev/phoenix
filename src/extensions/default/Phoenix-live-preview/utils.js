@@ -53,7 +53,7 @@ define(function (require, exports, module) {
         return false;
     }
 
-    function _getNoPreviewURL(){
+    function getNoPreviewURL(){
         return `${window.location.href}assets/phoenix-splash/no-preview.html`;
     }
 
@@ -73,7 +73,7 @@ define(function (require, exports, module) {
                     return;
                 }
             }
-            resolve({URL: _getNoPreviewURL()});
+            resolve({URL: getNoPreviewURL()});
         });
     }
 
@@ -105,6 +105,7 @@ define(function (require, exports, module) {
     }
 
     exports.getPreviewDetails = getPreviewDetails;
+    exports.getNoPreviewURL = getNoPreviewURL;
 });
 
 

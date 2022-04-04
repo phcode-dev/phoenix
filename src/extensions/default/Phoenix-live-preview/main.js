@@ -84,6 +84,9 @@ define(function (require, exports, module) {
     function _toggleVisibility() {
         let visible = !panel.isVisible();
         _setPanelVisibility(visible);
+        if(visible){
+            _loadPreview(true);
+        }
     }
 
     function _togglePinUrl() {
@@ -186,6 +189,14 @@ define(function (require, exports, module) {
         if(urlPinned){
             _togglePinUrl();
         }
+        if(!panel.isVisible()){
+            return;
+        }
+        $iframe[0].src = utils.getNoPreviewURL();
+        if(tab && !tab.closed){
+            tab.location = utils.getNoPreviewURL();
+        }
+        _loadPreview(true);
     }
 
     AppInit.appReady(function () {
