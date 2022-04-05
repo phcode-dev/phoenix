@@ -103,8 +103,13 @@ function zipTestFiles() {
         .pipe(dest('test/'));
 }
 
+function zipDefaultProjectFiles() {
+    return src(['src/assets/default-project/en/**'])
+        .pipe(zip('en.zip'))
+        .pipe(dest('src/assets/default-project/'));
+}
 
-exports.build = series(copyThirdPartyLibs);
+exports.build = series(copyThirdPartyLibs, zipDefaultProjectFiles);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
 exports.release = series(cleanDist, exports.build, release);
