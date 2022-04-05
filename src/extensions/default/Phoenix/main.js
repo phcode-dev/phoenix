@@ -2,7 +2,6 @@
  * GNU AGPL-3.0 License
  *
  * Copyright (c) 2021 - present core.ai . All rights reserved.
- * Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -19,7 +18,6 @@
  *
  */
 
-/*global fs, Phoenix, process*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
@@ -28,6 +26,7 @@ define(function (require, exports, module) {
     let Survey       = require("survey"),
         serverSync   = require("serverSync"),
         newProject   = require("new-project"),
+        startupProject   = require("startup-project"),
         AppInit      = brackets.getModule("utils/AppInit"),
         Strings      = brackets.getModule("strings");
 
@@ -52,6 +51,7 @@ define(function (require, exports, module) {
         _addToolbarIcon();
         Survey.init();
         serverSync.init();
+        startupProject.init();
         newProject.init();
     });
 });
