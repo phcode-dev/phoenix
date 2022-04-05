@@ -125,7 +125,7 @@ define(function (require, exports, module) {
             clickToPinUnpin: Strings.LIVE_DEV_CLICK_TO_PIN_UNPIN
         };
         const PANEL_MIN_SIZE = 50;
-        const INITIAL_PANEL_SIZE = screen.width/3;
+        const INITIAL_PANEL_SIZE = document.body.clientWidth/2.5;
         $icon = $("#toolbar-go-live");
         $icon.click(_toggleVisibility);
         $panel = $(Mustache.render(panelHTML, templateVars));

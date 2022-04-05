@@ -214,7 +214,7 @@ define(function (require, exports, module) {
             "Publish and Share website?",
             `Quickly preview changes and share your website with others. Phoenix can publish this website for you at 
              <a href="${_getProjectPreviewURL()}">${_getProjectPreviewURL()}</a>.
-             The files you edit and save will be instantly published. Do you wish to publish and share your website?`,
+             The published links will be valid for a period of 7 days. Do you wish to publish and share your website?`,
             [
                 {
                     className: Dialogs.DIALOG_BTN_CLASS_NORMAL,

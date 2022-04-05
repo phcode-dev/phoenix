@@ -26,6 +26,7 @@ Thumbs.db
 /src/.index.html
 /src/styles/brackets.min.css
 /src/styles/brackets.min.css.map
+/src/assets/default-project/en.zip
 
 # ignore everything in the dev extension directory EXCEPT the README
 # (so that the directory is non-empty and can be in git)

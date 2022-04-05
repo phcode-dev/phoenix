@@ -18,7 +18,7 @@
  */
 
 // jshint ignore: start
-/*global fs, Phoenix, process*/
+/*global fs*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
@@ -133,10 +133,10 @@ const _SAMPLE_HTML = `<!DOCTYPE html>
 const _createDefaultProject = function (vfs) {
     // Create phoenix app dirs
     // Create Phoenix default project if it doesnt exist
-    vfs.exists(vfs.getDefaultProjectDir(), (exists)=>{
+    let projectDir = vfs.getDefaultProjectDir();
+    vfs.exists(projectDir, (exists)=>{
         if(!exists){
-            vfs.ensureExistsDir(vfs.getDefaultProjectDir(), errorCb);
-            let projectDir = vfs.getDefaultProjectDir();
+            vfs.ensureExistsDir(projectDir, errorCb);
             let indexFile = vfs.path.normalize(`${projectDir}/index.html`);
             vfs.fs.stat(indexFile, function (err){
                 if (err && err.code === 'ENOENT') {
