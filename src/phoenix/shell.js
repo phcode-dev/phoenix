@@ -28,8 +28,11 @@
  * **/
 import init from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
+import getBrowserDetails from "./browserDetails.js";
 
-let Phoenix = {};
+let Phoenix = {
+    browser: getBrowserDetails()
+};
 let startTime = Date.now();
 
 window.Phoenix = Phoenix;

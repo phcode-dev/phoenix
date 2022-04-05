@@ -18,6 +18,7 @@
  *
  */
 
+/*global Phoenix*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
@@ -28,7 +29,10 @@ define(function (require, exports, module) {
         newProject   = require("new-project"),
         startupProject   = require("startup-project"),
         AppInit      = brackets.getModule("utils/AppInit"),
-        Strings      = brackets.getModule("strings");
+        Strings      = brackets.getModule("strings"),
+        Dialogs     = brackets.getModule("widgets/Dialogs"),
+        Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
+        unSupportedBrowserTemplate     = require("text!unsupported-browser.html");
 
     let $icon;
 
@@ -46,6 +50,21 @@ define(function (require, exports, module) {
             window.open(brackets.config.support_url);
         });
     }
+    function _showUnSupportedBrowserDialogue() {
+        var templateVars = {
+            Strings: Strings,
+            surveyURL: "https://s.surveyplanet.com/6208d1eccd51c561fc8e59ca"
+        };
+        Dialogs.showModalDialogUsingTemplate(Mustache.render(unSupportedBrowserTemplate, templateVars));
+    }
+
+    function _detectUnSupportedBrowser() {
+        let supportedBrowser = Phoenix.browser.isDeskTop &&
+            (Phoenix.browser.desktop.isChrome || Phoenix.browser.desktop.isEdgeChromium);
+        if(!supportedBrowser){
+            _showUnSupportedBrowserDialogue();
+        }
+    }
 
     AppInit.appReady(function () {
         _addToolbarIcon();
@@ -53,5 +72,6 @@ define(function (require, exports, module) {
         serverSync.init();
         startupProject.init();
         newProject.init();
+        _detectUnSupportedBrowser();
     });
 });

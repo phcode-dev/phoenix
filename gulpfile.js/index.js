@@ -3,13 +3,6 @@
 const del = require('del');
 const webserver = require('gulp-webserver');
 const { src, dest, series } = require('gulp');
-// This plugin concatenates any number of CSS and JavaScript files into a single file
-const useref = require('gulp-useref');
-// Requires the gulp-uglify plugin for minifying js files
-const uglify = require('gulp-uglify');
-const gulpIf = require('gulp-if');
-// Requires the gulp-cssnano plugin for minifying css files
-const cssnano = require('gulp-cssnano');
 const mergeStream =   require('merge-stream');
 const zip = require('gulp-zip');
 const rename = require("gulp-rename");
@@ -39,12 +32,7 @@ function cleanAll() {
  * @returns {*}
  */
 function release() {
-    return src('src/*.html')
-        .pipe(useref())
-        // Minifies only if it's a JavaScript file
-        .pipe(gulpIf('*.js', uglify()))
-        // Minifies only if it's a CSS file
-        .pipe(gulpIf('*.css', cssnano()))
+    return src('src/**/*')
         .pipe(dest('dist'));
 }
 
