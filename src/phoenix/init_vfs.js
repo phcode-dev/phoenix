@@ -130,19 +130,17 @@ const _SAMPLE_HTML = `<!DOCTYPE html>
     </body>
 </html>`;
 
-const _createDefaultProject = function (vfs) {
+const _createDefaultProject = function (vfs, Phoenix) {
     // Create phoenix app dirs
     // Create Phoenix default project if it doesnt exist
     let projectDir = vfs.getDefaultProjectDir();
+    Phoenix.firstBoot = false;
     vfs.exists(projectDir, (exists)=>{
         if(!exists){
             vfs.ensureExistsDir(projectDir, errorCb);
             let indexFile = vfs.path.normalize(`${projectDir}/index.html`);
-            vfs.fs.stat(indexFile, function (err){
-                if (err && err.code === 'ENOENT') {
-                    fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', errorCb);
-                }
-            });
+            Phoenix.firstBoot = true;
+            fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', errorCb);
         }
     });
 };
@@ -156,6 +154,6 @@ export default function init(Phoenix, FilerLib) {
 
     const vfs = _setupVFS(Phoenix, window.fs, window.path);
     _createAppDirs(vfs);
-    _createDefaultProject(vfs);
+    _createDefaultProject(vfs, Phoenix);
 }
 

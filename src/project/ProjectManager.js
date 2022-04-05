@@ -706,7 +706,7 @@ define(function (require, exports, module) {
      * @param {string} initialPath Path to Brackets directory (see FileUtils.getNativeBracketsDirectoryPath())
      * @return {!string} fullPath reference
      */
-    function _getWelcomeProjectPath() {
+    function getWelcomeProjectPath() {
         return ProjectModel._getWelcomeProjectPath(Urls.GETTING_STARTED, Phoenix.VFS.getDefaultProjectDir());
     }
 
@@ -730,7 +730,7 @@ define(function (require, exports, module) {
      * @return {boolean} true if this is a welcome project path
      */
     function isWelcomeProjectPath(path) {
-        return ProjectModel._isWelcomeProjectPath(path, _getWelcomeProjectPath(), PreferencesManager.getViewState("welcomeProjects"));
+        return ProjectModel._isWelcomeProjectPath(path, getWelcomeProjectPath(), PreferencesManager.getViewState("welcomeProjects"));
     }
 
     /**
@@ -738,7 +738,7 @@ define(function (require, exports, module) {
      */
     function updateWelcomeProjectPath(path) {
         if (isWelcomeProjectPath(path)) {
-            return _getWelcomeProjectPath();
+            return getWelcomeProjectPath();
         }
         return path;
 
@@ -760,7 +760,7 @@ define(function (require, exports, module) {
         }
 
         // Next is Getting Started project
-        fallbackPaths.push(_getWelcomeProjectPath());
+        fallbackPaths.push(getWelcomeProjectPath());
 
         // Helper func for Async.firstSequentially()
         function processItem(path) {
@@ -811,7 +811,7 @@ define(function (require, exports, module) {
                 if(exists){
                     resolve(startupProjectPath);
                 } else {
-                    resolve(_getWelcomeProjectPath());
+                    resolve(getWelcomeProjectPath());
                 }
             });
         });
@@ -1002,7 +1002,7 @@ define(function (require, exports, module) {
                             // If this is the most current welcome project, record it. In future launches, we want
                             // to substitute the latest welcome project from the current build instead of using an
                             // outdated one (when loading recent projects or the last opened project).
-                            if (rootPath === _getWelcomeProjectPath()) {
+                            if (rootPath === getWelcomeProjectPath()) {
                                 addWelcomeProjectPath(rootPath);
                             }
 
@@ -1324,7 +1324,7 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     // Init default project path to welcome project
-    PreferencesManager.stateManager.definePreference("projectPath", "string", _getWelcomeProjectPath());
+    PreferencesManager.stateManager.definePreference("projectPath", "string", getWelcomeProjectPath());
 
     exports.on(EVENT_PROJECT_OPEN, _reloadProjectPreferencesScope);
     exports.on(EVENT_PROJECT_OPEN, _saveProjectPath);
@@ -1514,6 +1514,7 @@ define(function (require, exports, module) {
     exports.getContext                    = getContext;
     exports.getInitialProjectPath         = getInitialProjectPath;
     exports.getStartupProjectPath         = getStartupProjectPath;
+    exports.getWelcomeProjectPath         = getWelcomeProjectPath;
     exports.isWelcomeProjectPath          = isWelcomeProjectPath;
     exports.updateWelcomeProjectPath      = updateWelcomeProjectPath;
     exports.createNewItem                 = createNewItem;
