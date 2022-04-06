@@ -1,5 +1,5 @@
 name: Deploy Notification To prodution phcode.dev
-
+# Please note to add branch protection rules for the prod branch in your repository.
 on:
   push:
     branches: [ prod ]
