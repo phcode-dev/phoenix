@@ -14,7 +14,7 @@ jobs:
           npm install
       - name: Verifying release artifact build
         run: |
-          npm run release
+          npm run release:staging
       - name: Deploy Notification To staging.phcode.dev repository
         uses: peter-evans/repository-dispatch@v2
         with:

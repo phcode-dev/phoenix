@@ -50,15 +50,12 @@ define(function (require, exports, module) {
     additionalGlobals.VERSION_MINOR = parsedVersion[2];
     additionalGlobals.VERSION_PATCH = parsedVersion[3];
 
-    var isDevBuild = !StringUtils.endsWith(decodeURI(window.location.pathname), "/www/index.html");
-    if (isDevBuild) {
-        additionalGlobals.BUILD_TYPE = strings.DEVELOPMENT_BUILD;
+    if (brackets.config.buildtype === 'production') {
+        additionalGlobals.BUILD_TYPE = strings.RELEASE_BUILD;
+    } else if (brackets.config.buildtype === 'staging') {
+        additionalGlobals.BUILD_TYPE = strings.PRERELEASE_BUILD;
     } else {
-        if (brackets.config.buildtype === 'production') {
-            additionalGlobals.BUILD_TYPE = strings.RELEASE_BUILD;
-        } else {
-            additionalGlobals.BUILD_TYPE = strings.PRERELEASE_BUILD;
-        }
+        additionalGlobals.BUILD_TYPE = strings.DEVELOPMENT_BUILD;
     }
 
     // Insert application strings
