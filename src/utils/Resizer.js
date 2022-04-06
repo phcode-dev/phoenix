@@ -360,6 +360,8 @@ define(function (require, exports, module) {
             adjustSibling(elementSize);
 
             $element.trigger(EVENT_PANEL_EXPANDED, [elementSize]);
+            elementPrefs.size = elementSize;
+            elementPrefs.contentSize = contentSize;
             PreferencesManager.setViewState(elementID, elementPrefs, null, isResizing);
         });
 
