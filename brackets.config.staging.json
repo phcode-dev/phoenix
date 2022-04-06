@@ -1,7 +1,7 @@
 {
-    "googleAnalyticsID"          : "G-P4HJFPDB76",
+    "googleAnalyticsID"          : "G-FP5S9BKDSJ",
     "environment"                : "stage",
     "update_info_url"            : "https://s3.amazonaws.com/files.brackets.io/updates/prerelease/<locale>.json",
     "notification_info_url"      : "https://s3.amazonaws.com/files.brackets.io/notifications/prerelease/<locale>.json",
-    "buildtype"                  : "dev"
+    "buildtype"                  : "staging"
 }
