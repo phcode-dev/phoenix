@@ -41,7 +41,10 @@ function getBrowserDetails() {
     let isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
     let isEdgeBrowser = navigator.userAgent.indexOf("Edg") !== -1;
     let isEdgeChromiumBrowser = isChrome && isEdgeBrowser;
-    let isChromeBrowser = isChrome && !isEdgeChromiumBrowser;
+    let isOpera = (!!window.opr && !!window.opr.addons) ||
+        !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+    let isOperaChromiumBrowser = isChrome && isOpera;
+    let isChromeBrowser = isChrome && !isEdgeChromiumBrowser && !isOperaChromiumBrowser;
     return{
         isTablet: _mobileAndTabletCheck(),
         isMobile: _mobileCheck(),
@@ -54,11 +57,12 @@ function getBrowserDetails() {
                 navigator.userAgent.match(/WPDesktop/i))!== null)
         },
         desktop: {
-            isOpera: (!!window.opr && !!window.opr.addons) ||
-                !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0,
+            isOpera: isOpera,
             isFirefox: typeof window.InstallTrigger !== 'undefined',
+            isChromeBased: isChrome,
             isChrome: isChromeBrowser,
-            isEdgeChromium: isEdgeChromiumBrowser
+            isEdgeChromium: isEdgeChromiumBrowser,
+            isOperaChromium: isOperaChromiumBrowser
         }
     };
 }

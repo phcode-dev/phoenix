@@ -59,8 +59,8 @@ define(function (require, exports, module) {
     }
 
     function _detectUnSupportedBrowser() {
-        let supportedBrowser = Phoenix.browser.isDeskTop &&
-            (Phoenix.browser.desktop.isChrome || Phoenix.browser.desktop.isEdgeChromium);
+        let supportedBrowser = Phoenix.browser.isDeskTop && (Phoenix.browser.desktop.isChrome ||
+            Phoenix.browser.desktop.isEdgeChromium || Phoenix.browser.desktop.isOperaChromium);
         if(!supportedBrowser){
             _showUnSupportedBrowserDialogue();
         }
