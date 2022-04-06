@@ -1,0 +1,24 @@
+name: Deploy Notification To prodution phcode.dev
+
+on:
+  push:
+    branches: [ prod ]
+
+jobs:
+  build-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Npm Install
+        run: |
+          npm install
+      - name: Verifying release artifact build
+        run: |
+          npm run release
+      - name: Deploy Notification To production repository phcode.dev
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT_PHOENIX_BOT_PUBLIC_REPO_ACCESS }}
+          repository: phcode-dev/phcode.dev
+          event-type: deploy-staging
+          client-payload: '{"source":"${{github.repositoryUrl}}", "workflow":"${{github.workflow}}", "run_id":"${{github.run_id}}", "run_number":"${{github.run_number}}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
