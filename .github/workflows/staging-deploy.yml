@@ -1,0 +1,24 @@
+name: Phoenix build verification
+
+on:
+  push:
+    branches: [ staging ]
+
+jobs:
+  build-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Npm Install
+        run: |
+          npm install
+      - name: Verifying release artifact build
+        run: |
+          npm run release
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT_PHOENIX_BOT_PUBLIC_REPO_ACCESS }}
+          repository: phcode-dev/staging.phcode.dev
+          event-type: deploy-staging
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
