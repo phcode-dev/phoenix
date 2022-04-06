@@ -20,5 +20,5 @@ jobs:
         with:
           token: ${{ secrets.PAT_PHOENIX_BOT_PUBLIC_REPO_ACCESS }}
           repository: phcode-dev/phcode.dev
-          event-type: deploy-staging
+          event-type: deploy-production
           client-payload: '{"source":"${{github.repositoryUrl}}", "workflow":"${{github.workflow}}", "run_id":"${{github.run_id}}", "run_number":"${{github.run_number}}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
