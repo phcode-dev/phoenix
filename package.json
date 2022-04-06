@@ -28,6 +28,7 @@
         "gulp-zip": "^5.1.0",
         "http-server": "14.1.0",
         "husky": "^7.0.4",
+        "lodash": "^4.17.21",
         "merge-stream": "^2.0.0",
         "readable-stream": "^3.6.0"
     },
@@ -42,7 +43,9 @@
         "build": "npm run lint && npm run buildonly && npm run test",
         "clean": "gulp clean",
         "reset": "gulp reset",
-        "release": "gulp release",
+        "release:dev": "gulp releaseDev",
+        "release:staging": "gulp releaseStaging",
+        "release:prod": "gulp releaseProd",
         "serve": "http-server . -p 8000 -c-1",
         "serveExternal": "http-server . -p 8000 -a 0.0.0.0 --log-ip true -c-1"
     },

@@ -13,7 +13,7 @@ jobs:
       - name: Building phoenix release artifacts
         run: |
           npm install
-          npm run release
+          npm run release:dev
         shell: bash
 
       - name: Deploy dist folder to Github Pages

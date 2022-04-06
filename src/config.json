@@ -93,7 +93,7 @@
     },
     "licenses": [
         {
-            "type": "MIT",
+            "type": "AGPL-3.0-or-later",
             "url": "https://github.com/aicore/phoenix/blob/master/LICENSE"
         }
     ]

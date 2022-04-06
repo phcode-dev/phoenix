@@ -1,11 +1,14 @@
 /* eslint-env node */
 
 const del = require('del');
+const _ = require('lodash');
+const fs = require('fs');
 const webserver = require('gulp-webserver');
 const { src, dest, series } = require('gulp');
 const mergeStream =   require('merge-stream');
 const zip = require('gulp-zip');
 const rename = require("gulp-rename");
+const configFile = require("../src/config.json");
 
 function cleanDist() {
     return del(['dist']);
@@ -31,7 +34,7 @@ function cleanAll() {
  * https://stackoverflow.com/questions/53353266/minify-and-combine-all-js-files-from-an-html-file
  * @returns {*}
  */
-function release() {
+function makeDist() {
     return src('src/**/*')
         .pipe(dest('dist'));
 }
@@ -97,10 +100,49 @@ function zipDefaultProjectFiles() {
         .pipe(dest('src/assets/default-project/'));
 }
 
+function _updateConfigFile(config) {
+    delete config.scripts;
+    delete config.devDependencies;
+    delete config.dependencies;
+    delete config.dependencies;
+
+    config.config.build_timestamp = new Date();
+
+    console.log("using config: ", config);
+    fs.writeFileSync('dist/config.json', JSON.stringify(config, null, 2));
+
+}
+
+function releaseStaging() {
+    return new Promise((resolve)=>{
+        const configFile = require('../src/config.json');
+        const stageConfigFile = {
+            config: require('../src/brackets.config.staging.json')
+        };
+        _updateConfigFile(_.merge(configFile, stageConfigFile));
+
+        resolve();
+    });
+}
+
+function releaseProd() {
+    return new Promise((resolve)=>{
+        const configFile = require('../src/config.json');
+        const prodConfigFile = {
+            config: require('../src/brackets.config.dist.json')
+        };
+        _updateConfigFile(_.merge(configFile, prodConfigFile));
+
+        resolve();
+    });
+}
+
 exports.build = series(copyThirdPartyLibs, zipDefaultProjectFiles);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
-exports.release = series(cleanDist, exports.build, release);
+exports.releaseDev = series(cleanDist, exports.build, makeDist);
+exports.releaseStaging = series(cleanDist, exports.build, makeDist, releaseStaging);
+exports.releaseProd = series(cleanDist, exports.build, makeDist, releaseProd);
 exports.serve = series(exports.build, serve);
 exports.test = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
