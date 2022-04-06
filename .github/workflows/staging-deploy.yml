@@ -1,4 +1,4 @@
-name: Phoenix build verification
+name: Deploy Notification To staging.phcode.dev
 
 on:
   push:
