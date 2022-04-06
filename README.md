@@ -89,6 +89,12 @@ To view/edit the files in the browser virtual file system in Phoenix:
 * clean builds only: `npm run clean`
 * Reset everything including node modules: `npm run reset`
 
+## Deployment to phcore.dev
+* To publish the changes to https://staging.phcode.dev , push changes to the `staging` branch in this repo with a pull request.
+* Once the changes are validated and tested, trigger a prod deployment by pushing to the `prod` branch.
+
+Note: Pre-prod is still work in progress.
+
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).
 * Inspired by previous work from the [Mozilla Thimble](https://github.com/mozilla/thimble.mozilla.org) project to port brackets to the web. https://github.com/mozilla/brackets
