@@ -21,4 +21,4 @@ jobs:
           token: ${{ secrets.PAT_PHOENIX_BOT_PUBLIC_REPO_ACCESS }}
           repository: phcode-dev/staging.phcode.dev
           event-type: deploy-staging
-          client-payload: '{"source":"${{github.action_repository}}", "action":"${{github.action}}", "run_id":"${{github.run_id}}", "run_number":"${{github.run_number}}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+          client-payload: '{"source":"${{github.repositoryUrl}}", "workflow":"${{github.workflow}}", "run_id":"${{github.run_id}}", "run_number":"${{github.run_number}}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
