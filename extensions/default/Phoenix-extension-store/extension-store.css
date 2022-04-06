@@ -1,0 +1,9 @@
+#panel-extension-store {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#panel-extension-store-frame {
+    border: none;
+}

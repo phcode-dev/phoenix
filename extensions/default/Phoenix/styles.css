@@ -1,0 +1,21 @@
+#sync-button {
+    width: 24px;
+    height: 24px;
+}
+
+#help-button {
+    width: 24px;
+    height: 24px;
+}
+
+.syncing {
+    background-image: url("./images/Ajax-Loading.svg");
+}
+
+.preview {
+    background-image: url("./images/share-fill.svg");
+}
+
+.help {
+    background-image: url("./images/discuss-icon.svg");
+}

@@ -1,0 +1,254 @@
+
+// Copyright (c) 2021 - present core.ai . All rights reserved.
+// Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
+
+
+/*
+ * Brackets Default Theme
+ *
+ * Defines all the variables that one can configure in a theme. This should
+ * contain all variables / mixins for UI styling that we want to be able to
+ * change in a theme.
+ *
+ * Throughout the rest of the LESS files we should _only_ use color
+ * variable names that are on the LHS of the list below. So, if we
+ * need a new color for some UI element, we should add a variable
+ * in this file.
+ */
+
+/* Overall Colors */
+
+/*
+ * Background colors are ordered from least "intense" to most "intense"
+ * So, if the background is light, then @background-color-3 should be
+ * lightest, -2 should be darker, and -1 should be darker still.
+ *
+ * The opposite is true for a dark background -- background-color-3 should be
+ * the darkest, -2 should be lighter, and -1 should be lighter still.
+ */
+
+@background: #f8f8f8;
+@foreground: #535353;
+
+/* Code Styling */
+
+/* code accent colors */
+@accent-keyword: #446fbd;
+@accent-atom: #e88501;
+@accent-number: #6d8600;
+@accent-def: #8757ad;
+@accent-variable: #535353;
+@accent-variable-2: #535353;
+@accent-variable-3: #535353;
+@accent-property: #8757ad;
+@accent-operator: #535353;
+@accent-comment: #949494;
+@accent-string: #e88501;
+@accent-string-2: #e88501;
+@accent-meta: #535353;
+@accent-error: #dc322f;
+@accent-qualifier: #446fbd;
+@accent-builtin: #446fbd;
+@accent-bracket: #222;
+@accent-tag: #446fbd;
+@accent-attribute: #6d8600;
+@accent-header: #d33682;
+@accent-quote: #446fbd;
+@accent-hr: #e88501;
+@accent-link: #8757ad;
+@accent-rangeinfo: #6c71c4;
+@accent-minus: #dc322f;
+@accent-plus: #859900;
+@match-text: #121212;
+@cm-match-highlight: #f5ee92;
+@cm-current-match-highlight: #f7c44e;
+
+/* code highlight */
+@matching-bracket: #cfead6;
+
+/* sidebar/toolbar colors */
+@project-panel-base-color: #47484B;
+@project-panel-text-1: #ffffff;
+@project-panel-text-2: #adb9bd;
+@main-toolbar-background-color: #5D5F60;
+
+/* open working file highlight */
+@open-working-file-name-highlight: #8fddff;
+@open-working-file-ext-highlight: #8fddff;
+
+/* selection colors */
+@selection-color-focused: #abdffa;
+@selection-color-unfocused: #d5dee3;
+
+/* background color of the line that has the cursor */
+@activeline-bg: #ebefef;
+@activeline-number: #000;
+@activeline-number-bg: #dee5e6;
+@activeline-number-bg-inline: #d7dede;
+
+/* custom scrollbar colors */
+@win-scrollbar-track: rgb(240, 240, 240);
+@win-scrollbar-thumb: rgb(206, 206, 206);
+@win-scrollbar-thumb-hover: rgb(166, 166, 166);
+@win-scrollbar-thumb-active: rgb(96, 96, 96);
+
+@linux-scrollbar-thumb: rgba(0, 0, 0, 0.24);
+@linux-scrollbar-thumb-inactive: rgba(0, 0, 0, 0.12);
+
+/* live preview */
+@live-preview-sync-error-background: #ff5d99;
+@live-preview-sync-error-color: #fff;
+
+/* Code font formatting
+ *
+ * NOTE (JRB): In order to get the web font to load early enough, we have a div called "dummy-text" that
+ * is styled with .code-font().
+ *
+ * The platform-specific selector gets added to the body tag *before* document ready time.
+ * We rely on this behavior to load platform-specific web fonts early.
+ */
+.code-font() {
+    color: @foreground;
+    line-height: 1.25;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+
+    font-family: @sourceFontFamily-Medium;
+}
+
+.code-font-win() {
+}
+
+.code-font-mac() {
+}
+
+.code-cursor() {
+    // to make a block cursor, use something like this:
+    // background-color: fadeout(@blue, 50%);
+    // border: none !important;
+
+    // to make an I-cursor, use something like this:
+    border-left: 1px solid black;
+
+}
+
+/* Dark theme styling
+ *
+ * These are overrides to make the UI look better when the editor theme is dark.
+ * Eventually, these will likely be replaced by full-featured UI themes.
+ */
+
+.dark {
+    .inline-widget {
+        color: @dark-bc-text;
+        background-color: @dark-bc-bg-inline-widget;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+        .inline-editor-header {
+            .filename {
+                color: #fff;
+
+                .dirty-indicator {
+                    color: #aaa;
+                }
+
+                .line-number {
+                    color: #bbb;
+                }
+            }
+        }
+
+        .btn {
+            background-color: @dark-bc-btn-bg;
+            color: @dark-bc-text;
+            border: 1px solid @dark-bc-btn-border;
+            box-shadow: inset 0 1px 0 @dark-bc-highlight;
+
+            &:hover {
+                background-color: @dark-bc-btn-bg;
+                color: @dark-bc-text;
+            }
+
+            &:focus {
+                border: 1px solid @dark-bc-btn-border-focused;
+                box-shadow: inset 0 1px 0 @dark-bc-highlight, 0 0 0 1px @dark-bc-btn-border-focused-glow;
+                color: @dark-bc-text;
+            }
+
+            &:active:not([disabled]) {
+                background-color: @dark-bc-btn-bg-down;
+                box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+                color: @dark-bc-text;
+            }
+        }
+
+        .close {
+            color: @dark-bc-text;
+        }
+
+        .CodeMirror-scroll {
+            .CodeMirror-linenumbers {
+                background-color: @dark-bc-bg-inline-widget;
+            }
+        }
+
+    }
+
+    #editor-holder .inline-widget .CodeMirror, #editor-holder .inline-widget .CodeMirror-gutters {
+        background: transparent;
+    }
+
+    .related-container {
+        background: @dark-bc-panel-bg;
+
+        .selection {
+            background: @dark-bc-panel-bg-selected;
+        }
+
+        .selection:before {
+            border-left: @inline-triangle-size solid @dark-bc-bg-inline-widget;
+        }
+
+        .related {
+            li {
+                color: @dark-bc-text-alt;
+
+                .related-file {
+                    color: @dark-bc-text-thin-quiet;
+                }
+            }
+
+            .selected {
+                color: @dark-bc-text-alt;
+            }
+        }
+
+        .inline-editor-message {
+            color: @dark-bc-text-thin-quiet;
+        }
+    }
+}
+
+/* Variables and Mixins for non-code UI elements that can be styled */
+

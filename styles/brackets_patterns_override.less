@@ -1,0 +1,2139 @@
+
+// Copyright (c) 2021 - present core.ai . All rights reserved.
+// Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
+
+
+/* Brackets patterns (and overrides and re-definitions of Bootstrap patterns)
+ *
+ * This file should contain all _reusable_ UI elements / LESS definitions
+ * That is, things that will either a.) be used for more than one element or
+ * b.) exist in multiple versions of brackets (e.g. App, In-Browser, etc.)
+ *
+ * Note that if you want a UI element to be themeable, you should put the
+ * themeable part in "brackets_theme_default" as variables/mixins.
+ *
+ */
+
+/* Links */
+
+a {
+    color: @bc-text-link;
+    text-decoration: none;
+
+    .dark & {
+        color: @dark-bc-text-link;
+    }
+}
+
+a:hover {
+    color: @bc-text-link;
+    text-decoration: underline;
+
+    .dark & {
+        color: @dark-bc-text-link;
+    }
+}
+
+a:focus {
+    color: @bc-text-link;
+    outline: 0;
+    box-shadow: 0 0 0 1px @bc-btn-border-focused-glow;
+    text-decoration: none;
+
+    .dark & {
+        color: @dark-bc-text-link;
+        box-shadow: 0 0 0 1px @dark-bc-btn-border-focused;
+    }
+}
+
+.panel {
+    .vbox;
+    .box-flex(1);
+
+    padding: 0;
+    margin: 0;
+
+    background: @project-panel-base-color;
+    color: #bbb;
+    letter-spacing: .01em;
+    text-shadow: 0 1px 2px @bc-shadow-large;
+
+    .dark & {
+        text-shadow: 0 1px 2px @dark-bc-shadow-large;
+    }
+}
+
+/* working set drag ghost styles */
+
+.wsv-drag-ghost {
+    letter-spacing: .01em;
+    position: absolute;
+    z-index: @z-index-brackets-drag-ghost;
+    background-color: transparent;
+
+    text-shadow: 0 1px 2px @bc-shadow-large;
+
+    .dark & {
+        text-shadow: 0 1px 2px @dark-bc-shadow-large;
+    }
+}
+
+.wsv-drag-ghost.dragging-current-file {
+    background-color: @bc-sidebar-selection;
+}
+
+#working-set-list-container .drag-show-as-selected {
+    background-color: @bc-sidebar-selection;
+}
+
+/* Toolbar-related styles */
+
+/* Simple toolbar layout (project panel, find in files, etc.)
+   We don't set this directly on .toolbar because it'd be a pain to override all the pieces
+   if other code (e.g. #main-toolbar) wants to do a different layout */
+.simple-toolbar-layout.toolbar {
+    .hbox;
+    .box-align(center);
+    overflow: hidden;
+
+    .title-wrapper {
+        /* This is necessary because text-overflow: ellipsis doesn't work when it's set
+           directly on a flexing box in Chrome currently. */
+        .box-flex(1);
+    }
+    .buttons {
+        .hbox;
+        margin-left: 4px;
+    }
+}
+
+/* Horizontal titlebar/menubar (in-browser only)
+
+   CSS hack based on this code: http://jsfiddle.net/cD657/3/ (via StackOverflow)
+   This center-aligns the title across the full width of the toolbar (ignoring the width of the nav floated
+   left and buttons floated right), yet still have the browser automatically wrap the floats onto a 2nd row
+   if they collide with the title. But the centered content must be a block element with fixed width. Since
+   the editor title (filename) varies in width, we rely on JS code to update the width whenever the string
+   changes.
+
+   Another wrinkle: wrapping to/from the two-line toolbar layout requires notifying the CodeMirror editor that
+   its height changed. Currently, we assume this can ONLY happen in two cases:
+    - the window resizes (handled by general listener in EditorManager)
+    - title content changes (the same JS code that sets .title-wrapper's fixed width is expected to handle this)
+*/
+#titlebar {
+    // Visible only in-browser
+    body.has-appshell-menus & {
+        display: none;
+    }
+
+    text-align: center;
+    .nav {  // menubar
+        float: left;
+        text-align: left;
+        > li {
+            float: left;
+        }
+        .dropdown-menu {
+            //max-height: calc(~"100vh - 34px"); doesn't seem to work...
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-animation: none;
+            animation: none;
+        }
+    }
+    .title {
+        float: none;
+        display: inline;  // must be an inline for JS to measure text size
+    }
+    .title-wrapper {
+        margin: 0 auto;
+        display: block;  // must be a block for the fixed width applied by JS to be respected
+        // width set in px is appled/updated by JavaScript in DocumentCommandHandlers
+    }
+}
+
+/* Vertical icon toolbar on right */
+#main-toolbar {
+    position: absolute;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    top: 0;
+    right: 0;
+    width: @main-toolbar-width;
+    height: 100%;
+    box-sizing: border-box;
+
+    background: @main-toolbar-background-color;
+    padding: 0;
+
+    // Ensure icons are vertically stacked & horizontally centered
+    .vbox;
+    .box-flex(1);
+    text-align: center;
+
+    // Ensure that it stays on top
+    z-index: @z-index-brackets-main-toolbar;
+
+    .plugin-panel{
+        width: 100%;
+        height: 100%;
+        background-color: @plugin-panel-bg;
+    }
+
+    #plugin-icons-bar {
+        position: absolute;
+        right: 0px;
+        background-color: @main-toolbar-background-color;
+        height: 100%;
+    }
+
+    .selected-button{
+        background-color: @plugin-panel-bg !important;
+        margin-left: 2px !important;
+        margin-right: 0px !important;
+    }
+
+    .buttons,
+    .bottom-buttons {
+        text-align: center;
+        justify-content: center;
+        margin: 0 3px 0 0;
+
+        > a {
+            border-radius: @bc-border-radius;
+            background-repeat: no-repeat;
+            display: block;
+            height: 24px;
+            margin: 7px 0 0 3px;
+            width: 24px;
+        }
+
+        > a:hover {
+            background-color: @bc-shadow !important;
+
+            .dark & {
+                background-color: @dark-bc-shadow !important;
+            }
+        }
+
+        > a:active {
+            background-color: @bc-shadow-large !important;
+
+            .dark & {
+                background-color: @dark-bc-shadow-large !important;
+            }
+        }
+    }
+
+    .bottom-buttons {
+        position: absolute;
+        bottom: 5px;
+    }
+}
+
+/* Toolbar appearance - shared by all toolbars, independent of layout */
+
+@toolbar-top-gap-px: 5px;
+
+.toolbar {
+    font-size: @label-font-size;
+    padding: 4px 8px;
+    background-color: @bc-menu-bg;
+    color: @bc-menu-text;
+
+    position: relative;  // needed for abs-positioned elements in toolbar (e.g. right-aligned "X")
+
+    .dark & {
+        background-color: @dark-bc-panel-bg-promoted;
+        color: @dark-bc-menu-text;
+    }
+
+    .title-wrapper {
+        // Title is taller than menu text, so reduce top padding to keep its baseline aligned
+        padding: (@toolbar-top-gap-px - 3px) 0 3px 0;
+    }
+    .title {
+        font-size: @title-font-size;
+        line-height: normal;
+        font-weight: @font-weight-light;
+
+        // On Win, the size+weight combo used above does not look good for the bullet character
+        .dirty-dot {
+            font-weight: normal;
+        }
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .buttons {
+        margin: @toolbar-top-gap-px 0 0 4px;
+
+        span, a {
+            cursor: default;
+        }
+    }
+}
+
+
+/* Menu-related styles */
+
+@menubar-top-padding: 8px;
+@menubar-bottom-padding: 6px;
+@menubar-h-padding: 9px;
+
+// Dropdown Menu Animation
+.dropdown-menu {
+    .animation(dropdown, 90ms, cubic-bezier(0, .97, .2, .99));
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    border: none;
+    border-radius: @bc-border-radius;
+
+    .dark & {
+        border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    }
+}
+
+@-webkit-keyframes dropdown {
+    0%   { opacity: 0.5; -webkit-transform: translate3d(0, 0, 0) scale(0.5); }
+    100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes dropdown {
+    0%   { opacity: 0.5; transform: translate3d(0, 0, 0) scale(0.5); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+// Code hints and inlinemenu don't need scaling navigation so we're removing it
+.codehint-menu.open .dropdown-menu, .inlinemenu-menu .dropdown-menu {
+    -webkit-animation: none;
+    animation: none;
+}
+
+.toolbar .nav, .context-menu, .codehint-menu, .inlinemenu-menu {
+
+    // The 1px adjustments here are to account for the border around the top-level menu items.
+    margin: (@toolbar-top-gap-px - @menubar-top-padding - 1) 0 (-@menubar-bottom-padding + 1) (-@menubar-h-padding + 4);
+
+    // General item appearance
+    a {
+        color: @bc-menu-text;
+        text-shadow: none;
+        cursor: default;
+
+        .dark & {
+            color: @dark-bc-menu-text;
+        }
+    }
+
+    // Menubar item appearance
+    .dropdown-toggle {
+        padding: @menubar-top-padding @menubar-h-padding @menubar-bottom-padding;
+        border: 1px solid rgba(0, 0, 0, 0); // transparent border just to hold the layout so it doesn't shift on hover
+        color: fadeout(@bc-menu-text, 25%);
+
+        .dark & {
+            color: fadeout(@dark-bc-menu-text, 25%);
+        }
+    }
+    .dropdown-toggle:focus {
+        background-color: @bc-menu-bg;
+        outline: 0;
+
+        .dark & {
+            background-color: @dark-bc-menu-bg;
+        }
+    }
+    .dropdown-toggle:hover, .dropdown.open .dropdown-toggle {
+        /* Note: we need several selectors for this in order to match the specificity of all the various Bootstrap
+           color rules we need to override (and Bootstrap has several selectors because the colors really differ
+           in their defaults). */
+        color: @bc-menu-text;
+        background: @bc-bg-highlight;
+        border-color: @bc-bg-highlight;
+
+        .dark & {
+            color: @dark-bc-menu-text;
+            background: @dark-bc-bg-highlight;
+            border-color: @dark-bc-bg-highlight;
+        }
+    }
+
+    // no triangle icon after menu items
+    .dropdown-toggle:after {
+        border: 0;
+        margin: 0;
+    }
+
+    // Menu dropdown appearance
+    .dropdown-menu {
+        // Offset for better alignment with button
+        top: 34px;
+        margin-top: 0;
+
+        // Fix for #4593: don't let narrow parent (menubar item) cause text wrap at the float boundary between
+        // the menu item label and keyboard shortcut. This takes away the "gotta get narrower" pressure.
+        // This technique won't work on all browsers; see comments in #4593 for alternative options.
+        width: -webkit-max-content;
+        width: -moz-max-content;
+        width: max-content;
+
+        background-color: @bc-menu-bg;
+        border-radius: 0 0 3px 3px;
+        box-shadow: 0 3px 9px @bc-shadow;
+        border: none;
+
+        .dark & {
+            background-color: @dark-bc-menu-bg;
+            box-shadow: 0 3px 9px @dark-bc-shadow;
+        }
+
+        // Menu items
+        li {
+            a {
+                font-size: @menu-item-font-size;
+                line-height: 18px;
+
+                // Slightly less padding on left to account for checkmark.
+                // More padding on top than bottom to center font within its bg highlight better.
+                padding: 2px 10px 0 6px;
+
+                color: @bc-menu-text;
+                text-shadow: none;
+                white-space: nowrap;
+                .box-shadow(none);
+
+                .dark & {
+                    color: @dark-bc-menu-text;
+                }
+
+                &.wide-result {
+                    white-space: normal;
+                }
+
+                &:hover, &.highlight {
+                    color: @bc-menu-text;
+                    background: @bc-bg-highlight;
+
+                    .dark & {
+                        color: @dark-bc-menu-text;
+                        background: @dark-bc-bg-highlight;
+                    }
+                }
+
+                &.disabled {
+                    color: @bc-text-thin-quiet;
+
+                    .dark & {
+                        color: @dark-bc-text-thin-quiet;
+                    }
+
+                    &:hover {
+                        background: @bc-menu-bg;
+
+                        .dark & {
+                            background: @dark-bc-menu-bg;
+                        }
+                    }
+                }
+
+                /* hidden checkmark for all list item content ensures consistent left spacing */
+                &::before {
+                    content: "✓\00a0"; /* non-breaking space */
+                    visibility: hidden;
+                }
+                /* toggle checkmark visibility */
+                &.checked::before {
+                    visibility: visible;
+                }
+            }
+        }
+
+        .divider {
+            background-color: @bc-menu-separator;
+            border: 0;
+            margin: 5px 1px;
+
+            .dark & {
+                 background-color: @dark-bc-menu-separator;
+            }
+        }
+    }
+
+    // Ensure a minimum amount of space to the left of the shortcut
+    .menu-shortcut {
+        float: right;
+        margin-left: 15px;
+    }
+}
+
+
+/* Context menu styles */
+
+
+.context-menu, .codehint-menu, .inlinemenu-menu {
+    position: absolute;
+    z-index: @z-index-brackets-context-menu-base;
+    list-style-type: none;
+
+    .dropdown-menu {
+        border-radius: 3px;
+        box-shadow: 0 3px 9px @bc-shadow;
+
+        .dark & {
+            box-shadow: 0 3px 9px @dark-bc-shadow;
+        }
+    }
+
+    .menu-shortcut {
+        float: right;
+    }
+}
+
+.codehint-menu, .inlinemenu-menu {
+    opacity: 0;
+    .dropdown-menu {
+        box-shadow: 0 3px 9px @bc-shadow;
+        max-height: 160px;
+        overflow-y: auto;
+        padding: 0;
+
+        .dark & {
+            box-shadow: 0 3px 9px @dark-bc-shadow;
+        }
+
+        // Styles used for inlinemenu widget header
+        li.inlinemenu-header a {
+            background-color: @bc-bg-tool-bar;
+            color: @bc-inlinemenu-text;
+            padding-bottom: 5px;
+
+            .dark & {
+                background-color: @dark-bc-bg-tool-bar;
+                color: @dark-bc-inlinemenu-text;
+                padding-bottom: 5px;
+            }
+
+            &:hover {
+                background-color: @bc-bg-tool-bar;
+                color: @bc-inlinemenu-text;
+                padding-bottom: 5px;
+
+                .dark & {
+                    background-color: @dark-bc-bg-tool-bar;
+                    color: @dark-bc-inlinemenu-text;
+                    padding-bottom: 5px;
+                }
+            }
+        }
+
+        li {
+            a {
+                // Less padding than on menus. More padding on top than bottom
+                // to center font within its bg highlight better.
+                padding: 2px 20px 4px 0;
+
+                // Don't show highlighting on hover for code hints...
+                &:hover {
+                    color: @bc-menu-text;
+                    background-color: @bc-menu-bg;
+
+                    .dark & {
+                        color: @dark-bc-menu-text;
+                        background-color: @dark-bc-menu-bg;
+                    }
+                }
+
+                // ...except for selected item
+                &.highlight:hover {
+                    color: @bc-menu-text;
+                    background-color: @bc-bg-highlight;
+
+                    .dark & {
+                        color: @dark-bc-menu-text;
+                        background-color: @dark-bc-bg-highlight;
+                    }
+                }
+
+                .color-swatch {
+                    border-radius: 2px;
+                    width: 12px;
+                    height: 12px;
+                    float: left;
+                    margin: 2px -8px 0 4px;
+                    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.24);
+
+                    .dark & {
+                        box-shadow: inset 0 0 1px rgba(255, 255, 255, 0.24);
+                    }
+                }
+
+                // Used to align non-swatch items with the others. Only applied
+                // if there's at least one item with a swatch in the list
+                .no-swatch-margin {
+                    margin-left: 8px;
+                }
+            }
+        }
+    }
+}
+
+.codehint-menu.open, .inlinemenu-menu.open {
+    opacity: 1;
+    transition: opacity 67ms cubic-bezier(0.03, 0.78, 0.17, 0.97);
+}
+
+.codehint-menu.apply-transition, .inlinemenu.apply-transition {
+    transition: right 167ms, left 167ms;
+}
+
+#codehint-desc {
+	background: @bc-codehint-desc;
+	position: absolute;
+	width: 100%;
+	box-sizing: border-box;
+	float: left;
+	border-radius: 1px !important;
+	border-top-left-radius: 0px !important;
+	border-top-right-radius: 0px !important;
+	overflow-x: hidden;
+	min-height: 30px;
+	max-height: 120px !important;
+
+    .dark & {
+		background: @dark-bc-codehint-desc;
+	}
+}
+
+.codehint-desc-type-details {
+	padding: 5px 15px 5px 15px;
+	color: @bc-codehint-desc-type-details;
+	font-weight: bold;
+	font-size: 1.2em;
+    line-height: inherit;
+
+    .dark & {
+		color: @dark-bc-codehint-desc-type-details;
+	}
+}
+
+.codehint-desc-documentation {
+	padding: 5px 15px 5px 15px;
+	color: @bc-codehint-desc-documentation;
+	font-size: 1.1em;
+	white-space: pre-wrap;
+
+    .dark & {
+		color: @dark-bc-codehint-desc-documentation;
+	}
+}
+
+#context-menu-bar {
+    margin: 0;
+}
+
+/* DropdownButton widget */
+
+.btn-dropdown, .btn-dropdown.btn-mini {
+    position: relative;   // needed to position ::after arrow
+    padding-right: 24px;  // makes room for ::after arrow
+}
+.btn-dropdown::after {
+    content: "";
+    display: block;
+    height: 0;
+    width: 0;
+    position: absolute;
+    right: 7px;
+    top: 11px;
+
+    /* dropdown triangle */
+    border-top: 5px solid @bc-btn-triangle;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+
+    .dark & {
+        border-top: 5px solid @dark-bc-btn-triangle;
+    }
+}
+.btn-dropdown.btn-mini::after {
+    top: 7px;
+}
+
+.dropdownbutton-popup {
+    &.dropdown-menu:focus {
+        outline: none;
+    }
+
+    &.dropdown-menu {
+        border: none;
+        border-radius: @bc-border-radius;
+        padding: 5px 0;
+        position: absolute;
+        display: block;
+        box-shadow: 0 3px 9px @bc-shadow;
+        max-height: 160px;
+        overflow-y: auto;
+        max-width: none;
+        min-width: 200px;
+        z-index: @z-index-brackets-stylesheet-menu;
+
+        .dark & {
+            box-shadow: 0 3px 9px @dark-bc-shadow;
+        }
+    }
+
+    &.dropdown-menu li a {
+        padding: 1px 15px 1px 15px;
+        color: @bc-menu-text;
+
+        .dark & {
+            color: @dark-bc-menu-text;
+        }
+
+        &.disabled {
+            color: @bc-text-thin-quiet;
+
+            .dark & {
+                color: @dark-bc-text-thin-quiet;
+            }
+        }
+    }
+
+    &.dropdown-menu .stylesheet-link {
+        display: block;
+    }
+
+    &.dropdown-menu a.selected {
+        background: @bc-bg-highlight;
+        color: @bc-menu-text !important;
+
+        .dark & {
+            background: @dark-bc-bg-highlight;
+            color: @dark-bc-menu-text !important;
+        }
+    }
+
+    &.dropdown-menu a {
+        &::before {
+            position: absolute;
+            left: 10px;
+            text-align: center;
+            content: "✓";
+            display: none;
+        }
+        /* toggle checkmark visibility */
+        &.checked::before {
+            display: inline-block;
+        }
+    }
+
+    &.dropdown-menu a:hover {
+        /* toggle checkmark visibility */
+        &.checked::before {
+            display: none;
+        }
+    }
+
+    &.dropdown-menu a:not(.selected):hover {
+        background: none;
+    }
+
+    .divider {
+        margin: 5px 1px;
+    }
+
+}
+
+/* Status bar language picker's DropdownButton */
+.dropdownbutton-popup.dropdown-status-bar {
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+    height: auto;
+    max-height: 80%;
+
+    // Improve how bottom of the dropdown joins with top of status bar button
+    margin-top: -6px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    li a .default-language {
+        font-style: italic;
+        color: @bc-text-quiet;
+
+        .dark & {
+            color: @dark-bc-text-quiet;
+        }
+    }
+
+    li a .checked-language::before {
+        content: "✓";
+        margin-left: -11px;
+        margin-right: 3px;
+    }
+}
+
+/* Inline editor stylesheet-picker DropdownButton */
+
+.stylesheet-button.btn-mini {
+    margin-left: 8px;
+    top: -1px;
+}
+
+.dropdownbutton-popup {
+    .stylesheet-link, .stylesheet-name {
+        white-space: nowrap;
+    }
+
+    .stylesheet-name {
+        color: @bc-text;
+
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+
+    .stylesheet-dir {
+        color: @bc-text-quiet;
+
+        .dark & {
+            color: @dark-bc-text-quiet;
+        }
+    }
+}
+
+/* Dialog-related styles */
+
+.modal-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    display: table;
+}
+
+.modal-inner-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.modal {
+    background-color: @bc-panel-bg;
+    border: 1px solid @bc-panel-border;
+    min-width: 200px;
+    position: relative;
+    top: 0;
+    margin: auto;
+    .animation(modal, 240ms, cubic-bezier(0, 1.05, .35, 1));
+
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+        border: 1px solid @dark-bc-panel-border;
+    }
+}
+
+.modal .close {
+    cursor: default;
+    margin: 7px 5px 0 0;
+}
+
+.modal-header {
+    background: @bc-panel-bg-promoted;;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 1px solid @bc-panel-separator;
+    box-shadow: inset 0 1px 0 @bc-highlight;
+
+    .dark & {
+        background: @dark-bc-panel-bg-promoted;;
+        border-bottom: 1px solid @dark-bc-panel-separator;
+        box-shadow: inset 0 1px 0 @dark-bc-highlight;
+    }
+}
+
+.modal-body {
+    background-color: @bc-panel-bg;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+    }
+}
+
+.modal-body.no-padding {
+    padding: 0;
+}
+
+.modal-body.no-padding td:first-child,
+.modal-body.no-padding th:first-child {
+    padding-left: 15px;
+}
+
+.modal-body.no-padding td:last-child,
+.modal-body.no-padding th:last-child {
+    padding-right: 15px;
+}
+
+.modal-body, .modal-header, .modal-footer {
+    /* See styles/bootstrap/patterns.less .modal class.
+       Pushing this value down to .modal-header and .modal-body
+       to allow the overall modal to take the width of the footer */
+    width: auto;
+}
+
+.modal-footer {
+    text-align: right;
+    background-color: @bc-panel-bg;
+    border-top: 1px solid @bc-panel-separator;
+    box-shadow: none;
+    padding: 10px 15px 12px;
+    white-space: nowrap;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+        border-top: 1px solid @dark-bc-panel-separator;
+    }
+}
+
+.modal-footer .btn {
+    float: none;
+}
+.modal-footer .left {
+    float: left;
+
+    /* Transfer the margin to the right of each left-aligned button, so the left side lines up properly
+     * with the title.
+     */
+    margin-left: 0;
+    margin-right: 5px;
+}
+.modal-footer .btn:not(.left) {
+    margin-left: 5px;
+}
+
+.platform-win {
+    /* Reverse Save/Cancel button order on Win */
+    .modal-footer {
+        text-align: left;
+    }
+    .modal-footer .btn:not(.left) {
+        float: right;
+    }
+}
+
+.modal-body ul {
+    /* Bootstrap's type.less defines a heavy margin-bottom on ul/ol that we don't want in dialogs
+       since they have heavy padding instead. */
+    margin-bottom: 0;
+}
+
+.modal-backdrop {
+    .animation (backdrop, 200ms, linear);
+    opacity: @bc-modal-backdrop-opacity;
+
+    .dark & {
+        opacity: @dark-bc-modal-backdrop-opacity;
+    }
+}
+
+@-webkit-keyframes backdrop {
+    0%   { opacity: 0; -webkit-transform: translate3d(0, 0, 0); }
+    100% { opacity: 0.4; -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes backdrop {
+    0%   { opacity: 0; transform: translate3d(0, 0, 0); }
+    100% { opacity: 0.4; transform: translate3d(0, 0, 0); }
+}
+
+@-webkit-keyframes modal {
+    0%   { opacity: 0; -webkit-transform: translate3d(0, 0, 0) scale(0); }
+    100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes modal {
+    0%   { opacity: 0; transform: translate3d(0, 0, 0) scale(0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+
+.dialog-title {
+    color: @bc-text-thin;
+    margin-bottom: 0;
+    margin-top: 0;
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: normal;
+
+    .dark & {
+        color: @dark-bc-text-thin;
+    }
+}
+
+.dialog-message {
+    color: @bc-text;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 20px;
+    font-weight: normal;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+.dialog-message li {
+    line-height: 20px;
+    color: @bc-text-thin;
+    padding: 0 0 5px;
+
+    .dark & {
+        color: @dark-bc-text-thin;
+    }
+}
+
+.dialog-message select {
+    margin-left: 10px;
+}
+
+.dialog-message select {
+    margin-left: 10px;
+}
+
+.dialog-list {
+    list-style: none;
+    margin: 5px 0 20px 10px;
+}
+
+.dialog-list > li:before {
+    content: "•  ";
+    color: @bc-text-quiet;
+    font-size: 1.5em;
+    position: relative;
+    top: 2px;
+
+    .dark & {
+        color: @dark-bc-text-quiet;
+    }
+}
+
+.dialog-filename {
+    word-wrap: break-word;
+
+    font-weight: @font-weight-semibold;
+}
+
+/* Any Dialog text in this style is automatically turned into a link that opens in the browser. Use href for the link's target. */
+a[href^="http"] {
+    cursor: pointer;
+}
+
+/* Update dialog */
+.update-dialog .modal-header {
+    position: relative;
+    .update-icon {
+        position: absolute;
+        left: 15px; // relative to border of modal-body
+        top: 10px;
+        width: 28px;
+        height: 28px;
+    }
+     .dialog-title {
+        // Icon is 28px, so we need at least that much left padding/margin to avoid overlap
+        margin-left: 34px;
+     }
+}
+
+.update-dialog .modal-body {
+        position: relative;
+
+    .update-text {
+        // Icon is 120px, so we need at least that much left padding/margin to avoid overlap
+        margin-left: 29px;
+
+        padding-top: 21px;
+        max-height: 280px;
+        overflow: auto;
+
+        .dialog-message {
+           font-size: 16px;
+        }
+        .update-info {
+            margin-right: 10px;
+            // Enable text selection
+            cursor: auto;
+            .user-select(text);
+
+            h3 {
+                font-weight: normal;
+                margin: 0 0 10px;
+                font-size: 20px;
+            }
+
+            ul {
+                margin-bottom: 0 0 20px;
+
+                > li {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}
+
+/* Project Settings and Install Extension dialogs */
+.project-settings-dialog .modal-body, .install-extension-dialog .modal-body {
+    text-align: center;
+
+    .field-container {
+        display: inline-block;
+    }
+    label {
+        float: none;
+    }
+    input.url {
+        display: inline;
+    }
+}
+
+.project-settings-dialog .modal-body input.url {
+    margin: 0 0 0 5px;
+    width: 400px;
+}
+
+.install-extension-dialog .modal-body input.url {
+    margin: 10px 0;
+    width: 550px;
+}
+
+/* Extension Manager dialog */
+.extension-manager-dialog {
+    background-color: @bc-panel-bg-promoted;
+    min-width: @extension-manager-min-width;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg-promoted;
+    }
+
+    .modal-header {
+        border-bottom: none;
+        padding: 0;
+
+        .nav-tabs {
+            margin: 0;
+            border-color: @bc-panel-separator;
+
+            .dark & {
+                border-color: @dark-bc-panel-separator;
+            }
+
+            /* Tab styling */
+            > li > a {
+                min-width: 80px;
+                min-height: 60px;
+                color: @bc-text-thin;
+                cursor: default;
+                font-size: 12px;
+
+                .box;
+                box-sizing: border-box;
+                .box-align(center);
+                .box-pack(center);
+                padding: 0;
+                margin: 0;
+
+                text-align: center;
+
+                .dark & {
+                    color: @dark-bc-text-thin;
+                }
+
+                &:hover {
+                    background-color: @bc-panel-bg-hover-alt;
+                    border-color: @bc-panel-bg-hover-alt;
+
+                    .dark & {
+                        background-color: @dark-bc-panel-bg-hover-alt;
+                        border-color: @dark-bc-panel-bg-hover-alt;
+                    }
+                }
+
+                &:focus {
+                    background-color: @bc-menu-bg;
+                    border-color: @bc-menu-bg;
+
+                    .dark & {
+                        background-color: @dark-bc-menu-bg;
+                        border-color: @dark-bc-menu-bg;
+                    }
+                }
+
+                > img {
+                    margin-top: 5px;
+                    padding-bottom: 2px;
+                }
+            }
+
+            /* Remove border-left from the first tab */
+            > li:nth-child(1) > a {
+                border-left: transparent;
+            }
+
+            /* Colors for the active tab, remove bottom border */
+            > .active > a,
+            > .active > a:hover {
+                background-color: @bc-panel-bg;
+                border-color: @bc-btn-border @bc-btn-border transparent @bc-btn-border;
+
+                .dark & {
+                    background-color: @dark-bc-panel-bg;
+                    border-color: @dark-bc-btn-border @dark-bc-btn-border transparent @dark-bc-btn-border;
+                }
+            }
+
+            > .active > a:focus {
+                background-color: @bc-panel-bg;
+                border-color: @bc-btn-border-focused @bc-btn-border-focused transparent @bc-btn-border-focused;
+                box-shadow: none;
+
+                .dark & {
+                    background-color: @dark-bc-panel-bg;
+                    border-color: @dark-bc-btn-border-focused @dark-bc-btn-border-focused transparent @dark-bc-btn-border-focused;
+                }
+            }
+
+            > li {
+                position: relative;  // for positioning .notification icon
+                .notification {
+                    display: none;  // hidden by default
+                    background-color: @bc-secondary-btn-bg;
+                    color: @bc-text-alt;
+                    border-radius: 16px;
+                    padding: 0 5px;
+                    position: absolute;
+                    right: 19px;
+                    top: 8px;
+
+                    .dark & {
+                        background-color: @dark-bc-secondary-btn-bg;
+                        color: @dark-bc-text-alt;
+                    }
+                }
+            }
+        }
+
+        /* Search box */
+        > :nth-child(2) {
+            @media (max-width: (@extension-manager-min-width - 1px)) {
+                display: flex;
+                overflow: hidden;
+                padding: 8px 1em;
+            }
+
+            @media (min-width: @extension-manager-min-width) {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        .search-container {
+            float: right;
+            .flex-item(1);
+        }
+
+        .search {
+            @media (max-width: (@extension-manager-min-width - 1px)) {
+                width: calc(~'100% - 27px - 20px'); // 100% minus padding etc.
+            }
+
+            background: @bc-input-bg url("images/topcoat-search-20.svg") 2px 2px no-repeat;
+            margin: 0;
+            padding-left: 27px;
+            padding-right: 20px;
+
+            .dark & {
+                background: @dark-bc-input-bg url("images/topcoat-search-20.svg") 2px 2px no-repeat;
+            }
+        }
+        .search-clear {
+            background: transparent;
+            position: relative;
+            display: block;
+            float: right;
+            font-size: 20px;
+            left: -6px;
+            line-height: 0;
+            margin: 6px 0 0 -20px;
+            opacity: 0.5;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            z-index: 1;
+            border: 0;
+
+            &:disabled {
+                opacity: 0.3;
+                cursor: default;
+            }
+        }
+        .search-clear:active {
+            opacity: 0.7;
+            &:disabled {
+                opacity: 0.3;
+            }
+        }
+        .sort-extensions {
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 0;
+            width: auto;
+            padding-right: 18px;
+            border-bottom-left-radius: 0px;
+            border-top-left-radius: 0px;
+            border-color: #707070;
+            border-left: 0px;
+        }
+        .ext-sort-group {
+            float: left;
+        }
+        #sort-attributes-icon {
+            width: 15px;
+            height: 14px;
+            float:left;
+            padding: 6px;
+            border-bottom-left-radius: 3px;
+            border-top-left-radius: 3px;
+            border: 1px solid #707070;
+            box-shadow: inset 0 1px rgba(255, 255, 255, 0.12);
+            background: @bc-btn-bg url("images/sort-by-attributes.svg") no-repeat right 5px center;
+            .dark & {
+                box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+                background-color: @dark-bc-btn-bg;
+            }
+        }
+    }
+    .modal-body {
+        height: 400px;
+        overflow-y: scroll;
+        background-color: @bc-panel-bg;
+        padding: 0;
+
+        .dark & {
+            background-color: @dark-bc-panel-bg;
+        }
+
+        .empty-message {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            margin-top: -1em;
+            text-align: center;
+        }
+
+        .info-message {
+            background-color: @bc-panel-bg;
+            color: @bc-text-thin-quiet;
+            padding: 1em;
+
+            .dark & {
+                background-color: @dark-bc-panel-bg;
+                color: @dark-bc-text-quiet;
+            }
+        }
+
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -18px;
+            margin-left: -18px;
+        }
+
+        .extension-list {
+            td {
+                height: 2em;
+            }
+            .ext-info {
+                padding-left: 15px;
+                width: 220px;
+            }
+            .ext-name {
+                color: @bc-text;
+                display: block;
+                font-size: 15px;
+                font-weight: normal;
+                .user-select(text);
+                cursor: text;
+
+                .dark & {
+                    color: @dark-bc-text;
+                }
+            }
+            .ext-desc {
+                width: auto;
+                color: @bc-text;
+                font-weight: normal;
+                .user-select(text);
+                cursor: text;
+
+                .dark & {
+                    color: @dark-bc-text;
+                }
+            }
+            .ext-translated,
+            .muted {
+                color: @bc-text-thin-quiet;
+
+                .dark & {
+                    color: @dark-bc-text-quiet;
+                }
+            }
+            .alert {
+                font-size: 11px;
+                margin: 0 0 10px;
+
+                .dark & {
+                    background: @dark-bc-warning-bg;
+                    border-radius: 2px;
+                    color: @dark-bc-warning-text;
+                }
+            }
+            .error {
+                font-weight: @font-weight-semibold;
+                color: @bc-error;
+
+                .dark & {
+                    color: @dark-bc-error;
+                }
+            }
+            .ext-version,
+            .ext-date,
+            .ext-author {
+                font-size: 11px;
+            }
+            .ext-author {
+                display: block;
+            }
+            .ext-action {
+                font-size: 12px;
+                padding-right: 15px;
+                text-align: right;
+                vertical-align: middle;
+                width: 150px;
+            }
+            .load-error {
+                display: inline-block;
+                margin-top: 240px;
+            }
+        }
+    }
+}
+
+/* About dialog */
+.about-dialog .modal-body {
+    // Simple two-column layout: image on left, text taking up remaining space on right
+    position: relative;
+    .about-icon {
+        position: absolute;
+        left: 19px;  // relative to border of modal-body (bounds outside padding)
+        top:  15px;
+        width: 100px;
+        height: 100px;
+    }
+    .about-text {
+        // Icon is 120px, so we need at least that much left padding/margin to avoid overlap
+        margin-left: 130px;
+        overflow: auto;
+
+        #about-build-number {
+            color: @bc-text-thin-quiet;
+
+            .dark & {
+                color: @dark-bc-text-thin-quiet;
+            }
+        }
+        .about-info {
+            max-height: 300px;
+            margin-right: 10px;
+        }
+        .about-contributors {
+            min-height: 100px;
+            padding-bottom: 13px;
+
+            a {
+                text-decoration: none;
+            }
+            img {
+                opacity: 0;
+                transition: opacity 1s;
+
+                .dark & {
+                    background-color: #f0f0f0; // same as GitHub's avatar background color.
+                }
+            }
+        }
+    }
+
+    h2 {
+        font-weight: normal;
+        font-size: 25px;
+        margin-bottom: -4px;
+        margin-top: 13px;
+    }
+    .dialog-message {
+        font-size: 14px;
+        line-height: 17px;
+
+        // Enable text selection
+        cursor: auto;
+        .user-select(text);
+    }
+}
+
+/* Input */
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+    background-color: @bc-input-bg;
+    border: 1px solid @bc-btn-border;
+    color: @bc-text-thin;
+    font-size: (@baseFontSize + 1px);
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    box-shadow: inset 0 1px 0 @bc-shadow-small;
+    border-radius: @bc-border-radius;
+    .transition(~"border linear 180ms, box-shadow linear 180ms");
+
+    .dark & {
+        background-color: @dark-bc-input-bg;
+        border: 1px solid @dark-bc-btn-border;
+        color: @dark-bc-text-thin;
+        box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+    }
+
+    &::-webkit-input-placeholder {
+        color: @bc-text-thin-quiet;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+
+        .dark & {
+            color: @dark-bc-text-thin-quiet;
+        }
+    }
+
+    &:focus {
+        outline: 0;
+        background-color: @bc-input-bg;
+        text-shadow: none;
+        border: 1px solid @bc-btn-border-focused;
+        box-shadow: inset 0 1px 0 @bc-shadow-small, 0 0 0 1px @bc-btn-border-focused-glow;
+
+        .dark & {
+            background-color: @dark-bc-input-bg;
+            border: 1px solid @dark-bc-btn-border-focused;
+            box-shadow: inset 0 1px 0 @dark-bc-shadow-small, 0 0 0 1px @dark-bc-btn-border-focused-glow;
+        }
+    }
+
+    &:disabled {
+        opacity: @bc-disabled-opacity;
+        cursor: default;
+
+        .dark & {
+            opacity: @dark-bc-disabled-opacity;
+        }
+    }
+}
+
+/* Twipsy tooltips */
+
+.tooltip {
+    &.in { opacity: 1; }
+}
+
+.tooltip-inner {
+    background: @bc-menu-bg;
+    box-shadow: 0 3px 9px @bc-shadow;
+    color: @bc-menu-text;
+    max-width: 220px;
+    text-align: left;
+
+    .dark & {
+        background: @dark-bc-menu-bg;
+        box-shadow: 0 3px 9px @dark-bc-shadow;
+        color: @dark-bc-menu-text;
+    }
+}
+
+.tooltip {
+    &.top .tooltip-arrow {
+        border-top-color: @bc-menu-bg;
+        left: 50%;
+
+        .dark & {
+            border-top-color: @dark-bc-menu-bg;
+        }
+    }
+    &.right .tooltip-arrow {
+        border-right-color: @bc-menu-bg;
+        top: 15px;
+
+        .dark & {
+            border-right-color: @dark-bc-menu-bg;
+        }
+    }
+    &.left .tooltip-arrow {
+        border-left-color: @bc-menu-bg;
+        top: 15px;
+
+        .dark & {
+            border-left-color: @dark-bc-menu-bg;
+        }
+    }
+    &.bottom .tooltip-arrow {
+        border-bottom-color: @bc-menu-bg;
+        left: 50%;
+
+        .dark & {
+            border-bottom-color: @dark-bc-menu-bg;
+        }
+    }
+}
+
+/* Buttons */
+
+// Base .btn styles
+
+.btn:hover,
+.btn:focus,
+.btn.disabled,
+.btn[disabled] {
+    background-color: @bc-btn-bg;
+    color: @bc-text;
+
+    .dark & {
+        background-color: @dark-bc-btn-bg;
+        color: @dark-bc-text;
+    }
+}
+
+.btn.primary:hover,
+.btn.primary:focus,
+.btn.primary.disabled,
+.btn.primary[disabled] {
+    background-color: @bc-primary-btn-bg;
+
+    .dark & {
+        background-color: @dark-bc-primary-btn-bg;
+    }
+}
+
+.btn {
+    // Button Base
+    background-image: none;
+
+    background-color: @bc-btn-bg;
+    color: @bc-text;
+    cursor: default;
+    font-size: (@baseFontSize + 1);
+    font-weight: @font-weight-semibold;
+    line-height: normal;
+    border: 1px solid @bc-btn-border;
+    border-radius: @bc-border-radius;
+    box-shadow: inset 0 1px @bc-highlight-hard;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: none;
+    margin: 3px 0 3px 3px;
+
+    .dark & {
+        background-color: @dark-bc-btn-bg;
+        color: @dark-bc-text;
+        border: 1px solid @dark-bc-btn-border;
+        box-shadow: inset 0 1px @dark-bc-highlight;
+    }
+
+    &:hover {
+        background-color: @bc-btn-bg;
+        color: @bc-text;
+
+        .dark & {
+            background-color: @dark-bc-btn-bg;
+            color: @dark-bc-text;
+        }
+    }
+
+    // Focus state for keyboard and accessibility
+    &:focus {
+        border: 1px solid @bc-btn-border-focused;
+        box-shadow: inset 0 1px 0 @bc-highlight, 0 0 0 1px @bc-btn-border-focused-glow;
+        color: @bc-text;
+        outline: none;
+
+        .dark & {
+            border: 1px solid @dark-bc-btn-border-focused;
+            box-shadow: inset 0 1px 0 @dark-bc-highlight, 0 0 0 1px @dark-bc-btn-border-focused-glow;
+            color: @dark-bc-text;
+        }
+    }
+
+    // Active and Disabled states
+    &.active:active {
+        background-color: @bc-bg-highlight !important;
+
+        .dark & {
+            background-color:@dark-bc-bg-highlight !important;
+        }
+    }
+
+    &.active:not([disabled]) {
+        background-image: none;
+        background-color: @bc-bg-highlight;
+        box-shadow: inset 0 1px 0 @bc-shadow-small;
+        color: @bc-text-alt;
+
+        .dark & {
+            background-color:@dark-bc-bg-highlight;
+            box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+            color: @dark-bc-text-alt;
+        }
+    }
+
+    &:active:not([disabled]) {
+        background-image: none;
+        background-color: @bc-btn-bg-down;
+        box-shadow: inset 0 1px 0 @bc-shadow-small;
+        color: @bc-text;
+
+        .dark & {
+            background-color: @dark-bc-btn-bg-down;
+            box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+            color: @dark-bc-text;
+        }
+    }
+
+    &.disabled, &[disabled] {
+        opacity: @bc-disabled-opacity;
+
+        .dark & {
+            opacity: @dark-bc-disabled-opacity;
+        }
+    }
+
+    // Primary Button Type
+    &.primary {
+        background-image: none;
+        background-color: @bc-primary-btn-bg;
+        border: 1px solid  @bc-primary-btn-border;
+        box-shadow: inset 0 1px 0 @bc-highlight;
+        color: @bc-text-alt;
+        text-shadow: none;
+
+        .dark & {
+            background-color: @dark-bc-primary-btn-bg;
+            border: 1px solid  @dark-bc-primary-btn-border;
+            box-shadow: inset 0 1px 0 @dark-bc-highlight;
+            color: @dark-bc-text-alt
+        }
+
+        &.active,
+        &:active {
+            background-image: none;
+            background-color: @bc-primary-btn-bg-down;
+            box-shadow: inset 0 1px 0 @bc-shadow-small;
+            color: @bc-text-alt;
+
+            .dark & {
+                background-color: @dark-bc-primary-btn-bg-down;
+                box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+                color: @dark-bc-text-alt;
+            }
+        }
+
+        &:focus {
+            border: 1px solid @bc-primary-btn-border;
+            box-shadow: inset 0 1px 0 @bc-highlight, 0 0 0 1px @bc-btn-border-focused-glow;
+            outline: none;
+
+            .dark & {
+                border: 1px solid @dark-bc-primary-btn-border;
+                box-shadow: inset 0 1px 0 @dark-bc-highlight, 0 0 0 1px @dark-bc-btn-border-focused-glow;
+            }
+        }
+    }
+
+    // Update Button Type
+    &.update {
+        background-color: @bc-secondary-btn-bg;
+        border-color: @bc-secondary-btn-border;
+        box-shadow: inset 0 1px 0 @bc-highlight;
+        color: @bc-text-alt;
+        font-weight: @font-weight-semibold;
+        text-shadow: 0 -1px 0 @bc-shadow-small;
+
+        .dark & {
+            background-color: @dark-bc-secondary-btn-bg;
+            border-color: @dark-bc-secondary-btn-border;
+            box-shadow: inset 0 1px 0 @dark-bc-highlight;
+            color: @dark-bc-text-alt;
+            text-shadow: 0 -1px 0 @dark-bc-shadow-small;
+        }
+
+        &:active {
+            background-color: @bc-secondary-btn-bg-down;
+            border-color: @bc-secondary-btn-border;
+            box-shadow: inset 0 1px 0 @bc-shadow-small;
+            color: @bc-text-alt;
+
+            .dark & {
+                background-color: @dark-bc-secondary-btn-bg-down;
+                border-color: @dark-bc-secondary-btn-border;
+                box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+                color: @dark-bc-text-alt
+            }
+        }
+    }
+
+    // Button Sizes
+    &.large {
+        font-size: (@baseFontSize + 1px);
+        border-radius: @bc-border-radius;
+    }
+    &.small {
+        font-size: (@baseFontSize - 1px);
+    }
+}
+
+.btn-alt-quiet {    // No dark style required because these reside in the sidebar.
+    border: 1px solid transparent;
+    border-radius: @bc-border-radius;
+    text-decoration: none;
+
+    &:hover {
+        border: 1px solid @bc-shadow;
+        box-shadow: inset 0 1px 0 @bc-highlight;
+    }
+    &:active {
+        background-color: @bc-btn-bg-down-alt;
+        border: 1px solid @bc-shadow;
+        box-shadow: inset 0 1px 0 @bc-shadow-small;
+    }
+}
+
+.btn-mini {
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 14px;
+    &:focus {
+        border: 1px solid @bc-btn-border-focused;
+        box-shadow: 0 0 0 1px @bc-btn-border-focused-glow;
+        outline: none;
+
+        .dark & {
+            border: 1px solid @dark-bc-btn-border-focused;
+            box-shadow: 0 0 0 1px @dark-bc-btn-border-focused-glow;
+        }
+    }
+}
+
+
+/* Tables */
+
+.table, table {
+    th {
+        font-weight: @font-weight-semibold;
+    }
+    td {
+        border-top: 1px solid transparent;
+    }
+    tbody th {
+        border-top: 1px solid transparent;
+    }
+    .right {
+        text-align: right;
+    }
+}
+
+.table-striped tbody {
+    tr:nth-child(odd) td,
+    tr:nth-child(odd) th {
+        background-color: @bc-panel-bg-alt;
+
+        .dark & {
+            background-color: @dark-bc-panel-bg-alt;
+        }
+    }
+    tr:nth-child(even) td,
+    tr:nth-child(even) th {
+        background-color: @bc-panel-bg; // turn off bootstrap hover highlight
+
+        .dark & {
+            background-color: @dark-bc-panel-bg;
+        }
+    }
+}
+.row-highlight tbody {
+    tr:hover td,
+    tr:hover th {
+        background-color: @bc-bg-highlight;
+        color: @bc-menu-text;
+
+        .dark & {
+            background-color: @dark-bc-bg-highlight;
+            color: @dark-bc-menu-text;
+        }
+    }
+}
+
+/* Emphasis */
+
+strong {
+    font-weight: @font-weight-semibold;
+}
+
+/* Type */
+
+code {
+    color: @bc-text;
+    background-color: transparent;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+label {
+    font-size: @label-font-size;
+}
+
+label.inline {
+    display: inline;
+}
+
+/* Overriding Bootstrap's bold properties */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+strong,
+dt,
+.label {
+    color: @bc-text;
+    font-weight: @font-weight-semibold;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+.alert-message a,
+.form-stacked label {
+    font-weight: @font-weight-semibold;
+}
+
+.alert {
+    text-shadow: none;
+    background-color: @bc-warning-bg;
+    border: none;
+
+    .dark & {
+        color: @dark-bc-warning-bg;
+    }
+}
+.alert h4 {
+    // Specified for the h4 to prevent conflicts of changing @headingsColor
+    color: @bc-warning-bg;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin: 0 5px 0 0;
+}
+
+input[type="checkbox"] {
+    height: 13px;
+    width: 13px;
+    vertical-align: middle;
+    border: 1px solid @bc-btn-border;
+    border-radius: @bc-border-radius;
+    background-color: @bc-btn-bg;
+    -webkit-appearance: none;
+    box-shadow: inset 0 1px 0 @bc-highlight;
+
+    .dark & {
+        border: 1px solid @dark-bc-btn-border;
+        background-color: @dark-bc-btn-bg;
+        box-shadow: inset 0 1px 0 @dark-bc-highlight;
+    }
+}
+
+input[type="checkbox"]:active:not(:disabled) {
+    background-color: @bc-btn-bg-down;
+    box-shadow: inset 0 1px 0 @bc-shadow-small;
+
+    .dark & {
+        background-color: @dark-bc-btn-bg-down;
+        box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+    }
+}
+
+select:focus,
+input[type="checkbox"]:focus {
+    outline:none;
+    border: 1px solid @bc-btn-border-focused;
+    box-shadow: 0 0 0 1px @bc-btn-border-focused-glow;
+
+    .dark & {
+        border: 1px solid @dark-bc-btn-border-focused;
+        box-shadow: 0 0 0 1px @dark-bc-btn-border-focused-glow;
+    }
+}
+
+select {
+    background: @bc-btn-bg url("images/select-triangles.svg") no-repeat right 7px center;
+    border: 1px solid @bc-btn-border;
+    border-radius: @bc-border-radius;
+    box-shadow: inset 0 1px @bc-highlight;
+    color: @bc-text;
+    line-height: 1.3;
+    position: relative;
+    -webkit-appearance: none;
+
+    &:active {
+        background-color: @bc-btn-bg-down;
+        box-shadow: inset 0 1px 0 @bc-shadow-small;
+
+        .dark & {
+            background-color: @dark-bc-btn-bg-down;
+            box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+        }
+    }
+
+    > option { // Windows (but not Mac) lets you style the dropdown items
+        background-color: @bc-menu-bg;
+        color: @bc-menu-text;
+
+        .dark & {
+            background: @dark-bc-menu-bg;
+            color: @dark-bc-menu-text;
+        }
+    }
+
+    .dark & {
+        background-color: @dark-bc-btn-bg;
+        border: 1px solid @dark-bc-btn-border;
+        box-shadow: inset 0 1px @dark-bc-highlight;
+        color: @dark-bc-text;
+    }
+}
+
+input[type="checkbox"]:checked:before {
+    font-weight: bold;
+    color: @bc-text;
+    content: '\2713';
+    -webkit-margin-start: 0;
+    position: relative;
+    left: 2px;
+    top: -7px;
+    font-size: 16px;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+code {
+    border: none;
+}
+
+
+.close {
+    color: @bc-text;
+    text-shadow: none;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+.close:hover {
+    color: @bc-text;
+    opacity: 1;
+    filter: alpha(opacity=100);
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+.dropdown-menu {
+    background-color: @bc-menu-bg;
+    color: @bc-menu-text;
+
+    .dark & {
+        background-color: @dark-bc-menu-bg;
+        color: @dark-bc-menu-text;
+    }
+
+    .divider {
+        background-color: @bc-menu-separator;
+        border: none;
+
+        .dark & {
+            background-color: @dark-bc-menu-separator;
+        }
+    }
+}
+
+.form-horizontal {
+    .controls {
+        margin-left: 170px;
+
+        input[type='checkbox'] {
+             margin-top: 8px;
+        }
+     }
+ }
