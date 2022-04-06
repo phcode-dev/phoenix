@@ -1,0 +1,25 @@
+name: Deploying to dev.phcode.dev for dev testing in this repo
+# All changes to the main branch is instantly deployed to dev in this repo
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Building phoenix release artifacts
+        run: |
+          npm install
+          npm run release
+        shell: bash
+
+      - name: Deploy dist folder to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          cname: dev.phcode.dev
