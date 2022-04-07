@@ -63,6 +63,11 @@ h1 {
     margin-top: 0;
 }
 
+.safari-text {
+    margin-top: -40px;
+    font-size: small !important;
+}
+
 .primary-button {
     width: 200px;
     height: 45px;
