@@ -1,21 +1,21 @@
 {
-    "file.newDoc":  [
-        "Ctrl-N"
+    "file.newFile":  [
+        "Alt-N"
     ],
     "file.open":  [
         "Ctrl-O"
     ],
     "file.close":  [
-        "Ctrl-W"
+        "Alt-W"
     ],
     "file.openFolder": [
         "Ctrl-Alt-O"
     ],
     "file.close_all":  [
-        "Ctrl-Shift-W"
+        "Alt-Shift-W"
     ],
     "file.save":  [
-        "Ctrl-s"
+        "Ctrl-S"
     ],
     "file.saveAll":  [
         "Ctrl-Alt-S"
