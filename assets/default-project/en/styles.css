@@ -5,6 +5,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Montserrat';
 }
 
 img {
@@ -60,22 +61,6 @@ h1 {
     line-height: 1.2;
     margin-top: 0;
 }
-
-.primary-button {
-    width: 200px;
-    height: 45px;
-    background: linear-gradient(90deg, #FAAA47 0%, #FA1801 100%);
-    background-size: 200% 200%;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    color: #ffffffef;
-    cursor: pointer;
-    box-shadow: 0 0 0 #FAAA47;
-    transition:2s background-color;
-    animation: Animation 2s ease infinite;
-}
-
 
 @keyframes Animation {
     0%{background-position:0% 0%}

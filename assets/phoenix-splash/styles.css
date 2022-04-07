@@ -5,7 +5,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Montserrat';font-size: 22px;
+    font-family: 'Montserrat';
+    font-size: 22px;
 }
 
 img {
@@ -60,6 +61,11 @@ h1 {
     font-weight: 600;
     line-height: 1.2;
     margin-top: 0;
+}
+
+.safari-text {
+    margin-top: -40px;
+    font-size: small !important;
 }
 
 .primary-button {

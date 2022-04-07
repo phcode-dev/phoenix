@@ -95,6 +95,10 @@
     <iframe id="splash-screen-frame" style="width: 100%; height: 100%;border: none" seamless="true"
             title="Phoenix Splash Screen" src="assets/phoenix-splash"></iframe>
 </div>
+<div id="safari_splash_screen">
+    <iframe id="splash-screen-frame-safari" style="width: 100%; height: 100%;border: none" seamless="true"
+            title="Phoenix Splash Screen" src="assets/phoenix-splash/safari.html"></iframe>
+</div>
 
 <!-- HTML content is dynamically loaded and rendered by brackets.js after _loadPhoenixAfterSplashScreen.
      Any modules that depend on or modify HTML during load should
@@ -104,4 +108,18 @@
 
 
 </body>
+
+<script>
+    function IsSafari() {
+        var is_safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));;
+        return is_safari;
+    }
+    if (IsSafari()) {
+        let splashScreenRef = document.getElementById('safari_splash_screen');
+        splashScreenRef.style.display = 'block';
+        splashScreenRef.style.height = '100vh';
+        splashScreenRef.style.width = '100vw';
+        document.getElementById('phoenix-loading-splash-screen-overlay').style.display = 'none';
+    }
+</script>
 </html>
