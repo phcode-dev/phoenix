@@ -111,7 +111,7 @@
 
 <script>
     function IsSafari() {
-        var is_safari = navigator.userAgent.toLowerCase().indexOf('safari/') > -1;
+        var is_safari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));;
         return is_safari;
     }
     if (IsSafari()) {
