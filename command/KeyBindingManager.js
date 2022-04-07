@@ -511,7 +511,16 @@ define(function (require, exports, module) {
             key = "Insert";
         } else if (event.keyCode === KeyEvent.DOM_VK_DELETE) {
             key = "Delete";
-        } else {
+        } else if (key === "ArrowUp") {
+            key = "Up";
+        } else if (key === "ArrowDown") {
+            key = "Down";
+        } else if (key === "ArrowLeft") {
+            key = "Left";
+        } else if (key === "ArrowRight") {
+            key = "Right";
+        }
+        else {
             key = _mapKeycodeToKey(event.keyCode, key);
         }
 
