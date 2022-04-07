@@ -244,13 +244,13 @@ define(function (require, exports, module) {
         }
 
         if (!_altGrDown) {
-            if (_ctrlDown !== CtrlDownStates.DETECTED_AND_IGNORED && e.ctrlKey && e.keyIdentifier === "Control") {
+            if (_ctrlDown !== CtrlDownStates.DETECTED_AND_IGNORED && e.ctrlKey && e.key === "Control") {
                 _ctrlDown = CtrlDownStates.DETECTED;
-            } else if (e.repeat && e.ctrlKey && e.keyIdentifier === "Control") {
+            } else if (e.repeat && e.ctrlKey && e.key === "Control") {
                 // We get here if the user is holding down left/right Control key. Set it to false
                 // so that we don't misidentify the combination of Ctrl and Alt keys as AltGr key.
                 _ctrlDown = CtrlDownStates.DETECTED_AND_IGNORED;
-            } else if (_ctrlDown === CtrlDownStates.DETECTED && e.altKey && e.ctrlKey && e.keyIdentifier === "Alt" &&
+            } else if (_ctrlDown === CtrlDownStates.DETECTED && e.altKey && e.ctrlKey && e.key === "Alt" &&
                         (e.timeStamp - _lastTimeStamp) < MAX_INTERVAL_FOR_CTRL_ALT_KEYS) {
                 _altGrDown = true;
                 _lastKeyIdentifier = "Alt";
@@ -262,14 +262,14 @@ define(function (require, exports, module) {
                 _ctrlDown = CtrlDownStates.NOT_YET_DETECTED;
             }
             _lastTimeStamp = e.timeStamp;
-        } else if (e.keyIdentifier === "Control" || e.keyIdentifier === "Alt") {
+        } else if (e.key === "Control" || e.key === "Alt") {
             // If the user is NOT holding down AltGr key or is also pressing Ctrl key,
             // then _lastKeyIdentifier will be the same as keyIdentifier in the current
             // key event. So we need to quit AltGr mode to re-enable KBM.
-            if (e.altKey && e.ctrlKey && e.keyIdentifier === _lastKeyIdentifier) {
+            if (e.altKey && e.ctrlKey && e.key === _lastKeyIdentifier) {
                 _quitAltGrMode();
             } else {
-                _lastKeyIdentifier = e.keyIdentifier;
+                _lastKeyIdentifier = e.key;
             }
         }
     }
@@ -485,11 +485,11 @@ define(function (require, exports, module) {
             hasShift = (event.shiftKey),
             key = String.fromCharCode(event.keyCode);
 
-        //From the W3C, if we can get the KeyboardEvent.keyIdentifier then look here
+        //From the W3C, if we can get the KeyboardEvent.key then look here
         //As that will let us use keys like then function keys "F5" for commands. The
         //full set of values we can use is here
-        //http://www.w3.org/TR/2007/WD-DOM-Level-3-Events-20071221/keyset.html#KeySet-Set
-        var ident = event.keyIdentifier;
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+        var ident = event.key;
         if (ident) {
             if (ident.charAt(0) === "U" && ident.charAt(1) === "+") {
                 //This is a unicode code point like "U+002A", get the 002A and use that
@@ -515,7 +515,7 @@ define(function (require, exports, module) {
             key = _mapKeycodeToKey(event.keyCode, key);
         }
 
-        return _buildKeyDescriptor(hasMacCtrl, hasCtrl, hasAlt, hasShift, key);
+        return normalizeKeyDescriptorString(_buildKeyDescriptor(hasMacCtrl, hasCtrl, hasAlt, hasShift, key));
     }
 
     /**
