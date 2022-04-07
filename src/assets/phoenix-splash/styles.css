@@ -5,7 +5,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Montserrat';font-size: 22px;
+    font-family: 'Montserrat';
+    font-size: 22px;
 }
 
 img {
