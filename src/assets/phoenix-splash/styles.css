@@ -1,8 +1,6 @@
 
 body {
     background: #000A2E;
-    background-size: 100%;
-    background-repeat: no-repeat;
     overflow: hidden;
     display: flex;
     justify-content: center;
