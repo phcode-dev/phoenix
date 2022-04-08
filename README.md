@@ -1,5 +1,7 @@
 # Welcome to Phoenix!
 
+**Website: https://phcode.dev**
+
 Phoenix is a modern open-source and free code editor for the web, built for the browser.
 
 #### Code Guardian
@@ -90,6 +92,7 @@ To view/edit the files in the browser virtual file system in Phoenix:
 * Reset everything including node modules: `npm run reset`
 
 ## Deployment to phcore.dev
+* All changes pushed to the main branch are automatically published to https://dev.phcode.dev
 * To publish the changes to https://staging.phcode.dev , push changes to the `staging` branch in this repo with a pull request.
 * Once the changes are validated and tested, trigger a prod deployment by pushing to the `prod` branch.
 
