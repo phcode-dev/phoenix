@@ -39,6 +39,7 @@ define(function (require, exports, module) {
 
     function _removePhoenixLoadingOverlay() {
         document.getElementById('phoenix-loading-splash-screen-overlay').remove();
+        document.getElementById('safari_splash_screen').remove();
     }
 
     // Load dependent non-module scripts
