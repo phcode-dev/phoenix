@@ -78,6 +78,7 @@ define(function (require, exports, module) {
         DefaultDialogs      = require("widgets/DefaultDialogs"),
         ExtensionLoader     = require("utils/ExtensionLoader"),
         ExtensionInterface  = require("utils/ExtensionInterface"),
+        EventManager        = require("utils/EventManager"),
         FeatureGate         = require("utils/FeatureGate"),
         Async               = require("utils/Async"),
         UpdateNotification  = require("utils/UpdateNotification"),
@@ -88,6 +89,8 @@ define(function (require, exports, module) {
         DeprecationWarning  = require("utils/DeprecationWarning"),
         ViewCommandHandlers = require("view/ViewCommandHandlers"),
         MainViewManager     = require("view/MainViewManager");
+
+    window.EventManager = EventManager; // Main event intermediary between brackets and other web pages.
 
     var MainViewHTML        = require("text!htmlContent/main-view.html");
 
@@ -211,6 +214,7 @@ define(function (require, exports, module) {
             DOMAgent: require("LiveDevelopment/Agents/DOMAgent"),
             DragAndDrop: require("utils/DragAndDrop"),
             EditorManager: require("editor/EditorManager"),
+            EventManager: require("utils/EventManager"),
             ExtensionLoader: require("utils/ExtensionLoader"),
             ExtensionUtils: require("utils/ExtensionUtils"),
             ExtensionInterface: require("utils/ExtensionInterface"),

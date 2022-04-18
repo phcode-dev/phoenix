@@ -23,8 +23,18 @@ define(function (require, exports, module) {
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         newProjectTemplate = require("text!new-project-template.html"),
-        Strings = brackets.getModule("strings");
-    const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue';
+        Strings = brackets.getModule("strings"),
+        EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+        EventManager = brackets.getModule("utils/EventManager");
+
+    const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
+        EVENT_HANDLER_NEW_PROJECT = "Extn.Phoenix.newProject",
+        EVENT_CLOSE_DIALOGUE = "closeDialogue";
+
+    EventDispatcher.makeEventDispatcher(exports);
+    EventManager.registerEventHandler(EVENT_HANDLER_NEW_PROJECT, exports);
+
+    let dialogue;
 
     // TODO: change default enabled to true to ship this feature.
     FeatureGate.registerFeatureGate(FEATURE_NEW_PROJECT_DIALOGUE, false);
@@ -34,8 +44,12 @@ define(function (require, exports, module) {
             Strings: Strings,
             newProjectURL: `${window.location.href}/assets/new-project/code-editor.html`
         };
-        Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars));
+        dialogue = Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars), true);
     }
+
+    exports.on(EVENT_CLOSE_DIALOGUE, ()=>{
+        dialogue.close();
+    });
 
     exports.init = function () {
         if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_PROJECT_DIALOGUE)){
