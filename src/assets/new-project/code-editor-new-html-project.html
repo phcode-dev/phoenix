@@ -17,8 +17,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
           rel="stylesheet">
+    <script src="assets/js/phoenix.js"></script>
 </head>
-<body id="top">
+<body id="top" onload="init()">
 <div class="code-editor-card">
     <div class="project-top d-flex align-items-center justify-content-between">
         <div class="editor-left d-flex align-items-center">
@@ -34,7 +35,7 @@
             </div>
         </div>
         <div class="editor-right">
-            <button class="close-btn">
+            <button class="close-btn" id="closeDialogueButton">
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16.1616 5.70972L5.70996 16.1613" stroke="white" stroke-width="2" stroke-linecap="round"
                           stroke-linejoin="round"/>

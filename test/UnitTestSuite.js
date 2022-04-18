@@ -46,6 +46,7 @@ define(function (require, exports, module) {
     require("spec/ExtensionLoader-test");
     require("spec/ExtensionManager-test");
     require("spec/ExtensionUtils-test");
+    require("spec/EventManager-test");
     require("spec/FileFilters-test");
     require("spec/FileSystem-test");
     require("spec/FileTreeView-test");
