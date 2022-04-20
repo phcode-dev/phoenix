@@ -22,8 +22,6 @@
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
-import initFsLib from "./fslib.js";
-
 /** Setup virtual file system. This happens before any code of phoenix is loaded.
  * The virtual file system is rooted at /
  * Application support folder that stores app data is /app/
@@ -145,12 +143,10 @@ const _createDefaultProject = function (vfs, Phoenix) {
     });
 };
 
-export default function init(Phoenix, FilerLib) {
-    if(!FilerLib || !Phoenix){
+export default function init(Phoenix) {
+    if(!window.fs || !window.path || !Phoenix){
         alertError(_FS_ERROR_MESSAGE);
     }
-
-    initFsLib(Phoenix, FilerLib);
 
     const vfs = _setupVFS(Phoenix, window.fs, window.path);
     _createAppDirs(vfs);
