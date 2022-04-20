@@ -45,6 +45,10 @@ function makeDist() {
  */
 async function copyThirdPartyLibs(){
     return mergeStream(
+        // @phcode/fs
+        src(['node_modules/@phcode/fs/dist/virtualfs.js',
+            'node_modules/@phcode/fs/dist/virtualfs.js.map'])
+            .pipe(dest('src/phoenix')),
         // jszip
         src(['node_modules/jszip/dist/jszip.js'])
             .pipe(dest('src/thirdparty')),
