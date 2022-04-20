@@ -17,7 +17,6 @@
  */
 
 // jshint ignore: start
-/*global Filer*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
@@ -37,7 +36,7 @@ let startTime = Date.now();
 
 window.Phoenix = Phoenix;
 
-init(Phoenix, Filer);
+init(Phoenix);
 
 Phoenix.app = {
     getNodeState: function (cbfn){
