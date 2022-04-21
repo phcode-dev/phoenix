@@ -48,13 +48,34 @@ define(function (require, exports, module) {
         AppInit            = brackets.getModule("utils/AppInit"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         EditorManager      = brackets.getModule("editor/EditorManager"),
+        DocumentManager    = brackets.getModule("document/DocumentManager"),
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
+        marked = require('thirdparty/marked.min'),
         utils = require('utils');
+
+    // TODO markdown advanced rendering options https://marked.js.org/using_advanced
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        // highlight: function(code, lang) {
+        //     const hljs = require('highlight.js');
+        //     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        //     return hljs.highlight(code, { language }).value;
+        // },
+        // langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
+        pedantic: false,
+        gfm: true,
+        breaks: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false,
+        xhtml: false
+    });
 
 
     // Templates
-    let panelHTML       = require("text!panel.html");
+    let panelHTML       = require("text!panel.html"),
+        markdownHTML = require("text!markdown.html");
     ExtensionUtils.loadStyleSheet(module, "live-preview.css");
 
     // jQuery objects
@@ -73,9 +94,8 @@ define(function (require, exports, module) {
     function _setPanelVisibility(isVisible) {
         if (isVisible) {
             $icon.toggleClass("active");
-
             panel.show();
-
+            _loadPreview(true);
         } else {
             $icon.toggleClass("active");
             panel.hide();
@@ -85,9 +105,6 @@ define(function (require, exports, module) {
     function _toggleVisibility() {
         let visible = !panel.isVisible();
         _setPanelVisibility(visible);
-        if(visible){
-            _loadPreview(true);
-        }
     }
 
     function _togglePinUrl() {
@@ -136,14 +153,11 @@ define(function (require, exports, module) {
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
-        let previewDetails = await utils.getPreviewDetails();
-        $iframe.attr('src', previewDetails.URL);
 
         panel = WorkspaceManager.createPluginPanel("live-preview-panel", $panel,
             PANEL_MIN_SIZE, $icon, INITIAL_PANEL_SIZE);
 
         WorkspaceManager.recomputeLayout(false);
-        _setTitle(previewDetails.filePath);
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
@@ -151,12 +165,46 @@ define(function (require, exports, module) {
         });
     }
 
+    function _renderMarkdown(fullPath) {
+        DocumentManager.getDocumentForPath(fullPath)
+            .done(function (doc) {
+                let text = doc.getText();
+                let markdownHtml = marked.parse(text);
+                let templateVars = {
+                    markdownContent: markdownHtml
+                };
+                let html = Mustache.render(markdownHTML, templateVars);
+                $iframe.attr('srcdoc', html);
+                if(tab && !tab.closed){
+                    tab.location = "about:blank";
+                    tab.window.document.write(html);
+                }
+            })
+            .fail(function (err) {
+                console.error(`Markdown rendering failed for ${fullPath}: `, err);
+            });
+    }
+
+    function _renderPreview(previewDetails, newSrc) {
+        if(previewDetails.isMarkdownFile){
+            let fullPath = previewDetails.fullPath;
+            $iframe.attr('src', 'about:blank');
+            _renderMarkdown(fullPath);
+        } else {
+            $iframe.attr('srcdoc', null);
+            $iframe.attr('src', newSrc);
+            if(tab && !tab.closed){
+                tab.location = newSrc;
+            }
+        }
+    }
+
     let savedScrollPositions = {};
     async function _loadPreview(force) {
         if(panel.isVisible() || (tab && !tab.closed)){
             let scrollX = $iframe[0].contentWindow.scrollX;
             let scrollY = $iframe[0].contentWindow.scrollY;
-            let currentSrc = $iframe[0].src || utils.getNoPreviewURL();
+            let currentSrc = $iframe.src || utils.getNoPreviewURL();
             savedScrollPositions[currentSrc] = {
                 scrollX: scrollX,
                 scrollY: scrollY
@@ -179,10 +227,8 @@ define(function (require, exports, module) {
                 }
             };
             if(currentSrc !== newSrc || force){
-                $iframe.attr('src', newSrc);
-                if(tab && !tab.closed){
-                    tab.location = newSrc;
-                }
+                $iframe.src = newSrc;
+                _renderPreview(previewDetails, newSrc);
             }
         }
     }

@@ -56,11 +56,11 @@
         }
     ],
     "dependencies": {
-        "@phcode/fs": "^1.0.8",
+        "@phcode/fs": "^1.0.9",
         "browser-mime": "^1.0.1",
         "jszip": "^3.7.1",
+        "marked": "^4.0.14",
         "mime-db": "^1.52.0",
-        "mime-types": "^2.1.35",
         "prettier": "^2.6.1",
         "underscore": "^1.13.2"
     }

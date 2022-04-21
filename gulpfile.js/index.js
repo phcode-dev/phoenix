@@ -73,6 +73,12 @@ async function copyThirdPartyLibs(){
             .pipe(dest('src/thirdparty')),
         src(['node_modules/mime-db/LICENSE'])
             .pipe(rename("mime-db.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
+        // marked.js markdown rendering
+        src(['node_modules/marked/marked.min.js'])
+            .pipe(dest('src/extensions/default/Phoenix-live-preview/thirdparty')),
+        src(['node_modules/marked/LICENSE.md'])
+            .pipe(rename("marked.markdown"))
             .pipe(dest('src/thirdparty/licences/'))
     );
 }
