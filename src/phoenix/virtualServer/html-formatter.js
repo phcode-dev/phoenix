@@ -132,20 +132,18 @@ if(!self.HtmlFormatter){
             let alt;
 
             // TODO: switch this to entry.isDirectory() if possible
-            if (entry.type === 'DIRECTORY') {
+            if (ContentType.isImage(ext)) {
+                icon = icons.image2;
+                alt = '[IMG]';
+            } else if (ContentType.isMedia(ext)) {
+                icon = icons.movie;
+                alt = '[MOV]';
+            } else if (!ext) {
                 icon = icons.folder;
                 alt = '[DIR]';
             } else {
-                if (ContentType.isImage(ext)) {
-                    icon = icons.image2;
-                    alt = '[IMG]';
-                } else if (ContentType.isMedia(ext)) {
-                    icon = icons.movie;
-                    alt = '[MOV]';
-                } else {
-                    icon = icons.text;
-                    alt = '[TXT]';
-                }
+                icon = icons.text;
+                alt = '[TXT]';
             }
 
             return formatRow(icon, alt, href, entryName, entry.mtime, entry.size);
