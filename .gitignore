@@ -22,6 +22,7 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/underscore-min.js
 /src/thirdparty/mime-db.json
 /src/extensions/default/Phoenix-prettier/thirdParty
+src/extensions/default/Phoenix-live-preview/thirdparty
 
 # ignore files copied from node_modules to src/thirdparty
 # https://github.com/aicore/phoenix/issues/10

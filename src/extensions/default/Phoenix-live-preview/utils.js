@@ -44,13 +44,19 @@ define(function (require, exports, module) {
         DocumentManager     = brackets.getModule("document/DocumentManager"),
         FileSystem         = brackets.getModule("filesystem/FileSystem");
 
-    function _isPreviewableFile(filePath) {
+    function _getExtension(filePath) {
         let pathSplit = filePath.split('.');
-        let extension = pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : null;
-        if(['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf'].includes(extension.toLowerCase())){
-            return true;
-        }
-        return false;
+        return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : null;
+    }
+
+    function _isPreviewableFile(filePath) {
+        let extension = _getExtension(filePath);
+        return ['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf', 'md'].includes(extension.toLowerCase());
+    }
+
+    function _isMarkdownFile(filePath) {
+        let extension = _getExtension(filePath);
+        return ['md', 'markdown'].includes(extension.toLowerCase());
     }
 
     function getNoPreviewURL(){
@@ -94,7 +100,9 @@ define(function (require, exports, module) {
                     const relativePath = path.relative(projectRoot, fullPath);
                     resolve({
                         URL: `${projectRootUrl}${relativePath}`,
-                        filePath: relativePath
+                        filePath: relativePath,
+                        fullPath: fullPath,
+                        isMarkdownFile: _isMarkdownFile(fullPath)
                     });
                 } else {
                     resolve({}); // not a previewable file
