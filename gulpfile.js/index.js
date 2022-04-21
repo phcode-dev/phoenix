@@ -66,6 +66,13 @@ async function copyThirdPartyLibs(){
             .pipe(dest('src/extensions/default/Phoenix-prettier/thirdParty')),
         src(['node_modules/prettier/LICENSE'])
             .pipe(rename("prettier.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
+        // mime-db
+        src(['node_modules/mime-db/db.json'])
+            .pipe(rename("mime-db.json"))
+            .pipe(dest('src/thirdparty')),
+        src(['node_modules/mime-db/LICENSE'])
+            .pipe(rename("mime-db.markdown"))
             .pipe(dest('src/thirdparty/licences/'))
     );
 }

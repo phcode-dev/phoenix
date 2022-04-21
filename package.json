@@ -40,7 +40,7 @@
         "prepare": "husky install",
         "test": "gulp test",
         "buildonly": "gulp build",
-        "build": "npm run lint && npm run buildonly && npm run test",
+        "build": "npm run buildonly && npm run test && npm run lint",
         "clean": "gulp clean",
         "reset": "gulp reset",
         "release:dev": "gulp releaseDev",
@@ -57,7 +57,10 @@
     ],
     "dependencies": {
         "@phcode/fs": "^1.0.8",
+        "browser-mime": "^1.0.1",
         "jszip": "^3.7.1",
+        "mime-db": "^1.52.0",
+        "mime-types": "^2.1.35",
         "prettier": "^2.6.1",
         "underscore": "^1.13.2"
     }
