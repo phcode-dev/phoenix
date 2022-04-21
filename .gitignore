@@ -20,6 +20,7 @@ src/phoenix/virtualfs.js.map
 !/src/thirdparty/licences
 /src/thirdparty/jszip.js
 /src/thirdparty/underscore-min.js
+/src/thirdparty/mime-db.json
 /src/extensions/default/Phoenix-prettier/thirdParty
 
 # ignore files copied from node_modules to src/thirdparty
