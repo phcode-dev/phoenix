@@ -1,36 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Phoenix editor</title>
-        <link rel="stylesheet" href="styles.css">
-        <link href='https://fonts.googleapis.com/css?family=Montserrat:100,200,300,500,600,800' rel='stylesheet'>
-    </head>
+<head>
+    <title>Phoenix editor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:100,200,300,500,600,800' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="video.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
 
-    <body>
-        <img id="starsLeft" alt="stars"  src="images/stars-left.svg"/>
-        <div id="mainDiv">
-            <img id="logo" alt="logo" src="images/phoenix-logo.svg"/>
-            <div id="MainText">
-                <h1>Phoenix</h1>
-                <span >Modern, Open-source, IDE For The Web <br></span><br>
-            </div>
+<body>
+<img id="starsLeft" alt="stars" src="images/stars-left.svg"/>
+<div id="mainDiv">
+    <img id="logo" alt="logo" src="images/phoenix-logo.svg"/>
+    <div id="MainText">
+        <h1>Phoenix</h1>
+        <span>Modern, Open-source, IDE For The Web <br></span><br>
+    </div>
+    <div class="video-slider">
+        <!-- SLIDE 1 -->
+        <div class="slide">
+            Live HTML preview
+            <iframe title="Live HTML Preview" allow="fullscreen;" class="video"
+                    src="https://www.youtube.com/embed/RIslg6XQwLA?ecver=2&enablejsapi=1"></iframe>
         </div>
-        <img id="cloudLeftTop" alt="cloud" src="images/vector-top-left.png"/>
-        <img id="cloudBottomRight" alt="cloud" src="images/vector-bottom-right.png"/>
-        <img id="starsRight" alt="stars" src="images/stars-right.svg"/>
-        <img class="clouds" alt="cloud" style="z-index: 3; transform: translate(0px, -1.55909px);" src="images/cloud1.svg"/>
-        <img class="clouds" alt="cloud" style="z-index: 6; transform: translate(0px, -2.33863px);" src="images/cloud2.svg"/>
-        <img class="clouds" alt="cloud" style="z-index: 5; transform: translate(0px, -3.89772px);" src="images/cloud3.svg"/>
-        <img class="clouds" alt="cloud" style="z-index: 6; transform: translate(0px, -3.89772px);" src="images/cloud4.svg"/>
-        <div class="night">
-            <div class="shooting_star">
-                <div class="shooting_star"/>
-            </div>
+        <!-- SLIDE 2 -->
+        <div class="slide">
+            Live Markdown Preview
+            <iframe title="Live Markdown Preview" allow="fullscreen;" class="video"
+                    src="https://www.youtube.com/embed/buDeBgf-B60?ecver=2&enablejsapi=1"></iframe>
         </div>
-        <div class="night">
-            <div class="shooting_star">
-                <div class="shooting_star"/>
-            </div>
-        </div>
-    </body>
+        <!-- END OF SLIDES -->
+        <div class="slide-arrow left"></div>
+        <div class="slide-arrow right"></div>
+    </div>
+</div>
+<img id="cloudLeftTop" alt="cloud" src="images/vector-top-left.png"/>
+<img id="cloudBottomRight" alt="cloud" src="images/vector-bottom-right.png"/>
+<img id="starsRight" alt="stars" src="images/stars-right.svg"/>
+<img class="clouds" alt="cloud" style="z-index: 3; transform: translate(0px, -1.55909px);" src="images/cloud1.svg"/>
+<img class="clouds" alt="cloud" style="z-index: 6; transform: translate(0px, -2.33863px);" src="images/cloud2.svg"/>
+<img class="clouds" alt="cloud" style="z-index: 5; transform: translate(0px, -3.89772px);" src="images/cloud3.svg"/>
+<img class="clouds" alt="cloud" style="z-index: 6; transform: translate(0px, -3.89772px);" src="images/cloud4.svg"/>
+<div class="night">
+    <div class="shooting_star">
+        <div class="shooting_star"/>
+    </div>
+</div>
+<div class="night">
+    <div class="shooting_star">
+        <div class="shooting_star"/>
+    </div>
+</div>
+</body>
 </html>
