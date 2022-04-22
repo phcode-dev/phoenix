@@ -96,11 +96,15 @@ define(function (require, exports, module) {
             const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
             if(currentFile){
                 let fullPath = currentFile.fullPath;
+                let httpFilePath = null;
+                if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
+                    httpFilePath = fullPath;
+                }
                 if(_isPreviewableFile(fullPath)){
-                    const relativePath = path.relative(projectRoot, fullPath);
+                    const filePath = httpFilePath || path.relative(projectRoot, fullPath);
                     resolve({
-                        URL: `${projectRootUrl}${relativePath}`,
-                        filePath: relativePath,
+                        URL: httpFilePath || `${projectRootUrl}${filePath}`,
+                        filePath: filePath,
                         fullPath: fullPath,
                         isMarkdownFile: _isMarkdownFile(fullPath)
                     });
