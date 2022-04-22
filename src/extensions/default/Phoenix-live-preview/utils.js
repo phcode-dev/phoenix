@@ -51,7 +51,7 @@ define(function (require, exports, module) {
 
     function _isPreviewableFile(filePath) {
         let extension = _getExtension(filePath);
-        return ['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf', 'md'].includes(extension.toLowerCase());
+        return ['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf', 'md', 'markdown'].includes(extension.toLowerCase());
     }
 
     function _isMarkdownFile(filePath) {
