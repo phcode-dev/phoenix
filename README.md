@@ -108,7 +108,7 @@ Discussion: https://github.com/aicore/phoenix/issues/184
 
 GNU AGPL-3.0 License
 
-Modified work Copyright (c) 2021 - present Core.ai
+Copyright (c) 2021 - present Core.ai
 
 Original work Copyright (c) 2012 Adobe Systems Incorporated. All rights reserved.
 
