@@ -177,7 +177,10 @@ define(function (require, exports, module) {
                 $iframe.attr('srcdoc', html);
                 if(tab && !tab.closed){
                     tab.location = "about:blank";
-                    tab.window.document.write(html);
+                    setTimeout(()=>{
+                        tab.window.document.write(html);
+                    }, 10); // timer hack, location and content cannot be set in a row,
+                    // we should move to iframe embedded controls
                 }
             })
             .fail(function (err) {
