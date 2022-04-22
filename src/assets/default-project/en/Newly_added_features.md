@@ -6,7 +6,7 @@ We are continuously adding features every week to improve the life of web develo
 
 List of features added to phoenix:
 ## Live HTML preview
-Added on Apr,2022
+`Added on Apr,2022`
 
 Code real-time in your browser. Make changes to CSS and HTML and you'll instantly see those changes on screen.
 
@@ -15,7 +15,7 @@ src="https://www.youtube.com/embed/RIslg6XQwLA">
 </iframe>
 
 ## Live Markdown preview
-Added on Apr,2022
+`Added on Apr,2022`
 
 Live preview but for markdown files!
 
