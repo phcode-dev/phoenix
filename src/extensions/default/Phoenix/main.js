@@ -28,6 +28,7 @@ define(function (require, exports, module) {
         serverSync   = require("serverSync"),
         newProject   = require("new-project"),
         startupProject   = require("startup-project"),
+        newFeature   = require("newly-added-features"),
         AppInit      = brackets.getModule("utils/AppInit"),
         Strings      = brackets.getModule("strings"),
         Dialogs     = brackets.getModule("widgets/Dialogs"),
@@ -72,6 +73,7 @@ define(function (require, exports, module) {
         serverSync.init();
         startupProject.init();
         newProject.init();
+        newFeature.init();
         _detectUnSupportedBrowser();
     });
 });
