@@ -24,6 +24,7 @@
 /* jshint ignore:start */
 
 const EVENT_HANDLER_NEW_PROJECT = "Extn.Phoenix.newProject",
+    EVENT_OPEN_FOLDER = "openFolder",
     EVENT_CLOSE_DIALOGUE = "closeDialogue";
 
 function messagePhoenix(event, ...params) {
@@ -38,8 +39,28 @@ function closeDialogue() {
     messagePhoenix(EVENT_HANDLER_NEW_PROJECT, EVENT_CLOSE_DIALOGUE);
 }
 
+function openProjectFolder(path){
+    messagePhoenix(EVENT_HANDLER_NEW_PROJECT, EVENT_OPEN_FOLDER, path);
+}
+
 function init() {
     document.getElementById("closeDialogueButton").onclick = function() {
         closeDialogue();
     };
+    var projectList = document.querySelectorAll(".recent-project-list li");
+    var plist = [], index;
+
+    for(var i = 0; i < projectList.length; i++){
+        plist.push(projectList[i].innerHTML);
+    }
+    for(var i = 0; i < projectList.length; i++){
+        // eslint-disable-next-line no-loop-func
+        projectList[i].onclick = function(){
+            index = plist.indexOf(this.innerHTML);
+
+            //select the element using command manager
+            //use appropriate command manager to open file
+            openProjectFolder("untitled_7");
+        };
+    }
 }

@@ -20,15 +20,18 @@
 
 define(function (require, exports, module) {
     let Dialogs = brackets.getModule("widgets/Dialogs"),
+        CommandManager = brackets.getModule("command/CommandManager"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         newProjectTemplate = require("text!new-project-template.html"),
         Strings = brackets.getModule("strings"),
         EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+        Commands = brackets.getModule("command/Commands"),
         EventManager = brackets.getModule("utils/EventManager");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
         EVENT_HANDLER_NEW_PROJECT = "Extn.Phoenix.newProject",
+        EVENT_OPEN_FOLDER = "openFolder",
         EVENT_CLOSE_DIALOGUE = "closeDialogue";
 
     EventDispatcher.makeEventDispatcher(exports);
@@ -47,8 +50,18 @@ define(function (require, exports, module) {
         dialogue = Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars), true);
     }
 
+    function openProjectFolder(path){
+        //open folder
+        CommandManager.execute(Commands.FILE_OPEN_FOLDER);
+    }
+
     exports.on(EVENT_CLOSE_DIALOGUE, ()=>{
         dialogue.close();
+    });
+
+    exports.on(EVENT_OPEN_FOLDER, (path)=>{
+        //TODO: existing folder opening with given path
+        openProjectFolder(path);
     });
 
     exports.init = function () {
