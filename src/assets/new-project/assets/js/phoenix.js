@@ -39,28 +39,20 @@ function closeDialogue() {
     messagePhoenix(EVENT_HANDLER_NEW_PROJECT, EVENT_CLOSE_DIALOGUE);
 }
 
-function openProjectFolder(path){
-    messagePhoenix(EVENT_HANDLER_NEW_PROJECT, EVENT_OPEN_FOLDER, path);
+function openProjectFolder(){
+    messagePhoenix(EVENT_HANDLER_NEW_PROJECT, EVENT_OPEN_FOLDER);
 }
 
 function init() {
     document.getElementById("closeDialogueButton").onclick = function() {
         closeDialogue();
     };
-    var projectList = document.querySelectorAll(".recent-project-list li");
-    var plist = [], index;
 
-    for(var i = 0; i < projectList.length; i++){
-        plist.push(projectList[i].innerHTML);
-    }
-    for(var i = 0; i < projectList.length; i++){
-        // eslint-disable-next-line no-loop-func
-        projectList[i].onclick = function(){
-            index = plist.indexOf(this.innerHTML);
+    var element = document.getElementsByClassName("project-type-list d-flex mb-0 pb-0 border-bottom-0");
+    var open_project = element[0].children;
+    open_project[0].onclick = function (){
+        openProjectFolder();
+    };
 
-            //select the element using command manager
-            //use appropriate command manager to open file
-            openProjectFolder("untitled_7");
-        };
-    }
+
 }

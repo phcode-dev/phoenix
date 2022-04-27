@@ -50,7 +50,7 @@ define(function (require, exports, module) {
         dialogue = Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars), true);
     }
 
-    function openProjectFolder(path){
+    function openProjectFolder(){
         //open folder
         CommandManager.execute(Commands.FILE_OPEN_FOLDER);
     }
@@ -59,9 +59,9 @@ define(function (require, exports, module) {
         dialogue.close();
     });
 
-    exports.on(EVENT_OPEN_FOLDER, (path)=>{
+    exports.on(EVENT_OPEN_FOLDER, ()=>{
         //TODO: existing folder opening with given path
-        openProjectFolder(path);
+        openProjectFolder();
     });
 
     exports.init = function () {
