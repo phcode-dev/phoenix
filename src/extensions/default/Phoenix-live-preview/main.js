@@ -47,7 +47,7 @@ define(function (require, exports, module) {
         WorkspaceManager   = brackets.getModule("view/WorkspaceManager"),
         AppInit            = brackets.getModule("utils/AppInit"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
-        EditorManager      = brackets.getModule("editor/EditorManager"),
+        MainViewManager    = brackets.getModule("view/MainViewManager"),
         DocumentManager    = brackets.getModule("document/DocumentManager"),
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
@@ -262,7 +262,7 @@ define(function (require, exports, module) {
         _createExtensionPanel();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
-        EditorManager.on("activeEditorChange", _loadPreview);
+        MainViewManager.on("currentFileChange", _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
             _toggleVisibility();
