@@ -923,21 +923,22 @@ define(function (require, exports, module) {
         if (!PreferencesManager.get("findInFiles.nodeSearch")) {
             return;
         }
-        ProjectManager.getAllFiles(filter, true, true)
-            .done(function (fileListResult) {
-                var files = fileListResult,
-                    filter = FileFilters.getActiveFilter();
-                if (filter && filter.patterns.length > 0) {
-                    files = FileFilters.filterFileList(FileFilters.compile(filter.patterns), files);
-                }
-                files = files.filter(function (entry) {
-                    return entry.isFile && _isReadableText(entry.fullPath);
-                }).map(function (entry) {
-                    return entry.fullPath;
-                });
-                FindUtils.notifyIndexingStarted();
-                searchDomain.exec("initCache", files);
-            });
+        // TODO: fix caching. desabling for now to prevent large project open crashes and performance issues
+        // ProjectManager.getAllFiles(filter, true, true)
+        //     .done(function (fileListResult) {
+        //         var files = fileListResult,
+        //             filter = FileFilters.getActiveFilter();
+        //         if (filter && filter.patterns.length > 0) {
+        //             files = FileFilters.filterFileList(FileFilters.compile(filter.patterns), files);
+        //         }
+        //         files = files.filter(function (entry) {
+        //             return entry.isFile && _isReadableText(entry.fullPath);
+        //         }).map(function (entry) {
+        //             return entry.fullPath;
+        //         });
+        //         FindUtils.notifyIndexingStarted();
+        //         searchDomain.exec("initCache", files);
+        //     });
         _searchScopeChanged();
     };
 
