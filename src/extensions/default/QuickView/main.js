@@ -542,12 +542,16 @@ define(function (require, exports, module) {
         };
 
         function _imageToDataURI(file, cb) {
+            let contentType = "data:image;base64,";
+            if(file.name.endsWith('.svg')){
+                contentType = "data:image/svg+xml;base64,";
+            }
             file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
                 var base64 = window.btoa(
                     new Uint8Array(content)
                         .reduce((data, byte) => data + String.fromCharCode(byte), '')
                 );
-                var dataURL="data:image;base64," + base64;
+                var dataURL= contentType + base64;
                 cb(null, dataURL);
             });
         }
