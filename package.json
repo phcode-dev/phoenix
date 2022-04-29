@@ -56,7 +56,7 @@
         }
     ],
     "dependencies": {
-        "@phcode/fs": "^1.0.9",
+        "@phcode/fs": "^1.0.10",
         "browser-mime": "^1.0.1",
         "jszip": "^3.7.1",
         "marked": "^4.0.14",
