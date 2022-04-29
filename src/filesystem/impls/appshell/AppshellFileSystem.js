@@ -207,6 +207,17 @@ define(function (require, exports, module) {
         appshell.fs.showSaveDialog(title, initialPath, proposedNewFilename, _wrap(callback));
     }
 
+    function _createStatObject(isFile, mtime, size, realPath, hash) {
+        var options = {
+            isFile: isFile,
+            mtime: mtime,
+            size: size,
+            realPath: realPath,
+            hash: hash
+        };
+        return  new FileSystemStats(options);
+    }
+
     /**
      * Stat the file or directory at the given path, calling back
      * asynchronously with either a FileSystemError string or the entry's
@@ -222,16 +233,8 @@ define(function (require, exports, module) {
             if (err) {
                 callback(_mapError(err));
             } else {
-                var options = {
-                    isFile: stats.isFile(),
-                    mtime: stats.mtime,
-                    size: stats.size,
-                    realPath: stats.realPath,
-                    hash: stats.mtime? stats.mtime.getTime() : null
-                };
-
-                var fsStats = new FileSystemStats(options);
-
+                const hash = stats.mtime? stats.mtime.getTime() : null;
+                var fsStats = _createStatObject(stats.isFile(), stats.mtime, stats.size, stats.realPath, hash);
                 callback(null, fsStats);
             }
         });
@@ -278,28 +281,28 @@ define(function (require, exports, module) {
     function readdir(path, callback) {
         console.log('readdir: ', path);
         path = _normalise_path(path);
-        appshell.fs.readdir(path, function (err, contents) {
+        appshell.fs.readdir(path, {withFileTypes: true}, function (err, stats) {
             if (err) {
                 callback(_mapError(err));
                 return;
             }
 
-            var count = contents.length;
+            var count = stats.length;
             if (!count) {
                 callback(null, [], []);
                 return;
             }
 
-            var stats = [];
-            contents.forEach(function (val, idx) {
-                stat(_normalise_path(path + "/" + val), function (err, stat) {
-                    stats[idx] = err || stat;
-                    count--;
-                    if (count <= 0) {
-                        callback(null, contents, stats);
-                    }
-                });
+            let contents = [],
+                statsObject =[];
+
+            stats.forEach(function (entryStat) {
+                contents.push(entryStat.name);
+                const hash = entryStat.mtime? entryStat.mtime.getTime() : null;
+                statsObject.push(_createStatObject(entryStat.isFile(), entryStat.mtime, entryStat.size,
+                    entryStat.realPath, hash));
             });
+            callback(null, contents, statsObject);
         });
     }
 
