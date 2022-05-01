@@ -5,6 +5,17 @@ We are continuously adding features every week to improve the life of web develo
 **Development status:** `Alpha`
 
 List of features added to phoenix:
+
+## Share and publish your website
+`Added on Apr,2022`
+
+Quickly preview changes and share your website with others on the web with a single click. 
+
+
+<iframe allow="fullscreen;" width="100%" height="315"
+src="https://www.youtube.com/embed/dJTZ2iduagg">
+</iframe>
+
 ## Live HTML preview
 `Added on Apr,2022`
 
