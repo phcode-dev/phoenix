@@ -14,6 +14,16 @@ Code real-time in your browser. Make changes to CSS and HTML and you'll instantl
 src="https://www.youtube.com/embed/RIslg6XQwLA">
 </iframe>
 
+## Share and publish your website
+`Added on Apr,2022`
+
+Quickly preview changes and share your website with others on the web with a single click.
+
+
+<iframe allow="fullscreen;" width="100%" height="315"
+src="https://www.youtube.com/embed/dJTZ2iduagg">
+</iframe>
+
 ## Live Markdown preview
 Added on Apr,2022
 
