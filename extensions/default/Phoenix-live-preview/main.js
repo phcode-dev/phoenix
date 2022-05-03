@@ -229,7 +229,7 @@ define(function (require, exports, module) {
                     }
                 }
             };
-            if(currentSrc !== newSrc || force){
+            if(currentSrc !== newSrc || force === true){
                 $iframe.src = newSrc;
                 _renderPreview(previewDetails, newSrc);
             }
