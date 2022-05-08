@@ -49,7 +49,26 @@ img {
     box-sizing: border-box;
 
 }
+@media screen and (max-width: 720px) {
+    #mainDiv {
+        color: #ffffffef;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        z-index: 8;
+        align-items: center;
+        justify-content: center;
+        display: flex!important;
+        flex-direction: column!important;
+    }
 
+    #logo {
+        height: 125px;
+        vertical-align: middle;
+        position: relative;
+     }
+}
 #MainText {
     color: #ffffffef;
     text-align: center!important;
