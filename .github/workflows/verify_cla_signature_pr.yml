@@ -1,0 +1,74 @@
+name: Checking CLA Signature
+# https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#github-context
+# The pull request target event provides RW token to github 
+# https://github.blog/2020-08-03-github-actions-improvements-for-fork-and-pull-request-workflows/
+# But `on: pull_request_target` should be avoided due to security
+# reasons. Read more: [SEC_ADV_1] https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+# 
+# We will use a mix of github pull_request that does not provide any write access to pull requests on forks
+# and workflow event, as discussed in [SEC_ADV_1]
+
+on: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  one:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 100
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setting up prerequisites
+        run: | 
+          mkdir ./.tmp
+          pip3 install requests
+      - name: Getting commit details
+        uses: wei/wget@v1
+        with:
+          args: -O ./.tmp/commitDetails.json ${{ toJSON(github.event.pull_request._links.commits.href) }}
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: | 
+          echo "$GITHUB_CONTEXT" > ./.tmp/github.json
+          echo ${{ github.event.number }} > ./.tmp/PRNumber
+          cat ./.tmp/github.json
+          echo "commit details: "
+          cat ./.tmp/commitDetails.json
+      
+      - name: Review pull request
+        run: |
+          which git
+          if ! python ./.github/workflows/python/verify_cla_signature_pr.py $PERSONAL_CLA_LINK $EMPLOYER_CLA_LINK; then
+              echo "Pull request details could not be extracted"
+              exit 1
+          else
+              echo "all good"
+          fi
+        env:
+          EMPLOYER_CLA_LINK: https://raw.githubusercontent.com/phcode-dev/contributor-license-agreement/main/employer_contributor_license_agreement.md
+          PERSONAL_CLA_LINK: https://raw.githubusercontent.com/phcode-dev/contributor-license-agreement/main/personal_contributor_licence_agreement.md
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: prcontext
+          path: .tmp/
+      
+      - name: Fail on validation errors
+        run: |
+          FILE=./.tmp/failed
+          if test -f "$FILE"; then
+              echo "Validation failed. Reason:"
+              cat ./.tmp/failed
+              exit 1
+          fi

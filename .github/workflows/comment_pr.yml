@@ -1,0 +1,66 @@
+name: Comment on pull request post pull request auto review
+# depends on and only executes after pull_request_processor.yml is complete
+
+on: 
+  workflow_run:
+    workflows: ["Checking CLA Signature"]
+    types:
+      - completed
+
+jobs:
+  one:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    if: >
+      ${{ github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Print github contexts
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: |
+          ls
+          echo "GH context:"
+          echo "$GITHUB_CONTEXT"
+      - name: 'Download artifact'
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{github.event.workflow_run.id }},
+            });
+            console.log(artifacts);
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "prcontext"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+      - run: |
+          ls
+          unzip pr.zip
+          cat ./comment
+      
+      - name: 'Comment on Current Pull Request'
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.COMMENT_BOT_TOKEN }}
+          script: |
+            var fs = require('fs');
+            var issue_number = Number(fs.readFileSync('./PRNumber'));
+            var comment = String(fs.readFileSync('./comment'));
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: comment
+            });
