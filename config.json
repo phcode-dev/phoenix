@@ -21,7 +21,9 @@
         "linting.enabled_by_default": true,
         "build_timestamp": "",
         "googleAnalyticsID": "G-P4HJFPDB76",
-        "environment": "stage",
+        "coreAnalyticsID": "phoenix",
+        "coreAnalyticsAppName": "phoenix-dev",
+        "environment": "dev",
         "update_info_url"         : "https://dev.phcode.dev/getupdates?locale=<locale>",
         "notification_info_url"   : "https://dev.phcode.dev/getnotifications?locale=<locale>",
         "buildtype": "dev"
