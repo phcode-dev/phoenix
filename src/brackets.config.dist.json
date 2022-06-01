@@ -1,5 +1,7 @@
 {
     "googleAnalyticsID"       : "G-FBK9RP5YK2",
+    "coreAnalyticsID"         : "phoenix",
+    "coreAnalyticsAppName"    : "phoenix-prod",
     "environment"             : "production",
     "update_info_url"         : "https://phcode.dev/getupdates?locale=<locale>",
     "notification_info_url"   : "https://phcode.dev/getnotifications?locale=<locale>",
