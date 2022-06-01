@@ -21,19 +21,11 @@
  *
  */
 
-/*global define, gtag*/
+/*global define, gtag, analytics*/
 define(function (require, exports, module) {
     const CATEGORY_PROJECT = "PROJECT";
 
-    /**
-     * send to google analytics
-     * @param category string mandatory
-     * @param action string mandatory
-     * @param label string can be null
-     * @param value int can be null
-     * @private
-     */
-    function sendEvent(category, action, label, value) {
+    function _sendToGoogleAnalytics(category, action, label, value) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
         category = category || "category";
         action = action || "action";
@@ -48,6 +40,32 @@ define(function (require, exports, module) {
             'event_label': label,
             'value': value
         });
+    }
+
+    function _sendToCoreAnalytics(category, action, label, value) {
+        // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
+        category = category || "category";
+        action = action || "action";
+        if(!label){
+            label = action;
+        }
+        if(!value){
+            value = 1;
+        }
+        analytics.event(category, action, label, value);
+    }
+
+    /**
+     * send to google analytics
+     * @param category string mandatory
+     * @param action string mandatory
+     * @param label string can be null
+     * @param value int can be null
+     * @private
+     */
+    function sendEvent(category, action, label, value) {
+        _sendToGoogleAnalytics(category, action, label, value);
+        _sendToCoreAnalytics(category, action, label, value);
     }
 
     function _sendMapValues(category, action, mapObject) {

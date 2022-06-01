@@ -47,7 +47,7 @@ Phoenix is in alpha and is under active development.
 ## Contributing/ Feedback
 * [Get in touch with our community](https://github.com/aicore/phoenix/discussions).
 * [Request a new feature](https://github.com/aicore/phoenix/discussions/categories/ideas)
-* [Join our Discord community](https://discord.gg/TwgBFCjVBd)
+* [Join our Discord community](https://discord.com/invite/rBpTBPttca)
 * [Raise issues](https://github.com/aicore/phoenix/issues)
 * [Contribute](https://github.com/aicore/phoenix)
 
