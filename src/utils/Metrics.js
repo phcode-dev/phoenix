@@ -22,348 +22,158 @@
 /**
  *  Utilities functions related to Health Data logging
  */
-/*global Map*/
+/*global gtag, analytics*/
 define(function (require, exports, module) {
+    const MAX_AUDIT_ENTRIES = 3000;
+    let initDone = false,
+        disabled = false,
+        loggedDataForAudit = new Map();
 
+    function _initGoogleAnalytics() {
+        // Load google analytics scripts
+        let script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.onload = function(){
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function(){window.dataLayer.push(arguments);};
+            gtag('js', new Date());
 
-    var PreferencesManager          = require("preferences/PreferencesManager"),
-        LanguageManager             = require("language/LanguageManager"),
-        FileUtils                   = require("file/FileUtils"),
-        PerfUtils                   = require("utils/PerfUtils"),
-        FindUtils                   = require("search/FindUtils"),
-        StringUtils                 = require("utils/StringUtils"),
-        EventDispatcher             = require("utils/EventDispatcher"),
-
-        HEALTH_DATA_STATE_KEY       = "HealthData.Logs",
-        logHealthData               = true,
-        analyticsEventMap           = new Map();
-
-    var commonStrings = { USAGE: "usage",
-        FILE_OPEN: "fileOpen",
-        FILE_NEW: "newfile",
-        FILE_SAVE: "fileSave",
-        FILE_CLOSE: "fileClose",
-        LANGUAGE_CHANGE: "languageChange",
-        LANGUAGE_SERVER_PROTOCOL: "languageServerProtocol",
-        CODE_HINTS: "codeHints",
-        PARAM_HINTS: "parameterHints",
-        JUMP_TO_DEF: "jumpToDefinition"
-    };
-
-    EventDispatcher.makeEventDispatcher(exports);
-
-    /**
-     * Init: creates the health log preference keys in the state.json file
-     */
-    function init() {
-        PreferencesManager.stateManager.definePreference(HEALTH_DATA_STATE_KEY, "object", {});
-    }
-
-    /**
-     * All the logging functions should be disabled if this returns false
-     * @return {boolean} true if health data can be logged
-     */
-    function shouldLogHealthData() {
-        return logHealthData;
-    }
-
-    /**
-     * Return all health data logged till now stored in the state prefs
-     * @return {Object} Health Data aggregated till now
-     */
-    function getStoredHealthData() {
-        var storedData = PreferencesManager.getViewState(HEALTH_DATA_STATE_KEY) || {};
-        return storedData;
-    }
-
-    /**
-     * Return the aggregate of all health data logged till now from all sources
-     * @return {Object} Health Data aggregated till now
-     */
-    function getAggregatedHealthData() {
-        var healthData = getStoredHealthData();
-        $.extend(healthData, PerfUtils.getHealthReport());
-        $.extend(healthData, FindUtils.getHealthReport());
-        return healthData;
-    }
-
-    /**
-     * Sets the health data
-     * @param {Object} dataObject The object to be stored as health data
-     */
-    function setHealthData(dataObject) {
-        if (!shouldLogHealthData()) {
-            return;
-        }
-        PreferencesManager.setViewState(HEALTH_DATA_STATE_KEY, dataObject);
-    }
-
-    /**
-     * Returns health data logged for the given key
-     * @return {Object} Health Data object for the key or undefined if no health data stored
-     */
-    function getHealthDataLog(key) {
-        var healthData = getStoredHealthData();
-        return healthData[key];
-    }
-
-    /**
-     * Sets the health data for the given key
-     * @param {Object} dataObject The object to be stored as health data for the key
-     */
-    function setHealthDataLog(key, dataObject) {
-        var healthData = getStoredHealthData();
-        healthData[key] = dataObject;
-        setHealthData(healthData);
-    }
-
-    /**
-     * Clears all the health data recorded till now
-     */
-    function clearHealthData() {
-        PreferencesManager.setViewState(HEALTH_DATA_STATE_KEY, {});
-        //clear the performance related health data also
-        PerfUtils.clear();
-    }
-
-    /**
-     * Enable or disable health data logs
-     * @param {boolean} enabled true to enable health logs
-     */
-    function setHealthLogsEnabled(enabled) {
-        logHealthData = enabled;
-        if (!enabled) {
-            clearHealthData();
-        }
-    }
-
-    /**
-     * Whenever a file is opened call this function. The function will record the number of times
-     * the standard file types have been opened. We only log the standard filetypes
-     * @param {String} filePath          The path of the file to be registered
-     * @param {boolean} addedToWorkingSet set to true if extensions of files added to the
-     *                                    working set needs to be logged
-     */
-    function fileOpened(filePath, addedToWorkingSet, encoding) {
-        if (!shouldLogHealthData()) {
-            return;
-        }
-        var fileExtension = FileUtils.getFileExtension(filePath),
-            language = LanguageManager.getLanguageForPath(filePath),
-            healthData = getStoredHealthData(),
-            fileExtCountMap = [];
-        healthData.fileStats = healthData.fileStats || {
-            openedFileExt: {},
-            workingSetFileExt: {},
-            openedFileEncoding: {}
+            gtag('config', brackets.config.googleAnalyticsID, {
+                'page_title': 'Phoenix editor',
+                'page_path': '/index.html',
+                'page_location': window.location.origin
+            });
         };
-        if (language.getId() !== "unknown") {
-            fileExtCountMap = addedToWorkingSet ? healthData.fileStats.workingSetFileExt : healthData.fileStats.openedFileExt;
-            if (!fileExtCountMap[fileExtension]) {
-                fileExtCountMap[fileExtension] = 0;
-            }
-            fileExtCountMap[fileExtension]++;
-            setHealthData(healthData);
-        }
-        if (encoding) {
-            var fileEncCountMap = healthData.fileStats.openedFileEncoding;
-            if (!fileEncCountMap) {
-                healthData.fileStats.openedFileEncoding = {};
-                fileEncCountMap = healthData.fileStats.openedFileEncoding;
-            }
-            if (!fileEncCountMap[encoding]) {
-                fileEncCountMap[encoding] = 0;
-            }
-            fileEncCountMap[encoding]++;
-            setHealthData(healthData);
-        }
+        script.src = 'https://www.googletagmanager.com/gtag/js?' + brackets.config.googleAnalyticsID;
+        document.getElementsByTagName('head')[0].appendChild(script);
+    }
 
-
-        sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_OPEN + language._name,
-                            commonStrings.USAGE,
-                            commonStrings.FILE_OPEN,
-                            language._name.toLowerCase()
-                         );
-
+    function _initCoreAnalytics() {
+        // Load core analytics scripts
+        if(!window.analytics){ window.analytics = {
+            _initData: [], loadStartTime: new Date().getTime(),
+            event: function (){window.analytics._initData.push(arguments);}
+        };}
+        let script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        window.analytics.debugMode = window.debugModeLogs;
+        script.onload = function(){
+            // replace `your_analytics_account_ID` and `appName` below with your values
+            window.initAnalyticsSession( brackets.config.coreAnalyticsID,
+                brackets.config.coreAnalyticsAppName);
+            window.analytics.event("core-analytics", "client-lib", "loadTime", 1,
+                (new Date().getTime())- window.analytics.loadStartTime);
+        };
+        script.src = 'https://unpkg.com/@aicore/core-analytics-client-lib/dist/analytics.min.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
     }
 
     /**
-     * Whenever a file is saved call this function.
-     * The function will send the analytics Data
-     * We only log the standard filetypes and fileSize
-     * @param {String} filePath The path of the file to be registered
+     * We are transitioning to our own analytics instead of google as we breached the free user threshold of google
+     * and paid plans for GA starts at 100,000 USD.
+     * @private
      */
-    function fileSaved(docToSave) {
-        if (!docToSave) {
+    function init(){
+        if(initDone){
             return;
         }
-        var fileType = docToSave.language ? docToSave.language._name : "";
-        sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_SAVE + fileType,
-                            commonStrings.USAGE,
-                            commonStrings.FILE_SAVE,
-                            fileType.toLowerCase()
-                         );
+        _initGoogleAnalytics();
+        _initCoreAnalytics();
+        initDone = true;
     }
 
-    /**
-     * Whenever a file is closed call this function.
-     * The function will send the analytics Data.
-     * We only log the standard filetypes and fileSize
-     * @param {String} filePath The path of the file to be registered
-     */
-    function fileClosed(file) {
-        if (!file) {
+    function _sendToGoogleAnalytics(category, action, label, value) {
+        // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
+        if(disabled){
             return;
         }
-        var language = LanguageManager.getLanguageForPath(file._path),
-            size = -1;
-
-        function _sendData(fileSize) {
-            var subType = "";
-
-            if(fileSize/1024 <= 1) {
-
-                if(fileSize < 0) {
-                    subType = "";
-                }
-                if(fileSize <= 10) {
-                    subType = "Size_0_10KB";
-                } else if (fileSize <= 50) {
-                    subType = "Size_10_50KB";
-                } else if (fileSize <= 100) {
-                    subType = "Size_50_100KB";
-                } else if (fileSize <= 500) {
-                    subType = "Size_100_500KB";
-                } else {
-                    subType = "Size_500KB_1MB";
-                }
-
-            } else {
-                fileSize = fileSize/1024;
-                if(fileSize <= 2) {
-                    subType = "Size_1_2MB";
-                } else if(fileSize <= 5) {
-                    subType = "Size_2_5MB";
-                } else {
-                    subType = "Size_Above_5MB";
-                }
-            }
-
-            sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_CLOSE + language._name + subType,
-                                commonStrings.USAGE,
-                                commonStrings.FILE_CLOSE,
-                                language._name.toLowerCase(),
-                                subType
-                             );
+        category = category || "category";
+        action = action || "action";
+        if(!label){
+            label = action;
         }
-
-        file.stat(function(err, fileStat) {
-            if(!err) {
-                size = fileStat.size.valueOf()/1024;
-            }
-            _sendData(size);
+        if(!value){
+            value = 1;
+        }
+        let eventAct = `${action}.${category}.${label}`;
+        gtag('event', eventAct, {
+            'event_category': category,
+            'event_label': label,
+            'value': value
         });
     }
 
-    /**
-     * Sets the project details(a probably unique prjID, number of files in the project and the node cache size) in the health log
-     * The name of the project is never saved into the health data log, only the hash(name) is for privacy requirements.
-     * @param {string} projectName The name of the project
-     * @param {number} numFiles    The number of file in the project
-     * @param {number} cacheSize   The node file cache memory consumed by the project
-     */
-    function setProjectDetail(projectName, numFiles, cacheSize) {
-        var projectNameHash = StringUtils.hashCode(projectName),
-            FIFLog = getHealthDataLog("ProjectDetails");
-        if (!FIFLog) {
-            FIFLog = {};
+    function _sendToCoreAnalytics(category, action, label, count, value) {
+        // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
+        if(disabled){
+            return;
         }
-        FIFLog["prj" + projectNameHash] = {
-            numFiles: numFiles,
-            cacheSize: cacheSize
-        };
-        setHealthDataLog("ProjectDetails", FIFLog);
+        category = category || "category";
+        action = action || "action";
+        if(!label){
+            label = action;
+        }
+        if(!value){
+            value = 1;
+        }
+        analytics.event(category, action, label, count, value);
+    }
+
+    function _logEventForAudit(eventType, eventCategory, eventSubCategory, val) {
+        let key = `${eventType}.${eventCategory}.${eventSubCategory}`;
+        let newVal = (loggedDataForAudit.get(key) || 0) + val;
+        loggedDataForAudit.set(key, newVal);
+        if(loggedDataForAudit.size >= MAX_AUDIT_ENTRIES){
+            const NUM_ENTRIES_TO_DELETE = 1000;
+            let keys = Array.from(loggedDataForAudit.keys()).slice(0, NUM_ENTRIES_TO_DELETE);
+            keys.forEach(k => loggedDataForAudit.delete(k));
+        }
     }
 
     /**
-     * Increments health log count for a particular kind of search done
-     * @param {string} searchType The kind of search type that needs to be logged- should be a js var compatible string
-     */
-    function searchDone(searchType) {
-        var searchDetails = getHealthDataLog("searchDetails");
-        if (!searchDetails) {
-            searchDetails = {};
-        }
-        if (!searchDetails[searchType]) {
-            searchDetails[searchType] = 0;
-        }
-        searchDetails[searchType]++;
-        setHealthDataLog("searchDetails", searchDetails);
-    }
-
-     /**
-     * Notifies the HealthData extension to send Analytics Data to server
-     * @param{Object} eventParams Event Data to be sent to Analytics Server
-     */
-    function notifyHealthManagerToSendData(eventParams) {
-        exports.trigger("SendAnalyticsData", eventParams);
-    }
-
-    /**
-     * Send Analytics Data
+     * log a numeric count >=0
+     * @param {string} eventType The kind of Event Type that needs to be logged- should be a js var compatible string
      * @param {string} eventCategory The kind of Event Category that
      * needs to be logged- should be a js var compatible string
      * @param {string} eventSubCategory The kind of Event Sub Category that
      * needs to be logged- should be a js var compatible string
-     * @param {string} eventType The kind of Event Type that needs to be logged- should be a js var compatible string
-     * @param {string} eventSubType The kind of Event Sub Type that
-     * needs to be logged- should be a js var compatible string
+     * @param {number} count >=0
      */
-    function sendAnalyticsData(eventName, eventCategory, eventSubCategory, eventType, eventSubType) {
-        var isEventDataAlreadySent = analyticsEventMap.get(eventName),
-            isHDTracking   = PreferencesManager.getExtensionPrefs("healthData").get("healthDataTracking"),
-            eventParams = {};
+    function countEvent(eventType, eventCategory, eventSubCategory, count) {
+        _logEventForAudit(eventType, eventCategory, eventSubCategory, count);
+        _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, count);
+        _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, count);
+    }
 
-        if (isHDTracking && !isEventDataAlreadySent && eventName && eventCategory) {
-            eventParams =  {
-                eventName: eventName,
-                eventCategory: eventCategory,
-                eventSubCategory: eventSubCategory || "",
-                eventType: eventType || "",
-                eventSubType: eventSubType || ""
-            };
-            notifyHealthManagerToSendData(eventParams);
-        }
+    /**
+     * log a numeric count >=0
+     * @param {string} eventType The kind of Event Type that needs to be logged- should be a js var compatible string
+     * @param {string} eventCategory The kind of Event Category that
+     * needs to be logged- should be a js var compatible string
+     * @param {string} eventSubCategory The kind of Event Sub Category that
+     * needs to be logged- should be a js var compatible string
+     * @param {number} value
+     */
+    function valueEvent(eventType, eventCategory, eventSubCategory, value) {
+        _logEventForAudit(eventType, eventCategory, eventSubCategory, value);
+        _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, value);
+        _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, 1, value);
+    }
+
+    function setDisabled(shouldDisable) {
+        disabled = shouldDisable;
+    }
+
+    function getLoggedDataForAudit() {
+        return loggedDataForAudit;
     }
 
     // Define public API
-    exports.getHealthDataLog          = getHealthDataLog;
-    exports.setHealthDataLog          = setHealthDataLog;
-    exports.getAggregatedHealthData   = getAggregatedHealthData;
-    exports.clearHealthData           = clearHealthData;
-    exports.fileOpened                = fileOpened;
-    exports.fileSaved                 = fileSaved;
-    exports.fileClosed                = fileClosed;
-    exports.setProjectDetail          = setProjectDetail;
-    exports.searchDone                = searchDone;
-    exports.setHealthLogsEnabled      = setHealthLogsEnabled;
-    exports.shouldLogHealthData       = shouldLogHealthData;
-    exports.init                      = init;
-    exports.sendAnalyticsData         = sendAnalyticsData;
-
-    // constants
-    // searchType for searchDone()
-    exports.SEARCH_INSTANT            = "searchInstant";
-    exports.SEARCH_ON_RETURN_KEY      = "searchOnReturnKey";
-    exports.SEARCH_REPLACE_ALL        = "searchReplaceAll";
-    exports.SEARCH_NEXT_PAGE          = "searchNextPage";
-    exports.SEARCH_PREV_PAGE          = "searchPrevPage";
-    exports.SEARCH_LAST_PAGE          = "searchLastPage";
-    exports.SEARCH_FIRST_PAGE         = "searchFirstPage";
-    exports.SEARCH_REGEXP             = "searchRegExp";
-    exports.SEARCH_CASE_SENSITIVE     = "searchCaseSensitive";
-    // A new search context on search bar up-Gives an idea of number of times user did a discrete search
-    exports.SEARCH_NEW                = "searchNew";
-    exports.commonStrings = commonStrings;
-    exports.analyticsEventMap = analyticsEventMap;
+    exports.init               = init;
+    exports.setDisabled        = setDisabled;
+    exports.getLoggedDataForAudit      = getLoggedDataForAudit;
+    exports.countEvent         = countEvent;
+    exports.valueEvent         = valueEvent;
 });
