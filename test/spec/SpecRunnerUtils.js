@@ -547,9 +547,6 @@ define(function (require, exports, module) {
                         "" :// TODO: change this to dev,user for loading vfs extension tests
                         "");
 
-            // disable update check in test windows
-            params.put("skipUpdateCheck", true);
-
             // disable loading of sample project
             params.put("skipSampleProjectLoad", true);
 

@@ -99,7 +99,7 @@ define(function (require, exports, module) {
         // tied to a window, so we need one window for all the tests. Need to think
         // more about how performance tests should ultimately work.
         it("File open performance", function () {
-            openFile("brackets-concat.js"); // 3.4MB
+            openFile("brackets-concat.js"); // 4.1MB
             openFile("jquery_ui_index.html");
             openFile("blank.js");
             openFile("InlineWidget.js");
