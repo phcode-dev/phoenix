@@ -26,7 +26,6 @@ define(function (require, exports, module) {
 
     var AppInit                 = brackets.getModule("utils/AppInit"),
         HealthLogger            = brackets.getModule("utils/HealthLogger"),
-        Metrics                 = brackets.getModule("utils/Metrics"),
         Menus                   = brackets.getModule("command/Menus"),
         CommandManager          = brackets.getModule("command/CommandManager"),
         Strings                 = brackets.getModule("strings"),
@@ -65,7 +64,6 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         initTest();
-        Metrics.init();
         HealthLogger.init();
     });
 
