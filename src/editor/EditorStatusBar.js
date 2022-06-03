@@ -49,7 +49,7 @@ define(function (require, exports, module) {
         Commands             = require("command/Commands"),
         DocumentManager      = require("document/DocumentManager"),
         StringUtils          = require("utils/StringUtils"),
-        HealthLogger         = require("utils/HealthLogger");
+        Metrics              = require("utils/Metrics");
 
     var SupportedEncodingsText = require("text!supported-encodings.json"),
         SupportedEncodings = JSON.parse(SupportedEncodingsText);
@@ -174,11 +174,11 @@ define(function (require, exports, module) {
 
         if (sels.length > 1) {
             //Send analytics data for multicursor use
-            HealthLogger.sendAnalyticsData(
+            Metrics.countEvent(
+                Metrics.EVENT_TYPE.EDITOR,
                 "multiCursor",
                 "usage",
-                "multiCursor",
-                "use"
+                1
             );
             selStr = StringUtils.format(Strings.STATUSBAR_SELECTION_MULTIPLE, sels.length);
         } else if (editor.hasSelection()) {
@@ -466,13 +466,11 @@ define(function (require, exports, module) {
             var fileType = (document.file instanceof InMemoryFile) ? "newFile" : "existingFile",
                 filelanguageName = lang ? lang._name : "";
 
-            HealthLogger.sendAnalyticsData(
-                HealthLogger.commonStrings.USAGE + HealthLogger.commonStrings.LANGUAGE_CHANGE
-                + filelanguageName + fileType,
-                HealthLogger.commonStrings.USAGE,
-                HealthLogger.commonStrings.LANGUAGE_CHANGE,
-                filelanguageName.toLowerCase(),
-                fileType
+            Metrics.countEvent(
+                Metrics.EVENT_TYPE.EDITOR,
+                "languageChange",
+                `${filelanguageName.toLowerCase()}-${fileType}`,
+                1
             );
 
             if (lang === LANGUAGE_SET_AS_DEFAULT) {

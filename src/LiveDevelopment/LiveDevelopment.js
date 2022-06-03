@@ -95,7 +95,7 @@ define(function LiveDevelopment(require, exports, module) {
         UserServer           = require("LiveDevelopment/Servers/UserServer").UserServer,
         WebSocketTransport   = require("LiveDevelopment/transports/WebSocketTransport"),
         PreferencesManager   = require("preferences/PreferencesManager"),
-        HealthLogger         = require("utils/HealthLogger");
+        Metrics         = require("utils/Metrics");
 
     // Inspector
     var Inspector       = require("LiveDevelopment/Inspector/Inspector");
@@ -1350,11 +1350,11 @@ define(function LiveDevelopment(require, exports, module) {
 
         }
         // Send analytics data when Live Preview is opened
-        HealthLogger.sendAnalyticsData(
-            "livePreviewOpen",
+        Metrics.countEvent(
+            Metrics.EVENT_TYPE.LIVE_PREVIEW,
+            "Open",
             "usage",
-            "livePreview",
-            "open"
+            1
         );
 
         // Register user defined server provider and keep handlers for further clean-up

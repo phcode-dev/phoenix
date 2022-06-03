@@ -650,15 +650,14 @@ define(function (require, exports, module) {
             document = editor ? editor.document : null,
             language = document ? document.language : null,
             languageName = language ? language._name : "",
-            HealthLogger = require("utils/HealthLogger"),
-            typeStr = HealthLogger.commonStrings[typeStrKey] || "";
+            Metrics = require("utils/Metrics"),
+            typeStr = typeStrKey;
 
-         HealthLogger.sendAnalyticsData(
-            HealthLogger.commonStrings.USAGE + HealthLogger.commonStrings.LANGUAGE_SERVER_PROTOCOL + typeStr + languageName,
-            HealthLogger.commonStrings.USAGE,
-            HealthLogger.commonStrings.LANGUAGE_SERVER_PROTOCOL,
-            typeStr,
-            languageName.toLowerCase()
+        Metrics.countEvent(
+            Metrics.EVENT_TYPE.CODE_HINTS,
+            "languageServerProtocol",
+            typeStr + languageName.toLowerCase(),
+            1
           );
     }
 

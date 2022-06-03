@@ -38,7 +38,8 @@ define(function (require, exports, module) {
         logHealthData               = true,
         analyticsEventMap           = new Map();
 
-    var commonStrings = { USAGE: "usage",
+    var commonStrings = {
+        USAGE: "usage",
         FILE_OPEN: "fileOpen",
         FILE_NEW: "newfile",
         FILE_SAVE: "fileSave",

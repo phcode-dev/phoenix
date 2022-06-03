@@ -176,4 +176,13 @@ define(function (require, exports, module) {
     exports.getLoggedDataForAudit      = getLoggedDataForAudit;
     exports.countEvent         = countEvent;
     exports.valueEvent         = valueEvent;
+    exports.EVENT_TYPE         = {
+        UI: "UI",
+        UI_DIALOG: "ui-dialog",
+        UI_BOTTOM_PANEL: "ui-bottomPanel",
+        UI_SIDE_PANEL: "ui-sidePanel",
+        LIVE_PREVIEW: "live-preview",
+        CODE_HINTS: "code-hints",
+        EDITOR: "editor"
+    };
 });
