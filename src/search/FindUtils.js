@@ -505,16 +505,6 @@ define(function (require, exports, module) {
         return collapseResults;
     }
 
-    /**
-     * Returns the health data pertaining to Find in files
-     */
-    function getHealthReport() {
-        return {
-            prefNodeSearchDisabled: _prefNodeSearchDisabled(),
-            prefInstantSearchDisabled: _prefInstantSearchDisabled()
-        };
-    }
-
     exports.parseDollars                    = parseDollars;
     exports.hasCheckedMatches               = hasCheckedMatches;
     exports.performReplacements             = performReplacements;
@@ -530,7 +520,6 @@ define(function (require, exports, module) {
     exports.isIndexingInProgress            = isIndexingInProgress;
     exports.setCollapseResults              = setCollapseResults;
     exports.isCollapsedResults              = isCollapsedResults;
-    exports.getHealthReport                 = getHealthReport;
     exports.ERROR_FILE_CHANGED              = "fileChanged";
 
     // event notification functions

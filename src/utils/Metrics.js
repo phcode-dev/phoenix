@@ -75,7 +75,7 @@ define(function (require, exports, module) {
      * and paid plans for GA starts at 100,000 USD.
      * @private
      */
-    function init(){
+    function _initAnalytics(){
         if(initDone){
             return;
         }
@@ -83,6 +83,8 @@ define(function (require, exports, module) {
         _initCoreAnalytics();
         initDone = true;
     }
+
+    _initAnalytics();
 
     function _sendToGoogleAnalytics(category, action, label, value) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
@@ -171,7 +173,6 @@ define(function (require, exports, module) {
     }
 
     // Define public API
-    exports.init               = init;
     exports.setDisabled        = setDisabled;
     exports.getLoggedDataForAudit      = getLoggedDataForAudit;
     exports.countEvent         = countEvent;
@@ -183,6 +184,7 @@ define(function (require, exports, module) {
         UI_SIDE_PANEL: "ui-sidePanel",
         LIVE_PREVIEW: "live-preview",
         CODE_HINTS: "code-hints",
-        EDITOR: "editor"
+        EDITOR: "editor",
+        SEARCH: "search"
     };
 });

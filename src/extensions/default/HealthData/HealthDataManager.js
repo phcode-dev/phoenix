@@ -305,7 +305,7 @@ define(function (require, exports, module) {
         checkHealthDataSend();
     });
 
-    HealthLogger.on("SendAnalyticsData", checkAnalyticsDataSend);
+    //HealthLogger.on("SendAnalyticsData", checkAnalyticsDataSend);
 
     window.addEventListener("online", function () {
         checkHealthDataSend();

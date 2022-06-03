@@ -38,7 +38,7 @@ define(function (require, exports, module) {
         ViewUtils          = require("utils/ViewUtils"),
         FindUtils          = require("search/FindUtils"),
         QuickSearchField   = require("search/QuickSearchField").QuickSearchField,
-        HealthLogger       = require("utils/HealthLogger");
+        Metrics            = require("utils/Metrics");
 
     /**
      * @private
@@ -264,9 +264,11 @@ define(function (require, exports, module) {
         // close the old Find bar (with no animation) before creating a new one.
         // TODO: see note above - this will move to ModalBar eventually.
         FindBar._closeFindBars();
+        let metricType = "findBar";
         if (this._options.multifile) {
-            HealthLogger.searchDone(HealthLogger.SEARCH_NEW);
+            metricType = "findInFiles.bar";
         }
+        Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, metricType, "opened", 1);
 
         var templateVars = _.clone(this._options);
         templateVars.Strings = Strings;
@@ -364,7 +366,6 @@ define(function (require, exports, module) {
                         if (self._options.multifile) {
                             if ($(e.target).is("#find-what")) {
                                 if (!self._options.replace) {
-                                    HealthLogger.searchDone(HealthLogger.SEARCH_INSTANT);
                                     self.trigger("doFind");
                                     lastQueriedText = self.getQueryInfo().query;
                                 }
@@ -386,12 +387,14 @@ define(function (require, exports, module) {
                                 // Just set focus to the Replace field.
                                 self.focusReplace();
                             } else {
-                                HealthLogger.searchDone(HealthLogger.SEARCH_ON_RETURN_KEY);
+                                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "findInFiles.bar",
+                                    "returnKey", 1);
                                 // Trigger a Find (which really means "Find All" in this context).
                                 self.trigger("doFind");
                             }
                         } else {
-                            HealthLogger.searchDone(HealthLogger.SEARCH_REPLACE_ALL);
+                            Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "replaceBatchInFiles.bar",
+                                "returnKey", 1);
                             self.trigger("doReplaceBatch");
                         }
                     } else {
