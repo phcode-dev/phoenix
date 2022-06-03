@@ -26,7 +26,7 @@ define(function (require, exports, module) {
     describe("Metrics tests", function () {
         beforeEach(function () {
             window.gtag=function () {};
-            window.analytics = {event: window.gtag};
+            window.analytics = {_initData: [], event: window.gtag};
         });
 
         it("should log health metrics", function () {
