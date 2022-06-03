@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         Strings                 = brackets.getModule("strings"),
         Dialogs                 = brackets.getModule("widgets/Dialogs"),
         ExtensionUtils          = brackets.getModule("utils/ExtensionUtils"),
-
+        Metrics                 = brackets.getModule("utils/Metrics"),
         HealthDataPreviewDialog = require("text!htmlContent/healthdata-preview-dialog.html"),
         HealthDataManager       = require("HealthDataManager");
 
@@ -48,7 +48,9 @@ define(function (require, exports, module) {
             var combinedHealthAnalyticsData = HealthDataManager.getAnalyticsData(),
                 content;
             combinedHealthAnalyticsData = [healthDataObject, combinedHealthAnalyticsData ];
-            content = JSON.stringify(combinedHealthAnalyticsData, null, 4);
+            let auditData = Metrics.getLoggedDataForAudit();
+            let sortedData = new Map([...auditData.entries()].sort());
+            content = JSON.stringify(Object.fromEntries(sortedData), null, 4);
             content = _.escape(content);
             content = content.replace(/ /g, "&nbsp;");
             content = content.replace(/(?:\r\n|\r|\n)/g, "<br />");

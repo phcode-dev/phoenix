@@ -128,17 +128,6 @@ define(function (require, exports, module) {
         }
     }
 
-    function _sendSearchMetrics(data) {
-        let CATEGORY_SEARCH = "searchDetails",
-            ACTION_SEARCH_NEW = "searchNew",
-            ACTION_SEARCH_INSTANT = "searchInstant",
-            searchDetails = data[CATEGORY_SEARCH] || {},
-            searchNew = searchDetails[ACTION_SEARCH_NEW] || 0,
-            searchInstant = searchDetails[ACTION_SEARCH_INSTANT] || 0;
-        sendEvent(CATEGORY_SEARCH, ACTION_SEARCH_NEW, null, searchNew);
-        sendEvent(CATEGORY_SEARCH, ACTION_SEARCH_INSTANT, null, searchInstant);
-    }
-
     function _sendThemesMetrics(data) {
         let CATEGORY_THEMES = "THEMES",
             ACTION_CURRENT_THEME = "bracketsTheme";
@@ -165,7 +154,6 @@ define(function (require, exports, module) {
         _sendPlatformMetrics(healthData);
         _sendProjectMetrics(healthData);
         _sendFileMetrics(healthData);
-        _sendSearchMetrics(healthData);
         _sendThemesMetrics(healthData);
         _sendExtensionMetrics(healthData);
     }

@@ -37,7 +37,7 @@ define(function (require, exports, module) {
         WorkspaceManager      = require("view/WorkspaceManager"),
         StringUtils           = require("utils/StringUtils"),
         Strings               = require("strings"),
-        HealthLogger          = require("utils/HealthLogger"),
+        Metrics               = require("utils/Metrics"),
         _                     = require("thirdparty/lodash"),
         Mustache              = require("thirdparty/mustache/mustache"),
 
@@ -164,23 +164,23 @@ define(function (require, exports, module) {
             .on("click.searchResults", ".first-page:not(.disabled)", function () {
                 self._currentStart = 0;
                 self._render();
-                HealthLogger.searchDone(HealthLogger.SEARCH_FIRST_PAGE);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "firstPage", 1);
             })
             // The link to go the previous page
             .on("click.searchResults", ".prev-page:not(.disabled)", function () {
                 self._currentStart -= RESULTS_PER_PAGE;
                 self._render();
-                HealthLogger.searchDone(HealthLogger.SEARCH_PREV_PAGE);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "prevPage", 1);
             })
             // The link to go to the next page
             .on("click.searchResults", ".next-page:not(.disabled)", function () {
                 self.trigger('getNextPage');
-                HealthLogger.searchDone(HealthLogger.SEARCH_NEXT_PAGE);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "nextPage", 1);
             })
             // The link to go to the last page
             .on("click.searchResults", ".last-page:not(.disabled)", function () {
                 self.trigger('getLastPage');
-                HealthLogger.searchDone(HealthLogger.SEARCH_LAST_PAGE);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "lastPage", 1);
             })
 
             // Add the file to the working set on double click

@@ -46,7 +46,7 @@ define(function (require, exports, module) {
         StatusBar         = require("widgets/StatusBar"),
         Strings           = require("strings"),
         StringUtils       = require("utils/StringUtils"),
-        HealthLogger      = require("utils/HealthLogger"),
+        Metrics           = require("utils/Metrics"),
         _                 = require("thirdparty/lodash");
 
 
@@ -221,12 +221,14 @@ define(function (require, exports, module) {
             if (queryInfo && queryInfo.query) {
                 _findBar.enable(!disableFindBar);
                 StatusBar.showBusyIndicator(disableFindBar);
+                let queryType = "query";
                 if (queryInfo.isRegexp) {
-                    HealthLogger.searchDone(HealthLogger.SEARCH_REGEXP);
+                    queryType = queryType + ":regex";
                 }
                 if (queryInfo.isCaseSensitive) {
-                    HealthLogger.searchDone(HealthLogger.SEARCH_CASE_SENSITIVE);
+                    queryType = queryType + ":caseSensitive";
                 }
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "findInFiles", queryType, 1);
 
                 var filter;
                 if (filterPicker) {

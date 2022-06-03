@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         CSSUtils             = brackets.getModule("language/CSSUtils"),
         HTMLUtils            = brackets.getModule("language/HTMLUtils"),
         ExtensionUtils       = brackets.getModule("utils/ExtensionUtils"),
-        HealthLogger         = brackets.getModule("utils/HealthLogger");
+        Metrics              = brackets.getModule("utils/Metrics");
 
     // Extension modules
     var InlineDocsViewer = require("InlineDocsViewer");
@@ -102,11 +102,11 @@ define(function (require, exports, module) {
         }
 
         // Send analytics data for Quick Doc open
-        HealthLogger.sendAnalyticsData(
-            "cssQuickDoc",
-            "usage",
-            "quickDoc",
-            "open"
+        Metrics.countEvent(
+            "MDNDocs",
+            "QuickDoc",
+            "css",
+            1
         );
 
         // Only provide docs if the selection is within a single line

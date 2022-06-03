@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         WrapSelection        = require("WrapSelection"),
         CommandManager       = brackets.getModule("command/CommandManager"),
         Menus                = brackets.getModule("command/Menus"),
-        HealthLogger         = brackets.getModule("utils/HealthLogger"),
+        Metrics              = brackets.getModule("utils/Metrics"),
         _                    = brackets.getModule("thirdparty/lodash"),
         EditorManager        = brackets.getModule("editor/EditorManager");
 
@@ -88,7 +88,7 @@ define(function (require, exports, module) {
             break;
         case REFACTORWRAPINTRYCATCH:
             eventName = REFACTORWRAPINTRYCATCH;
-            eventType = "tryCatch";
+            eventType = "wrapInTryCatch";
             WrapSelection.wrapInTryCatch();
             break;
         case REFACTORWRAPINCONDITION:
@@ -115,11 +115,11 @@ define(function (require, exports, module) {
                 return;
             }
             // Send analytics data for js refactoring
-            HealthLogger.sendAnalyticsData(
-                eventName,
-                "usage",
+            Metrics.countEvent(
+                Metrics.EVENT_TYPE.CODE_HINTS,
                 "jsRefactor",
-                eventType
+                eventType,
+                1
             );
         }
     }

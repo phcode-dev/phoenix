@@ -37,7 +37,7 @@ define(function (require, exports, module) {
         MultiRangeInlineEditor  = require("editor/MultiRangeInlineEditor"),
         Strings                 = require("strings"),
         ViewUtils               = require("utils/ViewUtils"),
-        HealthLogger            = require("utils/HealthLogger"),
+        Metrics                 = require("utils/Metrics"),
         _                       = require("thirdparty/lodash");
 
     var _newRuleCmd,
@@ -169,11 +169,11 @@ define(function (require, exports, module) {
         }
 
         //Send analytics data for QuickEdit open
-        HealthLogger.sendAnalyticsData(
-            "QuickEditOpen",
-            "usage",
-            "quickEdit",
-            "open"
+        Metrics.countEvent(
+            Metrics.EVENT_TYPE.EDITOR,
+            "QuickEdit",
+            "CSSInlineEditor",
+            1
         );
 
         // Only provide CSS editor if the selection is within a single line

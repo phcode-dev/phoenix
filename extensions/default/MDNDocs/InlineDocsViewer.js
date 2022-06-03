@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         KeyEvent        = brackets.getModule("utils/KeyEvent"),
         Strings         = brackets.getModule("strings"),
         Mustache        = brackets.getModule("thirdparty/mustache/mustache"),
-        HealthLogger    = brackets.getModule("utils/HealthLogger");
+        Metrics    = brackets.getModule("utils/Metrics");
 
     // Load template
     var inlineEditorTemplate = require("text!InlineDocsViewer.html");
@@ -199,11 +199,11 @@ define(function (require, exports, module) {
      * @return {boolean} false
      */
     InlineDocsViewer.prototype._logAnalyticsData = function () {
-        HealthLogger.sendAnalyticsData(
-            "QuickDocReadMore",
-            "usage",
-            "quickDoc",
-            "readMore"
+        Metrics.countEvent(
+            "MDNDocs",
+            "QuickDoc",
+            "ReadMore",
+            1
         );
         return false;
     };
