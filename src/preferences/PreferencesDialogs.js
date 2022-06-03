@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         SettingsDialogTemplate = require("text!htmlContent/project-settings-dialog.html"),
         Mustache               = require("thirdparty/mustache/mustache"),
         PathUtils              = require("thirdparty/path-utils/path-utils"),
-        HealthLogger           = require("utils/HealthLogger");
+        Metrics                = require("utils/Metrics");
 
     /**
      * Validate that text string is a valid base url which should map to a server folder
@@ -101,11 +101,11 @@ define(function (require, exports, module) {
                 var result = _validateBaseUrl(baseUrlValue);
                 if (result === "") {
                     // Send analytics data when url is set in project settings
-                    HealthLogger.sendAnalyticsData(
-                        "projectSettingsLivepreview",
-                        "usage",
+                    Metrics.countEvent(
+                        Metrics.EVENT_TYPE.UI_DIALOG,
                         "projectSettings",
-                        "use"
+                        "Livepreview",
+                        1
                     );
                     ProjectManager.setBaseUrl(baseUrlValue);
                 } else {

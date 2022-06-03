@@ -43,6 +43,7 @@ define(function (require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         Async               = require("utils/Async"),
         HealthLogger        = require("utils/HealthLogger"),
+        Metrics             = require("utils/Metrics"),
         Dialogs             = require("widgets/Dialogs"),
         DefaultDialogs      = require("widgets/DefaultDialogs"),
         Strings             = require("strings"),
@@ -687,13 +688,11 @@ define(function (require, exports, module) {
         var doc = DocumentManager.createUntitledDocument(_nextUntitledIndexToUse++, defaultExtension);
         MainViewManager._edit(MainViewManager.ACTIVE_PANE, doc);
 
-        HealthLogger.sendAnalyticsData(
-            HealthLogger.commonStrings.USAGE +
-            HealthLogger.commonStrings.FILE_OPEN +
-            HealthLogger.commonStrings.FILE_NEW,
-            HealthLogger.commonStrings.USAGE,
-            HealthLogger.commonStrings.FILE_OPEN,
-            HealthLogger.commonStrings.FILE_NEW
+        Metrics.countEvent(
+            Metrics.EVENT_TYPE.EDITOR,
+            "newUntitledFile",
+            "create",
+            1
         );
 
         return new $.Deferred().resolve(doc).promise();
@@ -703,6 +702,12 @@ define(function (require, exports, module) {
      * Create a new file in the project tree.
      */
     function handleFileNewInProject() {
+        Metrics.countEvent(
+            Metrics.EVENT_TYPE.EDITOR,
+            "newFile",
+            "inProject",
+            1
+        );
         _handleNewItemInProject(false);
     }
 
@@ -710,6 +715,12 @@ define(function (require, exports, module) {
      * Create a new folder in the project tree.
      */
     function handleNewFolderInProject() {
+        Metrics.countEvent(
+            Metrics.EVENT_TYPE.EDITOR,
+            "newFolder",
+            "inProject",
+            1
+        );
         _handleNewItemInProject(true);
     }
 

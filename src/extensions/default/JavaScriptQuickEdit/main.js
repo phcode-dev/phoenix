@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         PerfUtils               = brackets.getModule("utils/PerfUtils"),
         ProjectManager          = brackets.getModule("project/ProjectManager"),
         Strings                 = brackets.getModule("strings"),
-        HealthLogger            = brackets.getModule("utils/HealthLogger");
+        Metrics                 = brackets.getModule("utils/Metrics");
 
     /**
      * Return the token string that is at the specified position.
@@ -196,11 +196,11 @@ define(function (require, exports, module) {
         }
 
         //Send analytics data for Quick Edit open
-        HealthLogger.sendAnalyticsData(
-            "QuickEditOpen",
-            "usage",
-            "quickEdit",
-            "open"
+        Metrics.countEvent(
+            Metrics.EVENT_TYPE.EDITOR,
+            "JsQuickEdit",
+            "open",
+            1
         );
         // Only provide JavaScript editor if the selection is within a single line
         var sel = hostEditor.getSelection();
