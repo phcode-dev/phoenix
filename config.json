@@ -24,7 +24,6 @@
         "coreAnalyticsID": "phoenix",
         "coreAnalyticsAppName": "phoenix-dev",
         "environment": "dev",
-        "update_info_url"         : "https://dev.phcode.dev/getupdates?locale=<locale>",
         "buildtype": "dev"
     },
     "name": "Phoenix",
