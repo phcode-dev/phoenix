@@ -93,24 +93,6 @@ define(function (require, exports, module) {
         }
     }
 
-    function _sendProjectMetrics(data) {
-        let NUM_FILES = "numFiles",
-            NUM_PROJECTS_OPENED = "numProjectsOpened",
-            CACHE_SIZE= "cacheSize",
-            numProjects = 0,
-            projectDetails = data["ProjectDetails"] || {};
-        for(let projectName in projectDetails) {
-            let project = projectDetails[projectName];
-            numProjects++;
-            let numFiles = project[NUM_FILES] || 0;
-            sendEvent(CATEGORY_PROJECT, NUM_FILES, null, numFiles);
-            let cacheSize = project[CACHE_SIZE] || 0;
-            sendEvent(CATEGORY_PROJECT, CACHE_SIZE, null, cacheSize);
-        }
-        sendEvent(CATEGORY_PROJECT, NUM_PROJECTS_OPENED, null, numProjects);
-        _sendProjectLoadTimeMetrics(data);
-    }
-
     function _sendFileMetrics(data) {
         let CATEGORY_FILE = "FILE_STATS",
             ACTION_OPENED_FILES_EXT = "openedFileExt",
@@ -152,7 +134,6 @@ define(function (require, exports, module) {
 
     function sendHealthDataToGA(healthData) {
         _sendPlatformMetrics(healthData);
-        _sendProjectMetrics(healthData);
         _sendFileMetrics(healthData);
         _sendThemesMetrics(healthData);
         _sendExtensionMetrics(healthData);
