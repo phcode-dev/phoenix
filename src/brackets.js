@@ -81,7 +81,6 @@ define(function (require, exports, module) {
         EventManager        = require("utils/EventManager"),
         FeatureGate         = require("utils/FeatureGate"),
         Async               = require("utils/Async"),
-        UpdateNotification  = require("utils/UpdateNotification"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         PreferencesManager  = require("preferences/PreferencesManager"),
         DragAndDrop         = require("utils/DragAndDrop"),
@@ -246,7 +245,6 @@ define(function (require, exports, module) {
             ProjectManager: require("project/ProjectManager"),
             RemoteAgent: require("LiveDevelopment/Agents/RemoteAgent"),
             ScrollTrackMarkers: require("search/ScrollTrackMarkers"),
-            UpdateNotification: require("utils/UpdateNotification"),
             WorkingSetView: require("project/WorkingSetView"),
             doneLoading: false
         };
@@ -362,14 +360,6 @@ define(function (require, exports, module) {
                 });
             });
         });
-
-        // Check for updates
-        if (!brackets.inBrowser && !params.get("skipUpdateCheck")) {
-            AppInit.appReady(function () {
-                // launches periodic checks for updates cca every 24 hours
-                UpdateNotification.launchAutomaticUpdate();
-            });
-        }
     }
 
     /**

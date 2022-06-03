@@ -3,6 +3,5 @@
     "coreAnalyticsID"         : "phoenix",
     "coreAnalyticsAppName"    : "phoenix-prod",
     "environment"             : "production",
-    "update_info_url"         : "https://phcode.dev/getupdates?locale=<locale>",
     "buildtype"               : "production"
 }
