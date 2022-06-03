@@ -21,43 +21,51 @@
 /*global describe, it, expect, beforeFirst, afterLast, beforeEach, afterEach, waitsFor, runs, waitsForDone */
 
 define(function (require, exports, module) {
-    const ExtensionInterface = require("utils/ExtensionInterface"),
-        INTERFACE_OBJ = {
-            "hello": "world"
-        };
+    const Metrics = require("utils/Metrics");
 
-    describe("Extension Interface tests", function () {
-        it("should return a registered interface", function () {
-            const INTERFACE_1 = "int1";
-            ExtensionInterface.registerExtensionInterface(INTERFACE_1, INTERFACE_OBJ);
-            expect(ExtensionInterface.isExistsExtensionInterface(INTERFACE_1)).toEqual(true);
+    describe("Metrics tests", function () {
+        beforeEach(function () {
+            window.gtag=function () {};
+            window.analytics = {event: window.gtag};
         });
 
-        it("should raise event on extension registration", function () {
-            const INTERFACE_1 = "int1";
-            let notified = false, interfaceObjNotified = null;
-            ExtensionInterface.on(ExtensionInterface.EVENT_EXTENSION_INTERFACE_REGISTERED, (event, name, intrfaceObj)=>{
-                notified = name;
-                interfaceObjNotified = intrfaceObj;
-            });
-            ExtensionInterface.registerExtensionInterface(INTERFACE_1, INTERFACE_OBJ);
-            expect(ExtensionInterface.isExistsExtensionInterface(INTERFACE_1)).toEqual(true);
-            waitsFor(function () {
-                return notified === INTERFACE_1 && interfaceObjNotified === INTERFACE_OBJ;
-            }, 100, "extension interface registration notification");
+        it("should log health metrics", function () {
+            Metrics.init();
+            Metrics.countEvent("typec", "cat", "sub", 1);
+            Metrics.countEvent("typec", "cat", "sub", 1);
+            Metrics.valueEvent("typev", "cat", "sub", 10);
+            Metrics.valueEvent("typev", "cat", "sub", -20);
+            let data = Metrics.getLoggedDataForAudit();
+            expect(data.get("typec.cat.sub")).toEqual(2);
+            expect(data.get("typev.cat.sub")).toEqual(-10);
+            expect(data.size).toEqual(2);
         });
 
-        it("should await and get the extension interface", function () {
-            const INTERFACE_2 = "int2";
-            let extensionInterface = null;
-            ExtensionInterface.waitAndGetExtensionInterface(INTERFACE_2).then((interfaceObj)=>{
-                extensionInterface = interfaceObj;
-            });
+        it("should log health metrics For audit even if disabled", function () {
+            Metrics.init();
+            let data = Metrics.getLoggedDataForAudit();
+            data.clear();
+            Metrics.setDisabled(true);
+            Metrics.countEvent("typec", "cat", "sub", 1);
+            Metrics.countEvent("typec", "cat", "sub", 1);
+            Metrics.valueEvent("typev", "cat", "sub", 10);
+            Metrics.valueEvent("typev", "cat", "sub", -20);
+            data = Metrics.getLoggedDataForAudit();
+            expect(data.get("typec.cat.sub")).toEqual(2);
+            expect(data.get("typev.cat.sub")).toEqual(-10);
+            expect(data.size).toEqual(2);
+        });
 
-            ExtensionInterface.registerExtensionInterface(INTERFACE_2, INTERFACE_OBJ);
-            waitsFor(function () {
-                return extensionInterface === INTERFACE_OBJ;
-            }, 100, "awaiting extension interface");
+        it("should delete 1000 entries if 3000 max entries have been logged", function () {
+            Metrics.init();
+            let data = Metrics.getLoggedDataForAudit();
+            data.clear();
+            Metrics.setDisabled(true);
+            for(let i=0; i<3011; i++){
+                Metrics.countEvent("typec", "cat", `${i}`, 1);
+            }
+            data = Metrics.getLoggedDataForAudit();
+            expect(data.size).toEqual(2011);
         });
     });
 });
