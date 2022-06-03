@@ -4,6 +4,5 @@
     "coreAnalyticsAppName"       : "phoenix-stage",
     "environment"                : "stage",
     "update_info_url"            : "https://staging.phcode.dev/getupdates?locale=<locale>",
-    "notification_info_url"      : "https://staging.phcode.dev/getnotifications?locale=<locale>",
     "buildtype"                  : "staging"
 }
