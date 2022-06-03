@@ -92,6 +92,7 @@ define(function (require, exports, module) {
         let script = document.createElement('script');
         script.type = 'text/javascript';
         script.async = true;
+        window.analytics.debugMode = window.debugModeLogs;
         script.onload = function(){
             // replace `your_analytics_account_ID` and `appName` below with your values
             window.initAnalyticsSession( brackets.config.coreAnalyticsID,

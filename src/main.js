@@ -104,9 +104,9 @@ window.scriptObserver = new MutationObserver(callback);
 // Start observing the target node for configured mutations
 window.scriptObserver.observe(mainScripts, config);
 
-window.onerror = function (msg, url, line) {
+window.onerror = function (msg, url, line, ...err) {
     console.error("Caught Critical error from: "
-        + url + ":" + line + " message: " + msg);
+        + url + ":" + line + " message: " + msg, ...err);
     return true; // same as preventDefault
 };
 
