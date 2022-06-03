@@ -25,7 +25,6 @@
         "coreAnalyticsAppName": "phoenix-dev",
         "environment": "dev",
         "update_info_url"         : "https://dev.phcode.dev/getupdates?locale=<locale>",
-        "notification_info_url"   : "https://dev.phcode.dev/getnotifications?locale=<locale>",
         "buildtype": "dev"
     },
     "name": "Phoenix",
