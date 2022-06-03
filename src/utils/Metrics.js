@@ -29,14 +29,31 @@ define(function (require, exports, module) {
         disabled = false,
         loggedDataForAudit = new Map();
 
+    /**
+     * This is so that phoenix can starting as soon as the shims are inited. The events logged before init() will be
+     * placed into a holding queue by ga and core analytics. When the lib is loaded and inited,
+     * the events will be processed without any loss.
+     * @private
+     */
+    function _createAnalyticsShims() {
+        // for core analytics
+        if(!window.analytics){ window.analytics = {
+            _initData: [], loadStartTime: new Date().getTime(),
+            event: function (){window.analytics._initData.push(arguments);}
+        };}
+        // for google analytics
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){window.dataLayer.push(arguments);};
+    }
+
+    _createAnalyticsShims();
+
     function _initGoogleAnalytics() {
         // Load google analytics scripts
         let script = document.createElement('script');
         script.type = 'text/javascript';
         script.async = true;
         script.onload = function(){
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = function(){window.dataLayer.push(arguments);};
             gtag('js', new Date());
 
             gtag('config', brackets.config.googleAnalyticsID, {
@@ -51,10 +68,6 @@ define(function (require, exports, module) {
 
     function _initCoreAnalytics() {
         // Load core analytics scripts
-        if(!window.analytics){ window.analytics = {
-            _initData: [], loadStartTime: new Date().getTime(),
-            event: function (){window.analytics._initData.push(arguments);}
-        };}
         let script = document.createElement('script');
         script.type = 'text/javascript';
         script.async = true;
@@ -75,7 +88,7 @@ define(function (require, exports, module) {
      * and paid plans for GA starts at 100,000 USD.
      * @private
      */
-    function _initAnalytics(){
+    function init(){
         if(initDone){
             return;
         }
@@ -83,8 +96,6 @@ define(function (require, exports, module) {
         _initCoreAnalytics();
         initDone = true;
     }
-
-    _initAnalytics();
 
     function _sendToGoogleAnalytics(category, action, label, value) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
@@ -173,6 +184,7 @@ define(function (require, exports, module) {
     }
 
     // Define public API
+    exports.init               = init;
     exports.setDisabled        = setDisabled;
     exports.getLoggedDataForAudit      = getLoggedDataForAudit;
     exports.countEvent         = countEvent;
