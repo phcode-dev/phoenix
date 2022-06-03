@@ -30,9 +30,7 @@ define(function (require, exports, module) {
         LanguageManager             = require("language/LanguageManager"),
         FileUtils                   = require("file/FileUtils"),
         PerfUtils                   = require("utils/PerfUtils"),
-        FindUtils                   = require("search/FindUtils"),
         StringUtils                 = require("utils/StringUtils"),
-        EventDispatcher             = require("utils/EventDispatcher"),
         Metrics                     = require("utils/Metrics"),
 
         HEALTH_DATA_STATE_KEY       = "HealthData.Logs",
@@ -52,8 +50,6 @@ define(function (require, exports, module) {
         PARAM_HINTS: "parameterHints",
         JUMP_TO_DEF: "jumpToDefinition"
     };
-
-    EventDispatcher.makeEventDispatcher(exports);
 
     /**
      * Init: creates the health log preference keys in the state.json file
@@ -86,7 +82,6 @@ define(function (require, exports, module) {
     function getAggregatedHealthData() {
         var healthData = getStoredHealthData();
         $.extend(healthData, PerfUtils.getHealthReport());
-        $.extend(healthData, FindUtils.getHealthReport());
         return healthData;
     }
 
@@ -281,22 +276,6 @@ define(function (require, exports, module) {
         setHealthDataLog("ProjectDetails", FIFLog);
     }
 
-    /**
-     * Increments health log count for a particular kind of search done
-     * @param {string} searchType The kind of search type that needs to be logged- should be a js var compatible string
-     */
-    function searchDone(searchType) {
-        var searchDetails = getHealthDataLog("searchDetails");
-        if (!searchDetails) {
-            searchDetails = {};
-        }
-        if (!searchDetails[searchType]) {
-            searchDetails[searchType] = 0;
-        }
-        searchDetails[searchType]++;
-        setHealthDataLog("searchDetails", searchDetails);
-    }
-
     // Define public API
     exports.getHealthDataLog          = getHealthDataLog;
     exports.setHealthDataLog          = setHealthDataLog;
@@ -306,7 +285,6 @@ define(function (require, exports, module) {
     exports.fileSaved                 = fileSaved;
     exports.fileClosed                = fileClosed;
     exports.setProjectDetail          = setProjectDetail;
-    exports.searchDone                = searchDone;
     exports.setHealthLogsEnabled      = setHealthLogsEnabled;
     exports.shouldLogHealthData       = shouldLogHealthData;
     exports.init                      = init;
