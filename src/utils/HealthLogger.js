@@ -33,6 +33,7 @@ define(function (require, exports, module) {
         FindUtils                   = require("search/FindUtils"),
         StringUtils                 = require("utils/StringUtils"),
         EventDispatcher             = require("utils/EventDispatcher"),
+        Metrics                     = require("utils/Metrics"),
 
         HEALTH_DATA_STATE_KEY       = "HealthData.Logs",
         logHealthData               = true,
@@ -41,6 +42,7 @@ define(function (require, exports, module) {
     var commonStrings = {
         USAGE: "usage",
         FILE_OPEN: "fileOpen",
+        FILE_ADD_TO_WORKING_SET: "fileAddToWorkingSet",
         FILE_NEW: "newfile",
         FILE_SAVE: "fileSave",
         FILE_CLOSE: "fileClose",
@@ -179,13 +181,12 @@ define(function (require, exports, module) {
             setHealthData(healthData);
         }
 
-
-        sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_OPEN + language._name,
-                            commonStrings.USAGE,
-                            commonStrings.FILE_OPEN,
-                            language._name.toLowerCase()
-                         );
-
+        if(addedToWorkingSet){
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, commonStrings.FILE_ADD_TO_WORKING_SET,
+                language._name.toLowerCase(), 1);
+        } else {
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, commonStrings.FILE_OPEN, language._name.toLowerCase(), 1);
+        }
     }
 
     /**
@@ -198,12 +199,8 @@ define(function (require, exports, module) {
         if (!docToSave) {
             return;
         }
-        var fileType = docToSave.language ? docToSave.language._name : "";
-        sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_SAVE + fileType,
-                            commonStrings.USAGE,
-                            commonStrings.FILE_SAVE,
-                            fileType.toLowerCase()
-                         );
+        let fileType = docToSave.language ? docToSave.language._name : "";
+        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, commonStrings.FILE_SAVE, fileType, 1);
     }
 
     /**
@@ -219,43 +216,41 @@ define(function (require, exports, module) {
         var language = LanguageManager.getLanguageForPath(file._path),
             size = -1;
 
-        function _sendData(fileSize) {
-            var subType = "";
+        function _sendData(fileSizeInKB) {
+            let subType = "",
+                fileSizeInMB = fileSizeInKB/1024;
 
-            if(fileSize/1024 <= 1) {
-
-                if(fileSize < 0) {
+            if(fileSizeInMB <= 1) {
+                // We don't log exact file sizes for privacy.
+                if(fileSizeInKB < 0) {
                     subType = "";
                 }
-                if(fileSize <= 10) {
-                    subType = "Size_0_10KB";
-                } else if (fileSize <= 50) {
-                    subType = "Size_10_50KB";
-                } else if (fileSize <= 100) {
-                    subType = "Size_50_100KB";
-                } else if (fileSize <= 500) {
-                    subType = "Size_100_500KB";
+                if(fileSizeInKB <= 10) {
+                    subType = "0_to_10KB";
+                } else if (fileSizeInKB <= 50) {
+                    subType = "10_to_50KB";
+                } else if (fileSizeInKB <= 100) {
+                    subType = "50_to_100KB";
+                } else if (fileSizeInKB <= 500) {
+                    subType = "100_to_500KB";
                 } else {
-                    subType = "Size_500KB_1MB";
+                    subType = "500KB_to_1MB";
                 }
 
             } else {
-                fileSize = fileSize/1024;
-                if(fileSize <= 2) {
-                    subType = "Size_1_2MB";
-                } else if(fileSize <= 5) {
-                    subType = "Size_2_5MB";
+                if(fileSizeInMB <= 2) {
+                    subType = "1_to_2MB";
+                } else if(fileSizeInMB <= 5) {
+                    subType = "2_to_5MB";
+                } else if(fileSizeInMB <= 10) {
+                    subType = "5_to_10MB";
                 } else {
-                    subType = "Size_Above_5MB";
+                    subType = "Above_10MB";
                 }
             }
 
-            sendAnalyticsData(commonStrings.USAGE + commonStrings.FILE_CLOSE + language._name + subType,
-                                commonStrings.USAGE,
-                                commonStrings.FILE_CLOSE,
-                                language._name.toLowerCase(),
-                                subType
-                             );
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, commonStrings.FILE_CLOSE,
+                `${language._name.toLowerCase()}.${subType}`, 1);
         }
 
         file.stat(function(err, fileStat) {
@@ -302,41 +297,6 @@ define(function (require, exports, module) {
         setHealthDataLog("searchDetails", searchDetails);
     }
 
-     /**
-     * Notifies the HealthData extension to send Analytics Data to server
-     * @param{Object} eventParams Event Data to be sent to Analytics Server
-     */
-    function notifyHealthManagerToSendData(eventParams) {
-        exports.trigger("SendAnalyticsData", eventParams);
-    }
-
-    /**
-     * Send Analytics Data
-     * @param {string} eventCategory The kind of Event Category that
-     * needs to be logged- should be a js var compatible string
-     * @param {string} eventSubCategory The kind of Event Sub Category that
-     * needs to be logged- should be a js var compatible string
-     * @param {string} eventType The kind of Event Type that needs to be logged- should be a js var compatible string
-     * @param {string} eventSubType The kind of Event Sub Type that
-     * needs to be logged- should be a js var compatible string
-     */
-    function sendAnalyticsData(eventName, eventCategory, eventSubCategory, eventType, eventSubType) {
-        var isEventDataAlreadySent = analyticsEventMap.get(eventName),
-            isHDTracking   = PreferencesManager.getExtensionPrefs("healthData").get("healthDataTracking"),
-            eventParams = {};
-
-        if (isHDTracking && !isEventDataAlreadySent && eventName && eventCategory) {
-            eventParams =  {
-                eventName: eventName,
-                eventCategory: eventCategory,
-                eventSubCategory: eventSubCategory || "",
-                eventType: eventType || "",
-                eventSubType: eventSubType || ""
-            };
-            notifyHealthManagerToSendData(eventParams);
-        }
-    }
-
     // Define public API
     exports.getHealthDataLog          = getHealthDataLog;
     exports.setHealthDataLog          = setHealthDataLog;
@@ -350,7 +310,6 @@ define(function (require, exports, module) {
     exports.setHealthLogsEnabled      = setHealthLogsEnabled;
     exports.shouldLogHealthData       = shouldLogHealthData;
     exports.init                      = init;
-    exports.sendAnalyticsData         = sendAnalyticsData;
 
     // constants
     // searchType for searchDone()

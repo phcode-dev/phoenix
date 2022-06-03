@@ -49,7 +49,8 @@ define(function (require, exports, module) {
                 content;
             combinedHealthAnalyticsData = [healthDataObject, combinedHealthAnalyticsData ];
             let auditData = Metrics.getLoggedDataForAudit();
-            content = JSON.stringify(Object.fromEntries(auditData), null, 4);
+            let sortedData = new Map([...auditData.entries()].sort());
+            content = JSON.stringify(Object.fromEntries(sortedData), null, 4);
             content = _.escape(content);
             content = content.replace(/ /g, "&nbsp;");
             content = content.replace(/(?:\r\n|\r|\n)/g, "<br />");
