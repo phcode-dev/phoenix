@@ -32,6 +32,7 @@ define(function (require, exports, module) {
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         UrlParams           = brackets.getModule("utils/UrlParams").UrlParams,
         Strings             = brackets.getModule("strings"),
+        Metrics             = brackets.getModule("utils/Metrics"),
         HealthDataUtils     = require("HealthDataUtils"),
         SendToAnalytics     = require("SendToAnalytics"),
         prefs               = PreferencesManager.getExtensionPrefs("healthData"),
@@ -232,6 +233,8 @@ define(function (require, exports, module) {
     });
 
     prefs.on("change", "healthDataTracking", function () {
+        let healthDataDisabled = !prefs.get("healthDataTracking");
+        Metrics.setDisabled(healthDataDisabled);
         checkHealthDataSend();
     });
 
@@ -246,6 +249,9 @@ define(function (require, exports, module) {
     });
 
     AppInit.appReady(function () {
+        Metrics.init();
+        let healthDataDisabled = !prefs.get("healthDataTracking");
+        Metrics.setDisabled(healthDataDisabled);
         checkHealthDataSend();
     });
 

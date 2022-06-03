@@ -40,8 +40,7 @@ define(function (require, exports, module) {
         PerfUtils             = require("utils/PerfUtils"),
         NodeDomain            = require("utils/NodeDomain"),
         FileUtils             = require("file/FileUtils"),
-        FindUtils             = require("search/FindUtils"),
-        HealthLogger          = require("utils/HealthLogger");
+        FindUtils             = require("search/FindUtils");
 
     var _bracketsPath   = FileUtils.getNativeBracketsDirectoryPath(),
         _modulePath     = FileUtils.getNativeModuleDirectoryPath(module),
@@ -122,7 +121,6 @@ define(function (require, exports, module) {
         // we re-enable node search. If a search fails, node search will be switched off eventually.
         FindUtils.setNodeSearchDisabled(false);
         FindUtils.notifyIndexingFinished();
-        HealthLogger.setProjectDetail(projectName, numFiles, cacheSize);
     }
 
     /**

@@ -256,26 +256,6 @@ define(function (require, exports, module) {
         });
     }
 
-    /**
-     * Sets the project details(a probably unique prjID, number of files in the project and the node cache size) in the health log
-     * The name of the project is never saved into the health data log, only the hash(name) is for privacy requirements.
-     * @param {string} projectName The name of the project
-     * @param {number} numFiles    The number of file in the project
-     * @param {number} cacheSize   The node file cache memory consumed by the project
-     */
-    function setProjectDetail(projectName, numFiles, cacheSize) {
-        var projectNameHash = StringUtils.hashCode(projectName),
-            FIFLog = getHealthDataLog("ProjectDetails");
-        if (!FIFLog) {
-            FIFLog = {};
-        }
-        FIFLog["prj" + projectNameHash] = {
-            numFiles: numFiles,
-            cacheSize: cacheSize
-        };
-        setHealthDataLog("ProjectDetails", FIFLog);
-    }
-
     // Define public API
     exports.getHealthDataLog          = getHealthDataLog;
     exports.setHealthDataLog          = setHealthDataLog;
@@ -284,7 +264,6 @@ define(function (require, exports, module) {
     exports.fileOpened                = fileOpened;
     exports.fileSaved                 = fileSaved;
     exports.fileClosed                = fileClosed;
-    exports.setProjectDetail          = setProjectDetail;
     exports.setHealthLogsEnabled      = setHealthLogsEnabled;
     exports.shouldLogHealthData       = shouldLogHealthData;
     exports.init                      = init;
