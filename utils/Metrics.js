@@ -194,10 +194,15 @@ define(function (require, exports, module) {
         return loggedDataForAudit;
     }
 
+    function clearAuditData() {
+        loggedDataForAudit.clear();
+    }
+
     // Define public API
     exports.init               = init;
     exports.setDisabled        = setDisabled;
     exports.getLoggedDataForAudit      = getLoggedDataForAudit;
+    exports.clearAuditData     = clearAuditData;
     exports.countEvent         = countEvent;
     exports.valueEvent         = valueEvent;
     exports.EVENT_TYPE         = {
@@ -213,6 +218,7 @@ define(function (require, exports, module) {
         CODE_HINTS: "code-hints",
         EDITOR: "editor",
         SEARCH: "search",
+        SHARING: "sharing",
         PERFORMANCE: "performance"
     };
     exports.AUDIT_TYPE_COUNT = AUDIT_TYPE_COUNT;

@@ -30,8 +30,9 @@ define(function (require, exports, module) {
         EditorManager       = brackets.getModule("editor/EditorManager"),
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         Dialogs             = brackets.getModule("widgets/Dialogs"),
-        Strings            = brackets.getModule("strings"),
-        DefaultDialogs      = brackets.getModule("widgets/DefaultDialogs");
+        Strings             = brackets.getModule("strings"),
+        DefaultDialogs      = brackets.getModule("widgets/DefaultDialogs"),
+        Metrics             = brackets.getModule("utils/Metrics");
 
     let syncRoot = "";
     let $icon;
@@ -285,6 +286,7 @@ define(function (require, exports, module) {
             })
             .appendTo($("#main-toolbar .buttons"));
         $icon.on('click', ()=>{
+            Metrics.countEvent(Metrics.EVENT_TYPE.SHARING, "shareIcon", "clicked", 1);
             if(projectSyncCompleted){
                 previewInProgress = true;
                 _setSyncInProgress();
