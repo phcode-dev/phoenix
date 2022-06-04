@@ -71,7 +71,8 @@ define(function (require, exports, module) {
         FileSyncManager     = require("project/FileSyncManager"),
         ProjectModel        = require("project/ProjectModel"),
         FileTreeView        = require("project/FileTreeView"),
-        ViewUtils           = require("utils/ViewUtils");
+        ViewUtils           = require("utils/ViewUtils"),
+        Metrics             = require("utils/Metrics");
 
     // Needed to ensure that menus are set up when we need them.
     // See #10115
@@ -1014,7 +1015,9 @@ define(function (require, exports, module) {
                                 exports.trigger(EVENT_PROJECT_REFRESH, model.projectRoot);
                                 result.resolve();
                             }
-                            PerfUtils.addMeasurement(perfTimerName);
+                            let projectLoadTime = PerfUtils.addMeasurement(perfTimerName);
+                            Metrics.valueEvent(Metrics.EVENT_TYPE.PERFORMANCE, "projectLoad",
+                                "timeMs", Number(projectLoadTime));
                         });
                     } else {
                         console.error("error loading project");
