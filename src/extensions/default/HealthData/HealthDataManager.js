@@ -24,7 +24,7 @@
  *
  */
 
-/*global define, $, brackets, console, appshell , gtag, window, document, localStorage, Map, setTimeout*/
+/*global */
 define(function (require, exports, module) {
     var AppInit             = brackets.getModule("utils/AppInit"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
@@ -35,20 +35,12 @@ define(function (require, exports, module) {
         prefs               = PreferencesManager.getExtensionPrefs("healthData"),
         params              = new UrlParams(),
         ONE_SECOND          = 1000,
-        TEN_SECOND          = 10 * ONE_SECOND,
-        sentAnalyticsDataMap = new Map();
+        TEN_SECOND          = 10 * ONE_SECOND;
 
     prefs.definePreference("healthDataTracking", "boolean", true, {
         description: Strings.DESCRIPTION_HEALTH_DATA_TRACKING
     });
     params.parse();
-
-    /**
-     * will return complete Analyics Data in Json Format
-     */
-    function getAnalyticsData() {
-        return Array.from(sentAnalyticsDataMap.values());
-    }
 
     prefs.on("change", "healthDataTracking", function () {
         let healthDataDisabled = !prefs.get("healthDataTracking");
@@ -62,6 +54,4 @@ define(function (require, exports, module) {
         SendToAnalytics.sendPlatformMetrics();
         setTimeout(SendToAnalytics.sendStartupPerformanceMetrics, TEN_SECOND);
     });
-
-    exports.getAnalyticsData = getAnalyticsData;
 });
