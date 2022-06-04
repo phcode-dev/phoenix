@@ -77,6 +77,8 @@ define(function (require, exports, module) {
                 if (hdPref !== newHDPref) {
                     prefs.set("healthDataTracking", newHDPref);
                 }
+            } else if (id === 'clear'){
+                Metrics.clearAuditData();
             }
         });
     }
