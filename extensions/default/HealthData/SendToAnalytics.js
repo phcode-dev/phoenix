@@ -21,124 +21,94 @@
  *
  */
 
-/*global define, gtag, analytics*/
+/*global define*/
 define(function (require, exports, module) {
-    const CATEGORY_PROJECT = "PROJECT";
+    const Metrics = brackets.getModule("utils/Metrics"),
+        PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
+        PerfUtils           = brackets.getModule("utils/PerfUtils"),
+        themesPref          = PreferencesManager.getExtensionPrefs("themes");
 
-    function _sendToGoogleAnalytics(category, action, label, value) {
-        // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
-        category = category || "category";
-        action = action || "action";
-        if(!label){
-            label = action;
-        }
-        if(!value){
-            value = 1;
-        }
-        gtag('event', action, {
-            'event_category': category,
-            'event_label': label,
-            'value': value
-        });
-    }
+    const PLATFORM = Metrics.EVENT_TYPE.PLATFORM,
+        PERFORMANCE = Metrics.EVENT_TYPE.PERFORMANCE;
 
-    function _sendToCoreAnalytics(category, action, label, value) {
-        // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
-        category = category || "category";
-        action = action || "action";
-        if(!label){
-            label = action;
+    // Platform metrics to be sent at startup
+    function _emitDeviceTypeMetrics() {
+        if(brackets.browser.isDeskTop) {
+            Metrics.countEvent(PLATFORM, "device", "desktop", 1);
         }
-        if(!value){
-            value = 1;
+        if(brackets.browser.isMobile) {
+            Metrics.countEvent(PLATFORM, "device", "mobile", 1);
         }
-        analytics.event(category, action, label, value);
-    }
-
-    /**
-     * send to google analytics
-     * @param category string mandatory
-     * @param action string mandatory
-     * @param label string can be null
-     * @param value int can be null
-     * @private
-     */
-    function sendEvent(category, action, label, value) {
-        _sendToGoogleAnalytics(category, action, label, value);
-        _sendToCoreAnalytics(category, action, label, value);
-    }
-
-    function _sendMapValues(category, action, mapObject) {
-        for(let key in mapObject) {
-            sendEvent(category, action, key, mapObject[key]);
+        if(brackets.browser.isTablet) {
+            Metrics.countEvent(PLATFORM, "device", "tablet", 1);
         }
     }
-
-    function _sendPlatformMetrics(data) {
-        let CATEGORY_PLATFORM = "PLATFORM";
-        sendEvent(CATEGORY_PLATFORM, "os", data["os"]);
-        sendEvent(CATEGORY_PLATFORM, "osLanguage", data["osLanguage"]);
-        sendEvent(CATEGORY_PLATFORM, "bracketsLanguage", data["bracketsLanguage"]);
-        sendEvent(CATEGORY_PLATFORM, "bracketsVersion", data["bracketsVersion"]);
-        sendEvent(CATEGORY_PLATFORM, "AppStartupTime", null, data["AppStartupTime"]);
-        sendEvent(CATEGORY_PLATFORM, "ModuleDepsResolved", null, data["ModuleDepsResolved"]);
+    function _emitMobileMetricsIfPresent() {
+        let platform = "none";
+        if(brackets.browser.mobile.isIos) {
+            platform = "ios";
+        } else if(brackets.browser.mobile.isWindows) {
+            platform = "windows";
+        } else if(brackets.browser.mobile.isAndroid) {
+            platform = "android";
+        } else {
+            return;
+        }
+        Metrics.countEvent(PLATFORM, "mobile", platform, 1);
     }
-
-    function _sendProjectLoadTimeMetrics(data) {
-        let ACTION_PROJECT_LOAD_TIME = "projectLoadTimes";
-        let projectLoadTimeStr = data[ACTION_PROJECT_LOAD_TIME] || ""; //  string with : seperated load times":32:21"
-        let loadTimes = projectLoadTimeStr.substring(1).split(":");
-        for(let loadTime of loadTimes){
-            sendEvent(CATEGORY_PROJECT, "ACTION_PROJECT_LOAD_TIME", null, loadTime);
+    function _emitBrowserMetrics() {
+        if(brackets.browser.desktop.isChrome) {
+            Metrics.countEvent(PLATFORM, "browser", "chrome", 1);
+        }
+        if(brackets.browser.desktop.isChromeBased) {
+            Metrics.countEvent(PLATFORM, "browser", "chromeBased", 1);
+        }
+        if(brackets.browser.desktop.isEdgeChromium) {
+            Metrics.countEvent(PLATFORM, "browser", "EdgeChromium", 1);
+        }
+        if(brackets.browser.desktop.isFirefox) {
+            Metrics.countEvent(PLATFORM, "browser", "firefox", 1);
+        }
+        if(brackets.browser.desktop.isOpera) {
+            Metrics.countEvent(PLATFORM, "browser", "opera", 1);
+        }
+        if(brackets.browser.desktop.isOperaChromium) {
+            Metrics.countEvent(PLATFORM, "browser", "operaChromium", 1);
         }
     }
-
-    function _sendFileMetrics(data) {
-        let CATEGORY_FILE = "FILE_STATS",
-            ACTION_OPENED_FILES_EXT = "openedFileExt",
-            ACTION_WORKINGSET_FILES_EXT = "workingSetFileExt",
-            ACTION_OPENED_FILE_ENCODING = "openedFileEncoding",
-            fileStats = data["fileStats"] || {};
-        if(fileStats[ACTION_OPENED_FILES_EXT]){
-            _sendMapValues(CATEGORY_FILE, ACTION_OPENED_FILES_EXT, fileStats[ACTION_OPENED_FILES_EXT]);
-        }
-        if(fileStats[ACTION_WORKINGSET_FILES_EXT]){
-            _sendMapValues(CATEGORY_FILE, ACTION_WORKINGSET_FILES_EXT, fileStats[ACTION_WORKINGSET_FILES_EXT]);
-        }
-        if(fileStats[ACTION_OPENED_FILE_ENCODING]){
-            _sendMapValues(CATEGORY_FILE, ACTION_OPENED_FILE_ENCODING, fileStats[ACTION_OPENED_FILE_ENCODING]);
-        }
+    function sendPlatformMetrics() {
+        Metrics.countEvent(PLATFORM, "os", brackets.platform, 1);
+        Metrics.countEvent(PLATFORM, "os.flavor", brackets.getPlatformInfo(), 1);
+        Metrics.countEvent(PLATFORM, "userAgent", window.navigator.userAgent, 1);
+        Metrics.countEvent(PLATFORM, "languageOS", brackets.app.language, 1);
+        Metrics.countEvent(PLATFORM, "languageBrackets", brackets.getLocale(), 1);
+        Metrics.countEvent(PLATFORM, "bracketsVersion", brackets.metadata.version, 1);
+        _emitDeviceTypeMetrics();
+        _emitBrowserMetrics();
+        _emitMobileMetricsIfPresent();
     }
 
-    function _sendThemesMetrics(data) {
-        let CATEGORY_THEMES = "THEMES",
-            ACTION_CURRENT_THEME = "bracketsTheme";
-        sendEvent(CATEGORY_THEMES, ACTION_CURRENT_THEME, data[ACTION_CURRENT_THEME]);
+    // Performance
+    function sendStartupPerformanceMetrics() {
+        const healthReport = PerfUtils.getHealthReport();
+        Metrics.valueEvent(PERFORMANCE, "startup", "AppStartupTime",
+            Number(healthReport["AppStartupTime"]));
+        Metrics.valueEvent(PERFORMANCE, "startup", "ModuleDepsResolved",
+            Number(healthReport["ModuleDepsResolved"]));
     }
 
-    function _sendExtensionMetrics(data) {
-        let CATEGORY_EXTENSIONS = "EXTENSIONS",
-            CATEGORY_INSTALLED_EXTENSIONS = "installedExtensions",
-            NUM_EXTENSIONS_INSTALLED = "numExtensions",
-            ATTR_NAME = "name",
-            ATTR_VERSION = "version",
-            extensionStats = data["installedExtensions"] || [];
-        for (const item of extensionStats) {
-            let extension = item,
-                name = extension[ATTR_NAME] || "-",
-                version = extension[ATTR_VERSION] || "-";
-            sendEvent(CATEGORY_INSTALLED_EXTENSIONS, name, version);
-        }
-        sendEvent(CATEGORY_EXTENSIONS, NUM_EXTENSIONS_INSTALLED, null, extensionStats.length);
+    // Themes
+    function _getCurrentTheme() {
+        // TODO: currently phoenix only have default themes, but in future, we should ensure that only themes in the
+        //  registry and user installed are logged for privacy.
+        return themesPref.get("theme") || "default";
+    }
+    function sendThemesMetrics() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.THEMES, "currentTheme", _getCurrentTheme(), 1);
     }
 
-    function sendHealthDataToGA(healthData) {
-        _sendPlatformMetrics(healthData);
-        _sendFileMetrics(healthData);
-        _sendThemesMetrics(healthData);
-        _sendExtensionMetrics(healthData);
-    }
-
-    exports.sendHealthDataToGA = sendHealthDataToGA;
-    exports.sendEvent = sendEvent;
+    exports.sendPlatformMetrics = sendPlatformMetrics;
+    exports.sendStartupPerformanceMetrics = sendStartupPerformanceMetrics;
+    exports.sendThemesMetrics = sendThemesMetrics;
+    // TODO: send extension metrics
 });

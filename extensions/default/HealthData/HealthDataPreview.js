@@ -31,8 +31,7 @@ define(function (require, exports, module) {
         Dialogs                 = brackets.getModule("widgets/Dialogs"),
         ExtensionUtils          = brackets.getModule("utils/ExtensionUtils"),
         Metrics                 = brackets.getModule("utils/Metrics"),
-        HealthDataPreviewDialog = require("text!htmlContent/healthdata-preview-dialog.html"),
-        HealthDataManager       = require("HealthDataManager");
+        HealthDataPreviewDialog = require("text!htmlContent/healthdata-preview-dialog.html");
 
     var prefs = PreferencesManager.getExtensionPrefs("healthData");
 
@@ -42,39 +41,28 @@ define(function (require, exports, module) {
      * Show the dialog for previewing the Health Data that will be sent.
      */
     function previewHealthData() {
-        var result = new $.Deferred();
+        let content;
+        let auditData = Metrics.getLoggedDataForAudit();
+        let sortedData = new Map([...auditData.entries()].sort());
+        content = JSON.stringify(Object.fromEntries(sortedData), null, 4);
+        content = _.escape(content);
+        content = content.replace(/ /g, "&nbsp;");
+        content = content.replace(/(?:\r\n|\r|\n)/g, "<br />");
+        let hdPref   = prefs.get("healthDataTracking"),
+            template = Mustache.render(HealthDataPreviewDialog,
+                {Strings: Strings, content: content, hdPref: hdPref}),
+            $template = $(template);
 
-        HealthDataManager.getHealthData().done(function (healthDataObject) {
-            var combinedHealthAnalyticsData = HealthDataManager.getAnalyticsData(),
-                content;
-            combinedHealthAnalyticsData = [healthDataObject, combinedHealthAnalyticsData ];
-            let auditData = Metrics.getLoggedDataForAudit();
-            let sortedData = new Map([...auditData.entries()].sort());
-            content = JSON.stringify(Object.fromEntries(sortedData), null, 4);
-            content = _.escape(content);
-            content = content.replace(/ /g, "&nbsp;");
-            content = content.replace(/(?:\r\n|\r|\n)/g, "<br />");
+        Dialogs.addLinkTooltips($template);
+        Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
 
-            var hdPref   = prefs.get("healthDataTracking"),
-                template = Mustache.render(HealthDataPreviewDialog, {Strings: Strings, content: content, hdPref: hdPref}),
-                $template = $(template);
-
-            Dialogs.addLinkTooltips($template);
-
-            Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
-
-                if (id === "save") {
-                    var newHDPref = $template.find("[data-target]:checkbox").is(":checked");
-                    if (hdPref !== newHDPref) {
-                        prefs.set("healthDataTracking", newHDPref);
-                    }
+            if (id === "save") {
+                var newHDPref = $template.find("[data-target]:checkbox").is(":checked");
+                if (hdPref !== newHDPref) {
+                    prefs.set("healthDataTracking", newHDPref);
                 }
-            });
-
-            return result.resolve();
+            }
         });
-
-        return result.promise();
     }
 
     exports.previewHealthData = previewHealthData;

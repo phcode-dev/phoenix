@@ -97,8 +97,10 @@ define(function (require, exports, module) {
         initDone = true;
     }
 
-    function _sendToGoogleAnalytics(category, action, label, value) {
+    function _sendToGoogleAnalytics(category, action, label, count) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
+        // TODO, see if we are sending too many events to ga, unlike core analytics, GA has a limit of
+        //  1 Million events per month for free plan.
         if(disabled){
             return;
         }
@@ -107,14 +109,14 @@ define(function (require, exports, module) {
         if(!label){
             label = action;
         }
-        if(!value){
-            value = 1;
+        if(!count){
+            count = 1;
         }
         let eventAct = `${action}.${category}.${label}`;
         gtag('event', eventAct, {
             'event_category': category,
             'event_label': label,
-            'value': value
+            'value': count
         });
     }
 
@@ -135,6 +137,7 @@ define(function (require, exports, module) {
     }
 
     function _logEventForAudit(eventType, eventCategory, eventSubCategory, val) {
+        // TODO average and count value events
         let key = `${eventType}.${eventCategory}.${eventSubCategory}`;
         let newVal = (loggedDataForAudit.get(key) || 0) + val;
         loggedDataForAudit.set(key, newVal);
@@ -190,6 +193,10 @@ define(function (require, exports, module) {
     exports.countEvent         = countEvent;
     exports.valueEvent         = valueEvent;
     exports.EVENT_TYPE         = {
+        PLATFORM: "platform",
+        PROJECT: "project",
+        THEMES: "themes",
+        EXTENSIONS: "extensions",
         UI: "UI",
         UI_DIALOG: "ui-dialog",
         UI_BOTTOM_PANEL: "ui-bottomPanel",
@@ -197,6 +204,7 @@ define(function (require, exports, module) {
         LIVE_PREVIEW: "live-preview",
         CODE_HINTS: "code-hints",
         EDITOR: "editor",
-        SEARCH: "search"
+        SEARCH: "search",
+        PERFORMANCE: "performance"
     };
 });

@@ -191,7 +191,7 @@ define(function (require, exports, module) {
             id = new PerfMeasurement(id, id);
         }
 
-        var elapsedTime = brackets.app.getElapsedMilliseconds();
+        let elapsedTime = brackets.app.getElapsedMilliseconds();
 
         if (activeTests[id.id]) {
             elapsedTime -= activeTests[id.id].startTime;
@@ -217,6 +217,7 @@ define(function (require, exports, module) {
                 _reentTests[id]--;
             }
         }
+        return elapsedTime;
 
     }
 
