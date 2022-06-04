@@ -136,10 +136,18 @@ define(function (require, exports, module) {
         analytics.event(category, action, label, count, value);
     }
 
-    function _logEventForAudit(eventType, eventCategory, eventSubCategory, val) {
-        // TODO average and count value events
+    const AUDIT_TYPE_COUNT = "count",
+        AUDIT_TYPE_VALUE = "val";
+    function _logEventForAudit(eventType, eventCategory, eventSubCategory, val, type) {
+        let defaultVal = {
+            eventType: type,
+            sum: 0,
+            count: 0
+        };
         let key = `${eventType}.${eventCategory}.${eventSubCategory}`;
-        let newVal = (loggedDataForAudit.get(key) || 0) + val;
+        let newVal = loggedDataForAudit.get(key) || defaultVal;
+        newVal.count = newVal.count + 1;
+        newVal.sum = newVal.sum + val;
         loggedDataForAudit.set(key, newVal);
         if(loggedDataForAudit.size >= MAX_AUDIT_ENTRIES){
             const NUM_ENTRIES_TO_DELETE = 1000;
@@ -158,7 +166,7 @@ define(function (require, exports, module) {
      * @param {number} count >=0
      */
     function countEvent(eventType, eventCategory, eventSubCategory, count) {
-        _logEventForAudit(eventType, eventCategory, eventSubCategory, count);
+        _logEventForAudit(eventType, eventCategory, eventSubCategory, count, AUDIT_TYPE_COUNT);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, count);
         _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, count);
     }
@@ -173,7 +181,7 @@ define(function (require, exports, module) {
      * @param {number} value
      */
     function valueEvent(eventType, eventCategory, eventSubCategory, value) {
-        _logEventForAudit(eventType, eventCategory, eventSubCategory, value);
+        _logEventForAudit(eventType, eventCategory, eventSubCategory, value, AUDIT_TYPE_VALUE);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, value);
         _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, 1, value);
     }
@@ -207,4 +215,6 @@ define(function (require, exports, module) {
         SEARCH: "search",
         PERFORMANCE: "performance"
     };
+    exports.AUDIT_TYPE_COUNT = AUDIT_TYPE_COUNT;
+    exports.AUDIT_TYPE_VALUE = AUDIT_TYPE_VALUE;
 });
