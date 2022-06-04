@@ -37,20 +37,36 @@ define(function (require, exports, module) {
 
     ExtensionUtils.loadStyleSheet(module, "styles.css");
 
+    function _buildPreviewData() {
+        let content;
+        let auditData = Metrics.getLoggedDataForAudit();
+        let sortedData = new Map([...auditData.entries()].sort());
+        let displayData = [];
+        for (const [key, value] of sortedData.entries()) {
+            let valueString = "";
+            if(value.count > 1) {
+                valueString = `(${value.count})`;
+            }
+            if(value.eventType === Metrics.AUDIT_TYPE_COUNT){
+                displayData.push(`${key}  total: ${value.sum} ${valueString}`);
+            } else if(value.eventType === Metrics.AUDIT_TYPE_VALUE && value.count !== 0){
+                displayData.push(`${key}  avg: ${value.sum/value.count} ${valueString}`);
+            }
+        }
+        content = JSON.stringify(displayData, null, 2);
+        content = _.escape(content);
+        content = content.replace(/ /g, "&nbsp;");
+        content = content.replace(/(?:\r\n|\r|\n)/g, "<br />");
+        return content;
+    }
+
     /**
      * Show the dialog for previewing the Health Data that will be sent.
      */
     function previewHealthData() {
-        let content;
-        let auditData = Metrics.getLoggedDataForAudit();
-        let sortedData = new Map([...auditData.entries()].sort());
-        content = JSON.stringify(Object.fromEntries(sortedData), null, 4);
-        content = _.escape(content);
-        content = content.replace(/ /g, "&nbsp;");
-        content = content.replace(/(?:\r\n|\r|\n)/g, "<br />");
         let hdPref   = prefs.get("healthDataTracking"),
             template = Mustache.render(HealthDataPreviewDialog,
-                {Strings: Strings, content: content, hdPref: hdPref}),
+                {Strings: Strings, content: _buildPreviewData(), hdPref: hdPref}),
             $template = $(template);
 
         Dialogs.addLinkTooltips($template);
