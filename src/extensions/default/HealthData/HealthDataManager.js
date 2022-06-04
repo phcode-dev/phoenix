@@ -52,6 +52,7 @@ define(function (require, exports, module) {
         let healthDataDisabled = !prefs.get("healthDataTracking");
         Metrics.setDisabled(healthDataDisabled);
         SendToAnalytics.sendPlatformMetrics();
+        SendToAnalytics.sendThemesMetrics();
         setTimeout(SendToAnalytics.sendStartupPerformanceMetrics, TEN_SECOND);
     });
 });

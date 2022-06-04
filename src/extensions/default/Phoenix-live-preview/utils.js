@@ -44,18 +44,18 @@ define(function (require, exports, module) {
         DocumentManager     = brackets.getModule("document/DocumentManager"),
         FileSystem         = brackets.getModule("filesystem/FileSystem");
 
-    function _getExtension(filePath) {
+    function getExtension(filePath) {
         let pathSplit = filePath.split('.');
         return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : null;
     }
 
     function _isPreviewableFile(filePath) {
-        let extension = _getExtension(filePath);
+        let extension = getExtension(filePath);
         return ['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf', 'md', 'markdown'].includes(extension.toLowerCase());
     }
 
     function _isMarkdownFile(filePath) {
-        let extension = _getExtension(filePath);
+        let extension = getExtension(filePath);
         return ['md', 'markdown'].includes(extension.toLowerCase());
     }
 
@@ -118,6 +118,7 @@ define(function (require, exports, module) {
 
     exports.getPreviewDetails = getPreviewDetails;
     exports.getNoPreviewURL = getNoPreviewURL;
+    exports.getExtension = getExtension;
 });
 
 
