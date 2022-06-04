@@ -194,10 +194,15 @@ define(function (require, exports, module) {
         return loggedDataForAudit;
     }
 
+    function clearAuditData() {
+        loggedDataForAudit.clear();
+    }
+
     // Define public API
     exports.init               = init;
     exports.setDisabled        = setDisabled;
     exports.getLoggedDataForAudit      = getLoggedDataForAudit;
+    exports.clearAuditData     = clearAuditData;
     exports.countEvent         = countEvent;
     exports.valueEvent         = valueEvent;
     exports.EVENT_TYPE         = {
