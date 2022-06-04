@@ -36,7 +36,8 @@ define(function (require, exports, module) {
         Commands                = brackets.getModule("command/Commands"),
         Menus                   = brackets.getModule("command/Menus"),
         KeyBindingManager       = brackets.getModule("command/KeyBindingManager"),
-        FileSystem              = brackets.getModule("filesystem/FileSystem");
+        FileSystem              = brackets.getModule("filesystem/FileSystem"),
+        Metrics                 = brackets.getModule("utils/Metrics");
 
     var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
@@ -618,6 +619,7 @@ define(function (require, exports, module) {
     }
 
     function _navigateBackClicked(evt) {
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "back", 1);
         if(_hasNavBackFrames()){
             _navigateBack(evt.shiftKey || (evt.type === "contextmenu"));
         }
@@ -626,6 +628,7 @@ define(function (require, exports, module) {
     }
 
     function _navigateForwardClicked(evt) {
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "forward", 1);
         if(_hasNavForwardFrames()){
             _navigateForward(evt.shiftKey || (evt.type === "contextmenu"));
         }
@@ -634,10 +637,12 @@ define(function (require, exports, module) {
     }
 
     function _showInFileTreeClicked() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "showInFileTree", 1);
         CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
     }
 
     function _findInFiles() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "search", 1);
         CommandManager.execute(Commands.CMD_FIND_IN_FILES);
     }
 

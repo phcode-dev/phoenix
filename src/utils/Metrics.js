@@ -213,6 +213,7 @@ define(function (require, exports, module) {
         CODE_HINTS: "code-hints",
         EDITOR: "editor",
         SEARCH: "search",
+        SHARING: "sharing",
         PERFORMANCE: "performance"
     };
     exports.AUDIT_TYPE_COUNT = AUDIT_TYPE_COUNT;

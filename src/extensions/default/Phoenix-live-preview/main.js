@@ -51,6 +51,7 @@ define(function (require, exports, module) {
         DocumentManager    = brackets.getModule("document/DocumentManager"),
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
+        Metrics             = brackets.getModule("utils/Metrics"),
         marked = require('thirdparty/marked.min'),
         utils = require('utils');
 
@@ -189,16 +190,18 @@ define(function (require, exports, module) {
     }
 
     function _renderPreview(previewDetails, newSrc) {
+        let fullPath = previewDetails.fullPath;
         if(previewDetails.isMarkdownFile){
-            let fullPath = previewDetails.fullPath;
             $iframe.attr('src', 'about:blank');
             _renderMarkdown(fullPath);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "markdown", 1);
         } else {
             $iframe.attr('srcdoc', null);
             $iframe.attr('src', newSrc);
             if(tab && !tab.closed){
                 tab.location = newSrc;
             }
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", utils.getExtension(fullPath), 1);
         }
     }
 
