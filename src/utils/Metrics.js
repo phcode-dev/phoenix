@@ -19,10 +19,26 @@
  *
  */
 
-/**
- *  Utilities functions related to Health Data logging
- */
 /*global gtag, analytics*/
+
+/**
+ * @INCLUDE_IN_PHOENIX_API_DOCS
+ * The Metrics API can be used to send analytics data to track feature usage in accordance with users privacy settings.
+ *
+ *`Status: Internal - Not to be used by third party extensions.`
+ *
+ *## Import
+ * ```js
+ * // usage within core:
+ * const Metrics = require("utils/Metrics");
+ *
+ * // usage within default extensions:
+ * const Metrics = brackets.getModule("utils/Metrics");
+ * ```
+ *
+ *# APIs
+ * Two main APIs are available
+ */
 define(function (require, exports, module) {
     const MAX_AUDIT_ENTRIES = 3000;
     let initDone = false,

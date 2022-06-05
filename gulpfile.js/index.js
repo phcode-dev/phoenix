@@ -8,7 +8,8 @@ const { src, dest, series } = require('gulp');
 const mergeStream =   require('merge-stream');
 const zip = require('gulp-zip');
 const rename = require("gulp-rename");
-const configFile = require("../src/config.json");
+const through2 = require('through2');
+const jsDocGenerate = require('./jsDocGenerate');
 
 function cleanDist() {
     return del(['dist']);
@@ -154,6 +155,23 @@ function releaseProd() {
     });
 }
 
+function cleanDocs() {
+    return del(['docs']);
+}
+
+function createJSDocs() {
+    return src('src/**/*.js')
+        // Instead of using gulp-uglify, you can create an inline plugin
+        .pipe(through2.obj(function(file, _, cb) {
+            let shouldProcess = null;
+            if (file.isBuffer()) {
+                shouldProcess = jsDocGenerate.processFile(file, 'dst');
+            }
+            cb(null, shouldProcess);
+        }))
+        .pipe(dest('docs/'));
+}
+
 exports.build = series(copyThirdPartyLibs, zipDefaultProjectFiles);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
@@ -163,4 +181,5 @@ exports.releaseProd = series(cleanDist, exports.build, makeDist, releaseProd);
 exports.serve = series(exports.build, serve);
 exports.test = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
+exports.createJSDocs = series(cleanDocs, createJSDocs);
 exports.default = series(exports.build);
