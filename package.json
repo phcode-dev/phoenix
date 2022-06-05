@@ -31,6 +31,7 @@
         "husky": "^7.0.4",
         "lodash": "^4.17.21",
         "merge-stream": "^2.0.0",
+        "parse-comments": "^1.0.0",
         "readable-stream": "^3.6.0",
         "through2": "^4.0.2"
     },
