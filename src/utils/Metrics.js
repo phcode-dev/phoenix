@@ -36,7 +36,7 @@
  * const Metrics = brackets.getModule("utils/Metrics");
  * ```
  *
- * @module Metrics-API
+ * @module utils/Metrics
  */
 define(function (require, exports, module) {
     const MAX_AUDIT_ENTRIES = 3000;

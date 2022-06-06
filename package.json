@@ -51,7 +51,7 @@
         "release:prod": "gulp releaseProd",
         "serve": "http-server . -p 8000 -c-1",
         "serveExternal": "http-server . -p 8000 -a 0.0.0.0 --log-ip true -c-1",
-        "createJSDocs": "gulp createJSDocs"
+        "createJSDocs": "gulp createJSDocs && git add docs"
     },
     "licenses": [
         {

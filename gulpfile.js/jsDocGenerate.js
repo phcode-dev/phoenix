@@ -52,6 +52,7 @@ function processFile(file, cb) {
         .then(markdownDocStr => {
             file.contents = Buffer.from(markdownDocStr);
             file.extname = ".md";
+            file.stem = file.stem + "-api";
             cb(null, file);
         });
 }
