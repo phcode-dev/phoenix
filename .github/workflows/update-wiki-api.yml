@@ -37,8 +37,10 @@ jobs:
         shell: bash
       - name: Commit new wiki files
         run: |
+          pwd
+          cd wiki
           git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.name "phoenixide"
           git add .
           git commit -m "Adding API docs: ${{ github.event.pull_request.title }}"
           git log -p -1
