@@ -26,6 +26,8 @@ const path = require("path");
 const fs = require('fs');
 
 const TAG_INCLUDE_IN_API_DOCS = "INCLUDE_IN_API_DOCS";
+const FILE_NAME_SUFFIX = '-API',
+    MD_EXT = '.md';
 
 function generateDocs() {
     return through2.obj(function(file, _, cb) {
@@ -40,6 +42,7 @@ function generateDocs() {
 /**
  * Generate markdown documentation for all files labelled with @INCLUDE_IN_API_DOCS into the docs folder.
  * @param file
+ * @param cb
  * @returns {*}
  */
 function processFile(file, cb) {
@@ -50,12 +53,12 @@ function processFile(file, cb) {
         return;
     }
     console.log("Generating Doc for: ", file.path);
-    documentation.build(file.path,{})
+    documentation.build(file.path, {})
         .then(documentation.formats.md)
         .then(markdownDocStr => {
             file.contents = Buffer.from(markdownDocStr);
-            file.extname = ".md";
-            file.stem = file.stem + "-API";
+            file.extname = MD_EXT;
+            file.stem = file.stem + FILE_NAME_SUFFIX;
             cb(null, file);
         });
 }
@@ -63,10 +66,12 @@ function processFile(file, cb) {
 function getIndexMarkdown(docRoot, filePaths) {
     let markdown = "# API docs\nThe list of all APIs for phoenix.\n";
     for(let filePath of filePaths){
-        let relativePathToDocRoot = filePath.replace(docRoot, ''); // Eg. utils/Metrics.md
-        let fileName = path.basename(relativePathToDocRoot); // Metrics.md
-        let hrefName = path.parse(fileName).name; //Metrics
-        markdown += `\n[${relativePathToDocRoot}](${hrefName})`;
+        let relativePathToDocRoot = filePath.replace(docRoot, ''); // Eg. utils/Metrics-API.md
+        let fileName = path.basename(relativePathToDocRoot); // Metrics-API.md
+        let hrefName = path.parse(fileName).name; //Metrics-API
+        let suffixLength = FILE_NAME_SUFFIX.length + MD_EXT.length; // len(-API.md)
+        let apiFullName = relativePathToDocRoot.slice(0, -suffixLength); // utils/Metrics
+        markdown += `\n1. [${apiFullName}](${hrefName})`;
         console.log("processing file: ", relativePathToDocRoot);
     }
     return markdown;
