@@ -29,6 +29,7 @@ jobs:
         run: |
           pwd
           mkdir -p ./wiki/api
+          rm -rf ./wiki/api/*
           rsync -a ./phoenixSrc/docs/ ./wiki/api
           find ./wiki
           cd wiki
