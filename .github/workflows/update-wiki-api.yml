@@ -32,7 +32,7 @@ jobs:
           rsync -a ./phoenixSrc/docs/ ./wiki/api
           find ./wiki/api
           cd wiki
-          gti add .
+          git add .
           git status
         shell: bash
       - name: Commit new wiki files
