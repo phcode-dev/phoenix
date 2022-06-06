@@ -182,13 +182,7 @@ function cleanDocs() {
 function createJSDocs() {
     return src('src/**/*.js')
         // Instead of using gulp-uglify, you can create an inline plugin
-        .pipe(through2.obj(function(file, _, cb) {
-            let shouldProcess = null;
-            if (file.isBuffer()) {
-                shouldProcess = jsDocGenerate.processFile(file, 'dst');
-            }
-            cb(null, shouldProcess);
-        }))
+        .pipe(jsDocGenerate.generateDocs())
         .pipe(dest('docs/'));
 }
 

@@ -19,67 +19,41 @@
  */
 
 /* eslint-env node */
-const Comments = require('parse-comments');
+const documentation = require('documentation');
+const through2 = require("through2");
 
-const TAG_INCLUDE_IN_API_DOCS = "INCLUDE_IN_API_DOCS",
-    TAG_PRIVATE ="private";
+const TAG_INCLUDE_IN_API_DOCS = "INCLUDE_IN_API_DOCS";
+
+function generateDocs() {
+    return through2.obj(function(file, _, cb) {
+        if (file.isBuffer()) {
+            processFile(file, cb);
+            return;
+        }
+        cb(null, null); // omit this file
+    });
+}
 
 /**
  * Generate markdown documentation for all files labelled with @INCLUDE_IN_API_DOCS into the docs folder.
  * @param file
  * @returns {*}
  */
-function processFile(file) {
+function processFile(file, cb) {
     // For file properties https://gulpjs.com/docs/en/api/vinyl/
     const code = file.contents.toString();
-    if(code.includes("@"+ TAG_INCLUDE_IN_API_DOCS)){
-        console.log("Generating Doc for: ", file.relative);
-        file.contents = Buffer.from(getAPIDoc(code));
-        file.extname = ".md";
-        return file;
+    if(!code.includes("@"+ TAG_INCLUDE_IN_API_DOCS)) {
+        cb(null, null); // omit this file
+        return;
     }
+    console.log("Generating Doc for: ", file.path);
+    documentation.build(file.path,{})
+        .then(documentation.formats.md)
+        .then(markdownDocStr => {
+            file.contents = Buffer.from(markdownDocStr);
+            file.extname = ".md";
+            cb(null, file);
+        });
 }
 
-/**
- * TODO:
- * @param {string} eventType
- * @param {string} [eventType="df"]
- * @param {string} [eventType]
- * @param {string?} [eventType]
- * @param {string!} [eventType]
- * @return
- * @returns
- * @arg - same as param
- * @argument - same as param
- */
-
-function isCommentIncludesTag(comment, tagName) {
-    for(let tag of comment.tags){
-        if(tag.title === tagName){
-            return true;
-        }
-    }
-    return false;
-}
-
-function processComment(comment) {
-    if(comment.type !== 'BlockComment' || isCommentIncludesTag(comment, TAG_PRIVATE)){
-        return '';
-    }
-    let output = "\n";
-    let commentStr = comment.value;
-    // console.log(comment);
-    return output+ commentStr;
-}
-
-function getAPIDoc(srcCode) {
-    const comments = new Comments();
-    const ast = comments.parse(srcCode);
-    let apiDocMarkDown = "";
-    for(let comment of ast){
-        apiDocMarkDown += processComment(comment);
-    }
-    return apiDocMarkDown;
-}
-
-exports.processFile = processFile;
+exports.generateDocs = generateDocs;

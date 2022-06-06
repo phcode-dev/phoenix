@@ -16,6 +16,7 @@
         "@commitlint/cli": "^16.0.2",
         "@commitlint/config-conventional": "^16.0.0",
         "del": "^6.0.0",
+        "documentation": "^13.2.5",
         "eslint": "^7.32.0",
         "gulp": "^4.0.2",
         "gulp-concat": "^2.6.1",
@@ -31,7 +32,6 @@
         "husky": "^7.0.4",
         "lodash": "^4.17.21",
         "merge-stream": "^2.0.0",
-        "parse-comments": "^1.0.0",
         "readable-stream": "^3.6.0",
         "through2": "^4.0.2"
     },
