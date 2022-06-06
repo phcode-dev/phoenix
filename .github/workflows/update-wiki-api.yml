@@ -25,7 +25,12 @@ jobs:
         with:
            repository: ${{github.repository}}.wiki    # specify the wiki repo name here.
            path: wiki
-      - name: check wiki repo content
+      - name: copying generated API doc files to wiki
         run: |
           pwd
-          ls -al
+          mkdir -p ./wiki/api
+          rsync -a ./phoenixSrc/docs/ ./wiki/api
+          find ./wiki/api
+          cd wiki
+          git status
+        shell: bash
