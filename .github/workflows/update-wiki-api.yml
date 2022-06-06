@@ -51,4 +51,5 @@ jobs:
         with:
           repository: ${{github.repository}}.wiki
           branch: main
+          directory: wiki
           github_token: ${{ secrets.GITHUB_TOKEN }}
