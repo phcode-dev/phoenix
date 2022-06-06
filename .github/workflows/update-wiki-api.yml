@@ -1,0 +1,29 @@
+name: Generating WIKI API Docs in phoenix github wiki
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: phoenix
+      - name: Building phoenix and phoenix wiki
+        run: |
+          pwd
+          ls -al
+          npm install
+          npm run build
+        shell: bash
+
+      - uses: actions/checkout@v2
+        with:
+           repository: ${{github.repository}}.wiki    # specify the wiki repo name here.
+           path: wiki
+      - name: check wiki repo content
+        run: |
+          pwd
+          ls -al
