@@ -100,6 +100,10 @@ async function copyThirdPartyLibs(){
             .pipe(dest('src/extensions/default/Phoenix-live-preview/thirdparty')),
         src(['node_modules/marked/LICENSE.md'])
             .pipe(rename("marked.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
+        // documentation
+        src(['node_modules/documentation/LICENSE'])
+            .pipe(rename("documentation.markdown"))
             .pipe(dest('src/thirdparty/licences/'))
     );
 }
