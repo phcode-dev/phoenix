@@ -30,7 +30,7 @@ jobs:
           pwd
           mkdir -p ./wiki/api
           rsync -a ./phoenixSrc/docs/ ./wiki/api
-          find ./wiki/api
+          find ./wiki
           cd wiki
           git add .
           git status
@@ -50,4 +50,5 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           repository: ${{github.repository}}.wiki
+          branch: main
           github_token: ${{ secrets.GITHUB_TOKEN }}
