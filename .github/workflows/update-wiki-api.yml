@@ -32,5 +32,13 @@ jobs:
           rsync -a ./phoenixSrc/docs/ ./wiki/api
           find ./wiki/api
           cd wiki
+          gti add .
           git status
         shell: bash
+      - name: Commit new wiki files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Adding API docs: ${{ github.event.pull_request.title }}"
+          git log -p -1
