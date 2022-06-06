@@ -44,8 +44,9 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "phoenixide"
           git add .
-          git commit -m "Adding API docs: ${{ github.event.pull_request.title }}"
+          git diff-index --quiet HEAD || git commit -m "Adding API docs: ${{ github.event.pull_request.title }}"
           git log -1 --stat
+        shell: bash
 
       - name: Push changes to Github wiki
         uses: ad-m/github-push-action@master
