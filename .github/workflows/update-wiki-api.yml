@@ -10,13 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          path: phoenix
+          path: phoenixSrc
       - name: Building phoenix and phoenix wiki
         run: |
           pwd
           ls -al
+          cd phoenixSrc
           npm install
           npm run build
+          ls -al docs
         shell: bash
 
       - uses: actions/checkout@v2
