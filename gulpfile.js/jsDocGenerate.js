@@ -21,6 +21,9 @@
 /* eslint-env node */
 const documentation = require('documentation');
 const through2 = require("through2");
+const glob = require("glob");
+const path = require("path");
+const fs = require('fs');
 
 const TAG_INCLUDE_IN_API_DOCS = "INCLUDE_IN_API_DOCS";
 
@@ -57,4 +60,41 @@ function processFile(file, cb) {
         });
 }
 
+function getIndexMarkdown(docRoot, fileNames) {
+    let markdown = "# API docs\nThe list of all APIs for phoenix.\n";
+    for(let fileName of fileNames){
+        let relativeName = fileName.replace(docRoot, '');
+        markdown += `\n[${relativeName}](${path.basename(relativeName)})`;
+        console.log("processing file: ", relativeName);
+    }
+    return markdown;
+}
+
+async function _getAllDocFiles(docRoot) {
+    return new Promise((resolve, reject)=>{
+        let getDirectories = function (src, callback) {
+            glob(src + '/**/*.md', callback);
+        };
+        getDirectories(docRoot, function (err, res) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
+    });
+}
+
+async function generateDocIndex(docRoot) {
+    if(!docRoot.endsWith("/")){
+        docRoot = docRoot + "/";
+    }
+    const indexFileName = `${docRoot}index.md`;
+    let allDocFiles = await _getAllDocFiles(docRoot);
+    let indexMarkdown = getIndexMarkdown(docRoot, allDocFiles);
+    console.log("creating index file: ", indexFileName);
+    fs.writeFileSync(indexFileName, indexMarkdown);
+}
+
 exports.generateDocs = generateDocs;
+exports.generateDocIndex = generateDocIndex;

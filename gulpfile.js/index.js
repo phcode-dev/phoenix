@@ -30,6 +30,7 @@ const zip = require('gulp-zip');
 const rename = require("gulp-rename");
 const through2 = require('through2');
 const jsDocGenerate = require('./jsDocGenerate');
+const configFile = require("../src/config.json");
 
 function cleanDist() {
     return del(['dist']);
@@ -190,6 +191,13 @@ function createJSDocs() {
         .pipe(dest('docs/'));
 }
 
+function generateDocIndex() {
+    return new Promise(async (resolve)=>{
+        await jsDocGenerate.generateDocIndex('docs');
+        resolve();
+    });
+}
+
 exports.build = series(copyThirdPartyLibs, zipDefaultProjectFiles);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
@@ -199,5 +207,5 @@ exports.releaseProd = series(cleanDist, exports.build, makeDist, releaseProd);
 exports.serve = series(exports.build, serve);
 exports.test = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
-exports.createJSDocs = series(cleanDocs, createJSDocs);
+exports.createJSDocs = series(cleanDocs, createJSDocs, generateDocIndex);
 exports.default = series(exports.build);
