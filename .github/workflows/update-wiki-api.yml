@@ -35,6 +35,7 @@ jobs:
           git add .
           git status
         shell: bash
+
       - name: Commit new wiki files
         run: |
           pwd
@@ -43,4 +44,10 @@ jobs:
           git config --local user.name "phoenixide"
           git add .
           git commit -m "Adding API docs: ${{ github.event.pull_request.title }}"
-          git log -p -1
+          git log -1 --stat
+
+      - name: Push changes to Github wiki
+        uses: ad-m/github-push-action@master
+        with:
+          repository: ${{github.repository}}.wiki
+          github_token: ${{ secrets.GITHUB_TOKEN }}
