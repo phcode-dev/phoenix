@@ -60,12 +60,14 @@ function processFile(file, cb) {
         });
 }
 
-function getIndexMarkdown(docRoot, fileNames) {
+function getIndexMarkdown(docRoot, filePaths) {
     let markdown = "# API docs\nThe list of all APIs for phoenix.\n";
-    for(let fileName of fileNames){
-        let relativeName = fileName.replace(docRoot, '');
-        markdown += `\n[${relativeName}](${path.basename(relativeName)})`;
-        console.log("processing file: ", relativeName);
+    for(let filePath of filePaths){
+        let relativePathToDocRoot = filePath.replace(docRoot, ''); // Eg. utils/Metrics.md
+        let fileName = path.basename(relativePathToDocRoot); // Metrics.md
+        let hrefName = path.parse(fileName).name; //Metrics
+        markdown += `\n[${relativePathToDocRoot}](${hrefName})`;
+        console.log("processing file: ", relativePathToDocRoot);
     }
     return markdown;
 }
@@ -89,7 +91,7 @@ async function generateDocIndex(docRoot) {
     if(!docRoot.endsWith("/")){
         docRoot = docRoot + "/";
     }
-    const indexFileName = `${docRoot}index.md`;
+    const indexFileName = `${docRoot}gitHubIndex.md`;
     let allDocFiles = await _getAllDocFiles(docRoot);
     let indexMarkdown = getIndexMarkdown(docRoot, allDocFiles);
     console.log("creating index file: ", indexFileName);
