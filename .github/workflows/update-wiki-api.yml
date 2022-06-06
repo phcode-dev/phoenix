@@ -50,6 +50,6 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           repository: ${{github.repository}}.wiki
-          branch: main
+          branch: master
           directory: wiki
           github_token: ${{ secrets.GITHUB_TOKEN }}
