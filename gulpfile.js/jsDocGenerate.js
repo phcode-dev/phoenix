@@ -96,7 +96,7 @@ async function generateDocIndex(docRoot) {
     if(!docRoot.endsWith("/")){
         docRoot = docRoot + "/";
     }
-    const indexFileName = `${docRoot}gitHubIndex.md`;
+    const indexFileName = `${docRoot}GitHub-API-Index.md`;
     let allDocFiles = await _getAllDocFiles(docRoot);
     let indexMarkdown = getIndexMarkdown(docRoot, allDocFiles);
     console.log("creating index file: ", indexFileName);
