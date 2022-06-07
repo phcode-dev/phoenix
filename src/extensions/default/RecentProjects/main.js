@@ -43,10 +43,6 @@ define(function (require, exports, module) {
 
     var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
-
-    /** @const {string} Recent Projects commands ID */
-    var TOGGLE_DROPDOWN = "recentProjects.toggle";
-
     /** @const {number} Maximum number of displayed recent projects */
     var MAX_PROJECTS = 20;
 
@@ -297,6 +293,8 @@ define(function (require, exports, module) {
 
                 } else if (id === "open-folder-link") {
                     CommandManager.execute(Commands.FILE_OPEN_FOLDER);
+                } else if (id === "new-project-link") {
+                    CommandManager.execute(Commands.FILE_NEW_PROJECT);
                 }
 
             })
@@ -438,8 +436,8 @@ define(function (require, exports, module) {
     }
 
     // Register command handlers
-    CommandManager.register(Strings.CMD_TOGGLE_RECENT_PROJECTS, TOGGLE_DROPDOWN, handleKeyEvent);
-    KeyBindingManager.addBinding(TOGGLE_DROPDOWN, KeyboardPrefs.recentProjects);
+    CommandManager.register(Strings.CMD_TOGGLE_RECENT_PROJECTS, Commands.TOGGLE_DROPDOWN, handleKeyEvent);
+    KeyBindingManager.addBinding(Commands.TOGGLE_DROPDOWN, KeyboardPrefs.recentProjects);
 
     // Initialize extension
     AppInit.appReady(function () {
