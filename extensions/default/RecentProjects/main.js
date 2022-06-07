@@ -43,9 +43,8 @@ define(function (require, exports, module) {
 
     var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
-
     /** @const {string} Recent Projects commands ID */
-    var TOGGLE_DROPDOWN = "recentProjects.toggle";
+    let TOGGLE_DROPDOWN = "recentProjects.toggle";
 
     /** @const {number} Maximum number of displayed recent projects */
     var MAX_PROJECTS = 20;
@@ -297,6 +296,8 @@ define(function (require, exports, module) {
 
                 } else if (id === "open-folder-link") {
                     CommandManager.execute(Commands.FILE_OPEN_FOLDER);
+                } else if (id === "new-project-link") {
+                    CommandManager.execute(Commands.FILE_NEW_PROJECT);
                 }
 
             })

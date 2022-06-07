@@ -31,6 +31,7 @@ define(function (require, exports, module) {
     // FILE
     exports.FILE_NEW_UNTITLED           = "file.newDoc";                // DocumentCommandHandlers.js   handleFileNew()
     exports.FILE_NEW                    = "file.newFile";               // DocumentCommandHandlers.js   handleFileNewInProject()
+    exports.FILE_NEW_PROJECT            = "file.newProject";            // Phoenix extension: new-project.js
     exports.FILE_NEW_FOLDER             = "file.newFolder";             // DocumentCommandHandlers.js   handleNewFolderInProject()
     exports.FILE_OPEN                   = "file.open";                  // DocumentCommandHandlers.js   handleDocumentOpen()
     exports.FILE_OPEN_FOLDER            = "file.openFolder";            // ProjectManager.js            openProject()

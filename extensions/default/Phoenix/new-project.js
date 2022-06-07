@@ -19,13 +19,16 @@
  */
 
 define(function (require, exports, module) {
-    let Dialogs = brackets.getModule("widgets/Dialogs"),
+    const Dialogs = brackets.getModule("widgets/Dialogs"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         newProjectTemplate = require("text!new-project-template.html"),
         Strings = brackets.getModule("strings"),
         EventDispatcher = brackets.getModule("utils/EventDispatcher"),
-        EventManager = brackets.getModule("utils/EventManager");
+        EventManager = brackets.getModule("utils/EventManager"),
+        CommandManager = brackets.getModule("command/CommandManager"),
+        Commands = brackets.getModule("command/Commands"),
+        Menus = brackets.getModule("command/Menus");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
         EVENT_HANDLER_NEW_PROJECT = "Extn.Phoenix.newProject",
@@ -47,6 +50,12 @@ define(function (require, exports, module) {
         dialogue = Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars), true);
     }
 
+    function _addMenuEntries() {
+        CommandManager.register(Strings.CMD_PROJECT_NEW, Commands.FILE_NEW_PROJECT, _showNewProjectDialogue);
+        const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
+        fileMenu.addMenuItem(Commands.FILE_NEW_PROJECT, "Alt-Shift-N", Menus.AFTER, Commands.FILE_NEW);
+    }
+
     exports.on(EVENT_CLOSE_DIALOGUE, ()=>{
         dialogue.close();
     });
@@ -55,6 +64,7 @@ define(function (require, exports, module) {
         if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_PROJECT_DIALOGUE)){
             return;
         }
+        _addMenuEntries();
         _showNewProjectDialogue();
     };
 });
