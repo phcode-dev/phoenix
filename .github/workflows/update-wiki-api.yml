@@ -28,9 +28,9 @@ jobs:
       - name: copying generated API doc files to wiki
         run: |
           pwd
-          mkdir -p ./wiki/api
-          rm -rf ./wiki/api/*
-          rsync -a ./phoenixSrc/docs/ ./wiki/api
+          mkdir -p ./wiki/generatedDocs
+          rm -rf ./wiki/generatedDocs/*
+          rsync -a ./phoenixSrc/docs/ ./wiki/generatedDocs
           find ./wiki
           cd wiki
           git add .

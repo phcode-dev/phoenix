@@ -181,19 +181,19 @@ function releaseProd() {
 }
 
 function cleanDocs() {
-    return del(['docs']);
+    return del(['docs/generatedApiDocs']);
 }
 
 function createJSDocs() {
     return src('src/**/*.js')
         // Instead of using gulp-uglify, you can create an inline plugin
         .pipe(jsDocGenerate.generateDocs())
-        .pipe(dest('docs/'));
+        .pipe(dest('docs/generatedApiDocs'));
 }
 
 function generateDocIndex() {
     return new Promise(async (resolve)=>{
-        await jsDocGenerate.generateDocIndex('docs');
+        await jsDocGenerate.generateDocIndex('docs/generatedApiDocs');
         resolve();
     });
 }
