@@ -159,7 +159,7 @@ define(function (require, exports, module) {
         if(!count){
             count = 1;
         }
-        let eventAct = `${action}.${category}.${label}`;
+        let eventAct = `${category}.${action}.${label}`;
         gtag('event', eventAct, {
             'event_category': category,
             'event_label': label,
