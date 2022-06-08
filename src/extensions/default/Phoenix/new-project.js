@@ -24,18 +24,15 @@ define(function (require, exports, module) {
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         newProjectTemplate = require("text!new-project-template.html"),
         Strings = brackets.getModule("strings"),
-        EventDispatcher = brackets.getModule("utils/EventDispatcher"),
-        EventManager = brackets.getModule("utils/EventManager"),
+        ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
         CommandManager = brackets.getModule("command/CommandManager"),
         Commands = brackets.getModule("command/Commands"),
         Menus = brackets.getModule("command/Menus");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
-        EVENT_HANDLER_NEW_PROJECT = "Extn.Phoenix.newProject",
-        EVENT_CLOSE_DIALOGUE = "closeDialogue";
+        NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject";
 
-    EventDispatcher.makeEventDispatcher(exports);
-    EventManager.registerEventHandler(EVENT_HANDLER_NEW_PROJECT, exports);
+    ExtensionInterface.registerExtensionInterface(NEW_PROJECT_INTERFACE, exports);
 
     let dialogue;
 
@@ -56,9 +53,9 @@ define(function (require, exports, module) {
         fileMenu.addMenuItem(Commands.FILE_NEW_PROJECT, "Alt-Shift-N", Menus.AFTER, Commands.FILE_NEW);
     }
 
-    exports.on(EVENT_CLOSE_DIALOGUE, ()=>{
+    exports.closeDialogue = function () {
         dialogue.close();
-    });
+    };
 
     exports.init = function () {
         if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_PROJECT_DIALOGUE)){

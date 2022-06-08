@@ -23,19 +23,16 @@
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
 
-const EVENT_HANDLER_NEW_PROJECT = "Extn.Phoenix.newProject",
-    EVENT_CLOSE_DIALOGUE = "closeDialogue";
+const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject";
 
-function messagePhoenix(event, ...params) {
-    if(window.parent && window.parent.EventManager){
-        window.parent.EventManager.triggerEvent(event, ...params);
-    } else {
-        console.error("Cannot communicate with parent phoenix window");
-    }
-}
+let newProjectExtension;
+window.parent.ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
+    .then(interfaceObj => {
+        newProjectExtension = interfaceObj;
+    });
 
 function closeDialogue() {
-    messagePhoenix(EVENT_HANDLER_NEW_PROJECT, EVENT_CLOSE_DIALOGUE);
+    newProjectExtension.closeDialogue();
 }
 
 function init() {

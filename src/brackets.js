@@ -90,6 +90,11 @@ define(function (require, exports, module) {
         MainViewManager     = require("view/MainViewManager");
 
     window.EventManager = EventManager; // Main event intermediary between brackets and other web pages.
+    /**
+     * The extension interface that can be used to communicate with extensions that supports it.
+     */
+    window.ExtensionInterface = ExtensionInterface;
+
 
     var MainViewHTML        = require("text!htmlContent/main-view.html");
 
