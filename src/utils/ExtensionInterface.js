@@ -21,10 +21,46 @@
 /*global less */
 // jshint ignore: start
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * ExtensionInterface defines utility methods for communicating between extensions safely.
- * See <doc link here for more details on how to use this API>
+ * A global `window.ExtensionInterface` object is made available in phoenix that can be called anytime after AppStart.
+ *
+ * ## Usage
+ * For Eg. You may have two extensions installed say `angular` extension which has to call functions made available by
+ * `angular-cli` Extension.
+ *
+ * For Making this possible, the `angular-cli` extension makes a named interface available with the ExtensionInterface
+ * module and `angular` extension can get hold of the interface as and when the extension gets loaded.
+ *
+ * ```js
+ * // in angular-cli extension, make a file say cli-interface.js module within the extension, do the following:
+ * const ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
+ * // You can replace exports with any object you want to expose outside the extension really.
+ * ExtensionInterface.registerExtensionInterface("angularCli", exports);
+ * ```
+ * Once the interface is registered, the angular extension can get hold of the interface with the following code
+ * (inside or outside the extension) by using:
+ *
+ * ```js
+ * let angularCli;
+ * ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);
+ * ...
+ * if(angularCli){ // check if angular cli is avilable
+ * angularCli.callSomeFunction();
+ * }
+ * ...
+ * ```
+ *
+ * **Note** that the `angularCli` interface is async populated as and when the cli extension is loaded and the
+ * interface made available.
+ *
+ * **NBB:** Do Not use `await waitAndGetExtensionInterface` on tol level require as the module loading might fail.
+ *
+ * @module utils/ExtensionInterface
  */
+
 define(function (require, exports, module) {
     const EVENT_EXTENSION_INTERFACE_REGISTERED = "extensionInterfaceRegistered";
 
@@ -34,6 +70,10 @@ define(function (require, exports, module) {
 
     /**
      * Registers a named extension interface. Will overwrite if an interface of the same name is already present.
+     *
+     * @example <caption>To register an interface `angularCli`</caption>
+     * ExtensionInterface.registerExtensionInterface("angularCli", exports);
+     *
      * @param {string} extensionInterfaceName
      * @param {Object} interfaceObject
      */
@@ -54,18 +94,32 @@ define(function (require, exports, module) {
     /**
      * Returns a promise that gets resolved only when an ExtensionInterface of the given name is registered. Use this
      * getter to get hold of extensions interface predictably.
+     *
+     * @example <caption>To get a registered interface `angularCli`</caption>
+     * let angularCli;
+     * ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);
+     * ...
+     * if(angularCli){ // check if angular cli is avilable
+     * angularCli.callSomeFunction();
+     * }
+     * ...
+     *
      * @param extensionInterfaceName
      * @return {Promise}
      */
     function waitAndGetExtensionInterface(extensionInterfaceName) {
         return new Promise((resolve, reject)=>{
-            let registrationEventHandler = function (event, registeredInterfaceName, interfaceObj) {
+            if(isExistsExtensionInterface(extensionInterfaceName)){
+                resolve(_extensionInterfaceMap[extensionInterfaceName]);
+                return;
+            }
+            let resolveIfInterfaceRegistered = function (event, registeredInterfaceName, interfaceObj) {
                 if(registeredInterfaceName === extensionInterfaceName){
-                    exports.off(EVENT_EXTENSION_INTERFACE_REGISTERED, registrationEventHandler);
+                    exports.off(EVENT_EXTENSION_INTERFACE_REGISTERED, resolveIfInterfaceRegistered);
                     resolve(interfaceObj);
                 }
             };
-            exports.on(EVENT_EXTENSION_INTERFACE_REGISTERED, registrationEventHandler);
+            exports.on(EVENT_EXTENSION_INTERFACE_REGISTERED, resolveIfInterfaceRegistered);
         });
     }
 
