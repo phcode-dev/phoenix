@@ -54,7 +54,7 @@ define(function (require, exports, module) {
      *
      * ### Properties
      * `PLATFORM`, `PROJECT`, `THEMES`, `EXTENSIONS`, `EXTENSIONS`, `UI`, `UI_DIALOG`, `UI_BOTTOM_PANEL`,
-     * `UI_SIDE_PANEL`, `LIVE_PREVIEW`, `CODE_HINTS`, `EDITOR`, `SEARCH`, `SHARING`, `PERFORMANCE`
+     * `UI_SIDE_PANEL`, `LIVE_PREVIEW`, `CODE_HINTS`, `EDITOR`, `SEARCH`, `SHARING`, `PERFORMANCE`, `NEW_PROJECT`
      *
      * @typedef EVENT_TYPE
      * @type {Object}
@@ -73,7 +73,8 @@ define(function (require, exports, module) {
         EDITOR: "editor",
         SEARCH: "search",
         SHARING: "sharing",
-        PERFORMANCE: "performance"
+        PERFORMANCE: "performance",
+        NEW_PROJECT: "new-project"
     };
 
     /**
