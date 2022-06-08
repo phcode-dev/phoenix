@@ -57,6 +57,12 @@ define(function (require, exports, module) {
         dialogue.close();
     };
 
+    exports.openFolder = function () {
+        CommandManager.execute(Commands.FILE_OPEN_FOLDER).then((...args)=>{
+            dialogue.close();
+        });
+    };
+
     exports.init = function () {
         if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_PROJECT_DIALOGUE)){
             return;
