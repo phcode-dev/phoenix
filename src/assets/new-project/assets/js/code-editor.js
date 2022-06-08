@@ -23,15 +23,9 @@
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
 
-const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject";
 
-window.parent.ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
-    .then(interfaceObj => {
-        window.newProjectExtension = interfaceObj;
-    });
-
-function init() {
-    document.getElementById("closeDialogueButton").onclick = function() {
-        window.newProjectExtension.closeDialogue();
+function initCodeEditor() {
+    document.getElementById("openFolderBtn").onclick = function() {
+        window.newProjectExtension.openFolder();
     };
 }
