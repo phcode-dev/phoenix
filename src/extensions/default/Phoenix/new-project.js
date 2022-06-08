@@ -46,7 +46,11 @@ define(function (require, exports, module) {
             Strings: Strings,
             newProjectURL: `${window.location.href}/assets/new-project/code-editor.html`
         };
-        dialogue = Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars), true);
+        let dialogueContents = Mustache.render(newProjectTemplate, templateVars);
+        dialogue = Dialogs.showModalDialogUsingTemplate(dialogueContents, true);
+        setTimeout(()=>{
+            document.getElementById("newProjectFrame").contentWindow.focus();
+        }, 100);
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open", 1);
     }
 
