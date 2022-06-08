@@ -34,4 +34,26 @@ function init() {
     document.getElementById("closeDialogueButton").onclick = function() {
         window.newProjectExtension.closeDialogue();
     };
+    document.getElementById("top").onkeydown = function(e) {
+        if(e.code === 'Escape'){
+            window.newProjectExtension.closeDialogue();
+        } else if(e.code === 'ArrowRight') {
+            $.tabNext();
+            console.log(e);
+        } else if(e.code === 'ArrowLeft') {
+            $.tabPrev();
+        }
+    };
+    // Accessibility and keyboard navigation with Tab and Esc, Enter keys.
+    $('.tabable').focus(function(el) {
+        $(el.target).addClass('active');
+    }).blur(function(el) {
+        $(el.target).removeClass('active');
+    });
+
+    $('#focusguard-2').on('focus', function() {
+        // "last" focus guard got focus: set focus to the first field
+        $('#firstInputTabIndex').focus();
+    });
+    // Accessibility and keyboard navigation with Tab and Esc, Enter keys end.
 }
