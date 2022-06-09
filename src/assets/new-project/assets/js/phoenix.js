@@ -45,7 +45,6 @@ function init() {
             window.newProjectExtension.closeDialogue();
         } else if(e.code === 'ArrowRight') {
             $.tabNext();
-            console.log(e);
         } else if(e.code === 'ArrowLeft') {
             $.tabPrev();
         }
@@ -53,7 +52,6 @@ function init() {
     // Accessibility and keyboard navigation with Tab and Esc, Enter keys.
     $('.tabable').focus(function(el) {
         $(el.target).addClass('active');
-        console.log(el.target);
     }).blur(function(el) {
         $(el.target).removeClass('active');
     });
