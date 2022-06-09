@@ -23,19 +23,20 @@
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
 
-const PROJECT_PATH_ATTRIBUTE = "data-fullPath";
-
 function _createRecentProjectCard(projectName, fullPath, nodeId, tabIndex) {
+    let removeBtnDisableStyle = "";
+    if(fullPath === "/fs/local/default project"){
+        removeBtnDisableStyle = "display: none;";
+    }
     return $(`<li>
         <a id="${nodeId}" href="#" 
         class="d-flex align-items-center justify-content-between tabable"
         tabindex="${tabIndex}"
-        ${PROJECT_PATH_ATTRIBUTE}="${fullPath}",
-        onclick="openProject(this)">
+        onclick="openProject('${fullPath}')">
             <div class="project-name">
                 ${projectName}
             </div>
-            <button class="remove-btn">
+            <button class="remove-btn" onclick="removeProject('${fullPath}')" style="${removeBtnDisableStyle}">
                 <svg width="16" height="16" viewBox="0 0 14 14" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.75 3.5H2.91667H12.25" stroke="#D0D0D0" stroke-linecap="round"
@@ -73,14 +74,20 @@ function _updateProjectCards() {
     }
 }
 
-function openProject(domNode) {
-    window.recentProjectExtension.openProjectWithPath(domNode.getAttribute(PROJECT_PATH_ATTRIBUTE))
+function openProject(fullPath) {
+    window.recentProjectExtension.openProjectWithPath(fullPath)
         .then(()=>{
             window.newProjectExtension.closeDialogue();
         })
         .catch(()=>{
             _updateProjectCards();
         });
+}
+
+function removeProject(fullPath) {
+    window.recentProjectExtension.removeFromRecentProject(fullPath);
+    _updateProjectCards();
+    event.stopPropagation();
 }
 
 function initCodeEditor() {

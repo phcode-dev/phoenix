@@ -110,6 +110,19 @@ define(function (require, exports, module) {
         });
     }
 
+    function removeFromRecentProject(fullPath) {
+        let recentProjects = getRecentProjects(),
+            index = recentProjects.indexOf(fullPath),
+            newProjects = [],
+            i;
+        for (i = 0; i < recentProjects.length; i++) {
+            if (i !== index) {
+                newProjects.push(recentProjects[i]);
+            }
+        }
+        PreferencesManager.setViewState("recentProjects", newProjects);
+    }
+
     /**
      * Create the "delete" button that shows up when you hover over a project.
      */
@@ -120,20 +133,11 @@ define(function (require, exports, module) {
                 e.stopPropagation();
 
                 // Remove the project from the preferences.
-                var recentProjects = getRecentProjects(),
-                    index = recentProjects.indexOf($(this).parent().data("path")),
-                    newProjects = [],
-                    i;
-                for (i = 0; i < recentProjects.length; i++) {
-                    if (i !== index) {
-                        newProjects.push(recentProjects[i]);
-                    }
-                }
-                PreferencesManager.setViewState("recentProjects", newProjects);
+                removeFromRecentProject($(this).parent().data("path"));
                 $(this).closest("li").remove();
                 checkHovers(e.pageX, e.pageY);
 
-                if (newProjects.length === 1) {
+                if (getRecentProjects().length === 1) {
                     $dropdown.find(".divider").remove();
                 }
             });
@@ -481,4 +485,5 @@ define(function (require, exports, module) {
 
     exports.getRecentProjects = getRecentProjects;
     exports.openProjectWithPath = openProjectWithPath;
+    exports.removeFromRecentProject = removeFromRecentProject;
 });
