@@ -27,7 +27,9 @@ define(function (require, exports, module) {
         ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
         CommandManager = brackets.getModule("command/CommandManager"),
         Commands = brackets.getModule("command/Commands"),
-        Menus = brackets.getModule("command/Menus");
+        Menus = brackets.getModule("command/Menus"),
+        Metrics = brackets.getModule("utils/Metrics"),
+        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
         NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject";
@@ -44,7 +46,12 @@ define(function (require, exports, module) {
             Strings: Strings,
             newProjectURL: `${window.location.href}/assets/new-project/code-editor.html`
         };
-        dialogue = Dialogs.showModalDialogUsingTemplate(Mustache.render(newProjectTemplate, templateVars), true);
+        let dialogueContents = Mustache.render(newProjectTemplate, templateVars);
+        dialogue = Dialogs.showModalDialogUsingTemplate(dialogueContents, true);
+        setTimeout(()=>{
+            document.getElementById("newProjectFrame").contentWindow.focus();
+        }, 100);
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open", 1);
     }
 
     function _addMenuEntries() {
@@ -53,8 +60,22 @@ define(function (require, exports, module) {
         fileMenu.addMenuItem(Commands.FILE_NEW_PROJECT, "Alt-Shift-N", Menus.AFTER, Commands.FILE_NEW);
     }
 
-    exports.closeDialogue = function () {
+    function closeDialogue() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open", 1);
         dialogue.close();
+    }
+
+    exports.closeDialogue = closeDialogue;
+
+    exports.openFolder = function () {
+        if(!window.showOpenFilePicker){
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.UNSUPPORTED_BROWSER,
+                "Browser does not support Open folder."
+            );
+        }
+        CommandManager.execute(Commands.FILE_OPEN_FOLDER).then(closeDialogue);
     };
 
     exports.init = function () {

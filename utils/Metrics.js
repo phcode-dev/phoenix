@@ -54,17 +54,17 @@ define(function (require, exports, module) {
      *
      * ### Properties
      * `PLATFORM`, `PROJECT`, `THEMES`, `EXTENSIONS`, `EXTENSIONS`, `UI`, `UI_DIALOG`, `UI_BOTTOM_PANEL`,
-     * `UI_SIDE_PANEL`, `LIVE_PREVIEW`, `CODE_HINTS`, `EDITOR`, `SEARCH`, `SHARING`, `PERFORMANCE`
+     * `UI_SIDE_PANEL`, `LIVE_PREVIEW`, `CODE_HINTS`, `EDITOR`, `SEARCH`, `SHARING`, `PERFORMANCE`, `NEW_PROJECT`
      *
      * @typedef EVENT_TYPE
      * @type {Object}
      */
     const EVENT_TYPE = {
-        PLATFORM: "platform",
+        PLATFORM: "phoenix.platform",
         PROJECT: "project",
         THEMES: "themes",
         EXTENSIONS: "extensions",
-        UI: "UI",
+        UI: "phoenix.UI",
         UI_DIALOG: "ui-dialog",
         UI_BOTTOM_PANEL: "ui-bottomPanel",
         UI_SIDE_PANEL: "ui-sidePanel",
@@ -73,7 +73,8 @@ define(function (require, exports, module) {
         EDITOR: "editor",
         SEARCH: "search",
         SHARING: "sharing",
-        PERFORMANCE: "performance"
+        PERFORMANCE: "performance",
+        NEW_PROJECT: "new-project"
     };
 
     /**
