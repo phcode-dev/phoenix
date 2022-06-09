@@ -24,11 +24,17 @@
 /* jshint ignore:start */
 
 const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject";
+const RECENT_PROJECTS_INTERFACE = "Extn.Phoenix.recentProjects";
 
 window.parent.ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
     .then(interfaceObj => {
         window.newProjectExtension = interfaceObj;
     });
+window.parent.ExtensionInterface.waitAndGetExtensionInterface(RECENT_PROJECTS_INTERFACE)
+    .then(interfaceObj => {
+        window.recentProjectExtension = interfaceObj;
+    });
+
 
 function init() {
     document.getElementById("closeDialogueButton").onclick = function() {
@@ -47,6 +53,7 @@ function init() {
     // Accessibility and keyboard navigation with Tab and Esc, Enter keys.
     $('.tabable').focus(function(el) {
         $(el.target).addClass('active');
+        console.log(el.target);
     }).blur(function(el) {
         $(el.target).removeClass('active');
     });
