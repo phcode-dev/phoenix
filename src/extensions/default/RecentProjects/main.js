@@ -39,7 +39,12 @@ define(function (require, exports, module) {
         PopUpManager            = brackets.getModule("widgets/PopUpManager"),
         Strings                 = brackets.getModule("strings"),
         Mustache                = brackets.getModule("thirdparty/mustache/mustache"),
-        ProjectsMenuTemplate    = require("text!htmlContent/projects-menu.html");
+        ProjectsMenuTemplate    = require("text!htmlContent/projects-menu.html"),
+        ExtensionInterface = brackets.getModule("utils/ExtensionInterface");
+
+    const RECENT_PROJECTS_INTERFACE = "Extn.Phoenix.recentProjects";
+
+    ExtensionInterface.registerExtensionInterface(RECENT_PROJECTS_INTERFACE, exports);
 
     var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
@@ -267,6 +272,27 @@ define(function (require, exports, module) {
         $(window).off("keydown", keydownHook);
     }
 
+    function openProjectWithPath(fullPath) {
+        return new Promise((resolve, reject)=>{
+            ProjectManager.openProject(fullPath)
+                .then(resolve)
+                .fail(function () {
+                    // Remove the project from the list only if it does not exist on disk
+                    var recentProjects = getRecentProjects(),
+                        index = recentProjects.indexOf(fullPath);
+                    if (index === -1) {
+                        reject();
+                        return;
+                    }
+                    FileSystem.resolve(fullPath, function (err, item) {
+                        if (err) {
+                            recentProjects.splice(index, 1);
+                        }
+                        reject();
+                    });
+                });
+        });
+    }
 
     /**
      * Adds the click and mouse enter/leave events to the dropdown
@@ -279,19 +305,7 @@ define(function (require, exports, module) {
                     path  = $link.data("path");
 
                 if (path) {
-                    ProjectManager.openProject(path)
-                        .fail(function () {
-                            // Remove the project from the list only if it does not exist on disk
-                            var recentProjects = getRecentProjects(),
-                                index = recentProjects.indexOf(path);
-                            if (index !== -1) {
-                                FileSystem.resolve(path, function (err, item) {
-                                    if (err) {
-                                        recentProjects.splice(index, 1);
-                                    }
-                                });
-                            }
-                        });
+                    openProjectWithPath(path);
                     closeDropdown();
 
                 } else if (id === "open-folder-link") {
@@ -464,4 +478,7 @@ define(function (require, exports, module) {
         };
         Menus.ContextMenu.assignContextMenuToSelector("#project-dropdown-toggle", cmenuAdapter);
     });
+
+    exports.getRecentProjects = getRecentProjects;
+    exports.openProjectWithPath = openProjectWithPath;
 });
