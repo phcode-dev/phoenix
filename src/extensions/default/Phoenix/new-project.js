@@ -24,6 +24,7 @@ define(function (require, exports, module) {
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         newProjectTemplate = require("text!new-project-template.html"),
         Strings = brackets.getModule("strings"),
+        StringUtils = brackets.getModule("utils/StringUtils"),
         ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
         CommandManager = brackets.getModule("command/CommandManager"),
         Commands = brackets.getModule("command/Commands"),
@@ -66,12 +67,19 @@ define(function (require, exports, module) {
         dialogue.close();
     }
 
+    function showErrorDialogue(title, message) {
+        Dialogs.showModalDialog(
+            DefaultDialogs.DIALOG_ID_ERROR,
+            title,
+            message
+        );
+    }
+
     function openFolder () {
         if(!window.showOpenFilePicker){
-            Dialogs.showModalDialog(
-                DefaultDialogs.DIALOG_ID_ERROR,
+            showErrorDialogue(
                 Strings.UNSUPPORTED_BROWSER,
-                "Browser does not support Open folder."
+                Strings.UNSUPPORTED_BROWSER_OPEN_FOLDER
             );
         }
         CommandManager.execute(Commands.FILE_OPEN_FOLDER).then(closeDialogue);
@@ -85,22 +93,52 @@ define(function (require, exports, module) {
         _showNewProjectDialogue();
     }
 
+    function _showProjectErrorDialogue(desc, projectPath, err) {
+        let message = StringUtils.format(desc, projectPath, err);
+        showErrorDialogue(Strings.ERROR_LOADING_PROJECT, message);
+    }
+
+    function _validateProjectFolder(projectPath) {
+        let dir = FileSystem.getDirectoryForPath(projectPath);
+        let displayPath = projectPath.replace("/mnt/", "");
+        if(!dir){
+            _showProjectErrorDialogue(Strings.REQUEST_NATIVE_FILE_SYSTEM_ERROR, displayPath, Strings.NOT_FOUND_ERR);
+        }
+        dir.getContents(function (err, contents) {
+            if (err) {
+                _showProjectErrorDialogue(Strings.READ_DIRECTORY_ENTRIES_ERROR, displayPath, Strings.NOT_FOUND_ERR);
+            }
+            if(contents.length >0){
+                _showProjectErrorDialogue(Strings.DIRECTORY_NOT_EMPTY, displayPath);
+            }
+        });
+    }
+
+    function _getSuggestedProjectDir(url) {
+        // this is for vfs default project loc
+    }
+
     function downloadAndOpenProject(downloadURL, projectPath) {
+        // if project path is null, create on in default
+        if(!projectPath){
+            projectPath = _getSuggestedProjectDir(downloadURL);
+        }
+        _validateProjectFolder(projectPath);
         console.log(downloadURL, projectPath);
 
         // https://api.github.com/repos/phcode-dev/phoenix/zipball
-        // window.JSZipUtils.getBinaryContent(downloadURL, {
-        //     callback: function(err, data) {
-        //         if(err) {
-        //             console.error("could not load phoenix default project from zip file!");
-        //         } else {
-        //             console.log("default project Setup complete: ", data.length);
-        //         }
-        //     },
-        //     progress: function (){
-        //         console.log(arguments);
-        //     }
-        // });
+        window.JSZipUtils.getBinaryContent(downloadURL, {
+            callback: function(err, data) {
+                if(err) {
+                    console.error("could not load phoenix default project from zip file!");
+                } else {
+                    console.log("default project Setup complete: ", data.length);
+                }
+            },
+            progress: function (){
+                console.log(arguments);
+            }
+        });
     }
 
     function showFolderSelect() {
@@ -120,4 +158,5 @@ define(function (require, exports, module) {
     exports.closeDialogue = closeDialogue;
     exports.downloadAndOpenProject = downloadAndOpenProject;
     exports.showFolderSelect = showFolderSelect;
+    exports.showErrorDialogue = showErrorDialogue;
 });

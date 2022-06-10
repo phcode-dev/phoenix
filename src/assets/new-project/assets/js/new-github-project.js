@@ -23,8 +23,6 @@
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
 
-const PLEASE_SELECT_A_FOLDER = "Please select a folder...";
-
 let createProjectBtn, websiteURLInput, locationInput, openFolderBtn;
 
 function _isValidGitHubURL(url) {
@@ -75,7 +73,7 @@ function _validateProjectLocation() {
         return true;
     }
     let location = locationInput.value;
-    if( location === PLEASE_SELECT_A_FOLDER){
+    if( location === window.Strings.PLEASE_SELECT_A_FOLDER){
         $(locationInput).addClass("error-border");
         return false;
     }
@@ -99,12 +97,16 @@ function _selectFolder() {
 
 function _createProjectClicked() {
     if(_validate()){
-        $(createProjectBtn).removeClass("error-border");
+        let githubURL = websiteURLInput.value;
+        let components = githubURL.replace("https://github.com/", '').split('/');
+        let zipURL = `https://api.github.com/repos/${components[0]}/${components[1]}/zipball`;
         window.newProjectExtension.downloadAndOpenProject(
-            websiteURLInput.value,
+            zipURL,
             locationInput.fullPath);
     } else {
-        $(createProjectBtn).addClass("error-border");
+        window.newProjectExtension.showErrorDialogue(
+            window.Strings.MISSING_FIELDS,
+            window.Strings.PLEASE_FILL_ALL_REQUIRED);
     }
 }
 
@@ -115,7 +117,7 @@ function initGithubProject() {
     openFolderBtn = document.getElementById("openFolderBtn");
     createProjectBtn.onclick = _createProjectClicked;
     $(websiteURLInput).keyup(_validate);
-    locationInput.value = PLEASE_SELECT_A_FOLDER;
+    locationInput.value = window.Strings.PLEASE_SELECT_A_FOLDER;
     locationInput.onclick = _selectFolder;
     openFolderBtn.onclick = _selectFolder;
     _validate();
