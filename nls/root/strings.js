@@ -475,7 +475,7 @@ define({
     "ABOUT_TEXT_LINE1": "Release {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
     "ABOUT_TEXT_BUILD_TIMESTAMP": "build timestamp: ",
     "ABOUT_TEXT_LINE3": "Based on the Brackets Open source software by Adobe: <a href='https://github.com/adobe/brackets/'>https://github.com/adobe/brackets</a> . ",
-    "ABOUT_TEXT_LINE4": "Documentation and source at <a href='https://github.com/aicore/phoenix/'>https://github.com/aicore/phoenix/</a>",
+    "ABOUT_TEXT_LINE4": "Documentation and source at <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
     "ABOUT_TEXT_LINE5": "Made with \u2764 and JavaScript by:",
     "ABOUT_TEXT_LINE6": "Lots of people (but we're having trouble loading that data right now).",
     "ABOUT_TEXT_MDN_DOCS": "MDN Docs and the MDN graphical logo are licensed under a Creative Commons Attribution license, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
@@ -918,7 +918,21 @@ define({
 
     // Phoenix extension
     "UNSUPPORTED_BROWSER": "Browser Is Unsupported",
+    "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser does not support Open folder",
     "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Please use one of the supported browsers below.",
-    "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " We are working hard to make Phoenix available in more browsers. You may close this dialogue, but some features in Phoenix won't work in this browser."
+    "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " We are working hard to make Phoenix available in more browsers. You may close this dialogue, but some features in Phoenix won't work in this browser.",
 
+    // New project Extension
+    "MISSING_FIELDS": "Missing Fields",
+    "PLEASE_FILL_ALL_REQUIRED": "Please fill all required fields highlighted in red",
+    "PHOENIX_CODE_EDITOR": "Phoenix Code Editor",
+    "BUILD_THE_WEB": "Build the web",
+    "IMPORT_PROJECT": "Import Project",
+    "GITHUB_PROJECT": "Github Project",
+    "NEW_PROJECT_FROM_GITHUB": "New Project from Github",
+    "GITHUB_REPO_URL": "Github Repo URL :",
+    "CREATE_PROJECT": "Create Project",
+    "LOCATION": "Location :",
+    "PLEASE_SELECT_A_FOLDER": "Please select a folder...",
+    "DIRECTORY_NOT_EMPTY": "The selected folder <b>{0}</b> is not empty. Please select an empty folder to create the project."
 });

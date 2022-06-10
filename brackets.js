@@ -94,6 +94,10 @@ define(function (require, exports, module) {
      * The extension interface that can be used to communicate with extensions that supports it.
      */
     window.ExtensionInterface = ExtensionInterface;
+    /**
+     * All translation strings
+     */
+    window.Strings = Strings;
 
 
     var MainViewHTML        = require("text!htmlContent/main-view.html");
