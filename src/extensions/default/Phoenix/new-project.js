@@ -29,7 +29,8 @@ define(function (require, exports, module) {
         Commands = brackets.getModule("command/Commands"),
         Menus = brackets.getModule("command/Menus"),
         Metrics = brackets.getModule("utils/Metrics"),
-        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs");
+        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
+        FileSystem = brackets.getModule("filesystem/FileSystem");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
         NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject";
@@ -65,9 +66,7 @@ define(function (require, exports, module) {
         dialogue.close();
     }
 
-    exports.closeDialogue = closeDialogue;
-
-    exports.openFolder = function () {
+    function openFolder () {
         if(!window.showOpenFilePicker){
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
@@ -76,13 +75,49 @@ define(function (require, exports, module) {
             );
         }
         CommandManager.execute(Commands.FILE_OPEN_FOLDER).then(closeDialogue);
-    };
+    }
 
-    exports.init = function () {
+    function init() {
         if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_PROJECT_DIALOGUE)){
             return;
         }
         _addMenuEntries();
         _showNewProjectDialogue();
-    };
+    }
+
+    function downloadAndOpenProject(downloadURL, projectPath) {
+        console.log(downloadURL, projectPath);
+
+        // https://api.github.com/repos/phcode-dev/phoenix/zipball
+        // window.JSZipUtils.getBinaryContent(downloadURL, {
+        //     callback: function(err, data) {
+        //         if(err) {
+        //             console.error("could not load phoenix default project from zip file!");
+        //         } else {
+        //             console.log("default project Setup complete: ", data.length);
+        //         }
+        //     },
+        //     progress: function (){
+        //         console.log(arguments);
+        //     }
+        // });
+    }
+
+    function showFolderSelect() {
+        return new Promise((resolve, reject)=>{
+            FileSystem.showOpenDialog(false, true, Strings.CHOOSE_FOLDER, '', null, function (err, files) {
+                if(err || files.length !== 1){
+                    reject();
+                    return;
+                }
+                resolve(files[0]);
+            });
+        });
+    }
+
+    exports.init = init;
+    exports.openFolder = openFolder;
+    exports.closeDialogue = closeDialogue;
+    exports.downloadAndOpenProject = downloadAndOpenProject;
+    exports.showFolderSelect = showFolderSelect;
 });

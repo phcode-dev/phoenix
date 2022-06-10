@@ -4,16 +4,16 @@
         "app_name_about": "Phoenix",
         "about_icon"                 : "styles/images/phoenix-icon.svg",
         "how_to_use_url": "https://github.com/adobe/brackets/wiki/How-to-Use-Brackets",
-        "support_url"                : "https://github.com/aicore/phoenix/discussions",
-        "suggest_feature_url"        : "https://github.com/aicore/phoenix/discussions/categories/ideas",
-        "get_involved_url"           : "https://github.com/aicore/phoenix/discussions/77",
+        "support_url"                : "https://github.com/phcode-dev/phoenix/discussions",
+        "suggest_feature_url"        : "https://github.com/phcode-dev/phoenix/discussions/categories/ideas",
+        "get_involved_url"           : "https://github.com/phcode-dev/phoenix/discussions/77",
         "glob_help_url": "https://github.com/adobe/brackets/wiki/Using-File-Filters",
         "release_notes_url": "https://github.com/adobe/brackets/wiki/Release-Notes",
         "homepage_url": "https://core.ai",
         "twitter_url": "https://twitter.com/core_ai_scien",
         "troubleshoot_url": "https://github.com/adobe/brackets/wiki/Troubleshooting#wiki-livedev",
         "twitter_name": "@Phoenix",
-        "contributors_url": "https://api.github.com/repos/aicore/phoenix/contributors?per_page={0}&page={1}",
+        "contributors_url": "https://api.github.com/repos/phcode-dev/phoenix/contributors?per_page={0}&page={1}",
         "extension_listing_url": "",
         "extension_registry": "https://s3.amazonaws.com/extend.brackets/registry.json",
         "extension_url": "https://s3.amazonaws.com/extend.brackets/{0}/{0}-{1}.zip",
@@ -31,11 +31,11 @@
     "apiVersion": "2.0.0",
     "homepage": "https://core.ai",
     "issues": {
-        "url": "https://github.com/aicore/phoenix/issues"
+        "url": "https://github.com/phcode-dev/phoenix/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/aicore/phoenix.git",
+        "url": "https://github.com/phcode-dev/phoenix.git",
         "branch": "",
         "SHA": ""
     },
@@ -94,7 +94,7 @@
     "licenses": [
         {
             "type": "AGPL-3.0-or-later",
-            "url": "https://github.com/aicore/phoenix/blob/master/LICENSE"
+            "url": "https://github.com/phcode-dev/phoenix/blob/master/LICENSE"
         }
     ]
 }

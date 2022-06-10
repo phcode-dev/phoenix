@@ -18,8 +18,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
           rel="stylesheet">
     <script src="assets/js/phoenix.js"></script>
+    <script src="assets/js/new-github-project.js"></script>
 </head>
-<body id="top" onload="init()">
+<body id="top" onload="init(); initGithubProject();">
 <div class="code-editor-card">
     <div class="project-top d-flex align-items-center justify-content-between">
         <div class="editor-left d-flex align-items-center">
@@ -49,14 +50,17 @@
 
     <div class="website-main-content">
         <div class="website-detail d-flex align-items-center">
-            <span>Enter website URL :</span>
-            <input type="text" name="web-url" value="http://github.com/aircore/phoenix"/>
-            <button class="create-btn">Create Project</button>
+            <span>Github Repo URL :</span>
+            <input id="websiteURLInput" class="" type="text" name="web-url" value="https://github.com/phcode-dev/phoenix"/>
+            <button id="createProjectBtn" class="create-btn">Create Project</button>
         </div>
-        <div class="website-detail d-flex align-items-center">
-            <span>Project Name :</span>
-            <input type="text" name="web-url" value="phoenix"/>
-
+        <div id="projectLocation" class="website-detail d-flex align-items-center">
+            <span>Location :</span>
+            <input id="locationInput" type="button" name="web-url" value="">
+            <a id="openFolderBtn" href="#" class="tabable" tabindex="3">
+                <img src="images/tab-img6.png" alt="image">
+                <span>Open Folder</span>
+            </a>
         </div>
 
     </div>
