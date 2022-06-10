@@ -34,6 +34,7 @@
         "lodash": "^4.17.21",
         "merge-stream": "^2.0.0",
         "readable-stream": "^3.6.0",
+        "requirejs": "^2.3.6",
         "through2": "^4.0.2"
     },
     "scripts": {
@@ -52,7 +53,8 @@
         "release:prod": "gulp releaseProd",
         "serve": "http-server . -p 8000 -c-1",
         "serveExternal": "http-server . -p 8000 -a 0.0.0.0 --log-ip true -c-1",
-        "createJSDocs": "gulp createJSDocs && git add docs"
+        "createJSDocs": "gulp createJSDocs && git add docs",
+        "minify": "r.js -o require.min.config.js && echo this is untested see https://stackoverflow.com/questions/14337970/minifying-requirejs-javascript-codebase-to-a-single-file"
     },
     "licenses": [
         {
