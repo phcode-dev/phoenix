@@ -25,6 +25,7 @@
 
 const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject";
 const RECENT_PROJECTS_INTERFACE = "Extn.Phoenix.recentProjects";
+window.Strings = window.parent.Strings;
 
 window.parent.ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
     .then(interfaceObj => {
@@ -35,8 +36,17 @@ window.parent.ExtensionInterface.waitAndGetExtensionInterface(RECENT_PROJECTS_IN
         window.recentProjectExtension = interfaceObj;
     });
 
+function _localiseWithBracketsStrings() {
+    let allLocElements = document.getElementsByClassName("localize");
+    for(let el of allLocElements){
+        let key = el.textContent.trim();
+        let translation = window.Strings[key] || key;
+        el.textContent = translation;
+    }
+}
 
 function init() {
+    _localiseWithBracketsStrings();
     document.getElementById("closeDialogueButton").onclick = function() {
         window.newProjectExtension.closeDialogue();
     };
