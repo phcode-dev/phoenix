@@ -4,11 +4,11 @@
     "apiVersion": "2.0.0",
     "homepage": "https://core.ai",
     "issues": {
-        "url": "https://github.com/aicore/phoenix/issues"
+        "url": "https://github.com/phcode-dev/phoenix/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/aicore/phoenix.git",
+        "url": "https://github.com/phcode-dev/phoenix.git",
         "branch": "",
         "SHA": ""
     },
@@ -59,7 +59,7 @@
     "licenses": [
         {
             "type": "AGPL-3.0-or-later",
-            "url": "https://github.com/aicore/phoenix/blob/master/LICENSE"
+            "url": "https://github.com/phcode-dev/phoenix/blob/master/LICENSE"
         }
     ],
     "dependencies": {

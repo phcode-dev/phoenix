@@ -5,7 +5,7 @@
 Phoenix is a modern open-source and free code editor for the web, built for the browser.
 
 #### Code Guardian
-[![Phoenix build verification](https://github.com/aicore/phoenix/actions/workflows/build_verify.yml/badge.svg)](https://github.com/aicore/phoenix/actions/workflows/build_verify.yml)
+[![Phoenix build verification](https://github.com/phcode-dev/phoenix/actions/workflows/build_verify.yml/badge.svg)](https://github.com/phcode-dev/phoenix/actions/workflows/build_verify.yml)
 
 <a href="https://sonarcloud.io/summary/new_code?id=aicore_phoenix">
   <img src="https://sonarcloud.io/api/project_badges/measure?project=aicore_phoenix&metric=alert_status" alt="Sonar code quality check" />
@@ -42,17 +42,17 @@ to read and develop is a noop. We prioritize simplicity and eaze of development.
 
 ## Status
 Phoenix is in alpha and is under active development.
-* [Phoenix Alpha development status](https://github.com/aicore/phoenix/issues/11).
+* [Phoenix Alpha development status](https://github.com/phcode-dev/phoenix/issues/11).
 
 ## Contributing/ Feedback
-* [Get in touch with our community](https://github.com/aicore/phoenix/discussions).
-* [Request a new feature](https://github.com/aicore/phoenix/discussions/categories/ideas)
+* [Get in touch with our community](https://github.com/phcode-dev/phoenix/discussions).
+* [Request a new feature](https://github.com/phcode-dev/phoenix/discussions/categories/ideas)
 * [Join our Discord community](https://discord.com/invite/rBpTBPttca)
-* [Raise issues](https://github.com/aicore/phoenix/issues)
-* [Contribute](https://github.com/aicore/phoenix)
+* [Raise issues](https://github.com/phcode-dev/phoenix/issues)
+* [Contribute](https://github.com/phcode-dev/phoenix)
 
 ## Building Phoenix
-[Source Repository](https://github.com/aicore/phoenix) 
+[Source Repository](https://github.com/phcode-dev/phoenix) 
 
 * Install gulp globally once.  `npm install -g gulp-cli` (use **sudo** in *nix systems)
 * run `npm install`
@@ -104,7 +104,7 @@ Note: Pre-prod is still work in progress.
 
 
 ## License
-Discussion: https://github.com/aicore/phoenix/issues/184
+Discussion: https://github.com/phcode-dev/phoenix/issues/184
 
 GNU AGPL-3.0 License
 

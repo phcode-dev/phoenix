@@ -43,9 +43,9 @@ function init() {
     document.getElementById("top").onkeydown = function(e) {
         if(e.code === 'Escape'){
             window.newProjectExtension.closeDialogue();
-        } else if(e.code === 'ArrowRight') {
+        } else if(e.code === 'ArrowRight' && e.target.tagName !== 'INPUT') {
             $.tabNext();
-        } else if(e.code === 'ArrowLeft') {
+        } else if(e.code === 'ArrowLeft'&& e.target.tagName !== 'INPUT') {
             $.tabPrev();
         }
     };

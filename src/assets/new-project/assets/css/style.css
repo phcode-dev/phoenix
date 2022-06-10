@@ -866,6 +866,10 @@ img {
     border: 1px solid #016DC4;
 }
 
+.error-border {
+    border-color: red !important;
+}
+
 .website-detail {
     margin-bottom: 15px;
 }
@@ -972,4 +976,8 @@ img {
 .big-preview {
     height: calc(100% - 50px);
     padding: 0px 15px 15px;
+}
+
+.forced-hidden {
+    display: none !important;
 }

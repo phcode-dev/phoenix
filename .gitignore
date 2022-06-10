@@ -25,7 +25,7 @@ src/phoenix/virtualfs.js.map
 src/extensions/default/Phoenix-live-preview/thirdparty
 
 # ignore files copied from node_modules to src/thirdparty
-# https://github.com/aicore/phoenix/issues/10
+# https://github.com/phcode-dev/phoenix/issues/10
 
 # ignore compiled files
 /dist
