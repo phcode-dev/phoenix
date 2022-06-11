@@ -175,7 +175,7 @@ define(function (require, exports, module) {
                 resolve(projectPath);
                 return;
             }
-            _showReplaceKeepProjectConfirmDialogue(suggestedProjectName, true).done(function (id) {
+            _showReplaceKeepProjectConfirmDialogue(suggestedProjectName).done(function (id) {
                 if (id === Dialogs.DIALOG_BTN_OK) {
                     resolve(projectPath);
                     return;
