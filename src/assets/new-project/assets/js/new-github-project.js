@@ -24,6 +24,7 @@
 /* jshint ignore:start */
 
 let createProjectBtn, websiteURLInput, locationInput, openFolderBtn;
+const FLATTEN_ZIP_FIRST_LEVEL_DIR = true;
 
 function _isValidGitHubURL(url) {
     // strip trailing slash
@@ -103,7 +104,8 @@ function _createProjectClicked() {
         let suggestedProjectName = `${components[0]}-${components[1]}`;
         window.newProjectExtension.downloadAndOpenProject(
             zipURL,
-            locationInput.fullPath, suggestedProjectName);
+            locationInput.fullPath, suggestedProjectName, FLATTEN_ZIP_FIRST_LEVEL_DIR)
+            .then(window.newProjectExtension.closeDialogue);
     } else {
         window.newProjectExtension.showErrorDialogue(
             window.Strings.MISSING_FIELDS,

@@ -40,11 +40,20 @@ function _setupVFS(Phoenix, fsLib, pathLib){
         getDefaultProjectDir: () => '/fs/local/default project/',
         getUserDocumentsDirectory: () => '/fs/local/Documents/',
         ensureExistsDir: function (path, cb) {
-            fs.mkdir(path, function(err) {
-                if (err && err.code !== 'EEXIST') {
-                    cb(err);
+            Phoenix.VFS.exists(path, (exists) =>{
+                // We have to do the exists check explicitly here instead of only using fs.mkdir call check EEXIST code
+                // as trying to call mkdir on `/mnt/someFolder` will throw an error even if the mount point exists.
+                // mount points can only be created by the mount call.
+                if(exists){
+                    cb();
+                    return;
                 }
-                cb();
+                fs.mkdir(path, function(err) {
+                    if (err && err.code !== 'EEXIST') {
+                        cb(err);
+                    }
+                    cb();
+                });
             });
         },
         exists: function (path, cb) {
@@ -135,10 +144,12 @@ const _createDefaultProject = function (vfs, Phoenix) {
     Phoenix.firstBoot = false;
     vfs.exists(projectDir, (exists)=>{
         if(!exists){
-            vfs.ensureExistsDir(projectDir, errorCb);
-            let indexFile = vfs.path.normalize(`${projectDir}/index.html`);
-            Phoenix.firstBoot = true;
-            fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', errorCb);
+            vfs.ensureExistsDir(projectDir, (err)=>{
+                errorCb(err); // just alert and proceed hoping for the best
+                let indexFile = vfs.path.normalize(`${projectDir}/index.html`);
+                Phoenix.firstBoot = true;
+                fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', errorCb);
+            });
         }
     });
 };

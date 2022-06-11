@@ -21,57 +21,15 @@
 /*globals Phoenix, JSZip, Filer*/
 
 define(function (require, exports, module) {
-    const ProjectManager          = brackets.getModule("project/ProjectManager");
-
-    async function _ensureExistsAsync(path) {
-        return new Promise((resolve, reject)=>{
-            Phoenix.VFS.ensureExistsDir(path, (err)=>{
-                if(err){
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
-        });
-    }
-
-    function _copyZippedItemToFS(path, item, destProjectDir) {
-        return new Promise(async (resolve, reject) =>{
-            let destPath = `${destProjectDir}${path}`;
-            if(item.dir){
-                await _ensureExistsAsync(destPath);
-            } else {
-                await _ensureExistsAsync(window.path.dirname(destPath));
-                item.async("uint8array").then(function (data) {
-                    window.fs.writeFile(destPath, Filer.Buffer.from(data), writeErr=>{
-                        if(writeErr){
-                            reject(writeErr);
-                        } else {
-                            resolve(destPath);
-                        }
-                    });
-                }).catch(error=>{
-                    reject(error);
-                });
-            }
-        });
-    }
+    const ProjectManager          = brackets.getModule("project/ProjectManager"),
+        utils = require("utils");
 
     function _loadDefaultProjectFromZipFile(projectDir) {
-        window.JSZipUtils.getBinaryContent('assets/default-project/en.zip', function(err, data) {
+        window.JSZipUtils.getBinaryContent('assets/default-project/en.zip', async function(err, data) {
             if(err) {
                 console.error("could not load phoenix default project from zip file!");
             } else {
-                JSZip.loadAsync(data).then(function (zip) {
-                    let keys = Object.keys(zip.files);
-                    let allPromises=[];
-                    keys.forEach(path => {
-                        allPromises.push(_copyZippedItemToFS(path, zip.files[path], projectDir));
-                    });
-                    Promise.all(allPromises).then(()=>{
-                        console.log("default project Setup complete: ", projectDir);
-                    });
-                });
+                await utils.unzipFileToLocation(data, projectDir);
             }
         });
     }
