@@ -117,6 +117,7 @@ define(function (require, exports, module) {
                     return;
                 }
                 if(contents.length >0){
+                    // todo give overwrite option here
                     _showProjectErrorDialogue(Strings.DIRECTORY_NOT_EMPTY, displayPath);
                     reject();
                     return;
