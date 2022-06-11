@@ -935,10 +935,11 @@ define({
     "SETTING_UP_PROJECT": "Setting Up Project",
     "LOCATION": "Location :",
     "DOWNLOADING": "Downloading...",
-    "DOWNLOAD_FAILED_MESSAGE": "Make sure the download URL is a valid",
+    "DOWNLOAD_FAILED_MESSAGE": "Make sure the download URL is a valid. (NB: As Phoenix is in alpha, Github URLs larger than 25 MB is not allowed.)",
     "PLEASE_SELECT_A_FOLDER": "Please select a folder...",
     "UNZIP_IN_PROGRESS": "Unzipping files...",
     "UNZIP_FAILED": "Error: Unzipping failed.",
     "CONFIRM_REPLACE_TITLE": "Confirm Replace",
+    "KEEP_BOTH": "Keep Both",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?"
 });

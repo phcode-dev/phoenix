@@ -35,10 +35,12 @@ define(function (require, exports, module) {
         ProjectManager = brackets.getModule("project/ProjectManager"),
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
+        replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
         utils = require("utils");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
-        NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject";
+        NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject",
+        MAX_DEDUPE_COUNT = 10000;
 
     ExtensionInterface.registerExtensionInterface(NEW_PROJECT_INTERFACE, exports);
 
@@ -112,6 +114,15 @@ define(function (require, exports, module) {
         return Dialogs.showModalDialogUsingTemplate(Mustache.render(replaceProjectDialogue, templateVars));
     }
 
+    function _showReplaceKeepProjectConfirmDialogue(projectPath) {
+        let message = StringUtils.format(Strings.DIRECTORY_REPLACE_MESSAGE, projectPath);
+        let templateVars = {
+            Strings: Strings,
+            MESSAGE: message
+        };
+        return Dialogs.showModalDialogUsingTemplate(Mustache.render(replaceKeepProjectDialogue, templateVars));
+    }
+
     async function _validateProjectFolder(projectPath) {
         return new Promise((resolve, reject)=>{
             let dir = FileSystem.getDirectoryForPath(projectPath);
@@ -141,8 +152,42 @@ define(function (require, exports, module) {
         });
     }
 
-    function _getSuggestedProjectDir(url) {
-        // this is for vfs default project loc
+    async function _findFreeFolderName(basePath) {
+        return new Promise(async (resolve, reject)=>{
+            for(let i=0; i< MAX_DEDUPE_COUNT; i++){
+                let newPath = `${basePath}-${i}`;
+                let exists = await window.Phoenix.VFS.existsAsync(newPath);
+                if(!exists){
+                    await window.Phoenix.VFS.ensureExistsDirAsync(newPath);
+                    resolve(newPath);
+                    return;
+                }
+            }
+            reject();
+        });
+    }
+
+    async function _getSuggestedProjectDir(suggestedProjectName) {
+        return new Promise(async (resolve, reject)=>{
+            let projectPath = `/fs/local/${suggestedProjectName}`; // try suggested path first
+            let exists = await window.Phoenix.VFS.existsAsync(projectPath);
+            if(!exists){
+                resolve(projectPath);
+                return;
+            }
+            _showReplaceKeepProjectConfirmDialogue(suggestedProjectName).done(function (id) {
+                if (id === Dialogs.DIALOG_BTN_OK) {
+                    resolve(projectPath);
+                    return;
+                } else if(id === Dialogs.DIALOG_BTN_CANCEL){
+                    reject();
+                    return;
+                }
+                _findFreeFolderName(projectPath)
+                    .then(projectPath=>resolve(projectPath))
+                    .catch(reject);
+            });
+        });
     }
 
     function _showCreateProjectDialogue(title, message) {
@@ -195,9 +240,10 @@ define(function (require, exports, module) {
         return new Promise(async (resolve, reject)=>{
             // if project path is null, create one in default folder
             if(!projectPath){
-                projectPath = _getSuggestedProjectDir(downloadURL);
+                projectPath = await _getSuggestedProjectDir(suggestedProjectName);
+            } else {
+                await _validateProjectFolder(projectPath);
             }
-            await _validateProjectFolder(projectPath);
             console.log(`downloadAndOpenProject ${suggestedProjectName} from URL: ${downloadURL} to: ${projectPath}`);
 
             _showCreateProjectDialogue(Strings.SETTING_UP_PROJECT, Strings.DOWNLOADING);
