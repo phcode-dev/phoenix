@@ -31,14 +31,16 @@ define(function (require, exports, module) {
         Menus = brackets.getModule("command/Menus"),
         Metrics = brackets.getModule("utils/Metrics"),
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
-        FileSystem = brackets.getModule("filesystem/FileSystem");
+        FileSystem = brackets.getModule("filesystem/FileSystem"),
+        createProjectDialogue = require("text!create-project-dialogue.html");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
         NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject";
 
     ExtensionInterface.registerExtensionInterface(NEW_PROJECT_INTERFACE, exports);
 
-    let dialogue;
+    let newProjectDialogueObj,
+        createProjectDialogueObj;
 
     // TODO: change default enabled to true to ship this feature.
     FeatureGate.registerFeatureGate(FEATURE_NEW_PROJECT_DIALOGUE, false);
@@ -49,7 +51,7 @@ define(function (require, exports, module) {
             newProjectURL: `${window.location.href}/assets/new-project/code-editor.html`
         };
         let dialogueContents = Mustache.render(newProjectTemplate, templateVars);
-        dialogue = Dialogs.showModalDialogUsingTemplate(dialogueContents, true);
+        newProjectDialogueObj = Dialogs.showModalDialogUsingTemplate(dialogueContents, true);
         setTimeout(()=>{
             document.getElementById("newProjectFrame").contentWindow.focus();
         }, 100);
@@ -64,7 +66,7 @@ define(function (require, exports, module) {
 
     function closeDialogue() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open", 1);
-        dialogue.close();
+        newProjectDialogueObj.close();
     }
 
     function showErrorDialogue(title, message) {
@@ -98,19 +100,27 @@ define(function (require, exports, module) {
         showErrorDialogue(Strings.ERROR_LOADING_PROJECT, message);
     }
 
-    function _validateProjectFolder(projectPath) {
-        let dir = FileSystem.getDirectoryForPath(projectPath);
-        let displayPath = projectPath.replace("/mnt/", "");
-        if(!dir){
-            _showProjectErrorDialogue(Strings.REQUEST_NATIVE_FILE_SYSTEM_ERROR, displayPath, Strings.NOT_FOUND_ERR);
-        }
-        dir.getContents(function (err, contents) {
-            if (err) {
-                _showProjectErrorDialogue(Strings.READ_DIRECTORY_ENTRIES_ERROR, displayPath, Strings.NOT_FOUND_ERR);
+    async function _validateProjectFolder(projectPath) {
+        return new Promise((resolve, reject)=>{
+            let dir = FileSystem.getDirectoryForPath(projectPath);
+            let displayPath = projectPath.replace("/mnt/", "");
+            if(!dir){
+                _showProjectErrorDialogue(Strings.REQUEST_NATIVE_FILE_SYSTEM_ERROR, displayPath, Strings.NOT_FOUND_ERR);
+                reject();
             }
-            if(contents.length >0){
-                _showProjectErrorDialogue(Strings.DIRECTORY_NOT_EMPTY, displayPath);
-            }
+            dir.getContents(function (err, contents) {
+                if (err) {
+                    _showProjectErrorDialogue(Strings.READ_DIRECTORY_ENTRIES_ERROR, displayPath, Strings.NOT_FOUND_ERR);
+                    reject();
+                    return;
+                }
+                if(contents.length >0){
+                    _showProjectErrorDialogue(Strings.DIRECTORY_NOT_EMPTY, displayPath);
+                    reject();
+                    return;
+                }
+                resolve();
+            });
         });
     }
 
@@ -118,25 +128,53 @@ define(function (require, exports, module) {
         // this is for vfs default project loc
     }
 
-    function downloadAndOpenProject(downloadURL, projectPath) {
+    function _showCreateProjectDialogue(title, message) {
+        var templateVars = {
+            Strings: Strings,
+            TITLE: title,
+            MESSAGE: message
+        };
+        createProjectDialogueObj=
+            Dialogs.showModalDialogUsingTemplate(Mustache.render(createProjectDialogue, templateVars));
+    }
+
+    function _closeCreateProjectDialogue() {
+        createProjectDialogueObj.close();
+    }
+
+    function _updateCreateProjectDialogueMessage(message, title) {
+        let el = document.getElementById('new-prj-msg-dlg-message');
+        if(el){
+            el.textContent = message;
+        }
+        el = document.getElementById('new-prj-msg-dlg-title');
+        if(el && title){
+            el.textContent = title;
+        }
+    }
+
+    async function downloadAndOpenProject(downloadURL, projectPath, suggestedProjectName) {
         // if project path is null, create on in default
         if(!projectPath){
             projectPath = _getSuggestedProjectDir(downloadURL);
         }
-        _validateProjectFolder(projectPath);
-        console.log(downloadURL, projectPath);
+        await _validateProjectFolder(projectPath);
+        console.log(`downloadAndOpenProject ${suggestedProjectName} from URL: ${downloadURL} to: ${projectPath}`);
 
-        // https://api.github.com/repos/phcode-dev/phoenix/zipball
+        _showCreateProjectDialogue(Strings.SETTING_UP_PROJECT, Strings.DOWNLOADING);
         window.JSZipUtils.getBinaryContent(downloadURL, {
             callback: function(err, data) {
                 if(err) {
-                    console.error("could not load phoenix default project from zip file!");
+                    console.error("could not load phoenix default project from zip file!", err);
+                    _updateCreateProjectDialogueMessage(Strings.DOWNLOAD_FAILED_MESSAGE, Strings.DOWNLOAD_FAILED);
                 } else {
-                    console.log("default project Setup complete: ", data.length);
+                    console.log("default project Setup complete: ", data);
                 }
             },
-            progress: function (){
-                console.log(arguments);
+            progress: function (status){
+                if(status.percent > 0){
+                    _updateCreateProjectDialogueMessage(`${Strings.DOWNLOADING} ${Math.round(status.percent)}%`);
+                }
             }
         });
     }
