@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
+        replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
         utils = require("utils");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
@@ -102,6 +103,15 @@ define(function (require, exports, module) {
         showErrorDialogue(Strings.ERROR_LOADING_PROJECT, message);
     }
 
+    function _showReplaceProjectConfirmDialogue(projectPath) {
+        let message = StringUtils.format(Strings.DIRECTORY_REPLACE_MESSAGE, projectPath);
+        let templateVars = {
+            Strings: Strings,
+            MESSAGE: message
+        };
+        return Dialogs.showModalDialogUsingTemplate(Mustache.render(replaceProjectDialogue, templateVars));
+    }
+
     async function _validateProjectFolder(projectPath) {
         return new Promise((resolve, reject)=>{
             let dir = FileSystem.getDirectoryForPath(projectPath);
@@ -117,9 +127,13 @@ define(function (require, exports, module) {
                     return;
                 }
                 if(contents.length >0){
-                    // todo give overwrite option here
-                    _showProjectErrorDialogue(Strings.DIRECTORY_NOT_EMPTY, displayPath);
-                    reject();
+                    _showReplaceProjectConfirmDialogue(displayPath).done(function (id) {
+                        if (id === Dialogs.DIALOG_BTN_OK) {
+                            resolve();
+                            return;
+                        }
+                        reject();
+                    });
                     return;
                 }
                 resolve();

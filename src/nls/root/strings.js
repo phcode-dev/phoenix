@@ -939,5 +939,6 @@ define({
     "PLEASE_SELECT_A_FOLDER": "Please select a folder...",
     "UNZIP_IN_PROGRESS": "Unzipping files...",
     "UNZIP_FAILED": "Error: Unzipping failed.",
-    "DIRECTORY_NOT_EMPTY": "The selected folder <b>{0}</b> is not empty. Please select an empty folder to create the project."
+    "CONFIRM_REPLACE_TITLE": "Confirm Replace",
+    "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?"
 });
