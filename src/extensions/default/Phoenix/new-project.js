@@ -32,7 +32,9 @@ define(function (require, exports, module) {
         Metrics = brackets.getModule("utils/Metrics"),
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
-        createProjectDialogue = require("text!create-project-dialogue.html");
+        ProjectManager = brackets.getModule("project/ProjectManager"),
+        createProjectDialogue = require("text!create-project-dialogue.html"),
+        utils = require("utils");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
         NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject";
@@ -153,29 +155,66 @@ define(function (require, exports, module) {
         }
     }
 
-    async function downloadAndOpenProject(downloadURL, projectPath, suggestedProjectName) {
-        // if project path is null, create on in default
-        if(!projectPath){
-            projectPath = _getSuggestedProjectDir(downloadURL);
-        }
-        await _validateProjectFolder(projectPath);
-        console.log(`downloadAndOpenProject ${suggestedProjectName} from URL: ${downloadURL} to: ${projectPath}`);
+    function _unzipProject(data, projectPath, flattenFirstLevelInZip) {
+        return new Promise((resolve, reject)=>{
+            _updateCreateProjectDialogueMessage(Strings.UNZIP_IN_PROGRESS, Strings.DOWNLOAD_COMPLETE);
+            utils.unzipFileToLocation(data, projectPath, flattenFirstLevelInZip)
+                .then(resolve)
+                .catch(reject);
+        });
+    }
 
-        _showCreateProjectDialogue(Strings.SETTING_UP_PROJECT, Strings.DOWNLOADING);
-        window.JSZipUtils.getBinaryContent(downloadURL, {
-            callback: function(err, data) {
-                if(err) {
-                    console.error("could not load phoenix default project from zip file!", err);
-                    _updateCreateProjectDialogueMessage(Strings.DOWNLOAD_FAILED_MESSAGE, Strings.DOWNLOAD_FAILED);
-                } else {
-                    console.log("default project Setup complete: ", data);
-                }
-            },
-            progress: function (status){
-                if(status.percent > 0){
-                    _updateCreateProjectDialogueMessage(`${Strings.DOWNLOADING} ${Math.round(status.percent)}%`);
-                }
+    /**
+     *
+     * @param downloadURL
+     * @param projectPath
+     * @param suggestedProjectName
+     * @param flattenFirstLevelInZip if set to true, then if zip contents are nested inside a directory, the nexted dir
+     * will be removed in the path structure in destination. For Eg. some Zip may contain a `contents` folder inside the
+     * zip which has all the contents. If we blindly extract the zio, all the contents will be placed inside a
+     * `contents` folder in root and not the root dir itself.
+     * See a sample zip file here: https://api.github.com/repos/StartBootstrap/startbootstrap-grayscales/zipball
+     * @returns {Promise<void>}
+     */
+    async function downloadAndOpenProject(downloadURL, projectPath, suggestedProjectName, flattenFirstLevelInZip) {
+        return new Promise(async (resolve, reject)=>{
+            // if project path is null, create one in default folder
+            if(!projectPath){
+                projectPath = _getSuggestedProjectDir(downloadURL);
             }
+            await _validateProjectFolder(projectPath);
+            console.log(`downloadAndOpenProject ${suggestedProjectName} from URL: ${downloadURL} to: ${projectPath}`);
+
+            _showCreateProjectDialogue(Strings.SETTING_UP_PROJECT, Strings.DOWNLOADING);
+            window.JSZipUtils.getBinaryContent(downloadURL, {
+                callback: async function(err, data) {
+                    if(err) {
+                        console.error("could not load phoenix default project from zip file!", err);
+                        _closeCreateProjectDialogue();
+                        showErrorDialogue(Strings.DOWNLOAD_FAILED, Strings.DOWNLOAD_FAILED_MESSAGE);
+                        reject();
+                    } else {
+                        _unzipProject(data, projectPath, flattenFirstLevelInZip)
+                            .then(()=>{
+                                _closeCreateProjectDialogue();
+                                ProjectManager.openProject(projectPath)
+                                    .then(resolve)
+                                    .fail(reject);
+                            })
+                            .catch(()=>{
+                                _closeCreateProjectDialogue();
+                                showErrorDialogue(Strings.ERROR_LOADING_PROJECT, Strings.UNZIP_FAILED);
+                                reject();
+                            });
+                        console.log("Project Setup complete: ", projectPath);
+                    }
+                },
+                progress: function (status){
+                    if(status.percent > 0){
+                        _updateCreateProjectDialogueMessage(`${Strings.DOWNLOADING} ${Math.round(status.percent)}%`);
+                    }
+                }
+            });
         });
     }
 
