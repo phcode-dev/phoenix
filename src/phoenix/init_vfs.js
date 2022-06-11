@@ -56,6 +56,17 @@ function _setupVFS(Phoenix, fsLib, pathLib){
                 });
             });
         },
+        ensureExistsDirAsync: async function (path) {
+            return new Promise((resolve, reject)=>{
+                Phoenix.VFS.ensureExistsDir(path, (err) =>{
+                    if(err){
+                        reject();
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        },
         exists: function (path, cb) {
             fs.stat(path, function (err, stats){
                 if (stats && !err) {
@@ -63,6 +74,13 @@ function _setupVFS(Phoenix, fsLib, pathLib){
                 } else {
                     cb(false);
                 }
+            });
+        },
+        existsAsync: async function (path) {
+            return new Promise((resolve)=>{
+                Phoenix.VFS.exists(path, (exists) =>{
+                    resolve(exists);
+                });
             });
         },
         fs: fsLib,

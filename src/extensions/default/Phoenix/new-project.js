@@ -38,7 +38,8 @@ define(function (require, exports, module) {
         utils = require("utils");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
-        NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject";
+        NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject",
+        MAX_DEDUPE_COUNT = 10000;
 
     ExtensionInterface.registerExtensionInterface(NEW_PROJECT_INTERFACE, exports);
 
@@ -141,8 +142,22 @@ define(function (require, exports, module) {
         });
     }
 
-    function _getSuggestedProjectDir(url) {
-        // this is for vfs default project loc
+    async function _getSuggestedProjectDir(suggestedProjectName) {
+        return new Promise(async (resolve, reject)=>{
+            for(let i=0; i< MAX_DEDUPE_COUNT; i++){
+                let projectPath = `/fs/local/${suggestedProjectName}-${i}`;
+                if(i === 0){
+                    projectPath = `/fs/local/${suggestedProjectName}`; // try suggested path first
+                }
+                let exists = await window.Phoenix.VFS.existsAsync(projectPath);
+                if(!exists){
+                    await window.Phoenix.VFS.ensureExistsDirAsync(projectPath);
+                    resolve(projectPath);
+                    return;
+                }
+            }
+            reject();
+        });
     }
 
     function _showCreateProjectDialogue(title, message) {
@@ -195,7 +210,7 @@ define(function (require, exports, module) {
         return new Promise(async (resolve, reject)=>{
             // if project path is null, create one in default folder
             if(!projectPath){
-                projectPath = _getSuggestedProjectDir(downloadURL);
+                projectPath = await _getSuggestedProjectDir(suggestedProjectName);
             }
             await _validateProjectFolder(projectPath);
             console.log(`downloadAndOpenProject ${suggestedProjectName} from URL: ${downloadURL} to: ${projectPath}`);
