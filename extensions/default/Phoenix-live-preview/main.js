@@ -206,25 +206,35 @@ define(function (require, exports, module) {
     }
 
     let savedScrollPositions = {};
-    async function _loadPreview(force) {
-        if(panel.isVisible() || (tab && !tab.closed)){
+
+    function _saveScrollPositionsIfPossible() {
+        let currentSrc = $iframe.src || utils.getNoPreviewURL();
+        try{
             let scrollX = $iframe[0].contentWindow.scrollX;
             let scrollY = $iframe[0].contentWindow.scrollY;
-            let currentSrc = $iframe.src || utils.getNoPreviewURL();
             savedScrollPositions[currentSrc] = {
                 scrollX: scrollX,
                 scrollY: scrollY
             };
+            return {scrollX, scrollY, currentSrc};
+        }catch (e) {
+            return {scrollX: 0, scrollY: 0 , currentSrc};
+        }
+    }
+
+    async function _loadPreview(force) {
+        if(panel.isVisible() || (tab && !tab.closed)){
+            let saved = _saveScrollPositionsIfPossible();
             // panel-live-preview-title
             let previewDetails = await utils.getPreviewDetails();
-            let newSrc = currentSrc;
+            let newSrc = saved.currentSrc;
             if (!urlPinned && previewDetails.URL) {
                 newSrc = encodeURI(previewDetails.URL);
                 _setTitle(previewDetails.filePath);
             }
             $iframe[0].onload = function () {
-                if(currentSrc === newSrc){
-                    $iframe[0].contentWindow.scrollTo(scrollX, scrollY);
+                if(saved.currentSrc === newSrc){
+                    $iframe[0].contentWindow.scrollTo(saved.scrollX, saved.scrollY);
                 } else {
                     let savedPositions = savedScrollPositions[newSrc];
                     if(savedPositions){
@@ -232,7 +242,7 @@ define(function (require, exports, module) {
                     }
                 }
             };
-            if(currentSrc !== newSrc || force === true){
+            if(saved.currentSrc !== newSrc || force === true){
                 $iframe.src = newSrc;
                 _renderPreview(previewDetails, newSrc);
             }

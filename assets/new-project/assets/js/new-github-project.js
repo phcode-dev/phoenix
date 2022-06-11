@@ -24,6 +24,7 @@
 /* jshint ignore:start */
 
 let createProjectBtn, websiteURLInput, locationInput, openFolderBtn;
+const FLATTEN_ZIP_FIRST_LEVEL_DIR = true;
 
 function _isValidGitHubURL(url) {
     // strip trailing slash
@@ -99,10 +100,12 @@ function _createProjectClicked() {
     if(_validate()){
         let githubURL = websiteURLInput.value;
         let components = githubURL.replace("https://github.com/", '').split('/');
-        let zipURL = `https://api.github.com/repos/${components[0]}/${components[1]}/zipball`;
+        let zipURL = `https://phcode.site/getGitHubZip?org=${components[0]}&repo=${components[1]}`;
+        let suggestedProjectName = `${components[0]}-${components[1]}`;
         window.newProjectExtension.downloadAndOpenProject(
             zipURL,
-            locationInput.fullPath);
+            locationInput.fullPath, suggestedProjectName, FLATTEN_ZIP_FIRST_LEVEL_DIR)
+            .then(window.newProjectExtension.closeDialogue);
     } else {
         window.newProjectExtension.showErrorDialogue(
             window.Strings.MISSING_FIELDS,
