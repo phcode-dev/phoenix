@@ -45,6 +45,7 @@ define(function (require, exports, module) {
         FileSystem         = brackets.getModule("filesystem/FileSystem");
 
     function getExtension(filePath) {
+        filePath = filePath || '';
         let pathSplit = filePath.split('.');
         return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : null;
     }
