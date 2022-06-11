@@ -932,7 +932,10 @@ define({
     "NEW_PROJECT_FROM_GITHUB": "New Project from Github",
     "GITHUB_REPO_URL": "Github Repo URL :",
     "CREATE_PROJECT": "Create Project",
+    "SETTING_UP_PROJECT": "Setting Up Project",
     "LOCATION": "Location :",
+    "DOWNLOADING": "Downloading...",
+    "DOWNLOAD_FAILED_MESSAGE": "Make sure the download URL is a valid",
     "PLEASE_SELECT_A_FOLDER": "Please select a folder...",
     "DIRECTORY_NOT_EMPTY": "The selected folder <b>{0}</b> is not empty. Please select an empty folder to create the project."
 });

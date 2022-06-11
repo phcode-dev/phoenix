@@ -100,9 +100,10 @@ function _createProjectClicked() {
         let githubURL = websiteURLInput.value;
         let components = githubURL.replace("https://github.com/", '').split('/');
         let zipURL = `https://phcode.site/getGitHubZip?org=${components[0]}&repo=${components[1]}`;
+        let suggestedProjectName = `${components[0]}-${components[1]}`;
         window.newProjectExtension.downloadAndOpenProject(
             zipURL,
-            locationInput.fullPath);
+            locationInput.fullPath, suggestedProjectName);
     } else {
         window.newProjectExtension.showErrorDialogue(
             window.Strings.MISSING_FIELDS,
