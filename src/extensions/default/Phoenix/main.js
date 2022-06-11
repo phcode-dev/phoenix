@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         Strings      = brackets.getModule("strings"),
         Dialogs     = brackets.getModule("widgets/Dialogs"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
-        unSupportedBrowserTemplate     = require("text!unsupported-browser.html");
+        unSupportedBrowserTemplate     = require("text!html/unsupported-browser.html");
 
     let $icon;
 

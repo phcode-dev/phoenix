@@ -22,7 +22,7 @@ define(function (require, exports, module) {
     const Dialogs = brackets.getModule("widgets/Dialogs"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
         FeatureGate = brackets.getModule("utils/FeatureGate"),
-        newProjectTemplate = require("text!new-project-template.html"),
+        newProjectTemplate = require("text!html/new-project-template.html"),
         Strings = brackets.getModule("strings"),
         StringUtils = brackets.getModule("utils/StringUtils"),
         ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
-        createProjectDialogue = require("text!create-project-dialogue.html"),
+        createProjectDialogue = require("text!html/create-project-dialogue.html"),
         utils = require("utils");
 
     const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
@@ -48,7 +48,7 @@ define(function (require, exports, module) {
     FeatureGate.registerFeatureGate(FEATURE_NEW_PROJECT_DIALOGUE, false);
 
     function _showNewProjectDialogue() {
-        var templateVars = {
+        let templateVars = {
             Strings: Strings,
             newProjectURL: `${window.location.href}/assets/new-project/code-editor.html`
         };
@@ -132,7 +132,7 @@ define(function (require, exports, module) {
     }
 
     function _showCreateProjectDialogue(title, message) {
-        var templateVars = {
+        let templateVars = {
             Strings: Strings,
             TITLE: title,
             MESSAGE: message

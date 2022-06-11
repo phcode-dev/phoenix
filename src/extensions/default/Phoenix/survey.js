@@ -24,7 +24,7 @@ define(function (require, exports, module) {
         SHOWN_VERSION='v3'; // If you like to show the same survey again, just increase the version number to v4...
     let Dialogs     = brackets.getModule("widgets/Dialogs"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
-        SurveyTemplate     = require("text!survey-template.html"),
+        SurveyTemplate     = require("text!html/survey-template.html"),
         Strings            = brackets.getModule("strings");
 
 
