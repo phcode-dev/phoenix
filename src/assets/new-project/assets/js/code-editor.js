@@ -109,5 +109,9 @@ function initCodeEditor() {
         newProject(getPhoenixAbsURL("assets/sample-projects/bootstrap-blog.zip"),
             "bootstrap-blog", Strings.NEW_BOOTSTRAP_BLOG);
     };
+    document.getElementById("newHTMLBtn").onclick = function() {
+        newProject(getPhoenixAbsURL("assets/sample-projects/HTML5.zip"),
+            "bootstrap-blog", Strings.NEW_HTML);
+    };
     _updateProjectCards();
 }

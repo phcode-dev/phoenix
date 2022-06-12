@@ -945,5 +945,6 @@ define({
     "BLOG": "Blog",
     "PROJECT_NAME": "Project name:",
     "NEW_BOOTSTRAP_BLOG": "New Bootstrap Blog",
+    "NEW_HTML": "New HTML Project",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?"
 });
