@@ -111,7 +111,7 @@ function initCodeEditor() {
     };
     document.getElementById("newHTMLBtn").onclick = function() {
         newProject(getPhoenixAbsURL("assets/sample-projects/HTML5.zip"),
-            "bootstrap-blog", Strings.NEW_HTML);
+            "html project", Strings.NEW_HTML);
     };
     _updateProjectCards();
 }
