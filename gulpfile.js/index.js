@@ -148,6 +148,9 @@ function zipSampleProjectFiles() {
             .pipe(dest('src/assets/sample-projects/')),
         src(['src/assets/sample-projects/explore/**'])
             .pipe(zip('explore.zip'))
+            .pipe(dest('src/assets/sample-projects/')),
+        src(['src/assets/sample-projects/HTML5/**'])
+            .pipe(zip('HTML5.zip'))
             .pipe(dest('src/assets/sample-projects/'))
     );
 }
