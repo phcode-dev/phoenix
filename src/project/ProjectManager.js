@@ -712,6 +712,14 @@ define(function (require, exports, module) {
     }
 
     /**
+     * The flder where all the system managed projects live
+     * @returns {string}
+     */
+    function getLocalProjectsPath() {
+        return Phoenix.VFS.getLocalDir();
+    }
+
+    /**
      * Adds the path to the list of welcome projects we've ever seen, if not on the list already.
      *
      * @param {string} path Path to possibly add
@@ -1518,6 +1526,7 @@ define(function (require, exports, module) {
     exports.getInitialProjectPath         = getInitialProjectPath;
     exports.getStartupProjectPath         = getStartupProjectPath;
     exports.getWelcomeProjectPath         = getWelcomeProjectPath;
+    exports.getLocalProjectsPath          = getLocalProjectsPath;
     exports.isWelcomeProjectPath          = isWelcomeProjectPath;
     exports.updateWelcomeProjectPath      = updateWelcomeProjectPath;
     exports.createNewItem                 = createNewItem;

@@ -18,14 +18,14 @@
  *
  */
 
-/*global */
+/*global path, newProjectExtension, recentProjectExtension*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
 
 function _createRecentProjectCard(projectName, fullPath, nodeId, tabIndex) {
     let removeBtnDisableStyle = "";
-    if(fullPath === "/fs/local/default project"){
+    if(path.normalize(fullPath) === path.normalize(newProjectExtension.getWelcomeProjectPath())){
         removeBtnDisableStyle = "display: none;";
     }
     return $(`<li>
@@ -54,7 +54,7 @@ function _createRecentProjectCard(projectName, fullPath, nodeId, tabIndex) {
 }
 
 function getDisplayName(projectPath) {
-    const prefixRemove = ["/fs/local/", "/mnt/"];
+    const prefixRemove = [newProjectExtension.getLocalProjectsPath(), newProjectExtension.getMountDir()];
     for(let prefix of prefixRemove){
         if(projectPath.startsWith(prefix)){
             return projectPath.replace(prefix, '');
@@ -66,7 +66,7 @@ function getDisplayName(projectPath) {
 function _updateProjectCards() {
     let recentProjectList = $(document.getElementById('recentProjectList'));
     recentProjectList.empty();
-    let recentProjects = window.recentProjectExtension.getRecentProjects();
+    let recentProjects = recentProjectExtension.getRecentProjects();
     let tabIndex = 20;
     for(let recentProject of recentProjects){
         recentProjectList.append(_createRecentProjectCard(getDisplayName(recentProject),
@@ -75,9 +75,9 @@ function _updateProjectCards() {
 }
 
 function openProject(fullPath) {
-    window.recentProjectExtension.openProjectWithPath(fullPath)
+    recentProjectExtension.openProjectWithPath(fullPath)
         .then(()=>{
-            window.newProjectExtension.closeDialogue();
+            newProjectExtension.closeDialogue();
         })
         .catch(()=>{
             _updateProjectCards();
@@ -85,14 +85,14 @@ function openProject(fullPath) {
 }
 
 function removeProject(fullPath) {
-    window.recentProjectExtension.removeFromRecentProject(fullPath);
+    recentProjectExtension.removeFromRecentProject(fullPath);
     _updateProjectCards();
     event.stopPropagation();
 }
 
 function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
-        window.newProjectExtension.openFolder();
+        newProjectExtension.openFolder();
     };
     _updateProjectCards();
 }

@@ -26,6 +26,7 @@
 const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject";
 const RECENT_PROJECTS_INTERFACE = "Extn.Phoenix.recentProjects";
 window.Strings = window.parent.Strings;
+window.path = window.parent.path;
 
 window.parent.ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
     .then(interfaceObj => {

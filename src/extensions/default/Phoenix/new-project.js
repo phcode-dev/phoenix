@@ -18,6 +18,8 @@
  *
  */
 
+/*global Phoenix*/
+
 define(function (require, exports, module) {
     const Dialogs = brackets.getModule("widgets/Dialogs"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
@@ -126,7 +128,7 @@ define(function (require, exports, module) {
     async function _validateProjectFolder(projectPath) {
         return new Promise((resolve, reject)=>{
             let dir = FileSystem.getDirectoryForPath(projectPath);
-            let displayPath = projectPath.replace("/mnt/", "");
+            let displayPath = projectPath.replace(Phoenix.VFS.getMountDir(), "");
             if(!dir){
                 _showProjectErrorDialogue(Strings.REQUEST_NATIVE_FILE_SYSTEM_ERROR, displayPath, Strings.NOT_FOUND_ERR);
                 reject();
@@ -169,7 +171,7 @@ define(function (require, exports, module) {
 
     async function _getSuggestedProjectDir(suggestedProjectName) {
         return new Promise(async (resolve, reject)=>{
-            let projectPath = `/fs/local/${suggestedProjectName}`; // try suggested path first
+            let projectPath = `${ProjectManager.getLocalProjectsPath()}${suggestedProjectName}`; // try suggested path first
             let exists = await window.Phoenix.VFS.existsAsync(projectPath);
             if(!exists){
                 resolve(projectPath);
@@ -297,4 +299,7 @@ define(function (require, exports, module) {
     exports.downloadAndOpenProject = downloadAndOpenProject;
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
+    exports.getWelcomeProjectPath = ProjectManager.getWelcomeProjectPath;
+    exports.getLocalProjectsPath = ProjectManager.getLocalProjectsPath;
+    exports.getMountDir = Phoenix.VFS.getMountDir;
 });
