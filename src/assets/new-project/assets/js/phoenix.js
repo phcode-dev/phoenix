@@ -37,12 +37,21 @@ window.parent.ExtensionInterface.waitAndGetExtensionInterface(RECENT_PROJECTS_IN
         window.recentProjectExtension = interfaceObj;
     });
 
+// string of the form `hello {{world}}`
+function _getTranslatedString(templateStr) {
+    return templateStr.replace(
+        /{{(\w*)}}/g,
+        function( match, key ){
+            return window.Strings[key] ? window.Strings[key] : key;
+        }
+    );
+}
+
 function _localiseWithBracketsStrings() {
     let allLocElements = document.getElementsByClassName("localize");
     for(let el of allLocElements){
-        let key = el.textContent.trim();
-        let translation = window.Strings[key] || key;
-        el.textContent = translation;
+        let stringToTranslate = el.textContent.trim();
+        el.textContent = _getTranslatedString(stringToTranslate);
     }
 }
 
