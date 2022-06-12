@@ -31,6 +31,10 @@ const PARAM_SUGGESTED_NAME = params.suggestedName || "project";
 const PARAM_SUGGESTED_TITLE = params.title || Strings.CMD_PROJECT_NEW;
 const PARAM_SUGGESTED_URL = params.url;
 const FLATTEN_ZIP_FIRST_LEVEL_DIR = (params.flattenZipFirstLevel ==='true');
+const LICENSE = params.license;
+const LICENSE_URL = params.licenseURL;
+const CREDITS = params.credits;
+const CREDITS_URL = params.creditsURL;
 
 function _validateProjectLocation() {
     if(!window.showDirectoryPicker){ // fs access apis not present
@@ -77,6 +81,29 @@ function _createProjectClicked() {
     }
 }
 
+function _showLicensingInfo() {
+    if(LICENSE || LICENSE_URL){
+        $(document.getElementById("License")).removeClass("forced-hidden");
+        let el = document.getElementById("licenseLink");
+        el.textContent = LICENSE || LICENSE_URL;
+        let licenseURL = LICENSE_URL || '#';
+        el.href = licenseURL;
+        if(licenseURL === '#'){
+            $(el).attr('target', '');
+        }
+    }
+    if(CREDITS || CREDITS_URL){
+        $(document.getElementById("Credits")).removeClass("forced-hidden");
+        let el = document.getElementById("creditsLink");
+        el.textContent = CREDITS || CREDITS_URL;
+        let creditsURL = CREDITS_URL || '#';
+        el.href = creditsURL;
+        if(creditsURL === '#'){
+            $(el).attr('target', '');
+        }
+    }
+}
+
 function initNewProjectFromURL() {
     if(!window.showDirectoryPicker){ // fs access apis not present
         $(document.getElementById("projectLocation")).addClass("forced-hidden");
@@ -94,6 +121,7 @@ function initNewProjectFromURL() {
     locationInput.value = Strings.PLEASE_SELECT_A_FOLDER;
     projectNameInput.value = PARAM_SUGGESTED_NAME;
     locationInput.onclick = _selectFolder;
+    _showLicensingInfo();
     _validateProjectLocation();
     _validateSuggestedName();
 }

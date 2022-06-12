@@ -94,8 +94,21 @@ function getPhoenixAbsURL(relativePath) {
     return `${window.parent.Phoenix.baseURL}${relativePath}`;
 }
 
-function newProject(url, suggestedProjectName, title) {
-    window.location.href = `new-project-from-url.html?url=${url}&suggestedName=${suggestedProjectName}&title=${title}`;
+function newProject(url, suggestedProjectName, title, license, licenseURL, credits, creditsURL) {
+    let href = `new-project-from-url.html?url=${url}&suggestedName=${suggestedProjectName}&title=${title}`;
+    if(license){
+        href=`${href}&license=${license}`;
+    }
+    if(licenseURL){
+        href=`${href}&licenseURL=${licenseURL}`;
+    }
+    if(credits){
+        href=`${href}&credits=${credits}`;
+    }
+    if(creditsURL){
+        href=`${href}&creditsURL=${creditsURL}`;
+    }
+    window.location.href = href;
 }
 
 function initCodeEditor() {
@@ -107,7 +120,9 @@ function initCodeEditor() {
     };
     document.getElementById("newBootstrapBlogBtn").onclick = function() {
         newProject(getPhoenixAbsURL("assets/sample-projects/bootstrap-blog.zip"),
-            "bootstrap-blog", Strings.NEW_BOOTSTRAP_BLOG);
+            "bootstrap-blog", Strings.NEW_BOOTSTRAP_BLOG,
+            "MIT", "https://github.com/twbs/bootstrap/blob/main/LICENSE",
+            "https://getbootstrap.com", "https://getbootstrap.com");
     };
     document.getElementById("newHTMLBtn").onclick = function() {
         newProject(getPhoenixAbsURL("assets/sample-projects/HTML5.zip"),
