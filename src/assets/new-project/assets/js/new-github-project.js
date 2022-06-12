@@ -23,7 +23,7 @@
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
 
-let createProjectBtn, websiteURLInput, locationInput, openFolderBtn;
+let createProjectBtn, websiteURLInput, locationInput;
 const FLATTEN_ZIP_FIRST_LEVEL_DIR = true;
 
 function _isValidGitHubURL(url) {
@@ -69,8 +69,8 @@ function _validateGitHubURL() {
 }
 
 function _validateProjectLocation() {
-    if(!window.showDirectoryPicker){ // fs access apis not present
-        $(document.getElementById("projectLocation")).addClass("forced-hidden");
+    if(!window.showDirectoryPicker){
+        // fs access apis not present, so we will give phoenix empty location to figure out a suitable location
         return true;
     }
     let location = locationInput.value;
@@ -114,14 +114,15 @@ function _createProjectClicked() {
 }
 
 function initGithubProject() {
+    if(!window.showDirectoryPicker){ // fs access apis not present
+        $(document.getElementById("projectLocation")).addClass("forced-hidden");
+    }
     createProjectBtn = document.getElementById("createProjectBtn");
     websiteURLInput = document.getElementById("websiteURLInput");
     locationInput = document.getElementById("locationInput");
-    openFolderBtn = document.getElementById("openFolderBtn");
     createProjectBtn.onclick = _createProjectClicked;
     $(websiteURLInput).keyup(_validate);
     locationInput.value = Strings.PLEASE_SELECT_A_FOLDER;
     locationInput.onclick = _selectFolder;
-    openFolderBtn.onclick = _selectFolder;
     _validate();
 }

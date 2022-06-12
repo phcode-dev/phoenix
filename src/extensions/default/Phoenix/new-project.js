@@ -147,9 +147,9 @@ define(function (require, exports, module) {
                         }
                         reject();
                     });
-                    return;
+                } else {
+                    resolve();
                 }
-                resolve();
             });
         });
     }
@@ -167,6 +167,11 @@ define(function (require, exports, module) {
             }
             reject();
         });
+    }
+
+    async function alreadyExists(suggestedProjectName) {
+        let projectPath = `${ProjectManager.getLocalProjectsPath()}${suggestedProjectName}`; // try suggested path first
+        return await window.Phoenix.VFS.existsAsync(projectPath);
     }
 
     async function _getSuggestedProjectDir(suggestedProjectName) {
@@ -263,13 +268,13 @@ define(function (require, exports, module) {
                                 ProjectManager.openProject(projectPath)
                                     .then(resolve)
                                     .fail(reject);
+                                console.log("Project Setup complete: ", projectPath);
                             })
                             .catch(()=>{
                                 _closeCreateProjectDialogue();
                                 showErrorDialogue(Strings.ERROR_LOADING_PROJECT, Strings.UNZIP_FAILED);
                                 reject();
                             });
-                        console.log("Project Setup complete: ", projectPath);
                     }
                 },
                 progress: function (status){
@@ -299,6 +304,7 @@ define(function (require, exports, module) {
     exports.downloadAndOpenProject = downloadAndOpenProject;
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
+    exports.alreadyExists = alreadyExists;
     exports.getWelcomeProjectPath = ProjectManager.getWelcomeProjectPath;
     exports.getExploreProjectPath = ProjectManager.getExploreProjectPath;
     exports.getLocalProjectsPath = ProjectManager.getLocalProjectsPath;

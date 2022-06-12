@@ -18,7 +18,7 @@
  *
  */
 
-/*global path, newProjectExtension, recentProjectExtension*/
+/*global path, newProjectExtension, recentProjectExtension, Strings*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
@@ -90,12 +90,24 @@ function removeProject(fullPath) {
     event.stopPropagation();
 }
 
+function getPhoenixAbsURL(relativePath) {
+    return `${window.parent.Phoenix.baseURL}${relativePath}`;
+}
+
+function newProject(url, suggestedProjectName, title) {
+    window.location.href = `new-project-from-url.html?url=${url}&suggestedName=${suggestedProjectName}&title=${title}`;
+}
+
 function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
         newProjectExtension.openFolder();
     };
     document.getElementById("exploreBtn").onclick = function() {
         openProject(newProjectExtension.getExploreProjectPath());
+    };
+    document.getElementById("newBootstrapBlogBtn").onclick = function() {
+        newProject(getPhoenixAbsURL("assets/sample-projects/bootstrap-blog.zip"),
+            "bootstrap-blog", Strings.NEW_BOOTSTRAP_BLOG);
     };
     _updateProjectCards();
 }
