@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         Metrics = brackets.getModule("utils/Metrics"),
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
+        FileUtils = brackets.getModule("file/FileUtils"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
@@ -125,8 +126,20 @@ define(function (require, exports, module) {
         return Dialogs.showModalDialogUsingTemplate(Mustache.render(replaceKeepProjectDialogue, templateVars));
     }
 
-    async function _validateProjectFolder(projectPath) {
+    function _checkIfPathIsWritable(path) {
+        // this is needed as for fs access APIs in native folders, the browser will ask an additional write permission
+        // to the user. We have to validate that before proceeding.
+        // We do this by writing a file `.brackets.json` to the folder
         return new Promise((resolve, reject)=>{
+            let file = FileSystem.getFileForPath(`${path}/.brackets.json`);
+            FileUtils.writeText(file, "{}")
+                .done(resolve)
+                .fail(reject);
+        });
+    }
+
+    async function _validateProjectFolder(projectPath) {
+        return new Promise(async (resolve, reject)=>{
             let dir = FileSystem.getDirectoryForPath(projectPath);
             let displayPath = projectPath.replace(Phoenix.VFS.getMountDir(), "");
             if(!dir){
@@ -139,17 +152,22 @@ define(function (require, exports, module) {
                     reject();
                     return;
                 }
+                function _resolveIfWritable() {
+                    _checkIfPathIsWritable(projectPath)
+                        .then(resolve)
+                        .catch(reject);
+                }
                 if(contents.length >0){
                     _showReplaceProjectConfirmDialogue(displayPath).done(function (id) {
                         if (id === Dialogs.DIALOG_BTN_OK) {
-                            resolve();
+                            _resolveIfWritable();
                             return;
                         }
                         reject();
                     });
-                    return;
+                } else {
+                    _resolveIfWritable();
                 }
-                resolve();
             });
         });
     }
@@ -167,6 +185,11 @@ define(function (require, exports, module) {
             }
             reject();
         });
+    }
+
+    async function alreadyExists(suggestedProjectName) {
+        let projectPath = `${ProjectManager.getLocalProjectsPath()}${suggestedProjectName}`; // try suggested path first
+        return await window.Phoenix.VFS.existsAsync(projectPath);
     }
 
     async function _getSuggestedProjectDir(suggestedProjectName) {
@@ -263,13 +286,13 @@ define(function (require, exports, module) {
                                 ProjectManager.openProject(projectPath)
                                     .then(resolve)
                                     .fail(reject);
+                                console.log("Project Setup complete: ", projectPath);
                             })
                             .catch(()=>{
                                 _closeCreateProjectDialogue();
                                 showErrorDialogue(Strings.ERROR_LOADING_PROJECT, Strings.UNZIP_FAILED);
                                 reject();
                             });
-                        console.log("Project Setup complete: ", projectPath);
                     }
                 },
                 progress: function (status){
@@ -299,6 +322,7 @@ define(function (require, exports, module) {
     exports.downloadAndOpenProject = downloadAndOpenProject;
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
+    exports.alreadyExists = alreadyExists;
     exports.getWelcomeProjectPath = ProjectManager.getWelcomeProjectPath;
     exports.getExploreProjectPath = ProjectManager.getExploreProjectPath;
     exports.getLocalProjectsPath = ProjectManager.getLocalProjectsPath;
