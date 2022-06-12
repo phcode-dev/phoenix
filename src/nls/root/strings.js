@@ -941,5 +941,6 @@ define({
     "UNZIP_FAILED": "Error: Unzipping failed.",
     "CONFIRM_REPLACE_TITLE": "Confirm Replace",
     "KEEP_BOTH": "Keep Both",
+    "EXPLORE": "Explore",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?"
 });

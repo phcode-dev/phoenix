@@ -28,10 +28,19 @@ define(function (require, exports, module) {
         console.log("setting up startup project", ProjectManager.getWelcomeProjectPath());
         await utils.unzipURLToLocation('assets/default-project/en.zip', ProjectManager.getWelcomeProjectPath());
     }
+    async function _setupExploreProject() {
+        let exploreProjectPath = ProjectManager.getExploreProjectPath();
+        let exists = await Phoenix.VFS.existsAsync(exploreProjectPath);
+        if(!exists){
+            console.log("setting up explore project", exploreProjectPath);
+            await utils.unzipURLToLocation('assets/sample-projects/explore.zip', exploreProjectPath);
+        }
+    }
 
     exports.init = async function () {
         if(Phoenix.firstBoot){
             _setupStartupProject();
         }
+        _setupExploreProject();
     };
 });

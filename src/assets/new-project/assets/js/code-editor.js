@@ -94,5 +94,8 @@ function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
         newProjectExtension.openFolder();
     };
+    document.getElementById("exploreBtn").onclick = function() {
+        openProject(newProjectExtension.getExploreProjectPath());
+    };
     _updateProjectCards();
 }
