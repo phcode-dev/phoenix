@@ -18,7 +18,7 @@
  *
  */
 
-/*global */
+/*global newProjectExtension, Strings*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
@@ -74,7 +74,7 @@ function _validateProjectLocation() {
         return true;
     }
     let location = locationInput.value;
-    if( location === window.Strings.PLEASE_SELECT_A_FOLDER){
+    if( location === Strings.PLEASE_SELECT_A_FOLDER){
         $(locationInput).addClass("error-border");
         return false;
     }
@@ -88,10 +88,10 @@ function _validate() {
 }
 
 function _selectFolder() {
-    window.newProjectExtension.showFolderSelect()
+    newProjectExtension.showFolderSelect()
         .then(file =>{
             locationInput.fullPath = file;
-            locationInput.value = file.replace("/mnt/", "");
+            locationInput.value = file.replace(newProjectExtension.getMountDir(), "");
             _validateProjectLocation();
         });
 }
@@ -102,14 +102,14 @@ function _createProjectClicked() {
         let components = githubURL.replace("https://github.com/", '').split('/');
         let zipURL = `https://phcode.site/getGitHubZip?org=${components[0]}&repo=${components[1]}`;
         let suggestedProjectName = `${components[0]}-${components[1]}`;
-        window.newProjectExtension.downloadAndOpenProject(
+        newProjectExtension.downloadAndOpenProject(
             zipURL,
             locationInput.fullPath, suggestedProjectName, FLATTEN_ZIP_FIRST_LEVEL_DIR)
-            .then(window.newProjectExtension.closeDialogue);
+            .then(newProjectExtension.closeDialogue);
     } else {
-        window.newProjectExtension.showErrorDialogue(
-            window.Strings.MISSING_FIELDS,
-            window.Strings.PLEASE_FILL_ALL_REQUIRED);
+        newProjectExtension.showErrorDialogue(
+            Strings.MISSING_FIELDS,
+            Strings.PLEASE_FILL_ALL_REQUIRED);
     }
 }
 
@@ -120,7 +120,7 @@ function initGithubProject() {
     openFolderBtn = document.getElementById("openFolderBtn");
     createProjectBtn.onclick = _createProjectClicked;
     $(websiteURLInput).keyup(_validate);
-    locationInput.value = window.Strings.PLEASE_SELECT_A_FOLDER;
+    locationInput.value = Strings.PLEASE_SELECT_A_FOLDER;
     locationInput.onclick = _selectFolder;
     openFolderBtn.onclick = _selectFolder;
     _validate();
