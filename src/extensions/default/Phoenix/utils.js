@@ -65,16 +65,16 @@ define(function (require, exports, module) {
 
     /**
      *
-     * @param zipData
-     * @param projectDir
+     * @param zipData binary UInt8Array zip data
+     * @param projectDir To extract to
      * @param flattenFirstLevel if set to true, then if zip contents are nested inside a directory, the nexted dir will
      * be removed in the path structure in destination. For Eg. some Zip may contain a `contents` folder inside the zip
      * which has all the contents. If we blindly extract the zio, all the contents will be placed inside a `contents`
      * folder in root and not the root dir itself.
      * See a sample zip file here: https://api.github.com/repos/StartBootstrap/startbootstrap-grayscales/zipball
-     * @returns {*}
+     * @returns {Promise}
      */
-    function unzipFileToLocation(zipData, projectDir, flattenFirstLevel) {
+    function unzipFileToLocation(zipData, projectDir, flattenFirstLevel = false) {
         if(!projectDir.endsWith('/')){
             projectDir = projectDir + "/";
         }
@@ -95,5 +95,32 @@ define(function (require, exports, module) {
             });
         });
     }
+
+    /**
+     *
+     * @param url the zip fle URL
+     * @param projectDir To extract to
+     * @param flattenFirstLevel if set to true, then if zip contents are nested inside a directory, the nexted dir will
+     * be removed in the path structure in destination. For Eg. some Zip may contain a `contents` folder inside the zip
+     * which has all the contents. If we blindly extract the zio, all the contents will be placed inside a `contents`
+     * folder in root and not the root dir itself.
+     * See a sample zip file here: https://api.github.com/repos/StartBootstrap/startbootstrap-grayscales/zipball
+     * @returns {Promise}
+     */
+    function unzipURLToLocation(url, projectDir, flattenFirstLevel = false) {
+        return new Promise((resolve, reject)=>{
+            window.JSZipUtils.getBinaryContent(url, async function(err, data) {
+                if(err) {
+                    console.error(`could not load zip from URL: ${url}\n `, err);
+                    reject();
+                } else {
+                    unzipFileToLocation(data, projectDir, flattenFirstLevel)
+                        .then(resolve)
+                        .catch(reject);
+                }
+            });
+        });
+    }
     exports.unzipFileToLocation = unzipFileToLocation;
+    exports.unzipURLToLocation = unzipURLToLocation;
 });

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hangman</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Hangman game" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        padding: 16px;
+        font-family: 'Arial Black', sans-serif;
+        font-size: 100%;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        display: inline-block;
+        position: relative;
+        margin: 0 0 2rem 0;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: default;
+        user-select: none;
+        transition: all 180ms ease;
+      }
+
+      h1:hover {
+        color: rgb(0, 62, 230);
+        letter-spacing: 4px;
+        transform: scale(1.1) rotate(-4deg);
+      }
+
+      h1:before {
+        height: 4px;
+        content: ' ';
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 100%;
+        right: 0;
+        transition: all 180ms ease;
+      }
+
+      h1:hover:before {
+        left: 0;
+        background: rgb(0, 62, 230);
+      }
+
+      footer {
+        margin: 5rem 0 3rem;
+        font-family: Arial, Arial, Helvetica, sans-serif;
+        color: gray;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      footer a {
+        color: rgb(0, 62, 230);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+
+    <style>
+      .chars {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 3rem 1rem;
+      }
+
+      .chars__char {
+        width: 2.6rem;
+        height: 3rem;
+        flex-shrink: 0;
+        display: block;
+        margin: 0 0.5rem 0.5rem 0;
+        padding: 0.25rem;
+        border: 0 solid rgb(0, 62, 230);
+        border-bottom-width: 3px;
+        font-size: 1.5rem;
+        text-align: center;
+      }
+
+      .chars__char--is-letter {
+        border-width: 2px 2px 4px 2px;
+      }
+    </style>
+
+    <style>
+      .keyboard {
+        width: 100%;
+        max-width: 30rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 1rem;
+      }
+
+      .keyboard__key {
+        width: 3rem;
+        margin: 0 0.5rem 0.5rem 0;
+        padding: 0.5rem 0;
+        border-radius: 3px;
+        outline: none;
+        border: none;
+        background-color: rgba(0, 62, 230, 0.07);
+        color: rgb(0, 62, 230);
+        font: inherit;
+        font-size: 1.3rem;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .keyboard__key--found {
+        background-color: rgba(102, 226, 213, 0.07);
+        color: rgb(102, 226, 213);
+        cursor: default;
+      }
+
+      .keyboard__key--is-faulty {
+        background-color: rgba(254, 0, 0, 0.07);
+        color: rgb(254, 0, 0);
+        cursor: default;
+      }
+    </style>
+
+    <style>
+      .drawing {
+        max-width: 80rem;
+        margin: 0 auto;
+        border: 3px solid rgb(0, 62, 230);
+        box-shadow: 5px 5px 0 1px rgb(0, 47, 179);
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .drawing__container {
+        width: 20rem;
+        max-width: 100%;
+        height: 18rem;
+        display: inline-block;
+        position: relative;
+        border-bottom: 3px solid black;
+      }
+
+      .drawing__message {
+        margin-top: 1.5rem;
+        font-size: 1.3rem;
+        text-align: center;
+      }
+
+      .drawing__part {
+        position: absolute;
+      }
+
+      .drawing__part-1 {
+        width: 3px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background-color: black;
+      }
+
+      .drawing__part-2 {
+        height: 3px;
+        top: 0;
+        right: 50%;
+        left: 0;
+        background-color: black;
+      }
+
+      .drawing__part-3 {
+        width: 3px;
+        height: 15%;
+        top: 0;
+        left: 50%;
+        background-color: black;
+      }
+
+      .drawing__part-4 {
+        width: 2.5rem;
+        height: 2.5rem;
+        top: 15%;
+        left: calc(50% - 1.25rem + 1.5px);
+        border-radius: 100%;
+        border: 3px solid black;
+      }
+
+      .drawing__part-5 {
+        width: 3px;
+        height: 30%;
+        top: calc(15% + 2.5rem);
+        left: 50%;
+        background-color: black;
+      }
+
+      .drawing__part-6a,
+      .drawing__part-6b {
+        width: 10%;
+        height: 3px;
+        top: calc(15% + 2.5rem + 1.5rem);
+        background-color: black;
+      }
+
+      .drawing__part-6a {
+        left: calc(50% - 10% + 1.5px);
+        transform-origin: right center;
+        transform: rotate(20deg);
+      }
+
+      .drawing__part-6b {
+        left: calc(50% + 1.5px);
+        transform-origin: left center;
+        transform: rotate(-20deg);
+      }
+
+      .drawing__part-7a,
+      .drawing__part-7b {
+        width: 25%;
+        height: 3px;
+        top: calc(45% + 2.5rem - 3px);
+        background-color: black;
+      }
+
+      .drawing__part-7a {
+        left: calc(50% - 25% + 1.5px);
+        transform-origin: right center;
+        transform: rotate(-55deg);
+      }
+
+      .drawing__part-7b {
+        left: calc(50% + 1.5px);
+        transform-origin: left center;
+        transform: rotate(55deg);
+      }
+    </style>
+
+    <style>
+      .modal {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal__background {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+
+      .modal__main {
+        width: 24rem;
+        z-index: 1;
+        box-shadow: 5px 5px 0 1px rgb(0, 47, 179);
+        border: 3px solid rgb(0, 62, 230);
+        padding: 2rem;
+        background-color: white;
+      }
+
+      .modal__content {
+        font-size: 1.2rem;
+        line-height: 2rem;
+        text-align: center;
+      }
+
+      .modal__content em {
+        color: rgb(0, 62, 230);
+      }
+
+      .modal__actions {
+        margin-top: 2rem;
+        text-align: center;
+      }
+
+      .modal__actions button {
+        margin: 0;
+        padding: 0.5rem 1rem;
+        outline: none;
+        border: none;
+        background-color: rgb(0, 62, 230);
+        color: white;
+        font: inherit;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Hangman</h1>
+    </header>
+    <div id="hangman">
+      <div class="drawing" id="drawing">
+        <div class="drawing__container"></div>
+        <div class="drawing__message"></div>
+      </div>
+      <div id="result"></div>
+    </div>
+    <div id="board">
+      <div id="chars" class="chars"></div>
+      <div id="keyboard" class="keyboard"></div>
+    </div>
+    <div id="modal" class="modal" style="display: none">
+      <div class="modal__background"></div>
+      <div class="modal__main">
+        <div class="modal__content"></div>
+        <div class="modal__actions">
+          <button onclick="reinitGame()">Play New Game</button>
+        </div>
+      </div>
+    </div>
+    <footer>
+      Developed by <a href="https://sandroroth.com">sandroroth</a> for
+      <a href="https://metroxe.github.io/one-html-page-challenge/">one html page challenge</a>
+    </footer>
+
+    <script>
+      let game = null;
+      const MAX_FAULTS = 9;
+      const wordList = [
+        'Higher-Order Components',
+        'styled-components',
+        'Single File Components',
+        'Progressive Web App',
+        'Cascading Style Sheets',
+        'Svelte',
+        'Service Worker',
+        'CSS Custom Properties',
+        'Syntactically Awesome Style Sheets',
+        'Hangman',
+        'Hooks',
+        'Webpack',
+        'Hot Module Replacement',
+        'Lifecycle',
+        'Typescript',
+        'Reactive Programming',
+        'Uncontrolled Components',
+        'Strict Mode',
+        'Computed Properties',
+        'Event Handling',
+        'Server-Side Rendering',
+        'Reactivity',
+        'Internationalization',
+        'Accessibility',
+        'Ahead-of-Time Compilation',
+        'Source Maps',
+        'Dependency Injection',
+        'Node Package Manager',
+        'Virtual DOM',
+        'Single Page Application',
+        'Redux',
+        'State Management',
+        'Declarative Routing',
+        'Code Splitting',
+        'Lazy Loading',
+        'CSS Modules',
+        'Flexbox',
+        'Media Queries',
+        'Localhost',
+      ];
+
+      function reinitGame() {
+        game = initNewGame();
+      }
+
+      function hideModal() {
+        const modal = document.getElementById('modal');
+        modal.style.display = 'none';
+      }
+
+      function showModal(content) {
+        const modal = document.getElementById('modal');
+        const modalContent = modal.querySelector('.modal__content');
+        modalContent.innerHTML = content;
+        setTimeout(() => (modal.style.display = ''), 300);
+      }
+
+      function gameEndHandler() {
+        const content = game.hasWon()
+          ? `Great, you are a winner!`
+          : `Oh no, you fucked up! We were looking for <em>${game.getWord()}</em>.`;
+        showModal(content);
+      }
+
+      function initNewGame() {
+        const hangman = new Hangman(getRandomWord(), gameEndHandler);
+        hideModal();
+        drawGame(hangman);
+        return hangman;
+      }
+
+      function getRandomWord() {
+        const index = Math.floor(Math.random() * wordList.length);
+        return wordList[index];
+      }
+
+      function guessLetter(letter) {
+        if (game && !game.isFinished()) {
+          game.pickedLetter(letter);
+          drawGame(game);
+        }
+      }
+
+      function drawHangman(faults) {
+        const parts = [
+          '<div class="drawing__part drawing__part-1"></div>',
+          '<div class="drawing__part drawing__part-2"></div>',
+          '<div class="drawing__part drawing__part-3"></div>',
+          '<div class="drawing__part drawing__part-4"></div>',
+          '<div class="drawing__part drawing__part-5"></div>',
+          `<div class="drawing__part drawing__part-6a"></div>`,
+          `<div class="drawing__part drawing__part-6b"></div>`,
+          `<div class="drawing__part drawing__part-7a"></div>`,
+          `<div class="drawing__part drawing__part-7b"></div>`,
+        ];
+
+        const visibleParts = parts.splice(0, faults);
+        const parent = document.querySelector('#drawing .drawing__container');
+        parent.innerHTML = visibleParts.join('');
+      }
+
+      function drawResult(faults) {
+        const texts = [
+          /* 0 */ "Let's find that word!",
+          /* 1 */ "Let's hang out.",
+          /* 2 */ "Don't worry, everything is fine.",
+          /* 3 */ "Don't worry, everything is fine.",
+          /* 4 */ "Don't worry, everything is fine.",
+          /* 5 */ 'Ooh... be careful!',
+          /* 6 */ "That's not good!",
+          /* 7 */ 'OMG!!!',
+          /* 8 */ 'HEEEELP!',
+          /* 9 */ 'R.I.P.',
+        ];
+
+        const container = document.querySelector('#drawing .drawing__message');
+        container.innerText = texts[faults];
+      }
+
+      function drawKeyboard(foundLetters, faultyLetters) {
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const keys = letters.map(letter => {
+          const found = foundLetters.includes(letter);
+          const faulty = faultyLetters.includes(letter);
+          return { letter, found, faulty };
+        });
+
+        const parent = document.getElementById('keyboard');
+        parent.innerHTML = '';
+        keys.map(key => {
+          const el = document.createElement('button');
+          el.innerText = key.letter;
+          el.disabled = key.found || key.faulty;
+          el.className = 'keyboard__key';
+          key.found && el.classList.add('keyboard__key--found');
+          key.faulty && el.classList.add('keyboard__key--is-faulty');
+
+          el.onclick = () => {
+            guessLetter(key.letter);
+          };
+
+          parent.appendChild(el);
+        });
+      }
+
+      function drawCharList(chars) {
+        const parent = document.getElementById('chars');
+        parent.innerHTML = '';
+
+        chars.forEach(char => {
+          const charEl = document.createElement('div');
+          charEl.className = `chars__char ${char.isLetter ? 'chars__char--is-letter' : ''}`;
+          charEl.innerText = char.show ? char.value : '';
+          parent.appendChild(charEl);
+        });
+      }
+
+      function drawGame(hangman) {
+        drawResult(hangman.getNumberOfFaults());
+        drawHangman(hangman.getNumberOfFaults());
+        drawCharList(hangman.getCharList());
+        drawKeyboard(hangman.getFoundLetters(), hangman.getFaultyLetters());
+      }
+
+      function listenForInputs(callback) {
+        window.addEventListener('keydown', event => {
+          const pressedOtherKey = event.altKey || event.ctrlKey || event.metaKey; // Shift key is allowed
+          const key = event.key.toUpperCase();
+          const isLetter = key.match(/[A-Z]/);
+          !pressedOtherKey && isLetter && callback(key);
+        });
+      }
+
+      class Hangman {
+        constructor(word, onEndGame) {
+          this.word = word.toUpperCase();
+          this.pickedLetters = [];
+          this.faults = 0;
+          this.onEndGame = onEndGame;
+        }
+
+        getWord() {
+          return this.word;
+        }
+
+        getCharsOfWord() {
+          return this.word.split('');
+        }
+
+        getLettersOfWord() {
+          const chars = this.getCharsOfWord();
+          return chars
+            .filter(char => char.match(/[A-Z]/))
+            .filter((char, index, list) => list.indexOf(char) === index);
+        }
+
+        getNumberOfFaults() {
+          return this.faults;
+        }
+
+        getFaultyLetters() {
+          return this.pickedLetters.filter(letter => {
+            return !this.word.includes(letter);
+          });
+        }
+
+        getFoundLetters() {
+          return this.pickedLetters.filter(letter => {
+            return this.word.includes(letter);
+          });
+        }
+
+        getCharList() {
+          const chars = this.getCharsOfWord();
+          return chars.map(char => {
+            const isLetter = char.match(/[A-z]/);
+            const pickedLetterAlready = this.pickedLetters.includes(char);
+            const show = pickedLetterAlready || !isLetter;
+            return { isLetter, show, value: char };
+          });
+        }
+
+        pickedLetter(letter) {
+          const alreadyPicked = this.pickedLetters.includes(letter);
+          const contains = this.word.includes(letter);
+
+          if (alreadyPicked) {
+            console.log('Uuh, you already picked that letter');
+            return;
+          }
+
+          this.pickedLetters.push(letter);
+
+          if (contains) {
+            console.log('Yeah, you are great!');
+          } else {
+            console.log('Oh no, try it again');
+            this.pickedLetters.push(letter);
+            this.faults += 1;
+          }
+
+          if (this.isFinished()) {
+            this.onEndGame();
+          }
+        }
+
+        hasWon() {
+          const letters = this.getLettersOfWord();
+          return (
+            !this.hasLost() &&
+            letters.every(char => {
+              return this.pickedLetters.includes(char);
+            })
+          );
+        }
+
+        hasLost() {
+          return this.faults >= MAX_FAULTS;
+        }
+
+        isFinished() {
+          return this.hasLost() || this.hasWon();
+        }
+      }
+
+      game = initNewGame();
+      listenForInputs(letter => {
+        guessLetter(letter);
+      });
+    </script>
+  </body>
+</html>
