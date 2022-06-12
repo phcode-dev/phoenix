@@ -34,6 +34,7 @@
 function _setupVFS(Phoenix, fsLib, pathLib){
     Phoenix.VFS = {
         getRootDir: () => '/fs/',
+        getMountDir: () => '/mnt/',
         getAppSupportDir: () => '/fs/app/',
         getLocalDir: () => '/fs/local/',
         getTrashDir: () => '/fs/trash/',
