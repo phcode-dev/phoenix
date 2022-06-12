@@ -28,9 +28,7 @@ const { src, dest, series } = require('gulp');
 const mergeStream =   require('merge-stream');
 const zip = require('gulp-zip');
 const rename = require("gulp-rename");
-const through2 = require('through2');
 const jsDocGenerate = require('./jsDocGenerate');
-const configFile = require("../src/config.json");
 
 function cleanDist() {
     return del(['dist']);
@@ -143,6 +141,12 @@ function zipDefaultProjectFiles() {
         .pipe(dest('src/assets/default-project/'));
 }
 
+function zipSampleProjectFiles() {
+    return src(['src/assets/sample-projects/bootstrap-blog/**'])
+        .pipe(zip('bootstrap-blog.zip'))
+        .pipe(dest('src/assets/sample-projects/'));
+}
+
 function _updateConfigFile(config) {
     delete config.scripts;
     delete config.devDependencies;
@@ -198,7 +202,7 @@ function generateDocIndex() {
     });
 }
 
-exports.build = series(copyThirdPartyLibs, zipDefaultProjectFiles);
+exports.build = series(copyThirdPartyLibs, zipDefaultProjectFiles, zipSampleProjectFiles);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
 exports.releaseDev = series(cleanDist, exports.build, makeDist);
