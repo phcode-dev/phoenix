@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>game of life</title>
+    <style>
+      html {
+	  margin: auto;
+	  width: 80%;
+      }
+
+      #game {
+	  padding-left: 0;
+	  padding-right: 0;
+	  margin-left: auto;
+	  margin-right: auto;
+	  display: block;
+	  width: 600px;
+      }
+
+      .controls {
+	  padding-left: 0;
+	  padding-right: 0;
+	  margin-left: auto;
+	  margin-right: auto;
+	  display: block;
+      }
+
+      .controls button {
+	  color: #000000 !important;
+	  text-transform: uppercase;
+	  background: #ffffff;
+	  padding: 10px;
+	  border: 2px solid #000000 !important;
+	  display: inline-block;
+	  transition: all 0.3s ease 0s;
+	  cursor:pointer;
+      }
+
+      .controls button:active {
+	  box-shadow: 0 5px #0000;
+	  transform: translateY(2px);
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="header">Game of Life</h1>
+    <hr>
+    <div class="board">
+      <canvas id="game">
+      </canvas>
+      <hr>
+      <div class="controls">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="clear">Clear the board</button> 
+      </div>
+    </div>
+    <p class="tips">
+      The Game of Life, also known simply as Life, is a cellular
+      automaton devised by the British mathematician John Horton
+      Conway in 1970.
+
+      <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Learn more here!</a>
+      <ul>
+        <li>Black squared represent alive cells, while white ones are dead. </li>
+        <li>Click on a square to toggle it alive.</li>
+        <li>Push the start button to start the simulation.</li>
+        <li>See life unfold in front of you.</li>
+        <li>Stop whenever you feel like it.</li>
+      </ul>
+    </p>
+    <script>
+      const canvas = document.getElementById("game");
+      const context = canvas.getContext("2d");
+      canvas.width = 600;
+      canvas.height = 600;
+
+      const bw = canvas.width;
+      const bh = canvas.height;
+      const p = 0;
+      let board = [];
+
+      const start_button = document.getElementById("start");
+      const stop_button = document.getElementById("stop");
+      const clear_button = document.getElementById("clear");
+
+      let interval;
+
+      // game
+      // cell is an object like {x: 10, y:40} where x,y its left and
+      // top coordinates 
+      function neighbors(cell){
+	  let neighbors = [];
+	  for (x=-10; x<= 10; x+=10) {
+	      for (y=-10; y<=10; y+=10) {
+		  if (!(x == 0 && y == 0)) {
+		      neighbors.push({x: cell.x + x, y: cell.y + y});
+		  }
+	      }
+	  }
+	  return neighbors;
+      }
+
+      // given a cell's current status and number of neighbors return a
+      // boolean value of dead or alive
+      function cellStep(n, alive){
+	  if(alive){
+	      return (n == 2 || n == 3);
+	  } else {
+	      return n == 3;
+	  }
+      }
+
+      // given a generation array return an array of all the neighbors of
+      // the alive cells
+      function allNeighbors(gen){
+	  len = gen.length;
+	  let all_neighbors = [];
+	  for (i=0; i<len; i++) {
+	      all_neighbors = all_neighbors.concat(neighbors(gen[i]));
+	  }
+	  return all_neighbors;
+      }
+
+      function countOccurences(n){
+	  len = n.length;
+	  let occurences = [];
+	  for (i=0; i<len; i++){
+	      if(occurences.some(occ => (occ.x === n[i].x && occ.y === n[i].y))){
+		  occurences.find(occ => (occ.x === n[i].x
+					  && occ.y === n[i].y)).count += 1;
+	      } else {
+		  occurences.push({x: n[i].x, y: n[i].y, count: 1});
+	      }
+	  }
+	  return occurences;
+      }
+
+      function isAlive(cell, gen){
+	  return gen.some(c => c.x == cell.x && c.y == cell.y);
+      }
+
+      function removeCount(occ){
+	  const len = occ.length;
+	  let gen = [];
+	  for(let i = 0; i<len; i++){
+	      gen[i] = {x: occ[i].x, y:occ[i].y};
+	  }
+	  return gen;
+      }
+
+      function nextGeneration(gen){
+	  const neighbors = allNeighbors(gen);
+	  const active = countOccurences(neighbors);
+          
+	  return removeCount(active.filter(cell =>
+					   cellStep(cell.count, isAlive(cell, gen))));
+      }
+
+      // middleware
+      // given the x,y coordinates on the canvas return the appropriate
+      // coordinates for the square ie the coordinate of the top left pixel
+      function chooseSquare(x,y){
+	  square = {left: x - x % 10,
+		    top: y - y % 10};
+	  return square;
+      }
+
+      // UI
+      function drawBoard(){
+	  for (let x = 0; x <= bw; x += 10) {
+              context.moveTo(x + p, p);
+              context.lineTo(x + p, bh + p);
+	  }
+
+	  for (let x = 0; x <= bh; x += 10) {
+              context.moveTo(p, x + p);
+              context.lineTo(bw + p, x + p);
+	  }
+	  context.strokeStyle = "#000000";
+	  context.stroke();
+      }
+
+      //given a generation array fill the appropriate squares in canvas
+      function drawGeneration(gen){
+	  context.fillStyle = "#FFFFFF";
+	  context.fillRect(0,0,600,600);
+	  drawBoard();
+	  if(gen.length > 0){
+	      const len = gen.length;
+	      context.fillStyle = "#000000";
+	      for(let i=0;i<len;i++){
+		  context.fillRect(gen[i].x, gen[i].y, 10, 10);
+	      }
+	  }else{
+	      context.fillStyle = "#000000";
+	  }
+      }
+
+      // game loop
+      drawBoard();
+      drawBoard();
+
+      canvas.addEventListener('mousedown', event => {
+	  let rect = canvas.getBoundingClientRect();
+	  const x = event.clientX - rect.left;
+	  const y = event.clientY - rect.top;
+	  const square = chooseSquare(x,y);
+	  const cell = board.find(c => c.x == square.left && c.y == square.top);
+	  if(cell != undefined){
+	      let i = board.indexOf(cell);
+	      board.splice(i, 1);
+	      context.fillStyle = "#FFFFFF";
+	      context.fillRect(square.left, square.top, 10, 10);
+	      context.fillStyle = "#000000";
+	      drawBoard();
+	  } else{
+	      board.push({x: square.left, y: square.top});
+	      context.fillRect(square.left, square.top, 10, 10);
+	  }
+      });
+
+      start_button.onclick =  () => {
+	  start_button.style.cssText = "background-color:grey;cursor:not-allowed;";
+	  start_button.innerHTML = "Running!";
+	  if (!interval) {
+	      interval = setInterval(() => {
+		  board = nextGeneration(board);
+		  drawGeneration(board);
+	      }, 300);
+	  }
+      };
+
+      stop_button.onclick = () => {
+	  clearInterval(interval);
+	  interval = null;
+	  start_button.style.cssText = "background-color:white;";
+	  start_button.innerHTML = "Start";
+      };
+
+      clear_button.onclick = () => {
+	  board = [];
+	  drawGeneration(board);
+      };
+
+
+    </script>
+  </body>
+  
+</html>

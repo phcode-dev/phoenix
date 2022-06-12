@@ -925,7 +925,7 @@ define({
     // New project Extension
     "MISSING_FIELDS": "Missing Fields",
     "PLEASE_FILL_ALL_REQUIRED": "Please fill all required fields highlighted in red",
-    "PHOENIX_CODE_EDITOR": "Phoenix Code Editor",
+    "CODE_EDITOR": "Code Editor",
     "BUILD_THE_WEB": "Build the web",
     "IMPORT_PROJECT": "Import Project",
     "GITHUB_PROJECT": "Github Project",
@@ -941,5 +941,6 @@ define({
     "UNZIP_FAILED": "Error: Unzipping failed.",
     "CONFIRM_REPLACE_TITLE": "Confirm Replace",
     "KEEP_BOTH": "Keep Both",
+    "EXPLORE": "Explore",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?"
 });

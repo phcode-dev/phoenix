@@ -711,6 +711,10 @@ define(function (require, exports, module) {
         return ProjectModel._getWelcomeProjectPath(Urls.GETTING_STARTED, Phoenix.VFS.getDefaultProjectDir());
     }
 
+    function getExploreProjectPath() {
+        return `${getLocalProjectsPath()}explore`;
+    }
+
     /**
      * The flder where all the system managed projects live
      * @returns {string}
@@ -1526,6 +1530,7 @@ define(function (require, exports, module) {
     exports.getInitialProjectPath         = getInitialProjectPath;
     exports.getStartupProjectPath         = getStartupProjectPath;
     exports.getWelcomeProjectPath         = getWelcomeProjectPath;
+    exports.getExploreProjectPath         = getExploreProjectPath;
     exports.getLocalProjectsPath          = getLocalProjectsPath;
     exports.isWelcomeProjectPath          = isWelcomeProjectPath;
     exports.updateWelcomeProjectPath      = updateWelcomeProjectPath;

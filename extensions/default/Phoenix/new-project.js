@@ -300,6 +300,7 @@ define(function (require, exports, module) {
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
     exports.getWelcomeProjectPath = ProjectManager.getWelcomeProjectPath;
+    exports.getExploreProjectPath = ProjectManager.getExploreProjectPath;
     exports.getLocalProjectsPath = ProjectManager.getLocalProjectsPath;
     exports.getMountDir = Phoenix.VFS.getMountDir;
 });

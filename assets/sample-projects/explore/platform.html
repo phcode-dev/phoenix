@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+  <title>Platform</title>
+  <meta name='viewport' content='user-scalable=0'>
+  <meta name="keywords" content="game, online, Programming, Coding">
+  <meta name="author" content="Platform">
+  <meta name="description" content="v3.0 - Just a simple JavaScript game">
+</head>
+<body>
+  <h1>Platform</h1>
+  <p id="hscore">Highscore 0 | Score 0</p>
+  <p id="worka">Press SPACE to jump</p>
+  <p id="workb">Toggle A to move left</p>
+  <p id="workc">Toggle D to move right</p>
+  <div class="user" id="player">
+    <h1 class="face">0.0</h1>
+    <div id="leg"></div>
+    <div id="legs"></div>
+    <div id="hand"></div>
+    <div id="hands"></div>
+  </div>
+  <button onclick="if(moba==0){moba=1; mobb=0; mobc=0}" class="mob" id="moba"><h1 class="in">A</h1></button>
+  <button onclick="if(mobb==0){mobb=1; moba=0; mobc=0}" class="mob" id="mobb"><h1 class="in">D</h1></button>
+  <button onclick="if(mobc==0){mobc=1;}" class="mob" id="mobc"><h1 class="in">&#160;</h1></button>
+  <div id="land">
+  </div>
+  <div id="landout">
+  </div>
+  <div id="landtwo">
+  </div>
+  <div id="landtoo">
+  </div>
+  <div id="landthree">
+  </div>
+  <div id="point">
+    <h1 id="coin">?</h1>
+  </div>
+<style>
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
+h1, p{
+  text-align: center;
+  cursor: default;
+}
+div{
+  margin: 0px;
+  padding: 0px;
+}
+.mob{
+  background-color: black;
+  position: absolute;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  bottom: 15%;
+  display: none;
+}
+#moba{
+   left: 10px;
+}
+#mobb{
+   left: 80px;
+}
+#mobc{
+   right: 10px;
+}
+.in{
+  color:white;
+  position: relative;
+  top: -5px;
+}
+#land{
+  width: 40%;
+  position: absolute;
+  bottom: 10%;
+  height: 20px;
+  left: 35%;
+  background-color: black;
+  border-radius: 20px;
+}
+#landtwo{
+  width: 20%;
+  position: absolute;
+  bottom: 55%;
+  height: 20px;
+  left: 10%;
+  background-color: black;
+  border-radius: 20px;
+}
+#landtoo{
+  width: 20%;
+  position: absolute;
+  bottom: 40%;
+  height: 20px;
+  right: 15%;
+  background-color: black;
+  border-radius: 20px;
+}
+#landthree{
+  width: 20%;
+  position: absolute;
+  bottom: 30%;
+  height: 20px;
+  left: 25%;
+  background-color: black;
+  border-radius: 20px;
+}
+.user{
+  width:60px;
+  height:60px;
+  background-color: grey;
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transition: width 100s, height 100s;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  border-bottom: 5px solid white;
+}
+.face{
+  color: lightgrey;
+  position: relative;
+  top: -10px;
+}
+#point{
+  width:60px;
+  height:60px;
+  background-color: grey;
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  border-bottom: 5px solid white;
+  border-radius: 20px;
+}
+#coin{
+  text-align: center;
+  position: relative;
+  top: -8px;
+  left:1px;
+  color: lightgrey;
+}
+</style>
+<script>
+var x=(window.innerWidth/2);
+var y=(window.innerHeight/2);
+var xloot=0;
+var yloot=0;
+var land=0;
+var jump=1;
+var score=0;
+var moba=0;
+var mobb=0;
+var mobc=0;
+var hscore=0;
+function respawn(){
+  x=(window.innerWidth/2);
+  y=(window.innerHeight/2);
+  jump=1;
+  mobb=0;
+  moba=0;
+  if (score>hscore){
+    hscore=score;
+  }
+  mobc=0;
+  score=0;
+  refresh();
+}
+function spawnloot(){
+  land=Math.round(Math.random()*4);
+  if (land==0){
+    yloot=((1/10)*window.innerHeight)+20;
+    xloot=(Math.round(Math.random()*((4/10)*window.innerWidth)))+((35/100)*window.innerWidth)+1;
+    if (((y>(yloot-60))&&((y-60)<(yloot-60))||((((y-60)<yloot))&&(y>yloot)))&&((x<(xloot+60))&&((x+60)>(xloot+60))||((((x+60)>xloot))&&(x<xloot)))){
+      spawnloot();
+    }else{
+      refresh();
+    }
+  }else if (land==1){
+    yloot=((55/100)*window.innerHeight)+20;
+    xloot=(Math.round(Math.random()*((2/10)*window.innerWidth)))+((10/100)*window.innerWidth)+1;
+    if (((y>(yloot-60))&&((y-60)<(yloot-60))||((((y-60)<yloot))&&(y>yloot)))&&((x<(xloot+60))&&((x+60)>(xloot+60))||((((x+60)>xloot))&&(x<xloot)))){
+      spawnloot();
+    }else{
+      refresh();
+    }
+  }else if (land==2){
+    yloot=((3/10)*window.innerHeight)+20;
+    xloot=(Math.round(Math.random()*((2/10)*window.innerWidth)))+((25/100)*window.innerWidth)+1;
+    if (((y>(yloot-60))&&((y-60)<(yloot-60))||((((y-60)<yloot))&&(y>yloot)))&&((x<(xloot+60))&&((x+60)>(xloot+60))||((((x+60)>xloot))&&(x<xloot)))){
+      spawnloot();
+    }else{
+      refresh();
+    }
+  }else{
+    yloot=((4/10)*window.innerHeight)+20;
+    xloot=(Math.round(Math.random()*((2/10)*window.innerWidth)))+((65/100)*window.innerWidth)+1;
+    if (((y>(yloot-60))&&((y-60)<(yloot-60))||((((y-60)<yloot))&&(y>yloot)))&&((x<(xloot+60))&&((x+60)>(xloot+60))||((((x+60)>xloot))&&(x<xloot)))){
+      spawnloot();
+    }else{
+      refresh();
+    }
+  }
+}
+spawnloot();
+setInterval(gravity, 1);
+function refresh(){
+  y=y-1;
+  document.getElementById('player').style.left=x+"px";
+  document.getElementById('player').style.bottom=y+"px";
+  document.getElementById('point').style.left=xloot+"px";
+  document.getElementById('point').style.bottom=yloot+"px";
+  document.getElementById('hscore').innerHTML="Highscore&#160;"+hscore+"&#160;|&#160;Score&#160;"+score;
+}
+function gravity(){
+  if (((y>(yloot-60))&&((y-60)<(yloot-60))||((((y-60)<yloot))&&(y>yloot)))&&((x<(xloot+60))&&((x+60)>(xloot+60))||((((x+60)>xloot))&&(x<xloot)))){
+    score=score+(Math.round(Math.random()*5)+1);
+    if (score>994){
+      location.reload();
+    }
+    refresh();
+    spawnloot();
+  }
+  if ((y<(((3/10)*window.innerHeight)+20))&&(y>((3/10)*window.innerHeight))&&((x+60)>((1/4)*window.innerWidth))&&(x<((45/100)*window.innerWidth))){
+    y=(((3/10)*window.innerHeight)+20);
+    refresh();
+    jump=0;
+  }else if ((y<(((55/100)*window.innerHeight)+20))&&(y>((55/100)*window.innerHeight))&&((x+60)>((1/10)*window.innerWidth))&&(x<((30/100)*window.innerWidth))){
+    y=(((55/100)*window.innerHeight)+20);
+    refresh();
+    jump=0;
+  }else if ((y<(((4/10)*window.innerHeight)+20))&&(y>((4/10)*window.innerHeight))&&((x+60)>((65/100)*window.innerWidth))&&(x<((85/100)*window.innerWidth))){
+    y=(((4/10)*window.innerHeight)+20);
+    refresh();
+    jump=0;
+  }else if ((y<(((1/10)*window.innerHeight)+20))&&(y>((1/10)*window.innerHeight))&&((x+60)>((35/100)*window.innerWidth))&&(x<((75/100)*window.innerWidth))){
+    y=(((1/10)*window.innerHeight)+20);
+    refresh();
+    jump=0;
+  }else if (y>0){
+    y=y-1;
+    refresh();
+  }else if (y<70){
+    respawn();
+  }else{
+    jump=0;
+  }
+}
+var map = {};
+onkeydown = onkeyup = function(e){
+    e = e || event;
+    map[e.keyCode] = e.type == 'keydown';
+    if(map[65]){
+      if(moba==0){moba=1; mobb=0; mobc=0}
+    }else if(map[68]){
+      if(mobb==0){mobb=1; moba=0; mobc=0}
+    }else if(map[32] && jump==0){
+      if(mobc==0){mobc=1;}
+    }
+}
+function mobmove(){
+  if (moba==1){
+    if(x>10){
+      x=x-10;
+    refresh();
+    }
+  }
+  if (mobb==1){
+    if(x<(window.innerWidth-70)){
+      x=x+10;
+      refresh();
+     }
+  }
+  if (mobc==1 && jump==0){
+    if((y<(window.innerHeight-10))){
+      jump=1;
+      y=y+((3/10)*window.innerHeight);
+      mobc=0;
+      refresh();
+    }
+  }
+}
+setInterval(mobmove, 20);
+if ( window.innerWidth <= window.innerHeight ){
+  document.getElementById("moba").style.display="block";
+  document.getElementById("mobb").style.display="block";
+  document.getElementById("mobc").style.display="block";
+}
+</script>
+</body>
+</html>
