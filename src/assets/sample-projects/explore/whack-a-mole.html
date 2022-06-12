@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Whack-A-Mole</title>
+    <style>
+      :root {
+        --color-grey-one: #b2beb5;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+
+      html {
+        box-sizing: border-box;
+        overscroll-behavior-y: none;
+      }
+
+      body {
+        font-family: "Lucida Bright", Georgia, serif;
+        font-weight: 300;
+        color: black;
+        line-height: 1.5;
+        background-color: cornflowerblue;
+      }
+
+      .hidden {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      .game--container {
+        width: 80vw;
+        height: 700px;
+        max-height: 85vh;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 1px;
+        background-color: whitesmoke;
+        border-radius: 2%;
+      }
+
+      header {
+        height: 60px;
+        text-align: center;
+      }
+
+      .title {
+        font-weight: 500;
+        font-size: 24px;
+        text-align: center;
+        color: white;
+      }
+
+      .options {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-evenly;
+        margin: auto;
+        width: 70%;
+      }
+
+      .btn {
+        cursor: pointer;
+        align-self: center;
+        text-align: center;
+        color: white;
+      }
+
+      .left--menu {
+        float: left;
+        width: 30%;
+      }
+
+      .rules {
+        width: 100%;
+        padding: 2px;
+        padding-left: 3px;
+        padding-top: 10px;
+        font-size: 14px;
+      }
+
+      .rules--content {
+        padding: 2px;
+        padding-top: 6px;
+      }
+
+      h3 {
+        cursor: pointer;
+        background-color: #e8e2e2;
+      }
+
+      h3:hover {
+        color: cornflowerblue;
+      }
+
+      .plus--sign {
+        display: block;
+        float: right;
+      }
+
+      .hide {
+        display: none;
+        overflow: hidden;
+      }
+
+      .game--board {
+        width: 100%;
+        padding: 2px;
+        padding-left: 3px;
+        padding-top: 10px;
+        font-size: 14px;
+      }
+
+      .grid--container {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        border: 1px solid;
+        width: 65%;
+        margin: auto;
+        margin-top: 6px;
+      }
+
+      .grid--item {
+        border: 1px solid;
+        padding: 5px;
+        text-align: center;
+      }
+
+      .stats {
+        width: 60%;
+        height: 15%;
+        margin-left: 30vw;
+        margin-top: 30px;
+        line-height: 2;
+        display: flex;
+      }
+
+      .stat--item {
+        flex: 2;
+        text-align: center;
+        padding: 3px;
+        padding-top: 10px;
+      }
+
+      .stat--item .label {
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .stat--item .value {
+        font-size: 16px;
+        font-weight: 400;
+      }
+
+      .game--arena {
+        width: 60%;
+        height: 70%;
+        margin-top: 20px;
+        margin-left: 30vw;
+        border-style: solid;
+        border-color: var(--color-grey-one);
+        border-width: 1px;
+        display: grid;
+        grid-template-columns: repeat(3, 33.33%);
+        grid-template-rows: repeat(3, 33.33%);
+        grid-gap: 0.2rem;
+        text-align: center;
+        align-items: center;
+        font-size: 30px;
+        color: var(--color-grey-one);
+      }
+
+      .emoji {
+        font-size: 4.5rem;
+      }
+
+      button {
+        border: none;
+        z-index: 2;
+        padding: 2px;
+        margin: 5px;
+        margin-top: 10px;
+        background-color: var(--color-grey-one);
+        color: white;
+        font-size: 16px;
+        border-radius: 10%;
+        cursor: pointer;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 100;
+      }
+
+      .game--over--modal {
+        width: 45%;
+        height: 45%;
+        margin: auto;
+        padding-top: 7%;
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        z-index: 200;
+      }
+
+      .keypad {
+        display: none;
+        width: 60%;
+        margin: auto;
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      .keypad--row--one {
+        /* display: none; */
+        column-gap: 2px;
+        grid-template-columns: auto auto auto auto auto;
+        width: 80%;
+        margin: auto;
+        margin-top: 3px;
+      }
+
+      .keypad--row--two {
+        /* display: none; */
+        column-gap: 5px;
+        grid-template-columns: auto auto auto auto;
+        width: 80%;
+        margin: auto;
+        margin-top: 5px;
+      }
+
+      .keypad--item {
+        border: 1px solid var(--color-grey-one);
+        padding: 5px;
+        text-align: center;
+      }
+
+      .vertical--tab {
+        display: none;
+      }
+
+      @media only screen and (max-width: 700px) {
+        .game--board,
+        .rules h3 {
+          display: none;
+        }
+
+        header {
+          height: 75px;
+        }
+
+        .title {
+          font-size: 20px;
+        }
+
+        .emoji {
+          font-size: 3rem;
+        }
+
+        .btn {
+          font-size: 16px;
+        }
+
+        .stats {
+          width: 100%;
+          margin: auto;
+          line-height: 1;
+          justify-content: center;
+        }
+
+        .stat--item {
+          font-size: 8px;
+        }
+
+        .game--arena {
+          margin: auto;
+          height: 60%;
+          width: 70%;
+        }
+
+        .keypad {
+          display: block;
+        }
+
+        .keypad--row--one {
+          display: grid;
+        }
+
+        .keypad--row--two {
+          display: grid;
+        }
+
+        .game--over--modal {
+          width: 70%;
+        }
+
+        .vertical--tab {
+          display: block;
+          float: left;
+          position: absolute;
+          transform: rotate(270deg);
+          font-weight: 500;
+          background-color: var(--color-grey-one);
+          margin-left: -22px;
+          margin-top: 15px;
+          padding: 5px;
+        }
+
+        .rules--content {
+          display: none;
+          font-size: 16px;
+          width: 70%;
+          height: 60%;
+          margin: auto;
+          padding-top: 7%;
+          text-align: left;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: white;
+          z-index: 200;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="title">W H A C K - A - M O L E</div>
+      <div class="options">
+        <div class="btn btn--play">Play</div>
+        <div class="btn btn--shuffle">Shuffle Keyboard</div>
+        <div class="btn btn--unshuffle">Unshuffle Keyboard</div>
+        <div class="btn btn--god--level">God Level</div>
+      </div>
+    </header>
+    <div class="game--container">
+      <div class="left--menu">
+        <div class="rules collapsible">
+          <h3>
+            Rules
+            <div class="plus--sign">+</div>
+          </h3>
+          <div class="rules--content content hide">
+            1. Whack the mole DUH.. <br />
+            2. I mean press number key correspoding to appearance of enemies,
+            which are - 👽, 💀 and 🐙. <br />
+            3. Make sure to get nutrition along the way - 🍔, 🍎, 🍲 before you
+            run out of energy. One energy point depletes for every 3 alien
+            kills.
+            <br />
+            4. And if you kill the baby - 👶, then its game over for you, you
+            psychopath!! <br />
+            GOOD LUCK :)
+          </div>
+        </div>
+        <div class="game--board collapsible">
+          <h3>
+            Game Board
+            <div class="plus--sign">+</div>
+          </h3>
+          <div class="grid--container content">
+            <div class="grid--item">7</div>
+            <div class="grid--item">8</div>
+            <div class="grid--item">9</div>
+            <div class="grid--item">4</div>
+            <div class="grid--item">5</div>
+            <div class="grid--item">6</div>
+            <div class="grid--item">1</div>
+            <div class="grid--item">2</div>
+            <div class="grid--item">3</div>
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat--item">
+          <div class="label" data-index="0">Score</div>
+          <div class="value" data-index="0">0</div>
+        </div>
+        <div class="stat--item">
+          <div class="label" data-index="1">Max Score</div>
+          <div class="value" data-index="1">0</div>
+        </div>
+        <div class="stat--item">
+          <div class="label" data-index="2">Energy</div>
+          <div class="value" data-index="2">5</div>
+        </div>
+      </div>
+      <div class="vertical--tab">R U L E S</div>
+      <div class="game--arena">
+        <!-- 👽💀👶🍔🍲🍅🍎🐙 -->
+        <div class="tiles">7</div>
+        <div class="tiles">8</div>
+        <div class="tiles">9</div>
+        <div class="tiles">4</div>
+        <div class="tiles">5</div>
+        <div class="tiles">6</div>
+        <div class="tiles">1</div>
+        <div class="tiles">2</div>
+        <div class="tiles">3</div>
+      </div>
+      <div class="keypad">
+        <p>Use the keypad below -</p>
+        <div class="keypad--row--one">
+          <div class="keypad--item">1</div>
+          <div class="keypad--item">2</div>
+          <div class="keypad--item">3</div>
+          <div class="keypad--item">4</div>
+          <div class="keypad--item">5</div>
+        </div>
+        <div class="keypad--row--two">
+          <div class="keypad--item">6</div>
+          <div class="keypad--item">7</div>
+          <div class="keypad--item">8</div>
+          <div class="keypad--item">9</div>
+        </div>
+      </div>
+    </div>
+    <div class="game--over--modal hidden">
+      <h2>G A M E &emsp; O V E R</h2>
+      <br />
+      <p class="game--over--msg">Better Luck Next Time :)</p>
+      <br />
+      <p>Would you like to play another round?</p>
+      <br />
+      <button id="yes">Yes</button><button id="no">No</button>
+    </div>
+    <div class="overlay hidden"></div>
+    <script>
+      const gameCharacters = [
+        "👽",
+        "💀",
+        "👶",
+        "🐙",
+        "👽",
+        "🍔",
+        "🐙",
+        "👽",
+        "👶",
+        "👽",
+        "🍎",
+        "💀",
+        "👽",
+        "💀",
+        "🍲",
+        "👽",
+        "👶",
+        "🍲",
+        "👽",
+        "👽",
+        "🐙",
+        "💀",
+        "👶",
+        "🍎",
+        "👽",
+      ];
+
+      const scoreCard = [
+        1, 1, -1, 1, 1, 2, 1, 1, -1, 1, 2, 1, 1, 1, 2, 1, -1, 2, 1, 1, 1, 1, -1,
+        2, 1,
+      ];
+      const babyEmoji = [2, 8, 16, 22];
+      let tileIndex = [6, 7, 8, 3, 4, 5, 0, 1, 2];
+      let gameState = new Map();
+      let score = 0,
+        energy = 5,
+        maxScore = 0;
+
+      const gameArena = document.querySelector(".game--arena");
+      const tiles = document.querySelectorAll(".tiles");
+      const grids = document.querySelectorAll(".grid--item");
+      const statsValues = document.querySelectorAll(".value");
+      const btnPlay = document.querySelector(".btn--play");
+      const btnShuffle = document.querySelector(".btn--shuffle");
+      const btnUnshuffle = document.querySelector(".btn--unshuffle");
+      const btnGodLevel = document.querySelector(".btn--god--level");
+      const collapsible = document.querySelectorAll(".collapsible");
+      const modal = document.querySelector(".game--over--modal");
+      const overlay = document.querySelector(".overlay");
+      const btnYes = document.querySelector("#yes");
+      const btnNo = document.querySelector("#no");
+      const verticalTab = document.querySelector(".vertical--tab");
+      const rulesModal = document.querySelector(".rules--content");
+      const keypadKeys = document.querySelectorAll(".keypad--item");
+      const gameMsg = document.querySelector(".game--over--msg");
+
+      const randomNumberGenerator = function () {
+        return Math.trunc(Math.random() * 25);
+      };
+
+      const randomTileGenerator = function () {
+        return Math.trunc(Math.random() * 9);
+      };
+
+      let status = "stop";
+      let level = 0;
+      let activeCharacters = new Set();
+      let timeIntervals = [1500, 1000, 750, 500, 300];
+      const hitsPerLevel = [10, 15, 20, 25, 30];
+      const totalLevels = 5;
+      let startLevel;
+      let godLevel = 0;
+
+      function init() {
+        status = "stop";
+        level = 0;
+        gameState = new Map();
+        score = 0;
+        energy = 5;
+        activeCharacters = new Set();
+        gameMsg.textContent = "Better Luck Next Time :)";
+        tiles.forEach((tile, i) => {
+          tile.textContent = tileIndex[i] + 1;
+          tile.classList.remove("emoji");
+        });
+        grids.forEach((grid, i) => {
+          grid.textContent = tileIndex[i] + 1;
+        });
+        statsValues[0].textContent = 0;
+        statsValues[2].textContent = 5;
+        if (startLevel) clearInterval(startLevel);
+        timeIntervals = [1500, 1000, 750, 500, 300];
+        if (godLevel) timeIntervals = [300, 250, 230, 200, 180];
+        startGame();
+      }
+
+      const displayCharacter = function () {
+        if (activeCharacters.size === 9 || status !== "playing") return;
+        let tileNum = randomTileGenerator();
+        while (activeCharacters.has(tileNum)) {
+          tileNum = randomTileGenerator();
+        }
+        const indexOfCharacters = randomNumberGenerator();
+        gameState.set(tileNum, indexOfCharacters);
+        if (babyEmoji.includes(indexOfCharacters))
+          setTimeout(() => removeCharacter(tileNum), 1500);
+        tiles[tileIndex.indexOf(tileNum)].textContent =
+          gameCharacters[indexOfCharacters];
+        tiles[tileIndex.indexOf(tileNum)].classList.add("emoji");
+        activeCharacters.add(tileNum);
+      };
+
+      const updateScore = function (num) {
+        const value = scoreCard[gameState.get(num)];
+        if (value === 1) {
+          score++;
+          statsValues[0].textContent = score;
+          if (score % 3 === 0) {
+            energy--;
+            statsValues[2].textContent = energy;
+            if (energy <= 0) gameOver();
+          }
+        } else if (value === 2) {
+          energy++;
+          statsValues[2].textContent = energy;
+        } else if (value === -1) {
+          gameOver();
+        }
+        gameState.delete(num);
+      };
+
+      const removeCharacter = function (num) {
+        if (status !== "playing") return;
+        tiles[tileIndex.indexOf(num)].textContent = num + 1;
+        tiles[tileIndex.indexOf(num)].classList.remove("emoji");
+        activeCharacters.delete(num);
+      };
+
+      async function play(level) {
+        return new Promise(function (resolve) {
+          let counter = 0;
+          startLevel = setInterval(function () {
+            displayCharacter();
+            if (activeCharacters.size > 8) {
+              gameOver();
+              clearInterval(startLevel);
+              resolve();
+            }
+            counter++;
+            if (counter === hitsPerLevel[level]) {
+              clearInterval(startLevel);
+              resolve();
+            }
+          }, timeIntervals[level]);
+        });
+      }
+
+      const wait = async function (seconds) {
+        return new Promise(function (resolve) {
+          setTimeout(resolve, seconds * 1000);
+        });
+      };
+
+      const updateMaxScore = function () {
+        if (score > maxScore) {
+          maxScore = score;
+          statsValues[1].textContent = maxScore;
+        }
+      };
+
+      function gameOver(msg) {
+        status = "stop";
+        godLevel = 0;
+        if (startLevel) clearInterval(startLevel);
+        updateMaxScore();
+        openModal();
+      }
+
+      async function startGame() {
+        status = "playing";
+        while (status === "playing" && level < totalLevels) {
+          await play(level++);
+        }
+        await wait(1);
+        console.log(activeCharacters);
+        if (activeCharacters.size < 3)
+          gameMsg.textContent = "Congrats!! You have cleared all levels :)";
+        gameOver();
+      }
+
+      const checkAnswer = function (num) {
+        if (activeCharacters.has(num - 1)) {
+          removeCharacter(num - 1);
+          updateScore(num - 1);
+        }
+      };
+
+      const openModal = function () {
+        overlay.classList.remove("hidden");
+        modal.classList.remove("hidden");
+      };
+
+      const closeModal = function (e) {
+        modal.classList.add("hidden");
+        overlay.classList.add("hidden");
+        rulesModal.style.display = "none";
+      };
+
+      btnYes.addEventListener("click", function (e) {
+        closeModal();
+        init();
+      });
+
+      btnNo.addEventListener("click", closeModal);
+      overlay.addEventListener("click", closeModal);
+
+      verticalTab.addEventListener("click", function (e) {
+        overlay.classList.remove("hidden");
+        rulesModal.style.display = "block";
+      });
+
+      collapsible.forEach((element, i) => {
+        element.addEventListener("click", function (e) {
+          const content = element.querySelector(".content");
+          if (e.target.parentElement.classList.contains("game--board")) {
+            content.style.display =
+              content.style.display === "none" ? "grid" : "none";
+          } else if (content.classList.contains("hide")) {
+            content.classList.remove("hide");
+            rulesModal.style.display = "block";
+          } else {
+            content.classList.add("hide");
+            rulesModal.style.display = "none";
+          }
+        });
+      });
+
+      window.addEventListener("keydown", function (e) {
+        if (
+          !(
+            (e.keyCode >= 49 && e.keyCode <= 57) ||
+            (e.keyCode >= 97 && e.keyCode <= 105)
+          )
+        )
+          return;
+        if (status !== "playing") return;
+        const num =
+          e.keyCode >= 49 && e.keyCode <= 57 ? e.keyCode - 48 : e.keyCode - 96;
+        checkAnswer(num);
+      });
+
+      btnPlay.addEventListener("click", function (e) {
+        godLevel = 0;
+        updateMaxScore();
+        init();
+      });
+
+      keypadKeys.forEach((key) => {
+        key.addEventListener("click", function (e) {
+          if (status !== "playing") return;
+          checkAnswer(parseInt(key.textContent));
+        });
+      });
+
+      btnShuffle.addEventListener("click", function (e) {
+        godLevel = 0;
+        updateMaxScore();
+        tileIndex = [];
+        while (tileIndex.length < 9) {
+          const value = randomTileGenerator();
+          if (tileIndex.includes(value)) continue;
+          tileIndex.push(value);
+        }
+        init();
+      });
+
+      btnUnshuffle.addEventListener("click", function (e) {
+        godLevel = 0;
+        updateMaxScore();
+        tileIndex = [6, 7, 8, 3, 4, 5, 0, 1, 2];
+        init();
+      });
+
+      btnGodLevel.addEventListener("click", function (e) {
+        godLevel = 1;
+        init();
+      });
+    </script>
+  </body>
+</html>

@@ -142,9 +142,14 @@ function zipDefaultProjectFiles() {
 }
 
 function zipSampleProjectFiles() {
-    return src(['src/assets/sample-projects/bootstrap-blog/**'])
-        .pipe(zip('bootstrap-blog.zip'))
-        .pipe(dest('src/assets/sample-projects/'));
+    return mergeStream(
+        src(['src/assets/sample-projects/bootstrap-blog/**'])
+            .pipe(zip('bootstrap-blog.zip'))
+            .pipe(dest('src/assets/sample-projects/')),
+        src(['src/assets/sample-projects/explore/**'])
+            .pipe(zip('explore.zip'))
+            .pipe(dest('src/assets/sample-projects/'))
+    );
 }
 
 function _updateConfigFile(config) {

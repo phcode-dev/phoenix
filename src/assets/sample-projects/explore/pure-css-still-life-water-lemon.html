@@ -1,0 +1,2131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Photorealism CSS Still Life</title>
+
+    <style>
+
+        @media (orientation: landscape) {
+            body {
+                font-size: 1vh;
+            }
+        }
+
+        @media (orientation: portrait) {
+            body {
+                font-size: 1vw;
+            }
+        }
+
+        body {
+            background: #190d23;
+            text-align: center;
+        }
+
+        img {
+            height: 96em;
+        }
+
+        pic *, pic *:before, pic *:after {
+            display: block;
+            box-sizing: border-box;
+        }
+
+            pic i, pic *:after, pic *:before, pic:after, pic:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+        pic {
+            display: inline-block;
+            height: 96em;
+            width: 73em;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5em;
+        }
+
+            pic:after {
+                box-shadow: inset 0 0 5em #010000;
+                width: 100%;
+                height: 100%;
+                border-radius: 5em;
+            }
+
+        background:after {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+        }
+
+        background i:nth-of-type(1) {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #281E18, #443C33);
+        }
+
+            background i:nth-of-type(1):before {
+                width: 100%;
+                height: 57%;
+                background: linear-gradient(#8C877B, #574737);
+                border-bottom: 1em solid #000;
+                box-shadow: 0 -10em 10em 10em #000, 0 -10em 10em 10em #000, 0 -10em 10em 10em #000, inset 0 -10em 10em -10em #000, inset 0 -10em 12em -10em #000;
+            }
+
+            background i:nth-of-type(1):after {
+                width: 100%;
+                height: 80%;
+                background: linear-gradient(rgba(0, 0, 0, 0), #030409);
+                transform: translate3d(0, 55%, 0);
+            }
+
+        item2:before {
+            height: 17em;
+            width: 3em;
+            box-shadow: inset -.25em 0 .25em #F7F79A, inset -1em 0 2em -.5em #c8c819;
+            border-radius: 50%;
+            transform: translate3d(38em, 64em, 0) rotate(5deg);
+            -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0), #000, rgba(0, 0, 0, 0));
+            mask-image: linear-gradient(rgba(0, 0, 0, 0), #000, rgba(0, 0, 0, 0));
+        }
+
+        item2 i:nth-of-type(17) {
+            width: 31em;
+            height: 6em;
+            border: 0.3em solid #010000;
+            border-top: .3em solid #443B36;
+            border-radius: 50%;
+            transform: translate3d(15em, 14em, 0);
+            box-shadow: inset 0 0.1em 0.5em rgba(255, 255, 255, 0.5), 0 0.5em 0.5em -0.5em rgba(255, 255, 255, 0.5), inset -0.5em 0.5em 0.1em -0.6em #fff, 0 -0.2em 0 #010000, 0 0.2em 0 #010000;
+        }
+
+            item2 i:nth-of-type(17):before {
+                width: 28em;
+                height: 2em;
+                border: 1em solid #5D5247;
+                border-bottom: none;
+                border-radius: 50%;
+                transform: translate3d(1.1em, 19em, 0);
+                box-shadow: inset 0 0.3em 0 #271B1B, 0 -0.1em 0 #010000;
+            }
+
+            item2 i:nth-of-type(17):after {
+                width: 22em;
+                height: 9em;
+                border: 1em solid #010000;
+                border-radius: 50%;
+                transform: translate3d(4em, 35em, 0) scaleY(0.35);
+                box-shadow: inset 0 0 1em #010000, 0 0 1em #010000, 0 0 5em #010000, 2em 0 5em #010000, -2em 0 5em #010000;
+                background: linear-gradient(rgba(1, 0, 0, 0.7), rgba(0, 0, 0, 0)), #2b241c;
+                opacity: .7;
+            }
+
+        item2 i:nth-of-type(21) {
+            width: 14em;
+            height: 7em;
+            border-bottom: 0.5em solid #010000;
+            border-radius: 0 0 7em 7em;
+            transform: translate3d(20em, 80em, 0) scaleX(1.45);
+            transform-origin: 0 0;
+            background: #5D5440;
+        }
+
+            item2 i:nth-of-type(21):before {
+                width: 14em;
+                height: 7em;
+                border-bottom: .75em solid #433732;
+                border-radius: 0 0 7em 7em;
+                transform: translate3d(0em, -1em, 0);
+                transform-origin: 0 0;
+                background: radial-gradient(#433732, rgba(0, 0, 0, 0));
+            }
+
+            item2 i:nth-of-type(21):after {
+                width: 13em;
+                height: 7em;
+                border-radius: 0 0 7em 7em;
+                transform: translate3d(0.5em, 0em, 0) scaleY(0.2);
+                transform-origin: 0 0;
+                background: none;
+                box-shadow: 0.75em 0 2em #180C0C, -0.75em 0 2em #180C0C, inset 0.1em 0 1em rgba(255, 255, 255, 0.2), inset -0.1em 0 1em rgba(255, 255, 255, 0.2);
+            }
+
+        item2 i:nth-of-type(22) {
+            width: 10em;
+            height: 5em;
+            border-bottom: 1em solid #010000;
+            border-radius: 0 0 5em 5em;
+            transform: translate3d(22.5em, 77em, 0) scaleX(1.5) scaleY(0.4);
+            transform-origin: 0 0;
+            background: radial-gradient(at 10% 50%, #C0C1D4, #5D5440, #3A362A);
+            box-shadow: 0 1em 0 #5D5440;
+        }
+
+            item2 i:nth-of-type(22):before {
+                width: 13.5em;
+                height: 7em;
+                border-bottom: 1em solid #010000;
+                border-radius: 0 0 7em 7em;
+                transform: translate3d(-1.75em, 2em, 0);
+                transform-origin: 0 0;
+                box-shadow: 0 1em 0 #5D5440, 0 1.1em 0.5em #010000;
+            }
+
+            item2 i:nth-of-type(22):after {
+                width: 13em;
+                height: 11em;
+                border: 0.1em dashed rgba(0, 0, 0, 0);
+                border-radius: 50%;
+                transform: translate3d(-1.5em, 3em, 0) scaleY(2);
+                box-shadow: -.1em .1em 0 -.05em #CDC7CB;
+            }
+
+        item2 i:nth-of-type(23) {
+            width: 21em;
+            height: 5em;
+            border-radius: 50%;
+            transform: translate3d(19.75em, 72em, 0);
+            box-shadow: 0.5em 0.25em 0 -0.25em #010000, inset 0.5em -0.25em 0.5em -0.5em rgba(205, 199, 203, 0.5);
+        }
+
+            item2 i:nth-of-type(23):before {
+                width: 6em;
+                height: 7em;
+                border-radius: 50%;
+                transform: translate3d(8em, 10.75em, 0) scaleY(0.15);
+                transform-origin: 0 0;
+                box-shadow: inset 0 0 1em 0 #010000, 0 0 1em 0 #010000;
+                opacity: .5;
+            }
+
+        item2 i:nth-of-type(24) {
+            width: 1em;
+            height: 15em;
+            transform: translate3d(44em, 17.1em, 0) skewX(-5deg) skewY(30deg);
+            background: linear-gradient(rgba(205, 199, 203, 0.5), rgba(0, 0, 0, 0));
+        }
+
+            item2 i:nth-of-type(24):before {
+                width: 1em;
+                height: 3em;
+                transform: translate3d(0em, 13.5em, 0) skewY(-15deg);
+                background: linear-gradient(rgba(205, 199, 203, 0.2), rgba(205, 199, 203, 0.5));
+                border-radius: 1em 0 0 0;
+            }
+
+            item2 i:nth-of-type(24):after {
+                width: .4em;
+                height: 65em;
+                background: linear-gradient(rgba(1, 0, 0, 0.75), rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.75), rgba(0, 0, 0, 0), rgba(1, 0, 0, 0.1), rgba(205, 199, 203, 0.75), rgba(0, 0, 0, 0));
+                transform: translate3d(0.8em, -1em, 0);
+            }
+
+        item2 i:nth-of-type(25) {
+            width: 5em;
+            height: 70em;
+            transform: translate3d(17.6em, 14.3em, 0) skewX(4.5deg) skewY(-30deg);
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to right, #000 50%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0));
+            mask-image: linear-gradient(to right, #000 50%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0));
+        }
+
+            item2 i:nth-of-type(25):before {
+                width: 32em;
+                height: 6em;
+                border-radius: 50%;
+                border: 0.75em solid rgba(0, 0, 0, 0);
+                transform: translate3d(-1em, 7.7em, 0) skewX(-4.5deg) skewY(30deg);
+                box-shadow: 0 -0.2em 0 rgba(255, 255, 255, 0.75), inset 0 0.5em 0.1em rgba(255, 255, 255, 0.75);
+            }
+
+            item2 i:nth-of-type(25):after {
+                width: 2em;
+                height: 64em;
+                background: linear-gradient(to right, #443630, rgba(0, 0, 0, 0));
+                transform: translate3d(0em, 1em, 0);
+            }
+
+        item2 i:nth-of-type(26) {
+            width: .65em;
+            height: 36em;
+            transform: translate3d(16.4em, 16.4em, -1em) skewX(4.5deg) skewY(-30deg);
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.75) 5%, rgba(205, 199, 203, 0.5) 40%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0) 55%, rgba(205, 199, 203, 0.3));
+        }
+
+            item2 i:nth-of-type(26):before {
+                width: 4em;
+                height: 10em;
+                transform: translate3d(0.5em, 5em, 0) skewX(-0.5deg) skewY(22deg);
+                background: linear-gradient(rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.1), rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.2), rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.5), rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.2), rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.1), rgba(205, 199, 203, 0.1), rgba(0, 0, 0, 0));
+                -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), #000 50%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), #000 50%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0));
+            }
+
+            item2 i:nth-of-type(26):after {
+                width: .4em;
+                height: 65em;
+                background: linear-gradient(rgba(205, 199, 203, 0.75) 5%, rgba(205, 199, 203, 0.1) 30%, rgba(0, 0, 0, 0) 55%, rgba(205, 199, 203, 0.75) 56%, rgba(0, 0, 0, 0) 80%);
+                transform: translate3d(0.8em, 1.1em, 0) skewX(-0.5deg) skewY(60deg);
+            }
+
+        item2 i:nth-of-type(27) {
+            width: .5em;
+            height: 70em;
+            transform: translate3d(29em, 16.4em, 0) skewX(0.5deg);
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.1) 5%, rgba(205, 199, 203, 0.05) 20%, rgba(0, 0, 0, 0) 45%, rgba(205, 199, 203, 0.1) 60%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0) 80%, rgba(205, 199, 203, 0.05) 90%, rgba(0, 0, 0, 0));
+        }
+
+            item2 i:nth-of-type(27):before {
+                width: .5em;
+                height: 70em;
+                transform: translate3d(1.25em, 0em, 0) skewX(-1deg);
+                background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 43%, rgba(205, 199, 203, 0.075) 55%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0));
+            }
+
+            item2 i:nth-of-type(27):after {
+                width: 3em;
+                height: 71em;
+                transform: translate3d(7em, -1em, 0) skewX(-4deg) skewY(10deg);
+                background: linear-gradient(rgba(205, 199, 203, 0.075), rgba(0, 0, 0, 0) 40%, rgba(205, 199, 203, 0.075) 55%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0));
+                -webkit-mask-image: linear-gradient(to right, #000 50%, rgba(0, 0, 0, 0.2));
+                mask-image: linear-gradient(to right, #000 50%, rgba(0, 0, 0, 0.2));
+            }
+
+        item2 i:nth-of-type(28) {
+            width: 8em;
+            height: 70em;
+            transform: translate3d(35.2em, 14.3em, 0) skewX(-5deg) skewY(30deg);
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 55%, #000);
+            mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 55%, #000);
+        }
+
+            item2 i:nth-of-type(28):before {
+                width: 32em;
+                height: 6em;
+                border-radius: 50%;
+                border: 0.75em solid rgba(0, 0, 0, 0);
+                transform: translate3d(-23.5em, 7.1em, 0) skewX(4deg) skewY(-30deg);
+                box-shadow: 0 0.2em 0 rgba(255, 255, 255, 0.75), inset 0 -0.1em 0.1em rgba(255, 255, 255, 0.9);
+            }
+
+            item2 i:nth-of-type(28):after {
+                width: 2em;
+                height: 64em;
+                background: linear-gradient(to right, rgba(0, 0, 0, 0), #49413e);
+                opacity: .5;
+                transform: translate3d(6em, 0.5em, -1em);
+            }
+
+        item2 i:nth-of-type(29) {
+            width: .5em;
+            height: 5em;
+            transform: translate3d(17em, 17em, 0) skewX(4deg) skewY(-20deg);
+            background: linear-gradient(#fff, rgba(0, 0, 0, 0));
+        }
+
+            item2 i:nth-of-type(29):before {
+                width: .5em;
+                height: 5em;
+                transform: translate3d(0.75em, 0em, 0);
+                background: linear-gradient(#fff, rgba(0, 0, 0, 0));
+                opacity: .5;
+            }
+
+            item2 i:nth-of-type(29):after {
+                width: .5em;
+                height: 1em;
+                transform: translate3d(1.5em, 0.1em, 0);
+                background: linear-gradient(#fff, rgba(0, 0, 0, 0));
+                opacity: .5;
+            }
+
+        item2 i:nth-of-type(12) {
+            width: 5em;
+            height: 70em;
+            transform: translate3d(37.5em, 19.7em, -3em) skewX(-5deg) skewY(-15deg);
+            overflow: hidden;
+        }
+
+            item2 i:nth-of-type(12):before {
+                width: 4em;
+                height: 19.5em;
+                background: linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(205, 199, 203, 0.3), rgba(1, 0, 0, 0.3), rgba(1, 0, 0, 0.4), rgba(45, 50, 31, 0.9), rgba(1, 0, 0, 0.9));
+                transform: translate3d(1.5em, -5em, 0) skewX(1deg) skewY(20deg);
+                opacity: .6;
+            }
+
+            item2 i:nth-of-type(12):after {
+                width: 1em;
+                height: 4em;
+                background: #EDFAFE;
+                transform: translate3d(0.75em, 4em, -1em) skewY(-30deg);
+                border-radius: .1em 1em 0 0;
+            }
+
+        item2 i:nth-of-type(13) {
+            width: 1em;
+            height: 2em;
+            transform: translate3d(40.5em, 28.5em, -3em) skewX(-4deg) skewY(-15deg);
+            background: linear-gradient(#EDFAFE, rgba(205, 223, 247, 0.7));
+            border-radius: .1em .5em 0 0;
+            opacity: .9;
+        }
+
+            item2 i:nth-of-type(13):before {
+                width: 1em;
+                height: 9em;
+                transform: translate3d(-0.8em, -3em, 0) skewX(0deg) skewY(20deg);
+                border-right: .4em solid #EDFAFE;
+                border-radius: 0 50% 50% 0;
+                -webkit-mask-image: linear-gradient(#000 50%, rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(#000 50%, rgba(0, 0, 0, 0));
+            }
+
+            item2 i:nth-of-type(13):after {
+                width: 31em;
+                height: 7em;
+                transform: translate3d(-0.5em, -3em, 0) skewX(4deg) skewY(15deg);
+                border-radius: 50%;
+                border-top: 0.5em solid rgba(0, 0, 0, 0);
+                border-left: 0.5em solid rgba(0, 0, 0, 0);
+                box-shadow: -0.1em -0.1em 0 0 #010000, inset 0.1em 0.1em 0 0 #fff;
+                -webkit-mask-image: linear-gradient(to right, #000 5%, rgba(0, 0, 0, 0) 10%);
+                mask-image: linear-gradient(to right, #000 5%, rgba(0, 0, 0, 0) 10%);
+            }
+
+        item2 i:nth-of-type(14) {
+            width: .2em;
+            height: 9em;
+            transform: translate3d(43em, 25em, 0) skewX(-5deg) skewY(-15deg);
+            background: linear-gradient(#EDFAFE, rgba(0, 0, 0, 0));
+            border-radius: 50% 0 0 50%;
+        }
+
+            item2 i:nth-of-type(14):before {
+                width: 1em;
+                height: 9em;
+                transform: translate3d(-0.5em, 1em, 0) skewX(0deg) skewY(20deg) rotate(-3deg);
+                border-left: .3em solid #CDC7CB;
+                border-radius: 50% 0 0 50%;
+                -webkit-mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+            }
+
+            item2 i:nth-of-type(14):after {
+                width: 31em;
+                height: 7em;
+                transform: translate3d(-0.2em, 1em, 0) skewX(4deg) skewY(15deg);
+                border-radius: 50%;
+                border-top: 0.5em solid rgba(0, 0, 0, 0);
+                border-left: 0em solid rgba(0, 0, 0, 0);
+                box-shadow: -0.1em -0.2em 0 0 #010000, inset 0.1em 0.1em 0 0 #fff;
+                -webkit-mask-image: linear-gradient(to right, #000 2.5%, rgba(0, 0, 0, 0) 5%);
+                mask-image: linear-gradient(to right, #000 2.5%, rgba(0, 0, 0, 0) 5%);
+            }
+
+        item2 i:nth-of-type(10) {
+            width: 1em;
+            height: 3em;
+            transform: translate3d(35em, 21.5em, 0) rotate(1deg);
+            background: #FFFEFD;
+            border-radius: .5em 0 .5em 0;
+            box-shadow: -.15em -.15em .5em #5F5634, -.5em -.5em 1em #EAD9AD;
+        }
+
+            item2 i:nth-of-type(10):before {
+                width: 1em;
+                height: .5em;
+                transform: translate3d(0em, -1em, 0);
+                background: #FFFEFD;
+                border-radius: .5em 0 0 0;
+                box-shadow: -.15em -.15em .5em #5F5634, -.5em -.5em 1em #EAD9AD;
+            }
+
+            item2 i:nth-of-type(10):after {
+                width: .75em;
+                height: .75em;
+                transform: translate3d(0em, 3.5em, 0);
+                background: #FFFEFD;
+                border-radius: .5em 0 .5em 0;
+                box-shadow: -.15em 0 .5em #5F5634, -.5em 0 1em #EAD9AD;
+            }
+
+        item2 i:nth-of-type(11) {
+            width: .5em;
+            height: 4.5em;
+            transform: translate3d(35em, 28em, 0) rotate(-3deg);
+            border-radius: 50% 0 0 50%;
+            border-left: .3em solid #EAD9AD;
+            box-shadow: 0.7em 0 0.2em 0.1em rgba(234, 217, 173, 0.1);
+        }
+
+            item2 i:nth-of-type(11):before {
+                width: .2em;
+                height: 5em;
+                background: #EAD9AD;
+                box-shadow: 0.3em -1.5em 0.3em 0.3em rgba(234, 217, 173, 0.3);
+                transform: translate3d(-0.5em, 0, 0) rotate(4deg);
+            }
+
+            item2 i:nth-of-type(11):after {
+                width: .5em;
+                height: .4em;
+                background: #EAD9AD;
+                box-shadow: 0 0 1em #EAD9AD, 0 0 1em #EAD9AD;
+                transform: translate3d(-0.2em, 4.5em, 0);
+                border-radius: 100% 0 0 0;
+            }
+
+        item2 i:nth-of-type(15) {
+            width: 15em;
+            height: 15em;
+            transform: translate3d(30em, 19em, 0) skewX(-5deg);
+            background: linear-gradient(to right bottom, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2));
+        }
+
+            item2 i:nth-of-type(15):before {
+                box-shadow: 0 -0.2em 0 rgba(93, 77, 71, 0.9), 0 -0.4em 0 rgba(173, 173, 205, 0.9), -0.2em 0 1em rgba(173, 173, 205, 0.2);
+                transform: translate3d(-4.5em, 5.5em, 0) rotate(-5deg) skewY(-5deg);
+                border: solid 0.5em rgba(0, 0, 0, 0);
+                border-top: solid 4em #ADADCD;
+                border-right-width: .1em;
+            }
+
+            item2 i:nth-of-type(15):after {
+                width: .5em;
+                height: 3em;
+                background: linear-gradient(rgba(173, 173, 205, 0.1), #ADADCD);
+                box-shadow: 0.5em -0.5em 0.5em 0.2em rgba(173, 173, 205, 0.2), -0.7em 0 1em rgba(173, 173, 205, 0.2);
+                transform: translate3d(-3.5em, 11.5em, 0) skewX(5deg) rotate(-5deg);
+                border: 0.5em solid rgba(0, 0, 0, 0);
+                border-top: solid .4em #ADADCD;
+                border-radius: 75% 0 0 0;
+                border-left-width: 0;
+                border-right: .5em;
+            }
+
+        item2 i:nth-of-type(30) {
+            width: .5em;
+            height: .5em;
+            transform: translate3d(24em, 14.5em, 0) rotate(20deg) skewX(-60deg);
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 .5em #EAD9AD;
+        }
+
+            item2 i:nth-of-type(30):before {
+                width: .5em;
+                height: .5em;
+                transform: translate3d(4em, -4em, 0) rotate(-30deg) skewX(20deg);
+                background: #fff;
+                border-radius: 50%;
+                box-shadow: 0 0 .5em #EAD9AD;
+            }
+
+            item2 i:nth-of-type(30):after {
+                width: 1em;
+                height: .5em;
+                background: #FFFFFD;
+                border-radius: 50%;
+                box-shadow: 0 0 0.5em #FFFFFD;
+                transform: translate3d(17em, -1em, 0) skewY(40deg) skewX(-30deg);
+                filter: blur(0.1em);
+            }
+
+        item2 i:nth-of-type(19) {
+            width: 4em;
+            height: .5em;
+            background: linear-gradient(#010000, rgba(1, 0, 0, 0.3));
+            border-radius: 0 50% 5% 0;
+            transform: translate3d(16.5em, 34em, 0) skewX(5deg) skewY(-5deg);
+            filter: blur(0.1em);
+        }
+
+            item2 i:nth-of-type(19):before {
+                width: 4.5em;
+                height: .2em;
+                background: #010000;
+                transform: translate3d(4.5em, 0.25em, 0) skewX(5deg) skewY(4deg);
+                border-radius: 50%;
+                box-shadow: 0 0 .2em #fff;
+            }
+
+            item2 i:nth-of-type(19):after {
+                width: 5.5em;
+                height: .3em;
+                background: #010000;
+                transform: translate3d(10.5em, 0.75em, 0) skewX(5deg) skewY(5deg);
+                border-radius: 50%;
+            }
+
+        item2 i:nth-of-type(20) {
+            border-right: 10em solid #010000;
+            border-top: 0.2em solid rgba(0, 0, 0, 0);
+            border-bottom: 0.2em solid rgba(0, 0, 0, 0);
+            transform: translate3d(34.25em, 33.75em, 0) skewX(-5deg) skewY(2deg);
+        }
+
+            item2 i:nth-of-type(20):before {
+                width: 26em;
+                height: .4em;
+                background: #010000;
+                transform: translate3d(-17em, 0em, 0) skewX(5deg) skewY(-2deg);
+                border-radius: 50%;
+                opacity: .4;
+                box-shadow: -.5em 0 .5em #FFF;
+            }
+
+        item2 i:nth-of-type(18) {
+            width: 29em;
+            height: 2em;
+            border: solid 0.5em rgba(0, 0, 0, 0);
+            border-top-color: #010000;
+            border-radius: 50%;
+            transform: translate3d(16em, 34.1em, 0);
+        }
+
+            item2 i:nth-of-type(18):before {
+                width: 21em;
+                height: 6em;
+                border-radius: 50%;
+                transform: translate3d(3.4em, 36.5em, 0);
+                box-shadow: inset -1em -1em 2em -1em #8C877B, inset 1em -1em 2em -1em rgba(140, 135, 123, 0.5);
+                filter: blur(0.2em);
+                opacity: .2;
+            }
+
+        item2 i:nth-of-type(35) {
+            border: solid 1em rgba(0, 0, 0, 0);
+            border-right-width: .75em;
+            border-top: solid 3em #EAD9AD;
+            transform: translate3d(38.5em, 38em, 0);
+            border-radius: .75em .5em 0 0;
+            box-shadow: 0 -0.6em 0.3em -0.3em rgba(1, 0, 0, 0.5), -1em 3em 1em -0.5em rgba(255, 255, 255, 0.1);
+        }
+
+            item2 i:nth-of-type(35):before {
+                border: solid 0.5em rgba(0, 0, 0, 0);
+                border-right-width: .1em;
+                border-top: solid 2.5em #EAD9AD;
+                transform: translate3d(-1.75em, -2.75em, 0);
+                border-radius: .4em 0 0 0;
+                box-shadow: 0 -0.6em 0.3em -0.3em rgba(1, 0, 0, 0.5);
+                -webkit-mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+            }
+
+            item2 i:nth-of-type(35):after {
+                border: solid 1em rgba(0, 0, 0, 0);
+                border-right-width: .75em;
+                border-top: solid 6em rgba(255, 255, 255, 0.5);
+                transform: translate3d(-0.75em, -4em, 0);
+                border-radius: .75em .5em 0 0;
+                -webkit-mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+            }
+
+        item2 i:nth-of-type(36) {
+            border: solid 0.25em rgba(0, 0, 0, 0);
+            border-bottom: solid 5em #ADADCD;
+            transform: translate3d(24em, 44em, 0) skewY(5deg);
+            border-radius: 0 0 0 .25em;
+        }
+
+            item2 i:nth-of-type(36):before {
+                background: #ADADCD;
+                width: .5em;
+                height: .6em;
+                transform: translate3d(-0.2em, 6.5em, 0);
+                border-radius: .2em;
+                box-shadow: 0 0 .3em #ADADCD;
+            }
+
+            item2 i:nth-of-type(36):after {
+                background: #ADADCD;
+                width: .6em;
+                height: 3em;
+                transform: translate3d(-0.3em, 3.5em, 0);
+                filter: blur(0.3em);
+                opacity: .4;
+            }
+
+        item2 i:nth-of-type(2) {
+            height: 3em;
+            width: 24.5em;
+            transform: translate3d(18.5em, 50em, 0);
+            border-radius: 0 0 2em 2em;
+            box-shadow: 0 1.5em 1em -1em rgba(1, 0, 0, 0.5), inset 0 -0.5em 1em rgba(1, 0, 0, 0.5), inset 0 -0.5em 0 rgba(1, 0, 0, 0.4);
+        }
+
+            item2 i:nth-of-type(2):before {
+                width: 15em;
+                height: 20em;
+                background: linear-gradient(rgba(0, 0, 0, 0), #231f1b 4%, rgba(0, 0, 0, 0));
+                transform: translate3d(0.5em, 3em, 0) skewX(4.2deg);
+                border-radius: 1em 0 0 3em;
+            }
+
+            item2 i:nth-of-type(2):after {
+                width: 15em;
+                height: 20em;
+                background: linear-gradient(rgba(0, 0, 0, 0), #231f1b 4%, rgba(0, 0, 0, 0));
+                transform: translate3d(8.5em, 3em, 0) skewX(-5deg);
+                border-radius: 0 1em 3em 0;
+            }
+
+        item2 i:nth-of-type(37) {
+            transform: translate3d(32em, 41em, 0) skewX(-5deg);
+            width: 10em;
+            height: 40em;
+            overflow: hidden;
+        }
+
+            item2 i:nth-of-type(37):before {
+                height: 15em;
+                width: 10em;
+                transform: translate3d(11em, 7em, 0) skewY(-10deg);
+                border-radius: 50%;
+                box-shadow: 0 0 5em #fff;
+                background: #fff;
+            }
+
+            item2 i:nth-of-type(37):after {
+                height: 14em;
+                width: 4em;
+                transform: translate3d(6em, 24em, 0) skewY(25deg);
+                border-radius: 50%;
+                box-shadow: .2em -.1em .5em -.3em #F3EADA;
+                background: radial-gradient(14em at 50% 30%, rgba(255, 231, 89, 0.3), rgba(178, 153, 31, 0.1), rgba(0, 0, 0, 0));
+                -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), #000);
+                mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), #000);
+                filter: blur(0.3em);
+            }
+
+        item2 i:nth-of-type(38) {
+            transform: translate3d(38em, 65em, 0);
+        }
+
+            item2 i:nth-of-type(38):before {
+                background-image: radial-gradient(#2C2015 20%, transparent 0), radial-gradient(#2C2015 20%, transparent 0);
+                background-size: 1.2em 1.2em;
+                background-position: 0 0,.6em .6em;
+                height: 11em;
+                width: 3em;
+                transform: translate3d(0, 0, 0) skewX(-5deg);
+                -webkit-mask-image: radial-gradient(#000, rgba(0, 0, 0, 0));
+                mask-image: radial-gradient(#000, rgba(0, 0, 0, 0));
+                opacity: .2;
+            }
+
+            item2 i:nth-of-type(38):after {
+                height: 10em;
+                width: 3em;
+                transform: translate3d(-16.5em, -4em, 0) skewY(-45deg) rotate(-5deg);
+                opacity: .04;
+                border-radius: 50% 50% 1em 1em;
+                background: linear-gradient(to right, rgba(255, 231, 89, 0.2), #ffe759);
+                box-shadow: -1.5em -5em 0 0 rgba(255, 231, 89, 0.4);
+            }
+
+        item2 i:nth-of-type(39) {
+            height: 30em;
+            width: 5em;
+            transform: translate3d(19em, 50em, 0) skewX(4.5deg);
+            overflow: hidden;
+        }
+
+            item2 i:nth-of-type(39):before {
+                height: 10em;
+                width: 10em;
+                transform: translate3d(-9em, 12em, 0) rotate(80deg) skewX(45deg);
+                background: #ffe759;
+                border-radius: 1em;
+                opacity: .8;
+            }
+
+            item2 i:nth-of-type(39):after {
+                width: 25em;
+                height: 9.5em;
+                border: 0.5em solid rgba(0, 0, 0, 0);
+                border-left-color: #fff;
+                transform: translate3d(-3.5em, 16.5em, 0) skewX(30deg);
+                box-shadow: -18em 1em 0.2em 0 rgba(93, 84, 64, 0.2);
+                filter: blur(0.1em);
+                border-radius: 50%;
+            }
+
+        item2 i:nth-of-type(3) {
+            height: 10em;
+            width: 2em;
+            transform: translate3d(36.5em, 62em, 0) skewY(-10deg);
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2)), linear-gradient(rgba(0, 0, 0, 0), #674D03), linear-gradient(to right, #C1C3A2, rgba(0, 0, 0, 0)), radial-gradient(#9E8A2C, #674D03);
+            border-radius: 50%;
+            border-left: .35em solid #8E8B53;
+            filter: blur(0.1em);
+        }
+
+            item2 i:nth-of-type(3):before {
+                height: 4.5em;
+                width: 6.5em;
+                transform: translate3d(-3.35em, 3em, 0);
+                background: radial-gradient(circle at top left, #9E8A2C, #674D03);
+                border-radius: 60% 40% 40% 60%;
+            }
+
+            item2 i:nth-of-type(3):after {
+                height: 2em;
+                width: 4em;
+                transform: translate3d(-1.35em, 4em, 0);
+                border-top: .5em solid #C6C9BA;
+                border-radius: 60% 40% 40% 60%;
+                box-shadow: 0 -0.5em 0 #847549, -0.5em -1em 0 #C1C3A2, inset 0 0.75em 0 #7A6107, inset 0 -0.75em 0 rgba(173, 170, 111, 0.75), 0 1em 0 #6f590a;
+                opacity: .8;
+            }
+
+        item2 i:nth-of-type(4) {
+            height: 1.25em;
+            width: 2em;
+            transform: translate3d(31em, 68em, 0) skewY(-15deg);
+            border-radius: 50%;
+            border-left: .5em solid #848C7B;
+        }
+
+            item2 i:nth-of-type(4):before {
+                height: 2em;
+                width: 2em;
+                transform: translate3d(0.75em, -0.5em, 0) skewY(-15deg) skewX(45deg);
+                background: linear-gradient(to right, #2D2810 20%, #69644F 40%, #2D2810 60%);
+                border-radius: 10% 0 100% 0;
+                box-shadow: inset 0 0 1em #010000;
+            }
+
+            item2 i:nth-of-type(4):after {
+                height: .5em;
+                width: 2em;
+                transform: translate3d(0.2em, -0.25em, 0);
+                background: linear-gradient(to right, #848C7B, #69644F);
+                border-radius: 50%;
+                opacity: .75;
+                box-shadow: -.5em .25em 0 #848C7B;
+            }
+
+        item2 i:nth-of-type(5) {
+            height: .5em;
+            width: .75em;
+            transform: translate3d(35em, 67.5em, 0) skewY(-15deg);
+            border-radius: 50%;
+            background: #C1C3A2;
+            box-shadow: -0.75em 0.5em 0 #C1C3A2, -0.25em -1em 0 #C1C3A2, -1.5em -1em 0 #C1C3A2, 4.75em 0.5em 0 #8E8B53, 2em 0.5em 0 rgba(1, 0, 0, 0.1), 1em -1em 0 rgba(1, 0, 0, 0.2), -0.5em 0.25em 0 rgba(1, 0, 0, 0.1), 0em -0.75em 0 rgba(1, 0, 0, 0.2), -0.75em -0.75em 0 rgba(1, 0, 0, 0.3), 0em 1em 0 rgba(1, 0, 0, 0.3), 1em 2em 0 rgba(1, 0, 0, 0.3), 1.5em 1.5em 0 rgba(1, 0, 0, 0.2), 0.25em 1.5em 0 rgba(1, 0, 0, 0.3), 1.5em 2.5em 0 rgba(1, 0, 0, 0.2), 2em 2.25em 0 rgba(1, 0, 0, 0.1);
+        }
+
+            item2 i:nth-of-type(5):before {
+                width: 2em;
+                height: 2em;
+                border-bottom: .75em solid #8E8B53;
+                border-radius: 50%;
+                transform: translate3d(0em, -3.5em, 0) rotate(-45deg);
+            }
+
+            item2 i:nth-of-type(5):after {
+                width: 2em;
+                height: 2em;
+                border-top: 1em solid #7A6107;
+                border-radius: 50%;
+                transform: translate3d(0em, 2em, 0) rotate(45deg);
+            }
+
+        item2 i:nth-of-type(6) {
+            height: 4.5em;
+            width: 5em;
+            transform: translate3d(35em, 65em, 0) skewY(-5deg);
+            border-radius: 50%;
+            border-right: 1em solid #C1C3A2;
+            opacity: .3;
+        }
+
+            item2 i:nth-of-type(6):before {
+                width: 2em;
+                height: 2em;
+                border-bottom: .75em solid #8E8B53;
+                border-radius: 50%;
+                transform: translate3d(3em, -1.5em, 0) rotate(45deg);
+            }
+
+            item2 i:nth-of-type(6):after {
+                width: 2em;
+                height: 2em;
+                border-top: 1em solid #7A6107;
+                border-radius: 50%;
+                transform: translate3d(2.5em, 4em, 0) rotate(-45deg);
+            }
+
+        item2 i:nth-of-type(7) {
+            transform: translate3d(34em, 66em, 0) rotate(-15deg);
+            width: 6em;
+            height: 4em;
+            border-radius: 50%;
+            box-shadow: inset 0 -1em 0 0 #332f0e;
+            opacity: .3;
+        }
+
+            item2 i:nth-of-type(7):before {
+                width: 7em;
+                height: 5em;
+                transform: translate3d(-0.5em, -1em, 0);
+                border-radius: 50%;
+                background-image: radial-gradient(#F3EADA 20%, transparent 0), radial-gradient(#F3EADA 20%, transparent 0);
+                background-size: 1.2em 1.2em;
+                background-position: 0 0,.6em .6em;
+                -webkit-mask-image: linear-gradient(#000, rgba(0, 0, 0, 0.2));
+                mask-image: linear-gradient(#000, rgba(0, 0, 0, 0.2));
+            }
+
+            item2 i:nth-of-type(7):after {
+                width: 6em;
+                height: 4em;
+                transform: translate3d(1em, 1em, 0);
+                border-radius: 50%;
+                background-image: radial-gradient(#010000 20%, transparent 0), radial-gradient(#010000 20%, transparent 0);
+                background-size: 1.2em 1.2em;
+                background-position: 0 0,.6em .6em;
+                -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0), #000);
+                mask-image: linear-gradient(rgba(0, 0, 0, 0), #000);
+            }
+
+        item2 i:nth-of-type(8) {
+            transform: translate3d(36.75em, 62em, 0);
+            opacity: .3;
+        }
+
+            item2 i:nth-of-type(8):before {
+                width: 2em;
+                height: 10em;
+                transform: translate3d(0, 0, 0);
+                border-radius: 50%;
+                background-image: radial-gradient(#F3EADA 20%, transparent 0), radial-gradient(#F3EADA 20%, transparent 0);
+                background-size: 2.2em 1.2em;
+                background-position: 0 0,1.1em .3em;
+                -webkit-mask-image: linear-gradient(#000, rgba(0, 0, 0, 0.2));
+                mask-image: linear-gradient(#000, rgba(0, 0, 0, 0.2));
+            }
+
+            item2 i:nth-of-type(8):after {
+                width: 2em;
+                height: 10em;
+                transform: translate3d(0, 0.5em, 0);
+                border-radius: 50%;
+                background-image: radial-gradient(#010000 20%, transparent 0), radial-gradient(#010000 20%, transparent 0);
+                background-size: 1.2em 1.2em;
+                background-position: .7em .2em, 0 0;
+                -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0), #000);
+                mask-image: linear-gradient(rgba(0, 0, 0, 0), #000);
+            }
+
+        item2 i:nth-of-type(9) {
+            transform: translate3d(32em, 57em, 0) skewY(-5deg);
+        }
+
+            item2 i:nth-of-type(9):before {
+                transform: translate3d(-3em, 2em, 0);
+                width: 10em;
+                height: 20em;
+                background: radial-gradient(circle at top right, #ffd405, #564114, #010000);
+                border-radius: 50%;
+                -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), #000);
+                mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), #000);
+                opacity: .05;
+            }
+
+            item2 i:nth-of-type(9):after {
+                transform: translate3d(4em, 0, 0);
+                opacity: .05;
+                width: 20em;
+                height: 20em;
+                background: radial-gradient(circle at top left, #ffd405, #564114, #010000);
+                border-radius: 50%;
+                -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), #000);
+                mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), #000);
+                filter: blur(0.1em);
+            }
+
+        item2 i:nth-of-type(31) {
+            width: 14em;
+            height: 12em;
+            border-bottom: 0.5em solid #fff;
+            border-radius: 50%;
+            transform: translate3d(20em, 74em, 0) scaleX(1.45);
+            transform-origin: 0 0;
+            -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 70%, #000);
+            mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 70%, #000);
+        }
+
+            item2 i:nth-of-type(31):before {
+                width: 14em;
+                height: 12em;
+                border-bottom: 0.75em solid #fff;
+                border-radius: 50%;
+                transform: translate3d(0, -1em, 0);
+                transform-origin: 0 0;
+                -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 70%, #000);
+                mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 70%, #000);
+            }
+
+        item2 i:nth-of-type(32) {
+            width: 5em;
+            height: 2.5em;
+            background: #b7a015;
+            transform: translate3d(20em, 81.5em, 0) skewX(60deg);
+            transform-origin: 0 0;
+            border-radius: 2em;
+            opacity: .3;
+            box-shadow: inset -1em 0 0 #ffe759;
+            filter: blur(0.3em);
+        }
+
+            item2 i:nth-of-type(32):before {
+                width: 2em;
+                height: 1em;
+                background: #2A2215;
+                box-shadow: -1em 0 0 #ffe759, inset 0 0 1em #010000;
+                border-radius: 50%;
+                transform: translate3d(2em, 2em, 0) skewX(-50deg);
+            }
+
+        item2 i:nth-of-type(33) {
+            width: 13.9em;
+            height: 12em;
+            border-radius: 50%;
+            transform: translate3d(20em, 76em, 0) scaleX(1.45);
+            transform-origin: 0 0;
+            filter: blur(0.1em);
+            box-shadow: inset -.25em -.25em .25em -.5em #EAD9AD;
+        }
+
+            item2 i:nth-of-type(33):before {
+                width: 14em;
+                height: 12em;
+                border-radius: 50%;
+                transform: translate3d(0, 1em, 0);
+                transform-origin: 0 0;
+                box-shadow: inset -.25em -.25em .25em -.5em #EAD9AD;
+            }
+
+            item2 i:nth-of-type(33):after {
+                width: 14em;
+                height: 12em;
+                box-shadow: inset 2em -2em 2em -4em #EAD9AD;
+                border-radius: 50%;
+                transform: translate3d(0, 6em, 0);
+                transform-origin: 0 0;
+            }
+
+        item2 i:nth-of-type(1) {
+            height: 20em;
+            width: 17em;
+            transform: translate3d(20em, 81em, 0);
+            transform-origin: 0 0;
+            opacity: .2;
+            filter: blur(0.2em);
+            background: #010000;
+        }
+
+            item2 i:nth-of-type(1):before {
+                width: 3em;
+                height: 10em;
+                transform: translate3d(17em, 0, 0) skewX(4deg);
+                transform-origin: 0 0;
+                background: linear-gradient(to right, rgba(0, 0, 0, 0), #ADADCD);
+                -webkit-mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+            }
+
+            item2 i:nth-of-type(1):after {
+                width: 3em;
+                height: 10em;
+                transform: translate3d(0, 0, 0) skewX(-2deg);
+                transform-origin: 0 0;
+                background: linear-gradient(to right, #C1C3A2, rgba(0, 0, 0, 0));
+                -webkit-mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+            }
+
+        item1 {
+            width: 50em;
+            height: 50em;
+            transform: translate3d(41em, 49em, 0) skewX(-5deg);
+            overflow: hidden;
+        }
+
+            item1 i:nth-of-type(1):before {
+                width: 10em;
+                height: 10em;
+                transform: translate3d(0.5em, 12.5em, 0) rotate(-60deg) skewY(15deg);
+                border-radius: 1.5em;
+                background: linear-gradient(to bottom, #564114, #564114, #1F1B17);
+                box-shadow: inset -0.25em 0 0.25em -0.25em #896B3A, inset 0 -0.25em 0.25em -0.25em #010000;
+            }
+
+            item1 i:nth-of-type(1):after {
+                width: 25em;
+                height: 20em;
+                transform: translate3d(-15em, 7em, 0);
+                border-radius: 50%;
+                background: radial-gradient(circle at top, #ffd405, #564114, #010000);
+                border-top: #896B3A solid .25em;
+            }
+
+            item1 i:nth-of-type(2) {
+                width: 3em;
+                height: 5em;
+                transform: translate3d(8.5em, 14.5em, 0);
+                border-radius: 50%;
+                background: linear-gradient(to bottom right, #473712, #2B2617 85%, #010000);
+                filter: blur(0.5em);
+            }
+
+            item1 i:nth-of-type(3) {
+                width: 19em;
+                height: 19em;
+                transform: translate3d(-10em, 7.5em, 0) rotate(45deg);
+                border-radius: 50% 0 50% 50%;
+                overflow: hidden;
+            }
+
+                item1 i:nth-of-type(3):after {
+                    width: .15em;
+                    height: .15em;
+                    transform: translate3d(-1em, 0em, 0);
+                    border-radius: 50%;
+                    box-shadow: 7em 4em .1em #302512, 13em 19em .25em #302512, 12em 18em .25em #302512, 2em 4em .25em #302512, 9em 11em .25em #302512, 12em 14em .25em #302512, 11em 4em .25em #302512, 3em 18em .25em #302512, 18em 1em .25em #302512, 15em 8em .25em #302512, 18em 2em .25em #302512, 1em 14em .25em #302512, 2em 3em .25em #302512, 13em 13em .25em #302512, 4em 13em .25em #302512, 10em 16em .25em #302512, 16em 18em .25em #302512, 22em 12em .25em #302512, 6em 6em .25em #302512, 11em 5em .25em #302512, 12em 10em .25em #302512, 8em 14em .25em #302512, 20em 12em .25em #302512, 20em 18em .25em #302512, 18em 8em .25em #302512, 11em 20em .25em #302512, 4em 21em .25em #302512, 2em 7em .25em #302512, 9em 16em .25em #302512, 5em 17em .25em #302512, 12em 8em .25em #302512, 12em 11em .25em #302512, 6em 5em .25em #302512, 14em 20em .25em #302512, 13em 8em .25em #302512, 5em 21em .25em #302512, 19em 14em .25em #302512, 8em 6em .25em #302512, 1em 12em .25em #302512, 17em 10em .25em #302512, 19em 18em .25em #302512, 7em 8em .25em #302512, 11em 16em .25em #302512, 3em 4em .25em #302512, 15em 5em .25em #302512, 7em 5em .25em #302512, 17em 8em .25em #302512, 11em 2em .25em #302512, 19em 10em .25em #302512, 18em 21em .25em #302512, 5em 15em .25em #302512, 7em 10em .25em #302512, 12em 14em .25em #302512, 12em 15em .25em #302512, 9em 16em .25em #302512, 6em 13em .25em #302512, 12em 18em .25em #302512, 10em 17em .25em #302512, 14em 11em .25em #302512, 16em 7em .25em #302512, 11em 13em .25em #302512, 4em 15em .25em #302512, 22em 2em .25em #302512, 19em 2em .25em #302512, 1em 15em .25em #302512, 14em 9em .25em #302512, 20em 17em .25em #302512, 7em 17em .25em #302512, 8em 3em .25em #302512, 22em 3em .25em #302512, 15em 5em .25em #302512, 13em 11em .25em #302512, 11em 4em .25em #302512, 8em 20em .25em #302512, 4em 1em .25em #302512, 15em 15em .25em #302512, 13em 2em .25em #302512, 5em 10em .25em #302512, 5em 4em .25em #302512, 14em 11em .25em #302512, 15em 4em .25em #302512, 13em 22em .25em #302512, 16em 12em .25em #302512, 6em 8em .25em #302512, 14em 20em .25em #302512, 8em 5em .25em #302512, 14em 8em .25em #302512, 17em 6em .25em #302512, 11em 9em .25em #302512, 5em 10em .25em #302512, 4em 12em .25em #302512, 3em 6em .25em #302512, 3em 8em .25em #302512, 9em 2em .25em #302512, 12em 14em .25em #302512, 15em 4em .25em #302512, 22em 3em .25em #302512, 2em 2em .25em #302512, 19em 20em .25em #302512, 8em 10em .25em #302512, 1em 11em .25em #302512, 6em 12em .25em #302512, 14em 2em .25em #302512, 14em 6em .25em #302512, 22em 17em .25em #302512, 6em 12em .25em #302512, 2em 19em .25em #302512, 20em 17em .25em #302512, 18em 20em .25em #302512, 9em 17em .25em #302512, 8em 20em .25em #302512, 4em 15em .25em #302512, 16em 5em .25em #302512, 6em 4em .25em #302512, 3em 7em .25em #302512, 11em 12em .25em #302512, 12em 7em .25em #302512, 9em 19em .25em #302512, 19em 8em .25em #302512, 22em 11em .25em #302512, 2em 19em .25em #302512, 4em 14em .25em #302512, 22em 6em .25em #302512, 14em 18em .25em #302512, 22em 15em .25em #302512, 10em 22em .25em #302512, 18em 11em .25em #302512, 4em 17em .25em #302512, 3em 15em .25em #302512, 17em 1em .25em #302512, 11em 7em .25em #302512, 4em 16em .25em #302512, 5em 21em .25em #302512, 15em 21em .25em #302512, 13em 3em .25em #302512, 1em 10em .25em #302512, 8em 21em .25em #302512, 11em 20em .25em #302512, 2em 22em .25em #302512, 11em 22em .25em #302512, 5em 4em .25em #302512, 20em 11em .25em #302512, 14em 13em .25em #302512, 13em 20em .25em #302512, 22em 13em .25em #302512, 19em 10em .25em #302512, 20em 1em .25em #302512, 20em 5em .25em #302512, 20em 14em .25em #302512, 3em 6em .25em #302512;
+                    opacity: .5;
+                }
+
+                item1 i:nth-of-type(3):before {
+                    width: .15em;
+                    height: .15em;
+                    transform: translate3d(-0.25em, 1em, 0);
+                    border-radius: 50%;
+                    box-shadow: 16em 22em .1em #302512, 17em 19em .25em #302512, 20em 12em .25em #302512, 7em 18em .25em #302512, 18em 5em .25em #302512, 10em 17em .25em #302512, 16em 15em .25em #302512, 11em 12em .25em #302512, 20em 3em .25em #302512, 11em 22em .25em #302512, 13em 7em .25em #302512, 8em 10em .25em #302512, 14em 15em .25em #302512, 20em 12em .25em #302512, 22em 12em .25em #302512, 18em 5em .25em #302512, 11em 11em .25em #302512, 10em 14em .25em #302512, 5em 19em .25em #302512, 1em 19em .25em #302512, 13em 12em .25em #302512, 20em 11em .25em #302512, 9em 3em .25em #302512, 22em 4em .25em #302512, 21em 2em .25em #302512, 2em 3em .25em #302512, 21em 14em .25em #302512, 14em 9em .25em #302512, 3em 19em .25em #302512, 20em 15em .25em #302512, 15em 10em .25em #302512, 3em 7em .25em #302512, 3em 21em .25em #302512, 1em 21em .25em #302512, 16em 22em .25em #302512, 14em 22em .25em #302512, 5em 12em .25em #302512, 4em 12em .25em #302512, 10em 17em .25em #302512, 11em 7em .25em #302512, 13em 10em .25em #302512, 7em 15em .25em #302512, 17em 12em .25em #302512, 4em 13em .25em #302512, 10em 12em .25em #302512, 2em 16em .25em #302512, 18em 11em .25em #302512, 10em 14em .25em #302512, 13em 8em .25em #302512, 14em 14em .25em #302512, 14em 21em .25em #302512, 8em 15em .25em #302512, 6em 14em .25em #302512, 6em 7em .25em #302512, 11em 18em .25em #302512, 1em 13em .25em #302512, 20em 8em .25em #302512, 19em 13em .25em #302512, 18em 15em .25em #302512, 9em 12em .25em #302512, 8em 8em .25em #302512, 22em 21em .25em #302512, 20em 5em .25em #302512, 12em 3em .25em #302512, 1em 18em .25em #302512, 15em 17em .25em #302512, 8em 20em .25em #302512, 17em 9em .25em #302512, 9em 2em .25em #302512, 18em 9em .25em #302512, 22em 21em .25em #302512, 3em 21em .25em #302512, 14em 14em .25em #302512, 21em 8em .25em #302512, 13em 6em .25em #302512, 7em 1em .25em #302512, 22em 18em .25em #302512, 22em 1em .25em #302512, 5em 7em .25em #302512, 9em 21em .25em #302512, 16em 2em .25em #302512, 15em 19em .25em #302512, 18em 2em .25em #302512, 10em 21em .25em #302512, 20em 6em .25em #302512, 12em 17em .25em #302512, 14em 7em .25em #302512, 13em 16em .25em #302512, 3em 10em .25em #302512, 8em 6em .25em #302512, 22em 2em .25em #302512, 15em 20em .25em #302512, 2em 21em .25em #302512, 3em 12em .25em #302512, 5em 8em .25em #302512, 14em 4em .25em #302512, 5em 22em .25em #302512, 17em 2em .25em #302512, 15em 4em .25em #302512, 14em 8em .25em #302512, 1em 2em .25em #302512, 2em 12em .25em #302512, 15em 15em .25em #302512, 18em 2em .25em #302512, 14em 2em .25em #302512, 18em 14em .25em #302512, 15em 14em .25em #302512, 22em 12em .25em #302512, 20em 7em .25em #302512, 20em 20em .25em #302512, 3em 11em .25em #302512, 3em 3em .25em #302512, 14em 1em .25em #302512, 20em 14em .25em #302512, 21em 7em .25em #302512, 12em 11em .25em #302512, 16em 1em .25em #302512, 20em 11em .25em #302512, 7em 20em .25em #302512, 12em 9em .25em #302512, 20em 19em .25em #302512, 11em 12em .25em #302512, 3em 17em .25em #302512, 1em 15em .25em #302512, 2em 9em .25em #302512, 8em 19em .25em #302512, 8em 13em .25em #302512, 19em 5em .25em #302512, 11em 22em .25em #302512, 18em 4em .25em #302512, 16em 15em .25em #302512, 18em 1em .25em #302512, 20em 21em .25em #302512, 2em 15em .25em #302512, 10em 17em .25em #302512, 22em 5em .25em #302512, 19em 4em .25em #302512, 5em 21em .25em #302512, 1em 20em .25em #302512, 19em 13em .25em #302512, 19em 8em .25em #302512, 21em 14em .25em #302512, 3em 4em .25em #302512, 7em 15em .25em #302512, 3em 4em .25em #302512, 15em 18em .25em #302512, 10em 16em .25em #302512, 9em 1em .25em #302512, 11em 2em .25em #302512, 22em 22em .25em #302512;
+                    opacity: .5;
+                }
+
+            item1 i:nth-of-type(4) {
+                width: 19em;
+                height: 19em;
+                transform: translate3d(-10em, 7.5em, 0) rotate(-45deg);
+                border-radius: 50% 0 50% 50%;
+                overflow: hidden;
+            }
+
+                item1 i:nth-of-type(4):after {
+                    width: .15em;
+                    height: .15em;
+                    transform: translate3d(0, 0em, 0);
+                    border-radius: 50%;
+                    box-shadow: 7em 4em .1em #302512, 13em 19em .25em #302512, 12em 18em .25em #302512, 2em 4em .25em #302512, 9em 11em .25em #302512, 12em 14em .25em #302512, 11em 4em .25em #302512, 3em 18em .25em #302512, 18em 1em .25em #302512, 15em 8em .25em #302512, 18em 2em .25em #302512, 1em 14em .25em #302512, 2em 3em .25em #302512, 13em 13em .25em #302512, 4em 13em .25em #302512, 10em 16em .25em #302512, 16em 18em .25em #302512, 22em 12em .25em #302512, 6em 6em .25em #302512, 11em 5em .25em #302512, 12em 10em .25em #302512, 8em 14em .25em #302512, 20em 12em .25em #302512, 20em 18em .25em #302512, 18em 8em .25em #302512, 11em 20em .25em #302512, 4em 21em .25em #302512, 2em 7em .25em #302512, 9em 16em .25em #302512, 5em 17em .25em #302512, 12em 8em .25em #302512, 12em 11em .25em #302512, 6em 5em .25em #302512, 14em 20em .25em #302512, 13em 8em .25em #302512, 5em 21em .25em #302512, 19em 14em .25em #302512, 8em 6em .25em #302512, 1em 12em .25em #302512, 17em 10em .25em #302512, 19em 18em .25em #302512, 7em 8em .25em #302512, 11em 16em .25em #302512, 3em 4em .25em #302512, 15em 5em .25em #302512, 7em 5em .25em #302512, 17em 8em .25em #302512, 11em 2em .25em #302512, 19em 10em .25em #302512, 18em 21em .25em #302512, 5em 15em .25em #302512, 7em 10em .25em #302512, 12em 14em .25em #302512, 12em 15em .25em #302512, 9em 16em .25em #302512, 6em 13em .25em #302512, 12em 18em .25em #302512, 10em 17em .25em #302512, 14em 11em .25em #302512, 16em 7em .25em #302512, 11em 13em .25em #302512, 4em 15em .25em #302512, 22em 2em .25em #302512, 19em 2em .25em #302512, 1em 15em .25em #302512, 14em 9em .25em #302512, 20em 17em .25em #302512, 7em 17em .25em #302512, 8em 3em .25em #302512, 22em 3em .25em #302512, 15em 5em .25em #302512, 13em 11em .25em #302512, 11em 4em .25em #302512, 8em 20em .25em #302512, 4em 1em .25em #302512, 15em 15em .25em #302512, 13em 2em .25em #302512, 5em 10em .25em #302512, 5em 4em .25em #302512, 14em 11em .25em #302512, 15em 4em .25em #302512, 13em 22em .25em #302512, 16em 12em .25em #302512, 6em 8em .25em #302512, 14em 20em .25em #302512, 8em 5em .25em #302512, 14em 8em .25em #302512, 17em 6em .25em #302512, 11em 9em .25em #302512, 5em 10em .25em #302512, 4em 12em .25em #302512, 3em 6em .25em #302512, 3em 8em .25em #302512, 9em 2em .25em #302512, 12em 14em .25em #302512, 15em 4em .25em #302512, 22em 3em .25em #302512, 2em 2em .25em #302512, 19em 20em .25em #302512, 8em 10em .25em #302512, 1em 11em .25em #302512, 6em 12em .25em #302512, 14em 2em .25em #302512, 14em 6em .25em #302512, 22em 17em .25em #302512, 6em 12em .25em #302512, 2em 19em .25em #302512, 20em 17em .25em #302512, 18em 20em .25em #302512, 9em 17em .25em #302512, 8em 20em .25em #302512, 4em 15em .25em #302512, 16em 5em .25em #302512, 6em 4em .25em #302512, 3em 7em .25em #302512, 11em 12em .25em #302512, 12em 7em .25em #302512, 9em 19em .25em #302512, 19em 8em .25em #302512, 22em 11em .25em #302512, 2em 19em .25em #302512, 4em 14em .25em #302512, 22em 6em .25em #302512, 14em 18em .25em #302512, 22em 15em .25em #302512, 10em 22em .25em #302512, 18em 11em .25em #302512, 4em 17em .25em #302512, 3em 15em .25em #302512, 17em 1em .25em #302512, 11em 7em .25em #302512, 4em 16em .25em #302512, 5em 21em .25em #302512, 15em 21em .25em #302512, 13em 3em .25em #302512, 1em 10em .25em #302512, 8em 21em .25em #302512, 11em 20em .25em #302512, 2em 22em .25em #302512, 11em 22em .25em #302512, 5em 4em .25em #302512, 20em 11em .25em #302512, 14em 13em .25em #302512, 13em 20em .25em #302512, 22em 13em .25em #302512, 19em 10em .25em #302512, 20em 1em .25em #302512, 20em 5em .25em #302512, 20em 14em .25em #302512, 3em 6em .25em #302512;
+                    opacity: .5;
+                }
+
+                item1 i:nth-of-type(4):before {
+                    width: .25em;
+                    height: .25em;
+                    transform: translate3d(-0.25em, -0.25em, 0);
+                    border-radius: 50%;
+                    box-shadow: 16em 22em .1em #302512, 17em 19em .25em #302512, 20em 12em .25em #302512, 7em 18em .25em #302512, 18em 5em .25em #302512, 10em 17em .25em #302512, 16em 15em .25em #302512, 11em 12em .25em #302512, 20em 3em .25em #302512, 11em 22em .25em #302512, 13em 7em .25em #302512, 8em 10em .25em #302512, 14em 15em .25em #302512, 20em 12em .25em #302512, 22em 12em .25em #302512, 18em 5em .25em #302512, 11em 11em .25em #302512, 10em 14em .25em #302512, 5em 19em .25em #302512, 1em 19em .25em #302512, 13em 12em .25em #302512, 20em 11em .25em #302512, 9em 3em .25em #302512, 22em 4em .25em #302512, 21em 2em .25em #302512, 2em 3em .25em #302512, 21em 14em .25em #302512, 14em 9em .25em #302512, 3em 19em .25em #302512, 20em 15em .25em #302512, 15em 10em .25em #302512, 3em 7em .25em #302512, 3em 21em .25em #302512, 1em 21em .25em #302512, 16em 22em .25em #302512, 14em 22em .25em #302512, 5em 12em .25em #302512, 4em 12em .25em #302512, 10em 17em .25em #302512, 11em 7em .25em #302512, 13em 10em .25em #302512, 7em 15em .25em #302512, 17em 12em .25em #302512, 4em 13em .25em #302512, 10em 12em .25em #302512, 2em 16em .25em #302512, 18em 11em .25em #302512, 10em 14em .25em #302512, 13em 8em .25em #302512, 14em 14em .25em #302512, 14em 21em .25em #302512, 8em 15em .25em #302512, 6em 14em .25em #302512, 6em 7em .25em #302512, 11em 18em .25em #302512, 1em 13em .25em #302512, 20em 8em .25em #302512, 19em 13em .25em #302512, 18em 15em .25em #302512, 9em 12em .25em #302512, 8em 8em .25em #302512, 22em 21em .25em #302512, 20em 5em .25em #302512, 12em 3em .25em #302512, 1em 18em .25em #302512, 15em 17em .25em #302512, 8em 20em .25em #302512, 17em 9em .25em #302512, 9em 2em .25em #302512, 18em 9em .25em #302512, 22em 21em .25em #302512, 3em 21em .25em #302512, 14em 14em .25em #302512, 21em 8em .25em #302512, 13em 6em .25em #302512, 7em 1em .25em #302512, 22em 18em .25em #302512, 22em 1em .25em #302512, 5em 7em .25em #302512, 9em 21em .25em #302512, 16em 2em .25em #302512, 15em 19em .25em #302512, 18em 2em .25em #302512, 10em 21em .25em #302512, 20em 6em .25em #302512, 12em 17em .25em #302512, 14em 7em .25em #302512, 13em 16em .25em #302512, 3em 10em .25em #302512, 8em 6em .25em #302512, 22em 2em .25em #302512, 15em 20em .25em #302512, 2em 21em .25em #302512, 3em 12em .25em #302512, 5em 8em .25em #302512, 14em 4em .25em #302512, 5em 22em .25em #302512, 17em 2em .25em #302512, 15em 4em .25em #302512, 14em 8em .25em #302512, 1em 2em .25em #302512, 2em 12em .25em #302512, 15em 15em .25em #302512, 18em 2em .25em #302512, 14em 2em .25em #302512, 18em 14em .25em #302512, 15em 14em .25em #302512, 22em 12em .25em #302512, 20em 7em .25em #302512, 20em 20em .25em #302512, 3em 11em .25em #302512, 3em 3em .25em #302512, 14em 1em .25em #302512, 20em 14em .25em #302512, 21em 7em .25em #302512, 12em 11em .25em #302512, 16em 1em .25em #302512, 20em 11em .25em #302512, 7em 20em .25em #302512, 12em 9em .25em #302512, 20em 19em .25em #302512, 11em 12em .25em #302512, 3em 17em .25em #302512, 1em 15em .25em #302512, 2em 9em .25em #302512, 8em 19em .25em #302512, 8em 13em .25em #302512, 19em 5em .25em #302512, 11em 22em .25em #302512, 18em 4em .25em #302512, 16em 15em .25em #302512, 18em 1em .25em #302512, 20em 21em .25em #302512, 2em 15em .25em #302512, 10em 17em .25em #302512, 22em 5em .25em #302512, 19em 4em .25em #302512, 5em 21em .25em #302512, 1em 20em .25em #302512, 19em 13em .25em #302512, 19em 8em .25em #302512, 21em 14em .25em #302512, 3em 4em .25em #302512, 7em 15em .25em #302512, 3em 4em .25em #302512, 15em 18em .25em #302512, 10em 16em .25em #302512, 9em 1em .25em #302512, 11em 2em .25em #302512, 22em 22em .25em #302512;
+                    opacity: .3;
+                }
+
+            item1 i:nth-of-type(6) {
+                width: 19em;
+                height: 19em;
+                transform: translate3d(-10em, 7.5em, 0) rotate(45deg);
+                border-radius: 50% 0 50% 50%;
+                overflow: hidden;
+            }
+
+                item1 i:nth-of-type(6):after {
+                    width: 4em;
+                    height: 19em;
+                    transform: translate3d(2em, -5em, 0);
+                    background-image: radial-gradient(#ffd405 20%, transparent 0), radial-gradient(#F3EADA 20%, transparent 0);
+                    background-size: 1.2em 1.2em;
+                    background-position: .6em .6em, 0 0;
+                    filter: blur(0.25em);
+                }
+
+                item1 i:nth-of-type(6):before {
+                    width: 3em;
+                    height: 3em;
+                    transform: translate3d(9em, 0em, 0);
+                    background-image: radial-gradient(#fff 20%, transparent 0), radial-gradient(#fff 20%, transparent 0);
+                    background-size: 1.2em 1.2em;
+                    background-position: .6em .6em, 0 0;
+                    filter: blur(0.2em);
+                    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0), #000);
+                    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0), #000);
+                }
+
+            item1 i:nth-of-type(7) {
+                width: 19em;
+                height: 19em;
+                transform: translate3d(-10em, 7.5em, 0) rotate(-45deg);
+                border-radius: 50% 0 50% 50%;
+                overflow: hidden;
+                -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), #000);
+                mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), #000);
+            }
+
+                item1 i:nth-of-type(7):after {
+                    width: .1em;
+                    height: .1em;
+                    transform: translate3d(0, 0, 0);
+                    border-radius: 50%;
+                    box-shadow: 16em 4em .1em #302512, 16em 3em .25em #302512, 11em 9em .25em #302512, 3em 20em .25em #302512, 14em 2em .25em #302512, 4em 4em .25em #302512, 11em 9em .25em #302512, 2em 19em .25em #302512, 10em 5em .25em #302512, 10em 18em .25em #302512, 1em 11em .25em #302512, 15em 13em .25em #302512, 12em 17em .25em #302512, 11em 2em .25em #302512, 8em 3em .25em #302512, 22em 15em .25em #302512, 4em 18em .25em #302512, 9em 13em .25em #302512, 6em 2em .25em #302512, 8em 16em .25em #302512, 18em 5em .25em #302512, 17em 8em .25em #302512, 2em 1em .25em #302512, 16em 7em .25em #302512, 5em 18em .25em #302512, 14em 9em .25em #302512, 5em 12em .25em #302512, 18em 1em .25em #302512, 14em 3em .25em #302512, 6em 7em .25em #302512, 19em 10em .25em #302512, 6em 11em .25em #302512, 22em 14em .25em #302512, 17em 12em .25em #302512, 22em 17em .25em #302512, 11em 20em .25em #302512, 10em 7em .25em #302512, 3em 6em .25em #302512, 2em 17em .25em #302512, 3em 20em .25em #302512, 10em 18em .25em #302512, 22em 10em .25em #302512, 13em 6em .25em #302512, 13em 13em .25em #302512, 21em 17em .25em #302512, 5em 2em .25em #302512, 5em 21em .25em #302512, 1em 17em .25em #302512, 5em 15em .25em #302512, 1em 7em .25em #302512, 19em 21em .25em #302512, 16em 19em .25em #302512, 5em 3em .25em #302512, 14em 4em .25em #302512, 13em 22em .25em #302512, 6em 9em .25em #302512, 15em 18em .25em #302512, 10em 5em .25em #302512, 17em 4em .25em #302512, 16em 3em .25em #302512, 19em 5em .25em #302512, 12em 20em .25em #302512, 13em 17em .25em #302512, 7em 10em .25em #302512, 12em 6em .25em #302512, 3em 15em .25em #302512, 20em 15em .25em #302512, 16em 9em .25em #302512, 10em 9em .25em #302512, 13em 8em .25em #302512, 10em 19em .25em #302512, 20em 5em .25em #302512, 5em 15em .25em #302512, 10em 21em .25em #302512, 3em 20em .25em #302512, 21em 15em .25em #302512, 6em 17em .25em #302512, 7em 7em .25em #302512, 18em 6em .25em #302512, 18em 6em .25em #302512, 22em 15em .25em #302512, 11em 21em .25em #302512, 9em 9em .25em #302512, 21em 10em .25em #302512, 9em 15em .25em #302512, 6em 6em .25em #302512, 12em 19em .25em #302512, 22em 10em .25em #302512, 20em 6em .25em #302512, 16em 4em .25em #302512, 9em 17em .25em #302512, 7em 15em .25em #302512, 14em 14em .25em #302512, 16em 12em .25em #302512, 22em 11em .25em #302512, 1em 1em .25em #302512, 2em 5em .25em #302512, 4em 5em .25em #302512, 3em 8em .25em #302512, 15em 22em .25em #302512, 16em 4em .25em #302512, 3em 14em .25em #302512, 21em 3em .25em #302512, 9em 17em .25em #302512, 5em 18em .25em #302512, 15em 19em .25em #302512, 19em 5em .25em #302512, 4em 21em .25em #302512, 20em 21em .25em #302512, 22em 3em .25em #302512, 3em 2em .25em #302512, 16em 12em .25em #302512, 16em 18em .25em #302512, 18em 4em .25em #302512, 17em 19em .25em #302512, 8em 1em .25em #302512, 14em 9em .25em #302512, 4em 2em .25em #302512, 16em 14em .25em #302512, 21em 7em .25em #302512, 12em 7em .25em #302512, 14em 6em .25em #302512, 12em 13em .25em #302512, 6em 17em .25em #302512, 20em 7em .25em #302512, 4em 14em .25em #302512, 11em 16em .25em #302512, 15em 21em .25em #302512, 5em 12em .25em #302512, 3em 9em .25em #302512, 15em 9em .25em #302512, 2em 4em .25em #302512, 22em 5em .25em #302512, 6em 16em .25em #302512, 9em 19em .25em #302512, 13em 15em .25em #302512, 14em 21em .25em #302512, 22em 9em .25em #302512, 22em 14em .25em #302512, 13em 4em .25em #302512, 22em 4em .25em #302512, 1em 8em .25em #302512, 1em 21em .25em #302512, 5em 20em .25em #302512, 16em 17em .25em #302512, 1em 19em .25em #302512, 21em 13em .25em #302512, 2em 15em .25em #302512, 11em 14em .25em #302512, 16em 3em .25em #302512, 12em 4em .25em #302512, 16em 22em .25em #302512, 21em 10em .25em #302512, 22em 18em .25em #302512, 2em 22em .25em #302512, 3em 17em .25em #302512, 7em 8em .25em #302512, 17em 5em .25em #302512, 3em 7em .25em #302512, 5em 6em .25em #302512, 14em 22em .25em #302512, 2em 1em .25em #302512, 4em 8em .25em #302512, 7em 12em .25em #302512, 22em 10em .25em #302512, 22em 19em .25em #302512, 13em 18em .25em #302512, 17em 4em .25em #302512, 13em 11em .25em #302512, 4em 12em .25em #302512, 12em 19em .25em #302512, 17em 6em .25em #302512, 12em 18em .25em #302512, 11em 19em .25em #302512, 20em 7em .25em #302512, 10em 15em .25em #302512, 13em 12em .25em #302512, 19em 5em .25em #302512, 7em 11em .25em #302512, 12em 12em .25em #302512, 17em 14em .25em #302512, 8em 5em .25em #302512, 20em 20em .25em #302512, 5em 9em .25em #302512, 11em 4em .25em #302512, 2em 10em .25em #302512, 4em 22em .25em #302512, 12em 15em .25em #302512, 17em 20em .25em #302512, 8em 18em .25em #302512, 2em 19em .25em #302512, 3em 22em .25em #302512, 22em 18em .25em #302512, 17em 6em .25em #302512, 20em 20em .25em #302512, 3em 22em .25em #302512, 15em 22em .25em #302512, 10em 12em .25em #302512, 10em 5em .25em #302512, 12em 8em .25em #302512, 1em 7em .25em #302512, 12em 19em .25em #302512, 3em 3em .25em #302512, 12em 15em .25em #302512, 19em 21em .25em #302512, 3em 13em .25em #302512, 3em 15em .25em #302512, 16em 15em .25em #302512, 22em 14em .25em #302512, 9em 20em .25em #302512, 15em 2em .25em #302512, 10em 7em .25em #302512, 22em 18em .25em #302512, 5em 22em .25em #302512, 12em 2em .25em #302512, 4em 22em .25em #302512, 4em 19em .25em #302512, 17em 18em .25em #302512, 1em 8em .25em #302512, 16em 12em .25em #302512, 21em 19em .25em #302512, 11em 20em .25em #302512, 12em 9em .25em #302512, 5em 21em .25em #302512, 15em 21em .25em #302512, 7em 1em .25em #302512, 7em 10em .25em #302512, 6em 5em .25em #302512, 8em 1em .25em #302512, 14em 14em .25em #302512, 18em 11em .25em #302512, 18em 21em .25em #302512, 9em 15em .25em #302512, 1em 17em .25em #302512, 17em 14em .25em #302512, 3em 16em .25em #302512, 17em 16em .25em #302512, 3em 20em .25em #302512, 17em 8em .25em #302512, 4em 6em .25em #302512, 14em 9em .25em #302512, 3em 17em .25em #302512, 21em 14em .25em #302512, 5em 16em .25em #302512, 15em 17em .25em #302512, 19em 4em .25em #302512, 8em 16em .25em #302512, 4em 7em .25em #302512, 16em 22em .25em #302512, 18em 5em .25em #302512, 5em 22em .25em #302512, 22em 11em .25em #302512, 20em 20em .25em #302512, 18em 15em .25em #302512, 4em 1em .25em #302512, 22em 21em .25em #302512, 20em 11em .25em #302512, 5em 22em .25em #302512, 13em 6em .25em #302512, 4em 21em .25em #302512, 14em 20em .25em #302512, 12em 1em .25em #302512, 1em 20em .25em #302512, 12em 21em .25em #302512, 12em 14em .25em #302512, 2em 3em .25em #302512, 22em 9em .25em #302512, 18em 18em .25em #302512, 22em 3em .25em #302512, 2em 11em .25em #302512, 11em 4em .25em #302512, 6em 12em .25em #302512, 20em 21em .25em #302512, 21em 19em .25em #302512, 3em 10em .25em #302512, 9em 3em .25em #302512, 21em 2em .25em #302512, 12em 21em .25em #302512, 8em 14em .25em #302512, 14em 12em .25em #302512, 15em 18em .25em #302512, 1em 11em .25em #302512, 16em 6em .25em #302512, 15em 11em .25em #302512, 17em 17em .25em #302512, 14em 17em .25em #302512, 11em 20em .25em #302512, 10em 18em .25em #302512, 10em 14em .25em #302512, 11em 20em .25em #302512, 10em 21em .25em #302512, 20em 6em .25em #302512, 20em 3em .25em #302512, 3em 11em .25em #302512, 6em 17em .25em #302512, 1em 16em .25em #302512, 20em 11em .25em #302512, 6em 18em .25em #302512, 10em 13em .25em #302512, 9em 10em .25em #302512, 21em 22em .25em #302512, 14em 19em .25em #302512, 16em 6em .25em #302512, 9em 22em .25em #302512, 19em 21em .25em #302512, 8em 16em .25em #302512, 3em 13em .25em #302512, 15em 10em .25em #302512, 17em 10em .25em #302512, 8em 16em .25em #302512, 14em 17em .25em #302512, 12em 3em .25em #302512, 2em 3em .25em #302512, 10em 9em .25em #302512, 3em 7em .25em #302512, 8em 8em .25em #302512, 15em 14em .25em #302512, 20em 1em .25em #302512, 20em 9em .25em #302512, 11em 12em .25em #302512, 14em 21em .25em #302512, 22em 22em .25em #302512, 11em 19em .25em #302512, 3em 8em .25em #302512, 9em 10em .25em #302512, 12em 13em .25em #302512, 6em 10em .25em #302512, 16em 12em .25em #302512, 7em 21em .25em #302512, 15em 11em .25em #302512, 5em 16em .25em #302512, 12em 20em .25em #302512, 4em 5em .25em #302512, 16em 17em .25em #302512, 7em 9em .25em #302512, 3em 4em .25em #302512, 20em 12em .25em #302512, 6em 22em .25em #302512, 10em 2em .25em #302512, 15em 21em .25em #302512, 8em 3em .25em #302512, 14em 4em .25em #302512, 20em 6em .25em #302512, 11em 20em .25em #302512, 7em 3em .25em #302512, 6em 18em .25em #302512, 4em 22em .25em #302512, 6em 13em .25em #302512, 4em 2em .25em #302512, 15em 8em .25em #302512, 22em 12em .25em #302512, 1em 22em .25em #302512, 2em 8em .25em #302512, 17em 6em .25em #302512, 11em 15em .25em #302512, 8em 6em .25em #302512, 16em 12em .25em #302512, 21em 18em .25em #302512, 17em 12em .25em #302512, 12em 3em .25em #302512, 20em 21em .25em #302512, 14em 9em .25em #302512, 3em 11em .25em #302512, 12em 17em .25em #302512, 20em 18em .25em #302512, 13em 17em .25em #302512, 10em 7em .25em #302512, 4em 14em .25em #302512, 19em 6em .25em #302512, 14em 16em .25em #302512, 21em 15em .25em #302512, 17em 16em .25em #302512, 12em 17em .25em #302512, 18em 6em .25em #302512, 18em 2em .25em #302512, 17em 6em .25em #302512, 10em 6em .25em #302512, 6em 5em .25em #302512, 22em 3em .25em #302512, 14em 8em .25em #302512, 7em 7em .25em #302512, 1em 9em .25em #302512, 1em 8em .25em #302512, 7em 7em .25em #302512, 17em 8em .25em #302512, 10em 10em .25em #302512, 5em 11em .25em #302512, 20em 9em .25em #302512, 18em 1em .25em #302512, 13em 2em .25em #302512, 10em 4em .25em #302512, 11em 11em .25em #302512, 18em 20em .25em #302512, 9em 16em .25em #302512, 1em 8em .25em #302512, 1em 8em .25em #302512, 15em 11em .25em #302512, 17em 10em .25em #302512, 14em 2em .25em #302512, 9em 4em .25em #302512, 14em 21em .25em #302512, 4em 12em .25em #302512, 8em 8em .25em #302512, 7em 18em .25em #302512, 19em 14em .25em #302512, 17em 4em .25em #302512, 6em 20em .25em #302512, 6em 22em .25em #302512, 10em 21em .25em #302512, 3em 16em .25em #302512, 7em 7em .25em #302512, 13em 18em .25em #302512, 1em 19em .25em #302512, 19em 8em .25em #302512, 3em 13em .25em #302512, 15em 21em .25em #302512, 2em 2em .25em #302512, 20em 20em .25em #302512, 10em 4em .25em #302512, 16em 13em .25em #302512, 21em 4em .25em #302512, 5em 3em .25em #302512, 19em 22em .25em #302512, 8em 6em .25em #302512, 2em 10em .25em #302512, 11em 18em .25em #302512, 19em 17em .25em #302512, 5em 11em .25em #302512, 6em 2em .25em #302512, 16em 10em .25em #302512, 19em 17em .25em #302512, 10em 22em .25em #302512, 14em 20em .25em #302512, 2em 7em .25em #302512, 5em 17em .25em #302512, 4em 13em .25em #302512, 2em 18em .25em #302512, 13em 2em .25em #302512, 9em 8em .25em #302512, 4em 22em .25em #302512, 9em 14em .25em #302512, 22em 17em .25em #302512, 6em 18em .25em #302512, 8em 14em .25em #302512, 11em 12em .25em #302512, 21em 7em .25em #302512, 4em 5em .25em #302512, 8em 7em .25em #302512, 22em 13em .25em #302512, 12em 22em .25em #302512, 7em 19em .25em #302512, 5em 3em .25em #302512, 7em 22em .25em #302512, 14em 15em .25em #302512, 2em 15em .25em #302512, 16em 1em .25em #302512, 2em 16em .25em #302512, 20em 17em .25em #302512, 4em 19em .25em #302512, 4em 6em .25em #302512, 8em 1em .25em #302512, 21em 21em .25em #302512, 18em 9em .25em #302512, 17em 8em .25em #302512, 11em 10em .25em #302512, 20em 7em .25em #302512, 15em 1em .25em #302512, 7em 7em .25em #302512, 6em 6em .25em #302512, 16em 16em .25em #302512, 12em 8em .25em #302512, 5em 9em .25em #302512, 8em 18em .25em #302512, 12em 6em .25em #302512, 8em 21em .25em #302512, 1em 13em .25em #302512, 12em 8em .25em #302512, 2em 6em .25em #302512, 8em 13em .25em #302512, 9em 15em .25em #302512, 17em 16em .25em #302512, 21em 10em .25em #302512, 5em 4em .25em #302512, 1em 6em .25em #302512, 5em 1em .25em #302512, 18em 11em .25em #302512, 15em 14em .25em #302512, 3em 3em .25em #302512, 4em 20em .25em #302512, 10em 10em .25em #302512, 7em 1em .25em #302512, 4em 10em .25em #302512, 9em 2em .25em #302512, 15em 19em .25em #302512, 8em 4em .25em #302512, 3em 9em .25em #302512, 6em 3em .25em #302512, 12em 20em .25em #302512, 20em 6em .25em #302512, 13em 7em .25em #302512, 2em 8em .25em #302512, 2em 21em .25em #302512, 2em 11em .25em #302512, 21em 20em .25em #302512, 10em 14em .25em #302512, 9em 8em .25em #302512, 22em 22em .25em #302512, 1em 4em .25em #302512, 9em 14em .25em #302512, 20em 17em .25em #302512, 22em 11em .25em #302512, 14em 3em .25em #302512, 15em 16em .25em #302512, 18em 14em .25em #302512, 5em 12em .25em #302512, 5em 14em .25em #302512, 11em 8em .25em #302512, 1em 16em .25em #302512, 14em 4em .25em #302512, 22em 8em .25em #302512, 9em 7em .25em #302512, 11em 5em .25em #302512, 16em 17em .25em #302512, 12em 14em .25em #302512, 9em 5em .25em #302512, 5em 9em .25em #302512, 14em 22em .25em #302512, 12em 17em .25em #302512, 11em 15em .25em #302512, 11em 11em .25em #302512, 11em 17em .25em #302512, 20em 15em .25em #302512, 7em 8em .25em #302512, 20em 22em .25em #302512, 17em 10em .25em #302512, 12em 20em .25em #302512, 22em 12em .25em #302512, 11em 22em .25em #302512, 17em 8em .25em #302512, 3em 15em .25em #302512, 6em 8em .25em #302512, 13em 20em .25em #302512, 15em 12em .25em #302512, 6em 15em .25em #302512, 19em 10em .25em #302512, 7em 15em .25em #302512, 10em 16em .25em #302512, 4em 2em .25em #302512, 8em 16em .25em #302512, 19em 8em .25em #302512, 10em 9em .25em #302512, 16em 1em .25em #302512, 5em 16em .25em #302512, 4em 8em .25em #302512, 10em 13em .25em #302512, 18em 1em .25em #302512, 1em 10em .25em #302512, 17em 11em .25em #302512, 18em 12em .25em #302512, 2em 17em .25em #302512, 11em 16em .25em #302512, 9em 22em .25em #302512, 1em 14em .25em #302512, 8em 10em .25em #302512, 13em 12em .25em #302512, 5em 16em .25em #302512, 11em 10em .25em #302512, 22em 6em .25em #302512, 5em 8em .25em #302512, 21em 22em .25em #302512, 15em 10em .25em #302512, 14em 17em .25em #302512, 21em 2em .25em #302512, 20em 18em .25em #302512, 2em 20em .25em #302512, 17em 2em .25em #302512, 8em 20em .25em #302512, 4em 19em .25em #302512, 1em 18em .25em #302512, 18em 18em .25em #302512, 6em 17em .25em #302512, 5em 18em .25em #302512, 22em 9em .25em #302512, 11em 2em .25em #302512, 10em 20em .25em #302512, 16em 19em .25em #302512, 22em 9em .25em #302512, 4em 6em .25em #302512, 14em 4em .25em #302512, 15em 7em .25em #302512, 8em 1em .25em #302512, 4em 14em .25em #302512, 10em 22em .25em #302512, 2em 20em .25em #302512, 14em 9em .25em #302512, 19em 21em .25em #302512, 13em 10em .25em #302512, 18em 21em .25em #302512, 12em 11em .25em #302512, 16em 20em .25em #302512, 2em 3em .25em #302512, 16em 5em .25em #302512, 22em 5em .25em #302512, 22em 14em .25em #302512, 18em 22em .25em #302512, 18em 22em .25em #302512, 8em 12em .25em #302512, 5em 8em .25em #302512, 17em 5em .25em #302512, 19em 21em .25em #302512, 8em 3em .25em #302512, 13em 4em .25em #302512, 12em 11em .25em #302512, 17em 21em .25em #302512, 16em 22em .25em #302512, 18em 20em .25em #302512, 6em 6em .25em #302512, 9em 17em .25em #302512, 19em 1em .25em #302512, 14em 17em .25em #302512, 21em 11em .25em #302512, 10em 9em .25em #302512, 18em 16em .25em #302512, 22em 20em .25em #302512, 18em 4em .25em #302512, 2em 16em .25em #302512, 17em 6em .25em #302512, 2em 9em .25em #302512, 2em 21em .25em #302512, 9em 22em .25em #302512, 2em 16em .25em #302512, 11em 7em .25em #302512, 11em 16em .25em #302512, 2em 11em .25em #302512, 9em 7em .25em #302512, 3em 16em .25em #302512, 4em 20em .25em #302512, 22em 19em .25em #302512, 10em 7em .25em #302512, 1em 13em .25em #302512, 7em 3em .25em #302512, 7em 15em .25em #302512, 14em 9em .25em #302512, 2em 18em .25em #302512, 14em 5em .25em #302512, 22em 20em .25em #302512, 8em 18em .25em #302512, 8em 18em .25em #302512, 6em 11em .25em #302512, 4em 19em .25em #302512, 17em 19em .25em #302512, 22em 15em .25em #302512, 10em 14em .25em #302512, 3em 10em .25em #302512, 3em 16em .25em #302512, 18em 15em .25em #302512, 4em 4em .25em #302512, 5em 16em .25em #302512, 11em 18em .25em #302512, 9em 6em .25em #302512, 5em 22em .25em #302512, 12em 19em .25em #302512, 9em 6em .25em #302512, 16em 16em .25em #302512, 12em 9em .25em #302512, 18em 8em .25em #302512, 11em 22em .25em #302512, 15em 15em .25em #302512, 13em 8em .25em #302512, 21em 4em .25em #302512, 18em 7em .25em #302512, 1em 16em .25em #302512, 5em 11em .25em #302512, 6em 14em .25em #302512, 10em 11em .25em #302512, 8em 12em .25em #302512, 1em 1em .25em #302512, 3em 1em .25em #302512, 7em 6em .25em #302512, 2em 7em .25em #302512, 21em 4em .25em #302512, 5em 10em .25em #302512, 19em 2em .25em #302512, 4em 6em .25em #302512, 1em 6em .25em #302512, 8em 20em .25em #302512, 18em 22em .25em #302512, 4em 18em .25em #302512, 1em 5em .25em #302512, 14em 12em .25em #302512, 2em 5em .25em #302512, 9em 16em .25em #302512, 11em 14em .25em #302512, 7em 21em .25em #302512, 2em 2em .25em #302512, 17em 19em .25em #302512, 3em 4em .25em #302512, 6em 19em .25em #302512, 4em 9em .25em #302512, 8em 21em .25em #302512, 21em 12em .25em #302512, 4em 18em .25em #302512, 17em 11em .25em #302512, 10em 5em .25em #302512, 6em 8em .25em #302512, 11em 14em .25em #302512, 2em 14em .25em #302512, 3em 3em .25em #302512, 22em 3em .25em #302512, 18em 13em .25em #302512, 17em 1em .25em #302512, 18em 20em .25em #302512, 15em 18em .25em #302512, 14em 2em .25em #302512, 15em 3em .25em #302512, 8em 16em .25em #302512, 6em 13em .25em #302512, 17em 13em .25em #302512, 7em 1em .25em #302512, 2em 20em .25em #302512, 1em 19em .25em #302512, 13em 15em .25em #302512, 7em 10em .25em #302512, 14em 16em .25em #302512, 2em 4em .25em #302512, 3em 22em .25em #302512, 2em 10em .25em #302512, 8em 3em .25em #302512, 9em 7em .25em #302512, 21em 8em .25em #302512, 21em 1em .25em #302512, 9em 11em .25em #302512, 13em 6em .25em #302512, 22em 6em .25em #302512, 5em 3em .25em #302512, 11em 15em .25em #302512, 1em 4em .25em #302512, 21em 11em .25em #302512, 1em 21em .25em #302512, 18em 17em .25em #302512, 10em 16em .25em #302512, 1em 3em .25em #302512, 22em 11em .25em #302512, 8em 11em .25em #302512, 9em 4em .25em #302512, 16em 15em .25em #302512, 9em 20em .25em #302512, 14em 21em .25em #302512, 13em 9em .25em #302512, 16em 11em .25em #302512, 17em 18em .25em #302512, 3em 20em .25em #302512, 22em 22em .25em #302512, 4em 10em .25em #302512, 15em 4em .25em #302512, 19em 4em .25em #302512, 18em 6em .25em #302512, 21em 21em .25em #302512, 19em 22em .25em #302512, 20em 19em .25em #302512, 14em 11em .25em #302512, 7em 20em .25em #302512, 16em 16em .25em #302512, 22em 21em .25em #302512, 8em 19em .25em #302512, 11em 16em .25em #302512, 7em 10em .25em #302512, 17em 19em .25em #302512, 7em 12em .25em #302512, 9em 13em .25em #302512, 21em 22em .25em #302512, 17em 4em .25em #302512, 19em 19em .25em #302512, 21em 14em .25em #302512, 4em 4em .25em #302512, 15em 13em .25em #302512, 2em 18em .25em #302512, 9em 4em .25em #302512, 12em 2em .25em #302512, 17em 8em .25em #302512, 21em 4em .25em #302512, 20em 6em .25em #302512, 9em 11em .25em #302512, 19em 18em .25em #302512, 18em 8em .25em #302512, 14em 1em .25em #302512, 7em 20em .25em #302512, 10em 15em .25em #302512, 20em 16em .25em #302512, 17em 20em .25em #302512, 2em 4em .25em #302512, 11em 8em .25em #302512, 19em 11em .25em #302512, 5em 11em .25em #302512, 20em 16em .25em #302512, 2em 10em .25em #302512, 6em 18em .25em #302512, 19em 20em .25em #302512, 14em 22em .25em #302512, 14em 6em .25em #302512, 19em 16em .25em #302512, 6em 22em .25em #302512, 4em 2em .25em #302512, 13em 3em .25em #302512, 4em 1em .25em #302512, 8em 17em .25em #302512, 19em 10em .25em #302512, 5em 20em .25em #302512, 15em 3em .25em #302512, 13em 20em .25em #302512, 14em 18em .25em #302512, 18em 4em .25em #302512, 11em 8em .25em #302512, 8em 2em .25em #302512, 18em 11em .25em #302512, 15em 3em .25em #302512, 18em 1em .25em #302512, 3em 5em .25em #302512, 3em 7em .25em #302512, 8em 4em .25em #302512, 18em 8em .25em #302512, 21em 15em .25em #302512, 3em 1em .25em #302512, 14em 8em .25em #302512, 20em 16em .25em #302512, 20em 11em .25em #302512, 17em 10em .25em #302512, 6em 1em .25em #302512, 20em 4em .25em #302512, 15em 10em .25em #302512, 19em 11em .25em #302512, 7em 10em .25em #302512, 18em 13em .25em #302512, 11em 6em .25em #302512, 17em 14em .25em #302512, 18em 11em .25em #302512, 16em 14em .25em #302512, 13em 13em .25em #302512, 3em 18em .25em #302512, 4em 13em .25em #302512, 2em 21em .25em #302512, 10em 3em .25em #302512, 19em 14em .25em #302512, 12em 21em .25em #302512, 2em 16em .25em #302512, 6em 19em .25em #302512, 7em 2em .25em #302512, 6em 1em .25em #302512, 1em 7em .25em #302512, 21em 13em .25em #302512, 15em 13em .25em #302512, 17em 11em .25em #302512, 2em 9em .25em #302512, 3em 16em .25em #302512, 22em 1em .25em #302512, 4em 12em .25em #302512, 3em 3em .25em #302512, 11em 2em .25em #302512, 8em 22em .25em #302512, 3em 18em .25em #302512, 19em 11em .25em #302512, 9em 20em .25em #302512, 21em 15em .25em #302512, 15em 11em .25em #302512, 14em 1em .25em #302512, 3em 6em .25em #302512, 7em 9em .25em #302512, 7em 3em .25em #302512, 3em 3em .25em #302512, 11em 6em .25em #302512, 10em 6em .25em #302512, 7em 21em .25em #302512, 4em 17em .25em #302512, 6em 15em .25em #302512, 21em 15em .25em #302512, 1em 6em .25em #302512, 22em 20em .25em #302512, 8em 14em .25em #302512, 7em 12em .25em #302512, 1em 20em .25em #302512, 8em 13em .25em #302512, 10em 12em .25em #302512, 16em 22em .25em #302512, 21em 16em .25em #302512, 15em 12em .25em #302512, 19em 7em .25em #302512, 22em 18em .25em #302512, 4em 1em .25em #302512, 9em 2em .25em #302512, 3em 20em .25em #302512, 21em 3em .25em #302512, 9em 19em .25em #302512, 3em 7em .25em #302512, 17em 11em .25em #302512, 6em 9em .25em #302512, 21em 8em .25em #302512, 5em 20em .25em #302512, 4em 1em .25em #302512, 14em 8em .25em #302512, 12em 11em .25em #302512, 13em 20em .25em #302512, 12em 4em .25em #302512, 7em 5em .25em #302512, 16em 2em .25em #302512, 2em 15em .25em #302512, 18em 15em .25em #302512, 11em 11em .25em #302512, 10em 16em .25em #302512, 11em 21em .25em #302512, 21em 18em .25em #302512, 9em 21em .25em #302512, 14em 18em .25em #302512, 10em 20em .25em #302512, 17em 11em .25em #302512, 22em 19em .25em #302512, 6em 21em .25em #302512, 4em 15em .25em #302512, 1em 2em .25em #302512, 18em 20em .25em #302512, 22em 15em .25em #302512, 5em 15em .25em #302512, 15em 12em .25em #302512, 12em 19em .25em #302512, 17em 14em .25em #302512, 15em 18em .25em #302512, 4em 6em .25em #302512, 16em 12em .25em #302512, 6em 21em .25em #302512, 4em 1em .25em #302512, 9em 14em .25em #302512, 9em 20em .25em #302512, 5em 4em .25em #302512, 15em 14em .25em #302512, 16em 9em .25em #302512, 11em 18em .25em #302512, 4em 1em .25em #302512, 14em 2em .25em #302512, 11em 15em .25em #302512, 22em 2em .25em #302512, 8em 8em .25em #302512, 1em 20em .25em #302512, 22em 13em .25em #302512, 8em 9em .25em #302512, 6em 16em .25em #302512, 12em 10em .25em #302512, 17em 20em .25em #302512, 5em 1em .25em #302512, 7em 1em .25em #302512, 5em 16em .25em #302512, 2em 17em .25em #302512, 21em 17em .25em #302512, 12em 19em .25em #302512, 17em 14em .25em #302512, 7em 12em .25em #302512, 19em 21em .25em #302512, 14em 6em .25em #302512, 8em 18em .25em #302512, 11em 13em .25em #302512, 5em 2em .25em #302512, 19em 17em .25em #302512, 12em 21em .25em #302512, 4em 4em .25em #302512, 8em 16em .25em #302512, 9em 8em .25em #302512, 5em 16em .25em #302512, 9em 18em .25em #302512, 1em 20em .25em #302512, 3em 20em .25em #302512, 11em 19em .25em #302512, 2em 20em .25em #302512, 2em 9em .25em #302512, 15em 22em .25em #302512, 19em 20em .25em #302512, 4em 2em .25em #302512, 6em 7em .25em #302512, 5em 12em .25em #302512, 18em 6em .25em #302512, 19em 20em .25em #302512, 10em 8em .25em #302512, 15em 12em .25em #302512, 22em 6em .25em #302512, 7em 15em .25em #302512, 16em 11em .25em #302512, 4em 5em .25em #302512, 22em 19em .25em #302512, 3em 13em .25em #302512, 1em 17em .25em #302512, 14em 13em .25em #302512, 15em 22em .25em #302512, 3em 1em .25em #302512, 2em 10em .25em #302512, 21em 2em .25em #302512, 12em 17em .25em #302512, 2em 7em .25em #302512, 15em 15em .25em #302512, 19em 16em .25em #302512, 19em 10em .25em #302512, 13em 14em .25em #302512, 20em 3em .25em #302512, 19em 10em .25em #302512;
+                }
+
+                item1 i:nth-of-type(7):before {
+                    width: .1em;
+                    height: .1em;
+                    transform: translate3d(0.5em, 0.75em, 0);
+                    border-radius: 50%;
+                    box-shadow: 16em 4em .1em #302512, 16em 3em .25em #302512, 11em 9em .25em #302512, 3em 20em .25em #302512, 14em 2em .25em #302512, 4em 4em .25em #302512, 11em 9em .25em #302512, 2em 19em .25em #302512, 10em 5em .25em #302512, 10em 18em .25em #302512, 1em 11em .25em #302512, 15em 13em .25em #302512, 12em 17em .25em #302512, 11em 2em .25em #302512, 8em 3em .25em #302512, 22em 15em .25em #302512, 4em 18em .25em #302512, 9em 13em .25em #302512, 6em 2em .25em #302512, 8em 16em .25em #302512, 18em 5em .25em #302512, 17em 8em .25em #302512, 2em 1em .25em #302512, 16em 7em .25em #302512, 5em 18em .25em #302512, 14em 9em .25em #302512, 5em 12em .25em #302512, 18em 1em .25em #302512, 14em 3em .25em #302512, 6em 7em .25em #302512, 19em 10em .25em #302512, 6em 11em .25em #302512, 22em 14em .25em #302512, 17em 12em .25em #302512, 22em 17em .25em #302512, 11em 20em .25em #302512, 10em 7em .25em #302512, 3em 6em .25em #302512, 2em 17em .25em #302512, 3em 20em .25em #302512, 10em 18em .25em #302512, 22em 10em .25em #302512, 13em 6em .25em #302512, 13em 13em .25em #302512, 21em 17em .25em #302512, 5em 2em .25em #302512, 5em 21em .25em #302512, 1em 17em .25em #302512, 5em 15em .25em #302512, 1em 7em .25em #302512, 19em 21em .25em #302512, 16em 19em .25em #302512, 5em 3em .25em #302512, 14em 4em .25em #302512, 13em 22em .25em #302512, 6em 9em .25em #302512, 15em 18em .25em #302512, 10em 5em .25em #302512, 17em 4em .25em #302512, 16em 3em .25em #302512, 19em 5em .25em #302512, 12em 20em .25em #302512, 13em 17em .25em #302512, 7em 10em .25em #302512, 12em 6em .25em #302512, 3em 15em .25em #302512, 20em 15em .25em #302512, 16em 9em .25em #302512, 10em 9em .25em #302512, 13em 8em .25em #302512, 10em 19em .25em #302512, 20em 5em .25em #302512, 5em 15em .25em #302512, 10em 21em .25em #302512, 3em 20em .25em #302512, 21em 15em .25em #302512, 6em 17em .25em #302512, 7em 7em .25em #302512, 18em 6em .25em #302512, 18em 6em .25em #302512, 22em 15em .25em #302512, 11em 21em .25em #302512, 9em 9em .25em #302512, 21em 10em .25em #302512, 9em 15em .25em #302512, 6em 6em .25em #302512, 12em 19em .25em #302512, 22em 10em .25em #302512, 20em 6em .25em #302512, 16em 4em .25em #302512, 9em 17em .25em #302512, 7em 15em .25em #302512, 14em 14em .25em #302512, 16em 12em .25em #302512, 22em 11em .25em #302512, 1em 1em .25em #302512, 2em 5em .25em #302512, 4em 5em .25em #302512, 3em 8em .25em #302512, 15em 22em .25em #302512, 16em 4em .25em #302512, 3em 14em .25em #302512, 21em 3em .25em #302512, 9em 17em .25em #302512, 5em 18em .25em #302512, 15em 19em .25em #302512, 19em 5em .25em #302512, 4em 21em .25em #302512, 20em 21em .25em #302512, 22em 3em .25em #302512, 3em 2em .25em #302512, 16em 12em .25em #302512, 16em 18em .25em #302512, 18em 4em .25em #302512, 17em 19em .25em #302512, 8em 1em .25em #302512, 14em 9em .25em #302512, 4em 2em .25em #302512, 16em 14em .25em #302512, 21em 7em .25em #302512, 12em 7em .25em #302512, 14em 6em .25em #302512, 12em 13em .25em #302512, 6em 17em .25em #302512, 20em 7em .25em #302512, 4em 14em .25em #302512, 11em 16em .25em #302512, 15em 21em .25em #302512, 5em 12em .25em #302512, 3em 9em .25em #302512, 15em 9em .25em #302512, 2em 4em .25em #302512, 22em 5em .25em #302512, 6em 16em .25em #302512, 9em 19em .25em #302512, 13em 15em .25em #302512, 14em 21em .25em #302512, 22em 9em .25em #302512, 22em 14em .25em #302512, 13em 4em .25em #302512, 22em 4em .25em #302512, 1em 8em .25em #302512, 1em 21em .25em #302512, 5em 20em .25em #302512, 16em 17em .25em #302512, 1em 19em .25em #302512, 21em 13em .25em #302512, 2em 15em .25em #302512, 11em 14em .25em #302512, 16em 3em .25em #302512, 12em 4em .25em #302512, 16em 22em .25em #302512, 21em 10em .25em #302512, 22em 18em .25em #302512, 2em 22em .25em #302512, 3em 17em .25em #302512, 7em 8em .25em #302512, 17em 5em .25em #302512, 3em 7em .25em #302512, 5em 6em .25em #302512, 14em 22em .25em #302512, 2em 1em .25em #302512, 4em 8em .25em #302512, 7em 12em .25em #302512, 22em 10em .25em #302512, 22em 19em .25em #302512, 13em 18em .25em #302512, 17em 4em .25em #302512, 13em 11em .25em #302512, 4em 12em .25em #302512, 12em 19em .25em #302512, 17em 6em .25em #302512, 12em 18em .25em #302512, 11em 19em .25em #302512, 20em 7em .25em #302512, 10em 15em .25em #302512, 13em 12em .25em #302512, 19em 5em .25em #302512, 7em 11em .25em #302512, 12em 12em .25em #302512, 17em 14em .25em #302512, 8em 5em .25em #302512, 20em 20em .25em #302512, 5em 9em .25em #302512, 11em 4em .25em #302512, 2em 10em .25em #302512, 4em 22em .25em #302512, 12em 15em .25em #302512, 17em 20em .25em #302512, 8em 18em .25em #302512, 2em 19em .25em #302512, 3em 22em .25em #302512, 22em 18em .25em #302512, 17em 6em .25em #302512, 20em 20em .25em #302512, 3em 22em .25em #302512, 15em 22em .25em #302512, 10em 12em .25em #302512, 10em 5em .25em #302512, 12em 8em .25em #302512, 1em 7em .25em #302512, 12em 19em .25em #302512, 3em 3em .25em #302512, 12em 15em .25em #302512, 19em 21em .25em #302512, 3em 13em .25em #302512, 3em 15em .25em #302512, 16em 15em .25em #302512, 22em 14em .25em #302512, 9em 20em .25em #302512, 15em 2em .25em #302512, 10em 7em .25em #302512, 22em 18em .25em #302512, 5em 22em .25em #302512, 12em 2em .25em #302512, 4em 22em .25em #302512, 4em 19em .25em #302512, 17em 18em .25em #302512, 1em 8em .25em #302512, 16em 12em .25em #302512, 21em 19em .25em #302512, 11em 20em .25em #302512, 12em 9em .25em #302512, 5em 21em .25em #302512, 15em 21em .25em #302512, 7em 1em .25em #302512, 7em 10em .25em #302512, 6em 5em .25em #302512, 8em 1em .25em #302512, 14em 14em .25em #302512, 18em 11em .25em #302512, 18em 21em .25em #302512, 9em 15em .25em #302512, 1em 17em .25em #302512, 17em 14em .25em #302512, 3em 16em .25em #302512, 17em 16em .25em #302512, 3em 20em .25em #302512, 17em 8em .25em #302512, 4em 6em .25em #302512, 14em 9em .25em #302512, 3em 17em .25em #302512, 21em 14em .25em #302512, 5em 16em .25em #302512, 15em 17em .25em #302512, 19em 4em .25em #302512, 8em 16em .25em #302512, 4em 7em .25em #302512, 16em 22em .25em #302512, 18em 5em .25em #302512, 5em 22em .25em #302512, 22em 11em .25em #302512, 20em 20em .25em #302512, 18em 15em .25em #302512, 4em 1em .25em #302512, 22em 21em .25em #302512, 20em 11em .25em #302512, 5em 22em .25em #302512, 13em 6em .25em #302512, 4em 21em .25em #302512, 14em 20em .25em #302512, 12em 1em .25em #302512, 1em 20em .25em #302512, 12em 21em .25em #302512, 12em 14em .25em #302512, 2em 3em .25em #302512, 22em 9em .25em #302512, 18em 18em .25em #302512, 22em 3em .25em #302512, 2em 11em .25em #302512, 11em 4em .25em #302512, 6em 12em .25em #302512, 20em 21em .25em #302512, 21em 19em .25em #302512, 3em 10em .25em #302512, 9em 3em .25em #302512, 21em 2em .25em #302512, 12em 21em .25em #302512, 8em 14em .25em #302512, 14em 12em .25em #302512, 15em 18em .25em #302512, 1em 11em .25em #302512, 16em 6em .25em #302512, 15em 11em .25em #302512, 17em 17em .25em #302512, 14em 17em .25em #302512, 11em 20em .25em #302512, 10em 18em .25em #302512, 10em 14em .25em #302512, 11em 20em .25em #302512, 10em 21em .25em #302512, 20em 6em .25em #302512, 20em 3em .25em #302512, 3em 11em .25em #302512, 6em 17em .25em #302512, 1em 16em .25em #302512, 20em 11em .25em #302512, 6em 18em .25em #302512, 10em 13em .25em #302512, 9em 10em .25em #302512, 21em 22em .25em #302512, 14em 19em .25em #302512, 16em 6em .25em #302512, 9em 22em .25em #302512, 19em 21em .25em #302512, 8em 16em .25em #302512, 3em 13em .25em #302512, 15em 10em .25em #302512, 17em 10em .25em #302512, 8em 16em .25em #302512, 14em 17em .25em #302512, 12em 3em .25em #302512, 2em 3em .25em #302512, 10em 9em .25em #302512, 3em 7em .25em #302512, 8em 8em .25em #302512, 15em 14em .25em #302512, 20em 1em .25em #302512, 20em 9em .25em #302512, 11em 12em .25em #302512, 14em 21em .25em #302512, 22em 22em .25em #302512, 11em 19em .25em #302512, 3em 8em .25em #302512, 9em 10em .25em #302512, 12em 13em .25em #302512, 6em 10em .25em #302512, 16em 12em .25em #302512, 7em 21em .25em #302512, 15em 11em .25em #302512, 5em 16em .25em #302512, 12em 20em .25em #302512, 4em 5em .25em #302512, 16em 17em .25em #302512, 7em 9em .25em #302512, 3em 4em .25em #302512, 20em 12em .25em #302512, 6em 22em .25em #302512, 10em 2em .25em #302512, 15em 21em .25em #302512, 8em 3em .25em #302512, 14em 4em .25em #302512, 20em 6em .25em #302512, 11em 20em .25em #302512, 7em 3em .25em #302512, 6em 18em .25em #302512, 4em 22em .25em #302512, 6em 13em .25em #302512, 4em 2em .25em #302512, 15em 8em .25em #302512, 22em 12em .25em #302512, 1em 22em .25em #302512, 2em 8em .25em #302512, 17em 6em .25em #302512, 11em 15em .25em #302512, 8em 6em .25em #302512, 16em 12em .25em #302512, 21em 18em .25em #302512, 17em 12em .25em #302512, 12em 3em .25em #302512, 20em 21em .25em #302512, 14em 9em .25em #302512, 3em 11em .25em #302512, 12em 17em .25em #302512, 20em 18em .25em #302512, 13em 17em .25em #302512, 10em 7em .25em #302512, 4em 14em .25em #302512, 19em 6em .25em #302512, 14em 16em .25em #302512, 21em 15em .25em #302512, 17em 16em .25em #302512, 12em 17em .25em #302512, 18em 6em .25em #302512, 18em 2em .25em #302512, 17em 6em .25em #302512, 10em 6em .25em #302512, 6em 5em .25em #302512, 22em 3em .25em #302512, 14em 8em .25em #302512, 7em 7em .25em #302512, 1em 9em .25em #302512, 1em 8em .25em #302512, 7em 7em .25em #302512, 17em 8em .25em #302512, 10em 10em .25em #302512, 5em 11em .25em #302512, 20em 9em .25em #302512, 18em 1em .25em #302512, 13em 2em .25em #302512, 10em 4em .25em #302512, 11em 11em .25em #302512, 18em 20em .25em #302512, 9em 16em .25em #302512, 1em 8em .25em #302512, 1em 8em .25em #302512, 15em 11em .25em #302512, 17em 10em .25em #302512, 14em 2em .25em #302512, 9em 4em .25em #302512, 14em 21em .25em #302512, 4em 12em .25em #302512, 8em 8em .25em #302512, 7em 18em .25em #302512, 19em 14em .25em #302512, 17em 4em .25em #302512, 6em 20em .25em #302512, 6em 22em .25em #302512, 10em 21em .25em #302512, 3em 16em .25em #302512, 7em 7em .25em #302512, 13em 18em .25em #302512, 1em 19em .25em #302512, 19em 8em .25em #302512, 3em 13em .25em #302512, 15em 21em .25em #302512, 2em 2em .25em #302512, 20em 20em .25em #302512, 10em 4em .25em #302512, 16em 13em .25em #302512, 21em 4em .25em #302512, 5em 3em .25em #302512, 19em 22em .25em #302512, 8em 6em .25em #302512, 2em 10em .25em #302512, 11em 18em .25em #302512, 19em 17em .25em #302512, 5em 11em .25em #302512, 6em 2em .25em #302512, 16em 10em .25em #302512, 19em 17em .25em #302512, 10em 22em .25em #302512, 14em 20em .25em #302512, 2em 7em .25em #302512, 5em 17em .25em #302512, 4em 13em .25em #302512, 2em 18em .25em #302512, 13em 2em .25em #302512, 9em 8em .25em #302512, 4em 22em .25em #302512, 9em 14em .25em #302512, 22em 17em .25em #302512, 6em 18em .25em #302512, 8em 14em .25em #302512, 11em 12em .25em #302512, 21em 7em .25em #302512, 4em 5em .25em #302512, 8em 7em .25em #302512, 22em 13em .25em #302512, 12em 22em .25em #302512, 7em 19em .25em #302512, 5em 3em .25em #302512, 7em 22em .25em #302512, 14em 15em .25em #302512, 2em 15em .25em #302512, 16em 1em .25em #302512, 2em 16em .25em #302512, 20em 17em .25em #302512, 4em 19em .25em #302512, 4em 6em .25em #302512, 8em 1em .25em #302512, 21em 21em .25em #302512, 18em 9em .25em #302512, 17em 8em .25em #302512, 11em 10em .25em #302512, 20em 7em .25em #302512, 15em 1em .25em #302512, 7em 7em .25em #302512, 6em 6em .25em #302512, 16em 16em .25em #302512, 12em 8em .25em #302512, 5em 9em .25em #302512, 8em 18em .25em #302512, 12em 6em .25em #302512, 8em 21em .25em #302512, 1em 13em .25em #302512, 12em 8em .25em #302512, 2em 6em .25em #302512, 8em 13em .25em #302512, 9em 15em .25em #302512, 17em 16em .25em #302512, 21em 10em .25em #302512, 5em 4em .25em #302512, 1em 6em .25em #302512, 5em 1em .25em #302512, 18em 11em .25em #302512, 15em 14em .25em #302512, 3em 3em .25em #302512, 4em 20em .25em #302512, 10em 10em .25em #302512, 7em 1em .25em #302512, 4em 10em .25em #302512, 9em 2em .25em #302512, 15em 19em .25em #302512, 8em 4em .25em #302512, 3em 9em .25em #302512, 6em 3em .25em #302512, 12em 20em .25em #302512, 20em 6em .25em #302512, 13em 7em .25em #302512, 2em 8em .25em #302512, 2em 21em .25em #302512, 2em 11em .25em #302512, 21em 20em .25em #302512, 10em 14em .25em #302512, 9em 8em .25em #302512, 22em 22em .25em #302512, 1em 4em .25em #302512, 9em 14em .25em #302512, 20em 17em .25em #302512, 22em 11em .25em #302512, 14em 3em .25em #302512, 15em 16em .25em #302512, 18em 14em .25em #302512, 5em 12em .25em #302512, 5em 14em .25em #302512, 11em 8em .25em #302512, 1em 16em .25em #302512, 14em 4em .25em #302512, 22em 8em .25em #302512, 9em 7em .25em #302512, 11em 5em .25em #302512, 16em 17em .25em #302512, 12em 14em .25em #302512, 9em 5em .25em #302512, 5em 9em .25em #302512, 14em 22em .25em #302512, 12em 17em .25em #302512, 11em 15em .25em #302512, 11em 11em .25em #302512, 11em 17em .25em #302512, 20em 15em .25em #302512, 7em 8em .25em #302512, 20em 22em .25em #302512, 17em 10em .25em #302512, 12em 20em .25em #302512, 22em 12em .25em #302512, 11em 22em .25em #302512, 17em 8em .25em #302512, 3em 15em .25em #302512, 6em 8em .25em #302512, 13em 20em .25em #302512, 15em 12em .25em #302512, 6em 15em .25em #302512, 19em 10em .25em #302512, 7em 15em .25em #302512, 10em 16em .25em #302512, 4em 2em .25em #302512, 8em 16em .25em #302512, 19em 8em .25em #302512, 10em 9em .25em #302512, 16em 1em .25em #302512, 5em 16em .25em #302512, 4em 8em .25em #302512, 10em 13em .25em #302512, 18em 1em .25em #302512, 1em 10em .25em #302512, 17em 11em .25em #302512, 18em 12em .25em #302512, 2em 17em .25em #302512, 11em 16em .25em #302512, 9em 22em .25em #302512, 1em 14em .25em #302512, 8em 10em .25em #302512, 13em 12em .25em #302512, 5em 16em .25em #302512, 11em 10em .25em #302512, 22em 6em .25em #302512, 5em 8em .25em #302512, 21em 22em .25em #302512, 15em 10em .25em #302512, 14em 17em .25em #302512, 21em 2em .25em #302512, 20em 18em .25em #302512, 2em 20em .25em #302512, 17em 2em .25em #302512, 8em 20em .25em #302512, 4em 19em .25em #302512, 1em 18em .25em #302512, 18em 18em .25em #302512, 6em 17em .25em #302512, 5em 18em .25em #302512, 22em 9em .25em #302512, 11em 2em .25em #302512, 10em 20em .25em #302512, 16em 19em .25em #302512, 22em 9em .25em #302512, 4em 6em .25em #302512, 14em 4em .25em #302512, 15em 7em .25em #302512, 8em 1em .25em #302512, 4em 14em .25em #302512, 10em 22em .25em #302512, 2em 20em .25em #302512, 14em 9em .25em #302512, 19em 21em .25em #302512, 13em 10em .25em #302512, 18em 21em .25em #302512, 12em 11em .25em #302512, 16em 20em .25em #302512, 2em 3em .25em #302512, 16em 5em .25em #302512, 22em 5em .25em #302512, 22em 14em .25em #302512, 18em 22em .25em #302512, 18em 22em .25em #302512, 8em 12em .25em #302512, 5em 8em .25em #302512, 17em 5em .25em #302512, 19em 21em .25em #302512, 8em 3em .25em #302512, 13em 4em .25em #302512, 12em 11em .25em #302512, 17em 21em .25em #302512, 16em 22em .25em #302512, 18em 20em .25em #302512, 6em 6em .25em #302512, 9em 17em .25em #302512, 19em 1em .25em #302512, 14em 17em .25em #302512, 21em 11em .25em #302512, 10em 9em .25em #302512, 18em 16em .25em #302512, 22em 20em .25em #302512, 18em 4em .25em #302512, 2em 16em .25em #302512, 17em 6em .25em #302512, 2em 9em .25em #302512, 2em 21em .25em #302512, 9em 22em .25em #302512, 2em 16em .25em #302512, 11em 7em .25em #302512, 11em 16em .25em #302512, 2em 11em .25em #302512, 9em 7em .25em #302512, 3em 16em .25em #302512, 4em 20em .25em #302512, 22em 19em .25em #302512, 10em 7em .25em #302512, 1em 13em .25em #302512, 7em 3em .25em #302512, 7em 15em .25em #302512, 14em 9em .25em #302512, 2em 18em .25em #302512, 14em 5em .25em #302512, 22em 20em .25em #302512, 8em 18em .25em #302512, 8em 18em .25em #302512, 6em 11em .25em #302512, 4em 19em .25em #302512, 17em 19em .25em #302512, 22em 15em .25em #302512, 10em 14em .25em #302512, 3em 10em .25em #302512, 3em 16em .25em #302512, 18em 15em .25em #302512, 4em 4em .25em #302512, 5em 16em .25em #302512, 11em 18em .25em #302512, 9em 6em .25em #302512, 5em 22em .25em #302512, 12em 19em .25em #302512, 9em 6em .25em #302512, 16em 16em .25em #302512, 12em 9em .25em #302512, 18em 8em .25em #302512, 11em 22em .25em #302512, 15em 15em .25em #302512, 13em 8em .25em #302512, 21em 4em .25em #302512, 18em 7em .25em #302512, 1em 16em .25em #302512, 5em 11em .25em #302512, 6em 14em .25em #302512, 10em 11em .25em #302512, 8em 12em .25em #302512, 1em 1em .25em #302512, 3em 1em .25em #302512, 7em 6em .25em #302512, 2em 7em .25em #302512, 21em 4em .25em #302512, 5em 10em .25em #302512, 19em 2em .25em #302512, 4em 6em .25em #302512, 1em 6em .25em #302512, 8em 20em .25em #302512, 18em 22em .25em #302512, 4em 18em .25em #302512, 1em 5em .25em #302512, 14em 12em .25em #302512, 2em 5em .25em #302512, 9em 16em .25em #302512, 11em 14em .25em #302512, 7em 21em .25em #302512, 2em 2em .25em #302512, 17em 19em .25em #302512, 3em 4em .25em #302512, 6em 19em .25em #302512, 4em 9em .25em #302512, 8em 21em .25em #302512, 21em 12em .25em #302512, 4em 18em .25em #302512, 17em 11em .25em #302512, 10em 5em .25em #302512, 6em 8em .25em #302512, 11em 14em .25em #302512, 2em 14em .25em #302512, 3em 3em .25em #302512, 22em 3em .25em #302512, 18em 13em .25em #302512, 17em 1em .25em #302512, 18em 20em .25em #302512, 15em 18em .25em #302512, 14em 2em .25em #302512, 15em 3em .25em #302512, 8em 16em .25em #302512, 6em 13em .25em #302512, 17em 13em .25em #302512, 7em 1em .25em #302512, 2em 20em .25em #302512, 1em 19em .25em #302512, 13em 15em .25em #302512, 7em 10em .25em #302512, 14em 16em .25em #302512, 2em 4em .25em #302512, 3em 22em .25em #302512, 2em 10em .25em #302512, 8em 3em .25em #302512, 9em 7em .25em #302512, 21em 8em .25em #302512, 21em 1em .25em #302512, 9em 11em .25em #302512, 13em 6em .25em #302512, 22em 6em .25em #302512, 5em 3em .25em #302512, 11em 15em .25em #302512, 1em 4em .25em #302512, 21em 11em .25em #302512, 1em 21em .25em #302512, 18em 17em .25em #302512, 10em 16em .25em #302512, 1em 3em .25em #302512, 22em 11em .25em #302512, 8em 11em .25em #302512, 9em 4em .25em #302512, 16em 15em .25em #302512, 9em 20em .25em #302512, 14em 21em .25em #302512, 13em 9em .25em #302512, 16em 11em .25em #302512, 17em 18em .25em #302512, 3em 20em .25em #302512, 22em 22em .25em #302512, 4em 10em .25em #302512, 15em 4em .25em #302512, 19em 4em .25em #302512, 18em 6em .25em #302512, 21em 21em .25em #302512, 19em 22em .25em #302512, 20em 19em .25em #302512, 14em 11em .25em #302512, 7em 20em .25em #302512, 16em 16em .25em #302512, 22em 21em .25em #302512, 8em 19em .25em #302512, 11em 16em .25em #302512, 7em 10em .25em #302512, 17em 19em .25em #302512, 7em 12em .25em #302512, 9em 13em .25em #302512, 21em 22em .25em #302512, 17em 4em .25em #302512, 19em 19em .25em #302512, 21em 14em .25em #302512, 4em 4em .25em #302512, 15em 13em .25em #302512, 2em 18em .25em #302512, 9em 4em .25em #302512, 12em 2em .25em #302512, 17em 8em .25em #302512, 21em 4em .25em #302512, 20em 6em .25em #302512, 9em 11em .25em #302512, 19em 18em .25em #302512, 18em 8em .25em #302512, 14em 1em .25em #302512, 7em 20em .25em #302512, 10em 15em .25em #302512, 20em 16em .25em #302512, 17em 20em .25em #302512, 2em 4em .25em #302512, 11em 8em .25em #302512, 19em 11em .25em #302512, 5em 11em .25em #302512, 20em 16em .25em #302512, 2em 10em .25em #302512, 6em 18em .25em #302512, 19em 20em .25em #302512, 14em 22em .25em #302512, 14em 6em .25em #302512, 19em 16em .25em #302512, 6em 22em .25em #302512, 4em 2em .25em #302512, 13em 3em .25em #302512, 4em 1em .25em #302512, 8em 17em .25em #302512, 19em 10em .25em #302512, 5em 20em .25em #302512, 15em 3em .25em #302512, 13em 20em .25em #302512, 14em 18em .25em #302512, 18em 4em .25em #302512, 11em 8em .25em #302512, 8em 2em .25em #302512, 18em 11em .25em #302512, 15em 3em .25em #302512, 18em 1em .25em #302512, 3em 5em .25em #302512, 3em 7em .25em #302512, 8em 4em .25em #302512, 18em 8em .25em #302512, 21em 15em .25em #302512, 3em 1em .25em #302512, 14em 8em .25em #302512, 20em 16em .25em #302512, 20em 11em .25em #302512, 17em 10em .25em #302512, 6em 1em .25em #302512, 20em 4em .25em #302512, 15em 10em .25em #302512, 19em 11em .25em #302512, 7em 10em .25em #302512, 18em 13em .25em #302512, 11em 6em .25em #302512, 17em 14em .25em #302512, 18em 11em .25em #302512, 16em 14em .25em #302512, 13em 13em .25em #302512, 3em 18em .25em #302512, 4em 13em .25em #302512, 2em 21em .25em #302512, 10em 3em .25em #302512, 19em 14em .25em #302512, 12em 21em .25em #302512, 2em 16em .25em #302512, 6em 19em .25em #302512, 7em 2em .25em #302512, 6em 1em .25em #302512, 1em 7em .25em #302512, 21em 13em .25em #302512, 15em 13em .25em #302512, 17em 11em .25em #302512, 2em 9em .25em #302512, 3em 16em .25em #302512, 22em 1em .25em #302512, 4em 12em .25em #302512, 3em 3em .25em #302512, 11em 2em .25em #302512, 8em 22em .25em #302512, 3em 18em .25em #302512, 19em 11em .25em #302512, 9em 20em .25em #302512, 21em 15em .25em #302512, 15em 11em .25em #302512, 14em 1em .25em #302512, 3em 6em .25em #302512, 7em 9em .25em #302512, 7em 3em .25em #302512, 3em 3em .25em #302512, 11em 6em .25em #302512, 10em 6em .25em #302512, 7em 21em .25em #302512, 4em 17em .25em #302512, 6em 15em .25em #302512, 21em 15em .25em #302512, 1em 6em .25em #302512, 22em 20em .25em #302512, 8em 14em .25em #302512, 7em 12em .25em #302512, 1em 20em .25em #302512, 8em 13em .25em #302512, 10em 12em .25em #302512, 16em 22em .25em #302512, 21em 16em .25em #302512, 15em 12em .25em #302512, 19em 7em .25em #302512, 22em 18em .25em #302512, 4em 1em .25em #302512, 9em 2em .25em #302512, 3em 20em .25em #302512, 21em 3em .25em #302512, 9em 19em .25em #302512, 3em 7em .25em #302512, 17em 11em .25em #302512, 6em 9em .25em #302512, 21em 8em .25em #302512, 5em 20em .25em #302512, 4em 1em .25em #302512, 14em 8em .25em #302512, 12em 11em .25em #302512, 13em 20em .25em #302512, 12em 4em .25em #302512, 7em 5em .25em #302512, 16em 2em .25em #302512, 2em 15em .25em #302512, 18em 15em .25em #302512, 11em 11em .25em #302512, 10em 16em .25em #302512, 11em 21em .25em #302512, 21em 18em .25em #302512, 9em 21em .25em #302512, 14em 18em .25em #302512, 10em 20em .25em #302512, 17em 11em .25em #302512, 22em 19em .25em #302512, 6em 21em .25em #302512, 4em 15em .25em #302512, 1em 2em .25em #302512, 18em 20em .25em #302512, 22em 15em .25em #302512, 5em 15em .25em #302512, 15em 12em .25em #302512, 12em 19em .25em #302512, 17em 14em .25em #302512, 15em 18em .25em #302512, 4em 6em .25em #302512, 16em 12em .25em #302512, 6em 21em .25em #302512, 4em 1em .25em #302512, 9em 14em .25em #302512, 9em 20em .25em #302512, 5em 4em .25em #302512, 15em 14em .25em #302512, 16em 9em .25em #302512, 11em 18em .25em #302512, 4em 1em .25em #302512, 14em 2em .25em #302512, 11em 15em .25em #302512, 22em 2em .25em #302512, 8em 8em .25em #302512, 1em 20em .25em #302512, 22em 13em .25em #302512, 8em 9em .25em #302512, 6em 16em .25em #302512, 12em 10em .25em #302512, 17em 20em .25em #302512, 5em 1em .25em #302512, 7em 1em .25em #302512, 5em 16em .25em #302512, 2em 17em .25em #302512, 21em 17em .25em #302512, 12em 19em .25em #302512, 17em 14em .25em #302512, 7em 12em .25em #302512, 19em 21em .25em #302512, 14em 6em .25em #302512, 8em 18em .25em #302512, 11em 13em .25em #302512, 5em 2em .25em #302512, 19em 17em .25em #302512, 12em 21em .25em #302512, 4em 4em .25em #302512, 8em 16em .25em #302512, 9em 8em .25em #302512, 5em 16em .25em #302512, 9em 18em .25em #302512, 1em 20em .25em #302512, 3em 20em .25em #302512, 11em 19em .25em #302512, 2em 20em .25em #302512, 2em 9em .25em #302512, 15em 22em .25em #302512, 19em 20em .25em #302512, 4em 2em .25em #302512, 6em 7em .25em #302512, 5em 12em .25em #302512, 18em 6em .25em #302512, 19em 20em .25em #302512, 10em 8em .25em #302512, 15em 12em .25em #302512, 22em 6em .25em #302512, 7em 15em .25em #302512, 16em 11em .25em #302512, 4em 5em .25em #302512, 22em 19em .25em #302512, 3em 13em .25em #302512, 1em 17em .25em #302512, 14em 13em .25em #302512, 15em 22em .25em #302512, 3em 1em .25em #302512, 2em 10em .25em #302512, 21em 2em .25em #302512, 12em 17em .25em #302512, 2em 7em .25em #302512, 15em 15em .25em #302512, 19em 16em .25em #302512, 19em 10em .25em #302512, 13em 14em .25em #302512, 20em 3em .25em #302512, 19em 10em .25em #302512;
+                }
+
+        item3 > i:nth-of-type(6) {
+            width: 22em;
+            height: 20em;
+            transform: translate3d(35em, 70em, 0) rotate(47deg);
+            overflow: hidden;
+        }
+
+            item3 > i:nth-of-type(6):before {
+                transform: translate3d(7em, 7.5em, 0) rotate(19deg);
+                width: 6.5em;
+                height: 6em;
+                background: #CACC70;
+                border-radius: 3em 0 3em 2.5em;
+                box-shadow: 1em -1em 1em 1em #07090A, inset 0 0 1em #fff;
+            }
+
+            item3 > i:nth-of-type(6) i:nth-of-type(1) {
+                filter: contrast(1.1);
+                transform: translate3d(0em, -10em, 0);
+                width: 22em;
+                height: 22em;
+                background: radial-gradient(circle at top left, #ffd405, #564114, #010000);
+                border-radius: 50%;
+                box-shadow: inset 1.5em -.5em 1em #E3E660, inset 3em 2em 2em #E3E660, inset 4em 2em 4em #FBFCED, inset 7em 1em 5em #7A7C11;
+            }
+
+            item3 > i:nth-of-type(6) i:nth-of-type(2) {
+                transform: translate3d(1em, -9em, 0);
+                width: 15em;
+                height: 20em;
+                /*background: red;*/
+                border-radius: 50%;
+                overflow: hidden;
+                -webkit-mask-image: radial-gradient(circle at 30% 70%, #000, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+                mask-image: radial-gradient(circle at 30% 70%, #000, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+                opacity: .5;
+            }
+
+                item3 > i:nth-of-type(6) i:nth-of-type(2):after {
+                    width: .4em;
+                    height: .4em;
+                    transform: translate3d(-5em, -2em, 0);
+                    border-radius: 50%;
+                    box-shadow: 20em 11em .1em #7A7C11, 8em 15em .25em #7A7C11, 22em 13em .25em #7A7C11, 9em 22em .25em #7A7C11, 7em 16em .25em #7A7C11, 1em 17em .25em #7A7C11, 8em 5em .25em #7A7C11, 3em 19em .25em #7A7C11, 13em 3em .25em #7A7C11, 1em 22em .25em #7A7C11, 7em 9em .25em #7A7C11, 5em 8em .25em #7A7C11, 2em 6em .25em #7A7C11, 19em 21em .25em #7A7C11, 2em 11em .25em #7A7C11, 14em 16em .25em #7A7C11, 16em 1em .25em #7A7C11, 6em 15em .25em #7A7C11, 21em 6em .25em #7A7C11, 2em 5em .25em #7A7C11, 13em 7em .25em #7A7C11, 6em 16em .25em #7A7C11, 16em 7em .25em #7A7C11, 20em 18em .25em #7A7C11, 5em 8em .25em #7A7C11, 2em 18em .25em #7A7C11, 16em 3em .25em #7A7C11, 11em 20em .25em #7A7C11, 18em 22em .25em #7A7C11, 13em 19em .25em #7A7C11, 18em 5em .25em #7A7C11, 20em 6em .25em #7A7C11, 16em 3em .25em #7A7C11, 15em 20em .25em #7A7C11, 9em 20em .25em #7A7C11, 4em 1em .25em #7A7C11, 7em 4em .25em #7A7C11, 2em 16em .25em #7A7C11, 4em 5em .25em #7A7C11, 16em 7em .25em #7A7C11, 13em 10em .25em #7A7C11, 17em 8em .25em #7A7C11, 4em 22em .25em #7A7C11, 4em 4em .25em #7A7C11, 21em 9em .25em #7A7C11, 11em 12em .25em #7A7C11, 9em 12em .25em #7A7C11, 8em 15em .25em #7A7C11, 22em 5em .25em #7A7C11, 3em 4em .25em #7A7C11, 11em 19em .25em #7A7C11, 7em 7em .25em #7A7C11, 8em 17em .25em #7A7C11, 15em 18em .25em #7A7C11, 11em 14em .25em #7A7C11, 11em 14em .25em #7A7C11, 19em 6em .25em #7A7C11, 5em 4em .25em #7A7C11, 8em 3em .25em #7A7C11, 9em 22em .25em #7A7C11, 3em 11em .25em #7A7C11, 12em 21em .25em #7A7C11, 13em 17em .25em #7A7C11, 15em 17em .25em #7A7C11, 4em 18em .25em #7A7C11, 16em 16em .25em #7A7C11, 16em 8em .25em #7A7C11, 12em 15em .25em #7A7C11, 9em 2em .25em #7A7C11, 14em 5em .25em #7A7C11, 7em 4em .25em #7A7C11, 10em 10em .25em #7A7C11, 22em 22em .25em #7A7C11, 20em 19em .25em #7A7C11, 22em 13em .25em #7A7C11, 16em 14em .25em #7A7C11, 18em 22em .25em #7A7C11, 19em 11em .25em #7A7C11, 10em 4em .25em #7A7C11, 3em 1em .25em #7A7C11, 8em 4em .25em #7A7C11, 3em 12em .25em #7A7C11, 10em 22em .25em #7A7C11, 5em 14em .25em #7A7C11, 11em 2em .25em #7A7C11, 22em 7em .25em #7A7C11, 20em 15em .25em #7A7C11, 7em 4em .25em #7A7C11, 4em 6em .25em #7A7C11, 20em 4em .25em #7A7C11, 21em 4em .25em #7A7C11, 14em 12em .25em #7A7C11, 21em 1em .25em #7A7C11, 18em 3em .25em #7A7C11, 12em 12em .25em #7A7C11, 1em 16em .25em #7A7C11, 13em 14em .25em #7A7C11, 13em 18em .25em #7A7C11, 17em 4em .25em #7A7C11, 22em 13em .25em #7A7C11, 6em 3em .25em #7A7C11, 16em 9em .25em #7A7C11, 21em 13em .25em #7A7C11, 3em 1em .25em #7A7C11, 17em 21em .25em #7A7C11, 18em 10em .25em #7A7C11, 12em 3em .25em #7A7C11, 10em 22em .25em #7A7C11, 2em 13em .25em #7A7C11, 6em 12em .25em #7A7C11, 8em 6em .25em #7A7C11, 18em 13em .25em #7A7C11, 5em 10em .25em #7A7C11, 14em 14em .25em #7A7C11, 20em 14em .25em #7A7C11, 9em 21em .25em #7A7C11, 21em 12em .25em #7A7C11, 6em 16em .25em #7A7C11, 5em 3em .25em #7A7C11, 9em 5em .25em #7A7C11, 22em 2em .25em #7A7C11, 20em 18em .25em #7A7C11, 6em 6em .25em #7A7C11, 11em 3em .25em #7A7C11, 19em 11em .25em #7A7C11, 17em 5em .25em #7A7C11, 11em 22em .25em #7A7C11, 4em 19em .25em #7A7C11, 2em 13em .25em #7A7C11, 2em 12em .25em #7A7C11, 12em 2em .25em #7A7C11, 18em 20em .25em #7A7C11, 17em 4em .25em #7A7C11, 7em 16em .25em #7A7C11, 4em 20em .25em #7A7C11, 15em 9em .25em #7A7C11, 1em 5em .25em #7A7C11, 19em 8em .25em #7A7C11, 1em 6em .25em #7A7C11, 19em 10em .25em #7A7C11, 20em 10em .25em #7A7C11, 13em 5em .25em #7A7C11, 19em 16em .25em #7A7C11, 20em 10em .25em #7A7C11, 4em 3em .25em #7A7C11, 20em 16em .25em #7A7C11, 13em 11em .25em #7A7C11, 19em 12em .25em #7A7C11, 20em 1em .25em #7A7C11, 14em 22em .25em #7A7C11, 19em 13em .25em #7A7C11, 12em 13em .25em #7A7C11, 5em 1em .25em #7A7C11, 14em 9em .25em #7A7C11, 18em 11em .25em #7A7C11, 1em 15em .25em #7A7C11, 22em 22em .25em #7A7C11, 6em 6em .25em #7A7C11, 12em 13em .25em #7A7C11, 15em 20em .25em #7A7C11, 9em 5em .25em #7A7C11, 2em 5em .25em #7A7C11, 11em 6em .25em #7A7C11, 21em 13em .25em #7A7C11, 17em 7em .25em #7A7C11, 4em 21em .25em #7A7C11, 19em 15em .25em #7A7C11, 3em 4em .25em #7A7C11, 3em 14em .25em #7A7C11, 5em 18em .25em #7A7C11, 1em 12em .25em #7A7C11, 19em 13em .25em #7A7C11, 22em 16em .25em #7A7C11, 4em 8em .25em #7A7C11, 3em 22em .25em #7A7C11, 22em 7em .25em #7A7C11, 20em 2em .25em #7A7C11, 18em 2em .25em #7A7C11, 17em 20em .25em #7A7C11, 18em 10em .25em #7A7C11, 13em 14em .25em #7A7C11, 15em 12em .25em #7A7C11, 21em 21em .25em #7A7C11, 15em 8em .25em #7A7C11, 10em 11em .25em #7A7C11, 17em 14em .25em #7A7C11, 2em 18em .25em #7A7C11, 13em 22em .25em #7A7C11, 1em 16em .25em #7A7C11, 9em 15em .25em #7A7C11, 11em 11em .25em #7A7C11, 18em 1em .25em #7A7C11, 14em 5em .25em #7A7C11, 15em 15em .25em #7A7C11, 10em 15em .25em #7A7C11, 16em 6em .25em #7A7C11, 20em 9em .25em #7A7C11, 7em 15em .25em #7A7C11, 7em 12em .25em #7A7C11, 1em 13em .25em #7A7C11, 15em 9em .25em #7A7C11, 8em 6em .25em #7A7C11, 15em 7em .25em #7A7C11, 15em 18em .25em #7A7C11, 19em 7em .25em #7A7C11, 9em 12em .25em #7A7C11, 17em 1em .25em #7A7C11, 8em 20em .25em #7A7C11, 10em 18em .25em #7A7C11, 13em 18em .25em #7A7C11, 9em 13em .25em #7A7C11, 19em 22em .25em #7A7C11, 14em 21em .25em #7A7C11, 15em 3em .25em #7A7C11, 15em 5em .25em #7A7C11, 17em 2em .25em #7A7C11, 11em 6em .25em #7A7C11, 13em 7em .25em #7A7C11, 6em 9em .25em #7A7C11, 3em 22em .25em #7A7C11, 19em 16em .25em #7A7C11, 11em 11em .25em #7A7C11, 8em 10em .25em #7A7C11, 12em 5em .25em #7A7C11, 18em 10em .25em #7A7C11, 3em 5em .25em #7A7C11, 13em 8em .25em #7A7C11, 4em 20em .25em #7A7C11, 17em 12em .25em #7A7C11, 4em 16em .25em #7A7C11, 14em 16em .25em #7A7C11, 8em 7em .25em #7A7C11, 3em 22em .25em #7A7C11, 17em 2em .25em #7A7C11, 6em 18em .25em #7A7C11, 17em 22em .25em #7A7C11, 11em 12em .25em #7A7C11, 6em 18em .25em #7A7C11, 11em 19em .25em #7A7C11, 1em 10em .25em #7A7C11, 13em 9em .25em #7A7C11, 15em 21em .25em #7A7C11, 6em 19em .25em #7A7C11, 16em 11em .25em #7A7C11, 21em 14em .25em #7A7C11, 3em 7em .25em #7A7C11, 17em 4em .25em #7A7C11, 5em 22em .25em #7A7C11, 5em 21em .25em #7A7C11, 4em 13em .25em #7A7C11, 16em 7em .25em #7A7C11, 15em 13em .25em #7A7C11, 21em 8em .25em #7A7C11, 8em 14em .25em #7A7C11, 9em 6em .25em #7A7C11, 19em 3em .25em #7A7C11, 16em 16em .25em #7A7C11, 4em 7em .25em #7A7C11, 16em 14em .25em #7A7C11, 19em 22em .25em #7A7C11, 7em 15em .25em #7A7C11, 4em 4em .25em #7A7C11, 9em 17em .25em #7A7C11, 6em 11em .25em #7A7C11, 18em 20em .25em #7A7C11, 13em 16em .25em #7A7C11, 10em 18em .25em #7A7C11, 17em 1em .25em #7A7C11, 11em 1em .25em #7A7C11, 3em 21em .25em #7A7C11, 11em 5em .25em #7A7C11, 22em 16em .25em #7A7C11, 6em 17em .25em #7A7C11, 12em 9em .25em #7A7C11, 19em 19em .25em #7A7C11, 16em 14em .25em #7A7C11, 2em 18em .25em #7A7C11, 21em 13em .25em #7A7C11, 11em 18em .25em #7A7C11, 2em 22em .25em #7A7C11, 12em 9em .25em #7A7C11, 2em 11em .25em #7A7C11, 5em 22em .25em #7A7C11, 12em 19em .25em #7A7C11, 8em 7em .25em #7A7C11, 21em 14em .25em #7A7C11, 15em 21em .25em #7A7C11, 22em 11em .25em #7A7C11, 19em 8em .25em #7A7C11, 22em 3em .25em #7A7C11, 18em 8em .25em #7A7C11, 17em 12em .25em #7A7C11, 14em 22em .25em #7A7C11, 1em 3em .25em #7A7C11, 18em 4em .25em #7A7C11, 6em 20em .25em #7A7C11, 9em 12em .25em #7A7C11, 4em 13em .25em #7A7C11, 20em 3em .25em #7A7C11, 11em 12em .25em #7A7C11, 11em 11em .25em #7A7C11, 9em 14em .25em #7A7C11, 15em 20em .25em #7A7C11, 14em 3em .25em #7A7C11, 17em 8em .25em #7A7C11, 20em 19em .25em #7A7C11, 5em 1em .25em #7A7C11, 22em 19em .25em #7A7C11, 8em 11em .25em #7A7C11, 14em 15em .25em #7A7C11, 18em 20em .25em #7A7C11, 4em 15em .25em #7A7C11, 13em 5em .25em #7A7C11, 4em 5em .25em #7A7C11, 18em 21em .25em #7A7C11, 18em 11em .25em #7A7C11, 10em 3em .25em #7A7C11, 11em 2em .25em #7A7C11, 10em 17em .25em #7A7C11, 1em 17em .25em #7A7C11, 18em 15em .25em #7A7C11, 18em 19em .25em #7A7C11, 22em 2em .25em #7A7C11, 22em 7em .25em #7A7C11, 12em 17em .25em #7A7C11, 19em 13em .25em #7A7C11, 18em 4em .25em #7A7C11, 16em 8em .25em #7A7C11, 5em 11em .25em #7A7C11, 15em 12em .25em #7A7C11, 6em 11em .25em #7A7C11, 17em 14em .25em #7A7C11, 15em 4em .25em #7A7C11, 14em 5em .25em #7A7C11, 4em 1em .25em #7A7C11, 21em 10em .25em #7A7C11, 20em 4em .25em #7A7C11, 21em 14em .25em #7A7C11, 7em 18em .25em #7A7C11, 1em 14em .25em #7A7C11, 17em 13em .25em #7A7C11, 1em 3em .25em #7A7C11, 1em 4em .25em #7A7C11, 10em 2em .25em #7A7C11, 1em 3em .25em #7A7C11, 12em 8em .25em #7A7C11, 11em 20em .25em #7A7C11, 19em 6em .25em #7A7C11, 19em 1em .25em #7A7C11, 21em 7em .25em #7A7C11, 19em 2em .25em #7A7C11, 19em 12em .25em #7A7C11, 6em 3em .25em #7A7C11, 19em 19em .25em #7A7C11, 21em 14em .25em #7A7C11, 11em 22em .25em #7A7C11, 4em 21em .25em #7A7C11, 2em 8em .25em #7A7C11, 17em 11em .25em #7A7C11, 16em 20em .25em #7A7C11, 10em 12em .25em #7A7C11, 17em 10em .25em #7A7C11, 16em 13em .25em #7A7C11, 3em 10em .25em #7A7C11, 14em 10em .25em #7A7C11, 13em 2em .25em #7A7C11, 10em 14em .25em #7A7C11, 20em 13em .25em #7A7C11, 16em 13em .25em #7A7C11, 6em 10em .25em #7A7C11, 3em 9em .25em #7A7C11, 11em 3em .25em #7A7C11, 7em 22em .25em #7A7C11, 2em 4em .25em #7A7C11, 17em 10em .25em #7A7C11, 22em 4em .25em #7A7C11, 17em 20em .25em #7A7C11, 13em 1em .25em #7A7C11, 1em 4em .25em #7A7C11, 1em 8em .25em #7A7C11, 2em 2em .25em #7A7C11, 4em 21em .25em #7A7C11, 19em 16em .25em #7A7C11, 20em 1em .25em #7A7C11, 12em 3em .25em #7A7C11, 20em 9em .25em #7A7C11, 18em 21em .25em #7A7C11, 8em 21em .25em #7A7C11, 13em 21em .25em #7A7C11, 22em 15em .25em #7A7C11, 13em 14em .25em #7A7C11, 2em 9em .25em #7A7C11, 1em 15em .25em #7A7C11, 6em 9em .25em #7A7C11, 4em 19em .25em #7A7C11, 18em 1em .25em #7A7C11, 15em 16em .25em #7A7C11, 2em 12em .25em #7A7C11, 12em 7em .25em #7A7C11, 12em 1em .25em #7A7C11, 18em 6em .25em #7A7C11, 20em 6em .25em #7A7C11, 13em 8em .25em #7A7C11, 20em 18em .25em #7A7C11, 16em 21em .25em #7A7C11, 4em 9em .25em #7A7C11, 16em 12em .25em #7A7C11, 15em 20em .25em #7A7C11, 7em 13em .25em #7A7C11, 14em 8em .25em #7A7C11, 19em 1em .25em #7A7C11, 11em 2em .25em #7A7C11, 2em 18em .25em #7A7C11, 22em 8em .25em #7A7C11, 20em 1em .25em #7A7C11, 16em 20em .25em #7A7C11, 9em 3em .25em #7A7C11, 2em 6em .25em #7A7C11, 20em 8em .25em #7A7C11, 15em 12em .25em #7A7C11, 11em 16em .25em #7A7C11, 15em 5em .25em #7A7C11, 5em 4em .25em #7A7C11, 14em 22em .25em #7A7C11, 2em 9em .25em #7A7C11, 10em 1em .25em #7A7C11, 21em 21em .25em #7A7C11, 21em 14em .25em #7A7C11, 1em 2em .25em #7A7C11, 20em 7em .25em #7A7C11, 13em 6em .25em #7A7C11, 17em 14em .25em #7A7C11, 7em 21em .25em #7A7C11, 3em 14em .25em #7A7C11, 15em 5em .25em #7A7C11, 10em 10em .25em #7A7C11, 6em 13em .25em #7A7C11, 15em 15em .25em #7A7C11, 20em 10em .25em #7A7C11, 20em 2em .25em #7A7C11, 9em 18em .25em #7A7C11, 21em 12em .25em #7A7C11, 4em 4em .25em #7A7C11, 10em 15em .25em #7A7C11, 10em 14em .25em #7A7C11, 4em 6em .25em #7A7C11, 22em 10em .25em #7A7C11, 9em 19em .25em #7A7C11, 21em 19em .25em #7A7C11, 16em 3em .25em #7A7C11, 10em 19em .25em #7A7C11, 5em 8em .25em #7A7C11, 1em 9em .25em #7A7C11, 1em 21em .25em #7A7C11, 10em 3em .25em #7A7C11, 9em 9em .25em #7A7C11, 16em 18em .25em #7A7C11, 9em 10em .25em #7A7C11, 6em 22em .25em #7A7C11, 3em 18em .25em #7A7C11, 4em 12em .25em #7A7C11, 15em 4em .25em #7A7C11, 6em 5em .25em #7A7C11, 14em 14em .25em #7A7C11, 10em 5em .25em #7A7C11, 21em 4em .25em #7A7C11, 1em 9em .25em #7A7C11, 2em 6em .25em #7A7C11, 7em 15em .25em #7A7C11, 9em 11em .25em #7A7C11, 20em 6em .25em #7A7C11, 16em 16em .25em #7A7C11, 14em 10em .25em #7A7C11, 2em 11em .25em #7A7C11, 13em 19em .25em #7A7C11, 18em 6em .25em #7A7C11, 8em 4em .25em #7A7C11, 15em 13em .25em #7A7C11, 19em 13em .25em #7A7C11, 17em 10em .25em #7A7C11, 10em 10em .25em #7A7C11, 5em 3em .25em #7A7C11, 4em 13em .25em #7A7C11, 7em 11em .25em #7A7C11, 18em 4em .25em #7A7C11, 20em 5em .25em #7A7C11, 1em 9em .25em #7A7C11, 13em 18em .25em #7A7C11, 4em 11em .25em #7A7C11, 10em 13em .25em #7A7C11, 1em 2em .25em #7A7C11, 11em 8em .25em #7A7C11, 10em 8em .25em #7A7C11, 4em 22em .25em #7A7C11, 22em 6em .25em #7A7C11, 12em 5em .25em #7A7C11, 18em 11em .25em #7A7C11, 22em 18em .25em #7A7C11, 9em 6em .25em #7A7C11, 10em 2em .25em #7A7C11;
+                }
+
+                item3 > i:nth-of-type(6) i:nth-of-type(2):before {
+                    width: .3em;
+                    height: .3em;
+                    transform: translate3d(20.5em, 2.5em, 0) rotate(90deg);
+                    border-radius: 50%;
+                    box-shadow: 20em 11em .1em #7A7C11, 8em 15em .25em #7A7C11, 22em 13em .25em #7A7C11, 9em 22em .25em #7A7C11, 7em 16em .25em #7A7C11, 1em 17em .25em #7A7C11, 8em 5em .25em #7A7C11, 3em 19em .25em #7A7C11, 13em 3em .25em #7A7C11, 1em 22em .25em #7A7C11, 7em 9em .25em #7A7C11, 5em 8em .25em #7A7C11, 2em 6em .25em #7A7C11, 19em 21em .25em #7A7C11, 2em 11em .25em #7A7C11, 14em 16em .25em #7A7C11, 16em 1em .25em #7A7C11, 6em 15em .25em #7A7C11, 21em 6em .25em #7A7C11, 2em 5em .25em #7A7C11, 13em 7em .25em #7A7C11, 6em 16em .25em #7A7C11, 16em 7em .25em #7A7C11, 20em 18em .25em #7A7C11, 5em 8em .25em #7A7C11, 2em 18em .25em #7A7C11, 16em 3em .25em #7A7C11, 11em 20em .25em #7A7C11, 18em 22em .25em #7A7C11, 13em 19em .25em #7A7C11, 18em 5em .25em #7A7C11, 20em 6em .25em #7A7C11, 16em 3em .25em #7A7C11, 15em 20em .25em #7A7C11, 9em 20em .25em #7A7C11, 4em 1em .25em #7A7C11, 7em 4em .25em #7A7C11, 2em 16em .25em #7A7C11, 4em 5em .25em #7A7C11, 16em 7em .25em #7A7C11, 13em 10em .25em #7A7C11, 17em 8em .25em #7A7C11, 4em 22em .25em #7A7C11, 4em 4em .25em #7A7C11, 21em 9em .25em #7A7C11, 11em 12em .25em #7A7C11, 9em 12em .25em #7A7C11, 8em 15em .25em #7A7C11, 22em 5em .25em #7A7C11, 3em 4em .25em #7A7C11, 11em 19em .25em #7A7C11, 7em 7em .25em #7A7C11, 8em 17em .25em #7A7C11, 15em 18em .25em #7A7C11, 11em 14em .25em #7A7C11, 11em 14em .25em #7A7C11, 19em 6em .25em #7A7C11, 5em 4em .25em #7A7C11, 8em 3em .25em #7A7C11, 9em 22em .25em #7A7C11, 3em 11em .25em #7A7C11, 12em 21em .25em #7A7C11, 13em 17em .25em #7A7C11, 15em 17em .25em #7A7C11, 4em 18em .25em #7A7C11, 16em 16em .25em #7A7C11, 16em 8em .25em #7A7C11, 12em 15em .25em #7A7C11, 9em 2em .25em #7A7C11, 14em 5em .25em #7A7C11, 7em 4em .25em #7A7C11, 10em 10em .25em #7A7C11, 22em 22em .25em #7A7C11, 20em 19em .25em #7A7C11, 22em 13em .25em #7A7C11, 16em 14em .25em #7A7C11, 18em 22em .25em #7A7C11, 19em 11em .25em #7A7C11, 10em 4em .25em #7A7C11, 3em 1em .25em #7A7C11, 8em 4em .25em #7A7C11, 3em 12em .25em #7A7C11, 10em 22em .25em #7A7C11, 5em 14em .25em #7A7C11, 11em 2em .25em #7A7C11, 22em 7em .25em #7A7C11, 20em 15em .25em #7A7C11, 7em 4em .25em #7A7C11, 4em 6em .25em #7A7C11, 20em 4em .25em #7A7C11, 21em 4em .25em #7A7C11, 14em 12em .25em #7A7C11, 21em 1em .25em #7A7C11, 18em 3em .25em #7A7C11, 12em 12em .25em #7A7C11, 1em 16em .25em #7A7C11, 13em 14em .25em #7A7C11, 13em 18em .25em #7A7C11, 17em 4em .25em #7A7C11, 22em 13em .25em #7A7C11, 6em 3em .25em #7A7C11, 16em 9em .25em #7A7C11, 21em 13em .25em #7A7C11, 3em 1em .25em #7A7C11, 17em 21em .25em #7A7C11, 18em 10em .25em #7A7C11, 12em 3em .25em #7A7C11, 10em 22em .25em #7A7C11, 2em 13em .25em #7A7C11, 6em 12em .25em #7A7C11, 8em 6em .25em #7A7C11, 18em 13em .25em #7A7C11, 5em 10em .25em #7A7C11, 14em 14em .25em #7A7C11, 20em 14em .25em #7A7C11, 9em 21em .25em #7A7C11, 21em 12em .25em #7A7C11, 6em 16em .25em #7A7C11, 5em 3em .25em #7A7C11, 9em 5em .25em #7A7C11, 22em 2em .25em #7A7C11, 20em 18em .25em #7A7C11, 6em 6em .25em #7A7C11, 11em 3em .25em #7A7C11, 19em 11em .25em #7A7C11, 17em 5em .25em #7A7C11, 11em 22em .25em #7A7C11, 4em 19em .25em #7A7C11, 2em 13em .25em #7A7C11, 2em 12em .25em #7A7C11, 12em 2em .25em #7A7C11, 18em 20em .25em #7A7C11, 17em 4em .25em #7A7C11, 7em 16em .25em #7A7C11, 4em 20em .25em #7A7C11, 15em 9em .25em #7A7C11, 1em 5em .25em #7A7C11, 19em 8em .25em #7A7C11, 1em 6em .25em #7A7C11, 19em 10em .25em #7A7C11, 20em 10em .25em #7A7C11, 13em 5em .25em #7A7C11, 19em 16em .25em #7A7C11, 20em 10em .25em #7A7C11, 4em 3em .25em #7A7C11, 20em 16em .25em #7A7C11, 13em 11em .25em #7A7C11, 19em 12em .25em #7A7C11, 20em 1em .25em #7A7C11, 14em 22em .25em #7A7C11, 19em 13em .25em #7A7C11, 12em 13em .25em #7A7C11, 5em 1em .25em #7A7C11, 14em 9em .25em #7A7C11, 18em 11em .25em #7A7C11, 1em 15em .25em #7A7C11, 22em 22em .25em #7A7C11, 6em 6em .25em #7A7C11, 12em 13em .25em #7A7C11, 15em 20em .25em #7A7C11, 9em 5em .25em #7A7C11, 2em 5em .25em #7A7C11, 11em 6em .25em #7A7C11, 21em 13em .25em #7A7C11, 17em 7em .25em #7A7C11, 4em 21em .25em #7A7C11, 19em 15em .25em #7A7C11, 3em 4em .25em #7A7C11, 3em 14em .25em #7A7C11, 5em 18em .25em #7A7C11, 1em 12em .25em #7A7C11, 19em 13em .25em #7A7C11, 22em 16em .25em #7A7C11, 4em 8em .25em #7A7C11, 3em 22em .25em #7A7C11, 22em 7em .25em #7A7C11, 20em 2em .25em #7A7C11, 18em 2em .25em #7A7C11, 17em 20em .25em #7A7C11, 18em 10em .25em #7A7C11, 13em 14em .25em #7A7C11, 15em 12em .25em #7A7C11, 21em 21em .25em #7A7C11, 15em 8em .25em #7A7C11, 10em 11em .25em #7A7C11, 17em 14em .25em #7A7C11, 2em 18em .25em #7A7C11, 13em 22em .25em #7A7C11, 1em 16em .25em #7A7C11, 9em 15em .25em #7A7C11, 11em 11em .25em #7A7C11, 18em 1em .25em #7A7C11, 14em 5em .25em #7A7C11, 15em 15em .25em #7A7C11, 10em 15em .25em #7A7C11, 16em 6em .25em #7A7C11, 20em 9em .25em #7A7C11, 7em 15em .25em #7A7C11, 7em 12em .25em #7A7C11, 1em 13em .25em #7A7C11, 15em 9em .25em #7A7C11, 8em 6em .25em #7A7C11, 15em 7em .25em #7A7C11, 15em 18em .25em #7A7C11, 19em 7em .25em #7A7C11, 9em 12em .25em #7A7C11, 17em 1em .25em #7A7C11, 8em 20em .25em #7A7C11, 10em 18em .25em #7A7C11, 13em 18em .25em #7A7C11, 9em 13em .25em #7A7C11, 19em 22em .25em #7A7C11, 14em 21em .25em #7A7C11, 15em 3em .25em #7A7C11, 15em 5em .25em #7A7C11, 17em 2em .25em #7A7C11, 11em 6em .25em #7A7C11, 13em 7em .25em #7A7C11, 6em 9em .25em #7A7C11, 3em 22em .25em #7A7C11, 19em 16em .25em #7A7C11, 11em 11em .25em #7A7C11, 8em 10em .25em #7A7C11, 12em 5em .25em #7A7C11, 18em 10em .25em #7A7C11, 3em 5em .25em #7A7C11, 13em 8em .25em #7A7C11, 4em 20em .25em #7A7C11, 17em 12em .25em #7A7C11, 4em 16em .25em #7A7C11, 14em 16em .25em #7A7C11, 8em 7em .25em #7A7C11, 3em 22em .25em #7A7C11, 17em 2em .25em #7A7C11, 6em 18em .25em #7A7C11, 17em 22em .25em #7A7C11, 11em 12em .25em #7A7C11, 6em 18em .25em #7A7C11, 11em 19em .25em #7A7C11, 1em 10em .25em #7A7C11, 13em 9em .25em #7A7C11, 15em 21em .25em #7A7C11, 6em 19em .25em #7A7C11, 16em 11em .25em #7A7C11, 21em 14em .25em #7A7C11, 3em 7em .25em #7A7C11, 17em 4em .25em #7A7C11, 5em 22em .25em #7A7C11, 5em 21em .25em #7A7C11, 4em 13em .25em #7A7C11, 16em 7em .25em #7A7C11, 15em 13em .25em #7A7C11, 21em 8em .25em #7A7C11, 8em 14em .25em #7A7C11, 9em 6em .25em #7A7C11, 19em 3em .25em #7A7C11, 16em 16em .25em #7A7C11, 4em 7em .25em #7A7C11, 16em 14em .25em #7A7C11, 19em 22em .25em #7A7C11, 7em 15em .25em #7A7C11, 4em 4em .25em #7A7C11, 9em 17em .25em #7A7C11, 6em 11em .25em #7A7C11, 18em 20em .25em #7A7C11, 13em 16em .25em #7A7C11, 10em 18em .25em #7A7C11, 17em 1em .25em #7A7C11, 11em 1em .25em #7A7C11, 3em 21em .25em #7A7C11, 11em 5em .25em #7A7C11, 22em 16em .25em #7A7C11, 6em 17em .25em #7A7C11, 12em 9em .25em #7A7C11, 19em 19em .25em #7A7C11, 16em 14em .25em #7A7C11, 2em 18em .25em #7A7C11, 21em 13em .25em #7A7C11, 11em 18em .25em #7A7C11, 2em 22em .25em #7A7C11, 12em 9em .25em #7A7C11, 2em 11em .25em #7A7C11, 5em 22em .25em #7A7C11, 12em 19em .25em #7A7C11, 8em 7em .25em #7A7C11, 21em 14em .25em #7A7C11, 15em 21em .25em #7A7C11, 22em 11em .25em #7A7C11, 19em 8em .25em #7A7C11, 22em 3em .25em #7A7C11, 18em 8em .25em #7A7C11, 17em 12em .25em #7A7C11, 14em 22em .25em #7A7C11, 1em 3em .25em #7A7C11, 18em 4em .25em #7A7C11, 6em 20em .25em #7A7C11, 9em 12em .25em #7A7C11, 4em 13em .25em #7A7C11, 20em 3em .25em #7A7C11, 11em 12em .25em #7A7C11, 11em 11em .25em #7A7C11, 9em 14em .25em #7A7C11, 15em 20em .25em #7A7C11, 14em 3em .25em #7A7C11, 17em 8em .25em #7A7C11, 20em 19em .25em #7A7C11, 5em 1em .25em #7A7C11, 22em 19em .25em #7A7C11, 8em 11em .25em #7A7C11, 14em 15em .25em #7A7C11, 18em 20em .25em #7A7C11, 4em 15em .25em #7A7C11, 13em 5em .25em #7A7C11, 4em 5em .25em #7A7C11, 18em 21em .25em #7A7C11, 18em 11em .25em #7A7C11, 10em 3em .25em #7A7C11, 11em 2em .25em #7A7C11, 10em 17em .25em #7A7C11, 1em 17em .25em #7A7C11, 18em 15em .25em #7A7C11, 18em 19em .25em #7A7C11, 22em 2em .25em #7A7C11, 22em 7em .25em #7A7C11, 12em 17em .25em #7A7C11, 19em 13em .25em #7A7C11, 18em 4em .25em #7A7C11, 16em 8em .25em #7A7C11, 5em 11em .25em #7A7C11, 15em 12em .25em #7A7C11, 6em 11em .25em #7A7C11, 17em 14em .25em #7A7C11, 15em 4em .25em #7A7C11, 14em 5em .25em #7A7C11, 4em 1em .25em #7A7C11, 21em 10em .25em #7A7C11, 20em 4em .25em #7A7C11, 21em 14em .25em #7A7C11, 7em 18em .25em #7A7C11, 1em 14em .25em #7A7C11, 17em 13em .25em #7A7C11, 1em 3em .25em #7A7C11, 1em 4em .25em #7A7C11, 10em 2em .25em #7A7C11, 1em 3em .25em #7A7C11, 12em 8em .25em #7A7C11, 11em 20em .25em #7A7C11, 19em 6em .25em #7A7C11, 19em 1em .25em #7A7C11, 21em 7em .25em #7A7C11, 19em 2em .25em #7A7C11, 19em 12em .25em #7A7C11, 6em 3em .25em #7A7C11, 19em 19em .25em #7A7C11, 21em 14em .25em #7A7C11, 11em 22em .25em #7A7C11, 4em 21em .25em #7A7C11, 2em 8em .25em #7A7C11, 17em 11em .25em #7A7C11, 16em 20em .25em #7A7C11, 10em 12em .25em #7A7C11, 17em 10em .25em #7A7C11, 16em 13em .25em #7A7C11, 3em 10em .25em #7A7C11, 14em 10em .25em #7A7C11, 13em 2em .25em #7A7C11, 10em 14em .25em #7A7C11, 20em 13em .25em #7A7C11, 16em 13em .25em #7A7C11, 6em 10em .25em #7A7C11, 3em 9em .25em #7A7C11, 11em 3em .25em #7A7C11, 7em 22em .25em #7A7C11, 2em 4em .25em #7A7C11, 17em 10em .25em #7A7C11, 22em 4em .25em #7A7C11, 17em 20em .25em #7A7C11, 13em 1em .25em #7A7C11, 1em 4em .25em #7A7C11, 1em 8em .25em #7A7C11, 2em 2em .25em #7A7C11, 4em 21em .25em #7A7C11, 19em 16em .25em #7A7C11, 20em 1em .25em #7A7C11, 12em 3em .25em #7A7C11, 20em 9em .25em #7A7C11, 18em 21em .25em #7A7C11, 8em 21em .25em #7A7C11, 13em 21em .25em #7A7C11, 22em 15em .25em #7A7C11, 13em 14em .25em #7A7C11, 2em 9em .25em #7A7C11, 1em 15em .25em #7A7C11, 6em 9em .25em #7A7C11, 4em 19em .25em #7A7C11, 18em 1em .25em #7A7C11, 15em 16em .25em #7A7C11, 2em 12em .25em #7A7C11, 12em 7em .25em #7A7C11, 12em 1em .25em #7A7C11, 18em 6em .25em #7A7C11, 20em 6em .25em #7A7C11, 13em 8em .25em #7A7C11, 20em 18em .25em #7A7C11, 16em 21em .25em #7A7C11, 4em 9em .25em #7A7C11, 16em 12em .25em #7A7C11, 15em 20em .25em #7A7C11, 7em 13em .25em #7A7C11, 14em 8em .25em #7A7C11, 19em 1em .25em #7A7C11, 11em 2em .25em #7A7C11, 2em 18em .25em #7A7C11, 22em 8em .25em #7A7C11, 20em 1em .25em #7A7C11, 16em 20em .25em #7A7C11, 9em 3em .25em #7A7C11, 2em 6em .25em #7A7C11, 20em 8em .25em #7A7C11, 15em 12em .25em #7A7C11, 11em 16em .25em #7A7C11, 15em 5em .25em #7A7C11, 5em 4em .25em #7A7C11, 14em 22em .25em #7A7C11, 2em 9em .25em #7A7C11, 10em 1em .25em #7A7C11, 21em 21em .25em #7A7C11, 21em 14em .25em #7A7C11, 1em 2em .25em #7A7C11, 20em 7em .25em #7A7C11, 13em 6em .25em #7A7C11, 17em 14em .25em #7A7C11, 7em 21em .25em #7A7C11, 3em 14em .25em #7A7C11, 15em 5em .25em #7A7C11, 10em 10em .25em #7A7C11, 6em 13em .25em #7A7C11, 15em 15em .25em #7A7C11, 20em 10em .25em #7A7C11, 20em 2em .25em #7A7C11, 9em 18em .25em #7A7C11, 21em 12em .25em #7A7C11, 4em 4em .25em #7A7C11, 10em 15em .25em #7A7C11, 10em 14em .25em #7A7C11, 4em 6em .25em #7A7C11, 22em 10em .25em #7A7C11, 9em 19em .25em #7A7C11, 21em 19em .25em #7A7C11, 16em 3em .25em #7A7C11, 10em 19em .25em #7A7C11, 5em 8em .25em #7A7C11, 1em 9em .25em #7A7C11, 1em 21em .25em #7A7C11, 10em 3em .25em #7A7C11, 9em 9em .25em #7A7C11, 16em 18em .25em #7A7C11, 9em 10em .25em #7A7C11, 6em 22em .25em #7A7C11, 3em 18em .25em #7A7C11, 4em 12em .25em #7A7C11, 15em 4em .25em #7A7C11, 6em 5em .25em #7A7C11, 14em 14em .25em #7A7C11, 10em 5em .25em #7A7C11, 21em 4em .25em #7A7C11, 1em 9em .25em #7A7C11, 2em 6em .25em #7A7C11, 7em 15em .25em #7A7C11, 9em 11em .25em #7A7C11, 20em 6em .25em #7A7C11, 16em 16em .25em #7A7C11, 14em 10em .25em #7A7C11, 2em 11em .25em #7A7C11, 13em 19em .25em #7A7C11, 18em 6em .25em #7A7C11, 8em 4em .25em #7A7C11, 15em 13em .25em #7A7C11, 19em 13em .25em #7A7C11, 17em 10em .25em #7A7C11, 10em 10em .25em #7A7C11, 5em 3em .25em #7A7C11, 4em 13em .25em #7A7C11, 7em 11em .25em #7A7C11, 18em 4em .25em #7A7C11, 20em 5em .25em #7A7C11, 1em 9em .25em #7A7C11, 13em 18em .25em #7A7C11, 4em 11em .25em #7A7C11, 10em 13em .25em #7A7C11, 1em 2em .25em #7A7C11, 11em 8em .25em #7A7C11, 10em 8em .25em #7A7C11, 4em 22em .25em #7A7C11, 22em 6em .25em #7A7C11, 12em 5em .25em #7A7C11, 18em 11em .25em #7A7C11, 22em 18em .25em #7A7C11, 9em 6em .25em #7A7C11, 10em 2em .25em #7A7C11;
+                }
+
+            item3 > i:nth-of-type(6) i:nth-of-type(3) {
+                transform: translate3d(0em, -9em, 0);
+                width: 20em;
+                height: 20em;
+                /*background: red;*/
+                border-radius: 50%;
+                overflow: hidden;
+                -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+            }
+
+                item3 > i:nth-of-type(6) i:nth-of-type(3):after {
+                    width: .4em;
+                    height: .4em;
+                    transform: translate3d(-5em, -2em, 0);
+                    border-radius: 50%;
+                    box-shadow: 6em 9em .1em #ffe759, 3em 7em .25em #ffe759, 14em 19em .25em #ffe759, 17em 19em .25em #ffe759, 21em 16em .25em #ffe759, 14em 2em .25em #ffe759, 2em 17em .25em #ffe759, 11em 13em .25em #ffe759, 8em 10em .25em #ffe759, 16em 1em .25em #ffe759, 22em 13em .25em #ffe759, 11em 6em .25em #ffe759, 19em 2em .25em #ffe759, 9em 13em .25em #ffe759, 18em 19em .25em #ffe759, 13em 18em .25em #ffe759, 20em 15em .25em #ffe759, 17em 20em .25em #ffe759, 13em 22em .25em #ffe759, 7em 19em .25em #ffe759, 1em 12em .25em #ffe759, 16em 7em .25em #ffe759, 6em 21em .25em #ffe759, 20em 14em .25em #ffe759, 22em 21em .25em #ffe759, 9em 7em .25em #ffe759, 7em 11em .25em #ffe759, 5em 9em .25em #ffe759, 4em 4em .25em #ffe759, 15em 7em .25em #ffe759, 17em 9em .25em #ffe759, 20em 7em .25em #ffe759, 12em 8em .25em #ffe759, 11em 18em .25em #ffe759, 16em 19em .25em #ffe759, 21em 10em .25em #ffe759, 17em 18em .25em #ffe759, 5em 7em .25em #ffe759, 11em 9em .25em #ffe759, 16em 1em .25em #ffe759, 17em 9em .25em #ffe759, 6em 20em .25em #ffe759, 5em 21em .25em #ffe759, 6em 12em .25em #ffe759, 11em 15em .25em #ffe759, 7em 13em .25em #ffe759, 7em 13em .25em #ffe759, 18em 15em .25em #ffe759, 18em 22em .25em #ffe759, 19em 21em .25em #ffe759, 19em 12em .25em #ffe759, 4em 2em .25em #ffe759, 9em 14em .25em #ffe759, 10em 7em .25em #ffe759, 9em 11em .25em #ffe759, 17em 7em .25em #ffe759, 10em 8em .25em #ffe759, 10em 1em .25em #ffe759, 21em 8em .25em #ffe759, 10em 10em .25em #ffe759, 6em 10em .25em #ffe759, 7em 17em .25em #ffe759, 1em 22em .25em #ffe759, 9em 2em .25em #ffe759, 10em 19em .25em #ffe759, 22em 8em .25em #ffe759, 10em 16em .25em #ffe759, 1em 15em .25em #ffe759, 19em 16em .25em #ffe759, 21em 9em .25em #ffe759, 8em 12em .25em #ffe759, 16em 20em .25em #ffe759, 13em 22em .25em #ffe759, 4em 22em .25em #ffe759, 1em 16em .25em #ffe759, 4em 8em .25em #ffe759, 20em 17em .25em #ffe759, 20em 1em .25em #ffe759, 13em 12em .25em #ffe759, 19em 11em .25em #ffe759, 10em 21em .25em #ffe759, 21em 14em .25em #ffe759, 22em 22em .25em #ffe759, 5em 17em .25em #ffe759, 14em 19em .25em #ffe759, 10em 19em .25em #ffe759, 16em 1em .25em #ffe759, 19em 17em .25em #ffe759, 13em 15em .25em #ffe759, 13em 5em .25em #ffe759, 12em 10em .25em #ffe759, 3em 14em .25em #ffe759, 11em 2em .25em #ffe759, 22em 8em .25em #ffe759, 7em 8em .25em #ffe759, 20em 17em .25em #ffe759, 21em 10em .25em #ffe759, 1em 2em .25em #ffe759, 5em 9em .25em #ffe759, 18em 18em .25em #ffe759, 11em 20em .25em #ffe759, 20em 4em .25em #ffe759, 8em 19em .25em #ffe759, 21em 15em .25em #ffe759, 13em 1em .25em #ffe759, 3em 11em .25em #ffe759, 5em 10em .25em #ffe759, 15em 20em .25em #ffe759, 17em 13em .25em #ffe759, 4em 21em .25em #ffe759, 15em 15em .25em #ffe759, 17em 15em .25em #ffe759, 4em 10em .25em #ffe759, 3em 17em .25em #ffe759, 10em 6em .25em #ffe759, 3em 9em .25em #ffe759, 5em 11em .25em #ffe759, 11em 12em .25em #ffe759, 5em 15em .25em #ffe759, 21em 21em .25em #ffe759, 14em 5em .25em #ffe759, 9em 20em .25em #ffe759, 15em 14em .25em #ffe759, 4em 13em .25em #ffe759, 20em 11em .25em #ffe759, 14em 1em .25em #ffe759, 13em 20em .25em #ffe759, 2em 4em .25em #ffe759, 15em 3em .25em #ffe759, 7em 6em .25em #ffe759, 10em 22em .25em #ffe759, 7em 3em .25em #ffe759, 3em 3em .25em #ffe759, 9em 9em .25em #ffe759, 8em 2em .25em #ffe759, 4em 13em .25em #ffe759, 21em 1em .25em #ffe759, 14em 7em .25em #ffe759, 13em 16em .25em #ffe759, 4em 14em .25em #ffe759, 22em 15em .25em #ffe759, 18em 11em .25em #ffe759, 13em 4em .25em #ffe759, 4em 7em .25em #ffe759, 1em 18em .25em #ffe759, 16em 10em .25em #ffe759, 17em 5em .25em #ffe759, 18em 9em .25em #ffe759, 3em 9em .25em #ffe759, 12em 21em .25em #ffe759, 10em 19em .25em #ffe759, 6em 5em .25em #ffe759, 10em 22em .25em #ffe759, 15em 6em .25em #ffe759, 8em 13em .25em #ffe759, 11em 15em .25em #ffe759, 6em 4em .25em #ffe759, 3em 6em .25em #ffe759, 17em 16em .25em #ffe759, 12em 11em .25em #ffe759, 6em 6em .25em #ffe759, 6em 6em .25em #ffe759, 18em 18em .25em #ffe759, 13em 2em .25em #ffe759, 2em 8em .25em #ffe759, 6em 11em .25em #ffe759, 22em 16em .25em #ffe759, 14em 5em .25em #ffe759, 19em 9em .25em #ffe759, 19em 15em .25em #ffe759, 19em 21em .25em #ffe759, 9em 20em .25em #ffe759, 11em 16em .25em #ffe759, 19em 13em .25em #ffe759, 16em 16em .25em #ffe759, 10em 15em .25em #ffe759, 11em 15em .25em #ffe759, 6em 20em .25em #ffe759, 12em 15em .25em #ffe759, 2em 7em .25em #ffe759, 3em 19em .25em #ffe759, 17em 12em .25em #ffe759, 20em 21em .25em #ffe759, 2em 20em .25em #ffe759, 16em 22em .25em #ffe759, 12em 10em .25em #ffe759, 10em 6em .25em #ffe759, 4em 13em .25em #ffe759, 5em 20em .25em #ffe759, 1em 1em .25em #ffe759, 18em 8em .25em #ffe759, 16em 3em .25em #ffe759, 17em 14em .25em #ffe759, 12em 10em .25em #ffe759, 22em 21em .25em #ffe759, 14em 5em .25em #ffe759, 12em 13em .25em #ffe759, 18em 12em .25em #ffe759, 8em 11em .25em #ffe759, 2em 2em .25em #ffe759, 6em 18em .25em #ffe759, 5em 5em .25em #ffe759, 11em 17em .25em #ffe759, 6em 22em .25em #ffe759, 10em 7em .25em #ffe759, 13em 21em .25em #ffe759, 12em 21em .25em #ffe759, 2em 4em .25em #ffe759, 12em 6em .25em #ffe759, 3em 17em .25em #ffe759, 9em 4em .25em #ffe759, 8em 12em .25em #ffe759, 1em 2em .25em #ffe759, 6em 22em .25em #ffe759, 14em 15em .25em #ffe759, 7em 8em .25em #ffe759, 21em 12em .25em #ffe759, 21em 17em .25em #ffe759, 12em 16em .25em #ffe759, 17em 7em .25em #ffe759, 14em 4em .25em #ffe759, 2em 6em .25em #ffe759, 16em 12em .25em #ffe759, 22em 7em .25em #ffe759, 16em 18em .25em #ffe759, 22em 20em .25em #ffe759, 5em 19em .25em #ffe759, 7em 13em .25em #ffe759, 22em 11em .25em #ffe759, 2em 13em .25em #ffe759, 4em 12em .25em #ffe759, 6em 22em .25em #ffe759, 3em 3em .25em #ffe759, 10em 6em .25em #ffe759, 14em 9em .25em #ffe759, 15em 19em .25em #ffe759, 9em 14em .25em #ffe759, 12em 6em .25em #ffe759, 1em 2em .25em #ffe759, 18em 2em .25em #ffe759, 4em 8em .25em #ffe759, 13em 3em .25em #ffe759, 20em 10em .25em #ffe759, 14em 8em .25em #ffe759, 4em 6em .25em #ffe759, 18em 19em .25em #ffe759, 10em 12em .25em #ffe759, 19em 1em .25em #ffe759, 3em 11em .25em #ffe759, 5em 20em .25em #ffe759, 19em 17em .25em #ffe759, 6em 17em .25em #ffe759, 20em 22em .25em #ffe759, 9em 13em .25em #ffe759, 16em 16em .25em #ffe759, 10em 3em .25em #ffe759, 11em 13em .25em #ffe759, 4em 11em .25em #ffe759, 11em 10em .25em #ffe759, 1em 3em .25em #ffe759, 1em 15em .25em #ffe759, 15em 19em .25em #ffe759, 17em 3em .25em #ffe759, 3em 13em .25em #ffe759, 9em 14em .25em #ffe759, 5em 13em .25em #ffe759, 10em 10em .25em #ffe759, 5em 6em .25em #ffe759, 20em 15em .25em #ffe759, 8em 15em .25em #ffe759, 2em 1em .25em #ffe759, 16em 21em .25em #ffe759, 18em 15em .25em #ffe759, 8em 21em .25em #ffe759, 16em 20em .25em #ffe759, 19em 10em .25em #ffe759, 12em 8em .25em #ffe759, 12em 17em .25em #ffe759, 21em 7em .25em #ffe759, 13em 5em .25em #ffe759, 10em 5em .25em #ffe759, 13em 14em .25em #ffe759, 15em 1em .25em #ffe759, 12em 4em .25em #ffe759, 10em 12em .25em #ffe759, 15em 11em .25em #ffe759, 2em 10em .25em #ffe759, 8em 22em .25em #ffe759, 11em 7em .25em #ffe759, 11em 16em .25em #ffe759, 18em 15em .25em #ffe759, 9em 14em .25em #ffe759, 5em 15em .25em #ffe759, 12em 1em .25em #ffe759, 19em 11em .25em #ffe759, 12em 14em .25em #ffe759, 6em 9em .25em #ffe759, 20em 13em .25em #ffe759, 6em 5em .25em #ffe759, 20em 5em .25em #ffe759, 8em 20em .25em #ffe759, 7em 13em .25em #ffe759, 3em 19em .25em #ffe759, 11em 4em .25em #ffe759, 7em 7em .25em #ffe759, 12em 17em .25em #ffe759, 18em 21em .25em #ffe759, 16em 13em .25em #ffe759, 5em 5em .25em #ffe759, 3em 12em .25em #ffe759, 7em 6em .25em #ffe759, 14em 1em .25em #ffe759, 12em 21em .25em #ffe759, 12em 15em .25em #ffe759, 14em 19em .25em #ffe759, 4em 9em .25em #ffe759, 10em 15em .25em #ffe759, 14em 13em .25em #ffe759, 12em 21em .25em #ffe759, 10em 3em .25em #ffe759, 19em 16em .25em #ffe759, 16em 6em .25em #ffe759, 22em 2em .25em #ffe759, 8em 22em .25em #ffe759, 16em 17em .25em #ffe759, 17em 14em .25em #ffe759, 9em 13em .25em #ffe759, 21em 8em .25em #ffe759, 14em 4em .25em #ffe759, 16em 14em .25em #ffe759, 3em 10em .25em #ffe759, 3em 1em .25em #ffe759, 8em 19em .25em #ffe759, 19em 12em .25em #ffe759, 17em 3em .25em #ffe759, 14em 2em .25em #ffe759, 6em 3em .25em #ffe759, 22em 22em .25em #ffe759, 3em 22em .25em #ffe759, 7em 6em .25em #ffe759, 20em 2em .25em #ffe759, 18em 14em .25em #ffe759, 13em 8em .25em #ffe759, 15em 19em .25em #ffe759, 14em 16em .25em #ffe759, 13em 15em .25em #ffe759, 2em 2em .25em #ffe759, 17em 9em .25em #ffe759, 1em 3em .25em #ffe759, 12em 17em .25em #ffe759, 15em 3em .25em #ffe759, 19em 12em .25em #ffe759, 15em 9em .25em #ffe759, 21em 7em .25em #ffe759, 13em 11em .25em #ffe759, 8em 7em .25em #ffe759, 5em 13em .25em #ffe759, 7em 21em .25em #ffe759, 16em 2em .25em #ffe759, 2em 21em .25em #ffe759, 4em 12em .25em #ffe759, 13em 11em .25em #ffe759, 10em 17em .25em #ffe759, 5em 5em .25em #ffe759, 7em 17em .25em #ffe759, 21em 19em .25em #ffe759, 19em 10em .25em #ffe759, 15em 15em .25em #ffe759, 22em 17em .25em #ffe759, 9em 3em .25em #ffe759, 11em 16em .25em #ffe759, 3em 21em .25em #ffe759, 15em 14em .25em #ffe759, 12em 22em .25em #ffe759, 4em 22em .25em #ffe759, 11em 7em .25em #ffe759, 4em 12em .25em #ffe759, 21em 22em .25em #ffe759, 10em 21em .25em #ffe759, 1em 6em .25em #ffe759, 16em 20em .25em #ffe759, 16em 17em .25em #ffe759, 15em 9em .25em #ffe759, 18em 6em .25em #ffe759, 22em 9em .25em #ffe759, 2em 19em .25em #ffe759, 12em 19em .25em #ffe759, 7em 5em .25em #ffe759, 21em 3em .25em #ffe759, 20em 2em .25em #ffe759, 2em 4em .25em #ffe759, 6em 7em .25em #ffe759, 4em 10em .25em #ffe759, 7em 2em .25em #ffe759, 12em 5em .25em #ffe759, 18em 12em .25em #ffe759, 7em 7em .25em #ffe759, 14em 9em .25em #ffe759, 14em 10em .25em #ffe759, 17em 13em .25em #ffe759, 7em 20em .25em #ffe759, 11em 13em .25em #ffe759, 12em 4em .25em #ffe759, 17em 7em .25em #ffe759, 19em 21em .25em #ffe759, 5em 9em .25em #ffe759, 10em 21em .25em #ffe759, 1em 7em .25em #ffe759, 4em 3em .25em #ffe759, 10em 20em .25em #ffe759, 5em 16em .25em #ffe759, 8em 6em .25em #ffe759, 18em 19em .25em #ffe759, 1em 17em .25em #ffe759, 14em 10em .25em #ffe759, 12em 14em .25em #ffe759, 9em 10em .25em #ffe759, 9em 9em .25em #ffe759, 19em 12em .25em #ffe759, 21em 6em .25em #ffe759, 7em 11em .25em #ffe759, 4em 16em .25em #ffe759, 2em 1em .25em #ffe759, 4em 18em .25em #ffe759, 2em 5em .25em #ffe759, 9em 7em .25em #ffe759, 12em 1em .25em #ffe759, 21em 21em .25em #ffe759, 5em 18em .25em #ffe759, 13em 6em .25em #ffe759, 3em 9em .25em #ffe759, 14em 6em .25em #ffe759, 6em 3em .25em #ffe759, 17em 1em .25em #ffe759, 20em 18em .25em #ffe759, 13em 4em .25em #ffe759, 4em 14em .25em #ffe759, 10em 17em .25em #ffe759, 6em 7em .25em #ffe759, 18em 18em .25em #ffe759, 19em 22em .25em #ffe759, 15em 20em .25em #ffe759, 12em 2em .25em #ffe759, 4em 20em .25em #ffe759, 8em 20em .25em #ffe759, 5em 1em .25em #ffe759, 21em 10em .25em #ffe759, 5em 3em .25em #ffe759, 16em 15em .25em #ffe759, 3em 3em .25em #ffe759, 2em 9em .25em #ffe759, 13em 17em .25em #ffe759, 4em 15em .25em #ffe759, 13em 10em .25em #ffe759, 15em 22em .25em #ffe759, 12em 14em .25em #ffe759, 22em 5em .25em #ffe759, 2em 16em .25em #ffe759, 2em 15em .25em #ffe759, 2em 6em .25em #ffe759, 1em 14em .25em #ffe759, 4em 12em .25em #ffe759, 10em 21em .25em #ffe759, 13em 12em .25em #ffe759, 22em 5em .25em #ffe759, 12em 13em .25em #ffe759, 21em 8em .25em #ffe759, 5em 3em .25em #ffe759, 12em 3em .25em #ffe759, 2em 15em .25em #ffe759, 15em 8em .25em #ffe759, 20em 6em .25em #ffe759, 11em 22em .25em #ffe759, 2em 19em .25em #ffe759, 2em 20em .25em #ffe759, 18em 10em .25em #ffe759, 21em 15em .25em #ffe759, 4em 18em .25em #ffe759, 16em 17em .25em #ffe759, 8em 16em .25em #ffe759, 3em 11em .25em #ffe759, 14em 9em .25em #ffe759, 9em 3em .25em #ffe759, 22em 17em .25em #ffe759, 11em 7em .25em #ffe759, 4em 11em .25em #ffe759, 3em 20em .25em #ffe759, 7em 16em .25em #ffe759, 1em 22em .25em #ffe759, 10em 16em .25em #ffe759, 14em 2em .25em #ffe759, 22em 8em .25em #ffe759, 17em 11em .25em #ffe759, 5em 22em .25em #ffe759, 19em 1em .25em #ffe759, 22em 3em .25em #ffe759, 1em 21em .25em #ffe759, 3em 20em .25em #ffe759, 20em 5em .25em #ffe759, 9em 22em .25em #ffe759;
+                }
+
+                item3 > i:nth-of-type(6) i:nth-of-type(3):before {
+                    width: .5em;
+                    height: .5em;
+                    transform: translate3d(20.5em, 2.5em, 0) rotate(95deg);
+                    border-radius: 50%;
+                    box-shadow: 6em 9em .1em #ffe759, 3em 7em .25em #ffe759, 14em 19em .25em #ffe759, 17em 19em .25em #ffe759, 21em 16em .25em #ffe759, 14em 2em .25em #ffe759, 2em 17em .25em #ffe759, 11em 13em .25em #ffe759, 8em 10em .25em #ffe759, 16em 1em .25em #ffe759, 22em 13em .25em #ffe759, 11em 6em .25em #ffe759, 19em 2em .25em #ffe759, 9em 13em .25em #ffe759, 18em 19em .25em #ffe759, 13em 18em .25em #ffe759, 20em 15em .25em #ffe759, 17em 20em .25em #ffe759, 13em 22em .25em #ffe759, 7em 19em .25em #ffe759, 1em 12em .25em #ffe759, 16em 7em .25em #ffe759, 6em 21em .25em #ffe759, 20em 14em .25em #ffe759, 22em 21em .25em #ffe759, 9em 7em .25em #ffe759, 7em 11em .25em #ffe759, 5em 9em .25em #ffe759, 4em 4em .25em #ffe759, 15em 7em .25em #ffe759, 17em 9em .25em #ffe759, 20em 7em .25em #ffe759, 12em 8em .25em #ffe759, 11em 18em .25em #ffe759, 16em 19em .25em #ffe759, 21em 10em .25em #ffe759, 17em 18em .25em #ffe759, 5em 7em .25em #ffe759, 11em 9em .25em #ffe759, 16em 1em .25em #ffe759, 17em 9em .25em #ffe759, 6em 20em .25em #ffe759, 5em 21em .25em #ffe759, 6em 12em .25em #ffe759, 11em 15em .25em #ffe759, 7em 13em .25em #ffe759, 7em 13em .25em #ffe759, 18em 15em .25em #ffe759, 18em 22em .25em #ffe759, 19em 21em .25em #ffe759, 19em 12em .25em #ffe759, 4em 2em .25em #ffe759, 9em 14em .25em #ffe759, 10em 7em .25em #ffe759, 9em 11em .25em #ffe759, 17em 7em .25em #ffe759, 10em 8em .25em #ffe759, 10em 1em .25em #ffe759, 21em 8em .25em #ffe759, 10em 10em .25em #ffe759, 6em 10em .25em #ffe759, 7em 17em .25em #ffe759, 1em 22em .25em #ffe759, 9em 2em .25em #ffe759, 10em 19em .25em #ffe759, 22em 8em .25em #ffe759, 10em 16em .25em #ffe759, 1em 15em .25em #ffe759, 19em 16em .25em #ffe759, 21em 9em .25em #ffe759, 8em 12em .25em #ffe759, 16em 20em .25em #ffe759, 13em 22em .25em #ffe759, 4em 22em .25em #ffe759, 1em 16em .25em #ffe759, 4em 8em .25em #ffe759, 20em 17em .25em #ffe759, 20em 1em .25em #ffe759, 13em 12em .25em #ffe759, 19em 11em .25em #ffe759, 10em 21em .25em #ffe759, 21em 14em .25em #ffe759, 22em 22em .25em #ffe759, 5em 17em .25em #ffe759, 14em 19em .25em #ffe759, 10em 19em .25em #ffe759, 16em 1em .25em #ffe759, 19em 17em .25em #ffe759, 13em 15em .25em #ffe759, 13em 5em .25em #ffe759, 12em 10em .25em #ffe759, 3em 14em .25em #ffe759, 11em 2em .25em #ffe759, 22em 8em .25em #ffe759, 7em 8em .25em #ffe759, 20em 17em .25em #ffe759, 21em 10em .25em #ffe759, 1em 2em .25em #ffe759, 5em 9em .25em #ffe759, 18em 18em .25em #ffe759, 11em 20em .25em #ffe759, 20em 4em .25em #ffe759, 8em 19em .25em #ffe759, 21em 15em .25em #ffe759, 13em 1em .25em #ffe759, 3em 11em .25em #ffe759, 5em 10em .25em #ffe759, 15em 20em .25em #ffe759, 17em 13em .25em #ffe759, 4em 21em .25em #ffe759, 15em 15em .25em #ffe759, 17em 15em .25em #ffe759, 4em 10em .25em #ffe759, 3em 17em .25em #ffe759, 10em 6em .25em #ffe759, 3em 9em .25em #ffe759, 5em 11em .25em #ffe759, 11em 12em .25em #ffe759, 5em 15em .25em #ffe759, 21em 21em .25em #ffe759, 14em 5em .25em #ffe759, 9em 20em .25em #ffe759, 15em 14em .25em #ffe759, 4em 13em .25em #ffe759, 20em 11em .25em #ffe759, 14em 1em .25em #ffe759, 13em 20em .25em #ffe759, 2em 4em .25em #ffe759, 15em 3em .25em #ffe759, 7em 6em .25em #ffe759, 10em 22em .25em #ffe759, 7em 3em .25em #ffe759, 3em 3em .25em #ffe759, 9em 9em .25em #ffe759, 8em 2em .25em #ffe759, 4em 13em .25em #ffe759, 21em 1em .25em #ffe759, 14em 7em .25em #ffe759, 13em 16em .25em #ffe759, 4em 14em .25em #ffe759, 22em 15em .25em #ffe759, 18em 11em .25em #ffe759, 13em 4em .25em #ffe759, 4em 7em .25em #ffe759, 1em 18em .25em #ffe759, 16em 10em .25em #ffe759, 17em 5em .25em #ffe759, 18em 9em .25em #ffe759, 3em 9em .25em #ffe759, 12em 21em .25em #ffe759, 10em 19em .25em #ffe759, 6em 5em .25em #ffe759, 10em 22em .25em #ffe759, 15em 6em .25em #ffe759, 8em 13em .25em #ffe759, 11em 15em .25em #ffe759, 6em 4em .25em #ffe759, 3em 6em .25em #ffe759, 17em 16em .25em #ffe759, 12em 11em .25em #ffe759, 6em 6em .25em #ffe759, 6em 6em .25em #ffe759, 18em 18em .25em #ffe759, 13em 2em .25em #ffe759, 2em 8em .25em #ffe759, 6em 11em .25em #ffe759, 22em 16em .25em #ffe759, 14em 5em .25em #ffe759, 19em 9em .25em #ffe759, 19em 15em .25em #ffe759, 19em 21em .25em #ffe759, 9em 20em .25em #ffe759, 11em 16em .25em #ffe759, 19em 13em .25em #ffe759, 16em 16em .25em #ffe759, 10em 15em .25em #ffe759, 11em 15em .25em #ffe759, 6em 20em .25em #ffe759, 12em 15em .25em #ffe759, 2em 7em .25em #ffe759, 3em 19em .25em #ffe759, 17em 12em .25em #ffe759, 20em 21em .25em #ffe759, 2em 20em .25em #ffe759, 16em 22em .25em #ffe759, 12em 10em .25em #ffe759, 10em 6em .25em #ffe759, 4em 13em .25em #ffe759, 5em 20em .25em #ffe759, 1em 1em .25em #ffe759, 18em 8em .25em #ffe759, 16em 3em .25em #ffe759, 17em 14em .25em #ffe759, 12em 10em .25em #ffe759, 22em 21em .25em #ffe759, 14em 5em .25em #ffe759, 12em 13em .25em #ffe759, 18em 12em .25em #ffe759, 8em 11em .25em #ffe759, 2em 2em .25em #ffe759, 6em 18em .25em #ffe759, 5em 5em .25em #ffe759, 11em 17em .25em #ffe759, 6em 22em .25em #ffe759, 10em 7em .25em #ffe759, 13em 21em .25em #ffe759, 12em 21em .25em #ffe759, 2em 4em .25em #ffe759, 12em 6em .25em #ffe759, 3em 17em .25em #ffe759, 9em 4em .25em #ffe759, 8em 12em .25em #ffe759, 1em 2em .25em #ffe759, 6em 22em .25em #ffe759, 14em 15em .25em #ffe759, 7em 8em .25em #ffe759, 21em 12em .25em #ffe759, 21em 17em .25em #ffe759, 12em 16em .25em #ffe759, 17em 7em .25em #ffe759, 14em 4em .25em #ffe759, 2em 6em .25em #ffe759, 16em 12em .25em #ffe759, 22em 7em .25em #ffe759, 16em 18em .25em #ffe759, 22em 20em .25em #ffe759, 5em 19em .25em #ffe759, 7em 13em .25em #ffe759, 22em 11em .25em #ffe759, 2em 13em .25em #ffe759, 4em 12em .25em #ffe759, 6em 22em .25em #ffe759, 3em 3em .25em #ffe759, 10em 6em .25em #ffe759, 14em 9em .25em #ffe759, 15em 19em .25em #ffe759, 9em 14em .25em #ffe759, 12em 6em .25em #ffe759, 1em 2em .25em #ffe759, 18em 2em .25em #ffe759, 4em 8em .25em #ffe759, 13em 3em .25em #ffe759, 20em 10em .25em #ffe759, 14em 8em .25em #ffe759, 4em 6em .25em #ffe759, 18em 19em .25em #ffe759, 10em 12em .25em #ffe759, 19em 1em .25em #ffe759, 3em 11em .25em #ffe759, 5em 20em .25em #ffe759, 19em 17em .25em #ffe759, 6em 17em .25em #ffe759, 20em 22em .25em #ffe759, 9em 13em .25em #ffe759, 16em 16em .25em #ffe759, 10em 3em .25em #ffe759, 11em 13em .25em #ffe759, 4em 11em .25em #ffe759, 11em 10em .25em #ffe759, 1em 3em .25em #ffe759, 1em 15em .25em #ffe759, 15em 19em .25em #ffe759, 17em 3em .25em #ffe759, 3em 13em .25em #ffe759, 9em 14em .25em #ffe759, 5em 13em .25em #ffe759, 10em 10em .25em #ffe759, 5em 6em .25em #ffe759, 20em 15em .25em #ffe759, 8em 15em .25em #ffe759, 2em 1em .25em #ffe759, 16em 21em .25em #ffe759, 18em 15em .25em #ffe759, 8em 21em .25em #ffe759, 16em 20em .25em #ffe759, 19em 10em .25em #ffe759, 12em 8em .25em #ffe759, 12em 17em .25em #ffe759, 21em 7em .25em #ffe759, 13em 5em .25em #ffe759, 10em 5em .25em #ffe759, 13em 14em .25em #ffe759, 15em 1em .25em #ffe759, 12em 4em .25em #ffe759, 10em 12em .25em #ffe759, 15em 11em .25em #ffe759, 2em 10em .25em #ffe759, 8em 22em .25em #ffe759, 11em 7em .25em #ffe759, 11em 16em .25em #ffe759, 18em 15em .25em #ffe759, 9em 14em .25em #ffe759, 5em 15em .25em #ffe759, 12em 1em .25em #ffe759, 19em 11em .25em #ffe759, 12em 14em .25em #ffe759, 6em 9em .25em #ffe759, 20em 13em .25em #ffe759, 6em 5em .25em #ffe759, 20em 5em .25em #ffe759, 8em 20em .25em #ffe759, 7em 13em .25em #ffe759, 3em 19em .25em #ffe759, 11em 4em .25em #ffe759, 7em 7em .25em #ffe759, 12em 17em .25em #ffe759, 18em 21em .25em #ffe759, 16em 13em .25em #ffe759, 5em 5em .25em #ffe759, 3em 12em .25em #ffe759, 7em 6em .25em #ffe759, 14em 1em .25em #ffe759, 12em 21em .25em #ffe759, 12em 15em .25em #ffe759, 14em 19em .25em #ffe759, 4em 9em .25em #ffe759, 10em 15em .25em #ffe759, 14em 13em .25em #ffe759, 12em 21em .25em #ffe759, 10em 3em .25em #ffe759, 19em 16em .25em #ffe759, 16em 6em .25em #ffe759, 22em 2em .25em #ffe759, 8em 22em .25em #ffe759, 16em 17em .25em #ffe759, 17em 14em .25em #ffe759, 9em 13em .25em #ffe759, 21em 8em .25em #ffe759, 14em 4em .25em #ffe759, 16em 14em .25em #ffe759, 3em 10em .25em #ffe759, 3em 1em .25em #ffe759, 8em 19em .25em #ffe759, 19em 12em .25em #ffe759, 17em 3em .25em #ffe759, 14em 2em .25em #ffe759, 6em 3em .25em #ffe759, 22em 22em .25em #ffe759, 3em 22em .25em #ffe759, 7em 6em .25em #ffe759, 20em 2em .25em #ffe759, 18em 14em .25em #ffe759, 13em 8em .25em #ffe759, 15em 19em .25em #ffe759, 14em 16em .25em #ffe759, 13em 15em .25em #ffe759, 2em 2em .25em #ffe759, 17em 9em .25em #ffe759, 1em 3em .25em #ffe759, 12em 17em .25em #ffe759, 15em 3em .25em #ffe759, 19em 12em .25em #ffe759, 15em 9em .25em #ffe759, 21em 7em .25em #ffe759, 13em 11em .25em #ffe759, 8em 7em .25em #ffe759, 5em 13em .25em #ffe759, 7em 21em .25em #ffe759, 16em 2em .25em #ffe759, 2em 21em .25em #ffe759, 4em 12em .25em #ffe759, 13em 11em .25em #ffe759, 10em 17em .25em #ffe759, 5em 5em .25em #ffe759, 7em 17em .25em #ffe759, 21em 19em .25em #ffe759, 19em 10em .25em #ffe759, 15em 15em .25em #ffe759, 22em 17em .25em #ffe759, 9em 3em .25em #ffe759, 11em 16em .25em #ffe759, 3em 21em .25em #ffe759, 15em 14em .25em #ffe759, 12em 22em .25em #ffe759, 4em 22em .25em #ffe759, 11em 7em .25em #ffe759, 4em 12em .25em #ffe759, 21em 22em .25em #ffe759, 10em 21em .25em #ffe759, 1em 6em .25em #ffe759, 16em 20em .25em #ffe759, 16em 17em .25em #ffe759, 15em 9em .25em #ffe759, 18em 6em .25em #ffe759, 22em 9em .25em #ffe759, 2em 19em .25em #ffe759, 12em 19em .25em #ffe759, 7em 5em .25em #ffe759, 21em 3em .25em #ffe759, 20em 2em .25em #ffe759, 2em 4em .25em #ffe759, 6em 7em .25em #ffe759, 4em 10em .25em #ffe759, 7em 2em .25em #ffe759, 12em 5em .25em #ffe759, 18em 12em .25em #ffe759, 7em 7em .25em #ffe759, 14em 9em .25em #ffe759, 14em 10em .25em #ffe759, 17em 13em .25em #ffe759, 7em 20em .25em #ffe759, 11em 13em .25em #ffe759, 12em 4em .25em #ffe759, 17em 7em .25em #ffe759, 19em 21em .25em #ffe759, 5em 9em .25em #ffe759, 10em 21em .25em #ffe759, 1em 7em .25em #ffe759, 4em 3em .25em #ffe759, 10em 20em .25em #ffe759, 5em 16em .25em #ffe759, 8em 6em .25em #ffe759, 18em 19em .25em #ffe759, 1em 17em .25em #ffe759, 14em 10em .25em #ffe759, 12em 14em .25em #ffe759, 9em 10em .25em #ffe759, 9em 9em .25em #ffe759, 19em 12em .25em #ffe759, 21em 6em .25em #ffe759, 7em 11em .25em #ffe759, 4em 16em .25em #ffe759, 2em 1em .25em #ffe759, 4em 18em .25em #ffe759, 2em 5em .25em #ffe759, 9em 7em .25em #ffe759, 12em 1em .25em #ffe759, 21em 21em .25em #ffe759, 5em 18em .25em #ffe759, 13em 6em .25em #ffe759, 3em 9em .25em #ffe759, 14em 6em .25em #ffe759, 6em 3em .25em #ffe759, 17em 1em .25em #ffe759, 20em 18em .25em #ffe759, 13em 4em .25em #ffe759, 4em 14em .25em #ffe759, 10em 17em .25em #ffe759, 6em 7em .25em #ffe759, 18em 18em .25em #ffe759, 19em 22em .25em #ffe759, 15em 20em .25em #ffe759, 12em 2em .25em #ffe759, 4em 20em .25em #ffe759, 8em 20em .25em #ffe759, 5em 1em .25em #ffe759, 21em 10em .25em #ffe759, 5em 3em .25em #ffe759, 16em 15em .25em #ffe759, 3em 3em .25em #ffe759, 2em 9em .25em #ffe759, 13em 17em .25em #ffe759, 4em 15em .25em #ffe759, 13em 10em .25em #ffe759, 15em 22em .25em #ffe759, 12em 14em .25em #ffe759, 22em 5em .25em #ffe759, 2em 16em .25em #ffe759, 2em 15em .25em #ffe759, 2em 6em .25em #ffe759, 1em 14em .25em #ffe759, 4em 12em .25em #ffe759, 10em 21em .25em #ffe759, 13em 12em .25em #ffe759, 22em 5em .25em #ffe759, 12em 13em .25em #ffe759, 21em 8em .25em #ffe759, 5em 3em .25em #ffe759, 12em 3em .25em #ffe759, 2em 15em .25em #ffe759, 15em 8em .25em #ffe759, 20em 6em .25em #ffe759, 11em 22em .25em #ffe759, 2em 19em .25em #ffe759, 2em 20em .25em #ffe759, 18em 10em .25em #ffe759, 21em 15em .25em #ffe759, 4em 18em .25em #ffe759, 16em 17em .25em #ffe759, 8em 16em .25em #ffe759, 3em 11em .25em #ffe759, 14em 9em .25em #ffe759, 9em 3em .25em #ffe759, 22em 17em .25em #ffe759, 11em 7em .25em #ffe759, 4em 11em .25em #ffe759, 3em 20em .25em #ffe759, 7em 16em .25em #ffe759, 1em 22em .25em #ffe759, 10em 16em .25em #ffe759, 14em 2em .25em #ffe759, 22em 8em .25em #ffe759, 17em 11em .25em #ffe759, 5em 22em .25em #ffe759, 19em 1em .25em #ffe759, 22em 3em .25em #ffe759, 1em 21em .25em #ffe759, 3em 20em .25em #ffe759, 20em 5em .25em #ffe759, 9em 22em .25em #ffe759;
+                }
+
+            item3 > i:nth-of-type(6) i:nth-of-type(4) {
+                transform: translate3d(-0.5em, -10.5em, 0) rotate(-40deg);
+                width: 20em;
+                height: 20em;
+            }
+
+                item3 > i:nth-of-type(6) i:nth-of-type(4):before {
+                    opacity: .3;
+                    width: 1em;
+                    height: .6em;
+                    transform: translate3d(3.5em, 7.5em, 0) rotate(20deg);
+                    border-radius: 50%;
+                    background: #98983d;
+                    box-shadow: 0 1em 0 #98983d, -0.8em 0.2em 0 #98983d, -1.1em 1.2em 0 #98983d, -0.5em 2.2em 0 #98983d, 0.5em 3em 0 #98983d, -1.1em 3.5em 0 #98983d, 0.1em 4em 0 #98983d, -1.2em 4.5em 0 #98983d, 0.2em 5.2em 0 #98983d, -1em 5.3em 0 #98983d, 0.3em 6em 0 #98983d;
+                }
+
+                item3 > i:nth-of-type(6) i:nth-of-type(4):after {
+                    opacity: .5;
+                    width: 1em;
+                    height: .6em;
+                    transform: translate3d(3.85em, 9em, 0) rotate(20deg);
+                    border-radius: 50%;
+                    background: #98983d;
+                    box-shadow: 0 1em 0 #98983d, -0.8em 0.2em 0 #98983d, -1.1em 1.2em 0 #98983d, -0.5em 2.2em 0 #98983d, 0.5em 3em 0 #98983d, -1.1em 3.5em 0 #98983d, 0.1em 4em 0 #98983d, -1.2em 4.5em 0 #98983d, 0.2em 5.2em 0 #98983d, -1em 5.3em 0 #98983d, 0.3em 6em 0 #98983d;
+                }
+
+        item3 > i:nth-of-type(8) {
+            overflow: hidden;
+            transform: translate3d(42em, 77em, 0) rotate(61deg);
+            width: 6.5em;
+            height: 6em;
+            border-radius: 3em;
+        }
+
+            item3 > i:nth-of-type(8):before {
+                width: 3em;
+                height: 3em;
+                background: linear-gradient(to right bottom, #5F5118, rgba(0, 0, 0, 0));
+                transform: translate3d(4.5em, 3.5em, 0);
+                border-radius: 50%;
+            }
+
+            item3 > i:nth-of-type(8):after {
+                width: 2em;
+                height: 2em;
+                transform: translate3d(2em, 4.5em, 0);
+                border-radius: 50%;
+                box-shadow: inset -.4em .6em .5em -.6em #5F5118;
+            }
+
+        item3 > i:nth-of-type(5) {
+            transform: translate3d(42em, 75em, -20em) rotate(-5deg);
+            width: 6em;
+            height: 6em;
+            background: #CACC70;
+            border-radius: 1em;
+        }
+
+        item3 > i:nth-of-type(7) {
+            transform: translate3d(42em, 79.5em, 0) rotate(55deg);
+            width: 2em;
+            height: 1em;
+            border-radius: .5em;
+            box-shadow: inset .5em .3em .5em 0 #B5A852;
+        }
+
+        item3 > i:nth-of-type(4) {
+            transform: translate3d(48em, 63em, 0) rotate(47deg);
+            width: 22em;
+            height: 22em;
+            transform-origin: 0 0;
+        }
+
+            item3 > i:nth-of-type(4):before {
+                width: 5em;
+                height: 5em;
+                background: #FFFDFC;
+                transform: translate3d(0, 3em, 0);
+                transform-origin: 0 0;
+                border-radius: .5em 0 0 3em;
+            }
+
+            item3 > i:nth-of-type(4):after {
+                width: 5em;
+                height: 5em;
+                background: #141218;
+                transform: translate3d(17em, 3em, 0);
+                transform-origin: 0 0;
+                border-radius: 0 .5em 3em 0;
+            }
+
+        item3 > i:nth-of-type(9) {
+            transform: translate3d(48em, 62.95em, 0) rotate(47deg) scaleY(0.25);
+            width: 22em;
+            height: 22em;
+            transform-origin: 0 0;
+            overflow: hidden;
+        }
+
+            item3 > i:nth-of-type(9):before {
+                width: 11em;
+                height: 3em;
+                transform: translate3d(11em, 11em, 0);
+                border-radius: 1em;
+                background: #8a806b;
+                transform-origin: 0 0;
+                box-shadow: -10.5em 0 0.25em #8a806b, -11em 0 0 #B1A855, 0 0 0.25em #8a806b;
+                border-right: 0.5em solid #6B6946;
+            }
+
+            item3 > i:nth-of-type(9):after {
+                width: 11em;
+                height: 3em;
+                transform: translate3d(11em, 11em, 0) rotate(10deg);
+                border-radius: 1em;
+                background: #978d78;
+                transform-origin: 0 0;
+                box-shadow: -10.5em 0 0.25em #978d78, -11em 0 0 #B1A855, 0 0 0.25em #978d78;
+                border-right: 0.5em solid #6B6946;
+            }
+
+            item3 > i:nth-of-type(9) i:nth-of-type(1) {
+                width: 10.9em;
+                height: 3em;
+                transform: translate3d(11em, 11em, 0) rotate(20deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #a29987;
+                transform-origin: 0 0;
+                box-shadow: -10.5em 0 0.25em #a29987, -11em 0 0 #6B6946, 0 0 0.25em #a29987;
+                border-right: 0.5em solid #6B6946;
+            }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(1):before {
+                    width: 10.8em;
+                    height: 3em;
+                    transform: rotate(10deg);
+                    border-radius: 1em;
+                    background: #ada595;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #ada595, -11em 0 0 #6B6946, 0 0 0.25em #ada595;
+                    border-right: 0.5em solid #6B6946;
+                }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(1):after {
+                    width: 10.7em;
+                    height: 3em;
+                    transform: rotate(20deg);
+                    border-radius: 1em;
+                    background: #a29987;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #a29987, -11em 0 0 #6B6946, 0 0 0.25em #a29987;
+                    border-right: 0.5em solid #6B6946;
+                }
+
+            item3 > i:nth-of-type(9) i:nth-of-type(2) {
+                width: 10.7em;
+                height: 3em;
+                transform: translate3d(11em, 11em, 0) rotate(50deg);
+                border-radius: 1em;
+                background: #978d78;
+                transform-origin: 0 0;
+                box-shadow: -10.5em 0 0.25em #978d78, -11em 0 0 #6B6946, 0 0 0.25em #978d78;
+                border-right: 0.5em solid #6B6946;
+            }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(2):before {
+                    width: 10.8em;
+                    height: 3em;
+                    transform: rotate(10deg);
+                    border-radius: 1em;
+                    background: #8a806b;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #8a806b, -11em 0 0 #6B6946, 0 0 0.25em #8a806b;
+                    border-right: 0.5em solid #6B6946;
+                }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(2):after {
+                    width: 10.9em;
+                    height: 3em;
+                    transform: rotate(20deg);
+                    border-radius: 1em;
+                    background: #7c7360;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #7c7360, -11em 0 0 #6B6946, 0 0 0.25em #7c7360;
+                    border-right: 0.5em solid #6B6946;
+                }
+
+            item3 > i:nth-of-type(9) i:nth-of-type(3) {
+                width: 11em;
+                height: 3em;
+                transform: translate3d(11em, 11em, 0) rotate(80deg);
+                border-radius: 1em;
+                background: #7c7360;
+                transform-origin: 0 0;
+                box-shadow: -10.5em 0 0.25em #7c7360, -11em 0 0 #6B6946, 0 0 0.25em #7c7360;
+                border-right: 0.5em solid #6B6946;
+            }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(3):before {
+                    width: 11em;
+                    height: 3em;
+                    transform: rotate(10deg);
+                    border-radius: 1em;
+                    background: #7c7360;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #7c7360, -11em 0 0 #6B6946, 0 0 0.25em #7c7360;
+                    border-right: 0.5em solid #6B6946;
+                }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(3):after {
+                    width: 11em;
+                    height: 3em;
+                    transform: rotate(20deg);
+                    border-radius: 1em;
+                    background: #777250;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #7c7360, -11em 0 0 #6B6946, 0 0 0.25em #7c7360;
+                    border-right: 0.5em solid #6B6946;
+                }
+
+            item3 > i:nth-of-type(9) i:nth-of-type(4) {
+                width: 11em;
+                height: 3em;
+                transform: translate3d(11em, 11em, 0) rotate(110deg);
+                border-radius: 1em;
+                background: #908670;
+                transform-origin: 0 0;
+                box-shadow: -10.5em 0 0.25em #908670, -11em 0 0 #6B6946, 0 0 0.25em #908670;
+                border-right: 0.5em solid #6B6946;
+            }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(4):before {
+                    width: 11em;
+                    height: 3em;
+                    transform: rotate(10deg);
+                    border-radius: 1em;
+                    background: #a29987;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #a29987, -11em 0 0 #6B6946, 0 0 0.25em #a29987;
+                    border-right: 0.5em solid #B1A855;
+                }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(4):after {
+                    width: 11em;
+                    height: 3em;
+                    transform: rotate(20deg);
+                    border-radius: 1em;
+                    background: #928873;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #928873, -11em 0 0 #6B6946, 0 0 0.25em #928873;
+                    border-right: 0.5em solid #B1A855;
+                }
+
+            item3 > i:nth-of-type(9) i:nth-of-type(5) {
+                width: 11em;
+                height: 3em;
+                transform: translate3d(11em, 11em, 0) rotate(140deg);
+                border-radius: 1em;
+                background: #7c7360;
+                transform-origin: 0 0;
+                box-shadow: -10.5em 0 0.25em #7c7360, -11em 0 0 #6B6946, 0 0 0.25em #7c7360;
+                border-right: 0.5em solid #B1A855;
+            }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(5):before {
+                    width: 11em;
+                    height: 3em;
+                    transform: rotate(10deg);
+                    border-radius: 1em;
+                    background: #7c7360;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #7c7360, -11em 0 0 #6B6946, 0 0 0.25em #7c7360;
+                    border-right: 0.5em solid #B1A855;
+                }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(5):after {
+                    width: 11em;
+                    height: 3em;
+                    transform: rotate(20deg);
+                    border-radius: 1em;
+                    background: #7c7360;
+                    transform-origin: 0 0;
+                    box-shadow: -10.5em 0 0.25em #7c7360, -11em 0 0 #6B6946, 0 0 0.25em #7c7360;
+                    border-right: 0.5em solid #B1A855;
+                }
+
+            item3 > i:nth-of-type(9) i:nth-of-type(6) {
+                width: 11em;
+                height: 3em;
+                transform: translate3d(11em, 11em, 0) rotate(-10deg);
+                border-radius: 1em;
+                background: #7c7360;
+                transform-origin: 0 0;
+                border-right: 0.5em solid #6B6946;
+            }
+
+                item3 > i:nth-of-type(9) i:nth-of-type(6):before {
+                    width: 11em;
+                    height: 3em;
+                    transform: rotate(-10deg);
+                    border-radius: 1em;
+                    background: #7c7360;
+                    transform-origin: 0 0;
+                    border-right: 0.5em solid #6B6946;
+                }
+
+        item3 > i:nth-of-type(10) {
+            width: 22em;
+            height: 22em;
+            transform: translate3d(48em, 63em, 0) rotate(47deg) scaleY(0.24) scaleX(0.95);
+            transform-origin: 0 0;
+            filter: contrast(1.2);
+        }
+
+            item3 > i:nth-of-type(10):before {
+                width: 9em;
+                height: 1.5em;
+                transform: translate3d(12.5em, 10em, 0);
+                border-radius: .75em;
+                background: #3e3c20;
+                transform-origin: 100% 100%;
+                box-shadow: -11em 0 0 #3e3c20, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+            }
+
+            item3 > i:nth-of-type(10):after {
+                width: 9em;
+                height: 1.5em;
+                transform: translate3d(12.5em, 10.5em, 0) rotate(10deg);
+                border-radius: .75em;
+                background: #34321b;
+                transform-origin: 0 0;
+                box-shadow: -11em 0 0 #524f2b, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+            }
+
+            item3 > i:nth-of-type(10) i:nth-of-type(1) {
+                width: 9em;
+                height: 1.5em;
+                transform: translate3d(12.5em, 11em, 0) rotate(20deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #3c3a1f;
+                transform-origin: 0 0;
+                box-shadow: -11em 0 0 #3c3a1f, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(1):before {
+                    width: 9em;
+                    height: 1.5em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #4e4b29;
+                    transform-origin: 100% 100%;
+                    box-shadow: -11em 0 0 #4e4b29, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(1):after {
+                    width: 9em;
+                    height: 1.5em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #424023;
+                    transform-origin: 0 0;
+                    box-shadow: -11em 0 0 #424023, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+            item3 > i:nth-of-type(10) i:nth-of-type(2) {
+                width: 8.5em;
+                height: 1.5em;
+                transform: translate3d(12em, 12em, 0) rotate(50deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #484525;
+                transform-origin: 0 0;
+                box-shadow: -11em 0 0 #484525, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(2):before {
+                    width: 8em;
+                    height: 1.5em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #4d4a28;
+                    transform-origin: 100% 100%;
+                    box-shadow: -11em 0 0 #4d4a28, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(2):after {
+                    width: 8em;
+                    height: 1.5em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #4f4d29;
+                    transform-origin: 0 0;
+                    box-shadow: -11em 0 0 #4f4d29, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+            item3 > i:nth-of-type(10) i:nth-of-type(3) {
+                width: 8em;
+                height: 1.5em;
+                transform: translate3d(11em, 12em, 0) rotate(80deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #58552d;
+                transform-origin: 0 0;
+                box-shadow: -11em 0 0 #58552d, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(3):before {
+                    width: 8em;
+                    height: 1.5em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #4f4d29;
+                    transform-origin: 100% 100%;
+                    box-shadow: -11em 0 0 #4f4d29, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(3):after {
+                    width: 8em;
+                    height: 1.5em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #4f4d28;
+                    transform-origin: 0 0;
+                    box-shadow: -11em 0 0 #4f4d28, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+            item3 > i:nth-of-type(10) i:nth-of-type(4) {
+                width: 8em;
+                height: 1.5em;
+                transform: translate3d(10em, 12em, 0) rotate(110deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #4a4724;
+                transform-origin: 0 0;
+                box-shadow: -11em 0 0 #4a4724, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(4):before {
+                    width: 8em;
+                    height: 1.5em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #4a4721;
+                    transform-origin: 100% 100%;
+                    box-shadow: -11em 0 0 #4a4721, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(4):after {
+                    width: 8em;
+                    height: 1.5em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #413f1e;
+                    transform-origin: 0 0;
+                    box-shadow: -11em 0 0 #413f1e, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+            item3 > i:nth-of-type(10) i:nth-of-type(5) {
+                width: 8.5em;
+                height: 1.5em;
+                transform: translate3d(10em, 12em, 0) rotate(140deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #403d1e;
+                transform-origin: 0 0;
+                box-shadow: -11em 0 0 #403d1e, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(5):before {
+                    width: 8.5em;
+                    height: 1.5em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #444122;
+                    transform-origin: 100% 100%;
+                    box-shadow: -11em 0 0 #444122, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(10) i:nth-of-type(5):after {
+                    width: 8.5em;
+                    height: 1.5em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #4a4827;
+                    transform-origin: 0 0;
+                    box-shadow: -11em 0 0 #4a4827, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -11em 0 0.5em #51422A;
+                }
+
+        item3 > i:nth-of-type(11) {
+            width: 22em;
+            height: 22em;
+            opacity: .75;
+            transform: translate3d(48em, 63em, 0) rotate(47deg) scaleY(0.24) scaleX(0.95);
+            transform-origin: 0 0;
+            filter: contrast(1.5);
+        }
+
+            item3 > i:nth-of-type(11):before {
+                width: 4em;
+                height: .75em;
+                transform: translate3d(12em, 10em, 0);
+                border-radius: .75em;
+                background: #3e3c20;
+                transform-origin: 100% 100%;
+                box-shadow: -6em 0 0 #3e3c20, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+            }
+
+            item3 > i:nth-of-type(11):after {
+                width: 4em;
+                height: .75em;
+                transform: translate3d(13.5em, 10.5em, 0) rotate(10deg);
+                border-radius: .75em;
+                background: #34321b;
+                transform-origin: 0 0;
+                box-shadow: -6em 0 0 #524f2b, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+            }
+
+            item3 > i:nth-of-type(11) i:nth-of-type(1) {
+                width: 4em;
+                height: .75em;
+                transform: translate3d(12em, 11em, 0) rotate(20deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #3c3a1f;
+                transform-origin: 0 0;
+                box-shadow: -6em 0 0 #3c3a1f, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(1):before {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #4e4b29;
+                    transform-origin: 100% 100%;
+                    box-shadow: -6em 0 0 #4e4b29, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(1):after {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #424023;
+                    transform-origin: 0 0;
+                    box-shadow: -6em 0 0 #424023, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+            item3 > i:nth-of-type(11) i:nth-of-type(2) {
+                width: 4em;
+                height: .75em;
+                transform: translate3d(11em, 12em, 0) rotate(50deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #484525;
+                transform-origin: 0 0;
+                box-shadow: -6em 0 0 #484525, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(2):before {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #4d4a28;
+                    transform-origin: 100% 100%;
+                    box-shadow: -6em 0 0 #4d4a28, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(2):after {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #4f4d29;
+                    transform-origin: 0 0;
+                    box-shadow: -6em 0 0 #4f4d29, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+            item3 > i:nth-of-type(11) i:nth-of-type(3) {
+                width: 4em;
+                height: .75em;
+                transform: translate3d(11em, 12em, 0) rotate(80deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #58552d;
+                transform-origin: 0 0;
+                box-shadow: -6em 0 0 #58552d, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(3):before {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #4f4d29;
+                    transform-origin: 100% 100%;
+                    box-shadow: -6em 0 0 #4f4d29, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(3):after {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #4f4d28;
+                    transform-origin: 0 0;
+                    box-shadow: -6em 0 0 #4f4d28, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+            item3 > i:nth-of-type(11) i:nth-of-type(4) {
+                width: 4em;
+                height: .75em;
+                transform: translate3d(10em, 12em, 0) rotate(110deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #4a4724;
+                transform-origin: 0 0;
+                box-shadow: -6em 0 0 #4a4724, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(4):before {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #4a4721;
+                    transform-origin: 100% 100%;
+                    box-shadow: -6em 0 0 #4a4721, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(4):after {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #413f1e;
+                    transform-origin: 0 0;
+                    box-shadow: -6em 0 0 #413f1e, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+            item3 > i:nth-of-type(11) i:nth-of-type(5) {
+                width: 4em;
+                height: .75em;
+                transform: translate3d(10em, 12em, 0) rotate(140deg);
+                border-radius: .75em 1em .5em .75em;
+                background: #403d1e;
+                transform-origin: 0 0;
+                box-shadow: -6em 0 0 #403d1e, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+            }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(5):before {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(-0.5em, 1.5em, 0) rotate(9deg);
+                    border-radius: .75em;
+                    background: #444122;
+                    transform-origin: 100% 100%;
+                    box-shadow: -6em 0 0 #444122, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+                item3 > i:nth-of-type(11) i:nth-of-type(5):after {
+                    width: 4em;
+                    height: .75em;
+                    transform: translate3d(0em, 0em, 0) rotate(18deg);
+                    border-radius: .75em .5em 1em .75em;
+                    background: #4a4827;
+                    transform-origin: 0 0;
+                    box-shadow: -6em 0 0 #4a4827, 0 0 0.5em #51422A, inset 0.5em 0 0.5em rgba(255, 231, 89, 0.1), -6em 0 0.5em #51422A;
+                }
+
+        item3 > i:nth-of-type(1) {
+            width: 22em;
+            height: 20em;
+            transform: translate3d(35em, 77em, 0) rotate(137deg);
+            opacity: .1;
+            filter: blur(0.8em);
+        }
+
+            item3 > i:nth-of-type(1):before {
+                transform: translate3d(3em, -6em, 0);
+                width: 18em;
+                height: 18em;
+                border-radius: 50%;
+                box-shadow: inset -1em -4em 2em -1em #E3E660, inset 2em 0 0 #010000;
+                background: #010000;
+            }
+
+            item3 > i:nth-of-type(1):after {
+                transform: translate3d(9em, 10em, 0);
+                width: 5em;
+                height: 3em;
+                border-radius: 1em;
+                background: #010000;
+                box-shadow: inset -2em -1em 0 #E3E660, 1em -3em 2em 2em rgba(1, 0, 0, 0.5);
+            }
+
+        item3 > i:nth-of-type(2) {
+            width: 22em;
+            height: 20em;
+            transform: translate3d(35em, 70em, 0) rotate(47deg);
+            -webkit-mask-image: linear-gradient(to top, #000, #000, #000, rgba(0, 0, 0, 0));
+            mask-image: linear-gradient(to top, #000, #000, #000, rgba(0, 0, 0, 0));
+        }
+
+            item3 > i:nth-of-type(2):before {
+                transform: translate3d(0em, -10em, 0);
+                width: 22em;
+                height: 22em;
+                border-radius: 50%;
+                background: #010000;
+                box-shadow: 0 0 1em #010000, 0 0 1em #010000, 0 2em 3em -1em rgba(1, 0, 0, 0.5);
+            }
+
+        item3 > i:nth-of-type(3) {
+            width: 22em;
+            height: 20em;
+            transform: translate3d(35em, 77em, 0) rotate(137deg);
+        }
+
+            item3 > i:nth-of-type(3):before {
+                transform: translate3d(3em, -6em, 0) rotate(30deg);
+                width: 18em;
+                height: 18em;
+                border-radius: 50%;
+                box-shadow: inset 3em -3em 0 -3em #010000, -3em 3em 0 #010000;
+                filter: blur(0.8em);
+                -webkit-mask-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0));
+                mask-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0));
+            }
+    </style>
+</head>
+<body>
+
+    <pic>
+        <background>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </background>
+        <item1>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </item1>
+        <item2>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </item2>
+        <item3>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </i>
+            <i></i>
+            <i></i>
+            <i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </i>
+            <i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </i>
+            <i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </i>
+
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </item3>
+    </pic>
+</body>
+</html>

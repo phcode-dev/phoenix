@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>c o l o r c l o c k</title>
+  <style>
+    :root {
+  --background: hsl(0, 0%, 100%);
+}
+
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+	text-align:center;
+  background:var(--background);
+  user-select:none;
+}
+
+#container {
+  position:relative;
+  overflow:hidden;
+}
+
+#clock {
+  height:100vh;
+	color:white;
+	display:flex;
+  align-items:center;
+  justify-content:center;
+	font-size:120px;
+	font-family:'Courier New', Courier, monospace;
+}
+
+#controls {
+  position:absolute;
+  right:0;
+  top:0;
+  width:228px;
+  height:100%;
+  padding:48px 24px 48px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  align-items:center;
+  transform:translateX(0);
+  background-color:rgba(0, 0, 0, .3);
+  transition:all 1s ease-in-out;
+}
+
+#controls.closed {
+  transform:translateX(calc(100% - 48px));
+  background-color:transparent;
+  color:transparent;
+  transition:all 1s ease-in-out;
+}
+
+#controls.closed .control {
+  opacity:0;
+  transition:opacity 1s ease;
+}
+
+.menuButton {
+  color:white;
+  font-size:32px;
+  font-family:'Courier New', Courier, monospace;
+  position:absolute;
+  top:10px;
+  left:16px;
+  transform:rotate(180deg);
+  transition:1s ease-in-out;
+}
+
+.menuButton.open {
+  transform:rotate(0deg);
+  transition:1s ease-in-out;
+}
+
+#lightnessSlider {
+  width:100%;
+  margin:10px 0;
+}
+
+.text {
+	font-family:'Courier New', Courier, monospace;
+	font-size:12px;
+	color:white;
+}
+
+.control {
+  margin:48px 0;
+  opacity:1;
+  transition:opacity 2s ease;
+}
+
+.small {
+  font-size:10px;
+}
+
+.bold {
+  font-weight:bold;
+}
+
+.button {
+  width:60%;
+  padding:10px;
+  border:1px solid white;
+}
+
+.menuButton:hover, .button:hover, #explainerButton:hover {
+  cursor:pointer;
+}
+
+#explainerButton {
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  font-size:22px;
+  font-weight:bold;
+}
+
+#explainer {
+  visibility: visible;
+  position:absolute;
+  width:280px;
+  height:290px;
+  overflow-y:scroll;
+  border:1px solid white;
+  left:48px;
+  bottom:48px;
+  padding:5px;
+  font-family:'Courier New', Courier, monospace;
+  font-size:16px;
+  background-color:rgba(0, 0, 0, .3);
+  text-align:left;
+}
+
+#explainer.closed {
+  visibility:hidden;
+}
+
+p {
+  margin:10px 0;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 40%;
+  vertical-align: middle;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 0px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+  background: #ffffff;
+  border-radius: 6.2px;
+  border: 1px solid #ececec;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px rgba(5, 0, 0, 0), 0px 0px 0px rgba(31, 0, 0, 0);
+  border: 0px solid #000000;
+  height: 12px;
+  width: 11px;
+  border-radius: 50px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ffffff;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 0px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+  background: #ffffff;
+  border-radius: 6.2px;
+  border: 1px solid #ececec;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px rgba(5, 0, 0, 0), 0px 0px 0px rgba(31, 0, 0, 0);
+  border: 0px solid #000000;
+  height: 12px;
+  width: 11px;
+  border-radius: 50px;
+  background: #ffffff;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 0px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #fcfcfc;
+  border: 1px solid #ececec;
+  border-radius: 12.4px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+}
+input[type=range]::-ms-fill-upper {
+  background: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 12.4px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0px 0px 1px rgba(13, 13, 13, 0);
+}
+input[type=range]::-ms-thumb {
+  box-shadow: 0px 0px 0px rgba(5, 0, 0, 0), 0px 0px 0px rgba(31, 0, 0, 0);
+  border: 0px solid #000000;
+  height: 12px;
+  width: 11px;
+  border-radius: 50px;
+  background: #ffffff;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #ffffff;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #ffffff;
+}
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="clock">
+    	<span id="hour"></span><span class="clock_separator">:</span><span id="minutes"></span><span class="clock_separator">:</span><span id="seconds"></span>
+    </div>
+    <div id="controls" class="closed">
+      <div class="menuButton"><</div>
+      <div id="lightnessControl" class="control">
+        <div class="text">set color lightness:</div>
+        <input type="range" id="lightnessSlider" min="10" max="90">
+        <div class="text" id="lightnessValue">50%</div>
+      </div>
+      <div id="backgroundStyleToggle" class="text button control">Switch to gradient</div>
+      <div id="timeEncodingToggle" class="text button control">Current mode: hueWheel<br><p class="bold">
+        Change
+      </p></div>
+    </div>
+
+    <div id="explainerButton" class="text">?</div>
+    <div id="explainer" class="text closed">
+    	???
+      <p>Color Clock is a clock with a background color derived from the current time. So far I've implemented two ways of doing this: <span class="bold">time to hex</span> and <span class="bold">hue wheel</span></p>
+    	<p class="bold">Time to hex</p>
+    	<p>The current time is flattened into a six-character string and appended to a pound sign in order to be used as a hex color value. 13:43:06 becomes #134306.</p>
+    	<p class="bold">Hue wheel</p>
+    	<p>Each hour (0-23) is mapped to a section of the hue wheel (0-359).</p>
+      <p class="bold">Gradient mode</p>
+      <p>Makes a pretty gradient by adding a second color that is a bit further (30 degrees) in the hue wheel.</p>
+      <p class="small">Made by mechamech</p>
+    </div>
+  </div>
+  <script>
+    const hourEl = document.getElementById('hour');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const lightnessSlider = document.getElementById('lightnessSlider');
+
+    class Clock {
+      constructor() {
+        this.time = {
+          hour: 0,
+          minutes: 0,
+          seconds: 0
+        }
+      }
+
+    setTime() {
+      let date = new Date();	
+      this.time.hour = date.getHours();
+      this.time.minutes = date.getMinutes();
+      this.time.seconds = date.getSeconds();
+    }
+
+    getTime() {
+      return this.time;
+    }
+
+    displayTime() {
+      let clock = this;
+      let time = clock.time;
+      hourEl.textContent = clock.addZero(time.hour);
+      minutesEl.textContent = clock.addZero(time.minutes);
+      secondsEl.textContent = clock.addZero(time.seconds);
+    }
+	
+	addZero(number) {
+		if (number < 10) {
+			return "" + 0 + number;
+		}
+		return number;
+	}
+
+	tick() {
+		let clock = this;
+		clock.setTime();
+		clock.displayTime();
+		clock.color.displayColor();
+	}
+
+	start() {
+		let clock = this;
+		clock.setTime();
+		clock.color = new color(clock);
+		clock.tick();
+		window.setInterval(clock.tick.bind(clock), 1000)
+	}
+}
+
+class color {
+	constructor(clock) {
+		this.encodingModes = ["hueWheel", "timeToHex"],
+		this.timeEncoding = "hueWheel",
+		this.hue = 0,
+		this.lightness = 50,
+		this.gradient = false,
+		this.clock = clock;
+	}
+
+	makeHue() {
+		let timeEncoding = this.timeEncoding;
+		let time = this.clock.getTime();
+		switch (timeEncoding) {
+			case 'hueWheel':
+				return time.hour * 15 + time.minutes * .25;
+				break;
+
+			case 'timeToHex':
+				let hex = "#"  + this.clock.addZero(time.hour) + this.clock.addZero(time.minutes) + this.clock.addZero(time.seconds);
+				return hexToHue(hex);
+				break;
+    }
+  };
+
+	generateGradient() {
+		return `linear-gradient(to right, hsl(${this.hue}, 50%, ${this.lightness}%) , hsl(${this.hue + 30}, 50%, ${this.lightness}%))`;
+	};
+
+	displayColor() {
+		this.hue = this.makeHue();
+
+		if (this.gradient) {
+			document.querySelector('body').style.setProperty('--background', this.generateGradient());
+		}
+
+		else {
+			document.querySelector('body').style.setProperty('--background', `hsl(${this.hue}, 50%, ${this.lightness}%)`);
+		}
+	};
+
+	setLightness(value) {
+		this.lightness = value;
+	}
+}
+
+function hexToHue(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+  var r = parseInt(result[1], 16);
+  var g = parseInt(result[2], 16);
+  var b = parseInt(result[3], 16);
+
+  r /= 255, g /= 255, b /= 255;
+  var max = Math.max(r, g, b), min = Math.min(r, g, b);
+  var h, s, l = (max + min) / 2;
+
+  if(max == min){
+      h = s = 0;
+  } else {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch(max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+  }
+
+  h = Math.round(360*h);
+  s = s*100;
+  s = Math.round(s);
+  l = l*100;
+  l = Math.round(l);
+
+  return h;
+}
+
+function toggleOptions(event) {
+	if (event.target.classList.contains('button') || event.target.id === 'lightnessSlider') {
+		return;
+	}
+
+	this.classList.toggle('closed');
+	document.querySelector('.menuButton').classList.toggle('open');
+}
+
+window.onload = function() {
+	let clock = new Clock();
+	clock.start()
+	document.querySelector('#controls').addEventListener('click', toggleOptions);
+
+	lightnessSlider.addEventListener("input", function() {
+		var lightness = this.value;
+		clock.color.lightness = lightness;
+		if (clock.color.gradient) {
+		  window.body.style.setProperty('--background', `linear-gradient(to right, hsl(${clock.color.hue}, 50%, ${lightness}%) , hsl(${clock.color.hue + 30}, 50%, ${lightness}%))`);
+		}
+
+		else {
+		  window.body.style.setProperty('--background', `hsl(${clock.color.hue}, 50%, ${lightness}%)`);
+		}
+
+		lightnessValue.text(lightness + "%");
+	})
+
+	backgroundStyleToggle.addEventListener("click", function() {
+		clock.color.gradient = !clock.color.gradient;
+		clock.color.displayColor();
+		this.textContent = clock.color.gradient ? 'Switch to solid color' : 'Switch to gradient';
+	})
+
+	timeEncodingToggle.addEventListener("click", function() {
+		let encodings = clock.color.encodingModes;
+		let currentEncoding = clock.color.timeEncoding;
+		let currentIndex = encodings.indexOf(currentEncoding);
+		currentIndex++;
+		if (currentIndex >= encodings.length) currentIndex = 0;
+		clock.color.timeEncoding = encodings[currentIndex];
+
+		clock.color.displayColor();
+
+		this.innerHTML = `Current mode: ${clock.color.timeEncoding} <br> <p class="bold">Change</p>`;
+	})
+
+	explainerButton.addEventListener("click", function() {
+		explainer.classList.toggle('closed');
+	})
+};
+  </script>
+</body>
+</html>

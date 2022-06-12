@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .scene {
+            position: relative;
+            min-height: 100vh;
+            background-color: #A6CFFF;
+        }
+
+        .scene__price {
+            position: absolute;
+            background-color: #999;
+            color: #FFF;
+            top: 50px;
+            left: 50px;
+            padding: 20px;
+            border-radius: 30px;
+            font-size: 48px;
+        }
+
+        .scene__building {
+            background-image: linear-gradient(to bottom, transparent 50%, #e2d570 50%), linear-gradient(to right, #573098 50%, #e2d570 50%);
+            background-size: 30px 30px, 30px 30px;
+            background-position: 15px 15px;
+            height: 105px;
+            width: 105px;
+            min-width: 75px;
+            min-height: 75px;
+            max-width: 915px;
+            max-height: 615px;
+            position: absolute;
+            bottom: 30px;
+            left: 15%;
+            z-index: 5;
+        }
+
+        .scene__building__draggable {
+            top: -7px;
+            right: -7px;
+            width: 14px;
+            height: 14px;
+            border: 3px solid #573098;
+            position: absolute;
+            border-radius: 50%;
+            z-index: 10;
+            cursor: ne-resize;
+            animation: pulsate 1s ease-out infinite;
+        }
+
+        .scene__building__ceiling {
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            background-color: #7a6021;
+            border: 1px solid #524016;
+            height: 5px;
+            position: absolute;
+        }
+
+        .scene__building__ceiling__chimney {
+            position: absolute;
+            top: -16px;
+            height: 15px;
+            left: 80%;
+            width: 10px;
+            background-color: #999;
+        }
+
+        .scene__building__ceiling__chimney__smoke {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-top: -40px;
+            margin-left: -30px;
+            height: 0px;
+            width: 0px;
+            border: 35px solid #4b4b4b;
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0.2);
+            z-index: -1;
+        }
+
+        .scene__building__ceiling__chimney__smoke--1 {
+            animation: smokeL 10s 0s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--2 {
+            animation: smokeR 10s 1s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--3 {
+            animation: smokeL 10s 2s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--4 {
+            animation: smokeR 10s 3s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--5 {
+            animation: smokeL 10s 4s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--6 {
+            animation: smokeR 10s 5s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--7 {
+            animation: smokeL 10s 6s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--8 {
+            animation: smokeR 10s 7s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--9 {
+            animation: smokeR 10s 8s infinite;
+        }
+
+        .scene__building__ceiling__chimney__smoke--10 {
+            animation: smokeR 10s 9s infinite;
+        }
+
+        .scene__building__stairs {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
+
+        .scene__building__stairs:before {
+            content: "";
+            background-color: #7a6021;
+            display: block;
+            width: 15px;
+            height: 5px;
+            margin-left: -15px;
+        }
+
+        .scene__building__stairs:after {
+            content: "";
+            background-color: #7a6021;
+            display: block;
+            width: 20px;
+            height: 5px;
+            margin-left: -20px;
+        }
+
+        .scene__ground {
+            height: 30px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            position: absolute;
+            border-top: 1px solid #524016;
+            background-color: #7a6021;
+            z-index: 10;
+        }
+
+        @keyframes smokeL {
+            0% {
+                transform: scale(0.2) translate(0, 0);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(0.2) translate(0, -5px);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1) translate(-20px, -130px);
+            }
+        }
+
+        @keyframes smokeR {
+            0% {
+                transform: scale(0.2) translate(0, 0);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(0.2) translate(0, -5px);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1) translate(20px, -130px);
+            }
+        }
+
+        @-webkit-keyframes pulsate {
+            0% {
+                -webkit-transform: scale(0.1, 0.1);
+                opacity: 0.0;
+            }
+            50% {
+                opacity: 1.0;
+            }
+            100% {
+                -webkit-transform: scale(1.2, 1.2);
+                opacity: 0.0;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="scene">
+    <div class="scene__price"></div>
+    <div class="scene__building">
+        <div class="scene__building__draggable"></div>
+        <div class="scene__building__ceiling">
+            <div class="scene__building__ceiling__chimney">
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--1"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--2"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--3"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--4"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--5"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--6"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--7"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--8"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--9"></div>
+                <div class="scene__building__ceiling__chimney__smoke scene__building__ceiling__chimney__smoke--10"></div>
+            </div>
+        </div>
+        <div class="scene__building__stairs"></div>
+    </div>
+    <div class="scene__ground"></div>
+</div>
+
+<script>
+    (function () {
+        'use strict';
+
+        const building = document.querySelector('.scene__building');
+        const draggable = document.querySelector('.scene__building__draggable');
+        const price = document.querySelector('.scene__price');
+        const grid = 30;
+        let startX, startY, startWidth, startHeight;
+
+        function calculatePrice() {
+            const width = building.offsetWidth;
+            const height = building.offsetHeight;
+            const buildingArea = width * height;
+            const gridArea = grid * grid;
+            const numBlocks = Math.floor(buildingArea / gridArea);
+            const priceDigits = Math.ceil(numBlocks / 10);
+            const pricetag = '$'.repeat(priceDigits);
+
+            price.innerHTML = pricetag;
+
+        }
+
+        function initDrag(e) {
+            startX = e.clientX;
+            startY = e.clientY;
+            startWidth = building.offsetWidth;
+            startHeight = building.offsetHeight;
+            document.documentElement.addEventListener('mousemove', doDrag, false);
+            document.documentElement.addEventListener('mouseup', stopDrag, false);
+        }
+
+        function doDrag(e) {
+            // Round to the nearest grid multiple + 15px for the wall padding
+            const newWidth = Math.floor((startWidth + e.clientX - startX) / grid) * grid + 15;
+            const newHeight = Math.floor((startHeight - e.clientY + startY) / grid) * grid + 15;
+            building.style.width = newWidth + 'px';
+            building.style.height = newHeight + 'px';
+            calculatePrice();
+        }
+
+        function stopDrag() {
+            document.documentElement.removeEventListener('mousemove', doDrag, false);
+            document.documentElement.removeEventListener('mouseup', stopDrag, false);
+        }
+
+        draggable.addEventListener('mousedown', initDrag, false);
+        calculatePrice();
+    })();
+</script>
+</body>
+</html>
