@@ -30,7 +30,8 @@ import ERR_CODES from "./errno.js";
 import getBrowserDetails from "./browserDetails.js";
 
 let Phoenix = {
-    browser: getBrowserDetails()
+    browser: getBrowserDetails(),
+    baseURL: window.location.href
 };
 let startTime = Date.now();
 
