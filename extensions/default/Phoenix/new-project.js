@@ -48,7 +48,8 @@ define(function (require, exports, module) {
     ExtensionInterface.registerExtensionInterface(NEW_PROJECT_INTERFACE, exports);
 
     let newProjectDialogueObj,
-        createProjectDialogueObj;
+        createProjectDialogueObj,
+        downloadCancelled = false;
 
     // TODO: change default enabled to true to ship this feature.
     FeatureGate.registerFeatureGate(FEATURE_NEW_PROJECT_DIALOGUE, false);
@@ -223,6 +224,7 @@ define(function (require, exports, module) {
         };
         createProjectDialogueObj=
             Dialogs.showModalDialogUsingTemplate(Mustache.render(createProjectDialogue, templateVars));
+        return createProjectDialogueObj;
     }
 
     function _closeCreateProjectDialogue() {
@@ -271,10 +273,17 @@ define(function (require, exports, module) {
             }
             console.log(`downloadAndOpenProject ${suggestedProjectName} from URL: ${downloadURL} to: ${projectPath}`);
 
-            _showCreateProjectDialogue(Strings.SETTING_UP_PROJECT, Strings.DOWNLOADING);
+            downloadCancelled = false;
+            _showCreateProjectDialogue(Strings.SETTING_UP_PROJECT, Strings.DOWNLOADING).done(function (id) {
+                if (id === Dialogs.DIALOG_BTN_CANCEL) {
+                    downloadCancelled = true;
+                }
+            });
             window.JSZipUtils.getBinaryContent(downloadURL, {
                 callback: async function(err, data) {
-                    if(err) {
+                    if(downloadCancelled){
+                        reject();
+                    } else if(err) {
                         console.error("could not load phoenix default project from zip file!", err);
                         _closeCreateProjectDialogue();
                         showErrorDialogue(Strings.DOWNLOAD_FAILED, Strings.DOWNLOAD_FAILED_MESSAGE);
@@ -299,6 +308,9 @@ define(function (require, exports, module) {
                     if(status.percent > 0){
                         _updateCreateProjectDialogueMessage(`${Strings.DOWNLOADING} ${Math.round(status.percent)}%`);
                     }
+                },
+                abortCheck: function (){
+                    return downloadCancelled;
                 }
             });
         });
