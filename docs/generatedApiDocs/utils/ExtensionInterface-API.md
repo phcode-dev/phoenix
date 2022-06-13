@@ -42,10 +42,12 @@ interface made available.
 
 Registers a named extension interface. Will overwrite if an interface of the same name is already present.
 
+Type: [function][1]
+
 ### Parameters
 
-*   `extensionInterfaceName` **[string][1]** 
-*   `interfaceObject` **[Object][2]** 
+*   `extensionInterfaceName` **[string][2]** 
+*   `interfaceObject` **[Object][3]** 
 
 ### Examples
 
@@ -59,16 +61,20 @@ ExtensionInterface.registerExtensionInterface("angularCli", exports);
 
 Returns true is an interface of the given name exists.
 
+Type: [function][1]
+
 ### Parameters
 
-*   `extensionInterfaceName` **[string][1]** 
+*   `extensionInterfaceName` **[string][2]** 
 
-Returns **[boolean][3]** 
+Returns **[boolean][4]** 
 
 ## waitAndGetExtensionInterface
 
 Returns a promise that gets resolved only when an ExtensionInterface of the given name is registered. Use this
 getter to get hold of extensions interface predictably.
+
+Type: [function][1]
 
 ### Parameters
 
@@ -88,12 +94,14 @@ angularCli.callSomeFunction();
 ...
 ```
 
-Returns **[Promise][4]** 
+Returns **[Promise][5]** 
 
-[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise

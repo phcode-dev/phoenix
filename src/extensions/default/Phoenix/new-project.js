@@ -23,7 +23,6 @@
 define(function (require, exports, module) {
     const Dialogs = brackets.getModule("widgets/Dialogs"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
-        FeatureGate = brackets.getModule("utils/FeatureGate"),
         newProjectTemplate = require("text!html/new-project-template.html"),
         Strings = brackets.getModule("strings"),
         StringUtils = brackets.getModule("utils/StringUtils"),
@@ -41,8 +40,7 @@ define(function (require, exports, module) {
         replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
         utils = require("utils");
 
-    const FEATURE_NEW_PROJECT_DIALOGUE = 'newProjectDialogue',
-        NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject",
+    const NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject",
         MAX_DEDUPE_COUNT = 10000;
 
     ExtensionInterface.registerExtensionInterface(NEW_PROJECT_INTERFACE, exports);
@@ -50,9 +48,6 @@ define(function (require, exports, module) {
     let newProjectDialogueObj,
         createProjectDialogueObj,
         downloadCancelled = false;
-
-    // TODO: change default enabled to true to ship this feature.
-    FeatureGate.registerFeatureGate(FEATURE_NEW_PROJECT_DIALOGUE, false);
 
     function _showNewProjectDialogue() {
         let templateVars = {
@@ -97,9 +92,6 @@ define(function (require, exports, module) {
     }
 
     function init() {
-        if(!FeatureGate.isFeatureEnabled(FEATURE_NEW_PROJECT_DIALOGUE)){
-            return;
-        }
         _addMenuEntries();
         _showNewProjectDialogue();
     }

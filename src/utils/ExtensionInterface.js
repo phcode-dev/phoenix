@@ -76,6 +76,7 @@ define(function (require, exports, module) {
      *
      * @param {string} extensionInterfaceName
      * @param {Object} interfaceObject
+     * @type {function}
      */
     function registerExtensionInterface(extensionInterfaceName, interfaceObject) {
         _extensionInterfaceMap[extensionInterfaceName] = interfaceObject;
@@ -86,6 +87,7 @@ define(function (require, exports, module) {
      * Returns true is an interface of the given name exists.
      * @param {string} extensionInterfaceName
      * @return {boolean}
+     * @type {function}
      */
     function isExistsExtensionInterface(extensionInterfaceName) {
         return _extensionInterfaceMap[extensionInterfaceName] !== undefined;
@@ -106,6 +108,7 @@ define(function (require, exports, module) {
      *
      * @param extensionInterfaceName
      * @return {Promise}
+     * @type {function}
      */
     function waitAndGetExtensionInterface(extensionInterfaceName) {
         return new Promise((resolve, reject)=>{
