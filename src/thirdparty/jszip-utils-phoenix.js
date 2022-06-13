@@ -1,5 +1,5 @@
 /*@preserve
-
+ CUSTOMISED VERSION of JS ZIP utils in phoenix
 JSZipUtils - A collection of cross-browser utilities to go along with JSZip.
 <http://stuk.github.io/jszip-utils>
 
@@ -125,8 +125,11 @@ JSZipUtils.getBinaryContent = function (path, options) {
             }
         };
 
-        if(options.progress) {
-            xhr.onprogress = function(e) {
+        xhr.onprogress = function(e) {
+            if(options.abortCheck && options.abortCheck()){
+                xhr.abort();
+            }
+            if(options.progress) {
                 options.progress({
                     path: path,
                     originalEvent: e,
@@ -134,8 +137,8 @@ JSZipUtils.getBinaryContent = function (path, options) {
                     loaded: e.loaded,
                     total: e.total
                 });
-            };
-        }
+            }
+        };
 
         xhr.send();
 

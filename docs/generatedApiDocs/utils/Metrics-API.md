@@ -45,13 +45,14 @@ Type: [function][2]
     needs to be logged- should be a js var compatible string
 *   `eventSubCategory` **[string][4]** The kind of Event Sub Category that
     needs to be logged- should be a js var compatible string
-*   `count` **[number][5]** > \=0
+*   `count` **[number][5]** > \=0 , optional, if not set defaults to 1 (optional, default `1`)
 
 ### Examples
 
 To log that user clicked searchButton 5 times:
 
 ```javascript
+Metrics.countEvent(Metrics.EVENT_TYPE.UI, "searchButton", "click");
 Metrics.countEvent(Metrics.EVENT_TYPE.UI, "searchButton", "click", 5);
 ```
 
