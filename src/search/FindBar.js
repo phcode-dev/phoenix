@@ -268,7 +268,7 @@ define(function (require, exports, module) {
         if (this._options.multifile) {
             metricType = "findInFiles.bar";
         }
-        Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, metricType, "opened", 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, metricType, "opened");
 
         var templateVars = _.clone(this._options);
         templateVars.Strings = Strings;
@@ -388,13 +388,13 @@ define(function (require, exports, module) {
                                 self.focusReplace();
                             } else {
                                 Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "findInFiles.bar",
-                                    "returnKey", 1);
+                                    "returnKey");
                                 // Trigger a Find (which really means "Find All" in this context).
                                 self.trigger("doFind");
                             }
                         } else {
                             Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "replaceBatchInFiles.bar",
-                                "returnKey", 1);
+                                "returnKey");
                             self.trigger("doReplaceBatch");
                         }
                     } else {

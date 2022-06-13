@@ -118,8 +118,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(
                 Metrics.EVENT_TYPE.CODE_HINTS,
                 "jsRefactor",
-                eventType,
-                1
+                eventType
             );
         }
     }

@@ -18,7 +18,7 @@
  *
  */
 
-/*global newProjectExtension, Strings*/
+/*global newProjectExtension, Strings, Metrics*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
@@ -105,12 +105,16 @@ function _createProjectClicked() {
         newProjectExtension.downloadAndOpenProject(
             zipURL,
             locationInput.fullPath, suggestedProjectName, FLATTEN_ZIP_FIRST_LEVEL_DIR)
-            .then(newProjectExtension.closeDialogue);
+            .then(()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "github.btnClick", "create.success");
+                newProjectExtension.closeDialogue();
+            });
     } else {
         newProjectExtension.showErrorDialogue(
             Strings.MISSING_FIELDS,
             Strings.PLEASE_FILL_ALL_REQUIRED);
     }
+    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "github.btnClick", "create");
 }
 
 function initGithubProject() {

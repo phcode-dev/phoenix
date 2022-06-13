@@ -199,8 +199,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(
             Metrics.EVENT_TYPE.EDITOR,
             "JsQuickEdit",
-            "open",
-            1
+            "open"
         );
         // Only provide JavaScript editor if the selection is within a single line
         var sel = hostEditor.getSelection();

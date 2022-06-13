@@ -18,19 +18,21 @@
  *
  */
 
-/*global */
+/*global Metrics*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
 
 const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject";
 const RECENT_PROJECTS_INTERFACE = "Extn.Phoenix.recentProjects";
+const selfFileName = location.href.split('/').pop();
 window.Strings = window.parent.Strings;
 window.path = window.parent.path;
-
 window.parent.ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
     .then(interfaceObj => {
         window.newProjectExtension = interfaceObj;
+        window.Metrics = window.newProjectExtension.Metrics;
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `${selfFileName}`, "shown");
     });
 window.parent.ExtensionInterface.waitAndGetExtensionInterface(RECENT_PROJECTS_INTERFACE)
     .then(interfaceObj => {
@@ -59,14 +61,24 @@ function init() {
     _localiseWithBracketsStrings();
     document.getElementById("closeDialogueButton").onclick = function() {
         window.newProjectExtension.closeDialogue();
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `btnClick.${selfFileName}`, "closeDlg");
     };
     document.getElementById("top").onkeydown = function(e) {
+        let acceptedCode = false;
         if(e.code === 'Escape'){
             window.newProjectExtension.closeDialogue();
+            acceptedCode = true;
         } else if(e.code === 'ArrowRight' && e.target.tagName !== 'INPUT') {
             $.tabNext();
+            acceptedCode = true;
         } else if(e.code === 'ArrowLeft'&& e.target.tagName !== 'INPUT') {
             $.tabPrev();
+            acceptedCode = true;
+        } else if(e.code === 'Tab'&& e.target.tagName !== 'INPUT') {
+            acceptedCode = true; // will be handled by focus handler below
+        }
+        if(acceptedCode){
+            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `btnClick.${selfFileName}`, e.code);
         }
     };
     // Accessibility and keyboard navigation with Tab and Esc, Enter keys.

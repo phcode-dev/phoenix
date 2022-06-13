@@ -194,14 +194,14 @@ define(function (require, exports, module) {
         if(previewDetails.isMarkdownFile){
             $iframe.attr('src', 'about:blank');
             _renderMarkdown(fullPath);
-            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "markdown", 1);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "markdown");
         } else {
             $iframe.attr('srcdoc', null);
             $iframe.attr('src', newSrc);
             if(tab && !tab.closed){
                 tab.location = newSrc;
             }
-            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", utils.getExtension(fullPath), 1);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", utils.getExtension(fullPath));
         }
     }
 

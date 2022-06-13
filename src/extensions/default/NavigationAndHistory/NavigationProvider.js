@@ -619,7 +619,7 @@ define(function (require, exports, module) {
     }
 
     function _navigateBackClicked(evt) {
-        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "back", 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "back");
         if(_hasNavBackFrames()){
             _navigateBack(evt.shiftKey || (evt.type === "contextmenu"));
         }
@@ -628,7 +628,7 @@ define(function (require, exports, module) {
     }
 
     function _navigateForwardClicked(evt) {
-        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "forward", 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "forward");
         if(_hasNavForwardFrames()){
             _navigateForward(evt.shiftKey || (evt.type === "contextmenu"));
         }
@@ -637,12 +637,12 @@ define(function (require, exports, module) {
     }
 
     function _showInFileTreeClicked() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "showInFileTree", 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "showInFileTree");
         CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
     }
 
     function _findInFiles() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "search", 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "search");
         CommandManager.execute(Commands.CMD_FIND_IN_FILES);
     }
 
