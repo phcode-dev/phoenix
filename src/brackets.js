@@ -95,6 +95,10 @@ define(function (require, exports, module) {
      */
     window.ExtensionInterface = ExtensionInterface;
     /**
+     * The FeatureGate interface available in global context.
+     */
+    window.FeatureGate = FeatureGate;
+    /**
      * All translation strings
      */
     window.Strings = Strings;
