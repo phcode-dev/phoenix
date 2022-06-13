@@ -21,10 +21,42 @@
 /*global less */
 // jshint ignore: start
 
+// @INCLUDE_IN_API_DOCS
+
 /**
- * Check if certain features are enabled or disabled. This can be used to selectively enable features.
- * See <doc link here for more details on how to use this API>
+ * FeatureGate defines util methods for enabling or disabling features in development based on a flag in local storage.
+ * A global `window.FeatureGate` object is made available in phoenix that can be called anytime after AppStart.
+ *
+ * ## Usage
+ * For Eg. You may have an extensions in development that colors phoenix in red. But you are working on a new feature
+ * that makes other colors available, but not yet ready for use. So put the extension behind a named feature gate
+ * so that only people who want to test the extension will be able to use it.
+ *
+ * ### creating a feature gate
+ * ```js
+ * // within extensions
+ * const FeatureGate = brackets.getModule("utils/FeatureGate"); // replace with `require` for core modules.
+ * const FEATURE_NEW_COLORS = 'myExtension.newColors';
+ * FeatureGate.registerFeatureGate(FEATURE_NEW_COLORS, false); // false is the default value
+ * ```
+ *
+ * ### checking if a feature is gated
+ * Once the feature is registered, use the below code to check if the feature can be safely enabled. For Eg., if
+ * you want to enable fancy colors based on the example above:
+ *
+ * ```js
+ * if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
+ *    // do fancy colors here
+ * }
+ * ```
+ * ### Enabling features for testing
+ * 1. Open developer tools > local storage
+ * 2. Add a new key with the key you have specified for the feature gate.
+ *    In the above Eg., the key is `myExtension.newColors`
+ * 3. set the value in local storage to `enabled` to enable the feature or anything else to disable.
+ * @module utils/FeatureGate
  */
+
 define(function (require, exports, module) {
     const FEATURE_REGISTERED = "featureGateRegistered",
         ENABLED = 'enabled',
@@ -36,8 +68,13 @@ define(function (require, exports, module) {
 
     /**
      * Registers a named feature with the default enabled state.
+     * @example <caption>To register a feature gate with name `myExtension.newColors`</caption>
+     * const FEATURE_NEW_COLORS = 'myExtension.newColors';
+     * FeatureGate.registerFeatureGate(FEATURE_NEW_COLORS, false); // false is the default value here
+     *
      * @param {string} featureName
      * @param {boolean} enabledDefault
+     * @type {function}
      */
     function registerFeatureGate(featureName, enabledDefault) {
         if(typeof enabledDefault !== "boolean"){
@@ -51,6 +88,7 @@ define(function (require, exports, module) {
     /**
      * Returns an array of all named registered feature gates.
      * @return {[String]} list of registered features
+     * @type {function}
      */
     function getAllRegisteredFeatures() {
         return Object.keys(_FeatureGateMap);
@@ -58,8 +96,14 @@ define(function (require, exports, module) {
 
     /**
      * Returns true is an featureGate is enabled either by default or overridden by the user using local storage.
+     * @example <caption>To check if the feature `myExtension.newColors` is enabled</caption>
+     * const FEATURE_NEW_COLORS = 'myExtension.newColors';
+     * if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
+     *    // do fancy colors here
+     * }
      * @param {string} featureName
      * @return {boolean}
+     * @type {function}
      */
     function isFeatureEnabled(featureName) {
         let userOverRide = localStorage.getItem(`feature.${featureName}`);
