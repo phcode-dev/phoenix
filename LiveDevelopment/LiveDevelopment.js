@@ -1353,8 +1353,7 @@ define(function LiveDevelopment(require, exports, module) {
         Metrics.countEvent(
             Metrics.EVENT_TYPE.LIVE_PREVIEW,
             "Open",
-            "usage",
-            1
+            "usage"
         );
 
         // Register user defined server provider and keep handlers for further clean-up

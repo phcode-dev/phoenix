@@ -34,13 +34,13 @@ define(function (require, exports, module) {
     // Platform metrics to be sent at startup
     function _emitDeviceTypeMetrics() {
         if(brackets.browser.isDeskTop) {
-            Metrics.countEvent(PLATFORM, "device", "desktop", 1);
+            Metrics.countEvent(PLATFORM, "device", "desktop");
         }
         if(brackets.browser.isMobile) {
-            Metrics.countEvent(PLATFORM, "device", "mobile", 1);
+            Metrics.countEvent(PLATFORM, "device", "mobile");
         }
         if(brackets.browser.isTablet) {
-            Metrics.countEvent(PLATFORM, "device", "tablet", 1);
+            Metrics.countEvent(PLATFORM, "device", "tablet");
         }
     }
     function _emitMobileMetricsIfPresent() {
@@ -54,35 +54,35 @@ define(function (require, exports, module) {
         } else {
             return;
         }
-        Metrics.countEvent(PLATFORM, "mobile", platform, 1);
+        Metrics.countEvent(PLATFORM, "mobile", platform);
     }
     function _emitBrowserMetrics() {
         if(brackets.browser.desktop.isChrome) {
-            Metrics.countEvent(PLATFORM, "browser", "chrome", 1);
+            Metrics.countEvent(PLATFORM, "browser", "chrome");
         }
         if(brackets.browser.desktop.isChromeBased) {
-            Metrics.countEvent(PLATFORM, "browser", "chromeBased", 1);
+            Metrics.countEvent(PLATFORM, "browser", "chromeBased");
         }
         if(brackets.browser.desktop.isEdgeChromium) {
-            Metrics.countEvent(PLATFORM, "browser", "EdgeChromium", 1);
+            Metrics.countEvent(PLATFORM, "browser", "EdgeChromium");
         }
         if(brackets.browser.desktop.isFirefox) {
-            Metrics.countEvent(PLATFORM, "browser", "firefox", 1);
+            Metrics.countEvent(PLATFORM, "browser", "firefox");
         }
         if(brackets.browser.desktop.isOpera) {
-            Metrics.countEvent(PLATFORM, "browser", "opera", 1);
+            Metrics.countEvent(PLATFORM, "browser", "opera");
         }
         if(brackets.browser.desktop.isOperaChromium) {
-            Metrics.countEvent(PLATFORM, "browser", "operaChromium", 1);
+            Metrics.countEvent(PLATFORM, "browser", "operaChromium");
         }
     }
     function sendPlatformMetrics() {
-        Metrics.countEvent(PLATFORM, "os", brackets.platform, 1);
-        Metrics.countEvent(PLATFORM, "os.flavor", brackets.getPlatformInfo(), 1);
-        Metrics.countEvent(PLATFORM, "userAgent", window.navigator.userAgent, 1);
-        Metrics.countEvent(PLATFORM, "languageOS", brackets.app.language, 1);
-        Metrics.countEvent(PLATFORM, "languageBrackets", brackets.getLocale(), 1);
-        Metrics.countEvent(PLATFORM, "bracketsVersion", brackets.metadata.version, 1);
+        Metrics.countEvent(PLATFORM, "os", brackets.platform);
+        Metrics.countEvent(PLATFORM, "os.flavor", brackets.getPlatformInfo());
+        Metrics.countEvent(PLATFORM, "userAgent", window.navigator.userAgent);
+        Metrics.countEvent(PLATFORM, "languageOS", brackets.app.language);
+        Metrics.countEvent(PLATFORM, "languageBrackets", brackets.getLocale());
+        Metrics.countEvent(PLATFORM, "bracketsVersion", brackets.metadata.version);
         _emitDeviceTypeMetrics();
         _emitBrowserMetrics();
         _emitMobileMetricsIfPresent();
@@ -104,7 +104,7 @@ define(function (require, exports, module) {
         return themesPref.get("theme") || "default";
     }
     function sendThemesMetrics() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.THEMES, "currentTheme", _getCurrentTheme(), 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.THEMES, "currentTheme", _getCurrentTheme());
     }
 
     exports.sendPlatformMetrics = sendPlatformMetrics;

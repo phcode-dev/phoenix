@@ -63,7 +63,7 @@ define(function (require, exports, module) {
         setTimeout(()=>{
             document.getElementById("newProjectFrame").contentWindow.focus();
         }, 100);
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open", 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
     }
 
     function _addMenuEntries() {
@@ -73,7 +73,7 @@ define(function (require, exports, module) {
     }
 
     function closeDialogue() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open", 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         newProjectDialogueObj.close();
     }
 
@@ -323,6 +323,7 @@ define(function (require, exports, module) {
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
     exports.alreadyExists = alreadyExists;
+    exports.Metrics = Metrics;
     exports.getWelcomeProjectPath = ProjectManager.getWelcomeProjectPath;
     exports.getExploreProjectPath = ProjectManager.getExploreProjectPath;
     exports.getLocalProjectsPath = ProjectManager.getLocalProjectsPath;

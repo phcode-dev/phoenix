@@ -202,8 +202,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(
             "MDNDocs",
             "QuickDoc",
-            "ReadMore",
-            1
+            "ReadMore"
         );
         return false;
     };

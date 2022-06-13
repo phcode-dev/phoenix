@@ -207,6 +207,7 @@ define(function (require, exports, module) {
     /**
      * log a numeric count >=0
      * @example <caption>To log that user clicked searchButton 5 times:</caption>
+     * Metrics.countEvent(Metrics.EVENT_TYPE.UI, "searchButton", "click");
      * Metrics.countEvent(Metrics.EVENT_TYPE.UI, "searchButton", "click", 5);
      *
      * @param {EVENT_TYPE|string} eventType The kind of Event Type that needs to be logged- should be a js var compatible string.
@@ -215,10 +216,10 @@ define(function (require, exports, module) {
      * needs to be logged- should be a js var compatible string
      * @param {string} eventSubCategory The kind of Event Sub Category that
      * needs to be logged- should be a js var compatible string
-     * @param {number} count >=0
+     * @param {number} [count=1] >=0 , optional, if not set defaults to 1
      * @type {function}
      */
-    function countEvent(eventType, eventCategory, eventSubCategory, count) {
+    function countEvent(eventType, eventCategory, eventSubCategory, count= 1) {
         _logEventForAudit(eventType, eventCategory, eventSubCategory, count, AUDIT_TYPE_COUNT);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, count);
         _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, count);

@@ -656,8 +656,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(
             Metrics.EVENT_TYPE.CODE_HINTS,
             "languageServerProtocol",
-            typeStr + languageName.toLowerCase(),
-            1
+            typeStr + languageName.toLowerCase()
           );
     }
 

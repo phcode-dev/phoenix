@@ -18,7 +18,7 @@
  *
  */
 
-/*global path, newProjectExtension, recentProjectExtension, Strings*/
+/*global path, newProjectExtension, recentProjectExtension, Strings, Metrics*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
@@ -32,11 +32,12 @@ function _createRecentProjectCard(projectName, fullPath, nodeId, tabIndex) {
         <a id="${nodeId}" href="#" 
         class="d-flex align-items-center justify-content-between tabable"
         tabindex="${tabIndex}"
-        onclick="openProject('${fullPath}')">
+        onclick="openProject('${fullPath}');_recentProjectMetric('open');">
             <div class="project-name">
                 ${projectName}
             </div>
-            <button class="remove-btn" onclick="removeProject('${fullPath}')" style="${removeBtnDisableStyle}">
+            <button class="remove-btn" onclick="removeProject('${fullPath}');_recentProjectMetric('remove');"
+            style="${removeBtnDisableStyle}">
                 <svg width="16" height="16" viewBox="0 0 14 14" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.75 3.5H2.91667H12.25" stroke="#D0D0D0" stroke-linecap="round"
@@ -51,6 +52,10 @@ function _createRecentProjectCard(projectName, fullPath, nodeId, tabIndex) {
             </button>
         </a>
     </li>`);
+}
+
+function _recentProjectMetric(type) {
+    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "recentProject.btnClick", type);
 }
 
 function getDisplayName(projectPath) {
@@ -114,19 +119,27 @@ function newProject(url, suggestedProjectName, title, license, licenseURL, credi
 function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
         newProjectExtension.openFolder();
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "mainPage.btnClick", "open-folder");
+    };
+    document.getElementById("newGitHubProject").onclick = function() {
+        window.location.href = 'new-project-github.html';
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "mainPage.btnClick", "github-project");
     };
     document.getElementById("exploreBtn").onclick = function() {
         openProject(newProjectExtension.getExploreProjectPath());
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "mainPage.btnClick", "explore");
     };
     document.getElementById("newBootstrapBlogBtn").onclick = function() {
         newProject(getPhoenixAbsURL("assets/sample-projects/bootstrap-blog.zip"),
             "bootstrap-blog", Strings.NEW_BOOTSTRAP_BLOG,
             "MIT", "https://github.com/twbs/bootstrap/blob/main/LICENSE",
             "https://getbootstrap.com", "https://getbootstrap.com");
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "mainPage.btnClick", "bootstrap-blog");
     };
     document.getElementById("newHTMLBtn").onclick = function() {
         newProject(getPhoenixAbsURL("assets/sample-projects/HTML5.zip"),
             "html project", Strings.NEW_HTML);
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "mainPage.btnClick", "html5");
     };
     _updateProjectCards();
 }

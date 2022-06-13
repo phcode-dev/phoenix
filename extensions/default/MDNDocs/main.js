@@ -105,8 +105,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(
             "MDNDocs",
             "QuickDoc",
-            "css",
-            1
+            "css"
         );
 
         // Only provide docs if the selection is within a single line
