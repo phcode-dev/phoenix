@@ -158,12 +158,11 @@ define(function (require, exports, module) {
     function _fileOpened(filePath, addedToWorkingSet, encoding) {
         let language = LanguageManager.getLanguageForPath(filePath);
 
-        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileEncoding", encoding || 'UTF-8', 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileEncoding", encoding || 'UTF-8');
         if(addedToWorkingSet){
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileAddToWorkingSet",
-                language._name.toLowerCase(), 1);
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileAddToWorkingSet", language._name.toLowerCase());
         } else {
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileOpen", language._name.toLowerCase(), 1);
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileOpen", language._name.toLowerCase());
         }
     }
 
@@ -178,7 +177,7 @@ define(function (require, exports, module) {
             return;
         }
         let fileType = docToSave.language ? docToSave.language._name : "";
-        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileSave", fileType, 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileSave", fileType);
     }
 
     /**
@@ -228,7 +227,7 @@ define(function (require, exports, module) {
             }
 
             Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileClose",
-                `${language._name.toLowerCase()}.${subType}`, 1);
+                `${language._name.toLowerCase()}.${subType}`);
         }
 
         file.stat(function(err, fileStat) {
@@ -783,8 +782,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(
             Metrics.EVENT_TYPE.EDITOR,
             "newUntitledFile",
-            "create",
-            1
+            "create"
         );
 
         return new $.Deferred().resolve(doc).promise();
@@ -797,8 +795,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(
             Metrics.EVENT_TYPE.EDITOR,
             "newFile",
-            "inProject",
-            1
+            "inProject"
         );
         _handleNewItemInProject(false);
     }
@@ -810,8 +807,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(
             Metrics.EVENT_TYPE.EDITOR,
             "newFolder",
-            "inProject",
-            1
+            "inProject"
         );
         _handleNewItemInProject(true);
     }

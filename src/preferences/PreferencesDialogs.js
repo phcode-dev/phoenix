@@ -104,8 +104,7 @@ define(function (require, exports, module) {
                     Metrics.countEvent(
                         Metrics.EVENT_TYPE.UI_DIALOG,
                         "projectSettings",
-                        "Livepreview",
-                        1
+                        "Livepreview"
                     );
                     ProjectManager.setBaseUrl(baseUrlValue);
                 } else {

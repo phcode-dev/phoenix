@@ -177,8 +177,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(
                 Metrics.EVENT_TYPE.EDITOR,
                 "multiCursor",
-                "usage",
-                1
+                "usage"
             );
             selStr = StringUtils.format(Strings.STATUSBAR_SELECTION_MULTIPLE, sels.length);
         } else if (editor.hasSelection()) {
@@ -469,8 +468,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(
                 Metrics.EVENT_TYPE.EDITOR,
                 "languageChange",
-                `${filelanguageName.toLowerCase()}-${fileType}`,
-                1
+                `${filelanguageName.toLowerCase()}-${fileType}`
             );
 
             if (lang === LANGUAGE_SET_AS_DEFAULT) {

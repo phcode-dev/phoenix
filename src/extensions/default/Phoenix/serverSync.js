@@ -286,7 +286,7 @@ define(function (require, exports, module) {
             })
             .appendTo($("#main-toolbar .buttons"));
         $icon.on('click', ()=>{
-            Metrics.countEvent(Metrics.EVENT_TYPE.SHARING, "shareIcon", "clicked", 1);
+            Metrics.countEvent(Metrics.EVENT_TYPE.SHARING, "shareIcon", "clicked");
             if(projectSyncCompleted){
                 previewInProgress = true;
                 _setSyncInProgress();

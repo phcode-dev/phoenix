@@ -164,23 +164,23 @@ define(function (require, exports, module) {
             .on("click.searchResults", ".first-page:not(.disabled)", function () {
                 self._currentStart = 0;
                 self._render();
-                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "firstPage", 1);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "firstPage");
             })
             // The link to go the previous page
             .on("click.searchResults", ".prev-page:not(.disabled)", function () {
                 self._currentStart -= RESULTS_PER_PAGE;
                 self._render();
-                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "prevPage", 1);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "prevPage");
             })
             // The link to go to the next page
             .on("click.searchResults", ".next-page:not(.disabled)", function () {
                 self.trigger('getNextPage');
-                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "nextPage", 1);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "nextPage");
             })
             // The link to go to the last page
             .on("click.searchResults", ".last-page:not(.disabled)", function () {
                 self.trigger('getLastPage');
-                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "lastPage", 1);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "result.panel.btn", "lastPage");
             })
 
             // Add the file to the working set on double click

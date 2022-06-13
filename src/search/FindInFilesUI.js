@@ -228,7 +228,7 @@ define(function (require, exports, module) {
                 if (queryInfo.isCaseSensitive) {
                     queryType = queryType + ":caseSensitive";
                 }
-                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "findInFiles", queryType, 1);
+                Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "findInFiles", queryType);
 
                 var filter;
                 if (filterPicker) {

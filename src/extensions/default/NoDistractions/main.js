@@ -64,7 +64,7 @@ define(function (require, exports, module) {
      */
     function _togglePureCode() {
         PreferencesManager.set(PREFS_PURE_CODE, !PreferencesManager.get(PREFS_PURE_CODE));
-        Metrics.countEvent(Metrics.EVENT_TYPE.UI, 'noDistractions', 'toggle', 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, 'noDistractions', 'toggle');
     }
 
     /**
@@ -118,7 +118,7 @@ define(function (require, exports, module) {
             _showPanelsIfRequired();
         }
 
-        Metrics.countEvent(Metrics.EVENT_TYPE.UI, 'noDistractions', 'togglePanels', 1);
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, 'noDistractions', 'togglePanels');
     }
 
     PreferencesManager.definePreference(PREFS_PURE_CODE, "boolean", false, {

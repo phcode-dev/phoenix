@@ -172,8 +172,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(
             Metrics.EVENT_TYPE.EDITOR,
             "QuickEdit",
-            "CSSInlineEditor",
-            1
+            "CSSInlineEditor"
         );
 
         // Only provide CSS editor if the selection is within a single line
