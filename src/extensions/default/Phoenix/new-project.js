@@ -72,14 +72,14 @@ define(function (require, exports, module) {
     function closeDialogue() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         newProjectDialogueObj.close();
-        let note = NotificationUI.createFromTemplate("yo <b>hello world</b>",
-            "showInfileTree", ['top', 'bottom']);
-        note.done(()=>{
+        NotificationUI.createFromTemplate("yo <b>hello world</b>",
+            "showInfileTree", {
+                allowedPlacements: ['top', 'bottom'],
+                autoCloseTimeS: 30,
+                dismissOnClick: true
+        }).done(()=>{
             console.log('done');
         });
-        setTimeout(()=>{
-            note.close();
-        }, 3000);
     }
 
     function showErrorDialogue(title, message) {

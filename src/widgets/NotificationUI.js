@@ -31,11 +31,9 @@ define(function (require, exports, module) {
     /**
      * @constructor
      * @private
-     *
-     * @param {$.Promise} promise A promise that will be resolved when the Notification is dismissed. Never rejected.
      */
-    function Notification(tooltip, promise) {
-        this.tooltip    = tooltip;
+    function Notification(tooltip) {
+        this.$tooltip    = tooltip;
         this._result  = new $.Deferred();
         this._promise = this._result.promise();
     }
@@ -44,11 +42,15 @@ define(function (require, exports, module) {
      * Closes the Notification if is visible and destroys then dom nodes
      */
     Notification.prototype.close = function () {
-        $(this.tooltip)
-            .removeClass('notification-ui-visible')
+        let $tooltip = this.$tooltip;
+        $tooltip.removeClass('notification-ui-visible')
             .addClass('notification-ui-hidden');
-        // remove from body
-        this._result.resolve();
+        setTimeout(()=>{
+            // wait for the animation to complete before removal
+            $tooltip.remove();
+            WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $tooltip[0].update);
+            this._result.resolve();
+        }, 1000);
     };
 
     /**
@@ -86,13 +88,12 @@ define(function (require, exports, module) {
         }
     }
 
-    function _updatePositions(tooltip, onElement, arrowElement, allowedPlacements) {
-        console.log(onElement, tooltip, arrowElement);
+    function _updatePositions(tooltip, onElement, arrowElement, options) {
         let middleWare=  [
             FloatingUIDOM.offset(6),
             FloatingUIDOM.autoPlacement({
                 // 'right' and 'left' won't be chosen
-                allowedPlacements: allowedPlacements
+                allowedPlacements: options.allowedPlacements
             }),
             FloatingUIDOM.shift({padding: 5})
         ];
@@ -112,7 +113,7 @@ define(function (require, exports, module) {
         WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, tooltip.update);
     }
 
-    function _createDomElementWithArrowElement(domTemplate, elementID, allowedPlacements) {
+    function _createDomElementWithArrowElement(domTemplate, elementID, options) {
         notificationWidgetCount++;
         const onElement = document.getElementById(elementID);
         let arrowElement;
@@ -132,8 +133,8 @@ define(function (require, exports, module) {
             floatingDom.append(arrowElement);
         }
         $("body").append(floatingDom);
-        _updatePositions(floatingDom[0], onElement, arrowElement[0], allowedPlacements);
-        return floatingDom[0];
+        _updatePositions(floatingDom[0], onElement, arrowElement[0], options);
+        return floatingDom;
     }
 
     /**
@@ -142,18 +143,35 @@ define(function (require, exports, module) {
      *
      * @param {string|dom element} template A string template or jQuery object to use as the dialog HTML.
      * @param {String} [elementID] optional id string if provided will show the notification pointing to the element
-     * @param {Array[String]} [allowedPlacements=['top', 'bottom', 'left', 'right']] array with values restricting
-     * where the notification will be shown. ['top', 'bottom', 'left', 'right']
+     * @param {Object} [options] optional, supported options are:
+     *   allowedPlacements - {Array[String]} array with values restricting where the notification will be shown.
+     *       ['top', 'bottom', 'left', 'right']
+     *   autoCloseTimeS - Time in seconds after which the notification should be auto closed. Default is never.
+     *   dismissOnClick - when clicked, the notification is closed. Default is never.
      * @return {Notification}
      */
-    function createFromTemplate(template, elementID, allowedPlacements = ['top', 'bottom', 'left', 'right']) {
+    function createFromTemplate(template, elementID, options) {
         // https://floating-ui.com/docs/tutorial
+        options.allowedPlacements = options.allowedPlacements || ['top', 'bottom', 'left', 'right'];
         if(!elementID){
             elementID = 'notificationUIDefaultAnchor';
         }
-        const tooltip = _createDomElementWithArrowElement(template, elementID, allowedPlacements);
-        $(tooltip).addClass('notification-ui-visible');
-        return (new Notification(tooltip));
+        const tooltip = _createDomElementWithArrowElement(template, elementID, options);
+        tooltip.addClass('notification-ui-visible');
+        let notification = (new Notification(tooltip));
+
+        if(options.autoCloseTimeS){
+            setTimeout(()=>{
+                notification.close();
+            }, options.autoCloseTimeS * 1000);
+        }
+
+        if(options.dismissOnClick){
+            tooltip.click(()=>{
+                notification.close();
+            });
+        }
+        return notification;
     }
 
     exports.createFromTemplate = createFromTemplate;
