@@ -50,7 +50,7 @@ This section outlines the properties and methods available in this module
 
 ## Notification
 
-This is an instance of the notification returned by the createFromTemplate call. The object can be used to
+This is an instance of the notification returned by the `createFromTemplate` call. The object can be used to
 control the created notification. See Notification docs below.
 
 Type: [Object][2]

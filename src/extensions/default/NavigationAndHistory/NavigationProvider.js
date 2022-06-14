@@ -50,7 +50,8 @@ define(function (require, exports, module) {
 
     let $navback = null,
         $navForward = null,
-        $searchNav = null;
+        $searchNav = null,
+        $newProject = null;
 
    /**
     * Contains list of most recently known cursor positions.
@@ -646,23 +647,29 @@ define(function (require, exports, module) {
         CommandManager.execute(Commands.CMD_FIND_IN_FILES);
     }
 
+    function _newProjectClicked() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "fileNavBar", "newProject");
+        CommandManager.execute(Commands.FILE_NEW_PROJECT);
+    }
+
     function _setupNavigationButtons() {
         let $sidebar = $("#sidebar");
         $sidebar.prepend("<div id=\"navBackButton\" class=\"nav-back-btn btn-alt-quiet\"></div>\n" +
             "            <div id=\"navForwardButton\" class=\"nav-forward-btn btn-alt-quiet\"></div>\n" +
             "            <div id=\"showInfileTree\" class=\"show-in-file-tree-btn btn-alt-quiet\"></div>"+
+            "            <div id=\"newProject\" class=\"new-project-btn btn-alt-quiet\"></div>"+
             "            <div id=\"searchNav\" class=\"search-nav-btn btn-alt-quiet\"></div>");
         let $showInTree = $sidebar.find("#showInfileTree");
         $navback = $sidebar.find("#navBackButton");
         $navForward = $sidebar.find("#navForwardButton");
         $searchNav = $sidebar.find("#searchNav");
-        //CMD_FIND_IN_FILES
-
+        $newProject = $sidebar.find("#newProject");
 
         $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
         $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
         $showInTree.attr("title", Strings.CMD_SHOW_IN_TREE);
         $searchNav.attr("title", Strings.CMD_FIND_IN_FILES);
+        $newProject.attr("title", Strings.CMD_PROJECT_NEW);
 
         $navback.on("click", _navigateBackClicked);
         $navForward.on("click", _navigateForwardClicked);
@@ -670,6 +677,7 @@ define(function (require, exports, module) {
         $("#navForwardButton").contextmenu(_navigateForwardClicked);
         $showInTree.on("click", _showInFileTreeClicked);
         $searchNav.on("click", _findInFiles);
+        $newProject.on("click", _newProjectClicked);
     }
 
 
