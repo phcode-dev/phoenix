@@ -35,6 +35,7 @@ define(function (require, exports, module) {
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         FileUtils = brackets.getModule("file/FileUtils"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
+        NotificationUI = brackets.getModule("widgets/NotificationUI"),
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
         replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
@@ -71,6 +72,15 @@ define(function (require, exports, module) {
     function closeDialogue() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         newProjectDialogueObj.close();
+        // TODO: show new project notification on close
+        // NotificationUI.createFromTemplate("Click on <b>File > New Project</b> </br>to show the new project dialog again.",
+        //     "file-menu", {
+        //         allowedPlacements: ['top', 'bottom'],
+        //         autoCloseTimeS: 30,
+        //         dismissOnClick: true
+        // }).done(()=>{
+        //     console.log('done');
+        // });
     }
 
     function showErrorDialogue(title, message) {
