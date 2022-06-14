@@ -35,6 +35,7 @@ define(function (require, exports, module) {
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         FileUtils = brackets.getModule("file/FileUtils"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
+        NotificationUI = brackets.getModule("widgets/NotificationUI"),
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
         replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
@@ -71,6 +72,14 @@ define(function (require, exports, module) {
     function closeDialogue() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         newProjectDialogueObj.close();
+        let note = NotificationUI.createFromTemplate("yo <b>hello world</b>",
+            "showInfileTree", ['top', 'bottom']);
+        note.done(()=>{
+            console.log('done');
+        });
+        setTimeout(()=>{
+            note.close();
+        }, 3000);
     }
 
     function showErrorDialogue(title, message) {
