@@ -100,6 +100,14 @@ async function copyThirdPartyLibs(){
         src(['node_modules/marked/LICENSE.md'])
             .pipe(rename("marked.markdown"))
             .pipe(dest('src/thirdparty/licences/')),
+        // @floating-ui for notification ui widget  floating-ui.dom.umd.min.js
+        src(['node_modules/@floating-ui/core/dist/floating-ui.core.umd.min.js'])
+            .pipe(dest('src/thirdparty')),
+        src(['node_modules/@floating-ui/dom/dist/floating-ui.dom.umd.min.js'])
+            .pipe(dest('src/thirdparty')),
+        src(['node_modules/@floating-ui/core/LICENSE'])
+            .pipe(rename("floating-ui.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
         // documentation
         src(['node_modules/documentation/LICENSE'])
             .pipe(rename("documentation.markdown"))

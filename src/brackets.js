@@ -87,6 +87,7 @@ define(function (require, exports, module) {
         NativeApp           = require("utils/NativeApp"),
         DeprecationWarning  = require("utils/DeprecationWarning"),
         ViewCommandHandlers = require("view/ViewCommandHandlers"),
+        NotificationUI      = require("widgets/NotificationUI"),
         MainViewManager     = require("view/MainViewManager");
 
     window.EventManager = EventManager; // Main event intermediary between brackets and other web pages.
@@ -102,6 +103,10 @@ define(function (require, exports, module) {
      * All translation strings
      */
     window.Strings = Strings;
+    /**
+     * Global notification UI Widgets.
+     */
+    window.NotificationUI = NotificationUI;
 
 
     var MainViewHTML        = require("text!htmlContent/main-view.html");
