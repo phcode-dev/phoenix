@@ -72,14 +72,15 @@ define(function (require, exports, module) {
     function closeDialogue() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         newProjectDialogueObj.close();
-        NotificationUI.createFromTemplate("yo <b>hello world</b>",
-            "showInfileTree", {
-                allowedPlacements: ['top', 'bottom'],
-                autoCloseTimeS: 30,
-                dismissOnClick: true
-        }).done(()=>{
-            console.log('done');
-        });
+        // TODO: show new project notification on close
+        // NotificationUI.createFromTemplate("Click on <b>File > New Project</b> </br>to show the new project dialog again.",
+        //     "file-menu", {
+        //         allowedPlacements: ['top', 'bottom'],
+        //         autoCloseTimeS: 30,
+        //         dismissOnClick: true
+        // }).done(()=>{
+        //     console.log('done');
+        // });
     }
 
     function showErrorDialogue(title, message) {
