@@ -41,7 +41,7 @@ define(function (require, exports, module) {
     /**
      * Closes the Notification if is visible and destroys then dom nodes
      */
-    Notification.prototype.close = function () {
+    Notification.prototype.close = function (closeType) {
         let $tooltip = this.$tooltip;
         $tooltip.removeClass('notification-ui-visible')
             .addClass('notification-ui-hidden');
@@ -49,8 +49,9 @@ define(function (require, exports, module) {
             // wait for the animation to complete before removal
             $tooltip.remove();
             WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $tooltip[0].update);
-            this._result.resolve();
+            this._result.resolve(closeType);
         }, 1000);
+        return this;
     };
 
     /**
@@ -148,7 +149,7 @@ define(function (require, exports, module) {
      *       ['top', 'bottom', 'left', 'right']
      *   autoCloseTimeS - Time in seconds after which the notification should be auto closed. Default is never.
      *   dismissOnClick - when clicked, the notification is closed. Default is never.
-     * @return {Notification}
+     * @return {Notification} with a done handler that resolves when the notification closes
      */
     function createFromTemplate(template, elementID, options) {
         // https://floating-ui.com/docs/tutorial
@@ -162,17 +163,19 @@ define(function (require, exports, module) {
 
         if(options.autoCloseTimeS){
             setTimeout(()=>{
-                notification.close();
+                notification.close(exports.CLOSE_TIMEOUT);
             }, options.autoCloseTimeS * 1000);
         }
 
         if(options.dismissOnClick){
             tooltip.click(()=>{
-                notification.close();
+                notification.close(exports.CLOSE_CLICK_DISMISS);
             });
         }
         return notification;
     }
 
     exports.createFromTemplate = createFromTemplate;
+    exports.CLOSE_TIMEOUT = 'closeTimeout';
+    exports.CLOSE_CLICK_DISMISS = 'clickDismiss';
 });
