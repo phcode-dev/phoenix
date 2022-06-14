@@ -148,12 +148,13 @@ define(function (require, exports, module) {
      *   allowedPlacements - {Array[String]} array with values restricting where the notification will be shown.
      *       ['top', 'bottom', 'left', 'right']
      *   autoCloseTimeS - Time in seconds after which the notification should be auto closed. Default is never.
-     *   dismissOnClick - when clicked, the notification is closed. Default is never.
+     *   dismissOnClick - when clicked, the notification is closed. Default is true(dismiss).
      * @return {Notification} with a done handler that resolves when the notification closes
      */
     function createFromTemplate(template, elementID, options) {
         // https://floating-ui.com/docs/tutorial
         options.allowedPlacements = options.allowedPlacements || ['top', 'bottom', 'left', 'right'];
+        options.dismissOnClick = options.dismissOnClick || true;
         if(!elementID){
             elementID = 'notificationUIDefaultAnchor';
         }
