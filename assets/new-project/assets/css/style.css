@@ -662,6 +662,7 @@ img {
 
 .project-content-left {
     width: 400px;
+    margin-left: 25px;
 }
 
 .project-type-list {
