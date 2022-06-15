@@ -38,7 +38,8 @@ function _isValidGitHubURL(url) {
 }
 
 function _fixGitHubBrokenURL() {
-    let githubPrefix = "https://github.com/";
+    let githubPrefix = "https://github.com/",
+        gitSuffix = '.git';
     let githubURL = websiteURLInput.value;
     if(githubURL.startsWith("http:")){
         githubURL = githubURL.replace("http:", "https:");
@@ -51,6 +52,10 @@ function _fixGitHubBrokenURL() {
     githubURL = githubURL.substring(0, queryParamTrimIndex);
     // trim everything after https://github.com/orgname/repo/... to https://github.com/orgname/repo
     let components = githubURL.replace("https://github.com/", '').split('/');
+    // trim .git at the end of the name
+    if(githubURL.endsWith(gitSuffix)){
+        githubURL = githubURL.replace(new RegExp(gitSuffix + '$'), '');
+    }
     if(components.length > 2){
         githubURL = `https://github.com/${components[0]}/${components[1]}`;
     }
