@@ -21,7 +21,7 @@
 
 }
 
-@media (max-width: 990px) {
+@media (max-width: 700px) {
     .project-list li {
         width: calc(50% - 10px);
         margin-bottom: 25px;
@@ -70,7 +70,7 @@
     }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 600px) {
     .modal-popup .modal-content {
         padding: 15px;
     }
