@@ -61,7 +61,7 @@ function init() {
     _localiseWithBracketsStrings();
     document.getElementById("closeDialogueButton").onclick = function() {
         window.newProjectExtension.closeDialogue();
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `btnClick.${selfFileName}`, "closeDlg");
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `Click.${selfFileName}`, "closeDlg");
     };
     document.getElementById("top").onkeydown = function(e) {
         let acceptedCode = false;
@@ -78,7 +78,7 @@ function init() {
             acceptedCode = true; // will be handled by focus handler below
         }
         if(acceptedCode){
-            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `btnClick.${selfFileName}`, e.code);
+            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `Click.${selfFileName}`, e.code);
         }
     };
     // Accessibility and keyboard navigation with Tab and Esc, Enter keys.

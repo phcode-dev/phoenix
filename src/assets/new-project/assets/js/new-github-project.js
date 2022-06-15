@@ -111,7 +111,7 @@ function _createProjectClicked() {
             zipURL,
             locationInput.fullPath, suggestedProjectName, FLATTEN_ZIP_FIRST_LEVEL_DIR)
             .then(()=>{
-                Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "github.btnClick", "create.success");
+                Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "github.Click", "create.success");
                 newProjectExtension.closeDialogue();
             });
     } else {
