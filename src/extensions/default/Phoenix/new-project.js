@@ -69,18 +69,24 @@ define(function (require, exports, module) {
         fileMenu.addMenuItem(Commands.FILE_NEW_PROJECT, "Alt-Shift-N", Menus.AFTER, Commands.FILE_NEW);
     }
 
+    function _showNewProjectNotification() {
+        let newProjectNotificationShown = localStorage.getItem("newProjectNotificationShown");
+        if(newProjectNotificationShown){
+            return;
+        }
+        NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
+            "newProject", {
+                allowedPlacements: ['top', 'bottom'],
+                autoCloseTimeS: 15,
+                dismissOnClick: true}
+        );
+        localStorage.setItem("newProjectNotificationShown", "true");
+    }
+
     function closeDialogue() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         newProjectDialogueObj.close();
-        // TODO: show new project notification on close
-        // NotificationUI.createFromTemplate("Click on <b>File > New Project</b> </br>to show the new project dialog again.",
-        //     "file-menu", {
-        //         allowedPlacements: ['top', 'bottom'],
-        //         autoCloseTimeS: 30,
-        //         dismissOnClick: true
-        // }).done(()=>{
-        //     console.log('done');
-        // });
+        _showNewProjectNotification();
     }
 
     function showErrorDialogue(title, message) {
@@ -135,7 +141,7 @@ define(function (require, exports, module) {
         // We do this by writing a file `.brackets.json` to the folder
         return new Promise((resolve, reject)=>{
             let file = FileSystem.getFileForPath(`${path}/.brackets.json`);
-            FileUtils.writeText(file, "{}")
+            FileUtils.writeText(file, "{}", true)
                 .done(resolve)
                 .fail(reject);
         });
