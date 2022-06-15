@@ -41,7 +41,17 @@
         </div>
     </div>
     <div class="editor-project-content d-flex justify-content-between">
-        <div class="project-content-left">
+        <div id="recentProjectsContainer" class="project-content-left">
+            <div class="recent-project-card">
+                <div class="recent-head">
+                    <h5 class="localize">{{CMD_TOGGLE_RECENT_PROJECTS}}</h5>
+                </div>
+                <ul id="recentProjectList" class="recent-project-list">
+
+                </ul>
+            </div>
+        </div>
+        <div class="project-content-right">
             <div class="project-content-inner">
                 <div class="project-head d-flex align-items-center justify-content-between">
                     <h4 class="tab-title mb-0 localize">{{CMD_PROJECT_NEW}}</h4>
@@ -96,16 +106,6 @@
 <!--                            <span>From Website</span>-->
 <!--                        </a>-->
 <!--                    </li>-->
-                </ul>
-            </div>
-        </div>
-        <div id="recentProjectsContainer" class="project-content-right">
-            <div class="recent-project-card">
-                <div class="recent-head">
-                    <h5 class="localize">{{CMD_TOGGLE_RECENT_PROJECTS}}</h5>
-                </div>
-                <ul id="recentProjectList" class="recent-project-list">
-
                 </ul>
             </div>
         </div>
