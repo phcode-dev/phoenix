@@ -73,9 +73,17 @@ function _updateProjectCards() {
     recentProjectList.empty();
     let recentProjects = recentProjectExtension.getRecentProjects();
     let tabIndex = 20;
+    let defaultProjects = ['/fs/local/default project', '/fs/local/explore'],
+        showRecentProjects = false;
     for(let recentProject of recentProjects){
+        if(!defaultProjects.includes(recentProject)){
+            showRecentProjects = true;
+        }
         recentProjectList.append(_createRecentProjectCard(getDisplayName(recentProject),
             recentProject, `recent-prj-list-${tabIndex}`, tabIndex++));
+    }
+    if(!showRecentProjects){
+        $("#recentProjectsContainer").addClass("forced-hidden");
     }
 }
 
