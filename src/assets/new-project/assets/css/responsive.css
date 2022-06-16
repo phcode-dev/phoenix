@@ -73,6 +73,7 @@
 @media (max-width: 720px) {
     .project-content-left {
         margin-left: 0px;
+        margin-top: 20px;
     }
 
     .modal-popup .modal-content {
@@ -136,10 +137,6 @@
 
     .editor-project-content {
         flex-direction: column-reverse;
-    }
-
-    .project-content-left {
-        margin-top: 20px;
     }
 
     .editor-right {

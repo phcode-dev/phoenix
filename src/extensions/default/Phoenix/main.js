@@ -31,8 +31,8 @@ define(function (require, exports, module) {
         newFeature   = require("newly-added-features"),
         AppInit      = brackets.getModule("utils/AppInit"),
         Strings      = brackets.getModule("strings"),
-        Dialogs     = brackets.getModule("widgets/Dialogs"),
-        Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
+        Dialogs      = brackets.getModule("widgets/Dialogs"),
+        Mustache     = brackets.getModule("thirdparty/mustache/mustache"),
         unSupportedBrowserTemplate     = require("text!html/unsupported-browser.html");
 
     let $icon;
