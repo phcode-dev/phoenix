@@ -917,7 +917,7 @@ define({
     "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Following file types have been successfully associated with default applications.<br/>{0} You have the option to change your preference on whether you delete/add new file type associations in brackets.json by going to “Debug->Open Preferences File” menu.",
 
     // Phoenix extension
-    "UNSUPPORTED_BROWSER": "Browser Is Unsupported",
+    "UNSUPPORTED_BROWSER": "Browser Is Not Supported",
     "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser does not support Open folder",
     "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Please use one of the supported browsers below.",
     "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " We are working hard to make Phoenix available in more browsers. You may close this dialogue, but some features in Phoenix won't work in this browser.",
