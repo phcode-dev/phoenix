@@ -50,6 +50,7 @@ define(function (require, exports, module) {
         "ja": true,
         "ko": true,
         "lv": true,
+        "ml": true,
         "nb": true,
         "nl": true,
         "pl": true,
