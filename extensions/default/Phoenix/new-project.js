@@ -39,6 +39,7 @@ define(function (require, exports, module) {
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
         replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
+        guidedTour = require("guided-tour"),
         utils = require("utils");
 
     const NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject",
@@ -79,7 +80,11 @@ define(function (require, exports, module) {
                 allowedPlacements: ['top', 'bottom'],
                 autoCloseTimeS: 15,
                 dismissOnClick: true}
-        );
+        ).done(()=>{
+            if(Phoenix.firstBoot){
+                guidedTour.startTour();
+            }
+        });
         localStorage.setItem("newProjectNotificationShown", "true");
     }
 

@@ -87,6 +87,42 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Closes the Notification if is visible and destroys then dom nodes
+     * @type {function}
+     * @name Notification.close
+     */
+    Notification.prototype.close = function (closeType) {
+        let $tooltip = this.$tooltip;
+        if(!$tooltip){
+            return this; // if already closed
+        }
+        $tooltip.removeClass('notification-ui-visible')
+            .addClass('notification-ui-hidden');
+        setTimeout(()=>{
+            // wait for the animation to complete before removal
+            $tooltip.remove();
+            this.$tooltip = null;
+            WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $tooltip[0].update);
+            this._result.resolve(closeType);
+        }, 1000);
+        return this;
+    };
+
+    /**
+     * Adds a done callback to the Notification promise. The promise will be resolved
+     * when the Notification is dismissed. Never rejected.
+     * @example <caption>Print the close reason on console when the notification closes</caption>
+     * notificationInstance.done((closeReason)=>{
+     *     console.log(closeReason)
+     * })
+     * @type {function}
+     * @name Notification.done
+     */
+    Notification.prototype.done = function (callback) {
+        this._promise.done(callback);
+    };
+
+    /**
      * Creates a new notification popup from given template.
      * The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
      *
@@ -138,38 +174,6 @@ define(function (require, exports, module) {
         }
         return notification;
     }
-
-    /**
-     * Closes the Notification if is visible and destroys then dom nodes
-     * @type {function}
-     * @name Notification.close
-     */
-    Notification.prototype.close = function (closeType) {
-        let $tooltip = this.$tooltip;
-        $tooltip.removeClass('notification-ui-visible')
-            .addClass('notification-ui-hidden');
-        setTimeout(()=>{
-            // wait for the animation to complete before removal
-            $tooltip.remove();
-            WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $tooltip[0].update);
-            this._result.resolve(closeType);
-        }, 1000);
-        return this;
-    };
-
-    /**
-     * Adds a done callback to the Notification promise. The promise will be resolved
-     * when the Notification is dismissed. Never rejected.
-     * @example <caption>Print the close reason on console when the notification closes</caption>
-     * notificationInstance.done((closeReason)=>{
-     *     console.log(closeReason)
-     * })
-     * @type {function}
-     * @name Notification.done
-     */
-    Notification.prototype.done = function (callback) {
-        this._promise.done(callback);
-    };
 
     let notificationWidgetCount = 0;
 

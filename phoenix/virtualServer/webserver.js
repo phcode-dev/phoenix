@@ -132,7 +132,7 @@ if(!self.Serve){
 
             let err = null;
             for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
-                let fileStat = await _resolvingStat(path, fs.BYTE_ARRAY_ENCODING);
+                let fileStat = await _resolvingStat(path);
                 if(fileStat.error){
                     err = fileStat.error;
                     await _wait(i * BACKOFF_TIME_MS);
