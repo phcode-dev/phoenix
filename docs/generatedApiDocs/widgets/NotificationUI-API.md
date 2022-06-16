@@ -55,6 +55,29 @@ control the created notification. See Notification docs below.
 
 Type: [Object][2]
 
+## Notification.close
+
+Closes the Notification if is visible and destroys then dom nodes
+
+Type: [function][3]
+
+## Notification.done
+
+Adds a done callback to the Notification promise. The promise will be resolved
+when the Notification is dismissed. Never rejected.
+
+Type: [function][3]
+
+### Examples
+
+Print the close reason on console when the notification closes
+
+```javascript
+notificationInstance.done((closeReason)=>{
+    console.log(closeReason)
+})
+```
+
 ## createFromTemplate
 
 Creates a new notification popup from given template.
@@ -91,29 +114,6 @@ let notification1 = NotificationUI.createFromTemplate(
 ````
 
 Returns **[Notification][6]** Object with a done handler that resolves when the notification closes.
-
-## Notification.close
-
-Closes the Notification if is visible and destroys then dom nodes
-
-Type: [function][3]
-
-## Notification.done
-
-Adds a done callback to the Notification promise. The promise will be resolved
-when the Notification is dismissed. Never rejected.
-
-Type: [function][3]
-
-### Examples
-
-Print the close reason on console when the notification closes
-
-```javascript
-notificationInstance.done((closeReason)=>{
-    console.log(closeReason)
-})
-```
 
 [1]: <>
 
