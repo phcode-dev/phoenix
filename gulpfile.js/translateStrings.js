@@ -109,8 +109,8 @@ async function _processLang(lang) {
         let englishStringToTranslate = rootStrings[rootKey];
         let lastTranslatedEnglishString = lastTranslated[rootKey];
         if(englishStringToTranslate === lastTranslatedEnglishString){
-            // we don't need to translate, use existing translation as is
-            translations[rootKey] = existingTranslations[rootKey];
+            // Load expert translation if there is one else we don't need to translate, use existing translation as is.
+            translations[rootKey] = expertTranslations[englishStringToTranslate] || existingTranslations[rootKey];
         } else {
             if(expertTranslations[englishStringToTranslate]){
                 // prefer expert translations over machine translations
@@ -132,7 +132,8 @@ async function _processLang(lang) {
 let unsupportedLanguages = ['nb', 'gl'];
 
 async function translate() {
-    return new Promise(async (resolve, reject)=>{
+    console.log("please make sure that AWS/Google credentials are available as env vars.");
+    return new Promise(async (resolve)=>{
         let langs = _getAllNLSFolders();
         console.log(langs);
         for(let lang of langs){
@@ -140,7 +141,6 @@ async function translate() {
                 _processLang(lang);
             }
         }
-        //await _processLang("ro");
         resolve();
     });
 }

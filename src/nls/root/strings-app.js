@@ -43,6 +43,7 @@ define({
     "LOCALE_JA": "日本語",
     "LOCALE_KO": "한국어",
     "LOCALE_LV": "latviešu",
+    "LOCALE_ML": "മലയാളം",
     "LOCALE_NB": "norsk",
     "LOCALE_NL": "Nederlands",
     "LOCALE_PL": "polski",
