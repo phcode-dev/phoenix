@@ -1,25 +1,4 @@
-/*
- * GNU AGPL-3.0 License
- *
- * Copyright (c) 2021 - present core.ai . All rights reserved.
- * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
- * for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
- *
- */
-
-define({
+{
   "GENERIC_ERROR": "(error {0})",
   "NOT_FOUND_ERR": "The file/directory could not be found.",
   "NOT_READABLE_ERR": "The file/directory could not be read.",
@@ -802,4 +781,4 @@ define({
   "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
   "GUIDED_FILES_SIDEBAR": "Select an HTML file </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Make some code changes and save file to see preview. </br> <a href='#' style='float:right;'>ok</a>"
-});
+}
