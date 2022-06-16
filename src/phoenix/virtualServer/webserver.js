@@ -31,8 +31,33 @@ if(!self.Serve){
         return `attachment; filename="${filename}"; modification-date="${modified}"; size=${stats.size};`;
     }
 
-    const serve = function (path, formatter, download) {
-        return new Promise((resolve) => {
+    async function _wait(timeMs) {
+        return new Promise((resolve)=>{
+            setTimeout(resolve, timeMs);
+        });
+    }
+
+    // fs read that always resolves even if there is error
+    async function _resolvingRead(path, encoding) {
+        return new Promise((resolve)=>{
+            fs.readFile(path, encoding, function (error, contents) {
+                resolve({error, contents});
+            });
+        });
+    }
+    // fs stat that always resolves even if there is error
+    async function _resolvingStat(path) {
+        return new Promise((resolve)=>{
+            fs.stat(path, function (error, stats) {
+                resolve({error, stats});
+            });
+        });
+    }
+    const FILE_READ_RETRY_COUNT = 5,
+          BACKOFF_TIME_MS = 10;
+
+    const serve = async function (path, formatter, download) {
+        return new Promise(async (resolve) => {
             function buildResponse(responseData) {
                 return new Response(responseData.body, responseData.config);
             }
@@ -44,13 +69,18 @@ if(!self.Serve){
                 resolve(buildResponse(formatter.format500(path, err)));
             }
 
-            function serveFile(path, stats) {
-                fs.readFile(path, fs.BYTE_ARRAY_ENCODING, function (err, contents) {
-                    if (err) {
-                        return serveError(path, err);
+            async function serveFile(path, stats) {
+                let err = null;
+                for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
+                    // sometimes there is read after write contention in native fs between main thread and worker.
+                    // so we retry
+                    let fileResponse = await _resolvingRead(path, fs.BYTE_ARRAY_ENCODING);
+                    if(fileResponse.error){
+                        err = fileResponse.error;
+                        await _wait(i * BACKOFF_TIME_MS);
+                        continue;
                     }
-
-                    const responseData = formatter.formatFile(path, contents, stats);
+                    const responseData = formatter.formatFile(path, fileResponse.contents, stats);
 
                     // If we are supposed to serve this file or download, add headers
                     if (responseData.config.status === 200 && download) {
@@ -59,7 +89,9 @@ if(!self.Serve){
                     }
 
                     resolve(new Response(responseData.body, responseData.config));
-                });
+                    return;
+                }
+                serveError(path, err);
             }
 
             // Either serve /index.html (default index) or / (directory listing)
@@ -98,17 +130,21 @@ if(!self.Serve){
                 maybeServeIndexFile();
             }
 
-            fs.stat(path, function (err, stats) {
-                if (err) {
-                    return serveError(path, err);
+            let err = null;
+            for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
+                let fileStat = await _resolvingStat(path, fs.BYTE_ARRAY_ENCODING);
+                if(fileStat.error){
+                    err = fileStat.error;
+                    await _wait(i * BACKOFF_TIME_MS);
+                    continue;
                 }
-
-                if (stats.isDirectory()) {
-                    serveDir(path);
+                if (fileStat.stats.isDirectory()) {
+                    return serveDir(path);
                 } else {
-                    serveFile(path, stats);
+                    return serveFile(path, fileStat.stats);
                 }
-            });
+            }
+            return serveError(path, err);
         });
     };
 
