@@ -1,4 +1,11 @@
-# License credits to Projects we depend upon apart from the licenses in this folder
+# Credits
+Based on [Backets](https://brackets.io/), by the brackets.io community and [core.ai](https://core.ai/).
+
+[Original work](https://github.com/adobe/brackets/) Copyright (c) 2012 Adobe Systems Incorporated.
+# License credits 
+All projects we depend upon and their licenses can be found in this [folder](https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences).
+
+Please find all other licenses and attributions below:
 
 ## Attributions for Images and other assets used
 
