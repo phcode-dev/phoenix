@@ -29,6 +29,7 @@ const mergeStream =   require('merge-stream');
 const zip = require('gulp-zip');
 const rename = require("gulp-rename");
 const jsDocGenerate = require('./jsDocGenerate');
+const Translate = require("./translateStrings");
 
 function cleanDist() {
     return del(['dist']);
@@ -218,6 +219,13 @@ function generateDocIndex() {
     });
 }
 
+function translateStrings() {
+    return new Promise(async (resolve)=>{
+        await Translate.translate();
+        resolve();
+    });
+}
+
 exports.build = series(copyThirdPartyLibs, zipDefaultProjectFiles, zipSampleProjectFiles);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
@@ -228,4 +236,5 @@ exports.serve = series(exports.build, serve);
 exports.test = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
 exports.createJSDocs = series(cleanDocs, createJSDocs, generateDocIndex);
+exports.translateStrings = series(translateStrings);
 exports.default = series(exports.build);
