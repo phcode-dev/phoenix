@@ -15,7 +15,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_TRANSLATE }}
         run: |
           npm install
-          npm run build
           npm run translateStrings
           ls -al docs
         shell: bash
