@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "<br/>Luouusi projekti napsauttamalla tätä kuvaketta. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Valittu kansio <span class='dialog-filename'>{0}</span> ei ole tyhjä. Oletko varma, että haluat korvata kansion sisällön projektilla?",
   "GUIDED_FILES_SIDEBAR": "Valitse HTML-tiedosto </br> <a href='#' style='float:right;'>ok</a>",
-  "GUIDED_LIVE_PREVIEW": "Tee joitain koodimuutoksia ja tallenna tiedosto nähdäksesi esikatselun. </br> <a href='#' style='float:right;'>ok</a>"
+  "GUIDED_LIVE_PREVIEW": "Tee joitain koodimuutoksia ja tallenna tiedosto nähdäksesi esikatselun. </br> <a href='#' style='float:right;'>ok</a>",
+  "TEST_TRANSLATE": "testi"
 });

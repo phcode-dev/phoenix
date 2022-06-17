@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "Kliknite na ovu ikonu da<br/>biste kreirali novi projekat. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Izabrana fascikla <span class='dialog-filename'>{0}</span> nije prazna. Da li ste sigurni da želite da zamenite sadržaj fascikle sa projektom?",
   "GUIDED_FILES_SIDEBAR": "Izaberite HTML datoteku </br> <a href='#' style='float:right;'>ok</a>",
-  "GUIDED_LIVE_PREVIEW": "Napravite neke promene koda i sačuvajte datoteku da biste videli pregled. </br> <a href='#' style='float:right;'>ok</a>"
+  "GUIDED_LIVE_PREVIEW": "Napravite neke promene koda i sačuvajte datoteku da biste videli pregled. </br> <a href='#' style='float:right;'>ok</a>",
+  "TEST_TRANSLATE": "test"
 });

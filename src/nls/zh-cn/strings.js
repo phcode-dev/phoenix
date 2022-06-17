@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "单击此图标可<br/>创建新项目。</br><a href='#' style='float:right;'>好的</a>",
   "DIRECTORY_REPLACE_MESSAGE": "选定的文件夹 <span class='dialog-filename'>{0}</span> 不为空。确实要用项目替换文件夹内容吗？",
   "GUIDED_FILES_SIDEBAR": "选择一个 HTML 文件</br><a href='#' style='float:right;'>好的</a>",
-  "GUIDED_LIVE_PREVIEW": "进行一些代码更改并保存文件以查看预览。</br><a href='#' style='float:right;'>好的</a>"
+  "GUIDED_LIVE_PREVIEW": "进行一些代码更改并保存文件以查看预览。</br><a href='#' style='float:right;'>好的</a>",
+  "TEST_TRANSLATE": "测试"
 });

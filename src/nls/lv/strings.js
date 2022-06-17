@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "Noklikšķiniet uz šīs ikonas, lai<br/>izveidotu jaunu projektu. </br> <a href='#' style='float:right;'>labi</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Izvēlētā mape <span class='dialog-filename'>{0}</span> nav tukša. Vai tiešām vēlaties aizstāt mapes saturu ar projektu?",
   "GUIDED_FILES_SIDEBAR": "Atlasiet HTML failu </br> <a href='#' style='float:right;'>labi</a>",
-  "GUIDED_LIVE_PREVIEW": "Veiciet dažas koda izmaiņas un saglabājiet failu, lai skatītu priekšskatījumu. </br> <a href='#' style='float:right;'>labi</a>"
+  "GUIDED_LIVE_PREVIEW": "Veiciet dažas koda izmaiņas un saglabājiet failu, lai skatītu priekšskatījumu. </br> <a href='#' style='float:right;'>labi</a>",
+  "TEST_TRANSLATE": "pārbaude"
 });
