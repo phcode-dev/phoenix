@@ -20,13 +20,11 @@ jobs:
           ls -al docs
         shell: bash
 
-      - name: Commit translated strings if present
+      - name: Create Translation Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v4
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
-          pwd
-          cd wiki
-          git config --local user.email "action@github.com"
-          git config --local user.name "phoenixide"
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Adding Translated strings"
-          git log -1 --stat
-        shell: bash
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
