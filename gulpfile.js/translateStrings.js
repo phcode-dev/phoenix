@@ -113,7 +113,7 @@ async function _processLang(lang) {
     let lastTranslated = _getJson(`src/nls/${lang}/lastTranslated.json`, 'utf8');
     require(`../src/nls/${lang}/strings`);
     let existingTranslations = definedStrings;
-    let translations = {};
+    let translations = {}, newTranslations={};
     for(let rootKey of Object.keys(rootStrings)){
         if(!_isTranslatableKey(rootKey)){
             continue; // move on to next string
@@ -133,12 +133,12 @@ async function _processLang(lang) {
                 translations[rootKey] = awsTranslation;
             }
         }
-        lastTranslated[rootKey] = englishStringToTranslate;
+        newTranslations[rootKey] = englishStringToTranslate;
     }
     let translatedStringsJSON = JSON.stringify(translations, null, 2);
     let fileToWrite = `${FILE_HEADER}${translatedStringsJSON}${FILE_FOOTER}`;
     fs.writeFileSync(`src/nls/${lang}/strings.js`, fileToWrite);
-    fs.writeFileSync(`src/nls/${lang}/lastTranslated.json`, JSON.stringify(lastTranslated, null, 2));
+    fs.writeFileSync(`src/nls/${lang}/lastTranslated.json`, JSON.stringify(newTranslations, null, 2));
 }
 
 let unsupportedLanguages = ['nb', 'gl'];
