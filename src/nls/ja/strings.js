@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "<br/>新しいプロジェクトを作成するには、このアイコンをクリックします。</br><a href='#' style='float:right;'>わかった</a>",
   "DIRECTORY_REPLACE_MESSAGE": "選択したフォルダ <span class='dialog-filename'>{0}</span> は空ではありません。フォルダの内容をプロジェクトに置き換えてもよろしいですか?",
   "GUIDED_FILES_SIDEBAR": "HTML ファイルを選択してください</br> <a href='#' style='float:right;'>OK</a>",
-  "GUIDED_LIVE_PREVIEW": "コードを変更し、ファイルを保存してプレビューを表示します。</br><a href='#' style='float:right;'>わかった</a>"
+  "GUIDED_LIVE_PREVIEW": "コードを変更し、ファイルを保存してプレビューを表示します。</br><a href='#' style='float:right;'>わかった</a>",
+  "TEST_TRANSLATE": "テスト"
 });

@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a<br/>crea un nou proiect. </br> <a href='#' style='float:right;'>O.K</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Dosarul selectat <span class='dialog-filename'>{0}</span> nu este gol. Sigur doriți să înlocuiți conținutul folderului cu proiectul?",
   "GUIDED_FILES_SIDEBAR": "Selectați un fișier HTML </br> <a href='#' style='float:right;'>ok</a>",
-  "GUIDED_LIVE_PREVIEW": "Efectuați unele modificări de cod și salvați fișierul pentru a vedea previzualizarea. </br> <a href='#' style='float:right;'>O.K</a>"
+  "GUIDED_LIVE_PREVIEW": "Efectuați unele modificări de cod și salvați fișierul pentru a vedea previzualizarea. </br> <a href='#' style='float:right;'>O.K</a>",
+  "TEST_TRANSLATE": "test"
 });

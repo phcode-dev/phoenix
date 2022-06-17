@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "ഒരു പുതിയ പ്രോജക്റ്റ്<br/>സൃഷ്ടിക്കുന്നതിന് ഈ ഐക്കണിൽ ക്ലിക്കുചെയ്യുക. </br> <a href='#' style='float:right;'>ശരി</a>",
   "DIRECTORY_REPLACE_MESSAGE": "തിരഞ്ഞെടുത്ത ഫോൾഡർ <span class='dialog-filename'>{0}</span> ശൂന്യമല്ല. പ്രോജക്റ്റിനൊപ്പം ഫോൾഡർ ഉള്ളടക്കങ്ങൾ മാറ്റിസ്ഥാപിക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?",
   "GUIDED_FILES_SIDEBAR": "<a href='#' style='float:right;'>ശരി</a>ഒരു HTML ഫയൽ തിരഞ്ഞെടുക്കുക </br>",
-  "GUIDED_LIVE_PREVIEW": "പ്രിവ്യൂ കാണുന്നതിന് ചില കോഡ് മാറ്റങ്ങൾ വരുത്തി ഫയൽ സംരക്ഷിക്കുക. </br> <a href='#' style='float:right;'>ശരി</a>"
+  "GUIDED_LIVE_PREVIEW": "പ്രിവ്യൂ കാണുന്നതിന് ചില കോഡ് മാറ്റങ്ങൾ വരുത്തി ഫയൽ സംരക്ഷിക്കുക. </br> <a href='#' style='float:right;'>ശരി</a>",
+  "TEST_TRANSLATE": "ടെസ്റ്റ്"
 });
