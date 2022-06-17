@@ -1,0 +1,32 @@
+name: Generating Translations For strings
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Building phoenix
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_TRANSLATE }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_TRANSLATE }}
+        run: |
+          npm install
+          npm run build
+          npm run translateStrings
+          ls -al docs
+        shell: bash
+
+      - name: Commit translated strings if present
+        run: |
+          pwd
+          cd wiki
+          git config --local user.email "action@github.com"
+          git config --local user.name "phoenixide"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Adding Translated strings"
+          git log -1 --stat
+        shell: bash
