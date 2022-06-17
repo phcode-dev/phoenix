@@ -96,6 +96,15 @@ const FILE_HEADER = `/*
 define(`,
 FILE_FOOTER = ');';
 
+function _isTranslatableKey(key) {
+    const doNotTranslateDirective = '_DO_NOT_TRANSLATE';
+    const translationDisabledForKey = `${key}${doNotTranslateDirective}`;
+    if(key.endsWith(doNotTranslateDirective) || rootStrings[translationDisabledForKey] === 'true'){
+        return false;
+    }
+    return true;
+}
+
 async function _processLang(lang) {
     if(lang === 'root'){
         return;
@@ -106,6 +115,9 @@ async function _processLang(lang) {
     let existingTranslations = definedStrings;
     let translations = {};
     for(let rootKey of Object.keys(rootStrings)){
+        if(!_isTranslatableKey(rootKey)){
+            continue; // move on to next string
+        }
         let englishStringToTranslate = rootStrings[rootKey];
         let lastTranslatedEnglishString = lastTranslated[rootKey];
         if(englishStringToTranslate === lastTranslatedEnglishString){
