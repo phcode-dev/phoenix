@@ -24,6 +24,7 @@ define({
     "APP_NAME": "Phoenix",
 
     // Self locales (used by Debug > Switch Language)
+    "LOCALE_AR": "عربي",
     "LOCALE_BG": "български",
     "LOCALE_CS": "čeština",
     "LOCALE_DA": "Dansk",
@@ -36,6 +37,7 @@ define({
     "LOCALE_FI": "suomi",
     "LOCALE_FR": "français",
     "LOCALE_GL": "galego",
+    "LOCALE_HI": "हिन्दी",
     "LOCALE_HR": "hrvatski",
     "LOCALE_HU": "magyar",
     "LOCALE_ID": "Bahasa Indonesia",
@@ -56,6 +58,7 @@ define({
     "LOCALE_SV": "svenska",
     "LOCALE_TR": "Türkçe",
     "LOCALE_UK": "Українська",
+    "LOCALE_UR": "اردو",
     "LOCALE_ZH_CN": "简体中文",
     "LOCALE_ZH_TW": "繁體中文"
 });

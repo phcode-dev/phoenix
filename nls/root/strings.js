@@ -269,14 +269,23 @@ define({
      * Keyboard modifiers and special key names
      */
     "KEYBOARD_CTRL": "Ctrl",
+    "KEYBOARD_CTRL_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_SHIFT": "Shift",
+    "KEYBOARD_SHIFT_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_SPACE": "Space",
+    "KEYBOARD_SPACE_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_PAGE_UP": "Page Up",
+    "KEYBOARD_PAGE_UP_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_PAGE_DOWN": "Page Down",
+    "KEYBOARD_PAGE_DOWN_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_HOME": "Home",
+    "KEYBOARD_HOME_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_END": "End",
+    "KEYBOARD_END_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_INSERT": "Insert",
+    "KEYBOARD_INSERT_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_DELETE": "Delete",
+    "KEYBOARD_DELETE_DO_NOT_TRANSLATE": "true",
 
     /**
      * StatusBar strings
@@ -455,7 +464,7 @@ define({
     "CMD_GET_INVOLVED": "Get Involved",
     "CMD_SHOW_EXTENSIONS_FOLDER": "Show Extensions Folder",
     "CMD_HEALTH_DATA_STATISTICS": "Health Report",
-    "CMD_HOMEPAGE": "{APP_TITLE} Homepage",
+    "CMD_HOMEPAGE": "{APP_NAME} Homepage",
     "CMD_TWITTER": "{TWITTER_NAME} on Twitter",
     "CMD_ABOUT": "About {APP_TITLE}",
     "CMD_OPEN_PREFERENCES": "Open Preferences File",
