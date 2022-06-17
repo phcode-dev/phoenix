@@ -21,6 +21,7 @@
         "linting.enabled_by_default": true,
         "build_timestamp": "",
         "googleAnalyticsID": "G-P4HJFPDB76",
+        "mixPanelID": "49c4d164b592be2350fc7af06a259bf3",
         "coreAnalyticsID": "phoenix",
         "coreAnalyticsAppName": "phoenix-dev",
         "environment": "dev",

@@ -19,7 +19,7 @@
  *
  */
 
-/*global gtag, analytics*/
+/*global gtag, analytics, mixpanel*/
 
 // @INCLUDE_IN_API_DOCS
 /**
@@ -114,6 +114,13 @@ define(function (require, exports, module) {
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
+    function _initMixPanelAnalytics() {
+        // evaluating mixpanel instead of Google Analytics
+        // Enabling the debug mode flag is useful during implementation,
+        // but it's recommended you remove it for production
+        mixpanel.init(brackets.config.mixPanelID, {debug: window.debugModeLogs});
+    }
+
     function _initCoreAnalytics() {
         // Load core analytics scripts
         let script = document.createElement('script');
@@ -141,6 +148,7 @@ define(function (require, exports, module) {
             return;
         }
         _initGoogleAnalytics();
+        _initMixPanelAnalytics();
         _initCoreAnalytics();
         initDone = true;
     }
@@ -165,6 +173,22 @@ define(function (require, exports, module) {
             'event_category': category,
             'event_label': label,
             'value': count
+        });
+    }
+
+    function _sendToMixPanel(category, action, label, count, value) {
+        if(disabled){
+            return;
+        }
+        category = category || "category";
+        action = action || "action";
+        if(!label){
+            label = action;
+        }
+        count = count || 1;
+        value = value || 1;
+        mixpanel.track(category, {
+            action, label, count, value
         });
     }
 
@@ -222,6 +246,7 @@ define(function (require, exports, module) {
     function countEvent(eventType, eventCategory, eventSubCategory, count= 1) {
         _logEventForAudit(eventType, eventCategory, eventSubCategory, count, AUDIT_TYPE_COUNT);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, count);
+        _sendToMixPanel(eventType, eventCategory, eventSubCategory, count);
         _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, count);
     }
 
@@ -242,6 +267,7 @@ define(function (require, exports, module) {
     function valueEvent(eventType, eventCategory, eventSubCategory, value) {
         _logEventForAudit(eventType, eventCategory, eventSubCategory, value, AUDIT_TYPE_VALUE);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, value);
+        _sendToMixPanel(eventType, eventCategory, eventSubCategory, 1, value);
         _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, 1, value);
     }
 
