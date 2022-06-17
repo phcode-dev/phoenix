@@ -187,6 +187,9 @@ define(function (require, exports, module) {
         }
         count = count || 1;
         value = value || 1;
+        if(!mixpanel.track) {
+            return;
+        }
         mixpanel.track(category, {
             action, label, count, value
         });
