@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "Kliknutím na tuto ikonu<br/>vytvoříte nový projekt. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraná složka <span class='dialog-filename'>{0}</span> není prázdná. Opravdu chcete nahradit obsah složky projektem?",
   "GUIDED_FILES_SIDEBAR": "Vyberte soubor HTML </br> <a href='#' style='float:right;'>ok</a>",
-  "GUIDED_LIVE_PREVIEW": "Proveďte některé změny kódu a uložte soubor, abyste viděli náhled. </br> <a href='#' style='float:right;'>ok</a>"
+  "GUIDED_LIVE_PREVIEW": "Proveďte některé změny kódu a uložte soubor, abyste viděli náhled. </br> <a href='#' style='float:right;'>ok</a>",
+  "TEST_TRANSLATE": "test"
 });

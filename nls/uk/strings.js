@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "Натисніть цю піктограму, щоб<br/>створити новий проект. </br> <a href='#' style='float:right;'>ОК</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Вибрана тека <span class='dialog-filename'>{0}</span> не є порожньою. Ви дійсно хочете замінити вміст теки проектом?",
   "GUIDED_FILES_SIDEBAR": "Виберіть HTML-файл </br> <a href='#' style='float:right;'>ok</a>",
-  "GUIDED_LIVE_PREVIEW": "Зробіть деякі зміни в коді і збережіть файл, щоб побачити попередній перегляд. </br> <a href='#' style='float:right;'>ОК</a>"
+  "GUIDED_LIVE_PREVIEW": "Зробіть деякі зміни в коді і збережіть файл, щоб побачити попередній перегляд. </br> <a href='#' style='float:right;'>ОК</a>",
+  "TEST_TRANSLATE": "тест"
 });

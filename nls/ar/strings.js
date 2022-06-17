@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "انقر فوق هذا الرمز<br/> لإنشاء مشروع جديد. </br><a href='#' style='float:right;'>موافق</a>",
   "DIRECTORY_REPLACE_MESSAGE": "المجلد المحدد <span class='dialog-filename'>{0}</span> ليس فارغًا. هل تريد بالتأكيد استبدال محتويات المجلد بالمشروع؟",
   "GUIDED_FILES_SIDEBAR": "حدد ملف HTML</br> <a href='#' style='float:right;'>موافق</a>",
-  "GUIDED_LIVE_PREVIEW": "قم بإجراء بعض التغييرات في التعليمات البرمجية وحفظ الملف لمشاهدة المعاينة. </br><a href='#' style='float:right;'>موافق</a>"
+  "GUIDED_LIVE_PREVIEW": "قم بإجراء بعض التغييرات في التعليمات البرمجية وحفظ الملف لمشاهدة المعاينة. </br><a href='#' style='float:right;'>موافق</a>",
+  "TEST_TRANSLATE": "اختبار"
 });

@@ -190,15 +190,6 @@
   "GEAR_MENU_TOOLTIP": "Configure Working Set",
   "SPLITVIEW_INFO_TITLE": "Already Open",
   "SPLITVIEW_MULTIPANE_WARNING": "The file is already open in another pane. {APP_NAME} will soon support opening the same file in more than one pane. Until then, the file will be shown in the pane it's already open in.<br /><br />(You'll only see this message once.)",
-  "KEYBOARD_CTRL": "Ctrl",
-  "KEYBOARD_SHIFT": "Shift",
-  "KEYBOARD_SPACE": "Space",
-  "KEYBOARD_PAGE_UP": "Page Up",
-  "KEYBOARD_PAGE_DOWN": "Page Down",
-  "KEYBOARD_HOME": "Home",
-  "KEYBOARD_END": "End",
-  "KEYBOARD_INSERT": "Insert",
-  "KEYBOARD_DELETE": "Delete",
   "STATUSBAR_CURSOR_POSITION": "Line {0}, Column {1}",
   "STATUSBAR_SELECTION_CH_SINGULAR": " — Selected {0} column",
   "STATUSBAR_SELECTION_CH_PLURAL": " — Selected {0} columns",
@@ -780,5 +771,6 @@
   "NEW_PROJECT_NOTIFICATION": "Click this icon to<br/>create a new project. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
   "GUIDED_FILES_SIDEBAR": "Select an HTML file </br> <a href='#' style='float:right;'>ok</a>",
-  "GUIDED_LIVE_PREVIEW": "Make some code changes and save file to see preview. </br> <a href='#' style='float:right;'>ok</a>"
+  "GUIDED_LIVE_PREVIEW": "Make some code changes and save file to see preview. </br> <a href='#' style='float:right;'>ok</a>",
+  "TEST_TRANSLATE": "test"
 }

@@ -792,5 +792,6 @@ define({
   "NEW_PROJECT_NOTIFICATION": "Yeni bir proje<br/>oluşturmak için bu simgeye tıklayın. </br> <a href='#' style='float:right;'>tamam</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Seçilen <span class='dialog-filename'>{0}</span> klasörü boş değil. Klasör içeriğini proje ile değiştirmek istediğinizden emin misiniz?",
   "GUIDED_FILES_SIDEBAR": "Bir HTML dosyası seçin </br> <a href='#' style='float:right;'>tamam</a>",
-  "GUIDED_LIVE_PREVIEW": "Önizlemeyi görmek için bazı kod değişiklikleri yapın ve dosyayı kaydedin. </br> <a href='#' style='float:right;'>tamam</a>"
+  "GUIDED_LIVE_PREVIEW": "Önizlemeyi görmek için bazı kod değişiklikleri yapın ve dosyayı kaydedin. </br> <a href='#' style='float:right;'>tamam</a>",
+  "TEST_TRANSLATE": "test"
 });
