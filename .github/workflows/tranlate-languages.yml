@@ -24,7 +24,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: Update Translations
+          commit-message: 'ci: update Translations'
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           title: '[Translations BOT] Update String translations'
