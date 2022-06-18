@@ -957,6 +957,7 @@ define({
     "NEW_HTML": "New HTML Project",
     "LICENSE": "License:",
     "CREDITS": "Credits:",
+    "PREVIEW": "Preview",
     "NEW_PROJECT_NOTIFICATION": "Click this icon to<br/>create a new project. </br> <a href='#' style='float:right;'>ok</a>",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
     // Guided tour

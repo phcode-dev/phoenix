@@ -890,13 +890,27 @@ img {
     cursor: pointer;
 }
 
+.flex-column-fill{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.flex-0-1-auto {
+    flex: 0 1 auto;
+}
+
+.flex-1-1-auto {
+    flex: 1 1 auto;
+}
+
 .preview-box {
     background: #2E3031;
     border-radius: 5px;
     width: 100%;
-    height: 280px;
+    height: 95%;
     margin: auto;
-    margin-top: 30px;
+    margin-top: 10px;
     padding: 15px;
 }
 

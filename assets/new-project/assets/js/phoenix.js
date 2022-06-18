@@ -57,6 +57,29 @@ function _localiseWithBracketsStrings() {
     }
 }
 
+function _addQueryString(url, queryString, value) {
+    if(value){
+        return `${url}&${queryString}=${value}`;
+    }
+    return url;
+}
+
+function newProjectFromURLScreen(url, suggestedProjectName, title,
+    {license, licenseURL, credits, creditsURL, previewURL, backURL}) {
+    let href = `new-project-from-url.html?url=${url}&suggestedName=${suggestedProjectName}&title=${title}`;
+    href = _addQueryString(href, "license", license);
+    href = _addQueryString(href, "licenseURL", licenseURL);
+    href = _addQueryString(href, "credits", credits);
+    href = _addQueryString(href, "creditsURL", creditsURL);
+    href = _addQueryString(href, "previewURL", previewURL);
+    href = _addQueryString(href, "backURL", backURL);
+    window.location.href = href;
+}
+
+function getPhoenixAbsURL(relativePath) {
+    return `${window.parent.Phoenix.baseURL}${relativePath}`;
+}
+
 function init() {
     _localiseWithBracketsStrings();
     document.getElementById("closeDialogueButton").onclick = function() {

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/css/style.css"/>
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/lity.css">
     <link rel="stylesheet" href="assets/css/font-awesome/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,12 +16,20 @@
           rel="stylesheet">
     <script src="assets/js/phoenix.js"></script>
     <script src="assets/js/new-project-from-url.js"></script>
+    <!-- Javascript -->
+    <script src="assets/thirdparty/jquery.min.js"></script>
+    <script src="assets/thirdparty/Popper.js"></script>
+    <script src="assets/thirdparty/bootstrap.min.js"></script>
+    <script src="assets/thirdparty/jquery.easing.min.js"></script>
+    <script src="assets/thirdparty/lity.js"></script>
+    <!-- Appear js -->
+    <script src="assets/thirdparty/appear.min.js"></script>
 </head>
 <body id="top" onload="init(); initNewProjectFromURL();">
-<div class="code-editor-card">
-    <div class="project-top d-flex align-items-center justify-content-between">
+<div class="code-editor-card flex-column-fill">
+    <div class="project-top d-flex align-items-center justify-content-between flex-0-1-auto">
         <div class="editor-left d-flex align-items-center">
-            <a href="code-editor.html" class="back-btn">
+            <a id="backButton" href="code-editor.html" class="back-btn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11V13ZM5 12L4.29289 11.2929C3.90237 11.6834 3.90237 12.3166 4.29289 12.7071L5 12ZM11.2929 19.7071C11.6834 20.0976 12.3166 20.0976 12.7071 19.7071C13.0976 19.3166 13.0976 18.6834 12.7071 18.2929L11.2929 19.7071ZM12.7071 5.70711C13.0976 5.31658 13.0976 4.68342 12.7071 4.29289C12.3166 3.90237 11.6834 3.90237 11.2929 4.29289L12.7071 5.70711ZM19 11H5V13H19V11ZM12.7071 18.2929L5.70711 11.2929L4.29289 12.7071L11.2929 19.7071L12.7071 18.2929ZM5.70711 12.7071L12.7071 5.70711L11.2929 4.29289L4.29289 11.2929L5.70711 12.7071Z"
                           fill="white"/>
@@ -44,37 +53,70 @@
         </div>
     </div>
 
-    <div class="website-main-content">
-        <div id="projectLocation" class="website-detail d-flex align-items-center">
+    <div class="website-main-content flex-column-fill flex-1-1-auto">
+        <div id="projectLocation" class="website-detail d-flex align-items-center flex-0-1-auto">
             <span class="localize">{{LOCATION}}</span>
             <input id="locationInput" type="button" name="web-url" value="">
             <button id="createProjectBtn" class="create-btn localize">{{CREATE_PROJECT}}</button>
         </div>
-        <div id="projectName" class="website-detail d-flex align-items-center">
+        <div id="projectName" class="website-detail d-flex align-items-center flex-0-1-auto">
             <span class="localize">{{PROJECT_NAME}}</span>
             <input id="projectNameInput" class="" type="text" name="project-name" value="project"/>
             <button id="createProjectWithNameBtn" class="create-btn localize">{{CREATE_PROJECT}}</button>
         </div>
-        <div id="License" class="forced-hidden website-detail d-flex align-items-center">
+        <div id="License" class="forced-hidden website-detail d-flex align-items-center flex-0-1-auto">
             <span class="localize">{{LICENSE}}</span>
             <a id="licenseLink" href="#" target="_blank"></a>
         </div>
-        <div id="Credits" class="forced-hidden website-detail d-flex align-items-center">
+        <div id="Credits" class="forced-hidden website-detail d-flex align-items-center flex-0-1-auto">
             <span class="localize">{{CREDITS}}</span>
             <a id="creditsLink" href="#" target="_blank"></a>
         </div>
+        <div id="previewBox" class="website-preview-content flex-1-1-auto forced-hidden">
+            <div class="preview-box flex-column-fill">
+                <div class="preview-box-top d-flex align-items-center justify-content-between flex-0-1-auto">
+                    <div class="small-heading localize">{{PREVIEW}}</div>
+                    <a href="#inline" class="full-screen-btn" data-lity>
+                        <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 1.99667H3C2.46957 1.99667 1.96086 2.20669 1.58579 2.58052C1.21071 2.95435 1 3.46137 1 3.99005V6.98012M19 6.98012V3.99005C19 3.46137 18.7893 2.95435 18.4142 2.58052C18.0391 2.20669 17.5304 1.99667 17 1.99667H14M14 19.9371H17C17.5304 19.9371 18.0391 19.7271 18.4142 19.3532C18.7893 18.9794 19 18.4724 19 17.9437V14.9536M1 14.9536V17.9437C1 18.4724 1.21071 18.9794 1.58579 19.3532C1.96086 19.7271 2.46957 19.9371 3 19.9371H6"
+                                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M1.29407 18.2321C0.902895 18.622 0.901845 19.2552 1.29172 19.6463C1.6816 20.0375 2.31476 20.0386 2.70593 19.6487L1.29407 18.2321ZM18.7059 3.70166C19.0971 3.31178 19.0982 2.67862 18.7083 2.28744C18.3184 1.89627 17.6852 1.89522 17.2941 2.2851L18.7059 3.70166ZM8.20593 14.1669C8.5971 13.777 8.59815 13.1438 8.20828 12.7527C7.8184 12.3615 7.18524 12.3605 6.79407 12.7503L8.20593 14.1669ZM11.7941 7.76689C11.4029 8.15676 11.4018 8.78993 11.7917 9.1811C12.1816 9.57227 12.8148 9.57332 13.2059 9.18344L11.7941 7.76689ZM2.70593 19.6487L8.20593 14.1669L6.79407 12.7503L1.29407 18.2321L2.70593 19.6487ZM13.2059 9.18344L18.7059 3.70166L17.2941 2.2851L11.7941 7.76689L13.2059 9.18344Z"
+                                  fill="white"/>
+                        </svg>
 
+                    </a>
+                    <div id="inline" style="background:#2E3031; height: 100%" class="lity-hide">
+                        <div class="lity-header d-flex align-items-center justify-content-between">
+                            <h5>
+                                Preview
+                            </h5>
+                            <button class="lity-close-big" type="button" data-lity-close>
+                                <svg width="25" height="25" viewBox="0 0 25 25" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.292893 22.7929C-0.0976311 23.1834 -0.0976311 23.8166 0.292893 24.2071C0.683417 24.5976 1.31658 24.5976 1.70711 24.2071L0.292893 22.7929ZM24.2071 1.70711C24.5976 1.31658 24.5976 0.683417 24.2071 0.292893C23.8166 -0.0976311 23.1834 -0.0976311 22.7929 0.292893L24.2071 1.70711ZM7.89461 18.0196C8.28513 17.6291 8.28513 16.9959 7.89461 16.6054C7.50408 16.2149 6.87092 16.2149 6.48039 16.6054L7.89461 18.0196ZM17.1054 5.98039C16.7149 6.37092 16.7149 7.00408 17.1054 7.39461C17.4959 7.78513 18.1291 7.78513 18.5196 7.39461L17.1054 5.98039ZM1.70711 24.2071L7.89461 18.0196L6.48039 16.6054L0.292893 22.7929L1.70711 24.2071ZM18.5196 7.39461L24.2071 1.70711L22.7929 0.292893L17.1054 5.98039L18.5196 7.39461Z"
+                                          fill="white"/>
+                                    <path d="M8.5 3V6C8.5 6.53043 8.28929 7.03914 7.91421 7.41421C7.53914 7.78929 7.03043 8 6.5 8H3.5M21.5 8H18.5C17.9696 8 17.4609 7.78929 17.0858 7.41421C16.7107 7.03914 16.5 6.53043 16.5 6V3M16.5 21V18C16.5 17.4696 16.7107 16.9609 17.0858 16.5858C17.4609 16.2107 17.9696 16 18.5 16H21.5M3.5 16H6.5C7.03043 16 7.53914 16.2107 7.91421 16.5858C8.28929 16.9609 8.5 17.4696 8.5 18V21"
+                                          stroke="white" stroke-width="2" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+
+                            </button>
+                        </div>
+                        <div class="big-preview">
+                            <iframe id="bigFrame" title="big preview"
+                                    style="border: 0px; width: 100%; height: 100%; background-color: white;"
+                                    src='about:blank' class="img-fluid"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-image flex-1-1-auto">
+                    <iframe id="littleFrame" title="little preview"
+                            style="border: 0px; width: 100%; height: 100%; background-color: white;"
+                            src='about:blank' class="img-fluid"></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<!-- Javascript -->
-<script src="assets/thirdparty/jquery.min.js"></script>
-<script src="assets/thirdparty/Popper.js"></script>
-<script src="assets/thirdparty/bootstrap.min.js"></script>
-<script src="assets/thirdparty/jquery.easing.min.js"></script>
-<script src="assets/thirdparty/main.js"></script>
-<script src="assets/thirdparty/perfect-scrollbar.jquery.min.js"></script>
-<!-- Appear js -->
-<script src="assets/thirdparty/appear.min.js"></script>
 </body>
 </html>
