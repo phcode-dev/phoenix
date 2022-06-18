@@ -36,6 +36,7 @@ const LICENSE_URL = params.licenseURL;
 const CREDITS = params.credits;
 const CREDITS_URL = params.creditsURL;
 const PREVIEW_URL = params.previewURL;
+const BACK_URL = params.backURL;
 
 function _validateProjectLocation() {
     if(!window.showDirectoryPicker){ // fs access apis not present
@@ -116,10 +117,16 @@ function _showPreview() {
     $(document.getElementById("previewBox")).removeClass("forced-hidden");
     document.getElementById("bigFrame").src = PREVIEW_URL;
     document.getElementById("littleFrame").src = PREVIEW_URL;
-    // TODO add back button url
+}
+
+function _setupNavigation() {
+    if(BACK_URL){
+        document.getElementById("backButton").src = BACK_URL;
+    }
 }
 
 function initNewProjectFromURL() {
+    _setupNavigation();
     if(!window.showDirectoryPicker){ // fs access apis not present
         $(document.getElementById("projectLocation")).addClass("forced-hidden");
     } else {
