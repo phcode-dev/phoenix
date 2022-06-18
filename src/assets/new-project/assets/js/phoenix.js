@@ -57,6 +57,31 @@ function _localiseWithBracketsStrings() {
     }
 }
 
+function newProjectFromURLScreen(url, suggestedProjectName, title,
+    {license, licenseURL, credits, creditsURL, previewURL}) {
+    let href = `new-project-from-url.html?url=${url}&suggestedName=${suggestedProjectName}&title=${title}`;
+    if(license){
+        href=`${href}&license=${license}`;
+    }
+    if(licenseURL){
+        href=`${href}&licenseURL=${licenseURL}`;
+    }
+    if(credits){
+        href=`${href}&credits=${credits}`;
+    }
+    if(creditsURL){
+        href=`${href}&creditsURL=${creditsURL}`;
+    }
+    if(previewURL){
+        href=`${href}&previewURL=${previewURL}`;
+    }
+    window.location.href = href;
+}
+
+function getPhoenixAbsURL(relativePath) {
+    return `${window.parent.Phoenix.baseURL}${relativePath}`;
+}
+
 function init() {
     _localiseWithBracketsStrings();
     document.getElementById("closeDialogueButton").onclick = function() {
