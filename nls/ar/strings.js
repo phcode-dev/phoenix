@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "مشروع HTML جديد",
   "LICENSE": "الترخيص:",
   "CREDITS": "قروض:",
+  "PREVIEW": "استطلاع",
   "NEW_PROJECT_NOTIFICATION": "انقر فوق هذا الرمز<br/> لإنشاء مشروع جديد. </br><a href='#' style='float:right;'>موافق</a>",
   "DIRECTORY_REPLACE_MESSAGE": "المجلد المحدد <span class='dialog-filename'>{0}</span> ليس فارغًا. هل تريد بالتأكيد استبدال محتويات المجلد بالمشروع؟",
   "GUIDED_FILES_SIDEBAR": "حدد ملف HTML</br> <a href='#' style='float:right;'>موافق</a>",

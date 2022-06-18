@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Nuevo proyecto HTML",
   "LICENSE": "Licencia:",
   "CREDITS": "Créditos:",
+  "PREVIEW": "Vista previa",
   "NEW_PROJECT_NOTIFICATION": "Haga clic en este icono para<br/> crear un proyecto nuevo. </br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "La carpeta seleccionada <span class='dialog-filename'>{0}</span> no está vacía. ¿Está seguro de que desea reemplazar el contenido de la carpeta por el proyecto?",
   "GUIDED_FILES_SIDEBAR": "Seleccione un archivo HTML</br> <a href='#' style='float:right;'>ok</a>",

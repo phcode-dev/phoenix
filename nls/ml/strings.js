@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "പുതിയ HTML പ്രോജക്റ്റ്",
   "LICENSE": "ലൈസൻസ്:",
   "CREDITS": "ക്രെഡിറ്റുകൾ:",
+  "PREVIEW": "പ്രിവ്യൂ",
   "NEW_PROJECT_NOTIFICATION": "ഒരു പുതിയ പ്രോജക്റ്റ്<br/>സൃഷ്ടിക്കുന്നതിന് ഈ ഐക്കണിൽ ക്ലിക്കുചെയ്യുക. </br> <a href='#' style='float:right;'>ശരി</a>",
   "DIRECTORY_REPLACE_MESSAGE": "തിരഞ്ഞെടുത്ത ഫോൾഡർ <span class='dialog-filename'>{0}</span> ശൂന്യമല്ല. പ്രോജക്റ്റിനൊപ്പം ഫോൾഡർ ഉള്ളടക്കങ്ങൾ മാറ്റിസ്ഥാപിക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?",
   "GUIDED_FILES_SIDEBAR": "<a href='#' style='float:right;'>ശരി</a>ഒരു HTML ഫയൽ തിരഞ്ഞെടുക്കുക </br>",

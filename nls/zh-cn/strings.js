@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "新 HTML 项目",
   "LICENSE": "许可证：",
   "CREDITS": "积分：",
+  "PREVIEW": "预览",
   "NEW_PROJECT_NOTIFICATION": "单击此图标可<br/>创建新项目。</br><a href='#' style='float:right;'>好的</a>",
   "DIRECTORY_REPLACE_MESSAGE": "选定的文件夹 <span class='dialog-filename'>{0}</span> 不为空。确实要用项目替换文件夹内容吗？",
   "GUIDED_FILES_SIDEBAR": "选择一个 HTML 文件</br><a href='#' style='float:right;'>好的</a>",

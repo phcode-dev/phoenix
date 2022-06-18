@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "नया HTML प्रोजेक्ट",
   "LICENSE": "लाइसेंस:",
   "CREDITS": "क्रेडिट्स:",
+  "PREVIEW": "पूर्वावलोकन",
   "NEW_PROJECT_NOTIFICATION": "नया प्रोजेक्ट<br/> बनाने के लिए इस आइकन पर क्लिक करें। </br><a href='#' style='float:right;'>ठीक</a>",
   "DIRECTORY_REPLACE_MESSAGE": "चयनित फ़ोल्डर <span class='dialog-filename'>{0}</span> खाली नहीं है। क्या आप वाकई प्रोजेक्ट के साथ फ़ोल्डर सामग्री को बदलना चाहते हैं?",
   "GUIDED_FILES_SIDEBAR": "एक HTML फ़ाइल <a href='#' style='float:right;'>ठीक</a> चुनें</br>",

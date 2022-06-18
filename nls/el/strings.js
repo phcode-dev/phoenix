@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Νέο έργο HTML",
   "LICENSE": "Άδεια χρήσης:",
   "CREDITS": "Πιστώσεις:",
+  "PREVIEW": "Προεπισκόπηση",
   "NEW_PROJECT_NOTIFICATION": "Κάντε κλικ σε αυτό το εικονίδιο για να<br/>δημιουργήσετε ένα νέο έργο. </br> <a href='#' style='float:right;'>οκ</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Ο επιλεγμένος φάκελος <span class='dialog-filename'>{0}</span> δεν είναι κενός. Είστε βέβαιοι ότι θέλετε να αντικαταστήσετε τα περιεχόμενα του φακέλου με το έργο;",
   "GUIDED_FILES_SIDEBAR": "Επιλέξτε ένα αρχείο HTML </br> <a href='#' style='float:right;'>ok</a>",
