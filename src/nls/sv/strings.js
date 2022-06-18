@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Nytt HTML-projekt",
   "LICENSE": "Licens:",
   "CREDITS": "Poäng:",
+  "PREVIEW": "Förhandsvisning",
   "NEW_PROJECT_NOTIFICATION": "Klicka på den här ikonen för att<br/>skapa ett nytt projekt. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valda mappen <span class='dialog-filename'>{0}</span> är inte tom. Är du säker på att du vill ersätta mappinnehållet med projektet?",
   "GUIDED_FILES_SIDEBAR": "Välj en HTML-fil </br> <a href='#' style='float:right;'>ok</a>",

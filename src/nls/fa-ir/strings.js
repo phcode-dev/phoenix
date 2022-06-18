@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "پروژه HTML جدید",
   "LICENSE": "مجوز:",
   "CREDITS": "اعتبار:",
+  "PREVIEW": "پیش نمایش",
   "NEW_PROJECT_NOTIFICATION": "برای<br/>ایجاد یک پروژه جدید روی این آیکون کلیک کنید. </br> <a href='#' style='float:right;'>باشه</a>",
   "DIRECTORY_REPLACE_MESSAGE": "پوشه انتخاب شده <span class='dialog-filename'>{0}</span> خالی نیست. آیا مطمئن هستید که می خواهید محتویات پوشه را با پروژه جایگزین کنید؟",
   "GUIDED_FILES_SIDEBAR": "یک فایل HTML را <a href='#' style='float:right;'>خوب</a>انتخاب </br> کنید",

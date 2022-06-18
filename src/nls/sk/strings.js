@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Nový HTML projekt",
   "LICENSE": "Licencia:",
   "CREDITS": "Kredity:",
+  "PREVIEW": "Náhľad",
   "NEW_PROJECT_NOTIFICATION": "Kliknutím na túto ikonu<br/>vytvoríte nový projekt. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraný priečinok <span class='dialog-filename'>{0}</span> nie je prázdny. Naozaj chcete nahradiť obsah priečinka s projektom?",
   "GUIDED_FILES_SIDEBAR": "Vyberte súbor HTML </br> <a href='#' style='float:right;'>ok</a>",
