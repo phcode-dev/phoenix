@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Nieuw HTML-project",
   "LICENSE": "Licentie:",
   "CREDITS": "Credits:",
+  "PREVIEW": "voorsmaak",
   "NEW_PROJECT_NOTIFICATION": "Klik op dit pictogram om een nieuw project te<br/> maken. </br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "De geselecteerde map <span class='dialog-filename'>{0}</span> is niet leeg. Weet u zeker dat u de inhoud van de map wilt vervangen door het project?",
   "GUIDED_FILES_SIDEBAR": "Selecteer een HTML-bestand</br> <a href='#' style='float:right;'>ok</a>",

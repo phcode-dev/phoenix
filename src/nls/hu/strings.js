@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Új HTML projekt",
   "LICENSE": "Licenc:",
   "CREDITS": "Hitelek:",
+  "PREVIEW": "Előnézet",
   "NEW_PROJECT_NOTIFICATION": "Kattintson erre az ikonra egy új projekt<br/>létrehozásához. </br> <a href='#' style='float:right;'>rendben</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A kiválasztott mappa <span class='dialog-filename'>{0}</span> nem üres. Biztosan le akarja cserélni a mappa tartalmát a projekttel?",
   "GUIDED_FILES_SIDEBAR": "Válasszon egy HTML fájlt </br> <a href='#' style='float:right;'>ok</a>",

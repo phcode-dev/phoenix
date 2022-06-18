@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Новий HTML-проект",
   "LICENSE": "Ліцензія:",
   "CREDITS": "Кредити:",
+  "PREVIEW": "Попередній перегляд",
   "NEW_PROJECT_NOTIFICATION": "Натисніть цю піктограму, щоб<br/>створити новий проект. </br> <a href='#' style='float:right;'>ОК</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Вибрана тека <span class='dialog-filename'>{0}</span> не є порожньою. Ви дійсно хочете замінити вміст теки проектом?",
   "GUIDED_FILES_SIDEBAR": "Виберіть HTML-файл </br> <a href='#' style='float:right;'>ok</a>",
