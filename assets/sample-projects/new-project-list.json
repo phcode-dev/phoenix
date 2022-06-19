@@ -1,0 +1,31 @@
+{
+  "LICENCES": {
+    "bootstrap": {
+      "license": "MIT",
+      "licenseURL": "https://github.com/twbs/bootstrap/blob/main/LICENSE",
+      "credits": "https://getbootstrap.com/",
+      "creditsURL": "https://getbootstrap.com/"
+    }
+  },
+  "sections": {
+    "BUILD_WEBSITE_SECTION": {
+      "home-pages": {"LICENCES": "bootstrap",
+        "title": "WEBPAGE_HOME_PAGE",
+        "previewURL": "assets/sample-projects/home-pages/carousel/index.html",
+        "zipURL": "assets/sample-projects/home-pages.zip"
+      },
+      "dashboard": {"LICENCES": "bootstrap",
+        "title": "WEBPAGE_DASHBOARD",
+        "previewURL": "assets/sample-projects/dashboard/index.html",
+        "zipURL": "assets/sample-projects/dashboard.zip"
+      }
+    },
+    "LEARN_SECTION": {
+      "bootstrap": {"LICENCES": "bootstrap",
+        "iconURL": "bootstrap",
+        "title": "WEBPAGE_BOOTSTRAP_EXAMPLES",
+        "zipURL": "assets/sample-projects/zips/bootstrap.zip"
+      }
+    }
+  }
+}

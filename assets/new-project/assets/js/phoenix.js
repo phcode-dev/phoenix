@@ -32,7 +32,7 @@ window.parent.ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENS
     .then(interfaceObj => {
         window.newProjectExtension = interfaceObj;
         window.Metrics = window.newProjectExtension.Metrics;
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `${selfFileName}`, "shown");
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, 'shown', selfFileName);
     });
 window.parent.ExtensionInterface.waitAndGetExtensionInterface(RECENT_PROJECTS_INTERFACE)
     .then(interfaceObj => {
@@ -64,8 +64,8 @@ function _addQueryString(url, queryString, value) {
     return url;
 }
 
-function newProjectFromURLScreen(url, suggestedProjectName, title,
-    {license, licenseURL, credits, creditsURL, previewURL, backURL}) {
+function getNewProjectFromURL(url, suggestedProjectName, title,
+                                 {license, licenseURL, credits, creditsURL, previewURL, backURL}) {
     let href = `new-project-from-url.html?url=${url}&suggestedName=${suggestedProjectName}&title=${title}`;
     href = _addQueryString(href, "license", license);
     href = _addQueryString(href, "licenseURL", licenseURL);
@@ -73,10 +73,23 @@ function newProjectFromURLScreen(url, suggestedProjectName, title,
     href = _addQueryString(href, "creditsURL", creditsURL);
     href = _addQueryString(href, "previewURL", previewURL);
     href = _addQueryString(href, "backURL", backURL);
+    return href;
+}
+
+function newProjectFromURLScreen(url, suggestedProjectName, title,
+    {license, licenseURL, credits, creditsURL, previewURL, backURL}) {
+    let href= getNewProjectFromURL(url, suggestedProjectName, title,
+        {license, licenseURL, credits, creditsURL, previewURL, backURL});
     window.location.href = href;
 }
 
 function getPhoenixAbsURL(relativePath) {
+    if(!relativePath){
+        return null;
+    }
+    if(relativePath.startsWith('http://') || relativePath.startsWith('https://')){
+        return relativePath;
+    }
     return `${window.parent.Phoenix.baseURL}${relativePath}`;
 }
 
@@ -84,7 +97,7 @@ function init() {
     _localiseWithBracketsStrings();
     document.getElementById("closeDialogueButton").onclick = function() {
         window.newProjectExtension.closeDialogue();
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `Click.${selfFileName}`, "closeDlg");
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, 'close.click', selfFileName);
     };
     document.getElementById("top").onkeydown = function(e) {
         let acceptedCode = false;
@@ -101,7 +114,7 @@ function init() {
             acceptedCode = true; // will be handled by focus handler below
         }
         if(acceptedCode){
-            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `Click.${selfFileName}`, e.code);
+            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, `keyboardNav`, selfFileName);
         }
     };
     // Accessibility and keyboard navigation with Tab and Esc, Enter keys.

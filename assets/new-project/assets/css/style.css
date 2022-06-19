@@ -251,7 +251,7 @@ img {
 
 .view-all, .view-all:hover {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 13px;
     line-height: 19px;
     text-align: right;
     color: #016DC4;
@@ -815,7 +815,6 @@ img {
 }
 
 .new-project-content {
-    max-height: 340px;
     overflow-y: auto;
 }
 

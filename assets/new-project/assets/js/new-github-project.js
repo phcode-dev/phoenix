@@ -119,7 +119,7 @@ function _createProjectClicked() {
             Strings.MISSING_FIELDS,
             Strings.PLEASE_FILL_ALL_REQUIRED);
     }
-    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "github.btnClick", "create");
+    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "github.Click", "create");
 }
 
 function initGithubProject() {
