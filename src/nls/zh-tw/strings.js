@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "新增專案",
   "LICENSE": "授權：",
   "CREDITS": "積分：",
+  "PREVIEW": "預覽",
   "NEW_PROJECT_NOTIFICATION": "按一下此圖示可<br/>建立新專案。</br><a href='#' style='float:right;'>好</a>",
   "DIRECTORY_REPLACE_MESSAGE": "選取的資料夾 <span class='dialog-filename'> {0}</span> 不是空的。您確定要用專案取代資料夾內容嗎？",
   "GUIDED_FILES_SIDEBAR": "選擇一個 HTML 文件</br> <a href='#' style='float:right;'> 確定</a>",

@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Noul proiect HTML",
   "LICENSE": "Licență:",
   "CREDITS": "Credite:",
+  "PREVIEW": "previzualizare",
   "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a<br/>crea un nou proiect. </br> <a href='#' style='float:right;'>O.K</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Dosarul selectat <span class='dialog-filename'>{0}</span> nu este gol. Sigur doriți să înlocuiți conținutul folderului cu proiectul?",
   "GUIDED_FILES_SIDEBAR": "Selectați un fișier HTML </br> <a href='#' style='float:right;'>ok</a>",

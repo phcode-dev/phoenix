@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "نیا ایچ ٹی ایم ایل پروجیکٹ",
   "LICENSE": "لائسنس:",
   "CREDITS": "کریڈٹ:",
+  "PREVIEW": "پیش نظارہ",
   "NEW_PROJECT_NOTIFICATION": "نیا پروجیکٹ<br/>بنانے کے لئے اس آئکن پر کلک کریں. </br> <a href='#' style='float:right;'>ٹھیک ہے</a>",
   "DIRECTORY_REPLACE_MESSAGE": "منتخب شدہ فولڈر <span class='dialog-filename'>{0}</span> خالی نہیں ہے۔ کیا آپ کو یقین ہے کہ آپ فولڈر کے مواد کو منصوبے کے ساتھ تبدیل کرنا چاہتے ہیں؟",
   "GUIDED_FILES_SIDEBAR": "ایک HTML فائل <a href='#' style='float:right;'>ٹھیک ہے</a>منتخب </br> کریں",

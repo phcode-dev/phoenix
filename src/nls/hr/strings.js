@@ -789,6 +789,7 @@ define({
   "NEW_HTML": "Novi HTML projekt",
   "LICENSE": "Licenca:",
   "CREDITS": "Krediti:",
+  "PREVIEW": "pregled",
   "NEW_PROJECT_NOTIFICATION": "Kliknite ovu ikonu da<br/>biste stvorili novi projekt. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Odabrana mapa <span class='dialog-filename'>{0}</span> nije prazna. Jeste li sigurni da želite zamijeniti sadržaj mape s projektom?",
   "GUIDED_FILES_SIDEBAR": "Odaberite HTML datoteku </br> <a href='#' style='float:right;'>ok</a>",
