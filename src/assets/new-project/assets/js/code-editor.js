@@ -108,30 +108,34 @@ function removeProject(fullPath) {
 
 function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
-        newProjectExtension.openFolder();
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "open-folder");
+        newProjectExtension.openFolder();
+    };
+    document.getElementById("viewMore").onclick = function() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "viewMore");
+        window.location.href = 'new-project-more.html';
     };
     document.getElementById("newGitHubProject").onclick = function() {
-        window.location.href = 'new-project-github.html';
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "github-project");
+        window.location.href = 'new-project-github.html';
     };
     document.getElementById("exploreBtn").onclick = function() {
-        openProject(newProjectExtension.getExploreProjectPath());
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "explore");
+        openProject(newProjectExtension.getExploreProjectPath());
     };
     document.getElementById("newBootstrapBlogBtn").onclick = function() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "bootstrap-blog");
         newProjectFromURLScreen(getPhoenixAbsURL("assets/sample-projects/bootstrap-blog.zip"),
             "bootstrap-blog", Strings.NEW_BOOTSTRAP_BLOG, {
                 license: "MIT", licenseURL: "https://github.com/twbs/bootstrap/blob/main/LICENSE",
                 credits: "https://getbootstrap.com", creditsURL: "https://getbootstrap.com",
                 previewURL: `${getPhoenixAbsURL("assets/sample-projects/bootstrap-blog/index.html")}`});
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "bootstrap-blog");
     };
     document.getElementById("newHTMLBtn").onclick = function() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "html5");
         newProjectFromURLScreen(getPhoenixAbsURL("assets/sample-projects/HTML5.zip"),
             "html project", Strings.NEW_HTML,{
             previewURL: `${getPhoenixAbsURL("assets/sample-projects/HTML5/index.html")}`});
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "html5");
     };
     _updateProjectCards();
 }

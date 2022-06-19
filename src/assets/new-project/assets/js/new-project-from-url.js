@@ -76,7 +76,7 @@ function _createProjectClicked() {
             PARAM_SUGGESTED_URL,
             locationInput.fullPath, PARAM_SUGGESTED_NAME, FLATTEN_ZIP_FIRST_LEVEL_DIR)
             .then(()=>{
-                Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "fromURL.Click", "create.success");
+                Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "createProject.Click", "create.success");
                 newProjectExtension.closeDialogue();
             });
     } else {
@@ -84,7 +84,7 @@ function _createProjectClicked() {
             Strings.MISSING_FIELDS,
             Strings.PLEASE_FILL_ALL_REQUIRED);
     }
-    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "fromURL.btnClick", "create");
+    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "createProject.Click", "create");
 }
 
 function _showLicensingInfo() {
@@ -143,6 +143,7 @@ function initNewProjectFromURL() {
     locationInput.value = Strings.PLEASE_SELECT_A_FOLDER;
     projectNameInput.value = PARAM_SUGGESTED_NAME;
     locationInput.onclick = _selectFolder;
+    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "ofType", PARAM_SUGGESTED_NAME || 'default');
     _showLicensingInfo();
     _showPreview();
     _validateProjectLocation();
