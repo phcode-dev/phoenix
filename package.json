@@ -66,7 +66,7 @@
     ],
     "dependencies": {
         "@floating-ui/dom": "^0.5.3",
-        "@phcode/fs": "^1.0.10",
+        "@phcode/fs": "^1.0.11",
         "browser-mime": "^1.0.1",
         "jszip": "^3.7.1",
         "marked": "^4.0.14",

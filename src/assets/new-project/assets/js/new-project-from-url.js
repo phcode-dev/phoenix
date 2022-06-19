@@ -121,7 +121,7 @@ function _showPreview() {
 
 function _setupNavigation() {
     if(BACK_URL){
-        document.getElementById("backButton").src = BACK_URL;
+        document.getElementById("backButton").href = BACK_URL;
     }
 }
 

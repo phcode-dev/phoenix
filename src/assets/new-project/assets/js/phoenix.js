@@ -64,8 +64,8 @@ function _addQueryString(url, queryString, value) {
     return url;
 }
 
-function newProjectFromURLScreen(url, suggestedProjectName, title,
-    {license, licenseURL, credits, creditsURL, previewURL, backURL}) {
+function getNewProjectFromURL(url, suggestedProjectName, title,
+                                 {license, licenseURL, credits, creditsURL, previewURL, backURL}) {
     let href = `new-project-from-url.html?url=${url}&suggestedName=${suggestedProjectName}&title=${title}`;
     href = _addQueryString(href, "license", license);
     href = _addQueryString(href, "licenseURL", licenseURL);
@@ -73,10 +73,23 @@ function newProjectFromURLScreen(url, suggestedProjectName, title,
     href = _addQueryString(href, "creditsURL", creditsURL);
     href = _addQueryString(href, "previewURL", previewURL);
     href = _addQueryString(href, "backURL", backURL);
+    return href;
+}
+
+function newProjectFromURLScreen(url, suggestedProjectName, title,
+    {license, licenseURL, credits, creditsURL, previewURL, backURL}) {
+    let href= getNewProjectFromURL(url, suggestedProjectName, title,
+        {license, licenseURL, credits, creditsURL, previewURL, backURL});
     window.location.href = href;
 }
 
 function getPhoenixAbsURL(relativePath) {
+    if(!relativePath){
+        return null;
+    }
+    if(relativePath.startsWith('http://') || relativePath.startsWith('https://')){
+        return relativePath;
+    }
     return `${window.parent.Phoenix.baseURL}${relativePath}`;
 }
 

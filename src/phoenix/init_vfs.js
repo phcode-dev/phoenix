@@ -49,7 +49,7 @@ function _setupVFS(Phoenix, fsLib, pathLib){
                     cb();
                     return;
                 }
-                fs.mkdir(path, function(err) {
+                fs.mkdirs(path, 777, true, function(err) {
                     if (err && err.code !== 'EEXIST') {
                         cb(err);
                     }

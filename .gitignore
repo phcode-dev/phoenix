@@ -36,6 +36,8 @@ src/extensions/default/Phoenix-live-preview/thirdparty
 /src/styles/brackets.min.css.map
 /src/assets/default-project/*.zip
 /src/assets/sample-projects/*.zip
+/src/assets/sample-projects/preview-files-no-edit/*.zip
+
 
 # ignore everything in the dev extension directory EXCEPT the README
 # (so that the directory is non-empty and can be in git)
