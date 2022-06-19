@@ -11,13 +11,13 @@
     "BUILD_WEBSITE_SECTION": {
       "home-pages": {"LICENCES": "bootstrap",
         "title": "WEBPAGE_HOME_PAGE",
-        "previewURL": "assets/sample-projects/preview-files-no-edit/home-pages/carousel/index.html",
-        "zipURL": "assets/sample-projects/preview-files-no-edit/home-pages.zip"
+        "previewURL": "assets/sample-projects/home-pages/carousel/index.html",
+        "zipURL": "assets/sample-projects/home-pages.zip"
       },
       "dashboard": {"LICENCES": "bootstrap",
         "title": "WEBPAGE_DASHBOARD",
-        "previewURL": "assets/sample-projects/preview-files-no-edit/dashboard/index.html",
-        "zipURL": "assets/sample-projects/preview-files-no-edit/dashboard.zip"
+        "previewURL": "assets/sample-projects/dashboard/index.html",
+        "zipURL": "assets/sample-projects/dashboard.zip"
       }
     },
     "LEARN_SECTION": {

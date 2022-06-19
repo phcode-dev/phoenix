@@ -161,12 +161,12 @@ function zipSampleProjectFiles() {
         src(['src/assets/sample-projects/HTML5/**'])
             .pipe(zip('HTML5.zip'))
             .pipe(dest('src/assets/sample-projects/')),
-        src(['src/assets/sample-projects/preview-files-no-edit/dashboard/**'])
+        src(['src/assets/sample-projects/dashboard/**'])
             .pipe(zip('dashboard.zip'))
-            .pipe(dest('src/assets/sample-projects/preview-files-no-edit/')),
-        src(['src/assets/sample-projects/preview-files-no-edit/home-pages/**'])
+            .pipe(dest('src/assets/sample-projects/')),
+        src(['src/assets/sample-projects/home-pages/**'])
             .pipe(zip('home-pages.zip'))
-            .pipe(dest('src/assets/sample-projects/preview-files-no-edit/'))
+            .pipe(dest('src/assets/sample-projects/'))
     );
 }
 

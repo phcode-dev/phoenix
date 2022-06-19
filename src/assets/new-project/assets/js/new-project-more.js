@@ -57,7 +57,6 @@ function _addProjectEntries($projectList, sampleProjectsList, sectionTag) {
                             <span>${translatedTitle}</span>
                         </a>
                     </li>`);
-        console.log(project);
     }
 }
 
