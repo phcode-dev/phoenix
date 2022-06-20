@@ -230,7 +230,6 @@ define(function (require, exports, module) {
                 handlerList[i].handler.apply(null, applyArgs);
             } catch (err) {
                 console.error("Exception in '" + eventName + "' listener on", this, String(err), err.stack);
-                console.assert();  // causes dev tools to pause, just like an uncaught exception
             }
         }
     };
