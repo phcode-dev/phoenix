@@ -250,7 +250,7 @@ define(function (require, exports, module) {
     }
 
     function _projectFileChanges(evt, changedFile) {
-        if(changedFile.fullPath !== '/fs/app/state.json'){
+        if(changedFile && changedFile.fullPath !== '/fs/app/state.json'){
             // we are getting this change event somehow.
             // bug, investigate why we get this change event as a project file change.
             _loadPreview(true);
