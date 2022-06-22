@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Build Sajt",
   "VIEW_MORE": "Pogledaj više...",
   "NEW_PROJECT_NOTIFICATION": "Kliknite na ovu ikonu da<br/>biste kreirali novi projekat. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kliknite ovde da biste otvorili <br/><b>podrazumevani projekat</b> u feniksu. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Izabrana fascikla <span class='dialog-filename'>{0}</span> nije prazna. Da li ste sigurni da želite da zamenite sadržaj fascikle sa projektom?",
   "BUILD_WEBSITE_SECTION": "Build Sajt",
   "LEARN_SECTION": "Učite sa primerima",

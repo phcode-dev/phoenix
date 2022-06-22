@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Rakenna verkkosivusto",
   "VIEW_MORE": "Näytä lisää...",
   "NEW_PROJECT_NOTIFICATION": "<br/>Luouusi projekti napsauttamalla tätä kuvaketta. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Napsauta tätä avataksesi <br/><b>oletusprojektin</b> feeniksissä. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Valittu kansio <span class='dialog-filename'>{0}</span> ei ole tyhjä. Oletko varma, että haluat korvata kansion sisällön projektilla?",
   "BUILD_WEBSITE_SECTION": "Rakenna verkkosivusto",
   "LEARN_SECTION": "Opi esimerkkien avulla",

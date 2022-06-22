@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Создать веб-сайт",
   "VIEW_MORE": "Посмотреть больше...",
   "NEW_PROJECT_NOTIFICATION": "Нажмите на этот значок, чтобы<br/> создать новый проект. </br><a href='#' style='float:right;'>ок</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Нажмите здесь, чтобы открыть <b>проект по<br/> умолчанию</b> в phoenix. </br><a href='#' style='float:right;'>ок</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Выбранная папка <span class='dialog-filename'>{0}</span> не пуста. Вы действительно хотите заменить содержимое папки проектом?",
   "BUILD_WEBSITE_SECTION": "Создать веб-сайт",
   "LEARN_SECTION": "Учитесь на примерах",

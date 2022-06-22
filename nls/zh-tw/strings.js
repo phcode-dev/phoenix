@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "建立網站",
   "VIEW_MORE": "查看更多...",
   "NEW_PROJECT_NOTIFICATION": "按一下此圖示可<br/>建立新專案。</br><a href='#' style='float:right;'>好</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "單擊此處以在鳳凰城中打開<br/><b>默認項目</b>。</br><a href='#' style='float:right;'>好</a>",
   "DIRECTORY_REPLACE_MESSAGE": "選取的資料夾 <span class='dialog-filename'> {0}</span> 不是空的。您確定要用專案取代資料夾內容嗎？",
   "BUILD_WEBSITE_SECTION": "建立網站",
   "LEARN_SECTION": "通過示例學習",

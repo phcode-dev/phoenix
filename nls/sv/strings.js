@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Bygg webbplats",
   "VIEW_MORE": "Visa mer...",
   "NEW_PROJECT_NOTIFICATION": "Klicka på den här ikonen för att<br/>skapa ett nytt projekt. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klicka här för att öppna <br/><b>standardprojektet</b> i Phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valda mappen <span class='dialog-filename'>{0}</span> är inte tom. Är du säker på att du vill ersätta mappinnehållet med projektet?",
   "BUILD_WEBSITE_SECTION": "Bygg webbplats",
   "LEARN_SECTION": "Lär dig med exempel",

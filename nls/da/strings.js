@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Byg hjemmeside",
   "VIEW_MORE": "Se mere...",
   "NEW_PROJECT_NOTIFICATION": "Klik på dette ikon for at<br/>oprette et nyt projekt. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klik her for at åbne <br/><b>standardprojektet</b> i Phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valgte mappe <span class='dialog-filename'>{0}</span> er ikke tom. Er du sikker på, at du vil erstatte mappens indhold med projektet?",
   "BUILD_WEBSITE_SECTION": "Byg hjemmeside",
   "LEARN_SECTION": "Lær med eksempler",

@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Изграждане на уебсайт",
   "VIEW_MORE": "Виж повече...",
   "NEW_PROJECT_NOTIFICATION": "Щракнете върху тази икона, за да<br/>създадете нов проект. </br> <a href='#' style='float:right;'>ОК</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Щракнете тук, за да отворите<b>проекта <br/>по подразбиране</b> във феникс. </br> <a href='#' style='float:right;'>ОК</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Избраната папка <span class='dialog-filename'>{0}</span> не е празна. Сигурни ли сте, че искате да замените съдържанието на папката с проекта?",
   "BUILD_WEBSITE_SECTION": "Изграждане на уебсайт",
   "LEARN_SECTION": "Научете с примери",

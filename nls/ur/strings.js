@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "ویب سائٹ کی تعمیر",
   "VIEW_MORE": "مزید دیکھیے...",
   "NEW_PROJECT_NOTIFICATION": "نیا پروجیکٹ<br/>بنانے کے لئے اس آئکن پر کلک کریں. </br> <a href='#' style='float:right;'>ٹھیک ہے</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "فینکس میں <br/><b>پہلے سے طے شدہ منصوبے</b> کو کھولنے کے لئے یہاں کلک کریں. </br> <a href='#' style='float:right;'>ٹھیک ہے</a>",
   "DIRECTORY_REPLACE_MESSAGE": "منتخب شدہ فولڈر <span class='dialog-filename'>{0}</span> خالی نہیں ہے۔ کیا آپ کو یقین ہے کہ آپ فولڈر کے مواد کو منصوبے کے ساتھ تبدیل کرنا چاہتے ہیں؟",
   "BUILD_WEBSITE_SECTION": "ویب سائٹ کی تعمیر",
   "LEARN_SECTION": "مثالوں کے ساتھ سیکھیں",

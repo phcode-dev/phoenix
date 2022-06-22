@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Izgradite web stranicu",
   "VIEW_MORE": "Pogledaj više...",
   "NEW_PROJECT_NOTIFICATION": "Kliknite ovu ikonu da<br/>biste stvorili novi projekt. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kliknite ovdje da biste otvorili <br/><b>zadani projekt</b> u Phoenixu. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Odabrana mapa <span class='dialog-filename'>{0}</span> nije prazna. Jeste li sigurni da želite zamijeniti sadržaj mape s projektom?",
   "BUILD_WEBSITE_SECTION": "Izgradite web stranicu",
   "LEARN_SECTION": "Učite s primjerima",

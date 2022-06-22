@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Construiți site-ul web",
   "VIEW_MORE": "Vezi mai mult...",
   "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a<br/>crea un nou proiect. </br> <a href='#' style='float:right;'>O.K</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Faceți clic aici pentru a deschide<b>proiectul <br/>implicit</b> în Phoenix. </br> <a href='#' style='float:right;'>O.K</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Dosarul selectat <span class='dialog-filename'>{0}</span> nu este gol. Sigur doriți să înlocuiți conținutul folderului cu proiectul?",
   "BUILD_WEBSITE_SECTION": "Construiți site-ul web",
   "LEARN_SECTION": "Aflați cu exemple",

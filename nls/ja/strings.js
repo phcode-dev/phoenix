@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "ウェブサイトを構築",
   "VIEW_MORE": "もっと見る...",
   "NEW_PROJECT_NOTIFICATION": "<br/>新しいプロジェクトを作成するには、このアイコンをクリックします。</br><a href='#' style='float:right;'>わかった</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "ここをクリックして、<br/><b>フェニックスでデフォルトプロジェクトを開きます</b>。</br><a href='#' style='float:right;'>わかった</a>",
   "DIRECTORY_REPLACE_MESSAGE": "選択したフォルダ <span class='dialog-filename'>{0}</span> は空ではありません。フォルダの内容をプロジェクトに置き換えてもよろしいですか?",
   "BUILD_WEBSITE_SECTION": "ウェブサイトを構築",
   "LEARN_SECTION": "例を挙げて学ぶ",

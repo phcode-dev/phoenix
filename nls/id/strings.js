@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Bangun Situs Web",
   "VIEW_MORE": "Lihat Lebih Banyak...",
   "NEW_PROJECT_NOTIFICATION": "Klik ikon ini untuk<br/>membuat proyek baru. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klik di sini untuk membuka<b>proyek <br/>default</b> di phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Folder yang dipilih <span class='dialog-filename'>{0}</span> tidak kosong. Apakah Anda yakin ingin mengganti isi folder dengan proyek?",
   "BUILD_WEBSITE_SECTION": "Bangun Situs Web",
   "LEARN_SECTION": "Belajar Dengan Contoh",

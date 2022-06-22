@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Crear sitio web",
   "VIEW_MORE": "Ver más...",
   "NEW_PROJECT_NOTIFICATION": "Haga clic en este icono para<br/> crear un proyecto nuevo. </br><a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Haga clic aquí para abrir el <b>proyecto<br/> predeterminado</b> en phoenix. </br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "La carpeta seleccionada <span class='dialog-filename'>{0}</span> no está vacía. ¿Está seguro de que desea reemplazar el contenido de la carpeta por el proyecto?",
   "BUILD_WEBSITE_SECTION": "Crear sitio web",
   "LEARN_SECTION": "Aprenda con ejemplos",

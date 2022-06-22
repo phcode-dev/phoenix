@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Vytvorte webovú stránku",
   "VIEW_MORE": "Zobraziť viac...",
   "NEW_PROJECT_NOTIFICATION": "Kliknutím na túto ikonu<br/>vytvoríte nový projekt. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kliknite tu pre otvorenie <br/><b>predvoleného projektu</b> vo Phoenixe. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraný priečinok <span class='dialog-filename'>{0}</span> nie je prázdny. Naozaj chcete nahradiť obsah priečinka s projektom?",
   "BUILD_WEBSITE_SECTION": "Vytvorte webovú stránku",
   "LEARN_SECTION": "Naučte sa s príkladmi",
