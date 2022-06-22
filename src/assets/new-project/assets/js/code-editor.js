@@ -122,7 +122,7 @@ function initCodeEditor() {
         window.location.href = 'new-project-github.html';
     };
     document.getElementById("exploreBtn").onclick = function() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "explore");
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "games");
         openProject(newProjectExtension.getExploreProjectPath());
     };
     document.getElementById("defaultProjectButton").onclick = function() {
