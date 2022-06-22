@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Veidot vietni",
   "VIEW_MORE": "Skatīt vairāk...",
   "NEW_PROJECT_NOTIFICATION": "Noklikšķiniet uz šīs ikonas, lai<br/>izveidotu jaunu projektu. </br> <a href='#' style='float:right;'>labi</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Noklikšķiniet šeit, lai atvērtu <br/><b>noklusējuma projektu</b> Phoenix. </br> <a href='#' style='float:right;'>labi</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Izvēlētā mape <span class='dialog-filename'>{0}</span> nav tukša. Vai tiešām vēlaties aizstāt mapes saturu ar projektu?",
   "BUILD_WEBSITE_SECTION": "Veidot vietni",
   "LEARN_SECTION": "Mācīties ar piemēriem",

@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Створення веб-сайту",
   "VIEW_MORE": "Переглянути більше...",
   "NEW_PROJECT_NOTIFICATION": "Натисніть цю піктограму, щоб<br/>створити новий проект. </br> <a href='#' style='float:right;'>ОК</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Натисніть тут, щоб відкрити <br/><b>типовий проект</b> у Phoenix. </br> <a href='#' style='float:right;'>ОК</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Вибрана тека <span class='dialog-filename'>{0}</span> не є порожньою. Ви дійсно хочете замінити вміст теки проектом?",
   "BUILD_WEBSITE_SECTION": "Створення веб-сайту",
   "LEARN_SECTION": "Дізнайтеся на прикладах",

@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "إنشاء موقع",
   "VIEW_MORE": "عرض المزيد...",
   "NEW_PROJECT_NOTIFICATION": "انقر فوق هذا الرمز<br/> لإنشاء مشروع جديد. </br><a href='#' style='float:right;'>موافق</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "انقر هنا لفتح <b>المشروع<br/> الافتراضي</b> في طائر الفينيق. </br><a href='#' style='float:right;'>موافق</a>",
   "DIRECTORY_REPLACE_MESSAGE": "المجلد المحدد <span class='dialog-filename'>{0}</span> ليس فارغًا. هل تريد بالتأكيد استبدال محتويات المجلد بالمشروع؟",
   "BUILD_WEBSITE_SECTION": "إنشاء موقع",
   "LEARN_SECTION": "تعلم مع أمثلة",

@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Website bouwen",
   "VIEW_MORE": "Meer bekijken...",
   "NEW_PROJECT_NOTIFICATION": "Klik op dit pictogram om een nieuw project te<br/> maken. </br><a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klik hier om het<br/> <b>standaardproject</b> in phoenix te openen. </br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "De geselecteerde map <span class='dialog-filename'>{0}</span> is niet leeg. Weet u zeker dat u de inhoud van de map wilt vervangen door het project?",
   "BUILD_WEBSITE_SECTION": "Website bouwen",
   "LEARN_SECTION": "Leren met voorbeelden",

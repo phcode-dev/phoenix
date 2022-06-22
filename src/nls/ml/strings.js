@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "വെബ്സൈറ്റ് നിർമ്മിക്കുക",
   "VIEW_MORE": "കൂടുതൽ കാണുക...",
   "NEW_PROJECT_NOTIFICATION": "ഒരു പുതിയ പ്രോജക്റ്റ്<br/>സൃഷ്ടിക്കുന്നതിന് ഈ ഐക്കണിൽ ക്ലിക്കുചെയ്യുക. </br> <a href='#' style='float:right;'>ശരി</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "ഫീനിക്സിൽ <br/><b>സ്ഥിരസ്ഥിതി പ്രോജക്റ്റ്</b> തുറക്കാൻ ഇവിടെ ക്ലിക്കുചെയ്യുക. </br> <a href='#' style='float:right;'>ശരി</a>",
   "DIRECTORY_REPLACE_MESSAGE": "തിരഞ്ഞെടുത്ത ഫോൾഡർ <span class='dialog-filename'>{0}</span> ശൂന്യമല്ല. പ്രോജക്റ്റിനൊപ്പം ഫോൾഡർ ഉള്ളടക്കങ്ങൾ മാറ്റിസ്ഥാപിക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?",
   "BUILD_WEBSITE_SECTION": "വെബ്സൈറ്റ് നിർമ്മിക്കുക",
   "LEARN_SECTION": "ഉദാഹരണങ്ങൾ ഉപയോഗിച്ച് പഠിക്കുക",
