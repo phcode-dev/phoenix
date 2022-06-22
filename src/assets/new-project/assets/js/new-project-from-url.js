@@ -143,7 +143,6 @@ function initNewProjectFromURL() {
     locationInput.value = Strings.PLEASE_SELECT_A_FOLDER;
     projectNameInput.value = PARAM_SUGGESTED_NAME;
     locationInput.onclick = _selectFolder;
-    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "ofType", PARAM_SUGGESTED_NAME || 'default');
     _showLicensingInfo();
     _showPreview();
     _validateProjectLocation();

@@ -34,6 +34,11 @@ function _getIconURL(iconURL) {
     return 'images/tab-img2.png'; // HTML icon
 }
 
+function navigateToURL(url, metricLabel) {
+    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "moreProjects.Click", metricLabel);
+    location.href = url;
+}
+
 function _addProjectEntries($projectList, sampleProjectsList, sectionTag) {
     let projects = sampleProjectsList.sections[sectionTag];
     for(let project of Object.keys(projects)){
@@ -52,11 +57,11 @@ function _addProjectEntries($projectList, sampleProjectsList, sectionTag) {
                 previewURL: previewURL
             });
         $projectList.append(`<li>
-                        <a class="tabable" tabindex="1" href="${url}">
-                            <img alt="image" src="${_getIconURL(projectDetails.iconURL)}">
-                            <span>${translatedTitle}</span>
-                        </a>
-                    </li>`);
+                <a class="tabable" tabindex="1" href="#" onclick="navigateToURL('${url}', '${project}')">
+                    <img alt="image" src="${_getIconURL(projectDetails.iconURL)}">
+                    <span>${translatedTitle}</span>
+                </a>
+            </li>`);
     }
 }
 
