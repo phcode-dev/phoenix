@@ -34,7 +34,7 @@
  * ```js
  * const NotificationUI = brackets.getModule("widgets/NotificationUI");
  * // or use window.NotificationUI global object has the same effect.
- * let notification = NotificationUI.createFromTemplate("Click me to locate the file in file tree", "showInfileTree");
+ * let notification = NotificationUI.createFromTemplate("Click me to locate the file in file tree", "showInfileTree",{});
  * notification.done(()=>{
  *     console.log("notification is closed in ui.");
  * })

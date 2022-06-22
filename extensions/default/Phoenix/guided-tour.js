@@ -36,7 +36,14 @@ define(function (require, exports, module) {
                     allowedPlacements: ['left'],
                     autoCloseTimeS: 15,
                     dismissOnClick: true}
-            );
+            ).done(()=>{
+                NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
+                    "newProject", {
+                        allowedPlacements: ['top', 'bottom'],
+                        autoCloseTimeS: 15,
+                        dismissOnClick: true}
+                );
+            });
         });
     }
 

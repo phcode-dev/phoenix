@@ -18,7 +18,8 @@
  *
  */
 
-/*global path, newProjectExtension, recentProjectExtension, Strings, Metrics,newProjectFromURLScreen, getPhoenixAbsURL*/
+/*global path, newProjectExtension, recentProjectExtension, Strings, Metrics,newProjectFromURLScreen
+,getPhoenixAbsURL, createNotificationFromTemplate*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
@@ -108,6 +109,19 @@ function removeProject(fullPath) {
     event.stopPropagation();
 }
 
+function _showFirstTimeExperience() {
+    let shownBefore = localStorage.getItem('notification.defaultProject.Shown');
+    if(!shownBefore){
+        createNotificationFromTemplate(Strings.DEFAULT_PROJECT_NOTIFICATION,
+            "defaultProjectButton", {
+                allowedPlacements: ["left", "right"],
+                autoCloseTimeS: 15,
+                dismissOnClick: true
+            });
+        localStorage.setItem('notification.defaultProject.Shown', 'true');
+    }
+}
+
 function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "open-folder");
@@ -136,4 +150,5 @@ function initCodeEditor() {
             previewURL: `${getPhoenixAbsURL("assets/sample-projects/HTML5/index.html")}`});
     };
     _updateProjectCards();
+    _showFirstTimeExperience();
 }
