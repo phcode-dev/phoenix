@@ -68,12 +68,14 @@ function getDisplayName(projectPath) {
     return projectPath;
 }
 
+const DEFAULT_PROJECT_PATH = '/fs/local/default project';
+
 function _updateProjectCards() {
     let recentProjectList = $(document.getElementById('recentProjectList'));
     recentProjectList.empty();
     let recentProjects = recentProjectExtension.getRecentProjects();
     let tabIndex = 20;
-    let defaultProjects = ['/fs/local/default project', '/fs/local/explore'],
+    let defaultProjects = [DEFAULT_PROJECT_PATH, '/fs/local/explore'],
         omitProjectsInListing = ['/fs/local/explore'],
         showRecentProjects = false;
     for(let recentProject of recentProjects){
@@ -120,21 +122,17 @@ function initCodeEditor() {
         window.location.href = 'new-project-github.html';
     };
     document.getElementById("exploreBtn").onclick = function() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "explore");
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "games");
         openProject(newProjectExtension.getExploreProjectPath());
     };
-    document.getElementById("newBootstrapBlogBtn").onclick = function() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "bootstrap-blog");
-        newProjectFromURLScreen(getPhoenixAbsURL("assets/sample-projects/bootstrap-blog.zip"),
-            "bootstrap-blog", Strings.NEW_BOOTSTRAP_BLOG, {
-                license: "MIT", licenseURL: "https://github.com/twbs/bootstrap/blob/main/LICENSE",
-                credits: "https://getbootstrap.com", creditsURL: "https://getbootstrap.com",
-                previewURL: `${getPhoenixAbsURL("assets/sample-projects/bootstrap-blog/index.html")}`});
+    document.getElementById("defaultProjectButton").onclick = function() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "default-project");
+        openProject(newProjectExtension.getWelcomeProjectPath());
     };
     document.getElementById("newHTMLBtn").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "html5");
         newProjectFromURLScreen(getPhoenixAbsURL("assets/sample-projects/HTML5.zip"),
-            "html project", Strings.NEW_HTML,{
+            "html project", Strings.NEW_HTML, {
             previewURL: `${getPhoenixAbsURL("assets/sample-projects/HTML5/index.html")}`});
     };
     _updateProjectCards();
