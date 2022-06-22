@@ -653,17 +653,19 @@ define(function (require, exports, module) {
     }
 
     function _setupNavigationButtons() {
-        let $sidebar = $("#sidebar");
-        $sidebar.prepend("<div id=\"navBackButton\" class=\"nav-back-btn btn-alt-quiet\"></div>\n" +
+        let $mainNavBarRight = $("#mainNavBarRight");
+        let $mainNavBarLeft = $("#mainNavBarLeft");
+        $mainNavBarRight.prepend("<div id=\"navBackButton\" class=\"nav-back-btn btn-alt-quiet\"></div>\n" +
             "            <div id=\"navForwardButton\" class=\"nav-forward-btn btn-alt-quiet\"></div>\n" +
             "            <div id=\"showInfileTree\" class=\"show-in-file-tree-btn btn-alt-quiet\"></div>"+
-            "            <div id=\"newProject\" class=\"new-project-btn btn-alt-quiet\"></div>"+
             "            <div id=\"searchNav\" class=\"search-nav-btn btn-alt-quiet\"></div>");
-        let $showInTree = $sidebar.find("#showInfileTree");
-        $navback = $sidebar.find("#navBackButton");
-        $navForward = $sidebar.find("#navForwardButton");
-        $searchNav = $sidebar.find("#searchNav");
-        $newProject = $sidebar.find("#newProject");
+        let $showInTree = $mainNavBarRight.find("#showInfileTree");
+        $navback = $mainNavBarRight.find("#navBackButton");
+        $navForward = $mainNavBarRight.find("#navForwardButton");
+        $searchNav = $mainNavBarRight.find("#searchNav");
+
+        $mainNavBarLeft.prepend("<div id=\"newProject\" class=\"new-project-btn btn-alt-quiet\"></div>");
+        $newProject = $mainNavBarLeft.find("#newProject");
 
         $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
         $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
