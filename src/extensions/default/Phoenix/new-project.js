@@ -75,16 +75,7 @@ define(function (require, exports, module) {
         if(newProjectNotificationShown){
             return;
         }
-        NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
-            "newProject", {
-                allowedPlacements: ['top', 'bottom'],
-                autoCloseTimeS: 15,
-                dismissOnClick: true}
-        ).done(()=>{
-            if(Phoenix.firstBoot){
-                guidedTour.startTour();
-            }
-        });
+        guidedTour.startTour();
         localStorage.setItem("newProjectNotificationShown", "true");
     }
 

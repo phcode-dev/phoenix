@@ -961,6 +961,7 @@ define({
     "BUILD_WEBSITE": "Build Website",
     "VIEW_MORE": "View More...",
     "NEW_PROJECT_NOTIFICATION": "Click this icon to<br/>create a new project. </br> <a href='#' style='float:right;'>ok</a>",
+    "DEFAULT_PROJECT_NOTIFICATION": "Click here to open the <br/><b>default project</b> in phoenix. </br> <a href='#' style='float:right;'>ok</a>",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
     "BUILD_WEBSITE_SECTION": "Build Website",
     "LEARN_SECTION": "Learn With Examples",

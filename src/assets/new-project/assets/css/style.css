@@ -995,3 +995,37 @@ img {
 .forced-hidden {
     display: none !important;
 }
+
+/* notification ui styles */
+.notification-ui-arrow {
+    position: absolute;
+    background: #fd7e14;
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+}
+.notification-ui-tooltip {
+    position: absolute;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    background: #fd7e14;
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    opacity: 0;
+    font-size: 13px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+.notification-ui-hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    transition-delay:0.2s;
+}
+.notification-ui-visible {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    transition-delay:0.2s;
+}
