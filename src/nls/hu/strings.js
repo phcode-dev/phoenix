@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Weboldal készítése",
   "VIEW_MORE": "Nézz meg többet...",
   "NEW_PROJECT_NOTIFICATION": "Kattintson erre az ikonra egy új projekt<br/>létrehozásához. </br> <a href='#' style='float:right;'>rendben</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kattintson ide az <br/><b>alapértelmezett projekt</b> megnyitásához a főnixben. </br> <a href='#' style='float:right;'>rendben</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A kiválasztott mappa <span class='dialog-filename'>{0}</span> nem üres. Biztosan le akarja cserélni a mappa tartalmát a projekttel?",
   "BUILD_WEBSITE_SECTION": "Weboldal készítése",
   "LEARN_SECTION": "Tanuljon példákkal",

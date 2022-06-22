@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "建立网站",
   "VIEW_MORE": "查看更多...",
   "NEW_PROJECT_NOTIFICATION": "单击此图标可<br/>创建新项目。</br><a href='#' style='float:right;'>好的</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "点击此处在 phoenix 中打开<br/><b>默认项目</b>。</br><a href='#' style='float:right;'>好的</a>",
   "DIRECTORY_REPLACE_MESSAGE": "选定的文件夹 <span class='dialog-filename'>{0}</span> 不为空。确实要用项目替换文件夹内容吗？",
   "BUILD_WEBSITE_SECTION": "建立网站",
   "LEARN_SECTION": "用例子学习",

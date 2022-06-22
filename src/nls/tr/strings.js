@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Web Sitesi Oluştur",
   "VIEW_MORE": "Daha fazla göster...",
   "NEW_PROJECT_NOTIFICATION": "Yeni bir proje<br/>oluşturmak için bu simgeye tıklayın. </br> <a href='#' style='float:right;'>tamam</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Phoenix\"te <br/><b>varsayılan projeyi</b> açmak için burayı tıklayın. </br> <a href='#' style='float:right;'>tamam</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Seçilen <span class='dialog-filename'>{0}</span> klasörü boş değil. Klasör içeriğini proje ile değiştirmek istediğinizden emin misiniz?",
   "BUILD_WEBSITE_SECTION": "Web Sitesi Oluştur",
   "LEARN_SECTION": "Örneklerle Öğrenin",

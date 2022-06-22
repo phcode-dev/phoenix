@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Zbuduj stronę",
   "VIEW_MORE": "Zobacz więcej...",
   "NEW_PROJECT_NOTIFICATION": "Kliknij tę ikonę, aby<br/>utworzyć nowy projekt. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kliknij tutaj, aby otworzyć <br/><b>domyślny projekt</b> w Phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Wybrany folder <span class='dialog-filename'>{0}</span> nie jest pusty. Czy na pewno chcesz zastąpić zawartość folderu projektem?",
   "BUILD_WEBSITE_SECTION": "Zbuduj stronę",
   "LEARN_SECTION": "Ucz się z przykładami",

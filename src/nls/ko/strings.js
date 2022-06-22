@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "웹 사이트 구축",
   "VIEW_MORE": "더 보기...",
   "NEW_PROJECT_NOTIFICATION": "새 프로젝트를<br/> 만들려면 이 아이콘을 클릭합니다.</br><a href='#' style='float:right;'>오케이</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "피닉스에서<br/> <b>기본 프로젝트를</b> 열려면 여기를 클릭하십시오.</br><a href='#' style='float:right;'>오케이</a>",
   "DIRECTORY_REPLACE_MESSAGE": "선택한 폴더 <span class='dialog-filename'>{0}</span> 이 (가) 비어 있지 않습니다.폴더 내용을 프로젝트로 바꾸시겠습니까?",
   "BUILD_WEBSITE_SECTION": "웹 사이트 구축",
   "LEARN_SECTION": "예제와 함께 배우기",

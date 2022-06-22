@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Construir site",
   "VIEW_MORE": "Ver Mais...",
   "NEW_PROJECT_NOTIFICATION": "Clique neste ícone para<br/>criar um novo projeto. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Clique aqui para abrir o<b>projeto <br/>padrão</b> em Phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A pasta selecionada <span class='dialog-filename'>{0}</span> não está vazia. Tem certeza de que deseja substituir o conteúdo da pasta pelo projeto?",
   "BUILD_WEBSITE_SECTION": "Construir site",
   "LEARN_SECTION": "Aprenda com exemplos",

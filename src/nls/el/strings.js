@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Κατασκευή Ιστοσελίδας",
   "VIEW_MORE": "Δείτε περισσότερα...",
   "NEW_PROJECT_NOTIFICATION": "Κάντε κλικ σε αυτό το εικονίδιο για να<br/>δημιουργήσετε ένα νέο έργο. </br> <a href='#' style='float:right;'>οκ</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Κάντε κλικ εδώ για να ανοίξετε το <br/><b>προεπιλεγμένο έργο</b> στο Phoenix. </br> <a href='#' style='float:right;'>οκ</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Ο επιλεγμένος φάκελος <span class='dialog-filename'>{0}</span> δεν είναι κενός. Είστε βέβαιοι ότι θέλετε να αντικαταστήσετε τα περιεχόμενα του φακέλου με το έργο;",
   "BUILD_WEBSITE_SECTION": "Κατασκευή Ιστοσελίδας",
   "LEARN_SECTION": "Μάθετε με παραδείγματα",

@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Vytvořit webové stránky",
   "VIEW_MORE": "Zobrazit více...",
   "NEW_PROJECT_NOTIFICATION": "Kliknutím na tuto ikonu<br/>vytvoříte nový projekt. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kliknutím sem otevřete <br/><b>výchozí projekt</b> ve Phoenixu. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraná složka <span class='dialog-filename'>{0}</span> není prázdná. Opravdu chcete nahradit obsah složky projektem?",
   "BUILD_WEBSITE_SECTION": "Vytvořit webové stránky",
   "LEARN_SECTION": "Naučte se s příklady",

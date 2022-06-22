@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Website erstellen",
   "VIEW_MORE": "Mehr sehen...",
   "NEW_PROJECT_NOTIFICATION": "Klicken Sie auf dieses Symbol, um ein neues Projekt zu<br/> erstellen. </br><a href='#' style='float:right;'>in Ordnung</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klicken Sie hier, um das<br/> <b>Standardprojekt</b> in Phoenix zu öffnen. </br><a href='#' style='float:right;'>in Ordnung</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Der ausgewählte Ordner <span class='dialog-filename'>{0}</span> ist nicht leer. Möchten Sie den Inhalt des Ordners wirklich durch das Projekt ersetzen?",
   "BUILD_WEBSITE_SECTION": "Website erstellen",
   "LEARN_SECTION": "Lernen Sie anhand von Beispielen",

@@ -793,6 +793,7 @@ define({
   "BUILD_WEBSITE": "Créer un site Web",
   "VIEW_MORE": "Afficher plus...",
   "NEW_PROJECT_NOTIFICATION": "Cliquez sur cette icône pour<br/> créer un nouveau projet. </br><a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Cliquez ici pour ouvrir le <b>projet<br/> par défaut</b> dans Phoenix. </br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Le dossier sélectionné <span class='dialog-filename'>{0}</span> n'est pas vide. Êtes-vous sûr de vouloir remplacer le contenu du dossier par le projet ?",
   "BUILD_WEBSITE_SECTION": "Créer un site Web",
   "LEARN_SECTION": "Apprenez avec des exemples",
