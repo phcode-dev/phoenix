@@ -14,6 +14,11 @@
         "previewURL": "assets/sample-projects/home-pages/carousel/index.html",
         "zipURL": "assets/sample-projects/home-pages.zip"
       },
+      "blog": {"LICENCES": "bootstrap",
+        "title": "WEBPAGE_BLOG",
+        "previewURL": "assets/sample-projects/bootstrap-blog/index.html",
+        "zipURL": "assets/sample-projects/bootstrap-blog.zip"
+      },
       "dashboard": {"LICENCES": "bootstrap",
         "title": "WEBPAGE_DASHBOARD",
         "previewURL": "assets/sample-projects/dashboard/index.html",
