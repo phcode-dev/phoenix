@@ -35,7 +35,6 @@ define(function (require, exports, module) {
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         FileUtils = brackets.getModule("file/FileUtils"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
-        NotificationUI = brackets.getModule("widgets/NotificationUI"),
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
         replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
