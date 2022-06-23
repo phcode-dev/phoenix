@@ -930,6 +930,14 @@ define({
     "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser does not support Open folder",
     "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Please use one of the supported browsers below.",
     "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " We are working hard to make Phoenix available in more browsers. You may close this dialogue, but some features in Phoenix won't work in this browser.",
+    "CANNOT_PUBLISH_LARGE_PROJECT": "Cannot Publish Large Project",
+    "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix is still in experimental alpha. We have not yet enabled sync of projects with greater than 500 files.",
+    "SHARE_WEBSITE": "Publish and Share Website?",
+    "PUBLISH": "Publish",
+    "PUBLISH_CONSENT_MESSAGE": "Quickly preview changes and share your website with others. Phoenix can publish this website for you at {0}. The published links will be valid for a period of 7 days. </br>Do you wish to publish and share your website?",
+    "PUBLISH_SYNC_IN_PROGRESS": "Sync in progress for preview...",
+    "PUBLISH_PAGE": "Click to publish and share this site",
+    "PUBLISH_VIEW_PAGE": "Click to view published page",
 
     // New project Extension
     "MISSING_FIELDS": "Missing Fields",
