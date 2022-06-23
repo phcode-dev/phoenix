@@ -118,6 +118,10 @@ define(function (require, exports, module) {
         // evaluating mixpanel instead of Google Analytics
         // Enabling the debug mode flag is useful during implementation,
         // but it's recommended you remove it for production
+        if(!window.mixpanel){
+            console.error("Mixpanel not found. MixPanel Analytics will not be initialized.");
+            return;
+        }
         mixpanel.init(brackets.config.mixPanelID, {debug: window.debugModeLogs});
     }
 
@@ -187,7 +191,7 @@ define(function (require, exports, module) {
         }
         count = count || 1;
         value = value || 1;
-        if(!mixpanel.track) {
+        if(!window.mixpanel || !mixpanel.track) {
             return;
         }
         mixpanel.track(category, {
