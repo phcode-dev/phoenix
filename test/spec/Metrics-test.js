@@ -36,8 +36,8 @@ define(function (require, exports, module) {
             Metrics.valueEvent("typev", "cat", "sub", 10);
             Metrics.valueEvent("typev", "cat", "sub", -20);
             let data = Metrics.getLoggedDataForAudit();
-            expect(data.get("typec.cat.sub")).toEqual(2);
-            expect(data.get("typev.cat.sub")).toEqual(-10);
+            expect(data.get("typec.cat.sub")).toEqual({ eventType: 'count', sum: 2, count: 2 });
+            expect(data.get("typev.cat.sub")).toEqual({ eventType: 'val', sum: -10, count: 2 });
             expect(data.size).toEqual(2);
         });
 
@@ -51,8 +51,8 @@ define(function (require, exports, module) {
             Metrics.valueEvent("typev", "cat", "sub", 10);
             Metrics.valueEvent("typev", "cat", "sub", -20);
             data = Metrics.getLoggedDataForAudit();
-            expect(data.get("typec.cat.sub")).toEqual(2);
-            expect(data.get("typev.cat.sub")).toEqual(-10);
+            expect(data.get("typec.cat.sub")).toEqual({ eventType: 'count', sum: 2, count: 2 });
+            expect(data.get("typev.cat.sub")).toEqual({ eventType: 'val', sum: -10, count: 2 });
             expect(data.size).toEqual(2);
         });
 
