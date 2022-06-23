@@ -31,6 +31,7 @@ define(function (require, exports, module) {
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         Dialogs             = brackets.getModule("widgets/Dialogs"),
         Strings             = brackets.getModule("strings"),
+        StringUtils         = brackets.getModule("utils/StringUtils"),
         DefaultDialogs      = brackets.getModule("widgets/DefaultDialogs"),
         Metrics             = brackets.getModule("utils/Metrics");
 
@@ -127,8 +128,8 @@ define(function (require, exports, module) {
                 if(files.length > 500){
                     Dialogs.showModalDialog(
                         DefaultDialogs.DIALOG_ID_ERROR,
-                        'Cannot publish large project',
-                        'Since phoenix is still in alpha, we have not yet enabled sync of projects with >500 files'
+                        Strings.CANNOT_PUBLISH_LARGE_PROJECT,
+                        Strings.CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE
                     );
                     _setSyncComplete();
                     if(doneCb){
@@ -191,7 +192,7 @@ define(function (require, exports, module) {
         ongoingSyncCount = ongoingSyncCount+1;
         $icon.attr({
             class: "syncing",
-            title: "Sync in progress for preview..."
+            title: Strings.PUBLISH_SYNC_IN_PROGRESS
         });
     }
 
@@ -200,7 +201,7 @@ define(function (require, exports, module) {
         if(ongoingSyncCount ===0){
             $icon.attr({
                 class: "preview",
-                title: "Click to view published page"
+                title: Strings.PUBLISH_VIEW_PAGE
             });
         }
     }
@@ -209,12 +210,12 @@ define(function (require, exports, module) {
         if(projectSyncStarted){
             return;
         }
+        let publishMessage = StringUtils.format(Strings.PUBLISH_CONSENT_MESSAGE,
+            `<a href="${_getProjectPreviewURL()}">${_getProjectPreviewURL()}</a>`);
         Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_INFO,
-            "Publish and Share website?",
-            `Quickly preview changes and share your website with others. Phoenix can publish this website for you at 
-             <a href="${_getProjectPreviewURL()}">${_getProjectPreviewURL()}</a>.
-             The published links will be valid for a period of 7 days. Do you wish to publish and share your website?`,
+            Strings.SHARE_WEBSITE,
+            publishMessage,
             [
                 {
                     className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
@@ -224,7 +225,7 @@ define(function (require, exports, module) {
                 {
                     className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
                     id: Dialogs.DIALOG_BTN_OK,
-                    text: 'publish'
+                    text: Strings.PUBLISH
                 }
             ]
         )
@@ -282,7 +283,7 @@ define(function (require, exports, module) {
                 id: syncButtonID,
                 href: "#",
                 class: "preview",
-                title: "Click to publish and share this site."
+                title: Strings.PUBLISH_PAGE
             })
             .appendTo($("#main-toolbar .buttons"));
         $icon.on('click', ()=>{
