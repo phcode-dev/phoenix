@@ -87,7 +87,7 @@
 define(function (require, exports, module) {
 
 
-    var Directory       = require("filesystem/Directory"),
+    const Directory       = require("filesystem/Directory"),
         File            = require("filesystem/File"),
         FileIndex       = require("filesystem/FileIndex"),
         FileSystemError = require("filesystem/FileSystemError"),
@@ -99,7 +99,8 @@ define(function (require, exports, module) {
 
 
     // Collection of registered protocol adapters
-    var _fileProtocolPlugins = {};
+    let _fileProtocolPlugins = {};
+    const MAX_DEDUPE_NUMBER = 1000; // Eg: folder (copy 1000)
 
     /**
      * Typical signature of a file protocol adapter.
@@ -644,6 +645,55 @@ define(function (require, exports, module) {
 
     };
 
+    function _getNewPath(suggestedPath, isDir, i, pathLib) {
+        suggestedPath = pathLib.normalize(suggestedPath);
+        if(isDir){
+            return `${suggestedPath} (copy ${i})`;
+        } else {
+            const dir = pathLib.dirname(suggestedPath),
+                extName = pathLib.extname(suggestedPath),
+                baseName = pathLib.basename(suggestedPath, extName);
+            return pathLib.join(dir, `${baseName}(copy ${i})${extName}`);
+        }
+    }
+
+    /**
+     * Return a path that is free to use for the given suggestedPath.
+     * If suggestedPath is, Eg: `/a/b/dir` , then if `/a/b/dir` does not exist, it will be returned as is.
+     *
+     * if suggestedPath exists and is a dir, then the next available path will be returned like
+     * `/a/b/dir(copy)`, /a/b/dir(copy 1)`...
+     *
+     * if suggestedPath exists and is a file say `/a/b/test.html`, then the next available path will be returned like
+     * `/a/b/test (copy).html`, /a/b/test (copy 1).html`...
+     *
+     * @param {string} suggestedPath Absolute path of file or directory to check if free.
+     * @param {function(err, string)} callback Callback with err or Absolute path that is free to use.
+     */
+    FileSystem.prototype.getFreePath = function (suggestedPath, callback) {
+        let self = this;
+        self._impl.stat(suggestedPath, async function (err, stat) {
+            if (stat) {
+                // find a suggested path
+                let isDir = stat.isDirectory;
+                for(let i = 1; i < MAX_DEDUPE_NUMBER; i++) {
+                    let newPath = _getNewPath(suggestedPath, isDir, i, self._impl.pathLib);
+                    let exists = await self._impl.existsAsync(newPath);
+                    if(!exists){
+                        callback(null, newPath);
+                        return;
+                    }
+                }
+                callback(FileSystemError.TOO_MANY_ENTRIES);
+                return;
+            } else if (err && err === FileSystemError.NOT_FOUND) {
+                callback(null, suggestedPath);
+                return;
+            }
+            callback(err);
+        });
+    };
+
     /**
      * Return a Directory object for the specified path.
      *
@@ -1072,6 +1122,7 @@ define(function (require, exports, module) {
     exports.unwatch = _wrap(FileSystem.prototype.unwatch);
     exports.clearAllCaches = _wrap(FileSystem.prototype.clearAllCaches);
     exports.alwaysIndex = _wrap(FileSystem.prototype.alwaysIndex);
+    exports.getFreePath = _wrap(FileSystem.prototype.getFreePath);
 
     // Static public utility methods
     exports.isAbsolutePath = FileSystem.isAbsolutePath;
