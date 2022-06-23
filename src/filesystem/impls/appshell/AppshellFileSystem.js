@@ -268,6 +268,29 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Determine whether a file or directory exists at the given path by calling
+     * back asynchronously with either a FileSystemError string or a boolean,
+     * which is true if the file exists and false otherwise. The error will never
+     * be FileSystemError.NOT_FOUND; in that case, there will be no error and the
+     * boolean parameter will be false.
+     *
+     * @param {string} path
+     * @param {function(?string, boolean)} callback
+     */
+    function existsAsync(path) {
+        console.log('exists: ', path);
+        return new Promise(function (resolve, reject) {
+            exists(path, function (err, existStatus) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(existStatus);
+            });
+        });
+    }
+
+    /**
      * Read the contents of the directory at the given path, calling back
      * asynchronously either with a FileSystemError string or an array of
      * FileSystemEntry objects along with another consistent array, each index
@@ -575,6 +598,7 @@ define(function (require, exports, module) {
     exports.showOpenDialog  = showOpenDialog;
     exports.showSaveDialog  = showSaveDialog;
     exports.exists          = exists;
+    exports.existsAsync     = existsAsync;
     exports.readdir         = readdir;
     exports.mkdir           = mkdir;
     exports.rename          = rename;
@@ -587,6 +611,7 @@ define(function (require, exports, module) {
     exports.watchPath       = watchPath;
     exports.unwatchPath     = unwatchPath;
     exports.unwatchAll      = unwatchAll;
+    exports.pathLib         = window.Phoenix.VFS.path;
 
     /**
      * Indicates whether or not recursive watching notifications are supported

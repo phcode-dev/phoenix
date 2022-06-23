@@ -72,6 +72,18 @@ define(function (require, exports, module) {
         cb(null, _model.exists(path));
     }
 
+    function existsAsync(path) {
+        return new Promise(function (resolve, reject) {
+            exists(path, function (err, existStatus) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(existStatus);
+            });
+        });
+    }
+
     function readdir(path, callback) {
         var cb = _getCallback("readdir", path, callback);
 
@@ -206,6 +218,7 @@ define(function (require, exports, module) {
     exports.showOpenDialog  = showOpenDialog;
     exports.showSaveDialog  = showSaveDialog;
     exports.exists          = exists;
+    exports.existsAsync     = existsAsync;
     exports.readdir         = readdir;
     exports.mkdir           = mkdir;
     exports.rename          = rename;
@@ -217,6 +230,7 @@ define(function (require, exports, module) {
     exports.watchPath       = watchPath;
     exports.unwatchPath     = unwatchPath;
     exports.unwatchAll      = unwatchAll;
+    exports.pathLib         = window.Phoenix.VFS.path;
 
     exports.normalizeUNCPaths = _normalizeUNCPathsDefault;
     exports.recursiveWatch = _recursiveWatchDefault;

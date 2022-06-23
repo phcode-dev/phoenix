@@ -536,6 +536,111 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Get Free Path", function () {
+            it("should return suggested path as is if it doesnt exist", function () {
+                let cbCalled = false,
+                    dirThatDoesntExist = "/a/b";
+
+                runs(function () {
+                    fileSystem.getFreePath(dirThatDoesntExist, function (err, path) {
+                        expect(err).toBeFalsy();
+                        expect(path).toBe(dirThatDoesntExist);
+                        cbCalled = true;
+                    });
+                });
+                waitsFor(function () { return cbCalled; });
+            });
+
+            it("should return new dir path if suggested path exist", function () {
+                let cbCalled = false,
+                    dirThatDoesntExists = "/a/b";
+
+                runs(function () {
+                    MockFileSystemImpl.mkdir(dirThatDoesntExists, function (err) {
+                        expect(err).toBeFalsy();
+                        fileSystem.getFreePath(dirThatDoesntExists, function (err, path) {
+                            expect(err).toBeFalsy();
+                            expect(path).toBe(`${dirThatDoesntExists} (copy 1)`);
+                            cbCalled = true;
+                        });
+                    });
+                });
+                waitsFor(function () { return cbCalled; });
+            });
+
+            it("should return dir path if given path looks like file and existing path is dir", function () {
+                let cbCalled = false,
+                    dirThatDoesntExists = "/a/b.txt";
+
+                runs(function () {
+                    MockFileSystemImpl.mkdir(dirThatDoesntExists, function (err) {
+                        expect(err).toBeFalsy();
+                        fileSystem.getFreePath(dirThatDoesntExists, function (err, path) {
+                            expect(err).toBeFalsy();
+                            expect(path).toBe(`${dirThatDoesntExists} (copy 1)`);
+                            cbCalled = true;
+                        });
+                    });
+                });
+                waitsFor(function () { return cbCalled; });
+            });
+
+            it("should return dir path if given path looks like file and existing path is dir", function () {
+                let cbCalled = false,
+                    fileThatDoesntExists = "/a/b.txt",
+                    expectedName = "/a/b(copy 1).txt";
+
+                runs(function () {
+                    MockFileSystemImpl.writeFile(fileThatDoesntExists, "", function (err) {
+                        expect(err).toBeFalsy();
+                        fileSystem.getFreePath(fileThatDoesntExists, function (err, path) {
+                            expect(err).toBeFalsy();
+                            expect(path).toBe(expectedName);
+                            cbCalled = true;
+                        });
+                    });
+                });
+                waitsFor(function () { return cbCalled; });
+            });
+
+            it("should suggest file names in root folder", function () {
+                let cbCalled = false,
+                    fileThatDoesntExists = "/b.txt",
+                    expectedName = "/b(copy 1).txt";
+
+                runs(function () {
+                    MockFileSystemImpl.writeFile(fileThatDoesntExists, "", function (err) {
+                        expect(err).toBeFalsy();
+                        fileSystem.getFreePath(fileThatDoesntExists, function (err, path) {
+                            expect(err).toBeFalsy();
+                            expect(path).toBe(expectedName);
+                            cbCalled = true;
+                        });
+                    });
+                });
+                waitsFor(function () { return cbCalled; });
+            });
+
+            it("should return new dir path if suggested path is not normalised", function () {
+                let cbCalled = false,
+                    dirThatDoesntExists = "/a/b/",
+                    expectedPath = "/a/b (copy 1)";
+
+                runs(function () {
+                    MockFileSystemImpl.mkdir(dirThatDoesntExists, function (err) {
+                        expect(err).toBeFalsy();
+                        fileSystem.getFreePath(dirThatDoesntExists, function (err, path) {
+                            expect(err).toBeFalsy();
+                            expect(path).toBe(expectedPath);
+                            cbCalled = true;
+                        });
+                    });
+                });
+                waitsFor(function () { return cbCalled; });
+            });
+
+        });
+
         describe("Read and write files", function () {
             it("should read and write files", function () {
                 var file = fileSystem.getFileForPath("/subdir/file4.txt"),
