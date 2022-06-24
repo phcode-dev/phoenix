@@ -66,7 +66,8 @@
     }
 
     .website-detail input {
-        width: 442px;
+        width: 392px;
+        margin-right: 42px;
     }
 }
 
@@ -79,8 +80,13 @@
         margin-left:15px;
 
     }
-
+    
+    .website-detail input {
+        width: 242px;
+        height: 42px;
+    }
 }
+
 @media (max-width: 650px) {
     .project-content-left {
         margin-left: 0px;
