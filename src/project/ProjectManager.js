@@ -1269,6 +1269,19 @@ define(function (require, exports, module) {
         _renderTreeSync();
     }
 
+    function _duplicateFileCMD() {
+        let context = getContext();
+        if(context){
+            FileSystem.getFreePath(context.fullPath, (err, dupePath)=>{
+                FileSystem.copy(context.fullPath, dupePath, (err, copiedStats)=>{
+                    // TODO: we should focus on the copied element and perform rename here. maybe like below
+                    // let copiedEntry = FileSystem.getFileForPath(copiedStats.realPath);
+                    // renameItemInline(copiedEntry);
+                });
+            });
+        }
+    }
+
     // Initialize variables and listeners that depend on the HTML DOM
     AppInit.htmlReady(function () {
         $projectTreeContainer = $("#project-files-container");
@@ -1354,6 +1367,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_OPEN_FOLDER,      Commands.FILE_OPEN_FOLDER,      openProject);
     CommandManager.register(Strings.CMD_PROJECT_SETTINGS, Commands.FILE_PROJECT_SETTINGS, _projectSettings);
     CommandManager.register(Strings.CMD_FILE_REFRESH,     Commands.FILE_REFRESH,          refreshFileTree);
+    CommandManager.register(Strings.CMD_FILE_DUPLICATE, Commands.FILE_DUPLICATE, _duplicateFileCMD);
 
     // Define the preference to decide how to sort the Project Tree files
     PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, "boolean", brackets.platform !== "mac", {
