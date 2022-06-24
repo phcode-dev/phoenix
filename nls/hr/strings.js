@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Datoteka",
   "CMD_FILE_NEW_UNTITLED": "Nova",
   "CMD_FILE_NEW": "Nova datoteka",
+  "CMD_FILE_DUPLICATE": "Udvostruči",
   "CMD_PROJECT_NEW": "Novi projekt",
   "CMD_FILE_NEW_FOLDER": "Nova mapa",
   "CMD_FILE_OPEN": "Otvori…",

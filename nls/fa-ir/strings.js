@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "فایل",
   "CMD_FILE_NEW_UNTITLED": "جدید",
   "CMD_FILE_NEW": "فایل جدید",
+  "CMD_FILE_DUPLICATE": "دو نسخه کردن خط",
   "CMD_PROJECT_NEW": "پروژه جدید",
   "CMD_FILE_NEW_FOLDER": "پوشه جدید",
   "CMD_FILE_OPEN": "باز کردن…",

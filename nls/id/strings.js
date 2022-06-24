@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "File",
   "CMD_FILE_NEW_UNTITLED": "Baru",
   "CMD_FILE_NEW": "File Baru",
+  "CMD_FILE_DUPLICATE": "Gandakan",
   "CMD_PROJECT_NEW": "Proyek Baru",
   "CMD_FILE_NEW_FOLDER": "Folder Baru",
   "CMD_FILE_OPEN": "Buka…",
