@@ -47,7 +47,7 @@ define(function (require, exports, module) {
     function getExtension(filePath) {
         filePath = filePath || '';
         let pathSplit = filePath.split('.');
-        return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : null;
+        return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : '';
     }
 
     function _isPreviewableFile(filePath) {
