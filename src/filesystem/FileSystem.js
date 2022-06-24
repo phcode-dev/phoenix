@@ -658,6 +658,27 @@ define(function (require, exports, module) {
     }
 
     /**
+     * copies a file/folder path from src to destination recursively. follows unix copy semantics mostly.
+     * As with unix copy, the destination path may not be exactly the `dst` path provided.
+     * Eg. copy("/a/b", "/a/x") -> will copy to `/a/x/b` if folder `/a/x` exists. If dst `/a/x` not exists,
+     * then copy will honor the given destination `/a/x`
+     *
+     * @param {string} src Absolute path of file or directory to copy
+     * @param {string} dst Absolute path of file or directory destination
+     * @param {function(err, string)} callback Callback with err or stat of copied destination.
+     */
+    FileSystem.prototype.copy = function (src, dst, callback) {
+        let self = this;
+        self._impl.copy(src, dst, async function (err, stat) {
+            if (err) {
+                callback(err);
+                return;
+            }
+            callback(null, stat);
+        });
+    };
+
+    /**
      * Return a path that is free to use for the given suggestedPath.
      * If suggestedPath is, Eg: `/a/b/dir` , then if `/a/b/dir` does not exist, it will be returned as is.
      *
@@ -1123,6 +1144,7 @@ define(function (require, exports, module) {
     exports.clearAllCaches = _wrap(FileSystem.prototype.clearAllCaches);
     exports.alwaysIndex = _wrap(FileSystem.prototype.alwaysIndex);
     exports.getFreePath = _wrap(FileSystem.prototype.getFreePath);
+    exports.copy = _wrap(FileSystem.prototype.copy);
 
     // Static public utility methods
     exports.isAbsolutePath = FileSystem.isAbsolutePath;
