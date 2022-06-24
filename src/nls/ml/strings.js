@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "ഫയൽ",
   "CMD_FILE_NEW_UNTITLED": "പുതിയത്",
   "CMD_FILE_NEW": "പുതിയ ഫയൽ",
+  "CMD_FILE_DUPLICATE": "ഡ്യൂപ്ലിക്കേറ്റ്",
   "CMD_PROJECT_NEW": "പുതിയ പദ്ധതി",
   "CMD_FILE_NEW_FOLDER": "പുതിയ ഫോൾഡർ",
   "CMD_FILE_OPEN": "തുറക്കുക...",

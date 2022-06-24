@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Fișier",
   "CMD_FILE_NEW_UNTITLED": "Nou",
   "CMD_FILE_NEW": "Fișier nou",
+  "CMD_FILE_DUPLICATE": "Dublează",
   "CMD_PROJECT_NEW": "Proiect nou",
   "CMD_FILE_NEW_FOLDER": "Dosar nou",
   "CMD_FILE_OPEN": "Deschide…",

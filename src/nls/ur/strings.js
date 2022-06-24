@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "فائل",
   "CMD_FILE_NEW_UNTITLED": "نیا",
   "CMD_FILE_NEW": "نئی فائل",
+  "CMD_FILE_DUPLICATE": "ڈپلیکیٹ",
   "CMD_PROJECT_NEW": "نیا پروجیکٹ",
   "CMD_FILE_NEW_FOLDER": "نیا فولڈر",
   "CMD_FILE_OPEN": "کھولیں...",

@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Soubor",
   "CMD_FILE_NEW_UNTITLED": "Nový",
   "CMD_FILE_NEW": "Nový soubor",
+  "CMD_FILE_DUPLICATE": "Duplikovat",
   "CMD_PROJECT_NEW": "Nový projekt",
   "CMD_FILE_NEW_FOLDER": "Nová složka",
   "CMD_FILE_OPEN": "Otevřít…",

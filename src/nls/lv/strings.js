@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Datne",
   "CMD_FILE_NEW_UNTITLED": "Jauna",
   "CMD_FILE_NEW": "Jauna datne",
+  "CMD_FILE_DUPLICATE": "Dublēt",
   "CMD_PROJECT_NEW": "Jauns projekts",
   "CMD_FILE_NEW_FOLDER": "Jauna mape",
   "CMD_FILE_OPEN": "Atvērt…",

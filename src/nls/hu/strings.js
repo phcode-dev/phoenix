@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Fájl",
   "CMD_FILE_NEW_UNTITLED": "Új",
   "CMD_FILE_NEW": "Új Fájl",
+  "CMD_FILE_DUPLICATE": "Duplikálás",
   "CMD_PROJECT_NEW": "Új projekt",
   "CMD_FILE_NEW_FOLDER": "Új Mappa",
   "CMD_FILE_OPEN": "Megnyitás…",

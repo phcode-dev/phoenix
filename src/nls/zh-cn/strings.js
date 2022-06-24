@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "文件",
   "CMD_FILE_NEW_UNTITLED": "新建",
   "CMD_FILE_NEW": "新建文件",
+  "CMD_FILE_DUPLICATE": "创建副本",
   "CMD_PROJECT_NEW": "新项目",
   "CMD_FILE_NEW_FOLDER": "新建目录",
   "CMD_FILE_OPEN": "打开…",
