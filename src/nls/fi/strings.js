@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Tiedosto",
   "CMD_FILE_NEW_UNTITLED": "Uusi",
   "CMD_FILE_NEW": "Uusi tiedosto",
+  "CMD_FILE_DUPLICATE": "Monista",
   "CMD_PROJECT_NEW": "Uusi projekti",
   "CMD_FILE_NEW_FOLDER": "Uusi kansio",
   "CMD_FILE_OPEN": "Avaa…",

@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "파일",
   "CMD_FILE_NEW_UNTITLED": "새 파일",
   "CMD_FILE_NEW": "파일 만들기",
+  "CMD_FILE_DUPLICATE": "행 복사",
   "CMD_PROJECT_NEW": "새 프로젝트",
   "CMD_FILE_NEW_FOLDER": "폴더 만들기",
   "CMD_FILE_OPEN": "파일 열기…",

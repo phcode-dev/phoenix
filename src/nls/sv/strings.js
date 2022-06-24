@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Arkiv",
   "CMD_FILE_NEW_UNTITLED": "Ny",
   "CMD_FILE_NEW": "Ny fil",
+  "CMD_FILE_DUPLICATE": "Duplicera",
   "CMD_PROJECT_NEW": "Nytt projekt",
   "CMD_FILE_NEW_FOLDER": "Ny mapp",
   "CMD_FILE_OPEN": "Öppna…",

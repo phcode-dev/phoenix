@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Αρχείο",
   "CMD_FILE_NEW_UNTITLED": "Νέο",
   "CMD_FILE_NEW": "Νέο Αρχείο",
+  "CMD_FILE_DUPLICATE": "Δημιουργία Αντιγράφου",
   "CMD_PROJECT_NEW": "Νέο Έργο",
   "CMD_FILE_NEW_FOLDER": "Νέος Φάκελος",
   "CMD_FILE_OPEN": "Άνοιγμα…",

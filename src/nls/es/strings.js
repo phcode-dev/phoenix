@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Archivo",
   "CMD_FILE_NEW_UNTITLED": "Nuevo",
   "CMD_FILE_NEW": "Nuevo archivo",
+  "CMD_FILE_DUPLICATE": "Duplicar",
   "CMD_PROJECT_NEW": "Nuevo proyecto",
   "CMD_FILE_NEW_FOLDER": "Nueva carpeta",
   "CMD_FILE_OPEN": "Abrir…",

@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Dosya",
   "CMD_FILE_NEW_UNTITLED": "Yeni",
   "CMD_FILE_NEW": "Yeni Dosya",
+  "CMD_FILE_DUPLICATE": "Çoğalt",
   "CMD_PROJECT_NEW": "Yeni Proje",
   "CMD_FILE_NEW_FOLDER": "Yeni Klasör",
   "CMD_FILE_OPEN": "Aç…",

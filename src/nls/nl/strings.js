@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Bestand",
   "CMD_FILE_NEW_UNTITLED": "Nieuw",
   "CMD_FILE_NEW": "Nieuw bestand",
+  "CMD_FILE_DUPLICATE": "Dupliceer",
   "CMD_PROJECT_NEW": "Nieuw project",
   "CMD_FILE_NEW_FOLDER": "Nieuwe map",
   "CMD_FILE_OPEN": "Bestand openen…",

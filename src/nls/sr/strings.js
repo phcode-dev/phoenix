@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "Датотека",
   "CMD_FILE_NEW_UNTITLED": "Нова",
   "CMD_FILE_NEW": "Нова датотека",
+  "CMD_FILE_DUPLICATE": "Удвостручи",
   "CMD_PROJECT_NEW": "Novi projekat",
   "CMD_FILE_NEW_FOLDER": "Нови директоријум",
   "CMD_FILE_OPEN": "Отвори…",

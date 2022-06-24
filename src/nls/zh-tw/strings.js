@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "檔案",
   "CMD_FILE_NEW_UNTITLED": "新增",
   "CMD_FILE_NEW": "新增檔案",
+  "CMD_FILE_DUPLICATE": "整行複製",
   "CMD_PROJECT_NEW": "新建項目",
   "CMD_FILE_NEW_FOLDER": "新增資料夾",
   "CMD_FILE_OPEN": "開啟…",

@@ -247,6 +247,7 @@ define({
   "FILE_MENU": "ملف",
   "CMD_FILE_NEW_UNTITLED": "جديد",
   "CMD_FILE_NEW": "ملف جديد",
+  "CMD_FILE_DUPLICATE": "نسخة مكررة",
   "CMD_PROJECT_NEW": "مشروع جديد",
   "CMD_FILE_NEW_FOLDER": "مجلد جديد",
   "CMD_FILE_OPEN": "افتح...",
