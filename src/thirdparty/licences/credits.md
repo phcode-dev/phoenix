@@ -7,6 +7,9 @@ All projects we depend upon and their licenses can be found in this [folder](htt
 
 Please find all other licenses and attributions below:
 
+## Other Libraries used
+1. https://www.npmjs.com/package/@pixelbrackets/gfm-stylesheet under AGPL 2.0 license
+
 ## Attributions for Images and other assets used
 
 ### wikimedia CC
