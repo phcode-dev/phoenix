@@ -9,12 +9,6 @@
     <link href="{{{HIGHLIGHT_JS_CSS}}}" rel="stylesheet">
     <script src="{{{HIGHLIGHT_JS}}}"></script>
     <link rel="stylesheet" href="{{{GFM_CSS}}}" />
-
-    <script>
-        hljs.highlightAll();
-    </script>
-
-
     <style>
 
         *{
@@ -78,7 +72,7 @@
 
     </style>
 </head>
-<body >
+<body onload="hljs.highlightAll();">
 {{{markdownContent}}}
 </body>
 </html>
