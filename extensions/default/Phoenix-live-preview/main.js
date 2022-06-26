@@ -76,7 +76,7 @@ define(function (require, exports, module) {
 
     // Templates
     let panelHTML       = require("text!panel.html"),
-        markdownHTML = require("text!markdown.html");
+        markdownHTMLTemplate = require("text!markdown.html");
     ExtensionUtils.loadStyleSheet(module, "live-preview.css");
 
     // jQuery objects
@@ -172,9 +172,13 @@ define(function (require, exports, module) {
                 let text = doc.getText();
                 let markdownHtml = marked.parse(text);
                 let templateVars = {
-                    markdownContent: markdownHtml
+                    markdownContent: markdownHtml,
+                    BOOTSTRAP_LIB_CSS: `${window.parent.Phoenix.baseURL}thirdparty/bootstrap/bootstrap.min.css`,
+                    HIGHLIGHT_JS_CSS: `${window.parent.Phoenix.baseURL}thirdparty/highlight.js/styles/github.min.css`,
+                    HIGHLIGHT_JS: `${window.parent.Phoenix.baseURL}thirdparty/highlight.js/highlight.min.js`,
+                    GFM_CSS: `${window.parent.Phoenix.baseURL}thirdparty/gfm.min.css`
                 };
-                let html = Mustache.render(markdownHTML, templateVars);
+                let html = Mustache.render(markdownHTMLTemplate, templateVars);
                 $iframe.attr('srcdoc', html);
                 if(tab && !tab.closed){
                     tab.location = "about:blank";

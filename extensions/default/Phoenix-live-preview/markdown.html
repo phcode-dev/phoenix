@@ -5,16 +5,10 @@
     <title>Markdown- Phoenix</title>
 
 
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
-    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pixelbrackets/gfm-stylesheet/dist/gfm.min.css" />
-
-    <script>
-        hljs.initHighlightingOnLoad();
-    </script>
-
-
+    <link rel="stylesheet" href="{{{BOOTSTRAP_LIB_CSS}}}">
+    <link href="{{{HIGHLIGHT_JS_CSS}}}" rel="stylesheet">
+    <script src="{{{HIGHLIGHT_JS}}}"></script>
+    <link rel="stylesheet" href="{{{GFM_CSS}}}" />
     <style>
 
         *{
@@ -78,7 +72,7 @@
 
     </style>
 </head>
-<body >
+<body onload="hljs.highlightAll();">
 {{{markdownContent}}}
 </body>
 </html>
