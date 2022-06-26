@@ -82,6 +82,26 @@ async function copyThirdPartyLibs(){
         src(['node_modules/underscore/LICENSE'])
             .pipe(rename("underscore.markdown"))
             .pipe(dest('src/thirdparty/licences/')),
+        // bootstrap
+        src(['node_modules/bootstrap/dist/js/bootstrap.min.js', 'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
+            'node_modules/bootstrap/dist/css/bootstrap.min.css', 'node_modules/bootstrap/dist/css/bootstrap.min.css.map'])
+            .pipe(dest('src/thirdparty/bootstrap')),
+        src(['node_modules/bootstrap/LICENSE'])
+            .pipe(rename("bootstrap.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
+        // hilightjs
+        src(['node_modules/@highlightjs/cdn-assets/highlight.min.js'])
+            .pipe(dest('src/thirdparty/highlight.js')),
+        src(['node_modules/@highlightjs/cdn-assets/styles/*.*'])
+            .pipe(dest('src/thirdparty/highlight.js/styles')),
+        src(['node_modules/@highlightjs/cdn-assets/languages/*.*'])
+            .pipe(dest('src/thirdparty/highlight.js/languages')),
+        src(['node_modules/@highlightjs/cdn-assets/LICENSE'])
+            .pipe(rename("highlight.js.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
+        // gfm-stylesheet
+        src(['node_modules/@pixelbrackets/gfm-stylesheet/dist/gfm.min.css'])
+            .pipe(dest('src/thirdparty/')), // AGPL 2.0 license addded to
         // prettier
         src(['node_modules/prettier/*.js'])
             .pipe(dest('src/extensions/default/Phoenix-prettier/thirdParty')),

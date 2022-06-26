@@ -20,6 +20,9 @@ src/phoenix/virtualfs.js.map
 !/src/thirdparty/licences
 /src/thirdparty/jszip.js
 /src/thirdparty/underscore-min.js
+/src/thirdparty/bootstrap
+/src/thirdparty/highlight.js
+/src/thirdparty/gfm.min.css
 /src/thirdparty/mime-db.json
 /src/thirdparty/floating-ui.core.umd.min.js
 /src/thirdparty/floating-ui.dom.umd.min.js
