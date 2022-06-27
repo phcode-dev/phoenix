@@ -249,6 +249,10 @@ define(function (require, exports, module) {
         project_cmenu.addMenuItem(Commands.FILE_NEW);
         project_cmenu.addMenuItem(Commands.FILE_NEW_FOLDER);
         project_cmenu.addMenuDivider();
+        project_cmenu.addMenuItem(Commands.FILE_CUT);
+        project_cmenu.addMenuItem(Commands.FILE_COPY);
+        project_cmenu.addMenuItem(Commands.FILE_COPY_PATH);
+        project_cmenu.addMenuItem(Commands.FILE_PASTE);
         project_cmenu.addMenuItem(Commands.FILE_DUPLICATE);
         project_cmenu.addMenuDivider();
         project_cmenu.addMenuItem(Commands.FILE_RENAME);
