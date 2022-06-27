@@ -669,12 +669,32 @@ define(function (require, exports, module) {
      */
     FileSystem.prototype.copy = function (src, dst, callback) {
         let self = this;
+        // Block external change events until after the write has finished
+        self._beginChange();
         self._impl.copy(src, dst, async function (err, stat) {
             if (err) {
                 callback(err);
+                self._endChange();
                 return;
             }
-            callback(null, stat);
+            let target;
+            if(stat.isFile){
+                let parentDir = window.path.dirname(stat.realPath);
+                target = self.getDirectoryForPath(parentDir);
+            } else {
+                target = self.getDirectoryForPath(stat.realPath);
+            }
+            self._handleDirectoryChange(target, function (added, removed) {
+                try {
+                    callback(null, stat);
+                } finally {
+                    if (target._isWatched()) {
+                        self._fireChangeEvent(target, added, removed);
+                    }
+                    // Unblock external change events
+                    self._endChange();
+                }
+            });
         });
     };
 
@@ -771,6 +791,40 @@ define(function (require, exports, module) {
                 callback(null, item, stat);
             }.bind(this));
         }
+    };
+
+    /**
+     * Determine whether a file or directory exists at the given path
+     * resolved to a boolean, which is true if the file exists and false otherwise.
+     * The error will never be FileSystemError.NOT_FOUND; in that case, there will be no error and the
+     * boolean parameter will be false.
+     *
+     * @param {string} path
+     * @param {function(?string, boolean)} callback
+     */
+    FileSystem.prototype.existsAsync = function (path) {
+        return this._impl.existsAsync(path);
+    };
+
+    /**
+     * promisified version of FileSystem.resolve
+     * @param {String} path to resolve
+     * @returns {Promise<{entry, stat}>}
+     */
+    FileSystem.prototype.resolveAsync = function (path) {
+        let self = this;
+        return new Promise((resolve, reject)=>{
+            self.resolve(path, (err, item, stat)=>{
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve({
+                    entry: item,
+                    stat: stat
+                });
+            });
+        });
     };
 
     /**
@@ -1132,11 +1186,11 @@ define(function (require, exports, module) {
     // Export public methods as proxies to the singleton instance
     exports.init = _wrap(FileSystem.prototype.init);
     exports.close = _wrap(FileSystem.prototype.close);
-    exports.shouldShow = _wrap(FileSystem.prototype.shouldShow);
     exports.getFileForPath = _wrap(FileSystem.prototype.getFileForPath);
     exports.addEntryForPathIfRequired = _wrap(FileSystem.prototype.addEntryForPathIfRequired);
     exports.getDirectoryForPath = _wrap(FileSystem.prototype.getDirectoryForPath);
     exports.resolve = _wrap(FileSystem.prototype.resolve);
+    exports.resolveAsync = _wrap(FileSystem.prototype.resolveAsync);
     exports.showOpenDialog = _wrap(FileSystem.prototype.showOpenDialog);
     exports.showSaveDialog = _wrap(FileSystem.prototype.showSaveDialog);
     exports.watch = _wrap(FileSystem.prototype.watch);
@@ -1145,6 +1199,7 @@ define(function (require, exports, module) {
     exports.alwaysIndex = _wrap(FileSystem.prototype.alwaysIndex);
     exports.getFreePath = _wrap(FileSystem.prototype.getFreePath);
     exports.copy = _wrap(FileSystem.prototype.copy);
+    exports.existsAsync = _wrap(FileSystem.prototype.existsAsync);
 
     // Static public utility methods
     exports.isAbsolutePath = FileSystem.isAbsolutePath;

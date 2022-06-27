@@ -34,6 +34,10 @@ define(function (require, exports, module) {
     exports.FILE_NEW_PROJECT            = "file.newProject";            // Phoenix extension: new-project.js
     exports.FILE_NEW_FOLDER             = "file.newFolder";             // DocumentCommandHandlers.js   handleNewFolderInProject()
     exports.FILE_DUPLICATE              = "file.duplicate";             // ProjectManager.js
+    exports.FILE_CUT                    = "file.cut";                   // ProjectManager.js
+    exports.FILE_COPY                   = "file.copy";                  // ProjectManager.js
+    exports.FILE_COPY_PATH              = "file.copy.path";             // ProjectManager.js
+    exports.FILE_PASTE                  = "file.paste";                 // ProjectManager.js
     exports.FILE_OPEN                   = "file.open";                  // DocumentCommandHandlers.js   handleDocumentOpen()
     exports.FILE_OPEN_FOLDER            = "file.openFolder";            // ProjectManager.js            openProject()
     exports.FILE_SAVE                   = "file.save";                  // DocumentCommandHandlers.js   handleFileSave()

@@ -128,7 +128,9 @@ define(function (require, exports, module) {
         ERR_TYPE_MAX_FILES              = 7,
         ERR_TYPE_OPEN_DIALOG            = 8,
         ERR_TYPE_INVALID_FILENAME       = 9,
-        ERR_TYPE_MOVE                   = 10;
+        ERR_TYPE_MOVE                   = 10,
+        ERR_TYPE_PASTE                  = 11,
+        ERR_TYPE_PASTE_FAILED           = 12;
 
     /**
      * @private
@@ -618,7 +620,7 @@ define(function (require, exports, module) {
      * @param {string} path path to file or folder that had the error
      * @return {Dialog|null} Dialog if the error message was created
      */
-    _showErrorDialog = function (errType, isFolder, error, path) {
+    _showErrorDialog = function (errType, isFolder, error, path, dstPath) {
         var titleType = isFolder ? Strings.DIRECTORY_TITLE : Strings.FILE_TITLE,
             entryType = isFolder ? Strings.DIRECTORY : Strings.FILE,
             title,
@@ -665,6 +667,14 @@ define(function (require, exports, module) {
         case ERR_TYPE_INVALID_FILENAME:
             title = StringUtils.format(Strings.INVALID_FILENAME_TITLE, isFolder ? Strings.DIRECTORY_NAME : Strings.FILENAME);
             message = StringUtils.format(Strings.INVALID_FILENAME_MESSAGE, isFolder ? Strings.DIRECTORY_NAMES_LEDE : Strings.FILENAMES_LEDE, error);
+            break;
+        case ERR_TYPE_PASTE:
+            title = StringUtils.format(Strings.CANNOT_PASTE_TITLE, titleType);
+            message = StringUtils.format(Strings.ENTRY_WITH_SAME_NAME_EXISTS, path);
+            break;
+        case ERR_TYPE_PASTE_FAILED:
+            title = StringUtils.format(Strings.CANNOT_PASTE_TITLE, titleType);
+            message = StringUtils.format(Strings.ERR_TYPE_PASTE_FAILED, path, dstPath);
             break;
         }
 
@@ -1282,6 +1292,128 @@ define(function (require, exports, module) {
         }
     }
 
+    const OPERATION_CUT = 'cut',
+        OPERATION_COPY = 'copy';
+
+    function _addTextToSystemClipboard(text) {
+        if (!navigator.clipboard) {
+            console.warn('Browser doesnt support clipboard control. system cut/copy/paste may not work');
+            return;
+        }
+        navigator.clipboard.writeText(text).catch(function(err) {
+            console.error('System clipboard error: Could not copy text: ', err);
+        });
+    }
+
+    function _registerPathWithClipboard(path, operation) {
+        _addTextToSystemClipboard(window.path.basename(path));
+        localStorage.setItem("phoenix.clipboard", JSON.stringify({
+            operation: operation,
+            path: path
+        }));
+    }
+
+    function _getProjectRelativePath(path) {
+        let projectRoot = window.path.dirname(getProjectRoot().fullPath);
+        return window.path.relative(projectRoot, path);
+    }
+
+    function _copyProjectRelativePath() {
+        let context = getContext();
+        if(context){
+            _addTextToSystemClipboard(_getProjectRelativePath(context.fullPath));
+            localStorage.setItem("phoenix.clipboard", JSON.stringify({}));
+        }
+    }
+
+    function _cutFileCMD() {
+        let context = getContext();
+        if(context){
+            _registerPathWithClipboard(context.fullPath, OPERATION_CUT);
+        }
+    }
+
+    function _copyFileCMD() {
+        let context = getContext();
+        if(context){
+            _registerPathWithClipboard(context.fullPath, OPERATION_COPY);
+        }
+    }
+
+    // this function should be given a destination that always exists, be it file or dir
+    function _getPasteTarget(dstThatExists) {
+        return new Promise(async (resolve)=>{
+            let entry = (await FileSystem.resolveAsync(dstThatExists)).entry;
+            if(entry.isFile){
+                let parent = window.path.dirname(dstThatExists);
+                let parentEntry = (await FileSystem.resolveAsync(parent)).entry;
+                resolve(parentEntry);
+            } else {
+                resolve(entry);
+            }
+        });
+    }
+
+    function _isSubPathOf(dir, subDir) {
+        const relative = window.path.relative(dir, subDir);
+        return relative && !relative.startsWith('..') && !window.path.isAbsolute(relative);
+    }
+
+    async function _validatePasteTarget(srcEntry, targetEntry) {
+        if(_isSubPathOf(srcEntry.fullPath, targetEntry.fullPath)){
+            _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
+                _getProjectRelativePath(srcEntry.fullPath),
+                _getProjectRelativePath(targetEntry.fullPath));
+            return false;
+        }
+        let baseName = window.path.basename(srcEntry.fullPath);
+        let targetPath = window.path.normalize(`${targetEntry.fullPath}/${baseName}`);
+        let exists = await FileSystem.existsAsync(targetPath);
+        if(exists){
+            _showErrorDialog(ERR_TYPE_PASTE, srcEntry.isDirectory, "err", _getProjectRelativePath(targetPath));
+            return false;
+        }
+        return true;
+    }
+
+    async function _performCut(src, dst) {
+        let target = await _getPasteTarget(dst);
+        let srcEntry = (await FileSystem.resolveAsync(src)).entry;
+        console.log(target, srcEntry);
+    }
+
+    async function _performCopy(src, dst) {
+        let target = await _getPasteTarget(dst);
+        let srcEntry = (await FileSystem.resolveAsync(src)).entry;
+        let canPaste = await _validatePasteTarget(srcEntry, target);
+        if(canPaste){
+            FileSystem.copy(srcEntry.fullPath, target.fullPath, (err)=>{
+                if(err){
+                    _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
+                        _getProjectRelativePath(srcEntry.fullPath),
+                        _getProjectRelativePath(target.fullPath));
+                }
+            });
+        }
+    }
+
+    function _pasteFileCMD() {
+        let context = getContext();
+        if(context){
+            let targetPath = context.fullPath;
+            let clipboard = localStorage.getItem("phoenix.clipboard");
+            if(!clipboard){
+                return;
+            }
+            clipboard = JSON.parse(clipboard);
+            switch (clipboard.operation) {
+            case OPERATION_CUT: _performCut(clipboard.path, targetPath); break;
+            case OPERATION_COPY: _performCopy(clipboard.path, targetPath); break;
+            default: console.error("Clipboard unknown Operation: ", clipboard, targetPath);
+            }
+        }
+    }
+
     // Initialize variables and listeners that depend on the HTML DOM
     AppInit.htmlReady(function () {
         $projectTreeContainer = $("#project-files-container");
@@ -1367,6 +1499,10 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_OPEN_FOLDER,      Commands.FILE_OPEN_FOLDER,      openProject);
     CommandManager.register(Strings.CMD_PROJECT_SETTINGS, Commands.FILE_PROJECT_SETTINGS, _projectSettings);
     CommandManager.register(Strings.CMD_FILE_REFRESH,     Commands.FILE_REFRESH,          refreshFileTree);
+    CommandManager.register(Strings.CMD_FILE_CUT, Commands.FILE_CUT, _cutFileCMD);
+    CommandManager.register(Strings.CMD_FILE_COPY, Commands.FILE_COPY, _copyFileCMD);
+    CommandManager.register(Strings.CMD_FILE_COPY_PATH, Commands.FILE_COPY_PATH, _copyProjectRelativePath);
+    CommandManager.register(Strings.CMD_FILE_PASTE, Commands.FILE_PASTE, _pasteFileCMD);
     CommandManager.register(Strings.CMD_FILE_DUPLICATE, Commands.FILE_DUPLICATE, _duplicateFileCMD);
 
     // Define the preference to decide how to sort the Project Tree files
