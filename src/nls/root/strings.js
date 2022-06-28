@@ -72,6 +72,8 @@ define({
     "INVALID_FILENAME_TITLE": "Invalid {0}",
     "CANNOT_PASTE_TITLE": "Cannot Paste {0}",
     "ERR_TYPE_PASTE_FAILED": "An error occurred while pasting <span class='dialog-filename'>{0}</span> to <span class='dialog-filename'>{1}</span>",
+    "CANNOT_DUPLICATE_TITLE": "Cannot Duplicate",
+    "ERR_TYPE_DUPLICATE_FAILED": "An error occurred while duplicating <span class='dialog-filename'>{0}</span>",
     "INVALID_FILENAME_MESSAGE": "{0} cannot use any system reserved words, end with dots (.) or use any of the following characters: <code class='emphasized'>{1}</code>",
     "ENTRY_WITH_SAME_NAME_EXISTS": "A file or directory with the name <span class='dialog-filename'>{0}</span> already exists.",
     "ERROR_CREATING_FILE_TITLE": "Error Creating {0}",

@@ -47,7 +47,7 @@ define(function (require, exports, module) {
     var _ = require("thirdparty/lodash");
 
     // Load dependent modules
-    var AppInit             = require("utils/AppInit"),
+    let AppInit             = require("utils/AppInit"),
         Async               = require("utils/Async"),
         PreferencesDialogs  = require("preferences/PreferencesDialogs"),
         PreferencesManager  = require("preferences/PreferencesManager"),
@@ -130,7 +130,8 @@ define(function (require, exports, module) {
         ERR_TYPE_INVALID_FILENAME       = 9,
         ERR_TYPE_MOVE                   = 10,
         ERR_TYPE_PASTE                  = 11,
-        ERR_TYPE_PASTE_FAILED           = 12;
+        ERR_TYPE_PASTE_FAILED           = 12,
+        ERR_TYPE_DUPLICATE_FAILED       = 13;
 
     /**
      * @private
@@ -675,6 +676,10 @@ define(function (require, exports, module) {
         case ERR_TYPE_PASTE_FAILED:
             title = StringUtils.format(Strings.CANNOT_PASTE_TITLE, titleType);
             message = StringUtils.format(Strings.ERR_TYPE_PASTE_FAILED, path, dstPath);
+            break;
+        case ERR_TYPE_DUPLICATE_FAILED:
+            title = StringUtils.format(Strings.CANNOT_DUPLICATE_TITLE, titleType);
+            message = StringUtils.format(Strings.ERR_TYPE_DUPLICATE_FAILED, path);
             break;
         }
 
@@ -1295,14 +1300,27 @@ define(function (require, exports, module) {
         _renderTreeSync();
     }
 
+    // after model change, queue path for selection. As there can be only one selection, the last selection wins.
+    let queuePathForSelection = null;
+    model.on(ProjectModel.EVENT_CHANGE, ()=>{
+        // Path that is being copied can be selected only after project model is updated.
+        if(queuePathForSelection){
+            actionCreator.setSelected(queuePathForSelection);
+            queuePathForSelection = null;
+        }
+    });
+
     function _duplicateFileCMD() {
         let context = getContext();
         if(context){
             FileSystem.getFreePath(context.fullPath, (err, dupePath)=>{
                 FileSystem.copy(context.fullPath, dupePath, (err, copiedStats)=>{
-                    // TODO: we should focus on the copied element and perform rename here. maybe like below
-                    // let copiedEntry = FileSystem.getFileForPath(copiedStats.realPath);
-                    // renameItemInline(copiedEntry);
+                    if(err){
+                        _showErrorDialog(ERR_TYPE_DUPLICATE_FAILED, false, "err",
+                            _getProjectRelativePath(context.fullPath));
+                        return;
+                    }
+                    queuePathForSelection = copiedStats.realPath;
                 });
             });
         }
@@ -1415,7 +1433,9 @@ define(function (require, exports, module) {
                     _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
                         _getProjectRelativePath(srcEntry.fullPath),
                         _getProjectRelativePath(target.fullPath));
+                    return;
                 }
+                queuePathForSelection = targetPath;
             });
         }
     }
@@ -1425,30 +1445,33 @@ define(function (require, exports, module) {
         let srcEntry = (await FileSystem.resolveAsync(src)).entry;
         let canPaste = await _validatePasteTarget(srcEntry, target);
         if(canPaste){
-            FileSystem.copy(srcEntry.fullPath, target.fullPath, (err)=>{
+            FileSystem.copy(srcEntry.fullPath, target.fullPath, (err, targetStat)=>{
                 if(err){
                     _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
                         _getProjectRelativePath(srcEntry.fullPath),
                         _getProjectRelativePath(target.fullPath));
+                    return;
                 }
+                queuePathForSelection = targetStat.realPath;
             });
         }
     }
 
     function _pasteFileCMD() {
+        let targetPath = getProjectRoot().fullPath;
         let context = getContext();
         if(context){
-            let targetPath = context.fullPath;
-            let clipboard = localStorage.getItem("phoenix.clipboard");
-            if(!clipboard){
-                return;
-            }
-            clipboard = JSON.parse(clipboard);
-            switch (clipboard.operation) {
-            case OPERATION_CUT: _performCut(clipboard.path, targetPath); break;
-            case OPERATION_COPY: _performCopy(clipboard.path, targetPath); break;
-            default: console.error("Clipboard unknown Operation: ", clipboard, targetPath);
-            }
+            targetPath = context.fullPath;
+        }
+        let clipboard = localStorage.getItem("phoenix.clipboard");
+        if(!clipboard){
+            return;
+        }
+        clipboard = JSON.parse(clipboard);
+        switch (clipboard.operation) {
+        case OPERATION_CUT: _performCut(clipboard.path, targetPath); break;
+        case OPERATION_COPY: _performCopy(clipboard.path, targetPath); break;
+        default: console.error("Clipboard unknown Operation: ", clipboard, targetPath);
         }
     }
 
