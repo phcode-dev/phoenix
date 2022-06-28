@@ -1189,6 +1189,8 @@ define(function (require, exports, module) {
         entry.unlink(function (err) {
             if (!err) {
                 DocumentManager.notifyPathDeleted(entry.fullPath);
+                let parent = window.path.dirname(entry.fullPath);
+                _updateModelWithChange(parent);
                 result.resolve();
             } else {
                 _showErrorDialog(ERR_TYPE_DELETE, entry.isDirectory, FileUtils.getFileErrorString(err), entry.fullPath);
@@ -1249,6 +1251,14 @@ define(function (require, exports, module) {
         exports.trigger(EVENT_PROJECT_FILE_CHANGED, entry, added, removed);
     };
 
+    function _updateModelWithChange(path) {
+        FileSystem.resolve(path, (err, entry)=>{
+            if(!err){
+                model.handleFSEvent(entry);
+            }
+        });
+    }
+
     /**
      * @private
      * Respond to a FileSystem rename event.
@@ -1256,6 +1266,12 @@ define(function (require, exports, module) {
     _fileSystemRename = function (event, oldName, newName) {
         // Tell the document manager about the name change. This will update
         // all of the model information and send notification to all views
+        let oldParent = window.path.dirname(oldName),
+            newParent = window.path.dirname(newName);
+        _updateModelWithChange(oldParent);
+        if(newParent!== oldParent){
+            _updateModelWithChange(newParent);
+        }
         DocumentManager.notifyPathNameChanged(oldName, newName);
         exports.trigger(EVENT_PROJECT_FILE_RENAMED, oldName, newName);
     };
@@ -1314,14 +1330,25 @@ define(function (require, exports, module) {
     }
 
     function _getProjectRelativePath(path) {
-        let projectRoot = window.path.dirname(getProjectRoot().fullPath);
-        return window.path.relative(projectRoot, path);
+        // sometimes, when we copy across projects, there can be two project roots at work. For eg, when copying
+        // across /mnt/prj1 and /app/local/prj2; both should correctly resolve to prj1/ and prj2/ even though only
+        // /mnt/prj1 is the current active project root. So we cannot really use getProjectRoot().fullPath for all cases
+        let projectRootParent = window.path.dirname(getProjectRoot().fullPath);
+        let relativePath = window.path.relative(projectRootParent, path);
+        if(path.startsWith(Phoenix.VFS.getMountDir())){
+            relativePath = window.path.relative(Phoenix.VFS.getMountDir(), path);
+        } else if(path.startsWith(Phoenix.VFS.getLocalDir())){
+            relativePath = window.path.relative(Phoenix.VFS.getLocalDir(), path);
+        }
+        return relativePath;
     }
 
     function _copyProjectRelativePath() {
         let context = getContext();
         if(context){
-            _addTextToSystemClipboard(_getProjectRelativePath(context.fullPath));
+            let projectRoot = getProjectRoot().fullPath;
+            let relativePath = window.path.relative(projectRoot, context.fullPath);
+            _addTextToSystemClipboard(relativePath);
             localStorage.setItem("phoenix.clipboard", JSON.stringify({}));
         }
     }
@@ -1379,7 +1406,18 @@ define(function (require, exports, module) {
     async function _performCut(src, dst) {
         let target = await _getPasteTarget(dst);
         let srcEntry = (await FileSystem.resolveAsync(src)).entry;
-        console.log(target, srcEntry);
+        let canPaste = await _validatePasteTarget(srcEntry, target);
+        if(canPaste){
+            let baseName = window.path.basename(srcEntry.fullPath);
+            let targetPath = window.path.normalize(`${target.fullPath}/${baseName}`);
+            srcEntry.rename(targetPath, (err)=>{
+                if(err){
+                    _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
+                        _getProjectRelativePath(srcEntry.fullPath),
+                        _getProjectRelativePath(target.fullPath));
+                }
+            });
+        }
     }
 
     async function _performCopy(src, dst) {

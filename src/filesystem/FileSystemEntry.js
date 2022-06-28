@@ -341,6 +341,14 @@ define(function (require, exports, module) {
         }.bind(this));
     };
 
+    function _ensureTrailingSlash(path) {
+        if (path[path.length - 1] !== "/") {
+            path += "/";
+        }
+
+        return path;
+    }
+
     /**
      * Rename this entry.
      *
@@ -350,6 +358,9 @@ define(function (require, exports, module) {
      */
     FileSystemEntry.prototype.rename = function (newFullPath, callback) {
         callback = callback || function () {};
+        if(this.isDirectory){
+            newFullPath = _ensureTrailingSlash(newFullPath);
+        }
 
         // Block external change events until after the write has finished
         this._fileSystem._beginChange();
@@ -365,7 +376,7 @@ define(function (require, exports, module) {
                 }
 
                 // Update internal filesystem state
-                this._fileSystem._handleRename(this._path, newFullPath, this.isDirectory);
+                this._fileSystem._handleRename(oldFullPath, newFullPath, this.isDirectory);
 
                 try {
                     // Notify the caller
