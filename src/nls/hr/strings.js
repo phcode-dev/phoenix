@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Ime {0} nije valjano",
   "CANNOT_PASTE_TITLE": "Ne mogu zalijepiti {0}",
   "ERR_TYPE_PASTE_FAILED": "Došlo je do pogreške prilikom lijepljenja <span class='dialog-filename'>{0}</span> na <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Ne mogu duplicirati",
+  "ERR_TYPE_DUPLICATE_FAILED": "Došlo je do pogreške prilikom dupliciranja <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "Imena datoteka ne smiju sadržavati sljedeće znakove: {0} ili riječi rezervirane za sistem.",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Datoteka ili direktorij s imenom <span class='dialog-filename'>{0}</span> već postoji.",
   "ERROR_CREATING_FILE_TITLE": "Greška pri kreiranju {0}",

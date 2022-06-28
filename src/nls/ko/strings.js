@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "잘못된 {0}이름",
   "CANNOT_PASTE_TITLE": "붙여넣을 수 없습니다.",
   "ERR_TYPE_PASTE_FAILED": "{<span class='dialog-filename'>1</span>} 에 <span class='dialog-filename'>{0}</span> 을 (를) 붙여넣는 동안 오류가",
+  "CANNOT_DUPLICATE_TITLE": "복제 불가",
+  "ERR_TYPE_DUPLICATE_FAILED": "<span class='dialog-filename'>{0}</span> 을 (를) 복제하는 동안 오류가 발생했습니다",
   "INVALID_FILENAME_MESSAGE": "파일 이름에는 다음 문자를 포함 할 수 없습니다: {0} 또는 시스템의 모든 예약어",
   "ENTRY_WITH_SAME_NAME_EXISTS": "<span class='dialog-filename'>{0}</span> 이름을 가진 파일 또는 디렉토리가 이미 존재합니다.",
   "ERROR_CREATING_FILE_TITLE": "{0}를 만들던 중에 에러가 발생했습니다",

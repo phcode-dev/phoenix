@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Ungültiger {0}",
   "CANNOT_PASTE_TITLE": "{0} kann nicht eingefügt werden",
   "ERR_TYPE_PASTE_FAILED": "Beim Einfügen von <span class='dialog-filename'>{0} in <span class='dialog-filename'>{1}</span></span> ist ein Fehler aufgetreten",
+  "CANNOT_DUPLICATE_TITLE": "Kann nicht duplizieren",
+  "ERR_TYPE_DUPLICATE_FAILED": "Beim Duplizieren von <span class='dialog-filename'>{0}</span> ist ein Fehler aufgetreten",
   "INVALID_FILENAME_MESSAGE": "{0} dürfen keine dem System vorbehaltenen Namen gebrauchen und nicht mit Punkten (.) enden oder die folgenden Zeichen enthalten: <span class='emphasized'>{1}</span>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Eine Datei oder ein Ordner mit dem Namen <span class='dialog-filename'>{0}</span> existiert bereits.",
   "ERROR_CREATING_FILE_TITLE": "Fehler beim Erstellen von {0}",

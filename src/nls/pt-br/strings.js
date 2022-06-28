@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "{0} inválido",
   "CANNOT_PASTE_TITLE": "Não é possível colar {0}",
   "ERR_TYPE_PASTE_FAILED": "Ocorreu um erro ao colar <span class='dialog-filename'>{0}</span> em <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Impossível duplicar",
+  "ERR_TYPE_DUPLICATE_FAILED": "Ocorreu um erro ao duplicar <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "{0} não podem usar palavras reservadas do sistema, terminar com pontos (.) ou conter qualquer um dos seguintes caracteres: <code class='emphasized'>{1}</code>.",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Já existe um arquivo ou diretório como o nome <span class='dialog-filename'>{0}</span>.",
   "ERROR_CREATING_FILE_TITLE": "Erro ao criar {0}",

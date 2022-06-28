@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Helytelen fájlnév",
   "CANNOT_PASTE_TITLE": "{0} nem lehet beilleszteni",
   "ERR_TYPE_PASTE_FAILED": "Hiba történt a <span class='dialog-filename'>{0} <span class='dialog-filename'>{1}</span> </span> fájlba történő beillesztése közben",
+  "CANNOT_DUPLICATE_TITLE": "Nem lehet duplikálni",
+  "ERR_TYPE_DUPLICATE_FAILED": "Hiba történt a ( <span class='dialog-filename'>z) {0}</span>másolásakor",
   "INVALID_FILENAME_MESSAGE": "A fájl neve nem tartalmazhatja a következő karaktereket: {0} és foglalt rendszer neveket.",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Már létezik <span class='dialog-filename'>{0}</span> nevű fájl vagy könyvtár.",
   "ERROR_CREATING_FILE_TITLE": "Hiba történt a fájl létrehozása közben.",

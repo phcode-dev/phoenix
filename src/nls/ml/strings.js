@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "അസാധുവായ {0}",
   "CANNOT_PASTE_TITLE": "{0} ഒട്ടിക്കാൻ കഴിയില്ല",
   "ERR_TYPE_PASTE_FAILED": "<span class='dialog-filename'>{ 0} <span class='dialog-filename'>{1}</span> </span> ലേക്ക് ഒട്ടിക്കുമ്പോൾ ഒരു പിശക് സംഭവിച്ചു",
+  "CANNOT_DUPLICATE_TITLE": "ഡ്യൂപ്ലിക്കേറ്റ് ചെയ്യാൻ കഴിയില്ല",
+  "ERR_TYPE_DUPLICATE_FAILED": "<span class='dialog-filename'>{ 0}</span>തനിപ്പകർപ്പ് ചെയ്യുമ്പോൾ ഒരു പിശക് സംഭവിച്ചു",
   "INVALID_FILENAME_MESSAGE": "{0} സിസ്റ്റം റിസർവ് ചെയ്ത വാക്കുകളൊന്നും ഉപയോഗിക്കാൻ കഴിയില്ല, ഡോട്ടുകൾ ഉപയോഗിച്ച് അവസാനിപ്പിക്കുക (.) അല്ലെങ്കിൽ ഇനിപ്പറയുന്ന ഏതെങ്കിലും പ്രതീകങ്ങൾ ഉപയോഗിക്കുക: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "<span class='dialog-filename'>{ 0}</span> എന്ന പേരിലുള്ള ഒരു ഫയൽ അല്ലെങ്കിൽ ഡയറക്ടറി ഇതിനകം നിലവിലുണ്ട്.",
   "ERROR_CREATING_FILE_TITLE": "{0} സൃഷ്ടിക്കുന്നതിൽ പിശക്",

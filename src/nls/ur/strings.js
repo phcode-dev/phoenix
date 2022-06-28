@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "غلط {0}",
   "CANNOT_PASTE_TITLE": "پیسٹ نہیں کر سکتے {0}",
   "ERR_TYPE_PASTE_FAILED": "<span class='dialog-filename'>{ 0} کو <span class='dialog-filename'>{1}</span> </span> کو چسپاں کرتے وقت ایک غلطی ہوئی",
+  "CANNOT_DUPLICATE_TITLE": "ڈپلیکیٹ نہیں کر سکتا",
+  "ERR_TYPE_DUPLICATE_FAILED": "<span class='dialog-filename'>{ 0}</span>کی نقل کرتے وقت ایک خامی واقع ہوئی",
   "INVALID_FILENAME_MESSAGE": "{0} کسی بھی نظام محفوظ الفاظ کا استعمال نہیں کر سکتے ہیں، نقطوں کے ساتھ ختم کریں (.) یا مندرجہ ذیل حروف میں سے کسی کا استعمال کریں: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "نام <span class='dialog-filename'>{0} کے ساتھ ایک فائل یا ڈائرکٹری پہلے سے</span> موجود ہے.",
   "ERROR_CREATING_FILE_TITLE": "{0} بنانے میں خرابی",

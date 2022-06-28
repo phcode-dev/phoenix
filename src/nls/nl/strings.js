@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Ongeldige {0} naam",
   "CANNOT_PASTE_TITLE": "Kan {0} niet plakken",
   "ERR_TYPE_PASTE_FAILED": "Er is een fout opgetreden bij het plakken van <span class='dialog-filename'>{0}</span> naar <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Kan niet dupliceren",
+  "ERR_TYPE_DUPLICATE_FAILED": "Er is een fout opgetreden tijdens het dupliceren van <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "Bestandsnamen kunnen de volgende karakters niet bevatten: {0} of gebruik maken van woorden die door het systeem zijn gereserveerd.",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Een bestand of map met de naam <span class='dialog-filename'>{0}</span> bestaat al.",
   "ERROR_CREATING_FILE_TITLE": "Probleem bij het aanmaken van een {0}",

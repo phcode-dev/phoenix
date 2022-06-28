@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Μη έγκυρο {0} όνομα",
   "CANNOT_PASTE_TITLE": "Αδύνατη η επικόλληση {0}",
   "ERR_TYPE_PASTE_FAILED": "Παρουσιάστηκε σφάλμα κατά την επικόλληση <span class='dialog-filename'>{0}</span> στο <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Δεν είναι δυνατό να",
+  "ERR_TYPE_DUPLICATE_FAILED": "Παρουσιάστηκε σφάλμα κατά την αντιγραφή <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "Τα όνομα αρχείων δεν μπορούν να περιέχουν τους ακόλουθους χαρακτήρες: {0} ή οποιεσδήποτε system reserved λέξεις.",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Ένα αρχείο ή κατάλογος με όνομα <span class='dialog-filename'>{0}</span> υπάρχει ήδη.",
   "ERROR_CREATING_FILE_TITLE": "Σφάλμα δημιουργίας {0}",
