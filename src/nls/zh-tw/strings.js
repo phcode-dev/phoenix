@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "{0}無效",
   "CANNOT_PASTE_TITLE": "無法貼上 {0}",
   "ERR_TYPE_PASTE_FAILED": "將 <span class='dialog-filename'> {0} 貼到 {<span class='dialog-filename'> 1}</span></span> 時發生錯誤",
+  "CANNOT_DUPLICATE_TITLE": "無法複製",
+  "ERR_TYPE_DUPLICATE_FAILED": "複製 <span class='dialog-filename'> {0}</span> 時發生錯誤",
   "INVALID_FILENAME_MESSAGE": "{0}當中不能包含任何的系統保留字、結尾不能是半型句點 (.)，也不能使用下列字元: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "已經有叫做 <span class='dialog-filename'>{0}</span> 的檔案或目錄了。",
   "ERROR_CREATING_FILE_TITLE": "無法建立{0}",

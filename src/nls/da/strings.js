@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Ugyldigt {0}",
   "CANNOT_PASTE_TITLE": "Kan ikke indsætte {0}",
   "ERR_TYPE_PASTE_FAILED": "Der opstod en fejl under indsætning af <span class='dialog-filename'>{0}</span> til <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Kan ikke duplikere",
+  "ERR_TYPE_DUPLICATE_FAILED": "Der opstod en fejl under duplikering af <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "{0} må ikke gøre brug af system-reserverede ord, ende med punktum (.) eller indeholde nogen af følgende tegn: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "En fil eller mappe med navnet <span class='dialog-filename'>{0}</span> eksisterer allerede.",
   "ERROR_CREATING_FILE_TITLE": "Fejl ved oprettelse af {0}",

@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "{0} Tidak Valid",
   "CANNOT_PASTE_TITLE": "Tidak Dapat Menempel {0}",
   "ERR_TYPE_PASTE_FAILED": "Terjadi galat saat menempelkan <span class='dialog-filename'>{0}</span> ke <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Tidak Dapat Menduplikasi",
+  "ERR_TYPE_DUPLICATE_FAILED": "Terjadi galat saat menduplikasi <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "{0} tidak boleh menggunakan istilah cadangan milik sistem, akhiri dengan titik (.) atau gunakan karakter berikut: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "File atau direktori dengan nama <span class='dialog-filename'>{0}</span> sudah ada.",
   "ERROR_CREATING_FILE_TITLE": "Gagal Membuat {0}",

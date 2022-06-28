@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Neplatný {0} názov",
   "CANNOT_PASTE_TITLE": "Nie je možné vložiť {0}",
   "ERR_TYPE_PASTE_FAILED": "Pri vkladaní <span class='dialog-filename'>{0} do <span class='dialog-filename'>{1}</span> </span> došlo k chybe",
+  "CANNOT_DUPLICATE_TITLE": "Nie je možné duplikovať",
+  "ERR_TYPE_DUPLICATE_FAILED": "Pri duplikovaní <span class='dialog-filename'>{0}</span>sa vyskytla chyba",
   "INVALID_FILENAME_MESSAGE": "Názvy súboru nesmú obsahovať nasledujúce znaky: {0} alebo používať rezervované systémové slová.",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Súbor alebo adresár s názvom <span class='dialog-filename'>{0}</span> už existuje.",
   "ERROR_CREATING_FILE_TITLE": "Chyba pri vytváraní súboru {0}",

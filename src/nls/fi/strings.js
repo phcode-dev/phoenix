@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Virheellinen {0}",
   "CANNOT_PASTE_TITLE": "Ei voi liittää {0}",
   "ERR_TYPE_PASTE_FAILED": "Virhe liitettäessä <span class='dialog-filename'>{0}</span> kohteeseen <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Ei voi monistaa",
+  "ERR_TYPE_DUPLICATE_FAILED": "Virhe kopioitaessa <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "{0} ei voi käyttää mitään järjestelmän varaamia sanoja, päättyä pisteeseen (.) tai käyttää mitään seuraavista merkeistä: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Tiedosto tai hakemisto nimellä <span class='dialog-filename'>{0}</span> on jo olemassa.",
   "ERROR_CREATING_FILE_TITLE": "Virhe luotaessa {0}a",

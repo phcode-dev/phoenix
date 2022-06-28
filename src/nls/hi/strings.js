@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "अमान्य {0}",
   "CANNOT_PASTE_TITLE": "{0} पेस्ट नहीं किया जा सकता",
   "ERR_TYPE_PASTE_FAILED": "<span class='dialog-filename'>{0} को <span class='dialog-filename'>{1}</span></span> चिपकाने के दौरान एक त्रुटि हुई",
+  "CANNOT_DUPLICATE_TITLE": "डुप्लिकेट नहीं कर सकता",
+  "ERR_TYPE_DUPLICATE_FAILED": "<span class='dialog-filename'>{0}</span> डुप्लीकेट करते समय एक त्रुटि हुई",
   "INVALID_FILENAME_MESSAGE": "{0} किसी भी सिस्टम आरक्षित शब्दों का उपयोग नहीं कर सकते हैं, डॉट्स (.) के साथ समाप्त हो सकते हैं या निम्न वर्णों में से किसी एक का उपयोग नहीं कर सकते हैं: <code class='emphasized'>{</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "<span class='dialog-filename'>{0}</span> नाम वाली फ़ाइल या निर्देशिका पहले से मौजूद है।",
   "ERROR_CREATING_FILE_TITLE": "{0} बनाने में त्रुटि",

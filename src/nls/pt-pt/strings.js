@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Nome do ficheiro inválido",
   "CANNOT_PASTE_TITLE": "Não é possível colar {0}",
   "ERR_TYPE_PASTE_FAILED": "Ocorreu um erro ao colar <span class='dialog-filename'>{0}</span> para <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Não é possível duplicar",
+  "ERR_TYPE_DUPLICATE_FAILED": "Ocorreu um erro ao duplicar <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "O nome do ficheiro não pode conter os seguintes caracteres: {0}",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Já existe um arquivo ou diretório com o nome <span class='dialog-filename'>{0}</span> .",
   "ERROR_CREATING_FILE_TITLE": "Erro ao criar ficheiro.",

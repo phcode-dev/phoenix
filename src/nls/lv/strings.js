@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Nederīgs {0}",
   "CANNOT_PASTE_TITLE": "Nevar ielīmēt {0}",
   "ERR_TYPE_PASTE_FAILED": "Radās kļūda, ielīmējot <span class='dialog-filename'>{0}</span> uz <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Nevar dublēt",
+  "ERR_TYPE_DUPLICATE_FAILED": "Radās kļūda, dublējot <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "{0} nevar izmantot sistēmas rezervētos vārdus, kas beidzas ar punktu (.) vai izmantot šādus simbolus: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Jau eksistē datne vai katalogs ar nosaukumu <span class='dialog-filename'>{0}</span> .",
   "ERROR_CREATING_FILE_TITLE": "Kļūda, veidojot {0}",

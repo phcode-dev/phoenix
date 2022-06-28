@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Невірна {0}",
   "CANNOT_PASTE_TITLE": "Неможливо вставити {0}",
   "ERR_TYPE_PASTE_FAILED": "Сталася помилка при вставці <span class='dialog-filename'>{0}</span> до <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Не вдається дублювати",
+  "ERR_TYPE_DUPLICATE_FAILED": "Під час дублювання <span class='dialog-filename'>{0}</span>сталася помилка",
   "INVALID_FILENAME_MESSAGE": "{0} не може містити зарезервованих слів, закінчуватись крапками (.) та використовувати наступні симовли: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Файл або тека з назвою <span class='dialog-filename'>{0}</span> уже існує.",
   "ERROR_CREATING_FILE_TITLE": "Помилка створення {0}",

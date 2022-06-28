@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Грешно {0}",
   "CANNOT_PASTE_TITLE": "Не може да се постави {0}",
   "ERR_TYPE_PASTE_FAILED": "Възникна грешка при поставянето на <span class='dialog-filename'>{0}</span> на <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Не може да се дублира",
+  "ERR_TYPE_DUPLICATE_FAILED": "Възникна грешка при дублиране <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "{0} не може да използва запазени думи, да завършва с точки (.) или да използва никой от следните знаци: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Вече съществува файл или папка с името <span class='dialog-filename'>{0}</span>.",
   "ERROR_CREATING_FILE_TITLE": "Грешка при създаването на {0}",
