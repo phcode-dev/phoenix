@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "無効な{0}",
   "CANNOT_PASTE_TITLE": "{0} を貼り付けられません",
   "ERR_TYPE_PASTE_FAILED": "<span class='dialog-filename'>{0} を <span class='dialog-filename'>{1}</span></span> に貼り付けているときにエラーが発生しました",
+  "CANNOT_DUPLICATE_TITLE": "複製不可",
+  "ERR_TYPE_DUPLICATE_FAILED": "<span class='dialog-filename'>{0}</span> の複製中にエラーが発生しました",
   "INVALID_FILENAME_MESSAGE": "{0}にはシステムのすべての予約語、末尾のピリオド (.)、および次の文字を含めることはできません : <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "<span class='dialog-filename'>{0}</span> という名前のファイルまたはディレクトリは既に存在します。",
   "ERROR_CREATING_FILE_TITLE": "{0} を作成する際にエラーが発生しました。",

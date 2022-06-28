@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "无效文件名: {0}",
   "CANNOT_PASTE_TITLE": "无法粘贴 {0}",
   "ERR_TYPE_PASTE_FAILED": "<span class='dialog-filename'>将 {0} 粘贴到 <span class='dialog-filename'>{1}</span></span> 时出错",
+  "CANNOT_DUPLICATE_TITLE": "无法复制",
+  "ERR_TYPE_DUPLICATE_FAILED": "复制 <span class='dialog-filename'>{0}</span> 时出错",
   "INVALID_FILENAME_MESSAGE": "{0} 不能以(.)结尾或者包含系统保留字及以下字符：<code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "名为 <span class='dialog-filename'>{0}</span> 的文件/文件夹已经存在。",
   "ERROR_CREATING_FILE_TITLE": "创建文件 {0} 出现错误",

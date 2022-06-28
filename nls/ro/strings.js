@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Numele {0} e invalid",
   "CANNOT_PASTE_TITLE": "Imposibil de lipit {0}",
   "ERR_TYPE_PASTE_FAILED": "A apărut o eroare la lipirea <span class='dialog-filename'>{0}</span> pe <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Nu se poate duplica",
+  "ERR_TYPE_DUPLICATE_FAILED": "A apărut o eroare la duplicarea <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "Numele fișierului nu poate conține următoarele caractere: {0} sau să fie un cuvânt rezervat de sistemul de operare.",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Un fișier sau un directoriu cu numele <span class='dialog-filename'>{0}</span> există deja.",
   "ERROR_CREATING_FILE_TITLE": "Eroare la crearea fișierului {0}",

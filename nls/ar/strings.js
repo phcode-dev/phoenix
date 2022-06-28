@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "غير صالح {0}",
   "CANNOT_PASTE_TITLE": "لا يمكن لصق {0}",
   "ERR_TYPE_PASTE_FAILED": "حدث خطأ أثناء لصق <span class='dialog-filename'>{0}</span> إلى <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "لا يمكن التكرار",
+  "ERR_TYPE_DUPLICATE_FAILED": "حدث خطأ أثناء تكرار <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "{0} لا يمكن استخدام أي كلمات محجوزة للنظام، تنتهي بالنقاط (.) أو استخدام أي من الأحرف التالية: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "يوجد بالفعل ملف أو دليل باسم <span class='dialog-filename'>{0}</span>.",
   "ERROR_CREATING_FILE_TITLE": "حدث خطأ أثناء إنشاء {0}",

@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "غیر مجاز {0}",
   "CANNOT_PASTE_TITLE": "نمی توان چسباندن {0}",
   "ERR_TYPE_PASTE_FAILED": "هنگام چسباندن <span class='dialog-filename'>{0} به <span class='dialog-filename'>{1}</span> </span> خطایی رخ داد",
+  "CANNOT_DUPLICATE_TITLE": "نمی تواند تکراری باشد",
+  "ERR_TYPE_DUPLICATE_FAILED": "هنگام تکثیر <span class='dialog-filename'>{0}</span>خطایی رخ داد",
   "INVALID_FILENAME_MESSAGE": "{0} نمیتوانید از عبارات مورد استفاده نرم افزار, نقطه ها پایانی (.) یا کاراکترهای شامل موارد زیر استفاده کنید: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "پوشه یا پرونده ی با نام  <span class='dialog-filename'>{0}</span> هم اکنون موجود است.",
   "ERROR_CREATING_FILE_TITLE": "خطا در ایجاد {0}",

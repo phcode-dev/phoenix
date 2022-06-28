@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Nieprawidłowa nazwa pliku {0}",
   "CANNOT_PASTE_TITLE": "Nie można wkleić {0}",
   "ERR_TYPE_PASTE_FAILED": "Wystąpił błąd podczas wklejania <span class='dialog-filename'>{0}</span> do <span class='dialog-filename'>{1}</span>",
+  "CANNOT_DUPLICATE_TITLE": "Nie można powielić",
+  "ERR_TYPE_DUPLICATE_FAILED": "Wystąpił błąd podczas powielania <span class='dialog-filename'>{0}</span>",
   "INVALID_FILENAME_MESSAGE": "{0} nie może kończyć się kropką (.), zawierać żadnych zarezerwowanych słów ani żadnych z tych znaków: <code class='emphasized'>{1}</code>",
   "ENTRY_WITH_SAME_NAME_EXISTS": "Plik lub folder o nazwie <span class='dialog-filename'>{0}</span> już istnieje.",
   "ERROR_CREATING_FILE_TITLE": "Nie można utworzyć pliku {0}",

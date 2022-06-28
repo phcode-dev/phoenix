@@ -62,6 +62,8 @@ define({
   "INVALID_FILENAME_TITLE": "Hatalı dosya ismi",
   "CANNOT_PASTE_TITLE": "{0} Yapıştırılamıyor",
   "ERR_TYPE_PASTE_FAILED": "<span class='dialog-filename'>{ 0} <span class='dialog-filename'>{1}</span> </span> öğesine yapıştırılırken bir hata oluştu",
+  "CANNOT_DUPLICATE_TITLE": "Çoğaltılamıyor",
+  "ERR_TYPE_DUPLICATE_FAILED": "<span class='dialog-filename'>{ 0}</span>çoğaltılırken bir hata oluştu",
   "INVALID_FILENAME_MESSAGE": "Dosya isimleri yandaki karakterleri bulunduramaz: {0}",
   "ENTRY_WITH_SAME_NAME_EXISTS": "<span class='dialog-filename'>{ 0}</span> adında bir dosya veya dizin zaten var.",
   "ERROR_CREATING_FILE_TITLE": "Dosya yaratılırken hata",
