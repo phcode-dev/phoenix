@@ -37,7 +37,8 @@ define(function (require, exports, module) {
 
     describe("LowLevelFileIO", function () {
 
-        var baseDir = SpecRunnerUtils.getTempDirectory();
+        var baseDir = SpecRunnerUtils.getTempDirectory(),
+            testDir;
 
         function readdirSpy() {
             var callback = function (err, content) {
@@ -93,6 +94,7 @@ define(function (require, exports, module) {
                 // create the test folder and init the test files
                 var testFiles = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
                 waitsForDone(SpecRunnerUtils.copy(testFiles, baseDir), "copy temp files");
+                testDir = `${baseDir}/LowLevelFileIO-test-files`;
             });
         });
 
@@ -110,7 +112,7 @@ define(function (require, exports, module) {
                 var cb = readdirSpy();
 
                 runs(function () {
-                    brackets.fs.readdir(baseDir, cb);
+                    brackets.fs.readdir(testDir, cb);
                 });
 
                 waitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
@@ -191,7 +193,7 @@ define(function (require, exports, module) {
                 var cb = statSpy();
 
                 runs(function () {
-                    brackets.fs.stat(baseDir + "/file_one.txt", cb);
+                    brackets.fs.stat(testDir + "/file_one.txt", cb);
                 });
 
                 waitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
@@ -233,7 +235,7 @@ define(function (require, exports, module) {
                 var cb = readFileSpy();
 
                 runs(function () {
-                    brackets.fs.readFile(baseDir + "/file_one.txt", UTF8, cb);
+                    brackets.fs.readFile(testDir + "/file_one.txt", UTF8, cb);
                 });
 
                 waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
@@ -260,7 +262,7 @@ define(function (require, exports, module) {
 
             it("should return an error if trying to use an unsppported encoding", function () {
                 runs(function () {
-                    brackets.fs.readFile(baseDir + "/file_one.txt", UTF16, (a, c)=>{
+                    brackets.fs.readFile(testDir + "/file_one.txt", UTF16, (a, c)=>{
                         expect(ArrayBuffer.isView(c)).toBe(true);
                     });
                 });
@@ -290,7 +292,7 @@ define(function (require, exports, module) {
 
             it("should return an error trying to read a binary file", function () {
                 runs(function () {
-                    brackets.fs.readFile(baseDir + "/tree.jpg", "bin", (a, c)=> {
+                    brackets.fs.readFile(testDir + "/tree.jpg", "bin", (a, c)=> {
                         expect(ArrayBuffer.isView(c)).toBe(true);
                     });
                 });
@@ -300,7 +302,7 @@ define(function (require, exports, module) {
                 var cb = readFileSpy();
 
                 runs(function () {
-                    brackets.fs.readFile(baseDir + "/ru_utf8.html", UTF8, cb);
+                    brackets.fs.readFile(testDir + "/ru_utf8.html", UTF8, cb);
                 });
 
                 waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
@@ -314,7 +316,7 @@ define(function (require, exports, module) {
                 var cb = readFileSpy();
 
                 runs(function () {
-                    brackets.fs.readFile(baseDir + "/es_small_utf8.html", UTF8, cb);
+                    brackets.fs.readFile(testDir + "/es_small_utf8.html", UTF8, cb);
                 });
 
                 waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
@@ -329,7 +331,7 @@ define(function (require, exports, module) {
                var cb = readFileSpy();
 
                runs(function () {
-                   brackets.fs.readFile(baseDir + "/emptyfile.txt", UTF8, cb);
+                   brackets.fs.readFile(testDir + "/emptyfile.txt", UTF8, cb);
                });
 
                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
@@ -343,7 +345,7 @@ define(function (require, exports, module) {
                 var cb = readFileSpy();
 
                 runs(function () {
-                    brackets.fs.readFile(baseDir + "/ru_utf8_wBOM.html", UTF8, cb);
+                    brackets.fs.readFile(testDir + "/ru_utf8_wBOM.html", UTF8, cb);
                 });
 
                 waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
@@ -613,8 +615,8 @@ define(function (require, exports, module) {
             var complete;
 
             it("should rename a file", function () {
-                var oldName     = baseDir + "/file_one.txt",
-                    newName     = baseDir + "/file_one_renamed.txt",
+                var oldName     = testDir + "/file_one.txt",
+                    newName     = testDir + "/file_one_renamed.txt",
                     renameCB    = errSpy(),
                     statCB      = statSpy();
 
@@ -666,8 +668,8 @@ define(function (require, exports, module) {
 
             });
             it("should rename a folder", function () {
-                var oldName     = baseDir + "/rename_me",
-                    newName     = baseDir + "/renamed_folder",
+                var oldName     = testDir + "/rename_me",
+                    newName     = testDir + "/renamed_folder",
                     renameCB    = errSpy(),
                     statCB      = statSpy();
 
@@ -718,8 +720,8 @@ define(function (require, exports, module) {
                 });
             });
             it("should return an error if the new name already exists", function () {
-                var oldName = baseDir + "/file_one.txt",
-                    newName = baseDir + "/file_two.txt",
+                var oldName = testDir + "/file_one.txt",
+                    newName = testDir + "/file_two.txt",
                     cb      = errSpy();
 
                 complete = false;
@@ -736,8 +738,8 @@ define(function (require, exports, module) {
             });
             it("should return an error if the parent folder is read only (Mac only)", function () {
                 if (brackets.platform === "mac") {
-                    var oldName = baseDir + "/cant_write_here/readme.txt",
-                        newName = baseDir + "/cant_write_here/readme_renamed.txt",
+                    var oldName = testDir + "/cant_write_here/readme.txt",
+                        newName = testDir + "/cant_write_here/readme_renamed.txt",
                         cb      = errSpy();
 
                     complete = false;
@@ -760,8 +762,8 @@ define(function (require, exports, module) {
             var complete;
 
             it("should copy a file", function () {
-                var fileName     = baseDir + "/file_one.txt",
-                    copyName     = baseDir + "/file_one_copy.txt",
+                var fileName     = testDir + "/file_one.txt",
+                    copyName     = testDir + "/file_one_copy.txt",
                     copyCB       = errSpy(),
                     unlinkCB     = errSpy(),
                     statCB       = statSpy(),

@@ -64,7 +64,7 @@ define(function (require, exports, module) {
         WatchedRoot     = require("filesystem/WatchedRoot");
 
     var VISIT_DEFAULT_MAX_DEPTH = 100,
-        VISIT_DEFAULT_MAX_ENTRIES = 30000;
+        VISIT_DEFAULT_MAX_ENTRIES = 200000;
 
     /* Counter to give every entry a unique id */
     var nextId = 0;
@@ -476,83 +476,69 @@ define(function (require, exports, module) {
      * @param {function(FileSystemEntry): boolean} visitor - A visitor function, which is
      *      applied to descendent FileSystemEntry objects. If the function returns false for
      *      a particular Directory entry, that directory's descendents will not be visited.
-     * @param {{maxDepth: number, maxEntriesCounter: {value: number}, sortList: boolean}} options
-     * @param {function(?string)=} callback Callback with single FileSystemError string parameter.
+     * @param {{maxDepth: number, maxEntries: number, sortList: boolean}} options
+     * @returns {Promise<>} that resolves when the visit is complete
      */
-    FileSystemEntry.prototype._visitHelper = function (stats, visitedPaths, visitor, options, callback) {
-        var maxDepth = options.maxDepth,
-            maxEntriesCounter = options.maxEntriesCounter,
-            sortList = options.sortList;
+    FileSystemEntry.prototype._visitHelper = function (stats, visitedPaths, visitor, options, _currentDepth = 0) {
+        return new Promise((resolve, reject)=>{
+            const self = this;
+            let maxDepth = options.maxDepth,
+                maxEntries = options.maxEntries,
+                sortList = options.sortList,
+                totalPathsVisited = visitedPaths._totalPathsVisited || 0;
 
-        if (maxEntriesCounter.value-- <= 0 || maxDepth-- < 0) {
-            // The outer FileSystemEntry.visit call is responsible for applying
-            // the main callback to FileSystemError.TOO_MANY_FILES in this case
-            callback(null);
-            return;
-        }
+            if (self.isDirectory) {
+                var currentPath = stats.realPath || self.fullPath;
 
-        if (this.isDirectory) {
-            var visitedPath = stats.realPath || this.fullPath;
-
-            if (visitedPaths.hasOwnProperty(visitedPath)) {
-                // Link cycle detected
-                callback(null);
-                return;
-            }
-
-            visitedPaths[visitedPath] = true;
-        }
-
-        if (!visitor(this) || this.isFile) {
-            callback(null);
-            return;
-        }
-
-        this.getContents(function (err, entries, entriesStats) {
-            if (err) {
-                callback(err);
-                return;
-            }
-
-            var counter = entries.length;
-            if (counter === 0) {
-                callback(null);
-                return;
-            }
-
-            function helperCallback(err) {
-                if (--counter === 0) {
-                    callback(null);
+                if (visitedPaths.hasOwnProperty(currentPath)) {
+                    // Link cycle detected
+                    resolve();
+                    return;
                 }
+
+                visitedPaths[currentPath] = true;
             }
 
-            var nextOptions = {
-                maxDepth: maxDepth,
-                maxEntriesCounter: maxEntriesCounter,
-                sortList: sortList
-            };
-
-            //sort entries if required
-            function compareFilesWithIndices(index1, index2) {
-                return entries[index1]._name.toLocaleLowerCase().localeCompare(entries[index2]._name.toLocaleLowerCase());
+            if (visitedPaths._totalPathsVisited >= maxEntries) {
+                reject(FileSystemError.TOO_MANY_ENTRIES);
+                return;
             }
-            if (sortList) {
-                var fileIndexes = [], i = 0;
-                for (i = 0; i < entries.length; i++) {
-                    fileIndexes[i] = i;
+
+            visitedPaths._totalPathsVisited = totalPathsVisited + 1;
+            let shouldVisitChildren = visitor(self);
+            if (!shouldVisitChildren || self.isFile || _currentDepth >= maxDepth) {
+                resolve();
+                return;
+            }
+
+            self.getContents(async function (err, entries, entriesStats) {
+                if (err) {
+                    reject(err);
+                    return;
                 }
-                fileIndexes.sort(compareFilesWithIndices);
-                fileIndexes.forEach(function (fileIndex) {
-                    var stats = entriesStats[fileIndexes[fileIndex]];
-                    entries[fileIndexes[fileIndex]]._visitHelper(stats, visitedPaths, visitor, nextOptions, helperCallback);
-                });
-            } else {
-                entries.forEach(function (entry, index) {
-                    var stats = entriesStats[index];
-                    entry._visitHelper(stats, visitedPaths, visitor, nextOptions, helperCallback);
-                });
-            }
-        }.bind(this));
+
+                for(let i=0; i<entriesStats.length; i++){
+                    entries[i]._entryStats = entriesStats[i];
+                }
+
+                //sort entries if required
+                if (sortList) {
+                    function compare(entry1, entry2) {
+                        return entry1._name.toLocaleLowerCase().localeCompare(entry2._name.toLocaleLowerCase());
+                    }
+                    entries = entries.sort(compare);
+                }
+
+                try{
+                    for(let entry of entries){
+                        await entry._visitHelper(entry._entryStats, visitedPaths, visitor, options, _currentDepth + 1);
+                    }
+                    resolve();
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
     };
 
     /**
@@ -571,6 +557,7 @@ define(function (require, exports, module) {
      * @param {function(?string)=} callback Callback with single FileSystemError string parameter.
      */
     FileSystemEntry.prototype.visit = function (visitor, options, callback) {
+        let self = this;
         if (typeof options === "function") {
             callback = options;
             options = {};
@@ -590,30 +577,20 @@ define(function (require, exports, module) {
             options.maxEntries = VISIT_DEFAULT_MAX_ENTRIES;
         }
 
-        options.maxEntriesCounter = { value: options.maxEntries };
-
-        this.stat(function (err, stats) {
+        self.stat(function (err, stats) {
             if (err) {
                 callback(err);
                 return;
             }
 
-            this._visitHelper(stats, {}, visitor, options, function (err) {
-                if (callback) {
-                    if (err) {
-                        callback(err);
-                        return;
-                    }
-
-                    if (options.maxEntriesCounter.value < 0) {
-                        callback(FileSystemError.TOO_MANY_ENTRIES);
-                        return;
-                    }
-
+            self._visitHelper(stats, {}, visitor, options)
+                .then(()=>{
                     callback(null);
-                }
-            }.bind(this));
-        }.bind(this));
+                })
+                .catch((err)=>{
+                    callback(err);
+                });
+        });
     };
 
     // Export this class
