@@ -531,6 +531,9 @@ define(function (require, exports, module) {
 
                 try{
                     for(let entry of entries){
+                        // this is left intentionally serial to prevent a chrome crash bug when large number of fs
+                        // access APIs are called. Try to make this parallel in the future after verifying on a large
+                        // folder with more than 100K entries.
                         await entry._visitHelper(entry._entryStats, visitedPaths, visitor, options, _currentDepth + 1);
                     }
                     resolve();

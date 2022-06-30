@@ -55,6 +55,7 @@ define(function (require, exports, module) {
      * @type {RegExp}
      */
     var _exclusionListRegEx = /\.pyc$|^\.git$|^\.gitmodules$|^\.svn$|^\.DS_Store$|^Icon\r|^Thumbs\.db$|^\.hg$|^CVS$|^\.hgtags$|^\.idea$|^\.c9revisions$|^\.SyncArchive$|^\.SyncID$|^\.SyncIgnore$|\~$/;
+    var _cacheExcludeRegEx = /^node_modules$|^bower_components$/;
 
     /**
      * Glob definition of files and folders that should be excluded directly
@@ -124,6 +125,10 @@ define(function (require, exports, module) {
      */
     function shouldShow(entry) {
         return _shouldShowName(entry.name);
+    }
+
+    function _shouldCache(entry) {
+        return shouldShow(entry) && !_cacheExcludeRegEx.test(entry.name);
     }
 
     // Constants used by the ProjectModel
@@ -440,7 +445,7 @@ define(function (require, exports, module) {
             var deferred = new $.Deferred(),
                 allFiles = [],
                 allFilesVisitor = function (entry) {
-                    if (shouldShow(entry)) {
+                    if (_shouldCache(entry)) {
                         if (entry.isFile) {
                             allFiles.push(entry);
                         }
