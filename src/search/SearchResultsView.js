@@ -581,6 +581,7 @@ define(function (require, exports, module) {
 
         // Listen for user interaction events with the panel and change events from the model.
         this._addPanelListeners();
+        this._model.off("change.SearchResultsView"); // reset old listeners
         this._model.on("change.SearchResultsView", this._handleModelChange.bind(this));
     };
 

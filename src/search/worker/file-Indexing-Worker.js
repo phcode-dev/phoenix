@@ -19,7 +19,7 @@
  *
  */
 
-/*global importScripts, virtualfs, fs, doSearch */
+/*global importScripts, virtualfs, fs, doSearch, getNextPage, getAllResults, setCollapseResults */
 
 const urlParams = new URLSearchParams(location.search);
 const debugMode = (urlParams.get('debug') === 'true');
@@ -224,27 +224,27 @@ let callBacks = {};
 function exec(fnName, paramObject) {
     postUniqueId++;
     return new Promise((resolve, reject)=>{
-        postMessage({
+        postMessage(JSON.stringify({
             type: "exec",
             exec: fnName,
             params: paramObject,
             postUniqueId: postUniqueId
-        });
+        }));
         callBacks[postUniqueId] = {resolve, reject};
     });
 }
 
 
-function _processResponse(e) {
-    if(e.data.type === "response"){
+function _processResponse(data) {
+    if(data.type === "response"){
         // this is a response event
-        let postUniqueId = e.data.postUniqueId;
+        let postUniqueId = data.postUniqueId;
         if(callBacks[postUniqueId]){
             let {resolve, reject} = callBacks[postUniqueId];
-            if(e.data.err){
-                reject(e.data.err);
+            if(data.err){
+                reject(data.err);
             } else {
-                resolve(e.data.response);
+                resolve(data.response);
             }
             delete callBacks[postUniqueId];
         }
@@ -254,38 +254,48 @@ function _processResponse(e) {
 }
 
 onmessage = async function(e) {
-    if(_processResponse(e)){
+    let data = JSON.parse(e.data);
+    if(_processResponse(data)){
         return;
     }
     let response = {
         type: "response",
         err: null,
         response: null,
-        postUniqueId: e.data.postUniqueId
+        postUniqueId: data.postUniqueId
     };
     try{
-        switch (e.data.exec) {
+        switch (data.exec) {
         case 'initCache':
-            response.response = initCache(e.data.params);
+            response.response = initCache(data.params);
             break;
         case 'filesChanged':
-            response.response = addFilesToCache(e.data.params);
+            response.response = addFilesToCache(data.params);
             break;
         case 'documentChanged':
-            response.response = documentChanged(e.data.params);
+            response.response = documentChanged(data.params);
             break;
         case 'filesRemoved':
-            response.response = removeFilesFromCache(e.data.params);
+            response.response = removeFilesFromCache(data.params);
             break;
         case 'doSearch':
-            response.response = await doSearch(e.data.params);
+            response.response = await doSearch(data.params);
             break;
-        default: console.error("unknown indexing worker event received", e.data);
+        case 'nextPage':
+            response.response = await getNextPage(data.params);
+            break;
+        case 'getAllResults':
+            response.response = await getAllResults(data.params);
+            break;
+        case 'collapseResults':
+            response.response = setCollapseResults(data.params);
+            break;
+        default: console.error("unknown indexing worker event received", data);
         }
     } catch (err) {
         response.err = err;
     }
-    postMessage(response);
+    postMessage(JSON.stringify(response));
 };
 
 setTimeout(fileCrawler, 3000);
