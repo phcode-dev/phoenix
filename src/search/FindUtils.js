@@ -473,6 +473,13 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Notifies that a node has started indexing the files
+     */
+    function notifyIndexingProgress(progress, total) {
+        exports.trigger(exports.SEARCH_INDEXING_PROGRESS, progress, total);
+    }
+
+    /**
      * Notifies that a node has finished indexing the files
      */
     function notifyIndexingFinished() {
@@ -528,12 +535,14 @@ define(function (require, exports, module) {
     exports.notifyNodeSearchStarted         = notifyNodeSearchStarted;
     exports.notifyNodeSearchFinished        = notifyNodeSearchFinished;
     exports.notifyIndexingStarted           = notifyIndexingStarted;
+    exports.notifyIndexingProgress          = notifyIndexingProgress;
     exports.notifyIndexingFinished          = notifyIndexingFinished;
 
     // events raised by FindUtils
     exports.SEARCH_FILE_FILTERS_CHANGED              = "fileFiltersChanged";
     exports.SEARCH_SCOPE_CHANGED                     = "searchScopeChanged";
     exports.SEARCH_INDEXING_STARTED                  = "searchIndexingStarted";
+    exports.SEARCH_INDEXING_PROGRESS                 = "searchIndexingProgress";
     exports.SEARCH_INDEXING_FINISHED                 = "searchIndexingFinished";
     exports.SEARCH_COLLAPSE_RESULTS                  = "searchCollapseResults";
 });

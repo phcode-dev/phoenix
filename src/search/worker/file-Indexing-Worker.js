@@ -148,6 +148,17 @@ async function fileCrawler() {
     }
 }
 
+function _crawlProgressMessenger() {
+    if(!crawlComplete && files){
+        exec("crawlProgress", {
+            processed: currentCrawlIndex,
+            total: files.length
+        });
+    }
+}
+
+setInterval(_crawlProgressMessenger, 1000);
+
 /**
  * Init for project, resets the old project cache, and sets the crawler function to
  * restart the file crawl

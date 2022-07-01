@@ -98,6 +98,9 @@ define(function (require, exports, module) {
             case 'crawlComplete':
                 response.response = nodeFileCacheComplete(data.params);
                 break;
+            case 'crawlProgress':
+                response.response = FindUtils.notifyIndexingProgress(data.params.processed, data.params.total);
+                break;
             default: console.error("unknown indexing worker event received", data);
             }
         } catch (err) {
