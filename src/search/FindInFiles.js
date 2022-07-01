@@ -42,6 +42,41 @@ define(function (require, exports, module) {
         FileUtils             = require("file/FileUtils"),
         FindUtils             = require("search/FindUtils");
 
+    const _FindInFilesWorker = new Worker(
+        `search/worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
+
+    if(!_FindInFilesWorker){
+        console.error("Could not load find in files worker! Search will be disabled.");
+    }
+
+    let postUniqueId = 0;
+    let callBacks = {};
+    _FindInFilesWorker.exec = function (fnName, paramObject, callback) {
+        _FindInFilesWorker.postMessage({
+            exec: fnName,
+            params: paramObject,
+            postUniqueId: postUniqueId++
+        });
+        if(callback){
+            callBacks[postUniqueId] = callback;
+        }
+    };
+
+    _FindInFilesWorker.onmessage = function(e) {
+        let response = e.data;
+        switch (e.data.exec) {
+        case 'crawlComplete':
+            nodeFileCacheComplete(e.data.params);
+            break;
+        default: console.error("unknown indexing worker event received", e.data);
+        }
+        let postUniqueId = e.data.postUniqueId;
+        if(callBacks[postUniqueId]){
+            callBacks[postUniqueId](response);
+            delete callBacks[postUniqueId];
+        }
+    };
+
     var _bracketsPath   = FileUtils.getNativeBracketsDirectoryPath(),
         _modulePath     = FileUtils.getNativeModuleDirectoryPath(module),
         _nodePath       = "node/FindInFilesDomain",
@@ -62,6 +97,8 @@ define(function (require, exports, module) {
      * @const
      */
     var MAX_DISPLAY_LENGTH = 200;
+
+    let CACHE_INIT_DELAY_MS = 5000;
 
     /**
      * The search query and results model.
@@ -101,7 +138,9 @@ define(function (require, exports, module) {
         DocumentManager.on("fileNameChange",  _fileNameChangeHandler);
     }
 
-    function nodeFileCacheComplete(event, numFiles, cacheSize) {
+    function nodeFileCacheComplete([numFiles, cacheSize, crawlTime]) {
+        console.log(`file indexing worker cache complete: ${numFiles} files, size: ${cacheSize} B in ${crawlTime}ms`);
+        // TODO: add metrics for num project files and cache sze here.
         if (/\/test\/SpecRunner\.html$/.test(window.location.pathname)) {
             // Ignore the event in the SpecRunner window
             return;
@@ -333,7 +372,7 @@ define(function (require, exports, module) {
      * @param {string} fullPath
      * @return {boolean} True if the file's contents can be read as text
      */
-    function _isReadableText(fullPath) {
+    function _isReadableFileType(fullPath) {
         return !LanguageManager.getLanguageForPath(fullPath).isBinary();
     }
 
@@ -345,7 +384,7 @@ define(function (require, exports, module) {
      */
     function getCandidateFiles(scope) {
         function filter(file) {
-            return _subtreeFilter(file, scope) && _isReadableText(file.fullPath);
+            return _subtreeFilter(file, scope) && _isReadableFileType(file.fullPath);
         }
 
         // If the scope is a single file, just check if the file passes the filter directly rather than
@@ -382,7 +421,7 @@ define(function (require, exports, module) {
             }
         }
 
-        if (!_isReadableText(file.fullPath)) {
+        if (!_isReadableFileType(file.fullPath)) {
             return false;
         }
 
@@ -453,12 +492,12 @@ define(function (require, exports, module) {
                     "filePath": docPath,
                     "docContents": doc.getText()
                 };
-                searchDomain.exec("documentChanged", updateObject);
+                _FindInFilesWorker.exec("documentChanged", updateObject);
             }
         });
     }
 
-     /**
+    /**
      * @private
      * sends all changed documents that we have tracked to node
      */
@@ -514,7 +553,7 @@ define(function (require, exports, module) {
                     if (searchScopeChanged) {
                         var files = fileListResult
                             .filter(function (entry) {
-                                return entry.isFile && _isReadableText(entry.fullPath);
+                                return entry.isFile && _isReadableFileType(entry.fullPath);
                             })
                             .map(function (entry) {
                                 return entry.fullPath;
@@ -678,7 +717,7 @@ define(function (require, exports, module) {
             updateObject.filesInSearchScope = FileFilters.getPathsMatchingFilter(searchModel.filter, fileList);
             _searchScopeChanged();
         }
-        searchDomain.exec("filesChanged", updateObject);
+        _FindInFilesWorker.exec("filesChanged", updateObject);
     }
 
     /**
@@ -696,7 +735,7 @@ define(function (require, exports, module) {
             updateObject.filesInSearchScope = FileFilters.getPathsMatchingFilter(searchModel.filter, fileList);
             _searchScopeChanged();
         }
-        searchDomain.exec("filesRemoved", updateObject);
+        _FindInFilesWorker.exec("filesRemoved", updateObject);
     }
 
     /**
@@ -709,7 +748,7 @@ define(function (require, exports, module) {
     _fileNameChangeHandler = function (event, oldName, newName) {
         var resultsChanged = false;
 
-            // Update the search results
+        // Update the search results
         _.forEach(searchModel.results, function (item, fullPath) {
             if (fullPath.indexOf(oldName) === 0) {
                 // node search : inform node about the rename
@@ -778,8 +817,8 @@ define(function (require, exports, module) {
                 // gather up added files
                 var visitor = function (child) {
                     // Replicate filtering that getAllFiles() does
-                    if (ProjectManager.shouldShow(child)) {
-                        if (child.isFile && _isReadableText(child.name)) {
+                    if (ProjectManager.shouldIndex(child)) {
+                        if (child.isFile && _isReadableFileType(child.name)) {
                             // Re-check the filtering that the initial search applied
                             if (_inSearchScope(child)) {
                                 addedFiles.push(child);
@@ -911,34 +950,34 @@ define(function (require, exports, module) {
      */
     var _initCache = function () {
         function filter(file) {
-            return _subtreeFilter(file, null) && _isReadableText(file.fullPath);
+            return _subtreeFilter(file, null) && _isReadableFileType(file.fullPath);
         }
         FindUtils.setInstantSearchDisabled(true);
 
         //we always listen for filesytem changes.
         _addListeners();
 
-        if (!PreferencesManager.get("findInFiles.nodeSearch")) {
-            return;
-        }
-        // TODO: fix caching. desabling for now to prevent large project open crashes and performance issues
-        // ProjectManager.getAllFiles(filter, true, true)
-        //     .done(function (fileListResult) {
-        //         var files = fileListResult,
-        //             filter = FileFilters.getActiveFilter();
-        //         if (filter && filter.patterns.length > 0) {
-        //             files = FileFilters.filterFileList(FileFilters.compile(filter.patterns), files);
-        //         }
-        //         files = files.filter(function (entry) {
-        //             return entry.isFile && _isReadableText(entry.fullPath);
-        //         }).map(function (entry) {
-        //             return entry.fullPath;
-        //         });
-        //         FindUtils.notifyIndexingStarted();
-        //         searchDomain.exec("initCache", files);
-        //     });
+        ProjectManager.getAllFiles(filter, true, true)
+            .done(function (fileListResult) {
+                var files = fileListResult,
+                    filter = FileFilters.getActiveFilter();
+                if (filter && filter.patterns.length > 0) {
+                    files = FileFilters.filterFileList(FileFilters.compile(filter.patterns), files);
+                }
+                files = files.filter(function (entry) {
+                    return entry.isFile && _isReadableFileType(entry.fullPath);
+                }).map(function (entry) {
+                    return entry.fullPath;
+                });
+                FindUtils.notifyIndexingStarted();
+                _FindInFilesWorker.exec("initCache", files);
+            });
         _searchScopeChanged();
     };
+
+    function _scheduleCacheInit() {
+        setTimeout(_initCache, CACHE_INIT_DELAY_MS);
+    }
 
 
     /**
@@ -1003,11 +1042,10 @@ define(function (require, exports, module) {
         return searchDeferred.promise();
     }
 
-    ProjectManager.on("projectOpen", _initCache);
+    ProjectManager.on("projectOpen", _scheduleCacheInit);
     FindUtils.on(FindUtils.SEARCH_FILE_FILTERS_CHANGED, _searchScopeChanged);
     FindUtils.on(FindUtils.SEARCH_SCOPE_CHANGED, _searchScopeChanged);
     FindUtils.on(FindUtils.SEARCH_COLLAPSE_RESULTS, _searchcollapseResults);
-    searchDomain.on("crawlComplete", nodeFileCacheComplete);
 
     // Public exports
     exports.searchModel            = searchModel;
