@@ -109,12 +109,7 @@ define(function (require, exports, module) {
         _FindInFilesWorker.postMessage(JSON.stringify(response));
     };
 
-    var _bracketsPath   = FileUtils.getNativeBracketsDirectoryPath(),
-        _modulePath     = FileUtils.getNativeModuleDirectoryPath(module),
-        _nodePath       = "node/FindInFilesDomain",
-        _domainPath     = [_bracketsPath, _modulePath, _nodePath].join("/"),
-        searchDomain     = new NodeDomain("FindInFiles", _domainPath),
-        searchScopeChanged = false,
+    let searchScopeChanged = false,
         findOrReplaceInProgress = false,
         changedFileList = {};
 
@@ -130,7 +125,7 @@ define(function (require, exports, module) {
      */
     var MAX_DISPLAY_LENGTH = 200;
 
-    let CACHE_INIT_DELAY_MS = 5000;
+    let CACHE_INIT_DELAY_MS = 1000;
 
     /**
      * The search query and results model.

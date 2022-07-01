@@ -126,13 +126,15 @@ async function fileCrawler() {
         setTimeout(fileCrawler, 1000);
         return;
     }
-    let contents = "";
-    if (currentCrawlIndex < files.length) {
-        contents = await getFileContentsForFile(files[currentCrawlIndex]);
-        if (contents) {
-            cacheSize += contents.length;
-        }
+    const parallelRead = 5;
+    let readPromises = [];
+    for (let i = 0; i < parallelRead && currentCrawlIndex < files.length; i++) {
+        readPromises.push(getFileContentsForFile(files[currentCrawlIndex]));
         currentCrawlIndex++;
+    }
+    let contents = await Promise.all(readPromises) || [];
+    for(let content of contents){
+        cacheSize += content.length;
     }
     if (currentCrawlIndex < files.length) {
         crawlComplete = false;
