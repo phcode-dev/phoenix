@@ -51,30 +51,58 @@ define(function (require, exports, module) {
 
     let postUniqueId = 0;
     let callBacks = {};
-    _FindInFilesWorker.exec = function (fnName, paramObject, callback) {
-        _FindInFilesWorker.postMessage({
-            exec: fnName,
-            params: paramObject,
-            postUniqueId: postUniqueId++
+    _FindInFilesWorker.exec = function (fnName, paramObject) {
+        postUniqueId++;
+        return new Promise((resolve, reject)=>{
+            _FindInFilesWorker.postMessage({
+                type: "exec",
+                exec: fnName,
+                params: paramObject,
+                postUniqueId: postUniqueId
+            });
+            callBacks[postUniqueId] = {resolve, reject};
         });
-        if(callback){
-            callBacks[postUniqueId] = callback;
-        }
     };
 
-    _FindInFilesWorker.onmessage = function(e) {
-        let response = e.data;
-        switch (e.data.exec) {
-        case 'crawlComplete':
-            nodeFileCacheComplete(e.data.params);
-            break;
-        default: console.error("unknown indexing worker event received", e.data);
+    function _processResponse(e) {
+        if(e.data.type === "response"){
+            // this is a response event
+            let postUniqueId = e.data.postUniqueId;
+            if(callBacks[postUniqueId]){
+                let {resolve, reject} = callBacks[postUniqueId];
+                if(e.data.err){
+                    reject(e.data.err);
+                } else {
+                    resolve(e.data.response);
+                }
+                delete callBacks[postUniqueId];
+            }
+            return true;
         }
-        let postUniqueId = e.data.postUniqueId;
-        if(callBacks[postUniqueId]){
-            callBacks[postUniqueId](response);
-            delete callBacks[postUniqueId];
+        return false;
+    }
+
+    _FindInFilesWorker.onmessage = async function(e) {
+        if(_processResponse(e)){
+            return;
         }
+        let response = {
+            type: "response",
+            err: null,
+            response: null,
+            postUniqueId: e.data.postUniqueId
+        };
+        try {
+            switch (e.data.exec) {
+            case 'crawlComplete':
+                response.response = nodeFileCacheComplete(e.data.params);
+                break;
+            default: console.error("unknown indexing worker event received", e.data);
+            }
+        } catch (err) {
+            response.err = err;
+        }
+        _FindInFilesWorker.postMessage(response);
     };
 
     var _bracketsPath   = FileUtils.getNativeBracketsDirectoryPath(),
@@ -581,8 +609,8 @@ define(function (require, exports, module) {
                     }
                     _updateChangedDocs();
                     FindUtils.notifyNodeSearchStarted();
-                    searchDomain.exec("doSearch", searchObject)
-                        .done(function (rcvd_object) {
+                    _FindInFilesWorker.exec("doSearch", searchObject)
+                        .then(function (rcvd_object) {
                             FindUtils.notifyNodeSearchFinished();
                             if (!rcvd_object || !rcvd_object.results) {
                                 console.log('no node falling back to brackets search');
@@ -598,7 +626,7 @@ define(function (require, exports, module) {
                             searchModel.allResultsAvailable = rcvd_object.allResultsAvailable;
                             searchDeferred.resolve();
                         })
-                        .fail(function () {
+                        .catch(function () {
                             FindUtils.notifyNodeSearchFinished();
                             console.log('node fails');
                             FindUtils.setNodeSearchDisabled(true);
