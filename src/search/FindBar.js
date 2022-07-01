@@ -669,6 +669,11 @@ define(function (require, exports, module) {
      */
     FindBar.prototype.showIndexingSpinner = function () {
         this.$("#indexing-spinner").removeClass("forced-hidden");
+        this.setIndexingMessage(Strings.FIND_IN_FILES_INDEXING);
+    };
+
+    FindBar.prototype.setIndexingMessage = function (message) {
+        this.$("#indexing-spinner-message").text(message);
     };
 
     FindBar.prototype.hideIndexingSpinner = function () {
