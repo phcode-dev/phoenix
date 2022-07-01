@@ -127,7 +127,13 @@ define(function (require, exports, module) {
         return _shouldShowName(entry.name);
     }
 
-    function _shouldCache(entry) {
+    /**
+     * Returns false for files and directories that should not be indexed for search or code hints.
+     *
+     * @param {!FileSystemEntry} entry File or directory to filter
+     * @return {boolean} true if the file should be displayed
+     */
+    function shouldIndex(entry) {
         return shouldShow(entry) && !_cacheExcludeRegEx.test(entry.name);
     }
 
@@ -445,7 +451,7 @@ define(function (require, exports, module) {
             var deferred = new $.Deferred(),
                 allFiles = [],
                 allFilesVisitor = function (entry) {
-                    if (_shouldCache(entry)) {
+                    if (shouldIndex(entry)) {
                         if (entry.isFile) {
                             allFiles.push(entry);
                         }
@@ -1373,6 +1379,7 @@ define(function (require, exports, module) {
     exports._invalidChars           = "? * | : / < > \\ | \" ..";
 
     exports.shouldShow              = shouldShow;
+    exports.shouldIndex             = shouldIndex;
     exports.defaultIgnoreGlobs      = defaultIgnoreGlobs;
     exports.isValidFilename         = isValidFilename;
     exports.isValidPath             = isValidPath;

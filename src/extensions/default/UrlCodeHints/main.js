@@ -145,7 +145,7 @@ define(function (require, exports, module) {
 
                 if (!err) {
                     contents.forEach(function (entry) {
-                        if (ProjectManager.shouldShow(entry)) {
+                        if (ProjectManager.shouldIndex(entry)) {
                             // convert to doc relative path
                             entryStr = queryDir + entry._name;
                             if (entry._isDirectory) {
