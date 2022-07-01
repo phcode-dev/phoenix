@@ -19,11 +19,12 @@
  *
  */
 
-/*global importScripts, virtualfs, fs */
+/*global importScripts, virtualfs, fs, doSearch */
 
 const urlParams = new URLSearchParams(location.search);
 const debugMode = (urlParams.get('debug') === 'true');
 importScripts('../../phoenix/virtualfs.js');
+importScripts('./search.js');
 
 virtualfs.debugMode = debugMode;
 
@@ -111,7 +112,7 @@ async function getFileContentsForFile(filePath) {
         }
     } catch (ex) {
         console.log(ex);
-        projectCache[filePath] = null;
+        projectCache[filePath] = "";
     }
     return projectCache[filePath];
 }
@@ -220,40 +221,71 @@ function documentChanged(updateObject) {
 
 let postUniqueId = 0;
 let callBacks = {};
-function exec(fnName, paramObject, callback) {
-    postMessage({
-        exec: fnName,
-        params: paramObject,
-        postUniqueId: postUniqueId++
+function exec(fnName, paramObject) {
+    postUniqueId++;
+    return new Promise((resolve, reject)=>{
+        postMessage({
+            type: "exec",
+            exec: fnName,
+            params: paramObject,
+            postUniqueId: postUniqueId
+        });
+        callBacks[postUniqueId] = {resolve, reject};
     });
-    if(callback){
-        callBacks[postUniqueId] = callback;
-    }
 }
 
 
-onmessage = function(e) {
-    let response = e.data;
-    switch (e.data.exec) {
-    case 'initCache':
-        initCache(e.data.params);
-        break;
-    case 'filesChanged':
-        addFilesToCache(e.data.params);
-        break;
-    case 'documentChanged':
-        documentChanged(e.data.params);
-        break;
-    case 'filesRemoved':
-        removeFilesFromCache(e.data.params);
-        break;
-    default: console.error("unknown indexing worker event received", e.data);
+function _processResponse(e) {
+    if(e.data.type === "response"){
+        // this is a response event
+        let postUniqueId = e.data.postUniqueId;
+        if(callBacks[postUniqueId]){
+            let {resolve, reject} = callBacks[postUniqueId];
+            if(e.data.err){
+                reject(e.data.err);
+            } else {
+                resolve(e.data.response);
+            }
+            delete callBacks[postUniqueId];
+        }
+        return true;
     }
-    let postUniqueId = e.data.postUniqueId;
-    if(callBacks[postUniqueId]){
-        callBacks[postUniqueId](response);
-        delete callBacks[postUniqueId];
+    return false;
+}
+
+onmessage = async function(e) {
+    if(_processResponse(e)){
+        return;
     }
+    let response = {
+        type: "response",
+        err: null,
+        response: null,
+        postUniqueId: e.data.postUniqueId
+    };
+    try{
+        switch (e.data.exec) {
+        case 'initCache':
+            response.response = initCache(e.data.params);
+            break;
+        case 'filesChanged':
+            response.response = addFilesToCache(e.data.params);
+            break;
+        case 'documentChanged':
+            response.response = documentChanged(e.data.params);
+            break;
+        case 'filesRemoved':
+            response.response = removeFilesFromCache(e.data.params);
+            break;
+        case 'doSearch':
+            response.response = await doSearch(e.data.params);
+            break;
+        default: console.error("unknown indexing worker event received", e.data);
+        }
+    } catch (err) {
+        response.err = err;
+    }
+    postMessage(response);
 };
 
 setTimeout(fileCrawler, 3000);

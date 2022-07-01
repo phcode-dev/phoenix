@@ -21,11 +21,9 @@
 
 /*eslint-env node */
 /*jslint node: true */
-/*global getFileContentsForFile */
+/*global getFileContentsForFile, files, crawlComplete */
 
-var files,
-    _domainManager,
-    MAX_DISPLAY_LENGTH = 200,
+var MAX_DISPLAY_LENGTH = 200,
     MAX_TOTAL_RESULTS = 100000, // only 100,000 search results are supported
     MAX_RESULTS_IN_A_FILE = MAX_TOTAL_RESULTS,
     MAX_RESULTS_TO_RETURN = 120;
@@ -38,7 +36,6 @@ var results = {},
     exceedsMaximum = false,
     savedSearchObject = null,
     lastSearchedIndex = 0,
-    crawlComplete = false,
     collapseResults = false;
 
 /**
@@ -221,7 +218,7 @@ function doSearchInOneFile(filepath, text, queryExpr, maxResultsToReturn) {
  * @param {number} startFileIndex    the start index of the array from which the search has to be done
  * @param {number} maxResultsToReturn  the maximum number of results to return in this search
  */
-function doSearchInFiles(fileList, queryExpr, startFileIndex, maxResultsToReturn) {
+async function doSearchInFiles(fileList, queryExpr, startFileIndex, maxResultsToReturn) {
     var i;
     if (fileList.length === 0) {
         console.log('no files found');
@@ -230,7 +227,8 @@ function doSearchInFiles(fileList, queryExpr, startFileIndex, maxResultsToReturn
     }
     startFileIndex = startFileIndex || 0;
     for (i = startFileIndex; i < fileList.length && !foundMaximum; i++) {
-        doSearchInOneFile(fileList[i], getFileContentsForFile(fileList[i]), queryExpr, maxResultsToReturn);
+        let contents = await getFileContentsForFile(fileList[i]);
+        doSearchInOneFile(fileList[i], contents, queryExpr, maxResultsToReturn);
     }
     lastSearchedIndex = i;
 
@@ -301,11 +299,12 @@ function countNumMatches(contents, queryExpr) {
  * @param   {Object} queryExpr
  * @return {Number} total number of matches
  */
-function getNumMatches(fileList, queryExpr) {
-    var i,
+async function getNumMatches(fileList, queryExpr) {
+    let i,
         matches = 0;
     for (i = 0; i < fileList.length; i++) {
-        var temp = countNumMatches(getFileContentsForFile(fileList[i]), queryExpr);
+        let contents = await getFileContentsForFile(fileList[i]);
+        let temp = countNumMatches(contents, queryExpr);
         if (temp) {
             numFiles++;
             matches += temp;
@@ -324,7 +323,7 @@ function getNumMatches(fileList, queryExpr) {
  * @param   {boolean} nextPages    set to true if to indicate that next page of an existing page is being fetched
  * @return {Object}   search results
  */
-function doSearch(searchObject, nextPages) {
+async function doSearch(searchObject, nextPages) {
 
     savedSearchObject = searchObject;
     if (!files) {
@@ -346,9 +345,9 @@ function doSearch(searchObject, nextPages) {
     if (searchObject.getAllResults) {
         searchObject.maxResultsToReturn = MAX_TOTAL_RESULTS;
     }
-    doSearchInFiles(files, queryObject.queryExpr, searchObject.startFileIndex, searchObject.maxResultsToReturn);
+    await doSearchInFiles(files, queryObject.queryExpr, searchObject.startFileIndex, searchObject.maxResultsToReturn);
     if (crawlComplete && !nextPages) {
-        numMatches = getNumMatches(files, queryObject.queryExpr);
+        numMatches = await getNumMatches(files, queryObject.queryExpr);
     }
     var send_object = {
         "results": results,
@@ -371,7 +370,7 @@ function doSearch(searchObject, nextPages) {
  * Gets the next page of results of the ongoing search
  * @return {Object} search results
  */
-function getNextPage() {
+async function getNextPage() {
     var send_object = {
         "results": {},
         "numMatches": 0,
@@ -382,14 +381,14 @@ function getNextPage() {
         return send_object;
     }
     savedSearchObject.startFileIndex = lastSearchedIndex;
-    return doSearch(savedSearchObject, true);
+    return await doSearch(savedSearchObject, true);
 }
 
 /**
  * Gets all the results for the saved search query if present or empty search results
  * @return {Object} The results object
  */
-function getAllResults() {
+async function getAllResults() {
     var send_object = {
         "results": {},
         "numMatches": 0,
@@ -401,7 +400,7 @@ function getAllResults() {
     }
     savedSearchObject.startFileIndex = 0;
     savedSearchObject.getAllResults = true;
-    return doSearch(savedSearchObject);
+    return await doSearch(savedSearchObject);
 }
 
 /**
@@ -417,23 +416,6 @@ function setCollapseResults(collapse) {
  * @param {DomainManager} domainManager The DomainManager for the find in files domain "FindInFiles"
  */
 function init(domainManager) {
-    if (!domainManager.hasDomain("FindInFiles")) {
-        domainManager.registerDomain("FindInFiles", {major: 0, minor: 1});
-    }
-    _domainManager = domainManager;
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "doSearch",    // command name
-        doSearch,   // command handler function
-        false,          // this command is synchronous in Node
-        "Searches in project files and returns matches",
-        [{name: "searchObject", // parameters
-            type: "object",
-            description: "Object containing search data"}],
-        [{name: "searchResults", // return values
-            type: "object",
-            description: "Object containing results of the search"}]
-    );
     domainManager.registerCommand(
         "FindInFiles",       // domain name
         "nextPage",    // command name
