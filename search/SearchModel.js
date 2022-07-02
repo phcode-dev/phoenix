@@ -217,7 +217,7 @@ define(function (require, exports, module) {
             propertyName = "",
             i = 0;
 
-        if (FindUtils.isNodeSearchDisabled()) {
+        if (FindUtils.isWorkerSearchDisabled()) {
             return Object.keys(this.results).sort(function (key1, key2) {
                 if (firstFile === key1) {
                     return -1;

@@ -21,15 +21,9 @@
 
 /*eslint-env node */
 /*jslint node: true */
-/*global setImmediate */
+/*global getFileContentsForFile, files, crawlComplete */
 
-
-var fs = require("fs"),
-    projectCache = [],
-    files,
-    _domainManager,
-    MAX_FILE_SIZE_TO_INDEX = 16777216, //16MB
-    MAX_DISPLAY_LENGTH = 200,
+var MAX_DISPLAY_LENGTH = 200,
     MAX_TOTAL_RESULTS = 100000, // only 100,000 search results are supported
     MAX_RESULTS_IN_A_FILE = MAX_TOTAL_RESULTS,
     MAX_RESULTS_TO_RETURN = 120;
@@ -40,13 +34,9 @@ var results = {},
     evaluatedMatches,
     foundMaximum = false,
     exceedsMaximum = false,
-    currentCrawlIndex = 0,
     savedSearchObject = null,
     lastSearchedIndex = 0,
-    crawlComplete = false,
-    crawlEventSent = false,
-    collapseResults = false,
-    cacheSize = 0;
+    collapseResults = false;
 
 /**
  * Copied from StringUtils.js
@@ -178,52 +168,6 @@ function getSearchMatches(contents, queryExpr) {
 }
 
 /**
- * Clears the cached file contents of the project
- */
-function clearProjectCache() {
-    projectCache = [];
-}
-
-
-/**
- * Gets the file size in bytes.
- * @param   {string} fileName The name of the file to get the size
- * @returns {Number} the file size in bytes
- */
-function getFilesizeInBytes(fileName) {
-    try {
-        var stats = fs.statSync(fileName);
-        return stats.size || 0;
-    } catch (ex) {
-        console.log(ex);
-        return 0;
-    }
-}
-
-/**
- * Get the contents of a file from cache given the path. Also adds the file contents to cache from disk if not cached.
- * Will not read/cache files greater than MAX_FILE_SIZE_TO_INDEX in size.
- * @param   {string} filePath full file path
- * @return {string} contents or null if no contents
- */
-function getFileContentsForFile(filePath) {
-    if (projectCache[filePath] || projectCache[filePath] === "") {
-        return projectCache[filePath];
-    }
-    try {
-        if (getFilesizeInBytes(filePath) <= MAX_FILE_SIZE_TO_INDEX) {
-            projectCache[filePath] = fs.readFileSync(filePath, 'utf8');
-        } else {
-            projectCache[filePath] = "";
-        }
-    } catch (ex) {
-        console.log(ex);
-        projectCache[filePath] = null;
-    }
-    return projectCache[filePath];
-}
-
-/**
  * Sets the list of matches for the given path, removing the previous match info, if any, and updating
  * the total match count. Note that for the count to remain accurate, the previous match info must not have
  * been mutated since it was set.
@@ -274,7 +218,7 @@ function doSearchInOneFile(filepath, text, queryExpr, maxResultsToReturn) {
  * @param {number} startFileIndex    the start index of the array from which the search has to be done
  * @param {number} maxResultsToReturn  the maximum number of results to return in this search
  */
-function doSearchInFiles(fileList, queryExpr, startFileIndex, maxResultsToReturn) {
+async function doSearchInFiles(fileList, queryExpr, startFileIndex, maxResultsToReturn) {
     var i;
     if (fileList.length === 0) {
         console.log('no files found');
@@ -283,7 +227,8 @@ function doSearchInFiles(fileList, queryExpr, startFileIndex, maxResultsToReturn
     }
     startFileIndex = startFileIndex || 0;
     for (i = startFileIndex; i < fileList.length && !foundMaximum; i++) {
-        doSearchInOneFile(fileList[i], getFileContentsForFile(fileList[i]), queryExpr, maxResultsToReturn);
+        let contents = await getFileContentsForFile(fileList[i]);
+        doSearchInOneFile(fileList[i], contents, queryExpr, maxResultsToReturn);
     }
     lastSearchedIndex = i;
 
@@ -335,49 +280,6 @@ function parseQueryInfo(queryInfo) {
 }
 
 /**
- * Crawls through the files in the project ans stores them in cache. Since that could take a while
- * we do it in batches so that node wont be blocked.
- */
-function fileCrawler() {
-    if (!files || (files && files.length === 0)) {
-        setTimeout(fileCrawler, 1000);
-        return;
-    }
-    var contents = "";
-    if (currentCrawlIndex < files.length) {
-        contents = getFileContentsForFile(files[currentCrawlIndex]);
-        if (contents) {
-            cacheSize += contents.length;
-        }
-        currentCrawlIndex++;
-    }
-    if (currentCrawlIndex < files.length) {
-        crawlComplete = false;
-        setImmediate(fileCrawler);
-    } else {
-        crawlComplete = true;
-        if (!crawlEventSent) {
-            crawlEventSent = true;
-            _domainManager.emitEvent("FindInFiles", "crawlComplete", [files.length, cacheSize]);
-        }
-        setTimeout(fileCrawler, 1000);
-    }
-}
-
-/**
- * Init for project, resets the old project cache, and sets the crawler function to
- * restart the file crawl
- * @param   {array} fileList an array of files
- */
-function initCache(fileList) {
-    files = fileList;
-    currentCrawlIndex = 0;
-    cacheSize = 0;
-    clearProjectCache();
-    crawlEventSent = false;
-}
-
-/**
  * Counts the number of matches matching the queryExpr in the given contents
  * @param   {String} contents  The contents to search on
  * @param   {Object} queryExpr
@@ -397,11 +299,12 @@ function countNumMatches(contents, queryExpr) {
  * @param   {Object} queryExpr
  * @return {Number} total number of matches
  */
-function getNumMatches(fileList, queryExpr) {
-    var i,
+async function getNumMatches(fileList, queryExpr) {
+    let i,
         matches = 0;
     for (i = 0; i < fileList.length; i++) {
-        var temp = countNumMatches(getFileContentsForFile(fileList[i]), queryExpr);
+        let contents = await getFileContentsForFile(fileList[i]);
+        let temp = countNumMatches(contents, queryExpr);
         if (temp) {
             numFiles++;
             matches += temp;
@@ -420,7 +323,7 @@ function getNumMatches(fileList, queryExpr) {
  * @param   {boolean} nextPages    set to true if to indicate that next page of an existing page is being fetched
  * @return {Object}   search results
  */
-function doSearch(searchObject, nextPages) {
+async function doSearch(searchObject, nextPages) {
 
     savedSearchObject = searchObject;
     if (!files) {
@@ -442,9 +345,9 @@ function doSearch(searchObject, nextPages) {
     if (searchObject.getAllResults) {
         searchObject.maxResultsToReturn = MAX_TOTAL_RESULTS;
     }
-    doSearchInFiles(files, queryObject.queryExpr, searchObject.startFileIndex, searchObject.maxResultsToReturn);
+    await doSearchInFiles(files, queryObject.queryExpr, searchObject.startFileIndex, searchObject.maxResultsToReturn);
     if (crawlComplete && !nextPages) {
-        numMatches = getNumMatches(files, queryObject.queryExpr);
+        numMatches = await getNumMatches(files, queryObject.queryExpr);
     }
     var send_object = {
         "results": results,
@@ -464,64 +367,10 @@ function doSearch(searchObject, nextPages) {
 }
 
 /**
- * Remove the list of given files from the project cache
- * @param   {Object}   updateObject
- */
-function removeFilesFromCache(updateObject) {
-    var fileList = updateObject.fileList || [],
-        filesInSearchScope = updateObject.filesInSearchScope || [],
-        i = 0;
-    for (i = 0; i < fileList.length; i++) {
-        delete projectCache[fileList[i]];
-    }
-    function isNotInRemovedFilesList(path) {
-        return (filesInSearchScope.indexOf(path) === -1) ? true : false;
-    }
-    files = files ? files.filter(isNotInRemovedFilesList) : files;
-}
-
-/**
- * Adds the list of given files to the project cache. However the files will not be
- * read at this time. We just delete the project cache entry which will trigger a fetch on search.
- * @param   {Object}   updateObject
- */
-function addFilesToCache(updateObject) {
-    var fileList = updateObject.fileList || [],
-        filesInSearchScope = updateObject.filesInSearchScope || [],
-        i = 0,
-        changedFilesAlreadyInList = [],
-        newFiles = [];
-    for (i = 0; i < fileList.length; i++) {
-        // We just add a null entry indicating the precense of the file in the project list.
-        // The file will be later read when required.
-        projectCache[fileList[i]] = null;
-    }
-
-    //Now update the search scope
-    function isInChangedFileList(path) {
-        return (filesInSearchScope.indexOf(path) !== -1) ? true : false;
-    }
-    changedFilesAlreadyInList = files ? files.filter(isInChangedFileList) : [];
-    function isNotAlreadyInList(path) {
-        return (changedFilesAlreadyInList.indexOf(path) === -1) ? true : false;
-    }
-    newFiles = changedFilesAlreadyInList.filter(isNotAlreadyInList);
-    files.push.apply(files, newFiles);
-}
-
-/**
- * Notification function on document changed, we update the cache with the contents
- * @param {Object} updateObject
- */
-function documentChanged(updateObject) {
-    projectCache[updateObject.filePath] = updateObject.docContents;
-}
-
-/**
  * Gets the next page of results of the ongoing search
  * @return {Object} search results
  */
-function getNextPage() {
+async function getNextPage() {
     var send_object = {
         "results": {},
         "numMatches": 0,
@@ -532,14 +381,14 @@ function getNextPage() {
         return send_object;
     }
     savedSearchObject.startFileIndex = lastSearchedIndex;
-    return doSearch(savedSearchObject, true);
+    return await doSearch(savedSearchObject, true);
 }
 
 /**
  * Gets all the results for the saved search query if present or empty search results
  * @return {Object} The results object
  */
-function getAllResults() {
+async function getAllResults() {
     var send_object = {
         "results": {},
         "numMatches": 0,
@@ -551,7 +400,7 @@ function getAllResults() {
     }
     savedSearchObject.startFileIndex = 0;
     savedSearchObject.getAllResults = true;
-    return doSearch(savedSearchObject);
+    return await doSearch(savedSearchObject);
 }
 
 /**
@@ -561,123 +410,3 @@ function getAllResults() {
 function setCollapseResults(collapse) {
     collapseResults = collapse;
 }
-
-/**
- * Initialize the test domain with commands and events related to find in files.
- * @param {DomainManager} domainManager The DomainManager for the find in files domain "FindInFiles"
- */
-function init(domainManager) {
-    if (!domainManager.hasDomain("FindInFiles")) {
-        domainManager.registerDomain("FindInFiles", {major: 0, minor: 1});
-    }
-    _domainManager = domainManager;
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "doSearch",    // command name
-        doSearch,   // command handler function
-        false,          // this command is synchronous in Node
-        "Searches in project files and returns matches",
-        [{name: "searchObject", // parameters
-            type: "object",
-            description: "Object containing search data"}],
-        [{name: "searchResults", // return values
-            type: "object",
-            description: "Object containing results of the search"}]
-    );
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "nextPage",    // command name
-        getNextPage,   // command handler function
-        false,          // this command is synchronous in Node
-        "get the next page of reults",
-        [],
-        [{name: "searchResults", // return values
-            type: "object",
-            description: "Object containing results of the search"}]
-    );
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "getAllResults",    // command name
-        getAllResults,   // command handler function
-        false,          // this command is synchronous in Node
-        "get the next page of reults",
-        [],
-        [{name: "searchResults", // return values
-            type: "object",
-            description: "Object containing all results of the search"}]
-    );
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "collapseResults",    // command name
-        setCollapseResults,   // command handler function
-        false,          // this command is synchronous in Node
-        "get the next page of reults",
-        [{name: "collapse", // return values
-            type: "boolean",
-            description: "true to collapse"}],
-        []
-    );
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "filesChanged",    // command name
-        addFilesToCache,   // command handler function
-        false,          // this command is synchronous in Node
-        "files in the project has been changed, update cache",
-        [{name: "updateObject", // parameters
-            type: "object",
-            description: "Object containing list of changed files"}],
-        []
-    );
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "documentChanged",    // command name
-        documentChanged,   // command handler function
-        false,          // this command is synchronous in Node
-        "informs that the document changed and updates the cache",
-        [{name: "updateObject", // parameters
-            type: "object",
-            description: "update with the contents of the object"}],
-        []
-    );
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "filesRemoved",    // command name
-        removeFilesFromCache,   // command handler function
-        false,          // this command is synchronous in Node
-        "Searches in project files and returns matches",
-        [{name: "updateObject", // parameters
-            type: "object",
-            description: "Object containing list of removed files"}],
-        []
-    );
-    domainManager.registerCommand(
-        "FindInFiles",       // domain name
-        "initCache",    // command name
-        initCache,   // command handler function
-        false,          // this command is synchronous in Node
-        "Caches the project for find in files in node",
-        [{name: "fileList", // parameters
-            type: "Array",
-            description: "List of all project files - Path only"}],
-        []
-    );
-    domainManager.registerEvent(
-        "FindInFiles",     // domain name
-        "crawlComplete",   // event name
-        [
-            {
-                name: "numFiles",
-                type: "number",
-                description: "number of files cached"
-            },
-            {
-                name: "cacheSize",
-                type: "number",
-                description: "The size of the file cache epressesd as string length of files"
-            }
-        ]
-    );
-    setTimeout(fileCrawler, 5000);
-}
-
-exports.init = init;

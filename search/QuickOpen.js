@@ -685,12 +685,21 @@ define(function (require, exports, module) {
         }
 
         // Show the search bar
-        var searchBarHTML = "<div align='right'><input type='text' autocomplete='off' id='quickOpenSearch' placeholder='" + Strings.CMD_QUICK_OPEN + "\u2026' style='width: 30em'><span class='find-dialog-label'></span></div>";
+        var searchBarHTML =`<div align='right'>
+            <div id="indexing-spinner" class="indexing-group">
+                <div class="spinner inline spin"></div>
+                <div id="indexing-spinner-message" class="indexing-message">${Strings.FIND_IN_FILES_INDEXING}</div>
+            </div>
+            <input type='text' autocomplete='off' id='quickOpenSearch'
+            placeholder='${Strings.CMD_QUICK_OPEN}\u2026' style='width: 30em'>
+            <span class='find-dialog-label'></span>
+        </div>`;
         this.modalBar = new ModalBar(searchBarHTML, true);
 
         this.modalBar.on("close", this._handleCloseBar);
 
         this.$searchField = $("input#quickOpenSearch");
+        this.$indexingSpinner = $("#indexing-spinner");
 
         this.searchField = new QuickSearchField(this.$searchField, {
             maxResults: 20,
@@ -713,6 +722,7 @@ define(function (require, exports, module) {
         // meantime we show our old, stale fileList (unless the user has switched projects and we cleared it).
         fileListPromise = ProjectManager.getAllFiles(_filter, true)
             .done(function (files) {
+                this.$indexingSpinner.addClass("forced-hidden");
                 fileList = files;
                 fileListPromise = null;
                 this._filenameMatcher.reset();

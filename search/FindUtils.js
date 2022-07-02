@@ -28,43 +28,18 @@ define(function (require, exports, module) {
         FileSystem          = require("filesystem/FileSystem"),
         FileUtils           = require("file/FileUtils"),
         ProjectManager      = require("project/ProjectManager"),
-        PreferencesManager  = require("preferences/PreferencesManager"),
         EventDispatcher     = require("utils/EventDispatcher"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
         _                   = require("thirdparty/lodash");
 
-    var nodeSearchDisabled = false,
+    var workerSearchDisabled = false,
         instantSearchDisabled = false,
         indexingInProgress = false,
-        nodeSearchCount = 0,
+        workerSearchCount = 0,
         collapseResults = false;
 
     EventDispatcher.makeEventDispatcher(exports);
-
-    // define preferences for find in files
-    PreferencesManager.definePreference("findInFiles.nodeSearch", "boolean", true, {
-        description: Strings.DESCRIPTION_FIND_IN_FILES_NODE
-    });
-    PreferencesManager.definePreference("findInFiles.instantSearch", "boolean", true, {
-        description: Strings.DESCRIPTION_FIND_IN_FILES_INSTANT
-    });
-
-    /**
-     * returns true if the used disabled node based search in his preferences
-     * @return {boolean}
-     */
-    function _prefNodeSearchDisabled() {
-        return !PreferencesManager.get("findInFiles.nodeSearch");
-    }
-
-    /**
-     * returns true if the used instant search in his preferences
-     * @return {boolean}
-     */
-    function _prefInstantSearchDisabled() {
-        return !PreferencesManager.get("findInFiles.instantSearch");
-    }
 
     /**
      * Given a replace string that contains $-expressions, replace them with data from the given
@@ -387,46 +362,46 @@ define(function (require, exports, module) {
 
     /**
      * enable/disable instant search
-     * @param {boolean} disable true to disable node based search
+     * @param {boolean} disable true to disable web worker based search
      */
     function setInstantSearchDisabled(disable) {
         instantSearchDisabled = disable;
     }
 
     /**
-     * if instant search is disabled, this will return true we can only do instant search through node
+     * if instant search is disabled, this will return true we can only do instant search through worker
      * @return {boolean}
      */
     function isInstantSearchDisabled() {
-        return _prefNodeSearchDisabled() || _prefInstantSearchDisabled() || nodeSearchDisabled || instantSearchDisabled;
+        return workerSearchDisabled || instantSearchDisabled;
     }
 
     /**
-     * enable/disable node based search
-     * @param {boolean} disable true to disable node based search
+     * enable/disable web worker based search
+     * @param {boolean} disable true to disable worker based search
      */
-    function setNodeSearchDisabled(disable) {
+    function setWorkerSearchDisabled(disable) {
         if (disable) {
-            // only set disable. Enabling node earch doesnt mean we have to enable instant search.
+            // only set disable. Enabling worker search doesnt mean we have to enable instant search.
             setInstantSearchDisabled(disable);
         }
-        nodeSearchDisabled = disable;
+        workerSearchDisabled = disable;
     }
 
     /**
-     * if node search is disabled, this will return true
+     * if worker search is disabled, this will return true
      * @return {boolean}
      */
-    function isNodeSearchDisabled() {
-        return _prefNodeSearchDisabled() || nodeSearchDisabled;
+    function isWorkerSearchDisabled() {
+        return workerSearchDisabled;
     }
 
     /**
-     * check if a search is progressing in node
-     * @return {Boolean} true if search is processing in node
+     * check if a search is progressing in worker
+     * @return {Boolean} true if search is processing in worker
      */
-    function isNodeSearchInProgress() {
-        if (nodeSearchCount === 0) {
+    function isWorkerSearchInProgress() {
+        if (workerSearchCount === 0) {
             return false;
         }
         return true;
@@ -442,30 +417,30 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Raises an event when the search scope changes[say search in a sub drictory in the project]
+     * Raises an event when the search scope changes[say search in a subdirectory in the project]
      */
     function notifySearchScopeChanged() {
         exports.trigger(exports.SEARCH_SCOPE_CHANGED);
     }
 
     /**
-     * Notifies that a node search has started so that we FindUtils can figure out
-     * if any outstanding node search requests are pendind
+     * Notifies that a worker search has started so that we FindUtils can figure out
+     * if any outstanding worker search requests are pending
      */
-    function notifyNodeSearchStarted() {
-        nodeSearchCount++;
+    function notifyWorkerSearchStarted() {
+        workerSearchCount++;
     }
 
     /**
-     * Notifies that a node search has finished so that we FindUtils can figure out
-     * if any outstanding node search requests are pendind
+     * Notifies that a worker search has finished so that we FindUtils can figure out
+     * if any outstanding worker search requests are pending
      */
-    function notifyNodeSearchFinished() {
-        nodeSearchCount--;
+    function notifyWorkerSearchFinished() {
+        workerSearchCount--;
     }
 
     /**
-     * Notifies that a node has started indexing the files
+     * Notifies that a worker has started indexing the files
      */
     function notifyIndexingStarted() {
         indexingInProgress = true;
@@ -473,7 +448,14 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Notifies that a node has finished indexing the files
+     * Notifies that a worker has started indexing the files
+     */
+    function notifyIndexingProgress(progress, total) {
+        exports.trigger(exports.SEARCH_INDEXING_PROGRESS, progress, total);
+    }
+
+    /**
+     * Notifies that a worker has finished indexing the files
      */
     function notifyIndexingFinished() {
         indexingInProgress = false;
@@ -481,8 +463,8 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Return true if indexing is in pregress in node
-     * @return {boolean} true if files are being indexed in node
+     * Return true if indexing is in progress in worker
+     * @return {boolean} true if files are being indexed in worker
      */
     function isIndexingInProgress() {
         return indexingInProgress;
@@ -512,11 +494,11 @@ define(function (require, exports, module) {
     exports.parseQueryInfo                  = parseQueryInfo;
     exports.prioritizeOpenFile              = prioritizeOpenFile;
     exports.getOpenFilePath                 = getOpenFilePath;
-    exports.setNodeSearchDisabled           = setNodeSearchDisabled;
-    exports.isNodeSearchDisabled            = isNodeSearchDisabled;
+    exports.setWorkerSearchDisabled         = setWorkerSearchDisabled;
+    exports.isWorkerSearchDisabled          = isWorkerSearchDisabled;
     exports.setInstantSearchDisabled        = setInstantSearchDisabled;
     exports.isInstantSearchDisabled         = isInstantSearchDisabled;
-    exports.isNodeSearchInProgress          = isNodeSearchInProgress;
+    exports.isWorkerSearchInProgress        = isWorkerSearchInProgress;
     exports.isIndexingInProgress            = isIndexingInProgress;
     exports.setCollapseResults              = setCollapseResults;
     exports.isCollapsedResults              = isCollapsedResults;
@@ -525,15 +507,17 @@ define(function (require, exports, module) {
     // event notification functions
     exports.notifyFileFiltersChanged        = notifyFileFiltersChanged;
     exports.notifySearchScopeChanged        = notifySearchScopeChanged;
-    exports.notifyNodeSearchStarted         = notifyNodeSearchStarted;
-    exports.notifyNodeSearchFinished        = notifyNodeSearchFinished;
+    exports.notifyWorkerSearchStarted       = notifyWorkerSearchStarted;
+    exports.notifyWorkerSearchFinished      = notifyWorkerSearchFinished;
     exports.notifyIndexingStarted           = notifyIndexingStarted;
+    exports.notifyIndexingProgress          = notifyIndexingProgress;
     exports.notifyIndexingFinished          = notifyIndexingFinished;
 
     // events raised by FindUtils
     exports.SEARCH_FILE_FILTERS_CHANGED              = "fileFiltersChanged";
     exports.SEARCH_SCOPE_CHANGED                     = "searchScopeChanged";
     exports.SEARCH_INDEXING_STARTED                  = "searchIndexingStarted";
+    exports.SEARCH_INDEXING_PROGRESS                 = "searchIndexingProgress";
     exports.SEARCH_INDEXING_FINISHED                 = "searchIndexingFinished";
     exports.SEARCH_COLLAPSE_RESULTS                  = "searchCollapseResults";
 });

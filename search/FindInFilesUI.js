@@ -217,7 +217,7 @@ define(function (require, exports, module) {
 
         function startSearch(replaceText) {
             var queryInfo = _findBar.getQueryInfo(),
-                disableFindBar = FindUtils.isNodeSearchDisabled() || (replaceText ? true : false);
+                disableFindBar = FindUtils.isWorkerSearchDisabled() || (replaceText ? true : false);
             if (queryInfo && queryInfo.query) {
                 _findBar.enable(!disableFindBar);
                 StatusBar.showBusyIndicator(disableFindBar);
@@ -423,6 +423,16 @@ define(function (require, exports, module) {
     }
 
     /**
+     * When the search indexing is started, we need to show the indexing status on the find bar if present.
+     */
+    function _searchIndexingProgressing(_evt, processed, total) {
+        if (_findBar && _findBar._options.multifile && FindUtils.isIndexingInProgress()) {
+            let progressMessage = StringUtils.format(Strings.FIND_IN_FILES_INDEXING_PROGRESS, processed, total);
+            _findBar.setIndexingMessage(progressMessage);
+        }
+    }
+
+    /**
      * Once the indexing has finished, clear the indexing spinner
      */
     function _searchIndexingFinished() {
@@ -497,6 +507,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_REPLACE_IN_SUBTREE,  Commands.CMD_REPLACE_IN_SUBTREE,  _showReplaceBarForSubtree);
 
     FindUtils.on(FindUtils.SEARCH_INDEXING_STARTED, _searchIndexingStarted);
+    FindUtils.on(FindUtils.SEARCH_INDEXING_PROGRESS, _searchIndexingProgressing);
     FindUtils.on(FindUtils.SEARCH_INDEXING_FINISHED, _searchIndexingFinished);
     FindUtils.on(FindUtils.SEARCH_FILE_FILTERS_CHANGED, _searchIfRequired);
     FindUtils.on(FindUtils.SEARCH_SCOPE_CHANGED, _searchIfRequired);
