@@ -67,7 +67,8 @@ module.exports = {
         "no-new-object": 2,
         "no-trailing-spaces": 1,
         "semi-spacing": 1,
-        "semi": 2
+        "semi": 2,
+        "no-async-promise-executor": 2
     },
     "globals": {
         "$": false,
@@ -84,12 +85,14 @@ module.exports = {
         "XMLHttpRequest": false,
         "quiet": true
     },
-    "env":{
+    "env": {
+        "browser": true,
+        "commonjs": true,
         "es6": true,
-        "browser": true
+        "worker": true
     },
     "parserOptions": {
-        "ecmaVersion": 9,
+        "ecmaVersion": 2019,
         "sourceType": "module",
         "ecmaFeatures": {
             "arrowFunctions": true,

@@ -57,7 +57,7 @@ if(!self.Serve){
           BACKOFF_TIME_MS = 10;
 
     const serve = async function (path, formatter, download) {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => { // eslint-disable-line
             function buildResponse(responseData) {
                 return new Response(responseData.body, responseData.config);
             }
@@ -131,20 +131,24 @@ if(!self.Serve){
             }
 
             let err = null;
-            for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
-                let fileStat = await _resolvingStat(path);
-                if(fileStat.error){
-                    err = fileStat.error;
-                    await _wait(i * BACKOFF_TIME_MS);
-                    continue;
+            try{
+                for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
+                    let fileStat = await _resolvingStat(path);
+                    if(fileStat.error){
+                        err = fileStat.error;
+                        await _wait(i * BACKOFF_TIME_MS);
+                        continue;
+                    }
+                    if (fileStat.stats.isDirectory()) {
+                        return serveDir(path);
+                    } else {
+                        return serveFile(path, fileStat.stats);
+                    }
                 }
-                if (fileStat.stats.isDirectory()) {
-                    return serveDir(path);
-                } else {
-                    return serveFile(path, fileStat.stats);
-                }
+                return serveError(path, err);
+            } catch (e) {
+                reject(e);
             }
-            return serveError(path, err);
         });
     };
 

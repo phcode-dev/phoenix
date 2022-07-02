@@ -35,30 +35,34 @@ define(function (require, exports, module) {
     }
 
     function _copyZippedItemToFS(path, item, destProjectDir, flattenFirstLevel) {
-        return new Promise(async (resolve, reject) =>{
-            let destPath = `${destProjectDir}${path}`;
-            if(flattenFirstLevel){
-                // contents/index.html to index.html
-                let newPath = path.substr(path.indexOf("/") + 1);
-                destPath = `${destProjectDir}${newPath}`;
-                console.log(destPath);
-            }
-            if(item.dir){
-                await _ensureExistsAsync(destPath);
-                resolve(destPath);
-            } else {
-                await _ensureExistsAsync(window.path.dirname(destPath));
-                item.async("uint8array").then(function (data) {
-                    window.fs.writeFile(destPath, Filer.Buffer.from(data), writeErr=>{
-                        if(writeErr){
-                            reject(writeErr);
-                        } else {
-                            resolve(destPath);
-                        }
+        return new Promise(async (resolve, reject) =>{ // eslint-disable-line
+            try {
+                let destPath = `${destProjectDir}${path}`;
+                if(flattenFirstLevel){
+                    // contents/index.html to index.html
+                    let newPath = path.substr(path.indexOf("/") + 1);
+                    destPath = `${destProjectDir}${newPath}`;
+                    console.log(destPath);
+                }
+                if(item.dir){
+                    await _ensureExistsAsync(destPath);
+                    resolve(destPath);
+                } else {
+                    await _ensureExistsAsync(window.path.dirname(destPath));
+                    item.async("uint8array").then(function (data) {
+                        window.fs.writeFile(destPath, Filer.Buffer.from(data), writeErr=>{
+                            if(writeErr){
+                                reject(writeErr);
+                            } else {
+                                resolve(destPath);
+                            }
+                        });
+                    }).catch(error=>{
+                        reject(error);
                     });
-                }).catch(error=>{
-                    reject(error);
-                });
+                }
+            } catch (e) {
+                reject(e);
             }
         });
     }

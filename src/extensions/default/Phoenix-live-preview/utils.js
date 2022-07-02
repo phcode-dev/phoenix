@@ -65,22 +65,27 @@ define(function (require, exports, module) {
     }
 
     async function _getDefaultPreviewDetails() {
-        return new Promise(async (resolve)=>{
-            let projectRoot = ProjectManager.getProjectRoot().fullPath;
-            const projectRootUrl = `${window.fsServerUrl}${projectRoot}`;
-            let indexFiles = ['index.html', "index.htm"];
-            for(let indexFile of indexFiles){
-                let file = FileSystem.getFileForPath(`${projectRoot}${indexFile}`);
-                if(await file.existsAsync()){
-                    const relativePath = path.relative(projectRoot, file.fullPath);
-                    resolve({
-                        URL: `${projectRootUrl}${relativePath}`,
-                        filePath: relativePath
-                    });
-                    return;
+        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
+            // async is explicitly caught
+            try{
+                let projectRoot = ProjectManager.getProjectRoot().fullPath;
+                const projectRootUrl = `${window.fsServerUrl}${projectRoot}`;
+                let indexFiles = ['index.html', "index.htm"];
+                for(let indexFile of indexFiles){
+                    let file = FileSystem.getFileForPath(`${projectRoot}${indexFile}`);
+                    if(await file.existsAsync()){
+                        const relativePath = path.relative(projectRoot, file.fullPath);
+                        resolve({
+                            URL: `${projectRootUrl}${relativePath}`,
+                            filePath: relativePath
+                        });
+                        return;
+                    }
                 }
+                resolve({URL: getNoPreviewURL()});
+            } catch (e) {
+                reject(e);
             }
-            resolve({URL: getNoPreviewURL()});
         });
     }
 
@@ -90,30 +95,35 @@ define(function (require, exports, module) {
      * @return {Promise<*>}
      */
     async function getPreviewDetails() {
-        return new Promise(async (resolve)=>{
-            const projectRoot = ProjectManager.getProjectRoot().fullPath;
-            const projectRootUrl = `${window.fsServerUrl}${projectRoot}`;
-            const currentDocument = DocumentManager.getCurrentDocument();
-            const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
-            if(currentFile){
-                let fullPath = currentFile.fullPath;
-                let httpFilePath = null;
-                if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
-                    httpFilePath = fullPath;
+        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
+            // async is explicitly caught
+            try {
+                const projectRoot = ProjectManager.getProjectRoot().fullPath;
+                const projectRootUrl = `${window.fsServerUrl}${projectRoot}`;
+                const currentDocument = DocumentManager.getCurrentDocument();
+                const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+                if(currentFile){
+                    let fullPath = currentFile.fullPath;
+                    let httpFilePath = null;
+                    if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
+                        httpFilePath = fullPath;
+                    }
+                    if(_isPreviewableFile(fullPath)){
+                        const filePath = httpFilePath || path.relative(projectRoot, fullPath);
+                        resolve({
+                            URL: httpFilePath || `${projectRootUrl}${filePath}`,
+                            filePath: filePath,
+                            fullPath: fullPath,
+                            isMarkdownFile: _isMarkdownFile(fullPath)
+                        });
+                    } else {
+                        resolve({}); // not a previewable file
+                    }
                 }
-                if(_isPreviewableFile(fullPath)){
-                    const filePath = httpFilePath || path.relative(projectRoot, fullPath);
-                    resolve({
-                        URL: httpFilePath || `${projectRootUrl}${filePath}`,
-                        filePath: filePath,
-                        fullPath: fullPath,
-                        isMarkdownFile: _isMarkdownFile(fullPath)
-                    });
-                } else {
-                    resolve({}); // not a previewable file
-                }
+                resolve(await _getDefaultPreviewDetails());
+            }catch (e) {
+                reject(e);
             }
-            resolve(await _getDefaultPreviewDetails());
         });
     }
 
