@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "Súbor: <span class='dialog-filename'>{0}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd kliknutím rozbaliť/zbaliť všetky",
   "FIND_IN_FILES_INDEXING": "Indexovanie pre okamžité vyhľadávanie...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indexovanie {0} {1} súborov pre okamžité vyhľadávanie...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Nahradiť chyby",
   "REPLACE_IN_FILES_ERRORS": "Nasledujúce súbory neboli upravené, pretože sa po vyhľadávaní zmenili alebo sa nedali zapísať.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Problém pri získavaní informácií o aktualizácii",

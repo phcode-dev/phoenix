@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl-/Cmd-klik for at udfolde/sammenfolde alt",
   "FIND_IN_FILES_INDEXING": "Indeksering til Øjeblikkelig søgning...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indeksering {0} af {1} filer til Øjeblikkelig søgning...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Fejl ved erstatning",
   "REPLACE_IN_FILES_ERRORS": "Følgende filer blev ikke behandlet, da de har ændret sig siden søgningen eller ikke kunne gemmes.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Fejl ved hentning af opdateringsinformation",

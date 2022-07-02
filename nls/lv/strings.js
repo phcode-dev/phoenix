@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Spiediet Ctrl/Cmd, lai izvērstu/sakļautu visu",
   "FIND_IN_FILES_INDEXING": "Indeksēšana tūlītējai meklēšanai…",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indeksācija {0} no {1} failiem tūlītējai meklēšanai...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Aizstāt kļūdas",
   "REPLACE_IN_FILES_ERRORS": "Šīs datnes netika pārveidotas, jo tās mainījās pēc meklēšanas vai nevar tikt rakstītas.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Kļūda, saņemot informāciju par atjauninājumiem",

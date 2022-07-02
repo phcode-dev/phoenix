@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "按住 Ctrl/Cmd 再用滑鼠點一下可以全部展開/收合",
   "FIND_IN_FILES_INDEXING": "即時搜尋的索引...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "將 {1} 個檔案的 {0} 索引以進行即時搜尋...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "取代錯誤",
   "REPLACE_IN_FILES_ERRORS": "下列檔案沒有被修改，可能是搜尋後又被變更或是無法寫入。",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "無法取得更新資訊",

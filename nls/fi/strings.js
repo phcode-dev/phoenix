@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Laajenna tai pienennä kaikki painamalla Ctrl/Cmd",
   "FIND_IN_FILES_INDEXING": "Indeksoidaan pikahakua varten…",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "{1} -tiedostojen indeksointi {0} Instant Search...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Korvausvirheitä",
   "REPLACE_IN_FILES_ERRORS": "Seuraavia tiedostoja ei muokattu, koska ne olivat muuttuneet haun jälkeen tai niihin ei voitu kirjoittaa.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Virhe päivitystietojen haussa",

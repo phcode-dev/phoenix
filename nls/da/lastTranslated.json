@@ -155,6 +155,7 @@
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd click to expand/collapse all",
   "FIND_IN_FILES_INDEXING": "Indexing for Instant Search…",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indexing {0} of {1} files for Instant Search…",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Replace Errors",
   "REPLACE_IN_FILES_ERRORS": "The following files weren't modified because they changed after the search or couldn't be written.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Error Getting Update Info",

@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Притисните Ctrl/Cmd и кликните како бисте раширили/скупили све",
   "FIND_IN_FILES_INDEXING": "Indeksiranje za Instant Search...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indeksiranje {0} od {1} datoteka za trenutnu pretragu...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Замени грешке",
   "REPLACE_IN_FILES_ERRORS": "Следеће датотеке нису модификоване зато што су измењене након претраге или у њих није било могуће уписивати.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Грешка приликом учитавања информација о новој верзији",

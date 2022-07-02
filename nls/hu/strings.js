@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "Fájl: <span class='dialog-filename'>{0}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd kattintson az összes kibontásá/összecsukásához",
   "FIND_IN_FILES_INDEXING": "Indexelés az azonnali kereséshez...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "{1} fájlok {0} indexelése Azonnali kereséshez...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Hibák cseréje",
   "REPLACE_IN_FILES_ERRORS": "A következő fájlok nem módosultak, mert megváltoztak a keresés után, vagy nem írhatók.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Hiba a frissítési infó lekérdezése közben",

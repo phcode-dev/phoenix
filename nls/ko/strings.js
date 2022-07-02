@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd를 클릭하면 전부 펼치거나 접습니다",
   "FIND_IN_FILES_INDEXING": "빠른 검색을 위한 색인 중…",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "빠른 검색을 위해 {1} 개의 파일 {0} 개를 인덱싱하는 중...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "바꾸기 에러",
   "REPLACE_IN_FILES_ERRORS": "다음 파일은 검색 후에 변경되었거나 저장할 수 없는 파일이므로 수정할 수 없습니다.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "업데이트 정보를 검색하는 중 오류가 발생했습니다.",
