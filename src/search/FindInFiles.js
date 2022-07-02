@@ -182,7 +182,7 @@ define(function (require, exports, module) {
         // web worker search could be disabled if some error has happened in worker. But upon
         // project change, if we get this message, then it means that worker search is working,
         // we re-enable worker search. If a search fails, worker search will be switched off eventually.
-        FindUtils.setNodeSearchDisabled(false);
+        FindUtils.setWorkerSearchDisabled(false);
         FindUtils.notifyIndexingFinished();
         Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "numFiles", numFiles);
         Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "cacheSizeKB", cacheSize/1024);
@@ -564,7 +564,7 @@ define(function (require, exports, module) {
                 // Filter out files/folders that match user's current exclusion filter
                 fileListResult = FileFilters.filterFileList(filter, fileListResult);
 
-                if (searchModel.isReplace || FindUtils.isNodeSearchDisabled()) {
+                if (searchModel.isReplace || FindUtils.isWorkerSearchDisabled()) {
                     if (fileListResult.length) {
                         searchModel.allResultsAvailable = true;
                         return Async.doInParallel(fileListResult, _doSearchInOneFile);
@@ -607,14 +607,14 @@ define(function (require, exports, module) {
                         searchObject.getAllResults = true;
                     }
                     _updateChangedDocs();
-                    FindUtils.notifyNodeSearchStarted();
+                    FindUtils.notifyWorkerSearchStarted();
                     let searchStatTime = Date.now();
                     _FindInFilesWorker.exec("doSearch", searchObject)
                         .then(function (rcvd_object) {
-                            FindUtils.notifyNodeSearchFinished();
+                            FindUtils.notifyWorkerSearchFinished();
                             if (!rcvd_object || !rcvd_object.results) {
                                 console.error('search worker failed, falling back to brackets search');
-                                FindUtils.setNodeSearchDisabled(true);
+                                FindUtils.setWorkerSearchDisabled(true);
                                 searchDeferred.fail();
                                 clearSearch();
                                 return;
@@ -629,9 +629,9 @@ define(function (require, exports, module) {
                                 "timeMs", Date.now() - searchStatTime);
                         })
                         .catch(function () {
-                            FindUtils.notifyNodeSearchFinished();
+                            FindUtils.notifyWorkerSearchFinished();
                             console.error('worker fails');
-                            FindUtils.setNodeSearchDisabled(true);
+                            FindUtils.setWorkerSearchDisabled(true);
                             clearSearch();
                             searchDeferred.reject();
                         });
@@ -726,7 +726,7 @@ define(function (require, exports, module) {
      * Notify worker that the results should be collapsed
      */
     function _searchcollapseResults() {
-        if (FindUtils.isNodeSearchDisabled()) {
+        if (FindUtils.isWorkerSearchDisabled()) {
             return;
         }
         _FindInFilesWorker.exec("collapseResults", FindUtils.isCollapsedResults());
@@ -737,7 +737,7 @@ define(function (require, exports, module) {
      * @param {array} fileList The list of files that changed.
      */
     function filesChanged(fileList) {
-        if (FindUtils.isNodeSearchDisabled() || !fileList || fileList.length === 0) {
+        if (FindUtils.isWorkerSearchDisabled() || !fileList || fileList.length === 0) {
             return;
         }
         var updateObject = {
@@ -755,7 +755,7 @@ define(function (require, exports, module) {
      * @param {array} fileList The list of files that was removed.
      */
     function filesRemoved(fileList) {
-        if (FindUtils.isNodeSearchDisabled() || !fileList || fileList.length === 0) {
+        if (FindUtils.isWorkerSearchDisabled() || !fileList || fileList.length === 0) {
             return;
         }
         var updateObject = {
@@ -1020,10 +1020,10 @@ define(function (require, exports, module) {
             return searchDeferred.resolve().promise();
         }
         _updateChangedDocs();
-        FindUtils.notifyNodeSearchStarted();
+        FindUtils.notifyWorkerSearchStarted();
         _FindInFilesWorker.exec("nextPage")
             .then(function (rcvd_object) {
-                FindUtils.notifyNodeSearchFinished();
+                FindUtils.notifyWorkerSearchFinished();
                 if (searchModel.results) {
                     var resultEntry;
                     for (resultEntry in rcvd_object.results ) {
@@ -1038,9 +1038,9 @@ define(function (require, exports, module) {
                 searchDeferred.resolve();
             })
             .catch(function () {
-                FindUtils.notifyNodeSearchFinished();
+                FindUtils.notifyWorkerSearchFinished();
                 console.error('search worker fails');
-                FindUtils.setNodeSearchDisabled(true);
+                FindUtils.setWorkerSearchDisabled(true);
                 searchDeferred.reject();
             });
         return searchDeferred.promise();
@@ -1052,10 +1052,10 @@ define(function (require, exports, module) {
             return searchDeferred.resolve().promise();
         }
         _updateChangedDocs();
-        FindUtils.notifyNodeSearchStarted();
+        FindUtils.notifyWorkerSearchStarted();
         _FindInFilesWorker.exec("getAllResults")
             .then(function (rcvd_object) {
-                FindUtils.notifyNodeSearchFinished();
+                FindUtils.notifyWorkerSearchFinished();
                 searchModel.results = rcvd_object.results;
                 searchModel.numMatches = rcvd_object.numMatches;
                 searchModel.numFiles = rcvd_object.numFiles;
@@ -1064,9 +1064,9 @@ define(function (require, exports, module) {
                 searchDeferred.resolve();
             })
             .catch(function () {
-                FindUtils.notifyNodeSearchFinished();
+                FindUtils.notifyWorkerSearchFinished();
                 console.error('search worker fails');
-                FindUtils.setNodeSearchDisabled(true);
+                FindUtils.setWorkerSearchDisabled(true);
                 searchDeferred.reject();
             });
         return searchDeferred.promise();

@@ -217,7 +217,7 @@ define(function (require, exports, module) {
 
         function startSearch(replaceText) {
             var queryInfo = _findBar.getQueryInfo(),
-                disableFindBar = FindUtils.isNodeSearchDisabled() || (replaceText ? true : false);
+                disableFindBar = FindUtils.isWorkerSearchDisabled() || (replaceText ? true : false);
             if (queryInfo && queryInfo.query) {
                 _findBar.enable(!disableFindBar);
                 StatusBar.showBusyIndicator(disableFindBar);

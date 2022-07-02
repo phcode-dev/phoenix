@@ -349,7 +349,7 @@ define(function (require, exports, module) {
                 lastKeyCode = e.keyCode;
                 var executeSearchIfNeeded = function () {
                     // We only do instant search via node.
-                    if (FindUtils.isNodeSearchDisabled() || FindUtils.isInstantSearchDisabled()) {
+                    if (FindUtils.isWorkerSearchDisabled() || FindUtils.isInstantSearchDisabled()) {
                         // we still keep the interval timer up as instant search could get enabled/disabled based on node busy state
                         return;
                     }
@@ -360,7 +360,7 @@ define(function (require, exports, module) {
 
                     if (lastTypedTime && (currentTime - lastTypedTime >= 100) &&
                             self.getQueryInfo().query !== lastQueriedText &&
-                            !FindUtils.isNodeSearchInProgress()) {
+                            !FindUtils.isWorkerSearchInProgress()) {
 
                         // init Search
                         if (self._options.multifile) {
