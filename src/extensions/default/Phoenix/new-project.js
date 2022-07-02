@@ -143,7 +143,7 @@ define(function (require, exports, module) {
     }
 
     async function _validateProjectFolder(projectPath) {
-        return new Promise(async (resolve, reject)=>{
+        return new Promise((resolve, reject)=>{
             let dir = FileSystem.getDirectoryForPath(projectPath);
             let displayPath = projectPath.replace(Phoenix.VFS.getMountDir(), "");
             if(!dir){
@@ -177,45 +177,54 @@ define(function (require, exports, module) {
     }
 
     async function _findFreeFolderName(basePath) {
-        return new Promise(async (resolve, reject)=>{
-            for(let i=0; i< MAX_DEDUPE_COUNT; i++){
-                let newPath = `${basePath}-${i}`;
-                let exists = await window.Phoenix.VFS.existsAsync(newPath);
-                if(!exists){
-                    await window.Phoenix.VFS.ensureExistsDirAsync(newPath);
-                    resolve(newPath);
-                    return;
+        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
+            try {
+                for(let i=0; i< MAX_DEDUPE_COUNT; i++){
+                    let newPath = `${basePath}-${i}`;
+                    let exists = await window.Phoenix.VFS.existsAsync(newPath);
+                    if(!exists){
+                        await window.Phoenix.VFS.ensureExistsDirAsync(newPath);
+                        resolve(newPath);
+                        return;
+                    }
                 }
+                reject();
+            } catch (e) {
+                reject(e);
             }
-            reject();
         });
     }
 
     async function alreadyExists(suggestedProjectName) {
         let projectPath = `${ProjectManager.getLocalProjectsPath()}${suggestedProjectName}`; // try suggested path first
-        return await window.Phoenix.VFS.existsAsync(projectPath);
+        return window.Phoenix.VFS.existsAsync(projectPath);
     }
 
     async function _getSuggestedProjectDir(suggestedProjectName) {
-        return new Promise(async (resolve, reject)=>{
-            let projectPath = `${ProjectManager.getLocalProjectsPath()}${suggestedProjectName}`; // try suggested path first
-            let exists = await window.Phoenix.VFS.existsAsync(projectPath);
-            if(!exists){
-                resolve(projectPath);
-                return;
-            }
-            _showReplaceKeepProjectConfirmDialogue(suggestedProjectName).done(function (id) {
-                if (id === Dialogs.DIALOG_BTN_OK) {
+        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
+            try{
+                // try suggested path first
+                let projectPath = `${ProjectManager.getLocalProjectsPath()}${suggestedProjectName}`;
+                let exists = await window.Phoenix.VFS.existsAsync(projectPath);
+                if(!exists){
                     resolve(projectPath);
                     return;
-                } else if(id === Dialogs.DIALOG_BTN_CANCEL){
-                    reject();
-                    return;
                 }
-                _findFreeFolderName(projectPath)
-                    .then(projectPath=>resolve(projectPath))
-                    .catch(reject);
-            });
+                _showReplaceKeepProjectConfirmDialogue(suggestedProjectName).done(function (id) {
+                    if (id === Dialogs.DIALOG_BTN_OK) {
+                        resolve(projectPath);
+                        return;
+                    } else if(id === Dialogs.DIALOG_BTN_CANCEL){
+                        reject();
+                        return;
+                    }
+                    _findFreeFolderName(projectPath)
+                        .then(projectPath=>resolve(projectPath))
+                        .catch(reject);
+                });
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 
@@ -267,55 +276,61 @@ define(function (require, exports, module) {
      * @returns {Promise<void>}
      */
     async function downloadAndOpenProject(downloadURL, projectPath, suggestedProjectName, flattenFirstLevelInZip) {
-        return new Promise(async (resolve, reject)=>{
-            // if project path is null, create one in default folder
-            if(!projectPath){
-                projectPath = await _getSuggestedProjectDir(suggestedProjectName);
-            } else {
-                await _validateProjectFolder(projectPath);
-            }
-            console.log(`downloadAndOpenProject ${suggestedProjectName} from URL: ${downloadURL} to: ${projectPath}`);
+        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
+            try {
+                // if project path is null, create one in default folder
+                if(!projectPath){
+                    projectPath = await _getSuggestedProjectDir(suggestedProjectName);
+                } else {
+                    await _validateProjectFolder(projectPath);
+                }
+                console.log(
+                    `downloadAndOpenProject ${suggestedProjectName} from URL: ${downloadURL} to: ${projectPath}`);
 
-            downloadCancelled = false;
-            _showCreateProjectDialogue(Strings.SETTING_UP_PROJECT, Strings.DOWNLOADING).done(function (id) {
-                if (id === Dialogs.DIALOG_BTN_CANCEL) {
-                    downloadCancelled = true;
-                }
-            });
-            window.JSZipUtils.getBinaryContent(downloadURL, {
-                callback: async function(err, data) {
-                    if(downloadCancelled){
-                        reject();
-                    } else if(err) {
-                        console.error("could not load phoenix default project from zip file!", err);
-                        _closeCreateProjectDialogue();
-                        showErrorDialogue(Strings.DOWNLOAD_FAILED, Strings.DOWNLOAD_FAILED_MESSAGE);
-                        reject();
-                    } else {
-                        _unzipProject(data, projectPath, flattenFirstLevelInZip)
-                            .then(()=>{
-                                _closeCreateProjectDialogue();
-                                ProjectManager.openProject(projectPath)
-                                    .then(resolve)
-                                    .fail(reject);
-                                console.log("Project Setup complete: ", projectPath);
-                            })
-                            .catch(()=>{
-                                _closeCreateProjectDialogue();
-                                showErrorDialogue(Strings.ERROR_LOADING_PROJECT, Strings.UNZIP_FAILED);
-                                reject();
-                            });
+                downloadCancelled = false;
+                _showCreateProjectDialogue(Strings.SETTING_UP_PROJECT, Strings.DOWNLOADING).done(function (id) {
+                    if (id === Dialogs.DIALOG_BTN_CANCEL) {
+                        downloadCancelled = true;
                     }
-                },
-                progress: function (status){
-                    if(status.percent > 0){
-                        _updateCreateProjectDialogueMessage(`${Strings.DOWNLOADING} ${Math.round(status.percent)}%`);
+                });
+                window.JSZipUtils.getBinaryContent(downloadURL, {
+                    callback: async function(err, data) {
+                        if(downloadCancelled){
+                            reject();
+                        } else if(err) {
+                            console.error("could not load phoenix default project from zip file!", err);
+                            _closeCreateProjectDialogue();
+                            showErrorDialogue(Strings.DOWNLOAD_FAILED, Strings.DOWNLOAD_FAILED_MESSAGE);
+                            reject();
+                        } else {
+                            _unzipProject(data, projectPath, flattenFirstLevelInZip)
+                                .then(()=>{
+                                    _closeCreateProjectDialogue();
+                                    ProjectManager.openProject(projectPath)
+                                        .then(resolve)
+                                        .fail(reject);
+                                    console.log("Project Setup complete: ", projectPath);
+                                })
+                                .catch(()=>{
+                                    _closeCreateProjectDialogue();
+                                    showErrorDialogue(Strings.ERROR_LOADING_PROJECT, Strings.UNZIP_FAILED);
+                                    reject();
+                                });
+                        }
+                    },
+                    progress: function (status){
+                        if(status.percent > 0){
+                            _updateCreateProjectDialogueMessage(
+                                `${Strings.DOWNLOADING} ${Math.round(status.percent)}%`);
+                        }
+                    },
+                    abortCheck: function (){
+                        return downloadCancelled;
                     }
-                },
-                abortCheck: function (){
-                    return downloadCancelled;
-                }
-            });
+                });
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 

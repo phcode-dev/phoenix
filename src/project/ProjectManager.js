@@ -1387,14 +1387,18 @@ define(function (require, exports, module) {
 
     // this function should be given a destination that always exists, be it file or dir
     function _getPasteTarget(dstThatExists) {
-        return new Promise(async (resolve)=>{
-            let entry = (await FileSystem.resolveAsync(dstThatExists)).entry;
-            if(entry.isFile){
-                let parent = window.path.dirname(dstThatExists);
-                let parentEntry = (await FileSystem.resolveAsync(parent)).entry;
-                resolve(parentEntry);
-            } else {
-                resolve(entry);
+        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
+            try {
+                let entry = (await FileSystem.resolveAsync(dstThatExists)).entry;
+                if(entry.isFile){
+                    let parent = window.path.dirname(dstThatExists);
+                    let parentEntry = (await FileSystem.resolveAsync(parent)).entry;
+                    resolve(parentEntry);
+                } else {
+                    resolve(entry);
+                }
+            } catch (e) {
+                reject(e);
             }
         });
     }
