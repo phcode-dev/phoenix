@@ -280,16 +280,16 @@ onmessage = async function(e) {
     try{
         switch (data.exec) {
         case 'initCache':
-            response.response = initCache(data.params);
+            initCache(data.params);
             break;
         case 'filesChanged':
-            response.response = addFilesToCache(data.params);
+            addFilesToCache(data.params);
             break;
         case 'documentChanged':
-            response.response = documentChanged(data.params);
+            documentChanged(data.params);
             break;
         case 'filesRemoved':
-            response.response = removeFilesFromCache(data.params);
+            removeFilesFromCache(data.params);
             break;
         case 'doSearch':
             response.response = await doSearch(data.params);
@@ -301,7 +301,7 @@ onmessage = async function(e) {
             response.response = await getAllResults(data.params);
             break;
         case 'collapseResults':
-            response.response = setCollapseResults(data.params);
+            setCollapseResults(data.params);
             break;
         default: console.error("unknown indexing worker event received", data);
         }

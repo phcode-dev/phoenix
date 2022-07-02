@@ -94,10 +94,10 @@ define(function (require, exports, module) {
         try {
             switch (data.exec) {
             case 'crawlComplete':
-                response.response = workerFileCacheComplete(data.params);
+                workerFileCacheComplete(data.params);
                 break;
             case 'crawlProgress':
-                response.response = FindUtils.notifyIndexingProgress(data.params.processed, data.params.total);
+                FindUtils.notifyIndexingProgress(data.params.processed, data.params.total);
                 break;
             default: console.error("unknown indexing worker event received", data);
             }

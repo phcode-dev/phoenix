@@ -157,6 +157,8 @@ define(function (require, exports, module) {
         initDone = true;
     }
 
+    // some events generate too many ga events that ga can't handle. ignore them.
+    const ignoredGAEvents = ['instantSearch'];
     function _sendToGoogleAnalytics(category, action, label, count) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
         // TODO, see if we are sending too many events to ga, unlike core analytics, GA has a limit of
@@ -173,6 +175,9 @@ define(function (require, exports, module) {
             count = 1;
         }
         let eventAct = `${category}.${action}.${label}`;
+        if(ignoredGAEvents.includes(action)){
+            return;
+        }
         gtag('event', eventAct, {
             'event_category': category,
             'event_label': label,
