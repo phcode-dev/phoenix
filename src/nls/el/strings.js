@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd κλικ για επέκταση/σύμπτυξη όλων",
   "FIND_IN_FILES_INDEXING": "Ευρετήριο για Άμεση Αναζήτηση...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Ευρετηρίαση {0} αρχείων {1} για άμεση αναζήτηση...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Αντικατάσταση λαθών",
   "REPLACE_IN_FILES_ERRORS": "Τα ακόλουθα αρχεία δεν τροποποιήθηκαν επειδή άλλαξαν μετά την αναζήτηση ή δεν ήταν δυνατή η εγγραφή τους.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Σφάλμα λήψης πληροφοριών αναβάθμισης",

@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd clic pentru a extinde/restrânge toate",
   "FIND_IN_FILES_INDEXING": "Indexare pentru Căutare instantanee...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indexarea {0} a fișierelor {1} pentru Căutare instantanee...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Erori la înlocuire",
   "REPLACE_IN_FILES_ERRORS": "Următoarele fișiere nu au fost modificate pentru că acestea au fost modificate după căutare sau nu pot fi rescrise.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Eroare la primirea informațiilor despre actualizare",

@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd सभी का विस्तार/संक्षिप्त करने के लिए क्लिक करें",
   "FIND_IN_FILES_INDEXING": "त्वरित खोज के लिए इंडेक्सिंग...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "तत्काल खोज के लिए {1} फ़ाइलों में से {0} को अनुक्रमणित करना...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "त्रुटियाँ बदलें",
   "REPLACE_IN_FILES_ERRORS": "निम्न फ़ाइलों को संशोधित नहीं किया गया क्योंकि वे खोज के बाद बदल गईं या लिखी नहीं जा सकी।",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "अद्यतन जानकारी प्राप्त करने में त्रुटि",

@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd klik untuk melebarkan/melipat semua",
   "FIND_IN_FILES_INDEXING": "Pengindeksan untuk Pencarian Instan...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Pengindeksan {0} dari {1} file untuk Pencarian Instan...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Gagal Mengganti",
   "REPLACE_IN_FILES_ERRORS": "File berikut tidak termodifikasi karena berubah setelah pencarian atau tidak dapat ditulisi.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Gagal Mendapat Informasi Pembaruan",

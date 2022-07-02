@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "جهت بازکردن/بستن منوها کلید Ctrl/Cmd را گرفته و کلیک کنید.",
   "FIND_IN_FILES_INDEXING": "نمایه سازی برای جستجو از طریق مسنجر...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "نمایه سازی {0} از {1} فایل برای جستجوی از طریق مسنجر...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "خطاهای جایگزینی مقادیر",
   "REPLACE_IN_FILES_ERRORS": "پرونده های زیر قابل ویرایش نبودن. علت می تواند از قابل نوشتن نبودن پرونده های و یا تغییر آن های بعد از جستجو باشد.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "درحال بروزرسانی اطلاعات خطا",
