@@ -108,6 +108,22 @@ async function copyThirdPartyLibs(){
         src(['node_modules/prettier/LICENSE'])
             .pipe(rename("prettier.markdown"))
             .pipe(dest('src/thirdparty/licences/')),
+        // font-awesome
+        src(['node_modules/@fortawesome/fontawesome-free/css/*'])
+            .pipe(dest('src/thirdparty/fontawesome/css')),
+        src(['node_modules/@fortawesome/fontawesome-free/js/*'])
+            .pipe(dest('src/thirdparty/fontawesome/js')),
+        src(['node_modules/@fortawesome/fontawesome-free/webfonts/*'])
+            .pipe(dest('src/thirdparty/fontawesome/webfonts')),
+        src(['node_modules/@fortawesome/fontawesome-free/svgs/brands/*'])
+            .pipe(dest('src/thirdparty/fontawesome/svgs/brands')),
+        src(['node_modules/@fortawesome/fontawesome-free/svgs/regular/*'])
+            .pipe(dest('src/thirdparty/fontawesome/svgs/regular')),
+        src(['node_modules/@fortawesome/fontawesome-free/svgs/solid/*'])
+            .pipe(dest('src/thirdparty/fontawesome/svgs/solid')),
+        src(['node_modules/@fortawesome/fontawesome-free/LICENSE.txt'])
+            .pipe(rename("fontawesome.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
         // mime-db
         src(['node_modules/mime-db/db.json'])
             .pipe(rename("mime-db.json"))

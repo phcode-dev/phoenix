@@ -1,0 +1,27 @@
+{
+  "name": "ivogabe.icons",
+  "title": "Brackets Icons",
+  "description": "File icons in Brackets' file tree.",
+  "homepage": "https://github.com/ivogabe/Brackets-Icons",
+  "version": "1.5.7",
+  "author": "Ivo Gabe de Wolff (https://github.com/ivogabe)",
+  "license": "MIT",
+  "keywords": [
+    "icons",
+    "file",
+    "tree"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivogabe/Brackets-Icons.git"
+  },
+  "engines": {
+    "brackets": ">=0.44.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-typescript": "^2.7.7",
+    "gulp-zip": "^3.0.2",
+    "typescript": "^1.5.0-beta"
+  }
+}
