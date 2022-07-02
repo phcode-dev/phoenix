@@ -30,7 +30,6 @@ define(function (require, exports, module) {
         Async                 = require("utils/Async"),
         StringUtils           = require("utils/StringUtils"),
         ProjectManager        = require("project/ProjectManager"),
-        PreferencesManager    = require("preferences/PreferencesManager"),
         DocumentModule        = require("document/Document"),
         DocumentManager       = require("document/DocumentManager"),
         MainViewManager       = require("view/MainViewManager"),
@@ -38,9 +37,8 @@ define(function (require, exports, module) {
         LanguageManager       = require("language/LanguageManager"),
         SearchModel           = require("search/SearchModel").SearchModel,
         PerfUtils             = require("utils/PerfUtils"),
-        NodeDomain            = require("utils/NodeDomain"),
-        FileUtils             = require("file/FileUtils"),
-        FindUtils             = require("search/FindUtils");
+        FindUtils             = require("search/FindUtils"),
+        Metrics               = require("utils/Metrics");
 
     const _FindInFilesWorker = new Worker(
         `search/worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
@@ -96,7 +94,7 @@ define(function (require, exports, module) {
         try {
             switch (data.exec) {
             case 'crawlComplete':
-                response.response = nodeFileCacheComplete(data.params);
+                response.response = workerFileCacheComplete(data.params);
                 break;
             case 'crawlProgress':
                 response.response = FindUtils.notifyIndexingProgress(data.params.processed, data.params.total);
@@ -165,9 +163,8 @@ define(function (require, exports, module) {
         DocumentManager.on("fileNameChange",  _fileNameChangeHandler);
     }
 
-    function nodeFileCacheComplete([numFiles, cacheSize, crawlTime]) {
+    function workerFileCacheComplete([numFiles, cacheSize, crawlTime]) {
         console.log(`file indexing worker cache complete: ${numFiles} files, size: ${cacheSize} B in ${crawlTime}ms`);
-        // TODO: add metrics for num project files and cache sze here.
         if (/\/test\/SpecRunner\.html$/.test(window.location.pathname)) {
             // Ignore the event in the SpecRunner window
             return;
@@ -182,11 +179,14 @@ define(function (require, exports, module) {
         }
 
         FindUtils.setInstantSearchDisabled(false);
-        // Node search could be disabled if some error has happened in node. But upon
-        // project change, if we get this message, then it means that node search is working,
-        // we re-enable node search. If a search fails, node search will be switched off eventually.
+        // web worker search could be disabled if some error has happened in worker. But upon
+        // project change, if we get this message, then it means that worker search is working,
+        // we re-enable worker search. If a search fails, worker search will be switched off eventually.
         FindUtils.setNodeSearchDisabled(false);
         FindUtils.notifyIndexingFinished();
+        Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "numFiles", numFiles);
+        Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "cacheSizeKB", cacheSize/1024);
+        Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "crawlTimeMs", crawlTime);
     }
 
     /**
@@ -509,10 +509,10 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Inform node that the document has changed [along with its contents]
+     * Inform worker that the document has changed [along with its contents]
      * @param {string} docPath the path of the changed document
      */
-    function _updateDocumentInNode(docPath) {
+    function _updateDocumentInWorker(docPath) {
         DocumentManager.getDocumentForPath(docPath).done(function (doc) {
             if (doc) {
                 var updateObject = {
@@ -526,13 +526,13 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * sends all changed documents that we have tracked to node
+     * sends all changed documents that we have tracked to worker
      */
     function _updateChangedDocs() {
         var key = null;
         for (key in changedFileList) {
             if (changedFileList.hasOwnProperty(key)) {
-                _updateDocumentInNode(key);
+                _updateDocumentInWorker(key);
             }
         }
     }
@@ -608,11 +608,12 @@ define(function (require, exports, module) {
                     }
                     _updateChangedDocs();
                     FindUtils.notifyNodeSearchStarted();
+                    let searchStatTime = Date.now();
                     _FindInFilesWorker.exec("doSearch", searchObject)
                         .then(function (rcvd_object) {
                             FindUtils.notifyNodeSearchFinished();
                             if (!rcvd_object || !rcvd_object.results) {
-                                console.log('no node falling back to brackets search');
+                                console.error('search worker failed, falling back to brackets search');
                                 FindUtils.setNodeSearchDisabled(true);
                                 searchDeferred.fail();
                                 clearSearch();
@@ -624,10 +625,12 @@ define(function (require, exports, module) {
                             searchModel.exceedsMaximum = rcvd_object.exceedsMaximum;
                             searchModel.allResultsAvailable = rcvd_object.allResultsAvailable;
                             searchDeferred.resolve();
+                            Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "instantSearch",
+                                "timeMs", Date.now() - searchStatTime);
                         })
                         .catch(function () {
                             FindUtils.notifyNodeSearchFinished();
-                            console.log('node fails');
+                            console.error('worker fails');
                             FindUtils.setNodeSearchDisabled(true);
                             clearSearch();
                             searchDeferred.reject();
@@ -647,7 +650,7 @@ define(function (require, exports, module) {
                 return searchModel.results;
 
             }, function (err) {
-                console.log("find in files failed: ", err);
+                console.error("find in files failed: ", err);
                 PerfUtils.finalizeMeasurement(perfTimer);
 
                 // In jQuery promises, returning the error here propagates the rejection,
@@ -720,7 +723,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Notify node that the results should be collapsed
+     * Notify worker that the results should be collapsed
      */
     function _searchcollapseResults() {
         if (FindUtils.isNodeSearchDisabled()) {
@@ -730,7 +733,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Inform node that the list of files has changed.
+     * Inform worker that the list of files has changed.
      * @param {array} fileList The list of files that changed.
      */
     function filesChanged(fileList) {
@@ -748,7 +751,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Inform node that the list of files have been removed.
+     * Inform worker that the list of files have been removed.
      * @param {array} fileList The list of files that was removed.
      */
     function filesRemoved(fileList) {
@@ -778,7 +781,7 @@ define(function (require, exports, module) {
         // Update the search results
         _.forEach(searchModel.results, function (item, fullPath) {
             if (fullPath.indexOf(oldName) === 0) {
-                // node search : inform node about the rename
+                // worker search : inform worker about the rename
                 filesRemoved([fullPath]);
                 filesChanged([fullPath.replace(oldName, newName)]);
 
@@ -816,7 +819,7 @@ define(function (require, exports, module) {
                 Object.keys(searchModel.results).forEach(function (fullPath) {
                     if (fullPath === entry.fullPath ||
                             (entry.isDirectory && fullPath.indexOf(entry.fullPath) === 0)) {
-                        // node search : inform node that the file is removed
+                        // worker search : inform worker that the file is removed
                         fullPaths.push(fullPath);
                         if (findOrReplaceInProgress) {
                             searchModel.removeResults(fullPath);
@@ -863,7 +866,7 @@ define(function (require, exports, module) {
                         return;
                     }
 
-                    //node Search : inform node about the file changes
+                    //worker Search : inform worker about the file changes
                     //filesChanged(addedFilePaths);
                     fullPaths = fullPaths.concat(addedFilePaths);
 
@@ -972,8 +975,8 @@ define(function (require, exports, module) {
     };
 
     /**
-     * On project change, inform node about the new list of files that needs to be crawled.
-     * Instant search is also disabled for the time being till the crawl is complete in node.
+     * On project change, inform worker about the new list of files that needs to be crawled.
+     * Instant search is also disabled for the time being till the crawl is complete in worker.
      */
     var _initCache = function () {
         function filter(file) {
@@ -1036,7 +1039,7 @@ define(function (require, exports, module) {
             })
             .catch(function () {
                 FindUtils.notifyNodeSearchFinished();
-                console.log('node fails');
+                console.error('search worker fails');
                 FindUtils.setNodeSearchDisabled(true);
                 searchDeferred.reject();
             });
@@ -1062,7 +1065,7 @@ define(function (require, exports, module) {
             })
             .catch(function () {
                 FindUtils.notifyNodeSearchFinished();
-                console.log('node fails');
+                console.error('search worker fails');
                 FindUtils.setNodeSearchDisabled(true);
                 searchDeferred.reject();
             });

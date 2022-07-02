@@ -28,7 +28,6 @@ define(function (require, exports, module) {
         FileSystem          = require("filesystem/FileSystem"),
         FileUtils           = require("file/FileUtils"),
         ProjectManager      = require("project/ProjectManager"),
-        PreferencesManager  = require("preferences/PreferencesManager"),
         EventDispatcher     = require("utils/EventDispatcher"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
@@ -41,30 +40,6 @@ define(function (require, exports, module) {
         collapseResults = false;
 
     EventDispatcher.makeEventDispatcher(exports);
-
-    // define preferences for find in files
-    PreferencesManager.definePreference("findInFiles.nodeSearch", "boolean", true, {
-        description: Strings.DESCRIPTION_FIND_IN_FILES_NODE
-    });
-    PreferencesManager.definePreference("findInFiles.instantSearch", "boolean", true, {
-        description: Strings.DESCRIPTION_FIND_IN_FILES_INSTANT
-    });
-
-    /**
-     * returns true if the used disabled node based search in his preferences
-     * @return {boolean}
-     */
-    function _prefNodeSearchDisabled() {
-        return !PreferencesManager.get("findInFiles.nodeSearch");
-    }
-
-    /**
-     * returns true if the used instant search in his preferences
-     * @return {boolean}
-     */
-    function _prefInstantSearchDisabled() {
-        return !PreferencesManager.get("findInFiles.instantSearch");
-    }
 
     /**
      * Given a replace string that contains $-expressions, replace them with data from the given
@@ -398,7 +373,7 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     function isInstantSearchDisabled() {
-        return _prefNodeSearchDisabled() || _prefInstantSearchDisabled() || nodeSearchDisabled || instantSearchDisabled;
+        return nodeSearchDisabled || instantSearchDisabled;
     }
 
     /**
@@ -418,7 +393,7 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     function isNodeSearchDisabled() {
-        return _prefNodeSearchDisabled() || nodeSearchDisabled;
+        return nodeSearchDisabled;
     }
 
     /**
