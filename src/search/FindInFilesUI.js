@@ -279,6 +279,7 @@ define(function (require, exports, module) {
         }
 
         handleQueryChange();
+        startSearch();
 
         // Appending FilterPicker and query text can change height of modal bar, so resize editor.
         // Preserve scroll position of the current full editor across the editor refresh, adjusting
