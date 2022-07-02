@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "Dosya: <b>{0}</b>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd tümünü genişletmek/daraltmak için tıklayın",
   "FIND_IN_FILES_INDEXING": "Anında Arama için Dizin Oluşturma...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Anında Arama için {1} dosyalarının {0} dizinlenmesi...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Hataları Değiştir",
   "REPLACE_IN_FILES_ERRORS": "Aşağıdaki dosyalar, aramadan sonra değiştikleri veya yazılamadığı için değiştirilmedi.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Versiyon bilgisi alınırken hata",

@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{ 0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "എല്ലാം വിപുലീകരിക്കാനും ചുരുക്കാനും Ctrl/Cmd ക്ലിക്കുചെയ്യുക",
   "FIND_IN_FILES_INDEXING": "തൽക്ഷണ തിരയലിനായി ഇൻഡെക്സിംഗ്...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "തൽക്ഷണ തിരയലിനായി {0} {1} ഫയലുകളുടെ സൂചികയിലാക്കുന്നു...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "പിശകുകൾ മാറ്റിസ്ഥാപിക്കുക",
   "REPLACE_IN_FILES_ERRORS": "താഴെ ഫയലുകൾ അവർ തിരയൽ ശേഷം മാറ്റി അല്ലെങ്കിൽ എഴുതാൻ കഴിഞ്ഞില്ല കാരണം പരിഷ്ക്കരിച്ചില്ല.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "അപ്ഡേറ്റ് വിവരം നേടുന്നതിൽ പിശക്",

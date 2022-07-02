@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "Soubor <span class='dialog-filename'>{0}</span> ve složce <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd klik pro rozbalení/sbalení všeho",
   "FIND_IN_FILES_INDEXING": "Indexování pro okamžité vyhledávání…",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indexování {0} {1} souborů pro okamžité vyhledávání...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Nahradit chyby",
   "REPLACE_IN_FILES_ERRORS": "Následující soubory nebyly změněny, protože se změnily po hledání nebo do nich nelze zapisovat.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Chyba při získávání informací o aktualizaci",

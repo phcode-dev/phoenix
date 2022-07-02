@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Klik Ctrl/Cmd om alles in/uit te vouwen",
   "FIND_IN_FILES_INDEXING": "Indexering voor Direct zoeken...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indexeren van {0} van {1} bestanden voor Direct zoeken...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Vervang fouten",
   "REPLACE_IN_FILES_ERRORS": "De volgende bestanden zijn niet aangepast omdat deze na het zoeken zijn aangepast of niet bewerkt kunnen worden.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Probleem bij het ophalen van update-informatie",

@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd clic para expandir/colapsar todo",
   "FIND_IN_FILES_INDEXING": "Indexando archivos para la Búsqueda instantánea…",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indexando {0} de {1} archivos para la búsqueda instantánea...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Errores al reemplazar",
   "REPLACE_IN_FILES_ERRORS": "Los siguientes archivos no fueron modificados porque cambiaron después de realizar la búsqueda o no pueden ser escritos.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Error obteniendo información sobre actualizaciones",

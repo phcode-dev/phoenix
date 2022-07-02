@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{ 0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl /Cmd تمام توسیع/خاتمے کے لئے کلک کریں",
   "FIND_IN_FILES_INDEXING": "فوری تلاش کے لئے اشاریہ کاری...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "فوری تلاش کے لئے {1} فائلوں کے {0} کی اشاریہ کاری...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "غلطیوں کو تبدیل کریں",
   "REPLACE_IN_FILES_ERRORS": "درج ذیل فائلیں ترمیم نہیں کی گئیں کیونکہ وہ تلاش کے بعد تبدیل ہوگئیں یا لکھی نہیں جا سکتیں۔",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "اپ ڈیٹ معلومات حاصل کرنے میں خرابی",

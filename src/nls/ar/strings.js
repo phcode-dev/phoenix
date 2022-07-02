@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "كترل/كمد انقر لتوسيع/طي الكل",
   "FIND_IN_FILES_INDEXING": "يتم الآن فهرسة البحث الفوري...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "يتم الآن فهرسة {0} لملفات {1} للبحث الفوري...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "استبدال الأخطاء",
   "REPLACE_IN_FILES_ERRORS": "لم يتم تعديل الملفات التالية لأنها تغيرت بعد البحث أو تعذر كتابتها.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "خطأ في الحصول على معلومات التحديث",

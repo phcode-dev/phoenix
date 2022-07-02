@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd-klicka för att expandera/minimera alla",
   "FIND_IN_FILES_INDEXING": "Indexering för direktsökning...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Indexering av {0} av {1} -filer för direktsökning...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Ersättningsfel",
   "REPLACE_IN_FILES_ERRORS": "Följande filer ändrades inte eftersom de förändrats efter sökningen eller inte kunde skrivas till.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Fel vid hämtning av versioninformation",

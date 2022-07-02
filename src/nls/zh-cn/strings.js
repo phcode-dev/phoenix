@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "按住 Ctrl/Cmd 键以便展开/折叠全部结果",
   "FIND_IN_FILES_INDEXING": "Indexing for Instant Search…",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "正在索引 {0} 个 {1} 个文件以进行即时搜索...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "替换出现错误",
   "REPLACE_IN_FILES_ERRORS": "以下文件未被修改，可能是搜索后发生变更或无法写入。",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "获取更新信息失败",

@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd-клик чтобы развернуть/свернуть все",
   "FIND_IN_FILES_INDEXING": "Индексирование для мгновенного поиска...",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "Индексирование {0} из {1} файлов для мгновенного поиска...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "Ошибка замены",
   "REPLACE_IN_FILES_ERRORS": "Данные файлы не были изменены, т.к. они изменились после поиска или не могут быть записаны.",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "Ошибка при получении информации об обновлениях",

@@ -176,6 +176,7 @@ define({
   "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>",
   "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl / Command キーをクリックしてすべて展開 / 折りたたみ",
   "FIND_IN_FILES_INDEXING": "クイック検索のインデックスを作成中…",
+  "FIND_IN_FILES_INDEXING_PROGRESS": "{1} 個のファイルの {0} をクイック検索用にインデックス化しています...",
   "REPLACE_IN_FILES_ERRORS_TITLE": "置換エラー",
   "REPLACE_IN_FILES_ERRORS": "次のファイルは検索の後で変更されているか、書き込むことができないため、変更されていません。",
   "ERROR_FETCHING_UPDATE_INFO_TITLE": "更新情報を取得する際にエラーが発生しました。",
