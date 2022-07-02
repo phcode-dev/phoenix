@@ -1684,7 +1684,10 @@ define(function (require, exports, module) {
 
     /** Show in File Tree command handler **/
     function handleShowInTree() {
-        ProjectManager.showInTree(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE));
+        let activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
+        if(activeFile){
+            ProjectManager.showInTree(activeFile);
+        }
     }
 
     /** Delete file command handler  **/
