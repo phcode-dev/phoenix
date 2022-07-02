@@ -45,6 +45,7 @@ html, body {
     color: @bc-text;
     height: 100%;
     overflow: hidden;
+    font-size: 14px;
 
     /* Turn off selection for UI elements */
     .user-select(none);
@@ -154,6 +155,7 @@ a, img {
 #titlebar, .modal-bar {
     border-bottom: 1px solid @bc-panel-border;
     box-shadow: 0 1px 3px @bc-shadow-small;
+    font-size: @menu-item-font-size;
 
     // Make sure the bottom box-shadow goes above the editor (position: relative needed to start a new stacking group)
     position: relative;
@@ -737,7 +739,7 @@ a, img {
 
 .bottom-panel-table {
     td {
-        font-size: 12px;
+        font-size: 14px;
         padding-left: 15px;
         padding-right: 0;
         vertical-align: baseline;
@@ -992,10 +994,14 @@ a, img {
     cursor: col-resize;
 }
 
+.working-set-header-title{
+    font-size: 15px;
+}
+
 #project-files-header {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding: 8px 0 9px 12px;
-    font-size: 13px;
+    font-size: 15px;
     color: @project-panel-text-2;
     overflow: hidden;
 
@@ -1039,7 +1045,7 @@ a, img {
     a {
         color: @bc-text-alt;
 
-        font-size: 13px;
+        font-size: 14px;
         text-decoration: none;
 
         display: block;
