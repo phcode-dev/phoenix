@@ -1302,10 +1302,13 @@ define(function (require, exports, module) {
 
     // after model change, queue path for selection. As there can be only one selection, the last selection wins.
     let queuePathForSelection = null;
-    model.on(ProjectModel.EVENT_CHANGE, ()=>{
+    model.on(ProjectModel.EVENT_CHANGE, async ()=>{
         // Path that is being copied can be selected only after project model is updated.
         if(queuePathForSelection){
-            actionCreator.setSelected(queuePathForSelection);
+            let entry = (await FileSystem.resolveAsync(queuePathForSelection)).entry;
+            if(entry.isFile){
+                actionCreator.setSelected(queuePathForSelection);
+            }
             queuePathForSelection = null;
         }
     });
