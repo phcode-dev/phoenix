@@ -5,7 +5,6 @@ define(function (require, exports, module) {
 
     let extensionUtils = brackets.getModule('utils/ExtensionUtils'),
         fileUtils = brackets.getModule('file/FileUtils'),
-        LanguageManager = brackets.getModule("language/LanguageManager"),
         WorkingSetView = brackets.getModule('project/WorkingSetView'),
         FileTreeView = brackets.getModule('project/FileTreeView');
 
@@ -19,6 +18,9 @@ define(function (require, exports, module) {
         html: "devicon-html5-plain",
         js: "devicon-javascript-plain",
         ts: "devicon-typescript-plain",
+        map: "fa-map-signs fa-solid",
+        'js.map': "fa-map-signs fa-solid",
+        'css.map': "fa-map-signs fa-solid",
         xml: 'fa-code fa-solid',
         jsx: 'fa-react fa-brands',
         hbs: "devicon-handlebars-plain",
@@ -137,17 +139,26 @@ define(function (require, exports, module) {
         '.eslintrc.js': 'devicon-eslint-original'
     };
 
+    function getExtension(filePath) {
+        filePath = filePath || '';
+        let pathSplit = filePath.split('.');
+        return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : '';
+    }
+
     var iconProvider = function (entry) {
         let color = true;
         if (!entry.isFile) {
             return;
         }
 
-        var ext = LanguageManager.getCompoundFileExtension(entry.fullPath) || entry.name.substr(1);
-        var filename = fileUtils.getBaseName(entry.fullPath).toLowerCase();
+        let ext = getExtension(entry.fullPath) || entry.name.substr(1);
+        let filename = fileUtils.getBaseName(entry.fullPath).toLowerCase();
 
-        var el = $('<i>');
-        el.addClass('fa-solid fa-file bd-icon');
+        let span = $('<span>');
+        span.addClass('bd-icon');
+        let el = $('<i>');
+        span.append(el);
+        el.addClass('fa-solid fa-file');
 
         if (files[filename]) {
             el.removeClass('fa-solid fa-file');
@@ -163,9 +174,9 @@ define(function (require, exports, module) {
             }
         }
 
-        return el;
+        return span;
     };
 
-    WorkingSetView.addIconProvider(iconProvider);
-    FileTreeView.addIconProvider(iconProvider);
+    WorkingSetView.addIconProvider(iconProvider, -1);
+    FileTreeView.addIconProvider(iconProvider, -1);
 });

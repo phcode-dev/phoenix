@@ -405,26 +405,31 @@ define(function (require, exports, module) {
          * @return {Array.<PreactComponent>} icon components to render
          */
         getIcons: function () {
-            var result,
+            let result= [],
                 extensions = this.props.extensions;
-
             if (extensions && extensions.get("icons")) {
-                var data = this.getDataForExtension();
-                result = extensions.get("icons").map(function (callback) {
+                let data = this.getDataForExtension();
+                let iconProviders = extensions.get("icons").toArray();
+                // the iconProviders list is sorted by priority at insertion
+                for(let iconProviderCB of iconProviders){
                     try {
-                        var result = callback(data);
-                        if (result && !Preact.isValidElement(result)) {
-                            result = Preact.DOM.span({
+                        let iconResult = iconProviderCB(data);
+                        if (iconResult && !Preact.isValidElement(iconResult)) {
+                            iconResult = Preact.DOM.span({
                                 dangerouslySetInnerHTML: {
-                                    __html: $(result)[0].outerHTML
+                                    __html: $(iconResult)[0].outerHTML
                                 }
                             });
                         }
-                        return result;  // by this point, returns either undefined or a Preact object
+                        // by this point, returns either undefined or a Preact object
+                        if(iconResult){
+                            result.push(iconResult);
+                            break;
+                        }
                     } catch (e) {
                         console.error("Exception thrown in FileTreeView icon provider: " + e, e.stack);
                     }
-                }).filter(isDefined).toArray();
+                }
             }
 
             if (!result || result.length === 0) {
@@ -443,17 +448,28 @@ define(function (require, exports, module) {
          * @return {string} classes for the current node
          */
         getClasses: function (classes) {
-            var extensions = this.props.extensions;
+            let extensions = this.props.extensions;
 
             if (extensions && extensions.get("addClass")) {
-                var data = this.getDataForExtension();
-                classes = classes + " " + extensions.get("addClass").map(function (callback) {
-                    try {
-                        return callback(data);
+                let data = this.getDataForExtension();
+                let classProviders = extensions.get("addClass").toArray();
+                let succeededPriority = null;
+                // the classProviders list is sorted by priority at insertion
+                for(let classProviderCB of classProviders){
+                    if(succeededPriority !== null && (succeededPriority !== classProviderCB.priority)){
+                        // we need to append all class of the same priority and break once we shift to lower priority.
+                        break;
+                    }
+                    try{
+                        let classResult = classProviderCB(data);
+                        if(classResult){
+                            classes = classes + " " + classResult;
+                            succeededPriority = classProviderCB.priority;
+                        }
                     } catch (e) {
                         console.error("Exception thrown in FileTreeView addClass provider: " + e, e.stack);
                     }
-                }).filter(isDefined).toArray().join(" ");
+                }
             }
 
             return classes;
@@ -1295,20 +1311,27 @@ define(function (require, exports, module) {
             callbackList = Immutable.List();
         }
         callbackList = callbackList.push(callback);
+        callbackList = callbackList.sortBy((f) => -f.priority);
         _extensions = _extensions.set(category, callbackList);
     }
 
     /**
      * @see {@link ProjectManager::#addIconProvider}
+     * @param {number} [priority] optional priority. 0 being lowest. The icons with the highest priority wins if there
+     * are multiple callback providers attached. icon providers of the same priority first valid response wins.
      */
-    function addIconProvider(callback) {
+    function addIconProvider(callback, priority= 0) {
+        callback.priority = priority;
         _addExtension("icons", callback);
     }
 
     /**
      * @see {@link ProjectManager::#addClassesProvider}
+     * @param {number} [priority] optional priority. 0 being lowest. The class with the highest priority wins if there
+     * are multiple callback providers attached. class providers of the same priority will be appended.
      */
-    function addClassesProvider(callback) {
+    function addClassesProvider(callback, priority = 0) {
+        callback.priority = priority;
         _addExtension("addClass", callback);
     }
 
