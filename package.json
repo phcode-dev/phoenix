@@ -73,6 +73,7 @@
         "@pixelbrackets/gfm-stylesheet": "^1.1.0",
         "bootstrap": "^5.1.3",
         "browser-mime": "^1.0.1",
+        "devicon": "^2.15.1",
         "jszip": "^3.7.1",
         "marked": "^4.0.14",
         "mime-db": "^1.52.0",

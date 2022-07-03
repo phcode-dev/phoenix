@@ -1,0 +1,12 @@
+.bd-icon {
+    font-size: 14px;
+    vertical-align: middle;
+    color: white;
+    padding-right: 3px;
+    opacity: .8;
+}
+
+.jstree-clicked .bd-icon, .selected .bd-icon {
+    color: #8fddff;
+    opacity: 1;
+}
