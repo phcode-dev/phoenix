@@ -1414,15 +1414,6 @@ define(function (require, exports, module) {
     };
 
     /**
-     * paneDestroy event handler
-     */
-    MainViewManager.on("paneDestroy", function (e, paneId) {
-        var view = _views[paneId];
-        delete _views[view.paneId];
-        view.destroy();
-    });
-
-    /**
      * Creates a new WorkingSetView object for the specified pane
      * @param {!jQuery} $container - the WorkingSetView's DOM parent node
      * @param {!string} paneId - the id of the pane the view is being created for
@@ -1485,6 +1476,11 @@ define(function (require, exports, module) {
 
     AppInit.htmlReady(function () {
         $workingFilesContainer =  $("#working-set-list-container");
+        MainViewManager.on("paneDestroy", function (e, paneId) {
+            var view = _views[paneId];
+            delete _views[view.paneId];
+            view.destroy();
+        });
     });
 
     /*
