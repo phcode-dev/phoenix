@@ -1135,12 +1135,17 @@ define(function (require, exports, module) {
         // Create new list item with a link
         var $link = $("<a href='#'></a>").html(ViewUtils.getFileEntryDisplay(file));
 
-        _iconProviders.forEach(function (provider) {
-            var icon = provider(data);
-            if (icon) {
-                $link.prepend($(icon));
+        for(let provider of _iconProviders){
+            try{
+                let icon = provider(data);
+                if (icon) {
+                    $link.prepend($(icon));
+                    break;
+                }
+            } catch (e) {
+                console.error("Failed to create workingset file icon: ", e);
             }
-        });
+        }
 
         var $newItem = $("<li></li>")
             .append($link)
@@ -1438,12 +1443,18 @@ define(function (require, exports, module) {
      * @param {!function(!{name:string, fullPath:string, isFile:boolean}):?string|jQuery|DOMNode} callback
      * Return a string representing the HTML, a jQuery object or DOM node, or undefined. If undefined,
      * nothing is prepended to the list item.
+     * @param {number} [priority] optional priority. 0 being lowest. The icons with the highest priority wins if there
+     * are multiple callback providers attached. icon providers of the same priority first valid response wins.
      */
-    function addIconProvider(callback) {
+    function addIconProvider(callback, priority = 0) {
         if (!callback) {
             return;
         }
+        callback.priority = priority;
         _iconProviders.push(callback);
+        _iconProviders.sort(function(cb1, cb2){
+            return cb2.priority - cb1.priority;
+        });
         // build all views so the provider has a chance to add icons
         //    to all items that have already been created
         refresh(true);
@@ -1455,12 +1466,18 @@ define(function (require, exports, module) {
      *
      * @param {!function(!{name:string, fullPath:string, isFile:boolean}):?string} callback
      * Return a string containing space-separated CSS class(es) to add, or undefined to leave CSS unchanged.
+     * @param {number} [priority] optional priority. 0 being lowest. The class with the highest priority wins if there
+     * are multiple callback classes attached. class providers of the same priority will be appended.
      */
-    function addClassProvider(callback) {
+    function addClassProvider(callback, priority = 0) {
         if (!callback) {
             return;
         }
+        callback.priority = priority;
         _classProviders.push(callback);
+        _classProviders.sort(function(cb1, cb2){
+            return cb2.priority - cb1.priority;
+        });
         // build all views so the provider has a chance to style
         //    all items that have already been created
         refresh(true);
@@ -1476,12 +1493,17 @@ define(function (require, exports, module) {
      * @param {!jQuery} $element - jquery fn wrap for the list item
      */
     function useIconProviders(data, $element) {
-        _iconProviders.forEach(function (provider) {
-            var icon = provider(data);
-            if (icon) {
-                $element.prepend($(icon));
+        for(let provider of _iconProviders){
+            try{
+                let icon = provider(data);
+                if (icon) {
+                    $element.prepend($(icon));
+                    break;
+                }
+            } catch (e) {
+                console.error("Failed to create workingset file icon: ", e);
             }
-        });
+        }
     }
 
     /*
@@ -1490,9 +1512,23 @@ define(function (require, exports, module) {
      * @param {!jQuery} $element - jquery fn wrap for the list item
      */
     function useClassProviders(data, $element) {
-        _classProviders.forEach(function (provider) {
-            $element.addClass(provider(data));
-        });
+        let succeededPriority = null;
+        // the classProviders list is sorted by priority at insertion
+        for(let provider of _classProviders){
+            try{
+                if(succeededPriority !== null && (succeededPriority !== provider.priority)){
+                    // we need to append all class of the same priority and break once we shift to lower priority.
+                    break;
+                }
+                let classToApply = provider(data);
+                if(classToApply){
+                    $element.addClass(classToApply);
+                    succeededPriority = provider.priority;
+                }
+            } catch (e) {
+                console.error("Failed to apply workingset file class: ", e);
+            }
+        }
     }
 
     /**

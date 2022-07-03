@@ -1698,9 +1698,11 @@ define(function (require, exports, module) {
      * * `isFile`: true if it's a file, false if it's a directory
      * Return a string of HTML text, a Preact.DOM.ins instance, a jQuery object, or a DOM node; or undefined
      * to prepend nothing.
+     * @param {number} [priority] optional priority. 0 being lowest. The class with the highest priority wins if there
+     * are multiple callback responses. class providers of the same priority will be appended.
      */
-    function addIconProvider(callback) {
-        return FileTreeView.addIconProvider(callback);
+    function addIconProvider(callback, priority= 0) {
+        return FileTreeView.addIconProvider(callback, priority);
     }
 
     /**
