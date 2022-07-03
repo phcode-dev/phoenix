@@ -821,5 +821,5 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Příklady bootstrapu",
   "GUIDED_FILES_SIDEBAR": "Vyberte soubor HTML </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Proveďte některé změny kódu a uložte soubor, abyste viděli náhled. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "test"
+  "TEST_TRANSLATE": "použijte k testování překladů"
 });

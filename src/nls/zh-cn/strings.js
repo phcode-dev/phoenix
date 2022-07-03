@@ -821,5 +821,5 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "引导程序示例",
   "GUIDED_FILES_SIDEBAR": "选择一个 HTML 文件</br><a href='#' style='float:right;'>好的</a>",
   "GUIDED_LIVE_PREVIEW": "进行一些代码更改并保存文件以查看预览。</br><a href='#' style='float:right;'>好的</a>",
-  "TEST_TRANSLATE": "测试"
+  "TEST_TRANSLATE": "用它来测试翻译"
 });
