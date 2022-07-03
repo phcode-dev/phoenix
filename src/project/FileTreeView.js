@@ -1316,7 +1316,12 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @see {@link ProjectManager::#addIconProvider}
+     * Adds an icon provider. The callback is invoked before each working set item is created, and can
+     * return content to prepend to the item if it supports the icon.
+     *
+     * @param {!function(!{name:string, fullPath:string, isFile:boolean}):?string|jQuery|DOMNode} callback
+     * Return a string representing the HTML, a jQuery object or DOM node, or undefined. If undefined,
+     * nothing is prepended to the list item and the default or an available icon will be used.
      * @param {number} [priority] optional priority. 0 being lowest. The icons with the highest priority wins if there
      * are multiple callback providers attached. icon providers of the same priority first valid response wins.
      */
@@ -1326,9 +1331,13 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @see {@link ProjectManager::#addClassesProvider}
+     * Adds a CSS class provider, invoked before each working set item is created or updated. When called
+     * to update an existing item, all previously applied classes have been cleared.
+     *
+     * @param {!function(!{name:string, fullPath:string, isFile:boolean}):?string} callback
+     * Return a string containing space-separated CSS class(es) to add, or undefined to leave CSS unchanged.
      * @param {number} [priority] optional priority. 0 being lowest. The class with the highest priority wins if there
-     * are multiple callback providers attached. class providers of the same priority will be appended.
+     * are multiple callback classes attached. class providers of the same priority will be appended.
      */
     function addClassesProvider(callback, priority = 0) {
         callback.priority = priority;
