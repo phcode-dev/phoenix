@@ -821,5 +821,5 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap-esimerkkejä",
   "GUIDED_FILES_SIDEBAR": "Valitse HTML-tiedosto </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Tee joitain koodimuutoksia ja tallenna tiedosto nähdäksesi esikatselun. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "testi"
+  "TEST_TRANSLATE": "Käytä tätä käännösten testaamiseen"
 });

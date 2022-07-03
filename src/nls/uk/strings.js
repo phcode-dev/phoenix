@@ -821,5 +821,5 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Приклади початкового завантаження",
   "GUIDED_FILES_SIDEBAR": "Виберіть HTML-файл </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Зробіть деякі зміни в коді і збережіть файл, щоб побачити попередній перегляд. </br> <a href='#' style='float:right;'>ОК</a>",
-  "TEST_TRANSLATE": "тест"
+  "TEST_TRANSLATE": "використовуйте це для перевірки перекладів"
 });
