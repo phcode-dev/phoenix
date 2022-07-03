@@ -821,5 +821,5 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "نمونه بوت استرپ",
   "GUIDED_FILES_SIDEBAR": "یک فایل HTML را <a href='#' style='float:right;'>خوب</a>انتخاب </br> کنید",
   "GUIDED_LIVE_PREVIEW": "برخی از تغییرات کد را انجام دهید و فایل را برای دیدن پیش نمایش ذخیره کنید. </br> <a href='#' style='float:right;'>باشه</a>",
-  "TEST_TRANSLATE": "تست"
+  "TEST_TRANSLATE": "از این برای تست ترجمه ها استفاده کنید"
 });

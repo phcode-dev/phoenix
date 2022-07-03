@@ -821,5 +821,5 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "بوٹسٹریپ مثالیں",
   "GUIDED_FILES_SIDEBAR": "ایک HTML فائل <a href='#' style='float:right;'>ٹھیک ہے</a>منتخب </br> کریں",
   "GUIDED_LIVE_PREVIEW": "کچھ کوڈ میں تبدیلی کریں اور پیش نظارہ دیکھنے کے لئے فائل محفوظ کریں. </br> <a href='#' style='float:right;'>ٹھیک ہے</a>",
-  "TEST_TRANSLATE": "امتحان"
+  "TEST_TRANSLATE": "ترجمہ ٹیسٹ کرنے کے لئے اس کا استعمال"
 });

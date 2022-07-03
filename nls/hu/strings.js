@@ -821,5 +821,5 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap példák",
   "GUIDED_FILES_SIDEBAR": "Válasszon egy HTML fájlt </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Végezzen el néhány kódmódosítást, és mentse a fájlt az előnézet megtekintéséhez. </br> <a href='#' style='float:right;'>rendben</a>",
-  "TEST_TRANSLATE": "teszt"
+  "TEST_TRANSLATE": "használja ezt a fordítások teszteléséhez"
 });

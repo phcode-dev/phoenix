@@ -821,5 +821,5 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "引導示例",
   "GUIDED_FILES_SIDEBAR": "選擇一個 HTML 文件</br> <a href='#' style='float:right;'> 確定</a>",
   "GUIDED_LIVE_PREVIEW": "進行一些代碼更改並保存文件以查看預覽。</br><a href='#' style='float:right;'>好</a>",
-  "TEST_TRANSLATE": "測試"
+  "TEST_TRANSLATE": "用這個來測試翻譯"
 });
