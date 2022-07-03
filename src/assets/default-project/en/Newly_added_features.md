@@ -15,7 +15,7 @@ Instant search across all files in your project (Click on the search icon at top
 ## File and project icons
 `Added on June,2022`
 
-We have applied a fresh coat of paint to the icons ni files panel.
+We have applied a fresh coat of paint to the icons in files panel.
 
 ## New Project Welcome Screen
 `Added on May,2022`
