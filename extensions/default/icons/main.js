@@ -5,8 +5,7 @@ define(function (require, exports, module) {
 
     let extensionUtils = brackets.getModule('utils/ExtensionUtils'),
         fileUtils = brackets.getModule('file/FileUtils'),
-        WorkingSetView = brackets.getModule('project/WorkingSetView'),
-        FileTreeView = brackets.getModule('project/FileTreeView');
+        ProjectManager = brackets.getModule('project/ProjectManager');
 
     extensionUtils.loadStyleSheet(module, 'css/main.css');
 
@@ -177,6 +176,5 @@ define(function (require, exports, module) {
         return span;
     };
 
-    WorkingSetView.addIconProvider(iconProvider, -1);
-    FileTreeView.addIconProvider(iconProvider, -1);
+    ProjectManager.addIconProvider(iconProvider, -1);
 });
