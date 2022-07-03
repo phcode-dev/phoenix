@@ -124,6 +124,14 @@ async function copyThirdPartyLibs(){
         src(['node_modules/@fortawesome/fontawesome-free/LICENSE.txt'])
             .pipe(rename("fontawesome.markdown"))
             .pipe(dest('src/thirdparty/licences/')),
+        // devicons https://devicon.dev/
+        src(['node_modules/devicon/devicon.min.css'])
+            .pipe(dest('src/thirdparty/devicon/')),
+        src(['node_modules/devicon/fonts/*.*'])
+            .pipe(dest('src/thirdparty/devicon/fonts/')),
+        src(['node_modules/devicon/LICENSE'])
+            .pipe(rename("devicon.markdown"))
+            .pipe(dest('src/thirdparty/licences/')),
         // mime-db
         src(['node_modules/mime-db/db.json'])
             .pipe(rename("mime-db.json"))
@@ -149,7 +157,7 @@ async function copyThirdPartyLibs(){
         src(['node_modules/documentation/LICENSE'])
             .pipe(rename("documentation.markdown"))
             .pipe(dest('src/thirdparty/licences/'))
-    );
+);
 }
 
 function serve() {

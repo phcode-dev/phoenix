@@ -27,6 +27,7 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/floating-ui.core.umd.min.js
 /src/thirdparty/floating-ui.dom.umd.min.js
 /src/thirdparty/fontawesome
+/src/thirdparty/devicon
 /src/extensions/default/Phoenix-prettier/thirdParty
 src/extensions/default/Phoenix-live-preview/thirdparty
 
