@@ -39,6 +39,35 @@
     <link rel="stylesheet/less" type="text/css" href="styles/brackets.less">
 
     <!-- JavaScript -->
+    <script type="text/javascript">
+        // logger setup
+        function swallowLogs() {
+            // Do nothing
+        }
+        const savedLoggingFn = console.log;
+        const savedInfoFn = console.info;
+
+        window.setupLogging = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const logToConsoleOverride = urlParams.get('logToConsole');
+            const logToConsolePref = localStorage.getItem("logToConsole");
+            if((logToConsoleOverride && logToConsoleOverride.toLowerCase() === 'true')
+                || (logToConsolePref && logToConsolePref.toLowerCase() === 'true' && !logToConsoleOverride)){
+                console.log= savedLoggingFn;
+                console.info= savedInfoFn;
+                window.logToConsolePref = 'true';
+                window.debugMode = true;
+                return true;
+            } else {
+                console.info = console.log = swallowLogs;
+                window.logToConsolePref = 'false';
+                window.debugMode = false;
+                return false;
+            }
+        };
+
+        window.setupLogging();
+    </script>
 
     <!-- Pre-load third party scripts that cannot be async loaded. -->
     <!-- build:js thirdparty/thirdparty.min.js -->

@@ -58,31 +58,3 @@ Phoenix.app = {
 if(!window.appshell){
     window.appshell = Phoenix;
 }
-
-// logger setup
-function swallowLogs() {
-    // Do nothing
-}
-const savedLoggingFn = console.log;
-const savedInfoFn = console.info;
-
-window.setupLogging = function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const logToConsoleOverride = urlParams.get('logToConsole');
-    const logToConsolePref = localStorage.getItem("logToConsole");
-    if((logToConsoleOverride && logToConsoleOverride.toLowerCase() === 'true')
-        || (logToConsolePref && logToConsolePref.toLowerCase() === 'true' && !logToConsoleOverride)){
-        console.log= savedLoggingFn;
-        console.info= savedInfoFn;
-        window.logToConsolePref = 'true';
-        window.debugModeLogs = true;
-        return true;
-    } else {
-        console.info = console.log = swallowLogs;
-        window.logToConsolePref = 'false';
-        window.debugModeLogs = false;
-        return false;
-    }
-};
-
-window.setupLogging();

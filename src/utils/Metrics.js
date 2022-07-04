@@ -122,7 +122,7 @@ define(function (require, exports, module) {
             console.error("Mixpanel not found. MixPanel Analytics will not be initialized.");
             return;
         }
-        mixpanel.init(brackets.config.mixPanelID, {debug: window.debugModeLogs});
+        mixpanel.init(brackets.config.mixPanelID, {debug: window.debugMode});
     }
 
     function _initCoreAnalytics() {
@@ -130,7 +130,7 @@ define(function (require, exports, module) {
         let script = document.createElement('script');
         script.type = 'text/javascript';
         script.async = true;
-        window.analytics.debugMode = window.debugModeLogs;
+        window.analytics.debugMode = window.debugMode;
         script.onload = function(){
             // replace `your_analytics_account_ID` and `appName` below with your values
             window.initAnalyticsSession( brackets.config.coreAnalyticsID,
