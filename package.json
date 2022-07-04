@@ -69,7 +69,7 @@
         "@floating-ui/dom": "^0.5.3",
         "@fortawesome/fontawesome-free": "^6.1.1",
         "@highlightjs/cdn-assets": "^11.5.1",
-        "@phcode/fs": "^1.0.15",
+        "@phcode/fs": "^1.0.17",
         "@pixelbrackets/gfm-stylesheet": "^1.1.0",
         "bootstrap": "^5.1.3",
         "browser-mime": "^1.0.1",

@@ -47,7 +47,12 @@ define(function (require, exports, module) {
         });
     }
 
-    exports.startTour = async function () {
+    exports.startTourIfNeeded = function () {
+        let newProjectNotificationShown = localStorage.getItem("newProjectNotificationShown");
+        if(newProjectNotificationShown){
+            return;
+        }
         _showLivePreviewTour();
+        localStorage.setItem("newProjectNotificationShown", "true");
     };
 });
