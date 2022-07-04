@@ -327,7 +327,7 @@ async function doSearch(searchObject, nextPages) {
 
     savedSearchObject = searchObject;
     if (!files) {
-        console.log("no file object found");
+        console.log("file indexer: no file object found");
         return {};
     }
     results = {};
