@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap Örnekleri",
   "GUIDED_FILES_SIDEBAR": "Bir HTML dosyası seçin </br> <a href='#' style='float:right;'>tamam</a>",
   "GUIDED_LIVE_PREVIEW": "Önizlemeyi görmek için bazı kod değişiklikleri yapın ve dosyayı kaydedin. </br> <a href='#' style='float:right;'>tamam</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "Canlı önizlemeyi yeni bir sekmeye açmak için bu düğmeyi tıklayın. </br> <a href='#' style='float:right;'>tamam</a>",
   "TEST_TRANSLATE": "çevirileri test etmek için bunu kullanın"
 });

@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Ejemplos de Bootstrap",
   "GUIDED_FILES_SIDEBAR": "Seleccione un archivo HTML</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Realice algunos cambios en el código y guarde el archivo para ver la vista previa. </br><a href='#' style='float:right;'>ok</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "Haga clic en este botón para mostrar la vista previa en vivo en una nueva pestaña. </br><a href='#' style='float:right;'>ok</a>",
   "TEST_TRANSLATE": "usa esto para probar las traducciones"
 });

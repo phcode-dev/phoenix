@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap Príklady",
   "GUIDED_FILES_SIDEBAR": "Vyberte súbor HTML </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Vykonajte nejaké zmeny kódu a uložte súbor, aby ste videli náhľad. </br> <a href='#' style='float:right;'>ok</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "Kliknutím na toto tlačidlo zobrazíte živý náhľad na novú kartu. </br> <a href='#' style='float:right;'>ok</a>",
   "TEST_TRANSLATE": "použiť na testovanie prekladov"
 });

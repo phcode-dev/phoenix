@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Примери за първоначално зареждане",
   "GUIDED_FILES_SIDEBAR": "Изберете HTML файл </br> <a href='#' style='float:right;'>ОК</a>",
   "GUIDED_LIVE_PREVIEW": "Направете някои промени в кода и запазете файла, за да видите визуализация. </br> <a href='#' style='float:right;'>ОК</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "Щракнете върху този бутон, за да изскачаш визуализация на живо в нов раздел. </br> <a href='#' style='float:right;'>ОК</a>",
   "TEST_TRANSLATE": "използвайте това, за да тествате преводите"
 });
