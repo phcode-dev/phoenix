@@ -40,7 +40,7 @@
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
-    let ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
+    const ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
         CommandManager     = brackets.getModule("command/CommandManager"),
         Commands           = brackets.getModule("command/Commands"),
         Menus              = brackets.getModule("command/Menus"),
@@ -52,8 +52,11 @@ define(function (require, exports, module) {
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         Metrics             = brackets.getModule("utils/Metrics"),
+        NotificationUI = brackets.getModule("widgets/NotificationUI"),
         marked = require('thirdparty/marked.min'),
         utils = require('utils');
+
+    const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
 
     // TODO markdown advanced rendering options https://marked.js.org/using_advanced
     marked.setOptions({
@@ -155,7 +158,7 @@ define(function (require, exports, module) {
             $iframe.attr('srcdoc', null);
         };
 
-        panel = WorkspaceManager.createPluginPanel("live-preview-panel", $panel,
+        panel = WorkspaceManager.createPluginPanel(LIVE_PREVIEW_PANEL_ID, $panel,
             PANEL_MIN_SIZE, $icon, INITIAL_PANEL_SIZE);
 
         WorkspaceManager.recomputeLayout(false);
@@ -254,10 +257,11 @@ define(function (require, exports, module) {
     }
 
     function _projectFileChanges(evt, changedFile) {
-        if(changedFile && changedFile.fullPath !== '/fs/app/state.json'){
+        if(changedFile && changedFile.isFile && changedFile.fullPath && changedFile.fullPath !== '/fs/app/state.json'){
             // we are getting this change event somehow.
             // bug, investigate why we get this change event as a project file change.
             _loadPreview(true);
+            _showPopoutNotificationIfNeeded(changedFile.fullPath);
         }
     }
 
@@ -273,6 +277,21 @@ define(function (require, exports, module) {
             return;
         }
         _loadPreview(true);
+    }
+
+    function _showPopoutNotificationIfNeeded(path) {
+        let notificationKey = 'livePreviewPopoutShown';
+        let popoutMessageShown = localStorage.getItem(notificationKey);
+        if(!popoutMessageShown && WorkspaceManager.isPanelVisible(LIVE_PREVIEW_PANEL_ID)
+            && (path.endsWith('.html') || path.endsWith('.htm'))){
+            NotificationUI.createFromTemplate(Strings.GUIDED_LIVE_PREVIEW_POPOUT,
+                "livePreviewPopoutButton", {
+                    allowedPlacements: ['bottom'],
+                    autoCloseTimeS: 15,
+                    dismissOnClick: true}
+            );
+            localStorage.setItem(notificationKey, "true");
+        }
     }
 
     AppInit.appReady(function () {

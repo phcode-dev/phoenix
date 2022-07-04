@@ -70,7 +70,7 @@ let trackedScriptCount = 0;
 function _setSplashScreenStatusUpdate(message) {
     let splashScreenFrame = document.getElementById("splash-screen-frame");
     if(!splashScreenFrame){
-        if(!window.debugModeLogs){
+        if(!window.debugMode){
             // If not in debug mode & splash screen isn't there, we don't need to observe dom script update status
             // to improve performance.
             window.scriptObserver.disconnect();

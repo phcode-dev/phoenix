@@ -357,9 +357,19 @@ define(function (require, exports, module) {
         }
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
     });
+
+    function isPanelVisible(panelID) {
+        let panel = getPanelForID(panelID);
+        if(panel && panel.isVisible()){
+            return true;
+        }
+        return false;
+    }
+
     // Define public API
     exports.createBottomPanel               = createBottomPanel;
     exports.createPluginPanel               = createPluginPanel;
+    exports.isPanelVisible                  = isPanelVisible;
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;

@@ -69,19 +69,10 @@ define(function (require, exports, module) {
         fileMenu.addMenuItem(Commands.FILE_NEW_PROJECT, "Alt-Shift-N", Menus.AFTER, Commands.FILE_NEW);
     }
 
-    function _showNewProjectNotification() {
-        let newProjectNotificationShown = localStorage.getItem("newProjectNotificationShown");
-        if(newProjectNotificationShown){
-            return;
-        }
-        guidedTour.startTour();
-        localStorage.setItem("newProjectNotificationShown", "true");
-    }
-
     function closeDialogue() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         newProjectDialogueObj.close();
-        _showNewProjectNotification();
+        guidedTour.startTourIfNeeded();
     }
 
     function showErrorDialogue(title, message) {
