@@ -466,12 +466,9 @@ define(function (require, exports, module) {
      *      A change list as described in the Document constructor
      */
     _documentChangeHandler = function (event, document, change) {
-        if (!findOrReplaceInProgress) {
-            changedFileList[document.file.fullPath] = true;
-        } else {
-            if (_inSearchScope(document.file)) {
-                _updateResults(document, change);
-            }
+        changedFileList[document.file.fullPath] = true;
+        if (findOrReplaceInProgress && _inSearchScope(document.file)) {
+            _updateResults(document, change);
         }
     };
 
@@ -529,12 +526,13 @@ define(function (require, exports, module) {
      * sends all changed documents that we have tracked to worker
      */
     function _updateChangedDocs() {
-        var key = null;
+        let key = null;
         for (key in changedFileList) {
             if (changedFileList.hasOwnProperty(key)) {
                 _updateDocumentInWorker(key);
             }
         }
+        changedFileList = {};
     }
 
     /**
@@ -777,13 +775,15 @@ define(function (require, exports, module) {
      */
     _fileNameChangeHandler = function (event, oldName, newName) {
         var resultsChanged = false;
+        let removedFiles = [],
+            changedFiles = [];
 
         // Update the search results
         _.forEach(searchModel.results, function (item, fullPath) {
             if (fullPath.indexOf(oldName) === 0) {
                 // worker search : inform worker about the rename
-                filesRemoved([fullPath]);
-                filesChanged([fullPath.replace(oldName, newName)]);
+                removedFiles.push(fullPath);
+                changedFiles.push(fullPath.replace(oldName, newName));
 
                 if (findOrReplaceInProgress) {
                     searchModel.removeResults(fullPath);
@@ -792,6 +792,9 @@ define(function (require, exports, module) {
                 }
             }
         });
+
+        filesRemoved(removedFiles);
+        filesChanged(changedFiles);
 
         if (resultsChanged) {
             searchModel.fireChanged();
