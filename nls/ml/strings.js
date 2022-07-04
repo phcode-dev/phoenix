@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "ബൂട്ട്സ്ട്രാപ്പ് ഉദാഹരണങ്ങൾ",
   "GUIDED_FILES_SIDEBAR": "<a href='#' style='float:right;'>ശരി</a>ഒരു HTML ഫയൽ തിരഞ്ഞെടുക്കുക </br>",
   "GUIDED_LIVE_PREVIEW": "പ്രിവ്യൂ കാണുന്നതിന് ചില കോഡ് മാറ്റങ്ങൾ വരുത്തി ഫയൽ സംരക്ഷിക്കുക. </br> <a href='#' style='float:right;'>ശരി</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "ഒരു പുതിയ ടാബിലേക്ക് തത്സമയ പ്രിവ്യൂ പോപ്പ് out ട്ട് ചെയ്യുന്നതിന് ഈ ബട്ടൺ ക്ലിക്കുചെയ്യുക. </br> <a href='#' style='float:right;'>ശരി</a>",
   "TEST_TRANSLATE": "വിവർത്തനങ്ങൾ പരീക്ഷിക്കാൻ ഇത് ഉപയോഗിക്കുക"
 });

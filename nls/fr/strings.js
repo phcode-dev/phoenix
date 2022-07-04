@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Exemples d'amorçage",
   "GUIDED_FILES_SIDEBAR": "Sélectionnez un fichier HTML</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Apportez quelques modifications au code et enregistrez le fichier pour voir l'aperçu. </br><a href='#' style='float:right;'>ok</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "Cliquez sur ce bouton pour afficher l'aperçu en direct dans un nouvel onglet. </br><a href='#' style='float:right;'>ok</a>",
   "TEST_TRANSLATE": "utilisez ceci pour tester les traductions"
 });

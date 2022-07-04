@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "أمثلة على التمهيد",
   "GUIDED_FILES_SIDEBAR": "حدد ملف HTML</br> <a href='#' style='float:right;'>موافق</a>",
   "GUIDED_LIVE_PREVIEW": "قم بإجراء بعض التغييرات في التعليمات البرمجية وحفظ الملف لمشاهدة المعاينة. </br><a href='#' style='float:right;'>موافق</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "انقر فوق هذا الزر لبدء المعاينة المباشرة لعلامة تبويب جديدة. </br><a href='#' style='float:right;'>موافق</a>",
   "TEST_TRANSLATE": "استخدم هذا لاختبار الترجمات"
 });
