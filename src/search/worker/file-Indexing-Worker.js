@@ -181,7 +181,7 @@ function initCache(fileList) {
  * @param   {Object}   updateObject
  */
 function removeFilesFromCache(updateObject) {
-    console.log("documetn removed", updateObject);
+    console.log("file Indexer Document removed", updateObject);
     let fileList = updateObject.fileList || [],
         filesInSearchScope = updateObject.filesInSearchScope || [],
         i = 0;
@@ -200,6 +200,7 @@ function removeFilesFromCache(updateObject) {
  * @param   {Object}   updateObject
  */
 function addFilesToCache(updateObject) {
+    console.log("file Indexer Document add", updateObject);
     let fileList = updateObject.fileList || [],
         filesInSearchScope = updateObject.filesInSearchScope || [],
         i = 0,
