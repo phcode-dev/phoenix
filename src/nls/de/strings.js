@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap-Beispiele",
   "GUIDED_FILES_SIDEBAR": "Wählen Sie eine HTML-Datei</br> aus <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Nehmen Sie einige Codeänderungen vor und speichern Sie die Datei, um die Vorschau anzuzeigen </br><a href='#' style='float:right;'>in Ordnung</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "Klicken Sie auf diese Schaltfläche, um die Live-Vorschau auf einer neuen Registerkarte anzuzeigen. </br><a href='#' style='float:right;'>ok</a>",
   "TEST_TRANSLATE": "benutze dies, um Übersetzungen zu testen"
 });

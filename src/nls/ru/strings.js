@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Примеры бутстрапа",
   "GUIDED_FILES_SIDEBAR": "Выберите HTML-файл</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Внесите некоторые изменения в код и сохраните файл для предварительного просмотра. </br><a href='#' style='float:right;'>ок</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "Нажмите эту кнопку, чтобы открыть предварительный просмотр в новой вкладке. </br><a href='#' style='float:right;'>хорошо</a>",
   "TEST_TRANSLATE": "используйте это для тестирования переводов"
 });

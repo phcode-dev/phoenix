@@ -821,5 +821,6 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Primjeri Bootstrapa",
   "GUIDED_FILES_SIDEBAR": "Odaberite HTML datoteku </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Napravite neke promjene koda i spremite datoteku da biste vidjeli pregled. </br> <a href='#' style='float:right;'>ok</a>",
+  "GUIDED_LIVE_PREVIEW_POPOUT": "Kliknite ovaj gumb da biste prikazali pregled uživo na novu karticu. </br> <a href='#' style='float:right;'>ok</a>",
   "TEST_TRANSLATE": "upotrijebite ovo za testiranje prijevoda"
 });
