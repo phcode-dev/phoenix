@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Uzantıyı Yükle...",
   "CMD_EXTENSION_MANAGER": "Eklenti Yöneticisi…",
   "CMD_FILE_REFRESH": "Dosya Ağacını Yenile",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Önce Klasörleri Sırala",
   "CMD_QUIT": "Çık",
   "CMD_EXIT": "Çıkış",
   "EDIT_MENU": "Düzenle",

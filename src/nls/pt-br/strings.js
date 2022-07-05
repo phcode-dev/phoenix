@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Instalar extensão…",
   "CMD_EXTENSION_MANAGER": "Gerenciador de extensões…",
   "CMD_FILE_REFRESH": "Atualizar árvore de arquivos",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Classificar pastas primeiro",
   "CMD_QUIT": "Fechar",
   "CMD_EXIT": "Sair",
   "EDIT_MENU": "Editar",

@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Instaliraj ekstenziju…",
   "CMD_EXTENSION_MANAGER": "Manager ekstenzija…",
   "CMD_FILE_REFRESH": "Osvježi stablo datoteka",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Prvo sortiraj mape",
   "CMD_QUIT": "Prekini",
   "CMD_EXIT": "Izađi",
   "EDIT_MENU": "Uredi",

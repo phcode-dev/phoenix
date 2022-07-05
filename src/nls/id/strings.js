@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Instal Ekstensi…",
   "CMD_EXTENSION_MANAGER": "Pengelola Ekstensi…",
   "CMD_FILE_REFRESH": "Muat Ulang Daftar File",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Urutkan Folder Pertama",
   "CMD_QUIT": "Keluar",
   "CMD_EXIT": "Keluar",
   "EDIT_MENU": "Edit",

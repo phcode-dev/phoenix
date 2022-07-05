@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Install Extension…",
   "CMD_EXTENSION_MANAGER": "Extension Manager…",
   "CMD_FILE_REFRESH": "Refresh File Tree",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Sort Folders First",
   "CMD_QUIT": "Quit",
   "CMD_EXIT": "Exit",
   "EDIT_MENU": "Edit",

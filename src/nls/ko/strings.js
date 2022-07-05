@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "확장 기능 설치…",
   "CMD_EXTENSION_MANAGER": "확장 기능 관리자…",
   "CMD_FILE_REFRESH": "파일 트리 업데이트",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "폴더 우선 정렬",
   "CMD_QUIT": "종료",
   "CMD_EXIT": "종료",
   "EDIT_MENU": "편집",

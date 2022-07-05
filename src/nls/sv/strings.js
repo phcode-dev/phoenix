@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Installera tillägg…",
   "CMD_EXTENSION_MANAGER": "Tilläggshanteraren…",
   "CMD_FILE_REFRESH": "Uppdatera filträd",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Sortera mappar först",
   "CMD_QUIT": "Avsluta",
   "CMD_EXIT": "Avsluta",
   "EDIT_MENU": "Redigera",

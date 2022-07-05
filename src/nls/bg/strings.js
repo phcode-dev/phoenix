@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Инсталиране на разширение…",
   "CMD_EXTENSION_MANAGER": "Управител на разширения…",
   "CMD_FILE_REFRESH": "Опресняване на дървото от файлове",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Първо сортиране на папки",
   "CMD_QUIT": "Изход",
   "CMD_EXIT": "Изход",
   "EDIT_MENU": "Редактиране",

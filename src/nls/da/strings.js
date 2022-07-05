@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Installér udvidelse…",
   "CMD_EXTENSION_MANAGER": "Udvidelseshåndtering…",
   "CMD_FILE_REFRESH": "Genindlæs filtræ",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Sorter mapper først",
   "CMD_QUIT": "Afslut",
   "CMD_EXIT": "Afslut",
   "EDIT_MENU": "Redigér",

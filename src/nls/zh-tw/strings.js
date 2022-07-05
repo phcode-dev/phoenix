@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "安裝擴充功能…",
   "CMD_EXTENSION_MANAGER": "擴充功能管理員…",
   "CMD_FILE_REFRESH": "重新整理檔案樹",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "先排序資料夾",
   "CMD_QUIT": "結束",
   "CMD_EXIT": "結束",
   "EDIT_MENU": "編輯",
