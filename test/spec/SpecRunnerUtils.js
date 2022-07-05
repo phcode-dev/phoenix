@@ -52,7 +52,7 @@ define(function (require, exports, module) {
     MainViewManager._initialize($("#mock-main-view"));
 
     function _getFileSystem() {
-        return _testWindow ? _testWindow.brackets.test.FileSystem : FileSystem;
+        return FileSystem;
     }
 
     /**
@@ -530,6 +530,38 @@ define(function (require, exports, module) {
         waitsForDone(promise, "dismiss dialog");
     }
 
+    function _setupTestWindow() {
+        // Displays the primary console messages from the test window in the
+        // test runner's console as well.
+        ["debug", "log", "info", "warn", "error"].forEach(function (method) {
+            var originalMethod = _testWindow.console[method];
+            _testWindow.console[method] = function () {
+                var log = ["[testWindow] "].concat(Array.prototype.slice.call(arguments, 0));
+                console[method].apply(console, log);
+                originalMethod.apply(_testWindow.console, arguments);
+            };
+        });
+
+        _testWindow.isBracketsTestWindow = true;
+
+        _testWindow.executeCommand = function executeCommand(cmd, args) {
+            return _testWindow.brackets.test.CommandManager.execute(cmd, args);
+        };
+
+        _testWindow.closeAllFiles = function closeAllFiles() {
+            runs(function () {
+                var promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL);
+
+                _testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    _testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    _testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                waitsForDone(promise, "Close all open files in working set");
+            });
+        };
+    }
+
     function createTestWindowAndRun(spec, callback, options) {
         runs(function () {
             // Position popup windows in the lower right so they're out of the way
@@ -574,37 +606,15 @@ define(function (require, exports, module) {
                 }
             }
 
-            _testWindow = window.open(getBracketsSourceRoot() + "/index.html?" + params.toString(), "_blank", optionsStr);
+            let _testWindowURL = getBracketsSourceRoot() + "/index.html?" + params.toString();
+            if(!_testWindow){
+                _testWindow = window.open(_testWindowURL, "_blank", optionsStr);
+            } else{
+                _testWindow.location.href = 'about:blank';
+                _testWindow.location.href = _testWindowURL;
+            }
 
-            // Displays the primary console messages from the test window in the
-            // test runner's console as well.
-            ["debug", "log", "info", "warn", "error"].forEach(function (method) {
-                var originalMethod = _testWindow.console[method];
-                _testWindow.console[method] = function () {
-                    var log = ["[testWindow] "].concat(Array.prototype.slice.call(arguments, 0));
-                    console[method].apply(console, log);
-                    originalMethod.apply(_testWindow.console, arguments);
-                };
-            });
-
-            _testWindow.isBracketsTestWindow = true;
-
-            _testWindow.executeCommand = function executeCommand(cmd, args) {
-                return _testWindow.brackets.test.CommandManager.execute(cmd, args);
-            };
-
-            _testWindow.closeAllFiles = function closeAllFiles() {
-                runs(function () {
-                    var promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL);
-
-                    _testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        _testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        _testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
-
-                    waitsForDone(promise, "Close all open files in working set");
-                });
-            };
+            _setupTestWindow();
         });
 
         // FIXME (issue #249): Need an event or something a little more reliable...
@@ -647,6 +657,10 @@ define(function (require, exports, module) {
             "brackets.test.doneLoading",
             10000
         );
+
+        runs(function () {
+            _setupTestWindow();
+        });
     }
 
     function closeTestWindow() {
@@ -664,9 +678,9 @@ define(function (require, exports, module) {
                     doc.refreshText(doc.getText(), doc.diskTimestamp);
                 }
             });
-            _testWindow.close();
             _testWindow.executeCommand = null;
-            _testWindow = null;
+            //_testWindow.location.href = 'about:blank';
+            _testWindow.brackets.test.doneLoading = false;
         });
     }
 

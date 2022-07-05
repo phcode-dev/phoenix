@@ -51,6 +51,9 @@ define(function (require, exports, module) {
         downloadCancelled = false;
 
     function _showNewProjectDialogue() {
+        if(window.testEnvironment){
+            return;
+        }
         let templateVars = {
             Strings: Strings,
             newProjectURL: `${window.location.href}/assets/new-project/code-editor.html`

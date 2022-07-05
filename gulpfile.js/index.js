@@ -182,6 +182,7 @@ function serveExternal() {
 function zipTestFiles() {
     return src([
         'test/**',
+        'test/**/.*',
         '!test/thirdparty/**',
         '!test/test_folders.zip'])
         .pipe(zip('test_folders.zip'))
