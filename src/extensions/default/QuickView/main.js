@@ -575,7 +575,7 @@ define(function (require, exports, module) {
             xpos: xpos,
             ytop: coord.top,
             ybot: coord.bottom,
-            _imgPath: imgPath
+            _imgPath: imgPath || loadFromDisk
         };
     }
 
