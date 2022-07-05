@@ -11,7 +11,10 @@ define(function (require, exports, module) {
 
     // use this cheetsheet for fontawesome icons https://fontawesome.com/v5/cheatsheet/free/brands
     // or https://fontawesome.com/v5/cheatsheet/free/solid or https://fontawesome.com/v5/cheatsheet/free/regular
+    // or https://devicon.dev/
     var exts = {
+        folder: "fa-folder fa-solid",
+
         css: "devicon-css3-plain",
         htm: "devicon-html5-plain",
         html: "devicon-html5-plain",
@@ -146,18 +149,21 @@ define(function (require, exports, module) {
 
     var iconProvider = function (entry) {
         let color = true;
-        if (!entry.isFile) {
-            return;
-        }
-
-        let ext = getExtension(entry.fullPath) || entry.name.substr(1);
-        let filename = fileUtils.getBaseName(entry.fullPath).toLowerCase();
 
         let span = $('<span>');
         span.addClass('bd-icon');
         let el = $('<i>');
         span.append(el);
         el.addClass('fa-solid fa-file');
+
+        if (!entry.isFile) {
+            el.removeClass('fa-solid fa-file');
+            el.addClass(exts.folder);
+            return span;
+        }
+
+        let ext = getExtension(entry.fullPath) || entry.name.substr(1);
+        let filename = fileUtils.getBaseName(entry.fullPath).toLowerCase();
 
         if (files[filename]) {
             el.removeClass('fa-solid fa-file');
