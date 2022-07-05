@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "एक्सटेंशन इंस्टॉल करें...",
   "CMD_EXTENSION_MANAGER": "एक्सटेंशन मैनेजर...",
   "CMD_FILE_REFRESH": "फ़ाइल ट्री रीफ्रेश करें",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "फ़ोल्डर को पहले सॉर्ट करें",
   "CMD_QUIT": "क्विट",
   "CMD_EXIT": "बाहर जाएं",
   "EDIT_MENU": "संपादित करें",

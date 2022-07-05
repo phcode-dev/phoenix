@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Инсталирај екстензију…",
   "CMD_EXTENSION_MANAGER": "Менаџер екстензија…",
   "CMD_FILE_REFRESH": "Освежи стабло датотека",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Prvo sortiraj fascikle",
   "CMD_QUIT": "Прекини",
   "CMD_EXIT": "Излаз",
   "EDIT_MENU": "Уреди",

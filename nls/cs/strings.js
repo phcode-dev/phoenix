@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Instalovat doplňky…",
   "CMD_EXTENSION_MANAGER": "Správce doplňků…",
   "CMD_FILE_REFRESH": "Obnovit",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Nejprve seřadit složky",
   "CMD_QUIT": "Konec",
   "CMD_EXIT": "Konec",
   "EDIT_MENU": "Úpravy",

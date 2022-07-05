@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Inštalovať rozšírenia…",
   "CMD_EXTENSION_MANAGER": "Správca rozšírení…",
   "CMD_FILE_REFRESH": "Obnoviť strom súborov",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Najskôr zoradiť priečinky",
   "CMD_QUIT": "Koniec",
   "CMD_EXIT": "Koniec",
   "EDIT_MENU": "Upraviť",

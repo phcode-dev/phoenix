@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "توسیع انسٹال کریں...",
   "CMD_EXTENSION_MANAGER": "ایکسٹنشن مینیجر...",
   "CMD_FILE_REFRESH": "فائل ٹری کو تازہ کریں",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "فولڈرز کو پہلے ترتیب دیں",
   "CMD_QUIT": "چھوڑیں",
   "CMD_EXIT": "باہر نکلیں",
   "EDIT_MENU": "ترمیم کریں",

@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Instalēt paplašinājumu…",
   "CMD_EXTENSION_MANAGER": "Paplašinājumu pārvaldnieks…",
   "CMD_FILE_REFRESH": "Atsvaidzināt datņu koku",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Vispirms kārtot mapes",
   "CMD_QUIT": "Beigt",
   "CMD_EXIT": "Iziet",
   "EDIT_MENU": "Rediģēt",

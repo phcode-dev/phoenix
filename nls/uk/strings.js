@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Встановити розширення…",
   "CMD_EXTENSION_MANAGER": "Менеджер розширень…",
   "CMD_FILE_REFRESH": "Оновити дерево файлів",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Спочатку сортувати теки",
   "CMD_QUIT": "Покинути програму",
   "CMD_EXIT": "Вийти",
   "EDIT_MENU": "Змінити",

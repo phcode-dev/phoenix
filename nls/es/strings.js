@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Instalar extensión…",
   "CMD_EXTENSION_MANAGER": "Gestionar extensiones…",
   "CMD_FILE_REFRESH": "Actualizar árbol de archivos",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Ordenar primero las carpetas",
   "CMD_QUIT": "Salir",
   "CMD_EXIT": "Salir",
   "EDIT_MENU": "Edición",

@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "تثبيت ملحق...",
   "CMD_EXTENSION_MANAGER": "إدارة الإضافات...",
   "CMD_FILE_REFRESH": "تحديث شجرة الملفات",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "فرز المجلدات أولاً",
   "CMD_QUIT": "قم بإنهاء",
   "CMD_EXIT": "إكسيت",
   "EDIT_MENU": "تحرير",

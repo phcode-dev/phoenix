@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Installeer extensie…",
   "CMD_EXTENSION_MANAGER": "Extensiebeheer…",
   "CMD_FILE_REFRESH": "Ververs bestandsboom",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Mappen eerst sorteren",
   "CMD_QUIT": "Stoppen",
   "CMD_EXIT": "Afsluiten",
   "EDIT_MENU": "Bewerken",

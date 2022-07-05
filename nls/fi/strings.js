@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Asenna laajennus…",
   "CMD_EXTENSION_MANAGER": "Laajennusten hallinta…",
   "CMD_FILE_REFRESH": "Päivitä tiedostopuu",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Lajittele kansiot ensin",
   "CMD_QUIT": "Lopeta",
   "CMD_EXIT": "Lopeta",
   "EDIT_MENU": "Muokkaa",

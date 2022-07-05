@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "വിപുലീകരണം ഇൻസ്റ്റാൾ ചെയ്യുക...",
   "CMD_EXTENSION_MANAGER": "എക്സ്റ്റൻഷൻ മാനേജർ...",
   "CMD_FILE_REFRESH": "ഫയൽ ട്രീ പുതുക്കുക",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "ആദ്യം ഫോൾഡറുകൾ അടുക്കുക",
   "CMD_QUIT": "ക്വിറ്റ്",
   "CMD_EXIT": "എക്സിറ്റ്",
   "EDIT_MENU": "എഡിറ്റ്",
