@@ -1096,6 +1096,11 @@ define(function (require, exports, module) {
         return new $.Deferred().resolve().promise();
     };
 
+    function _showFolderFirst() {
+        const newPref = !PreferencesManager.get(SORT_DIRECTORIES_FIRST);
+        PreferencesManager.set(SORT_DIRECTORIES_FIRST, newPref);
+    }
+
     refreshFileTree = _.debounce(refreshFileTree, _refreshDelay);
 
     /**
@@ -1575,12 +1580,16 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_FILE_DUPLICATE, Commands.FILE_DUPLICATE, _duplicateFileCMD);
 
     // Define the preference to decide how to sort the Project Tree files
-    PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, "boolean", brackets.platform !== "mac", {
+    PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, "boolean", true, {
         description: Strings.DESCRIPTION_SORT_DIRECTORIES_FIRST
     })
         .on("change", function () {
-            actionCreator.setSortDirectoriesFirst(PreferencesManager.get(SORT_DIRECTORIES_FIRST));
+            let sortPref = PreferencesManager.get(SORT_DIRECTORIES_FIRST);
+            actionCreator.setSortDirectoriesFirst(sortPref);
+            CommandManager.get(Commands.FILE_SHOW_FOLDERS_FIRST).setChecked(sortPref);
         });
+    CommandManager.register(Strings.CMD_FILE_SHOW_FOLDERS_FIRST, Commands.FILE_SHOW_FOLDERS_FIRST, _showFolderFirst);
+    CommandManager.get(Commands.FILE_SHOW_FOLDERS_FIRST).setChecked(PreferencesManager.get(SORT_DIRECTORIES_FIRST));
 
     actionCreator.setSortDirectoriesFirst(PreferencesManager.get(SORT_DIRECTORIES_FIRST));
 
