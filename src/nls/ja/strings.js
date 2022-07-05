@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "拡張機能をインストール…",
   "CMD_EXTENSION_MANAGER": "拡張機能マネージャー…",
   "CMD_FILE_REFRESH": "ファイルツリーを更新",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "フォルダを最初にソート",
   "CMD_QUIT": "終了する",
   "CMD_EXIT": "終了",
   "EDIT_MENU": "編集",

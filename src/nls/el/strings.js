@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Εγκατάσταση Επέκτασης (Extension)…",
   "CMD_EXTENSION_MANAGER": "Διαχείρηση Επεκτάσεων…",
   "CMD_FILE_REFRESH": "Ανανέωση Δέντρου Αρχείων",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Ταξινόμηση φακέλων πρώτα",
   "CMD_QUIT": "Κλείσιμο",
   "CMD_EXIT": "΄Εξοδος",
   "EDIT_MENU": "Επεξεργασία",

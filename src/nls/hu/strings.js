@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Bővítmény Telepítése…",
   "CMD_EXTENSION_MANAGER": "Bővítménykezelő…",
   "CMD_FILE_REFRESH": "Újratöltés",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Először rendezze a mappákat",
   "CMD_QUIT": "Bezár",
   "CMD_EXIT": "Kilépés",
   "EDIT_MENU": "Szerkesztés",

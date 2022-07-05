@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Installa Estensioni…",
   "CMD_EXTENSION_MANAGER": "Manager delle Estensioni…",
   "CMD_FILE_REFRESH": "Ricarica il percorso file",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Ordina prima le cartelle",
   "CMD_QUIT": "Abbandona",
   "CMD_EXIT": "Esci",
   "EDIT_MENU": "Modifica",

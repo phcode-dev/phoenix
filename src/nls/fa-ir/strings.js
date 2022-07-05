@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "نصب افزونه …",
   "CMD_EXTENSION_MANAGER": "مدیریت افزونه…",
   "CMD_FILE_REFRESH": "نوسازی درختی پرونده",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "مرتب سازی بر اساس پوشه",
   "CMD_QUIT": "ترک کردن",
   "CMD_EXIT": "خروج",
   "EDIT_MENU": "ویرایش",

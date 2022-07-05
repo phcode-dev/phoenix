@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "安装扩展…",
   "CMD_EXTENSION_MANAGER": "扩展管理器…",
   "CMD_FILE_REFRESH": "刷新文件列表",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "先对文件夹进行排序",
   "CMD_QUIT": "退出",
   "CMD_EXIT": "退出",
   "EDIT_MENU": "编辑",

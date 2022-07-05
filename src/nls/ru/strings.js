@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Установить расширение…",
   "CMD_EXTENSION_MANAGER": "Менеджер расширений…",
   "CMD_FILE_REFRESH": "Обновить дерево проекта",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Сначала отсортировать папки",
   "CMD_QUIT": "Выход",
   "CMD_EXIT": "Выход",
   "EDIT_MENU": "Правка",

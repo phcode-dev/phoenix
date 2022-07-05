@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Installer une extension…",
   "CMD_EXTENSION_MANAGER": "Gestionnaire d'extensions…",
   "CMD_FILE_REFRESH": "Actualiser l’arborescence de fichiers",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Trier d'abord les dossiers",
   "CMD_QUIT": "Quitter",
   "CMD_EXIT": "Quitter",
   "EDIT_MENU": "Modifier",

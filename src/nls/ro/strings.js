@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Instalează extensia…",
   "CMD_EXTENSION_MANAGER": "Managerul de extensii…",
   "CMD_FILE_REFRESH": "Actualizează arborele de fișiere",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Sortează folderele",
   "CMD_QUIT": "Ieșire",
   "CMD_EXIT": "Ieșire",
   "EDIT_MENU": "Editare",

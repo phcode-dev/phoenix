@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Erweiterung installieren…",
   "CMD_EXTENSION_MANAGER": "Erweiterungs-Verwaltung…",
   "CMD_FILE_REFRESH": "Dateibaum neu laden",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Ordner zuerst sortieren",
   "CMD_QUIT": "Beenden",
   "CMD_EXIT": "Beenden",
   "EDIT_MENU": "Bearbeiten",

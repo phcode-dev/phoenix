@@ -282,6 +282,7 @@ define({
   "CMD_INSTALL_EXTENSION": "Zainstaluj rozszerzenie…",
   "CMD_EXTENSION_MANAGER": "Menedżer rozszerzeń…",
   "CMD_FILE_REFRESH": "Odśwież",
+  "CMD_FILE_SHOW_FOLDERS_FIRST": "Najpierw sortuj foldery",
   "CMD_QUIT": "Wyjdź",
   "CMD_EXIT": "Wyjdź",
   "EDIT_MENU": "Edytuj",
