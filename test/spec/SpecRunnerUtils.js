@@ -679,7 +679,7 @@ define(function (require, exports, module) {
                 }
             });
             _testWindow.executeCommand = null;
-            //_testWindow.location.href = 'about:blank';
+            _testWindow.location.href = 'about:blank';
             _testWindow.brackets.test.doneLoading = false;
         });
     }
