@@ -148,7 +148,7 @@ define(function (require, exports, module) {
      * @private
      */
     function init(){
-        if(initDone){
+        if(initDone || window.testEnvironment){
             return;
         }
         _initGoogleAnalytics();
@@ -163,7 +163,7 @@ define(function (require, exports, module) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
         // TODO, see if we are sending too many events to ga, unlike core analytics, GA has a limit of
         //  1 Million events per month for free plan.
-        if(disabled){
+        if(disabled || window.testEnvironment){
             return;
         }
         category = category || "category";
@@ -186,7 +186,7 @@ define(function (require, exports, module) {
     }
 
     function _sendToMixPanel(category, action, label, count, value) {
-        if(disabled){
+        if(disabled || window.testEnvironment){
             return;
         }
         category = category || "category";
@@ -206,7 +206,7 @@ define(function (require, exports, module) {
 
     function _sendToCoreAnalytics(category, action, label, count, value) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
-        if(disabled){
+        if(disabled || window.testEnvironment){
             return;
         }
         category = category || "category";

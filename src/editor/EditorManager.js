@@ -62,6 +62,7 @@ define(function (require, exports, module) {
         PerfUtils           = require("utils/PerfUtils"),
         Editor              = require("editor/Editor").Editor,
         InlineTextEditor    = require("editor/InlineTextEditor").InlineTextEditor,
+        MultiRangeInlineEditor    = require("editor/MultiRangeInlineEditor").MultiRangeInlineEditor,
         Strings             = require("strings"),
         LanguageManager     = require("language/LanguageManager"),
         DeprecationWarning  = require("utils/DeprecationWarning");
@@ -426,7 +427,8 @@ define(function (require, exports, module) {
 
         if (hostEditor) {
             hostEditor.getInlineWidgets().forEach(function (widget) {
-                if (widget instanceof InlineTextEditor && widget.editor) {
+                if ((widget instanceof InlineTextEditor && widget.editor)
+                    ||(widget instanceof MultiRangeInlineEditor && widget.editor)) {
                     inlineEditors.push(widget.editor);
                 }
             });

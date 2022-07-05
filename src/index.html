@@ -51,6 +51,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const logToConsoleOverride = urlParams.get('logToConsole');
             const logToConsolePref = localStorage.getItem("logToConsole");
+            window.testEnvironment = (urlParams.get('testEnvironment') === 'true');
             if((logToConsoleOverride && logToConsoleOverride.toLowerCase() === 'true')
                 || (logToConsolePref && logToConsolePref.toLowerCase() === 'true' && !logToConsoleOverride)){
                 console.log= savedLoggingFn;
@@ -97,7 +98,15 @@
             MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
     </script>
     <script>
+        function _removeSplashScreenIfTest() {
+            if(testEnvironment){
+                document.getElementById('phoenix-loading-splash-screen-overlay').remove();
+                document.getElementById('safari_splash_screen').remove();
+            }
+        }
+
         function _loadPhoenixAfterSplashScreen() {
+            _removeSplashScreenIfTest();
             if(location.href.endsWith("index.html")){
                 console.log("Redirecting to root dir for phoenix paths to work properly.");
                 let currentUrl = location.href;
