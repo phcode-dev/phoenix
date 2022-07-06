@@ -22,26 +22,26 @@ define(function (require, exports, module) {
             gutterName = "CodeMirror-foldgutter",
             foldMarkerOpen = gutterName + "-open",
             foldMarkerClosed = gutterName + "-folded";
-        var testDocumentDirectory = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
+        var testDocumentDirectory = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files"),
             // The line numbers referenced below are dependent on the files in /unittest-files directory.
             // Remember to update the numbers if the files change.
             testFilesSpec = {
                 js: {
-                    filePath: testDocumentDirectory + "test.js",
+                    filePath: "test.js",
                     foldableLines: [1, 11, 17, 21, 25, 27, 30],
                     sameLevelFoldableLines: [17, 21],
                     firstSelection: {start: {line: 2, ch: 0}, end: {line: 10, ch: 0}},
                     secondSelection: {start: {line: 5, ch: 0}, end: {line: 8, ch: 4}}
                 },
                 html: {
-                    filePath: testDocumentDirectory + "test.html",
+                    filePath: "test.html",
                     foldableLines: [1, 2, 3, 4, 8, 9, 14, 15, 16, 20, 21, 22, 23, 28, 29, 34, 37],
                     sameLevelFoldableLines: [3, 8],
                     firstSelection: {start: {line: 38, ch: 0}, end: {line: 41, ch: 0}},
                     secondSelection: {start: {line: 42, ch: 0}, end: {line: 45, ch: 4}}
                 },
                 hbs: {
-                    filePath: testDocumentDirectory + "test.hbs",
+                    filePath: "test.hbs",
                     foldableLines: [1, 7, 14, 16, 17, 21, 26, 28, 29, 32, 33, 38, 41],
                     sameLevelFoldableLines: [1, 7, 14],
                     firstSelection: {start: {line: 2, ch: 0}, end: {line: 10, ch: 0}},
@@ -261,6 +261,11 @@ define(function (require, exports, module) {
             var testFileSpec = testFilesSpec[file];
             describe(file + " - Editor/Gutter", function () {
                 beforeEach(function () {
+                    runs(function () {
+                        setupWindow();
+                        setup();
+                    });
+
                     runs(function () {
                         openTestFile(testFilePath);
                     });
