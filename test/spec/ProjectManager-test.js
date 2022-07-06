@@ -326,6 +326,11 @@ define(function (require, exports, module) {
                     });
                 });
                 waitsFor(function () { return complete; }, 1000);
+                // give some time for fle to be opened and visible in files panel. Ideally, we should be hooking on to
+                // editor file changed event. If this pops up in the future.
+                let waitDone = false;
+                setTimeout(()=>{waitDone = true;}, 1000);
+                waitsFor(function () { return waitDone; }, 1500);
 
                 // Verify the existence of the new file and make sure it is selected in the project tree.
                 runs(function () {
