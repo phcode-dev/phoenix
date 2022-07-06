@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         prefs              = PreferencesManager.getExtensionPrefs("quickview");
 
     describe("Quick View", function () {
-        var testFolder = FileUtils.getNativeModuleDirectoryPath(module) + "/unittest-files/";
+        let testFolder = SpecRunnerUtils.getTestPath("/spec/quickview-extn-test-files");
 
         // load from testWindow
         var testWindow,
@@ -50,13 +50,6 @@ define(function (require, exports, module) {
                 runs(function () {
                     SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
                         testWindow = w;
-                        // Load module instances from brackets.test
-                        brackets = testWindow.brackets;
-                        CommandManager = brackets.test.CommandManager;
-                        Commands = brackets.test.Commands;
-                        EditorManager = brackets.test.EditorManager;
-                        extensionRequire = brackets.test.ExtensionLoader.getRequireContextForExtension("QuickView");
-                        QuickView = extensionRequire("main");
                     });
                 });
 
@@ -64,6 +57,16 @@ define(function (require, exports, module) {
                     SpecRunnerUtils.loadProjectInTestWindow(testFolder);
                 });
             }
+
+            runs(function () {
+                // Load module instances from brackets.test
+                brackets = testWindow.brackets;
+                CommandManager = brackets.test.CommandManager;
+                Commands = brackets.test.Commands;
+                EditorManager = brackets.test.EditorManager;
+                extensionRequire = brackets.test.ExtensionLoader.getRequireContextForExtension("QuickView");
+                QuickView = extensionRequire("main");
+            });
 
             if (testFile !== oldFile) {
                 runs(function () {
@@ -78,6 +81,7 @@ define(function (require, exports, module) {
         });
 
         function getPopoverAtPos(lineNum, columnNum) {
+            editor  = EditorManager.getCurrentFullEditor();
             var cm = editor._codeMirror,
                 pos = { line: lineNum, ch: columnNum },
                 token;
@@ -426,8 +430,15 @@ define(function (require, exports, module) {
             it("highlight matched text when popover shown", function () {
                 showPopoverAtPos(4, 14);
                 var markers = editor._codeMirror.findMarksAt({line: 4, ch: 14});
-                expect(markers.length).toBe(1);
-                var range = markers[0].find();
+                let rangeMarker = null;
+                for(let marker of markers){
+                    if(marker.type === 'range'){
+                        rangeMarker = marker;
+                        break;
+                    }
+                }
+                expect(rangeMarker).toBeDefined();
+                let range = rangeMarker.find();
                 expect(range.from.ch).toBe(11);
                 expect(range.to.ch).toBe(18);
             });
