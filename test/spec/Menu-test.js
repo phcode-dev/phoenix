@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, runs, beforeFirst, afterLast, waitsForDone, spyOn*/
+/*global describe, it, expect, runs, beforeFirst, afterLast, waitsForDone, spyOn, xdescribe*/
 
 define(function (require, exports, module) {
 
@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         KeyEvent            = require("utils/KeyEvent");
 
 
-    describe("Menus (Native Shell)", function () {
+    xdescribe("Menus (Native Shell)", function () {
 
         this.category = "integration";
 

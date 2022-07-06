@@ -19,7 +19,7 @@
  *
  */
 
-/*global jasmine, expect, beforeEach, waitsFor, waitsForDone, runs, spyOn, KeyboardEvent */
+/*global jasmine, expect, beforeEach, waitsFor, waitsForDone, runs, spyOn, KeyboardEvent, waits */
 
 define(function (require, exports, module) {
 
@@ -610,11 +610,10 @@ define(function (require, exports, module) {
             if(!_testWindow){
                 _testWindow = window.open(_testWindowURL, "_blank", optionsStr);
             } else{
+                _testWindow.brackets = null;
                 _testWindow.location.href = 'about:blank';
                 _testWindow.location.href = _testWindowURL;
             }
-
-            _setupTestWindow();
         });
 
         // FIXME (issue #249): Need an event or something a little more reliable...
@@ -623,8 +622,12 @@ define(function (require, exports, module) {
                 return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
             },
             "brackets.test.doneLoading",
-            10000
+            60000
         );
+
+        runs(function () {
+            _setupTestWindow();
+        });
 
         runs(function () {
             // callback allows specs to query the testWindow before they run
@@ -644,8 +647,8 @@ define(function (require, exports, module) {
                 }
             });
             let savedHref = _testWindow.location.href;
-            _testWindow.location.href = "";
-            _testWindow.brackets.test.doneLoading = false;
+            _testWindow.brackets = null;
+            _testWindow.location.href = "about:blank";
             _testWindow.location.href = savedHref;
         });
 
@@ -655,7 +658,7 @@ define(function (require, exports, module) {
                 return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
             },
             "brackets.test.doneLoading",
-            10000
+            60000
         );
 
         runs(function () {
@@ -664,8 +667,6 @@ define(function (require, exports, module) {
     }
 
     function closeTestWindow() {
-        // debug-only to see testWindow state before closing
-        // waits(500);
 
         runs(function () {
             //we need to mark the documents as not dirty before we close
@@ -682,6 +683,8 @@ define(function (require, exports, module) {
             _testWindow.location.href = 'about:blank';
             _testWindow.brackets.test.doneLoading = false;
         });
+        // debug-only to see testWindow state before closing
+        // waits(1000);
     }
 
 
