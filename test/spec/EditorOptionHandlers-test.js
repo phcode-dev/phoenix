@@ -460,13 +460,13 @@ define(function (require, exports, module) {
                 });
             });
 
-            it("should NOT auto close single quotes inside comments", function () {
+            it("should auto close single quotes inside comments", function () {
                 openEditor(JS_FILE);
 
                 runs(function () {
                     var editor = EditorManager.getCurrentFullEditor();
                     checkCloseBraces(editor, {line: 0, ch: 15}, null, SINGLE_QUOTE, "var myContent ='' \"This is awesome!\";");
-                    checkCloseBraces(editor, {line: 1, ch: 7}, null, SINGLE_QUOTE, "// Yes, it is!");
+                    checkCloseBraces(editor, {line: 1, ch: 7}, null, SINGLE_QUOTE, "// Yes,'' it is!");
                 });
             });
         });
