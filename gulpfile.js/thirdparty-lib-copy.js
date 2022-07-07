@@ -22,14 +22,13 @@
 
 const { src, dest, series } = require('gulp');
 // removed require('merge-stream') node module. it gives wired glob behavior and some files goes missing
-const mergeStream =   require('merge-stream');
 const rename = require("gulp-rename");
 
 
 // individual third party copy
 function copyLicence(path, name) {
     console.log(`Copying licence file ${name}.markdown`);
-    return src([path])
+    return src(path)
         .pipe(rename(`${name}.markdown`))
         .pipe(dest('src/thirdparty/licences/'));
 }
@@ -39,114 +38,91 @@ function copyFiles(srcPathList, dstPath) {
         .pipe(dest(dstPath));
 }
 
-let copyThirdPartyLibsAndLicences = series(
+function _copyMimeDB() {
+    // mime-db
+    return src(['node_modules/mime-db/db.json'])
+        .pipe(rename("mime-db.json"))
+        .pipe(dest('src/thirdparty'));
+}
+
+
+/**
+ * Add thirdparty libs copied to gitignore except the licence file.
+ */
+let copyThirdPartyLibs = series(
     // codemirror
     copyFiles.bind(copyFiles, ['node_modules/codemirror/addon/**/*'], 'src/thirdparty/CodeMirror/addon'),
     copyFiles.bind(copyFiles, ['node_modules/codemirror/keymap/**/*'], 'src/thirdparty/CodeMirror/keymap'),
     copyFiles.bind(copyFiles, ['node_modules/codemirror/lib/**/*'], 'src/thirdparty/CodeMirror/lib'),
     copyFiles.bind(copyFiles, ['node_modules/codemirror/mode/**/*'], 'src/thirdparty/CodeMirror/mode'),
     copyFiles.bind(copyFiles, ['node_modules/codemirror/theme/**/*'], 'src/thirdparty/CodeMirror/theme'),
-    copyLicence.bind(copyLicence, 'node_modules/codemirror/LICENSE', 'codemirror')
+    copyLicence.bind(copyLicence, 'node_modules/codemirror/LICENSE', 'codemirror'),
+    // @phcode/fs
+    copyFiles.bind(copyFiles, ['node_modules/@phcode/fs/dist/virtualfs.js',
+        'node_modules/@phcode/fs/dist/virtualfs.js.map'], 'src/phoenix'),
+    // jszip
+    copyFiles.bind(copyFiles, ['node_modules/jszip/dist/jszip.js'], 'src/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/jszip/LICENSE.markdown', 'jsZip'),
+    // underscore
+    copyFiles.bind(copyFiles, ['node_modules/underscore/underscore-min.js'], 'src/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/underscore/LICENSE', 'underscore'),
+    // bootstrap
+    copyFiles.bind(copyFiles, ['node_modules/bootstrap/dist/js/bootstrap.min.js',
+        'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
+        'node_modules/bootstrap/dist/css/bootstrap.min.css',
+        'node_modules/bootstrap/dist/css/bootstrap.min.css.map'], 'src/thirdparty/bootstrap'),
+    copyLicence.bind(copyLicence, 'node_modules/bootstrap/LICENSE', 'bootstrap'),
+    // hilightjs
+    copyFiles.bind(copyFiles, ['node_modules/@highlightjs/cdn-assets/highlight.min.js'],
+        'src/thirdparty/highlight.js'),
+    copyFiles.bind(copyFiles, ['node_modules/@highlightjs/cdn-assets/styles/*.*'],
+        'src/thirdparty/highlight.js/styles'),
+    copyFiles.bind(copyFiles, ['node_modules/@highlightjs/cdn-assets/languages/*.*'],
+        'src/thirdparty/highlight.js/languages'),
+    copyLicence.bind(copyLicence, 'node_modules/@highlightjs/cdn-assets/LICENSE', 'highlight.js'),
+    // gfm-stylesheet
+    copyFiles.bind(copyFiles, ['node_modules/@pixelbrackets/gfm-stylesheet/dist/gfm.min.css'],
+        'src/thirdparty/'), // AGPL 2.0 license added to licence md
+    // prettier
+    copyFiles.bind(copyFiles, ['node_modules/prettier/*.js'],
+        'src/extensions/default/Phoenix-prettier/thirdParty'),
+    copyLicence.bind(copyLicence, 'node_modules/prettier/LICENSE', 'prettier'),
+    // font-awesome
+    copyFiles.bind(copyFiles, ['node_modules/@fortawesome/fontawesome-free/css/*'],
+        'src/thirdparty/fontawesome/css'),
+    copyFiles.bind(copyFiles, ['node_modules/@fortawesome/fontawesome-free/js/*'],
+        'src/thirdparty/fontawesome/js'),
+    copyFiles.bind(copyFiles, ['node_modules/@fortawesome/fontawesome-free/webfonts/*'],
+        'src/thirdparty/fontawesome/webfonts'),
+    copyFiles.bind(copyFiles, ['node_modules/@fortawesome/fontawesome-free/svgs/brands/*'],
+        'src/thirdparty/fontawesome/svgs/brands'),
+    copyFiles.bind(copyFiles, ['node_modules/@fortawesome/fontawesome-free/svgs/regular/*'],
+        'src/thirdparty/fontawesome/svgs/regular'),
+    copyFiles.bind(copyFiles, ['node_modules/@fortawesome/fontawesome-free/svgs/solid/*'],
+        'src/thirdparty/fontawesome/svgs/solid'),
+    copyLicence.bind(copyLicence, 'node_modules/@fortawesome/fontawesome-free/LICENSE.txt', 'fontawesome'),
+    // devicons https://devicon.dev/
+    copyFiles.bind(copyFiles, ['node_modules/devicon/devicon.min.css'],
+        'src/thirdparty/devicon/'),
+    copyFiles.bind(copyFiles, ['node_modules/devicon/fonts/*.*'],
+        'src/thirdparty/devicon/fonts/'),
+    copyLicence.bind(copyLicence, 'node_modules/devicon/LICENSE', 'devicon'),
+    // mime-db
+    _copyMimeDB,
+    copyLicence.bind(copyLicence, 'node_modules/mime-db/LICENSE', 'mime-db'),
+    // marked.js markdown rendering
+    copyFiles.bind(copyFiles, ['node_modules/marked/marked.min.js'],
+        'src/extensions/default/Phoenix-live-preview/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/marked/LICENSE.md', 'marked'),
+    // @floating-ui for notification ui widget  floating-ui.dom.umd.min.js
+    copyFiles.bind(copyFiles, ['node_modules/@floating-ui/core/dist/floating-ui.core.umd.min.js'],
+        'src/thirdparty'),
+    copyFiles.bind(copyFiles, ['node_modules/@floating-ui/dom/dist/floating-ui.dom.umd.min.js'],
+        'src/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/@floating-ui/core/LICENSE', 'floating-ui'),
+    // documentation
+    copyLicence.bind(copyLicence, 'node_modules/documentation/LICENSE', 'documentation')
+
 );
 
-/**
- * Add thirdparty libs copied to gitignore except the licence file.
- * @returns {Promise<PassThrough>}
- */
-async function copyThirdPartyLibs(){
-    return mergeStream(
-        // @phcode/fs
-        src(['node_modules/@phcode/fs/dist/virtualfs.js',
-            'node_modules/@phcode/fs/dist/virtualfs.js.map'])
-            .pipe(dest('src/phoenix')),
-        // jszip
-        src(['node_modules/jszip/dist/jszip.js'])
-            .pipe(dest('src/thirdparty')),
-        src(['node_modules/jszip/LICENSE.markdown'])
-            .pipe(rename("jsZip.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // underscore
-        src(['node_modules/underscore/underscore-min.js'])
-            .pipe(dest('src/thirdparty')),
-        src(['node_modules/underscore/LICENSE'])
-            .pipe(rename("underscore.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // bootstrap
-        src(['node_modules/bootstrap/dist/js/bootstrap.min.js', 'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
-            'node_modules/bootstrap/dist/css/bootstrap.min.css', 'node_modules/bootstrap/dist/css/bootstrap.min.css.map'])
-            .pipe(dest('src/thirdparty/bootstrap')),
-        src(['node_modules/bootstrap/LICENSE'])
-            .pipe(rename("bootstrap.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // hilightjs
-        src(['node_modules/@highlightjs/cdn-assets/highlight.min.js'])
-            .pipe(dest('src/thirdparty/highlight.js')),
-        src(['node_modules/@highlightjs/cdn-assets/styles/*.*'])
-            .pipe(dest('src/thirdparty/highlight.js/styles')),
-        src(['node_modules/@highlightjs/cdn-assets/languages/*.*'])
-            .pipe(dest('src/thirdparty/highlight.js/languages')),
-        src(['node_modules/@highlightjs/cdn-assets/LICENSE'])
-            .pipe(rename("highlight.js.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // gfm-stylesheet
-        src(['node_modules/@pixelbrackets/gfm-stylesheet/dist/gfm.min.css'])
-            .pipe(dest('src/thirdparty/')), // AGPL 2.0 license addded to
-        // prettier
-        src(['node_modules/prettier/*.js'])
-            .pipe(dest('src/extensions/default/Phoenix-prettier/thirdParty')),
-        src(['node_modules/prettier/LICENSE'])
-            .pipe(rename("prettier.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // font-awesome
-        src(['node_modules/@fortawesome/fontawesome-free/css/*'])
-            .pipe(dest('src/thirdparty/fontawesome/css')),
-        src(['node_modules/@fortawesome/fontawesome-free/js/*'])
-            .pipe(dest('src/thirdparty/fontawesome/js')),
-        src(['node_modules/@fortawesome/fontawesome-free/webfonts/*'])
-            .pipe(dest('src/thirdparty/fontawesome/webfonts')),
-        src(['node_modules/@fortawesome/fontawesome-free/svgs/brands/*'])
-            .pipe(dest('src/thirdparty/fontawesome/svgs/brands')),
-        src(['node_modules/@fortawesome/fontawesome-free/svgs/regular/*'])
-            .pipe(dest('src/thirdparty/fontawesome/svgs/regular')),
-        src(['node_modules/@fortawesome/fontawesome-free/svgs/solid/*'])
-            .pipe(dest('src/thirdparty/fontawesome/svgs/solid')),
-        src(['node_modules/@fortawesome/fontawesome-free/LICENSE.txt'])
-            .pipe(rename("fontawesome.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // devicons https://devicon.dev/
-        src(['node_modules/devicon/devicon.min.css'])
-            .pipe(dest('src/thirdparty/devicon/')),
-        src(['node_modules/devicon/fonts/*.*'])
-            .pipe(dest('src/thirdparty/devicon/fonts/')),
-        src(['node_modules/devicon/LICENSE'])
-            .pipe(rename("devicon.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // mime-db
-        src(['node_modules/mime-db/db.json'])
-            .pipe(rename("mime-db.json"))
-            .pipe(dest('src/thirdparty')),
-        src(['node_modules/mime-db/LICENSE'])
-            .pipe(rename("mime-db.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // marked.js markdown rendering
-        src(['node_modules/marked/marked.min.js'])
-            .pipe(dest('src/extensions/default/Phoenix-live-preview/thirdparty')),
-        src(['node_modules/marked/LICENSE.md'])
-            .pipe(rename("marked.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // @floating-ui for notification ui widget  floating-ui.dom.umd.min.js
-        src(['node_modules/@floating-ui/core/dist/floating-ui.core.umd.min.js'])
-            .pipe(dest('src/thirdparty')),
-        src(['node_modules/@floating-ui/dom/dist/floating-ui.dom.umd.min.js'])
-            .pipe(dest('src/thirdparty')),
-        src(['node_modules/@floating-ui/core/LICENSE'])
-            .pipe(rename("floating-ui.markdown"))
-            .pipe(dest('src/thirdparty/licences/')),
-        // documentation
-        src(['node_modules/documentation/LICENSE'])
-            .pipe(rename("documentation.markdown"))
-            .pipe(dest('src/thirdparty/licences/'))
-);
-}
-
-exports.copyAll = series(copyThirdPartyLibs, copyThirdPartyLibsAndLicences);
+exports.copyAll = series(copyThirdPartyLibs);
