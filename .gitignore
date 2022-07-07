@@ -37,6 +37,7 @@ src/extensions/default/Phoenix-live-preview/thirdparty
 
 # ignore compiled files
 /dist
+/distToDeploy
 /src/.index.html
 /src/styles/brackets.min.css
 /src/styles/brackets.min.css.map
