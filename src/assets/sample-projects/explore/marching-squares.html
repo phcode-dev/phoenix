@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Marching Squares</title>
+	<style>
+		body {
+			margin: 0px;
+		}
+
+		canvas {
+			border: 1px solid;
+		}
+
+		html,
+		body {
+			overflow: hidden;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="canvas"></canvas>
+
+	<script>
+
+		let canvas = document.getElementById("canvas");
+		let ctx = canvas.getContext("2d");
+
+		canvas.width = document.documentElement.clientWidth;
+		canvas.height = document.documentElement.clientHeight;
+
+		window.addEventListener("resize", () => {
+			canvas.width = document.documentElement.clientWidth;
+			canvas.height = document.documentElement.clientHeight;
+		})
+
+		canvas.addEventListener("mousemove", (e) => {
+			draw(e);
+		})
+
+		function getMousePos(canvas, evt) {
+			var rect = canvas.getBoundingClientRect(), // abs. size of element
+				scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
+				scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
+
+			return {
+				x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
+				y: (evt.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+			}
+		}
+
+
+		function drawPolygon(context, pointsArray, fillColor, strokeColor) {
+			if (pointsArray.length <= 0) return;
+			context.beginPath();
+			context.moveTo(pointsArray[0][0], pointsArray[0][1]);
+			for (var i = 0; i < pointsArray.length; i++) {
+				context.lineTo(pointsArray[i][0], pointsArray[i][1]);
+			}
+			if (strokeColor != null && strokeColor != undefined)
+				context.strokeStyle = strokeColor;
+
+			if (fillColor != null && fillColor != undefined) {
+				context.fillStyle = fillColor;
+				context.fill();
+			}
+			context.stroke();
+		}
+
+		// converts binary to decimal, because the states are in a binary form
+		function getState(a, b, c, d) {
+			return a * 8 + b * 4 + c * 2 + d * 1;
+		}
+
+		let tilesize = 32;
+
+		let width = canvas.width; // TODO: get client canvas width and height
+		let height = canvas.height;
+
+		let cols = 1 + parseInt(width / tilesize);
+		let rows = 1 + parseInt(height / tilesize);
+
+		// begin of field creation
+		let field = [];
+		for (let col = 0; col < cols; col++) {
+			field.push([]);
+			for (let row = 0; row < rows; row++) {
+				field[col].push(0);
+			}
+		}
+		// end of field creation
+
+		function fillField(field, x, y) {
+
+			// converting positions to rows and cols
+			let row = parseInt(x / tilesize);
+			let col = parseInt(y / tilesize);
+
+			// filling the field
+			field[row][col] = 1;
+
+
+			return field;
+		}
+
+
+		function drawField(field) {
+			ctx.clearRect(0, 0, width, height)
+
+			// drawining background
+			ctx.fillStyle = "black";
+			ctx.fillRect(0, 0, width, height);
+
+			// begin drawining the grid
+			ctx.fillStyle = "white";
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
+					let x = (i * tilesize) + tilesize;
+					let y = (j * tilesize) + tilesize;
+					ctx.fillRect(x, y, 1, 1)
+				}
+			}
+			// end of drawining grid
+
+
+			// begin of drawining marching squares algorithm
+
+			for (let i = 0; i < cols - 1; i++) {
+				for (let j = 0; j < rows - 1; j++) {
+					let x = i * tilesize;
+					let y = j * tilesize;
+
+					// 4 halfs of each side of the square
+					let a = [x + tilesize * 0.5, y];
+					let b = [x + tilesize, y + tilesize * 0.5];
+					let c = [x + tilesize * 0.5, y + tilesize];
+					let d = [x, y + tilesize * 0.5];
+
+					// gets its current state based on on or off dots
+					// https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Marching_squares_isolines.svg/640px-Marching_squares_isolines.svg.png
+
+					const STATE = getState(field[i][j], field[i + 1][j], field[i + 1][j + 1], field[i][j + 1]);
+
+					switch (STATE) {
+						case 1:
+							drawPolygon(ctx, [c, d, [x, y + tilesize]], "white", "white");
+							break;
+						case 2:
+							drawPolygon(ctx, [b, c, [x + tilesize, y + tilesize]], "white", "white");
+							break;
+						case 3:
+							drawPolygon(ctx, [b, d, [x, y + tilesize], [x + tilesize, y + tilesize]], "white", "white");
+							break;
+						case 4:
+							drawPolygon(ctx, [a, b, [x + tilesize, y]], "white", "white");
+							break;
+						case 5:
+							drawPolygon(ctx, [a, [x + tilesize, y], b, c, [x, y + tilesize], d], "white", "white");
+							break;
+						case 6:
+							drawPolygon(ctx, [a, c, [x + tilesize, y + tilesize], [x + tilesize, y]], "white", "white");
+							break;
+						case 7:
+							drawPolygon(ctx, [a, d, [x, y + tilesize], [x + tilesize, y + tilesize], [x + tilesize, y]], "white", "white");
+							break;
+						case 8:
+							drawPolygon(ctx, [a, d, [x, y]], "white", "white");
+							break;
+						case 9:
+							drawPolygon(ctx, [a, c, [x, y + tilesize], [x, y]], "white", "white");
+							break;
+						case 10:
+							drawPolygon(ctx, [[x, y], a, b, [x + tilesize, y + tilesize], c, d], "white", "white");
+							break;
+						case 11:
+							drawPolygon(ctx, [a, b, [x + tilesize, y + tilesize], [x, y + tilesize], [x, y]], "white", "white");
+							break;
+						case 12:
+							drawPolygon(ctx, [b, d, [x, y], [x + tilesize, y]], "white", "white");
+							break;
+						case 13:
+							drawPolygon(ctx, [b, c, [x, y + tilesize], [x, y], [x + tilesize, y]], "white", "white");
+							break;
+						case 14:
+							drawPolygon(ctx, [c, d, [x, y], [x + tilesize, y], [x + tilesize, y + tilesize]], "white", "white");
+							break;
+						case 15:
+							drawPolygon(ctx, [[x, y], [x + tilesize, y], [x + tilesize, y + tilesize], [x, y + tilesize]], "white", "white");
+							break;
+
+						default:
+							break;
+					}
+				}
+			}
+			// end
+		}
+
+
+		function draw(evt) {
+			var pos = getMousePos(canvas, evt);
+			fillField(field, pos.x, pos.y);
+			drawField(field);
+
+		}
+		drawField(field);
+
+	</script>
+</body>
+
+</html>

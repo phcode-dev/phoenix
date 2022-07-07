@@ -1,8 +1,0 @@
-{
-    "googleAnalyticsID"          : "G-FP5S9BKDSJ",
-    "mixPanelID"                 : "a7e08ffd43c37767c29b13df1d2e6c62",
-    "coreAnalyticsID"            : "phoenix",
-    "coreAnalyticsAppName"       : "phoenix-stage",
-    "environment"                : "stage",
-    "buildtype"                  : "staging"
-}

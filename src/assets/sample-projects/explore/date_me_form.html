@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Me Form</title>
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        color: #09585d;
+        font-family: "Oswald";
+        font-size: 1.3rem;
+        text-decoration:none;
+    }
+    a, input{
+        cursor:pointer;
+    }
+    .main-bg {
+        background: #ece9e2;
+    }
+    .title{
+        margin-bottom: 1rem;
+    }
+    .bord{
+        margin: 0 auto;
+        margin-top: 2rem;
+        width: 80%;
+        border: 1px solid #cfcfcf;
+        margin-bottom:2rem;
+        padding: 1rem .5rem 1rem .5rem;
+    }
+    .content {
+        margin: 0 auto;
+        margin-top: 2rem;
+        padding-top:2rem;
+        margin-bottom:2rem;
+        width: 80%;
+        border: 1 solid #cfcfcf;
+        background: #f2dcde;
+        text-align: center;
+        border-radius: .3rem;
+    }
+    form.content{
+        padding-bottom:2rem;
+    }
+    .check{
+        width:100%;
+    }
+    .check-1, .check-2, .check-3{
+        padding: 1rem 2rem .5rem 2rem;
+        display:flex;
+        justify-content: space-between;
+    }
+    .checkbox-align{
+        padding-right: 2rem;
+    }
+    textarea{
+        width:100%;
+        height: 20vh;
+    }
+    textarea:focus, input:focus{
+        outline: 1px solid #cfcfcf;
+    }
+    ::placeholder{
+        font-size:1rem;
+    }
+    a.btn{
+        background: #09585d;
+        color:#fff;
+        padding:.7rem;
+        border-radius:5px;
+    }
+    </style>
+</head>
+<body class="main-bg">
+    <form  class="content">
+        <h2 class="title">Application for permission to date me</h2>
+        <p class="note">
+            <b>Note : </b>
+            The Form is to be completed at least 21 days prior.
+        </p>
+        <fieldset class="bord">
+            <legend>
+                <h2 class="title">Personal Details</h2>
+            </legend>
+            <label>Name : </label>
+                <input type="text" placeholder="Enter your name here"> <br> <br>
+            <label>Email : </label>
+                <input type="text" placeholder="Enter your email here"> <br> <br>
+            <label>Address : </label>
+                <input type="text" placeholder="Enter your address here"> <br> <br>
+            <label>Phone Number : </label>
+                <input type="text" placeholder="Enter your phone number here">  <br> <br>
+            <label>IQ : </label>
+                <input type="text" placeholder="Enter your IQ here">  <br> <br>      
+            <label>Gender: </label> <br><br>
+                <input type="radio" name="gender">Male 
+                <input type="radio" name="gender">Female <br><br>
+            <label>Date of Proposed Outing : </label>
+                <input type="date">       
+        </fieldset>
+        <fieldset class="bord">
+            <h2 class="title">Check all that apply</h2>
+            <table class="check">
+                <tr class="check-1">
+                    <td><input type="checkbox"> <label>I love pets</label></td>
+                    <td><input type="checkbox"> <label>I work Full-time</label></td>
+                </tr>
+                <tr class="check-2">
+                    <td><input type="checkbox"> <label>I have children</label></td>
+                    <td><input type="checkbox"> <label>My parents are rich</label></td>
+                </tr>
+                <tr class="check-3">
+                    <td><input type="checkbox"> <label>Date at public location</label></td>
+                    <td><input type="checkbox"> <label>Have fun without judging</label></td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset class="bord">
+            <legend>Essay</legend>
+            <p>In 50 words or more, explain why you want to date me</p>
+            <textarea placeholder="Enter your reasons why..."></textarea>
+        </fieldset>
+        <a href="#" class="btn">Send Your Application</a>
+    </form>    
+</body>
+</html>

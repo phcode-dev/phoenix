@@ -1,3 +1,0 @@
-CHANGED.CHANGED file
-
-This file should *CHANGED* show up in certain searches

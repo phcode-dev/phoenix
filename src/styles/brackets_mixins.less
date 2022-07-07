@@ -1,0 +1,143 @@
+
+// Copyright (c) 2021 - present core.ai . All rights reserved.
+// Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
+
+/* Brackets mixins */
+
+/* Helpers for working with flex layouts */
+/* see: https://developer.mozilla.org/en-US/docs/Web/CSS/flex */
+.flex-box(@direction: row) {
+    display: flex;
+    flex-direction: @direction;
+}
+.flex-item(@grow: 0, @shrink: 1, @basis: auto) {
+    flex: @grow @shrink @basis;
+}
+
+/* Helpers for working with box layouts */
+.box {
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+}
+.hbox {
+    .box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+}
+.vbox {
+    .box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+}
+.box-flex(@ratio) {
+    -webkit-box-flex: @ratio;
+    -moz-box-flex: @ratio;
+    box-flex: @ratio;
+}
+.box-pack(@pack) {
+    -webkit-box-pack: @pack;
+    -moz-box-pack: @pack;
+    box-pack: @pack;
+}
+.box-align(@align) {
+    -webkit-box-align: @align;
+    -moz-box-align: @align;
+    box-align: @align;
+}
+
+/* Helpful for percentage-sizing items that have border/padding */
+.sane-box-model {
+    box-sizing: border-box;
+}
+
+/* Helpers for spritesheet images */
+/* Sets the background to the given offset in the spritesheet. Typically, the element you set this on requires
+   a fixed size so that other parts of the spritesheet don't show. */
+.sprite(@x-offset, @y-offset, @sprite-sheet) {
+    background: url("@{sprite-sheet}") -@x-offset -@y-offset no-repeat;
+}
+
+/* Turns the given element into an icon showing the given rectangle in the spritesheet. Can be used on empty elements
+   (e.g. a link with no text) or on the :before/:after selector of elements that have content. */
+.sprite-icon(@x-offset, @y-offset, @width, @height, @sprite-sheet) {
+    content: "";
+    .sprite(@x-offset, @y-offset, @sprite-sheet);
+    width: @width;
+    height: @height;
+}
+
+/* Like .sprite-icon, but for retina. Note that the x-offset/y-offset/width/height are non-retina
+ * sizes. The background-width/background-height are the *total* non-retina size of the
+ * spritesheet. .sprite-swap() works as usual (again with non-retina sizes). So, for example, if you have
+ * a non-retina "spritesheet.png" at 48x24 (with two icons that are 24x24 each) and a retina version
+ * "spritesheet@2x.png" at 96x48, you would call:
+ *     .sprite-icon-retina(0, 0, 24px, 24px, "spritesheet.png", 48px, 24px, "spritesheet@2x.png");
+ *     &:hover { .sprite-swap(-24px, 0); }
+ */
+.sprite-icon-retina(@x-offset, @y-offset, @width, @height, @sprite-sheet, @background-width, @background-height, @sprite-sheet-2x) {
+    content: "";
+    .sprite-icon(@x-offset, @y-offset, @width, @height, @sprite-sheet);
+    background-size: @background-width @background-height;
+    @media only screen and (-webkit-min-device-pixel-ratio: 2),
+        only screen and (min-device-pixel-ratio: 2) {
+            background-image: url("@{sprite-sheet-2x}");
+        }
+}
+
+/* Changes an element that's already showing one area of a spritesheet to show a different area of the same size.
+   Should be used with an element whose base styling includes .sprite() or .sprite-icon() */
+.sprite-swap(@x-offset, @y-offset) {
+    background-position: -@x-offset -@y-offset;
+}
+
+
+/* Scale x-axis using top-left as the origin  */
+.scale-x (@value: 1.0, @horizontal: 50%, @vertical: 50%) {
+    -ms-transform: scaleX(@value);
+    -moz-transform: scaleX(@value);
+    -webkit-transform: scaleX(@value);
+    -o-transform: scaleX(@value);
+    transform: scaleX(@value);
+
+    -ms-transform-origin: @horizontal @vertical;
+    -moz-transform-origin: @horizontal @vertical;
+    -webkit-transform-origin: @horizontal @vertical;
+    -o-transform-origin: @horizontal @vertical;
+    transform-origin: @horizontal @vertical;
+}
+
+/* Change the settings for user-select and its counterparts, defaulting to none. */
+.user-select(@type: none) {
+    -webkit-user-select: @type;
+    -khtml-user-select: @type;
+    -moz-user-select: @type;
+    -ms-user-select: @type;
+    -o-user-select: @type;
+    user-select: @type;
+}
+
+.animation (@name, @duration: 300ms, @ease: ease, @delay: 0ms, @iteration-count: 1) {
+    -webkit-animation: @name @duration @ease @delay @iteration-count;
+    animation: @name @duration @ease @delay @iteration-count;
+}

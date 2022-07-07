@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ant Colony</title>
+    <style>
+        body {
+            font-family: monospace;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0;
+        }
+
+        h3 {
+            text-align: center;
+            margin: 0;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        #window {
+            overflow: scroll;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: calc(100vh - 80px);
+            width: calc(100vw - 80px);
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            transform: translate(-50%, -50%);
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #legend {
+            position: absolute;
+            min-height: 250px;
+            min-width: 180px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: black;
+            bottom: 15px;
+            left: 15px;
+            padding: 10px;
+            background-color: white;
+        }
+
+        #banner {
+            position: absolute;
+            border-width: 1px;
+            border-style: solid;
+            border-color: black;
+            padding: 10px;
+            min-height: 40px;
+            right: 80px;
+            bottom: 15px;
+            justify-self: center;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div id="window">
+    <div id="root"></div>
+</div>
+<div id="legend">
+    <h1>Colony</h1>
+    <br/>
+    <span class="label">Queen(s): </span><span id="queens"></span>
+    <br/>
+    <span class="label">Ant(s): </span><span id="ants"></span>
+    <br/>
+    <span class="label">Food: </span><span id="food"></span>
+    <br/>
+    <span class="label">Tiles Explored: </span><span id="tiles"></span>
+    <br/>
+    <span class="label">Time: </span><span id="ticks"></span><span> ticks</span>
+    <br/>
+    <br/>
+    <h1>Stats</h1>
+    <br/>
+    <span class="label">Food Drop Chance: </span><span id="foodDrop"></span><span>%</span>
+    <br/>
+    <span class="label">Queen Birth Chance: </span><span id="queenBirth"></span><span>%</span>
+    <br/>
+    <span class="label">Time Until Birth: </span><span id="timeUntilBirth"></span><span> ticks</span>
+</div>
+<div id="banner">
+    <h3>Coded by <a href="https://github.com/metroxe">Christopher Powroznik</a> for the <a
+            href="https://onehtmlpagechallenge.com">One HTML Page Challenge</a></h3>
+</div>
+</body>
+<script>
+	const isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+	const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+	if (isSafari ||  iOS) {
+		alert("Sorry, but I use class variables defined outside of methods in this simulation. Safari does not support " +
+			"this, in their version of javascript. Try using Chrome Desktop instead.");
+		document.getElementsByTagName("body")[0].innerHTML = `
+            <h1>
+            😭<br/>
+            <a href='https://onehtmlpagechallenge.com'>One HTML Page Challenge</a>
+            <br/>
+            <a href='https://github.com/metroxe'>Christopher Powroznik</a>
+            </h1>`;
+	}
+</script>
+<script>
+
+	// elements
+	const root              = document.getElementById("root");
+	const queensEle         = document.getElementById("queens");
+	const antsEle           = document.getElementById("ants");
+	const foodEle           = document.getElementById("food");
+	const tilesEle          = document.getElementById("tiles");
+	const timeEle           = document.getElementById("ticks");
+	const foodDropEle       = document.getElementById("foodDrop");
+	const queenBirthEle     = document.getElementById("queenBirth");
+	const timeUntilBirthEle = document.getElementById("timeUntilBirth");
+
+	// static variables
+	const drawTime    = 50;
+	const tickTime    = 50;
+	const foodChance  = 0.03;
+	const queenChance = 0.02;
+	const birthTime   = 30;
+	const ObjectType  = { // enum for object types
+		WALL: 0,
+		ANT: 1,
+		FOOD: 2
+	};
+
+	// maps
+	const grid    = {}; // true = dug out |  false = full
+	const objects = {}; // holds all classes
+
+	// variables
+	let queenCount  = 0;
+	let antCount    = 0;
+	let tickCount   = 0;
+	let foodCount   = 0;
+	let minX        = 0;
+	let maxX        = 0;
+	let minY        = 0;
+	let maxY        = 0;
+	let idIncrement = 0;
+	let ticking     = false; //in case of lag, this will avoid double ticking on the same tick.
+	let drawing     = false; //in case of lag, this will avoid double drawing on the same draw.
+
+	/**
+	 * Default Class for all Objects in the world
+	 */
+	class WorldObject {
+		// override these
+		letter;
+		objectType;
+
+		// set in constructor
+		x;
+		y;
+		id;
+
+		constructor(x, y) {
+			idIncrement++;
+			this.id           = idIncrement;
+			this.x            = x;
+			this.y            = y;
+			const newCoord    = coord(x, y);
+			objects[newCoord] = {...objects[coord(x, y)], [this.id]: this};
+			grid[newCoord]    = true;
+		}
+
+		die() {
+			delete objects[coord(this.x, this.y)][this.id];
+		}
+	}
+
+	class Food extends WorldObject {
+		objectType = ObjectType.FOOD;
+		foodLeft   = 3;
+		letter     = this.foodLeft.toString();
+
+		constructor(x, y) {
+			super(x, y);
+			foodCount += this.foodLeft;
+		}
+
+		eat() {
+			foodCount--;
+			this.foodLeft--;
+			if (this.foodLeft <= 0) {
+				this.die();
+			}
+			this.letter = this.foodLeft.toString(10);
+		}
+	}
+
+	/**
+	 * The Bug Class that has the ability to take basic actions
+	 * extend upon this class for all other objects
+	 */
+	class Bug extends WorldObject {
+		// override these
+		hungerMax;
+		hungerRate;
+		delay;
+
+		// set in constructor
+		wait;
+		hunger;
+		lastDirection = "bottom";
+
+		constructor(x, y) {
+			super(x, y);
+			this.wait = this.delay;
+		}
+
+		die() {
+			super.die();
+			new Food(this.x, this.y);
+		}
+
+		takeTurn(action = () => {}) {
+			// check hunger
+			this.hunger -= this.hungerRate;
+			if (this.hunger <= 0) {
+				this.die();
+				return;
+			}
+
+			if (this.wait > 0) {
+				this.wait--;
+				return;
+			}
+
+			this.wait = this.delay;
+			action();
+		}
+
+		move(direction) {
+			const lastCoord = coord(this.x, this.y);
+			delete objects[lastCoord][this.id];
+			if (Object.keys(objects[lastCoord]).length < 1) {
+				delete objects[lastCoord];
+			}
+			switch (direction) {
+				case ("left"):
+					this.x = this.x - 1;
+					if (this.x < minX) {
+						minX = this.x;
+					}
+					break;
+				case ("top"):
+					this.y = this.y - 1;
+					if (this.y < minY) {
+						minY = this.y;
+					}
+					break;
+				case ("bottom"):
+					this.y = this.y + 1;
+					if (this.y > maxY) {
+						maxY = this.y;
+					}
+					break;
+				case ("right"):
+					this.x = this.x + 1;
+					if (this.x > maxX) {
+						maxX = this.x;
+					}
+					break;
+			}
+			const newCoord = coord(this.x, this.y);
+			if (!grid[newCoord] && Math.random() < foodChance) {
+				new Food(this.x, this.y);
+			}
+			grid[newCoord]    = true;
+			objects[newCoord] = {
+				...objects[newCoord],
+				[this.id]: this
+			};
+		}
+	}
+
+	/**
+	 * this is the ant capable of making new tunnels and looking for food
+	 */
+	class Ant extends Bug {
+		letter     = "A";
+		delay      = 1;
+		hungerMax  = 100;
+		hungerRate = 1;
+		objectType = ObjectType.ANT;
+
+		constructor(x, y) {
+			super(x, y);
+			antCount++;
+			this.hunger = this.hungerMax;
+		}
+
+		die() {
+			super.die();
+			antCount--;
+		}
+
+		takeTurn(action = () => {}) {
+			super.takeTurn(() => {
+				const [priorities, distanceNegative] = this.getPriorities();
+				const direction                      = priorityDirection(
+					sight(this.x, this.y),
+					priorities,
+					this.lastDirection,
+					distanceNegative
+				);
+				this.move(direction);
+
+				// eat if necessary
+				if (this.hunger < (this.hungerMax - (this.hungerRate * 10))) {
+					const checkCoord = coord(this.x, this.y);
+					let _objects     = Object.values(objects[checkCoord]);
+					_objects         = _objects.filter(o => o.objectType === ObjectType.FOOD);
+					if (_objects.length > 0) {
+						_objects[0].eat();
+						this.hunger = this.hungerMax;
+					}
+				}
+
+				action();
+			});
+		}
+
+		getPriorities() {
+			const priorities = [ObjectType.WALL];
+			if ((this.hunger / this.hungerMax) < 0.5) {
+				priorities.unshift(ObjectType.FOOD);
+			}
+			return [priorities, this.hunger / this.hungerMax];
+		}
+	}
+
+	class Queen extends Ant {
+		letter     = "Q";
+		delay      = 3;
+		hungerMax  = 500;
+		hungerRate = 1;
+		birthTime  = birthTime;
+		birthCount = 0;
+
+		constructor(x, y) {
+			super(x, y);
+			queenCount++;
+			this.hunger = this.hungerMax;
+		}
+
+		die() {
+			super.die();
+			queenCount--;
+		}
+
+		takeTurn(action = () => {}) {
+			super.takeTurn(() => {
+				this.birthCount++;
+				if (this.birthCount >= this.birthTime) {
+					this.birthCount = 0;
+					if (Math.random() < queenChance) {
+						new Queen(this.x + 1, this.y);
+					} else {
+						new Ant(this.x + 1, this.y);
+					}
+				}
+				action();
+			});
+		}
+	}
+
+	/**
+	 * Function for drawing the world
+	 * TODO: only draw the new parts of the world, right now it iterates over the whole thing
+	 */
+	function draw() {
+		if (drawing) {
+			return;
+		}
+		drawing           = true;
+		// map
+		let x;
+		let y;
+		let tilesExplored = 0;
+		let text          = "";
+		for (y = minY; y <= maxY; y++) {
+			for (x = minX; x <= maxX; x++) {
+				const curObjects = objects[coord(x, y)];
+
+				if (curObjects) {
+					tilesExplored++;
+					text += Object.values(curObjects)[0].letter;
+					continue;
+				}
+
+				if (!grid[`${x},${y}`]) {
+					text += "░";
+					continue;
+				}
+
+				tilesExplored++;
+				const [left, top, bottom, right] = adjacent(x, y);
+
+				// ╣
+				if (left && top && bottom && !right) {
+					text += "╣";
+				}
+				// ║
+				else if (!left && top && bottom && !right) {
+					text += "║";
+				}
+				// ╗
+				else if (left && !top && bottom && !right) {
+					text += "╗";
+				}
+				// ╝
+				else if (left && top && !bottom && !right) {
+					text += "╝";
+				}
+				// ╚
+				else if (!left && top && !bottom && right) {
+					text += "╚";
+				}
+				// ╔
+				else if (!left && !top && bottom && right) {
+					text += "╔";
+				}
+				// ╩
+				else if (left && top && !bottom && right) {
+					text += "╩";
+				}
+				// ╦
+				else if (left && !top && bottom && right) {
+					text += "╦";
+				}
+				// ╠
+				else if (!left && top && bottom && right) {
+					text += "╠";
+				}
+				// ═
+				else if (left && !top && !bottom && right) {
+					text += "═";
+				}
+				// ╬
+				else if (left && top && bottom && right) {
+					text += "╬";
+				} else {
+					text += "░";
+				}
+			}
+			text += "\n";
+		}
+		root.innerText = text;
+
+		// legend
+		queensEle.innerText         = queenCount.toString();
+		antsEle.innerText           = antCount.toString();
+		foodEle.innerText           = foodCount.toString();
+		tilesEle.innerText          = tilesExplored.toString();
+		timeEle.innerText           = tickCount.toString();
+		foodDropEle.innerText       = (foodChance * 100).toString();
+		queenBirthEle.innerText     = (queenChance * 100).toString();
+		timeUntilBirthEle.innerText = birthTime.toString();
+		drawing                     = false;
+	}
+
+
+	/**
+	 * Iterates over all bugs and makes them take their turn
+	 */
+	function tick() {
+		if (!ticking) {
+			ticking = true;
+			Object.values(objects).forEach(bugs => {
+				Object.values(bugs).forEach(bug => {
+					if (bug.takeTurn) {
+						bug.takeTurn();
+					}
+				});
+			});
+			tickCount++;
+			ticking = false;
+		}
+	}
+
+	/**
+	 * Utility for getting surroundings at a coord
+	 */
+	function adjacent(x, y) {
+		const left   = grid[coord(x - 1, y)];
+		const top    = grid[coord(x, y - 1)];
+		const bottom = grid[coord(x, y + 1)];
+		const right  = grid[coord(x + 1, y)];
+		return [left, top, bottom, right];
+	}
+
+	/**
+	 * Utility for getting sight in straight lines. Gives the array and distance
+	 * [[Array<ObjectType>, number], x4]
+	 */
+	function sight(x, y) {
+		let _x;
+		let _y;
+		let left;
+		let top;
+		let bottom;
+		let right;
+
+		// left
+		_x = x - 1;
+		while (!left) {
+			left = scan(_x, y);
+			if (left) {
+				left = [left, Math.abs(x - _x)];
+			}
+			_x--;
+		}
+
+		// top
+		_y = y - 1;
+		while (!top) {
+			top = scan(x, _y);
+			if (top) {
+				top = [top, Math.abs(y - _y)];
+			}
+			_y--;
+		}
+
+		// bottom
+		_y = y + 1;
+		while (!bottom) {
+			bottom = scan(x, _y);
+			if (bottom) {
+				bottom = [bottom, Math.abs(y - _y)];
+			}
+			_y++;
+		}
+
+		// right
+		_x = x + 1;
+		while (!right) {
+			right = scan(_x, y);
+			if (right) {
+				right = [right, Math.abs(x - _x)];
+			}
+			_x++;
+		}
+
+		return [left, top, bottom, right];
+	}
+
+	/**
+	 * Check a single spot and return the array of Objects
+	 */
+	function scan(x, y) {
+		const _coord   = coord(x, y);
+		const _objects = objects[_coord];
+		if (_objects) {
+			return Object.values(_objects).map(o => (o.objectType));
+		}
+		if (!grid[_coord]) {
+			return [ObjectType.WALL];
+		}
+	}
+
+	/**
+	 * Utility for making the coord key;
+	 */
+	function coord(x, y) {
+		return `${x},${y}`;
+	}
+
+	/**
+	 * Utility for determining priority direction based on sight.
+	 * DistanceNegative will make things less priority if farther away
+	 */
+	function priorityDirection(sightArr, priorities, lastDirection, distanceNegative = 0) {
+		const [
+				  [leftTypes, leftDistance],
+				  [topTypes, topDistance],
+				  [bottomTypes, bottomDistance],
+				  [rightTypes, rightDistance]
+			  ] = sightArr;
+
+		const filter = t => (priorities.includes(t));
+		const sort   = (a, b) => (priorities.indexOf(a) - priorities.indexOf(b));
+
+		let bestLeft = priorities.indexOf(
+			leftTypes
+				.filter(filter)
+				.sort(sort)[0]
+		);
+		bestLeft < 0 ?
+			bestLeft = Number.MAX_SAFE_INTEGER :
+			bestLeft += leftDistance * distanceNegative;
+
+		let bestTop = priorities.indexOf(
+			topTypes
+				.filter(filter)
+				.sort(sort)[0]
+		);
+		bestTop < 0 ?
+			bestTop = Number.MAX_SAFE_INTEGER :
+			bestTop += topDistance * distanceNegative;
+
+		let bestBottom = priorities.indexOf(
+			bottomTypes
+				.filter(filter)
+				.sort(sort)[0]
+		);
+		bestBottom < 0 ?
+			bestBottom = Number.MAX_SAFE_INTEGER :
+			bestBottom += bottomDistance * distanceNegative;
+
+		let bestRight = priorities.indexOf(
+			rightTypes
+				.filter(filter)
+				.sort(sort)[0]
+		);
+		bestRight < 0 ?
+			bestRight = Number.MAX_SAFE_INTEGER :
+			bestRight += rightDistance * distanceNegative;
+
+		let list = [
+			[bestLeft, "left"],
+			[bestTop, "top"],
+			[bestBottom, "bottom"],
+			[bestRight, "right"]
+		];
+
+		list       = list.sort((a, b) => (a[0] - b[0]));
+		let lowest = list[0][0];
+		list       = list.filter(p => p[0] <= lowest);
+		return list[Math.floor(Math.random() * list.length)][1];
+	}
+
+	// start with 1 queen
+	new Queen(0, 0);
+
+	setInterval(tick, tickTime);
+	setInterval(() => window.requestAnimationFrame(draw), drawTime);
+
+
+</script>
+</html>

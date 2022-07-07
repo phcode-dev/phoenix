@@ -1,4 +1,0 @@
-CHANGEDbar.txt file
-CHANGED
-CHANGEDThis file should *not* show up in certain searches
-CHANGED

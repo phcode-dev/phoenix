@@ -1,3 +1,0 @@
-[bar].[txt] file
-
-This file should *[not]* show up in certain searches

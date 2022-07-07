@@ -1,0 +1,25 @@
+{
+  "name": "Phoenix-Markdown",
+  "version": "1.0.0",
+  "engines": { "brackets": ">=1.0.0" },
+  "description": "Writing documents in Markdown.",
+  "keywords": ["markdown", "writing"],
+  "license": "MIT",
+  "dependencies": {
+  },
+  "authors": [{
+    "name": "Alan Hohn",
+    "email": "alanhohn@gmail.com",
+    "url": "https://github.com/alanhohn"
+  },
+    {
+      "name": "Glenn Ruehle",
+      "email": "gruehle@gmail.com",
+      "url": "https://github.com/gruehle"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alanhohn/markdown-toolbar.git"
+  }
+}

@@ -1,7 +1,0 @@
-/* basic.less */
-#project-title {
-  font-weight: 800;
-}
-#project-title {
-  font-size: 66px;
-}

@@ -1,0 +1,168 @@
+@charset "utf-8";
+/* CSS Document */
+
+article,
+aside,
+figure,
+footer,
+header,
+nav,
+section {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+body {
+	background-color: #66b034;
+	color: #000;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin: 0;
+	padding: 00;
+}
+#container {
+	margin: 0 auto;
+	width: 840px;
+}
+#logo {
+	background-image: url(../images/lrg_logo.png);
+	background-repeat: no-repeat;
+	height: 138px;
+	width: 100%;
+}
+#logo h1, #logo h2 {
+	position: absolute;
+	top: -500px;
+}
+nav {
+	padding-top: 150px;
+}
+#maincontent {
+	margin-top: 80px;
+	padding: 10px 0;
+}
+ul {
+	margin: 0;
+	padding: 0;
+}
+nav ul {
+	font-size: 20px;
+	font-weight: bold;
+	list-style: none;
+	margin-bottom: 15px;
+}
+nav ul li {
+	float: left;
+}
+nav ul a {
+	border: 1px solid #618a37;
+	border-radius: 8px;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+	color: #fff;
+	display: block;
+	padding: 10px;
+	text-align:center;
+	text-decoration: none;
+	margin: 5px 0;
+	-moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+	width: 140px;
+}
+nav ul a:link,
+nav ul a:visited {
+	background: rgba(255,255,255,0.2);
+}
+nav ul a:hover, 
+nav ul a:active,
+nav ul a:focus {
+	background: rgba(255,255,255,0.4);
+}
+nav ul li:hover {
+	margin-top:-10px;
+}
+nav ul li {
+	float: left;
+	-webkit-transition-duration:.5s;
+	-webkit-transition-property:margin-top;
+	-webkit-transition-timing-function:ease-in-out;
+	-o-transition-duration:.5s;
+	-o-transition-property:margin-top;
+	-o-transition-timing-function:ease-in-out;
+	-moz-transition-duration:.5s;
+	-moz-transition-property:margin-top;
+	-moz-transition-timing-function:ease-in-out;
+	transition-duration:.5s;
+	transition-property:margin-top;
+	transition-timing-function:ease-in-out;
+}
+#vision {
+	background-image: url(../images/lrg_hero.jpg);
+	background-repeat: no-repeat;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 32px;
+	font-weight: bold;
+	height: 237px;
+	line-height: 1.2;
+	margin-bottom: 20px;
+	padding: 60px 370px 0 40px;
+	width: 409px;
+}
+.pod {
+	background: #fff;
+	float: left;
+	margin-right: 13px;
+	padding: 10px;
+	width: 244px;
+}
+.podContent {
+	height: 181px;
+	margin-top: 10px;
+	overflow: hidden;
+	width: 244px;
+}
+#news .podContent {
+	margin-top: 12px;
+	overflow: auto;
+}
+#news .podContent p {
+	font-size: 15px;
+	margin-bottom: 5px;
+	margin-left: 6px;
+	margin-top: 5px;
+}
+.pod h1 {
+	background: #ccc;
+	background-image: url(../images/icon_chevron.png);
+	background-position: 95%;
+	background-repeat: no-repeat;
+	color: #000;
+	font-size:16px;
+	font-weight: normal;
+	margin: 0 0 10px 0;
+	padding: 5px;
+}
+a.block {
+	display: block;
+	text-decoration: none;
+}
+time {
+	display: inline-block;
+	font-weight: bold;
+	width: 2.5em;
+}
+footer {
+	clear: both;
+	color: #fff;
+	padding: 10px 0;
+}
+footer p {
+	margin: 0 0 5px 0;
+}
+#phone {
+	color: #000;
+	font-weight: bold;
+}
+#facebookTwitter {
+	float: right;
+	margin-right: 25px;
+}
