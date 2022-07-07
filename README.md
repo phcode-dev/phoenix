@@ -82,6 +82,12 @@ IDEs from this link before raising a pull request: https://www.sonarlint.org/
 * Run tests as required. 
   * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
 
+### Running tests in dev staging and prod stacks
+* To run tests against these stacks go to the following url: 
+* dev: https://dev.phcode.dev/distToDeploy/testing/test/SpecRunner.html
+* staging: https://staging.phcode.dev/distToDeploy/testing/test/SpecRunner.html
+* prod: https://phcode.dev/distToDeploy/testing/test/SpecRunner.html
+
 ## Browsing the virtual file system
 To view/edit the files in the browser virtual file system in Phoenix:
 `debug menu> Open Virtual File System`
