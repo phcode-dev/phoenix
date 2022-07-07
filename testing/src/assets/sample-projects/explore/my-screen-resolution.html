@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is my Screen Resolution</title>
+    <style>
+        
+
+        :root {
+            --fborder: #08f;
+            --sborder: green;
+        }
+
+        body {
+            background-color: black;
+            text-align: center;
+            color: white;
+
+            text-shadow:
+                0 0 1vw red,
+                0 0 3vw red,
+                0 0 10vw red;
+        }
+
+        main {
+            border: 4px white solid;
+            border-radius: 10px;
+            padding: 20px;
+            background: black;
+            margin: 50px auto auto auto;
+            animation: animatef 3s infinite alternate linear;
+            box-shadow:
+                0 0 .25rem #fff,
+                inset 0 0 .25rem var(--fborder),
+                0 0 1rem var(--fborder),
+                inset 0 0 1rem var(--fborder),
+                0 0 2rem var(--fborder),
+                inset 0 0 2rem var(--fborder);
+            font-weight: 100;
+            max-width: 600px;
+        }
+
+        .container {
+            border: 4px white solid;
+            border-radius: 10px;
+            background-color: black;
+            text-align: center;
+            padding: 10px;
+            animation: animates 2s infinite linear;
+            box-shadow:
+                0 0 .25rem #fff,
+                inset 0 0 .25rem #08f,
+                0 0 1rem #08f,
+                inset 0 0 1rem #08f,
+                0 0 2rem #08f,
+                inset 0 0 2rem #08f;
+        }
+
+        span#resolution {
+            font-size: 25px;
+            text-shadow:
+                0 0 1vw #08f,
+                0 0 3vw #08f,
+                0 0 10vw #08f;
+            animation: blink 5s infinite;
+        }
+
+        span {
+            text-shadow:
+                0 0 1vw green,
+                0 0 3vw green,
+                0 0 10vw green;
+
+        }
+
+        @keyframes animatef {
+            0% {
+                --fborder: #f00;
+            }
+
+            33% {
+                --fborder: yellow;
+            }
+
+            100% {
+                --fborder: #0f0;
+            }
+        }
+
+        @keyframes blink {
+
+            0%,
+            19%,
+            21%,
+            23%,
+            25%,
+            54%,
+            56%,
+            100% {
+                visibility: show;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <div class="container">
+            <h2>Your Screen Resolution is <br />
+                <span id="resolution"></span>
+            </h2>
+        </div>
+        <h3>Screen Width : <span id="width"></span></h3>
+        <h3>Screen Height : <span id="height"></span></h3>
+        <h3>Available Screen Width : <span id="awidth"></span></h3>
+        <h3>Available Screen Height : <span id="aheight"></span></h3>
+        <h3>Screen Color Depth : <span id="color"></span></h3>
+        <h3>Screen Pixal Depth : <span id="pixal"></span></h3>
+    </main>
+
+    <script>
+        window.onload = () => {
+
+            document.getElementById("width").innerText = screen.width + " px";
+            document.getElementById("height").innerText = screen.height + " px";
+            document.getElementById("resolution").innerText = screen.width + " X " + screen.height + " px";
+            document.getElementById("aheight").innerText = screen.availHeight + " px";
+            document.getElementById("awidth").innerText = screen.availWidth + " px";
+            document.getElementById("color").innerText = screen.colorDepth + " px";
+            document.getElementById("pixal").innerText = screen.pixelDepth + " px";
+
+        }
+    </script>
+</body>
+
+</html>

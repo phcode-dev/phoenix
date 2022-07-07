@@ -1,0 +1,8 @@
+{
+    "googleAnalyticsID"       : "G-FBK9RP5YK2",
+    "mixPanelID"              : "8cb6814f733e37c05cc59b4adad26407",
+    "coreAnalyticsID"         : "phoenix",
+    "coreAnalyticsAppName"    : "phoenix-prod",
+    "environment"             : "production",
+    "buildtype"               : "production"
+}

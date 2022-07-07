@@ -1,0 +1,21 @@
+{
+    "name": "icons",
+    "title": "Brackets icons",
+    "description": "File tree icons for Brackets. Based on https://github.com/bvermeule/brackets-devicons",
+    "homepage": "https://github.com/bvermeule/brackets-devicons",
+    "version": "1.0.0",
+    "author": "phcode.dev, based on work by Björn Vermeule (https://github.com/bvermeule/brackets-devicons)",
+    "license": "MIT",
+    "keywords": [
+        "icons",
+        "file",
+        "tree"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/phcode"
+    },
+    "engines": {
+        "brackets": ">=0.44.0"
+    }
+}

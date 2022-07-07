@@ -1,0 +1,32 @@
+<div class="about-dialog modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.ABOUT}}</h1>
+    </div>
+    <div class="modal-body no-padding">
+        <img class="about-icon" src="{{ABOUT_ICON}}">
+        <div class="about-text">
+            <h2>{{APP_NAME_ABOUT_BOX}}</h2>
+            <div class="about-info">
+                <p class="dialog-message">{{Strings.ABOUT_TEXT_LINE1}} <span id="about-build-number">{{BUILD_INFO}}</span>
+                  {{#BUILD_TIMESTAMP}}
+                  <br><span class="dialog-message">{{Strings.ABOUT_TEXT_BUILD_TIMESTAMP}}{{BUILD_TIMESTAMP}}</span>
+                  {{/BUILD_TIMESTAMP}}
+                </p>
+
+                <p class="dialog-message"><!-- $NON-NLS$ -->Copyright 2021 - present <a href="https://core.ai">Core.ai</a> and its licensors. All rights reserved.</p>
+                <p class="dialog-message">{{{Strings.ABOUT_TEXT_LINE3}}}</p>
+                <p class="dialog-message">{{{Strings.ABOUT_TEXT_MDN_DOCS}}}</p>
+                <p class="dialog-message">{{{Strings.ABOUT_TEXT_LINE4}}}</p>
+                <p class="dialog-message">
+                    {{Strings.ABOUT_TEXT_LINE5}}
+                    <span class="spinner inline"></span>
+                </p>
+                <div class="about-contributors">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="dialog-button btn primary" data-button-id="ok">{{Strings.CLOSE}}</button>
+    </div>
+</div>

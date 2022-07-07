@@ -1,0 +1,16 @@
+<div id="panel-live-preview">
+    <div class="plugin-toolbar" title="Live Preview (experimental)" style="display: flex; align-items: center; flex-direction: row;">
+        <div id="left-buttons" style="position: absolute; left: 0px;">
+            <button id="reloadButton" title="{{clickToReload}}" class="btn-alt-quiet toolbar-button reload-icon"></button>
+        </div>
+        <button id="pinURLButton" title="{{clickToPinUnpin}}" class="btn-alt-quiet toolbar-button unpin-icon"></button>
+        <span id="panel-live-preview-title">{{livePreview}}</span>
+        <button id="livePreviewPopoutButton" title="{{clickToPopout}}" class="btn-alt-quiet toolbar-button open-icon"></button>
+    </div>
+    <div class="frame-container">
+        <div style="width: 3px;"></div>
+        <iframe id="panel-live-preview-frame" title="Extension Store" style="border: none"
+                width="100%" height="100%" seamless="true" srcdoc='<img width="50px" src="styles/images/Spinner-1s-200px.svg">'>
+        </iframe>
+    </div>
+</div>

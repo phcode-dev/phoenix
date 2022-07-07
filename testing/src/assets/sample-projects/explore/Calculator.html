@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Made By @Abhay557</title>
+</head>
+<style>
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height: 100vh;
+    background-color: #233342;
+}
+.calculator{
+    border-radius: 35px;
+    background: #233342;
+    box-shadow:  26px 26px 35px #1c2834,
+             -26px -26px 35px #2a3e50;
+    position: relative;
+    display:grid;
+}
+
+.calculator .value{
+    grid-column: span 4;
+    height: 70px;
+    text-align: right;
+    border: none;
+    outline:none;
+    padding: 10px;
+    font-size: 18px;
+    border-radius:30px;
+    margin: 10px;
+}
+
+.calculator span{
+    margin: 10px;
+    border-radius:50px;
+    display:grid;
+    width: 60px;
+    height: 60px;
+    color: #fff;
+    background-color: #0c2835;
+    place-items: center;
+    border: 1px solid rgba(0,0,0,.1);
+}
+
+.calculator span:active{
+    background: #74ff3b;
+    color:#111;
+}
+
+.calculator span.clear{
+    grid-column: span 2;
+    width: 140px;
+    background: #e25057;
+}
+
+.calculator span.plus{
+    grid-row: span 2;
+    height: 140px;
+}
+
+.calculator span.equal{
+    background: #7c4dbe;
+}
+</style
+<body>
+    <form class="calculator" name="cal">
+        <input class="value" type="text" name="txt" readonly="">
+        <span class="num clear" onclick="document.cal.txt.value = ''">C</span>
+        <span class="num" onclick="document.cal.txt.value += '/'">/</span>
+        <span class="num" onclick="document.cal.txt.value += '*'">*</span>
+        <span class="num" onclick="document.cal.txt.value += '7'">7</span>
+        <span class="num" onclick="document.cal.txt.value += '8'">8</span>
+        <span class="num" onclick="document.cal.txt.value += '9'">9</span>
+        <span class="num" onclick="document.cal.txt.value += '-'">-</span>
+        <span class="num" onclick="document.cal.txt.value += '4'">4</span>
+        <span class="num" onclick="document.cal.txt.value += '5'">5</span>
+        <span class="num" onclick="document.cal.txt.value += '6'">6</span>
+        <span class="num plus" onclick="document.cal.txt.value += '+'">+</span>
+        <span class="num" onclick="document.cal.txt.value += '1'">1</span>
+        <span class="num" onclick="document.cal.txt.value += '2'">2</span>
+        <span class="num" onclick="document.cal.txt.value += '3'">3</span>
+        <span class="num" onclick="document.cal.txt.value += '0'">0</span>
+        <span class="num" onclick="document.cal.txt.value += '00'">00</span>
+        <span class="num" onclick="document.cal.txt.value += '.'">.</span>
+        <span class="num equal" onclick="document.cal.txt.value = eval(document.cal.txt.value)">=</span>
+    </form>
+    
+</body>
+</html>

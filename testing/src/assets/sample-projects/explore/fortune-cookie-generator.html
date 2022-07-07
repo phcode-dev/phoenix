@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function makeCookie() {
+            let message = document.getElementById('message');
+
+            message.innerHTML = cookieMessage();
+        }
+
+        function cookieMessage() {
+            const OPTIONS = 36;
+            let person;
+            let char;
+            let anim;
+            let itm;
+
+            switch (randomNumber(OPTIONS)) {
+                case 0:
+                    return `Make ${virtue()}, not ${misfortune()}.`;
+                case 1:
+                    return `The cure for ${misfortune()} is ${virtue()}.`;
+                case 2:
+                    person = personality();
+                    return `${time()} you will meet ${article(person)} ${person} ${character()}.`;
+                case 3:
+                    char = character();
+                    return `${startingPhrase()} ${article(char)} ${char} without ${virtue()} brings ${misfortune()}.`;
+                case 4:
+                    return `Replace ${misfortune()} with ${virtue()}.`;
+                case 5:
+                    return `Avoid ${personality()} people.`;
+                case 6:
+                    return `Your soul-mate's horoscope is the ${chineseHoroscope()}.`;
+                case 7:
+                    return `Be ${personality()} and you shall live with ${virtue()}.`;
+                case 8:
+                    return `Be ${personality()} and you shall have ${fortune()}.`;
+                case 9:
+                    return `${startingPhrase()} ${misfortune()} is bad.`;
+                case 10:
+                    return `${time()} you shall have ${fortune()}.`;
+                case 11:
+                    return `${startingPhrase()} ${vice()} does not bring ${fortune()}; ${virtue()} does.`;
+                case 12:
+                    return `If you have ${vice()}, you will get no ${fortune()}.`;
+                case 13:
+                    return `Fight ${vice()} with ${virtue()}.`;
+                case 14:
+                    return `You have a strong desire for ${fortune()}.`;
+                case 15:
+                    return `${time()} you should pursue your dreams.`;
+                case 16:
+                    return `${time()} you will get a pet ${animal()}.`;
+                case 17:
+                    anim = animal();
+                    return `Your spirit animal is ${article(anim)} ${anim}.`;
+                case 18:
+                    person = personality();
+                    return `In your previous life you were ${article(person)} ${person} ${animal()}.`;
+                case 19:
+                    anim = animal();
+                    return `You have the ${virtue()} of ${article(anim)} ${anim}.`;
+                case 20:
+                    person = personality();
+                    return `${time()} you will face ${article(person)} ${person} ${character()}.`;
+                case 21:
+                    return `Don't let ${vice()} get in the way of your ${fortune()}.`;
+                case 22:
+                    person = personality();
+                    return `${startingPhrase()} ${article(person)} ${person} army is sure to win.`
+                case 23:
+                    return `No ${character()} is perfect.`;
+                case 24:
+                    return `In ${misfortune()}, we see true ${virtue()}.`;
+                case 25:
+                    return `Serious ${misfortune()} will bypass you.`;
+                case 26:
+                    return `Worry not, for ${misfortune()} is behind you. Ahead, you will find only ${fortune()}.`;
+                case 27:
+                    return `${time()} ${misfortune()} will fall upon your country.`;
+                case 28:
+                    return `${startingPhrase()} only those who dare to be ${personality()} get ${fortune()}.`;
+                case 29:
+                    return `The ${personality()} will get ${virtue()}.`;
+                case 30:
+                    return `${time()} a ${character()} will give you ${fortune()}.`
+                case 31:
+                    itm = item();
+                    return `You will sell ${article(itm)} ${itm} for ${fortune()}.`;
+                case 32:
+                    person = personality();
+                    itm = item();
+                    return `${time()} ${article(person)} ${person} ${character()} will give you ${article(itm)} ${itm}.`;
+                case 33:
+                    char = character();
+                    itm = item();
+                    return `Give ${article(char)} ${char} in need some ${itm}.`;
+                case 34:
+                    return `${startingPhrase()} ${fortune()} is worth more than some ${item()}.`;
+                case 35:
+                    char = character();
+                    return `${time()} ${article(char)} ${char} will steal your ${item()}.`;
+                case 36:
+                    return `The ${personality()} shall inherit the ${fortune()}.`;
+            }
+        }
+
+        function randomNumber(choiceNum) {
+            let rng = Math.random();
+            let rn = Math.floor(rng * choiceNum);
+
+            return rn;
+        }
+
+        function selectFromList(list) {
+            let options = list.length;
+            let number = randomNumber(options);
+
+            return list[number];
+        }
+
+        function article(word) {
+            let vowelRegex = '^[aieou].*';
+            let isVower = word.match(vowelRegex);
+
+            return isVower ? 'an' : 'a';
+        }
+
+        function startingPhrase() {
+            const LIST = [
+                'It is known that', 'Remember,', 'A wise old man once said:', 'As a matter of fact,', 'I hate to say this, but',
+                'There\'s no denying that', 'An old chinese proverb says:', 'By the way,'
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function virtue() {
+            const LIST = [
+                'wisdom', 'temperance', 'justice', 'humour', 'dignity',
+                'mercy', 'gravity', 'humanity', 'selflessness', 'nobility',
+                'chastity', 'temperance', 'charity', 'diligence', 'patience',
+                'kindness', 'humility', 'sincerity', 'tranquility', 'empathy',
+                'beauty',
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function vice() {
+            const LIST = [
+                'anger', 'arrogance', 'envy', 'gluttony', 'greed',
+                'lust', 'sloth', 'cowardice', 'disloyalty', 'doubt',
+                'injustice', 'jelousy', 'vanity', 'wrath',
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function misfortune() {
+            const LIST = [
+                'sickness', 'poverty', 'disaster', 'taxes', 'inequality',
+                'war', 'conflict', 'hunger', 'trouble', 'drough',
+                'plague', 'crime', 'unhappiness', 'misfortune',
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function fortune() {
+            const LIST = [
+                'fortune', 'wealth', 'love', 'friendship', 'cookies',
+                'happiness', 'joy', 'gold', 'bitcoins',
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function time() {
+            const LIST = [
+                'Today', 'Tomorrow', 'Soon', 'Sometime', 'In the year of the ' + chineseHoroscope(),
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function chineseHoroscope() {
+            const LIST = [
+                'Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake',
+                'Horse', 'Goat', 'Monkey', 'Rooster', 'Dog', 'Pig',
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function personality() {
+            const LIST = [
+                'adventurous', 'alert', 'athletic', 'balanced', 'brilliant',
+                'calm', 'caring', 'charismatic', 'clever', 'creative',
+                'curious', 'daring', 'dramatic', 'educated', 'empathetic',
+                'fair', 'friendly', 'gentle', 'hardworking', 'happy',
+                'humourous', 'kind', 'liberal', 'logical', 'mature',
+                'loyal', 'modest', 'organized', 'patriotic', 'perfectionist',
+                'popular', 'protective', 'relaxed', 'strong', 'sweet',
+                'wise', 'agressive', 'ambitious', 'amusing', 'busy',
+                'casual', 'complex', 'cute', 'invisible', 'political',
+                'tough', 'unpatriotic', 'angry', 'anxious', 'barbaric',
+                'crazy', 'cruel', 'cynical', 'dirty', 'dogmatic',
+                'foolish', 'gloomy', 'grim', 'hostile', 'lazy',
+                'odd', 'paranoid', 'shy', 'stupid', 'weak',
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function character() {
+            const LIST = [
+                'person', 'man', 'woman', 'boy', 'girl',
+                'child', animal(),
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function animal() {
+            const LIST = [
+                'dolphin', 'cat', 'dog', 'giraffe', 'red panda',
+                'wolf', 'tiger', 'elephant', 'monkey', 'horse',
+                'panda', 'turtle', 'penguin',
+            ];
+
+            return selectFromList(LIST);
+        }
+
+        function item() {
+            const LIST = [
+                'book', 'coin', 'sword', 'fortune cookie', 'cup',
+                'silk', 'camera', 'pen', 'scroll', 'ring',
+                'toilet paper', 'ball', 'bell', 'drink', 'hammer',
+                'essay', 'cheese', 'food',
+            ];
+
+            return selectFromList(LIST);
+        }
+    </script>
+
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Trebuchet MS';
+            font-size: 1.5vw;
+        }
+
+        header {
+            margin-bottom: 10%;
+            text-shadow: 1px 1px 10px gray;
+        }
+
+        h1 {
+            font-family: 'Brush Script MT';
+            font-size: 3vw;
+        }
+
+        #message {
+            display: inline;
+            font-style: italic;
+        }
+
+        button {
+            font-size: 1.5vw;
+            margin-top: 10%;
+            border-radius: 20px;
+        }
+
+            button:hover {
+                border-radius: 30px;
+                transition: 0.2s;
+            }
+
+            button:active {
+                font-weight: bold;
+            }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            font-size: 50%;
+        }
+    </style>
+
+    <title>Fortune Cookie Generator</title>
+</head>
+<body>
+    <header>
+        <h1>Fortune Cookie Generator</h1>
+        <h2>签语饼</h2>
+    </header>
+
+    <main>
+        <div id="message"></div>
+        <br />
+        <button onclick="makeCookie();">Open a cookie!</button>
+    </main>
+
+    <footer>
+        <div>The cookie messages are generated by an algorithm.</div>
+    </footer>
+</body>
+</html>

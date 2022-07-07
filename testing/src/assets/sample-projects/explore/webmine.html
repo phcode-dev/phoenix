@@ -1,0 +1,605 @@
+<html>
+<head>
+<title>Web Minesweeper</title>
+<style type="text/css">
+.minetbl { border: solid #008800 2px;
+  cursor: crosshair;
+ }
+
+body {
+  background-color: #000000;
+  color: #aaFFaa;
+  }
+
+input {
+  background-color: #330033;
+  color: #aaFFaa;
+  border: solid #00FF00 1px;
+  text-align: center;
+  }
+
+select {
+  background-color: #330033;
+  color: #aaFFaa;
+  border: solid #00FF00 1px;
+  text-align: center;
+  }
+
+#headingBox {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  width: auto;
+  overflow: visible;
+  }
+H1, H2 { margin: 0px; padding: 0px; }
+
+#face {
+  border: none;
+  text-decoration:none;
+  color: #FFFF00;
+  font-size: 52px;
+  }
+#modeBox {
+  position: absolute;
+  border: solid green 1px;
+  top: 0px;
+  right: 0px;
+  z-index: 101;
+  padding-top: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
+  padding-bottom: 0px;
+  }
+
+#modeBoxHandle {
+  border: solid green 1px;
+  text-align: center;
+  -moz-border-radius: 10 10 0 0;
+  }
+
+#modeBoxHandleText {
+  color: #44ff44;
+  text-decoration: none;
+  }
+.minecell {
+  height: 2EM;
+  width: 2EM;
+  text-align:center;
+  font-size: 1.5EM;
+  vertical-align: center;
+  }
+</style>
+<script>
+var i,j,count; // Counter variables
+var firstMove = 1; // flag to indicate if the first move is made yet
+// Create the board
+
+var boardRows = 9;   // these three variables represent the size of the board,
+var boardCols = 9;   // and the number of mines found on it - once the auto-
+var boardMines = 10; // build feature (and multiple diff. lvls) are used, they
+                     // will determine how the board is built.
+var board = new Array(boardRows);
+var flags = new Array(boardRows);
+var clockFlag = "nothing running";
+var clockAt = 0;
+var minesLeft = boardMines; // the dynamic count
+var tilesLeft = boardRows*boardCols - minesLeft;
+var totalClicks = 0; // Tracking how many clicks used so far (right and left both)
+var totalSquares = 0; // Tracking how many squares have been opened
+var hitBlankOrMine = 0; // For tracking how many "number" squares are hit before the
+                        // first "blank" area opens up, or a mine is hit.
+
+var tiles = new Array(); // Default font set: Full Emoji Support
+tiles[0]= "&nbsp;"; // Blank Space
+tiles[1]= "<span style='color:#0000FF'>1</span>";
+tiles[2]= "<span style='color:#00FF00'>2</span>";
+tiles[3]= "<span style='color:#FF0000'>3</span>";
+tiles[4]= "<span style='color:#000088'>4</span>";
+tiles[5]= "<span style='color:#008800'>5</span>";
+tiles[6]= "<span style='color:#880000'>6</span>";
+tiles[7]= "<span style='color:#008888'>7</span>";
+tiles[8]= "<span style='color:#888800'>8</span>";
+tiles[9]= "<span style='color:#008800'>	&#9971;</span>"; // Planted Flag
+tiles[10]= "<span style='color:#FFFF00'>&#128165;</span>"; // Exploded Mine
+tiles[11]= "<span style='color:#FF0000'>&#128711;</span>"; // False Flag
+tiles[12]= "<span style='color:#000000'>&#128163;</span>"; // Unexploded Mine
+tiles[13]= "<span style='color:#00FF00'>?</span>"; // Unknown marking
+tiles[14]= "&#128578;"; // Happy face
+tiles[15]= "&#128534;"; // Dead face
+tiles[16]= "&#128526;"; // Victory face
+
+
+function setMode(mode) {
+  switch(mode) {
+    case "Beginner":
+      boardRows = 9;
+      boardCols = 9;
+      boardMines = 10;
+      break;
+    case "Intermediate":
+      boardRows = 16;
+      boardCols = 16;
+      boardMines = 40;
+      break;
+    case "Expert":
+      boardRows = 16;
+      boardCols = 30;
+      boardMines = 99;
+      break;
+    case "Custom":
+      boardRows =  parseInt(document.forms.modes.nRows.value);
+      boardCols =  parseInt(document.forms.modes.nCols.value);
+      boardMines = parseInt(document.forms.modes.nMines.value);
+    default:
+    };
+  document.getElementById("modeTitle").innerHTML = mode + " Mode";
+  document.forms.modes.nRows.value = boardRows;
+  document.forms.modes.nCols.value = boardCols;
+  document.forms.modes.nMines.value = boardMines;
+  resetBoard();
+  };
+
+
+
+function updateMines(incr) {
+  var mineStr = "Mines:<br />";
+  minesLeft += incr;
+  mineStr += minesLeft;
+  document.getElementById("mineCount").innerHTML = mineStr;
+  };
+
+function updateClock() {
+  var clockStr = "Time:<br />";
+  clockAt += 1;
+  if (clockAt < 10) {
+    clockStr += "0";
+    };
+  if (clockAt < 100) {
+    clockStr += "0";
+    };
+  clockStr += clockAt;
+  document.getElementById("timeCount").innerHTML = clockStr;
+  };
+
+
+
+function rebuildBoard() {
+  var cR,cC;
+  var tableStr = "<table class=\"minetbl\" cellspacing=\"0\" cellpadding=\"0\">\n";
+  for (cR=0;cR<boardRows;cR++) {
+    tableStr += "<tr>\n";
+    for (cC=0;cC<boardCols;cC++) {
+      tableStr += "<td class=\"minecell\" id=\"c"+cR+":"+cC+"\" style=\"border: outset #aaaaaa 0.1EM; background-color: #888888;\" onclick=\"lClick('"+cR+":"+cC+"')\" oncontextmenu=\"return rClick('"+cR+":"+cC+"')\">&nbsp;</td>\n";
+      };
+    tableStr += "</tr>";
+    };
+  tableStr += "</table>\n";
+  document.getElementById("theTable").innerHTML = tableStr;
+  };
+
+
+
+function resetBoard() {
+  // Reset everything - the flags and board arrays, the mines, the images, and the cell style properties.
+  document.getElementById("face").innerHTML = tiles[14];
+  rebuildBoard();
+  if (clockFlag != "nothing running") { // Stop the clock if needed.
+    clearInterval(clockFlag);
+    };
+  clockAt = -1; // Now reset the clock to show 000
+  updateClock();
+  minesLeft = boardMines;
+  totalClicks = 0;
+  totalSquares = 0;
+  hitBlankOrMine = 0;
+  updateMines(0);
+  firstMove = 1;
+  for (i=0;i<boardRows;i++) {
+    board[i] = new Array(boardCols);
+    flags[i] = new Array(boardCols);
+    for (j=0;j<boardCols;j++) {
+      board[i][j]=" ";
+      flags[i][j]=" ";
+      document.getElementById("c"+i+":"+j).innerHTML="&nbsp;";
+      document.getElementById("c"+i+":"+j).style.backgroundColor="#888888";
+      document.getElementById("c"+i+":"+j).style.borderStyle="outset";
+      };
+    };
+  // Now place the mines
+  for (count=0;count<minesLeft;count++) {
+    i = Math.round(Math.random()*(boardRows - 1));
+    j = Math.round(Math.random()*(boardCols - 1));
+    while (board[i][j] == "M") {
+      // picked bad numbers, pick new ones.
+      i = Math.round(Math.random()*(boardRows - 1));
+      j = Math.round(Math.random()*(boardCols - 1));
+      };
+    board[i][j] = "M";
+    };
+  tilesLeft = boardRows*boardCols - minesLeft;
+  return false;
+  };
+
+
+function lClick(whichOne) {
+  // most of the gameplay goes on here.
+  var row,col; // local position variables
+  var nrow,ncol,neighbors, theName, theMode;
+  row = parseInt(whichOne);
+  col = parseInt(whichOne.substring(whichOne.indexOf(":")+1,whichOne.length));
+
+  if ((flags[row][col] == "F") || (flags[row][col] == "C")) {
+    // don't allow clicks on flagged squares, or even count them.
+    return false;
+    };
+  totalClicks++;
+  totalSquares++;
+  if (firstMove) {
+    firstMove = 0; // Only ever do this once per game.
+    clockFlag = setInterval("updateClock()",1000);
+    if (board[row][col] == "M") {
+      // Don't allow the user to click on a mine with their first click,
+      // if they did, then move the mine before finishing the click.
+      board[row][col] = " ";
+      nrow = Math.round(Math.random()*(boardRows - 1));
+      ncol = Math.round(Math.random()*(boardCols - 1));
+      while (board[nrow][ncol] == "M") { // make sure the new place for this
+        nrow = Math.round(Math.random()*(boardRows - 1)); // displaced mine is actually
+        ncol = Math.round(Math.random()*(boardCols - 1)); // empty first ...
+        };
+      board[nrow][ncol] = "M";  
+      };
+    };
+  // Ok, the mine's status is dealt with, now fix other things like the
+  // cell's border, and figure out which display image to show.	
+  document.getElementById("c"+whichOne).style.borderStyle = "solid";
+      document.getElementById("c"+whichOne).style.backgroundColor = "#aaaaaa";
+  if (board[row][col] == "M") {
+    document.getElementById("face").innerHTML = tiles[15];
+    document.getElementById("c"+whichOne).style.backgroundColor="red";
+
+    // Send out requests for the various "records" that can happen here:
+    // 1: Most "number" squares clicked before hitting a blank area or a mine
+    // 2: Most mines found before hitting a mine?
+    theMode = document.forms.modes.modeSelect.options[document.forms.modes.modeSelect.selectedIndex].value;
+    if (hitBlankOrMine == 0) {
+      hitBlankOrMine = 1;
+      };
+    
+    clearInterval(clockFlag);
+    clockFlag = "nothing running";
+    firstMove = 1;
+    for (nrow=0;nrow<boardRows;nrow++) {
+      for (ncol=0;ncol<boardCols;ncol++) {
+        if ((board[nrow][ncol]=="M") && (flags[nrow][ncol] != "F")) {
+          document.getElementById("c"+nrow+":"+ncol).innerHTML=tiles[12];
+          };
+        if ((flags[nrow][ncol] == "F") && (board[nrow][ncol] != "M")) {
+          document.getElementById("c"+nrow+":"+ncol).innerHTML=tiles[11];
+          };
+        flags[nrow][ncol]="C";
+        };
+      };
+    document.getElementById("c"+whichOne).innerHTML=tiles[10];
+    } else {
+    // Not a mine! Figure out if it's next to one, or what...
+    document.getElementById("c"+whichOne).innerHTML=tiles[0];
+    flags[row][col] = "C";
+    neighbors = neighbourCount(row,col);
+    // Now neighbor count is complete...
+    if (neighbors == 0) {
+      // none! Click everything around yourself, but first, send out
+      // requests for the various "records" that can happen here:
+      // 1: Most "number" squares clicked before hitting a blank area or a mine
+      theMode = document.forms.modes.modeSelect.options[document.forms.modes.modeSelect.selectedIndex].value;
+      if (hitBlankOrMine == 0) {
+        hitBlankOrMine = 1;
+        };
+
+
+      if (row != 0) { // don't scan the row above if there isn't one.
+        if (col != 0) { // don't scan left of the far left column
+          lClick(""+(row-1)+":"+(col-1)); // top left
+          };
+        lClick(""+(row-1)+":"+(col)); // top center
+        if (col < (boardCols-1)) { // don't scan right of the far right column
+          lClick(""+(row-1)+":"+(col+1)); // top right
+          };
+        };
+      if (col != 0) { // don't scan left of the far left column
+          lClick(""+(row)+":"+(col-1)); // mid left
+        };
+      if (col < (boardCols-1)) { // don't scan right of the far right column
+          lClick(""+(row)+":"+(col+1)); // mid right
+        };
+      if (row < (boardRows-1)) { // don't scan the row below if there isn't one.
+        if (col != 0) { // don't scan left of the far left column
+          lClick(""+(row+1)+":"+(col-1)); // bot left
+          };
+        lClick(""+(row+1)+":"+(col)); // bot center
+        if (col < (boardCols-1)) { // don't scan right of the far right column
+          lClick(""+(row+1)+":"+(col+1)); // bot right
+          };
+        };
+      } else {
+      // show the image for the number of neighbors...
+      document.getElementById("c"+whichOne).style.backgroundColor = "#aaaaaa";
+      document.getElementById("c"+whichOne).style.borderStyle = "solid";
+      document.getElementById("c"+whichOne).innerHTML=tiles[neighbors];
+      };
+    tilesLeft -= 1;
+    if (tilesLeft < 1) {
+      // If they've got all of the tiles without mines uncovered, they're a winner!
+      // Add the victory dance here.
+      clearInterval(clockFlag);
+      document.getElementById("face").innerHTML = tiles[16];
+
+      theMode = document.forms.modes.modeSelect.options[document.forms.modes.modeSelect.selectedIndex].value;
+
+
+
+      for (nrow=0;nrow<boardRows;nrow++) {
+        for (ncol=0;ncol<boardCols;ncol++) {
+          flags[nrow][ncol] = "C";
+          if (board[nrow][ncol] == "M") {
+            document.getElementById("c"+nrow+":"+ncol).innerHTML=tiles[9];
+            };
+          };
+        };
+      };
+    };
+
+
+  
+  };
+
+
+
+function neighbourCount(row,col) {
+  var crowd = 0;
+  if (row > 0) { // don't look above the top row
+    if (col > 0) { // don't look left of the left side
+      if (board[row-1][col-1] == "M") {crowd++;};
+      };
+    if (board[row-1][col] == "M") {crowd++;};
+    if (col < (boardCols - 1)) { // don't look right of the right side
+      if (board[row-1][col+1] == "M") {crowd++;};
+      };
+    };
+  if (col > 0) { // don't look left of the left side
+    if (board[row][col-1] == "M") {crowd++;};
+    };
+  if (col < (boardCols - 1)) { // don't look right of the right side
+    if (board[row][col+1] == "M") {crowd++;};
+    };
+  if (row < (boardRows - 1)) { // don't look below the bottom
+    if (col > 0) { // don't look left of the left side
+      if (board[row+1][col-1] == "M") {crowd++;};
+      };
+    if (board[row+1][col] == "M") {crowd++;};
+    if (col < (boardCols - 1)) { // don't look right of the right side
+      if (board[row+1][col+1] == "M") {crowd++;};
+      };
+    };
+  return crowd;
+  };
+
+
+function flagCount(row,col) {
+  var crowd = 0;
+  if (row > 0) { // don't look above the top row
+    if (col > 0) { // don't look left of the left side
+      if (flags[row-1][col-1] == "F") {crowd++;};
+      };
+    if (flags[row-1][col] == "F") {crowd++;};
+    if (col < (boardCols - 1)) { // don't look right of the right side
+      if (flags[row-1][col+1] == "F") {crowd++;};
+      };
+    };
+  if (col > 0) { // don't look left of the left side
+    if (flags[row][col-1] == "F") {crowd++;};
+    };
+  if (col < (boardCols - 1)) { // don't look right of the right side
+    if (flags[row][col+1] == "F") {crowd++;};
+    };
+  if (row < (boardRows - 1)) { // don't look below the bottom
+    if (col > 0) { // don't look left of the left side
+      if (flags[row+1][col-1] == "F") {crowd++;};
+      };
+    if (flags[row+1][col] == "F") {crowd++;};
+    if (col < (boardCols - 1)) { // don't look right of the right side
+      if (flags[row+1][col+1] == "F") {crowd++;};
+      };
+    };
+  return crowd;
+  };
+
+
+
+function rClick(whichOne) {
+  var nrow,ncol;
+  row = parseInt(whichOne);
+  col = parseInt(whichOne.substring(whichOne.indexOf(":")+1,whichOne.length));
+  if (flags[row][col] == "C") {
+    if ((neighbourCount(row,col) == flagCount(row,col)) && (neighbourCount(row,col) > 0)) {
+      // same number of flags around the square as neighbours, "click" the surroundings.
+      
+        if (row != 0) { // don't scan the row above if there isn't one.
+          if (col != 0) { // don't scan left of the far left column
+            lClick(""+(row-1)+":"+(col-1)); // top left
+            };
+          lClick(""+(row-1)+":"+(col)); // top center
+          if (col < (boardCols-1)) { // don't scan right of the far right column
+            lClick(""+(row-1)+":"+(col+1)); // top right
+            };
+          };
+        if (col != 0) { // don't scan left of the far left column
+            lClick(""+(row)+":"+(col-1)); // mid left
+          };
+        if (col < (boardCols-1)) { // don't scan right of the far right column
+            lClick(""+(row)+":"+(col+1)); // mid right
+          };
+        if (row < (boardRows-1)) { // don't scan the row below if there isn't one.
+          if (col != 0) { // don't scan left of the far left column
+            lClick(""+(row+1)+":"+(col-1)); // bot left
+            };
+          lClick(""+(row+1)+":"+(col)); // bot center
+          if (col < (boardCols-1)) { // don't scan right of the far right column
+            lClick(""+(row+1)+":"+(col+1)); // bot right
+            };
+          };
+      };
+    return false;
+    };
+  if (flags[row][col] == " ") {
+    flags[row][col] = "F";
+    updateMines(-1);
+    document.getElementById("c"+whichOne).innerHTML = tiles[9];
+    return false;
+    };
+  if (flags[row][col] == "F") {
+    updateMines(1);
+    flags[row][col] = "?";
+    document.getElementById("c"+whichOne).innerHTML = tiles[13];
+    return false;
+    };
+  if (flags[row][col] == "?") {
+    flags[row][col] = " ";
+    document.getElementById("c"+whichOne).innerHTML = tiles[0];
+    return false;
+    };
+  return false;
+  };
+
+
+</script>
+
+<!-- figure out how to add in webmineIE.css for IE users? -->
+</head>
+<body onload="resetBoard()">
+<div id="modeBox">
+<form name="modes" action="#" method="GET" onsubmit="return false">
+Mode:
+<select name="modeSelect" onchange="setMode(modeSelect.options[modeSelect.selectedIndex].value)">
+<option value="Beginner">Beginner</option>
+<option value="Intermediate">Intermediate</option>
+<option value="Expert">Expert</option>
+<option value="Custom">Custom</option>
+</select> &nbsp; 
+Row x Col:<input type="text" name="nRows" size="2" value="9" > x <input type="text" name="nCols" size="2" value="9" ><br />
+Mines:<input type="text" name="nMines" size="2" value="10" > &nbsp;
+<input type="button" name="goCust" value="activate custom board" onclick="setMode(modeSelect.options[modeSelect.selectedIndex].value)">
+<br />
+</form>
+</div>
+<div id="headingBox">
+<h1 >Web Minesweeper</h1>
+<h2 id="modeTitle">Beginner Mode</h2>
+</div>
+<br clear="all" />
+<div align="center">
+<table border="0" cellspacing="0" cellpadding="0" width="240"><tr>
+<td id="mineCount" align="center" width="100">Mines:<br />10</td>
+<td align="center" width="40"><a href="#" onclick="return resetBoard();" id="face"  border="0" >&#128578;</a></td>
+<td id="timeCount" align="center" width="100">Time:<br />000</td></tr></table>
+
+<br />
+<div id="theTable">
+<table class="minetbl" cellspacing="0" cellpadding="0">
+<tr>
+<td id="c0:0" onclick="lClick('0:0')" oncontextmenu="return rClick('0:0')" class="minecell">&nbsp;</td>
+<td id="c0:1" onclick="lClick('0:1')" oncontextmenu="return rClick('0:1')" class="minecell">&nbsp;</td>
+<td id="c0:2" onclick="lClick('0:2')" oncontextmenu="return rClick('0:2')" class="minecell">&nbsp;</td>
+<td id="c0:3" onclick="lClick('0:3')" oncontextmenu="return rClick('0:3')" class="minecell">&nbsp;</td>
+<td id="c0:4" onclick="lClick('0:4')" oncontextmenu="return rClick('0:4')" class="minecell">&nbsp;</td>
+<td id="c0:5" onclick="lClick('0:5')" oncontextmenu="return rClick('0:5')" class="minecell">&nbsp;</td>
+<td id="c0:6" onclick="lClick('0:6')" oncontextmenu="return rClick('0:6')" class="minecell">&nbsp;</td>
+<td id="c0:7" onclick="lClick('0:7')" oncontextmenu="return rClick('0:7')" class="minecell">&nbsp;</td>
+<td id="c0:8" onclick="lClick('0:8')" oncontextmenu="return rClick('0:8')" class="minecell">&nbsp;</td>
+</tr><tr>
+<td id="c1:0" onclick="lClick('1:0')" oncontextmenu="return rClick('1:0')" class="minecell">&nbsp;</td>
+<td id="c1:1" onclick="lClick('1:1')" oncontextmenu="return rClick('1:1')" class="minecell">&nbsp;</td>
+<td id="c1:2" onclick="lClick('1:2')" oncontextmenu="return rClick('1:2')" class="minecell">&nbsp;</td>
+<td id="c1:3" onclick="lClick('1:3')" oncontextmenu="return rClick('1:3')" class="minecell">&nbsp;</td>
+<td id="c1:4" onclick="lClick('1:4')" oncontextmenu="return rClick('1:4')" class="minecell">&nbsp;</td>
+<td id="c1:5" onclick="lClick('1:5')" oncontextmenu="return rClick('1:5')" class="minecell">&nbsp;</td>
+<td id="c1:6" onclick="lClick('1:6')" oncontextmenu="return rClick('1:6')" class="minecell">&nbsp;</td>
+<td id="c1:7" onclick="lClick('1:7')" oncontextmenu="return rClick('1:7')" class="minecell">&nbsp;</td>
+<td id="c1:8" onclick="lClick('1:8')" oncontextmenu="return rClick('1:8')" class="minecell">&nbsp;</td>
+</tr><tr>
+<td id="c2:0" onclick="lClick('2:0')" oncontextmenu="return rClick('2:0')" class="minecell">&nbsp;</td>
+<td id="c2:1" onclick="lClick('2:1')" oncontextmenu="return rClick('2:1')" class="minecell">&nbsp;</td>
+<td id="c2:2" onclick="lClick('2:2')" oncontextmenu="return rClick('2:2')" class="minecell">&nbsp;</td>
+<td id="c2:3" onclick="lClick('2:3')" oncontextmenu="return rClick('2:3')" class="minecell">&nbsp;</td>
+<td id="c2:4" onclick="lClick('2:4')" oncontextmenu="return rClick('2:4')" class="minecell">&nbsp;</td>
+<td id="c2:5" onclick="lClick('2:5')" oncontextmenu="return rClick('2:5')" class="minecell">&nbsp;</td>
+<td id="c2:6" onclick="lClick('2:6')" oncontextmenu="return rClick('2:6')" class="minecell">&nbsp;</td>
+<td id="c2:7" onclick="lClick('2:7')" oncontextmenu="return rClick('2:7')" class="minecell">&nbsp;</td>
+<td id="c2:8" onclick="lClick('2:8')" oncontextmenu="return rClick('2:8')" class="minecell">&nbsp;</td>
+</tr><tr>
+<td id="c3:0" onclick="lClick('3:0')" oncontextmenu="return rClick('3:0')" class="minecell">&nbsp;</td>
+<td id="c3:1" onclick="lClick('3:1')" oncontextmenu="return rClick('3:1')" class="minecell">&nbsp;</td>
+<td id="c3:2" onclick="lClick('3:2')" oncontextmenu="return rClick('3:2')" class="minecell">&nbsp;</td>
+<td id="c3:3" onclick="lClick('3:3')" oncontextmenu="return rClick('3:3')" class="minecell">&nbsp;</td>
+<td id="c3:4" onclick="lClick('3:4')" oncontextmenu="return rClick('3:4')" class="minecell">&nbsp;</td>
+<td id="c3:5" onclick="lClick('3:5')" oncontextmenu="return rClick('3:5')" class="minecell">&nbsp;</td>
+<td id="c3:6" onclick="lClick('3:6')" oncontextmenu="return rClick('3:6')" class="minecell">&nbsp;</td>
+<td id="c3:7" onclick="lClick('3:7')" oncontextmenu="return rClick('3:7')" class="minecell">&nbsp;</td>
+<td id="c3:8" onclick="lClick('3:8')" oncontextmenu="return rClick('3:8')" class="minecell">&nbsp;</td>
+</tr><tr>
+<td id="c4:0" onclick="lClick('4:0')" oncontextmenu="return rClick('4:0')" class="minecell">&nbsp;</td>
+<td id="c4:1" onclick="lClick('4:1')" oncontextmenu="return rClick('4:1')" class="minecell">&nbsp;</td>
+<td id="c4:2" onclick="lClick('4:2')" oncontextmenu="return rClick('4:2')" class="minecell">&nbsp;</td>
+<td id="c4:3" onclick="lClick('4:3')" oncontextmenu="return rClick('4:3')" class="minecell">&nbsp;</td>
+<td id="c4:4" onclick="lClick('4:4')" oncontextmenu="return rClick('4:4')" class="minecell">&nbsp;</td>
+<td id="c4:5" onclick="lClick('4:5')" oncontextmenu="return rClick('4:5')" class="minecell">&nbsp;</td>
+<td id="c4:6" onclick="lClick('4:6')" oncontextmenu="return rClick('4:6')" class="minecell">&nbsp;</td>
+<td id="c4:7" onclick="lClick('4:7')" oncontextmenu="return rClick('4:7')" class="minecell">&nbsp;</td>
+<td id="c4:8" onclick="lClick('4:8')" oncontextmenu="return rClick('4:8')" class="minecell">&nbsp;</td>
+</tr><tr>
+<td id="c5:0" onclick="lClick('5:0')" oncontextmenu="return rClick('5:0')" class="minecell">&nbsp;</td>
+<td id="c5:1" onclick="lClick('5:1')" oncontextmenu="return rClick('5:1')" class="minecell">&nbsp;</td>
+<td id="c5:2" onclick="lClick('5:2')" oncontextmenu="return rClick('5:2')" class="minecell">&nbsp;</td>
+<td id="c5:3" onclick="lClick('5:3')" oncontextmenu="return rClick('5:3')" class="minecell">&nbsp;</td>
+<td id="c5:4" onclick="lClick('5:4')" oncontextmenu="return rClick('5:4')" class="minecell">&nbsp;</td>
+<td id="c5:5" onclick="lClick('5:5')" oncontextmenu="return rClick('5:5')" class="minecell">&nbsp;</td>
+<td id="c5:6" onclick="lClick('5:6')" oncontextmenu="return rClick('5:6')" class="minecell">&nbsp;</td>
+<td id="c5:7" onclick="lClick('5:7')" oncontextmenu="return rClick('5:7')" class="minecell">&nbsp;</td>
+<td id="c5:8" onclick="lClick('5:8')" oncontextmenu="return rClick('5:8')" class="minecell">&nbsp;</td>
+</tr><tr>
+<td id="c6:0" onclick="lClick('6:0')" oncontextmenu="return rClick('6:0')" class="minecell">&nbsp;</td>
+<td id="c6:1" onclick="lClick('6:1')" oncontextmenu="return rClick('6:1')" class="minecell">&nbsp;</td>
+<td id="c6:2" onclick="lClick('6:2')" oncontextmenu="return rClick('6:2')" class="minecell">&nbsp;</td>
+<td id="c6:3" onclick="lClick('6:3')" oncontextmenu="return rClick('6:3')" class="minecell">&nbsp;</td>
+<td id="c6:4" onclick="lClick('6:4')" oncontextmenu="return rClick('6:4')" class="minecell">&nbsp;</td>
+<td id="c6:5" onclick="lClick('6:5')" oncontextmenu="return rClick('6:5')" class="minecell">&nbsp;</td>
+<td id="c6:6" onclick="lClick('6:6')" oncontextmenu="return rClick('6:6')" class="minecell">&nbsp;</td>
+<td id="c6:7" onclick="lClick('6:7')" oncontextmenu="return rClick('6:7')" class="minecell">&nbsp;</td>
+<td id="c6:8" onclick="lClick('6:8')" oncontextmenu="return rClick('6:8')" class="minecell">&nbsp;</td>
+</tr><tr>
+<td id="c7:0" onclick="lClick('7:0')" oncontextmenu="return rClick('7:0')" class="minecell">&nbsp;</td>
+<td id="c7:1" onclick="lClick('7:1')" oncontextmenu="return rClick('7:1')" class="minecell">&nbsp;</td>
+<td id="c7:2" onclick="lClick('7:2')" oncontextmenu="return rClick('7:2')" class="minecell">&nbsp;</td>
+<td id="c7:3" onclick="lClick('7:3')" oncontextmenu="return rClick('7:3')" class="minecell">&nbsp;</td>
+<td id="c7:4" onclick="lClick('7:4')" oncontextmenu="return rClick('7:4')" class="minecell">&nbsp;</td>
+<td id="c7:5" onclick="lClick('7:5')" oncontextmenu="return rClick('7:5')" class="minecell">&nbsp;</td>
+<td id="c7:6" onclick="lClick('7:6')" oncontextmenu="return rClick('7:6')" class="minecell">&nbsp;</td>
+<td id="c7:7" onclick="lClick('7:7')" oncontextmenu="return rClick('7:7')" class="minecell">&nbsp;</td>
+<td id="c7:8" onclick="lClick('7:8')" oncontextmenu="return rClick('7:8')" class="minecell">&nbsp;</td>
+</tr><tr>
+<td id="c8:0" onclick="lClick('8:0')" oncontextmenu="return rClick('8:0')" class="minecell">&nbsp;</td>
+<td id="c8:1" onclick="lClick('8:1')" oncontextmenu="return rClick('8:1')" class="minecell">&nbsp;</td>
+<td id="c8:2" onclick="lClick('8:2')" oncontextmenu="return rClick('8:2')" class="minecell">&nbsp;</td>
+<td id="c8:3" onclick="lClick('8:3')" oncontextmenu="return rClick('8:3')" class="minecell">&nbsp;</td>
+<td id="c8:4" onclick="lClick('8:4')" oncontextmenu="return rClick('8:4')" class="minecell">&nbsp;</td>
+<td id="c8:5" onclick="lClick('8:5')" oncontextmenu="return rClick('8:5')" class="minecell">&nbsp;</td>
+<td id="c8:6" onclick="lClick('8:6')" oncontextmenu="return rClick('8:6')" class="minecell">&nbsp;</td>
+<td id="c8:7" onclick="lClick('8:7')" oncontextmenu="return rClick('8:7')" class="minecell">&nbsp;</td>
+<td id="c8:8" onclick="lClick('8:8')" oncontextmenu="return rClick('8:8')" class="minecell">&nbsp;</td>
+</tr></table>
+</div>
+</div>
+</body>
+</html>
