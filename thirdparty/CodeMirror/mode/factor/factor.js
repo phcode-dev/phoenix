@@ -1,5 +1,5 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: http://codemirror.net/LICENSE
+// Distributed under an MIT license: https://codemirror.net/5/LICENSE
 
 // Factor syntax highlight - simple mode
 //
@@ -16,7 +16,7 @@
   "use strict";
 
   CodeMirror.defineSimpleMode("factor", {
-    // The start state contains the rules that are intially used
+    // The start state contains the rules that are initially used
     start: [
       // comments
       {regex: /#?!.*/, token: "comment"},
@@ -77,7 +77,7 @@
     // specific to simple modes.
     meta: {
       dontIndentStates: ["start", "vocabulary", "string", "string3", "stack"],
-      lineComment: [ "!", "#!" ]
+      lineComment: "!"
     }
   });
 
