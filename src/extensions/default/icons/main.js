@@ -5,21 +5,22 @@ define(function (require, exports, module) {
 
     let extensionUtils = brackets.getModule('utils/ExtensionUtils'),
         fileUtils = brackets.getModule('file/FileUtils'),
-        ProjectManager = brackets.getModule('project/ProjectManager');
+        ProjectManager = brackets.getModule('project/ProjectManager'),
+        LanguageManager = brackets.getModule("language/LanguageManager");
 
     extensionUtils.loadStyleSheet(module, 'css/main.css');
 
     // use this cheetsheet for fontawesome icons https://fontawesome.com/v5/cheatsheet/free/brands
     // or https://fontawesome.com/v5/cheatsheet/free/solid or https://fontawesome.com/v5/cheatsheet/free/regular
     // or https://devicon.dev/
-    var exts = {
+    var languages = {
         folder: "fa-folder fa-solid",
 
         css: "devicon-css3-plain",
         htm: "devicon-html5-plain",
         html: "devicon-html5-plain",
-        js: "devicon-javascript-plain",
-        ts: "devicon-typescript-plain",
+        javascript: "devicon-javascript-plain",
+        typescript: "devicon-typescript-plain",
         map: "fa-map-signs fa-solid",
         'js.map': "fa-map-signs fa-solid",
         'css.map': "fa-map-signs fa-solid",
@@ -30,6 +31,7 @@ define(function (require, exports, module) {
         woff: "fa-font fa-solid",
         ttf: "fa-font fa-solid",
         txt: "fa-file-alt fa-solid",
+        text: "fa-file-alt fa-solid",
 
         json: "fa-cogs fa-solid",
         yml: "fa-cogs fa-solid",
@@ -41,21 +43,19 @@ define(function (require, exports, module) {
         htpasswd: "fa-cogs fa-solid",
         project: "fa-cogs fa-solid",
         org: "fa-cogs fa-solid",
+        properties: "fa-cogs fa-solid",
 
         markdown: "devicon-markdown-original nocolor",
-        md: "devicon-markdown-original nocolor",
+        'markdown (github)': "devicon-markdown-original nocolor",
 
-        py: "devicon-python-plain",
+        python: "devicon-python-plain",
         pyc: "devicon-python-plain",
         pyd: "devicon-python-plain",
         pyo: "devicon-python-plain",
 
         php: "devicon-php-plain",
-        phtml: "devicon-php-plain",
-        php3: "devicon-php-plain",
-        php4: "devicon-php-plain",
-        php5: "devicon-php-plain",
-        phps: "devicon-php-plain",
+
+        lua: "devicon-lua-plain",
 
         gitignore: "devicon-git-plain",
         gitattributes: "devicon-git-plain",
@@ -67,6 +67,9 @@ define(function (require, exports, module) {
 
         c: "devicon-c-plain nocolor",
         cpp: "devicon-cplusplus-plain nocolor",
+        'objective-c': "devicon-objectivec-plain nocolor",
+        kotlin: "devicon-kotlin-plain",
+        'c#': "devicon-csharp-plain",
 
         bat: "fa-file-code fa-solid",
         sh: "fa-file-code fa-solid",
@@ -77,20 +80,25 @@ define(function (require, exports, module) {
         java: "fa-java fa-brands",
         jar: "fa-archive fa-solid",
 
-        rb: "devicon-ruby-plain",
-        erb: "devicon-ruby-plain",
+        'erb_html': "devicon-ruby-plain",
+        ruby: "devicon-ruby-plain",
         rbw: "devicon-ruby-plain",
         rdoc: "devicon-ruby-plain",
         haml: "devicon-rails-plain",
 
-        coffee: "devicon-coffeescript-original nocolor",
+        coffeescript: "devicon-coffeescript-original nocolor",
+
+        groovy: "devicon-groovy-plain",
+
+        clojure: "devicon-clojure-plain",
 
         styl: "devicon-stylus-original nocolor",
+
+        dart: "devicon-dart-plain",
 
         npmignore: "fa-npm fa-brands",
 
         scala: "devicon-scala-plain",
-        sc: "devicon-scala-plain",
 
         go: "devicon-go-plain",
 
@@ -98,14 +106,14 @@ define(function (require, exports, module) {
 
         sln: 'devicon-visualstudio-plain',
 
-        pl: 'devicon-perl-plain nocolor',
-        pm: 'devicon-perl-plain nocolor',
+        perl: 'devicon-perl-plain nocolor',
 
         hs: 'devicon-haskell-plain nocolor',
         lhs: 'devicon-haskell-plain nocolor',
 
         psd: 'devicon-photoshop-plain',
         ai: 'devicon-illustrator-plain',
+        image: 'fa-image fa-solid',
         png: 'fa-image fa-solid',
         ico: 'fa-image fa-solid',
         jpg: 'fa-image fa-solid',
@@ -114,6 +122,7 @@ define(function (require, exports, module) {
         gif: 'fa-photo-video fa-solid',
         svg: 'fa-code fa-solid',
 
+        audio: 'fa-music fa-solid',
         mp3: 'fa-music fa-solid',
         wav: 'fa-music fa-solid',
 
@@ -158,7 +167,7 @@ define(function (require, exports, module) {
 
         if (!entry.isFile) {
             el.removeClass('fa-solid fa-file');
-            el.addClass(exts.folder);
+            el.addClass(languages.folder);
             return span;
         }
 
@@ -171,10 +180,20 @@ define(function (require, exports, module) {
             if(!files[filename].includes('nocolor') && color){
                 el.addClass('colored');
             }
-        } else if (exts[ext]) {
+        } else if (languages[ext]) {
             el.removeClass('fa-solid fa-file');
-            el.addClass(exts[ext]);
-            if(!exts[ext].includes('nocolor') && color){
+            el.addClass(languages[ext]);
+            if(!languages[ext].includes('nocolor') && color){
+                el.addClass('colored');
+            }
+        } else{
+            let lang = LanguageManager.getLanguageForPath(entry.fullPath).getName().toLowerCase();
+            if(!languages[lang]){
+                return span;
+            }
+            el.removeClass('fa-solid fa-file');
+            el.addClass(languages[lang]);
+            if(!languages[lang].includes('nocolor') && color){
                 el.addClass('colored');
             }
         }
