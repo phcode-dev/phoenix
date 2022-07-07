@@ -99,6 +99,7 @@ Note: Pre-prod is still work in progress.
 
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).
+* Our main code editor library https://codemirror.net/
 * Inspired by previous work from the [Mozilla Thimble](https://github.com/mozilla/thimble.mozilla.org) project to port brackets to the web. https://github.com/mozilla/brackets
 * In browser server based on [nohost](https://github.com/humphd/nohost) by https://github.com/humphd/
 
