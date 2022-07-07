@@ -14,6 +14,7 @@ jobs:
         run: |
           npm install
           npm run release:dev
+          npm run test
           cp -r dist distToDeploy/
           mkdir distToDeploy/testing/
           cp -r dist distToDeploy/testing/src/

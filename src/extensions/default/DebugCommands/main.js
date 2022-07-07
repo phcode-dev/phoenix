@@ -90,15 +90,20 @@ define(function (require, exports, module) {
     // Implements the 'Run Tests' menu to bring up the Jasmine unit test window
     var _testWindow = null;
     function _runUnitTests(spec) {
-        var queryString = spec ? "?spec=" + spec : "?suite=unit";
+        let queryString = spec ? "?spec=" + spec : "?suite=unit";
+        let testBaseURL = "../test/SpecRunner.html";
+        if(window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'){
+            // must be a deployed in phcode.dev/other sites. point to site test url
+            testBaseURL = "testing/test/SpecRunner.html";
+        }
         if (_testWindow && !_testWindow.closed) {
             if (_testWindow.location.search !== queryString) {
-                _testWindow.location.href = "../test/SpecRunner.html" + queryString;
+                _testWindow.location.href = testBaseURL + queryString;
             } else {
                 _testWindow.location.reload(true);
             }
         } else {
-            _testWindow = window.open("../test/SpecRunner.html" + queryString);
+            _testWindow = window.open(testBaseURL + queryString);
             _testWindow.location.reload(true); // if it had been opened earlier, force a reload because it will be cached
         }
     }
