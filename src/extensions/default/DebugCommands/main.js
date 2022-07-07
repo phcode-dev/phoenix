@@ -94,7 +94,7 @@ define(function (require, exports, module) {
         let testBaseURL = "../test/SpecRunner.html";
         if(window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'){
             // must be a deployed in phcode.dev/other sites. point to site test url
-            testBaseURL = "testing/test/SpecRunner.html";
+            testBaseURL = "test/SpecRunner.html";
         }
         if (_testWindow && !_testWindow.closed) {
             if (_testWindow.location.search !== queryString) {
