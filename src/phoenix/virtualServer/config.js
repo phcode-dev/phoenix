@@ -31,11 +31,6 @@ if(!self.Config){
      * Users will have to know the filename they wish to get back from the server.  Defaults
      * to `true` (i.e. directory indexes are shown).
      *
-     * `directoryIndex`: `String` value used to override the default directory index
-     * used when a filename isn't given. Defautls to `index.html`. For example,
-     * `/fs/` would return `/fs/index.html` by default, or use another name if
-     * specified.
-     *
      * `debug`: if present (i.e., `Boolean`), enable workbox debug logging
      */
     const url = new URL(location);
@@ -65,7 +60,6 @@ if(!self.Config){
     self.Config = {
         route: getNormalizeRoute(),
         disableIndexes: url.searchParams.get('disableIndexes') !== null,
-        directoryIndex: url.searchParams.get('route') || 'index.html',
         debug: url.searchParams.get('debug') === 'true'
     };
 }
