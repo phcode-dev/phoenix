@@ -98,8 +98,13 @@ if(!self.Serve){
             function serveDir(path) {
 
                 function maybeServeIndexFile() {
-                    const indexPath = Path.join(path, Config.directoryIndex);
+                    if(path.endsWith("//")){
+                        // this is for us to override and show the directory listing if the path ends with //
+                        serveDirListing();
+                        return;
+                    }
 
+                    const indexPath = Path.join(path, 'index.html');
                     fs.stat(indexPath, function (err, stats) {
                         if (err) {
                             if (err.code === 'ENOENT' && !Config.disableIndexes) {
