@@ -277,8 +277,8 @@ define(function (require, exports, module) {
      * @private
      */
     function _loadThemeFromFile(file, options) {
-        var currentThemeName = prefs.get("theme");
-        var theme = new Theme(file, options);
+        let currentThemeName = prefs.get("theme");
+        let theme = new Theme(file, options);
         loadedThemes[theme.name] = theme;
         ThemeSettings._setThemes(loadedThemes);
 
@@ -288,41 +288,44 @@ define(function (require, exports, module) {
         if (currentThemeName === theme.name) {
             refresh(true);
         }
+        return theme;
     }
 
     /**
      * Loads a theme from a url.
      *
-     * @param {string} url is the full hhtp/https url of the theme file
+     * @param {string} url is the full http/https url of the theme file
      * @param {Object} options is an optional parameter to specify metadata
      *    for the theme.
      * @return {$.Promise} promise object resolved with the theme to be loaded from fileName
      */
     function _loadFileFromURL(url, options) {
-        var deferred         = new $.Deferred();
+        let deferred         = new $.Deferred();
 
-        var themeName = options.name || options.theme.title;
-        var fileName = options.theme.file;
-        var themePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/extensions/user/" +
+        let themeName = options.name || options.theme.title;
+        let fileName = options.theme.file;
+        let themePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/extensions/user/" +
             themeName + '_' + fileName);
-        var file = FileSystem.getFileForPath(themePath);
+        let file = FileSystem.getFileForPath(themePath);
 
-        file.exists(function (err, exists) {
-            var theme;
-
-            if (exists) {
-                _loadThemeFromFile(file, options);
+        $.get(url).done(function (themeContent) {
+            // Write theme to file
+            FileUtils.writeText(file, themeContent, true).then(function () {
+                let theme = _loadThemeFromFile(file, options);
                 deferred.resolve(theme);
-                return;
-            }
-            $.get(url).done(function (themeContent) {
-                // Write theme to file
-                FileUtils.writeText(file, themeContent).then(function () {
-                    _loadThemeFromFile(file, options);
+            }, deferred.reject);
+        }).fail(function () {
+            // if offline, try to see if we have the previously saved theme available
+            file.exists(function (err, exists) {
+                if(err){
+                    deferred.reject(err);
+                    return;
+                }
+                if (exists) {
+                    let theme = _loadThemeFromFile(file, options);
                     deferred.resolve(theme);
-                }, deferred.reject);
-            }).fail(function (err) {
-                deferred.reject(err);
+                    return;
+                }
             });
         });
 
