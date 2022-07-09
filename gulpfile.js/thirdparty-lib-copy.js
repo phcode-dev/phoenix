@@ -60,6 +60,9 @@ let copyThirdPartyLibs = series(
     // @phcode/fs
     copyFiles.bind(copyFiles, ['node_modules/@phcode/fs/dist/virtualfs.js',
         'node_modules/@phcode/fs/dist/virtualfs.js.map'], 'src/phoenix'),
+    // lessjs
+    copyFiles.bind(copyFiles, ['node_modules/less/dist/less.min.js', 'node_modules/less/dist/less.min.js.map'],
+        'src/thirdparty'),
     // jszip
     copyFiles.bind(copyFiles, ['node_modules/jszip/dist/jszip.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/jszip/LICENSE.markdown', 'jsZip'),
