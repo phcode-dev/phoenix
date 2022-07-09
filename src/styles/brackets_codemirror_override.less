@@ -80,9 +80,14 @@ span.cm-keyword {color: @accent-keyword;}
 span.cm-atom {color: @accent-atom;}
 span.cm-number {color: @accent-number;}
 span.cm-def {color: @accent-def;}
-span.cm-variable {color: @accent-variable;}
+span.cm-variable {
+    color: @accent-variable; // global variable
+    font-weight: bold;
+    font-size: 97%;
+}
 span.cm-variable-2 {color: @accent-variable-2;}
-span.cm-variable-3 {color: @accent-variable-3;}
+span.cm-variable-3 {color: @accent-def;}
+span.cm-type{color: @accent-def;}
 span.cm-operator {color: @accent-operator;}
 span.cm-comment {color: @accent-comment;}
 span.cm-string {color: @accent-string;}

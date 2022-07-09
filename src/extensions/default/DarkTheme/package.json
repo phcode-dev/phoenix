@@ -2,7 +2,7 @@
     "title": "Phoenix Dark",
     "name": "dark-theme",
     "description": "Built-in dark theme for Phoenix",
-    "version": "0.42.0",
+    "version": "0.44.0",
     "author": "Miguel Castillo <mahchagnu@gmail.com>",
     "engines": {
         "brackets": ">=0.42.0"
