@@ -43,6 +43,7 @@
 @accent-variable: #b77fdb; // global var
 @accent-variable-2: #b77fdb; // scoped var
 @accent-variable-3: #535353; // type
+@accent-string-2: #ffc641;
 
 /* Code Styling */
 
@@ -64,7 +65,8 @@
     }
 }
 
-.cm-atom, .cm-string, .cm-string-2, .cm-hr {color: #d89333;}
+.cm-atom, .cm-string, .cm-hr {color: #d89333;}
+.cm-string-2, .cm-hr {color: @accent-string-2;}
 .cm-number, .cm-attribute, .cm-plus {color: #85a300;}
 .cm-def {color: @accent-def;}
 .cm-property {color: @accent-property;}
