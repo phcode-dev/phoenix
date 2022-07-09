@@ -18,6 +18,7 @@ src/phoenix/virtualfs.js.map
 
 # Thirdparty libs
 !/src/thirdparty/licences
+/src/thirdparty/less.*
 /src/thirdparty/CodeMirror
 /src/thirdparty/jszip.js
 /src/thirdparty/underscore-min.js
