@@ -134,7 +134,9 @@ async function fileCrawler() {
     }
     let contents = await Promise.all(readPromises) || [];
     for(let content of contents){
-        cacheSize += content.length;
+        if(content && content.length){
+            cacheSize += content.length;
+        }
     }
     if (currentCrawlIndex < files.length) {
         crawlComplete = false;
