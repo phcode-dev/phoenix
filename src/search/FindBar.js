@@ -25,7 +25,7 @@
 define(function (require, exports, module) {
 
 
-    var _                  = require("thirdparty/lodash"),
+    const _                  = require("thirdparty/lodash"),
         Mustache           = require("thirdparty/mustache/mustache"),
         EventDispatcher    = require("utils/EventDispatcher"),
         Commands           = require("command/Commands"),
@@ -45,15 +45,14 @@ define(function (require, exports, module) {
      * The template we use for all Find bars.
      * @type {string}
      */
-    var _searchBarTemplate = require("text!htmlContent/findreplace-bar.html");
+    const _searchBarTemplate = require("text!htmlContent/findreplace-bar.html");
 
-    var lastTypedTime = 0,
-        currentTime = 0,
-        intervalId = 0,
+    let intervalId = 0,
         lastQueriedText = "",
         lastTypedText = "",
-        lastTypedTextWasRegexp = false,
-        lastKeyCode;
+        lastTypedTextWasRegexp = false;
+
+    const INSTANT_SEARCH_INTERVAL_MS = 50;
 
     /**
      * @constructor
@@ -304,7 +303,6 @@ define(function (require, exports, module) {
             self._closed = true;
             window.clearInterval(intervalId);
             intervalId = 0;
-            lastTypedTime = 0;
             FindBar._removeFindBar(self);
             MainViewManager.focusActivePane();
             self.trigger("close");
@@ -345,23 +343,15 @@ define(function (require, exports, module) {
                 self.$("#find-what").focus();
             })
             .on("keydown", "#find-what, #replace-with", function (e) {
-                lastTypedTime = new Date().getTime();
-                lastKeyCode = e.keyCode;
                 var executeSearchIfNeeded = function () {
-                    // We only do instant search via node.
+                    // We only do instant search via worker.
                     if (FindUtils.isWorkerSearchDisabled() || FindUtils.isInstantSearchDisabled()) {
-                        // we still keep the interval timer up as instant search could get enabled/disabled based on node busy state
                         return;
                     }
                     if (self._closed) {
                         return;
                     }
-                    currentTime = new Date().getTime();
-
-                    if (lastTypedTime && (currentTime - lastTypedTime >= 100) &&
-                            self.getQueryInfo().query !== lastQueriedText &&
-                            !FindUtils.isWorkerSearchInProgress()) {
-
+                    if ( self.getQueryInfo().query !== lastQueriedText && !FindUtils.isWorkerSearchInProgress()) {
                         // init Search
                         if (self._options.multifile) {
                             if ($(e.target).is("#find-what")) {
@@ -374,7 +364,7 @@ define(function (require, exports, module) {
                     }
                 };
                 if (intervalId === 0) {
-                    intervalId = window.setInterval(executeSearchIfNeeded, 50);
+                    intervalId = window.setInterval(executeSearchIfNeeded, INSTANT_SEARCH_INTERVAL_MS);
                 }
                 if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
                     e.preventDefault();
