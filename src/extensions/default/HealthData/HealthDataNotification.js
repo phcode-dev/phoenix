@@ -24,23 +24,27 @@
 
 define(function (require, exports, module) {
 
-    var AppInit                      = brackets.getModule("utils/AppInit"),
-        PreferencesManager           = brackets.getModule("preferences/PreferencesManager"),
-        UrlParams                    = brackets.getModule("utils/UrlParams").UrlParams,
+    var PreferencesManager           = brackets.getModule("preferences/PreferencesManager"),
+        ExtensionInterface           = brackets.getModule("utils/ExtensionInterface"),
         HealthDataPreview            = require("HealthDataPreview"),
         HealthDataPopup              = require("HealthDataPopup");
 
-    // Parse URL params
-    var params = new UrlParams();
+    const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject";
+    let newProjectExtn;
+    ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
+        .then(interfaceObj => {
+            newProjectExtn = interfaceObj;
+            interfaceObj.on(interfaceObj.EVENT_NEW_PROJECT_DIALOGUE_CLOSED, _showFirstLaunchPopup);
+        });
 
     function handleHealthDataStatistics() {
         HealthDataPreview.previewHealthData();
     }
 
-    AppInit.appReady(function () {
-        params.parse();
-        // Check whether the notification dialog should be shown. It will be shown one time. Does not check in testing environment.
-        if (!params.get("testEnvironment")) {
+    function _showFirstLaunchPopup() {
+        // Check whether the notification dialog should be shown. It will be shown only one time.
+        newProjectExtn.off(newProjectExtn.EVENT_NEW_PROJECT_DIALOGUE_CLOSED, _showFirstLaunchPopup);
+        if(!window.testEnvironment){
             var alreadyShown = PreferencesManager.getViewState("healthDataNotificationShown");
             var prefs = PreferencesManager.getExtensionPrefs("healthData");
             if (!alreadyShown && prefs.get("healthDataTracking")) {
@@ -50,7 +54,7 @@ define(function (require, exports, module) {
                     });
             }
         }
-    });
+    };
 
 
     exports.handleHealthDataStatistics       = handleHealthDataStatistics;
