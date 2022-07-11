@@ -1195,11 +1195,11 @@ define(function (require, exports, module) {
      */
     function deleteItem(entry) {
         var result = new $.Deferred();
-        _numPendingOperations++;
-        _showOrHideBusySpinner();
+        let name = window.path.basename(entry.fullPath);
+        let message = StringUtils.format(Strings.DELETING, name);
+        setProjectBusy(true, message);
         entry.unlink(function (err) {
-            _numPendingOperations--;
-            _showOrHideBusySpinner();
+            setProjectBusy(false, message);
             if (!err) {
                 DocumentManager.notifyPathDeleted(entry.fullPath);
                 let parent = window.path.dirname(entry.fullPath);
@@ -1308,12 +1308,38 @@ define(function (require, exports, module) {
         _renderTreeSync();
     }
 
-    let _numPendingOperations = 0;
-    function _showOrHideBusySpinner() {
+    let _numPendingOperations = 0,
+        projectBusyMessages = [];
+
+    /**
+     * Sets or unsets project busy spinner with the specified message as reason.
+     *
+     * For Eg., if you want to mark project as busy with reason compiling project:
+     * `setProjectBusy(true, "compiling project...")` . The project spinner will be shown with the specified reason.
+     *
+     * Once the compilation is complete, call, we need to unset the busy status by calling:
+     * `setProjectBusy(false, "compiling project...")` . Make sure to pass in the exact message when
+     * calling set and unset.
+     *
+     * @param {boolean} isBusy true or false to set the project as busy or not
+     * @param {string} message The reason why the project is busy. Will be displayed as a hover tooltip on busy spinner.
+     */
+    function setProjectBusy(isBusy, message) {
+        const $projectSpinner = $("#project-operations-spinner");
+        message = message || Strings.PROJECT_BUSY;
+        isBusy?
+            _numPendingOperations++:
+            _numPendingOperations--;
         if(_numPendingOperations > 0){
-            $("#project-operations-spinner").removeClass("forced-hidden");
+            projectBusyMessages.push(message);
+            $projectSpinner.removeClass("forced-hidden");
+            $projectSpinner.attr("title", message);
         } else {
-            $("#project-operations-spinner").addClass("forced-hidden");
+            $projectSpinner.addClass("forced-hidden");
+            projectBusyMessages = projectBusyMessages.filter(item => item !== message);
+            if(projectBusyMessages.length > 0){
+                $projectSpinner.attr("title", projectBusyMessages[0]);
+            }
         }
     }
 
@@ -1331,23 +1357,21 @@ define(function (require, exports, module) {
     });
 
     model.on(ProjectModel.EVENT_FS_RENAME_STARTED, ()=>{
-        _numPendingOperations++;
-        _showOrHideBusySpinner();
+        setProjectBusy(true);
     });
     model.on(ProjectModel.EVENT_FS_RENAME_END, ()=>{
-        _numPendingOperations--;
-        _showOrHideBusySpinner();
+        setProjectBusy(false);
     });
 
     function _duplicateFileCMD() {
         let context = getContext();
         if(context){
-            _numPendingOperations++;
-            _showOrHideBusySpinner();
+            let name = window.path.basename(context.fullPath);
+            let message = StringUtils.format(Strings.DUPLICATING, name);
+            setProjectBusy(true, message);
             FileSystem.getFreePath(context.fullPath, (err, dupePath)=>{
                 FileSystem.copy(context.fullPath, dupePath, (err, copiedStats)=>{
-                    _numPendingOperations--;
-                    _showOrHideBusySpinner();
+                    setProjectBusy(false, message);
                     if(err){
                         _showErrorDialog(ERR_TYPE_DUPLICATE_FAILED, false, "err",
                             _getProjectRelativePath(context.fullPath));
@@ -1465,11 +1489,10 @@ define(function (require, exports, module) {
         if(canPaste){
             let baseName = window.path.basename(srcEntry.fullPath);
             let targetPath = window.path.normalize(`${target.fullPath}/${baseName}`);
-            _numPendingOperations++;
-            _showOrHideBusySpinner();
+            let message = StringUtils.format(Strings.MOVING, baseName);
+            setProjectBusy(true, message);
             srcEntry.rename(targetPath, (err)=>{
-                _numPendingOperations--;
-                _showOrHideBusySpinner();
+                setProjectBusy(false, message);
                 if(err){
                     _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
                         _getProjectRelativePath(srcEntry.fullPath),
@@ -1486,11 +1509,11 @@ define(function (require, exports, module) {
         let srcEntry = (await FileSystem.resolveAsync(src)).entry;
         let canPaste = await _validatePasteTarget(srcEntry, target);
         if(canPaste){
-            _numPendingOperations++;
-            _showOrHideBusySpinner();
+            let name = window.path.basename(srcEntry.fullPath);
+            let message = StringUtils.format(Strings.COPYING, name);
+            setProjectBusy(true, message);
             FileSystem.copy(srcEntry.fullPath, target.fullPath, (err, targetStat)=>{
-                _numPendingOperations--;
-                _showOrHideBusySpinner();
+                setProjectBusy(false, message);
                 if(err){
                     _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
                         _getProjectRelativePath(srcEntry.fullPath),
@@ -1807,6 +1830,7 @@ define(function (require, exports, module) {
     exports.addIconProvider               = addIconProvider;
     exports.addClassesProvider            = addClassesProvider;
     exports.rerenderTree                  = rerenderTree;
+    exports.setProjectBusy                = setProjectBusy;
 
     // public events
     exports.EVENT_PROJECT_BEFORE_CLOSE = EVENT_PROJECT_BEFORE_CLOSE;
