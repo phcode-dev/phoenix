@@ -61,7 +61,7 @@ function _setupVFS(Phoenix, fsLib, pathLib){
             return new Promise((resolve, reject)=>{
                 Phoenix.VFS.ensureExistsDir(path, (err) =>{
                     if(err){
-                        reject();
+                        reject(err);
                     } else {
                         resolve();
                     }

@@ -24,7 +24,8 @@ define({
     /**
      * Errors
      */
-
+    // Generic strings
+    "SYSTEM_DEFAULT": "System Default",
     // General file io error strings
     "GENERIC_ERROR": "(error {0})",
     "NOT_FOUND_ERR": "The file/directory could not be found.",

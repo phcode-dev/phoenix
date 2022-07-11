@@ -24,7 +24,7 @@
 define(function (require, exports, module) {
 
 
-    var _                   = require("thirdparty/lodash"),
+    let _                   = require("thirdparty/lodash"),
         Mustache            = require("thirdparty/mustache/mustache"),
         Dialogs             = require("widgets/Dialogs"),
         Strings             = require("strings"),
@@ -37,14 +37,18 @@ define(function (require, exports, module) {
      * @type {Object}
      * Currently loaded themes that are available to choose from.
      */
-    var loadedThemes = {};
+    let loadedThemes = {};
+
+    const SYSTEM_DEFAULT_THEME = "system-default";
 
     /**
      * Object with all default values that can be configure via the settings UI
      */
-    var defaults = {
-        "themeScrollbars": true,
-        "theme": "light-theme"
+    const DEFAULTS = {
+        themeScrollbars: true,
+        theme: SYSTEM_DEFAULT_THEME,
+        lightTheme: "light-theme",
+        darkTheme: "dark-theme"
     };
 
 
@@ -62,7 +66,7 @@ define(function (require, exports, module) {
     function getValues() {
         var result = {};
 
-        Object.keys(defaults).forEach(function (key) {
+        Object.keys(DEFAULTS).forEach(function (key) {
             result[key] = prefs.get(key);
         });
 
@@ -76,18 +80,24 @@ define(function (require, exports, module) {
      * Opens the settings dialog
      */
     function showDialog() {
-        var currentSettings = getValues();
-        var newSettings     = {};
-        var themes          = _.map(loadedThemes, function (theme) { return theme; });
-        var template        = $("<div>").append($settings).html();
-        var $template       = $(Mustache.render(template, {"settings": currentSettings, "themes": themes, "Strings": Strings}));
+        const currentSettings = getValues(),
+            newSettings     = {},
+            themes          = _.map(loadedThemes, function (theme) { return theme; });
+        // Insert system default theme
+        themes.unshift({
+            displayName: Strings.SYSTEM_DEFAULT,
+            name: SYSTEM_DEFAULT_THEME
+        });
+        const template      = $("<div>").append($settings).html(),
+            $template       = $(Mustache.render(template,
+                {"settings": currentSettings, "themes": themes, "Strings": Strings}));
 
         // Select the correct theme.
         var $currentThemeOption = $template
             .find("[value='" + currentSettings.theme + "']");
 
         if ($currentThemeOption.length === 0) {
-            $currentThemeOption = $template.find("[value='" + defaults.theme + "']");
+            $currentThemeOption = $template.find("[value='" + DEFAULTS.theme + "']");
         }
         $currentThemeOption.attr("selected", "selected");
 
@@ -136,7 +146,7 @@ define(function (require, exports, module) {
             if (id === "save") {
                 // Go through each new setting and apply it
                 Object.keys(newSettings).forEach(function (setting) {
-                    if (defaults.hasOwnProperty(setting)) {
+                    if (DEFAULTS.hasOwnProperty(setting)) {
                         prefs.set(setting, newSettings[setting]);
                     } else {
                         // Figure out if the setting is in the ViewCommandHandlers, which means it is
@@ -166,17 +176,18 @@ define(function (require, exports, module) {
      * Restores themes to factory settings.
      */
     function restore() {
-        prefs.set("theme", defaults.theme);
-        prefs.set("themeScrollbars", defaults.themeScrollbars);
+        prefs.set("theme", DEFAULTS.theme);
+        prefs.set("themeScrollbars", DEFAULTS.themeScrollbars);
     }
 
-    prefs.definePreference("theme", "string", defaults.theme, {
+    prefs.definePreference("theme", "string", DEFAULTS.theme, {
         description: Strings.DESCRIPTION_THEME
     });
-    prefs.definePreference("themeScrollbars", "boolean", defaults.themeScrollbars, {
+    prefs.definePreference("themeScrollbars", "boolean", DEFAULTS.themeScrollbars, {
         description: Strings.DESCRIPTION_USE_THEME_SCROLLBARS
     });
 
+    exports.DEFAULTS   = DEFAULTS;
     exports._setThemes = setThemes;
     exports.restore    = restore;
     exports.showDialog = showDialog;
