@@ -75,7 +75,7 @@ define(function (require, exports, module) {
     }
 
     exports.init = function () {
-        if(!Phoenix.firstBoot){
+        if(!Phoenix.firstBoot && !window.testEnvironment){
             _showNewUpdatesIfPresent();
             return;
         }
