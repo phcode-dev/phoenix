@@ -41,7 +41,6 @@ define(function (require, exports, module) {
     var loadedThemes    = {},
         currentTheme    = null,
         styleNode       = $(ExtensionUtils.addEmbeddedStyleSheet("")),
-        defaultTheme    = "thor-light-theme",
         commentRegex    = /\/\*([\s\S]*?)\*\//mg,
         scrollbarsRegex = /((?:[^}|,]*)::-webkit-scrollbar(?:[^{]*)[{](?:[^}]*?)[}])/mgi,
         stylesPath      = FileUtils.getNativeBracketsDirectoryPath() + "/styles/";
@@ -198,6 +197,9 @@ define(function (require, exports, module) {
      * @return {Theme} the current theme instance
      */
     function getCurrentTheme() {
+        let defaultTheme = isOSInDarkTheme() ?
+            ThemeSettings.DEFAULTS.darkTheme:
+            ThemeSettings.DEFAULTS.lightTheme;
         if (!currentTheme) {
             currentTheme = loadedThemes[prefs.get("theme")] || loadedThemes[defaultTheme];
         }
@@ -385,6 +387,20 @@ define(function (require, exports, module) {
         return loadFile(fileName, themePackage.metadata);
     }
 
+    /**
+     * Detects if the os settings is set to dark theme or not
+     */
+    function isOSInDarkTheme() {
+        if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+            return true;
+        }
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        // listen to system dark/light theme changes
+        console.log(`System theme changed to ${e.matches ? "dark" : "light"} mode`);
+        refresh(true);
+    });
 
     prefs.on("change", "theme", function () {
         // Make sure we don't reprocess a theme that's already loaded
@@ -431,6 +447,7 @@ define(function (require, exports, module) {
     exports.loadPackage     = loadPackage;
     exports.getCurrentTheme = getCurrentTheme;
     exports.getAllThemes    = getAllThemes;
+    exports.isOSInDarkTheme = isOSInDarkTheme;
 
     // Exposed for testing purposes
     exports._toDisplayName     = toDisplayName;
