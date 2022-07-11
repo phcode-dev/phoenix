@@ -279,7 +279,6 @@ define(function (require, exports, module) {
      * @private
      */
     function _loadThemeFromFile(file, options) {
-        let currentThemeName = prefs.get("theme");
         let theme = new Theme(file, options);
         loadedThemes[theme.name] = theme;
         ThemeSettings._setThemes(loadedThemes);
@@ -287,7 +286,7 @@ define(function (require, exports, module) {
         // For themes that are loaded after ThemeManager has been loaded,
         // we should check if it's the current theme.  If it is, then we just
         // load it.
-        if (currentThemeName === theme.name) {
+        if (currentTheme && currentTheme.name === theme.name) {
             refresh(true);
         }
         return theme;
@@ -304,18 +303,29 @@ define(function (require, exports, module) {
     function _loadFileFromURL(url, options) {
         let deferred         = new $.Deferred();
 
-        let themeName = options.name || options.theme.title;
-        let fileName = options.theme.file;
-        let themePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/extensions/user/" +
-            themeName + '_' + fileName);
-        let file = FileSystem.getFileForPath(themePath);
+        const themeName = options.name || options.theme.title,
+            fileName = options.theme.file,
+            themeFolder = brackets.app.getApplicationSupportDirectory() + "/extensions/user/",
+            themePath = path.normalize(themeFolder + themeName + '_' + fileName),
+            file = FileSystem.getFileForPath(themePath),
+            folder = FileSystem.getDirectoryForPath(themeFolder);
 
         $.get(url).done(function (themeContent) {
             // Write theme to file
-            FileUtils.writeText(file, themeContent, true).then(function () {
-                let theme = _loadThemeFromFile(file, options);
-                deferred.resolve(theme);
-            }, deferred.reject);
+            folder.create((err)=>{
+                if(err){
+                    console.error(err);
+                    deferred.reject();
+                    return;
+                }
+                FileUtils.writeText(file, themeContent, true).done(function () {
+                    let theme = _loadThemeFromFile(file, options);
+                    deferred.resolve(theme);
+                }).fail(function (err) {
+                    console.error(err);
+                    deferred.reject();
+                });
+            });
         }).fail(function () {
             // if offline, try to see if we have the previously saved theme available
             file.exists(function (err, exists) {
@@ -348,8 +358,7 @@ define(function (require, exports, module) {
         }
 
         var deferred         = new $.Deferred(),
-            file             = FileSystem.getFileForPath(fileName),
-            currentThemeName = prefs.get("theme");
+            file             = FileSystem.getFileForPath(fileName);
 
         file.exists(function (err, exists) {
             var theme;
@@ -362,7 +371,7 @@ define(function (require, exports, module) {
                 // For themes that are loaded after ThemeManager has been loaded,
                 // we should check if it's the current theme.  If it is, then we just
                 // load it.
-                if (currentThemeName === theme.name) {
+                if (currentTheme && currentTheme.name === theme.name) {
                     refresh(true);
                 }
 
