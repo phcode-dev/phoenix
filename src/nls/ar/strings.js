@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "افتراضي النظام",
+  "PROJECT_BUSY": "عمليات المشروع قيد التقدم",
+  "DUPLICATING": "تكرار {0}",
+  "MOVING": "الانتقال {0}",
+  "COPYING": "نسخ {0}",
+  "DELETING": "حذف {0}",
+  "RENAMING": "إعادة تسمية",
   "GENERIC_ERROR": "(خطأ {0})",
   "NOT_FOUND_ERR": "تعذر العثور على الملف/الدليل.",
   "NOT_READABLE_ERR": "تعذّر قراءة الملف/الدليل.",

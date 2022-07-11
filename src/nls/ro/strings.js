@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Limba implicită a sistemului",
+  "PROJECT_BUSY": "Operațiuni de proiect în curs",
+  "DUPLICATING": "Duplicarea {0}",
+  "MOVING": "Mutarea {0}",
+  "COPYING": "Copierea {0}",
+  "DELETING": "Ștergerea {0}",
+  "RENAMING": "Redenumirea",
   "GENERIC_ERROR": "(eroare {0})",
   "NOT_FOUND_ERR": "Fișierul nu a fost găsit.",
   "NOT_READABLE_ERR": "Fișierul nu poate fi citit.",

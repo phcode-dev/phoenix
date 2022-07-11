@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "језик система",
+  "PROJECT_BUSY": "Projektne operacije u toku",
+  "DUPLICATING": "Dupliranje {0}",
+  "MOVING": "Moving {0}",
+  "COPYING": "Kopiranje {0}",
+  "DELETING": "Brisanje {0}",
+  "RENAMING": "Preimenovanje",
   "GENERIC_ERROR": "(грешка {0})",
   "NOT_FOUND_ERR": "Непостојећа датотека.",
   "NOT_READABLE_ERR": "Датотека не може бити учитана.",

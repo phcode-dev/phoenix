@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Järjestelmän oletus",
+  "PROJECT_BUSY": "Projektitoiminnot käynnissä",
+  "DUPLICATING": "Kopiointi {0}",
+  "MOVING": "Liikkuminen {0}",
+  "COPYING": "Kopiointi {0}",
+  "DELETING": "Poistaminen {0}",
+  "RENAMING": "Nimeäminen uudelleen",
   "GENERIC_ERROR": "(virhe {0})",
   "NOT_FOUND_ERR": "Tiedostoa tai hakemistoa ei löytynyt.",
   "NOT_READABLE_ERR": "Tiedostoa tai hakemistoa ei voitu lukea.",

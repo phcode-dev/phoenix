@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Padrão do sistema",
+  "PROJECT_BUSY": "Operações do projeto em andamento",
+  "DUPLICATING": "Duplicando {0}",
+  "MOVING": "Movendo {0}",
+  "COPYING": "Copiando {0}",
+  "DELETING": "Excluindo {0}",
+  "RENAMING": "Renomeando",
   "GENERIC_ERROR": "(erro {0})",
   "NOT_FOUND_ERR": "O arquivo não pôde ser encontrado.",
   "NOT_READABLE_ERR": "O arquivo não pôde ser lido.",

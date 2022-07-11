@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Default Sistem",
+  "PROJECT_BUSY": "Operasi Proyek Dalam Progres",
+  "DUPLICATING": "Duplikasi {0}",
+  "MOVING": "Bergerak {0}",
+  "COPYING": "Menyalin {0}",
+  "DELETING": "Menghapus {0}",
+  "RENAMING": "Mengganti nama",
   "GENERIC_ERROR": "(kesalahan {0})",
   "NOT_FOUND_ERR": "File/direktori tidak dapat ditemukan.",
   "NOT_READABLE_ERR": "File/direktori tidak dapat dibaca.",

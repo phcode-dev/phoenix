@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Systeemvoorkeuren",
+  "PROJECT_BUSY": "Projectactiviteiten in uitvoering",
+  "DUPLICATING": "{0} dupliceren",
+  "MOVING": "Verhuizen {0}",
+  "COPYING": "{0} kopiëren",
+  "DELETING": "Verwijderen van {0}",
+  "RENAMING": "Hernoemen",
   "GENERIC_ERROR": "(fout {0})",
   "NOT_FOUND_ERR": "Het bestand kan niet worden gevonden.",
   "NOT_READABLE_ERR": "Het bestand kan niet worden ingelezen.",

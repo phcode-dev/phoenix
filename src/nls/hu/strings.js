@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Rendszer Alapértelmezett",
+  "PROJECT_BUSY": "Projekt műveletek folyamatban",
+  "DUPLICATING": "Másolás {0}",
+  "MOVING": "Mozgó {0}",
+  "COPYING": "Másolás {0}",
+  "DELETING": "{0} törlése",
+  "RENAMING": "Átnevezés",
   "GENERIC_ERROR": "(hiba {0})",
   "NOT_FOUND_ERR": "A fájl nem található.",
   "NOT_READABLE_ERR": "A fájl nem olvasható.",

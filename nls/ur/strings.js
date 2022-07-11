@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "سسٹم ڈیفالٹ",
+  "PROJECT_BUSY": "پراجیکٹ آپریشنز میں پیش رفت",
+  "DUPLICATING": "نقل کاری {0}",
+  "MOVING": "منتقل {0}",
+  "COPYING": "کاپی کر {0}",
+  "DELETING": "حذف کرنا {0}",
+  "RENAMING": "نام تبدیل کرنا۔",
   "GENERIC_ERROR": "(غلطی {0})",
   "NOT_FOUND_ERR": "فائل/ڈائرکٹری نہیں مل سکا.",
   "NOT_READABLE_ERR": "فائل/ڈائرکٹری پڑھا نہیں جا سکا.",

@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Systemstandard",
+  "PROJECT_BUSY": "Projektbetrieb läuft",
+  "DUPLICATING": "Duplizieren von {0}",
+  "MOVING": "Bewegung {0}",
+  "COPYING": "{0} wird kopiert",
+  "DELETING": "Löschen von {0}",
+  "RENAMING": "Umbenennen",
   "GENERIC_ERROR": "(Fehler {0})",
   "NOT_FOUND_ERR": "Die Datei/der Ordner konnte nicht gefunden werden.",
   "NOT_READABLE_ERR": "Die Datei/der Ordner konnte nicht gelesen werden.",

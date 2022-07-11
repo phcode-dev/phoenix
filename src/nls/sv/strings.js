@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Systemstandard",
+  "PROJECT_BUSY": "Projektets pågående verksamhet",
+  "DUPLICATING": "Duplicera {0}",
+  "MOVING": "Flytta {0}",
+  "COPYING": "Kopiera {0}",
+  "DELETING": "Radera {0}",
+  "RENAMING": "Byta namn",
   "GENERIC_ERROR": "(fel {0})",
   "NOT_FOUND_ERR": "Filen/mappen kunde inte hittas.",
   "NOT_READABLE_ERR": "Filen/mappen kunde inte läsas.",

@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "系统默认",
+  "PROJECT_BUSY": "项目运营进行中",
+  "DUPLICATING": "正在复制 {0}",
+  "MOVING": "移动 {0}",
+  "COPYING": "正在复制 {0}",
+  "DELETING": "正在删除 {0}",
+  "RENAMING": "重命名",
   "GENERIC_ERROR": "(错误 {0})",
   "NOT_FOUND_ERR": "未能发现该文件",
   "NOT_READABLE_ERR": "无法读取该文件。",

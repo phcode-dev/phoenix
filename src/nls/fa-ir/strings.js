@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "پیشفرض سیستم",
+  "PROJECT_BUSY": "عملیات پروژه در حال انجام",
+  "DUPLICATING": "تکثیر {0}",
+  "MOVING": "در حال حرکت {0}",
+  "COPYING": "کپی کردن {0}",
+  "DELETING": "حذف {0}",
+  "RENAMING": "تغییر نام",
   "GENERIC_ERROR": "(خطا {0})",
   "NOT_FOUND_ERR": "پرونده پیدا نشد.",
   "NOT_READABLE_ERR": "پرونده قابل خواندن نیست.",

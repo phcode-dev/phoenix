@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "システムのデフォルト",
+  "PROJECT_BUSY": "進行中のプロジェクト運用",
+  "DUPLICATING": "{0} を複製しています",
+  "MOVING": "{0} を移動中",
+  "COPYING": "{0} をコピーしています",
+  "DELETING": "{0} を削除しています",
+  "RENAMING": "名前の変更",
   "GENERIC_ERROR": "(エラー {0})",
   "NOT_FOUND_ERR": "ファイルまたはディレクトリが見つかりません。",
   "NOT_READABLE_ERR": "ファイルまたはディレクトリを読み込めませんでした。",

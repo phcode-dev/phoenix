@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Sistēmas noklusējums",
+  "PROJECT_BUSY": "Notiek projekta darbības",
+  "DUPLICATING": "Dublēšana {0}",
+  "MOVING": "Pārvietojas {0}",
+  "COPYING": "Kopēšana {0}",
+  "DELETING": "Dzēšana {0}",
+  "RENAMING": "Pārdēvēšana",
   "GENERIC_ERROR": "(kļūda {0})",
   "NOT_FOUND_ERR": "Datne/katalogs netika atrasts.",
   "NOT_READABLE_ERR": "Nevar nolasīt datni/katalogu.",

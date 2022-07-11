@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Preferita dal sistema",
+  "PROJECT_BUSY": "Operazioni di progetto in corso",
+  "DUPLICATING": "Duplicazione di {0}",
+  "MOVING": "Spostamento {0}",
+  "COPYING": "Copia di {0}",
+  "DELETING": "Eliminazione di {0}",
+  "RENAMING": "Ridenominazione",
   "GENERIC_ERROR": "(errore {0})",
   "NOT_FOUND_ERR": "Impossibile trovare il file o la cartella.",
   "NOT_READABLE_ERR": "Impossibile leggere il file o la cartella.",

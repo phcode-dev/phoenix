@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Προεπιλογή Συστήματος",
+  "PROJECT_BUSY": "Λειτουργίες Έργου σε εξέλιξη",
+  "DUPLICATING": "Αντιγραφή {0}",
+  "MOVING": "Μετακίνηση {0}",
+  "COPYING": "Αντιγραφή {0}",
+  "DELETING": "Διαγραφή {0}",
+  "RENAMING": "Μετονομασία",
   "GENERIC_ERROR": "(error {0})",
   "NOT_FOUND_ERR": "Το αρχείο δεν βρέθηκε.",
   "NOT_READABLE_ERR": "Το αρχείο δεν μπορεί να διαβαστεί.",

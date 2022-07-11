@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "시스템 언어",
+  "PROJECT_BUSY": "프로젝트 운영 진행 중",
+  "DUPLICATING": "{0} 복제",
+  "MOVING": "{0} 이사",
+  "COPYING": "{0} 복사",
+  "DELETING": "{0} 삭제",
+  "RENAMING": "이름 바꾸기",
   "GENERIC_ERROR": "(에러 {0})",
   "NOT_FOUND_ERR": "파일을 찾을 수 없습니다.",
   "NOT_READABLE_ERR": "파일을 읽을 수 없습니다.",

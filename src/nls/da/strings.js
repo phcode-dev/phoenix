@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Systemets sprog",
+  "PROJECT_BUSY": "Projekt Operationer i gang",
+  "DUPLICATING": "Duplikering {0}",
+  "MOVING": "Bevæger sig {0}",
+  "COPYING": "Kopiering {0}",
+  "DELETING": "Sletning {0}",
+  "RENAMING": "Omdøbning",
   "GENERIC_ERROR": "(fejl {0})",
   "NOT_FOUND_ERR": "Filen kunne ikke findes.",
   "NOT_READABLE_ERR": "Filen kunne ikke læses.",
