@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Predvolený v systéme",
+  "PROJECT_BUSY": "Prebiehajúce operácie projektu",
+  "DUPLICATING": "Duplikovanie {0}",
+  "MOVING": "Pohybujúce sa {0}",
+  "COPYING": "Kopírovanie {0}",
+  "DELETING": "Odstránenie {0}",
+  "RENAMING": "Premenovanie",
   "GENERIC_ERROR": "(chyba {0})",
   "NOT_FOUND_ERR": "Súbor nenájdený.",
   "NOT_READABLE_ERR": "Súbor sa nedá čítať.",

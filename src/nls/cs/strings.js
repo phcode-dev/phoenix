@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Výchozí",
+  "PROJECT_BUSY": "Probíhající operace projektu",
+  "DUPLICATING": "Duplikování {0}",
+  "MOVING": "Pohybující se {0}",
+  "COPYING": "Kopírování {0}",
+  "DELETING": "Smazání {0}",
+  "RENAMING": "Přejmenování",
   "GENERIC_ERROR": "(chyba {0})",
   "NOT_FOUND_ERR": "Soubor nenalezen.",
   "NOT_READABLE_ERR": "Soubor nelze číst.",

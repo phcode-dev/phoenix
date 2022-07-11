@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Типова в системі",
+  "PROJECT_BUSY": "Проектні операції в процесі",
+  "DUPLICATING": "Дублювання {0}",
+  "MOVING": "Переїзд {0}",
+  "COPYING": "Копіювання {0}",
+  "DELETING": "Вилучення {0}",
+  "RENAMING": "Перейменування",
   "GENERIC_ERROR": "(помилка {0})",
   "NOT_FOUND_ERR": "Файл не знайдено.",
   "NOT_READABLE_ERR": "Не вдається прочитати файл.",

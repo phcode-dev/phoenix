@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Domyślny systemu",
+  "PROJECT_BUSY": "Operacje projektowe w toku",
+  "DUPLICATING": "Powielanie {0}",
+  "MOVING": "Przenoszenie {0}",
+  "COPYING": "Kopiowanie {0}",
+  "DELETING": "Usuwanie {0}",
+  "RENAMING": "Zmiana nazwy",
   "GENERIC_ERROR": "(błąd {0})",
   "NOT_FOUND_ERR": "Nie znaleziono pliku/folderu.",
   "NOT_READABLE_ERR": "Nie można odczytać pliku/folderu.",

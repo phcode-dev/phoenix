@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "По умолчанию",
+  "PROJECT_BUSY": "Незавершенные операции по проекту",
+  "DUPLICATING": "Дублирование {0}",
+  "MOVING": "Перемещение {0}",
+  "COPYING": "Копирование {0}",
+  "DELETING": "Удаление {0}",
+  "RENAMING": "Переименование",
   "GENERIC_ERROR": "(ошибка {0})",
   "NOT_FOUND_ERR": "Файл не найден",
   "NOT_READABLE_ERR": "Файл не может быть прочитан",

@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Idioma predeterminado",
+  "PROJECT_BUSY": "Operaciones del proyecto en curso",
+  "DUPLICATING": "Duplicar {0}",
+  "MOVING": "Mover {0}",
+  "COPYING": "Copiar {0}",
+  "DELETING": "Eliminar {0}",
+  "RENAMING": "Renombrar",
   "GENERIC_ERROR": "(error {0})",
   "NOT_FOUND_ERR": "No se pudo encontrar el archivo/directorio.",
   "NOT_READABLE_ERR": "No se pudo leer el archivo/directorio.",
