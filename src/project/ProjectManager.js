@@ -1195,7 +1195,7 @@ define(function (require, exports, module) {
      */
     function deleteItem(entry) {
         var result = new $.Deferred();
-        let name = window.path.basename(entry.fullPath);
+        let name = _getProjectRelativePath(entry.fullPath);
         let message = StringUtils.format(Strings.DELETING, name);
         setProjectBusy(true, message);
         entry.unlink(function (err) {
@@ -1327,19 +1327,27 @@ define(function (require, exports, module) {
     function setProjectBusy(isBusy, message) {
         const $projectSpinner = $("#project-operations-spinner");
         message = message || Strings.PROJECT_BUSY;
-        isBusy?
-            _numPendingOperations++:
-            _numPendingOperations--;
-        if(_numPendingOperations > 0){
+        if(isBusy){
+            _numPendingOperations++;
             projectBusyMessages.push(message);
+        } else{
+            _numPendingOperations--;
+            console.log(projectBusyMessages);
+            console.log("removing: ", message);
+            const index = projectBusyMessages.indexOf(message);
+            if (index > -1) {
+                // can't use array.filter here as it will filter all similar messages like ["copy","copy"]
+                projectBusyMessages.splice(index, 1);
+            }
+            console.log(projectBusyMessages);
+        }
+        if(projectBusyMessages.length > 0){
+            $projectSpinner.attr("title", projectBusyMessages.join(", "));
+        }
+        if(_numPendingOperations > 0){
             $projectSpinner.removeClass("forced-hidden");
-            $projectSpinner.attr("title", message);
         } else {
             $projectSpinner.addClass("forced-hidden");
-            projectBusyMessages = projectBusyMessages.filter(item => item !== message);
-            if(projectBusyMessages.length > 0){
-                $projectSpinner.attr("title", projectBusyMessages[0]);
-            }
         }
     }
 
@@ -1357,16 +1365,16 @@ define(function (require, exports, module) {
     });
 
     model.on(ProjectModel.EVENT_FS_RENAME_STARTED, ()=>{
-        setProjectBusy(true);
+        setProjectBusy(true, Strings.RENAMING);
     });
     model.on(ProjectModel.EVENT_FS_RENAME_END, ()=>{
-        setProjectBusy(false);
+        setProjectBusy(false, Strings.RENAMING);
     });
 
     function _duplicateFileCMD() {
         let context = getContext();
         if(context){
-            let name = window.path.basename(context.fullPath);
+            let name = _getProjectRelativePath(context.fullPath);
             let message = StringUtils.format(Strings.DUPLICATING, name);
             setProjectBusy(true, message);
             FileSystem.getFreePath(context.fullPath, (err, dupePath)=>{
@@ -1489,7 +1497,7 @@ define(function (require, exports, module) {
         if(canPaste){
             let baseName = window.path.basename(srcEntry.fullPath);
             let targetPath = window.path.normalize(`${target.fullPath}/${baseName}`);
-            let message = StringUtils.format(Strings.MOVING, baseName);
+            let message = StringUtils.format(Strings.MOVING, _getProjectRelativePath(srcEntry.fullPath));
             setProjectBusy(true, message);
             srcEntry.rename(targetPath, (err)=>{
                 setProjectBusy(false, message);
@@ -1509,7 +1517,7 @@ define(function (require, exports, module) {
         let srcEntry = (await FileSystem.resolveAsync(src)).entry;
         let canPaste = await _validatePasteTarget(srcEntry, target);
         if(canPaste){
-            let name = window.path.basename(srcEntry.fullPath);
+            let name = _getProjectRelativePath(srcEntry.fullPath);
             let message = StringUtils.format(Strings.COPYING, name);
             setProjectBusy(true, message);
             FileSystem.copy(srcEntry.fullPath, target.fullPath, (err, targetStat)=>{
@@ -1706,7 +1714,7 @@ define(function (require, exports, module) {
                 d.reject(errorInfo);
             });
         return d.promise();
-    };
+    }
 
     /**
      * Returns an Array of all files for this project, optionally including
