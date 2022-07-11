@@ -585,5 +585,47 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Project Busy spinner", function () {
+            it("should show project busy spinner", function () {
+                let spinner = testWindow.$("#project-operations-spinner");
+                let isVisible = spinner.is(":visible");
+                expect(isVisible).toBe(false);
+
+                ProjectManager.setProjectBusy(true, "hello world");
+                let spinnerMessage = spinner.attr("title");
+                expect(spinnerMessage).toBe("hello world");
+                isVisible = spinner.is(":visible");
+                expect(isVisible).toBe(true);
+
+                ProjectManager.setProjectBusy(true, "second status");
+                spinnerMessage = spinner.attr("title");
+                expect(spinnerMessage).toBe("hello world, second status");
+                isVisible = spinner.is(":visible");
+                expect(isVisible).toBe(true);
+
+                ProjectManager.setProjectBusy(false, "second status");
+                spinnerMessage = spinner.attr("title");
+                expect(spinnerMessage).toBe("hello world");
+                isVisible = spinner.is(":visible");
+                expect(isVisible).toBe(true);
+
+                ProjectManager.setProjectBusy(true, "third status");
+                spinnerMessage = spinner.attr("title");
+                expect(spinnerMessage).toBe("hello world, third status");
+                isVisible = spinner.is(":visible");
+                expect(isVisible).toBe(true);
+
+                ProjectManager.setProjectBusy(false, "hello world");
+                spinnerMessage = spinner.attr("title");
+                expect(spinnerMessage).toBe("third status");
+                isVisible = spinner.is(":visible");
+                expect(isVisible).toBe(true);
+
+                ProjectManager.setProjectBusy(false, "third status");
+                isVisible = spinner.is(":visible");
+                expect(isVisible).toBe(false);
+            });
+        });
+
     });
 });
