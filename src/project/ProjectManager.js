@@ -110,7 +110,6 @@ define(function (require, exports, module) {
         _fileSystemRename,
         _showErrorDialog,
         _saveTreeState,
-        renameItemInline,
         _renderTreeSync,
         _renderTree;
 
@@ -1196,8 +1195,11 @@ define(function (require, exports, module) {
      */
     function deleteItem(entry) {
         var result = new $.Deferred();
-
+        _numPendingOperations++;
+        _showOrHideBusySpinner();
         entry.unlink(function (err) {
+            _numPendingOperations--;
+            _showOrHideBusySpinner();
             if (!err) {
                 DocumentManager.notifyPathDeleted(entry.fullPath);
                 let parent = window.path.dirname(entry.fullPath);
@@ -1306,6 +1308,15 @@ define(function (require, exports, module) {
         _renderTreeSync();
     }
 
+    let _numPendingOperations = 0;
+    function _showOrHideBusySpinner() {
+        if(_numPendingOperations > 0){
+            $("#project-operations-spinner").removeClass("forced-hidden");
+        } else {
+            $("#project-operations-spinner").addClass("forced-hidden");
+        }
+    }
+
     // after model change, queue path for selection. As there can be only one selection, the last selection wins.
     let queuePathForSelection = null;
     model.on(ProjectModel.EVENT_CHANGE, async ()=>{
@@ -1319,11 +1330,24 @@ define(function (require, exports, module) {
         }
     });
 
+    model.on(ProjectModel.EVENT_FS_RENAME_STARTED, ()=>{
+        _numPendingOperations++;
+        _showOrHideBusySpinner();
+    });
+    model.on(ProjectModel.EVENT_FS_RENAME_END, ()=>{
+        _numPendingOperations--;
+        _showOrHideBusySpinner();
+    });
+
     function _duplicateFileCMD() {
         let context = getContext();
         if(context){
+            _numPendingOperations++;
+            _showOrHideBusySpinner();
             FileSystem.getFreePath(context.fullPath, (err, dupePath)=>{
                 FileSystem.copy(context.fullPath, dupePath, (err, copiedStats)=>{
+                    _numPendingOperations--;
+                    _showOrHideBusySpinner();
                     if(err){
                         _showErrorDialog(ERR_TYPE_DUPLICATE_FAILED, false, "err",
                             _getProjectRelativePath(context.fullPath));
@@ -1441,7 +1465,11 @@ define(function (require, exports, module) {
         if(canPaste){
             let baseName = window.path.basename(srcEntry.fullPath);
             let targetPath = window.path.normalize(`${target.fullPath}/${baseName}`);
+            _numPendingOperations++;
+            _showOrHideBusySpinner();
             srcEntry.rename(targetPath, (err)=>{
+                _numPendingOperations--;
+                _showOrHideBusySpinner();
                 if(err){
                     _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
                         _getProjectRelativePath(srcEntry.fullPath),
@@ -1458,7 +1486,11 @@ define(function (require, exports, module) {
         let srcEntry = (await FileSystem.resolveAsync(src)).entry;
         let canPaste = await _validatePasteTarget(srcEntry, target);
         if(canPaste){
+            _numPendingOperations++;
+            _showOrHideBusySpinner();
             FileSystem.copy(srcEntry.fullPath, target.fullPath, (err, targetStat)=>{
+                _numPendingOperations--;
+                _showOrHideBusySpinner();
                 if(err){
                     _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
                         _getProjectRelativePath(srcEntry.fullPath),
@@ -1609,7 +1641,7 @@ define(function (require, exports, module) {
      * @param {boolean=} isMoved optional flag which indicates whether the entry is being moved instead of renamed
      * @return {$.Promise} a promise resolved when the rename is done.
      */
-    renameItemInline = function (entry, isMoved) {
+    function renameItemInline(entry, isMoved) {
         var d = new $.Deferred();
 
         model.startRename(entry, isMoved)
