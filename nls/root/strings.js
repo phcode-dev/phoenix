@@ -26,6 +26,12 @@ define({
      */
     // Generic strings
     "SYSTEM_DEFAULT": "System Default",
+    "PROJECT_BUSY": "Project Operations In Progress",
+    "DUPLICATING": "Duplicating {0}",
+    "MOVING": "Moving {0}",
+    "COPYING": "Copying {0}",
+    "DELETING": "Deleting {0}",
+    "RENAMING": "Renaming",
     // General file io error strings
     "GENERIC_ERROR": "(error {0})",
     "NOT_FOUND_ERR": "The file/directory could not be found.",

@@ -41,6 +41,8 @@ define(function (require, exports, module) {
     var EVENT_CHANGE            = "change",
         EVENT_SHOULD_SELECT     = "select",
         EVENT_SHOULD_FOCUS      = "focus",
+        EVENT_FS_RENAME_STARTED = "mvStart",
+        EVENT_FS_RENAME_END     = "mvEnd",
         ERROR_CREATION          = "creationError",
         ERROR_INVALID_FILENAME  = "invalidFilename",
         ERROR_NOT_IN_PROJECT    = "notInProject";
@@ -916,38 +918,6 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Rename a file/folder. This will update the project tree data structures
-     * and send notifications about the rename.
-     *
-     * @param {string} oldPath Old name of the item with the path
-     * @param {string} newPath New name of the item with the path
-     * @param {string} newName New name of the item
-     * @param {boolean} isFolder True if item is a folder; False if it is a file.
-     * @return {$.Promise} A promise object that will be resolved or rejected when
-     *   the rename is finished.
-     */
-    function _renameItem(oldPath, newPath, newName, isFolder) {
-        var result = new $.Deferred();
-
-        if (oldPath === newPath) {
-            result.resolve();
-        } else if (!isValidFilename(newName)) {
-            result.reject(ERROR_INVALID_FILENAME);
-        } else {
-            var entry = isFolder ? FileSystem.getDirectoryForPath(oldPath) : FileSystem.getFileForPath(oldPath);
-            entry.rename(newPath, function (err) {
-                if (err) {
-                    result.reject(err);
-                } else {
-                    result.resolve();
-                }
-            });
-        }
-
-        return result.promise();
-    }
-
-    /**
      * @private
      *
      * Renames the item at the old path to the new name provided.
@@ -957,7 +927,28 @@ define(function (require, exports, module) {
      * @param {string} newName new name for the file or directory
      */
     ProjectModel.prototype._renameItem = function (oldPath, newPath, newName) {
-        return _renameItem(oldPath, newPath, newName, !_pathIsFile(oldPath));
+        const result = new $.Deferred();
+        const isFolder = !_pathIsFile(oldPath);
+        const self = this;
+
+        if (oldPath === newPath) {
+            result.resolve();
+        } else if (!isValidFilename(newName)) {
+            result.reject(ERROR_INVALID_FILENAME);
+        } else {
+            var entry = isFolder ? FileSystem.getDirectoryForPath(oldPath) : FileSystem.getFileForPath(oldPath);
+            self.trigger(EVENT_FS_RENAME_STARTED);
+            entry.rename(newPath, function (err) {
+                self.trigger(EVENT_FS_RENAME_END);
+                if (err) {
+                    result.reject(err);
+                } else {
+                    result.resolve();
+                }
+            });
+        }
+
+        return result.promise();
     };
 
     /**
@@ -1386,6 +1377,8 @@ define(function (require, exports, module) {
     exports.EVENT_CHANGE            = EVENT_CHANGE;
     exports.EVENT_SHOULD_SELECT     = EVENT_SHOULD_SELECT;
     exports.EVENT_SHOULD_FOCUS      = EVENT_SHOULD_FOCUS;
+    exports.EVENT_FS_RENAME_STARTED = EVENT_FS_RENAME_STARTED;
+    exports.EVENT_FS_RENAME_END     = EVENT_FS_RENAME_END;
     exports.ERROR_CREATION          = ERROR_CREATION;
     exports.ERROR_INVALID_FILENAME  = ERROR_INVALID_FILENAME;
     exports.ERROR_NOT_IN_PROJECT    = ERROR_NOT_IN_PROJECT;
