@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "系統預設",
+  "PROJECT_BUSY": "項目運營進行中",
+  "DUPLICATING": "正在複製 {0}",
+  "MOVING": "移動中 {0}",
+  "COPYING": "正在複製 {0}",
+  "DELETING": "正在刪除 {0}",
+  "RENAMING": "重新命名",
   "GENERIC_ERROR": "(錯誤 {0})",
   "NOT_FOUND_ERR": "找不到檔案或目錄。",
   "NOT_READABLE_ERR": "無法讀取檔案或目錄。",

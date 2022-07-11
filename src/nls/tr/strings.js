@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Sistem Varsayılan",
+  "PROJECT_BUSY": "Proje İşlemleri Devam Ediyor",
+  "DUPLICATING": "Çoğaltma {0}",
+  "MOVING": "Hareketli {0}",
+  "COPYING": "Kopyalama {0}",
+  "DELETING": "{0} siliniyor",
+  "RENAMING": "Yeniden adlandırma",
   "GENERIC_ERROR": "(hata {0})",
   "NOT_FOUND_ERR": "Dosya bulunamadı.",
   "NOT_READABLE_ERR": "Dosya okunamadı.",

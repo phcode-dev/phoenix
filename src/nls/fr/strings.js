@@ -20,6 +20,13 @@
  */
 
 define({
+  "SYSTEM_DEFAULT": "Langue par défaut du système",
+  "PROJECT_BUSY": "Opérations du projet en cours",
+  "DUPLICATING": "Duplication {0}",
+  "MOVING": "Déménagement {0}",
+  "COPYING": "Copie {0}",
+  "DELETING": "Suppression de {0}",
+  "RENAMING": "Renommer",
   "GENERIC_ERROR": "(Erreur {0})",
   "NOT_FOUND_ERR": "Fichier/répertoire introuvable.",
   "NOT_READABLE_ERR": "Impossible de lire le fichier/répertoire.",
