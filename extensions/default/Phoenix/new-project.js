@@ -35,11 +35,14 @@ define(function (require, exports, module) {
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         FileUtils = brackets.getModule("file/FileUtils"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
+        EventDispatcher     = brackets.getModule("utils/EventDispatcher"),
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
         replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
         guidedTour = require("guided-tour"),
         utils = require("utils");
+
+    EventDispatcher.makeEventDispatcher(exports);
 
     const NEW_PROJECT_INTERFACE = "Extn.Phoenix.newProject",
         MAX_DEDUPE_COUNT = 10000;
@@ -75,6 +78,7 @@ define(function (require, exports, module) {
     function closeDialogue() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
         newProjectDialogueObj.close();
+        exports.trigger(exports.EVENT_NEW_PROJECT_DIALOGUE_CLOSED);
         guidedTour.startTourIfNeeded();
     }
 
@@ -348,6 +352,7 @@ define(function (require, exports, module) {
     exports.showErrorDialogue = showErrorDialogue;
     exports.alreadyExists = alreadyExists;
     exports.Metrics = Metrics;
+    exports.EVENT_NEW_PROJECT_DIALOGUE_CLOSED = "newProjectDlgClosed";
     exports.getWelcomeProjectPath = ProjectManager.getWelcomeProjectPath;
     exports.getExploreProjectPath = ProjectManager.getExploreProjectPath;
     exports.getLocalProjectsPath = ProjectManager.getLocalProjectsPath;
