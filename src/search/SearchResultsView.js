@@ -538,6 +538,7 @@ define(function (require, exports, module) {
             };
             self._$previewEditor.editor =
                 new Editor.Editor(doc, false, self._$previewEditor, null, editorOptions);
+            exports._previewEditorForTests = self._$previewEditor.editor;
             self._$previewEditor.editor.setSelection(selectStart, selectEnd, true);
             self._$previewEditor.editor.updateLayout();
         });
@@ -546,6 +547,7 @@ define(function (require, exports, module) {
     SearchResultsView.prototype._closePreviewEditor = function () {
         let self = this;
         if(self._$previewEditor.editor){
+            exports._previewEditorForTests = null;
             self._$previewEditor.editor.destroy();
             self._$previewEditor.editor = null;
         }
