@@ -525,8 +525,7 @@ define(function (require, exports, module) {
         let self = this;
         if(self._$previewEditor.editor
             && self._$previewEditor.editor.document.file.fullPath === fullPath){
-            self._$previewEditor.editor.setSelection(selectStart, selectEnd, true);
-            self._$previewEditor.editor.updateLayout();
+            self._$previewEditor.editor.setSelection(selectStart, selectEnd, true, Editor.BOUNDARY_BULLSEYE);
             return;
         }
         DocumentManager.getDocumentForPath(fullPath).done(function (doc) {
@@ -540,8 +539,8 @@ define(function (require, exports, module) {
             self._$previewEditor.editor =
                 new Editor.Editor(doc, false, self._$previewEditor, null, editorOptions);
             exports._previewEditorForTests = self._$previewEditor.editor;
-            self._$previewEditor.editor.setSelection(selectStart, selectEnd, true);
             self._$previewEditor.editor.updateLayout();
+            self._$previewEditor.editor.setSelection(selectStart, selectEnd, true, Editor.BOUNDARY_BULLSEYE);
         });
     };
 
