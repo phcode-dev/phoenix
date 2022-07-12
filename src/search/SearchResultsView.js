@@ -526,6 +526,7 @@ define(function (require, exports, module) {
         if(self._$previewEditor.editor
             && self._$previewEditor.editor.document.file.fullPath === fullPath){
             self._$previewEditor.editor.setSelection(selectStart, selectEnd, true);
+            self._$previewEditor.editor.updateLayout();
             return;
         }
         DocumentManager.getDocumentForPath(fullPath).done(function (doc) {
