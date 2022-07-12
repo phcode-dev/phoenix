@@ -246,6 +246,7 @@ define(function (require, exports, module) {
             FileViewController: require("project/FileViewController"),
             FindInFiles: require("search/FindInFiles"),
             FindInFilesUI: require("search/FindInFilesUI"),
+            FindUtils: require("search/FindUtils"),
             HTMLInstrumentation: require("language/HTMLInstrumentation"),
             Inspector: require("LiveDevelopment/Inspector/Inspector"),
             InstallExtensionDialog: require("extensibility/InstallExtensionDialog"),
@@ -264,6 +265,7 @@ define(function (require, exports, module) {
             PreferencesManager: require("preferences/PreferencesManager"),
             ProjectManager: require("project/ProjectManager"),
             RemoteAgent: require("LiveDevelopment/Agents/RemoteAgent"),
+            SearchResultsView: require("search/SearchResultsView"),
             ScrollTrackMarkers: require("search/ScrollTrackMarkers"),
             WorkingSetView: require("project/WorkingSetView"),
             doneLoading: false

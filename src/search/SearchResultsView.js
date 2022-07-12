@@ -29,6 +29,7 @@ define(function (require, exports, module) {
         EventDispatcher       = require("utils/EventDispatcher"),
         Commands              = require("command/Commands"),
         DocumentManager       = require("document/DocumentManager"),
+        Editor                = require("editor/Editor"),
         EditorManager         = require("editor/EditorManager"),
         ProjectManager        = require("project/ProjectManager"),
         FileViewController    = require("project/FileViewController"),
@@ -73,13 +74,20 @@ define(function (require, exports, module) {
      * @param {string} type type to identify if it is reference search or string match serach
      */
     function SearchResultsView(model, panelID, panelName, type) {
-        var panelHtml  = Mustache.render(searchPanelTemplate, {panelID: panelID});
+        const self = this;
+        let panelHtml  = Mustache.render(searchPanelTemplate, {panelID: panelID});
 
         this._panel    = WorkspaceManager.createBottomPanel(panelName, $(panelHtml), 100);
         this._$summary = this._panel.$panel.find(".title");
         this._$table   = this._panel.$panel.find(".table-container");
+        this._$previewEditor   = this._panel.$panel.find(".search-editor-preview");
         this._model    = model;
         this._searchResultsType = type;
+        new ResizeObserver(()=>{
+            if(self._$previewEditor.editor){
+                self._$previewEditor.editor.updateLayout();
+            }
+        }).observe(this._panel.$panel[0]);
     }
     EventDispatcher.makeEventDispatcher(SearchResultsView.prototype);
 
@@ -185,13 +193,19 @@ define(function (require, exports, module) {
 
             // Add the file to the working set on double click
             .on("dblclick.searchResults", ".table-container tr:not(.file-section)", function (e) {
-                var item = self._searchList[$(this).data("file-index")];
-                FileViewController.openFileAndAddToWorkingSet(item.fullPath);
+                let $row = $(e.target).closest("tr");
+                let searchFile = self._searchList[$row.data("file-index")];
+                let item = searchFile.items[$row.data("item-index")];
+                FileViewController.openFileAndAddToWorkingSet(searchFile.fullPath).done(function () {
+                    // Opened document is now the current main editor
+                    EditorManager.getCurrentFullEditor().setSelection(item.start, item.end, true);
+                });
             })
 
             // Add the click event listener directly on the table parent
             .on("click.searchResults .table-container", function (e) {
-                var $row = $(e.target).closest("tr");
+                let $row = $(e.target).closest("tr");
+                let isLineNumberClick = $row.context && $($row.context).hasClass("line-number");
 
                 if ($row.length) {
                     if (self._$selectedRow) {
@@ -237,13 +251,15 @@ define(function (require, exports, module) {
                     // This is a file row, show the result on click
                     } else {
                         // Grab the required item data
-                        var item = searchItem.items[$row.data("item-index")];
-
-                        CommandManager.execute(Commands.FILE_OPEN, {fullPath: fullPath})
-                            .done(function (doc) {
-                                // Opened document is now the current main editor
-                                EditorManager.getCurrentFullEditor().setSelection(item.start, item.end, true);
-                            });
+                        let item = searchItem.items[$row.data("item-index")];
+                        self._showPreviewEditor(fullPath, item.start, item.end);
+                        if(isLineNumberClick){
+                            CommandManager.execute(Commands.FILE_OPEN, {fullPath: fullPath})
+                                .done(function () {
+                                    // Opened document is now the current main editor
+                                    EditorManager.getCurrentFullEditor().setSelection(item.start, item.end, true);
+                                });
+                        }
                     }
                 }
             });
@@ -391,14 +407,15 @@ define(function (require, exports, module) {
      * Shows the current set of results.
      */
     SearchResultsView.prototype._render = function () {
-        var searchItems, match, i, item, multiLine,
+        let searchItems, match, i, item, multiLine,
             count            = this._model.countFilesMatches(),
             searchFiles      = this._model.prioritizeOpenFile(this._initialFilePath),
             lastIndex        = this._getLastIndex(count.matches),
             matchesCounter   = 0,
             showMatches      = false,
             allInFileChecked = true,
-            self             = this;
+            self             = this,
+            previewFileSelected = false;
 
         this._showSummary();
         this._searchList = [];
@@ -441,6 +458,10 @@ define(function (require, exports, module) {
                 while (i < item.matches.length && matchesCounter < lastIndex) {
                     match     = item.matches[i];
                     multiLine = match.start.line !== match.end.line;
+                    if(!previewFileSelected){
+                        previewFileSelected = true;
+                        self._showPreviewEditor(fullPath, match.start, match.end);
+                    }
 
                     searchItems.push({
                         fileIndex: self._searchList.length,
@@ -463,7 +484,7 @@ define(function (require, exports, module) {
                 }
 
                 // Add a row for each file
-                var relativePath    = FileUtils.getDirectoryPath(ProjectManager.makeProjectRelativeIfPossible(fullPath)),
+                let relativePath    = FileUtils.getDirectoryPath(ProjectManager.makeProjectRelativeIfPossible(fullPath)),
                     directoryPath   = FileUtils.getDirectoryPath(relativePath),
                     displayFileName = StringUtils.format(
                         Strings.FIND_IN_FILES_FILE_PATH,
@@ -500,6 +521,38 @@ define(function (require, exports, module) {
 
         this._panel.show();
         this._$table.scrollTop(0); // Otherwise scroll pos from previous contents is remembered
+    };
+
+    SearchResultsView.prototype._showPreviewEditor = function (fullPath, selectStart, selectEnd) {
+        let self = this;
+        if(self._$previewEditor.editor
+            && self._$previewEditor.editor.document.file.fullPath === fullPath){
+            self._$previewEditor.editor.setSelection(selectStart, selectEnd, true, Editor.BOUNDARY_BULLSEYE);
+            return;
+        }
+        DocumentManager.getDocumentForPath(fullPath).done(function (doc) {
+            if(self._$previewEditor.editor){
+                self._closePreviewEditor();
+            }
+
+            let editorOptions = {
+                isReadOnly: true
+            };
+            self._$previewEditor.editor =
+                new Editor.Editor(doc, false, self._$previewEditor, null, editorOptions);
+            exports._previewEditorForTests = self._$previewEditor.editor;
+            self._$previewEditor.editor.updateLayout();
+            self._$previewEditor.editor.setSelection(selectStart, selectEnd, true, Editor.BOUNDARY_BULLSEYE);
+        });
+    };
+
+    SearchResultsView.prototype._closePreviewEditor = function () {
+        let self = this;
+        if(self._$previewEditor.editor){
+            exports._previewEditorForTests = null;
+            self._$previewEditor.editor.destroy();
+            self._$previewEditor.editor = null;
+        }
     };
 
     /**

@@ -162,6 +162,9 @@ define(function (require, exports, module) {
         // to avoid logic issues later with comparing values.
         resultInfo.collapsed = !!resultInfo.collapsed;
 
+        if(!this.results[fullpath] && this.numFiles >= 0){
+            this.numFiles++;
+        }
         this.results[fullpath] = resultInfo;
         this.numMatches += resultInfo.matches.length;
         if (this.numMatches >= SearchModel.MAX_TOTAL_RESULTS) {
@@ -183,6 +186,9 @@ define(function (require, exports, module) {
     SearchModel.prototype.removeResults = function (fullpath) {
         if (this.results[fullpath]) {
             this.numMatches -= this.results[fullpath].matches.length;
+            if(this.numFiles){
+                this.numFiles--;
+            }
             delete this.results[fullpath];
         }
     };

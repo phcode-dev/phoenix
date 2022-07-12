@@ -162,7 +162,7 @@ define(function (require, exports, module) {
     function lessifyTheme(content, theme) {
         var deferred = new $.Deferred();
 
-        less.render("#editor-holder {" + content + "\n}", {
+        less.render("#editor-holder, .editor-holder {" + content + "\n}", {
             rootpath: fixPath(stylesPath),
             filename: fixPath(theme.file._path)
         }, function (err, tree) {

@@ -53,11 +53,11 @@ define(function (require, exports, module) {
 
     describe("Editor", function () {
         var defaultContent = "Brackets is going to be awesome!\n";
-        var myDocument, myEditor;
+        var myDocument, myEditor, $paneEl;
 
         function createTestEditor(content, languageId) {
             // create dummy Document and Editor
-            var mocks = SpecRunnerUtils.createMockEditor(content, languageId);
+            let mocks = SpecRunnerUtils.createMockEditor(content, languageId);
             myDocument = mocks.doc;
             myEditor = mocks.editor;
         }
@@ -114,6 +114,11 @@ define(function (require, exports, module) {
         describe("Editor wrapper", function () {
             beforeEach(function () {
                 createTestEditor(defaultContent, "");
+            });
+
+            it("should initialize editor-holder class", function () {
+                // verify editor content
+                expect(myEditor.$el.parent().hasClass('editor-holder')).toEqual(true);
             });
 
             it("should initialize with content", function () {

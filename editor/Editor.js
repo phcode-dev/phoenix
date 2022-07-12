@@ -252,10 +252,12 @@ define(function (require, exports, module) {
 
     /**
      * Constant: ignore upper boundary when centering text
+     * Constant: bulls-eye = strictly centre always
      * @type {number}
      */
     var BOUNDARY_CHECK_NORMAL   = 0,
-        BOUNDARY_IGNORE_TOP     = 1;
+        BOUNDARY_IGNORE_TOP     = 1,
+        BOUNDARY_BULLSEYE      = 2;
 
     /**
      * @private
@@ -334,7 +336,8 @@ define(function (require, exports, module) {
             container = container.get(0);
         }
 
-        var $container = $(container);
+        let $container = $(container);
+        $container.addClass("editor-holder");
 
         if (range) {    // attach this first: want range updated before we process a change
             this._visibleRange = new TextRange(document, range.startLine, range.endLine);
@@ -1240,16 +1243,20 @@ define(function (require, exports, module) {
      * @param {number} centerOptions Option value, or 0 for no options; one of the BOUNDARY_* constants above.
      */
     Editor.prototype.centerOnCursor = function (centerOptions) {
-        var $scrollerElement = $(this.getScrollerElement());
-        var editorHeight = $scrollerElement.height();
+        let $scrollerElement = $(this.getScrollerElement());
+        let editorHeight = $scrollerElement.height();
 
         // we need to make adjustments for the statusbar's padding on the bottom and the menu bar on top.
-        var statusBarHeight = $scrollerElement.outerHeight() - editorHeight;
-        var menuBarHeight = $scrollerElement.offset().top;
+        let statusBarHeight = $("#status-bar").height();
 
-        var documentCursorPosition = this._codeMirror.cursorCoords(null, "local").bottom;
-        var screenCursorPosition = this._codeMirror.cursorCoords(null, "page").bottom - menuBarHeight;
+        let documentCursorPosition = this._codeMirror.cursorCoords(null, "local").bottom;
+        let screenCursorPosition = this._codeMirror.cursorCoords(null, "page").bottom;
 
+        if(centerOptions === BOUNDARY_BULLSEYE){
+            let pos = documentCursorPosition - editorHeight / 2 + statusBarHeight;
+            this.setScrollPos(null, pos);
+            return;
+        }
         // If the cursor is already reasonably centered, we won't
         // make any change. "Reasonably centered" is defined as
         // not being within CENTERING_MARGIN of the top or bottom
@@ -2780,4 +2787,5 @@ define(function (require, exports, module) {
     exports.Editor                  = Editor;
     exports.BOUNDARY_CHECK_NORMAL   = BOUNDARY_CHECK_NORMAL;
     exports.BOUNDARY_IGNORE_TOP     = BOUNDARY_IGNORE_TOP;
+    exports.BOUNDARY_BULLSEYE      = BOUNDARY_BULLSEYE;
 });
