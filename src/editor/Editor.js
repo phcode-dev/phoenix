@@ -334,7 +334,8 @@ define(function (require, exports, module) {
             container = container.get(0);
         }
 
-        var $container = $(container);
+        let $container = $(container);
+        $container.addClass("editor-holder");
 
         if (range) {    // attach this first: want range updated before we process a change
             this._visibleRange = new TextRange(document, range.startLine, range.endLine);
