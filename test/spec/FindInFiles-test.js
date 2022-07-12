@@ -57,10 +57,13 @@ define(function (require, exports, module) {
             FileSystem,
             File,
             FindInFiles,
+            FindUtilsWin,
             FindInFilesUI,
             ProjectManager,
+            SearchResultsView,
             testWindow,
-            $;
+            $,
+            indexingComplete = false;
 
         beforeFirst(function () {
             SpecRunnerUtils.createTempDirectory();
@@ -76,15 +79,23 @@ define(function (require, exports, module) {
                 FileFilters         = testWindow.brackets.test.FileFilters;
                 FileSystem          = testWindow.brackets.test.FileSystem;
                 File                = testWindow.brackets.test.File;
+                FindUtilsWin        = testWindow.brackets.test.FindUtils;
                 FindInFiles         = testWindow.brackets.test.FindInFiles;
                 FindInFilesUI       = testWindow.brackets.test.FindInFilesUI;
                 ProjectManager      = testWindow.brackets.test.ProjectManager;
                 MainViewManager     = testWindow.brackets.test.MainViewManager;
+                SearchResultsView   = testWindow.brackets.test.SearchResultsView;
                 $                   = testWindow.$;
                 PreferencesManager  = testWindow.brackets.test.PreferencesManager;
                 PreferencesManager.set("findInFiles.nodeSearch", false);
                 PreferencesManager.set("findInFiles.instantSearch", false);
                 PreferencesManager.set("maxSearchHistory", 5);
+                FindUtilsWin.on(FindUtils.SEARCH_INDEXING_STARTED, ()=>{
+                    indexingComplete = false;
+                });
+                FindUtilsWin.on(FindUtils.SEARCH_INDEXING_FINISHED, ()=>{
+                    indexingComplete = true;
+                });
             });
         });
 
@@ -149,6 +160,9 @@ define(function (require, exports, module) {
         }
 
         function executeSearch(searchString) {
+            waitsFor(function () {
+                return indexingComplete;
+            }, "indexing complete");
             runs(function () {
                 var $searchField = $("#find-what");
                 $searchField.val(searchString).trigger("input");
@@ -472,20 +486,22 @@ define(function (require, exports, module) {
                 openSearchBar(fileEntry);
 
                 runs(function () {
-                    $("#find-what").val("some");
+                    var $searchField = $("#find-what");
+                    $searchField.val("some");
+                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
                     closeSearchBar();
-                    // Adding delay to make sure that search bar is closed
-                    setTimeout(function () {
-                        openSearchBar(fileEntry);
-                        expect($("#find-what").val()).toBe("some");
-                        var searchHistory = PreferencesManager.getViewState("searchHistory");
-                        expect(searchHistory[0]).toBe("some");
-                        var $searchField = $("#find-what");
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $searchField[0]);
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $searchField[0]);
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                        expect($("#find-what").val()).toBe("some");
-                    }, 500);
+                });
+
+                openSearchBar(fileEntry);
+
+                runs(function () {
+                    var searchHistory = PreferencesManager.getViewState("searchHistory");
+                    expect(searchHistory[0]).toBe("some");
+                    var $searchField = $("#find-what");
+                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $searchField[0]);
+                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $searchField[0]);
+                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
+                    expect($searchField.val()).toBe("some");
                 });
             });
 
@@ -507,6 +523,7 @@ define(function (require, exports, module) {
                     expect(match.end.ch).toBe(20);
                     expect(match.end.line).toBe(6);
                 });
+                closeSearchBar();
             });
 
             it("should keep dialog and show panel when there are results", function () {
@@ -514,7 +531,7 @@ define(function (require, exports, module) {
                     fileEntry = FileSystem.getFileForPath(filePath);
 
                 openSearchBar(fileEntry);
-                executeSearch("callFoo");
+                executeSearch("callF");
 
                 // With instant search, the Search Bar should not close on a search
                 runs(function () {
@@ -583,16 +600,20 @@ define(function (require, exports, module) {
                     var $firstHit = $($panelResults[1]);
                     expect($firstHit.hasClass("file-section")).toBeFalsy();
                     $firstHit.click();
+                });
+                waitsFor(function () {
+                    let editor = SearchResultsView._previewEditorForTests;
+                    return (editor && editor.document.file.fullPath === filePath);
+                }, 1000, "file open");
 
-                    setTimeout(function () {
-                        // Verify current document
-                        editor = EditorManager.getActiveEditor();
-                        expect(editor.document.file.fullPath).toEqual(filePath);
+                runs(function () {
+                    // Verify current document
+                    let editor = SearchResultsView._previewEditorForTests;
+                    expect(editor.document.file.fullPath).toEqual(filePath);
 
-                        // Verify selection
-                        expect(editor.getSelectedText().toLowerCase() === "foo");
-                        waitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "closing all files");
-                    }, 500);
+                    // Verify selection
+                    expect(editor.getSelectedText().toLowerCase() === "foo");
+                    waitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "closing all files");
                 });
             });
 
@@ -616,8 +637,10 @@ define(function (require, exports, module) {
                     expect($firstHit.hasClass("file-section")).toBeFalsy();
                     $firstHit.dblclick();
 
-                    // Verify document is now in working set
-                    expect(MainViewManager.findInWorkingSet(MainViewManager.ALL_PANES, filePath)).not.toBe(-1);
+                    waitsFor(function () {
+                        return MainViewManager.findInWorkingSet(MainViewManager.ALL_PANES, filePath) !== -1;
+                    }, 1000, "indexing complete");
+
                     waitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "closing all files");
                 });
             });
@@ -647,20 +670,20 @@ define(function (require, exports, module) {
 
                 // Wait for file to open if not already open
                 waitsFor(function () {
-                    var editor = EditorManager.getActiveEditor();
-                    return (editor.document.file.fullPath === filePath);
+                    let editor = SearchResultsView._previewEditorForTests;
+                    return (editor && editor.document.file.fullPath === filePath);
                 }, 1000, "file open");
 
                 // Wait for selection to change (this happens asynchronously after file opens)
                 waitsFor(function () {
-                    var editor = EditorManager.getActiveEditor(),
+                    let editor = SearchResultsView._previewEditorForTests,
                         sel = editor.getSelection();
                     return (sel.start.line === 4 && sel.start.ch === 7);
                 }, 1000, "selection change");
 
                 runs(function () {
                     // Verify current selection
-                    var editor = EditorManager.getActiveEditor();
+                    let editor = SearchResultsView._previewEditorForTests;
                     expect(editor.getSelectedText().toLowerCase()).toBe("foo");
 
                     // Edit text to remove hit from file
@@ -678,7 +701,7 @@ define(function (require, exports, module) {
                     // Verify list automatically updated
                     expect($panelResults.length).toBe(panelListLen - 1);
 
-                    waitsForDone(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }), "closing file");
+                    waitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }), "closing file");
                 });
             });
 
@@ -772,36 +795,59 @@ define(function (require, exports, module) {
                 }
             ];
 
+            function waitms(timeout) {
+                let waitDone = false;
+                setTimeout(()=>{
+                    waitDone = true;
+                }, timeout);
+                waitsFor(function () {
+                    return waitDone;
+                }, timeout + 100, "wait done");
+            }
+
             function expectPageDisplay(options) {
                 // Check the title
-                expect($("#find-in-files-results .title").text().match("\\b" + options.totalResults + "\\b")).toBeTruthy();
-                expect($("#find-in-files-results .title").text().match("\\b" + options.totalFiles + "\\b")).toBeTruthy();
+                let match = $("#find-in-files-results .title").text().match("\\b" + options.totalResults + "\\b");
+                expect(match).toBeTruthy();
+                match = $("#find-in-files-results .title").text().match("\\b" + options.totalFiles + "\\b");
+                expect(match).toBeTruthy();
                 var paginationInfo = $("#find-in-files-results .pagination-col").text();
-                expect(paginationInfo.match("\\b" + options.overallFirstIndex + "\\b")).toBeTruthy();
-                expect(paginationInfo.match("\\b" + options.overallLastIndex + "\\b")).toBeTruthy();
+                match = paginationInfo.match("\\b" + options.overallFirstIndex + "\\b");
+                expect(match).toBeTruthy();
+                match = paginationInfo.match("\\b" + options.overallLastIndex + "\\b");
+                expect(match).toBeTruthy();
 
                 // Check for presence of file and first/last item rows within each file
                 options.matchRanges.forEach(function (range) {
-                    var $fileRow = $("#find-in-files-results tr.file-section[data-file-index='" + range.file + "']");
+                    let $fileRow = $("#find-in-files-results tr.file-section[data-file-index='" + range.file + "']");
                     expect($fileRow.length).toBe(1);
-                    expect($fileRow.find(".dialog-filename").text()).toEqual(range.filename);
+                    let fileName = $fileRow.find(".dialog-filename").text();
+                    expect(fileName).toEqual(range.filename);
 
-                    var $firstMatchRow = $("#find-in-files-results tr[data-file-index='" + range.file + "'][data-item-index='" + range.first + "']");
+                    let $firstMatchRow = $("#find-in-files-results tr[data-file-index='" + range.file + "'][data-item-index='" + range.first + "']");
                     expect($firstMatchRow.length).toBe(1);
-                    expect($firstMatchRow.find(".line-number").text().match("\\b" + range.firstLine + "\\b")).toBeTruthy();
-                    expect($firstMatchRow.find(".line-text").text().match(range.pattern)).toBeTruthy();
+                    match = $firstMatchRow.find(".line-number").text().match("\\b" + range.firstLine + "\\b");
+                    expect(match).toBeTruthy();
+                    match = $firstMatchRow.find(".line-text").text().match(range.pattern);
+                    expect(match).toBeTruthy();
 
-                    var $lastMatchRow = $("#find-in-files-results tr[data-file-index='" + range.file + "'][data-item-index='" + range.last + "']");
+                    let $lastMatchRow = $("#find-in-files-results tr[data-file-index='" + range.file + "'][data-item-index='" + range.last + "']");
                     expect($lastMatchRow.length).toBe(1);
-                    expect($lastMatchRow.find(".line-number").text().match("\\b" + range.lastLine + "\\b")).toBeTruthy();
-                    expect($lastMatchRow.find(".line-text").text().match(range.pattern)).toBeTruthy();
+                    match = $lastMatchRow.find(".line-number").text().match("\\b" + range.lastLine + "\\b");
+                    expect(match).toBeTruthy();
+                    match = $lastMatchRow.find(".line-text").text().match(range.pattern);
+                    expect(match).toBeTruthy();
                 });
 
                 // Check enablement of buttons
-                expect($("#find-in-files-results .first-page").hasClass("disabled")).toBe(!options.firstPageEnabled);
-                expect($("#find-in-files-results .last-page").hasClass("disabled")).toBe(!options.lastPageEnabled);
-                expect($("#find-in-files-results .prev-page").hasClass("disabled")).toBe(!options.prevPageEnabled);
-                expect($("#find-in-files-results .next-page").hasClass("disabled")).toBe(!options.nextPageEnabled);
+                let disabled = $("#find-in-files-results .first-page").hasClass("disabled");
+                expect(disabled).toBe(!options.firstPageEnabled);
+                disabled = $("#find-in-files-results .last-page").hasClass("disabled");
+                expect(disabled).toBe(!options.lastPageEnabled);
+                disabled = $("#find-in-files-results .prev-page").hasClass("disabled");
+                expect(disabled).toBe(!options.prevPageEnabled);
+                disabled = $("#find-in-files-results .next-page").hasClass("disabled");
+                expect(disabled).toBe(!options.nextPageEnabled);
             }
 
             it("should page forward, then jump back to first page, displaying correct contents at each step", function () {
@@ -814,15 +860,38 @@ define(function (require, exports, module) {
                 executeSearch("find this");
 
                 runs(function () {
-                    var i;
-                    for (i = 0; i < 5; i++) {
-                        if (i > 0) {
-                            $("#find-in-files-results .next-page").click();
-                        }
-                        expectPageDisplay(expectedPages[i]);
-                    }
-
+                    $("#find-in-files-results .next-page").click();
+                    waitms(1000);
+                });
+                runs(function () {
+                    expectPageDisplay(expectedPages[1]);
+                });
+                runs(function () {
+                    $("#find-in-files-results .next-page").click();
+                    waitms(1000);
+                });
+                runs(function () {
+                    expectPageDisplay(expectedPages[2]);
+                });
+                runs(function () {
+                    $("#find-in-files-results .next-page").click();
+                    waitms(1000);
+                });
+                runs(function () {
+                    expectPageDisplay(expectedPages[3]);
+                });
+                runs(function () {
+                    $("#find-in-files-results .next-page").click();
+                    waitms(1000);
+                });
+                runs(function () {
+                    expectPageDisplay(expectedPages[4]);
+                });
+                runs(function () {
                     $("#find-in-files-results .first-page").click();
+                    waitms(1000);
+                });
+                runs(function () {
                     expectPageDisplay(expectedPages[0]);
                 });
             });
@@ -833,14 +902,18 @@ define(function (require, exports, module) {
                 executeSearch("find this");
 
                 runs(function () {
-                    var i;
                     $("#find-in-files-results .last-page").click();
-                    for (i = 4; i >= 0; i--) {
-                        if (i < 4) {
-                            $("#find-in-files-results .prev-page").click();
-                        }
-                        expectPageDisplay(expectedPages[i]);
-                    }
+                    waitms(1000);
+                });
+                runs(function () {
+                    expectPageDisplay(expectedPages[4]);
+                });
+                runs(function () {
+                    $("#find-in-files-results .prev-page").click();
+                    waitms(1000);
+                });
+                runs(function () {
+                    expectPageDisplay(expectedPages[3]);
                 });
             });
         });
