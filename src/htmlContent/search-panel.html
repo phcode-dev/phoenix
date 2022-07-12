@@ -1,7 +1,10 @@
-<div id="{{panelID}}" class="search-results bottom-panel vert-resizable top-resizer no-focus">
+<div id="{{panelID}}" class="search-results bottom-panel vert-resizable top-resizer no-focus" style="height: 100%">
     <div class="toolbar simple-toolbar-layout">
         <div class="title"></div>
         <a href="#" class="close">&times;</a>
     </div>
-    <div class="table-container resizable-content"></div>
+    <div style="display: flex; height: 100%;" class="resizable-content">
+        <div class="table-container" style="width: 50%; height: 100%;"></div>
+        <div class="search-editor-preview" style="width: 50%; height: 100%;"></div>
+    </div>
 </div>
