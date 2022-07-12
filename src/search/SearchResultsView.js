@@ -205,6 +205,7 @@ define(function (require, exports, module) {
             // Add the click event listener directly on the table parent
             .on("click.searchResults .table-container", function (e) {
                 let $row = $(e.target).closest("tr");
+                let isLineNumberClick = $row.context && $($row.context).hasClass("line-number");
 
                 if ($row.length) {
                     if (self._$selectedRow) {
@@ -252,12 +253,13 @@ define(function (require, exports, module) {
                         // Grab the required item data
                         let item = searchItem.items[$row.data("item-index")];
                         self._showPreviewEditor(fullPath, item.start, item.end);
-
-                        // CommandManager.execute(Commands.FILE_OPEN, {fullPath: fullPath})
-                        //     .done(function (doc) {
-                        //         // Opened document is now the current main editor
-                        //         EditorManager.getCurrentFullEditor().setSelection(item.start, item.end, true);
-                        //     });
+                        if(isLineNumberClick){
+                            CommandManager.execute(Commands.FILE_OPEN, {fullPath: fullPath})
+                                .done(function () {
+                                    // Opened document is now the current main editor
+                                    EditorManager.getCurrentFullEditor().setSelection(item.start, item.end, true);
+                                });
+                        }
                     }
                 }
             });
