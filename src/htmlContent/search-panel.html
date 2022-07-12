@@ -3,8 +3,9 @@
         <div class="title"></div>
         <a href="#" class="close">&times;</a>
     </div>
-    <div style="display: flex; height: 100%;" class="resizable-content">
-        <div class="table-container" style="width: 50%; height: 100%;"></div>
-        <div class="search-editor-preview" style="width: 50%; height: 100%;"></div>
+    <div style="display: flex; height: 100%;">
+<!--27 px is status bar height. If this is not set, the preview code mirror editor gives weird layout issues at times-->
+        <div class="table-container" style="width: 50%; height: calc(100% - 27px);"></div>
+        <div class="search-editor-preview" style="width: 50%; height: calc(100% - 27px);"></div>
     </div>
 </div>
