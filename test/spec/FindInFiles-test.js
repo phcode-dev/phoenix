@@ -42,6 +42,15 @@ define(function (require, exports, module) {
     var promisify = Async.promisify; // for convenience
 
     describe("FindInFiles", function () {
+        function waitms(timeout) {
+            let waitDone = false;
+            setTimeout(()=>{
+                waitDone = true;
+            }, timeout);
+            waitsFor(function () {
+                return waitDone;
+            }, timeout + 100, "wait done");
+        }
 
         this.category = "integration";
 
@@ -180,6 +189,9 @@ define(function (require, exports, module) {
         }
 
         function doSearch(options) {
+            waitsFor(function () {
+                return indexingComplete;
+            }, "indexing complete");
             runs(function () {
                 FindInFiles.doSearchInScope(options.queryInfo, null, null, options.replaceText).done(function (results) {
                     searchResults = results;
@@ -189,6 +201,9 @@ define(function (require, exports, module) {
             runs(function () {
                 expect(numMatches(searchResults)).toBe(options.numMatches);
             });
+            waitsFor(function () {
+                return FindInFiles._searchDone;
+            }, "Find in Files done");
         }
 
 
@@ -795,16 +810,6 @@ define(function (require, exports, module) {
                 }
             ];
 
-            function waitms(timeout) {
-                let waitDone = false;
-                setTimeout(()=>{
-                    waitDone = true;
-                }, timeout);
-                waitsFor(function () {
-                    return waitDone;
-                }, timeout + 100, "wait done");
-            }
-
             function expectPageDisplay(options) {
                 // Check the title
                 let match = $("#find-in-files-results .title").text().match("\\b" + options.totalResults + "\\b");
@@ -861,35 +866,21 @@ define(function (require, exports, module) {
 
                 runs(function () {
                     $("#find-in-files-results .next-page").click();
-                    waitms(1000);
+                    waitms(2000);
                 });
                 runs(function () {
                     expectPageDisplay(expectedPages[1]);
                 });
                 runs(function () {
                     $("#find-in-files-results .next-page").click();
-                    waitms(1000);
+                    waitms(2000);
                 });
                 runs(function () {
                     expectPageDisplay(expectedPages[2]);
                 });
                 runs(function () {
-                    $("#find-in-files-results .next-page").click();
-                    waitms(1000);
-                });
-                runs(function () {
-                    expectPageDisplay(expectedPages[3]);
-                });
-                runs(function () {
-                    $("#find-in-files-results .next-page").click();
-                    waitms(1000);
-                });
-                runs(function () {
-                    expectPageDisplay(expectedPages[4]);
-                });
-                runs(function () {
                     $("#find-in-files-results .first-page").click();
-                    waitms(1000);
+                    waitms(2000);
                 });
                 runs(function () {
                     expectPageDisplay(expectedPages[0]);
@@ -903,18 +894,20 @@ define(function (require, exports, module) {
 
                 runs(function () {
                     $("#find-in-files-results .last-page").click();
-                    waitms(1000);
+                    waitms(2000);
                 });
                 runs(function () {
                     expectPageDisplay(expectedPages[4]);
                 });
                 runs(function () {
                     $("#find-in-files-results .prev-page").click();
-                    waitms(1000);
+                    waitms(2000);
                 });
                 runs(function () {
                     expectPageDisplay(expectedPages[3]);
                 });
+                openProject(defaultSourcePath);
+                waitms(2000);
             });
         });
 
@@ -949,6 +942,9 @@ define(function (require, exports, module) {
                     queryInfo: {query: "foo"},
                     numMatches: 14
                 });
+                waitsFor(function () {
+                    return FindInFiles.searchModel && FindInFiles.searchModel.results;
+                }, 1000, "search completed");
                 runs(function () {
                     oldResults = _.cloneDeep(FindInFiles.searchModel.results);
                 });
@@ -991,6 +987,7 @@ define(function (require, exports, module) {
 
             describe("when in-memory document changes", function () {
                 it("should update the results when a matching line is added, updating line numbers and adding the match", function () {
+                    waitms(2000);
                     runs(function () {
                         waitsForDone(CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: fullTestPath("foo.html") }));
                     });
@@ -1032,6 +1029,7 @@ define(function (require, exports, module) {
                 });
 
                 it("should update the results when a matching line is deleted, updating line numbers and removing the match", function () {
+                    waitms(2000);
                     runs(function () {
                         waitsForDone(CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: fullTestPath("foo.html") }));
                     });
@@ -1069,6 +1067,7 @@ define(function (require, exports, module) {
                 });
 
                 it("should replace matches in a portion of the document that was edited to include a new match", function () {
+                    waitms(2000);
                     runs(function () {
                         waitsForDone(CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: fullTestPath("foo.html") }));
                     });
@@ -1110,6 +1109,7 @@ define(function (require, exports, module) {
                 });
 
                 it("should completely remove the document from the results list if all matches in the document are deleted", function () {
+                    waitms(2000);
                     runs(function () {
                         waitsForDone(CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: fullTestPath("foo.html") }));
                     });
@@ -1312,6 +1312,7 @@ define(function (require, exports, module) {
                 runs(function () {
                     waitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }), "close all files");
                 });
+                waitms(2000);
             });
 
             describe("Engine", function () {
