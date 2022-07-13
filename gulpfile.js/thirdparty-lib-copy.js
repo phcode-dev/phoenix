@@ -124,7 +124,15 @@ let copyThirdPartyLibs = series(
         'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/@floating-ui/core/LICENSE', 'floating-ui'),
     // documentation
-    copyLicence.bind(copyLicence, 'node_modules/documentation/LICENSE', 'documentation')
+    copyLicence.bind(copyLicence, 'node_modules/documentation/LICENSE', 'documentation'),
+    // jasmine
+    copyFiles.bind(copyFiles, ['node_modules/jasmine-core/lib/jasmine-core/**/*'],
+        'test/thirdparty/jasmine-core/'),
+    copyLicence.bind(copyLicence, 'node_modules/jasmine-core/MIT.LICENSE', 'jasmine'),
+    // jasmine
+    copyFiles.bind(copyFiles, ['node_modules/jasmine-reporters/src/**/*'],
+        'test/thirdparty/jasmine-reporters/'),
+    copyLicence.bind(copyLicence, 'node_modules/jasmine-reporters/LICENSE', 'jasmine-reporters')
 
 );
 
