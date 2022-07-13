@@ -1,11 +1,11 @@
-<div id="{{panelID}}" class="search-results bottom-panel vert-resizable top-resizer no-focus" style="height: 100%">
+<div id="{{panelID}}" class="search-results bottom-panel vert-resizable top-resizer no-focus">
     <div class="toolbar simple-toolbar-layout">
         <div class="title"></div>
         <a href="#" class="close">&times;</a>
     </div>
-    <div style="display: flex; height: 100%;">
+    <div style="display: flex; height: calc(100% - 27px);">
 <!--27 px is status bar height. If this is not set, the preview code mirror editor gives weird layout issues at times-->
-        <div class="table-container" style="width: 50%; height: calc(100% - 27px);"></div>
-        <div class="search-editor-preview" style="width: 50%; height: calc(100% - 27px);"></div>
+        <div class="table-container" style="width: 50%; height: 100%;"></div>
+        <div class="search-editor-preview" style="width: 50%; height: 100%;"></div>
     </div>
 </div>

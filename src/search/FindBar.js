@@ -393,13 +393,26 @@ define(function (require, exports, module) {
                         self.trigger("doFind", e.shiftKey);
                     }
                     historyIndex = 0;
-                } else if (e.keyCode === KeyEvent.DOM_VK_DOWN || e.keyCode === KeyEvent.DOM_VK_UP) {
-                    var quickSearchContainer = $(".quick-search-container");
-                    if (!self.searchField) {
-                        self.showSearchHints();
-                    } else if (!quickSearchContainer.is(':visible')) {
-                        quickSearchContainer.show();
-                    }
+                } else if (e.keyCode === KeyEvent.DOM_VK_DOWN) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    self.trigger("selectNextResult"); //selectPrevResult
+                    // var quickSearchContainer = $(".quick-search-container");
+                    // if (!self.searchField) {
+                    //     self.showSearchHints();
+                    // } else if (!quickSearchContainer.is(':visible')) {
+                    //     quickSearchContainer.show();
+                    // }
+                } else if (e.keyCode === KeyEvent.DOM_VK_UP) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    self.trigger("selectPrevResult"); //selectPrevResult
+                    // var quickSearchContainer = $(".quick-search-container");
+                    // if (!self.searchField) {
+                    //     self.showSearchHints();
+                    // } else if (!quickSearchContainer.is(':visible')) {
+                    //     quickSearchContainer.show();
+                    // }
                 }
             })
             .on("click", ".close", function () {
