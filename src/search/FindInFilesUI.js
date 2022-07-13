@@ -266,6 +266,16 @@ define(function (require, exports, module) {
                 if (_findBar && _findBar._options.multifile){
                     _resultsView.selectPrevResult();
                 }
+            })
+            .on("selectNextPage", function () {
+                if (_findBar && _findBar._options.multifile){
+                    _resultsView.selectNextPage();
+                }
+            })
+            .on("selectPrevPage", function () {
+                if (_findBar && _findBar._options.multifile){
+                    _resultsView.selectPrevPage();
+                }
             });
 
         if (showReplace) {

@@ -91,9 +91,6 @@ define(function (require, exports, module) {
         this._options = _.extend(defaults, options);
         this._closed = false;
         this._enabled = true;
-        this.lastQueriedText = "";
-        this.lastTypedText = "";
-        this.lastTypedTextWasRegexp = false;
     }
     EventDispatcher.makeEventDispatcher(FindBar.prototype);
 
@@ -396,23 +393,19 @@ define(function (require, exports, module) {
                 } else if (e.keyCode === KeyEvent.DOM_VK_DOWN) {
                     e.preventDefault();
                     e.stopPropagation();
-                    self.trigger("selectNextResult"); //selectPrevResult
-                    // var quickSearchContainer = $(".quick-search-container");
-                    // if (!self.searchField) {
-                    //     self.showSearchHints();
-                    // } else if (!quickSearchContainer.is(':visible')) {
-                    //     quickSearchContainer.show();
-                    // }
+                    self.trigger("selectNextResult");
                 } else if (e.keyCode === KeyEvent.DOM_VK_UP) {
                     e.preventDefault();
                     e.stopPropagation();
-                    self.trigger("selectPrevResult"); //selectPrevResult
-                    // var quickSearchContainer = $(".quick-search-container");
-                    // if (!self.searchField) {
-                    //     self.showSearchHints();
-                    // } else if (!quickSearchContainer.is(':visible')) {
-                    //     quickSearchContainer.show();
-                    // }
+                    self.trigger("selectPrevResult");
+                } else if (e.keyCode === KeyEvent.DOM_VK_PAGE_DOWN) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    self.trigger("selectNextPage");
+                } else if (e.keyCode === KeyEvent.DOM_VK_PAGE_UP) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    self.trigger("selectPrevPage");
                 }
             })
             .on("click", ".close", function () {
