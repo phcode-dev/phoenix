@@ -156,6 +156,19 @@ define(function (require, exports, module) {
         }
     };
 
+    SearchResultsView.prototype.OpenSelectedFile = function () {
+        const self = this;
+        if (self._$selectedRow) {
+            let searchItem = self._searchList[self._$selectedRow.data("file-index")];
+            let item = searchItem.items[self._$selectedRow.data("item-index")];
+            CommandManager.execute(Commands.FILE_OPEN, {fullPath: searchItem.fullPath})
+                .done(function () {
+                    // Opened document is now the current main editor
+                    EditorManager.getCurrentFullEditor().setSelection(item.start, item.end, true);
+                });
+        }
+    };
+
     SearchResultsView.prototype._previewSelectedFile = function () {
         const self = this;
         if (self._$selectedRow) {
