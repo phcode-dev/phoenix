@@ -157,7 +157,7 @@ define(function (require, exports, module) {
     };
 
     SearchResultsView.prototype._previewSelectedFile = function () {
-        var self = this;
+        const self = this;
         if (self._$selectedRow) {
             let searchItem = self._searchList[self._$selectedRow.data("file-index")];
             let item = searchItem.items[self._$selectedRow.data("item-index")];
@@ -166,12 +166,20 @@ define(function (require, exports, module) {
     };
 
     SearchResultsView.prototype.selectNextResult = function () {
-        let self = this;
+        const self = this;
         if (self._$selectedRow) {
-            let selectedElement = self._$selectedRow[0];
+            const selectedElement = self._$selectedRow[0];
             let nextElement = selectedElement.nextElementSibling;
-            while(nextElement && !$(nextElement).hasClass('file-search-item')){
+            let searchItem = self._searchList[self._$selectedRow.data("file-index")];
+            let collapsed = self._model.results[searchItem.fullPath].collapsed;
+            while(nextElement && (collapsed || !$(nextElement).hasClass('file-search-item'))){
+                // skip collapsed elements too
                 nextElement = nextElement.nextElementSibling;
+                if(!nextElement){
+                    break;
+                }
+                searchItem = self._searchList[$(nextElement).data("file-index")];
+                collapsed = self._model.results[searchItem.fullPath].collapsed;
             }
             if(nextElement){
                 self._$selectedRow.removeClass("selected");
@@ -186,14 +194,14 @@ define(function (require, exports, module) {
     };
 
     SearchResultsView.prototype.selectNextPage = function () {
-        let self = this;
+        const self = this;
         if(self._hasNextPage){
             self.trigger('getNextPage');
         }
     };
 
     SearchResultsView.prototype.selectLastResultInPage = function () {
-        let self = this;
+        const self = this;
         if (self._$selectedRow) {
             let selectedElement = self._$selectedRow[0];
             let lastElement = selectedElement.parentNode.lastChild;
@@ -211,12 +219,20 @@ define(function (require, exports, module) {
     };
 
     SearchResultsView.prototype.selectPrevResult = function () {
-        let self = this;
+        const self = this;
         if (self._$selectedRow) {
             let selectedElement = self._$selectedRow[0];
             let prevElement = selectedElement.previousElementSibling;
-            while(prevElement && !$(prevElement).hasClass('file-search-item')){
+            let searchItem = self._searchList[self._$selectedRow.data("file-index")];
+            let collapsed = self._model.results[searchItem.fullPath].collapsed;
+            while(prevElement && (collapsed || !$(prevElement).hasClass('file-search-item'))){
+                // skip collapsed elements too
                 prevElement = prevElement.previousElementSibling;
+                if(!prevElement){
+                    break;
+                }
+                searchItem = self._searchList[$(prevElement).data("file-index")];
+                collapsed = self._model.results[searchItem.fullPath].collapsed;
             }
             if(prevElement){
                 self._$selectedRow.removeClass("selected");
@@ -232,7 +248,7 @@ define(function (require, exports, module) {
     };
 
     SearchResultsView.prototype.selectPrevPage = function () {
-        let self = this;
+        const self = this;
         if(self._hasPreviousPage){
             self.showPreviousPage();
         }
