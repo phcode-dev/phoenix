@@ -88,9 +88,11 @@ define(function (require, exports, module) {
 
     // Load both top-level suites. Filtering is applied at the top-level as a filter to BootstrapReporter.
     require("test/UnitTestSuite");
-    require("test/PerformanceTestSuite");
+    // todo TEST_MODERN enable performance tests
+    //require("test/PerformanceTestSuite");
 
     // Load JUnitXMLReporter
+    // todo TEST_MODERN junit reporter
     require("test/thirdparty/jasmine-reporters/jasmine.junit_reporter");
 
     // Load CodeMirror add-ons--these attach themselves to the CodeMirror module
@@ -345,43 +347,44 @@ define(function (require, exports, module) {
         // configure spawned test windows to load extensions
         SpecRunnerUtils.setLoadExtensionsInTestWindow(selectedSuites.indexOf("extension") >= 0);
 
-        _loadExtensionTests(selectedSuites).always(function () {
-            var jasmineEnv = jasmine.getEnv();
-            jasmineEnv.updateInterval = 1000;
+        // todo TEST_MODERN enable extension tests
+        //_loadExtensionTests(selectedSuites).always(function () {
+        var jasmineEnv = jasmine.getEnv();
+        jasmineEnv.updateInterval = 1000;
 
-            _registerBeforeAfterHandlers();
+        _registerBeforeAfterHandlers();
 
-            // Create the reporter, which is really a model class that just gathers
-            // spec and performance data.
-            reporter = new UnitTestReporter(jasmineEnv, topLevelFilter, params.get("spec"));
-            SpecRunnerUtils.setUnitTestReporter(reporter);
+        // Create the reporter, which is really a model class that just gathers
+        // spec and performance data.
+        reporter = new UnitTestReporter(jasmineEnv, topLevelFilter, params.get("spec"));
+        SpecRunnerUtils.setUnitTestReporter(reporter);
 
-            // Optionally emit JUnit XML file for automated runs
-            if (resultsPath) {
-                if (resultsPath.substr(-4) === ".xml") {
-                    _patchJUnitReporter();
-                    jasmineEnv.addReporter(new jasmine.JUnitXmlReporter(null, true, false));
-                }
-
-                // Close the window
-                $(reporter).on("runnerEnd", _runnerEndHandler);
-            } else {
-                _writeResults.resolve();
+        // Optionally emit JUnit XML file for automated runs
+        if (resultsPath) {
+            if (resultsPath.substr(-4) === ".xml") {
+                _patchJUnitReporter();
+                jasmineEnv.addReporter(new jasmine.JUnitXmlReporter(null, true, false));
             }
 
-            jasmineEnv.addReporter(reporter);
+            // Close the window
+            $(reporter).on("runnerEnd", _runnerEndHandler);
+        } else {
+            _writeResults.resolve();
+        }
 
-            // Create the view that displays the data from the reporter. (Usually in
-            // Jasmine this is part of the reporter, but we separate them out so that
-            // we can more easily grab just the model data for output during automatic
-            // testing.)
-            reporterView = new BootstrapReporterView(window.document, reporter);
+        jasmineEnv.addReporter(reporter);
 
-            // remember the suite for the next unit test window launch
-            window.localStorage.setItem("SpecRunner.suite", selectedSuites);
+        // Create the view that displays the data from the reporter. (Usually in
+        // Jasmine this is part of the reporter, but we separate them out so that
+        // we can more easily grab just the model data for output during automatic
+        // testing.)
+        reporterView = new BootstrapReporterView(window.document, reporter);
 
-            $(window.document).ready(_documentReadyHandler);
-        });
+        // remember the suite for the next unit test window launch
+        window.localStorage.setItem("SpecRunner.suite", selectedSuites);
+
+        $(window.document).ready(_documentReadyHandler);
+        //});
 
 
         // Prevent clicks on any link from navigating to a different page (which could lose unsaved
