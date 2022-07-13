@@ -32,6 +32,8 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/devicon
 /src/extensions/default/Phoenix-prettier/thirdParty
 src/extensions/default/Phoenix-live-preview/thirdparty
+test/thirdparty/jasmine-core
+test/thirdparty/jasmine-reporters
 
 # ignore files copied from node_modules to src/thirdparty
 # https://github.com/phcode-dev/phoenix/issues/10
