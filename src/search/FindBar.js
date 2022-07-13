@@ -310,6 +310,28 @@ define(function (require, exports, module) {
 
         FindBar._addFindBar(this);
 
+        let executeSearchIfNeeded = function () {
+            // We only do instant search via worker.
+            if (FindUtils.isWorkerSearchDisabled() || FindUtils.isInstantSearchDisabled()) {
+                return;
+            }
+            if (self._closed) {
+                return;
+            }
+            if ( self.getQueryInfo().query !== lastQueriedText && !FindUtils.isWorkerSearchInProgress()) {
+                // init Search
+                if (self._options.multifile) {
+                    self.trigger("doFind");
+                    lastQueriedText = self.getQueryInfo().query;
+                }
+            }
+        };
+        if (intervalId === 0) {
+            // we do this so that is the search query changes by any means - by keypress, or programmatically
+            // we do an instant search if the search term changes.
+            intervalId = window.setInterval(executeSearchIfNeeded, INSTANT_SEARCH_INTERVAL_MS);
+        }
+
         var $root = this._modalBar.getRoot();
         var historyIndex = 0;
         $root
@@ -340,34 +362,10 @@ define(function (require, exports, module) {
                 self.$("#find-what").focus();
             })
             .on("keydown", "#find-what, #replace-with", function (e) {
-                let executeSearchIfNeeded = function () {
-                    // We only do instant search via worker.
-                    if (FindUtils.isWorkerSearchDisabled() || FindUtils.isInstantSearchDisabled()) {
-                        return;
-                    }
-                    if (self._closed) {
-                        return;
-                    }
-                    if ( self.getQueryInfo().query !== lastQueriedText && !FindUtils.isWorkerSearchInProgress()) {
-                        // init Search
-                        if (self._options.multifile) {
-                            if ($(e.target).is("#find-what")) {
-                                self.trigger("doFind");
-                                lastQueriedText = self.getQueryInfo().query;
-                            }
-                        }
-                    }
-                };
-                if (intervalId === 0) {
-                    // we do this so that is the search query changes by any means - by keypress, or programmatically
-                    // we do an instant search if the search term changes.
-                    intervalId = window.setInterval(executeSearchIfNeeded, INSTANT_SEARCH_INTERVAL_MS);
-                }
                 if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
                     e.preventDefault();
                     e.stopPropagation();
                     self._addElementToSearchHistory(self.$("#find-what").val());
-                    lastQueriedText = self.getQueryInfo().query;
                     if (self._options.multifile) {
                         if ($(e.target).is("#find-what")) {
                             if (self._options.replace) {
@@ -500,6 +498,7 @@ define(function (require, exports, module) {
      * @param {boolean} suppressAnimation If true, don't do the standard closing animation. Default false.
      */
     FindBar.prototype.close = function (suppressAnimation) {
+        lastQueriedText = "";
         if (this._modalBar) {
             // 1st arg = restore scroll pos; 2nd arg = no animation, since getting replaced immediately
             this._modalBar.close(true, !suppressAnimation);
