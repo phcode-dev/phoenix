@@ -377,7 +377,7 @@ define(function (require, exports, module) {
                                 Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "findInFiles.bar",
                                     "returnKey");
                                 // Trigger a Find (which really means "Find All" in this context).
-                                self.trigger("doFind");
+                                self.trigger("openSelectedFile");
                             }
                         } else {
                             Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "replaceBatchInFiles.bar",

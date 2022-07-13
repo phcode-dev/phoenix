@@ -276,6 +276,11 @@ define(function (require, exports, module) {
                 if (_findBar && _findBar._options.multifile){
                     _resultsView.selectPrevPage();
                 }
+            })
+            .on("openSelectedFile", function () {
+                if (_findBar && _findBar._options.multifile){
+                    _resultsView.OpenSelectedFile();
+                }
             });
 
         if (showReplace) {
