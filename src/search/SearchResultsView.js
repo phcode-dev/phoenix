@@ -83,6 +83,8 @@ define(function (require, exports, module) {
         this._$previewEditor   = this._panel.$panel.find(".search-editor-preview");
         this._model    = model;
         this._searchResultsType = type;
+        this._hasPreviousPage = false;
+        this._hasNextPage = false;
         new ResizeObserver(()=>{
             if(self._$previewEditor.editor){
                 self._$previewEditor.editor.updateLayout();
@@ -151,6 +153,74 @@ define(function (require, exports, module) {
             }, UPDATE_TIMEOUT);
         } else {
             this._updateResults();
+        }
+    };
+
+    SearchResultsView.prototype._previewSelectedFile = function () {
+        var self = this;
+        if (self._$selectedRow) {
+            let searchItem = self._searchList[self._$selectedRow.data("file-index")];
+            let item = searchItem.items[self._$selectedRow.data("item-index")];
+            self._showPreviewEditor(searchItem.fullPath, item.start, item.end);
+        }
+    };
+
+    SearchResultsView.prototype.selectNextResult = function () {
+        var self = this;
+        if (self._$selectedRow) {
+            let selectedElement = self._$selectedRow[0];
+            let nextElement = selectedElement.nextElementSibling;
+            while(nextElement && !$(nextElement).hasClass('file-search-item')){
+                nextElement = nextElement.nextElementSibling;
+            }
+            if(nextElement){
+                self._$selectedRow.removeClass("selected");
+                self._$selectedRow = $(nextElement);
+                self._$selectedRow.addClass("selected");
+                nextElement.scrollIntoView({block: "nearest"});
+                self._previewSelectedFile();
+            } else if(self._hasNextPage){
+                self.trigger('getNextPage');
+            }
+        }
+    };
+
+    SearchResultsView.prototype.selectLastResultInPage = function () {
+        var self = this;
+        if (self._$selectedRow) {
+            let selectedElement = self._$selectedRow[0];
+            let lastElement = selectedElement.parentNode.lastChild;
+            while(lastElement && !$(lastElement).hasClass('file-search-item')){
+                lastElement = lastElement.previousElementSibling;
+            }
+            if(lastElement){
+                self._$selectedRow.removeClass("selected");
+                self._$selectedRow = $(lastElement);
+                self._$selectedRow.addClass("selected");
+                lastElement.scrollIntoView({block: "nearest"});
+                self._previewSelectedFile();
+            }
+        }
+    };
+
+    SearchResultsView.prototype.selectPrevResult = function () {
+        var self = this;
+        if (self._$selectedRow) {
+            let selectedElement = self._$selectedRow[0];
+            let prevElement = selectedElement.previousElementSibling;
+            while(prevElement && !$(prevElement).hasClass('file-search-item')){
+                prevElement = prevElement.previousElementSibling;
+            }
+            if(prevElement){
+                self._$selectedRow.removeClass("selected");
+                self._$selectedRow = $(prevElement);
+                self._$selectedRow.addClass("selected");
+                prevElement.scrollIntoView({block: "nearest"});
+                self._previewSelectedFile();
+            } else if(self._hasPreviousPage){
+                self.showPreviousPage();
+                self.selectLastResultInPage();
+            }
         }
     };
 
@@ -361,8 +431,9 @@ define(function (require, exports, module) {
      * Shows the Results Summary
      */
     SearchResultsView.prototype._showSummary = function () {
-        var count     = this._model.countFilesMatches(),
-            lastIndex = this._getLastIndex(count.matches),
+        let self = this;
+        let count     = self._model.countFilesMatches(),
+            lastIndex = self._getLastIndex(count.matches),
             typeStr = (count.matches > 1) ? Strings.FIND_IN_FILES_MATCHES : Strings.FIND_IN_FILES_MATCH,
             filesStr,
             summary;
@@ -380,24 +451,26 @@ define(function (require, exports, module) {
         // This text contains some formatting, so all the strings are assumed to be already escaped
         summary = StringUtils.format(
             Strings.FIND_TITLE_SUMMARY,
-            this._model.exceedsMaximum ? Strings.FIND_IN_FILES_MORE_THAN : "",
+            self._model.exceedsMaximum ? Strings.FIND_IN_FILES_MORE_THAN : "",
             String(count.matches),
             typeStr,
             filesStr
         );
 
-        this._$summary.html(Mustache.render(searchSummaryTemplate, {
-            query: (this._model.queryInfo && this._model.queryInfo.query && this._model.queryInfo.query.toString()) || "",
-            replaceWith: this._model.replaceText,
-            titleLabel: this._model.isReplace ? Strings.FIND_REPLACE_TITLE_LABEL : Strings.FIND_TITLE_LABEL,
-            scope: this._model.scope ? "&nbsp;" + FindUtils.labelForScope(this._model.scope) + "&nbsp;" : "",
+        self._hasPreviousPage = self._currentStart > 0;
+        self._hasNextPage = lastIndex < count.matches;
+        self._$summary.html(Mustache.render(searchSummaryTemplate, {
+            query: (self._model.queryInfo && self._model.queryInfo.query && self._model.queryInfo.query.toString()) || "",
+            replaceWith: self._model.replaceText,
+            titleLabel: self._model.isReplace ? Strings.FIND_REPLACE_TITLE_LABEL : Strings.FIND_TITLE_LABEL,
+            scope: self._model.scope ? "&nbsp;" + FindUtils.labelForScope(self._model.scope) + "&nbsp;" : "",
             summary: summary,
-            allChecked: this._allChecked,
+            allChecked: self._allChecked,
             hasPages: count.matches > RESULTS_PER_PAGE,
-            results: StringUtils.format(Strings.FIND_IN_FILES_PAGING, this._currentStart + 1, lastIndex),
-            hasPrev: this._currentStart > 0,
-            hasNext: lastIndex < count.matches,
-            replace: this._model.isReplace,
+            results: StringUtils.format(Strings.FIND_IN_FILES_PAGING, self._currentStart + 1, lastIndex),
+            hasPrev: self._hasPreviousPage,
+            hasNext: self._hasNextPage,
+            replace: self._model.isReplace,
             Strings: Strings
         }));
     };
@@ -516,7 +589,11 @@ define(function (require, exports, module) {
 
         if (this._$selectedRow) {
             this._$selectedRow.removeClass("selected");
-            this._$selectedRow = null;
+        }
+        let searchResults = this._$table.find(".file-search-item");
+        if(searchResults.length > 0){
+            this._$selectedRow = $(searchResults[0]);
+            this._$selectedRow.addClass("selected");
         }
 
         this._panel.show();
@@ -595,6 +672,17 @@ define(function (require, exports, module) {
      */
     SearchResultsView.prototype.showNextPage = function () {
         this._currentStart += RESULTS_PER_PAGE;
+        this._render();
+    };
+
+    /**
+     * Shows the next page of the resultrs view if possible
+     */
+    SearchResultsView.prototype.showPreviousPage = function () {
+        this._currentStart -= RESULTS_PER_PAGE;
+        if(this._currentStart < 0){
+            this._currentStart = 0;
+        }
         this._render();
     };
 

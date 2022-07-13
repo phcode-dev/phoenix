@@ -256,6 +256,16 @@ define(function (require, exports, module) {
             .on("close.FindInFiles", function (e) {
                 _findBar.off(".FindInFiles");
                 _findBar = null;
+            })
+            .on("selectNextResult", function () {
+                if (_findBar && _findBar._options.multifile){
+                    _resultsView.selectNextResult();
+                }
+            })
+            .on("selectPrevResult", function () {
+                if (_findBar && _findBar._options.multifile){
+                    _resultsView.selectPrevResult();
+                }
             });
 
         if (showReplace) {
