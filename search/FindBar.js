@@ -343,7 +343,7 @@ define(function (require, exports, module) {
                 self.$("#find-what").focus();
             })
             .on("keydown", "#find-what, #replace-with", function (e) {
-                var executeSearchIfNeeded = function () {
+                let executeSearchIfNeeded = function () {
                     // We only do instant search via worker.
                     if (FindUtils.isWorkerSearchDisabled() || FindUtils.isInstantSearchDisabled()) {
                         return;
@@ -355,15 +355,15 @@ define(function (require, exports, module) {
                         // init Search
                         if (self._options.multifile) {
                             if ($(e.target).is("#find-what")) {
-                                if (!self._options.replace) {
-                                    self.trigger("doFind");
-                                    lastQueriedText = self.getQueryInfo().query;
-                                }
+                                self.trigger("doFind");
+                                lastQueriedText = self.getQueryInfo().query;
                             }
                         }
                     }
                 };
                 if (intervalId === 0) {
+                    // we do this so that is the search query changes by any means - by keypress, or programmatically
+                    // we do an instant search if the search term changes.
                     intervalId = window.setInterval(executeSearchIfNeeded, INSTANT_SEARCH_INTERVAL_MS);
                 }
                 if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
