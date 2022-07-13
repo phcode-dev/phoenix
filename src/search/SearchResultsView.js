@@ -166,7 +166,7 @@ define(function (require, exports, module) {
     };
 
     SearchResultsView.prototype.selectNextResult = function () {
-        var self = this;
+        let self = this;
         if (self._$selectedRow) {
             let selectedElement = self._$selectedRow[0];
             let nextElement = selectedElement.nextElementSibling;
@@ -185,8 +185,15 @@ define(function (require, exports, module) {
         }
     };
 
+    SearchResultsView.prototype.selectNextPage = function () {
+        let self = this;
+        if(self._hasNextPage){
+            self.trigger('getNextPage');
+        }
+    };
+
     SearchResultsView.prototype.selectLastResultInPage = function () {
-        var self = this;
+        let self = this;
         if (self._$selectedRow) {
             let selectedElement = self._$selectedRow[0];
             let lastElement = selectedElement.parentNode.lastChild;
@@ -204,7 +211,7 @@ define(function (require, exports, module) {
     };
 
     SearchResultsView.prototype.selectPrevResult = function () {
-        var self = this;
+        let self = this;
         if (self._$selectedRow) {
             let selectedElement = self._$selectedRow[0];
             let prevElement = selectedElement.previousElementSibling;
@@ -221,6 +228,13 @@ define(function (require, exports, module) {
                 self.showPreviousPage();
                 self.selectLastResultInPage();
             }
+        }
+    };
+
+    SearchResultsView.prototype.selectPrevPage = function () {
+        let self = this;
+        if(self._hasPreviousPage){
+            self.showPreviousPage();
         }
     };
 
