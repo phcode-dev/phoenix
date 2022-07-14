@@ -137,6 +137,7 @@ define(function (require, exports, module) {
         self.suites = {};
         self.jasmineRootSuite = env.topSuite();
         self.specIdToSpecMap = {};
+        self.suiteIdToSuiteMap = {};
         self.specIdToSuiteMap = {};
         self.specIdToCategoryMap = {};
         self._populateSpecIdMaps(self.jasmineRootSuite);
@@ -178,28 +179,56 @@ define(function (require, exports, module) {
             }
         });
 
-        let htmlReporter = new jasmine.HtmlReporter({
-            env: env,
-            navigateWithNewParam: function(key, value) {
-                return self.queryString.navigateWithNewParam(key, value);
+        env.addReporter(jasmine.JsApiReporter);
+
+        let phoenixReporter = {
+            jasmineStarted: function(suiteInfo) {
+                console.log('Running suite with ' + suiteInfo.totalSpecsDefined);
+                self.reportRunnerStarting(suiteInfo);
             },
-            addToExistingQueryString: function(key, value) {
-                return self.queryString.fullStringWithNewParam(key, value);
+
+            // suiteStarted: function(result) {
+            //     console.log('Suite started: ' + result.description
+            //         + ' whose full description is: ' + result.fullName);
+            // },
+
+            specStarted: async function(result) {
+                console.log('Spec started: ' + result.description
+                    + ' whose full description is: ' + result.fullName);
+                self.reportSpecStarting(result);
             },
-            getContainer: function() {
-                return document.body;
+
+            specDone: function(result) {
+                console.log('Spec: ' + result.description + ' was ' + result.status);
+
+                for(var i = 0; i < result.failedExpectations.length; i++) {
+                    console.log('Failure: ' + result.failedExpectations[i].message);
+                    console.log(result.failedExpectations[i].stack);
+                }
+                console.log(result.passedExpectations.length);
+
+                self.reportSpecResults(result);
             },
-            createElement: function() {
-                return document.createElement.apply(document, arguments);
+
+            suiteDone: function(result) {
+                console.log('Suite: ' + result.description + ' was ' + result.status);
+                for(var i = 0; i < result.failedExpectations.length; i++) {
+                    console.log('Suite ' + result.failedExpectations[i].message);
+                    console.log(result.failedExpectations[i].stack);
+                }
+                self.reportSuiteResults(result);
             },
-            createTextNode: function() {
-                return document.createTextNode.apply(document, arguments);
-            },
-            timer: new jasmine.Timer()
-            //filterSpecs: self.specFilter
-        });
-        env.addReporter(htmlReporter);
-        htmlReporter.initialize();
+
+            jasmineDone: function(result) {
+                console.log('Finished suite: ' + result.overallStatus);
+                for(var i = 0; i < result.failedExpectations.length; i++) {
+                    console.log('Global ' + result.failedExpectations[i].message);
+                    console.log(result.failedExpectations[i].stack);
+                }
+                self.reportRunnerResults(result);
+            }
+        };
+        env.addReporter(phoenixReporter);
     }
 
     /**
@@ -261,6 +290,7 @@ define(function (require, exports, module) {
             if(isSuite){
                 // recursively count child suites
                 self._populateSpecIdMaps(specOrSuite, category);
+                self.suiteIdToSuiteMap[specOrSuite.id] = specOrSuite;
             } else {
                 self.specIdToSuiteMap[specOrSuite.id] = suite;
                 self.specIdToSpecMap[specOrSuite.id] = specOrSuite;
@@ -300,6 +330,7 @@ define(function (require, exports, module) {
      * @return {string} the top level suite name
      */
     UnitTestReporter.prototype.getTopLevelSuiteName = function (spec) {
+        let self = this;
         var topLevelSuite = self.specIdToSuiteMap[spec.id];
 
         while (topLevelSuite.parentSuite && topLevelSuite.parentSuite !== self.jasmineRootSuite) {
@@ -326,21 +357,23 @@ define(function (require, exports, module) {
 
     // Handlers for Jasmine callback functions
 
-    UnitTestReporter.prototype.reportRunnerStarting = function (runner) {
+    UnitTestReporter.prototype.reportRunnerStarting = function () {
         activeReporter = this;
         this.runInfo.startTime = new Date().toString();
         $(this).triggerHandler("runnerStart", [this]);
     };
 
     UnitTestReporter.prototype.reportRunnerResults = function (runner) {
-        this.passed = runner.results().passed();
+        this.passed = (runner.overallStatus === "passed");
         this.runInfo.endTime = new Date().toString();
         $(this).triggerHandler("runnerEnd", [this]);
         activeReporter = null;
     };
 
-    UnitTestReporter.prototype.reportSuiteResults = function (suite) {
-        if (suite.parentSuite === null) {
+    UnitTestReporter.prototype.reportSuiteResults = function (suiteResult) {
+        let self = this;
+        let suite = self.suiteIdToSuiteMap[suiteResult.id];
+        if (suite && suite.parentSuite === self.jasmineRootSuite) {
             $(this).triggerHandler("suiteEnd", [this, this.suites[suite.getFullName()]]);
         }
     };
@@ -350,12 +383,12 @@ define(function (require, exports, module) {
         if (self.specIdToCategoryMap[spec.id] === "performance") {
             self._currentPerfRecord = [];
         }
-        $(self).triggerHandler("specStart", [self, spec.getFullName()]);
+        $(self).triggerHandler("specStart", [self, spec.fullName]);
     };
 
     UnitTestReporter.prototype.reportSpecResults = function (spec) {
-        if (!spec.results().skipped) {
-            var specData = this._addSpecResults(spec, spec.results(), this._currentPerfRecord);
+        if (spec.status !== "excluded") {
+            let specData = this._addSpecResults(spec, this._currentPerfRecord);
             $(this).triggerHandler("specEnd", [this, specData, this.suites[this.getTopLevelSuiteName(spec)]]);
         }
         this._currentPerfRecord = null;
@@ -370,12 +403,13 @@ define(function (require, exports, module) {
      * @return {Object} the spec data for the given spec, listing whether it passed and any
      * messages/perf data
      */
-    UnitTestReporter.prototype._addSpecResults = function (spec, results, perfRecord) {
-        var suiteData = this.suites[this.getTopLevelSuiteName(spec)],
+    UnitTestReporter.prototype._addSpecResults = function (spec, perfRecord) {
+        let suiteData = this.suites[this.getTopLevelSuiteName(spec)],
             specData = {
-                name: spec.getFullName(),
+                name: spec.fullName,
                 description: spec.description,
-                passed: results.passed()
+                passed: (spec.status === "passed"),
+                messages: []
             };
 
         this.activeSpecCompleteCount++;
@@ -388,13 +422,7 @@ define(function (require, exports, module) {
             this.totalFailedCount++;
         }
 
-        results.getItems().forEach(function (item) {
-            var message = SpecRunnerUtils.getResultMessage(item);
-            if (message) {
-                specData.messages = specData.messages || [];
-                specData.messages.push(message);
-            }
-        });
+        specData.messages = _getResultMessage(spec);
 
         if (perfRecord && perfRecord.length) {
             specData.perf = perfRecord;
@@ -403,6 +431,25 @@ define(function (require, exports, module) {
         suiteData.specs.push(specData);
         return specData;
     };
+
+    function _getResultMessage(spec) {
+        var messages = [];
+        let abstract = `Status: ${spec.status}, Completed in: ${spec.duration}ms`;
+        if(spec.debugLogs){
+            abstract = abstract + `\n debug logs:${spec.debugLogs}`;
+        }
+        if(spec.pendingReason){
+            abstract = abstract + `\n pendingReason:${spec.pendingReason}`;
+        }
+        messages.push(abstract);
+        for(let failure of spec.failedExpectations){
+            messages.push(`${failure.message}\n${failure.stack}`);
+        }
+        for(let deprecations of spec.deprecationWarnings){
+            messages.push(`${deprecations.message}\n${deprecations.stack}`);
+        }
+        return messages;
+    }
 
     // Performance tracking
 

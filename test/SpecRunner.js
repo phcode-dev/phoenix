@@ -339,9 +339,6 @@ define(function (require, exports, module) {
             _writeResults.resolve();
         }
 
-        jasmineEnv.addReporter(jasmine.JsApiReporter);
-        //jasmineEnv.addReporter(reporter);
-
         // Create the view that displays the data from the reporter. (Usually in
         // Jasmine this is part of the reporter, but we separate them out so that
         // we can more easily grab just the model data for output during automatic

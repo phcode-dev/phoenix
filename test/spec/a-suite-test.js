@@ -13,6 +13,10 @@ define(function (require, exports, module) {
         it("spec 2 should fail", function() {
             expect(true).toBeFalsy();
         });
+
+        it("spec2 I throws", function() {
+            throw new Error("i throw");
+        });
     });
 
     describe("integration:suite2a", function() {
@@ -26,9 +30,15 @@ define(function (require, exports, module) {
             it("nested spec2a pass", function() {
                 expect(true).toBeTruthy();
             });
-
         });
 
+    });
+
+    describe("passing suite 3", function() {
+
+        it("spec3 pass", function() {
+            expect(true).toBeTruthy();
+        });
     });
 
 });
