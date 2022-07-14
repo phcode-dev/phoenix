@@ -19,7 +19,7 @@
  *
  */
 
-/*global jsPromise, jasmine, expect, beforeEach, waitsFor, awaitsFor, waitsForDone, runs, spyOn, KeyboardEvent, waits */
+/*global jsPromise, jasmine, expect, beforeEach, awaitsFor,awaitsForDone, spyOn, KeyboardEvent, waits */
 
 define(function (require, exports, module) {
 
@@ -164,39 +164,23 @@ define(function (require, exports, module) {
 
 
     /**
-     * Utility for tests that wait on a Promise to complete. Placed in the global namespace so it can be used
-     * similarly to the standard Jasmine waitsFor(). Unlike waitsFor(), must be called from INSIDE
-     * the runs() that generates the promise.
+     * Utility for tests that wait on a Promise to complete.
      * @param {$.Promise} promise
-     * @param {string} operationName  Name used for timeout error message
      */
-    window.waitsForDone = function (promise, operationName, timeout) {
-        timeout = timeout || 1000;
-        expect(promise).toBeTruthy();
-        promise.fail(function (err) {
-            expect("[" + operationName + "] promise rejected with: " + err).toBe("(expected resolved instead)");
-        });
-        waitsFor(function () {
-            return promise.state() === "resolved";
-        }, "success [" + operationName + "]", timeout);
+    window.awaitsForDone = function (promise) {
+        return jsPromise(promise);
     };
 
     /**
-     * Utility for tests that waits on a Promise to fail. Placed in the global namespace so it can be used
-     * similarly to the standards Jasmine waitsFor(). Unlike waitsFor(), must be called from INSIDE
-     * the runs() that generates the promise.
+     * Utility for tests that waits on a Promise to fail. resolves only if the promise fails. else will reject
      * @param {$.Promise} promise
-     * @param {string} operationName  Name used for timeout error message
      */
-    window.waitsForFail = function (promise, operationName, timeout) {
-        timeout = timeout || 1000;
-        expect(promise).toBeTruthy();
-        promise.done(function (result) {
-            expect("[" + operationName + "] promise resolved with: " + result).toBe("(expected rejected instead)");
+    window.awaitsForFail = function (promise) {
+        return new Promise((resolve, reject)=>{
+            jsPromise(promise)
+                .then(reject)
+                .catch(resolve);
         });
-        waitsFor(function () {
-            return promise.state() === "rejected";
-        }, "failure " + operationName, timeout);
     };
 
     /**
@@ -234,20 +218,16 @@ define(function (require, exports, module) {
     /**
      * Create the temporary unit test project directory.
      */
-    function createTempDirectory() {
-        var deferred = new $.Deferred();
-
-        runs(function () {
-            _getFileSystem().getDirectoryForPath(getTempDirectory()).create(function (err) {
-                if (err && err !== FileSystemError.ALREADY_EXISTS) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve();
-                }
-            });
+    async function createTempDirectory() {
+        let deferred = new $.Deferred();
+        _getFileSystem().getDirectoryForPath(getTempDirectory()).create(function (err) {
+            if (err && err !== FileSystemError.ALREADY_EXISTS) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve();
+            }
         });
-
-        waitsForDone(deferred, "Create temp directory", 500);
+        await awaitsForDone(deferred);
     }
 
     function _resetPermissionsOnSpecialTempFolders() {
@@ -499,7 +479,7 @@ define(function (require, exports, module) {
      * @param {string} buttonId  One of the Dialogs.DIALOG_BTN_* symbolic constants.
      * @param {boolean=} enableFirst  If true, then enable the button before clicking.
      */
-    function clickDialogButton(buttonId, enableFirst) {
+    async function clickDialogButton(buttonId, enableFirst) {
         // Make sure there's one and only one dialog open
         var $dlg = _testWindow.$(".modal.instance"),
             promise = $dlg.data("promise");
@@ -519,7 +499,7 @@ define(function (require, exports, module) {
         $dismissButton.click();
 
         // Dialog should resolve/reject the promise
-        waitsForDone(promise, "dismiss dialog");
+        await awaitsForDone(promise);
     }
 
     function _setupTestWindow() {
@@ -617,36 +597,33 @@ define(function (require, exports, module) {
         callback.call(spec, _testWindow);
         return _testWindow;
     }
-    function reloadWindow() {
-        runs(function () {
-            //we need to mark the documents as not dirty before we close
-            //or the window will stay open prompting to save
-            var openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
-            openDocs.forEach(function resetDoc(doc) {
-                if (doc.isDirty) {
-                    //just refresh it back to it's current text. This will mark it
-                    //clean to save
-                    doc.refreshText(doc.getText(), doc.diskTimestamp);
-                }
-            });
-            let savedHref = _testWindow.location.href;
-            _testWindow.brackets = null;
-            _testWindow.location.href = "about:blank";
-            _testWindow.location.href = savedHref;
+    async function reloadWindow() {
+        //we need to mark the documents as not dirty before we close
+        //or the window will stay open prompting to save
+        var openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
+        openDocs.forEach(function resetDoc(doc) {
+            if (doc.isDirty) {
+                //just refresh it back to it's current text. This will mark it
+                //clean to save
+                doc.refreshText(doc.getText(), doc.diskTimestamp);
+            }
         });
+        let savedHref = _testWindow.location.href;
+        _testWindow.brackets = null;
+        _testWindow.location.href = "about:blank";
+        _testWindow.location.href = savedHref;
 
         // FIXME (issue #249): Need an event or something a little more reliable...
-        waitsFor(
+        await awaitsFor(
             function isBracketsDoneLoading() {
                 return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
             },
             "brackets.test.doneLoading",
-            60000
+            60000,
+            100
         );
 
-        runs(function () {
-            _setupTestWindow();
-        });
+        _setupTestWindow();
     }
 
     async function closeTestWindow() {
@@ -668,14 +645,9 @@ define(function (require, exports, module) {
     }
 
 
-    function loadProjectInTestWindow(path) {
-        runs(function () {
-            // begin loading project path
-            var result = _testWindow.brackets.test.ProjectManager.openProject(path);
-
-            // wait for file system to finish loading
-            waitsForDone(result, "ProjectManager.openProject()", 10000);
-        });
+    async function loadProjectInTestWindow(path) {
+        let result = _testWindow.brackets.test.ProjectManager.openProject(path);
+        await awaitsForDone(result);
     }
 
     /**
