@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, awaitsForDone, beforeAll, afterAll */
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone, awaitsFor, beforeAll, afterAll */
 
 define(function (require, exports, module) {
 
@@ -4128,7 +4128,19 @@ define(function (require, exports, module) {
         // Helper function for closing open files in the test window
         async function closeFilesInTestWindow() {
             let promise = CommandManager.execute(Commands.FILE_CLOSE_ALL);
-            await awaitsForDone(promise, "Close all open files in working set");
+            try{
+                await awaitsFor(
+                    function isDlgVisible() {
+                        // sometimes there may not be anything to close
+                        let $dlg = testWindow.$(".modal.instance");
+                        return !!$dlg.length;
+                    },
+                    "brackets.test.closing",
+                    1000
+                );
+            } catch (e) {
+                // do nothing.
+            }
 
             // Close the save dialog without saving the changes
             let $dlg = testWindow.$(".modal.instance");
@@ -4136,6 +4148,7 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.clickDialogButton("dontsave");
             }
             $dlg = null;
+            await awaitsForDone(promise, "Close all open files in working set");
         }
 
         // Helper function for closing the test window
@@ -4148,7 +4161,7 @@ define(function (require, exports, module) {
         }
         beforeAll(async function () {
             await createTestWindow(this);
-        });
+        }, 30000);
 
         afterAll(async function () {
             await closeTestWindow();
@@ -4167,12 +4180,13 @@ define(function (require, exports, module) {
 
             afterEach(async function () {
                 await closeFilesInTestWindow();
-            });
+            }, 10000);
 
 
-            it("should not move the first line of the inline editor up", function () {
+            it("should not move the first line of the inline editor up", async function () {
                 myEditor.setCursorPos({line: 0, ch: 5});
-                CommandManager.execute(Commands.EDIT_LINE_UP, myEditor);
+                let promise = CommandManager.execute(Commands.EDIT_LINE_UP, myEditor);
+                await awaitsForDone(promise);
 
                 expect(myEditor.document.getText()).toEqual(moveContent);
                 expect(myEditor._codeMirror.doc.historySize().undo).toBe(0);
