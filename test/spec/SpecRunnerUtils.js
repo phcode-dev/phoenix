@@ -19,7 +19,7 @@
  *
  */
 
-/*global jasmine, expect, beforeEach, waitsFor, waitsForDone, runs, spyOn, KeyboardEvent, waits */
+/*global jsPromise, jasmine, expect, beforeEach, waitsFor, awaitsFor, waitsForDone, runs, spyOn, KeyboardEvent, waits */
 
 define(function (require, exports, module) {
 
@@ -540,76 +540,72 @@ define(function (require, exports, module) {
             return _testWindow.brackets.test.CommandManager.execute(cmd, args);
         };
 
-        _testWindow.closeAllFiles = function closeAllFiles() {
-            runs(function () {
-                var promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL);
+        _testWindow.closeAllFiles = async function closeAllFiles() {
+            let promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL);
 
-                _testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    _testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    _testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+            _testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                _testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                _testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+            );
 
-                waitsForDone(promise, "Close all open files in working set");
-            });
+            await jsPromise(promise);
         };
     }
 
-    function createTestWindowAndRun(spec, callback, options) {
-        runs(function () {
-            // Position popup windows in the lower right so they're out of the way
-            var testWindowWid = 1000,
-                testWindowHt  =  700,
-                testWindowX   = window.screen.availWidth - testWindowWid,
-                testWindowY   = window.screen.availHeight - testWindowHt,
-                optionsStr    = "left=" + testWindowX + ",top=" + testWindowY +
-                                ",width=" + testWindowWid + ",height=" + testWindowHt;
+    async function createTestWindowAndRun(spec, callback, options) {
+        // Position popup windows in the lower right so they're out of the way
+        let testWindowWid = 1000,
+            testWindowHt  =  700,
+            testWindowX   = window.screen.availWidth - testWindowWid,
+            testWindowY   = window.screen.availHeight - testWindowHt,
+            optionsStr    = "left=" + testWindowX + ",top=" + testWindowY +
+                ",width=" + testWindowWid + ",height=" + testWindowHt;
 
-            var params = new UrlParams();
+        let params = new UrlParams();
 
-            // setup extension loading in the test window
-            params.put("extensions", _doLoadExtensions ?
-                        "" :// TODO: change this to dev,user for loading vfs extension tests
-                        "");
+        // setup extension loading in the test window
+        params.put("extensions", _doLoadExtensions ?
+            "" :// TODO: change this to dev,user for loading vfs extension tests
+            "");
 
-            // disable loading of sample project
-            params.put("skipSampleProjectLoad", true);
+        // disable loading of sample project
+        params.put("skipSampleProjectLoad", true);
 
-            // disable initial dialog for live development
-            params.put("skipLiveDevelopmentInfo", true);
+        // disable initial dialog for live development
+        params.put("skipLiveDevelopmentInfo", true);
 
-            // signals that main.js should configure RequireJS for tests
-            params.put("testEnvironment", true);
+        // signals that main.js should configure RequireJS for tests
+        params.put("testEnvironment", true);
 
-            if (options) {
-                // option to set the params
-                if (options.hasOwnProperty("params")) {
-                    var paramObject = options.params || {};
-                    var obj;
-                    for (obj in paramObject) {
-                        if (paramObject.hasOwnProperty(obj)) {
-                            params.put(obj, paramObject[obj]);
-                        }
+        if (options) {
+            // option to set the params
+            if (options.hasOwnProperty("params")) {
+                var paramObject = options.params || {};
+                var obj;
+                for (obj in paramObject) {
+                    if (paramObject.hasOwnProperty(obj)) {
+                        params.put(obj, paramObject[obj]);
                     }
                 }
-
-                // option to launch test window with either native or HTML menus
-                if (options.hasOwnProperty("hasNativeMenus")) {
-                    params.put("hasNativeMenus", (options.hasNativeMenus ? "true" : "false"));
-                }
             }
 
-            let _testWindowURL = getBracketsSourceRoot() + "/index.html?" + params.toString();
-            if(!_testWindow){
-                _testWindow = window.open(_testWindowURL, "_blank", optionsStr);
-            } else{
-                _testWindow.brackets = null;
-                _testWindow.location.href = 'about:blank';
-                _testWindow.location.href = _testWindowURL;
+            // option to launch test window with either native or HTML menus
+            if (options.hasOwnProperty("hasNativeMenus")) {
+                params.put("hasNativeMenus", (options.hasNativeMenus ? "true" : "false"));
             }
-        });
+        }
+
+        let _testWindowURL = getBracketsSourceRoot() + "/index.html?" + params.toString();
+        if(!_testWindow){
+            _testWindow = window.open(_testWindowURL, "_blank", optionsStr);
+        } else{
+            _testWindow.brackets = null;
+            _testWindow.location.href = 'about:blank';
+            _testWindow.location.href = _testWindowURL;
+        }
 
         // FIXME (issue #249): Need an event or something a little more reliable...
-        waitsFor(
+        await awaitsFor(
             function isBracketsDoneLoading() {
                 return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
             },
@@ -617,14 +613,9 @@ define(function (require, exports, module) {
             60000
         );
 
-        runs(function () {
-            _setupTestWindow();
-        });
-
-        runs(function () {
-            // callback allows specs to query the testWindow before they run
-            callback.call(spec, _testWindow);
-        });
+        _setupTestWindow();
+        callback.call(spec, _testWindow);
+        return _testWindow;
     }
     function reloadWindow() {
         runs(function () {
@@ -658,23 +649,20 @@ define(function (require, exports, module) {
         });
     }
 
-    function closeTestWindow() {
-
-        runs(function () {
-            //we need to mark the documents as not dirty before we close
-            //or the window will stay open prompting to save
-            var openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
-            openDocs.forEach(function resetDoc(doc) {
-                if (doc.isDirty) {
-                    //just refresh it back to it's current text. This will mark it
-                    //clean to save
-                    doc.refreshText(doc.getText(), doc.diskTimestamp);
-                }
-            });
-            _testWindow.executeCommand = null;
-            _testWindow.location.href = 'about:blank';
-            _testWindow.brackets.test.doneLoading = false;
+    async function closeTestWindow() {
+        //we need to mark the documents as not dirty before we close
+        //or the window will stay open prompting to save
+        let openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
+        openDocs.forEach(function resetDoc(doc) {
+            if (doc.isDirty) {
+                //just refresh it back to it's current text. This will mark it
+                //clean to save
+                doc.refreshText(doc.getText(), doc.diskTimestamp);
+            }
         });
+        _testWindow.executeCommand = null;
+        _testWindow.location.href = 'about:blank';
+        _testWindow.brackets.test.doneLoading = false;
         // debug-only to see testWindow state before closing
         // waits(1000);
     }
@@ -1314,4 +1302,5 @@ define(function (require, exports, module) {
     exports.removeTempDirectory             = removeTempDirectory;
     exports.setUnitTestReporter             = setUnitTestReporter;
     exports.resizeEditor                    = resizeEditor;
+    exports.jsPromise                       = jsPromise;
 });

@@ -50,6 +50,41 @@ const EXTRACT_TEST_ASSETS_KEY = 'EXTRACT_TEST_ASSETS_KEY';
 const EXTRACT = 'EXTRACT';
 const DONT_EXTRACT = 'DONT_EXTRACT';
 
+function jsPromise(jqueryOrJSPromise) {
+    if(jqueryOrJSPromise && jqueryOrJSPromise.catch && jqueryOrJSPromise.then && jqueryOrJSPromise.finally){
+        // this should be a normal js promise return as is
+        return  jqueryOrJSPromise;
+    }
+    if(!jqueryOrJSPromise ||
+        (jqueryOrJSPromise && !jqueryOrJSPromise.fail) || (jqueryOrJSPromise && !jqueryOrJSPromise.done)){
+        throw new Error("this function expects a jquery promise with done and fail handlers");
+    }
+    return new Promise((resolve, reject)=>{
+        jqueryOrJSPromise
+            .done(resolve)
+            .fail(reject);
+    });
+}
+function awaitsFor(pollFn, _message, timeoutms, pollInterval = 10){
+    return new Promise((resolve, reject)=>{
+        let lapsedTime = 0;
+        let interval = setInterval(()=>{
+            if(pollFn()){
+                clearInterval(interval);
+                resolve();
+                return;
+            }
+            lapsedTime += pollInterval;
+            if(lapsedTime>timeoutms){
+                clearInterval(interval);
+                reject();
+            }
+        }, pollInterval);
+    });
+}
+window.jsPromise = jsPromise;
+window.awaitsFor = awaitsFor;
+
 define(function (require, exports, module) {
 
 
