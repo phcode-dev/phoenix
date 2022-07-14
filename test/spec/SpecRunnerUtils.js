@@ -305,21 +305,13 @@ define(function (require, exports, module) {
      * Remove temp folder used for temporary unit tests files
      */
     function removeTempDirectory() {
-        var deferred    = new $.Deferred(),
-            baseDir     = getTempDirectory();
-
-        runs(function () {
+        return new Promise((resolve, reject)=>{
+            let baseDir     = getTempDirectory();
             _resetPermissionsOnSpecialTempFolders().done(function () {
-                deletePath(baseDir, true).then(deferred.resolve, deferred.reject);
+                deletePath(baseDir, true).then(resolve, reject);
             }).fail(function () {
-                deferred.reject();
+                reject();
             });
-
-            deferred.fail(function (err) {
-                console.log("boo");
-            });
-
-            waitsForDone(deferred.promise(), "removeTempDirectory", 2000);
         });
     }
 

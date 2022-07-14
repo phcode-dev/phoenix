@@ -88,8 +88,7 @@ define(function (require, exports, module) {
 
     // Load both top-level suites. Filtering is applied at the top-level as a filter to BootstrapReporter.
     require("test/UnitTestSuite");
-    // todo TEST_MODERN enable performance tests
-    //require("test/PerformanceTestSuite");
+    require("test/PerformanceTestSuite");
 
     // Load JUnitXMLReporter
     require("test/thirdparty/jasmine-reporters/junit_reporter");
@@ -272,35 +271,6 @@ define(function (require, exports, module) {
         };
     }
 
-    function _registerBeforeAfterHandlers() {
-        // todo: TEST_MODERN
-        // Initiailize unit test preferences for each spec
-        // beforeEach(function () {
-        //     // Unique key for unit testing
-        //     window.localStorage.setItem("preferencesKey", SpecRunnerUtils.TEST_PREFERENCES_KEY);
-        //
-        //     // Reset preferences from previous test runs
-        //     window.localStorage.removeItem("doLoadPreferences");
-        //     window.localStorage.removeItem(SpecRunnerUtils.TEST_PREFERENCES_KEY);
-        // });
-        //
-        // // Revert unit test preferences after each spec
-        // afterEach(function () {
-        //     // Clean up preferencesKey
-        //     window.localStorage.removeItem("preferencesKey");
-        // });
-        //
-        // // Delete temp folder before running the first test
-        // beforeAll(function () {
-        //     SpecRunnerUtils.removeTempDirectory();
-        // });
-        //
-        // // Delete temp folder after running the last test
-        // afterAll(function () {
-        //     SpecRunnerUtils.removeTempDirectory();
-        // });
-    }
-
     function init() {
         selectedCategories = (params.get("category")
             || window.localStorage.getItem("SpecRunner.category") || "unit").split(",");
@@ -318,8 +288,6 @@ define(function (require, exports, module) {
         //_loadExtensionTests(selectedCategories).always(function () {
         var jasmineEnv = jasmine.getEnv();
         jasmineEnv.updateInterval = 1000;
-
-        _registerBeforeAfterHandlers();
 
         // Create the reporter, which is really a model class that just gathers
         // spec and performance data.

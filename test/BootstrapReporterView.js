@@ -58,6 +58,13 @@ define(function (require, exports, module) {
     };
 
     BootstrapReporterView.prototype._createSuiteListItem = function (suiteName, specCount, reporter) {
+        let displayName = suiteName;
+        if(suiteName.includes(":")){
+            let category = suiteName.split(":");
+            if(reporter.knownCategories.includes(category[0])){
+                displayName = suiteName.replace(`${category[0]}:`, '');
+            }
+        }
         let hyperlink = `?spec=${encodeURIComponent(suiteName)}`;
         if(reporter.selectedCategories.length){
             hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
@@ -65,7 +72,7 @@ define(function (require, exports, module) {
         var $badgeAll = $('<span class="badge">' + specCount + "</span>"),
             $badgePassed = $('<span class="badge badge-success" style="display:none"/>'),
             $badgeFailed = $('<span class="badge badge-important" style="display:none"/>'),
-            $anchor = $('<a href="' + hyperlink + '">' + suiteName + '</a>').append($badgeAll).append($badgePassed).append($badgeFailed),
+            $anchor = $('<a href="' + hyperlink + '">' + displayName + '</a>').append($badgeAll).append($badgePassed).append($badgeFailed),
             $listItem = $('<li/>').append($anchor);
 
         this._topLevelSuiteMap[suiteName] = {
