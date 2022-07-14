@@ -239,7 +239,11 @@ define(function (require, exports, module) {
             }
 
             // print spec name
-            $specLink = $('<a href="?spec=' + encodeURIComponent(specData.name) + '"/>').text(specData.description);
+            let hyperlink = `?spec=${encodeURIComponent(specData.name)}`;
+            if(reporter.selectedCategories.length){
+                hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
+            }
+            $specLink = $('<a href="' + hyperlink + '"/>').text(specData.description);
             $resultDisplay = $('<div class="alert alert-error"/>').append($specLink);
 
             // print failure details
@@ -262,7 +266,11 @@ define(function (require, exports, module) {
 
         if (specData.passed && specData.perf) {
             // add spec name
-            $specLink = $('<a href="?spec=' + encodeURIComponent(specData.name) + '"/>').text(specData.name);
+            let hyperlink = `?spec=${encodeURIComponent(specData.name)}`;
+            if(reporter.selectedCategories.length){
+                hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
+            }
+            $specLink = $('<a href="' + hyperlink + '"/>').text(specData.name);
             this.$resultsContainer.append($('<div class="alert alert-info"/>').append($specLink));
 
             // add table
