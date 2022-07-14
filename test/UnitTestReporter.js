@@ -185,6 +185,11 @@ define(function (require, exports, module) {
             jasmineStarted: function(suiteInfo) {
                 console.log('Running suite with ' + suiteInfo.totalSpecsDefined);
                 self.reportRunnerStarting(suiteInfo);
+                if(!self.activeSuite){
+                    // no test suite is selected in url, so we don't execute anything, just show the suites
+                    // return a promise that never gets resolved for jasmine to get stuck.
+                    return new Promise(()=>{});
+                }
             },
 
             // suiteStarted: function(result) {
@@ -241,13 +246,6 @@ define(function (require, exports, module) {
             filter = filterString ? filterString.toLowerCase() : undefined;
 
         return function (spec) {
-            // filterString is undefined when no top-level suite is active (e.g. "All", "HTMLUtils", etc.)
-            // When undefined, all specs fail this filter and no tests are ran. This is by design.
-            // This setup allows the SpecRunner to load initially without automatically running all tests.
-            if (filter === undefined) {
-                return false;
-            }
-
             let runAll = (selectedCategories.indexOf("all") >= 0);
             // special case "all" suite to run unit, perf, extension, and integration tests
             if (runAll) {
@@ -263,11 +261,9 @@ define(function (require, exports, module) {
                 return false;
             }
 
-            if (filter === "all") {
-                return true;
-            }
-
-            if (filter === spec.getFullName().toLowerCase()) {
+            if (filter === "all"
+                || !filter
+                || filter === spec.getFullName().toLowerCase()) {
                 return true;
             }
 
