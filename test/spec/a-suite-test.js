@@ -1,4 +1,5 @@
 /*global describe, beforeEach, it, runs, waitsFor, waitsForDone, waitsForFail, expect */
+// sample tests to develop the unit test spec runner framework
 define(function (require, exports, module) {
     describe("suite2", function() {
         this.category = "performance";
@@ -29,6 +30,19 @@ define(function (require, exports, module) {
 
             it("nested spec2a pass", function() {
                 expect(true).toBeTruthy();
+            });
+
+            function timer() {
+                return new Promise(resolve=>{
+                    setTimeout(() => {
+                        resolve("hello");
+                    }, 100);
+                });
+            }
+
+            it("I am an async test", async function() {
+                let msg = await timer();
+                expect(msg).toEqual("hello");
             });
         });
 
