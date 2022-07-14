@@ -202,19 +202,19 @@ define(function (require, exports, module) {
 
             specStarted: async function(result) {
                 console.log('Spec started: ' + result.description
-                    + ' whose full description is: ' + result.fullName);
+                    + ' [description]: ' + result.fullName);
                 self.reportSpecStarting(result);
                 _beforeEachGlobal();
             },
 
             specDone: function(result) {
-                console.log('Spec: ' + result.description + ' was ' + result.status);
+                console.log('Spec: ' + result.description + ' [status]: ' + result.status);
                 self.reportSpecResults(result);
                 _afterEachGlobal();
             },
 
             suiteDone: function(result) {
-                console.log('Suite: ' + result.description + ' was ' + result.status);
+                console.log('Suite: ' + result.description + ' [status]: ' + result.status);
                 self.reportSuiteResults(result);
             },
 
@@ -404,6 +404,16 @@ define(function (require, exports, module) {
 
     UnitTestReporter.prototype.reportSuiteResults = function (suiteResult) {
         let self = this;
+        this.passed = (suiteResult.status === "passed");
+        if(!this.passed){
+            console.error('Spec Error: ' + suiteResult.description + ' was ' + suiteResult.status);
+
+            for(const element of suiteResult.failedExpectations) {
+                console.error('Failure: ', element.message);
+                console.error('Stack: ', element.stack);
+            }
+
+        }
         let suite = self.suiteIdToSuiteMap[suiteResult.id];
         if (suite && suite.parentSuite === self.jasmineRootSuite) {
             $(this).triggerHandler("suiteEnd", [this, this.suites[suite.getFullName()]]);

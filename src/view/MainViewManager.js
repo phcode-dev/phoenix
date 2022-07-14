@@ -1603,8 +1603,12 @@ define(function (require, exports, module) {
 
         }
 
-        var projectRoot     = ProjectManager.getProjectRoot(),
-            context         = { location: { scope: "user",
+        let projectRoot     = ProjectManager.getProjectRoot();
+        if (!projectRoot) {
+            return;
+        }
+
+        let context         = { location: { scope: "user",
                 layer: "project",
                 layerID: projectRoot.fullPath } },
 
@@ -1615,11 +1619,6 @@ define(function (require, exports, module) {
                 panes: {
                 }
             };
-
-
-        if (!projectRoot) {
-            return;
-        }
 
         _.forEach(_panes, function (pane) {
             state.panes[pane.id] = pane.saveState();
