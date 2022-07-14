@@ -251,10 +251,6 @@ define(function (require, exports, module) {
             if (runAll) {
                 return true;
             }
-            // todo TEST_MODERN if unit tests are selected, make sure there is no category in the heirarchy
-            // if not a unit test, make sure the category is selected
-            // return (selectedCategories.indexOf("unit") >= 0 && category === undefined) ||
-            //     (selectedCategories.indexOf(category) >= 0);
 
             let specCat = self.specIdToCategoryMap[spec.id];
             if(!selectedCategories.includes(specCat)){
