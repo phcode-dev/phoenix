@@ -21,14 +21,14 @@
 
 define(function (require, exports, module) {
 
-    // require("spec/a-suite-test");
     // todo TEST_MODERN
+    require("spec/utframework-suite-test");
     require("spec/Async-test");
+    require("spec/CommandManager-test");
+    require("spec/CSSUtils-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
-    // require("spec/CommandManager-test");
-    // require("spec/CSSUtils-test");
     // require("spec/CSSInlineEdit-test");
     // require("spec/JSUtils-test");
     // require("spec/Document-test");

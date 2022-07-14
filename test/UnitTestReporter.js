@@ -126,7 +126,8 @@ define(function (require, exports, module) {
         let config = {
             stopOnSpecFailure: false,
             stopSpecOnExpectationFailure: false,
-            hideDisabled: false
+            hideDisabled: false,
+            random: false
         };
         config.specFilter = self.specFilter;
 
@@ -184,7 +185,7 @@ define(function (require, exports, module) {
 
         let phoenixReporter = {
             jasmineStarted: async function(suiteInfo) {
-                console.log('Running suite with ' + suiteInfo.totalSpecsDefined);
+                console.log('Running jasmine with ' + suiteInfo.totalSpecsDefined);
                 self.reportRunnerStarting(suiteInfo);
                 if(!self.activeSuite){
                     // no test suite is selected in url, so we don't execute anything, just show the suites
@@ -218,7 +219,7 @@ define(function (require, exports, module) {
             },
 
             jasmineDone: async function(result) {
-                console.log('Finished suite: ' + result.overallStatus);
+                console.log('Finished jasmine: ' + result.overallStatus);
                 self.reportRunnerResults(result);
                 await _afterAllGlobal();
             }

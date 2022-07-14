@@ -1,28 +1,13 @@
 /*global describe, beforeEach, it, runs, waitsFor, waitsForDone, waitsForFail, expect */
 // sample tests to develop the unit test spec runner framework
 define(function (require, exports, module) {
-    describe("suite2", function() {
-        this.category = "performance";
+    describe("unit test framework suite test", function() {
         beforeEach(function() {
             console.log("before each");
-        });
-
-        it("spec 2 should pass", function() {
             expect(true).toBeTruthy();
         });
 
-        it("spec 2 should fail", function() {
-            expect(true).toBeFalsy();
-        });
-
-        it("spec2 I throws", function() {
-            throw new Error("i throw");
-        });
-    });
-
-    describe("integration:suite2a", function() {
-
-        it("spec2a pass", function() {
+        it("spec async work", function() {
             expect(true).toBeTruthy();
         });
 
@@ -45,12 +30,11 @@ define(function (require, exports, module) {
                 expect(msg).toEqual("hello");
             });
         });
-
     });
 
-    describe("passing suite 3", function() {
+    describe("integration:integration test framework suite test", function() {
 
-        it("spec3 pass", function() {
+        it("should pass", function() {
             expect(true).toBeTruthy();
         });
     });

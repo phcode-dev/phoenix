@@ -139,7 +139,9 @@ define(function (require, exports, module) {
             if (reporter.passed) {
                 this.$info.toggleClass("alert-success", true).text("Complete. No failures.");
             } else {
-                this.$info.toggleClass("alert-error", true).text("Complete. See failures.");
+                this.$info.toggleClass("alert-error", true).text(
+                    "Complete. See failures. If all tests have passed, then there must be some syntax error" +
+                    " in any of the test files that was loaded as part of this run, but not executed.");
             }
         }
     };

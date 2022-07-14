@@ -56,24 +56,21 @@ define(function (require, exports, module) {
         }
 
         beforeEach(async function () {
-            await SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                testWindow = w;
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            // Load module instances from brackets.test
+            CommandManager      = testWindow.brackets.test.CommandManager;
+            Commands            = testWindow.brackets.test.Commands;
+            DocumentCommandHandlers = testWindow.brackets.test.DocumentCommandHandlers;
+            DocumentManager     = testWindow.brackets.test.DocumentManager;
+            PerfUtils           = testWindow.brackets.test.PerfUtils;
 
-                // Load module instances from brackets.test
-                CommandManager      = testWindow.brackets.test.CommandManager;
-                Commands            = testWindow.brackets.test.Commands;
-                DocumentCommandHandlers = testWindow.brackets.test.DocumentCommandHandlers;
-                DocumentManager     = testWindow.brackets.test.DocumentManager;
-                PerfUtils           = testWindow.brackets.test.PerfUtils;
-
-                jsLintCommand = CommandManager.get("jslint.toggleEnabled");
-                if (jsLintCommand) {
-                    jsLintPrevSetting = jsLintCommand.getChecked();
-                    if (jsLintPrevSetting) {
-                        jsLintCommand.execute();
-                    }
+            jsLintCommand = CommandManager.get("jslint.toggleEnabled");
+            if (jsLintCommand) {
+                jsLintPrevSetting = jsLintCommand.getChecked();
+                if (jsLintPrevSetting) {
+                    jsLintCommand.execute();
                 }
-            });
+            }
         });
 
         afterEach(function () {
