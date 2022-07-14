@@ -28,16 +28,38 @@
  * to JSON.
  */
 
+/*global jasmine, jasmineReporters*/
+
 define(function (require, exports, module) {
 
 
-    var SpecRunnerUtils = require("spec/SpecRunnerUtils"),
+    let SpecRunnerUtils = require("spec/SpecRunnerUtils"),
         BuildInfoUtils = require("utils/BuildInfoUtils");
 
     // make sure the global brackets variable is loaded
     require("utils/Global");
 
-    var activeReporter;
+    let activeReporter;
+    let knownCategories = [
+        "all",
+        "unit",
+        "integration",
+        "livepreview",
+        "mainview",
+        "performance",
+        "extension"
+    ];
+
+    function _getKnownCategory(name) {
+        name = name || '';
+        if(name.includes(':')){
+            let category = name.split(':')[0];
+            if(knownCategories.includes(category)){
+                return category;
+            }
+        }
+        return '';
+    }
 
     /**
      * @constructor
@@ -56,6 +78,7 @@ define(function (require, exports, module) {
      *
      * passed - true if all specs passed, false otherwise
      * sortedNames - a sorted list of suite names (including all the keys in the suites object except All).
+     * selectedCategories - the active category from url
      * activeSuite - the suite currently selected in the URL params, "all" if all are being run, and null if no tests are being run.
      * activeSpecCount - the number of specs that will actually be run given the current filter
      * activeSpecCompleteCount - the number of specs that have been run so far
@@ -73,15 +96,17 @@ define(function (require, exports, module) {
      *     endTime - time the run finished
      *
      * @param {!Object} env The Jasmine environment we're running in.
-     * @param {Function} filter The filter being used to determine whether a given spec is run or not.
      * @param {string} activeSuite The suite currently selected in the URL params, or null if all are being run.
+     * @param selectedCategories array of selected categories
      */
-    function UnitTestReporter(env, filter, activeSuite) {
-        var self = this;
+    function UnitTestReporter(env, activeSuite, selectedCategories) {
+        let self = this;
 
-        this.activeSuite = activeSuite;
+        self.activeSuite = activeSuite;
+        self.selectedCategories = selectedCategories;
+        self.filterSpecs = self._createSpecFilter(self.activeSuite, self.selectedCategories);
 
-        this.runInfo = {
+        self.runInfo = {
             app: brackets.metadata.name,
             version: brackets.metadata.version,
             platform: brackets.platform
@@ -91,21 +116,36 @@ define(function (require, exports, module) {
             self.runInfo.sha = sha;
         });
 
-        // _topLevelFilter is applied first - selects Performance vs. Unit test suites
-        this._topLevelFilter = filter;
+        self.queryString = new jasmine.QueryString({
+            getWindowLocation: function() {
+                return window.location;
+            }
+        });
 
+        let config = {
+            stopOnSpecFailure: false,
+            stopSpecOnExpectationFailure: false,
+            hideDisabled: false
+        };
+        config.specFilter = self.filterSpecs;
+
+        env.configure(config);
         // Jasmine's runner uses the specFilter to choose which tests to run.
         // If you selected an option other than "All" this will be a subset of all tests loaded.
-        env.specFilter = this._createSpecFilter(this.activeSuite);
+        //
 
-        this.suites = {};
-        this.passed = false;
+        self.suites = {};
+        self.specIdToSpecMap = {};
+        self.specIdToSuiteMap = {};
+        self.specIdToCategoryMap = {};
+        self._populateSpecIdMaps(env.topSuite());
 
-        this.totalSpecCount = 0;
-        this.totalPassedCount = 0;
-        this.totalFailedCount = 0;
-        env.currentRunner().topLevelSuites().forEach(function (suite) {
-            var specCount = self._countSpecs(suite, filter);
+        self.passed = false;
+        self.totalSpecCount = 0;
+        self.totalPassedCount = 0;
+        self.totalFailedCount = 0;
+        env.topSuite().children.forEach(function (suite) {
+            let specCount = self._countSpecs(suite, config.specFilter);
             self.suites[suite.getFullName()] = {
                 id: suite.id,
                 name: suite.getFullName(),
@@ -117,7 +157,7 @@ define(function (require, exports, module) {
             self.totalSpecCount += specCount;
         });
 
-        this.sortedNames = Object.keys(this.suites).sort(function (a, b) {
+        self.sortedNames = Object.keys(self.suites).sort(function (a, b) {
             a = a.toLowerCase();
             b = b.toLowerCase();
             if (a < b) {
@@ -128,23 +168,47 @@ define(function (require, exports, module) {
             return 0;
         });
 
-        this.activeSpecCount = 0;
-        this.activeSpecCompleteCount = 0;
+        self.activeSpecCount = 0;
+        self.activeSpecCompleteCount = 0;
 
-        env.currentRunner().specs().forEach(function (spec, index) {
-            if (env.specFilter(spec)) {
-                self.activeSpecCount++;
-            }
+        // todo TEST_MODERN get all specs
+        // env.currentRunner().specs().forEach(function (spec, index) {
+        //     if (env.specFilter(spec)) {
+        //         self.activeSpecCount++;
+        //     }
+        // });
+
+        let htmlReporter = new jasmine.HtmlReporter({
+            env: env,
+            navigateWithNewParam: function(key, value) {
+                return self.queryString.navigateWithNewParam(key, value);
+            },
+            addToExistingQueryString: function(key, value) {
+                return self.queryString.fullStringWithNewParam(key, value);
+            },
+            getContainer: function() {
+                return document.body;
+            },
+            createElement: function() {
+                return document.createElement.apply(document, arguments);
+            },
+            createTextNode: function() {
+                return document.createTextNode.apply(document, arguments);
+            },
+            timer: new jasmine.Timer()
+            //filterSpecs: self.filterSpecs
         });
+        env.addReporter(htmlReporter);
+        htmlReporter.initialize();
     }
 
     /**
      * @private
-     * Filters specs by full name. Applies _topLevelFilter first before checking
+     * Filters specs by full name.
      * for a matching starting substring.
      */
-    UnitTestReporter.prototype._createSpecFilter = function (filterString) {
-        var self = this,
+    UnitTestReporter.prototype._createSpecFilter = function (filterString, selectedCategories = []) {
+        let self = this,
             filter = filterString ? filterString.toLowerCase() : undefined;
 
         return function (spec) {
@@ -155,7 +219,18 @@ define(function (require, exports, module) {
                 return false;
             }
 
-            if (!self._topLevelFilter(spec)) {
+            let runAll = (selectedCategories.indexOf("all") >= 0);
+            // special case "all" suite to run unit, perf, extension, and integration tests
+            if (runAll) {
+                return true;
+            }
+            // todo TEST_MODERN if unit tests are selected, make sure there is no category in the heirarchy
+            // if not a unit test, make sure the category is selected
+            // return (selectedCategories.indexOf("unit") >= 0 && category === undefined) ||
+            //     (selectedCategories.indexOf(category) >= 0);
+
+            let specCat = self.specIdToCategoryMap[spec.id];
+            if(!selectedCategories.includes(specCat)){
                 return false;
             }
 
@@ -167,16 +242,31 @@ define(function (require, exports, module) {
                 return true;
             }
 
-            // spec.getFullName() concatenates the names of all containing describe()s. We want to filter
-            // on just the outermost suite's name (i.e., the item that was selected in the spec list UI)
-            // to avoid ambiguity when suite names share the same prefix.
-            var topLevelSuite = spec.suite;
-            while (topLevelSuite.parentSuite) {
-                topLevelSuite = topLevelSuite.parentSuite;
-            }
-
-            return filter === topLevelSuite.description.toLowerCase();
+            // spec.getFullName() concatenates the names of all containing describe()s.
+            // eg. `suite nestedSuite spec1 spec2` . so if we have to allow all in nestedSuite, we have to check for
+            // prefix `suite nestedSuite spec1 ` (mind the space). if the space isn't there, it will match
+            // `suite nestedSuite spec1a spec2` too, where `spec1a` tests are not to be run.
+            return spec.getFullName() === filter
+                || spec.getFullName().toLowerCase().startsWith(filter+ " ");
         };
+    };
+
+    UnitTestReporter.prototype._populateSpecIdMaps = function (suite, category) {
+        const self = this;
+        category = _getKnownCategory(suite.description) || category || 'unit';
+
+        // count specs attached directly to this suite
+        suite.children.forEach(function (specOrSuite) {
+            let isSuite = (specOrSuite.constructor.name === 'SuiteMetadata');
+            if(isSuite){
+                // recursively count child suites
+                self._populateSpecIdMaps(specOrSuite, category);
+            } else {
+                self.specIdToSuiteMap[specOrSuite.id] = suite;
+                self.specIdToSpecMap[specOrSuite.id] = specOrSuite;
+                self.specIdToCategoryMap[specOrSuite.id] = category;
+            }
+        });
     };
 
     /**
@@ -187,19 +277,18 @@ define(function (require, exports, module) {
      * @return {Number} count The number of specs in the given suite (and its descendants) that match the filter.
      */
     UnitTestReporter.prototype._countSpecs = function (suite, filter) {
-        var count = 0,
+        let count = 0,
             self = this;
 
         // count specs attached directly to this suite
-        suite.specs().forEach(function (spec) {
-            if (!filter || filter(spec)) {
+        suite.children.forEach(function (specOrSuite) {
+            let isSuite = (specOrSuite.constructor.name === 'SuiteMetadata');
+            if(isSuite){
+                // recursively count child suites
+                count += self._countSpecs(specOrSuite, filter);
+            } else if (!filter || filter(specOrSuite)) {
                 count++;
             }
-        });
-
-        // recursively count child suites
-        suite.suites().forEach(function (child) {
-            count += self._countSpecs(child, filter);
         });
 
         return count;
@@ -420,6 +509,13 @@ define(function (require, exports, module) {
     function getActiveReporter() {
         return activeReporter;
     }
+
+    // TODO TEST_MODERN enable for headless. only reporter is integrated nothing else is done.
+    // var junitReporter = new jasmineReporters.JUnitXmlReporter({
+    //     savePath: '..',
+    //     consolidateAll: false
+    // });
+    // jasmine.getEnv().addReporter(junitReporter);
 
     // Exports
 
