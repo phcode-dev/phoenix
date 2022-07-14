@@ -26,12 +26,12 @@ define(function (require, exports, module) {
     require("spec/Async-test");
     require("spec/CommandManager-test");
     require("spec/CSSUtils-test");
+    require("spec/Document-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
     // require("spec/JSUtils-test");
-    // require("spec/Document-test");
     // require("spec/DocumentCommandHandlers-test");
     // require("spec/DocumentManager-test");
     // require("spec/DragAndDrop-test");
