@@ -71,7 +71,7 @@ define(function (require, exports, module) {
                     jsLintCommand.execute();
                 }
             }
-        });
+        }, 30000);
 
         afterEach(function () {
             testWindow              = null;

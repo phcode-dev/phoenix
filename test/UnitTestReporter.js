@@ -236,6 +236,7 @@ define(function (require, exports, module) {
         // Reset preferences from previous test runs
         window.localStorage.removeItem("doLoadPreferences");
         window.localStorage.removeItem(SpecRunnerUtils.TEST_PREFERENCES_KEY);
+        _addEqlMatcher();
     }
 
     // Revert unit test preferences after each spec
@@ -252,6 +253,25 @@ define(function (require, exports, module) {
     // Delete temp folder after running the last test
     async function _afterAllGlobal() {
         await SpecRunnerUtils.removeTempDirectory();
+    }
+
+    function _addEqlMatcher() {
+        jasmine.addMatchers({
+            toEql: function (matchersUtil) {
+                return{
+                    compare: function(actual, expected) {
+                        let result = {};
+                        let isSame = window.deepEqualKeyValuesOnly(expected, actual);
+                        result.pass = matchersUtil.equals(isSame, true);
+                        if (!result.pass) {
+                            result.message = "Expected: " + JSON.stringify(expected) +
+                                "\nbut got : " + JSON.stringify(actual);
+                        }
+                        return result;
+                    }
+                };
+            }
+        });
     }
 
     // Global before and after handlers end
