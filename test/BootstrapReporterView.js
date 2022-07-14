@@ -57,11 +57,15 @@ define(function (require, exports, module) {
         this.$resultsContainer = $("#results-container");
     };
 
-    BootstrapReporterView.prototype._createSuiteListItem = function (suiteName, specCount) {
+    BootstrapReporterView.prototype._createSuiteListItem = function (suiteName, specCount, reporter) {
+        let hyperlink = `?spec=${encodeURIComponent(suiteName)}`;
+        if(reporter.selectedCategories.length){
+            hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
+        }
         var $badgeAll = $('<span class="badge">' + specCount + "</span>"),
             $badgePassed = $('<span class="badge badge-success" style="display:none"/>'),
             $badgeFailed = $('<span class="badge badge-important" style="display:none"/>'),
-            $anchor = $('<a href="?spec=' + encodeURIComponent(suiteName) + '">' + suiteName + '</a>').append($badgeAll).append($badgePassed).append($badgeFailed),
+            $anchor = $('<a href="' + hyperlink + '">' + suiteName + '</a>').append($badgeAll).append($badgePassed).append($badgeFailed),
             $listItem = $('<li/>').append($anchor);
 
         this._topLevelSuiteMap[suiteName] = {
@@ -75,18 +79,18 @@ define(function (require, exports, module) {
         return $listItem;
     };
 
-    BootstrapReporterView.prototype._createSuiteList = function (suites, sortedNames, totalSpecCount) {
+    BootstrapReporterView.prototype._createSuiteList = function (suites, sortedNames, totalSpecCount, reporter) {
         var self = this;
 
         sortedNames.forEach(function (name, index) {
             var count = suites[name].specCount;
             if (count > 0) {
-                self.$suiteList.append(self._createSuiteListItem(name, count));
+                self.$suiteList.append(self._createSuiteListItem(name, count, reporter));
             }
         });
 
         // add an "all" top-level suite
-        this.$suiteList.prepend(this._createSuiteListItem("All", totalSpecCount));
+        this.$suiteList.prepend(this._createSuiteListItem("All", totalSpecCount, reporter));
     };
 
     BootstrapReporterView.prototype._showProgressBar = function (spec) {
@@ -102,7 +106,7 @@ define(function (require, exports, module) {
         var topLevelData;
 
         // create top level suite list navigation
-        this._createSuiteList(reporter.suites, reporter.sortedNames, reporter.totalSpecCount);
+        this._createSuiteList(reporter.suites, reporter.sortedNames, reporter.totalSpecCount, reporter);
 
         // highlight the current suite
         topLevelData = reporter.activeSuite ? this._topLevelSuiteMap[reporter.activeSuite] : null;
