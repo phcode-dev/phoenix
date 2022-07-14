@@ -135,16 +135,17 @@ define(function (require, exports, module) {
         //
 
         self.suites = {};
+        self.jasmineRootSuite = env.topSuite();
         self.specIdToSpecMap = {};
         self.specIdToSuiteMap = {};
         self.specIdToCategoryMap = {};
-        self._populateSpecIdMaps(env.topSuite());
+        self._populateSpecIdMaps(self.jasmineRootSuite);
 
         self.passed = false;
         self.totalSpecCount = 0;
         self.totalPassedCount = 0;
         self.totalFailedCount = 0;
-        env.topSuite().children.forEach(function (suite) {
+        self.jasmineRootSuite.children.forEach(function (suite) {
             let specCount = self._countSpecs(suite, config.specFilter);
             self.suites[suite.getFullName()] = {
                 id: suite.id,
@@ -299,13 +300,65 @@ define(function (require, exports, module) {
      * @return {string} the top level suite name
      */
     UnitTestReporter.prototype.getTopLevelSuiteName = function (spec) {
-        var topLevelSuite = spec.suite;
+        var topLevelSuite = self.specIdToSuiteMap[spec.id];
 
-        while (topLevelSuite.parentSuite) {
+        while (topLevelSuite.parentSuite && topLevelSuite.parentSuite !== self.jasmineRootSuite) {
             topLevelSuite = topLevelSuite.parentSuite;
         }
 
         return topLevelSuite.getFullName();
+    };
+
+    /**
+     * Returns a JSON string containing all our public data. See the constructor
+     * docs for a list.
+     * @return {string} the JSON string
+     */
+    UnitTestReporter.prototype.toJSON = function () {
+        var data = {}, prop;
+        for (prop in this) {
+            if (this.hasOwnProperty(prop) && prop.charAt(0) !== "_") {
+                data[prop] = this[prop];
+            }
+        }
+        return JSON.stringify(data, null, "    ");
+    };
+
+    // Handlers for Jasmine callback functions
+
+    UnitTestReporter.prototype.reportRunnerStarting = function (runner) {
+        activeReporter = this;
+        this.runInfo.startTime = new Date().toString();
+        $(this).triggerHandler("runnerStart", [this]);
+    };
+
+    UnitTestReporter.prototype.reportRunnerResults = function (runner) {
+        this.passed = runner.results().passed();
+        this.runInfo.endTime = new Date().toString();
+        $(this).triggerHandler("runnerEnd", [this]);
+        activeReporter = null;
+    };
+
+    UnitTestReporter.prototype.reportSuiteResults = function (suite) {
+        if (suite.parentSuite === null) {
+            $(this).triggerHandler("suiteEnd", [this, this.suites[suite.getFullName()]]);
+        }
+    };
+
+    UnitTestReporter.prototype.reportSpecStarting = function (spec) {
+        let self = this;
+        if (self.specIdToCategoryMap[spec.id] === "performance") {
+            self._currentPerfRecord = [];
+        }
+        $(self).triggerHandler("specStart", [self, spec.getFullName()]);
+    };
+
+    UnitTestReporter.prototype.reportSpecResults = function (spec) {
+        if (!spec.results().skipped) {
+            var specData = this._addSpecResults(spec, spec.results(), this._currentPerfRecord);
+            $(this).triggerHandler("specEnd", [this, specData, this.suites[this.getTopLevelSuiteName(spec)]]);
+        }
+        this._currentPerfRecord = null;
     };
 
     /**
@@ -349,77 +402,6 @@ define(function (require, exports, module) {
 
         suiteData.specs.push(specData);
         return specData;
-    };
-
-    /**
-     * Returns a JSON string containing all our public data. See the constructor
-     * docs for a list.
-     * @return {string} the JSON string
-     */
-    UnitTestReporter.prototype.toJSON = function () {
-        var data = {}, prop;
-        for (prop in this) {
-            if (this.hasOwnProperty(prop) && prop.charAt(0) !== "_") {
-                data[prop] = this[prop];
-            }
-        }
-        return JSON.stringify(data, null, "    ");
-    };
-
-    // Handlers for Jasmine callback functions
-
-    UnitTestReporter.prototype.reportRunnerStarting = function (runner) {
-        activeReporter = this;
-        this.runInfo.startTime = new Date().toString();
-        $(this).triggerHandler("runnerStart", [this]);
-    };
-
-    UnitTestReporter.prototype.reportRunnerResults = function (runner) {
-        this.passed = runner.results().passed();
-        this.runInfo.endTime = new Date().toString();
-        $(this).triggerHandler("runnerEnd", [this]);
-        activeReporter = null;
-    };
-
-    UnitTestReporter.prototype.reportSuiteResults = function (suite) {
-        if (suite.parentSuite === null) {
-            $(this).triggerHandler("suiteEnd", [this, this.suites[suite.getFullName()]]);
-        }
-    };
-
-    /**
-     * @private
-     * @param {!Object} spec the Jasmine spec to find the category for
-     * @return {string} the category for the given spec, or null if it has no category
-     */
-    UnitTestReporter.prototype._getCategory = function (spec) {
-        if (spec.category) {
-            return spec.category;
-        }
-        var suite = spec.suite;
-        while (suite) {
-            if (suite.category) {
-                return suite.category;
-            }
-            suite = suite.parentSuite;
-        }
-
-        return null;
-    };
-
-    UnitTestReporter.prototype.reportSpecStarting = function (spec) {
-        if (this._getCategory(spec) === "performance") {
-            this._currentPerfRecord = [];
-        }
-        $(this).triggerHandler("specStart", [this, spec.getFullName()]);
-    };
-
-    UnitTestReporter.prototype.reportSpecResults = function (spec) {
-        if (!spec.results().skipped) {
-            var specData = this._addSpecResults(spec, spec.results(), this._currentPerfRecord);
-            $(this).triggerHandler("specEnd", [this, specData, this.suites[this.getTopLevelSuiteName(spec)]]);
-        }
-        this._currentPerfRecord = null;
     };
 
     // Performance tracking
