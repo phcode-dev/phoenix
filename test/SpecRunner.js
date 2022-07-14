@@ -50,6 +50,11 @@ const EXTRACT_TEST_ASSETS_KEY = 'EXTRACT_TEST_ASSETS_KEY';
 const EXTRACT = 'EXTRACT';
 const DONT_EXTRACT = 'DONT_EXTRACT';
 
+/**
+ * global util to convert jquery/js promise to a js promise
+ * @param jqueryOrJSPromise
+ * @returns {{finally}|{then}|{catch}|*}
+ */
 function jsPromise(jqueryOrJSPromise) {
     if(jqueryOrJSPromise && jqueryOrJSPromise.catch && jqueryOrJSPromise.then && jqueryOrJSPromise.finally){
         // this should be a normal js promise return as is
@@ -65,7 +70,16 @@ function jsPromise(jqueryOrJSPromise) {
             .fail(reject);
     });
 }
-function awaitsFor(pollFn, _message, timeoutms, pollInterval = 10){
+
+/**
+ * global test util to wait for a polling result.
+ * @param pollFn return true to indicate sucess and break waiting.
+ * @param _message - unused
+ * @param timeoutms - max timeout to wait for. if not given, will wait for 2 seconds
+ * @param pollInterval in millis, default poll interval is 10ms
+ * @returns {*}
+ */
+function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
     return new Promise((resolve, reject)=>{
         let lapsedTime = 0;
         let interval = setInterval(()=>{

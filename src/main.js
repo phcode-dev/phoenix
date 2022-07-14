@@ -65,6 +65,27 @@ if (window.location.search.indexOf("testEnvironment") > -1) {
     });
 }
 
+/**
+ * global util to convert jquery/js promise to a js promise
+ * @param jqueryOrJSPromise
+ * @returns {{finally}|{then}|{catch}|*}
+ */
+function jsPromise(jqueryOrJSPromise) {
+    if(jqueryOrJSPromise && jqueryOrJSPromise.catch && jqueryOrJSPromise.then && jqueryOrJSPromise.finally){
+        // this should be a normal js promise return as is
+        return  jqueryOrJSPromise;
+    }
+    if(!jqueryOrJSPromise ||
+        (jqueryOrJSPromise && !jqueryOrJSPromise.fail) || (jqueryOrJSPromise && !jqueryOrJSPromise.done)){
+        throw new Error("this function expects a jquery promise with done and fail handlers");
+    }
+    return new Promise((resolve, reject)=>{
+        jqueryOrJSPromise
+            .done(resolve)
+            .fail(reject);
+    });
+}
+
 // splash screen updates for initial install which could take time, or slow networks.
 let trackedScriptCount = 0;
 function _setSplashScreenStatusUpdate(message) {
