@@ -246,14 +246,14 @@ define(function (require, exports, module) {
             filter = filterString ? filterString.toLowerCase() : undefined;
 
         return function (spec) {
-            let runAll = (selectedCategories.indexOf("all") >= 0);
-            // special case "all" suite to run unit, perf, extension, and integration tests
-            if (runAll) {
+            let runAllCategories = (selectedCategories.indexOf("all") >= 0);
+            if (runAllCategories && filter === "all") {
+                // special case run everything.
                 return true;
             }
 
             let specCat = self.specIdToCategoryMap[spec.id];
-            if(!selectedCategories.includes(specCat)){
+            if(!runAllCategories && !selectedCategories.includes(specCat)){
                 return false;
             }
 
