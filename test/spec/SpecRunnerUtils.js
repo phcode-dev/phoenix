@@ -532,7 +532,7 @@ define(function (require, exports, module) {
         };
     }
 
-    async function createTestWindowAndRun(spec, callback, options) {
+    async function createTestWindowAndRun(options) {
         // Position popup windows in the lower right so they're out of the way
         let testWindowWid = 1000,
             testWindowHt  =  700,
@@ -594,7 +594,6 @@ define(function (require, exports, module) {
         );
 
         _setupTestWindow();
-        callback.call(spec, _testWindow);
         return _testWindow;
     }
     async function reloadWindow() {
@@ -1150,7 +1149,7 @@ define(function (require, exports, module) {
             FileSystem      = testWindow.brackets.test.FileSystem,
             origGetAllFiles = ProjectManager.getAllFiles;
 
-        spyOn(ProjectManager, "getAllFiles").andCallFake(function () {
+        spyOn(ProjectManager, "getAllFiles").and.callFake(function () {
             var testResult = new testWindow.$.Deferred();
             origGetAllFiles.apply(ProjectManager, arguments).done(function (result) {
                 var dummyFile = FileSystem.getFileForPath(extraFilePath);
