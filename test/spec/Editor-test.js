@@ -63,9 +63,19 @@ define(function (require, exports, module) {
         }
 
         beforeEach(function () {
-            this.addMatchers({
-                toSpecifyModeNamed: function (expected) {
-                    return compareMode(expected, this.actual);
+            jasmine.addMatchers({
+                toSpecifyModeNamed: function (matchersUtil) {
+                    return{
+                        compare: function(actual, expected) {
+                            let result = {};
+                            let isSame = compareMode(expected, actual);
+                            result.pass = matchersUtil.equals(isSame, true);
+                            if (!result.pass) {
+                                result.message = "Expected " + expected + " but got " + actual;
+                            }
+                            return result;
+                        }
+                    };
                 }
             });
         });
@@ -101,14 +111,18 @@ define(function (require, exports, module) {
         }
         function expectCursorAt(pos) {
             var selection = myEditor.getSelection();
-            expect(selection.start).toEqual(selection.end);
-            expect(fixPos(selection.start)).toEqual(fixPos(pos));
+            expect(selection.start).toEql(selection.end);
+            expect(fixPos(selection.start)).toEql(fixPos(pos));
         }
         function expectSelection(sel) {
-            expect(fixSel(myEditor.getSelection())).toEqual(fixSel(sel));
+            let expected = fixSel(sel);
+            let actual = fixSel(myEditor.getSelection());
+            expect(actual).toEql(expected);
         }
         function expectSelections(sels) {
-            expect(fixSels(myEditor.getSelections())).toEqual(fixSels(sels));
+            let expected = fixSels(sels);
+            let actual = fixSels(myEditor.getSelections());
+            expect(actual).toEql(expected);
         }
 
         describe("Editor wrapper", function () {
@@ -156,9 +170,9 @@ define(function (require, exports, module) {
                     cm.replaceRange("", {line: 0, ch: 0}, {line: 0, ch: 4});
                 });
 
-                expect(changeHandler.callCount).toBe(1);
+                expect(changeHandler.calls.count()).toBe(1);
 
-                var args = changeHandler.mostRecentCall.args;
+                var args = changeHandler.calls.mostRecent().args;
                 expect(args[1]).toBe(myDocument);
                 expect(args[2][0].text).toEqual(["inserted"]);
                 expect(args[2][0].from.line).toEqual(1);
@@ -204,7 +218,7 @@ define(function (require, exports, module) {
                  *       the editor
                  * @see: https://github.com/adobe/brackets/issues/9972
                  */
-                spyOn(myEditor._codeMirror, "focus").andCallThrough();
+                spyOn(myEditor._codeMirror, "focus").and.callThrough();
                 myEditor.focus();
                 expect(myEditor._codeMirror.focus).toHaveBeenCalled();
             });
