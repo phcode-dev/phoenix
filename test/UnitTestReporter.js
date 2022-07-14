@@ -104,7 +104,7 @@ define(function (require, exports, module) {
 
         self.activeSuite = activeSuite;
         self.selectedCategories = selectedCategories;
-        self.filterSpecs = self._createSpecFilter(self.activeSuite, self.selectedCategories);
+        self.specFilter = self._createSpecFilter(self.activeSuite, self.selectedCategories);
 
         self.runInfo = {
             app: brackets.metadata.name,
@@ -127,7 +127,7 @@ define(function (require, exports, module) {
             stopSpecOnExpectationFailure: false,
             hideDisabled: false
         };
-        config.specFilter = self.filterSpecs;
+        config.specFilter = self.specFilter;
 
         env.configure(config);
         // Jasmine's runner uses the specFilter to choose which tests to run.
@@ -171,12 +171,11 @@ define(function (require, exports, module) {
         self.activeSpecCount = 0;
         self.activeSpecCompleteCount = 0;
 
-        // todo TEST_MODERN get all specs
-        // env.currentRunner().specs().forEach(function (spec, index) {
-        //     if (env.specFilter(spec)) {
-        //         self.activeSpecCount++;
-        //     }
-        // });
+        Object.keys(self.specIdToSpecMap).forEach(specID => {
+            if (self.specFilter(self.specIdToSpecMap[specID])) {
+                self.activeSpecCount++;
+            }
+        });
 
         let htmlReporter = new jasmine.HtmlReporter({
             env: env,
@@ -196,7 +195,7 @@ define(function (require, exports, module) {
                 return document.createTextNode.apply(document, arguments);
             },
             timer: new jasmine.Timer()
-            //filterSpecs: self.filterSpecs
+            //filterSpecs: self.specFilter
         });
         env.addReporter(htmlReporter);
         htmlReporter.initialize();
