@@ -19,7 +19,7 @@
  *
  */
 
-/*global jasmine, describe, beforeFirst, afterLast, beforeEach, afterEach, it, runs, expect, waitsForDone */
+/*global jasmine, describe, beforeAll, afterAll,beforeEach, afterEach, it, expect, awaitsForDone */
 
 define(function (require, exports, module) {
 
@@ -232,31 +232,28 @@ define(function (require, exports, module) {
         });
     });
 
-    describe("Document Integration", function () {
-        this.category = "integration";
+    describe("integration:Document Integration", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/Document-test-files"),
             testWindow,
             $;
 
-        beforeFirst(function () {
-            SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                testWindow = w;
-                $ = testWindow.$;
+        beforeAll(async function () {
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            $ = testWindow.$;
 
-                // Load module instances from brackets.test
-                CommandManager      = testWindow.brackets.test.CommandManager;
-                Commands            = testWindow.brackets.test.Commands;
-                EditorManager       = testWindow.brackets.test.EditorManager;
-                DocumentModule      = testWindow.brackets.test.DocumentModule;
-                DocumentManager     = testWindow.brackets.test.DocumentManager;
-                MainViewManager     = testWindow.brackets.test.MainViewManager;
+            // Load module instances from brackets.test
+            CommandManager      = testWindow.brackets.test.CommandManager;
+            Commands            = testWindow.brackets.test.Commands;
+            EditorManager       = testWindow.brackets.test.EditorManager;
+            DocumentModule      = testWindow.brackets.test.DocumentModule;
+            DocumentManager     = testWindow.brackets.test.DocumentManager;
+            MainViewManager     = testWindow.brackets.test.MainViewManager;
 
-                SpecRunnerUtils.loadProjectInTestWindow(testPath);
-            });
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         });
 
-        afterLast(function () {
+        afterAll(async function () {
             testWindow      = null;
             CommandManager  = null;
             Commands        = null;
@@ -264,17 +261,14 @@ define(function (require, exports, module) {
             DocumentModule  = null;
             DocumentManager = null;
             MainViewManager = null;
-            SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.closeTestWindow();
             testWindow = null;
         });
 
         afterEach(function () {
             testWindow.closeAllFiles();
-
-            runs(function () {
-                expect(DocumentManager.getAllOpenDocuments().length).toBe(0);
-                DocumentModule.off(".docTest");
-            });
+            expect(DocumentManager.getAllOpenDocuments().length).toBe(0);
+            DocumentModule.off(".docTest");
         });
 
         var JS_FILE   = testPath + "/test.js",
@@ -285,184 +279,153 @@ define(function (require, exports, module) {
         describe("Dirty flag and undo", function () {
             var promise;
 
-            it("should not fire dirtyFlagChange when created", function () {
-                var dirtyFlagListener = jasmine.createSpy();
+            it("should not fire dirtyFlagChange when created", async function () {
+                let dirtyFlagListener = jasmine.createSpy();
+                DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
 
-                runs(function () {
-                    DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
-
-                    promise = DocumentManager.getDocumentForPath(JS_FILE);
-                    waitsForDone(promise, "Create Document");
-                });
-                runs(function () {
-                    expect(dirtyFlagListener.callCount).toBe(0);
-                    DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
-                });
+                promise = DocumentManager.getDocumentForPath(JS_FILE);
+                await awaitsForDone(promise);
+                expect(dirtyFlagListener.calls.count()).toBe(0);
+                DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
             });
 
-            it("should clear dirty flag, preserve undo when marked saved", function () {
-                var dirtyFlagListener = jasmine.createSpy();
+            it("should clear dirty flag, preserve undo when marked saved", async function () {
+                let dirtyFlagListener = jasmine.createSpy();
+                DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
 
-                runs(function () {
-                    DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
+                promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
+                await awaitsForDone(promise);
+                let doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
+                expect(doc.isDirty).toBe(false);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0);
 
-                    promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
-                    waitsForDone(promise, "Open file");
-                });
-                runs(function () {
-                    var doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
-                    expect(doc.isDirty).toBe(false);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0);
+                // Make an edit (make dirty)
+                doc.replaceRange("Foo", {line: 0, ch: 0});
+                expect(doc.isDirty).toBe(true);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
+                expect(dirtyFlagListener.calls.count()).toBe(1);
 
-                    // Make an edit (make dirty)
-                    doc.replaceRange("Foo", {line: 0, ch: 0});
-                    expect(doc.isDirty).toBe(true);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
-                    expect(dirtyFlagListener.callCount).toBe(1);
+                // Mark saved (e.g. called by Save command)
+                doc.notifySaved();
+                expect(doc.isDirty).toBe(false);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1); // still has undo history
+                expect(dirtyFlagListener.calls.count()).toBe(2);
 
-                    // Mark saved (e.g. called by Save command)
-                    doc.notifySaved();
-                    expect(doc.isDirty).toBe(false);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1); // still has undo history
-                    expect(dirtyFlagListener.callCount).toBe(2);
-
-                    DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
-                });
+                DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
             });
 
-            it("should clear dirty flag AND undo when text reset", function () {
-                var dirtyFlagListener = jasmine.createSpy(),
+            it("should clear dirty flag AND undo when text reset", async function () {
+                let dirtyFlagListener = jasmine.createSpy(),
                     changeListener    = jasmine.createSpy();
+                DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
 
-                runs(function () {
-                    DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
+                promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
+                await awaitsForDone(promise);
+                let doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
+                doc.on("change", changeListener);
 
-                    promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
-                    waitsForDone(promise, "Open file");
-                });
-                runs(function () {
-                    var doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
-                    doc.on("change", changeListener);
+                expect(doc.isDirty).toBe(false);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0);
 
-                    expect(doc.isDirty).toBe(false);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0);
+                // Make an edit (make dirty)
+                doc.replaceRange("Foo", {line: 0, ch: 0});
+                expect(doc.isDirty).toBe(true);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
+                expect(dirtyFlagListener.calls.count()).toBe(1);
+                expect(changeListener.calls.count()).toBe(1);
 
-                    // Make an edit (make dirty)
-                    doc.replaceRange("Foo", {line: 0, ch: 0});
-                    expect(doc.isDirty).toBe(true);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
-                    expect(dirtyFlagListener.callCount).toBe(1);
-                    expect(changeListener.callCount).toBe(1);
+                // Reset text (e.g. called by Revert command, or syncing external changes)
+                doc.refreshText("New content", Date.now());
+                expect(doc.isDirty).toBe(false);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0); // undo history GONE
+                expect(dirtyFlagListener.calls.count()).toBe(2);
+                expect(changeListener.calls.count()).toBe(2);
 
-                    // Reset text (e.g. called by Revert command, or syncing external changes)
-                    doc.refreshText("New content", Date.now());
-                    expect(doc.isDirty).toBe(false);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0); // undo history GONE
-                    expect(dirtyFlagListener.callCount).toBe(2);
-                    expect(changeListener.callCount).toBe(2);
-
-                    doc.off("change", changeListener);
-                    DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
-                });
+                doc.off("change", changeListener);
+                DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
             });
 
-            it("should fire change but not dirtyFlagChange when clean text reset, with editor", function () {  // bug #502
-                var dirtyFlagListener = jasmine.createSpy(),
+            it("should fire change but not dirtyFlagChange when clean text reset, with editor", async function () {
+                // bug #502
+                let dirtyFlagListener = jasmine.createSpy(),
                     changeListener    = jasmine.createSpy();
+                DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
 
-                runs(function () {
-                    DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
+                promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
+                await awaitsForDone(promise, "Open file");
 
-                    promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
-                    waitsForDone(promise, "Open file");
-                });
-                runs(function () {
-                    var doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
-                    doc.on("change", changeListener);
+                let doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
+                doc.on("change", changeListener);
 
-                    expect(doc.isDirty).toBe(false);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0);
+                expect(doc.isDirty).toBe(false);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0);
 
-                    doc.refreshText("New content", Date.now());  // e.g. syncing external changes
-                    expect(doc.isDirty).toBe(false);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0); // still no undo history
-                    expect(dirtyFlagListener.callCount).toBe(0);  // isDirty hasn't changed
-                    expect(changeListener.callCount).toBe(1);     // but still counts as a content change
+                doc.refreshText("New content", Date.now());  // e.g. syncing external changes
+                expect(doc.isDirty).toBe(false);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(0); // still no undo history
+                expect(dirtyFlagListener.calls.count()).toBe(0);  // isDirty hasn't changed
+                expect(changeListener.calls.count()).toBe(1);     // but still counts as a content change
 
-                    doc.off("change", changeListener);
-                    DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
-                });
+                doc.off("change", changeListener);
+                DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
             });
 
-            it("should fire change but not dirtyFlagChange when clean text reset, without editor", function () {
-                var dirtyFlagListener = jasmine.createSpy(),
+            it("should fire change but not dirtyFlagChange when clean text reset, without editor", async function () {
+                let dirtyFlagListener = jasmine.createSpy(),
                     changeListener    = jasmine.createSpy(),
                     doc;
+                DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
 
-                runs(function () {
-                    DocumentManager.on("dirtyFlagChange", dirtyFlagListener);
+                promise = DocumentManager.getDocumentForPath(JS_FILE)
+                    .done(function (result) { doc = result; });
+                await awaitsForDone(promise, "Create Document");
+                doc.on("change", changeListener);
 
-                    promise = DocumentManager.getDocumentForPath(JS_FILE)
-                        .done(function (result) { doc = result; });
-                    waitsForDone(promise, "Create Document");
-                });
-                runs(function () {
-                    doc.on("change", changeListener);
+                expect(doc._masterEditor).toBeFalsy();
+                expect(doc.isDirty).toBe(false);
 
-                    expect(doc._masterEditor).toBeFalsy();
-                    expect(doc.isDirty).toBe(false);
+                doc.refreshText("New content", Date.now());  // e.g. syncing external changes
+                expect(doc.isDirty).toBe(false);
+                expect(dirtyFlagListener.calls.count()).toBe(0);
+                expect(changeListener.calls.count()).toBe(1);   // resetting text is still a content change
 
-                    doc.refreshText("New content", Date.now());  // e.g. syncing external changes
-                    expect(doc.isDirty).toBe(false);
-                    expect(dirtyFlagListener.callCount).toBe(0);
-                    expect(changeListener.callCount).toBe(1);   // resetting text is still a content change
-
-                    doc.off("change", changeListener);
-                    DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
-                    doc = null;
-                });
+                doc.off("change", changeListener);
+                DocumentManager.off("dirtyFlagChange", dirtyFlagListener);
+                doc = null;
             });
 
-            it("should not clean history when reset is called with the same text as in the editor", function () {
-                runs(function () {
-                    promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
-                    waitsForDone(promise, "Open file");
-                });
-                runs(function () {
-                    var doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
+            it("should not clean history when reset is called with the same text as in the editor", async function () {
+                promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
+                await awaitsForDone(promise, "Open file");
+                var doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
 
-                    // Put some text into editor
-                    doc.setText("Foo");
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
+                // Put some text into editor
+                doc.setText("Foo");
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
 
-                    // Reset text with the same value, expect history not to change
-                    doc.refreshText("Foo", Date.now());
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
-                });
+                // Reset text with the same value, expect history not to change
+                doc.refreshText("Foo", Date.now());
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
             });
 
-            it("should not clean history when reset is called with the same text with different line-endings", function () {
-                runs(function () {
-                    promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
-                    waitsForDone(promise, "Open file");
-                });
-                runs(function () {
-                    var doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
-                    var crlf = "a\r\nb\r\nc";
-                    var lf = "a\nb\nc";
+            it("should not clean history when reset is called with the same text with different line-endings", async function () {
+                promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
+                await awaitsForDone(promise, "Open file");
+                var doc = DocumentManager.getOpenDocumentForPath(JS_FILE);
+                var crlf = "a\r\nb\r\nc";
+                var lf = "a\nb\nc";
 
-                    // Put some text into editor
-                    doc.setText(crlf);
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
+                // Put some text into editor
+                doc.setText(crlf);
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
 
-                    // Reset text with the same value, expect history not to change
-                    doc.refreshText(lf, Date.now());
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
+                // Reset text with the same value, expect history not to change
+                doc.refreshText(lf, Date.now());
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
 
-                    // Reset text with the same value, expect history not to change
-                    doc.refreshText(crlf, Date.now());
-                    expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
-                });
+                // Reset text with the same value, expect history not to change
+                doc.refreshText(crlf, Date.now());
+                expect(doc._masterEditor._codeMirror.historySize().undo).toBe(1);
             });
         });
 
@@ -481,58 +444,43 @@ define(function (require, exports, module) {
                 doc = null;
             });
 
-            it("should fire both change and documentChange when text is refreshed if doc does not have masterEditor", function () {
-                runs(function () {
-                    promise = DocumentManager.getDocumentForPath(JS_FILE)
-                        .done(function (result) { doc = result; });
-                    waitsForDone(promise, "Create Document");
-                });
+            it("should fire both change and documentChange when text is refreshed if doc does not have masterEditor", async function () {
+                promise = DocumentManager.getDocumentForPath(JS_FILE)
+                    .done(function (result) { doc = result; });
+                await awaitsForDone(promise, "Create Document");
+                DocumentModule.on("documentChange.docTest", docChangeListener);
+                doc.on("change", changeListener);
 
-                runs(function () {
-                    DocumentModule.on("documentChange.docTest", docChangeListener);
-                    doc.on("change", changeListener);
+                expect(doc._masterEditor).toBeFalsy();
 
-                    expect(doc._masterEditor).toBeFalsy();
+                doc.refreshText("New content", Date.now());
 
-                    doc.refreshText("New content", Date.now());
-
-                    expect(doc._masterEditor).toBeFalsy();
-                    expect(docChangeListener.callCount).toBe(1);
-                    expect(changeListener.callCount).toBe(1);
-                });
+                expect(doc._masterEditor).toBeFalsy();
+                expect(docChangeListener.calls.count()).toBe(1);
+                expect(changeListener.calls.count()).toBe(1);
             });
 
-            it("should fire both change and documentChange when text is refreshed if doc has masterEditor", function () {
-                runs(function () {
-                    promise = DocumentManager.getDocumentForPath(JS_FILE)
-                        .done(function (result) { doc = result; });
-                    waitsForDone(promise, "Create Document");
-                });
+            it("should fire both change and documentChange when text is refreshed if doc has masterEditor", async function () {
+                promise = DocumentManager.getDocumentForPath(JS_FILE)
+                    .done(function (result) { doc = result; });
+                await awaitsForDone(promise, "Create Document");
+                expect(doc._masterEditor).toBeFalsy();
+                doc.setText("first edit");
+                expect(doc._masterEditor).toBeTruthy();
 
-                runs(function () {
-                    expect(doc._masterEditor).toBeFalsy();
-                    doc.setText("first edit");
-                    expect(doc._masterEditor).toBeTruthy();
+                DocumentModule.on("documentChange.docTest", docChangeListener);
+                doc.on("change", changeListener);
 
-                    DocumentModule.on("documentChange.docTest", docChangeListener);
-                    doc.on("change", changeListener);
+                doc.refreshText("New content", Date.now());
 
-                    doc.refreshText("New content", Date.now());
-
-                    expect(docChangeListener.callCount).toBe(1);
-                    expect(changeListener.callCount).toBe(1);
-                });
+                expect(docChangeListener.calls.count()).toBe(1);
+                expect(changeListener.calls.count()).toBe(1);
             });
 
-            it("should *not* fire documentChange when a document is first created", function () {
-                runs(function () {
-                    DocumentModule.on("documentChange.docTest", docChangeListener);
-                    waitsForDone(DocumentManager.getDocumentForPath(JS_FILE));
-                });
-
-                runs(function () {
-                    expect(docChangeListener.callCount).toBe(0);
-                });
+            it("should *not* fire documentChange when a document is first created", async function () {
+                DocumentModule.on("documentChange.docTest", docChangeListener);
+                await awaitsForDone(DocumentManager.getDocumentForPath(JS_FILE));
+                expect(docChangeListener.calls.count()).toBe(0);
             });
         });
 
@@ -541,55 +489,49 @@ define(function (require, exports, module) {
             // TODO: additional, simpler ref counting test cases such as Live Development, open/close inline editor (refs from
             //  both editor & rule list TextRanges), navigate files w/o adding to working set, etc.
 
-            it("should clean up (later) a master Editor auto-created by calling read-only Document API, if Editor not used by UI", function () {
+            it("should clean up (later) a master Editor auto-created by calling read-only Document API, if Editor not used by UI", async function () {
                 var promise,
                     cssDoc,
                     cssMasterEditor;
 
-                runs(function () {
-                    promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: HTML_FILE});
-                    waitsForDone(promise, "Open into working set");
-                });
-                runs(function () {
-                    // Open inline editor onto test.css's ".testClass" rule
-                    promise = SpecRunnerUtils.toggleQuickEditAtOffset(EditorManager.getCurrentFullEditor(), {line: 8, ch: 4});
-                    waitsForDone(promise, "Open inline editor");
-                });
-                runs(function () {
-                    expect(MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, CSS_FILE)).toBe(-1);
-                    expect(DocumentManager.getOpenDocumentForPath(CSS_FILE)).toBeTruthy();
+                promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: HTML_FILE});
+                await awaitsForDone(promise, "Open into working set");
 
-                    // Force creation of master editor for CSS file
-                    cssDoc = DocumentManager.getOpenDocumentForPath(CSS_FILE);
-                    expect(cssDoc._masterEditor).toBeFalsy();
-                    DocumentManager.getOpenDocumentForPath(CSS_FILE).getLine(0);
-                    expect(cssDoc._masterEditor).toBeTruthy();
+                // Open inline editor onto test.css's ".testClass" rule
+                promise = SpecRunnerUtils.toggleQuickEditAtOffset(EditorManager.getCurrentFullEditor(), {line: 8, ch: 4});
+                await awaitsForDone(promise, "Open inline editor");
 
-                    // Close inline editor
-                    var hostEditor = EditorManager.getCurrentFullEditor();
-                    var inlineWidget = hostEditor.getInlineWidgets()[0];
-                    waitsForDone(EditorManager.closeInlineWidget(hostEditor, inlineWidget), "close inline editor");
-                });
-                runs(function () {
-                    // Now there are no parts of Brackets that need to keep the CSS Document alive (its only ref is its own master
-                    // Editor and that Editor isn't accessible in the UI anywhere). It's ready to get "GCed" by DocumentManager as
-                    // soon as it hits a trigger point for doing so.
-                    expect(DocumentManager.getOpenDocumentForPath(CSS_FILE)).toBeTruthy();
-                    expect(cssDoc._refCount).toBe(1);
-                    expect(cssDoc._masterEditor).toBeTruthy();
-                    expect(testWindow.$(".CodeMirror").length).toBe(2);   // HTML editor (current) & CSS editor (dangling)
+                expect(MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, CSS_FILE)).toBe(-1);
+                expect(DocumentManager.getOpenDocumentForPath(CSS_FILE)).toBeTruthy();
 
-                    // Switch to a third file - trigger point for cleanup
-                    promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
-                    waitsForDone(promise, "Switch to other file");
-                });
-                runs(function () {
-                    // Creation of that third file's Document should have triggered cleanup of CSS Document and its master Editor
-                    expect(DocumentManager.getOpenDocumentForPath(CSS_FILE)).toBeFalsy();
-                    expect(cssDoc._refCount).toBe(0);
-                    expect(cssDoc._masterEditor).toBeFalsy();
-                    expect(testWindow.$(".CodeMirror").length).toBe(2);   // HTML editor (working set) & JS editor (current)
-                });
+                // Force creation of master editor for CSS file
+                cssDoc = DocumentManager.getOpenDocumentForPath(CSS_FILE);
+                expect(cssDoc._masterEditor).toBeFalsy();
+                DocumentManager.getOpenDocumentForPath(CSS_FILE).getLine(0);
+                expect(cssDoc._masterEditor).toBeTruthy();
+
+                // Close inline editor
+                var hostEditor = EditorManager.getCurrentFullEditor();
+                var inlineWidget = hostEditor.getInlineWidgets()[0];
+                await awaitsForDone(EditorManager.closeInlineWidget(hostEditor, inlineWidget), "close inline editor");
+
+                // Now there are no parts of Brackets that need to keep the CSS Document alive (its only ref is its own master
+                // Editor and that Editor isn't accessible in the UI anywhere). It's ready to get "GCed" by DocumentManager as
+                // soon as it hits a trigger point for doing so.
+                expect(DocumentManager.getOpenDocumentForPath(CSS_FILE)).toBeTruthy();
+                expect(cssDoc._refCount).toBe(1);
+                expect(cssDoc._masterEditor).toBeTruthy();
+                expect(testWindow.$(".CodeMirror").length).toBe(2);   // HTML editor (current) & CSS editor (dangling)
+
+                // Switch to a third file - trigger point for cleanup
+                promise = CommandManager.execute(Commands.FILE_OPEN, {fullPath: JS_FILE});
+                await awaitsForDone(promise, "Switch to other file");
+
+                // Creation of that third file's Document should have triggered cleanup of CSS Document and its master Editor
+                expect(DocumentManager.getOpenDocumentForPath(CSS_FILE)).toBeFalsy();
+                expect(cssDoc._refCount).toBe(0);
+                expect(cssDoc._masterEditor).toBeFalsy();
+                expect(testWindow.$(".CodeMirror").length).toBe(2);   // HTML editor (working set) & JS editor (current)
 
                 cssDoc = cssMasterEditor = null;
             });
