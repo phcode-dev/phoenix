@@ -1258,131 +1258,9 @@ define(function (require, exports, module) {
         return 0;
     }
 
-
-    /**
-     * @private
-     * Adds a new before all or after all function to the current suite. If requires it creates a new
-     * object to store the before all and after all functions and a spec counter for the current suite.
-     * @param {string} type  "beforeFirst" or "afterLast"
-     * @param {function} func  The function to store
-     */
-    function _addSuiteFunction(type, func) {
-        var suiteId = (jasmine.getEnv().currentSuite || _rootSuite).id;
-        if (!_testSuites[suiteId]) {
-            _testSuites[suiteId] = {
-                beforeFirst: [],
-                afterLast: [],
-                specCounter: null
-            };
-        }
-        _testSuites[suiteId][type].push(func);
-    }
-
-    /**
-     * Utility for tests that need to open a window or do something before every test in a suite
-     * @param {function} func
-     */
-    window.beforeFirst = function (func) {
-        _addSuiteFunction("beforeFirst", func);
-    };
-
-    /**
-     * Utility for tests that need to close a window or do something after every test in a suite
-     * @param {function} func
-     */
-    window.afterLast = function (func) {
-        _addSuiteFunction("afterLast", func);
-    };
-
-    /**
-     * @private
-     * Returns an array with the parent suites of the current spec with the top most suite last
-     * @return {Array.<jasmine.Suite>}
-     */
-    function _getParentSuites() {
-        var suite  = jasmine.getEnv().currentSpec.suite,
-            suites = [];
-
-        while (suite) {
-            suites.push(suite);
-            suite = suite.parentSuite;
-        }
-
-        return suites;
-    }
-
-    /**
-     * @private
-     * Calls each function in the given array of functions
-     * @param {Array.<function>} functions
-     */
-    function _callFunctions(functions) {
-        var spec = jasmine.getEnv().currentSpec;
-        functions.forEach(function (func) {
-            func.apply(spec);
-        });
-    }
-
-    /**
-     * Calls the before first functions for the parent suites of the current spec when is the first spec of the suite.
-     */
-    function runBeforeFirst() {
-        var suites = _getParentSuites().reverse();
-
-        // SpecRunner-scoped beforeFirst
-        if (_testSuites[_rootSuite.id].beforeFirst) {
-            _callFunctions(_testSuites[_rootSuite.id].beforeFirst);
-            _testSuites[_rootSuite.id].beforeFirst = null;
-        }
-
-        // Iterate through all the parent suites of the current spec
-        suites.forEach(function (suite) {
-            // If we have functions for this suite and it was never called, initialize the spec counter
-            if (_testSuites[suite.id] && _testSuites[suite.id].specCounter === null) {
-                _callFunctions(_testSuites[suite.id].beforeFirst);
-                _testSuites[suite.id].specCounter = countSpecs(suite);
-            }
-        });
-    }
-
-    /**
-     * @private
-     * @return {boolean} True if the current spect is the last spec to be run
-     */
-    function _isLastSpec() {
-        return _unitTestReporter.activeSpecCompleteCount === _unitTestReporter.activeSpecCount - 1;
-    }
-
-    /**
-     * Calls the after last functions for the parent suites of the current spec when is the last spec of the suite.
-     */
-    function runAfterLast() {
-        var suites = _getParentSuites();
-
-        // Iterate throught all the parent suites of the current spec
-        suites.forEach(function (suite) {
-            // If we have functions for this suite, reduce the spec counter
-            if (_testSuites[suite.id] && _testSuites[suite.id].specCounter > 0) {
-                _testSuites[suite.id].specCounter--;
-
-                // If this was the last spec of the suite run the after last functions and remove it
-                if (_testSuites[suite.id].specCounter === 0) {
-                    _callFunctions(_testSuites[suite.id].afterLast);
-                    delete _testSuites[suite.id];
-                }
-            }
-        });
-
-        // SpecRunner-scoped afterLast
-        if (_testSuites[_rootSuite.id].afterLast && _isLastSpec()) {
-            _callFunctions(_testSuites[_rootSuite.id].afterLast);
-            _testSuites[_rootSuite.id].afterLast = null;
-        }
-    }
-
     // "global" custom matchers
     beforeEach(function () {
-        this.addMatchers({
+        jasmine.addMatchers({
             /**
              * Expects the given editor's selection to be a cursor at the given position (no range selected)
              */
@@ -1462,8 +1340,6 @@ define(function (require, exports, module) {
     exports.findDOMText                     = findDOMText;
     exports.injectIntoGetAllFiles           = injectIntoGetAllFiles;
     exports.countSpecs                      = countSpecs;
-    exports.runBeforeFirst                  = runBeforeFirst;
-    exports.runAfterLast                    = runAfterLast;
     exports.removeTempDirectory             = removeTempDirectory;
     exports.setUnitTestReporter             = setUnitTestReporter;
     exports.resizeEditor                    = resizeEditor;

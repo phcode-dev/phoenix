@@ -19,7 +19,7 @@
  *
  */
 
-/*global beforeEach, afterEach, beforeFirst, afterLast, jasmine, Filer */
+/*global beforeEach, afterEach, beforeAll, afterAll, jasmine, Filer */
 
 // Set the baseUrl to brackets/src
 require.config({
@@ -92,8 +92,7 @@ define(function (require, exports, module) {
     //require("test/PerformanceTestSuite");
 
     // Load JUnitXMLReporter
-    // todo TEST_MODERN junit reporter
-    require("test/thirdparty/jasmine-reporters/jasmine.junit_reporter");
+    require("test/thirdparty/jasmine-reporters/junit_reporter");
 
     // Load CodeMirror add-ons--these attach themselves to the CodeMirror module
     require("thirdparty/CodeMirror/addon/fold/xml-fold");
@@ -119,7 +118,7 @@ define(function (require, exports, module) {
     require("features/ParameterHintsManager");
     require("features/JumpToDefManager");
 
-    var selectedSuites,
+    var selectedCategories,
         params          = new UrlParams(),
         reporter,
         reporterView,
@@ -145,7 +144,7 @@ define(function (require, exports, module) {
         let paths = ["default"];
 
         // load dev and user extensions only when running the extension test suite
-        if (selectedSuites.indexOf("extension") >= 0) {
+        if (selectedCategories.indexOf("extension") >= 0) {
             paths.push("dev");
             paths.push("user");
         }
@@ -173,8 +172,8 @@ define(function (require, exports, module) {
             window.location.reload(true);
         });
 
-        if (selectedSuites.length === 1) {
-            $("#" + (selectedSuites[0])).closest("li").toggleClass("active", true);
+        if (selectedCategories.length === 1) {
+            $("#" + (selectedCategories[0])).closest("li").toggleClass("active", true);
         }
 
         AppInit._dispatchReady(AppInit.APP_READY);
@@ -274,69 +273,37 @@ define(function (require, exports, module) {
     }
 
     function _registerBeforeAfterHandlers() {
+        // todo: TEST_MODERN
         // Initiailize unit test preferences for each spec
-        beforeEach(function () {
-            // Unique key for unit testing
-            window.localStorage.setItem("preferencesKey", SpecRunnerUtils.TEST_PREFERENCES_KEY);
-
-            // Reset preferences from previous test runs
-            window.localStorage.removeItem("doLoadPreferences");
-            window.localStorage.removeItem(SpecRunnerUtils.TEST_PREFERENCES_KEY);
-
-            SpecRunnerUtils.runBeforeFirst();
-        });
-
-        // Revert unit test preferences after each spec
-        afterEach(function () {
-            // Clean up preferencesKey
-            window.localStorage.removeItem("preferencesKey");
-
-            SpecRunnerUtils.runAfterLast();
-        });
-
-        // Delete temp folder before running the first test
-        beforeFirst(function () {
-            SpecRunnerUtils.removeTempDirectory();
-        });
-
-        // Delete temp folder after running the last test
-        afterLast(function () {
-            SpecRunnerUtils.removeTempDirectory();
-        });
+        // beforeEach(function () {
+        //     // Unique key for unit testing
+        //     window.localStorage.setItem("preferencesKey", SpecRunnerUtils.TEST_PREFERENCES_KEY);
+        //
+        //     // Reset preferences from previous test runs
+        //     window.localStorage.removeItem("doLoadPreferences");
+        //     window.localStorage.removeItem(SpecRunnerUtils.TEST_PREFERENCES_KEY);
+        // });
+        //
+        // // Revert unit test preferences after each spec
+        // afterEach(function () {
+        //     // Clean up preferencesKey
+        //     window.localStorage.removeItem("preferencesKey");
+        // });
+        //
+        // // Delete temp folder before running the first test
+        // beforeAll(function () {
+        //     SpecRunnerUtils.removeTempDirectory();
+        // });
+        //
+        // // Delete temp folder after running the last test
+        // afterAll(function () {
+        //     SpecRunnerUtils.removeTempDirectory();
+        // });
     }
 
     function init() {
-        selectedSuites = (params.get("suite") || window.localStorage.getItem("SpecRunner.suite") || "unit").split(",");
-
-        // Create a top-level filter to show/hide performance and extensions tests
-        var runAll = (selectedSuites.indexOf("all") >= 0);
-
-        var topLevelFilter = function (spec) {
-            // special case "all" suite to run unit, perf, extension, and integration tests
-            if (runAll) {
-                return true;
-            }
-
-            var currentSuite = spec.suite,
-                category = spec.category;
-
-            if (!category) {
-                // find the category from the closest suite
-                while (currentSuite) {
-                    if (currentSuite.category) {
-                        category = currentSuite.category;
-                        break;
-                    }
-
-                    currentSuite = currentSuite.parentSuite;
-                }
-            }
-
-            // if unit tests are selected, make sure there is no category in the heirarchy
-            // if not a unit test, make sure the category is selected
-            return (selectedSuites.indexOf("unit") >= 0 && category === undefined) ||
-                (selectedSuites.indexOf(category) >= 0);
-        };
+        selectedCategories = (params.get("category")
+            || window.localStorage.getItem("SpecRunner.category") || "unit").split(",");
 
         /*
          * TODO (jason-sanjose): extension unit tests should only load the
@@ -345,10 +312,10 @@ define(function (require, exports, module) {
          */
 
         // configure spawned test windows to load extensions
-        SpecRunnerUtils.setLoadExtensionsInTestWindow(selectedSuites.indexOf("extension") >= 0);
+        SpecRunnerUtils.setLoadExtensionsInTestWindow(selectedCategories.indexOf("extension") >= 0);
 
         // todo TEST_MODERN enable extension tests
-        //_loadExtensionTests(selectedSuites).always(function () {
+        //_loadExtensionTests(selectedCategories).always(function () {
         var jasmineEnv = jasmine.getEnv();
         jasmineEnv.updateInterval = 1000;
 
@@ -356,7 +323,7 @@ define(function (require, exports, module) {
 
         // Create the reporter, which is really a model class that just gathers
         // spec and performance data.
-        reporter = new UnitTestReporter(jasmineEnv, topLevelFilter, params.get("spec"));
+        reporter = new UnitTestReporter(jasmineEnv, params.get("spec"), selectedCategories);
         SpecRunnerUtils.setUnitTestReporter(reporter);
 
         // Optionally emit JUnit XML file for automated runs
@@ -372,7 +339,8 @@ define(function (require, exports, module) {
             _writeResults.resolve();
         }
 
-        jasmineEnv.addReporter(reporter);
+        jasmineEnv.addReporter(jasmine.JsApiReporter);
+        //jasmineEnv.addReporter(reporter);
 
         // Create the view that displays the data from the reporter. (Usually in
         // Jasmine this is part of the reporter, but we separate them out so that
@@ -381,7 +349,7 @@ define(function (require, exports, module) {
         reporterView = new BootstrapReporterView(window.document, reporter);
 
         // remember the suite for the next unit test window launch
-        window.localStorage.setItem("SpecRunner.suite", selectedSuites);
+        window.localStorage.setItem("SpecRunner.suite", selectedCategories);
 
         $(window.document).ready(_documentReadyHandler);
         //});
