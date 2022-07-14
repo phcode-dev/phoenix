@@ -104,6 +104,7 @@ define(function (require, exports, module) {
 
         self.activeSuite = activeSuite;
         self.selectedCategories = selectedCategories;
+        self.knownCategories = knownCategories;
         self.specFilter = self._createSpecFilter(self.activeSuite, self.selectedCategories);
 
         self.runInfo = {
@@ -182,7 +183,7 @@ define(function (require, exports, module) {
         env.addReporter(jasmine.JsApiReporter);
 
         let phoenixReporter = {
-            jasmineStarted: function(suiteInfo) {
+            jasmineStarted: async function(suiteInfo) {
                 console.log('Running suite with ' + suiteInfo.totalSpecsDefined);
                 self.reportRunnerStarting(suiteInfo);
                 if(!self.activeSuite){
@@ -190,6 +191,7 @@ define(function (require, exports, module) {
                     // return a promise that never gets resolved for jasmine to get stuck.
                     return new Promise(()=>{});
                 }
+                await _beforeAllGlobal();
             },
 
             // suiteStarted: function(result) {
@@ -201,40 +203,57 @@ define(function (require, exports, module) {
                 console.log('Spec started: ' + result.description
                     + ' whose full description is: ' + result.fullName);
                 self.reportSpecStarting(result);
+                _beforeEachGlobal();
             },
 
             specDone: function(result) {
                 console.log('Spec: ' + result.description + ' was ' + result.status);
-
-                for(var i = 0; i < result.failedExpectations.length; i++) {
-                    console.log('Failure: ' + result.failedExpectations[i].message);
-                    console.log(result.failedExpectations[i].stack);
-                }
-                console.log(result.passedExpectations.length);
-
                 self.reportSpecResults(result);
+                _afterEachGlobal();
             },
 
             suiteDone: function(result) {
                 console.log('Suite: ' + result.description + ' was ' + result.status);
-                for(var i = 0; i < result.failedExpectations.length; i++) {
-                    console.log('Suite ' + result.failedExpectations[i].message);
-                    console.log(result.failedExpectations[i].stack);
-                }
                 self.reportSuiteResults(result);
             },
 
-            jasmineDone: function(result) {
+            jasmineDone: async function(result) {
                 console.log('Finished suite: ' + result.overallStatus);
-                for(var i = 0; i < result.failedExpectations.length; i++) {
-                    console.log('Global ' + result.failedExpectations[i].message);
-                    console.log(result.failedExpectations[i].stack);
-                }
                 self.reportRunnerResults(result);
+                await _afterAllGlobal();
             }
         };
         env.addReporter(phoenixReporter);
     }
+
+    // Global before and after handlers start
+    // Initiailize unit test preferences for each spec
+    function _beforeEachGlobal() {
+        // Unique key for unit testing
+        window.localStorage.setItem("preferencesKey", SpecRunnerUtils.TEST_PREFERENCES_KEY);
+
+        // Reset preferences from previous test runs
+        window.localStorage.removeItem("doLoadPreferences");
+        window.localStorage.removeItem(SpecRunnerUtils.TEST_PREFERENCES_KEY);
+    }
+
+    // Revert unit test preferences after each spec
+    function _afterEachGlobal() {
+        // Clean up preferencesKey
+        window.localStorage.removeItem("preferencesKey");
+    }
+
+    // Delete temp folder before running the first test
+    async function _beforeAllGlobal() {
+        await SpecRunnerUtils.removeTempDirectory();
+    }
+
+    // Delete temp folder after running the last test
+    async function _afterAllGlobal() {
+        await SpecRunnerUtils.removeTempDirectory();
+    }
+
+    // Global before and after handlers end
 
     /**
      * @private
