@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeEach, it, runs, waitsFor, waitsForDone, waitsForFail, expect */
+/*global describe, beforeEach, it, awaitsFor, awaitsForDone, awaitsForFail, expect */
 
 define(function (require, exports, module) {
 
@@ -90,38 +90,35 @@ define(function (require, exports, module) {
                 };
             }
 
-            function expectChainHelper(functions, args, shouldSucceed, responseComparator) {
+            async function expectChainHelper(functions, args, shouldSucceed, responseComparator) {
                 var done = false;
                 var success = false;
                 var response = null;
-                runs(function () {
-                    var result = Async.chain(
-                        functions,
-                        args
-                    );
-                    result.done(function () {
-                        done = true;
-                        success = true;
-                        response = arguments;
-                    });
-                    result.fail(function () {
-                        done = true;
-                        success = false;
-                        response = arguments;
-                    });
+                var result = Async.chain(
+                    functions,
+                    args
+                );
+                result.done(function () {
+                    done = true;
+                    success = true;
+                    response = arguments;
                 });
-                waitsFor(function () {
+                result.fail(function () {
+                    done = true;
+                    success = false;
+                    response = arguments;
+                });
+
+                await awaitsFor(function () {
                     return done;
                 }, "The chain should complete", 100);
-                runs(function () {
-                    expect(success).toBe(shouldSucceed);
-                    responseComparator(response);
-                });
+                expect(success).toBe(shouldSucceed);
+                responseComparator(response);
             }
 
             describe("Zero-argument deferreds", function () {
-                it("[zero-arg] work with a null argument array", function () {
-                    expectChainHelper(
+                it("[zero-arg] work with a null argument array", async function () {
+                    await expectChainHelper(
                         [zeroArgThatSucceeds, zeroArgThatSucceeds, zeroArgThatSucceeds],
                         null,
                         true,
@@ -129,8 +126,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[zero-arg] call error callback when first deferred fails", function () {
-                    expectChainHelper(
+                it("[zero-arg] call error callback when first deferred fails", async function () {
+                    await expectChainHelper(
                         [zeroArgThatFails, zeroArgThatSucceeds, zeroArgThatSucceeds],
                         [],
                         false,
@@ -138,8 +135,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[zero-arg] call error callback when middle deferred fails", function () {
-                    expectChainHelper(
+                it("[zero-arg] call error callback when middle deferred fails", async function () {
+                    await expectChainHelper(
                         [zeroArgThatSucceeds, zeroArgThatFails, zeroArgThatSucceeds],
                         [],
                         false,
@@ -147,8 +144,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[zero-arg] call error callback when last deferred fails", function () {
-                    expectChainHelper(
+                it("[zero-arg] call error callback when last deferred fails", async function () {
+                    await expectChainHelper(
                         [zeroArgThatSucceeds, zeroArgThatSucceeds, zeroArgThatFails],
                         [],
                         false,
@@ -156,8 +153,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[zero-arg] call success callback when all deferreds succeed", function () {
-                    expectChainHelper(
+                it("[zero-arg] call success callback when all deferreds succeed", async function () {
+                    await expectChainHelper(
                         [zeroArgThatSucceeds, zeroArgThatSucceeds, zeroArgThatSucceeds],
                         [],
                         true,
@@ -165,8 +162,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[zero-arg] call success callback immediately if there are no deferreds", function () {
-                    expectChainHelper(
+                it("[zero-arg] call success callback immediately if there are no deferreds", async function () {
+                    await expectChainHelper(
                         [],
                         [],
                         true,
@@ -176,8 +173,8 @@ define(function (require, exports, module) {
             });
 
             describe("Nonzero-argument deferreds", function () {
-                it("[nonzero-arg] call error callback when first deferred fails", function () {
-                    expectChainHelper(
+                it("[nonzero-arg] call error callback when first deferred fails", async function () {
+                    await expectChainHelper(
                         [twoArgThatFails, twoArgThatSucceeds, twoArgThatSucceeds],
                         [1, 2],
                         false,
@@ -185,8 +182,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[nonzero-arg] call error callback when middle deferred fails", function () {
-                    expectChainHelper(
+                it("[nonzero-arg] call error callback when middle deferred fails", async function () {
+                    await expectChainHelper(
                         [twoArgThatSucceeds, twoArgThatFails, twoArgThatSucceeds],
                         [1, 2],
                         false,
@@ -194,8 +191,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[nonzero-arg] call error callback when last deferred fails", function () {
-                    expectChainHelper(
+                it("[nonzero-arg] call error callback when last deferred fails", async function () {
+                    await expectChainHelper(
                         [twoArgThatSucceeds, twoArgThatSucceeds, twoArgThatFails],
                         [1, 2],
                         false,
@@ -203,8 +200,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[nonzero-arg] call success callback when all deferreds succeed", function () {
-                    expectChainHelper(
+                it("[nonzero-arg] call success callback when all deferreds succeed", async function () {
+                    await expectChainHelper(
                         [twoArgThatSucceeds, twoArgThatSucceeds, twoArgThatSucceeds],
                         [1, 2],
                         true,
@@ -212,8 +209,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[nonzero-arg] call success callback immediately if there are no deferreds", function () {
-                    expectChainHelper(
+                it("[nonzero-arg] call success callback immediately if there are no deferreds", async function () {
+                    await expectChainHelper(
                         [],
                         [1, 2],
                         true,
@@ -240,81 +237,58 @@ define(function (require, exports, module) {
                     return d.promise();
                 }
 
-                it("should resolve promise before rejected with timeout", function () {
-                    var promiseBase, promiseWrapper;
+                it("should resolve promise before rejected with timeout", async function () {
+                    let promiseBase, promiseWrapper;
 
-                    runs(function () {
-                        promiseBase    = promiseThatSucceeds(5);
-                        promiseWrapper = Async.withTimeout(promiseBase, 10);
-                        waitsForDone(promiseWrapper, "promise resolves before timeout");
-                    });
+                    promiseBase    = promiseThatSucceeds(5);
+                    promiseWrapper = Async.withTimeout(promiseBase, 10);
+                    await awaitsForDone(promiseWrapper);
 
-                    runs(function () {
-                        // base promise resolves wrapper promise
-                        expect(promiseBase.state()).toBe("resolved");
-                        expect(promiseWrapper.state()).toBe("resolved");
-                    });
+                    expect(promiseBase.state()).toBe("resolved");
+                    expect(promiseWrapper.state()).toBe("resolved");
                 });
 
-                it("should reject promise before resolved with timeout", function () {
-                    var promiseBase, promiseWrapper;
+                it("should reject promise before resolved with timeout", async function () {
+                    let promiseBase, promiseWrapper;
 
-                    runs(function () {
-                        promiseBase    = promiseThatFails(5);
-                        promiseWrapper = Async.withTimeout(promiseBase, 10, true);
-                        waitsForFail(promiseWrapper, "promise rejected before timeout");
-                    });
+                    promiseBase    = promiseThatFails(5);
+                    promiseWrapper = Async.withTimeout(promiseBase, 10, true);
+                    await awaitsForFail(promiseWrapper);
 
-                    runs(function () {
-                        // base promise rejects wrapper promise
-                        expect(promiseBase.state()).toBe("rejected");
-                        expect(promiseWrapper.state()).toBe("rejected");
-                    });
+                    expect(promiseBase.state()).toBe("rejected");
+                    expect(promiseWrapper.state()).toBe("rejected");
                 });
 
-                it("should timeout with reject before promise resolves", function () {
-                    var promiseBase, promiseWrapper;
+                it("should timeout with reject before promise resolves", async function () {
+                    let promiseBase, promiseWrapper;
 
-                    runs(function () {
-                        promiseBase    = promiseThatSucceeds(10);
-                        promiseWrapper = Async.withTimeout(promiseBase, 5);
-                        waitsForFail(promiseWrapper, "times out before promise resolves");
-                    });
+                    promiseBase    = promiseThatSucceeds(10);
+                    promiseWrapper = Async.withTimeout(promiseBase, 5);
+                    await awaitsForFail(promiseWrapper);
 
-                    runs(function () {
-                        expect(promiseWrapper.state()).toBe("rejected");
-                        waitsForDone(promiseBase, "promise resolves after timeout");
-                    });
-
-                    runs(function () {
-                        expect(promiseBase.state()).toBe("resolved");
-                    });
+                    expect(promiseWrapper.state()).toBe("rejected");
+                    await awaitsForDone(promiseBase);
+                    expect(promiseBase.state()).toBe("resolved");
                 });
 
-                it("should timeout with resolve before promise rejected", function () {
-                    var promiseBase, promiseWrapper;
+                it("should timeout with resolve before promise rejected", async function () {
+                    let promiseBase, promiseWrapper;
 
-                    runs(function () {
-                        promiseBase    = promiseThatFails(10);
-                        promiseWrapper = Async.withTimeout(promiseBase, 5, true);
-                        waitsForDone(promiseWrapper, "times out before promise is rejected");
-                    });
+                    promiseBase    = promiseThatFails(10);
+                    promiseWrapper = Async.withTimeout(promiseBase, 5, true);
+                    await awaitsForDone(promiseWrapper);
 
-                    runs(function () {
-                        expect(promiseWrapper.state()).toBe("resolved");
-                        waitsForFail(promiseBase, "promise is rejected after timeout");
-                    });
+                    expect(promiseWrapper.state()).toBe("resolved");
+                    await awaitsForFail(promiseBase);
 
-                    runs(function () {
-                        expect(promiseBase.state()).toBe("rejected");
-                    });
+                    expect(promiseBase.state()).toBe("rejected");
                 });
             });
 
 
             describe("Async/sync mix", function () {
-                it("[async/sync] succeed with sync command at beginning", function () {
-                    expectChainHelper(
+                it("[async/sync] succeed with sync command at beginning", async function () {
+                    await expectChainHelper(
                         [syncAddTwoArg, oneArgThatSucceeds, oneArgThatSucceeds],
                         [1, 2],
                         true,
@@ -322,8 +296,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[async/sync] succeed with sync command at middle", function () {
-                    expectChainHelper(
+                it("[async/sync] succeed with sync command at middle", async function () {
+                    await expectChainHelper(
                         [twoArgThatSucceeds, syncAddTwoArg, oneArgThatSucceeds],
                         [1, 2],
                         true,
@@ -331,8 +305,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[async/sync] succeed with sync command at end", function () {
-                    expectChainHelper(
+                it("[async/sync] succeed with sync command at end", async function () {
+                    await expectChainHelper(
                         [twoArgThatSucceeds, twoArgThatSucceeds, syncAddTwoArg],
                         [1, 2],
                         true,
@@ -340,8 +314,8 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[async/sync] call error callback if sync command fails", function () {
-                    expectChainHelper(
+                it("[async/sync] call error callback if sync command fails", async function () {
+                    await expectChainHelper(
                         [twoArgThatSucceeds, syncException, twoArgThatSucceeds],
                         [1, 2],
                         false,
@@ -352,39 +326,28 @@ define(function (require, exports, module) {
                     );
                 });
 
-                it("[async/sync] two sync commands in order are executed completely synchronously", function () {
-                    var promise = null,
+                it("[async/sync] two sync commands in order are executed completely synchronously", async function () {
+                    let promise = null,
                         flag = true;
 
-                    runs(function () {
+                    function negate(b) {
+                        return !b;
+                    }
+                    function setFlag(b) {
+                        flag = b;
+                        return flag;
+                    }
 
-                        function negate(b) {
-                            return !b;
-                        }
-                        function setFlag(b) {
-                            flag = b;
-                            return flag;
-                        }
-
-                        promise = Async.chain([negate, setFlag], [flag]);
-                        promise.done(function (b) {
-                            expect(b).toBe(flag);
-                        });
-
-                        // note, we WANT to test this synchronously. This is not a bug
-                        // in the unit test. A series of synchronous functions should
-                        // execute synchronously.
-                        expect(flag).toBe(false);
+                    promise = Async.chain([negate, setFlag], [flag]);
+                    promise.done(function (b) {
+                        expect(b).toBe(flag);
                     });
 
-                    runs(function () {
-                        // With (the current version) of jQuery promises, resolution and
-                        // resolution handlers will get called synchronously. However, if we
-                        // move to a different promise implementation (e.g. Q) then resolution
-                        // handlers will get called asynchronously. So, we check completion
-                        // of the promise on a separate pass.
-                        waitsForDone(promise, "The chain to complete");
-                    });
+                    // note, we WANT to test this synchronously. This is not a bug
+                    // in the unit test. A series of synchronous functions should
+                    // execute synchronously.
+                    expect(flag).toBe(false);
+                    await awaitsForDone(promise);
                 });
 
             });
