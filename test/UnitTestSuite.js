@@ -23,7 +23,7 @@ define(function (require, exports, module) {
 
     // require("spec/a-suite-test");
     // todo TEST_MODERN
-    // require("spec/Async-test");
+    require("spec/Async-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
