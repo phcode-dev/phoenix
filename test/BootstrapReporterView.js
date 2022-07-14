@@ -140,8 +140,8 @@ define(function (require, exports, module) {
                 this.$info.toggleClass("alert-success", true).text("Complete. No failures.");
             } else {
                 this.$info.toggleClass("alert-error", true).text(
-                    "Complete. See failures. If all tests have passed, then there must be some syntax error" +
-                    " in any of the test files that was loaded as part of this run, but not executed.");
+                    "Complete. See failures. If all tests have passed and this shows up in red," +
+                    "check the debug console for errors. (search for 'Spec Error:' in console)");
             }
         }
     };
