@@ -30,6 +30,8 @@ define(function (require, exports, module) {
     require("spec/Editor-test");
     require("spec/EditorRedraw-test");
     require("spec/EditorCommandHandlers-test");
+    require("spec/EditorManager-test");
+    require("spec/EventDispatcher-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
@@ -39,8 +41,6 @@ define(function (require, exports, module) {
     // require("spec/DocumentManager-test");
     // require("spec/DragAndDrop-test");
     // require("spec/EditorOptionHandlers-test");
-    // require("spec/EditorManager-test");
-    // require("spec/EventDispatcher-test");
     // require("spec/ExtensionInstallation-test");
     // require("spec/ExtensionInterface-test");
     // require("spec/FeatureGate-test");

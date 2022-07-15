@@ -58,7 +58,7 @@ define(function (require, exports, module) {
             expect(fn1).toHaveBeenCalled();
             expect(fn2).toHaveBeenCalled();
 
-            expect(fn1.mostRecentCall.args[0]).toEqual({ type: "foo", target: dispatcher });
+            expect(fn1.calls.mostRecent().args[0]).toEql({ type: "foo", target: dispatcher });
         });
 
         it("should receive events with arguments", function () {
@@ -74,8 +74,8 @@ define(function (require, exports, module) {
             expect(fn1).toHaveBeenCalled();
             expect(fn2).not.toHaveBeenCalled();
 
-            fn1.reset();
-            fn2.reset();
+            fn1.calls.reset();
+            fn2.calls.reset();
             dispatcher.trigger("bar");
             expect(fn1).not.toHaveBeenCalled();
             expect(fn2).toHaveBeenCalled();
@@ -179,7 +179,7 @@ define(function (require, exports, module) {
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
 
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher.off("foo.4");  // shouldn't throw
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
@@ -198,7 +198,7 @@ define(function (require, exports, module) {
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
 
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher.trigger("bar");
             expect(fn1).toHaveBeenCalled();
         });
@@ -208,11 +208,11 @@ define(function (require, exports, module) {
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
 
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher.trigger("bar");
             expect(fn1).toHaveBeenCalled();
 
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher.off(".1");
             dispatcher.trigger("foo");
             expect(fn1).not.toHaveBeenCalled();
@@ -258,8 +258,8 @@ define(function (require, exports, module) {
             expect(fn1).toHaveBeenCalled();
             expect(fn2).not.toHaveBeenCalled();
 
-            fn1.reset();
-            fn2.reset();
+            fn1.calls.reset();
+            fn2.calls.reset();
             sc1.off("foo");
             sc2.trigger("foo");
             expect(fn1).not.toHaveBeenCalled();
@@ -270,7 +270,7 @@ define(function (require, exports, module) {
         it("attaching handler multiple times should call it multiple times", function () {
             dispatcher.on("foo", fn1).on("foo", fn1);
             dispatcher.trigger("foo");
-            expect(fn1.callCount).toBe(2);
+            expect(fn1.calls.count()).toBe(2);
         });
 
         it("duplicate handlers should all be detached at once", function () {
@@ -284,7 +284,7 @@ define(function (require, exports, module) {
             dispatcher.on("foo.1", fn1).on("foo.2", fn1);
             dispatcher.off("foo.1", fn1);
             dispatcher.trigger("foo");
-            expect(fn1.callCount).toBe(1);
+            expect(fn1.calls.count()).toBe(1);
         });
 
         it("concurrent removals don't break trigger()", function () {
@@ -297,8 +297,8 @@ define(function (require, exports, module) {
             expect(fn1).toHaveBeenCalled();
             expect(fn2).toHaveBeenCalled();
 
-            fn1.reset();
-            fn2.reset();
+            fn1.calls.reset();
+            fn2.calls.reset();
             dispatcher.trigger("foo");
             expect(fn1).not.toHaveBeenCalled();
             expect(fn2).not.toHaveBeenCalled();
@@ -315,9 +315,9 @@ define(function (require, exports, module) {
             expect(fn2).toHaveBeenCalled();
             expect(fn3).not.toHaveBeenCalled();
 
-            fn1.reset();
-            fn2.reset();
-            fn3.reset();
+            fn1.calls.reset();
+            fn2.calls.reset();
+            fn3.calls.reset();
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
             expect(fn2).toHaveBeenCalled();
@@ -332,9 +332,9 @@ define(function (require, exports, module) {
             expect(fn2).toHaveBeenCalled();
             expect(fn3).toHaveBeenCalled();
 
-            fn1.reset();
-            fn2.reset();
-            fn3.reset();
+            fn1.calls.reset();
+            fn2.calls.reset();
+            fn3.calls.reset();
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
             expect(fn2).not.toHaveBeenCalled();
@@ -346,14 +346,14 @@ define(function (require, exports, module) {
 
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher.trigger("foo");
             expect(fn1).not.toHaveBeenCalled();
 
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher.trigger("bar");
             expect(fn1).toHaveBeenCalled();
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher.trigger("bar");
             expect(fn1).not.toHaveBeenCalled();
         });
@@ -368,14 +368,14 @@ define(function (require, exports, module) {
 
             dispatcher1.trigger("foo");
             expect(fn1).toHaveBeenCalled();
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher1.trigger("foo");
             expect(fn1).not.toHaveBeenCalled();
 
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher2.trigger("foo");
             expect(fn1).toHaveBeenCalled();
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher2.trigger("foo");
             expect(fn1).not.toHaveBeenCalled();
         });
@@ -384,9 +384,9 @@ define(function (require, exports, module) {
             dispatcher.one("foo", fn1).one("foo", fn1);
 
             dispatcher.trigger("foo");
-            expect(fn1.callCount).toBe(2);
+            expect(fn1.calls.count()).toBe(2);
             dispatcher.trigger("foo");
-            expect(fn1.callCount).toBe(2);
+            expect(fn1.calls.count()).toBe(2);
         });
 
         it("off() given a function should work with one()", function () {
@@ -419,7 +419,7 @@ define(function (require, exports, module) {
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
 
-            fn1.reset();
+            fn1.calls.reset();
             dispatcher.on("foo", fn2);  // add 2nd listener the normal way - shouldn't disrupt original listener
             dispatcher.trigger("foo");
             expect(fn1).toHaveBeenCalled();
