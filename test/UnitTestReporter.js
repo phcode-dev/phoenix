@@ -261,7 +261,8 @@ define(function (require, exports, module) {
                 return{
                     compare: function(actual, expected) {
                         let result = {};
-                        let isSame = window.deepEqualKeyValuesOnly(expected, actual);
+                        let isSame = expected === actual || (JSON.stringify(expected) === JSON.stringify(actual));
+                        isSame = isSame ? isSame : window.deepEqualKeyValuesOnly(expected, actual);
                         result.pass = matchersUtil.equals(isSame, true);
                         if (!result.pass) {
                             result.message = "Expected: " + JSON.stringify(expected) +
