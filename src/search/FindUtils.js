@@ -377,18 +377,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * enable/disable web worker based search
-     * @param {boolean} disable true to disable worker based search
-     */
-    function setWorkerSearchDisabled(disable) {
-        if (disable) {
-            // only set disable. Enabling worker search doesnt mean we have to enable instant search.
-            setInstantSearchDisabled(disable);
-        }
-        workerSearchDisabled = disable;
-    }
-
-    /**
      * if worker search is disabled, this will return true
      * @return {boolean}
      */
@@ -494,7 +482,6 @@ define(function (require, exports, module) {
     exports.parseQueryInfo                  = parseQueryInfo;
     exports.prioritizeOpenFile              = prioritizeOpenFile;
     exports.getOpenFilePath                 = getOpenFilePath;
-    exports.setWorkerSearchDisabled         = setWorkerSearchDisabled;
     exports.isWorkerSearchDisabled          = isWorkerSearchDisabled;
     exports.setInstantSearchDisabled        = setInstantSearchDisabled;
     exports.isInstantSearchDisabled         = isInstantSearchDisabled;
