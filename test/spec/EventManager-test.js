@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeFirst, afterLast, beforeEach, afterEach, waitsFor, runs, waitsForDone */
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor */
 
 define(function (require, exports, module) {
     const EventManager = require("utils/EventManager"),
@@ -33,7 +33,7 @@ define(function (require, exports, module) {
             expect(EventManager.isExistsEventHandler("ev1")).toBe(true);
         });
 
-        it("should be trigger a registered event", function () {
+        it("should be trigger a registered event", async function () {
             EventManager.registerEventHandler("ev2", dispatcher);
             expect(EventManager.isExistsEventHandler("ev2")).toBe(true);
             let arg1, arg2;
@@ -43,7 +43,7 @@ define(function (require, exports, module) {
             });
             EventManager.triggerEvent("ev2", "someEvent", 1, "param1");
 
-            waitsFor(function () {
+            await awaitsFor(function () {
                 return arg1 === 1 && arg2 === "param1";
             }, 100, "awaiting event trigger");
         });
