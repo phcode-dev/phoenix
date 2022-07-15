@@ -32,6 +32,8 @@ define(function (require, exports, module) {
     require("spec/EditorCommandHandlers-test");
     require("spec/EditorManager-test");
     require("spec/EventDispatcher-test");
+    require("spec/EventManager-test");
+    require("spec/ExtensionInterface-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
@@ -42,12 +44,10 @@ define(function (require, exports, module) {
     // require("spec/DragAndDrop-test");
     // require("spec/EditorOptionHandlers-test");
     // require("spec/ExtensionInstallation-test");
-    // require("spec/ExtensionInterface-test");
     // require("spec/FeatureGate-test");
     // require("spec/ExtensionLoader-test");
     // require("spec/ExtensionManager-test");
     // require("spec/ExtensionUtils-test");
-    // require("spec/EventManager-test");
     // require("spec/FileFilters-test");
     // require("spec/FileSystem-test");
     // require("spec/FileTreeView-test");
