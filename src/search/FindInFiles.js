@@ -42,6 +42,8 @@ define(function (require, exports, module) {
         FindUtils             = require("search/FindUtils"),
         Metrics               = require("utils/Metrics");
 
+    let projectIndexingComplete = false;
+
     const _FindInFilesWorker = new Worker(
         `${Phoenix.baseURL}search/worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
 
@@ -166,6 +168,7 @@ define(function (require, exports, module) {
     }
 
     function workerFileCacheComplete([numFiles, cacheSize, crawlTime]) {
+        projectIndexingComplete = true;
         console.log(`file indexing worker cache complete: ${numFiles} files, size: ${cacheSize} B in ${crawlTime}ms`);
         if (/\/test\/SpecRunner\.html$/.test(window.location.pathname)) {
             // Ignore the event in the SpecRunner window
@@ -665,7 +668,9 @@ define(function (require, exports, module) {
 
     /**
      * Does a search in the given scope with the given filter. Used when you want to start a search
-     * programmatically.
+     * programmatically. Make sure that project indexing is complete by calling isProjectIndexingComplete()
+     * Else, an empty result will be returned if search is invoked before any files are indexed.
+     *
      * @param {{query: string, caseSensitive: boolean, isRegexp: boolean}} queryInfo Query info object
      * @param {?Entry} scope Project file/subfolder to search within; else searches whole project.
      * @param {?string} filter A "compiled" filter as returned by FileFilters.compile(), or null for no filter
@@ -978,6 +983,7 @@ define(function (require, exports, module) {
      * to not affect project load performance.
      */
     var _initCache = function () {
+        projectIndexingComplete = false;
         function filter(file) {
             return _subtreeFilter(file, null) && _isReadableFileType(file.fullPath);
         }
@@ -1005,6 +1011,7 @@ define(function (require, exports, module) {
     };
 
     function _scheduleCacheInit() {
+        projectIndexingComplete = false;
         setTimeout(_initCache, CACHE_INIT_DELAY_MS);
     }
 
@@ -1069,20 +1076,25 @@ define(function (require, exports, module) {
         return searchDeferred.promise();
     }
 
+    function isProjectIndexingComplete() {
+        return projectIndexingComplete;
+    }
+
     ProjectManager.on("projectOpen", _scheduleCacheInit);
     FindUtils.on(FindUtils.SEARCH_FILE_FILTERS_CHANGED, _searchScopeChanged);
     FindUtils.on(FindUtils.SEARCH_SCOPE_CHANGED, _searchScopeChanged);
     FindUtils.on(FindUtils.SEARCH_COLLAPSE_RESULTS, _searchcollapseResults);
 
     // Public exports
-    exports.searchModel            = searchModel;
-    exports.doSearchInScope        = doSearchInScope;
-    exports.doReplace              = doReplace;
-    exports.getCandidateFiles      = getCandidateFiles;
-    exports.clearSearch            = clearSearch;
-    exports.ZERO_FILES_TO_SEARCH   = ZERO_FILES_TO_SEARCH;
+    exports.searchModel               = searchModel;
+    exports.isProjectIndexingComplete = isProjectIndexingComplete;
+    exports.doSearchInScope           = doSearchInScope;
+    exports.doReplace                 = doReplace;
+    exports.getCandidateFiles         = getCandidateFiles;
+    exports.clearSearch               = clearSearch;
+    exports.ZERO_FILES_TO_SEARCH      = ZERO_FILES_TO_SEARCH;
     exports.getNextPageofSearchResults          = getNextPageofSearchResults;
-    exports.getAllSearchResults    = getAllSearchResults;
+    exports.getAllSearchResults       = getAllSearchResults;
 
     // For unit tests only
     exports._documentChangeHandler = _documentChangeHandler;

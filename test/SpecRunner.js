@@ -82,19 +82,23 @@ function jsPromise(jqueryOrJSPromise) {
 function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
     return new Promise((resolve, reject)=>{
         let lapsedTime = 0;
-        let interval = setInterval(()=>{
-            if(pollFn()){
-                clearInterval(interval);
-                resolve();
-                return;
+        function pollingFn() {
+            try{
+                if(pollFn()){
+                    resolve();
+                    return;
+                }
+                lapsedTime += pollInterval;
+                if(lapsedTime>timeoutms){
+                    reject();
+                    return;
+                }
+                setTimeout(pollingFn, pollInterval);
+            } catch (e) {
+                reject(e);
             }
-            lapsedTime += pollInterval;
-            if(lapsedTime>timeoutms){
-                clearInterval(interval);
-                reject();
-                return;
-            }
-        }, pollInterval);
+        }
+        pollingFn();
     });
 }
 
