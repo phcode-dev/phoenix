@@ -541,24 +541,34 @@ define(function (require, exports, module) {
         }
 
         async function executeSearch(searchString) {
+            await awaitsFor(function () {
+                return FindInFiles.isProjectIndexingComplete();
+            }, "Find in Files done", 10000);
             FindInFiles._searchDone = false;
             let $searchField = $(".modal-bar #find-group input");
             $searchField.val(searchString).trigger("input");
-            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
+            //SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
             await awaitsFor(function () {
                 return FindInFiles._searchDone;
-            }, "Find in Files done");
+            }, "Find in Files done", 10000);
+        }
+
+        async function executeCleanSearch(searchString) {
+            // instant search will not search for the same string twice as there is already results available.
+            await executeSearch(" ");
+            await executeSearch(searchString);
         }
 
         describe("Find in Files filtering", function () {
-            beforeAll(setupTestWindow, 10000);
-            //afterAll(teardownTestWindow, 2000);
+            beforeAll(setupTestWindow, 30000);
+            afterAll(teardownTestWindow, 2000);
 
             it("should search all files by default", async function () {
                 await openSearchBar();
-                await executeSearch("{1}");
+                await executeCleanSearch("{1}");
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
                 expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
+                await closeSearchBar();
             }, 10000);
 
             // This finishes async, since clickDialogButton() finishes async (dialogs close asynchronously)
@@ -574,21 +584,23 @@ define(function (require, exports, module) {
             it("should exclude files from search", async function () {
                 await openSearchBar();
                 await setExcludeCSSFiles();
-                await executeSearch("{1}");
+                await executeCleanSearch("{1}");
                 // *.css should have been excluded this time
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
                 expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
-            });
+                await closeSearchBar();
+            }, 10000);
 
             it("should respect filter when searching folder", async function () {
                 let dirEntry = FileSystem.getDirectoryForPath(testPath);
                 await openSearchBar(dirEntry);
                 await setExcludeCSSFiles();
-                await executeSearch("{1}");
+                await executeCleanSearch("{1}");
                 // *.css should have been excluded this time
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
                 expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
-            });
+                await closeSearchBar();
+            }, 10000);
 
             it("should ignore filter when searching a single file", async function () {
                 let fileEntry = FileSystem.getFileForPath(testPath + "/test1.css");
@@ -596,10 +608,10 @@ define(function (require, exports, module) {
                 // Cannot explicitly set *.css filter in dialog because button is hidden
                 // (which is verified here), but filter persists from previous test
                 expect($("button.file-filter-picker").is(":visible")).toBeFalsy();
-                await executeSearch("{1}");
+                await executeCleanSearch("{1}");
                 // ignore *.css exclusion since we're explicitly searching this file
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
-            });
+            }, 10000);
 
             it("should show error when filter excludes all files", async function () {
                 await openSearchBar();
@@ -609,7 +621,7 @@ define(function (require, exports, module) {
                 // Edit the filter & confirm changes
                 $(".modal.instance textarea").val("test1.*\n*.css");
                 await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-                await executeSearch("{1}");
+                await executeCleanSearch("{1}");
                 let $modalBar = $(".modal-bar");
 
                 // Dialog still showing
@@ -624,12 +636,12 @@ define(function (require, exports, module) {
                 // Close search bar
                 let $searchField = $modalBar.find("#find-group input");
                 await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
-            });
+            }, 10000);
 
             it("should respect filter when editing code", async function () {
                 await openSearchBar();
                 await setExcludeCSSFiles();
-                await executeSearch("{1}");
+                await executeCleanSearch("{1}");
                 let promise = testWindow.brackets.test.DocumentManager.getDocumentForPath(testPath + "/test1.css");
                 await awaitsForDone(promise);
                 promise.done(function (doc) {
@@ -640,16 +652,20 @@ define(function (require, exports, module) {
                 await awaits(800);  // ensure _documentChangeHandler()'s timeout has time to run
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();  // *.css should still be excluded
                 expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
-            });
+            }, 10000);
         });
 
         describe("Filter picker UI", function () {
-            beforeAll(setupTestWindow);
-            afterAll(teardownTestWindow);
+            beforeAll(setupTestWindow, 30000);
+            afterAll(teardownTestWindow, 10000);
 
-            beforeEach(openSearchBar);
+            beforeEach(async function () {
+                await openSearchBar();
+            });
 
-            afterEach(closeSearchBar);
+            afterEach(async ()=>{
+                await closeSearchBar();
+            });
 
             function verifyButtonLabel(expectedLabel) {
                 let newButtonLabel  = StringUtils.format(Strings.EXCLUDE_FILE_FILTER, expectedLabel);
@@ -680,7 +696,7 @@ define(function (require, exports, module) {
 
             it("should show 'No files Excluded' in filter picker button by default", async function () {
                 verifyButtonLabel();
-            });
+            }, 10000);
 
             it("should show two filter commands by default", async function () {
                 FileFilters.showDropdown();
@@ -692,7 +708,7 @@ define(function (require, exports, module) {
                 expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
 
                 FileFilters.closeDropdown();
-            });
+            }, 10000);
 
             it("should launch filter editor and add a new filter set when invoked from new filter command", async function () {
                 let $dropdown;
@@ -721,7 +737,7 @@ define(function (require, exports, module) {
                 expect($(".recent-filter-patterns", $($dropdown.children()[3])).text()).toEqual(" - *.css, *.less " + filterSuffix);
 
                 FileFilters.closeDropdown();
-            });
+            }, 10000);
 
             it("should clear the active filter set when invoked from clear filter command", async function () {
                 let $dropdown;
@@ -751,7 +767,7 @@ define(function (require, exports, module) {
                 expect($(".recent-filter-patterns", $($dropdown.children()[3])).text()).toEqual(" - *.css, *.less " + filterSuffix);
 
                 FileFilters.closeDropdown();
-            });
+            }, 10000);
 
             it("should switch the active filter set to the selected one", async function () {
                 let $dropdown;
@@ -767,7 +783,7 @@ define(function (require, exports, module) {
                 // Verify filter picker button label is updated with the name of the selected filter set.
                 verifyButtonLabel("CSS Files");
                 expect($dropdown.is(":visible")).toBeFalsy();
-            });
+            }, 10000);
 
             it("should launch filter editor and fill in the text fields with selected filter info", async function () {
                 let $dropdown;
@@ -789,7 +805,7 @@ define(function (require, exports, module) {
                 // Verify filter picker button label is updated with the patterns of the selected filter set.
                 verifyButtonLabel("*.css");
                 expect($dropdown.is(":visible")).toBeFalsy();
-            });
+            }, 10000);
 
             it("should remove selected filter from filter sets preferences without changing picker button label", async function () {
                 let $dropdown,
@@ -828,7 +844,7 @@ define(function (require, exports, module) {
                 expect($("a", $dropdown.children()[4]).data("index")).toBe(4);
 
                 FileFilters.closeDropdown();
-            });
+            }, 10000);
 
             it("should remove selected filter from filter sets preferences plus changing picker button label", async function () {
                 let $dropdown;
@@ -850,7 +866,7 @@ define(function (require, exports, module) {
                 expect($dropdown.children().length).toEqual(4);
 
                 FileFilters.closeDropdown();
-            });
+            }, 10000);
 
             it("should also remove the divider from the dropdown list after removing the last remaining filter set", async function () {
                 let $dropdown;
@@ -872,7 +888,7 @@ define(function (require, exports, module) {
                 expect($dropdown.children().length).toEqual(2);
 
                 FileFilters.closeDropdown();
-            });
+            }, 10000);
         });
     });
 });
