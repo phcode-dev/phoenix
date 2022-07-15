@@ -284,7 +284,7 @@ define(function (require, exports, module) {
     /**
      * Remove temp folder used for temporary unit tests files
      */
-    function removeTempDirectory() {
+    async function removeTempDirectory() {
         return new Promise((resolve, reject)=>{
             let baseDir     = getTempDirectory();
             _resetPermissionsOnSpecialTempFolders().done(function () {
@@ -1190,41 +1190,17 @@ define(function (require, exports, module) {
     }
 
     // "global" custom matchers
-    beforeEach(function () {
-        jasmine.addMatchers({
-            /**
-             * Expects the given editor's selection to be a cursor at the given position (no range selected)
-             */
-            toHaveCursorPosition: function (line, ch, ignoreSelection) {
-                var editor = this.actual;
-                var selection = editor.getSelection();
-                var notString = this.isNot ? "not " : "";
-
-                var start = selection.start;
-                var end = selection.end;
-                var selectionMoreThanOneCharacter = start.line !== end.line || start.ch !== end.ch;
-
-                this.message = function () {
-                    var message = "Expected the cursor to " + notString + "be at (" + line + ", " + ch +
-                        ") but it was actually at (" + start.line + ", " + start.ch + ")";
-                    if (!this.isNot && selectionMoreThanOneCharacter) {
-                        message += " and more than one character was selected.";
-                    }
-                    return message;
-                };
-
-                var positionsMatch = start.line === line && start.ch === ch;
-
-                // when adding the not operator, it's confusing to check both the size of the
-                // selection and the position. We just check the position in that case.
-                if (this.isNot || ignoreSelection) {
-                    return positionsMatch;
-                }
-                return !selectionMoreThanOneCharacter && positionsMatch;
-
-            }
-        });
-    });
+    function editorHasCursorPosition(editor, line, ch, ignoreSelection) {
+        let selection = editor.getSelection();
+        let start = selection.start;
+        let end = selection.end;
+        let selectionMoreThanOneCharacter = start.line !== end.line || start.ch !== end.ch;
+        let positionsMatch = start.line === line && start.ch === ch;
+        if (ignoreSelection) {
+            return positionsMatch;
+        }
+        return !selectionMoreThanOneCharacter && positionsMatch;
+    }
 
     function setUnitTestReporter(reporter) {
         _unitTestReporter = reporter;
@@ -1273,5 +1249,6 @@ define(function (require, exports, module) {
     exports.removeTempDirectory             = removeTempDirectory;
     exports.setUnitTestReporter             = setUnitTestReporter;
     exports.resizeEditor                    = resizeEditor;
+    exports.editorHasCursorPosition            = editorHasCursorPosition;
     exports.jsPromise                       = jsPromise;
 });
