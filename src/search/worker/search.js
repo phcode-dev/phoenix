@@ -327,8 +327,12 @@ async function doSearch(searchObject, nextPages) {
 
     savedSearchObject = searchObject;
     if (!files) {
-        console.log("file indexer: no file object found");
-        return {};
+        console.log("file indexer: search was called before indexing or there are no files in project!");
+        return {
+            "results": {},
+            "foundMaximum": false,
+            "exceedsMaximum": false
+        };
     }
     results = {};
     numMatches = 0;

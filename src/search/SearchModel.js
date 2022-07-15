@@ -223,17 +223,6 @@ define(function (require, exports, module) {
             propertyName = "",
             i = 0;
 
-        if (FindUtils.isWorkerSearchDisabled()) {
-            return Object.keys(this.results).sort(function (key1, key2) {
-                if (firstFile === key1) {
-                    return -1;
-                } else if (firstFile === key2) {
-                    return 1;
-                }
-                return FileUtils.comparePaths(key1, key2);
-            });
-        }
-
         firstFile = firstFile || "";
 
         // Create a working set path map which indicates if a file in working set is found in file list

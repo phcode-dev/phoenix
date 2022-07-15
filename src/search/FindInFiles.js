@@ -560,7 +560,7 @@ define(function (require, exports, module) {
                 // Filter out files/folders that match user's current exclusion filter
                 fileListResult = FileFilters.filterFileList(filter, fileListResult);
 
-                if (searchModel.isReplace || FindUtils.isWorkerSearchDisabled()) {
+                if (searchModel.isReplace) {
                     if (fileListResult.length) {
                         searchModel.allResultsAvailable = true;
                         return Async.doInParallel(fileListResult, _doSearchInOneFile);
@@ -609,7 +609,7 @@ define(function (require, exports, module) {
                         .then(function (rcvd_object) {
                             FindUtils.notifyWorkerSearchFinished();
                             if (!rcvd_object || !rcvd_object.results) {
-                                console.error('search worker failed, falling back to brackets search', JSON.parse(rcvd_object));
+                                console.error('search worker failed, falling back to brackets search', rcvd_object);
                                 searchDeferred.fail();
                                 clearSearch();
                                 return;
@@ -720,9 +720,6 @@ define(function (require, exports, module) {
      * Notify worker that the results should be collapsed
      */
     function _searchcollapseResults() {
-        if (FindUtils.isWorkerSearchDisabled()) {
-            return;
-        }
         _FindInFilesWorker.exec("collapseResults", FindUtils.isCollapsedResults());
     }
 
@@ -731,7 +728,7 @@ define(function (require, exports, module) {
      * @param {array} fileList The list of files that changed.
      */
     function filesChanged(fileList) {
-        if (FindUtils.isWorkerSearchDisabled() || !fileList || fileList.length === 0) {
+        if (!fileList || fileList.length === 0) {
             return;
         }
         var updateObject = {
@@ -749,7 +746,7 @@ define(function (require, exports, module) {
      * @param {array} fileList The list of files that was removed.
      */
     function filesRemoved(fileList) {
-        if (FindUtils.isWorkerSearchDisabled() || !fileList || fileList.length === 0) {
+        if (!fileList || fileList.length === 0) {
             return;
         }
         var updateObject = {
@@ -976,6 +973,9 @@ define(function (require, exports, module) {
     /**
      * On project change, inform worker about the new list of files that needs to be crawled.
      * Instant search is also disabled for the time being till the crawl is complete in worker.
+     *
+     * This should never be called directly and only called via _scheduleCacheInit() below
+     * to not affect project load performance.
      */
     var _initCache = function () {
         function filter(file) {
