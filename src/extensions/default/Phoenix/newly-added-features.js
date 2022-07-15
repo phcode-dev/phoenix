@@ -27,7 +27,7 @@ define(function (require, exports, module) {
     const NEW_FEATURE_MARKDOWN_SHOWN_HASH = "Newly_added_features.md.shown.hash";
 
     function _getUpdateMarkdownPath() {
-        return location.href + "assets/default-project/en/Newly_added_features.md";
+        return Phoenix.baseURL + "assets/default-project/en/Newly_added_features.md";
     }
 
     async function _digestMessage(message) {

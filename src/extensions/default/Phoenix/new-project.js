@@ -59,7 +59,7 @@ define(function (require, exports, module) {
         }
         let templateVars = {
             Strings: Strings,
-            newProjectURL: `${window.location.href}/assets/new-project/code-editor.html`
+            newProjectURL: `${window.Phoenix.baseURL}assets/new-project/code-editor.html`
         };
         let dialogueContents = Mustache.render(newProjectTemplate, templateVars);
         newProjectDialogueObj = Dialogs.showModalDialogUsingTemplate(dialogueContents, true);

@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /*
  * The core search functionality used by Find in Files and single-file Replace Batch.
  */
@@ -41,7 +43,7 @@ define(function (require, exports, module) {
         Metrics               = require("utils/Metrics");
 
     const _FindInFilesWorker = new Worker(
-        `search/worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
+        `${Phoenix.baseURL}search/worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
 
     if(!_FindInFilesWorker){
         console.error("Could not load find in files worker! Search will be disabled.");
@@ -611,7 +613,7 @@ define(function (require, exports, module) {
                         .then(function (rcvd_object) {
                             FindUtils.notifyWorkerSearchFinished();
                             if (!rcvd_object || !rcvd_object.results) {
-                                console.error('search worker failed, falling back to brackets search');
+                                console.error('search worker failed, falling back to brackets search', JSON.parse(rcvd_object));
                                 FindUtils.setWorkerSearchDisabled(true);
                                 searchDeferred.fail();
                                 clearSearch();
