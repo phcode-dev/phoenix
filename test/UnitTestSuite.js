@@ -42,6 +42,8 @@ define(function (require, exports, module) {
     require("spec/FileTreeView-test");
     require("spec/FileTreeViewModel-test");
     require("spec/FileUtils-test");
+    require("spec/FindReplace-test");
+    //require("spec/FindReplace-integ-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
@@ -54,7 +56,6 @@ define(function (require, exports, module) {
     // require("spec/ExtensionInstallation-test");
     // require("spec/ExtensionUtils-test");
     // require("spec/FindInFiles-test");
-    // require("spec/FindReplace-test");
     // require("spec/HTMLInstrumentation-test");
     // require("spec/HTMLSimpleDOM-test");
     // require("spec/HTMLTokenizer-test");
