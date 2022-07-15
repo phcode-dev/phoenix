@@ -151,23 +151,6 @@ define(function (require, exports, module) {
                 expect(actions.setContext).toHaveBeenCalledWith("/foo/afile.js");
             });
 
-            it("should not set context on a node by control click on Windows", function () {
-                var actions = jasmine.createSpyObj("actions", ["setContext"]);
-                var rendered = PreactTestUtils.renderIntoDocument(FileTreeView._fileNode({
-                    name: "afile.js",
-                    entry: Immutable.Map(),
-                    actions: actions,
-                    parentPath: "/foo/",
-                    platform: "win"
-                }));
-                var node = Preact.findDOMNode(rendered);
-                PreactTestUtils.Simulate.mouseDown(node, {
-                    button: 0,
-                    ctrlKey: true
-                });
-                expect(actions.setContext).not.toHaveBeenCalled();
-            });
-
             it("should allow icon extensions to return a jQuery object for the icon", function () {
                 var extensionCalls = 0,
                     rendered = PreactTestUtils.renderIntoDocument(FileTreeView._fileNode({
