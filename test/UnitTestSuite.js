@@ -38,6 +38,7 @@ define(function (require, exports, module) {
     require("spec/ExtensionManager-test");
     require("spec/FeatureGate-test");
     require("spec/FileFilters-test");
+    require("spec/FileSystem-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
@@ -49,7 +50,6 @@ define(function (require, exports, module) {
     // require("spec/EditorOptionHandlers-test");
     // require("spec/ExtensionInstallation-test");
     // require("spec/ExtensionUtils-test");
-    // require("spec/FileSystem-test");
     // require("spec/FileTreeView-test");
     // require("spec/FileTreeViewModel-test");
     // require("spec/FileUtils-test");
