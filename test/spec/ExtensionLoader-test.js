@@ -94,9 +94,7 @@ define(function (require, exports, module) {
         });
 
         it("should load a basic extension that uses requirejs-config.json", async function () {
-            spyOn(console, "log").and.callThrough();
             await testLoadExtension("RequireJSConfig", "resolved");
-            expect(console.log.calls.mostRecent().args[0]).toBe("bar_exported");
         });
 
         it("should log an error if an extension fails to init", async function () {
