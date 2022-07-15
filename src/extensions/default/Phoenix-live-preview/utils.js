@@ -61,7 +61,7 @@ define(function (require, exports, module) {
     }
 
     function getNoPreviewURL(){
-        return `${window.location.href}assets/phoenix-splash/no-preview.html`;
+        return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html`;
     }
 
     async function _getDefaultPreviewDetails() {

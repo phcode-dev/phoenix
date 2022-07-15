@@ -92,12 +92,26 @@ function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
             if(lapsedTime>timeoutms){
                 clearInterval(interval);
                 reject();
+                return;
             }
         }, pollInterval);
     });
 }
+
+/**
+ * global test util to wait for a period of time
+ * @param waitTimeMs - max time to wait for in ms.
+ * @returns {*}
+ */
+function awaits(waitTimeMs){
+    return new Promise((resolve)=>{
+        setTimeout(resolve, waitTimeMs);
+    });
+}
+
 window.jsPromise = jsPromise;
 window.awaitsFor = awaitsFor;
+window.awaits = awaits;
 
 define(function (require, exports, module) {
 

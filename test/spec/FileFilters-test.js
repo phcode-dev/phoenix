@@ -21,13 +21,13 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-/*global describe, it, expect, beforeFirst, afterLast, beforeEach, afterEach, waitsFor, waitsForDone, waits, runs */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, awaits*/
 /*unittests: FileFilters*/
 
 define(function (require, exports, module) {
 
 
-    var FileFilters        = require("search/FileFilters"),
+    let FileFilters        = require("search/FileFilters"),
         SpecRunnerUtils    = require("spec/SpecRunnerUtils"),
         Dialogs            = require("widgets/Dialogs"),
         KeyEvent           = require("utils/KeyEvent"),
@@ -48,7 +48,7 @@ define(function (require, exports, module) {
             }
 
             it("empty filter should accept everything", function () {
-                var filter = FileFilters.compile([]);
+                let filter = FileFilters.compile([]);
                 expectNotMatch(filter, "/foo");
                 expectNotMatch(filter, "/foo/bbb/");
                 expectNotMatch(filter, "/foo/bbb/file");
@@ -56,7 +56,7 @@ define(function (require, exports, module) {
             });
 
             it("should match simple substring", function () {
-                var filter = FileFilters.compile(["foo"]);
+                let filter = FileFilters.compile(["foo"]);
                 expectMatch(filter, "/foo/bbb/file.txt");
                 expectMatch(filter, "/aaa/bbb/foo.txt");
                 expectMatch(filter, "/aaa/bbb/ccc.foo");
@@ -73,7 +73,7 @@ define(function (require, exports, module) {
             });
 
             it("should match file extension", function () {
-                var filter = FileFilters.compile(["*.css"]);
+                let filter = FileFilters.compile(["*.css"]);
                 expectMatch(filter,    "/file.css");
                 expectMatch(filter,    "/aaa/bbb/file.css");
                 expectNotMatch(filter, "/foo/bbb/file.txt");
@@ -89,7 +89,7 @@ define(function (require, exports, module) {
             });
 
             it("should match file name", function () {
-                var filter = FileFilters.compile(["/jquery.js"]);
+                let filter = FileFilters.compile(["/jquery.js"]);
                 expectMatch(filter,    "/jquery.js");
                 expectMatch(filter,    "/aaa/bbb/jquery.js");
                 expectNotMatch(filter, "/foo/bbb/jquery.js.txt");
@@ -103,7 +103,7 @@ define(function (require, exports, module) {
             });
 
             it("should match folder name", function () {
-                var filter = FileFilters.compile(["/node_modules/"]);
+                let filter = FileFilters.compile(["/node_modules/"]);
                 expectMatch(filter,    "/node_modules/");
                 expectMatch(filter,    "/node_modules/file.js");
                 expectMatch(filter,    "/node_modules/bbb/file.js");
@@ -115,7 +115,7 @@ define(function (require, exports, module) {
             });
 
             it("should match multi-segment path part", function () {
-                var filter = FileFilters.compile(["/foo/bar/"]);
+                let filter = FileFilters.compile(["/foo/bar/"]);
                 expectMatch(filter,    "/foo/bar/");
                 expectMatch(filter,    "/foo/bar/file.txt");
                 expectMatch(filter,    "/aaa/foo/bar/");
@@ -147,7 +147,7 @@ define(function (require, exports, module) {
             });
 
             it("should match * within path segment", function () {
-                var filter = FileFilters.compile(["a*c"]);
+                let filter = FileFilters.compile(["a*c"]);
                 expectMatch(filter,    "/ac");
                 expectMatch(filter,    "/abc");
                 expectMatch(filter,    "/a123c");
@@ -257,7 +257,7 @@ define(function (require, exports, module) {
                 // Note: many of the other testcases also cover ** since they're implied at the start & end of most filters
                 // (see docs in FileFilters.compile() and at https://github.com/adobe/brackets/wiki/Using-File-Filters)
 
-                var filter = FileFilters.compile(["a**c"]);
+                let filter = FileFilters.compile(["a**c"]);
                 expectMatch(filter,    "/ac");
                 expectMatch(filter,    "/abc");
                 expectMatch(filter,    "/a123c");
@@ -338,7 +338,7 @@ define(function (require, exports, module) {
             });
 
             it("should match ? against single non-slash char", function () {
-                var filter = FileFilters.compile(["a?c"]);
+                let filter = FileFilters.compile(["a?c"]);
                 expectNotMatch(filter, "/ac");
                 expectMatch(filter,    "/abc");
                 expectNotMatch(filter, "/Xac");
@@ -385,8 +385,8 @@ define(function (require, exports, module) {
 
         describe("Automatic glob prefixes/suffixes", function () {
             function expectEquivalent(orig, wrapped) {
-                var compiled1 = FileFilters.compile([orig]);
-                var compiled2 = FileFilters.compile([wrapped]);
+                let compiled1 = FileFilters.compile([orig]);
+                let compiled2 = FileFilters.compile([wrapped]);
                 expect(compiled1).toEqual(compiled2);
             }
 
@@ -434,7 +434,7 @@ define(function (require, exports, module) {
             });
 
             it("should select the newly added filter set as the active one", function () {
-                var existingFilters = [{name: "Node Modules", patterns: "node_module"},
+                let existingFilters = [{name: "Node Modules", patterns: "node_module"},
                                        {name: "Mark Down Files", patterns: "*.md"}],
                     newFilterSet    = {name: "CSS Files", patterns: "*.css, *.less"};
 
@@ -450,7 +450,7 @@ define(function (require, exports, module) {
             });
 
             it("should select the just edited filter set as the active one", function () {
-                var existingFilters = [{name: "Node Modules", patterns: "node_module"},
+                let existingFilters = [{name: "Node Modules", patterns: "node_module"},
                                        {name: "Mark Down Files", patterns: "*.md"}],
                     newFilterSet    = {name: "CSS Files", patterns: "*.css, *.less"};
 
@@ -468,7 +468,7 @@ define(function (require, exports, module) {
             });
 
             it("should not have an active filter set after removing the current active one", function () {
-                var existingFilters = [{name: "Node Modules", patterns: "node_module"},
+                let existingFilters = [{name: "Node Modules", patterns: "node_module"},
                                        {name: "Mark Down Files", patterns: "*.md"}];
 
                 // Create two filter sets and make the second one active.
@@ -484,535 +484,394 @@ define(function (require, exports, module) {
                 expect(PreferencesManager.getViewState("activeFileFilter")).toBe(-1);
             });
         });
+    });
+    describe("integration: FileFilters", function () {
 
-        describe("Integration", function () {
+        let testPath = SpecRunnerUtils.getTestPath("/spec/InlineEditorProviders-test-files"),
+            testWindow,
+            FileFilters,
+            FileSystem,
+            FindInFiles,
+            FindInFilesUI,
+            CommandManager,
+            $;
 
-            this.category = "integration";
+        // We don't directly call beforeAll/afterAll here because it appears that we need
+        // separate test windows for the nested describe suites.
+        async function setupTestWindow() {
+            // Create a new window that will be shared by ALL tests in this spec.
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            // Load module instances from brackets.test
+            FileFilters     = testWindow.brackets.test.FileFilters;
+            FileSystem      = testWindow.brackets.test.FileSystem;
+            FindInFiles     = testWindow.brackets.test.FindInFiles;
+            FindInFilesUI   = testWindow.brackets.test.FindInFilesUI;
+            CommandManager  = testWindow.brackets.test.CommandManager;
+            $               = testWindow.$;
 
-            var testPath = SpecRunnerUtils.getTestPath("/spec/InlineEditorProviders-test-files"),
-                testWindow,
-                FileFilters,
-                FileSystem,
-                FindInFiles,
-                FindInFilesUI,
-                CommandManager,
-                $;
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+        }
 
-            // We don't directly call beforeFirst/afterLast here because it appears that we need
-            // separate test windows for the nested describe suites.
-            function setupTestWindow(spec) {
-                // Create a new window that will be shared by ALL tests in this spec.
-                SpecRunnerUtils.createTestWindowAndRun(spec, function (w) {
-                    testWindow = w;
+        async function teardownTestWindow() {
+            testWindow = null;
+            FileSystem = null;
+            FileFilters = null;
+            FindInFiles = null;
+            FindInFilesUI = null;
+            CommandManager = null;
+            $ = null;
+            await SpecRunnerUtils.closeTestWindow();
+        }
 
-                    // Load module instances from brackets.test
-                    FileFilters     = testWindow.brackets.test.FileFilters;
-                    FileSystem      = testWindow.brackets.test.FileSystem;
-                    FindInFiles     = testWindow.brackets.test.FindInFiles;
-                    FindInFilesUI   = testWindow.brackets.test.FindInFilesUI;
-                    CommandManager  = testWindow.brackets.test.CommandManager;
-                    $               = testWindow.$;
+        // These helper functions are slight variations of the ones in FindInFiles, so need to be
+        // kept in sync with those. It's a bit awkward to try to share them, and as long as
+        // it's just these few functions it's probably okay to just keep them in sync manually,
+        // but if this gets more complicated we should probably figure out how to break them out.
+        async function openSearchBar(scope) {
+            FindInFiles._searchDone = false;
+            FindInFilesUI._showFindBar(scope);
+            await awaitsFor(function () {
+                return $(".modal-bar").length === 1;
+            }, "search bar open");
+        }
 
-                    SpecRunnerUtils.loadProjectInTestWindow(testPath);
-                });
+        function closeSearchBar() {
+            let $searchField = $(".modal-bar #find-group input");
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
+        }
+
+        async function executeSearch(searchString) {
+            FindInFiles._searchDone = false;
+            let $searchField = $(".modal-bar #find-group input");
+            $searchField.val(searchString).trigger("input");
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
+            await awaitsFor(function () {
+                return FindInFiles._searchDone;
+            }, "Find in Files done");
+        }
+
+        describe("Find in Files filtering", function () {
+            beforeAll(setupTestWindow, 10000);
+            //afterAll(teardownTestWindow, 2000);
+
+            it("should search all files by default", async function () {
+                await openSearchBar();
+                await executeSearch("{1}");
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
+            }, 10000);
+
+            // This finishes async, since clickDialogButton() finishes async (dialogs close asynchronously)
+            async function setExcludeCSSFiles() {
+                // Launch filter editor
+                FileFilters.editFilter({ name: "", patterns: [] }, -1);
+
+                // Edit the filter & confirm changes
+                $(".modal.instance textarea").val("*.css");
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
             }
 
-            function teardownTestWindow() {
-                testWindow = null;
-                FileSystem = null;
-                FileFilters = null;
-                FindInFiles = null;
-                FindInFilesUI = null;
-                CommandManager = null;
-                $ = null;
-                SpecRunnerUtils.closeTestWindow();
-            }
-
-            // These helper functions are slight variations of the ones in FindInFiles, so need to be
-            // kept in sync with those. It's a bit awkward to try to share them, and as long as
-            // it's just these few functions it's probably okay to just keep them in sync manually,
-            // but if this gets more complicated we should probably figure out how to break them out.
-            function openSearchBar(scope) {
-                runs(function () {
-                    FindInFiles._searchDone = false;
-                    FindInFilesUI._showFindBar(scope);
-                });
-                waitsFor(function () {
-                    return $(".modal-bar").length === 1;
-                }, "search bar open");
-            }
-
-            function closeSearchBar() {
-                runs(function () {
-                    var $searchField = $(".modal-bar #find-group input");
-                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
-                });
-            }
-
-            function executeSearch(searchString) {
-                FindInFiles._searchDone = false;
-                var $searchField = $(".modal-bar #find-group input");
-                $searchField.val(searchString).trigger("input");
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                waitsFor(function () {
-                    return FindInFiles._searchDone;
-                }, "Find in Files done");
-            }
-
-            describe("Find in Files filtering", function () {
-                beforeFirst(function () {
-                    setupTestWindow(this);
-                });
-                afterLast(teardownTestWindow);
-
-                it("should search all files by default", function () {
-                    openSearchBar();
-                    runs(function () {
-                        executeSearch("{1}");
-                    });
-                    runs(function () {
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
-                    });
-                });
-
-                // This finishes async, since clickDialogButton() finishes async (dialogs close asynchronously)
-                function setExcludeCSSFiles() {
-                    // Launch filter editor
-                    FileFilters.editFilter({ name: "", patterns: [] }, -1);
-
-                    // Edit the filter & confirm changes
-                    $(".modal.instance textarea").val("*.css");
-                    SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-                }
-
-                it("should exclude files from search", function () {
-                    openSearchBar();
-                    runs(function () {
-                        setExcludeCSSFiles();
-                    });
-                    runs(function () {
-                        executeSearch("{1}");
-                    });
-                    runs(function () {
-                        // *.css should have been excluded this time
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
-                    });
-                });
-
-                it("should respect filter when searching folder", function () {
-                    var dirEntry = FileSystem.getDirectoryForPath(testPath);
-                    openSearchBar(dirEntry);
-                    runs(function () {
-                        setExcludeCSSFiles();
-                    });
-                    runs(function () {
-                        executeSearch("{1}");
-                    });
-                    runs(function () {
-                        // *.css should have been excluded this time
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
-                    });
-                });
-
-                it("should ignore filter when searching a single file", function () {
-                    var fileEntry = FileSystem.getFileForPath(testPath + "/test1.css");
-                    openSearchBar(fileEntry);
-                    runs(function () {
-                        // Cannot explicitly set *.css filter in dialog because button is hidden
-                        // (which is verified here), but filter persists from previous test
-                        expect($("button.file-filter-picker").is(":visible")).toBeFalsy();
-                    });
-                    runs(function () {
-                        executeSearch("{1}");
-                    });
-                    runs(function () {
-                        // ignore *.css exclusion since we're explicitly searching this file
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
-                    });
-                });
-
-                it("should show error when filter excludes all files", function () {
-                    openSearchBar();
-                    runs(function () {
-                        // Launch filter editor
-                        FileFilters.editFilter({ name: "", patterns: [] }, -1);
-
-                        // Edit the filter & confirm changes
-                        $(".modal.instance textarea").val("test1.*\n*.css");
-                        SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-                    });
-                    runs(function () {
-                        executeSearch("{1}");
-                    });
-                    runs(function () {
-                        var $modalBar = $(".modal-bar");
-
-                        // Dialog still showing
-                        expect($modalBar.length).toBe(1);
-
-                        // Error message displayed
-                        expect($modalBar.find("#find-group div.error").is(":visible")).toBeTruthy();
-
-                        // Search panel not showing
-                        expect($("#find-in-files-results").is(":visible")).toBeFalsy();
-
-                        // Close search bar
-                        var $searchField = $modalBar.find("#find-group input");
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
-                    });
-                });
-
-                it("should respect filter when editing code", function () {
-                    openSearchBar();
-                    runs(function () {
-                        setExcludeCSSFiles();
-                    });
-                    runs(function () {
-                        executeSearch("{1}");
-                    });
-                    runs(function () {
-                        var promise = testWindow.brackets.test.DocumentManager.getDocumentForPath(testPath + "/test1.css");
-                        waitsForDone(promise);
-                        promise.done(function (doc) {
-                            // Modify line that contains potential search result
-                            expect(doc.getLine(5).indexOf("{1}")).not.toBe(-1);
-                            doc.replaceRange("X", {line: 5, ch: 0});
-                        });
-                    });
-                    runs(function () {
-                        waits(800);  // ensure _documentChangeHandler()'s timeout has time to run
-                    });
-                    runs(function () {
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();  // *.css should still be excluded
-                        expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
-                    });
-                });
+            it("should exclude files from search", async function () {
+                await openSearchBar();
+                await setExcludeCSSFiles();
+                await executeSearch("{1}");
+                // *.css should have been excluded this time
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
             });
 
-            describe("Filter picker UI", function () {
-                beforeFirst(function () {
-                    setupTestWindow(this);
+            it("should respect filter when searching folder", async function () {
+                let dirEntry = FileSystem.getDirectoryForPath(testPath);
+                await openSearchBar(dirEntry);
+                await setExcludeCSSFiles();
+                await executeSearch("{1}");
+                // *.css should have been excluded this time
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
+            });
+
+            it("should ignore filter when searching a single file", async function () {
+                let fileEntry = FileSystem.getFileForPath(testPath + "/test1.css");
+                await openSearchBar(fileEntry);
+                // Cannot explicitly set *.css filter in dialog because button is hidden
+                // (which is verified here), but filter persists from previous test
+                expect($("button.file-filter-picker").is(":visible")).toBeFalsy();
+                await executeSearch("{1}");
+                // ignore *.css exclusion since we're explicitly searching this file
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
+            });
+
+            it("should show error when filter excludes all files", async function () {
+                await openSearchBar();
+                // Launch filter editor
+                FileFilters.editFilter({ name: "", patterns: [] }, -1);
+
+                // Edit the filter & confirm changes
+                $(".modal.instance textarea").val("test1.*\n*.css");
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
+                await executeSearch("{1}");
+                let $modalBar = $(".modal-bar");
+
+                // Dialog still showing
+                expect($modalBar.length).toBe(1);
+
+                // Error message displayed
+                expect($modalBar.find("#find-group div.error").is(":visible")).toBeTruthy();
+
+                // Search panel not showing
+                expect($("#find-in-files-results").is(":visible")).toBeFalsy();
+
+                // Close search bar
+                let $searchField = $modalBar.find("#find-group input");
+                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
+            });
+
+            it("should respect filter when editing code", async function () {
+                await openSearchBar();
+                await setExcludeCSSFiles();
+                await executeSearch("{1}");
+                let promise = testWindow.brackets.test.DocumentManager.getDocumentForPath(testPath + "/test1.css");
+                await awaitsForDone(promise);
+                promise.done(function (doc) {
+                    // Modify line that contains potential search result
+                    expect(doc.getLine(5).indexOf("{1}")).not.toBe(-1);
+                    doc.replaceRange("X", {line: 5, ch: 0});
                 });
-                afterLast(teardownTestWindow);
+                await awaits(800);  // ensure _documentChangeHandler()'s timeout has time to run
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();  // *.css should still be excluded
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
+            });
+        });
 
-                beforeEach(function () {
-                    openSearchBar();
-                });
+        describe("Filter picker UI", function () {
+            beforeAll(setupTestWindow);
+            afterAll(teardownTestWindow);
 
-                afterEach(function () {
-                    closeSearchBar();
-                });
+            beforeEach(openSearchBar);
 
-                function verifyButtonLabel(expectedLabel) {
-                    var newButtonLabel  = StringUtils.format(Strings.EXCLUDE_FILE_FILTER, expectedLabel);
+            afterEach(closeSearchBar);
 
-                    if (expectedLabel) {
-                        // Verify filter picker button label is updated with the patterns of the selected filter set.
-                        expect($("button.file-filter-picker").text()).toEqual(newButtonLabel);
-                    } else {
-                        expect($("button.file-filter-picker").text()).toEqual(Strings.NO_FILE_FILTER);
-                    }
+            function verifyButtonLabel(expectedLabel) {
+                let newButtonLabel  = StringUtils.format(Strings.EXCLUDE_FILE_FILTER, expectedLabel);
+
+                if (expectedLabel) {
+                    // Verify filter picker button label is updated with the patterns of the selected filter set.
+                    expect($("button.file-filter-picker").text()).toEqual(newButtonLabel);
+                } else {
+                    expect($("button.file-filter-picker").text()).toEqual(Strings.NO_FILE_FILTER);
                 }
+            }
 
-                // This finishes async, since clickDialogButton() finishes async (dialogs close asynchronously)
-                function setExcludeCSSFiles() {
-                    // Edit the filter & confirm changes
-                    $(".modal.instance .exclusions-name").val("CSS Files");
-                    $(".modal.instance .exclusions-editor").val("*.css\n*.less\n*.scss");
-                    SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-                }
+            // This finishes async, since clickDialogButton() finishes async (dialogs close asynchronously)
+            async function setExcludeCSSFiles() {
+                // Edit the filter & confirm changes
+                $(".modal.instance .exclusions-name").val("CSS Files");
+                $(".modal.instance .exclusions-editor").val("*.css\n*.less\n*.scss");
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
+            }
 
-                // Trigger a mouseover event on the 'parent' and then click on the button with the given 'selector'.
-                function clickOnMouseOverButton(selector, parent) {
-                    runs(function () {
-                        parent.trigger("mouseover");
-                    });
-                    runs(function () {
-                        expect($(selector, parent).is(":visible")).toBeTruthy();
-                        $(selector, parent).click();
-                    });
-                }
+            // Trigger a mouseover event on the 'parent' and then click on the button with the given 'selector'.
+            function clickOnMouseOverButton(selector, parent) {
+                parent.trigger("mouseover");
+                // async here?
+                expect($(selector, parent).is(":visible")).toBeTruthy();
+                $(selector, parent).click();
+            }
 
-                it("should show 'No files Excluded' in filter picker button by default", function () {
-                    runs(function () {
-                        verifyButtonLabel();
-                    });
-                });
+            it("should show 'No files Excluded' in filter picker button by default", async function () {
+                verifyButtonLabel();
+            });
 
-                it("should show two filter commands by default", function () {
-                    runs(function () {
-                        FileFilters.showDropdown();
-                    });
+            it("should show two filter commands by default", async function () {
+                FileFilters.showDropdown();
 
-                    runs(function () {
-                        var $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        expect($dropdown.is(":visible")).toBeTruthy();
-                        expect($dropdown.children().length).toEqual(2);
-                        expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                        expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
-                    });
+                let $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                expect($dropdown.is(":visible")).toBeTruthy();
+                expect($dropdown.children().length).toEqual(2);
+                expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
+                expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
 
-                    runs(function () {
-                        FileFilters.closeDropdown();
-                    });
-                });
+                FileFilters.closeDropdown();
+            });
 
-                it("should launch filter editor and add a new filter set when invoked from new filter command", function () {
-                    var $dropdown;
-                    runs(function () {
-                        FileFilters.showDropdown();
-                    });
+            it("should launch filter editor and add a new filter set when invoked from new filter command", async function () {
+                let $dropdown;
+                FileFilters.showDropdown();
 
-                    // Invoke new filter command by pressing down arrow key once and then enter key.
-                    runs(function () {
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
-                    });
+                // Invoke new filter command by pressing down arrow key once and then enter key.
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
 
-                    runs(function () {
-                        setExcludeCSSFiles();
-                    });
+                await setExcludeCSSFiles();
 
-                    runs(function () {
-                        FileFilters.showDropdown();
-                    });
+                FileFilters.showDropdown();
 
-                    runs(function () {
-                        var filterSuffix = StringUtils.format(Strings.FILE_FILTER_CLIPPED_SUFFIX, 1);
+                let filterSuffix = StringUtils.format(Strings.FILE_FILTER_CLIPPED_SUFFIX, 1);
 
-                        // Verify filter picker button is updated with the name of the new filter.
-                        verifyButtonLabel("CSS Files");
+                // Verify filter picker button is updated with the name of the new filter.
+                verifyButtonLabel("CSS Files");
 
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        expect($dropdown.is(":visible")).toBeTruthy();
-                        expect($dropdown.children().length).toEqual(4);
-                        expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                        expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
-                        expect($(".recent-filter-name", $($dropdown.children()[3])).text()).toEqual("CSS Files");
-                        expect($(".recent-filter-patterns", $($dropdown.children()[3])).text()).toEqual(" - *.css, *.less " + filterSuffix);
-                    });
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                expect($dropdown.is(":visible")).toBeTruthy();
+                expect($dropdown.children().length).toEqual(4);
+                expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
+                expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
+                expect($(".recent-filter-name", $($dropdown.children()[3])).text()).toEqual("CSS Files");
+                expect($(".recent-filter-patterns", $($dropdown.children()[3])).text()).toEqual(" - *.css, *.less " + filterSuffix);
 
-                    runs(function () {
-                        FileFilters.closeDropdown();
-                    });
-                });
+                FileFilters.closeDropdown();
+            });
 
-                it("should clear the active filter set when invoked from clear filter command", function () {
-                    var $dropdown;
-                    runs(function () {
-                        FileFilters.showDropdown();
-                    });
+            it("should clear the active filter set when invoked from clear filter command", async function () {
+                let $dropdown;
+                FileFilters.showDropdown();
 
-                    // Invoke new filter command by pressing down arrow key twice and then enter key.
-                    runs(function () {
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
-                    });
+                // Invoke new filter command by pressing down arrow key twice and then enter key.
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
 
-                    runs(function () {
-                        // Verify filter picker button is updated to show no active filter.
-                        verifyButtonLabel();
-                        expect($dropdown.is(":visible")).toBeFalsy();
-                    });
+                // Verify filter picker button is updated to show no active filter.
+                verifyButtonLabel();
+                expect($dropdown.is(":visible")).toBeFalsy();
 
-                    // Re-open dropdown list and verify that nothing changed.
-                    runs(function () {
-                        FileFilters.showDropdown();
-                    });
+                // Re-open dropdown list and verify that nothing changed.
+                FileFilters.showDropdown();
 
-                    runs(function () {
-                        var filterSuffix = StringUtils.format(Strings.FILE_FILTER_CLIPPED_SUFFIX, 1);
+                let filterSuffix = StringUtils.format(Strings.FILE_FILTER_CLIPPED_SUFFIX, 1);
 
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        expect($dropdown.is(":visible")).toBeTruthy();
-                        expect($dropdown.children().length).toEqual(4);
-                        expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                        expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
-                        expect($(".recent-filter-name", $($dropdown.children()[3])).text()).toEqual("CSS Files");
-                        expect($(".recent-filter-patterns", $($dropdown.children()[3])).text()).toEqual(" - *.css, *.less " + filterSuffix);
-                    });
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                expect($dropdown.is(":visible")).toBeTruthy();
+                expect($dropdown.children().length).toEqual(4);
+                expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
+                expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
+                expect($(".recent-filter-name", $($dropdown.children()[3])).text()).toEqual("CSS Files");
+                expect($(".recent-filter-patterns", $($dropdown.children()[3])).text()).toEqual(" - *.css, *.less " + filterSuffix);
 
-                    runs(function () {
-                        FileFilters.closeDropdown();
-                    });
-                });
+                FileFilters.closeDropdown();
+            });
 
-                it("should switch the active filter set to the selected one", function () {
-                    var $dropdown;
-                    runs(function () {
-                        // Verify that there is no active filter (was set from the previous test).
-                        verifyButtonLabel();
-                        FileFilters.showDropdown();
-                    });
+            it("should switch the active filter set to the selected one", async function () {
+                let $dropdown;
+                // Verify that there is no active filter (was set from the previous test).
+                verifyButtonLabel();
+                FileFilters.showDropdown();
 
-                    // Select the last filter set in the dropdown by pressing up arrow key once and then enter key.
-                    runs(function () {
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $dropdown[0]);
-                        SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
-                    });
+                // Select the last filter set in the dropdown by pressing up arrow key once and then enter key.
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $dropdown[0]);
+                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
 
-                    runs(function () {
-                        // Verify filter picker button label is updated with the name of the selected filter set.
-                        verifyButtonLabel("CSS Files");
-                        expect($dropdown.is(":visible")).toBeFalsy();
-                    });
-                });
+                // Verify filter picker button label is updated with the name of the selected filter set.
+                verifyButtonLabel("CSS Files");
+                expect($dropdown.is(":visible")).toBeFalsy();
+            });
 
-                it("should launch filter editor and fill in the text fields with selected filter info", function () {
-                    var $dropdown;
+            it("should launch filter editor and fill in the text fields with selected filter info", async function () {
+                let $dropdown;
 
-                    runs(function () {
-                        FileFilters.showDropdown();
-                    });
+                FileFilters.showDropdown();
 
-                    // Click on the edit icon that shows up in the first filter set on mouseover.
-                    runs(function () {
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        clickOnMouseOverButton(".filter-edit-icon", $($dropdown.children()[3]));
-                    });
+                // Click on the edit icon that shows up in the first filter set on mouseover.
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                clickOnMouseOverButton(".filter-edit-icon", $($dropdown.children()[3]));
 
-                    // Remove the name of the filter set and reduce the filter set to '*.css'.
-                    runs(function () {
-                        expect($(".modal.instance .exclusions-name").val()).toEqual("CSS Files");
-                        expect($(".modal.instance .exclusions-editor").val()).toEqual("*.css\n*.less\n*.scss");
+                // Remove the name of the filter set and reduce the filter set to '*.css'.
+                expect($(".modal.instance .exclusions-name").val()).toEqual("CSS Files");
+                expect($(".modal.instance .exclusions-editor").val()).toEqual("*.css\n*.less\n*.scss");
 
-                        $(".modal.instance .exclusions-name").val("");
-                        $(".modal.instance .exclusions-editor").val("*.css");
-                        SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-                    });
+                $(".modal.instance .exclusions-name").val("");
+                $(".modal.instance .exclusions-editor").val("*.css");
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
 
-                    runs(function () {
-                        // Verify filter picker button label is updated with the patterns of the selected filter set.
-                        verifyButtonLabel("*.css");
-                        expect($dropdown.is(":visible")).toBeFalsy();
-                    });
-                });
+                // Verify filter picker button label is updated with the patterns of the selected filter set.
+                verifyButtonLabel("*.css");
+                expect($dropdown.is(":visible")).toBeFalsy();
+            });
 
-                it("should remove selected filter from filter sets preferences without changing picker button label", function () {
-                    var $dropdown,
-                        filters = [{name: "Node Modules", patterns: ["node_module"]},
-                                   {name: "Mark Down Files", patterns: ["*.md"]},
-                                   {name: "CSS Files", patterns: ["*.css", "*.less"]}];
+            it("should remove selected filter from filter sets preferences without changing picker button label", async function () {
+                let $dropdown,
+                    filters = [{name: "Node Modules", patterns: ["node_module"]},
+                        {name: "Mark Down Files", patterns: ["*.md"]},
+                        {name: "CSS Files", patterns: ["*.css", "*.less"]}];
 
-                    // Create three filter sets and make the last one active.
-                    runs(function () {
-                        FileFilters.editFilter(filters[0], 0);
-                        SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-                    });
+                // Create three filter sets and make the last one active.
+                FileFilters.editFilter(filters[0], 0);
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
 
-                    runs(function () {
-                        FileFilters.editFilter(filters[1], -1);
-                        SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-                    });
+                FileFilters.editFilter(filters[1], -1);
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
 
-                    runs(function () {
-                        FileFilters.editFilter(filters[2], -1);
-                        SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-                    });
+                FileFilters.editFilter(filters[2], -1);
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
 
-                    runs(function () {
-                        verifyButtonLabel("CSS Files");
-                        FileFilters.showDropdown();
-                    });
+                verifyButtonLabel("CSS Files");
+                FileFilters.showDropdown();
 
-                    runs(function () {
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        expect($dropdown.children().length).toEqual(6);
-                    });
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                expect($dropdown.children().length).toEqual(6);
 
-                    // Click on the delete icon that shows up in the first filter set on mouseover.
-                    runs(function () {
-                        clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[3]));
-                    });
+                // Click on the delete icon that shows up in the first filter set on mouseover.
+                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[3]));
 
-                    runs(function () {
-                        expect($dropdown.is(":visible")).toBeTruthy();
-                        // Verify that button label is still the same since the deleted one is not the active one.
-                        verifyButtonLabel("CSS Files");
+                expect($dropdown.is(":visible")).toBeTruthy();
+                // Verify that button label is still the same since the deleted one is not the active one.
+                verifyButtonLabel("CSS Files");
 
-                        // Verify that the list has one less item (from 6 to 5).
-                        expect($dropdown.children().length).toEqual(5);
+                // Verify that the list has one less item (from 6 to 5).
+                expect($dropdown.children().length).toEqual(5);
 
-                        // Verify data-index of the two remaining filter sets.
-                        expect($("a", $dropdown.children()[3]).data("index")).toBe(3);
-                        expect($("a", $dropdown.children()[4]).data("index")).toBe(4);
-                    });
+                // Verify data-index of the two remaining filter sets.
+                expect($("a", $dropdown.children()[3]).data("index")).toBe(3);
+                expect($("a", $dropdown.children()[4]).data("index")).toBe(4);
 
-                    runs(function () {
-                        FileFilters.closeDropdown();
-                    });
-                });
+                FileFilters.closeDropdown();
+            });
 
-                it("should remove selected filter from filter sets preferences plus changing picker button label", function () {
-                    var $dropdown;
+            it("should remove selected filter from filter sets preferences plus changing picker button label", async function () {
+                let $dropdown;
 
-                    runs(function () {
-                        verifyButtonLabel("CSS Files");
-                        FileFilters.showDropdown();
-                    });
+                verifyButtonLabel("CSS Files");
+                FileFilters.showDropdown();
 
-                    runs(function () {
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        expect($dropdown.children().length).toEqual(5);
-                    });
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                expect($dropdown.children().length).toEqual(5);
 
-                    // Click on the delete icon that shows up in the last filter set on mouseover.
-                    runs(function () {
-                        clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[4]));
-                    });
+                // Click on the delete icon that shows up in the last filter set on mouseover.
+                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[4]));
 
-                    runs(function () {
-                        expect($dropdown.is(":visible")).toBeTruthy();
-                        // Verify that button label is changed to "No Files Excluded".
-                        verifyButtonLabel();
+                expect($dropdown.is(":visible")).toBeTruthy();
+                // Verify that button label is changed to "No Files Excluded".
+                verifyButtonLabel();
 
-                        // Verify that the list has one less item.
-                        expect($dropdown.children().length).toEqual(4);
-                    });
+                // Verify that the list has one less item.
+                expect($dropdown.children().length).toEqual(4);
 
-                    runs(function () {
-                        FileFilters.closeDropdown();
-                    });
-                });
+                FileFilters.closeDropdown();
+            });
 
-                it("should also remove the divider from the dropdown list after removing the last remaining filter set", function () {
-                    var $dropdown;
+            it("should also remove the divider from the dropdown list after removing the last remaining filter set", async function () {
+                let $dropdown;
 
-                    runs(function () {
-                        verifyButtonLabel();
-                        FileFilters.showDropdown();
-                    });
+                verifyButtonLabel();
+                FileFilters.showDropdown();
 
-                    runs(function () {
-                        $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                        expect($dropdown.children().length).toEqual(4);
-                    });
+                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+                expect($dropdown.children().length).toEqual(4);
 
-                    // Click on the delete icon that shows up in the last filter set on mouseover.
-                    runs(function () {
-                        clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[3]));
-                    });
+                // Click on the delete icon that shows up in the last filter set on mouseover.
+                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[3]));
 
-                    runs(function () {
-                        expect($dropdown.is(":visible")).toBeTruthy();
-                        // Verify that button label still shows "No Files Excluded".
-                        verifyButtonLabel();
+                expect($dropdown.is(":visible")).toBeTruthy();
+                // Verify that button label still shows "No Files Excluded".
+                verifyButtonLabel();
 
-                        // Verify that the list has only two filter commands.
-                        expect($dropdown.children().length).toEqual(2);
-                    });
+                // Verify that the list has only two filter commands.
+                expect($dropdown.children().length).toEqual(2);
 
-                    runs(function () {
-                        FileFilters.closeDropdown();
-                    });
-                });
+                FileFilters.closeDropdown();
             });
         });
     });

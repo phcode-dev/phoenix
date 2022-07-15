@@ -81,7 +81,7 @@ define(function (require, exports, module) {
     });
 
     /**
-     * Returns the path to the default extensions directory relative to window.location.href
+     * Returns the path to the default extensions directory relative to Phoenix base URL
      */
     function getDefaultExtensionPath() {
         return pathLib.normalize("/extensions/default");
