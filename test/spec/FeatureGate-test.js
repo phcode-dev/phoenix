@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeFirst, afterLast, beforeEach, afterEach, waitsFor, runs, waitsForDone */
+/*global describe, it, expect, awaitsFor */
 
 define(function (require, exports, module) {
     const FeatureGate = require("utils/FeatureGate");
@@ -29,7 +29,7 @@ define(function (require, exports, module) {
             expect(FeatureGate.getAllRegisteredFeatures().includes("feature1")).toEqual(true);
         });
 
-        it("should raise event on feature registration", function () {
+        it("should raise event on feature registration", async function () {
             const FEATURE2 = "feature2";
             let notified = false, featureDefaultValue = null;
             FeatureGate.on(FeatureGate.FEATURE_REGISTERED, (event, name, defaultValue)=>{
@@ -38,7 +38,7 @@ define(function (require, exports, module) {
             });
             FeatureGate.registerFeatureGate(FEATURE2, true);
             expect(FeatureGate.getAllRegisteredFeatures().includes(FEATURE2)).toEqual(true);
-            waitsFor(function () {
+            await awaitsFor(function () {
                 return notified === FEATURE2 && featureDefaultValue === true;
             }, 100, "Feature gate registration notification");
         });
