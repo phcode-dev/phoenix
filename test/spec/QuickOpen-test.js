@@ -169,7 +169,7 @@ define(function (require, exports, module) {
                 runs(function () {
                     // The user enters a 1-based number, but the reported position
                     // is 0 based, so we check for line-1, col-1.
-                    expect(editor).toHaveCursorPosition(line - 1, col - 1);
+                    expect(SpecRunnerUtils.editorHasCursorPosition(editor, line - 1, col - 1)).toBeTrue();
 
                     // We expect the result to be scrolled roughly to the middle of the window.
                     var offset = $scroller.offset().top;

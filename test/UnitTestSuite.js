@@ -43,7 +43,7 @@ define(function (require, exports, module) {
     require("spec/FileTreeViewModel-test");
     require("spec/FileUtils-test");
     require("spec/FindReplace-test");
-    //require("spec/FindReplace-integ-test");
+    require("spec/FindReplace-integ-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
