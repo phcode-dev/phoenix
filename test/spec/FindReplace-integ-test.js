@@ -673,7 +673,8 @@ define(function (require, exports, module) {
                 requireExpectedMatches[0].end.ch++;  // other results now include one more char
                 requireExpectedMatches[1].end.ch++;
                 requireExpectedMatches[2].end.ch++;
-                expectHighlightedMatches(requireExpectedMatches, 3);  // in a new file, JS isn't color coded, so there's only one span each
+                // in a new file, JS isn't color coded, so there's only one span each + 1 additional for current selection probably from ode mirror update
+                expectHighlightedMatches(requireExpectedMatches, 4);
                 expectSelection(requireExpectedMatches[0]);
                 expectMatchIndex(0, 3);
             });
@@ -950,13 +951,13 @@ define(function (require, exports, module) {
 
                 twCommandManager.execute(Commands.CMD_FIND);
 
-                // CodeMirror coerces all 0-length matches to 1 char
+                // CodeMirror coerces all 0-length matches to 0 char now
                 toggleRegexp(true);
                 enterSearchText("^");  // matches pos before start of every line, but 0-length match text
-                expectSelection({start: {line: 0, ch: 0}, end: {line: 0, ch: 1}});
+                expectSelection({start: {line: 0, ch: 0}, end: {line: 0, ch: 0}});
 
                 enterSearchText("()"); // matches pos before every char, but 0-length match text
-                expectSelection({start: {line: 0, ch: 0}, end: {line: 0, ch: 1}});
+                expectSelection({start: {line: 0, ch: 0}, end: {line: 0, ch: 0}});
             });
         });
 
