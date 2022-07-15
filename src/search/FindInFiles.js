@@ -181,10 +181,6 @@ define(function (require, exports, module) {
         }
 
         FindUtils.setInstantSearchDisabled(false);
-        // web worker search could be disabled if some error has happened in worker. But upon
-        // project change, if we get this message, then it means that worker search is working,
-        // we re-enable worker search. If a search fails, worker search will be switched off eventually.
-        FindUtils.setWorkerSearchDisabled(false);
         FindUtils.notifyIndexingFinished();
         Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "numFiles", numFiles);
         Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "cacheSizeKB", cacheSize/1024);
@@ -614,7 +610,6 @@ define(function (require, exports, module) {
                             FindUtils.notifyWorkerSearchFinished();
                             if (!rcvd_object || !rcvd_object.results) {
                                 console.error('search worker failed, falling back to brackets search', JSON.parse(rcvd_object));
-                                FindUtils.setWorkerSearchDisabled(true);
                                 searchDeferred.fail();
                                 clearSearch();
                                 return;
@@ -628,10 +623,9 @@ define(function (require, exports, module) {
                             Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "instantSearch",
                                 "timeMs", Date.now() - searchStatTime);
                         })
-                        .catch(function () {
+                        .catch(function (err) {
                             FindUtils.notifyWorkerSearchFinished();
-                            console.error('worker fails');
-                            FindUtils.setWorkerSearchDisabled(true);
+                            console.error('worker fails', err);
                             clearSearch();
                             searchDeferred.reject();
                         });
@@ -1042,10 +1036,9 @@ define(function (require, exports, module) {
                 searchModel.fireChanged();
                 searchDeferred.resolve();
             })
-            .catch(function () {
+            .catch(function (err) {
                 FindUtils.notifyWorkerSearchFinished();
-                console.error('search worker fails');
-                FindUtils.setWorkerSearchDisabled(true);
+                console.error('search worker fails', err);
                 searchDeferred.reject();
             });
         return searchDeferred.promise();
@@ -1068,10 +1061,9 @@ define(function (require, exports, module) {
                 searchModel.fireChanged();
                 searchDeferred.resolve();
             })
-            .catch(function () {
+            .catch(function (err) {
                 FindUtils.notifyWorkerSearchFinished();
-                console.error('search worker fails');
-                FindUtils.setWorkerSearchDisabled(true);
+                console.error('search worker fails', err);
                 searchDeferred.reject();
             });
         return searchDeferred.promise();
