@@ -49,10 +49,11 @@ define(function (require, exports, module) {
     require("spec/HTMLTokenizer-test");
     require("spec/CodeHintUtils-test");
     require("spec/JSONUtils-test");
+    require("spec/JSUtils-test");
+    require("spec/JSUtils-integ-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
-    // require("spec/JSUtils-test");
     // require("spec/DocumentCommandHandlers-test");
     // require("spec/DocumentManager-test");
     // require("spec/DragAndDrop-test");
