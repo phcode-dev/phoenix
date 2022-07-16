@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, waitsFor, waitsForDone, runs, beforeFirst */
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone, beforeAll */
 /*unittests: Preferences Base*/
 
 define(function (require, exports, module) {
@@ -1438,7 +1438,7 @@ define(function (require, exports, module) {
                 filestorage,
                 originalText;
 
-            beforeFirst(function () {
+            beforeAll(async function () {
                 var deferred = $.Deferred();
                 settingsFile.read({}, function (err, text) {
                     if (err) {
@@ -1448,14 +1448,14 @@ define(function (require, exports, module) {
                     originalText = text;
                     deferred.resolve();
                 });
-                waitsForDone(deferred.promise());
+                await awaitsForDone(deferred.promise());
             });
 
             beforeEach(function () {
                 filestorage = new PreferencesBase.FileStorage(settingsFile.fullPath);
             });
 
-            afterEach(function () {
+            afterEach(async function () {
                 var deferred = $.Deferred();
                 settingsFile.write(originalText, {}, function (err) {
                     if (err) {
@@ -1464,142 +1464,122 @@ define(function (require, exports, module) {
                         deferred.resolve();
                     }
                 });
-                waitsForDone(deferred.promise());
+                await awaitsForDone(deferred.promise());
 
                 var deleted = false;
-                runs(function () {
-                    newSettingsFile.unlink(function () {
-                        deleted = true;
-                    });
+                newSettingsFile.unlink(function () {
+                    deleted = true;
                 });
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return deleted;
                 });
             });
 
-            it("can load preferences from disk", function () {
+            it("can load preferences from disk", async function () {
                 var filestorage = new PreferencesBase.FileStorage(settingsFile.fullPath);
                 var pm = new PreferencesBase.PreferencesSystem();
                 var projectScope = new PreferencesBase.Scope(filestorage);
-                waitsForDone(pm.addScope("project", projectScope));
-                runs(function () {
-                    projectScope.addLayer(new PreferencesBase.PathLayer("/"));
-                    expect(pm.get("spaceUnits")).toBe(9);
+                await awaitsForDone(pm.addScope("project", projectScope));
+                projectScope.addLayer(new PreferencesBase.PathLayer("/"));
+                expect(pm.get("spaceUnits")).toBe(9);
 
-                    expect(pm.get("spaceUnits", {
-                        scopeOrder: ["project"],
-                        path: "/foo.go"
-                    })).toBe(7);
-                });
+                expect(pm.get("spaceUnits", {
+                    scopeOrder: ["project"],
+                    path: "/foo.go"
+                })).toBe(7);
             });
 
-            it("can validate preferences loaded from disk", function () {
+            it("can validate preferences loaded from disk", async function () {
                 var filestorage = new PreferencesBase.FileStorage(settingsFile.fullPath);
                 var pm = new PreferencesBase.PreferencesSystem();
                 var projectScope = new PreferencesBase.Scope(filestorage);
-                waitsForDone(pm.addScope("project", projectScope));
-                runs(function () {
-                    projectScope.addLayer(new PreferencesBase.PathLayer("/"));
-                    pm.definePreference("spaceUnits", "number", 3, {
-                        validator: function (value) {
-                            return (value >= 0 && value <= 8);
-                        }
-                    });
-                    // Value on disk (9) is out-of-range, so expect default (3)
-                    expect(pm.get("spaceUnits")).toBe(3);
+                await awaitsForDone(pm.addScope("project", projectScope));
+                projectScope.addLayer(new PreferencesBase.PathLayer("/"));
+                pm.definePreference("spaceUnits", "number", 3, {
+                    validator: function (value) {
+                        return (value >= 0 && value <= 8);
+                    }
                 });
+                // Value on disk (9) is out-of-range, so expect default (3)
+                expect(pm.get("spaceUnits")).toBe(3);
             });
 
-            it("can save preferences", function () {
+            it("can save preferences", async function () {
                 var filestorage = new PreferencesBase.FileStorage(settingsFile.fullPath);
                 var pm = new PreferencesBase.PreferencesSystem();
                 var projectScope = new PreferencesBase.Scope(filestorage);
-                waitsForDone(pm.addScope("project", projectScope));
-                runs(function () {
-                    var memstorage = new PreferencesBase.MemoryStorage();
-                    pm.addScope("session", new PreferencesBase.Scope(memstorage));
-                    pm.set("unicorn-filled", true, {
-                        location: {
-                            scope: "session"
-                        }
-                    });
-                    pm.set("unicorn-filled", false, {
-                        location: {
-                            scope: "project"
-                        }
-                    });
-                    waitsForDone(pm.save());
-                    runs(function () {
-                        expect(memstorage.data["unicorn-filled"]).toBe(true);
-                    });
+                await awaitsForDone(pm.addScope("project", projectScope));
+                var memstorage = new PreferencesBase.MemoryStorage();
+                pm.addScope("session", new PreferencesBase.Scope(memstorage));
+                pm.set("unicorn-filled", true, {
+                    location: {
+                        scope: "session"
+                    }
                 });
+                pm.set("unicorn-filled", false, {
+                    location: {
+                        scope: "project"
+                    }
+                });
+                await awaitsForDone(pm.save());
+                expect(memstorage.data["unicorn-filled"]).toBe(true);
             });
 
-            it("can create a new pref file", function () {
+            it("can create a new pref file", async function () {
                 var filestorage = new PreferencesBase.FileStorage(newSettingsFile.fullPath, true);
                 var pm = new PreferencesBase.PreferencesSystem();
                 var newScope = new PreferencesBase.Scope(filestorage);
-                waitsForDone(pm.addScope("new", newScope), "adding scope");
-                runs(function () {
-                    pm.set("unicorn-filled", true, {
-                        location: {
-                            scope: "new"
-                        }
-                    });
-                    expect(pm.get("unicorn-filled")).toBe(true);
-
-                    waitsForDone(pm.save(), "saving prefs");
-
-                    var deferred = $.Deferred();
-                    runs(function () {
-                        newSettingsFile.exists(function (err, exists) {
-                            if (err || !exists) {
-                                deferred.reject(err);
-                            } else {
-                                deferred.resolve();
-                            }
-                        });
-                    });
-
-                    waitsForDone(deferred.promise(), "checking file");
+                await awaitsForDone(pm.addScope("new", newScope), "adding scope");
+                pm.set("unicorn-filled", true, {
+                    location: {
+                        scope: "new"
+                    }
                 });
+                expect(pm.get("unicorn-filled")).toBe(true);
+
+                await awaitsForDone(pm.save(), "saving prefs");
+
+                var deferred = $.Deferred();
+                newSettingsFile.exists(function (err, exists) {
+                    if (err || !exists) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve();
+                    }
+                });
+
+                await awaitsForDone(deferred.promise(), "checking file");
 
             });
 
-            it("can load preferences later", function () {
+            it("can load preferences later", async function () {
                 var filestorage = new PreferencesBase.FileStorage();
                 var pm = new PreferencesBase.PreferencesSystem();
                 var newScope = new PreferencesBase.Scope(filestorage);
                 newScope.addLayer(new PreferencesBase.PathLayer("/"));
                 var changes = [];
-                waitsForDone(pm.addScope("new", newScope), "adding scope");
+                await awaitsForDone(pm.addScope("new", newScope), "adding scope");
                 pm.on("change", function (change, data) {
                     changes.push(data);
                 });
-                runs(function () {
-                    expect(pm.get("spaceUnits")).toBeUndefined();
-                    filestorage.setPath(settingsFile.fullPath);
-                });
-                waitsFor(function () {
+                expect(pm.get("spaceUnits")).toBeUndefined();
+                filestorage.setPath(settingsFile.fullPath);
+                await awaitsFor(function () {
                     return changes.length > 0;
                 });
-                runs(function () {
-                    expect(pm.get("spaceUnits")).toBe(9);
-                    expect(changes).toEqual([{
-                        ids: ["spaceUnits"]
-                    }]);
-                });
+                expect(pm.get("spaceUnits")).toBe(9);
+                expect(changes).toEqual([{
+                    ids: ["spaceUnits"]
+                }]);
             });
 
-            it("is fine with empty preferences files", function () {
+            it("is fine with empty preferences files", async function () {
                 var filestorage = new PreferencesBase.FileStorage(emptySettingsFile.fullPath),
                     promise = filestorage.load();
 
-                waitsForDone(promise, "loading empty JSON file");
-                runs(function () {
-                    promise.then(function (data) {
-                        expect(data).toEqual({});
-                    });
+                await awaitsForDone(promise, "loading empty JSON file");
+                promise.then(function (data) {
+                    expect(data).toEqual({});
                 });
             });
         });
