@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, runs, HTMLElement, beforeFirst, afterLast, waitsForDone */
+/*global describe, it, expect, beforeEach, afterEach*/
 
 define(function (require, exports, module) {
 
@@ -27,8 +27,7 @@ define(function (require, exports, module) {
     var MultiRangeInlineEditor  = require("editor/MultiRangeInlineEditor").MultiRangeInlineEditor,
         InlineTextEditor        = require("editor/InlineTextEditor").InlineTextEditor,
         InlineWidget            = require("editor/InlineWidget").InlineWidget,
-        SpecRunnerUtils         = require("spec/SpecRunnerUtils"),
-        Commands                = require("command/Commands");
+        SpecRunnerUtils         = require("spec/SpecRunnerUtils");
 
     // TODO: overlaps a lot with CSSInlineEdit-test integration suite
     describe("MultiRangeInlineEditor", function () {
@@ -643,122 +642,5 @@ define(function (require, exports, module) {
             // TODO: test hiding rule list when removing 2nd to last range
             // TODO: test auto-closing when removing last range
         });
-
-        describe("integration", function () {
-
-            this.category = "integration";
-
-            var testWindow,
-                TWCommandManager,
-                TWEditorManager,
-                TWMultiRangeInlineEditor;
-
-            beforeFirst(function () {
-                SpecRunnerUtils.createTempDirectory();
-
-                // Create a new window that will be shared by ALL tests in this spec.
-                SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                    testWindow = w;
-
-                    // Load module instances from brackets.test
-                    TWCommandManager         = testWindow.brackets.test.CommandManager;
-                    TWEditorManager          = testWindow.brackets.test.EditorManager;
-                    TWMultiRangeInlineEditor = testWindow.brackets.test.MultiRangeInlineEditor;
-
-                    SpecRunnerUtils.loadProjectInTestWindow(SpecRunnerUtils.getTempDirectory());
-                });
-            });
-
-            afterLast(function () {
-                testWindow               = null;
-                TWCommandManager         = null;
-                TWEditorManager          = null;
-                TWMultiRangeInlineEditor = null;
-                SpecRunnerUtils.closeTestWindow();
-
-                SpecRunnerUtils.removeTempDirectory();
-            });
-
-            beforeEach(function () {
-                runs(function () {
-                    waitsForDone(TWCommandManager.execute(Commands.FILE_NEW_UNTITLED));
-                });
-
-                runs(function () {
-                    hostEditor = TWEditorManager.getCurrentFullEditor();
-                });
-            });
-
-            afterEach(function () {
-                runs(function () {
-                    waitsForDone(TWCommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }));
-                });
-
-                runs(function () {
-                    inlineEditor = null;
-                    hostEditor = null;
-                });
-            });
-
-            // This needs to open in a Brackets test window because it's actually relying on
-            // the real Editor functions for adding an inline widget, which complete asynchronously
-            // after the animation is finished. That animation doesn't actually occur in the
-            // Jasmine window.
-            it("should close and return focus to the host editor", function () {
-                runs(function () {
-                    var inlineDoc = SpecRunnerUtils.createMockDocument("div{}\n.foo{}\n");
-
-                    var mockRanges = [
-                        {
-                            document: inlineDoc,
-                            name: "div",
-                            lineStart: 0,
-                            lineEnd: 0
-                        }
-                    ];
-
-                    inlineEditor = new TWMultiRangeInlineEditor(mockRanges);
-                    inlineEditor.load(hostEditor);
-
-                    // add widget
-                    waitsForDone(hostEditor.addInlineWidget({line: 0, ch: 0}, inlineEditor));
-                });
-
-                runs(function () {
-                    // verify it was added
-                    expect(hostEditor.hasFocus()).toBe(false);
-                    expect(hostEditor.getInlineWidgets().length).toBe(1);
-
-                    // close the inline editor directly, should call EditorManager and removeInlineWidget
-                    waitsForDone(inlineEditor.close());
-                });
-
-                runs(function () {
-                    // verify no editors
-                    expect(hostEditor.getInlineWidgets().length).toBe(0);
-                    expect(hostEditor.hasFocus()).toBe(true);
-                });
-            });
-
-            it("should be able to add an inline editor with no ranges", function () {
-                runs(function () {
-                    inlineEditor = new TWMultiRangeInlineEditor([]);
-                    inlineEditor.load(hostEditor);
-                    waitsForDone(hostEditor.addInlineWidget({line: 0, ch: 0}, inlineEditor), "adding empty inline editor");
-                });
-
-                runs(function () {
-                    // verify it was added
-                    expect(hostEditor.getInlineWidgets().length).toBe(1);
-                    waitsForDone(inlineEditor.close(), "closing empty inline editor");
-                });
-
-                runs(function () {
-                    // verify no editors
-                    expect(hostEditor.getInlineWidgets().length).toBe(0);
-                });
-            });
-        });
-
     });
 });
