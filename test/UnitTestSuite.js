@@ -56,6 +56,8 @@ define(function (require, exports, module) {
     require("spec/LanguageManager-integ-test");
     require("spec/LowLevelFileIO-test");
     require("spec/Metrics-test");
+    require("spec/MultiRangeInlineEditor-test");
+    require("spec/MultiRangeInlineEditor-integ-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
@@ -73,7 +75,6 @@ define(function (require, exports, module) {
     // require("spec/MainViewFactory-test");
     // require("spec/MainViewManager-test");
     // require("spec/Menu-test");
-    // require("spec/MultiRangeInlineEditor-test");
     // require("spec/NodeConnection-test");
     // require("spec/Pane-test");
     // require("spec/PreferencesBase-test");
