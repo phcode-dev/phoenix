@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, jasmine, beforeEach, afterEach, it, runs, waitsFor, expect, waitsForDone, spyOn */
+/*global describe, jasmine, beforeEach, afterEach, it, awaitsFor, expect, awaitsForDone, spyOn */
 /*unittests: LanguageManager */
 
 define(function (require, exports, module) {
@@ -28,13 +28,12 @@ define(function (require, exports, module) {
     // Load dependent modules
     var CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
         LanguageManager     = require("language/LanguageManager"),
-        SpecRunnerUtils     = require("spec/SpecRunnerUtils"),
         PreferencesManager  = require("preferences/PreferencesManager");
 
     describe("LanguageManager", function () {
 
-        beforeEach(function () {
-            waitsForDone(LanguageManager.ready, "LanguageManager ready", 10000);
+        beforeEach(async function () {
+            await awaitsForDone(LanguageManager.ready, "LanguageManager ready", 10000);
 
             spyOn(console, "error");
         });
@@ -310,481 +309,149 @@ define(function (require, exports, module) {
                 expect(console.error).toHaveBeenCalledWith("mode must not be empty");
             });
 
-            it("should create a language with file extensions and a mode", function () {
+            it("should create a language with file extensions and a mode", async function () {
                 var def = { id: "pascal", name: "Pascal", fileExtensions: ["pas", "p"], mode: "pascal" },
                     language;
 
-                runs(function () {
-                    defineLanguage(def).done(function (lang) {
-                        language = lang;
-                    });
+                defineLanguage(def).done(function (lang) {
+                    language = lang;
                 });
 
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return Boolean(language);
                 }, "The language should be resolved", 50);
 
-                runs(function () {
-                    expect(LanguageManager.getLanguageForPath("file.p")).toBe(language);
-                    validateLanguage(def, language);
-                });
+                expect(LanguageManager.getLanguageForPath("file.p")).toBe(language);
+                validateLanguage(def, language);
             });
 
-            it("should allow multiple languages to use the same mode", function () {
+            it("should allow multiple languages to use the same mode", async function () {
                 var xmlBefore,
                     def         = { id: "wix", name: "WiX", fileExtensions: ["wix"], mode: "xml" },
                     lang,
                     xmlAfter;
 
-                runs(function () {
-                    xmlBefore = LanguageManager.getLanguage("xml");
+                xmlBefore = LanguageManager.getLanguage("xml");
 
-                    defineLanguage(def).done(function (language) {
-                        lang = language;
-                        xmlAfter = LanguageManager.getLanguage("xml");
-                    });
+                defineLanguage(def).done(function (language) {
+                    lang = language;
+                    xmlAfter = LanguageManager.getLanguage("xml");
                 });
 
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return Boolean(lang);
                 }, "The language should be resolved", 50);
 
-                runs(function () {
-                    expect(xmlBefore).toBe(xmlAfter);
-                    expect(LanguageManager.getLanguageForPath("file.wix")).toBe(lang);
-                    expect(LanguageManager.getLanguageForPath("file.xml")).toBe(xmlAfter);
+                expect(xmlBefore).toBe(xmlAfter);
+                expect(LanguageManager.getLanguageForPath("file.wix")).toBe(lang);
+                expect(LanguageManager.getLanguageForPath("file.xml")).toBe(xmlAfter);
 
-                    validateLanguage(def, lang);
-                });
+                validateLanguage(def, lang);
             });
 
             // FIXME: Add internal LanguageManager._reset()
             // or unload a language (pascal is loaded from the previous test)
-            it("should return an error if a language is already defined", function () {
+            it("should return an error if a language is already defined", async function () {
                 var def = { id: "pascal", name: "Pascal", fileExtensions: ["pas", "p"], mode: "pascal" },
                     error = -1;
 
-                runs(function () {
-                    defineLanguage(def).fail(function (err) {
-                        error = err;
-                    });
+                defineLanguage(def).fail(function (err) {
+                    error = err;
                 });
 
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return error !== -1;
                 }, "The promise should be rejected with an error", 50);
 
-                runs(function () {
-                    expect(error).toBe("Language \"pascal\" is already defined");
-                });
+                expect(error).toBe("Language \"pascal\" is already defined");
             });
 
-            it("should validate comment prefix/suffix", function () {
+            it("should validate comment prefix/suffix", async function () {
                 var def = { id: "coldfusion", name: "ColdFusion", fileExtensions: ["cfml", "cfm"], mode: "xml" },
                     language;
 
-                runs(function () {
-                    defineLanguage(def).done(function (lang) {
-                        language = lang;
-                    });
+                defineLanguage(def).done(function (lang) {
+                    language = lang;
                 });
 
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return Boolean(language);
                 }, "The language should be resolved", 50);
 
-                runs(function () {
-                    language.setLineCommentSyntax("");
-                    expect(console.error).toHaveBeenCalledWith("prefix must not be empty");
+                language.setLineCommentSyntax("");
+                expect(console.error).toHaveBeenCalledWith("prefix must not be empty");
 
-                    language.setBlockCommentSyntax("<!---", "");
-                    expect(console.error).toHaveBeenCalledWith("suffix must not be empty");
+                language.setBlockCommentSyntax("<!---", "");
+                expect(console.error).toHaveBeenCalledWith("suffix must not be empty");
 
-                    language.setBlockCommentSyntax("", "--->");
-                    expect(console.error).toHaveBeenCalledWith("prefix must not be empty");
+                language.setBlockCommentSyntax("", "--->");
+                expect(console.error).toHaveBeenCalledWith("prefix must not be empty");
 
-                    def.lineComment = "//";
-                    def.blockComment = {
-                        prefix: "<!---",
-                        suffix: "--->"
-                    };
+                def.lineComment = "//";
+                def.blockComment = {
+                    prefix: "<!---",
+                    suffix: "--->"
+                };
 
-                    language.setLineCommentSyntax(def.lineComment);
-                    language.setBlockCommentSyntax(def.blockComment.prefix, def.blockComment.suffix);
+                language.setLineCommentSyntax(def.lineComment);
+                language.setBlockCommentSyntax(def.blockComment.prefix, def.blockComment.suffix);
 
-                    validateLanguage(def, language);
-                });
+                validateLanguage(def, language);
             });
 
-            it("should validate multiple line comment prefixes", function () {
+            it("should validate multiple line comment prefixes", async function () {
                 var def = { id: "php2", name: "PHP2", fileExtensions: ["php2"], mode: "php" },
                     language;
 
-                runs(function () {
-                    defineLanguage(def).done(function (lang) {
-                        language = lang;
-                    });
+                defineLanguage(def).done(function (lang) {
+                    language = lang;
                 });
 
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return Boolean(language);
                 }, "The language should be resolved", 50);
 
-                runs(function () {
-                    language.setLineCommentSyntax([]);
-                    expect(console.error).toHaveBeenCalledWith("The prefix array should not be empty");
+                language.setLineCommentSyntax([]);
+                expect(console.error).toHaveBeenCalledWith("The prefix array should not be empty");
 
-                    language.setLineCommentSyntax([""]);
-                    expect(console.error).toHaveBeenCalledWith("prefix[0] must not be empty");
+                language.setLineCommentSyntax([""]);
+                expect(console.error).toHaveBeenCalledWith("prefix[0] must not be empty");
 
-                    language.setLineCommentSyntax(["#", ""]);
-                    expect(console.error).toHaveBeenCalledWith("prefix[1] must not be empty");
+                language.setLineCommentSyntax(["#", ""]);
+                expect(console.error).toHaveBeenCalledWith("prefix[1] must not be empty");
 
-                    def.lineComment = ["#"];
+                def.lineComment = ["#"];
 
-                    language.setLineCommentSyntax(def.lineComment);
-                    validateLanguage(def, language);
-                });
+                language.setLineCommentSyntax(def.lineComment);
+                validateLanguage(def, language);
 
-                runs(function () {
-                    def.lineComment = ["#", "//"];
+                def.lineComment = ["#", "//"];
 
-                    language.setLineCommentSyntax(def.lineComment);
-                    validateLanguage(def, language);
-                });
+                language.setLineCommentSyntax(def.lineComment);
+                validateLanguage(def, language);
             });
 
-            it("should load a built-in CodeMirror mode", function () {
+            it("should load a built-in CodeMirror mode", async function () {
                 var id          = "erlang",
                     def         = { id: id, name: "erlang", fileExtensions: ["erlang"], mode: "erlang" },
                     language;
 
-                runs(function () {
-                    // erlang is not defined in the default set of languages in languages.json
-                    expect(CodeMirror.modes[id]).toBe(undefined);
+                // erlang is not defined in the default set of languages in languages.json
+                expect(CodeMirror.modes[id]).toBe(undefined);
 
-                    defineLanguage(def).done(function (lang) {
-                        language = lang;
-                    });
+                defineLanguage(def).done(function (lang) {
+                    language = lang;
                 });
 
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return Boolean(language);
                 }, "The language should be resolved", 50);
 
-                runs(function () {
-                    expect(LanguageManager.getLanguageForPath("file.erlang")).toBe(language);
-                    validateLanguage(def, language);
-                });
-
-                runs(function () {
-                    // confirm the mode is loaded in CodeMirror
-                    expect(CodeMirror.modes[id]).not.toBe(undefined);
-                });
-            });
-
-        });
-
-        describe("Document language updating", function () {
-            this.category = "integration";
-
-            it("should update the document's language when a file is renamed", function () {
-                var tempDir     = SpecRunnerUtils.getTempDirectory(),
-                    oldFilename = tempDir + "/foo.js",
-                    newFilename = tempDir + "/dummy.html",
-                    spy         = jasmine.createSpy("languageChanged event handler"),
-                    dmspy       = jasmine.createSpy("currentDocumentLanguageChanged event handler"),
-                    javascript,
-                    html,
-                    oldFile,
-                    doc;
-
-                var DocumentManager,
-                    FileSystem,
-                    LanguageManager,
-                    MainViewManager;
-
-                SpecRunnerUtils.createTempDirectory();
-
-                SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                    // Load module instances from brackets.test
-                    FileSystem = w.brackets.test.FileSystem;
-                    LanguageManager = w.brackets.test.LanguageManager;
-                    DocumentManager = w.brackets.test.DocumentManager;
-                    MainViewManager = w.brackets.test.MainViewManager;
-                });
-
-                var writeDeferred = $.Deferred();
-                runs(function () {
-                    oldFile = FileSystem.getFileForPath(oldFilename);
-                    oldFile.write("", function (err) {
-                        if (err) {
-                            writeDeferred.reject(err);
-                        } else {
-                            writeDeferred.resolve();
-                        }
-                    });
-                });
-                waitsForDone(writeDeferred.promise(), "old file creation");
-
-                SpecRunnerUtils.loadProjectInTestWindow(tempDir);
-
-                runs(function () {
-                    waitsForDone(DocumentManager.getDocumentForPath(oldFilename).done(function (_doc) {
-                        doc = _doc;
-                    }), "get document");
-                });
-
-                var renameDeferred = $.Deferred();
-                runs(function () {
-                    MainViewManager._edit(MainViewManager.ACTIVE_PANE, doc);
-                    javascript = LanguageManager.getLanguage("javascript");
-
-                    // sanity check language
-                    expect(doc.getLanguage()).toBe(javascript);
-
-                    // Documents are only 'active' while referenced; they won't be maintained by DocumentManager
-                    // for global updates like rename otherwise.
-                    doc.addRef();
-
-                    // listen for event
-                    doc.on("languageChanged", spy);
-                    DocumentManager.on("currentDocumentLanguageChanged", dmspy);
-
-                    // trigger a rename
-                    oldFile.rename(newFilename, function (err) {
-                        if (err) {
-                            renameDeferred.reject(err);
-                        } else {
-                            renameDeferred.resolve();
-                        }
-                    });
-                });
-                waitsForDone(renameDeferred.promise(), "old file rename");
-
-                runs(function () {
-                    html = LanguageManager.getLanguage("html");
-
-                    // language should change
-                    expect(doc.getLanguage()).toBe(html);
-                    expect(spy).toHaveBeenCalled();
-                    expect(spy.callCount).toEqual(1);
-                    expect(dmspy.callCount).toEqual(1);
-
-                    // check callback args (arg 0 is a jQuery event)
-                    expect(spy.mostRecentCall.args[1]).toBe(javascript);
-                    expect(spy.mostRecentCall.args[2]).toBe(html);
-
-                    // cleanup
-                    doc.releaseRef();
-                });
-
-                SpecRunnerUtils.closeTestWindow();
-                SpecRunnerUtils.removeTempDirectory();
-            });
-
-            it("should update the document's language when a language is added", function () {
-                var unknown,
-                    doc,
-                    spy,
-                    schemeLanguage,
-                    promise;
-
-                runs(function () {
-                    // Create a scheme script file
-                    doc = SpecRunnerUtils.createMockActiveDocument({ filename: "/file.scheme" });
-
-                    // Initial language will be unknown (scheme is not a default language)
-                    unknown = LanguageManager.getLanguage("unknown");
-
-                    // listen for event
-                    spy = jasmine.createSpy("languageChanged event handler");
-                    doc.on("languageChanged", spy);
-
-                    // sanity check language
-                    expect(doc.getLanguage()).toBe(unknown);
-
-                    // make active
-                    doc.addRef();
-
-                    // Add the scheme language, DocumentManager should update all open documents
-                    promise = LanguageManager.defineLanguage("scheme", {
-                        name: "Scheme",
-                        mode: "scheme",
-                        fileExtensions: ["scheme"]
-                    }).done(function (language) {
-                        schemeLanguage = language;
-                    });
-
-                    waitsForDone(promise, "loading scheme mode", 1000);
-                });
-
-                runs(function () {
-                    // language should change
-                    expect(doc.getLanguage()).toBe(schemeLanguage);
-                    expect(spy).toHaveBeenCalled();
-                    expect(spy.callCount).toEqual(1);
-
-                    // check callback args (arg 0 is a jQuery event)
-                    expect(spy.mostRecentCall.args[1]).toBe(unknown);
-                    expect(spy.mostRecentCall.args[2]).toBe(schemeLanguage);
-
-                    // make sure LanguageManager keeps track of it
-                    expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(schemeLanguage);
-
-                    // cleanup
-                    doc.releaseRef();
-                });
-            });
-
-            it("should update the document's language when a language is modified", function () {
-                var unknown,
-                    doc,
-                    spy,
-                    modifiedLanguage;
-
-                // Create a foo script file
-                doc = SpecRunnerUtils.createMockActiveDocument({ filename: "/test.foo" });
-
-                // Initial language will be unknown (foo is not a default language)
-                unknown = LanguageManager.getLanguage("unknown");
-
-                // listen for event
-                spy = jasmine.createSpy("languageChanged event handler");
-                doc.on("languageChanged", spy);
-
-                // sanity check language
-                expect(doc.getLanguage()).toBe(unknown);
-
-                // make active
-                doc.addRef();
-
-                modifiedLanguage = LanguageManager.getLanguage("html");
-                modifiedLanguage.addFileExtension("foo");
-
-                // language should change
-                expect(doc.getLanguage()).toBe(modifiedLanguage);
-                expect(spy).toHaveBeenCalled();
-                expect(spy.callCount).toEqual(1);
-                expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(modifiedLanguage);
-
-                // check callback args (arg 0 is a jQuery event)
-                expect(spy.mostRecentCall.args[1]).toBe(unknown);
-                expect(spy.mostRecentCall.args[2]).toBe(modifiedLanguage);
-
-                // cleanup
-                doc.releaseRef();
-            });
-
-            it("should update the document's language via setLanguageOverride(), then keep it locked", function () {
-                var unknownLang = LanguageManager.getLanguage("unknown"),
-                    phpLang = LanguageManager.getLanguage("php"),
-                    doc,
-                    modifiedLanguage,
-                    spy;
-
-                doc = SpecRunnerUtils.createMockActiveDocument({ filename: "/test.foo2" });
-
-                // listen for event
-                spy = jasmine.createSpy("languageChanged event handler");
-                doc.on("languageChanged", spy);
-
-                // sanity check language
-                expect(doc.getLanguage()).toBe(unknownLang);
-
-                // make active
-                doc.addRef();
-
-                LanguageManager.setLanguageOverrideForPath(doc.file.fullPath, phpLang);
-
-                // language should change
-                expect(doc.getLanguage()).toBe(phpLang);
-                expect(spy.callCount).toEqual(1);
-                expect(spy.mostRecentCall.args[1]).toBe(unknownLang);
-                expect(spy.mostRecentCall.args[2]).toBe(phpLang);
-                expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(phpLang);
-
-                // add 'foo2' extension to some other language
-                modifiedLanguage = LanguageManager.getLanguage("html");
-                modifiedLanguage.addFileExtension("foo2");
-
-                // language should NOT change
-                expect(doc.getLanguage()).toBe(phpLang);
-                expect(spy.callCount).toEqual(1);
-                expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(phpLang);
-
-                // cleanup
-                doc.releaseRef();
-            });
-
-            it("should unlock the document's language for updates after setLanguageOverride(null)", function () {
-                var unknownLang = LanguageManager.getLanguage("unknown"),
-                    phpLang = LanguageManager.getLanguage("php"),
-                    doc,
-                    modifiedLanguage,
-                    spy;
-
-                doc = SpecRunnerUtils.createMockActiveDocument({ filename: "/test.foo3" });
-
-                // listen for event
-                spy = jasmine.createSpy("languageChanged event handler");
-                doc.on("languageChanged", spy);
-
-                // sanity check language
-                expect(doc.getLanguage()).toBe(unknownLang);
-
-                // make active
-                doc.addRef();
-
-                LanguageManager.setLanguageOverrideForPath(doc.file.fullPath, phpLang);
-
-                // language should change
-                expect(doc.getLanguage()).toBe(phpLang);
-                expect(spy.callCount).toEqual(1);
-                expect(spy.mostRecentCall.args[1]).toBe(unknownLang);
-                expect(spy.mostRecentCall.args[2]).toBe(phpLang);
-                expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(phpLang);
-
-                LanguageManager.setLanguageOverrideForPath(doc.file.fullPath, null);
-
-                // language should revert
-                expect(doc.getLanguage()).toBe(unknownLang);
-                expect(spy.callCount).toEqual(2);
-                expect(spy.mostRecentCall.args[1]).toBe(phpLang);
-                expect(spy.mostRecentCall.args[2]).toBe(unknownLang);
-                expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(unknownLang);
-
-                // add 'foo3' extension to some other language
-                modifiedLanguage = LanguageManager.getLanguage("html");
-                modifiedLanguage.addFileExtension("foo3");
-
-                // language should change
-                expect(doc.getLanguage()).toBe(modifiedLanguage);
-                expect(spy.callCount).toEqual(3);
-                expect(spy.mostRecentCall.args[1]).toBe(unknownLang);
-                expect(spy.mostRecentCall.args[2]).toBe(modifiedLanguage);
-                expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(modifiedLanguage);
-
-                // override again
-                LanguageManager.setLanguageOverrideForPath(doc.file.fullPath, phpLang);
-
-                expect(doc.getLanguage()).toBe(phpLang);
-                expect(spy.callCount).toBe(4);
-                expect(spy.mostRecentCall.args[1]).toBe(modifiedLanguage);
-                expect(spy.mostRecentCall.args[2]).toBe(phpLang);
-                expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(phpLang);
-
-                // remove override, should restore to modifiedLanguage
-                LanguageManager.setLanguageOverrideForPath(doc.file.fullPath, null);
-
-                expect(doc.getLanguage()).toBe(modifiedLanguage);
-                expect(spy.callCount).toBe(5);
-                expect(spy.mostRecentCall.args[1]).toBe(phpLang);
-                expect(spy.mostRecentCall.args[2]).toBe(modifiedLanguage);
-                expect(LanguageManager.getLanguageForPath(doc.file.fullPath)).toBe(modifiedLanguage);
-
-                // cleanup
-                doc.releaseRef();
+                expect(LanguageManager.getLanguageForPath("file.erlang")).toBe(language);
+                validateLanguage(def, language);
+
+                // confirm the mode is loaded in CodeMirror
+                expect(CodeMirror.modes[id]).not.toBe(undefined);
             });
 
         });
