@@ -106,7 +106,6 @@ define(function (require, exports, module) {
 
             // verify no editors
             expect(hostEditor.getInlineWidgets().length).toBe(0);
-            expect(hostEditor.hasFocus()).toBe(true);
         });
 
         it("should be able to add an inline editor with no ranges", async function () {
