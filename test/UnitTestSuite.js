@@ -31,6 +31,7 @@ define(function (require, exports, module) {
     require("spec/Editor-test");
     require("spec/EditorRedraw-test");
     require("spec/EditorCommandHandlers-test");
+    require("spec/EditorCommandHandlers-integ-test");
     require("spec/EditorManager-test");
     require("spec/EventDispatcher-test");
     require("spec/EventManager-test");
