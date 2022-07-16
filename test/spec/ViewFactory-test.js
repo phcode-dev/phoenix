@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, runs, spyOn */
+/*global describe, it, expect, spyOn */
 
 define(function (require, exports, module) {
 
@@ -35,31 +35,25 @@ define(function (require, exports, module) {
             };
         }
         it("should register a factory", function () {
-            runs(function () {
-                var factory = createMockFactory();
-                spyOn(factory, "canOpenFile");
-                MainViewFactory.registerViewFactory(factory);
-                MainViewFactory.findSuitableFactoryForPath();
-                expect(factory.canOpenFile).toHaveBeenCalled();
-            });
+            var factory = createMockFactory();
+            spyOn(factory, "canOpenFile");
+            MainViewFactory.registerViewFactory(factory);
+            MainViewFactory.findSuitableFactoryForPath();
+            expect(factory.canOpenFile).toHaveBeenCalled();
         });
         it("should find a factory", function () {
-            runs(function () {
-                var factory = createMockFactory();
+            var factory = createMockFactory();
 
-                MainViewFactory.registerViewFactory(factory);
-                var result = MainViewFactory.findSuitableFactoryForPath("blah");
+            MainViewFactory.registerViewFactory(factory);
+            var result = MainViewFactory.findSuitableFactoryForPath("blah");
 
-                expect(result).toBeTruthy();
-            });
+            expect(result).toBeTruthy();
         });
         it("should not find a factory", function () {
-            runs(function () {
-                var factory = createMockFactory();
-                MainViewFactory.registerViewFactory(factory);
-                var result = MainViewFactory.findSuitableFactoryForPath("blahblah");
-                expect(result).toBeFalsy();
-            });
+            var factory = createMockFactory();
+            MainViewFactory.registerViewFactory(factory);
+            var result = MainViewFactory.findSuitableFactoryForPath("blahblah");
+            expect(result).toBeFalsy();
         });
     });
 });
