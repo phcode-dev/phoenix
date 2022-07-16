@@ -48,6 +48,7 @@ define(function (require, exports, module) {
     require("spec/HTMLSimpleDOM-test");
     require("spec/HTMLTokenizer-test");
     require("spec/CodeHintUtils-test");
+    require("spec/JSONUtils-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
@@ -61,7 +62,6 @@ define(function (require, exports, module) {
     // require("spec/FindInFiles-test");
     // require("spec/InlineEditorProviders-test");
     // require("spec/InstallExtensionDialog-test");
-    // require("spec/JSONUtils-test");
     // require("spec/KeyBindingManager-test");
     // require("spec/LanguageManager-test");
     // require("spec/LanguageTools-test");
