@@ -368,6 +368,9 @@ define(function (require, exports, module) {
     UnitTestReporter.prototype.getTopLevelSuiteName = function (spec) {
         let self = this;
         var topLevelSuite = self.specIdToSuiteMap[spec.id];
+        if(!topLevelSuite){
+            topLevelSuite = self.suiteIdToSuiteMap[spec.id];
+        }
 
         while (topLevelSuite.parentSuite && topLevelSuite.parentSuite !== self.jasmineRootSuite) {
             topLevelSuite = topLevelSuite.parentSuite;
@@ -413,9 +416,12 @@ define(function (require, exports, module) {
             console.error('Spec Error: ' + suiteResult.description + ' was ' + suiteResult.status);
 
             for(const element of suiteResult.failedExpectations) {
-                console.error('Failure: ', element.message);
-                console.error('Stack: ', element.stack);
+                console.error('Spec Error: Failure: ', element.message);
+                console.error('Spec Error: Stack: ', element.stack);
             }
+
+            let suiteData = this._addSuiteResults(suiteResult, this._currentPerfRecord);
+            $(this).triggerHandler("specEnd", [this, suiteData, this.suites[this.getTopLevelSuiteName(suiteResult)]]);
 
         }
         let suite = self.suiteIdToSuiteMap[suiteResult.id];
@@ -450,6 +456,35 @@ define(function (require, exports, module) {
      * messages/perf data
      */
     UnitTestReporter.prototype._addSpecResults = function (spec, perfRecord) {
+        let suiteData = this.suites[this.getTopLevelSuiteName(spec)],
+            specData = {
+                name: spec.fullName,
+                description: spec.description,
+                passed: (spec.status === "passed"),
+                messages: []
+            };
+
+        this.activeSpecCompleteCount++;
+
+        if (specData.passed) {
+            suiteData.passedCount++;
+            this.totalPassedCount++;
+        } else {
+            suiteData.failedCount++;
+            this.totalFailedCount++;
+        }
+
+        specData.messages = _getResultMessage(spec);
+
+        if (perfRecord && perfRecord.length) {
+            specData.perf = perfRecord;
+        }
+
+        suiteData.specs.push(specData);
+        return specData;
+    };
+
+    UnitTestReporter.prototype._addSuiteResults = function (spec, perfRecord) {
         let suiteData = this.suites[this.getTopLevelSuiteName(spec)],
             specData = {
                 name: spec.fullName,
