@@ -55,6 +55,7 @@ define(function (require, exports, module) {
     require("spec/LanguageManager-test");
     require("spec/LanguageManager-integ-test");
     require("spec/LowLevelFileIO-test");
+    require("spec/Metrics-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
@@ -95,6 +96,5 @@ define(function (require, exports, module) {
     // require("spec/WorkingSetView-test");
     // require("spec/WorkingSetSort-test");
     // require("spec/XMLUtils-test");
-    // require("spec/Metrics-test");
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
 });
