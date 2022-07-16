@@ -58,6 +58,7 @@ define(function (require, exports, module) {
     require("spec/Metrics-test");
     require("spec/MultiRangeInlineEditor-test");
     require("spec/MultiRangeInlineEditor-integ-test");
+    require("spec/Pane-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");

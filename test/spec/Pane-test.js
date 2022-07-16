@@ -113,8 +113,8 @@ define(function (require, exports, module) {
                 expect(myPane._views[myView.getFullPath()]).toEqual(myView);
             });
             it("should show a view", function () {
-                spyOn(myView, "notifyVisibilityChange").andCallThrough();
-                spyOn(myView, "getFile").andCallThrough();
+                spyOn(myView, "notifyVisibilityChange").and.callThrough();
+                spyOn(myView, "getFile").and.callThrough();
                 spyOn(myView, "updateLayout");
 
                 myPane.showView(myView);
@@ -251,8 +251,8 @@ define(function (require, exports, module) {
                 myPane.mergeFrom(secondPane);
 
                 expect(secondPane._setViewVisibility).toHaveBeenCalled();
-                expect(secondPane._setViewVisibility.calls[0].args[0]).toBe(secondView);
-                expect(secondPane._setViewVisibility.calls[0].args[1]).toBeFalsy();
+                expect(secondPane._setViewVisibility.calls.all()[0].args[0]).toBe(secondView);
+                expect(secondPane._setViewVisibility.calls.all()[0].args[1]).toBeFalsy();
 
                 secondPane.destroy();
             });
@@ -264,7 +264,7 @@ define(function (require, exports, module) {
                 expect(myPane._currentView).toEqual(myView);
             });
             it("should switch views when removing view", function () {
-                spyOn(myPane, "_execOpenFile").andCallFake(function (fullPath) {
+                spyOn(myPane, "_execOpenFile").and.callFake(function (fullPath) {
                     myPane.showView(myPane._views[fullPath]);
                     return new $.Deferred().resolve().promise();
                 });
@@ -282,14 +282,14 @@ define(function (require, exports, module) {
                 expect(myPane._currentView).toEqual(myView);
             });
             it("should show interstitial when showing the next file fails", function () {
-                spyOn(myPane, "_execOpenFile").andCallFake(function (fullPath) {
+                spyOn(myPane, "_execOpenFile").and.callFake(function (fullPath) {
                     return new $.Deferred().reject().promise();
                 });
 
                 var secondView = createMockView("second-view");
 
-                spyOn(myPane, "_hideCurrentView").andCallThrough();
-                spyOn(myPane, "showInterstitial").andCallThrough();
+                spyOn(myPane, "_hideCurrentView").and.callThrough();
+                spyOn(myPane, "showInterstitial").and.callThrough();
 
                 myPane.addToViewList(myView.getFile());
                 myPane.addToViewList(secondView.getFile());
@@ -302,7 +302,7 @@ define(function (require, exports, module) {
                 expect(myPane._currentView).toEqual(null);
                 // should be called twice --
                 //  the second time to show the interstitial due to the removal
-                expect(myPane.showInterstitial.calls[1].args[0]).toBeTruthy();
+                expect(myPane.showInterstitial.calls.all()[1].args[0]).toBeTruthy();
                 expect(myPane._hideCurrentView).toHaveBeenCalled();
                 expect(myPane._views.hasOwnProperty(secondView.getFile().fullPath)).toBeFalsy();
             });
@@ -503,7 +503,7 @@ define(function (require, exports, module) {
                 myPane.showView(myView);
                 myPane._reset();
 
-                expect(eventHandler.callCount).toBe(2);
+                expect(eventHandler.calls.count()).toBe(2);
                 myPane.off(".test");
             });
         });
