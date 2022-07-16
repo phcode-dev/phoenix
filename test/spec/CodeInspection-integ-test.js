@@ -122,7 +122,7 @@ define(function (require, exports, module) {
             CodeInspection.toggleEnabled(true);
 
             await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
-        });
+        }, 30000);
 
         beforeEach(function () {
             // this is to make the tests run faster
