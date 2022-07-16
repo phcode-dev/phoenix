@@ -67,7 +67,7 @@ define(function (require, exports, module) {
             Dialogs = null;
             FileSystem = null;
             testWindow = null;
-            await SpecRunnerUtils.closeTestWindow();
+            //await SpecRunnerUtils.closeTestWindow();
         });
 
         function dropdownButton() {
@@ -163,10 +163,13 @@ define(function (require, exports, module) {
             it("should open two inline editors and show the matching rules", async function () {
                 var inlineWidgets;
 
-                var promise = SpecRunnerUtils.toggleQuickEditAtOffset(EditorManager.getCurrentFullEditor(), {line: 15, ch: 22});
-                await awaitsForDone(promise, "Open inline editor 1");
+                let editor = EditorManager.getCurrentFullEditor();
+                var promise = SpecRunnerUtils.toggleQuickEditAtOffset(editor,
+                    {line: 15, ch: 22});
 
-                var promise2 = SpecRunnerUtils.toggleQuickEditAtOffset(EditorManager.getCurrentFullEditor(), {line: 20, ch: 25});
+                var promise2 = SpecRunnerUtils.toggleQuickEditAtOffset(editor,
+                    {line: 20, ch: 25});
+                await awaitsForDone(promise, "Open inline editor 1");
                 await awaitsForDone(promise2, "Open inline editor 2");
 
                 inlineWidgets = getInlineEditorWidgets();
@@ -196,7 +199,7 @@ define(function (require, exports, module) {
                 expect(files.length).toBe(2);
                 expectListItem(files.eq(0), ".banner-new", "test.css", 8);
                 expectListItem(files.eq(1), ".banner-new", "test2.css", 8);
-            });
+            }, 100000);
 
             it("should show no matching rule in inline editor", async function () {
                 var promise = SpecRunnerUtils.toggleQuickEditAtOffset(EditorManager.getCurrentFullEditor(), {line: 16, ch: 7});
