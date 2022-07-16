@@ -62,6 +62,7 @@ define(function (require, exports, module) {
     require("spec/PreferencesBase-test");
     require("spec/ProjectModel-test");
     require("spec/QuickSearchField-test");
+    require("spec/RemoteFunctions-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
@@ -84,7 +85,6 @@ define(function (require, exports, module) {
     // require("spec/PreferencesManager-test");
     // require("spec/ProjectManager-test");
     // require("spec/QuickOpen-test");
-    // require("spec/RemoteFunctions-test");
     // require("spec/SpecRunnerUtils-test");
     // require("spec/StringMatch-test");
     // require("spec/StringUtils-test");
