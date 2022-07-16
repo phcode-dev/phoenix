@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, waitsForDone */
+/*global describe, it, expect, awaitsForDone */
 
 define(function (require, exports, module) {
 
@@ -58,7 +58,7 @@ define(function (require, exports, module) {
 
 
         describe("Extract Scrollbar", function () {
-            it("should extract scrollbars from a theme with other css", function () {
+            it("should extract scrollbars from a theme with other css", async function () {
                 var themeFile = FileSystem.getFileForPath(testFilePath + "/scrollbars.css");
                 var promise = FileUtils.readAsText(themeFile).done(function (content) {
                     var themeScrollbars = ThemeManager._extractScrollbars(content);
@@ -66,10 +66,10 @@ define(function (require, exports, module) {
                     expect(superTrim(themeScrollbars.content)).toEqual("span{}");
                 });
 
-                waitsForDone(promise, "theme with scrollbar and other css", 5000);
+                await awaitsForDone(promise, "theme with scrollbar and other css", 5000);
             });
 
-            it("should extract scrollbars from a theme with only scrollbars", function () {
+            it("should extract scrollbars from a theme with only scrollbars", async function () {
                 var themeFile = FileSystem.getFileForPath(testFilePath + "/simple-scrollbars.css");
                 var promise = FileUtils.readAsText(themeFile).done(function (content) {
                     var themeScrollbars = ThemeManager._extractScrollbars(content);
@@ -78,10 +78,10 @@ define(function (require, exports, module) {
                     expect(superTrim(themeScrollbars.content)).toEqual("");
                 });
 
-                waitsForDone(promise, "theme with only scrollbars", 5000);
+                await awaitsForDone(promise, "theme with only scrollbars", 5000);
             });
 
-            it("should be fine with an empty theme", function () {
+            it("should be fine with an empty theme", async function () {
                 var themeFile = FileSystem.getFileForPath(testFilePath + "/empty.css");
                 var promise = FileUtils.readAsText(themeFile).done(function (content) {
                     var themeScrollbars = ThemeManager._extractScrollbars(content);
@@ -89,19 +89,19 @@ define(function (require, exports, module) {
                     expect(superTrim(themeScrollbars.content)).toEqual("");
                 });
 
-                waitsForDone(promise, "empty theme", 5000);
+                await awaitsForDone(promise, "empty theme", 5000);
             });
         });
 
 
         describe("Load themes", function () {
-            it("should load a theme from a single CSS file", function () {
+            it("should load a theme from a single CSS file", async function () {
                 var promise = ThemeManager.loadFile(testFilePath + "/scrollbars.css").done(function (theme) {
                     expect(theme.name).toEqual("scrollbars");
                     expect(theme.displayName).toEqual("Scrollbars");
                 });
 
-                waitsForDone(promise, "theme file", 5000);
+                await awaitsForDone(promise, "theme file", 5000);
             });
         });
     });
