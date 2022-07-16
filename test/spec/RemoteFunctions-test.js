@@ -20,7 +20,7 @@
  */
 
 /*jslint evil: true */
-/*global describe, it, xit, expect, beforeEach, afterEach */
+/*global describe, it, expect, beforeEach, afterEach */
 
 define(function (require, exports, module) {
 
@@ -107,98 +107,78 @@ define(function (require, exports, module) {
                 return queryBracketsID(targetID);
             }
 
+            function _toHaveEdit(edit, parentClone, ignoreParent) {
+                var msgArray    = [],
+                    target      = getTargetElement(edit),
+                    child,
+                    before      = queryBracketsID(edit.beforeID),
+                    after       = queryBracketsID(edit.afterID);
+
+
+                function checkAttributes(target, attrs) {
+                    Object.keys(attrs).forEach(function (attr) {
+                        if (target.getAttribute(attr) !== attrs[attr]) {
+                            msgArray.push("Expected attribute \"" + attr + "\" to have value: \"" + attrs[attr] + "\"");
+                        }
+                    });
+                }
+
+                if (edit.type === "elementInsert") {
+                    // elementInsert tagID assignment
+                    child = queryBracketsID(edit.tagID);
+
+                    if (!child) {
+                        msgArray.push("Could not find new child element \"" + edit.tag + "\" of parentID " + edit.parentID);
+                    } else if (!ignoreParent &&
+                        (child.parentNode !== target ||
+                            (edit._isImplicit && child.parentNode.parentNode !== target))) {
+                        msgArray.push("New child element \"" + edit.tag + "\" was not under parentID " + edit.parentID);
+                    }
+
+                    checkAttributes(child, edit._attributesExpected || edit.attributes);
+                } else if (edit.type.match(/textReplace|textInsert/)) {
+                    // text node content
+                    child = (edit.firstChild && target.firstChild) ||
+                        (edit.lastChild && target.lastChild) ||
+                        (before && before.previousSibling) ||
+                        (after && after.nextSibling) ||
+                        (!edit.lastChild && target.lastChild);
+
+                    if ((edit._contentExpected && child.nodeValue !== edit._contentExpected) ||
+                        (!edit._contentExpected && child.nodeValue !== edit.content)) {
+                        msgArray.push("Expected text node \"" + child.nodeValue + "\" to have content: \"" + (edit._contentExpected || edit.content) + "\"");
+                    }
+                } else if (edit.type.match(/attrAdd|attrChange/)) {
+                    child = queryBracketsID(edit.tagID);
+                    var attrs = {};
+                    attrs[edit.attribute] = edit._valueExpected || edit.value;
+                    checkAttributes(child, attrs);
+                }
+                if (edit.type.match(/elementInsert|textInsert|textReplace/)) {
+                    // child position
+                    if (edit.firstChild && target.firstChild !== child) {
+                        msgArray.push("expected new node as firstChild");
+                    }
+
+                    if (edit.lastChild && target.lastChild !== child) {
+                        msgArray.push("elementInsert expected new node as lastChild");
+                    }
+
+                    if (edit.beforeID && before.previousSibling !== child) {
+                        msgArray.push("elementInsert expected new node before beforeID=" + edit.beforeID);
+                    }
+
+                    if (edit.afterID && after.nextSibling !== child) {
+                        msgArray.push("elementInsert expected new node after afterID=" + edit.afterID);
+                    }
+                }
+
+                return msgArray.join(",\n");
+            }
+
             beforeEach(function () {
                 htmlDocument = window.document.implementation.createHTMLDocument();
                 editHandler = new RemoteFunctions.DOMEditHandler(htmlDocument);
-
-                this.addMatchers({
-                    toHaveEdit: function (edit, parentClone, ignoreParent) {
-                        var msgArray    = [],
-                            target      = getTargetElement(edit),
-                            child,
-                            before      = queryBracketsID(edit.beforeID),
-                            after       = queryBracketsID(edit.afterID);
-
-                        this.message = function () {
-                            return msgArray.toString();
-                        };
-
-
-                        function checkAttributes(target, attrs) {
-                            Object.keys(attrs).forEach(function (attr) {
-                                if (target.getAttribute(attr) !== attrs[attr]) {
-                                    msgArray.push("Expected attribute \"" + attr + "\" to have value: \"" + attrs[attr] + "\"");
-                                }
-                            });
-                        }
-
-                        if (edit.type === "elementInsert") {
-                            // elementInsert tagID assignment
-                            child = queryBracketsID(edit.tagID);
-
-                            if (!child) {
-                                msgArray.push("Could not find new child element \"" + edit.tag + "\" of parentID " + edit.parentID);
-                            } else if (!ignoreParent &&
-                                       (child.parentNode !== target ||
-                                        (edit._isImplicit && child.parentNode.parentNode !== target))) {
-                                msgArray.push("New child element \"" + edit.tag + "\" was not under parentID " + edit.parentID);
-                            }
-
-                            checkAttributes(child, edit._attributesExpected || edit.attributes);
-                        } else if (edit.type.match(/textReplace|textInsert/)) {
-                            // text node content
-                            child = (edit.firstChild && target.firstChild) ||
-                                (edit.lastChild && target.lastChild) ||
-                                (before && before.previousSibling) ||
-                                (after && after.nextSibling) ||
-                                (!edit.lastChild && target.lastChild);
-
-                            if ((edit._contentExpected && child.nodeValue !== edit._contentExpected) ||
-                                    (!edit._contentExpected && child.nodeValue !== edit.content)) {
-                                msgArray.push("Expected text node \"" + child.nodeValue + "\" to have content: \"" + (edit._contentExpected || edit.content) + "\"");
-                            }
-                        } else if (edit.type.match(/attrAdd|attrChange/)) {
-                            child = queryBracketsID(edit.tagID);
-                            var attrs = {};
-                            attrs[edit.attribute] = edit._valueExpected || edit.value;
-                            checkAttributes(child, attrs);
-                        }
-
-                        // FIXME implicit open tag
-//                        if (edit.type.match(/textDelete|elementDelete/)) {
-//                            // childNodes count delete
-//                            if (target.childNodes.length !== parentClone.childNodes.length - 1) {
-//                                msgArray.push("Expected childNodes to decrement by 1");
-//                            }
-//                        } else if (edit.type.match(/elementInsert|textInsert/)) {
-//                            // childNodes count insert
-//                            if (target.childNodes.length !== parentClone.childNodes.length + 1) {
-//                                msgArray.push("Expected childNodes to increment by 1");
-//                            }
-//                        }
-
-                        if (edit.type.match(/elementInsert|textInsert|textReplace/)) {
-                            // child position
-                            if (edit.firstChild && target.firstChild !== child) {
-                                msgArray.push("expected new node as firstChild");
-                            }
-
-                            if (edit.lastChild && target.lastChild !== child) {
-                                msgArray.push("elementInsert expected new node as lastChild");
-                            }
-
-                            if (edit.beforeID && before.previousSibling !== child) {
-                                msgArray.push("elementInsert expected new node before beforeID=" + edit.beforeID);
-                            }
-
-                            if (edit.afterID && after.nextSibling !== child) {
-                                msgArray.push("elementInsert expected new node after afterID=" + edit.afterID);
-                            }
-                        }
-
-                        return msgArray.length === 0;
-                    }
-                });
             });
 
             afterEach(function () {
@@ -241,7 +221,7 @@ define(function (require, exports, module) {
                 }
 
                 editHandler.apply([edit]);
-                expect(htmlDocument).toHaveEdit(edit, parentClone, ignoreParent);
+                expect(_toHaveEdit(edit, parentClone, ignoreParent)).toBeFalsy();
 
                 if (expected) {
                     expect(targetElement.outerHTML).toBe(expected);
@@ -327,29 +307,6 @@ define(function (require, exports, module) {
                         tag: "body",
                         parentID: 999 // this should be ignored
                     }, '<html><head></head><body data-brackets-id="1000"></body></html>', htmlDocument.documentElement, true);
-                });
-
-                // FIXME lastChild might need afterID instead for implicit open?
-                xit("should support elementInsert when the implicit tag and children both do not exist", function () {
-                    /* empty table */
-                    applyEdit(TABLE_EMPTY, {
-                        parentID: 70,
-                        type: "elementInsert",
-                        tag: "tr",
-                        firstChild: true
-                    }, '<table data-brackets-id="70"><tr data-brackets-id="1000"></tr></table>');
-                });
-
-                // FIXME lastChild might need afterID instead for implicit open?
-                xit("should support elementInsert when the implicit tag is hidden but a child exists", function () {
-                    /* implicit tbody */
-                    applyEdit(TABLE_IMPLICIT_TBODY, {
-                        parentID: 80,
-                        type: "elementInsert",
-                        tag: "tr",
-                        lastChild: true,
-                        _isImplicit: true
-                    }, '<table data-brackets-id="80"><tbody><tr data-brackets-id="81"><td data-brackets-id="82">foo</td></tr><tr data-brackets-id="1000"></tr></tbody></table>');
                 });
 
                 it("should support elementInsert for implicit open tags that appear in the DOM", function () {
