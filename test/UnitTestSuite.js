@@ -71,6 +71,7 @@ define(function (require, exports, module) {
     require("spec/StringUtils-test");
     require("spec/TextRange-test");
     require("spec/ThemeManager-test");
+    require("spec/UrlParams-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
@@ -94,7 +95,6 @@ define(function (require, exports, module) {
     // require("spec/ProjectManager-test");
     // require("spec/QuickOpen-test");
     // require("spec/StringUtils-test");
-    // require("spec/UrlParams-test");
     // require("spec/ValidationUtils-test");
     // require("spec/ViewFactory-test");
     // require("spec/ViewCommandHandlers-test");
