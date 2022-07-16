@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeEach, afterEach, it, expect, spyOn, runs, waits */
+/*global describe, beforeEach, afterEach, afterAll, it, expect, awaits */
 /*unittests: KeyBindingManager */
 
 define(function (require, exports, module) {
@@ -136,6 +136,14 @@ define(function (require, exports, module) {
         });
 
         describe("addBinding", function () {
+            let original;
+            beforeEach(function () {
+                original= KeyBindingManager.useWindowsCompatibleBindings;
+            });
+
+            afterEach(function () {
+                KeyBindingManager.useWindowsCompatibleBindings = original;
+            });
 
             it("should require command and key binding arguments", function () {
                 KeyBindingManager.addBinding();
@@ -317,12 +325,6 @@ define(function (require, exports, module) {
             });
 
             it("should use windows key bindings on linux", function () {
-                var original = KeyBindingManager.useWindowsCompatibleBindings;
-
-                this.after(function () {
-                    KeyBindingManager.useWindowsCompatibleBindings = original;
-                });
-
                 KeyBindingManager.useWindowsCompatibleBindings = true;
                 brackets.platform = "linux";
 
@@ -346,12 +348,6 @@ define(function (require, exports, module) {
             });
 
             it("should support windows compatible bindings", function () {
-                var original = KeyBindingManager.useWindowsCompatibleBindings;
-
-                this.after(function () {
-                    KeyBindingManager.useWindowsCompatibleBindings = original;
-                });
-
                 KeyBindingManager.useWindowsCompatibleBindings = true;
                 brackets.platform = "linux";
 
@@ -443,299 +439,289 @@ define(function (require, exports, module) {
         });
 
         describe("Load User Key Map", function () {
-
-            it("should show an error when loading an image file as a user key map file", function () {
-                runs(function () {
-                    var imageTestFilesPath = SpecRunnerUtils.getTestPath("/spec/test-image-files");
-                    KeyBindingManager._setUserKeyMapFilePath(imageTestFilesPath + "/eye.jpg");
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
-
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        expect(message).toEqual(Strings.ERROR_LOADING_KEYMAP);
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+            let savedShowModalDialog = Dialogs.showModalDialog;
+            afterAll(function () {
+                Dialogs.showModalDialog = savedShowModalDialog;
             });
 
-            it("should show an error when loading a corrupted key map file", function () {
-                runs(function () {
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/invalid.json");
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+            it("should show an error when loading an image file as a user key map file", async function () {
+                // this test fails as filer
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    // this should be ERROR_LOADING_KEYMAP but we need to modify filer vfs to throw error when reading
+                    // non utf-8 strings. filer will try utf-8fy the string returned. But on native fs, this will return
+                    // an error.
+                    expect(message).toEqual(Strings.ERROR_KEYMAP_CORRUPT);
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+                var imageTestFilesPath = SpecRunnerUtils.getTestPath("/spec/test-image-files");
+                KeyBindingManager._setUserKeyMapFilePath(imageTestFilesPath + "/eye.jpg");
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
 
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        expect(message).toEqual(Strings.ERROR_KEYMAP_CORRUPT);
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+                expect(called).toBeTrue();
             });
 
-            it("should show an error when loading a key map file with only whitespaces", function () {
-                runs(function () {
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/whitespace.json");
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+            it("should show an error when loading a corrupted key map file", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    expect(message).toEqual(Strings.ERROR_KEYMAP_CORRUPT);
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/invalid.json");
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
 
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        expect(message).toEqual(Strings.ERROR_KEYMAP_CORRUPT);
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+                expect(called).toBeTrue();
             });
 
-            it("should NOT show any error when loading a user key map file with an empty object", function () {
-                runs(function () {
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/empty.json");
-                    KeyBindingManager._loadUserKeyMap();
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).not.toHaveBeenCalled();
-                });
+            it("should show an error when loading a key map file with only whitespaces", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    expect(message).toEqual(Strings.ERROR_KEYMAP_CORRUPT);
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/whitespace.json");
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
+
+                expect(called).toBeTrue();
             });
 
-            it("should NOT show any error when loading a zero-byte user key map file", function () {
-                runs(function () {
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/blank.json");
-                    KeyBindingManager._loadUserKeyMap();
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).not.toHaveBeenCalled();
-                });
+            it("should NOT show any error when loading a user key map file with an empty object", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function () {
+                    called = true;
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+
+                KeyBindingManager._initCommandAndKeyMaps();
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/empty.json");
+                KeyBindingManager._loadUserKeyMap();
+
+                await awaits(300);
+                expect(called).toBeFalse();
             });
 
-            it("should show an error when attempting to reassign a special command", function () {
-                runs(function () {
-                    CommandManager.register("test copy command", "edit.copy", testCommandFn);
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/reassignCopy.json");
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+            it("should NOT show any error when loading a zero-byte user key map file", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function () {
+                    called = true;
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
 
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        var msgPrefix = Strings.ERROR_RESTRICTED_COMMANDS.replace("{0}", "");
-                        expect(message).toMatch(msgPrefix);
-                        expect(message).toMatch("edit.copy");
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+                KeyBindingManager._initCommandAndKeyMaps();
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/blank.json");
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
+
+                expect(called).toBeFalse();
             });
 
-            it("should show an error when attempting to reassign a restricted shortcut (either bind to a special command or a mac system shortcut)", function () {
+            it("should show an error when attempting to reassign a special command", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    var msgPrefix = Strings.ERROR_RESTRICTED_COMMANDS.replace("{0}", "");
+                    expect(message).toMatch(msgPrefix);
+                    expect(message).toMatch("edit.copy");
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+                CommandManager.register("test copy command", "edit.copy", testCommandFn);
+                KeyBindingManager._initCommandAndKeyMaps();
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/reassignCopy.json");
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
+
+                expect(called).toBeTrue();
+            });
+
+            it("should show an error when attempting to reassign a restricted shortcut (either bind to a special command or a mac system shortcut)", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    var msgPrefix = Strings.ERROR_RESTRICTED_SHORTCUTS.replace("{0}", "");
+                    expect(message).toMatch(msgPrefix);
+                    if (platform === "mac") {
+                        expect(message).toMatch("cmd-z");
+                        expect(message).toMatch("Cmd-m");
+                        expect(message).toMatch("cmd-h");
+                    } else {
+                        expect(message).toMatch("ctrl-z");
+                    }
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
                 var testFilePath = (platform === "mac") ? (testPath + "/macRestrictedShortcut.json") : (testPath + "/restrictedShortcut.json");
-                runs(function () {
-                    brackets.platform = platform;
-                    populateDefaultKeyMap();
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    KeyBindingManager._setUserKeyMapFilePath(testFilePath);
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+                brackets.platform = platform;
+                populateDefaultKeyMap();
+                KeyBindingManager._initCommandAndKeyMaps();
+                KeyBindingManager._setUserKeyMapFilePath(testFilePath);
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
 
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        var msgPrefix = Strings.ERROR_RESTRICTED_SHORTCUTS.replace("{0}", "");
-                        expect(message).toMatch(msgPrefix);
-                        if (platform === "mac") {
-                            expect(message).toMatch("cmd-z");
-                            expect(message).toMatch("Cmd-m");
-                            expect(message).toMatch("cmd-h");
-                        } else {
-                            expect(message).toMatch("ctrl-z");
-                        }
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+                expect(called).toBeTrue();
             });
 
-            it("should show an error when attempting to assign multiple shortcuts to the same command", function () {
-                runs(function () {
-                    brackets.platform = platform;
-                    populateDefaultKeyMap();
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/multipleShortcuts.json");
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
-
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        var msgPrefix = Strings.ERROR_MULTIPLE_SHORTCUTS.replace("{0}", "");
-                        expect(message).toMatch(msgPrefix);
-                        expect(message).toMatch("file.openFolder");
-                        expect(message).toMatch("view.toggleSidebar");
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+            it("should show an error when attempting to assign multiple shortcuts to the same command", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    var msgPrefix = Strings.ERROR_MULTIPLE_SHORTCUTS.replace("{0}", "");
+                    expect(message).toMatch(msgPrefix);
+                    expect(message).toMatch("file.openFolder");
+                    expect(message).toMatch("view.toggleSidebar");
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+                brackets.platform = platform;
+                populateDefaultKeyMap();
+                KeyBindingManager._initCommandAndKeyMaps();
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/multipleShortcuts.json");
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
+                expect(called).toBeTrue();
             });
 
-            it("should show an error when attempting to set duplicate shortcuts", function () {
-                runs(function () {
-                    brackets.platform = platform;
-                    populateDefaultKeyMap();
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/duplicateShortcuts.json");
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
-
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        var msgPrefix = Strings.ERROR_DUPLICATE_SHORTCUTS.replace("{0}", "");
-                        expect(message).toMatch(msgPrefix);
-                        expect(message).toMatch("Ctrl-2");
-                        expect(message).toMatch("Alt-Ctrl-4");
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+            it("should show an error when attempting to set duplicate shortcuts", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    var msgPrefix = Strings.ERROR_DUPLICATE_SHORTCUTS.replace("{0}", "");
+                    expect(message).toMatch(msgPrefix);
+                    expect(message).toMatch("Ctrl-2");
+                    expect(message).toMatch("Alt-Ctrl-4");
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+                brackets.platform = platform;
+                populateDefaultKeyMap();
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/duplicateShortcuts.json");
+                KeyBindingManager._initCommandAndKeyMaps();
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
+                expect(called).toBeTrue();
             });
 
-            it("should show an error when parsing invalid shortcuts", function () {
-                runs(function () {
-                    brackets.platform = platform;
-                    populateDefaultKeyMap();
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/invalidKeys.json");
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+            it("should show an error when parsing invalid shortcuts", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    var msgPrefix = Strings.ERROR_INVALID_SHORTCUTS.replace("{0}", "");
+                    expect(message).toMatch(msgPrefix);
+                    expect(message).toMatch("command-2");
+                    expect(message).toMatch("Option-Cmd-Backspace");
+                    expect(message).toMatch("ctrl-kk");
+                    expect(message).toMatch("cmd-Del");
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
 
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        var msgPrefix = Strings.ERROR_INVALID_SHORTCUTS.replace("{0}", "");
-                        expect(message).toMatch(msgPrefix);
-                        expect(message).toMatch("command-2");
-                        expect(message).toMatch("Option-Cmd-Backspace");
-                        expect(message).toMatch("ctrl-kk");
-                        expect(message).toMatch("cmd-Del");
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+                brackets.platform = platform;
+                populateDefaultKeyMap();
+                KeyBindingManager._initCommandAndKeyMaps();
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/invalidKeys.json");
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
+
+                expect(called).toBeTrue();
             });
 
-            it("should show an error when attempting to set shortcuts to non-existent commands", function () {
-                runs(function () {
-                    // The command map has to be empty for this test case. So we are intentionally NOT calling
-                    // populateDefaultKeyMap() before loading the user key map.
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    KeyBindingManager._setUserKeyMapFilePath(testPath + "/keymap.json");
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+            it("should show an error when attempting to set shortcuts to non-existent commands", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    var msgPrefix = Strings.ERROR_NONEXISTENT_COMMANDS.replace("{0}", "");
+                    expect(message).toMatch(msgPrefix);
+                    expect(message).toMatch("file.openFolder");
+                    expect(message).toMatch("view.toggleSidebar");
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+                // The command map has to be empty for this test case. So we are intentionally NOT calling
+                // populateDefaultKeyMap() before loading the user key map.
+                KeyBindingManager._initCommandAndKeyMaps();
+                KeyBindingManager._setUserKeyMapFilePath(testPath + "/keymap.json");
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
 
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        var msgPrefix = Strings.ERROR_NONEXISTENT_COMMANDS.replace("{0}", "");
-                        expect(message).toMatch(msgPrefix);
-                        expect(message).toMatch("file.openFolder");
-                        expect(message).toMatch("view.toggleSidebar");
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    expect(Dialogs.showModalDialog).toHaveBeenCalled();
-                });
+                expect(called).toBeTrue();
             });
 
-            it("should update key map with the user specified key bindings", function () {
-                var testFilePath = (platform === "mac") ? (testPath + "/macKeymap.json") : (testPath + "/keymap.json");
-                runs(function () {
-                    brackets.platform = platform;
-                    var defKeyMap = getDefaultKeyMap();
-                    populateDefaultKeyMap();
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    expect(KeyBindingManager.getKeymap()).toEqual(defKeyMap);
-                    KeyBindingManager._setUserKeyMapFilePath(testFilePath);
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+            it("should update key map with the user specified key bindings", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
 
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    var keymap = KeyBindingManager.getKeymap(),
-                        reassignedKey1 = (platform === "mac") ? "Alt-Cmd-Backspace" : "Ctrl-Alt-Backspace",
-                        reassignedKey2 = (platform === "mac") ? "Cmd-T" : "Ctrl-T";
-                    expect(Dialogs.showModalDialog).not.toHaveBeenCalled();
-                    expect(keymap["Ctrl-2"].commandID).toEqual("file.openFolder");
-                    expect(keymap["Alt-Cmd-O"]).toBeFalsy();
-                    expect(keymap["Alt-Ctrl-O"]).toBeFalsy();
+                let testFilePath = (platform === "mac") ? (testPath + "/macKeymap.json") : (testPath + "/keymap.json");
+                brackets.platform = platform;
+                let defKeyMap = getDefaultKeyMap();
+                populateDefaultKeyMap();
+                KeyBindingManager._initCommandAndKeyMaps();
+                let keymap = KeyBindingManager.getKeymap();
+                expect(keymap).toEql(defKeyMap);
+                KeyBindingManager._setUserKeyMapFilePath(testFilePath);
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
 
-                    expect(keymap[reassignedKey1].commandID).toEqual("view.toggleSidebar");
-                    expect(keymap["Shift-Cmd-H"]).toBeFalsy();
-                    expect(keymap["Alt-Ctrl-H"]).toBeFalsy();
+                keymap = KeyBindingManager.getKeymap();
+                let reassignedKey1 = (platform === "mac") ? "Alt-Cmd-Backspace" : "Ctrl-Alt-Backspace",
+                    reassignedKey2 = (platform === "mac") ? "Cmd-T" : "Ctrl-T";
+                expect(called).toBeFalse();
+                expect(keymap["Ctrl-2"].commandID).toEqual("file.openFolder");
+                expect(keymap["Alt-Cmd-O"]).toBeFalsy();
+                expect(keymap["Alt-Ctrl-O"]).toBeFalsy();
 
-                    expect(keymap["Ctrl-L"].commandID).toEqual("navigate.gotoDefinition");
-                    expect(keymap[reassignedKey2]).toBeFalsy();
+                expect(keymap[reassignedKey1].commandID).toEqual("view.toggleSidebar");
+                expect(keymap["Shift-Cmd-H"]).toBeFalsy();
+                expect(keymap["Alt-Ctrl-H"]).toBeFalsy();
 
-                    expect(keymap["Alt-Cmd-L"]).toBeFalsy();
-                    expect(keymap["Alt-Ctrl-L"]).toBeFalsy();
-                });
+                expect(keymap["Ctrl-L"].commandID).toEqual("navigate.gotoDefinition");
+                expect(keymap[reassignedKey2]).toBeFalsy();
+
+                expect(keymap["Alt-Cmd-L"]).toBeFalsy();
+                expect(keymap["Alt-Ctrl-L"]).toBeFalsy();
             });
 
-            it("should restore original key bindings when the user key map is updated", function () {
+            it("should restore original key bindings when the user key map is updated", async function () {
+                let called = false;
+                Dialogs.showModalDialog = function (dlgClass, title, message, buttons) {
+                    called = true;
+                    return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
+                };
+
                 var testFilePath1 = (platform === "mac") ? (testPath + "/macKeymap.json") : (testPath + "/keymap.json"),
                     testFilePath2 = (platform === "mac") ? (testPath + "/macKeymap1.json") : (testPath + "/keymap1.json");
-                runs(function () {
-                    brackets.platform = platform;
-                    var defKeyMap = getDefaultKeyMap();
-                    populateDefaultKeyMap();
-                    KeyBindingManager._initCommandAndKeyMaps();
-                    expect(KeyBindingManager.getKeymap()).toEqual(defKeyMap);
-                    KeyBindingManager._setUserKeyMapFilePath(testFilePath1);
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+                brackets.platform = platform;
+                var defKeyMap = getDefaultKeyMap();
+                populateDefaultKeyMap();
+                KeyBindingManager._initCommandAndKeyMaps();
+                expect(KeyBindingManager.getKeymap()).toEqual(defKeyMap);
+                KeyBindingManager._setUserKeyMapFilePath(testFilePath1);
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
 
-                    // Loading a different key map file to simulate the user updating an existing key map.
-                    KeyBindingManager._setUserKeyMapFilePath(testFilePath2);
-                    KeyBindingManager._loadUserKeyMap();
-                    waits(300);
+                // Loading a different key map file to simulate the user updating an existing key map.
+                KeyBindingManager._setUserKeyMapFilePath(testFilePath2);
+                KeyBindingManager._loadUserKeyMap();
+                await awaits(300);
 
-                    spyOn(Dialogs, 'showModalDialog').andCallFake(function (dlgClass, title, message, buttons) {
-                        return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
-                    });
-                });
-                runs(function () {
-                    var keymap = KeyBindingManager.getKeymap(),
-                        reassignedKey1 = (platform === "mac") ? "Alt-Cmd-Backspace" : "Ctrl-Alt-Backspace",
-                        reassignedKey2 = (platform === "mac") ? "Alt-Cmd-O" : "Ctrl-Alt-O",
-                        reassignedKey3 = (platform === "mac") ? "Cmd-T" : "Ctrl-T";
+                var keymap = KeyBindingManager.getKeymap(),
+                    reassignedKey1 = (platform === "mac") ? "Alt-Cmd-Backspace" : "Ctrl-Alt-Backspace",
+                    reassignedKey2 = (platform === "mac") ? "Alt-Cmd-O" : "Ctrl-Alt-O",
+                    reassignedKey3 = (platform === "mac") ? "Cmd-T" : "Ctrl-T";
 
-                    expect(Dialogs.showModalDialog).not.toHaveBeenCalled();
-                    expect(keymap["Ctrl-2"].commandID).toEqual("view.toggleSidebar");
+                expect(called).toBeFalse();
+                expect(keymap["Ctrl-2"].commandID).toEqual("view.toggleSidebar");
 
-                    // Previous user key binding to "view.toggleSidebar" is gone.
-                    expect(keymap[reassignedKey1]).toBeFalsy();
+                // Previous user key binding to "view.toggleSidebar" is gone.
+                expect(keymap[reassignedKey1]).toBeFalsy();
 
-                    // Default key binding for "file.openFolder" is restored.
-                    expect(keymap[reassignedKey2].commandID).toEqual("file.openFolder");
+                // Default key binding for "file.openFolder" is restored.
+                expect(keymap[reassignedKey2].commandID).toEqual("file.openFolder");
 
-                    expect(keymap["Ctrl-L"].commandID).toEqual("navigate.gotoDefinition");
-                    expect(keymap[reassignedKey3]).toBeFalsy();
-                });
+                expect(keymap["Ctrl-L"].commandID).toEqual("navigate.gotoDefinition");
+                expect(keymap[reassignedKey3]).toBeFalsy();
             });
         });
 
