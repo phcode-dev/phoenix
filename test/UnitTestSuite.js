@@ -27,6 +27,7 @@ define(function (require, exports, module) {
     require("spec/CommandManager-test");
     require("spec/CSSUtils-test");
     require("spec/Document-test");
+    require("spec/Document-integ-test");
     require("spec/Editor-test");
     require("spec/EditorRedraw-test");
     require("spec/EditorCommandHandlers-test");
