@@ -78,7 +78,7 @@ define(function (require, exports, module) {
     require("spec/XMLUtils-test");
     require("spec/CodeInspection-integ-test");
     require("spec/CodeHint-integ-test");
-    // require("spec/CSSInlineEdit-test");
+    require("spec/CSSInlineEdit-integ-test");
     // require("spec/DocumentCommandHandlers-test");
     // require("spec/DocumentManager-test");
     // require("spec/DragAndDrop-test");
