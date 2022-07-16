@@ -47,8 +47,8 @@ define(function (require, exports, module) {
     require("spec/HTMLInstrumentation-test");
     require("spec/HTMLSimpleDOM-test");
     require("spec/HTMLTokenizer-test");
+    require("spec/CodeHintUtils-test");
     // require("spec/CodeHint-test");
-    // require("spec/CodeHintUtils-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
     // require("spec/JSUtils-test");
