@@ -40,6 +40,7 @@ define(function (require, exports, module) {
     require("spec/ExtensionManager-test");
     require("spec/FeatureGate-test");
     require("spec/FileFilters-test");
+    require("spec/FileFilters-integ-test");
     require("spec/FileSystem-test");
     require("spec/FileTreeView-test");
     require("spec/FileTreeViewModel-test");
