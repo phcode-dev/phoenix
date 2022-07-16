@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, waitsFor, waitsForDone, runs */
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone*/
 
 define(function (require, exports, module) {
 
@@ -87,19 +87,17 @@ define(function (require, exports, module) {
             return callback;
         }
 
-        beforeEach(function () {
-            SpecRunnerUtils.createTempDirectory();
+        beforeEach(async function () {
+            await SpecRunnerUtils.createTempDirectory();
 
-            runs(function () {
-                // create the test folder and init the test files
-                var testFiles = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
-                waitsForDone(SpecRunnerUtils.copy(testFiles, baseDir), "copy temp files");
-                testDir = `${baseDir}/LowLevelFileIO-test-files`;
-            });
+            // create the test folder and init the test files
+            var testFiles = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
+            await awaitsForDone(SpecRunnerUtils.copy(testFiles, baseDir), "copy temp files");
+            testDir = `${baseDir}/LowLevelFileIO-test-files`;
         });
 
-        afterEach(function () {
-            SpecRunnerUtils.removeTempDirectory();
+        afterEach(async function () {
+            await SpecRunnerUtils.removeTempDirectory();
         });
 
         it("should have a brackets.fs namespace", function () {
@@ -108,56 +106,44 @@ define(function (require, exports, module) {
 
         describe("readdir", function () {
 
-            it("should read a directory from disk", function () {
+            it("should read a directory from disk", async function () {
                 var cb = readdirSpy();
 
-                runs(function () {
-                    brackets.fs.readdir(testDir, cb);
-                });
+                brackets.fs.readdir(testDir, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error).toBeFalsy();
+                expect(cb.error).toBeFalsy();
 
-                    // Look for known files
-                    expect(cb.content.indexOf("file_one.txt")).not.toBe(-1);
-                    expect(cb.content.indexOf("file_two.txt")).not.toBe(-1);
-                    expect(cb.content.indexOf("file_three.txt")).not.toBe(-1);
+                // Look for known files
+                expect(cb.content.indexOf("file_one.txt")).not.toBe(-1);
+                expect(cb.content.indexOf("file_two.txt")).not.toBe(-1);
+                expect(cb.content.indexOf("file_three.txt")).not.toBe(-1);
 
-                    // Make sure '.' and '..' are omitted
-                    expect(cb.content.indexOf(".")).toBe(-1);
-                    expect(cb.content.indexOf("..")).toBe(-1);
-                });
+                // Make sure '.' and '..' are omitted
+                expect(cb.content.indexOf(".")).toBe(-1);
+                expect(cb.content.indexOf("..")).toBe(-1);
             });
 
-            it("should return an error if the directory doesn't exist", function () {
+            it("should return an error if the directory doesn't exist", async function () {
                 var cb = readdirSpy();
 
-                runs(function () {
-                    brackets.fs.readdir("/This/directory/doesnt/exist", cb);
-                });
+                brackets.fs.readdir("/This/directory/doesnt/exist", cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
             });
 
-            it("should return an error if the directory can't be read (Mac only)", function () {
+            it("should return an error if the directory can't be read (Mac only)", async function () {
                 if (brackets.platform === "mac") {
                     var cb = readdirSpy();
 
-                    runs(function () {
-                        brackets.fs.readdir(baseDir + "/cant_read_here", cb);
-                    });
+                    brackets.fs.readdir(baseDir + "/cant_read_here", cb);
 
-                    waitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
+                    await awaitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
 
-                    runs(function () {
-                        expect(cb.error).toBe(brackets.fs.ERR_CANT_READ);
-                    });
+                    expect(cb.error).toBe(brackets.fs.ERR_CANT_READ);
                 }
 
             });
@@ -173,50 +159,38 @@ define(function (require, exports, module) {
 
         describe("stat", function () {
 
-            it("should return correct information for a directory", function () {
+            it("should return correct information for a directory", async function () {
                 var cb = statSpy();
 
-                runs(function () {
-                    brackets.fs.stat(baseDir, cb);
-                });
+                brackets.fs.stat(baseDir, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, 1000);
 
-                runs(function () {
-                    expect(cb.error).toBeFalsy();
-                    expect(cb.stat.isDirectory()).toBe(true);
-                    expect(cb.stat.isFile()).toBe(false);
-                });
+                expect(cb.error).toBeFalsy();
+                expect(cb.stat.isDirectory()).toBe(true);
+                expect(cb.stat.isFile()).toBe(false);
             });
 
-            it("should return correct information for a file", function () {
+            it("should return correct information for a file", async function () {
                 var cb = statSpy();
 
-                runs(function () {
-                    brackets.fs.stat(testDir + "/file_one.txt", cb);
-                });
+                brackets.fs.stat(testDir + "/file_one.txt", cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error).toBeFalsy();
-                    expect(cb.stat.isDirectory()).toBe(false);
-                    expect(cb.stat.isFile()).toBe(true);
-                });
+                expect(cb.error).toBeFalsy();
+                expect(cb.stat.isDirectory()).toBe(false);
+                expect(cb.stat.isFile()).toBe(true);
             });
 
-            it("should return an error if the file/directory doesn't exist", function () {
+            it("should return an error if the file/directory doesn't exist", async function () {
                 var cb = statSpy();
 
-                runs(function () {
-                    brackets.fs.stat("/This/directory/doesnt/exist", cb);
-                });
+                brackets.fs.stat("/This/directory/doesnt/exist", cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
             });
 
             it("should return an error if incorrect parameters are passed", function () {
@@ -231,40 +205,30 @@ define(function (require, exports, module) {
 
         describe("readFile", function () {
 
-            it("should read a text file", function () {
+            it("should read a text file", async function () {
                 var cb = readFileSpy();
 
-                runs(function () {
-                    brackets.fs.readFile(testDir + "/file_one.txt", UTF8, cb);
-                });
+                brackets.fs.readFile(testDir + "/file_one.txt", UTF8, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error).toBeFalsy();
-                    expect(cb.content).toBe("Hello world");
-                });
+                expect(cb.error).toBeFalsy();
+                expect(cb.content).toBe("Hello world");
             });
 
-            it("should return an error if trying to read a non-existent file", function () {
+            it("should return an error if trying to read a non-existent file", async function () {
                 var cb = readFileSpy();
 
-                runs(function () {
-                    brackets.fs.readFile("/This/file/doesnt/exist.txt", UTF8, cb);
-                });
+                brackets.fs.readFile("/This/file/doesnt/exist.txt", UTF8, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
             });
 
             it("should return an error if trying to use an unsppported encoding", function () {
-                runs(function () {
-                    brackets.fs.readFile(testDir + "/file_one.txt", UTF16, (a, c)=>{
-                        expect(ArrayBuffer.isView(c)).toBe(true);
-                    });
+                brackets.fs.readFile(testDir + "/file_one.txt", UTF16, (a, c)=>{
+                    expect(ArrayBuffer.isView(c)).toBe(true);
                 });
             });
 
@@ -276,84 +240,62 @@ define(function (require, exports, module) {
                 }).toThrow();
             });
 
-            it("should return an error if trying to read a directory", function () {
+            it("should return an error if trying to read a directory", async function () {
                 var cb = readFileSpy();
 
-                runs(function () {
-                    brackets.fs.readFile(baseDir, UTF8, cb);
-                });
+                brackets.fs.readFile(baseDir, UTF8, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, 1000);
 
-                runs(function () {
-                    expect(cb.error.code).toBe(brackets.fs.ERR_EISDIR);
-                });
+                expect(cb.error.code).toBe(brackets.fs.ERR_EISDIR);
             });
 
             it("should return an error trying to read a binary file", function () {
-                runs(function () {
-                    brackets.fs.readFile(testDir + "/tree.jpg", "bin", (a, c)=> {
-                        expect(ArrayBuffer.isView(c)).toBe(true);
-                    });
+                brackets.fs.readFile(testDir + "/tree.jpg", "bin", (a, c)=> {
+                    expect(ArrayBuffer.isView(c)).toBe(true);
                 });
             });
 
-            it("should be able to quickly determine if a large file is UTF-8", function () {
+            it("should be able to quickly determine if a large file is UTF-8", async function () {
                 var cb = readFileSpy();
 
-                runs(function () {
-                    brackets.fs.readFile(testDir + "/ru_utf8.html", UTF8, cb);
-                });
+                brackets.fs.readFile(testDir + "/ru_utf8.html", UTF8, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error).toBe(null);
-                });
+                expect(cb.error).toBe(null);
             });
 
-            it("should be able to quickly read a small UTF-8 file", function () {
+            it("should be able to quickly read a small UTF-8 file", async function () {
                 var cb = readFileSpy();
 
-                runs(function () {
-                    brackets.fs.readFile(testDir + "/es_small_utf8.html", UTF8, cb);
-                });
+                brackets.fs.readFile(testDir + "/es_small_utf8.html", UTF8, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error).toBe(null);
-                });
+                expect(cb.error).toBe(null);
             });
 
 
-           it("should be able to read a zero-length file", function () {
-               var cb = readFileSpy();
-
-               runs(function () {
-                   brackets.fs.readFile(testDir + "/emptyfile.txt", UTF8, cb);
-               });
-
-               waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
-
-               runs(function () {
-                   expect(cb.error).toBe(null);
-               });
-           });
-
-            it("should be able to read a UTF-8 file with a BOM", function () {
+            it("should be able to read a zero-length file", async function () {
                 var cb = readFileSpy();
 
-                runs(function () {
-                    brackets.fs.readFile(testDir + "/ru_utf8_wBOM.html", UTF8, cb);
-                });
+                brackets.fs.readFile(testDir + "/emptyfile.txt", UTF8, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error).toBe(null);
-                    expect(cb.content[0]).toBe("<");  // should not have BOM
-                });
+                expect(cb.error).toBe(null);
+            });
+
+            it("should be able to read a UTF-8 file with a BOM", async function () {
+                var cb = readFileSpy();
+
+                brackets.fs.readFile(testDir + "/ru_utf8_wBOM.html", UTF8, cb);
+
+                await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
+
+                expect(cb.error).toBe(null);
+                expect(cb.content[0]).toBe("<");  // should not have BOM
             });
 
         }); // describe("readFile")
@@ -362,46 +304,34 @@ define(function (require, exports, module) {
 
             var contents = "This content was generated from LowLevelFileIO-test.js";
 
-            it("should write the entire contents of a file", function () {
+            it("should write the entire contents of a file", async function () {
                 var cb = errSpy(),
                     readFileCB = readFileSpy();
 
-                runs(function () {
-                    brackets.fs.writeFile(baseDir + "/write_test.txt", contents, UTF8, cb);
-                });
+                brackets.fs.writeFile(baseDir + "/write_test.txt", contents, UTF8, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "writeFile to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "writeFile to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error).toBeFalsy();
-                });
+                expect(cb.error).toBeFalsy();
 
                 // Read contents to verify
-                runs(function () {
-                    brackets.fs.readFile(baseDir + "/write_test.txt", UTF8, readFileCB);
-                });
+                brackets.fs.readFile(baseDir + "/write_test.txt", UTF8, readFileCB);
 
-                waitsFor(function () { return readFileCB.wasCalled; }, 1000);
+                await awaitsFor(function () { return readFileCB.wasCalled; }, 1000);
 
-                runs(function () {
-                    expect(readFileCB.error).toBeFalsy();
-                    expect(readFileCB.content).toBe(contents);
-                });
+                expect(readFileCB.error).toBeFalsy();
+                expect(readFileCB.content).toBe(contents);
             });
 
-            it("should return an error if the file can't be written (Mac only)", function () {
+            it("should return an error if the file can't be written (Mac only)", async function () {
                 if (brackets.platform === "mac") {
                     var cb = errSpy();
 
-                    runs(function () {
-                        brackets.fs.writeFile(baseDir + "/cant_write_here/write_test.txt", contents, UTF8, cb);
-                    });
+                    brackets.fs.writeFile(baseDir + "/cant_write_here/write_test.txt", contents, UTF8, cb);
 
-                    waitsFor(function () { return cb.wasCalled; }, "writeFile to finish", 1000);
+                    await awaitsFor(function () { return cb.wasCalled; }, "writeFile to finish", 1000);
 
-                    runs(function () {
-                        expect(cb.error).toBe(brackets.fs.ERR_CANT_WRITE);
-                    });
+                    expect(cb.error).toBe(brackets.fs.ERR_CANT_WRITE);
                 }
 
             });
@@ -414,19 +344,15 @@ define(function (require, exports, module) {
                 }).toThrow();
             });
 
-            it("should return an error if trying to write a directory", function () {
+            it("should return an error if trying to write a directory", async function () {
                 var cb = errSpy();
 
-                runs(function () {
-                    brackets.fs.writeFile(baseDir, contents, UTF8, cb);
-                });
+                brackets.fs.writeFile(baseDir, contents, UTF8, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "writeFile to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "writeFile to finish", 1000);
 
-                runs(function () {
-                    // Ideally we would get ERR_CANT_WRITE, but as long as we get some sort of error it's fine.
-                    expect(cb.error).toBeTruthy();
-                });
+                // Ideally we would get ERR_CANT_WRITE, but as long as we get some sort of error it's fine.
+                expect(cb.error).toBeTruthy();
             });
         }); // describe("writeFile")
 
@@ -434,187 +360,133 @@ define(function (require, exports, module) {
 
             var contents = "This content was generated from LowLevelFileIO-test.js";
 
-            it("should remove a file", function () {
+            it("should remove a file", async function () {
                 var filename    = baseDir + "/remove_me.txt",
                     writeFileCB = errSpy(),
                     readFileCB  = readFileSpy(),
                     unlinkCB    = errSpy(),
                     statCB      = statSpy();
 
-                runs(function () {
-                    brackets.fs.writeFile(filename, contents, UTF8, writeFileCB);
-                });
+                brackets.fs.writeFile(filename, contents, UTF8, writeFileCB);
 
-                waitsFor(function () { return writeFileCB.wasCalled; }, "writeFile to finish", 1000);
+                await awaitsFor(function () { return writeFileCB.wasCalled; }, "writeFile to finish", 1000);
 
-                runs(function () {
-                    expect(writeFileCB.error).toBeFalsy();
-                });
+                expect(writeFileCB.error).toBeFalsy();
 
+                brackets.fs.readFile(filename, UTF8, readFileCB);
 
-                // Read contents to verify
-                runs(function () {
-                    brackets.fs.readFile(filename, UTF8, readFileCB);
-                });
+                await awaitsFor(function () { return readFileCB.wasCalled; },  "readFile to finish", 1000);
 
-                waitsFor(function () { return readFileCB.wasCalled; },  "readFile to finish", 1000);
-
-                runs(function () {
-                    expect(readFileCB.error).toBeFalsy();
-                    expect(readFileCB.content).toBe(contents);
-                });
+                expect(readFileCB.error).toBeFalsy();
+                expect(readFileCB.content).toBe(contents);
 
                 // Remove the file
-                runs(function () {
-                    brackets.fs.unlink(filename, unlinkCB);
-                });
+                brackets.fs.unlink(filename, unlinkCB);
 
-                waitsFor(function () { return unlinkCB.wasCalled; },  "unlink to finish", 1000);
+                await awaitsFor(function () { return unlinkCB.wasCalled; },  "unlink to finish", 1000);
 
-                runs(function () {
-                    expect(unlinkCB.error).toBeFalsy();
-                });
+                expect(unlinkCB.error).toBeFalsy();
 
                 // Verify it is gone
-                runs(function () {
-                    brackets.fs.stat(filename, statCB);
-                });
+                brackets.fs.stat(filename, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; },  "stat to finish", 1000);
+                await awaitsFor(function () { return statCB.wasCalled; },  "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
             });
 
-            it("should return an error if the file doesn't exist", function () {
+            it("should return an error if the file doesn't exist", async function () {
                 var cb = errSpy();
 
-                runs(function () {
-                    brackets.fs.unlink("/This/file/doesnt/exist.txt", cb);
-                });
+                brackets.fs.unlink("/This/file/doesnt/exist.txt", cb);
 
-                waitsFor(function () { return cb.wasCalled; },  "unlink to finish",  1000);
+                await awaitsFor(function () { return cb.wasCalled; },  "unlink to finish",  1000);
 
-                runs(function () {
-                    expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
             });
 
-            it("should return an error if called with invalid parameters", function () {
+            it("should return an error if called with invalid parameters", async function () {
                 var cb = errSpy();
 
-                runs(function () {
-                    brackets.fs.unlink(42, cb);
-                });
+                brackets.fs.unlink(42, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "unlink to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "unlink to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error.code).toBe(brackets.fs.ERR_EINVAL);
-                });
+                expect(cb.error.code).toBe(brackets.fs.ERR_EINVAL);
             });
 
-            it("should remove a directory", function () {
+            it("should remove a directory", async function () {
                 var delDirName  = baseDir + "/unlink_dir",
                     cb          = errSpy(),
                     statCB      = statSpy(),
                     unlinkCB    = errSpy();
 
-                runs(function () {
-                    brackets.fs.mkdir(delDirName, parseInt("777", 0), cb);
-                });
+                brackets.fs.mkdir(delDirName, parseInt("777", 0), cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "makeDir to finish");
+                await awaitsFor(function () { return cb.wasCalled; }, "makeDir to finish");
 
-                runs(function () {
-                    expect(cb.error).toBe(null);
-                });
+                expect(cb.error).toBe(null);
 
                 // Verify directory was created
-                runs(function () {
-                    brackets.fs.stat(delDirName, statCB);
-                });
+                brackets.fs.stat(delDirName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish");
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish");
 
-                runs(function () {
-                    expect(statCB.error).toBe(null);
-                    expect(statCB.stat.isDirectory()).toBe(true);
-                });
+                expect(statCB.error).toBe(null);
+                expect(statCB.stat.isDirectory()).toBe(true);
 
                 // Delete the directory
-                runs(function () {
-                    brackets.fs.unlink(delDirName, unlinkCB);
-                });
+                brackets.fs.unlink(delDirName, unlinkCB);
 
-                waitsFor(function () { return unlinkCB.wasCalled; });
+                await awaitsFor(function () { return unlinkCB.wasCalled; });
 
-                runs(function () {
-                    expect(cb.error).toBe(null);
-                });
+                expect(cb.error).toBe(null);
 
                 // Verify it is gone
-                runs(function () {
-                    statCB = statSpy();
-                    brackets.fs.stat(delDirName, statCB);
-                });
+                statCB = statSpy();
+                brackets.fs.stat(delDirName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, 1000, "stat to finish");
+                await awaitsFor(function () { return statCB.wasCalled; }, 1000, "stat to finish");
 
-                runs(function () {
-                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
             });
         }); // describe("unlink")
 
         describe("makedir", function () {
 
-            it("should make a new directory", function () {
+            it("should make a new directory", async function () {
                 var newDirName  = baseDir + "/brackets_unittests_new_dir",
                     cb          = errSpy(),
                     statCB      = statSpy(),
                     trashCB     = errSpy();
 
-                runs(function () {
-                    brackets.fs.mkdir(newDirName, parseInt("777", 0), cb);
-                });
+                brackets.fs.mkdir(newDirName, parseInt("777", 0), cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "makedir to finish");
+                await awaitsFor(function () { return cb.wasCalled; }, "makedir to finish");
 
-                runs(function () {
-                    expect(cb.error).toBe(null);
-                });
+                expect(cb.error).toBe(null);
 
                 // Verify directory was created
-                runs(function () {
-                    brackets.fs.stat(newDirName, statCB);
-                });
+                brackets.fs.stat(newDirName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish");
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish");
 
-                runs(function () {
-                    expect(statCB.error).toBe(null);
-                    expect(statCB.stat.isDirectory()).toBe(true);
-                });
+                expect(statCB.error).toBe(null);
+                expect(statCB.stat.isDirectory()).toBe(true);
 
                 // Delete the directory
-                runs(function () {
-                    brackets.fs.unlink(newDirName, trashCB);
-                });
+                brackets.fs.unlink(newDirName, trashCB);
 
-                waitsFor(function () { return trashCB.wasCalled; }, "moveToTrash to finish");
+                await awaitsFor(function () { return trashCB.wasCalled; }, "moveToTrash to finish");
 
-                runs(function () {
-                    expect(trashCB.error).toBe(null);
-                });
+                expect(trashCB.error).toBe(null);
             });
         });
 
         describe("rename", function () {
             var complete;
 
-            it("should rename a file", function () {
+            it("should rename a file", async function () {
                 var oldName     = testDir + "/file_one.txt",
                     newName     = testDir + "/file_one_renamed.txt",
                     renameCB    = errSpy(),
@@ -622,52 +494,36 @@ define(function (require, exports, module) {
 
                 complete = false;
 
-                runs(function () {
-                    brackets.fs.rename(oldName, newName, renameCB);
-                });
+                brackets.fs.rename(oldName, newName, renameCB);
 
-                waitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
+                await awaitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
 
-                runs(function () {
-                    expect(renameCB.error).toBe(null);
-                });
+                expect(renameCB.error).toBe(null);
 
                 // Verify new file is found and old one is missing
-                runs(function () {
-                    brackets.fs.stat(oldName, statCB);
-                });
+                brackets.fs.stat(oldName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
 
-                runs(function () {
-                    statCB = statSpy();
-                    brackets.fs.stat(newName, statCB);
-                });
+                statCB = statSpy();
+                brackets.fs.stat(newName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCB.error).toBe(null);
-                });
+                expect(statCB.error).toBe(null);
 
                 // Rename the file back to the old name
-                runs(function () {
-                    renameCB = errSpy();
-                    brackets.fs.rename(newName, oldName, renameCB);
-                });
+                renameCB = errSpy();
+                brackets.fs.rename(newName, oldName, renameCB);
 
-                waitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
+                await awaitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
 
-                runs(function () {
-                    expect(renameCB.error).toBe(null);
-                });
+                expect(renameCB.error).toBe(null);
 
             });
-            it("should rename a folder", function () {
+            it("should rename a folder", async function () {
                 var oldName     = testDir + "/rename_me",
                     newName     = testDir + "/renamed_folder",
                     renameCB    = errSpy(),
@@ -675,68 +531,48 @@ define(function (require, exports, module) {
 
                 complete = false;
 
-                runs(function () {
-                    brackets.fs.rename(oldName, newName, renameCB);
-                });
+                brackets.fs.rename(oldName, newName, renameCB);
 
-                waitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
+                await awaitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
 
-                runs(function () {
-                    expect(renameCB.error).toBe(null);
-                });
+                expect(renameCB.error).toBe(null);
 
                 // Verify new folder is found and old one is missing
-                runs(function () {
-                    brackets.fs.stat(oldName, statCB);
-                });
+                brackets.fs.stat(oldName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
 
-                runs(function () {
-                    statCB = statSpy();
-                    brackets.fs.stat(newName, statCB);
-                });
+                statCB = statSpy();
+                brackets.fs.stat(newName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCB.error).toBe(null);
-                });
+                expect(statCB.error).toBe(null);
 
                 // Rename the folder back to the old name
-                runs(function () {
-                    renameCB = errSpy();
-                    brackets.fs.rename(newName, oldName, renameCB);
-                });
+                renameCB = errSpy();
+                brackets.fs.rename(newName, oldName, renameCB);
 
-                waitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
+                await awaitsFor(function () { return renameCB.wasCalled; }, "rename to finish", 1000);
 
-                runs(function () {
-                    expect(renameCB.error).toBe(null);
-                });
+                expect(renameCB.error).toBe(null);
             });
-            it("should return an error if the new name already exists", function () {
+            it("should return an error if the new name already exists", async function () {
                 var oldName = testDir + "/file_one.txt",
                     newName = testDir + "/file_two.txt",
                     cb      = errSpy();
 
                 complete = false;
 
-                runs(function () {
-                    brackets.fs.rename(oldName, newName, cb);
-                });
+                brackets.fs.rename(oldName, newName, cb);
 
-                waitsFor(function () { return cb.wasCalled; }, "rename to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "rename to finish", 1000);
 
-                runs(function () {
-                    expect(cb.error.code).toBe(brackets.fs.ERR_FILE_EXISTS);
-                });
+                expect(cb.error.code).toBe(brackets.fs.ERR_FILE_EXISTS);
             });
-            it("should return an error if the parent folder is read only (Mac only)", function () {
+            it("should return an error if the parent folder is read only (Mac only)", async function () {
                 if (brackets.platform === "mac") {
                     var oldName = testDir + "/cant_write_here/readme.txt",
                         newName = testDir + "/cant_write_here/readme_renamed.txt",
@@ -744,15 +580,11 @@ define(function (require, exports, module) {
 
                     complete = false;
 
-                    runs(function () {
-                        brackets.fs.rename(oldName, newName, cb);
-                    });
+                    brackets.fs.rename(oldName, newName, cb);
 
-                    waitsFor(function () { return cb.wasCalled; }, "rename to finish", 1000);
+                    await awaitsFor(function () { return cb.wasCalled; }, "rename to finish", 1000);
 
-                    runs(function () {
-                        expect(cb.error).toBe(brackets.fs.ERR_CANT_WRITE);
-                    });
+                    expect(cb.error).toBe(brackets.fs.ERR_CANT_WRITE);
                 }
             });
             // TODO: More testing of error cases?
@@ -761,7 +593,7 @@ define(function (require, exports, module) {
         describe("copyFile", function () {
             var complete;
 
-            it("should copy a file", function () {
+            it("should copy a file", async function () {
                 var fileName     = testDir + "/file_one.txt",
                     copyName     = testDir + "/file_one_copy.txt",
                     copyCB       = errSpy(),
@@ -772,86 +604,58 @@ define(function (require, exports, module) {
                 complete = false;
 
                 // Verify new file does not exist
-                runs(function () {
-                    brackets.fs.stat(copyName, statCB);
-                });
+                brackets.fs.stat(copyName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
-                });
+                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
 
                 // Verify src file exist
-                runs(function () {
-                    brackets.fs.stat(fileName, statCBsrc);
-                });
+                brackets.fs.stat(fileName, statCBsrc);
 
-                waitsFor(function () { return statCBsrc.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return statCBsrc.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCBsrc.error).toBe(null);
-                });
+                expect(statCBsrc.error).toBe(null);
 
                 // make the copy
-                runs(function () {
-                    brackets.fs.copyFile(fileName, copyName, copyCB);
-                });
+                brackets.fs.copyFile(fileName, copyName, copyCB);
 
-                waitsFor(function () { return copyCB.wasCalled; }, "copyFile to finish", 1000);
+                await awaitsFor(function () { return copyCB.wasCalled; }, "copyFile to finish", 1000);
 
-                runs(function () {
-                    expect(copyCB.error).toBe(null);
-                });
+                expect(copyCB.error).toBe(null);
 
                 // Verify new file is found
-                runs(function () {
-                    statCB = statSpy();
-                    brackets.fs.stat(copyName, statCB);
-                });
+                statCB = statSpy();
+                brackets.fs.stat(copyName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCB.error).toBe(null);
-                });
+                expect(statCB.error).toBe(null);
 
                 // Verify the origin file still exists
-                runs(function () {
-                    statCB = statSpy();
-                    brackets.fs.stat(fileName, statCB);
-                });
+                statCB = statSpy();
+                brackets.fs.stat(fileName, statCB);
 
-                waitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                runs(function () {
-                    expect(statCB.error).toBe(null);
-                });
+                expect(statCB.error).toBe(null);
 
                 // Delete the copy
-                runs(function () {
-                    brackets.fs.unlink(copyName, unlinkCB);
-                });
+                brackets.fs.unlink(copyName, unlinkCB);
 
-                waitsFor(function () { return unlinkCB.wasCalled; }, "unlink to finish", 1000);
+                await awaitsFor(function () { return unlinkCB.wasCalled; }, "unlink to finish", 1000);
 
-                runs(function () {
-                    expect(unlinkCB.error).toBe(null);
-                });
+                expect(unlinkCB.error).toBe(null);
 
             });
         });
 
         describe("specialDirectories", function () {
-            it("should have an application support directory", function () {
-                runs(function () {
-                    expect(brackets.app.getApplicationSupportDirectory().length).toNotBe(0);
-                });
+            it("should have an application support directory", async function () {
+                expect(brackets.app.getApplicationSupportDirectory().length).not.toBe(0);
             });
             it("should have a user documents directory", function () {
-                runs(function () {
-                    expect(brackets.app.getUserDocumentsDirectory().length).toNotBe(0);
-                });
+                expect(brackets.app.getUserDocumentsDirectory().length).not.toBe(0);
             });
         });
     });

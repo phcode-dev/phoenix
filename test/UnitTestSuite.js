@@ -54,6 +54,7 @@ define(function (require, exports, module) {
     require("spec/KeyBindingManager-test");
     require("spec/LanguageManager-test");
     require("spec/LanguageManager-integ-test");
+    require("spec/LowLevelFileIO-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
@@ -66,10 +67,8 @@ define(function (require, exports, module) {
     // require("spec/FindInFiles-test");
     // require("spec/InlineEditorProviders-test");
     // require("spec/InstallExtensionDialog-test");
-    // require("spec/LanguageTools-test");
     // require("spec/LiveDevelopment-test");
     // require("spec/LiveDevelopmentMultiBrowser-test");
-    // require("spec/LowLevelFileIO-test");
     // require("spec/MainViewFactory-test");
     // require("spec/MainViewManager-test");
     // require("spec/Menu-test");
@@ -97,4 +96,5 @@ define(function (require, exports, module) {
     // require("spec/WorkingSetSort-test");
     // require("spec/XMLUtils-test");
     // require("spec/Metrics-test");
+    // require("spec/LanguageTools-test"); LSP tests. disabled for now
 });
