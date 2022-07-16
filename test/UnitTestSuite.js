@@ -75,6 +75,7 @@ define(function (require, exports, module) {
     require("spec/ValidationUtils-test");
     require("spec/ViewFactory-test");
     require("spec/ViewUtils-test");
+    require("spec/XMLUtils-test");
     // require("spec/CodeHint-test");
     // require("spec/CodeInspection-test");
     // require("spec/CSSInlineEdit-test");
@@ -101,6 +102,5 @@ define(function (require, exports, module) {
     // require("spec/ViewCommandHandlers-test");
     // require("spec/WorkingSetView-test");
     // require("spec/WorkingSetSort-test");
-    // require("spec/XMLUtils-test");
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
 });
