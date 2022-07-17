@@ -81,7 +81,7 @@ define(function (require, exports, module) {
     require("spec/CodeHint-integ-test");
     require("spec/CSSInlineEdit-integ-test");
     require("spec/DocumentCommandHandlers-integ-test");
-    // require("spec/DocumentManager-test");
+    require("spec/DocumentManager-integ-test");
     // require("spec/DragAndDrop-test");
     // require("spec/EditorOptionHandlers-test");
     // require("spec/ExtensionInstallation-test");
