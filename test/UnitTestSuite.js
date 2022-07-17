@@ -26,6 +26,7 @@ define(function (require, exports, module) {
     require("spec/Async-test");
     require("spec/CommandManager-test");
     require("spec/CSSUtils-test");
+    require("spec/CSSUtils-integ-test");
     require("spec/Document-test");
     require("spec/Document-integ-test");
     require("spec/Editor-test");
@@ -79,7 +80,7 @@ define(function (require, exports, module) {
     require("spec/CodeInspection-integ-test");
     require("spec/CodeHint-integ-test");
     require("spec/CSSInlineEdit-integ-test");
-    // require("spec/DocumentCommandHandlers-test");
+    require("spec/DocumentCommandHandlers-integ-test");
     // require("spec/DocumentManager-test");
     // require("spec/DragAndDrop-test");
     // require("spec/EditorOptionHandlers-test");
