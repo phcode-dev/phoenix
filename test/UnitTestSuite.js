@@ -83,7 +83,7 @@ define(function (require, exports, module) {
     require("spec/DocumentCommandHandlers-integ-test");
     require("spec/DocumentManager-integ-test");
     require("spec/DragAndDrop-integ-test");
-    // require("spec/EditorOptionHandlers-test");
+    require("spec/EditorOptionHandlers-integ-test");
     // require("spec/ExtensionInstallation-test");
     // require("spec/ExtensionUtils-test");
     // require("spec/FindInFiles-test");
