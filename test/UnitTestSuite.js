@@ -21,7 +21,6 @@
 
 define(function (require, exports, module) {
 
-    // todo TEST_MODERN
     require("spec/utframework-suite-test");
     require("spec/Async-test");
     require("spec/CommandManager-test");
@@ -86,22 +85,22 @@ define(function (require, exports, module) {
     require("spec/EditorOptionHandlers-integ-test");
     require("spec/ExtensionUtils-integ-test");
     require("spec/InlineEditorProviders-integ-test");
-    // require("spec/FindInFiles-test");
-    // require("spec/LiveDevelopment-test");
-    // require("spec/LiveDevelopmentMultiBrowser-test");
+    require("spec/PreferencesManager-integ-test");
     // require("spec/MainViewFactory-test");
     // require("spec/MainViewManager-test");
     // require("spec/Menu-test");
-    // require("spec/NodeConnection-test");
     // require("spec/Pane-test");
-    // require("spec/PreferencesManager-test");
     // require("spec/ProjectManager-test");
     // require("spec/QuickOpen-test");
-    // require("spec/StringUtils-test");
     // require("spec/ViewCommandHandlers-test");
     // require("spec/WorkingSetView-test");
     // require("spec/WorkingSetSort-test");
+    // require("spec/FindInFiles-test");
+    // todo TEST_MODERN
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
     // require("spec/ExtensionInstallation-test"); To Remove after new extension manager framework
     // require("spec/InstallExtensionDialog-test"); reevaluate after new extension manager framework. all tests pass
+    // require("spec/LiveDevelopment-test"); reevaluate after new live preview
+    // require("spec/LiveDevelopmentMultiBrowser-test"); reevaluate after new live preview
+    // require("spec/NodeConnection-test"); deprecate and remove node connection
 });
