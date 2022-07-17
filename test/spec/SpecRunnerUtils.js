@@ -178,8 +178,14 @@ define(function (require, exports, module) {
     window.awaitsForFail = function (promise) {
         return new Promise((resolve, reject)=>{
             jsPromise(promise)
-                .then(reject)
-                .catch(resolve);
+                .then(()=>{
+                    // dont pass any args back, so not chaining with them
+                    reject();
+                })
+                .catch(()=>{
+                    // dont pass any args back, so not chaining with them
+                    resolve();
+                });
         });
     };
 
