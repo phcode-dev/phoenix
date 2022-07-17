@@ -85,10 +85,8 @@ define(function (require, exports, module) {
     require("spec/DragAndDrop-integ-test");
     require("spec/EditorOptionHandlers-integ-test");
     require("spec/ExtensionUtils-integ-test");
-    // require("spec/ExtensionInstallation-test");
+    require("spec/InlineEditorProviders-integ-test");
     // require("spec/FindInFiles-test");
-    // require("spec/InlineEditorProviders-test");
-    // require("spec/InstallExtensionDialog-test");
     // require("spec/LiveDevelopment-test");
     // require("spec/LiveDevelopmentMultiBrowser-test");
     // require("spec/MainViewFactory-test");
@@ -104,4 +102,6 @@ define(function (require, exports, module) {
     // require("spec/WorkingSetView-test");
     // require("spec/WorkingSetSort-test");
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
+    // require("spec/ExtensionInstallation-test"); To Remove after new extension manager framework
+    // require("spec/InstallExtensionDialog-test"); reevaluate after new extension manager framework. all tests pass
 });
