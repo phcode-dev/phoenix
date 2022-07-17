@@ -62,12 +62,15 @@ function jsPromise(jqueryOrJSPromise) {
     }
     if(!jqueryOrJSPromise ||
         (jqueryOrJSPromise && !jqueryOrJSPromise.fail) || (jqueryOrJSPromise && !jqueryOrJSPromise.done)){
+        console.error("this function expects a jquery promise with done and fail handlers");
         throw new Error("this function expects a jquery promise with done and fail handlers");
     }
     return new Promise((resolve, reject)=>{
         jqueryOrJSPromise
             .done(resolve)
-            .fail(reject);
+            .fail(()=>{
+                reject();
+            });
     });
 }
 
