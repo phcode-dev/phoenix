@@ -629,6 +629,7 @@ define(function (require, exports, module) {
         );
 
         _setupTestWindow();
+        return _testWindow;
     }
 
     async function closeTestWindow() {
