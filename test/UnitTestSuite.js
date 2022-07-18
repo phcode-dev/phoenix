@@ -87,7 +87,7 @@ define(function (require, exports, module) {
     require("spec/InlineEditorProviders-integ-test");
     require("spec/PreferencesManager-integ-test");
     require("spec/MainViewFactory-integ-test");
-    // require("spec/MainViewManager-test");
+    require("spec/MainViewManager-integ-test");
     // require("spec/Menu-test");
     // require("spec/Pane-test");
     // require("spec/ProjectManager-test");
