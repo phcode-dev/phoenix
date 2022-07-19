@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         Strings            = require("strings"),
         StringUtils        = require("utils/StringUtils");
 
-    describe("integration: FileFilters", function () {
+    describe("search: FileFilters", function () {
 
         let testPath = SpecRunnerUtils.getTestPath("/spec/InlineEditorProviders-test-files"),
             testWindow,

@@ -44,6 +44,7 @@ define(function (require, exports, module) {
         "all",
         "unit",
         "integration",
+        "search",
         "livepreview",
         "mainview",
         "performance",
