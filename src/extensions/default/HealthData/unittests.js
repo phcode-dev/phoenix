@@ -22,7 +22,7 @@
  *
  */
 
-/*global describe, runs, beforeEach, it, afterEach, expect, waitsForDone, waitsForFail */
+/*global describe, beforeEach, it, afterEach, expect */
 /*unittests: HealthData*/
 
 define(function (require, exports, module) {
@@ -32,41 +32,26 @@ define(function (require, exports, module) {
     var testWindow,
         PreferencesManager;
 
-    describe("HealthData", function () {
+    describe("extension:HealthData", function () {
 
-        beforeEach(function () {
-            SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                testWindow = w;
-            });
-
+        beforeEach(async function () {
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
         });
 
-        afterEach(function () {
-            SpecRunnerUtils.closeTestWindow();
+        afterEach(async function () {
+            await SpecRunnerUtils.closeTestWindow();
             testWindow = null;
         });
 
 
         describe("Data Send to Server", function () {
-            var ONE_DAY = 24 * 60 * 60 * 1000,
-                FIRST_LAUNCH_SEND_DELAY = 30 * 60 * 1000,
-                prefs,
+            var prefs,
                 HealthDataManager;
 
-            beforeEach(function () {
+            beforeEach(async function () {
                 PreferencesManager = testWindow.brackets.test.PreferencesManager;
                 prefs = PreferencesManager.getExtensionPrefs("healthData");
                 HealthDataManager = testWindow.brackets.test.HealthDataManager;
-
-                this.addMatchers({
-                    // Oddly, Jasmine has expect().toBeGreaterThan() built in, but not greater-or-equal
-                    toBeGreaterOrEqualTo: function (expected) {
-                        this.message = function () {
-                            return "Expected " + this.actual + " to be >= " + expected;
-                        };
-                        return this.actual >= expected;
-                    }
-                });
             });
 
             afterEach(function () {
@@ -113,16 +98,10 @@ define(function (require, exports, module) {
                 HealthDataPreview = null;
             });
 
-            it("should show file preview dialog", function () {
+            it("should show file preview dialog", async function () {
+                HealthDataPreview.previewHealthData();
 
-                runs(function () {
-                    HealthDataPreview.previewHealthData();
-                });
-
-                runs(function () {
-                    expect($(testWindow.document).find(".health-data-preview.instance").length).toBe(1);
-                });
-
+                expect($(testWindow.document).find(".health-data-preview.instance").length).toBe(1);
             });
         });
     });
