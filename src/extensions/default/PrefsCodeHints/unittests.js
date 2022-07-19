@@ -147,8 +147,8 @@ define(function (require, exports, module) {
         // Determines the position of the cursor.
         function expectCursorAt(pos) {
             var selection = testEditor.getSelection();
-            expect(fixPos(selection.start)).toEqual(fixPos(selection.end));
-            expect(fixPos(selection.start)).toEqual(fixPos(pos));
+            expect(fixPos(selection.start)).toEql(fixPos(selection.end));
+            expect(fixPos(selection.start)).toEql(fixPos(pos));
         }
 
         describe("File name based hinting", function () {
