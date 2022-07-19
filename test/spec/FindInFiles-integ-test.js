@@ -28,8 +28,6 @@ define(function (require, exports, module) {
     var Commands        = require("command/Commands"),
         KeyEvent        = require("utils/KeyEvent"),
         SpecRunnerUtils = require("spec/SpecRunnerUtils"),
-        FindUtils       = require("search/FindUtils"),
-        Async           = require("utils/Async"),
         StringUtils     = require("utils/StringUtils"),
         Strings         = require("strings");
 
@@ -93,8 +91,8 @@ define(function (require, exports, module) {
             $                   = null;
             testWindow          = null;
             PreferencesManager  = null;
-            // await SpecRunnerUtils.closeTestWindow();
-            // await SpecRunnerUtils.removeTempDirectory();
+            await SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.removeTempDirectory();
         });
 
         async function openProject(sourcePath) {
