@@ -93,8 +93,8 @@ define(function (require, exports, module) {
             $                   = null;
             testWindow          = null;
             PreferencesManager  = null;
-            await SpecRunnerUtils.closeTestWindow();
-            await SpecRunnerUtils.removeTempDirectory();
+            // await SpecRunnerUtils.closeTestWindow();
+            // await SpecRunnerUtils.removeTempDirectory();
         });
 
         async function openProject(sourcePath) {
@@ -141,7 +141,6 @@ define(function (require, exports, module) {
             var $searchField = $("#find-what");
             FindInFiles._searchDone = false;
             $searchField.val(searchString).trigger("input");
-            //SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
             await awaitsFor(function () {
                 return FindInFiles._searchDone;
             }, "Find in Files done");
@@ -154,6 +153,7 @@ define(function (require, exports, module) {
         describe("Find", function () {
             beforeEach(async function () {
                 await openProject(defaultSourcePath);
+                await openSearchBar();
                 await awaitsFor(function () {
                     return FindInFiles.isProjectIndexingComplete();
                 }, "indexing complete", 20000);
@@ -228,7 +228,7 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
 
                 // Set project back to main test folder
-                SpecRunnerUtils.loadProjectInTestWindow(testPath);
+                await SpecRunnerUtils.loadProjectInTestWindow(testPath);
             });
 
             it("should ignore unreadable files", async function () {
@@ -281,83 +281,53 @@ define(function (require, exports, module) {
             });
 
             it("should verify the contents of searchHistory array", async function () {
+                PreferencesManager.setViewState("searchHistory", []);
                 var fileEntry = FileSystem.getFileForPath(testPath + "/foo.js");
                 await openSearchBar(fileEntry);
                 await executeSearch("foo1");
                 var $searchField = $("#find-what");
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                await executeSearch("foo2");
-                var $searchField = $("#find-what");
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                await executeSearch("foo3");
-                var $searchField = $("#find-what");
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                await executeSearch("foo4");
-                var $searchField = $("#find-what");
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                await executeSearch("foo5");
-
-                var searchHistory = PreferencesManager.getViewState("searchHistory");
-                expect(searchHistory.length).toBe(4);
-                expect(searchHistory).toEqual(["foo4", "foo3", "foo2", "foo1"]);
-            });
-
-            it("should traverse through search history using arrow down key", async function () {
-                var fileEntry = FileSystem.getFileForPath(testPath + "/foo.js");
                 await openSearchBar(fileEntry);
-                await executeSearch("foo1");
                 await executeSearch("foo2");
+                var $searchField = $("#find-what");
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
+                await openSearchBar(fileEntry);
                 await executeSearch("foo3");
+                var $searchField = $("#find-what");
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
+                await openSearchBar(fileEntry);
                 await executeSearch("foo4");
+                var $searchField = $("#find-what");
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
+                await openSearchBar(fileEntry);
                 await executeSearch("foo5");
 
                 var searchHistory = PreferencesManager.getViewState("searchHistory");
+                const found = searchHistory.some(r=> ["foo4", "foo3", "foo2", "foo1"].includes(r));
+                expect(found).toBeTrue();
+            }, 10000);
+
+            it("should traverse through results with arrow down/up key", async function () {
+                await openSearchBar();
+                await executeSearch("foo ");
                 var $searchField = $("#find-what");
 
-                $("#find-what").val("");
+                let editor;
+                await awaitsFor(function () {
+                    editor = SearchResultsView._previewEditorForTests;
+                    return (editor && editor.document.file.fullPath === "/test/spec/FindReplace-test-files/css/foo.css");
+                }, "keyboard nav", 1000);
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $searchField[0]);
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $searchField[0]);
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                expect($("#find-what").val()).toBe("foo5");
-            });
-
-            it("should traverse through search history using arrow up key", async function () {
-                var fileEntry = FileSystem.getFileForPath(testPath + "/foo.js");
-                await openSearchBar(fileEntry);
-                await executeSearch("foo1");
-                await executeSearch("foo2");
-                await executeSearch("foo3");
-                await executeSearch("foo4");
-                await executeSearch("foo5");
-
-                var searchHistory = PreferencesManager.getViewState("searchHistory");
-                var $searchField = $("#find-what");
-
-                $("#find-what").val("");
+                await awaitsFor(function () {
+                    editor = SearchResultsView._previewEditorForTests;
+                    return (editor && editor.document.file.fullPath === "/test/spec/FindReplace-test-files/foo.js");
+                }, "keyboard nav", 1000);
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $searchField[0]);
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $searchField[0]);
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                expect($("#find-what").val()).toBe("foo1");
-            });
-
-            it("should add element to search history if it is pre-filled in search bar", async function () {
-                var fileEntry = FileSystem.getFileForPath(testPath + "/foo.js");
-                await openSearchBar(fileEntry);
-
-                var $searchField = $("#find-what");
-                $searchField.val("some");
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                await closeSearchBar();
-
-                await openSearchBar(fileEntry);
-
-                var searchHistory = PreferencesManager.getViewState("searchHistory");
-                expect(searchHistory[0]).toBe("some");
-                var $searchField = $("#find-what");
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $searchField[0]);
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $searchField[0]);
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
-                expect($searchField.val()).toBe("some");
+                await awaitsFor(function () {
+                    editor = SearchResultsView._previewEditorForTests;
+                    console.log(editor && editor.document.file.fullPath);
+                    return (editor && editor.document.file.fullPath === "/test/spec/FindReplace-test-files/css/foo.css");
+                }, "keyboard nav", 1000);
             });
 
             it("should find start and end positions", async function () {
@@ -422,7 +392,8 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
             });
 
-            it("should open file in editor and select text when a result is clicked", async function () {
+            it("should open file in preview editor and select text when a result is clicked", async function () {
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "closing all files");
                 var filePath = testPath + "/foo.html",
                     fileEntry = FileSystem.getFileForPath(filePath);
 
@@ -451,7 +422,7 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     let editor = SearchResultsView._previewEditorForTests;
                     return (editor && editor.document.file.fullPath === filePath);
-                }, 1000, "file open");
+                }, "file open", 1000);
 
                 // Verify current document
                 editor = SearchResultsView._previewEditorForTests;
@@ -483,7 +454,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () {
                     return MainViewManager.findInWorkingSet(MainViewManager.ALL_PANES, filePath) !== -1;
-                }, 1000, "indexing complete");
+                }, "indexing complete", 1000);
 
                 await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "closing all files");
             });
@@ -513,14 +484,14 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     let editor = SearchResultsView._previewEditorForTests;
                     return (editor && editor.document.file.fullPath === filePath);
-                }, 1000, "file open");
+                },  "file open", 1000);
 
                 // Wait for selection to change (this happens asynchronously after file opens)
                 await awaitsFor(function () {
                     let editor = SearchResultsView._previewEditorForTests,
                         sel = editor.getSelection();
                     return (sel.start.line === 4 && sel.start.ch === 7);
-                }, 1000, "selection change");
+                }, "selection change", 1000);
 
                 // Verify current selection
                 let editor = SearchResultsView._previewEditorForTests;
