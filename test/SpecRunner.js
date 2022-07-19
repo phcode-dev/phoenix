@@ -83,15 +83,19 @@ function jsPromise(jqueryOrJSPromise) {
  * @returns {*}
  */
 function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
+    if(!(typeof  timeoutms === "number" && typeof  pollInterval === "number" && typeof  _message === "string")){
+        throw new Error("awaitsFor: invalid parameters");
+    }
     return new Promise((resolve, reject)=>{
-        let lapsedTime = 0;
+        let startTime = Date.now(),
+            lapsedTime;
         function pollingFn() {
             try{
                 if(pollFn()){
                     resolve();
                     return;
                 }
-                lapsedTime += pollInterval;
+                lapsedTime = Date.now() - startTime;
                 if(lapsedTime>timeoutms){
                     console.error("await timed out");
                     reject();
