@@ -91,7 +91,7 @@ define(function (require, exports, module) {
     require("spec/Menu-integ-test");
     require("spec/ProjectManager-integ-test");
     require("spec/QuickOpen-integ-test");
-    // require("spec/ViewCommandHandlers-test");
+    require("spec/ViewCommandHandlers-integ-test");
     // require("spec/WorkingSetView-test");
     // require("spec/WorkingSetSort-test");
     // require("spec/FindInFiles-test");
