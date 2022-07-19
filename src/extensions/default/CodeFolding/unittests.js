@@ -4,13 +4,13 @@
  * @date 01/08/2015 18:34
  */
 
-/*global describe, beforeFirst, beforeEach, afterEach, afterLast, it, expect, runs, waitsForDone, waitsFor*/
+/*global describe, beforeAll, beforeEach, afterEach, afterAll, it, expect, awaitsForDone, awaitsFor, awaits*/
 
 define(function (require, exports, module) {
 
     var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
 
-    describe("Code Folding", function () {
+    describe("extension:Code Folding", function () {
         var testWindow,
             testEditor,
             EditorManager,
@@ -66,47 +66,41 @@ define(function (require, exports, module) {
          * Open a test file
          * @param {String} path The path to the file to open
          */
-        function openTestFile(path) {
+        async function openTestFile(path) {
             var promise = SpecRunnerUtils.openProjectFiles([path]);
             promise.then(function () {
                 testEditor = EditorManager.getCurrentFullEditor();
                 cm = testEditor._codeMirror;
             });
-            waitsForDone(promise, "Test file opened", 3000);
+            await awaitsForDone(promise, "Test file opened", 3000);
         }
 
         /**
          * Sets up the test window and loads the test project
          */
-        function setupWindow() {
-            runs(function () {
-                SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                    testWindow = w;
-                    EditorManager = w.brackets.test.EditorManager;
-                    DocumentManager = w.brackets.test.DocumentManager;
-                    PreferencesManager = w.brackets.test.PreferencesManager;
-                    CommandManager = w.brackets.test.CommandManager;
+        async function setupWindow() {
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            EditorManager = testWindow.brackets.test.EditorManager;
+            DocumentManager = testWindow.brackets.test.DocumentManager;
+            PreferencesManager = testWindow.brackets.test.PreferencesManager;
+            CommandManager = testWindow.brackets.test.CommandManager;
 
-                    prefs = PreferencesManager.getExtensionPrefs("code-folding");
-                }, {hasNativeMenus: true});
-            });
+            prefs = PreferencesManager.getExtensionPrefs("code-folding");
         }
 
         /**
          * Sets up the test window and loads the test project
          */
-        function setup() {
-            runs(function () {
-                //setPreference("saveFoldStates", false);
-                SpecRunnerUtils.loadProjectInTestWindow(testDocumentDirectory);
-            });
+        async function setup() {
+            //setPreference("saveFoldStates", false);
+            await SpecRunnerUtils.loadProjectInTestWindow(testDocumentDirectory);
         }
 
         /**
          * Closes the test window
          */
-        function tearDown() {
-            SpecRunnerUtils.closeTestWindow();
+        async function tearDown() {
+            await SpecRunnerUtils.closeTestWindow();
         }
 
         /**
@@ -122,20 +116,20 @@ define(function (require, exports, module) {
          * Folds the code on the given line number
          * @param {Number} line The line number to fold
          */
-        function foldCodeOnLine(line) {
+        async function foldCodeOnLine(line) {
             cm.setCursor(line - 1);
             var promise = runCommand("codefolding.collapse");
-            waitsForDone(promise, "Collapse code", 2000);
+            await awaitsForDone(promise, "Collapse code", 2000);
         }
 
         /**
          * Expands the code on the given line number
          * @param {Number} line The line number to fold
          */
-        function expandCodeOnLine(line) {
+        async function expandCodeOnLine(line) {
             cm.setCursor(line - 1);
             var promise = runCommand("codefolding.expand");
-            waitsForDone(promise, "Expand code", 2000);
+            await awaitsForDone(promise, "Expand code", 2000);
         }
 
         /**
@@ -230,29 +224,20 @@ define(function (require, exports, module) {
          * @param   {CodeMirror.Pos} start the start position of the selection
          * @param   {CodeMirror.Pos} end   the end position of the selection
          */
-        function selectTextInEditor(start, end) {
-            var marksVisible = false;
-            runs(function () {
-                cm.setSelection(start, end);
-                setTimeout(function () {
-                    //wait for foldmarks to be rendered
-                    marksVisible = true;
-                }, 410);
-            });
-
-            waitsFor(function () {
-                return marksVisible;
-            }, "Fold markers now visible in gutter", 500);
+        async function selectTextInEditor(start, end) {
+            cm.setSelection(start, end);
+            //wait for foldmarks to be rendered
+            await awaits(500);
         }
 
-        beforeFirst(function () {
-            setupWindow();
-            setup();
-        });
+        beforeAll(async function () {
+            await setupWindow();
+            await setup();
+        }, 30000);
 
-        afterLast(function () {
-            testWindow.closeAllFiles();
-            tearDown();
+        afterAll(async function () {
+            await testWindow.closeAllFiles();
+            await tearDown();
         });
 
         Object.keys(testFilesSpec).forEach(function (file) {
@@ -260,27 +245,21 @@ define(function (require, exports, module) {
             var foldableLines = testFilesSpec[file].foldableLines;
             var testFileSpec = testFilesSpec[file];
             describe(file + " - Editor/Gutter", function () {
-                beforeEach(function () {
-                    runs(function () {
-                        setupWindow();
-                        setup();
-                    });
+                beforeEach(async function () {
+                    await setupWindow();
+                    await setup();
 
-                    runs(function () {
-                        openTestFile(testFilePath);
-                    });
+                    await openTestFile(testFilePath);
 
-                    runs(function () {
-                        testEditor = EditorManager.getCurrentFullEditor();
-                        cm = testEditor._codeMirror;
-                    });
+                    testEditor = EditorManager.getCurrentFullEditor();
+                    cm = testEditor._codeMirror;
                 });
 
-                afterEach(function () {
-                    testWindow.closeAllFiles();
+                afterEach(async function () {
+                    await testWindow.closeAllFiles();
                 });
 
-                it("renders fold marks on startup", function () {
+                it("renders fold marks on startup", async function () {
                     var marks = getGutterFoldMarks();
                     expect(marks.length).toBeGreaterThan(0);
                     marks.map(getLineNumber).forEach(function (line) {
@@ -288,77 +267,56 @@ define(function (require, exports, module) {
                     });
                 });
 
-                it("creates a folded region in editor when fold marker is clicked", function () {
+                it("creates a folded region in editor when fold marker is clicked", async function () {
                     var lineNumber = foldableLines[0];
-                    runs(function () {
-                        foldCodeOnLine(lineNumber);
-                    });
+                    await foldCodeOnLine(lineNumber);
 
-                    runs(function () {
-                        var marks = getEditorFoldMarks();
-                        expect(marks.length).toEqual(1);
-                        expect(marks[0].lines[0].lineNo()).toEqual(lineNumber - 1);
-                    });
+                    var marks = getEditorFoldMarks();
+                    expect(marks.length).toEqual(1);
+                    expect(marks[0].lines[0].lineNo()).toEqual(lineNumber - 1);
                 });
 
-                it("clears the folded region in editor when collapsed fold marker is clicked", function () {
+                it("clears the folded region in editor when collapsed fold marker is clicked", async function () {
                     var lineNumber = foldableLines[0];
-                    runs(function () {
-                        foldCodeOnLine(lineNumber);
-                    });
-                    runs(function () {
-                        expandCodeOnLine(lineNumber);
-                    });
+                    await foldCodeOnLine(lineNumber);
+                    await expandCodeOnLine(lineNumber);
 
-                    runs(function () {
-                        var marks = getEditorFoldMarks();
-                        expect(marks.length).toEqual(0);
-                    });
+                    var marks = getEditorFoldMarks();
+                    expect(marks.length).toEqual(0);
                 });
 
-                it("expands and updates the fold gutter when text marker for a folded region in editor is cleared", function () {
+                it("expands and updates the fold gutter when text marker for a folded region in editor is cleared", async function () {
                     var lineNumber = foldableLines[0];
-                    runs(function () {
-                        foldCodeOnLine(lineNumber);
+                    await foldCodeOnLine(lineNumber);
+                    var marks = getEditorFoldMarks().filter(function (m) {
+                        var range = m.find();
+                        return range ? range.from.line === lineNumber - 1 : false;
                     });
-                    runs(function () {
-                        var marks = getEditorFoldMarks().filter(function (m) {
-                            var range = m.find();
-                            return range ? range.from.line === lineNumber - 1 : false;
-                        });
-                        marks[0].clear();
-                    });
+                    marks[0].clear();
 
-                    runs(function () {
-                        var marks = getEditorFoldMarks();
-                        var gutterMark = getGutterFoldMarks().filter(function (m) {
-                            return m.line === lineNumber - 1 && m.type === open;
-                        });
-                        expect(marks.length).toEqual(0);
-                        expect(gutterMark.length).toEqual(1);
-
+                    var marks = getEditorFoldMarks();
+                    var gutterMark = getGutterFoldMarks().filter(function (m) {
+                        return m.line === lineNumber - 1 && m.type === open;
                     });
+                    expect(marks.length).toEqual(0);
+                    expect(gutterMark.length).toEqual(1);
                 });
 
-                it("renders folded marker in the gutter for folded code regions", function () {
+                it("renders folded marker in the gutter for folded code regions", async function () {
                     var lineNumbers = testFilesSpec[file].sameLevelFoldableLines;
-                    runs(function () {
-                        lineNumbers.forEach(function (l) {
-                            foldCodeOnLine(l);
-                        });
-                    });
+                    for(let l of lineNumbers){
+                        await foldCodeOnLine(l);
+                    }
 
-                    runs(function () {
-                        var marks = getGutterFoldMarks().filter(filterFolded);
-                        expect(marks.length).toEqual(lineNumbers.length);
+                    var marks = getGutterFoldMarks().filter(filterFolded);
+                    expect(marks.length).toEqual(lineNumbers.length);
 
-                        var gutterNumbers = marks
-                            .map(getLineNumber);
-                        expect(gutterNumbers).toEqual(toZeroIndex(lineNumbers));
-                    });
+                    var gutterNumbers = marks
+                        .map(getLineNumber);
+                    expect(gutterNumbers).toEqual(toZeroIndex(lineNumbers));
                 });
 
-                it("indicates foldable lines in the gutter", function () {
+                it("indicates foldable lines in the gutter", async function () {
                     var lineNumbers = foldableLines;
                     var marks = getGutterFoldMarks();
                     var gutterNumbers = marks.filter(filterOpen)
@@ -367,122 +325,90 @@ define(function (require, exports, module) {
                 });
 
                 describe("Preferences", function () {
-                    it("persists fold states", function () {
+                    it("persists fold states", async function () {
                         var lineNumbers = testFileSpec.sameLevelFoldableLines;
-                        runs(function () {
-                            lineNumbers.forEach(function (line) {
-                                foldCodeOnLine(line);
-                            });
-                        });
-                        runs(function () {
-                            testWindow.closeAllFiles();
-                        });
+                        for(let line of lineNumbers){
+                            await foldCodeOnLine(line);
+                        }
+                        await testWindow.closeAllFiles();
 
-                        runs(function () {
-                            openTestFile(testFilePath);
-                        });
+                        await openTestFile(testFilePath);
 
-                        runs(function () {
-                            var marks = getEditorFoldMarks();
-                            var gutterNumbers = marks.map(function (mark) {
-                                return mark.lines[0].lineNo();
-                            });
-                            expect(gutterNumbers).toEqual(toZeroIndex(lineNumbers));
+                        var marks = getEditorFoldMarks();
+                        var gutterNumbers = marks.map(function (mark) {
+                            return mark.lines[0].lineNo();
                         });
+                        expect(gutterNumbers).toEqual(toZeroIndex(lineNumbers));
                     });
 
-                    it("can disable persistence of fold states", function () {
-                        setPreference("saveFoldStates", false);
-                        runs(function () {
-                            foldCodeOnLine(foldableLines[0]);
-                        });
-                        runs(function () {
-                            testWindow.closeAllFiles();
-                        });
+                    it("can disable persistence of fold states", async function () {
+                        await setPreference("saveFoldStates", false);
+                        await foldCodeOnLine(foldableLines[0]);
+                        await testWindow.closeAllFiles();
 
-                        runs(function () {
-                            openTestFile(testFilePath);
-                        });
+                        await openTestFile(testFilePath);
 
-                        runs(function () {
-                            var marks = getEditorFoldMarks();
-                            expect(marks.length).toEqual(0);
-                        });
+                        var marks = getEditorFoldMarks();
+                        expect(marks.length).toEqual(0);
 
-                        runs(function () {
-                            var lineNumbers = foldableLines;
-                            var marks = getGutterFoldMarks();
-                            var gutterNumbers = marks.filter(filterOpen)
-                                .map(getLineNumber);
-                            expect(gutterNumbers).toEqual(toZeroIndex(lineNumbers));
-                        });
+                        var lineNumbers = foldableLines;
+                        var marks = getGutterFoldMarks();
+                        var gutterNumbers = marks.filter(filterOpen)
+                            .map(getLineNumber);
+                        expect(gutterNumbers).toEqual(toZeroIndex(lineNumbers));
                     });
 
-                    it("can set the minimum fold size", function () {
-                        setPreference("minFoldSize", 20000);
-                        runs(function () {
-                            testWindow.closeAllFiles();
-                        });
+                    it("can set the minimum fold size", async function () {
+                        await setPreference("minFoldSize", 20000);
+                        await testWindow.closeAllFiles();
 
-                        runs(function () {
-                            openTestFile(testFilePath);
-                        });
+                        await openTestFile(testFilePath);
 
-                        runs(function () {
-                            var marks = getGutterFoldMarks();
-                            expect(marks.length).toEqual(0);
-                        });
+                        var marks = getGutterFoldMarks();
+                        expect(marks.length).toEqual(0);
                     });
 
-                    it("can disable code folding", function () {
+                    it("can disable code folding", async function () {
                         setPreference("enabled", false);
-                        runs(function () {
-                            var marks = getEditorFoldMarks();
-                            expect(marks.length).toEqual(0);
-                        });
+                        var marks = getEditorFoldMarks();
+                        expect(marks.length).toEqual(0);
                     });
 
                     describe("Fold selected region", function () {
-                        it("can be enabled by setting `makeSelectionsFoldable' to true", function () {
+                        it("can be enabled by setting `makeSelectionsFoldable' to true", async function () {
                             var start = testFileSpec.firstSelection.start, end = testFileSpec.firstSelection.end;
                             setPreference("makeSelectionsFoldable", true);
 
-                            selectTextInEditor(start, end);
+                            await selectTextInEditor(start, end);
 
-                            runs(function () {
-                                var marks = getGutterFoldMarks().filter(filterOpen).map(getLineNumber);
-                                expect(marks).toContain(start.line);
-                            });
+                            var marks = getGutterFoldMarks().filter(filterOpen).map(getLineNumber);
+                            expect(marks).toContain(start.line);
                         });
 
-                        it("can be disabled by setting `makeSelectionsFoldable' to false", function () {
-                            setPreference("makeSelectionsFoldable", false);
+                        it("can be disabled by setting `makeSelectionsFoldable' to false", async function () {
+                            await setPreference("makeSelectionsFoldable", false);
                             var start = testFileSpec.firstSelection.start, end = testFileSpec.firstSelection.end;
-                            selectTextInEditor(start, end);
+                            await selectTextInEditor(start, end);
 
-                            runs(function () {
-                                var marks = getGutterFoldMarks().filter(filterOpen)
-                                    .map(getLineNumber).filter(function (d) {
-                                        return d === start.line;
-                                    });
-                                expect(marks.length).toEqual(0);
-                            });
+                            var marks = getGutterFoldMarks().filter(filterOpen)
+                                .map(getLineNumber).filter(function (d) {
+                                    return d === start.line;
+                                });
+                            expect(marks.length).toEqual(0);
                         });
 
-                        it("shows fold ranges for only the most recent selection", function () {
+                        it("shows fold ranges for only the most recent selection", async function () {
                             var firstSelection = testFileSpec.firstSelection,
                                 secondSelection = testFileSpec.secondSelection;
 
-                            selectTextInEditor(firstSelection.start, firstSelection.end);
+                            await selectTextInEditor(firstSelection.start, firstSelection.end);
 
-                            selectTextInEditor(secondSelection.start, secondSelection.end);
+                            await selectTextInEditor(secondSelection.start, secondSelection.end);
 
-                            runs(function () {
-                                var marks = getGutterFoldMarks().filter(filterOpen)
-                                    .map(getLineNumber);
-                                expect(marks).toContain(secondSelection.start.line);
-                                expect(marks).not.toContain(firstSelection.start.line);
-                            });
+                            var marks = getGutterFoldMarks().filter(filterOpen)
+                                .map(getLineNumber);
+                            expect(marks).toContain(secondSelection.start.line);
+                            expect(marks).not.toContain(firstSelection.start.line);
                         });
                     });
 
@@ -493,51 +419,39 @@ define(function (require, exports, module) {
                         expandTimeoutElapsed = false;
 
                     // add a line after folding a region preserves the region and the region can be unfolded
-                    it("can unfold a folded region after a line has been added above it", function () {
-                        runs(function () {
-                            foldCodeOnLine(foldableLine);
-                            cm.replaceRange("\r\n", {line: foldableLine - 1, ch: 0});
-                        });
+                    it("can unfold a folded region after a line has been added above it", async function () {
+                        await foldCodeOnLine(foldableLine);
+                        cm.replaceRange("\r\n", {line: foldableLine - 1, ch: 0});
 
-                        runs(function () {
-                            expandCodeOnLine(foldableLine + 1);
-                            setTimeout(function () {
-                                expandTimeoutElapsed = true;
-                            }, 400);
-                        });
+                        await expandCodeOnLine(foldableLine + 1);
+                        setTimeout(function () {
+                            expandTimeoutElapsed = true;
+                        }, 400);
 
-                        waitsFor(function () {
+                        await awaitsFor(function () {
                             return expandTimeoutElapsed;
                         }, "waiting a moment for gutter markerts to be re-rendered", 500);
 
-                        runs(function () {
-                            var marks = getGutterFoldMarks().filter(filterFolded);
-                            expect(marks.length).toEqual(0);
-                        });
+                        var marks = getGutterFoldMarks().filter(filterFolded);
+                        expect(marks.length).toEqual(0);
 
                     });
 
-                    it("can unfold a folded region even after a line has been removed above it", function () {
-                        runs(function () {
-                            foldCodeOnLine(foldableLine);
-                            cm.replaceRange("", {line: foldableLine - 1, ch: 0}, {line: foldableLine, ch: 0});
-                        });
+                    it("can unfold a folded region even after a line has been removed above it", async function () {
+                        await foldCodeOnLine(foldableLine);
+                        cm.replaceRange("", {line: foldableLine - 1, ch: 0}, {line: foldableLine, ch: 0});
 
-                        runs(function () {
-                            expandCodeOnLine(foldableLine - 1);
-                            setTimeout(function () {
-                                expandTimeoutElapsed = true;
-                            }, 400);
-                        });
+                        await expandCodeOnLine(foldableLine - 1);
+                        setTimeout(function () {
+                            expandTimeoutElapsed = true;
+                        }, 400);
 
-                        waitsFor(function () {
+                        await awaitsFor(function () {
                             return expandTimeoutElapsed;
                         }, "waiting a moment for gutter markerts to be re-rendered", 500);
 
-                        runs(function () {
-                            var marks = getGutterFoldMarks().filter(filterFolded);
-                            expect(marks.length).toEqual(0);
-                        });
+                        var marks = getGutterFoldMarks().filter(filterFolded);
+                        expect(marks.length).toEqual(0);
                     });
                 });
             });
