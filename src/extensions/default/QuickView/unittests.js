@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
         prefs              = PreferencesManager.getExtensionPrefs("quickview");
 
-    describe("Quick View", function () {
+    describe("extension:Quick View", function () {
         let testFolder = SpecRunnerUtils.getTestPath("/spec/quickview-extn-test-files");
 
         // load from testWindow

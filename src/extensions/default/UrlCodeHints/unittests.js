@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         UrlCodeHints              = require("main");
 
 
-    describe("Url Code Hinting", function () {
+    describe("extension:Url Code Hinting", function () {
 
         var extensionPath   = FileUtils.getNativeModuleDirectoryPath(module),
             testHtmlPath    = extensionPath + "/testfiles/test.html",

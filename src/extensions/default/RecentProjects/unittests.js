@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         KeyEvent        = brackets.getModule("utils/KeyEvent"),
         _               = brackets.getModule("thirdparty/lodash");
 
-    describe("Recent Projects", function () {
+    describe("extension:Recent Projects", function () {
         var extensionPath = FileUtils.getNativeModuleDirectoryPath(module),
             testWindow,
             $,

@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         PrefsCodeHints      = require("./main"),
         testPreferences     = JSON.parse(require("text!./unittest-files/preferences.json"));
 
-    describe("Preferences Code Hints", function () {
+    describe("unit:Preferences Code Hints", function () {
         var testContent, testDocument, testEditor, mockEditor;
 
         // A sample preferences file to run tests against.

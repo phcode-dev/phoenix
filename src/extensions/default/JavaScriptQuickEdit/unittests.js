@@ -104,7 +104,7 @@ define(function (require, exports, module) {
         }
     };
 
-    describe("JSQuickEdit", function () {
+    describe("extension:JSQuickEdit", function () {
 
         /*
          *

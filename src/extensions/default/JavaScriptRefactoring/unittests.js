@@ -42,7 +42,7 @@ define(function (require, exports, module) {
         testDoc         = null,
         testEditor;
 
-    describe("Javascript Refactoring ", function () {
+    describe("extension:Javascript Refactoring ", function () {
 
         function setupTest(path, primePump) { // FIXME: primePump argument ignored even though used below
             DocumentManager.getDocumentForPath(path).done(function (doc) {

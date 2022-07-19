@@ -209,13 +209,7 @@ define(function (require, exports, module) {
     resultsPath = params.get("resultsPath");
 
     function _loadExtensionTests() {
-        let paths = ["default"];
-
-        // load dev and user extensions only when running the extension test suite
-        if (selectedCategories.indexOf("extension") >= 0) {
-            paths.push("dev");
-            paths.push("user");
-        }
+        let paths = ["default", "dev", "user"];
 
         return Async.doInParallel(paths, function (dir) {
             if(dir === "default"){

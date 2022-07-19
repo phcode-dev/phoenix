@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         BezierCurveEditor       = require("BezierCurveEditor").BezierCurveEditor,
         StepEditor              = require("StepEditor").StepEditor;
 
-    describe("extension:Inline Timing Function Editor", function () {
+    describe("unit:Inline Timing Function Editor", function () {
 
         var testDocument, testEditor, inline;
 

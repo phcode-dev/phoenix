@@ -39,7 +39,7 @@ define(function (require, exports, module) {
 
 
 
-    describe("RemoteFileAdapter", function () {
+    describe("extension:RemoteFileAdapter", function () {
         var testWindow,
             $,
             brackets;

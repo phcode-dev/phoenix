@@ -37,7 +37,7 @@ define(function (require, exports, module) {
         return pos;
     }
 
-    describe("extension:HTML Entity Hinting", function () {
+    describe("unit:HTML Entity Hinting", function () {
 
         var testEditorAndDoc,
             hintProvider = new HTMLEntityHints();

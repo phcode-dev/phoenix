@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         testContentHTML = require("text!unittest-files/region-template.html"),
         CSSCodeHints    = require("main");
 
-    describe("extension:CSS Code Hinting", function () {
+    describe("unit:CSS Code Hinting", function () {
 
         var defaultContent = "@media screen { \n" +
                              " body { \n" +

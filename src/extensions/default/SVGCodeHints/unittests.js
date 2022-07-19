@@ -28,7 +28,7 @@ define(function (require, exports, module) {
     var SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils"),
         SVGCodeHints        = require("./main");
 
-    describe("SVG Code Hints", function () {
+    describe("unit:SVG Code Hints", function () {
         var testContent, testDocument, testEditor;
 
         // SVG Content that we will be using to run tests against.

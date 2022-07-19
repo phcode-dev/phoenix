@@ -31,7 +31,7 @@ define(function (require, exports, module) {
         testCSS             = require("text!unittest-files/test1.css"),
         testHTML            = require("text!unittest-files/test1.html");
 
-    describe("MDNDocs", function () {
+    describe("unit:MDNDocs", function () {
 
         var testCSSInfo     = SpecRunnerUtils.parseOffsetsFromText(testCSS),
             testHTMLInfo    = SpecRunnerUtils.parseOffsetsFromText(testHTML),
