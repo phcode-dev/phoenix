@@ -37,7 +37,7 @@ define(function (require, exports, module) {
         return pos;
     }
 
-    describe("HTML Entity Hinting", function () {
+    describe("extension:HTML Entity Hinting", function () {
 
         var testEditorAndDoc,
             hintProvider = new HTMLEntityHints();
@@ -156,7 +156,7 @@ define(function (require, exports, module) {
 
                 var hints = expectHints(hintProvider);
                 hintProvider.insertHint(hints[0]);
-                expect(fixPos(testEditorAndDoc.editor.getCursorPos())).toEqual(fixPos({line: 17, ch: 23}));
+                expect(fixPos(testEditorAndDoc.editor.getCursorPos())).toEql(fixPos({line: 17, ch: 23}));
             });
         });
     });

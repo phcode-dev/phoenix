@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, runs, waitsForDone */
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone */
 
 define(function (require, exports, module) {
 
@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         BezierCurveEditor       = require("BezierCurveEditor").BezierCurveEditor,
         StepEditor              = require("StepEditor").StepEditor;
 
-    describe("Inline Timing Function Editor", function () {
+    describe("extension:Inline Timing Function Editor", function () {
 
         var testDocument, testEditor, inline;
 
@@ -44,17 +44,15 @@ define(function (require, exports, module) {
          * @param {!{line:number, ch: number}} cursor Position for which to open the inline editor.
          *    if the provider did not create an inline editor.
          */
-        function makeTimingFunctionEditor(cursor) {
-            runs(function () {
-                var promise = provider(testEditor, cursor);
-                if (promise) {
-                    promise.done(function (inlineResult) {
-                        inlineResult.onAdded();
-                        inline = inlineResult;
-                    });
-                    waitsForDone(promise, "open timing function editor");
-                }
-            });
+        async function makeTimingFunctionEditor(cursor) {
+            var promise = provider(testEditor, cursor);
+            if (promise) {
+                promise.done(function (inlineResult) {
+                    inlineResult.onAdded();
+                    inline = inlineResult;
+                });
+                await awaitsForDone(promise, "open timing function editor");
+            }
         }
 
         /**
@@ -81,10 +79,8 @@ define(function (require, exports, module) {
              */
             function testInvalidBezier(str, expectedArray) {
                 var match = TimingFunctionUtils.timingFunctionMatch(str, false);
-                runs(function () {
-                    expectArraysToBeEqual(match, expectedArray);
-                    expect(match.originalString).toEqual(str);
-                });
+                expectArraysToBeEqual(match, expectedArray);
+                expect(match.originalString).toEqual(str);
             }
 
             // Valid cubic-bezier function cases
@@ -277,10 +273,8 @@ define(function (require, exports, module) {
              */
             function testInvalidStep(str, expectedArray) {
                 var match = TimingFunctionUtils.timingFunctionMatch(str, false);
-                runs(function () {
-                    expectArraysToBeEqual(match, expectedArray);
-                    expect(match.originalString).toEqual(str);
-                });
+                expectArraysToBeEqual(match, expectedArray);
+                expect(match.originalString).toEqual(str);
             }
 
             // Valid steps function cases
@@ -450,41 +444,39 @@ define(function (require, exports, module) {
              * @param {number} start The expected start of timing function.
              * @param {number} end The expected end of timing function.
              */
-            function testOpenTimingFunction(cursor, start, end) {
-                makeTimingFunctionEditor(cursor);
-                runs(function () {
-                    expect(inline).toBeTruthy();
-                    expect(inline._startBookmark.find().ch).toBe(start);
-                    expect(inline._endBookmark.find().ch).toBe(end);
-                });
+            async function testOpenTimingFunction(cursor, start, end) {
+                await makeTimingFunctionEditor(cursor);
+                expect(inline).toBeTruthy();
+                expect(inline._startBookmark.find().ch).toBe(start);
+                expect(inline._endBookmark.find().ch).toBe(end);
             }
 
-            it("should bookmark cubic-bezier() function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 3, ch: 34}, 32, 60);
+            it("should bookmark cubic-bezier() function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 3, ch: 34}, 32, 60);
             });
-            it("should bookmark linear function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 5, ch: 35}, 32, 38);
+            it("should bookmark linear function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 5, ch: 35}, 32, 38);
             });
-            it("should bookmark second cubic-bezier() function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 13, ch: 80}, 75, 107);
+            it("should bookmark second cubic-bezier() function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 13, ch: 80}, 75, 107);
             });
-            it("should bookmark steps() function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 17, ch: 37}, 32, 45);
+            it("should bookmark steps() function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 17, ch: 37}, 32, 45);
             });
-            it("should bookmark step-start function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 20, ch: 40}, 32, 42);
+            it("should bookmark step-start function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 20, ch: 40}, 32, 42);
             });
-            it("should bookmark long, invalid cubic-bezier() function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 25, ch: 52}, 32, 74);
+            it("should bookmark long, invalid cubic-bezier() function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 25, ch: 52}, 32, 74);
             });
-            it("should bookmark empty, invalid cubic-bezier() function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 26, ch: 47}, 32, 46);
+            it("should bookmark empty, invalid cubic-bezier() function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 26, ch: 47}, 32, 46);
             });
-            it("should bookmark long, invalid steps() function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 30, ch: 44}, 32, 50);
+            it("should bookmark long, invalid steps() function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 30, ch: 44}, 32, 50);
             });
-            it("should bookmark empty, invalid steps() function when opened in inline editor", function () {
-                testOpenTimingFunction({line: 31, ch: 45}, 32, 39);
+            it("should bookmark empty, invalid steps() function when opened in inline editor", async function () {
+                await testOpenTimingFunction({line: 31, ch: 45}, 32, 39);
             });
         });
 
@@ -522,89 +514,67 @@ define(function (require, exports, module) {
 
             describe("Initial Load and External Update", function () {
 
-                it("should load the initial cubic-bezier function correctly", function () {
-                    runs(function () {
-                        makeTimingFuncUI("cubic-bezier(.2, .3, .4, .5)");
-                        expect(timingFuncEditor).toBeTruthy();
-                        expect(timingFuncEditor._cubicBezierCoords).toBeTruthy();
-                        expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".2", ".3", ".4", ".5"]);
-                    });
+                it("should load the initial cubic-bezier function correctly", async function () {
+                    makeTimingFuncUI("cubic-bezier(.2, .3, .4, .5)");
+                    expect(timingFuncEditor).toBeTruthy();
+                    expect(timingFuncEditor._cubicBezierCoords).toBeTruthy();
+                    expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".2", ".3", ".4", ".5"]);
                 });
                 it("should load externally updated cubic-bezier function correctly", function () {
-                    runs(function () {
-                        makeTimingFuncUI("cubic-bezier(.1, .3, .5, .7)");
-                        var matchUpdate = TimingFunctionUtils.timingFunctionMatch("cubic-bezier(.2, .4, .6, .8)", true);
-                        timingFuncEditor.handleExternalUpdate(matchUpdate);
-                        expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".2", ".4", ".6", ".8"]);
-                    });
+                    makeTimingFuncUI("cubic-bezier(.1, .3, .5, .7)");
+                    var matchUpdate = TimingFunctionUtils.timingFunctionMatch("cubic-bezier(.2, .4, .6, .8)", true);
+                    timingFuncEditor.handleExternalUpdate(matchUpdate);
+                    expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".2", ".4", ".6", ".8"]);
                 });
                 it("should load the initial steps function correctly", function () {
-                    runs(function () {
-                        makeTimingFuncUI("steps(5, start)");
-                        expect(timingFuncEditor).toBeTruthy();
-                        expect(timingFuncEditor._stepParams).toBeTruthy();
-                        expect(timingFuncEditor._stepParams.count).toEqual(5);
-                        expect(timingFuncEditor._stepParams.timing).toEqual("start");
-                    });
+                    makeTimingFuncUI("steps(5, start)");
+                    expect(timingFuncEditor).toBeTruthy();
+                    expect(timingFuncEditor._stepParams).toBeTruthy();
+                    expect(timingFuncEditor._stepParams.count).toEqual(5);
+                    expect(timingFuncEditor._stepParams.timing).toEqual("start");
                 });
                 it("should load externally updated steps function correctly", function () {
-                    runs(function () {
-                        makeTimingFuncUI("steps(5, start)");
-                        var matchUpdate = TimingFunctionUtils.timingFunctionMatch("steps(6, end)", true);
-                        timingFuncEditor.handleExternalUpdate(matchUpdate);
-                        expect(timingFuncEditor._stepParams.count).toEqual(6);
-                        expect(timingFuncEditor._stepParams.timing).toEqual("end");
-                    });
+                    makeTimingFuncUI("steps(5, start)");
+                    var matchUpdate = TimingFunctionUtils.timingFunctionMatch("steps(6, end)", true);
+                    timingFuncEditor.handleExternalUpdate(matchUpdate);
+                    expect(timingFuncEditor._stepParams.count).toEqual(6);
+                    expect(timingFuncEditor._stepParams.timing).toEqual("end");
                 });
             });
 
             describe("Conversions", function () {
 
                 it("should convert linear function to cubic-bezier function parameters", function () {
-                    runs(function () {
-                        makeTimingFuncUI("linear");
-                        expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, ["0", "0", "1", "1"]);
-                    });
+                    makeTimingFuncUI("linear");
+                    expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, ["0", "0", "1", "1"]);
                 });
                 it("should convert ease function to cubic-bezier function parameters", function () {
-                    runs(function () {
-                        makeTimingFuncUI("ease");
-                        expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".25", ".1", ".25", "1"]);
-                    });
+                    makeTimingFuncUI("ease");
+                    expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".25", ".1", ".25", "1"]);
                 });
                 it("should convert ease-in function to cubic-bezier function parameters", function () {
-                    runs(function () {
-                        makeTimingFuncUI("ease-in");
-                        expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".42", "0", "1", "1"]);
-                    });
+                    makeTimingFuncUI("ease-in");
+                    expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".42", "0", "1", "1"]);
                 });
                 it("should convert ease-out function to cubic-bezier function parameters", function () {
-                    runs(function () {
-                        makeTimingFuncUI("ease-out");
-                        expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, ["0", "0", ".58", "1"]);
-                    });
+                    makeTimingFuncUI("ease-out");
+                    expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, ["0", "0", ".58", "1"]);
                 });
                 it("should convert ease-in-out function to cubic-bezier function parameters", function () {
-                    runs(function () {
-                        makeTimingFuncUI("ease-in-out");
-                        expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".42", "0", ".58", "1"]);
-                    });
+                    makeTimingFuncUI("ease-in-out");
+                    expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".42", "0", ".58", "1"]);
                 });
                 it("should convert step-start function to steps function parameters", function () {
-                    runs(function () {
-                        makeTimingFuncUI("step-start");
-                        expect(timingFuncEditor).toBeTruthy();
-                        expect(timingFuncEditor._stepParams).toBeTruthy();
-                        expect(timingFuncEditor._stepParams.count).toEqual(1);
-                        expect(timingFuncEditor._stepParams.timing).toEqual("start");
-                    });
+                    makeTimingFuncUI("step-start");
+                    expect(timingFuncEditor).toBeTruthy();
+                    expect(timingFuncEditor._stepParams).toBeTruthy();
+                    expect(timingFuncEditor._stepParams.count).toEqual(1);
+                    expect(timingFuncEditor._stepParams.timing).toEqual("start");
                 });
                 it("should convert step-end function to steps function parameters", function () {
-                    runs(function () {
-                        makeTimingFuncUI("step-end");
-                        expect(timingFuncEditor._stepParams.count).toEqual(1);
-                        expect(timingFuncEditor._stepParams.timing).toEqual("end");
-                    });
+                    makeTimingFuncUI("step-end");
+                    expect(timingFuncEditor._stepParams.count).toEqual(1);
+                    expect(timingFuncEditor._stepParams.timing).toEqual("end");
                 });
             });
 
@@ -807,20 +777,16 @@ define(function (require, exports, module) {
                         expect(timingFunctionString).toBe("cubic-bezier(.42, .1, .58, 1)");
                     };
 
-                    runs(function () {
-                        triggerTimingFunctionEditorKey({
-                            func: "cubic-bezier(.42, 0, .58 ,1)",
-                            item: "P1",
-                            key: KeyEvent.DOM_VK_UP,
-                            shift: true,
-                            callback: _callback
-                        });
-                        expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".42", ".1", ".58", "1"]);
+                    triggerTimingFunctionEditorKey({
+                        func: "cubic-bezier(.42, 0, .58 ,1)",
+                        item: "P1",
+                        key: KeyEvent.DOM_VK_UP,
+                        shift: true,
+                        callback: _callback
                     });
+                    expectArraysToBeEqual(timingFuncEditor._cubicBezierCoords, [".42", ".1", ".58", "1"]);
 
-                    runs(function () {
-                        expect(calledBack).toBeTruthy();
-                    });
+                    expect(calledBack).toBeTruthy();
                 });
 
                 // steps() tests
@@ -881,7 +847,7 @@ define(function (require, exports, module) {
                     expect(timingFuncEditor._stepParams.timing).toEqual("end");
                 });
 
-                it("should call callback function after steps function edit", function () {
+                it("should call callback function after steps function edit", async function () {
                     var calledBack = false;
 
                     var _callback = function (timingFunctionString) {
@@ -889,19 +855,15 @@ define(function (require, exports, module) {
                         expect(timingFunctionString).toBe("steps(5, start)");
                     };
 
-                    runs(function () {
-                        triggerTimingFunctionEditorKey({
-                            func: "steps(4, start)",
-                            item: "canvas",
-                            key: KeyEvent.DOM_VK_UP,
-                            callback: _callback
-                        });
-                        expect(timingFuncEditor._stepParams.count).toEqual(5);
+                    triggerTimingFunctionEditorKey({
+                        func: "steps(4, start)",
+                        item: "canvas",
+                        key: KeyEvent.DOM_VK_UP,
+                        callback: _callback
                     });
+                    expect(timingFuncEditor._stepParams.count).toEqual(5);
 
-                    runs(function () {
-                        expect(calledBack).toBeTruthy();
-                    });
+                    expect(calledBack).toBeTruthy();
                 });
 
             });

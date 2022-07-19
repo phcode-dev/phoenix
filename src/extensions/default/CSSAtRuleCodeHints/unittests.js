@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, xit, expect, beforeEach, afterEach */
+/*global describe, it, expect, beforeEach, afterEach */
 
 define(function (require, exports, module) {
 
@@ -27,7 +27,7 @@ define(function (require, exports, module) {
     var SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils"),
         CSSAtRuleCodeHints  = require("main");
 
-    describe("CSS '@' rules Code Hinting", function () {
+    describe("extension:CSS '@' rules Code Hinting", function () {
 
         var defaultContent = "@ { \n" +
                              "} \n" +
@@ -94,8 +94,8 @@ define(function (require, exports, module) {
         }
         function expectCursorAt(pos) {
             var selection = testEditor.getSelection();
-            expect(fixPos(selection.start)).toEqual(fixPos(selection.end));
-            expect(fixPos(selection.start)).toEqual(fixPos(pos));
+            expect(fixPos(selection.start)).toEql(fixPos(selection.end));
+            expect(fixPos(selection.start)).toEql(fixPos(pos));
         }
 
         function verifyFirstEntry(hintList, expectedFirstHint) {

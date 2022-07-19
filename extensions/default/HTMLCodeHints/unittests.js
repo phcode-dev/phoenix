@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, xit, expect, beforeEach, afterEach */
+/*global describe, it, expect, beforeEach, afterEach */
 
 define(function (require, exports, module) {
 
@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         Editor          = brackets.getModule("editor/Editor").Editor,
         HTMLCodeHints   = require("main");
 
-    describe("HTML Code Hinting", function () {
+    describe("extension: HTML Code Hinting", function () {
 
         var defaultContent = "<!doctype html>\n" +
                              "<html>\n" +
@@ -194,13 +194,6 @@ define(function (require, exports, module) {
                 expectHints(HTMLCodeHints.attrHintProvider);
             });
 
-            // TODO: Uncomment this after fixing issue #1521
-            xit("should NOT list hints to left of '=' sign with whitespace", function () {
-                testEditor.setCursorPos({ line: 6, ch: 9 });    // cursor between two spaces before =
-                expectNoHints(HTMLCodeHints.attrHintProvider);
-                testEditor.setCursorPos({ line: 6, ch: 10 });    // cursor between space and =
-                expectNoHints(HTMLCodeHints.attrHintProvider);
-            });
             it("should NOT list hints to right of '=' sign with whitespace on id attr", function () {
                 testEditor.setCursorPos({ line: 6, ch: 11 });   // cursor between = and space
                 expectNoHints(HTMLCodeHints.attrHintProvider);
@@ -500,8 +493,8 @@ define(function (require, exports, module) {
             }
             function expectCursorAt(pos) {
                 var selection = testEditor.getSelection();
-                expect(fixPos(selection.start)).toEqual(fixPos(selection.end));
-                expect(fixPos(selection.start)).toEqual(fixPos(pos));
+                expect(fixPos(selection.start)).toEql(fixPos(selection.end));
+                expect(fixPos(selection.start)).toEql(fixPos(pos));
             }
 
             it("should insert =\"\" after attribute", function () {

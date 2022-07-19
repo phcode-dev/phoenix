@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, xit, expect, beforeEach, afterEach */
+/*global describe, it, expect, beforeEach, afterEach */
 
 define(function (require, exports, module) {
 
@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         PseudoStaticDataRaw         = require("text!PseudoSelectors.json"),
         PseudoStaticData            = JSON.parse(PseudoStaticDataRaw);
 
-    describe("CSS Pseudo class/element Code Hinting", function () {
+    describe("extension:CSS Pseudo class/element Code Hinting", function () {
 
         var defaultContent = ".selector1: { \n" +
                              "} \n" +
@@ -43,24 +43,6 @@ define(function (require, exports, module) {
 
         var testDocument, testEditor;
 
-        /*
-         * Create a mockup editor with the given content and language id.
-         *
-         * @param {string} content - content for test window
-         * @param {string} languageId
-         */
-        function setupTest(content, languageId) {
-            var mock = SpecRunnerUtils.createMockEditor(content, languageId);
-            testDocument = mock.doc;
-            testEditor = mock.editor;
-        }
-
-        function tearDownTest() {
-            SpecRunnerUtils.destroyMockEditor(testDocument);
-            testEditor = null;
-            testDocument = null;
-        }
-
         // Ask provider for hints at current cursor position; expect it to return some
         function expectHints(provider, implicitChar, returnWholeObj) {
             expect(provider.hasHints(testEditor, implicitChar)).toBe(true);
@@ -68,11 +50,6 @@ define(function (require, exports, module) {
             expect(hintsObj).toBeTruthy();
             // return just the array of hints if returnWholeObj is falsy
             return returnWholeObj ? hintsObj : hintsObj.hints;
-        }
-
-        // Ask provider for hints at current cursor position; expect it NOT to return any
-        function expectNoHints(provider, implicitChar) {
-            expect(provider.hasHints(testEditor, implicitChar)).toBe(false);
         }
 
         // compares lists to ensure they are the same
@@ -85,36 +62,10 @@ define(function (require, exports, module) {
         }
 
 
-        function selectHint(provider, expectedHint, implicitChar) {
-            var hintList = expectHints(provider, implicitChar);
-            expect(hintList.indexOf(expectedHint)).not.toBe(-1);
-            return provider.insertHint(expectedHint);
-        }
-
-        // Helper function for testing cursor position
-        function fixPos(pos) {
-            if (!("sticky" in pos)) {
-                pos.sticky = null;
-            }
-            return pos;
-        }
-        function expectCursorAt(pos) {
-            var selection = testEditor.getSelection();
-            expect(fixPos(selection.start)).toEqual(fixPos(selection.end));
-            expect(fixPos(selection.start)).toEqual(fixPos(pos));
-        }
-
         function verifyFirstEntry(hintList, expectedFirstHint) {
             expect(hintList[0]).toBe(expectedFirstHint);
         }
 
-        // Helper function to
-        // a) ensure the hintList and the list with the available values have the same size
-        // b) ensure that all possible values are mentioned in the hintList
-        function verifyAllValues(hintList, values) {
-            expect(hintList.length).toBe(values.length);
-            expect(hintList.sort().toString()).toBe(values.sort().toString());
-        }
 
         var modesToTest = ['css', 'scss', 'less'],
             modeCounter;
