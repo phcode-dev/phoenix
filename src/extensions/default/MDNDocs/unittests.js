@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, waitsFor, runs, waitsForDone, waitsForFail */
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone, awaitsForFail */
 
 define(function (require, exports, module) {
 
@@ -39,81 +39,69 @@ define(function (require, exports, module) {
             doc,
             pos;
 
-        function queryInlineAtPos(info, offset, expectInline, expectedProperty) {
+        async function queryInlineAtPos(info, offset, expectInline, expectedProperty) {
             var widget = null,
                 promise;
 
-            runs(function () {
-                // set cursor position in editor
-                pos = info.offsets[offset];
-                editor.setSelection(pos);
+            // set cursor position in editor
+            pos = info.offsets[offset];
+            editor.setSelection(pos);
 
-                // fetch inline editor
-                promise = main._inlineProvider(editor, pos);
+            // fetch inline editor
+            promise = main._inlineProvider(editor, pos);
+
+            if (expectInline) {
+                expect(promise).toBeTruthy();
+            }
+
+            if (promise) {
+                promise.done(function (result) {
+                    widget = result;
+                });
 
                 if (expectInline) {
-                    expect(promise).toBeTruthy();
+                    // expecting a valid CSS property
+                    await awaitsForDone(promise, "MDNDocs _inlineProvider", 1000);
+                } else {
+                    // expecting an invalid css property
+                    await awaitsForFail(promise, "MDNDocs _inlineProvider", 1000);
                 }
+            }
 
-                if (promise) {
-                    promise.done(function (result) {
-                        widget = result;
-                    });
-
-                    if (expectInline) {
-                        // expecting a valid CSS property
-                        waitsForDone(promise, "MDNDocs _inlineProvider", 1000);
-                    } else {
-                        // expecting an invalid css property
-                        waitsForFail(promise, "MDNDocs _inlineProvider", 1000);
-                    }
+            if (promise) {
+                if (expectInline) {
+                    expect(widget).toBeTruthy();
+                    expect(widget.$htmlContent.find(".css-prop-summary h1").text()).toBe(expectedProperty);
+                } else {
+                    expect(widget).toBeNull();
                 }
-            });
-
-            runs(function () {
-                if (promise) {
-                    if (expectInline) {
-                        expect(widget).toBeTruthy();
-                        expect(widget.$htmlContent.find(".css-prop-summary h1").text()).toBe(expectedProperty);
-                    } else {
-                        expect(widget).toBeNull();
-                    }
-                }
-            });
+            }
         }
 
         describe("InlineDocsProvider database", function () {
 
-            it("should retrieve the CSS docs database", function () {
+            it("should retrieve the CSS docs database", async function () {
                 var json;
 
-                runs(function () {
-                    main._getDocs("css.json").done(function (result) {
-                        json = result;
-                    });
+                main._getDocs("css.json").done(function (result) {
+                    json = result;
                 });
 
-                waitsFor(function () { return json !== undefined; }, "read css.json database", 5000);
+                await awaitsFor(function () { return json !== undefined; }, "read css.json database", 5000);
 
-                runs(function () {
-                    expect(Object.keys(json).length).toBeGreaterThan(0);
-                });
+                expect(Object.keys(json).length).toBeGreaterThan(0);
             });
 
-            it("should retrieve the HTML docs database", function () {
+            it("should retrieve the HTML docs database", async function () {
                 var json;
 
-                runs(function () {
-                    main._getDocs("html.json").done(function (result) {
-                        json = result;
-                    });
+                main._getDocs("html.json").done(function (result) {
+                    json = result;
                 });
 
-                waitsFor(function () { return json !== undefined; }, "read html.json database", 5000);
+                await awaitsFor(function () { return json !== undefined; }, "read html.json database", 5000);
 
-                runs(function () {
-                    expect(Object.keys(json).length).toBeGreaterThan(0);
-                });
+                expect(Object.keys(json).length).toBeGreaterThan(0);
             });
 
         });
@@ -130,35 +118,35 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.destroyMockEditor(doc);
             });
 
-            it("should open docs when the selection is on a CSS property", function () {
+            it("should open docs when the selection is on a CSS property", async function () {
                 /* css property */
-                queryInlineAtPos(testCSSInfo, 1, true, "border");
+                await queryInlineAtPos(testCSSInfo, 1, true, "border");
 
                 /* css value */
-                queryInlineAtPos(testCSSInfo, 2, true, "border");
+                await queryInlineAtPos(testCSSInfo, 2, true, "border");
             });
 
-            it("should not open docs when the selection is not on a CSS property", function () {
+            it("should not open docs when the selection is not on a CSS property", async function () {
                 /* css selector */
-                queryInlineAtPos(testCSSInfo, 0, false);
+                await queryInlineAtPos(testCSSInfo, 0, false);
 
                 /* css comment */
-                queryInlineAtPos(testCSSInfo, 5, false);
+                await queryInlineAtPos(testCSSInfo, 5, false);
             });
 
-            it("should not open docs for an invalid CSS property", function () {
+            it("should not open docs for an invalid CSS property", async function () {
                 /* css invalid property */
-                queryInlineAtPos(testCSSInfo, 3, false);
+                await queryInlineAtPos(testCSSInfo, 3, false);
             });
 
-            it("should open docs for a vendor-prefixed CSS property", function () {
+            it("should open docs for a vendor-prefixed CSS property", async function () {
                 /* css -webkit- prefixed property */
-                queryInlineAtPos(testCSSInfo, 6, true, "animation");
+                await queryInlineAtPos(testCSSInfo, 6, true, "animation");
             });
 
-            it("should not open docs for an invalid CSS property (looking like a vendor-prefixed one)", function () {
+            it("should not open docs for an invalid CSS property (looking like a vendor-prefixed one)", async function () {
                 /* css property invalidly prefixed */
-                queryInlineAtPos(testCSSInfo, 7, false);
+                await queryInlineAtPos(testCSSInfo, 7, false);
             });
 
         });
@@ -175,40 +163,40 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.destroyMockEditor(doc);
             });
 
-            it("should open docs for CSS in a <style> block", function () {
-                queryInlineAtPos(testHTMLInfo, 0, true, "border");
+            it("should open docs for CSS in a <style> block", async function () {
+                await queryInlineAtPos(testHTMLInfo, 0, true, "border");
             });
 
-            it("should open docs when the selection is on an HTML tag", function () {
-                queryInlineAtPos(testHTMLInfo, 1, true, "<body>");
+            it("should open docs when the selection is on an HTML tag", async function () {
+                await queryInlineAtPos(testHTMLInfo, 1, true, "background-color");
             });
 
-            it("should not open docs when the selection is on an invalid HTML tag", function () {
-                queryInlineAtPos(testHTMLInfo, 2, false);
+            it("should not open docs when the selection is on an invalid HTML tag", async function () {
+                await queryInlineAtPos(testHTMLInfo, 2, false);
             });
 
-            it("should not open docs when the selection is not an HTML tag", function () {
+            it("should not open docs when the selection is not an HTML tag", async function () {
                 /* Text */
-                queryInlineAtPos(testHTMLInfo, 3, false);
+                await queryInlineAtPos(testHTMLInfo, 3, false);
 
                 /* Commented tag */
-                queryInlineAtPos(testHTMLInfo, 4, false);
+                await queryInlineAtPos(testHTMLInfo, 4, false);
             });
 
-            it("should open docs when the selection is on an HTML attribute", function () {
-                queryInlineAtPos(testHTMLInfo, 5, true, "<div>");
+            it("should open docs when the selection is on an HTML attribute", async function () {
+                await queryInlineAtPos(testHTMLInfo, 5, true, "<div>");
             });
 
-            it("should open docs for tag (fallback) when the selection is on an HTML attribute's value", function () {
-                queryInlineAtPos(testHTMLInfo, 6, true, "<div>");
+            it("should open docs for tag (fallback) when the selection is on an HTML attribute's value", async function () {
+                await queryInlineAtPos(testHTMLInfo, 6, true, "<div>");
             });
 
-            it("should open docs for tag (fallback) when the selection is on an invalid HTML attribute", function () {
-                queryInlineAtPos(testHTMLInfo, 7, true, "<div>");
+            it("should open docs for tag (fallback) when the selection is on an invalid HTML attribute", async function () {
+                await queryInlineAtPos(testHTMLInfo, 7, true, "<div>");
             });
 
-            it("should not open docs when the selection is on an invalid HTML attribute on an invalid HTML tag", function () {
-                queryInlineAtPos(testHTMLInfo, 8, false);
+            it("should not open docs when the selection is on an invalid HTML attribute on an invalid HTML tag", async function () {
+                await queryInlineAtPos(testHTMLInfo, 8, false);
             });
 
         });
