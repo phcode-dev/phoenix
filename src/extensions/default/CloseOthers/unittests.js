@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, runs, waitsForDone, spyOn */
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone, spyOn */
 
 define(function (require, exports, module) {
 
@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         MainViewManager,
         FileSystem;
 
-    describe("CloseOthers", function () {
+    describe("extension:CloseOthers extension", function () {
         var testPath = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
             testWindow,
             $,
@@ -41,89 +41,74 @@ define(function (require, exports, module) {
             cmdToRun,
             brackets;
 
-        function createUntitled(count) {
-            function doCreateUntitled(content) {
-                runs(function () {
-                    var promise = CommandManager.execute(Commands.FILE_NEW_UNTITLED);
-                    promise.done(function (untitledDoc) {
-                        untitledDoc.replaceRange(content, {line: 0, ch: 0});
-                    });
-                    waitsForDone(promise, "FILE_NEW_UNTITLED");
+        async function createUntitled(count) {
+            async function doCreateUntitled(content) {
+                var promise = CommandManager.execute(Commands.FILE_NEW_UNTITLED);
+                promise.done(function (untitledDoc) {
+                    untitledDoc.replaceRange(content, {line: 0, ch: 0});
                 });
+                await awaitsForDone(promise, "FILE_NEW_UNTITLED");
             }
 
             var i;
             for (i = 0; i < count; i++) {
-                doCreateUntitled(String(i));
+                await doCreateUntitled(String(i));
             }
         }
 
         /** Expect a file to exist (failing test if not) and then delete it */
-        function expectAndDelete(fullPath) {
-            runs(function () {
-                var promise = SpecRunnerUtils.resolveNativeFileSystemPath(fullPath);
-                waitsForDone(promise, "Verify file exists: " + fullPath);
-            });
-            runs(function () {
-                var promise = SpecRunnerUtils.deletePath(fullPath);
-                waitsForDone(promise, "Remove testfile " + fullPath, 5000);
-            });
+        async function expectAndDelete(fullPath) {
+            var promise = SpecRunnerUtils.resolveNativeFileSystemPath(fullPath);
+            await awaitsForDone(promise, "Verify file exists: " + fullPath);
+            var promise = SpecRunnerUtils.deletePath(fullPath);
+            await awaitsForDone(promise, "Remove testfile " + fullPath, 5000);
         }
 
         function getFilename(i) {
             return testPath + "test_closeothers" + i + ".js";
         }
 
-        beforeEach(function () {
+        beforeEach(async function () {
 
-            runs(function () {
-                SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                    testWindow = w;
-                    $ = testWindow.$;
-                    brackets		= testWindow.brackets;
-                    DocumentManager = testWindow.brackets.test.DocumentManager;
-                    MainViewManager = testWindow.brackets.test.MainViewManager;
-                    CommandManager  = testWindow.brackets.test.CommandManager;
-                    EditorManager   = testWindow.brackets.test.EditorManager;
-                    Dialogs			= testWindow.brackets.test.Dialogs;
-                    Commands        = testWindow.brackets.test.Commands;
-                    FileSystem      = testWindow.brackets.test.FileSystem;
-                });
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            $ = testWindow.$;
+            brackets		= testWindow.brackets;
+            DocumentManager = testWindow.brackets.test.DocumentManager;
+            MainViewManager = testWindow.brackets.test.MainViewManager;
+            CommandManager  = testWindow.brackets.test.CommandManager;
+            EditorManager   = testWindow.brackets.test.EditorManager;
+            Dialogs			= testWindow.brackets.test.Dialogs;
+            Commands        = testWindow.brackets.test.Commands;
+            FileSystem      = testWindow.brackets.test.FileSystem;
+
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+
+            await createUntitled(5);
+
+            var fileI = 0;
+            spyOn(FileSystem, 'showSaveDialog').and.callFake(function (dialogTitle, initialPath, proposedNewName, callback) {
+                callback(undefined, getFilename(fileI));
+                fileI++;
             });
 
-            runs(function () {
-                SpecRunnerUtils.loadProjectInTestWindow(testPath);
-            });
-
-            createUntitled(5);
-
-            runs(function () {
-                var fileI = 0;
-                spyOn(FileSystem, 'showSaveDialog').andCallFake(function (dialogTitle, initialPath, proposedNewName, callback) {
-                    callback(undefined, getFilename(fileI));
-                    fileI++;
-                });
-
-                var promise = CommandManager.execute(Commands.FILE_SAVE_ALL);
-                waitsForDone(promise, "FILE_SAVE_ALL", 5000);
-            });
+            var promise = CommandManager.execute(Commands.FILE_SAVE_ALL);
+            await awaitsForDone(promise, "FILE_SAVE_ALL", 5000);
         });
 
-        afterEach(function () {
+        afterEach(async function () {
             // Verify files exist & clean up
-            [0, 1, 2, 3, 4].forEach(function (i) {
-                expectAndDelete(getFilename(i));
-            });
-
+            for(let i of [0, 1, 2, 3, 4]){
+                await expectAndDelete(getFilename(i));
+            }
             testWindow    = null;
             $             = null;
             brackets      = null;
             EditorManager = null;
-            SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.closeTestWindow();
         });
 
 
-        function runCloseOthers() {
+        async function runCloseOthers() {
             var ws = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE),
                 promise;
 
@@ -132,47 +117,39 @@ define(function (require, exports, module) {
                     MainViewManager._edit(MainViewManager.ACTIVE_PANE, doc);
                 });
 
-                runs(function () {
-                    promise = CommandManager.execute(cmdToRun);
-                    waitsForDone(promise, cmdToRun);
-                });
-                runs(function () {
-                    expect(MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE)).toEqual(ws[docSelectIndex].fullPath, "Path of document in editor after close others command should be the document that was selected");
-                });
+                promise = CommandManager.execute(cmdToRun);
+                await awaitsForDone(promise, cmdToRun);
+                expect(MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE))
+                    .toEqual(ws[docSelectIndex].fullPath,
+                        "Path of document in editor after close others command should be the document that was selected");
             }
         }
 
-        it("Close others", function () {
+        it("Close others", async function () {
             docSelectIndex = 2;
             cmdToRun       = "file.close_others";
 
-            runCloseOthers();
+            await runCloseOthers();
 
-            runs(function () {
-                expect(MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE).length).toEqual(1);
-            });
+            expect(MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE).length).toEqual(1);
         });
 
-        it("Close others above", function () {
+        it("Close others above", async function () {
             docSelectIndex = 2;
             cmdToRun       = "file.close_above";
 
-            runCloseOthers();
+            await runCloseOthers();
 
-            runs(function () {
-                expect(MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE).length).toEqual(3);
-            });
+            expect(MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE).length).toEqual(3);
         });
 
-        it("Close others below", function () {
+        it("Close others below", async function () {
             docSelectIndex = 1;
             cmdToRun       = "file.close_below";
 
-            runCloseOthers();
+            await runCloseOthers();
 
-            runs(function () {
-                expect(MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE).length).toEqual(2);
-            });
+            expect(MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE).length).toEqual(2);
         });
     });
 });
