@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, xit, expect, beforeEach, afterEach */
+/*global describe, it, expect, beforeEach, afterEach */
 
 define(function (require, exports, module) {
 
@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         testContentHTML = require("text!unittest-files/region-template.html"),
         CSSCodeHints    = require("main");
 
-    describe("CSS Code Hinting", function () {
+    describe("extension:CSS Code Hinting", function () {
 
         var defaultContent = "@media screen { \n" +
                              " body { \n" +
@@ -135,8 +135,8 @@ define(function (require, exports, module) {
         }
         function expectCursorAt(pos) {
             var selection = testEditor.getSelection();
-            expect(fixPos(selection.start)).toEqual(fixPos(selection.end));
-            expect(fixPos(selection.start)).toEqual(fixPos(pos));
+            expect(fixPos(selection.start)).toEql(fixPos(selection.end));
+            expect(fixPos(selection.start)).toEql(fixPos(pos));
         }
 
         // Helper function to
@@ -307,17 +307,6 @@ define(function (require, exports, module) {
                 selectHint(CSSCodeHints.cssPropHintProvider, "none");
                 expect(testDocument.getLine(13)).toBe(" display: none");
                 expectCursorAt({ line: 13, ch: 14 });
-            });
-
-            xit("should start new hinting whenever there is a whitespace last stringliteral", function () {
-                // topic: multi-value properties
-                // this needs to be discussed, whether or not this behaviour is aimed for
-                // if so, changes to CSSUtils.getInfoAt need to be done imho to classify this
-                testDocument.replaceRange(" ", { line: 16, ch: 6 }); // insert whitespace after color
-                testEditor.setCursorPos({ line: 16, ch: 7 });   // cursor one whitespace after color
-                selectHint(CSSCodeHints.cssPropHintProvider, "color");
-                expect(testDocument.getLine(16)).toBe(" color color:");
-                expectCursorAt({ line: 16, ch: 13 });
             });
         });
 
@@ -662,19 +651,6 @@ define(function (require, exports, module) {
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
                 verifyAttrHints(hintList, "always");  // first hint should be always
                 verifyAllValues(hintList, ["always", "auto", "avoid", "avoid-column", "avoid-page", "avoid-region", "column", "left", "page", "region", "right"]);
-            });
-
-            // TODO: Need to add vendor prefixed properties for CSS code hint provider.
-            xit("should list 4 value-name hints for vendor prefixed region-* properties", function () {
-                testEditor.setCursorPos({ line: 7, ch: 16 });    // after -ms-region
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "region-break-after");  // first hint should be region-break-after
-                verifyAllValues(hintList, ["region-break-after", "region-break-before", "region-break-inside", "region-fragment"]);
-
-                testEditor.setCursorPos({ line: 8, ch: 20 });    // after -webkit-region
-                hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "region-break-after");  // first hint should be region-break-after
-                verifyAllValues(hintList, ["region-break-after", "region-break-before", "region-break-inside", "region-fragment"]);
             });
 
             it("should list 2 value-name hints for flow-from", function () {
