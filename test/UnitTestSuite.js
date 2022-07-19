@@ -94,7 +94,7 @@ define(function (require, exports, module) {
     require("spec/ViewCommandHandlers-integ-test");
     require("spec/WorkingSetView-integ-test");
     require("spec/WorkingSetSort-integ-test");
-    // require("spec/FindInFiles-test");
+    require("spec/FindInFiles-integ-test");
     // todo TEST_MODERN
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
     // require("spec/ExtensionInstallation-test"); To Remove after new extension manager framework
