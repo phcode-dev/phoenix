@@ -220,7 +220,7 @@ define(function (require, exports, module) {
 
                     await assertFile();
                 }
-            });
+            }, 30000);
 
             // Issue #10183 -- Brackets writing to filtered directories could cause them to appear
             // in the file tree
