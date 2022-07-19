@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeFirst, afterLast, beforeEach, afterEach, waitsFor, runs, waitsForDone */
+/*global describe, it, expect, awaitsFor */
 
 define(function (require, exports, module) {
     const ExtensionInterface = require("utils/ExtensionInterface"),
@@ -33,7 +33,7 @@ define(function (require, exports, module) {
             expect(ExtensionInterface.isExistsExtensionInterface(INTERFACE_1)).toEqual(true);
         });
 
-        it("should raise event on extension registration", function () {
+        it("should raise event on extension registration", async function () {
             const INTERFACE_1 = "int1";
             let notified = false, interfaceObjNotified = null;
             ExtensionInterface.on(ExtensionInterface.EVENT_EXTENSION_INTERFACE_REGISTERED, (event, name, intrfaceObj)=>{
@@ -42,12 +42,12 @@ define(function (require, exports, module) {
             });
             ExtensionInterface.registerExtensionInterface(INTERFACE_1, INTERFACE_OBJ);
             expect(ExtensionInterface.isExistsExtensionInterface(INTERFACE_1)).toEqual(true);
-            waitsFor(function () {
+            await awaitsFor(function () {
                 return notified === INTERFACE_1 && interfaceObjNotified === INTERFACE_OBJ;
             }, 100, "extension interface registration notification");
         });
 
-        it("should await and get the extension interface", function () {
+        it("should await and get the extension interface", async function () {
             const INTERFACE_2 = "int2";
             let extensionInterface = null;
             ExtensionInterface.waitAndGetExtensionInterface(INTERFACE_2).then((interfaceObj)=>{
@@ -55,7 +55,7 @@ define(function (require, exports, module) {
             });
 
             ExtensionInterface.registerExtensionInterface(INTERFACE_2, INTERFACE_OBJ);
-            waitsFor(function () {
+            await awaitsFor(function () {
                 return extensionInterface === INTERFACE_OBJ;
             }, 100, "awaiting extension interface");
         });

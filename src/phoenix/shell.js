@@ -29,9 +29,21 @@ import init from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
 import getBrowserDetails from "./browserDetails.js";
 
+function _getBaseURL() {
+    // strip query string
+    let base = window.location.href.split('?')[0];
+    if(base.endsWith("index.html")){
+        base = base.slice(0, base.lastIndexOf('index.html'));
+    }
+    if(!base.endsWith("/")){
+        base = `${base}/`;
+    }
+    return base;
+}
+
 let Phoenix = {
     browser: getBrowserDetails(),
-    baseURL: window.location.href
+    baseURL: _getBaseURL()
 };
 let startTime = Date.now();
 

@@ -19,7 +19,7 @@
  *
  */
 
-/*global beforeEach, afterEach, beforeFirst, afterLast, jasmine, Filer */
+/*global beforeEach, afterEach, beforeAll, afterAll, jasmine, Filer */
 
 // Set the baseUrl to brackets/src
 require.config({
@@ -49,6 +49,86 @@ require.config({
 const EXTRACT_TEST_ASSETS_KEY = 'EXTRACT_TEST_ASSETS_KEY';
 const EXTRACT = 'EXTRACT';
 const DONT_EXTRACT = 'DONT_EXTRACT';
+
+/**
+ * global util to convert jquery/js promise to a js promise
+ * @param jqueryOrJSPromise
+ * @returns {{finally}|{then}|{catch}|*}
+ */
+function jsPromise(jqueryOrJSPromise) {
+    if(jqueryOrJSPromise && jqueryOrJSPromise.catch && jqueryOrJSPromise.then && jqueryOrJSPromise.finally){
+        // this should be a normal js promise return as is
+        return  jqueryOrJSPromise;
+    }
+    if(!jqueryOrJSPromise ||
+        (jqueryOrJSPromise && !jqueryOrJSPromise.fail) || (jqueryOrJSPromise && !jqueryOrJSPromise.done)){
+        console.error("this function expects a jquery promise with done and fail handlers");
+        throw new Error("this function expects a jquery promise with done and fail handlers");
+    }
+    return new Promise((resolve, reject)=>{
+        jqueryOrJSPromise
+            .done(resolve)
+            .fail(()=>{
+                reject();
+            });
+    });
+}
+
+/**
+ * global test util to wait for a polling result.
+ * @param pollFn return true to indicate sucess and break waiting.
+ * @param _message - unused
+ * @param timeoutms - max timeout to wait for. if not given, will wait for 2 seconds
+ * @param pollInterval in millis, default poll interval is 10ms
+ * @returns {*}
+ */
+function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
+    if(typeof  _message === "number"){
+        timeoutms = _message;
+        pollInterval = timeoutms;
+    }
+    if(!(typeof  timeoutms === "number" && typeof  pollInterval === "number")){
+        throw new Error("awaitsFor: invalid parameters when awaiting for " + _message);
+    }
+    return new Promise((resolve, reject)=>{
+        let startTime = Date.now(),
+            lapsedTime;
+        function pollingFn() {
+            try{
+                if(pollFn()){
+                    resolve();
+                    return;
+                }
+                lapsedTime = Date.now() - startTime;
+                if(lapsedTime>timeoutms){
+                    console.error("await timed out for", _message);
+                    reject();
+                    return;
+                }
+                setTimeout(pollingFn, pollInterval);
+            } catch (e) {
+                console.error(e);
+                reject(e);
+            }
+        }
+        pollingFn();
+    });
+}
+
+/**
+ * global test util to wait for a period of time
+ * @param waitTimeMs - max time to wait for in ms.
+ * @returns {*}
+ */
+function awaits(waitTimeMs){
+    return new Promise((resolve)=>{
+        setTimeout(resolve, waitTimeMs);
+    });
+}
+
+window.jsPromise = jsPromise;
+window.awaitsFor = awaitsFor;
+window.awaits = awaits;
 
 define(function (require, exports, module) {
 
@@ -91,7 +171,7 @@ define(function (require, exports, module) {
     require("test/PerformanceTestSuite");
 
     // Load JUnitXMLReporter
-    require("test/thirdparty/jasmine-reporters/jasmine.junit_reporter");
+    require("test/thirdparty/jasmine-reporters/junit_reporter");
 
     // Load CodeMirror add-ons--these attach themselves to the CodeMirror module
     require("thirdparty/CodeMirror/addon/fold/xml-fold");
@@ -117,7 +197,7 @@ define(function (require, exports, module) {
     require("features/ParameterHintsManager");
     require("features/JumpToDefManager");
 
-    var selectedSuites,
+    var selectedCategories,
         params          = new UrlParams(),
         reporter,
         reporterView,
@@ -143,7 +223,7 @@ define(function (require, exports, module) {
         let paths = ["default"];
 
         // load dev and user extensions only when running the extension test suite
-        if (selectedSuites.indexOf("extension") >= 0) {
+        if (selectedCategories.indexOf("extension") >= 0) {
             paths.push("dev");
             paths.push("user");
         }
@@ -171,8 +251,8 @@ define(function (require, exports, module) {
             window.location.reload(true);
         });
 
-        if (selectedSuites.length === 1) {
-            $("#" + (selectedSuites[0])).closest("li").toggleClass("active", true);
+        if (selectedCategories.length === 1) {
+            $("#" + (selectedCategories[0])).closest("li").toggleClass("active", true);
         }
 
         AppInit._dispatchReady(AppInit.APP_READY);
@@ -271,70 +351,37 @@ define(function (require, exports, module) {
         };
     }
 
-    function _registerBeforeAfterHandlers() {
-        // Initiailize unit test preferences for each spec
-        beforeEach(function () {
-            // Unique key for unit testing
-            window.localStorage.setItem("preferencesKey", SpecRunnerUtils.TEST_PREFERENCES_KEY);
-
-            // Reset preferences from previous test runs
-            window.localStorage.removeItem("doLoadPreferences");
-            window.localStorage.removeItem(SpecRunnerUtils.TEST_PREFERENCES_KEY);
-
-            SpecRunnerUtils.runBeforeFirst();
-        });
-
-        // Revert unit test preferences after each spec
-        afterEach(function () {
-            // Clean up preferencesKey
-            window.localStorage.removeItem("preferencesKey");
-
-            SpecRunnerUtils.runAfterLast();
-        });
-
-        // Delete temp folder before running the first test
-        beforeFirst(function () {
-            SpecRunnerUtils.removeTempDirectory();
-        });
-
-        // Delete temp folder after running the last test
-        afterLast(function () {
-            SpecRunnerUtils.removeTempDirectory();
-        });
+    function deepEqualKeyValuesOnly(object1, object2) {
+        if((!object1 && !object2) || object1 === object2){
+            return true;
+        }
+        if((!isObject(object1) || !isObject(object2)) && object1 !== object2){
+            return false;
+        }
+        const keys1 = Object.keys(object1);
+        const keys2 = Object.keys(object2);
+        if (keys1.length !== keys2.length) {
+            return false;
+        }
+        for (const key of keys1) {
+            const val1 = object1[key];
+            const val2 = object2[key];
+            const areObjects = isObject(val1) && isObject(val2);
+            if (areObjects && !deepEqualKeyValuesOnly(val1, val2) ||
+                (!areObjects && val1 !== val2)) {
+                return false;
+            }
+        }
+        return true;
     }
+    function isObject(object) {
+        return object != null && typeof object === 'object';
+    }
+    window.deepEqualKeyValuesOnly = deepEqualKeyValuesOnly;
 
     function init() {
-        selectedSuites = (params.get("suite") || window.localStorage.getItem("SpecRunner.suite") || "unit").split(",");
-
-        // Create a top-level filter to show/hide performance and extensions tests
-        var runAll = (selectedSuites.indexOf("all") >= 0);
-
-        var topLevelFilter = function (spec) {
-            // special case "all" suite to run unit, perf, extension, and integration tests
-            if (runAll) {
-                return true;
-            }
-
-            var currentSuite = spec.suite,
-                category = spec.category;
-
-            if (!category) {
-                // find the category from the closest suite
-                while (currentSuite) {
-                    if (currentSuite.category) {
-                        category = currentSuite.category;
-                        break;
-                    }
-
-                    currentSuite = currentSuite.parentSuite;
-                }
-            }
-
-            // if unit tests are selected, make sure there is no category in the heirarchy
-            // if not a unit test, make sure the category is selected
-            return (selectedSuites.indexOf("unit") >= 0 && category === undefined) ||
-                (selectedSuites.indexOf(category) >= 0);
-        };
+        selectedCategories = (params.get("category")
+            || window.localStorage.getItem("SpecRunner.category") || "unit").split(",");
 
         /*
          * TODO (jason-sanjose): extension unit tests should only load the
@@ -343,45 +390,42 @@ define(function (require, exports, module) {
          */
 
         // configure spawned test windows to load extensions
-        SpecRunnerUtils.setLoadExtensionsInTestWindow(selectedSuites.indexOf("extension") >= 0);
+        SpecRunnerUtils.setLoadExtensionsInTestWindow(selectedCategories.indexOf("extension") >= 0);
 
-        _loadExtensionTests(selectedSuites).always(function () {
-            var jasmineEnv = jasmine.getEnv();
-            jasmineEnv.updateInterval = 1000;
+        // todo TEST_MODERN enable extension tests
+        //_loadExtensionTests(selectedCategories).always(function () {
+        var jasmineEnv = jasmine.getEnv();
+        jasmineEnv.updateInterval = 1000;
 
-            _registerBeforeAfterHandlers();
+        // Create the reporter, which is really a model class that just gathers
+        // spec and performance data.
+        reporter = new UnitTestReporter(jasmineEnv, params.get("spec"), selectedCategories);
+        SpecRunnerUtils.setUnitTestReporter(reporter);
 
-            // Create the reporter, which is really a model class that just gathers
-            // spec and performance data.
-            reporter = new UnitTestReporter(jasmineEnv, topLevelFilter, params.get("spec"));
-            SpecRunnerUtils.setUnitTestReporter(reporter);
-
-            // Optionally emit JUnit XML file for automated runs
-            if (resultsPath) {
-                if (resultsPath.substr(-4) === ".xml") {
-                    _patchJUnitReporter();
-                    jasmineEnv.addReporter(new jasmine.JUnitXmlReporter(null, true, false));
-                }
-
-                // Close the window
-                $(reporter).on("runnerEnd", _runnerEndHandler);
-            } else {
-                _writeResults.resolve();
+        // Optionally emit JUnit XML file for automated runs
+        if (resultsPath) {
+            if (resultsPath.substr(-4) === ".xml") {
+                _patchJUnitReporter();
+                jasmineEnv.addReporter(new jasmine.JUnitXmlReporter(null, true, false));
             }
 
-            jasmineEnv.addReporter(reporter);
+            // Close the window
+            $(reporter).on("runnerEnd", _runnerEndHandler);
+        } else {
+            _writeResults.resolve();
+        }
 
-            // Create the view that displays the data from the reporter. (Usually in
-            // Jasmine this is part of the reporter, but we separate them out so that
-            // we can more easily grab just the model data for output during automatic
-            // testing.)
-            reporterView = new BootstrapReporterView(window.document, reporter);
+        // Create the view that displays the data from the reporter. (Usually in
+        // Jasmine this is part of the reporter, but we separate them out so that
+        // we can more easily grab just the model data for output during automatic
+        // testing.)
+        reporterView = new BootstrapReporterView(window.document, reporter);
 
-            // remember the suite for the next unit test window launch
-            window.localStorage.setItem("SpecRunner.suite", selectedSuites);
+        // remember the suite for the next unit test window launch
+        window.localStorage.setItem("SpecRunner.suite", selectedCategories);
 
-            $(window.document).ready(_documentReadyHandler);
-        });
+        $(window.document).ready(_documentReadyHandler);
+        //});
 
 
         // Prevent clicks on any link from navigating to a different page (which could lose unsaved

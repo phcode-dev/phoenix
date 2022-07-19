@@ -33,8 +33,7 @@ define(function (require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         _                   = require("thirdparty/lodash");
 
-    var workerSearchDisabled = false,
-        instantSearchDisabled = false,
+    var instantSearchDisabled = false,
         indexingInProgress = false,
         workerSearchCount = 0,
         collapseResults = false;
@@ -373,27 +372,7 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     function isInstantSearchDisabled() {
-        return workerSearchDisabled || instantSearchDisabled;
-    }
-
-    /**
-     * enable/disable web worker based search
-     * @param {boolean} disable true to disable worker based search
-     */
-    function setWorkerSearchDisabled(disable) {
-        if (disable) {
-            // only set disable. Enabling worker search doesnt mean we have to enable instant search.
-            setInstantSearchDisabled(disable);
-        }
-        workerSearchDisabled = disable;
-    }
-
-    /**
-     * if worker search is disabled, this will return true
-     * @return {boolean}
-     */
-    function isWorkerSearchDisabled() {
-        return workerSearchDisabled;
+        return instantSearchDisabled;
     }
 
     /**
@@ -494,8 +473,6 @@ define(function (require, exports, module) {
     exports.parseQueryInfo                  = parseQueryInfo;
     exports.prioritizeOpenFile              = prioritizeOpenFile;
     exports.getOpenFilePath                 = getOpenFilePath;
-    exports.setWorkerSearchDisabled         = setWorkerSearchDisabled;
-    exports.isWorkerSearchDisabled          = isWorkerSearchDisabled;
     exports.setInstantSearchDisabled        = setInstantSearchDisabled;
     exports.isInstantSearchDisabled         = isInstantSearchDisabled;
     exports.isWorkerSearchInProgress        = isWorkerSearchInProgress;

@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /*
  * The core search functionality used by Find in Files and single-file Replace Batch.
  */
@@ -40,8 +42,10 @@ define(function (require, exports, module) {
         FindUtils             = require("search/FindUtils"),
         Metrics               = require("utils/Metrics");
 
+    let projectIndexingComplete = false;
+
     const _FindInFilesWorker = new Worker(
-        `search/worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
+        `${Phoenix.baseURL}search/worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
 
     if(!_FindInFilesWorker){
         console.error("Could not load find in files worker! Search will be disabled.");
@@ -164,6 +168,7 @@ define(function (require, exports, module) {
     }
 
     function workerFileCacheComplete([numFiles, cacheSize, crawlTime]) {
+        projectIndexingComplete = true;
         console.log(`file indexing worker cache complete: ${numFiles} files, size: ${cacheSize} B in ${crawlTime}ms`);
         if (/\/test\/SpecRunner\.html$/.test(window.location.pathname)) {
             // Ignore the event in the SpecRunner window
@@ -179,10 +184,6 @@ define(function (require, exports, module) {
         }
 
         FindUtils.setInstantSearchDisabled(false);
-        // web worker search could be disabled if some error has happened in worker. But upon
-        // project change, if we get this message, then it means that worker search is working,
-        // we re-enable worker search. If a search fails, worker search will be switched off eventually.
-        FindUtils.setWorkerSearchDisabled(false);
         FindUtils.notifyIndexingFinished();
         Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "numFiles", numFiles);
         Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "cacheSizeKB", cacheSize/1024);
@@ -562,7 +563,7 @@ define(function (require, exports, module) {
                 // Filter out files/folders that match user's current exclusion filter
                 fileListResult = FileFilters.filterFileList(filter, fileListResult);
 
-                if (searchModel.isReplace || FindUtils.isWorkerSearchDisabled()) {
+                if (searchModel.isReplace) {
                     if (fileListResult.length) {
                         searchModel.allResultsAvailable = true;
                         return Async.doInParallel(fileListResult, _doSearchInOneFile);
@@ -611,8 +612,7 @@ define(function (require, exports, module) {
                         .then(function (rcvd_object) {
                             FindUtils.notifyWorkerSearchFinished();
                             if (!rcvd_object || !rcvd_object.results) {
-                                console.error('search worker failed, falling back to brackets search');
-                                FindUtils.setWorkerSearchDisabled(true);
+                                console.error('search worker failed, falling back to brackets search', rcvd_object);
                                 searchDeferred.fail();
                                 clearSearch();
                                 return;
@@ -626,10 +626,9 @@ define(function (require, exports, module) {
                             Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "instantSearch",
                                 "timeMs", Date.now() - searchStatTime);
                         })
-                        .catch(function () {
+                        .catch(function (err) {
                             FindUtils.notifyWorkerSearchFinished();
-                            console.error('worker fails');
-                            FindUtils.setWorkerSearchDisabled(true);
+                            console.error('worker fails', err);
                             clearSearch();
                             searchDeferred.reject();
                         });
@@ -669,7 +668,9 @@ define(function (require, exports, module) {
 
     /**
      * Does a search in the given scope with the given filter. Used when you want to start a search
-     * programmatically.
+     * programmatically. Make sure that project indexing is complete by calling isProjectIndexingComplete()
+     * Else, an empty result will be returned if search is invoked before any files are indexed.
+     *
      * @param {{query: string, caseSensitive: boolean, isRegexp: boolean}} queryInfo Query info object
      * @param {?Entry} scope Project file/subfolder to search within; else searches whole project.
      * @param {?string} filter A "compiled" filter as returned by FileFilters.compile(), or null for no filter
@@ -724,9 +725,6 @@ define(function (require, exports, module) {
      * Notify worker that the results should be collapsed
      */
     function _searchcollapseResults() {
-        if (FindUtils.isWorkerSearchDisabled()) {
-            return;
-        }
         _FindInFilesWorker.exec("collapseResults", FindUtils.isCollapsedResults());
     }
 
@@ -735,7 +733,7 @@ define(function (require, exports, module) {
      * @param {array} fileList The list of files that changed.
      */
     function filesChanged(fileList) {
-        if (FindUtils.isWorkerSearchDisabled() || !fileList || fileList.length === 0) {
+        if (!fileList || fileList.length === 0) {
             return;
         }
         var updateObject = {
@@ -753,7 +751,7 @@ define(function (require, exports, module) {
      * @param {array} fileList The list of files that was removed.
      */
     function filesRemoved(fileList) {
-        if (FindUtils.isWorkerSearchDisabled() || !fileList || fileList.length === 0) {
+        if (!fileList || fileList.length === 0) {
             return;
         }
         var updateObject = {
@@ -980,8 +978,12 @@ define(function (require, exports, module) {
     /**
      * On project change, inform worker about the new list of files that needs to be crawled.
      * Instant search is also disabled for the time being till the crawl is complete in worker.
+     *
+     * This should never be called directly and only called via _scheduleCacheInit() below
+     * to not affect project load performance.
      */
     var _initCache = function () {
+        projectIndexingComplete = false;
         function filter(file) {
             return _subtreeFilter(file, null) && _isReadableFileType(file.fullPath);
         }
@@ -1009,6 +1011,7 @@ define(function (require, exports, module) {
     };
 
     function _scheduleCacheInit() {
+        projectIndexingComplete = false;
         setTimeout(_initCache, CACHE_INIT_DELAY_MS);
     }
 
@@ -1040,10 +1043,9 @@ define(function (require, exports, module) {
                 searchModel.fireChanged();
                 searchDeferred.resolve();
             })
-            .catch(function () {
+            .catch(function (err) {
                 FindUtils.notifyWorkerSearchFinished();
-                console.error('search worker fails');
-                FindUtils.setWorkerSearchDisabled(true);
+                console.error('search worker fails', err);
                 searchDeferred.reject();
             });
         return searchDeferred.promise();
@@ -1066,13 +1068,16 @@ define(function (require, exports, module) {
                 searchModel.fireChanged();
                 searchDeferred.resolve();
             })
-            .catch(function () {
+            .catch(function (err) {
                 FindUtils.notifyWorkerSearchFinished();
-                console.error('search worker fails');
-                FindUtils.setWorkerSearchDisabled(true);
+                console.error('search worker fails', err);
                 searchDeferred.reject();
             });
         return searchDeferred.promise();
+    }
+
+    function isProjectIndexingComplete() {
+        return projectIndexingComplete;
     }
 
     ProjectManager.on("projectOpen", _scheduleCacheInit);
@@ -1081,14 +1086,15 @@ define(function (require, exports, module) {
     FindUtils.on(FindUtils.SEARCH_COLLAPSE_RESULTS, _searchcollapseResults);
 
     // Public exports
-    exports.searchModel            = searchModel;
-    exports.doSearchInScope        = doSearchInScope;
-    exports.doReplace              = doReplace;
-    exports.getCandidateFiles      = getCandidateFiles;
-    exports.clearSearch            = clearSearch;
-    exports.ZERO_FILES_TO_SEARCH   = ZERO_FILES_TO_SEARCH;
+    exports.searchModel               = searchModel;
+    exports.isProjectIndexingComplete = isProjectIndexingComplete;
+    exports.doSearchInScope           = doSearchInScope;
+    exports.doReplace                 = doReplace;
+    exports.getCandidateFiles         = getCandidateFiles;
+    exports.clearSearch               = clearSearch;
+    exports.ZERO_FILES_TO_SEARCH      = ZERO_FILES_TO_SEARCH;
     exports.getNextPageofSearchResults          = getNextPageofSearchResults;
-    exports.getAllSearchResults    = getAllSearchResults;
+    exports.getAllSearchResults       = getAllSearchResults;
 
     // For unit tests only
     exports._documentChangeHandler = _documentChangeHandler;

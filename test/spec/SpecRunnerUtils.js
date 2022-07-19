@@ -19,7 +19,7 @@
  *
  */
 
-/*global jasmine, expect, beforeEach, waitsFor, waitsForDone, runs, spyOn, KeyboardEvent, waits */
+/*global jsPromise, jasmine, expect, beforeEach, awaitsFor,awaitsForDone, spyOn, KeyboardEvent, waits */
 
 define(function (require, exports, module) {
 
@@ -164,39 +164,30 @@ define(function (require, exports, module) {
 
 
     /**
-     * Utility for tests that wait on a Promise to complete. Placed in the global namespace so it can be used
-     * similarly to the standard Jasmine waitsFor(). Unlike waitsFor(), must be called from INSIDE
-     * the runs() that generates the promise.
+     * Utility for tests that wait on a Promise to complete.
      * @param {$.Promise} promise
-     * @param {string} operationName  Name used for timeout error message
      */
-    window.waitsForDone = function (promise, operationName, timeout) {
-        timeout = timeout || 1000;
-        expect(promise).toBeTruthy();
-        promise.fail(function (err) {
-            expect("[" + operationName + "] promise rejected with: " + err).toBe("(expected resolved instead)");
-        });
-        waitsFor(function () {
-            return promise.state() === "resolved";
-        }, "success [" + operationName + "]", timeout);
+    window.awaitsForDone = function (promise) {
+        return jsPromise(promise);
     };
 
     /**
-     * Utility for tests that waits on a Promise to fail. Placed in the global namespace so it can be used
-     * similarly to the standards Jasmine waitsFor(). Unlike waitsFor(), must be called from INSIDE
-     * the runs() that generates the promise.
+     * Utility for tests that waits on a Promise to fail. resolves only if the promise fails. else will reject
      * @param {$.Promise} promise
-     * @param {string} operationName  Name used for timeout error message
      */
-    window.waitsForFail = function (promise, operationName, timeout) {
-        timeout = timeout || 1000;
-        expect(promise).toBeTruthy();
-        promise.done(function (result) {
-            expect("[" + operationName + "] promise resolved with: " + result).toBe("(expected rejected instead)");
+    window.awaitsForFail = function (promise) {
+        return new Promise((resolve, reject)=>{
+            jsPromise(promise)
+                .then(()=>{
+                    // dont pass any args back, so not chaining with them
+                    console.error("awaitsForFail failed");
+                    reject();
+                })
+                .catch(()=>{
+                    // dont pass any args back, so not chaining with them
+                    resolve();
+                });
         });
-        waitsFor(function () {
-            return promise.state() === "rejected";
-        }, "failure " + operationName, timeout);
     };
 
     /**
@@ -234,20 +225,16 @@ define(function (require, exports, module) {
     /**
      * Create the temporary unit test project directory.
      */
-    function createTempDirectory() {
-        var deferred = new $.Deferred();
-
-        runs(function () {
-            _getFileSystem().getDirectoryForPath(getTempDirectory()).create(function (err) {
-                if (err && err !== FileSystemError.ALREADY_EXISTS) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve();
-                }
-            });
+    async function createTempDirectory() {
+        let deferred = new $.Deferred();
+        _getFileSystem().getDirectoryForPath(getTempDirectory()).create(function (err) {
+            if (err && err !== FileSystemError.ALREADY_EXISTS) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve();
+            }
         });
-
-        waitsForDone(deferred, "Create temp directory", 500);
+        await awaitsForDone(deferred);
     }
 
     function _resetPermissionsOnSpecialTempFolders() {
@@ -304,22 +291,14 @@ define(function (require, exports, module) {
     /**
      * Remove temp folder used for temporary unit tests files
      */
-    function removeTempDirectory() {
-        var deferred    = new $.Deferred(),
-            baseDir     = getTempDirectory();
-
-        runs(function () {
+    async function removeTempDirectory() {
+        return new Promise((resolve, reject)=>{
+            let baseDir     = getTempDirectory();
             _resetPermissionsOnSpecialTempFolders().done(function () {
-                deletePath(baseDir, true).then(deferred.resolve, deferred.reject);
+                deletePath(baseDir, true).then(resolve, reject);
             }).fail(function () {
-                deferred.reject();
+                reject();
             });
-
-            deferred.fail(function (err) {
-                console.log("boo");
-            });
-
-            waitsForDone(deferred.promise(), "removeTempDirectory", 2000);
         });
     }
 
@@ -507,7 +486,7 @@ define(function (require, exports, module) {
      * @param {string} buttonId  One of the Dialogs.DIALOG_BTN_* symbolic constants.
      * @param {boolean=} enableFirst  If true, then enable the button before clicking.
      */
-    function clickDialogButton(buttonId, enableFirst) {
+    async function clickDialogButton(buttonId, enableFirst) {
         // Make sure there's one and only one dialog open
         var $dlg = _testWindow.$(".modal.instance"),
             promise = $dlg.data("promise");
@@ -527,7 +506,7 @@ define(function (require, exports, module) {
         $dismissButton.click();
 
         // Dialog should resolve/reject the promise
-        waitsForDone(promise, "dismiss dialog");
+        await awaitsForDone(promise);
     }
 
     function _setupTestWindow() {
@@ -548,112 +527,72 @@ define(function (require, exports, module) {
             return _testWindow.brackets.test.CommandManager.execute(cmd, args);
         };
 
-        _testWindow.closeAllFiles = function closeAllFiles() {
-            runs(function () {
-                var promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL);
+        _testWindow.closeAllFiles = async function closeAllFiles() {
+            let promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL);
 
-                _testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    _testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    _testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+            _testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                _testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                _testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+            );
 
-                waitsForDone(promise, "Close all open files in working set");
-            });
+            await jsPromise(promise);
         };
     }
 
-    function createTestWindowAndRun(spec, callback, options) {
-        runs(function () {
-            // Position popup windows in the lower right so they're out of the way
-            var testWindowWid = 1000,
-                testWindowHt  =  700,
-                testWindowX   = window.screen.availWidth - testWindowWid,
-                testWindowY   = window.screen.availHeight - testWindowHt,
-                optionsStr    = "left=" + testWindowX + ",top=" + testWindowY +
-                                ",width=" + testWindowWid + ",height=" + testWindowHt;
+    async function createTestWindowAndRun(options) {
+        // Position popup windows in the lower right so they're out of the way
+        let testWindowWid = 1000,
+            testWindowHt  =  700,
+            testWindowX   = window.screen.availWidth - testWindowWid,
+            testWindowY   = window.screen.availHeight - testWindowHt,
+            optionsStr    = "left=" + testWindowX + ",top=" + testWindowY +
+                ",width=" + testWindowWid + ",height=" + testWindowHt;
 
-            var params = new UrlParams();
+        let params = new UrlParams();
 
-            // setup extension loading in the test window
-            params.put("extensions", _doLoadExtensions ?
-                        "" :// TODO: change this to dev,user for loading vfs extension tests
-                        "");
+        // setup extension loading in the test window
+        params.put("extensions", _doLoadExtensions ?
+            "" :// TODO: change this to dev,user for loading vfs extension tests
+            "");
 
-            // disable loading of sample project
-            params.put("skipSampleProjectLoad", true);
+        // disable loading of sample project
+        params.put("skipSampleProjectLoad", true);
 
-            // disable initial dialog for live development
-            params.put("skipLiveDevelopmentInfo", true);
+        // disable initial dialog for live development
+        params.put("skipLiveDevelopmentInfo", true);
 
-            // signals that main.js should configure RequireJS for tests
-            params.put("testEnvironment", true);
+        // signals that main.js should configure RequireJS for tests
+        params.put("testEnvironment", true);
 
-            if (options) {
-                // option to set the params
-                if (options.hasOwnProperty("params")) {
-                    var paramObject = options.params || {};
-                    var obj;
-                    for (obj in paramObject) {
-                        if (paramObject.hasOwnProperty(obj)) {
-                            params.put(obj, paramObject[obj]);
-                        }
+        if (options) {
+            // option to set the params
+            if (options.hasOwnProperty("params")) {
+                var paramObject = options.params || {};
+                var obj;
+                for (obj in paramObject) {
+                    if (paramObject.hasOwnProperty(obj)) {
+                        params.put(obj, paramObject[obj]);
                     }
                 }
-
-                // option to launch test window with either native or HTML menus
-                if (options.hasOwnProperty("hasNativeMenus")) {
-                    params.put("hasNativeMenus", (options.hasNativeMenus ? "true" : "false"));
-                }
             }
 
-            let _testWindowURL = getBracketsSourceRoot() + "/index.html?" + params.toString();
-            if(!_testWindow){
-                _testWindow = window.open(_testWindowURL, "_blank", optionsStr);
-            } else{
-                _testWindow.brackets = null;
-                _testWindow.location.href = 'about:blank';
-                _testWindow.location.href = _testWindowURL;
+            // option to launch test window with either native or HTML menus
+            if (options.hasOwnProperty("hasNativeMenus")) {
+                params.put("hasNativeMenus", (options.hasNativeMenus ? "true" : "false"));
             }
-        });
+        }
 
-        // FIXME (issue #249): Need an event or something a little more reliable...
-        waitsFor(
-            function isBracketsDoneLoading() {
-                return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
-            },
-            "brackets.test.doneLoading",
-            60000
-        );
-
-        runs(function () {
-            _setupTestWindow();
-        });
-
-        runs(function () {
-            // callback allows specs to query the testWindow before they run
-            callback.call(spec, _testWindow);
-        });
-    }
-    function reloadWindow() {
-        runs(function () {
-            //we need to mark the documents as not dirty before we close
-            //or the window will stay open prompting to save
-            var openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
-            openDocs.forEach(function resetDoc(doc) {
-                if (doc.isDirty) {
-                    //just refresh it back to it's current text. This will mark it
-                    //clean to save
-                    doc.refreshText(doc.getText(), doc.diskTimestamp);
-                }
-            });
-            let savedHref = _testWindow.location.href;
+        let _testWindowURL = getBracketsSourceRoot() + "/index.html?" + params.toString();
+        if(!_testWindow){
+            _testWindow = window.open(_testWindowURL, "_blank", optionsStr);
+        } else{
             _testWindow.brackets = null;
-            _testWindow.location.href = "about:blank";
-            _testWindow.location.href = savedHref;
-        });
+            _testWindow.location.href = 'about:blank';
+            _testWindow.location.href = _testWindowURL;
+        }
 
         // FIXME (issue #249): Need an event or something a little more reliable...
-        waitsFor(
+        await awaitsFor(
             function isBracketsDoneLoading() {
                 return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
             },
@@ -661,41 +600,61 @@ define(function (require, exports, module) {
             60000
         );
 
-        runs(function () {
-            _setupTestWindow();
+        _setupTestWindow();
+        return _testWindow;
+    }
+    async function reloadWindow() {
+        //we need to mark the documents as not dirty before we close
+        //or the window will stay open prompting to save
+        var openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
+        openDocs.forEach(function resetDoc(doc) {
+            if (doc.isDirty) {
+                //just refresh it back to it's current text. This will mark it
+                //clean to save
+                doc.refreshText(doc.getText(), doc.diskTimestamp);
+            }
         });
+        let savedHref = _testWindow.location.href;
+        _testWindow.brackets = null;
+        _testWindow.location.href = "about:blank";
+        _testWindow.location.href = savedHref;
+
+        // FIXME (issue #249): Need an event or something a little more reliable...
+        await awaitsFor(
+            function isBracketsDoneLoading() {
+                return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
+            },
+            "brackets.test.doneLoading",
+            60000,
+            100
+        );
+
+        _setupTestWindow();
+        return _testWindow;
     }
 
-    function closeTestWindow() {
-
-        runs(function () {
-            //we need to mark the documents as not dirty before we close
-            //or the window will stay open prompting to save
-            var openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
-            openDocs.forEach(function resetDoc(doc) {
-                if (doc.isDirty) {
-                    //just refresh it back to it's current text. This will mark it
-                    //clean to save
-                    doc.refreshText(doc.getText(), doc.diskTimestamp);
-                }
-            });
-            _testWindow.executeCommand = null;
-            _testWindow.location.href = 'about:blank';
-            _testWindow.brackets.test.doneLoading = false;
+    async function closeTestWindow() {
+        //we need to mark the documents as not dirty before we close
+        //or the window will stay open prompting to save
+        let openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
+        openDocs.forEach(function resetDoc(doc) {
+            if (doc.isDirty) {
+                //just refresh it back to it's current text. This will mark it
+                //clean to save
+                doc.refreshText(doc.getText(), doc.diskTimestamp);
+            }
         });
+        _testWindow.executeCommand = null;
+        _testWindow.location.href = 'about:blank';
+        _testWindow.brackets.test.doneLoading = false;
         // debug-only to see testWindow state before closing
         // waits(1000);
     }
 
 
-    function loadProjectInTestWindow(path) {
-        runs(function () {
-            // begin loading project path
-            var result = _testWindow.brackets.test.ProjectManager.openProject(path);
-
-            // wait for file system to finish loading
-            waitsForDone(result, "ProjectManager.openProject()", 10000);
-        });
+    async function loadProjectInTestWindow(path) {
+        let result = _testWindow.brackets.test.ProjectManager.openProject(path);
+        await awaitsForDone(result);
     }
 
     /**
@@ -1152,26 +1111,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Extracts the jasmine.log() and/or jasmine.expect() messages from the given result,
-     * including stack traces if available.
-     * @param {Object} result A jasmine result item (from results.getItems()).
-     * @return {string} the error message from that item.
-     */
-    function getResultMessage(result) {
-        var message;
-        if (result.type === 'log') {
-            message = result.toString();
-        } else if (result.type === 'expect' && result.passed && !result.passed()) {
-            message = result.message;
-
-            if (result.trace.stack) {
-                message = result.trace.stack;
-            }
-        }
-        return message;
-    }
-
-    /**
      * Searches the DOM tree for text containing the given content. Useful for verifying
      * that data you expect to show up in the UI somewhere is actually there.
      *
@@ -1218,7 +1157,7 @@ define(function (require, exports, module) {
             FileSystem      = testWindow.brackets.test.FileSystem,
             origGetAllFiles = ProjectManager.getAllFiles;
 
-        spyOn(ProjectManager, "getAllFiles").andCallFake(function () {
+        spyOn(ProjectManager, "getAllFiles").and.callFake(function () {
             var testResult = new testWindow.$.Deferred();
             origGetAllFiles.apply(ProjectManager, arguments).done(function (result) {
                 var dummyFile = FileSystem.getFileForPath(extraFilePath);
@@ -1258,164 +1197,18 @@ define(function (require, exports, module) {
         return 0;
     }
 
-
-    /**
-     * @private
-     * Adds a new before all or after all function to the current suite. If requires it creates a new
-     * object to store the before all and after all functions and a spec counter for the current suite.
-     * @param {string} type  "beforeFirst" or "afterLast"
-     * @param {function} func  The function to store
-     */
-    function _addSuiteFunction(type, func) {
-        var suiteId = (jasmine.getEnv().currentSuite || _rootSuite).id;
-        if (!_testSuites[suiteId]) {
-            _testSuites[suiteId] = {
-                beforeFirst: [],
-                afterLast: [],
-                specCounter: null
-            };
-        }
-        _testSuites[suiteId][type].push(func);
-    }
-
-    /**
-     * Utility for tests that need to open a window or do something before every test in a suite
-     * @param {function} func
-     */
-    window.beforeFirst = function (func) {
-        _addSuiteFunction("beforeFirst", func);
-    };
-
-    /**
-     * Utility for tests that need to close a window or do something after every test in a suite
-     * @param {function} func
-     */
-    window.afterLast = function (func) {
-        _addSuiteFunction("afterLast", func);
-    };
-
-    /**
-     * @private
-     * Returns an array with the parent suites of the current spec with the top most suite last
-     * @return {Array.<jasmine.Suite>}
-     */
-    function _getParentSuites() {
-        var suite  = jasmine.getEnv().currentSpec.suite,
-            suites = [];
-
-        while (suite) {
-            suites.push(suite);
-            suite = suite.parentSuite;
-        }
-
-        return suites;
-    }
-
-    /**
-     * @private
-     * Calls each function in the given array of functions
-     * @param {Array.<function>} functions
-     */
-    function _callFunctions(functions) {
-        var spec = jasmine.getEnv().currentSpec;
-        functions.forEach(function (func) {
-            func.apply(spec);
-        });
-    }
-
-    /**
-     * Calls the before first functions for the parent suites of the current spec when is the first spec of the suite.
-     */
-    function runBeforeFirst() {
-        var suites = _getParentSuites().reverse();
-
-        // SpecRunner-scoped beforeFirst
-        if (_testSuites[_rootSuite.id].beforeFirst) {
-            _callFunctions(_testSuites[_rootSuite.id].beforeFirst);
-            _testSuites[_rootSuite.id].beforeFirst = null;
-        }
-
-        // Iterate through all the parent suites of the current spec
-        suites.forEach(function (suite) {
-            // If we have functions for this suite and it was never called, initialize the spec counter
-            if (_testSuites[suite.id] && _testSuites[suite.id].specCounter === null) {
-                _callFunctions(_testSuites[suite.id].beforeFirst);
-                _testSuites[suite.id].specCounter = countSpecs(suite);
-            }
-        });
-    }
-
-    /**
-     * @private
-     * @return {boolean} True if the current spect is the last spec to be run
-     */
-    function _isLastSpec() {
-        return _unitTestReporter.activeSpecCompleteCount === _unitTestReporter.activeSpecCount - 1;
-    }
-
-    /**
-     * Calls the after last functions for the parent suites of the current spec when is the last spec of the suite.
-     */
-    function runAfterLast() {
-        var suites = _getParentSuites();
-
-        // Iterate throught all the parent suites of the current spec
-        suites.forEach(function (suite) {
-            // If we have functions for this suite, reduce the spec counter
-            if (_testSuites[suite.id] && _testSuites[suite.id].specCounter > 0) {
-                _testSuites[suite.id].specCounter--;
-
-                // If this was the last spec of the suite run the after last functions and remove it
-                if (_testSuites[suite.id].specCounter === 0) {
-                    _callFunctions(_testSuites[suite.id].afterLast);
-                    delete _testSuites[suite.id];
-                }
-            }
-        });
-
-        // SpecRunner-scoped afterLast
-        if (_testSuites[_rootSuite.id].afterLast && _isLastSpec()) {
-            _callFunctions(_testSuites[_rootSuite.id].afterLast);
-            _testSuites[_rootSuite.id].afterLast = null;
-        }
-    }
-
     // "global" custom matchers
-    beforeEach(function () {
-        this.addMatchers({
-            /**
-             * Expects the given editor's selection to be a cursor at the given position (no range selected)
-             */
-            toHaveCursorPosition: function (line, ch, ignoreSelection) {
-                var editor = this.actual;
-                var selection = editor.getSelection();
-                var notString = this.isNot ? "not " : "";
-
-                var start = selection.start;
-                var end = selection.end;
-                var selectionMoreThanOneCharacter = start.line !== end.line || start.ch !== end.ch;
-
-                this.message = function () {
-                    var message = "Expected the cursor to " + notString + "be at (" + line + ", " + ch +
-                        ") but it was actually at (" + start.line + ", " + start.ch + ")";
-                    if (!this.isNot && selectionMoreThanOneCharacter) {
-                        message += " and more than one character was selected.";
-                    }
-                    return message;
-                };
-
-                var positionsMatch = start.line === line && start.ch === ch;
-
-                // when adding the not operator, it's confusing to check both the size of the
-                // selection and the position. We just check the position in that case.
-                if (this.isNot || ignoreSelection) {
-                    return positionsMatch;
-                }
-                return !selectionMoreThanOneCharacter && positionsMatch;
-
-            }
-        });
-    });
+    function editorHasCursorPosition(editor, line, ch, ignoreSelection) {
+        let selection = editor.getSelection();
+        let start = selection.start;
+        let end = selection.end;
+        let selectionMoreThanOneCharacter = start.line !== end.line || start.ch !== end.ch;
+        let positionsMatch = start.line === line && start.ch === ch;
+        if (ignoreSelection) {
+            return positionsMatch;
+        }
+        return !selectionMoreThanOneCharacter && positionsMatch;
+    }
 
     function setUnitTestReporter(reporter) {
         _unitTestReporter = reporter;
@@ -1457,14 +1250,13 @@ define(function (require, exports, module) {
     exports.getTestWindow                   = getTestWindow;
     exports.simulateKeyEvent                = simulateKeyEvent;
     exports.setLoadExtensionsInTestWindow   = setLoadExtensionsInTestWindow;
-    exports.getResultMessage                = getResultMessage;
     exports.parseOffsetsFromText            = parseOffsetsFromText;
     exports.findDOMText                     = findDOMText;
     exports.injectIntoGetAllFiles           = injectIntoGetAllFiles;
     exports.countSpecs                      = countSpecs;
-    exports.runBeforeFirst                  = runBeforeFirst;
-    exports.runAfterLast                    = runAfterLast;
     exports.removeTempDirectory             = removeTempDirectory;
     exports.setUnitTestReporter             = setUnitTestReporter;
     exports.resizeEditor                    = resizeEditor;
+    exports.editorHasCursorPosition            = editorHasCursorPosition;
+    exports.jsPromise                       = jsPromise;
 });

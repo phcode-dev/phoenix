@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeFirst, afterLast, beforeEach, afterEach, waitsFor, runs, waitsForDone */
+/*global describe, it, expect, beforeEach */
 
 define(function (require, exports, module) {
     const Metrics = require("utils/Metrics");

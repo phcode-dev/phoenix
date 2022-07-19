@@ -21,62 +21,49 @@
 
 define(function (require, exports, module) {
 
-
+    require("spec/utframework-suite-test");
     require("spec/Async-test");
-    require("spec/CodeHint-test");
-    require("spec/CodeHintUtils-test");
-    require("spec/CodeInspection-test");
     require("spec/CommandManager-test");
     require("spec/CSSUtils-test");
-    require("spec/CSSInlineEdit-test");
-    require("spec/JSUtils-test");
+    require("spec/CSSUtils-integ-test");
     require("spec/Document-test");
-    require("spec/DocumentCommandHandlers-test");
-    require("spec/DocumentManager-test");
-    require("spec/DragAndDrop-test");
+    require("spec/Document-integ-test");
     require("spec/Editor-test");
     require("spec/EditorRedraw-test");
     require("spec/EditorCommandHandlers-test");
-    require("spec/EditorOptionHandlers-test");
+    require("spec/EditorCommandHandlers-integ-test");
     require("spec/EditorManager-test");
     require("spec/EventDispatcher-test");
-    require("spec/ExtensionInstallation-test");
+    require("spec/EventManager-test");
     require("spec/ExtensionInterface-test");
-    require("spec/FeatureGate-test");
     require("spec/ExtensionLoader-test");
     require("spec/ExtensionManager-test");
-    require("spec/ExtensionUtils-test");
-    require("spec/EventManager-test");
+    require("spec/FeatureGate-test");
     require("spec/FileFilters-test");
+    require("spec/FileFilters-integ-test");
     require("spec/FileSystem-test");
     require("spec/FileTreeView-test");
     require("spec/FileTreeViewModel-test");
     require("spec/FileUtils-test");
-    require("spec/FindInFiles-test");
     require("spec/FindReplace-test");
+    require("spec/FindReplace-integ-test");
     require("spec/HTMLInstrumentation-test");
     require("spec/HTMLSimpleDOM-test");
     require("spec/HTMLTokenizer-test");
-    require("spec/InlineEditorProviders-test");
-    require("spec/InstallExtensionDialog-test");
+    require("spec/CodeHintUtils-test");
     require("spec/JSONUtils-test");
+    require("spec/JSUtils-test");
+    require("spec/JSUtils-integ-test");
     require("spec/KeyBindingManager-test");
     require("spec/LanguageManager-test");
-    require("spec/LanguageTools-test");
-    require("spec/LiveDevelopment-test");
-    require("spec/LiveDevelopmentMultiBrowser-test");
+    require("spec/LanguageManager-integ-test");
     require("spec/LowLevelFileIO-test");
-    require("spec/MainViewFactory-test");
-    require("spec/MainViewManager-test");
-    require("spec/Menu-test");
+    require("spec/Metrics-test");
     require("spec/MultiRangeInlineEditor-test");
-    require("spec/NodeConnection-test");
+    require("spec/MultiRangeInlineEditor-integ-test");
     require("spec/Pane-test");
     require("spec/PreferencesBase-test");
-    require("spec/PreferencesManager-test");
-    require("spec/ProjectManager-test");
     require("spec/ProjectModel-test");
-    require("spec/QuickOpen-test");
     require("spec/QuickSearchField-test");
     require("spec/RemoteFunctions-test");
     require("spec/SpecRunnerUtils-test");
@@ -87,10 +74,33 @@ define(function (require, exports, module) {
     require("spec/UrlParams-test");
     require("spec/ValidationUtils-test");
     require("spec/ViewFactory-test");
-    require("spec/ViewCommandHandlers-test");
     require("spec/ViewUtils-test");
-    require("spec/WorkingSetView-test");
-    require("spec/WorkingSetSort-test");
     require("spec/XMLUtils-test");
-    require("spec/Metrics-test");
+    require("spec/CodeInspection-integ-test");
+    require("spec/CodeHint-integ-test");
+    require("spec/CSSInlineEdit-integ-test");
+    require("spec/DocumentCommandHandlers-integ-test");
+    require("spec/DocumentManager-integ-test");
+    require("spec/DragAndDrop-integ-test");
+    require("spec/EditorOptionHandlers-integ-test");
+    require("spec/ExtensionUtils-integ-test");
+    require("spec/InlineEditorProviders-integ-test");
+    require("spec/PreferencesManager-integ-test");
+    require("spec/MainViewFactory-integ-test");
+    require("spec/MainViewManager-integ-test");
+    require("spec/Menu-integ-test");
+    require("spec/ProjectManager-integ-test");
+    require("spec/QuickOpen-integ-test");
+    require("spec/ViewCommandHandlers-integ-test");
+    require("spec/WorkingSetView-integ-test");
+    require("spec/WorkingSetSort-integ-test");
+    require("spec/FindInFiles-integ-test");
+    // todo TEST_MODERN
+    // require("spec/LanguageTools-test"); LSP tests. disabled for now
+    // require("spec/ExtensionInstallation-test"); To Remove after new extension manager framework
+    // require("spec/InstallExtensionDialog-test"); reevaluate after new extension manager framework. all tests pass
+    // require("spec/LiveDevelopment-test"); reevaluate after new live preview
+    // require("spec/LiveDevelopmentMultiBrowser-test"); reevaluate after new live preview
+    // require("spec/NodeConnection-test"); deprecate and remove node connection
+    // require("spec/Menu-native-integ-test"); evaluate after we have native menus in os installed builds
 });

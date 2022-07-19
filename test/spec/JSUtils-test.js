@@ -19,29 +19,18 @@
  *
  */
 
-/*global describe, it, xit, expect, beforeEach, afterEach, waitsFor, runs, waitsForDone */
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone */
 
 define(function (require, exports, module) {
 
 
-    var DocumentManager,        // loaded from brackets.test
-        FileViewController,     // loaded from brackets.test
-        ProjectManager,         // loaded from brackets.test
-
-        JSUtils             = require("language/JSUtils"),
+    var JSUtils             = require("language/JSUtils"),
         FileSystem          = require("filesystem/FileSystem"),
         FileUtils           = require("file/FileUtils"),
         SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
     var testPath = SpecRunnerUtils.getTestPath("/spec/JSUtils-test-files"),
         doneLoading = false;
-
-    // Verifies whether one of the results returned by JSUtils.findAllMatchingFunctionsInText()
-    // came from the expected function name or not.
-
-    var toMatchFunctionName = function (expected) {
-        return this.actual.functionName.trim() === expected;
-    };
 
     var simpleJsFileEntry           = FileSystem.getFileForPath(testPath + "/simple.js");
     var trickyJsFileEntry           = FileSystem.getFileForPath(testPath + "/tricky.js");
@@ -58,17 +47,13 @@ define(function (require, exports, module) {
 
     function init(spec, fileEntry) {
         if (fileEntry) {
-            spec.addMatchers({toMatchFunctionName: toMatchFunctionName});
-
-            runs(function () {
-                FileUtils.readAsText(fileEntry)
-                    .done(function (text) {
-                        spec.fileJsContent = text;
-                    })
-                    .always(function (text) {
-                        doneLoading = true;
-                    });
-            });
+            FileUtils.readAsText(fileEntry)
+                .done(function (text) {
+                    spec.fileJsContent = text;
+                })
+                .always(function (text) {
+                    doneLoading = true;
+                });
         }
     }
 
@@ -82,10 +67,8 @@ define(function (require, exports, module) {
         describe("basics", function () {
 
             it("should parse an empty string", function () {
-                runs(function () {
-                    var result = JSUtils.findAllMatchingFunctionsInText("", "myFunc");
-                    expect(result.length).toEqual(0);
-                });
+                var result = JSUtils.findAllMatchingFunctionsInText("", "myFunc");
+                expect(result.length).toEqual(0);
             });
         });
 
@@ -102,10 +85,10 @@ define(function (require, exports, module) {
 
             function expectFunctionRanges(spec, jsCode, funcName, ranges) {
                 var result = JSUtils.findAllMatchingFunctionsInText(jsCode, funcName);
-                spec.expect(result.length).toEqual(ranges.length);
+                expect(result.length).toEqual(ranges.length);
                 ranges.forEach(function (range, i) {
-                    spec.expect(result[i].lineStart).toEqual(range.start);
-                    spec.expect(result[i].lineEnd).toEqual(range.end);
+                    expect(result[i].lineStart).toEqual(range.start);
+                    expect(result[i].lineEnd).toEqual(range.end);
                 });
             }
 
@@ -114,255 +97,172 @@ define(function (require, exports, module) {
                 expect(result.length).toBe(0);
             }
 
-            it("should return correct start and end line numbers for es6 class definitions and methods", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, es6ClassesFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for es6 class definitions and methods", async function () {
+                doneLoading = false;
+                init(this, es6ClassesFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "Shape", [ {start: 0, end: 9} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "constructor", [ {start: 1, end: 4} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "move", [ {start: 5, end: 8} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "Shape", [ {start: 0, end: 9} ]);
+                expectFunctionRanges(this, this.fileJsContent, "constructor", [ {start: 1, end: 4} ]);
+                expectFunctionRanges(this, this.fileJsContent, "move", [ {start: 5, end: 8} ]);
             });
 
-            it("should return correct start and end line numbers for es6 static class methods", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, es6StaticsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for es6 static class methods", async function () {
+                doneLoading = false;
+                init(this, es6StaticsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "Rectangle", [ {start: 0, end: 4} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "defaultRectangle", [ {start: 1, end: 3} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "Rectangle", [ {start: 0, end: 4} ]);
+                expectFunctionRanges(this, this.fileJsContent, "defaultRectangle", [ {start: 1, end: 3} ]);
             });
 
-            it("should return correct start and end line numbers for es6 class inheritance", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, es6InheritanceFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for es6 class inheritance", async function () {
+                doneLoading = false;
+                init(this, es6InheritanceFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "Rectangle", [ {start: 0, end: 6} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "Circle", [ {start: 7, end: 12} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "constructor", [ {start: 1, end: 5}, {start: 8, end: 11} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "Rectangle", [ {start: 0, end: 6} ]);
+                expectFunctionRanges(this, this.fileJsContent, "Circle", [ {start: 7, end: 12} ]);
+                expectFunctionRanges(this, this.fileJsContent, "constructor", [ {start: 1, end: 5}, {start: 8, end: 11} ]);
             });
 
-            it("should return correct start and end line numbers for es6 class members getters/setters", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, es6GetterSetterFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for es6 class members getters/setters", async function () {
+                doneLoading = false;
+                init(this, es6GetterSetterFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "Rectangle", [ {start: 0, end: 10} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "constructor", [ {start: 1, end: 4} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "width", [ {start: 5, end: 5}, {start: 6, end: 6} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "height", [ {start: 7, end: 7}, {start: 8, end: 8} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "area", [ {start: 9, end: 9} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "Rectangle", [ {start: 0, end: 10} ]);
+                expectFunctionRanges(this, this.fileJsContent, "constructor", [ {start: 1, end: 4} ]);
+                expectFunctionRanges(this, this.fileJsContent, "width", [ {start: 5, end: 5}, {start: 6, end: 6} ]);
+                expectFunctionRanges(this, this.fileJsContent, "height", [ {start: 7, end: 7}, {start: 8, end: 8} ]);
+                expectFunctionRanges(this, this.fileJsContent, "area", [ {start: 9, end: 9} ]);
             });
 
-            it("should return correct start and end line numbers for es6 async and arrow function expressions", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, es6AsyncAndArrowFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for es6 async and arrow function expressions", async function () {
+                doneLoading = false;
+                init(this, es6AsyncAndArrowFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "bar", [ {start: 1, end: 1} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "fooAgain", [ {start: 3, end: 3} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "bar", [ {start: 1, end: 1} ]);
+                expectFunctionRanges(this, this.fileJsContent, "fooAgain", [ {start: 3, end: 3} ]);
             });
 
-            it("should return correct start and end line numbers for simple functions", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for simple functions", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await  awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "simple1", [ {start: 0, end: 2} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "simple2", [ {start: 7, end: 9} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "simple3", [ {start: 11, end: 13} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "simple1", [ {start: 0, end: 2} ]);
+                expectFunctionRanges(this, this.fileJsContent, "simple2", [ {start: 7, end: 9} ]);
+                expectFunctionRanges(this, this.fileJsContent, "simple3", [ {start: 11, end: 13} ]);
             });
 
-            it("should return correct start and end line numbers for parameterized functions", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for parameterized functions", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "param1", [ {start: 18, end: 19} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "param2", [ {start: 24, end: 26} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "param3", [ {start: 28, end: 32} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "param1", [ {start: 18, end: 19} ]);
+                expectFunctionRanges(this, this.fileJsContent, "param2", [ {start: 24, end: 26} ]);
+                expectFunctionRanges(this, this.fileJsContent, "param3", [ {start: 28, end: 32} ]);
             });
 
-            it("should return correct start and end line numbers for single line functions", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for single line functions", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "single1", [ {start: 35, end: 35} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "single2", [ {start: 36, end: 36} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "single3", [ {start: 37, end: 37} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "single1", [ {start: 35, end: 35} ]);
+                expectFunctionRanges(this, this.fileJsContent, "single2", [ {start: 36, end: 36} ]);
+                expectFunctionRanges(this, this.fileJsContent, "single3", [ {start: 37, end: 37} ]);
             });
 
-            it("should return correct start and end line numbers for nested functions", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for nested functions", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "nested1", [ {start: 42, end: 50} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "nested2", [ {start: 44, end: 49} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "nested3", [ {start: 47, end: 48} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "nested1", [ {start: 42, end: 50} ]);
+                expectFunctionRanges(this, this.fileJsContent, "nested2", [ {start: 44, end: 49} ]);
+                expectFunctionRanges(this, this.fileJsContent, "nested3", [ {start: 47, end: 48} ]);
             });
 
-            it("should return correct start and end line numbers for functions with keyword 'function' in name", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for functions with keyword 'function' in name", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    //expectFunctionRanges(this, this.fileJsContent, "functionX",   [ {start: 53, end: 55} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "my_function", [ {start: 56, end: 57} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "function3",   [ {start: 58, end: 60} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "my_function", [ {start: 56, end: 57} ]);
+                expectFunctionRanges(this, this.fileJsContent, "function3",   [ {start: 58, end: 60} ]);
             });
 
-            it("should return correct start and end line numbers for prototype method declarations", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should return correct start and end line numbers for prototype method declarations", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "myMethod", [ {start: 66, end: 68} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "myMethod", [ {start: 66, end: 68} ]);
             });
 
-            it("should handle various whitespace variations", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should handle various whitespace variations", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "noSpaceBeforeFunc", [ {start: 71, end: 71} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "spaceBeforeColon", [ {start: 73, end: 75} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "noSpaceAfterColon", [ {start: 77, end: 79} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "fakePeriodBeforeFunction", [ {start: 82, end: 84} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "noSpaceAfterFunction", [ {start: 86, end: 88} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "noSpaceAfterFunction2", [ {start: 90, end: 92} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "findMe", [ {start: 93, end: 93} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "noSpaceBeforeFunc", [ {start: 71, end: 71} ]);
+                expectFunctionRanges(this, this.fileJsContent, "spaceBeforeColon", [ {start: 73, end: 75} ]);
+                expectFunctionRanges(this, this.fileJsContent, "noSpaceAfterColon", [ {start: 77, end: 79} ]);
+                expectFunctionRanges(this, this.fileJsContent, "fakePeriodBeforeFunction", [ {start: 82, end: 84} ]);
+                expectFunctionRanges(this, this.fileJsContent, "noSpaceAfterFunction", [ {start: 86, end: 88} ]);
+                expectFunctionRanges(this, this.fileJsContent, "noSpaceAfterFunction2", [ {start: 90, end: 92} ]);
+                expectFunctionRanges(this, this.fileJsContent, "findMe", [ {start: 93, end: 93} ]);
             });
 
-            it("should work with high-ascii characters in function names", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should work with high-ascii characters in function names", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "highAscÍÍChars", [ {start: 95, end: 97} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "moreHighAscÍÍChars", [ {start: 99, end: 101} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "ÅsciiExtendedIdentifierStart", [ {start: 103, end: 104} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "highAscÍÍChars", [ {start: 95, end: 97} ]);
+                expectFunctionRanges(this, this.fileJsContent, "moreHighAscÍÍChars", [ {start: 99, end: 101} ]);
+                expectFunctionRanges(this, this.fileJsContent, "ÅsciiExtendedIdentifierStart", [ {start: 103, end: 104} ]);
             });
 
-            it("should work with unicode characters in or around function names", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should work with unicode characters in or around function names", async function () {
+                doneLoading = false;
+                init(this, simpleJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "ʸUnicodeModifierLettervalidIdentifierStart", [ {start: 106, end: 107} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "unicodeModifierLettervalidIdentifierPartʸ", [ {start: 112, end: 113} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "ʸUnicodeModifierLettervalidIdentifierStart", [ {start: 106, end: 107} ]);
+                expectFunctionRanges(this, this.fileJsContent, "unicodeModifierLettervalidIdentifierPartʸ", [ {start: 112, end: 113} ]);
             });
 
-            // TODO (issue #1125): support escaped unicode
-            xit("FAIL should work with unicode characters in or around function names", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, simpleJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should work when colliding with prototype properties", async function () { // #1390, #2813
+                doneLoading = false;
+                init(this, trickyJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "\u02b8UnicodeEscapedIdentifierStart", [ {start: 109, end: 110} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "unicodeEscapedIdentifierPart\u02b8", [ {start: 115, end: 116} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "unicodeTabBefore", [ {start: 118, end: 119} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "unicodeTabAfter", [ {start: 121, end: 122} ]);
-                });
+                expectFunctionRanges(this, this.fileJsContent, "toString", [ {start: 1, end: 3} ]);
+                expectFunctionRanges(this, this.fileJsContent, "length", [ {start: 6, end: 8} ]);
+                expectFunctionRanges(this, this.fileJsContent, "hasOwnProperty", [ {start: 11, end: 13} ]);
             });
 
-            it("should work when colliding with prototype properties", function () { // #1390, #2813
-                runs(function () {
-                    doneLoading = false;
-                    init(this, trickyJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should fail with invalid function names", async function () {
+                doneLoading = false;
+                init(this, invalidJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expectFunctionRanges(this, this.fileJsContent, "toString", [ {start: 1, end: 3} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "length", [ {start: 6, end: 8} ]);
-                    expectFunctionRanges(this, this.fileJsContent, "hasOwnProperty", [ {start: 11, end: 13} ]);
-                });
-            });
-
-            it("should fail with invalid function names", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, invalidJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
-
-                runs(function () {
-                    expectNoFunction(this.fileJsContent, "0digitIdentifierStart");
-                    expectNoFunction(this.fileJsContent, ".punctuationIdentifierStart");
-                    expectNoFunction(this.fileJsContent, "punctuation.IdentifierPart");
-                });
+                expectNoFunction(this.fileJsContent, "0digitIdentifierStart");
+                expectNoFunction(this.fileJsContent, ".punctuationIdentifierStart");
+                expectNoFunction(this.fileJsContent, "punctuation.IdentifierPart");
             });
         });
 
         describe("brace ends of functions", function () {
-            beforeEach(function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, braceEndJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            beforeEach(async function () {
+                doneLoading = false;
+                init(this, braceEndJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
             });
 
             afterEach(function () {
@@ -371,7 +271,7 @@ define(function (require, exports, module) {
 
             function expectEndBrace(spec, funcName) {
                 var startPos = spec.fileJsContent.indexOf("function " + funcName);
-                expect(startPos).toNotBe(-1);
+                expect(startPos).not.toBe(-1);
 
                 var endPos = JSUtils._getFunctionEndOffset(spec.fileJsContent, startPos);
                 var endMarker = spec.fileJsContent.slice(endPos);
@@ -417,43 +317,33 @@ define(function (require, exports, module) {
         });
 
         describe("brace end of function that ends at end of file", function () {
-            it("should find the end of a function that ends exactly at the end of the file", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, eofJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should find the end of a function that ends exactly at the end of the file", async function () {
+                doneLoading = false;
+                init(this, eofJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expect(JSUtils._getFunctionEndOffset(this.fileJsContent, 0)).toBe(this.fileJsContent.length);
-                    cleanup(this);
-                });
+                expect(JSUtils._getFunctionEndOffset(this.fileJsContent, 0)).toBe(this.fileJsContent.length);
+                cleanup(this);
             });
         });
 
         describe("end of function that's unclosed at end of file", function () {
-            it("should find the end of a function that is unclosed at the end of the file", function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, eof2JsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            it("should find the end of a function that is unclosed at the end of the file", async function () {
+                doneLoading = false;
+                init(this, eof2JsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
 
-                runs(function () {
-                    expect(JSUtils._getFunctionEndOffset(this.fileJsContent, 0)).toBe(this.fileJsContent.length);
-                    cleanup(this);
-                });
+                expect(JSUtils._getFunctionEndOffset(this.fileJsContent, 0)).toBe(this.fileJsContent.length);
+                cleanup(this);
             });
         });
 
         describe("with real-world jQuery JS code", function () {
 
-            beforeEach(function () {
-                runs(function () {
-                    doneLoading = false;
-                    init(this, jQueryJsFileEntry);
-                });
-                waitsFor(function () { return doneLoading; }, 1000);
+            beforeEach(async function () {
+                doneLoading = false;
+                init(this, jQueryJsFileEntry);
+                await awaitsFor(function () { return doneLoading; }, 1000);
             });
 
             afterEach(function () {
@@ -490,181 +380,4 @@ define(function (require, exports, module) {
         });
 
     }); // describe("JSUtils")
-
-
-    describe("JS Indexing", function () {
-
-        this.category = "integration";
-
-        var functions;  // populated by indexAndFind()
-
-        beforeEach(function () {
-            SpecRunnerUtils.createTestWindowAndRun(this, function (testWindow) {
-                // Load module instances from brackets.test
-                var brackets        = testWindow.brackets;
-                DocumentManager     = brackets.test.DocumentManager;
-                FileViewController  = brackets.test.FileViewController;
-                ProjectManager      = brackets.test.ProjectManager;
-                JSUtils             = brackets.test.JSUtils;
-
-                SpecRunnerUtils.loadProjectInTestWindow(testPath);
-            });
-        });
-
-        afterEach(function () {
-            DocumentManager     = null;
-            FileViewController  = null;
-            JSUtils             = null;
-            ProjectManager      = null;
-            SpecRunnerUtils.closeTestWindow();
-        });
-
-        function init(fileName) {
-            runs(function () {
-                waitsForDone(
-                    FileViewController.openAndSelectDocument(
-                        testPath + "/" + fileName,
-                        FileViewController.PROJECT_MANAGER
-                    ),
-                    "openAndSelectDocument"
-                );
-            });
-        }
-
-        /**
-         * Builds a fileInfos index of the project, as required to call findMatchingFunctions(). Calls the
-         * specified 'invoker' function with fileInfos, and populates the 'functions' var once it's done.
-         * Does not need to be wrapped in a runs() block.
-         * @param {function(Array.<File>):$.Promise} invokeFind
-         */
-        function indexAndFind(invokeFind) {
-            runs(function () {
-                var result = new $.Deferred();
-                ProjectManager.getAllFiles().done(function (files) {
-                    invokeFind(files)
-                        .done(function (functionsResult) { functions = functionsResult; })
-                        .then(result.resolve, result.reject);
-                });
-
-                waitsForDone(result, "Index and invoke JSUtils.findMatchingFunctions()");
-            });
-        }
-
-
-        describe("Index integrity", function () {
-            it("should handle colliding with prototype properties", function () { // #2813
-                // no init() needed - don't need any editors to be open
-                indexAndFind(function (fileInfos) {
-                    return JSUtils.findMatchingFunctions("toString", fileInfos);
-                });
-                runs(function () {
-                    expect(functions.length).toBe(1);
-                    expect(functions[0].lineStart).toBe(1);
-                    expect(functions[0].lineEnd).toBe(3);
-                });
-
-                indexAndFind(function (fileInfos) {
-                    return JSUtils.findMatchingFunctions("length", fileInfos);
-                });
-                runs(function () {
-                    expect(functions.length).toBe(1);
-                    expect(functions[0].lineStart).toBe(6);
-                    expect(functions[0].lineEnd).toBe(8);
-                });
-
-                indexAndFind(function (fileInfos) {
-                    return JSUtils.findMatchingFunctions("hasOwnProperty", fileInfos);
-                });
-                runs(function () {
-                    expect(functions.length).toBe(1);
-                    expect(functions[0].lineStart).toBe(11);
-                    expect(functions[0].lineEnd).toBe(13);
-                });
-            });
-        });
-
-
-        describe("Working with unsaved changes", function () {
-
-            function fileChangedTest(buildCache) {
-                init("edit.js");
-
-                // Populate JSUtils cache
-                if (buildCache) {
-                    // Look for "edit2" function
-                    indexAndFind(function (fileInfos) {
-                        return JSUtils.findMatchingFunctions("edit2", fileInfos);
-                    });
-                    runs(function () {
-                        expect(functions.length).toBe(1);
-                        expect(functions[0].lineStart).toBe(7);
-                        expect(functions[0].lineEnd).toBe(9);
-                    });
-                }
-
-                // Add several blank lines at the beginning of the text
-                runs(function () {
-                    var doc = DocumentManager.getCurrentDocument();
-                    doc.setText("\n\n\n\n" + doc.getText());
-                });
-
-                // Look for function again, expecting line offsets to have changed
-                indexAndFind(function (fileInfos) {
-                    return JSUtils.findMatchingFunctions("edit2", fileInfos);
-                });
-                runs(function () {
-                    expect(functions.length).toBe(1);
-                    expect(functions[0].lineStart).toBe(11);
-                    expect(functions[0].lineEnd).toBe(13);
-                });
-            }
-
-            it("should return the correct offsets if the file has changed", function () {
-                fileChangedTest(false);
-            });
-
-            it("should return the correct offsets if the results were cached and the file has changed", function () {
-                fileChangedTest(true);
-            });
-
-            function insertFunctionTest(buildCache) {
-                init("edit.js");
-
-                // Populate JSUtils cache
-                if (buildCache) {
-                    // Look for function that doesn't exist yet
-                    indexAndFind(function (fileInfos) {
-                        return JSUtils.findMatchingFunctions("TESTFUNCTION", fileInfos);
-                    });
-                    runs(function () {
-                        expect(functions.length).toBe(0);
-                    });
-                }
-
-                // Add a new function to the file
-                runs(function () {
-                    var doc = DocumentManager.getCurrentDocument();
-                    doc.setText(doc.getText() + "\n\nfunction TESTFUNCTION() {\n    return true;\n}\n");
-                });
-
-                // Look for the function we just created
-                indexAndFind(function (fileInfos) {
-                    return JSUtils.findMatchingFunctions("TESTFUNCTION", fileInfos);
-                });
-                runs(function () {
-                    expect(functions.length).toBe(1);
-                    expect(functions[0].lineStart).toBe(33);
-                    expect(functions[0].lineEnd).toBe(35);
-                });
-            }
-
-            it("should return a newly created function in an unsaved file", function () {
-                insertFunctionTest(false);
-            });
-
-            it("should return a newly created function in an unsaved file that already has cached results", function () {
-                insertFunctionTest(true);
-            });
-        });
-    }); //describe("JS Indexing")
 });

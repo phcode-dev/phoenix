@@ -38,7 +38,7 @@ define(function (require, exports, module) {
 
         // build DOM immediately
         var container = $(
-            '<div class="container-fluid">' +
+            '<div class="container-fluid" style="height: 95%; overflow: scroll;">' +
                 '<div class="row-fluid">' +
                     '<div class="span4">' +
                         '<ul id="suite-list" class="nav nav-pills nav-stacked">' +
@@ -57,11 +57,22 @@ define(function (require, exports, module) {
         this.$resultsContainer = $("#results-container");
     };
 
-    BootstrapReporterView.prototype._createSuiteListItem = function (suiteName, specCount) {
+    BootstrapReporterView.prototype._createSuiteListItem = function (suiteName, specCount, reporter) {
+        let displayName = suiteName;
+        if(suiteName.includes(":")){
+            let category = suiteName.split(":");
+            if(reporter.knownCategories.includes(category[0])){
+                displayName = suiteName.replace(`${category[0]}:`, '');
+            }
+        }
+        let hyperlink = `?spec=${encodeURIComponent(suiteName)}`;
+        if(reporter.selectedCategories.length){
+            hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
+        }
         var $badgeAll = $('<span class="badge">' + specCount + "</span>"),
             $badgePassed = $('<span class="badge badge-success" style="display:none"/>'),
             $badgeFailed = $('<span class="badge badge-important" style="display:none"/>'),
-            $anchor = $('<a href="?spec=' + encodeURIComponent(suiteName) + '">' + suiteName + '</a>').append($badgeAll).append($badgePassed).append($badgeFailed),
+            $anchor = $('<a href="' + hyperlink + '">' + displayName + '</a>').append($badgeAll).append($badgePassed).append($badgeFailed),
             $listItem = $('<li/>').append($anchor);
 
         this._topLevelSuiteMap[suiteName] = {
@@ -75,18 +86,18 @@ define(function (require, exports, module) {
         return $listItem;
     };
 
-    BootstrapReporterView.prototype._createSuiteList = function (suites, sortedNames, totalSpecCount) {
+    BootstrapReporterView.prototype._createSuiteList = function (suites, sortedNames, totalSpecCount, reporter) {
         var self = this;
 
         sortedNames.forEach(function (name, index) {
             var count = suites[name].specCount;
             if (count > 0) {
-                self.$suiteList.append(self._createSuiteListItem(name, count));
+                self.$suiteList.append(self._createSuiteListItem(name, count, reporter));
             }
         });
 
         // add an "all" top-level suite
-        this.$suiteList.prepend(this._createSuiteListItem("All", totalSpecCount));
+        this.$suiteList.prepend(this._createSuiteListItem("All", totalSpecCount, reporter));
     };
 
     BootstrapReporterView.prototype._showProgressBar = function (spec) {
@@ -102,7 +113,7 @@ define(function (require, exports, module) {
         var topLevelData;
 
         // create top level suite list navigation
-        this._createSuiteList(reporter.suites, reporter.sortedNames, reporter.totalSpecCount);
+        this._createSuiteList(reporter.suites, reporter.sortedNames, reporter.totalSpecCount, reporter);
 
         // highlight the current suite
         topLevelData = reporter.activeSuite ? this._topLevelSuiteMap[reporter.activeSuite] : null;
@@ -128,7 +139,9 @@ define(function (require, exports, module) {
             if (reporter.passed) {
                 this.$info.toggleClass("alert-success", true).text("Complete. No failures.");
             } else {
-                this.$info.toggleClass("alert-error", true).text("Complete. See failures.");
+                this.$info.toggleClass("alert-error", true).text(
+                    "Complete. See failures Below. If all tests have passed and no failures are seen below," +
+                    "Check the debug console for errors. (search for 'Spec Error:' in console)");
             }
         }
     };
@@ -226,7 +239,11 @@ define(function (require, exports, module) {
             }
 
             // print spec name
-            $specLink = $('<a href="?spec=' + encodeURIComponent(specData.name) + '"/>').text(specData.description);
+            let hyperlink = `?spec=${encodeURIComponent(specData.name)}`;
+            if(reporter.selectedCategories.length){
+                hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
+            }
+            $specLink = $('<a href="' + hyperlink + '"/>').text(specData.description);
             $resultDisplay = $('<div class="alert alert-error"/>').append($specLink);
 
             // print failure details
@@ -249,7 +266,11 @@ define(function (require, exports, module) {
 
         if (specData.passed && specData.perf) {
             // add spec name
-            $specLink = $('<a href="?spec=' + encodeURIComponent(specData.name) + '"/>').text(specData.name);
+            let hyperlink = `?spec=${encodeURIComponent(specData.name)}`;
+            if(reporter.selectedCategories.length){
+                hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
+            }
+            $specLink = $('<a href="' + hyperlink + '"/>').text(specData.name);
             this.$resultsContainer.append($('<div class="alert alert-info"/>').append($specLink));
 
             // add table

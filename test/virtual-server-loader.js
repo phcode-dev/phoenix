@@ -67,6 +67,4 @@ if ('serviceWorker' in navigator) {
     });
 
     wb.register();
-    navigator.serviceWorker.register("service-worker.js");
-
 }

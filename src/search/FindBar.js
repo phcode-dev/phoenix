@@ -312,7 +312,7 @@ define(function (require, exports, module) {
 
         let executeSearchIfNeeded = function () {
             // We only do instant search via worker.
-            if (FindUtils.isWorkerSearchDisabled() || FindUtils.isInstantSearchDisabled()) {
+            if (FindUtils.isInstantSearchDisabled()) {
                 return;
             }
             if (self._closed) {

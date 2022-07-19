@@ -41,7 +41,7 @@ define(function (require, exports, module) {
                 params.parse("http://www.brackets.io?one=1&two=true&three=foobar");
 
                 expect(params.isEmpty()).toBeFalsy();
-                expect(params.toString()).toNotEqual("");
+                expect(params.toString()).not.toEqual("");
             });
         });
 
@@ -126,7 +126,7 @@ define(function (require, exports, module) {
                 expect(params.get("three")).toEqual("foobar");
 
                 expect(params.isEmpty()).toBeFalsy();
-                expect(params.toString()).toNotEqual("");
+                expect(params.toString()).not.toEqual("");
 
                 params.remove("one");
                 params.remove("two");
@@ -159,7 +159,7 @@ define(function (require, exports, module) {
                 expect(params.get("three")).toEqual("foobar");
 
                 expect(params.isEmpty()).toBeFalsy();
-                expect(params.toString()).toNotEqual("");
+                expect(params.toString()).not.toEqual("");
             });
         });
 

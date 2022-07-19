@@ -21,7 +21,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-/*global jasmine, describe, it, expect, beforeEach, afterEach, runs, waitsFor */
+/*global jasmine, describe, it, expect, beforeEach, afterEach, awaitsFor */
 
 define(function (require, exports, module) {
 
@@ -75,7 +75,7 @@ define(function (require, exports, module) {
 
         /** Sets provider to a function that synchronously returns results from mockResults */
         function makeSyncProvider() {
-            provider = jasmine.createSpy().andCallFake(function (query) {
+            provider = jasmine.createSpy().and.callFake(function (query) {
                 return mockResults[query || "<blank>"];
             });
         }
@@ -85,7 +85,7 @@ define(function (require, exports, module) {
          * results from mockResults, by calling finishAsync().
          */
         function makeAsyncProvider() {
-            provider = jasmine.createSpy().andCallFake(function (query) {
+            provider = jasmine.createSpy().and.callFake(function (query) {
                 var promise = new $.Deferred();
                 provider.futures.push(function () {
                     promise.resolve(mockResults[query || "<blank>"]);
@@ -128,197 +128,153 @@ define(function (require, exports, module) {
         }
 
 
-        it("updates list on setText()", function () {
-            runs(function () {
-                makeSyncProvider();
+        it("updates list on setText()", async function () {
+            makeSyncProvider();
 
-                enterSearchText("foo");
-                waitsFor(function () { return provider.callCount === 1; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("foo");
-                expectListContents(mockResults.foo);
+            enterSearchText("foo");
+            await awaitsFor(function () { return provider.calls.count() === 1; });
+            expect(provider).toHaveBeenCalledWith("foo");
+            expectListContents(mockResults.foo);
 
-                searchField.setText("bar");
-                waitsFor(function () { return provider.callCount === 2; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("bar");
-                expectListContents(mockResults.bar);
-            });
+            searchField.setText("bar");
+            await awaitsFor(function () { return provider.calls.count() === 2; });
+            expect(provider).toHaveBeenCalledWith("bar");
+            expectListContents(mockResults.bar);
         });
 
-        it("selects first item on Enter key", function () {
-            runs(function () {
-                makeSyncProvider();
+        it("selects first item on Enter key", async function () {
+            makeSyncProvider();
 
-                enterSearchText("foo");
-                waitsFor(function () { return provider.callCount === 1; });
-            });
-            runs(function () {
-                onCommit = jasmine.createSpy();
+            enterSearchText("foo");
+            await awaitsFor(function () { return provider.calls.count() === 1; });
+            onCommit = jasmine.createSpy();
 
-                pressEnter();
-                waitsFor(function () { return onCommit.callCount === 1; });
-            });
-            runs(function () {
-                expect(onCommit).toHaveBeenCalledWith("one", "foo");
-                expect(provider.callCount).toBe(1);  // shouldn't need to query provider a 2nd time
-            });
+            pressEnter();
+            await awaitsFor(function () { return onCommit.calls.count() === 1; });
+            expect(onCommit).toHaveBeenCalledWith("one", "foo");
+            expect(provider.calls.count()).toBe(1);  // shouldn't need to query provider a 2nd time
         });
 
-        it("highlights correcct item in list", function () {
-            runs(function () {
-                makeSyncProvider();
-                mockResults["<blank>"] = mockResults.f;
+        it("highlights correcct item in list", async function () {
+            makeSyncProvider();
+            mockResults["<blank>"] = mockResults.f;
 
-                searchField.updateResults();
+            searchField.updateResults();
 
-                expect(provider.callCount).toEqual(1);
-                expect(searchField.options.onHighlight.callCount).toEqual(1);
-                expect(searchField.options.onHighlight).toHaveBeenCalledWith("one", "", false);
+            expect(provider.calls.count()).toEqual(1);
+            expect(searchField.options.onHighlight.calls.count()).toEqual(1);
+            expect(searchField.options.onHighlight).toHaveBeenCalledWith("one", "", false);
 
-                pressDownArow();
+            pressDownArow();
 
-                expect(provider.callCount).toEqual(1);
-                expect(searchField.options.onHighlight.callCount).toEqual(2);
-                expect(searchField.options.onHighlight).toHaveBeenCalledWith("two", "", true);
+            expect(provider.calls.count()).toEqual(1);
+            expect(searchField.options.onHighlight.calls.count()).toEqual(2);
+            expect(searchField.options.onHighlight).toHaveBeenCalledWith("two", "", true);
 
-                enterSearchText("foo");
-                waitsFor(function () { return provider.callCount === 2; });
-            });
-            runs(function () {
-                expect(searchField.options.onHighlight.callCount).toEqual(3);
-                expect(searchField.options.onHighlight).toHaveBeenCalledWith("one", "foo", false);
-            });
+            enterSearchText("foo");
+            await awaitsFor(function () { return provider.calls.count() === 2; });
+            expect(searchField.options.onHighlight.calls.count()).toEqual(3);
+            expect(searchField.options.onHighlight).toHaveBeenCalledWith("one", "foo", false);
         });
 
-        it("re-queries provider when updateResults() called", function () {
-            runs(function () {
-                makeSyncProvider();
+        it("re-queries provider when updateResults() called", async function () {
+            makeSyncProvider();
 
-                mockResults.changeable = ["a", "b", "c"];
+            mockResults.changeable = ["a", "b", "c"];
 
-                enterSearchText("changeable");
-                waitsFor(function () { return provider.callCount === 1; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("changeable");
-                expectListContents(mockResults.changeable);
+            enterSearchText("changeable");
+            await awaitsFor(function () { return provider.calls.count() === 1; });
+            expect(provider).toHaveBeenCalledWith("changeable");
+            expectListContents(mockResults.changeable);
 
-                mockResults.changeable = ["x", "y", "z"];
+            mockResults.changeable = ["x", "y", "z"];
 
-                searchField.updateResults();
-                waitsFor(function () { return provider.callCount === 2; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("changeable");
-                expectListContents(mockResults.changeable);
-            });
+            searchField.updateResults();
+            await awaitsFor(function () { return provider.calls.count() === 2; });
+            expect(provider).toHaveBeenCalledWith("changeable");
+            expectListContents(mockResults.changeable);
         });
 
-        it("throttles updates when provider slow to respond", function () {
-            runs(function () {
-                makeSyncProvider();
+        it("throttles updates when provider slow to respond", async function () {
+            makeSyncProvider();
 
-                enterSearchText("f");
-                waitsFor(function () { return provider.callCount === 1; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("f");
-                expectListContents(mockResults.f);
+            enterSearchText("f");
+            await awaitsFor(function () { return provider.calls.count() === 1; });
+            expect(provider).toHaveBeenCalledWith("f");
+            expectListContents(mockResults.f);
 
-                // This is *roughly* what happens when typing outpaces JS event servicing:
-                // a string of key events arrive before any setTimeouts() set from the first
-                // one will get to run
-                enterSearchText("fo");
-                enterSearchText("foo");
-                enterSearchText("foob");
-                enterSearchText("fooba");
-                enterSearchText("foobar");
+            // This is *roughly* what happens when typing outpaces JS event servicing:
+            // a string of key events arrive before any setTimeouts() set from the first
+            // one will get to run
+            enterSearchText("fo");
+            enterSearchText("foo");
+            enterSearchText("foob");
+            enterSearchText("fooba");
+            enterSearchText("foobar");
 
-                waitsFor(function () { return provider.callCount > 1; });
-            });
-            runs(function () {
-                // The 2nd provider call skips all the intermediate fo, foo, foob, etc. states and
-                // goes straight to "foobar"
-                expect(provider.callCount).toBe(2);
-                expect(provider).toHaveBeenCalledWith("foobar");
-                expectListContents(mockResults.foobar);
-            });
+            await awaitsFor(function () { return provider.calls.count() > 1; });
+            // The 2nd provider call skips all the intermediate fo, foo, foob, etc. states and
+            // goes straight to "foobar"
+            expect(provider.calls.count()).toBe(2);
+            expect(provider).toHaveBeenCalledWith("foobar");
+            expectListContents(mockResults.foobar);
         });
 
-        it("updates list when async provider finally responds", function () {
-            runs(function () {
-                makeAsyncProvider();
+        it("updates list when async provider finally responds", async function () {
+            makeAsyncProvider();
 
-                enterSearchText("foo");
-                waitsFor(function () { return provider.callCount === 1; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("foo");
-                expectListContents([]);  // no results yet
+            enterSearchText("foo");
+            await awaitsFor(function () { return provider.calls.count() === 1; });
+            expect(provider).toHaveBeenCalledWith("foo");
+            expectListContents([]);  // no results yet
 
-                finishAsync(0);
-                expectListContents(mockResults.foo);
-                expect(provider.callCount).toBe(1);  // shouldn't query provider any extra times
-            });
+            finishAsync(0);
+            expectListContents(mockResults.foo);
+            expect(provider.calls.count()).toBe(1);  // shouldn't query provider any extra times
         });
 
-        it("shows latest list even when async provider responds out of order", function () {
-            runs(function () {
-                makeAsyncProvider();
+        it("shows latest list even when async provider responds out of order", async function () {
+            makeAsyncProvider();
 
-                enterSearchText("foo");
-                waitsFor(function () { return provider.callCount === 1; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("foo");
-                expectListContents([]);
+            enterSearchText("foo");
+            await awaitsFor(function () { return provider.calls.count() === 1; });
+            expect(provider).toHaveBeenCalledWith("foo");
+            expectListContents([]);
 
-                enterSearchText("bar");
-                waitsFor(function () { return provider.callCount === 2; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("bar");
-                expectListContents([]);
+            enterSearchText("bar");
+            await awaitsFor(function () { return provider.calls.count() === 2; });
+            expect(provider).toHaveBeenCalledWith("bar");
+            expectListContents([]);
 
-                finishAsync(1);  // respond to latest query ("bar") first
-                finishAsync(0);  // respond to older query ("foo") second
+            finishAsync(1);  // respond to latest query ("bar") first
+            finishAsync(0);  // respond to older query ("foo") second
 
-                expectListContents(mockResults.bar);
-                expect(provider.callCount).toBe(2);  // shouldn't query provider any extra times
-            });
+            expectListContents(mockResults.bar);
+            expect(provider.calls.count()).toBe(2);  // shouldn't query provider any extra times
         });
 
         // This was bug #1855 in the original smart-autocomplete QuickOpen implementation
-        it("commits correct item when enter pressed before async provider updates", function () {
-            runs(function () {
-                makeAsyncProvider();
+        it("commits correct item when enter pressed before async provider updates", async function () {
+            makeAsyncProvider();
 
-                enterSearchText("foo");
-                waitsFor(function () { return provider.callCount === 1; });
-            });
-            runs(function () {
-                expect(provider).toHaveBeenCalledWith("foo");
+            enterSearchText("foo");
+            await awaitsFor(function () { return provider.calls.count() === 1; });
+            expect(provider).toHaveBeenCalledWith("foo");
 
-                finishAsync(0);
-                expectListContents(mockResults.foo);
+            finishAsync(0);
+            expectListContents(mockResults.foo);
 
-                enterSearchText("foobar");
-                waitsFor(function () { return provider.callCount === 2; });
-            });
-            runs(function () {
-                expectListContents(mockResults.foo);  // still showing "foo" result since 2nd promise not resolved yet
+            enterSearchText("foobar");
+            await awaitsFor(function () { return provider.calls.count() === 2; });
+            expectListContents(mockResults.foo);  // still showing "foo" result since 2nd promise not resolved yet
 
-                onCommit = jasmine.createSpy();
-                pressEnter();
+            onCommit = jasmine.createSpy();
+            pressEnter();
 
-                expect(onCommit).not.toHaveBeenCalled();
+            expect(onCommit).not.toHaveBeenCalled();
 
-                finishAsync(1);
-                expect(onCommit).toHaveBeenCalledWith("three", "foobar");
-            });
+            finishAsync(1);
+            expect(onCommit).toHaveBeenCalledWith("three", "foobar");
         });
 
     });

@@ -244,9 +244,10 @@ define(function (require, exports, module) {
      */
     function _handleExtensionLoad(e, path) {
         function setData(metadata) {
-            var locationType,
+            let locationType,
                 id = metadata.name,
                 userExtensionPath = ExtensionLoader.getUserExtensionPath();
+            metadata.title = metadata.title || metadata.name;
             if (path.indexOf(userExtensionPath) === 0) {
                 locationType = LOCATION_USER;
             } else {

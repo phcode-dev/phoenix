@@ -51,15 +51,19 @@
       math: 'always'
     };
   </script>
+  <link rel="stylesheet/less" type="text/css" href="../src/styles/brackets.less">
   <script src="../src/thirdparty/less.min.js"></script>
   <script src="thirdparty/bootstrap2/js/bootstrap.min.js"></script>
 
   <script src="thirdparty/jasmine-core/jasmine.js"></script>
+  <script src="thirdparty/jasmine-core/jasmine-html.js"></script>
+  <script src="thirdparty/jasmine-core/boot0.js"></script>
+
   <script type="text/javascript" src="../src/thirdparty/jszip-utils-phoenix.js"></script>
 
 </head>
 
-<body>
+<body style="user-select: text !important;">
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -71,13 +75,14 @@
           <a class="brand" href="#">Brackets Tests</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a id="all" href="?suite=all">All</a></li>
-              <li><a id="unit" href="?suite=unit">Unit</a></li>
-              <li><a id="integration" href="?suite=integration">Integration</a></li>
-              <li><a id="livepreview" href="?suite=livepreview">Live&nbsp;Preview</a></li>
-              <li><a id="mainview"    href="?suite=mainview">Main&nbsp;View</a></li>
-              <li><a id="performance" href="?suite=performance">Performance</a></li>
-              <li><a id="extension" href="?suite=extension">Extensions</a></li>
+              <li><a id="all" href="?category=all">All</a></li>
+              <li><a id="unit" href="?category=unit">Unit</a></li>
+              <li><a id="integration" href="?category=integration">Integration</a></li>
+              <li><a id="search" href="?category=search">Find Replace</a></li>
+              <li><a id="livepreview" href="?category=livepreview">Live&nbsp;Preview</a></li>
+              <li><a id="mainview"    href="?category=mainview">Main&nbsp;View</a></li>
+              <li><a id="performance" href="?category=performance">Performance</a></li>
+              <li><a id="extension" href="?category=extension">Extensions</a></li>
               <li><a id="reload" href="#">Reset and Reload Tests</a></li>
               <li><a id="show-dev-tools" href="#">Show&nbsp;Developer&nbsp;Tools</a></li>
             </ul>

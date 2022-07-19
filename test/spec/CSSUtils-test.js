@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, waitsForDone, runs, beforeFirst, afterLast */
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone */
 
 define(function (require, exports, module) {
 
@@ -57,60 +57,41 @@ define(function (require, exports, module) {
         varInterpolationTestScss   = require("text!spec/CSSUtils-test-files/variables.scss"),
         varInterpolationTestLess   = require("text!spec/CSSUtils-test-files/variables.less");
 
-    /**
-     * Verifies whether one of the results returned by CSSUtils._findAllMatchingSelectorsInText()
-     * came from the expected selector string or not. String is the complete compound selector, not
-     * the larger selector group or the smaller rightmost-simple-selector. E.g. if some rule
-     * "div, foo .bar { ... }" matches a search for ".bar", the selector will be "foo .bar"
-     */
-    var toMatchSelector = function (expected) {
-        return this.actual.selector.trim() === expected;
-    };
-
-    function init(spec, fileEntry) {
+    async function init(spec, fileEntry) {
         spec.fileContent = null;
 
         if (fileEntry) {
-            spec.addMatchers({toMatchSelector: toMatchSelector});
 
-            runs(function () {
-                var promise = FileUtils.readAsText(fileEntry)
-                    .done(function (text) {
-                        spec.fileContent = text;
-                    });
-                waitsForDone(promise);
-            });
+            let promise = FileUtils.readAsText(fileEntry)
+                .done(function (text) {
+                    spec.fileContent = text;
+                });
+            await awaitsForDone(promise);
         }
     }
 
 
     describe("CSSUtils", function () {
 
-        beforeEach(function () {
-            init(this);
+        beforeEach(async function () {
+            await init(this);
         });
 
         describe("basics", function () {
 
             it("should parse an empty string", function () {
-                runs(function () {
-                    var result = CSSUtils._findAllMatchingSelectorsInText("", { tag: "div" });
-                    expect(result.length).toEqual(0);
-                });
+                let result = CSSUtils._findAllMatchingSelectorsInText("", { tag: "div" });
+                expect(result.length).toEqual(0);
             });
 
             it("should parse an empty string with less mode", function () {
-                runs(function () {
-                    var result = CSSUtils._findAllMatchingSelectorsInText("", { tag: "div" }, "text/x-less");
-                    expect(result.length).toEqual(0);
-                });
+                let result = CSSUtils._findAllMatchingSelectorsInText("", { tag: "div" }, "text/x-less");
+                expect(result.length).toEqual(0);
             });
 
             it("should parse an empty string with scss mode", function () {
-                runs(function () {
-                    var result = CSSUtils._findAllMatchingSelectorsInText("", { tag: "div" }, "text/x-scss");
-                    expect(result.length).toEqual(0);
-                });
+                let result = CSSUtils._findAllMatchingSelectorsInText("", { tag: "div" }, "text/x-scss");
+                expect(result.length).toEqual(0);
             });
 
             // it("should parse simple selectors from more than one file", function () {
@@ -125,12 +106,12 @@ define(function (require, exports, module) {
              * results to equal the length of 'ranges'; each entry in range gives the {start, end}
              * of the expected line range for that Nth result.
              */
-            function expectRuleRanges(spec, cssCode, selector, ranges, mode) {
+            function expectRuleRanges(_spec, cssCode, selector, ranges, mode) {
                 var result = CSSUtils._findAllMatchingSelectorsInText(cssCode, selector, mode);
-                spec.expect(result.length).toEqual(ranges.length);
+                expect(result.length).toEqual(ranges.length);
                 ranges.forEach(function (range, i) {
-                    spec.expect(result[i].ruleStartLine).toEqual(range.start);
-                    spec.expect(result[i].declListEndLine).toEqual(range.end);
+                    expect(result[i].ruleStartLine).toEqual(range.start);
+                    expect(result[i].declListEndLine).toEqual(range.end);
                 });
             }
 
@@ -143,169 +124,141 @@ define(function (require, exports, module) {
              * Expects the numbers of results to equal the length of 'ranges'; each entry in range gives
              * the {start, end} of the expected line range for that Nth result.
              */
-            function expectGroupRanges(spec, cssCode, selector, ranges, mode) {
+            function expectGroupRanges(_spec, cssCode, selector, ranges, mode) {
                 var result = CSSUtils._findAllMatchingSelectorsInText(cssCode, selector, mode);
-                spec.expect(result.length).toEqual(ranges.length);
+                expect(result.length).toEqual(ranges.length);
                 ranges.forEach(function (range, i) {
-                    spec.expect(result[i].selectorGroupStartLine).toEqual(range.start);
-                    spec.expect(result[i].declListEndLine).toEqual(range.end);
+                    expect(result[i].selectorGroupStartLine).toEqual(range.start);
+                    expect(result[i].declListEndLine).toEqual(range.end);
                 });
             }
 
-            it("should return correct start and end line numbers for simple rules", function () {
-                runs(function () {
-                    init(this, simpleCssFileEntry);
-                });
-
-                runs(function () {
-                    expectRuleRanges(this, this.fileContent, "html", [ {start: 0, end: 2}, {start: 4, end: 6 }]);
-                    expectRuleRanges(this, this.fileContent, ".firstGrade", [ {start: 8, end: 10} ]);
-                    expectRuleRanges(this, this.fileContent, "#brack3ts",
-                        [ {start: 16, end: 18} ]);
-                });
+            it("should return correct start and end line numbers for simple rules", async function () {
+                await init(this, simpleCssFileEntry);
+                expectRuleRanges(this, this.fileContent, "html", [ {start: 0, end: 2}, {start: 4, end: 6 }]);
+                expectRuleRanges(this, this.fileContent, ".firstGrade", [ {start: 8, end: 10} ]);
+                expectRuleRanges(this, this.fileContent, "#brack3ts",
+                    [ {start: 16, end: 18} ]);
             });
 
-            it("should handle rules on adjacent lines", function () {
-                runs(function () {
-                    init(this, offsetsCssFileEntry);
-                });
-
-                runs(function () {
-                    expectRuleRanges(this, this.fileContent, "a", [
-                        {start: 0, end: 2}, {start: 3, end: 5}, {start: 7, end: 7},
-                        {start: 8, end: 8}, {start: 10, end: 10}, {start: 10, end: 10},
-                        {start: 16, end: 19}, {start: 23, end: 25}, {start: 29, end: 32},
-                        {start: 33, end: 35}, {start: 38, end: 41}
-                    ]);
-                });
+            it("should handle rules on adjacent lines", async function () {
+                await init(this, offsetsCssFileEntry);
+                expectRuleRanges(this, this.fileContent, "a", [
+                    {start: 0, end: 2}, {start: 3, end: 5}, {start: 7, end: 7},
+                    {start: 8, end: 8}, {start: 10, end: 10}, {start: 10, end: 10},
+                    {start: 16, end: 19}, {start: 23, end: 25}, {start: 29, end: 32},
+                    {start: 33, end: 35}, {start: 38, end: 41}
+                ]);
             });
 
-            it("should return correct group range when selector group spans multiple lines", function () {
-                runs(function () {
-                    init(this, groupsFileEntry);
-                });
-
-                runs(function () {
-                    expectGroupRanges(this, this.fileContent, ".a", [{start: 24, end: 29}]);
-                    expectGroupRanges(this, this.fileContent, ".b", [{start: 24, end: 29}]);
-                    expectGroupRanges(this, this.fileContent, ".c", [{start: 24, end: 29}]);
-                    expectGroupRanges(this, this.fileContent, ".d", [{start: 24, end: 29}]);
-
-                    expectGroupRanges(this, this.fileContent, ".f", [{start: 31, end: 31}]);
-                    expectGroupRanges(this, this.fileContent, ".g", [{start: 31, end: 34}]);
-                    expectGroupRanges(this, this.fileContent, ".h", [{start: 31, end: 34}]);
-
-                });
+            it("should return correct group range when selector group spans multiple lines", async function () {
+                await init(this, groupsFileEntry);
+                expectGroupRanges(this, this.fileContent, ".a", [{start: 24, end: 29}]);
+                expectGroupRanges(this, this.fileContent, ".b", [{start: 24, end: 29}]);
+                expectGroupRanges(this, this.fileContent, ".c", [{start: 24, end: 29}]);
+                expectGroupRanges(this, this.fileContent, ".d", [{start: 24, end: 29}]);
+                expectGroupRanges(this, this.fileContent, ".f", [{start: 31, end: 31}]);
+                expectGroupRanges(this, this.fileContent, ".g", [{start: 31, end: 34}]);
+                expectGroupRanges(this, this.fileContent, ".h", [{start: 31, end: 34}]);
             });
 
-            it("should return correct rule ranges for rules with comma separators in property values", function () {
-                runs(function () {
-                    init(this, propListCssFileEntry);
-                });
+            it("should return correct rule ranges for rules with comma separators in property values", async function () {
+                await init(this, propListCssFileEntry);
+                expectRuleRanges(this, this.fileContent, "h1", [{start: 0, end: 2}]);
 
-                runs(function () {
-                    // https://github.com/adobe/brackets/issues/9008
-                    expectRuleRanges(this, this.fileContent, "h1", [{start: 0, end: 2}]);
-
-                    // https://github.com/adobe/brackets/issues/8966
-                    expectRuleRanges(this, this.fileContent, ".alert", [{start: 4, end: 8}]);
-                });
+                // https://github.com/adobe/brackets/issues/8966
+                expectRuleRanges(this, this.fileContent, ".alert", [{start: 4, end: 8}]);
             });
 
-            it("should return correct rule range and group range for different nested levels", function () {
-                runs(function () {
-                    init(this, nestedGroupsFileEntry);
-                });
+            it("should return correct rule range and group range for different nested levels", async function () {
+                await init(this, nestedGroupsFileEntry);
+                expectRuleRanges(this, this.fileContent, ".table", [
+                    {start: 6, end: 9}, {start: 6, end: 9},
+                    {start: 10, end: 26}, {start: 10, end: 26},
+                    {start: 27, end: 43}, {start: 27, end: 43},
+                    {start: 44, end: 47}
+                ], "text/x-less");
+                expectGroupRanges(this, this.fileContent, ".table", [
+                    {start: 6, end: 9}, {start: 6, end: 9},
+                    {start: 11, end: 26}, {start: 11, end: 26},
+                    {start: 28, end: 43}, {start: 28, end: 43},
+                    {start: 44, end: 47}
+                ], "text/x-less");
 
-                runs(function () {
-                    expectRuleRanges(this, this.fileContent, ".table", [
-                        {start: 6, end: 9}, {start: 6, end: 9},
-                        {start: 10, end: 26}, {start: 10, end: 26},
-                        {start: 27, end: 43}, {start: 27, end: 43},
-                        {start: 44, end: 47}
-                    ], "text/x-less");
-                    expectGroupRanges(this, this.fileContent, ".table", [
-                        {start: 6, end: 9}, {start: 6, end: 9},
-                        {start: 11, end: 26}, {start: 11, end: 26},
-                        {start: 28, end: 43}, {start: 28, end: 43},
-                        {start: 44, end: 47}
-                    ], "text/x-less");
+                expectRuleRanges(this, this.fileContent, "tbody", [
+                    {start: 13, end: 25}, {start: 30, end: 42}, {start: 55, end: 76}
+                ], "text/x-less");
+                expectGroupRanges(this, this.fileContent, "tbody", [
+                    {start: 13, end: 25}, {start: 30, end: 42}, {start: 55, end: 76}
+                ], "text/x-less");
 
-                    expectRuleRanges(this, this.fileContent, "tbody", [
-                        {start: 13, end: 25}, {start: 30, end: 42}, {start: 55, end: 76}
-                    ], "text/x-less");
-                    expectGroupRanges(this, this.fileContent, "tbody", [
-                        {start: 13, end: 25}, {start: 30, end: 42}, {start: 55, end: 76}
-                    ], "text/x-less");
+                expectRuleRanges(this, this.fileContent, "thead", [
+                    {start: 13, end: 25}, {start: 55, end: 76}
+                ], "text/x-less");
+                expectGroupRanges(this, this.fileContent, "thead", [
+                    {start: 13, end: 25}, {start: 55, end: 76}
+                ], "text/x-less");
 
-                    expectRuleRanges(this, this.fileContent, "thead", [
-                        {start: 13, end: 25}, {start: 55, end: 76}
-                    ], "text/x-less");
-                    expectGroupRanges(this, this.fileContent, "thead", [
-                        {start: 13, end: 25}, {start: 55, end: 76}
-                    ], "text/x-less");
+                expectRuleRanges(this, this.fileContent, "tr", [
+                    {start: 15, end: 24}, {start: 32, end: 41}, {start: 58, end: 75}
+                ], "text/x-less");
 
-                    expectRuleRanges(this, this.fileContent, "tr", [
-                        {start: 15, end: 24}, {start: 32, end: 41}, {start: 58, end: 75}
-                    ], "text/x-less");
+                expectRuleRanges(this, this.fileContent, "th", [
+                    {start: 16, end: 19}, {start: 20, end: 23}, {start: 33, end: 36},
+                    {start: 37, end: 40}, {start: 48, end: 51}, {start: 59, end: 62},
+                    {start: 63, end: 66}, {start: 67, end: 70}, {start: 71, end: 74}
+                ], "text/x-less");
+                expectGroupRanges(this, this.fileContent, "th", [
+                    {start: 16, end: 19}, {start: 20, end: 23}, {start: 33, end: 36},
+                    {start: 37, end: 40}, {start: 48, end: 51}, {start: 59, end: 62},
+                    {start: 63, end: 66}, {start: 67, end: 70}, {start: 71, end: 74}
+                ], "text/x-less");
 
-                    expectRuleRanges(this, this.fileContent, "th", [
-                        {start: 16, end: 19}, {start: 20, end: 23}, {start: 33, end: 36},
-                        {start: 37, end: 40}, {start: 48, end: 51}, {start: 59, end: 62},
-                        {start: 63, end: 66}, {start: 67, end: 70}, {start: 71, end: 74}
-                    ], "text/x-less");
-                    expectGroupRanges(this, this.fileContent, "th", [
-                        {start: 16, end: 19}, {start: 20, end: 23}, {start: 33, end: 36},
-                        {start: 37, end: 40}, {start: 48, end: 51}, {start: 59, end: 62},
-                        {start: 63, end: 66}, {start: 67, end: 70}, {start: 71, end: 74}
-                    ], "text/x-less");
-
-                });
             });
         });
 
         describe("with the universal selector", function () {
 
-            beforeEach(function () {
-                init(this, universalCssFileEntry);
+            beforeEach(async function () {
+                await init(this, universalCssFileEntry);
             });
 
             it("should match a tag name not referenced anywhere in the CSS", function () {
-                var matches = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "blockquote");
+                let matches = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "blockquote");
                 expect(matches.length).toEqual(1);
-                expect(matches[0]).toMatchSelector("*");
+                expect(matches[0].selector).toEqual("*");
             });
             it("should match a tag name also referenced elsewhere in the CSS", function () {
-                var matches = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "p");
+                let matches = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "p");
 
                 expect(matches.length).toEqual(2);
-                expect(matches[0]).toMatchSelector("*");
-                expect(matches[1]).toMatchSelector("p");
+                expect(matches[0].selector).toEqual("*");
+                expect(matches[1].selector).toEqual("p");
             });
         });
 
         describe("with sprint 4 exemptions", function () {
 
-            beforeEach(function () {
-                var sprint4exemptions = FileSystem.getFileForPath(testPath + "/sprint4.css");
-                init(this, sprint4exemptions);
+            beforeEach(async function () {
+                let sprint4exemptions = FileSystem.getFileForPath(testPath + "/sprint4.css");
+                await init(this, sprint4exemptions);
             });
 
             it("should match a class selector (right-most only, no pseudo or attr selectors)", function () {
-                var matches = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, ".message");
+                let matches = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, ".message");
 
                 expect(matches.length).toEqual(7);
-                expect(matches[0]).toMatchSelector("div.message");
-                expect(matches[1]).toMatchSelector("footer .message");
-                expect(matches[2]).toMatchSelector("footer div.message");
-                expect(matches[3]).toMatchSelector("h2.message");
-                expect(matches[4]).toMatchSelector("div.message:hovered");
-                expect(matches[5]).toMatchSelector(".message:hover");
-                expect(matches[6]).toMatchSelector(".message[data-attr='42']");
+                expect(matches[0].selector).toEqual("div.message");
+                expect(matches[1].selector).toEqual("footer .message");
+                expect(matches[2].selector).toEqual("footer div.message");
+                expect(matches[3].selector).toEqual("h2.message");
+                expect(matches[4].selector).toEqual("div.message:hovered");
+                expect(matches[5].selector).toEqual(".message:hover");
+                expect(matches[6].selector).toEqual(".message[data-attr='42']");
             });
 
             it("should match a type selector (can terminate with class name, ID, pseudo or attr selectors)", function () {
-                var matches = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "h4");
+                let matches = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "h4");
 
                 expect(matches.length).toEqual(5);
             });
@@ -313,12 +266,12 @@ define(function (require, exports, module) {
 
         describe("with real-world Bootstrap CSS code", function () {
 
-            beforeEach(function () {
-                init(this, bootstrapCssFileEntry);
+            beforeEach(async function () {
+                await init(this, bootstrapCssFileEntry);
             });
 
             it("should find the first instance of the h2 selector", function () {
-                var selectors = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "h2");
+                let selectors = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "h2");
                 expect(selectors).toBeTruthy();
                 expect(selectors.length).toBeGreaterThan(0);
 
@@ -328,7 +281,7 @@ define(function (require, exports, module) {
             });
 
             it("should find all instances of the h2 selector", function () {
-                var selectors = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "h2");
+                let selectors = CSSUtils._findAllMatchingSelectorsInText(this.fileContent, "h2");
                 expect(selectors.length).toBe(2);
 
                 expect(selectors[0].selectorStartLine).toBe(292);
@@ -346,8 +299,8 @@ define(function (require, exports, module) {
 
         describe("escapes", function () {
 
-            beforeEach(function () {
-                init(this, escapesCssFileEntry);
+            beforeEach(async function () {
+                await init(this, escapesCssFileEntry);
             });
 
             it("should remove simple backslashes for simple characters", function () {
@@ -420,11 +373,9 @@ define(function (require, exports, module) {
         describe("findSelectorAtDocumentPos selector groups", function () {
             var editor;
 
-            beforeEach(function () {
-                init(this, groupsFileEntry);
-                runs(function () {
-                    editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
-                });
+            beforeEach(async function () {
+                await init(this, groupsFileEntry);
+                editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
             });
 
             afterEach(function () {
@@ -461,11 +412,9 @@ define(function (require, exports, module) {
         describe("findSelectorAtDocumentPos comments", function () {
             var editor;
 
-            beforeEach(function () {
-                init(this, offsetsCssFileEntry);
-                runs(function () {
-                    editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
-                });
+            beforeEach(async function () {
+                await init(this, offsetsCssFileEntry);
+                editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
             });
 
             afterEach(function () {
@@ -502,11 +451,9 @@ define(function (require, exports, module) {
         describe("findSelectorAtDocumentPos pseudo-classes and at-rules", function () {
             var editor;
 
-            beforeEach(function () {
-                init(this, offsetsCssFileEntry);
-                runs(function () {
-                    editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
-                });
+            beforeEach(async function () {
+                await init(this, offsetsCssFileEntry);
+                editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
             });
 
             afterEach(function () {
@@ -539,11 +486,9 @@ define(function (require, exports, module) {
         describe("findSelectorAtDocumentPos complex selectors", function () {
             var editor;
 
-            beforeEach(function () {
-                init(this, bootstrapCssFileEntry);
-                runs(function () {
-                    editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
-                });
+            beforeEach(async function () {
+                await init(this, bootstrapCssFileEntry);
+                editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
             });
 
             afterEach(function () {
@@ -576,11 +521,9 @@ define(function (require, exports, module) {
         describe("findSelectorAtDocumentPos beginning, middle and end of selector", function () {
             var editor;
 
-            beforeEach(function () {
-                init(this, groupsFileEntry);
-                runs(function () {
-                    editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
-                });
+            beforeEach(async function () {
+                await init(this, groupsFileEntry);
+                editor = SpecRunnerUtils.createMockEditor(this.fileContent, "css").editor;
             });
 
             afterEach(function () {
@@ -665,11 +608,9 @@ define(function (require, exports, module) {
         describe("findSelectorAtDocumentPos in embedded <style> blocks", function () {
             var editor;
 
-            beforeEach(function () {
-                init(this, embeddedHtmlFileEntry);
-                runs(function () {
-                    editor = SpecRunnerUtils.createMockEditor(this.fileContent, "html").editor;
-                });
+            beforeEach(async function () {
+                await init(this, embeddedHtmlFileEntry);
+                editor = SpecRunnerUtils.createMockEditor(this.fileContent, "html").editor;
             });
 
             afterEach(function () {
@@ -722,7 +663,6 @@ define(function (require, exports, module) {
     }); // describe("CSSUtils")
 
 
-
     describe("CSS Parsing", function () {
 
         var lastCssCode,
@@ -756,12 +696,7 @@ define(function (require, exports, module) {
          */
         var _match = function (cssCode, tagInfo, mode) {
             lastCssCode = cssCode;
-            try {
-                return _findMatchingRules(cssCode, tagInfo, mode);
-            } catch (e) {
-                this.fail(e.message + ": " + cssCode);
-                return [];
-            }
+            return _findMatchingRules(cssCode, tagInfo, mode);
         };
 
         /** Tests against the same CSS text as the last call to match() */
@@ -782,7 +717,7 @@ define(function (require, exports, module) {
                 _findMatchingRules(cssCode, null);
 
                 // shouldn't get here since _findMatchingRules() is expected to throw
-                this.fail("Expected parse error: " + cssCode);
+                expect("Should never reach here").toBeFalse();
 
             } catch (error) {
                 expect(error.index).toBe(expectedCodeOffset);
@@ -792,7 +727,7 @@ define(function (require, exports, module) {
 
         /** To call fail(), these helpers need access to the value of 'this' inside each it() */
         beforeEach(function () {
-            match = _match.bind(this);
+            match = _match;
             expectParseError = _expectParseError.bind(this);
         });
 
@@ -1862,138 +1797,7 @@ define(function (require, exports, module) {
             });
         }); // describe("Nested rules following an @include block")
 
-
-        describe("CSS Integration Tests", function () {
-            this.category = "integration";
-
-            var testPath = SpecRunnerUtils.getTestPath("/spec/CSSUtils-test-files"),
-                testWindow,
-                CSSUtils,
-                DocumentManager,
-                FileViewController;
-
-            beforeFirst(function () {
-                SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                    testWindow = w;
-
-                    // Load module instances from brackets.test
-                    CSSUtils            = testWindow.brackets.test.CSSUtils;
-                    DocumentManager     = testWindow.brackets.test.DocumentManager;
-                    FileViewController  = testWindow.brackets.test.FileViewController;
-
-                    // Load test project
-                    SpecRunnerUtils.loadProjectInTestWindow(testPath);
-                });
-            });
-
-            afterLast(function () {
-                CSSUtils            = null;
-                DocumentManager     = null;
-                FileViewController  = null;
-                SpecRunnerUtils.closeTestWindow();
-            });
-
-            afterEach(function () {
-                testWindow.closeAllFiles();
-            });
-
-
-            describe("Working with real public CSSUtils API", function () {
-
-                it("should include comment preceding selector (issue #403)", function () {
-                    var rules;
-                    runs(function () {
-                        var promise = CSSUtils.findMatchingRules("#issue403")
-                            .done(function (result) { rules = result; });
-                        waitsForDone(promise, "CSSUtils.findMatchingRules()");
-                    });
-
-                    runs(function () {
-                        expect(rules.length).toBe(1);
-                        expect(rules[0].lineStart).toBe(4);
-                        expect(rules[0].lineEnd).toBe(7);
-                    });
-                });
-
-                it("should continue search despite unreadable files (issue #10013)", function () {
-                    runs(function () {
-                        // Add a nonexistent CSS file to the ProjectManager.getAllFiles() result, which will force a file IO error
-                        // when we try to read the file later. Similar errors may arise in real-world for non-UTF files, etc.
-                        SpecRunnerUtils.injectIntoGetAllFiles(testWindow, testPath + "/doesNotExist.css");
-
-                        var promise = CSSUtils.findMatchingRules("html");
-                        promise.done(function (result) {
-                            expect(result.length).toBeGreaterThan(0);
-                        });
-                        waitsForDone(promise, "CSSUtils.findMatchingRules()");
-                    });
-                });
-            });
-
-            describe("Working with unsaved changes", function () {
-
-                it("should return the correct offsets if the file has changed", function () {
-                    runs(function () {
-                        var promise = FileViewController.openAndSelectDocument(testPath + "/simple.css", FileViewController.PROJECT_MANAGER);
-                        waitsForDone(promise, "FileViewController.openAndSelectDocument()");
-                    });
-
-                    var rules = null;
-
-                    runs(function () {
-                        var doc = DocumentManager.getCurrentDocument();
-
-                        // Add several blank lines at the beginning of the text
-                        doc.setText("\n\n\n\n" + doc.getText());
-
-                        // Look for ".FIRSTGRADE"
-                        var promise = CSSUtils.findMatchingRules(".FIRSTGRADE")
-                            .done(function (result) { rules = result; });
-                        waitsForDone(promise, "CSSUtils.findMatchingRules()");
-
-                        doc = null;
-                    });
-
-                    runs(function () {
-                        expect(rules.length).toBe(1);
-                        expect(rules[0].lineStart).toBe(16);
-                        expect(rules[0].lineEnd).toBe(18);
-                    });
-                });
-
-                it("should return a newly created rule in an unsaved file", function () {
-                    runs(function () {
-                        var promise = FileViewController.openAndSelectDocument(testPath + "/simple.css", FileViewController.PROJECT_MANAGER);
-                        waitsForDone(promise, "FileViewController.openAndSelectDocument()");
-                    });
-
-                    var rules = null;
-
-                    runs(function () {
-                        var doc = DocumentManager.getCurrentDocument();
-
-                        // Add a new selector to the file
-                        doc.setText(doc.getText() + "\n\n.TESTSELECTOR {\n    font-size: 12px;\n}\n");
-
-                        // Look for the selector we just created
-                        var promise = CSSUtils.findMatchingRules(".TESTSELECTOR")
-                            .done(function (result) { rules = result; });
-                        waitsForDone(promise, "CSSUtils.findMatchingRules()");
-
-                        doc = null;
-                    });
-
-                    runs(function () {
-                        expect(rules.length).toBe(1);
-                        expect(rules[0].lineStart).toBe(24);
-                        expect(rules[0].lineEnd).toBe(26);
-                    });
-                });
-            });
-        });
-
     }); //describe("CSS Parsing")
-
 
 
     describe("CSSUtils - Other", function () {
@@ -2144,17 +1948,14 @@ define(function (require, exports, module) {
     });
 
 
-
     // Unit Tests: "HTMLUtils (css)"
     describe("HTMLUtils InlineEditorProviders", function () {
         var editor;
 
         describe("Embedded <style> blocks: ", function () {
-            beforeEach(function () {
-                init(this, embeddedHtmlFileEntry);
-                runs(function () {
-                    editor = SpecRunnerUtils.createMockEditor(this.fileContent, "html").editor;
-                });
+            beforeEach(async function () {
+                await init(this, embeddedHtmlFileEntry);
+                editor = SpecRunnerUtils.createMockEditor(this.fileContent, "html").editor;
             });
 
             afterEach(function () {
@@ -2183,7 +1984,6 @@ define(function (require, exports, module) {
             });
         });
     });
-
 
 
     // These tests are based on the implementation spec at https://github.com/adobe/brackets/wiki/CSS-Context-API-implementation-spec.
@@ -2575,7 +2375,8 @@ define(function (require, exports, module) {
                     offset: 1,
                     index: -1,
                     values: [],
-                    isNewItem: false
+                    isNewItem: false,
+                    range: undefined
                 });
             });
 
@@ -2587,7 +2388,8 @@ define(function (require, exports, module) {
                     offset: 1,
                     index: -1,
                     values: [],
-                    isNewItem: false
+                    isNewItem: false,
+                    range: undefined
                 });
             });
         });
@@ -2632,7 +2434,8 @@ define(function (require, exports, module) {
                 name: "",
                 index: -1,
                 values: [],
-                isNewItem: false
+                isNewItem: false,
+                range: undefined
             };
 
             function expectEmptyInfo(offset) {
@@ -2663,7 +2466,6 @@ define(function (require, exports, module) {
             });
         });
     });
-
 
 
     // These are tests related to Shapes editor requirements for determining the start/end range of a css property
@@ -2756,10 +2558,9 @@ define(function (require, exports, module) {
     });
 
 
-
     describe("CSS Regions", function () {
-        beforeEach(function () {
-            init(this, cssRegionsFileEntry);
+        beforeEach(async function () {
+            await init(this, cssRegionsFileEntry);
         });
 
         it("should find named flows", function () {
