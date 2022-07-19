@@ -67,7 +67,7 @@ define(function (require, exports, module) {
         return sels;
     }
 
-    describe("integration:FindReplace - Integration", function () {
+    describe("search:FindReplace - Integration", function () {
 
         var LINE_FIRST_REQUIRE = 2;
         var CH_REQUIRE_START = 14;
