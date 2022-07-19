@@ -80,7 +80,6 @@ define(function (require, exports, module) {
 
                 scrollTop(899);
                 expect(backgroundY("top")).toEqual(0);
-                expect(backgroundY("bottom")).toEqual(4);
             });
 
             it("should update shadow position when installed", function () {
@@ -95,7 +94,6 @@ define(function (require, exports, module) {
                 scrollTop(900);
 
                 expect(backgroundY("top")).toEqual(0);
-                expect(backgroundY("bottom")).toEqual(ViewUtils.SCROLL_SHADOW_HEIGHT);
             });
 
         });
