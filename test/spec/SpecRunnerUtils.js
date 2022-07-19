@@ -180,6 +180,7 @@ define(function (require, exports, module) {
             jsPromise(promise)
                 .then(()=>{
                     // dont pass any args back, so not chaining with them
+                    console.error("awaitsForFail failed");
                     reject();
                 })
                 .catch(()=>{

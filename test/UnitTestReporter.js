@@ -202,20 +202,26 @@ define(function (require, exports, module) {
             // },
 
             specStarted: async function(result) {
-                console.log('Spec started: ' + result.description
-                    + ' [description]: ' + result.fullName);
+                if (self.specFilter(self.specIdToSpecMap[result.id])) {
+                    console.log('Spec started: ' + result.description
+                        + ' [description]: ' + result.fullName);
+                }
                 self.reportSpecStarting(result);
                 _beforeEachGlobal();
             },
 
             specDone: function(result) {
-                console.log('Spec: ' + result.description + ' [status]: ' + result.status);
+                if (self.specFilter(self.specIdToSpecMap[result.id])) {
+                    console.log('Spec: ' + result.description + ' [status]: ' + result.status);
+                }
                 self.reportSpecResults(result);
                 _afterEachGlobal();
             },
 
             suiteDone: function(result) {
-                console.log('Suite: ' + result.description + ' [status]: ' + result.status);
+                if (self.specFilter(self.suiteIdToSuiteMap[result.id])) {
+                    console.log('Suite: ' + result.description + ' [status]: ' + result.status);
+                }
                 self.reportSuiteResults(result);
             },
 

@@ -93,11 +93,13 @@ function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
                 }
                 lapsedTime += pollInterval;
                 if(lapsedTime>timeoutms){
+                    console.error("await timed out");
                     reject();
                     return;
                 }
                 setTimeout(pollingFn, pollInterval);
             } catch (e) {
+                console.error(e);
                 reject(e);
             }
         }
