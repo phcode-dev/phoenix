@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, waits, runs, waitsForDone, spyOn */
+/*global describe, it, expect, beforeEach, afterEach, awaits, awaitsForDone, spyOn */
 
 define(function (require, exports, module) {
 
@@ -57,7 +57,7 @@ define(function (require, exports, module) {
         return sels;
     }
 
-    describe("Inline Color Editor - unit", function () {
+    describe("extension:Inline Color Editor - unit", function () {
 
         var testDocument, testEditor, inline;
 
@@ -68,17 +68,15 @@ define(function (require, exports, module) {
          * @param {!{line:number, ch: number}} cursor Position for which to open the inline editor.
          * if the provider did not create an inline editor.
          */
-        function makeColorEditor(cursor) {
-            runs(function () {
-                var promise = provider(testEditor, cursor);
-                if (promise) {
-                    promise.done(function (inlineResult) {
-                        inlineResult.onAdded();
-                        inline = inlineResult;
-                    });
-                    waitsForDone(promise, "open color editor");
-                }
-            });
+        async function makeColorEditor(cursor) {
+            var promise = provider(testEditor, cursor);
+            if (promise) {
+                promise.done(function (inlineResult) {
+                    inlineResult.onAdded();
+                    inline = inlineResult;
+                });
+                await awaitsForDone(promise, "open color editor");
+            }
         }
 
         /**
@@ -87,12 +85,10 @@ define(function (require, exports, module) {
          * @param {!{line:number, ch:number}} cursor The cursor position to try opening the inline at.
          * @param {string} color The expected color.
          */
-        function testOpenColor(cursor, color) {
-            makeColorEditor(cursor);
-            runs(function () {
-                expect(inline).toBeTruthy();
-                expect(inline._color).toBe(color);
-            });
+        async function testOpenColor(cursor, color) {
+            await makeColorEditor(cursor);
+            expect(inline).toBeTruthy();
+            expect(inline._color).toBe(color);
         }
 
         /**
@@ -128,192 +124,162 @@ define(function (require, exports, module) {
 
             describe("simple open cases", function () {
 
-                it("should show the correct color when opened on an #rrggbb color", function () {
-                    testOpenColor({line: 1, ch: 18}, "#abcdef");
+                it("should show the correct color when opened on an #rrggbb color", async function () {
+                    await testOpenColor({line: 1, ch: 18}, "#abcdef");
                 });
-                it("should open when at the beginning of the color", function () {
-                    testOpenColor({line: 1, ch: 16}, "#abcdef");
+                it("should open when at the beginning of the color", async function () {
+                    await testOpenColor({line: 1, ch: 16}, "#abcdef");
                 });
-                it("should open when at the end of the color", function () {
-                    testOpenColor({line: 1, ch: 23}, "#abcdef");
+                it("should open when at the end of the color", async function () {
+                    await testOpenColor({line: 1, ch: 23}, "#abcdef");
                 });
-                it("should show the correct color when opened on an #rgb color", function () {
-                    testOpenColor({line: 5, ch: 18}, "#abc");
+                it("should show the correct color when opened on an #rgb color", async function () {
+                    await testOpenColor({line: 5, ch: 18}, "#abc");
                 });
-                it("should show the correct color when opened on an rgb() color", function () {
-                    testOpenColor({line: 9, ch: 18}, "rgb(100, 200, 150)");
+                it("should show the correct color when opened on an rgb() color", async function () {
+                    await testOpenColor({line: 9, ch: 18}, "rgb(100, 200, 150)");
                 });
-                it("should show the correct color when opened on an rgba() color", function () {
-                    testOpenColor({line: 13, ch: 18}, "rgba(100, 200, 150, 0.5)");
+                it("should show the correct color when opened on an rgba() color", async function () {
+                    await testOpenColor({line: 13, ch: 18}, "rgba(100, 200, 150, 0.5)");
                 });
-                it("should show the correct color when opened on an hsl() color", function () {
-                    testOpenColor({line: 17, ch: 18}, "hsl(180, 50%, 50%)");
+                it("should show the correct color when opened on an hsl() color", async function () {
+                    await testOpenColor({line: 17, ch: 18}, "hsl(180, 50%, 50%)");
                 });
-                it("should show the correct color when opened on an hsla() color", function () {
-                    testOpenColor({line: 21, ch: 18}, "hsla(180, 50%, 50%, 0.5)");
+                it("should show the correct color when opened on an hsla() color", async function () {
+                    await testOpenColor({line: 21, ch: 18}, "hsla(180, 50%, 50%, 0.5)");
                 });
-                it("should show the correct color when opened on an uppercase hex color", function () {
-                    testOpenColor({line: 33, ch: 18}, "#DEFCBA");
+                it("should show the correct color when opened on an uppercase hex color", async function () {
+                    await testOpenColor({line: 33, ch: 18}, "#DEFCBA");
                 });
-                it("should show the correct color when opened on a color in a shorthand property", function () {
-                    testOpenColor({line: 41, ch: 27}, "#0f0f0f");
+                it("should show the correct color when opened on a color in a shorthand property", async function () {
+                    await testOpenColor({line: 41, ch: 27}, "#0f0f0f");
                 });
-                it("should show the correct color when opened on an rgba() color with a leading period in the alpha field", function () {
-                    testOpenColor({line: 45, ch: 18}, "rgba(100, 200, 150, .5)");
+                it("should show the correct color when opened on an rgba() color with a leading period in the alpha field", async function () {
+                    await testOpenColor({line: 45, ch: 18}, "rgba(100, 200, 150, .5)");
                 });
-                it("should show the correct color when opened on an hsla() color with a leading period in the alpha field", function () {
-                    testOpenColor({line: 49, ch: 18}, "hsla(180, 50%, 50%, .5)");
-                });
-
-                it("should not open when not on a color", function () {
-                    makeColorEditor({line: 1, ch: 6});
-                    runs(function () {
-                        expect(inline).toEqual(null);
-                    });
-                });
-                it("should not open when on an invalid color", function () {
-                    makeColorEditor({line: 25, ch: 18});
-                    runs(function () {
-                        expect(inline).toEqual(null);
-                    });
-                });
-                it("should not open when on an hsl color with missing percent signs", function () {
-                    makeColorEditor({line: 37, ch: 18});
-                    runs(function (inline) {
-                        expect(inline).toEqual(null);
-                    });
+                it("should show the correct color when opened on an hsla() color with a leading period in the alpha field", async function () {
+                    await testOpenColor({line: 49, ch: 18}, "hsla(180, 50%, 50%, .5)");
                 });
 
-                it("should open on the second color when there are two colors in the same line", function () {
-                    testOpenColor({line: 29, ch: 48}, "#ddeeff");
+                it("should not open when not on a color", async function () {
+                    await makeColorEditor({line: 1, ch: 6});
+                    expect(inline).toEqual(null);
+                });
+                it("should not open when on an invalid color", async function () {
+                    await makeColorEditor({line: 25, ch: 18});
+                    expect(inline).toEqual(null);
+                });
+                it("should not open when on an hsl color with missing percent signs", async function () {
+                    await makeColorEditor({line: 37, ch: 18});
+                    expect(inline).toEqual(null);
                 });
 
-                it("should properly add/remove ref to document when opened/closed", function () {
-                    runs(function () {
-                        spyOn(testDocument, "addRef").andCallThrough();
-                        spyOn(testDocument, "releaseRef").andCallThrough();
-                    });
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        expect(testDocument.addRef).toHaveBeenCalled();
-                        expect(testDocument.addRef.callCount).toBe(1);
+                it("should open on the second color when there are two colors in the same line", async function () {
+                    await testOpenColor({line: 29, ch: 48}, "#ddeeff");
+                });
 
-                        inline.onClosed();
-                        expect(testDocument.releaseRef).toHaveBeenCalled();
-                        expect(testDocument.releaseRef.callCount).toBe(1);
-                    });
+                it("should properly add/remove ref to document when opened/closed", async function () {
+                    spyOn(testDocument, "addRef").and.callThrough();
+                    spyOn(testDocument, "releaseRef").and.callThrough();
+                    await makeColorEditor({line: 1, ch: 18});
+                    expect(testDocument.addRef).toHaveBeenCalled();
+                    expect(testDocument.addRef.calls.count()).toBe(1);
+
+                    inline.onClosed();
+                    expect(testDocument.releaseRef).toHaveBeenCalled();
+                    expect(testDocument.releaseRef.calls.count()).toBe(1);
                 });
 
             });
 
             describe("update host document on edit in color editor", function () {
 
-                it("should update host document when change is committed in color editor", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        inline.colorEditor.setColorFromString("#c0c0c0");
-                        expect(testDocument.getRange({line: 1, ch: 16}, {line: 1, ch: 23})).toBe("#c0c0c0");
-                    });
+                it("should update host document when change is committed in color editor", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    inline.colorEditor.setColorFromString("#c0c0c0");
+                    expect(testDocument.getRange({line: 1, ch: 16}, {line: 1, ch: 23})).toBe("#c0c0c0");
                 });
 
-                it("should update correct range of host document with color format of different length", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        inline.colorEditor.setColorFromString("rgb(20, 20, 20)");
-                        expect(testDocument.getRange({line: 1, ch: 16}, {line: 1, ch: 31})).toBe("rgb(20, 20, 20)");
-                    });
+                it("should update correct range of host document with color format of different length", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    inline.colorEditor.setColorFromString("rgb(20, 20, 20)");
+                    expect(testDocument.getRange({line: 1, ch: 16}, {line: 1, ch: 31})).toBe("rgb(20, 20, 20)");
                 });
 
-                it("should not invalidate range when change is committed", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        inline.colorEditor.setColorFromString("rgb(20, 20, 20)");
-                        expect(inline.getCurrentRange()).toBeTruthy();
-                    });
+                it("should not invalidate range when change is committed", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    inline.colorEditor.setColorFromString("rgb(20, 20, 20)");
+                    expect(inline.getCurrentRange()).toBeTruthy();
                 });
 
-                it("should update correct range of host document when the in-editor color string is invalid", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        testDocument.replaceRange("", {line: 1, ch: 22}, {line: 1, ch: 24});
-                        inline.colorEditor.setColorFromString("#c0c0c0");
-                        expect(fixSel(inline.getCurrentRange())).toEqual(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 23}}));
-                        expect(testDocument.getRange({line: 1, ch: 16}, {line: 1, ch: 23})).toBe("#c0c0c0");
-                    });
+                it("should update correct range of host document when the in-editor color string is invalid", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    testDocument.replaceRange("", {line: 1, ch: 22}, {line: 1, ch: 24});
+                    inline.colorEditor.setColorFromString("#c0c0c0");
+                    expect(fixSel(inline.getCurrentRange())).toEql(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 23}}));
+                    expect(testDocument.getRange({line: 1, ch: 16}, {line: 1, ch: 23})).toBe("#c0c0c0");
                 });
 
             });
 
             describe("update color editor on edit in host editor", function () {
 
-                it("should update when edit is made to color range in host editor", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        spyOn(inline, "close");
+                it("should update when edit is made to color range in host editor", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    spyOn(inline, "close");
 
-                        testDocument.replaceRange("0", {line: 1, ch: 18}, {line: 1, ch: 19});
-                        expect(inline._color).toBe("#a0cdef");
-                        // TODO (#2201): this assumes getColor() is a tinycolor, but sometimes it's a string
-                        expect(inline.colorEditor.getColor().toHexString().toLowerCase()).toBe("#a0cdef");
-                        expect(inline.close).not.toHaveBeenCalled();
-                        expect(fixSel(inline.getCurrentRange())).toEqual(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 23}}));
-                    });
+                    testDocument.replaceRange("0", {line: 1, ch: 18}, {line: 1, ch: 19});
+                    expect(inline._color).toBe("#a0cdef");
+                    // TODO (#2201): this assumes getColor() is a tinycolor, but sometimes it's a string
+                    expect(inline.colorEditor.getColor().toHexString().toLowerCase()).toBe("#a0cdef");
+                    expect(inline.close).not.toHaveBeenCalled();
+                    expect(fixSel(inline.getCurrentRange())).toEql(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 23}}));
                 });
 
-                it("should close itself if edit is made that destroys end textmark and leaves color invalid", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        spyOn(inline, "close");
+                it("should close itself if edit is made that destroys end textmark and leaves color invalid", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    spyOn(inline, "close");
 
-                        // Replace everything including the semicolon, so it crosses the textmark boundary.
-                        testDocument.replaceRange("rgb(255, 25", {line: 1, ch: 16}, {line: 1, ch: 24});
-                        expect(inline.close).toHaveBeenCalled();
-                    });
+                    // Replace everything including the semicolon, so it crosses the textmark boundary.
+                    testDocument.replaceRange("rgb(255, 25", {line: 1, ch: 16}, {line: 1, ch: 24});
+                    expect(inline.close).toHaveBeenCalled();
                 });
 
-                it("should maintain the range if the user deletes the last character of the color and types a new one", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        spyOn(inline, "close");
+                it("should maintain the range if the user deletes the last character of the color and types a new one", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    spyOn(inline, "close");
 
-                        testDocument.replaceRange("", {line: 1, ch: 22}, {line: 1, ch: 23});
-                        testDocument.replaceRange("0", {line: 1, ch: 22}, {line: 1, ch: 22});
-                        expect(inline._color).toBe("#abcde0");
-                        expect(inline.close).not.toHaveBeenCalled();
-                        expect(fixSel(inline.getCurrentRange())).toEqual(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 23}}));
-                    });
+                    testDocument.replaceRange("", {line: 1, ch: 22}, {line: 1, ch: 23});
+                    testDocument.replaceRange("0", {line: 1, ch: 22}, {line: 1, ch: 22});
+                    expect(inline._color).toBe("#abcde0");
+                    expect(inline.close).not.toHaveBeenCalled();
+                    expect(fixSel(inline.getCurrentRange())).toEql(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 23}}));
                 });
 
-                it("should not update the end textmark and the color shown to a shorter valid match if the marker still exists and the color becomes invalid", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        testDocument.replaceRange("", {line: 1, ch: 22}, {line: 1, ch: 23});
-                        expect(inline._color).toBe("#abcdef");
-                        expect(fixSel(inline.getCurrentRange())).toEqual(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 22}}));
-                    });
+                it("should not update the end textmark and the color shown to a shorter valid match if the marker still exists and the color becomes invalid", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    testDocument.replaceRange("", {line: 1, ch: 22}, {line: 1, ch: 23});
+                    expect(inline._color).toBe("#abcdef");
+                    expect(fixSel(inline.getCurrentRange())).toEql(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 22}}));
                 });
 
-                it("should not update the end textmark and the color shown to a shorter valid match if the marker no longer exists and the color becomes invalid", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        testDocument.replaceRange("", {line: 1, ch: 22}, {line: 1, ch: 24});
-                        expect(inline._color).toBe("#abcdef");
-                        expect(fixSel(inline.getCurrentRange())).toEqual(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 22}}));
-                    });
+                it("should not update the end textmark and the color shown to a shorter valid match if the marker no longer exists and the color becomes invalid", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    testDocument.replaceRange("", {line: 1, ch: 22}, {line: 1, ch: 24});
+                    expect(inline._color).toBe("#abcdef");
+                    expect(fixSel(inline.getCurrentRange())).toEql(fixSel({start: {line: 1, ch: 16}, end: {line: 1, ch: 22}}));
                 });
 
             });
 
             describe("edit batching", function () {
-                it("should combine multiple edits within the same inline editor into a single undo in the host editor", function () {
-                    makeColorEditor({line: 1, ch: 18});
-                    runs(function () {
-                        inline.colorEditor.setColorFromString("#010101");
-                        inline.colorEditor.setColorFromString("#123456");
-                        inline.colorEditor.setColorFromString("#bdafe0");
-                        testDocument._masterEditor._codeMirror.undo();
-                        expect(testDocument.getRange({line: 1, ch: 16}, {line: 1, ch: 23})).toBe("#abcdef");
-                    });
+                it("should combine multiple edits within the same inline editor into a single undo in the host editor", async function () {
+                    await makeColorEditor({line: 1, ch: 18});
+                    inline.colorEditor.setColorFromString("#010101");
+                    inline.colorEditor.setColorFromString("#123456");
+                    inline.colorEditor.setColorFromString("#bdafe0");
+                    testDocument._masterEditor._codeMirror.undo();
+                    expect(testDocument.getRange({line: 1, ch: 16}, {line: 1, ch: 23})).toBe("#abcdef");
                 });
             });
         });
@@ -332,8 +298,8 @@ define(function (require, exports, module) {
                 testDocument = null;
             });
 
-            it("should open on a color in an HTML file", function () {
-                testOpenColor({line: 4, ch: 30}, "#dead01");
+            it("should open on a color in an HTML file", async function () {
+                await testOpenColor({line: 4, ch: 30}, "#dead01");
             });
         });
 
@@ -415,58 +381,50 @@ define(function (require, exports, module) {
 
             describe("simple load/commit", function () {
 
-                it("should load the initial color correctly", function () {
+                it("should load the initial color correctly", async function () {
                     var colorStr    = "rgba(77, 122, 31, 0.5)";
                     var colorStrRgb = "rgb(77, 122, 31)";
 
-                    runs(function () {
-                        makeUI(colorStr);
-                        expect(colorEditor.getColor().getOriginalInput()).toBe(colorStr);
-                        expect(colorEditor.$colorValue.val()).toBe(colorStr);
-                        expect(tinycolor.equals(colorEditor.$currentColor.css("background-color"), colorStr)).toBe(true);
+                    makeUI(colorStr);
+                    expect(colorEditor.getColor().getOriginalInput()).toBe(colorStr);
+                    expect(colorEditor.$colorValue.val()).toBe(colorStr);
+                    expect(tinycolor.equals(colorEditor.$currentColor.css("background-color"), colorStr)).toBe(true);
 
-                        // Not sure why the tolerances need to be larger for these.
-                        checkNear(tinycolor(colorEditor.$selection.css("background-color")).toHsv().h, 90, 2.0);
-                        checkNear(tinycolor(colorEditor.$hueBase.css("background-color")).toHsv().h, 90, 2.0);
+                    // Not sure why the tolerances need to be larger for these.
+                    checkNear(tinycolor(colorEditor.$selection.css("background-color")).toHsv().h, 90, 2.0);
+                    checkNear(tinycolor(colorEditor.$hueBase.css("background-color")).toHsv().h, 90, 2.0);
 
-                        expect(tinycolor.equals(colorEditor.$selectionBase.css("background-color"), colorStrRgb)).toBe(true);
-                    });
+                    expect(tinycolor.equals(colorEditor.$selectionBase.css("background-color"), colorStrRgb)).toBe(true);
 
                     // Need to do these on a timeout since we can't seem to read back CSS positions synchronously.
-                    waits(1);
+                    await awaits(1);
 
-                    runs(function () {
-                        checkPercentageNear(colorEditor.$hueSelector[0].style.bottom, 25);
-                        checkPercentageNear(colorEditor.$opacitySelector[0].style.bottom, 50);
-                        checkPercentageNear(colorEditor.$selectionBase[0].style.left, 74);
-                        checkPercentageNear(colorEditor.$selectionBase[0].style.bottom, 47);
-                    });
+                    checkPercentageNear(colorEditor.$hueSelector[0].style.bottom, 25);
+                    checkPercentageNear(colorEditor.$opacitySelector[0].style.bottom, 50);
+                    checkPercentageNear(colorEditor.$selectionBase[0].style.left, 74);
+                    checkPercentageNear(colorEditor.$selectionBase[0].style.bottom, 47);
                 });
 
-                it("should load a committed color correctly", function () {
+                it("should load a committed color correctly", async function () {
                     var colorStr = "rgba(77, 122, 31, 0.5)";
                     var colorStrRgb = "rgb(77, 122, 31)";
 
-                    runs(function () {
-                        makeUI("#0a0a0a");
-                        colorEditor.setColorFromString(colorStr);
-                        expect(colorEditor.getColor().getOriginalInput()).toBe(colorStr);
-                        expect(colorEditor.$colorValue.val()).toBe(colorStr);
-                        expect(tinycolor.equals(colorEditor.$currentColor.css("background-color"), colorStr)).toBe(true);
-                        checkNear(tinycolor(colorEditor.$selection.css("background-color")).toHsv().h, tinycolor(colorStr).toHsv().h);
-                        checkNear(tinycolor(colorEditor.$hueBase.css("background-color")).toHsv().h, tinycolor(colorStr).toHsv().h);
-                        expect(tinycolor.equals(colorEditor.$selectionBase.css("background-color"), colorStrRgb)).toBe(true);
-                    });
+                    makeUI("#0a0a0a");
+                    colorEditor.setColorFromString(colorStr);
+                    expect(colorEditor.getColor().getOriginalInput()).toBe(colorStr);
+                    expect(colorEditor.$colorValue.val()).toBe(colorStr);
+                    expect(tinycolor.equals(colorEditor.$currentColor.css("background-color"), colorStr)).toBe(true);
+                    checkNear(tinycolor(colorEditor.$selection.css("background-color")).toHsv().h, tinycolor(colorStr).toHsv().h);
+                    checkNear(tinycolor(colorEditor.$hueBase.css("background-color")).toHsv().h, tinycolor(colorStr).toHsv().h);
+                    expect(tinycolor.equals(colorEditor.$selectionBase.css("background-color"), colorStrRgb)).toBe(true);
 
                     // Need to do these on a timeout since we can't seem to read back CSS positions synchronously.
-                    waits(1);
+                    await awaits(1);
 
-                    runs(function () {
-                        checkPercentageNear(colorEditor.$hueSelector[0].style.bottom, 25);
-                        checkPercentageNear(colorEditor.$opacitySelector[0].style.bottom, 50);
-                        checkPercentageNear(colorEditor.$selectionBase[0].style.left, 74);
-                        checkPercentageNear(colorEditor.$selectionBase[0].style.bottom, 47);
-                    });
+                    checkPercentageNear(colorEditor.$hueSelector[0].style.bottom, 25);
+                    checkPercentageNear(colorEditor.$opacitySelector[0].style.bottom, 50);
+                    checkPercentageNear(colorEditor.$selectionBase[0].style.left, 74);
+                    checkPercentageNear(colorEditor.$selectionBase[0].style.bottom, 47);
                 });
 
                 it("should call the callback when a new color is committed", function () {
@@ -1378,132 +1336,106 @@ define(function (require, exports, module) {
                     $element.trigger($.Event("keydown", eventProps));
                 }
 
-                it("should undo when Ctrl-Z is pressed on a focused element in the color editor", function () {
+                it("should undo when Ctrl-Z is pressed on a focused element in the color editor", async function () {
                     makeUI("#abcdef");
-                    runs(function () {
-                        colorEditor.setColorFromString("#a0a0a0");
-                        colorEditor.$hueBase.focus();
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("#abcdef");
-                    });
+                    colorEditor.setColorFromString("#a0a0a0");
+                    colorEditor.$hueBase.focus();
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("#abcdef");
                 });
 
-                it("should redo when Ctrl-Shift-Z is pressed on a focused element in the color editor", function () {
+                it("should redo when Ctrl-Shift-Z is pressed on a focused element in the color editor", async function () {
                     makeUI("#abcdef");
-                    runs(function () {
-                        colorEditor._commitColor("#a0a0a0", true);
-                        colorEditor.$hueBase.focus();
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z, true);
-                        expect(getColorString()).toBe("#a0a0a0");
-                    });
+                    colorEditor._commitColor("#a0a0a0", true);
+                    colorEditor.$hueBase.focus();
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z, true);
+                    expect(getColorString()).toBe("#a0a0a0");
                 });
 
-                it("should redo when Ctrl-Y is pressed on a focused element in the color editor", function () {
+                it("should redo when Ctrl-Y is pressed on a focused element in the color editor", async function () {
                     makeUI("#abcdef");
-                    runs(function () {
-                        colorEditor._commitColor("#a0a0a0", true);
-                        colorEditor.$hueBase.focus();
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Y);
-                        expect(getColorString()).toBe("#a0a0a0");
-                    });
+                    colorEditor._commitColor("#a0a0a0", true);
+                    colorEditor.$hueBase.focus();
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Y);
+                    expect(getColorString()).toBe("#a0a0a0");
                 });
 
-                it("should redo when Ctrl-Y is pressed after two Ctrl-Zs (only one Ctrl-Z should take effect)", function () {
+                it("should redo when Ctrl-Y is pressed after two Ctrl-Zs (only one Ctrl-Z should take effect)", async function () {
                     makeUI("#abcdef");
-                    runs(function () {
-                        colorEditor._commitColor("#a0a0a0", true);
-                        colorEditor.$hueBase.focus();
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Y);
-                        expect(getColorString()).toBe("#a0a0a0");
-                    });
+                    colorEditor._commitColor("#a0a0a0", true);
+                    colorEditor.$hueBase.focus();
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Y);
+                    expect(getColorString()).toBe("#a0a0a0");
                 });
 
-                it("should undo when Ctrl-Z is pressed after two Ctrl-Ys (only one Ctrl-Y should take effect)", function () {
+                it("should undo when Ctrl-Z is pressed after two Ctrl-Ys (only one Ctrl-Y should take effect)", async function () {
                     makeUI("#abcdef");
-                    runs(function () {
-                        colorEditor._commitColor("#a0a0a0", true);
-                        colorEditor.$hueBase.focus();
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Y);
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Y);
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("#abcdef");
-                    });
+                    colorEditor._commitColor("#a0a0a0", true);
+                    colorEditor.$hueBase.focus();
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Y);
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Y);
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("#abcdef");
                 });
 
-                it("should undo an rgba conversion", function () {
+                it("should undo an rgba conversion", async function () {
                     makeUI("#abcdef");
-                    runs(function () {
-                        colorEditor.$rgbaButton.click();
-                        triggerCtrlKey(colorEditor.$rgbaButton, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("#abcdef");
-                    });
+                    colorEditor.$rgbaButton.click();
+                    triggerCtrlKey(colorEditor.$rgbaButton, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("#abcdef");
                 });
-                it("should undo an hsla conversion", function () {
+                it("should undo an hsla conversion", async function () {
                     makeUI("#abcdef");
-                    runs(function () {
-                        colorEditor.$hslButton.click();
-                        triggerCtrlKey(colorEditor.$hslButton, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("#abcdef");
-                    });
+                    colorEditor.$hslButton.click();
+                    triggerCtrlKey(colorEditor.$hslButton, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("#abcdef");
                 });
-                it("should undo a hex conversion", function () {
+                it("should undo a hex conversion", async function () {
                     makeUI("rgba(12, 32, 65, 0.2)");
-                    runs(function () {
-                        colorEditor.$hexButton.trigger("click");
-                        triggerCtrlKey(colorEditor.$hexButton, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("rgba(12, 32, 65, 0.2)");
-                    });
+                    colorEditor.$hexButton.trigger("click");
+                    triggerCtrlKey(colorEditor.$hexButton, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("rgba(12, 32, 65, 0.2)");
                 });
 
-                it("should undo a saturation/value change", function () {
+                it("should undo a saturation/value change", async function () {
                     makeUI("rgba(100, 150, 200, 0.3)");
-                    runs(function () {
-                        eventAtRatio("mousedown", colorEditor.$selectionBase, [0.5, 0.5]);
-                        triggerCtrlKey(colorEditor.$selectionBase, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
-                        colorEditor.$selectionBase.trigger("mouseup");  // clean up drag state
-                    });
+                    eventAtRatio("mousedown", colorEditor.$selectionBase, [0.5, 0.5]);
+                    triggerCtrlKey(colorEditor.$selectionBase, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
+                    colorEditor.$selectionBase.trigger("mouseup");  // clean up drag state
                 });
-                it("should undo a hue change", function () {
+                it("should undo a hue change", async function () {
                     makeUI("rgba(100, 150, 200, 0.3)");
-                    runs(function () {
-                        eventAtRatio("mousedown", colorEditor.$hueBase, [0, 0.5]);
-                        triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
-                        colorEditor.$hueBase.trigger("mouseup");  // clean up drag state
-                    });
+                    eventAtRatio("mousedown", colorEditor.$hueBase, [0, 0.5]);
+                    triggerCtrlKey(colorEditor.$hueBase, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
+                    colorEditor.$hueBase.trigger("mouseup");  // clean up drag state
                 });
-                it("should undo an opacity change", function () {
+                it("should undo an opacity change", async function () {
                     makeUI("rgba(100, 150, 200, 0.3)");
-                    runs(function () {
-                        eventAtRatio("mousedown", colorEditor.$opacitySelector, [0, 0.5]);
-                        triggerCtrlKey(colorEditor.$opacitySelector, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
-                        colorEditor.$opacitySelector.trigger("mouseup");  // clean up drag state
-                    });
+                    eventAtRatio("mousedown", colorEditor.$opacitySelector, [0, 0.5]);
+                    triggerCtrlKey(colorEditor.$opacitySelector, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
+                    colorEditor.$opacitySelector.trigger("mouseup");  // clean up drag state
                 });
 
-                it("should undo a text field change", function () {
+                it("should undo a text field change", async function () {
                     makeUI("rgba(100, 150, 200, 0.3)");
-                    runs(function () {
-                        colorEditor.$colorValue.val("rgba(50, 50, 50, 0.9)");
-                        triggerCtrlKey(colorEditor.$colorValue, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
-                    });
+                    colorEditor.$colorValue.val("rgba(50, 50, 50, 0.9)");
+                    triggerCtrlKey(colorEditor.$colorValue, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
                 });
-                it("should undo a swatch click", function () {
+                it("should undo a swatch click", async function () {
                     makeUI("rgba(100, 150, 200, 0.3)");
-                    runs(function () {
-                        var $swatch = $(colorEditor.$swatches.find("li")[0]);
-                        $swatch.trigger("click");
-                        triggerCtrlKey($swatch, KeyEvent.DOM_VK_Z);
-                        expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
-                    });
+                    var $swatch = $(colorEditor.$swatches.find("li")[0]);
+                    $swatch.trigger("click");
+                    triggerCtrlKey($swatch, KeyEvent.DOM_VK_Z);
+                    expect(getColorString()).toBe("rgba(100, 150, 200, 0.3)");
                 });
 
             });
