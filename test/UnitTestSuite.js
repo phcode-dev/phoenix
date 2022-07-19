@@ -88,7 +88,7 @@ define(function (require, exports, module) {
     require("spec/PreferencesManager-integ-test");
     require("spec/MainViewFactory-integ-test");
     require("spec/MainViewManager-integ-test");
-    // require("spec/Menu-test");
+    require("spec/Menu-integ-test");
     // require("spec/Pane-test");
     // require("spec/ProjectManager-test");
     // require("spec/QuickOpen-test");
@@ -103,4 +103,5 @@ define(function (require, exports, module) {
     // require("spec/LiveDevelopment-test"); reevaluate after new live preview
     // require("spec/LiveDevelopmentMultiBrowser-test"); reevaluate after new live preview
     // require("spec/NodeConnection-test"); deprecate and remove node connection
+    // require("spec/Menu-native-integ-test"); evaluate after we have native menus in os installed builds
 });
