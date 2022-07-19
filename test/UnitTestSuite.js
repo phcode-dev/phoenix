@@ -89,8 +89,7 @@ define(function (require, exports, module) {
     require("spec/MainViewFactory-integ-test");
     require("spec/MainViewManager-integ-test");
     require("spec/Menu-integ-test");
-    // require("spec/Pane-test");
-    // require("spec/ProjectManager-test");
+    require("spec/ProjectManager-integ-test");
     // require("spec/QuickOpen-test");
     // require("spec/ViewCommandHandlers-test");
     // require("spec/WorkingSetView-test");

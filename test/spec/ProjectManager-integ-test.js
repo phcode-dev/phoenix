@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, afterEach, waitsFor, runs, waitsForDone, beforeFirst, afterLast, waits */
+/*global describe, it, expect, afterEach, awaitsFor, awaitsForDone, beforeAll, afterAll, awaits */
 
 define(function (require, exports, module) {
 
@@ -34,134 +34,112 @@ define(function (require, exports, module) {
         _                   = require("thirdparty/lodash");
 
 
-    describe("ProjectManager", function () {
-
-        this.category = "integration";
+    describe("integration:ProjectManager", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/ProjectManager-test-files"),
             tempDir  = SpecRunnerUtils.getTempDirectory(),
             testWindow,
             brackets;
 
-        beforeFirst(function () {
-            SpecRunnerUtils.createTempDirectory();
+        beforeAll(async function () {
+            await SpecRunnerUtils.createTempDirectory();
 
             // copy files to temp directory
-            runs(function () {
-                waitsForDone(SpecRunnerUtils.copyPath(testPath, tempDir), "copy temp files");
-            });
+            await awaitsForDone(SpecRunnerUtils.copyPath(testPath, tempDir), "copy temp files");
 
-            runs(function () {
-                waitsForDone(SpecRunnerUtils.rename(tempDir + "/git/", tempDir + "/.git/"), "move files");
-            });
+            await awaitsForDone(SpecRunnerUtils.rename(tempDir + "/git/", tempDir + "/.git/"), "move files");
 
-            SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                testWindow = w;
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
 
-                // Load module instances from brackets.test
-                brackets       = testWindow.brackets;
-                ProjectManager = testWindow.brackets.test.ProjectManager;
-                CommandManager = testWindow.brackets.test.CommandManager;
-                FileSystem     = testWindow.brackets.test.FileSystem;
+            // Load module instances from brackets.test
+            brackets       = testWindow.brackets;
+            ProjectManager = testWindow.brackets.test.ProjectManager;
+            CommandManager = testWindow.brackets.test.CommandManager;
+            FileSystem     = testWindow.brackets.test.FileSystem;
 
-                SpecRunnerUtils.loadProjectInTestWindow(tempDir);
-            });
+            await SpecRunnerUtils.loadProjectInTestWindow(tempDir);
         });
 
-        afterLast(function () {
+        afterAll(async function () {
             testWindow     = null;
             brackets       = null;
             ProjectManager = null;
             CommandManager = null;
-            SpecRunnerUtils.closeTestWindow();
-            SpecRunnerUtils.removeTempDirectory();
+            await SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.removeTempDirectory();
         });
 
         afterEach(function () {
             testWindow.closeAllFiles();
         });
 
-        function waitForDialog() {
+        async function waitForDialog() {
             var $dlg;
-            waitsFor(function () {
+            await awaitsFor(function () {
                 $dlg = testWindow.$(".modal.instance");
                 return $dlg.length > 0;
             }, 300, "dialog to appear");
         }
 
         describe("createNewItem", function () {
-            it("should create a new file with a given name", function () {
+            it("should create a new file with a given name", async function () {
                 var didCreate = false, gotError = false;
 
-                runs(function () {
-                    // skip rename
-                    ProjectManager.createNewItem(tempDir, "Untitled.js", true)
-                        .done(function () { didCreate = true; })
-                        .fail(function () { gotError = true; });
-                });
-                waitsFor(function () { return didCreate && !gotError; }, "ProjectManager.createNewItem() timeout", 5000);
+                // skip rename
+                ProjectManager.createNewItem(tempDir, "Untitled.js", true)
+                    .done(function () { didCreate = true; })
+                    .fail(function () { gotError = true; });
+                await awaitsFor(function () { return didCreate && !gotError; }, "ProjectManager.createNewItem() timeout", 5000);
 
                 var error, stat, complete = false;
                 var filePath = tempDir + "/Untitled.js";
                 var file = FileSystem.getFileForPath(filePath);
 
-                runs(function () {
-                    file.stat(function (err, _stat) {
-                        error = err;
-                        stat = _stat;
-                        complete = true;
-                    });
+                file.stat(function (err, _stat) {
+                    error = err;
+                    stat = _stat;
+                    complete = true;
                 });
 
-                waitsFor(function () { return complete; }, 1000);
+                await awaitsFor(function () { return complete; }, 1000);
 
-                runs(function () {
-                    expect(error).toBeFalsy();
-                    expect(stat.isFile).toBe(true);
-                });
+                expect(error).toBeFalsy();
+                expect(stat.isFile).toBe(true);
             });
 
-            it("should fail when a file already exists", function () {
+            it("should fail when a file already exists", async function () {
                 var didCreate = false, gotError = false;
 
-                runs(function () {
-                    // skip rename
-                    ProjectManager.createNewItem(tempDir, "file.js", true)
-                        .done(function () { didCreate = true; })
-                        .fail(function () { gotError = true; });
-                });
-                waitsFor(function () { return !didCreate && gotError; }, "ProjectManager.createNewItem() timeout", 5000);
-                waitForDialog();
+                // skip rename
+                ProjectManager.createNewItem(tempDir, "file.js", true)
+                    .done(function () { didCreate = true; })
+                    .fail(function () { gotError = true; });
+                await awaitsFor(function () { return !didCreate && gotError; }, "ProjectManager.createNewItem() timeout", 5000);
+                await waitForDialog();
 
-                runs(function () {
-                    expect(gotError).toBeTruthy();
-                    expect(didCreate).toBeFalsy();
+                expect(gotError).toBeTruthy();
+                expect(didCreate).toBeFalsy();
 
-                    SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
-                });
+                SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
             });
 
-            it("should fail when a file name matches a directory that already exists", function () {
+            it("should fail when a file name matches a directory that already exists", async function () {
                 var didCreate = false, gotError = false;
 
-                runs(function () {
-                    // skip rename
-                    ProjectManager.createNewItem(tempDir, "directory", true)
-                        .done(function () { didCreate = true; })
-                        .fail(function () { gotError = true; });
-                });
-                waitsFor(function () { return !didCreate && gotError; }, "ProjectManager.createNewItem() timeout", 5000);
-                waitForDialog();
+                // skip rename
+                ProjectManager.createNewItem(tempDir, "directory", true)
+                    .done(function () { didCreate = true; })
+                    .fail(function () { gotError = true; });
+                await awaitsFor(function () { return !didCreate && gotError; }, "ProjectManager.createNewItem() timeout", 5000);
+                await waitForDialog();
 
-                runs(function () {
-                    expect(gotError).toBeTruthy();
-                    expect(didCreate).toBeFalsy();
+                expect(gotError).toBeTruthy();
+                expect(didCreate).toBeFalsy();
 
-                    SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
-                });
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
             });
 
-            it("should fail when file name contains special characters", function () {
+            it("should fail when file name contains special characters", async function () {
                 var chars = "/?*:<>\\|\"";  // invalid characters on Windows
                 var i = 0;
                 var len = 0;
@@ -185,11 +163,11 @@ define(function (require, exports, module) {
                     return !didCreate && gotError;
                 }
 
-                function assertFile() {
+                async function assertFile() {
                     expect(gotError).toBeTruthy();
                     expect(didCreate).toBeFalsy();
 
-                    SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
+                    await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
                 }
 
                 for (i = 0; i < len; i++) {
@@ -197,15 +175,15 @@ define(function (require, exports, module) {
                     gotError = false;
                     charAt = chars.charAt(i);
 
-                    runs(createFile);
-                    waitsFor(waitForFileCreate, "ProjectManager.createNewItem() timeout", 5000);
-                    waitForDialog();
+                    createFile();
+                    await awaitsFor(waitForFileCreate, "ProjectManager.createNewItem() timeout", 5000);
+                    await waitForDialog();
 
-                    runs(assertFile);
+                    await assertFile();
                 }
             });
 
-            it("should fail when file name is invalid", function () {
+            it("should fail when file name is invalid", async function () {
                 var files = ['com1', 'com2', 'com3', 'com4', 'com5', 'com6', 'com7', 'com8', 'com9',
                     'lpt1', 'lpt2', 'lpt3', 'lpt4', 'lpt5', 'lpt6', 'lpt7', 'lpt8', 'lpt9',
                     'nul', 'con', 'prn', 'aux', '.', '..', '...'];
@@ -224,11 +202,11 @@ define(function (require, exports, module) {
                     return didCreate || gotError;
                 }
 
-                function assertFile() {
+                async function assertFile() {
                     expect(gotError).toBeTruthy();
                     expect(didCreate).toBeFalsy();
 
-                    SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
+                    await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
                 }
 
                 for (i = 0; i < len; i++) {
@@ -236,73 +214,65 @@ define(function (require, exports, module) {
                     gotError = false;
                     fileAt = files[i];
 
-                    runs(createFile);
-                    waitsFor(waitForFileCreate, "ProjectManager.createNewItem() timeout", 5000);
-                    waitForDialog();
+                    createFile();
+                    await awaitsFor(waitForFileCreate, "ProjectManager.createNewItem() timeout", 5000);
+                    await waitForDialog();
 
-                    runs(assertFile);
+                    await assertFile();
                 }
             });
 
             // Issue #10183 -- Brackets writing to filtered directories could cause them to appear
             // in the file tree
-            it("should not display excluded entry when resolved and written to", function () {
+            it("should not display excluded entry when resolved and written to", async function () {
                 var opFailed = false,
                     doneResolving = false,
                     doneWriting = false,
                     entry;
 
-                runs(function () {
-                    var found = testWindow.$(".jstree-brackets span:contains(\".git\")").length;
-                    expect(found).toBe(0);
+                var found = testWindow.$(".jstree-brackets span:contains(\".git\")").length;
+                expect(found).toBe(0);
+
+                FileSystem.resolve(ProjectManager.getProjectRoot().fullPath + ".git/", function (err, e, stat) {
+                    if (err) {
+                        opFailed = true;
+                        return;
+                    }
+                    entry = e;
+                    doneResolving = true;
                 });
 
-                runs(function () {
-                    FileSystem.resolve(ProjectManager.getProjectRoot().fullPath + ".git/", function (err, e, stat) {
-                        if (err) {
-                            opFailed = true;
-                            return;
-                        }
-                        entry = e;
-                        doneResolving = true;
-                    });
-                });
-
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return !opFailed && doneResolving;
                 }, "FileSystem.resolve()", 500);
 
-                runs(function () {
-                    var file = FileSystem.getFileForPath(entry.fullPath + "test");
-                    file.write("hi there!", function (err) {
-                        if (err) {
-                            opFailed = true;
-                            return;
-                        }
-                        doneWriting = true;
-                    });
+                var file = FileSystem.getFileForPath(entry.fullPath + "test");
+                file.write("hi there!", function (err) {
+                    if (err) {
+                        opFailed = true;
+                        return;
+                    }
+                    doneWriting = true;
                 });
 
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return !opFailed && doneWriting;
                 }, "create a file under .git", 500);
 
                 // wait for the fs event to propagate to the project model
-                waits(500);
+                await awaits(500);
 
-                runs(function () {
-                    var found = testWindow.$(".jstree-brackets span:contains(\".git\")").length,
-                        sanity = testWindow.$(".jstree-brackets span:contains(\"file\") + span:contains(\".js\")").length;
-                    expect(sanity).toBe(1);
-                    expect(found).toBe(0);
-                });
+                found = testWindow.$(".jstree-brackets span:contains(\".git\")").length;
+                let    sanity = testWindow.$(".jstree-brackets span:contains(\"file\") + span:contains(\".js\")").length;
+                expect(sanity).toBe(1);
+                expect(found).toBe(0);
 
             });
 
         });
 
         describe("deleteItem", function () {
-            it("should delete the selected file in the project tree", function () {
+            it("should delete the selected file in the project tree", async function () {
                 var complete    = false,
                     newFile     = FileSystem.getFileForPath(tempDir + "/brackets_unittests_delete_me.js"),
                     selectedFile,
@@ -310,63 +280,51 @@ define(function (require, exports, module) {
                     stat;
 
                 // Create a file and select it in the project tree.
-                runs(function () {
-                    complete = false;
-                    ProjectManager.createNewItem(tempDir, "brackets_unittests_delete_me.js", true)
-                        .always(function () { complete = true; });
-                });
-                waitsFor(function () { return complete; }, "ProjectManager.createNewItem() timeout", 5000);
+                complete = false;
+                ProjectManager.createNewItem(tempDir, "brackets_unittests_delete_me.js", true)
+                    .always(function () { complete = true; });
+                await awaitsFor(function () { return complete; }, "ProjectManager.createNewItem() timeout", 5000);
 
-                runs(function () {
-                    complete = false;
-                    newFile.stat(function (err, _stat) {
-                        error = err;
-                        stat = _stat;
-                        complete = true;
-                    });
+                complete = false;
+                newFile.stat(function (err, _stat) {
+                    error = err;
+                    stat = _stat;
+                    complete = true;
                 });
-                waitsFor(function () { return complete; }, 1000);
+                await awaitsFor(function () { return complete; }, 1000);
                 // give some time for fle to be opened and visible in files panel. Ideally, we should be hooking on to
                 // editor file changed event. If this pops up in the future.
                 let waitDone = false;
                 setTimeout(()=>{waitDone = true;}, 1000);
-                waitsFor(function () { return waitDone; }, 1500);
+                await awaitsFor(function () { return waitDone; }, 1500);
 
                 // Verify the existence of the new file and make sure it is selected in the project tree.
-                runs(function () {
-                    expect(error).toBeFalsy();
-                    expect(stat.isFile).toBe(true);
-                    selectedFile = ProjectManager.getSelectedItem();
-                    expect(selectedFile.fullPath).toBe(tempDir + "/brackets_unittests_delete_me.js");
-                });
+                expect(error).toBeFalsy();
+                expect(stat.isFile).toBe(true);
+                selectedFile = ProjectManager.getSelectedItem();
+                expect(selectedFile.fullPath).toBe(tempDir + "/brackets_unittests_delete_me.js");
 
-                runs(function () {
-                    // delete the new file
-                    var promise = ProjectManager.deleteItem(selectedFile);
-                    waitsForDone(promise, "ProjectManager.deleteItem() timeout", 5000);
-                });
+                // delete the new file
+                var promise = ProjectManager.deleteItem(selectedFile);
+                await awaitsForDone(promise, "ProjectManager.deleteItem() timeout", 5000);
 
                 // Verify that file no longer exists.
-                runs(function () {
-                    complete = false;
-                    newFile.stat(function (err, _stat) {
-                        error = err;
-                        stat = _stat;
-                        complete = true;
-                    });
+                complete = false;
+                newFile.stat(function (err, _stat) {
+                    error = err;
+                    stat = _stat;
+                    complete = true;
                 });
-                waitsFor(function () { return complete; }, 1000);
+                await awaitsFor(function () { return complete; }, 1000);
 
-                runs(function () {
-                    expect(error).toBe(FileSystemError.NOT_FOUND);
+                expect(error).toBe(FileSystemError.NOT_FOUND);
 
-                    // Verify that some other file is selected in the project tree.
-                    var curSelectedFile = ProjectManager.getSelectedItem();
-                    expect(curSelectedFile).not.toBe(selectedFile);
-                });
+                // Verify that some other file is selected in the project tree.
+                var curSelectedFile = ProjectManager.getSelectedItem();
+                expect(curSelectedFile).not.toBe(selectedFile);
             });
 
-            it("should delete the selected folder and all items in it.", function () {
+            it("should delete the selected folder and all items in it.", async function () {
                 var complete        = false,
                     rootFolderName  = tempDir + "/toDelete1/",
                     rootFolderEntry = FileSystem.getDirectoryForPath(rootFolderName),
@@ -375,30 +333,24 @@ define(function (require, exports, module) {
                     promise;
 
                 // Delete the root folder and all files/folders in it.
-                runs(function () {
-                    promise = ProjectManager.deleteItem(rootFolderEntry);
-                    waitsForDone(promise, "ProjectManager.deleteItem() timeout", 5000);
-                });
+                promise = ProjectManager.deleteItem(rootFolderEntry);
+                await awaitsForDone(promise, "ProjectManager.deleteItem() timeout", 5000);
 
                 // Verify that the root folder no longer exists.
-                runs(function () {
-                    var rootFolder = FileSystem.getDirectoryForPath(rootFolderName);
-                    complete = false;
-                    rootFolder.stat(function (err, _stat) {
-                        error = err;
-                        stat = _stat;
-                        complete = true;
-                    });
+                var rootFolder = FileSystem.getDirectoryForPath(rootFolderName);
+                complete = false;
+                rootFolder.stat(function (err, _stat) {
+                    error = err;
+                    stat = _stat;
+                    complete = true;
                 });
-                waitsFor(function () { return complete; }, 1000);
+                await awaitsFor(function () { return complete; }, 1000);
 
-                runs(function () {
-                    expect(error).toBe(FileSystemError.NOT_FOUND);
+                expect(error).toBe(FileSystemError.NOT_FOUND);
 
-                    // Verify that some other file is selected in the project tree.
-                    var curSelectedFile = ProjectManager.getSelectedItem();
-                    expect(curSelectedFile).not.toBe(rootFolderEntry);
-                });
+                // Verify that some other file is selected in the project tree.
+                var curSelectedFile = ProjectManager.getSelectedItem();
+                expect(curSelectedFile).not.toBe(rootFolderEntry);
             });
         });
 
@@ -433,30 +385,24 @@ define(function (require, exports, module) {
              * ProjectManager pauses between renders for performance reasons. For some tests,
              * we'll need to wait for the next render.
              */
-            function waitForRenderDebounce() {
-                waits(ProjectManager._RENDER_DEBOUNCE_TIME);
+            async function waitForRenderDebounce() {
+                await awaits(ProjectManager._RENDER_DEBOUNCE_TIME);
             }
 
-            it("should deselect after opening file not rendered in tree", function () {
+            it("should deselect after opening file not rendered in tree", async function () {
                 var promise,
                     exposedFile   = tempDir + "/file.js",
                     unexposedFile = tempDir + "/directory/interiorfile.js";
 
-                runs(function () {
-                    promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: exposedFile });
-                    waitsForDone(promise);
-                });
-                waitForRenderDebounce();
-                runs(function () {
-                    expectSelected(exposedFile);
+                promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: exposedFile });
+                await awaitsForDone(promise);
+                await waitForRenderDebounce();
+                expectSelected(exposedFile);
 
-                    promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: unexposedFile });
-                    waitsForDone(promise);
-                });
-                waitForRenderDebounce();
-                runs(function () {
-                    expectSelected(null);
-                });
+                promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: unexposedFile });
+                await awaitsForDone(promise);
+                await waitForRenderDebounce();
+                expectSelected(null);
             });
 
             function findExtantNode(fullPath) {
@@ -476,7 +422,7 @@ define(function (require, exports, module) {
                 return $result;
             }
 
-            function toggleFolder(fullPath, open) {
+            async function toggleFolder(fullPath, open) {
                 var $treeNode = findExtantNode(fullPath);
 
                 var expectedClass = open ? "jstree-open" : "jstree-closed";
@@ -485,77 +431,54 @@ define(function (require, exports, module) {
                 $treeNode.children("a").children("span").click();
 
                 // if a folder has never been expanded before, this will be async
-                waitsFor(function () {
+                await awaitsFor(function () {
                     return $treeNode.hasClass(expectedClass);
                 }, (open ? "Open" : "Close") + " tree node", 1000);
             }
 
-            it("should reselect previously selected file when made visible again", function () {
+            it("should reselect previously selected file when made visible again", async function () {
                 var promise,
                     initialFile  = tempDir + "/file.js",
                     folder       = tempDir + "/directory/",
                     fileInFolder = tempDir + "/directory/interiorfile.js";
 
-                runs(function () {
-                    promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: initialFile });
-                    waitsForDone(promise);
-                });
-                waitForRenderDebounce();
-                runs(function () {
-                    expectSelected(initialFile);
-                    toggleFolder(folder, true);     // open folder
-                });
-                runs(function () {                  // open file in folder
-                    promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileInFolder });
-                    waitsForDone(promise);
-                });
-                waitForRenderDebounce();
-                runs(function () {
-                    expectSelected(fileInFolder);
-                    toggleFolder(folder, false);    // close folder
-                });
-                runs(function () {
-                    toggleFolder(folder, true);     // open folder again
-                });
-                waitForRenderDebounce();
-                runs(function () {
-                    expectSelected(fileInFolder);
-                    toggleFolder(folder, false);    // close folder
-                });
+                promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: initialFile });
+                await awaitsForDone(promise);
+                await waitForRenderDebounce();
+                expectSelected(initialFile);
+                await toggleFolder(folder, true);     // open folder
+                // open file in folder
+                promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileInFolder });
+                await awaitsForDone(promise);
+                await waitForRenderDebounce();
+                expectSelected(fileInFolder);
+                await toggleFolder(folder, false);    // close folder
+                await toggleFolder(folder, true);     // open folder again
+                await waitForRenderDebounce();
+                expectSelected(fileInFolder);
+                await toggleFolder(folder, false);    // close folder
             });
 
-            it("should deselect after opening file hidden in tree, but select when made visible again", function () {
+            it("should deselect after opening file hidden in tree, but select when made visible again", async function () {
                 var promise,
                     initialFile  = tempDir + "/file.js",
                     folder       = tempDir + "/directory/",
                     fileInFolder = tempDir + "/directory/interiorfile.js";
 
-                runs(function () {
-                    promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: initialFile });
-                    waitsForDone(promise);
-                });
-                waitForRenderDebounce();
-                runs(function () {
-                    expectSelected(initialFile);
-                    toggleFolder(folder, true);     // open folder
-                });
-                runs(function () {
-                    toggleFolder(folder, false);    // close folder
-                });
-                runs(function () {                  // open file in folder
-                    promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileInFolder });
-                    waitsForDone(promise);
-                });
-                waitForRenderDebounce();
-                runs(function () {
-                    expectSelected(null);
-                    toggleFolder(folder, true);     // open folder again
-                });
-                waitForRenderDebounce();
-                runs(function () {
-                    expectSelected(fileInFolder);
-                    toggleFolder(folder, false);    // close folder
-                });
+                promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: initialFile });
+                await awaitsForDone(promise);
+                await waitForRenderDebounce();
+                expectSelected(initialFile);
+                await toggleFolder(folder, true);     // open folder
+                await toggleFolder(folder, false);    // close folder
+                promise = CommandManager.execute(Commands.FILE_OPEN, { fullPath: fileInFolder });
+                await awaitsForDone(promise);// open file in folder
+                await waitForRenderDebounce();
+                expectSelected(null);
+                await toggleFolder(folder, true);     // open folder again
+                await waitForRenderDebounce();
+                expectSelected(fileInFolder);
+                await toggleFolder(folder, false);    // close folder
             });
         });
 
