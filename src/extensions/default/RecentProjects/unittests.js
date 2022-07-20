@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeFirst, afterLast, runs, waitsFor, spyOn */
+/*global describe, it, expect, beforeAll, afterAll, awaitsFor, spyOn */
 
 define(function (require, exports, module) {
 
@@ -36,31 +36,27 @@ define(function (require, exports, module) {
             CommandManager,
             PreferencesManager;
 
-        beforeFirst(function () {
-            runs(function () {
-                SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                    testWindow = w;
-                    $ = testWindow.$;
-                    CommandManager  = testWindow.brackets.test.CommandManager;
-                    PreferencesManager = testWindow.brackets.test.PreferencesManager;
-                });
-            });
+        beforeAll(async function () {
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            $ = testWindow.$;
+            CommandManager  = testWindow.brackets.test.CommandManager;
+            PreferencesManager = testWindow.brackets.test.PreferencesManager;
         });
 
-        afterLast(function () {
+        afterAll(async function () {
             testWindow = null;
-            SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.closeTestWindow();
         });
 
-        function openRecentProjectDropDown() {
+        async function openRecentProjectDropDown() {
             CommandManager.execute("recentProjects.toggle");
-            waitsFor(function () {
+            await awaitsFor(function () {
                 return $("#project-dropdown").is(":visible");
             });
         }
 
         function setupRecentProjectsSpy(howManyProjects) {
-            spyOn(PreferencesManager, "getViewState").andCallFake(function (prefId) {
+            spyOn(PreferencesManager, "getViewState").and.callFake(function (prefId) {
                 if (prefId === "recentProjects") {
                     // return howManyProjects number of fake recent projects entries
                     return _.map(_.range(1, howManyProjects + 1), function (num) { return extensionPath + "/Test-Project-" + num; });
@@ -71,47 +67,33 @@ define(function (require, exports, module) {
         }
 
         describe("UI", function () {
-            it("should open the recent projects list with only the getting started project", function () {
-                runs(function () {
-                    openRecentProjectDropDown();
-                });
+            it("should open the recent projects list with only the getting started project", async function () {
+                await openRecentProjectDropDown();
 
-                runs(function () {
-                    var $dropDown = $("#project-dropdown");
-                    expect($dropDown.children().length).toEqual(1);
-                });
+                var $dropDown = $("#project-dropdown");
+                expect($dropDown.children().length).toEqual(2); // new project and open project menu item
             });
 
-            it("should open the recent project list and show 5 recent projects", function () {
+            it("should open the recent project list and show 5 recent projects", async function () {
                 setupRecentProjectsSpy(5);
 
-                runs(function () {
-                    openRecentProjectDropDown();
-                });
+                await openRecentProjectDropDown();
 
-                runs(function () {
-                    var $dropDown = $("#project-dropdown");
-                    expect($dropDown.find(".recent-folder-link").length).toEqual(5);
-                });
+                var $dropDown = $("#project-dropdown");
+                expect($dropDown.find(".recent-folder-link").length).toEqual(5);
             });
 
-            it("should delete one project from recent project list when delete key is pressed on", function () {
+            it("should delete one project from recent project list when delete key is pressed on", async function () {
                 setupRecentProjectsSpy(5);
 
-                runs(function () {
-                    openRecentProjectDropDown();
-                });
+                await openRecentProjectDropDown();
 
-                runs(function () {
-                    var $dropDown = $("#project-dropdown");
-                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropDown[0]);
-                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DELETE, "keydown", $dropDown[0]);
-                });
+                var $dropDown = $("#project-dropdown");
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropDown[0]);
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DELETE, "keydown", $dropDown[0]);
 
-                runs(function () {
-                    var $dropDown = $("#project-dropdown");
-                    expect($dropDown.find(".recent-folder-link").length).toEqual(4);
-                });
+                var $dropDown = $("#project-dropdown");
+                expect($dropDown.find(".recent-folder-link").length).toEqual(4);
             });
         });
     });
