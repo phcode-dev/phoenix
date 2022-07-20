@@ -435,7 +435,7 @@ define(function (require, exports, module) {
 
     function _showLoading(show) {
         if(show){
-            document.getElementById('loading').style='';
+            document.getElementById('loading').style='margin-top: 150px;';
         } else {
             document.getElementById('loading').setAttribute('style', 'display: none;');
         }
