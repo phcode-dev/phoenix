@@ -41,7 +41,7 @@ define(function (require, exports, module) {
             $ = testWindow.$;
             CommandManager  = testWindow.brackets.test.CommandManager;
             PreferencesManager = testWindow.brackets.test.PreferencesManager;
-        });
+        }, 30000);
 
         afterAll(async function () {
             testWindow = null;
