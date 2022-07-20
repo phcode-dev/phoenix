@@ -29,7 +29,7 @@ define(function (require, exports, module) {
     var LanguageManager     = require("language/LanguageManager"),
         SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
-    describe("LanguageManager", function () {
+    describe("integration:LanguageManager", function () {
 
         beforeEach(async function () {
             await awaitsForDone(LanguageManager.ready, "LanguageManager ready", 10000);
@@ -41,7 +41,7 @@ define(function (require, exports, module) {
             LanguageManager._resetPathLanguageOverrides();
         });
 
-        describe("integration:Document language updating", function () {
+        describe("Document language updating", function () {
 
             it("should update the document's language when a file is renamed", async function () {
                 var tempDir     = SpecRunnerUtils.getTempDirectory(),
