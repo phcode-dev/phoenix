@@ -27,7 +27,7 @@ define(function (require, exports, module) {
     var SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils"),
         CSSAtRuleCodeHints  = require("main");
 
-    describe("CSS '@' rules Code Hinting", function () {
+    describe("extension:CSS '@' rules Code Hinting", function () {
 
         var defaultContent = "@ { \n" +
                              "} \n" +
