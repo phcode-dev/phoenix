@@ -496,7 +496,7 @@ define(function (require, exports, module) {
                     JSZip.loadAsync(data).then(function (zip) {
                         let keys = Object.keys(zip.files);
                         let destPath = `/test/`;
-                        console.log("Deleting test directory: /test/");
+                        console.log("Cleaning test directory: /test/");
                         window.fs.unlink(destPath, async function (err) {
                             if(err && err.code !== 'ENOENT'){
                                 console.error("Could not clean test dir. we will try to move ahead", err);
