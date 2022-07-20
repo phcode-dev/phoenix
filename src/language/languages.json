@@ -33,6 +33,14 @@
         "lineComment": ["//"]
     },
 
+    "less": {
+        "name": "LESS",
+        "mode": ["css", "text/x-less"],
+        "fileExtensions": ["less", "less.erb"],
+        "blockComment": ["/*", "*/"],
+        "lineComment": ["//"]
+    },
+
     "stylus": {
         "name": "Stylus",
         "mode": ["stylus", "text/x-styl"],
