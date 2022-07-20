@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         Editor          = brackets.getModule("editor/Editor").Editor,
         HTMLCodeHints   = require("main");
 
-    describe("extension: HTML Code Hinting", function () {
+    describe("unit: HTML Code Hinting", function () {
 
         var defaultContent = "<!doctype html>\n" +
                              "<html>\n" +

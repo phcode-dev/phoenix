@@ -28,7 +28,7 @@ define(function (require, exports, module) {
     var SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils"),
         SVGCodeHints        = require("./main");
 
-    describe("SVG Code Hints", function () {
+    describe("unit:SVG Code Hints", function () {
         var testContent, testDocument, testEditor;
 
         // SVG Content that we will be using to run tests against.
@@ -116,8 +116,8 @@ define(function (require, exports, module) {
         // Used to test cursor position.
         function expectCursorAt(pos) {
             var selection = testEditor.getSelection();
-            expect(fixPos(selection.start)).toEqual(fixPos(selection.end));
-            expect(fixPos(selection.start)).toEqual(fixPos(pos));
+            expect(fixPos(selection.start)).toEql(fixPos(selection.end));
+            expect(fixPos(selection.start)).toEql(fixPos(pos));
         }
 
         describe("Tag Hinting", function () {

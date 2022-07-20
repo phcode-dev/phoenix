@@ -38,7 +38,7 @@ define(function (require, exports, module) {
 
         // build DOM immediately
         var container = $(
-            '<div class="container-fluid" style="height: 95%; overflow: scroll; width: 100%; margin-top: 50px;">' +
+            '<div class="container-fluid" style="height: 95%; overflow: scroll; width: 100%;">' +
                 '<div class="row-fluid">' +
                     '<div class="span4">' +
                         '<ul id="suite-list" class="nav nav-pills nav-stacked">' +

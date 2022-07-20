@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         PrefsCodeHints      = require("./main"),
         testPreferences     = JSON.parse(require("text!./unittest-files/preferences.json"));
 
-    describe("Preferences Code Hints", function () {
+    describe("unit:Preferences Code Hints", function () {
         var testContent, testDocument, testEditor, mockEditor;
 
         // A sample preferences file to run tests against.
@@ -147,8 +147,8 @@ define(function (require, exports, module) {
         // Determines the position of the cursor.
         function expectCursorAt(pos) {
             var selection = testEditor.getSelection();
-            expect(fixPos(selection.start)).toEqual(fixPos(selection.end));
-            expect(fixPos(selection.start)).toEqual(fixPos(pos));
+            expect(fixPos(selection.start)).toEql(fixPos(selection.end));
+            expect(fixPos(selection.start)).toEql(fixPos(pos));
         }
 
         describe("File name based hinting", function () {

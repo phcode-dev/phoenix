@@ -10,7 +10,7 @@ define(function (require, exports, module) {
 
     var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
 
-    describe("extension:Code Folding", function () {
+    describe("individualrun:Code Folding", function () {
         var testWindow,
             testEditor,
             EditorManager,

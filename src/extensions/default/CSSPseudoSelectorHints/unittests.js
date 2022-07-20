@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         PseudoStaticDataRaw         = require("text!PseudoSelectors.json"),
         PseudoStaticData            = JSON.parse(PseudoStaticDataRaw);
 
-    describe("extension:CSS Pseudo class/element Code Hinting", function () {
+    describe("unit:CSS Pseudo class/element Code Hinting", function () {
 
         var defaultContent = ".selector1: { \n" +
                              "} \n" +

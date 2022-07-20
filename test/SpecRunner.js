@@ -209,13 +209,7 @@ define(function (require, exports, module) {
     resultsPath = params.get("resultsPath");
 
     function _loadExtensionTests() {
-        let paths = ["default"];
-
-        // load dev and user extensions only when running the extension test suite
-        if (selectedCategories.indexOf("extension") >= 0) {
-            paths.push("dev");
-            paths.push("user");
-        }
+        let paths = ["default", "dev", "user"];
 
         return Async.doInParallel(paths, function (dir) {
             if(dir === "default"){
@@ -441,7 +435,7 @@ define(function (require, exports, module) {
 
     function _showLoading(show) {
         if(show){
-            document.getElementById('loading').style='';
+            document.getElementById('loading').style='margin-top: 150px;';
         } else {
             document.getElementById('loading').setAttribute('style', 'display: none;');
         }
@@ -474,6 +468,19 @@ define(function (require, exports, module) {
         });
     }
 
+    function makeTestDir() {
+        return new Promise((resolve, reject)=>{
+            let testPath = `/test/`;
+            window.fs.mkdirs(testPath, '777', true, (err)=>{
+                if(err){
+                    reject();
+                } else {
+                    resolve(testPath);
+                }
+            });
+        });
+    }
+
     function setupAndRunTests() {
         let shouldExtract = localStorage.getItem(EXTRACT_TEST_ASSETS_KEY);
         if(shouldExtract === EXTRACT || shouldExtract === null) {
@@ -488,12 +495,22 @@ define(function (require, exports, module) {
                 } else {
                     JSZip.loadAsync(data).then(function (zip) {
                         let keys = Object.keys(zip.files);
-                        let allPromises=[];
-                        for (let i = 0; i < keys.length; i++) {
-                            let path = keys[i];
-                            allPromises.push(_copyZippedItemToFS(path, zip.files[path]));
-                        }
-                        Promise.all(allPromises).then(()=>{
+                        let destPath = `/test/`;
+                        console.log("Cleaning test directory: /test/");
+                        window.fs.unlink(destPath, async function (err) {
+                            if(err && err.code !== 'ENOENT'){
+                                console.error("Could not clean test dir. we will try to move ahead", err);
+                                // we will now try to overwrite existing
+                            }
+                            console.log("Creating test folder /test/");
+                            await makeTestDir();
+                            console.log("Copying test assets to /test/", err);
+                            let progressMessageEl = document.getElementById("loadProgressMessage");
+                            for (let i = 0; i < keys.length; i++) {
+                                let path = keys[i];
+                                progressMessageEl.textContent = `${i+1} of ${keys.length}`;
+                                await _copyZippedItemToFS(path, zip.files[path]);
+                            }
                             localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, DONT_EXTRACT);
                             _showLoading(false);
                             init();

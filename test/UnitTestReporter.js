@@ -48,7 +48,8 @@ define(function (require, exports, module) {
         "livepreview",
         "mainview",
         "performance",
-        "extension"
+        "extension",
+        "individualrun"
     ];
 
     function _getKnownCategory(name) {

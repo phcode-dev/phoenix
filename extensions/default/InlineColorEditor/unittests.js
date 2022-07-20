@@ -57,7 +57,7 @@ define(function (require, exports, module) {
         return sels;
     }
 
-    describe("extension:Inline Color Editor - unit", function () {
+    describe("unit:Inline Color Editor - unit", function () {
 
         var testDocument, testEditor, inline;
 
