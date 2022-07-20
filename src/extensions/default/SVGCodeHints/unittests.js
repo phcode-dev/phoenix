@@ -116,8 +116,8 @@ define(function (require, exports, module) {
         // Used to test cursor position.
         function expectCursorAt(pos) {
             var selection = testEditor.getSelection();
-            expect(fixPos(selection.start)).toEqual(fixPos(selection.end));
-            expect(fixPos(selection.start)).toEqual(fixPos(pos));
+            expect(fixPos(selection.start)).toEql(fixPos(selection.end));
+            expect(fixPos(selection.start)).toEql(fixPos(pos));
         }
 
         describe("Tag Hinting", function () {
