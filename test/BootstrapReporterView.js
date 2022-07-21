@@ -26,6 +26,56 @@ define(function (require, exports, module) {
 
     var _ = require("thirdparty/lodash");
 
+    function _addPrintableContainer() {
+        var container = $(`
+<div>
+<div id="fullReport">
+<table id="suiteResultsList">
+  <tr>
+    <th>Test</th>
+    <th>Failed</th>
+    <th>Passed</th>
+    <th>All</th>
+  </tr>
+</table>
+</table>
+<div id="results-container-print"></div>
+</div>
+</div>
+        `);
+
+        $("#printableReport").append(container);
+    }
+
+    function _copyElementToClipboardWithStyle( elementID ) {
+
+        const doc = document;
+        const text = doc.getElementById( elementID );
+        let range;
+        let selection;
+
+        if( doc.body.createTextRange ) {
+
+            range = doc.body.createTextRange();
+            range.moveToElement( text );
+            range.select();
+
+        } else if ( window.getSelection ) {
+
+            selection = window.getSelection();
+
+            range = doc.createRange();
+            range.selectNodeContents( text );
+
+            selection.removeAllRanges();
+            selection.addRange( range );
+
+        }
+
+        document.execCommand( 'copy' );
+        window.getSelection().removeAllRanges();
+    }
+
     var BootstrapReporterView = function (doc, reporter) {
         doc = doc || window.document;
 
@@ -38,7 +88,7 @@ define(function (require, exports, module) {
 
         // build DOM immediately
         var container = $(
-            '<div class="container-fluid" style="height: 95%; overflow: scroll; width: 100%;">' +
+            '<div id="interactiveReport" class="container-fluid" style="height: 95%; overflow: scroll; width: 100%;">' +
                 '<div class="row-fluid">' +
                     '<div class="span4">' +
                         '<ul id="suite-list" class="nav nav-pills nav-stacked">' +
@@ -51,10 +101,24 @@ define(function (require, exports, module) {
         );
 
         $(doc.body).append(container);
+        _addPrintableContainer();
 
         this._topLevelSuiteMap = {};
+        this._topLevelSuiteMapForPrint = {};
         this.$suiteList = $("#suite-list");
+        this.$suiteListForPrint = $("#suiteResultsList");
         this.$resultsContainer = $("#results-container");
+        this.$resultsContainerForPrint = $("#results-container-print");
+
+        $("#copyReportButton").click(function () {
+            _copyElementToClipboardWithStyle("suiteResultsList");
+        });
+        $("#copyReportErrorsButton").click(function () {
+            _copyElementToClipboardWithStyle("results-container-print");
+        });
+        $("#copyFullReportButton").click(function () {
+            _copyElementToClipboardWithStyle("fullReport");
+        });
     };
 
     BootstrapReporterView.prototype._createSuiteListItem = function (suiteName, specCount, reporter) {
@@ -86,18 +150,52 @@ define(function (require, exports, module) {
         return $listItem;
     };
 
+    BootstrapReporterView.prototype._createSuiteListItemForPrint = function (suiteName, specCount, reporter) {
+        let displayName = suiteName;
+        if(suiteName.includes(":")){
+            let category = suiteName.split(":");
+            if(reporter.knownCategories.includes(category[0])){
+                displayName = suiteName.replace(`${category[0]}:`, '');
+            }
+        }
+        let hyperlink = `?spec=${encodeURIComponent(suiteName)}`;
+        if(reporter.selectedCategories.length){
+            hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
+        }
+        var $listItem = $('<tr/>'),
+            $Name = $('<td>' + '<a href="' + hyperlink + '">' + displayName + '</a>' + "</td>"),
+            $badgePassed = $('<td/>'),
+            $badgeFailed = $('<td/>'),
+            $badgeAll = $('<td>' + specCount + "</td>");
+
+        $listItem.append($Name).append($badgeFailed).append($badgePassed).append($badgeAll);
+
+        this._topLevelSuiteMapForPrint[suiteName] = {
+            $Name: $Name,
+            $badgeAll: $badgeAll,
+            $badgePassed: $badgePassed,
+            $badgeFailed: $badgeFailed,
+            $listItem: $listItem
+        };
+
+        return $listItem;
+    };
+
     BootstrapReporterView.prototype._createSuiteList = function (suites, sortedNames, totalSpecCount, reporter) {
         var self = this;
 
+        // add an "all" top-level suite
+        self.$suiteListForPrint.append(self._createSuiteListItemForPrint("All", totalSpecCount, reporter));
         sortedNames.forEach(function (name, index) {
             var count = suites[name].specCount;
             if (count > 0) {
                 self.$suiteList.append(self._createSuiteListItem(name, count, reporter));
+                self.$suiteListForPrint.append(self._createSuiteListItemForPrint(name, count, reporter));
             }
         });
 
         // add an "all" top-level suite
-        this.$suiteList.prepend(this._createSuiteListItem("All", totalSpecCount, reporter));
+        self.$suiteList.prepend(this._createSuiteListItem("All", totalSpecCount, reporter));
     };
 
     BootstrapReporterView.prototype._showProgressBar = function (spec) {
@@ -159,6 +257,7 @@ define(function (require, exports, module) {
 
     BootstrapReporterView.prototype._updateSuiteStatus = function (name, specCount, passedCount, failedCount) {
         var data = this._topLevelSuiteMap[name];
+        var printData = this._topLevelSuiteMapForPrint[name];
 
         if (!data) {
             return;
@@ -167,12 +266,14 @@ define(function (require, exports, module) {
         // update status badges
         if (passedCount) {
             data.$badgePassed.show().text(passedCount);
+            printData.$badgePassed.text(passedCount).addClass("pass");
         } else {
             data.$badgePassed.hide();
         }
 
         if (failedCount) {
             data.$badgeFailed.show().text(failedCount);
+            printData.$badgeFailed.text(failedCount).addClass("fail");
         } else {
             data.$badgeFailed.hide();
         }
@@ -236,6 +337,7 @@ define(function (require, exports, module) {
 
             if ($suiteHeader.length === 0) {
                 this.$resultsContainer.append($('<div id="suite-results-' + suiteData.id + '" class="alert alert-info"/>').text(suiteData.name));
+                this.$resultsContainerForPrint.append($('<div id="suite-results-' + suiteData.id + '" class="alert alert-info"/>').text(suiteData.name));
             }
 
             // print spec name
@@ -262,6 +364,7 @@ define(function (require, exports, module) {
             $resultDisplay.on("click", ".link-to-source", this._handleSourceLinkClick.bind(this));
 
             this.$resultsContainer.append($resultDisplay);
+            this.$resultsContainerForPrint.append($resultDisplay);
         }
 
         if (specData.passed && specData.perf) {
@@ -272,6 +375,7 @@ define(function (require, exports, module) {
             }
             $specLink = $('<a href="' + hyperlink + '"/>').text(specData.name);
             this.$resultsContainer.append($('<div class="alert alert-info"/>').append($specLink));
+            this.$resultsContainerForPrint.append($('<div class="alert alert-info"/>').append($specLink));
 
             // add table
             var $table = $('<table class="table table-striped table-bordered table-condensed"><thead><tr><th>Measurement</th><th>Value</th></tr></thead></table>'),
@@ -280,6 +384,7 @@ define(function (require, exports, module) {
                 specRecords = specData.perf;
 
             this.$resultsContainer.append($table);
+            this.$resultsContainerForPrint.append($table);
 
             specRecords.forEach(function (record) {
                 rows = self._createRows(record);
