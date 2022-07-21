@@ -221,13 +221,16 @@ define(function (require, exports, module) {
     }
 
     function _documentReadyHandler() {
-        if (brackets.app.showDeveloperTools) {
-            $("#show-dev-tools").click(function () {
-                brackets.app.showDeveloperTools();
-            });
-        } else {
-            $("#show-dev-tools").remove();
-        }
+        $("#show-report-to-copy").click(function () {
+            let hidden = $("#printableReport").hasClass("forced-hidden");
+            if(hidden){
+                $("#printableReport").removeClass("forced-hidden");
+                $("#interactiveReport").addClass("forced-hidden");
+            } else {
+                $("#printableReport").addClass("forced-hidden");
+                $("#interactiveReport").removeClass("forced-hidden");
+            }
+        });
 
         $("#reload").click(function () {
             localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, EXTRACT);

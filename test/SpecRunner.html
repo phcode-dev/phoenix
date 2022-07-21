@@ -60,7 +60,33 @@
   <script src="thirdparty/jasmine-core/boot0.js"></script>
 
   <script type="text/javascript" src="../src/thirdparty/jszip-utils-phoenix.js"></script>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
 
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    .pass{
+      background-color: green;
+      color: black;
+    }
+
+    .fail{
+      background-color: darkred;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
 </head>
 
 <body style="user-select: text !important; display: flex">
@@ -86,11 +112,16 @@
               <li><a id="extension" href="?category=extension">Extensions</a></li>
               <li><a id="individualrun" href="?category=individualrun">Individual Run</a></li>
               <li><a id="reload" href="#">Reset and Reload Tests</a></li>
-              <li><a id="show-dev-tools" href="#">Show&nbsp;Developer&nbsp;Tools</a></li>
+              <li><a id="show-report-to-copy" href="#">Toggle Printable Report</a></li>
             </ul>
           </div>
         </div>
       </div>
+    </div>
+    <div id="printableReport" class="forced-hidden" style="margin-top: 30px;overflow: scroll;width: 100%; height: 94%;">
+      <button id="copyReportButton"> Copy Report</button>
+      <button id="copyReportErrorsButton"> Copy Error Report</button>
+      <button id="copyFullReportButton"> Copy Full Report</button>
     </div>
     <div id="loading" style="display: none; margin-top: 100px;">
       Please run <code>npm run test</code> before starting tests at least once or if you are facing issues.

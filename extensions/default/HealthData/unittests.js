@@ -32,7 +32,7 @@ define(function (require, exports, module) {
     var testWindow,
         PreferencesManager;
 
-    describe("extension:HealthData", function () {
+    describe("individualrun:HealthData", function () {
 
         beforeEach(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
