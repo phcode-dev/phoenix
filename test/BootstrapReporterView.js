@@ -364,7 +364,7 @@ define(function (require, exports, module) {
             $resultDisplay.on("click", ".link-to-source", this._handleSourceLinkClick.bind(this));
 
             this.$resultsContainer.append($resultDisplay);
-            this.$resultsContainerForPrint.append($resultDisplay);
+            this.$resultsContainerForPrint.append($resultDisplay.clone());
         }
 
         if (specData.passed && specData.perf) {
@@ -375,7 +375,7 @@ define(function (require, exports, module) {
             }
             $specLink = $('<a href="' + hyperlink + '"/>').text(specData.name);
             this.$resultsContainer.append($('<div class="alert alert-info"/>').append($specLink));
-            this.$resultsContainerForPrint.append($('<div class="alert alert-info"/>').append($specLink));
+            this.$resultsContainerForPrint.append($('<div class="alert alert-info"/>').append($specLink.clone()));
 
             // add table
             var $table = $('<table class="table table-striped table-bordered table-condensed"><thead><tr><th>Measurement</th><th>Value</th></tr></thead></table>'),
@@ -384,7 +384,6 @@ define(function (require, exports, module) {
                 specRecords = specData.perf;
 
             this.$resultsContainer.append($table);
-            this.$resultsContainerForPrint.append($table);
 
             specRecords.forEach(function (record) {
                 rows = self._createRows(record);
@@ -393,6 +392,7 @@ define(function (require, exports, module) {
                     $tbody.append(row);
                 });
             });
+            this.$resultsContainerForPrint.append($table.clone());
         }
     };
 
