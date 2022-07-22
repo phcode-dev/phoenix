@@ -90,6 +90,17 @@ define(function (require, exports, module) {
                 self._$previewEditor.editor.updateLayout();
             }
         }).observe(this._panel.$panel[0]);
+
+        function _showPanelIfResultsAvailable(e, panelID) {
+            let resultsCount     = self._model.countFilesMatches();
+            if(resultsCount.matches === 0){
+                self._panel.hide();
+            }
+            if(panelID === self._panel.panelID){
+                self._handleModelChange();
+            }
+        }
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN, _showPanelIfResultsAvailable);
     }
     EventDispatcher.makeEventDispatcher(SearchResultsView.prototype);
 
@@ -276,10 +287,10 @@ define(function (require, exports, module) {
         this._panel.$panel
             .off(".searchResults")  // Remove the old events
             .on("dblclick.searchResults", ".toolbar", function() {
-                self.close();
+                self._panel.hide();
             })
             .on("click.searchResults", ".close", function () {
-                self.close();
+                self._panel.hide();
             })
             // The link to go the first page
             .on("click.searchResults", ".first-page:not(.disabled)", function () {
