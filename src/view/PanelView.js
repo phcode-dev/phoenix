@@ -27,7 +27,8 @@ define(function (require, exports, module) {
     const EventDispatcher = require("utils/EventDispatcher"),
         Resizer = require("utils/Resizer"),
         EVENT_PANEL_HIDDEN = 'panelHidden',
-        EVENT_PANEL_SHOWN = 'panelShown';
+        EVENT_PANEL_SHOWN = 'panelShown',
+        PANEL_TYPE_BOTTOM_PANEL = "bottomPanel";
 
     /**
      * Represents a panel below the editor area (a child of ".content").
@@ -57,16 +58,20 @@ define(function (require, exports, module) {
      * Shows the panel
      */
     Panel.prototype.show = function () {
-        Resizer.show(this.$panel[0]);
-        exports.trigger(EVENT_PANEL_SHOWN, this.panelID);
+        if(!this.isVisible()){
+            Resizer.show(this.$panel[0]);
+            exports.trigger(EVENT_PANEL_SHOWN, this.panelID);
+        }
     };
 
     /**
      * Hides the panel
      */
     Panel.prototype.hide = function () {
-        Resizer.hide(this.$panel[0]);
-        exports.trigger(EVENT_PANEL_HIDDEN, this.panelID);
+        if(this.isVisible()){
+            Resizer.hide(this.$panel[0]);
+            exports.trigger(EVENT_PANEL_HIDDEN, this.panelID);
+        }
     };
 
     /**
@@ -81,6 +86,13 @@ define(function (require, exports, module) {
         }
     };
 
+    /**
+     * gets the Panle's type
+     * @return {string}
+     */
+    Panel.prototype.getPanelType = function () {
+        return PANEL_TYPE_BOTTOM_PANEL;
+    };
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -89,4 +101,5 @@ define(function (require, exports, module) {
     //events
     exports.EVENT_PANEL_HIDDEN = EVENT_PANEL_HIDDEN;
     exports.EVENT_PANEL_SHOWN = EVENT_PANEL_SHOWN;
+    exports.PANEL_TYPE_BOTTOM_PANEL = PANEL_TYPE_BOTTOM_PANEL;
 });

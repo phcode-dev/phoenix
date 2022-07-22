@@ -48,7 +48,6 @@ define(function (require, exports, module) {
         Strings                 = require("strings"),
         StringUtils             = require("utils/StringUtils"),
         AppInit                 = require("utils/AppInit"),
-        Resizer                 = require("utils/Resizer"),
         StatusBar               = require("widgets/StatusBar"),
         Async                   = require("utils/Async"),
         PanelTemplate           = require("text!htmlContent/problems-panel.html"),
@@ -98,6 +97,12 @@ define(function (require, exports, module) {
      * @type {$.Element}
      */
     var $problemsPanel;
+
+    /**
+     * @private the panelView
+     * @type {Panel}
+     */
+    var problemsPanel;
 
     /**
      * @private
@@ -355,7 +360,7 @@ define(function (require, exports, module) {
         if (!_enabled) {
             _hasErrors = false;
             _currentPromise = null;
-            Resizer.hide($problemsPanel);
+            problemsPanel.hide();
             StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-disabled", Strings.LINT_DISABLED);
             setGotoEnabled(false);
             return;
@@ -384,7 +389,7 @@ define(function (require, exports, module) {
                 _hasErrors = Boolean(errors);
 
                 if (!errors) {
-                    Resizer.hide($problemsPanel);
+                    problemsPanel.hide();
 
                     var message = Strings.NO_ERRORS_MULTIPLE_PROVIDER;
                     if (providerList.length === 1) {
@@ -448,7 +453,7 @@ define(function (require, exports, module) {
                     .scrollTop(0);  // otherwise scroll pos from previous contents is remembered
 
                 if (!_collapsed) {
-                    Resizer.show($problemsPanel);
+                    problemsPanel.show();
                 }
 
                 updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted);
@@ -461,7 +466,7 @@ define(function (require, exports, module) {
             // No provider for current file
             _hasErrors = false;
             _currentPromise = null;
-            Resizer.hide($problemsPanel);
+            problemsPanel.hide();
             var language = currentDoc && LanguageManager.getLanguageForPath(currentDoc.file.fullPath);
             if (language) {
                 StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-disabled", StringUtils.format(Strings.NO_LINT_AVAILABLE, language.getName()));
@@ -602,10 +607,10 @@ define(function (require, exports, module) {
         }
 
         if (_collapsed) {
-            Resizer.hide($problemsPanel);
+            problemsPanel.hide();
         } else {
             if (_hasErrors) {
-                Resizer.show($problemsPanel);
+                problemsPanel.show();
             }
         }
     }
@@ -654,7 +659,7 @@ define(function (require, exports, module) {
     AppInit.htmlReady(function () {
         // Create bottom panel to list error details
         var panelHtml = Mustache.render(PanelTemplate, Strings);
-        WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100);
+        problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100);
         $problemsPanel = $("#problems-panel");
 
         var $selectedRow;
@@ -701,6 +706,7 @@ define(function (require, exports, module) {
 
         $("#problems-panel .close").click(function () {
             toggleCollapsed(true);
+            MainViewManager.focusActivePane();
         });
 
         // Status bar indicator - icon & tooltip updated by run()
