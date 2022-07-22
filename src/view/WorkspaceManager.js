@@ -378,37 +378,36 @@ define(function (require, exports, module) {
         if(!focussedEditor){
             return;
         }
-        if (e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
-            if(lastToggledBottomPanel){
-                let visibility = !lastToggledBottomPanel.isVisible();
-                if(visibility){
-                    lastToggledBottomPanel.show();
-                } else {
-                    lastToggledBottomPanel.hide();
-                }
-                e.stopPropagation();
-                e.preventDefault();
-                return;
+        if (e.keyCode === KeyEvent.DOM_VK_ESCAPE && lastToggledBottomPanel) {
+            let visibility = !lastToggledBottomPanel.isVisible();
+            if(visibility){
+                lastToggledBottomPanel.show();
+            } else {
+                lastToggledBottomPanel.hide();
             }
-            let allPanelIds = getAllPanelIDs();
-            for(let panelId of allPanelIds){
-                let panel = getPanelForID(panelId);
-                if(panel.isVisible() && panel.getPanelType() === PanelView.PANEL_TYPE_BOTTOM_PANEL){
-                    panel.hide();
-                    lastToggledBottomPanel = panel;
-                    e.stopPropagation();
-                    e.preventDefault();
-                    return;
-                }
-            }
+            e.stopPropagation();
+            e.preventDefault();
         }
     }
     window.document.body.addEventListener("keydown", _handleKeydown, true);
+
+    /**
+     * Sets the panel to toggle when escape key is pressed in the editor area with the given panelID.
+     * This can be used to override the default panel keyboard toggle behavior, but use this sparsely.
+     * @param panelId
+     */
+    function setEscapeKeyTogglePanel(panelId) {
+        let panel = getPanelForID(panelId);
+        if(panel){
+            lastToggledBottomPanel = panel;
+        }
+    }
 
     // Define public API
     exports.createBottomPanel               = createBottomPanel;
     exports.createPluginPanel               = createPluginPanel;
     exports.isPanelVisible                  = isPanelVisible;
+    exports.setEscapeKeyTogglePanel         = setEscapeKeyTogglePanel;
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;

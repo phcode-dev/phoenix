@@ -466,7 +466,9 @@ define(function (require, exports, module) {
             // No provider for current file
             _hasErrors = false;
             _currentPromise = null;
-            problemsPanel.hide();
+            if(problemsPanel){
+                problemsPanel.hide();
+            }
             var language = currentDoc && LanguageManager.getLanguageForPath(currentDoc.file.fullPath);
             if (language) {
                 StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-disabled", StringUtils.format(Strings.NO_LINT_AVAILABLE, language.getName()));
