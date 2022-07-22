@@ -91,11 +91,11 @@ define(function (require, exports, module) {
             }
         }).observe(this._panel.$panel[0]);
 
-        function _showPanelIfResultsAvailable(e, panelID) {
+        function _showPanelIfResultsAvailable(_e, shownPanelID) {
             if(self._model.numMatches === 0){
                 self._panel.hide();
             }
-            if(panelID === self._panel.panelID && !self._model.isReplace){
+            if(shownPanelID === self._panel.panelID && !self._model.isReplace){
                 // If it is replace, _handleModelChange will close the find bar as we dont
                 // do replace if there is a model change. So we wont enter this flow if it is a replace operation
                 self._handleModelChange();
