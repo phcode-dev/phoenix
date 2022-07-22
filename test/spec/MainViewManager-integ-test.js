@@ -32,7 +32,9 @@ define(function (require, exports, module) {
         ProjectManager,          // loaded from brackets.test
         FileSystem,              // loaded from brackets.test
         Dialogs,                 // loaded from brackets.test
-        SpecRunnerUtils          = require("spec/SpecRunnerUtils");
+        WorkspaceManager,
+        SpecRunnerUtils          = require("spec/SpecRunnerUtils"),
+        KeyEvent                 = require("utils/KeyEvent");
 
     describe("mainview:MainViewManager", function () {
 
@@ -54,6 +56,7 @@ define(function (require, exports, module) {
             EditorManager           = testWindow.brackets.test.EditorManager;
             MainViewManager         = testWindow.brackets.test.MainViewManager;
             ProjectManager          = testWindow.brackets.test.ProjectManager;
+            WorkspaceManager        = testWindow.brackets.test.WorkspaceManager;
             FileSystem              = testWindow.brackets.test.FileSystem;
             Dialogs                 = testWindow.brackets.test.Dialogs;
             _$                      = testWindow.$;
@@ -823,6 +826,57 @@ define(function (require, exports, module) {
 
                 expect(traverseResult.file).toEqual(getFileObject("test.html"));
                 expect(traverseResult.pane).toEqual("second-pane");
+            });
+        });
+
+        describe("Bottom panel toggle with escape", function () {
+            let panel1, panel2;
+            beforeAll(function () {
+                let samplePanelTemplate = `<div id="some-panel1" class="bottom-panel vert-resizable top-resizer"></div>`;
+                panel1 = WorkspaceManager.createBottomPanel("panel1", _$(samplePanelTemplate), 100);
+                panel1.show();
+                expect(panel1.isVisible()).toBeTrue();
+            });
+
+            it("should bottom panel not toggle visibility on escape when there is no editor", async function () {
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeTrue();
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeTrue();
+            });
+
+            it("should bottom panel toggle visibility on escape on focus in code editor", async function () {
+                panel1.show();
+                expect(panel1.isVisible()).toBeTrue();
+
+                expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeFalse();
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeTrue();
+            });
+
+            it("should bottom panel only toggle visibility of last shown panel", async function () {
+                panel1.show();
+                expect(panel1.isVisible()).toBeTrue();
+                let samplePanelTemplate = `<div id="some-panel2" class="bottom-panel vert-resizable top-resizer"></div>`;
+                panel2 = WorkspaceManager.createBottomPanel("panel1", _$(samplePanelTemplate), 100);
+                panel2.show();
+                expect(panel2.isVisible()).toBeTrue();
+
+                expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel2.isVisible()).toBeFalse();
+                expect(panel1.isVisible()).toBeTrue();
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel2.isVisible()).toBeTrue();
+                expect(panel1.isVisible()).toBeTrue();
             });
         });
     });

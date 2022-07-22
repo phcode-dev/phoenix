@@ -90,6 +90,18 @@ define(function (require, exports, module) {
                 self._$previewEditor.editor.updateLayout();
             }
         }).observe(this._panel.$panel[0]);
+
+        function _showPanelIfResultsAvailable(_e, shownPanelID) {
+            if(self._model.numMatches === 0){
+                self._panel.hide();
+            }
+            if(shownPanelID === self._panel.panelID && !self._model.isReplace){
+                // If it is replace, _handleModelChange will close the find bar as we dont
+                // do replace if there is a model change. So we wont enter this flow if it is a replace operation
+                self._handleModelChange();
+            }
+        }
+        WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN, _showPanelIfResultsAvailable);
     }
     EventDispatcher.makeEventDispatcher(SearchResultsView.prototype);
 
@@ -276,10 +288,10 @@ define(function (require, exports, module) {
         this._panel.$panel
             .off(".searchResults")  // Remove the old events
             .on("dblclick.searchResults", ".toolbar", function() {
-                self.close();
+                self._panel.hide();
             })
             .on("click.searchResults", ".close", function () {
-                self.close();
+                self._panel.hide();
             })
             // The link to go the first page
             .on("click.searchResults", ".first-page:not(.disabled)", function () {

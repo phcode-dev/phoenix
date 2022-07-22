@@ -25,8 +25,9 @@
 define(function (require, exports, module) {
 
     const EventDispatcher = require("utils/EventDispatcher"),
-        EVENT_PLUGIN_PANEL_SHOWN = "plugin-panel-shown-event",
-        EVENT_PLUGIN_PANEL_HIDDEN = "plugin-panel-hidden-event";
+        EVENT_PANEL_SHOWN = "panelShown",
+        EVENT_PANEL_HIDDEN = "panelHidden",
+        PANEL_TYPE_PLUGIN_PANEL = "pluginPanel";
 
     /**
      * Represents a panel below the editor area (a child of ".content").
@@ -67,18 +68,22 @@ define(function (require, exports, module) {
      * Shows the panel
      */
     Panel.prototype.show = function () {
-        this.$toolbarIcon.addClass("selected-button");
-        this.$panel.show();
-        exports.trigger(EVENT_PLUGIN_PANEL_SHOWN, this.panelID);
+        if(!this.isVisible()){
+            this.$toolbarIcon.addClass("selected-button");
+            this.$panel.show();
+            exports.trigger(EVENT_PANEL_SHOWN, this.panelID);
+        }
     };
 
     /**
      * Hides the panel
      */
     Panel.prototype.hide = function () {
-        this.$toolbarIcon.removeClass("selected-button");
-        this.$panel.hide();
-        exports.trigger(EVENT_PLUGIN_PANEL_HIDDEN, this.panelID);
+        if(this.isVisible()){
+            this.$toolbarIcon.removeClass("selected-button");
+            this.$panel.hide();
+            exports.trigger(EVENT_PANEL_HIDDEN, this.panelID);
+        }
     };
 
     /**
@@ -93,12 +98,20 @@ define(function (require, exports, module) {
         }
     };
 
+    /**
+     * gets the Panle's type
+     * @return {string}
+     */
+    Panel.prototype.getPanelType = function () {
+        return PANEL_TYPE_PLUGIN_PANEL;
+    };
 
     EventDispatcher.makeEventDispatcher(exports);
 
     // Public API
     exports.Panel = Panel;
     //events
-    exports.EVENT_PLUGIN_PANEL_HIDDEN = EVENT_PLUGIN_PANEL_HIDDEN;
-    exports.EVENT_PLUGIN_PANEL_SHOWN = EVENT_PLUGIN_PANEL_SHOWN;
+    exports.EVENT_PANEL_HIDDEN = EVENT_PANEL_HIDDEN;
+    exports.EVENT_PANEL_SHOWN = EVENT_PANEL_SHOWN;
+    exports.PANEL_TYPE_PLUGIN_PANEL = PANEL_TYPE_PLUGIN_PANEL;
 });

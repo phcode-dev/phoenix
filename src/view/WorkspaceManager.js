@@ -37,12 +37,14 @@ define(function (require, exports, module) {
         EventDispatcher         = require("utils/EventDispatcher"),
         Resizer                 = require("utils/Resizer"),
         PluginPanelView         = require("view/PluginPanelView"),
-        PanelView               = require("view/PanelView");
+        PanelView               = require("view/PanelView"),
+        EditorManager       = require("editor/EditorManager"),
+        KeyEvent                = require("utils/KeyEvent");
 
     //constants
     const EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
-        EVENT_WORKSPACE_PANEL_SHOWN    = "workspacePanelShown",
-        EVENT_WORKSPACE_PANEL_HIDDEN   = "workspacePanelHidden",
+        EVENT_WORKSPACE_PANEL_SHOWN    = PanelView.EVENT_PANEL_SHOWN,
+        EVENT_WORKSPACE_PANEL_HIDDEN   = PanelView.EVENT_PANEL_HIDDEN,
         MAIN_TOOLBAR_WIDTH = 30;
 
     /**
@@ -86,6 +88,8 @@ define(function (require, exports, module) {
      * @type {boolean}
      */
     var windowResizing = false;
+
+    let lastToggledBottomPanel = null;
 
 
     /**
@@ -304,9 +308,11 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     PanelView.on(PanelView.EVENT_PANEL_SHOWN, (event, panelID)=>{
+        lastToggledBottomPanel = getPanelForID(panelID);
         exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
     });
     PanelView.on(PanelView.EVENT_PANEL_HIDDEN, (event, panelID)=>{
+        lastToggledBottomPanel = getPanelForID(panelID);
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
     });
 
@@ -339,7 +345,7 @@ define(function (require, exports, module) {
         recomputeLayout(true);
     }
 
-    PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_SHOWN, (event, panelID)=>{
+    PluginPanelView.on(PluginPanelView.EVENT_PANEL_SHOWN, (event, panelID)=>{
         panelShowInProgress = true;
         _showPluginSidePanel(panelID);
         if(currentlyShownPanel){
@@ -350,7 +356,7 @@ define(function (require, exports, module) {
         panelShowInProgress = false;
     });
 
-    PluginPanelView.on(PluginPanelView.EVENT_PLUGIN_PANEL_HIDDEN, (event, panelID)=>{
+    PluginPanelView.on(PluginPanelView.EVENT_PANEL_HIDDEN, (event, panelID)=>{
         if(!panelShowInProgress){
             _hidePluginSidePanel();
             currentlyShownPanel = null;
@@ -366,10 +372,42 @@ define(function (require, exports, module) {
         return false;
     }
 
+    // pressing escape when focused on editor will toggle the last opened bottom panel
+    function _handleKeydown(e) {
+        let focussedEditor = EditorManager.getFocusedEditor();
+        if(!focussedEditor){
+            return;
+        }
+        if (e.keyCode === KeyEvent.DOM_VK_ESCAPE && lastToggledBottomPanel) {
+            let visibility = !lastToggledBottomPanel.isVisible();
+            if(visibility){
+                lastToggledBottomPanel.show();
+            } else {
+                lastToggledBottomPanel.hide();
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    }
+    window.document.body.addEventListener("keydown", _handleKeydown, true);
+
+    /**
+     * Sets the panel to toggle when escape key is pressed in the editor area with the given panelID.
+     * This can be used to override the default panel keyboard toggle behavior, but use this sparsely.
+     * @param panelId
+     */
+    function setEscapeKeyTogglePanel(panelId) {
+        let panel = getPanelForID(panelId);
+        if(panel){
+            lastToggledBottomPanel = panel;
+        }
+    }
+
     // Define public API
     exports.createBottomPanel               = createBottomPanel;
     exports.createPluginPanel               = createPluginPanel;
     exports.isPanelVisible                  = isPanelVisible;
+    exports.setEscapeKeyTogglePanel         = setEscapeKeyTogglePanel;
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;
@@ -377,4 +415,6 @@ define(function (require, exports, module) {
     exports.EVENT_WORKSPACE_UPDATE_LAYOUT   = EVENT_WORKSPACE_UPDATE_LAYOUT;
     exports.EVENT_WORKSPACE_PANEL_SHOWN     = EVENT_WORKSPACE_PANEL_SHOWN;
     exports.EVENT_WORKSPACE_PANEL_HIDDEN    = EVENT_WORKSPACE_PANEL_HIDDEN;
+    exports.PANEL_TYPE_BOTTOM_PANEL         = PanelView.PANEL_TYPE_BOTTOM_PANEL;
+    exports.PANEL_TYPE_PLUGIN_PANEL         = PluginPanelView.PANEL_TYPE_PLUGIN_PANEL;
 });

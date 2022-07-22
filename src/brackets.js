@@ -264,6 +264,7 @@ define(function (require, exports, module) {
             PerfUtils: require("utils/PerfUtils"),
             PreferencesManager: require("preferences/PreferencesManager"),
             ProjectManager: require("project/ProjectManager"),
+            WorkspaceManager: require("view/WorkspaceManager"),
             RemoteAgent: require("LiveDevelopment/Agents/RemoteAgent"),
             SearchResultsView: require("search/SearchResultsView"),
             ScrollTrackMarkers: require("search/ScrollTrackMarkers"),
