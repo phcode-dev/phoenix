@@ -166,8 +166,14 @@ define(function (require, exports, module) {
         }
 
         // Get initial query/replace text
-        var currentEditor = EditorManager.getActiveEditor(),
-            initialQuery = FindBar.getInitialQuery(_findBar, currentEditor);
+        let currentEditor = EditorManager.getActiveEditor();
+        let focussedEditor = EditorManager.getFocusedEditor();
+        if(!focussedEditor && _resultsView._$previewEditor && _resultsView._$previewEditor.editor
+            && _resultsView._$previewEditor.editor.hasFocus()){
+            currentEditor =  _resultsView._$previewEditor.editor;
+        }
+
+        let initialQuery = FindBar.getInitialQuery(_findBar, currentEditor);
 
         // Close our previous find bar, if any. (The open() of the new _findBar will
         // take care of closing any other find bar instances.)
