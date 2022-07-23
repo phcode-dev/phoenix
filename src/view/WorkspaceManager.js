@@ -378,7 +378,23 @@ define(function (require, exports, module) {
         if(!focussedEditor){
             return;
         }
+        if (e.keyCode === KeyEvent.DOM_VK_ESCAPE && e.shiftKey) {
+            // shift + escape will close all open panels one by one
+            let allPanelsIDs = getAllPanelIDs();
+            for(let panelID of allPanelsIDs){
+                let panel = getPanelForID(panelID);
+                if(panel.getPanelType() === PanelView.PANEL_TYPE_BOTTOM_PANEL && panel.isVisible()){
+                    panel.hide();
+                    lastToggledBottomPanel = panel;
+                    break;
+                }
+            }
+            e.stopPropagation();
+            e.preventDefault();
+            return;
+        }
         if (e.keyCode === KeyEvent.DOM_VK_ESCAPE && lastToggledBottomPanel) {
+            // just escape will toggle last toggled panel
             let visibility = !lastToggledBottomPanel.isVisible();
             if(visibility){
                 lastToggledBottomPanel.show();
