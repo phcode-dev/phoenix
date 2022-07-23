@@ -55,10 +55,36 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Registers a call back function that will be called just before panel is shown. The handler should return true
+     * if the panel can be shown, else return false and the panel will not be shown.
+     * @param {function|null} canShowHandlerFn function that should return true of false if the panel can be shown/not.
+     * or null to clear the handler.
+     * @return {boolean} true if visible, false if not
+     */
+    Panel.prototype.registerCanBeShownHandler = function (canShowHandlerFn) {
+        if(this.canBeShownHandler && canShowHandlerFn){
+            console.warn(`canBeShownHandler already registered for panel: ${this.panelID}. will be overwritten`);
+        }
+        this.canBeShownHandler = canShowHandlerFn;
+    };
+
+    /**
+     * Returns true if th panel can be shown, else false.
+     * @return {boolean}
+     */
+    Panel.prototype.canBeShown = function () {
+        let self = this;
+        if(self.canBeShownHandler){
+            return self.canBeShownHandler();
+        }
+        return true;
+    };
+
+    /**
      * Shows the panel
      */
     Panel.prototype.show = function () {
-        if(!this.isVisible()){
+        if(!this.isVisible() && this.canBeShown()){
             Resizer.show(this.$panel[0]);
             exports.trigger(EVENT_PANEL_SHOWN, this.panelID);
         }
