@@ -89,7 +89,8 @@ define(function (require, exports, module) {
      */
     var windowResizing = false;
 
-    let lastToggledBottomPanel = null;
+    let lastHiddenBottomPanelStack = [],
+        lastShownBottomPanelStack = [];
 
 
     /**
@@ -308,11 +309,15 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     PanelView.on(PanelView.EVENT_PANEL_SHOWN, (event, panelID)=>{
-        lastToggledBottomPanel = getPanelForID(panelID);
+        lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== panelID);
+        lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== panelID);
+        lastShownBottomPanelStack.push(panelID);
         exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, panelID);
     });
     PanelView.on(PanelView.EVENT_PANEL_HIDDEN, (event, panelID)=>{
-        lastToggledBottomPanel = getPanelForID(panelID);
+        lastHiddenBottomPanelStack = lastHiddenBottomPanelStack.filter(item => item !== panelID);
+        lastHiddenBottomPanelStack.push(panelID);
+        lastShownBottomPanelStack = lastShownBottomPanelStack.filter(item => item !== panelID);
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
     });
 
@@ -372,42 +377,64 @@ define(function (require, exports, module) {
         return false;
     }
 
+    function _showLastHiddenPanelIfPossible() {
+        while(lastHiddenBottomPanelStack.length > 0){
+            let panelToShow = getPanelForID(lastHiddenBottomPanelStack.pop());
+            if(panelToShow.canBeShown()){
+                panelToShow.show();
+                return;
+            }
+        }
+    }
+
+    function _handleEscapeKey(e) {
+        let allPanelsIDs = getAllPanelIDs();
+        // first we see if there is any least recently shown panel
+        if(lastShownBottomPanelStack.length > 0){
+            let panelToHide = getPanelForID(lastShownBottomPanelStack.pop());
+            panelToHide.hide();
+            return;
+        }
+        // if not, see if there is any open panels that are not yet tracked in the least recently used stacks.
+        for(let panelID of allPanelsIDs){
+            let panel = getPanelForID(panelID);
+            if(panel.getPanelType() === PanelView.PANEL_TYPE_BOTTOM_PANEL && panel.isVisible()){
+                panel.hide();
+                lastHiddenBottomPanelStack.push(panelID);
+                return;
+            }
+        }
+        // no panels hidden, we will toggle the last hidden panel with succeeding escape key presses
+        _showLastHiddenPanelIfPossible();
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
+    function _handleShiftEscapeKey(e) {
+        // show hidden panels one by one
+        _showLastHiddenPanelIfPossible();
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
     // pressing escape when focused on editor will toggle the last opened bottom panel
     function _handleKeydown(e) {
         let focussedEditor = EditorManager.getFocusedEditor();
         if(!focussedEditor){
             return;
         }
-        if (e.keyCode === KeyEvent.DOM_VK_ESCAPE && lastToggledBottomPanel) {
-            let visibility = !lastToggledBottomPanel.isVisible();
-            if(visibility){
-                lastToggledBottomPanel.show();
-            } else {
-                lastToggledBottomPanel.hide();
-            }
-            e.stopPropagation();
-            e.preventDefault();
+        if (e.keyCode === KeyEvent.DOM_VK_ESCAPE  && e.shiftKey) {
+            _handleShiftEscapeKey(e);
+        } else if (e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
+            _handleEscapeKey(e);
         }
     }
     window.document.body.addEventListener("keydown", _handleKeydown, true);
-
-    /**
-     * Sets the panel to toggle when escape key is pressed in the editor area with the given panelID.
-     * This can be used to override the default panel keyboard toggle behavior, but use this sparsely.
-     * @param panelId
-     */
-    function setEscapeKeyTogglePanel(panelId) {
-        let panel = getPanelForID(panelId);
-        if(panel){
-            lastToggledBottomPanel = panel;
-        }
-    }
 
     // Define public API
     exports.createBottomPanel               = createBottomPanel;
     exports.createPluginPanel               = createPluginPanel;
     exports.isPanelVisible                  = isPanelVisible;
-    exports.setEscapeKeyTogglePanel         = setEscapeKeyTogglePanel;
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;
