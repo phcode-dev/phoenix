@@ -1223,7 +1223,7 @@ define(function (require, exports, module) {
 
     };
 
-    /*
+    /**
      * Restores the view state
      * @param {!EditorViewState} viewState - the view state object to restore
      */
@@ -1407,8 +1407,9 @@ define(function (require, exports, module) {
 
     };
 
-    /*
-     * gets the language for the selection. (Javascript selected from an HTML document or CSS selected from an HTML document, etc...)
+    /**
+     * gets the language for the selection. (Javascript selected from an HTML document or CSS selected from an HTML
+     * document, etc...)
      * @return {!Language}
      */
     Editor.prototype.getLanguageForSelection = function () {
