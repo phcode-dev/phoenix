@@ -66,12 +66,10 @@ define(function (require, exports, module) {
         LanguageManager    = require("language/LanguageManager"),
         EventDispatcher    = require("utils/EventDispatcher"),
         PerfUtils          = require("utils/PerfUtils"),
-        PopUpManager       = require("widgets/PopUpManager"),
         PreferencesManager = require("preferences/PreferencesManager"),
         TextRange          = require("document/TextRange").TextRange,
         TokenUtils         = require("utils/TokenUtils"),
         HTMLUtils          = require("language/HTMLUtils"),
-        ViewUtils          = require("utils/ViewUtils"),
         MainViewManager    = require("view/MainViewManager"),
         _                  = require("thirdparty/lodash");
 
@@ -79,7 +77,8 @@ define(function (require, exports, module) {
 
     let IndentHelper = require("./EditorHelper/IndentHelper"),
         EditorPreferences = require("./EditorHelper/EditorPreferences"),
-        ChangeHelper = require("./EditorHelper/ChangeHelper");
+        ChangeHelper = require("./EditorHelper/ChangeHelper"),
+        ErrorPopupHelper = require("./EditorHelper/ErrorPopupHelper");
 
     /** Editor preferences */
 
@@ -1314,127 +1313,7 @@ define(function (require, exports, module) {
      *
      * @param {string} errorMsg Error message to display
      */
-    Editor.prototype.displayErrorMessageAtCursor = function (errorMsg) {
-        var arrowBelow, cursorPos, cursorCoord, popoverRect,
-            top, left, clip, arrowCenter, arrowLeft,
-            self = this,
-            POPOVER_MARGIN = 10,
-            POPOVER_ARROW_HALF_WIDTH = 10,
-            POPOVER_ARROW_HALF_BASE = POPOVER_ARROW_HALF_WIDTH + 3; // 3 is border radius
-
-        function _removeListeners() {
-            self.off(".msgbox");
-        }
-
-        // PopUpManager.removePopUp() callback
-        function _clearMessagePopover() {
-            if (self._$messagePopover && self._$messagePopover.length > 0) {
-                // self._$messagePopover.remove() is done by PopUpManager
-                self._$messagePopover = null;
-            }
-            _removeListeners();
-        }
-
-        // PopUpManager.removePopUp() is called either directly by this closure, or by
-        // PopUpManager as a result of another popup being invoked.
-        function _removeMessagePopover() {
-            if (self._$messagePopover) {
-                PopUpManager.removePopUp(self._$messagePopover);
-            }
-        }
-
-        function _addListeners() {
-            self
-                .on("blur.msgbox",           _removeMessagePopover)
-                .on("change.msgbox",         _removeMessagePopover)
-                .on("cursorActivity.msgbox", _removeMessagePopover)
-                .on("update.msgbox",         _removeMessagePopover);
-        }
-
-        // Only 1 message at a time
-        if (this._$messagePopover) {
-            _removeMessagePopover();
-        }
-
-        // Make sure cursor is in view
-        cursorPos = this.getCursorPos();
-        this._codeMirror.scrollIntoView(cursorPos);
-
-        // Determine if arrow is above or below
-        cursorCoord = this._codeMirror.charCoords(cursorPos);
-
-        // Assume popover height is max of 2 lines
-        arrowBelow = (cursorCoord.top > 100);
-
-        // Text is dynamic, so build popover first so we can measure final width
-        this._$messagePopover = $("<div/>").addClass("popover-message").appendTo($("body"));
-        if (!arrowBelow) {
-            $("<div/>").addClass("arrowAbove").appendTo(this._$messagePopover);
-        }
-        $("<div/>").addClass("text").appendTo(this._$messagePopover).html(errorMsg);
-        if (arrowBelow) {
-            $("<div/>").addClass("arrowBelow").appendTo(this._$messagePopover);
-        }
-
-        // Estimate where to position popover.
-        top = (arrowBelow) ? cursorCoord.top - this._$messagePopover.height() - POPOVER_MARGIN
-                           : cursorCoord.bottom + POPOVER_MARGIN;
-        left = cursorCoord.left - (this._$messagePopover.width() / 2);
-
-        popoverRect = {
-            top: top,
-            left: left,
-            height: this._$messagePopover.height(),
-            width: this._$messagePopover.width()
-        };
-
-        // See if popover is clipped on any side
-        clip = ViewUtils.getElementClipSize($("#editor-holder"), popoverRect);
-
-        // Prevent horizontal clipping
-        if (clip.left > 0) {
-            left += clip.left;
-        } else if (clip.right > 0) {
-            left -= clip.right;
-        }
-
-        // Popover text and arrow are positioned individually
-        this._$messagePopover.css({"top": top, "left": left});
-
-        // Position popover arrow centered over/under cursor...
-        arrowCenter = cursorCoord.left - left;
-
-        // ... but don't let it slide off text box
-        arrowCenter = Math.min(popoverRect.width - POPOVER_ARROW_HALF_BASE,
-                               Math.max(arrowCenter, POPOVER_ARROW_HALF_BASE));
-
-        arrowLeft = arrowCenter - POPOVER_ARROW_HALF_WIDTH;
-        if (arrowBelow) {
-            this._$messagePopover.find(".arrowBelow").css({"margin-left": arrowLeft});
-        } else {
-            this._$messagePopover.find(".arrowAbove").css({"margin-left": arrowLeft});
-        }
-
-        // Add listeners
-        PopUpManager.addPopUp(this._$messagePopover, _clearMessagePopover, true);
-        _addListeners();
-
-        // Animate open
-        AnimationUtils.animateUsingClass(this._$messagePopover[0], "animateOpen").done(function () {
-            // Make sure we still have a popover
-            if (self._$messagePopover && self._$messagePopover.length > 0) {
-                self._$messagePopover.addClass("open");
-
-                // Don't add scroll listeners until open so we don't get event
-                // from scrolling cursor into view
-                self.on("scroll.msgbox", _removeMessagePopover);
-
-                // Animate closed -- which includes delay to show message
-                AnimationUtils.animateUsingClass(self._$messagePopover[0], "animateClose", 6000)
-                    .done(_removeMessagePopover);
-            }
-        });
-    };
+    Editor.prototype.displayErrorMessageAtCursor = ErrorPopupHelper.displayErrorMessageAtCursor;
 
     /**
      * Returns the offset of the top of the virtual scroll area relative to the browser window (not the editor

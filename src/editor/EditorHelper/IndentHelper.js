@@ -4,18 +4,18 @@
  * Copyright (c) 2021 - present core.ai . All rights reserved.
  * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
  *
- * This program is free software: you can redistribute it and/or modify it
+ * self program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
+ * self program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
  * for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ * along with self program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
 
@@ -38,7 +38,9 @@ define(function (require, exports, module) {
      *     The selections to indent.
      */
     function _addIndentAtEachSelection(selections) {
-        var instance = this._codeMirror,
+        // eslint-disable-next-line no-invalid-this
+        let self = this;
+        var instance = self._codeMirror,
             usingTabs = instance.getOption("indentWithTabs"),
             indentUnit = instance.getOption("indentUnit"),
             edits = [];
@@ -56,7 +58,7 @@ define(function (require, exports, module) {
             edits.push({edit: {text: indentStr, start: sel.start}});
         });
 
-        this.document.doMultipleEdits(edits);
+        self.document.doMultipleEdits(edits);
     }
 
     /**
@@ -65,9 +67,11 @@ define(function (require, exports, module) {
      *     The selections to indent.
      */
     function _autoIndentEachSelection(selections) {
+        // eslint-disable-next-line no-invalid-this
+        let self = this;
         // Capture all the line lengths, so we can tell if anything changed.
-        // Note that this function should only be called if all selections are within a single line.
-        var instance = this._codeMirror,
+        // Note that self function should only be called if all selections are within a single line.
+        var instance = self._codeMirror,
             lineLengths = {};
         _.each(selections, function (sel) {
             lineLengths[sel.start.line] = instance.getLine(sel.start.line).length;
@@ -78,7 +82,7 @@ define(function (require, exports, module) {
 
         // If there were no code or selection changes, then indent each selection one more indent.
         var changed = false,
-            newSelections = this.getSelections();
+            newSelections = self.getSelections();
         if (newSelections.length === selections.length) {
             _.each(selections, function (sel, index) {
                 var newSel = newSelections[index];
@@ -100,6 +104,8 @@ define(function (require, exports, module) {
     }
 
     function _handleTabKey() {
+        // eslint-disable-next-line no-invalid-this
+        let self = this;
         // Tab key handling is done as follows:
         // 1. If any of the selections are multiline, just add one indent level to the
         //    beginning of all lines that intersect any selection.
@@ -120,9 +126,9 @@ define(function (require, exports, module) {
         // *outdent* the line. If we had more control over the autoindent algorithm or
         // implemented it ourselves, we could handle that case separately.
 
-        var instance = this._codeMirror,
+        var instance = self._codeMirror,
             selectionType = "indentAuto",
-            selections = this.getSelections();
+            selections = self.getSelections();
 
         _.each(selections, function (sel) {
             if (sel.start.line !== sel.end.line) {
@@ -145,12 +151,12 @@ define(function (require, exports, module) {
 
         case "indentAtSelection":
             // Case 2
-            this._addIndentAtEachSelection(selections);
+            self._addIndentAtEachSelection(selections);
             break;
 
         case "indentAuto":
             // Case 3
-            this._autoIndentEachSelection(selections);
+            self._autoIndentEachSelection(selections);
             break;
         }
     }
@@ -162,16 +168,18 @@ define(function (require, exports, module) {
      * @param {string} functionName name of the CodeMirror function to call if we handle the key
      */
     function _handleSoftTabNavigation(direction, functionName) {
-        var instance = this._codeMirror,
+        // eslint-disable-next-line no-invalid-this
+        let self = this;
+        var instance = self._codeMirror,
             overallJump = null;
 
         if (!instance.getOption("indentWithTabs") && PreferencesManager.get(SOFT_TABS)) {
             var indentUnit = instance.getOption("indentUnit");
 
-            _.each(this.getSelections(), function (sel) {
+            _.each(self.getSelections(), function (sel) {
                 if (CodeMirror.cmpPos(sel.start, sel.end) !== 0) {
-                    // This is a range - it will just collapse/be deleted regardless of the jump we set, so
-                    // we can just ignore it and continue. (We don't want to return false in this case since
+                    // self is a range - it will just collapse/be deleted regardless of the jump we set, so
+                    // we can just ignore it and continue. (We don't want to return false in self case since
                     // we want to keep looking at other ranges.)
                     return;
                 }
@@ -208,7 +216,7 @@ define(function (require, exports, module) {
                     }
                 }
 
-                // Did we calculate a jump, and is this jump value either the first one or
+                // Did we calculate a jump, and is self jump value either the first one or
                 // consistent with all the other jumps? If so, we're good. Otherwise, bail
                 // out of the foreach, since as soon as we hit an inconsistent jump we don't
                 // have to look any further.
@@ -234,6 +242,7 @@ define(function (require, exports, module) {
      * @param Editor
      */
     function addHelpers(Editor) {
+        // only private Editor APIs should be assigned below. Public APIs should be updated in Editor.js only.
         Editor.prototype._addIndentAtEachSelection = _addIndentAtEachSelection;
         Editor.prototype._autoIndentEachSelection = _autoIndentEachSelection;
         Editor.prototype._handleTabKey = _handleTabKey;
