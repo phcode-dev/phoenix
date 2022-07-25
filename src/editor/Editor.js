@@ -384,6 +384,7 @@ define(function (require, exports, module) {
 
     IndentHelper.addHelpers(Editor);
     ChangeHelper.addHelpers(Editor);
+    InlineWidgetHelper.addHelpers(Editor);
 
     Editor.prototype.markPaneId = function (paneId) {
         this._paneId = paneId;
