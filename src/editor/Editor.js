@@ -212,7 +212,7 @@ define(function (require, exports, module) {
         validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_SPACE_UNITS, MAX_SPACE_UNITS),
         description: Strings.DESCRIPTION_SPACE_UNITS
     });
-    PreferencesManager.definePreference(STYLE_ACTIVE_LINE,  "boolean", false, {
+    PreferencesManager.definePreference(STYLE_ACTIVE_LINE,  "boolean", true, {
         description: Strings.DESCRIPTION_STYLE_ACTIVE_LINE
     });
     PreferencesManager.definePreference(TAB_SIZE,           "number", DEFAULT_TAB_SIZE, {
