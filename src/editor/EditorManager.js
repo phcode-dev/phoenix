@@ -636,7 +636,7 @@ define(function (require, exports, module) {
      * Returns the focused Editor within an inline text editor, or null if something else has focus
      * @return {?Editor}
      */
-    function _getFocusedInlineEditor() {
+    function getFocusedInlineEditor() {
         var focusedWidget = getFocusedInlineWidget();
         if (focusedWidget instanceof InlineTextEditor) {
             return focusedWidget.getFocusedEditor();
@@ -658,7 +658,7 @@ define(function (require, exports, module) {
         if (currentEditor) {
 
             // See if any inlines have focus
-            var focusedInline = _getFocusedInlineEditor();
+            var focusedInline = getFocusedInlineEditor();
             if (focusedInline) {
                 return focusedInline;
             }
@@ -751,6 +751,7 @@ define(function (require, exports, module) {
     exports.getActiveEditor               = getActiveEditor;
     exports.getCurrentFullEditor          = getCurrentFullEditor;
     exports.getFocusedEditor              = getFocusedEditor;
+    exports.getFocusedInlineEditor        = getFocusedInlineEditor;
 
 
     exports.registerInlineEditProvider    = registerInlineEditProvider;
