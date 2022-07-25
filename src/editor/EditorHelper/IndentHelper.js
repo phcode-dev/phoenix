@@ -241,5 +241,4 @@ define(function (require, exports, module) {
     }
 
     exports.addHelpers =addHelpers;
-    exports.SOFT_TABS = SOFT_TABS;
 });
