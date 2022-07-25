@@ -20,7 +20,7 @@
  */
 
 /**
- * Editor instance helpers for indentation relator editor flows.
+ * Editor instance helpers change handling. Only to be used from Editor.js.
  */
 
 define(function (require, exports, module) {

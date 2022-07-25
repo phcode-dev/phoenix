@@ -1312,6 +1312,7 @@ define(function (require, exports, module) {
      * cursor if space allows, otherwise below.
      *
      * @param {string} errorMsg Error message to display
+     * @function
      */
     Editor.prototype.displayErrorMessageAtCursor = ErrorPopupHelper.displayErrorMessageAtCursor;
 
