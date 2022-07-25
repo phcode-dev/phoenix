@@ -27,9 +27,10 @@ define(function (require, exports, module) {
 
     const _ = require("thirdparty/lodash"),
         CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
-        PreferencesManager = require("preferences/PreferencesManager");
+        PreferencesManager = require("preferences/PreferencesManager"),
+        EditorPreferences = require("./EditorPreferences");
 
-    const SOFT_TABS = "softTabs";
+    const SOFT_TABS = EditorPreferences.SOFT_TABS;
 
     /**
      * Helper function for `_handleTabKey()` (case 2) - see comment in that function.
