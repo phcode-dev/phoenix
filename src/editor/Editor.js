@@ -78,7 +78,8 @@ define(function (require, exports, module) {
     let IndentHelper = require("./EditorHelper/IndentHelper"),
         EditorPreferences = require("./EditorHelper/EditorPreferences"),
         ChangeHelper = require("./EditorHelper/ChangeHelper"),
-        ErrorPopupHelper = require("./EditorHelper/ErrorPopupHelper");
+        ErrorPopupHelper = require("./EditorHelper/ErrorPopupHelper"),
+        InlineWidgetHelper = require("./EditorHelper/InlineWidgetHelper");
 
     /** Editor preferences */
 
@@ -1118,194 +1119,46 @@ define(function (require, exports, module) {
      * @return {$.Promise} A promise object that is resolved when the widget has been added (but might
      *     still be animating open). Never rejected.
      */
-    Editor.prototype.addInlineWidget = function (pos, inlineWidget, scrollLineIntoView) {
-        var self = this,
-            queue = this._inlineWidgetQueues[pos.line],
-            deferred = new $.Deferred();
-        if (!queue) {
-            queue = new Async.PromiseQueue();
-            this._inlineWidgetQueues[pos.line] = queue;
-        }
-        queue.add(function () {
-            self._addInlineWidgetInternal(pos, inlineWidget, scrollLineIntoView, deferred);
-            return deferred.promise();
-        });
-        return deferred.promise();
-    };
-
-    /**
-     * @private
-     * Does the actual work of addInlineWidget().
-     */
-    Editor.prototype._addInlineWidgetInternal = function (pos, inlineWidget, scrollLineIntoView, deferred) {
-        var self = this;
-
-        this.removeAllInlineWidgetsForLine(pos.line).done(function () {
-            if (scrollLineIntoView === undefined) {
-                scrollLineIntoView = true;
-            }
-
-            if (scrollLineIntoView) {
-                self._codeMirror.scrollIntoView(pos);
-            }
-
-            inlineWidget.info = self._codeMirror.addLineWidget(pos.line, inlineWidget.htmlContent,
-                                                               { coverGutter: true, noHScroll: true });
-            CodeMirror.on(inlineWidget.info.line, "delete", function () {
-                self._removeInlineWidgetInternal(inlineWidget);
-            });
-            self._inlineWidgets.push(inlineWidget);
-
-            // Set up the widget to start closed, then animate open when its initial height is set.
-            inlineWidget.$htmlContent.height(0);
-            AnimationUtils.animateUsingClass(inlineWidget.htmlContent, "animating")
-                .done(function () {
-                    deferred.resolve();
-                });
-
-            // Callback to widget once parented to the editor. The widget should call back to
-            // setInlineWidgetHeight() in order to set its initial height and animate open.
-            inlineWidget.onAdded();
-        });
-    };
+    Editor.prototype.addInlineWidget = InlineWidgetHelper.addInlineWidget;
 
     /**
      * Removes all inline widgets
      */
-    Editor.prototype.removeAllInlineWidgets = function () {
-        // copy the array because _removeInlineWidgetInternal will modify the original
-        var widgets = [].concat(this.getInlineWidgets());
-
-        return Async.doInParallel(
-            widgets,
-            this.removeInlineWidget.bind(this)
-        );
-    };
+    Editor.prototype.removeAllInlineWidgets = InlineWidgetHelper.removeAllInlineWidgets;
 
     /**
      * Removes the given inline widget.
      * @param {number} inlineWidget The widget to remove.
      * @return {$.Promise} A promise that is resolved when the inline widget is fully closed and removed from the DOM.
      */
-    Editor.prototype.removeInlineWidget = function (inlineWidget) {
-        var deferred = new $.Deferred(),
-            self = this;
-
-        function finishRemoving() {
-            self._codeMirror.removeLineWidget(inlineWidget.info);
-            self._removeInlineWidgetInternal(inlineWidget);
-            deferred.resolve();
-        }
-
-        if (!inlineWidget.closePromise) {
-            // Remove the inline widget from our internal list immediately, so
-            // everyone external to us knows it's essentially already gone. We
-            // don't want to wait until it's done animating closed (but we do want
-            // the other stuff in _removeInlineWidgetInternal to wait until then).
-            self._removeInlineWidgetFromList(inlineWidget);
-
-            // If we're not visible (in which case the widget will have 0 client height),
-            // don't try to do the animation, because nothing will happen and we won't get
-            // called back right away. (The animation would happen later when we switch
-            // back to the editor.)
-            if (self.isFullyVisible()) {
-                AnimationUtils.animateUsingClass(inlineWidget.htmlContent, "animating")
-                    .done(finishRemoving);
-                inlineWidget.$htmlContent.height(0);
-            } else {
-                finishRemoving();
-            }
-            inlineWidget.closePromise = deferred.promise();
-        }
-        return inlineWidget.closePromise;
-    };
+    Editor.prototype.removeInlineWidget = InlineWidgetHelper.removeInlineWidget;
 
     /**
      * Removes all inline widgets for a given line
      * @param {number} lineNum The line number to modify
      */
-    Editor.prototype.removeAllInlineWidgetsForLine = function (lineNum) {
-        var lineInfo = this._codeMirror.lineInfo(lineNum),
-            widgetInfos = (lineInfo && lineInfo.widgets) ? [].concat(lineInfo.widgets) : null,
-            self = this;
-
-        if (widgetInfos && widgetInfos.length) {
-            // Map from CodeMirror LineWidget to Brackets InlineWidget
-            var inlineWidget,
-                allWidgetInfos = this._inlineWidgets.map(function (w) {
-                    return w.info;
-                });
-
-            return Async.doInParallel(
-                widgetInfos,
-                function (info) {
-                    // Lookup the InlineWidget object using the same index
-                    inlineWidget = self._inlineWidgets[allWidgetInfos.indexOf(info)];
-                    if (inlineWidget) {
-                        return self.removeInlineWidget(inlineWidget);
-                    }
-                    return new $.Deferred().resolve().promise();
-
-                }
-            );
-        }
-        return new $.Deferred().resolve().promise();
-
-    };
-
-    /**
-     * Cleans up the given inline widget from our internal list of widgets. It's okay
-     * to call this multiple times for the same widget--it will just do nothing if
-     * the widget has already been removed.
-     * @param {InlineWidget} inlineWidget  an inline widget.
-     */
-    Editor.prototype._removeInlineWidgetFromList = function (inlineWidget) {
-        var l = this._inlineWidgets.length,
-            i;
-        for (i = 0; i < l; i++) {
-            if (this._inlineWidgets[i] === inlineWidget) {
-                this._inlineWidgets.splice(i, 1);
-                break;
-            }
-        }
-    };
-
-    /**
-     * Removes the inline widget from the editor and notifies it to clean itself up.
-     * @param {InlineWidget} inlineWidget  an inline widget.
-     */
-    Editor.prototype._removeInlineWidgetInternal = function (inlineWidget) {
-        if (!inlineWidget.isClosed) {
-            this._removeInlineWidgetFromList(inlineWidget);
-            inlineWidget.onClosed();
-            inlineWidget.isClosed = true;
-        }
-    };
+    Editor.prototype.removeAllInlineWidgetsForLine = InlineWidgetHelper.removeAllInlineWidgetsForLine;
 
     /**
      * Returns a list of all inline widgets currently open in this editor. Each entry contains the
      * inline's id, and the data parameter that was passed to addInlineWidget().
      * @return {!Array.<{id:number, data:Object}>}
      */
-    Editor.prototype.getInlineWidgets = function () {
-        return this._inlineWidgets;
-    };
+    Editor.prototype.getInlineWidgets = InlineWidgetHelper.getInlineWidgets;
 
-      /**
+    /**
      * Returns the currently focused inline widget, if any.
      * @return {?InlineWidget}
      */
-    Editor.prototype.getFocusedInlineWidget = function () {
-        var result = null;
+    Editor.prototype.getFocusedInlineWidget = InlineWidgetHelper.getFocusedInlineWidget;
 
-        this.getInlineWidgets().forEach(function (widget) {
-            if (widget.hasFocus()) {
-                result = widget;
-            }
-        });
-
-        return result;
-    };
+    /**
+     * Sets the height of an inline widget in this editor.
+     * @param {!InlineWidget} inlineWidget The widget whose height should be set.
+     * @param {!number} height The height of the widget.
+     * @param {boolean=} ensureVisible Whether to scroll the entire widget into view. Default false.
+     */
+    Editor.prototype.setInlineWidgetHeight = InlineWidgetHelper.setInlineWidgetHeight;
 
     /**
      * Display temporary popover message at current cursor position. Display message above
@@ -1327,76 +1180,6 @@ define(function (require, exports, module) {
         var topPadding = this._getLineSpaceElement().offsetTop, // padding within mover
             scroller = this.getScrollerElement();
         return $(scroller).offset().top - scroller.scrollTop + topPadding;
-    };
-
-    /**
-     * Sets the height of an inline widget in this editor.
-     * @param {!InlineWidget} inlineWidget The widget whose height should be set.
-     * @param {!number} height The height of the widget.
-     * @param {boolean=} ensureVisible Whether to scroll the entire widget into view. Default false.
-     */
-    Editor.prototype.setInlineWidgetHeight = function (inlineWidget, height, ensureVisible) {
-        var self = this,
-            node = inlineWidget.htmlContent,
-            oldHeight = (node && $(node).height()) || 0,
-            changed = (oldHeight !== height),
-            isAttached = inlineWidget.info !== undefined;
-
-        function updateHeight() {
-            // Notify CodeMirror for the height change.
-            if (isAttached) {
-                inlineWidget.info.changed();
-            }
-        }
-
-        function setOuterHeight() {
-            function finishAnimating(e) {
-                if (e.target === node) {
-                    updateHeight();
-                    $(node).off("webkitTransitionEnd", finishAnimating);
-                }
-            }
-            $(node).height(height);
-            if ($(node).hasClass("animating")) {
-                $(node).on("webkitTransitionEnd", finishAnimating);
-            } else {
-                updateHeight();
-            }
-        }
-
-        // Make sure we set an explicit height on the widget, so children can use things like
-        // min-height if they want.
-        if (changed || !node.style.height) {
-            // If we're animating, set the wrapper's height on a timeout so the layout is finished before we animate.
-            if ($(node).hasClass("animating")) {
-                window.setTimeout(setOuterHeight, 0);
-            } else {
-                setOuterHeight();
-            }
-        }
-
-        if (ensureVisible && isAttached) {
-            var offset = $(node).offset(), // offset relative to document
-                position = $(node).position(), // position within parent linespace
-                scrollerTop = self.getVirtualScrollAreaTop();
-
-            self._codeMirror.scrollIntoView({
-                left: position.left,
-                top: offset.top - scrollerTop,
-                right: position.left, // don't try to make the right edge visible
-                bottom: offset.top + height - scrollerTop
-            });
-        }
-    };
-
-    /**
-     * @private
-     * Get the starting line number for an inline widget.
-     * @param {!InlineWidget} inlineWidget
-     * @return {number} The line number of the widget or -1 if not found.
-     */
-    Editor.prototype._getInlineWidgetLineNumber = function (inlineWidget) {
-        return this._codeMirror.getLineNumber(inlineWidget.info.line);
     };
 
     /** Gives focus to the editor control */
