@@ -69,10 +69,8 @@ define(function (require, exports, module) {
         PerfUtils          = require("utils/PerfUtils"),
         PopUpManager       = require("widgets/PopUpManager"),
         PreferencesManager = require("preferences/PreferencesManager"),
-        Strings            = require("strings"),
         TextRange          = require("document/TextRange").TextRange,
         TokenUtils         = require("utils/TokenUtils"),
-        ValidationUtils    = require("utils/ValidationUtils"),
         HTMLUtils          = require("language/HTMLUtils"),
         ViewUtils          = require("utils/ViewUtils"),
         MainViewManager    = require("view/MainViewManager"),
@@ -80,7 +78,8 @@ define(function (require, exports, module) {
 
     /** Editor helpers */
 
-    let IndentHelper = require("./EditorHelper/IndentHelper");
+    let IndentHelper = require("./EditorHelper/IndentHelper"),
+        EditorPreferences = require("./EditorHelper/EditorPreferences");
 
     /** Editor preferences */
 
@@ -93,158 +92,30 @@ define(function (require, exports, module) {
 
     let cmOptions         = {};
 
+    EditorPreferences.init(cmOptions);
 
-    var CLOSE_BRACKETS      = "closeBrackets",
-        CLOSE_TAGS          = "closeTags",
-        DRAG_DROP           = "dragDropText",
-        HIGHLIGHT_MATCHES   = "highlightMatches",
-        LINEWISE_COPY_CUT   = "lineWiseCopyCut",
-        SCROLL_PAST_END     = "scrollPastEnd",
-        SHOW_CURSOR_SELECT  = "showCursorWhenSelecting",
-        SHOW_LINE_NUMBERS   = "showLineNumbers",
-        SMART_INDENT        = "smartIndent",
-        SOFT_TABS           = IndentHelper.SOFT_TABS,
-        SPACE_UNITS         = "spaceUnits",
-        STYLE_ACTIVE_LINE   = "styleActiveLine",
-        TAB_SIZE            = "tabSize",
-        UPPERCASE_COLORS    = "uppercaseColors",
-        USE_TAB_CHAR        = "useTabChar",
-        WORD_WRAP           = "wordWrap",
-        AUTO_HIDE_SEARCH    = "autoHideSearch",
-        INDENT_LINE_COMMENT   = "indentLineComment",
-        INDENT_LINE_COMMENT = "indentLineComment",
-        INPUT_STYLE         = "inputStyle";
+    const CLOSE_BRACKETS    = EditorPreferences.CLOSE_BRACKETS,
+        CLOSE_TAGS          = EditorPreferences.CLOSE_TAGS,
+        DRAG_DROP           = EditorPreferences.DRAG_DROP,
+        HIGHLIGHT_MATCHES   = EditorPreferences.HIGHLIGHT_MATCHES,
+        LINEWISE_COPY_CUT   = EditorPreferences.LINEWISE_COPY_CUT,
+        SCROLL_PAST_END     = EditorPreferences.SCROLL_PAST_END,
+        SHOW_CURSOR_SELECT  = EditorPreferences.SHOW_CURSOR_SELECT,
+        SHOW_LINE_NUMBERS   = EditorPreferences.SHOW_LINE_NUMBERS,
+        SMART_INDENT        = EditorPreferences.SMART_INDENT,
+        SPACE_UNITS         = EditorPreferences.SPACE_UNITS,
+        STYLE_ACTIVE_LINE   = EditorPreferences.STYLE_ACTIVE_LINE,
+        TAB_SIZE            = EditorPreferences.TAB_SIZE,
+        USE_TAB_CHAR        = EditorPreferences.USE_TAB_CHAR,
+        WORD_WRAP           = EditorPreferences.WORD_WRAP,
+        INDENT_LINE_COMMENT   = EditorPreferences.INDENT_LINE_COMMENT,
+        INPUT_STYLE         = EditorPreferences.INPUT_STYLE;
 
-    /**
-     * Constants
-     * @type {number}
-     */
-    var MIN_SPACE_UNITS         =  1,
-        MIN_TAB_SIZE            =  1,
-        DEFAULT_SPACE_UNITS     =  4,
-        DEFAULT_TAB_SIZE        =  4,
-        MAX_SPACE_UNITS         = 10,
-        MAX_TAB_SIZE            = 10;
+    const LINE_NUMBER_GUTTER = EditorPreferences.LINE_NUMBER_GUTTER,
+        LINE_NUMBER_GUTTER_PRIORITY     = EditorPreferences.LINE_NUMBER_GUTTER_PRIORITY,
+        CODE_FOLDING_GUTTER_PRIORITY    = EditorPreferences.CODE_FOLDING_GUTTER_PRIORITY;
 
-    var LINE_NUMBER_GUTTER = "CodeMirror-linenumbers",
-        LINE_NUMBER_GUTTER_PRIORITY     = 100,
-        CODE_FOLDING_GUTTER_PRIORITY    = 1000;
-
-    // Mappings from Brackets preferences to CodeMirror options
-    cmOptions[CLOSE_BRACKETS]     = "autoCloseBrackets";
-    cmOptions[CLOSE_TAGS]         = "autoCloseTags";
-    cmOptions[DRAG_DROP]          = "dragDrop";
-    cmOptions[HIGHLIGHT_MATCHES]  = "highlightSelectionMatches";
-    cmOptions[LINEWISE_COPY_CUT]  = "lineWiseCopyCut";
-    cmOptions[SCROLL_PAST_END]    = "scrollPastEnd";
-    cmOptions[SHOW_CURSOR_SELECT] = "showCursorWhenSelecting";
-    cmOptions[SHOW_LINE_NUMBERS]  = "lineNumbers";
-    cmOptions[SMART_INDENT]       = "smartIndent";
-    cmOptions[SPACE_UNITS]        = "indentUnit";
-    cmOptions[STYLE_ACTIVE_LINE]  = "styleActiveLine";
-    cmOptions[TAB_SIZE]           = "tabSize";
-    cmOptions[USE_TAB_CHAR]       = "indentWithTabs";
-    cmOptions[WORD_WRAP]          = "lineWrapping";
-    cmOptions[INPUT_STYLE]        = "inputStyle";
-
-    PreferencesManager.definePreference(CLOSE_BRACKETS,     "boolean", true, {
-        description: Strings.DESCRIPTION_CLOSE_BRACKETS
-    });
-
-    // CodeMirror, html mode, set some tags do not close automatically.
-    // We do not initialize "dontCloseTags" because otherwise we would overwrite the default behavior of CodeMirror.
-    PreferencesManager.definePreference(CLOSE_TAGS,         "object", { whenOpening: true, whenClosing: true, indentTags: [] }, {
-        description: Strings.DESCRIPTION_CLOSE_TAGS,
-        keys: {
-            dontCloseTags: {
-                type: "array",
-                description: Strings.DESCRIPTION_CLOSE_TAGS_DONT_CLOSE_TAGS
-            },
-            whenOpening: {
-                type: "boolean",
-                description: Strings.DESCRIPTION_CLOSE_TAGS_WHEN_OPENING,
-                initial: true
-            },
-            whenClosing: {
-                type: "boolean",
-                description: Strings.DESCRIPTION_CLOSE_TAGS_WHEN_CLOSING,
-                initial: true
-            },
-            indentTags: {
-                type: "array",
-                description: Strings.DESCRIPTION_CLOSE_TAGS_INDENT_TAGS
-            }
-        }
-    });
-    PreferencesManager.definePreference(DRAG_DROP,          "boolean", true, {
-        description: Strings.DESCRIPTION_DRAG_DROP_TEXT
-    });
-    PreferencesManager.definePreference(HIGHLIGHT_MATCHES,  "boolean", false, {
-        description: Strings.DESCRIPTION_HIGHLIGHT_MATCHES,
-        keys: {
-            showToken: {
-                type: "boolean",
-                description: Strings.DESCRIPTION_HIGHLIGHT_MATCHES_SHOW_TOKEN,
-                initial: false
-            },
-            wordsOnly: {
-                type: "boolean",
-                description: Strings.DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY,
-                initial: false
-            }
-        }
-    });
-    PreferencesManager.definePreference(LINEWISE_COPY_CUT,  "boolean", true, {
-        description: Strings.DESCRIPTION_LINEWISE_COPY_CUT
-    });
-    PreferencesManager.definePreference(SCROLL_PAST_END,    "boolean", false, {
-        description: Strings.DESCRIPTION_SCROLL_PAST_END
-    });
-    PreferencesManager.definePreference(SHOW_CURSOR_SELECT, "boolean", false, {
-        description: Strings.DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING
-    });
-    PreferencesManager.definePreference(SHOW_LINE_NUMBERS,  "boolean", true, {
-        description: Strings.DESCRIPTION_SHOW_LINE_NUMBERS
-    });
-    PreferencesManager.definePreference(SMART_INDENT,       "boolean", true, {
-        description: Strings.DESCRIPTION_SMART_INDENT
-    });
-    PreferencesManager.definePreference(SOFT_TABS,          "boolean", true, {
-        description: Strings.DESCRIPTION_SOFT_TABS
-    });
-    PreferencesManager.definePreference(SPACE_UNITS,        "number", DEFAULT_SPACE_UNITS, {
-        validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_SPACE_UNITS, MAX_SPACE_UNITS),
-        description: Strings.DESCRIPTION_SPACE_UNITS
-    });
-    PreferencesManager.definePreference(STYLE_ACTIVE_LINE,  "boolean", true, {
-        description: Strings.DESCRIPTION_STYLE_ACTIVE_LINE
-    });
-    PreferencesManager.definePreference(TAB_SIZE,           "number", DEFAULT_TAB_SIZE, {
-        validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_TAB_SIZE, MAX_TAB_SIZE),
-        description: Strings.DESCRIPTION_TAB_SIZE
-    });
-    PreferencesManager.definePreference(UPPERCASE_COLORS,   "boolean", false, {
-        description: Strings.DESCRIPTION_UPPERCASE_COLORS
-    });
-    PreferencesManager.definePreference(USE_TAB_CHAR,       "boolean", false, {
-        description: Strings.DESCRIPTION_USE_TAB_CHAR
-    });
-    PreferencesManager.definePreference(WORD_WRAP,          "boolean", true, {
-        description: Strings.DESCRIPTION_WORD_WRAP
-    });
-
-    PreferencesManager.definePreference(AUTO_HIDE_SEARCH,   "boolean", true, {
-        description: Strings.DESCRIPTION_SEARCH_AUTOHIDE
-    });
-
-    PreferencesManager.definePreference(INDENT_LINE_COMMENT,  "boolean", false, {
-        description: Strings.DESCRIPTION_INDENT_LINE_COMMENT
-    });
-    PreferencesManager.definePreference(INPUT_STYLE,  "string", "textarea", {
-        description: Strings.DESCRIPTION_INPUT_STYLE
-    });
-
-    var editorOptions = Object.keys(cmOptions);
+    let editorOptions = Object.keys(cmOptions);
 
     /** Editor preferences */
 
