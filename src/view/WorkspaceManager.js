@@ -382,18 +382,19 @@ define(function (require, exports, module) {
             let panelToShow = getPanelForID(lastHiddenBottomPanelStack.pop());
             if(panelToShow.canBeShown()){
                 panelToShow.show();
-                return;
+                return true;
             }
         }
+        return false;
     }
 
-    function _handleEscapeKey(e) {
+    function _handleEscapeKey() {
         let allPanelsIDs = getAllPanelIDs();
         // first we see if there is any least recently shown panel
         if(lastShownBottomPanelStack.length > 0){
             let panelToHide = getPanelForID(lastShownBottomPanelStack.pop());
             panelToHide.hide();
-            return;
+            return true;
         }
         // if not, see if there is any open panels that are not yet tracked in the least recently used stacks.
         for(let panelID of allPanelsIDs){
@@ -401,32 +402,37 @@ define(function (require, exports, module) {
             if(panel.getPanelType() === PanelView.PANEL_TYPE_BOTTOM_PANEL && panel.isVisible()){
                 panel.hide();
                 lastHiddenBottomPanelStack.push(panelID);
-                return;
+                return true;
             }
         }
         // no panels hidden, we will toggle the last hidden panel with succeeding escape key presses
-        _showLastHiddenPanelIfPossible();
-        e.stopPropagation();
-        e.preventDefault();
+        return _showLastHiddenPanelIfPossible();
     }
 
-    function _handleShiftEscapeKey(e) {
+    function _handleShiftEscapeKey() {
         // show hidden panels one by one
-        _showLastHiddenPanelIfPossible();
-        e.stopPropagation();
-        e.preventDefault();
+        return _showLastHiddenPanelIfPossible();
     }
 
     // pressing escape when focused on editor will toggle the last opened bottom panel
     function _handleKeydown(e) {
         let focussedEditor = EditorManager.getFocusedEditor();
-        if(!focussedEditor){
+        if(!focussedEditor || EditorManager.getFocusedInlineEditor()){
+            // if there is no editor in focus, we do no panel toggling
+            // if there is an editor with an inline widget in focus, the escape key will be
+            // handled by the inline widget itself first.
             return;
         }
+        let handled = false;
         if (e.keyCode === KeyEvent.DOM_VK_ESCAPE  && e.shiftKey) {
-            _handleShiftEscapeKey(e);
+            handled = _handleShiftEscapeKey();
         } else if (e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
-            _handleEscapeKey(e);
+            handled = _handleEscapeKey();
+        }
+
+        if(handled){
+            e.stopPropagation();
+            e.preventDefault();
         }
     }
     window.document.body.addEventListener("keydown", _handleKeydown, true);

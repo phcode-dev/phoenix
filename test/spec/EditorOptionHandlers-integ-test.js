@@ -229,27 +229,28 @@ define(function (require, exports, module) {
 
 
         describe("Toggle Active Line", function () {
-            it("should NOT show active line in main editor by default", async function () {
+            it("should show active line in main editor by default", async function () {
                 await openEditor(HTML_FILE);
 
                 var editor = EditorManager.getCurrentFullEditor();
-                checkActiveLine(editor, 5, false);
+                checkActiveLine(editor, 5, true);
             });
 
-            it("should NOT show active line in inline editor by default", async function () {
+            it("should show active line in inline editor by default", async function () {
                 await openInlineEditor();
 
                 var editor = EditorManager.getCurrentFullEditor().getInlineWidgets()[0].editor;
-                checkActiveLine(editor, 0, false);
+                checkActiveLine(editor, 0, true);
             });
 
-            it("should style active line after turning it on", async function () {
+            it("should not style active line after turning it off", async function () {
                 // Turn on show active line
                 await toggleOption(Commands.TOGGLE_ACTIVE_LINE, "Toggle active line");
                 await openEditor(CSS_FILE);
 
                 var editor = EditorManager.getCurrentFullEditor();
-                checkActiveLine(editor, 0, true);
+                checkActiveLine(editor, 0, false);
+                await toggleOption(Commands.TOGGLE_ACTIVE_LINE, "Toggle active line");
             });
 
             it("should have the active line option be FALSE when the editor has a selection", async function () {
