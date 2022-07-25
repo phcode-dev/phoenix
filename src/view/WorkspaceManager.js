@@ -420,7 +420,10 @@ define(function (require, exports, module) {
     // pressing escape when focused on editor will toggle the last opened bottom panel
     function _handleKeydown(e) {
         let focussedEditor = EditorManager.getFocusedEditor();
-        if(!focussedEditor){
+        if(!focussedEditor || EditorManager.getFocusedInlineEditor()){
+            // if there is no editor in focus, we do no panel toggling
+            // if there is an editor with an inline widget in focus, the escape key will be
+            // handled by the inline widget itself first.
             return;
         }
         if (e.keyCode === KeyEvent.DOM_VK_ESCAPE  && e.shiftKey) {

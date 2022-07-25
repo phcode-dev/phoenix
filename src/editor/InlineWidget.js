@@ -80,9 +80,10 @@ define(function (require, exports, module) {
      * @return {boolean} True if any part of the inline widget is focused
      */
     InlineWidget.prototype.hasFocus = function () {
-        var focusedItem = window.document.activeElement,
+        const focusedItem = window.document.activeElement,
             htmlContent = this.$htmlContent[0];
-        return $.contains(htmlContent, focusedItem) || htmlContent === focusedItem;
+        const containsFocus = $.contains(htmlContent, focusedItem);
+        return containsFocus || htmlContent === focusedItem;
     };
 
     /**
