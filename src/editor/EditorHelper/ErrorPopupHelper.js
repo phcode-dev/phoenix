@@ -20,7 +20,7 @@
  */
 
 /**
- * Editor instance helpers for indentation relator editor flows.
+ * Editor instance helpers for showing error popups. Only to be used from Editor.js.
  */
 
 define(function (require, exports, module) {
@@ -29,6 +29,8 @@ define(function (require, exports, module) {
         PopUpManager = require("widgets/PopUpManager"),
         ViewUtils = require("utils/ViewUtils");
     /**
+     * ****** Update actual public API doc in Editor.js *****
+     *
      * Display temporary popover message at current cursor position. Display message above
      * cursor if space allows, otherwise below.
      *
