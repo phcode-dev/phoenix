@@ -66,7 +66,7 @@ define(function (require, exports, module) {
         try {
             AST = Acorn.parse(text, {locations: true});
         } catch (e) {
-            AST = AcornLoose.parse_dammit(text, {locations: true});
+            AST = AcornLoose.parse(text, {locations: true});
         }
 
         function _addResult(node, offset, prefix) {

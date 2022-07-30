@@ -20,6 +20,7 @@ src/phoenix/virtualfs.js.map
 !/src/thirdparty/licences
 /src/thirdparty/less.*
 /src/thirdparty/CodeMirror
+/src/thirdparty/acorn
 /src/thirdparty/tern
 /src/thirdparty/jszip.js
 /src/thirdparty/underscore-min.js

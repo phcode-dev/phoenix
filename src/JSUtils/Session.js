@@ -664,7 +664,7 @@ define(function (require, exports, module) {
         try {
             ast = Acorn.parse(fragment);
         } catch (e) {
-            ast = Acorn_Loose.parse_dammit(fragment, {});
+            ast = Acorn_Loose.parse(fragment, {});
         }
 
         // find argument as cursor location and bold it.
