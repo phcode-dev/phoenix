@@ -100,7 +100,7 @@ define(function (require, exports, module) {
         try {
             ast = Acorn.parse(text, {ecmaVersion: 9});
         } catch(e) {
-            ast = Acorn.parse_dammit(text, {ecmaVersion: 9});
+            ast = Acorn.parse(text, {ecmaVersion: 9});
         }
         return ast;
     }
@@ -396,7 +396,7 @@ define(function (require, exports, module) {
                             );
                     }
                 } else {
-                    // Acorn parse_dammit marks name with '✖' under erroneous declarations, check it
+                    // Acorn parse marks name with '✖' under erroneous declarations, check it
                     if (curScope.fnType === "✖") {
                         curScope.name = "function starting with " +
                             fullText.substr(
@@ -471,7 +471,7 @@ define(function (require, exports, module) {
         try {
             ast = Acorn.parse(text);
         } catch(e) {
-            ast = Acorn.parse_dammit(text);
+            ast = Acorn.parse(text);
         }
         return ast;
     };
@@ -518,7 +518,7 @@ define(function (require, exports, module) {
      */
     RefactoringSession.prototype.getParamsOfFunction = function getParamsOfFunction(start, end, selectedText) {
         var param = [];
-        ASTWalker.simple(AcornLoose.parse_dammit(selectedText), {
+        ASTWalker.simple(AcornLoose.parse(selectedText), {
             Function: function (node) {
                 if (node.type === "FunctionDeclaration") {
                     node.params.forEach(function (item) {

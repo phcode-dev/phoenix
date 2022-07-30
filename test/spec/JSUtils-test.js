@@ -97,6 +97,13 @@ define(function (require, exports, module) {
                 expect(result.length).toBe(0);
             }
 
+            it("should not fail with SyntaxError: Escape sequence in keyword function", async function () {
+                // https://github.com/acornjs/acorn/issues/1139
+                // This tests fails for now till acorn loose fixes the root issue
+                let result = JSUtils.findAllMatchingFunctionsInText('function unicodeTabAfter\\u0009() {}', "");
+                expect(result.length).toEqual(0);
+            });
+
             it("should return correct start and end line numbers for es6 class definitions and methods", async function () {
                 doneLoading = false;
                 init(this, es6ClassesFileEntry);

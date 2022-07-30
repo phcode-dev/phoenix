@@ -34,6 +34,14 @@ function copyLicence(path, name) {
         .pipe(rename(`${name}.markdown`))
         .pipe(dest('src/thirdparty/licences/'));
 }
+
+function renameFile(path, newName, destPath) {
+    console.log(`Renaming file ${path} to ${newName}`);
+    return src(path)
+        .pipe(rename(newName))
+        .pipe(dest(destPath));
+}
+
 function copyFiles(srcPathList, dstPath) {
     console.log(`Copying files ${dstPath}`);
     return src(srcPathList)
@@ -70,6 +78,12 @@ let copyThirdPartyLibs = series(
     copyFiles.bind(copyFiles, ['node_modules/tern/lib/**/*'], 'src/thirdparty/tern/lib'),
     copyFiles.bind(copyFiles, ['node_modules/tern/plugin/**/*'], 'src/thirdparty/tern/plugin'),
     copyLicence.bind(copyLicence, 'node_modules/tern/LICENSE', 'tern'),
+    // acorn js
+    copyFiles.bind(copyFiles, ['node_modules/acorn/dist/acorn.js*'], 'src/thirdparty/acorn/dist'),
+    renameFile.bind(renameFile, 'node_modules/acorn-loose/dist/acorn-loose.js', 'acorn_loose.js', 'src/thirdparty/acorn/dist'),
+    renameFile.bind(renameFile, 'node_modules/acorn-loose/dist/acorn-loose.js.map', 'acorn_loose.js.map', 'src/thirdparty/acorn/dist'),
+    copyFiles.bind(copyFiles, ['node_modules/acorn-walk/dist/walk.js*'], 'src/thirdparty/acorn/dist'),
+    copyLicence.bind(copyLicence, 'node_modules/acorn/LICENSE', 'acorn'),
     // jszip
     copyFiles.bind(copyFiles, ['node_modules/jszip/dist/jszip.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/jszip/LICENSE.markdown', 'jsZip'),
@@ -146,7 +160,7 @@ let copyThirdPartyLibs = series(
 function _patchAcornLib() {
     return new Promise(async (resolve)=>{ // eslint-disable-line
         let fpath = "src/thirdparty/acorn/dist/acorn_loose.js";
-        console.log("patching ", fpath);
+        console.log("patching acorn require path for :", fpath);
         let content = fs.readFileSync(fpath, "utf8");
         content = content.replaceAll("'acorn'", "'./acorn'");
         fs.writeFileSync(fpath, content, "utf8");

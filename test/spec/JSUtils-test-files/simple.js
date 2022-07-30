@@ -10,9 +10,9 @@ var simple2 = function () {
 };
 
 simple3: function () {
-    
+
 }
-    
+
 /*
  * parameterized functions
  */
@@ -29,9 +29,9 @@ var param2 = function (p1, p2) {
 param3: function (longParameterName1,
                   longParameterName2,
                   longParameterName3) {
-    
+
 }
-    
+
 // single line functions
 function single1() { return true; }
 var single2 = function (param1) { /* does nothing */ };
@@ -43,7 +43,7 @@ single3: function () { return false; }  // comment after end of function, on sam
 var nested1 = function (param1) {
 
     nested2: function () {
-        
+
         /* nested functions */
         function nested3() {
         }
@@ -71,19 +71,19 @@ MyClass.prototype.myMethod = function () {
 // whitespace variations (see #1108)
 var crowdedObj = {noSpaceBeforeFunc:function () { /* noSpaceBeforeFunc */ }};
 var anotherObj = {
-    spaceBeforeColon : function (param) { 
+    spaceBeforeColon : function (param) {
         /* spaceBeforeColon */
     },
-    
+
     noSpaceAfterColon:function (param) {
         /* noSpaceAfterColon */
     },
-    
+
     // A comment that ends with a period.
     fakePeriodBeforeFunction: function () {
         /* fakePeriodBeforeFunction */
     },
-    
+
     noSpaceAfterFunction: function() {
         /* jslint hates this */
     }
@@ -117,7 +117,4 @@ function unicodeEscapedIdentifierPart\u02b8 () {
 }
 
 function\u0009unicodeTabBefore () {
-}
-
-function unicodeTabAfter\u0009() {
 }
