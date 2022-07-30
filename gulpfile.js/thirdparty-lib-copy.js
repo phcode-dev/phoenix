@@ -21,6 +21,8 @@
 /* eslint-env node */
 
 const { src, dest, series } = require('gulp');
+const fs = require("fs");
+
 // removed require('merge-stream') node module. it gives wired glob behavior and some files goes missing
 const rename = require("gulp-rename");
 
@@ -141,4 +143,15 @@ let copyThirdPartyLibs = series(
 
 );
 
-exports.copyAll = series(copyThirdPartyLibs);
+function _patchAcornLib() {
+    return new Promise(async (resolve)=>{ // eslint-disable-line
+        let fpath = "src/thirdparty/acorn/dist/acorn_loose.js";
+        console.log("patching ", fpath);
+        let content = fs.readFileSync(fpath, "utf8");
+        content = content.replaceAll("'acorn'", "'./acorn'");
+        fs.writeFileSync(fpath, content, "utf8");
+        resolve();
+    });
+}
+
+exports.copyAll = series(copyThirdPartyLibs, _patchAcornLib);
