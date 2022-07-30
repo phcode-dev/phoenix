@@ -11,6 +11,7 @@
   "HtmlEntityCodeHints",
   "InlineColorEditor",
   "InlineTimingFunctionEditor",
+  "JavaScriptCodeHints",
   "JavaScriptQuickEdit",
   "JavaScriptRefactoring",
   "JSLint",
