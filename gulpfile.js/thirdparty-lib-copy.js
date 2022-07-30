@@ -63,6 +63,11 @@ let copyThirdPartyLibs = series(
     // lessjs
     copyFiles.bind(copyFiles, ['node_modules/less/dist/less.min.js', 'node_modules/less/dist/less.min.js.map'],
         'src/thirdparty'),
+    // tern js
+    copyFiles.bind(copyFiles, ['node_modules/tern/defs/**/*'], 'src/thirdparty/tern/defs'),
+    copyFiles.bind(copyFiles, ['node_modules/tern/lib/**/*'], 'src/thirdparty/tern/lib'),
+    copyFiles.bind(copyFiles, ['node_modules/tern/plugin/**/*'], 'src/thirdparty/tern/plugin'),
+    copyLicence.bind(copyLicence, 'node_modules/tern/LICENSE', 'tern'),
     // jszip
     copyFiles.bind(copyFiles, ['node_modules/jszip/dist/jszip.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/jszip/LICENSE.markdown', 'jsZip'),
@@ -129,7 +134,7 @@ let copyThirdPartyLibs = series(
     copyFiles.bind(copyFiles, ['node_modules/jasmine-core/lib/jasmine-core/**/*'],
         'test/thirdparty/jasmine-core/'),
     copyLicence.bind(copyLicence, 'node_modules/jasmine-core/MIT.LICENSE', 'jasmine'),
-    // jasmine
+    // jasmine-reporters
     copyFiles.bind(copyFiles, ['node_modules/jasmine-reporters/src/**/*'],
         'test/thirdparty/jasmine-reporters/'),
     copyLicence.bind(copyLicence, 'node_modules/jasmine-reporters/LICENSE', 'jasmine-reporters')
