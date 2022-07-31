@@ -95,7 +95,7 @@
  */
 
 
-function _createEventDispatcherGlobal() {
+(function () {
 
     let globalObject = {};
     if(typeof window !== 'undefined'){
@@ -348,7 +348,7 @@ function _createEventDispatcherGlobal() {
         on.call(futureDispatcher, events, fn);
     }
 
-    /**
+    /**_createEventDispatcherGlobal();
      * Mark a given event name as deprecated, such that on() will emit warnings when called with it.
      * May be called before makeEventDispatcher(). May be called on a prototype where makeEventDispatcher()
      * is called separately per instance (i.e. in the constructor). Should be called before clients have
@@ -383,7 +383,5 @@ function _createEventDispatcherGlobal() {
             exports.markDeprecated      = globalObject.EventDispatcher.markDeprecated;
         });
     }
-}
-
-_createEventDispatcherGlobal();
+}());
 
