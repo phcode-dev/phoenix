@@ -733,22 +733,23 @@ img {
     height: 280px;
 }
 
-.recent-project-list::-webkit-scrollbar {
+.code-editor-card::-webkit-scrollbar,.recent-project-list::-webkit-scrollbar {
     width: 12px;
     height: 12px;
     background-color: rgba(15, 15, 15, 1);
 }
 
-.recent-project-list::-webkit-scrollbar-thumb {
+.code-editor-card::-webkit-scrollbar-thumb, .recent-project-list::-webkit-scrollbar-thumb {
     box-shadow: 0 0 0 12px rgba(49, 49, 49, 1) inset;
+    border-radius:100vw;
 }
 
-.recent-project-list::-webkit-scrollbar-thumb:hover,
-.recent-project-list::-webkit-scrollbar-thumb:focus {
+.code-editor-card::-webkit-scrollbar-thumb:hover, .recent-project-list::-webkit-scrollbar-thumb:hover,
+.code-editor-cardt::-webkit-scrollbar-thumb:focus, .recent-project-list::-webkit-scrollbar-thumb:focus {
     box-shadow: 0 0 0 12px rgba(206, 206, 206, 1) inset;
 }
 
-.recent-project-list::-webkit-scrollbar-thumb:active {
+.code-editor-card::-webkit-scrollbar-thumb:active, .recent-project-list::-webkit-scrollbar-thumb:active {
     box-shadow: 0 0 0 12px rgba(206, 206, 206, 1) inset;
 }
 
