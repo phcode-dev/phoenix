@@ -21,8 +21,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
- * Implements a jQuery-like event dispatch pattern for non-DOM objects:
+ * Implements a jQuery-like event dispatch pattern for non-DOM objects (works in web workers as well):
  *  - Listeners are attached via on()/one() & detached via off()
  *  - Listeners can use namespaces for easy removal
  *  - Listeners can attach to multiple events at once via a space-separated list
@@ -50,11 +52,64 @@
  * for any obj that has the EventDispatcher pattern. In the future, this may be deprecated.
  *
  * To add EventDispatcher methods to any object, call EventDispatcher.makeEventDispatcher(obj).
+ *
+ * ## Usage
+ * ### Importing from an extension
+ * ```js
+ * const EventDispatcher = brackets.getModule("utils/EventDispatcher");
+ * ```
+ * ### Using the global object
+ * The EventDispatcher Object is available within the global context, be it phoenix or phoenix core web workers.
+ * ```js
+ * window.EventDispatcher.trigger("someEvent"); // within phoenix
+ * self.EventDispatcher.trigger("someEvent"); // within web worker
+ * ```
+ *
+ * If you wish to import event dispatcher to your custom web worker, use the following
+ * ```js
+ * importScripts('<relative path from your extension>/utils/EventDispatcher');
+ * // this will add the global EventDispatcher to your web-worker. Note that the EventDispatcher in the web worker
+ * // is a separate domain and cannot raise or listen to events in phoenix/other workers
+ * self.EventDispatcher.trigger("someEvent"); // within web worker
+ * ```
+ * ### Sample Usage within extension
+ * ```js
+ * // in your extension js file.
+ * define(function (require, exports, module) {
+ *     const EventDispatcher     = brackets.getModule("utils/EventDispatcher");
+ *     EventDispatcher.makeEventDispatcher(exports); // This extension triggers some events
+ *     let eventHandler = function (event, paramObject, paramVal) {
+ *         console.log(event, paramObject, paramVal);
+ *     };
+ *     exports.on("sampleEvent", eventHandler); // listen to our own event for demo
+ *     exports.trigger("sampleEvent", { // trigger a sample event. This will activate the above listener 'on' function.
+ *             param: 1,
+ *             param2: "sample"
+ *     }, "value");
+ *     // If needed, the event listener can be removed with `off`. But it is not a requirement at shutdown.
+ *     exports.off("sampleEvent", eventHandler);
+ * }
+ * ```
+ *
+ * @module utils/EventDispatcher
  */
-define(function (require, exports, module) {
 
 
-    var _ = require("thirdparty/lodash");
+(function () {
+
+    let globalObject = {};
+    if(typeof window !== 'undefined'){
+        globalObject = window; // browser
+    } else if(typeof self !== 'undefined'){
+        globalObject = self; // web worker
+    } else if(typeof global !== 'undefined'){
+        globalObject = global; //nodejs
+    }
+
+    if(globalObject.EventDispatcher){
+        // already created
+        return;
+    }
 
     var LEAK_WARNING_THRESHOLD = 15;
 
@@ -63,6 +118,7 @@ define(function (require, exports, module) {
      * Split "event.namespace" string into its two parts; both parts are optional.
      * @param {string} eventName Event name and/or trailing ".namespace"
      * @return {!{event:string, ns:string}} Uses "" for missing parts.
+     * @type {function}
      */
     function splitNs(eventStr) {
         var dot = eventStr.indexOf(".");
@@ -82,6 +138,7 @@ define(function (require, exports, module) {
      * event, a duplicate copy is added.
      * @param {string} events
      * @param {!function(!{type:string, target:!Object}, ...)} fn
+     * @type {function}
      */
     var on = function (events, fn) {
         var eventsList = events.split(/\s+/).map(splitNs),
@@ -133,6 +190,7 @@ define(function (require, exports, module) {
      * only handlers exactly equal to 'fn' are removed (there may still be >1, if duplicates were added).
      * @param {string} events
      * @param {?function(!{type:string, target:!Object}, ...)} fn
+     * @type {function}
      */
     var off = function (events, fn) {
         if (!this._eventHandlers) {
@@ -170,9 +228,9 @@ define(function (require, exports, module) {
                 removeAllMatches(eventRec, eventRec.eventName);
             } else {
                 // If arg only gives a namespace, look at handler lists for all events
-                _.forEach(this._eventHandlers, function (handlerList, eventName) {
+                for (let eventName in this._eventHandlers) {
                     removeAllMatches(eventRec, eventName);
-                });
+                }
             }
         }.bind(this);
 
@@ -189,6 +247,7 @@ define(function (require, exports, module) {
      * Attaches a handler so it's only called once (per event in the 'events' list).
      * @param {string} events
      * @param {?function(!{type:string, target:!Object}, ...)} fn
+     * @type {function}
      */
     var one = function (events, fn) {
         // Wrap fn in a self-detaching handler; saved on the original fn so off() can detect it later
@@ -207,6 +266,7 @@ define(function (require, exports, module) {
      * Invokes all handlers for the given event (in the order they were added).
      * @param {string} eventName
      * @param {*} ... Any additional args are passed to the event handler after the event object
+     * @type {function}
      */
     var trigger = function (eventName) {
         var event = { type: eventName, target: this },
@@ -239,6 +299,7 @@ define(function (require, exports, module) {
      * Adds the EventDispatcher APIs to the given object: on(), one(), off(), and trigger(). May also be
      * called on a prototype object - each instance will still behave independently.
      * @param {!Object} obj Object to add event-dispatch methods to
+     * @type {function}
      */
     function makeEventDispatcher(obj) {
         $.extend(obj, {
@@ -261,6 +322,7 @@ define(function (require, exports, module) {
      * @param {!Object} dispatcher
      * @param {string} eventName
      * @param {!Array.<*>} argsArray
+     * @type {function}
      */
     function triggerWithArray(dispatcher, eventName, argsArray) {
         var triggerArgs = [eventName].concat(argsArray);
@@ -280,12 +342,13 @@ define(function (require, exports, module) {
      * @param {!Object} futureDispatcher
      * @param {string} events
      * @param {?function(!{type:string, target:!Object}, ...)} fn
+     * @type {function}
      */
     function on_duringInit(futureDispatcher, events, fn) {
         on.call(futureDispatcher, events, fn);
     }
 
-    /**
+    /**_createEventDispatcherGlobal();
      * Mark a given event name as deprecated, such that on() will emit warnings when called with it.
      * May be called before makeEventDispatcher(). May be called on a prototype where makeEventDispatcher()
      * is called separately per instance (i.e. in the constructor). Should be called before clients have
@@ -293,6 +356,7 @@ define(function (require, exports, module) {
      * @param {!Object} obj Event dispatcher object
      * @param {string} eventName Name of deprecated event
      * @param {string=} insteadStr Suggested thing to use instead
+     * @type {function}
      */
     function markDeprecated(obj, eventName, insteadStr) {
         // Mark event as deprecated - on() will emit warnings when called with this event
@@ -303,8 +367,21 @@ define(function (require, exports, module) {
     }
 
 
-    exports.makeEventDispatcher = makeEventDispatcher;
-    exports.triggerWithArray    = triggerWithArray;
-    exports.on_duringInit       = on_duringInit;
-    exports.markDeprecated      = markDeprecated;
-});
+    globalObject.EventDispatcher = {
+        makeEventDispatcher,
+        triggerWithArray,
+        on_duringInit,
+        markDeprecated
+    };
+
+    if(globalObject.define){
+        // for requirejs support
+        define(function (require, exports, module) {
+            exports.makeEventDispatcher = globalObject.EventDispatcher.makeEventDispatcher;
+            exports.triggerWithArray    = globalObject.EventDispatcher.triggerWithArray;
+            exports.on_duringInit       = globalObject.EventDispatcher.on_duringInit;
+            exports.markDeprecated      = globalObject.EventDispatcher.markDeprecated;
+        });
+    }
+}());
+

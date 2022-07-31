@@ -24,6 +24,7 @@
 const urlParams = new URLSearchParams(location.search);
 const debugMode = (urlParams.get('debug') === 'true');
 importScripts('../../phoenix/virtualfs.js');
+importScripts('../../utils/EventDispatcher.js');
 importScripts('./search.js');
 
 virtualfs.debugMode = debugMode;
