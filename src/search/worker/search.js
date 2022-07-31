@@ -385,7 +385,7 @@ async function getNextPage() {
         return send_object;
     }
     savedSearchObject.startFileIndex = lastSearchedIndex;
-    return await doSearch(savedSearchObject, true);
+    return doSearch(savedSearchObject, true);
 }
 
 /**
@@ -404,7 +404,7 @@ async function getAllResults() {
     }
     savedSearchObject.startFileIndex = 0;
     savedSearchObject.getAllResults = true;
-    return await doSearch(savedSearchObject);
+    return doSearch(savedSearchObject);
 }
 
 /**
