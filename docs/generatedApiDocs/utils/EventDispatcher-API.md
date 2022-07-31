@@ -2,7 +2,7 @@
 
 ## utils/EventDispatcher
 
-Implements a jQuery-like event dispatch pattern for non-DOM objects:
+Implements a jQuery-like event dispatch pattern for non-DOM objects (works in web workers as well):
 
 *   Listeners are attached via on()/one() & detached via off()
 *   Listeners can use namespaces for easy removal
@@ -53,10 +53,30 @@ self.EventDispatcher.trigger("someEvent"); // within web worker
 If you wish to import event dispatcher to your custom web worker, use the following
 
 ```js
-importScripts('<relative path from your extension>/utils/EventDispatcherInternal');
+importScripts('<relative path from your extension>/utils/EventDispatcher');
 // this will add the global EventDispatcher to your web-worker. Note that the EventDispatcher in the web worker
 // is a separate domain and cannot raise or listen to events in phoenix/other workers
 self.EventDispatcher.trigger("someEvent"); // within web worker
+```
+
+### Sample Usage within extension
+
+```js
+// in your extension js file.
+define(function (require, exports, module) {
+    const EventDispatcher     = brackets.getModule("utils/EventDispatcher");
+    EventDispatcher.makeEventDispatcher(exports); // This extension triggers some events
+    let eventHandler = function (event, paramObject, paramVal) {
+        console.log(event, paramObject, paramVal);
+    };
+    exports.on("sampleEvent", eventHandler); // listen to our own event for demo
+    exports.trigger("sampleEvent", { // trigger a sample event. This will activate the above listener 'on' function.
+            param: 1,
+            param2: "sample"
+    }, "value");
+    // If needed, the event listener can be removed with `off`. But it is not a requirement at shutdown.
+    exports.off("sampleEvent", eventHandler);
+}
 ```
 
 ## splitNs

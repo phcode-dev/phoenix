@@ -1,7 +1,7 @@
 # API docs
 The list of all APIs for phoenix.
 
-1. [utils/EventDispatcherInternal](EventDispatcherInternal-API)
+1. [utils/EventDispatcher](EventDispatcher-API)
 1. [utils/EventManager](EventManager-API)
 1. [utils/ExtensionInterface](ExtensionInterface-API)
 1. [utils/FeatureGate](FeatureGate-API)
