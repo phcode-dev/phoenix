@@ -302,13 +302,11 @@
      * @type {function}
      */
     function makeEventDispatcher(obj) {
-        $.extend(obj, {
-            on: on,
-            off: off,
-            one: one,
-            trigger: trigger,
-            _EventDispatcher: true
-        });
+        obj.on = on;
+        obj.off= off;
+        obj.one= one;
+        obj.trigger= trigger;
+        obj._EventDispatcher= true;
         // Later, on() may add _eventHandlers: Object.<string, Array.<{event:string, namespace:?string,
         //   handler:!function(!{type:string, target:!Object}, ...)}>> - map from eventName to an array
         //   of handler records
@@ -348,7 +346,7 @@
         on.call(futureDispatcher, events, fn);
     }
 
-    /**_createEventDispatcherGlobal();
+    /**
      * Mark a given event name as deprecated, such that on() will emit warnings when called with it.
      * May be called before makeEventDispatcher(). May be called on a prototype where makeEventDispatcher()
      * is called separately per instance (i.e. in the constructor). Should be called before clients have

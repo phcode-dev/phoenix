@@ -21,7 +21,7 @@
 
 /*eslint-env node */
 /*jslint node: true */
-/*global getFileContentsForFile, files, crawlComplete */
+/*global getFileContentsForFile, files, crawlComplete, WorkerComm */
 
 var MAX_DISPLAY_LENGTH = 200,
     MAX_TOTAL_RESULTS = 100000, // only 100,000 search results are supported
@@ -414,3 +414,9 @@ async function getAllResults() {
 function setCollapseResults(collapse) {
     collapseResults = collapse;
 }
+
+
+WorkerComm.setExecHandler("doSearch", doSearch);
+WorkerComm.setExecHandler("nextPage", getNextPage);
+WorkerComm.setExecHandler("getAllResults", getAllResults);
+WorkerComm.setExecHandler("collapseResults", setCollapseResults);
