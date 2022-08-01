@@ -23,9 +23,11 @@ let workerPath = ExtensionUtils.getModulePath(module, "my_worker_path_within_ext
 // we need to pass in the `workerCommUrl` so that the web-worker can
 // load`WorkerComm` within the worker context as described below.
 let workerCommUrl = `${Phoenix.baseURL}worker/WorkerComm.js`;
+let eventDispatcherURL = `${Phoenix.baseURL}utils/EventDispatcher.js`;
 
 // load the worker
-const _myWorker = new Worker(`${workerPath}/workerCommUrl=${workerCommUrl}`);
+const _myWorker = new Worker(
+`${workerPath}?workerCommUrl=${workerCommUrl}&eventDispatcherURL=${eventDispatcherURL}`);
 
 // Not create a `WorkerComm` object and attach to your extension module exports.
 EventDispatcher.makeEventDispatcher(exports);
@@ -45,6 +47,7 @@ instance in Phoenix. For this, we need to load `WorkerComm` from the URL paramet
 ```js
 const urlParams = new URLSearchParams(location.search);
 importScripts(urlParams.get('workerCommUrl'));
+importScripts(urlParams.get('eventDispatcherURL'));
 // After this, a global `WorkerComm` object will be available within the
 // web-worker that can be used to communicate with Phoenix.
 ```
@@ -68,9 +71,10 @@ Create a web-worker with `WorkerComm` in an extension.
 
 ```javascript
 // load the worker [See API docs for full sample]
-const _myWorker = new Worker(`${workerPath}/workerCommUrl=${workerCommUrl}`);
+const _myWorker = new Worker(
+`${workerPath}?workerCommUrl=${workerCommUrl}&eventDispatcherURL=${eventDispatcherURL}`);
 
-// Not create a `WorkerComm` object and attach to your extension module exports.
+// Now create a `WorkerComm` object and attach to your extension module exports.
 EventDispatcher.makeEventDispatcher(exports);
 // all WorkerComm objects needs to be an EventDispatcher.
 WorkerComm.createWorkerComm(_myWorker, exports);
@@ -184,6 +188,10 @@ let ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
 let addWorkerScriptPath = ExtensionUtils.getModulePath(module, "add_worker_Script.js")
 exports.loadScriptInWorker(addWorkerScriptPath);
 ```
+
+## EVENT_WORKER_COMM_INIT_COMPLETE
+
+Raised on main thread when WorkerComm is loaded in the web-worker and is ready.
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 

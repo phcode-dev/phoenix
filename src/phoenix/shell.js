@@ -32,8 +32,8 @@ import getBrowserDetails from "./browserDetails.js";
 function _getBaseURL() {
     // strip query string
     let base = window.location.href.split('?')[0];
-    if(base.endsWith("index.html")){
-        base = base.slice(0, base.lastIndexOf('index.html'));
+    if(base.endsWith(".html")){
+        base = base.slice(0, base.lastIndexOf('/'));
     }
     if(!base.endsWith("/")){
         base = `${base}/`;
