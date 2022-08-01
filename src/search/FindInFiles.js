@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /*
  * The core search functionality used by Find in Files and single-file Replace Batch.
  */
@@ -42,6 +44,8 @@ define(function (require, exports, module) {
         IndexingWorker        = require("worker/IndexingWorker");
 
     let projectIndexingComplete = false;
+
+    IndexingWorker.loadScriptInWorker(`${Phoenix.baseURL}search/worker/search.js`);
 
     IndexingWorker.on("crawlComplete", function (_evt, params) {
         workerFileCacheComplete(params);

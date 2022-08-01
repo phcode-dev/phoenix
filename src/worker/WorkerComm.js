@@ -31,6 +31,10 @@
         EVT_TYPE_EXEC = 'exec',
         EVT_TYPE_RESPONSE = 'response',
         EVT_TYPE_TRIGGER = 'trigger';
+
+    const EXEC_LOAD_SCRIPT = 'loadScript',
+        EVENT_WORKER_COMM_INIT_COMPLETE = "WorkerCommInitDone";
+
     let globalObject = {};
     let env;
     if(typeof window !== 'undefined'){
@@ -85,6 +89,37 @@
                 params: paramObject
             }));
         };
+
+        if(env === ENV_BROWSER){
+            // In browser main thread, loadScriptInWorker api will be present in WorkerComm. But we have to ensure that
+            // within the web-worker thread, WorkerComm is inited to properly handle the script load message. So,
+            // we queue all script load requests till we get EVENT_WORKER_COMM_INIT_COMPLETE and then load all pending
+            // queued scripts.
+            let loadScriptQueue = [],
+                workerCommLoadCompleteInWorker = false;
+            function loadPendingScripts() {
+                workerCommLoadCompleteInWorker = true;
+                for(let scriptUrl of loadScriptQueue){
+                    eventDispatcher.loadScriptInWorker(scriptUrl);
+                }
+                loadScriptQueue = [];
+            }
+            eventDispatcher.on(EVENT_WORKER_COMM_INIT_COMPLETE, loadPendingScripts);
+            eventDispatcher.loadScriptInWorker = function (scriptURL) {
+                if(!workerCommLoadCompleteInWorker){
+                    loadScriptQueue.push(scriptURL);
+                    return;
+                }
+                eventDispatcher.execPeer(EXEC_LOAD_SCRIPT, scriptURL);
+            };
+        } else {
+            function _loadScriptHandler(url) {
+                console.log(`${env}: loading script from url: ${url}`);
+                importScripts(url);
+            }
+            eventDispatcher.setExecHandler(EXEC_LOAD_SCRIPT, _loadScriptHandler);
+        }
+
 
         function _processResponse(data) {
             if(data.type === EVT_TYPE_RESPONSE){
@@ -153,10 +188,11 @@
         // from browser thread, multiple worker thread can be created and attached to workerComm.
         globalObject.WorkerComm = {createWorkerComm};
     } else {
-        // from worker thread, com is only possible with parent main thread.
+        // from worker thread, communication is only possible with parent main thread.
         // we create a global `WorkerComm` in worker for event handling within the worker
         globalObject.WorkerComm = {};
         globalObject.EventDispatcher.makeEventDispatcher(globalObject.WorkerComm);
         createWorkerComm(globalObject, globalObject.WorkerComm);
+        globalObject.WorkerComm.triggerPeer(EVENT_WORKER_COMM_INIT_COMPLETE);
     }
 }());
