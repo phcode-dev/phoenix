@@ -26,7 +26,6 @@ const debugMode = (urlParams.get('debug') === 'true');
 importScripts('../phoenix/virtualfs.js');
 importScripts('../utils/EventDispatcher.js');
 importScripts('./WorkerComm.js');
-importScripts('../search/worker/search.js');
 
 virtualfs.debugMode = debugMode;
 
