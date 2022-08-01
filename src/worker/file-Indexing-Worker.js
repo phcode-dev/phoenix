@@ -19,13 +19,14 @@
  *
  */
 
-/*global importScripts, virtualfs, fs, doSearch, getNextPage, getAllResults, setCollapseResults */
+/*global virtualfs, fs, WorkerComm */
 
 const urlParams = new URLSearchParams(location.search);
 const debugMode = (urlParams.get('debug') === 'true');
-importScripts('../../phoenix/virtualfs.js');
-importScripts('../../utils/EventDispatcher.js');
-importScripts('./search.js');
+importScripts('../phoenix/virtualfs.js');
+importScripts('../utils/EventDispatcher.js');
+importScripts('./WorkerComm.js');
+importScripts('../search/worker/search.js');
 
 virtualfs.debugMode = debugMode;
 
@@ -147,7 +148,7 @@ async function fileCrawler() {
         if (!crawlEventSent) {
             crawlEventSent = true;
             let crawlTime =  Date.now() - cacheStartTime;
-            exec("crawlComplete", [files.length, cacheSize, crawlTime]);
+            WorkerComm.triggerPeer("crawlComplete", [files.length, cacheSize, crawlTime]);
         }
         setTimeout(fileCrawler, 1000);
     }
@@ -155,7 +156,7 @@ async function fileCrawler() {
 
 function _crawlProgressMessenger() {
     if(!crawlComplete && files){
-        exec("crawlProgress", {
+        WorkerComm.triggerPeer("crawlProgress", {
             processed: currentCrawlIndex,
             total: files.length
         });
@@ -236,83 +237,9 @@ function documentChanged(updateObject) {
     projectCache[updateObject.filePath] = updateObject.docContents;
 }
 
-let postUniqueId = 0;
-let callBacks = {};
-function exec(fnName, paramObject) {
-    postUniqueId++;
-    return new Promise((resolve, reject)=>{
-        postMessage(JSON.stringify({
-            type: "exec",
-            exec: fnName,
-            params: paramObject,
-            postUniqueId: postUniqueId
-        }));
-        callBacks[postUniqueId] = {resolve, reject};
-    });
-}
-
-
-function _processResponse(data) {
-    if(data.type === "response"){
-        // this is a response event
-        let postUniqueId = data.postUniqueId;
-        if(callBacks[postUniqueId]){
-            let {resolve, reject} = callBacks[postUniqueId];
-            if(data.err){
-                reject(data.err);
-            } else {
-                resolve(data.response);
-            }
-            delete callBacks[postUniqueId];
-        }
-        return true;
-    }
-    return false;
-}
-
-onmessage = async function(e) {
-    let data = JSON.parse(e.data);
-    if(_processResponse(data)){
-        return;
-    }
-    let response = {
-        type: "response",
-        err: null,
-        response: null,
-        postUniqueId: data.postUniqueId
-    };
-    try{
-        switch (data.exec) {
-        case 'initCache':
-            initCache(data.params);
-            break;
-        case 'filesChanged':
-            addFilesToCache(data.params);
-            break;
-        case 'documentChanged':
-            documentChanged(data.params);
-            break;
-        case 'filesRemoved':
-            removeFilesFromCache(data.params);
-            break;
-        case 'doSearch':
-            response.response = await doSearch(data.params);
-            break;
-        case 'nextPage':
-            response.response = await getNextPage(data.params);
-            break;
-        case 'getAllResults':
-            response.response = await getAllResults(data.params);
-            break;
-        case 'collapseResults':
-            setCollapseResults(data.params);
-            break;
-        default: console.error("unknown indexing worker event received", data);
-        }
-    } catch (err) {
-        response.err = err;
-    }
-    postMessage(JSON.stringify(response));
-};
+WorkerComm.setExecHandler("initCache", initCache);
+WorkerComm.setExecHandler("filesChanged", addFilesToCache);
+WorkerComm.setExecHandler("documentChanged", documentChanged);
+WorkerComm.setExecHandler("filesRemoved", removeFilesFromCache);
 
 setTimeout(fileCrawler, 3000);

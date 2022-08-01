@@ -19,8 +19,6 @@
  *
  */
 
-/*global Phoenix*/
-
 /*
  * The core search functionality used by Find in Files and single-file Replace Batch.
  */
@@ -40,76 +38,18 @@ define(function (require, exports, module) {
         SearchModel           = require("search/SearchModel").SearchModel,
         PerfUtils             = require("utils/PerfUtils"),
         FindUtils             = require("search/FindUtils"),
-        Metrics               = require("utils/Metrics");
+        Metrics               = require("utils/Metrics"),
+        IndexingWorker        = require("worker/IndexingWorker");
 
     let projectIndexingComplete = false;
 
-    const _FindInFilesWorker = new Worker(
-        `${Phoenix.baseURL}search/worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
+    IndexingWorker.on("crawlComplete", function (_evt, params) {
+        workerFileCacheComplete(params);
+    });
 
-    if(!_FindInFilesWorker){
-        console.error("Could not load find in files worker! Search will be disabled.");
-    }
-
-    let postUniqueId = 0;
-    let callBacks = {};
-    _FindInFilesWorker.exec = function (fnName, paramObject) {
-        postUniqueId++;
-        return new Promise((resolve, reject)=>{
-            _FindInFilesWorker.postMessage(JSON.stringify({
-                type: "exec",
-                exec: fnName,
-                params: paramObject,
-                postUniqueId: postUniqueId
-            }));
-            callBacks[postUniqueId] = {resolve, reject};
-        });
-    };
-
-    function _processResponse(data) {
-        if(data.type === "response"){
-            // this is a response event
-            let postUniqueId = data.postUniqueId;
-            if(callBacks[postUniqueId]){
-                let {resolve, reject} = callBacks[postUniqueId];
-                if(data.err){
-                    reject(data.err);
-                } else {
-                    resolve(data.response);
-                }
-                delete callBacks[postUniqueId];
-            }
-            return true;
-        }
-        return false;
-    }
-
-    _FindInFilesWorker.onmessage = async function(e) {
-        let data = JSON.parse(e.data);
-        if(_processResponse(data)){
-            return;
-        }
-        let response = {
-            type: "response",
-            err: null,
-            response: null,
-            postUniqueId: data.postUniqueId
-        };
-        try {
-            switch (data.exec) {
-            case 'crawlComplete':
-                workerFileCacheComplete(data.params);
-                break;
-            case 'crawlProgress':
-                FindUtils.notifyIndexingProgress(data.params.processed, data.params.total);
-                break;
-            default: console.error("unknown indexing worker event received", data);
-            }
-        } catch (err) {
-            response.err = err;
-        }
-        _FindInFilesWorker.postMessage(JSON.stringify(response));
-    };
+    IndexingWorker.on("crawlProgress", function (_evt, params) {
+        FindUtils.notifyIndexingProgress(params.processed, params.total);
+    });
 
     let searchScopeChanged = false,
         findOrReplaceInProgress = false,
@@ -517,7 +457,7 @@ define(function (require, exports, module) {
                     "filePath": docPath,
                     "docContents": doc.getText()
                 };
-                _FindInFilesWorker.exec("documentChanged", updateObject);
+                IndexingWorker.execPeer("documentChanged", updateObject);
             }
         });
     }
@@ -608,7 +548,7 @@ define(function (require, exports, module) {
                     _updateChangedDocs();
                     FindUtils.notifyWorkerSearchStarted();
                     let searchStatTime = Date.now();
-                    _FindInFilesWorker.exec("doSearch", searchObject)
+                    IndexingWorker.execPeer("doSearch", searchObject)
                         .then(function (rcvd_object) {
                             FindUtils.notifyWorkerSearchFinished();
                             if (!rcvd_object || !rcvd_object.results) {
@@ -725,7 +665,7 @@ define(function (require, exports, module) {
      * Notify worker that the results should be collapsed
      */
     function _searchcollapseResults() {
-        _FindInFilesWorker.exec("collapseResults", FindUtils.isCollapsedResults());
+        IndexingWorker.execPeer("collapseResults", FindUtils.isCollapsedResults());
     }
 
     /**
@@ -743,7 +683,7 @@ define(function (require, exports, module) {
             updateObject.filesInSearchScope = FileFilters.getPathsMatchingFilter(searchModel.filter, fileList);
             _searchScopeChanged();
         }
-        _FindInFilesWorker.exec("filesChanged", updateObject);
+        IndexingWorker.execPeer("filesChanged", updateObject);
     }
 
     /**
@@ -761,7 +701,7 @@ define(function (require, exports, module) {
             updateObject.filesInSearchScope = FileFilters.getPathsMatchingFilter(searchModel.filter, fileList);
             _searchScopeChanged();
         }
-        _FindInFilesWorker.exec("filesRemoved", updateObject);
+        IndexingWorker.execPeer("filesRemoved", updateObject);
     }
 
     /**
@@ -1005,7 +945,7 @@ define(function (require, exports, module) {
                 }).map(function (entry) {
                     return entry.fullPath;
                 });
-                _FindInFilesWorker.exec("initCache", files);
+                IndexingWorker.execPeer("initCache", files);
             });
         _searchScopeChanged();
     };
@@ -1027,7 +967,7 @@ define(function (require, exports, module) {
         }
         _updateChangedDocs();
         FindUtils.notifyWorkerSearchStarted();
-        _FindInFilesWorker.exec("nextPage")
+        IndexingWorker.execPeer("nextPage")
             .then(function (rcvd_object) {
                 FindUtils.notifyWorkerSearchFinished();
                 if (searchModel.results) {
@@ -1058,7 +998,7 @@ define(function (require, exports, module) {
         }
         _updateChangedDocs();
         FindUtils.notifyWorkerSearchStarted();
-        _FindInFilesWorker.exec("getAllResults")
+        IndexingWorker.execPeer("getAllResults")
             .then(function (rcvd_object) {
                 FindUtils.notifyWorkerSearchFinished();
                 searchModel.results = rcvd_object.results;
