@@ -18,10 +18,52 @@
  *
  */
 
-/*global Phoenix*/
+// @INCLUDE_IN_API_DOCS
 
 /**
- * util methods to communicate with web workers. this module can be loaded from within brackets or from web workers.
+ * WorkerComm provides util methods to communicate between web workers and Phoenix.
+ * This module can be loaded from within web-workers and a phoenix extension that loads the web-worker.
+ *
+ * ## Import
+ * ### Creating a WebWorker from your extension and attaching `WorkerComm` to it.
+ * See an example extension code below that creates its own web worker and uses `WorkerComm` for communication.
+ * ```js
+ * // from within an extension
+ * const WorkerComm = brackets.getModule("worker/WorkerComm"),
+ *       EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+ *       ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
+ *
+ * // figure out the path of the web worker relative to your extension
+ * let workerPath = ExtensionUtils.getModulePath(module, "my_worker_path_within_extension.js")
+ *
+ * // we need to pass in the `workerCommUrl` so that the web-worker can
+ * // load`WorkerComm` within the worker context as described below.
+ * let workerCommUrl = `${Phoenix.baseURL}worker/WorkerComm.js`;
+ *
+ * // load the worker
+ * const _myWorker = new Worker(`${workerPath}/workerCommUrl=${workerCommUrl}`);
+ *
+ * // Not create a `WorkerComm` object and attach to your extension module exports.
+ * EventDispatcher.makeEventDispatcher(exports);
+ * // all WorkerComm objects needs to be an EventDispatcher.
+ * WorkerComm.createWorkerComm(_myWorker, exports);
+ *
+ * // Now `exports` can be used to communicate with the web-worker
+ * // using `WorkerComm` APIs listed below.
+ * ```
+ *
+ * ### Loading `WorkerComm` from within your webWorker
+ * The Web Worker we created above also needs to load `WorkerComm` to be able to communicate with the `WorkerComm`
+ * instance in Phoenix. For this, we need to load `WorkerComm` from the URL parameters.
+ * (WorkerComm.js lib url needs to passed in while creating the web worker from Phoenix).
+ * ```js
+ * const urlParams = new URLSearchParams(location.search);
+ * importScripts(urlParams.get('workerCommUrl'));
+ * // After this, a global `WorkerComm` object will be available within the
+ * // web-worker that can be used to communicate with Phoenix.
+ * ```
+ * ## APIs
+ * @module worker/WorkerComm
  */
 
 (function () {
@@ -58,10 +100,68 @@
         return;
     }
 
+    /**
+     * Adds support for WorkerComm APIs to the provided web-Worker instance. Only available in the main thread.
+     * @example <caption>Create a web-worker with `WorkerComm` in an extension.</caption>
+     * // load the worker [See API docs for full sample]
+     * const _myWorker = new Worker(`${workerPath}/workerCommUrl=${workerCommUrl}`);
+     *
+     * // Not create a `WorkerComm` object and attach to your extension module exports.
+     * EventDispatcher.makeEventDispatcher(exports);
+     * // all WorkerComm objects needs to be an EventDispatcher.
+     * WorkerComm.createWorkerComm(_myWorker, exports);
+     * @param {string} postTarget - The web-worker reference.
+     * @param {object} eventDispatcher created with `util/EventDispatcher`.
+     * @type {function}
+     */
     function createWorkerComm(postTarget, eventDispatcher) {
         let postUniqueId = 0;
         let callBacks = {};
         let execHandlers = {};
+
+        /**
+         * Sets a named function execution handler in the main thread or worker thread.
+         * @example <caption>To set a named function `sayHello` in worker and phoenix</caption>
+         *
+         * function sayHello(arg)=>{
+         *     console.log("hello from worker ", arg); // prints "hello from worker phoenix"
+         *     return "Hello Phoenix";
+         * }
+         *
+         * // For usage in web-worker say my_worker.js, use the global `WorkerComm` object.
+         * WorkerComm.setExecHandler("sayHello", sayHello);
+         * // For usage in phoenix extension side, use `eventDispatcher` object used with `createWorkerComm`.
+         * YourWorker.setExecHandler("sayHello", sayHello);
+         * @param {string} fnName - The name of the function to register as exec handler.
+         * @param {function} execHandlerFn
+         * @returns {Promise} That will be resolved or rejected based on function execution at the other end.
+         * @type {function}
+         */
+        eventDispatcher.setExecHandler = function (fnName, execHandlerFn) {
+            if(execHandlers[fnName]){
+                console.error(`${env}: Exec handler of same name already registered, will be overwritten: ${fnName}`);
+            }
+            execHandlers[fnName] = execHandlerFn;
+        };
+
+        /**
+         * Executes the named function at the other end if present. If this is called from the main thread, it will
+         * execute the function at the worker thread and vice-versa. The function to execute
+         * is set with API `setExecHandler`.
+         * @example <caption>To Execute a named function `sayHello` in the worker from phoenix</caption>
+         * // in my_worker.js
+         * WorkerComm.setExecHandler("sayHello", (arg)=>{
+         *     console.log("hello from worker ", arg); // prints "hello from worker phoenix"
+         *     return "Hello Phoenix";
+         *   });
+         * // In Phoenix/extension
+         * let workerMessage = await YourWorker.execPeer("sayHello", "phoenix");
+         * console.log(workerMessage); // prints "Hello Phoenix"
+         * @param {string} fnName - The name of the function to execute at the other end.
+         * @param {object} paramObject to be passed on to the function at the other end.
+         * @returns {Promise} That will be resolved or rejected based on function execution at the other end.
+         * @type {function}
+         */
         eventDispatcher.execPeer = function (fnName, paramObject) {
             postUniqueId++;
             return new Promise((resolve, reject)=>{
@@ -75,13 +175,22 @@
             });
         };
 
-        eventDispatcher.setExecHandler = function (fnName, execHandlerFn) {
-            if(execHandlers[fnName]){
-                console.error(`${env}: Exec handler of same name already registered, will be overwritten: ${fnName}`);
-            }
-            execHandlers[fnName] = execHandlerFn;
-        };
-
+        /**
+         * Triggers events at the other end on the eventDispatcher. If this is called from the main thread, it will
+         * trigger `WorkerComm` global at the worker thread. If this is called from the worker thread, it will
+         * trigger `eventDispatcher` used in `createWorkerComm` API call when creating the worker.
+         * @example <caption>To Trigger a named event `searchDone` from worker to phoenix</caption>
+         * // in my_worker.js
+         * WorkerComm.triggerPeer("searchDone", {matches: 2});
+         *
+         * // In Phoenix/extension, you can listen to these events
+         * YourWorker.on("searchDone", (result)=>{
+         *     console.log(result.matches);
+         * });
+         * @param {string} eventName to trigger at the other end
+         * @param {object} paramObject to be passed on to the event listener at the other end.
+         * @type {function}
+         */
         eventDispatcher.triggerPeer = function (eventName, paramObject) {
             postTarget.postMessage(JSON.stringify({
                 type: EVT_TYPE_TRIGGER,
@@ -105,6 +214,18 @@
                 loadScriptQueue = [];
             }
             eventDispatcher.on(EVENT_WORKER_COMM_INIT_COMPLETE, loadPendingScripts);
+            /**
+             * Loads a script into the worker context. Only available within the main thread. This can be used
+             * by the main Phoenix thread to dynamically load scripts in the worker-thread.
+             * @example <caption>To load a script `add_worker_Script.js` into the your worker:</caption>
+             * WorkerComm.createWorkerComm(_myWorker, exports);
+             * .....
+             * let ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
+             * let addWorkerScriptPath = ExtensionUtils.getModulePath(module, "add_worker_Script.js")
+             * exports.loadScriptInWorker(addWorkerScriptPath);
+             * @param {string} scriptURL the Full url to load.
+             * @type {function}
+             */
             eventDispatcher.loadScriptInWorker = function (scriptURL) {
                 if(!workerCommLoadCompleteInWorker){
                     loadScriptQueue.push(scriptURL);
@@ -194,5 +315,12 @@
         globalObject.EventDispatcher.makeEventDispatcher(globalObject.WorkerComm);
         createWorkerComm(globalObject, globalObject.WorkerComm);
         globalObject.WorkerComm.triggerPeer(EVENT_WORKER_COMM_INIT_COMPLETE);
+    }
+
+    if(globalObject.define && env === ENV_BROWSER){
+        // for requirejs support
+        define(function (require, exports, module) {
+            exports.createWorkerComm = globalObject.WorkerComm.createWorkerComm;
+        });
     }
 }());

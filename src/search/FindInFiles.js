@@ -47,11 +47,11 @@ define(function (require, exports, module) {
 
     IndexingWorker.loadScriptInWorker(`${Phoenix.baseURL}search/worker/search.js`);
 
-    IndexingWorker.on("crawlComplete", function (_evt, params) {
+    IndexingWorker.on(IndexingWorker.EVENT_CRAWL_COMPLETE, function (_evt, params) {
         workerFileCacheComplete(params);
     });
 
-    IndexingWorker.on("crawlProgress", function (_evt, params) {
+    IndexingWorker.on(IndexingWorker.EVENT_CRAWL_PROGRESS, function (_evt, params) {
         FindUtils.notifyIndexingProgress(params.processed, params.total);
     });
 
@@ -111,7 +111,10 @@ define(function (require, exports, module) {
         DocumentManager.on("fileNameChange",  _fileNameChangeHandler);
     }
 
-    function workerFileCacheComplete([numFiles, cacheSize, crawlTime]) {
+    function workerFileCacheComplete(data) {
+        let numFiles = data.numFilesCached,
+            cacheSize = data.cacheSizeBytes,
+            crawlTime = data.crawlTimeMs;
         projectIndexingComplete = true;
         console.log(`file indexing worker cache complete: ${numFiles} files, size: ${cacheSize} B in ${crawlTime}ms`);
         if (/\/test\/SpecRunner\.html$/.test(window.location.pathname)) {
