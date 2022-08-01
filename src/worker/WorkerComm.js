@@ -39,9 +39,11 @@
  * // we need to pass in the `workerCommUrl` so that the web-worker can
  * // load`WorkerComm` within the worker context as described below.
  * let workerCommUrl = `${Phoenix.baseURL}worker/WorkerComm.js`;
+ * let eventDispatcherURL = `${Phoenix.baseURL}utils/EventDispatcher.js`;
  *
  * // load the worker
- * const _myWorker = new Worker(`${workerPath}/workerCommUrl=${workerCommUrl}`);
+ * const _myWorker = new Worker(
+ * `${workerPath}?workerCommUrl=${workerCommUrl}&eventDispatcherURL=${eventDispatcherURL}`);
  *
  * // Not create a `WorkerComm` object and attach to your extension module exports.
  * EventDispatcher.makeEventDispatcher(exports);
@@ -59,6 +61,7 @@
  * ```js
  * const urlParams = new URLSearchParams(location.search);
  * importScripts(urlParams.get('workerCommUrl'));
+ * importScripts(urlParams.get('eventDispatcherURL'));
  * // After this, a global `WorkerComm` object will be available within the
  * // web-worker that can be used to communicate with Phoenix.
  * ```
@@ -102,11 +105,13 @@
 
     /**
      * Adds support for WorkerComm APIs to the provided web-Worker instance. Only available in the main thread.
+     * This API should be called immediately after creating the worker in main thread.
      * @example <caption>Create a web-worker with `WorkerComm` in an extension.</caption>
      * // load the worker [See API docs for full sample]
-     * const _myWorker = new Worker(`${workerPath}/workerCommUrl=${workerCommUrl}`);
+     * const _myWorker = new Worker(
+     * `${workerPath}?workerCommUrl=${workerCommUrl}&eventDispatcherURL=${eventDispatcherURL}`);
      *
-     * // Not create a `WorkerComm` object and attach to your extension module exports.
+     * // Now create a `WorkerComm` object and attach to your extension module exports.
      * EventDispatcher.makeEventDispatcher(exports);
      * // all WorkerComm objects needs to be an EventDispatcher.
      * WorkerComm.createWorkerComm(_myWorker, exports);
@@ -222,16 +227,16 @@
              * .....
              * let ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
              * let addWorkerScriptPath = ExtensionUtils.getModulePath(module, "add_worker_Script.js")
-             * exports.loadScriptInWorker(addWorkerScriptPath);
+             * await exports.loadScriptInWorker(addWorkerScriptPath);
              * @param {string} scriptURL the Full url to load.
              * @type {function}
              */
-            eventDispatcher.loadScriptInWorker = function (scriptURL) {
+            eventDispatcher.loadScriptInWorker = async function (scriptURL) {
                 if(!workerCommLoadCompleteInWorker){
                     loadScriptQueue.push(scriptURL);
                     return;
                 }
-                eventDispatcher.execPeer(EXEC_LOAD_SCRIPT, scriptURL);
+                await eventDispatcher.execPeer(EXEC_LOAD_SCRIPT, scriptURL);
             };
         } else {
             function _loadScriptHandler(url) {
@@ -288,7 +293,7 @@
                     }
                 }
             } catch (err) {
-                response.err = err;
+                response.err = err.stack || err.toString();
             }
             postTarget.postMessage(JSON.stringify(response));
         }
@@ -321,6 +326,11 @@
         // for requirejs support
         define(function (require, exports, module) {
             exports.createWorkerComm = globalObject.WorkerComm.createWorkerComm;
+            /**
+             * Raised on main thread when WorkerComm is loaded in the web-worker and is ready.
+             * @event EVENT_WORKER_COMM_INIT_COMPLETE
+             */
+            exports.EVENT_WORKER_COMM_INIT_COMPLETE = EVENT_WORKER_COMM_INIT_COMPLETE;
         });
     }
 }());
