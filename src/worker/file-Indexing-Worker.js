@@ -147,7 +147,11 @@ async function fileCrawler() {
         if (!crawlEventSent) {
             crawlEventSent = true;
             let crawlTime =  Date.now() - cacheStartTime;
-            WorkerComm.triggerPeer("crawlComplete", [files.length, cacheSize, crawlTime]);
+            WorkerComm.triggerPeer("crawlComplete", {
+                numFilesCached: files.length,
+                cacheSizeBytes: cacheSize,
+                crawlTimeMs: crawlTime
+            });
         }
         setTimeout(fileCrawler, 1000);
     }
@@ -177,6 +181,7 @@ function initCache(fileList) {
     clearProjectCache();
     crawlEventSent = false;
     cacheStartTime = Date.now();
+    WorkerComm.triggerPeer("crawlStarted");
 }
 
 /**
