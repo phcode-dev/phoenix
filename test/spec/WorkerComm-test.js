@@ -23,8 +23,8 @@
 define(function (require, exports, module) {
     // Load dependent modules
     const WorkerComm = require("worker/WorkerComm"),
-        EventDispatcher = brackets.getModule("utils/EventDispatcher"),
-        ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
+        EventDispatcher = require("utils/EventDispatcher"),
+        ExtensionUtils = require("utils/ExtensionUtils");
 
     EventDispatcher.makeEventDispatcher(exports);
     let _myWorker;
