@@ -6,14 +6,6 @@
         "Ctrl-Alt-M"
     ],
     "renameIdentifier": [
-        {
-            "key": "Ctrl-R", "platform": "mac"
-        },
-        {
-            "key": "Ctrl-R", "platform": "win"
-        },
-        {
-            "key": "Ctrl-R", "platform": "linux"
-        }
+        "Shift-F2"
     ]
 }
