@@ -1714,6 +1714,8 @@ define(function (require, exports, module) {
 
 
     EventDispatcher.makeEventDispatcher(exports);
+    // currentFileChange has a large number of listeners. so we raise warning threshold to 25
+    EventDispatcher.setLeakThresholdForEvent("currentFileChange", 25);
 
     // Unit Test Helpers
     exports._initialize                   = _initialize;

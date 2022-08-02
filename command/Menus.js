@@ -517,12 +517,12 @@ define(function (require, exports, module) {
      *      Pass Menus.DIVIDER for a menu divider, or just call addMenuDivider() instead.
      * @param {?string | Array.<{key: string, platform: string}>}  keyBindings - register one
      *      one or more key bindings to associate with the supplied command.
-     * @param {?string} position - constant defining the position of new MenuItem relative to
+     * @param {?string} [position] - constant defining the position of new MenuItem relative to
      *      other MenuItems. Values:
      *          - With no relativeID, use Menus.FIRST or LAST (default is LAST)
      *          - Relative to a command id, use BEFORE or AFTER (required)
      *          - Relative to a MenuSection, use FIRST_IN_SECTION or LAST_IN_SECTION (required)
-     * @param {?string} relativeID - command id OR one of the MenuSection.* constants. Required
+     * @param {?string} [relativeID] - command id OR one of the MenuSection.* constants. Required
      *      for all position constants except FIRST and LAST.
      *
      * @return {MenuItem} the newly created MenuItem
