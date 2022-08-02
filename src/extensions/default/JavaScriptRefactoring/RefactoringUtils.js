@@ -471,7 +471,7 @@ define(function (require, exports, module) {
         try {
             ast = Acorn.parse(text);
         } catch(e) {
-            ast = Acorn.parse(text);
+            ast = AcornLoose.parse(text);
         }
         return ast;
     };
