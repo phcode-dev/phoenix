@@ -393,6 +393,11 @@ define(function (require, exports, module) {
             key = "-";
         }
 
+        // Check if it is a shift key only press
+        if (key === "" && origDescriptor.toLowerCase() === 'shift-shift') {
+            key = "Shift";
+        }
+
         // '+' char is valid if it's the only key. Keyboard shortcut strings should use
         // unicode characters (unescaped). Keyboard shortcut display strings may use
         // unicode escape sequences (e.g. \u20AC euro sign)

@@ -111,7 +111,8 @@
         return;
     }
 
-    var LEAK_WARNING_THRESHOLD = 15;
+    let LEAK_WARNING_THRESHOLD = 15,
+        eventSpecificThreshold = {};
 
 
     /**
@@ -127,6 +128,22 @@
         }
         return { eventName: eventStr.substring(0, dot), ns: eventStr.substring(dot) };
 
+    }
+
+    /**
+     * By default, we consider any events having more than 15 listeners to be leaky. But sometimes there may be
+     * genuine use cases where an event can have a large number of listeners. For those events, it is recommended
+     * to increase the leaky warning threshold individually with this API.
+     * @param {string} eventName
+     * @param {number} threshold - The new threshold to set. Will only be set if the new threshold is greater than
+     * the current threshold.
+     * @type {function}
+     */
+    function setLeakThresholdForEvent(eventName, threshold) {
+        let currentThreshold = eventSpecificThreshold[eventName] || LEAK_WARNING_THRESHOLD;
+        if(threshold > currentThreshold){
+            eventSpecificThreshold[eventName] = threshold;
+        }
     }
 
 
@@ -175,8 +192,10 @@
             this._eventHandlers[eventName].push(eventsList[i]);
 
             // Check for suspicious number of listeners being added to one object-event pair
-            if (this._eventHandlers[eventName].length > LEAK_WARNING_THRESHOLD) {
-                console.error("Possible memory leak: " + this._eventHandlers[eventName].length + " '" + eventName + "' listeners attached to", this);
+            let leakThreshold = eventSpecificThreshold[eventName] || LEAK_WARNING_THRESHOLD;
+            if (this._eventHandlers[eventName].length > leakThreshold) {
+                console.error("Possible memory leak: " +
+                    this._eventHandlers[eventName].length + " '" + eventName + "' listeners attached to", this);
             }
         }
 
@@ -369,7 +388,8 @@
         makeEventDispatcher,
         triggerWithArray,
         on_duringInit,
-        markDeprecated
+        markDeprecated,
+        setLeakThresholdForEvent
     };
 
     if(globalObject.define){
@@ -379,6 +399,7 @@
             exports.triggerWithArray    = globalObject.EventDispatcher.triggerWithArray;
             exports.on_duringInit       = globalObject.EventDispatcher.on_duringInit;
             exports.markDeprecated      = globalObject.EventDispatcher.markDeprecated;
+            exports.setLeakThresholdForEvent = globalObject.EventDispatcher.setLeakThresholdForEvent;
         });
     }
 }());

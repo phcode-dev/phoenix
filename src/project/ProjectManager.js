@@ -88,6 +88,8 @@ define(function (require, exports, module) {
         EVENT_PROJECT_FILE_CHANGED = "projectFileChanged",
         EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed";
 
+    EventDispatcher.setLeakThresholdForEvent(EVENT_PROJECT_OPEN, 25);
+
     /**
      * @private
      * Filename to use for project settings files.

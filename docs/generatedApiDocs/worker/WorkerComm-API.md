@@ -57,6 +57,7 @@ importScripts(urlParams.get('eventDispatcherURL'));
 ## createWorkerComm
 
 Adds support for WorkerComm APIs to the provided web-Worker instance. Only available in the main thread.
+This API should be called immediately after creating the worker in main thread.
 
 Type: [function][1]
 
@@ -186,7 +187,7 @@ WorkerComm.createWorkerComm(_myWorker, exports);
 .....
 let ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
 let addWorkerScriptPath = ExtensionUtils.getModulePath(module, "add_worker_Script.js")
-exports.loadScriptInWorker(addWorkerScriptPath);
+await exports.loadScriptInWorker(addWorkerScriptPath);
 ```
 
 ## EVENT_WORKER_COMM_INIT_COMPLETE
