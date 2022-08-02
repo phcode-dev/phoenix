@@ -381,10 +381,10 @@ var require_shared = __commonJS({
     (module2.exports = function(key, value) {
       return store[key] || (store[key] = value !== void 0 ? value : {});
     })("versions", []).push({
-      version: "3.21.1",
+      version: "3.22.2",
       mode: IS_PURE ? "pure" : "global",
       copyright: "\xA9 2014-2022 Denis Pushkarev (zloirock.ru)",
-      license: "https://github.com/zloirock/core-js/blob/v3.21.1/LICENSE",
+      license: "https://github.com/zloirock/core-js/blob/v3.22.2/LICENSE",
       source: "https://github.com/zloirock/core-js"
     });
   }
@@ -1511,7 +1511,7 @@ var require_es_array_flat = __commonJS({
   }
 });
 
-// dist/index.js
+// dist/_index.js.cjs.js
 var _excluded = ["cliName", "cliCategory", "cliDescription"];
 var _excluded2 = ["_"];
 var _excluded3 = ["overrides"];
@@ -1551,9 +1551,11 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 require_es_array_flat_map();
 require_es_object_from_entries();
 require_es_array_flat();
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames2 = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __esm = (fn, res) => function __init() {
   return fn && (res = (0, fn[__getOwnPropNames2(fn)[0]])(fn = 0)), res;
@@ -1581,6 +1583,10 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+  value: mod,
+  enumerable: true
+}) : target, mod));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", {
   value: true
 }), mod);
@@ -1808,15 +1814,18 @@ var require_array = __commonJS2({
     }
   }
 });
-var require_escape_string_regexp = __commonJS2({
-  "node_modules/escape-string-regexp/index.js"(exports2, module2) {
-    "use strict";
-    module2.exports = (string) => {
-      if (typeof string !== "string") {
-        throw new TypeError("Expected a string");
-      }
-      return string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d");
-    };
+var escape_string_regexp_exports = {};
+__export(escape_string_regexp_exports, {
+  default: () => escapeStringRegexp
+});
+function escapeStringRegexp(string) {
+  if (typeof string !== "string") {
+    throw new TypeError("Expected a string");
+  }
+  return string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d");
+}
+var init_escape_string_regexp = __esm({
+  "node_modules/escape-string-regexp/index.js"() {
   }
 });
 var require_get_last = __commonJS2({
@@ -1860,7 +1869,7 @@ var require_re = __commonJS2({
     var R = 0;
     var createToken = (name, value, isGlobal) => {
       const index = R++;
-      debug(index, value);
+      debug(name, index, value);
       t[name] = index;
       src[index] = value;
       re[index] = new RegExp(value, isGlobal ? "g" : void 0);
@@ -1906,8 +1915,8 @@ var require_re = __commonJS2({
     createToken("HYPHENRANGE", `^\\s*(${src[t.XRANGEPLAIN]})\\s+-\\s+(${src[t.XRANGEPLAIN]})\\s*$`);
     createToken("HYPHENRANGELOOSE", `^\\s*(${src[t.XRANGEPLAINLOOSE]})\\s+-\\s+(${src[t.XRANGEPLAINLOOSE]})\\s*$`);
     createToken("STAR", "(<|>)?=?\\s*\\*");
-    createToken("GTE0", "^\\s*>=\\s*0.0.0\\s*$");
-    createToken("GTE0PRE", "^\\s*>=\\s*0.0.0-0\\s*$");
+    createToken("GTE0", "^\\s*>=\\s*0\\.0\\.0\\s*$");
+    createToken("GTE0PRE", "^\\s*>=\\s*0\\.0\\.0-0\\s*$");
   }
 });
 var require_parse_options = __commonJS2({
@@ -1915,9 +1924,9 @@ var require_parse_options = __commonJS2({
     var opts = ["includePrerelease", "loose", "rtl"];
     var parseOptions = (options) => !options ? {} : typeof options !== "object" ? {
       loose: true
-    } : opts.filter((k) => options[k]).reduce((options2, k) => {
-      options2[k] = true;
-      return options2;
+    } : opts.filter((k) => options[k]).reduce((o, k) => {
+      o[k] = true;
+      return o;
     }, {});
     module2.exports = parseOptions;
   }
@@ -2151,7 +2160,7 @@ var require_semver = __commonJS2({
               }
             }
             if (identifier) {
-              if (this.prerelease[0] === identifier) {
+              if (compareIdentifiers(this.prerelease[0], identifier) === 0) {
                 if (isNaN(this.prerelease[1])) {
                   this.prerelease = [identifier, 0];
                 }
@@ -2755,107 +2764,86 @@ var require_is_non_empty_array = __commonJS2({
     module2.exports = isNonEmptyArray;
   }
 });
-var require_string_width = __commonJS2({
-  "vendors/string-width.js"(exports2, module2) {
-    var __create = Object.create;
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames22 = Object.getOwnPropertyNames;
-    var __getProtoOf = Object.getPrototypeOf;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __commonJS22 = (cb, mod) => function __require() {
-      return mod || (0, cb[__getOwnPropNames22(cb)[0]])((mod = {
-        exports: {}
-      }).exports, mod), mod.exports;
+function ansiRegex({
+  onlyFirst = false
+} = {}) {
+  const pattern = ["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))"].join("|");
+  return new RegExp(pattern, onlyFirst ? void 0 : "g");
+}
+var init_ansi_regex = __esm({
+  "node_modules/strip-ansi/node_modules/ansi-regex/index.js"() {
+  }
+});
+function stripAnsi(string) {
+  if (typeof string !== "string") {
+    throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
+  }
+  return string.replace(ansiRegex(), "");
+}
+var init_strip_ansi = __esm({
+  "node_modules/strip-ansi/index.js"() {
+    init_ansi_regex();
+  }
+});
+function isFullwidthCodePoint(codePoint) {
+  if (!Number.isInteger(codePoint)) {
+    return false;
+  }
+  return codePoint >= 4352 && (codePoint <= 4447 || codePoint === 9001 || codePoint === 9002 || 11904 <= codePoint && codePoint <= 12871 && codePoint !== 12351 || 12880 <= codePoint && codePoint <= 19903 || 19968 <= codePoint && codePoint <= 42182 || 43360 <= codePoint && codePoint <= 43388 || 44032 <= codePoint && codePoint <= 55203 || 63744 <= codePoint && codePoint <= 64255 || 65040 <= codePoint && codePoint <= 65049 || 65072 <= codePoint && codePoint <= 65131 || 65281 <= codePoint && codePoint <= 65376 || 65504 <= codePoint && codePoint <= 65510 || 110592 <= codePoint && codePoint <= 110593 || 127488 <= codePoint && codePoint <= 127569 || 131072 <= codePoint && codePoint <= 262141);
+}
+var init_is_fullwidth_code_point = __esm({
+  "node_modules/is-fullwidth-code-point/index.js"() {
+  }
+});
+var require_emoji_regex = __commonJS2({
+  "node_modules/emoji-regex/index.js"(exports2, module2) {
+    "use strict";
+    module2.exports = function() {
+      return /\uD83C\uDFF4\uDB40\uDC67\uDB40\uDC62(?:\uDB40\uDC77\uDB40\uDC6C\uDB40\uDC73|\uDB40\uDC73\uDB40\uDC63\uDB40\uDC74|\uDB40\uDC65\uDB40\uDC6E\uDB40\uDC67)\uDB40\uDC7F|(?:\uD83E\uDDD1\uD83C\uDFFF\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFF\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB-\uDFFE])|(?:\uD83E\uDDD1\uD83C\uDFFE\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFE\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB-\uDFFD\uDFFF])|(?:\uD83E\uDDD1\uD83C\uDFFD\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFD\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])|(?:\uD83E\uDDD1\uD83C\uDFFC\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFC\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB\uDFFD-\uDFFF])|(?:\uD83E\uDDD1\uD83C\uDFFB\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFB\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFC-\uDFFF])|\uD83D\uDC68(?:\uD83C\uDFFB(?:\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFF]))|\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFC-\uDFFF])|[\u2695\u2696\u2708]\uFE0F|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD]))?|(?:\uD83C[\uDFFC-\uDFFF])\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFF]))|\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83D\uDC68|(?:\uD83D[\uDC68\uDC69])\u200D(?:\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67]))|\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFF\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFE])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFE\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFD\uDFFF])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFD\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFC\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB\uDFFD-\uDFFF])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|(?:\uD83C\uDFFF\u200D[\u2695\u2696\u2708]|\uD83C\uDFFE\u200D[\u2695\u2696\u2708]|\uD83C\uDFFD\u200D[\u2695\u2696\u2708]|\uD83C\uDFFC\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708])\uFE0F|\u200D(?:(?:\uD83D[\uDC68\uDC69])\u200D(?:\uD83D[\uDC66\uDC67])|\uD83D[\uDC66\uDC67])|\uD83C\uDFFF|\uD83C\uDFFE|\uD83C\uDFFD|\uD83C\uDFFC)?|(?:\uD83D\uDC69(?:\uD83C\uDFFB\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69])|(?:\uD83C[\uDFFC-\uDFFF])\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69]))|\uD83E\uDDD1(?:\uD83C[\uDFFB-\uDFFF])\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1)(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC69\u200D\uD83D\uDC69\u200D(?:\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67]))|\uD83D\uDC69(?:\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFF\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFE\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFD\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFC\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFB\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD]))|\uD83E\uDDD1(?:\u200D(?:\uD83E\uDD1D\u200D\uD83E\uDDD1|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFF\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFE\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFD\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFC\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFB\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD]))|\uD83D\uDC69\u200D\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC69\u200D\uD83D\uDC69\u200D(?:\uD83D[\uDC66\uDC67])|\uD83D\uDC69\u200D\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|(?:\uD83D\uDC41\uFE0F\u200D\uD83D\uDDE8|\uD83E\uDDD1(?:\uD83C\uDFFF\u200D[\u2695\u2696\u2708]|\uD83C\uDFFE\u200D[\u2695\u2696\u2708]|\uD83C\uDFFD\u200D[\u2695\u2696\u2708]|\uD83C\uDFFC\u200D[\u2695\u2696\u2708]|\uD83C\uDFFB\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708])|\uD83D\uDC69(?:\uD83C\uDFFF\u200D[\u2695\u2696\u2708]|\uD83C\uDFFE\u200D[\u2695\u2696\u2708]|\uD83C\uDFFD\u200D[\u2695\u2696\u2708]|\uD83C\uDFFC\u200D[\u2695\u2696\u2708]|\uD83C\uDFFB\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708])|\uD83D\uDE36\u200D\uD83C\uDF2B|\uD83C\uDFF3\uFE0F\u200D\u26A7|\uD83D\uDC3B\u200D\u2744|(?:(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC6F|\uD83E[\uDD3C\uDDDE\uDDDF])\u200D[\u2640\u2642]|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])\u200D[\u2640\u2642]|\uD83C\uDFF4\u200D\u2620|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD])\u200D[\u2640\u2642]|[\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u2328\u23CF\u23ED-\u23EF\u23F1\u23F2\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB\u25FC\u2600-\u2604\u260E\u2611\u2618\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u2692\u2694-\u2697\u2699\u269B\u269C\u26A0\u26A7\u26B0\u26B1\u26C8\u26CF\u26D1\u26D3\u26E9\u26F0\u26F1\u26F4\u26F7\u26F8\u2702\u2708\u2709\u270F\u2712\u2714\u2716\u271D\u2721\u2733\u2734\u2744\u2747\u2763\u27A1\u2934\u2935\u2B05-\u2B07\u3030\u303D\u3297\u3299]|\uD83C[\uDD70\uDD71\uDD7E\uDD7F\uDE02\uDE37\uDF21\uDF24-\uDF2C\uDF36\uDF7D\uDF96\uDF97\uDF99-\uDF9B\uDF9E\uDF9F\uDFCD\uDFCE\uDFD4-\uDFDF\uDFF5\uDFF7]|\uD83D[\uDC3F\uDCFD\uDD49\uDD4A\uDD6F\uDD70\uDD73\uDD76-\uDD79\uDD87\uDD8A-\uDD8D\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA\uDECB\uDECD-\uDECF\uDEE0-\uDEE5\uDEE9\uDEF0\uDEF3])\uFE0F|\uD83C\uDFF3\uFE0F\u200D\uD83C\uDF08|\uD83D\uDC69\u200D\uD83D\uDC67|\uD83D\uDC69\u200D\uD83D\uDC66|\uD83D\uDE35\u200D\uD83D\uDCAB|\uD83D\uDE2E\u200D\uD83D\uDCA8|\uD83D\uDC15\u200D\uD83E\uDDBA|\uD83E\uDDD1(?:\uD83C\uDFFF|\uD83C\uDFFE|\uD83C\uDFFD|\uD83C\uDFFC|\uD83C\uDFFB)?|\uD83D\uDC69(?:\uD83C\uDFFF|\uD83C\uDFFE|\uD83C\uDFFD|\uD83C\uDFFC|\uD83C\uDFFB)?|\uD83C\uDDFD\uD83C\uDDF0|\uD83C\uDDF6\uD83C\uDDE6|\uD83C\uDDF4\uD83C\uDDF2|\uD83D\uDC08\u200D\u2B1B|\u2764\uFE0F\u200D(?:\uD83D\uDD25|\uD83E\uDE79)|\uD83D\uDC41\uFE0F|\uD83C\uDFF3\uFE0F|\uD83C\uDDFF(?:\uD83C[\uDDE6\uDDF2\uDDFC])|\uD83C\uDDFE(?:\uD83C[\uDDEA\uDDF9])|\uD83C\uDDFC(?:\uD83C[\uDDEB\uDDF8])|\uD83C\uDDFB(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA])|\uD83C\uDDFA(?:\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF])|\uD83C\uDDF9(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF])|\uD83C\uDDF8(?:\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF])|\uD83C\uDDF7(?:\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC])|\uD83C\uDDF5(?:\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE])|\uD83C\uDDF3(?:\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF])|\uD83C\uDDF2(?:\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF])|\uD83C\uDDF1(?:\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE])|\uD83C\uDDF0(?:\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF])|\uD83C\uDDEF(?:\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5])|\uD83C\uDDEE(?:\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9])|\uD83C\uDDED(?:\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA])|\uD83C\uDDEC(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE])|\uD83C\uDDEB(?:\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7])|\uD83C\uDDEA(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA])|\uD83C\uDDE9(?:\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF])|\uD83C\uDDE8(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF])|\uD83C\uDDE7(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF])|\uD83C\uDDE6(?:\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF])|[#\*0-9]\uFE0F\u20E3|\u2764\uFE0F|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])|\uD83C\uDFF4|(?:[\u270A\u270B]|\uD83C[\uDF85\uDFC2\uDFC7]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC]|\uD83E[\uDD0C\uDD0F\uDD18-\uDD1C\uDD1E\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5])(?:\uD83C[\uDFFB-\uDFFF])|(?:[\u261D\u270C\u270D]|\uD83D[\uDD74\uDD90])(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])|[\u270A\u270B]|\uD83C[\uDF85\uDFC2\uDFC7]|\uD83D[\uDC08\uDC15\uDC3B\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE2E\uDE35\uDE36\uDE4C\uDE4F\uDEC0\uDECC]|\uD83E[\uDD0C\uDD0F\uDD18-\uDD1C\uDD1E\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5]|\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD]|\uD83D\uDC6F|\uD83E[\uDD3C\uDDDE\uDDDF]|[\u231A\u231B\u23E9-\u23EC\u23F0\u23F3\u25FD\u25FE\u2614\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA\u26AB\u26BD\u26BE\u26C4\u26C5\u26CE\u26D4\u26EA\u26F2\u26F3\u26F5\u26FA\u26FD\u2705\u2728\u274C\u274E\u2753-\u2755\u2757\u2795-\u2797\u27B0\u27BF\u2B1B\u2B1C\u2B50\u2B55]|\uD83C[\uDC04\uDCCF\uDD8E\uDD91-\uDD9A\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF84\uDF86-\uDF93\uDFA0-\uDFC1\uDFC5\uDFC6\uDFC8\uDFC9\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF8-\uDFFF]|\uD83D[\uDC00-\uDC07\uDC09-\uDC14\uDC16-\uDC3A\uDC3C-\uDC3E\uDC40\uDC44\uDC45\uDC51-\uDC65\uDC6A\uDC79-\uDC7B\uDC7D-\uDC80\uDC84\uDC88-\uDC8E\uDC90\uDC92-\uDCA9\uDCAB-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDDA4\uDDFB-\uDE2D\uDE2F-\uDE34\uDE37-\uDE44\uDE48-\uDE4A\uDE80-\uDEA2\uDEA4-\uDEB3\uDEB7-\uDEBF\uDEC1-\uDEC5\uDED0-\uDED2\uDED5-\uDED7\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB]|\uD83E[\uDD0D\uDD0E\uDD10-\uDD17\uDD1D\uDD20-\uDD25\uDD27-\uDD2F\uDD3A\uDD3F-\uDD45\uDD47-\uDD76\uDD78\uDD7A-\uDDB4\uDDB7\uDDBA\uDDBC-\uDDCB\uDDD0\uDDE0-\uDDFF\uDE70-\uDE74\uDE78-\uDE7A\uDE80-\uDE86\uDE90-\uDEA8\uDEB0-\uDEB6\uDEC0-\uDEC2\uDED0-\uDED6]|(?:[\u231A\u231B\u23E9-\u23EC\u23F0\u23F3\u25FD\u25FE\u2614\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA\u26AB\u26BD\u26BE\u26C4\u26C5\u26CE\u26D4\u26EA\u26F2\u26F3\u26F5\u26FA\u26FD\u2705\u270A\u270B\u2728\u274C\u274E\u2753-\u2755\u2757\u2795-\u2797\u27B0\u27BF\u2B1B\u2B1C\u2B50\u2B55]|\uD83C[\uDC04\uDCCF\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF93\uDFA0-\uDFCA\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF4\uDFF8-\uDFFF]|\uD83D[\uDC00-\uDC3E\uDC40\uDC42-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDD7A\uDD95\uDD96\uDDA4\uDDFB-\uDE4F\uDE80-\uDEC5\uDECC\uDED0-\uDED2\uDED5-\uDED7\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB]|\uD83E[\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDD78\uDD7A-\uDDCB\uDDCD-\uDDFF\uDE70-\uDE74\uDE78-\uDE7A\uDE80-\uDE86\uDE90-\uDEA8\uDEB0-\uDEB6\uDEC0-\uDEC2\uDED0-\uDED6])|(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26A7\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDED5-\uDED7\uDEE0-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEFC\uDFE0-\uDFEB]|\uD83E[\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDD78\uDD7A-\uDDCB\uDDCD-\uDDFF\uDE70-\uDE74\uDE78-\uDE7A\uDE80-\uDE86\uDE90-\uDEA8\uDEB0-\uDEB6\uDEC0-\uDEC2\uDED0-\uDED6])\uFE0F|(?:[\u261D\u26F9\u270A-\u270D]|\uD83C[\uDF85\uDFC2-\uDFC4\uDFC7\uDFCA-\uDFCC]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66-\uDC78\uDC7C\uDC81-\uDC83\uDC85-\uDC87\uDC8F\uDC91\uDCAA\uDD74\uDD75\uDD7A\uDD90\uDD95\uDD96\uDE45-\uDE47\uDE4B-\uDE4F\uDEA3\uDEB4-\uDEB6\uDEC0\uDECC]|\uD83E[\uDD0C\uDD0F\uDD18-\uDD1F\uDD26\uDD30-\uDD39\uDD3C-\uDD3E\uDD77\uDDB5\uDDB6\uDDB8\uDDB9\uDDBB\uDDCD-\uDDCF\uDDD1-\uDDDD])/g;
     };
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, {
-          get: all[name],
-          enumerable: true
-        });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames22(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, {
-              get: () => from[key],
-              enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable
-            });
-      }
-      return to;
-    };
-    var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps2(isNodeMode || !mod || !mod.__esModule ? __defProp2(target, "default", {
-      value: mod,
-      enumerable: true
-    }) : target, mod));
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", {
-      value: true
-    }), mod);
-    var require_emoji_regex = __commonJS22({
-      "node_modules/emoji-regex/index.js"(exports3, module22) {
-        "use strict";
-        module22.exports = function() {
-          return /\uD83C\uDFF4\uDB40\uDC67\uDB40\uDC62(?:\uDB40\uDC77\uDB40\uDC6C\uDB40\uDC73|\uDB40\uDC73\uDB40\uDC63\uDB40\uDC74|\uDB40\uDC65\uDB40\uDC6E\uDB40\uDC67)\uDB40\uDC7F|(?:\uD83E\uDDD1\uD83C\uDFFF\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFF\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB-\uDFFE])|(?:\uD83E\uDDD1\uD83C\uDFFE\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFE\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB-\uDFFD\uDFFF])|(?:\uD83E\uDDD1\uD83C\uDFFD\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFD\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])|(?:\uD83E\uDDD1\uD83C\uDFFC\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFC\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB\uDFFD-\uDFFF])|(?:\uD83E\uDDD1\uD83C\uDFFB\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFB\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFC-\uDFFF])|\uD83D\uDC68(?:\uD83C\uDFFB(?:\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFF]))|\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFC-\uDFFF])|[\u2695\u2696\u2708]\uFE0F|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD]))?|(?:\uD83C[\uDFFC-\uDFFF])\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFF]))|\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83D\uDC68|(?:\uD83D[\uDC68\uDC69])\u200D(?:\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67]))|\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFF\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFE])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFE\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFD\uDFFF])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFD\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFC\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB\uDFFD-\uDFFF])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|(?:\uD83C\uDFFF\u200D[\u2695\u2696\u2708]|\uD83C\uDFFE\u200D[\u2695\u2696\u2708]|\uD83C\uDFFD\u200D[\u2695\u2696\u2708]|\uD83C\uDFFC\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708])\uFE0F|\u200D(?:(?:\uD83D[\uDC68\uDC69])\u200D(?:\uD83D[\uDC66\uDC67])|\uD83D[\uDC66\uDC67])|\uD83C\uDFFF|\uD83C\uDFFE|\uD83C\uDFFD|\uD83C\uDFFC)?|(?:\uD83D\uDC69(?:\uD83C\uDFFB\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69])|(?:\uD83C[\uDFFC-\uDFFF])\u200D\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69]))|\uD83E\uDDD1(?:\uD83C[\uDFFB-\uDFFF])\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1)(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC69\u200D\uD83D\uDC69\u200D(?:\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67]))|\uD83D\uDC69(?:\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69])|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFF\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFE\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFD\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFC\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFB\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD]))|\uD83E\uDDD1(?:\u200D(?:\uD83E\uDD1D\u200D\uD83E\uDDD1|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFF\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFE\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFD\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFC\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFB\u200D(?:\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD]))|\uD83D\uDC69\u200D\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC69\u200D\uD83D\uDC69\u200D(?:\uD83D[\uDC66\uDC67])|\uD83D\uDC69\u200D\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|(?:\uD83D\uDC41\uFE0F\u200D\uD83D\uDDE8|\uD83E\uDDD1(?:\uD83C\uDFFF\u200D[\u2695\u2696\u2708]|\uD83C\uDFFE\u200D[\u2695\u2696\u2708]|\uD83C\uDFFD\u200D[\u2695\u2696\u2708]|\uD83C\uDFFC\u200D[\u2695\u2696\u2708]|\uD83C\uDFFB\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708])|\uD83D\uDC69(?:\uD83C\uDFFF\u200D[\u2695\u2696\u2708]|\uD83C\uDFFE\u200D[\u2695\u2696\u2708]|\uD83C\uDFFD\u200D[\u2695\u2696\u2708]|\uD83C\uDFFC\u200D[\u2695\u2696\u2708]|\uD83C\uDFFB\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708])|\uD83D\uDE36\u200D\uD83C\uDF2B|\uD83C\uDFF3\uFE0F\u200D\u26A7|\uD83D\uDC3B\u200D\u2744|(?:(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC6F|\uD83E[\uDD3C\uDDDE\uDDDF])\u200D[\u2640\u2642]|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])\u200D[\u2640\u2642]|\uD83C\uDFF4\u200D\u2620|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD])\u200D[\u2640\u2642]|[\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u2328\u23CF\u23ED-\u23EF\u23F1\u23F2\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB\u25FC\u2600-\u2604\u260E\u2611\u2618\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u2692\u2694-\u2697\u2699\u269B\u269C\u26A0\u26A7\u26B0\u26B1\u26C8\u26CF\u26D1\u26D3\u26E9\u26F0\u26F1\u26F4\u26F7\u26F8\u2702\u2708\u2709\u270F\u2712\u2714\u2716\u271D\u2721\u2733\u2734\u2744\u2747\u2763\u27A1\u2934\u2935\u2B05-\u2B07\u3030\u303D\u3297\u3299]|\uD83C[\uDD70\uDD71\uDD7E\uDD7F\uDE02\uDE37\uDF21\uDF24-\uDF2C\uDF36\uDF7D\uDF96\uDF97\uDF99-\uDF9B\uDF9E\uDF9F\uDFCD\uDFCE\uDFD4-\uDFDF\uDFF5\uDFF7]|\uD83D[\uDC3F\uDCFD\uDD49\uDD4A\uDD6F\uDD70\uDD73\uDD76-\uDD79\uDD87\uDD8A-\uDD8D\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA\uDECB\uDECD-\uDECF\uDEE0-\uDEE5\uDEE9\uDEF0\uDEF3])\uFE0F|\uD83C\uDFF3\uFE0F\u200D\uD83C\uDF08|\uD83D\uDC69\u200D\uD83D\uDC67|\uD83D\uDC69\u200D\uD83D\uDC66|\uD83D\uDE35\u200D\uD83D\uDCAB|\uD83D\uDE2E\u200D\uD83D\uDCA8|\uD83D\uDC15\u200D\uD83E\uDDBA|\uD83E\uDDD1(?:\uD83C\uDFFF|\uD83C\uDFFE|\uD83C\uDFFD|\uD83C\uDFFC|\uD83C\uDFFB)?|\uD83D\uDC69(?:\uD83C\uDFFF|\uD83C\uDFFE|\uD83C\uDFFD|\uD83C\uDFFC|\uD83C\uDFFB)?|\uD83C\uDDFD\uD83C\uDDF0|\uD83C\uDDF6\uD83C\uDDE6|\uD83C\uDDF4\uD83C\uDDF2|\uD83D\uDC08\u200D\u2B1B|\u2764\uFE0F\u200D(?:\uD83D\uDD25|\uD83E\uDE79)|\uD83D\uDC41\uFE0F|\uD83C\uDFF3\uFE0F|\uD83C\uDDFF(?:\uD83C[\uDDE6\uDDF2\uDDFC])|\uD83C\uDDFE(?:\uD83C[\uDDEA\uDDF9])|\uD83C\uDDFC(?:\uD83C[\uDDEB\uDDF8])|\uD83C\uDDFB(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA])|\uD83C\uDDFA(?:\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF])|\uD83C\uDDF9(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF])|\uD83C\uDDF8(?:\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF])|\uD83C\uDDF7(?:\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC])|\uD83C\uDDF5(?:\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE])|\uD83C\uDDF3(?:\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF])|\uD83C\uDDF2(?:\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF])|\uD83C\uDDF1(?:\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE])|\uD83C\uDDF0(?:\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF])|\uD83C\uDDEF(?:\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5])|\uD83C\uDDEE(?:\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9])|\uD83C\uDDED(?:\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA])|\uD83C\uDDEC(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE])|\uD83C\uDDEB(?:\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7])|\uD83C\uDDEA(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA])|\uD83C\uDDE9(?:\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF])|\uD83C\uDDE8(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF])|\uD83C\uDDE7(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF])|\uD83C\uDDE6(?:\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF])|[#\*0-9]\uFE0F\u20E3|\u2764\uFE0F|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])|\uD83C\uDFF4|(?:[\u270A\u270B]|\uD83C[\uDF85\uDFC2\uDFC7]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC]|\uD83E[\uDD0C\uDD0F\uDD18-\uDD1C\uDD1E\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5])(?:\uD83C[\uDFFB-\uDFFF])|(?:[\u261D\u270C\u270D]|\uD83D[\uDD74\uDD90])(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])|[\u270A\u270B]|\uD83C[\uDF85\uDFC2\uDFC7]|\uD83D[\uDC08\uDC15\uDC3B\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE2E\uDE35\uDE36\uDE4C\uDE4F\uDEC0\uDECC]|\uD83E[\uDD0C\uDD0F\uDD18-\uDD1C\uDD1E\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5]|\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD]|\uD83D\uDC6F|\uD83E[\uDD3C\uDDDE\uDDDF]|[\u231A\u231B\u23E9-\u23EC\u23F0\u23F3\u25FD\u25FE\u2614\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA\u26AB\u26BD\u26BE\u26C4\u26C5\u26CE\u26D4\u26EA\u26F2\u26F3\u26F5\u26FA\u26FD\u2705\u2728\u274C\u274E\u2753-\u2755\u2757\u2795-\u2797\u27B0\u27BF\u2B1B\u2B1C\u2B50\u2B55]|\uD83C[\uDC04\uDCCF\uDD8E\uDD91-\uDD9A\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF84\uDF86-\uDF93\uDFA0-\uDFC1\uDFC5\uDFC6\uDFC8\uDFC9\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF8-\uDFFF]|\uD83D[\uDC00-\uDC07\uDC09-\uDC14\uDC16-\uDC3A\uDC3C-\uDC3E\uDC40\uDC44\uDC45\uDC51-\uDC65\uDC6A\uDC79-\uDC7B\uDC7D-\uDC80\uDC84\uDC88-\uDC8E\uDC90\uDC92-\uDCA9\uDCAB-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDDA4\uDDFB-\uDE2D\uDE2F-\uDE34\uDE37-\uDE44\uDE48-\uDE4A\uDE80-\uDEA2\uDEA4-\uDEB3\uDEB7-\uDEBF\uDEC1-\uDEC5\uDED0-\uDED2\uDED5-\uDED7\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB]|\uD83E[\uDD0D\uDD0E\uDD10-\uDD17\uDD1D\uDD20-\uDD25\uDD27-\uDD2F\uDD3A\uDD3F-\uDD45\uDD47-\uDD76\uDD78\uDD7A-\uDDB4\uDDB7\uDDBA\uDDBC-\uDDCB\uDDD0\uDDE0-\uDDFF\uDE70-\uDE74\uDE78-\uDE7A\uDE80-\uDE86\uDE90-\uDEA8\uDEB0-\uDEB6\uDEC0-\uDEC2\uDED0-\uDED6]|(?:[\u231A\u231B\u23E9-\u23EC\u23F0\u23F3\u25FD\u25FE\u2614\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA\u26AB\u26BD\u26BE\u26C4\u26C5\u26CE\u26D4\u26EA\u26F2\u26F3\u26F5\u26FA\u26FD\u2705\u270A\u270B\u2728\u274C\u274E\u2753-\u2755\u2757\u2795-\u2797\u27B0\u27BF\u2B1B\u2B1C\u2B50\u2B55]|\uD83C[\uDC04\uDCCF\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF93\uDFA0-\uDFCA\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF4\uDFF8-\uDFFF]|\uD83D[\uDC00-\uDC3E\uDC40\uDC42-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDD7A\uDD95\uDD96\uDDA4\uDDFB-\uDE4F\uDE80-\uDEC5\uDECC\uDED0-\uDED2\uDED5-\uDED7\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB]|\uD83E[\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDD78\uDD7A-\uDDCB\uDDCD-\uDDFF\uDE70-\uDE74\uDE78-\uDE7A\uDE80-\uDE86\uDE90-\uDEA8\uDEB0-\uDEB6\uDEC0-\uDEC2\uDED0-\uDED6])|(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26A7\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDED5-\uDED7\uDEE0-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEFC\uDFE0-\uDFEB]|\uD83E[\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDD78\uDD7A-\uDDCB\uDDCD-\uDDFF\uDE70-\uDE74\uDE78-\uDE7A\uDE80-\uDE86\uDE90-\uDEA8\uDEB0-\uDEB6\uDEC0-\uDEC2\uDED0-\uDED6])\uFE0F|(?:[\u261D\u26F9\u270A-\u270D]|\uD83C[\uDF85\uDFC2-\uDFC4\uDFC7\uDFCA-\uDFCC]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66-\uDC78\uDC7C\uDC81-\uDC83\uDC85-\uDC87\uDC8F\uDC91\uDCAA\uDD74\uDD75\uDD7A\uDD90\uDD95\uDD96\uDE45-\uDE47\uDE4B-\uDE4F\uDEA3\uDEB4-\uDEB6\uDEC0\uDECC]|\uD83E[\uDD0C\uDD0F\uDD18-\uDD1F\uDD26\uDD30-\uDD39\uDD3C-\uDD3E\uDD77\uDDB5\uDDB6\uDDB8\uDDB9\uDDBB\uDDCD-\uDDCF\uDDD1-\uDDDD])/g;
-        };
-      }
-    });
-    var string_width_exports = {};
-    __export2(string_width_exports, {
-      default: () => stringWidth
-    });
-    module2.exports = __toCommonJS2(string_width_exports);
-    function ansiRegex({
-      onlyFirst = false
-    } = {}) {
-      const pattern = ["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))"].join("|");
-      return new RegExp(pattern, onlyFirst ? void 0 : "g");
+  }
+});
+var string_width_exports = {};
+__export(string_width_exports, {
+  default: () => stringWidth
+});
+function stringWidth(string) {
+  if (typeof string !== "string" || string.length === 0) {
+    return 0;
+  }
+  string = stripAnsi(string);
+  if (string.length === 0) {
+    return 0;
+  }
+  string = string.replace((0, import_emoji_regex.default)(), "  ");
+  let width = 0;
+  for (let index = 0; index < string.length; index++) {
+    const codePoint = string.codePointAt(index);
+    if (codePoint <= 31 || codePoint >= 127 && codePoint <= 159) {
+      continue;
     }
-    function stripAnsi(string) {
-      if (typeof string !== "string") {
-        throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
-      }
-      return string.replace(ansiRegex(), "");
+    if (codePoint >= 768 && codePoint <= 879) {
+      continue;
     }
-    function isFullwidthCodePoint(codePoint) {
-      if (!Number.isInteger(codePoint)) {
-        return false;
-      }
-      return codePoint >= 4352 && (codePoint <= 4447 || codePoint === 9001 || codePoint === 9002 || 11904 <= codePoint && codePoint <= 12871 && codePoint !== 12351 || 12880 <= codePoint && codePoint <= 19903 || 19968 <= codePoint && codePoint <= 42182 || 43360 <= codePoint && codePoint <= 43388 || 44032 <= codePoint && codePoint <= 55203 || 63744 <= codePoint && codePoint <= 64255 || 65040 <= codePoint && codePoint <= 65049 || 65072 <= codePoint && codePoint <= 65131 || 65281 <= codePoint && codePoint <= 65376 || 65504 <= codePoint && codePoint <= 65510 || 110592 <= codePoint && codePoint <= 110593 || 127488 <= codePoint && codePoint <= 127569 || 131072 <= codePoint && codePoint <= 262141);
+    if (codePoint > 65535) {
+      index++;
     }
-    var import_emoji_regex = __toESM(require_emoji_regex(), 1);
-    function stringWidth(string) {
-      if (typeof string !== "string" || string.length === 0) {
-        return 0;
-      }
-      string = stripAnsi(string);
-      if (string.length === 0) {
-        return 0;
-      }
-      string = string.replace((0, import_emoji_regex.default)(), "  ");
-      let width = 0;
-      for (let index = 0; index < string.length; index++) {
-        const codePoint = string.codePointAt(index);
-        if (codePoint <= 31 || codePoint >= 127 && codePoint <= 159) {
-          continue;
-        }
-        if (codePoint >= 768 && codePoint <= 879) {
-          continue;
-        }
-        if (codePoint > 65535) {
-          index++;
-        }
-        width += isFullwidthCodePoint(codePoint) ? 2 : 1;
-      }
-      return width;
-    }
+    width += isFullwidthCodePoint(codePoint) ? 2 : 1;
+  }
+  return width;
+}
+var import_emoji_regex;
+var init_string_width = __esm({
+  "node_modules/string-width/index.js"() {
+    init_strip_ansi();
+    init_is_fullwidth_code_point();
+    import_emoji_regex = __toESM(require_emoji_regex());
   }
 });
 var require_get_string_width = __commonJS2({
   "src/utils/get-string-width.js"(exports2, module2) {
     "use strict";
-    var stringWidth = require_string_width().default;
+    var stringWidth2 = (init_string_width(), __toCommonJS(string_width_exports)).default;
     var notAsciiRegex = /[^\x20-\x7F]/;
     function getStringWidth(text) {
       if (!text) {
@@ -2864,7 +2852,7 @@ var require_get_string_width = __commonJS2({
       if (!notAsciiRegex.test(text)) {
         return text.length;
       }
-      return stringWidth(text);
+      return stringWidth2(text);
     }
     module2.exports = getStringWidth;
   }
@@ -3004,7 +2992,9 @@ var require_get_next_non_space_non_comment_character_index_with_start_index = __
 var require_util = __commonJS2({
   "src/common/util.js"(exports2, module2) {
     "use strict";
-    var escapeStringRegexp = require_escape_string_regexp();
+    var {
+      default: escapeStringRegexp2
+    } = (init_escape_string_regexp(), __toCommonJS(escape_string_regexp_exports));
     var getLast = require_get_last();
     var {
       getSupportInfo: getSupportInfo2
@@ -3169,14 +3159,14 @@ var require_util = __commonJS2({
       return rawNumber.toLowerCase().replace(/^([+-]?[\d.]+e)(?:\+|(-))?0*(\d)/, "$1$2$3").replace(/^([+-]?[\d.]+)e[+-]?0+$/, "$1").replace(/^([+-])?\./, "$10.").replace(/(\.\d+?)0+(?=e|$)/, "$1").replace(/\.(?=e|$)/, "");
     }
     function getMaxContinuousCount(str, target) {
-      const results = str.match(new RegExp(`(${escapeStringRegexp(target)})+`, "g"));
+      const results = str.match(new RegExp(`(${escapeStringRegexp2(target)})+`, "g"));
       if (results === null) {
         return 0;
       }
       return results.reduce((maxCount, result) => Math.max(maxCount, result.length / target.length), 0);
     }
     function getMinNotPresentContinuousCount(str, target) {
-      const matches = str.match(new RegExp(`(${escapeStringRegexp(target)})+`, "g"));
+      const matches = str.match(new RegExp(`(${escapeStringRegexp2(target)})+`, "g"));
       if (matches === null) {
         return 0;
       }
@@ -3792,7 +3782,7 @@ var require_descriptors2 = __commonJS2({
     tslib_1.__exportStar(require_api(), exports2);
   }
 });
-var require_escape_string_regexp2 = __commonJS2({
+var require_escape_string_regexp = __commonJS2({
   "node_modules/vnopts/node_modules/escape-string-regexp/index.js"(exports2, module2) {
     "use strict";
     var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
@@ -5185,7 +5175,7 @@ var require_templates = __commonJS2({
 var require_chalk = __commonJS2({
   "node_modules/vnopts/node_modules/chalk/index.js"(exports2, module2) {
     "use strict";
-    var escapeStringRegexp = require_escape_string_regexp2();
+    var escapeStringRegexp2 = require_escape_string_regexp();
     var ansiStyles = require_ansi_styles();
     var stdoutColor = require_supports_color().stdout;
     var template = require_templates();
@@ -5218,7 +5208,7 @@ var require_chalk = __commonJS2({
       ansiStyles.blue.open = "\x1B[94m";
     }
     for (const key of Object.keys(ansiStyles)) {
-      ansiStyles[key].closeRe = new RegExp(escapeStringRegexp(ansiStyles[key].close), "g");
+      ansiStyles[key].closeRe = new RegExp(escapeStringRegexp2(ansiStyles[key].close), "g");
       styles[key] = {
         get() {
           const codes = ansiStyles[key];
@@ -5231,7 +5221,7 @@ var require_chalk = __commonJS2({
         return build.call(this, this._styles || [], true, "visible");
       }
     };
-    ansiStyles.color.closeRe = new RegExp(escapeStringRegexp(ansiStyles.color.close), "g");
+    ansiStyles.color.closeRe = new RegExp(escapeStringRegexp2(ansiStyles.color.close), "g");
     for (const model of Object.keys(ansiStyles.color.ansi)) {
       if (skipModels.has(model)) {
         continue;
@@ -5251,7 +5241,7 @@ var require_chalk = __commonJS2({
         }
       };
     }
-    ansiStyles.bgColor.closeRe = new RegExp(escapeStringRegexp(ansiStyles.bgColor.close), "g");
+    ansiStyles.bgColor.closeRe = new RegExp(escapeStringRegexp2(ansiStyles.bgColor.close), "g");
     for (const model of Object.keys(ansiStyles.bgColor.ansi)) {
       if (skipModels.has(model)) {
         continue;
@@ -6195,11 +6185,11 @@ var require_options_normalizer = __commonJS2({
     };
     var hasDeprecationWarned;
     function normalizeOptions(options, optionInfos, {
-      logger,
+      logger = false,
       isCLI = false,
       passThrough = false,
-      colorsModule,
-      levenshteinDistance
+      colorsModule = null,
+      levenshteinDistance = null
     } = {}) {
       const unknown = !passThrough ? (key, value, options2) => {
         const _options2$schemas = options2.schemas, {
@@ -6303,7 +6293,7 @@ var require_options_normalizer = __commonJS2({
         case "int":
           SchemaConstructor = vnopts.IntegerSchema;
           if (isCLI) {
-            parameters.preprocess = (value) => Number(value);
+            parameters.preprocess = Number;
           }
           break;
         case "string":
@@ -6420,6 +6410,32 @@ var require_loc = __commonJS2({
       hasSameLocStart,
       hasSameLoc
     };
+  }
+});
+var require_load_parser = __commonJS2({
+  "src/main/load-parser.js"(exports2, module2) {
+    "use strict";
+    var path = require("path");
+    var {
+      ConfigError
+    } = require_errors();
+    var {
+      locStart,
+      locEnd
+    } = require_loc();
+    function requireParser(parser) {
+      try {
+        return {
+          parse: require(path.resolve(process.cwd(), parser)),
+          astFormat: "estree",
+          locStart,
+          locEnd
+        };
+      } catch {
+        throw new ConfigError(`Couldn't resolve parser "${parser}"`);
+      }
+    }
+    module2.exports = requireParser;
   }
 });
 var require_js_tokens = __commonJS2({
@@ -6631,7 +6647,7 @@ var require_lib3 = __commonJS2({
     var _keyword = require_keyword();
   }
 });
-var require_escape_string_regexp3 = __commonJS2({
+var require_escape_string_regexp2 = __commonJS2({
   "node_modules/@babel/highlight/node_modules/escape-string-regexp/index.js"(exports2, module2) {
     "use strict";
     var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
@@ -6852,7 +6868,7 @@ var require_templates2 = __commonJS2({
 var require_chalk2 = __commonJS2({
   "node_modules/@babel/highlight/node_modules/chalk/index.js"(exports2, module2) {
     "use strict";
-    var escapeStringRegexp = require_escape_string_regexp3();
+    var escapeStringRegexp2 = require_escape_string_regexp2();
     var ansiStyles = require_ansi_styles();
     var stdoutColor = require_supports_color2().stdout;
     var template = require_templates2();
@@ -6885,7 +6901,7 @@ var require_chalk2 = __commonJS2({
       ansiStyles.blue.open = "\x1B[94m";
     }
     for (const key of Object.keys(ansiStyles)) {
-      ansiStyles[key].closeRe = new RegExp(escapeStringRegexp(ansiStyles[key].close), "g");
+      ansiStyles[key].closeRe = new RegExp(escapeStringRegexp2(ansiStyles[key].close), "g");
       styles[key] = {
         get() {
           const codes = ansiStyles[key];
@@ -6898,7 +6914,7 @@ var require_chalk2 = __commonJS2({
         return build.call(this, this._styles || [], true, "visible");
       }
     };
-    ansiStyles.color.closeRe = new RegExp(escapeStringRegexp(ansiStyles.color.close), "g");
+    ansiStyles.color.closeRe = new RegExp(escapeStringRegexp2(ansiStyles.color.close), "g");
     for (const model of Object.keys(ansiStyles.color.ansi)) {
       if (skipModels.has(model)) {
         continue;
@@ -6918,7 +6934,7 @@ var require_chalk2 = __commonJS2({
         }
       };
     }
-    ansiStyles.bgColor.closeRe = new RegExp(escapeStringRegexp(ansiStyles.bgColor.close), "g");
+    ansiStyles.bgColor.closeRe = new RegExp(escapeStringRegexp2(ansiStyles.bgColor.close), "g");
     for (const model of Object.keys(ansiStyles.bgColor.ansi)) {
       if (skipModels.has(model)) {
         continue;
@@ -7258,11 +7274,11 @@ ${frame}`;
 var require_parser = __commonJS2({
   "src/main/parser.js"(exports2, module2) {
     "use strict";
-    var path = require("path");
     var {
       ConfigError
     } = require_errors();
     var jsLoc = require_loc();
+    var loadParser = require_load_parser();
     var {
       locStart,
       locEnd
@@ -7297,19 +7313,7 @@ var require_parser = __commonJS2({
         if (false) {
           throw new ConfigError(`Couldn't resolve parser "${opts.parser}". Parsers must be explicitly added to the standalone bundle.`);
         }
-        return requireParser(opts.parser);
-      }
-    }
-    function requireParser(parser) {
-      try {
-        return {
-          parse: require(path.resolve(process.cwd(), parser)),
-          astFormat: "estree",
-          locStart,
-          locEnd
-        };
-      } catch {
-        throw new ConfigError(`Couldn't resolve parser "${parser}"`);
+        return loadParser(opts.parser);
       }
     }
     function parse(text, opts) {
@@ -7794,7 +7798,7 @@ var require_comments = __commonJS2({
           ast: ast2,
           isLastComment
         } = context;
-        if (options2.parser === "json" || options2.parser === "json5" || options2.parser === "__js_expression" || options2.parser === "__vue_expression") {
+        if (options2.parser === "json" || options2.parser === "json5" || options2.parser === "__js_expression" || options2.parser === "__vue_expression" || options2.parser === "__vue_ts_expression") {
           if (locStart(comment) - locStart(ast2) <= 0) {
             addLeadingComment(ast2, comment);
             continue;
@@ -11708,11 +11712,11 @@ var require_micromatch = __commonJS2({
           options.onResult(state);
         items.push(state.output);
       };
-      let matches = micromatch(list, patterns, Object.assign(Object.assign({}, options), {}, {
+      let matches = new Set(micromatch(list, patterns, Object.assign(Object.assign({}, options), {}, {
         onResult
-      }));
+      })));
       for (let item of items) {
-        if (!matches.includes(item)) {
+        if (!matches.has(item)) {
           result.add(item);
         }
       }
@@ -14543,6 +14547,19 @@ ${error.message}`;
     };
   }
 });
+var require_partition = __commonJS2({
+  "src/utils/partition.js"(exports2, module2) {
+    "use strict";
+    function partition(array, predicate) {
+      const result = [[], []];
+      for (const value of array) {
+        result[predicate(value) ? 0 : 1].push(value);
+      }
+      return result;
+    }
+    module2.exports = partition;
+  }
+});
 var require_homedir = __commonJS2({
   "node_modules/resolve/lib/homedir.js"(exports2, module2) {
     "use strict";
@@ -15716,190 +15733,29 @@ var require_resolve2 = __commonJS2({
     module2.exports = resolve;
   }
 });
-var require_mem = __commonJS2({
-  "vendors/mem.js"(exports2, module2) {
-    var __create = Object.create;
-    var __defProp2 = Object.defineProperty;
-    var __defProps = Object.defineProperties;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
-    var __getOwnPropNames22 = Object.getOwnPropertyNames;
-    var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-    var __getProtoOf = Object.getPrototypeOf;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __propIsEnum = Object.prototype.propertyIsEnumerable;
-    var __defNormalProp = (obj, key, value) => key in obj ? __defProp2(obj, key, {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value
-    }) : obj[key] = value;
-    var __spreadValues = (a, b) => {
-      for (var prop in b || (b = {}))
-        if (__hasOwnProp2.call(b, prop))
-          __defNormalProp(a, prop, b[prop]);
-      if (__getOwnPropSymbols)
-        for (var prop of __getOwnPropSymbols(b)) {
-          if (__propIsEnum.call(b, prop))
-            __defNormalProp(a, prop, b[prop]);
-        }
-      return a;
-    };
-    var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-    var __commonJS22 = (cb, mod) => function __require() {
-      return mod || (0, cb[__getOwnPropNames22(cb)[0]])((mod = {
-        exports: {}
-      }).exports, mod), mod.exports;
-    };
-    var __export2 = (target, all) => {
-      for (var name in all)
-        __defProp2(target, name, {
-          get: all[name],
-          enumerable: true
-        });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames22(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, {
-              get: () => from[key],
-              enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable
-            });
-      }
-      return to;
-    };
-    var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps2(isNodeMode || !mod || !mod.__esModule ? __defProp2(target, "default", {
-      value: mod,
-      enumerable: true
-    }) : target, mod));
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", {
-      value: true
-    }), mod);
-    var require_p_defer = __commonJS22({
-      "node_modules/p-defer/index.js"(exports3, module22) {
-        "use strict";
-        module22.exports = () => {
-          const ret = {};
-          ret.promise = new Promise((resolve, reject) => {
-            ret.resolve = resolve;
-            ret.reject = reject;
-          });
-          return ret;
-        };
-      }
-    });
-    var require_dist = __commonJS22({
-      "node_modules/map-age-cleaner/dist/index.js"(exports3, module22) {
-        "use strict";
-        var __awaiter2 = exports3 && exports3.__awaiter || function(thisArg, _arguments, P, generator) {
-          return new (P || (P = Promise))(function(resolve, reject) {
-            function fulfilled(value) {
-              try {
-                step(generator.next(value));
-              } catch (e) {
-                reject(e);
-              }
-            }
-            function rejected(value) {
-              try {
-                step(generator["throw"](value));
-              } catch (e) {
-                reject(e);
-              }
-            }
-            function step(result) {
-              result.done ? resolve(result.value) : new P(function(resolve2) {
-                resolve2(result.value);
-              }).then(fulfilled, rejected);
-            }
-            step((generator = generator.apply(thisArg, _arguments || [])).next());
-          });
-        };
-        var __importDefault2 = exports3 && exports3.__importDefault || function(mod) {
-          return mod && mod.__esModule ? mod : {
-            "default": mod
-          };
-        };
-        Object.defineProperty(exports3, "__esModule", {
-          value: true
-        });
-        var p_defer_1 = __importDefault2(require_p_defer());
-        function mapAgeCleaner2(map, property = "maxAge") {
-          let processingKey;
-          let processingTimer;
-          let processingDeferred;
-          const cleanup = () => __awaiter2(this, void 0, void 0, function* () {
-            if (processingKey !== void 0) {
-              return;
-            }
-            const setupTimer = (item) => __awaiter2(this, void 0, void 0, function* () {
-              processingDeferred = p_defer_1.default();
-              const delay = item[1][property] - Date.now();
-              if (delay <= 0) {
-                map.delete(item[0]);
-                processingDeferred.resolve();
-                return;
-              }
-              processingKey = item[0];
-              processingTimer = setTimeout(() => {
-                map.delete(item[0]);
-                if (processingDeferred) {
-                  processingDeferred.resolve();
-                }
-              }, delay);
-              if (typeof processingTimer.unref === "function") {
-                processingTimer.unref();
-              }
-              return processingDeferred.promise;
-            });
-            try {
-              for (const entry of map) {
-                yield setupTimer(entry);
-              }
-            } catch (_a) {
-            }
-            processingKey = void 0;
-          });
-          const reset = () => {
-            processingKey = void 0;
-            if (processingTimer !== void 0) {
-              clearTimeout(processingTimer);
-              processingTimer = void 0;
-            }
-            if (processingDeferred !== void 0) {
-              processingDeferred.reject(void 0);
-              processingDeferred = void 0;
-            }
-          };
-          const originalSet = map.set.bind(map);
-          map.set = (key, value) => {
-            if (map.has(key)) {
-              map.delete(key);
-            }
-            const result = originalSet(key, value);
-            if (processingKey && processingKey === key) {
-              reset();
-            }
-            cleanup();
-            return result;
-          };
-          cleanup();
-          return map;
-        }
-        exports3.default = mapAgeCleaner2;
-        module22.exports = mapAgeCleaner2;
-        module22.exports.default = mapAgeCleaner2;
-      }
-    });
-    var dist_exports = {};
-    __export2(dist_exports, {
-      default: () => mem,
-      memClear: () => memClear,
-      memDecorator: () => memDecorator
-    });
-    module2.exports = __toCommonJS2(dist_exports);
-    var copyProperty = (to, from, property, ignoreNonConfigurable) => {
+function mimicFunction(to, from, {
+  ignoreNonConfigurable = false
+} = {}) {
+  const {
+    name
+  } = to;
+  for (const property of Reflect.ownKeys(from)) {
+    copyProperty(to, from, property, ignoreNonConfigurable);
+  }
+  changePrototype(to, from);
+  changeToString(to, from, name);
+  return to;
+}
+var copyProperty;
+var canCopyProperty;
+var changePrototype;
+var wrappedToString;
+var toStringDescriptor;
+var toStringName;
+var changeToString;
+var init_mimic_fn = __esm({
+  "node_modules/mimic-fn/index.js"() {
+    copyProperty = (to, from, property, ignoreNonConfigurable) => {
       if (property === "length" || property === "prototype") {
         return;
       }
@@ -15913,99 +15769,215 @@ var require_mem = __commonJS2({
       }
       Object.defineProperty(to, property, fromDescriptor);
     };
-    var canCopyProperty = function(toDescriptor, fromDescriptor) {
+    canCopyProperty = function(toDescriptor, fromDescriptor) {
       return toDescriptor === void 0 || toDescriptor.configurable || toDescriptor.writable === fromDescriptor.writable && toDescriptor.enumerable === fromDescriptor.enumerable && toDescriptor.configurable === fromDescriptor.configurable && (toDescriptor.writable || toDescriptor.value === fromDescriptor.value);
     };
-    var changePrototype = (to, from) => {
+    changePrototype = (to, from) => {
       const fromPrototype = Object.getPrototypeOf(from);
       if (fromPrototype === Object.getPrototypeOf(to)) {
         return;
       }
       Object.setPrototypeOf(to, fromPrototype);
     };
-    var wrappedToString = (withName, fromBody) => `/* Wrapped ${withName}*/
+    wrappedToString = (withName, fromBody) => `/* Wrapped ${withName}*/
 ${fromBody}`;
-    var toStringDescriptor = Object.getOwnPropertyDescriptor(Function.prototype, "toString");
-    var toStringName = Object.getOwnPropertyDescriptor(Function.prototype.toString, "name");
-    var changeToString = (to, from, name) => {
+    toStringDescriptor = Object.getOwnPropertyDescriptor(Function.prototype, "toString");
+    toStringName = Object.getOwnPropertyDescriptor(Function.prototype.toString, "name");
+    changeToString = (to, from, name) => {
       const withName = name === "" ? "" : `with ${name.trim()}() `;
       const newToString = wrappedToString.bind(null, withName, from.toString());
       Object.defineProperty(newToString, "name", toStringName);
-      Object.defineProperty(to, "toString", __spreadProps(__spreadValues({}, toStringDescriptor), {
+      Object.defineProperty(to, "toString", Object.assign(Object.assign({}, toStringDescriptor), {}, {
         value: newToString
       }));
     };
-    function mimicFunction(to, from, {
-      ignoreNonConfigurable = false
-    } = {}) {
-      const {
-        name
-      } = to;
-      for (const property of Reflect.ownKeys(from)) {
-        copyProperty(to, from, property, ignoreNonConfigurable);
-      }
-      changePrototype(to, from);
-      changeToString(to, from, name);
-      return to;
-    }
-    var import_map_age_cleaner = __toESM(require_dist(), 1);
-    var cacheStore = /* @__PURE__ */ new WeakMap();
-    function mem(fn, {
-      cacheKey,
-      cache = /* @__PURE__ */ new Map(),
-      maxAge
-    } = {}) {
-      if (typeof maxAge === "number") {
-        (0, import_map_age_cleaner.default)(cache);
-      }
-      const memoized = function(...arguments_) {
-        const key = cacheKey ? cacheKey(arguments_) : arguments_[0];
-        const cacheItem = cache.get(key);
-        if (cacheItem) {
-          return cacheItem.data;
+  }
+});
+var require_p_defer = __commonJS2({
+  "node_modules/p-defer/index.js"(exports2, module2) {
+    "use strict";
+    module2.exports = () => {
+      const ret = {};
+      ret.promise = new Promise((resolve, reject) => {
+        ret.resolve = resolve;
+        ret.reject = reject;
+      });
+      return ret;
+    };
+  }
+});
+var require_dist = __commonJS2({
+  "node_modules/map-age-cleaner/dist/index.js"(exports2, module2) {
+    "use strict";
+    var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
+      return new (P || (P = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
         }
-        const result = fn.apply(this, arguments_);
-        cache.set(key, {
-          data: result,
-          maxAge: maxAge ? Date.now() + maxAge : Number.POSITIVE_INFINITY
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : new P(function(resolve2) {
+            resolve2(result.value);
+          }).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : {
+        "default": mod
+      };
+    };
+    Object.defineProperty(exports2, "__esModule", {
+      value: true
+    });
+    var p_defer_1 = __importDefault2(require_p_defer());
+    function mapAgeCleaner2(map, property = "maxAge") {
+      let processingKey;
+      let processingTimer;
+      let processingDeferred;
+      const cleanup = () => __awaiter2(this, void 0, void 0, function* () {
+        if (processingKey !== void 0) {
+          return;
+        }
+        const setupTimer = (item) => __awaiter2(this, void 0, void 0, function* () {
+          processingDeferred = p_defer_1.default();
+          const delay = item[1][property] - Date.now();
+          if (delay <= 0) {
+            map.delete(item[0]);
+            processingDeferred.resolve();
+            return;
+          }
+          processingKey = item[0];
+          processingTimer = setTimeout(() => {
+            map.delete(item[0]);
+            if (processingDeferred) {
+              processingDeferred.resolve();
+            }
+          }, delay);
+          if (typeof processingTimer.unref === "function") {
+            processingTimer.unref();
+          }
+          return processingDeferred.promise;
         });
+        try {
+          for (const entry of map) {
+            yield setupTimer(entry);
+          }
+        } catch (_a) {
+        }
+        processingKey = void 0;
+      });
+      const reset = () => {
+        processingKey = void 0;
+        if (processingTimer !== void 0) {
+          clearTimeout(processingTimer);
+          processingTimer = void 0;
+        }
+        if (processingDeferred !== void 0) {
+          processingDeferred.reject(void 0);
+          processingDeferred = void 0;
+        }
+      };
+      const originalSet = map.set.bind(map);
+      map.set = (key, value) => {
+        if (map.has(key)) {
+          map.delete(key);
+        }
+        const result = originalSet(key, value);
+        if (processingKey && processingKey === key) {
+          reset();
+        }
+        cleanup();
         return result;
       };
-      mimicFunction(memoized, fn, {
-        ignoreNonConfigurable: true
-      });
-      cacheStore.set(memoized, cache);
-      return memoized;
+      cleanup();
+      return map;
     }
-    function memDecorator(options = {}) {
-      const instanceMap = /* @__PURE__ */ new WeakMap();
-      return (target, propertyKey, descriptor) => {
-        const input = target[propertyKey];
-        if (typeof input !== "function") {
-          throw new TypeError("The decorated value must be a function");
-        }
-        delete descriptor.value;
-        delete descriptor.writable;
-        descriptor.get = function() {
-          if (!instanceMap.has(this)) {
-            const value = mem(input, options);
-            instanceMap.set(this, value);
-            return value;
-          }
-          return instanceMap.get(this);
-        };
-      };
+    exports2.default = mapAgeCleaner2;
+    module2.exports = mapAgeCleaner2;
+    module2.exports.default = mapAgeCleaner2;
+  }
+});
+var dist_exports = {};
+__export(dist_exports, {
+  default: () => mem,
+  memClear: () => memClear,
+  memDecorator: () => memDecorator
+});
+function mem(fn, {
+  cacheKey,
+  cache = /* @__PURE__ */ new Map(),
+  maxAge
+} = {}) {
+  if (typeof maxAge === "number") {
+    (0, import_map_age_cleaner.default)(cache);
+  }
+  const memoized = function(...arguments_) {
+    const key = cacheKey ? cacheKey(arguments_) : arguments_[0];
+    const cacheItem = cache.get(key);
+    if (cacheItem) {
+      return cacheItem.data;
     }
-    function memClear(fn) {
-      const cache = cacheStore.get(fn);
-      if (!cache) {
-        throw new TypeError("Can't clear a function that was not memoized!");
+    const result = fn.apply(this, arguments_);
+    cache.set(key, {
+      data: result,
+      maxAge: maxAge ? Date.now() + maxAge : Number.POSITIVE_INFINITY
+    });
+    return result;
+  };
+  mimicFunction(memoized, fn, {
+    ignoreNonConfigurable: true
+  });
+  cacheStore.set(memoized, cache);
+  return memoized;
+}
+function memDecorator(options = {}) {
+  const instanceMap = /* @__PURE__ */ new WeakMap();
+  return (target, propertyKey, descriptor) => {
+    const input = target[propertyKey];
+    if (typeof input !== "function") {
+      throw new TypeError("The decorated value must be a function");
+    }
+    delete descriptor.value;
+    delete descriptor.writable;
+    descriptor.get = function() {
+      if (!instanceMap.has(this)) {
+        const value = mem(input, options);
+        instanceMap.set(this, value);
+        return value;
       }
-      if (typeof cache.clear !== "function") {
-        throw new TypeError("The cache Map can't be cleared!");
-      }
-      cache.clear();
-    }
+      return instanceMap.get(this);
+    };
+  };
+}
+function memClear(fn) {
+  const cache = cacheStore.get(fn);
+  if (!cache) {
+    throw new TypeError("Can't clear a function that was not memoized!");
+  }
+  if (typeof cache.clear !== "function") {
+    throw new TypeError("The cache Map can't be cleared!");
+  }
+  cache.clear();
+}
+var import_map_age_cleaner;
+var cacheStore;
+var init_dist = __esm({
+  "node_modules/mem/dist/index.js"() {
+    init_mimic_fn();
+    import_map_age_cleaner = __toESM(require_dist());
+    cacheStore = /* @__PURE__ */ new WeakMap();
   }
 });
 var require_pseudomap = __commonJS2({
@@ -16113,7 +16085,7 @@ var require_map = __commonJS2({
   }
 });
 var require_yallist = __commonJS2({
-  "node_modules/yallist/yallist.js"(exports2, module2) {
+  "node_modules/editorconfig/node_modules/yallist/yallist.js"(exports2, module2) {
     module2.exports = Yallist;
     Yallist.Node = Node;
     Yallist.create = Yallist;
@@ -16437,7 +16409,7 @@ var require_yallist = __commonJS2({
   }
 });
 var require_lru_cache = __commonJS2({
-  "node_modules/lru-cache/index.js"(exports2, module2) {
+  "node_modules/editorconfig/node_modules/lru-cache/index.js"(exports2, module2) {
     "use strict";
     module2.exports = LRUCache;
     var Map2 = require_map();
@@ -18175,11 +18147,11 @@ var require_resolve_config_editorconfig = __commonJS2({
     var editorconfig = require_src2();
     var editorConfigToPrettier = require_editorconfig_to_prettier();
     var {
-      default: mem,
-      memClear
-    } = require_mem();
+      default: mem2,
+      memClear: memClear2
+    } = (init_dist(), __toCommonJS(dist_exports));
     var findProjectRoot = require_find_project_root();
-    var jsonStringifyMem = (fn) => mem(fn, {
+    var jsonStringifyMem = (fn) => mem2(fn, {
       cacheKey: JSON.stringify
     });
     var maybeParse = (filePath, parse) => filePath && parse(filePath, {
@@ -18199,8 +18171,8 @@ var require_resolve_config_editorconfig = __commonJS2({
       return opts.cache ? editorconfigAsyncWithCache : editorconfigAsyncNoCache;
     }
     function clearCache() {
-      memClear(editorconfigSyncWithCache);
-      memClear(editorconfigAsyncWithCache);
+      memClear2(editorconfigSyncWithCache);
+      memClear2(editorconfigAsyncWithCache);
     }
     module2.exports = {
       getLoadFunction,
@@ -18216,13 +18188,14 @@ var require_resolve_config = __commonJS2({
     var thirdParty = require("./third-party.js");
     var loadToml = require_load_toml();
     var loadJson5 = require_load_json5();
+    var partition = require_partition();
     var resolve = require_resolve2();
     var {
-      default: mem,
-      memClear
-    } = require_mem();
+      default: mem2,
+      memClear: memClear2
+    } = (init_dist(), __toCommonJS(dist_exports));
     var resolveEditorConfig = require_resolve_config_editorconfig();
-    var getExplorerMemoized = mem((opts) => {
+    var getExplorerMemoized = mem2((opts) => {
       const cosmiconfig = thirdParty["cosmiconfig" + (opts.sync ? "Sync" : "")];
       const explorer = cosmiconfig("prettier", {
         cache: opts.cache,
@@ -18295,7 +18268,7 @@ var require_resolve_config = __commonJS2({
     var resolveConfig = (filePath, opts) => _resolveConfig(filePath, opts, false);
     resolveConfig.sync = (filePath, opts) => _resolveConfig(filePath, opts, true);
     function clearCache() {
-      memClear(getExplorerMemoized);
+      memClear2(getExplorerMemoized);
       resolveEditorConfig.clearCache();
     }
     async function resolveConfigFile(filePath) {
@@ -18336,15 +18309,7 @@ var require_resolve_config = __commonJS2({
     }
     function pathMatchesGlobs(filePath, patterns, excludedPatterns) {
       const patternList = Array.isArray(patterns) ? patterns : [patterns];
-      const withSlashes = [];
-      const withoutSlashes = [];
-      for (const pattern of patternList) {
-        if (pattern.includes("/")) {
-          withSlashes.push(pattern);
-        } else {
-          withoutSlashes.push(pattern);
-        }
-      }
+      const [withSlashes, withoutSlashes] = partition(patternList, (pattern) => pattern.includes("/"));
       return micromatch.isMatch(filePath, withoutSlashes, {
         ignore: excludedPatterns,
         basename: true,
@@ -18582,7 +18547,7 @@ var require_create_ignorer = __commonJS2({
   "src/common/create-ignorer.js"(exports2, module2) {
     "use strict";
     var path = require("path");
-    var ignore = require_ignore();
+    var ignore = require_ignore().default;
     var getFileContentOrNull = require_get_file_content_or_null();
     async function createIgnorer(ignorePath, withNodeModules) {
       const ignoreContent = ignorePath ? await getFileContentOrNull(path.resolve(ignorePath)) : null;
@@ -18738,2008 +18703,6 @@ var require_util_shared = __commonJS2({
       addDanglingComment,
       addTrailingComment
     };
-  }
-});
-var require_listCacheClear = __commonJS2({
-  "node_modules/lodash/_listCacheClear.js"(exports2, module2) {
-    function listCacheClear() {
-      this.__data__ = [];
-      this.size = 0;
-    }
-    module2.exports = listCacheClear;
-  }
-});
-var require_eq = __commonJS2({
-  "node_modules/lodash/eq.js"(exports2, module2) {
-    function eq(value, other) {
-      return value === other || value !== value && other !== other;
-    }
-    module2.exports = eq;
-  }
-});
-var require_assocIndexOf = __commonJS2({
-  "node_modules/lodash/_assocIndexOf.js"(exports2, module2) {
-    var eq = require_eq();
-    function assocIndexOf(array, key) {
-      var length = array.length;
-      while (length--) {
-        if (eq(array[length][0], key)) {
-          return length;
-        }
-      }
-      return -1;
-    }
-    module2.exports = assocIndexOf;
-  }
-});
-var require_listCacheDelete = __commonJS2({
-  "node_modules/lodash/_listCacheDelete.js"(exports2, module2) {
-    var assocIndexOf = require_assocIndexOf();
-    var arrayProto = Array.prototype;
-    var splice = arrayProto.splice;
-    function listCacheDelete(key) {
-      var data = this.__data__, index = assocIndexOf(data, key);
-      if (index < 0) {
-        return false;
-      }
-      var lastIndex = data.length - 1;
-      if (index == lastIndex) {
-        data.pop();
-      } else {
-        splice.call(data, index, 1);
-      }
-      --this.size;
-      return true;
-    }
-    module2.exports = listCacheDelete;
-  }
-});
-var require_listCacheGet = __commonJS2({
-  "node_modules/lodash/_listCacheGet.js"(exports2, module2) {
-    var assocIndexOf = require_assocIndexOf();
-    function listCacheGet(key) {
-      var data = this.__data__, index = assocIndexOf(data, key);
-      return index < 0 ? void 0 : data[index][1];
-    }
-    module2.exports = listCacheGet;
-  }
-});
-var require_listCacheHas = __commonJS2({
-  "node_modules/lodash/_listCacheHas.js"(exports2, module2) {
-    var assocIndexOf = require_assocIndexOf();
-    function listCacheHas(key) {
-      return assocIndexOf(this.__data__, key) > -1;
-    }
-    module2.exports = listCacheHas;
-  }
-});
-var require_listCacheSet = __commonJS2({
-  "node_modules/lodash/_listCacheSet.js"(exports2, module2) {
-    var assocIndexOf = require_assocIndexOf();
-    function listCacheSet(key, value) {
-      var data = this.__data__, index = assocIndexOf(data, key);
-      if (index < 0) {
-        ++this.size;
-        data.push([key, value]);
-      } else {
-        data[index][1] = value;
-      }
-      return this;
-    }
-    module2.exports = listCacheSet;
-  }
-});
-var require_ListCache = __commonJS2({
-  "node_modules/lodash/_ListCache.js"(exports2, module2) {
-    var listCacheClear = require_listCacheClear();
-    var listCacheDelete = require_listCacheDelete();
-    var listCacheGet = require_listCacheGet();
-    var listCacheHas = require_listCacheHas();
-    var listCacheSet = require_listCacheSet();
-    function ListCache(entries) {
-      var index = -1, length = entries == null ? 0 : entries.length;
-      this.clear();
-      while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-      }
-    }
-    ListCache.prototype.clear = listCacheClear;
-    ListCache.prototype["delete"] = listCacheDelete;
-    ListCache.prototype.get = listCacheGet;
-    ListCache.prototype.has = listCacheHas;
-    ListCache.prototype.set = listCacheSet;
-    module2.exports = ListCache;
-  }
-});
-var require_stackClear = __commonJS2({
-  "node_modules/lodash/_stackClear.js"(exports2, module2) {
-    var ListCache = require_ListCache();
-    function stackClear() {
-      this.__data__ = new ListCache();
-      this.size = 0;
-    }
-    module2.exports = stackClear;
-  }
-});
-var require_stackDelete = __commonJS2({
-  "node_modules/lodash/_stackDelete.js"(exports2, module2) {
-    function stackDelete(key) {
-      var data = this.__data__, result = data["delete"](key);
-      this.size = data.size;
-      return result;
-    }
-    module2.exports = stackDelete;
-  }
-});
-var require_stackGet = __commonJS2({
-  "node_modules/lodash/_stackGet.js"(exports2, module2) {
-    function stackGet(key) {
-      return this.__data__.get(key);
-    }
-    module2.exports = stackGet;
-  }
-});
-var require_stackHas = __commonJS2({
-  "node_modules/lodash/_stackHas.js"(exports2, module2) {
-    function stackHas(key) {
-      return this.__data__.has(key);
-    }
-    module2.exports = stackHas;
-  }
-});
-var require_freeGlobal = __commonJS2({
-  "node_modules/lodash/_freeGlobal.js"(exports2, module2) {
-    var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
-    module2.exports = freeGlobal;
-  }
-});
-var require_root = __commonJS2({
-  "node_modules/lodash/_root.js"(exports2, module2) {
-    var freeGlobal = require_freeGlobal();
-    var freeSelf = typeof self == "object" && self && self.Object === Object && self;
-    var root = freeGlobal || freeSelf || Function("return this")();
-    module2.exports = root;
-  }
-});
-var require_Symbol = __commonJS2({
-  "node_modules/lodash/_Symbol.js"(exports2, module2) {
-    var root = require_root();
-    var Symbol2 = root.Symbol;
-    module2.exports = Symbol2;
-  }
-});
-var require_getRawTag = __commonJS2({
-  "node_modules/lodash/_getRawTag.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    var nativeObjectToString = objectProto.toString;
-    var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
-    function getRawTag(value) {
-      var isOwn = hasOwnProperty.call(value, symToStringTag), tag = value[symToStringTag];
-      try {
-        value[symToStringTag] = void 0;
-        var unmasked = true;
-      } catch (e) {
-      }
-      var result = nativeObjectToString.call(value);
-      if (unmasked) {
-        if (isOwn) {
-          value[symToStringTag] = tag;
-        } else {
-          delete value[symToStringTag];
-        }
-      }
-      return result;
-    }
-    module2.exports = getRawTag;
-  }
-});
-var require_objectToString = __commonJS2({
-  "node_modules/lodash/_objectToString.js"(exports2, module2) {
-    var objectProto = Object.prototype;
-    var nativeObjectToString = objectProto.toString;
-    function objectToString(value) {
-      return nativeObjectToString.call(value);
-    }
-    module2.exports = objectToString;
-  }
-});
-var require_baseGetTag = __commonJS2({
-  "node_modules/lodash/_baseGetTag.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var getRawTag = require_getRawTag();
-    var objectToString = require_objectToString();
-    var nullTag = "[object Null]";
-    var undefinedTag = "[object Undefined]";
-    var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
-    function baseGetTag(value) {
-      if (value == null) {
-        return value === void 0 ? undefinedTag : nullTag;
-      }
-      return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
-    }
-    module2.exports = baseGetTag;
-  }
-});
-var require_isObject = __commonJS2({
-  "node_modules/lodash/isObject.js"(exports2, module2) {
-    function isObject(value) {
-      var type = typeof value;
-      return value != null && (type == "object" || type == "function");
-    }
-    module2.exports = isObject;
-  }
-});
-var require_isFunction = __commonJS2({
-  "node_modules/lodash/isFunction.js"(exports2, module2) {
-    var baseGetTag = require_baseGetTag();
-    var isObject = require_isObject();
-    var asyncTag = "[object AsyncFunction]";
-    var funcTag = "[object Function]";
-    var genTag = "[object GeneratorFunction]";
-    var proxyTag = "[object Proxy]";
-    function isFunction(value) {
-      if (!isObject(value)) {
-        return false;
-      }
-      var tag = baseGetTag(value);
-      return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
-    }
-    module2.exports = isFunction;
-  }
-});
-var require_coreJsData = __commonJS2({
-  "node_modules/lodash/_coreJsData.js"(exports2, module2) {
-    var root = require_root();
-    var coreJsData = root["__core-js_shared__"];
-    module2.exports = coreJsData;
-  }
-});
-var require_isMasked = __commonJS2({
-  "node_modules/lodash/_isMasked.js"(exports2, module2) {
-    var coreJsData = require_coreJsData();
-    var maskSrcKey = function() {
-      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
-      return uid ? "Symbol(src)_1." + uid : "";
-    }();
-    function isMasked(func) {
-      return !!maskSrcKey && maskSrcKey in func;
-    }
-    module2.exports = isMasked;
-  }
-});
-var require_toSource = __commonJS2({
-  "node_modules/lodash/_toSource.js"(exports2, module2) {
-    var funcProto = Function.prototype;
-    var funcToString = funcProto.toString;
-    function toSource(func) {
-      if (func != null) {
-        try {
-          return funcToString.call(func);
-        } catch (e) {
-        }
-        try {
-          return func + "";
-        } catch (e) {
-        }
-      }
-      return "";
-    }
-    module2.exports = toSource;
-  }
-});
-var require_baseIsNative = __commonJS2({
-  "node_modules/lodash/_baseIsNative.js"(exports2, module2) {
-    var isFunction = require_isFunction();
-    var isMasked = require_isMasked();
-    var isObject = require_isObject();
-    var toSource = require_toSource();
-    var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-    var reIsHostCtor = /^\[object .+?Constructor\]$/;
-    var funcProto = Function.prototype;
-    var objectProto = Object.prototype;
-    var funcToString = funcProto.toString;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    var reIsNative = RegExp("^" + funcToString.call(hasOwnProperty).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$");
-    function baseIsNative(value) {
-      if (!isObject(value) || isMasked(value)) {
-        return false;
-      }
-      var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
-      return pattern.test(toSource(value));
-    }
-    module2.exports = baseIsNative;
-  }
-});
-var require_getValue = __commonJS2({
-  "node_modules/lodash/_getValue.js"(exports2, module2) {
-    function getValue(object, key) {
-      return object == null ? void 0 : object[key];
-    }
-    module2.exports = getValue;
-  }
-});
-var require_getNative = __commonJS2({
-  "node_modules/lodash/_getNative.js"(exports2, module2) {
-    var baseIsNative = require_baseIsNative();
-    var getValue = require_getValue();
-    function getNative(object, key) {
-      var value = getValue(object, key);
-      return baseIsNative(value) ? value : void 0;
-    }
-    module2.exports = getNative;
-  }
-});
-var require_Map = __commonJS2({
-  "node_modules/lodash/_Map.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var Map2 = getNative(root, "Map");
-    module2.exports = Map2;
-  }
-});
-var require_nativeCreate = __commonJS2({
-  "node_modules/lodash/_nativeCreate.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var nativeCreate = getNative(Object, "create");
-    module2.exports = nativeCreate;
-  }
-});
-var require_hashClear = __commonJS2({
-  "node_modules/lodash/_hashClear.js"(exports2, module2) {
-    var nativeCreate = require_nativeCreate();
-    function hashClear() {
-      this.__data__ = nativeCreate ? nativeCreate(null) : {};
-      this.size = 0;
-    }
-    module2.exports = hashClear;
-  }
-});
-var require_hashDelete = __commonJS2({
-  "node_modules/lodash/_hashDelete.js"(exports2, module2) {
-    function hashDelete(key) {
-      var result = this.has(key) && delete this.__data__[key];
-      this.size -= result ? 1 : 0;
-      return result;
-    }
-    module2.exports = hashDelete;
-  }
-});
-var require_hashGet = __commonJS2({
-  "node_modules/lodash/_hashGet.js"(exports2, module2) {
-    var nativeCreate = require_nativeCreate();
-    var HASH_UNDEFINED = "__lodash_hash_undefined__";
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function hashGet(key) {
-      var data = this.__data__;
-      if (nativeCreate) {
-        var result = data[key];
-        return result === HASH_UNDEFINED ? void 0 : result;
-      }
-      return hasOwnProperty.call(data, key) ? data[key] : void 0;
-    }
-    module2.exports = hashGet;
-  }
-});
-var require_hashHas = __commonJS2({
-  "node_modules/lodash/_hashHas.js"(exports2, module2) {
-    var nativeCreate = require_nativeCreate();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function hashHas(key) {
-      var data = this.__data__;
-      return nativeCreate ? data[key] !== void 0 : hasOwnProperty.call(data, key);
-    }
-    module2.exports = hashHas;
-  }
-});
-var require_hashSet = __commonJS2({
-  "node_modules/lodash/_hashSet.js"(exports2, module2) {
-    var nativeCreate = require_nativeCreate();
-    var HASH_UNDEFINED = "__lodash_hash_undefined__";
-    function hashSet(key, value) {
-      var data = this.__data__;
-      this.size += this.has(key) ? 0 : 1;
-      data[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED : value;
-      return this;
-    }
-    module2.exports = hashSet;
-  }
-});
-var require_Hash = __commonJS2({
-  "node_modules/lodash/_Hash.js"(exports2, module2) {
-    var hashClear = require_hashClear();
-    var hashDelete = require_hashDelete();
-    var hashGet = require_hashGet();
-    var hashHas = require_hashHas();
-    var hashSet = require_hashSet();
-    function Hash(entries) {
-      var index = -1, length = entries == null ? 0 : entries.length;
-      this.clear();
-      while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-      }
-    }
-    Hash.prototype.clear = hashClear;
-    Hash.prototype["delete"] = hashDelete;
-    Hash.prototype.get = hashGet;
-    Hash.prototype.has = hashHas;
-    Hash.prototype.set = hashSet;
-    module2.exports = Hash;
-  }
-});
-var require_mapCacheClear = __commonJS2({
-  "node_modules/lodash/_mapCacheClear.js"(exports2, module2) {
-    var Hash = require_Hash();
-    var ListCache = require_ListCache();
-    var Map2 = require_Map();
-    function mapCacheClear() {
-      this.size = 0;
-      this.__data__ = {
-        "hash": new Hash(),
-        "map": new (Map2 || ListCache)(),
-        "string": new Hash()
-      };
-    }
-    module2.exports = mapCacheClear;
-  }
-});
-var require_isKeyable = __commonJS2({
-  "node_modules/lodash/_isKeyable.js"(exports2, module2) {
-    function isKeyable(value) {
-      var type = typeof value;
-      return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
-    }
-    module2.exports = isKeyable;
-  }
-});
-var require_getMapData = __commonJS2({
-  "node_modules/lodash/_getMapData.js"(exports2, module2) {
-    var isKeyable = require_isKeyable();
-    function getMapData(map, key) {
-      var data = map.__data__;
-      return isKeyable(key) ? data[typeof key == "string" ? "string" : "hash"] : data.map;
-    }
-    module2.exports = getMapData;
-  }
-});
-var require_mapCacheDelete = __commonJS2({
-  "node_modules/lodash/_mapCacheDelete.js"(exports2, module2) {
-    var getMapData = require_getMapData();
-    function mapCacheDelete(key) {
-      var result = getMapData(this, key)["delete"](key);
-      this.size -= result ? 1 : 0;
-      return result;
-    }
-    module2.exports = mapCacheDelete;
-  }
-});
-var require_mapCacheGet = __commonJS2({
-  "node_modules/lodash/_mapCacheGet.js"(exports2, module2) {
-    var getMapData = require_getMapData();
-    function mapCacheGet(key) {
-      return getMapData(this, key).get(key);
-    }
-    module2.exports = mapCacheGet;
-  }
-});
-var require_mapCacheHas = __commonJS2({
-  "node_modules/lodash/_mapCacheHas.js"(exports2, module2) {
-    var getMapData = require_getMapData();
-    function mapCacheHas(key) {
-      return getMapData(this, key).has(key);
-    }
-    module2.exports = mapCacheHas;
-  }
-});
-var require_mapCacheSet = __commonJS2({
-  "node_modules/lodash/_mapCacheSet.js"(exports2, module2) {
-    var getMapData = require_getMapData();
-    function mapCacheSet(key, value) {
-      var data = getMapData(this, key), size = data.size;
-      data.set(key, value);
-      this.size += data.size == size ? 0 : 1;
-      return this;
-    }
-    module2.exports = mapCacheSet;
-  }
-});
-var require_MapCache = __commonJS2({
-  "node_modules/lodash/_MapCache.js"(exports2, module2) {
-    var mapCacheClear = require_mapCacheClear();
-    var mapCacheDelete = require_mapCacheDelete();
-    var mapCacheGet = require_mapCacheGet();
-    var mapCacheHas = require_mapCacheHas();
-    var mapCacheSet = require_mapCacheSet();
-    function MapCache(entries) {
-      var index = -1, length = entries == null ? 0 : entries.length;
-      this.clear();
-      while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-      }
-    }
-    MapCache.prototype.clear = mapCacheClear;
-    MapCache.prototype["delete"] = mapCacheDelete;
-    MapCache.prototype.get = mapCacheGet;
-    MapCache.prototype.has = mapCacheHas;
-    MapCache.prototype.set = mapCacheSet;
-    module2.exports = MapCache;
-  }
-});
-var require_stackSet = __commonJS2({
-  "node_modules/lodash/_stackSet.js"(exports2, module2) {
-    var ListCache = require_ListCache();
-    var Map2 = require_Map();
-    var MapCache = require_MapCache();
-    var LARGE_ARRAY_SIZE = 200;
-    function stackSet(key, value) {
-      var data = this.__data__;
-      if (data instanceof ListCache) {
-        var pairs = data.__data__;
-        if (!Map2 || pairs.length < LARGE_ARRAY_SIZE - 1) {
-          pairs.push([key, value]);
-          this.size = ++data.size;
-          return this;
-        }
-        data = this.__data__ = new MapCache(pairs);
-      }
-      data.set(key, value);
-      this.size = data.size;
-      return this;
-    }
-    module2.exports = stackSet;
-  }
-});
-var require_Stack = __commonJS2({
-  "node_modules/lodash/_Stack.js"(exports2, module2) {
-    var ListCache = require_ListCache();
-    var stackClear = require_stackClear();
-    var stackDelete = require_stackDelete();
-    var stackGet = require_stackGet();
-    var stackHas = require_stackHas();
-    var stackSet = require_stackSet();
-    function Stack(entries) {
-      var data = this.__data__ = new ListCache(entries);
-      this.size = data.size;
-    }
-    Stack.prototype.clear = stackClear;
-    Stack.prototype["delete"] = stackDelete;
-    Stack.prototype.get = stackGet;
-    Stack.prototype.has = stackHas;
-    Stack.prototype.set = stackSet;
-    module2.exports = Stack;
-  }
-});
-var require_setCacheAdd = __commonJS2({
-  "node_modules/lodash/_setCacheAdd.js"(exports2, module2) {
-    var HASH_UNDEFINED = "__lodash_hash_undefined__";
-    function setCacheAdd(value) {
-      this.__data__.set(value, HASH_UNDEFINED);
-      return this;
-    }
-    module2.exports = setCacheAdd;
-  }
-});
-var require_setCacheHas = __commonJS2({
-  "node_modules/lodash/_setCacheHas.js"(exports2, module2) {
-    function setCacheHas(value) {
-      return this.__data__.has(value);
-    }
-    module2.exports = setCacheHas;
-  }
-});
-var require_SetCache = __commonJS2({
-  "node_modules/lodash/_SetCache.js"(exports2, module2) {
-    var MapCache = require_MapCache();
-    var setCacheAdd = require_setCacheAdd();
-    var setCacheHas = require_setCacheHas();
-    function SetCache(values) {
-      var index = -1, length = values == null ? 0 : values.length;
-      this.__data__ = new MapCache();
-      while (++index < length) {
-        this.add(values[index]);
-      }
-    }
-    SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
-    SetCache.prototype.has = setCacheHas;
-    module2.exports = SetCache;
-  }
-});
-var require_arraySome = __commonJS2({
-  "node_modules/lodash/_arraySome.js"(exports2, module2) {
-    function arraySome(array, predicate) {
-      var index = -1, length = array == null ? 0 : array.length;
-      while (++index < length) {
-        if (predicate(array[index], index, array)) {
-          return true;
-        }
-      }
-      return false;
-    }
-    module2.exports = arraySome;
-  }
-});
-var require_cacheHas = __commonJS2({
-  "node_modules/lodash/_cacheHas.js"(exports2, module2) {
-    function cacheHas(cache, key) {
-      return cache.has(key);
-    }
-    module2.exports = cacheHas;
-  }
-});
-var require_equalArrays = __commonJS2({
-  "node_modules/lodash/_equalArrays.js"(exports2, module2) {
-    var SetCache = require_SetCache();
-    var arraySome = require_arraySome();
-    var cacheHas = require_cacheHas();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var COMPARE_UNORDERED_FLAG = 2;
-    function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
-      var isPartial = bitmask & COMPARE_PARTIAL_FLAG, arrLength = array.length, othLength = other.length;
-      if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
-        return false;
-      }
-      var arrStacked = stack.get(array);
-      var othStacked = stack.get(other);
-      if (arrStacked && othStacked) {
-        return arrStacked == other && othStacked == array;
-      }
-      var index = -1, result = true, seen = bitmask & COMPARE_UNORDERED_FLAG ? new SetCache() : void 0;
-      stack.set(array, other);
-      stack.set(other, array);
-      while (++index < arrLength) {
-        var arrValue = array[index], othValue = other[index];
-        if (customizer) {
-          var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
-        }
-        if (compared !== void 0) {
-          if (compared) {
-            continue;
-          }
-          result = false;
-          break;
-        }
-        if (seen) {
-          if (!arraySome(other, function(othValue2, othIndex) {
-            if (!cacheHas(seen, othIndex) && (arrValue === othValue2 || equalFunc(arrValue, othValue2, bitmask, customizer, stack))) {
-              return seen.push(othIndex);
-            }
-          })) {
-            result = false;
-            break;
-          }
-        } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
-          result = false;
-          break;
-        }
-      }
-      stack["delete"](array);
-      stack["delete"](other);
-      return result;
-    }
-    module2.exports = equalArrays;
-  }
-});
-var require_Uint8Array = __commonJS2({
-  "node_modules/lodash/_Uint8Array.js"(exports2, module2) {
-    var root = require_root();
-    var Uint8Array2 = root.Uint8Array;
-    module2.exports = Uint8Array2;
-  }
-});
-var require_mapToArray = __commonJS2({
-  "node_modules/lodash/_mapToArray.js"(exports2, module2) {
-    function mapToArray(map) {
-      var index = -1, result = Array(map.size);
-      map.forEach(function(value, key) {
-        result[++index] = [key, value];
-      });
-      return result;
-    }
-    module2.exports = mapToArray;
-  }
-});
-var require_setToArray = __commonJS2({
-  "node_modules/lodash/_setToArray.js"(exports2, module2) {
-    function setToArray(set) {
-      var index = -1, result = Array(set.size);
-      set.forEach(function(value) {
-        result[++index] = value;
-      });
-      return result;
-    }
-    module2.exports = setToArray;
-  }
-});
-var require_equalByTag = __commonJS2({
-  "node_modules/lodash/_equalByTag.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var Uint8Array2 = require_Uint8Array();
-    var eq = require_eq();
-    var equalArrays = require_equalArrays();
-    var mapToArray = require_mapToArray();
-    var setToArray = require_setToArray();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var COMPARE_UNORDERED_FLAG = 2;
-    var boolTag = "[object Boolean]";
-    var dateTag = "[object Date]";
-    var errorTag = "[object Error]";
-    var mapTag = "[object Map]";
-    var numberTag = "[object Number]";
-    var regexpTag = "[object RegExp]";
-    var setTag = "[object Set]";
-    var stringTag = "[object String]";
-    var symbolTag = "[object Symbol]";
-    var arrayBufferTag = "[object ArrayBuffer]";
-    var dataViewTag = "[object DataView]";
-    var symbolProto = Symbol2 ? Symbol2.prototype : void 0;
-    var symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
-    function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
-      switch (tag) {
-        case dataViewTag:
-          if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
-            return false;
-          }
-          object = object.buffer;
-          other = other.buffer;
-        case arrayBufferTag:
-          if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array2(object), new Uint8Array2(other))) {
-            return false;
-          }
-          return true;
-        case boolTag:
-        case dateTag:
-        case numberTag:
-          return eq(+object, +other);
-        case errorTag:
-          return object.name == other.name && object.message == other.message;
-        case regexpTag:
-        case stringTag:
-          return object == other + "";
-        case mapTag:
-          var convert = mapToArray;
-        case setTag:
-          var isPartial = bitmask & COMPARE_PARTIAL_FLAG;
-          convert || (convert = setToArray);
-          if (object.size != other.size && !isPartial) {
-            return false;
-          }
-          var stacked = stack.get(object);
-          if (stacked) {
-            return stacked == other;
-          }
-          bitmask |= COMPARE_UNORDERED_FLAG;
-          stack.set(object, other);
-          var result = equalArrays(convert(object), convert(other), bitmask, customizer, equalFunc, stack);
-          stack["delete"](object);
-          return result;
-        case symbolTag:
-          if (symbolValueOf) {
-            return symbolValueOf.call(object) == symbolValueOf.call(other);
-          }
-      }
-      return false;
-    }
-    module2.exports = equalByTag;
-  }
-});
-var require_arrayPush = __commonJS2({
-  "node_modules/lodash/_arrayPush.js"(exports2, module2) {
-    function arrayPush(array, values) {
-      var index = -1, length = values.length, offset = array.length;
-      while (++index < length) {
-        array[offset + index] = values[index];
-      }
-      return array;
-    }
-    module2.exports = arrayPush;
-  }
-});
-var require_isArray = __commonJS2({
-  "node_modules/lodash/isArray.js"(exports2, module2) {
-    var isArray = Array.isArray;
-    module2.exports = isArray;
-  }
-});
-var require_baseGetAllKeys = __commonJS2({
-  "node_modules/lodash/_baseGetAllKeys.js"(exports2, module2) {
-    var arrayPush = require_arrayPush();
-    var isArray = require_isArray();
-    function baseGetAllKeys(object, keysFunc, symbolsFunc) {
-      var result = keysFunc(object);
-      return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
-    }
-    module2.exports = baseGetAllKeys;
-  }
-});
-var require_arrayFilter = __commonJS2({
-  "node_modules/lodash/_arrayFilter.js"(exports2, module2) {
-    function arrayFilter(array, predicate) {
-      var index = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
-      while (++index < length) {
-        var value = array[index];
-        if (predicate(value, index, array)) {
-          result[resIndex++] = value;
-        }
-      }
-      return result;
-    }
-    module2.exports = arrayFilter;
-  }
-});
-var require_stubArray = __commonJS2({
-  "node_modules/lodash/stubArray.js"(exports2, module2) {
-    function stubArray() {
-      return [];
-    }
-    module2.exports = stubArray;
-  }
-});
-var require_getSymbols = __commonJS2({
-  "node_modules/lodash/_getSymbols.js"(exports2, module2) {
-    var arrayFilter = require_arrayFilter();
-    var stubArray = require_stubArray();
-    var objectProto = Object.prototype;
-    var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-    var nativeGetSymbols = Object.getOwnPropertySymbols;
-    var getSymbols = !nativeGetSymbols ? stubArray : function(object) {
-      if (object == null) {
-        return [];
-      }
-      object = Object(object);
-      return arrayFilter(nativeGetSymbols(object), function(symbol) {
-        return propertyIsEnumerable.call(object, symbol);
-      });
-    };
-    module2.exports = getSymbols;
-  }
-});
-var require_baseTimes = __commonJS2({
-  "node_modules/lodash/_baseTimes.js"(exports2, module2) {
-    function baseTimes(n, iteratee) {
-      var index = -1, result = Array(n);
-      while (++index < n) {
-        result[index] = iteratee(index);
-      }
-      return result;
-    }
-    module2.exports = baseTimes;
-  }
-});
-var require_isObjectLike = __commonJS2({
-  "node_modules/lodash/isObjectLike.js"(exports2, module2) {
-    function isObjectLike(value) {
-      return value != null && typeof value == "object";
-    }
-    module2.exports = isObjectLike;
-  }
-});
-var require_baseIsArguments = __commonJS2({
-  "node_modules/lodash/_baseIsArguments.js"(exports2, module2) {
-    var baseGetTag = require_baseGetTag();
-    var isObjectLike = require_isObjectLike();
-    var argsTag = "[object Arguments]";
-    function baseIsArguments(value) {
-      return isObjectLike(value) && baseGetTag(value) == argsTag;
-    }
-    module2.exports = baseIsArguments;
-  }
-});
-var require_isArguments = __commonJS2({
-  "node_modules/lodash/isArguments.js"(exports2, module2) {
-    var baseIsArguments = require_baseIsArguments();
-    var isObjectLike = require_isObjectLike();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-    var isArguments = baseIsArguments(function() {
-      return arguments;
-    }()) ? baseIsArguments : function(value) {
-      return isObjectLike(value) && hasOwnProperty.call(value, "callee") && !propertyIsEnumerable.call(value, "callee");
-    };
-    module2.exports = isArguments;
-  }
-});
-var require_stubFalse = __commonJS2({
-  "node_modules/lodash/stubFalse.js"(exports2, module2) {
-    function stubFalse() {
-      return false;
-    }
-    module2.exports = stubFalse;
-  }
-});
-var require_isBuffer = __commonJS2({
-  "node_modules/lodash/isBuffer.js"(exports2, module2) {
-    var root = require_root();
-    var stubFalse = require_stubFalse();
-    var freeExports = typeof exports2 == "object" && exports2 && !exports2.nodeType && exports2;
-    var freeModule = freeExports && typeof module2 == "object" && module2 && !module2.nodeType && module2;
-    var moduleExports = freeModule && freeModule.exports === freeExports;
-    var Buffer2 = moduleExports ? root.Buffer : void 0;
-    var nativeIsBuffer = Buffer2 ? Buffer2.isBuffer : void 0;
-    var isBuffer = nativeIsBuffer || stubFalse;
-    module2.exports = isBuffer;
-  }
-});
-var require_isIndex = __commonJS2({
-  "node_modules/lodash/_isIndex.js"(exports2, module2) {
-    var MAX_SAFE_INTEGER = 9007199254740991;
-    var reIsUint = /^(?:0|[1-9]\d*)$/;
-    function isIndex(value, length) {
-      var type = typeof value;
-      length = length == null ? MAX_SAFE_INTEGER : length;
-      return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
-    }
-    module2.exports = isIndex;
-  }
-});
-var require_isLength = __commonJS2({
-  "node_modules/lodash/isLength.js"(exports2, module2) {
-    var MAX_SAFE_INTEGER = 9007199254740991;
-    function isLength(value) {
-      return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-    }
-    module2.exports = isLength;
-  }
-});
-var require_baseIsTypedArray = __commonJS2({
-  "node_modules/lodash/_baseIsTypedArray.js"(exports2, module2) {
-    var baseGetTag = require_baseGetTag();
-    var isLength = require_isLength();
-    var isObjectLike = require_isObjectLike();
-    var argsTag = "[object Arguments]";
-    var arrayTag = "[object Array]";
-    var boolTag = "[object Boolean]";
-    var dateTag = "[object Date]";
-    var errorTag = "[object Error]";
-    var funcTag = "[object Function]";
-    var mapTag = "[object Map]";
-    var numberTag = "[object Number]";
-    var objectTag = "[object Object]";
-    var regexpTag = "[object RegExp]";
-    var setTag = "[object Set]";
-    var stringTag = "[object String]";
-    var weakMapTag = "[object WeakMap]";
-    var arrayBufferTag = "[object ArrayBuffer]";
-    var dataViewTag = "[object DataView]";
-    var float32Tag = "[object Float32Array]";
-    var float64Tag = "[object Float64Array]";
-    var int8Tag = "[object Int8Array]";
-    var int16Tag = "[object Int16Array]";
-    var int32Tag = "[object Int32Array]";
-    var uint8Tag = "[object Uint8Array]";
-    var uint8ClampedTag = "[object Uint8ClampedArray]";
-    var uint16Tag = "[object Uint16Array]";
-    var uint32Tag = "[object Uint32Array]";
-    var typedArrayTags = {};
-    typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
-    typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
-    function baseIsTypedArray(value) {
-      return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
-    }
-    module2.exports = baseIsTypedArray;
-  }
-});
-var require_baseUnary = __commonJS2({
-  "node_modules/lodash/_baseUnary.js"(exports2, module2) {
-    function baseUnary(func) {
-      return function(value) {
-        return func(value);
-      };
-    }
-    module2.exports = baseUnary;
-  }
-});
-var require_nodeUtil = __commonJS2({
-  "node_modules/lodash/_nodeUtil.js"(exports2, module2) {
-    var freeGlobal = require_freeGlobal();
-    var freeExports = typeof exports2 == "object" && exports2 && !exports2.nodeType && exports2;
-    var freeModule = freeExports && typeof module2 == "object" && module2 && !module2.nodeType && module2;
-    var moduleExports = freeModule && freeModule.exports === freeExports;
-    var freeProcess = moduleExports && freeGlobal.process;
-    var nodeUtil = function() {
-      try {
-        var types = freeModule && freeModule.require && freeModule.require("util").types;
-        if (types) {
-          return types;
-        }
-        return freeProcess && freeProcess.binding && freeProcess.binding("util");
-      } catch (e) {
-      }
-    }();
-    module2.exports = nodeUtil;
-  }
-});
-var require_isTypedArray = __commonJS2({
-  "node_modules/lodash/isTypedArray.js"(exports2, module2) {
-    var baseIsTypedArray = require_baseIsTypedArray();
-    var baseUnary = require_baseUnary();
-    var nodeUtil = require_nodeUtil();
-    var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
-    var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
-    module2.exports = isTypedArray;
-  }
-});
-var require_arrayLikeKeys = __commonJS2({
-  "node_modules/lodash/_arrayLikeKeys.js"(exports2, module2) {
-    var baseTimes = require_baseTimes();
-    var isArguments = require_isArguments();
-    var isArray = require_isArray();
-    var isBuffer = require_isBuffer();
-    var isIndex = require_isIndex();
-    var isTypedArray = require_isTypedArray();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function arrayLikeKeys(value, inherited) {
-      var isArr = isArray(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer(value), isType = !isArr && !isArg && !isBuff && isTypedArray(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
-      for (var key in value) {
-        if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (key == "length" || isBuff && (key == "offset" || key == "parent") || isType && (key == "buffer" || key == "byteLength" || key == "byteOffset") || isIndex(key, length)))) {
-          result.push(key);
-        }
-      }
-      return result;
-    }
-    module2.exports = arrayLikeKeys;
-  }
-});
-var require_isPrototype = __commonJS2({
-  "node_modules/lodash/_isPrototype.js"(exports2, module2) {
-    var objectProto = Object.prototype;
-    function isPrototype(value) {
-      var Ctor = value && value.constructor, proto = typeof Ctor == "function" && Ctor.prototype || objectProto;
-      return value === proto;
-    }
-    module2.exports = isPrototype;
-  }
-});
-var require_overArg = __commonJS2({
-  "node_modules/lodash/_overArg.js"(exports2, module2) {
-    function overArg(func, transform) {
-      return function(arg) {
-        return func(transform(arg));
-      };
-    }
-    module2.exports = overArg;
-  }
-});
-var require_nativeKeys = __commonJS2({
-  "node_modules/lodash/_nativeKeys.js"(exports2, module2) {
-    var overArg = require_overArg();
-    var nativeKeys = overArg(Object.keys, Object);
-    module2.exports = nativeKeys;
-  }
-});
-var require_baseKeys = __commonJS2({
-  "node_modules/lodash/_baseKeys.js"(exports2, module2) {
-    var isPrototype = require_isPrototype();
-    var nativeKeys = require_nativeKeys();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function baseKeys(object) {
-      if (!isPrototype(object)) {
-        return nativeKeys(object);
-      }
-      var result = [];
-      for (var key in Object(object)) {
-        if (hasOwnProperty.call(object, key) && key != "constructor") {
-          result.push(key);
-        }
-      }
-      return result;
-    }
-    module2.exports = baseKeys;
-  }
-});
-var require_isArrayLike = __commonJS2({
-  "node_modules/lodash/isArrayLike.js"(exports2, module2) {
-    var isFunction = require_isFunction();
-    var isLength = require_isLength();
-    function isArrayLike(value) {
-      return value != null && isLength(value.length) && !isFunction(value);
-    }
-    module2.exports = isArrayLike;
-  }
-});
-var require_keys = __commonJS2({
-  "node_modules/lodash/keys.js"(exports2, module2) {
-    var arrayLikeKeys = require_arrayLikeKeys();
-    var baseKeys = require_baseKeys();
-    var isArrayLike = require_isArrayLike();
-    function keys(object) {
-      return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
-    }
-    module2.exports = keys;
-  }
-});
-var require_getAllKeys = __commonJS2({
-  "node_modules/lodash/_getAllKeys.js"(exports2, module2) {
-    var baseGetAllKeys = require_baseGetAllKeys();
-    var getSymbols = require_getSymbols();
-    var keys = require_keys();
-    function getAllKeys(object) {
-      return baseGetAllKeys(object, keys, getSymbols);
-    }
-    module2.exports = getAllKeys;
-  }
-});
-var require_equalObjects = __commonJS2({
-  "node_modules/lodash/_equalObjects.js"(exports2, module2) {
-    var getAllKeys = require_getAllKeys();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
-      var isPartial = bitmask & COMPARE_PARTIAL_FLAG, objProps = getAllKeys(object), objLength = objProps.length, othProps = getAllKeys(other), othLength = othProps.length;
-      if (objLength != othLength && !isPartial) {
-        return false;
-      }
-      var index = objLength;
-      while (index--) {
-        var key = objProps[index];
-        if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {
-          return false;
-        }
-      }
-      var objStacked = stack.get(object);
-      var othStacked = stack.get(other);
-      if (objStacked && othStacked) {
-        return objStacked == other && othStacked == object;
-      }
-      var result = true;
-      stack.set(object, other);
-      stack.set(other, object);
-      var skipCtor = isPartial;
-      while (++index < objLength) {
-        key = objProps[index];
-        var objValue = object[key], othValue = other[key];
-        if (customizer) {
-          var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
-        }
-        if (!(compared === void 0 ? objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack) : compared)) {
-          result = false;
-          break;
-        }
-        skipCtor || (skipCtor = key == "constructor");
-      }
-      if (result && !skipCtor) {
-        var objCtor = object.constructor, othCtor = other.constructor;
-        if (objCtor != othCtor && "constructor" in object && "constructor" in other && !(typeof objCtor == "function" && objCtor instanceof objCtor && typeof othCtor == "function" && othCtor instanceof othCtor)) {
-          result = false;
-        }
-      }
-      stack["delete"](object);
-      stack["delete"](other);
-      return result;
-    }
-    module2.exports = equalObjects;
-  }
-});
-var require_DataView = __commonJS2({
-  "node_modules/lodash/_DataView.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var DataView = getNative(root, "DataView");
-    module2.exports = DataView;
-  }
-});
-var require_Promise = __commonJS2({
-  "node_modules/lodash/_Promise.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var Promise2 = getNative(root, "Promise");
-    module2.exports = Promise2;
-  }
-});
-var require_Set = __commonJS2({
-  "node_modules/lodash/_Set.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var Set2 = getNative(root, "Set");
-    module2.exports = Set2;
-  }
-});
-var require_WeakMap = __commonJS2({
-  "node_modules/lodash/_WeakMap.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var WeakMap2 = getNative(root, "WeakMap");
-    module2.exports = WeakMap2;
-  }
-});
-var require_getTag = __commonJS2({
-  "node_modules/lodash/_getTag.js"(exports2, module2) {
-    var DataView = require_DataView();
-    var Map2 = require_Map();
-    var Promise2 = require_Promise();
-    var Set2 = require_Set();
-    var WeakMap2 = require_WeakMap();
-    var baseGetTag = require_baseGetTag();
-    var toSource = require_toSource();
-    var mapTag = "[object Map]";
-    var objectTag = "[object Object]";
-    var promiseTag = "[object Promise]";
-    var setTag = "[object Set]";
-    var weakMapTag = "[object WeakMap]";
-    var dataViewTag = "[object DataView]";
-    var dataViewCtorString = toSource(DataView);
-    var mapCtorString = toSource(Map2);
-    var promiseCtorString = toSource(Promise2);
-    var setCtorString = toSource(Set2);
-    var weakMapCtorString = toSource(WeakMap2);
-    var getTag = baseGetTag;
-    if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map2 && getTag(new Map2()) != mapTag || Promise2 && getTag(Promise2.resolve()) != promiseTag || Set2 && getTag(new Set2()) != setTag || WeakMap2 && getTag(new WeakMap2()) != weakMapTag) {
-      getTag = function(value) {
-        var result = baseGetTag(value), Ctor = result == objectTag ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
-        if (ctorString) {
-          switch (ctorString) {
-            case dataViewCtorString:
-              return dataViewTag;
-            case mapCtorString:
-              return mapTag;
-            case promiseCtorString:
-              return promiseTag;
-            case setCtorString:
-              return setTag;
-            case weakMapCtorString:
-              return weakMapTag;
-          }
-        }
-        return result;
-      };
-    }
-    module2.exports = getTag;
-  }
-});
-var require_baseIsEqualDeep = __commonJS2({
-  "node_modules/lodash/_baseIsEqualDeep.js"(exports2, module2) {
-    var Stack = require_Stack();
-    var equalArrays = require_equalArrays();
-    var equalByTag = require_equalByTag();
-    var equalObjects = require_equalObjects();
-    var getTag = require_getTag();
-    var isArray = require_isArray();
-    var isBuffer = require_isBuffer();
-    var isTypedArray = require_isTypedArray();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var argsTag = "[object Arguments]";
-    var arrayTag = "[object Array]";
-    var objectTag = "[object Object]";
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
-      var objIsArr = isArray(object), othIsArr = isArray(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
-      objTag = objTag == argsTag ? objectTag : objTag;
-      othTag = othTag == argsTag ? objectTag : othTag;
-      var objIsObj = objTag == objectTag, othIsObj = othTag == objectTag, isSameTag = objTag == othTag;
-      if (isSameTag && isBuffer(object)) {
-        if (!isBuffer(other)) {
-          return false;
-        }
-        objIsArr = true;
-        objIsObj = false;
-      }
-      if (isSameTag && !objIsObj) {
-        stack || (stack = new Stack());
-        return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
-      }
-      if (!(bitmask & COMPARE_PARTIAL_FLAG)) {
-        var objIsWrapped = objIsObj && hasOwnProperty.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty.call(other, "__wrapped__");
-        if (objIsWrapped || othIsWrapped) {
-          var objUnwrapped = objIsWrapped ? object.value() : object, othUnwrapped = othIsWrapped ? other.value() : other;
-          stack || (stack = new Stack());
-          return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
-        }
-      }
-      if (!isSameTag) {
-        return false;
-      }
-      stack || (stack = new Stack());
-      return equalObjects(object, other, bitmask, customizer, equalFunc, stack);
-    }
-    module2.exports = baseIsEqualDeep;
-  }
-});
-var require_baseIsEqual = __commonJS2({
-  "node_modules/lodash/_baseIsEqual.js"(exports2, module2) {
-    var baseIsEqualDeep = require_baseIsEqualDeep();
-    var isObjectLike = require_isObjectLike();
-    function baseIsEqual(value, other, bitmask, customizer, stack) {
-      if (value === other) {
-        return true;
-      }
-      if (value == null || other == null || !isObjectLike(value) && !isObjectLike(other)) {
-        return value !== value && other !== other;
-      }
-      return baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
-    }
-    module2.exports = baseIsEqual;
-  }
-});
-var require_baseIsMatch = __commonJS2({
-  "node_modules/lodash/_baseIsMatch.js"(exports2, module2) {
-    var Stack = require_Stack();
-    var baseIsEqual = require_baseIsEqual();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var COMPARE_UNORDERED_FLAG = 2;
-    function baseIsMatch(object, source, matchData, customizer) {
-      var index = matchData.length, length = index, noCustomizer = !customizer;
-      if (object == null) {
-        return !length;
-      }
-      object = Object(object);
-      while (index--) {
-        var data = matchData[index];
-        if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
-          return false;
-        }
-      }
-      while (++index < length) {
-        data = matchData[index];
-        var key = data[0], objValue = object[key], srcValue = data[1];
-        if (noCustomizer && data[2]) {
-          if (objValue === void 0 && !(key in object)) {
-            return false;
-          }
-        } else {
-          var stack = new Stack();
-          if (customizer) {
-            var result = customizer(objValue, srcValue, key, object, source, stack);
-          }
-          if (!(result === void 0 ? baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG, customizer, stack) : result)) {
-            return false;
-          }
-        }
-      }
-      return true;
-    }
-    module2.exports = baseIsMatch;
-  }
-});
-var require_isStrictComparable = __commonJS2({
-  "node_modules/lodash/_isStrictComparable.js"(exports2, module2) {
-    var isObject = require_isObject();
-    function isStrictComparable(value) {
-      return value === value && !isObject(value);
-    }
-    module2.exports = isStrictComparable;
-  }
-});
-var require_getMatchData = __commonJS2({
-  "node_modules/lodash/_getMatchData.js"(exports2, module2) {
-    var isStrictComparable = require_isStrictComparable();
-    var keys = require_keys();
-    function getMatchData(object) {
-      var result = keys(object), length = result.length;
-      while (length--) {
-        var key = result[length], value = object[key];
-        result[length] = [key, value, isStrictComparable(value)];
-      }
-      return result;
-    }
-    module2.exports = getMatchData;
-  }
-});
-var require_matchesStrictComparable = __commonJS2({
-  "node_modules/lodash/_matchesStrictComparable.js"(exports2, module2) {
-    function matchesStrictComparable(key, srcValue) {
-      return function(object) {
-        if (object == null) {
-          return false;
-        }
-        return object[key] === srcValue && (srcValue !== void 0 || key in Object(object));
-      };
-    }
-    module2.exports = matchesStrictComparable;
-  }
-});
-var require_baseMatches = __commonJS2({
-  "node_modules/lodash/_baseMatches.js"(exports2, module2) {
-    var baseIsMatch = require_baseIsMatch();
-    var getMatchData = require_getMatchData();
-    var matchesStrictComparable = require_matchesStrictComparable();
-    function baseMatches(source) {
-      var matchData = getMatchData(source);
-      if (matchData.length == 1 && matchData[0][2]) {
-        return matchesStrictComparable(matchData[0][0], matchData[0][1]);
-      }
-      return function(object) {
-        return object === source || baseIsMatch(object, source, matchData);
-      };
-    }
-    module2.exports = baseMatches;
-  }
-});
-var require_isSymbol = __commonJS2({
-  "node_modules/lodash/isSymbol.js"(exports2, module2) {
-    var baseGetTag = require_baseGetTag();
-    var isObjectLike = require_isObjectLike();
-    var symbolTag = "[object Symbol]";
-    function isSymbol(value) {
-      return typeof value == "symbol" || isObjectLike(value) && baseGetTag(value) == symbolTag;
-    }
-    module2.exports = isSymbol;
-  }
-});
-var require_isKey = __commonJS2({
-  "node_modules/lodash/_isKey.js"(exports2, module2) {
-    var isArray = require_isArray();
-    var isSymbol = require_isSymbol();
-    var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/;
-    var reIsPlainProp = /^\w*$/;
-    function isKey(value, object) {
-      if (isArray(value)) {
-        return false;
-      }
-      var type = typeof value;
-      if (type == "number" || type == "symbol" || type == "boolean" || value == null || isSymbol(value)) {
-        return true;
-      }
-      return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
-    }
-    module2.exports = isKey;
-  }
-});
-var require_memoize = __commonJS2({
-  "node_modules/lodash/memoize.js"(exports2, module2) {
-    var MapCache = require_MapCache();
-    var FUNC_ERROR_TEXT = "Expected a function";
-    function memoize(func, resolver) {
-      if (typeof func != "function" || resolver != null && typeof resolver != "function") {
-        throw new TypeError(FUNC_ERROR_TEXT);
-      }
-      var memoized = function() {
-        var args = arguments, key = resolver ? resolver.apply(this, args) : args[0], cache = memoized.cache;
-        if (cache.has(key)) {
-          return cache.get(key);
-        }
-        var result = func.apply(this, args);
-        memoized.cache = cache.set(key, result) || cache;
-        return result;
-      };
-      memoized.cache = new (memoize.Cache || MapCache)();
-      return memoized;
-    }
-    memoize.Cache = MapCache;
-    module2.exports = memoize;
-  }
-});
-var require_memoizeCapped = __commonJS2({
-  "node_modules/lodash/_memoizeCapped.js"(exports2, module2) {
-    var memoize = require_memoize();
-    var MAX_MEMOIZE_SIZE = 500;
-    function memoizeCapped(func) {
-      var result = memoize(func, function(key) {
-        if (cache.size === MAX_MEMOIZE_SIZE) {
-          cache.clear();
-        }
-        return key;
-      });
-      var cache = result.cache;
-      return result;
-    }
-    module2.exports = memoizeCapped;
-  }
-});
-var require_stringToPath = __commonJS2({
-  "node_modules/lodash/_stringToPath.js"(exports2, module2) {
-    var memoizeCapped = require_memoizeCapped();
-    var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
-    var reEscapeChar = /\\(\\)?/g;
-    var stringToPath = memoizeCapped(function(string) {
-      var result = [];
-      if (string.charCodeAt(0) === 46) {
-        result.push("");
-      }
-      string.replace(rePropName, function(match, number, quote, subString) {
-        result.push(quote ? subString.replace(reEscapeChar, "$1") : number || match);
-      });
-      return result;
-    });
-    module2.exports = stringToPath;
-  }
-});
-var require_arrayMap = __commonJS2({
-  "node_modules/lodash/_arrayMap.js"(exports2, module2) {
-    function arrayMap(array, iteratee) {
-      var index = -1, length = array == null ? 0 : array.length, result = Array(length);
-      while (++index < length) {
-        result[index] = iteratee(array[index], index, array);
-      }
-      return result;
-    }
-    module2.exports = arrayMap;
-  }
-});
-var require_baseToString = __commonJS2({
-  "node_modules/lodash/_baseToString.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var arrayMap = require_arrayMap();
-    var isArray = require_isArray();
-    var isSymbol = require_isSymbol();
-    var INFINITY = 1 / 0;
-    var symbolProto = Symbol2 ? Symbol2.prototype : void 0;
-    var symbolToString = symbolProto ? symbolProto.toString : void 0;
-    function baseToString(value) {
-      if (typeof value == "string") {
-        return value;
-      }
-      if (isArray(value)) {
-        return arrayMap(value, baseToString) + "";
-      }
-      if (isSymbol(value)) {
-        return symbolToString ? symbolToString.call(value) : "";
-      }
-      var result = value + "";
-      return result == "0" && 1 / value == -INFINITY ? "-0" : result;
-    }
-    module2.exports = baseToString;
-  }
-});
-var require_toString = __commonJS2({
-  "node_modules/lodash/toString.js"(exports2, module2) {
-    var baseToString = require_baseToString();
-    function toString(value) {
-      return value == null ? "" : baseToString(value);
-    }
-    module2.exports = toString;
-  }
-});
-var require_castPath = __commonJS2({
-  "node_modules/lodash/_castPath.js"(exports2, module2) {
-    var isArray = require_isArray();
-    var isKey = require_isKey();
-    var stringToPath = require_stringToPath();
-    var toString = require_toString();
-    function castPath(value, object) {
-      if (isArray(value)) {
-        return value;
-      }
-      return isKey(value, object) ? [value] : stringToPath(toString(value));
-    }
-    module2.exports = castPath;
-  }
-});
-var require_toKey = __commonJS2({
-  "node_modules/lodash/_toKey.js"(exports2, module2) {
-    var isSymbol = require_isSymbol();
-    var INFINITY = 1 / 0;
-    function toKey(value) {
-      if (typeof value == "string" || isSymbol(value)) {
-        return value;
-      }
-      var result = value + "";
-      return result == "0" && 1 / value == -INFINITY ? "-0" : result;
-    }
-    module2.exports = toKey;
-  }
-});
-var require_baseGet = __commonJS2({
-  "node_modules/lodash/_baseGet.js"(exports2, module2) {
-    var castPath = require_castPath();
-    var toKey = require_toKey();
-    function baseGet(object, path) {
-      path = castPath(path, object);
-      var index = 0, length = path.length;
-      while (object != null && index < length) {
-        object = object[toKey(path[index++])];
-      }
-      return index && index == length ? object : void 0;
-    }
-    module2.exports = baseGet;
-  }
-});
-var require_get = __commonJS2({
-  "node_modules/lodash/get.js"(exports2, module2) {
-    var baseGet = require_baseGet();
-    function get(object, path, defaultValue) {
-      var result = object == null ? void 0 : baseGet(object, path);
-      return result === void 0 ? defaultValue : result;
-    }
-    module2.exports = get;
-  }
-});
-var require_baseHasIn = __commonJS2({
-  "node_modules/lodash/_baseHasIn.js"(exports2, module2) {
-    function baseHasIn(object, key) {
-      return object != null && key in Object(object);
-    }
-    module2.exports = baseHasIn;
-  }
-});
-var require_hasPath = __commonJS2({
-  "node_modules/lodash/_hasPath.js"(exports2, module2) {
-    var castPath = require_castPath();
-    var isArguments = require_isArguments();
-    var isArray = require_isArray();
-    var isIndex = require_isIndex();
-    var isLength = require_isLength();
-    var toKey = require_toKey();
-    function hasPath(object, path, hasFunc) {
-      path = castPath(path, object);
-      var index = -1, length = path.length, result = false;
-      while (++index < length) {
-        var key = toKey(path[index]);
-        if (!(result = object != null && hasFunc(object, key))) {
-          break;
-        }
-        object = object[key];
-      }
-      if (result || ++index != length) {
-        return result;
-      }
-      length = object == null ? 0 : object.length;
-      return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
-    }
-    module2.exports = hasPath;
-  }
-});
-var require_hasIn = __commonJS2({
-  "node_modules/lodash/hasIn.js"(exports2, module2) {
-    var baseHasIn = require_baseHasIn();
-    var hasPath = require_hasPath();
-    function hasIn(object, path) {
-      return object != null && hasPath(object, path, baseHasIn);
-    }
-    module2.exports = hasIn;
-  }
-});
-var require_baseMatchesProperty = __commonJS2({
-  "node_modules/lodash/_baseMatchesProperty.js"(exports2, module2) {
-    var baseIsEqual = require_baseIsEqual();
-    var get = require_get();
-    var hasIn = require_hasIn();
-    var isKey = require_isKey();
-    var isStrictComparable = require_isStrictComparable();
-    var matchesStrictComparable = require_matchesStrictComparable();
-    var toKey = require_toKey();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var COMPARE_UNORDERED_FLAG = 2;
-    function baseMatchesProperty(path, srcValue) {
-      if (isKey(path) && isStrictComparable(srcValue)) {
-        return matchesStrictComparable(toKey(path), srcValue);
-      }
-      return function(object) {
-        var objValue = get(object, path);
-        return objValue === void 0 && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG);
-      };
-    }
-    module2.exports = baseMatchesProperty;
-  }
-});
-var require_identity = __commonJS2({
-  "node_modules/lodash/identity.js"(exports2, module2) {
-    function identity(value) {
-      return value;
-    }
-    module2.exports = identity;
-  }
-});
-var require_baseProperty = __commonJS2({
-  "node_modules/lodash/_baseProperty.js"(exports2, module2) {
-    function baseProperty(key) {
-      return function(object) {
-        return object == null ? void 0 : object[key];
-      };
-    }
-    module2.exports = baseProperty;
-  }
-});
-var require_basePropertyDeep = __commonJS2({
-  "node_modules/lodash/_basePropertyDeep.js"(exports2, module2) {
-    var baseGet = require_baseGet();
-    function basePropertyDeep(path) {
-      return function(object) {
-        return baseGet(object, path);
-      };
-    }
-    module2.exports = basePropertyDeep;
-  }
-});
-var require_property = __commonJS2({
-  "node_modules/lodash/property.js"(exports2, module2) {
-    var baseProperty = require_baseProperty();
-    var basePropertyDeep = require_basePropertyDeep();
-    var isKey = require_isKey();
-    var toKey = require_toKey();
-    function property(path) {
-      return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
-    }
-    module2.exports = property;
-  }
-});
-var require_baseIteratee = __commonJS2({
-  "node_modules/lodash/_baseIteratee.js"(exports2, module2) {
-    var baseMatches = require_baseMatches();
-    var baseMatchesProperty = require_baseMatchesProperty();
-    var identity = require_identity();
-    var isArray = require_isArray();
-    var property = require_property();
-    function baseIteratee(value) {
-      if (typeof value == "function") {
-        return value;
-      }
-      if (value == null) {
-        return identity;
-      }
-      if (typeof value == "object") {
-        return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
-      }
-      return property(value);
-    }
-    module2.exports = baseIteratee;
-  }
-});
-var require_baseFindIndex = __commonJS2({
-  "node_modules/lodash/_baseFindIndex.js"(exports2, module2) {
-    function baseFindIndex(array, predicate, fromIndex, fromRight) {
-      var length = array.length, index = fromIndex + (fromRight ? 1 : -1);
-      while (fromRight ? index-- : ++index < length) {
-        if (predicate(array[index], index, array)) {
-          return index;
-        }
-      }
-      return -1;
-    }
-    module2.exports = baseFindIndex;
-  }
-});
-var require_baseIsNaN = __commonJS2({
-  "node_modules/lodash/_baseIsNaN.js"(exports2, module2) {
-    function baseIsNaN(value) {
-      return value !== value;
-    }
-    module2.exports = baseIsNaN;
-  }
-});
-var require_strictIndexOf = __commonJS2({
-  "node_modules/lodash/_strictIndexOf.js"(exports2, module2) {
-    function strictIndexOf(array, value, fromIndex) {
-      var index = fromIndex - 1, length = array.length;
-      while (++index < length) {
-        if (array[index] === value) {
-          return index;
-        }
-      }
-      return -1;
-    }
-    module2.exports = strictIndexOf;
-  }
-});
-var require_baseIndexOf = __commonJS2({
-  "node_modules/lodash/_baseIndexOf.js"(exports2, module2) {
-    var baseFindIndex = require_baseFindIndex();
-    var baseIsNaN = require_baseIsNaN();
-    var strictIndexOf = require_strictIndexOf();
-    function baseIndexOf(array, value, fromIndex) {
-      return value === value ? strictIndexOf(array, value, fromIndex) : baseFindIndex(array, baseIsNaN, fromIndex);
-    }
-    module2.exports = baseIndexOf;
-  }
-});
-var require_arrayIncludes = __commonJS2({
-  "node_modules/lodash/_arrayIncludes.js"(exports2, module2) {
-    var baseIndexOf = require_baseIndexOf();
-    function arrayIncludes(array, value) {
-      var length = array == null ? 0 : array.length;
-      return !!length && baseIndexOf(array, value, 0) > -1;
-    }
-    module2.exports = arrayIncludes;
-  }
-});
-var require_arrayIncludesWith = __commonJS2({
-  "node_modules/lodash/_arrayIncludesWith.js"(exports2, module2) {
-    function arrayIncludesWith(array, value, comparator) {
-      var index = -1, length = array == null ? 0 : array.length;
-      while (++index < length) {
-        if (comparator(value, array[index])) {
-          return true;
-        }
-      }
-      return false;
-    }
-    module2.exports = arrayIncludesWith;
-  }
-});
-var require_noop = __commonJS2({
-  "node_modules/lodash/noop.js"(exports2, module2) {
-    function noop() {
-    }
-    module2.exports = noop;
-  }
-});
-var require_createSet = __commonJS2({
-  "node_modules/lodash/_createSet.js"(exports2, module2) {
-    var Set2 = require_Set();
-    var noop = require_noop();
-    var setToArray = require_setToArray();
-    var INFINITY = 1 / 0;
-    var createSet = !(Set2 && 1 / setToArray(new Set2([, -0]))[1] == INFINITY) ? noop : function(values) {
-      return new Set2(values);
-    };
-    module2.exports = createSet;
-  }
-});
-var require_baseUniq = __commonJS2({
-  "node_modules/lodash/_baseUniq.js"(exports2, module2) {
-    var SetCache = require_SetCache();
-    var arrayIncludes = require_arrayIncludes();
-    var arrayIncludesWith = require_arrayIncludesWith();
-    var cacheHas = require_cacheHas();
-    var createSet = require_createSet();
-    var setToArray = require_setToArray();
-    var LARGE_ARRAY_SIZE = 200;
-    function baseUniq(array, iteratee, comparator) {
-      var index = -1, includes = arrayIncludes, length = array.length, isCommon = true, result = [], seen = result;
-      if (comparator) {
-        isCommon = false;
-        includes = arrayIncludesWith;
-      } else if (length >= LARGE_ARRAY_SIZE) {
-        var set = iteratee ? null : createSet(array);
-        if (set) {
-          return setToArray(set);
-        }
-        isCommon = false;
-        includes = cacheHas;
-        seen = new SetCache();
-      } else {
-        seen = iteratee ? [] : result;
-      }
-      outer:
-        while (++index < length) {
-          var value = array[index], computed = iteratee ? iteratee(value) : value;
-          value = comparator || value !== 0 ? value : 0;
-          if (isCommon && computed === computed) {
-            var seenIndex = seen.length;
-            while (seenIndex--) {
-              if (seen[seenIndex] === computed) {
-                continue outer;
-              }
-            }
-            if (iteratee) {
-              seen.push(computed);
-            }
-            result.push(value);
-          } else if (!includes(seen, computed, comparator)) {
-            if (seen !== result) {
-              seen.push(computed);
-            }
-            result.push(value);
-          }
-        }
-      return result;
-    }
-    module2.exports = baseUniq;
-  }
-});
-var require_uniqBy = __commonJS2({
-  "node_modules/lodash/uniqBy.js"(exports2, module2) {
-    var baseIteratee = require_baseIteratee();
-    var baseUniq = require_baseUniq();
-    function uniqBy(array, iteratee) {
-      return array && array.length ? baseUniq(array, baseIteratee(iteratee, 2)) : [];
-    }
-    module2.exports = uniqBy;
-  }
-});
-var require_arrayAggregator = __commonJS2({
-  "node_modules/lodash/_arrayAggregator.js"(exports2, module2) {
-    function arrayAggregator(array, setter, iteratee, accumulator) {
-      var index = -1, length = array == null ? 0 : array.length;
-      while (++index < length) {
-        var value = array[index];
-        setter(accumulator, value, iteratee(value), array);
-      }
-      return accumulator;
-    }
-    module2.exports = arrayAggregator;
-  }
-});
-var require_createBaseFor = __commonJS2({
-  "node_modules/lodash/_createBaseFor.js"(exports2, module2) {
-    function createBaseFor(fromRight) {
-      return function(object, iteratee, keysFunc) {
-        var index = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
-        while (length--) {
-          var key = props[fromRight ? length : ++index];
-          if (iteratee(iterable[key], key, iterable) === false) {
-            break;
-          }
-        }
-        return object;
-      };
-    }
-    module2.exports = createBaseFor;
-  }
-});
-var require_baseFor = __commonJS2({
-  "node_modules/lodash/_baseFor.js"(exports2, module2) {
-    var createBaseFor = require_createBaseFor();
-    var baseFor = createBaseFor();
-    module2.exports = baseFor;
-  }
-});
-var require_baseForOwn = __commonJS2({
-  "node_modules/lodash/_baseForOwn.js"(exports2, module2) {
-    var baseFor = require_baseFor();
-    var keys = require_keys();
-    function baseForOwn(object, iteratee) {
-      return object && baseFor(object, iteratee, keys);
-    }
-    module2.exports = baseForOwn;
-  }
-});
-var require_createBaseEach = __commonJS2({
-  "node_modules/lodash/_createBaseEach.js"(exports2, module2) {
-    var isArrayLike = require_isArrayLike();
-    function createBaseEach(eachFunc, fromRight) {
-      return function(collection, iteratee) {
-        if (collection == null) {
-          return collection;
-        }
-        if (!isArrayLike(collection)) {
-          return eachFunc(collection, iteratee);
-        }
-        var length = collection.length, index = fromRight ? length : -1, iterable = Object(collection);
-        while (fromRight ? index-- : ++index < length) {
-          if (iteratee(iterable[index], index, iterable) === false) {
-            break;
-          }
-        }
-        return collection;
-      };
-    }
-    module2.exports = createBaseEach;
-  }
-});
-var require_baseEach = __commonJS2({
-  "node_modules/lodash/_baseEach.js"(exports2, module2) {
-    var baseForOwn = require_baseForOwn();
-    var createBaseEach = require_createBaseEach();
-    var baseEach = createBaseEach(baseForOwn);
-    module2.exports = baseEach;
-  }
-});
-var require_baseAggregator = __commonJS2({
-  "node_modules/lodash/_baseAggregator.js"(exports2, module2) {
-    var baseEach = require_baseEach();
-    function baseAggregator(collection, setter, iteratee, accumulator) {
-      baseEach(collection, function(value, key, collection2) {
-        setter(accumulator, value, iteratee(value), collection2);
-      });
-      return accumulator;
-    }
-    module2.exports = baseAggregator;
-  }
-});
-var require_createAggregator = __commonJS2({
-  "node_modules/lodash/_createAggregator.js"(exports2, module2) {
-    var arrayAggregator = require_arrayAggregator();
-    var baseAggregator = require_baseAggregator();
-    var baseIteratee = require_baseIteratee();
-    var isArray = require_isArray();
-    function createAggregator(setter, initializer) {
-      return function(collection, iteratee) {
-        var func = isArray(collection) ? arrayAggregator : baseAggregator, accumulator = initializer ? initializer() : {};
-        return func(collection, setter, baseIteratee(iteratee, 2), accumulator);
-      };
-    }
-    module2.exports = createAggregator;
-  }
-});
-var require_partition = __commonJS2({
-  "node_modules/lodash/partition.js"(exports2, module2) {
-    var createAggregator = require_createAggregator();
-    var partition = createAggregator(function(result, value, key) {
-      result[key ? 0 : 1].push(value);
-    }, function() {
-      return [[], []];
-    });
-    module2.exports = partition;
   }
 });
 var require_array3 = __commonJS2({
@@ -23332,6 +21295,24 @@ var require_out4 = __commonJS2({
     module2.exports = FastGlob;
   }
 });
+var require_uniq_by_key = __commonJS2({
+  "src/utils/uniq-by-key.js"(exports2, module2) {
+    "use strict";
+    function uniqByKey(array, key) {
+      const result = [];
+      const seen = /* @__PURE__ */ new Set();
+      for (const element of array) {
+        const value = element[key];
+        if (!seen.has(value)) {
+          seen.add(value);
+          result.push(element);
+        }
+      }
+      return result;
+    }
+    module2.exports = uniqByKey;
+  }
+});
 var require_create_language = __commonJS2({
   "src/utils/create-language.js"(exports2, module2) {
     "use strict";
@@ -23673,10 +21654,31 @@ var require_utils6 = __commonJS2({
 var require_is_block_comment = __commonJS2({
   "src/language-js/utils/is-block-comment.js"(exports2, module2) {
     "use strict";
-    function isBlockComment(comment) {
-      return comment.type === "Block" || comment.type === "CommentBlock" || comment.type === "MultiLine";
-    }
+    var BLOCK_COMMENT_TYPES = /* @__PURE__ */ new Set(["Block", "CommentBlock", "MultiLine"]);
+    var isBlockComment = (comment) => BLOCK_COMMENT_TYPES.has(comment === null || comment === void 0 ? void 0 : comment.type);
     module2.exports = isBlockComment;
+  }
+});
+var require_is_node_matches = __commonJS2({
+  "src/language-js/utils/is-node-matches.js"(exports2, module2) {
+    "use strict";
+    function isNodeMatchesNameOrPath(node, nameOrPath) {
+      const names = nameOrPath.split(".");
+      for (let index = names.length - 1; index >= 0; index--) {
+        const name = names[index];
+        if (index === 0) {
+          return node.type === "Identifier" && node.name === name;
+        }
+        if (node.type !== "MemberExpression" || node.optional || node.computed || node.property.type !== "Identifier" || node.property.name !== name) {
+          return false;
+        }
+        node = node.object;
+      }
+    }
+    function isNodeMatches(node, nameOrPaths) {
+      return nameOrPaths.some((nameOrPath) => isNodeMatchesNameOrPath(node, nameOrPath));
+    }
+    module2.exports = isNodeMatches;
   }
 });
 var require_utils7 = __commonJS2({
@@ -23697,14 +21699,17 @@ var require_utils7 = __commonJS2({
       hasSameLocStart
     } = require_loc();
     var isBlockComment = require_is_block_comment();
+    var isNodeMatches = require_is_node_matches();
     var NON_LINE_TERMINATING_WHITE_SPACE = "(?:(?=.)\\s)";
     var FLOW_SHORTHAND_ANNOTATION = new RegExp(`^${NON_LINE_TERMINATING_WHITE_SPACE}*:`);
     var FLOW_ANNOTATION = new RegExp(`^${NON_LINE_TERMINATING_WHITE_SPACE}*::`);
     function hasFlowShorthandAnnotationComment(node) {
-      return node.extra && node.extra.parenthesized && isNonEmptyArray(node.trailingComments) && isBlockComment(node.trailingComments[0]) && FLOW_SHORTHAND_ANNOTATION.test(node.trailingComments[0].value);
+      var _node$extra, _node$trailingComment;
+      return ((_node$extra = node.extra) === null || _node$extra === void 0 ? void 0 : _node$extra.parenthesized) && isBlockComment((_node$trailingComment = node.trailingComments) === null || _node$trailingComment === void 0 ? void 0 : _node$trailingComment[0]) && FLOW_SHORTHAND_ANNOTATION.test(node.trailingComments[0].value);
     }
     function hasFlowAnnotationComment(comments) {
-      return isNonEmptyArray(comments) && isBlockComment(comments[0]) && FLOW_ANNOTATION.test(comments[0].value);
+      const firstComment = comments === null || comments === void 0 ? void 0 : comments[0];
+      return isBlockComment(firstComment) && FLOW_ANNOTATION.test(firstComment.value);
     }
     function hasNode(node, fn) {
       if (!node || typeof node !== "object") {
@@ -23720,10 +21725,11 @@ var require_utils7 = __commonJS2({
       return node.type === "AssignmentExpression" || node.type === "BinaryExpression" || node.type === "LogicalExpression" || node.type === "NGPipeExpression" || node.type === "ConditionalExpression" || isCallExpression(node) || isMemberExpression(node) || node.type === "SequenceExpression" || node.type === "TaggedTemplateExpression" || node.type === "BindExpression" || node.type === "UpdateExpression" && !node.prefix || node.type === "TSAsExpression" || node.type === "TSNonNullExpression";
     }
     function getLeftSide(node) {
+      var _ref2, _ref3, _ref4, _ref5, _ref6, _node$left;
       if (node.expressions) {
         return node.expressions[0];
       }
-      return node.left || node.test || node.callee || node.object || node.tag || node.argument || node.expression;
+      return (_ref2 = (_ref3 = (_ref4 = (_ref5 = (_ref6 = (_node$left = node.left) !== null && _node$left !== void 0 ? _node$left : node.test) !== null && _ref6 !== void 0 ? _ref6 : node.callee) !== null && _ref5 !== void 0 ? _ref5 : node.object) !== null && _ref4 !== void 0 ? _ref4 : node.tag) !== null && _ref3 !== void 0 ? _ref3 : node.argument) !== null && _ref2 !== void 0 ? _ref2 : node.expression;
     }
     function getLeftSidePathName(path, node) {
       if (node.expressions) {
@@ -23752,13 +21758,12 @@ var require_utils7 = __commonJS2({
       }
       throw new Error("Unexpected node has no left side.");
     }
-    function isLineComment(comment) {
-      return comment.type === "Line" || comment.type === "CommentLine" || comment.type === "SingleLine" || comment.type === "HashbangComment" || comment.type === "HTMLOpen" || comment.type === "HTMLClose";
+    function createTypeCheckFunction(types) {
+      types = new Set(types);
+      return (node) => types.has(node === null || node === void 0 ? void 0 : node.type);
     }
-    var exportDeclarationTypes = /* @__PURE__ */ new Set(["ExportDefaultDeclaration", "ExportDefaultSpecifier", "DeclareExportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"]);
-    function isExportDeclaration(node) {
-      return node && exportDeclarationTypes.has(node.type);
-    }
+    var isLineComment = createTypeCheckFunction(["Line", "CommentLine", "SingleLine", "HashbangComment", "HTMLOpen", "HTMLClose"]);
+    var isExportDeclaration = createTypeCheckFunction(["ExportDefaultDeclaration", "ExportDefaultSpecifier", "DeclareExportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"]);
     function getParentExportDeclaration(path) {
       const parentNode = path.getParentNode();
       if (path.getName() === "declaration" && isExportDeclaration(parentNode)) {
@@ -23766,9 +21771,7 @@ var require_utils7 = __commonJS2({
       }
       return null;
     }
-    function isLiteral(node) {
-      return node.type === "BooleanLiteral" || node.type === "DirectiveLiteral" || node.type === "Literal" || node.type === "NullLiteral" || node.type === "NumericLiteral" || node.type === "BigIntLiteral" || node.type === "DecimalLiteral" || node.type === "RegExpLiteral" || node.type === "StringLiteral" || node.type === "TemplateLiteral" || node.type === "TSTypeLiteral" || node.type === "JSXText";
-    }
+    var isLiteral = createTypeCheckFunction(["BooleanLiteral", "DirectiveLiteral", "Literal", "NullLiteral", "NumericLiteral", "BigIntLiteral", "DecimalLiteral", "RegExpLiteral", "StringLiteral", "TemplateLiteral", "TSTypeLiteral", "JSXText"]);
     function isNumericLiteral(node) {
       return node.type === "NumericLiteral" || node.type === "Literal" && typeof node.value === "number";
     }
@@ -23778,24 +21781,15 @@ var require_utils7 = __commonJS2({
     function isStringLiteral(node) {
       return node.type === "StringLiteral" || node.type === "Literal" && typeof node.value === "string";
     }
-    function isObjectType(node) {
-      return node.type === "ObjectTypeAnnotation" || node.type === "TSTypeLiteral" || node.type === "TSMappedType";
-    }
-    function isFunctionOrArrowExpression(node) {
-      return node.type === "FunctionExpression" || node.type === "ArrowFunctionExpression";
-    }
+    var isObjectType = createTypeCheckFunction(["ObjectTypeAnnotation", "TSTypeLiteral", "TSMappedType"]);
+    var isFunctionOrArrowExpression = createTypeCheckFunction(["FunctionExpression", "ArrowFunctionExpression"]);
     function isFunctionOrArrowExpressionWithBody(node) {
       return node.type === "FunctionExpression" || node.type === "ArrowFunctionExpression" && node.body.type === "BlockStatement";
-    }
-    function isTemplateLiteral(node) {
-      return node.type === "TemplateLiteral";
     }
     function isAngularTestWrapper(node) {
       return isCallExpression(node) && node.callee.type === "Identifier" && ["async", "inject", "fakeAsync", "waitForAsync"].includes(node.callee.name);
     }
-    function isJsxNode(node) {
-      return node.type === "JSXElement" || node.type === "JSXFragment";
-    }
+    var isJsxNode = createTypeCheckFunction(["JSXElement", "JSXFragment"]);
     function isTheOnlyJsxElementInMarkdown(options, path) {
       if (options.parentParser !== "markdown" && options.parentParser !== "mdx") {
         return false;
@@ -23819,10 +21813,7 @@ var require_utils7 = __commonJS2({
     function isTypeAnnotationAFunction(node) {
       return (node.type === "TypeAnnotation" || node.type === "TSTypeAnnotation") && node.typeAnnotation.type === "FunctionTypeAnnotation" && !node.static && !hasSameLocStart(node, node.typeAnnotation);
     }
-    var binaryishNodeTypes = /* @__PURE__ */ new Set(["BinaryExpression", "LogicalExpression", "NGPipeExpression"]);
-    function isBinaryish(node) {
-      return binaryishNodeTypes.has(node.type);
-    }
+    var isBinaryish = createTypeCheckFunction(["BinaryExpression", "LogicalExpression", "NGPipeExpression"]);
     function isMemberish(node) {
       return isMemberExpression(node) || node.type === "BindExpression" && Boolean(node.object);
     }
@@ -23839,13 +21830,13 @@ var require_utils7 = __commonJS2({
       }
       return false;
     }
-    var unitTestRe = /^(?:skip|[fx]?(?:it|describe|test))$/;
-    function isSkipOrOnlyBlock(node) {
-      return isMemberExpression(node.callee) && node.callee.object.type === "Identifier" && node.callee.property.type === "Identifier" && unitTestRe.test(node.callee.object.name) && (node.callee.property.name === "only" || node.callee.property.name === "skip");
-    }
     function isUnitTestSetUp(node) {
       const unitTestSetUpRe = /^(?:before|after)(?:Each|All)$/;
       return node.callee.type === "Identifier" && unitTestSetUpRe.test(node.callee.name) && node.arguments.length === 1;
+    }
+    var testCallCalleePatterns = ["it", "it.only", "it.skip", "describe", "describe.only", "describe.skip", "test", "test.only", "test.skip", "test.step", "test.describe", "test.describe.only", "test.describe.parallel", "test.describe.parallel.only", "test.describe.serial", "test.describe.serial.only", "skip", "xit", "xdescribe", "xtest", "fit", "fdescribe", "ftest"];
+    function isTestCallCallee(node) {
+      return isNodeMatches(node, testCallCalleePatterns);
     }
     function isTestCall(node, parent) {
       if (node.type !== "CallExpression") {
@@ -23859,7 +21850,7 @@ var require_utils7 = __commonJS2({
           return isAngularTestWrapper(node.arguments[0]);
         }
       } else if (node.arguments.length === 2 || node.arguments.length === 3) {
-        if ((node.callee.type === "Identifier" && unitTestRe.test(node.callee.name) || isSkipOrOnlyBlock(node)) && (isTemplateLiteral(node.arguments[0]) || isStringLiteral(node.arguments[0]))) {
+        if ((node.arguments[0].type === "TemplateLiteral" || isStringLiteral(node.arguments[0])) && isTestCallCallee(node.callee)) {
           if (node.arguments[2] && !isNumericLiteral(node.arguments[2])) {
             return false;
           }
@@ -23868,12 +21859,8 @@ var require_utils7 = __commonJS2({
       }
       return false;
     }
-    function isCallExpression(node) {
-      return node && (node.type === "CallExpression" || node.type === "OptionalCallExpression");
-    }
-    function isMemberExpression(node) {
-      return node && (node.type === "MemberExpression" || node.type === "OptionalMemberExpression");
-    }
+    var isCallExpression = createTypeCheckFunction(["CallExpression", "OptionalCallExpression"]);
+    var isMemberExpression = createTypeCheckFunction(["MemberExpression", "OptionalMemberExpression"]);
     function isSimpleTemplateLiteral(node) {
       let expressionsKey = "expressions";
       if (node.type === "TSTemplateLiteralType") {
@@ -23910,11 +21897,8 @@ var require_utils7 = __commonJS2({
       });
     }
     function getTypeScriptMappedTypeModifier(tokenNode, keyword) {
-      if (tokenNode === "+") {
-        return "+" + keyword;
-      }
-      if (tokenNode === "-") {
-        return "-" + keyword;
+      if (tokenNode === "+" || tokenNode === "-") {
+        return tokenNode + keyword;
       }
       return keyword;
     }
@@ -24016,7 +22000,8 @@ var require_utils7 = __commonJS2({
       return false;
     }
     function rawText(node) {
-      return node.extra ? node.extra.raw : node.raw;
+      var _node$extra$raw, _node$extra2;
+      return (_node$extra$raw = (_node$extra2 = node.extra) === null || _node$extra2 === void 0 ? void 0 : _node$extra2.raw) !== null && _node$extra$raw !== void 0 ? _node$extra$raw : node.raw;
     }
     function identity(x) {
       return x;
@@ -24102,14 +22087,9 @@ var require_utils7 = __commonJS2({
       }
       return true;
     }
-    var PRECEDENCE = {};
-    for (const [i, tier] of [["|>"], ["??"], ["||"], ["&&"], ["|"], ["^"], ["&"], ["==", "===", "!=", "!=="], ["<", ">", "<=", ">=", "in", "instanceof"], [">>", "<<", ">>>"], ["+", "-"], ["*", "/", "%"], ["**"]].entries()) {
-      for (const op of tier) {
-        PRECEDENCE[op] = i;
-      }
-    }
-    function getPrecedence(op) {
-      return PRECEDENCE[op];
+    var PRECEDENCE = new Map([["|>"], ["??"], ["||"], ["&&"], ["|"], ["^"], ["&"], ["==", "===", "!=", "!=="], ["<", ">", "<=", ">=", "in", "instanceof"], [">>", "<<", ">>>"], ["+", "-"], ["*", "/", "%"], ["**"]].flatMap((operators, index) => operators.map((operator) => [operator, index])));
+    function getPrecedence(operator) {
+      return PRECEDENCE.get(operator);
     }
     function getLeftMost(node) {
       while (node.left) {
@@ -24121,11 +22101,12 @@ var require_utils7 = __commonJS2({
       return Boolean(bitshiftOperators[operator]) || operator === "|" || operator === "^" || operator === "&";
     }
     function hasRestParameter(node) {
+      var _getLast;
       if (node.rest) {
         return true;
       }
       const parameters = getFunctionParameters(node);
-      return parameters.length > 0 && getLast(parameters).type === "RestElement";
+      return ((_getLast = getLast(parameters)) === null || _getLast === void 0 ? void 0 : _getLast.type) === "RestElement";
     }
     var functionParametersCache = /* @__PURE__ */ new WeakMap();
     function getFunctionParameters(node) {
@@ -24219,14 +22200,14 @@ var require_utils7 = __commonJS2({
       }
     };
     function hasComment(node, flags, fn) {
-      if (!node || !isNonEmptyArray(node.comments)) {
+      if (!isNonEmptyArray(node === null || node === void 0 ? void 0 : node.comments)) {
         return false;
       }
       const test = getCommentTestFunction(flags, fn);
       return test ? node.comments.some(test) : true;
     }
     function getComments(node, flags, fn) {
-      if (!node || !Array.isArray(node.comments)) {
+      if (!Array.isArray(node === null || node === void 0 ? void 0 : node.comments)) {
         return [];
       }
       const test = getCommentTestFunction(flags, fn);
@@ -24935,7 +22916,8 @@ var require_clean = __commonJS2({
         removeTemplateElementsValue(newObj.quasi);
       }
       if (ast.type === "TemplateLiteral") {
-        const hasLanguageComment = ast.leadingComments && ast.leadingComments.some((comment) => isBlockComment(comment) && ["GraphQL", "HTML"].some((languageName) => comment.value === ` ${languageName} `));
+        var _ast$leadingComments;
+        const hasLanguageComment = (_ast$leadingComments = ast.leadingComments) === null || _ast$leadingComments === void 0 ? void 0 : _ast$leadingComments.some((comment) => isBlockComment(comment) && ["GraphQL", "HTML"].some((languageName) => comment.value === ` ${languageName} `));
         if (hasLanguageComment || parent.type === "CallExpression" && parent.callee.name === "graphql" || !ast.leadingComments) {
           removeTemplateElementsValue(newObj);
         }
@@ -25183,10 +23165,10 @@ var require_comments2 = __commonJS2({
     } = require_loc();
     var isBlockComment = require_is_block_comment();
     function handleOwnLineComment(context) {
-      return [handleIgnoreComments, handleLastFunctionArgComments, handleMemberExpressionComments, handleIfStatementComments, handleWhileComments, handleTryStatementComments, handleClassComments, handleImportSpecifierComments, handleForComments, handleUnionTypeComments, handleOnlyComments, handleImportDeclarationComments, handleAssignmentPatternComments, handleMethodNameComments, handleLabeledStatementComments, handleBreakAndContinueStatementComments].some((fn) => fn(context));
+      return [handleIgnoreComments, handleLastFunctionArgComments, handleMemberExpressionComments, handleIfStatementComments, handleWhileComments, handleTryStatementComments, handleClassComments, handleForComments, handleUnionTypeComments, handleOnlyComments, handleModuleSpecifiersComments, handleAssignmentPatternComments, handleMethodNameComments, handleLabeledStatementComments, handleBreakAndContinueStatementComments].some((fn) => fn(context));
     }
     function handleEndOfLineComment(context) {
-      return [handleClosureTypeCastComments, handleLastFunctionArgComments, handleConditionalExpressionComments, handleImportSpecifierComments, handleIfStatementComments, handleWhileComments, handleTryStatementComments, handleClassComments, handleLabeledStatementComments, handleCallExpressionComments, handlePropertyComments, handleOnlyComments, handleVariableDeclaratorComments, handleBreakAndContinueStatementComments, handleSwitchDefaultCaseComments].some((fn) => fn(context));
+      return [handleClosureTypeCastComments, handleLastFunctionArgComments, handleConditionalExpressionComments, handleModuleSpecifiersComments, handleIfStatementComments, handleWhileComments, handleTryStatementComments, handleClassComments, handleLabeledStatementComments, handleCallExpressionComments, handlePropertyComments, handleOnlyComments, handleVariableDeclaratorComments, handleBreakAndContinueStatementComments, handleSwitchDefaultCaseComments].some((fn) => fn(context));
     }
     function handleRemainingComment(context) {
       return [handleIgnoreComments, handleIfStatementComments, handleWhileComments, handleObjectPropertyAssignment, handleCommentInEmptyParens, handleMethodNameComments, handleOnlyComments, handleCommentAfterArrowParams, handleFunctionNameComments, handleTSMappedTypeComments, handleBreakAndContinueStatementComments, handleTSFunctionTrailingComments].some((fn) => fn(context));
@@ -25225,7 +23207,7 @@ var require_comments2 = __commonJS2({
       followingNode,
       text
     }) {
-      if (!enclosingNode || enclosingNode.type !== "IfStatement" || !followingNode) {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) !== "IfStatement" || !followingNode) {
         return false;
       }
       const nextCharacter = getNextNonSpaceNonCommentCharacter(text, comment, locEnd);
@@ -25268,7 +23250,7 @@ var require_comments2 = __commonJS2({
       followingNode,
       text
     }) {
-      if (!enclosingNode || enclosingNode.type !== "WhileStatement" || !followingNode) {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) !== "WhileStatement" || !followingNode) {
         return false;
       }
       const nextCharacter = getNextNonSpaceNonCommentCharacter(text, comment, locEnd);
@@ -25292,7 +23274,7 @@ var require_comments2 = __commonJS2({
       enclosingNode,
       followingNode
     }) {
-      if (!enclosingNode || enclosingNode.type !== "TryStatement" && enclosingNode.type !== "CatchClause" || !followingNode) {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) !== "TryStatement" && (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) !== "CatchClause" || !followingNode) {
         return false;
       }
       if (enclosingNode.type === "CatchClause" && precedingNode) {
@@ -25318,7 +23300,7 @@ var require_comments2 = __commonJS2({
       enclosingNode,
       followingNode
     }) {
-      if (isMemberExpression(enclosingNode) && followingNode && followingNode.type === "Identifier") {
+      if (isMemberExpression(enclosingNode) && (followingNode === null || followingNode === void 0 ? void 0 : followingNode.type) === "Identifier") {
         addLeadingComment(enclosingNode, comment);
         return true;
       }
@@ -25332,7 +23314,7 @@ var require_comments2 = __commonJS2({
       text
     }) {
       const isSameLineAsPrecedingNode = precedingNode && !hasNewlineInRange(text, locEnd(precedingNode), locStart(comment));
-      if ((!precedingNode || !isSameLineAsPrecedingNode) && enclosingNode && (enclosingNode.type === "ConditionalExpression" || enclosingNode.type === "TSConditionalType") && followingNode) {
+      if ((!precedingNode || !isSameLineAsPrecedingNode) && ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ConditionalExpression" || (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "TSConditionalType") && followingNode) {
         addLeadingComment(followingNode, comment);
         return true;
       }
@@ -25349,13 +23331,14 @@ var require_comments2 = __commonJS2({
       }
       return false;
     }
+    var classLikeNodeTypes = /* @__PURE__ */ new Set(["ClassDeclaration", "ClassExpression", "DeclareClass", "DeclareInterface", "InterfaceDeclaration", "TSInterfaceDeclaration"]);
     function handleClassComments({
       comment,
       precedingNode,
       enclosingNode,
       followingNode
     }) {
-      if (enclosingNode && (enclosingNode.type === "ClassDeclaration" || enclosingNode.type === "ClassExpression" || enclosingNode.type === "DeclareClass" || enclosingNode.type === "DeclareInterface" || enclosingNode.type === "InterfaceDeclaration" || enclosingNode.type === "TSInterfaceDeclaration")) {
+      if (classLikeNodeTypes.has(enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type)) {
         if (isNonEmptyArray(enclosingNode.decorators) && !(followingNode && followingNode.type === "Decorator")) {
           addTrailingComment(getLast(enclosingNode.decorators), comment);
           return true;
@@ -25383,6 +23366,7 @@ var require_comments2 = __commonJS2({
       }
       return false;
     }
+    var propertyLikeNodeTypes = /* @__PURE__ */ new Set(["ClassMethod", "ClassProperty", "PropertyDefinition", "TSAbstractPropertyDefinition", "TSAbstractMethodDefinition", "TSDeclareMethod", "MethodDefinition"]);
     function handleMethodNameComments({
       comment,
       precedingNode,
@@ -25393,12 +23377,13 @@ var require_comments2 = __commonJS2({
         addTrailingComment(precedingNode, comment);
         return true;
       }
-      if (precedingNode && enclosingNode && precedingNode.type === "Decorator" && (enclosingNode.type === "ClassMethod" || enclosingNode.type === "ClassProperty" || enclosingNode.type === "PropertyDefinition" || enclosingNode.type === "TSAbstractPropertyDefinition" || enclosingNode.type === "TSAbstractMethodDefinition" || enclosingNode.type === "TSDeclareMethod" || enclosingNode.type === "MethodDefinition")) {
+      if ((precedingNode === null || precedingNode === void 0 ? void 0 : precedingNode.type) === "Decorator" && propertyLikeNodeTypes.has(enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type)) {
         addTrailingComment(precedingNode, comment);
         return true;
       }
       return false;
     }
+    var functionLikeNodeTypes = /* @__PURE__ */ new Set(["FunctionDeclaration", "FunctionExpression", "ClassMethod", "MethodDefinition", "ObjectMethod"]);
     function handleFunctionNameComments({
       comment,
       precedingNode,
@@ -25408,7 +23393,7 @@ var require_comments2 = __commonJS2({
       if (getNextNonSpaceNonCommentCharacter(text, comment, locEnd) !== "(") {
         return false;
       }
-      if (precedingNode && enclosingNode && (enclosingNode.type === "FunctionDeclaration" || enclosingNode.type === "FunctionExpression" || enclosingNode.type === "ClassMethod" || enclosingNode.type === "MethodDefinition" || enclosingNode.type === "ObjectMethod")) {
+      if (precedingNode && functionLikeNodeTypes.has(enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type)) {
         addTrailingComment(precedingNode, comment);
         return true;
       }
@@ -25419,7 +23404,7 @@ var require_comments2 = __commonJS2({
       enclosingNode,
       text
     }) {
-      if (!(enclosingNode && enclosingNode.type === "ArrowFunctionExpression")) {
+      if (!((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ArrowFunctionExpression")) {
         return false;
       }
       const index = getNextNonSpaceNonCommentCharacterIndex(text, comment, locEnd);
@@ -25441,7 +23426,7 @@ var require_comments2 = __commonJS2({
         addDanglingComment(enclosingNode, comment);
         return true;
       }
-      if (enclosingNode && (enclosingNode.type === "MethodDefinition" || enclosingNode.type === "TSAbstractMethodDefinition") && getFunctionParameters(enclosingNode.value).length === 0) {
+      if (((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "MethodDefinition" || (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "TSAbstractMethodDefinition") && getFunctionParameters(enclosingNode.value).length === 0) {
         addDanglingComment(enclosingNode.value, comment);
         return true;
       }
@@ -25454,15 +23439,15 @@ var require_comments2 = __commonJS2({
       followingNode,
       text
     }) {
-      if (precedingNode && precedingNode.type === "FunctionTypeParam" && enclosingNode && enclosingNode.type === "FunctionTypeAnnotation" && followingNode && followingNode.type !== "FunctionTypeParam") {
+      if ((precedingNode === null || precedingNode === void 0 ? void 0 : precedingNode.type) === "FunctionTypeParam" && (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "FunctionTypeAnnotation" && (followingNode === null || followingNode === void 0 ? void 0 : followingNode.type) !== "FunctionTypeParam") {
         addTrailingComment(precedingNode, comment);
         return true;
       }
-      if (precedingNode && (precedingNode.type === "Identifier" || precedingNode.type === "AssignmentPattern") && enclosingNode && isRealFunctionLikeNode(enclosingNode) && getNextNonSpaceNonCommentCharacter(text, comment, locEnd) === ")") {
+      if (((precedingNode === null || precedingNode === void 0 ? void 0 : precedingNode.type) === "Identifier" || (precedingNode === null || precedingNode === void 0 ? void 0 : precedingNode.type) === "AssignmentPattern") && enclosingNode && isRealFunctionLikeNode(enclosingNode) && getNextNonSpaceNonCommentCharacter(text, comment, locEnd) === ")") {
         addTrailingComment(precedingNode, comment);
         return true;
       }
-      if (enclosingNode && enclosingNode.type === "FunctionDeclaration" && followingNode && followingNode.type === "BlockStatement") {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "FunctionDeclaration" && (followingNode === null || followingNode === void 0 ? void 0 : followingNode.type) === "BlockStatement") {
         const functionParamRightParenIndex = (() => {
           const parameters = getFunctionParameters(enclosingNode);
           if (parameters.length > 0) {
@@ -25478,21 +23463,11 @@ var require_comments2 = __commonJS2({
       }
       return false;
     }
-    function handleImportSpecifierComments({
-      comment,
-      enclosingNode
-    }) {
-      if (enclosingNode && enclosingNode.type === "ImportSpecifier") {
-        addLeadingComment(enclosingNode, comment);
-        return true;
-      }
-      return false;
-    }
     function handleLabeledStatementComments({
       comment,
       enclosingNode
     }) {
-      if (enclosingNode && enclosingNode.type === "LabeledStatement") {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "LabeledStatement") {
         addLeadingComment(enclosingNode, comment);
         return true;
       }
@@ -25502,7 +23477,7 @@ var require_comments2 = __commonJS2({
       comment,
       enclosingNode
     }) {
-      if (enclosingNode && (enclosingNode.type === "ContinueStatement" || enclosingNode.type === "BreakStatement") && !enclosingNode.label) {
+      if (((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ContinueStatement" || (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "BreakStatement") && !enclosingNode.label) {
         addTrailingComment(enclosingNode, comment);
         return true;
       }
@@ -25525,7 +23500,7 @@ var require_comments2 = __commonJS2({
       enclosingNode,
       followingNode
     }) {
-      if (enclosingNode && (enclosingNode.type === "UnionTypeAnnotation" || enclosingNode.type === "TSUnionType")) {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "UnionTypeAnnotation" || (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "TSUnionType") {
         if (isPrettierIgnoreComment(comment)) {
           followingNode.prettierIgnore = true;
           comment.unignore = true;
@@ -25536,7 +23511,7 @@ var require_comments2 = __commonJS2({
         }
         return false;
       }
-      if (followingNode && (followingNode.type === "UnionTypeAnnotation" || followingNode.type === "TSUnionType") && isPrettierIgnoreComment(comment)) {
+      if (((followingNode === null || followingNode === void 0 ? void 0 : followingNode.type) === "UnionTypeAnnotation" || (followingNode === null || followingNode === void 0 ? void 0 : followingNode.type) === "TSUnionType") && isPrettierIgnoreComment(comment)) {
         followingNode.types[0].prettierIgnore = true;
         comment.unignore = true;
       }
@@ -25567,7 +23542,7 @@ var require_comments2 = __commonJS2({
         }
         return true;
       }
-      if (enclosingNode && enclosingNode.type === "Program" && enclosingNode.body.length === 0 && !isNonEmptyArray(enclosingNode.directives)) {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "Program" && (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.body.length) === 0 && !isNonEmptyArray(enclosingNode.directives)) {
         if (isLastComment) {
           addDanglingComment(enclosingNode, comment);
         } else {
@@ -25575,7 +23550,7 @@ var require_comments2 = __commonJS2({
         }
         return true;
       }
-      if (followingNode && followingNode.type === "Program" && followingNode.body.length === 0 && enclosingNode && enclosingNode.type === "ModuleExpression") {
+      if ((followingNode === null || followingNode === void 0 ? void 0 : followingNode.type) === "Program" && (followingNode === null || followingNode === void 0 ? void 0 : followingNode.body.length) === 0 && (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ModuleExpression") {
         addDanglingComment(followingNode, comment);
         return true;
       }
@@ -25585,19 +23560,25 @@ var require_comments2 = __commonJS2({
       comment,
       enclosingNode
     }) {
-      if (enclosingNode && (enclosingNode.type === "ForInStatement" || enclosingNode.type === "ForOfStatement")) {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ForInStatement" || (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ForOfStatement") {
         addLeadingComment(enclosingNode, comment);
         return true;
       }
       return false;
     }
-    function handleImportDeclarationComments({
+    function handleModuleSpecifiersComments({
       comment,
       precedingNode,
       enclosingNode,
       text
     }) {
-      if (precedingNode && precedingNode.type === "ImportSpecifier" && enclosingNode && enclosingNode.type === "ImportDeclaration" && hasNewline(text, locEnd(comment))) {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ImportSpecifier" || (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ExportSpecifier") {
+        addLeadingComment(enclosingNode, comment);
+        return true;
+      }
+      const isImportDeclaration = (precedingNode === null || precedingNode === void 0 ? void 0 : precedingNode.type) === "ImportSpecifier" && (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ImportDeclaration";
+      const isExportDeclaration = (precedingNode === null || precedingNode === void 0 ? void 0 : precedingNode.type) === "ExportSpecifier" && (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "ExportNamedDeclaration";
+      if ((isImportDeclaration || isExportDeclaration) && hasNewline(text, locEnd(comment))) {
         addTrailingComment(precedingNode, comment);
         return true;
       }
@@ -25607,18 +23588,20 @@ var require_comments2 = __commonJS2({
       comment,
       enclosingNode
     }) {
-      if (enclosingNode && enclosingNode.type === "AssignmentPattern") {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "AssignmentPattern") {
         addLeadingComment(enclosingNode, comment);
         return true;
       }
       return false;
     }
+    var assignmentLikeNodeTypes = /* @__PURE__ */ new Set(["VariableDeclarator", "AssignmentExpression", "TypeAlias", "TSTypeAliasDeclaration"]);
+    var complexExprNodeTypes = /* @__PURE__ */ new Set(["ObjectExpression", "ArrayExpression", "TemplateLiteral", "TaggedTemplateExpression", "ObjectTypeAnnotation", "TSTypeLiteral"]);
     function handleVariableDeclaratorComments({
       comment,
       enclosingNode,
       followingNode
     }) {
-      if (enclosingNode && (enclosingNode.type === "VariableDeclarator" || enclosingNode.type === "AssignmentExpression" || enclosingNode.type === "TypeAlias" || enclosingNode.type === "TSTypeAliasDeclaration") && followingNode && (followingNode.type === "ObjectExpression" || followingNode.type === "ArrayExpression" || followingNode.type === "TemplateLiteral" || followingNode.type === "TaggedTemplateExpression" || followingNode.type === "ObjectTypeAnnotation" || followingNode.type === "TSTypeLiteral" || isBlockComment(comment))) {
+      if (assignmentLikeNodeTypes.has(enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) && followingNode && (complexExprNodeTypes.has(followingNode.type) || isBlockComment(comment))) {
         addLeadingComment(followingNode, comment);
         return true;
       }
@@ -25630,7 +23613,7 @@ var require_comments2 = __commonJS2({
       followingNode,
       text
     }) {
-      if (!followingNode && enclosingNode && (enclosingNode.type === "TSMethodSignature" || enclosingNode.type === "TSDeclareFunction" || enclosingNode.type === "TSAbstractMethodDefinition") && getNextNonSpaceNonCommentCharacter(text, comment, locEnd) === ";") {
+      if (!followingNode && ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "TSMethodSignature" || (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "TSDeclareFunction" || (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "TSAbstractMethodDefinition") && getNextNonSpaceNonCommentCharacter(text, comment, locEnd) === ";") {
         addTrailingComment(enclosingNode, comment);
         return true;
       }
@@ -25641,7 +23624,7 @@ var require_comments2 = __commonJS2({
       enclosingNode,
       followingNode
     }) {
-      if (isPrettierIgnoreComment(comment) && enclosingNode && enclosingNode.type === "TSMappedType" && followingNode && followingNode.type === "TSTypeParameter" && followingNode.constraint) {
+      if (isPrettierIgnoreComment(comment) && (enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) === "TSMappedType" && (followingNode === null || followingNode === void 0 ? void 0 : followingNode.type) === "TSTypeParameter" && followingNode.constraint) {
         enclosingNode.prettierIgnore = true;
         comment.unignore = true;
         return true;
@@ -25653,14 +23636,14 @@ var require_comments2 = __commonJS2({
       enclosingNode,
       followingNode
     }) {
-      if (!enclosingNode || enclosingNode.type !== "TSMappedType") {
+      if ((enclosingNode === null || enclosingNode === void 0 ? void 0 : enclosingNode.type) !== "TSMappedType") {
         return false;
       }
-      if (followingNode && followingNode.type === "TSTypeParameter" && followingNode.name) {
+      if ((followingNode === null || followingNode === void 0 ? void 0 : followingNode.type) === "TSTypeParameter" && followingNode.name) {
         addLeadingComment(followingNode.name, comment);
         return true;
       }
-      if (precedingNode && precedingNode.type === "TSTypeParameter" && precedingNode.constraint) {
+      if ((precedingNode === null || precedingNode === void 0 ? void 0 : precedingNode.type) === "TSTypeParameter" && precedingNode.constraint) {
         addTrailingComment(precedingNode.constraint, comment);
         return true;
       }
@@ -26246,6 +24229,7 @@ var require_print_preprocess = __commonJS2({
         case "json-stringify":
         case "__js_expression":
         case "__vue_expression":
+        case "__vue_ts_expression":
           return Object.assign(Object.assign({}, ast), {}, {
             type: options.parser.startsWith("__") ? "JsExpressionRoot" : "JsonRoot",
             node: ast,
@@ -28229,6 +26213,10 @@ var require_type_annotation = __commonJS2({
       const leftDelimiter = node.type === "OptionalIndexedAccessType" && node.optional ? "?.[" : "[";
       return [print("objectType"), leftDelimiter, print("indexType"), "]"];
     }
+    function printJSDocType(path, print, token) {
+      const node = path.getValue();
+      return [node.postfix ? "" : token, print("typeAnnotation"), node.postfix ? token : ""];
+    }
     module2.exports = {
       printOpaqueType,
       printTypeAlias,
@@ -28237,7 +26225,8 @@ var require_type_annotation = __commonJS2({
       printFunctionType,
       printTupleType,
       printIndexedAccessType,
-      shouldHugType
+      shouldHugType,
+      printJSDocType
     };
   }
 });
@@ -28327,6 +26316,12 @@ var require_type_parameters = __commonJS2({
       if (node.variance) {
         parts.push(print("variance"));
       }
+      if (node.in) {
+        parts.push("in ");
+      }
+      if (node.out) {
+        parts.push("out ");
+      }
       parts.push(print("name"));
       if (node.bound) {
         parts.push(": ", print("bound"));
@@ -28346,7 +26341,7 @@ var require_type_parameters = __commonJS2({
     };
   }
 });
-var require_property2 = __commonJS2({
+var require_property = __commonJS2({
   "src/language-js/print/property.js"(exports2, module2) {
     "use strict";
     var {
@@ -28464,7 +26459,7 @@ var require_function = __commonJS2({
     } = require_function_parameters();
     var {
       printPropertyKey
-    } = require_property2();
+    } = require_property();
     var {
       printFunctionTypeParameters
     } = require_misc();
@@ -28822,7 +26817,7 @@ var require_class = __commonJS2({
     } = require_misc();
     var {
       printPropertyKey
-    } = require_property2();
+    } = require_property();
     var {
       printAssignment
     } = require_assignment();
@@ -29474,7 +27469,7 @@ var require_flow = __commonJS2({
     } = require_object();
     var {
       printPropertyKey
-    } = require_property2();
+    } = require_property();
     var {
       printOptionalToken,
       printTypeAnnotation,
@@ -30179,7 +28174,7 @@ var require_typescript = __commonJS2({
     } = require_type_parameters();
     var {
       printPropertyKey
-    } = require_property2();
+    } = require_property();
     var {
       printFunction,
       printMethodInternal
@@ -30196,7 +28191,8 @@ var require_typescript = __commonJS2({
       printUnionType,
       printFunctionType,
       printTupleType,
-      printIndexedAccessType
+      printIndexedAccessType,
+      printJSDocType
     } = require_type_annotation();
     function printTypescript(path, options, print) {
       const node = path.getValue();
@@ -30306,7 +28302,7 @@ var require_typescript = __commonJS2({
           parts.push(print("parameter"));
           return parts;
         case "TSTypeQuery":
-          return ["typeof ", print("exprName")];
+          return ["typeof ", print("exprName"), print("typeParameters")];
         case "TSIndexSignature": {
           const parent = path.getParentNode();
           const trailingComma = node.parameters.length > 1 ? ifBreak(shouldPrintComma(options) ? "," : "") : "";
@@ -30385,7 +28381,11 @@ var require_typescript = __commonJS2({
           }
           return parts;
         case "TSEnumMember":
-          parts.push(print("id"));
+          if (node.computed) {
+            parts.push("[", print("id"), "]");
+          } else {
+            parts.push(print("id"));
+          }
           if (node.initializer) {
             parts.push(" = ", print("initializer"));
           }
@@ -30456,9 +28456,11 @@ var require_typescript = __commonJS2({
         case "TSJSDocUnknownType":
           return "?";
         case "TSJSDocNullableType":
-          return ["?", print("typeAnnotation")];
+          return printJSDocType(path, print, "?");
         case "TSJSDocNonNullableType":
-          return ["!", print("typeAnnotation")];
+          return printJSDocType(path, print, "!");
+        case "TSInstantiationExpression":
+          return [print("expression"), print("typeParameters")];
         default:
           throw new Error(`Unknown TypeScript node type: ${JSON.stringify(node.type)}.`);
       }
@@ -30686,7 +28688,7 @@ var require_printer_estree = __commonJS2({
     } = require_class();
     var {
       printProperty
-    } = require_property2();
+    } = require_property();
     var {
       printFunction,
       printArrowFunction,
@@ -30807,7 +28809,7 @@ var require_printer_estree = __commonJS2({
           if (node.directive) {
             return [printDirective(node.expression, options), semi];
           }
-          if (options.parser === "__vue_event_binding") {
+          if (options.parser === "__vue_event_binding" || options.parser === "__vue_ts_event_binding") {
             const parent = path.getParentNode();
             if (parent.type === "Program" && parent.body.length === 1 && parent.body[0] === node) {
               return [print("expression"), isVueEventBindingExpression(node.expression) ? ";" : ""];
@@ -31453,8 +29455,14 @@ var require_parsers = __commonJS2({
       get __vue_expression() {
         return require("./parser-babel.js").parsers.__vue_expression;
       },
+      get __vue_ts_expression() {
+        return require("./parser-babel.js").parsers.__vue_ts_expression;
+      },
       get __vue_event_binding() {
         return require("./parser-babel.js").parsers.__vue_event_binding;
+      },
+      get __vue_ts_event_binding() {
+        return require("./parser-babel.js").parsers.__vue_ts_event_binding;
       },
       get flow() {
         return require("./parser-flow.js").parsers.flow;
@@ -31500,7 +29508,7 @@ var require_JavaScript = __commonJS2({
       codemirrorMimeType: "text/javascript",
       color: "#f1e05a",
       aliases: ["js", "node"],
-      extensions: [".js", "._js", ".bones", ".cjs", ".es", ".es6", ".frag", ".gs", ".jake", ".jsb", ".jscad", ".jsfl", ".jsm", ".jss", ".jsx", ".mjs", ".njs", ".pac", ".sjs", ".ssjs", ".xsjs", ".xsjslib"],
+      extensions: [".js", "._js", ".bones", ".cjs", ".es", ".es6", ".frag", ".gs", ".jake", ".javascript", ".jsb", ".jscad", ".jsfl", ".jslib", ".jsm", ".jspre", ".jss", ".jsx", ".mjs", ".njs", ".pac", ".sjs", ".ssjs", ".xsjs", ".xsjslib"],
       filenames: ["Jakefile"],
       interpreters: ["chakra", "d8", "gjs", "js", "node", "nodejs", "qjs", "rhino", "v8", "v8-shell"],
       languageId: 183
@@ -31512,10 +29520,10 @@ var require_TypeScript = __commonJS2({
     module2.exports = {
       name: "TypeScript",
       type: "programming",
-      color: "#2b7489",
+      color: "#3178c6",
       aliases: ["ts"],
       interpreters: ["deno", "ts-node"],
-      extensions: [".ts"],
+      extensions: [".ts", ".cts", ".mts"],
       tmScope: "source.ts",
       aceMode: "typescript",
       codemirrorMode: "javascript",
@@ -31529,6 +29537,7 @@ var require_TSX = __commonJS2({
     module2.exports = {
       name: "TSX",
       type: "programming",
+      color: "#3178c6",
       group: "TypeScript",
       extensions: [".tsx"],
       tmScope: "source.tsx",
@@ -31544,12 +29553,14 @@ var require_JSON = __commonJS2({
     module2.exports = {
       name: "JSON",
       type: "data",
+      color: "#292929",
       tmScope: "source.json",
       aceMode: "json",
       codemirrorMode: "javascript",
       codemirrorMimeType: "application/json",
-      extensions: [".json", ".avsc", ".geojson", ".gltf", ".har", ".ice", ".JSON-tmLanguage", ".jsonl", ".mcmeta", ".tfstate", ".tfstate.backup", ".topojson", ".webapp", ".webmanifest", ".yy", ".yyp"],
-      filenames: [".arcconfig", ".htmlhintrc", ".imgbotconfig", ".tern-config", ".tern-project", ".watchmanconfig", "Pipfile.lock", "composer.lock", "mcmod.info"],
+      aliases: ["geojson", "jsonl", "topojson"],
+      extensions: [".json", ".4DForm", ".4DProject", ".avsc", ".geojson", ".gltf", ".har", ".ice", ".JSON-tmLanguage", ".jsonl", ".mcmeta", ".tfstate", ".tfstate.backup", ".topojson", ".webapp", ".webmanifest", ".yy", ".yyp"],
+      filenames: [".arcconfig", ".auto-changelog", ".c8rc", ".htmlhintrc", ".imgbotconfig", ".nycrc", ".tern-config", ".tern-project", ".watchmanconfig", "Pipfile.lock", "composer.lock", "mcmod.info"],
       languageId: 174
     };
   }
@@ -31559,14 +29570,15 @@ var require_JSON_with_Comments = __commonJS2({
     module2.exports = {
       name: "JSON with Comments",
       type: "data",
+      color: "#292929",
       group: "JSON",
       tmScope: "source.js",
       aceMode: "javascript",
       codemirrorMode: "javascript",
       codemirrorMimeType: "text/javascript",
       aliases: ["jsonc"],
-      extensions: [".jsonc", ".sublime-build", ".sublime-commands", ".sublime-completions", ".sublime-keymap", ".sublime-macro", ".sublime-menu", ".sublime-mousemap", ".sublime-project", ".sublime-settings", ".sublime-theme", ".sublime-workspace", ".sublime_metrics", ".sublime_session"],
-      filenames: [".babelrc", ".eslintrc.json", ".jscsrc", ".jshintrc", ".jslintrc", "api-extractor.json", "devcontainer.json", "jsconfig.json", "language-configuration.json", "tsconfig.json", "tslint.json"],
+      extensions: [".jsonc", ".code-snippets", ".sublime-build", ".sublime-commands", ".sublime-completions", ".sublime-keymap", ".sublime-macro", ".sublime-menu", ".sublime-mousemap", ".sublime-project", ".sublime-settings", ".sublime-theme", ".sublime-workspace", ".sublime_metrics", ".sublime_session"],
+      filenames: [".babelrc", ".devcontainer.json", ".eslintrc.json", ".jscsrc", ".jshintrc", ".jslintrc", "api-extractor.json", "devcontainer.json", "jsconfig.json", "language-configuration.json", "tsconfig.json", "tslint.json"],
       languageId: 423
     };
   }
@@ -31576,6 +29588,7 @@ var require_JSON5 = __commonJS2({
     module2.exports = {
       name: "JSON5",
       type: "data",
+      color: "#267CB9",
       extensions: [".json5"],
       tmScope: "source.js",
       aceMode: "javascript",
@@ -31622,11 +29635,10 @@ var require_language_js = __commonJS2({
       codemirrorMode: "jsx",
       codemirrorMimeType: "text/jsx",
       color: void 0
-    })), createLanguage(require_TypeScript(), (data) => ({
+    })), createLanguage(require_TypeScript(), () => ({
       since: "1.4.0",
       parsers: ["typescript", "babel-ts"],
-      vscodeLanguageIds: ["typescript"],
-      extensions: [...data.extensions, ".mts", ".cts"]
+      vscodeLanguageIds: ["typescript"]
     })), createLanguage(require_TSX(), () => ({
       since: "1.4.0",
       parsers: ["typescript", "babel-ts"],
@@ -31636,7 +29648,7 @@ var require_language_js = __commonJS2({
       since: "1.13.0",
       parsers: ["json-stringify"],
       vscodeLanguageIds: ["json"],
-      extensions: [],
+      extensions: [".importmap"],
       filenames: ["package.json", "package-lock.json", "composer.json"]
     })), createLanguage(require_JSON(), (data) => ({
       since: "1.5.0",
@@ -31897,26 +29909,31 @@ var require_utils8 = __commonJS2({
       return counter === -1 ? null : path.getParentNode(counter);
     }
     function getPropOfDeclNode(path) {
+      var _declAncestorNode$pro;
       const declAncestorNode = getAncestorNode(path, "css-decl");
-      return declAncestorNode && declAncestorNode.prop && declAncestorNode.prop.toLowerCase();
+      return declAncestorNode === null || declAncestorNode === void 0 ? void 0 : (_declAncestorNode$pro = declAncestorNode.prop) === null || _declAncestorNode$pro === void 0 ? void 0 : _declAncestorNode$pro.toLowerCase();
     }
+    var wideKeywords = /* @__PURE__ */ new Set(["initial", "inherit", "unset", "revert"]);
     function isWideKeywords(value) {
-      return ["initial", "inherit", "unset", "revert"].includes(value.toLowerCase());
+      return wideKeywords.has(value.toLowerCase());
     }
     function isKeyframeAtRuleKeywords(path, value) {
       const atRuleAncestorNode = getAncestorNode(path, "css-atrule");
-      return atRuleAncestorNode && atRuleAncestorNode.name && atRuleAncestorNode.name.toLowerCase().endsWith("keyframes") && ["from", "to"].includes(value.toLowerCase());
+      return (atRuleAncestorNode === null || atRuleAncestorNode === void 0 ? void 0 : atRuleAncestorNode.name) && atRuleAncestorNode.name.toLowerCase().endsWith("keyframes") && ["from", "to"].includes(value.toLowerCase());
     }
     function maybeToLowerCase(value) {
       return value.includes("$") || value.includes("@") || value.includes("#") || value.startsWith("%") || value.startsWith("--") || value.startsWith(":--") || value.includes("(") && value.includes(")") ? value : value.toLowerCase();
     }
     function insideValueFunctionNode(path, functionName) {
+      var _funcAncestorNode$val;
       const funcAncestorNode = getAncestorNode(path, "value-func");
-      return funcAncestorNode && funcAncestorNode.value && funcAncestorNode.value.toLowerCase() === functionName;
+      return (funcAncestorNode === null || funcAncestorNode === void 0 ? void 0 : (_funcAncestorNode$val = funcAncestorNode.value) === null || _funcAncestorNode$val === void 0 ? void 0 : _funcAncestorNode$val.toLowerCase()) === functionName;
     }
     function insideICSSRuleNode(path) {
+      var _ruleAncestorNode$raw;
       const ruleAncestorNode = getAncestorNode(path, "css-rule");
-      return ruleAncestorNode && ruleAncestorNode.raws && ruleAncestorNode.raws.selector && (ruleAncestorNode.raws.selector.startsWith(":import") || ruleAncestorNode.raws.selector.startsWith(":export"));
+      const selector = ruleAncestorNode === null || ruleAncestorNode === void 0 ? void 0 : (_ruleAncestorNode$raw = ruleAncestorNode.raws) === null || _ruleAncestorNode$raw === void 0 ? void 0 : _ruleAncestorNode$raw.selector;
+      return selector && (selector.startsWith(":import") || selector.startsWith(":export"));
     }
     function insideAtRuleNode(path, atRuleNameOrAtRuleNames) {
       const atRuleNames = Array.isArray(atRuleNameOrAtRuleNames) ? atRuleNameOrAtRuleNames : [atRuleNameOrAtRuleNames];
@@ -31926,26 +29943,24 @@ var require_utils8 = __commonJS2({
     function insideURLFunctionInImportAtRuleNode(path) {
       const node = path.getValue();
       const atRuleAncestorNode = getAncestorNode(path, "css-atrule");
-      return atRuleAncestorNode && atRuleAncestorNode.name === "import" && node.groups[0].value === "url" && node.groups.length === 2;
+      return (atRuleAncestorNode === null || atRuleAncestorNode === void 0 ? void 0 : atRuleAncestorNode.name) === "import" && node.groups[0].value === "url" && node.groups.length === 2;
     }
     function isURLFunctionNode(node) {
       return node.type === "value-func" && node.value.toLowerCase() === "url";
     }
     function isLastNode(path, node) {
-      const parentNode = path.getParentNode();
-      if (!parentNode) {
-        return false;
-      }
-      const {
-        nodes
-      } = parentNode;
+      var _path$getParentNode;
+      const nodes = (_path$getParentNode = path.getParentNode()) === null || _path$getParentNode === void 0 ? void 0 : _path$getParentNode.nodes;
       return nodes && nodes.indexOf(node) === nodes.length - 1;
     }
     function isDetachedRulesetDeclarationNode(node) {
-      if (!node.selector) {
+      const {
+        selector
+      } = node;
+      if (!selector) {
         return false;
       }
-      return typeof node.selector === "string" && /^@.+:.*$/.test(node.selector) || node.selector.value && /^@.+:.*$/.test(node.selector.value);
+      return typeof selector === "string" && /^@.+:.*$/.test(selector) || selector.value && /^@.+:.*$/.test(selector.value);
     }
     function isForKeywordNode(node) {
       return node.type === "value-word" && ["from", "through", "end"].includes(node.value);
@@ -31984,7 +29999,8 @@ var require_utils8 = __commonJS2({
       return node.type === "css-atrule" && ["if", "else", "for", "each", "while"].includes(node.name);
     }
     function isDetachedRulesetCallNode(node) {
-      return node.raws && node.raws.params && /^\(\s*\)$/.test(node.raws.params);
+      var _node$raws;
+      return ((_node$raws = node.raws) === null || _node$raws === void 0 ? void 0 : _node$raws.params) && /^\(\s*\)$/.test(node.raws.params);
     }
     function isTemplatePlaceholderNode(node) {
       return node.name.startsWith("prettier-placeholder");
@@ -31993,24 +30009,30 @@ var require_utils8 = __commonJS2({
       return node.prop.startsWith("@prettier-placeholder");
     }
     function isPostcssSimpleVarNode(currentNode, nextNode) {
-      return currentNode.value === "$$" && currentNode.type === "value-func" && nextNode && nextNode.type === "value-word" && !nextNode.raws.before;
+      return currentNode.value === "$$" && currentNode.type === "value-func" && (nextNode === null || nextNode === void 0 ? void 0 : nextNode.type) === "value-word" && !nextNode.raws.before;
     }
     function hasComposesNode(node) {
-      return node.value && node.value.type === "value-root" && node.value.group && node.value.group.type === "value-value" && node.prop.toLowerCase() === "composes";
+      var _node$value, _node$value$group;
+      return ((_node$value = node.value) === null || _node$value === void 0 ? void 0 : _node$value.type) === "value-root" && ((_node$value$group = node.value.group) === null || _node$value$group === void 0 ? void 0 : _node$value$group.type) === "value-value" && node.prop.toLowerCase() === "composes";
     }
     function hasParensAroundNode(node) {
-      return node.value && node.value.group && node.value.group.group && node.value.group.group.type === "value-paren_group" && node.value.group.group.open !== null && node.value.group.group.close !== null;
+      var _node$value2, _node$value2$group, _node$value2$group$gr;
+      return ((_node$value2 = node.value) === null || _node$value2 === void 0 ? void 0 : (_node$value2$group = _node$value2.group) === null || _node$value2$group === void 0 ? void 0 : (_node$value2$group$gr = _node$value2$group.group) === null || _node$value2$group$gr === void 0 ? void 0 : _node$value2$group$gr.type) === "value-paren_group" && node.value.group.group.open !== null && node.value.group.group.close !== null;
     }
     function hasEmptyRawBefore(node) {
-      return node.raws && node.raws.before === "";
+      var _node$raws2;
+      return ((_node$raws2 = node.raws) === null || _node$raws2 === void 0 ? void 0 : _node$raws2.before) === "";
     }
     function isKeyValuePairNode(node) {
-      return node.type === "value-comma_group" && node.groups && node.groups[1] && node.groups[1].type === "value-colon";
+      var _node$groups, _node$groups$;
+      return node.type === "value-comma_group" && ((_node$groups = node.groups) === null || _node$groups === void 0 ? void 0 : (_node$groups$ = _node$groups[1]) === null || _node$groups$ === void 0 ? void 0 : _node$groups$.type) === "value-colon";
     }
     function isKeyValuePairInParenGroupNode(node) {
-      return node.type === "value-paren_group" && node.groups && node.groups[0] && isKeyValuePairNode(node.groups[0]);
+      var _node$groups2;
+      return node.type === "value-paren_group" && ((_node$groups2 = node.groups) === null || _node$groups2 === void 0 ? void 0 : _node$groups2[0]) && isKeyValuePairNode(node.groups[0]);
     }
     function isSCSSMapItemNode(path) {
+      var _declNode$prop;
       const node = path.getValue();
       if (node.groups.length === 0) {
         return false;
@@ -32020,7 +30042,7 @@ var require_utils8 = __commonJS2({
         return false;
       }
       const declNode = getAncestorNode(path, "css-decl");
-      if (declNode && declNode.prop && declNode.prop.startsWith("$")) {
+      if (declNode !== null && declNode !== void 0 && (_declNode$prop = declNode.prop) !== null && _declNode$prop !== void 0 && _declNode$prop.startsWith("$")) {
         return true;
       }
       if (isKeyValuePairInParenGroupNode(parentParentNode)) {
@@ -32047,7 +30069,7 @@ var require_utils8 = __commonJS2({
       return ["value-word", "value-atword"].includes(node.type);
     }
     function isColonNode(node) {
-      return node && node.type === "value-colon";
+      return (node === null || node === void 0 ? void 0 : node.type) === "value-colon";
     }
     function isKeyInValuePairNode(node, parentNode) {
       if (!isKeyValuePairNode(parentNode)) {
@@ -32075,23 +30097,25 @@ var require_utils8 = __commonJS2({
       return /\/\//.test(text.split(/[\n\r]/).pop());
     }
     function isAtWordPlaceholderNode(node) {
-      return node && node.type === "value-atword" && node.value.startsWith("prettier-placeholder-");
+      return (node === null || node === void 0 ? void 0 : node.type) === "value-atword" && node.value.startsWith("prettier-placeholder-");
     }
     function isConfigurationNode(node, parentNode) {
-      if (!node.open || node.open.value !== "(" || !node.close || node.close.value !== ")" || node.groups.some((group) => group.type !== "value-comma_group")) {
+      var _node$open, _node$close;
+      if (((_node$open = node.open) === null || _node$open === void 0 ? void 0 : _node$open.value) !== "(" || ((_node$close = node.close) === null || _node$close === void 0 ? void 0 : _node$close.value) !== ")" || node.groups.some((group) => group.type !== "value-comma_group")) {
         return false;
       }
       if (parentNode.type === "value-comma_group") {
         const prevIdx = parentNode.groups.indexOf(node) - 1;
         const maybeWithNode = parentNode.groups[prevIdx];
-        if (maybeWithNode && maybeWithNode.type === "value-word" && maybeWithNode.value === "with") {
+        if ((maybeWithNode === null || maybeWithNode === void 0 ? void 0 : maybeWithNode.type) === "value-word" && maybeWithNode.value === "with") {
           return true;
         }
       }
       return false;
     }
     function isParenGroupNode(node) {
-      return node.type === "value-paren_group" && node.open && node.open.value === "(" && node.close && node.close.value === ")";
+      var _node$open2, _node$close2;
+      return node.type === "value-paren_group" && ((_node$open2 = node.open) === null || _node$open2 === void 0 ? void 0 : _node$open2.value) === "(" && ((_node$close2 = node.close) === null || _node$close2 === void 0 ? void 0 : _node$close2.value) === ")";
     }
     module2.exports = {
       getAncestorCounter,
@@ -32370,11 +30394,29 @@ var require_css_units_evaluate = __commonJS2({
       lh: "lh",
       rlh: "rlh",
       vw: "vw",
+      svw: "svw",
+      lvw: "lvw",
+      dvw: "dvw",
       vh: "vh",
+      svh: "svh",
+      lvh: "lvh",
+      dvh: "dvh",
       vi: "vi",
+      svi: "svi",
+      lvi: "lvi",
+      dvi: "dvi",
       vb: "vb",
+      svb: "svb",
+      lvb: "lvb",
+      dvb: "dvb",
       vmin: "vmin",
+      svmin: "svmin",
+      lvmin: "lvmin",
+      dvmin: "dvmin",
       vmax: "vmax",
+      svmax: "svmax",
+      lvmax: "lvmax",
+      dvmax: "dvmax",
       cm: "cm",
       mm: "mm",
       q: "Q",
@@ -32845,8 +30887,11 @@ var require_printer_postcss = __commonJS2({
               parts[1] = group(parts[1]);
               return group(dedent(printed2));
             }
-            if (!isLast && child.type === "value-comma_group" && child.groups && child.groups[0].type !== "value-paren_group" && isNextLineEmpty(options.originalText, getLast(child.groups), locEnd)) {
-              printed2.push(hardline);
+            if (!isLast && child.type === "value-comma_group" && isNonEmptyArray(child.groups)) {
+              const last = getLast(child.groups);
+              if (last.source && isNextLineEmpty(options.originalText, last, locEnd)) {
+                printed2.push(hardline);
+              }
             }
             return printed2;
           }, "groups"))]), ifBreak(!isLastItemComment && isSCSS(options.parser, options.originalText) && isSCSSMapItem && shouldPrintComma(options) ? "," : ""), softline, node.close ? print("close") : ""], {
@@ -32993,6 +31038,7 @@ var require_PostCSS = __commonJS2({
     module2.exports = {
       name: "PostCSS",
       type: "markup",
+      color: "#dc3a0c",
       tmScope: "source.postcss",
       group: "CSS",
       extensions: [".pcss", ".postcss"],
@@ -33007,6 +31053,7 @@ var require_Less = __commonJS2({
       name: "Less",
       type: "markup",
       color: "#1d365d",
+      aliases: ["less-css"],
       extensions: [".less"],
       tmScope: "source.css.less",
       aceMode: "less",
@@ -33102,14 +31149,18 @@ var require_clean3 = __commonJS2({
   }
 });
 var require_html_void_elements = __commonJS2({
-  "node_modules/html-void-elements/index.json"(exports2, module2) {
-    module2.exports = ["area", "base", "basefont", "bgsound", "br", "col", "command", "embed", "frame", "hr", "image", "img", "input", "isindex", "keygen", "link", "menuitem", "meta", "nextid", "param", "source", "track", "wbr"];
+  "vendors/html-void-elements.json"(exports2, module2) {
+    module2.exports = {
+      htmlVoidElements: ["area", "base", "basefont", "bgsound", "br", "col", "command", "embed", "frame", "hr", "image", "img", "input", "isindex", "keygen", "link", "menuitem", "meta", "nextid", "param", "source", "track", "wbr"]
+    };
   }
 });
 var require_utils9 = __commonJS2({
   "src/language-handlebars/utils.js"(exports2, module2) {
     "use strict";
-    var htmlVoidElements = require_html_void_elements();
+    var {
+      htmlVoidElements
+    } = require_html_void_elements();
     var getLast = require_get_last();
     function isLastNodeOfSiblings(path) {
       const node = path.getValue();
@@ -33126,11 +31177,11 @@ var require_utils9 = __commonJS2({
       return string.toUpperCase() === string;
     }
     function isGlimmerComponent(node) {
-      return isNodeOfSomeType(node, ["ElementNode"]) && typeof node.tag === "string" && node.tag[0] !== ":" && (isUppercase(node.tag[0]) || node.tag.includes("."));
+      return isNodeOfSomeType(node, ["ElementNode"]) && typeof node.tag === "string" && !node.tag.startsWith(":") && (isUppercase(node.tag[0]) || node.tag.includes("."));
     }
     var voidTags = new Set(htmlVoidElements);
     function isVoid(node) {
-      return isGlimmerComponent(node) && node.children.every((node2) => isWhitespaceNode(node2)) || voidTags.has(node.tag);
+      return voidTags.has(node.tag) || isGlimmerComponent(node) && node.children.every((node2) => isWhitespaceNode(node2));
     }
     function isWhitespaceNode(node) {
       return isNodeOfSomeType(node, ["TextNode"]) && !/\S/.test(node.chars);
@@ -33151,9 +31202,10 @@ var require_utils9 = __commonJS2({
       return isNodeOfSomeType(nextNode, types);
     }
     function getSiblingNode(path, offset) {
+      var _path$getParentNode2, _ref7, _ref8, _parentNode$children;
       const node = path.getValue();
-      const parentNode = path.getParentNode(0) || {};
-      const children = parentNode.children || parentNode.body || parentNode.parts || [];
+      const parentNode = (_path$getParentNode2 = path.getParentNode(0)) !== null && _path$getParentNode2 !== void 0 ? _path$getParentNode2 : {};
+      const children = (_ref7 = (_ref8 = (_parentNode$children = parentNode.children) !== null && _parentNode$children !== void 0 ? _parentNode$children : parentNode.body) !== null && _ref8 !== void 0 ? _ref8 : parentNode.parts) !== null && _ref7 !== void 0 ? _ref7 : [];
       const index = children.indexOf(node);
       return index !== -1 && children[index + offset];
     }
@@ -33629,12 +31681,12 @@ var require_printer_glimmer = __commonJS2({
       return false;
     }
     function printSubExpressionPathAndParams(path, print2) {
-      const p = printPath(path, print2);
+      const printed = printPath(path, print2);
       const params = printParams(path, print2);
       if (!params) {
-        return p;
+        return printed;
       }
-      return indent([p, line, group(params)]);
+      return indent([printed, line, group(params)]);
     }
     function printPathAndParams(path, print2) {
       const p = printPath(path, print2);
@@ -33809,17 +31861,24 @@ var require_printer_graphql = __commonJS2({
           return ["fragment ", print("name"), isNonEmptyArray(node.variableDefinitions) ? group(["(", indent([softline, join([ifBreak("", ", "), softline], path.map(print, "variableDefinitions"))]), softline, ")"]) : "", " on ", print("typeCondition"), printDirectives(path, print, node), " ", print("selectionSet")];
         }
         case "SelectionSet": {
-          return ["{", indent([hardline, join(hardline, path.call((selectionsPath) => printSequence(selectionsPath, options, print), "selections"))]), hardline, "}"];
+          return ["{", indent([hardline, join(hardline, printSequence(path, options, print, "selections"))]), hardline, "}"];
         }
         case "Field": {
-          return group([node.alias ? [print("alias"), ": "] : "", print("name"), node.arguments.length > 0 ? group(["(", indent([softline, join([ifBreak("", ", "), softline], path.call((argsPath) => printSequence(argsPath, options, print), "arguments"))]), softline, ")"]) : "", printDirectives(path, print, node), node.selectionSet ? " " : "", print("selectionSet")]);
+          return group([node.alias ? [print("alias"), ": "] : "", print("name"), node.arguments.length > 0 ? group(["(", indent([softline, join([ifBreak("", ", "), softline], printSequence(path, options, print, "arguments"))]), softline, ")"]) : "", printDirectives(path, print, node), node.selectionSet ? " " : "", print("selectionSet")]);
         }
         case "Name": {
           return node.value;
         }
         case "StringValue": {
           if (node.block) {
-            return ['"""', hardline, join(hardline, node.value.replace(/"""/g, "\\$&").split("\n")), hardline, '"""'];
+            const lines = node.value.replace(/"""/g, "\\$&").split("\n");
+            if (lines.length === 1) {
+              lines[0] = lines[0].trim();
+            }
+            if (lines.every((line2) => line2 === "")) {
+              lines.length = 0;
+            }
+            return join(hardline, ['"""', ...lines, '"""']);
           }
           return ['"', node.value.replace(/["\\]/g, "\\$&").replace(/\n/g, "\\n"), '"'];
         }
@@ -33848,7 +31907,7 @@ var require_printer_graphql = __commonJS2({
           return [print("name"), ": ", print("value")];
         }
         case "Directive": {
-          return ["@", print("name"), node.arguments.length > 0 ? group(["(", indent([softline, join([ifBreak("", ", "), softline], path.call((argsPath) => printSequence(argsPath, options, print), "arguments"))]), softline, ")"]) : ""];
+          return ["@", print("name"), node.arguments.length > 0 ? group(["(", indent([softline, join([ifBreak("", ", "), softline], printSequence(path, options, print, "arguments"))]), softline, ")"]) : ""];
         }
         case "NamedType": {
           return print("name");
@@ -33858,17 +31917,17 @@ var require_printer_graphql = __commonJS2({
         }
         case "ObjectTypeExtension":
         case "ObjectTypeDefinition": {
-          return [print("description"), node.description ? hardline : "", node.kind === "ObjectTypeExtension" ? "extend " : "", "type ", print("name"), node.interfaces.length > 0 ? [" implements ", ...printInterfaces(path, options, print)] : "", printDirectives(path, print, node), node.fields.length > 0 ? [" {", indent([hardline, join(hardline, path.call((fieldsPath) => printSequence(fieldsPath, options, print), "fields"))]), hardline, "}"] : ""];
+          return [print("description"), node.description ? hardline : "", node.kind === "ObjectTypeExtension" ? "extend " : "", "type ", print("name"), node.interfaces.length > 0 ? [" implements ", ...printInterfaces(path, options, print)] : "", printDirectives(path, print, node), node.fields.length > 0 ? [" {", indent([hardline, join(hardline, printSequence(path, options, print, "fields"))]), hardline, "}"] : ""];
         }
         case "FieldDefinition": {
-          return [print("description"), node.description ? hardline : "", print("name"), node.arguments.length > 0 ? group(["(", indent([softline, join([ifBreak("", ", "), softline], path.call((argsPath) => printSequence(argsPath, options, print), "arguments"))]), softline, ")"]) : "", ": ", print("type"), printDirectives(path, print, node)];
+          return [print("description"), node.description ? hardline : "", print("name"), node.arguments.length > 0 ? group(["(", indent([softline, join([ifBreak("", ", "), softline], printSequence(path, options, print, "arguments"))]), softline, ")"]) : "", ": ", print("type"), printDirectives(path, print, node)];
         }
         case "DirectiveDefinition": {
-          return [print("description"), node.description ? hardline : "", "directive ", "@", print("name"), node.arguments.length > 0 ? group(["(", indent([softline, join([ifBreak("", ", "), softline], path.call((argsPath) => printSequence(argsPath, options, print), "arguments"))]), softline, ")"]) : "", node.repeatable ? " repeatable" : "", " on ", join(" | ", path.map(print, "locations"))];
+          return [print("description"), node.description ? hardline : "", "directive ", "@", print("name"), node.arguments.length > 0 ? group(["(", indent([softline, join([ifBreak("", ", "), softline], printSequence(path, options, print, "arguments"))]), softline, ")"]) : "", node.repeatable ? " repeatable" : "", " on ", join(" | ", path.map(print, "locations"))];
         }
         case "EnumTypeExtension":
         case "EnumTypeDefinition": {
-          return [print("description"), node.description ? hardline : "", node.kind === "EnumTypeExtension" ? "extend " : "", "enum ", print("name"), printDirectives(path, print, node), node.values.length > 0 ? [" {", indent([hardline, join(hardline, path.call((valuesPath) => printSequence(valuesPath, options, print), "values"))]), hardline, "}"] : ""];
+          return [print("description"), node.description ? hardline : "", node.kind === "EnumTypeExtension" ? "extend " : "", "enum ", print("name"), printDirectives(path, print, node), node.values.length > 0 ? [" {", indent([hardline, join(hardline, printSequence(path, options, print, "values"))]), hardline, "}"] : ""];
         }
         case "EnumValueDefinition": {
           return [print("description"), node.description ? hardline : "", print("name"), printDirectives(path, print, node)];
@@ -33878,17 +31937,20 @@ var require_printer_graphql = __commonJS2({
         }
         case "InputObjectTypeExtension":
         case "InputObjectTypeDefinition": {
-          return [print("description"), node.description ? hardline : "", node.kind === "InputObjectTypeExtension" ? "extend " : "", "input ", print("name"), printDirectives(path, print, node), node.fields.length > 0 ? [" {", indent([hardline, join(hardline, path.call((fieldsPath) => printSequence(fieldsPath, options, print), "fields"))]), hardline, "}"] : ""];
+          return [print("description"), node.description ? hardline : "", node.kind === "InputObjectTypeExtension" ? "extend " : "", "input ", print("name"), printDirectives(path, print, node), node.fields.length > 0 ? [" {", indent([hardline, join(hardline, printSequence(path, options, print, "fields"))]), hardline, "}"] : ""];
+        }
+        case "SchemaExtension": {
+          return ["extend schema", printDirectives(path, print, node), ...node.operationTypes.length > 0 ? [" {", indent([hardline, join(hardline, printSequence(path, options, print, "operationTypes"))]), hardline, "}"] : []];
         }
         case "SchemaDefinition": {
-          return [print("description"), node.description ? hardline : "", "schema", printDirectives(path, print, node), " {", node.operationTypes.length > 0 ? indent([hardline, join(hardline, path.call((opsPath) => printSequence(opsPath, options, print), "operationTypes"))]) : "", hardline, "}"];
+          return [print("description"), node.description ? hardline : "", "schema", printDirectives(path, print, node), " {", node.operationTypes.length > 0 ? indent([hardline, join(hardline, printSequence(path, options, print, "operationTypes"))]) : "", hardline, "}"];
         }
         case "OperationTypeDefinition": {
           return [print("operation"), ": ", print("type")];
         }
         case "InterfaceTypeExtension":
         case "InterfaceTypeDefinition": {
-          return [print("description"), node.description ? hardline : "", node.kind === "InterfaceTypeExtension" ? "extend " : "", "interface ", print("name"), node.interfaces.length > 0 ? [" implements ", ...printInterfaces(path, options, print)] : "", printDirectives(path, print, node), node.fields.length > 0 ? [" {", indent([hardline, join(hardline, path.call((fieldsPath) => printSequence(fieldsPath, options, print), "fields"))]), hardline, "}"] : ""];
+          return [print("description"), node.description ? hardline : "", node.kind === "InterfaceTypeExtension" ? "extend " : "", "interface ", print("name"), node.interfaces.length > 0 ? [" implements ", ...printInterfaces(path, options, print)] : "", printDirectives(path, print, node), node.fields.length > 0 ? [" {", indent([hardline, join(hardline, printSequence(path, options, print, "fields"))]), hardline, "}"] : ""];
         }
         case "FragmentSpread": {
           return ["...", print("name"), printDirectives(path, print, node)];
@@ -33924,15 +31986,14 @@ var require_printer_graphql = __commonJS2({
       }
       return [" ", group(indent([softline, printed]))];
     }
-    function printSequence(sequencePath, options, print) {
-      const count = sequencePath.getValue().length;
-      return sequencePath.map((path, i) => {
+    function printSequence(path, options, print, property) {
+      return path.map((path2, index, sequence) => {
         const printed = print();
-        if (isNextLineEmpty(options.originalText, path.getValue(), locEnd) && i < count - 1) {
+        if (index < sequence.length - 1 && isNextLineEmpty(options.originalText, path2.getValue(), locEnd)) {
           return [printed, hardline];
         }
         return printed;
-      });
+      }, property);
     }
     function canAttachComment(node) {
       return node.kind && node.kind !== "Comment";
@@ -33964,12 +32025,16 @@ var require_printer_graphql = __commonJS2({
       }
       return parts;
     }
-    function clean() {
+    function clean(node, newNode) {
+      if (node.kind === "StringValue" && node.block && !node.value.includes("\n")) {
+        newNode.value = newNode.value.trim();
+      }
     }
     clean.ignoredProperties = /* @__PURE__ */ new Set(["loc", "comments"]);
     function hasPrettierIgnore(path) {
+      var _node$comments;
       const node = path.getValue();
-      return node && Array.isArray(node.comments) && node.comments.some((comment) => comment.value.trim() === "prettier-ignore");
+      return node === null || node === void 0 ? void 0 : (_node$comments = node.comments) === null || _node$comments === void 0 ? void 0 : _node$comments.some((comment) => comment.value.trim() === "prettier-ignore");
     }
     module2.exports = {
       print: genericPrint,
@@ -34194,11 +32259,11 @@ var require_utils10 = __commonJS2({
       }(ast, null, []);
     }
     function isAutolink(node) {
-      if (!node || node.type !== "link" || node.children.length !== 1) {
+      if ((node === null || node === void 0 ? void 0 : node.type) !== "link" || node.children.length !== 1) {
         return false;
       }
-      const child = node.children[0];
-      return child && locStart(node) === locStart(child) && locEnd(node) === locEnd(child);
+      const [child] = node.children;
+      return locStart(node) === locStart(child) && locEnd(node) === locEnd(child);
     }
     module2.exports = {
       mapAst,
@@ -34289,7 +32354,7 @@ var require_pragma4 = __commonJS2({
 )[\\s\\S]*
 .*-->`].join("|"), "m");
       const matched = text.match(regex);
-      return matched && matched.index === 0;
+      return (matched === null || matched === void 0 ? void 0 : matched.index) === 0;
     }
     module2.exports = {
       startWithPragma,
@@ -34989,7 +33054,7 @@ var require_printer_markdown = __commonJS2({
           match = comment.value.match(/^prettier-ignore(?:-(start|end))?$/);
         }
       }
-      return match ? match[1] ? match[1] : "next" : false;
+      return match ? match[1] || "next" : false;
     }
     function shouldPrePrintHardline(node, data) {
       const isFirstNode = data.parts.length === 0;
@@ -34998,13 +33063,14 @@ var require_printer_markdown = __commonJS2({
       return !isFirstNode && !isInlineNode && !isInlineHTML;
     }
     function shouldPrePrintDoubleHardline(node, data) {
+      var _data$prevNode, _data$prevNode2, _data$prevNode3;
       const isSequence = (data.prevNode && data.prevNode.type) === node.type;
       const isSiblingNode = isSequence && SIBLING_NODE_TYPES.has(node.type);
       const isInTightListItem = data.parentNode.type === "listItem" && !data.parentNode.loose;
-      const isPrevNodeLooseListItem = data.prevNode && data.prevNode.type === "listItem" && data.prevNode.loose;
+      const isPrevNodeLooseListItem = ((_data$prevNode = data.prevNode) === null || _data$prevNode === void 0 ? void 0 : _data$prevNode.type) === "listItem" && data.prevNode.loose;
       const isPrevNodePrettierIgnore = isPrettierIgnore(data.prevNode) === "next";
-      const isBlockHtmlWithoutBlankLineBetweenPrevHtml = node.type === "html" && data.prevNode && data.prevNode.type === "html" && data.prevNode.position.end.line + 1 === node.position.start.line;
-      const isHtmlDirectAfterListItem = node.type === "html" && data.parentNode.type === "listItem" && data.prevNode && data.prevNode.type === "paragraph" && data.prevNode.position.end.line + 1 === node.position.start.line;
+      const isBlockHtmlWithoutBlankLineBetweenPrevHtml = node.type === "html" && ((_data$prevNode2 = data.prevNode) === null || _data$prevNode2 === void 0 ? void 0 : _data$prevNode2.type) === "html" && data.prevNode.position.end.line + 1 === node.position.start.line;
+      const isHtmlDirectAfterListItem = node.type === "html" && data.parentNode.type === "listItem" && ((_data$prevNode3 = data.prevNode) === null || _data$prevNode3 === void 0 ? void 0 : _data$prevNode3.type) === "paragraph" && data.prevNode.position.end.line + 1 === node.position.start.line;
       return isPrevNodeLooseListItem || !(isSiblingNode || isInTightListItem || isPrevNodePrettierIgnore || isBlockHtmlWithoutBlankLineBetweenPrevHtml || isHtmlDirectAfterListItem);
     }
     function shouldPrePrintTripleHardline(node, data) {
@@ -35096,7 +33162,7 @@ var require_Markdown = __commonJS2({
       codemirrorMode: "gfm",
       codemirrorMimeType: "text/x-gfm",
       wrap: true,
-      extensions: [".md", ".markdown", ".mdown", ".mdwn", ".mdx", ".mkd", ".mkdn", ".mkdown", ".ronn", ".scd", ".workbook"],
+      extensions: [".md", ".livemd", ".markdown", ".mdown", ".mdwn", ".mdx", ".mkd", ".mkdn", ".mkdown", ".ronn", ".scd", ".workbook"],
       filenames: ["contents.lr"],
       tmScope: "source.gfm",
       languageId: 222
@@ -35141,7 +33207,7 @@ var require_clean5 = __commonJS2({
     var {
       isFrontMatterNode
     } = require_util();
-    var ignoredProperties = /* @__PURE__ */ new Set(["sourceSpan", "startSourceSpan", "endSourceSpan", "nameSpan", "valueSpan", "parent"]);
+    var ignoredProperties = /* @__PURE__ */ new Set(["sourceSpan", "startSourceSpan", "endSourceSpan", "nameSpan", "valueSpan"]);
     function clean(ast, newNode) {
       if (ast.type === "text" || ast.type === "comment") {
         return null;
@@ -35465,14 +33531,14 @@ var require_utils11 = __commonJS2({
       if (type === "text/html") {
         return "html";
       }
-      if (type && (type.endsWith("json") || type.endsWith("importmap"))) {
+      if (type && (type.endsWith("json") || type.endsWith("importmap")) || type === "speculationrules") {
         return "json";
       }
       if (type === "text/x-handlebars-template") {
         return "glimmer";
       }
     }
-    function inferStyleParser(node) {
+    function inferStyleParser(node, options) {
       const {
         lang
       } = node.attrMap;
@@ -35485,6 +33551,9 @@ var require_utils11 = __commonJS2({
       if (lang === "less") {
         return "less";
       }
+      if (lang === "stylus") {
+        return inferParserByLanguage("stylus", options);
+      }
     }
     function inferScriptParser(node, options) {
       if (node.name === "script" && !node.attrMap.src) {
@@ -35494,7 +33563,7 @@ var require_utils11 = __commonJS2({
         return _inferScriptParser(node);
       }
       if (node.name === "style") {
-        return inferStyleParser(node);
+        return inferStyleParser(node, options);
       }
       if (options && isVueNonHtmlBlock(node, options)) {
         return _inferScriptParser(node) || !("src" in node.attrMap) && inferParserByLanguage(node.attrMap.lang, options);
@@ -35632,6 +33701,9 @@ var require_utils11 = __commonJS2({
     function getTextValueParts(node, value = node.value) {
       return node.parent.isWhitespaceSensitive ? node.parent.isIndentationSensitive ? replaceTextEndOfLine(value) : replaceTextEndOfLine(dedentString(htmlTrimPreserveIndentation(value)), hardline) : getDocParts(join(line, splitByHtmlWhitespace(value)));
     }
+    function isVueScriptTag(node, options) {
+      return isVueSfcBlock(node, options) && node.name === "script";
+    }
     module2.exports = {
       htmlTrim,
       htmlTrimPreserveIndentation,
@@ -35651,8 +33723,10 @@ var require_utils11 = __commonJS2({
       inferScriptParser,
       isVueCustomBlock,
       isVueNonHtmlBlock,
+      isVueScriptTag,
       isVueSlotAttribute,
       isVueSfcBindingsAttribute,
+      isVueSfcBlock,
       isDanglingSpaceSensitiveNode,
       isIndentationSensitiveNode,
       isLeadingSpaceSensitiveNode,
@@ -36626,9 +34700,10 @@ var require_print_preprocess3 = __commonJS2({
       isIndentationSensitiveNode,
       isLeadingSpaceSensitiveNode,
       isTrailingSpaceSensitiveNode,
-      isWhitespaceSensitiveNode
+      isWhitespaceSensitiveNode,
+      isVueScriptTag
     } = require_utils11();
-    var PREPROCESS_PIPELINE = [removeIgnorableFirstLf, mergeIfConditionalStartEndCommentIntoElementOpeningTag, mergeCdataIntoText, extractInterpolation, extractWhitespaces, addCssDisplay, addIsSelfClosing, addHasHtmComponentClosingTag, addIsSpaceSensitive, mergeSimpleElementIntoText];
+    var PREPROCESS_PIPELINE = [removeIgnorableFirstLf, mergeIfConditionalStartEndCommentIntoElementOpeningTag, mergeCdataIntoText, extractInterpolation, extractWhitespaces, addCssDisplay, addIsSelfClosing, addHasHtmComponentClosingTag, addIsSpaceSensitive, mergeSimpleElementIntoText, markTsScript];
     function preprocess(ast, options) {
       for (const fn of PREPROCESS_PIPELINE) {
         fn(ast, options);
@@ -36862,6 +34937,20 @@ var require_print_preprocess3 = __commonJS2({
         }
       });
     }
+    function markTsScript(ast, options) {
+      if (options.parser === "vue") {
+        const vueScriptTag = ast.children.find((child) => isVueScriptTag(child, options));
+        if (!vueScriptTag) {
+          return;
+        }
+        const {
+          lang
+        } = vueScriptTag.attrMap;
+        if (lang === "ts" || lang === "typescript") {
+          options.__should_parse_vue_template_with_ts = true;
+        }
+      }
+    }
     module2.exports = preprocess;
   }
 });
@@ -36923,7 +35012,8 @@ var require_tag = __commonJS2({
       getLastDescendant,
       isPreLikeNode,
       hasPrettierIgnore,
-      shouldPreserveContent
+      shouldPreserveContent,
+      isVueSfcBlock
     } = require_utils11();
     function printClosingTag(node, options) {
       return [node.isSelfClosing ? "" : printClosingTagStart(node, options), printClosingTagEnd(node, options)];
@@ -37016,7 +35106,8 @@ var require_tag = __commonJS2({
         return hasPrettierIgnoreAttribute(attribute) ? replaceTextEndOfLine(options.originalText.slice(locStart(attribute), locEnd(attribute))) : print();
       }, "attrs");
       const forceNotToBreakAttrContent = node.type === "element" && node.fullName === "script" && node.attrs.length === 1 && node.attrs[0].fullName === "src" && node.children.length === 0;
-      const attributeLine = options.singleAttributePerLine && node.attrs.length > 1 ? hardline : line;
+      const shouldPrintAttributePerLine = options.singleAttributePerLine && node.attrs.length > 1 && !isVueSfcBlock(node, options);
+      const attributeLine = shouldPrintAttributePerLine ? hardline : line;
       const parts = [indent([forceNotToBreakAttrContent ? " " : line, join(attributeLine, printedAttributes)])];
       if (node.firstChild && needsToBorrowParentOpeningTagEndMarker(node.firstChild) || node.isSelfClosing && needsToBorrowLastChildClosingTagEndMarker(node.parent) || forceNotToBreakAttrContent) {
         parts.push(node.isSelfClosing ? " " : "");
@@ -37504,8 +35595,9 @@ var require_embed4 = __commonJS2({
         const jsExpressionBindingPatterns = ["^v-"];
         if (isKeyMatched(vueEventBindingPatterns)) {
           const value = getValue();
+          const parser = isVueEventBindingExpression(value) ? "__js_expression" : options.__should_parse_vue_template_with_ts ? "__vue_ts_event_binding" : "__vue_event_binding";
           return printMaybeHug(attributeTextToDoc(value, {
-            parser: isVueEventBindingExpression(value) ? "__js_expression" : "__vue_event_binding"
+            parser
           }));
         }
         if (isKeyMatched(vueExpressionBindingPatterns)) {
@@ -37599,7 +35691,7 @@ var require_embed4 = __commonJS2({
         }
         case "text": {
           if (isScriptLikeTag(node.parent)) {
-            const parser = inferScriptParser(node.parent);
+            const parser = inferScriptParser(node.parent, options);
             if (parser) {
               const value = parser === "markdown" ? dedentString(node.value.replace(/^[^\S\n]*\n/, "")) : node.value;
               const textToDocOptions = {
@@ -37629,7 +35721,7 @@ var require_embed4 = __commonJS2({
               textToDocOptions.parser = "__ng_interpolation";
               textToDocOptions.trailingComma = "none";
             } else if (options.parser === "vue") {
-              textToDocOptions.parser = "__vue_expression";
+              textToDocOptions.parser = options.__should_parse_vue_template_with_ts ? "__vue_ts_expression" : "__vue_expression";
             } else {
               textToDocOptions.parser = "__js_expression";
             }
@@ -38056,7 +36148,7 @@ var require_HTML = __commonJS2({
       codemirrorMimeType: "text/html",
       color: "#e34c26",
       aliases: ["xhtml"],
-      extensions: [".html", ".htm", ".html.hl", ".inc", ".xht", ".xhtml"],
+      extensions: [".html", ".hta", ".htm", ".html.hl", ".inc", ".xht", ".xhtml"],
       languageId: 146
     };
   }
@@ -38254,19 +36346,19 @@ var require_utils12 = __commonJS2({
       return hasLeadingComments(node) || hasMiddleComments(node) || hasIndicatorComment(node) || hasTrailingComment(node) || hasEndComments(node);
     }
     function hasLeadingComments(node) {
-      return node && isNonEmptyArray(node.leadingComments);
+      return isNonEmptyArray(node === null || node === void 0 ? void 0 : node.leadingComments);
     }
     function hasMiddleComments(node) {
-      return node && isNonEmptyArray(node.middleComments);
+      return isNonEmptyArray(node === null || node === void 0 ? void 0 : node.middleComments);
     }
     function hasIndicatorComment(node) {
-      return node && node.indicatorComment;
+      return node === null || node === void 0 ? void 0 : node.indicatorComment;
     }
     function hasTrailingComment(node) {
-      return node && node.trailingComment;
+      return node === null || node === void 0 ? void 0 : node.trailingComment;
     }
     function hasEndComments(node) {
-      return node && isNonEmptyArray(node.endComments);
+      return isNonEmptyArray(node === null || node === void 0 ? void 0 : node.endComments);
     }
     function splitWithSingleSpace(text) {
       const parts = [];
@@ -38897,7 +36989,7 @@ var require_printer_yaml = __commonJS2({
         case "sequence":
           return join(hardline, path.map(print, "children"));
         case "sequenceItem":
-          return ["- ", alignWithSpaces(2, !node.content ? "" : print("content"))];
+          return ["- ", alignWithSpaces(2, node.content ? print("content") : "")];
         case "mappingKey":
         case "mappingValue":
           return !node.content ? "" : print("content");
@@ -38989,7 +37081,7 @@ var require_YAML = __commonJS2({
       tmScope: "source.yaml",
       aliases: ["yml"],
       extensions: [".yml", ".mir", ".reek", ".rviz", ".sublime-syntax", ".syntax", ".yaml", ".yaml-tmlanguage", ".yaml.sed", ".yml.mysql"],
-      filenames: [".clang-format", ".clang-tidy", ".gemrc", "glide.lock", "yarn.lock"],
+      filenames: [".clang-format", ".clang-tidy", ".gemrc", "CITATION.cff", "glide.lock", "yarn.lock"],
       aceMode: "yaml",
       codemirrorMode: "yaml",
       codemirrorMimeType: "text/x-yaml",
@@ -39031,23 +37123,23 @@ var require_load_plugins = __commonJS2({
     "use strict";
     var fs = require("fs");
     var path = require("path");
-    var uniqBy = require_uniqBy();
-    var partition = require_partition();
     var fastGlob = require_out4();
+    var partition = require_partition();
+    var uniqByKey = require_uniq_by_key();
     var internalPlugins = require_languages();
     var {
-      default: mem,
-      memClear
-    } = require_mem();
+      default: mem2,
+      memClear: memClear2
+    } = (init_dist(), __toCommonJS(dist_exports));
     var thirdParty = require("./third-party.js");
     var resolve = require_resolve2();
-    var memoizedLoad = mem(load, {
+    var memoizedLoad = mem2(load, {
       cacheKey: JSON.stringify
     });
-    var memoizedSearch = mem(findPluginsInNodeModules);
+    var memoizedSearch = mem2(findPluginsInNodeModules);
     var clearCache = () => {
-      memClear(memoizedLoad);
-      memClear(memoizedSearch);
+      memClear2(memoizedLoad);
+      memClear2(memoizedSearch);
     };
     function load(plugins2, pluginSearchDirs) {
       if (!plugins2) {
@@ -39092,7 +37184,7 @@ var require_load_plugins = __commonJS2({
           })
         }));
       });
-      const externalPlugins = [...uniqBy([...externalManualLoadPluginInfos, ...externalAutoLoadPluginInfos], "requirePath").map((externalPluginInfo) => Object.assign({
+      const externalPlugins = [...uniqByKey([...externalManualLoadPluginInfos, ...externalAutoLoadPluginInfos], "requirePath").map((externalPluginInfo) => Object.assign({
         name: externalPluginInfo.name
       }, require(externalPluginInfo.requirePath))), ...externalPluginInstances];
       return [...internalPlugins, ...externalPlugins];
@@ -39176,6 +37268,7 @@ module.exports = {
     utils: {
       arrayify: require_arrayify(),
       getLast: require_get_last(),
+      partition: require_partition(),
       isNonEmptyArray: require_util().isNonEmptyArray
     }
   },

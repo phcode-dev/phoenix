@@ -381,10 +381,10 @@ var require_shared = __commonJS({
     (module2.exports = function(key, value) {
       return store[key] || (store[key] = value !== void 0 ? value : {});
     })("versions", []).push({
-      version: "3.21.1",
+      version: "3.22.2",
       mode: IS_PURE ? "pure" : "global",
       copyright: "\xA9 2014-2022 Denis Pushkarev (zloirock.ru)",
-      license: "https://github.com/zloirock/core-js/blob/v3.21.1/LICENSE",
+      license: "https://github.com/zloirock/core-js/blob/v3.22.2/LICENSE",
       source: "https://github.com/zloirock/core-js"
     });
   }
@@ -1511,16 +1511,49 @@ var require_es_array_flat = __commonJS({
   }
 });
 
-// dist/cli.js
+// dist/_cli.js.cjs.js
 require_es_object_from_entries();
 require_es_array_flat_map();
 require_es_array_flat();
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames2 = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames2(fn)[0]])(fn = 0)), res;
+};
 var __commonJS2 = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames2(cb)[0]])((mod = {
     exports: {}
   }).exports, mod), mod.exports;
 };
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, {
+      get: all[name],
+      enumerable: true
+    });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames2(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+        });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+  value: mod,
+  enumerable: true
+}) : target, mod));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", {
+  value: true
+}), mod);
 var require_fast_json_stable_stringify = __commonJS2({
   "node_modules/fast-json-stable-stringify/index.js"(exports2, module2) {
     "use strict";
@@ -1593,24 +1626,6 @@ var require_fast_json_stable_stringify = __commonJS2({
     };
   }
 });
-var require_ansi_regex = __commonJS2({
-  "node_modules/ansi-regex/index.js"(exports2, module2) {
-    "use strict";
-    module2.exports = ({
-      onlyFirst = false
-    } = {}) => {
-      const pattern = ["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))"].join("|");
-      return new RegExp(pattern, onlyFirst ? void 0 : "g");
-    };
-  }
-});
-var require_strip_ansi = __commonJS2({
-  "node_modules/strip-ansi/index.js"(exports2, module2) {
-    "use strict";
-    var ansiRegex = require_ansi_regex();
-    module2.exports = (string) => typeof string === "string" ? string.replace(ansiRegex(), "") : string;
-  }
-});
 var require_clone = __commonJS2({
   "node_modules/clone/clone.js"(exports2, module2) {
     var clone = function() {
@@ -1636,7 +1651,7 @@ var require_clone = __commonJS2({
           if (depth2 == 0)
             return parent2;
           var child;
-          var proto;
+          var proto2;
           if (typeof parent2 != "object") {
             return parent2;
           }
@@ -1658,11 +1673,11 @@ var require_clone = __commonJS2({
             return child;
           } else {
             if (typeof prototype == "undefined") {
-              proto = Object.getPrototypeOf(parent2);
-              child = Object.create(proto);
+              proto2 = Object.getPrototypeOf(parent2);
+              child = Object.create(proto2);
             } else {
               child = Object.create(prototype);
-              proto = prototype;
+              proto2 = prototype;
             }
           }
           if (circular) {
@@ -1675,8 +1690,8 @@ var require_clone = __commonJS2({
           }
           for (var i in parent2) {
             var attrs;
-            if (proto) {
-              attrs = Object.getOwnPropertyDescriptor(proto, i);
+            if (proto2) {
+              attrs = Object.getOwnPropertyDescriptor(proto2, i);
             }
             if (attrs && attrs.set == null) {
               continue;
@@ -1811,355 +1826,334 @@ var require_wcwidth = __commonJS2({
     }
   }
 });
-var require_chalk = __commonJS2({
-  "vendors/chalk.js"(exports2, module2) {
-    var __create = Object.create;
-    var __defProp = Object.defineProperty;
-    var __defProps = Object.defineProperties;
-    var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-    var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
-    var __getOwnPropNames22 = Object.getOwnPropertyNames;
-    var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-    var __getProtoOf = Object.getPrototypeOf;
-    var __hasOwnProp = Object.prototype.hasOwnProperty;
-    var __propIsEnum = Object.prototype.propertyIsEnumerable;
-    var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value
-    }) : obj[key] = value;
-    var __spreadValues = (a, b) => {
-      for (var prop in b || (b = {}))
-        if (__hasOwnProp.call(b, prop))
-          __defNormalProp(a, prop, b[prop]);
-      if (__getOwnPropSymbols)
-        for (var prop of __getOwnPropSymbols(b)) {
-          if (__propIsEnum.call(b, prop))
-            __defNormalProp(a, prop, b[prop]);
-        }
-      return a;
-    };
-    var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-    var __export = (target, all) => {
-      for (var name in all)
-        __defProp(target, name, {
-          get: all[name],
-          enumerable: true
-        });
-    };
-    var __copyProps = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames22(from))
-          if (!__hasOwnProp.call(to, key) && key !== except)
-            __defProp(to, key, {
-              get: () => from[key],
-              enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
-            });
-      }
-      return to;
-    };
-    var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
-      value: mod,
-      enumerable: true
-    }) : target, mod));
-    var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", {
-      value: true
-    }), mod);
-    var source_exports = {};
-    __export(source_exports, {
-      Chalk: () => Chalk,
-      chalkStderr: () => chalkStderr,
-      default: () => source_default,
-      supportsColor: () => stdoutColor,
-      supportsColorStderr: () => stderrColor
-    });
-    module2.exports = __toCommonJS(source_exports);
-    var ANSI_BACKGROUND_OFFSET = 10;
-    var wrapAnsi16 = (offset = 0) => (code) => `\x1B[${code + offset}m`;
-    var wrapAnsi256 = (offset = 0) => (code) => `\x1B[${38 + offset};5;${code}m`;
-    var wrapAnsi16m = (offset = 0) => (red, green, blue) => `\x1B[${38 + offset};2;${red};${green};${blue}m`;
-    function assembleStyles() {
-      const codes = /* @__PURE__ */ new Map();
-      const styles2 = {
-        modifier: {
-          reset: [0, 0],
-          bold: [1, 22],
-          dim: [2, 22],
-          italic: [3, 23],
-          underline: [4, 24],
-          overline: [53, 55],
-          inverse: [7, 27],
-          hidden: [8, 28],
-          strikethrough: [9, 29]
-        },
-        color: {
-          black: [30, 39],
-          red: [31, 39],
-          green: [32, 39],
-          yellow: [33, 39],
-          blue: [34, 39],
-          magenta: [35, 39],
-          cyan: [36, 39],
-          white: [37, 39],
-          blackBright: [90, 39],
-          redBright: [91, 39],
-          greenBright: [92, 39],
-          yellowBright: [93, 39],
-          blueBright: [94, 39],
-          magentaBright: [95, 39],
-          cyanBright: [96, 39],
-          whiteBright: [97, 39]
-        },
-        bgColor: {
-          bgBlack: [40, 49],
-          bgRed: [41, 49],
-          bgGreen: [42, 49],
-          bgYellow: [43, 49],
-          bgBlue: [44, 49],
-          bgMagenta: [45, 49],
-          bgCyan: [46, 49],
-          bgWhite: [47, 49],
-          bgBlackBright: [100, 49],
-          bgRedBright: [101, 49],
-          bgGreenBright: [102, 49],
-          bgYellowBright: [103, 49],
-          bgBlueBright: [104, 49],
-          bgMagentaBright: [105, 49],
-          bgCyanBright: [106, 49],
-          bgWhiteBright: [107, 49]
-        }
+function ansiRegex({
+  onlyFirst = false
+} = {}) {
+  const pattern = ["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))"].join("|");
+  return new RegExp(pattern, onlyFirst ? void 0 : "g");
+}
+var init_ansi_regex = __esm({
+  "node_modules/strip-ansi/node_modules/ansi-regex/index.js"() {
+  }
+});
+var strip_ansi_exports = {};
+__export(strip_ansi_exports, {
+  default: () => stripAnsi
+});
+function stripAnsi(string) {
+  if (typeof string !== "string") {
+    throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
+  }
+  return string.replace(ansiRegex(), "");
+}
+var init_strip_ansi = __esm({
+  "node_modules/strip-ansi/index.js"() {
+    init_ansi_regex();
+  }
+});
+function assembleStyles() {
+  const codes = /* @__PURE__ */ new Map();
+  const styles2 = {
+    modifier: {
+      reset: [0, 0],
+      bold: [1, 22],
+      dim: [2, 22],
+      italic: [3, 23],
+      underline: [4, 24],
+      overline: [53, 55],
+      inverse: [7, 27],
+      hidden: [8, 28],
+      strikethrough: [9, 29]
+    },
+    color: {
+      black: [30, 39],
+      red: [31, 39],
+      green: [32, 39],
+      yellow: [33, 39],
+      blue: [34, 39],
+      magenta: [35, 39],
+      cyan: [36, 39],
+      white: [37, 39],
+      blackBright: [90, 39],
+      redBright: [91, 39],
+      greenBright: [92, 39],
+      yellowBright: [93, 39],
+      blueBright: [94, 39],
+      magentaBright: [95, 39],
+      cyanBright: [96, 39],
+      whiteBright: [97, 39]
+    },
+    bgColor: {
+      bgBlack: [40, 49],
+      bgRed: [41, 49],
+      bgGreen: [42, 49],
+      bgYellow: [43, 49],
+      bgBlue: [44, 49],
+      bgMagenta: [45, 49],
+      bgCyan: [46, 49],
+      bgWhite: [47, 49],
+      bgBlackBright: [100, 49],
+      bgRedBright: [101, 49],
+      bgGreenBright: [102, 49],
+      bgYellowBright: [103, 49],
+      bgBlueBright: [104, 49],
+      bgMagentaBright: [105, 49],
+      bgCyanBright: [106, 49],
+      bgWhiteBright: [107, 49]
+    }
+  };
+  styles2.color.gray = styles2.color.blackBright;
+  styles2.bgColor.bgGray = styles2.bgColor.bgBlackBright;
+  styles2.color.grey = styles2.color.blackBright;
+  styles2.bgColor.bgGrey = styles2.bgColor.bgBlackBright;
+  for (const [groupName, group] of Object.entries(styles2)) {
+    for (const [styleName, style] of Object.entries(group)) {
+      styles2[styleName] = {
+        open: `\x1B[${style[0]}m`,
+        close: `\x1B[${style[1]}m`
       };
-      styles2.color.gray = styles2.color.blackBright;
-      styles2.bgColor.bgGray = styles2.bgColor.bgBlackBright;
-      styles2.color.grey = styles2.color.blackBright;
-      styles2.bgColor.bgGrey = styles2.bgColor.bgBlackBright;
-      for (const [groupName, group] of Object.entries(styles2)) {
-        for (const [styleName, style] of Object.entries(group)) {
-          styles2[styleName] = {
-            open: `\x1B[${style[0]}m`,
-            close: `\x1B[${style[1]}m`
-          };
-          group[styleName] = styles2[styleName];
-          codes.set(style[0], style[1]);
-        }
-        Object.defineProperty(styles2, groupName, {
-          value: group,
-          enumerable: false
-        });
-      }
-      Object.defineProperty(styles2, "codes", {
-        value: codes,
-        enumerable: false
-      });
-      styles2.color.close = "\x1B[39m";
-      styles2.bgColor.close = "\x1B[49m";
-      styles2.color.ansi = wrapAnsi16();
-      styles2.color.ansi256 = wrapAnsi256();
-      styles2.color.ansi16m = wrapAnsi16m();
-      styles2.bgColor.ansi = wrapAnsi16(ANSI_BACKGROUND_OFFSET);
-      styles2.bgColor.ansi256 = wrapAnsi256(ANSI_BACKGROUND_OFFSET);
-      styles2.bgColor.ansi16m = wrapAnsi16m(ANSI_BACKGROUND_OFFSET);
-      Object.defineProperties(styles2, {
-        rgbToAnsi256: {
-          value: (red, green, blue) => {
-            if (red === green && green === blue) {
-              if (red < 8) {
-                return 16;
-              }
-              if (red > 248) {
-                return 231;
-              }
-              return Math.round((red - 8) / 247 * 24) + 232;
-            }
-            return 16 + 36 * Math.round(red / 255 * 5) + 6 * Math.round(green / 255 * 5) + Math.round(blue / 255 * 5);
-          },
-          enumerable: false
-        },
-        hexToRgb: {
-          value: (hex) => {
-            const matches = /(?<colorString>[a-f\d]{6}|[a-f\d]{3})/i.exec(hex.toString(16));
-            if (!matches) {
-              return [0, 0, 0];
-            }
-            let {
-              colorString
-            } = matches.groups;
-            if (colorString.length === 3) {
-              colorString = [...colorString].map((character) => character + character).join("");
-            }
-            const integer = Number.parseInt(colorString, 16);
-            return [integer >> 16 & 255, integer >> 8 & 255, integer & 255];
-          },
-          enumerable: false
-        },
-        hexToAnsi256: {
-          value: (hex) => styles2.rgbToAnsi256(...styles2.hexToRgb(hex)),
-          enumerable: false
-        },
-        ansi256ToAnsi: {
-          value: (code) => {
-            if (code < 8) {
-              return 30 + code;
-            }
-            if (code < 16) {
-              return 90 + (code - 8);
-            }
-            let red;
-            let green;
-            let blue;
-            if (code >= 232) {
-              red = ((code - 232) * 10 + 8) / 255;
-              green = red;
-              blue = red;
-            } else {
-              code -= 16;
-              const remainder = code % 36;
-              red = Math.floor(code / 36) / 5;
-              green = Math.floor(remainder / 6) / 5;
-              blue = remainder % 6 / 5;
-            }
-            const value = Math.max(red, green, blue) * 2;
-            if (value === 0) {
-              return 30;
-            }
-            let result = 30 + (Math.round(blue) << 2 | Math.round(green) << 1 | Math.round(red));
-            if (value === 2) {
-              result += 60;
-            }
-            return result;
-          },
-          enumerable: false
-        },
-        rgbToAnsi: {
-          value: (red, green, blue) => styles2.ansi256ToAnsi(styles2.rgbToAnsi256(red, green, blue)),
-          enumerable: false
-        },
-        hexToAnsi: {
-          value: (hex) => styles2.ansi256ToAnsi(styles2.hexToAnsi256(hex)),
-          enumerable: false
-        }
-      });
-      return styles2;
+      group[styleName] = styles2[styleName];
+      codes.set(style[0], style[1]);
     }
-    var ansiStyles = assembleStyles();
-    var ansi_styles_default = ansiStyles;
-    var import_node_process = __toESM(require("process"), 1);
-    var import_node_os = __toESM(require("os"), 1);
-    var import_node_tty = __toESM(require("tty"), 1);
-    function hasFlag(flag, argv = import_node_process.default.argv) {
-      const prefix = flag.startsWith("-") ? "" : flag.length === 1 ? "-" : "--";
-      const position = argv.indexOf(prefix + flag);
-      const terminatorPosition = argv.indexOf("--");
-      return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
+    Object.defineProperty(styles2, groupName, {
+      value: group,
+      enumerable: false
+    });
+  }
+  Object.defineProperty(styles2, "codes", {
+    value: codes,
+    enumerable: false
+  });
+  styles2.color.close = "\x1B[39m";
+  styles2.bgColor.close = "\x1B[49m";
+  styles2.color.ansi = wrapAnsi16();
+  styles2.color.ansi256 = wrapAnsi256();
+  styles2.color.ansi16m = wrapAnsi16m();
+  styles2.bgColor.ansi = wrapAnsi16(ANSI_BACKGROUND_OFFSET);
+  styles2.bgColor.ansi256 = wrapAnsi256(ANSI_BACKGROUND_OFFSET);
+  styles2.bgColor.ansi16m = wrapAnsi16m(ANSI_BACKGROUND_OFFSET);
+  Object.defineProperties(styles2, {
+    rgbToAnsi256: {
+      value: (red, green, blue) => {
+        if (red === green && green === blue) {
+          if (red < 8) {
+            return 16;
+          }
+          if (red > 248) {
+            return 231;
+          }
+          return Math.round((red - 8) / 247 * 24) + 232;
+        }
+        return 16 + 36 * Math.round(red / 255 * 5) + 6 * Math.round(green / 255 * 5) + Math.round(blue / 255 * 5);
+      },
+      enumerable: false
+    },
+    hexToRgb: {
+      value: (hex) => {
+        const matches = /(?<colorString>[a-f\d]{6}|[a-f\d]{3})/i.exec(hex.toString(16));
+        if (!matches) {
+          return [0, 0, 0];
+        }
+        let {
+          colorString
+        } = matches.groups;
+        if (colorString.length === 3) {
+          colorString = [...colorString].map((character) => character + character).join("");
+        }
+        const integer = Number.parseInt(colorString, 16);
+        return [integer >> 16 & 255, integer >> 8 & 255, integer & 255];
+      },
+      enumerable: false
+    },
+    hexToAnsi256: {
+      value: (hex) => styles2.rgbToAnsi256(...styles2.hexToRgb(hex)),
+      enumerable: false
+    },
+    ansi256ToAnsi: {
+      value: (code) => {
+        if (code < 8) {
+          return 30 + code;
+        }
+        if (code < 16) {
+          return 90 + (code - 8);
+        }
+        let red;
+        let green;
+        let blue;
+        if (code >= 232) {
+          red = ((code - 232) * 10 + 8) / 255;
+          green = red;
+          blue = red;
+        } else {
+          code -= 16;
+          const remainder = code % 36;
+          red = Math.floor(code / 36) / 5;
+          green = Math.floor(remainder / 6) / 5;
+          blue = remainder % 6 / 5;
+        }
+        const value = Math.max(red, green, blue) * 2;
+        if (value === 0) {
+          return 30;
+        }
+        let result = 30 + (Math.round(blue) << 2 | Math.round(green) << 1 | Math.round(red));
+        if (value === 2) {
+          result += 60;
+        }
+        return result;
+      },
+      enumerable: false
+    },
+    rgbToAnsi: {
+      value: (red, green, blue) => styles2.ansi256ToAnsi(styles2.rgbToAnsi256(red, green, blue)),
+      enumerable: false
+    },
+    hexToAnsi: {
+      value: (hex) => styles2.ansi256ToAnsi(styles2.hexToAnsi256(hex)),
+      enumerable: false
     }
-    var {
+  });
+  return styles2;
+}
+var ANSI_BACKGROUND_OFFSET;
+var wrapAnsi16;
+var wrapAnsi256;
+var wrapAnsi16m;
+var ansiStyles;
+var ansi_styles_default;
+var init_ansi_styles = __esm({
+  "node_modules/chalk/source/vendor/ansi-styles/index.js"() {
+    ANSI_BACKGROUND_OFFSET = 10;
+    wrapAnsi16 = (offset = 0) => (code) => `\x1B[${code + offset}m`;
+    wrapAnsi256 = (offset = 0) => (code) => `\x1B[${38 + offset};5;${code}m`;
+    wrapAnsi16m = (offset = 0) => (red, green, blue) => `\x1B[${38 + offset};2;${red};${green};${blue}m`;
+    ansiStyles = assembleStyles();
+    ansi_styles_default = ansiStyles;
+  }
+});
+function hasFlag(flag, argv = import_node_process.default.argv) {
+  const prefix = flag.startsWith("-") ? "" : flag.length === 1 ? "-" : "--";
+  const position = argv.indexOf(prefix + flag);
+  const terminatorPosition = argv.indexOf("--");
+  return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
+}
+function envForceColor() {
+  if ("FORCE_COLOR" in env) {
+    if (env.FORCE_COLOR === "true") {
+      return 1;
+    }
+    if (env.FORCE_COLOR === "false") {
+      return 0;
+    }
+    return env.FORCE_COLOR.length === 0 ? 1 : Math.min(Number.parseInt(env.FORCE_COLOR, 10), 3);
+  }
+}
+function translateLevel(level) {
+  if (level === 0) {
+    return false;
+  }
+  return {
+    level,
+    hasBasic: true,
+    has256: level >= 2,
+    has16m: level >= 3
+  };
+}
+function _supportsColor(haveStream, {
+  streamIsTTY,
+  sniffFlags = true
+} = {}) {
+  const noFlagForceColor = envForceColor();
+  if (noFlagForceColor !== void 0) {
+    flagForceColor = noFlagForceColor;
+  }
+  const forceColor = sniffFlags ? flagForceColor : noFlagForceColor;
+  if (forceColor === 0) {
+    return 0;
+  }
+  if (sniffFlags) {
+    if (hasFlag("color=16m") || hasFlag("color=full") || hasFlag("color=truecolor")) {
+      return 3;
+    }
+    if (hasFlag("color=256")) {
+      return 2;
+    }
+  }
+  if (haveStream && !streamIsTTY && forceColor === void 0) {
+    return 0;
+  }
+  const min = forceColor || 0;
+  if (env.TERM === "dumb") {
+    return min;
+  }
+  if (import_node_process.default.platform === "win32") {
+    const osRelease = import_node_os.default.release().split(".");
+    if (Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) {
+      return Number(osRelease[2]) >= 14931 ? 3 : 2;
+    }
+    return 1;
+  }
+  if ("CI" in env) {
+    if (["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI", "GITHUB_ACTIONS", "BUILDKITE", "DRONE"].some((sign) => sign in env) || env.CI_NAME === "codeship") {
+      return 1;
+    }
+    return min;
+  }
+  if ("TEAMCITY_VERSION" in env) {
+    return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;
+  }
+  if ("TF_BUILD" in env && "AGENT_NAME" in env) {
+    return 1;
+  }
+  if (env.COLORTERM === "truecolor") {
+    return 3;
+  }
+  if ("TERM_PROGRAM" in env) {
+    const version = Number.parseInt((env.TERM_PROGRAM_VERSION || "").split(".")[0], 10);
+    switch (env.TERM_PROGRAM) {
+      case "iTerm.app":
+        return version >= 3 ? 3 : 2;
+      case "Apple_Terminal":
+        return 2;
+    }
+  }
+  if (/-256(color)?$/i.test(env.TERM)) {
+    return 2;
+  }
+  if (/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env.TERM)) {
+    return 1;
+  }
+  if ("COLORTERM" in env) {
+    return 1;
+  }
+  return min;
+}
+function createSupportsColor(stream, options = {}) {
+  const level = _supportsColor(stream, Object.assign({
+    streamIsTTY: stream && stream.isTTY
+  }, options));
+  return translateLevel(level);
+}
+var import_node_process;
+var import_node_os;
+var import_node_tty;
+var env;
+var flagForceColor;
+var supportsColor;
+var supports_color_default;
+var init_supports_color = __esm({
+  "node_modules/chalk/source/vendor/supports-color/index.js"() {
+    import_node_process = __toESM(require("process"), 1);
+    import_node_os = __toESM(require("os"), 1);
+    import_node_tty = __toESM(require("tty"), 1);
+    ({
       env
-    } = import_node_process.default;
-    var flagForceColor;
+    } = import_node_process.default);
     if (hasFlag("no-color") || hasFlag("no-colors") || hasFlag("color=false") || hasFlag("color=never")) {
       flagForceColor = 0;
     } else if (hasFlag("color") || hasFlag("colors") || hasFlag("color=true") || hasFlag("color=always")) {
       flagForceColor = 1;
     }
-    function envForceColor() {
-      if ("FORCE_COLOR" in env) {
-        if (env.FORCE_COLOR === "true") {
-          return 1;
-        }
-        if (env.FORCE_COLOR === "false") {
-          return 0;
-        }
-        return env.FORCE_COLOR.length === 0 ? 1 : Math.min(Number.parseInt(env.FORCE_COLOR, 10), 3);
-      }
-    }
-    function translateLevel(level) {
-      if (level === 0) {
-        return false;
-      }
-      return {
-        level,
-        hasBasic: true,
-        has256: level >= 2,
-        has16m: level >= 3
-      };
-    }
-    function _supportsColor(haveStream, {
-      streamIsTTY,
-      sniffFlags = true
-    } = {}) {
-      const noFlagForceColor = envForceColor();
-      if (noFlagForceColor !== void 0) {
-        flagForceColor = noFlagForceColor;
-      }
-      const forceColor = sniffFlags ? flagForceColor : noFlagForceColor;
-      if (forceColor === 0) {
-        return 0;
-      }
-      if (sniffFlags) {
-        if (hasFlag("color=16m") || hasFlag("color=full") || hasFlag("color=truecolor")) {
-          return 3;
-        }
-        if (hasFlag("color=256")) {
-          return 2;
-        }
-      }
-      if (haveStream && !streamIsTTY && forceColor === void 0) {
-        return 0;
-      }
-      const min = forceColor || 0;
-      if (env.TERM === "dumb") {
-        return min;
-      }
-      if (import_node_process.default.platform === "win32") {
-        const osRelease = import_node_os.default.release().split(".");
-        if (Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) {
-          return Number(osRelease[2]) >= 14931 ? 3 : 2;
-        }
-        return 1;
-      }
-      if ("CI" in env) {
-        if (["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI", "GITHUB_ACTIONS", "BUILDKITE", "DRONE"].some((sign) => sign in env) || env.CI_NAME === "codeship") {
-          return 1;
-        }
-        return min;
-      }
-      if ("TEAMCITY_VERSION" in env) {
-        return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;
-      }
-      if ("TF_BUILD" in env && "AGENT_NAME" in env) {
-        return 1;
-      }
-      if (env.COLORTERM === "truecolor") {
-        return 3;
-      }
-      if ("TERM_PROGRAM" in env) {
-        const version = Number.parseInt((env.TERM_PROGRAM_VERSION || "").split(".")[0], 10);
-        switch (env.TERM_PROGRAM) {
-          case "iTerm.app":
-            return version >= 3 ? 3 : 2;
-          case "Apple_Terminal":
-            return 2;
-        }
-      }
-      if (/-256(color)?$/i.test(env.TERM)) {
-        return 2;
-      }
-      if (/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env.TERM)) {
-        return 1;
-      }
-      if ("COLORTERM" in env) {
-        return 1;
-      }
-      return min;
-    }
-    function createSupportsColor(stream, options = {}) {
-      const level = _supportsColor(stream, __spreadValues({
-        streamIsTTY: stream && stream.isTTY
-      }, options));
-      return translateLevel(level);
-    }
-    var supportsColor = {
+    supportsColor = {
       stdout: createSupportsColor({
         isTTY: import_node_tty.default.isatty(1)
       }),
@@ -2167,65 +2161,103 @@ var require_chalk = __commonJS2({
         isTTY: import_node_tty.default.isatty(2)
       })
     };
-    var supports_color_default = supportsColor;
-    function stringReplaceAll(string, substring, replacer) {
-      let index = string.indexOf(substring);
-      if (index === -1) {
-        return string;
-      }
-      const substringLength = substring.length;
-      let endIndex = 0;
-      let returnValue = "";
-      do {
-        returnValue += string.substr(endIndex, index - endIndex) + substring + replacer;
-        endIndex = index + substringLength;
-        index = string.indexOf(substring, endIndex);
-      } while (index !== -1);
-      returnValue += string.slice(endIndex);
-      return returnValue;
-    }
-    function stringEncaseCRLFWithFirstIndex(string, prefix, postfix, index) {
-      let endIndex = 0;
-      let returnValue = "";
-      do {
-        const gotCR = string[index - 1] === "\r";
-        returnValue += string.substr(endIndex, (gotCR ? index - 1 : index) - endIndex) + prefix + (gotCR ? "\r\n" : "\n") + postfix;
-        endIndex = index + 1;
-        index = string.indexOf("\n", endIndex);
-      } while (index !== -1);
-      returnValue += string.slice(endIndex);
-      return returnValue;
-    }
-    var {
+    supports_color_default = supportsColor;
+  }
+});
+function stringReplaceAll(string, substring, replacer) {
+  let index = string.indexOf(substring);
+  if (index === -1) {
+    return string;
+  }
+  const substringLength = substring.length;
+  let endIndex = 0;
+  let returnValue = "";
+  do {
+    returnValue += string.substr(endIndex, index - endIndex) + substring + replacer;
+    endIndex = index + substringLength;
+    index = string.indexOf(substring, endIndex);
+  } while (index !== -1);
+  returnValue += string.slice(endIndex);
+  return returnValue;
+}
+function stringEncaseCRLFWithFirstIndex(string, prefix, postfix, index) {
+  let endIndex = 0;
+  let returnValue = "";
+  do {
+    const gotCR = string[index - 1] === "\r";
+    returnValue += string.substr(endIndex, (gotCR ? index - 1 : index) - endIndex) + prefix + (gotCR ? "\r\n" : "\n") + postfix;
+    endIndex = index + 1;
+    index = string.indexOf("\n", endIndex);
+  } while (index !== -1);
+  returnValue += string.slice(endIndex);
+  return returnValue;
+}
+var init_utilities = __esm({
+  "node_modules/chalk/source/utilities.js"() {
+  }
+});
+var source_exports = {};
+__export(source_exports, {
+  Chalk: () => Chalk,
+  chalkStderr: () => chalkStderr,
+  default: () => source_default,
+  supportsColor: () => stdoutColor,
+  supportsColorStderr: () => stderrColor
+});
+function createChalk(options) {
+  return chalkFactory(options);
+}
+var stdoutColor;
+var stderrColor;
+var GENERATOR;
+var STYLER;
+var IS_EMPTY;
+var levelMapping;
+var styles;
+var applyOptions;
+var Chalk;
+var chalkFactory;
+var getModelAnsi;
+var usedModels;
+var proto;
+var createStyler;
+var createBuilder;
+var applyStyle;
+var chalk;
+var chalkStderr;
+var source_default;
+var init_source = __esm({
+  "node_modules/chalk/source/index.js"() {
+    init_ansi_styles();
+    init_supports_color();
+    init_utilities();
+    ({
       stdout: stdoutColor,
       stderr: stderrColor
-    } = supports_color_default;
-    var GENERATOR = Symbol("GENERATOR");
-    var STYLER = Symbol("STYLER");
-    var IS_EMPTY = Symbol("IS_EMPTY");
-    var levelMapping = ["ansi", "ansi", "ansi256", "ansi16m"];
-    var styles = /* @__PURE__ */ Object.create(null);
-    var applyOptions = (object, options = {}) => {
+    } = supports_color_default);
+    GENERATOR = Symbol("GENERATOR");
+    STYLER = Symbol("STYLER");
+    IS_EMPTY = Symbol("IS_EMPTY");
+    levelMapping = ["ansi", "ansi", "ansi256", "ansi16m"];
+    styles = /* @__PURE__ */ Object.create(null);
+    applyOptions = (object, options = {}) => {
       if (options.level && !(Number.isInteger(options.level) && options.level >= 0 && options.level <= 3)) {
         throw new Error("The `level` option should be an integer from 0 to 3");
       }
       const colorLevel = stdoutColor ? stdoutColor.level : 0;
       object.level = options.level === void 0 ? colorLevel : options.level;
     };
-    var Chalk = class {
+    Chalk = class {
       constructor(options) {
         return chalkFactory(options);
       }
     };
-    var chalkFactory = (options) => {
+    chalkFactory = (options) => {
       const chalk2 = (...strings) => strings.join(" ");
       applyOptions(chalk2, options);
       Object.setPrototypeOf(chalk2, createChalk.prototype);
       return chalk2;
     };
-    function createChalk(options) {
-      return chalkFactory(options);
-    }
     Object.setPrototypeOf(createChalk.prototype, Function.prototype);
     for (const [styleName, style] of Object.entries(ansi_styles_default)) {
       styles[styleName] = {
@@ -2247,7 +2279,7 @@ var require_chalk = __commonJS2({
         return builder;
       }
     };
-    var getModelAnsi = (model, level, type, ...arguments_) => {
+    getModelAnsi = (model, level, type, ...arguments_) => {
       if (model === "rgb") {
         if (level === "ansi16m") {
           return ansi_styles_default[type].ansi16m(...arguments_);
@@ -2262,7 +2294,7 @@ var require_chalk = __commonJS2({
       }
       return ansi_styles_default[type][model](...arguments_);
     };
-    var usedModels = ["rgb", "hex", "ansi256"];
+    usedModels = ["rgb", "hex", "ansi256"];
     for (const model of usedModels) {
       styles[model] = {
         get() {
@@ -2288,8 +2320,8 @@ var require_chalk = __commonJS2({
         }
       };
     }
-    var proto = Object.defineProperties(() => {
-    }, __spreadProps(__spreadValues({}, styles), {
+    proto = Object.defineProperties(() => {
+    }, Object.assign(Object.assign({}, styles), {}, {
       level: {
         enumerable: true,
         get() {
@@ -2300,7 +2332,7 @@ var require_chalk = __commonJS2({
         }
       }
     }));
-    var createStyler = (open, close, parent) => {
+    createStyler = (open, close, parent) => {
       let openAll;
       let closeAll;
       if (parent === void 0) {
@@ -2318,7 +2350,7 @@ var require_chalk = __commonJS2({
         parent
       };
     };
-    var createBuilder = (self2, _styler, _isEmpty) => {
+    createBuilder = (self2, _styler, _isEmpty) => {
       const builder = (...arguments_) => applyStyle(builder, arguments_.length === 1 ? "" + arguments_[0] : arguments_.join(" "));
       Object.setPrototypeOf(builder, proto);
       builder[GENERATOR] = self2;
@@ -2326,7 +2358,7 @@ var require_chalk = __commonJS2({
       builder[IS_EMPTY] = _isEmpty;
       return builder;
     };
-    var applyStyle = (self2, string) => {
+    applyStyle = (self2, string) => {
       if (self2.level <= 0 || !string) {
         return self2[IS_EMPTY] ? "" : string;
       }
@@ -2351,26 +2383,28 @@ var require_chalk = __commonJS2({
       return openAll + string + closeAll;
     };
     Object.defineProperties(createChalk.prototype, styles);
-    var chalk = createChalk();
-    var chalkStderr = createChalk({
+    chalk = createChalk();
+    chalkStderr = createChalk({
       level: stderrColor ? stderrColor.level : 0
     });
-    var source_default = chalk;
+    source_default = chalk;
   }
 });
 var require_logger = __commonJS2({
   "src/cli/logger.js"(exports2, module2) {
     "use strict";
     var readline = require("readline");
-    var stripAnsi = require_strip_ansi();
     var wcwidth = require_wcwidth();
     var {
-      default: chalk
-    } = require_chalk();
+      default: stripAnsi2
+    } = (init_strip_ansi(), __toCommonJS(strip_ansi_exports));
+    var {
+      default: chalk2
+    } = (init_source(), __toCommonJS(source_exports));
     var countLines = (stream, text) => {
       const columns = stream.columns || 80;
       let lineCount = 0;
-      for (const line of stripAnsi(text).split("\n")) {
+      for (const line of stripAnsi2(text).split("\n")) {
         lineCount += Math.max(1, Math.ceil(wcwidth(line) / columns));
       }
       return lineCount;
@@ -2401,7 +2435,7 @@ var require_logger = __commonJS2({
         if (!shouldLog(loggerName)) {
           return () => emptyLogResult;
         }
-        const prefix = color ? `[${chalk[color](loggerName)}] ` : "";
+        const prefix = color ? `[${chalk2[color](loggerName)}] ` : "";
         const stream = process[loggerName === "log" ? "stdout" : "stderr"];
         return (message, options) => {
           options = Object.assign({
@@ -2602,46 +2636,62 @@ var require_constant = __commonJS2({
     } = require_prettier_internal();
     var categoryOrder = [coreOptions.CATEGORY_OUTPUT, coreOptions.CATEGORY_FORMAT, coreOptions.CATEGORY_CONFIG, coreOptions.CATEGORY_EDITOR, coreOptions.CATEGORY_OTHER];
     var options = {
+      cache: {
+        default: false,
+        description: "Only format changed files. Cannot use with --stdin-filepath.",
+        type: "boolean"
+      },
+      "cache-strategy": {
+        choices: [{
+          description: "Use the file metadata such as timestamps as cache keys",
+          value: "metadata"
+        }, {
+          description: "Use the file content as cache keys",
+          value: "content"
+        }],
+        description: "Strategy for the cache to use for detecting changed files.",
+        type: "choice"
+      },
       check: {
-        type: "boolean",
-        category: coreOptions.CATEGORY_OUTPUT,
         alias: "c",
+        category: coreOptions.CATEGORY_OUTPUT,
         description: outdent`
       Check if the given files are formatted, print a human-friendly summary
       message and paths to unformatted files (see also --list-different).
-    `
+    `,
+        type: "boolean"
       },
       color: {
-        type: "boolean",
         default: true,
         description: "Colorize error messages.",
-        oppositeDescription: "Do not colorize error messages."
+        oppositeDescription: "Do not colorize error messages.",
+        type: "boolean"
       },
       config: {
-        type: "path",
         category: coreOptions.CATEGORY_CONFIG,
         description: "Path to a Prettier configuration file (.prettierrc, package.json, prettier.config.js).",
+        exception: (value) => value === false,
         oppositeDescription: "Do not look for a configuration file.",
-        exception: (value) => value === false
+        type: "path"
       },
       "config-precedence": {
-        type: "choice",
         category: coreOptions.CATEGORY_CONFIG,
-        default: "cli-override",
         choices: [{
-          value: "cli-override",
-          description: "CLI options take precedence over config file"
+          description: "CLI options take precedence over config file",
+          value: "cli-override"
         }, {
-          value: "file-override",
-          description: "Config file take precedence over CLI options"
+          description: "Config file take precedence over CLI options",
+          value: "file-override"
         }, {
-          value: "prefer-file",
           description: outdent`
           If a config file is found will evaluate it and ignore other CLI options.
           If no config file is found CLI options will evaluate as normal.
-        `
+        `,
+          value: "prefer-file"
         }],
-        description: "Define in which order config files and CLI options should be evaluated."
+        default: "cli-override",
+        description: "Define in which order config files and CLI options should be evaluated.",
+        type: "choice"
       },
       "debug-benchmark": {
         type: "boolean"
@@ -2649,98 +2699,98 @@ var require_constant = __commonJS2({
       "debug-check": {
         type: "boolean"
       },
-      "debug-print-doc": {
+      "debug-print-ast": {
         type: "boolean"
       },
       "debug-print-comments": {
         type: "boolean"
       },
-      "debug-print-ast": {
+      "debug-print-doc": {
         type: "boolean"
       },
       "debug-repeat": {
-        type: "int",
-        default: 0
+        default: 0,
+        type: "int"
       },
       editorconfig: {
-        type: "boolean",
         category: coreOptions.CATEGORY_CONFIG,
+        default: true,
         description: "Take .editorconfig into account when parsing configuration.",
         oppositeDescription: "Don't take .editorconfig into account when parsing configuration.",
-        default: true
+        type: "boolean"
       },
       "error-on-unmatched-pattern": {
-        type: "boolean",
-        oppositeDescription: "Prevent errors when pattern is unmatched."
-      },
-      "find-config-path": {
-        type: "path",
-        category: coreOptions.CATEGORY_CONFIG,
-        description: "Find and print the path to a configuration file for the given input file."
+        oppositeDescription: "Prevent errors when pattern is unmatched.",
+        type: "boolean"
       },
       "file-info": {
-        type: "path",
         description: outdent`
       Extract the following info (as JSON) for a given file path. Reported fields:
       * ignored (boolean) - true if file path is filtered by --ignore-path
       * inferredParser (string | null) - name of parser inferred from file path
-    `
+    `,
+        type: "path"
+      },
+      "find-config-path": {
+        category: coreOptions.CATEGORY_CONFIG,
+        description: "Find and print the path to a configuration file for the given input file.",
+        type: "path"
       },
       help: {
-        type: "flag",
         alias: "h",
         description: outdent`
       Show CLI usage, or details about the given flag.
       Example: --help write
     `,
-        exception: (value) => value === ""
+        exception: (value) => value === "",
+        type: "flag"
       },
       "ignore-path": {
-        type: "path",
         category: coreOptions.CATEGORY_CONFIG,
         default: ".prettierignore",
-        description: "Path to a file with patterns describing files to ignore."
+        description: "Path to a file with patterns describing files to ignore.",
+        type: "path"
       },
       "ignore-unknown": {
-        type: "boolean",
         alias: "u",
-        description: "Ignore unknown files."
+        description: "Ignore unknown files.",
+        type: "boolean"
       },
       "list-different": {
-        type: "boolean",
-        category: coreOptions.CATEGORY_OUTPUT,
         alias: "l",
-        description: "Print the names of files that are different from Prettier's formatting (see also --check)."
+        category: coreOptions.CATEGORY_OUTPUT,
+        description: "Print the names of files that are different from Prettier's formatting (see also --check).",
+        type: "boolean"
       },
       loglevel: {
-        type: "choice",
-        description: "What level of logs to report.",
+        choices: ["silent", "error", "warn", "log", "debug"],
         default: "log",
-        choices: ["silent", "error", "warn", "log", "debug"]
+        description: "What level of logs to report.",
+        type: "choice"
       },
       "plugin-search": {
-        type: "boolean",
-        oppositeDescription: "Disable plugin autoloading."
+        oppositeDescription: "Disable plugin autoloading.",
+        type: "boolean"
       },
       "support-info": {
-        type: "boolean",
-        description: "Print support information as JSON."
+        description: "Print support information as JSON.",
+        type: "boolean"
       },
       version: {
-        type: "boolean",
         alias: "v",
-        description: "Print Prettier version."
+        description: "Print Prettier version.",
+        type: "boolean"
       },
       "with-node-modules": {
-        type: "boolean",
         category: coreOptions.CATEGORY_CONFIG,
-        description: "Process files inside 'node_modules' directory."
+        description: "Process files inside 'node_modules' directory.",
+        type: "boolean"
       },
       write: {
-        type: "boolean",
         alias: "w",
         category: coreOptions.CATEGORY_OUTPUT,
-        description: "Edit files in-place. (Beware!)"
+        description: "Edit files in-place. (Beware!)",
+        type: "boolean"
       }
     };
     var usageSummary = outdent`
@@ -2859,1082 +2909,6 @@ var require_get_context_options = __commonJS2({
     module2.exports = getContextOptions;
   }
 });
-var require_isArray = __commonJS2({
-  "node_modules/lodash/isArray.js"(exports2, module2) {
-    var isArray = Array.isArray;
-    module2.exports = isArray;
-  }
-});
-var require_freeGlobal = __commonJS2({
-  "node_modules/lodash/_freeGlobal.js"(exports2, module2) {
-    var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
-    module2.exports = freeGlobal;
-  }
-});
-var require_root = __commonJS2({
-  "node_modules/lodash/_root.js"(exports2, module2) {
-    var freeGlobal = require_freeGlobal();
-    var freeSelf = typeof self == "object" && self && self.Object === Object && self;
-    var root = freeGlobal || freeSelf || Function("return this")();
-    module2.exports = root;
-  }
-});
-var require_Symbol = __commonJS2({
-  "node_modules/lodash/_Symbol.js"(exports2, module2) {
-    var root = require_root();
-    var Symbol2 = root.Symbol;
-    module2.exports = Symbol2;
-  }
-});
-var require_getRawTag = __commonJS2({
-  "node_modules/lodash/_getRawTag.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    var nativeObjectToString = objectProto.toString;
-    var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
-    function getRawTag(value) {
-      var isOwn = hasOwnProperty.call(value, symToStringTag), tag = value[symToStringTag];
-      try {
-        value[symToStringTag] = void 0;
-        var unmasked = true;
-      } catch (e) {
-      }
-      var result = nativeObjectToString.call(value);
-      if (unmasked) {
-        if (isOwn) {
-          value[symToStringTag] = tag;
-        } else {
-          delete value[symToStringTag];
-        }
-      }
-      return result;
-    }
-    module2.exports = getRawTag;
-  }
-});
-var require_objectToString = __commonJS2({
-  "node_modules/lodash/_objectToString.js"(exports2, module2) {
-    var objectProto = Object.prototype;
-    var nativeObjectToString = objectProto.toString;
-    function objectToString(value) {
-      return nativeObjectToString.call(value);
-    }
-    module2.exports = objectToString;
-  }
-});
-var require_baseGetTag = __commonJS2({
-  "node_modules/lodash/_baseGetTag.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var getRawTag = require_getRawTag();
-    var objectToString = require_objectToString();
-    var nullTag = "[object Null]";
-    var undefinedTag = "[object Undefined]";
-    var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
-    function baseGetTag(value) {
-      if (value == null) {
-        return value === void 0 ? undefinedTag : nullTag;
-      }
-      return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
-    }
-    module2.exports = baseGetTag;
-  }
-});
-var require_isObjectLike = __commonJS2({
-  "node_modules/lodash/isObjectLike.js"(exports2, module2) {
-    function isObjectLike(value) {
-      return value != null && typeof value == "object";
-    }
-    module2.exports = isObjectLike;
-  }
-});
-var require_isSymbol = __commonJS2({
-  "node_modules/lodash/isSymbol.js"(exports2, module2) {
-    var baseGetTag = require_baseGetTag();
-    var isObjectLike = require_isObjectLike();
-    var symbolTag = "[object Symbol]";
-    function isSymbol(value) {
-      return typeof value == "symbol" || isObjectLike(value) && baseGetTag(value) == symbolTag;
-    }
-    module2.exports = isSymbol;
-  }
-});
-var require_isKey = __commonJS2({
-  "node_modules/lodash/_isKey.js"(exports2, module2) {
-    var isArray = require_isArray();
-    var isSymbol = require_isSymbol();
-    var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/;
-    var reIsPlainProp = /^\w*$/;
-    function isKey(value, object) {
-      if (isArray(value)) {
-        return false;
-      }
-      var type = typeof value;
-      if (type == "number" || type == "symbol" || type == "boolean" || value == null || isSymbol(value)) {
-        return true;
-      }
-      return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
-    }
-    module2.exports = isKey;
-  }
-});
-var require_isObject = __commonJS2({
-  "node_modules/lodash/isObject.js"(exports2, module2) {
-    function isObject(value) {
-      var type = typeof value;
-      return value != null && (type == "object" || type == "function");
-    }
-    module2.exports = isObject;
-  }
-});
-var require_isFunction = __commonJS2({
-  "node_modules/lodash/isFunction.js"(exports2, module2) {
-    var baseGetTag = require_baseGetTag();
-    var isObject = require_isObject();
-    var asyncTag = "[object AsyncFunction]";
-    var funcTag = "[object Function]";
-    var genTag = "[object GeneratorFunction]";
-    var proxyTag = "[object Proxy]";
-    function isFunction(value) {
-      if (!isObject(value)) {
-        return false;
-      }
-      var tag = baseGetTag(value);
-      return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
-    }
-    module2.exports = isFunction;
-  }
-});
-var require_coreJsData = __commonJS2({
-  "node_modules/lodash/_coreJsData.js"(exports2, module2) {
-    var root = require_root();
-    var coreJsData = root["__core-js_shared__"];
-    module2.exports = coreJsData;
-  }
-});
-var require_isMasked = __commonJS2({
-  "node_modules/lodash/_isMasked.js"(exports2, module2) {
-    var coreJsData = require_coreJsData();
-    var maskSrcKey = function() {
-      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
-      return uid ? "Symbol(src)_1." + uid : "";
-    }();
-    function isMasked(func) {
-      return !!maskSrcKey && maskSrcKey in func;
-    }
-    module2.exports = isMasked;
-  }
-});
-var require_toSource = __commonJS2({
-  "node_modules/lodash/_toSource.js"(exports2, module2) {
-    var funcProto = Function.prototype;
-    var funcToString = funcProto.toString;
-    function toSource(func) {
-      if (func != null) {
-        try {
-          return funcToString.call(func);
-        } catch (e) {
-        }
-        try {
-          return func + "";
-        } catch (e) {
-        }
-      }
-      return "";
-    }
-    module2.exports = toSource;
-  }
-});
-var require_baseIsNative = __commonJS2({
-  "node_modules/lodash/_baseIsNative.js"(exports2, module2) {
-    var isFunction = require_isFunction();
-    var isMasked = require_isMasked();
-    var isObject = require_isObject();
-    var toSource = require_toSource();
-    var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-    var reIsHostCtor = /^\[object .+?Constructor\]$/;
-    var funcProto = Function.prototype;
-    var objectProto = Object.prototype;
-    var funcToString = funcProto.toString;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    var reIsNative = RegExp("^" + funcToString.call(hasOwnProperty).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$");
-    function baseIsNative(value) {
-      if (!isObject(value) || isMasked(value)) {
-        return false;
-      }
-      var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
-      return pattern.test(toSource(value));
-    }
-    module2.exports = baseIsNative;
-  }
-});
-var require_getValue = __commonJS2({
-  "node_modules/lodash/_getValue.js"(exports2, module2) {
-    function getValue(object, key) {
-      return object == null ? void 0 : object[key];
-    }
-    module2.exports = getValue;
-  }
-});
-var require_getNative = __commonJS2({
-  "node_modules/lodash/_getNative.js"(exports2, module2) {
-    var baseIsNative = require_baseIsNative();
-    var getValue = require_getValue();
-    function getNative(object, key) {
-      var value = getValue(object, key);
-      return baseIsNative(value) ? value : void 0;
-    }
-    module2.exports = getNative;
-  }
-});
-var require_nativeCreate = __commonJS2({
-  "node_modules/lodash/_nativeCreate.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var nativeCreate = getNative(Object, "create");
-    module2.exports = nativeCreate;
-  }
-});
-var require_hashClear = __commonJS2({
-  "node_modules/lodash/_hashClear.js"(exports2, module2) {
-    var nativeCreate = require_nativeCreate();
-    function hashClear() {
-      this.__data__ = nativeCreate ? nativeCreate(null) : {};
-      this.size = 0;
-    }
-    module2.exports = hashClear;
-  }
-});
-var require_hashDelete = __commonJS2({
-  "node_modules/lodash/_hashDelete.js"(exports2, module2) {
-    function hashDelete(key) {
-      var result = this.has(key) && delete this.__data__[key];
-      this.size -= result ? 1 : 0;
-      return result;
-    }
-    module2.exports = hashDelete;
-  }
-});
-var require_hashGet = __commonJS2({
-  "node_modules/lodash/_hashGet.js"(exports2, module2) {
-    var nativeCreate = require_nativeCreate();
-    var HASH_UNDEFINED = "__lodash_hash_undefined__";
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function hashGet(key) {
-      var data = this.__data__;
-      if (nativeCreate) {
-        var result = data[key];
-        return result === HASH_UNDEFINED ? void 0 : result;
-      }
-      return hasOwnProperty.call(data, key) ? data[key] : void 0;
-    }
-    module2.exports = hashGet;
-  }
-});
-var require_hashHas = __commonJS2({
-  "node_modules/lodash/_hashHas.js"(exports2, module2) {
-    var nativeCreate = require_nativeCreate();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function hashHas(key) {
-      var data = this.__data__;
-      return nativeCreate ? data[key] !== void 0 : hasOwnProperty.call(data, key);
-    }
-    module2.exports = hashHas;
-  }
-});
-var require_hashSet = __commonJS2({
-  "node_modules/lodash/_hashSet.js"(exports2, module2) {
-    var nativeCreate = require_nativeCreate();
-    var HASH_UNDEFINED = "__lodash_hash_undefined__";
-    function hashSet(key, value) {
-      var data = this.__data__;
-      this.size += this.has(key) ? 0 : 1;
-      data[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED : value;
-      return this;
-    }
-    module2.exports = hashSet;
-  }
-});
-var require_Hash = __commonJS2({
-  "node_modules/lodash/_Hash.js"(exports2, module2) {
-    var hashClear = require_hashClear();
-    var hashDelete = require_hashDelete();
-    var hashGet = require_hashGet();
-    var hashHas = require_hashHas();
-    var hashSet = require_hashSet();
-    function Hash(entries) {
-      var index = -1, length = entries == null ? 0 : entries.length;
-      this.clear();
-      while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-      }
-    }
-    Hash.prototype.clear = hashClear;
-    Hash.prototype["delete"] = hashDelete;
-    Hash.prototype.get = hashGet;
-    Hash.prototype.has = hashHas;
-    Hash.prototype.set = hashSet;
-    module2.exports = Hash;
-  }
-});
-var require_listCacheClear = __commonJS2({
-  "node_modules/lodash/_listCacheClear.js"(exports2, module2) {
-    function listCacheClear() {
-      this.__data__ = [];
-      this.size = 0;
-    }
-    module2.exports = listCacheClear;
-  }
-});
-var require_eq = __commonJS2({
-  "node_modules/lodash/eq.js"(exports2, module2) {
-    function eq(value, other) {
-      return value === other || value !== value && other !== other;
-    }
-    module2.exports = eq;
-  }
-});
-var require_assocIndexOf = __commonJS2({
-  "node_modules/lodash/_assocIndexOf.js"(exports2, module2) {
-    var eq = require_eq();
-    function assocIndexOf(array, key) {
-      var length = array.length;
-      while (length--) {
-        if (eq(array[length][0], key)) {
-          return length;
-        }
-      }
-      return -1;
-    }
-    module2.exports = assocIndexOf;
-  }
-});
-var require_listCacheDelete = __commonJS2({
-  "node_modules/lodash/_listCacheDelete.js"(exports2, module2) {
-    var assocIndexOf = require_assocIndexOf();
-    var arrayProto = Array.prototype;
-    var splice = arrayProto.splice;
-    function listCacheDelete(key) {
-      var data = this.__data__, index = assocIndexOf(data, key);
-      if (index < 0) {
-        return false;
-      }
-      var lastIndex = data.length - 1;
-      if (index == lastIndex) {
-        data.pop();
-      } else {
-        splice.call(data, index, 1);
-      }
-      --this.size;
-      return true;
-    }
-    module2.exports = listCacheDelete;
-  }
-});
-var require_listCacheGet = __commonJS2({
-  "node_modules/lodash/_listCacheGet.js"(exports2, module2) {
-    var assocIndexOf = require_assocIndexOf();
-    function listCacheGet(key) {
-      var data = this.__data__, index = assocIndexOf(data, key);
-      return index < 0 ? void 0 : data[index][1];
-    }
-    module2.exports = listCacheGet;
-  }
-});
-var require_listCacheHas = __commonJS2({
-  "node_modules/lodash/_listCacheHas.js"(exports2, module2) {
-    var assocIndexOf = require_assocIndexOf();
-    function listCacheHas(key) {
-      return assocIndexOf(this.__data__, key) > -1;
-    }
-    module2.exports = listCacheHas;
-  }
-});
-var require_listCacheSet = __commonJS2({
-  "node_modules/lodash/_listCacheSet.js"(exports2, module2) {
-    var assocIndexOf = require_assocIndexOf();
-    function listCacheSet(key, value) {
-      var data = this.__data__, index = assocIndexOf(data, key);
-      if (index < 0) {
-        ++this.size;
-        data.push([key, value]);
-      } else {
-        data[index][1] = value;
-      }
-      return this;
-    }
-    module2.exports = listCacheSet;
-  }
-});
-var require_ListCache = __commonJS2({
-  "node_modules/lodash/_ListCache.js"(exports2, module2) {
-    var listCacheClear = require_listCacheClear();
-    var listCacheDelete = require_listCacheDelete();
-    var listCacheGet = require_listCacheGet();
-    var listCacheHas = require_listCacheHas();
-    var listCacheSet = require_listCacheSet();
-    function ListCache(entries) {
-      var index = -1, length = entries == null ? 0 : entries.length;
-      this.clear();
-      while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-      }
-    }
-    ListCache.prototype.clear = listCacheClear;
-    ListCache.prototype["delete"] = listCacheDelete;
-    ListCache.prototype.get = listCacheGet;
-    ListCache.prototype.has = listCacheHas;
-    ListCache.prototype.set = listCacheSet;
-    module2.exports = ListCache;
-  }
-});
-var require_Map = __commonJS2({
-  "node_modules/lodash/_Map.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var Map2 = getNative(root, "Map");
-    module2.exports = Map2;
-  }
-});
-var require_mapCacheClear = __commonJS2({
-  "node_modules/lodash/_mapCacheClear.js"(exports2, module2) {
-    var Hash = require_Hash();
-    var ListCache = require_ListCache();
-    var Map2 = require_Map();
-    function mapCacheClear() {
-      this.size = 0;
-      this.__data__ = {
-        "hash": new Hash(),
-        "map": new (Map2 || ListCache)(),
-        "string": new Hash()
-      };
-    }
-    module2.exports = mapCacheClear;
-  }
-});
-var require_isKeyable = __commonJS2({
-  "node_modules/lodash/_isKeyable.js"(exports2, module2) {
-    function isKeyable(value) {
-      var type = typeof value;
-      return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
-    }
-    module2.exports = isKeyable;
-  }
-});
-var require_getMapData = __commonJS2({
-  "node_modules/lodash/_getMapData.js"(exports2, module2) {
-    var isKeyable = require_isKeyable();
-    function getMapData(map, key) {
-      var data = map.__data__;
-      return isKeyable(key) ? data[typeof key == "string" ? "string" : "hash"] : data.map;
-    }
-    module2.exports = getMapData;
-  }
-});
-var require_mapCacheDelete = __commonJS2({
-  "node_modules/lodash/_mapCacheDelete.js"(exports2, module2) {
-    var getMapData = require_getMapData();
-    function mapCacheDelete(key) {
-      var result = getMapData(this, key)["delete"](key);
-      this.size -= result ? 1 : 0;
-      return result;
-    }
-    module2.exports = mapCacheDelete;
-  }
-});
-var require_mapCacheGet = __commonJS2({
-  "node_modules/lodash/_mapCacheGet.js"(exports2, module2) {
-    var getMapData = require_getMapData();
-    function mapCacheGet(key) {
-      return getMapData(this, key).get(key);
-    }
-    module2.exports = mapCacheGet;
-  }
-});
-var require_mapCacheHas = __commonJS2({
-  "node_modules/lodash/_mapCacheHas.js"(exports2, module2) {
-    var getMapData = require_getMapData();
-    function mapCacheHas(key) {
-      return getMapData(this, key).has(key);
-    }
-    module2.exports = mapCacheHas;
-  }
-});
-var require_mapCacheSet = __commonJS2({
-  "node_modules/lodash/_mapCacheSet.js"(exports2, module2) {
-    var getMapData = require_getMapData();
-    function mapCacheSet(key, value) {
-      var data = getMapData(this, key), size = data.size;
-      data.set(key, value);
-      this.size += data.size == size ? 0 : 1;
-      return this;
-    }
-    module2.exports = mapCacheSet;
-  }
-});
-var require_MapCache = __commonJS2({
-  "node_modules/lodash/_MapCache.js"(exports2, module2) {
-    var mapCacheClear = require_mapCacheClear();
-    var mapCacheDelete = require_mapCacheDelete();
-    var mapCacheGet = require_mapCacheGet();
-    var mapCacheHas = require_mapCacheHas();
-    var mapCacheSet = require_mapCacheSet();
-    function MapCache(entries) {
-      var index = -1, length = entries == null ? 0 : entries.length;
-      this.clear();
-      while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-      }
-    }
-    MapCache.prototype.clear = mapCacheClear;
-    MapCache.prototype["delete"] = mapCacheDelete;
-    MapCache.prototype.get = mapCacheGet;
-    MapCache.prototype.has = mapCacheHas;
-    MapCache.prototype.set = mapCacheSet;
-    module2.exports = MapCache;
-  }
-});
-var require_memoize = __commonJS2({
-  "node_modules/lodash/memoize.js"(exports2, module2) {
-    var MapCache = require_MapCache();
-    var FUNC_ERROR_TEXT = "Expected a function";
-    function memoize(func, resolver) {
-      if (typeof func != "function" || resolver != null && typeof resolver != "function") {
-        throw new TypeError(FUNC_ERROR_TEXT);
-      }
-      var memoized = function() {
-        var args = arguments, key = resolver ? resolver.apply(this, args) : args[0], cache = memoized.cache;
-        if (cache.has(key)) {
-          return cache.get(key);
-        }
-        var result = func.apply(this, args);
-        memoized.cache = cache.set(key, result) || cache;
-        return result;
-      };
-      memoized.cache = new (memoize.Cache || MapCache)();
-      return memoized;
-    }
-    memoize.Cache = MapCache;
-    module2.exports = memoize;
-  }
-});
-var require_memoizeCapped = __commonJS2({
-  "node_modules/lodash/_memoizeCapped.js"(exports2, module2) {
-    var memoize = require_memoize();
-    var MAX_MEMOIZE_SIZE = 500;
-    function memoizeCapped(func) {
-      var result = memoize(func, function(key) {
-        if (cache.size === MAX_MEMOIZE_SIZE) {
-          cache.clear();
-        }
-        return key;
-      });
-      var cache = result.cache;
-      return result;
-    }
-    module2.exports = memoizeCapped;
-  }
-});
-var require_stringToPath = __commonJS2({
-  "node_modules/lodash/_stringToPath.js"(exports2, module2) {
-    var memoizeCapped = require_memoizeCapped();
-    var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
-    var reEscapeChar = /\\(\\)?/g;
-    var stringToPath = memoizeCapped(function(string) {
-      var result = [];
-      if (string.charCodeAt(0) === 46) {
-        result.push("");
-      }
-      string.replace(rePropName, function(match, number, quote, subString) {
-        result.push(quote ? subString.replace(reEscapeChar, "$1") : number || match);
-      });
-      return result;
-    });
-    module2.exports = stringToPath;
-  }
-});
-var require_arrayMap = __commonJS2({
-  "node_modules/lodash/_arrayMap.js"(exports2, module2) {
-    function arrayMap(array, iteratee) {
-      var index = -1, length = array == null ? 0 : array.length, result = Array(length);
-      while (++index < length) {
-        result[index] = iteratee(array[index], index, array);
-      }
-      return result;
-    }
-    module2.exports = arrayMap;
-  }
-});
-var require_baseToString = __commonJS2({
-  "node_modules/lodash/_baseToString.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var arrayMap = require_arrayMap();
-    var isArray = require_isArray();
-    var isSymbol = require_isSymbol();
-    var INFINITY = 1 / 0;
-    var symbolProto = Symbol2 ? Symbol2.prototype : void 0;
-    var symbolToString = symbolProto ? symbolProto.toString : void 0;
-    function baseToString(value) {
-      if (typeof value == "string") {
-        return value;
-      }
-      if (isArray(value)) {
-        return arrayMap(value, baseToString) + "";
-      }
-      if (isSymbol(value)) {
-        return symbolToString ? symbolToString.call(value) : "";
-      }
-      var result = value + "";
-      return result == "0" && 1 / value == -INFINITY ? "-0" : result;
-    }
-    module2.exports = baseToString;
-  }
-});
-var require_toString = __commonJS2({
-  "node_modules/lodash/toString.js"(exports2, module2) {
-    var baseToString = require_baseToString();
-    function toString(value) {
-      return value == null ? "" : baseToString(value);
-    }
-    module2.exports = toString;
-  }
-});
-var require_castPath = __commonJS2({
-  "node_modules/lodash/_castPath.js"(exports2, module2) {
-    var isArray = require_isArray();
-    var isKey = require_isKey();
-    var stringToPath = require_stringToPath();
-    var toString = require_toString();
-    function castPath(value, object) {
-      if (isArray(value)) {
-        return value;
-      }
-      return isKey(value, object) ? [value] : stringToPath(toString(value));
-    }
-    module2.exports = castPath;
-  }
-});
-var require_toKey = __commonJS2({
-  "node_modules/lodash/_toKey.js"(exports2, module2) {
-    var isSymbol = require_isSymbol();
-    var INFINITY = 1 / 0;
-    function toKey(value) {
-      if (typeof value == "string" || isSymbol(value)) {
-        return value;
-      }
-      var result = value + "";
-      return result == "0" && 1 / value == -INFINITY ? "-0" : result;
-    }
-    module2.exports = toKey;
-  }
-});
-var require_baseGet = __commonJS2({
-  "node_modules/lodash/_baseGet.js"(exports2, module2) {
-    var castPath = require_castPath();
-    var toKey = require_toKey();
-    function baseGet(object, path) {
-      path = castPath(path, object);
-      var index = 0, length = path.length;
-      while (object != null && index < length) {
-        object = object[toKey(path[index++])];
-      }
-      return index && index == length ? object : void 0;
-    }
-    module2.exports = baseGet;
-  }
-});
-var require_defineProperty = __commonJS2({
-  "node_modules/lodash/_defineProperty.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var defineProperty = function() {
-      try {
-        var func = getNative(Object, "defineProperty");
-        func({}, "", {});
-        return func;
-      } catch (e) {
-      }
-    }();
-    module2.exports = defineProperty;
-  }
-});
-var require_baseAssignValue = __commonJS2({
-  "node_modules/lodash/_baseAssignValue.js"(exports2, module2) {
-    var defineProperty = require_defineProperty();
-    function baseAssignValue(object, key, value) {
-      if (key == "__proto__" && defineProperty) {
-        defineProperty(object, key, {
-          "configurable": true,
-          "enumerable": true,
-          "value": value,
-          "writable": true
-        });
-      } else {
-        object[key] = value;
-      }
-    }
-    module2.exports = baseAssignValue;
-  }
-});
-var require_assignValue = __commonJS2({
-  "node_modules/lodash/_assignValue.js"(exports2, module2) {
-    var baseAssignValue = require_baseAssignValue();
-    var eq = require_eq();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function assignValue(object, key, value) {
-      var objValue = object[key];
-      if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) || value === void 0 && !(key in object)) {
-        baseAssignValue(object, key, value);
-      }
-    }
-    module2.exports = assignValue;
-  }
-});
-var require_isIndex = __commonJS2({
-  "node_modules/lodash/_isIndex.js"(exports2, module2) {
-    var MAX_SAFE_INTEGER = 9007199254740991;
-    var reIsUint = /^(?:0|[1-9]\d*)$/;
-    function isIndex(value, length) {
-      var type = typeof value;
-      length = length == null ? MAX_SAFE_INTEGER : length;
-      return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
-    }
-    module2.exports = isIndex;
-  }
-});
-var require_baseSet = __commonJS2({
-  "node_modules/lodash/_baseSet.js"(exports2, module2) {
-    var assignValue = require_assignValue();
-    var castPath = require_castPath();
-    var isIndex = require_isIndex();
-    var isObject = require_isObject();
-    var toKey = require_toKey();
-    function baseSet(object, path, value, customizer) {
-      if (!isObject(object)) {
-        return object;
-      }
-      path = castPath(path, object);
-      var index = -1, length = path.length, lastIndex = length - 1, nested = object;
-      while (nested != null && ++index < length) {
-        var key = toKey(path[index]), newValue = value;
-        if (key === "__proto__" || key === "constructor" || key === "prototype") {
-          return object;
-        }
-        if (index != lastIndex) {
-          var objValue = nested[key];
-          newValue = customizer ? customizer(objValue, key, nested) : void 0;
-          if (newValue === void 0) {
-            newValue = isObject(objValue) ? objValue : isIndex(path[index + 1]) ? [] : {};
-          }
-        }
-        assignValue(nested, key, newValue);
-        nested = nested[key];
-      }
-      return object;
-    }
-    module2.exports = baseSet;
-  }
-});
-var require_basePickBy = __commonJS2({
-  "node_modules/lodash/_basePickBy.js"(exports2, module2) {
-    var baseGet = require_baseGet();
-    var baseSet = require_baseSet();
-    var castPath = require_castPath();
-    function basePickBy(object, paths, predicate) {
-      var index = -1, length = paths.length, result = {};
-      while (++index < length) {
-        var path = paths[index], value = baseGet(object, path);
-        if (predicate(value, path)) {
-          baseSet(result, castPath(path, object), value);
-        }
-      }
-      return result;
-    }
-    module2.exports = basePickBy;
-  }
-});
-var require_baseHasIn = __commonJS2({
-  "node_modules/lodash/_baseHasIn.js"(exports2, module2) {
-    function baseHasIn(object, key) {
-      return object != null && key in Object(object);
-    }
-    module2.exports = baseHasIn;
-  }
-});
-var require_baseIsArguments = __commonJS2({
-  "node_modules/lodash/_baseIsArguments.js"(exports2, module2) {
-    var baseGetTag = require_baseGetTag();
-    var isObjectLike = require_isObjectLike();
-    var argsTag = "[object Arguments]";
-    function baseIsArguments(value) {
-      return isObjectLike(value) && baseGetTag(value) == argsTag;
-    }
-    module2.exports = baseIsArguments;
-  }
-});
-var require_isArguments = __commonJS2({
-  "node_modules/lodash/isArguments.js"(exports2, module2) {
-    var baseIsArguments = require_baseIsArguments();
-    var isObjectLike = require_isObjectLike();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-    var isArguments = baseIsArguments(function() {
-      return arguments;
-    }()) ? baseIsArguments : function(value) {
-      return isObjectLike(value) && hasOwnProperty.call(value, "callee") && !propertyIsEnumerable.call(value, "callee");
-    };
-    module2.exports = isArguments;
-  }
-});
-var require_isLength = __commonJS2({
-  "node_modules/lodash/isLength.js"(exports2, module2) {
-    var MAX_SAFE_INTEGER = 9007199254740991;
-    function isLength(value) {
-      return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-    }
-    module2.exports = isLength;
-  }
-});
-var require_hasPath = __commonJS2({
-  "node_modules/lodash/_hasPath.js"(exports2, module2) {
-    var castPath = require_castPath();
-    var isArguments = require_isArguments();
-    var isArray = require_isArray();
-    var isIndex = require_isIndex();
-    var isLength = require_isLength();
-    var toKey = require_toKey();
-    function hasPath(object, path, hasFunc) {
-      path = castPath(path, object);
-      var index = -1, length = path.length, result = false;
-      while (++index < length) {
-        var key = toKey(path[index]);
-        if (!(result = object != null && hasFunc(object, key))) {
-          break;
-        }
-        object = object[key];
-      }
-      if (result || ++index != length) {
-        return result;
-      }
-      length = object == null ? 0 : object.length;
-      return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
-    }
-    module2.exports = hasPath;
-  }
-});
-var require_hasIn = __commonJS2({
-  "node_modules/lodash/hasIn.js"(exports2, module2) {
-    var baseHasIn = require_baseHasIn();
-    var hasPath = require_hasPath();
-    function hasIn(object, path) {
-      return object != null && hasPath(object, path, baseHasIn);
-    }
-    module2.exports = hasIn;
-  }
-});
-var require_basePick = __commonJS2({
-  "node_modules/lodash/_basePick.js"(exports2, module2) {
-    var basePickBy = require_basePickBy();
-    var hasIn = require_hasIn();
-    function basePick(object, paths) {
-      return basePickBy(object, paths, function(value, path) {
-        return hasIn(object, path);
-      });
-    }
-    module2.exports = basePick;
-  }
-});
-var require_arrayPush = __commonJS2({
-  "node_modules/lodash/_arrayPush.js"(exports2, module2) {
-    function arrayPush(array, values) {
-      var index = -1, length = values.length, offset = array.length;
-      while (++index < length) {
-        array[offset + index] = values[index];
-      }
-      return array;
-    }
-    module2.exports = arrayPush;
-  }
-});
-var require_isFlattenable = __commonJS2({
-  "node_modules/lodash/_isFlattenable.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var isArguments = require_isArguments();
-    var isArray = require_isArray();
-    var spreadableSymbol = Symbol2 ? Symbol2.isConcatSpreadable : void 0;
-    function isFlattenable(value) {
-      return isArray(value) || isArguments(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
-    }
-    module2.exports = isFlattenable;
-  }
-});
-var require_baseFlatten = __commonJS2({
-  "node_modules/lodash/_baseFlatten.js"(exports2, module2) {
-    var arrayPush = require_arrayPush();
-    var isFlattenable = require_isFlattenable();
-    function baseFlatten(array, depth, predicate, isStrict, result) {
-      var index = -1, length = array.length;
-      predicate || (predicate = isFlattenable);
-      result || (result = []);
-      while (++index < length) {
-        var value = array[index];
-        if (depth > 0 && predicate(value)) {
-          if (depth > 1) {
-            baseFlatten(value, depth - 1, predicate, isStrict, result);
-          } else {
-            arrayPush(result, value);
-          }
-        } else if (!isStrict) {
-          result[result.length] = value;
-        }
-      }
-      return result;
-    }
-    module2.exports = baseFlatten;
-  }
-});
-var require_flatten = __commonJS2({
-  "node_modules/lodash/flatten.js"(exports2, module2) {
-    var baseFlatten = require_baseFlatten();
-    function flatten(array) {
-      var length = array == null ? 0 : array.length;
-      return length ? baseFlatten(array, 1) : [];
-    }
-    module2.exports = flatten;
-  }
-});
-var require_apply = __commonJS2({
-  "node_modules/lodash/_apply.js"(exports2, module2) {
-    function apply(func, thisArg, args) {
-      switch (args.length) {
-        case 0:
-          return func.call(thisArg);
-        case 1:
-          return func.call(thisArg, args[0]);
-        case 2:
-          return func.call(thisArg, args[0], args[1]);
-        case 3:
-          return func.call(thisArg, args[0], args[1], args[2]);
-      }
-      return func.apply(thisArg, args);
-    }
-    module2.exports = apply;
-  }
-});
-var require_overRest = __commonJS2({
-  "node_modules/lodash/_overRest.js"(exports2, module2) {
-    var apply = require_apply();
-    var nativeMax = Math.max;
-    function overRest(func, start, transform) {
-      start = nativeMax(start === void 0 ? func.length - 1 : start, 0);
-      return function() {
-        var args = arguments, index = -1, length = nativeMax(args.length - start, 0), array = Array(length);
-        while (++index < length) {
-          array[index] = args[start + index];
-        }
-        index = -1;
-        var otherArgs = Array(start + 1);
-        while (++index < start) {
-          otherArgs[index] = args[index];
-        }
-        otherArgs[start] = transform(array);
-        return apply(func, this, otherArgs);
-      };
-    }
-    module2.exports = overRest;
-  }
-});
-var require_constant2 = __commonJS2({
-  "node_modules/lodash/constant.js"(exports2, module2) {
-    function constant(value) {
-      return function() {
-        return value;
-      };
-    }
-    module2.exports = constant;
-  }
-});
-var require_identity = __commonJS2({
-  "node_modules/lodash/identity.js"(exports2, module2) {
-    function identity(value) {
-      return value;
-    }
-    module2.exports = identity;
-  }
-});
-var require_baseSetToString = __commonJS2({
-  "node_modules/lodash/_baseSetToString.js"(exports2, module2) {
-    var constant = require_constant2();
-    var defineProperty = require_defineProperty();
-    var identity = require_identity();
-    var baseSetToString = !defineProperty ? identity : function(func, string) {
-      return defineProperty(func, "toString", {
-        "configurable": true,
-        "enumerable": false,
-        "value": constant(string),
-        "writable": true
-      });
-    };
-    module2.exports = baseSetToString;
-  }
-});
-var require_shortOut = __commonJS2({
-  "node_modules/lodash/_shortOut.js"(exports2, module2) {
-    var HOT_COUNT = 800;
-    var HOT_SPAN = 16;
-    var nativeNow = Date.now;
-    function shortOut(func) {
-      var count = 0, lastCalled = 0;
-      return function() {
-        var stamp = nativeNow(), remaining = HOT_SPAN - (stamp - lastCalled);
-        lastCalled = stamp;
-        if (remaining > 0) {
-          if (++count >= HOT_COUNT) {
-            return arguments[0];
-          }
-        } else {
-          count = 0;
-        }
-        return func.apply(void 0, arguments);
-      };
-    }
-    module2.exports = shortOut;
-  }
-});
-var require_setToString = __commonJS2({
-  "node_modules/lodash/_setToString.js"(exports2, module2) {
-    var baseSetToString = require_baseSetToString();
-    var shortOut = require_shortOut();
-    var setToString = shortOut(baseSetToString);
-    module2.exports = setToString;
-  }
-});
-var require_flatRest = __commonJS2({
-  "node_modules/lodash/_flatRest.js"(exports2, module2) {
-    var flatten = require_flatten();
-    var overRest = require_overRest();
-    var setToString = require_setToString();
-    function flatRest(func) {
-      return setToString(overRest(func, void 0, flatten), func + "");
-    }
-    module2.exports = flatRest;
-  }
-});
-var require_pick = __commonJS2({
-  "node_modules/lodash/pick.js"(exports2, module2) {
-    var basePick = require_basePick();
-    var flatRest = require_flatRest();
-    var pick = flatRest(function(object, paths) {
-      return object == null ? {} : basePick(object, paths);
-    });
-    module2.exports = pick;
-  }
-});
 var require_camelcase = __commonJS2({
   "node_modules/camelcase/index.js"(exports2, module2) {
     "use strict";
@@ -4020,59 +2994,66 @@ var require_camelcase = __commonJS2({
     module2.exports.default = camelCase;
   }
 });
-var require_leven = __commonJS2({
-  "node_modules/leven/index.js"(exports2, module2) {
+var sdbm_exports = {};
+__export(sdbm_exports, {
+  default: () => sdbm
+});
+function sdbm(string) {
+  let hash = 0;
+  for (let i = 0; i < string.length; i++) {
+    hash = string.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
+  }
+  return hash >>> 0;
+}
+var init_sdbm = __esm({
+  "node_modules/sdbm/index.js"() {
+  }
+});
+var require_utils = __commonJS2({
+  "src/cli/utils.js"(exports2, module2) {
     "use strict";
-    var array = [];
-    var charCodeCache = [];
-    var leven = (left, right) => {
-      if (left === right) {
-        return 0;
-      }
-      const swap = left;
-      if (left.length > right.length) {
-        left = right;
-        right = swap;
-      }
-      let leftLength = left.length;
-      let rightLength = right.length;
-      while (leftLength > 0 && left.charCodeAt(~-leftLength) === right.charCodeAt(~-rightLength)) {
-        leftLength--;
-        rightLength--;
-      }
-      let start = 0;
-      while (start < leftLength && left.charCodeAt(start) === right.charCodeAt(start)) {
-        start++;
-      }
-      leftLength -= start;
-      rightLength -= start;
-      if (leftLength === 0) {
-        return rightLength;
-      }
-      let bCharCode;
-      let result;
-      let temp;
-      let temp2;
-      let i = 0;
-      let j = 0;
-      while (i < leftLength) {
-        charCodeCache[i] = left.charCodeAt(start + i);
-        array[i] = ++i;
-      }
-      while (j < rightLength) {
-        bCharCode = right.charCodeAt(start + j);
-        temp = j++;
-        result = j;
-        for (i = 0; i < leftLength; i++) {
-          temp2 = bCharCode === charCodeCache[i] ? temp : temp + 1;
-          temp = array[i];
-          result = array[i] = temp > result ? temp2 > result ? result + 1 : temp2 : temp2 > temp ? temp + 1 : temp2;
+    var {
+      promises: fs
+    } = require("fs");
+    var {
+      default: sdbm2
+    } = (init_sdbm(), __toCommonJS(sdbm_exports));
+    var printToScreen2 = console.log.bind(console);
+    function groupBy(array2, iteratee) {
+      const result = /* @__PURE__ */ Object.create(null);
+      for (const value of array2) {
+        const key = iteratee(value);
+        if (Array.isArray(result[key])) {
+          result[key].push(value);
+        } else {
+          result[key] = [value];
         }
       }
       return result;
+    }
+    function pick(object, keys) {
+      const entries = keys.map((key) => [key, object[key]]);
+      return Object.fromEntries(entries);
+    }
+    function createHash(source) {
+      return String(sdbm2(source));
+    }
+    async function statSafe(filePath) {
+      try {
+        return await fs.stat(filePath);
+      } catch (error) {
+        if (error.code !== "ENOENT") {
+          throw error;
+        }
+      }
+    }
+    module2.exports = {
+      printToScreen: printToScreen2,
+      groupBy,
+      pick,
+      createHash,
+      statSafe
     };
-    module2.exports = leven;
-    module2.exports.default = leven;
   }
 });
 var require_minimist = __commonJS2({
@@ -4301,1060 +3282,14 @@ var require_minimist2 = __commonJS2({
     };
   }
 });
-var require_arrayAggregator = __commonJS2({
-  "node_modules/lodash/_arrayAggregator.js"(exports2, module2) {
-    function arrayAggregator(array, setter, iteratee, accumulator) {
-      var index = -1, length = array == null ? 0 : array.length;
-      while (++index < length) {
-        var value = array[index];
-        setter(accumulator, value, iteratee(value), array);
-      }
-      return accumulator;
-    }
-    module2.exports = arrayAggregator;
-  }
-});
-var require_createBaseFor = __commonJS2({
-  "node_modules/lodash/_createBaseFor.js"(exports2, module2) {
-    function createBaseFor(fromRight) {
-      return function(object, iteratee, keysFunc) {
-        var index = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
-        while (length--) {
-          var key = props[fromRight ? length : ++index];
-          if (iteratee(iterable[key], key, iterable) === false) {
-            break;
-          }
-        }
-        return object;
-      };
-    }
-    module2.exports = createBaseFor;
-  }
-});
-var require_baseFor = __commonJS2({
-  "node_modules/lodash/_baseFor.js"(exports2, module2) {
-    var createBaseFor = require_createBaseFor();
-    var baseFor = createBaseFor();
-    module2.exports = baseFor;
-  }
-});
-var require_baseTimes = __commonJS2({
-  "node_modules/lodash/_baseTimes.js"(exports2, module2) {
-    function baseTimes(n, iteratee) {
-      var index = -1, result = Array(n);
-      while (++index < n) {
-        result[index] = iteratee(index);
-      }
-      return result;
-    }
-    module2.exports = baseTimes;
-  }
-});
-var require_stubFalse = __commonJS2({
-  "node_modules/lodash/stubFalse.js"(exports2, module2) {
-    function stubFalse() {
-      return false;
-    }
-    module2.exports = stubFalse;
-  }
-});
-var require_isBuffer = __commonJS2({
-  "node_modules/lodash/isBuffer.js"(exports2, module2) {
-    var root = require_root();
-    var stubFalse = require_stubFalse();
-    var freeExports = typeof exports2 == "object" && exports2 && !exports2.nodeType && exports2;
-    var freeModule = freeExports && typeof module2 == "object" && module2 && !module2.nodeType && module2;
-    var moduleExports = freeModule && freeModule.exports === freeExports;
-    var Buffer2 = moduleExports ? root.Buffer : void 0;
-    var nativeIsBuffer = Buffer2 ? Buffer2.isBuffer : void 0;
-    var isBuffer = nativeIsBuffer || stubFalse;
-    module2.exports = isBuffer;
-  }
-});
-var require_baseIsTypedArray = __commonJS2({
-  "node_modules/lodash/_baseIsTypedArray.js"(exports2, module2) {
-    var baseGetTag = require_baseGetTag();
-    var isLength = require_isLength();
-    var isObjectLike = require_isObjectLike();
-    var argsTag = "[object Arguments]";
-    var arrayTag = "[object Array]";
-    var boolTag = "[object Boolean]";
-    var dateTag = "[object Date]";
-    var errorTag = "[object Error]";
-    var funcTag = "[object Function]";
-    var mapTag = "[object Map]";
-    var numberTag = "[object Number]";
-    var objectTag = "[object Object]";
-    var regexpTag = "[object RegExp]";
-    var setTag = "[object Set]";
-    var stringTag = "[object String]";
-    var weakMapTag = "[object WeakMap]";
-    var arrayBufferTag = "[object ArrayBuffer]";
-    var dataViewTag = "[object DataView]";
-    var float32Tag = "[object Float32Array]";
-    var float64Tag = "[object Float64Array]";
-    var int8Tag = "[object Int8Array]";
-    var int16Tag = "[object Int16Array]";
-    var int32Tag = "[object Int32Array]";
-    var uint8Tag = "[object Uint8Array]";
-    var uint8ClampedTag = "[object Uint8ClampedArray]";
-    var uint16Tag = "[object Uint16Array]";
-    var uint32Tag = "[object Uint32Array]";
-    var typedArrayTags = {};
-    typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
-    typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
-    function baseIsTypedArray(value) {
-      return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
-    }
-    module2.exports = baseIsTypedArray;
-  }
-});
-var require_baseUnary = __commonJS2({
-  "node_modules/lodash/_baseUnary.js"(exports2, module2) {
-    function baseUnary(func) {
-      return function(value) {
-        return func(value);
-      };
-    }
-    module2.exports = baseUnary;
-  }
-});
-var require_nodeUtil = __commonJS2({
-  "node_modules/lodash/_nodeUtil.js"(exports2, module2) {
-    var freeGlobal = require_freeGlobal();
-    var freeExports = typeof exports2 == "object" && exports2 && !exports2.nodeType && exports2;
-    var freeModule = freeExports && typeof module2 == "object" && module2 && !module2.nodeType && module2;
-    var moduleExports = freeModule && freeModule.exports === freeExports;
-    var freeProcess = moduleExports && freeGlobal.process;
-    var nodeUtil = function() {
-      try {
-        var types = freeModule && freeModule.require && freeModule.require("util").types;
-        if (types) {
-          return types;
-        }
-        return freeProcess && freeProcess.binding && freeProcess.binding("util");
-      } catch (e) {
-      }
-    }();
-    module2.exports = nodeUtil;
-  }
-});
-var require_isTypedArray = __commonJS2({
-  "node_modules/lodash/isTypedArray.js"(exports2, module2) {
-    var baseIsTypedArray = require_baseIsTypedArray();
-    var baseUnary = require_baseUnary();
-    var nodeUtil = require_nodeUtil();
-    var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
-    var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
-    module2.exports = isTypedArray;
-  }
-});
-var require_arrayLikeKeys = __commonJS2({
-  "node_modules/lodash/_arrayLikeKeys.js"(exports2, module2) {
-    var baseTimes = require_baseTimes();
-    var isArguments = require_isArguments();
-    var isArray = require_isArray();
-    var isBuffer = require_isBuffer();
-    var isIndex = require_isIndex();
-    var isTypedArray = require_isTypedArray();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function arrayLikeKeys(value, inherited) {
-      var isArr = isArray(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer(value), isType = !isArr && !isArg && !isBuff && isTypedArray(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
-      for (var key in value) {
-        if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (key == "length" || isBuff && (key == "offset" || key == "parent") || isType && (key == "buffer" || key == "byteLength" || key == "byteOffset") || isIndex(key, length)))) {
-          result.push(key);
-        }
-      }
-      return result;
-    }
-    module2.exports = arrayLikeKeys;
-  }
-});
-var require_isPrototype = __commonJS2({
-  "node_modules/lodash/_isPrototype.js"(exports2, module2) {
-    var objectProto = Object.prototype;
-    function isPrototype(value) {
-      var Ctor = value && value.constructor, proto = typeof Ctor == "function" && Ctor.prototype || objectProto;
-      return value === proto;
-    }
-    module2.exports = isPrototype;
-  }
-});
-var require_overArg = __commonJS2({
-  "node_modules/lodash/_overArg.js"(exports2, module2) {
-    function overArg(func, transform) {
-      return function(arg) {
-        return func(transform(arg));
-      };
-    }
-    module2.exports = overArg;
-  }
-});
-var require_nativeKeys = __commonJS2({
-  "node_modules/lodash/_nativeKeys.js"(exports2, module2) {
-    var overArg = require_overArg();
-    var nativeKeys = overArg(Object.keys, Object);
-    module2.exports = nativeKeys;
-  }
-});
-var require_baseKeys = __commonJS2({
-  "node_modules/lodash/_baseKeys.js"(exports2, module2) {
-    var isPrototype = require_isPrototype();
-    var nativeKeys = require_nativeKeys();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function baseKeys(object) {
-      if (!isPrototype(object)) {
-        return nativeKeys(object);
-      }
-      var result = [];
-      for (var key in Object(object)) {
-        if (hasOwnProperty.call(object, key) && key != "constructor") {
-          result.push(key);
-        }
-      }
-      return result;
-    }
-    module2.exports = baseKeys;
-  }
-});
-var require_isArrayLike = __commonJS2({
-  "node_modules/lodash/isArrayLike.js"(exports2, module2) {
-    var isFunction = require_isFunction();
-    var isLength = require_isLength();
-    function isArrayLike(value) {
-      return value != null && isLength(value.length) && !isFunction(value);
-    }
-    module2.exports = isArrayLike;
-  }
-});
-var require_keys = __commonJS2({
-  "node_modules/lodash/keys.js"(exports2, module2) {
-    var arrayLikeKeys = require_arrayLikeKeys();
-    var baseKeys = require_baseKeys();
-    var isArrayLike = require_isArrayLike();
-    function keys(object) {
-      return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
-    }
-    module2.exports = keys;
-  }
-});
-var require_baseForOwn = __commonJS2({
-  "node_modules/lodash/_baseForOwn.js"(exports2, module2) {
-    var baseFor = require_baseFor();
-    var keys = require_keys();
-    function baseForOwn(object, iteratee) {
-      return object && baseFor(object, iteratee, keys);
-    }
-    module2.exports = baseForOwn;
-  }
-});
-var require_createBaseEach = __commonJS2({
-  "node_modules/lodash/_createBaseEach.js"(exports2, module2) {
-    var isArrayLike = require_isArrayLike();
-    function createBaseEach(eachFunc, fromRight) {
-      return function(collection, iteratee) {
-        if (collection == null) {
-          return collection;
-        }
-        if (!isArrayLike(collection)) {
-          return eachFunc(collection, iteratee);
-        }
-        var length = collection.length, index = fromRight ? length : -1, iterable = Object(collection);
-        while (fromRight ? index-- : ++index < length) {
-          if (iteratee(iterable[index], index, iterable) === false) {
-            break;
-          }
-        }
-        return collection;
-      };
-    }
-    module2.exports = createBaseEach;
-  }
-});
-var require_baseEach = __commonJS2({
-  "node_modules/lodash/_baseEach.js"(exports2, module2) {
-    var baseForOwn = require_baseForOwn();
-    var createBaseEach = require_createBaseEach();
-    var baseEach = createBaseEach(baseForOwn);
-    module2.exports = baseEach;
-  }
-});
-var require_baseAggregator = __commonJS2({
-  "node_modules/lodash/_baseAggregator.js"(exports2, module2) {
-    var baseEach = require_baseEach();
-    function baseAggregator(collection, setter, iteratee, accumulator) {
-      baseEach(collection, function(value, key, collection2) {
-        setter(accumulator, value, iteratee(value), collection2);
-      });
-      return accumulator;
-    }
-    module2.exports = baseAggregator;
-  }
-});
-var require_stackClear = __commonJS2({
-  "node_modules/lodash/_stackClear.js"(exports2, module2) {
-    var ListCache = require_ListCache();
-    function stackClear() {
-      this.__data__ = new ListCache();
-      this.size = 0;
-    }
-    module2.exports = stackClear;
-  }
-});
-var require_stackDelete = __commonJS2({
-  "node_modules/lodash/_stackDelete.js"(exports2, module2) {
-    function stackDelete(key) {
-      var data = this.__data__, result = data["delete"](key);
-      this.size = data.size;
-      return result;
-    }
-    module2.exports = stackDelete;
-  }
-});
-var require_stackGet = __commonJS2({
-  "node_modules/lodash/_stackGet.js"(exports2, module2) {
-    function stackGet(key) {
-      return this.__data__.get(key);
-    }
-    module2.exports = stackGet;
-  }
-});
-var require_stackHas = __commonJS2({
-  "node_modules/lodash/_stackHas.js"(exports2, module2) {
-    function stackHas(key) {
-      return this.__data__.has(key);
-    }
-    module2.exports = stackHas;
-  }
-});
-var require_stackSet = __commonJS2({
-  "node_modules/lodash/_stackSet.js"(exports2, module2) {
-    var ListCache = require_ListCache();
-    var Map2 = require_Map();
-    var MapCache = require_MapCache();
-    var LARGE_ARRAY_SIZE = 200;
-    function stackSet(key, value) {
-      var data = this.__data__;
-      if (data instanceof ListCache) {
-        var pairs = data.__data__;
-        if (!Map2 || pairs.length < LARGE_ARRAY_SIZE - 1) {
-          pairs.push([key, value]);
-          this.size = ++data.size;
-          return this;
-        }
-        data = this.__data__ = new MapCache(pairs);
-      }
-      data.set(key, value);
-      this.size = data.size;
-      return this;
-    }
-    module2.exports = stackSet;
-  }
-});
-var require_Stack = __commonJS2({
-  "node_modules/lodash/_Stack.js"(exports2, module2) {
-    var ListCache = require_ListCache();
-    var stackClear = require_stackClear();
-    var stackDelete = require_stackDelete();
-    var stackGet = require_stackGet();
-    var stackHas = require_stackHas();
-    var stackSet = require_stackSet();
-    function Stack(entries) {
-      var data = this.__data__ = new ListCache(entries);
-      this.size = data.size;
-    }
-    Stack.prototype.clear = stackClear;
-    Stack.prototype["delete"] = stackDelete;
-    Stack.prototype.get = stackGet;
-    Stack.prototype.has = stackHas;
-    Stack.prototype.set = stackSet;
-    module2.exports = Stack;
-  }
-});
-var require_setCacheAdd = __commonJS2({
-  "node_modules/lodash/_setCacheAdd.js"(exports2, module2) {
-    var HASH_UNDEFINED = "__lodash_hash_undefined__";
-    function setCacheAdd(value) {
-      this.__data__.set(value, HASH_UNDEFINED);
-      return this;
-    }
-    module2.exports = setCacheAdd;
-  }
-});
-var require_setCacheHas = __commonJS2({
-  "node_modules/lodash/_setCacheHas.js"(exports2, module2) {
-    function setCacheHas(value) {
-      return this.__data__.has(value);
-    }
-    module2.exports = setCacheHas;
-  }
-});
-var require_SetCache = __commonJS2({
-  "node_modules/lodash/_SetCache.js"(exports2, module2) {
-    var MapCache = require_MapCache();
-    var setCacheAdd = require_setCacheAdd();
-    var setCacheHas = require_setCacheHas();
-    function SetCache(values) {
-      var index = -1, length = values == null ? 0 : values.length;
-      this.__data__ = new MapCache();
-      while (++index < length) {
-        this.add(values[index]);
-      }
-    }
-    SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
-    SetCache.prototype.has = setCacheHas;
-    module2.exports = SetCache;
-  }
-});
-var require_arraySome = __commonJS2({
-  "node_modules/lodash/_arraySome.js"(exports2, module2) {
-    function arraySome(array, predicate) {
-      var index = -1, length = array == null ? 0 : array.length;
-      while (++index < length) {
-        if (predicate(array[index], index, array)) {
-          return true;
-        }
-      }
-      return false;
-    }
-    module2.exports = arraySome;
-  }
-});
-var require_cacheHas = __commonJS2({
-  "node_modules/lodash/_cacheHas.js"(exports2, module2) {
-    function cacheHas(cache, key) {
-      return cache.has(key);
-    }
-    module2.exports = cacheHas;
-  }
-});
-var require_equalArrays = __commonJS2({
-  "node_modules/lodash/_equalArrays.js"(exports2, module2) {
-    var SetCache = require_SetCache();
-    var arraySome = require_arraySome();
-    var cacheHas = require_cacheHas();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var COMPARE_UNORDERED_FLAG = 2;
-    function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
-      var isPartial = bitmask & COMPARE_PARTIAL_FLAG, arrLength = array.length, othLength = other.length;
-      if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
-        return false;
-      }
-      var arrStacked = stack.get(array);
-      var othStacked = stack.get(other);
-      if (arrStacked && othStacked) {
-        return arrStacked == other && othStacked == array;
-      }
-      var index = -1, result = true, seen = bitmask & COMPARE_UNORDERED_FLAG ? new SetCache() : void 0;
-      stack.set(array, other);
-      stack.set(other, array);
-      while (++index < arrLength) {
-        var arrValue = array[index], othValue = other[index];
-        if (customizer) {
-          var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
-        }
-        if (compared !== void 0) {
-          if (compared) {
-            continue;
-          }
-          result = false;
-          break;
-        }
-        if (seen) {
-          if (!arraySome(other, function(othValue2, othIndex) {
-            if (!cacheHas(seen, othIndex) && (arrValue === othValue2 || equalFunc(arrValue, othValue2, bitmask, customizer, stack))) {
-              return seen.push(othIndex);
-            }
-          })) {
-            result = false;
-            break;
-          }
-        } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
-          result = false;
-          break;
-        }
-      }
-      stack["delete"](array);
-      stack["delete"](other);
-      return result;
-    }
-    module2.exports = equalArrays;
-  }
-});
-var require_Uint8Array = __commonJS2({
-  "node_modules/lodash/_Uint8Array.js"(exports2, module2) {
-    var root = require_root();
-    var Uint8Array2 = root.Uint8Array;
-    module2.exports = Uint8Array2;
-  }
-});
-var require_mapToArray = __commonJS2({
-  "node_modules/lodash/_mapToArray.js"(exports2, module2) {
-    function mapToArray(map) {
-      var index = -1, result = Array(map.size);
-      map.forEach(function(value, key) {
-        result[++index] = [key, value];
-      });
-      return result;
-    }
-    module2.exports = mapToArray;
-  }
-});
-var require_setToArray = __commonJS2({
-  "node_modules/lodash/_setToArray.js"(exports2, module2) {
-    function setToArray(set) {
-      var index = -1, result = Array(set.size);
-      set.forEach(function(value) {
-        result[++index] = value;
-      });
-      return result;
-    }
-    module2.exports = setToArray;
-  }
-});
-var require_equalByTag = __commonJS2({
-  "node_modules/lodash/_equalByTag.js"(exports2, module2) {
-    var Symbol2 = require_Symbol();
-    var Uint8Array2 = require_Uint8Array();
-    var eq = require_eq();
-    var equalArrays = require_equalArrays();
-    var mapToArray = require_mapToArray();
-    var setToArray = require_setToArray();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var COMPARE_UNORDERED_FLAG = 2;
-    var boolTag = "[object Boolean]";
-    var dateTag = "[object Date]";
-    var errorTag = "[object Error]";
-    var mapTag = "[object Map]";
-    var numberTag = "[object Number]";
-    var regexpTag = "[object RegExp]";
-    var setTag = "[object Set]";
-    var stringTag = "[object String]";
-    var symbolTag = "[object Symbol]";
-    var arrayBufferTag = "[object ArrayBuffer]";
-    var dataViewTag = "[object DataView]";
-    var symbolProto = Symbol2 ? Symbol2.prototype : void 0;
-    var symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
-    function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
-      switch (tag) {
-        case dataViewTag:
-          if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
-            return false;
-          }
-          object = object.buffer;
-          other = other.buffer;
-        case arrayBufferTag:
-          if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array2(object), new Uint8Array2(other))) {
-            return false;
-          }
-          return true;
-        case boolTag:
-        case dateTag:
-        case numberTag:
-          return eq(+object, +other);
-        case errorTag:
-          return object.name == other.name && object.message == other.message;
-        case regexpTag:
-        case stringTag:
-          return object == other + "";
-        case mapTag:
-          var convert = mapToArray;
-        case setTag:
-          var isPartial = bitmask & COMPARE_PARTIAL_FLAG;
-          convert || (convert = setToArray);
-          if (object.size != other.size && !isPartial) {
-            return false;
-          }
-          var stacked = stack.get(object);
-          if (stacked) {
-            return stacked == other;
-          }
-          bitmask |= COMPARE_UNORDERED_FLAG;
-          stack.set(object, other);
-          var result = equalArrays(convert(object), convert(other), bitmask, customizer, equalFunc, stack);
-          stack["delete"](object);
-          return result;
-        case symbolTag:
-          if (symbolValueOf) {
-            return symbolValueOf.call(object) == symbolValueOf.call(other);
-          }
-      }
-      return false;
-    }
-    module2.exports = equalByTag;
-  }
-});
-var require_baseGetAllKeys = __commonJS2({
-  "node_modules/lodash/_baseGetAllKeys.js"(exports2, module2) {
-    var arrayPush = require_arrayPush();
-    var isArray = require_isArray();
-    function baseGetAllKeys(object, keysFunc, symbolsFunc) {
-      var result = keysFunc(object);
-      return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
-    }
-    module2.exports = baseGetAllKeys;
-  }
-});
-var require_arrayFilter = __commonJS2({
-  "node_modules/lodash/_arrayFilter.js"(exports2, module2) {
-    function arrayFilter(array, predicate) {
-      var index = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
-      while (++index < length) {
-        var value = array[index];
-        if (predicate(value, index, array)) {
-          result[resIndex++] = value;
-        }
-      }
-      return result;
-    }
-    module2.exports = arrayFilter;
-  }
-});
-var require_stubArray = __commonJS2({
-  "node_modules/lodash/stubArray.js"(exports2, module2) {
-    function stubArray() {
-      return [];
-    }
-    module2.exports = stubArray;
-  }
-});
-var require_getSymbols = __commonJS2({
-  "node_modules/lodash/_getSymbols.js"(exports2, module2) {
-    var arrayFilter = require_arrayFilter();
-    var stubArray = require_stubArray();
-    var objectProto = Object.prototype;
-    var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-    var nativeGetSymbols = Object.getOwnPropertySymbols;
-    var getSymbols = !nativeGetSymbols ? stubArray : function(object) {
-      if (object == null) {
-        return [];
-      }
-      object = Object(object);
-      return arrayFilter(nativeGetSymbols(object), function(symbol) {
-        return propertyIsEnumerable.call(object, symbol);
-      });
-    };
-    module2.exports = getSymbols;
-  }
-});
-var require_getAllKeys = __commonJS2({
-  "node_modules/lodash/_getAllKeys.js"(exports2, module2) {
-    var baseGetAllKeys = require_baseGetAllKeys();
-    var getSymbols = require_getSymbols();
-    var keys = require_keys();
-    function getAllKeys(object) {
-      return baseGetAllKeys(object, keys, getSymbols);
-    }
-    module2.exports = getAllKeys;
-  }
-});
-var require_equalObjects = __commonJS2({
-  "node_modules/lodash/_equalObjects.js"(exports2, module2) {
-    var getAllKeys = require_getAllKeys();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
-      var isPartial = bitmask & COMPARE_PARTIAL_FLAG, objProps = getAllKeys(object), objLength = objProps.length, othProps = getAllKeys(other), othLength = othProps.length;
-      if (objLength != othLength && !isPartial) {
-        return false;
-      }
-      var index = objLength;
-      while (index--) {
-        var key = objProps[index];
-        if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {
-          return false;
-        }
-      }
-      var objStacked = stack.get(object);
-      var othStacked = stack.get(other);
-      if (objStacked && othStacked) {
-        return objStacked == other && othStacked == object;
-      }
-      var result = true;
-      stack.set(object, other);
-      stack.set(other, object);
-      var skipCtor = isPartial;
-      while (++index < objLength) {
-        key = objProps[index];
-        var objValue = object[key], othValue = other[key];
-        if (customizer) {
-          var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
-        }
-        if (!(compared === void 0 ? objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack) : compared)) {
-          result = false;
-          break;
-        }
-        skipCtor || (skipCtor = key == "constructor");
-      }
-      if (result && !skipCtor) {
-        var objCtor = object.constructor, othCtor = other.constructor;
-        if (objCtor != othCtor && "constructor" in object && "constructor" in other && !(typeof objCtor == "function" && objCtor instanceof objCtor && typeof othCtor == "function" && othCtor instanceof othCtor)) {
-          result = false;
-        }
-      }
-      stack["delete"](object);
-      stack["delete"](other);
-      return result;
-    }
-    module2.exports = equalObjects;
-  }
-});
-var require_DataView = __commonJS2({
-  "node_modules/lodash/_DataView.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var DataView = getNative(root, "DataView");
-    module2.exports = DataView;
-  }
-});
-var require_Promise = __commonJS2({
-  "node_modules/lodash/_Promise.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var Promise2 = getNative(root, "Promise");
-    module2.exports = Promise2;
-  }
-});
-var require_Set = __commonJS2({
-  "node_modules/lodash/_Set.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var Set2 = getNative(root, "Set");
-    module2.exports = Set2;
-  }
-});
-var require_WeakMap = __commonJS2({
-  "node_modules/lodash/_WeakMap.js"(exports2, module2) {
-    var getNative = require_getNative();
-    var root = require_root();
-    var WeakMap2 = getNative(root, "WeakMap");
-    module2.exports = WeakMap2;
-  }
-});
-var require_getTag = __commonJS2({
-  "node_modules/lodash/_getTag.js"(exports2, module2) {
-    var DataView = require_DataView();
-    var Map2 = require_Map();
-    var Promise2 = require_Promise();
-    var Set2 = require_Set();
-    var WeakMap2 = require_WeakMap();
-    var baseGetTag = require_baseGetTag();
-    var toSource = require_toSource();
-    var mapTag = "[object Map]";
-    var objectTag = "[object Object]";
-    var promiseTag = "[object Promise]";
-    var setTag = "[object Set]";
-    var weakMapTag = "[object WeakMap]";
-    var dataViewTag = "[object DataView]";
-    var dataViewCtorString = toSource(DataView);
-    var mapCtorString = toSource(Map2);
-    var promiseCtorString = toSource(Promise2);
-    var setCtorString = toSource(Set2);
-    var weakMapCtorString = toSource(WeakMap2);
-    var getTag = baseGetTag;
-    if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map2 && getTag(new Map2()) != mapTag || Promise2 && getTag(Promise2.resolve()) != promiseTag || Set2 && getTag(new Set2()) != setTag || WeakMap2 && getTag(new WeakMap2()) != weakMapTag) {
-      getTag = function(value) {
-        var result = baseGetTag(value), Ctor = result == objectTag ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
-        if (ctorString) {
-          switch (ctorString) {
-            case dataViewCtorString:
-              return dataViewTag;
-            case mapCtorString:
-              return mapTag;
-            case promiseCtorString:
-              return promiseTag;
-            case setCtorString:
-              return setTag;
-            case weakMapCtorString:
-              return weakMapTag;
-          }
-        }
-        return result;
-      };
-    }
-    module2.exports = getTag;
-  }
-});
-var require_baseIsEqualDeep = __commonJS2({
-  "node_modules/lodash/_baseIsEqualDeep.js"(exports2, module2) {
-    var Stack = require_Stack();
-    var equalArrays = require_equalArrays();
-    var equalByTag = require_equalByTag();
-    var equalObjects = require_equalObjects();
-    var getTag = require_getTag();
-    var isArray = require_isArray();
-    var isBuffer = require_isBuffer();
-    var isTypedArray = require_isTypedArray();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var argsTag = "[object Arguments]";
-    var arrayTag = "[object Array]";
-    var objectTag = "[object Object]";
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
-      var objIsArr = isArray(object), othIsArr = isArray(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
-      objTag = objTag == argsTag ? objectTag : objTag;
-      othTag = othTag == argsTag ? objectTag : othTag;
-      var objIsObj = objTag == objectTag, othIsObj = othTag == objectTag, isSameTag = objTag == othTag;
-      if (isSameTag && isBuffer(object)) {
-        if (!isBuffer(other)) {
-          return false;
-        }
-        objIsArr = true;
-        objIsObj = false;
-      }
-      if (isSameTag && !objIsObj) {
-        stack || (stack = new Stack());
-        return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
-      }
-      if (!(bitmask & COMPARE_PARTIAL_FLAG)) {
-        var objIsWrapped = objIsObj && hasOwnProperty.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty.call(other, "__wrapped__");
-        if (objIsWrapped || othIsWrapped) {
-          var objUnwrapped = objIsWrapped ? object.value() : object, othUnwrapped = othIsWrapped ? other.value() : other;
-          stack || (stack = new Stack());
-          return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
-        }
-      }
-      if (!isSameTag) {
-        return false;
-      }
-      stack || (stack = new Stack());
-      return equalObjects(object, other, bitmask, customizer, equalFunc, stack);
-    }
-    module2.exports = baseIsEqualDeep;
-  }
-});
-var require_baseIsEqual = __commonJS2({
-  "node_modules/lodash/_baseIsEqual.js"(exports2, module2) {
-    var baseIsEqualDeep = require_baseIsEqualDeep();
-    var isObjectLike = require_isObjectLike();
-    function baseIsEqual(value, other, bitmask, customizer, stack) {
-      if (value === other) {
-        return true;
-      }
-      if (value == null || other == null || !isObjectLike(value) && !isObjectLike(other)) {
-        return value !== value && other !== other;
-      }
-      return baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
-    }
-    module2.exports = baseIsEqual;
-  }
-});
-var require_baseIsMatch = __commonJS2({
-  "node_modules/lodash/_baseIsMatch.js"(exports2, module2) {
-    var Stack = require_Stack();
-    var baseIsEqual = require_baseIsEqual();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var COMPARE_UNORDERED_FLAG = 2;
-    function baseIsMatch(object, source, matchData, customizer) {
-      var index = matchData.length, length = index, noCustomizer = !customizer;
-      if (object == null) {
-        return !length;
-      }
-      object = Object(object);
-      while (index--) {
-        var data = matchData[index];
-        if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
-          return false;
-        }
-      }
-      while (++index < length) {
-        data = matchData[index];
-        var key = data[0], objValue = object[key], srcValue = data[1];
-        if (noCustomizer && data[2]) {
-          if (objValue === void 0 && !(key in object)) {
-            return false;
-          }
-        } else {
-          var stack = new Stack();
-          if (customizer) {
-            var result = customizer(objValue, srcValue, key, object, source, stack);
-          }
-          if (!(result === void 0 ? baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG, customizer, stack) : result)) {
-            return false;
-          }
-        }
-      }
-      return true;
-    }
-    module2.exports = baseIsMatch;
-  }
-});
-var require_isStrictComparable = __commonJS2({
-  "node_modules/lodash/_isStrictComparable.js"(exports2, module2) {
-    var isObject = require_isObject();
-    function isStrictComparable(value) {
-      return value === value && !isObject(value);
-    }
-    module2.exports = isStrictComparable;
-  }
-});
-var require_getMatchData = __commonJS2({
-  "node_modules/lodash/_getMatchData.js"(exports2, module2) {
-    var isStrictComparable = require_isStrictComparable();
-    var keys = require_keys();
-    function getMatchData(object) {
-      var result = keys(object), length = result.length;
-      while (length--) {
-        var key = result[length], value = object[key];
-        result[length] = [key, value, isStrictComparable(value)];
-      }
-      return result;
-    }
-    module2.exports = getMatchData;
-  }
-});
-var require_matchesStrictComparable = __commonJS2({
-  "node_modules/lodash/_matchesStrictComparable.js"(exports2, module2) {
-    function matchesStrictComparable(key, srcValue) {
-      return function(object) {
-        if (object == null) {
-          return false;
-        }
-        return object[key] === srcValue && (srcValue !== void 0 || key in Object(object));
-      };
-    }
-    module2.exports = matchesStrictComparable;
-  }
-});
-var require_baseMatches = __commonJS2({
-  "node_modules/lodash/_baseMatches.js"(exports2, module2) {
-    var baseIsMatch = require_baseIsMatch();
-    var getMatchData = require_getMatchData();
-    var matchesStrictComparable = require_matchesStrictComparable();
-    function baseMatches(source) {
-      var matchData = getMatchData(source);
-      if (matchData.length == 1 && matchData[0][2]) {
-        return matchesStrictComparable(matchData[0][0], matchData[0][1]);
-      }
-      return function(object) {
-        return object === source || baseIsMatch(object, source, matchData);
-      };
-    }
-    module2.exports = baseMatches;
-  }
-});
-var require_get = __commonJS2({
-  "node_modules/lodash/get.js"(exports2, module2) {
-    var baseGet = require_baseGet();
-    function get(object, path, defaultValue) {
-      var result = object == null ? void 0 : baseGet(object, path);
-      return result === void 0 ? defaultValue : result;
-    }
-    module2.exports = get;
-  }
-});
-var require_baseMatchesProperty = __commonJS2({
-  "node_modules/lodash/_baseMatchesProperty.js"(exports2, module2) {
-    var baseIsEqual = require_baseIsEqual();
-    var get = require_get();
-    var hasIn = require_hasIn();
-    var isKey = require_isKey();
-    var isStrictComparable = require_isStrictComparable();
-    var matchesStrictComparable = require_matchesStrictComparable();
-    var toKey = require_toKey();
-    var COMPARE_PARTIAL_FLAG = 1;
-    var COMPARE_UNORDERED_FLAG = 2;
-    function baseMatchesProperty(path, srcValue) {
-      if (isKey(path) && isStrictComparable(srcValue)) {
-        return matchesStrictComparable(toKey(path), srcValue);
-      }
-      return function(object) {
-        var objValue = get(object, path);
-        return objValue === void 0 && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG);
-      };
-    }
-    module2.exports = baseMatchesProperty;
-  }
-});
-var require_baseProperty = __commonJS2({
-  "node_modules/lodash/_baseProperty.js"(exports2, module2) {
-    function baseProperty(key) {
-      return function(object) {
-        return object == null ? void 0 : object[key];
-      };
-    }
-    module2.exports = baseProperty;
-  }
-});
-var require_basePropertyDeep = __commonJS2({
-  "node_modules/lodash/_basePropertyDeep.js"(exports2, module2) {
-    var baseGet = require_baseGet();
-    function basePropertyDeep(path) {
-      return function(object) {
-        return baseGet(object, path);
-      };
-    }
-    module2.exports = basePropertyDeep;
-  }
-});
-var require_property = __commonJS2({
-  "node_modules/lodash/property.js"(exports2, module2) {
-    var baseProperty = require_baseProperty();
-    var basePropertyDeep = require_basePropertyDeep();
-    var isKey = require_isKey();
-    var toKey = require_toKey();
-    function property(path) {
-      return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
-    }
-    module2.exports = property;
-  }
-});
-var require_baseIteratee = __commonJS2({
-  "node_modules/lodash/_baseIteratee.js"(exports2, module2) {
-    var baseMatches = require_baseMatches();
-    var baseMatchesProperty = require_baseMatchesProperty();
-    var identity = require_identity();
-    var isArray = require_isArray();
-    var property = require_property();
-    function baseIteratee(value) {
-      if (typeof value == "function") {
-        return value;
-      }
-      if (value == null) {
-        return identity;
-      }
-      if (typeof value == "object") {
-        return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
-      }
-      return property(value);
-    }
-    module2.exports = baseIteratee;
-  }
-});
-var require_createAggregator = __commonJS2({
-  "node_modules/lodash/_createAggregator.js"(exports2, module2) {
-    var arrayAggregator = require_arrayAggregator();
-    var baseAggregator = require_baseAggregator();
-    var baseIteratee = require_baseIteratee();
-    var isArray = require_isArray();
-    function createAggregator(setter, initializer) {
-      return function(collection, iteratee) {
-        var func = isArray(collection) ? arrayAggregator : baseAggregator, accumulator = initializer ? initializer() : {};
-        return func(collection, setter, baseIteratee(iteratee, 2), accumulator);
-      };
-    }
-    module2.exports = createAggregator;
-  }
-});
-var require_partition = __commonJS2({
-  "node_modules/lodash/partition.js"(exports2, module2) {
-    var createAggregator = require_createAggregator();
-    var partition = createAggregator(function(result, value, key) {
-      result[key ? 0 : 1].push(value);
-    }, function() {
-      return [[], []];
-    });
-    module2.exports = partition;
-  }
-});
 var require_create_minimist_options = __commonJS2({
   "src/cli/options/create-minimist-options.js"(exports2, module2) {
     "use strict";
-    var partition = require_partition();
+    var {
+      utils: {
+        partition
+      }
+    } = require_prettier_internal();
     module2.exports = function createMinimistOptions(detailedOptions) {
       const [boolean, string] = partition(detailedOptions, ({
         type
@@ -5372,23 +3307,96 @@ var require_create_minimist_options = __commonJS2({
     };
   }
 });
+var leven_exports = {};
+__export(leven_exports, {
+  default: () => leven
+});
+function leven(first, second) {
+  if (first === second) {
+    return 0;
+  }
+  const swap = first;
+  if (first.length > second.length) {
+    first = second;
+    second = swap;
+  }
+  let firstLength = first.length;
+  let secondLength = second.length;
+  while (firstLength > 0 && first.charCodeAt(~-firstLength) === second.charCodeAt(~-secondLength)) {
+    firstLength--;
+    secondLength--;
+  }
+  let start = 0;
+  while (start < firstLength && first.charCodeAt(start) === second.charCodeAt(start)) {
+    start++;
+  }
+  firstLength -= start;
+  secondLength -= start;
+  if (firstLength === 0) {
+    return secondLength;
+  }
+  let bCharacterCode;
+  let result;
+  let temporary;
+  let temporary2;
+  let index = 0;
+  let index2 = 0;
+  while (index < firstLength) {
+    characterCodeCache[index] = first.charCodeAt(start + index);
+    array[index] = ++index;
+  }
+  while (index2 < secondLength) {
+    bCharacterCode = second.charCodeAt(start + index2);
+    temporary = index2++;
+    result = index2;
+    for (index = 0; index < firstLength; index++) {
+      temporary2 = bCharacterCode === characterCodeCache[index] ? temporary : temporary + 1;
+      temporary = array[index];
+      result = array[index] = temporary > result ? temporary2 > result ? result + 1 : temporary2 : temporary2 > temporary ? temporary + 1 : temporary2;
+    }
+  }
+  return result;
+}
+var array;
+var characterCodeCache;
+var init_leven = __esm({
+  "node_modules/leven/index.js"() {
+    array = [];
+    characterCodeCache = [];
+  }
+});
+var require_normalize_cli_options = __commonJS2({
+  "src/cli/options/normalize-cli-options.js"(exports2, module2) {
+    "use strict";
+    var {
+      default: chalk2
+    } = (init_source(), __toCommonJS(source_exports));
+    var {
+      default: leven2
+    } = (init_leven(), __toCommonJS(leven_exports));
+    var {
+      optionsNormalizer
+    } = require_prettier_internal();
+    function normalizeCliOptions(options, optionInfos, opts) {
+      return optionsNormalizer.normalizeCliOptions(options, optionInfos, Object.assign({
+        colorsModule: chalk2,
+        levenshteinDistance: leven2
+      }, opts));
+    }
+    module2.exports = normalizeCliOptions;
+  }
+});
 var require_parse_cli_arguments = __commonJS2({
   "src/cli/options/parse-cli-arguments.js"(exports2, module2) {
     "use strict";
-    var pick = require_pick();
     var camelCase = require_camelcase();
-    var leven = require_leven();
     var {
-      default: chalk
-    } = require_chalk();
-    var {
-      optionsNormalizer: {
-        normalizeCliOptions
-      }
-    } = require_prettier_internal();
+      pick
+    } = require_utils();
     var getContextOptions = require_get_context_options();
     var minimist = require_minimist2();
     var createMinimistOptions = require_create_minimist_options();
+    var normalizeCliOptions = require_normalize_cli_options();
     function parseArgv(rawArguments, detailedOptions, logger, keys) {
       const minimistOptions = createMinimistOptions(detailedOptions);
       let argv = minimist(rawArguments, minimistOptions);
@@ -5400,9 +3408,7 @@ var require_parse_cli_arguments = __commonJS2({
         argv = pick(argv, keys);
       }
       const normalized = normalizeCliOptions(argv, detailedOptions, {
-        logger,
-        colorsModule: chalk,
-        levenshteinDistance: leven
+        logger
       });
       return Object.assign(Object.assign({}, Object.fromEntries(Object.entries(normalized).map(([key, value]) => {
         const option = detailedOptions.find(({
@@ -5453,7 +3459,7 @@ var require_context = __commonJS2({
         this.pushContextPlugins(plugins, pluginSearchDirs);
         const argv = parseArgv(rawArguments, this.detailedOptions, logger);
         this.argv = argv;
-        this.filePatterns = argv._.map((file) => String(file));
+        this.filePatterns = argv._.map(String);
       }
       pushContextPlugins(plugins, pluginSearchDirs) {
         const options = getContextOptions(plugins, pluginSearchDirs);
@@ -5464,32 +3470,45 @@ var require_context = __commonJS2({
         this.stack.pop();
         Object.assign(this, getLast(this.stack));
       }
+      get performanceTestFlag() {
+        const {
+          debugBenchmark,
+          debugRepeat
+        } = this.argv;
+        if (debugBenchmark) {
+          return {
+            name: "--debug-benchmark",
+            debugBenchmark: true
+          };
+        }
+        if (debugRepeat > 0) {
+          return {
+            name: "--debug-repeat",
+            debugRepeat
+          };
+        }
+        const {
+          PRETTIER_PERF_REPEAT
+        } = process.env;
+        if (PRETTIER_PERF_REPEAT && /^\d+$/.test(PRETTIER_PERF_REPEAT)) {
+          return {
+            name: "PRETTIER_PERF_REPEAT (environment variable)",
+            debugRepeat: Number(PRETTIER_PERF_REPEAT)
+          };
+        }
+      }
     };
     module2.exports = Context2;
-  }
-});
-var require_groupBy = __commonJS2({
-  "node_modules/lodash/groupBy.js"(exports2, module2) {
-    var baseAssignValue = require_baseAssignValue();
-    var createAggregator = require_createAggregator();
-    var objectProto = Object.prototype;
-    var hasOwnProperty = objectProto.hasOwnProperty;
-    var groupBy = createAggregator(function(result, value, key) {
-      if (hasOwnProperty.call(result, key)) {
-        result[key].push(value);
-      } else {
-        baseAssignValue(result, key, [value]);
-      }
-    });
-    module2.exports = groupBy;
   }
 });
 var require_usage = __commonJS2({
   "src/cli/usage.js"(exports2, module2) {
     "use strict";
-    var groupBy = require_groupBy();
     var camelCase = require_camelcase();
     var constant = require_constant();
+    var {
+      groupBy
+    } = require_utils();
     var OPTION_USAGE_THRESHOLD = 25;
     var CHOICE_USAGE_MARGIN = 3;
     var CHOICE_USAGE_INDENTATION = 2;
@@ -5872,7 +3891,7 @@ var require_glob_parent = __commonJS2({
     };
   }
 });
-var require_utils = __commonJS2({
+var require_utils2 = __commonJS2({
   "node_modules/braces/lib/utils.js"(exports2) {
     "use strict";
     exports2.isInteger = (num) => {
@@ -5957,7 +3976,7 @@ var require_utils = __commonJS2({
 var require_stringify = __commonJS2({
   "node_modules/braces/lib/stringify.js"(exports2, module2) {
     "use strict";
-    var utils = require_utils();
+    var utils = require_utils2();
     module2.exports = (ast, options = {}) => {
       let stringify2 = (node, parent = {}) => {
         let invalidBlock = options.escapeInvalid && utils.isInvalidBrace(parent);
@@ -6444,7 +4463,7 @@ var require_compile = __commonJS2({
   "node_modules/braces/lib/compile.js"(exports2, module2) {
     "use strict";
     var fill = require_fill_range();
-    var utils = require_utils();
+    var utils = require_utils2();
     var compile = (ast, options = {}) => {
       let walk = (node, parent = {}) => {
         let invalidBlock = utils.isInvalidBrace(parent);
@@ -6497,7 +4516,7 @@ var require_expand = __commonJS2({
     "use strict";
     var fill = require_fill_range();
     var stringify2 = require_stringify();
-    var utils = require_utils();
+    var utils = require_utils2();
     var append = (queue = "", stash = "", enclose = false) => {
       let result = [];
       queue = [].concat(queue);
@@ -7146,7 +5165,7 @@ var require_constants2 = __commonJS2({
     };
   }
 });
-var require_utils2 = __commonJS2({
+var require_utils3 = __commonJS2({
   "node_modules/picomatch/lib/utils.js"(exports2) {
     "use strict";
     var path = require("path");
@@ -7210,7 +5229,7 @@ var require_utils2 = __commonJS2({
 var require_scan = __commonJS2({
   "node_modules/picomatch/lib/scan.js"(exports2, module2) {
     "use strict";
-    var utils = require_utils2();
+    var utils = require_utils3();
     var {
       CHAR_ASTERISK,
       CHAR_AT,
@@ -7535,7 +5554,7 @@ var require_parse2 = __commonJS2({
   "node_modules/picomatch/lib/parse.js"(exports2, module2) {
     "use strict";
     var constants = require_constants2();
-    var utils = require_utils2();
+    var utils = require_utils3();
     var {
       MAX_LENGTH,
       POSIX_REGEX_SOURCE,
@@ -8459,7 +6478,7 @@ var require_picomatch = __commonJS2({
     var path = require("path");
     var scan = require_scan();
     var parse = require_parse2();
-    var utils = require_utils2();
+    var utils = require_utils3();
     var constants = require_constants2();
     var isObject = (val) => val && typeof val === "object" && !Array.isArray(val);
     var picomatch = (glob, options, returnState = false) => {
@@ -8642,7 +6661,7 @@ var require_micromatch = __commonJS2({
     var util = require("util");
     var braces = require_braces();
     var picomatch = require_picomatch2();
-    var utils = require_utils2();
+    var utils = require_utils3();
     var isEmptyString = (val) => val === "" || val === "./";
     var micromatch = (list, patterns, options) => {
       patterns = [].concat(patterns);
@@ -8702,11 +6721,11 @@ var require_micromatch = __commonJS2({
           options.onResult(state);
         items.push(state.output);
       };
-      let matches = micromatch(list, patterns, Object.assign(Object.assign({}, options), {}, {
+      let matches = new Set(micromatch(list, patterns, Object.assign(Object.assign({}, options), {}, {
         onResult
-      }));
+      })));
       for (let item of items) {
-        if (!matches.includes(item)) {
+        if (!matches.has(item)) {
           result.add(item);
         }
       }
@@ -9115,15 +7134,15 @@ var require_string = __commonJS2({
     exports2.isEmpty = isEmpty;
   }
 });
-var require_utils3 = __commonJS2({
+var require_utils4 = __commonJS2({
   "node_modules/fast-glob/out/utils/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", {
       value: true
     });
     exports2.string = exports2.stream = exports2.pattern = exports2.path = exports2.fs = exports2.errno = exports2.array = void 0;
-    var array = require_array();
-    exports2.array = array;
+    var array2 = require_array();
+    exports2.array = array2;
     var errno = require_errno();
     exports2.errno = errno;
     var fs = require_fs();
@@ -9145,7 +7164,7 @@ var require_tasks = __commonJS2({
       value: true
     });
     exports2.convertPatternGroupToTask = exports2.convertPatternGroupsToTasks = exports2.groupPatternsByBaseDirectory = exports2.getNegativePatternsAsPositive = exports2.getPositivePatterns = exports2.convertPatternsToTasks = exports2.generate = void 0;
-    var utils = require_utils3();
+    var utils = require_utils4();
     function generate(patterns, settings) {
       const positivePatterns = getPositivePatterns(patterns);
       const negativePatterns = getNegativePatternsAsPositive(patterns, settings.ignore);
@@ -9481,7 +7500,7 @@ var require_fs3 = __commonJS2({
     exports2.createDirentFromStats = createDirentFromStats;
   }
 });
-var require_utils4 = __commonJS2({
+var require_utils5 = __commonJS2({
   "node_modules/@nodelib/fs.scandir/out/utils/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", {
@@ -9518,7 +7537,7 @@ var require_async2 = __commonJS2({
     var fsStat = require_out();
     var rpl = require_run_parallel();
     var constants_1 = require_constants3();
-    var utils = require_utils4();
+    var utils = require_utils5();
     var common = require_common();
     function read(directory, settings, callback) {
       if (!settings.stats && constants_1.IS_SUPPORT_READDIR_WITH_FILE_TYPES) {
@@ -9629,7 +7648,7 @@ var require_sync2 = __commonJS2({
     exports2.readdir = exports2.readdirWithFileTypes = exports2.read = void 0;
     var fsStat = require_out();
     var constants_1 = require_constants3();
-    var utils = require_utils4();
+    var utils = require_utils5();
     var common = require_common();
     function read(directory, settings) {
       if (!settings.stats && constants_1.IS_SUPPORT_READDIR_WITH_FILE_TYPES) {
@@ -10432,7 +8451,7 @@ var require_reader2 = __commonJS2({
     });
     var path = require("path");
     var fsStat = require_out();
-    var utils = require_utils3();
+    var utils = require_utils4();
     var Reader = class {
       constructor(_settings) {
         this._settings = _settings;
@@ -10528,7 +8547,7 @@ var require_matcher = __commonJS2({
     Object.defineProperty(exports2, "__esModule", {
       value: true
     });
-    var utils = require_utils3();
+    var utils = require_utils4();
     var Matcher = class {
       constructor(_patterns, _settings, _micromatchOptions) {
         this._patterns = _patterns;
@@ -10617,7 +8636,7 @@ var require_deep = __commonJS2({
     Object.defineProperty(exports2, "__esModule", {
       value: true
     });
-    var utils = require_utils3();
+    var utils = require_utils4();
     var partial_1 = require_partial();
     var DeepFilter = class {
       constructor(_settings, _micromatchOptions) {
@@ -10682,7 +8701,7 @@ var require_entry = __commonJS2({
     Object.defineProperty(exports2, "__esModule", {
       value: true
     });
-    var utils = require_utils3();
+    var utils = require_utils4();
     var EntryFilter = class {
       constructor(_settings, _micromatchOptions) {
         this._settings = _settings;
@@ -10744,7 +8763,7 @@ var require_error = __commonJS2({
     Object.defineProperty(exports2, "__esModule", {
       value: true
     });
-    var utils = require_utils3();
+    var utils = require_utils4();
     var ErrorFilter = class {
       constructor(_settings) {
         this._settings = _settings;
@@ -10765,7 +8784,7 @@ var require_entry2 = __commonJS2({
     Object.defineProperty(exports2, "__esModule", {
       value: true
     });
-    var utils = require_utils3();
+    var utils = require_utils4();
     var EntryTransformer = class {
       constructor(_settings) {
         this._settings = _settings;
@@ -11003,8 +9022,8 @@ var require_settings4 = __commonJS2({
     });
     exports2.DEFAULT_FILE_SYSTEM_ADAPTER = void 0;
     var fs = require("fs");
-    var os = require("os");
-    var CPU_COUNT = Math.max(os.cpus().length, 1);
+    var os2 = require("os");
+    var CPU_COUNT = Math.max(os2.cpus().length, 1);
     exports2.DEFAULT_FILE_SYSTEM_ADAPTER = {
       lstat: fs.lstat,
       lstatSync: fs.lstatSync,
@@ -11063,7 +9082,7 @@ var require_out4 = __commonJS2({
     var stream_1 = require_stream4();
     var sync_1 = require_sync6();
     var settings_1 = require_settings4();
-    var utils = require_utils3();
+    var utils = require_utils4();
     async function FastGlob(source, options) {
       assertPatternsInput(source);
       const works = getWorks(source, async_1.default, options);
@@ -11123,10 +9142,10 @@ var require_expand_patterns = __commonJS2({
   "src/cli/expand-patterns.js"(exports2, module2) {
     "use strict";
     var path = require("path");
-    var {
-      promises: fs
-    } = require("fs");
     var fastGlob = require_out4();
+    var {
+      statSafe
+    } = require_utils();
     async function* expandPatterns(context) {
       const cwd = process.cwd();
       const seen = /* @__PURE__ */ new Set();
@@ -11247,15 +9266,6 @@ ${message}`
     function sortPaths(paths) {
       return paths.sort((a, b) => a.localeCompare(b));
     }
-    async function statSafe(filePath) {
-      try {
-        return await fs.stat(filePath);
-      } catch (error) {
-        if (error.code !== "ENOENT") {
-          throw error;
-        }
-      }
-    }
     function escapePathForGlob(path2) {
       return fastGlob.escapePath(path2.replace(/\\/g, "\0")).replace(/\\!/g, "@(!)").replace(/\0/g, "@(\\\\)");
     }
@@ -11273,16 +9283,13 @@ var require_get_options_for_file = __commonJS2({
   "src/cli/options/get-options-for-file.js"(exports2, module2) {
     "use strict";
     var dashify = require_dashify();
-    var leven = require_leven();
-    var {
-      default: chalk
-    } = require_chalk();
     var prettier2 = require("./index.js");
     var {
       optionsNormalizer
     } = require_prettier_internal();
     var minimist = require_minimist2();
     var createMinimistOptions = require_create_minimist_options();
+    var normalizeCliOptions = require_normalize_cli_options();
     function getOptions(argv, detailedOptions) {
       return Object.fromEntries(detailedOptions.filter(({
         forwardToApi
@@ -11304,14 +9311,12 @@ var require_get_options_for_file = __commonJS2({
     function parseArgsToOptions(context, overrideDefaults) {
       const minimistOptions = createMinimistOptions(context.detailedOptions);
       const apiDetailedOptionMap = createApiDetailedOptionMap(context.detailedOptions);
-      return getOptions(optionsNormalizer.normalizeCliOptions(minimist(context.rawArguments, {
+      return getOptions(normalizeCliOptions(minimist(context.rawArguments, {
         string: minimistOptions.string,
         boolean: minimistOptions.boolean,
         default: cliifyOptions(overrideDefaults, apiDetailedOptionMap)
       }), context.detailedOptions, {
-        logger: false,
-        colorsModule: chalk,
-        levenshteinDistance: leven
+        logger: false
       }), context.detailedOptions);
     }
     async function getOptionsOrDie(context, filePath) {
@@ -11376,6 +9381,4761 @@ var require_is_tty = __commonJS2({
     module2.exports = function isTTY() {
       return process.stdout.isTTY && !isCI();
     };
+  }
+});
+var require_commondir = __commonJS2({
+  "node_modules/commondir/index.js"(exports2, module2) {
+    var path = require("path");
+    module2.exports = function(basedir, relfiles) {
+      if (relfiles) {
+        var files = relfiles.map(function(r) {
+          return path.resolve(basedir, r);
+        });
+      } else {
+        var files = basedir;
+      }
+      var res = files.slice(1).reduce(function(ps, file) {
+        if (!file.match(/^([A-Za-z]:)?\/|\\/)) {
+          throw new Error("relative path without a basedir");
+        }
+        var xs = file.split(/\/+|\\+/);
+        for (var i = 0; ps[i] === xs[i] && i < Math.min(ps.length, xs.length); i++)
+          ;
+        return ps.slice(0, i);
+      }, files[0].split(/\/+|\\+/));
+      return res.length > 1 ? res.join("/") : "/";
+    };
+  }
+});
+var require_p_try = __commonJS2({
+  "node_modules/p-try/index.js"(exports2, module2) {
+    "use strict";
+    var pTry = (fn, ...arguments_) => new Promise((resolve) => {
+      resolve(fn(...arguments_));
+    });
+    module2.exports = pTry;
+    module2.exports.default = pTry;
+  }
+});
+var require_p_limit = __commonJS2({
+  "node_modules/p-limit/index.js"(exports2, module2) {
+    "use strict";
+    var pTry = require_p_try();
+    var pLimit = (concurrency) => {
+      if (!((Number.isInteger(concurrency) || concurrency === Infinity) && concurrency > 0)) {
+        return Promise.reject(new TypeError("Expected `concurrency` to be a number from 1 and up"));
+      }
+      const queue = [];
+      let activeCount = 0;
+      const next = () => {
+        activeCount--;
+        if (queue.length > 0) {
+          queue.shift()();
+        }
+      };
+      const run2 = (fn, resolve, ...args) => {
+        activeCount++;
+        const result = pTry(fn, ...args);
+        resolve(result);
+        result.then(next, next);
+      };
+      const enqueue = (fn, resolve, ...args) => {
+        if (activeCount < concurrency) {
+          run2(fn, resolve, ...args);
+        } else {
+          queue.push(run2.bind(null, fn, resolve, ...args));
+        }
+      };
+      const generator = (fn, ...args) => new Promise((resolve) => enqueue(fn, resolve, ...args));
+      Object.defineProperties(generator, {
+        activeCount: {
+          get: () => activeCount
+        },
+        pendingCount: {
+          get: () => queue.length
+        },
+        clearQueue: {
+          value: () => {
+            queue.length = 0;
+          }
+        }
+      });
+      return generator;
+    };
+    module2.exports = pLimit;
+    module2.exports.default = pLimit;
+  }
+});
+var require_p_locate = __commonJS2({
+  "node_modules/p-locate/index.js"(exports2, module2) {
+    "use strict";
+    var pLimit = require_p_limit();
+    var EndError = class extends Error {
+      constructor(value) {
+        super();
+        this.value = value;
+      }
+    };
+    var testElement = async (element, tester) => tester(await element);
+    var finder = async (element) => {
+      const values = await Promise.all(element);
+      if (values[1] === true) {
+        throw new EndError(values[0]);
+      }
+      return false;
+    };
+    var pLocate = async (iterable, tester, options) => {
+      options = Object.assign({
+        concurrency: Infinity,
+        preserveOrder: true
+      }, options);
+      const limit = pLimit(options.concurrency);
+      const items = [...iterable].map((element) => [element, limit(testElement, element, tester)]);
+      const checkLimit = pLimit(options.preserveOrder ? 1 : Infinity);
+      try {
+        await Promise.all(items.map((element) => checkLimit(finder, element)));
+      } catch (error) {
+        if (error instanceof EndError) {
+          return error.value;
+        }
+        throw error;
+      }
+    };
+    module2.exports = pLocate;
+    module2.exports.default = pLocate;
+  }
+});
+var require_locate_path = __commonJS2({
+  "node_modules/locate-path/index.js"(exports2, module2) {
+    "use strict";
+    var path = require("path");
+    var fs = require("fs");
+    var {
+      promisify
+    } = require("util");
+    var pLocate = require_p_locate();
+    var fsStat = promisify(fs.stat);
+    var fsLStat = promisify(fs.lstat);
+    var typeMappings = {
+      directory: "isDirectory",
+      file: "isFile"
+    };
+    function checkType({
+      type
+    }) {
+      if (type in typeMappings) {
+        return;
+      }
+      throw new Error(`Invalid type specified: ${type}`);
+    }
+    var matchType = (type, stat) => type === void 0 || stat[typeMappings[type]]();
+    module2.exports = async (paths, options) => {
+      options = Object.assign({
+        cwd: process.cwd(),
+        type: "file",
+        allowSymlinks: true
+      }, options);
+      checkType(options);
+      const statFn = options.allowSymlinks ? fsStat : fsLStat;
+      return pLocate(paths, async (path_) => {
+        try {
+          const stat = await statFn(path.resolve(options.cwd, path_));
+          return matchType(options.type, stat);
+        } catch (_) {
+          return false;
+        }
+      }, options);
+    };
+    module2.exports.sync = (paths, options) => {
+      options = Object.assign({
+        cwd: process.cwd(),
+        allowSymlinks: true,
+        type: "file"
+      }, options);
+      checkType(options);
+      const statFn = options.allowSymlinks ? fs.statSync : fs.lstatSync;
+      for (const path_ of paths) {
+        try {
+          const stat = statFn(path.resolve(options.cwd, path_));
+          if (matchType(options.type, stat)) {
+            return path_;
+          }
+        } catch (_) {
+        }
+      }
+    };
+  }
+});
+var require_path_exists = __commonJS2({
+  "node_modules/path-exists/index.js"(exports2, module2) {
+    "use strict";
+    var fs = require("fs");
+    var {
+      promisify
+    } = require("util");
+    var pAccess = promisify(fs.access);
+    module2.exports = async (path) => {
+      try {
+        await pAccess(path);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    };
+    module2.exports.sync = (path) => {
+      try {
+        fs.accessSync(path);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    };
+  }
+});
+var require_find_up = __commonJS2({
+  "node_modules/find-up/index.js"(exports2, module2) {
+    "use strict";
+    var path = require("path");
+    var locatePath = require_locate_path();
+    var pathExists = require_path_exists();
+    var stop = Symbol("findUp.stop");
+    module2.exports = async (name, options = {}) => {
+      let directory = path.resolve(options.cwd || "");
+      const {
+        root
+      } = path.parse(directory);
+      const paths = [].concat(name);
+      const runMatcher = async (locateOptions) => {
+        if (typeof name !== "function") {
+          return locatePath(paths, locateOptions);
+        }
+        const foundPath = await name(locateOptions.cwd);
+        if (typeof foundPath === "string") {
+          return locatePath([foundPath], locateOptions);
+        }
+        return foundPath;
+      };
+      while (true) {
+        const foundPath = await runMatcher(Object.assign(Object.assign({}, options), {}, {
+          cwd: directory
+        }));
+        if (foundPath === stop) {
+          return;
+        }
+        if (foundPath) {
+          return path.resolve(directory, foundPath);
+        }
+        if (directory === root) {
+          return;
+        }
+        directory = path.dirname(directory);
+      }
+    };
+    module2.exports.sync = (name, options = {}) => {
+      let directory = path.resolve(options.cwd || "");
+      const {
+        root
+      } = path.parse(directory);
+      const paths = [].concat(name);
+      const runMatcher = (locateOptions) => {
+        if (typeof name !== "function") {
+          return locatePath.sync(paths, locateOptions);
+        }
+        const foundPath = name(locateOptions.cwd);
+        if (typeof foundPath === "string") {
+          return locatePath.sync([foundPath], locateOptions);
+        }
+        return foundPath;
+      };
+      while (true) {
+        const foundPath = runMatcher(Object.assign(Object.assign({}, options), {}, {
+          cwd: directory
+        }));
+        if (foundPath === stop) {
+          return;
+        }
+        if (foundPath) {
+          return path.resolve(directory, foundPath);
+        }
+        if (directory === root) {
+          return;
+        }
+        directory = path.dirname(directory);
+      }
+    };
+    module2.exports.exists = pathExists;
+    module2.exports.sync.exists = pathExists.sync;
+    module2.exports.stop = stop;
+  }
+});
+var require_pkg_dir = __commonJS2({
+  "node_modules/pkg-dir/index.js"(exports2, module2) {
+    "use strict";
+    var path = require("path");
+    var findUp = require_find_up();
+    var pkgDir = async (cwd) => {
+      const filePath = await findUp("package.json", {
+        cwd
+      });
+      return filePath && path.dirname(filePath);
+    };
+    module2.exports = pkgDir;
+    module2.exports.default = pkgDir;
+    module2.exports.sync = (cwd) => {
+      const filePath = findUp.sync("package.json", {
+        cwd
+      });
+      return filePath && path.dirname(filePath);
+    };
+  }
+});
+var require_semver = __commonJS2({
+  "node_modules/make-dir/node_modules/semver/semver.js"(exports2, module2) {
+    exports2 = module2.exports = SemVer;
+    var debug;
+    if (typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG)) {
+      debug = function() {
+        var args = Array.prototype.slice.call(arguments, 0);
+        args.unshift("SEMVER");
+        console.log.apply(console, args);
+      };
+    } else {
+      debug = function() {
+      };
+    }
+    exports2.SEMVER_SPEC_VERSION = "2.0.0";
+    var MAX_LENGTH = 256;
+    var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || 9007199254740991;
+    var MAX_SAFE_COMPONENT_LENGTH = 16;
+    var re = exports2.re = [];
+    var src = exports2.src = [];
+    var t = exports2.tokens = {};
+    var R = 0;
+    function tok(n) {
+      t[n] = R++;
+    }
+    tok("NUMERICIDENTIFIER");
+    src[t.NUMERICIDENTIFIER] = "0|[1-9]\\d*";
+    tok("NUMERICIDENTIFIERLOOSE");
+    src[t.NUMERICIDENTIFIERLOOSE] = "[0-9]+";
+    tok("NONNUMERICIDENTIFIER");
+    src[t.NONNUMERICIDENTIFIER] = "\\d*[a-zA-Z-][a-zA-Z0-9-]*";
+    tok("MAINVERSION");
+    src[t.MAINVERSION] = "(" + src[t.NUMERICIDENTIFIER] + ")\\.(" + src[t.NUMERICIDENTIFIER] + ")\\.(" + src[t.NUMERICIDENTIFIER] + ")";
+    tok("MAINVERSIONLOOSE");
+    src[t.MAINVERSIONLOOSE] = "(" + src[t.NUMERICIDENTIFIERLOOSE] + ")\\.(" + src[t.NUMERICIDENTIFIERLOOSE] + ")\\.(" + src[t.NUMERICIDENTIFIERLOOSE] + ")";
+    tok("PRERELEASEIDENTIFIER");
+    src[t.PRERELEASEIDENTIFIER] = "(?:" + src[t.NUMERICIDENTIFIER] + "|" + src[t.NONNUMERICIDENTIFIER] + ")";
+    tok("PRERELEASEIDENTIFIERLOOSE");
+    src[t.PRERELEASEIDENTIFIERLOOSE] = "(?:" + src[t.NUMERICIDENTIFIERLOOSE] + "|" + src[t.NONNUMERICIDENTIFIER] + ")";
+    tok("PRERELEASE");
+    src[t.PRERELEASE] = "(?:-(" + src[t.PRERELEASEIDENTIFIER] + "(?:\\." + src[t.PRERELEASEIDENTIFIER] + ")*))";
+    tok("PRERELEASELOOSE");
+    src[t.PRERELEASELOOSE] = "(?:-?(" + src[t.PRERELEASEIDENTIFIERLOOSE] + "(?:\\." + src[t.PRERELEASEIDENTIFIERLOOSE] + ")*))";
+    tok("BUILDIDENTIFIER");
+    src[t.BUILDIDENTIFIER] = "[0-9A-Za-z-]+";
+    tok("BUILD");
+    src[t.BUILD] = "(?:\\+(" + src[t.BUILDIDENTIFIER] + "(?:\\." + src[t.BUILDIDENTIFIER] + ")*))";
+    tok("FULL");
+    tok("FULLPLAIN");
+    src[t.FULLPLAIN] = "v?" + src[t.MAINVERSION] + src[t.PRERELEASE] + "?" + src[t.BUILD] + "?";
+    src[t.FULL] = "^" + src[t.FULLPLAIN] + "$";
+    tok("LOOSEPLAIN");
+    src[t.LOOSEPLAIN] = "[v=\\s]*" + src[t.MAINVERSIONLOOSE] + src[t.PRERELEASELOOSE] + "?" + src[t.BUILD] + "?";
+    tok("LOOSE");
+    src[t.LOOSE] = "^" + src[t.LOOSEPLAIN] + "$";
+    tok("GTLT");
+    src[t.GTLT] = "((?:<|>)?=?)";
+    tok("XRANGEIDENTIFIERLOOSE");
+    src[t.XRANGEIDENTIFIERLOOSE] = src[t.NUMERICIDENTIFIERLOOSE] + "|x|X|\\*";
+    tok("XRANGEIDENTIFIER");
+    src[t.XRANGEIDENTIFIER] = src[t.NUMERICIDENTIFIER] + "|x|X|\\*";
+    tok("XRANGEPLAIN");
+    src[t.XRANGEPLAIN] = "[v=\\s]*(" + src[t.XRANGEIDENTIFIER] + ")(?:\\.(" + src[t.XRANGEIDENTIFIER] + ")(?:\\.(" + src[t.XRANGEIDENTIFIER] + ")(?:" + src[t.PRERELEASE] + ")?" + src[t.BUILD] + "?)?)?";
+    tok("XRANGEPLAINLOOSE");
+    src[t.XRANGEPLAINLOOSE] = "[v=\\s]*(" + src[t.XRANGEIDENTIFIERLOOSE] + ")(?:\\.(" + src[t.XRANGEIDENTIFIERLOOSE] + ")(?:\\.(" + src[t.XRANGEIDENTIFIERLOOSE] + ")(?:" + src[t.PRERELEASELOOSE] + ")?" + src[t.BUILD] + "?)?)?";
+    tok("XRANGE");
+    src[t.XRANGE] = "^" + src[t.GTLT] + "\\s*" + src[t.XRANGEPLAIN] + "$";
+    tok("XRANGELOOSE");
+    src[t.XRANGELOOSE] = "^" + src[t.GTLT] + "\\s*" + src[t.XRANGEPLAINLOOSE] + "$";
+    tok("COERCE");
+    src[t.COERCE] = "(^|[^\\d])(\\d{1," + MAX_SAFE_COMPONENT_LENGTH + "})(?:\\.(\\d{1," + MAX_SAFE_COMPONENT_LENGTH + "}))?(?:\\.(\\d{1," + MAX_SAFE_COMPONENT_LENGTH + "}))?(?:$|[^\\d])";
+    tok("COERCERTL");
+    re[t.COERCERTL] = new RegExp(src[t.COERCE], "g");
+    tok("LONETILDE");
+    src[t.LONETILDE] = "(?:~>?)";
+    tok("TILDETRIM");
+    src[t.TILDETRIM] = "(\\s*)" + src[t.LONETILDE] + "\\s+";
+    re[t.TILDETRIM] = new RegExp(src[t.TILDETRIM], "g");
+    var tildeTrimReplace = "$1~";
+    tok("TILDE");
+    src[t.TILDE] = "^" + src[t.LONETILDE] + src[t.XRANGEPLAIN] + "$";
+    tok("TILDELOOSE");
+    src[t.TILDELOOSE] = "^" + src[t.LONETILDE] + src[t.XRANGEPLAINLOOSE] + "$";
+    tok("LONECARET");
+    src[t.LONECARET] = "(?:\\^)";
+    tok("CARETTRIM");
+    src[t.CARETTRIM] = "(\\s*)" + src[t.LONECARET] + "\\s+";
+    re[t.CARETTRIM] = new RegExp(src[t.CARETTRIM], "g");
+    var caretTrimReplace = "$1^";
+    tok("CARET");
+    src[t.CARET] = "^" + src[t.LONECARET] + src[t.XRANGEPLAIN] + "$";
+    tok("CARETLOOSE");
+    src[t.CARETLOOSE] = "^" + src[t.LONECARET] + src[t.XRANGEPLAINLOOSE] + "$";
+    tok("COMPARATORLOOSE");
+    src[t.COMPARATORLOOSE] = "^" + src[t.GTLT] + "\\s*(" + src[t.LOOSEPLAIN] + ")$|^$";
+    tok("COMPARATOR");
+    src[t.COMPARATOR] = "^" + src[t.GTLT] + "\\s*(" + src[t.FULLPLAIN] + ")$|^$";
+    tok("COMPARATORTRIM");
+    src[t.COMPARATORTRIM] = "(\\s*)" + src[t.GTLT] + "\\s*(" + src[t.LOOSEPLAIN] + "|" + src[t.XRANGEPLAIN] + ")";
+    re[t.COMPARATORTRIM] = new RegExp(src[t.COMPARATORTRIM], "g");
+    var comparatorTrimReplace = "$1$2$3";
+    tok("HYPHENRANGE");
+    src[t.HYPHENRANGE] = "^\\s*(" + src[t.XRANGEPLAIN] + ")\\s+-\\s+(" + src[t.XRANGEPLAIN] + ")\\s*$";
+    tok("HYPHENRANGELOOSE");
+    src[t.HYPHENRANGELOOSE] = "^\\s*(" + src[t.XRANGEPLAINLOOSE] + ")\\s+-\\s+(" + src[t.XRANGEPLAINLOOSE] + ")\\s*$";
+    tok("STAR");
+    src[t.STAR] = "(<|>)?=?\\s*\\*";
+    for (i = 0; i < R; i++) {
+      debug(i, src[i]);
+      if (!re[i]) {
+        re[i] = new RegExp(src[i]);
+      }
+    }
+    var i;
+    exports2.parse = parse;
+    function parse(version, options) {
+      if (!options || typeof options !== "object") {
+        options = {
+          loose: !!options,
+          includePrerelease: false
+        };
+      }
+      if (version instanceof SemVer) {
+        return version;
+      }
+      if (typeof version !== "string") {
+        return null;
+      }
+      if (version.length > MAX_LENGTH) {
+        return null;
+      }
+      var r = options.loose ? re[t.LOOSE] : re[t.FULL];
+      if (!r.test(version)) {
+        return null;
+      }
+      try {
+        return new SemVer(version, options);
+      } catch (er) {
+        return null;
+      }
+    }
+    exports2.valid = valid;
+    function valid(version, options) {
+      var v = parse(version, options);
+      return v ? v.version : null;
+    }
+    exports2.clean = clean;
+    function clean(version, options) {
+      var s = parse(version.trim().replace(/^[=v]+/, ""), options);
+      return s ? s.version : null;
+    }
+    exports2.SemVer = SemVer;
+    function SemVer(version, options) {
+      if (!options || typeof options !== "object") {
+        options = {
+          loose: !!options,
+          includePrerelease: false
+        };
+      }
+      if (version instanceof SemVer) {
+        if (version.loose === options.loose) {
+          return version;
+        } else {
+          version = version.version;
+        }
+      } else if (typeof version !== "string") {
+        throw new TypeError("Invalid Version: " + version);
+      }
+      if (version.length > MAX_LENGTH) {
+        throw new TypeError("version is longer than " + MAX_LENGTH + " characters");
+      }
+      if (!(this instanceof SemVer)) {
+        return new SemVer(version, options);
+      }
+      debug("SemVer", version, options);
+      this.options = options;
+      this.loose = !!options.loose;
+      var m = version.trim().match(options.loose ? re[t.LOOSE] : re[t.FULL]);
+      if (!m) {
+        throw new TypeError("Invalid Version: " + version);
+      }
+      this.raw = version;
+      this.major = +m[1];
+      this.minor = +m[2];
+      this.patch = +m[3];
+      if (this.major > MAX_SAFE_INTEGER || this.major < 0) {
+        throw new TypeError("Invalid major version");
+      }
+      if (this.minor > MAX_SAFE_INTEGER || this.minor < 0) {
+        throw new TypeError("Invalid minor version");
+      }
+      if (this.patch > MAX_SAFE_INTEGER || this.patch < 0) {
+        throw new TypeError("Invalid patch version");
+      }
+      if (!m[4]) {
+        this.prerelease = [];
+      } else {
+        this.prerelease = m[4].split(".").map(function(id) {
+          if (/^[0-9]+$/.test(id)) {
+            var num = +id;
+            if (num >= 0 && num < MAX_SAFE_INTEGER) {
+              return num;
+            }
+          }
+          return id;
+        });
+      }
+      this.build = m[5] ? m[5].split(".") : [];
+      this.format();
+    }
+    SemVer.prototype.format = function() {
+      this.version = this.major + "." + this.minor + "." + this.patch;
+      if (this.prerelease.length) {
+        this.version += "-" + this.prerelease.join(".");
+      }
+      return this.version;
+    };
+    SemVer.prototype.toString = function() {
+      return this.version;
+    };
+    SemVer.prototype.compare = function(other) {
+      debug("SemVer.compare", this.version, this.options, other);
+      if (!(other instanceof SemVer)) {
+        other = new SemVer(other, this.options);
+      }
+      return this.compareMain(other) || this.comparePre(other);
+    };
+    SemVer.prototype.compareMain = function(other) {
+      if (!(other instanceof SemVer)) {
+        other = new SemVer(other, this.options);
+      }
+      return compareIdentifiers(this.major, other.major) || compareIdentifiers(this.minor, other.minor) || compareIdentifiers(this.patch, other.patch);
+    };
+    SemVer.prototype.comparePre = function(other) {
+      if (!(other instanceof SemVer)) {
+        other = new SemVer(other, this.options);
+      }
+      if (this.prerelease.length && !other.prerelease.length) {
+        return -1;
+      } else if (!this.prerelease.length && other.prerelease.length) {
+        return 1;
+      } else if (!this.prerelease.length && !other.prerelease.length) {
+        return 0;
+      }
+      var i2 = 0;
+      do {
+        var a = this.prerelease[i2];
+        var b = other.prerelease[i2];
+        debug("prerelease compare", i2, a, b);
+        if (a === void 0 && b === void 0) {
+          return 0;
+        } else if (b === void 0) {
+          return 1;
+        } else if (a === void 0) {
+          return -1;
+        } else if (a === b) {
+          continue;
+        } else {
+          return compareIdentifiers(a, b);
+        }
+      } while (++i2);
+    };
+    SemVer.prototype.compareBuild = function(other) {
+      if (!(other instanceof SemVer)) {
+        other = new SemVer(other, this.options);
+      }
+      var i2 = 0;
+      do {
+        var a = this.build[i2];
+        var b = other.build[i2];
+        debug("prerelease compare", i2, a, b);
+        if (a === void 0 && b === void 0) {
+          return 0;
+        } else if (b === void 0) {
+          return 1;
+        } else if (a === void 0) {
+          return -1;
+        } else if (a === b) {
+          continue;
+        } else {
+          return compareIdentifiers(a, b);
+        }
+      } while (++i2);
+    };
+    SemVer.prototype.inc = function(release, identifier) {
+      switch (release) {
+        case "premajor":
+          this.prerelease.length = 0;
+          this.patch = 0;
+          this.minor = 0;
+          this.major++;
+          this.inc("pre", identifier);
+          break;
+        case "preminor":
+          this.prerelease.length = 0;
+          this.patch = 0;
+          this.minor++;
+          this.inc("pre", identifier);
+          break;
+        case "prepatch":
+          this.prerelease.length = 0;
+          this.inc("patch", identifier);
+          this.inc("pre", identifier);
+          break;
+        case "prerelease":
+          if (this.prerelease.length === 0) {
+            this.inc("patch", identifier);
+          }
+          this.inc("pre", identifier);
+          break;
+        case "major":
+          if (this.minor !== 0 || this.patch !== 0 || this.prerelease.length === 0) {
+            this.major++;
+          }
+          this.minor = 0;
+          this.patch = 0;
+          this.prerelease = [];
+          break;
+        case "minor":
+          if (this.patch !== 0 || this.prerelease.length === 0) {
+            this.minor++;
+          }
+          this.patch = 0;
+          this.prerelease = [];
+          break;
+        case "patch":
+          if (this.prerelease.length === 0) {
+            this.patch++;
+          }
+          this.prerelease = [];
+          break;
+        case "pre":
+          if (this.prerelease.length === 0) {
+            this.prerelease = [0];
+          } else {
+            var i2 = this.prerelease.length;
+            while (--i2 >= 0) {
+              if (typeof this.prerelease[i2] === "number") {
+                this.prerelease[i2]++;
+                i2 = -2;
+              }
+            }
+            if (i2 === -1) {
+              this.prerelease.push(0);
+            }
+          }
+          if (identifier) {
+            if (this.prerelease[0] === identifier) {
+              if (isNaN(this.prerelease[1])) {
+                this.prerelease = [identifier, 0];
+              }
+            } else {
+              this.prerelease = [identifier, 0];
+            }
+          }
+          break;
+        default:
+          throw new Error("invalid increment argument: " + release);
+      }
+      this.format();
+      this.raw = this.version;
+      return this;
+    };
+    exports2.inc = inc;
+    function inc(version, release, loose, identifier) {
+      if (typeof loose === "string") {
+        identifier = loose;
+        loose = void 0;
+      }
+      try {
+        return new SemVer(version, loose).inc(release, identifier).version;
+      } catch (er) {
+        return null;
+      }
+    }
+    exports2.diff = diff;
+    function diff(version1, version2) {
+      if (eq(version1, version2)) {
+        return null;
+      } else {
+        var v1 = parse(version1);
+        var v2 = parse(version2);
+        var prefix = "";
+        if (v1.prerelease.length || v2.prerelease.length) {
+          prefix = "pre";
+          var defaultResult = "prerelease";
+        }
+        for (var key in v1) {
+          if (key === "major" || key === "minor" || key === "patch") {
+            if (v1[key] !== v2[key]) {
+              return prefix + key;
+            }
+          }
+        }
+        return defaultResult;
+      }
+    }
+    exports2.compareIdentifiers = compareIdentifiers;
+    var numeric = /^[0-9]+$/;
+    function compareIdentifiers(a, b) {
+      var anum = numeric.test(a);
+      var bnum = numeric.test(b);
+      if (anum && bnum) {
+        a = +a;
+        b = +b;
+      }
+      return a === b ? 0 : anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : 1;
+    }
+    exports2.rcompareIdentifiers = rcompareIdentifiers;
+    function rcompareIdentifiers(a, b) {
+      return compareIdentifiers(b, a);
+    }
+    exports2.major = major;
+    function major(a, loose) {
+      return new SemVer(a, loose).major;
+    }
+    exports2.minor = minor;
+    function minor(a, loose) {
+      return new SemVer(a, loose).minor;
+    }
+    exports2.patch = patch;
+    function patch(a, loose) {
+      return new SemVer(a, loose).patch;
+    }
+    exports2.compare = compare;
+    function compare(a, b, loose) {
+      return new SemVer(a, loose).compare(new SemVer(b, loose));
+    }
+    exports2.compareLoose = compareLoose;
+    function compareLoose(a, b) {
+      return compare(a, b, true);
+    }
+    exports2.compareBuild = compareBuild;
+    function compareBuild(a, b, loose) {
+      var versionA = new SemVer(a, loose);
+      var versionB = new SemVer(b, loose);
+      return versionA.compare(versionB) || versionA.compareBuild(versionB);
+    }
+    exports2.rcompare = rcompare;
+    function rcompare(a, b, loose) {
+      return compare(b, a, loose);
+    }
+    exports2.sort = sort;
+    function sort(list, loose) {
+      return list.sort(function(a, b) {
+        return exports2.compareBuild(a, b, loose);
+      });
+    }
+    exports2.rsort = rsort;
+    function rsort(list, loose) {
+      return list.sort(function(a, b) {
+        return exports2.compareBuild(b, a, loose);
+      });
+    }
+    exports2.gt = gt;
+    function gt(a, b, loose) {
+      return compare(a, b, loose) > 0;
+    }
+    exports2.lt = lt;
+    function lt(a, b, loose) {
+      return compare(a, b, loose) < 0;
+    }
+    exports2.eq = eq;
+    function eq(a, b, loose) {
+      return compare(a, b, loose) === 0;
+    }
+    exports2.neq = neq;
+    function neq(a, b, loose) {
+      return compare(a, b, loose) !== 0;
+    }
+    exports2.gte = gte;
+    function gte(a, b, loose) {
+      return compare(a, b, loose) >= 0;
+    }
+    exports2.lte = lte;
+    function lte(a, b, loose) {
+      return compare(a, b, loose) <= 0;
+    }
+    exports2.cmp = cmp;
+    function cmp(a, op, b, loose) {
+      switch (op) {
+        case "===":
+          if (typeof a === "object")
+            a = a.version;
+          if (typeof b === "object")
+            b = b.version;
+          return a === b;
+        case "!==":
+          if (typeof a === "object")
+            a = a.version;
+          if (typeof b === "object")
+            b = b.version;
+          return a !== b;
+        case "":
+        case "=":
+        case "==":
+          return eq(a, b, loose);
+        case "!=":
+          return neq(a, b, loose);
+        case ">":
+          return gt(a, b, loose);
+        case ">=":
+          return gte(a, b, loose);
+        case "<":
+          return lt(a, b, loose);
+        case "<=":
+          return lte(a, b, loose);
+        default:
+          throw new TypeError("Invalid operator: " + op);
+      }
+    }
+    exports2.Comparator = Comparator;
+    function Comparator(comp, options) {
+      if (!options || typeof options !== "object") {
+        options = {
+          loose: !!options,
+          includePrerelease: false
+        };
+      }
+      if (comp instanceof Comparator) {
+        if (comp.loose === !!options.loose) {
+          return comp;
+        } else {
+          comp = comp.value;
+        }
+      }
+      if (!(this instanceof Comparator)) {
+        return new Comparator(comp, options);
+      }
+      debug("comparator", comp, options);
+      this.options = options;
+      this.loose = !!options.loose;
+      this.parse(comp);
+      if (this.semver === ANY) {
+        this.value = "";
+      } else {
+        this.value = this.operator + this.semver.version;
+      }
+      debug("comp", this);
+    }
+    var ANY = {};
+    Comparator.prototype.parse = function(comp) {
+      var r = this.options.loose ? re[t.COMPARATORLOOSE] : re[t.COMPARATOR];
+      var m = comp.match(r);
+      if (!m) {
+        throw new TypeError("Invalid comparator: " + comp);
+      }
+      this.operator = m[1] !== void 0 ? m[1] : "";
+      if (this.operator === "=") {
+        this.operator = "";
+      }
+      if (!m[2]) {
+        this.semver = ANY;
+      } else {
+        this.semver = new SemVer(m[2], this.options.loose);
+      }
+    };
+    Comparator.prototype.toString = function() {
+      return this.value;
+    };
+    Comparator.prototype.test = function(version) {
+      debug("Comparator.test", version, this.options.loose);
+      if (this.semver === ANY || version === ANY) {
+        return true;
+      }
+      if (typeof version === "string") {
+        try {
+          version = new SemVer(version, this.options);
+        } catch (er) {
+          return false;
+        }
+      }
+      return cmp(version, this.operator, this.semver, this.options);
+    };
+    Comparator.prototype.intersects = function(comp, options) {
+      if (!(comp instanceof Comparator)) {
+        throw new TypeError("a Comparator is required");
+      }
+      if (!options || typeof options !== "object") {
+        options = {
+          loose: !!options,
+          includePrerelease: false
+        };
+      }
+      var rangeTmp;
+      if (this.operator === "") {
+        if (this.value === "") {
+          return true;
+        }
+        rangeTmp = new Range(comp.value, options);
+        return satisfies(this.value, rangeTmp, options);
+      } else if (comp.operator === "") {
+        if (comp.value === "") {
+          return true;
+        }
+        rangeTmp = new Range(this.value, options);
+        return satisfies(comp.semver, rangeTmp, options);
+      }
+      var sameDirectionIncreasing = (this.operator === ">=" || this.operator === ">") && (comp.operator === ">=" || comp.operator === ">");
+      var sameDirectionDecreasing = (this.operator === "<=" || this.operator === "<") && (comp.operator === "<=" || comp.operator === "<");
+      var sameSemVer = this.semver.version === comp.semver.version;
+      var differentDirectionsInclusive = (this.operator === ">=" || this.operator === "<=") && (comp.operator === ">=" || comp.operator === "<=");
+      var oppositeDirectionsLessThan = cmp(this.semver, "<", comp.semver, options) && (this.operator === ">=" || this.operator === ">") && (comp.operator === "<=" || comp.operator === "<");
+      var oppositeDirectionsGreaterThan = cmp(this.semver, ">", comp.semver, options) && (this.operator === "<=" || this.operator === "<") && (comp.operator === ">=" || comp.operator === ">");
+      return sameDirectionIncreasing || sameDirectionDecreasing || sameSemVer && differentDirectionsInclusive || oppositeDirectionsLessThan || oppositeDirectionsGreaterThan;
+    };
+    exports2.Range = Range;
+    function Range(range, options) {
+      if (!options || typeof options !== "object") {
+        options = {
+          loose: !!options,
+          includePrerelease: false
+        };
+      }
+      if (range instanceof Range) {
+        if (range.loose === !!options.loose && range.includePrerelease === !!options.includePrerelease) {
+          return range;
+        } else {
+          return new Range(range.raw, options);
+        }
+      }
+      if (range instanceof Comparator) {
+        return new Range(range.value, options);
+      }
+      if (!(this instanceof Range)) {
+        return new Range(range, options);
+      }
+      this.options = options;
+      this.loose = !!options.loose;
+      this.includePrerelease = !!options.includePrerelease;
+      this.raw = range;
+      this.set = range.split(/\s*\|\|\s*/).map(function(range2) {
+        return this.parseRange(range2.trim());
+      }, this).filter(function(c) {
+        return c.length;
+      });
+      if (!this.set.length) {
+        throw new TypeError("Invalid SemVer Range: " + range);
+      }
+      this.format();
+    }
+    Range.prototype.format = function() {
+      this.range = this.set.map(function(comps) {
+        return comps.join(" ").trim();
+      }).join("||").trim();
+      return this.range;
+    };
+    Range.prototype.toString = function() {
+      return this.range;
+    };
+    Range.prototype.parseRange = function(range) {
+      var loose = this.options.loose;
+      range = range.trim();
+      var hr = loose ? re[t.HYPHENRANGELOOSE] : re[t.HYPHENRANGE];
+      range = range.replace(hr, hyphenReplace);
+      debug("hyphen replace", range);
+      range = range.replace(re[t.COMPARATORTRIM], comparatorTrimReplace);
+      debug("comparator trim", range, re[t.COMPARATORTRIM]);
+      range = range.replace(re[t.TILDETRIM], tildeTrimReplace);
+      range = range.replace(re[t.CARETTRIM], caretTrimReplace);
+      range = range.split(/\s+/).join(" ");
+      var compRe = loose ? re[t.COMPARATORLOOSE] : re[t.COMPARATOR];
+      var set = range.split(" ").map(function(comp) {
+        return parseComparator(comp, this.options);
+      }, this).join(" ").split(/\s+/);
+      if (this.options.loose) {
+        set = set.filter(function(comp) {
+          return !!comp.match(compRe);
+        });
+      }
+      set = set.map(function(comp) {
+        return new Comparator(comp, this.options);
+      }, this);
+      return set;
+    };
+    Range.prototype.intersects = function(range, options) {
+      if (!(range instanceof Range)) {
+        throw new TypeError("a Range is required");
+      }
+      return this.set.some(function(thisComparators) {
+        return isSatisfiable(thisComparators, options) && range.set.some(function(rangeComparators) {
+          return isSatisfiable(rangeComparators, options) && thisComparators.every(function(thisComparator) {
+            return rangeComparators.every(function(rangeComparator) {
+              return thisComparator.intersects(rangeComparator, options);
+            });
+          });
+        });
+      });
+    };
+    function isSatisfiable(comparators, options) {
+      var result = true;
+      var remainingComparators = comparators.slice();
+      var testComparator = remainingComparators.pop();
+      while (result && remainingComparators.length) {
+        result = remainingComparators.every(function(otherComparator) {
+          return testComparator.intersects(otherComparator, options);
+        });
+        testComparator = remainingComparators.pop();
+      }
+      return result;
+    }
+    exports2.toComparators = toComparators;
+    function toComparators(range, options) {
+      return new Range(range, options).set.map(function(comp) {
+        return comp.map(function(c) {
+          return c.value;
+        }).join(" ").trim().split(" ");
+      });
+    }
+    function parseComparator(comp, options) {
+      debug("comp", comp, options);
+      comp = replaceCarets(comp, options);
+      debug("caret", comp);
+      comp = replaceTildes(comp, options);
+      debug("tildes", comp);
+      comp = replaceXRanges(comp, options);
+      debug("xrange", comp);
+      comp = replaceStars(comp, options);
+      debug("stars", comp);
+      return comp;
+    }
+    function isX(id) {
+      return !id || id.toLowerCase() === "x" || id === "*";
+    }
+    function replaceTildes(comp, options) {
+      return comp.trim().split(/\s+/).map(function(comp2) {
+        return replaceTilde(comp2, options);
+      }).join(" ");
+    }
+    function replaceTilde(comp, options) {
+      var r = options.loose ? re[t.TILDELOOSE] : re[t.TILDE];
+      return comp.replace(r, function(_, M, m, p, pr) {
+        debug("tilde", comp, _, M, m, p, pr);
+        var ret;
+        if (isX(M)) {
+          ret = "";
+        } else if (isX(m)) {
+          ret = ">=" + M + ".0.0 <" + (+M + 1) + ".0.0";
+        } else if (isX(p)) {
+          ret = ">=" + M + "." + m + ".0 <" + M + "." + (+m + 1) + ".0";
+        } else if (pr) {
+          debug("replaceTilde pr", pr);
+          ret = ">=" + M + "." + m + "." + p + "-" + pr + " <" + M + "." + (+m + 1) + ".0";
+        } else {
+          ret = ">=" + M + "." + m + "." + p + " <" + M + "." + (+m + 1) + ".0";
+        }
+        debug("tilde return", ret);
+        return ret;
+      });
+    }
+    function replaceCarets(comp, options) {
+      return comp.trim().split(/\s+/).map(function(comp2) {
+        return replaceCaret(comp2, options);
+      }).join(" ");
+    }
+    function replaceCaret(comp, options) {
+      debug("caret", comp, options);
+      var r = options.loose ? re[t.CARETLOOSE] : re[t.CARET];
+      return comp.replace(r, function(_, M, m, p, pr) {
+        debug("caret", comp, _, M, m, p, pr);
+        var ret;
+        if (isX(M)) {
+          ret = "";
+        } else if (isX(m)) {
+          ret = ">=" + M + ".0.0 <" + (+M + 1) + ".0.0";
+        } else if (isX(p)) {
+          if (M === "0") {
+            ret = ">=" + M + "." + m + ".0 <" + M + "." + (+m + 1) + ".0";
+          } else {
+            ret = ">=" + M + "." + m + ".0 <" + (+M + 1) + ".0.0";
+          }
+        } else if (pr) {
+          debug("replaceCaret pr", pr);
+          if (M === "0") {
+            if (m === "0") {
+              ret = ">=" + M + "." + m + "." + p + "-" + pr + " <" + M + "." + m + "." + (+p + 1);
+            } else {
+              ret = ">=" + M + "." + m + "." + p + "-" + pr + " <" + M + "." + (+m + 1) + ".0";
+            }
+          } else {
+            ret = ">=" + M + "." + m + "." + p + "-" + pr + " <" + (+M + 1) + ".0.0";
+          }
+        } else {
+          debug("no pr");
+          if (M === "0") {
+            if (m === "0") {
+              ret = ">=" + M + "." + m + "." + p + " <" + M + "." + m + "." + (+p + 1);
+            } else {
+              ret = ">=" + M + "." + m + "." + p + " <" + M + "." + (+m + 1) + ".0";
+            }
+          } else {
+            ret = ">=" + M + "." + m + "." + p + " <" + (+M + 1) + ".0.0";
+          }
+        }
+        debug("caret return", ret);
+        return ret;
+      });
+    }
+    function replaceXRanges(comp, options) {
+      debug("replaceXRanges", comp, options);
+      return comp.split(/\s+/).map(function(comp2) {
+        return replaceXRange(comp2, options);
+      }).join(" ");
+    }
+    function replaceXRange(comp, options) {
+      comp = comp.trim();
+      var r = options.loose ? re[t.XRANGELOOSE] : re[t.XRANGE];
+      return comp.replace(r, function(ret, gtlt, M, m, p, pr) {
+        debug("xRange", comp, ret, gtlt, M, m, p, pr);
+        var xM = isX(M);
+        var xm = xM || isX(m);
+        var xp = xm || isX(p);
+        var anyX = xp;
+        if (gtlt === "=" && anyX) {
+          gtlt = "";
+        }
+        pr = options.includePrerelease ? "-0" : "";
+        if (xM) {
+          if (gtlt === ">" || gtlt === "<") {
+            ret = "<0.0.0-0";
+          } else {
+            ret = "*";
+          }
+        } else if (gtlt && anyX) {
+          if (xm) {
+            m = 0;
+          }
+          p = 0;
+          if (gtlt === ">") {
+            gtlt = ">=";
+            if (xm) {
+              M = +M + 1;
+              m = 0;
+              p = 0;
+            } else {
+              m = +m + 1;
+              p = 0;
+            }
+          } else if (gtlt === "<=") {
+            gtlt = "<";
+            if (xm) {
+              M = +M + 1;
+            } else {
+              m = +m + 1;
+            }
+          }
+          ret = gtlt + M + "." + m + "." + p + pr;
+        } else if (xm) {
+          ret = ">=" + M + ".0.0" + pr + " <" + (+M + 1) + ".0.0" + pr;
+        } else if (xp) {
+          ret = ">=" + M + "." + m + ".0" + pr + " <" + M + "." + (+m + 1) + ".0" + pr;
+        }
+        debug("xRange return", ret);
+        return ret;
+      });
+    }
+    function replaceStars(comp, options) {
+      debug("replaceStars", comp, options);
+      return comp.trim().replace(re[t.STAR], "");
+    }
+    function hyphenReplace($0, from, fM, fm, fp, fpr, fb, to, tM, tm, tp, tpr, tb) {
+      if (isX(fM)) {
+        from = "";
+      } else if (isX(fm)) {
+        from = ">=" + fM + ".0.0";
+      } else if (isX(fp)) {
+        from = ">=" + fM + "." + fm + ".0";
+      } else {
+        from = ">=" + from;
+      }
+      if (isX(tM)) {
+        to = "";
+      } else if (isX(tm)) {
+        to = "<" + (+tM + 1) + ".0.0";
+      } else if (isX(tp)) {
+        to = "<" + tM + "." + (+tm + 1) + ".0";
+      } else if (tpr) {
+        to = "<=" + tM + "." + tm + "." + tp + "-" + tpr;
+      } else {
+        to = "<=" + to;
+      }
+      return (from + " " + to).trim();
+    }
+    Range.prototype.test = function(version) {
+      if (!version) {
+        return false;
+      }
+      if (typeof version === "string") {
+        try {
+          version = new SemVer(version, this.options);
+        } catch (er) {
+          return false;
+        }
+      }
+      for (var i2 = 0; i2 < this.set.length; i2++) {
+        if (testSet(this.set[i2], version, this.options)) {
+          return true;
+        }
+      }
+      return false;
+    };
+    function testSet(set, version, options) {
+      for (var i2 = 0; i2 < set.length; i2++) {
+        if (!set[i2].test(version)) {
+          return false;
+        }
+      }
+      if (version.prerelease.length && !options.includePrerelease) {
+        for (i2 = 0; i2 < set.length; i2++) {
+          debug(set[i2].semver);
+          if (set[i2].semver === ANY) {
+            continue;
+          }
+          if (set[i2].semver.prerelease.length > 0) {
+            var allowed = set[i2].semver;
+            if (allowed.major === version.major && allowed.minor === version.minor && allowed.patch === version.patch) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+      return true;
+    }
+    exports2.satisfies = satisfies;
+    function satisfies(version, range, options) {
+      try {
+        range = new Range(range, options);
+      } catch (er) {
+        return false;
+      }
+      return range.test(version);
+    }
+    exports2.maxSatisfying = maxSatisfying;
+    function maxSatisfying(versions, range, options) {
+      var max = null;
+      var maxSV = null;
+      try {
+        var rangeObj = new Range(range, options);
+      } catch (er) {
+        return null;
+      }
+      versions.forEach(function(v) {
+        if (rangeObj.test(v)) {
+          if (!max || maxSV.compare(v) === -1) {
+            max = v;
+            maxSV = new SemVer(max, options);
+          }
+        }
+      });
+      return max;
+    }
+    exports2.minSatisfying = minSatisfying;
+    function minSatisfying(versions, range, options) {
+      var min = null;
+      var minSV = null;
+      try {
+        var rangeObj = new Range(range, options);
+      } catch (er) {
+        return null;
+      }
+      versions.forEach(function(v) {
+        if (rangeObj.test(v)) {
+          if (!min || minSV.compare(v) === 1) {
+            min = v;
+            minSV = new SemVer(min, options);
+          }
+        }
+      });
+      return min;
+    }
+    exports2.minVersion = minVersion;
+    function minVersion(range, loose) {
+      range = new Range(range, loose);
+      var minver = new SemVer("0.0.0");
+      if (range.test(minver)) {
+        return minver;
+      }
+      minver = new SemVer("0.0.0-0");
+      if (range.test(minver)) {
+        return minver;
+      }
+      minver = null;
+      for (var i2 = 0; i2 < range.set.length; ++i2) {
+        var comparators = range.set[i2];
+        comparators.forEach(function(comparator) {
+          var compver = new SemVer(comparator.semver.version);
+          switch (comparator.operator) {
+            case ">":
+              if (compver.prerelease.length === 0) {
+                compver.patch++;
+              } else {
+                compver.prerelease.push(0);
+              }
+              compver.raw = compver.format();
+            case "":
+            case ">=":
+              if (!minver || gt(minver, compver)) {
+                minver = compver;
+              }
+              break;
+            case "<":
+            case "<=":
+              break;
+            default:
+              throw new Error("Unexpected operation: " + comparator.operator);
+          }
+        });
+      }
+      if (minver && range.test(minver)) {
+        return minver;
+      }
+      return null;
+    }
+    exports2.validRange = validRange;
+    function validRange(range, options) {
+      try {
+        return new Range(range, options).range || "*";
+      } catch (er) {
+        return null;
+      }
+    }
+    exports2.ltr = ltr;
+    function ltr(version, range, options) {
+      return outside(version, range, "<", options);
+    }
+    exports2.gtr = gtr;
+    function gtr(version, range, options) {
+      return outside(version, range, ">", options);
+    }
+    exports2.outside = outside;
+    function outside(version, range, hilo, options) {
+      version = new SemVer(version, options);
+      range = new Range(range, options);
+      var gtfn, ltefn, ltfn, comp, ecomp;
+      switch (hilo) {
+        case ">":
+          gtfn = gt;
+          ltefn = lte;
+          ltfn = lt;
+          comp = ">";
+          ecomp = ">=";
+          break;
+        case "<":
+          gtfn = lt;
+          ltefn = gte;
+          ltfn = gt;
+          comp = "<";
+          ecomp = "<=";
+          break;
+        default:
+          throw new TypeError('Must provide a hilo val of "<" or ">"');
+      }
+      if (satisfies(version, range, options)) {
+        return false;
+      }
+      for (var i2 = 0; i2 < range.set.length; ++i2) {
+        var comparators = range.set[i2];
+        var high = null;
+        var low = null;
+        comparators.forEach(function(comparator) {
+          if (comparator.semver === ANY) {
+            comparator = new Comparator(">=0.0.0");
+          }
+          high = high || comparator;
+          low = low || comparator;
+          if (gtfn(comparator.semver, high.semver, options)) {
+            high = comparator;
+          } else if (ltfn(comparator.semver, low.semver, options)) {
+            low = comparator;
+          }
+        });
+        if (high.operator === comp || high.operator === ecomp) {
+          return false;
+        }
+        if ((!low.operator || low.operator === comp) && ltefn(version, low.semver)) {
+          return false;
+        } else if (low.operator === ecomp && ltfn(version, low.semver)) {
+          return false;
+        }
+      }
+      return true;
+    }
+    exports2.prerelease = prerelease;
+    function prerelease(version, options) {
+      var parsed = parse(version, options);
+      return parsed && parsed.prerelease.length ? parsed.prerelease : null;
+    }
+    exports2.intersects = intersects;
+    function intersects(r1, r2, options) {
+      r1 = new Range(r1, options);
+      r2 = new Range(r2, options);
+      return r1.intersects(r2);
+    }
+    exports2.coerce = coerce;
+    function coerce(version, options) {
+      if (version instanceof SemVer) {
+        return version;
+      }
+      if (typeof version === "number") {
+        version = String(version);
+      }
+      if (typeof version !== "string") {
+        return null;
+      }
+      options = options || {};
+      var match = null;
+      if (!options.rtl) {
+        match = version.match(re[t.COERCE]);
+      } else {
+        var next;
+        while ((next = re[t.COERCERTL].exec(version)) && (!match || match.index + match[0].length !== version.length)) {
+          if (!match || next.index + next[0].length !== match.index + match[0].length) {
+            match = next;
+          }
+          re[t.COERCERTL].lastIndex = next.index + next[1].length + next[2].length;
+        }
+        re[t.COERCERTL].lastIndex = -1;
+      }
+      if (match === null) {
+        return null;
+      }
+      return parse(match[2] + "." + (match[3] || "0") + "." + (match[4] || "0"), options);
+    }
+  }
+});
+var require_make_dir = __commonJS2({
+  "node_modules/make-dir/index.js"(exports2, module2) {
+    "use strict";
+    var fs = require("fs");
+    var path = require("path");
+    var {
+      promisify
+    } = require("util");
+    var semver = require_semver();
+    var useNativeRecursiveOption = semver.satisfies(process.version, ">=10.12.0");
+    var checkPath = (pth) => {
+      if (process.platform === "win32") {
+        const pathHasInvalidWinCharacters = /[<>:"|?*]/.test(pth.replace(path.parse(pth).root, ""));
+        if (pathHasInvalidWinCharacters) {
+          const error = new Error(`Path contains invalid characters: ${pth}`);
+          error.code = "EINVAL";
+          throw error;
+        }
+      }
+    };
+    var processOptions = (options) => {
+      const defaults = {
+        mode: 511,
+        fs
+      };
+      return Object.assign(Object.assign({}, defaults), options);
+    };
+    var permissionError = (pth) => {
+      const error = new Error(`operation not permitted, mkdir '${pth}'`);
+      error.code = "EPERM";
+      error.errno = -4048;
+      error.path = pth;
+      error.syscall = "mkdir";
+      return error;
+    };
+    var makeDir = async (input, options) => {
+      checkPath(input);
+      options = processOptions(options);
+      const mkdir = promisify(options.fs.mkdir);
+      const stat = promisify(options.fs.stat);
+      if (useNativeRecursiveOption && options.fs.mkdir === fs.mkdir) {
+        const pth = path.resolve(input);
+        await mkdir(pth, {
+          mode: options.mode,
+          recursive: true
+        });
+        return pth;
+      }
+      const make = async (pth) => {
+        try {
+          await mkdir(pth, options.mode);
+          return pth;
+        } catch (error) {
+          if (error.code === "EPERM") {
+            throw error;
+          }
+          if (error.code === "ENOENT") {
+            if (path.dirname(pth) === pth) {
+              throw permissionError(pth);
+            }
+            if (error.message.includes("null bytes")) {
+              throw error;
+            }
+            await make(path.dirname(pth));
+            return make(pth);
+          }
+          try {
+            const stats = await stat(pth);
+            if (!stats.isDirectory()) {
+              throw new Error("The path is not a directory");
+            }
+          } catch (_) {
+            throw error;
+          }
+          return pth;
+        }
+      };
+      return make(path.resolve(input));
+    };
+    module2.exports = makeDir;
+    module2.exports.sync = (input, options) => {
+      checkPath(input);
+      options = processOptions(options);
+      if (useNativeRecursiveOption && options.fs.mkdirSync === fs.mkdirSync) {
+        const pth = path.resolve(input);
+        fs.mkdirSync(pth, {
+          mode: options.mode,
+          recursive: true
+        });
+        return pth;
+      }
+      const make = (pth) => {
+        try {
+          options.fs.mkdirSync(pth, options.mode);
+        } catch (error) {
+          if (error.code === "EPERM") {
+            throw error;
+          }
+          if (error.code === "ENOENT") {
+            if (path.dirname(pth) === pth) {
+              throw permissionError(pth);
+            }
+            if (error.message.includes("null bytes")) {
+              throw error;
+            }
+            make(path.dirname(pth));
+            return make(pth);
+          }
+          try {
+            if (!options.fs.statSync(pth).isDirectory()) {
+              throw new Error("The path is not a directory");
+            }
+          } catch (_) {
+            throw error;
+          }
+        }
+        return pth;
+      };
+      return make(path.resolve(input));
+    };
+  }
+});
+var require_find_cache_dir = __commonJS2({
+  "node_modules/find-cache-dir/index.js"(exports2, module2) {
+    "use strict";
+    var path = require("path");
+    var fs = require("fs");
+    var commonDir = require_commondir();
+    var pkgDir = require_pkg_dir();
+    var makeDir = require_make_dir();
+    var {
+      env: env2,
+      cwd
+    } = process;
+    var isWritable = (path2) => {
+      try {
+        fs.accessSync(path2, fs.constants.W_OK);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    };
+    function useDirectory(directory, options) {
+      if (options.create) {
+        makeDir.sync(directory);
+      }
+      if (options.thunk) {
+        return (...arguments_) => path.join(directory, ...arguments_);
+      }
+      return directory;
+    }
+    function getNodeModuleDirectory(directory) {
+      const nodeModules = path.join(directory, "node_modules");
+      if (!isWritable(nodeModules) && (fs.existsSync(nodeModules) || !isWritable(path.join(directory)))) {
+        return;
+      }
+      return nodeModules;
+    }
+    module2.exports = (options = {}) => {
+      if (env2.CACHE_DIR && !["true", "false", "1", "0"].includes(env2.CACHE_DIR)) {
+        return useDirectory(path.join(env2.CACHE_DIR, options.name), options);
+      }
+      let {
+        cwd: directory = cwd()
+      } = options;
+      if (options.files) {
+        directory = commonDir(directory, options.files);
+      }
+      directory = pkgDir.sync(directory);
+      if (!directory) {
+        return;
+      }
+      const nodeModules = getNodeModuleDirectory(directory);
+      if (!nodeModules) {
+        return void 0;
+      }
+      return useDirectory(path.join(directory, "node_modules", ".cache", options.name), options);
+    };
+  }
+});
+var require_find_cache_file = __commonJS2({
+  "src/cli/find-cache-file.js"(exports2, module2) {
+    "use strict";
+    var os2 = require("os");
+    var path = require("path");
+    var findCacheDir = require_find_cache_dir();
+    function findCacheFile() {
+      const cacheDir = findCacheDir({
+        name: "prettier",
+        create: true
+      }) || os2.tmpdir();
+      const cacheFilePath = path.join(cacheDir, ".prettier-cache");
+      return cacheFilePath;
+    }
+    module2.exports = findCacheFile;
+  }
+});
+var require_cjs = __commonJS2({
+  "node_modules/flatted/cjs/index.js"(exports2) {
+    "use strict";
+    var {
+      parse: $parse,
+      stringify: $stringify
+    } = JSON;
+    var {
+      keys
+    } = Object;
+    var Primitive = String;
+    var primitive = "string";
+    var ignore = {};
+    var object = "object";
+    var noop = (_, value) => value;
+    var primitives = (value) => value instanceof Primitive ? Primitive(value) : value;
+    var Primitives = (_, value) => typeof value === primitive ? new Primitive(value) : value;
+    var revive = (input, parsed, output, $) => {
+      const lazy = [];
+      for (let ke = keys(output), {
+        length
+      } = ke, y = 0; y < length; y++) {
+        const k = ke[y];
+        const value = output[k];
+        if (value instanceof Primitive) {
+          const tmp = input[value];
+          if (typeof tmp === object && !parsed.has(tmp)) {
+            parsed.add(tmp);
+            output[k] = ignore;
+            lazy.push({
+              k,
+              a: [input, parsed, tmp, $]
+            });
+          } else
+            output[k] = $.call(output, k, tmp);
+        } else if (output[k] !== ignore)
+          output[k] = $.call(output, k, value);
+      }
+      for (let {
+        length
+      } = lazy, i = 0; i < length; i++) {
+        const {
+          k,
+          a
+        } = lazy[i];
+        output[k] = $.call(output, k, revive.apply(null, a));
+      }
+      return output;
+    };
+    var set = (known, input, value) => {
+      const index = Primitive(input.push(value) - 1);
+      known.set(value, index);
+      return index;
+    };
+    var parse = (text, reviver) => {
+      const input = $parse(text, Primitives).map(primitives);
+      const value = input[0];
+      const $ = reviver || noop;
+      const tmp = typeof value === object && value ? revive(input, /* @__PURE__ */ new Set(), value, $) : value;
+      return $.call({
+        "": tmp
+      }, "", tmp);
+    };
+    exports2.parse = parse;
+    var stringify2 = (value, replacer, space) => {
+      const $ = replacer && typeof replacer === object ? (k, v) => k === "" || -1 < replacer.indexOf(k) ? v : void 0 : replacer || noop;
+      const known = /* @__PURE__ */ new Map();
+      const input = [];
+      const output = [];
+      let i = +set(known, input, $.call({
+        "": value
+      }, "", value));
+      let firstRun = !i;
+      while (i < input.length) {
+        firstRun = true;
+        output[i] = $stringify(input[i++], replace, space);
+      }
+      return "[" + output.join(",") + "]";
+      function replace(key, value2) {
+        if (firstRun) {
+          firstRun = !firstRun;
+          return value2;
+        }
+        const after = $.call(this, key, value2);
+        switch (typeof after) {
+          case object:
+            if (after === null)
+              return after;
+          case primitive:
+            return known.get(after) || set(known, input, after);
+        }
+        return after;
+      }
+    };
+    exports2.stringify = stringify2;
+    var toJSON = (any) => $parse(stringify2(any));
+    exports2.toJSON = toJSON;
+    var fromJSON = (any) => parse($stringify(any));
+    exports2.fromJSON = fromJSON;
+  }
+});
+var require_utils6 = __commonJS2({
+  "node_modules/flat-cache/src/utils.js"(exports2, module2) {
+    var fs = require("fs");
+    var path = require("path");
+    var flatted = require_cjs();
+    module2.exports = {
+      tryParse: function(filePath, defaultValue) {
+        var result;
+        try {
+          result = this.readJSON(filePath);
+        } catch (ex) {
+          result = defaultValue;
+        }
+        return result;
+      },
+      readJSON: function(filePath) {
+        return flatted.parse(fs.readFileSync(filePath, {
+          encoding: "utf8"
+        }));
+      },
+      writeJSON: function(filePath, data) {
+        fs.mkdirSync(path.dirname(filePath), {
+          recursive: true
+        });
+        fs.writeFileSync(filePath, flatted.stringify(data));
+      }
+    };
+  }
+});
+var require_old = __commonJS2({
+  "node_modules/fs.realpath/old.js"(exports2) {
+    var pathModule = require("path");
+    var isWindows = process.platform === "win32";
+    var fs = require("fs");
+    var DEBUG = process.env.NODE_DEBUG && /fs/.test(process.env.NODE_DEBUG);
+    function rethrow() {
+      var callback;
+      if (DEBUG) {
+        var backtrace = new Error();
+        callback = debugCallback;
+      } else
+        callback = missingCallback;
+      return callback;
+      function debugCallback(err) {
+        if (err) {
+          backtrace.message = err.message;
+          err = backtrace;
+          missingCallback(err);
+        }
+      }
+      function missingCallback(err) {
+        if (err) {
+          if (process.throwDeprecation)
+            throw err;
+          else if (!process.noDeprecation) {
+            var msg = "fs: missing callback " + (err.stack || err.message);
+            if (process.traceDeprecation)
+              console.trace(msg);
+            else
+              console.error(msg);
+          }
+        }
+      }
+    }
+    function maybeCallback(cb) {
+      return typeof cb === "function" ? cb : rethrow();
+    }
+    var normalize = pathModule.normalize;
+    if (isWindows) {
+      nextPartRe = /(.*?)(?:[\/\\]+|$)/g;
+    } else {
+      nextPartRe = /(.*?)(?:[\/]+|$)/g;
+    }
+    var nextPartRe;
+    if (isWindows) {
+      splitRootRe = /^(?:[a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/][^\\\/]+)?[\\\/]*/;
+    } else {
+      splitRootRe = /^[\/]*/;
+    }
+    var splitRootRe;
+    exports2.realpathSync = function realpathSync(p, cache) {
+      p = pathModule.resolve(p);
+      if (cache && Object.prototype.hasOwnProperty.call(cache, p)) {
+        return cache[p];
+      }
+      var original = p, seenLinks = {}, knownHard = {};
+      var pos;
+      var current;
+      var base;
+      var previous;
+      start();
+      function start() {
+        var m = splitRootRe.exec(p);
+        pos = m[0].length;
+        current = m[0];
+        base = m[0];
+        previous = "";
+        if (isWindows && !knownHard[base]) {
+          fs.lstatSync(base);
+          knownHard[base] = true;
+        }
+      }
+      while (pos < p.length) {
+        nextPartRe.lastIndex = pos;
+        var result = nextPartRe.exec(p);
+        previous = current;
+        current += result[0];
+        base = previous + result[1];
+        pos = nextPartRe.lastIndex;
+        if (knownHard[base] || cache && cache[base] === base) {
+          continue;
+        }
+        var resolvedLink;
+        if (cache && Object.prototype.hasOwnProperty.call(cache, base)) {
+          resolvedLink = cache[base];
+        } else {
+          var stat = fs.lstatSync(base);
+          if (!stat.isSymbolicLink()) {
+            knownHard[base] = true;
+            if (cache)
+              cache[base] = base;
+            continue;
+          }
+          var linkTarget = null;
+          if (!isWindows) {
+            var id = stat.dev.toString(32) + ":" + stat.ino.toString(32);
+            if (seenLinks.hasOwnProperty(id)) {
+              linkTarget = seenLinks[id];
+            }
+          }
+          if (linkTarget === null) {
+            fs.statSync(base);
+            linkTarget = fs.readlinkSync(base);
+          }
+          resolvedLink = pathModule.resolve(previous, linkTarget);
+          if (cache)
+            cache[base] = resolvedLink;
+          if (!isWindows)
+            seenLinks[id] = linkTarget;
+        }
+        p = pathModule.resolve(resolvedLink, p.slice(pos));
+        start();
+      }
+      if (cache)
+        cache[original] = p;
+      return p;
+    };
+    exports2.realpath = function realpath(p, cache, cb) {
+      if (typeof cb !== "function") {
+        cb = maybeCallback(cache);
+        cache = null;
+      }
+      p = pathModule.resolve(p);
+      if (cache && Object.prototype.hasOwnProperty.call(cache, p)) {
+        return process.nextTick(cb.bind(null, null, cache[p]));
+      }
+      var original = p, seenLinks = {}, knownHard = {};
+      var pos;
+      var current;
+      var base;
+      var previous;
+      start();
+      function start() {
+        var m = splitRootRe.exec(p);
+        pos = m[0].length;
+        current = m[0];
+        base = m[0];
+        previous = "";
+        if (isWindows && !knownHard[base]) {
+          fs.lstat(base, function(err) {
+            if (err)
+              return cb(err);
+            knownHard[base] = true;
+            LOOP();
+          });
+        } else {
+          process.nextTick(LOOP);
+        }
+      }
+      function LOOP() {
+        if (pos >= p.length) {
+          if (cache)
+            cache[original] = p;
+          return cb(null, p);
+        }
+        nextPartRe.lastIndex = pos;
+        var result = nextPartRe.exec(p);
+        previous = current;
+        current += result[0];
+        base = previous + result[1];
+        pos = nextPartRe.lastIndex;
+        if (knownHard[base] || cache && cache[base] === base) {
+          return process.nextTick(LOOP);
+        }
+        if (cache && Object.prototype.hasOwnProperty.call(cache, base)) {
+          return gotResolvedLink(cache[base]);
+        }
+        return fs.lstat(base, gotStat);
+      }
+      function gotStat(err, stat) {
+        if (err)
+          return cb(err);
+        if (!stat.isSymbolicLink()) {
+          knownHard[base] = true;
+          if (cache)
+            cache[base] = base;
+          return process.nextTick(LOOP);
+        }
+        if (!isWindows) {
+          var id = stat.dev.toString(32) + ":" + stat.ino.toString(32);
+          if (seenLinks.hasOwnProperty(id)) {
+            return gotTarget(null, seenLinks[id], base);
+          }
+        }
+        fs.stat(base, function(err2) {
+          if (err2)
+            return cb(err2);
+          fs.readlink(base, function(err3, target) {
+            if (!isWindows)
+              seenLinks[id] = target;
+            gotTarget(err3, target);
+          });
+        });
+      }
+      function gotTarget(err, target, base2) {
+        if (err)
+          return cb(err);
+        var resolvedLink = pathModule.resolve(previous, target);
+        if (cache)
+          cache[base2] = resolvedLink;
+        gotResolvedLink(resolvedLink);
+      }
+      function gotResolvedLink(resolvedLink) {
+        p = pathModule.resolve(resolvedLink, p.slice(pos));
+        start();
+      }
+    };
+  }
+});
+var require_fs5 = __commonJS2({
+  "node_modules/fs.realpath/index.js"(exports2, module2) {
+    module2.exports = realpath;
+    realpath.realpath = realpath;
+    realpath.sync = realpathSync;
+    realpath.realpathSync = realpathSync;
+    realpath.monkeypatch = monkeypatch;
+    realpath.unmonkeypatch = unmonkeypatch;
+    var fs = require("fs");
+    var origRealpath = fs.realpath;
+    var origRealpathSync = fs.realpathSync;
+    var version = process.version;
+    var ok = /^v[0-5]\./.test(version);
+    var old = require_old();
+    function newError(er) {
+      return er && er.syscall === "realpath" && (er.code === "ELOOP" || er.code === "ENOMEM" || er.code === "ENAMETOOLONG");
+    }
+    function realpath(p, cache, cb) {
+      if (ok) {
+        return origRealpath(p, cache, cb);
+      }
+      if (typeof cache === "function") {
+        cb = cache;
+        cache = null;
+      }
+      origRealpath(p, cache, function(er, result) {
+        if (newError(er)) {
+          old.realpath(p, cache, cb);
+        } else {
+          cb(er, result);
+        }
+      });
+    }
+    function realpathSync(p, cache) {
+      if (ok) {
+        return origRealpathSync(p, cache);
+      }
+      try {
+        return origRealpathSync(p, cache);
+      } catch (er) {
+        if (newError(er)) {
+          return old.realpathSync(p, cache);
+        } else {
+          throw er;
+        }
+      }
+    }
+    function monkeypatch() {
+      fs.realpath = realpath;
+      fs.realpathSync = realpathSync;
+    }
+    function unmonkeypatch() {
+      fs.realpath = origRealpath;
+      fs.realpathSync = origRealpathSync;
+    }
+  }
+});
+var require_concat_map = __commonJS2({
+  "node_modules/concat-map/index.js"(exports2, module2) {
+    module2.exports = function(xs, fn) {
+      var res = [];
+      for (var i = 0; i < xs.length; i++) {
+        var x = fn(xs[i], i);
+        if (isArray(x))
+          res.push.apply(res, x);
+        else
+          res.push(x);
+      }
+      return res;
+    };
+    var isArray = Array.isArray || function(xs) {
+      return Object.prototype.toString.call(xs) === "[object Array]";
+    };
+  }
+});
+var require_balanced_match = __commonJS2({
+  "node_modules/balanced-match/index.js"(exports2, module2) {
+    "use strict";
+    module2.exports = balanced;
+    function balanced(a, b, str) {
+      if (a instanceof RegExp)
+        a = maybeMatch(a, str);
+      if (b instanceof RegExp)
+        b = maybeMatch(b, str);
+      var r = range(a, b, str);
+      return r && {
+        start: r[0],
+        end: r[1],
+        pre: str.slice(0, r[0]),
+        body: str.slice(r[0] + a.length, r[1]),
+        post: str.slice(r[1] + b.length)
+      };
+    }
+    function maybeMatch(reg, str) {
+      var m = str.match(reg);
+      return m ? m[0] : null;
+    }
+    balanced.range = range;
+    function range(a, b, str) {
+      var begs, beg, left, right, result;
+      var ai = str.indexOf(a);
+      var bi = str.indexOf(b, ai + 1);
+      var i = ai;
+      if (ai >= 0 && bi > 0) {
+        if (a === b) {
+          return [ai, bi];
+        }
+        begs = [];
+        left = str.length;
+        while (i >= 0 && !result) {
+          if (i == ai) {
+            begs.push(i);
+            ai = str.indexOf(a, i + 1);
+          } else if (begs.length == 1) {
+            result = [begs.pop(), bi];
+          } else {
+            beg = begs.pop();
+            if (beg < left) {
+              left = beg;
+              right = bi;
+            }
+            bi = str.indexOf(b, i + 1);
+          }
+          i = ai < bi && ai >= 0 ? ai : bi;
+        }
+        if (begs.length) {
+          result = [left, right];
+        }
+      }
+      return result;
+    }
+  }
+});
+var require_brace_expansion = __commonJS2({
+  "node_modules/brace-expansion/index.js"(exports2, module2) {
+    var concatMap = require_concat_map();
+    var balanced = require_balanced_match();
+    module2.exports = expandTop;
+    var escSlash = "\0SLASH" + Math.random() + "\0";
+    var escOpen = "\0OPEN" + Math.random() + "\0";
+    var escClose = "\0CLOSE" + Math.random() + "\0";
+    var escComma = "\0COMMA" + Math.random() + "\0";
+    var escPeriod = "\0PERIOD" + Math.random() + "\0";
+    function numeric(str) {
+      return parseInt(str, 10) == str ? parseInt(str, 10) : str.charCodeAt(0);
+    }
+    function escapeBraces(str) {
+      return str.split("\\\\").join(escSlash).split("\\{").join(escOpen).split("\\}").join(escClose).split("\\,").join(escComma).split("\\.").join(escPeriod);
+    }
+    function unescapeBraces(str) {
+      return str.split(escSlash).join("\\").split(escOpen).join("{").split(escClose).join("}").split(escComma).join(",").split(escPeriod).join(".");
+    }
+    function parseCommaParts(str) {
+      if (!str)
+        return [""];
+      var parts = [];
+      var m = balanced("{", "}", str);
+      if (!m)
+        return str.split(",");
+      var pre = m.pre;
+      var body = m.body;
+      var post = m.post;
+      var p = pre.split(",");
+      p[p.length - 1] += "{" + body + "}";
+      var postParts = parseCommaParts(post);
+      if (post.length) {
+        p[p.length - 1] += postParts.shift();
+        p.push.apply(p, postParts);
+      }
+      parts.push.apply(parts, p);
+      return parts;
+    }
+    function expandTop(str) {
+      if (!str)
+        return [];
+      if (str.substr(0, 2) === "{}") {
+        str = "\\{\\}" + str.substr(2);
+      }
+      return expand(escapeBraces(str), true).map(unescapeBraces);
+    }
+    function embrace(str) {
+      return "{" + str + "}";
+    }
+    function isPadded(el) {
+      return /^-?0\d/.test(el);
+    }
+    function lte(i, y) {
+      return i <= y;
+    }
+    function gte(i, y) {
+      return i >= y;
+    }
+    function expand(str, isTop) {
+      var expansions = [];
+      var m = balanced("{", "}", str);
+      if (!m || /\$$/.test(m.pre))
+        return [str];
+      var isNumericSequence = /^-?\d+\.\.-?\d+(?:\.\.-?\d+)?$/.test(m.body);
+      var isAlphaSequence = /^[a-zA-Z]\.\.[a-zA-Z](?:\.\.-?\d+)?$/.test(m.body);
+      var isSequence = isNumericSequence || isAlphaSequence;
+      var isOptions = m.body.indexOf(",") >= 0;
+      if (!isSequence && !isOptions) {
+        if (m.post.match(/,.*\}/)) {
+          str = m.pre + "{" + m.body + escClose + m.post;
+          return expand(str);
+        }
+        return [str];
+      }
+      var n;
+      if (isSequence) {
+        n = m.body.split(/\.\./);
+      } else {
+        n = parseCommaParts(m.body);
+        if (n.length === 1) {
+          n = expand(n[0], false).map(embrace);
+          if (n.length === 1) {
+            var post = m.post.length ? expand(m.post, false) : [""];
+            return post.map(function(p) {
+              return m.pre + n[0] + p;
+            });
+          }
+        }
+      }
+      var pre = m.pre;
+      var post = m.post.length ? expand(m.post, false) : [""];
+      var N;
+      if (isSequence) {
+        var x = numeric(n[0]);
+        var y = numeric(n[1]);
+        var width = Math.max(n[0].length, n[1].length);
+        var incr = n.length == 3 ? Math.abs(numeric(n[2])) : 1;
+        var test = lte;
+        var reverse = y < x;
+        if (reverse) {
+          incr *= -1;
+          test = gte;
+        }
+        var pad = n.some(isPadded);
+        N = [];
+        for (var i = x; test(i, y); i += incr) {
+          var c;
+          if (isAlphaSequence) {
+            c = String.fromCharCode(i);
+            if (c === "\\")
+              c = "";
+          } else {
+            c = String(i);
+            if (pad) {
+              var need = width - c.length;
+              if (need > 0) {
+                var z = new Array(need + 1).join("0");
+                if (i < 0)
+                  c = "-" + z + c.slice(1);
+                else
+                  c = z + c;
+              }
+            }
+          }
+          N.push(c);
+        }
+      } else {
+        N = concatMap(n, function(el) {
+          return expand(el, false);
+        });
+      }
+      for (var j = 0; j < N.length; j++) {
+        for (var k = 0; k < post.length; k++) {
+          var expansion = pre + N[j] + post[k];
+          if (!isTop || isSequence || expansion)
+            expansions.push(expansion);
+        }
+      }
+      return expansions;
+    }
+  }
+});
+var require_minimatch = __commonJS2({
+  "node_modules/minimatch/minimatch.js"(exports2, module2) {
+    module2.exports = minimatch;
+    minimatch.Minimatch = Minimatch;
+    var path = function() {
+      try {
+        return require("path");
+      } catch (e) {
+      }
+    }() || {
+      sep: "/"
+    };
+    minimatch.sep = path.sep;
+    var GLOBSTAR = minimatch.GLOBSTAR = Minimatch.GLOBSTAR = {};
+    var expand = require_brace_expansion();
+    var plTypes = {
+      "!": {
+        open: "(?:(?!(?:",
+        close: "))[^/]*?)"
+      },
+      "?": {
+        open: "(?:",
+        close: ")?"
+      },
+      "+": {
+        open: "(?:",
+        close: ")+"
+      },
+      "*": {
+        open: "(?:",
+        close: ")*"
+      },
+      "@": {
+        open: "(?:",
+        close: ")"
+      }
+    };
+    var qmark = "[^/]";
+    var star = qmark + "*?";
+    var twoStarDot = "(?:(?!(?:\\/|^)(?:\\.{1,2})($|\\/)).)*?";
+    var twoStarNoDot = "(?:(?!(?:\\/|^)\\.).)*?";
+    var reSpecials = charSet("().*{}+?[]^$\\!");
+    function charSet(s) {
+      return s.split("").reduce(function(set, c) {
+        set[c] = true;
+        return set;
+      }, {});
+    }
+    var slashSplit = /\/+/;
+    minimatch.filter = filter;
+    function filter(pattern, options) {
+      options = options || {};
+      return function(p, i, list) {
+        return minimatch(p, pattern, options);
+      };
+    }
+    function ext(a, b) {
+      b = b || {};
+      var t = {};
+      Object.keys(a).forEach(function(k) {
+        t[k] = a[k];
+      });
+      Object.keys(b).forEach(function(k) {
+        t[k] = b[k];
+      });
+      return t;
+    }
+    minimatch.defaults = function(def) {
+      if (!def || typeof def !== "object" || !Object.keys(def).length) {
+        return minimatch;
+      }
+      var orig = minimatch;
+      var m = function minimatch2(p, pattern, options) {
+        return orig(p, pattern, ext(def, options));
+      };
+      m.Minimatch = function Minimatch2(pattern, options) {
+        return new orig.Minimatch(pattern, ext(def, options));
+      };
+      m.Minimatch.defaults = function defaults(options) {
+        return orig.defaults(ext(def, options)).Minimatch;
+      };
+      m.filter = function filter2(pattern, options) {
+        return orig.filter(pattern, ext(def, options));
+      };
+      m.defaults = function defaults(options) {
+        return orig.defaults(ext(def, options));
+      };
+      m.makeRe = function makeRe2(pattern, options) {
+        return orig.makeRe(pattern, ext(def, options));
+      };
+      m.braceExpand = function braceExpand2(pattern, options) {
+        return orig.braceExpand(pattern, ext(def, options));
+      };
+      m.match = function(list, pattern, options) {
+        return orig.match(list, pattern, ext(def, options));
+      };
+      return m;
+    };
+    Minimatch.defaults = function(def) {
+      return minimatch.defaults(def).Minimatch;
+    };
+    function minimatch(p, pattern, options) {
+      assertValidPattern(pattern);
+      if (!options)
+        options = {};
+      if (!options.nocomment && pattern.charAt(0) === "#") {
+        return false;
+      }
+      return new Minimatch(pattern, options).match(p);
+    }
+    function Minimatch(pattern, options) {
+      if (!(this instanceof Minimatch)) {
+        return new Minimatch(pattern, options);
+      }
+      assertValidPattern(pattern);
+      if (!options)
+        options = {};
+      pattern = pattern.trim();
+      if (!options.allowWindowsEscape && path.sep !== "/") {
+        pattern = pattern.split(path.sep).join("/");
+      }
+      this.options = options;
+      this.set = [];
+      this.pattern = pattern;
+      this.regexp = null;
+      this.negate = false;
+      this.comment = false;
+      this.empty = false;
+      this.partial = !!options.partial;
+      this.make();
+    }
+    Minimatch.prototype.debug = function() {
+    };
+    Minimatch.prototype.make = make;
+    function make() {
+      var pattern = this.pattern;
+      var options = this.options;
+      if (!options.nocomment && pattern.charAt(0) === "#") {
+        this.comment = true;
+        return;
+      }
+      if (!pattern) {
+        this.empty = true;
+        return;
+      }
+      this.parseNegate();
+      var set = this.globSet = this.braceExpand();
+      if (options.debug)
+        this.debug = function debug() {
+          console.error.apply(console, arguments);
+        };
+      this.debug(this.pattern, set);
+      set = this.globParts = set.map(function(s) {
+        return s.split(slashSplit);
+      });
+      this.debug(this.pattern, set);
+      set = set.map(function(s, si, set2) {
+        return s.map(this.parse, this);
+      }, this);
+      this.debug(this.pattern, set);
+      set = set.filter(function(s) {
+        return s.indexOf(false) === -1;
+      });
+      this.debug(this.pattern, set);
+      this.set = set;
+    }
+    Minimatch.prototype.parseNegate = parseNegate;
+    function parseNegate() {
+      var pattern = this.pattern;
+      var negate = false;
+      var options = this.options;
+      var negateOffset = 0;
+      if (options.nonegate)
+        return;
+      for (var i = 0, l = pattern.length; i < l && pattern.charAt(i) === "!"; i++) {
+        negate = !negate;
+        negateOffset++;
+      }
+      if (negateOffset)
+        this.pattern = pattern.substr(negateOffset);
+      this.negate = negate;
+    }
+    minimatch.braceExpand = function(pattern, options) {
+      return braceExpand(pattern, options);
+    };
+    Minimatch.prototype.braceExpand = braceExpand;
+    function braceExpand(pattern, options) {
+      if (!options) {
+        if (this instanceof Minimatch) {
+          options = this.options;
+        } else {
+          options = {};
+        }
+      }
+      pattern = typeof pattern === "undefined" ? this.pattern : pattern;
+      assertValidPattern(pattern);
+      if (options.nobrace || !/\{(?:(?!\{).)*\}/.test(pattern)) {
+        return [pattern];
+      }
+      return expand(pattern);
+    }
+    var MAX_PATTERN_LENGTH = 1024 * 64;
+    var assertValidPattern = function(pattern) {
+      if (typeof pattern !== "string") {
+        throw new TypeError("invalid pattern");
+      }
+      if (pattern.length > MAX_PATTERN_LENGTH) {
+        throw new TypeError("pattern is too long");
+      }
+    };
+    Minimatch.prototype.parse = parse;
+    var SUBPARSE = {};
+    function parse(pattern, isSub) {
+      assertValidPattern(pattern);
+      var options = this.options;
+      if (pattern === "**") {
+        if (!options.noglobstar)
+          return GLOBSTAR;
+        else
+          pattern = "*";
+      }
+      if (pattern === "")
+        return "";
+      var re = "";
+      var hasMagic = !!options.nocase;
+      var escaping = false;
+      var patternListStack = [];
+      var negativeLists = [];
+      var stateChar;
+      var inClass = false;
+      var reClassStart = -1;
+      var classStart = -1;
+      var patternStart = pattern.charAt(0) === "." ? "" : options.dot ? "(?!(?:^|\\/)\\.{1,2}(?:$|\\/))" : "(?!\\.)";
+      var self2 = this;
+      function clearStateChar() {
+        if (stateChar) {
+          switch (stateChar) {
+            case "*":
+              re += star;
+              hasMagic = true;
+              break;
+            case "?":
+              re += qmark;
+              hasMagic = true;
+              break;
+            default:
+              re += "\\" + stateChar;
+              break;
+          }
+          self2.debug("clearStateChar %j %j", stateChar, re);
+          stateChar = false;
+        }
+      }
+      for (var i = 0, len = pattern.length, c; i < len && (c = pattern.charAt(i)); i++) {
+        this.debug("%s	%s %s %j", pattern, i, re, c);
+        if (escaping && reSpecials[c]) {
+          re += "\\" + c;
+          escaping = false;
+          continue;
+        }
+        switch (c) {
+          case "/": {
+            return false;
+          }
+          case "\\":
+            clearStateChar();
+            escaping = true;
+            continue;
+          case "?":
+          case "*":
+          case "+":
+          case "@":
+          case "!":
+            this.debug("%s	%s %s %j <-- stateChar", pattern, i, re, c);
+            if (inClass) {
+              this.debug("  in class");
+              if (c === "!" && i === classStart + 1)
+                c = "^";
+              re += c;
+              continue;
+            }
+            self2.debug("call clearStateChar %j", stateChar);
+            clearStateChar();
+            stateChar = c;
+            if (options.noext)
+              clearStateChar();
+            continue;
+          case "(":
+            if (inClass) {
+              re += "(";
+              continue;
+            }
+            if (!stateChar) {
+              re += "\\(";
+              continue;
+            }
+            patternListStack.push({
+              type: stateChar,
+              start: i - 1,
+              reStart: re.length,
+              open: plTypes[stateChar].open,
+              close: plTypes[stateChar].close
+            });
+            re += stateChar === "!" ? "(?:(?!(?:" : "(?:";
+            this.debug("plType %j %j", stateChar, re);
+            stateChar = false;
+            continue;
+          case ")":
+            if (inClass || !patternListStack.length) {
+              re += "\\)";
+              continue;
+            }
+            clearStateChar();
+            hasMagic = true;
+            var pl = patternListStack.pop();
+            re += pl.close;
+            if (pl.type === "!") {
+              negativeLists.push(pl);
+            }
+            pl.reEnd = re.length;
+            continue;
+          case "|":
+            if (inClass || !patternListStack.length || escaping) {
+              re += "\\|";
+              escaping = false;
+              continue;
+            }
+            clearStateChar();
+            re += "|";
+            continue;
+          case "[":
+            clearStateChar();
+            if (inClass) {
+              re += "\\" + c;
+              continue;
+            }
+            inClass = true;
+            classStart = i;
+            reClassStart = re.length;
+            re += c;
+            continue;
+          case "]":
+            if (i === classStart + 1 || !inClass) {
+              re += "\\" + c;
+              escaping = false;
+              continue;
+            }
+            var cs = pattern.substring(classStart + 1, i);
+            try {
+              RegExp("[" + cs + "]");
+            } catch (er) {
+              var sp = this.parse(cs, SUBPARSE);
+              re = re.substr(0, reClassStart) + "\\[" + sp[0] + "\\]";
+              hasMagic = hasMagic || sp[1];
+              inClass = false;
+              continue;
+            }
+            hasMagic = true;
+            inClass = false;
+            re += c;
+            continue;
+          default:
+            clearStateChar();
+            if (escaping) {
+              escaping = false;
+            } else if (reSpecials[c] && !(c === "^" && inClass)) {
+              re += "\\";
+            }
+            re += c;
+        }
+      }
+      if (inClass) {
+        cs = pattern.substr(classStart + 1);
+        sp = this.parse(cs, SUBPARSE);
+        re = re.substr(0, reClassStart) + "\\[" + sp[0];
+        hasMagic = hasMagic || sp[1];
+      }
+      for (pl = patternListStack.pop(); pl; pl = patternListStack.pop()) {
+        var tail = re.slice(pl.reStart + pl.open.length);
+        this.debug("setting tail", re, pl);
+        tail = tail.replace(/((?:\\{2}){0,64})(\\?)\|/g, function(_, $1, $2) {
+          if (!$2) {
+            $2 = "\\";
+          }
+          return $1 + $1 + $2 + "|";
+        });
+        this.debug("tail=%j\n   %s", tail, tail, pl, re);
+        var t = pl.type === "*" ? star : pl.type === "?" ? qmark : "\\" + pl.type;
+        hasMagic = true;
+        re = re.slice(0, pl.reStart) + t + "\\(" + tail;
+      }
+      clearStateChar();
+      if (escaping) {
+        re += "\\\\";
+      }
+      var addPatternStart = false;
+      switch (re.charAt(0)) {
+        case "[":
+        case ".":
+        case "(":
+          addPatternStart = true;
+      }
+      for (var n = negativeLists.length - 1; n > -1; n--) {
+        var nl = negativeLists[n];
+        var nlBefore = re.slice(0, nl.reStart);
+        var nlFirst = re.slice(nl.reStart, nl.reEnd - 8);
+        var nlLast = re.slice(nl.reEnd - 8, nl.reEnd);
+        var nlAfter = re.slice(nl.reEnd);
+        nlLast += nlAfter;
+        var openParensBefore = nlBefore.split("(").length - 1;
+        var cleanAfter = nlAfter;
+        for (i = 0; i < openParensBefore; i++) {
+          cleanAfter = cleanAfter.replace(/\)[+*?]?/, "");
+        }
+        nlAfter = cleanAfter;
+        var dollar = "";
+        if (nlAfter === "" && isSub !== SUBPARSE) {
+          dollar = "$";
+        }
+        var newRe = nlBefore + nlFirst + nlAfter + dollar + nlLast;
+        re = newRe;
+      }
+      if (re !== "" && hasMagic) {
+        re = "(?=.)" + re;
+      }
+      if (addPatternStart) {
+        re = patternStart + re;
+      }
+      if (isSub === SUBPARSE) {
+        return [re, hasMagic];
+      }
+      if (!hasMagic) {
+        return globUnescape(pattern);
+      }
+      var flags = options.nocase ? "i" : "";
+      try {
+        var regExp = new RegExp("^" + re + "$", flags);
+      } catch (er) {
+        return new RegExp("$.");
+      }
+      regExp._glob = pattern;
+      regExp._src = re;
+      return regExp;
+    }
+    minimatch.makeRe = function(pattern, options) {
+      return new Minimatch(pattern, options || {}).makeRe();
+    };
+    Minimatch.prototype.makeRe = makeRe;
+    function makeRe() {
+      if (this.regexp || this.regexp === false)
+        return this.regexp;
+      var set = this.set;
+      if (!set.length) {
+        this.regexp = false;
+        return this.regexp;
+      }
+      var options = this.options;
+      var twoStar = options.noglobstar ? star : options.dot ? twoStarDot : twoStarNoDot;
+      var flags = options.nocase ? "i" : "";
+      var re = set.map(function(pattern) {
+        return pattern.map(function(p) {
+          return p === GLOBSTAR ? twoStar : typeof p === "string" ? regExpEscape(p) : p._src;
+        }).join("\\/");
+      }).join("|");
+      re = "^(?:" + re + ")$";
+      if (this.negate)
+        re = "^(?!" + re + ").*$";
+      try {
+        this.regexp = new RegExp(re, flags);
+      } catch (ex) {
+        this.regexp = false;
+      }
+      return this.regexp;
+    }
+    minimatch.match = function(list, pattern, options) {
+      options = options || {};
+      var mm = new Minimatch(pattern, options);
+      list = list.filter(function(f) {
+        return mm.match(f);
+      });
+      if (mm.options.nonull && !list.length) {
+        list.push(pattern);
+      }
+      return list;
+    };
+    Minimatch.prototype.match = function match(f, partial) {
+      if (typeof partial === "undefined")
+        partial = this.partial;
+      this.debug("match", f, this.pattern);
+      if (this.comment)
+        return false;
+      if (this.empty)
+        return f === "";
+      if (f === "/" && partial)
+        return true;
+      var options = this.options;
+      if (path.sep !== "/") {
+        f = f.split(path.sep).join("/");
+      }
+      f = f.split(slashSplit);
+      this.debug(this.pattern, "split", f);
+      var set = this.set;
+      this.debug(this.pattern, "set", set);
+      var filename;
+      var i;
+      for (i = f.length - 1; i >= 0; i--) {
+        filename = f[i];
+        if (filename)
+          break;
+      }
+      for (i = 0; i < set.length; i++) {
+        var pattern = set[i];
+        var file = f;
+        if (options.matchBase && pattern.length === 1) {
+          file = [filename];
+        }
+        var hit = this.matchOne(file, pattern, partial);
+        if (hit) {
+          if (options.flipNegate)
+            return true;
+          return !this.negate;
+        }
+      }
+      if (options.flipNegate)
+        return false;
+      return this.negate;
+    };
+    Minimatch.prototype.matchOne = function(file, pattern, partial) {
+      var options = this.options;
+      this.debug("matchOne", {
+        "this": this,
+        file,
+        pattern
+      });
+      this.debug("matchOne", file.length, pattern.length);
+      for (var fi = 0, pi = 0, fl = file.length, pl = pattern.length; fi < fl && pi < pl; fi++, pi++) {
+        this.debug("matchOne loop");
+        var p = pattern[pi];
+        var f = file[fi];
+        this.debug(pattern, p, f);
+        if (p === false)
+          return false;
+        if (p === GLOBSTAR) {
+          this.debug("GLOBSTAR", [pattern, p, f]);
+          var fr = fi;
+          var pr = pi + 1;
+          if (pr === pl) {
+            this.debug("** at the end");
+            for (; fi < fl; fi++) {
+              if (file[fi] === "." || file[fi] === ".." || !options.dot && file[fi].charAt(0) === ".")
+                return false;
+            }
+            return true;
+          }
+          while (fr < fl) {
+            var swallowee = file[fr];
+            this.debug("\nglobstar while", file, fr, pattern, pr, swallowee);
+            if (this.matchOne(file.slice(fr), pattern.slice(pr), partial)) {
+              this.debug("globstar found match!", fr, fl, swallowee);
+              return true;
+            } else {
+              if (swallowee === "." || swallowee === ".." || !options.dot && swallowee.charAt(0) === ".") {
+                this.debug("dot detected!", file, fr, pattern, pr);
+                break;
+              }
+              this.debug("globstar swallow a segment, and continue");
+              fr++;
+            }
+          }
+          if (partial) {
+            this.debug("\n>>> no match, partial?", file, fr, pattern, pr);
+            if (fr === fl)
+              return true;
+          }
+          return false;
+        }
+        var hit;
+        if (typeof p === "string") {
+          hit = f === p;
+          this.debug("string match", p, f, hit);
+        } else {
+          hit = f.match(p);
+          this.debug("pattern match", p, f, hit);
+        }
+        if (!hit)
+          return false;
+      }
+      if (fi === fl && pi === pl) {
+        return true;
+      } else if (fi === fl) {
+        return partial;
+      } else if (pi === pl) {
+        return fi === fl - 1 && file[fi] === "";
+      }
+      throw new Error("wtf?");
+    };
+    function globUnescape(s) {
+      return s.replace(/\\(.)/g, "$1");
+    }
+    function regExpEscape(s) {
+      return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    }
+  }
+});
+var require_inherits_browser = __commonJS2({
+  "node_modules/inherits/inherits_browser.js"(exports2, module2) {
+    if (typeof Object.create === "function") {
+      module2.exports = function inherits(ctor, superCtor) {
+        if (superCtor) {
+          ctor.super_ = superCtor;
+          ctor.prototype = Object.create(superCtor.prototype, {
+            constructor: {
+              value: ctor,
+              enumerable: false,
+              writable: true,
+              configurable: true
+            }
+          });
+        }
+      };
+    } else {
+      module2.exports = function inherits(ctor, superCtor) {
+        if (superCtor) {
+          ctor.super_ = superCtor;
+          var TempCtor = function() {
+          };
+          TempCtor.prototype = superCtor.prototype;
+          ctor.prototype = new TempCtor();
+          ctor.prototype.constructor = ctor;
+        }
+      };
+    }
+  }
+});
+var require_inherits = __commonJS2({
+  "node_modules/inherits/inherits.js"(exports2, module2) {
+    try {
+      util = require("util");
+      if (typeof util.inherits !== "function")
+        throw "";
+      module2.exports = util.inherits;
+    } catch (e) {
+      module2.exports = require_inherits_browser();
+    }
+    var util;
+  }
+});
+var require_path_is_absolute = __commonJS2({
+  "node_modules/path-is-absolute/index.js"(exports2, module2) {
+    "use strict";
+    function posix(path) {
+      return path.charAt(0) === "/";
+    }
+    function win32(path) {
+      var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+      var result = splitDeviceRe.exec(path);
+      var device = result[1] || "";
+      var isUnc = Boolean(device && device.charAt(1) !== ":");
+      return Boolean(result[2] || isUnc);
+    }
+    module2.exports = process.platform === "win32" ? win32 : posix;
+    module2.exports.posix = posix;
+    module2.exports.win32 = win32;
+  }
+});
+var require_common3 = __commonJS2({
+  "node_modules/glob/common.js"(exports2) {
+    exports2.setopts = setopts;
+    exports2.ownProp = ownProp;
+    exports2.makeAbs = makeAbs;
+    exports2.finish = finish;
+    exports2.mark = mark;
+    exports2.isIgnored = isIgnored;
+    exports2.childrenIgnored = childrenIgnored;
+    function ownProp(obj, field) {
+      return Object.prototype.hasOwnProperty.call(obj, field);
+    }
+    var fs = require("fs");
+    var path = require("path");
+    var minimatch = require_minimatch();
+    var isAbsolute = require_path_is_absolute();
+    var Minimatch = minimatch.Minimatch;
+    function alphasort(a, b) {
+      return a.localeCompare(b, "en");
+    }
+    function setupIgnores(self2, options) {
+      self2.ignore = options.ignore || [];
+      if (!Array.isArray(self2.ignore))
+        self2.ignore = [self2.ignore];
+      if (self2.ignore.length) {
+        self2.ignore = self2.ignore.map(ignoreMap);
+      }
+    }
+    function ignoreMap(pattern) {
+      var gmatcher = null;
+      if (pattern.slice(-3) === "/**") {
+        var gpattern = pattern.replace(/(\/\*\*)+$/, "");
+        gmatcher = new Minimatch(gpattern, {
+          dot: true
+        });
+      }
+      return {
+        matcher: new Minimatch(pattern, {
+          dot: true
+        }),
+        gmatcher
+      };
+    }
+    function setopts(self2, pattern, options) {
+      if (!options)
+        options = {};
+      if (options.matchBase && pattern.indexOf("/") === -1) {
+        if (options.noglobstar) {
+          throw new Error("base matching requires globstar");
+        }
+        pattern = "**/" + pattern;
+      }
+      self2.silent = !!options.silent;
+      self2.pattern = pattern;
+      self2.strict = options.strict !== false;
+      self2.realpath = !!options.realpath;
+      self2.realpathCache = options.realpathCache || /* @__PURE__ */ Object.create(null);
+      self2.follow = !!options.follow;
+      self2.dot = !!options.dot;
+      self2.mark = !!options.mark;
+      self2.nodir = !!options.nodir;
+      if (self2.nodir)
+        self2.mark = true;
+      self2.sync = !!options.sync;
+      self2.nounique = !!options.nounique;
+      self2.nonull = !!options.nonull;
+      self2.nosort = !!options.nosort;
+      self2.nocase = !!options.nocase;
+      self2.stat = !!options.stat;
+      self2.noprocess = !!options.noprocess;
+      self2.absolute = !!options.absolute;
+      self2.fs = options.fs || fs;
+      self2.maxLength = options.maxLength || Infinity;
+      self2.cache = options.cache || /* @__PURE__ */ Object.create(null);
+      self2.statCache = options.statCache || /* @__PURE__ */ Object.create(null);
+      self2.symlinks = options.symlinks || /* @__PURE__ */ Object.create(null);
+      setupIgnores(self2, options);
+      self2.changedCwd = false;
+      var cwd = process.cwd();
+      if (!ownProp(options, "cwd"))
+        self2.cwd = cwd;
+      else {
+        self2.cwd = path.resolve(options.cwd);
+        self2.changedCwd = self2.cwd !== cwd;
+      }
+      self2.root = options.root || path.resolve(self2.cwd, "/");
+      self2.root = path.resolve(self2.root);
+      if (process.platform === "win32")
+        self2.root = self2.root.replace(/\\/g, "/");
+      self2.cwdAbs = isAbsolute(self2.cwd) ? self2.cwd : makeAbs(self2, self2.cwd);
+      if (process.platform === "win32")
+        self2.cwdAbs = self2.cwdAbs.replace(/\\/g, "/");
+      self2.nomount = !!options.nomount;
+      options.nonegate = true;
+      options.nocomment = true;
+      self2.minimatch = new Minimatch(pattern, options);
+      self2.options = self2.minimatch.options;
+    }
+    function finish(self2) {
+      var nou = self2.nounique;
+      var all = nou ? [] : /* @__PURE__ */ Object.create(null);
+      for (var i = 0, l = self2.matches.length; i < l; i++) {
+        var matches = self2.matches[i];
+        if (!matches || Object.keys(matches).length === 0) {
+          if (self2.nonull) {
+            var literal = self2.minimatch.globSet[i];
+            if (nou)
+              all.push(literal);
+            else
+              all[literal] = true;
+          }
+        } else {
+          var m = Object.keys(matches);
+          if (nou)
+            all.push.apply(all, m);
+          else
+            m.forEach(function(m2) {
+              all[m2] = true;
+            });
+        }
+      }
+      if (!nou)
+        all = Object.keys(all);
+      if (!self2.nosort)
+        all = all.sort(alphasort);
+      if (self2.mark) {
+        for (var i = 0; i < all.length; i++) {
+          all[i] = self2._mark(all[i]);
+        }
+        if (self2.nodir) {
+          all = all.filter(function(e) {
+            var notDir = !/\/$/.test(e);
+            var c = self2.cache[e] || self2.cache[makeAbs(self2, e)];
+            if (notDir && c)
+              notDir = c !== "DIR" && !Array.isArray(c);
+            return notDir;
+          });
+        }
+      }
+      if (self2.ignore.length)
+        all = all.filter(function(m2) {
+          return !isIgnored(self2, m2);
+        });
+      self2.found = all;
+    }
+    function mark(self2, p) {
+      var abs = makeAbs(self2, p);
+      var c = self2.cache[abs];
+      var m = p;
+      if (c) {
+        var isDir = c === "DIR" || Array.isArray(c);
+        var slash = p.slice(-1) === "/";
+        if (isDir && !slash)
+          m += "/";
+        else if (!isDir && slash)
+          m = m.slice(0, -1);
+        if (m !== p) {
+          var mabs = makeAbs(self2, m);
+          self2.statCache[mabs] = self2.statCache[abs];
+          self2.cache[mabs] = self2.cache[abs];
+        }
+      }
+      return m;
+    }
+    function makeAbs(self2, f) {
+      var abs = f;
+      if (f.charAt(0) === "/") {
+        abs = path.join(self2.root, f);
+      } else if (isAbsolute(f) || f === "") {
+        abs = f;
+      } else if (self2.changedCwd) {
+        abs = path.resolve(self2.cwd, f);
+      } else {
+        abs = path.resolve(f);
+      }
+      if (process.platform === "win32")
+        abs = abs.replace(/\\/g, "/");
+      return abs;
+    }
+    function isIgnored(self2, path2) {
+      if (!self2.ignore.length)
+        return false;
+      return self2.ignore.some(function(item) {
+        return item.matcher.match(path2) || !!(item.gmatcher && item.gmatcher.match(path2));
+      });
+    }
+    function childrenIgnored(self2, path2) {
+      if (!self2.ignore.length)
+        return false;
+      return self2.ignore.some(function(item) {
+        return !!(item.gmatcher && item.gmatcher.match(path2));
+      });
+    }
+  }
+});
+var require_sync7 = __commonJS2({
+  "node_modules/glob/sync.js"(exports2, module2) {
+    module2.exports = globSync;
+    globSync.GlobSync = GlobSync;
+    var rp = require_fs5();
+    var minimatch = require_minimatch();
+    var Minimatch = minimatch.Minimatch;
+    var Glob = require_glob().Glob;
+    var util = require("util");
+    var path = require("path");
+    var assert = require("assert");
+    var isAbsolute = require_path_is_absolute();
+    var common = require_common3();
+    var setopts = common.setopts;
+    var ownProp = common.ownProp;
+    var childrenIgnored = common.childrenIgnored;
+    var isIgnored = common.isIgnored;
+    function globSync(pattern, options) {
+      if (typeof options === "function" || arguments.length === 3)
+        throw new TypeError("callback provided to sync glob\nSee: https://github.com/isaacs/node-glob/issues/167");
+      return new GlobSync(pattern, options).found;
+    }
+    function GlobSync(pattern, options) {
+      if (!pattern)
+        throw new Error("must provide pattern");
+      if (typeof options === "function" || arguments.length === 3)
+        throw new TypeError("callback provided to sync glob\nSee: https://github.com/isaacs/node-glob/issues/167");
+      if (!(this instanceof GlobSync))
+        return new GlobSync(pattern, options);
+      setopts(this, pattern, options);
+      if (this.noprocess)
+        return this;
+      var n = this.minimatch.set.length;
+      this.matches = new Array(n);
+      for (var i = 0; i < n; i++) {
+        this._process(this.minimatch.set[i], i, false);
+      }
+      this._finish();
+    }
+    GlobSync.prototype._finish = function() {
+      assert(this instanceof GlobSync);
+      if (this.realpath) {
+        var self2 = this;
+        this.matches.forEach(function(matchset, index) {
+          var set = self2.matches[index] = /* @__PURE__ */ Object.create(null);
+          for (var p in matchset) {
+            try {
+              p = self2._makeAbs(p);
+              var real = rp.realpathSync(p, self2.realpathCache);
+              set[real] = true;
+            } catch (er) {
+              if (er.syscall === "stat")
+                set[self2._makeAbs(p)] = true;
+              else
+                throw er;
+            }
+          }
+        });
+      }
+      common.finish(this);
+    };
+    GlobSync.prototype._process = function(pattern, index, inGlobStar) {
+      assert(this instanceof GlobSync);
+      var n = 0;
+      while (typeof pattern[n] === "string") {
+        n++;
+      }
+      var prefix;
+      switch (n) {
+        case pattern.length:
+          this._processSimple(pattern.join("/"), index);
+          return;
+        case 0:
+          prefix = null;
+          break;
+        default:
+          prefix = pattern.slice(0, n).join("/");
+          break;
+      }
+      var remain = pattern.slice(n);
+      var read;
+      if (prefix === null)
+        read = ".";
+      else if (isAbsolute(prefix) || isAbsolute(pattern.join("/"))) {
+        if (!prefix || !isAbsolute(prefix))
+          prefix = "/" + prefix;
+        read = prefix;
+      } else
+        read = prefix;
+      var abs = this._makeAbs(read);
+      if (childrenIgnored(this, read))
+        return;
+      var isGlobStar = remain[0] === minimatch.GLOBSTAR;
+      if (isGlobStar)
+        this._processGlobStar(prefix, read, abs, remain, index, inGlobStar);
+      else
+        this._processReaddir(prefix, read, abs, remain, index, inGlobStar);
+    };
+    GlobSync.prototype._processReaddir = function(prefix, read, abs, remain, index, inGlobStar) {
+      var entries = this._readdir(abs, inGlobStar);
+      if (!entries)
+        return;
+      var pn = remain[0];
+      var negate = !!this.minimatch.negate;
+      var rawGlob = pn._glob;
+      var dotOk = this.dot || rawGlob.charAt(0) === ".";
+      var matchedEntries = [];
+      for (var i = 0; i < entries.length; i++) {
+        var e = entries[i];
+        if (e.charAt(0) !== "." || dotOk) {
+          var m;
+          if (negate && !prefix) {
+            m = !e.match(pn);
+          } else {
+            m = e.match(pn);
+          }
+          if (m)
+            matchedEntries.push(e);
+        }
+      }
+      var len = matchedEntries.length;
+      if (len === 0)
+        return;
+      if (remain.length === 1 && !this.mark && !this.stat) {
+        if (!this.matches[index])
+          this.matches[index] = /* @__PURE__ */ Object.create(null);
+        for (var i = 0; i < len; i++) {
+          var e = matchedEntries[i];
+          if (prefix) {
+            if (prefix.slice(-1) !== "/")
+              e = prefix + "/" + e;
+            else
+              e = prefix + e;
+          }
+          if (e.charAt(0) === "/" && !this.nomount) {
+            e = path.join(this.root, e);
+          }
+          this._emitMatch(index, e);
+        }
+        return;
+      }
+      remain.shift();
+      for (var i = 0; i < len; i++) {
+        var e = matchedEntries[i];
+        var newPattern;
+        if (prefix)
+          newPattern = [prefix, e];
+        else
+          newPattern = [e];
+        this._process(newPattern.concat(remain), index, inGlobStar);
+      }
+    };
+    GlobSync.prototype._emitMatch = function(index, e) {
+      if (isIgnored(this, e))
+        return;
+      var abs = this._makeAbs(e);
+      if (this.mark)
+        e = this._mark(e);
+      if (this.absolute) {
+        e = abs;
+      }
+      if (this.matches[index][e])
+        return;
+      if (this.nodir) {
+        var c = this.cache[abs];
+        if (c === "DIR" || Array.isArray(c))
+          return;
+      }
+      this.matches[index][e] = true;
+      if (this.stat)
+        this._stat(e);
+    };
+    GlobSync.prototype._readdirInGlobStar = function(abs) {
+      if (this.follow)
+        return this._readdir(abs, false);
+      var entries;
+      var lstat;
+      var stat;
+      try {
+        lstat = this.fs.lstatSync(abs);
+      } catch (er) {
+        if (er.code === "ENOENT") {
+          return null;
+        }
+      }
+      var isSym = lstat && lstat.isSymbolicLink();
+      this.symlinks[abs] = isSym;
+      if (!isSym && lstat && !lstat.isDirectory())
+        this.cache[abs] = "FILE";
+      else
+        entries = this._readdir(abs, false);
+      return entries;
+    };
+    GlobSync.prototype._readdir = function(abs, inGlobStar) {
+      var entries;
+      if (inGlobStar && !ownProp(this.symlinks, abs))
+        return this._readdirInGlobStar(abs);
+      if (ownProp(this.cache, abs)) {
+        var c = this.cache[abs];
+        if (!c || c === "FILE")
+          return null;
+        if (Array.isArray(c))
+          return c;
+      }
+      try {
+        return this._readdirEntries(abs, this.fs.readdirSync(abs));
+      } catch (er) {
+        this._readdirError(abs, er);
+        return null;
+      }
+    };
+    GlobSync.prototype._readdirEntries = function(abs, entries) {
+      if (!this.mark && !this.stat) {
+        for (var i = 0; i < entries.length; i++) {
+          var e = entries[i];
+          if (abs === "/")
+            e = abs + e;
+          else
+            e = abs + "/" + e;
+          this.cache[e] = true;
+        }
+      }
+      this.cache[abs] = entries;
+      return entries;
+    };
+    GlobSync.prototype._readdirError = function(f, er) {
+      switch (er.code) {
+        case "ENOTSUP":
+        case "ENOTDIR":
+          var abs = this._makeAbs(f);
+          this.cache[abs] = "FILE";
+          if (abs === this.cwdAbs) {
+            var error = new Error(er.code + " invalid cwd " + this.cwd);
+            error.path = this.cwd;
+            error.code = er.code;
+            throw error;
+          }
+          break;
+        case "ENOENT":
+        case "ELOOP":
+        case "ENAMETOOLONG":
+        case "UNKNOWN":
+          this.cache[this._makeAbs(f)] = false;
+          break;
+        default:
+          this.cache[this._makeAbs(f)] = false;
+          if (this.strict)
+            throw er;
+          if (!this.silent)
+            console.error("glob error", er);
+          break;
+      }
+    };
+    GlobSync.prototype._processGlobStar = function(prefix, read, abs, remain, index, inGlobStar) {
+      var entries = this._readdir(abs, inGlobStar);
+      if (!entries)
+        return;
+      var remainWithoutGlobStar = remain.slice(1);
+      var gspref = prefix ? [prefix] : [];
+      var noGlobStar = gspref.concat(remainWithoutGlobStar);
+      this._process(noGlobStar, index, false);
+      var len = entries.length;
+      var isSym = this.symlinks[abs];
+      if (isSym && inGlobStar)
+        return;
+      for (var i = 0; i < len; i++) {
+        var e = entries[i];
+        if (e.charAt(0) === "." && !this.dot)
+          continue;
+        var instead = gspref.concat(entries[i], remainWithoutGlobStar);
+        this._process(instead, index, true);
+        var below = gspref.concat(entries[i], remain);
+        this._process(below, index, true);
+      }
+    };
+    GlobSync.prototype._processSimple = function(prefix, index) {
+      var exists = this._stat(prefix);
+      if (!this.matches[index])
+        this.matches[index] = /* @__PURE__ */ Object.create(null);
+      if (!exists)
+        return;
+      if (prefix && isAbsolute(prefix) && !this.nomount) {
+        var trail = /[\/\\]$/.test(prefix);
+        if (prefix.charAt(0) === "/") {
+          prefix = path.join(this.root, prefix);
+        } else {
+          prefix = path.resolve(this.root, prefix);
+          if (trail)
+            prefix += "/";
+        }
+      }
+      if (process.platform === "win32")
+        prefix = prefix.replace(/\\/g, "/");
+      this._emitMatch(index, prefix);
+    };
+    GlobSync.prototype._stat = function(f) {
+      var abs = this._makeAbs(f);
+      var needDir = f.slice(-1) === "/";
+      if (f.length > this.maxLength)
+        return false;
+      if (!this.stat && ownProp(this.cache, abs)) {
+        var c = this.cache[abs];
+        if (Array.isArray(c))
+          c = "DIR";
+        if (!needDir || c === "DIR")
+          return c;
+        if (needDir && c === "FILE")
+          return false;
+      }
+      var exists;
+      var stat = this.statCache[abs];
+      if (!stat) {
+        var lstat;
+        try {
+          lstat = this.fs.lstatSync(abs);
+        } catch (er) {
+          if (er && (er.code === "ENOENT" || er.code === "ENOTDIR")) {
+            this.statCache[abs] = false;
+            return false;
+          }
+        }
+        if (lstat && lstat.isSymbolicLink()) {
+          try {
+            stat = this.fs.statSync(abs);
+          } catch (er) {
+            stat = lstat;
+          }
+        } else {
+          stat = lstat;
+        }
+      }
+      this.statCache[abs] = stat;
+      var c = true;
+      if (stat)
+        c = stat.isDirectory() ? "DIR" : "FILE";
+      this.cache[abs] = this.cache[abs] || c;
+      if (needDir && c === "FILE")
+        return false;
+      return c;
+    };
+    GlobSync.prototype._mark = function(p) {
+      return common.mark(this, p);
+    };
+    GlobSync.prototype._makeAbs = function(f) {
+      return common.makeAbs(this, f);
+    };
+  }
+});
+var require_wrappy = __commonJS2({
+  "node_modules/wrappy/wrappy.js"(exports2, module2) {
+    module2.exports = wrappy;
+    function wrappy(fn, cb) {
+      if (fn && cb)
+        return wrappy(fn)(cb);
+      if (typeof fn !== "function")
+        throw new TypeError("need wrapper function");
+      Object.keys(fn).forEach(function(k) {
+        wrapper[k] = fn[k];
+      });
+      return wrapper;
+      function wrapper() {
+        var args = new Array(arguments.length);
+        for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i];
+        }
+        var ret = fn.apply(this, args);
+        var cb2 = args[args.length - 1];
+        if (typeof ret === "function" && ret !== cb2) {
+          Object.keys(cb2).forEach(function(k) {
+            ret[k] = cb2[k];
+          });
+        }
+        return ret;
+      }
+    }
+  }
+});
+var require_once = __commonJS2({
+  "node_modules/once/once.js"(exports2, module2) {
+    var wrappy = require_wrappy();
+    module2.exports = wrappy(once);
+    module2.exports.strict = wrappy(onceStrict);
+    once.proto = once(function() {
+      Object.defineProperty(Function.prototype, "once", {
+        value: function() {
+          return once(this);
+        },
+        configurable: true
+      });
+      Object.defineProperty(Function.prototype, "onceStrict", {
+        value: function() {
+          return onceStrict(this);
+        },
+        configurable: true
+      });
+    });
+    function once(fn) {
+      var f = function() {
+        if (f.called)
+          return f.value;
+        f.called = true;
+        return f.value = fn.apply(this, arguments);
+      };
+      f.called = false;
+      return f;
+    }
+    function onceStrict(fn) {
+      var f = function() {
+        if (f.called)
+          throw new Error(f.onceError);
+        f.called = true;
+        return f.value = fn.apply(this, arguments);
+      };
+      var name = fn.name || "Function wrapped with `once`";
+      f.onceError = name + " shouldn't be called more than once";
+      f.called = false;
+      return f;
+    }
+  }
+});
+var require_inflight = __commonJS2({
+  "node_modules/inflight/inflight.js"(exports2, module2) {
+    var wrappy = require_wrappy();
+    var reqs = /* @__PURE__ */ Object.create(null);
+    var once = require_once();
+    module2.exports = wrappy(inflight);
+    function inflight(key, cb) {
+      if (reqs[key]) {
+        reqs[key].push(cb);
+        return null;
+      } else {
+        reqs[key] = [cb];
+        return makeres(key);
+      }
+    }
+    function makeres(key) {
+      return once(function RES() {
+        var cbs = reqs[key];
+        var len = cbs.length;
+        var args = slice(arguments);
+        try {
+          for (var i = 0; i < len; i++) {
+            cbs[i].apply(null, args);
+          }
+        } finally {
+          if (cbs.length > len) {
+            cbs.splice(0, len);
+            process.nextTick(function() {
+              RES.apply(null, args);
+            });
+          } else {
+            delete reqs[key];
+          }
+        }
+      });
+    }
+    function slice(args) {
+      var length = args.length;
+      var array2 = [];
+      for (var i = 0; i < length; i++)
+        array2[i] = args[i];
+      return array2;
+    }
+  }
+});
+var require_glob = __commonJS2({
+  "node_modules/glob/glob.js"(exports2, module2) {
+    module2.exports = glob;
+    var rp = require_fs5();
+    var minimatch = require_minimatch();
+    var Minimatch = minimatch.Minimatch;
+    var inherits = require_inherits();
+    var EE = require("events").EventEmitter;
+    var path = require("path");
+    var assert = require("assert");
+    var isAbsolute = require_path_is_absolute();
+    var globSync = require_sync7();
+    var common = require_common3();
+    var setopts = common.setopts;
+    var ownProp = common.ownProp;
+    var inflight = require_inflight();
+    var util = require("util");
+    var childrenIgnored = common.childrenIgnored;
+    var isIgnored = common.isIgnored;
+    var once = require_once();
+    function glob(pattern, options, cb) {
+      if (typeof options === "function")
+        cb = options, options = {};
+      if (!options)
+        options = {};
+      if (options.sync) {
+        if (cb)
+          throw new TypeError("callback provided to sync glob");
+        return globSync(pattern, options);
+      }
+      return new Glob(pattern, options, cb);
+    }
+    glob.sync = globSync;
+    var GlobSync = glob.GlobSync = globSync.GlobSync;
+    glob.glob = glob;
+    function extend(origin, add) {
+      if (add === null || typeof add !== "object") {
+        return origin;
+      }
+      var keys = Object.keys(add);
+      var i = keys.length;
+      while (i--) {
+        origin[keys[i]] = add[keys[i]];
+      }
+      return origin;
+    }
+    glob.hasMagic = function(pattern, options_) {
+      var options = extend({}, options_);
+      options.noprocess = true;
+      var g = new Glob(pattern, options);
+      var set = g.minimatch.set;
+      if (!pattern)
+        return false;
+      if (set.length > 1)
+        return true;
+      for (var j = 0; j < set[0].length; j++) {
+        if (typeof set[0][j] !== "string")
+          return true;
+      }
+      return false;
+    };
+    glob.Glob = Glob;
+    inherits(Glob, EE);
+    function Glob(pattern, options, cb) {
+      if (typeof options === "function") {
+        cb = options;
+        options = null;
+      }
+      if (options && options.sync) {
+        if (cb)
+          throw new TypeError("callback provided to sync glob");
+        return new GlobSync(pattern, options);
+      }
+      if (!(this instanceof Glob))
+        return new Glob(pattern, options, cb);
+      setopts(this, pattern, options);
+      this._didRealPath = false;
+      var n = this.minimatch.set.length;
+      this.matches = new Array(n);
+      if (typeof cb === "function") {
+        cb = once(cb);
+        this.on("error", cb);
+        this.on("end", function(matches) {
+          cb(null, matches);
+        });
+      }
+      var self2 = this;
+      this._processing = 0;
+      this._emitQueue = [];
+      this._processQueue = [];
+      this.paused = false;
+      if (this.noprocess)
+        return this;
+      if (n === 0)
+        return done();
+      var sync = true;
+      for (var i = 0; i < n; i++) {
+        this._process(this.minimatch.set[i], i, false, done);
+      }
+      sync = false;
+      function done() {
+        --self2._processing;
+        if (self2._processing <= 0) {
+          if (sync) {
+            process.nextTick(function() {
+              self2._finish();
+            });
+          } else {
+            self2._finish();
+          }
+        }
+      }
+    }
+    Glob.prototype._finish = function() {
+      assert(this instanceof Glob);
+      if (this.aborted)
+        return;
+      if (this.realpath && !this._didRealpath)
+        return this._realpath();
+      common.finish(this);
+      this.emit("end", this.found);
+    };
+    Glob.prototype._realpath = function() {
+      if (this._didRealpath)
+        return;
+      this._didRealpath = true;
+      var n = this.matches.length;
+      if (n === 0)
+        return this._finish();
+      var self2 = this;
+      for (var i = 0; i < this.matches.length; i++)
+        this._realpathSet(i, next);
+      function next() {
+        if (--n === 0)
+          self2._finish();
+      }
+    };
+    Glob.prototype._realpathSet = function(index, cb) {
+      var matchset = this.matches[index];
+      if (!matchset)
+        return cb();
+      var found = Object.keys(matchset);
+      var self2 = this;
+      var n = found.length;
+      if (n === 0)
+        return cb();
+      var set = this.matches[index] = /* @__PURE__ */ Object.create(null);
+      found.forEach(function(p, i) {
+        p = self2._makeAbs(p);
+        rp.realpath(p, self2.realpathCache, function(er, real) {
+          if (!er)
+            set[real] = true;
+          else if (er.syscall === "stat")
+            set[p] = true;
+          else
+            self2.emit("error", er);
+          if (--n === 0) {
+            self2.matches[index] = set;
+            cb();
+          }
+        });
+      });
+    };
+    Glob.prototype._mark = function(p) {
+      return common.mark(this, p);
+    };
+    Glob.prototype._makeAbs = function(f) {
+      return common.makeAbs(this, f);
+    };
+    Glob.prototype.abort = function() {
+      this.aborted = true;
+      this.emit("abort");
+    };
+    Glob.prototype.pause = function() {
+      if (!this.paused) {
+        this.paused = true;
+        this.emit("pause");
+      }
+    };
+    Glob.prototype.resume = function() {
+      if (this.paused) {
+        this.emit("resume");
+        this.paused = false;
+        if (this._emitQueue.length) {
+          var eq = this._emitQueue.slice(0);
+          this._emitQueue.length = 0;
+          for (var i = 0; i < eq.length; i++) {
+            var e = eq[i];
+            this._emitMatch(e[0], e[1]);
+          }
+        }
+        if (this._processQueue.length) {
+          var pq = this._processQueue.slice(0);
+          this._processQueue.length = 0;
+          for (var i = 0; i < pq.length; i++) {
+            var p = pq[i];
+            this._processing--;
+            this._process(p[0], p[1], p[2], p[3]);
+          }
+        }
+      }
+    };
+    Glob.prototype._process = function(pattern, index, inGlobStar, cb) {
+      assert(this instanceof Glob);
+      assert(typeof cb === "function");
+      if (this.aborted)
+        return;
+      this._processing++;
+      if (this.paused) {
+        this._processQueue.push([pattern, index, inGlobStar, cb]);
+        return;
+      }
+      var n = 0;
+      while (typeof pattern[n] === "string") {
+        n++;
+      }
+      var prefix;
+      switch (n) {
+        case pattern.length:
+          this._processSimple(pattern.join("/"), index, cb);
+          return;
+        case 0:
+          prefix = null;
+          break;
+        default:
+          prefix = pattern.slice(0, n).join("/");
+          break;
+      }
+      var remain = pattern.slice(n);
+      var read;
+      if (prefix === null)
+        read = ".";
+      else if (isAbsolute(prefix) || isAbsolute(pattern.join("/"))) {
+        if (!prefix || !isAbsolute(prefix))
+          prefix = "/" + prefix;
+        read = prefix;
+      } else
+        read = prefix;
+      var abs = this._makeAbs(read);
+      if (childrenIgnored(this, read))
+        return cb();
+      var isGlobStar = remain[0] === minimatch.GLOBSTAR;
+      if (isGlobStar)
+        this._processGlobStar(prefix, read, abs, remain, index, inGlobStar, cb);
+      else
+        this._processReaddir(prefix, read, abs, remain, index, inGlobStar, cb);
+    };
+    Glob.prototype._processReaddir = function(prefix, read, abs, remain, index, inGlobStar, cb) {
+      var self2 = this;
+      this._readdir(abs, inGlobStar, function(er, entries) {
+        return self2._processReaddir2(prefix, read, abs, remain, index, inGlobStar, entries, cb);
+      });
+    };
+    Glob.prototype._processReaddir2 = function(prefix, read, abs, remain, index, inGlobStar, entries, cb) {
+      if (!entries)
+        return cb();
+      var pn = remain[0];
+      var negate = !!this.minimatch.negate;
+      var rawGlob = pn._glob;
+      var dotOk = this.dot || rawGlob.charAt(0) === ".";
+      var matchedEntries = [];
+      for (var i = 0; i < entries.length; i++) {
+        var e = entries[i];
+        if (e.charAt(0) !== "." || dotOk) {
+          var m;
+          if (negate && !prefix) {
+            m = !e.match(pn);
+          } else {
+            m = e.match(pn);
+          }
+          if (m)
+            matchedEntries.push(e);
+        }
+      }
+      var len = matchedEntries.length;
+      if (len === 0)
+        return cb();
+      if (remain.length === 1 && !this.mark && !this.stat) {
+        if (!this.matches[index])
+          this.matches[index] = /* @__PURE__ */ Object.create(null);
+        for (var i = 0; i < len; i++) {
+          var e = matchedEntries[i];
+          if (prefix) {
+            if (prefix !== "/")
+              e = prefix + "/" + e;
+            else
+              e = prefix + e;
+          }
+          if (e.charAt(0) === "/" && !this.nomount) {
+            e = path.join(this.root, e);
+          }
+          this._emitMatch(index, e);
+        }
+        return cb();
+      }
+      remain.shift();
+      for (var i = 0; i < len; i++) {
+        var e = matchedEntries[i];
+        var newPattern;
+        if (prefix) {
+          if (prefix !== "/")
+            e = prefix + "/" + e;
+          else
+            e = prefix + e;
+        }
+        this._process([e].concat(remain), index, inGlobStar, cb);
+      }
+      cb();
+    };
+    Glob.prototype._emitMatch = function(index, e) {
+      if (this.aborted)
+        return;
+      if (isIgnored(this, e))
+        return;
+      if (this.paused) {
+        this._emitQueue.push([index, e]);
+        return;
+      }
+      var abs = isAbsolute(e) ? e : this._makeAbs(e);
+      if (this.mark)
+        e = this._mark(e);
+      if (this.absolute)
+        e = abs;
+      if (this.matches[index][e])
+        return;
+      if (this.nodir) {
+        var c = this.cache[abs];
+        if (c === "DIR" || Array.isArray(c))
+          return;
+      }
+      this.matches[index][e] = true;
+      var st = this.statCache[abs];
+      if (st)
+        this.emit("stat", e, st);
+      this.emit("match", e);
+    };
+    Glob.prototype._readdirInGlobStar = function(abs, cb) {
+      if (this.aborted)
+        return;
+      if (this.follow)
+        return this._readdir(abs, false, cb);
+      var lstatkey = "lstat\0" + abs;
+      var self2 = this;
+      var lstatcb = inflight(lstatkey, lstatcb_);
+      if (lstatcb)
+        self2.fs.lstat(abs, lstatcb);
+      function lstatcb_(er, lstat) {
+        if (er && er.code === "ENOENT")
+          return cb();
+        var isSym = lstat && lstat.isSymbolicLink();
+        self2.symlinks[abs] = isSym;
+        if (!isSym && lstat && !lstat.isDirectory()) {
+          self2.cache[abs] = "FILE";
+          cb();
+        } else
+          self2._readdir(abs, false, cb);
+      }
+    };
+    Glob.prototype._readdir = function(abs, inGlobStar, cb) {
+      if (this.aborted)
+        return;
+      cb = inflight("readdir\0" + abs + "\0" + inGlobStar, cb);
+      if (!cb)
+        return;
+      if (inGlobStar && !ownProp(this.symlinks, abs))
+        return this._readdirInGlobStar(abs, cb);
+      if (ownProp(this.cache, abs)) {
+        var c = this.cache[abs];
+        if (!c || c === "FILE")
+          return cb();
+        if (Array.isArray(c))
+          return cb(null, c);
+      }
+      var self2 = this;
+      self2.fs.readdir(abs, readdirCb(this, abs, cb));
+    };
+    function readdirCb(self2, abs, cb) {
+      return function(er, entries) {
+        if (er)
+          self2._readdirError(abs, er, cb);
+        else
+          self2._readdirEntries(abs, entries, cb);
+      };
+    }
+    Glob.prototype._readdirEntries = function(abs, entries, cb) {
+      if (this.aborted)
+        return;
+      if (!this.mark && !this.stat) {
+        for (var i = 0; i < entries.length; i++) {
+          var e = entries[i];
+          if (abs === "/")
+            e = abs + e;
+          else
+            e = abs + "/" + e;
+          this.cache[e] = true;
+        }
+      }
+      this.cache[abs] = entries;
+      return cb(null, entries);
+    };
+    Glob.prototype._readdirError = function(f, er, cb) {
+      if (this.aborted)
+        return;
+      switch (er.code) {
+        case "ENOTSUP":
+        case "ENOTDIR":
+          var abs = this._makeAbs(f);
+          this.cache[abs] = "FILE";
+          if (abs === this.cwdAbs) {
+            var error = new Error(er.code + " invalid cwd " + this.cwd);
+            error.path = this.cwd;
+            error.code = er.code;
+            this.emit("error", error);
+            this.abort();
+          }
+          break;
+        case "ENOENT":
+        case "ELOOP":
+        case "ENAMETOOLONG":
+        case "UNKNOWN":
+          this.cache[this._makeAbs(f)] = false;
+          break;
+        default:
+          this.cache[this._makeAbs(f)] = false;
+          if (this.strict) {
+            this.emit("error", er);
+            this.abort();
+          }
+          if (!this.silent)
+            console.error("glob error", er);
+          break;
+      }
+      return cb();
+    };
+    Glob.prototype._processGlobStar = function(prefix, read, abs, remain, index, inGlobStar, cb) {
+      var self2 = this;
+      this._readdir(abs, inGlobStar, function(er, entries) {
+        self2._processGlobStar2(prefix, read, abs, remain, index, inGlobStar, entries, cb);
+      });
+    };
+    Glob.prototype._processGlobStar2 = function(prefix, read, abs, remain, index, inGlobStar, entries, cb) {
+      if (!entries)
+        return cb();
+      var remainWithoutGlobStar = remain.slice(1);
+      var gspref = prefix ? [prefix] : [];
+      var noGlobStar = gspref.concat(remainWithoutGlobStar);
+      this._process(noGlobStar, index, false, cb);
+      var isSym = this.symlinks[abs];
+      var len = entries.length;
+      if (isSym && inGlobStar)
+        return cb();
+      for (var i = 0; i < len; i++) {
+        var e = entries[i];
+        if (e.charAt(0) === "." && !this.dot)
+          continue;
+        var instead = gspref.concat(entries[i], remainWithoutGlobStar);
+        this._process(instead, index, true, cb);
+        var below = gspref.concat(entries[i], remain);
+        this._process(below, index, true, cb);
+      }
+      cb();
+    };
+    Glob.prototype._processSimple = function(prefix, index, cb) {
+      var self2 = this;
+      this._stat(prefix, function(er, exists) {
+        self2._processSimple2(prefix, index, er, exists, cb);
+      });
+    };
+    Glob.prototype._processSimple2 = function(prefix, index, er, exists, cb) {
+      if (!this.matches[index])
+        this.matches[index] = /* @__PURE__ */ Object.create(null);
+      if (!exists)
+        return cb();
+      if (prefix && isAbsolute(prefix) && !this.nomount) {
+        var trail = /[\/\\]$/.test(prefix);
+        if (prefix.charAt(0) === "/") {
+          prefix = path.join(this.root, prefix);
+        } else {
+          prefix = path.resolve(this.root, prefix);
+          if (trail)
+            prefix += "/";
+        }
+      }
+      if (process.platform === "win32")
+        prefix = prefix.replace(/\\/g, "/");
+      this._emitMatch(index, prefix);
+      cb();
+    };
+    Glob.prototype._stat = function(f, cb) {
+      var abs = this._makeAbs(f);
+      var needDir = f.slice(-1) === "/";
+      if (f.length > this.maxLength)
+        return cb();
+      if (!this.stat && ownProp(this.cache, abs)) {
+        var c = this.cache[abs];
+        if (Array.isArray(c))
+          c = "DIR";
+        if (!needDir || c === "DIR")
+          return cb(null, c);
+        if (needDir && c === "FILE")
+          return cb();
+      }
+      var exists;
+      var stat = this.statCache[abs];
+      if (stat !== void 0) {
+        if (stat === false)
+          return cb(null, stat);
+        else {
+          var type = stat.isDirectory() ? "DIR" : "FILE";
+          if (needDir && type === "FILE")
+            return cb();
+          else
+            return cb(null, type, stat);
+        }
+      }
+      var self2 = this;
+      var statcb = inflight("stat\0" + abs, lstatcb_);
+      if (statcb)
+        self2.fs.lstat(abs, statcb);
+      function lstatcb_(er, lstat) {
+        if (lstat && lstat.isSymbolicLink()) {
+          return self2.fs.stat(abs, function(er2, stat2) {
+            if (er2)
+              self2._stat2(f, abs, null, lstat, cb);
+            else
+              self2._stat2(f, abs, er2, stat2, cb);
+          });
+        } else {
+          self2._stat2(f, abs, er, lstat, cb);
+        }
+      }
+    };
+    Glob.prototype._stat2 = function(f, abs, er, stat, cb) {
+      if (er && (er.code === "ENOENT" || er.code === "ENOTDIR")) {
+        this.statCache[abs] = false;
+        return cb();
+      }
+      var needDir = f.slice(-1) === "/";
+      this.statCache[abs] = stat;
+      if (abs.slice(-1) === "/" && stat && !stat.isDirectory())
+        return cb(null, false, stat);
+      var c = true;
+      if (stat)
+        c = stat.isDirectory() ? "DIR" : "FILE";
+      this.cache[abs] = this.cache[abs] || c;
+      if (needDir && c === "FILE")
+        return cb();
+      return cb(null, c, stat);
+    };
+  }
+});
+var require_rimraf = __commonJS2({
+  "node_modules/rimraf/rimraf.js"(exports2, module2) {
+    var assert = require("assert");
+    var path = require("path");
+    var fs = require("fs");
+    var glob = void 0;
+    try {
+      glob = require_glob();
+    } catch (_err) {
+    }
+    var defaultGlobOpts = {
+      nosort: true,
+      silent: true
+    };
+    var timeout = 0;
+    var isWindows = process.platform === "win32";
+    var defaults = (options) => {
+      const methods = ["unlink", "chmod", "stat", "lstat", "rmdir", "readdir"];
+      methods.forEach((m) => {
+        options[m] = options[m] || fs[m];
+        m = m + "Sync";
+        options[m] = options[m] || fs[m];
+      });
+      options.maxBusyTries = options.maxBusyTries || 3;
+      options.emfileWait = options.emfileWait || 1e3;
+      if (options.glob === false) {
+        options.disableGlob = true;
+      }
+      if (options.disableGlob !== true && glob === void 0) {
+        throw Error("glob dependency not found, set `options.disableGlob = true` if intentional");
+      }
+      options.disableGlob = options.disableGlob || false;
+      options.glob = options.glob || defaultGlobOpts;
+    };
+    var rimraf = (p, options, cb) => {
+      if (typeof options === "function") {
+        cb = options;
+        options = {};
+      }
+      assert(p, "rimraf: missing path");
+      assert.equal(typeof p, "string", "rimraf: path should be a string");
+      assert.equal(typeof cb, "function", "rimraf: callback function required");
+      assert(options, "rimraf: invalid options argument provided");
+      assert.equal(typeof options, "object", "rimraf: options should be object");
+      defaults(options);
+      let busyTries = 0;
+      let errState = null;
+      let n = 0;
+      const next = (er) => {
+        errState = errState || er;
+        if (--n === 0)
+          cb(errState);
+      };
+      const afterGlob = (er, results) => {
+        if (er)
+          return cb(er);
+        n = results.length;
+        if (n === 0)
+          return cb();
+        results.forEach((p2) => {
+          const CB = (er2) => {
+            if (er2) {
+              if ((er2.code === "EBUSY" || er2.code === "ENOTEMPTY" || er2.code === "EPERM") && busyTries < options.maxBusyTries) {
+                busyTries++;
+                return setTimeout(() => rimraf_(p2, options, CB), busyTries * 100);
+              }
+              if (er2.code === "EMFILE" && timeout < options.emfileWait) {
+                return setTimeout(() => rimraf_(p2, options, CB), timeout++);
+              }
+              if (er2.code === "ENOENT")
+                er2 = null;
+            }
+            timeout = 0;
+            next(er2);
+          };
+          rimraf_(p2, options, CB);
+        });
+      };
+      if (options.disableGlob || !glob.hasMagic(p))
+        return afterGlob(null, [p]);
+      options.lstat(p, (er, stat) => {
+        if (!er)
+          return afterGlob(null, [p]);
+        glob(p, options.glob, afterGlob);
+      });
+    };
+    var rimraf_ = (p, options, cb) => {
+      assert(p);
+      assert(options);
+      assert(typeof cb === "function");
+      options.lstat(p, (er, st) => {
+        if (er && er.code === "ENOENT")
+          return cb(null);
+        if (er && er.code === "EPERM" && isWindows)
+          fixWinEPERM(p, options, er, cb);
+        if (st && st.isDirectory())
+          return rmdir(p, options, er, cb);
+        options.unlink(p, (er2) => {
+          if (er2) {
+            if (er2.code === "ENOENT")
+              return cb(null);
+            if (er2.code === "EPERM")
+              return isWindows ? fixWinEPERM(p, options, er2, cb) : rmdir(p, options, er2, cb);
+            if (er2.code === "EISDIR")
+              return rmdir(p, options, er2, cb);
+          }
+          return cb(er2);
+        });
+      });
+    };
+    var fixWinEPERM = (p, options, er, cb) => {
+      assert(p);
+      assert(options);
+      assert(typeof cb === "function");
+      options.chmod(p, 438, (er2) => {
+        if (er2)
+          cb(er2.code === "ENOENT" ? null : er);
+        else
+          options.stat(p, (er3, stats) => {
+            if (er3)
+              cb(er3.code === "ENOENT" ? null : er);
+            else if (stats.isDirectory())
+              rmdir(p, options, er, cb);
+            else
+              options.unlink(p, cb);
+          });
+      });
+    };
+    var fixWinEPERMSync = (p, options, er) => {
+      assert(p);
+      assert(options);
+      try {
+        options.chmodSync(p, 438);
+      } catch (er2) {
+        if (er2.code === "ENOENT")
+          return;
+        else
+          throw er;
+      }
+      let stats;
+      try {
+        stats = options.statSync(p);
+      } catch (er3) {
+        if (er3.code === "ENOENT")
+          return;
+        else
+          throw er;
+      }
+      if (stats.isDirectory())
+        rmdirSync(p, options, er);
+      else
+        options.unlinkSync(p);
+    };
+    var rmdir = (p, options, originalEr, cb) => {
+      assert(p);
+      assert(options);
+      assert(typeof cb === "function");
+      options.rmdir(p, (er) => {
+        if (er && (er.code === "ENOTEMPTY" || er.code === "EEXIST" || er.code === "EPERM"))
+          rmkids(p, options, cb);
+        else if (er && er.code === "ENOTDIR")
+          cb(originalEr);
+        else
+          cb(er);
+      });
+    };
+    var rmkids = (p, options, cb) => {
+      assert(p);
+      assert(options);
+      assert(typeof cb === "function");
+      options.readdir(p, (er, files) => {
+        if (er)
+          return cb(er);
+        let n = files.length;
+        if (n === 0)
+          return options.rmdir(p, cb);
+        let errState;
+        files.forEach((f) => {
+          rimraf(path.join(p, f), options, (er2) => {
+            if (errState)
+              return;
+            if (er2)
+              return cb(errState = er2);
+            if (--n === 0)
+              options.rmdir(p, cb);
+          });
+        });
+      });
+    };
+    var rimrafSync = (p, options) => {
+      options = options || {};
+      defaults(options);
+      assert(p, "rimraf: missing path");
+      assert.equal(typeof p, "string", "rimraf: path should be a string");
+      assert(options, "rimraf: missing options");
+      assert.equal(typeof options, "object", "rimraf: options should be object");
+      let results;
+      if (options.disableGlob || !glob.hasMagic(p)) {
+        results = [p];
+      } else {
+        try {
+          options.lstatSync(p);
+          results = [p];
+        } catch (er) {
+          results = glob.sync(p, options.glob);
+        }
+      }
+      if (!results.length)
+        return;
+      for (let i = 0; i < results.length; i++) {
+        const p2 = results[i];
+        let st;
+        try {
+          st = options.lstatSync(p2);
+        } catch (er) {
+          if (er.code === "ENOENT")
+            return;
+          if (er.code === "EPERM" && isWindows)
+            fixWinEPERMSync(p2, options, er);
+        }
+        try {
+          if (st && st.isDirectory())
+            rmdirSync(p2, options, null);
+          else
+            options.unlinkSync(p2);
+        } catch (er) {
+          if (er.code === "ENOENT")
+            return;
+          if (er.code === "EPERM")
+            return isWindows ? fixWinEPERMSync(p2, options, er) : rmdirSync(p2, options, er);
+          if (er.code !== "EISDIR")
+            throw er;
+          rmdirSync(p2, options, er);
+        }
+      }
+    };
+    var rmdirSync = (p, options, originalEr) => {
+      assert(p);
+      assert(options);
+      try {
+        options.rmdirSync(p);
+      } catch (er) {
+        if (er.code === "ENOENT")
+          return;
+        if (er.code === "ENOTDIR")
+          throw originalEr;
+        if (er.code === "ENOTEMPTY" || er.code === "EEXIST" || er.code === "EPERM")
+          rmkidsSync(p, options);
+      }
+    };
+    var rmkidsSync = (p, options) => {
+      assert(p);
+      assert(options);
+      options.readdirSync(p).forEach((f) => rimrafSync(path.join(p, f), options));
+      const retries = isWindows ? 100 : 1;
+      let i = 0;
+      do {
+        let threw = true;
+        try {
+          const ret = options.rmdirSync(p, options);
+          threw = false;
+          return ret;
+        } finally {
+          if (++i < retries && threw)
+            continue;
+        }
+      } while (true);
+    };
+    module2.exports = rimraf;
+    rimraf.sync = rimrafSync;
+  }
+});
+var require_del = __commonJS2({
+  "node_modules/flat-cache/src/del.js"(exports2, module2) {
+    var rimraf = require_rimraf().sync;
+    var fs = require("fs");
+    module2.exports = function del(file) {
+      if (fs.existsSync(file)) {
+        rimraf(file, {
+          glob: false
+        });
+        return true;
+      }
+      return false;
+    };
+  }
+});
+var require_cache = __commonJS2({
+  "node_modules/flat-cache/src/cache.js"(exports2, module2) {
+    var path = require("path");
+    var fs = require("fs");
+    var utils = require_utils6();
+    var del = require_del();
+    var writeJSON = utils.writeJSON;
+    var cache = {
+      load: function(docId, cacheDir) {
+        var me = this;
+        me._visited = {};
+        me._persisted = {};
+        me._pathToFile = cacheDir ? path.resolve(cacheDir, docId) : path.resolve(__dirname, "../.cache/", docId);
+        if (fs.existsSync(me._pathToFile)) {
+          me._persisted = utils.tryParse(me._pathToFile, {});
+        }
+      },
+      loadFile: function(pathToFile) {
+        var me = this;
+        var dir = path.dirname(pathToFile);
+        var fName = path.basename(pathToFile);
+        me.load(fName, dir);
+      },
+      all: function() {
+        return this._persisted;
+      },
+      keys: function() {
+        return Object.keys(this._persisted);
+      },
+      setKey: function(key, value) {
+        this._visited[key] = true;
+        this._persisted[key] = value;
+      },
+      removeKey: function(key) {
+        delete this._visited[key];
+        delete this._persisted[key];
+      },
+      getKey: function(key) {
+        this._visited[key] = true;
+        return this._persisted[key];
+      },
+      _prune: function() {
+        var me = this;
+        var obj = {};
+        var keys = Object.keys(me._visited);
+        if (keys.length === 0) {
+          return;
+        }
+        keys.forEach(function(key) {
+          obj[key] = me._persisted[key];
+        });
+        me._visited = {};
+        me._persisted = obj;
+      },
+      save: function(noPrune) {
+        var me = this;
+        !noPrune && me._prune();
+        writeJSON(me._pathToFile, me._persisted);
+      },
+      removeCacheFile: function() {
+        return del(this._pathToFile);
+      },
+      destroy: function() {
+        var me = this;
+        me._visited = {};
+        me._persisted = {};
+        me.removeCacheFile();
+      }
+    };
+    module2.exports = {
+      load: function(docId, cacheDir) {
+        return this.create(docId, cacheDir);
+      },
+      create: function(docId, cacheDir) {
+        var obj = Object.create(cache);
+        obj.load(docId, cacheDir);
+        return obj;
+      },
+      createFromFile: function(filePath) {
+        var obj = Object.create(cache);
+        obj.loadFile(filePath);
+        return obj;
+      },
+      clearCacheById: function(docId, cacheDir) {
+        var filePath = cacheDir ? path.resolve(cacheDir, docId) : path.resolve(__dirname, "../.cache/", docId);
+        return del(filePath);
+      },
+      clearAll: function(cacheDir) {
+        var filePath = cacheDir ? path.resolve(cacheDir) : path.resolve(__dirname, "../.cache/");
+        return del(filePath);
+      }
+    };
+  }
+});
+var require_cache2 = __commonJS2({
+  "node_modules/file-entry-cache/cache.js"(exports2, module2) {
+    var path = require("path");
+    var crypto = require("crypto");
+    module2.exports = {
+      createFromFile: function(filePath, useChecksum) {
+        var fname = path.basename(filePath);
+        var dir = path.dirname(filePath);
+        return this.create(fname, dir, useChecksum);
+      },
+      create: function(cacheId, _path, useChecksum) {
+        var fs = require("fs");
+        var flatCache = require_cache();
+        var cache = flatCache.load(cacheId, _path);
+        var normalizedEntries = {};
+        var removeNotFoundFiles = function removeNotFoundFiles2() {
+          const cachedEntries = cache.keys();
+          cachedEntries.forEach(function remover(fPath) {
+            try {
+              fs.statSync(fPath);
+            } catch (err) {
+              if (err.code === "ENOENT") {
+                cache.removeKey(fPath);
+              }
+            }
+          });
+        };
+        removeNotFoundFiles();
+        return {
+          cache,
+          getHash: function(buffer) {
+            return crypto.createHash("md5").update(buffer).digest("hex");
+          },
+          hasFileChanged: function(file) {
+            return this.getFileDescriptor(file).changed;
+          },
+          analyzeFiles: function(files) {
+            var me = this;
+            files = files || [];
+            var res = {
+              changedFiles: [],
+              notFoundFiles: [],
+              notChangedFiles: []
+            };
+            me.normalizeEntries(files).forEach(function(entry) {
+              if (entry.changed) {
+                res.changedFiles.push(entry.key);
+                return;
+              }
+              if (entry.notFound) {
+                res.notFoundFiles.push(entry.key);
+                return;
+              }
+              res.notChangedFiles.push(entry.key);
+            });
+            return res;
+          },
+          getFileDescriptor: function(file) {
+            var fstat;
+            try {
+              fstat = fs.statSync(file);
+            } catch (ex) {
+              this.removeEntry(file);
+              return {
+                key: file,
+                notFound: true,
+                err: ex
+              };
+            }
+            if (useChecksum) {
+              return this._getFileDescriptorUsingChecksum(file);
+            }
+            return this._getFileDescriptorUsingMtimeAndSize(file, fstat);
+          },
+          _getFileDescriptorUsingMtimeAndSize: function(file, fstat) {
+            var meta = cache.getKey(file);
+            var cacheExists = !!meta;
+            var cSize = fstat.size;
+            var cTime = fstat.mtime.getTime();
+            var isDifferentDate;
+            var isDifferentSize;
+            if (!meta) {
+              meta = {
+                size: cSize,
+                mtime: cTime
+              };
+            } else {
+              isDifferentDate = cTime !== meta.mtime;
+              isDifferentSize = cSize !== meta.size;
+            }
+            var nEntry = normalizedEntries[file] = {
+              key: file,
+              changed: !cacheExists || isDifferentDate || isDifferentSize,
+              meta
+            };
+            return nEntry;
+          },
+          _getFileDescriptorUsingChecksum: function(file) {
+            var meta = cache.getKey(file);
+            var cacheExists = !!meta;
+            var contentBuffer;
+            try {
+              contentBuffer = fs.readFileSync(file);
+            } catch (ex) {
+              contentBuffer = "";
+            }
+            var isDifferent = true;
+            var hash = this.getHash(contentBuffer);
+            if (!meta) {
+              meta = {
+                hash
+              };
+            } else {
+              isDifferent = hash !== meta.hash;
+            }
+            var nEntry = normalizedEntries[file] = {
+              key: file,
+              changed: !cacheExists || isDifferent,
+              meta
+            };
+            return nEntry;
+          },
+          getUpdatedFiles: function(files) {
+            var me = this;
+            files = files || [];
+            return me.normalizeEntries(files).filter(function(entry) {
+              return entry.changed;
+            }).map(function(entry) {
+              return entry.key;
+            });
+          },
+          normalizeEntries: function(files) {
+            files = files || [];
+            var me = this;
+            var nEntries = files.map(function(file) {
+              return me.getFileDescriptor(file);
+            });
+            return nEntries;
+          },
+          removeEntry: function(entryName) {
+            delete normalizedEntries[entryName];
+            cache.removeKey(entryName);
+          },
+          deleteCacheFile: function() {
+            cache.removeCacheFile();
+          },
+          destroy: function() {
+            normalizedEntries = {};
+            cache.destroy();
+          },
+          _getMetaForFileUsingCheckSum: function(cacheEntry) {
+            var contentBuffer = fs.readFileSync(cacheEntry.key);
+            var hash = this.getHash(contentBuffer);
+            var meta = Object.assign(cacheEntry.meta, {
+              hash
+            });
+            delete meta.size;
+            delete meta.mtime;
+            return meta;
+          },
+          _getMetaForFileUsingMtimeAndSize: function(cacheEntry) {
+            var stat = fs.statSync(cacheEntry.key);
+            var meta = Object.assign(cacheEntry.meta, {
+              size: stat.size,
+              mtime: stat.mtime.getTime()
+            });
+            delete meta.hash;
+            return meta;
+          },
+          reconcile: function(noPrune) {
+            removeNotFoundFiles();
+            noPrune = typeof noPrune === "undefined" ? true : noPrune;
+            var entries = normalizedEntries;
+            var keys = Object.keys(entries);
+            if (keys.length === 0) {
+              return;
+            }
+            var me = this;
+            keys.forEach(function(entryName) {
+              var cacheEntry = entries[entryName];
+              try {
+                var meta = useChecksum ? me._getMetaForFileUsingCheckSum(cacheEntry) : me._getMetaForFileUsingMtimeAndSize(cacheEntry);
+                cache.setKey(entryName, meta);
+              } catch (err) {
+                if (err.code !== "ENOENT") {
+                  throw err;
+                }
+              }
+            });
+            cache.save(noPrune);
+          }
+        };
+      }
+    };
+  }
+});
+var require_format_results_cache = __commonJS2({
+  "src/cli/format-results-cache.js"(exports2, module2) {
+    "use strict";
+    var fileEntryCache = require_cache2();
+    var stringify2 = require_fast_json_stable_stringify();
+    var {
+      version: prettierVersion
+    } = require("./index.js");
+    var {
+      createHash
+    } = require_utils();
+    var optionsHashCache = /* @__PURE__ */ new WeakMap();
+    var nodeVersion = process && process.version;
+    function getHashOfOptions(options) {
+      if (optionsHashCache.has(options)) {
+        return optionsHashCache.get(options);
+      }
+      const hash = createHash(`${prettierVersion}_${nodeVersion}_${stringify2(options)}`);
+      optionsHashCache.set(options, hash);
+      return hash;
+    }
+    function getMetadataFromFileDescriptor(fileDescriptor) {
+      return fileDescriptor.meta;
+    }
+    var FormatResultsCache = class {
+      constructor(cacheFileLocation, cacheStrategy) {
+        const useChecksum = cacheStrategy === "content";
+        this.cacheFileLocation = cacheFileLocation;
+        this.fileEntryCache = fileEntryCache.create(cacheFileLocation, void 0, useChecksum);
+      }
+      existsAvailableFormatResultsCache(filePath, options) {
+        const fileDescriptor = this.fileEntryCache.getFileDescriptor(filePath);
+        const hashOfOptions = getHashOfOptions(options);
+        const meta = getMetadataFromFileDescriptor(fileDescriptor);
+        const changed = fileDescriptor.changed || meta.hashOfOptions !== hashOfOptions;
+        if (fileDescriptor.notFound) {
+          return false;
+        }
+        if (changed) {
+          return false;
+        }
+        return true;
+      }
+      setFormatResultsCache(filePath, options) {
+        const fileDescriptor = this.fileEntryCache.getFileDescriptor(filePath);
+        const meta = getMetadataFromFileDescriptor(fileDescriptor);
+        if (fileDescriptor && !fileDescriptor.notFound) {
+          meta.hashOfOptions = getHashOfOptions(options);
+        }
+      }
+      reconcile() {
+        this.fileEntryCache.reconcile();
+      }
+    };
+    module2.exports = FormatResultsCache;
   }
 });
 var require_base = __commonJS2({
@@ -11512,11 +14272,11 @@ var require_base = __commonJS2({
           return left === right || this.options.ignoreCase && left.toLowerCase() === right.toLowerCase();
         }
       },
-      removeEmpty: function removeEmpty(array) {
+      removeEmpty: function removeEmpty(array2) {
         var ret = [];
-        for (var i = 0; i < array.length; i++) {
-          if (array[i]) {
-            ret.push(array[i]);
+        for (var i = 0; i < array2.length; i++) {
+          if (array2[i]) {
+            ret.push(array2[i]);
           }
         }
         return ret;
@@ -11816,8 +14576,8 @@ var require_format = __commonJS2({
     } = require("fs");
     var path = require("path");
     var {
-      default: chalk
-    } = require_chalk();
+      default: chalk2
+    } = (init_source(), __toCommonJS(source_exports));
     var prettier2 = require("./index.js");
     var {
       getStdin
@@ -11832,6 +14592,11 @@ var require_format = __commonJS2({
     } = require_expand_patterns();
     var getOptionsForFile = require_get_options_for_file();
     var isTTY = require_is_tty();
+    var findCacheFile = require_find_cache_file();
+    var FormatResultsCache = require_format_results_cache();
+    var {
+      statSafe
+    } = require_utils();
     function diff(a, b) {
       return require_create().createTwoFilesPatch("", "", a, b, "", "", {
         context: 2
@@ -11938,7 +14703,10 @@ var require_format = __commonJS2({
           filepath: opt.filepath || "(stdin)\n"
         };
       }
-      if (context.argv.debugBenchmark) {
+      const {
+        performanceTestFlag
+      } = context;
+      if (performanceTestFlag !== null && performanceTestFlag !== void 0 && performanceTestFlag.debugBenchmark) {
         let benchmark;
         try {
           benchmark = require("benchmark");
@@ -11960,7 +14728,7 @@ var require_format = __commonJS2({
         }).run({
           async: false
         });
-      } else if (context.argv.debugRepeat > 0) {
+      } else if (performanceTestFlag !== null && performanceTestFlag !== void 0 && performanceTestFlag.debugRepeat) {
         const repeat = context.argv.debugRepeat;
         context.logger.debug("'--debug-repeat' option found, running formatWithCursor " + repeat + " times.");
         let totalMs = 0;
@@ -12003,18 +14771,45 @@ var require_format = __commonJS2({
         if (listDifferent(context, input, options, "(stdin)")) {
           return;
         }
-        writeOutput(context, format(context, input, options), options);
+        const formatted = format(context, input, options);
+        const {
+          performanceTestFlag
+        } = context;
+        if (performanceTestFlag) {
+          context.logger.log(`'${performanceTestFlag.name}' option found, skipped print code to screen.`);
+          return;
+        }
+        writeOutput(context, formatted, options);
       } catch (error) {
         handleError(context, relativeFilepath || "stdin", error);
       }
     }
     async function formatFiles2(context) {
+      var _formatResultsCache3;
       const ignorer = await createIgnorerFromContextOrDie(context);
       let numberOfUnformattedFilesFound = 0;
-      if (context.argv.check) {
+      const {
+        performanceTestFlag
+      } = context;
+      if (context.argv.check && !performanceTestFlag) {
         context.logger.log("Checking formatting...");
       }
+      let formatResultsCache;
+      const cacheFilePath = findCacheFile();
+      if (context.argv.cache) {
+        formatResultsCache = new FormatResultsCache(cacheFilePath, context.argv.cacheStrategy || "content");
+      } else {
+        if (context.argv.cacheStrategy) {
+          context.logger.error("`--cache-strategy` cannot be used without `--cache`.");
+          process.exit(2);
+        }
+        const stat = await statSafe(cacheFilePath);
+        if (stat) {
+          await fs.unlink(cacheFilePath);
+        }
+      }
       for await (const pathOrError of expandPatterns(context)) {
+        var _formatResultsCache, _formatResultsCache2;
         if (typeof pathOrError === "object") {
           context.logger.error(pathOrError.error);
           process.exitCode = 2;
@@ -12053,18 +14848,30 @@ ${error.message}`);
           continue;
         }
         const start = Date.now();
+        const isCacheExists = (_formatResultsCache = formatResultsCache) === null || _formatResultsCache === void 0 ? void 0 : _formatResultsCache.existsAvailableFormatResultsCache(filename, options);
         let result;
         let output;
         try {
-          result = format(context, input, options);
+          if (isCacheExists) {
+            result = {
+              formatted: input
+            };
+          } else {
+            result = format(context, input, options);
+          }
           output = result.formatted;
         } catch (error) {
           handleError(context, filename, error, printedFilename);
           continue;
         }
+        (_formatResultsCache2 = formatResultsCache) === null || _formatResultsCache2 === void 0 ? void 0 : _formatResultsCache2.setFormatResultsCache(filename, options);
         const isDifferent = output !== input;
         if (printedFilename) {
           printedFilename.clear();
+        }
+        if (performanceTestFlag) {
+          context.logger.log(`'${performanceTestFlag.name}' option found, skipped print code or write files.`);
+          return;
         }
         if (context.argv.write) {
           if (isDifferent) {
@@ -12079,7 +14886,12 @@ ${error.message}`);
               process.exitCode = 2;
             }
           } else if (!context.argv.check && !context.argv.listDifferent) {
-            context.logger.log(`${chalk.grey(filename)} ${Date.now() - start}ms`);
+            const message = `${chalk2.grey(filename)} ${Date.now() - start}ms`;
+            if (isCacheExists) {
+              context.logger.log(`${message} (cached)`);
+            } else {
+              context.logger.log(message);
+            }
           }
         } else if (context.argv.debugCheck) {
           if (result.filepath) {
@@ -12099,11 +14911,14 @@ ${error.message}`);
           numberOfUnformattedFilesFound += 1;
         }
       }
+      (_formatResultsCache3 = formatResultsCache) === null || _formatResultsCache3 === void 0 ? void 0 : _formatResultsCache3.reconcile();
       if (context.argv.check) {
         if (numberOfUnformattedFilesFound === 0) {
           context.logger.log("All matched files use Prettier code style!");
+        } else if (numberOfUnformattedFilesFound === 1) {
+          context.logger.warn(context.argv.write ? "Code style issues fixed in the above file." : "Code style issues found in the above file. Forgot to run Prettier?");
         } else {
-          context.logger.warn(context.argv.write ? "Code style issues fixed in the above file(s)." : "Code style issues found in the above file(s). Forgot to run Prettier?");
+          context.logger.warn(context.argv.write ? "Code style issues found in " + numberOfUnformattedFilesFound + " files." : "Code style issues found in " + numberOfUnformattedFilesFound + " files. Forgot to run Prettier?");
         }
       }
       if ((context.argv.check || context.argv.listDifferent) && numberOfUnformattedFilesFound > 0 && !process.exitCode && !context.argv.write) {
@@ -12116,15 +14931,6 @@ ${error.message}`);
     };
   }
 });
-var require_utils5 = __commonJS2({
-  "src/cli/utils.js"(exports2, module2) {
-    "use strict";
-    var printToScreen2 = console.log.bind(console);
-    module2.exports = {
-      printToScreen: printToScreen2
-    };
-  }
-});
 var require_file_info = __commonJS2({
   "src/cli/file-info.js"(exports2, module2) {
     "use strict";
@@ -12132,7 +14938,7 @@ var require_file_info = __commonJS2({
     var prettier2 = require("./index.js");
     var {
       printToScreen: printToScreen2
-    } = require_utils5();
+    } = require_utils();
     async function logFileInfoOrDie2(context) {
       const {
         fileInfo: file,
@@ -12163,7 +14969,7 @@ var require_find_config_path = __commonJS2({
     var prettier2 = require("./index.js");
     var {
       printToScreen: printToScreen2
-    } = require_utils5();
+    } = require_utils();
     async function logResolvedConfigPathOrDie2(context) {
       const file = context.argv.findConfigPath;
       const configFile = await prettier2.resolveConfigFile(file);
@@ -12200,7 +15006,7 @@ var {
 } = require_prettier_internal();
 var {
   printToScreen
-} = require_utils5();
+} = require_utils();
 async function run(rawArguments) {
   let logger = createLogger();
   try {
@@ -12208,18 +15014,21 @@ async function run(rawArguments) {
     if (logLevel !== logger.logLevel) {
       logger = createLogger(logLevel);
     }
-    await main(rawArguments, logger);
+    const context = new Context({
+      rawArguments,
+      logger
+    });
+    if (logger.logLevel !== "debug" && context.performanceTestFlag) {
+      context.logger = createLogger("debug");
+    }
+    await main(context);
   } catch (error) {
     logger.error(error.message);
     process.exitCode = 1;
   }
 }
-async function main(rawArguments, logger) {
-  const context = new Context({
-    rawArguments,
-    logger
-  });
-  logger.debug(`normalized argv: ${JSON.stringify(context.argv)}`);
+async function main(context) {
+  context.logger.debug(`normalized argv: ${JSON.stringify(context.argv)}`);
   if (context.argv.pluginSearch === false) {
     const rawPluginSearchDirs = context.argv.__raw["plugin-search-dir"];
     if (typeof rawPluginSearchDirs === "string" || isNonEmptyArray(rawPluginSearchDirs)) {
@@ -12259,6 +15068,10 @@ async function main(rawArguments, logger) {
   } else if (context.argv.fileInfo) {
     await logFileInfoOrDie(context);
   } else if (useStdin) {
+    if (context.argv.cache) {
+      context.logger.error("`--cache` cannot be used with stdin.");
+      process.exit(2);
+    }
     await formatStdin(context);
   } else if (hasFilePatterns) {
     await formatFiles(context);

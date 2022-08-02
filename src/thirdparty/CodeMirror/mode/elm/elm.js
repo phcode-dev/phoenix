@@ -230,6 +230,8 @@
       startState: function ()  { return { f: normal() }; },
       copyState:  function (s) { return { f: s.f }; },
 
+      lineComment: '--',
+
       token: function(stream, state) {
         var type = state.f(stream, function(s) { state.f = s; });
         var word = stream.current();
