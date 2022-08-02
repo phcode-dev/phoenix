@@ -35,7 +35,7 @@ define(function (require, exports, module) {
         NotWellFormedDoc    = require("text!spec/HTMLInstrumentation-test-files/omitEndTags.html"),
         InvalidHTMLDoc      = require("text!spec/HTMLInstrumentation-test-files/invalidHTML.html");
 
-    RemoteFunctions = eval("(" + RemoteFunctions.trim() + ")()");
+    RemoteFunctions = eval(`(()=>{${RemoteFunctions.trim()}\nreturn RemoteFunctions();})()`);
 
     var editor,
         instrumentedHTML,

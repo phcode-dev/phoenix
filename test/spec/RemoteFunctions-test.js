@@ -28,7 +28,7 @@ define(function (require, exports, module) {
     var RemoteFunctions = require("text!LiveDevelopment/Agents/RemoteFunctions.js");
 
     // "load" RemoteFunctions
-    RemoteFunctions = eval("(" + RemoteFunctions.trim() + ")()");
+    RemoteFunctions = eval(`(()=>{${RemoteFunctions.trim()}\nreturn RemoteFunctions();})()`);
 
     // test cases
     // empty element

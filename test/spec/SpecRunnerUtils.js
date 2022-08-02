@@ -203,11 +203,7 @@ define(function (require, exports, module) {
     }
 
     function getTestRoot() {
-        // /path/to/brackets/test/SpecRunner.html
-        var path = window.location.pathname;
-        path = path.substr(0, path.lastIndexOf("/"));
-        path = FileUtils.convertToNativePath(path);
-        return path;
+        return '/test';
     }
 
     function getTestPath(path) {
