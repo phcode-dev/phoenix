@@ -34,7 +34,7 @@ Phoenix is in early alpha.
 4. Uncompromised local development experience.
 5. Support for pluggable remote back-ends.
 6. Phoenix core will work from a static web server.
-7. No minification/compilation step or code obfuscation of release builds for code auditability and readability.
+7. Source code in release builds will always be auditable and readable from dev-tools.
 
 AGPL/Libre license guards your right to audit and change code that handles your data.
 Phoenix usually loads up in under one second and loading it faster at the expense of making it hard

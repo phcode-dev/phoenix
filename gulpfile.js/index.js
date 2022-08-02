@@ -30,6 +30,8 @@ const zip = require('gulp-zip');
 const jsDocGenerate = require('./jsDocGenerate');
 const Translate = require("./translateStrings");
 const copyThirdPartyLibs = require("./thirdparty-lib-copy");
+const minify = require('gulp-minify');
+const sourcemaps = require('gulp-sourcemaps');
 
 function cleanDist() {
     return del(['dist']);
@@ -55,8 +57,30 @@ function cleanAll() {
  * https://stackoverflow.com/questions/53353266/minify-and-combine-all-js-files-from-an-html-file
  * @returns {*}
  */
-function makeDist() {
+function makeDistAll() {
     return src('src/**/*')
+        .pipe(dest('dist'));
+}
+
+function makeJSDist() {
+    return src(['src/**/*.js', '!src/**/unittest-files/**/*'])
+        .pipe(sourcemaps.init())
+        .pipe(minify({
+            ext:{
+                min:'.js'
+            },
+            noSource: true,
+            mangle: false,
+            compress: {
+                unused: false
+            }
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(dest('dist'));
+}
+
+function makeDistNonJS() {
+    return src(['src/**/*', '!src/**/*.js'])
         .pipe(dest('dist'));
 }
 
@@ -190,9 +214,9 @@ function translateStrings() {
 exports.build = series(copyThirdPartyLibs.copyAll, zipDefaultProjectFiles, zipSampleProjectFiles);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
-exports.releaseDev = series(cleanDist, exports.build, makeDist);
-exports.releaseStaging = series(cleanDist, exports.build, makeDist, releaseStaging);
-exports.releaseProd = series(cleanDist, exports.build, makeDist, releaseProd);
+exports.releaseDev = series(cleanDist, exports.build, makeDistAll);
+exports.releaseStaging = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseStaging);
+exports.releaseProd = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseProd);
 exports.serve = series(exports.build, serve);
 exports.test = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
