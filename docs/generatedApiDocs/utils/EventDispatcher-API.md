@@ -92,6 +92,20 @@ Type: [function][2]
 
 Returns **!{event: [string][3], ns: [string][3]}** Uses "" for missing parts.
 
+## setLeakThresholdForEvent
+
+By default, we consider any events having more than 15 listeners to be leaky. But sometimes there may be
+genuine use cases where an event can have a large number of listeners. For those events, it is recommended
+to increase the leaky warning threshold individually with this API.
+
+Type: [function][2]
+
+### Parameters
+
+*   `eventName` **[string][3]** 
+*   `threshold` **[number][4]** The new threshold to set. Will only be set if the new threshold is greater than
+    the current threshold.
+
 ## on
 
 Adds the given handler function to 'events': a space-separated list of one or more event names, each
@@ -149,7 +163,7 @@ Type: [function][2]
 
 ### Parameters
 
-*   `obj` **\![Object][4]** Object to add event-dispatch methods to
+*   `obj` **\![Object][5]** Object to add event-dispatch methods to
 
 ## triggerWithArray
 
@@ -160,9 +174,9 @@ Type: [function][2]
 
 ### Parameters
 
-*   `dispatcher` **\![Object][4]** 
+*   `dispatcher` **\![Object][5]** 
 *   `eventName` **[string][3]** 
-*   `argsArray` **\![Array][5]\<any>** 
+*   `argsArray` **\![Array][6]\<any>** 
 
 ## on_duringInit
 
@@ -179,7 +193,7 @@ Type: [function][2]
 
 ### Parameters
 
-*   `futureDispatcher` **\![Object][4]** 
+*   `futureDispatcher` **\![Object][5]** 
 *   `events` **[string][3]** 
 *   `fn`  
 
@@ -194,7 +208,7 @@ Type: [function][2]
 
 ### Parameters
 
-*   `obj` **\![Object][4]** Event dispatcher object
+*   `obj` **\![Object][5]** Event dispatcher object
 *   `eventName` **[string][3]** Name of deprecated event
 *   `insteadStr` **[string][3]?** Suggested thing to use instead
 
@@ -204,6 +218,8 @@ Type: [function][2]
 
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
