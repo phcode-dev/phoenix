@@ -55,6 +55,12 @@ function _copyMimeDB() {
         .pipe(dest('src/thirdparty'));
 }
 
+// just lists the files in a directory at given path as a json file
+function _createListDirJson(dirPath, jsonFileName) {
+    let filenames = fs.readdirSync(dirPath);
+    fs.writeFileSync(`${dirPath}/${jsonFileName}`, JSON.stringify(filenames));
+}
+
 
 /**
  * Add thirdparty libs copied to gitignore except the licence file.
@@ -168,4 +174,16 @@ function _patchAcornLib() {
     });
 }
 
-exports.copyAll = series(copyThirdPartyLibs, _patchAcornLib);
+function _patchTernLib() {
+    return new Promise(async (resolve)=>{ // eslint-disable-line
+        let ternDefsDir = "src/thirdparty/tern/defs",
+            ternPluginDir = "src/thirdparty/tern/plugin";
+        console.log("patching tern definitions at :", ternDefsDir);
+        _createListDirJson(ternDefsDir, "defs.json");
+        console.log("patching tern plugins at :", ternPluginDir);
+        _createListDirJson(ternPluginDir, "plugin.json");
+        resolve();
+    });
+}
+
+exports.copyAll = series(copyThirdPartyLibs, _patchAcornLib, _patchTernLib);
