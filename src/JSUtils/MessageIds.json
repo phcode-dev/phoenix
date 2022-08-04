@@ -14,5 +14,8 @@
   "SET_CONFIG": "SetConfig",
   "TERN_UPDATE_DIRTY_FILE": "UpdateDirtyFileEntry",
   "TERN_REFS": "getRefs",
-  "TERN_CLEAR_DIRTY_FILES_LIST": "ClearDirtyFilesList"
+  "TERN_CLEAR_DIRTY_FILES_LIST": "ClearDirtyFilesList",
+  "TERN_FILE_INFO_TYPE_PART": "part",
+  "TERN_FILE_INFO_TYPE_FULL": "full",
+  "TERN_FILE_INFO_TYPE_EMPTY": "empty"
 }
