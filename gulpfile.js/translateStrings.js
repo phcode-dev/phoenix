@@ -105,6 +105,32 @@ function _isTranslatableKey(key) {
 }
 
 /**
+ * If there are any manual translations done in `<locale>/strings.js`, pass it on as existingTranslations.
+ * Users can explicitly provide translations like these: https://github.com/phcode-dev/phoenix/pull/588 .
+ * @param lang
+ * @param existingTranslations
+ * @private
+ */
+function _updateExpertTranslationsDict(lang, existingTranslations, lastTranslated) {
+    let expertTranslations = _getJson(`src/nls/${lang}/expertTranslations.json`, 'utf8');
+    let lastTranslatedLocale = _getJson(`src/nls/${lang}/lastTranslatedLocale.json`, 'utf8');
+    let expertTranslationsUpdated = false;
+    for(let rootKey of Object.keys(existingTranslations)){
+        if(existingTranslations[rootKey] !== lastTranslatedLocale[rootKey]){
+            let englishString = lastTranslated[rootKey];
+            let userProvidedExpertTranslation = existingTranslations[rootKey];
+            expertTranslations[englishString] = userProvidedExpertTranslation;
+            expertTranslationsUpdated = true;
+        }
+    }
+    if(expertTranslationsUpdated){
+        fs.writeFileSync(
+            `src/nls/${lang}/expertTranslations.json`, JSON.stringify(expertTranslations, null, 2));
+    }
+    return expertTranslations;
+}
+
+/**
  * Auto translations scans the following files to determine which strings have changed and needs to be translated:
  * 1. nls/<lang>/lastTranslated.json holds the last root english strings that was automatically translated. This will be
  * used to compare with the current `root/strings.js`. We can determine which strings have changed from the last locale
@@ -135,10 +161,10 @@ async function _processLang(lang) {
     if(lang === 'root'){
         return;
     }
-    let expertTranslations = _getJson(`src/nls/${lang}/expertTranslations.json`, 'utf8');
     let lastTranslated = _getJson(`src/nls/${lang}/lastTranslated.json`, 'utf8');
     require(`../src/nls/${lang}/strings`);
     let existingTranslations = definedStrings;
+    let expertTranslations = _updateExpertTranslationsDict(lang, existingTranslations, lastTranslated);
     let translations = {}, newTranslationsInRoot={};
     for(let rootKey of Object.keys(rootStrings)){
         if(!_isTranslatableKey(rootKey)){
