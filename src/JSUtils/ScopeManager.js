@@ -31,7 +31,7 @@ define(function (require, exports, module) {
 
     var _ = require("thirdparty/lodash");
 
-    var CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
+    const CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
         DefaultDialogs      = require("widgets/DefaultDialogs"),
         Dialogs             = require("widgets/Dialogs"),
         DocumentManager     = require("document/DocumentManager"),
@@ -53,7 +53,6 @@ define(function (require, exports, module) {
 
     var ternEnvironment     = [],
         pendingTernRequests = {},
-        builtinFiles        = ["ecmascript.json", "browser.json", "jquery.json"],
         builtinLibraryNames = [],
         isDocumentDirty     = false,
         _hintCount          = 0,
@@ -89,25 +88,21 @@ define(function (require, exports, module) {
      * Read in the json files that have type information for the builtins, dom,etc
      */
     function initTernEnv() {
-        var path = [_absoluteModulePath, "node/node_modules/tern/defs/"].join("/"),
-            files = builtinFiles,
-            library;
+        const builtinDefinitionFiles = JSON.parse(require("text!thirdparty/tern/defs/defs.json"));
 
-        files.forEach(function (i) {
-            FileSystem.resolve(path + i, function (err, file) {
-                if (!err) {
-                    FileUtils.readAsText(file).done(function (text) {
-                        library = JSON.parse(text);
-                        builtinLibraryNames.push(library["!name"]);
-                        ternEnvironment.push(library);
-                    }).fail(function (error) {
-                        console.log("failed to read tern config file " + i);
-                    });
-                } else {
-                    console.log("failed to read tern config file " + i);
-                }
-            });
-        });
+        for(let fileName of builtinDefinitionFiles){
+            let filePath = `thirdparty/tern/defs/${fileName}`;
+            console.log("loading tern definition file: ", filePath);
+            fetch(filePath)
+                .then(async contents =>{
+                    const ternDefsLibrary = await contents.json();
+                    builtinLibraryNames.push(ternDefsLibrary["!name"]);
+                    ternEnvironment.push(ternDefsLibrary);
+                })
+                .catch(e =>{
+                    console.error("failed to init from tern definition file " + fileName, e);
+                });
+        }
     }
 
     initTernEnv();

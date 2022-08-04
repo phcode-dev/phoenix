@@ -58,6 +58,10 @@ function _copyMimeDB() {
 // just lists the files in a directory at given path as a json file
 function _createListDirJson(dirPath, jsonFileName) {
     let filenames = fs.readdirSync(dirPath);
+    if(filenames.includes(jsonFileName)){
+        // we dont want to add the index file itself to the dir listing.
+        filenames.splice(filenames.indexOf(jsonFileName), 1);
+    }
     fs.writeFileSync(`${dirPath}/${jsonFileName}`, JSON.stringify(filenames));
 }
 
