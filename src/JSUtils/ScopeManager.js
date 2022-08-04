@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /*
  * Throughout this file, the term "outer scope" is used to refer to the outer-
  * most/global/root Scope objects for particular file. The term "inner scope"
@@ -36,7 +38,6 @@ define(function (require, exports, module) {
         Dialogs             = require("widgets/Dialogs"),
         DocumentManager     = require("document/DocumentManager"),
         EditorManager       = require("editor/EditorManager"),
-        ExtensionUtils      = require("utils/ExtensionUtils"),
         FileSystem          = require("filesystem/FileSystem"),
         FileUtils           = require("file/FileUtils"),
         LanguageManager     = require("language/LanguageManager"),
@@ -45,10 +46,13 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
         NodeDomain          = require("utils/NodeDomain"),
-        InMemoryFile        = require("document/InMemoryFile");
+        InMemoryFile        = require("document/InMemoryFile"),
+        IndexingWorker        = require("worker/IndexingWorker");
+
+    IndexingWorker.loadScriptInWorker(`${Phoenix.baseURL}JSUtils/worker/tern-main.js`);
 
     var HintUtils           = require("./HintUtils"),
-        MessageIds          = require("./MessageIds"),
+        MessageIds          = JSON.parse(require("text!./MessageIds.json")),
         Preferences         = require("./Preferences");
 
     var ternEnvironment     = [],
@@ -64,7 +68,6 @@ define(function (require, exports, module) {
     var _bracketsPath       = FileUtils.getNativeBracketsDirectoryPath(),
         _modulePath         = FileUtils.getNativeModuleDirectoryPath(module),
         _nodePath           = "node/TernNodeDomain",
-        _absoluteModulePath = [_bracketsPath, _modulePath].join("/"),
         _domainPath         = [_bracketsPath, _modulePath, _nodePath].join("/");
 
 
@@ -1091,9 +1094,6 @@ define(function (require, exports, module) {
             ternPromise = moduleDeferred.promise();
 
             function prepareTern() {
-                _ternNodeDomain.exec("setInterface", {
-                    messageIds: MessageIds
-                });
 
                 _ternNodeDomain.exec("invokeTernCommand", {
                     type: MessageIds.SET_CONFIG,

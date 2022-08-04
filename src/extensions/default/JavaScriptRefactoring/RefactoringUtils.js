@@ -30,7 +30,7 @@ define(function (require, exports, module) {
 
     var Acorn         = brackets.getModule("thirdparty/acorn/dist/acorn"),
         ASTWalker     = brackets.getModule("thirdparty/acorn/dist/walk"),
-        MessageIds    = brackets.getModule("JSUtils/MessageIds"),
+        MessageIds    = JSON.parse(brackets.getModule("text!JSUtils/MessageIds.json")),
         _             = brackets.getModule("thirdparty/lodash"),
         AcornLoose    = brackets.getModule("thirdparty/acorn/dist/acorn_loose"),
         ScopeManager  = brackets.getModule("JSUtils/ScopeManager");

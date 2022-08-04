@@ -894,21 +894,6 @@ function invokeTernCommand(commandConfig) {
     }
 }
 
-function setInterface(msgInterface) {
-    MessageIds = msgInterface.messageIds;
-}
-
-function checkInterfaceAndReInit() {
-    if (!MessageIds) {
-        // WTF - Worse than failure
-        // We are here as node process got restarted
-        // Request for ReInitialization of interface and Tern Server
-        self.postMessage({
-            type: "RE_INIT_TERN"
-        });
-    }
-}
-
  /**
  * Initialize the test domain with commands and events related to find in files.
  * @param {DomainManager} domainManager The DomainManager for the TernNodeDomain
@@ -933,17 +918,6 @@ function init(domainManager) {
 
     domainManager.registerCommand(
         "TernNodeDomain",       // domain name
-        "setInterface",    // command name
-        setInterface,   // command handler function
-        false,          // this command is synchronous in Node
-        "Sets the shared message interface",
-        [{name: "msgInterface", // parameters
-            type: "object",
-            description: "Object containing messageId enums"}]
-    );
-
-    domainManager.registerCommand(
-        "TernNodeDomain",       // domain name
         "resetTernServer",    // command name
         resetTernServer,   // command handler function
         true,          // this command is synchronous in Node
@@ -961,7 +935,6 @@ function init(domainManager) {
             }
         ]
     );
-    setTimeout(checkInterfaceAndReInit, 1000);
 }
 
 exports.init = init;
