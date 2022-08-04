@@ -1,0 +1,18 @@
+{
+  "TERN_ADD_FILES_MSG": "AddFiles",
+  "TERN_UPDATE_FILE_MSG": "UpdateFile",
+  "TERN_INIT_MSG": "Init",
+  "TERN_JUMPTODEF_MSG": "JumptoDef",
+  "TERN_COMPLETIONS_MSG": "Completions",
+  "TERN_GET_FILE_MSG": "GetFile",
+  "TERN_SCOPEDATA_MSG": "ScopeData",
+  "TERN_CALLED_FUNC_TYPE_MSG": "FunctionType",
+  "TERN_PRIME_PUMP_MSG": "PrimePump",
+  "TERN_GET_GUESSES_MSG": "GetGuesses",
+  "TERN_WORKER_READY": "WorkerReady",
+  "TERN_INFERENCE_TIMEDOUT": "InferenceTimedOut",
+  "SET_CONFIG": "SetConfig",
+  "TERN_UPDATE_DIRTY_FILE": "UpdateDirtyFileEntry",
+  "TERN_REFS": "getRefs",
+  "TERN_CLEAR_DIRTY_FILES_LIST": "ClearDirtyFilesList"
+}
