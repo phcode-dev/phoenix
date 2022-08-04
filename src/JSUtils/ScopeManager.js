@@ -45,9 +45,8 @@ define(function (require, exports, module) {
         ProjectManager      = require("project/ProjectManager"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
-        NodeDomain          = require("utils/NodeDomain"),
         InMemoryFile        = require("document/InMemoryFile"),
-        IndexingWorker        = require("worker/IndexingWorker");
+        IndexingWorker      = require("worker/IndexingWorker");
 
     IndexingWorker.loadScriptInWorker(`${Phoenix.baseURL}JSUtils/worker/tern-main.js`);
 
@@ -55,7 +54,8 @@ define(function (require, exports, module) {
         MessageIds          = JSON.parse(require("text!./MessageIds.json")),
         Preferences         = require("./Preferences");
 
-    var ternEnvironment     = [],
+    let ternEnvironment     = [],
+        ternConfigInitDone        = false,
         pendingTernRequests = {},
         builtinLibraryNames = [],
         isDocumentDirty     = false,
@@ -65,13 +65,8 @@ define(function (require, exports, module) {
         preferences         = null,
         deferredPreferences = null;
 
-    var _bracketsPath       = FileUtils.getNativeBracketsDirectoryPath(),
-        _modulePath         = FileUtils.getNativeModuleDirectoryPath(module),
-        _nodePath           = "node/TernNodeDomain",
-        _domainPath         = [_bracketsPath, _modulePath, _nodePath].join("/");
 
-
-    var MAX_HINTS           = 30,  // how often to reset the tern server
+    const MAX_HINTS           = 30,  // how often to reset the tern server
         LARGE_LINE_CHANGE   = 100,
         LARGE_LINE_COUNT    = 10000,
         OFFSET_ZERO         = {line: 0, ch: 0};
@@ -819,8 +814,7 @@ define(function (require, exports, module) {
             resolvedFiles       = {},       // file -> resolved file
             numInitialFiles     = 0,
             numResolvedFiles    = 0,
-            numAddedFiles       = 0,
-            _ternNodeDomain     = null;
+            numAddedFiles       = 0;
 
         /**
          * @param {string} file a relative path
@@ -846,16 +840,11 @@ define(function (require, exports, module) {
          * the message will not be posted until initialization is complete
          */
         function postMessage(msg) {
-            addFilesPromise.done(function (ternModule) {
-                // If an error came up during file handling, bail out now
-                if (!_ternNodeDomain) {
-                    return;
-                }
-
+            addFilesPromise.done(function () {
                 if (config.debug) {
                     console.debug("Sending message", msg);
                 }
-                _ternNodeDomain.exec("invokeTernCommand", msg);
+                IndexingWorker.execPeer("invokeTernCommand", msg);
             });
         }
 
@@ -864,11 +853,11 @@ define(function (require, exports, module) {
          * need to be sent before and while the addFilesPromise is being resolved.
          */
         function _postMessageByPass(msg) {
-            ternPromise.done(function (ternModule) {
+            ternPromise.done(function () {
                 if (config.debug) {
                     console.debug("Sending message", msg);
                 }
-                _ternNodeDomain.exec("invokeTernCommand", msg);
+                IndexingWorker.execPeer("invokeTernCommand", msg);
             });
         }
 
@@ -1032,7 +1021,7 @@ define(function (require, exports, module) {
                 }
 
                 numAddedFiles += files.length;
-                ternPromise.done(function (ternModule) {
+                ternPromise.done(function () {
                     var msg = {
                         type: MessageIds.TERN_ADD_FILES_MSG,
                         files: files
@@ -1041,7 +1030,7 @@ define(function (require, exports, module) {
                     if (config.debug) {
                         console.debug("Sending message", msg);
                     }
-                    _ternNodeDomain.exec("invokeTernCommand", msg);
+                    IndexingWorker.execPeer("invokeTernCommand", msg);
                 });
 
             } else {
@@ -1090,68 +1079,59 @@ define(function (require, exports, module) {
          * Init the Tern module that does all the code hinting work.
          */
         function initTernModule() {
-            var moduleDeferred = $.Deferred();
+            let moduleDeferred = $.Deferred();
             ternPromise = moduleDeferred.promise();
 
-            function prepareTern() {
+            function _ternWorkerEventHandler(evt, data) {
+                if (config.debug) {
+                    console.log("Message received", data.type);
+                }
 
-                _ternNodeDomain.exec("invokeTernCommand", {
-                    type: MessageIds.SET_CONFIG,
-                    config: config
-                });
-                moduleDeferred.resolveWith(null, [_ternNodeDomain]);
+                var response = data,
+                    type = response.type;
+
+                if (type === MessageIds.TERN_COMPLETIONS_MSG ||
+                    type === MessageIds.TERN_CALLED_FUNC_TYPE_MSG) {
+                    // handle any completions the tern server calculated
+                    handleTernCompletions(response);
+                } else if (type === MessageIds.TERN_GET_FILE_MSG) {
+                    // handle a request for the contents of a file
+                    handleTernGetFile(response);
+                } else if (type === MessageIds.TERN_JUMPTODEF_MSG) {
+                    handleJumptoDef(response);
+                } else if (type === MessageIds.TERN_SCOPEDATA_MSG) {
+                    handleScopeData(response);
+                } else if (type === MessageIds.TERN_REFS) {
+                    handleRename(response);
+                } else if (type === MessageIds.TERN_PRIME_PUMP_MSG) {
+                    handlePrimePumpCompletion(response);
+                } else if (type === MessageIds.TERN_GET_GUESSES_MSG) {
+                    handleGetGuesses(response);
+                } else if (type === MessageIds.TERN_UPDATE_FILE_MSG) {
+                    handleUpdateFile(response);
+                } else if (type === MessageIds.TERN_INFERENCE_TIMEDOUT) {
+                    handleTimedOut(response);
+                } else if (type === MessageIds.TERN_WORKER_READY) {
+                    moduleDeferred.resolveWith(null);
+                } else {
+                    console.error("Tern Module received unknown event: " + (response.log || response));
+                }
             }
 
-            if (_ternNodeDomain) {
-                _ternNodeDomain.exec("resetTernServer");
-                moduleDeferred.resolveWith(null, [_ternNodeDomain]);
-            } else {
-                _ternNodeDomain     = new NodeDomain("TernNodeDomain", _domainPath);
-                _ternNodeDomain.on("data", function (evt, data) {
-                    if (config.debug) {
-                        console.log("Message received", data.type);
-                    }
-
-                    var response = data,
-                        type = response.type;
-
-                    if (type === MessageIds.TERN_COMPLETIONS_MSG ||
-                            type === MessageIds.TERN_CALLED_FUNC_TYPE_MSG) {
-                        // handle any completions the tern server calculated
-                        handleTernCompletions(response);
-                    } else if (type === MessageIds.TERN_GET_FILE_MSG) {
-                        // handle a request for the contents of a file
-                        handleTernGetFile(response);
-                    } else if (type === MessageIds.TERN_JUMPTODEF_MSG) {
-                        handleJumptoDef(response);
-                    } else if (type === MessageIds.TERN_SCOPEDATA_MSG) {
-                        handleScopeData(response);
-                    } else if (type === MessageIds.TERN_REFS) {
-                        handleRename(response);
-                    } else if (type === MessageIds.TERN_PRIME_PUMP_MSG) {
-                        handlePrimePumpCompletion(response);
-                    } else if (type === MessageIds.TERN_GET_GUESSES_MSG) {
-                        handleGetGuesses(response);
-                    } else if (type === MessageIds.TERN_UPDATE_FILE_MSG) {
-                        handleUpdateFile(response);
-                    } else if (type === MessageIds.TERN_INFERENCE_TIMEDOUT) {
-                        handleTimedOut(response);
-                    } else if (type === MessageIds.TERN_WORKER_READY) {
-                        moduleDeferred.resolveWith(null, [_ternNodeDomain]);
-                    } else if (type === "RE_INIT_TERN") {
-                        // Ensure the request is because of a node restart
-                        if (currentModule) {
-                            prepareTern();
-                            // Mark the module with resetForced, then creation of TernModule will
-                            // happen again as part of '_maybeReset' call
-                            currentModule.resetForced = true;
-                        }
-                    } else {
-                        console.log("Tern Module: " + (response.log || response));
-                    }
+            if(!ternConfigInitDone){
+                ternConfigInitDone = true;
+                IndexingWorker.off("tern-data");
+                IndexingWorker.on("tern-data", _ternWorkerEventHandler);
+                IndexingWorker.execPeer("invokeTernCommand", {
+                    type: MessageIds.SET_CONFIG,
+                    config: config
+                }).then(()=>{
+                    moduleDeferred.resolveWith(null);
                 });
-
-                _ternNodeDomain.promise().done(prepareTern);
+            } else {
+                IndexingWorker.off("tern-data");
+                IndexingWorker.on("tern-data", _ternWorkerEventHandler);
+                IndexingWorker.execPeer("resetTernServer");
             }
         }
 
@@ -1165,7 +1145,7 @@ define(function (require, exports, module) {
             stopAddingFiles = false;
             numInitialFiles = files.length;
 
-            ternPromise.done(function (ternModule) {
+            ternPromise.done(function () {
                 var msg = {
                     type: MessageIds.TERN_INIT_MSG,
                     dir: dir,
@@ -1173,7 +1153,7 @@ define(function (require, exports, module) {
                     env: ternEnvironment,
                     timeout: PreferencesManager.get("jscodehints.inferenceTimeout")
                 };
-                _ternNodeDomain.exec("invokeTernCommand", msg);
+                IndexingWorker.execPeer("invokeTernCommand", msg);
             });
             rootTernDir = dir + "/";
         }
@@ -1218,10 +1198,10 @@ define(function (require, exports, module) {
                     var updateFilePromise = updateTernFile(previousDocument);
                     updateFilePromise.done(function () {
                         primePump(path, document.isUntitled());
-                        addFilesDeferred.resolveWith(null, [_ternNodeDomain]);
+                        addFilesDeferred.resolveWith(null);
                     });
                 } else {
-                    addFilesDeferred.resolveWith(null, [_ternNodeDomain]);
+                    addFilesDeferred.resolveWith(null);
                 }
 
                 isDocumentDirty = false;
@@ -1242,7 +1222,7 @@ define(function (require, exports, module) {
                     initTernServer(pr, []);
                     var hintsPromise = primePump(path, true);
                     hintsPromise.done(function () {
-                        addFilesDeferred.resolveWith(null, [_ternNodeDomain]);
+                        addFilesDeferred.resolveWith(null);
                     });
                     return;
                 }
@@ -1287,14 +1267,14 @@ define(function (require, exports, module) {
                                             // prime the pump again but this time don't wait
                                             // for completion.
                                             primePump(path, false);
-                                            addFilesDeferred.resolveWith(null, [_ternNodeDomain]);
+                                            addFilesDeferred.resolveWith(null);
                                         });
                                     } else {
-                                        addFilesDeferred.resolveWith(null, [_ternNodeDomain]);
+                                        addFilesDeferred.resolveWith(null);
                                     }
                                 });
                             } else {
-                                addFilesDeferred.resolveWith(null, [_ternNodeDomain]);
+                                addFilesDeferred.resolveWith(null);
                             }
                         });
                     });
@@ -1327,19 +1307,15 @@ define(function (require, exports, module) {
          */
         function resetModule() {
             function resetTernServer() {
-                if (_ternNodeDomain.ready()) {
-                    _ternNodeDomain.exec('resetTernServer');
-                }
+                IndexingWorker.execPeer('resetTernServer');
             }
 
-            if (_ternNodeDomain) {
-                if (addFilesPromise) {
-                    // If we're in the middle of added files, don't reset
-                    // until we're done
-                    addFilesPromise.done(resetTernServer).fail(resetTernServer);
-                } else {
-                    resetTernServer();
-                }
+            if (addFilesPromise) {
+                // If we're in the middle of added files, don't reset
+                // until we're done
+                addFilesPromise.done(resetTernServer).fail(resetTernServer);
+            } else {
+                resetTernServer();
             }
         }
 
