@@ -25,7 +25,7 @@ define(function (require, exports, module) {
     var EditorManager        = brackets.getModule("editor/EditorManager"),
         ScopeManager         = brackets.getModule("JSUtils/ScopeManager"),
         Session              = brackets.getModule("JSUtils/Session"),
-        MessageIds           = brackets.getModule("JSUtils/MessageIds"),
+        MessageIds           = JSON.parse(brackets.getModule("text!JSUtils/MessageIds.json")),
         TokenUtils           = brackets.getModule("utils/TokenUtils"),
         Strings              = brackets.getModule("strings"),
         ProjectManager      = brackets.getModule("project/ProjectManager");

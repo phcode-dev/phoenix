@@ -23,6 +23,11 @@
 
 const urlParams = new URLSearchParams(location.search);
 const debugMode = (urlParams.get('debug') === 'true');
+// eslint-disable-next-line no-unused-vars
+const Phoenix = {
+    // exported to be used by extensions that extend the indexing worker
+    baseURL: '../'
+};
 importScripts('../phoenix/virtualfs.js');
 importScripts('../utils/EventDispatcher.js');
 importScripts('./WorkerComm.js');
