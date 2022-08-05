@@ -89,9 +89,9 @@ define(function (require, exports, module) {
         const builtinDefinitionFiles = JSON.parse(require("text!thirdparty/tern/defs/defs.json"));
 
         for(let fileName of builtinDefinitionFiles){
-            let filePath = `thirdparty/tern/defs/${fileName}`;
-            console.log("loading tern definition file: ", filePath);
-            fetch(filePath)
+            let fileUrl = `${Phoenix.baseURL}thirdparty/tern/defs/${fileName}`;
+            console.log("loading tern definition file: ", fileUrl);
+            fetch(fileUrl)
                 .then(async contents =>{
                     const ternDefsLibrary = await contents.json();
                     builtinLibraryNames.push(ternDefsLibrary["!name"]);
@@ -128,7 +128,9 @@ define(function (require, exports, module) {
         if (pr) {
             projectRootPath = pr.fullPath;
         } else if (!projectRootPath) {
-            console.log("initPreferences: projectRootPath has no value");
+            console.log("initPreferences: projectRootPath has no value. Using Defaults.");
+            preferences = new Preferences();
+            return;
         }
 
         var path = projectRootPath + Preferences.FILE_NAME;

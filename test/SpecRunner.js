@@ -19,7 +19,7 @@
  *
  */
 
-/*global beforeEach, afterEach, beforeAll, afterAll, jasmine, Filer */
+/*global beforeEach, afterEach, beforeAll, afterAll, jasmine, Filer, Phoenix */
 
 // Set the baseUrl to brackets/src
 require.config({
@@ -129,6 +129,8 @@ function awaits(waitTimeMs){
 window.jsPromise = jsPromise;
 window.awaitsFor = awaitsFor;
 window.awaits = awaits;
+
+Phoenix.baseURL = `${Phoenix.baseURL}../src/`;
 
 define(function (require, exports, module) {
 

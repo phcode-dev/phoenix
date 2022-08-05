@@ -20,34 +20,44 @@
  */
 
 /*jslint regexp: true */
-/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone */
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor, beforeAll, afterAll, awaits, awaitsForDone */
 
 define(function (require, exports, module) {
 
 
-    var MainViewManager      = brackets.getModule("view/MainViewManager"),
+    const MainViewManager      = brackets.getModule("view/MainViewManager"),
         DocumentManager      = brackets.getModule("document/DocumentManager"),
-        FileUtils            = brackets.getModule("file/FileUtils"),
         SpecRunnerUtils      = brackets.getModule("spec/SpecRunnerUtils"),
+        ScopeManager         = brackets.getModule("JSUtils/ScopeManager"),
+        Session              = brackets.getModule("JSUtils/Session"),
         ExtractToVariable    = require("ExtractToVariable"),
+        ProjectManager       = brackets.getModule("project/ProjectManager"),
+        FileSystem           = brackets.getModule("filesystem/FileSystem"),
         ExtractToFunction    = require("ExtractToFunction"),
         TokenUtils           = brackets.getModule("utils/TokenUtils"),
         WrapSelection        = require("WrapSelection"),
         RenameIdentifier     = require("RenameIdentifier");
+    const testFolder = SpecRunnerUtils.getTestPath("/spec/js-refactor-ext-test-files/");
 
-    var extensionPath   = FileUtils.getNativeModuleDirectoryPath(module),
-        testPath        = extensionPath + "/unittest-files/test.js",
+    var testPath        = testFolder + "test.js",
         testDoc         = null,
         testEditor;
 
     describe("extension:Javascript Refactoring ", function () {
-        it("tests are disabled till we have refactoring working", function () {
-           expect("tests are disabled").toBeFalsy();
+        let savedGetAllFiles = ProjectManager.getAllFiles,
+            savedGetProjectRoot = ProjectManager.getProjectRoot;
+        beforeAll(function () {
+            ProjectManager.getAllFiles = function () {
+                var files = new $.Deferred();
+                files.resolve([FileSystem.getFileForPath(testPath)]);
+                return files.promise();
+            };
         });
-    });
 
-/*
-    describe("extension:Javascript Refactoring ", function () {
+        afterAll(function () {
+            ProjectManager.getAllFiles = savedGetAllFiles;
+            ProjectManager.getProjectRoot = savedGetProjectRoot;
+        });
 
         async function setupTest(path, primePump) { // FIXME: primePump argument ignored even though used below
             DocumentManager.getDocumentForPath(path).done(function (doc) {
@@ -60,6 +70,10 @@ define(function (require, exports, module) {
 
             // create Editor instance (containing a CodeMirror instance)
             testEditor = SpecRunnerUtils.createMockEditorForDocument(testDoc);
+            ScopeManager.handleProjectOpen(testFolder);
+            await awaits(100); // wait for code indexing workers to prime
+            let session = new Session(testEditor);
+            ScopeManager.handleEditorChange(session, testEditor.document, null);
         }
 
         function tearDownTest() {
@@ -78,7 +92,7 @@ define(function (require, exports, module) {
             }
             await awaitsFor(function() {
                 return (testDoc.getText().length !== prevDocLength || (numberOfLines && testDoc.getText().split("\n").length !== numberOfLines));
-            }, 3000);
+            }, 500);
             callback();
         }
 
@@ -761,5 +775,4 @@ define(function (require, exports, module) {
         });
     });
 
- */
 });
