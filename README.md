@@ -2,7 +2,7 @@
 
 **Website: https://phcode.dev**
 
-Phoenix is a modern open-source and free code editor for the web, built for the browser.
+Phoenix is a modern open-source and [free software](https://www.gnu.org/philosophy/free-sw.en.html) code editor for the web, built for the browser.
 
 #### Code Guardian
 [![Phoenix build verification](https://github.com/phcode-dev/phoenix/actions/workflows/build_verify.yml/badge.svg)](https://github.com/phcode-dev/phoenix/actions/workflows/build_verify.yml)
