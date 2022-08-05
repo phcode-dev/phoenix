@@ -378,7 +378,6 @@ define(function (require, exports, module) {
         // configure spawned test windows to load extensions
         SpecRunnerUtils.setLoadExtensionsInTestWindow(selectedCategories.indexOf("extension") >= 0);
 
-        // todo TEST_MODERN enable extension tests
         _loadExtensionTests().always(function () {
             var jasmineEnv = jasmine.getEnv();
             jasmineEnv.updateInterval = 1000;
