@@ -912,6 +912,8 @@ define(function (require, exports, module) {
         // for unit testing
         exports.getSession = getSession;
         exports.jsHintProvider = jsHints;
+        exports._phProvider = phProvider;
+        window.phProvider = phProvider;
         exports.initializeSession = initializeSession;
         exports.handleJumpToDefinition = jdProvider.doJumpToDef.bind(jdProvider);
     });
