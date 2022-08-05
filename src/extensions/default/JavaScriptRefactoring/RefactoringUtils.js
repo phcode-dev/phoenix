@@ -100,7 +100,7 @@ define(function (require, exports, module) {
         try {
             ast = Acorn.parse(text, {ecmaVersion: 9});
         } catch(e) {
-            ast = Acorn.parse(text, {ecmaVersion: 9});
+            ast = AcornLoose.parse(text, {ecmaVersion: 9});
         }
         return ast;
     }

@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, awaitsForDone, awaitsFor, beforeAll, afterAll */
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone, awaitsFor, beforeAll, afterAll, awaits */
 
 define(function (require, exports, module) {
 
@@ -204,11 +204,12 @@ define(function (require, exports, module) {
 
                 myEditor = EditorManager.getCurrentFullEditor();
                 myEditor.setCursorPos({line: 5, ch: 8});
+                await awaits(200); // for the code intelligence framework to prime up
                 promise = CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION);
                 await awaitsForDone(promise, "Jump To Definition");
 
                 selection = myEditor.getSelection();
-                expect(fixSel(selection)).toEqual(fixSel({
+                expect(fixSel(selection)).toEql(fixSel({
                     start: {line: 0, ch: 9},
                     end: {line: 0, ch: 15}
                 }));
