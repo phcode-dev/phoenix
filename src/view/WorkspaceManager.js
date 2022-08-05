@@ -423,6 +423,9 @@ define(function (require, exports, module) {
             // handled by the inline widget itself first.
             return;
         }
+        if(focussedEditor.canConsumeEscapeKeyEvent()){
+            return;
+        }
         let handled = false;
         if (e.keyCode === KeyEvent.DOM_VK_ESCAPE  && e.shiftKey) {
             handled = _handleShiftEscapeKey();

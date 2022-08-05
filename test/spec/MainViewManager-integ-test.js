@@ -869,6 +869,22 @@ define(function (require, exports, module) {
                 expect(panel1.isVisible()).toBeTrue();
             });
 
+            it("should bottom panel not toggle visibility on escape if focused editor has selection", async function () {
+                panel1.show();
+                expect(panel1.isVisible()).toBeTrue();
+
+                expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                let editor = EditorManager.getActiveEditor();
+                editor.setSelection({line: 0, ch: 0}, {line: 0, ch: 1});
+                expect(editor.hasSelection()).toBeTrue();
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeTrue();
+                editor.clearSelection();
+            });
+
             it("should escape close bottom panel one by one", async function () {
                 panel1.show();
                 expect(panel1.isVisible()).toBeTrue();
