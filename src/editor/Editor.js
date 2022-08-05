@@ -263,7 +263,7 @@ define(function (require, exports, module) {
             "Delete": function (instance) {
                 self._handleSoftTabNavigation(1, "deleteH");
             },
-            "Esc": function (instance) {
+            "Esc": function (_instance) {
                 if(!self.canConsumeEscapeKeyEvent()){
                     return;
                 }
