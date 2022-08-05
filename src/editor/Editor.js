@@ -264,9 +264,14 @@ define(function (require, exports, module) {
                 self._handleSoftTabNavigation(1, "deleteH");
             },
             "Esc": function (instance) {
-                if (self.getSelections().length > 1) {
-                    CodeMirror.commands.singleSelection(instance);
-                } else {
+                if(!self.canConsumeEscapeKeyEvent()){
+                    return;
+                }
+                if (self.getSelections().length > 1) { // multi cursor
+                    self.clearSelection();
+                } else if(self.hasSelection()){
+                    self.clearSelection();
+                }else {
                     self.removeAllInlineWidgets();
                 }
             },
@@ -396,6 +401,16 @@ define(function (require, exports, module) {
         // and the document is already dirty and present in another working set, make sure
         // to add this documents to the new panes working set.
         this._doWorkingSetSync(null, this.document);
+    };
+
+    /**
+     * returns true if the editor can do something an escape key event. Eg. Disable multi cursor escape
+     */
+    Editor.prototype.canConsumeEscapeKeyEvent = function () {
+        let self = this;
+        return (self.getSelections().length > 1) // multi cursor should go away on escape
+            || (self.hasSelection()) // selection should go away on escape
+            || self.getFocusedInlineWidget(); // inline widget
     };
 
     Editor.prototype._doWorkingSetSync = function (event, doc) {
@@ -594,9 +609,9 @@ define(function (require, exports, module) {
 
     /**
      * Gets the current cursor position within the editor.
-     * @param {boolean} expandTabs  If true, return the actual visual column number instead of the character offset in
+     * @param {?boolean} [expandTabs]  If true, return the actual visual column number instead of the character offset in
      *      the "ch" property.
-     * @param {?string} which Optional string indicating which end of the
+     * @param {?string} [which] Optional string indicating which end of the
      *  selection to return. It may be "start", "end", "head" (the side of the
      *  selection that moves when you press shift+arrow), or "anchor" (the
      *  fixed side of the selection). Omitting the argument is the same as
@@ -927,6 +942,14 @@ define(function (require, exports, module) {
      */
     Editor.prototype.setSelection = function (start, end, center, centerOptions, origin) {
         this.setSelections([{start: start, end: end || start}], center, centerOptions, origin);
+    };
+
+    /**
+     * Clears any active selection if present.
+     */
+    Editor.prototype.clearSelection = function () {
+        let pos = this.getCursorPos();
+        this.setCursorPos(pos.line, pos.ch);
     };
 
     /**
