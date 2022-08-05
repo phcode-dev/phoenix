@@ -43,6 +43,15 @@ importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/complete_strings.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/commonjs.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/angular.js`);
 
+const detailedDebugLogs = false; // set this to false before checkin
+
+function debugLog(...args) {
+    if(!detailedDebugLogs) {
+        return;
+    }
+    console.log("tern: " + args[0], ...args.splice(1));
+}
+
 function _postTernData(data) {
     WorkerComm.triggerPeer("tern-data", data);
 }
@@ -116,6 +125,7 @@ function _reportError(e, file) {
  * @param {string} text - the contents of the file
  */
 function handleGetFile(file, text) {
+    debugLog(`tern Got file ${file}`, text);
     let contentCallback = fileCallBacks[file];
     if (contentCallback) {
         try {
@@ -177,6 +187,7 @@ function getFile(name, contentCb) {
  * @param {Array.<string>} files - a list of filenames tern should be aware of
  */
 function initTernServer(env, files) {
+    console.log("init tern server with files: ", files);
     ternOptions = {
         defs: env,
         async: true,
@@ -814,6 +825,7 @@ function handleFunctionType(fileInfo, offset) {
  * path of a file.
  */
 function handleAddFiles(files) {
+    debugLog("handleAddFiles: ", files);
     files.forEach(function (file) {
         ternServer.addFile(file);
     });
@@ -826,7 +838,7 @@ function handleAddFiles(files) {
  * @param {string} text - content of the file.
  */
 function handleUpdateFile(path, text) {
-
+    debugLog(`handleUpdateFile: ${path} `, text);
     ternServer.addFile(path, text);
 
     _postTernData({type: MessageIds.TERN_UPDATE_FILE_MSG,
@@ -873,9 +885,8 @@ function _requestTernServer(commandConfig) {
     let file, text, offset,
         request = commandConfig,
         type = request.type;
-    if (config.debug) {
-        console.error("Message received " + type);
-    }
+
+    console.log("Tern worker received Message of type: " + type);
 
     if (type === MessageIds.TERN_INIT_MSG) {
         let env     = request.env,
