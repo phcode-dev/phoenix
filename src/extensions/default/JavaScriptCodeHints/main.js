@@ -793,11 +793,11 @@ define(function (require, exports, module) {
                         if (resolvedPath) {
                             CommandManager.execute(Commands.FILE_OPEN, {fullPath: resolvedPath})
                                 .done(function () {
-                                    setJumpSelection(jumpResp.start, jumpResp.end, jumpResp.isFunction);
+                                    setJumpSelection(jumpResp.start, jumpResp.end);
                                 });
                         }
                     } else {
-                        setJumpSelection(jumpResp.start, jumpResp.end, jumpResp.isFunction);
+                        setJumpSelection(jumpResp.start, jumpResp.end);
                     }
                 } else {
                     result.reject();
