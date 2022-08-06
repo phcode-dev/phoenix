@@ -43,6 +43,8 @@ importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/complete_strings.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/commonjs.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/angular.js`);
 
+importScripts(`${Phoenix.baseURL}JSUtils/worker/testTern.js`);
+
 const detailedDebugLogs = false; // set this to false before checkin
 
 function debugLog(...args) {
@@ -129,7 +131,7 @@ function handleGetFile(file, text) {
     let contentCallback = fileCallBacks[file];
     if (contentCallback) {
         try {
-            contentCallback(text);
+            contentCallback(null, text);
         } catch (e) {
             _reportError(e, file);
         }
@@ -156,6 +158,7 @@ function _getDenormalizedFilename(fileName) {
  * @param {string} file - the name of the file
  */
 function _requestFileContent(name) {
+    debugLog("_requestFileContent: ", name);
     _postTernData({
         type: MessageIds.TERN_GET_FILE_MSG,
         file: name
@@ -194,13 +197,14 @@ function initTernServer(env, files) {
         getFile: getFile,
         plugins: {
             requirejs: {},
-            doc_comment: true,
             angular: true,
-            es_modules: true,
-            node: true,
-            node_resolve: true,
             complete_strings: true,
-            commonjs: true
+            doc_comment: true,
+            doc_comments: true,
+            es_modules: true
+            //node: true, these cannot be enabled as it breaks es6 import jump to def between files
+            //node_resolve: true,
+            //commonjs: true
         }
     };
 
@@ -427,13 +431,9 @@ function getJumptoDef(fileInfo, offset) {
                 end: data.end
             };
 
-            request = buildRequest(fileInfo, "type", offset);
-            // See if we can tell if the reference is to a Function type
-            ternServer.request(request, function (error, data) {
-                if (!error) {
-                    response.isFunction = data.type.length > 2 && data.type.substring(0, 2) === "fn";
-                }
+            request = buildRequest(fileInfo, "definition", offset);
 
+            ternServer.request(request, function (error, data) {
                 // Post a message back to the main thread with the definition
                 _postTernData(response);
             });
