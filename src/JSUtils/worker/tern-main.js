@@ -45,7 +45,7 @@ importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/angular.js`);
 
 importScripts(`${Phoenix.baseURL}JSUtils/worker/testTern.js`);
 
-const detailedDebugLogs = true; // set this to false before checkin
+const detailedDebugLogs = false; // set this to false before checkin
 
 function debugLog(...args) {
     if(!detailedDebugLogs) {
@@ -431,9 +431,7 @@ function getJumptoDef(fileInfo, offset) {
                 end: data.end
             };
 
-            request = buildRequest(fileInfo, "definition", offset, {
-                guess: false
-            });
+            request = buildRequest(fileInfo, "definition", offset);
 
             ternServer.request(request, function (error, data) {
                 // Post a message back to the main thread with the definition
