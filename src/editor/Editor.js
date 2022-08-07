@@ -288,6 +288,14 @@ define(function (require, exports, module) {
             })
         );
 
+        //cm: CodeMirror, repeat: "single" | "double" | "triple", event: Event
+        // The function is called when the left mouse button is pressed in codemirror
+        function _mouseHandlerOverride(_cm, _repeat, event) {
+            return {
+                addNew: event.altKey // alt key will init multi cursor instead of ctrl-key
+            };
+        }
+
         // When panes are created *after* the showLineNumbers option has been turned off
         //  we need to apply the show-line-padding class or the text will be juxtaposed
         //  to the edge of the editor which makes it not easy to read.  The code below to handle
@@ -301,9 +309,11 @@ define(function (require, exports, module) {
             autoCloseBrackets: currentOptions[CLOSE_BRACKETS],
             autoCloseTags: currentOptions[CLOSE_TAGS],
             coverGutterNextToScrollbar: true,
+            continueComments: true,
             cursorScrollMargin: 3,
             dragDrop: currentOptions[DRAG_DROP],
             electricChars: true,
+            configureMouse: _mouseHandlerOverride,
             extraKeys: codeMirrorKeyMap,
             highlightSelectionMatches: currentOptions[HIGHLIGHT_MATCHES],
             indentUnit: currentOptions[USE_TAB_CHAR] ? currentOptions[TAB_SIZE] : currentOptions[SPACE_UNITS],
