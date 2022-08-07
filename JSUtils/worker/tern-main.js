@@ -35,6 +35,7 @@ importScripts(`${Phoenix.baseURL}thirdparty/tern/lib/infer.js`);
 const Tern = tern;
 // import tern plugins
 importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/modules.js`);
+importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/requirejs.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/es_modules.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/doc_comment.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/tern/plugin/node.js`);
@@ -196,15 +197,15 @@ function initTernServer(env, files) {
         async: true,
         getFile: getFile,
         plugins: {
+            commonjs: true,
             requirejs: {},
             angular: true,
             complete_strings: true,
             doc_comment: true,
             doc_comments: true,
-            es_modules: true
-            //node: true, these cannot be enabled as it breaks es6 import jump to def between files
-            //node_resolve: true,
-            //commonjs: true
+            es_modules: true,
+            node: true,
+            node_resolve: true
         }
     };
 
