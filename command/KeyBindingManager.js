@@ -823,11 +823,11 @@ define(function (require, exports, module) {
      */
     function _handleKey(key) {
         if (_enabled && _keyMap[key]) {
-            // The execute() function returns a promise because some commands are async.
-            // Generally, commands decide whether they can run or not synchronously,
-            // and reject immediately, so we can test for that synchronously.
-            var promise = CommandManager.execute(_keyMap[key].commandID);
-            return (promise.state() !== "rejected");
+            CommandManager.execute(_keyMap[key].commandID);
+            // If there is a registered and enabled key event, we always mark the event as processed and return true.
+            // We don't want multiple behavior tied to the same key event. For Instance, in browser, if `ctrl-k`
+            // is not handled by quick edit, it will open browser url bar if we return false here(which is bad ux).
+            return true;
         }
         return false;
     }
