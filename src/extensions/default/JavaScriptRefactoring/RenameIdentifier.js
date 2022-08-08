@@ -125,8 +125,7 @@ define(function (require, exports, module) {
 
             var inlineWidget = EditorManager.getFocusedInlineWidget(),
                 editor = EditorManager.getActiveEditor(),
-                refs = refsResp.references.refs,
-                type = refsResp.references.type;
+                refs = refsResp.references.refs;
 
             //In case of inline widget if some references are outside widget's text range then don't allow for rename
             if (inlineWidget) {
