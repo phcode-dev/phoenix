@@ -141,11 +141,14 @@ define(function (require, exports, module) {
             }
 
             var currentPosition = editor.posFromIndex(refsResp.offset),
-                refsArray = refs;
-            if (type !== "local") {
-                refsArray = refs.filter(function (element) {
-                    return isInSameFile(element, refsResp);
-                });
+                refsArray;
+            refsArray = refs.filter(function (element) {
+                return isInSameFile(element, refsResp);
+            });
+            if (refsArray.length !== refs.length) {
+                // There are references across multiple files, we are not ready to handle this yet
+                // https://github.com/phcode-dev/phoenix/issues/604
+                return;
             }
 
             // Finding the Primary Reference in Array
