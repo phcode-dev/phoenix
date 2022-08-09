@@ -554,6 +554,24 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Returns an array of files that is within the project from the supplied list of paths.
+     * @param {string|FileSystemEntry[]} absPathOrEntryArray array which can be either a string path or FileSystemEntry
+     * @return {string|FileSystemEntry[]} A array that contains only files paths that are in the project
+     */
+    function filterProjectFiles(absPathOrEntryArray) {
+        if(!absPathOrEntryArray){
+            return absPathOrEntryArray;
+        }
+        let filteredPaths = [];
+        absPathOrEntryArray.forEach(function (file) {
+            if(isWithinProject(file)){
+                filteredPaths.push(file);
+            }
+        });
+        return filteredPaths;
+    }
+
+    /**
      * If absPath lies within the project, returns a project-relative path. Else returns absPath
      * unmodified.
      * Does not support paths containing ".."
@@ -1249,6 +1267,8 @@ define(function (require, exports, module) {
         FileSyncManager.syncOpenDocuments();
 
         model.handleFSEvent(entry, added, removed);
+        let removedInProject = [],
+            addedInProject = [];
 
         // @TODO: DocumentManager should implement its own fsChange  handler
         //          we can clean up the calls to DocumentManager.notifyPathDeleted
@@ -1261,9 +1281,23 @@ define(function (require, exports, module) {
                 //  document manager about deleted images that are
                 //  not in the working set -- try to clean that up here
                 DocumentManager.notifyPathDeleted(file.fullPath);
+                if(isWithinProject(file)){
+                    removedInProject.push(file);
+                }
             });
         }
-        exports.trigger(EVENT_PROJECT_FILE_CHANGED, entry, added, removed);
+        addedInProject = filterProjectFiles(added);
+
+        if(entry && !isWithinProject(entry)){
+            if(addedInProject && addedInProject.length && isWithinProject(addedInProject[0].parentPath)){
+                entry = FileSystem.getDirectoryForPath(addedInProject[0].parentPath);
+            } else if(removedInProject && removedInProject.length && isWithinProject(removedInProject[0].parentPath)){
+                entry = FileSystem.getDirectoryForPath(removedInProject[0].parentPath);
+            } else {
+                return;
+            }
+        }
+        exports.trigger(EVENT_PROJECT_FILE_CHANGED, entry, addedInProject, removedInProject);
     };
 
     function _updateModelWithChange(path) {
@@ -1815,6 +1849,7 @@ define(function (require, exports, module) {
     exports.getBaseUrl                    = getBaseUrl;
     exports.setBaseUrl                    = setBaseUrl;
     exports.isWithinProject               = isWithinProject;
+    exports.filterProjectFiles            = filterProjectFiles;
     exports.makeProjectRelativeIfPossible = makeProjectRelativeIfPossible;
     exports.shouldShow                    = ProjectModel.shouldShow;
     exports.shouldIndex                   = ProjectModel.shouldIndex;
