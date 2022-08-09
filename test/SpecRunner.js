@@ -68,9 +68,7 @@ function jsPromise(jqueryOrJSPromise) {
     return new Promise((resolve, reject)=>{
         jqueryOrJSPromise
             .done(resolve)
-            .fail(()=>{
-                reject();
-            });
+            .fail(reject);
     });
 }
 

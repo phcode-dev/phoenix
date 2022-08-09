@@ -36,6 +36,7 @@
         "husky": "^7.0.4",
         "jasmine-core": "^4.2.0",
         "jasmine-reporters": "^2.5.0",
+        "jshint": "^2.13.5",
         "lodash": "^4.17.21",
         "readable-stream": "^3.6.0",
         "requirejs": "^2.3.6",

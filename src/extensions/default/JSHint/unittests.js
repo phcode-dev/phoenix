@@ -19,75 +19,50 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, awaitsForDone, spyOn */
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone, awaits */
 
 define(function (require, exports, module) {
 
 
     var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
 
-    describe("extension:JSLint", function () {
+    describe("extension:JSHint", function () {
         var testFolder = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
             testWindow,
             $,
-            brackets,
-            CodeInspection,
-            EditorManager;
+            CodeInspection;
 
-        var toggleJSLintResults = function (visible) {
+        var toggleJSLintResults = function () {
             $("#status-inspection").triggerHandler("click");
-            expect($("#problems-panel").is(":visible")).toBe(visible);
         };
 
         beforeEach(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             // Load module instances from brackets.test
             $ = testWindow.$;
-            brackets = testWindow.brackets;
-            EditorManager = testWindow.brackets.test.EditorManager;
             CodeInspection = testWindow.brackets.test.CodeInspection;
             CodeInspection.toggleEnabled(true);
 
             await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
-        });
+        }, 30000);
 
         afterEach(async function () {
             testWindow    = null;
             $             = null;
-            brackets      = null;
-            EditorManager = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
-
-        it("should run JSLint linter when a JavaScript document opens", async function () {
-            spyOn(testWindow, "JSLINT").and.callThrough();
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
-
-            expect(testWindow.JSLINT).toHaveBeenCalled();
         });
 
         it("status icon should toggle Errors panel when errors present", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
+            await awaits(100);
 
-            toggleJSLintResults(false);
-            toggleJSLintResults(true);
+            expect($("#problems-panel").is(":visible")).toBe(true);
+
+            toggleJSLintResults();
+            expect($("#problems-panel").is(":visible")).toBe(false);
+
+            toggleJSLintResults();
+            expect($("#problems-panel").is(":visible")).toBe(true);
         });
-
-        // the file no-errors.js has actually js lint errors, so the below tests as failing.
-        // as we are deprecating jslint, we are not investing in the fix.
-        // it("status icon should not toggle Errors panel when no errors present", async function () {
-        //     await awaitsForDone(SpecRunnerUtils.openProjectFiles(["no-errors.js"]), "open test file");
-        //
-        //     toggleJSLintResults(false);
-        //     toggleJSLintResults(false);
-        // });
-        //
-        // it("should default to the editor's indent", async function () {
-        //     await awaitsForDone(SpecRunnerUtils.openProjectFiles(["different-indent.js"]), "open test file");
-        //
-        //     toggleJSLintResults(false);
-        //     toggleJSLintResults(false);
-        // });
     });
 });
