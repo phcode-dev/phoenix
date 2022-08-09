@@ -19,6 +19,8 @@
  *
  */
 
+/*global jsPromise*/
+
 /**
  * Manages linters and other code inspections on a per-language basis. Provides a UI and status indicator for
  * the resulting errors/warnings.
@@ -254,12 +256,12 @@ define(function (require, exports, module) {
                             };
                             runPromise.resolve({errors: [errTimeout]});
                         }, prefs.get(PREF_ASYNC_TIMEOUT));
-                        provider.scanFileAsync(fileText, file.fullPath)
-                            .done(function (scanResult) {
+                        jsPromise(provider.scanFileAsync(fileText, file.fullPath))
+                            .then(function (scanResult) {
                                 PerfUtils.addMeasurement(perfTimerProvider);
                                 runPromise.resolve(scanResult);
                             })
-                            .fail(function (err) {
+                            .catch(function (err) {
                                 PerfUtils.finalizeMeasurement(perfTimerProvider);
                                 var errError = {
                                     pos: {line: -1, col: 0},
@@ -375,6 +377,7 @@ define(function (require, exports, module) {
             var allErrors = [];
             var html;
             var providersReportingProblems = [];
+            $problemsPanelTable.empty();
 
             // run all the providers registered for this file type
             (_currentPromise = inspectFile(currentDoc.file, providerList)).then(function (results) {

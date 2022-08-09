@@ -554,6 +554,24 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Returns an array of files that is within the project from the supplied list of paths.
+     * @param {string|FileSystemEntry[]} absPathOrEntryArray array which can be either a string path or FileSystemEntry
+     * @return {string|FileSystemEntry[]} A array that contains only files paths that are in the project
+     */
+    function filterProjectFiles(absPathOrEntryArray) {
+        if(!absPathOrEntryArray){
+            return absPathOrEntryArray;
+        }
+        let filteredPaths = [];
+        absPathOrEntryArray.forEach(function (file) {
+            if(isWithinProject(file)){
+                filteredPaths.push(file);
+            }
+        });
+        return filteredPaths;
+    }
+
+    /**
      * If absPath lies within the project, returns a project-relative path. Else returns absPath
      * unmodified.
      * Does not support paths containing ".."
@@ -1197,7 +1215,7 @@ define(function (require, exports, module) {
      */
     function deleteItem(entry) {
         var result = new $.Deferred();
-        let name = _getProjectRelativePath(entry.fullPath);
+        let name = _getProjectRelativePathForCopy(entry.fullPath);
         let message = StringUtils.format(Strings.DELETING, name);
         setProjectBusy(true, message);
         entry.unlink(function (err) {
@@ -1249,6 +1267,8 @@ define(function (require, exports, module) {
         FileSyncManager.syncOpenDocuments();
 
         model.handleFSEvent(entry, added, removed);
+        let removedInProject = [],
+            addedInProject = [];
 
         // @TODO: DocumentManager should implement its own fsChange  handler
         //          we can clean up the calls to DocumentManager.notifyPathDeleted
@@ -1261,9 +1281,23 @@ define(function (require, exports, module) {
                 //  document manager about deleted images that are
                 //  not in the working set -- try to clean that up here
                 DocumentManager.notifyPathDeleted(file.fullPath);
+                if(isWithinProject(file)){
+                    removedInProject.push(file);
+                }
             });
         }
-        exports.trigger(EVENT_PROJECT_FILE_CHANGED, entry, added, removed);
+        addedInProject = filterProjectFiles(added);
+
+        if(entry && !isWithinProject(entry)){
+            if(addedInProject && addedInProject.length && isWithinProject(addedInProject[0].parentPath)){
+                entry = FileSystem.getDirectoryForPath(addedInProject[0].parentPath);
+            } else if(removedInProject && removedInProject.length && isWithinProject(removedInProject[0].parentPath)){
+                entry = FileSystem.getDirectoryForPath(removedInProject[0].parentPath);
+            } else {
+                return;
+            }
+        }
+        exports.trigger(EVENT_PROJECT_FILE_CHANGED, entry, addedInProject, removedInProject);
     };
 
     function _updateModelWithChange(path) {
@@ -1376,7 +1410,7 @@ define(function (require, exports, module) {
     function _duplicateFileCMD() {
         let context = getContext();
         if(context){
-            let name = _getProjectRelativePath(context.fullPath);
+            let name = _getProjectRelativePathForCopy(context.fullPath);
             let message = StringUtils.format(Strings.DUPLICATING, name);
             setProjectBusy(true, message);
             FileSystem.getFreePath(context.fullPath, (err, dupePath)=>{
@@ -1384,7 +1418,7 @@ define(function (require, exports, module) {
                     setProjectBusy(false, message);
                     if(err){
                         _showErrorDialog(ERR_TYPE_DUPLICATE_FAILED, false, "err",
-                            _getProjectRelativePath(context.fullPath));
+                            _getProjectRelativePathForCopy(context.fullPath));
                         return;
                     }
                     queuePathForSelection = copiedStats.realPath;
@@ -1414,7 +1448,18 @@ define(function (require, exports, module) {
         }));
     }
 
-    function _getProjectRelativePath(path) {
+    /**
+     * Return the project root relative path of the given path.
+     * @param {string} path
+     * @return {string}
+     */
+    function getProjectRelativePath(path) {
+        let projectRootParent = window.path.dirname(getProjectRoot().fullPath);
+        let relativePath = window.path.relative(projectRootParent, path);
+        return relativePath;
+    }
+
+    function _getProjectRelativePathForCopy(path) {
         // sometimes, when we copy across projects, there can be two project roots at work. For eg, when copying
         // across /mnt/prj1 and /app/local/prj2; both should correctly resolve to prj1/ and prj2/ even though only
         // /mnt/prj1 is the current active project root. So we cannot really use getProjectRoot().fullPath for all cases
@@ -1478,15 +1523,15 @@ define(function (require, exports, module) {
     async function _validatePasteTarget(srcEntry, targetEntry) {
         if(_isSubPathOf(srcEntry.fullPath, targetEntry.fullPath)){
             _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
-                _getProjectRelativePath(srcEntry.fullPath),
-                _getProjectRelativePath(targetEntry.fullPath));
+                _getProjectRelativePathForCopy(srcEntry.fullPath),
+                _getProjectRelativePathForCopy(targetEntry.fullPath));
             return false;
         }
         let baseName = window.path.basename(srcEntry.fullPath);
         let targetPath = window.path.normalize(`${targetEntry.fullPath}/${baseName}`);
         let exists = await FileSystem.existsAsync(targetPath);
         if(exists){
-            _showErrorDialog(ERR_TYPE_PASTE, srcEntry.isDirectory, "err", _getProjectRelativePath(targetPath));
+            _showErrorDialog(ERR_TYPE_PASTE, srcEntry.isDirectory, "err", _getProjectRelativePathForCopy(targetPath));
             return false;
         }
         return true;
@@ -1499,14 +1544,14 @@ define(function (require, exports, module) {
         if(canPaste){
             let baseName = window.path.basename(srcEntry.fullPath);
             let targetPath = window.path.normalize(`${target.fullPath}/${baseName}`);
-            let message = StringUtils.format(Strings.MOVING, _getProjectRelativePath(srcEntry.fullPath));
+            let message = StringUtils.format(Strings.MOVING, _getProjectRelativePathForCopy(srcEntry.fullPath));
             setProjectBusy(true, message);
             srcEntry.rename(targetPath, (err)=>{
                 setProjectBusy(false, message);
                 if(err){
                     _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
-                        _getProjectRelativePath(srcEntry.fullPath),
-                        _getProjectRelativePath(target.fullPath));
+                        _getProjectRelativePathForCopy(srcEntry.fullPath),
+                        _getProjectRelativePathForCopy(target.fullPath));
                     return;
                 }
                 queuePathForSelection = targetPath;
@@ -1519,15 +1564,15 @@ define(function (require, exports, module) {
         let srcEntry = (await FileSystem.resolveAsync(src)).entry;
         let canPaste = await _validatePasteTarget(srcEntry, target);
         if(canPaste){
-            let name = _getProjectRelativePath(srcEntry.fullPath);
+            let name = _getProjectRelativePathForCopy(srcEntry.fullPath);
             let message = StringUtils.format(Strings.COPYING, name);
             setProjectBusy(true, message);
             FileSystem.copy(srcEntry.fullPath, target.fullPath, (err, targetStat)=>{
                 setProjectBusy(false, message);
                 if(err){
                     _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
-                        _getProjectRelativePath(srcEntry.fullPath),
-                        _getProjectRelativePath(target.fullPath));
+                        _getProjectRelativePathForCopy(srcEntry.fullPath),
+                        _getProjectRelativePathForCopy(target.fullPath));
                     return;
                 }
                 queuePathForSelection = targetStat.realPath;
@@ -1815,6 +1860,7 @@ define(function (require, exports, module) {
     exports.getBaseUrl                    = getBaseUrl;
     exports.setBaseUrl                    = setBaseUrl;
     exports.isWithinProject               = isWithinProject;
+    exports.filterProjectFiles            = filterProjectFiles;
     exports.makeProjectRelativeIfPossible = makeProjectRelativeIfPossible;
     exports.shouldShow                    = ProjectModel.shouldShow;
     exports.shouldIndex                   = ProjectModel.shouldIndex;
@@ -1824,6 +1870,7 @@ define(function (require, exports, module) {
     exports.getContext                    = getContext;
     exports.getInitialProjectPath         = getInitialProjectPath;
     exports.getStartupProjectPath         = getStartupProjectPath;
+    exports.getProjectRelativePath        = getProjectRelativePath;
     exports.getWelcomeProjectPath         = getWelcomeProjectPath;
     exports.getExploreProjectPath         = getExploreProjectPath;
     exports.getLocalProjectsPath          = getLocalProjectsPath;
