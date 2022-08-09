@@ -38,7 +38,8 @@ define(function (require, exports, module) {
     IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/jshint-helper.js`);
 
     let prefs = PreferencesManager.getExtensionPrefs("jshint"),
-        projectSpecificOptions = null;
+        projectSpecificOptions = null,
+        jsHintConfigFileErrorMessage = null;
 
     prefs.definePreference("options", "object", {
         "esversion": 11,
@@ -54,12 +55,25 @@ define(function (require, exports, module) {
         CodeInspection.requestRun(Strings.JSHINT_NAME);
     });
 
+    function _getLinterConfigFileErrorMsg() {
+        return [{
+            // JSLint returns 1-based line/col numbers
+            pos: { line: -1, ch: 0 },
+            message: jsHintConfigFileErrorMessage,
+            type: CodeInspection.Type.ERROR
+        }];
+    }
+
     /**
      * Run JSLint on the current document. Reports results to the main UI. Displays
      * a gold star when no errors are found.
      */
     async function lintOneFile(text, _fullPath) {
         return new Promise((resolve)=>{
+            if(jsHintConfigFileErrorMessage){
+                resolve({ errors: _getLinterConfigFileErrorMsg() });
+                return;
+            }
             // If a line contains only whitespace (here spaces or tabs), remove the whitespace
             text = text.replace(/^[ \t]+$/gm, "");
 
@@ -123,57 +137,62 @@ define(function (require, exports, module) {
      * @param {string} dir absolute path to a directory.
      * @param {string} configFileName name of the configuration file (optional)
      *
-     * @returns {$.Promise} a promise to return configuration object.
+     * @returns {Promise} a promise to return configuration object.
      */
     function _readConfig(dir, configFileName) {
-        var result = new $.Deferred(),
-            file;
-        configFileName = configFileName || CONFIG_FILE_NAME;
-        file = FileSystem.getFileForPath(dir + configFileName);
-        file.read(function (err, content) {
-            if (!err) {
-                let cfg = {},
-                    config;
+        return new Promise((resolve, reject)=>{
+            configFileName = configFileName || CONFIG_FILE_NAME;
+            let file = FileSystem.getFileForPath(dir + configFileName);
+            file.read(function (err, content) {
+                if (err) {
+                    resolve(null); // no config file is a valid case. we just resolve with null
+                    return;
+                }
+                let config;
                 try {
                     config = JSON.parse(removeComments(content));
                 } catch (e) {
-                    console.error("JSHint: error parsing " + file.fullPath + ". Details: " + e);
-                    result.reject(e);
+                    console.log("JSHint: error parsing " + file.fullPath);
+                    // just log and return as this is an expected failure for us while the user edits code
+                    reject("Error parsing JSHint config file:    "
+                        + ProjectManager.getProjectRelativePath(file.fullPath));
                     return;
                 }
                 // Load any base config defined by "extends".
                 // The same functionality as in
                 // jslints -> cli.js -> loadConfig -> if (config['extends'])...
                 // https://jshint.com/docs/cli/ > Special Options
-                var baseConfigResult = $.Deferred();
                 if (config.extends) {
                     let extendFile = FileSystem.getFileForPath(dir + config.extends);
-                    baseConfigResult = _readConfig(extendFile.parentPath, extendFile.name);
-                    delete config.extends;
+                    _readConfig(extendFile.parentPath, extendFile.name).then(baseConfigResult=>{
+                        delete config.extends;
+                        let mergedConfig = $.extend({}, baseConfigResult, config);
+                        if (config.globals) {
+                            delete config.globals;
+                        }
+                        resolve(mergedConfig);
+                    }).catch(()=>{
+                        reject("Error parsing JSHint config file:    "
+                            + ProjectManager.getProjectRelativePath(extendFile.name));
+                    });
                 }
                 else {
-                    baseConfigResult.resolve({});
+                    resolve(config);
                 }
-                baseConfigResult.done(function (baseConfig) {
-                    cfg.globals = $.extend({}, baseConfig.globals, config.globals);
-                    if (config.globals) { delete config.globals; }
-                    cfg.options = $.extend({}, baseConfig.options, config);
-                    projectSpecificOptions = config;
-                    CodeInspection.requestRun(Strings.JSHINT_NAME);
-                    result.resolve(cfg);
-                }).fail(function (e) {
-                    result.reject(e);
-                });
-            } else {
-                result.reject(err);
-            }
+            });
         });
-        return result.promise();
     }
 
     function _reloadOptions() {
         projectSpecificOptions = null;
-        _readConfig(ProjectManager.getProjectRoot().fullPath, CONFIG_FILE_NAME);
+        _readConfig(ProjectManager.getProjectRoot().fullPath, CONFIG_FILE_NAME).then((config)=>{
+            projectSpecificOptions = config;
+            CodeInspection.requestRun(Strings.JSHINT_NAME);
+            jsHintConfigFileErrorMessage = null;
+        }).catch((err)=>{
+            jsHintConfigFileErrorMessage = err;
+            CodeInspection.requestRun(Strings.JSHINT_NAME);
+        });
     }
 
     function _isFileInArray(fileToCheck, fileArray){
