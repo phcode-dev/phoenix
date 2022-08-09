@@ -196,6 +196,9 @@ define(function (require, exports, module) {
     }
 
     function _isFileInArray(fileToCheck, fileArray){
+        if(!fileArray){
+            return false;
+        }
         for(let file of fileArray){
             if(file.fullPath === fileToCheck.fullPath){
                 return true;
