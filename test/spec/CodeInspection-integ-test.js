@@ -563,7 +563,7 @@ define(function (require, exports, module) {
                 asyncProvider.futures[noErrorsJS][1].resolve(failLintResult());
                 await awaits(100);
                 expect($("#problems-panel").is(":visible")).toBe(true);
-            }, 1000000);
+            });
 
             it("should ignore async results from previous run in same file - finishing reverse order", async function () {
                 CodeInspection.toggleEnabled(false);
