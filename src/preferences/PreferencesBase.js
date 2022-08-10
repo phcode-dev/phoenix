@@ -314,7 +314,7 @@ define(function (require, exports, module) {
         load: function () {
             var result = new $.Deferred();
             this.storage.load()
-                .then(function (data) {
+                .done(function (data) {
                     var oldKeys = this.getKeys();
                     this.data = data;
                     result.resolve();
@@ -1486,7 +1486,7 @@ define(function (require, exports, module) {
 
             if (!isPending) {
                 promise
-                    .then(function () {
+                    .done(function () {
                         this._scopes[id] = scope;
                         this._tryAddToScopeOrder(shadowEntry);
                     }.bind(this))
@@ -1788,7 +1788,7 @@ define(function (require, exports, module) {
                 }
                 return (new $.Deferred()).resolve().promise();
 
-            }).then(function () {
+            }).done(function () {
                 that._saveInProgress = false;
                 if (that._nextSaveDeferred) {
                     that.save();

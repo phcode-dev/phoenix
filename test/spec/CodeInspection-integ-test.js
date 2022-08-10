@@ -556,12 +556,14 @@ define(function (require, exports, module) {
 
                 // Finish old (stale) linting session - verify results not shown
                 asyncProvider.futures[noErrorsJS][0].resolve(failLintResult());
+                await awaits(100);
                 expect($("#problems-panel").is(":visible")).toBe(false);
 
                 // Finish new (current) linting session - verify results are shown
                 asyncProvider.futures[noErrorsJS][1].resolve(failLintResult());
+                await awaits(100);
                 expect($("#problems-panel").is(":visible")).toBe(true);
-            });
+            }, 1000000);
 
             it("should ignore async results from previous run in same file - finishing reverse order", async function () {
                 CodeInspection.toggleEnabled(false);
@@ -583,10 +585,12 @@ define(function (require, exports, module) {
 
                 // Finish new (current) linting session - verify results are shown
                 asyncProvider.futures[noErrorsJS][1].resolve(failLintResult());
+                await awaits(100);
                 expect($("#problems-panel").is(":visible")).toBe(true);
 
                 // Finish old (stale) linting session - verify results don't replace current results
                 asyncProvider.futures[noErrorsJS][0].resolve(successfulLintResult());
+                await awaits(100);
                 expect($("#problems-panel").is(":visible")).toBe(true);
             });
 
