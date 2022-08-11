@@ -114,6 +114,10 @@ define(function (require, exports, module) {
                             || obj.file === refsResp.file.slice(1, refsResp.file.length)));
         }
 
+        function _multiFileRename(refs) {
+            // TODO: Multi file rename here
+        }
+
         /**
          * Check if references are in this file only
          * If yes then select all references
@@ -146,7 +150,7 @@ define(function (require, exports, module) {
             });
             if (refsArray.length !== refs.length) {
                 // There are references across multiple files, we are not ready to handle this yet
-                // https://github.com/phcode-dev/phoenix/issues/604
+                _multiFileRename(refs);
                 return;
             }
 

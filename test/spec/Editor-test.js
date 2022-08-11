@@ -2143,5 +2143,61 @@ define(function (require, exports, module) {
                 expect(lineInfo.gutterMarkers[leftGutter], marker);
             });
         });
+
+        describe("Tokens", function () {
+            function _expectTokenToBe(token, start, end, string, type) {
+                expect(token.start).toBe(start);
+                expect(token.end).toBe(end);
+                expect(token.string).toBe(string);
+                expect(token.type).toBe(type);
+            }
+
+            beforeEach(function () {
+                let jsContent = "const x=10;\n" +
+                    "function print(val){\n" +
+                    " console.log(val);\n" +
+                    "}\n" +
+                    "print(x);\n" +
+                    "let str=`multi\n" +
+                    "line`;";
+                createTestEditor(jsContent, langNames.javascript.mode);
+            });
+
+            it("should get tokens if cursor position not specified", function () {
+                myEditor.setCursorPos(0, 1);    // first char in text
+
+                _expectTokenToBe(myEditor.getToken(), 0, 5, 'const', 'keyword');
+            });
+
+            it("should get tokens at specified cursor", function () {
+                _expectTokenToBe(myEditor.getToken({line: 1, ch: 1}), 0, 8, 'function', 'keyword');
+                _expectTokenToBe(myEditor.getToken({line: 1, ch: 1}), 0, 8, 'function', 'keyword');
+                // multi line
+                _expectTokenToBe(myEditor.getToken({line: 5, ch: 10}), 8, 14, '`multi', 'string-2');
+            });
+
+            it("should get next token", function () {
+                myEditor.setCursorPos(0, 0);    // first char in text
+                _expectTokenToBe(myEditor.getNextToken(), 0, 5, 'const', 'keyword');
+                _expectTokenToBe(myEditor.getNextToken({line: 0, ch: 1}), 6, 7, 'x', 'def');
+                // whitespace test
+                _expectTokenToBe(myEditor.getNextToken({line: 0, ch: 1}, false), 5, 6, ' ', null);
+                // next line
+                _expectTokenToBe(myEditor.getNextToken({line: 0, ch: 11}), 0, 8, 'function', 'keyword');
+                _expectTokenToBe(myEditor.getNextToken({line: 5, ch: 10}), 0, 5, 'line`', 'string-2');
+            });
+
+            it("should get previous token", function () {
+                myEditor.setCursorPos(5, 10);    // first char in text
+                _expectTokenToBe(myEditor.getPreviousToken(), 7, 8, '=', 'operator');
+                _expectTokenToBe(myEditor.getPreviousToken({line: 0, ch: 1}), 0, 0, '', null);
+                _expectTokenToBe(myEditor.getPreviousToken({line: 0, ch: 7}), 0, 5, 'const', 'keyword');
+                // whitespace test
+                _expectTokenToBe(myEditor.getPreviousToken({line: 0, ch: 7}, false), 5, 6, ' ', null);
+                // prev line
+                _expectTokenToBe(myEditor.getPreviousToken({line: 1, ch: 1}), 10, 11, ';', null);
+                _expectTokenToBe(myEditor.getPreviousToken({line: 1, ch: 0}), 10, 11, ';', null);
+            });
+        });
     });
 });
