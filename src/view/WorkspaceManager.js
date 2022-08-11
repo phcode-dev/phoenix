@@ -38,7 +38,7 @@ define(function (require, exports, module) {
         Resizer                 = require("utils/Resizer"),
         PluginPanelView         = require("view/PluginPanelView"),
         PanelView               = require("view/PanelView"),
-        EditorManager       = require("editor/EditorManager"),
+        EditorManager           = require("editor/EditorManager"),
         KeyEvent                = require("utils/KeyEvent");
 
     //constants
@@ -416,6 +416,9 @@ define(function (require, exports, module) {
 
     // pressing escape when focused on editor will toggle the last opened bottom panel
     function _handleKeydown(e) {
+        if(e.keyCode !== KeyEvent.DOM_VK_ESCAPE){
+            return;
+        }
         let focussedEditor = EditorManager.getFocusedEditor();
         if(!focussedEditor || EditorManager.getFocusedInlineEditor()){
             // if there is no editor in focus, we do no panel toggling
@@ -426,17 +429,15 @@ define(function (require, exports, module) {
         if(focussedEditor.canConsumeEscapeKeyEvent()){
             return;
         }
-        let handled = false;
+
         if (e.keyCode === KeyEvent.DOM_VK_ESCAPE  && e.shiftKey) {
-            handled = _handleShiftEscapeKey();
+            _handleShiftEscapeKey();
         } else if (e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
-            handled = _handleEscapeKey();
+            _handleEscapeKey();
         }
 
-        if(handled){
-            e.stopPropagation();
-            e.preventDefault();
-        }
+        e.stopPropagation();
+        e.preventDefault();
     }
     window.document.body.addEventListener("keydown", _handleKeydown, true);
 

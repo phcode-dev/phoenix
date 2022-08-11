@@ -304,7 +304,7 @@
         "Ctrl-E"
     ],
     "navigate.toggleQuickDocs":  [
-        "Ctrl-K"
+        "Ctrl-Shift-E"
     ],
     "navigate.previousMatch":  [
         {
