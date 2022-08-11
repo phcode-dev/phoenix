@@ -951,6 +951,83 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Get the token at the given cursor position, or at the current cursor
+     * if none is given.
+     *
+     * @param {?{line: number, ch: number}} [cursor] - Optional cursor position
+     *      at which to retrieve a token. If not provided, the current position will be used.
+     * @return {Object} - the CodeMirror token at the given cursor position
+     */
+    Editor.prototype.getToken = function (cursor) {
+        let cm = this._codeMirror;
+
+        if (cursor) {
+            return TokenUtils.getTokenAt(cm, cursor);
+        }
+        return TokenUtils.getTokenAt(cm, this.getCursorPos());
+    };
+
+    /**
+     * Get the token after the one at the given cursor position
+     *
+     * @param {{line: number, ch: number}} [cursor] - Optional cursor position after
+     *      which a token should be retrieved
+     * @param {boolean} [skipWhitespace] - true if this should skip over whitespace tokens. Default is true.
+     * @return {Object} - the CodeMirror token after the one at the given
+     *      cursor position
+     */
+    Editor.prototype.getNextToken = function (cursor, skipWhitespace = true) {
+        cursor = cursor || this.getCursorPos();
+        let token   = this.getToken(cursor),
+            next    = token,
+            doc     = this.document;
+
+        do {
+            if (next.end < doc.getLine(cursor.line).length) {
+                cursor.ch = next.end + 1;
+            } else if (doc.getLine(cursor.line + 1)) {
+                cursor.ch = 0;
+                cursor.line++;
+            } else {
+                next = null;
+                break;
+            }
+            next = this.getToken(cursor);
+        } while (skipWhitespace && !/\S/.test(next.string));
+
+        return next;
+    };
+
+    /**
+     * Get the token before the one at the given cursor position
+     *
+     * @param {{line: number, ch: number}} [cursor] - Optional cursor position before
+     *      which a token should be retrieved
+     * @return {Object} - the CodeMirror token before the one at the given
+     *      cursor position
+     */
+    Editor.prototype.getPreviousToken = function (cursor, skipWhitespace = true) {
+        cursor = cursor || this.getCursorPos();
+        let token   = this.getToken(cursor),
+            prev    = token,
+            doc     = this.document;
+
+        do {
+            if (prev.start < cursor.ch) {
+                cursor.ch = prev.start;
+            } else if (cursor.line > 0) {
+                cursor.ch = doc.getLine(cursor.line - 1).length;
+                cursor.line--;
+            } else {
+                break;
+            }
+            prev = this.getToken(cursor);
+        } while (skipWhitespace && !/\S/.test(prev.string));
+
+        return prev;
+    };
+
+    /**
      * Sets the current selection. Start is inclusive, end is exclusive. Places the cursor at the
      * end of the selection range. Optionally centers around the cursor after
      * making the selection
