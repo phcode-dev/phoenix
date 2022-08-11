@@ -414,12 +414,24 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Gets the inline widgets below the current cursor position or null.
+     * @return {boolean}
+     */
+    Editor.prototype.getInlineWidgetsBelowCursor = function () {
+        let self = this;
+        let cursor = self.getCursorPos();
+        let line = cursor.line;
+        return  self.getAllInlineWidgetsForLine(line);
+    };
+
+    /**
      * returns true if the editor can do something an escape key event. Eg. Disable multi cursor escape
      */
     Editor.prototype.canConsumeEscapeKeyEvent = function () {
         let self = this;
         return (self.getSelections().length > 1) // multi cursor should go away on escape
             || (self.hasSelection()) // selection should go away on escape
+            || self.getInlineWidgetsBelowCursor() // inline widget is below cursor
             || self.getFocusedInlineWidget(); // inline widget
     };
 
@@ -1172,6 +1184,13 @@ define(function (require, exports, module) {
      * @param {number} lineNum The line number to modify
      */
     Editor.prototype.removeAllInlineWidgetsForLine = InlineWidgetHelper.removeAllInlineWidgetsForLine;
+
+    /**
+     * ****** Update actual public API doc in Editor.js *****
+     * Gets all inline widgets for a given line
+     * @param {number} lineNum The line number to modify
+     */
+    Editor.prototype.getAllInlineWidgetsForLine = InlineWidgetHelper.getAllInlineWidgetsForLine;
 
     /**
      * Returns a list of all inline widgets currently open in this editor. Each entry contains the
