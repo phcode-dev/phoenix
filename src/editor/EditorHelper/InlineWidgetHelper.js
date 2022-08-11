@@ -186,6 +186,19 @@ define(function (require, exports, module) {
     }
 
     /**
+     * ****** Update actual public API doc in Editor.js *****
+     * Gets all inline widgets for a given line
+     * @param {number} lineNum The line number to modify
+     */
+    function getAllInlineWidgetsForLine(lineNum) {
+        // eslint-disable-next-line no-invalid-this
+        let self = this;
+        let lineInfo = self._codeMirror.lineInfo(lineNum),
+            widgetInfos = (lineInfo && lineInfo.widgets) ? [].concat(lineInfo.widgets) : null;
+        return widgetInfos;
+    }
+
+    /**
      * Cleans up the given inline widget from our internal list of widgets. It's okay
      * to call self multiple times for the same widget--it will just do nothing if
      * the widget has already been removed.
@@ -340,6 +353,7 @@ define(function (require, exports, module) {
     exports.removeAllInlineWidgets = removeAllInlineWidgets;
     exports.removeInlineWidget = removeInlineWidget;
     exports.removeAllInlineWidgetsForLine = removeAllInlineWidgetsForLine;
+    exports.getAllInlineWidgetsForLine = getAllInlineWidgetsForLine;
     exports.getInlineWidgets = getInlineWidgets;
     exports.getFocusedInlineWidget = getFocusedInlineWidget;
     exports.setInlineWidgetHeight = setInlineWidgetHeight;
