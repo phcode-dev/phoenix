@@ -733,8 +733,7 @@ define(function (require, exports, module) {
          * Method to handle jump to definition feature.
          */
         JSJumpToDefProvider.prototype.doJumpToDef = function () {
-            var offset,
-                handleJumpResponse;
+            var handleJumpResponse;
 
 
             // Only provide jump-to-definition results when cursor is in JavaScript content
@@ -775,66 +774,10 @@ define(function (require, exports, module) {
              *
              * @param {number} start - the start of the selection
              * @param {number} end - the end of the selection
-             * @param {boolean} isFunction - true if we are jumping to the source of a function def
              */
-            function setJumpSelection(start, end, isFunction) {
-
-                /**
-                 * helper function to decide if the tokens on the RHS of an assignment
-                 * look like an identifier, or member expr.
-                 */
-                function validIdOrProp(token) {
-                    if (!token) {
-                        return false;
-                    }
-                    if (token.string === ".") {
-                        return true;
-                    }
-                    var type = token.type;
-                    if (type === "variable-2" || type === "variable" || type === "property") {
-                        return true;
-                    }
-
-                    return false;
-                }
-
-                var madeNewRequest = false;
-
-                if (isFunction) {
-                    // When jumping to function defs, follow the chain back
-                    // to get to the original function def
-                    var cursor = {line: end.line, ch: end.ch},
-                        prev = session._getPreviousToken(cursor),
-                        next,
-                        offset;
-
-                    // see if the selection is preceded by a '.', indicating we're in a member expr
-                    if (prev.string === ".") {
-                        cursor = {line: end.line, ch: end.ch};
-                        next = session.getNextToken(cursor, true);
-                        // check if the next token indicates an assignment
-                        if (next && next.string === "=") {
-                            next = session.getNextToken(cursor, true);
-                            // find the last token of the identifier, or member expr
-                            while (validIdOrProp(next)) {
-                                offset = session.getOffsetFromCursor({line: cursor.line, ch: next.end});
-                                next = session.getNextToken(cursor, false);
-                            }
-                            if (offset) {
-                                // trigger another jump to def based on the offset of the RHS
-                                requestJumpToDef(session, offset);
-                                madeNewRequest = true;
-                            }
-                        }
-                    }
-                }
-                // We didn't make a new jump-to-def request, so we can resolve the promise
-                // and set the selection
-                if (!madeNewRequest) {
-                    // set the selection
-                    session.editor.setSelection(start, end, true);
-                    result.resolve(true);
-                }
+            function setJumpSelection(start, end) {
+                session.editor.setSelection(start, end, true);
+                result.resolve(true);
             }
 
             /**
@@ -850,18 +793,18 @@ define(function (require, exports, module) {
                         if (resolvedPath) {
                             CommandManager.execute(Commands.FILE_OPEN, {fullPath: resolvedPath})
                                 .done(function () {
-                                    setJumpSelection(jumpResp.start, jumpResp.end, jumpResp.isFunction);
+                                    setJumpSelection(jumpResp.start, jumpResp.end);
                                 });
                         }
                     } else {
-                        setJumpSelection(jumpResp.start, jumpResp.end, jumpResp.isFunction);
+                        setJumpSelection(jumpResp.start, jumpResp.end);
                     }
                 } else {
                     result.reject();
                 }
             };
 
-            offset = session.getOffset();
+            let offset = session.getCursor();
             // request a jump-to-def
             requestJumpToDef(session, offset);
 
@@ -912,6 +855,8 @@ define(function (require, exports, module) {
         // for unit testing
         exports.getSession = getSession;
         exports.jsHintProvider = jsHints;
+        exports._phProvider = phProvider;
+        window.phProvider = phProvider;
         exports.initializeSession = initializeSession;
         exports.handleJumpToDefinition = jdProvider.doJumpToDef.bind(jdProvider);
     });

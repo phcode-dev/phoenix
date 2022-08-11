@@ -50,6 +50,7 @@ define(function (require, exports, module) {
     require("widgets/bootstrap-twipsy-mod");
 
     // Load CodeMirror add-ons--these attach themselves to the CodeMirror module
+    require("thirdparty/CodeMirror/addon/comment/continuecomment");
     require("thirdparty/CodeMirror/addon/edit/closebrackets");
     require("thirdparty/CodeMirror/addon/edit/closetag");
     require("thirdparty/CodeMirror/addon/edit/matchbrackets");

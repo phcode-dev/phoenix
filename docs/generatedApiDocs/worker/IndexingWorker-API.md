@@ -35,6 +35,9 @@ Once the worker script is loaded with the above step, we can communicate with it
 reference within Phoenix or the global `WorkerComm` reference within the Indexing worker.
 All utility methods in module [worker/WorkerComm][1] can be used for worker communication.
 
+A global constant `Phoenix.baseURL` is available in the worker context to get the base url from which phoenix was
+launched.
+
 NB: You can use all util methods available in `worker/WorkerComm` as `IndexingWorker` internally uses `WorkerComm`
 to communicate with the underlying worker thread.
 

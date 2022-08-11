@@ -58,6 +58,10 @@ function _copyMimeDB() {
 // just lists the files in a directory at given path as a json file
 function _createListDirJson(dirPath, jsonFileName) {
     let filenames = fs.readdirSync(dirPath);
+    if(filenames.includes(jsonFileName)){
+        // we dont want to add the index file itself to the dir listing.
+        filenames.splice(filenames.indexOf(jsonFileName), 1);
+    }
     fs.writeFileSync(`${dirPath}/${jsonFileName}`, JSON.stringify(filenames));
 }
 
@@ -93,6 +97,9 @@ let copyThirdPartyLibs = series(
     // jszip
     copyFiles.bind(copyFiles, ['node_modules/jszip/dist/jszip.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/jszip/LICENSE.markdown', 'jsZip'),
+    // jsHint
+    copyFiles.bind(copyFiles, ['node_modules/jshint/dist/jshint.js'], 'src/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/jshint/LICENSE', 'jshint'),
     // underscore
     copyFiles.bind(copyFiles, ['node_modules/underscore/underscore-min.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/underscore/LICENSE', 'underscore'),

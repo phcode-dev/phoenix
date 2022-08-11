@@ -167,21 +167,30 @@ define(function (require, exports, module) {
      * Utility for tests that wait on a Promise to complete.
      * @param {$.Promise} promise
      */
-    window.awaitsForDone = function (promise) {
-        return jsPromise(promise);
+    window.awaitsForDone = function (promise, msg = "") {
+        return new Promise((resolve, reject)=>{
+            jsPromise(promise)
+                .then(()=>{
+                    resolve();
+                })
+                .catch((err)=>{
+                    console.error("awaitsForDone failed when expecting to pass for: " + msg, err);
+                    reject(err);
+                });
+        });
     };
 
     /**
      * Utility for tests that waits on a Promise to fail. resolves only if the promise fails. else will reject
      * @param {$.Promise} promise
      */
-    window.awaitsForFail = function (promise) {
+    window.awaitsForFail = function (promise, msg = "") {
         return new Promise((resolve, reject)=>{
             jsPromise(promise)
                 .then(()=>{
                     // dont pass any args back, so not chaining with them
-                    console.error("awaitsForFail failed");
-                    reject();
+                    console.error("awaitsForFail expected to fail but passed for:"  + msg);
+                    reject("awaitsForFail expected to fail but passed for:"  + msg);
                 })
                 .catch(()=>{
                     // dont pass any args back, so not chaining with them
