@@ -2199,5 +2199,161 @@ define(function (require, exports, module) {
                 _expectTokenToBe(myEditor.getPreviousToken({line: 1, ch: 0}), 10, 11, ';', null);
             });
         });
+
+        describe("Markers", function () {
+
+            beforeEach(function () {
+                let jsContent = "const x=10;\n" +
+                    "function print(val){\n" +
+                    " console.log(val);\n" +
+                    "}\n" +
+                    "print(x);\n" +
+                    "let str=`multi\n" +
+                    "line`;";
+                createTestEditor(jsContent, langNames.javascript.mode);
+            });
+
+            it("should markText without options", function () {
+                let markType = "mark1";
+                let mark = myEditor.markText(markType, {line: 0, ch: 0}, {line: 0, ch: 1});
+                expect(mark.markType).toBe(markType);
+                expect(mark.type).toBe("range");
+                expect(mark.className).toBeFalsy();
+            });
+
+            it("should markText with options", function () {
+                let markType = "mark2";
+                let mark = myEditor.markText(markType, {line: 0, ch: 0}, {line: 0, ch: 1}, {
+                    className: "cssClassName"
+                });
+                expect(mark.markType).toBe(markType);
+                expect(mark.type).toBe("range");
+                expect(mark.className).toBe("cssClassName");
+            });
+
+            it("should markToken and findMarksAt position", function () {
+                let markType = "mark3";
+                myEditor.markToken(markType, {line: 0, ch: 1});
+                let mark = myEditor.findMarksAt({line: 0, ch: 3}, markType);
+                expect(mark.length).toBe(1);
+                expect(mark[0].markType).toBe(markType);
+                expect(mark[0].type).toBe("range");
+            });
+
+            it("should findMarksAt position return all without markType", function () {
+                let markType = "mark4";
+                myEditor.markToken(markType, {line: 0, ch: 1});
+                myEditor.markToken("someMark", {line: 0, ch: 2});
+                let mark = myEditor.findMarksAt({line: 0, ch: 3});
+                expect(mark.length).toBe(2);
+            });
+
+            it("should setBookmark without options", function () {
+                let markType = "mark5";
+                myEditor.setBookmark(markType, {line: 0, ch: 3});
+                let mark = myEditor.findMarksAt({line: 0, ch: 3});
+                expect(mark.length).toBe(1);
+                expect(mark[0].markType).toBe(markType);
+                expect(mark[0].type).toBe("bookmark");
+
+                mark = myEditor.findMarksAt({line: 0, ch: 1});
+                expect(mark.length).toBe(0);
+            });
+
+            it("should findMarksAt get bookmarks and range marks", function () {
+                let markType = "mark6";
+                myEditor.setBookmark(markType, {line: 0, ch: 3});
+                myEditor.markToken(markType, {line: 0, ch: 1});
+                let mark = myEditor.findMarksAt({line: 0, ch: 3});
+                expect(mark.length).toBe(2);
+                expect([mark[0].type, mark[1].type].includes("bookmark")).toBeTrue();
+                expect([mark[0].type, mark[1].type].includes("range")).toBeTrue();
+            });
+
+            it("should findMarks get bookmarks and range marks without markType", function () {
+                let markType = "mark7";
+                myEditor.setBookmark(markType, {line: 0, ch: 3});
+                myEditor.markToken(markType, {line: 0, ch: 1});
+
+                let mark = myEditor.findMarks({line: 0, ch: 0}, {line: 0, ch: 5});
+                expect(mark.length).toBe(2);
+                expect([mark[0].type, mark[1].type].includes("bookmark")).toBeTrue();
+                expect([mark[0].type, mark[1].type].includes("range")).toBeTrue();
+
+                mark = myEditor.findMarks({line: 1, ch: 0}, {line: 1, ch: 1});
+                expect(mark.length).toBe(0);
+                mark = myEditor.findMarks({line: 0, ch: 6}, {line: 0, ch: 7});
+                expect(mark.length).toBe(0);
+
+                mark = myEditor.findMarks({line: 0, ch: 4}, {line: 0, ch: 7});
+                expect(mark.length).toBe(1);
+            });
+
+            it("should findMarks get bookmarks and range marks with markType", function () {
+                myEditor.setBookmark("book", {line: 0, ch: 3});
+                myEditor.markToken("token", {line: 0, ch: 1});
+
+                let mark = myEditor.findMarks({line: 0, ch: 0}, {line: 0, ch: 5}, "book");
+                expect(mark.length).toBe(1);
+                expect(mark[0].type).toBe("bookmark");
+                mark = myEditor.findMarks({line: 0, ch: 0}, {line: 0, ch: 5}, "token");
+                expect(mark.length).toBe(1);
+                expect(mark[0].type).toBe("range");
+            });
+
+            it("should getAllMarks get bookmarks and range marks without markType", function () {
+                myEditor.setBookmark("book", {line: 0, ch: 3});
+                myEditor.markToken("token", {line: 0, ch: 1});
+
+                let mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(2);
+                expect([mark[0].type, mark[1].type].includes("bookmark")).toBeTrue();
+                expect([mark[0].type, mark[1].type].includes("range")).toBeTrue();
+            });
+
+            it("should getAllMarks get bookmarks and range marks with markType", function () {
+                myEditor.setBookmark("book", {line: 0, ch: 3});
+                myEditor.markToken("token", {line: 0, ch: 1});
+
+                let mark = myEditor.getAllMarks("book");
+                expect(mark.length).toBe(1);
+                expect(mark[0].type).toBe("bookmark");
+                mark = myEditor.getAllMarks("token");
+                expect(mark.length).toBe(1);
+                expect(mark[0].type).toBe("range");
+            });
+
+            it("should clearAllMarks clear bookmarks and range marks without markType", function () {
+                myEditor.setBookmark("book", {line: 0, ch: 3});
+                myEditor.markToken("token", {line: 0, ch: 1});
+
+                let mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(2);
+                expect([mark[0].type, mark[1].type].includes("bookmark")).toBeTrue();
+                expect([mark[0].type, mark[1].type].includes("range")).toBeTrue();
+
+                myEditor.clearAllMarks();
+                mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(0);
+            });
+
+            it("should clearAllMarks clear bookmarks and range marks with markType", function () {
+                myEditor.setBookmark("book", {line: 0, ch: 3});
+                myEditor.markToken("token", {line: 0, ch: 1});
+
+                let mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(2);
+                expect([mark[0].type, mark[1].type].includes("bookmark")).toBeTrue();
+                expect([mark[0].type, mark[1].type].includes("range")).toBeTrue();
+
+                myEditor.clearAllMarks("book");
+                mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(1);
+                expect(mark[0].type).toBe("range");
+                myEditor.clearAllMarks("token");
+                mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(0);
+            });
+        });
     });
 });
