@@ -28,17 +28,17 @@
  * Currently, inspection providers are only invoked on the current file and only when it is opened, switched to,
  * or saved. But in the future, inspectors may be invoked as part of a global scan, at intervals while typing, etc.
  * Currently, results are only displayed in a bottom panel list and in a status bar icon. But in the future,
- * results may also be displayed inline in the editor (as gutter markers, squiggly underlines, etc.).
+ * results may also be displayed inline in the editor (as gutter markers, etc.).
  * In the future, support may also be added for error/warning providers that cannot process a single file at a time
  * (e.g. a full-project compiler).
  */
 define(function (require, exports, module) {
 
 
-    var _ = require("thirdparty/lodash");
+    const _ = require("thirdparty/lodash");
 
     // Load dependent modules
-    var Commands                = require("command/Commands"),
+    const Commands                = require("command/Commands"),
         WorkspaceManager        = require("view/WorkspaceManager"),
         CommandManager          = require("command/CommandManager"),
         DocumentManager         = require("document/DocumentManager"),
@@ -56,10 +56,10 @@ define(function (require, exports, module) {
         ResultsTemplate         = require("text!htmlContent/problems-panel-table.html"),
         Mustache                = require("thirdparty/mustache/mustache");
 
-    var INDICATOR_ID = "status-inspection";
+    const INDICATOR_ID = "status-inspection";
 
     /** Values for problem's 'type' property */
-    var Type = {
+    const Type = {
         /** Unambiguous error, such as a syntax error */
         ERROR: "problem_type_error",
         /** Maintainability issue, probable error / bad smell, etc. */
@@ -68,16 +68,18 @@ define(function (require, exports, module) {
         META: "problem_type_meta"
     };
 
+    const CODE_MARK_TYPE_INSPECTOR = "codeInspector";
+
     /**
      * Constants for the preferences defined in this file.
      */
-    var PREF_ENABLED            = "enabled",
+    const PREF_ENABLED            = "enabled",
         PREF_COLLAPSED          = "collapsed",
         PREF_ASYNC_TIMEOUT      = "asyncTimeout",
         PREF_PREFER_PROVIDERS   = "prefer",
         PREF_PREFERRED_ONLY     = "usePreferredOnly";
 
-    var prefs = PreferencesManager.getExtensionPrefs("linting");
+    const prefs = PreferencesManager.getExtensionPrefs("linting");
 
     /**
      * When disabled, the errors panel is closed and the status bar icon is grayed out.
@@ -268,7 +270,7 @@ define(function (require, exports, module) {
                                     message: StringUtils.format(Strings.LINTER_FAILED, provider.name, err),
                                     type: Type.ERROR
                                 };
-                                console.error("[CodeInspection] Provider " + provider.name + " (async) failed: " + err);
+                                console.error("[CodeInspection] Provider " + provider.name + " (async) failed: " + err.stack);
                                 runPromise.resolve({errors: [errError]});
                             });
                     } else {
@@ -283,7 +285,7 @@ define(function (require, exports, module) {
                                 message: StringUtils.format(Strings.LINTER_FAILED, provider.name, err),
                                 type: Type.ERROR
                             };
-                            console.error("[CodeInspection] Provider " + provider.name + " (sync) threw an error: " + err);
+                            console.error("[CodeInspection] Provider " + provider.name + " (sync) threw an error: " + err.stack);
                             runPromise.resolve({errors: [errError]});
                         }
                     }
@@ -361,12 +363,13 @@ define(function (require, exports, module) {
 
     function _updateEditorMarks(resultProviderEntries) {
         let editor = EditorManager.getCurrentFullEditor();
+        editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
         if(editor && resultProviderEntries && resultProviderEntries.length){
             for(let resultProvider of resultProviderEntries){
-                let errors = resultProvider.result.errors;
+                let errors = (resultProvider.result && resultProvider.result.errors) || [];
                 for(let error of errors){
-                    // error.message on hover
-                    editor.markToken(error.pos, {
+                    // todo: add error.message on hover
+                    editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, {
                         className: _getCSSClass(error)
                     });
                 }
