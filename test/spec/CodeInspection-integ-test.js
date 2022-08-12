@@ -505,6 +505,75 @@ define(function (require, exports, module) {
                 expect($statusBar.is(":visible")).toBe(true);
             });
 
+            it("should show errors underline under text in editor", async function () {
+                let codeInspector = createCodeInspector("javascript linter", failLintResult());
+                CodeInspection.register("javascript", codeInspector);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
+
+                expect($("#problems-panel").is(":visible")).toBe(true);
+                let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
+                expect(marks.length).toBe(1);
+                expect(marks[0].className).toBe("editor-text-fragment-warn");
+            });
+
+            it("should underline errors only if warnings and info present in the same location", async function () {
+                var codeInspector1 = createCodeInspector("javascript linter 1", {
+                    errors: [
+                        {
+                            pos: { line: 1, ch: 1 },
+                            message: "Some errors here and there",
+                            type: CodeInspection.Type.WARNING
+                        }, {
+                            pos: { line: 1, ch: 2 },
+                            message: "Some errors here and there",
+                            type: CodeInspection.Type.ERROR
+                        }, {
+                            pos: { line: 1, ch: 3 },
+                            message: "Some errors here and there",
+                            type: CodeInspection.Type.META
+                        }
+                    ]
+                });
+                CodeInspection.register("javascript", codeInspector1);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
+
+                expect($("#problems-panel").is(":visible")).toBe(true);
+                let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
+                expect(marks.length).toBe(1); // only the error marking will prevail as it has the highest priority
+                expect(marks[0].className).toBe("editor-text-fragment-error");
+            });
+
+            it("should show errors, warning or info underline under text in editor appropriately", async function () {
+                var codeInspector1 = createCodeInspector("javascript linter 1", {
+                    errors: [
+                        {
+                            pos: { line: 1, ch: 1 },
+                            message: "Some errors here and there",
+                            type: CodeInspection.Type.WARNING
+                        }, {
+                            pos: { line: 1, ch: 2 },
+                            message: "Some errors here and there",
+                            type: CodeInspection.Type.ERROR
+                        }, {
+                            pos: { line: 1, ch: 10 },
+                            message: "Some errors here and there",
+                            type: CodeInspection.Type.META
+                        }
+                    ]
+                });
+                CodeInspection.register("javascript", codeInspector1);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
+
+                expect($("#problems-panel").is(":visible")).toBe(true);
+                let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
+                expect(marks.length).toBe(2);
+                expect(marks[0].className).toBe("editor-text-fragment-error");
+                expect(marks[1].className).toBe("editor-text-fragment-info");
+            });
+
             it("should ignore async results from previous file", async function () {
                 CodeInspection.toggleEnabled(false);
 
@@ -921,6 +990,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
+                await awaits(100);
                 var $problemPanelTitle = $("#problems-panel .title").text();
                 expect($problemPanelTitle).toBe(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2));
 
