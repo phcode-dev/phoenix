@@ -238,6 +238,8 @@ define(function (require, exports, module) {
         this._hideMarks = [];
         this._lastEditorWidth = null;
 
+        this._markTypesMap = {};
+
         this._$messagePopover = null;
 
         // To track which pane the editor is being attached to if it's a full editor
@@ -1033,6 +1035,7 @@ define(function (require, exports, module) {
      * Can be used to mark a range of text with a specific CSS class name. cursorFrom and cursorTo should be {line, ch}
      * objects. The options parameter is optional.
      *
+     * @param {string} markType - A String that can be used to label the mark type.
      * @param {{line: number, ch: number}} cursorFrom - Mark start position
      * @param {{line: number, ch: number}} cursorTo - Mark end position
      * @param {Object} [options] - When given, it should be an object that may contain the following
@@ -1092,25 +1095,29 @@ define(function (require, exports, module) {
      * @event hide Fired when the last part of the marker is removed from the document by editing operations.
      * @event unhide Fired when, after the marker was removed by editing, a undo operation brought the marker back.
      */
-    Editor.prototype.markText = function (cursorFrom, cursorTo, options) {
-        return this._codeMirror.markText(cursorFrom, cursorTo, options);
+    Editor.prototype.markText = function (markType, cursorFrom, cursorTo, options) {
+        let newMark = this._codeMirror.markText(cursorFrom, cursorTo, options);
+        newMark.markType = markType;
+        return newMark;
     };
 
     /**
      * Same as markText, but will apply to the token at the given position or current position
+     * @param {string} markType - A String that can be used to label the mark type.
      * @param {{line: number, ch: number}} cursor - The position of the token
      * @param [options] same as markText
      * @return {Object} TextMarker
      */
-    Editor.prototype.markToken = function (cursor, options) {
+    Editor.prototype.markToken = function (markType, cursor, options) {
         let token = this.getToken(cursor);
-        return this.markText({line: cursor.line, ch: token.start},
+        return this.markText(markType, {line: cursor.line, ch: token.start},
             {line: cursor.line, ch: token.end}, options);
     };
 
     /**
      * Inserts a bookmark, a handle that follows the text around it as it is being edited, at the given position.
      * Similar to mark text, but for just a point instead of range.
+     * @param {string} markType - A String that can be used to label the mark type.
      * @param {{line: number, ch: number}} cursorPos - Where to place the mark
      * @param {Object} [options] - When given, it should be an object that may contain the following
      * configuration options:
@@ -1124,35 +1131,60 @@ define(function (require, exports, module) {
      * @return {{clear, find}} TextMarker- A bookmark has two methods find() and clear(). `find` returns the current
      * position of the bookmark, if it is still in the document, and `clear` explicitly removes the bookmark.
      */
-    Editor.prototype.setBookmark = function (cursorPos, options) {
-        return this._codeMirror.setBookmark(cursorPos, options);
+    Editor.prototype.setBookmark = function (markType, cursorPos, options) {
+        let newMark = this._codeMirror.setBookmark(cursorPos, options);
+        newMark.markType = markType;
+        return newMark;
     };
 
     /**
      * Returns an array of all the bookmarks and marked ranges found between the given positions (non-inclusive).
      * @param {{line: number, ch: number}} cursorFrom - Mark start position
      * @param {{line: number, ch: number}} cursorTo - Mark end position
+     * @param {string} [markType] - Optional, if given will only return marks of that type. Else returns everything.
      * @returns {Array[TextMarker]} TextMarker - A text marker array
      */
-    Editor.prototype.findMarks = function (cursorFrom, cursorTo) {
-        return this._codeMirror.findMarks(cursorFrom, cursorTo);
+    Editor.prototype.findMarks = function (cursorFrom, cursorTo, markType) {
+        let marks = this._codeMirror.findMarks(cursorFrom, cursorTo) || [];
+        return marks.filter(function (mark){
+            return markType ? mark.markType === markType : true;
+        });
     };
 
     /**
      * Returns an array of all the bookmarks and marked ranges present at the given position.
      * @param {{line: number, ch: number}} cursorPos - cursor position
+     * @param {string} [markType] - Optional, if given will only return marks of that type. Else returns everything.
      * @returns {Array[TextMarker]} TextMarker - A text marker array
      */
-    Editor.prototype.findMarksAt = function (cursorPos) {
-        return this._codeMirror.findMarksAt(cursorPos);
+    Editor.prototype.findMarksAt = function (cursorPos, markType) {
+        let marks = this._codeMirror.findMarksAt(cursorPos) || [];
+        return marks.filter(function (mark){
+            return markType ? mark.markType === markType : true;
+        });
     };
 
     /**
      * Returns an array containing all marked ranges in the document.
+     * @param {string} [markType] - Optional, if given will only return marks of that type. Else returns everything.
      * @returns {Array[TextMarker]} TextMarker - A text marker array
      */
-    Editor.prototype.getAllMarks = function () {
-        return this._codeMirror.getAllMarks();
+    Editor.prototype.getAllMarks = function (markType) {
+        let marks = this._codeMirror.getAllMarks() || [];
+        return marks.filter(function (mark){
+            return markType ? mark.markType === markType : true;
+        });
+    };
+
+    /**
+     * Clears all mark of the given type. If nothing is given, clears all marks(Don't use this API without types!).
+     * @param {string} [markType] - Optional, if given will only delete marks of that type. Else delete everything.
+     */
+    Editor.prototype.clearAllMarks = function (markType) {
+        let marks = this.getAllMarks(markType);
+        for(let mark of marks){
+            mark.clear();
+        }
     };
 
     /**
