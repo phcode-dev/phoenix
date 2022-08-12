@@ -68,6 +68,10 @@ define(function (require, exports, module) {
         META: "problem_type_meta"
     };
 
+    const CSS_CLASS_ERROR = "editor-text-fragment-error",
+        CSS_CLASS_WARN = "editor-text-fragment-warn",
+        CSS_CLASS_INFO = "editor-text-fragment-info";
+
     const CODE_MARK_TYPE_INSPECTOR = "codeInspector";
 
     /**
@@ -355,10 +359,41 @@ define(function (require, exports, module) {
 
     function _getCSSClass(error){
         switch (error.type) {
-        case Type.ERROR: return "editor-text-fragment-error";
-        case Type.WARNING: return "editor-text-fragment-warn";
-        case Type.META: return "editor-text-fragment-info";
+        case Type.ERROR: return CSS_CLASS_ERROR;
+        case Type.WARNING: return CSS_CLASS_WARN;
+        case Type.META: return CSS_CLASS_INFO;
         }
+    }
+
+    function _getCSSClassPriority(cssClass){
+        switch (cssClass) {
+        case CSS_CLASS_ERROR: return 3;
+        case CSS_CLASS_WARN: return 2;
+        case CSS_CLASS_INFO: return 1;
+        }
+    }
+
+    function _shouldMarkTokenAtPosition(editor, error) {
+        if(isNaN(error.pos.line) || isNaN(error.pos.ch) || error.pos.line < 0 || error.pos.ch < 0){
+            console.warn("CodeInspector: Invalid error position: ", error);
+            return false;
+        }
+        // now we only apply a style if there is not already a higher priority style applied to it.
+        // Ie. If an error style is applied, we don't apply an info style over it as error takes precedence.
+        let markings = editor.findMarksAt(error.pos, CODE_MARK_TYPE_INSPECTOR);
+        let classToApply = _getCSSClass(error);
+        let classToApplyPriority = _getCSSClassPriority(classToApply);
+        let shouldMark = true;
+        for(let mark of markings){
+            let classPriority = _getCSSClassPriority(mark.className);
+            if(classPriority<classToApplyPriority){
+                mark.clear();
+            } else {
+                // there's something with a higher priority marking the token
+                shouldMark = false;
+            }
+        }
+        return shouldMark;
     }
 
     function _updateEditorMarks(resultProviderEntries) {
@@ -369,6 +404,9 @@ define(function (require, exports, module) {
                 let errors = (resultProvider.result && resultProvider.result.errors) || [];
                 for(let error of errors){
                     // todo: add error.message on hover
+                    if(!_shouldMarkTokenAtPosition(editor, error)){
+                        return;
+                    }
                     editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, {
                         className: _getCSSClass(error)
                     });
