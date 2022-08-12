@@ -351,6 +351,29 @@ define(function (require, exports, module) {
         StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-errors", tooltip);
     }
 
+    function _getCSSClass(error){
+        switch (error.type) {
+        case Type.ERROR: return "editor-text-fragment-error";
+        case Type.WARNING: return "editor-text-fragment-warn";
+        case Type.META: return "editor-text-fragment-info";
+        }
+    }
+
+    function _updateEditorMarks(resultProviderEntries) {
+        let editor = EditorManager.getCurrentFullEditor();
+        if(editor && resultProviderEntries && resultProviderEntries.length){
+            for(let resultProvider of resultProviderEntries){
+                let errors = resultProvider.result.errors;
+                for(let error of errors){
+                    // error.message on hover
+                    editor.markToken(error.pos, {
+                        className: _getCSSClass(error)
+                    });
+                }
+            }
+        }
+    }
+
     /**
      * Run inspector applicable to current document. Updates status bar indicator and refreshes error list in
      * bottom panel. Does not run if inspection is disabled or if a providerName is given and does not
@@ -381,6 +404,7 @@ define(function (require, exports, module) {
 
             // run all the providers registered for this file type
             (_currentPromise = inspectFile(currentDoc.file, providerList)).then(function (results) {
+                _updateEditorMarks(results);
                 // check if promise has not changed while inspectFile was running
                 if (this !== _currentPromise) {
                     return;
