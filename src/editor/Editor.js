@@ -956,7 +956,8 @@ define(function (require, exports, module) {
      *
      * @param {?{line: number, ch: number}} [cursor] - Optional cursor position
      *      at which to retrieve a token. If not provided, the current position will be used.
-     * @return {Object} - the CodeMirror token at the given cursor position
+     * @return {{end: number, start:number, string: string, type: string}} -
+     * the CodeMirror token at the given cursor position
      */
     Editor.prototype.getToken = function (cursor) {
         let cm = this._codeMirror;
@@ -973,8 +974,8 @@ define(function (require, exports, module) {
      * @param {{line: number, ch: number}} [cursor] - Optional cursor position after
      *      which a token should be retrieved
      * @param {boolean} [skipWhitespace] - true if this should skip over whitespace tokens. Default is true.
-     * @return {Object} - the CodeMirror token after the one at the given
-     *      cursor position
+     * @return {{end: number, start:number, string: string, type: string}} -
+     * the CodeMirror token after the one at the given cursor position
      */
     Editor.prototype.getNextToken = function (cursor, skipWhitespace = true) {
         cursor = cursor || this.getCursorPos();
@@ -1004,8 +1005,8 @@ define(function (require, exports, module) {
      * @param {{line: number, ch: number}} [cursor] - Optional cursor position before
      *      which a token should be retrieved
      * @param {boolean} [skipWhitespace] - true if this should skip over whitespace tokens. Default is true.
-     * @return {Object} - the CodeMirror token before the one at the given
-     *      cursor position
+     * @return {{end: number, start:number, string: string, type: string}} - the CodeMirror token before
+     * the one at the given cursor position
      */
     Editor.prototype.getPreviousToken = function (cursor, skipWhitespace = true) {
         cursor = cursor || this.getCursorPos();
@@ -1026,6 +1027,132 @@ define(function (require, exports, module) {
         } while (skipWhitespace && !/\S/.test(prev.string));
 
         return prev;
+    };
+
+    /**
+     * Can be used to mark a range of text with a specific CSS class name. cursorFrom and cursorTo should be {line, ch}
+     * objects. The options parameter is optional.
+     *
+     * @param {{line: number, ch: number}} cursorFrom - Mark start position
+     * @param {{line: number, ch: number}} cursorTo - Mark end position
+     * @param {Object} [options] - When given, it should be an object that may contain the following
+     * configuration options:
+     * @param {string} [options.className] -Assigns a CSS class to the marked stretch of text.
+     * @param {string} [options.css] -A string of CSS to be applied to the covered text. For example "color: #fe3".
+     * @param {string} [options.startStyle] -Can be used to specify an extra CSS class to be applied to the leftmost
+     * span that is part of the marker.
+     * @param {string} [options.endStyle] -Equivalent to startStyle, but for the rightmost span.
+     * @param {object} [options.attributes] -When given, add the attributes in the given object to the elements created
+     * for the marked text. Adding class or style attributes this way is not supported.
+     * @param {boolean} [options.inclusiveLeft] - Determines whether text inserted on the left of the marker will end
+     * up inside or outside of it.
+     * @param {boolean} [options.inclusiveRight] - Like inclusiveLeft, but for the right side.
+     * @param {boolean} [options.atomic] -Atomic ranges act as a single unit when cursor movement is concerned—i.e.
+     * it is impossible to place the cursor inside of them. You can control whether the cursor is allowed to be placed
+     * directly before or after them using selectLeft or selectRight. If selectLeft (or right) is not provided, then
+     * inclusiveLeft (or right) will control this behavior.
+     * @param {boolean} [options.selectLeft] -For atomic ranges, determines whether the cursor is allowed to be placed
+     * directly to the left of the range. Has no effect on non-atomic ranges.
+     * @param {boolean} [options.selectRight] - Like selectLeft, but for the right side.
+     * @param {boolean} [options.collapsed] - Collapsed ranges do not show up in the display.
+     * Setting a range to be collapsed will automatically make it atomic.
+     * @param {boolean} [options.clearOnEnter] - When enabled, will cause the mark to clear itself whenever the cursor
+     * enters its range. This is mostly useful for text-replacement widgets that need to 'snap open' when the user
+     * tries to edit them. The "clear" event fired on the range handle can be used to be notified when this happens.
+     * @param {boolean} [options.clearWhenEmpty] - Determines whether the mark is automatically cleared when it becomes
+     * empty. Default is true.
+     * @param {Element} [options.replacedWith] - Use a given node to display this range. Implies both collapsed and
+     * atomic. The given DOM node must be an inline element (as opposed to a block element).
+     * @param {boolean} [options.handleMouseEvents] - When replacedWith is given, this determines whether the editor
+     * will capture mouse and drag events occurring in this widget. Default is false—the events will be left alone
+     * for the default browser handler, or specific handlers on the widget, to capture.
+     * @param {boolean} [options.readOnly] - A read-only span can, as long as it is not cleared, not be modified except
+     * by calling setValue to reset the whole document. Note: adding a read-only span currently clears the undo history
+     * of the editor, because existing undo events being partially nullified by read-only spans would corrupt the
+     * history (in the current implementation).
+     * @param {boolean} [options.addToHistory] - When set to true (default is false), adding this marker will create an
+     * event in the undo history that can be individually undone (clearing the marker).
+     *
+     * @return {{clear, find, changed}} TextMarker - The method will return an object(TextMarker) that represents
+     * the marker which exposes three methods:
+     * clear(), to remove the mark, find(), which returns a {from, to} object (both holding document positions),
+     * indicating the current position of the marked range, or undefined if the marker is no longer in the document,
+     * and finally changed(), which you can call if you've done something that might change the size of the marker
+     * (for example changing the content of a replacedWith node), and want to cheaply update the display.
+     *
+     * The Returned TextMarker emits the following events that can be listened with the on and off methods.
+     * @event beforeCursorEnter Fired on TextMarker when the cursor enters the marked range. From this event handler,
+     * the editor state may be inspected but not modified, with the exception that the range on which the event
+     * fires may be cleared.
+     * @event clear (from: {line, ch}, to: {line, ch}) Fired when the range is cleared, either through cursor movement
+     * in combination with clearOnEnter or through a call to its clear() method. Will only be fired once per handle.
+     * Note that deleting the range through text editing does not fire this event, because an undo action might
+     * bring the range back into existence. from and to give the part of the document that the range spanned
+     * when it was cleared.
+     * @event hide Fired when the last part of the marker is removed from the document by editing operations.
+     * @event unhide Fired when, after the marker was removed by editing, a undo operation brought the marker back.
+     */
+    Editor.prototype.markText = function (cursorFrom, cursorTo, options) {
+        return this._codeMirror.markText(cursorFrom, cursorTo, options);
+    };
+
+    /**
+     * Same as markText, but will apply to the token at the given position or current position
+     * @param {{line: number, ch: number}} cursor - The position of the token
+     * @param [options] same as markText
+     * @return {Object} TextMarker
+     */
+    Editor.prototype.markToken = function (cursor, options) {
+        let token = this.getToken(cursor);
+        return this.markText({line: cursor.line, ch: token.start},
+            {line: cursor.line, ch: token.end}, options);
+    };
+
+    /**
+     * Inserts a bookmark, a handle that follows the text around it as it is being edited, at the given position.
+     * Similar to mark text, but for just a point instead of range.
+     * @param {{line: number, ch: number}} cursorPos - Where to place the mark
+     * @param {Object} [options] - When given, it should be an object that may contain the following
+     * configuration options:
+     * @param {Element} [options.widget] - Can be used to display a DOM node at the current location of the bookmark
+     * (analogous to the replacedWith option to markText).
+     * @param {boolean} [options.insertLeft] - By default, text typed when the cursor is on top of the bookmark will
+     * end up to the right of the bookmark. Set this option to true to make it go to the left instead.
+     * @param {boolean} [options.handleMouseEvents] - As with markText, this determines whether mouse events on the
+     * widget inserted for this bookmark are handled by CodeMirror. The default is false.
+     *
+     * @return {{clear, find}} TextMarker- A bookmark has two methods find() and clear(). `find` returns the current
+     * position of the bookmark, if it is still in the document, and `clear` explicitly removes the bookmark.
+     */
+    Editor.prototype.setBookmark = function (cursorPos, options) {
+        return this._codeMirror.setBookmark(cursorPos, options);
+    };
+
+    /**
+     * Returns an array of all the bookmarks and marked ranges found between the given positions (non-inclusive).
+     * @param {{line: number, ch: number}} cursorFrom - Mark start position
+     * @param {{line: number, ch: number}} cursorTo - Mark end position
+     * @returns {Array[TextMarker]} TextMarker - A text marker array
+     */
+    Editor.prototype.findMarks = function (cursorFrom, cursorTo) {
+        return this._codeMirror.findMarks(cursorFrom, cursorTo);
+    };
+
+    /**
+     * Returns an array of all the bookmarks and marked ranges present at the given position.
+     * @param {{line: number, ch: number}} cursorPos - cursor position
+     * @returns {Array[TextMarker]} TextMarker - A text marker array
+     */
+    Editor.prototype.findMarksAt = function (cursorPos) {
+        return this._codeMirror.findMarksAt(cursorPos);
+    };
+
+    /**
+     * Returns an array containing all marked ranges in the document.
+     * @returns {Array[TextMarker]} TextMarker - A text marker array
+     */
+    Editor.prototype.getAllMarks = function () {
+        return this._codeMirror.getAllMarks();
     };
 
     /**
