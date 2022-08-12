@@ -116,6 +116,8 @@ define(function (require, exports, module) {
 
         function _multiFileRename(refs) {
             // TODO: Multi file rename here
+            // note that before we enable this, we should load tern with the full code base to identify all
+            // references properly. This sadly needs refactoring the current tern integration heavily
         }
 
         /**
