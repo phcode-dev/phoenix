@@ -61,11 +61,11 @@ define(function (require, exports, module) {
     /** Values for problem's 'type' property */
     const Type = {
         /** Unambiguous error, such as a syntax error */
-        ERROR: "problem_type_error",
+        ERROR: "problem_type_error fa-times-circle",
         /** Maintainability issue, probable error / bad smell, etc. */
-        WARNING: "problem_type_warning",
+        WARNING: "problem_type_warning fa-exclamation-triangle",
         /** Inspector unable to continue, code too complex for static analysis, etc. Not counted in error/warning tally. */
-        META: "problem_type_meta"
+        META: "problem_type_meta fa-info"
     };
 
     const CSS_CLASS_ERROR = "editor-text-fragment-error",
