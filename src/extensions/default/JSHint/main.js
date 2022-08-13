@@ -27,7 +27,8 @@
 define(function (require, exports, module) {
 
     // Load dependent modules
-    var CodeInspection     = brackets.getModule("language/CodeInspection"),
+    const _                = brackets.getModule("thirdparty/lodash"),
+        CodeInspection     = brackets.getModule("language/CodeInspection"),
         AppInit            = brackets.getModule("utils/AppInit"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
         Strings            = brackets.getModule("strings"),
@@ -41,7 +42,9 @@ define(function (require, exports, module) {
         projectSpecificOptions = null,
         jsHintConfigFileErrorMessage = null;
 
-    prefs.definePreference("options", "object", {
+    // We don't provide default options in the preferences as preferences will try to mixin default options with
+    // user defined options leading to unexpected results. Either we take user defined options or default, no mixin.
+    let DEFAULT_OPTIONS = {
         "esversion": 11,
         "browser": true,
         "node": true,
@@ -49,7 +52,9 @@ define(function (require, exports, module) {
         "rhino": false, // false here means read-only global property
         "jasmine": true,
         "devel": false
-    }, {
+    };
+
+    prefs.definePreference("options", "object", {}, {
         description: Strings.DESCRIPTION_JSHINT_OPTIONS
     }).on("change", function () {
         CodeInspection.requestRun(Strings.JSHINT_NAME);
@@ -77,7 +82,9 @@ define(function (require, exports, module) {
             // If a line contains only whitespace (here spaces or tabs), remove the whitespace
             text = text.replace(/^[ \t]+$/gm, "");
 
-            let options = projectSpecificOptions || prefs.get("options");
+            let userPrefOptions = _.isEmpty(prefs.get("options")) ? DEFAULT_OPTIONS : prefs.get("options");
+
+            let options = projectSpecificOptions || userPrefOptions;
 
             IndexingWorker.execPeer("jsHint", {
                 text,
@@ -151,6 +158,7 @@ define(function (require, exports, module) {
                 let config;
                 try {
                     config = JSON.parse(removeComments(content));
+                    console.log("JSHint: loaded config file for project " + file.fullPath);
                 } catch (e) {
                     console.log("JSHint: error parsing " + file.fullPath);
                     // just log and return as this is an expected failure for us while the user edits code
