@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "Podešavanje projekta",
   "LOCATION": "Lokacija:",
   "DOWNLOADING": "Preuzimanje...",
+  "EXTRACTING_FILES_PROGRESS": "Izdvajanje {0} od {1} fajlova.",
   "DOWNLOAD_FAILED_MESSAGE": "Uverite se da je URL za preuzimanje validan. </br>Napomena: Kako je Phoenik u alfa, privatni Repos i Github URL-ovi veći od 25 MB nisu dozvoljeni.",
   "PLEASE_SELECT_A_FOLDER": "Izaberite fasciklu...",
   "UNZIP_IN_PROGRESS": "Unzipping fajlova...",

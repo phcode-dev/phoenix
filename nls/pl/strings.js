@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Konfigurowanie projektu",
   "LOCATION": "Lokalizacja:",
   "DOWNLOADING": "Pobieranie...",
+  "EXTRACTING_FILES_PROGRESS": "Wyodrębnianie {0} plików {1}.",
   "DOWNLOAD_FAILED_MESSAGE": "Upewnij się, że adres URL pobierania jest prawidłowy. </br>Uwaga: Ponieważ Phoenix jest w wersji alfa, prywatne repozytoria i adresy Github większe niż 25 MB są niedozwolone.",
   "PLEASE_SELECT_A_FOLDER": "Proszę wybrać folder...",
   "UNZIP_IN_PROGRESS": "Rozpakowując pliki...",

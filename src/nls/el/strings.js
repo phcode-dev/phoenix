@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Ρύθμιση του έργου",
   "LOCATION": "Τοποθεσία:",
   "DOWNLOADING": "Λήψη...",
+  "EXTRACTING_FILES_PROGRESS": "Εξαγωγή {0} αρχείων {1}.",
   "DOWNLOAD_FAILED_MESSAGE": "Βεβαιωθείτε ότι η διεύθυνση URL λήψης είναι έγκυρη. </br>Σημείωση: Καθώς το Phoenix είναι σε alpha, τα ιδιωτικά Repos και Github URL μεγαλύτερα από 25 MB δεν επιτρέπονται.",
   "PLEASE_SELECT_A_FOLDER": "Παρακαλώ επιλέξτε ένα φάκελο...",
   "UNZIP_IN_PROGRESS": "Αποσυμπιέζοντας αρχεία...",

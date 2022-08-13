@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "إعداد المشروع",
   "LOCATION": "الموقع:",
   "DOWNLOADING": "جاري التنزيل...",
+  "EXTRACTING_FILES_PROGRESS": "استخراج {0} من ملفات {1}.",
   "DOWNLOAD_FAILED_MESSAGE": "تأكد من أن عنوان URL للتنزيل صالح. </br>ملحوظة: نظرًا لأن Phoenix في alpha، لا يُسمح بعناوين URL الخاصة لـ Repos و Github التي يزيد حجمها عن 25 ميغابايت.",
   "PLEASE_SELECT_A_FOLDER": "الرجاء تحديد مجلد...",
   "UNZIP_IN_PROGRESS": "فك ضغط الملفات...",

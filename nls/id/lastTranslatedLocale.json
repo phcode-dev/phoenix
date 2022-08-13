@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "Menyiapkan Proyek",
   "LOCATION": "Lokasi:",
   "DOWNLOADING": "Mengunduh...",
+  "EXTRACTING_FILES_PROGRESS": "Mengekstrak {0} dari {1} file.",
   "DOWNLOAD_FAILED_MESSAGE": "Pastikan URL unduhan valid. </br>NB: Seperti Phoenix dalam alpha, Private Repos dan Github URL yang lebih besar dari 25 MB tidak diperbolehkan.",
   "PLEASE_SELECT_A_FOLDER": "Silakan pilih folder...",
   "UNZIP_IN_PROGRESS": "Membuka ritsleting file...",

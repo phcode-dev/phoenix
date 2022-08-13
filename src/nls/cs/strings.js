@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Nastavení projektu",
   "LOCATION": "Umístění:",
   "DOWNLOADING": "Stahování...",
+  "EXTRACTING_FILES_PROGRESS": "Extrahuje {0} {1} souborů.",
   "DOWNLOAD_FAILED_MESSAGE": "Ujistěte se, že adresa URL pro stažení je platná. </br>Poznámka: Vzhledem k tomu, že Phoenix je v alfa, soukromé repos a adresy URL Github větší než 25 MB nejsou povoleny.",
   "PLEASE_SELECT_A_FOLDER": "Vyberte složku...",
   "UNZIP_IN_PROGRESS": "Rozbalování souborů...",

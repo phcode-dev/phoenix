@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "设置项目",
   "LOCATION": "地点：",
   "DOWNLOADING": "正在下载...",
+  "EXTRACTING_FILES_PROGRESS": "正在提取 {1} 个文件中的 {0} 个。",
   "DOWNLOAD_FAILED_MESSAGE": "确保下载 URL 是有效的。</br>注意：由于 Phoenix 处于 alpha 版本，因此不允许使用大于 25 MB 的私有存储库和 Github URL。",
   "PLEASE_SELECT_A_FOLDER": "请选择一个文件夹...",
   "UNZIP_IN_PROGRESS": "正在解压缩文件...",

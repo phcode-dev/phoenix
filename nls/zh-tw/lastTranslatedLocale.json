@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "設定專案",
   "LOCATION": "位置:",
   "DOWNLOADING": "正在下載中...",
+  "EXTRACTING_FILES_PROGRESS": "解壓縮 {1} 個檔案的 {0}。",
   "DOWNLOAD_FAILED_MESSAGE": "請確定下載網址是有效的。</br>注意：由於鳳凰城位於阿爾法版本中，因此不允許使用大於 25 MB 的私人存放庫和 Github 網址。",
   "PLEASE_SELECT_A_FOLDER": "請選擇一個資料夾...",
   "UNZIP_IN_PROGRESS": "正在解壓縮檔案...",

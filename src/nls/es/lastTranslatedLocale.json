@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "Configuración del proyecto",
   "LOCATION": "Ubicación:",
   "DOWNLOADING": "Descargando...",
+  "EXTRACTING_FILES_PROGRESS": "Extracción de {0} de {1} archivos.",
   "DOWNLOAD_FAILED_MESSAGE": "Asegúrese de que la URL de descarga sea válida. </br>NB: Como Phoenix está en alfa, no se permiten repos privados ni URL de Github de más de 25 MB.",
   "PLEASE_SELECT_A_FOLDER": "Selecciona una carpeta...",
   "UNZIP_IN_PROGRESS": "Descomprimiendo archivos...",

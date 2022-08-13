@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Настройка проекта",
   "LOCATION": "Местонахождение:",
   "DOWNLOADING": "Загрузка...",
+  "EXTRACTING_FILES_PROGRESS": "Извлечение {0} из {1} файлов.",
   "DOWNLOAD_FAILED_MESSAGE": "Убедитесь, что URL-адрес загрузки действителен. </br>NB: Поскольку Phoenix находится в альфа-версии, URL-адреса частных репозиториев и Github размером более 25 МБ не допускаются.",
   "PLEASE_SELECT_A_FOLDER": "Выберите папку...",
   "UNZIP_IN_PROGRESS": "Распаковка файлов...",
