@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "Създаване на проект",
   "LOCATION": "Местоположение:",
   "DOWNLOADING": "Изтеглянето...",
+  "EXTRACTING_FILES_PROGRESS": "Извличане на {0} от {1} файлове.",
   "DOWNLOAD_FAILED_MESSAGE": "Уверете се, че URL адресът за изтегляне е валиден. </br>Забележка: Тъй като Phoenix е в алфа, частни репо и Github URL адреси по-големи от 25 MB не е позволено.",
   "PLEASE_SELECT_A_FOLDER": "Моля, изберете папка...",
   "UNZIP_IN_PROGRESS": "Декомпресиране на файлове...",

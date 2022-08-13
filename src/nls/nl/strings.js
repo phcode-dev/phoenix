@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Project opzetten",
   "LOCATION": "Locatie:",
   "DOWNLOADING": "Downloaden...",
+  "EXTRACTING_FILES_PROGRESS": "{0} {1} bestanden uitpakken.",
   "DOWNLOAD_FAILED_MESSAGE": "Zorg ervoor dat de download-URL geldig is. </br>NB: Aangezien Phoenix in alpha is, zijn Private Repo's en Github-URL's groter dan 25 MB niet toegestaan.",
   "PLEASE_SELECT_A_FOLDER": "Selecteer een map...",
   "UNZIP_IN_PROGRESS": "Bestanden uitpakken...",

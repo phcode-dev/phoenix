@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "Opsætning af projekt",
   "LOCATION": "Beliggenhed:",
   "DOWNLOADING": "Downloader...",
+  "EXTRACTING_FILES_PROGRESS": "Udpakning {0} af {1} filer.",
   "DOWNLOAD_FAILED_MESSAGE": "Sørg for, at download-URL'en er gyldig. </br>NB: Da Phoenix er i alpha, Private Repos og Github URL'er større end 25 MB er ikke tilladt.",
   "PLEASE_SELECT_A_FOLDER": "Vælg en mappe...",
   "UNZIP_IN_PROGRESS": "Udpakning af filer...",

@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Impostazione del progetto",
   "LOCATION": "Ubicazione:",
   "DOWNLOADING": "Download in corso...",
+  "EXTRACTING_FILES_PROGRESS": "Estrazione di {0} di {1} file.",
   "DOWNLOAD_FAILED_MESSAGE": "Assicurati che l'URL di download sia valido. </br>NB: Poiché Phoenix è in alpha, non sono consentiti repository privati e URL Github più grandi di 25 MB.",
   "PLEASE_SELECT_A_FOLDER": "Seleziona una cartella...",
   "UNZIP_IN_PROGRESS": "Decompressione dei file in corso...",

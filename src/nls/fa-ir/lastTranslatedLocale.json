@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "راه اندازی پروژه",
   "LOCATION": "محل سکونت:",
   "DOWNLOADING": "در حال بارگیری...",
+  "EXTRACTING_FILES_PROGRESS": "استخراج {0} از {1} فایل.",
   "DOWNLOAD_FAILED_MESSAGE": "اطمینان حاصل کنید که URL بارگیری معتبر است. </br>NB: همانطور که ققنوس در آلفا است، آدرس های خصوصی Repos و Github بزرگتر از 25 مگابایت مجاز نیست.",
   "PLEASE_SELECT_A_FOLDER": "لطفا یک پوشه را انتخاب کنید...",
   "UNZIP_IN_PROGRESS": "باز کردن فایل ها...",

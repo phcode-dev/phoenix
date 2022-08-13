@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Projekta iestatīšana",
   "LOCATION": "Atrašanās vieta:",
   "DOWNLOADING": "Lejupielādē...",
+  "EXTRACTING_FILES_PROGRESS": "{0} no {1} failu izgūšana.",
   "DOWNLOAD_FAILED_MESSAGE": "Pārliecinieties, vai lejupielādes URL ir derīgs. </br>NB: Kā Phoenix ir alfa, Privātās Repos un GitHub URL lielāks nekā 25 MB nav atļauta.",
   "PLEASE_SELECT_A_FOLDER": "Lūdzu, izvēlieties mapi...",
   "UNZIP_IN_PROGRESS": "Failu izņemšana no ZIP...",

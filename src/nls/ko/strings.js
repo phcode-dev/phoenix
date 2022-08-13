@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "프로젝트 설정",
   "LOCATION": "위치:",
   "DOWNLOADING": "다운로드 중...",
+  "EXTRACTING_FILES_PROGRESS": "{1} 개 파일 중 {0} 개를 추출하고 있습니다.",
   "DOWNLOAD_FAILED_MESSAGE": "다운로드 URL이 올바른지 확인합니다.</br>주의: 피닉스는 알파이므로 25MB보다 큰 비공개 리포지토리 및 Github URL은 허용되지 않습니다.",
   "PLEASE_SELECT_A_FOLDER": "폴더를 선택하세요...",
   "UNZIP_IN_PROGRESS": "파일 압축 해제 중...",
