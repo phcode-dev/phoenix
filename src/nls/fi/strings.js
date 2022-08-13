@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Projektin määrittäminen",
   "LOCATION": "Sijainti:",
   "DOWNLOADING": "Ladataan...",
+  "EXTRACTING_FILES_PROGRESS": "Poimitaan {0} {1} -tiedostoista.",
   "DOWNLOAD_FAILED_MESSAGE": "Varmista, että latauksen URL-osoite on kelvollinen. </br>HUOM: Koska Phoenix on alfassa, yksityiset Repot- ja Github-URL-osoitteet, jotka ovat suurempia kuin 25 Mt, eivät ole sallittuja.",
   "PLEASE_SELECT_A_FOLDER": "Valitse kansio...",
   "UNZIP_IN_PROGRESS": "Tiedostojen purkaminen...",

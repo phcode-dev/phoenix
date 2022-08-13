@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "پروجیکٹ کی ترتیب",
   "LOCATION": "مقام:",
   "DOWNLOADING": "ڈاؤن لوڈ کر رہا ہے...",
+  "EXTRACTING_FILES_PROGRESS": "{1} فائلوں کی {0} نکالنا.",
   "DOWNLOAD_FAILED_MESSAGE": "یقینی بنائیں کہ ڈاؤن لوڈ کردہ URL درست ہے۔ </br>اینبی: جیسا کہ فینکس الفا میں ہے، 25 MB سے زیادہ نجی ریپوز اور Github یو آر ایل کی اجازت نہیں ہے.",
   "PLEASE_SELECT_A_FOLDER": "براہ کرم ایک فولڈر منتخب کریں...",
   "UNZIP_IN_PROGRESS": "فائلوں کو غیر زپ کرنا...",

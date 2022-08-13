@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "プロジェクトを設定する",
   "LOCATION": "ロケーション:",
   "DOWNLOADING": "ダウンロード中...",
+  "EXTRACTING_FILES_PROGRESS": "{1} 個中 {0} 個のファイルを抽出しています。",
   "DOWNLOAD_FAILED_MESSAGE": "ダウンロード URL が有効であることを確認してください。</br>注:Phoenix はアルファ版であるため、25 MB を超えるプライベートリポジトリと Github URL は許可されません。",
   "PLEASE_SELECT_A_FOLDER": "フォルダを選択してください...",
   "UNZIP_IN_PROGRESS": "ファイルを解凍中...",

@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "Ställa in projekt",
   "LOCATION": "Plats:",
   "DOWNLOADING": "Laddar ner...",
+  "EXTRACTING_FILES_PROGRESS": "Extrahera {0} av {1} -filer.",
   "DOWNLOAD_FAILED_MESSAGE": "Se till att nedladdningsadressen är giltig. </br>OBS: Eftersom Phoenix är i alfa är privata repor och Github webbadresser större än 25 MB inte tillåtna.",
   "PLEASE_SELECT_A_FOLDER": "Välj en mapp...",
   "UNZIP_IN_PROGRESS": "Packa upp filer...",

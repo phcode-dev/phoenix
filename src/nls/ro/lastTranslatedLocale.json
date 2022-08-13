@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "Configurarea proiectului",
   "LOCATION": "Locație:",
   "DOWNLOADING": "Se descarcă...",
+  "EXTRACTING_FILES_PROGRESS": "Extragerea {0} a fișierelor {1}.",
   "DOWNLOAD_FAILED_MESSAGE": "Asigurați-vă că adresa URL de descărcare este validă. </br>NB: Deoarece Phoenix este în alfa, adresele URL Private Repos și Github mai mari de 25 MB nu sunt permise.",
   "PLEASE_SELECT_A_FOLDER": "Vă rugăm să selectați un dosar...",
   "UNZIP_IN_PROGRESS": "Dezarhivarea fișierelor...",

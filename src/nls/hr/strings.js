@@ -772,6 +772,7 @@ define({
   "SETTING_UP_PROJECT": "Postavljanje projekta",
   "LOCATION": "Lokacija:",
   "DOWNLOADING": "Preuzimanje...",
+  "EXTRACTING_FILES_PROGRESS": "Vađenje {0} od {1} datoteka.",
   "DOWNLOAD_FAILED_MESSAGE": "Provjerite je li URL za preuzimanje valjan. </br>Napomena: Budući da je Phoenix u alfa, privatni Repos i Github URL-ovi veći od 25 MB nisu dopušteni.",
   "PLEASE_SELECT_A_FOLDER": "Odaberite mapu...",
   "UNZIP_IN_PROGRESS": "Otkopčavanje datoteka...",

@@ -752,6 +752,7 @@
   "SETTING_UP_PROJECT": "Proje Kurma",
   "LOCATION": "Lokasyon:",
   "DOWNLOADING": "İndiriliyor...",
+  "EXTRACTING_FILES_PROGRESS": "{1} dosyaların {0} ayıklanması.",
   "DOWNLOAD_FAILED_MESSAGE": "İndirme URL\"sinin geçerli olduğundan emin olun. </br>Not: Phoenix'in alfa olduğu için 25 MB'den büyük Private Repos ve Github URL'lerine izin verilmez.",
   "PLEASE_SELECT_A_FOLDER": "Lütfen bir klasör seçin...",
   "UNZIP_IN_PROGRESS": "Dosyaları açıyor...",
