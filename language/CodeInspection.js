@@ -61,16 +61,25 @@ define(function (require, exports, module) {
     /** Values for problem's 'type' property */
     const Type = {
         /** Unambiguous error, such as a syntax error */
-        ERROR: "problem_type_error",
+        ERROR: "error",
         /** Maintainability issue, probable error / bad smell, etc. */
-        WARNING: "problem_type_warning",
-        /** Inspector unable to continue, code too complex for static analysis, etc. Not counted in error/warning tally. */
-        META: "problem_type_meta"
+        WARNING: "warning",
+        /** Inspector unable to continue, code too complex for static analysis, etc. Not counted in err/warn tally. */
+        META: "meta"
     };
 
-    const CSS_CLASS_ERROR = "editor-text-fragment-error",
-        CSS_CLASS_WARN = "editor-text-fragment-warn",
-        CSS_CLASS_INFO = "editor-text-fragment-info";
+    function _getIconClassForType(type) {
+        switch (type) {
+        case Type.ERROR: return "line-icon-problem_type_error fa-solid fa-times-circle";
+        case Type.WARNING: return "line-icon-problem_type_warning fa-solid fa-exclamation-triangle";
+        case Type.META: return "line-icon-problem_type_meta fa-solid fa-info";
+        default: return "line-icon-problem_type_meta fa-solid fa-info";
+        }
+    }
+
+    const CSS_TEXT_UNDERLINE_CLASS_ERROR = "editor-text-fragment-error",
+        CSS_TEXT_UNDERLINE_CLASS_WARN = "editor-text-fragment-warn",
+        CSS_TEXT_UNDERLINE_CLASS_INFO = "editor-text-fragment-info";
 
     const CODE_MARK_TYPE_INSPECTOR = "codeInspector";
 
@@ -359,17 +368,17 @@ define(function (require, exports, module) {
 
     function _getCSSClass(error){
         switch (error.type) {
-        case Type.ERROR: return CSS_CLASS_ERROR;
-        case Type.WARNING: return CSS_CLASS_WARN;
-        case Type.META: return CSS_CLASS_INFO;
+        case Type.ERROR: return CSS_TEXT_UNDERLINE_CLASS_ERROR;
+        case Type.WARNING: return CSS_TEXT_UNDERLINE_CLASS_WARN;
+        case Type.META: return CSS_TEXT_UNDERLINE_CLASS_INFO;
         }
     }
 
     function _getCSSClassPriority(cssClass){
         switch (cssClass) {
-        case CSS_CLASS_ERROR: return 3;
-        case CSS_CLASS_WARN: return 2;
-        case CSS_CLASS_INFO: return 1;
+        case CSS_TEXT_UNDERLINE_CLASS_ERROR: return 3;
+        case CSS_TEXT_UNDERLINE_CLASS_WARN: return 2;
+        case CSS_TEXT_UNDERLINE_CLASS_INFO: return 1;
         }
     }
 
@@ -490,6 +499,8 @@ define(function (require, exports, module) {
                             if (error.type !== Type.META) {
                                 numProblems++;
                             }
+
+                            error.iconClass = _getIconClassForType(error.type);
 
                             // Hide the errors when the provider is collapsed.
                             error.display = isExpanded ? "" : "forced-hidden";
