@@ -90,12 +90,17 @@ define(function (require, exports, module) {
             JSZip.loadAsync(zipData).then(async function (zip) {
                 let keys = Object.keys(zip.files);
                 try{
+                    const extractBatchSize = 500;
                     let totalCount = keys.length,
-                        doneCount = 0;
+                        doneCount = 0,
+                        extractPromises = [];
                     for(let path of keys){
-                        // This is intentionally serial as fs access api hangs on large file access,
-                        // Maybe try slightly parallel with maybe 5 current promises?
-                        await _copyZippedItemToFS(path, zip.files[path], projectDir, flattenFirstLevel);
+                        // This is intentionally batched as fs access api hangs on large number of file access
+                        extractPromises.push(_copyZippedItemToFS(path, zip.files[path], projectDir, flattenFirstLevel));
+                        if(extractPromises.length === extractBatchSize){
+                            await Promise.all(extractPromises);
+                            extractPromises = [];
+                        }
                         doneCount ++;
                         if(progressControlCallback){
                             let continueExtraction = progressControlCallback(doneCount, totalCount);
@@ -104,6 +109,9 @@ define(function (require, exports, module) {
                                 return;
                             }
                         }
+                    }
+                    if(extractPromises.length) {
+                        await Promise.all(extractPromises);
                     }
                     console.log("Unzip complete: ", projectDir);
                     resolve();
