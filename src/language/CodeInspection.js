@@ -61,11 +61,11 @@ define(function (require, exports, module) {
     /** Values for problem's 'type' property */
     const Type = {
         /** Unambiguous error, such as a syntax error */
-        ERROR: "problem_type_error fa-times-circle",
+        ERROR: "error",
         /** Maintainability issue, probable error / bad smell, etc. */
-        WARNING: "problem_type_warning fa-exclamation-triangle",
+        WARNING: "warning",
         /** Inspector unable to continue, code too complex for static analysis, etc. Not counted in err/warn tally. */
-        META: "problem_type_meta fa-info"
+        META: "meta"
     };
 
     function _getIconClassForType(type) {
