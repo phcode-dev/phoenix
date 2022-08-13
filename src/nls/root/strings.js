@@ -941,6 +941,7 @@ define({
     "SETTING_UP_PROJECT": "Setting Up Project",
     "LOCATION": "Location :",
     "DOWNLOADING": "Downloading...",
+    "EXTRACTING_FILES_PROGRESS": "Extracting {0} of {1} files.",
     "DOWNLOAD_FAILED_MESSAGE": "Make sure the download URL is a valid. </br>NB: As Phoenix is in alpha, Private Repos and Github URLs larger than 25 MB is not allowed.",
     "PLEASE_SELECT_A_FOLDER": "Please select a folder...",
     "UNZIP_IN_PROGRESS": "Unzipping files...",
