@@ -76,26 +76,49 @@ define(function (require, exports, module) {
      * which has all the contents. If we blindly extract the zio, all the contents will be placed inside a `contents`
      * folder in root and not the root dir itself.
      * See a sample zip file here: https://api.github.com/repos/StartBootstrap/startbootstrap-grayscales/zipball
+     * @param {function(doneCount: number, totalCount: number)} progressControlCallback A function that can be used
+     * to view the progress and stop further extraction. The function will be invoked with (doneCount, totalCount).
+     * The function should return `false` if further extraction needs to be stopped. If nothing or `true` is returned,
+     * it will continue extraction.
      * @returns {Promise}
      */
-    function unzipFileToLocation(zipData, projectDir, flattenFirstLevel = false) {
+    function unzipFileToLocation(zipData, projectDir, flattenFirstLevel = false, progressControlCallback) {
         if(!projectDir.endsWith('/')){
             projectDir = projectDir + "/";
         }
         return new Promise((resolve, reject)=>{
-            JSZip.loadAsync(zipData).then(function (zip) {
+            JSZip.loadAsync(zipData).then(async function (zip) {
                 let keys = Object.keys(zip.files);
-                let allPromises=[];
-                keys.forEach(path => {
-                    allPromises.push(_copyZippedItemToFS(path, zip.files[path], projectDir, flattenFirstLevel));
-                });
-                Promise.all(allPromises).then(()=>{
+                try{
+                    const extractBatchSize = 500;
+                    let totalCount = keys.length,
+                        doneCount = 0,
+                        extractPromises = [];
+                    for(let path of keys){
+                        // This is intentionally batched as fs access api hangs on large number of file access
+                        extractPromises.push(_copyZippedItemToFS(path, zip.files[path], projectDir, flattenFirstLevel));
+                        if(extractPromises.length === extractBatchSize){
+                            await Promise.all(extractPromises);
+                            extractPromises = [];
+                        }
+                        doneCount ++;
+                        if(progressControlCallback){
+                            let continueExtraction = progressControlCallback(doneCount, totalCount);
+                            if(continueExtraction === false){
+                                reject(`Extraction cancelled by progress controller`);
+                                return;
+                            }
+                        }
+                    }
+                    if(extractPromises.length) {
+                        await Promise.all(extractPromises);
+                    }
                     console.log("Unzip complete: ", projectDir);
                     resolve();
-                }).catch(err=>{
+                } catch (err) {
                     console.error('unzip failed', err);
                     reject(err);
-                });
+                }
             });
         });
     }

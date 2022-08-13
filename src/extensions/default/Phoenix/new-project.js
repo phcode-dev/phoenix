@@ -252,10 +252,10 @@ define(function (require, exports, module) {
         }
     }
 
-    function _unzipProject(data, projectPath, flattenFirstLevelInZip) {
+    function _unzipProject(data, projectPath, flattenFirstLevelInZip, progressCb) {
         return new Promise((resolve, reject)=>{
             _updateCreateProjectDialogueMessage(Strings.UNZIP_IN_PROGRESS, Strings.DOWNLOAD_COMPLETE);
-            utils.unzipFileToLocation(data, projectPath, flattenFirstLevelInZip)
+            utils.unzipFileToLocation(data, projectPath, flattenFirstLevelInZip, progressCb)
                 .then(resolve)
                 .catch(reject);
         });
@@ -301,7 +301,12 @@ define(function (require, exports, module) {
                             showErrorDialogue(Strings.DOWNLOAD_FAILED, Strings.DOWNLOAD_FAILED_MESSAGE);
                             reject();
                         } else {
-                            _unzipProject(data, projectPath, flattenFirstLevelInZip)
+                            function _progressCB(done, total) {
+                                let message = StringUtils.format(Strings.EXTRACTING_FILES_PROGRESS, done, total);
+                                _updateCreateProjectDialogueMessage(message);
+                                return !downloadCancelled; // continueExtraction id not download cancelled
+                            }
+                            _unzipProject(data, projectPath, flattenFirstLevelInZip, _progressCB)
                                 .then(()=>{
                                     _closeCreateProjectDialogue();
                                     ProjectManager.openProject(projectPath)
