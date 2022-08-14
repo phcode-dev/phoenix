@@ -112,6 +112,8 @@ define(function (require, exports, module) {
         INPUT_STYLE         = EditorPreferences.INPUT_STYLE;
 
     const LINE_NUMBER_GUTTER = EditorPreferences.LINE_NUMBER_GUTTER,
+        DEBUG_INFO_GUTTER    = EditorPreferences.DEBUG_INFO_GUTTER,
+        DEBUG_INFO_GUTTER_PRIORITY      = EditorPreferences.DEBUG_INFO_GUTTER_PRIORITY,
         LINE_NUMBER_GUTTER_PRIORITY     = EditorPreferences.LINE_NUMBER_GUTTER_PRIORITY,
         CODE_FOLDING_GUTTER_PRIORITY    = EditorPreferences.CODE_FOLDING_GUTTER_PRIORITY;
 
@@ -1032,6 +1034,20 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Use This if you are making large number of editor changes in a single workflow to improve performance.
+     * The editor internally buffers changes and only updates its DOM structure after it has finished performing
+     * some operation. If you need to perform a lot of operations on a CodeMirror instance, you can call this method
+     * with a function argument. It will call the function, buffering up all changes, and only doing the expensive
+     * update after the function returns. This can be a lot faster. The return value from this method will be the
+     * return value of your function.
+     * @param execFn The function that will be called to make all editor changes.
+     * @return {*}
+     */
+    Editor.prototype.operation = function (execFn) {
+        return this._codeMirror.operation(execFn);
+    };
+
+    /**
      * Can be used to mark a range of text with a specific CSS class name. cursorFrom and cursorTo should be {line, ch}
      * objects. The options parameter is optional.
      *
@@ -1910,6 +1926,10 @@ define(function (require, exports, module) {
             registeredGutters.push({name: LINE_NUMBER_GUTTER, priority: LINE_NUMBER_GUTTER_PRIORITY});
         }
 
+        if (gutters.indexOf(DEBUG_INFO_GUTTER) < 0) {
+            registeredGutters.push({name: DEBUG_INFO_GUTTER, priority: DEBUG_INFO_GUTTER_PRIORITY});
+        }
+
         gutters = registeredGutters.sort(_sortByPriority)
             .filter(_filterByLanguages)
             .map(_getName);
@@ -1926,7 +1946,7 @@ define(function (require, exports, module) {
 
     /**
      * Sets the marker for the specified gutter on the specified line number
-     * @param   {string}   lineNumber The line number for the inserted gutter marker
+     * @param   {number}   lineNumber The line number for the inserted gutter marker
      * @param   {string}   gutterName The name of the gutter
      * @param   {object}   marker     The dom element representing the marker to the inserted in the gutter
      */
@@ -2198,6 +2218,8 @@ define(function (require, exports, module) {
 
     Editor.LINE_NUMBER_GUTTER_PRIORITY = LINE_NUMBER_GUTTER_PRIORITY;
     Editor.CODE_FOLDING_GUTTER_PRIORITY = CODE_FOLDING_GUTTER_PRIORITY;
+    Editor.DEBUG_INFO_GUTTER_PRIORITY = DEBUG_INFO_GUTTER_PRIORITY;
+    Editor.DEBUG_INFO_GUTTER = DEBUG_INFO_GUTTER;
 
     // Set up listeners for preference changes
     editorOptions.forEach(function (prefName) {

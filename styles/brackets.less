@@ -2258,6 +2258,34 @@ textarea.exclusions-editor {
     background: url(images/topcoat-okay-15.svg) 9px 5px no-repeat;
 }
 
+.line-icon-problem_type_error {
+    color: @error-underline-text;
+}
+.line-icon-problem_type_warning {
+    color: @warn-underline-text;
+}
+.line-icon-problem_type_meta {
+    color: @info-underline-text;
+}
+.line-icon-problem_type_spell {
+    color: @spell-underline-text;
+}
+
+.CodeMirror .phoenix-debug-info-gutter {
+    width: 1em;
+    background-color: transparent;
+}
+
+.brackets-inspection-gutter-marker {
+    cursor: default;
+    display: inline-flex;
+    line-height: 1em;
+    height: 1em;
+    width: 1em;
+    font-size: .8em;
+    pointer-events: auto;
+}
+
 #problems-panel {
     .user-select(text);  // allow selecting error messages for easy web searching
     .line {
@@ -2273,17 +2301,6 @@ textarea.exclusions-editor {
             background-image: url(images/topcoat-inactive-15.svg);
             background-repeat: no-repeat;
             background-position: 0px 1px;
-        }
-
-        // Add an image based on the type of the problem.
-        .line-icon-problem_type_error {
-            color: @error-underline-text;
-        }
-        .line-icon-problem_type_warning {
-            color: @warn-underline-text;
-        }
-        .line-icon-problem_type_meta {
-            color: @info-underline-text;
         }
     }
 
