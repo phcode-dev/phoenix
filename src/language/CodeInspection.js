@@ -406,8 +406,28 @@ define(function (require, exports, module) {
         return shouldMark;
     }
 
-    function _clearGutter(editor) {
+    function _updateGutterMarks(editor, gutterErrorMessages) {
         editor.clearGutter(Editor.DEBUG_INFO_GUTTER);
+        // add gutter icons
+        for(let lineno of Object.keys(gutterErrorMessages)){
+            let gutterMessage = gutterErrorMessages[lineno].reduce((prev, current)=>{
+                return {message: `${prev.message}\n${current.message}`};
+            }, {message: ''});
+            let type = gutterErrorMessages[lineno][0].type,
+                line = gutterErrorMessages[lineno][0].line,
+                ch = gutterErrorMessages[lineno][0].ch;
+            let $marker = $('<div><span>')
+                .attr('title', gutterMessage.message)
+                .addClass(Editor.DEBUG_INFO_GUTTER);
+            $marker.click(function (){
+               editor.setCursorPos(line, ch);
+            });
+            $marker.find('span')
+                .addClass(_getIconClassForType(type))
+                .addClass("brackets-inspection-gutter-marker")
+                .html('&nbsp;');
+            editor.setGutterMarker(line, Editor.DEBUG_INFO_GUTTER, $marker[0]);
+        }
     }
 
     /**
@@ -419,31 +439,27 @@ define(function (require, exports, module) {
         let editor = EditorManager.getCurrentFullEditor();
         editor.operation(function () {
             editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
-            _clearGutter(editor);
+            let gutterErrorMessages = {};
             if(editor && resultProviderEntries && resultProviderEntries.length){
                 for(let resultProvider of resultProviderEntries){
                     let errors = (resultProvider.result && resultProvider.result.errors) || [];
                     for(let error of errors){
                         // todo: add error.message on hover
                         if(!_shouldMarkTokenAtPosition(editor, error)){
-                            return;
+                            continue;
                         }
                         // add squiggly lines
                         editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, {
                             className: _getCSSClass(error)
                         });
-                        // add gutter icons
-                        let $marker = $('<div><span>')
-                            .attr('title', error.message)
-                            .addClass(Editor.DEBUG_INFO_GUTTER);
-                        $marker.find('span')
-                            .addClass(_getIconClassForType(error.type))
-                            .addClass("brackets-inspection-gutter-marker")
-                            .html('&nbsp;');
                         let line = error.pos.line || 0;
-                        editor.setGutterMarker(line, Editor.DEBUG_INFO_GUTTER, $marker[0]);
+                        let ch = error.pos.ch || 0;
+                        let gutterMessage = gutterErrorMessages[line] || [];
+                        gutterMessage.push({message: error.message, type: error.type, line, ch});
+                        gutterErrorMessages[line] = gutterMessage;
                     }
                 }
+                _updateGutterMarks(editor, gutterErrorMessages);
             }
         });
     }
