@@ -69,8 +69,8 @@ define(function (require, exports, module) {
             }, "Unable to open test document", 10000);
 
             // create Editor instance (containing a CodeMirror instance)
-            testEditor = SpecRunnerUtils.createMockEditorForDocument(testDoc);
             ScopeManager.handleProjectOpen(testFolder);
+            testEditor = SpecRunnerUtils.createMockEditorForDocument(testDoc);
             await awaits(100); // wait for code indexing workers to prime
             let session = new Session(testEditor);
             ScopeManager.handleEditorChange(session, testEditor.document, null);
@@ -92,7 +92,7 @@ define(function (require, exports, module) {
             }
             await awaitsFor(function() {
                 return (testDoc.getText().length !== prevDocLength || (numberOfLines && testDoc.getText().split("\n").length !== numberOfLines));
-            }, 500);
+            }, "_waitForRefactoring", 500);
             callback();
         }
 
