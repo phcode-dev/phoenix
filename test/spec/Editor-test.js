@@ -2073,7 +2073,7 @@ define(function (require, exports, module) {
                 debugGutter = Editor.DEBUG_INFO_GUTTER;
 
             beforeEach(function () {
-                createTestEditor(defaultContent, "javascript");
+                createTestEditor("hello\nworld\nyo", "javascript");
                 Editor.registerGutter(leftGutter, 1);
                 Editor.registerGutter(rightGutter, 101);
             });
@@ -2097,6 +2097,14 @@ define(function (require, exports, module) {
                 });
                 expect(gutters).toEqual(expectedGutters);
                 expect(registeredGutters).toEqual(expectedGutters);
+            });
+
+            it("should isGutterRegistered work on multiple gutters", function () {
+                expect(myEditor.isGutterRegistered(leftGutter)).toBeTrue();
+                expect(myEditor.isGutterRegistered(rightGutter)).toBeTrue();
+                expect(myEditor.isGutterRegistered(lineNumberGutter)).toBeTrue();
+                expect(myEditor.isGutterRegistered(debugGutter)).toBeTrue();
+                expect(myEditor.isGutterRegistered("gutter not exists")).toBeFalse();
             });
 
             it("should return gutters registered with the same priority in insertion order", function () {
@@ -2142,6 +2150,47 @@ define(function (require, exports, module) {
                 myEditor.setGutterMarker(1, leftGutter, marker);
                 var lineInfo = myEditor._codeMirror.lineInfo(1);
                 expect(lineInfo.gutterMarkers[leftGutter], marker);
+            });
+
+            it("should get gutter marker correctly", function () {
+                let marker = window.document.createElement("div");
+                myEditor.setGutterMarker(1, leftGutter, marker);
+
+                let getMarker = myEditor.getGutterMarker(1, leftGutter);
+                expect(getMarker).toBe(marker);
+
+                getMarker = myEditor.getGutterMarker(2, leftGutter);
+                expect(getMarker).not.toBeDefined();
+            });
+
+            it("should clear gutter marker correctly", function () {
+                let marker = window.document.createElement("div");
+                myEditor.setGutterMarker(1, leftGutter, marker);
+
+                let getMarker = myEditor.getGutterMarker(1, leftGutter);
+                expect(getMarker).toBe(marker);
+
+                myEditor.clearGutterMarker(1, leftGutter);
+                getMarker = myEditor.getGutterMarker(1, leftGutter);
+                expect(getMarker).not.toBeDefined();
+            });
+
+            it("should clear all gutter marker correctly", function () {
+                let marker = window.document.createElement("div");
+                myEditor.setGutterMarker(1, leftGutter, marker);
+                let marker2 = window.document.createElement("span");
+                myEditor.setGutterMarker(2, leftGutter, marker2);
+
+                let getMarker = myEditor.getGutterMarker(1, leftGutter);
+                expect(getMarker).toEqual(marker);
+                getMarker = myEditor.getGutterMarker(2, leftGutter);
+                expect(getMarker).toBe(marker2);
+
+                myEditor.clearGutter(leftGutter);
+                getMarker = myEditor.getGutterMarker(1, leftGutter);
+                expect(getMarker).not.toBeDefined();
+                getMarker = myEditor.getGutterMarker(2, leftGutter);
+                expect(getMarker).not.toBeDefined();
             });
         });
 
