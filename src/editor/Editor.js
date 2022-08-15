@@ -112,8 +112,6 @@ define(function (require, exports, module) {
         INPUT_STYLE         = EditorPreferences.INPUT_STYLE;
 
     const LINE_NUMBER_GUTTER = EditorPreferences.LINE_NUMBER_GUTTER,
-        DEBUG_INFO_GUTTER    = EditorPreferences.DEBUG_INFO_GUTTER,
-        DEBUG_INFO_GUTTER_PRIORITY      = EditorPreferences.DEBUG_INFO_GUTTER_PRIORITY,
         LINE_NUMBER_GUTTER_PRIORITY     = EditorPreferences.LINE_NUMBER_GUTTER_PRIORITY,
         CODE_FOLDING_GUTTER_PRIORITY    = EditorPreferences.CODE_FOLDING_GUTTER_PRIORITY;
 
@@ -1929,10 +1927,6 @@ define(function (require, exports, module) {
             registeredGutters.push({name: LINE_NUMBER_GUTTER, priority: LINE_NUMBER_GUTTER_PRIORITY});
         }
 
-        if (gutters.indexOf(DEBUG_INFO_GUTTER) < 0) {
-            registeredGutters.push({name: DEBUG_INFO_GUTTER, priority: DEBUG_INFO_GUTTER_PRIORITY});
-        }
-
         gutters = registeredGutters.sort(_sortByPriority)
             .filter(_filterByLanguages)
             .map(_getName);
@@ -2022,7 +2016,7 @@ define(function (require, exports, module) {
      * Registers the gutter with the specified name at the given priority.
      * @param {string} name    The name of the gutter.
      * @param {number} priority  A number denoting the priority of the gutter. Priorities higher than LINE_NUMBER_GUTTER_PRIORITY appear after the line numbers. Priority less than LINE_NUMBER_GUTTER_PRIORITY appear before.
-     * @param {?Array<string>} languageIds A list of language ids that this gutter is valid for. If no language ids are passed, then the gutter is valid in all languages.
+     * @param {?Array<string>} [languageIds] A list of language ids that this gutter is valid for. If no language ids are passed, then the gutter is valid in all languages.
      */
     Editor.registerGutter = function (name, priority, languageIds) {
         if (isNaN(priority)) {
@@ -2265,8 +2259,6 @@ define(function (require, exports, module) {
 
     Editor.LINE_NUMBER_GUTTER_PRIORITY = LINE_NUMBER_GUTTER_PRIORITY;
     Editor.CODE_FOLDING_GUTTER_PRIORITY = CODE_FOLDING_GUTTER_PRIORITY;
-    Editor.DEBUG_INFO_GUTTER_PRIORITY = DEBUG_INFO_GUTTER_PRIORITY;
-    Editor.DEBUG_INFO_GUTTER = DEBUG_INFO_GUTTER;
 
     /**
      * Mark options to use with API with Editor.markText or Editor.markToken.

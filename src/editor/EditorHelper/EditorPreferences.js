@@ -62,9 +62,7 @@ define(function (require, exports, module) {
         MAX_TAB_SIZE            = 10;
 
     const LINE_NUMBER_GUTTER = "CodeMirror-linenumbers",
-        DEBUG_INFO_GUTTER = "phoenix-debug-info-gutter",
         LINE_NUMBER_GUTTER_PRIORITY     = 100,
-        DEBUG_INFO_GUTTER_PRIORITY      = 500,
         CODE_FOLDING_GUTTER_PRIORITY    = 1000;
 
     PreferencesManager.definePreference(CLOSE_BRACKETS,     "boolean", true, {
@@ -211,8 +209,6 @@ define(function (require, exports, module) {
     exports.MAX_TAB_SIZE            = MAX_TAB_SIZE;
 
     exports.LINE_NUMBER_GUTTER = LINE_NUMBER_GUTTER;
-    exports.DEBUG_INFO_GUTTER  = DEBUG_INFO_GUTTER;
-    exports.DEBUG_INFO_GUTTER_PRIORITY      = DEBUG_INFO_GUTTER_PRIORITY;
     exports.LINE_NUMBER_GUTTER_PRIORITY     = LINE_NUMBER_GUTTER_PRIORITY;
     exports.CODE_FOLDING_GUTTER_PRIORITY    = CODE_FOLDING_GUTTER_PRIORITY;
 

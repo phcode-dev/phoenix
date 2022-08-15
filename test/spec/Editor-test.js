@@ -2069,8 +2069,7 @@ define(function (require, exports, module) {
         describe("Gutter APIs", function () {
             var leftGutter = "left",
                 rightGutter = "right",
-                lineNumberGutter = "CodeMirror-linenumbers",
-                debugGutter = Editor.DEBUG_INFO_GUTTER;
+                lineNumberGutter = "CodeMirror-linenumbers";
 
             beforeEach(function () {
                 createTestEditor("hello\nworld\nyo", "javascript");
@@ -2090,7 +2089,7 @@ define(function (require, exports, module) {
             });
 
             it("should register multiple gutters in the correct order", function () {
-                var expectedGutters = [leftGutter, lineNumberGutter,  rightGutter, debugGutter];
+                var expectedGutters = [leftGutter, lineNumberGutter,  rightGutter];
                 var gutters  = myEditor._codeMirror.getOption("gutters");
                 var registeredGutters = Editor.getRegisteredGutters().map(function (gutter) {
                     return gutter.name;
@@ -2103,14 +2102,13 @@ define(function (require, exports, module) {
                 expect(myEditor.isGutterRegistered(leftGutter)).toBeTrue();
                 expect(myEditor.isGutterRegistered(rightGutter)).toBeTrue();
                 expect(myEditor.isGutterRegistered(lineNumberGutter)).toBeTrue();
-                expect(myEditor.isGutterRegistered(debugGutter)).toBeTrue();
                 expect(myEditor.isGutterRegistered("gutter not exists")).toBeFalse();
             });
 
             it("should return gutters registered with the same priority in insertion order", function () {
                 var secondRightGutter = "second-right";
                 Editor.registerGutter(secondRightGutter, 101);
-                var expectedGutters = [leftGutter, lineNumberGutter, rightGutter, secondRightGutter, debugGutter];
+                var expectedGutters = [leftGutter, lineNumberGutter, rightGutter, secondRightGutter];
                 var gutters  = myEditor._codeMirror.getOption("gutters");
                 var registeredGutters = Editor.getRegisteredGutters().map(function (gutter) {
                     return gutter.name;
@@ -2122,8 +2120,8 @@ define(function (require, exports, module) {
             it("should have only gutters registered with the intended languageIds ", function () {
                 var lessOnlyGutter = "less-only-gutter";
                 Editor.registerGutter(lessOnlyGutter, 101, ["less"]);
-                var expectedGutters = [leftGutter, lineNumberGutter, rightGutter, debugGutter];
-                var expectedRegisteredGutters = [leftGutter, lineNumberGutter, rightGutter, lessOnlyGutter, debugGutter];
+                var expectedGutters = [leftGutter, lineNumberGutter, rightGutter];
+                var expectedRegisteredGutters = [leftGutter, lineNumberGutter, rightGutter, lessOnlyGutter];
                 var gutters  = myEditor._codeMirror.getOption("gutters");
                 var registeredGutters = Editor.getRegisteredGutters().map(function (gutter) {
                     return gutter.name;
@@ -2136,7 +2134,7 @@ define(function (require, exports, module) {
                 Editor.unregisterGutter(leftGutter);
                 Editor.unregisterGutter(rightGutter);
                 Editor.registerGutter(leftGutter, 1);
-                var expectedGutters = [leftGutter, lineNumberGutter, debugGutter];
+                var expectedGutters = [leftGutter, lineNumberGutter];
                 var gutters  = myEditor._codeMirror.getOption("gutters");
                 var registeredGutters = Editor.getRegisteredGutters().map(function (gutter) {
                     return gutter.name;
