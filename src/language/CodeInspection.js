@@ -57,6 +57,9 @@ define(function (require, exports, module) {
         ResultsTemplate         = require("text!htmlContent/problems-panel-table.html"),
         Mustache                = require("thirdparty/mustache/mustache");
 
+    const CODE_INSPECTION_GUTTER_PRIORITY      = 500,
+        CODE_INSPECTION_GUTTER = "code-inspection-gutter";
+
     const INDICATOR_ID = "status-inspection";
 
     /** Values for problem's 'type' property */
@@ -414,7 +417,7 @@ define(function (require, exports, module) {
                 ch = gutterErrorMessages[lineno][0].ch;
             let $marker = $('<div><span>')
                 .attr('title', gutterMessage.message)
-                .addClass(Editor.DEBUG_INFO_GUTTER);
+                .addClass(CODE_INSPECTION_GUTTER);
             $marker.click(function (){
                editor.setCursorPos(line, ch);
             });
@@ -422,7 +425,7 @@ define(function (require, exports, module) {
                 .addClass(_getIconClassForType(type))
                 .addClass("brackets-inspection-gutter-marker")
                 .html('&nbsp;');
-            editor.setGutterMarker(line, Editor.DEBUG_INFO_GUTTER, $marker[0]);
+            editor.setGutterMarker(line, CODE_INSPECTION_GUTTER, $marker[0]);
         }
     }
 
@@ -772,6 +775,7 @@ define(function (require, exports, module) {
 
     // Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
+        Editor.registerGutter(CODE_INSPECTION_GUTTER, CODE_INSPECTION_GUTTER_PRIORITY);
         // Create bottom panel to list error details
         var panelHtml = Mustache.render(PanelTemplate, Strings);
         problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100);
