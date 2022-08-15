@@ -1047,6 +1047,16 @@ define(function (require, exports, module) {
         return this._codeMirror.operation(execFn);
     };
 
+    const MARK_OPTION_UNDERLINE_ERROR = {
+            className: "editor-text-fragment-error"
+        }, MARK_OPTION_UNDERLINE_WARN = {
+            className: "editor-text-fragment-warn"
+        }, MARK_OPTION_UNDERLINE_INFO = {
+            className: "editor-text-fragment-info"
+        }, MARK_OPTION_UNDERLINE_SPELLCHECK = {
+            className: "editor-text-fragment-spell-error"
+        };
+
     /**
      * Can be used to mark a range of text with a specific CSS class name. cursorFrom and cursorTo should be {line, ch}
      * objects. The options parameter is optional.
@@ -1054,8 +1064,9 @@ define(function (require, exports, module) {
      * @param {string} markType - A String that can be used to label the mark type.
      * @param {{line: number, ch: number}} cursorFrom - Mark start position
      * @param {{line: number, ch: number}} cursorTo - Mark end position
-     * @param {Object} [options] - When given, it should be an object that may contain the following
-     * configuration options:
+     * @param {Object} [options] - When given, it should be  one of the predefined `Editor.MARK_OPTION_UNDERLINE*` or
+     * it should be an object that may contain the following configuration options:
+     *
      * @param {string} [options.className] -Assigns a CSS class to the marked stretch of text.
      * @param {string} [options.css] -A string of CSS to be applied to the covered text. For example "color: #fe3".
      * @param {string} [options.startStyle] -Can be used to specify an extra CSS class to be applied to the leftmost
@@ -1890,14 +1901,6 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Clears all marks from the gutter with the specified name.
-     * @param {string} name The name of the gutter to clear.
-     */
-    Editor.prototype.clearGutter = function (name) {
-        this._codeMirror.clearGutter(name);
-    };
-
-    /**
      * Renders all registered gutters
      * @private
      */
@@ -1945,22 +1948,66 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Return true if gutter of the given name is registered
+     * @param   {string}   gutterName The name of the gutter
+     * @return {boolean}
+     */
+    Editor.prototype.isGutterRegistered = function (gutterName) {
+        return registeredGutters.some(function (gutter) {
+            return gutter.name === gutterName;
+        });
+    };
+
+    /**
      * Sets the marker for the specified gutter on the specified line number
      * @param   {number}   lineNumber The line number for the inserted gutter marker
      * @param   {string}   gutterName The name of the gutter
      * @param   {object}   marker     The dom element representing the marker to the inserted in the gutter
      */
     Editor.prototype.setGutterMarker = function (lineNumber, gutterName, marker) {
-        var gutterNameRegistered = registeredGutters.some(function (gutter) {
-            return gutter.name === gutterName;
-        });
-
-        if (!gutterNameRegistered) {
+        if (!this.isGutterRegistered(gutterName)) {
             console.warn("Gutter name must be registered before calling editor.setGutterMarker");
             return;
         }
 
         this._codeMirror.setGutterMarker(lineNumber, gutterName, marker);
+    };
+
+    /**
+     * Gets the gutter marker of the given name if found on the current line, else returns undefined.
+     * @param   {number}   lineNumber The line number for the inserted gutter marker
+     * @param   {string}   gutterName The name of the gutter
+     */
+    Editor.prototype.getGutterMarker = function (lineNumber, gutterName) {
+        if (!this.isGutterRegistered(gutterName)) {
+            console.warn("Gutter name must be registered before calling editor.getGutterMarker");
+            return;
+        }
+        let lineInfo = this._codeMirror.lineInfo(lineNumber);
+        let gutterMarkers = lineInfo && lineInfo.gutterMarkers || {};
+        return gutterMarkers[gutterName];
+    };
+
+    /**
+     * Clears the marker for the specified gutter on the specified line number. Does nothing if there was no marker
+     * on the line.
+     * @param   {number}   lineNumber The line number for the inserted gutter marker
+     * @param   {string}   gutterName The name of the gutter
+     */
+    Editor.prototype.clearGutterMarker = function (lineNumber, gutterName) {
+        this.setGutterMarker(lineNumber, gutterName, null);
+    };
+
+    /**
+     * Clears all marks from the gutter with the specified name.
+     * @param {string} gutterName The name of the gutter to clear.
+     */
+    Editor.prototype.clearGutter = function (gutterName) {
+        if (!this.isGutterRegistered(gutterName)) {
+            console.warn("Gutter name must be registered before calling editor.clearGutter");
+            return;
+        }
+        this._codeMirror.clearGutter(gutterName);
     };
 
     /**
@@ -2220,6 +2267,14 @@ define(function (require, exports, module) {
     Editor.CODE_FOLDING_GUTTER_PRIORITY = CODE_FOLDING_GUTTER_PRIORITY;
     Editor.DEBUG_INFO_GUTTER_PRIORITY = DEBUG_INFO_GUTTER_PRIORITY;
     Editor.DEBUG_INFO_GUTTER = DEBUG_INFO_GUTTER;
+
+    /**
+     * Mark options to use with API with Editor.markText or Editor.markToken.
+     */
+    Editor.MARK_OPTION_UNDERLINE_ERROR = MARK_OPTION_UNDERLINE_ERROR;
+    Editor.MARK_OPTION_UNDERLINE_WARN = MARK_OPTION_UNDERLINE_WARN;
+    Editor.MARK_OPTION_UNDERLINE_INFO = MARK_OPTION_UNDERLINE_INFO;
+    Editor.MARK_OPTION_UNDERLINE_SPELLCHECK = MARK_OPTION_UNDERLINE_SPELLCHECK;
 
     // Set up listeners for preference changes
     editorOptions.forEach(function (prefName) {

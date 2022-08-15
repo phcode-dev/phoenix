@@ -78,10 +78,6 @@ define(function (require, exports, module) {
         }
     }
 
-    const CSS_TEXT_UNDERLINE_CLASS_ERROR = "editor-text-fragment-error",
-        CSS_TEXT_UNDERLINE_CLASS_WARN = "editor-text-fragment-warn",
-        CSS_TEXT_UNDERLINE_CLASS_INFO = "editor-text-fragment-info";
-
     const CODE_MARK_TYPE_INSPECTOR = "codeInspector";
 
     /**
@@ -367,19 +363,19 @@ define(function (require, exports, module) {
         StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-errors", tooltip);
     }
 
-    function _getCSSClass(error){
+    function _getMarkOptions(error){
         switch (error.type) {
-        case Type.ERROR: return CSS_TEXT_UNDERLINE_CLASS_ERROR;
-        case Type.WARNING: return CSS_TEXT_UNDERLINE_CLASS_WARN;
-        case Type.META: return CSS_TEXT_UNDERLINE_CLASS_INFO;
+        case Type.ERROR: return Editor.MARK_OPTION_UNDERLINE_ERROR;
+        case Type.WARNING: return Editor.MARK_OPTION_UNDERLINE_WARN;
+        case Type.META: return Editor.MARK_OPTION_UNDERLINE_INFO;
         }
     }
 
     function _getCSSClassPriority(cssClass){
         switch (cssClass) {
-        case CSS_TEXT_UNDERLINE_CLASS_ERROR: return 3;
-        case CSS_TEXT_UNDERLINE_CLASS_WARN: return 2;
-        case CSS_TEXT_UNDERLINE_CLASS_INFO: return 1;
+        case Editor.MARK_OPTION_UNDERLINE_ERROR.className: return 3;
+        case Editor.MARK_OPTION_UNDERLINE_WARN.className: return 2;
+        case Editor.MARK_OPTION_UNDERLINE_INFO.className: return 1;
         }
     }
 
@@ -391,12 +387,12 @@ define(function (require, exports, module) {
         // now we only apply a style if there is not already a higher priority style applied to it.
         // Ie. If an error style is applied, we don't apply an info style over it as error takes precedence.
         let markings = editor.findMarksAt(error.pos, CODE_MARK_TYPE_INSPECTOR);
-        let classToApply = _getCSSClass(error);
+        let classToApply = _getMarkOptions(error).className;
         let classToApplyPriority = _getCSSClassPriority(classToApply);
         let shouldMark = true;
         for(let mark of markings){
             let classPriority = _getCSSClassPriority(mark.className);
-            if(classPriority<classToApplyPriority){
+            if(classPriority<=classToApplyPriority){
                 mark.clear();
             } else {
                 // there's something with a higher priority marking the token
@@ -449,9 +445,7 @@ define(function (require, exports, module) {
                             continue;
                         }
                         // add squiggly lines
-                        editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, {
-                            className: _getCSSClass(error)
-                        });
+                        editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
                         let line = error.pos.line || 0;
                         let ch = error.pos.ch || 0;
                         let gutterMessage = gutterErrorMessages[line] || [];
