@@ -428,8 +428,29 @@ define(function (require, exports, module) {
         return $marker[0];
     }
 
+    /**
+     * We have to draw empty gutter markers if it doesnt exist, else there is a visual gap in the gutter when
+     * codemirror renders gutter with lines having no gutter icons
+     * @param editor
+     * @param line
+     * @private
+     */
+    function _addDummyGutterMarkerIfNotExist(editor, line) {
+        let marker = editor.getGutterMarker(line, CODE_INSPECTION_GUTTER);
+        if(!marker){
+            let $marker = $('<div>')
+                .addClass(CODE_INSPECTION_GUTTER);
+            editor.setGutterMarker(line, CODE_INSPECTION_GUTTER, $marker[0]);
+        }
+    }
+
+    function _populateDummyGutterElements(editor, from, to) {
+        for(let line=from; line <= to; line++) {
+            _addDummyGutterMarkerIfNotExist(editor, line);
+        }
+    }
+
     function _updateGutterMarks(editor, gutterErrorMessages) {
-        editor.clearGutter(CODE_INSPECTION_GUTTER);
         // add gutter icons
         for(let lineno of Object.keys(gutterErrorMessages)){
             // We mark the line with the Highest priority icon. (Eg. error icon if same line has warnings and info)
@@ -446,6 +467,11 @@ define(function (require, exports, module) {
             let marker = _createMarkerElement(editor, line, ch, highestPriorityMarkTypeSeen, message);
             editor.setGutterMarker(line, CODE_INSPECTION_GUTTER, marker);
         }
+        _populateDummyGutterElements(editor, 0, editor.getLastVisibleLine());
+    }
+
+    function _editorVieportChangeHandler(_evt, editor, from, to) {
+        _populateDummyGutterElements(editor, from, to);
     }
 
     /**
@@ -455,29 +481,33 @@ define(function (require, exports, module) {
      */
     function _updateEditorMarks(resultProviderEntries) {
         let editor = EditorManager.getCurrentFullEditor();
+        if(!(editor && resultProviderEntries && resultProviderEntries.length)) {
+            return;
+        }
         editor.operation(function () {
             editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
+            editor.clearGutter(CODE_INSPECTION_GUTTER);
+            editor.off("viewportChange.codeInspection");
+            editor.on("viewportChange.codeInspection", _editorVieportChangeHandler);
             let gutterErrorMessages = {};
-            if(editor && resultProviderEntries && resultProviderEntries.length){
-                for(let resultProvider of resultProviderEntries){
-                    let errors = (resultProvider.result && resultProvider.result.errors) || [];
-                    for(let error of errors){
-                        // todo: add error.message on hover
-                        // add gutter markers
-                        let line = error.pos.line || 0;
-                        let ch = error.pos.ch || 0;
-                        let gutterMessage = gutterErrorMessages[line] || [];
-                        gutterMessage.push({message: error.message, type: error.type, line, ch});
-                        gutterErrorMessages[line] = gutterMessage;
-                        // add squiggly lines
-                        if(_shouldMarkTokenAtPosition(editor, error)){
-                            let mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
-                            mark.type = error.type;
-                        }
+            for (let resultProvider of resultProviderEntries) {
+                let errors = (resultProvider.result && resultProvider.result.errors) || [];
+                for (let error of errors) {
+                    // todo: add error.message on hover
+                    // add gutter markers
+                    let line = error.pos.line || 0;
+                    let ch = error.pos.ch || 0;
+                    let gutterMessage = gutterErrorMessages[line] || [];
+                    gutterMessage.push({message: error.message, type: error.type, line, ch});
+                    gutterErrorMessages[line] = gutterMessage;
+                    // add squiggly lines
+                    if (_shouldMarkTokenAtPosition(editor, error)) {
+                        let mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
+                        mark.type = error.type;
                     }
                 }
-                _updateGutterMarks(editor, gutterErrorMessages);
             }
+            _updateGutterMarks(editor, gutterErrorMessages);
         });
     }
 
