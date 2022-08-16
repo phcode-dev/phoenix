@@ -374,11 +374,11 @@ define(function (require, exports, module) {
         }
     }
 
-    function _getCSSClassPriority(cssClass){
-        switch (cssClass) {
-        case Editor.MARK_OPTION_UNDERLINE_ERROR.className: return 3;
-        case Editor.MARK_OPTION_UNDERLINE_WARN.className: return 2;
-        case Editor.MARK_OPTION_UNDERLINE_INFO.className: return 1;
+    function _getMarkTypePriority(type){
+        switch (type) {
+        case Type.ERROR: return 3;
+        case Type.WARNING: return 2;
+        case Type.META: return 1;
         }
     }
 
@@ -390,12 +390,11 @@ define(function (require, exports, module) {
         // now we only apply a style if there is not already a higher priority style applied to it.
         // Ie. If an error style is applied, we don't apply an info style over it as error takes precedence.
         let markings = editor.findMarksAt(error.pos, CODE_MARK_TYPE_INSPECTOR);
-        let classToApply = _getMarkOptions(error).className;
-        let classToApplyPriority = _getCSSClassPriority(classToApply);
+        let MarkToApplyPriority = _getMarkTypePriority(error.type);
         let shouldMark = true;
         for(let mark of markings){
-            let classPriority = _getCSSClassPriority(mark.className);
-            if(classPriority<=classToApplyPriority){
+            let markTypePriority = _getMarkTypePriority(mark.type);
+            if(markTypePriority<=MarkToApplyPriority){
                 mark.clear();
             } else {
                 // there's something with a higher priority marking the token
@@ -405,27 +404,47 @@ define(function (require, exports, module) {
         return shouldMark;
     }
 
+    /**
+     * It creates a div element with a span element inside it, and then adds a click handler to move cursor to the
+     * error position.
+     * @param editor - the editor instance
+     * @param line - the line number of the error
+     * @param ch - the character position of the error
+     * @param type - The type of the marker. This is a string that can be one of the error types
+     * @param message - The message that will be displayed when you hover over the marker.
+     * @returns A DOM element.
+     */
+    function _createMarkerElement(editor, line, ch, type, message) {
+        let $marker = $('<div><span>')
+            .attr('title', message)
+            .addClass(CODE_INSPECTION_GUTTER);
+        $marker.click(function (){
+            editor.setCursorPos(line, ch);
+        });
+        $marker.find('span')
+            .addClass(_getIconClassForType(type))
+            .addClass("brackets-inspection-gutter-marker")
+            .html('&nbsp;');
+        return $marker[0];
+    }
+
     function _updateGutterMarks(editor, gutterErrorMessages) {
-        editor.clearGutter(Editor.DEBUG_INFO_GUTTER);
+        editor.clearGutter(CODE_INSPECTION_GUTTER);
         // add gutter icons
         for(let lineno of Object.keys(gutterErrorMessages)){
+            // We mark the line with the Highest priority icon. (Eg. error icon if same line has warnings and info)
+            let highestPriorityMarkTypeSeen = Type.META;
             let gutterMessage = gutterErrorMessages[lineno].reduce((prev, current)=>{
-                return {message: `${prev.message}\n${current.message}`};
+                if(_getMarkTypePriority(current.type) > _getMarkTypePriority(highestPriorityMarkTypeSeen)){
+                    highestPriorityMarkTypeSeen = current.type;
+                }
+                return {message: `${prev.message}\n${current.message} at column: ${current.ch+1}`};
             }, {message: ''});
-            let type = gutterErrorMessages[lineno][0].type,
-                line = gutterErrorMessages[lineno][0].line,
-                ch = gutterErrorMessages[lineno][0].ch;
-            let $marker = $('<div><span>')
-                .attr('title', gutterMessage.message)
-                .addClass(CODE_INSPECTION_GUTTER);
-            $marker.click(function (){
-               editor.setCursorPos(line, ch);
-            });
-            $marker.find('span')
-                .addClass(_getIconClassForType(type))
-                .addClass("brackets-inspection-gutter-marker")
-                .html('&nbsp;');
-            editor.setGutterMarker(line, CODE_INSPECTION_GUTTER, $marker[0]);
+            let line = gutterErrorMessages[lineno][0].line,
+                ch = gutterErrorMessages[lineno][0].ch,
+                message = gutterMessage.message;
+            let marker = _createMarkerElement(editor, line, ch, highestPriorityMarkTypeSeen, message);
+            editor.setGutterMarker(line, CODE_INSPECTION_GUTTER, marker);
         }
     }
 
@@ -444,16 +463,18 @@ define(function (require, exports, module) {
                     let errors = (resultProvider.result && resultProvider.result.errors) || [];
                     for(let error of errors){
                         // todo: add error.message on hover
-                        if(!_shouldMarkTokenAtPosition(editor, error)){
-                            continue;
-                        }
-                        // add squiggly lines
-                        editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
+                        // add gutter markers
                         let line = error.pos.line || 0;
                         let ch = error.pos.ch || 0;
                         let gutterMessage = gutterErrorMessages[line] || [];
                         gutterMessage.push({message: error.message, type: error.type, line, ch});
                         gutterErrorMessages[line] = gutterMessage;
+                        // add squiggly lines
+                        if(!_shouldMarkTokenAtPosition(editor, error)){
+                            continue;
+                        }
+                        let mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
+                        mark.type = error.type;
                     }
                 }
                 _updateGutterMarks(editor, gutterErrorMessages);
