@@ -74,6 +74,10 @@ img {
 
 }
 
+.margin-right-1em{
+    margin-right: 1em;
+}
+
 .modal-popup .modal-content {
     position: relative;
     display: -webkit-box;

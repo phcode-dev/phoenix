@@ -186,6 +186,9 @@ define(function (require, exports, module) {
         self._codeMirror.on("changes", function (instance, changeList) {
             self.trigger("change", self, changeList);
         });
+        self._codeMirror.on("viewportChange", function (instance, from, to) {
+            self.trigger("viewportChange", self, from, to);
+        });
         self._codeMirror.on("beforeChange", function (instance, changeObj) {
             self.trigger("beforeChange", self, changeObj);
         });

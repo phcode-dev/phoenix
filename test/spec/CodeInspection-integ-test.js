@@ -517,19 +517,52 @@ define(function (require, exports, module) {
                 expect(marks[0].className).toBe("editor-text-fragment-warn");
             });
 
-            it("should underline errors only if warnings and info present in the same location", async function () {
-                var codeInspector1 = createCodeInspector("javascript linter 1", {
+            it("should show warning gutter icon on line in editor", async function () {
+                let codeInspector = createCodeInspector("javascript linter", failLintResult());
+                CodeInspection.register("javascript", codeInspector);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
+
+                expect($("#problems-panel").is(":visible")).toBe(true);
+                let marks = EditorManager.getActiveEditor().getGutterMarker(1, CodeInspection.CODE_INSPECTION_GUTTER);
+                expect(marks.title).toBe('\nSome errors here and there at column: 4');
+                marks = $(marks);
+                expect(marks.find('span').hasClass('line-icon-problem_type_warning')).toBeTrue();
+            });
+
+            it("should show info gutter icon on line in editor", async function () {
+                let codeInspector1 = createCodeInspector("javascript linter 1", {
                     errors: [
                         {
                             pos: { line: 1, ch: 1 },
                             message: "Some errors here and there",
+                            type: CodeInspection.Type.META
+                        }
+                    ]
+                });
+                CodeInspection.register("javascript", codeInspector1);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
+
+                expect($("#problems-panel").is(":visible")).toBe(true);
+                let marks = $(EditorManager.getActiveEditor()
+                    .getGutterMarker(1, CodeInspection.CODE_INSPECTION_GUTTER));
+                expect(marks.find('span').hasClass('line-icon-problem_type_info')).toBeTrue();
+            });
+
+            async function _verifyMixOfErrors(chw, che, chm, numMarksExpected = 1) {
+                let codeInspector1 = createCodeInspector("javascript linter 1", {
+                    errors: [
+                        {
+                            pos: { line: 1, ch: chw },
+                            message: "Some errors here and there",
                             type: CodeInspection.Type.WARNING
                         }, {
-                            pos: { line: 1, ch: 2 },
+                            pos: { line: 1, ch: che },
                             message: "Some errors here and there",
                             type: CodeInspection.Type.ERROR
                         }, {
-                            pos: { line: 1, ch: 3 },
+                            pos: { line: 1, ch: chm },
                             message: "Some errors here and there",
                             type: CodeInspection.Type.META
                         }
@@ -541,35 +574,25 @@ define(function (require, exports, module) {
 
                 expect($("#problems-panel").is(":visible")).toBe(true);
                 let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
-                expect(marks.length).toBe(1); // only the error marking will prevail as it has the highest priority
+                expect(marks.length).toBe(numMarksExpected);
                 expect(marks[0].className).toBe("editor-text-fragment-error");
+            }
+
+            it("should underline errors only if warnings and info present in the same location", async function () {
+                await _verifyMixOfErrors(1, 2, 3);
+            });
+
+            it("should show errors icon only in gutter if warn and info also present on line", async function () {
+                await _verifyMixOfErrors(1, 2, 3);
+
+                let marks = $(EditorManager.getActiveEditor().getGutterMarker(1, CodeInspection.CODE_INSPECTION_GUTTER));
+                expect(marks.find('span').hasClass('line-icon-problem_type_error')).toBeTrue();
             });
 
             it("should show errors, warning or info underline under text in editor appropriately", async function () {
-                var codeInspector1 = createCodeInspector("javascript linter 1", {
-                    errors: [
-                        {
-                            pos: { line: 1, ch: 1 },
-                            message: "Some errors here and there",
-                            type: CodeInspection.Type.WARNING
-                        }, {
-                            pos: { line: 1, ch: 2 },
-                            message: "Some errors here and there",
-                            type: CodeInspection.Type.ERROR
-                        }, {
-                            pos: { line: 1, ch: 10 },
-                            message: "Some errors here and there",
-                            type: CodeInspection.Type.META
-                        }
-                    ]
-                });
-                CodeInspection.register("javascript", codeInspector1);
+                await _verifyMixOfErrors(1, 2, 10, 2);
 
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
-
-                expect($("#problems-panel").is(":visible")).toBe(true);
                 let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
-                expect(marks.length).toBe(2);
                 expect(marks[0].className).toBe("editor-text-fragment-error");
                 expect(marks[1].className).toBe("editor-text-fragment-info");
             });

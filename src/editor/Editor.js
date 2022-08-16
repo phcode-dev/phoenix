@@ -27,7 +27,7 @@
  * destroy() an Editor that's going away so it can release its Document ref.
  *
  * For now, there's a distinction between the "master" Editor for a Document - which secretly acts
- * as the Document's internal model of the text state - and the multitude of "slave" secondary Editors
+ * as the Document's internal model of the text state - and the multitude of secondary Editors
  * which, via Document, sync their changes to and from that master.
  *
  * For now, direct access to the underlying CodeMirror object is still possible via `_codeMirror` --
@@ -37,10 +37,21 @@
  *    - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the
  *      text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the
  *      raw DOM event. Note: most listeners will only want to listen for "keypress".
+ *    - change - Triggered with an array of change objects. Parameters: (editor, changeList)
+ *    - beforeChange - (self, changeObj)
+ *    - beforeSelectionChange - (selectionObj)
+ *    - focus - Fired when an editor is focused
+ *    - blur - Fired when an editor loses focused
+ *    - update - Will be fired whenever Editor updates its DOM display.
  *    - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.
  *      Note: do not listen to this in order to be generally informed of edits--listen to the
  *      "change" event on Document instead.
  *    - scroll -- When the editor is scrolled, either by user action or programmatically.
+ *    - viewportChange - (from: number, to: number) Fires whenever the view port of the editor changes
+ *      (due to scrolling, editing, or any other factor). The from and to arguments give the new start
+ *      and end of the viewport. This is combination with `editorInstance.getViewPort()` can be used to
+ *      selectively redraw visual elements in code like syntax analyze only parts of code instead
+ *      of the full code everytime.
  *    - lostContent -- When the backing Document changes in such a way that this Editor is no longer
  *      able to display accurate text. This occurs if the Document's file is deleted, or in certain
  *      Document->editor syncing edge cases that we do not yet support (the latter cause will
@@ -112,8 +123,6 @@ define(function (require, exports, module) {
         INPUT_STYLE         = EditorPreferences.INPUT_STYLE;
 
     const LINE_NUMBER_GUTTER = EditorPreferences.LINE_NUMBER_GUTTER,
-        DEBUG_INFO_GUTTER    = EditorPreferences.DEBUG_INFO_GUTTER,
-        DEBUG_INFO_GUTTER_PRIORITY      = EditorPreferences.DEBUG_INFO_GUTTER_PRIORITY,
         LINE_NUMBER_GUTTER_PRIORITY     = EditorPreferences.LINE_NUMBER_GUTTER_PRIORITY,
         CODE_FOLDING_GUTTER_PRIORITY    = EditorPreferences.CODE_FOLDING_GUTTER_PRIORITY;
 
@@ -743,6 +752,20 @@ define(function (require, exports, module) {
         this._codeMirror.setSize(width, height);
     };
 
+
+    /**
+     * Returns a {from, to} object indicating the start (inclusive) and end (exclusive) of the currently rendered
+     * part of the document. In big documents, when most content is scrolled out of view, Editor will only render
+     * the visible part, and a margin around it. See also the `viewportChange` event fired on the editor.
+     *
+     * This is combination with `viewportChange` event can be used to selectively redraw visual elements in code
+     * like syntax analyze only parts of code instead of the full code everytime.
+     * @return {{from: number, to: number}}
+     */
+    Editor.prototype.getViewport = function () {
+        return this._codeMirror.getViewport();
+    };
+
     /** @const */
     var CENTERING_MARGIN = 0.15;
 
@@ -1047,6 +1070,16 @@ define(function (require, exports, module) {
         return this._codeMirror.operation(execFn);
     };
 
+    const MARK_OPTION_UNDERLINE_ERROR = {
+            className: "editor-text-fragment-error"
+        }, MARK_OPTION_UNDERLINE_WARN = {
+            className: "editor-text-fragment-warn"
+        }, MARK_OPTION_UNDERLINE_INFO = {
+            className: "editor-text-fragment-info"
+        }, MARK_OPTION_UNDERLINE_SPELLCHECK = {
+            className: "editor-text-fragment-spell-error"
+        };
+
     /**
      * Can be used to mark a range of text with a specific CSS class name. cursorFrom and cursorTo should be {line, ch}
      * objects. The options parameter is optional.
@@ -1054,8 +1087,9 @@ define(function (require, exports, module) {
      * @param {string} markType - A String that can be used to label the mark type.
      * @param {{line: number, ch: number}} cursorFrom - Mark start position
      * @param {{line: number, ch: number}} cursorTo - Mark end position
-     * @param {Object} [options] - When given, it should be an object that may contain the following
-     * configuration options:
+     * @param {Object} [options] - When given, it should be  one of the predefined `Editor.MARK_OPTION_UNDERLINE*` or
+     * it should be an object that may contain the following configuration options:
+     *
      * @param {string} [options.className] -Assigns a CSS class to the marked stretch of text.
      * @param {string} [options.css] -A string of CSS to be applied to the covered text. For example "color: #fe3".
      * @param {string} [options.startStyle] -Can be used to specify an extra CSS class to be applied to the leftmost
@@ -1890,14 +1924,6 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Clears all marks from the gutter with the specified name.
-     * @param {string} name The name of the gutter to clear.
-     */
-    Editor.prototype.clearGutter = function (name) {
-        this._codeMirror.clearGutter(name);
-    };
-
-    /**
      * Renders all registered gutters
      * @private
      */
@@ -1926,10 +1952,6 @@ define(function (require, exports, module) {
             registeredGutters.push({name: LINE_NUMBER_GUTTER, priority: LINE_NUMBER_GUTTER_PRIORITY});
         }
 
-        if (gutters.indexOf(DEBUG_INFO_GUTTER) < 0) {
-            registeredGutters.push({name: DEBUG_INFO_GUTTER, priority: DEBUG_INFO_GUTTER_PRIORITY});
-        }
-
         gutters = registeredGutters.sort(_sortByPriority)
             .filter(_filterByLanguages)
             .map(_getName);
@@ -1945,22 +1967,66 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Return true if gutter of the given name is registered
+     * @param   {string}   gutterName The name of the gutter
+     * @return {boolean}
+     */
+    Editor.prototype.isGutterRegistered = function (gutterName) {
+        return registeredGutters.some(function (gutter) {
+            return gutter.name === gutterName;
+        });
+    };
+
+    /**
      * Sets the marker for the specified gutter on the specified line number
      * @param   {number}   lineNumber The line number for the inserted gutter marker
      * @param   {string}   gutterName The name of the gutter
      * @param   {object}   marker     The dom element representing the marker to the inserted in the gutter
      */
     Editor.prototype.setGutterMarker = function (lineNumber, gutterName, marker) {
-        var gutterNameRegistered = registeredGutters.some(function (gutter) {
-            return gutter.name === gutterName;
-        });
-
-        if (!gutterNameRegistered) {
+        if (!this.isGutterRegistered(gutterName)) {
             console.warn("Gutter name must be registered before calling editor.setGutterMarker");
             return;
         }
 
         this._codeMirror.setGutterMarker(lineNumber, gutterName, marker);
+    };
+
+    /**
+     * Gets the gutter marker of the given name if found on the current line, else returns undefined.
+     * @param   {number}   lineNumber The line number for the inserted gutter marker
+     * @param   {string}   gutterName The name of the gutter
+     */
+    Editor.prototype.getGutterMarker = function (lineNumber, gutterName) {
+        if (!this.isGutterRegistered(gutterName)) {
+            console.warn("Gutter name must be registered before calling editor.getGutterMarker");
+            return;
+        }
+        let lineInfo = this._codeMirror.lineInfo(lineNumber);
+        let gutterMarkers = lineInfo && lineInfo.gutterMarkers || {};
+        return gutterMarkers[gutterName];
+    };
+
+    /**
+     * Clears the marker for the specified gutter on the specified line number. Does nothing if there was no marker
+     * on the line.
+     * @param   {number}   lineNumber The line number for the inserted gutter marker
+     * @param   {string}   gutterName The name of the gutter
+     */
+    Editor.prototype.clearGutterMarker = function (lineNumber, gutterName) {
+        this.setGutterMarker(lineNumber, gutterName, null);
+    };
+
+    /**
+     * Clears all marks from the gutter with the specified name.
+     * @param {string} gutterName The name of the gutter to clear.
+     */
+    Editor.prototype.clearGutter = function (gutterName) {
+        if (!this.isGutterRegistered(gutterName)) {
+            console.warn("Gutter name must be registered before calling editor.clearGutter");
+            return;
+        }
+        this._codeMirror.clearGutter(gutterName);
     };
 
     /**
@@ -1975,7 +2041,7 @@ define(function (require, exports, module) {
      * Registers the gutter with the specified name at the given priority.
      * @param {string} name    The name of the gutter.
      * @param {number} priority  A number denoting the priority of the gutter. Priorities higher than LINE_NUMBER_GUTTER_PRIORITY appear after the line numbers. Priority less than LINE_NUMBER_GUTTER_PRIORITY appear before.
-     * @param {?Array<string>} languageIds A list of language ids that this gutter is valid for. If no language ids are passed, then the gutter is valid in all languages.
+     * @param {?Array<string>} [languageIds] A list of language ids that this gutter is valid for. If no language ids are passed, then the gutter is valid in all languages.
      */
     Editor.registerGutter = function (name, priority, languageIds) {
         if (isNaN(priority)) {
@@ -2218,8 +2284,14 @@ define(function (require, exports, module) {
 
     Editor.LINE_NUMBER_GUTTER_PRIORITY = LINE_NUMBER_GUTTER_PRIORITY;
     Editor.CODE_FOLDING_GUTTER_PRIORITY = CODE_FOLDING_GUTTER_PRIORITY;
-    Editor.DEBUG_INFO_GUTTER_PRIORITY = DEBUG_INFO_GUTTER_PRIORITY;
-    Editor.DEBUG_INFO_GUTTER = DEBUG_INFO_GUTTER;
+
+    /**
+     * Mark options to use with API with Editor.markText or Editor.markToken.
+     */
+    Editor.MARK_OPTION_UNDERLINE_ERROR = MARK_OPTION_UNDERLINE_ERROR;
+    Editor.MARK_OPTION_UNDERLINE_WARN = MARK_OPTION_UNDERLINE_WARN;
+    Editor.MARK_OPTION_UNDERLINE_INFO = MARK_OPTION_UNDERLINE_INFO;
+    Editor.MARK_OPTION_UNDERLINE_SPELLCHECK = MARK_OPTION_UNDERLINE_SPELLCHECK;
 
     // Set up listeners for preference changes
     editorOptions.forEach(function (prefName) {
