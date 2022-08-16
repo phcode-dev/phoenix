@@ -27,7 +27,7 @@
  * destroy() an Editor that's going away so it can release its Document ref.
  *
  * For now, there's a distinction between the "master" Editor for a Document - which secretly acts
- * as the Document's internal model of the text state - and the multitude of "slave" secondary Editors
+ * as the Document's internal model of the text state - and the multitude of secondary Editors
  * which, via Document, sync their changes to and from that master.
  *
  * For now, direct access to the underlying CodeMirror object is still possible via `_codeMirror` --
@@ -37,10 +37,21 @@
  *    - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the
  *      text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the
  *      raw DOM event. Note: most listeners will only want to listen for "keypress".
+ *    - change - Triggered with an array of change objects. Parameters: (editor, changeList)
+ *    - beforeChange - (self, changeObj)
+ *    - beforeSelectionChange - (selectionObj)
+ *    - focus - Fired when an editor is focused
+ *    - blur - Fired when an editor loses focused
+ *    - update - Will be fired whenever Editor updates its DOM display.
  *    - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.
  *      Note: do not listen to this in order to be generally informed of edits--listen to the
  *      "change" event on Document instead.
  *    - scroll -- When the editor is scrolled, either by user action or programmatically.
+ *    - viewportChange - (from: number, to: number) Fires whenever the view port of the editor changes
+ *      (due to scrolling, editing, or any other factor). The from and to arguments give the new start
+ *      and end of the viewport. This is combination with `editorInstance.getViewPort()` can be used to
+ *      selectively redraw visual elements in code like syntax analyze only parts of code instead
+ *      of the full code everytime.
  *    - lostContent -- When the backing Document changes in such a way that this Editor is no longer
  *      able to display accurate text. This occurs if the Document's file is deleted, or in certain
  *      Document->editor syncing edge cases that we do not yet support (the latter cause will
@@ -739,6 +750,20 @@ define(function (require, exports, module) {
      */
     Editor.prototype.setSize = function (width, height) {
         this._codeMirror.setSize(width, height);
+    };
+
+
+    /**
+     * Returns a {from, to} object indicating the start (inclusive) and end (exclusive) of the currently rendered
+     * part of the document. In big documents, when most content is scrolled out of view, Editor will only render
+     * the visible part, and a margin around it. See also the `viewportChange` event fired on the editor.
+     *
+     * This is combination with `viewportChange` event can be used to selectively redraw visual elements in code
+     * like syntax analyze only parts of code instead of the full code everytime.
+     * @return {{from: number, to: number}}
+     */
+    Editor.prototype.getViewport = function () {
+        return this._codeMirror.getViewport();
     };
 
     /** @const */

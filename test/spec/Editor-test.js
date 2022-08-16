@@ -393,6 +393,13 @@ define(function (require, exports, module) {
             return content;
         }
 
+        describe("getViewport", function () {
+            it("should getViewport", function () {
+                createTestEditor(makeDummyLines(1000).join("\n"), "unknown");
+                expect(myEditor.getViewport()).toEqual({ from: 0, to: 0 }); // mock editor no dom is rendered.
+            });
+        });
+
         describe("Selections", function () {
 
             beforeEach(function () {
