@@ -76,8 +76,8 @@ define(function (require, exports, module) {
         switch (type) {
         case Type.ERROR: return "line-icon-problem_type_error fa-solid fa-times-circle";
         case Type.WARNING: return "line-icon-problem_type_warning fa-solid fa-exclamation-triangle";
-        case Type.META: return "line-icon-problem_type_meta fa-solid fa-info";
-        default: return "line-icon-problem_type_meta fa-solid fa-info";
+        case Type.META: return "line-icon-problem_type_info fa-solid fa-info-circle";
+        default: return "line-icon-problem_type_info fa-solid fa-info-circle";
         }
     }
 
@@ -470,11 +470,10 @@ define(function (require, exports, module) {
                         gutterMessage.push({message: error.message, type: error.type, line, ch});
                         gutterErrorMessages[line] = gutterMessage;
                         // add squiggly lines
-                        if(!_shouldMarkTokenAtPosition(editor, error)){
-                            continue;
+                        if(_shouldMarkTokenAtPosition(editor, error)){
+                            let mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
+                            mark.type = error.type;
                         }
-                        let mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
-                        mark.type = error.type;
                     }
                 }
                 _updateGutterMarks(editor, gutterErrorMessages);
@@ -872,6 +871,7 @@ define(function (require, exports, module) {
     exports._PREF_PREFERRED_ONLY    = PREF_PREFERRED_ONLY;
 
     // Public API
+    exports.CODE_INSPECTION_GUTTER      = CODE_INSPECTION_GUTTER;
     exports.register                    = register;
     exports.Type                        = Type;
     exports.toggleEnabled               = toggleEnabled;
