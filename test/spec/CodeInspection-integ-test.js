@@ -530,6 +530,14 @@ define(function (require, exports, module) {
                 expect(marks.find('span').hasClass('line-icon-problem_type_warning')).toBeTrue();
             });
 
+            it("should not show codeinspection gutter on unsupported languages", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["no-gutters.md"]), "open test file", 5000);
+
+                expect($("#problems-panel").is(":visible")).toBe(false);
+                let gutters = EditorManager.getActiveEditor()._codeMirror.options.gutters;
+                expect(gutters.includes(CodeInspection.CODE_INSPECTION_GUTTER)).toBeFalse();
+            });
+
             it("should show info gutter icon on line in editor", async function () {
                 let codeInspector1 = createCodeInspector("javascript linter 1", {
                     errors: [
