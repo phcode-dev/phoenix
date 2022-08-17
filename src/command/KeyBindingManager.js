@@ -1005,8 +1005,7 @@ define(function (require, exports, module) {
         // Install keydown event listener.
         window.document.body.addEventListener(
             "keydown",
-            _handleKeyEvent,
-            true
+            _handleKeyEvent
         );
 
         exports.useWindowsCompatibleBindings = (brackets.platform !== "mac") &&

@@ -632,9 +632,11 @@ define(function (require, exports, module) {
      * usual undo logic run since it will destroy our marker.
      */
     ColorEditor.prototype.undo = function () {
-        if (this._originalColor.toString() !== this._color.toString()) {
+        if (this._originalColor.toString() !== this._color.getOriginalInput()) {
+            let originalColor = this._color.getOriginalInput();
             this._commitColor(this._originalColor, true);
-            this._redoColor = this._color.toString();
+            // commit resets this._redoColor, so we have to do this save load cycle.
+            this._redoColor = originalColor;
         }
     };
 
@@ -651,7 +653,7 @@ define(function (require, exports, module) {
      * arrow keys that would be handled by the scroller.
      */
     ColorEditor.prototype._handleKeydown = function (event) {
-        var hasCtrl = (brackets.platform === "win") ? (event.ctrlKey) : (event.metaKey);
+        var hasCtrl = (brackets.platform !== "mac") ? (event.ctrlKey) : (event.metaKey);
         if (hasCtrl) {
             switch (event.keyCode) {
             case KeyEvent.DOM_VK_Z:
