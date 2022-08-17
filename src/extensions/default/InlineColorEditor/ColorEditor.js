@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         StringUtils        = brackets.getModule("utils/StringUtils"),
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
-        tinycolor          = require("thirdparty/tinycolor-min");
+        tinycolor          = require("thirdparty/tinycolor");
 
     /** Mustache template that forms the bare DOM structure of the UI */
     var ColorEditorTemplate = require("text!ColorEditorTemplate.html");
@@ -56,6 +56,15 @@ define(function (require, exports, module) {
      */
     function as0xString(color) {
         return color.toHexString().replace("#", "0x");
+    }
+
+    /**
+     * Converts a color to a 0x-prefixed string
+     * @param {tinycolor} color - color to convert
+     * @returns {string} - color as 0x-prefixed string
+     */
+    function as0x8String(color) {
+        return color.toHex8String().replace("#", "0x");
     }
 
     /**
@@ -299,7 +308,7 @@ define(function (require, exports, module) {
             var newFormat   = $(event.currentTarget).html().toLowerCase().replace("%", "p"),
                 newColor    = self.getColor().toString();
 
-            var colorObject = checkSetFormat(newColor);
+            var colorObject = self.getColor();
 
             switch (newFormat) {
             case "hsla":
@@ -312,13 +321,26 @@ define(function (require, exports, module) {
                 newColor = colorObject.toPercentageRgbString();
                 break;
             case "hex":
-                newColor = colorObject.toHexString();
-                self._hsv.a = 1;
+                if(colorObject._a <1){
+                    newColor = colorObject.toHex8String();
+                } else {
+                    newColor = colorObject.toHexString();
+                    self._hsv.a = 1;
+                }
+                break;
+            case "hex8":
+                newColor = colorObject.toHex8String();
                 break;
             case "0x":
-                newColor = as0xString(colorObject);
-                self._hsv.a = 1;
-                self._format = "0x";
+                if(colorObject._a <1){
+                    newColor = as0x8String(colorObject);
+                    self._hsv.a = 1;
+                    self._format = "0x";
+                } else {
+                    newColor = as0xString(colorObject);
+                    self._hsv.a = 1;
+                    self._format = "0x";
+                }
                 break;
             }
 
@@ -498,7 +520,10 @@ define(function (require, exports, module) {
             colorVal = this._hsv.a < 1 ? newColor.toRgbString() : newColor.toHexString();
             break;
         case "0x":
-            colorVal = as0xString(newColor);
+            colorVal = this._hsv.a < 1 ? as0x8String(newColor): as0xString(newColor);
+            break;
+        case "hex8":
+            colorVal = newColor.toHex8String();
             break;
         }
         colorVal = this._isUpperCase ? colorVal.toUpperCase() : colorVal;
