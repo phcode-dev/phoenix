@@ -2106,10 +2106,10 @@ define(function (require, exports, module) {
             });
 
             it("should isGutterRegistered work on multiple gutters", function () {
-                expect(myEditor.isGutterRegistered(leftGutter)).toBeTrue();
-                expect(myEditor.isGutterRegistered(rightGutter)).toBeTrue();
-                expect(myEditor.isGutterRegistered(lineNumberGutter)).toBeTrue();
-                expect(myEditor.isGutterRegistered("gutter not exists")).toBeFalse();
+                expect(Editor.isGutterRegistered(leftGutter)).toBeTrue();
+                expect(Editor.isGutterRegistered(rightGutter)).toBeTrue();
+                expect(Editor.isGutterRegistered(lineNumberGutter)).toBeTrue();
+                expect(Editor.isGutterRegistered("gutter not exists")).toBeFalse();
             });
 
             it("should return gutters registered with the same priority in insertion order", function () {

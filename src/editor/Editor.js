@@ -1970,24 +1970,13 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Return true if gutter of the given name is registered
-     * @param   {string}   gutterName The name of the gutter
-     * @return {boolean}
-     */
-    Editor.prototype.isGutterRegistered = function (gutterName) {
-        return registeredGutters.some(function (gutter) {
-            return gutter.name === gutterName;
-        });
-    };
-
-    /**
      * Sets the marker for the specified gutter on the specified line number
      * @param   {number}   lineNumber The line number for the inserted gutter marker
      * @param   {string}   gutterName The name of the gutter
      * @param   {object}   marker     The dom element representing the marker to the inserted in the gutter
      */
     Editor.prototype.setGutterMarker = function (lineNumber, gutterName, marker) {
-        if (!this.isGutterRegistered(gutterName)) {
+        if (!Editor.isGutterRegistered(gutterName)) {
             console.warn("Gutter name must be registered before calling editor.setGutterMarker");
             return;
         }
@@ -2001,7 +1990,7 @@ define(function (require, exports, module) {
      * @param   {string}   gutterName The name of the gutter
      */
     Editor.prototype.getGutterMarker = function (lineNumber, gutterName) {
-        if (!this.isGutterRegistered(gutterName)) {
+        if (!Editor.isGutterRegistered(gutterName)) {
             console.warn("Gutter name must be registered before calling editor.getGutterMarker");
             return;
         }
@@ -2025,7 +2014,7 @@ define(function (require, exports, module) {
      * @param {string} gutterName The name of the gutter to clear.
      */
     Editor.prototype.clearGutter = function (gutterName) {
-        if (!this.isGutterRegistered(gutterName)) {
+        if (!Editor.isGutterRegistered(gutterName)) {
             console.warn("Gutter name must be registered before calling editor.clearGutter");
             return;
         }
@@ -2038,6 +2027,17 @@ define(function (require, exports, module) {
      */
     Editor.getRegisteredGutters = function () {
         return registeredGutters;
+    };
+
+    /**
+     * Return true if gutter of the given name is registered
+     * @param   {string}   gutterName The name of the gutter
+     * @return {boolean}
+     */
+    Editor.isGutterRegistered = function (gutterName) {
+        return registeredGutters.some(function (gutter) {
+            return gutter.name === gutterName;
+        });
     };
 
     /**
