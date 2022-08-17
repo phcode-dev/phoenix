@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         provider           = require("main").inlineColorEditorProvider,
         InlineColorEditor  = require("InlineColorEditor").InlineColorEditor,
         ColorEditor        = require("ColorEditor").ColorEditor,
-        tinycolor          = require("thirdparty/tinycolor-min");
+        tinycolor          = require("thirdparty/tinycolor");
 
     // Helper functions for testing cursor position / selection range
     function fixPos(pos) {
@@ -57,7 +57,7 @@ define(function (require, exports, module) {
         return sels;
     }
 
-    describe("unit:Inline Color Editor - unit", function () {
+    describe("unit: Inline Color Editor", function () {
 
         var testDocument, testEditor, inline;
 
@@ -466,8 +466,8 @@ define(function (require, exports, module) {
                 it("should convert an rgb color to hex when mode button clicked", function () {
                     testConvert("rgb(15, 160, 21)", "hex", "#0fa015");
                 });
-                it("should convert an rgba color to hex (dropping alpha) when mode button clicked", function () {
-                    testConvert("rgba(15, 160, 21, 0.5)", "hex", "#0fa015");
+                it("should convert an rgba color to hex with alpha when mode button clicked", function () {
+                    testConvert("rgba(15, 160, 21, 0.5)", "hex", "#0fa01580");
                 });
                 it("should convert an rgb color to hsl when mode button clicked", function () {
                     testConvert("rgb(15, 160, 21)", "hsla", "hsl(122, 83%, 34%)");
@@ -478,8 +478,8 @@ define(function (require, exports, module) {
                 it("should convert an hsl color to hex when mode button clicked", function () {
                     testConvert("hsl(152, 12%, 22%)", "hex", "#313f39");
                 });
-                it("should convert an hsla color to hex (dropping alpha) when mode button clicked", function () {
-                    testConvert("hsla(152, 12%, 22%, 0.7)", "hex", "#313f39");
+                it("should convert an hsla color to hex with alpha when mode button clicked", function () {
+                    testConvert("hsla(152, 12%, 22%, 0.7)", "hex", "#313f39b3");
                 });
                 it("should convert an hsl color to rgb when mode button clicked", function () {
                     testConvert("hsl(152, 12%, 22%)", "rgba", "rgb(49, 63, 57)");
@@ -519,8 +519,8 @@ define(function (require, exports, module) {
                 it("should convert an rgb color to hex in uppercase when mode button clicked", function () {
                     testConvert("RGB(15, 160, 21)", "hex", "#0FA015");
                 });
-                it("should convert an rgba color to hex (dropping alpha) in uppercase when mode button clicked", function () {
-                    testConvert("RGBA(15, 160, 21, 0.5)", "hex", "#0FA015");
+                it("should convert an rgba color to hex with alpha in uppercase when mode button clicked", function () {
+                    testConvert("RGBA(15, 160, 21, 0.5)", "hex", "#0FA01580");
                 });
                 it("should convert an rgb color to hsl in uppercase when mode button clicked", function () {
                     testConvert("RGB(15, 160, 21)", "hsla", "HSL(122, 83%, 34%)");
@@ -531,8 +531,8 @@ define(function (require, exports, module) {
                 it("should convert an hsl color to hex in uppercase when mode button clicked", function () {
                     testConvert("HSL(152, 12%, 22%)", "hex", "#313F39");
                 });
-                it("should convert an hsla color to hex (dropping alpha) in uppercase when mode button clicked", function () {
-                    testConvert("HSLA(152, 12%, 22%, 0.7)", "hex", "#313F39");
+                it("should convert an hsla color to hex with alpha in uppercase when mode button clicked", function () {
+                    testConvert("HSLA(152, 12%, 22%, 0.7)", "hex", "#313F39B3");
                 });
                 it("should convert an hsl color to rgb in uppercase when mode button clicked", function () {
                     testConvert("HSL(152, 12%, 22%)", "rgba", "RGB(49, 63, 57)");
@@ -1330,7 +1330,7 @@ define(function (require, exports, module) {
             describe("undo/redo", function () {
 
                 function triggerCtrlKey($element, key, shift) {
-                    var ctrlKeyProperty = (brackets.platform === "win" ? "ctrlKey" : "metaKey"),
+                    var ctrlKeyProperty = (brackets.platform === "mac" ? "metaKey": "ctrlKey"),
                         eventProps = {keyCode: key, shiftKey: shift};
                     eventProps[ctrlKeyProperty] = true;
                     $element.trigger($.Event("keydown", eventProps));
