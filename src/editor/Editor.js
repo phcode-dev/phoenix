@@ -983,16 +983,17 @@ define(function (require, exports, module) {
      *
      * @param {?{line: number, ch: number}} [cursor] - Optional cursor position
      *      at which to retrieve a token. If not provided, the current position will be used.
+     * @param {boolean} [precise] If given, results in more current results. Suppresses caching.
      * @return {{end: number, start:number, string: string, type: string}} -
      * the CodeMirror token at the given cursor position
      */
-    Editor.prototype.getToken = function (cursor) {
+    Editor.prototype.getToken = function (cursor, precise) {
         let cm = this._codeMirror;
 
         if (cursor) {
-            return TokenUtils.getTokenAt(cm, cursor);
+            return TokenUtils.getTokenAt(cm, cursor, precise);
         }
-        return TokenUtils.getTokenAt(cm, this.getCursorPos());
+        return TokenUtils.getTokenAt(cm, this.getCursorPos(), precise);
     };
 
     /**
@@ -1001,12 +1002,13 @@ define(function (require, exports, module) {
      * @param {{line: number, ch: number}} [cursor] - Optional cursor position after
      *      which a token should be retrieved
      * @param {boolean} [skipWhitespace] - true if this should skip over whitespace tokens. Default is true.
+     * @param {boolean} [precise] If given, results in more current results. Suppresses caching.
      * @return {{end: number, start:number, string: string, type: string}} -
      * the CodeMirror token after the one at the given cursor position
      */
-    Editor.prototype.getNextToken = function (cursor, skipWhitespace = true) {
+    Editor.prototype.getNextToken = function (cursor, skipWhitespace = true, precise) {
         cursor = cursor || this.getCursorPos();
-        let token   = this.getToken(cursor),
+        let token   = this.getToken(cursor, precise),
             next    = token,
             doc     = this.document;
 
@@ -1020,7 +1022,7 @@ define(function (require, exports, module) {
                 next = null;
                 break;
             }
-            next = this.getToken(cursor);
+            next = this.getToken(cursor, precise);
         } while (skipWhitespace && !/\S/.test(next.string));
 
         return next;
@@ -1032,12 +1034,13 @@ define(function (require, exports, module) {
      * @param {{line: number, ch: number}} [cursor] - Optional cursor position before
      *      which a token should be retrieved
      * @param {boolean} [skipWhitespace] - true if this should skip over whitespace tokens. Default is true.
+     * @param {boolean} [precise] If given, results in more current results. Suppresses caching.
      * @return {{end: number, start:number, string: string, type: string}} - the CodeMirror token before
      * the one at the given cursor position
      */
-    Editor.prototype.getPreviousToken = function (cursor, skipWhitespace = true) {
+    Editor.prototype.getPreviousToken = function (cursor, skipWhitespace = true, precise) {
         cursor = cursor || this.getCursorPos();
-        let token   = this.getToken(cursor),
+        let token   = this.getToken(cursor, precise),
             prev    = token,
             doc     = this.document;
 
@@ -1050,7 +1053,7 @@ define(function (require, exports, module) {
             } else {
                 break;
             }
-            prev = this.getToken(cursor);
+            prev = this.getToken(cursor, precise);
         } while (skipWhitespace && !/\S/.test(prev.string));
 
         return prev;

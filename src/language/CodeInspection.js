@@ -141,6 +141,12 @@ define(function (require, exports, module) {
 
     /**
      * @private
+     * @type
+     */
+    let _registeredLanguageIDs = [];
+
+    /**
+     * @private
      * @type {boolean}
      */
     var _hasErrors;
@@ -680,6 +686,12 @@ define(function (require, exports, module) {
         }
 
         _providers[languageId].push(provider);
+
+        if(!_registeredLanguageIDs.includes(languageId)){
+            _registeredLanguageIDs.push(languageId);
+            Editor.unregisterGutter(CODE_INSPECTION_GUTTER);
+            Editor.registerGutter(CODE_INSPECTION_GUTTER, CODE_INSPECTION_GUTTER_PRIORITY, _registeredLanguageIDs);
+        }
 
         run();  // in case a file of this type is open currently
     }
