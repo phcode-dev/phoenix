@@ -42,42 +42,43 @@ define(function (require, exports, module) {
      * provider responded or the provider that responded failed.
      */
     function _doJumpToDef() {
-        var request = null,
+        let request = null,
             result = new $.Deferred(),
             jumpToDefProvider = null,
             editor = EditorManager.getActiveEditor();
 
-        if (editor) {
-            // Find a suitable provider, if any
-            var language = editor.getLanguageForSelection(),
-                enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
-
-
-            enabledProviders.some(function (item, index) {
-                if (item.provider.canJumpToDef(editor)) {
-                    jumpToDefProvider = item.provider;
-                    return true;
-                }
-            });
-
-            if (jumpToDefProvider) {
-                request = jumpToDefProvider.doJumpToDef(editor);
-
-                if (request) {
-                    request.done(function () {
-                        result.resolve();
-                    }).fail(function () {
-                        result.reject();
-                    });
-                } else {
-                    result.reject();
-                }
-            } else {
-                result.reject();
-            }
-        } else {
+        if (!editor) {
             result.reject();
+            return result.promise();
         }
+        // Find a suitable provider, if any
+        let language = editor.getLanguageForSelection(),
+            enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
+
+
+        enabledProviders.some(function (item, index) {
+            if (item.provider.canJumpToDef(editor)) {
+                jumpToDefProvider = item.provider;
+                return true;
+            }
+        });
+
+        if (!jumpToDefProvider) {
+            result.reject();
+            return result.promise();
+        }
+        request = jumpToDefProvider.doJumpToDef(editor);
+
+        if (!request) {
+            result.reject();
+            return result.promise();
+        }
+
+        request.done(function () {
+            result.resolve();
+        }).fail(function () {
+            result.reject();
+        });
 
         return result.promise();
     }

@@ -63,11 +63,7 @@
     ],
     "edit.splitSelIntoLines": [
         {
-           "key": "Ctrl-Alt-L"
-        },
-        {
-           "key":"Ctrl-Shift-L",
-           "platform": "linux"
+           "key": "Ctrl-Shift-L"
         }
     ],
     "edit.addCursorToPrevLine": [
