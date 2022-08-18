@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         Menus = require("command/Menus"),
         KeyEvent = require("utils/KeyEvent"),
         Strings = require("strings"),
+        KeyBindingManager = require("command/KeyBindingManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
 
@@ -119,22 +120,23 @@ define(function (require, exports, module) {
      * parameters, syntax for optional parameters, and the order of the
      * parameter type and parameter name.
      *
+     * @param editor
      * @param {!Array.<{name: string, type: string, isOptional: boolean}>} params -
      * array of parameter descriptors
      * @param {function(string)=} appendSeparators - callback function to append separators.
      * The separator is passed to the callback.
-     * @param {function(string, number)=} appendParameter - callback function to append parameter.
+     * @param {function(string, string, number)=} appendParameter - callback function to append parameter.
      * The formatted parameter type and name is passed to the callback along with the
      * current index of the parameter.
      * @param {boolean=} typesOnly - only show parameter types. The
      * default behavior is to include both parameter names and types.
      * @return {string} - formatted parameter hint
      */
-    function _formatParameterHint(params, appendSeparators, appendParameter, typesOnly) {
+    function _formatParameterHint(functionName, params, appendSeparators, appendParameter, typesOnly) {
         var result = "",
             pendingOptional = false;
 
-        appendParameter("(", "", -1);
+        appendParameter(`${functionName}(`, "", -1);
         params.forEach(function (value, i) {
             var param = value.label || value.type,
                 documentation = value.documentation,
@@ -196,7 +198,7 @@ define(function (require, exports, module) {
      *  tells if the caret is in a function call and the position
      *  of the function call.
      */
-    function formatHint(hints) {
+    function _formatHint(editor, hints) {
         $hintContent.empty();
         $hintContent.addClass("brackets-hints");
 
@@ -217,7 +219,8 @@ define(function (require, exports, module) {
         }
 
         if (hints.parameters.length > 0) {
-            _formatParameterHint(hints.parameters, appendSeparators, appendParameter);
+            let token = editor.getToken(hints.functionCallPos);
+            _formatParameterHint(token.string, hints.parameters, appendSeparators, appendParameter);
         } else {
             $hintContent.append(_.escape(Strings.NO_ARGUMENTS));
         }
@@ -234,9 +237,11 @@ define(function (require, exports, module) {
             hintState = {};
 
             if (editor) {
+                editor.setCanConsumeEscapeKeyEvent("ParameterHinting", false);
                 editor.off("cursorActivity.ParameterHinting", handleCursorActivity);
                 sessionEditor = null;
             } else if (sessionEditor) {
+                sessionEditor.setCanConsumeEscapeKeyEvent("ParameterHinting", false);
                 sessionEditor.off("cursorActivity.ParameterHinting", handleCursorActivity);
                 sessionEditor = null;
             }
@@ -259,6 +264,7 @@ define(function (require, exports, module) {
         var sessionProvider = null;
 
         dismissHint(editor);
+        editor.setCanConsumeEscapeKeyEvent("ParameterHinting", true);
         // Find a suitable provider, if any
         var language = editor.getLanguageForSelection(),
             enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
@@ -280,7 +286,7 @@ define(function (require, exports, module) {
                     pos = parameterHint.functionCallPos || editor.getCursorPos();
 
                 pos = cm.charCoords(pos);
-                formatHint(parameterHint);
+                _formatHint(editor, parameterHint);
 
                 $hintContainer.show();
                 positionHint(pos.left, pos.top, pos.bottom);
@@ -309,6 +315,12 @@ define(function (require, exports, module) {
         }
     };
 
+    function _globalKeyDownHook(event) {
+        if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
+            dismissHint();
+        }
+    }
+
     /**
      * Install function hint listeners.
      *
@@ -316,11 +328,8 @@ define(function (require, exports, module) {
      *      changes
      */
     function installListeners(editor) {
-        editor.on("keydown.ParameterHinting", function (event, editor, domEvent) {
-            if (domEvent.keyCode === KeyEvent.DOM_VK_ESCAPE) {
-                dismissHint(editor);
-            }
-        }).on("scroll.ParameterHinting", function () {
+        KeyBindingManager.addGlobalKeydownHook(_globalKeyDownHook);
+        editor.on("scroll.ParameterHinting", function () {
             dismissHint(editor);
         })
             .on("editorChange.ParameterHinting", _handleChange)
@@ -332,6 +341,7 @@ define(function (require, exports, module) {
      * @param {!Editor} editor
      */
     function uninstallListeners(editor) {
+        KeyBindingManager.removeGlobalKeydownHook(_globalKeyDownHook);
         editor.off(".ParameterHinting");
     }
 
