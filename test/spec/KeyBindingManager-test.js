@@ -45,7 +45,7 @@ define(function (require, exports, module) {
 
     var defaultKeyBindings = {
             "Ctrl-L": "edit.selectLine",
-            "Ctrl-Alt-L": "edit.splitSelIntoLines",
+            "Ctrl-Shift-L": "edit.splitSelIntoLines",
             "Alt-Shift-Down": "edit.addCursorToNextLine",
             "Alt-Shift-Up": "edit.addCursorToPrevLine",
             "F8": "navigate.gotoFirstProblem",

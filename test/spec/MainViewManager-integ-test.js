@@ -76,7 +76,7 @@ define(function (require, exports, module) {
             EditorManager           = null;
             ProjectManager          = null;
             FileSystem              = null;
-            await SpecRunnerUtils.closeTestWindow();
+            //await SpecRunnerUtils.closeTestWindow();
         });
 
         beforeEach(async function () {

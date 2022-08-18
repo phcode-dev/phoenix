@@ -604,7 +604,9 @@ importScripts(`${Phoenix.baseURL}JSUtils/worker/testTern.js`);
             let result;
 
             if (inferType instanceof Tern.AVal) {
-                inferType = inferType.types[0];
+                // if there are multiple types, we take only the last, the first one is usually the current
+                // function itself inferred types which may be not what the user wants.
+                inferType = inferType.types[inferType.types.length-1];
             }
 
             if (inferType instanceof Tern.Prim) {

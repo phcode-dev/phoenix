@@ -816,6 +816,19 @@ define(function (require, exports, module) {
     }
 
     /**
+     * If there is a registered and enabled key event, we always mark the event as processed
+     * except the ones in UN_SWALLOWED_EVENTS.
+     * @type {(string)[]}
+     */
+    let UN_SWALLOWED_EVENTS = [
+        Commands.EDIT_UNDO,
+        Commands.EDIT_REDO,
+        Commands.EDIT_CUT,
+        Commands.EDIT_COPY,
+        Commands.EDIT_PASTE
+    ];
+
+    /**
      * Process the keybinding for the current key.
      *
      * @param {string} A key-description string.
@@ -823,7 +836,10 @@ define(function (require, exports, module) {
      */
     function _handleKey(key) {
         if (_enabled && _keyMap[key]) {
-            CommandManager.execute(_keyMap[key].commandID);
+            let promise = CommandManager.execute(_keyMap[key].commandID);
+            if(UN_SWALLOWED_EVENTS.includes(_keyMap[key].commandID)){
+                return (promise.state() !== "rejected");
+            }
             // If there is a registered and enabled key event, we always mark the event as processed and return true.
             // We don't want multiple behavior tied to the same key event. For Instance, in browser, if `ctrl-k`
             // is not handled by quick edit, it will open browser url bar if we return false here(which is bad ux).
@@ -1005,7 +1021,8 @@ define(function (require, exports, module) {
         // Install keydown event listener.
         window.document.body.addEventListener(
             "keydown",
-            _handleKeyEvent
+            _handleKeyEvent,
+            true
         );
 
         exports.useWindowsCompatibleBindings = (brackets.platform !== "mac") &&

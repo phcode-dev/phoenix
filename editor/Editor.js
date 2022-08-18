@@ -71,8 +71,8 @@
 define(function (require, exports, module) {
 
 
-    let AnimationUtils     = require("utils/AnimationUtils"),
-        Async              = require("utils/Async"),
+    let CommandManager     = require("command/CommandManager"),
+        Commands           = require("command/Commands"),
         CodeMirror         = require("thirdparty/CodeMirror/lib/codemirror"),
         LanguageManager    = require("language/LanguageManager"),
         EventDispatcher    = require("utils/EventDispatcher"),
@@ -248,6 +248,7 @@ define(function (require, exports, module) {
         this._inlineWidgetQueues = {};
         this._hideMarks = [];
         this._lastEditorWidth = null;
+        this._escapeKeyConsumers = [];
 
         this._markTypesMap = {};
 
@@ -304,6 +305,11 @@ define(function (require, exports, module) {
         //cm: CodeMirror, repeat: "single" | "double" | "triple", event: Event
         // The function is called when the left mouse button is pressed in codemirror
         function _mouseHandlerOverride(_cm, _repeat, event) {
+            if(event.ctrlKey){
+                setTimeout(()=>{
+                    CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION);
+                }, 100);
+            }
             return {
                 addNew: event.altKey // alt key will init multi cursor instead of ctrl-key
             };
@@ -438,11 +444,30 @@ define(function (require, exports, module) {
     };
 
     /**
+     * If any widgets related to the editor needs to consume the escape key event, add it here. This will prevent the
+     * primary escape key toggle panel behavior of phoenix.
+     * @param {string} consumerName
+     * @param {boolean} true to set and false to unset.
+     */
+    Editor.prototype.setCanConsumeEscapeKeyEvent = function (consumerName, consume) {
+        if(consume && !this._escapeKeyConsumers.includes(consumerName)){
+            this._escapeKeyConsumers.push(consumerName);
+        }
+        if(!consume){
+            const index = this._escapeKeyConsumers.indexOf(consumerName);
+            if (index > -1) {
+                this._escapeKeyConsumers.splice(index, 1);
+            }
+        }
+    };
+
+    /**
      * returns true if the editor can do something an escape key event. Eg. Disable multi cursor escape
      */
     Editor.prototype.canConsumeEscapeKeyEvent = function () {
         let self = this;
-        return (self.getSelections().length > 1) // multi cursor should go away on escape
+        return self._escapeKeyConsumers.length
+            || (self.getSelections().length > 1) // multi cursor should go away on escape
             || (self.hasSelection()) // selection should go away on escape
             || self.getInlineWidgetsBelowCursor() // inline widget is below cursor
             || self.getFocusedInlineWidget(); // inline widget

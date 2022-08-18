@@ -676,6 +676,8 @@ define(function (require, exports, module) {
      * @param {Editor} editor
      */
     function _startNewSession(editor) {
+        const SHOW_PARAMETER_HINT_CMD_ID = "showParameterHint";
+        CommandManager.execute(SHOW_PARAMETER_HINT_CMD_ID);
         if (isOpen()) {
             return;
         }
