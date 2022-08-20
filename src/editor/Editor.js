@@ -305,7 +305,7 @@ define(function (require, exports, module) {
         //cm: CodeMirror, repeat: "single" | "double" | "triple", event: Event
         // The function is called when the left mouse button is pressed in codemirror
         function _mouseHandlerOverride(_cm, _repeat, event) {
-            if(event.ctrlKey){
+            if(event.ctrlKey || event.metaKey){
                 setTimeout(()=>{
                     CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION);
                 }, 100);
@@ -1003,6 +1003,18 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Given an {left, top} object (e.g. coordinates of a mouse event) returns the {line, ch} position that
+     * corresponds to it. The optional mode parameter determines relative to what the coordinates are interpreted.
+     *
+     * @param {{left: number, top:number}} coordinates be obtained from Eg. coordinates of a mouse event
+     * @param {string} [mode] It may be "window", "page" (the default), or "local".
+     * @return {{line:number, ch: number}} for the given coordinates
+     */
+    Editor.prototype.coordsChar = function (coordinates, mode) {
+        return this._codeMirror.coordsChar(coordinates, mode);
+    };
+
+    /**
      * Get the token at the given cursor position, or at the current cursor
      * if none is given.
      *
@@ -1106,6 +1118,8 @@ define(function (require, exports, module) {
             className: "editor-text-fragment-info"
         }, MARK_OPTION_UNDERLINE_SPELLCHECK = {
             className: "editor-text-fragment-spell-error"
+        }, MARK_OPTION_HYPERLINK_TEXT = {
+            className: "editor-text-fragment-hover"
         };
 
     /**
@@ -2320,6 +2334,7 @@ define(function (require, exports, module) {
     Editor.MARK_OPTION_UNDERLINE_WARN = MARK_OPTION_UNDERLINE_WARN;
     Editor.MARK_OPTION_UNDERLINE_INFO = MARK_OPTION_UNDERLINE_INFO;
     Editor.MARK_OPTION_UNDERLINE_SPELLCHECK = MARK_OPTION_UNDERLINE_SPELLCHECK;
+    Editor.MARK_OPTION_HYPERLINK_TEXT = MARK_OPTION_HYPERLINK_TEXT;
 
     // Set up listeners for preference changes
     editorOptions.forEach(function (prefName) {
