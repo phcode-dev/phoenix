@@ -1120,6 +1120,8 @@ define(function (require, exports, module) {
             className: "editor-text-fragment-spell-error"
         }, MARK_OPTION_HYPERLINK_TEXT = {
             className: "editor-text-fragment-hover"
+        }, MARK_OPTION_MATCHING_REFS = {
+            className: "editor-text-fragment-matching-refs"
         };
 
     /**
@@ -2335,6 +2337,7 @@ define(function (require, exports, module) {
     Editor.MARK_OPTION_UNDERLINE_INFO = MARK_OPTION_UNDERLINE_INFO;
     Editor.MARK_OPTION_UNDERLINE_SPELLCHECK = MARK_OPTION_UNDERLINE_SPELLCHECK;
     Editor.MARK_OPTION_HYPERLINK_TEXT = MARK_OPTION_HYPERLINK_TEXT;
+    Editor.MARK_OPTION_MATCHING_REFS = MARK_OPTION_MATCHING_REFS;
 
     // Set up listeners for preference changes
     editorOptions.forEach(function (prefName) {
