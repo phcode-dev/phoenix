@@ -25,7 +25,7 @@ define(function (require, exports, module) {
 
 
     // Brackets modules
-    var colorGradientProvider          = require("./colorGradientProvider"),
+    const colorGradientProvider          = require("./colorGradientProvider"),
         ImagePreviewProvider           = require("./ImagePreviewProvider"),
         CommandManager      = brackets.getModule("command/CommandManager"),
         Commands            = brackets.getModule("command/Commands"),
@@ -34,12 +34,11 @@ define(function (require, exports, module) {
         Menus               = brackets.getModule("command/Menus"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Strings             = brackets.getModule("strings"),
-        ViewUtils           = brackets.getModule("utils/ViewUtils"),
-        TokenUtils          = brackets.getModule("utils/TokenUtils");
+        ViewUtils           = brackets.getModule("utils/ViewUtils");
 
-    var previewContainerHTML       = require("text!QuickViewTemplate.html");
+    const previewContainerHTML       = require("text!QuickViewTemplate.html");
 
-    var enabled,                             // Only show preview if true
+    let enabled,                             // Only show preview if true
         prefs                      = null,   // Preferences
         $previewContainer,                   // Preview container
         $previewContent,                     // Preview content holder
@@ -47,9 +46,12 @@ define(function (require, exports, module) {
         animationRequest;
 
     // Constants
-    var CMD_ENABLE_QUICK_VIEW       = "view.enableQuickView",
-        HOVER_DELAY                 = 350,  // Time (ms) mouse must remain over a provider's matched text before popover appears
-        POINTER_HEIGHT              = 15,   // Pointer height, used to shift popover above pointer (plus a little bit of space)
+    const CMD_ENABLE_QUICK_VIEW       = "view.enableQuickView",
+        QUICK_VIEW_EDITOR_MARKER = 'quickViewMark',
+        // Time (ms) mouse must remain over a provider's matched text before popover appears
+        HOVER_DELAY                 = 350,
+        // Pointer height, used to shift popover above pointer (plus a little bit of space)
+        POINTER_HEIGHT              = 15,
         POPOVER_HORZ_MARGIN         =  5;   // Horizontal margin
 
     prefs = PreferencesManager.getExtensionPrefs("quickview");
@@ -80,7 +82,7 @@ define(function (require, exports, module) {
      *      marker: ?CodeMirror.TextMarker  - only set once visible==true
      * }}
      */
-    var popoverState = null;
+    let popoverState = null;
 
 
 
@@ -108,7 +110,7 @@ define(function (require, exports, module) {
     }
 
     function positionPreview(editor, xpos, ypos, ybot) {
-        var previewWidth  = $previewContainer.outerWidth(),
+        let previewWidth  = $previewContainer.outerWidth(),
             top           = ypos - $previewContainer.outerHeight() - POINTER_HEIGHT,
             left          = xpos - previewWidth / 2,
             elementRect = {
@@ -146,15 +148,6 @@ define(function (require, exports, module) {
             .addClass("active");
     }
 
-    function divContainsMouse($div, mousePos) {
-        var offset = $div.offset();
-
-        return (mousePos.clientX >= offset.left &&
-                mousePos.clientX <= offset.left + $div.width() &&
-                mousePos.clientY >= offset.top &&
-                mousePos.clientY <= offset.top + $div.height());
-    }
-
     // Preview hide/show logic ------------------------------------------------
 
     /**
@@ -163,11 +156,11 @@ define(function (require, exports, module) {
      * Lacks only hoverTimer (supplied by handleMouseMove()) and marker (supplied by showPreview()).
      */
     function queryPreviewProviders(editor, pos, token) {
-        var line = editor.document.getLine(pos.line);
+        let line = editor.document.getLine(pos.line);
 
         // FUTURE: Support plugin providers. For now we just hard-code...
-        var popover = colorGradientProvider.colorAndGradientPreviewProvider($previewContainer, editor, pos, token, line) ||
-            ImagePreviewProvider.imagePreviewProvider($previewContainer, editor, pos, token, line);
+        let popover = colorGradientProvider.colorAndGradientPreviewProvider($previewContainer, editor, pos, token, line)
+            || ImagePreviewProvider.imagePreviewProvider($previewContainer, editor, pos, token, line);
 
         if (popover) {
             // Providers return just { start, end, content, ?onShow, xpos, ytop, ybot }
@@ -179,63 +172,25 @@ define(function (require, exports, module) {
         return null;
     }
 
-    function getHoveredEditor(mousePos) {
-        // Figure out which editor we are over
-        var fullEditor = EditorManager.getCurrentFullEditor();
-
-        if (!fullEditor || !mousePos) {
-            return;
-        }
-
-        // Check for inline Editor instances first
-        var inlines = fullEditor.getInlineWidgets(),
-            i,
-            editor;
-
-        for (i = 0; i < inlines.length; i++) {
-            var $inlineEditorRoot = inlines[i].editor && $(inlines[i].editor.getRootElement()), // see MultiRangeInlineEditor
-                $otherDiv = inlines[i].$htmlContent;
-
-            if ($inlineEditorRoot && divContainsMouse($inlineEditorRoot, mousePos)) {
-                editor = inlines[i].editor;
-                break;
-            } else if ($otherDiv && divContainsMouse($otherDiv, mousePos)) {
-                // Mouse inside unsupported inline editor like Quick Docs or Color Editor
-                return;
-            }
-        }
-
-        // Check main editor
-        if (!editor) {
-            if (divContainsMouse($(fullEditor.getRootElement()), mousePos)) {
-                editor = fullEditor;
-            }
-        }
-
-        return editor;
-    }
-
     /**
      * Changes the current hidden popoverState to visible, showing it in the UI and highlighting
      * its matching text in the editor.
      */
     function showPreview(editor, popover) {
-        var token, cm;
+        let token;
 
         // Figure out which editor we are over
         if (!editor) {
-            editor = getHoveredEditor(lastMousePos);
+            editor = EditorManager.getHoveredEditor(lastMousePos);
         }
 
-        if (!editor || !editor._codeMirror) {
+        if (!editor) {
             hidePreview();
             return;
         }
 
-        cm = editor._codeMirror;
-
         // Find char mouse is over
-        var pos = cm.coordsChar({left: lastMousePos.clientX, top: lastMousePos.clientY});
+        let pos = editor.coordsChar({left: lastMousePos.clientX, top: lastMousePos.clientY});
 
         // No preview if mouse is past last char on line
         if (pos.ch >= editor.document.getLine(pos.line).length) {
@@ -246,12 +201,13 @@ define(function (require, exports, module) {
             popoverState = popover;
         } else {
             // Query providers and append to popoverState
-            token = TokenUtils.getTokenAt(cm, pos);
+            token = editor.getToken(pos);
             popoverState = $.extend({}, popoverState, queryPreviewProviders(editor, pos, token));
         }
 
         if (popoverState && popoverState.start && popoverState.end) {
-            popoverState.marker = cm.markText(
+            popoverState.marker = editor.markText(
+                QUICK_VIEW_EDITOR_MARKER,
                 popoverState.start,
                 popoverState.end,
                 {className: "quick-view-highlight"}
@@ -282,17 +238,16 @@ define(function (require, exports, module) {
             return;         // should never get here, but safety first!
         }
 
-        var showImmediately = false,
+        let showImmediately = false,
             editor = null;
 
         if (popoverState && popoverState.visible) {
             // Only figure out which editor we are over when there is already a popover
             // showing (otherwise wait until after delay to minimize processing)
-            editor = getHoveredEditor(lastMousePos);
-            if (editor && editor._codeMirror) {
+            editor = EditorManager.getHoveredEditor(lastMousePos);
+            if (editor) {
                 // Find char mouse is over
-                var cm = editor._codeMirror,
-                    pos = cm.coordsChar({left: lastMousePos.clientX, top: lastMousePos.clientY});
+                let pos = editor.coordsChar({left: lastMousePos.clientX, top: lastMousePos.clientY});
 
                 if (popoverState.start && popoverState.end &&
                         editor.posWithinRange(pos, popoverState.start, popoverState.end, true) &&
@@ -367,9 +322,10 @@ define(function (require, exports, module) {
     function setEnabled(_enabled, doNotSave) {
         if (enabled !== _enabled) {
             enabled = _enabled;
-            var editorHolder = $("#editor-holder")[0];
+            let editorHolder = $("#editor-holder")[0];
             if (enabled) {
-                // Note: listening to "scroll" also catches text edits, which bubble a scroll event up from the hidden text area. This means
+                // Note: listening to "scroll" also catches text edits, which bubble a scroll
+                // event up from the hidden text area. This means
                 // we auto-hide on text edit, which is probably actually a good thing.
                 editorHolder.addEventListener("mousemove", handleMouseMove, true);
                 editorHolder.addEventListener("scroll", hidePreview, true);
@@ -422,7 +378,8 @@ define(function (require, exports, module) {
     // Register command
     // Insert menu at specific pos since this may load before OR after code folding extension
     CommandManager.register(Strings.CMD_ENABLE_QUICK_VIEW, CMD_ENABLE_QUICK_VIEW, toggleEnableQuickView);
-    Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(CMD_ENABLE_QUICK_VIEW, null, Menus.AFTER, Commands.VIEW_TOGGLE_INSPECTION);
+    Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(
+        CMD_ENABLE_QUICK_VIEW, null, Menus.AFTER, Commands.VIEW_TOGGLE_INSPECTION);
 
     // Setup initial UI state
     setEnabled(prefs.get("enabled"), true);

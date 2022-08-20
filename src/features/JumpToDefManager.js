@@ -24,34 +24,23 @@
 define(function (require, exports, module) {
 
 
-    var Commands = require("command/Commands"),
+    const Commands = require("command/Commands"),
         Strings = require("strings"),
         AppInit = require("utils/AppInit"),
         CommandManager = require("command/CommandManager"),
         EditorManager = require("editor/EditorManager"),
+        Editor              = require("editor/Editor").Editor,
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
-    var _providerRegistrationHandler = new ProviderRegistrationHandler(),
+    const JUMP_TO_DEF_MARKER = "jumpMarker";
+
+    let _providerRegistrationHandler = new ProviderRegistrationHandler(),
         registerJumpToDefProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler),
         removeJumpToDefProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
 
 
-    /**
-     * Asynchronously asks providers to handle jump-to-definition.
-     * @return {!Promise} Resolved when the provider signals that it's done; rejected if no
-     * provider responded or the provider that responded failed.
-     */
-    function _doJumpToDef() {
-        let request = null,
-            result = new $.Deferred(),
-            jumpToDefProvider = null,
-            editor = EditorManager.getActiveEditor();
-
-        if (!editor) {
-            result.reject();
-            return result.promise();
-        }
-        // Find a suitable provider, if any
+    function _getJumpToDefProvider(editor) {
+        let jumpToDefProvider = null;
         let language = editor.getLanguageForSelection(),
             enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
 
@@ -62,7 +51,25 @@ define(function (require, exports, module) {
                 return true;
             }
         });
+        return jumpToDefProvider;
+    }
 
+    /**
+     * Asynchronously asks providers to handle jump-to-definition.
+     * @return {!Promise} Resolved when the provider signals that it's done; rejected if no
+     * provider responded or the provider that responded failed.
+     */
+    function _doJumpToDef() {
+        let request = null,
+            result = new $.Deferred(),
+            editor = EditorManager.getActiveEditor();
+
+        if (!editor) {
+            result.reject();
+            return result.promise();
+        }
+
+        let jumpToDefProvider = _getJumpToDefProvider(editor);
         if (!jumpToDefProvider) {
             result.reject();
             return result.promise();
@@ -82,6 +89,53 @@ define(function (require, exports, module) {
 
         return result.promise();
     }
+
+    /**
+     * variable that tracks is mark is already present in editor to improve redraw performance on mousemove
+     * @type {boolean}
+     */
+    let marksPresent = false;
+
+    function _clearHoverMarkers(editor) {
+        if(marksPresent && editor){
+            editor.clearAllMarks(JUMP_TO_DEF_MARKER);
+            marksPresent = false;
+        }
+    }
+
+    const tokenTypesToIgnore = ['keyword', "operator", 'meta', 'atom', 'number', 'comment'];
+    // defs and strings not ignored for usage in imports
+
+    function _drawHoverMarkers(editor, pos) {
+        if(editor){
+            _clearHoverMarkers(editor);
+            let jumpToDefProvider = _getJumpToDefProvider(editor);
+            let token = editor.getToken(pos);
+            if(jumpToDefProvider && token.type && !tokenTypesToIgnore.includes(token.type)){
+                editor.markToken(JUMP_TO_DEF_MARKER, pos, Editor.MARK_OPTION_HYPERLINK_TEXT);
+                marksPresent = true;
+            }
+        }
+    }
+
+    function _hoverMarkersOnMouseMove(evt){
+        let editor = EditorManager.getHoveredEditor(evt);
+        _clearHoverMarkers(editor);
+        if(editor && (evt.ctrlKey || evt.metaKey)){
+            let pos = editor.coordsChar({left: evt.clientX, top: evt.clientY});
+            // No preview if mouse is past last char on line
+            if (pos.ch >= editor.document.getLine(pos.line).length) {
+                return;
+            }
+            _drawHoverMarkers(editor, pos);
+        }
+    }
+
+    AppInit.appReady(function () {
+        let editorHolder = $("#editor-holder")[0];
+        editorHolder.addEventListener("mousemove", _hoverMarkersOnMouseMove, true);
+        editorHolder.addEventListener("keyup", _hoverMarkersOnMouseMove, true);
+    });
 
     CommandManager.register(Strings.CMD_JUMPTO_DEFINITION, Commands.NAVIGATE_JUMPTO_DEFINITION, _doJumpToDef);
 

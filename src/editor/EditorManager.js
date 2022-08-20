@@ -684,6 +684,61 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Returns the editor/inline editor under given mouse cursor coordinates specified. The coordinates can be usually
+     * fetched from the `document.onmousemove` dom event handler or any dom events.
+     * https://stackoverflow.com/questions/7790725/javascript-track-mouse-position
+     *
+     * @param {{clientX: number, clientY: number}} mousePos The mouse position(or the js event with mouse
+     * position).
+     * @return {Editor}
+     */
+    function getHoveredEditor(mousePos) {
+        function divContainsMouse($div, mousePos) {
+            let offset = $div.offset();
+
+            return (mousePos.clientX >= offset.left &&
+                mousePos.clientX <= offset.left + $div.width() &&
+                mousePos.clientY >= offset.top &&
+                mousePos.clientY <= offset.top + $div.height());
+        }
+
+        // Figure out which editor we are over
+        let fullEditor = getCurrentFullEditor();
+
+        if (!fullEditor || !mousePos) {
+            return;
+        }
+
+        // Check for inline Editor instances first
+        let inlines = fullEditor.getInlineWidgets(),
+            i,
+            editor;
+
+        for (i = 0; i < inlines.length; i++) {
+            // see MultiRangeInlineEditor
+            let $inlineEditorRoot = inlines[i].editor && $(inlines[i].editor.getRootElement()),
+                $otherDiv = inlines[i].$htmlContent;
+
+            if ($inlineEditorRoot && divContainsMouse($inlineEditorRoot, mousePos)) {
+                editor = inlines[i].editor;
+                break;
+            } else if ($otherDiv && divContainsMouse($otherDiv, mousePos)) {
+                // Mouse inside unsupported inline editor like Quick Docs or Color Editor
+                return;
+            }
+        }
+
+        // Check main editor
+        if (!editor) {
+            if (divContainsMouse($(fullEditor.getRootElement()), mousePos)) {
+                editor = fullEditor;
+            }
+        }
+
+        return editor;
+    }
+
+    /**
      * file removed from pane handler.
      * @param {jQuery.Event} e
      * @param {File|Array.<File>} removedFiles - file, path or array of files or paths that are being removed
@@ -752,6 +807,7 @@ define(function (require, exports, module) {
     exports.getCurrentFullEditor          = getCurrentFullEditor;
     exports.getFocusedEditor              = getFocusedEditor;
     exports.getFocusedInlineEditor        = getFocusedInlineEditor;
+    exports.getHoveredEditor              = getHoveredEditor;
 
 
     exports.registerInlineEditProvider    = registerInlineEditProvider;
