@@ -305,7 +305,7 @@ importScripts(`${Phoenix.baseURL}JSUtils/worker/testTern.js`);
         try {
             ternServer.request(request, function (error, data) {
                 if (error) {
-                    console.error("Error returned from Tern 'refs' request: " + error);
+                    console.log("Error returned from Tern 'refs' request: " + error);
                     let response = {
                         type: MessageIds.TERN_REFS,
                         error: error.message

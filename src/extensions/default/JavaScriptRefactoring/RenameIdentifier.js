@@ -22,15 +22,16 @@
 define(function (require, exports, module) {
 
 
-    var EditorManager        = brackets.getModule("editor/EditorManager"),
+    let EditorManager        = brackets.getModule("editor/EditorManager"),
         ScopeManager         = brackets.getModule("JSUtils/ScopeManager"),
         Session              = brackets.getModule("JSUtils/Session"),
         MessageIds           = JSON.parse(brackets.getModule("text!JSUtils/MessageIds.json")),
         TokenUtils           = brackets.getModule("utils/TokenUtils"),
         Strings              = brackets.getModule("strings"),
+        Editor               = brackets.getModule("editor/Editor").Editor,
         ProjectManager      = brackets.getModule("project/ProjectManager");
 
-    var session             = null,  // object that encapsulates the current session state
+    let session             = null,  // object that encapsulates the current session state
         keywords = ["define", "alert", "exports", "require", "module", "arguments"];
 
     //Create new session
@@ -54,22 +55,104 @@ define(function (require, exports, module) {
         if (!document || !session) {
             return;
         }
-        var path    = document.file.fullPath,
+        let path    = document.file.fullPath,
             fileInfo = {
                 type: MessageIds.TERN_FILE_INFO_TYPE_FULL,
                 name: path,
                 offsetLines: 0,
                 text: ScopeManager.filterText(session.getJavascriptText())
             };
-        var ternPromise = getRefs(fileInfo, offset);
+        let ternPromise = getRefs(fileInfo, offset);
 
         return {promise: ternPromise};
     }
 
+    // This is the highlight references under cursor feature. We should ideally move this to
+    // features/findReferencesManager
+
+    const HIGHLIGHT_REFS_MARKER = "JS_REFS";
+
+    function _handleHighLightRefs(editor, refsResp) {
+        if (!refsResp || !refsResp.references || !refsResp.references.refs) {
+            return;
+        }
+        editor.operation(function () {
+            for(let ref of refsResp.references.refs){
+                if(editor.document.file.fullPath.endsWith(ref.file)){
+                    editor.markText(HIGHLIGHT_REFS_MARKER, ref.start, ref.end, Editor.MARK_OPTION_MATCHING_REFS);
+                }
+            }
+        });
+    }
+
+    function _hasASingleCursor(editor) {
+        let selections = editor.getSelections();
+        if(selections.length > 1){
+            // multi cursor, no highlight
+            return false;
+        }
+        let start = selections[0].start,
+            end = selections[0].end;
+        if(start.line !== end.line || start.ch !== end.ch){
+            // has a range selection
+            return false;
+        }
+        return true;
+    }
+
+    let allowedHighlightTypes = ["def", "variable", "variable-2", "variable-3", "property"];
+    let lastHighlightToken = {};
+    function _cursorActivity(_evt, editor) {
+        // Only provide a JavaScript editor when cursor is in JavaScript content
+        if (editor.getModeForSelection() !== "javascript") {
+            return;
+        }
+
+        let token = editor.getToken();
+        if(lastHighlightToken === token) {
+            return;
+        }
+
+        editor.clearAllMarks(HIGHLIGHT_REFS_MARKER);
+        lastHighlightToken = token;
+        if(!allowedHighlightTypes.includes(token.type)){
+            return;
+        }
+
+        let offset = session.getOffset();
+
+        if(!_hasASingleCursor(editor)){
+            return;
+        }
+
+        // only do this request if token under cursor is a variable type
+        requestFindRefs(session, session.editor.document, offset).promise
+            .done(response =>{
+                _handleHighLightRefs(editor, response);
+            })
+            .fail(function (err) {
+                console.error("find references failed with: ", err);
+            });
+    }
+
+    function _activeEditorChanged(_evt,  current, previous) {
+        if(previous){
+            previous.off("cursorActivity.highlightRefs");
+        }
+        if(current){
+            current.off("cursorActivity.highlightRefs");
+            current.on("cursorActivity.highlightRefs", _cursorActivity);
+            initializeSession(current);
+            _cursorActivity(_evt, current);
+        }
+    }
+
+    EditorManager.on("activeEditorChange", _activeEditorChanged);
+
     //Do rename of identifier which is at cursor
     function handleRename() {
-        var editor = EditorManager.getActiveEditor(),
-            offset, handleFindRefs, token;
+        let editor = EditorManager.getActiveEditor(),
+            offset, token;
 
         if (!editor) {
             return;
@@ -93,10 +176,10 @@ define(function (require, exports, module) {
             return;
         }
 
-        var result = new $.Deferred();
+        let result = new $.Deferred();
 
         function isInSameFile(obj, refsResp) {
-            var projectRoot = ProjectManager.getProjectRoot(),
+            let projectRoot = ProjectManager.getProjectRoot(),
                 projectDir,
                 fileName = "";
             if (projectRoot) {
@@ -129,13 +212,13 @@ define(function (require, exports, module) {
                 return;
             }
 
-            var inlineWidget = EditorManager.getFocusedInlineWidget(),
+            let inlineWidget = EditorManager.getFocusedInlineWidget(),
                 editor = EditorManager.getActiveEditor(),
                 refs = refsResp.references.refs;
 
             //In case of inline widget if some references are outside widget's text range then don't allow for rename
             if (inlineWidget) {
-                var isInTextRange  = !refs.find(function(item) {
+                let isInTextRange  = !refs.find(function(item) {
                     return (item.start.line < inlineWidget._startLine || item.end.line > inlineWidget._endLine);
                 });
 
@@ -145,7 +228,7 @@ define(function (require, exports, module) {
                 }
             }
 
-            var currentPosition = editor.posFromIndex(refsResp.offset),
+            let currentPosition = editor.posFromIndex(refsResp.offset),
                 refsArray;
             refsArray = refs.filter(function (element) {
                 return isInSameFile(element, refsResp);
@@ -157,7 +240,7 @@ define(function (require, exports, module) {
             }
 
             // Finding the Primary Reference in Array
-            var primaryRef = refsArray.find(function (element) {
+            let primaryRef = refsArray.find(function (element) {
                 return ((element.start.line === currentPosition.line || element.end.line === currentPosition.line)
                         && currentPosition.ch <= element.end.ch && currentPosition.ch >= element.start.ch);
             });
@@ -173,10 +256,11 @@ define(function (require, exports, module) {
          * @param {number} offset - the offset of where to jump from
          */
         function requestFindReferences(session, offset) {
-            var response = requestFindRefs(session, session.editor.document, offset);
+            let response = requestFindRefs(session, session.editor.document, offset);
 
             if (response && response.hasOwnProperty("promise")) {
-                response.promise.done(handleFindRefs).fail(function () {
+                response.promise.done(handleFindRefs).fail(function (errorMsg) {
+                    EditorManager.getActiveEditor().displayErrorMessageAtCursor(errorMsg);
                     result.reject();
                 });
             }

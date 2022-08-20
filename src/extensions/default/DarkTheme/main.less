@@ -45,6 +45,7 @@
 @accent-variable-3: #535353; // type
 @accent-string-2: #ffc641;
 @accent-meta: #B39C1D;
+@matching-bracket: #2e5c00;
 
 /* Code Styling */
 
@@ -64,6 +65,10 @@
     .inline-widget .CodeMirror-gutter-elt {
         color: #767676;
     }
+}
+
+.editor-text-fragment-matching-refs{
+    background-color: @matching-bracket;
 }
 
 .cm-atom, .cm-string, .cm-hr {color: #d89333;}
@@ -119,7 +124,7 @@
 
 .CodeMirror-matchingbracket, .CodeMirror-matchingtag {
     /* Ensure visibility against gray inline editor background */
-    background-color: #2e5c00;
+    background-color: @matching-bracket;
     color: @foreground !important;
 }
 
