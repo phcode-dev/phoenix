@@ -643,6 +643,68 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Highlight References", function () {
+            beforeEach(async function () {
+                await setupTest(testPath, false);
+            });
+
+            afterEach(function () {
+                tearDownTest();
+            });
+
+            it("should highlight matching variable references", async function() {
+                testEditor.setCursorPos(11, 1);
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getAllMarks(RenameIdentifier.HIGHLIGHT_REFS_MARKER).length).toBe(20);
+            });
+
+            it("should highlight matching property references", async function() {
+                testEditor.setCursorPos(18, 7);
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getAllMarks(RenameIdentifier.HIGHLIGHT_REFS_MARKER).length).toBe(1);
+                // sadly tern is only returning the root def for property. if this fails in future and hilights
+                // all references, change test accordingly https://github.com/ternjs/tern/issues/1052
+            });
+
+            it("should highlight matching class references", async function() {
+                testEditor.setCursorPos(18, 7);
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getAllMarks(RenameIdentifier.HIGHLIGHT_REFS_MARKER).length).toBe(1);
+                // sadly tern is only returning the root def for property. if this fails in future and hilights
+                // all references, change test accordingly https://github.com/ternjs/tern/issues/1052
+            });
+
+            it("should highlight matching class references", async function() {
+                testEditor.setCursorPos(100, 26);
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getAllMarks(RenameIdentifier.HIGHLIGHT_REFS_MARKER).length).toBe(2);
+            });
+
+            it("should not highlight reserved words and operators", async function() {
+                testEditor.setCursorPos(17, 3);
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getToken({line: 17, ch: 3}).string).toBe("=");
+                expect(testEditor.getAllMarks(RenameIdentifier.HIGHLIGHT_REFS_MARKER).length).toBe(0);
+
+                testEditor.setCursorPos(26, 9);
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getToken({line: 26, ch: 9}).string).toBe("function");
+                expect(testEditor.getAllMarks(RenameIdentifier.HIGHLIGHT_REFS_MARKER).length).toBe(0);
+            });
+
+            it("should not highlight if range is selected", async function() {
+                testEditor.setSelection({line: 18, ch: 7}, {line: 18, ch: 8});
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getAllMarks(RenameIdentifier.HIGHLIGHT_REFS_MARKER).length).toBe(0);
+            });
+
+            it("should not highlight if multiple cursors present", async function() {
+                testEditor.setSelections([{start:{line: 18, ch: 7}}, {start:{line: 18, ch: 8}}]);
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getAllMarks(RenameIdentifier.HIGHLIGHT_REFS_MARKER).length).toBe(0);
+            });
+        });
+
         describe("Wrap Selection", function () {
             beforeEach(async function () {
                 await setupTest(testPath, false);

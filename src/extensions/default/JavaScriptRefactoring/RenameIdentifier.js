@@ -273,4 +273,5 @@ define(function (require, exports, module) {
     }
 
     exports.handleRename = handleRename;
+    exports.HIGHLIGHT_REFS_MARKER = HIGHLIGHT_REFS_MARKER;
 });
