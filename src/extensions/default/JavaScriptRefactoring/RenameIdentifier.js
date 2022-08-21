@@ -28,7 +28,6 @@ define(function (require, exports, module) {
         MessageIds           = JSON.parse(brackets.getModule("text!JSUtils/MessageIds.json")),
         TokenUtils           = brackets.getModule("utils/TokenUtils"),
         Strings              = brackets.getModule("strings"),
-        Editor               = brackets.getModule("editor/Editor").Editor,
         ProjectManager      = brackets.getModule("project/ProjectManager");
 
     let session             = null,  // object that encapsulates the current session state
@@ -66,88 +65,6 @@ define(function (require, exports, module) {
 
         return {promise: ternPromise};
     }
-
-    // This is the highlight references under cursor feature. We should ideally move this to
-    // features/findReferencesManager
-
-    const HIGHLIGHT_REFS_MARKER = "JS_REFS";
-
-    function _handleHighLightRefs(editor, refsResp) {
-        if (!refsResp || !refsResp.references || !refsResp.references.refs) {
-            return;
-        }
-        editor.operation(function () {
-            for(let ref of refsResp.references.refs){
-                if(editor.document.file.fullPath.endsWith(ref.file)){
-                    editor.markText(HIGHLIGHT_REFS_MARKER, ref.start, ref.end, Editor.MARK_OPTION_MATCHING_REFS);
-                }
-            }
-        });
-    }
-
-    function _hasASingleCursor(editor) {
-        let selections = editor.getSelections();
-        if(selections.length > 1){
-            // multi cursor, no highlight
-            return false;
-        }
-        let start = selections[0].start,
-            end = selections[0].end;
-        if(start.line !== end.line || start.ch !== end.ch){
-            // has a range selection
-            return false;
-        }
-        return true;
-    }
-
-    let allowedHighlightTypes = ["def", "variable", "variable-2", "variable-3", "property"];
-    let lastHighlightToken = {};
-    function _cursorActivity(_evt, editor) {
-        // Only provide a JavaScript editor when cursor is in JavaScript content
-        if (editor.getModeForSelection() !== "javascript") {
-            return;
-        }
-
-        let token = editor.getToken();
-        if(lastHighlightToken === token) {
-            return;
-        }
-
-        editor.clearAllMarks(HIGHLIGHT_REFS_MARKER);
-        lastHighlightToken = token;
-        if(!allowedHighlightTypes.includes(token.type)){
-            return;
-        }
-
-        let offset = session.getOffset();
-
-        if(!_hasASingleCursor(editor)){
-            return;
-        }
-
-        // only do this request if token under cursor is a variable type
-        requestFindRefs(session, session.editor.document, offset).promise
-            .done(response =>{
-                _handleHighLightRefs(editor, response);
-            })
-            .fail(function (err) {
-                console.error("find references failed with: ", err);
-            });
-    }
-
-    function _activeEditorChanged(_evt,  current, previous) {
-        if(previous){
-            previous.off("cursorActivity.highlightRefs");
-        }
-        if(current){
-            current.off("cursorActivity.highlightRefs");
-            current.on("cursorActivity.highlightRefs", _cursorActivity);
-            initializeSession(current);
-            _cursorActivity(_evt, current);
-        }
-    }
-
-    EditorManager.on("activeEditorChange", _activeEditorChanged);
 
     //Do rename of identifier which is at cursor
     function handleRename() {
@@ -273,5 +190,4 @@ define(function (require, exports, module) {
     }
 
     exports.handleRename = handleRename;
-    exports.HIGHLIGHT_REFS_MARKER = HIGHLIGHT_REFS_MARKER;
 });
