@@ -379,14 +379,16 @@ define(function (require, exports, module) {
     function handleRename(response) {
 
         if (response.error) {
-            EditorManager.getActiveEditor().displayErrorMessageAtCursor(response.error);
+            // todo: we need to show this error message, but it will cause problems with the
+            // highlight references feature which use the same code. Rn, if tern rename fails, we do nothing.
+            // EditorManager.getActiveEditor().displayErrorMessageAtCursor(response.error);
             return;
         }
 
-        var file = response.file,
+        let file = response.file,
             offset = response.offset;
 
-        var $deferredFindRefs = getPendingRequest(file, offset, MessageIds.TERN_REFS);
+        let $deferredFindRefs = getPendingRequest(file, offset, MessageIds.TERN_REFS);
 
         if ($deferredFindRefs) {
             $deferredFindRefs.resolveWith(null, [response]);

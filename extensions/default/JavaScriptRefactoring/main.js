@@ -36,6 +36,8 @@ define(function (require, exports, module) {
         _                    = brackets.getModule("thirdparty/lodash"),
         EditorManager        = brackets.getModule("editor/EditorManager");
 
+    require("HighLightReferences");
+
     var jsRefactoringEnabled     = true;
 
     var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
