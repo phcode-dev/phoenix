@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         ExtractToVariable    = require("ExtractToVariable"),
         ExtractToFunction    = require("ExtractToFunction"),
         WrapSelection        = require("WrapSelection"),
+        HighLightReferences  = require("HighLightReferences"),
         CommandManager       = brackets.getModule("command/CommandManager"),
         Menus                = brackets.getModule("command/Menus"),
         Metrics              = brackets.getModule("utils/Metrics"),
