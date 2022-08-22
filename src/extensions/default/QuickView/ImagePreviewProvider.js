@@ -32,12 +32,12 @@ define(function (require, exports, module) {
         Strings             = brackets.getModule("strings"),
         PathUtils           = brackets.getModule("thirdparty/path-utils/path-utils");
 
-    var enabled,                             // Only show preview if true
+    let enabled,                             // Only show preview if true
         prefs                      = null,   // Preferences
         extensionlessImagePreview;           // Whether to try and preview extensionless URLs
 
     // List of protocols which we will support for image preview urls
-    var validProtocols = ["data:", "http:", "https:", "ftp:", "file:"];
+    let validProtocols = ["data:", "http:", "https:", "ftp:", "file:"];
 
     prefs = PreferencesManager.getExtensionPrefs("quickview");
 
@@ -52,10 +52,10 @@ define(function (require, exports, module) {
 
     function imagePreviewProvider($previewContainer, editor, pos, token, line) {
         const $previewContent = $previewContainer.find(".preview-content");
-        var cm = editor._codeMirror;
+        let cm = editor._codeMirror;
 
         // Check for image name
-        var urlRegEx = /url\(([^\)]*)\)/gi,
+        let urlRegEx = /url\(([^\)]*)\)/gi,
             tokenString,
             urlMatch;
 
@@ -82,19 +82,19 @@ define(function (require, exports, module) {
         // Strip leading/trailing quotes, if present
         tokenString = tokenString.replace(/(^['"])|(['"]$)/g, "");
 
-        var sPos, ePos;
-        var docPath = editor.document.file.fullPath;
-        var imgPath;
+        let sPos, ePos;
+        let docPath = editor.document.file.fullPath;
+        let imgPath;
 
         // Determine whether or not this URL/path is likely to be an image.
-        var parsed = PathUtils.parseUrl(tokenString);
+        let parsed = PathUtils.parseUrl(tokenString);
         // If the URL has a protocol, check if it's one of the supported protocols
-        var hasProtocol = parsed.protocol !== "" && validProtocols.indexOf(parsed.protocol.trim().toLowerCase()) !== -1;
-        var ext = parsed.filenameExtension.replace(/^\./, '');
-        var language = LanguageManager.getLanguageForExtension(ext);
-        var id = language && language.getId();
-        var isImage = id === "image" || id === "svg";
-        var loadFromDisk = null;
+        let hasProtocol = parsed.protocol !== "" && validProtocols.indexOf(parsed.protocol.trim().toLowerCase()) !== -1;
+        let ext = parsed.filenameExtension.replace(/^\./, '');
+        let language = LanguageManager.getLanguageForExtension(ext);
+        let id = language && language.getId();
+        let isImage = id === "image" || id === "svg";
+        let loadFromDisk = null;
 
         // Use this URL if this is an absolute URL and either points to a
         // filename with a known image extension, or lacks an extension (e.g.,
@@ -121,17 +121,15 @@ define(function (require, exports, module) {
             ePos = {line: pos.line, ch: token.end};
         }
 
-        var imgPreview = "<div class='image-preview'>"          +
+        let imgPreview = "<div class='image-preview'>"          +
             "    <img src=\"" + imgPath + "\">"    +
             "</div>";
-        var coord = cm.charCoords(sPos);
-        var xpos = (cm.charCoords(ePos).left - coord.left) / 2 + coord.left;
 
         function showHandlerWithImageURL(imageURL) {
             return new Promise((resolve, reject)=>{
                 // Hide the preview container until the image is loaded.
                 $previewContainer.hide();
-                var img = $previewContainer.find(".image-preview > img");
+                let img = $previewContainer.find(".image-preview > img");
                 if(imageURL){
                     img[0].src = imageURL;
                 }
@@ -156,19 +154,19 @@ define(function (require, exports, module) {
                 contentType = "data:image/svg+xml;base64,";
             }
             file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
-                var base64 = window.btoa(
+                let base64 = window.btoa(
                     new Uint8Array(content)
                         .reduce((data, byte) => data + String.fromCharCode(byte), '')
                 );
-                var dataURL= contentType + base64;
+                let dataURL= contentType + base64;
                 cb(null, dataURL);
             });
         }
 
-        var showHandler = function () {
+        let showHandler = function () {
             return new Promise((resolve, reject)=>{
                 if(loadFromDisk){
-                    var imageFile = FileSystem.getFileForPath(loadFromDisk);
+                    let imageFile = FileSystem.getFileForPath(loadFromDisk);
                     _imageToDataURI(imageFile, function (err, dataURL){
                         showHandlerWithImageURL(dataURL).then(resolve).catch(reject);
                     });
@@ -183,9 +181,6 @@ define(function (require, exports, module) {
             end: ePos,
             content: imgPreview,
             onShow: showHandler,
-            xpos: xpos,
-            ytop: coord.top,
-            ybot: coord.bottom,
             _imgPath: imgPath || loadFromDisk
         };
     }

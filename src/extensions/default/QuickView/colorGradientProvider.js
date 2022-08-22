@@ -35,13 +35,13 @@ define(function (require, exports, module) {
 
         // Check for gradient. -webkit-gradient() can have parens in parameters
         // nested 2 levels. Other gradients can only nest 1 level.
-        var gradientRegEx = /-webkit-gradient\((?:[^\(]*?(?:\((?:[^\(]*?(?:\([^\)]*?\))*?)*?\))*?)*?\)|(?:(?:-moz-|-ms-|-o-|-webkit-|:|\s)((repeating-)?linear-gradient)|(?:-moz-|-ms-|-o-|-webkit-|:|\s)((repeating-)?radial-gradient))(\((?:[^\)]*?(?:\([^\)]*?\))*?)*?\))/gi,
+        let gradientRegEx = /-webkit-gradient\((?:[^\(]*?(?:\((?:[^\(]*?(?:\([^\)]*?\))*?)*?\))*?)*?\)|(?:(?:-moz-|-ms-|-o-|-webkit-|:|\s)((repeating-)?linear-gradient)|(?:-moz-|-ms-|-o-|-webkit-|:|\s)((repeating-)?radial-gradient))(\((?:[^\)]*?(?:\([^\)]*?\))*?)*?\))/gi,
             colorRegEx    = new RegExp(ColorUtils.COLOR_REGEX),
             mode          = TokenUtils.getModeAt(editor._codeMirror, pos, false),
             isStyleSheet  = (styleLanguages.indexOf(mode) !== -1);
 
         function areParensBalanced(str) {
-            var i,
+            let i,
                 nestLevel = 0,
                 len;
 
@@ -71,18 +71,18 @@ define(function (require, exports, module) {
 
         function execGradientMatch(line, parensBalanced) {
             // Unbalanced parens cause infinite loop (see issue #4650)
-            var gradientMatch = (parensBalanced ? gradientRegEx.exec(line) : null),
+            let gradientMatch = (parensBalanced ? gradientRegEx.exec(line) : null),
                 prefix = "",
                 colorValue;
 
             if (gradientMatch) {
                 if (gradientMatch[0].indexOf("@") !== -1) {
                     // If the gradient match has "@" in it, it is most likely a less or
-                    // sass variable. Ignore it since it won't be displayed correctly.
+                    // sass letiable. Ignore it since it won't be displayed correctly.
                     gradientMatch = null;
 
                 } else {
-                    // If it was a linear-gradient or radial-gradient variant with a vendor prefix
+                    // If it was a linear-gradient or radial-gradient letiant with a vendor prefix
                     // add "-webkit-" so it shows up correctly in Brackets.
                     if (gradientMatch[0].match(/-o-|-moz-|-ms-|-webkit-/i)) {
                         prefix = "-webkit-";
@@ -109,11 +109,11 @@ define(function (require, exports, module) {
         }
 
         function execColorMatch(editor, line, pos) {
-            var colorMatch,
+            let colorMatch,
                 ignoreNamedColors;
 
             function hyphenOnMatchBoundary(match, line) {
-                var beforeIndex, afterIndex;
+                let beforeIndex, afterIndex;
                 if (match) {
                     beforeIndex = match.index - 1;
                     if (beforeIndex >= 0 && line[beforeIndex] === "-") {
@@ -141,7 +141,7 @@ define(function (require, exports, module) {
                     break;
                 }
                 if (ignoreNamedColors === undefined) {
-                    var mode = TokenUtils.getModeAt(editor._codeMirror, pos, false).name;
+                    let mode = TokenUtils.getModeAt(editor._codeMirror, pos, false).name;
                     ignoreNamedColors = styleLanguages.indexOf(mode) === -1;
                 }
             } while (hyphenOnMatchBoundary(colorMatch, line) ||
@@ -152,13 +152,13 @@ define(function (require, exports, module) {
 
         // simple css property splitter (used to find color stop arguments in gradients)
         function splitStyleProperty(property) {
-            var token = /((?:[^"']|".*?"|'.*?')*?)([(,)]|$)/g;
-            var recurse = function () {
-                var array = [];
+            let token = /((?:[^"']|".*?"|'.*?')*?)([(,)]|$)/g;
+            let recurse = function () {
+                let array = [];
                 for (;;) {
-                    var result = token.exec(property);
+                    let result = token.exec(property);
                     if (result[2] === "(") {
-                        var str = result[1].trim() + "(" + recurse().join(",") + ")";
+                        let str = result[1].trim() + "(" + recurse().join(",") + ")";
                         result = token.exec(property);
                         str += result[1];
                         array.push(str);
@@ -190,7 +190,7 @@ define(function (require, exports, module) {
         // Normalizes px color stops to %
         function normalizeGradientExpressionForQuickview(expression) {
             if (expression.indexOf("px") > 0) {
-                var paramStart = expression.indexOf("(") + 1,
+                let paramStart = expression.indexOf("(") + 1,
                     paramEnd = expression.lastIndexOf(")"),
                     parameters = expression.substring(paramStart, paramEnd),
                     params = splitStyleProperty(parameters),
@@ -244,10 +244,9 @@ define(function (require, exports, module) {
             return expression;
         }
 
-        var parensBalanced = areParensBalanced(line),
+        let parensBalanced = areParensBalanced(line),
             gradientMatch = execGradientMatch(line, parensBalanced),
-            match = gradientMatch.match || execColorMatch(editor, line, pos),
-            cm = editor._codeMirror;
+            match = gradientMatch.match || execColorMatch(editor, line, pos);
 
         while (match) {
             if (pos.ch < match.index) {
@@ -261,28 +260,21 @@ define(function (require, exports, module) {
                 }
             } else if (pos.ch <= match.index + match[0].length) {
                 // build the css for previewing the gradient from the regex result
-                var previewCSS = gradientMatch.prefix + (gradientMatch.colorValue || match[0]);
+                let previewCSS = gradientMatch.prefix + (gradientMatch.colorValue || match[0]);
 
                 // normalize the arguments to something that we can display to the user
                 // NOTE: we need both the div and the popover's _previewCSS member
                 //          (used by unit tests) to match so normalize the css for both
                 previewCSS = normalizeGradientExpressionForQuickview(ensureHexFormat(previewCSS));
 
-                var preview = "<div class='color-swatch' style='background:" + previewCSS + "'>" + "</div>";
-                var startPos = {line: pos.line, ch: match.index},
-                    endPos = {line: pos.line, ch: match.index + match[0].length},
-                    startCoords = cm.charCoords(startPos),
-                    xPos;
-
-                xPos = (cm.charCoords(endPos).left - startCoords.left) / 2 + startCoords.left;
+                let preview = "<div class='color-swatch' style='background:" + previewCSS + "'>" + "</div>";
+                let startPos = {line: pos.line, ch: match.index},
+                    endPos = {line: pos.line, ch: match.index + match[0].length};
 
                 return {
                     start: startPos,
                     end: endPos,
                     content: preview,
-                    xpos: xPos,
-                    ytop: startCoords.top,
-                    ybot: startCoords.bottom,
                     _previewCSS: previewCSS
                 };
             }
