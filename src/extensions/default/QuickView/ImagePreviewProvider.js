@@ -30,7 +30,9 @@ define(function (require, exports, module) {
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         LanguageManager     = brackets.getModule("language/LanguageManager"),
         Strings             = brackets.getModule("strings"),
-        PathUtils           = brackets.getModule("thirdparty/path-utils/path-utils");
+        PathUtils           = brackets.getModule("thirdparty/path-utils/path-utils"),
+        AppInit             = brackets.getModule("utils/AppInit"),
+        QuickView = require("main");
 
     let enabled,                             // Only show preview if true
         prefs                      = null,   // Preferences
@@ -50,7 +52,7 @@ define(function (require, exports, module) {
 
     // Image preview provider -------------------------------------------------
 
-    function imagePreviewProvider(editor, pos, token, line) {
+    function getQuickView(editor, pos, token, line) {
 
         // Check for image name
         let urlRegEx = /url\(([^\)]*)\)/gi,
@@ -199,6 +201,10 @@ define(function (require, exports, module) {
         setExtensionlessImagePreview(prefs.get("extensionlessImagePreview"));
     });
 
-    exports.imagePreviewProvider = imagePreviewProvider;
+    AppInit.appReady(function () {
+        QuickView.registerQuickViewProvider(exports, ["all"], 0);
+    });
+
+    exports.getQuickView = getQuickView;
 
 });
