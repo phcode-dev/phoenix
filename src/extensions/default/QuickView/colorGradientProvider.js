@@ -31,7 +31,7 @@ define(function (require, exports, module) {
 
     let styleLanguages = ["css", "text/x-less", "sass", "text/x-scss", "stylus"];
 
-    function colorAndGradientPreviewProvider($previewContainer, editor, pos, token, line) {
+    function colorAndGradientPreviewProvider(editor, pos, token, line) {
 
         // Check for gradient. -webkit-gradient() can have parens in parameters
         // nested 2 levels. Other gradients can only nest 1 level.
@@ -195,7 +195,7 @@ define(function (require, exports, module) {
                     parameters = expression.substring(paramStart, paramEnd),
                     params = splitStyleProperty(parameters),
                     lowerBound = 0,
-                    upperBound = $previewContainer.width(),
+                    upperBound = $("#quick-view-color-swatch").width(),
                     args,
                     thisSize,
                     i;
@@ -267,7 +267,7 @@ define(function (require, exports, module) {
                 //          (used by unit tests) to match so normalize the css for both
                 previewCSS = normalizeGradientExpressionForQuickview(ensureHexFormat(previewCSS));
 
-                let preview = "<div class='color-swatch' style='background:" + previewCSS + "'>" + "</div>";
+                let preview = "<div id='quick-view-color-swatch' class='color-swatch' style='background:" + previewCSS + "'>" + "</div>";
                 let startPos = {line: pos.line, ch: match.index},
                     endPos = {line: pos.line, ch: match.index + match[0].length};
 

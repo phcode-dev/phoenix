@@ -162,7 +162,7 @@ define(function (require, exports, module) {
         let line = editor.document.getLine(pos.line);
 
         // FUTURE: Support plugin providers. For now we just hard-code...
-        let popover = colorGradientProvider.colorAndGradientPreviewProvider($previewContainer, editor, pos, token, line)
+        let popover = colorGradientProvider.colorAndGradientPreviewProvider(editor, pos, token, line)
             || ImagePreviewProvider.imagePreviewProvider(editor, pos, token, line);
 
         if (popover) {
