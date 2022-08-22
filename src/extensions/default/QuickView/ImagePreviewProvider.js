@@ -50,9 +50,7 @@ define(function (require, exports, module) {
 
     // Image preview provider -------------------------------------------------
 
-    function imagePreviewProvider($previewContainer, editor, pos, token, line) {
-        const $previewContent = $previewContainer.find(".preview-content");
-        let cm = editor._codeMirror;
+    function imagePreviewProvider(editor, pos, token, line) {
 
         // Check for image name
         let urlRegEx = /url\(([^\)]*)\)/gi,
@@ -121,21 +119,21 @@ define(function (require, exports, module) {
             ePos = {line: pos.line, ch: token.end};
         }
 
-        let imgPreview = "<div class='image-preview'>"          +
+        let imgPreview = "<div id='quick-view-image-preview'><div class='image-preview'>"          +
             "    <img src=\"" + imgPath + "\">"    +
-            "</div>";
+            "</div></div>";
 
         function showHandlerWithImageURL(imageURL) {
             return new Promise((resolve, reject)=>{
                 // Hide the preview container until the image is loaded.
-                $previewContainer.hide();
-                let img = $previewContainer.find(".image-preview > img");
+                let $imageContainer = $("#quick-view-image-preview");
+                let img = $imageContainer.find("img");
                 if(imageURL){
                     img[0].src = imageURL;
                 }
 
                 img.on("load", function () {
-                    $previewContent
+                    $imageContainer
                         .append("<div class='img-size'>" +
                             this.naturalWidth + " &times; " + this.naturalHeight + " " + Strings.UNIT_PIXELS +
                             "</div>"
