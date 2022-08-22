@@ -1006,13 +1006,27 @@ define(function (require, exports, module) {
      * Given an {left, top} object (e.g. coordinates of a mouse event) returns the {line, ch} position that
      * corresponds to it. The optional mode parameter determines relative to what the coordinates are interpreted.
      *
-     * @param {{left: number, top:number}} coordinates be obtained from Eg. coordinates of a mouse event
+     * @param {{left: number, top:number}} coordinates can be obtained from Eg. coordinates of a mouse event
      * @param {string} [mode] It may be "window", "page" (the default), or "local".
      * @return {{line:number, ch: number}} for the given coordinates
      */
     Editor.prototype.coordsChar = function (coordinates, mode) {
         return this._codeMirror.coordsChar(coordinates, mode);
     };
+
+    /**
+     * Returns the position and dimensions of an arbitrary character given a cursor (Eg. from getCursorPos()).
+     * It'll give the size of the whole character, rather than just the position that the cursor would have
+     * when it would sit at that position.
+     *
+     * @param {{line:number, ch: number}} pos A cursor, can be obtained from Eg. getCursorPos()
+     * @param {string} [mode] It may be "window", "page" (the default), or "local".
+     * @return {{left:number, right:number, top:number, bottom:number}} coordinates for the given character position
+     */
+    Editor.prototype.charCoords = function (pos, mode) {
+        return this._codeMirror.charCoords(pos, mode);
+    };
+
 
     /**
      * Get the token at the given cursor position, or at the current cursor

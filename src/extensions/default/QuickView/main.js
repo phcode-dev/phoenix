@@ -166,7 +166,16 @@ define(function (require, exports, module) {
             || ImagePreviewProvider.imagePreviewProvider($previewContainer, editor, pos, token, line);
 
         if (popover) {
-            // Providers return just { start, end, content, ?onShow, xpos, ytop, ybot }
+            // Providers return just { start, end, content, ?onShow}
+            let startCoord = editor.charCoords(popover.start),
+                endCoord = editor.charCoords(popover.end);
+            popover.xpos = (endCoord.left - startCoord.left) / 2 + startCoord.left;
+            if(endCoord.left<startCoord.left){
+                // this probably spans multiple lines, just show at start cursor position
+                popover.xpos = startCoord.left;
+            }
+            popover.ytop = startCoord.top;
+            popover.ybot = startCoord.bottom;
             popover.visible = false;
             popover.editor  = editor;
             return popover;
