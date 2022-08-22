@@ -163,7 +163,7 @@ define(function (require, exports, module) {
 
         // FUTURE: Support plugin providers. For now we just hard-code...
         let popover = colorGradientProvider.colorAndGradientPreviewProvider($previewContainer, editor, pos, token, line)
-            || ImagePreviewProvider.imagePreviewProvider($previewContainer, editor, pos, token, line);
+            || ImagePreviewProvider.imagePreviewProvider(editor, pos, token, line);
 
         if (popover) {
             // Providers return just { start, end, content, ?onShow}
