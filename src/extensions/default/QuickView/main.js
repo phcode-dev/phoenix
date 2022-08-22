@@ -25,16 +25,34 @@ define(function (require, exports, module) {
 
 
     // Brackets modules
-    const colorGradientProvider          = require("./colorGradientProvider"),
-        ImagePreviewProvider           = require("./ImagePreviewProvider"),
-        CommandManager      = brackets.getModule("command/CommandManager"),
+    const CommandManager      = brackets.getModule("command/CommandManager"),
         Commands            = brackets.getModule("command/Commands"),
         EditorManager       = brackets.getModule("editor/EditorManager"),
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         Menus               = brackets.getModule("command/Menus"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Strings             = brackets.getModule("strings"),
-        ViewUtils           = brackets.getModule("utils/ViewUtils");
+        ViewUtils           = brackets.getModule("utils/ViewUtils"),
+        ProviderRegistrationHandler = brackets.getModule("features/PriorityBasedRegistration").RegistrationHandler;
+
+    require("./colorGradientProvider");
+    require("./ImagePreviewProvider");
+
+
+    const _providerRegistrationHandler = new ProviderRegistrationHandler(),
+        registerQuickViewProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler),
+        removeQuickViewProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
+
+    function _getQuickViewProviders(editor) {
+        let quickViewProviders = [];
+        let language = editor.getLanguageForSelection(),
+            enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
+
+        for(let item of enabledProviders){
+            quickViewProviders.push(item.provider);
+        }
+        return quickViewProviders;
+    }
 
     const previewContainerHTML       = require("text!QuickViewTemplate.html");
 
@@ -162,8 +180,14 @@ define(function (require, exports, module) {
         let line = editor.document.getLine(pos.line);
 
         // FUTURE: Support plugin providers. For now we just hard-code...
-        let popover = colorGradientProvider.colorAndGradientPreviewProvider(editor, pos, token, line)
-            || ImagePreviewProvider.imagePreviewProvider(editor, pos, token, line);
+        let providers = _getQuickViewProviders(editor);
+        let popover;
+        for(let provider of providers){
+            popover = provider.getQuickView(editor, pos, token, line);
+            if(popover){
+                break;
+            }
+        }
 
         if (popover) {
             // Providers return just { start, end, content, ?onShow}
@@ -462,4 +486,7 @@ define(function (require, exports, module) {
     // For unit testing
     exports._queryPreviewProviders  = queryPreviewProviders;
     exports._forceShow              = _forceShow;
+
+    exports.registerQuickViewProvider = registerQuickViewProvider;
+    exports.removeQuickViewProvider   = removeQuickViewProvider;
 });

@@ -27,11 +27,13 @@ define(function (require, exports, module) {
     // Brackets modules
     const ColorUtils          = brackets.getModule("utils/ColorUtils"),
         CSSUtils            = brackets.getModule("language/CSSUtils"),
-        TokenUtils          = brackets.getModule("utils/TokenUtils");
+        TokenUtils          = brackets.getModule("utils/TokenUtils"),
+        AppInit            = brackets.getModule("utils/AppInit"),
+        QuickView = require("main");
 
     let styleLanguages = ["css", "text/x-less", "sass", "text/x-scss", "stylus"];
 
-    function colorAndGradientPreviewProvider(editor, pos, token, line) {
+    function getQuickView(editor, pos, token, line) {
 
         // Check for gradient. -webkit-gradient() can have parens in parameters
         // nested 2 levels. Other gradients can only nest 1 level.
@@ -289,5 +291,9 @@ define(function (require, exports, module) {
         return null;
     }
 
-    exports.colorAndGradientPreviewProvider = colorAndGradientPreviewProvider;
+    AppInit.appReady(function () {
+        QuickView.registerQuickViewProvider(exports, ["all"], 0);
+    });
+
+    exports.getQuickView = getQuickView;
 });
