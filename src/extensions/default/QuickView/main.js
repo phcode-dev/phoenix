@@ -188,37 +188,7 @@ define(function (require, exports, module) {
      * Changes the current hidden popoverState to visible, showing it in the UI and highlighting
      * its matching text in the editor.
      */
-    function showPreview(editor, popover) {
-        console.log("showpreview");
-        let token;
-
-        // Figure out which editor we are over
-        if (!editor) {
-            editor = EditorManager.getHoveredEditor(_currentMousePos);
-        }
-
-        if (!editor) {
-            console.log("hiding as no editor");
-            hidePreview();
-            return;
-        }
-
-        // Find char mouse is over
-        let pos = editor.coordsChar({left: _currentMousePos.clientX, top: _currentMousePos.clientY});
-
-        // No preview if mouse is past last char on line
-        if (pos.ch >= editor.document.getLine(pos.line).length) {
-            return;
-        }
-
-        if (popover) {
-            popoverState = popover;
-        } else {
-            // Query providers and append to popoverState
-            token = editor.getToken(pos);
-            popoverState = $.extend({}, popoverState, queryPreviewProviders(editor, pos, token));
-        }
-
+    function _renderPreview(editor) {
         if (popoverState && popoverState.start && popoverState.end) {
             popoverState.marker = editor.markText(
                 QUICK_VIEW_EDITOR_MARKER,
@@ -246,6 +216,35 @@ define(function (require, exports, module) {
                 positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
             }
         }
+    }
+
+    function showPreview(editor) {
+        console.log("showpreview");
+        let token;
+
+        // Figure out which editor we are over
+        if (!editor) {
+            editor = EditorManager.getHoveredEditor(_currentMousePos);
+        }
+
+        if (!editor) {
+            console.log("hiding as no editor");
+            hidePreview();
+            return;
+        }
+
+        // Find char mouse is over
+        let pos = editor.coordsChar({left: _currentMousePos.clientX, top: _currentMousePos.clientY});
+
+        // No preview if mouse is past last char on line
+        if (pos.ch >= editor.document.getLine(pos.line).length) {
+            return;
+        }
+
+        // Query providers and append to popoverState
+        token = editor.getToken(pos);
+        popoverState = $.extend({}, queryPreviewProviders(editor, pos, token));
+        _renderPreview(editor);
     }
 
     function _isMouseFarFromPopup() {
@@ -436,7 +435,8 @@ define(function (require, exports, module) {
             clientX: popover.xpos,
             clientY: Math.floor((popover.ybot + popover.ytop) / 2)
         };
-        showPreview(popover.editor, popover);
+        popoverState = popover;
+        _renderPreview(popover.editor);
     }
 
     // Create the preview container
