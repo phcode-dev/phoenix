@@ -25,11 +25,11 @@ define(function (require, exports, module) {
 
 
     // Brackets modules
-    const ColorUtils          = brackets.getModule("utils/ColorUtils"),
+    const ColorUtils        = brackets.getModule("utils/ColorUtils"),
         CSSUtils            = brackets.getModule("language/CSSUtils"),
         TokenUtils          = brackets.getModule("utils/TokenUtils"),
-        AppInit            = brackets.getModule("utils/AppInit"),
-        QuickView = require("main");
+        AppInit             = brackets.getModule("utils/AppInit"),
+        QuickView           = brackets.getModule("features/QuickViewManager");
 
     let styleLanguages = ["css", "text/x-less", "sass", "text/x-scss", "stylus"];
 

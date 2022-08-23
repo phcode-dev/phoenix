@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         Strings             = brackets.getModule("strings"),
         PathUtils           = brackets.getModule("thirdparty/path-utils/path-utils"),
         AppInit             = brackets.getModule("utils/AppInit"),
-        QuickView = require("main");
+        QuickView           = brackets.getModule("features/QuickViewManager");
 
     let enabled,                             // Only show preview if true
         prefs                      = null,   // Preferences
