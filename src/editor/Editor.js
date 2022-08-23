@@ -838,7 +838,7 @@ define(function (require, exports, module) {
 
     /**
      * Given a position, returns its index within the text (assuming \n newlines)
-     * @param {!{line:number, ch:number}}
+     * @param {{line:number, ch:number}}
      * @return {number}
      */
     Editor.prototype.indexFromPos = function (coords) {
