@@ -103,7 +103,7 @@ The function will be called with the following arguments:
 
 #### return types
 
-The promise returned should have the following contents:
+The promise returned should resolve with the following contents:
 
 1.  `start` : Indicates the start cursor position from which the quick view is valid.
 2.  `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
