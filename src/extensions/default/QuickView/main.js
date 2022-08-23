@@ -72,6 +72,7 @@ define(function (require, exports, module) {
         POINTER_HEIGHT              = 15,
         POPOVER_HORZ_MARGIN         =  5;   // Horizontal margin
 
+    // todo change to core preferences
     prefs = PreferencesManager.getExtensionPrefs("quickview");
     prefs.definePreference("enabled", "boolean", true, {
         description: Strings.DESCRIPTION_QUICK_VIEW_ENABLED
@@ -171,26 +172,19 @@ define(function (require, exports, module) {
 
     // Preview hide/show logic ------------------------------------------------
 
-    /**
-     * Returns a 'ready for use' popover state object:
-     * { visible: false, editor, start, end, content, ?onShow, xpos, ytop, ybot }
-     * Lacks only hoverTimer (supplied by handleMouseMove()) and marker (supplied by showPreview()).
-     */
-    function queryPreviewProviders(editor, pos, token) {
-        let line = editor.document.getLine(pos.line);
-
-        // FUTURE: Support plugin providers. For now we just hard-code...
-        let providers = _getQuickViewProviders(editor);
-        let popover;
-        for(let provider of providers){
-            popover = provider.getQuickView(editor, pos, token, line);
-            if(popover){
-                break;
+    function _createPopoverState(editor, popoverResults) {
+        if (popoverResults && popoverResults.length) {
+            let popover = {
+                content: $("<div></div>")
+            };
+            // Each provider return popover { start, end, content, ?onShow}
+            for(let result of popoverResults){
+                //todo reduce highlight area instead of just assigning last seen start/end
+                popover.start = result.start;
+                popover.end = result.end;
+                popover.content.append(result.content);
             }
-        }
 
-        if (popover) {
-            // Providers return just { start, end, content, ?onShow}
             let startCoord = editor.charCoords(popover.start),
                 endCoord = editor.charCoords(popover.end);
             popover.xpos = (endCoord.left - startCoord.left) / 2 + startCoord.left;
@@ -209,6 +203,28 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Returns a 'ready for use' popover state object:
+     * { visible: false, editor, start, end, content, ?onShow, xpos, ytop, ybot }
+     * Lacks only hoverTimer (supplied by handleMouseMove()) and marker (supplied by showPreview()).
+     */
+    async function queryPreviewProviders(editor, pos, token) {
+        let line = editor.document.getLine(pos.line);
+        let providers = _getQuickViewProviders(editor);
+        let popovers = [], providerPromises = [];
+        for(let provider of providers){
+            providerPromises.push(provider.getQuickView(editor, pos, token, line));
+        }
+        let results = await Promise.allSettled(providerPromises);
+        for(let result of results){
+            if(result.status === "fulfilled" && result.value){
+                popovers.push(result.value);
+            }
+        }
+
+        return _createPopoverState(editor, popovers);
+    }
+
+    /**
      * Changes the current hidden popoverState to visible, showing it in the UI and highlighting
      * its matching text in the editor.
      */
@@ -221,28 +237,20 @@ define(function (require, exports, module) {
                 {className: "quick-view-highlight"}
             );
 
-            $previewContent.append(popoverState.content);
+            let $popoverContent = $(popoverState.content);
+            $previewContent.append($popoverContent);
             $previewContainer.show();
 
-            popoverState.visible = true;
-
-            if (popoverState.onShow) {
-                popoverState.onShow()
-                    .then(()=>{
-                        $previewContainer.show();
-                        positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
-                    })
-                    .catch(()=>{
-                        console.log("hiding onShow error");
-                        hidePreview();
-                    });
-            } else {
+            $popoverContent[0].addEventListener('DOMSubtreeModified', ()=>{
                 positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
-            }
+            }, false);
+
+            popoverState.visible = true;
+            positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
         }
     }
 
-    function showPreview(editor) {
+    async function showPreview(editor) {
         console.log("showpreview");
         let token;
 
@@ -267,7 +275,7 @@ define(function (require, exports, module) {
 
         // Query providers and append to popoverState
         token = editor.getToken(pos);
-        popoverState = $.extend({}, queryPreviewProviders(editor, pos, token));
+        popoverState = await queryPreviewProviders(editor, pos, token);
         _renderPreview(editor);
     }
 
@@ -356,9 +364,9 @@ define(function (require, exports, module) {
             return;
         }
 
-        if (event.which) {
+        if (event.buttons !== 0) {
             // Button is down - don't show popovers while dragging
-            console.log("hiding as button clicked");
+            console.log("hiding as button clicked", event);
             hidePreview();
             return;
         }
