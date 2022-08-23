@@ -21,6 +21,113 @@
 
 /*jslint regexp: true */
 
+// @INCLUDE_IN_API_DOCS
+
+/**
+ * QuickViewManager provides support to add interactive preview popups on hover over the main editors.
+ * Extensions can register to provide previews with `QuickViewManager.registerQuickViewProvider` API.
+ * ![quick-view-image.png](generatedDocs/images/quick-view-image.png)
+ * ![quick-view-youtube.png](generatedDocs/images/quick-view-youtube.png)
+ *
+ *
+ * ## Usage
+ * Lets build a "hello world" extension that displays "hello world" on hover over a text in the editor.
+ * In your extension file, add the following code:
+ * ```js
+ * const QuickViewManager = brackets.getModule("features/QuickViewManager");
+ * // replace `all` with language ID(Eg. javascript) if you want to restrict the preview to js files only.
+ * QuickViewManager.registerQuickViewProvider(exports, ["all"]);
+ *
+ * // now implement the getQuickView function that will be invoked when ever user hovers over a text in the editor.
+ * exports.getQuickView = function(editor, pos, token, line) {
+ *         return new Promise((resolve, reject)=>{
+ *             resolve({
+ *                 start: {line: pos.line, ch:token.start},
+ *                 end: {line: pos.line, ch:token.end},
+ *                 content: "<div>hello world</div>"
+ *             });
+ *         });
+ *     };
+ * ```
+ *
+ * ### How it works
+ * When QuickViewManager determines that the user intents to see QuickView on hover, `getQuickView` function on all
+ * registered QuickView providers are invoked to get the quick view popup. `getQuickView` should return a promise
+ * that resolves to the popup contents if the provider has a quick view. Else just reject the promise. If multiple
+ * providers returns QuickView, all of them are displayed one by one. See detailed API docs for implementation
+ * details below:
+ *
+ * ## API
+ * ### registerQuickViewProvider
+ * Register a QuickView provider with this api.
+ *
+ * ```js
+ * // syntax
+ * QuickViewManager.registerQuickViewProvider(provider, supportedLanguages);
+ * ```
+ * The API requires three parameters:
+ * 1. `provider`: must implement a  `getQuickView` function which will be invoked to get the preview. See API doc below.
+ * 1. `supportedLanguages`: An array of languages that the QuickView supports. If `["all"]` is supplied, then the
+ *    QuickView will be invoked for all languages. Restrict to specific languages: Eg: `["javascript", "html", "php"]`
+ *
+ * ```js
+ * // to register a provider that will be invoked for all languages. where provider is any object that implements
+ * // a getQuickView function
+ * QuickViewManager.registerQuickViewProvider(provider, ["all"]);
+ *
+ * // to register a provider that will be invoked for specific languages
+ * QuickViewManager.registerQuickViewProvider(provider, ["javascript", "html", "php"]);
+ * ```
+ *
+ * ### removeQuickViewProvider
+ * Removes a registered code hint provider. The API takes the same arguments as `registerQuickViewProvider`.
+ * ```js
+ * // syntax
+ * QuickViewManager.removeQuickViewProvider(provider, supportedLanguages);
+ * // Example
+ * QuickViewManager.removeQuickViewProvider(provider, ["javascript", "html"]);
+ * ```
+ *
+ * ### getQuickView
+ * Each provider must implement the `getQuickView` function that returns a promise. The promise either resolves with
+ * the quick view details object(described below) or rejects if there is no preview for the position.
+ * ```js
+ * // function signature
+ * provider.getQuickView = function(editor, pos, token, line) {
+ *         return new Promise((resolve, reject)=>{
+ *             resolve({
+ *                 start: {line: pos.line, ch:token.start},
+ *                 end: {line: pos.line, ch:token.end},
+ *                 content: "<div>hello world</div>"
+ *             });
+ *         });
+ *     };
+ * ```
+ *
+ * #### parameters
+ * The function will be called with the following arguments:
+ * 1. `editor` - The editor over which the user hovers the mouse cursor.
+ * 1. `pos` - the cursor position over which the user hovers.
+ * 1. `token` - hovered token details
+ * 1. `line` - the full line text as string.
+ *
+ * #### return types
+ * The promise returned should resolve with the following contents:
+ * 1. `start` : Indicates the start cursor position from which the quick view is valid.
+ * 1. `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
+ *    the hovered section of the text in the editor.
+ * 1. `content`: Either `HTML` as text, a `DOM Node` or a `Jquery Element`.
+ *
+ * #### Considerations
+ * 1. QuickView won't be displayed till all provider promises are settled. To improve performance, if your QuickView
+ *    handler takes time to resolve the QuickView, resolve a dummy quick once you are sure that a QuickView needs
+ *    to be shown to the user. The div contents can be later updated as and when more details are available.
+ * 1. Note that the QuickView could be hidden/removed any time by the QuickViewManager.
+ * 1. If multiple providers returns a valid popup, all of them are displayed.
+ *
+ * @module features/QuickViewManager
+ */
+
 define(function (require, exports, module) {
 
 
@@ -71,14 +178,13 @@ define(function (require, exports, module) {
         POINTER_HEIGHT              = 15,
         POPOVER_HORZ_MARGIN         =  5;   // Horizontal margin
 
-    // todo change to core preferences
     prefs = PreferencesManager.getExtensionPrefs("quickview");
     prefs.definePreference("enabled", "boolean", true, {
         description: Strings.DESCRIPTION_QUICK_VIEW_ENABLED
     });
 
     /**
-     * There are three states for this var:
+     * There are three states for this var:getToken
      * 1. If null, there is no provider result for the given mouse position.
      * 2. If non-null, and visible==true, there is a popover currently showing.
      * 3. If non-null, but visible==false, we're waiting for HOVER_DELAY, which
@@ -99,6 +205,7 @@ define(function (require, exports, module) {
      *      ybot: number,                   - y of bottom of matched text (when popover moved below text, avoiding window top)
      *      marker: ?CodeMirror.TextMarker  - only set once visible==true
      * }}
+     * @private
      */
     let popoverState = null;
 
@@ -109,11 +216,16 @@ define(function (require, exports, module) {
     /**
      * Cancels whatever popoverState was currently pending and sets it back to null. If the popover was visible,
      * hides it; if the popover was invisible and still pending, cancels hoverTimer so it will never be shown.
+     * @private
      */
     function hidePreview() {
         if (!popoverState) {
             return;
         }
+        if(popoverState.resizeObserver){
+            popoverState.resizeObserver.disconnect();
+        }
+        popoverState.resizeObserver = null;
 
         if (popoverState.visible) {
             popoverState.marker.clear();
@@ -174,16 +286,33 @@ define(function (require, exports, module) {
 
     // Preview hide/show logic ------------------------------------------------
 
+    function _isResultBeforePopoverStart(editor, popover, result){
+        if(!popover.start){
+            return true;
+        }
+        return editor.indexFromPos(result.start) < editor.indexFromPos(popover.start);
+    }
+
+    function _isResultAfterPopoverEnd(editor, popover, result){
+        if(!popover.end){
+            return true;
+        }
+        return editor.indexFromPos(popover.start) > editor.indexFromPos(result.end);
+    }
+
     function _createPopoverState(editor, popoverResults) {
         if (popoverResults && popoverResults.length) {
             let popover = {
                 content: $("<div id='quick-view-popover-root'></div>")
             };
-            // Each provider return popover { start, end, content, ?onShow}
+            // Each provider return popover { start, end, content}
             for(let result of popoverResults){
-                //todo reduce highlight area instead of just assigning last seen start/end
-                popover.start = result.start;
-                popover.end = result.end;
+                if(_isResultBeforePopoverStart(editor, popover, result)){
+                    popover.start = result.start;
+                }
+                if(_isResultAfterPopoverEnd(editor, popover, result)){
+                    popover.end = result.end;
+                }
                 popover.content.append(result.content);
             }
 
@@ -208,6 +337,7 @@ define(function (require, exports, module) {
      * Returns a 'ready for use' popover state object:
      * { visible: false, editor, start, end, content, ?onShow, xpos, ytop, ybot }
      * Lacks only hoverTimer (supplied by handleMouseMove()) and marker (supplied by showPreview()).
+     * @private
      */
     async function queryPreviewProviders(editor, pos, token) {
         let line = editor.document.getLine(pos.line);
@@ -229,6 +359,7 @@ define(function (require, exports, module) {
     /**
      * Changes the current hidden popoverState to visible, showing it in the UI and highlighting
      * its matching text in the editor.
+     * @private
      */
     function _renderPreview(editor) {
         if (popoverState && popoverState.start && popoverState.end) {
@@ -242,13 +373,13 @@ define(function (require, exports, module) {
             let $popoverContent = $(popoverState.content);
             $previewContent.append($popoverContent);
             $previewContainer.show();
-
-            $popoverContent[0].addEventListener('DOMSubtreeModified', ()=>{
-                positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
-            }, false);
-
             popoverState.visible = true;
             positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
+
+            popoverState.resizeObserver = new ResizeObserver(() => {
+                positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
+            });
+            popoverState.resizeObserver.observe($popoverContent[0]);
         }
     }
 
@@ -396,7 +527,7 @@ define(function (require, exports, module) {
     let mouseInPreviewContainer = false;
     function mouseOut(_evt) {
         setTimeout(()=>{
-            if(mouseInPreviewContainer){
+            if(mouseInPreviewContainer || $previewContainer[0].contains(_evt.toElement)){
                 return;
             }
             hidePreview();
