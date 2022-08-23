@@ -175,7 +175,7 @@ define(function (require, exports, module) {
         // Time (ms) mouse must remain over a provider's matched text before popover appears
         HOVER_DELAY                 = 500,
         // Pointer height, used to shift popover above pointer (plus a little bit of space)
-        POINTER_HEIGHT              = 15,
+        POINTER_HEIGHT              = 10,
         POPOVER_HORZ_MARGIN         =  5;   // Horizontal margin
 
     prefs = PreferencesManager.getExtensionPrefs("quickview");
@@ -222,10 +222,6 @@ define(function (require, exports, module) {
         if (!popoverState) {
             return;
         }
-        if(popoverState.resizeObserver){
-            popoverState.resizeObserver.disconnect();
-        }
-        popoverState.resizeObserver = null;
 
         if (popoverState.visible) {
             popoverState.marker.clear();
@@ -376,10 +372,9 @@ define(function (require, exports, module) {
             popoverState.visible = true;
             positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
 
-            popoverState.resizeObserver = new ResizeObserver(() => {
+            $popoverContent[0].addEventListener('DOMSubtreeModified', ()=>{
                 positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
-            });
-            popoverState.resizeObserver.observe($popoverContent[0]);
+            }, false);
         }
     }
 

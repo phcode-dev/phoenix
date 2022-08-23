@@ -96,7 +96,7 @@ define(function (require, exports, module) {
                     errors = errors.map(function (lintError) {
                         return {
                             // JSLint returns 1-based line/col numbers
-                            pos: { line: lintError.line - 1, ch: lintError.character - 1 },
+                            pos: { line: lintError.line - 1, ch: lintError.character },
                             message: `${lintError.reason} jshint (${lintError.code})`,
                             type: CodeInspection.Type.ERROR
                         };

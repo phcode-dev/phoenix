@@ -55,7 +55,8 @@ define(function (require, exports, module) {
         Async                   = require("utils/Async"),
         PanelTemplate           = require("text!htmlContent/problems-panel.html"),
         ResultsTemplate         = require("text!htmlContent/problems-panel-table.html"),
-        Mustache                = require("thirdparty/mustache/mustache");
+        Mustache                = require("thirdparty/mustache/mustache"),
+        QuickViewManager        = require("features/QuickViewManager");
 
     const CODE_INSPECTION_GUTTER_PRIORITY      = 500,
         CODE_INSPECTION_GUTTER = "code-inspection-gutter";
@@ -480,6 +481,26 @@ define(function (require, exports, module) {
         _populateDummyGutterElements(editor, from, to);
     }
 
+    function getQuickView(editor, pos, token, line) {
+        return new Promise((resolve, reject)=>{
+            let codeInspectionMarks = editor.findMarksAt(pos, CODE_MARK_TYPE_INSPECTOR) || [];
+            let hoverMessage = '';
+            for(let mark of codeInspectionMarks){
+                hoverMessage = `${hoverMessage}${mark.message}\n`;
+            }
+            if(hoverMessage){
+                resolve({
+                    start: {line: pos.line, ch: token.start},
+                    end: {line: pos.line, ch: token.end},
+                    content: hoverMessage
+                });
+                return;
+            }
+            reject();
+        });
+    }
+
+
     /**
      * Adds gutter icons and squiggly lines under err/warn/info to editor after lint.
      * @param resultProviderEntries
@@ -510,6 +531,7 @@ define(function (require, exports, module) {
                     if (_shouldMarkTokenAtPosition(editor, error)) {
                         let mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
                         mark.type = error.type;
+                        mark.message = error.message;
                     }
                 }
             }
@@ -904,6 +926,10 @@ define(function (require, exports, module) {
         // Set initial UI state
         toggleEnabled(prefs.get(PREF_ENABLED), true);
         toggleCollapsed(prefs.get(PREF_COLLAPSED), true);
+
+        QuickViewManager.registerQuickViewProvider({
+            getQuickView
+        }, ["all"]);
     });
 
     // Testing
