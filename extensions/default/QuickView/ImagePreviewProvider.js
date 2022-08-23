@@ -211,7 +211,7 @@ define(function (require, exports, module) {
     });
 
     AppInit.appReady(function () {
-        QuickView.registerQuickViewProvider(exports, ["all"], 0);
+        QuickView.registerQuickViewProvider(exports, ["all"]);
     });
 
     exports.getQuickView = getQuickView;
