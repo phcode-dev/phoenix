@@ -172,11 +172,12 @@ define(function (require, exports, module) {
                 });
             }
 
+            $imgPreview.attr("data-for-test", imgPath || loadFromDisk);
+
             let previewPopup = {
                 start: sPos,
                 end: ePos,
-                content: $imgPreview,
-                _imgPath: imgPath || loadFromDisk
+                content: $imgPreview
             };
 
             if(loadFromDisk){
@@ -185,6 +186,8 @@ define(function (require, exports, module) {
                     if(!err){
                         showHandlerWithImageURL(dataURL);
                         resolve(previewPopup);
+                    } else {
+                        reject();
                     }
                 });
             } else {
