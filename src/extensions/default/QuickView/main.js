@@ -112,7 +112,6 @@ define(function (require, exports, module) {
      * hides it; if the popover was invisible and still pending, cancels hoverTimer so it will never be shown.
      */
     function hidePreview() {
-        console.log("hiding preview");
         if (!popoverState) {
             return;
         }
@@ -132,6 +131,10 @@ define(function (require, exports, module) {
     }
 
     function positionPreview(editor, xpos, ypos, ybot) {
+        if ($previewContent.find("#quick-view-popover-root").is(':empty')){
+            hidePreview();
+            return;
+        }
         let previewWidth  = $previewContainer.outerWidth(),
             top           = ypos - $previewContainer.outerHeight() - POINTER_HEIGHT,
             left          = xpos - previewWidth / 2,
@@ -175,7 +178,7 @@ define(function (require, exports, module) {
     function _createPopoverState(editor, popoverResults) {
         if (popoverResults && popoverResults.length) {
             let popover = {
-                content: $("<div></div>")
+                content: $("<div id='quick-view-popover-root'></div>")
             };
             // Each provider return popover { start, end, content, ?onShow}
             for(let result of popoverResults){
@@ -251,7 +254,6 @@ define(function (require, exports, module) {
     }
 
     async function showPreview(editor) {
-        console.log("showpreview");
         let token;
 
         // Figure out which editor we are over
@@ -260,7 +262,6 @@ define(function (require, exports, module) {
         }
 
         if (!editor) {
-            console.log("hiding as no editor");
             hidePreview();
             return;
         }
@@ -343,7 +344,6 @@ define(function (require, exports, module) {
             // so we return from this mousemove event handler ASAP.
             popoverState.hoverTimer = window.setTimeout(function () {
                 showPreviewQueued = false;
-                console.log("hiding to create new popup");
                 if(!mouseInPreviewContainer){
                     hidePreview();
                     popoverState = {};
@@ -366,7 +366,6 @@ define(function (require, exports, module) {
 
         if (event.buttons !== 0) {
             // Button is down - don't show popovers while dragging
-            console.log("hiding as button clicked", event);
             hidePreview();
             return;
         }
@@ -379,7 +378,6 @@ define(function (require, exports, module) {
 
     function onActiveEditorChange(event, current, previous) {
         // Hide preview when editor changes
-        console.log("hiding active editor changed");
         hidePreview();
 
         if (previous && previous.document) {
@@ -402,7 +400,6 @@ define(function (require, exports, module) {
             if(mouseInPreviewContainer){
                 return;
             }
-            console.log("hiding mouse out");
             hidePreview();
         }, HOVER_DELAY);
     }
