@@ -128,6 +128,11 @@ define(function (require, exports, module) {
                 "    <img src=\"" + imgPath + "\">"    +
                 "</div></div>");
 
+            function _tryLoadingURLInIframe() {
+                let $iframe = $(`<iframe class='image-preview' src="${imgPath}">`);
+                $imgPreview.find(".image-preview").append($iframe);
+            }
+
             function showHandlerWithImageURL(imageURL) {
                 // Hide the preview container until the image is loaded.
                 let img = $imgPreview.find("img");
@@ -142,6 +147,8 @@ define(function (require, exports, module) {
                             "</div>"
                         );
                 }).on("error", function (e) {
+                    img.remove();
+                    _tryLoadingURLInIframe();
                     e.preventDefault();
                 });
             }
