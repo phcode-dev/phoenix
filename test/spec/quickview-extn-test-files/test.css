@@ -145,15 +145,15 @@ background: -ms-linear-gradient(top,  #d2dfed 0%,#c8d7eb 26%,#bed0ea 51%,#a6c0e3
 
     background: "https://raw.github.com/gruehle/HoverPreview/master/screenshots/Image.png";
 
-    background: "img/med_hero.jpg";
-    background: 'img/Gradient.png';
-    background: 'img/specials.jpeg';
+    background: "img/update_large_icon.svg";
+    background: 'img/Color.png';
+    background: 'img/throbber.gif';
 }
 
 .foo {
-    background: -webkit-image-set(url("img/specials.jpeg") 1x, url("img/Gradient.png") 2x);
-    background: -webkit-image-set(url(img/specials.jpeg) 1x,   url(img/Gradient.png) 2x);
-    background: -webkit-image-set("img/specials.jpeg" 1x,      "img/Gradient.png" 2x);
+    background: -webkit-image-set(url("img/Color.png") 1x, url("img/Color.png") 2x);
+    background: -webkit-image-set(url(img/Color.png) 1x,   url(img/Color.png) 2x);
+    background: -webkit-image-set("img/Color.png" 1x,      "img/Color.png" 2x);
 }
 
 .data {
@@ -161,13 +161,13 @@ background: -ms-linear-gradient(top,  #d2dfed 0%,#c8d7eb 26%,#bed0ea 51%,#a6c0e3
 }
 
 .pixelGradient {
-    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, green 300px, red 600px); 
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, green 300px, red 600px);
     background-image: repeating-linear-gradient(red, blue 20px, red 40px);
-    background-image: repeating-radial-gradient(red, blue 20px, red 40px);    
+    background-image: repeating-radial-gradient(red, blue 20px, red 40px);
 }
 
-.whitespaceCheck_linear_gradient { 
-    background : linear-gradient(to bottom, black 0%, white 100%); 
+.whitespaceCheck_linear_gradient {
+    background : linear-gradient(to bottom, black 0%, white 100%);
     background: linear-gradient(to bottom, black 0%, white 100%);
     background :linear-gradient(to bottom, black 0%, white 100%);
     background:linear-gradient(to bottom, black 0%, white 100%);

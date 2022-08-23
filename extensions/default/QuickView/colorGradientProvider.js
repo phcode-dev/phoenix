@@ -269,15 +269,14 @@ define(function (require, exports, module) {
                     //          (used by unit tests) to match so normalize the css for both
                     previewCSS = normalizeGradientExpressionForQuickview(ensureHexFormat(previewCSS));
 
-                    let preview = "<div id='quick-view-color-swatch' class='color-swatch' style='background:" + previewCSS + "'>" + "</div>";
+                    let preview = "<div id='quick-view-color-swatch' data-for-test='"+previewCSS+"' class='color-swatch' style='background:" + previewCSS + "'>" + "</div>";
                     let startPos = {line: pos.line, ch: match.index},
                         endPos = {line: pos.line, ch: match.index + match[0].length};
 
                     resolve({
                         start: startPos,
                         end: endPos,
-                        content: preview,
-                        _previewCSS: previewCSS
+                        content: preview
                     });
                     return;
                 }

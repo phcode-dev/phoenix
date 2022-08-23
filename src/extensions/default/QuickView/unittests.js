@@ -34,7 +34,6 @@ define(function (require, exports, module) {
         // load from testWindow
         var testWindow,
             brackets,
-            extensionRequire,
             CommandManager,
             Commands,
             EditorManager,
@@ -56,8 +55,7 @@ define(function (require, exports, module) {
             CommandManager = brackets.test.CommandManager;
             Commands = brackets.test.Commands;
             EditorManager = brackets.test.EditorManager;
-            extensionRequire = brackets.test.ExtensionLoader.getRequireContextForExtension("QuickView");
-            QuickView = extensionRequire("main");
+            QuickView = brackets.test.QuickViewManager;
 
             if (testFile !== oldFile) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
@@ -73,7 +71,6 @@ define(function (require, exports, module) {
             CommandManager   = null;
             Commands         = null;
             EditorManager    = null;
-            extensionRequire = null;
             QuickView        = null;
             await SpecRunnerUtils.closeTestWindow();
         });
@@ -97,7 +94,7 @@ define(function (require, exports, module) {
 
         async function checkColorAtPos(expectedColor, line, ch) {
             var popoverInfo = await getPopoverAtPos(line, ch);
-            expect(popoverInfo._previewCSS).toBe(expectedColor);
+            expect(popoverInfo.content.find("#quick-view-color-swatch").attr("data-for-test")).toBe(expectedColor);
         }
 
         async function checkGradientAtPos(expectedGradient, line, ch) {
@@ -107,15 +104,16 @@ define(function (require, exports, module) {
 
         async function checkImagePathAtPos(expectedPathEnding, line, ch) {
             var popoverInfo = await getPopoverAtPos(line, ch),
-                imagePath = popoverInfo._imgPath;
+                imagePath = popoverInfo.content.find("#quick-view-image-preview").attr("data-for-test");
 
             // Just check end of path - local drive location prefix unimportant
             expect(imagePath.substr(imagePath.length - expectedPathEnding.length)).toBe(expectedPathEnding);
         }
 
         async function checkImageDataAtPos(expectedData, line, ch) {
-            var popoverInfo = await getPopoverAtPos(line, ch);
-            expect(popoverInfo._imgPath).toBe(expectedData);
+            var popoverInfo = await getPopoverAtPos(line, ch),
+                imagePath = popoverInfo.content.find("#quick-view-image-preview").attr("data-for-test");
+            expect(imagePath).toBe(expectedData);
         }
 
         describe("Quick view colors", function () {
@@ -297,91 +295,6 @@ define(function (require, exports, module) {
             });
         });
 
-        describe("Quick view display", function () {
-
-            async function showPopoverAtPos(line, ch) {
-                var popoverInfo = await getPopoverAtPos(line, ch);
-                QuickView._forceShow(popoverInfo);
-            }
-
-            function getBounds(object, useOffset) {
-                var left = (useOffset ? object.offset().left : parseInt(object.css("left"), 10)),
-                    top = (useOffset ? object.offset().top : parseInt(object.css("top"), 10));
-                return {
-                    left: left,
-                    top: top,
-                    right: left + object.outerWidth(),
-                    bottom: top + object.outerHeight()
-                };
-            }
-
-            function boundsInsideWindow(object) {
-                // For the popover, we can't use offset(), because jQuery gets confused by the
-                // scale factor and transform origin that the animation uses. Instead, we rely
-                // on the fact that its offset parent is body, and just test its explicit left/top
-                // values.
-                var bounds = getBounds(object, false),
-                    editorBounds = getBounds(testWindow.$("#editor-holder"), true);
-                return bounds.left   >= editorBounds.left   &&
-                    bounds.right  <= editorBounds.right  &&
-                    bounds.top    >= editorBounds.top    &&
-                    bounds.bottom <= editorBounds.bottom;
-            }
-
-            async function toggleOption(commandID, text) {
-                var promise = CommandManager.execute(commandID);
-                await awaitsForDone(promise, text);
-            }
-
-            it("popover is positioned within window bounds", async function () {
-                var $popover  = testWindow.$("#quick-view-container");
-                expect($popover.length).toEqual(1);
-
-                // Popover should be below item
-                await showPopoverAtPos(3, 12);
-                expect(boundsInsideWindow($popover)).toBeTruthy();
-
-                // Popover should above item
-                await showPopoverAtPos(20, 33);
-                expect(boundsInsideWindow($popover)).toBeTruthy();
-
-                // Turn off word wrap for next tests
-                await toggleOption(Commands.TOGGLE_WORD_WRAP, "Toggle word-wrap");
-
-                // Popover should be inside right edge
-                await showPopoverAtPos(81, 36);
-                expect(boundsInsideWindow($popover)).toBeTruthy();
-
-                // Popover should be inside left edge
-                var scrollX = editor._codeMirror.defaultCharWidth()  * 80,
-                    scrollY = editor._codeMirror.defaultTextHeight() * 70;
-
-                editor.setScrollPos(scrollX, scrollY);      // Scroll right
-                await showPopoverAtPos(82, 136);
-                expect(boundsInsideWindow($popover)).toBeTruthy();
-
-                // restore word wrap
-                await toggleOption(Commands.TOGGLE_WORD_WRAP, "Toggle word-wrap");
-            });
-
-            it("highlight matched text when popover shown",async function () {
-                await showPopoverAtPos(4, 14);
-                var markers = editor._codeMirror.findMarksAt({line: 4, ch: 14});
-                let rangeMarker = null;
-                for(let marker of markers){
-                    if(marker.type === 'range'){
-                        rangeMarker = marker;
-                        break;
-                    }
-                }
-                expect(rangeMarker).toBeDefined();
-                let range = rangeMarker.find();
-                expect(range.from.ch).toBe(11);
-                expect(range.to.ch).toBe(18);
-            });
-
-        });
-
         describe("Quick view images", function () {
             it("Should show image preview for file path inside url()",async function () {
                 await checkImagePathAtPos("img/grabber_color-well.png", 140, 26);
@@ -395,15 +308,15 @@ define(function (require, exports, module) {
             });
 
             it("Should show image preview for file path inside single or double quotes",async function () {
-                await checkImagePathAtPos("img/med_hero.jpg",  147, 26);
-                await checkImagePathAtPos("img/Gradient.png",  148, 26);
-                await checkImagePathAtPos("img/specials.jpeg", 149, 26);
+                await checkImagePathAtPos("img/update_large_icon.svg",  147, 26);
+                await checkImagePathAtPos("img/Color.png",  148, 26);
+                await checkImagePathAtPos("img/throbber.gif", 149, 26);
             });
 
             it("Should show image preview for subsequent images in a line",async function () {
-                await checkImagePathAtPos("img/Gradient.png", 153, 80);    // url("")
-                await checkImagePathAtPos("img/Gradient.png", 154, 80);    // url()
-                await checkImagePathAtPos("img/Gradient.png", 155, 80);    // ""
+                await checkImagePathAtPos("img/Color.png", 153, 70);    // url("")
+                await checkImagePathAtPos("img/Color.png", 154, 70);    // url()
+                await checkImagePathAtPos("img/Color.png", 155, 70);    // ""
             });
 
             it("Should show image preview for URIs containing quotes",async function () {
