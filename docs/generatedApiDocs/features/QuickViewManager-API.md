@@ -7,6 +7,16 @@ Extensions can register to provide previews with `QuickViewManager.registerQuick
 ![quick-view-image.png][1]
 ![quick-view-youtube.png][2]
 
+### See Related: SelectionViewManager
+
+[features/SelectionViewManager][3] is similar to
+QuickViewManager API.
+
+*   SelectionViews popup only once user selects a text.
+*   Quickviews popup on mouse hover. They are not shown if there is a selection view already being displayed.
+
+(todo add selection view images here)
+
 ## Usage
 
 Lets build a "hello world" extension that displays "hello world" on hover over a text in the editor.
@@ -48,7 +58,7 @@ Register a QuickView provider with this api.
 QuickViewManager.registerQuickViewProvider(provider, supportedLanguages);
 ```
 
-The API requires three parameters:
+The API requires two parameters:
 
 1.  `provider`: must implement a  `getQuickView` function which will be invoked to get the preview. See API doc below.
 2.  `supportedLanguages`: An array of languages that the QuickView supports. If `["all"]` is supplied, then the
@@ -103,12 +113,20 @@ The function will be called with the following arguments:
 
 #### return types
 
-The promise returned should resolve with the following contents:
+The promise returned should resolve to an object with the following contents:
 
 1.  `start` : Indicates the start cursor position from which the quick view is valid.
 2.  `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
     the hovered section of the text in the editor.
 3.  `content`: Either `HTML` as text, a `DOM Node` or a `Jquery Element`.
+
+#### Modifying the QuickView content after resolving `getQuickView` promise
+
+Some advanced/interactive extensions may need to do dom operations on the quick view content.
+In such cases, it is advised to return a domNode/Jquery element as content in `getQuickView`. Event Handlers
+or further dom manipulations can be done on the returned content element.
+The Quick view may be dismissed at any time, so be sure to check if the DOM Node is visible in the editor before
+performing any operations.
 
 #### Considerations
 
@@ -121,3 +139,5 @@ The promise returned should resolve with the following contents:
 [1]: generatedDocs/images/quick-view-image.png
 
 [2]: generatedDocs/images/quick-view-youtube.png
+
+[3]: https://github.com/phcode-dev/phoenix/wiki/SelectionViewManager-API
