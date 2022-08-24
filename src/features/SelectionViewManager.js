@@ -171,6 +171,8 @@ define(function (require, exports, module) {
     let enabled,                             // Only show preview if true
         prefs                      = null,   // Preferences
         $previewContainer,                   // Preview container
+        lastMouseX = 0,
+        lastMouseY = 0,
         $previewContent;                     // Preview content holder
 
     // Constants
@@ -229,16 +231,14 @@ define(function (require, exports, module) {
     }
 
     function positionPreview(editor) {
-        let xpos = popoverState.xpos,
-            ypos = popoverState.ytop,
-            ybot = popoverState.ybot;
+        let ybot = popoverState.ybot;
         if ($previewContent.find("#selection-view-popover-root").is(':empty')){
             hidePreview();
             return;
         }
         let previewWidth  = $previewContainer.outerWidth(),
-            top           = ypos - $previewContainer.outerHeight() - POINTER_HEIGHT,
-            left          = xpos - previewWidth / 2,
+            top           = lastMouseY - $previewContainer.outerHeight() - POINTER_HEIGHT,
+            left          = lastMouseX - previewWidth / 2,
             elementRect = {
                 top: top,
                 left: left - POPOVER_HORZ_MARGIN,
@@ -403,6 +403,8 @@ define(function (require, exports, module) {
     }
 
     function _processMouseMove(event) {
+        lastMouseX= event.clientX;
+        lastMouseY= event.clientY;
         if (event.buttons !== 0) {
             // Button is down - don't show popovers while dragging
             return;
@@ -424,8 +426,7 @@ define(function (require, exports, module) {
                 //this is just a cursor
                 return;
             }
-            if (editor.posWithinRange(mousePos, selection.start, selection.end, true) &&
-                (mousePos.ch < editor.document.getLine(mousePos.line).length)) {
+            if (editor.posWithinRange(mousePos, selection.start, selection.end, true)) {
                 popoverState = {};
                 showPreview(editor, selectionObj);
             }

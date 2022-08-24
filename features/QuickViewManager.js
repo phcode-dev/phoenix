@@ -154,7 +154,6 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
-        SelectionViewManager= require("features/SelectionViewManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const previewContainerHTML       = '<div id="quick-view-container">\n' +
