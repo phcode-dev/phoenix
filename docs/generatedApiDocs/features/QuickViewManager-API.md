@@ -12,10 +12,10 @@ Extensions can register to provide previews with `QuickViewManager.registerQuick
 [features/SelectionViewManager][3] is similar to
 QuickViewManager API.
 
-*   SelectionViews popup only once user selects a text.
-*   Quickviews popup on mouse hover. They are not shown if there is a selection view already being displayed.
+*   SelectionViews popup only once user selects a text by mouse or hover over a region with text selection.
+*   Quickviews popup on mouse hover.
 
-(todo add selection view images here)
+![image][4]
 
 ## Usage
 
@@ -136,8 +136,22 @@ performing any operations.
 2.  Note that the QuickView could be hidden/removed any time by the QuickViewManager.
 3.  If multiple providers returns a valid popup, all of them are displayed.
 
+## isQuickViewShown
+
+If quickview is displayed and visible on screen
+
+Type: [function][5]
+
+Returns **[boolean][6]** 
+
 [1]: generatedDocs/images/quick-view-image.png
 
 [2]: generatedDocs/images/quick-view-youtube.png
 
 [3]: https://github.com/phcode-dev/phoenix/wiki/SelectionViewManager-API
+
+[4]: https://user-images.githubusercontent.com/5336369/186434397-3db55789-6077-4d02-b4e2-78ef3f663399.png
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
