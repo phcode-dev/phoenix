@@ -104,6 +104,11 @@ define(function (require, exports, module) {
             return;
         }
 
+        if(!_hasASingleCursor(editor)){
+            editor.clearAllMarks(HIGHLIGHT_REFS_MARKER);
+            return;
+        }
+
         let token = editor.getToken();
         if(lastHighlightToken === token) {
             return;
@@ -116,10 +121,6 @@ define(function (require, exports, module) {
         }
 
         let offset = session.getOffset();
-
-        if(!_hasASingleCursor(editor)){
-            return;
-        }
 
         // only do this request if token under cursor is a variable type
         requestFindRefs(session, session.editor.document, offset).promise

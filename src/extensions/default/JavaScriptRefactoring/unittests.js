@@ -699,6 +699,17 @@ define(function (require, exports, module) {
                 expect(testEditor.getAllMarks(HighLightReferences.HIGHLIGHT_REFS_MARKER).length).toBe(0);
             });
 
+            it("should not highlight if selection range changes within same token", async function() {
+                // selection at `test1`
+                testEditor.setSelection({line: 18, ch: 4}, {line: 18, ch: 9});
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getAllMarks(HighLightReferences.HIGHLIGHT_REFS_MARKER).length).toBe(0);
+                // now change selection to `est`
+                testEditor.setSelection({line: 18, ch: 5}, {line: 18, ch: 8});
+                await awaits(500); // wait for code indexing workers to prime
+                expect(testEditor.getAllMarks(HighLightReferences.HIGHLIGHT_REFS_MARKER).length).toBe(0);
+            });
+
             it("should not highlight if multiple cursors present", async function() {
                 testEditor.setSelections([{start:{line: 18, ch: 7}}, {start:{line: 18, ch: 8}}]);
                 await awaits(500); // wait for code indexing workers to prime
