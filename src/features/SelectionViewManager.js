@@ -220,7 +220,6 @@ define(function (require, exports, module) {
         if (!popoverState) {
             return;
         }
-        console.log("hide preview");
         if (popoverState.visible) {
             $previewContent.empty();
             $previewContainer.hide();
@@ -307,11 +306,25 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Returns a 'ready for use' popover state object:
+     * Returns a 'ready for use' popover state object or null if there is no popover:
      * { visible: false, editor, start, end, content, xpos, ytop, ybot }
      * @private
      */
     async function queryPreviewProviders(editor, selectionObj) {
+        if(!editor){
+            return null;
+        }
+
+        selectionObj = selectionObj || editor.getSelections();
+        if(selectionObj.length !== 1){
+            // we only show selection view over a single selection
+            return null;
+        }
+        let selection = editor.getSelection();
+        if(selection.start.line === selection.end.line &&  selection.start.ch === selection.end.ch){
+            //this is just a cursor
+            return null;
+        }
         let providers = _getSelectionViewProviders(editor);
         let popovers = [], providerPromises = [];
         for(let provider of providers){
@@ -362,35 +375,12 @@ define(function (require, exports, module) {
         currentQueryID++;
         let savedQueryId = currentQueryID;
         popoverState = await queryPreviewProviders(editor, selectionObj);
-        console.log("got preview");
         if(savedQueryId === currentQueryID){
             // this is to prevent race conditions. For Eg., if the preview provider takes time to generate a preview,
             // another query might have happened while the last query is still in progress. So we only render the most
             // recent QueryID
             _renderPreview(editor);
         }
-    }
-
-    // we do this delayed popup so that we get a consistent view of the editor selections
-    function _delayedPopupShow() {
-        let editor = EditorManager.getActiveEditor();
-        if(!editor){
-            return;
-        }
-
-        let selectionObj = editor.getSelections();
-        if(selectionObj.length !== 1){
-            // we only show selection view over a single selection
-            return;
-        }
-        let selection = editor.getSelection();
-        if(selection.start.line === selection.end.line &&  selection.start.ch === selection.end.ch){
-            //this is just a cursor
-            return;
-        }
-        popoverState = {};
-        console.log("show preview", selection);
-        showPreview(editor, selectionObj);
     }
 
     function handleMouseUp(event) {
@@ -403,7 +393,13 @@ define(function (require, exports, module) {
             // Button is down - don't show popovers while dragging
             return;
         }
-        setTimeout(_delayedPopupShow, POPUP_DELAY);
+        setTimeout(()=>{
+            // we do this delayed popup so that we get a consistent view of the editor selections
+            let editor = EditorManager.getActiveEditor();
+            if(editor){
+                showPreview(editor, editor.getSelections());
+            }
+        }, POPUP_DELAY);
     }
 
     function _processMouseMove(event) {
@@ -431,15 +427,13 @@ define(function (require, exports, module) {
             if (editor.posWithinRange(mousePos, selection.start, selection.end, true) &&
                 (mousePos.ch < editor.document.getLine(mousePos.line).length)) {
                 popoverState = {};
-                console.log("show preview", selection);
                 showPreview(editor, selectionObj);
             }
         }
     }
 
-    function onActiveEditorChange(event, current, previous) {
+    function onActiveEditorChange(_event, current, previous) {
         // Hide preview when editor changes
-        console.log("hide preview editor change");
         hidePreview();
 
         if (previous && previous.document) {
@@ -466,7 +460,6 @@ define(function (require, exports, module) {
                 // we auto-hide on text edit, which is probably actually a good thing.
                 editorHolder.addEventListener("mouseup", handleMouseUp, true);
                 editorHolder.addEventListener("mousemove", _processMouseMove, true);
-                // todo maybe follow scroll instead of hiding?
                 editorHolder.addEventListener("scroll", hidePreview, true);
 
                 // Setup doc "change" listener

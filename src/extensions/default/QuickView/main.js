@@ -28,14 +28,4 @@ define(function (require, exports, module) {
 
     // Load our stylesheet
     ExtensionUtils.loadStyleSheet(module, "QuickView.less");
-
-    const SelectionViewManager = brackets.getModule("features/SelectionViewManager");
-    SelectionViewManager.registerSelectionViewProvider(exports, ["all"]);
-    exports.getSelectionView = function(editor, selections) {
-        return new Promise((resolve, reject)=>{
-            resolve({
-                content: "<div>hello world</div>"
-            });
-        });
-    };
 });
