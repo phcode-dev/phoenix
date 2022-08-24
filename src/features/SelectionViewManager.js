@@ -28,13 +28,14 @@
  * This can be used to provide interactive editor controls on a selected element.
  *
  * Extensions can register to provide previews with `SelectionViewManager.registerSelectionViewProvider` API.
- * ![quick-view-image.png](todo add images here)
+ * ![image](https://user-images.githubusercontent.com/5336369/186434397-3db55789-6077-4d02-b4e2-78ef3f663399.png)
+ * ![selection view](https://user-images.githubusercontent.com/5336369/186434671-c1b263e5-19a9-4a9d-8f90-507df5f881b5.gif)
  *
  * ### See Related: QuickViewManager
  * [features/QuickViewManager](https://github.com/phcode-dev/phoenix/wiki/QuickViewManager-API) is similar to
  * SelectionViewManager API.
- * * SelectionViews popup only once user selects a text.
- * * Quickviews popup on mouse hover. They are not shown if there is a selection view already being displayed.
+ * * SelectionViews popup only once user selects a text by mouse or hover over a region with text selection.
+ * * Quickviews popup on mouse hover.
  * ![quick-view-youtube.png](generatedDocs/images/quick-view-youtube.png)
  *
  * ## Usage
@@ -145,7 +146,6 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
-        Editor              = require("editor/Editor").Editor,
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const previewContainerHTML       = '<div id="selection-view-container">\n' +
@@ -406,6 +406,37 @@ define(function (require, exports, module) {
         setTimeout(_delayedPopupShow, POPUP_DELAY);
     }
 
+    function _processMouseMove(event) {
+        if (event.buttons !== 0) {
+            // Button is down - don't show popovers while dragging
+            return;
+        }
+        if (isSelectionViewShown()) {
+            return;
+        }
+        let editor = EditorManager.getHoveredEditor(event);
+        if (editor) {
+            // Find char mouse is over
+            let mousePos = editor.coordsChar({left: event.clientX, top: event.clientY});
+            let selectionObj = editor.getSelections();
+            if(selectionObj.length !== 1){
+                // we only show selection view over a single selection
+                return;
+            }
+            let selection = editor.getSelection();
+            if(selection.start.line === selection.end.line &&  selection.start.ch === selection.end.ch){
+                //this is just a cursor
+                return;
+            }
+            if (editor.posWithinRange(mousePos, selection.start, selection.end, true) &&
+                (mousePos.ch < editor.document.getLine(mousePos.line).length)) {
+                popoverState = {};
+                console.log("show preview", selection);
+                showPreview(editor, selectionObj);
+            }
+        }
+    }
+
     function onActiveEditorChange(event, current, previous) {
         // Hide preview when editor changes
         console.log("hide preview editor change");
@@ -434,6 +465,7 @@ define(function (require, exports, module) {
                 // event up from the hidden text area. This means
                 // we auto-hide on text edit, which is probably actually a good thing.
                 editorHolder.addEventListener("mouseup", handleMouseUp, true);
+                editorHolder.addEventListener("mousemove", _processMouseMove, true);
                 // todo maybe follow scroll instead of hiding?
                 editorHolder.addEventListener("scroll", hidePreview, true);
 
@@ -443,6 +475,7 @@ define(function (require, exports, module) {
 
             } else {
                 editorHolder.removeEventListener("mouseup", handleMouseUp, true);
+                editorHolder.addEventListener("mousemove", _processMouseMove, true);
                 editorHolder.removeEventListener("scroll", hidePreview, true);
 
                 // Cleanup doc "change" listener
@@ -489,10 +522,20 @@ define(function (require, exports, module) {
         });
     });
 
+    /**
+     * If quickview is displayed and visible on screen
+     * @return {boolean}
+     * @type {function}
+     */
+    function isSelectionViewShown() {
+        return (popoverState && popoverState.visible) || false;
+    }
+
     // For unit testing
     exports._queryPreviewProviders  = queryPreviewProviders;
     exports._forceShow              = _forceShow;
 
     exports.registerSelectionViewProvider = registerSelectionViewProvider;
     exports.removeSelectionViewProvider   = removeSelectionViewProvider;
+    exports.isSelectionViewShown = isSelectionViewShown;
 });

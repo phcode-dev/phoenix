@@ -32,9 +32,9 @@
  * ### See Related: SelectionViewManager
  * [features/SelectionViewManager](https://github.com/phcode-dev/phoenix/wiki/SelectionViewManager-API) is similar to
  * QuickViewManager API.
- * * SelectionViews popup only once user selects a text.
- * * Quickviews popup on mouse hover. They are not shown if there is a selection view already being displayed.
- * (todo add selection view images here)
+ * * SelectionViews popup only once user selects a text by mouse or hover over a region with text selection.
+ * * Quickviews popup on mouse hover.
+ * ![image](https://user-images.githubusercontent.com/5336369/186434397-3db55789-6077-4d02-b4e2-78ef3f663399.png)
  *
  *
  * ## Usage
@@ -154,6 +154,7 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
+        SelectionViewManager= require("features/SelectionViewManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const previewContainerHTML       = '<div id="quick-view-container">\n' +
@@ -636,10 +637,20 @@ define(function (require, exports, module) {
         });
     });
 
+    /**
+     * If quickview is displayed and visible on screen
+     * @return {boolean}
+     * @type {function}
+     */
+    function isQuickViewShown() {
+        return (popoverState && popoverState.visible) || false;
+    }
+
     // For unit testing
     exports._queryPreviewProviders  = queryPreviewProviders;
     exports._forceShow              = _forceShow;
 
     exports.registerQuickViewProvider = registerQuickViewProvider;
     exports.removeQuickViewProvider   = removeQuickViewProvider;
+    exports.isQuickViewShown = isQuickViewShown;
 });

@@ -6,17 +6,18 @@ SelectionViewManager provides support to add interactive preview popups on selec
 This can be used to provide interactive editor controls on a selected element.
 
 Extensions can register to provide previews with `SelectionViewManager.registerSelectionViewProvider` API.
-!\[quick-view-image.png]\(todo add images here)
+![image][1]
+![selection view][2]
 
 ### See Related: QuickViewManager
 
-[features/QuickViewManager][1] is similar to
+[features/QuickViewManager][3] is similar to
 SelectionViewManager API.
 
-*   SelectionViews popup only once user selects a text.
-*   Quickviews popup on mouse hover. They are not shown if there is a selection view already being displayed.
+*   SelectionViews popup only once user selects a text by mouse or hover over a region with text selection.
+*   Quickviews popup on mouse hover.
 
-![quick-view-youtube.png][2]
+![quick-view-youtube.png][4]
 
 ## Usage
 
@@ -128,6 +129,22 @@ performing any operations.
 2.  Note that the SelectionView could be hidden/removed any time by the SelectionViewManager.
 3.  If multiple providers returns a valid popup, all of them are displayed.
 
-[1]: https://github.com/phcode-dev/phoenix/wiki/QuickViewManager-API
+## isSelectionViewShown
 
-[2]: generatedDocs/images/quick-view-youtube.png
+If quickview is displayed and visible on screen
+
+Type: [function][5]
+
+Returns **[boolean][6]** 
+
+[1]: https://user-images.githubusercontent.com/5336369/186434397-3db55789-6077-4d02-b4e2-78ef3f663399.png
+
+[2]: https://user-images.githubusercontent.com/5336369/186434671-c1b263e5-19a9-4a9d-8f90-507df5f881b5.gif
+
+[3]: https://github.com/phcode-dev/phoenix/wiki/QuickViewManager-API
+
+[4]: generatedDocs/images/quick-view-youtube.png
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
