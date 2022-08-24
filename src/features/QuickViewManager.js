@@ -394,6 +394,7 @@ define(function (require, exports, module) {
         }
     }
 
+    let currentQueryID = 0;
     async function showPreview(editor) {
         let token;
 
@@ -417,8 +418,15 @@ define(function (require, exports, module) {
 
         // Query providers and append to popoverState
         token = editor.getToken(pos);
+        currentQueryID++;
+        let savedQueryId = currentQueryID;
         popoverState = await queryPreviewProviders(editor, pos, token);
-        _renderPreview(editor);
+        if(savedQueryId === currentQueryID){
+            // this is to prevent race conditions. For Eg., if the preview provider takes time to generate a preview,
+            // another query might have happened while the last query is still in progress. So we only render the most
+            // recent QueryID
+            _renderPreview(editor);
+        }
     }
 
     function _isMouseFarFromPopup() {

@@ -1715,6 +1715,62 @@ a, img {
     background-color: rgba(200, 200, 150, 0.4);
 }
 
+// selection view
+#selection-view-container {
+    display: none;
+    pointer-events: auto;
+
+    -webkit-transition: opacity 0.125s ease-in, -webkit-transform 0.125s;
+    transition: opacity 0.125s ease-in, transform 0.125s;
+
+    transform: scale(0);
+    opacity: 0;
+
+    background: @bc-panel-bg;
+    position: absolute;
+    z-index: 5000;
+    user-select: text;
+
+    padding: 8px;
+    text-align: center;
+    max-width: 75%;
+    max-height: 75%;
+
+    border-radius: 4px;
+    box-shadow: 0 4px 15px @bc-shadow-large;
+
+    .dark & {
+        background: @dark-bc-panel-bg;
+        box-shadow: 0 4px 15px @dark-bc-shadow-large;
+    }
+}
+
+#selection-view-container.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+#selection-view-container.preview-bubble-above {
+    -webkit-transform-origin: center bottom;
+}
+
+#selection-view-container.preview-bubble-above:before {
+    display: none;
+}
+
+#selection-view-container.preview-bubble-below {
+    -webkit-transform-origin: center top;
+}
+
+#selection-view-container.preview-bubble-below:before {
+    -webkit-filter: drop-shadow(0px 1px 0 rgba(255, 255, 255, 0.18));
+    transform: rotate(180deg);
+    top: -9px;
+}
+
+#selection-view-container.preview-bubble-below:after {
+    display: none;
+}
 
 /* Modal bar for Find/Quick Open */
 

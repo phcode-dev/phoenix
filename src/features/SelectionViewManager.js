@@ -145,6 +145,7 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
+        Editor              = require("editor/Editor").Editor,
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const previewContainerHTML       = '<div id="selection-view-container">\n' +
@@ -170,16 +171,12 @@ define(function (require, exports, module) {
     let enabled,                             // Only show preview if true
         prefs                      = null,   // Preferences
         $previewContainer,                   // Preview container
-        $previewContent,                     // Preview content holder
-        _currentMousePos,
-        animationRequest;
+        $previewContent;                     // Preview content holder
 
     // Constants
     const CMD_ENABLE_SELECTION_VIEW       = "view.enableSelectionView",
-        SELECTION_VIEW_EDITOR_MARKER = 'SelectionViewMark',
-        // Time (ms) mouse must remain over a provider's matched text before popover appears
-        HOVER_DELAY                 = 500,
         // Pointer height, used to shift popover above pointer (plus a little bit of space)
+        POPUP_DELAY                 = 200,
         POINTER_HEIGHT              = 10,
         POPOVER_HORZ_MARGIN         =  5;   // Horizontal margin
 
@@ -199,14 +196,12 @@ define(function (require, exports, module) {
      * @type {{
      *      visible: boolean,
      *      editor: !Editor,
-     *      hoverTimer: number,             - setTimeout() token
      *      start: !{line, ch},             - start of matched text range
      *      end: !{line, ch},               - end of matched text range
      *      content: !string,               - HTML content to display in popover
      *      xpos: number,                   - x of center of popover
      *      ytop: number,                   - y of top of matched text (when popover placed above text, normally)
      *      ybot: number,                   - y of bottom of matched text (when popover moved below text, avoiding window top)
-     *      marker: ?CodeMirror.TextMarker  - only set once visible==true
      * }}
      * @private
      */
@@ -225,23 +220,20 @@ define(function (require, exports, module) {
         if (!popoverState) {
             return;
         }
-
+        console.log("hide preview");
         if (popoverState.visible) {
-            popoverState.marker.clear();
-
             $previewContent.empty();
             $previewContainer.hide();
             $previewContainer.removeClass("active");
-        } else {
-            showPreviewQueued = false;
-            mouseInPreviewContainer = false;
-            window.clearTimeout(popoverState.hoverTimer);
         }
         popoverState = null;
     }
 
-    function positionPreview(editor, xpos, ypos, ybot) {
-        if ($previewContent.find("#quick-view-popover-root").is(':empty')){
+    function positionPreview(editor) {
+        let xpos = popoverState.xpos,
+            ypos = popoverState.ytop,
+            ybot = popoverState.ybot;
+        if ($previewContent.find("#selection-view-popover-root").is(':empty')){
             hidePreview();
             return;
         }
@@ -285,38 +277,19 @@ define(function (require, exports, module) {
 
     // Preview hide/show logic ------------------------------------------------
 
-    function _isResultBeforePopoverStart(editor, popover, result){
-        if(!popover.start){
-            return true;
-        }
-        return editor.indexFromPos(result.start) < editor.indexFromPos(popover.start);
-    }
-
-    function _isResultAfterPopoverEnd(editor, popover, result){
-        if(!popover.end){
-            return true;
-        }
-        return editor.indexFromPos(popover.start) > editor.indexFromPos(result.end);
-    }
-
     function _createPopoverState(editor, popoverResults) {
         if (popoverResults && popoverResults.length) {
             let popover = {
-                content: $("<div id='quick-view-popover-root'></div>")
+                content: $("<div id='selection-view-popover-root'></div>")
             };
             // Each provider return popover { start, end, content}
             for(let result of popoverResults){
-                if(_isResultBeforePopoverStart(editor, popover, result)){
-                    popover.start = result.start;
-                }
-                if(_isResultAfterPopoverEnd(editor, popover, result)){
-                    popover.end = result.end;
-                }
                 popover.content.append(result.content);
             }
 
-            let startCoord = editor.charCoords(popover.start),
-                endCoord = editor.charCoords(popover.end);
+            let pos = editor.getCursorPos();
+            let startCoord = editor.charCoords(pos),
+                endCoord = editor.charCoords(pos);
             popover.xpos = (endCoord.left - startCoord.left) / 2 + startCoord.left;
             if(endCoord.left<startCoord.left){
                 // this probably spans multiple lines, just show at start cursor position
@@ -326,6 +299,7 @@ define(function (require, exports, module) {
             popover.ybot = startCoord.bottom;
             popover.visible = false;
             popover.editor  = editor;
+            popover.pos = pos;
             return popover;
         }
 
@@ -334,20 +308,18 @@ define(function (require, exports, module) {
 
     /**
      * Returns a 'ready for use' popover state object:
-     * { visible: false, editor, start, end, content, ?onShow, xpos, ytop, ybot }
-     * Lacks only hoverTimer (supplied by handleMouseMove()) and marker (supplied by showPreview()).
+     * { visible: false, editor, start, end, content, xpos, ytop, ybot }
      * @private
      */
-    async function queryPreviewProviders(editor, pos, token) {
-        let line = editor.document.getLine(pos.line);
+    async function queryPreviewProviders(editor, selectionObj) {
         let providers = _getSelectionViewProviders(editor);
         let popovers = [], providerPromises = [];
         for(let provider of providers){
             if(!provider.getSelectionView){
-                console.error("SelectionView provider does not implement the required getSelectionView function", provider);
+                console.error("Error: SelectionView provider should implement getSelectionView function", provider);
                 continue;
             }
-            providerPromises.push(provider.getSelectionView(editor, pos, token, line));
+            providerPromises.push(provider.getSelectionView(editor, selectionObj));
         }
         let results = await Promise.allSettled(providerPromises);
         for(let result of results){
@@ -365,151 +337,78 @@ define(function (require, exports, module) {
      * @private
      */
     function _renderPreview(editor) {
-        if (popoverState && popoverState.start && popoverState.end) {
-            popoverState.marker = editor.markText(
-                SELECTION_VIEW_EDITOR_MARKER,
-                popoverState.start,
-                popoverState.end,
-                {className: "quick-view-highlight"}
-            );
-
+        if (popoverState) {
             let $popoverContent = $(popoverState.content);
+            $previewContent.empty();
             $previewContent.append($popoverContent);
             $previewContainer.show();
             popoverState.visible = true;
-            positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
+            positionPreview(editor);
 
             $popoverContent[0].addEventListener('DOMSubtreeModified', ()=>{
-                positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
+                positionPreview(editor);
             }, false);
         }
     }
 
-    async function showPreview(editor) {
-        let token;
-
-        // Figure out which editor we are over
-        if (!editor) {
-            editor = EditorManager.getHoveredEditor(_currentMousePos);
-        }
-
+    let currentQueryID = 0;
+    async function showPreview(editor, selectionObj) {
         if (!editor) {
             hidePreview();
-            return;
-        }
-
-        // Find char mouse is over
-        let pos = editor.coordsChar({left: _currentMousePos.clientX, top: _currentMousePos.clientY});
-
-        // No preview if mouse is past last char on line
-        if (pos.ch >= editor.document.getLine(pos.line).length) {
             return;
         }
 
         // Query providers and append to popoverState
-        token = editor.getToken(pos);
-        popoverState = await queryPreviewProviders(editor, pos, token);
-        _renderPreview(editor);
+        currentQueryID++;
+        let savedQueryId = currentQueryID;
+        popoverState = await queryPreviewProviders(editor, selectionObj);
+        console.log("got preview");
+        if(savedQueryId === currentQueryID){
+            // this is to prevent race conditions. For Eg., if the preview provider takes time to generate a preview,
+            // another query might have happened while the last query is still in progress. So we only render the most
+            // recent QueryID
+            _renderPreview(editor);
+        }
     }
 
-    function _isMouseFarFromPopup() {
-        const previewRect = $previewContainer[0].getBoundingClientRect();
-        const docRect = {
-            height: $(document).height(),
-            width: $(document).width()
-        };
-        const thresholdPercent = 5;
-        function _isDistanceExceedThreshold(smaller, larger, total, threshold) {
-            return ((larger - smaller)/total)*100 > threshold;
-        }
-        let x= _currentMousePos.clientX, y=_currentMousePos.clientY;
-        if((x<previewRect.left && _isDistanceExceedThreshold(x, previewRect.left, docRect.width, thresholdPercent))
-            ||(x>previewRect.right && _isDistanceExceedThreshold(previewRect.right, x, docRect.width, thresholdPercent))
-            ||(y<previewRect.top && _isDistanceExceedThreshold(y, previewRect.top, docRect.height, thresholdPercent))
-            ||(y>previewRect.bottom && _isDistanceExceedThreshold(previewRect.bottom, y, docRect.height, thresholdPercent))){
-            return true;
-        }
-        return false;
-    }
-
-    let showPreviewQueued = false;
-
-    function processMouseMove() {
-        animationRequest = null;
-
-        if (mouseInPreviewContainer) {
+    // we do this delayed popup so that we get a consistent view of the editor selections
+    function _delayedPopupShow() {
+        let editor = EditorManager.getActiveEditor();
+        if(!editor){
             return;
         }
 
-        let editor = null;
-
-        if (popoverState && popoverState.visible) {
-            // Only figure out which editor we are over when there is already a popover
-            // showing (otherwise wait until after delay to minimize processing)
-            editor = EditorManager.getHoveredEditor(_currentMousePos);
-            if (editor) {
-                // Find char mouse is over
-                let pos = editor.coordsChar({left: _currentMousePos.clientX, top: _currentMousePos.clientY});
-                if (popoverState.start && popoverState.end &&
-                        editor.posWithinRange(pos, popoverState.start, popoverState.end, true) &&
-                        (pos.ch < editor.document.getLine(pos.line).length)) {
-
-                    // That one's still relevant - nothing more to do
-                    // Note: posWithinRange() includes mouse past end of line, so need to check for that case
-                    return;
-                }
-                if(_isMouseFarFromPopup()){
-                    hidePreview();
-                    return;
-                }
-            }
+        let selectionObj = editor.getSelections();
+        if(selectionObj.length !== 1){
+            // we only show selection view over a single selection
+            return;
         }
-
-        if(!showPreviewQueued){
-            // Initialize popoverState
-            showPreviewQueued = true;
-            popoverState = popoverState || {};
-
-            // Set timer to scan and show. This will get cancelled (in hidePreview())
-            // if mouse movement rendered this popover inapplicable before timer fires.
-            // When showing "immediately", still use setTimeout() to make this async
-            // so we return from this mousemove event handler ASAP.
-            popoverState.hoverTimer = window.setTimeout(function () {
-                showPreviewQueued = false;
-                if(!mouseInPreviewContainer){
-                    hidePreview();
-                    popoverState = {};
-                    showPreview(editor);
-                }
-            }, HOVER_DELAY);
+        let selection = editor.getSelection();
+        if(selection.start.line === selection.end.line &&  selection.start.ch === selection.end.ch){
+            //this is just a cursor
+            return;
         }
+        popoverState = {};
+        console.log("show preview", selection);
+        showPreview(editor, selectionObj);
     }
 
-    function handleMouseMove(event) {
-        // Keep track of mouse position
-        _currentMousePos = {
-            clientX: event.clientX,
-            clientY: event.clientY
-        };
-
+    function handleMouseUp(event) {
         if (!enabled) {
             return;
         }
 
+        hidePreview();
         if (event.buttons !== 0) {
             // Button is down - don't show popovers while dragging
-            hidePreview();
             return;
         }
-
-        // Prevent duplicate animation frame requests
-        if (!animationRequest) {
-            animationRequest = window.requestAnimationFrame(processMouseMove);
-        }
+        setTimeout(_delayedPopupShow, POPUP_DELAY);
     }
 
     function onActiveEditorChange(event, current, previous) {
         // Hide preview when editor changes
+        console.log("hide preview editor change");
         hidePreview();
 
         if (previous && previous.document) {
@@ -526,50 +425,25 @@ define(function (require, exports, module) {
         CommandManager.get(CMD_ENABLE_SELECTION_VIEW).setChecked(enabled);
     }
 
-    let mouseInPreviewContainer = false;
-    function mouseOut(_evt) {
-        setTimeout(()=>{
-            if(mouseInPreviewContainer || $previewContainer[0].contains(_evt.toElement)){
-                return;
-            }
-            hidePreview();
-        }, HOVER_DELAY);
-    }
-
-    function _mouseEnteredPreviewContainer() {
-        mouseInPreviewContainer = true;
-    }
-
-    function _mouseExitedPreviewContainer() {
-        mouseInPreviewContainer = false;
-    }
-
     function setEnabled(_enabled, doNotSave) {
         if (enabled !== _enabled) {
             enabled = _enabled;
             let editorHolder = $("#editor-holder")[0];
-            let previewContainer = $previewContainer[0];
             if (enabled) {
                 // Note: listening to "scroll" also catches text edits, which bubble a scroll
                 // event up from the hidden text area. This means
                 // we auto-hide on text edit, which is probably actually a good thing.
-                editorHolder.addEventListener("mousemove", handleMouseMove, true);
+                editorHolder.addEventListener("mouseup", handleMouseUp, true);
+                // todo maybe follow scroll instead of hiding?
                 editorHolder.addEventListener("scroll", hidePreview, true);
-                editorHolder.addEventListener("mouseout", mouseOut, true);
-                previewContainer.addEventListener("mouseover", _mouseEnteredPreviewContainer, true);
-                previewContainer.addEventListener("mouseout", _mouseExitedPreviewContainer, true);
 
                 // Setup doc "change" listener
                 onActiveEditorChange(null, EditorManager.getActiveEditor(), null);
                 EditorManager.on("activeEditorChange", onActiveEditorChange);
 
             } else {
-                editorHolder.removeEventListener("mousemove", handleMouseMove, true);
+                editorHolder.removeEventListener("mouseup", handleMouseUp, true);
                 editorHolder.removeEventListener("scroll", hidePreview, true);
-                editorHolder.removeEventListener("mouseout", mouseOut, true);
-                previewContainer.removeEventListener("mouseover", _mouseEnteredPreviewContainer, true);
-                previewContainer.removeEventListener("mouseout", _mouseExitedPreviewContainer, true);
-
 
                 // Cleanup doc "change" listener
                 onActiveEditorChange(null, null, EditorManager.getActiveEditor());
@@ -592,10 +466,6 @@ define(function (require, exports, module) {
 
     function _forceShow(popover) {
         hidePreview();
-        _currentMousePos = {
-            clientX: popover.xpos,
-            clientY: Math.floor((popover.ybot + popover.ytop) / 2)
-        };
         popoverState = popover;
         _renderPreview(popover.editor);
     }
