@@ -33,7 +33,7 @@
  * For now, direct access to the underlying CodeMirror object is still possible via `_codeMirror` --
  * but this is considered deprecated and may go away.
  *
- * The Editor object dispatches the following events:
+ * The Editor object dispatches the following events: (available as `Editor.EVENT_*` constants. see below)
  *    - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the
  *      text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the
  *      raw DOM event. Note: most listeners will only want to listen for "keypress".
@@ -901,7 +901,7 @@ define(function (require, exports, module) {
      * returns the current cursor position as both the start and end of the range (i.e. a selection
      * of length zero). If `reversed` is set, then the head of the selection (the end of the selection
      * that would be changed if the user extended the selection) is before the anchor.
-     * @return {!{start:{line:number, ch:number}, end:{line:number, ch:number}}, reversed:boolean}
+     * @return {{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean}}
      */
     Editor.prototype.getSelection = function () {
         return _normalizeRange(this.getCursorPos(false, "anchor"), this.getCursorPos(false, "head"));
@@ -2352,6 +2352,51 @@ define(function (require, exports, module) {
     Editor.MARK_OPTION_UNDERLINE_SPELLCHECK = MARK_OPTION_UNDERLINE_SPELLCHECK;
     Editor.MARK_OPTION_HYPERLINK_TEXT = MARK_OPTION_HYPERLINK_TEXT;
     Editor.MARK_OPTION_MATCHING_REFS = MARK_OPTION_MATCHING_REFS;
+
+    /**
+     * Each Editor instance object dispatches the following events:
+     *    - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the
+     *      text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the
+     *      raw DOM event. Note: most listeners will only want to listen for "keypress".
+     *    - change - Triggered with an array of change objects. Parameters: (editor, changeList)
+     *    - beforeChange - (self, changeObj)
+     *    - beforeSelectionChange - (selectionObj)
+     *    - focus - Fired when an editor is focused
+     *    - blur - Fired when an editor loses focused
+     *    - update - Will be fired whenever Editor updates its DOM display.
+     *    - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.
+     *      Note: do not listen to this in order to be generally informed of edits--listen to the
+     *      "change" event on Document instead.
+     *    - scroll -- When the editor is scrolled, either by user action or programmatically.
+     *    - viewportChange - (from: number, to: number) Fires whenever the view port of the editor changes
+     *      (due to scrolling, editing, or any other factor). The from and to arguments give the new start
+     *      and end of the viewport. This is combination with `editorInstance.getViewPort()` can be used to
+     *      selectively redraw visual elements in code like syntax analyze only parts of code instead
+     *      of the full code everytime.
+     *    - lostContent -- When the backing Document changes in such a way that this Editor is no longer
+     *      able to display accurate text. This occurs if the Document's file is deleted, or in certain
+     *      Document->editor syncing edge cases that we do not yet support (the latter cause will
+     *      eventually go away).
+     *    - optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener
+     *      is a string containing the editor option that is changing. The 3rd arg, which can be any
+     *      data type, is the new value for the editor option.
+     *    - beforeDestroy - Triggered before the object is about to dispose of all its internal state data
+     *      so that listeners can cache things like scroll pos, etc...
+     */
+    Editor.EVENT_BEFORE_CHANGE = "beforeChange";
+    Editor.EVENT_CHANGE = "change";
+    Editor.EVENT_BEFORE_SELECTION_CHANGE = "beforeSelectionChange";
+    Editor.EVENT_CURSOR_ACTIVITY = "cursorActivity";
+    Editor.EVENT_KEY_PRESS = "keypress";
+    Editor.EVENT_KEY_DOWN = "keydown";
+    Editor.EVENT_KEY_UP = "keyup";
+    Editor.EVENT_FOCUS = "focus";
+    Editor.EVENT_BLUR = "blur";
+    Editor.EVENT_UPDATE = "update";
+    Editor.EVENT_SCROLL = "scroll";
+    Editor.EVENT_VIEW_PORT_CHANGE = "viewportChange";
+    Editor.EVENT_LOST_CONTENT = "lostContent";
+    Editor.EVENT_OPTION_CHANGE = "optionChange";
 
     // Set up listeners for preference changes
     editorOptions.forEach(function (prefName) {

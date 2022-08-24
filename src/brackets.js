@@ -67,7 +67,7 @@ define(function (require, exports, module) {
     require("thirdparty/CodeMirror/keymap/sublime");
 
     // Load dependent modules
-    var AppInit             = require("utils/AppInit"),
+    const AppInit             = require("utils/AppInit"),
         LanguageManager     = require("language/LanguageManager"),
         ProjectManager      = require("project/ProjectManager"),
         FileViewController  = require("project/FileViewController"),
@@ -112,7 +112,7 @@ define(function (require, exports, module) {
     window.NotificationUI = NotificationUI;
 
 
-    var MainViewHTML        = require("text!htmlContent/main-view.html");
+    const MainViewHTML        = require("text!htmlContent/main-view.html");
 
     // load modules for later use
     require("utils/Global");
@@ -136,7 +136,7 @@ define(function (require, exports, module) {
     // DEPRECATED: In future we want to remove the global CodeMirror, but for now we
     // expose our required CodeMirror globally so as to avoid breaking extensions in the
     // interim.
-    var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
+    const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
 
     Object.defineProperty(window, "CodeMirror", {
         get: function () {
@@ -148,7 +148,7 @@ define(function (require, exports, module) {
     // DEPRECATED: In future we want to remove the global Mustache, but for now we
     // expose our required Mustache globally so as to avoid breaking extensions in the
     // interim.
-    var Mustache = require("thirdparty/mustache/mustache");
+    const Mustache = require("thirdparty/mustache/mustache");
 
     Object.defineProperty(window, "Mustache", {
         get: function () {
@@ -160,7 +160,7 @@ define(function (require, exports, module) {
     // DEPRECATED: In future we want to remove the global PathUtils, but for now we
     // expose our required PathUtils globally so as to avoid breaking extensions in the
     // interim.
-    var PathUtils = require("thirdparty/path-utils/path-utils");
+    const PathUtils = require("thirdparty/path-utils/path-utils");
 
     Object.defineProperty(window, "PathUtils", {
         get: function () {
@@ -173,6 +173,7 @@ define(function (require, exports, module) {
     require("features/ParameterHintsManager");
     require("features/JumpToDefManager");
     require("features/QuickViewManager");
+    require("features/SelectionViewManager");
 
     // Load modules that self-register and just need to get included in the main project
     require("command/DefaultMenus");
@@ -206,7 +207,7 @@ define(function (require, exports, module) {
     PerfUtils.addMeasurement("brackets module dependencies resolved");
 
     // Local variables
-    var params = new UrlParams();
+    const params = new UrlParams();
 
     // read URL params
     params.parse();
@@ -267,6 +268,7 @@ define(function (require, exports, module) {
             PreferencesManager: require("preferences/PreferencesManager"),
             ProjectManager: require("project/ProjectManager"),
             QuickViewManager: require("features/QuickViewManager"),
+            SelectionViewManager: require("features/SelectionViewManager"),
             WorkspaceManager: require("view/WorkspaceManager"),
             RemoteAgent: require("LiveDevelopment/Agents/RemoteAgent"),
             SearchResultsView: require("search/SearchResultsView"),
@@ -294,10 +296,10 @@ define(function (require, exports, module) {
         // Use quiet scrollbars if we aren't on Lion. If we're on Lion, only
         // use native scroll bars when the mouse is not plugged in or when
         // using the "Always" scroll bar setting.
-        var osxMatch = /Mac OS X 10\D([\d+])\D/.exec(window.navigator.userAgent);
+        const osxMatch = /Mac OS X 10\D([\d+])\D/.exec(window.navigator.userAgent);
         if (osxMatch && osxMatch[1] && Number(osxMatch[1]) >= 7) {
             // test a scrolling div for scrollbars
-            var $testDiv = $("<div style='position:fixed;left:-50px;width:50px;height:50px;overflow:auto;'><div style='width:100px;height:100px;'/></div>").appendTo(window.document.body);
+            const $testDiv = $("<div style='position:fixed;left:-50px;width:50px;height:50px;overflow:auto;'><div style='width:100px;height:100px;'/></div>").appendTo(window.document.body);
 
             if ($testDiv.outerWidth() === $testDiv.get(0).clientWidth) {
                 $(".sidebar").removeClass("quiet-scrollbars");
@@ -310,8 +312,8 @@ define(function (require, exports, module) {
         Async.waitForAll([LanguageManager.ready, PreferencesManager.ready]).always(function () {
             // Load all extensions. This promise will complete even if one or more
             // extensions fail to load.
-            var extensionPathOverride = params.get("extensions");  // used by unit tests
-            var extensionLoaderPromise = ExtensionLoader.init(extensionPathOverride ? extensionPathOverride.split(",") : null);
+            const extensionPathOverride = params.get("extensions");  // used by unit tests
+            const extensionLoaderPromise = ExtensionLoader.init(extensionPathOverride ? extensionPathOverride.split(",") : null);
 
             // Finish UI initialization
             ViewCommandHandlers.restoreFontSize();
@@ -323,14 +325,14 @@ define(function (require, exports, module) {
                     // the samples folder on first launch), open it automatically. (We explicitly check for the
                     // samples folder in case this is the first time we're launching Brackets after upgrading from
                     // an old version that might not have set the "afterFirstLaunch" pref.)
-                    var deferred = new $.Deferred();
+                    const deferred = new $.Deferred();
 
                     if (!params.get("skipSampleProjectLoad") && !PreferencesManager.getViewState("afterFirstLaunch")) {
                         PreferencesManager.setViewState("afterFirstLaunch", "true");
                         if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
                             FileSystem.resolve(initialProjectPath + "index.html", function (err, file) {
                                 if (!err) {
-                                    var promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
+                                    const promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
                                     promise.then(deferred.resolve, deferred.reject);
                                 } else {
                                     deferred.reject();
@@ -354,11 +356,11 @@ define(function (require, exports, module) {
                             PerfUtils.addMeasurement("Application Startup");
 
                             if (PreferencesManager._isUserScopeCorrupt()) {
-                                var userPrefFullPath = PreferencesManager.getUserPrefFile();
+                                const userPrefFullPath = PreferencesManager.getUserPrefFile();
                                 // user scope can get corrupt only if the file exists, is readable,
                                 // but malformed. no need to check for its existance.
-                                var info = MainViewManager.findInAllWorkingSets(userPrefFullPath);
-                                var paneId;
+                                const info = MainViewManager.findInAllWorkingSets(userPrefFullPath);
+                                let paneId;
                                 if (info.length) {
                                     paneId = info[0].paneId;
                                 }
@@ -406,7 +408,7 @@ define(function (require, exports, module) {
         // (issue #5310) workaround for bootstrap dropdown: prevent the menu item to grab
         // the focus -- override jquery focus implementation for top-level menu items
         (function () {
-            var defaultFocus = $.fn.focus;
+            const defaultFocus = $.fn.focus;
             $.fn.focus = function () {
                 if (!this.hasClass("dropdown-toggle")) {
                     return defaultFocus.apply(this, arguments);
@@ -445,7 +447,7 @@ define(function (require, exports, module) {
         // focus from going to the click target.
         $("html").on("mousedown", ".no-focus", function (e) {
             // Text fields should always be focusable.
-            var $target = $(e.target),
+            const $target = $(e.target),
                 isFormElement =
                     $target.is("input") ||
                     $target.is("textarea") ||
@@ -462,7 +464,7 @@ define(function (require, exports, module) {
         // navigate. Also, a capture handler is more reliable than bubble.
         window.document.body.addEventListener("click", function (e) {
             // Check parents too, in case link has inline formatting tags
-            var node = e.target, url;
+            let node = e.target, url;
             while (node) {
                 if (node.tagName === "A") {
                     url = node.getAttribute("href");
@@ -477,9 +479,9 @@ define(function (require, exports, module) {
         }, true);
 
         // jQuery patch to shim deprecated usage of $() on EventDispatchers
-        var DefaultCtor = jQuery.fn.init;
+        const DefaultCtor = jQuery.fn.init;
         jQuery.fn.init = function (firstArg, secondArg) {
-            var jQObject = new DefaultCtor(firstArg, secondArg);
+            const jQObject = new DefaultCtor(firstArg, secondArg);
 
             // Is this a Brackets EventDispatcher object? (not a DOM node or other object)
             if (firstArg && firstArg._EventDispatcher) {
@@ -499,7 +501,7 @@ define(function (require, exports, module) {
     }
 
     // Wait for view state to load.
-    var viewStateTimer = PerfUtils.markStart("User viewstate loading");
+    const viewStateTimer = PerfUtils.markStart("User viewstate loading");
     PreferencesManager._smUserScopeLoading.always(function () {
         PerfUtils.addMeasurement(viewStateTimer);
         // Dispatch htmlReady event

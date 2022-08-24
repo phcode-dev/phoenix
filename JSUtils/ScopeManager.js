@@ -135,6 +135,7 @@ define(function (require, exports, module) {
 
         var path = projectRootPath + Preferences.FILE_NAME;
 
+        preferences = new Preferences();
         FileSystem.resolve(path, function (err, file) {
             if (!err) {
                 FileUtils.readAsText(file).done(function (text) {
@@ -156,7 +157,6 @@ define(function (require, exports, module) {
                     deferredPreferences.resolve();
                 });
             } else {
-                preferences = new Preferences();
                 deferredPreferences.resolve();
             }
         });

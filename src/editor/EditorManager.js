@@ -51,7 +51,7 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var Commands            = require("command/Commands"),
+    const Commands            = require("command/Commands"),
         EventDispatcher     = require("utils/EventDispatcher"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         PreferencesManager  = require("preferences/PreferencesManager"),
@@ -66,6 +66,8 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         LanguageManager     = require("language/LanguageManager"),
         DeprecationWarning  = require("utils/DeprecationWarning");
+
+    const EVENT_ACTIVE_EDITOR_CHANGED = "activeEditorChange";
 
 
     /**
@@ -148,7 +150,7 @@ define(function (require, exports, module) {
         var previous = _lastFocusedEditor;
         _lastFocusedEditor = current;
 
-        exports.trigger("activeEditorChange", current, previous);
+        exports.trigger(EVENT_ACTIVE_EDITOR_CHANGED, current, previous);
     }
 
     /**
@@ -766,9 +768,10 @@ define(function (require, exports, module) {
 
     // Set up event dispatching
     EventDispatcher.makeEventDispatcher(exports);
+    EventDispatcher.setLeakThresholdForEvent(EVENT_ACTIVE_EDITOR_CHANGED, 25);
 
     // File-based preferences handling
-    exports.on("activeEditorChange", function (e, current) {
+    exports.on(EVENT_ACTIVE_EDITOR_CHANGED, function (e, current) {
         if (current && current.document && current.document.file) {
             PreferencesManager._setCurrentFile(current.document.file.fullPath);
         }
@@ -793,6 +796,9 @@ define(function (require, exports, module) {
     // Internal Use only
     exports._saveEditorViewState          = _saveEditorViewState;
     exports._createUnattachedMasterEditor = _createUnattachedMasterEditor;
+
+    // public events
+    exports.EVENT_ACTIVE_EDITOR_CHANGED = EVENT_ACTIVE_EDITOR_CHANGED;
 
     // Define public API
     exports.createInlineEditorForDocument = createInlineEditorForDocument;

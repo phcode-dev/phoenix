@@ -196,7 +196,7 @@ define(function (require, exports, module) {
             self.trigger("cursorActivity", self);
         });
         self._codeMirror.on("beforeSelectionChange", function (instance, selectionObj) {
-            self.trigger("beforeSelectionChange", selectionObj);
+            self.trigger("beforeSelectionChange", selectionObj, self);
         });
         self._codeMirror.on("scroll", function (instance) {
             // If self editor is visible, close all dropdowns on scroll.

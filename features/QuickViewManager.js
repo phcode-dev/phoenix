@@ -29,6 +29,13 @@
  * ![quick-view-image.png](generatedDocs/images/quick-view-image.png)
  * ![quick-view-youtube.png](generatedDocs/images/quick-view-youtube.png)
  *
+ * ### See Related: SelectionViewManager
+ * [features/SelectionViewManager](https://github.com/phcode-dev/phoenix/wiki/SelectionViewManager-API) is similar to
+ * QuickViewManager API.
+ * * SelectionViews popup only once user selects a text by mouse or hover over a region with text selection.
+ * * Quickviews popup on mouse hover.
+ * ![image](https://user-images.githubusercontent.com/5336369/186434397-3db55789-6077-4d02-b4e2-78ef3f663399.png)
+ *
  *
  * ## Usage
  * Lets build a "hello world" extension that displays "hello world" on hover over a text in the editor.
@@ -65,7 +72,7 @@
  * // syntax
  * QuickViewManager.registerQuickViewProvider(provider, supportedLanguages);
  * ```
- * The API requires three parameters:
+ * The API requires two parameters:
  * 1. `provider`: must implement a  `getQuickView` function which will be invoked to get the preview. See API doc below.
  * 1. `supportedLanguages`: An array of languages that the QuickView supports. If `["all"]` is supplied, then the
  *    QuickView will be invoked for all languages. Restrict to specific languages: Eg: `["javascript", "html", "php"]`
@@ -112,11 +119,18 @@
  * 1. `line` - the full line text as string.
  *
  * #### return types
- * The promise returned should resolve with the following contents:
+ * The promise returned should resolve to an object with the following contents:
  * 1. `start` : Indicates the start cursor position from which the quick view is valid.
  * 1. `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
  *    the hovered section of the text in the editor.
  * 1. `content`: Either `HTML` as text, a `DOM Node` or a `Jquery Element`.
+ *
+ * #### Modifying the QuickView content after resolving `getQuickView` promise
+ * Some advanced/interactive extensions may need to do dom operations on the quick view content.
+ * In such cases, it is advised to return a domNode/Jquery element as content in `getQuickView`. Event Handlers
+ * or further dom manipulations can be done on the returned content element.
+ * The Quick view may be dismissed at any time, so be sure to check if the DOM Node is visible in the editor before
+ * performing any operations.
  *
  * #### Considerations
  * 1. QuickView won't be displayed till all provider promises are settled. To improve performance, if your QuickView
@@ -140,6 +154,7 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
+        SelectionViewManager= require("features/SelectionViewManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const previewContainerHTML       = '<div id="quick-view-container">\n' +
@@ -198,8 +213,6 @@ define(function (require, exports, module) {
      *      start: !{line, ch},             - start of matched text range
      *      end: !{line, ch},               - end of matched text range
      *      content: !string,               - HTML content to display in popover
-     *      onShow: ?function():void,       - called once popover content added to the DOM (may never be called)
-     *        - if specified, must call positionPreview()
      *      xpos: number,                   - x of center of popover
      *      ytop: number,                   - y of top of matched text (when popover placed above text, normally)
      *      ybot: number,                   - y of bottom of matched text (when popover moved below text, avoiding window top)
@@ -340,6 +353,10 @@ define(function (require, exports, module) {
         let providers = _getQuickViewProviders(editor);
         let popovers = [], providerPromises = [];
         for(let provider of providers){
+            if(!provider.getQuickView){
+                console.error("Quickview provider does not implement the required getQuickView function", provider);
+                continue;
+            }
             providerPromises.push(provider.getQuickView(editor, pos, token, line));
         }
         let results = await Promise.allSettled(providerPromises);
@@ -378,6 +395,7 @@ define(function (require, exports, module) {
         }
     }
 
+    let currentQueryID = 0;
     async function showPreview(editor) {
         let token;
 
@@ -401,8 +419,15 @@ define(function (require, exports, module) {
 
         // Query providers and append to popoverState
         token = editor.getToken(pos);
+        currentQueryID++;
+        let savedQueryId = currentQueryID;
         popoverState = await queryPreviewProviders(editor, pos, token);
-        _renderPreview(editor);
+        if(savedQueryId === currentQueryID){
+            // this is to prevent race conditions. For Eg., if the preview provider takes time to generate a preview,
+            // another query might have happened while the last query is still in progress. So we only render the most
+            // recent QueryID
+            _renderPreview(editor);
+        }
     }
 
     function _isMouseFarFromPopup() {
@@ -612,10 +637,20 @@ define(function (require, exports, module) {
         });
     });
 
+    /**
+     * If quickview is displayed and visible on screen
+     * @return {boolean}
+     * @type {function}
+     */
+    function isQuickViewShown() {
+        return (popoverState && popoverState.visible) || false;
+    }
+
     // For unit testing
     exports._queryPreviewProviders  = queryPreviewProviders;
     exports._forceShow              = _forceShow;
 
     exports.registerQuickViewProvider = registerQuickViewProvider;
     exports.removeQuickViewProvider   = removeQuickViewProvider;
+    exports.isQuickViewShown = isQuickViewShown;
 });
