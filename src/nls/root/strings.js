@@ -739,8 +739,9 @@ define({
     // extensions/default/JSLint
     "JSHINT_NAME": "JSHint",
 
-    // extensions/default/QuickView
+    // Features/QuickView
     "CMD_ENABLE_QUICK_VIEW": "Quick View on Hover",
+    "CMD_ENABLE_SELECTION_VIEW": "Selection View",
 
     // extensions/default/RecentProjects
     "CMD_TOGGLE_RECENT_PROJECTS": "Recent Projects",
@@ -826,6 +827,7 @@ define({
     "DESCRIPTION_INFERENCE_TIMEOUT": "The amount of time after which Tern will time out when trying to understand files",
     "DESCRIPTION_SHOW_ERRORS_IN_STATUS_BAR": "true to show errors in status bar",
     "DESCRIPTION_QUICK_VIEW_ENABLED": "true to enable Quick View",
+    "DESCRIPTION_SELECTION_VIEW_ENABLED": "true to enable Selection View",
     "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true to show image previews for URLs missing extensions",
     "DESCRIPTION_THEME": "Select a {APP_NAME} theme",
     "DESCRIPTION_USE_THEME_SCROLLBARS": "true to allow custom scroll bars",

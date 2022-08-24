@@ -173,6 +173,7 @@ define(function (require, exports, module) {
     require("features/ParameterHintsManager");
     require("features/JumpToDefManager");
     require("features/QuickViewManager");
+    require("features/SelectionViewManager");
 
     // Load modules that self-register and just need to get included in the main project
     require("command/DefaultMenus");
@@ -267,6 +268,7 @@ define(function (require, exports, module) {
             PreferencesManager: require("preferences/PreferencesManager"),
             ProjectManager: require("project/ProjectManager"),
             QuickViewManager: require("features/QuickViewManager"),
+            SelectionViewManager: require("features/SelectionViewManager"),
             WorkspaceManager: require("view/WorkspaceManager"),
             RemoteAgent: require("LiveDevelopment/Agents/RemoteAgent"),
             SearchResultsView: require("search/SearchResultsView"),
