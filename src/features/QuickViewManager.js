@@ -154,6 +154,7 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
+        WorkspaceManager    = require("view/WorkspaceManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const previewContainerHTML       = '<div id="quick-view-container">\n' +
@@ -237,15 +238,16 @@ define(function (require, exports, module) {
 
         if (popoverState.visible) {
             popoverState.marker.clear();
-
             $previewContent.empty();
             $previewContainer.hide();
             $previewContainer.removeClass("active");
-        } else {
-            showPreviewQueued = false;
-            mouseInPreviewContainer = false;
-            window.clearTimeout(popoverState.hoverTimer);
+            if(EditorManager.getActiveEditor()){
+                EditorManager.getActiveEditor().focus();
+            }
         }
+        showPreviewQueued = false;
+        mouseInPreviewContainer = false;
+        window.clearTimeout(popoverState.hoverTimer);
         popoverState = null;
     }
 
@@ -617,6 +619,16 @@ define(function (require, exports, module) {
         _renderPreview(popover.editor);
     }
 
+    function _handleEscapeKeyEvent(event) {
+        if(isQuickViewShown()){
+            hidePreview();
+            event.preventDefault();
+            event.stopPropagation();
+            return true;
+        }
+        return false;
+    }
+
     AppInit.appReady(function () {
         // Create the preview container
         $previewContainer = $(previewContainerHTML).appendTo($("body"));
@@ -634,6 +646,8 @@ define(function (require, exports, module) {
         prefs.on("change", "enabled", function () {
             setEnabled(prefs.get("enabled"), true);
         });
+
+        WorkspaceManager.addEscapeKeyEventHandler("quickView", _handleEscapeKeyEvent);
     });
 
     /**

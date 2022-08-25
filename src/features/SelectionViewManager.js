@@ -146,6 +146,7 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
+        WorkspaceManager    = require("view/WorkspaceManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const previewContainerHTML       = '<div id="selection-view-container">\n' +
@@ -226,6 +227,9 @@ define(function (require, exports, module) {
             $previewContent.empty();
             $previewContainer.hide();
             $previewContainer.removeClass("active");
+            if(EditorManager.getActiveEditor()){
+                EditorManager.getActiveEditor().focus();
+            }
         }
         popoverState = null;
     }
@@ -497,6 +501,16 @@ define(function (require, exports, module) {
         _renderPreview(popover.editor);
     }
 
+    function _handleEscapeKeyEvent(event) {
+        if(isSelectionViewShown()){
+            hidePreview();
+            event.preventDefault();
+            event.stopPropagation();
+            return true;
+        }
+        return false;
+    }
+
     AppInit.appReady(function () {
         // Create the preview container
         $previewContainer = $(previewContainerHTML).appendTo($("body"));
@@ -514,6 +528,8 @@ define(function (require, exports, module) {
         prefs.on("change", "enabled", function () {
             setEnabled(prefs.get("enabled"), true);
         });
+
+        WorkspaceManager.addEscapeKeyEventHandler("selectionView", _handleEscapeKeyEvent);
     });
 
     /**
