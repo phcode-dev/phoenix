@@ -377,6 +377,46 @@ define(function (require, exports, module) {
         return false;
     }
 
+    // Escape key and toggle panel special handling
+    let _escapeKeyConsumers = {};
+
+    /**
+     * If any widgets related to the editor needs to handle the escape key event, add it here. returning true from the
+     * registered handler will prevent primary escape key toggle panel behavior of phoenix. Note that returning true
+     * will no stop the event bubbling, that has to be controlled with the event parameter forwarded to the handler.
+     * @param {string} consumerName a unique name for your consumer
+     * @param {function(event)} eventHandler If the eventHandler returns true for this callback, the escape key event
+     * @return {boolean} true if added
+     * will not lead to panel toggle default behavior.
+     */
+    function addEscapeKeyEventHandler(consumerName, eventHandler) {
+        if(_escapeKeyConsumers[consumerName]){
+            console.error("EscapeKeyEvent consumer of same name already registered: ", consumerName);
+            return false;
+        }
+        if(typeof eventHandler !== 'function'){
+            console.error(`EscapeKeyEvent invalid eventHandler: ${consumerName}, ${eventHandler}`);
+            return false;
+        }
+        _escapeKeyConsumers[consumerName] = eventHandler;
+        return true;
+    }
+
+    /**
+     * Removing the escape key event consumer.
+     * @param {string} consumerName used to register the consumer.
+     * @return {boolean} true if removed
+     */
+    function removeEscapeKeyEventHandler(consumerName) {
+        if(_escapeKeyConsumers[consumerName]){
+            delete _escapeKeyConsumers[consumerName];
+            return true;
+        } else {
+            console.error("EscapeKeyEvent no such consumer to remove: ", consumerName);
+        }
+        return false;
+    }
+
     function _showLastHiddenPanelIfPossible() {
         while(lastHiddenBottomPanelStack.length > 0){
             let panelToShow = getPanelForID(lastHiddenBottomPanelStack.pop());
@@ -415,8 +455,8 @@ define(function (require, exports, module) {
     }
 
     // pressing escape when focused on editor will toggle the last opened bottom panel
-    function _handleKeydown(e) {
-        if(e.keyCode !== KeyEvent.DOM_VK_ESCAPE){
+    function _handleKeydown(event) {
+        if(event.keyCode !== KeyEvent.DOM_VK_ESCAPE){
             return;
         }
         let focussedEditor = EditorManager.getFocusedEditor();
@@ -430,14 +470,20 @@ define(function (require, exports, module) {
             return;
         }
 
-        if (e.keyCode === KeyEvent.DOM_VK_ESCAPE  && e.shiftKey) {
+        for(let consumerName of Object.keys(_escapeKeyConsumers)){
+            if(_escapeKeyConsumers[consumerName](event)){
+                return;
+            }
+        }
+
+        if (event.keyCode === KeyEvent.DOM_VK_ESCAPE  && event.shiftKey) {
             _handleShiftEscapeKey();
-        } else if (e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
+        } else if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
             _handleEscapeKey();
         }
 
-        e.stopPropagation();
-        e.preventDefault();
+        event.stopPropagation();
+        event.preventDefault();
     }
     window.document.body.addEventListener("keydown", _handleKeydown, true);
 
@@ -448,6 +494,8 @@ define(function (require, exports, module) {
     exports.recomputeLayout                 = recomputeLayout;
     exports.getAllPanelIDs                  = getAllPanelIDs;
     exports.getPanelForID                   = getPanelForID;
+    exports.addEscapeKeyEventHandler        = addEscapeKeyEventHandler;
+    exports.removeEscapeKeyEventHandler     = removeEscapeKeyEventHandler;
     exports._setMockDOM                     = _setMockDOM;
     exports.EVENT_WORKSPACE_UPDATE_LAYOUT   = EVENT_WORKSPACE_UPDATE_LAYOUT;
     exports.EVENT_WORKSPACE_PANEL_SHOWN     = EVENT_WORKSPACE_PANEL_SHOWN;
