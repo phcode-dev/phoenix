@@ -25,21 +25,20 @@
 define(function (require, exports, module) {
 
 
-    var _ = require("thirdparty/lodash");
+    let _ = require("thirdparty/lodash");
 
-    var Commands = require("command/Commands"),
+    let Commands = require("command/Commands"),
         AppInit = require("utils/AppInit"),
         CommandManager = require("command/CommandManager"),
         EditorManager = require("editor/EditorManager"),
         Menus = require("command/Menus"),
-        KeyEvent = require("utils/KeyEvent"),
         Strings = require("strings"),
-        KeyBindingManager = require("command/KeyBindingManager"),
+        WorkspaceManager  = require("view/WorkspaceManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
 
     /** @const {string} Show Function Hint command ID */
-    var SHOW_PARAMETER_HINT_CMD_ID = "showParameterHint", // string must MATCH string in native code (brackets_extensions)
+    let SHOW_PARAMETER_HINT_CMD_ID = "showParameterHint", // string must MATCH string in native code (brackets_extensions)
         hintContainerHTML = require("text!htmlContent/parameter-hint-template.html"),
         KeyboardPrefs = {
             "showParameterHint": [
@@ -53,7 +52,7 @@ define(function (require, exports, module) {
             ]
         };
 
-    var $hintContainer, // function hint container
+    let $hintContainer, // function hint container
         $hintContent, // function hint content holder
         hintState = {},
         lastChar = null,
@@ -61,14 +60,15 @@ define(function (require, exports, module) {
         keyDownEditor = null;
 
     // Constants
-    var POINTER_TOP_OFFSET = 4, // Size of margin + border of hint.
+    let POINTER_TOP_OFFSET = 4, // Size of margin + border of hint.
         POSITION_BELOW_OFFSET = 4; // Amount to adjust to top position when the preview bubble is below the text
 
     // keep jslint from complaining about handleCursorActivity being used before
     // it was defined.
-    var handleCursorActivity;
+    let handleCursorActivity,
+        popupShown = false;
 
-    var _providerRegistrationHandler = new ProviderRegistrationHandler(),
+    let _providerRegistrationHandler = new ProviderRegistrationHandler(),
         registerHintProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler),
         removeHintProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
 
@@ -80,7 +80,7 @@ define(function (require, exports, module) {
      * @param {number} ybot
      */
     function positionHint(xpos, ypos, ybot) {
-        var hintWidth = $hintContainer.width(),
+        let hintWidth = $hintContainer.width(),
             hintHeight = $hintContainer.height(),
             top = ypos - hintHeight - POINTER_TOP_OFFSET,
             left = xpos,
@@ -133,12 +133,12 @@ define(function (require, exports, module) {
      * @return {string} - formatted parameter hint
      */
     function _formatParameterHint(functionName, params, appendSeparators, appendParameter, typesOnly) {
-        var result = "",
+        let result = "",
             pendingOptional = false;
 
         appendParameter(`${functionName}(`, "", -1);
         params.forEach(function (value, i) {
-            var param = value.label || value.type,
+            let param = value.label || value.type,
                 documentation = value.documentation,
                 separators = "";
 
@@ -235,13 +235,12 @@ define(function (require, exports, module) {
             $hintContainer.hide();
             $hintContent.empty();
             hintState = {};
+            popupShown = false;
 
             if (editor) {
-                editor.setCanConsumeEscapeKeyEvent("ParameterHinting", false);
                 editor.off("cursorActivity.ParameterHinting", handleCursorActivity);
                 sessionEditor = null;
             } else if (sessionEditor) {
-                sessionEditor.setCanConsumeEscapeKeyEvent("ParameterHinting", false);
                 sessionEditor.off("cursorActivity.ParameterHinting", handleCursorActivity);
                 sessionEditor = null;
             }
@@ -259,14 +258,14 @@ define(function (require, exports, module) {
      *
      */
     function popUpHint(editor, explicit, onCursorActivity) {
-        var request = null;
-        var $deferredPopUp = $.Deferred();
-        var sessionProvider = null;
+        let request = null;
+        let $deferredPopUp = $.Deferred();
+        let sessionProvider = null;
 
         dismissHint(editor);
-        editor.setCanConsumeEscapeKeyEvent("ParameterHinting", true);
+        popupShown = true;
         // Find a suitable provider, if any
-        var language = editor.getLanguageForSelection(),
+        let language = editor.getLanguageForSelection(),
             enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
 
         enabledProviders.some(function (item, index) {
@@ -282,7 +281,7 @@ define(function (require, exports, module) {
 
         if (request) {
             request.done(function (parameterHint) {
-                var cm = editor._codeMirror,
+                let cm = editor._codeMirror,
                     pos = parameterHint.functionCallPos || editor.getCursorPos();
 
                 pos = cm.charCoords(pos);
@@ -315,12 +314,6 @@ define(function (require, exports, module) {
         }
     };
 
-    function _globalKeyDownHook(event) {
-        if (event.keyCode === KeyEvent.DOM_VK_ESCAPE) {
-            dismissHint();
-        }
-    }
-
     /**
      * Install function hint listeners.
      *
@@ -328,7 +321,6 @@ define(function (require, exports, module) {
      *      changes
      */
     function installListeners(editor) {
-        KeyBindingManager.addGlobalKeydownHook(_globalKeyDownHook);
         editor.on("scroll.ParameterHinting", function () {
             dismissHint(editor);
         })
@@ -341,7 +333,6 @@ define(function (require, exports, module) {
      * @param {!Editor} editor
      */
     function uninstallListeners(editor) {
-        KeyBindingManager.removeGlobalKeydownHook(_globalKeyDownHook);
         editor.off(".ParameterHinting");
     }
 
@@ -393,16 +384,24 @@ define(function (require, exports, module) {
      *
      */
     function handleShowParameterHint() {
-        var editor = EditorManager.getActiveEditor();
+        let editor = EditorManager.getActiveEditor();
         // Pop up function hint
         popUpHint(editor, true, false);
+    }
+
+    function _handleEscapeKeyEvent() {
+        if(popupShown){
+            dismissHint();
+            return true;
+        }
+        return false;
     }
 
     AppInit.appReady(function () {
         CommandManager.register(Strings.CMD_SHOW_PARAMETER_HINT, SHOW_PARAMETER_HINT_CMD_ID, handleShowParameterHint);
 
         // Add the menu items
-        var menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
+        let menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
         if (menu) {
             menu.addMenuItem(SHOW_PARAMETER_HINT_CMD_ID, KeyboardPrefs.showParameterHint, Menus.AFTER, Commands.SHOW_CODE_HINTS);
         }
@@ -413,12 +412,13 @@ define(function (require, exports, module) {
 
         EditorManager.on("activeEditorChange", activeEditorChangeHandler);
 
-        CommandManager.on("beforeExecuteCommand", function (event, commandId) {
+        CommandManager.on("beforeExecuteCommand", function (_event, commandId) {
             if (commandId !== SHOW_PARAMETER_HINT_CMD_ID &&
                 commandId !== Commands.SHOW_CODE_HINTS) {
                 dismissHint();
             }
         });
+        WorkspaceManager.addEscapeKeyEventHandler("parameterHints", _handleEscapeKeyEvent);
     });
 
     exports.registerHintProvider = registerHintProvider;

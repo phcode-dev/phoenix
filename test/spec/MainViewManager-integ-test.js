@@ -847,15 +847,19 @@ define(function (require, exports, module) {
                panel2.hide();
             });
 
-            it("should bottom panel not toggle visibility on escape when there is no editor", async function () {
+            function _testPanelDoesntToggle() {
                 panel1.show();
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeTrue();
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeTrue();
+            }
+
+            it("should bottom panel not toggle visibility on escape when there is no editor", async function () {
+                _testPanelDoesntToggle();
             });
 
-            it("should bottom panel toggle visibility on escape on focus in code editor", async function () {
+            async function _testPanelToggleSuccess() {
                 panel1.show();
                 expect(panel1.isVisible()).toBeTrue();
 
@@ -867,6 +871,10 @@ define(function (require, exports, module) {
                 expect(panel1.isVisible()).toBeFalse();
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeTrue();
+            }
+
+            it("should bottom panel toggle visibility on escape on focus in code editor", async function () {
+                await _testPanelToggleSuccess();
             });
 
             it("should bottom panel not toggle visibility on escape if focused editor has selection", async function () {
@@ -883,6 +891,37 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeTrue();
                 editor.clearSelection();
+            });
+
+            it("should workspace add and remove EscapeKeyEventHandler", async function () {
+                function escapeHandler() {}
+                expect(WorkspaceManager.addEscapeKeyEventHandler("x", null)).toBeFalse();
+                expect(WorkspaceManager.addEscapeKeyEventHandler("x", {})).toBeFalse();
+                expect(WorkspaceManager.addEscapeKeyEventHandler("x", escapeHandler)).toBeTrue();
+                // adding existing handler will fail
+                expect(WorkspaceManager.addEscapeKeyEventHandler("x", escapeHandler)).toBeFalse();
+                // remove now
+                expect(WorkspaceManager.removeEscapeKeyEventHandler("x")).toBeTrue();
+                // removing handler that doesnt exist will fail
+                expect(WorkspaceManager.removeEscapeKeyEventHandler("x")).toBeFalse();
+            });
+
+            it("should dismiss panel if EscapeKeyEventHandler returns false", async function () {
+                function escapeHandler() {return false;}
+                expect(WorkspaceManager.addEscapeKeyEventHandler("x", escapeHandler)).toBeTrue();
+                await _testPanelToggleSuccess();
+
+                // cleanup
+                expect(WorkspaceManager.removeEscapeKeyEventHandler("x")).toBeTrue();
+            });
+
+            it("should not dismiss panel if EscapeKeyEventHandler returns true", async function () {
+                function escapeHandler() {return true;}
+                expect(WorkspaceManager.addEscapeKeyEventHandler("x", escapeHandler)).toBeTrue();
+                _testPanelDoesntToggle();
+
+                // cleanup
+                expect(WorkspaceManager.removeEscapeKeyEventHandler("x")).toBeTrue();
             });
 
             it("should escape close bottom panel one by one", async function () {
