@@ -25,8 +25,7 @@ define(function (require, exports, module) {
 
 
     var SpecRunnerUtils    = require("spec/SpecRunnerUtils"),
-        PreferencesManager = require("preferences/PreferencesManager"),
-        prefs              = PreferencesManager.getExtensionPrefs("SelectionView");
+        KeyEvent           = require("utils/KeyEvent");
 
     describe("integration:Selection View", function () {
         let testFolder = SpecRunnerUtils.getTestPath("/spec/quickview-extn-test-files");
@@ -86,7 +85,7 @@ define(function (require, exports, module) {
             SelectionViewManager._forceShow(popoverInfo);
         }
 
-        let pos, token, line, selections;
+        let selections;
 
         function getProvider(html, noPreview) {
             return {
@@ -142,6 +141,10 @@ define(function (require, exports, module) {
             async function toggleOption(commandID, text) {
                 var promise = CommandManager.execute(commandID);
                 await awaitsForDone(promise, text);
+            }
+
+            function isHidden(el) {
+                return (el.offsetParent === null);
             }
 
             describe("Selection view register provider", function (){
@@ -259,6 +262,35 @@ define(function (require, exports, module) {
                 // Popover should be inside right edge
                 await showPopoverAtPos(81, 36);
                 expect(boundsInsideWindow($popover)).toBeTruthy();
+            });
+
+            it("popover is dismissed on escape key press", async function () {
+                EditorManager.getActiveEditor().setSelection({line:0, ch:0}, {line:10, ch:0});
+                var $popover  = testWindow.$("#selection-view-container");
+                expect($popover.length).toEqual(1);
+
+                // Popover should be below item
+                await showPopoverAtPos(3, 12);
+                expect(isHidden($popover[0])).toBeFalse();
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $popover[0]);
+                expect(isHidden($popover[0])).toBeTrue();
+            });
+
+            it("active editor is focussed after popover dismissed", async function () {
+                EditorManager.getActiveEditor().setSelection({line:0, ch:0}, {line:10, ch:0});
+                var $popover  = testWindow.$("#selection-view-container");
+                expect($popover.length).toEqual(1);
+
+                // Popover should be below item
+                await showPopoverAtPos(3, 12);
+                expect(isHidden($popover[0])).toBeFalse();
+                $popover.focus();
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $popover[0]);
+                expect(isHidden($popover[0])).toBeTrue();
+                // somehow we should try to get the actual focus element in future, but focus tests are hard to do.
+                expect(EditorManager.getFocusedEditor()).toBeTruthy();
             });
         });
     });

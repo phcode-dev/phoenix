@@ -459,6 +459,13 @@ define(function (require, exports, module) {
         if(event.keyCode !== KeyEvent.DOM_VK_ESCAPE){
             return;
         }
+
+        for(let consumerName of Object.keys(_escapeKeyConsumers)){
+            if(_escapeKeyConsumers[consumerName](event)){
+                return;
+            }
+        }
+
         let focussedEditor = EditorManager.getFocusedEditor();
         if(!focussedEditor || EditorManager.getFocusedInlineEditor()){
             // if there is no editor in focus, we do no panel toggling
@@ -468,12 +475,6 @@ define(function (require, exports, module) {
         }
         if(focussedEditor.canConsumeEscapeKeyEvent()){
             return;
-        }
-
-        for(let consumerName of Object.keys(_escapeKeyConsumers)){
-            if(_escapeKeyConsumers[consumerName](event)){
-                return;
-            }
         }
 
         if (event.keyCode === KeyEvent.DOM_VK_ESCAPE  && event.shiftKey) {

@@ -25,8 +25,7 @@ define(function (require, exports, module) {
 
 
     var SpecRunnerUtils    = require("spec/SpecRunnerUtils"),
-        PreferencesManager = require("preferences/PreferencesManager"),
-        prefs              = PreferencesManager.getExtensionPrefs("quickview");
+        KeyEvent           = require("utils/KeyEvent");
 
     describe("integration:Quick View", function () {
         let testFolder = SpecRunnerUtils.getTestPath("/spec/quickview-extn-test-files");
@@ -124,6 +123,10 @@ define(function (require, exports, module) {
                 await awaitsForDone(promise, text);
             }
 
+            function isHidden(el) {
+                return (el.offsetParent === null);
+            }
+
             it("popover is positioned within window bounds", async function () {
                 var $popover  = testWindow.$("#quick-view-container");
                 expect($popover.length).toEqual(1);
@@ -155,7 +158,34 @@ define(function (require, exports, module) {
                 await toggleOption(Commands.TOGGLE_WORD_WRAP, "Toggle word-wrap");
             });
 
-            it("highlight matched text when popover shown",async function () {
+            it("popover is dismissed on escape key press", async function () {
+                let $popover  = testWindow.$("#quick-view-container");
+                expect($popover.length).toEqual(1);
+
+                // Popover should be below item
+                await showPopoverAtPos(3, 12);
+                expect(isHidden($popover[0])).toBeFalse();
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $popover[0]);
+                expect(isHidden($popover[0])).toBeTrue();
+            });
+
+            it("active editor is focussed after popover dismissed", async function () {
+                let $popover  = testWindow.$("#quick-view-container");
+                expect($popover.length).toEqual(1);
+
+                // Popover should be below item
+                await showPopoverAtPos(3, 12);
+                expect(isHidden($popover[0])).toBeFalse();
+                $popover.focus();
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $popover[0]);
+                expect(isHidden($popover[0])).toBeTrue();
+                // somehow we should try to get the actual focus element in future, but focus tests are hard to do.
+                expect(EditorManager.getFocusedEditor()).toBeTruthy();
+            });
+
+            it("highlight matched text when popover shown", async function () {
                 await showPopoverAtPos(4, 14);
                 var markers = editor._codeMirror.findMarksAt({line: 4, ch: 14});
                 let rangeMarker = null;
