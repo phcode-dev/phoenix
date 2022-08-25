@@ -24,7 +24,13 @@
  * Phoenix houses a file indexing worker which caches all cacheable files of a project in memory.
  * This module can be used to communicate with the Index and extend it by attaching new js worker scripts to the
  * indexing worker as discussed below. Any extension that works on a large number of files should use the indexing
- * worker cache to free up the main thread of heavy computation.
+ * worker cache to free up the main thread of heavy file access. This is similar to
+ * [worker/ExtensionsWorker](ExtensionsWorker-API) but with a full file index.
+ *
+ * * Extensions are advised to use [worker/ExtensionsWorker](ExtensionsWorker-API) if they do not use the file index and
+ *   just want to offload minor tasks.
+ * * Extensions performing large compute tasks should create their own worker and may use easy util methods in
+ *   [worker/WorkerComm](WorkerComm-API) to communicate with the web worker.
  *
  * ## Import
  * ```js
@@ -46,8 +52,9 @@
  * IndexingWorker.loadScriptInWorker(workerPath);
  * ```
  *
- * Once the worker script is loaded with the above step, we can communicate with it using the either `IndexingWorker`
- * reference within Phoenix or the global `WorkerComm` reference within the Indexing worker.
+ * Once the worker script is loaded with the above step:
+ * * Phoenix can communicate with worker using the `IndexingWorker` reference in Phoenix.
+ * * Worker can communicate with Phoenix with the global `WorkerComm` reference within the Indexing worker.
  * All utility methods in module [worker/WorkerComm](WorkerComm-API) can be used for worker communication.
  *
  * A global constant `Phoenix.baseURL` is available in the worker context to get the base url from which phoenix was
@@ -63,7 +70,7 @@ define(function (require, exports, module) {
         EventDispatcher = require("utils/EventDispatcher");
 
     const _FileIndexingWorker = new Worker(
-        `${Phoenix.baseURL}worker/file-Indexing-Worker.js?debug=${window.logToConsolePref === 'true'}`);
+        `${Phoenix.baseURL}worker/file-Indexing-Worker-thread.js?debug=${window.logToConsolePref === 'true'}`);
 
     if(!_FileIndexingWorker){
         console.error("Could not load find in files worker! Search will be disabled.");

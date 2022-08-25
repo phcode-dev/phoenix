@@ -203,6 +203,9 @@ define(function (require, exports, module) {
     require("languageTools/DefaultProviders");
     require("languageTools/DefaultEventHandlers");
 
+    // web workers
+    require("worker/IndexingWorker");
+    require("worker/ExtensionsWorker");
 
     PerfUtils.addMeasurement("brackets module dependencies resolved");
 
