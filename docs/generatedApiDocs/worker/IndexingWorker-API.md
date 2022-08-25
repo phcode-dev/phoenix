@@ -5,7 +5,13 @@
 Phoenix houses a file indexing worker which caches all cacheable files of a project in memory.
 This module can be used to communicate with the Index and extend it by attaching new js worker scripts to the
 indexing worker as discussed below. Any extension that works on a large number of files should use the indexing
-worker cache to free up the main thread of heavy computation.
+worker cache to free up the main thread of heavy file access. This is similar to
+[worker/ExtensionsWorker][1] but with a full file index.
+
+*   Extensions are advised to use [worker/ExtensionsWorker][1] if they do not use the file index and
+    just want to offload minor tasks.
+*   Extensions performing large compute tasks should create their own worker and may use easy util methods in
+    [worker/WorkerComm][2] to communicate with the web worker.
 
 ## Import
 
@@ -31,9 +37,12 @@ let workerPath = ExtensionUtils.getModulePath(module, "my_worker.js")
 IndexingWorker.loadScriptInWorker(workerPath);
 ```
 
-Once the worker script is loaded with the above step, we can communicate with it using the either `IndexingWorker`
-reference within Phoenix or the global `WorkerComm` reference within the Indexing worker.
-All utility methods in module [worker/WorkerComm][1] can be used for worker communication.
+Once the worker script is loaded with the above step:
+
+*   Phoenix can communicate with worker using the `IndexingWorker` reference in Phoenix.
+*   Worker can communicate with Phoenix with the global `WorkerComm` reference within the Indexing worker.
+
+All utility methods in module [worker/WorkerComm][2] can be used for worker communication.
 
 A global constant `Phoenix.baseURL` is available in the worker context to get the base url from which phoenix was
 launched.
@@ -49,7 +58,7 @@ in module `worker/WorkerComm`.
 The above methods can be used with either `IndexingWorker` reference within Phoenix
 or the global `WorkerComm` reference within the Indexing worker. (See example below.)
 
-See [worker/WorkerComm][1] for detailed API docs.
+See [worker/WorkerComm][2] for detailed API docs.
 
 ### Examples
 
@@ -77,28 +86,30 @@ Type: null
 Raised when crawling in progressing within the worker. The handler will receive the
 following properties as parameter.
 
-Type: [object][2]
+Type: [object][3]
 
 ### Properties
 
-*   `processed` **[number][3]** The number of files cached till now.
-*   `total` **[number][3]** Number of files to cache.
+*   `processed` **[number][4]** The number of files cached till now.
+*   `total` **[number][4]** Number of files to cache.
 
 ## EVENT_CRAWL_COMPLETE
 
 Raised when crawling is complete within the worker. The handler will receive the
 following properties as parameter.
 
-Type: [object][2]
+Type: [object][3]
 
 ### Properties
 
-*   `numFilesCached` **[number][3]** 
-*   `cacheSizeBytes` **[number][3]** 
-*   `crawlTimeMs` **[number][3]** in milliseconds.
+*   `numFilesCached` **[number][4]** 
+*   `cacheSizeBytes` **[number][4]** 
+*   `crawlTimeMs` **[number][4]** in milliseconds.
 
-[1]: WorkerComm-API
+[1]: ExtensionsWorker-API
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[2]: WorkerComm-API
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number

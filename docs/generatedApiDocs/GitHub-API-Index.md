@@ -9,5 +9,6 @@ The list of all APIs for phoenix.
 1. [utils/FeatureGate](FeatureGate-API)
 1. [utils/Metrics](Metrics-API)
 1. [widgets/NotificationUI](NotificationUI-API)
+1. [worker/ExtensionsWorker](ExtensionsWorker-API)
 1. [worker/IndexingWorker](IndexingWorker-API)
 1. [worker/WorkerComm](WorkerComm-API)
