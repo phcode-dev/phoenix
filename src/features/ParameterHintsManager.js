@@ -32,9 +32,7 @@ define(function (require, exports, module) {
         CommandManager = require("command/CommandManager"),
         EditorManager = require("editor/EditorManager"),
         Menus = require("command/Menus"),
-        KeyEvent = require("utils/KeyEvent"),
         Strings = require("strings"),
-        KeyBindingManager = require("command/KeyBindingManager"),
         WorkspaceManager  = require("view/WorkspaceManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
