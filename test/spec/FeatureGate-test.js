@@ -45,7 +45,7 @@ define(function (require, exports, module) {
 
         it("user should be able to override feature in localstorage", function () {
             const FEATURENAME = "feature3",
-                STORAGE_KEY = `feature.${FEATURENAME}`;
+                STORAGE_KEY = `${FEATURENAME}`;
             localStorage.removeItem(STORAGE_KEY);
             FeatureGate.registerFeatureGate(FEATURENAME, true);
 

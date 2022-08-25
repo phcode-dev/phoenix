@@ -122,7 +122,7 @@ let copyThirdPartyLibs = series(
         'src/thirdparty/'), // AGPL 2.0 license added to licence md
     // prettier
     copyFiles.bind(copyFiles, ['node_modules/prettier/*.js'],
-        'src/extensions/default/Phoenix-prettier/thirdParty'),
+        'src/thirdparty/prettier'),
     copyLicence.bind(copyLicence, 'node_modules/prettier/LICENSE', 'prettier'),
     // font-awesome
     copyFiles.bind(copyFiles, ['node_modules/@fortawesome/fontawesome-free/css/*'],

@@ -44,46 +44,27 @@
  * To test variour prettier options, See https://prettier.io/playground/
  */
 
-define(['require', 'exports', 'module', 'thirdParty/standalone', 'thirdParty/parser-graphql',
-    'thirdParty/parser-html'],
-    function (require, exports, module, prettier, graphQLPlugin, htmlPlugin) {
+define(function (require, exports, module) {
 
     const ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         FeatureGate = brackets.getModule("utils/FeatureGate"),
-        AppInit = brackets.getModule("utils/AppInit");
+        AppInit = brackets.getModule("utils/AppInit"),
+        ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
 
     const FEATURE_PRETTIER = 'Phoenix-Prettier';
     FeatureGate.registerFeatureGate(FEATURE_PRETTIER, false);
 
     ExtensionUtils.loadStyleSheet(module, "prettier.css");
 
-    const plugins = [graphQLPlugin, htmlPlugin ];
-    const _graphQL = function (code) {
-        return prettier.format(code, {
-            parser: "graphql",
-            plugins
-        });
-    };
-
-    const _html = function (code) {
-        return prettier.format(code, {
-            parser: "html",
-            plugins
-        });
-    };
     function _createExtensionStatusBarIcon() {
         // create prettier ui elements here.
     }
 
     AppInit.appReady(function () {
-        console.log(_graphQL("type Query { hello: String }"));
-        console.log(_html("<!DOCTYPE html>\n" +
-            "<HTML CLASS=\"no-js mY-ClAsS\"><HEAD><META CHARSET=\"utf-8\">" +
-            "<TITLE>My tITlE</TITLE><META NAME=\"description\" content=\"My CoNtEnT\"></HEAD></HTML>"));
-
         if (!FeatureGate.isFeatureEnabled(FEATURE_PRETTIER)) {
             return;
         }
+        ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
         _createExtensionStatusBarIcon();
     });
 });
