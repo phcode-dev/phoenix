@@ -47,7 +47,6 @@
 define(function (require, exports, module) {
 
     const ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        FeatureGate = brackets.getModule("utils/FeatureGate"),
         AppInit = brackets.getModule("utils/AppInit"),
         Strings = brackets.getModule("strings"),
         FileUtils  = brackets.getModule("file/FileUtils"),
@@ -195,8 +194,7 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject)=>{
             console.log("beautifying selection with partial text");
             let selection = editor.getSelection();
-            let text = editor.getSelectedText();
-            prettierParams.text = text;
+            prettierParams.text = editor.getSelectedText();
             ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
                 if(!response || !response.text){
                     reject();
@@ -263,9 +261,6 @@ define(function (require, exports, module) {
         });
     }
 
-    const FEATURE_PRETTIER = 'Phoenix-Prettier';
-    FeatureGate.registerFeatureGate(FEATURE_PRETTIER, false);
-
     ExtensionUtils.loadStyleSheet(module, "prettier.css");
 
     function _createExtensionStatusBarIcon() {
@@ -273,9 +268,6 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
-        if (!FeatureGate.isFeatureEnabled(FEATURE_PRETTIER)) {
-            return;
-        }
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
         BeautificationManager.registerBeautificationProvider(exports,
             ["javascript", "html",
