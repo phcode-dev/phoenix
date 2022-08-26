@@ -40,11 +40,39 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
         yaml: "yaml"
     };
 
+    function _identifyChangedRange(oldText, newText, start, end) {
+        let charsToEndIndex = oldText.length - end;
+        let newRangeStart = start,
+            newRangeEnd = newText.length - charsToEndIndex;
+        // diff from start to see if there is any changes before newRangeStart
+        for (let i = 0; i < oldText.length && i < newText.length && i <= newRangeStart; i++) {
+            if(oldText[i] !== newText[i]){
+                newRangeStart = i;
+                break;
+            }
+        }
+        for (let i = 0; i < oldText.length && i < newText.length && i < charsToEndIndex; i++) {
+            if(oldText[oldText.length - i - 1] !== newText[newText.length - i -1]){
+                newRangeEnd = newText.length - i -1;
+                break;
+            }
+        }
+        return {
+            text: newText,
+            rangeStart: newRangeStart,
+            rangeEnd: newRangeEnd
+        };
+    }
+
     function prettify(params) {
         console.log(params);
         let options = params.options || {};
+        console.log(options.rangeStart, options.rangeEnd, params.text.length);
+        options.rangeStart = options.rangeStart || 0;
+        options.rangeEnd = options.rangeEnd || params.text.length;
         options.plugins= prettierPlugins;
-        return prettier.format(params.text, params.options);
+        let prettyText = prettier.format(params.text, params.options);
+        return _identifyChangedRange(params.text, prettyText, options.rangeStart, options.rangeEnd);
     }
 
     WorkerComm.setExecHandler("prettify", prettify);

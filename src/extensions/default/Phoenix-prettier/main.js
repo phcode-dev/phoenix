@@ -78,28 +78,36 @@ define(function (require, exports, module) {
             }
         };
 
-        let beautifySelection = false, endIndex, charsToEndIndex;
+        let beautifySelection = false;
         if(editor.hasSelection()){
             beautifySelection = true;
             prettierParams.options.rangeStart = editor.indexFromPos(selection.start);
             prettierParams.options.rangeEnd = editor.indexFromPos(selection.end);
-            endIndex = editor.indexFromPos(editor.getEndingCursorPos());
-            charsToEndIndex = endIndex - prettierParams.options.rangeEnd;
+
+            // fix prettier bug where it was not prettifying if something starts with comment
+            let token = editor.getToken(selection.start);
+            while(token && (token.type === null || token.type === "comment")){
+                token = editor.getNextToken({line: token.line, ch: token.end});
+            }
+            let tokensIndex = editor.indexFromPos({line: token.line, ch: token.start});
+            if(tokensIndex> prettierParams.options.rangeStart
+                && tokensIndex < prettierParams.options.rangeEnd){
+                prettierParams.options.rangeStart = tokensIndex;
+            }
         }
         console.log(prettierParams);
         ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
-            if(!response){
+            if(!response || prettierParams.text === response){
                 return;
             }
             let doc = editor.document;
             doc.batchOperation(function() {
-                editor.document.setText(response);
+                editor.document.setText(response.text);
                 if(beautifySelection){
-                    endIndex = editor.indexFromPos(editor.getEndingCursorPos());
-                    editor.setSelection(editor.posFromIndex(prettierParams.options.rangeStart),
-                        editor.posFromIndex(endIndex - charsToEndIndex));
+                    editor.setSelection(editor.posFromIndex(response.rangeStart),
+                        editor.posFromIndex(response.rangeEnd));
                 } else {
-                    editor.setSelection({line: 0, ch:0}, editor.getEndingCursorPos());
+                    editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos(), true);
                 }
             });
         });
