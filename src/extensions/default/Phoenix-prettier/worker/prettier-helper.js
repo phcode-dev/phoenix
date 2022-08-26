@@ -29,17 +29,6 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
 
 (function () {
     // see https://prettier.io/docs/en/options.html#parser for more parsers available
-    const parsersForLanguage = {
-        javascript: "babel",
-        json: "json-stringify",
-        html: "html",
-        css: "css",
-        less: "less",
-        scss: "scss",
-        markdown: "markdown",
-        yaml: "yaml"
-    };
-
     function _identifyChangedRange(oldText, newText, start, end) {
         let charsToEndIndex = oldText.length - end;
         let newRangeStart = start,

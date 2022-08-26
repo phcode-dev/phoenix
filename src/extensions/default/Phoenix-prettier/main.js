@@ -50,6 +50,7 @@ define(function (require, exports, module) {
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         AppInit = brackets.getModule("utils/AppInit"),
         Strings = brackets.getModule("strings"),
+        LanguageManager = brackets.getModule("language/LanguageManager"),
         BeautificationManager = brackets.getModule("features/BeautificationManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
@@ -113,21 +114,36 @@ define(function (require, exports, module) {
         }
     });
 
+    const parsersForLanguage = {
+        javascript: "babel",
+        json: "json-stringify",
+        html: "html",
+        css: "css",
+        less: "less",
+        scss: "scss",
+        markdown: "markdown",
+        gfm: "markdown",
+        yaml: "yaml"
+    };
+
     function beautify(editor) {
         return new Promise((resolve, reject)=>{
+            let languageId = LanguageManager.getLanguageForPath(editor.document.file.fullPath).getId();
+            console.log(languageId);
+
             let selection = editor.getSelections();
-            if(selection.length >1){
+            if(!parsersForLanguage[languageId]
+                || selection.length >1){ // dont beautify on multiple selections or cursors
                 reject();
-                return; // dont beautify on multiple selections or cursors
+                return;
             }
             selection = selection[0];
+
             let options = prefs.get("options");
             Object.assign(options, {
-                parser: "babel",
-                trailingComma: "none",
+                parser: parsersForLanguage[languageId],
                 tabWidth: 4,
                 useTabs: false,
-                printWidth: 80,
                 filepath: editor.document.file.fullPath
             });
 
@@ -139,6 +155,8 @@ define(function (require, exports, module) {
             let beautifySelection = false;
             if(editor.hasSelection()){
                 beautifySelection = true;
+                let text = editor.getSelectedText();
+                console.log(text);
                 prettierParams.options.rangeStart = editor.indexFromPos(selection.start);
                 prettierParams.options.rangeEnd = editor.indexFromPos(selection.end);
 
@@ -153,7 +171,7 @@ define(function (require, exports, module) {
                     prettierParams.options.rangeStart = tokensIndex;
                 }
             }
-            console.log(prettierParams);
+
             ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
                 if(!response || prettierParams.text === response){
                     reject();
@@ -163,10 +181,10 @@ define(function (require, exports, module) {
                     resolve({
                         changedText: response.changedText,
                         ranges: {
-                            replaceStart: editor.posFromIndex(response.rangeStart),
-                            replaceEnd: editor.posFromIndex(response.rangeEndInOldText),
-                            selectStart: editor.posFromIndex(response.rangeStart),
-                            selectEnd: editor.posFromIndex(response.rangeEnd)
+                            replaceStart: response.rangeStart,
+                            replaceEnd: response.rangeEndInOldText,
+                            selectStart: response.rangeStart,
+                            selectEnd: response.rangeEnd
                         }
                     });
                 } else {
@@ -190,7 +208,8 @@ define(function (require, exports, module) {
             return;
         }
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
-        BeautificationManager.registerBeautificationProvider(exports, ["javascript"]);
+        BeautificationManager.registerBeautificationProvider(exports,
+            ["javascript", "html", "markdown", "gfm", "css"]);
 
         _createExtensionStatusBarIcon();
     });

@@ -68,15 +68,29 @@
  *             resolve({
  *                 changedText: "partial or full text that changed. If partial, specify the range options below",
  *                 ranges:{
- *                     replaceStart: {line, ch},
- *                     replaceEnd: {line, ch},
- *                     selectStart: {line, ch},
- *                     selectEnd: {line, ch}
+ *                     replaceStart: number,
+ *                     replaceEnd: number,
+ *                     selectStart: number,
+ *                     selectEnd: number
  *                 }
  *             });
  *         });
  *     };
  * ```
+ *
+ * #### The resoved promise object
+ * The resolved promise should contain the following details:
+ * 1. changedText - string, this should be the fully prettified text of the whole file or a fragment of pretty text
+ *    if a range was selected. If a range is selected, then the resolved object must contain a ranges attribute.
+ *    This may also be null if the extension itself has prettified the code and doesn't want
+ *    any further processing from BeautificationManager.
+ * 1. ranges - is a set of 4 numbers that gives details on what changes are to be done to the BeautificationManager.
+ *    it has 4 fields:
+ *    1. replaceStart - number, the index from which the editor should replace the text in the original text editor.
+ *       indexes can be obtained using the `editor.indexFromPos` API.
+ *    1. replaceEnd - number, the index to which the editor should replace the text in the original text editor
+ *    1. selectStart - number, the index from which the editor should select text based on new text indexes
+ *    1. selectEnd - number, the index to which the editor should select text based on new text indexes
  * @module features/BeautificationManager
  */
 define(function (require, exports, module) {
@@ -99,7 +113,6 @@ define(function (require, exports, module) {
     async function _getBeautifiedCodeDetails(editor) {
         let language = editor.getLanguageForSelection(),
             enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
-        // todo get language for path?
 
         for(let item of enabledProviders){
             if(!item.provider.beautify){
@@ -124,7 +137,7 @@ define(function (require, exports, module) {
             return;
         }
         _getBeautifiedCodeDetails(editor).then(beautyObject => {
-            if(!beautyObject){
+            if(!beautyObject || !beautyObject.changedText){
                 return;
             }
             let doc = editor.document;
@@ -133,8 +146,11 @@ define(function (require, exports, module) {
                     console.log(beautyObject);
                     if(beautyObject.ranges){
                         let ranges = beautyObject.ranges;
-                        editor.document.replaceRange(beautyObject.changedText, ranges.replaceStart, ranges.replaceEnd);
-                        editor.setSelection(ranges.selectStart, ranges.selectEnd, true);
+                        editor.document.replaceRange(beautyObject.changedText,
+                            editor.posFromIndex(ranges.replaceStart),
+                            editor.posFromIndex(ranges.replaceEnd));
+                            editor.setSelection(editor.posFromIndex(ranges.selectStart),
+                            editor.posFromIndex(ranges.selectEnd), true);
                     } else {
                         editor.document.setText(beautyObject.changedText);
                         editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
