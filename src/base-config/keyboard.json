@@ -144,7 +144,7 @@
         }
     ],
     "edit.beautifyCode": [
-        "Alt-B"
+        "Ctrl-B"
     ],
     "cmd.find":  [
         "Ctrl-F"
@@ -193,12 +193,12 @@
     ],
     "cmd.addNextMatch": [
         {
-            "key": "Ctrl-B"
+            "key": "Alt-B"
         }
     ],
     "cmd.skipCurrentMatch": [
         {
-            "key": "Ctrl-Shift-B"
+            "key": "Alt-Shift-B"
         }
     ],
     "cmd.replace":  [
