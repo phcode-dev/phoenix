@@ -49,11 +49,8 @@ define(function (require, exports, module) {
     const ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         AppInit = brackets.getModule("utils/AppInit"),
-        CommandManager = brackets.getModule("command/CommandManager"),
-        Commands = brackets.getModule("command/Commands"),
-        Menus = brackets.getModule("command/Menus"),
         Strings = brackets.getModule("strings"),
-        EditorManager = brackets.getModule("editor/EditorManager"),
+        BeautificationManager = brackets.getModule("features/BeautificationManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
 
@@ -116,68 +113,65 @@ define(function (require, exports, module) {
         }
     });
 
-    function prettify() {
-        let editor = EditorManager.getActiveEditor();
-        if(!editor){
-            return;
-        }
-
-        let selection = editor.getSelections();
-        if(selection.length >1){
-            return; // dont beautify on multiple selections or cursors
-        }
-        selection = selection[0];
-        let options = prefs.get("options");
-        Object.assign(options, {
-            parser: "babel",
-            trailingComma: "none",
-            tabWidth: 4,
-            useTabs: false,
-            printWidth: 80,
-            filepath: editor.document.file.fullPath
-        });
-
-        let prettierParams ={
-            text: editor.document.getText(),
-            options: options
-        };
-
-        let beautifySelection = false;
-        if(editor.hasSelection()){
-            beautifySelection = true;
-            prettierParams.options.rangeStart = editor.indexFromPos(selection.start);
-            prettierParams.options.rangeEnd = editor.indexFromPos(selection.end);
-
-            // fix prettier bug where it was not prettifying if something starts with comment
-            let token = editor.getToken(selection.start);
-            while(token && (token.type === null || token.type === "comment")){
-                token = editor.getNextToken({line: token.line, ch: token.end});
+    function beautify(editor) {
+        return new Promise((resolve, reject)=>{
+            let selection = editor.getSelections();
+            if(selection.length >1){
+                reject();
+                return; // dont beautify on multiple selections or cursors
             }
-            let tokensIndex = editor.indexFromPos({line: token.line, ch: token.start});
-            if(tokensIndex> prettierParams.options.rangeStart
-                && tokensIndex < prettierParams.options.rangeEnd){
-                prettierParams.options.rangeStart = tokensIndex;
+            selection = selection[0];
+            let options = prefs.get("options");
+            Object.assign(options, {
+                parser: "babel",
+                trailingComma: "none",
+                tabWidth: 4,
+                useTabs: false,
+                printWidth: 80,
+                filepath: editor.document.file.fullPath
+            });
+
+            let prettierParams ={
+                text: editor.document.getText(),
+                options: options
+            };
+
+            let beautifySelection = false;
+            if(editor.hasSelection()){
+                beautifySelection = true;
+                prettierParams.options.rangeStart = editor.indexFromPos(selection.start);
+                prettierParams.options.rangeEnd = editor.indexFromPos(selection.end);
+
+                // fix prettier bug where it was not prettifying if something starts with comment
+                let token = editor.getToken(selection.start);
+                while(token && (token.type === null || token.type === "comment")){
+                    token = editor.getNextToken({line: token.line, ch: token.end});
+                }
+                let tokensIndex = editor.indexFromPos({line: token.line, ch: token.start});
+                if(tokensIndex> prettierParams.options.rangeStart
+                    && tokensIndex < prettierParams.options.rangeEnd){
+                    prettierParams.options.rangeStart = tokensIndex;
+                }
             }
-        }
-        console.log(prettierParams);
-        ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
-            if(!response || prettierParams.text === response){
-                return;
-            }
-            let doc = editor.document;
-            doc.batchOperation(function() {
-                editor.operation(function () {
-                    console.log(response.changedText);
-                    if(beautifySelection){
-                        editor.document.replaceRange(response.changedText, editor.posFromIndex(response.rangeStart),
-                            editor.posFromIndex(response.rangeEndInOldText));
-                        editor.setSelection(editor.posFromIndex(response.rangeStart),
-                            editor.posFromIndex(response.rangeEnd), true);
-                    } else {
-                        editor.document.setText(response.text);
-                        editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
-                    }
-                });
+            console.log(prettierParams);
+            ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
+                if(!response || prettierParams.text === response){
+                    reject();
+                    return;
+                }
+                if(beautifySelection){
+                    resolve({
+                        changedText: response.changedText,
+                        ranges: {
+                            replaceStart: editor.posFromIndex(response.rangeStart),
+                            replaceEnd: editor.posFromIndex(response.rangeEndInOldText),
+                            selectStart: editor.posFromIndex(response.rangeStart),
+                            selectEnd: editor.posFromIndex(response.rangeEnd)
+                        }
+                    });
+                } else {
+                    resolve({changedText: response.text});
+                }
             });
         });
     }
@@ -196,14 +190,12 @@ define(function (require, exports, module) {
             return;
         }
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
-        CommandManager.register(Strings.CMD_BEAUTIFY_CODE, Commands.EDIT_BEAUTIFY_CODE, prettify);
-        let editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
-        editMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "");
+        BeautificationManager.registerBeautificationProvider(exports, ["javascript"]);
 
-        let editorContextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
-        editorContextMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "", Menus.AFTER, Commands.EDIT_SELECT_ALL);
         _createExtensionStatusBarIcon();
     });
+
+    exports.beautify = beautify;
 });
 
 

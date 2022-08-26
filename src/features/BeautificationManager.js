@@ -66,7 +66,7 @@
  * provider.beautify = function(editor) {
  *         return new Promise((resolve, reject)=>{
  *             resolve({
- *                 changedCode: "partial or full text that changed. If partial, specify the range options below",
+ *                 changedText: "partial or full text that changed. If partial, specify the range options below",
  *                 ranges:{
  *                     replaceStart: {line, ch},
  *                     replaceEnd: {line, ch},
@@ -86,29 +86,74 @@ define(function (require, exports, module) {
         Strings = require("strings"),
         AppInit = require("utils/AppInit"),
         CommandManager = require("command/CommandManager"),
+        Menus = brackets.getModule("command/Menus"),
         EditorManager = require("editor/EditorManager"),
-        Editor              = require("editor/Editor").Editor,
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     let _providerRegistrationHandler = new ProviderRegistrationHandler(),
-        registerBeautificationProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler),
-        removeBeautificationProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
+        registerBeautificationProvider = _providerRegistrationHandler
+            .registerProvider.bind(_providerRegistrationHandler),
+        removeBeautificationProvider = _providerRegistrationHandler
+            .removeProvider.bind(_providerRegistrationHandler);
 
-    function _getBeautifiedCodeDetails(editor) {
+    async function _getBeautifiedCodeDetails(editor) {
         let language = editor.getLanguageForSelection(),
             enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
+        // todo get language for path?
 
-        enabledProviders.some(function (item, index) {
-            if (item.provider.canJumpToDef(editor)) {
-                //jumpToDefProvider = item.provider;
-                return true;
+        for(let item of enabledProviders){
+            if(!item.provider.beautify){
+                console.error("Beautify providers must implement beautify function", item);
+                continue;
             }
-        });
+            try{
+                let beautyObject = await item.provider.beautify(editor);
+                if(beautyObject){
+                    return beautyObject;
+                }
+            } catch (e) {
+                // providers reject if they didn't beautify the code. We do nothing in the case as expected failure.
+            }
+        }
         return null;
     }
 
-    AppInit.appReady(function () {
+    function _prettify() {
+        let editor = EditorManager.getActiveEditor();
+        if(!editor){
+            return;
+        }
+        _getBeautifiedCodeDetails(editor).then(beautyObject => {
+            if(!beautyObject){
+                return;
+            }
+            let doc = editor.document;
+            doc.batchOperation(function() {
+                editor.operation(function () {
+                    console.log(beautyObject);
+                    if(beautyObject.ranges){
+                        let ranges = beautyObject.ranges;
+                        editor.document.replaceRange(beautyObject.changedText, ranges.replaceStart, ranges.replaceEnd);
+                        editor.setSelection(ranges.selectStart, ranges.selectEnd, true);
+                    } else {
+                        editor.document.setText(beautyObject.changedText);
+                        editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
+                    }
+                });
+            });
+        }).catch(e=>{
+            console.log("No beautify providers responded", e);
+        });
+    }
 
+    AppInit.appReady(function () {
+        CommandManager.register(Strings.CMD_BEAUTIFY_CODE, Commands.EDIT_BEAUTIFY_CODE, _prettify);
+        let editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
+        editMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "");
+
+        let editorContextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
+        editorContextMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "", Menus.AFTER, Commands.EDIT_SELECT_ALL);
+        // todo active editor change and disable beautify if not supported
     });
 
     exports.registerBeautificationProvider = registerBeautificationProvider;
