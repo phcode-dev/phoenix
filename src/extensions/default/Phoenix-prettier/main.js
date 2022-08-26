@@ -161,6 +161,35 @@ define(function (require, exports, module) {
             }).catch(reject);
         });
     }
+
+    function _fixTabs(text, selectionLineText, chToStart) {
+        let trimmedLine = selectionLineText.trim();
+        let padding = selectionLineText.substring(0, chToStart),
+            firstLinePadding = "";
+        if(trimmedLine){
+            let index = selectionLineText.indexOf(trimmedLine);
+            if(index > chToStart){
+                firstLinePadding = selectionLineText.substring(chToStart, index);
+            }
+            padding = selectionLineText.substring(0, index);
+        }
+        const result = text.split(/\r?\n/);
+        if(!result || result.length === 0){
+            return text;
+        }
+
+        let paddedText = firstLinePadding + result[0].trim();
+        for(let i=1; i<result.length; i++){
+            if(result[i].trim()){
+                paddedText = `${paddedText}\r\n${padding}${result[i]}`;
+            } else {
+                // empty line
+                paddedText = `${paddedText}\r\n${result[i]}`;
+            }
+        }
+        return paddedText;
+    }
+
     function _trySelectionWithPartialText(editor, prettierParams) {
         return new Promise((resolve, reject)=>{
             console.log("beautifying selection with partial text");
@@ -175,13 +204,15 @@ define(function (require, exports, module) {
                 }
                 let start = editor.indexFromPos(selection.start),
                     end = editor.indexFromPos(selection.end);
+                let text = _fixTabs(response.text,
+                    editor.document.getLine(selection.start.line), selection.start.ch);
                 resolve({
-                    changedText: response.text,
+                    changedText: text,
                     ranges: {
                         replaceStart: start,
                         replaceEnd: end,
                         selectStart: start,
-                        selectEnd: start + response.text.length
+                        selectEnd: start + text.length
                     }
                 });
             }).catch(reject);
