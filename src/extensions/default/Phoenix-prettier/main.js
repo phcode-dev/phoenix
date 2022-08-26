@@ -242,8 +242,11 @@ define(function (require, exports, module) {
                 options: options
             };
             if(editor.hasSelection()){
-                _trySelectionWithPartialText(editor, _clone(prettierParams)).then(resolve).catch(function (err) {
-                    _trySelectionWithFullText(editor, prettierParams).then(resolve).catch(reject);
+                _trySelectionWithPartialText(editor, _clone(prettierParams)).then(resolve).catch(function () {
+                    _trySelectionWithFullText(editor, prettierParams).then(resolve).catch(error=>{
+                        console.error("Could not prettify selection", error);
+                        reject(error);
+                    });
                 });
             } else {
                 ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
@@ -252,7 +255,10 @@ define(function (require, exports, module) {
                         return;
                     }
                     resolve({changedText: response.text});
-                }).catch(reject);
+                }).catch(err=>{
+                    console.error("Could not prettify", err);
+                    reject(err);
+                });
             }
         });
     }
@@ -272,7 +278,10 @@ define(function (require, exports, module) {
         }
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
         BeautificationManager.registerBeautificationProvider(exports,
-            ["javascript", "html", "markdown", "gfm", "css"]); // todo add all supported langs
+            ["javascript", "html",
+                "css", 'less', 'scss',
+                "markdown", "gfm",
+                'yaml', 'json']);
 
         _createExtensionStatusBarIcon();
     });
