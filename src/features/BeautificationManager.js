@@ -139,10 +139,14 @@ define(function (require, exports, module) {
                 if(beautyObject.ranges){
                     let ranges = beautyObject.ranges;
                     editor.setSelection(ranges.replaceStart, ranges.replaceEnd);
-                    editor.replaceSelection(beautyObject.changedText, 'around');
+                    if(editor.getSelectedText() !== beautyObject.changedText){
+                        editor.replaceSelection(beautyObject.changedText, 'around');
+                    }
                 } else {
                     editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
-                    editor.replaceSelection(beautyObject.changedText, 'around');
+                    if(editor.getSelectedText() !== beautyObject.changedText){
+                        editor.replaceSelection(beautyObject.changedText, 'around');
+                    }
                 }
             });
         }).catch(e=>{
