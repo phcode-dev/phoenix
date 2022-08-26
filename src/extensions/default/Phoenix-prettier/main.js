@@ -50,6 +50,7 @@ define(function (require, exports, module) {
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         AppInit = brackets.getModule("utils/AppInit"),
         Strings = brackets.getModule("strings"),
+        FileUtils  = brackets.getModule("file/FileUtils"),
         LanguageManager = brackets.getModule("language/LanguageManager"),
         BeautificationManager = brackets.getModule("features/BeautificationManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
@@ -178,12 +179,13 @@ define(function (require, exports, module) {
 
         let paddedText = firstLinePadding + result[0].trim();
         let length = result[result.length-1].trim() ? result.length : result.length - 1;
+        let lineEndingChar = FileUtils.sniffLineEndings(text) === FileUtils.LINE_ENDINGS_LF ? '\n' : '\r\n';
         for(let i=1; i<length; i++){
             if(result[i].trim()){
-                paddedText = `${paddedText}\r\n${padding}${result[i]}`;
+                paddedText = `${paddedText}${lineEndingChar}${padding}${result[i]}`;
             } else {
                 // empty line
-                paddedText = `${paddedText}\r\n${result[i]}`;
+                paddedText = `${paddedText}${lineEndingChar}${result[i]}`;
             }
         }
         return paddedText;
