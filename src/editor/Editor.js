@@ -676,6 +676,25 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Gets the cursor position of the last charected in the editor.
+     * @param {boolean} [expandTabs]  If true, return the actual visual column number instead of the character offset in
+     *      the "ch" property.
+     * @return {{line:number, ch:number}}
+     */
+    Editor.prototype.getEndingCursorPos = function (expandTabs) {
+        let lastLine = this._codeMirror.lastLine();
+        let cursor = {
+            line: lastLine,
+            ch: this._codeMirror.getLine(lastLine).length
+        };
+
+        if (expandTabs) {
+            cursor.ch = this.getColOffset(cursor);
+        }
+        return cursor;
+    };
+
+    /**
      * Returns the display column (zero-based) for a given string-based pos. Differs from pos.ch only
      * when the line contains preceding \t chars. Result depends on the current tab size setting.
      * @param {!{line:number, ch:number}} pos
@@ -1280,11 +1299,11 @@ define(function (require, exports, module) {
      * end of the selection range. Optionally centers around the cursor after
      * making the selection
      *
-     * @param {!{line:number, ch:number}} start
-     * @param {{line:number, ch:number}=} end If not specified, defaults to start.
-     * @param {boolean} center true to center the viewport
-     * @param {number} centerOptions Option value, or 0 for no options; one of the BOUNDARY_* constants above.
-     * @param {?string} origin An optional string that describes what other selection or edit operations this
+     * @param {{line:number, ch:number}} start
+     * @param {{line:number, ch:number}} [end] If not specified, defaults to start.
+     * @param {boolean} [center] true to center the viewport
+     * @param {number} [centerOptions] Option value, or 0 for no options; one of the BOUNDARY_* constants above.
+     * @param {?string} [origin] An optional string that describes what other selection or edit operations this
      *      should be merged with for the purposes of undo. See {@link Document#replaceRange} for more details.
      */
     Editor.prototype.setSelection = function (start, end, center, centerOptions, origin) {

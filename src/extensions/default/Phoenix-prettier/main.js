@@ -49,7 +49,33 @@ define(function (require, exports, module) {
     const ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         FeatureGate = brackets.getModule("utils/FeatureGate"),
         AppInit = brackets.getModule("utils/AppInit"),
+        CommandManager = brackets.getModule("command/CommandManager"),
+        Commands = brackets.getModule("command/Commands"),
+        Menus = brackets.getModule("command/Menus"),
+        Strings = brackets.getModule("strings"),
+        EditorManager = brackets.getModule("editor/EditorManager"),
         ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
+
+    function prettify() {
+        let editor = EditorManager.getActiveEditor();
+        if(!editor){
+            return;
+        }
+        ExtensionsWorker.execPeer("prettify", {
+            text: editor.document.getText()
+        }).then(response=>{
+            if(response){
+                editor.document.setText(response);
+                editor.setSelection({line: 0, ch:0}, editor.getEndingCursorPos());
+            }
+            // let doc = editor.document;
+            // doc.batchOperation(function() {
+            //     // Replace
+            //     doc.replaceRange(fnCall, start, end);
+            //     doc.replaceRange(fnDeclaration, insertPos);
+            // });
+        });
+    }
 
     const FEATURE_PRETTIER = 'Phoenix-Prettier';
     FeatureGate.registerFeatureGate(FEATURE_PRETTIER, false);
@@ -65,6 +91,12 @@ define(function (require, exports, module) {
             return;
         }
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
+        CommandManager.register(Strings.CMD_BEAUTIFY_CODE, Commands.EDIT_BEAUTIFY_CODE, prettify);
+        let editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
+        editMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "");
+
+        let editorContextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
+        editorContextMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "", Menus.AFTER, Commands.EDIT_SELECT_ALL);
         _createExtensionStatusBarIcon();
     });
 });

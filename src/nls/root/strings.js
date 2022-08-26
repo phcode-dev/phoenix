@@ -405,6 +405,7 @@ define({
     "CMD_OPEN_LINE_BELOW": "Open Line Below",
     "CMD_TOGGLE_CLOSE_BRACKETS": "Auto Close Braces",
     "CMD_SHOW_CODE_HINTS": "Show Code Hints",
+    "CMD_BEAUTIFY_CODE": "Beautify Code",
 
     // Search menu commands
     "FIND_MENU": "Find",

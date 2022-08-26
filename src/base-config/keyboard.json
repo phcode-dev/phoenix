@@ -143,6 +143,9 @@
             "platform": "mac"
         }
     ],
+    "edit.beautifyCode": [
+        "Alt-B"
+    ],
     "cmd.find":  [
         "Ctrl-F"
     ],
