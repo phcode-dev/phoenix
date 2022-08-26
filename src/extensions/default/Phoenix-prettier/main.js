@@ -102,13 +102,18 @@ define(function (require, exports, module) {
             }
             let doc = editor.document;
             doc.batchOperation(function() {
-                editor.document.setText(response.text);
-                if(beautifySelection){
-                    editor.setSelection(editor.posFromIndex(response.rangeStart),
-                        editor.posFromIndex(response.rangeEnd));
-                } else {
-                    editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos(), true);
-                }
+                editor.operation(function () {
+                    console.log(response.changedText);
+                    if(beautifySelection){
+                        editor.document.replaceRange(response.changedText, editor.posFromIndex(response.rangeStart),
+                            editor.posFromIndex(response.rangeEndInOldText));
+                        editor.setSelection(editor.posFromIndex(response.rangeStart),
+                            editor.posFromIndex(response.rangeEnd), true);
+                    } else {
+                        editor.document.setText(response.text);
+                        editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
+                    }
+                });
             });
         });
     }

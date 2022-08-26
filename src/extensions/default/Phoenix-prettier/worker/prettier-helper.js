@@ -43,7 +43,8 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
     function _identifyChangedRange(oldText, newText, start, end) {
         let charsToEndIndex = oldText.length - end;
         let newRangeStart = start,
-            newRangeEnd = newText.length - charsToEndIndex;
+            newRangeEnd = newText.length - charsToEndIndex,
+            rangeEndInOldText = oldText.length - charsToEndIndex;
         // diff from start to see if there is any changes before newRangeStart
         for (let i = 0; i < oldText.length && i < newText.length && i <= newRangeStart; i++) {
             if(oldText[i] !== newText[i]){
@@ -53,14 +54,17 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
         }
         for (let i = 0; i < oldText.length && i < newText.length && i < charsToEndIndex; i++) {
             if(oldText[oldText.length - i - 1] !== newText[newText.length - i -1]){
-                newRangeEnd = newText.length - i -1;
+                newRangeEnd = newText.length - i;
+                rangeEndInOldText = oldText.length - i;
                 break;
             }
         }
         return {
             text: newText,
+            changedText: newText.substring(newRangeStart, newRangeEnd),
             rangeStart: newRangeStart,
-            rangeEnd: newRangeEnd
+            rangeEnd: newRangeEnd,
+            rangeEndInOldText: rangeEndInOldText
         };
     }
 
