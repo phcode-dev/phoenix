@@ -42,12 +42,9 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
 
     function prettify(params) {
         console.log(params);
-        return prettier.format(params.text, {
-            parser: "babel",
-            plugins: prettierPlugins,
-            trailingComma: "none",
-            tabWidth: 4
-        });
+        let options = params.options || {};
+        options.plugins= prettierPlugins;
+        return prettier.format(params.text, params.options);
     }
 
     WorkerComm.setExecHandler("prettify", prettify);

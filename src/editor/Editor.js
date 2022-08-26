@@ -649,14 +649,17 @@ define(function (require, exports, module) {
 
     /**
      * Gets the current cursor position within the editor.
-     * @param {?boolean} [expandTabs]  If true, return the actual visual column number instead of the character offset in
+     *
+     * Cursor positions can be converted to index(0 based character offsets in editor text string)
+     * using `editor.indexFromPos` API.
+     * @param {boolean} [expandTabs]  If true, return the actual visual column number instead of the character offset in
      *      the "ch" property.
-     * @param {?string} [which] Optional string indicating which end of the
+     * @param {string} [which] Optional string indicating which end of the
      *  selection to return. It may be "start", "end", "head" (the side of the
      *  selection that moves when you press shift+arrow), or "anchor" (the
      *  fixed side of the selection). Omitting the argument is the same as
      *  passing "head". A {line, ch} object will be returned.)
-     * @return {!{line:number, ch:number}}
+     * @return {{line:number, ch:number}}
      */
     Editor.prototype.getCursorPos = function (expandTabs, which) {
         // Translate "start" and "end" to the official CM names (it actually
@@ -837,13 +840,18 @@ define(function (require, exports, module) {
 
     /**
      * Given a position, returns its index within the text (assuming \n newlines)
-     * @param {{line:number, ch:number}}
+     * @param {{line:number, ch:number}} cursorPos
      * @return {number}
      */
-    Editor.prototype.indexFromPos = function (coords) {
-        return this._codeMirror.indexFromPos(coords);
+    Editor.prototype.indexFromPos = function (cursorPos) {
+        return this._codeMirror.indexFromPos(cursorPos);
     };
 
+    /**
+     * Given a position, returns its index within the text (assuming \n newlines)
+     * @param {number} index
+     * @return {{line:number, ch:number}}
+     */
     Editor.prototype.posFromIndex = function (index) {
         return this._codeMirror.posFromIndex(index);
     };
