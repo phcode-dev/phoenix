@@ -61,19 +61,47 @@ define(function (require, exports, module) {
         if(!editor){
             return;
         }
-        ExtensionsWorker.execPeer("prettify", {
-            text: editor.document.getText()
-        }).then(response=>{
-            if(response){
-                editor.document.setText(response);
-                editor.setSelection({line: 0, ch:0}, editor.getEndingCursorPos());
+
+        let selection = editor.getSelections();
+        if(selection.length >1){
+            return; // dont beautify on multiple selections or cursors
+        }
+        selection = selection[0];
+        let prettierParams ={
+            text: editor.document.getText(),
+            options: {
+                parser: "babel",
+                trailingComma: "none",
+                tabWidth: 4,
+                useTabs: false,
+                printWidth: 80
             }
-            // let doc = editor.document;
-            // doc.batchOperation(function() {
-            //     // Replace
-            //     doc.replaceRange(fnCall, start, end);
-            //     doc.replaceRange(fnDeclaration, insertPos);
-            // });
+        };
+
+        let beautifySelection = false, endIndex, charsToEndIndex;
+        if(editor.hasSelection()){
+            beautifySelection = true;
+            prettierParams.options.rangeStart = editor.indexFromPos(selection.start);
+            prettierParams.options.rangeEnd = editor.indexFromPos(selection.end);
+            endIndex = editor.indexFromPos(editor.getEndingCursorPos());
+            charsToEndIndex = endIndex - prettierParams.options.rangeEnd;
+        }
+        console.log(prettierParams);
+        ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
+            if(!response){
+                return;
+            }
+            let doc = editor.document;
+            doc.batchOperation(function() {
+                editor.document.setText(response);
+                if(beautifySelection){
+                    endIndex = editor.indexFromPos(editor.getEndingCursorPos());
+                    editor.setSelection(editor.posFromIndex(prettierParams.options.rangeStart),
+                        editor.posFromIndex(endIndex - charsToEndIndex));
+                } else {
+                    editor.setSelection({line: 0, ch:0}, editor.getEndingCursorPos());
+                }
+            });
         });
     }
 
