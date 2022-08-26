@@ -42,20 +42,13 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
 
     function prettify(params) {
         console.log(params);
+        return prettier.format(params.text, {
+            parser: "babel",
+            plugins: prettierPlugins,
+            trailingComma: "none",
+            tabWidth: 4
+        });
     }
 
     WorkerComm.setExecHandler("prettify", prettify);
-
-    // parser json-stringify for json, babel for js via babel
-    console.log(prettier.format("function s(){console.log('hello world');}", {
-        parser: "babel",
-        plugins: prettierPlugins
-    }));
-
-// support parser css, scss, less via postcss
-    console.log(prettier.format('# hello\n- world', {
-        parser: "yaml",
-        plugins: prettierPlugins
-    }));
-
 }());
