@@ -21,6 +21,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Beautification manager interacts with beautify extensions to determine what to do when user issues `beautify code`
  * command. Beautification providers can use this module to register new providers to beautify new languages.
