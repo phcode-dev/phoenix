@@ -177,7 +177,8 @@ define(function (require, exports, module) {
         }
 
         let paddedText = firstLinePadding + result[0].trim();
-        for(let i=1; i<result.length; i++){
+        let length = result[result.length-1].trim() ? result.length : result.length - 1;
+        for(let i=1; i<length; i++){
             if(result[i].trim()){
                 paddedText = `${paddedText}\r\n${padding}${result[i]}`;
             } else {

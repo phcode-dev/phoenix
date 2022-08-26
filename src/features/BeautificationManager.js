@@ -135,19 +135,15 @@ define(function (require, exports, module) {
             if(!beautyObject || !beautyObject.changedText){
                 return;
             }
-            let doc = editor.document;
-            doc.batchOperation(function() {
-                editor.operation(function () {
-                    console.log(beautyObject);
-                    if(beautyObject.ranges){
-                        let ranges = beautyObject.ranges;
-                        editor.setSelection(ranges.replaceStart, ranges.replaceEnd);
-                        editor.replaceSelection(beautyObject.changedText, 'around');
-                    } else {
-                        editor.document.setText(beautyObject.changedText);
-                        editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
-                    }
-                });
+            editor.operation(function () {
+                if(beautyObject.ranges){
+                    let ranges = beautyObject.ranges;
+                    editor.setSelection(ranges.replaceStart, ranges.replaceEnd);
+                    editor.replaceSelection(beautyObject.changedText, 'around');
+                } else {
+                    editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
+                    editor.replaceSelection(beautyObject.changedText, 'around');
+                }
             });
         }).catch(e=>{
             console.log("No beautify providers responded", e);
