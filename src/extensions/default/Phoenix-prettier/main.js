@@ -54,7 +54,67 @@ define(function (require, exports, module) {
         Menus = brackets.getModule("command/Menus"),
         Strings = brackets.getModule("strings"),
         EditorManager = brackets.getModule("editor/EditorManager"),
+        PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
+
+    const prefs = PreferencesManager.getExtensionPrefs("beautify");
+    prefs.definePreference("options", "object", {
+        printWidth: 80,
+        semi: true,
+        trailingComma: "none",
+        singleQuote: false,
+        quoteProps: "as-needed",
+        bracketSameLine: true,
+        singleAttributePerLine: false,
+        proseWrap: "always"
+    }, {
+        description: Strings.BEAUTIFY_OPTIONS,
+        keys: {
+            printWidth: {
+                type: "number",
+                description: Strings.BEAUTIFY_OPTION_PRINT_WIDTH,
+                initial: 80
+            },
+            semi: {
+                type: "boolean",
+                description: Strings.BEAUTIFY_OPTION_SEMICOLON,
+                initial: true
+            },
+            trailingComma: {
+                type: "string",
+                description: Strings.BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS,
+                values: ["none", "es5", "all"],
+                initial: "none"
+            },
+            singleQuote: {
+                type: "boolean",
+                description: Strings.BEAUTIFY_OPTION_SINGLE_QUOTE,
+                initial: false
+            },
+            quoteProps: {
+                type: "string",
+                description: Strings.BEAUTIFY_OPTION_QUOTE_PROPS,
+                values: ["as-needed", "consistent", "preserve"],
+                initial: "as-needed"
+            },
+            proseWrap: {
+                type: "string",
+                description: Strings.BEAUTIFY_OPTION_PROSE_WRAP,
+                values: ["always", "never", "preserve"],
+                initial: "always"
+            },
+            bracketSameLine: {
+                type: "boolean",
+                description: Strings.BEAUTIFY_OPTION_BRACKET_SAME_LINE,
+                initial: true
+            },
+            singleAttributePerLine: {
+                type: "boolean",
+                description: Strings.BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE,
+                initial: false
+            }
+        }
+    });
 
     function prettify() {
         let editor = EditorManager.getActiveEditor();
@@ -67,15 +127,19 @@ define(function (require, exports, module) {
             return; // dont beautify on multiple selections or cursors
         }
         selection = selection[0];
+        let options = prefs.get("options");
+        Object.assign(options, {
+            parser: "babel",
+            trailingComma: "none",
+            tabWidth: 4,
+            useTabs: false,
+            printWidth: 80,
+            filepath: editor.document.file.fullPath
+        });
+
         let prettierParams ={
             text: editor.document.getText(),
-            options: {
-                parser: "babel",
-                trailingComma: "none",
-                tabWidth: 4,
-                useTabs: false,
-                printWidth: 80
-            }
+            options: options
         };
 
         let beautifySelection = false;
