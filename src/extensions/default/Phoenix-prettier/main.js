@@ -126,6 +126,72 @@ define(function (require, exports, module) {
         yaml: "yaml"
     };
 
+    function _trySelectionWithFullText(editor, prettierParams) {
+        return new Promise((resolve, reject)=>{
+            console.log("beautifying selection with full text");
+            let selection = editor.getSelection();
+            prettierParams.options.rangeStart = editor.indexFromPos(selection.start);
+            prettierParams.options.rangeEnd = editor.indexFromPos(selection.end);
+
+            // fix prettier bug where it was not prettifying if something starts with comment
+            let token = editor.getToken(selection.start);
+            while(token && (token.type === null || token.type === "comment")){
+                token = editor.getNextToken({line: token.line, ch: token.end});
+            }
+            let tokensIndex = editor.indexFromPos({line: token.line, ch: token.start});
+            if(tokensIndex> prettierParams.options.rangeStart
+                && tokensIndex < prettierParams.options.rangeEnd){
+                prettierParams.options.rangeStart = tokensIndex;
+            }
+
+            ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
+                if(!response || prettierParams.text === response.text){
+                    reject();
+                    return;
+                }
+                resolve({
+                    changedText: response.changedText,
+                    ranges: {
+                        replaceStart: response.rangeStart,
+                        replaceEnd: response.rangeEndInOldText,
+                        selectStart: response.rangeStart,
+                        selectEnd: response.rangeEnd
+                    }
+                });
+            }).catch(reject);
+        });
+    }
+    function _trySelectionWithPartialText(editor, prettierParams) {
+        return new Promise((resolve, reject)=>{
+            console.log("beautifying selection with partial text");
+            let selection = editor.getSelection();
+            let text = editor.getSelectedText();
+            console.log(text);
+            prettierParams.text = text;
+            ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
+                if(!response || !response.text){
+                    reject();
+                    return;
+                }
+                let start = editor.indexFromPos(selection.start),
+                    end = editor.indexFromPos(selection.end);
+                resolve({
+                    changedText: response.text,
+                    ranges: {
+                        replaceStart: start,
+                        replaceEnd: end,
+                        selectStart: start,
+                        selectEnd: start + response.text.length
+                    }
+                });
+            }).catch(reject);
+        });
+    }
+
+    function _clone(obj) {
+        return Object.assign({}, obj);
+    }
+
     function beautify(editor) {
         return new Promise((resolve, reject)=>{
             let languageId = LanguageManager.getLanguageForPath(editor.document.file.fullPath).getId();
@@ -137,7 +203,6 @@ define(function (require, exports, module) {
                 reject();
                 return;
             }
-            selection = selection[0];
 
             let options = prefs.get("options");
             Object.assign(options, {
@@ -146,51 +211,24 @@ define(function (require, exports, module) {
                 useTabs: false,
                 filepath: editor.document.file.fullPath
             });
-
             let prettierParams ={
                 text: editor.document.getText(),
                 options: options
             };
-
-            let beautifySelection = false;
             if(editor.hasSelection()){
-                beautifySelection = true;
-                let text = editor.getSelectedText();
-                console.log(text);
-                prettierParams.options.rangeStart = editor.indexFromPos(selection.start);
-                prettierParams.options.rangeEnd = editor.indexFromPos(selection.end);
-
-                // fix prettier bug where it was not prettifying if something starts with comment
-                let token = editor.getToken(selection.start);
-                while(token && (token.type === null || token.type === "comment")){
-                    token = editor.getNextToken({line: token.line, ch: token.end});
-                }
-                let tokensIndex = editor.indexFromPos({line: token.line, ch: token.start});
-                if(tokensIndex> prettierParams.options.rangeStart
-                    && tokensIndex < prettierParams.options.rangeEnd){
-                    prettierParams.options.rangeStart = tokensIndex;
-                }
-            }
-
-            ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
-                if(!response || prettierParams.text === response){
-                    reject();
-                    return;
-                }
-                if(beautifySelection){
-                    resolve({
-                        changedText: response.changedText,
-                        ranges: {
-                            replaceStart: response.rangeStart,
-                            replaceEnd: response.rangeEndInOldText,
-                            selectStart: response.rangeStart,
-                            selectEnd: response.rangeEnd
-                        }
-                    });
-                } else {
+                _trySelectionWithPartialText(editor, _clone(prettierParams)).then(resolve).catch(function (err) {
+                    console.log(err);
+                    _trySelectionWithFullText(editor, prettierParams).then(resolve).catch(reject);
+                });
+            } else {
+                ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
+                    if(!response || prettierParams.text === response.text){
+                        reject();
+                        return;
+                    }
                     resolve({changedText: response.text});
-                }
-            });
+                }).catch(reject);
+            }
         });
     }
 
@@ -209,7 +247,7 @@ define(function (require, exports, module) {
         }
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
         BeautificationManager.registerBeautificationProvider(exports,
-            ["javascript", "html", "markdown", "gfm", "css"]);
+            ["javascript", "html", "markdown", "gfm", "css"]); // todo add all supported langs
 
         _createExtensionStatusBarIcon();
     });
