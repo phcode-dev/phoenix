@@ -68,10 +68,8 @@
  *             resolve({
  *                 changedText: "partial or full text that changed. If partial, specify the range options below",
  *                 ranges:{
- *                     replaceStart: number,
- *                     replaceEnd: number,
- *                     selectStart: number,
- *                     selectEnd: number
+ *                     replaceStart: {line,ch},
+ *                     replaceEnd: {line,ch}
  *                 }
  *             });
  *         });
@@ -84,13 +82,10 @@
  *    if a range was selected. If a range is selected, then the resolved object must contain a ranges attribute.
  *    This may also be null if the extension itself has prettified the code and doesn't want
  *    any further processing from BeautificationManager.
- * 1. ranges - is a set of 4 numbers that gives details on what changes are to be done to the BeautificationManager.
+ * 1. ranges - is a set of 2 cursors that gives details on what range to replace with given changed text
  *    it has 4 fields:
- *    1. replaceStart - number, the index from which the editor should replace the text in the original text editor.
- *       indexes can be obtained using the `editor.indexFromPos` API.
- *    1. replaceEnd - number, the index to which the editor should replace the text in the original text editor
- *    1. selectStart - number, the index from which the editor should select text based on new text indexes
- *    1. selectEnd - number, the index to which the editor should select text based on new text indexes
+ *    1. replaceStart - the start of range to replace
+ *    1. replaceEnd - the end of range to replace
  * @module features/BeautificationManager
  */
 define(function (require, exports, module) {
@@ -146,11 +141,8 @@ define(function (require, exports, module) {
                     console.log(beautyObject);
                     if(beautyObject.ranges){
                         let ranges = beautyObject.ranges;
-                        editor.document.replaceRange(beautyObject.changedText,
-                            editor.posFromIndex(ranges.replaceStart),
-                            editor.posFromIndex(ranges.replaceEnd));
-                            editor.setSelection(editor.posFromIndex(ranges.selectStart),
-                            editor.posFromIndex(ranges.selectEnd), true);
+                        editor.setSelection(ranges.replaceStart, ranges.replaceEnd);
+                        editor.replaceSelection(beautyObject.changedText, 'around');
                     } else {
                         editor.document.setText(beautyObject.changedText);
                         editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
