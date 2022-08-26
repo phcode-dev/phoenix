@@ -1323,6 +1323,17 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Replace the selection with the given string.
+     * @param {string} replacement the text to replace the current selection
+     * @param {string} [select] The optional select argument can be used to change selection. Passing "around"
+     * will cause the new text to be selected, passing "start" will collapse the selection to the start
+     * of the inserted text.
+     */
+    Editor.prototype.replaceSelection = function (replacement, select) {
+        this._codeMirror.replaceSelection(replacement, select);
+    };
+
+    /**
      * Clears any active selection if present.
      */
     Editor.prototype.clearSelection = function () {

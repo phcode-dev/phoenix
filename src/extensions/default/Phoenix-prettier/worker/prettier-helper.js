@@ -58,9 +58,7 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
     }
 
     function prettify(params) {
-        console.log(params);
         let options = params.options || {};
-        console.log(options.rangeStart, options.rangeEnd, params.text.length);
         options.rangeStart = options.rangeStart || 0;
         options.rangeEnd = options.rangeEnd || params.text.length;
         options.plugins= prettierPlugins;

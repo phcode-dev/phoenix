@@ -152,10 +152,8 @@ define(function (require, exports, module) {
                 resolve({
                     changedText: response.changedText,
                     ranges: {
-                        replaceStart: response.rangeStart,
-                        replaceEnd: response.rangeEndInOldText,
-                        selectStart: response.rangeStart,
-                        selectEnd: response.rangeEnd
+                        replaceStart: editor.posFromIndex(response.rangeStart),
+                        replaceEnd: editor.posFromIndex(response.rangeEndInOldText)
                     }
                 });
             }).catch(reject);
@@ -195,24 +193,18 @@ define(function (require, exports, module) {
             console.log("beautifying selection with partial text");
             let selection = editor.getSelection();
             let text = editor.getSelectedText();
-            console.log(text);
             prettierParams.text = text;
             ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
                 if(!response || !response.text){
                     reject();
                     return;
                 }
-                let start = editor.indexFromPos(selection.start),
-                    end = editor.indexFromPos(selection.end);
-                let text = _fixTabs(response.text,
-                    editor.document.getLine(selection.start.line), selection.start.ch);
                 resolve({
-                    changedText: text,
+                    changedText: _fixTabs(response.text,
+                        editor.document.getLine(selection.start.line), selection.start.ch),
                     ranges: {
-                        replaceStart: start,
-                        replaceEnd: end,
-                        selectStart: start,
-                        selectEnd: start + text.length
+                        replaceStart: selection.start,
+                        replaceEnd: selection.end
                     }
                 });
             }).catch(reject);
@@ -226,7 +218,7 @@ define(function (require, exports, module) {
     function beautify(editor) {
         return new Promise((resolve, reject)=>{
             let languageId = LanguageManager.getLanguageForPath(editor.document.file.fullPath).getId();
-            console.log(languageId);
+            console.log("Beautifying with language id: ", languageId);
 
             let selection = editor.getSelections();
             if(!parsersForLanguage[languageId]
@@ -248,7 +240,6 @@ define(function (require, exports, module) {
             };
             if(editor.hasSelection()){
                 _trySelectionWithPartialText(editor, _clone(prettierParams)).then(resolve).catch(function (err) {
-                    console.log(err);
                     _trySelectionWithFullText(editor, prettierParams).then(resolve).catch(reject);
                 });
             } else {
