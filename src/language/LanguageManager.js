@@ -253,8 +253,8 @@ define(function (require, exports, module) {
 
     /**
      * Resolves a file path to a Language object.
-     * @param {!string} path Path to the file to find a language for
-     * @param {?boolean} ignoreOverride If set to true will cause the lookup to ignore any
+     * @param {string} path Path to the file to find a language for
+     * @param {boolean} [ignoreOverride] If set to true will cause the lookup to ignore any
      *      overrides and return default binding. By default override is not ignored.
      *
      * @return {Language} The language for the provided file type or the fallback language
