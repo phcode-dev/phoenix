@@ -54,7 +54,6 @@ define(function (require, exports, module) {
         BeautificationManager = brackets.getModule("features/BeautificationManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Editor = brackets.getModule("editor/Editor").Editor,
-        EditorManager = brackets.getModule("editor/EditorManager"),
         ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
 
     const prefs = PreferencesManager.getExtensionPrefs("beautify");
