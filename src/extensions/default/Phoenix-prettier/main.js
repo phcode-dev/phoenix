@@ -36,7 +36,7 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global define, brackets */
+/*global */
 //jshint-ignore:no-start
 /**
  * This module beautifies HTML/JS/other language code with the help of prettier plugin
@@ -160,7 +160,7 @@ define(function (require, exports, module) {
         });
     }
 
-    function _fixTabs(text, selectionLineText, chToStart) {
+    function _computePaddingForSelection(selectionLineText, chToStart) {
         let trimmedLine = selectionLineText.trim();
         let padding = selectionLineText.substring(0, chToStart),
             firstLinePadding = "";
@@ -171,6 +171,12 @@ define(function (require, exports, module) {
             }
             padding = selectionLineText.substring(0, index);
         }
+        return {
+            padding, firstLinePadding
+        };
+    }
+
+    function _fixTabs(text, padding, firstLinePadding) {
         const result = text.split(/\r?\n/);
         if(!result || result.length === 0){
             return text;
@@ -190,10 +196,27 @@ define(function (require, exports, module) {
         return paddedText;
     }
 
+    /**
+     * In selections, we have to reduce line printWidth according to the padding before prettifying. We only do this
+     * if padding takes less than 70% of total line width.
+     * @param prettierParams
+     * @param padding
+     * @private
+     */
+    function _adjustPrintWidthOption(prettierParams, padding) {
+        let paddingPercent = (padding.length/prettierParams.options.printWidth) * 100;
+        if(paddingPercent < 70){
+            prettierParams.options.printWidth = prettierParams.options.printWidth - padding.length;
+        }
+    }
+
     function _trySelectionWithPartialText(editor, prettierParams) {
         return new Promise((resolve, reject)=>{
             console.log("beautifying selection with partial text");
-            let selection = editor.getSelection();
+            let selection = editor.getSelection(),
+                selectionLineText = editor.document.getLine(selection.start.line);
+            let {padding, firstLinePadding} = _computePaddingForSelection(selectionLineText, selection.start.ch);
+            _adjustPrintWidthOption(prettierParams, padding);
             prettierParams.text = editor.getSelectedText();
             ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
                 if(!response || !response.text){
@@ -201,8 +224,7 @@ define(function (require, exports, module) {
                     return;
                 }
                 resolve({
-                    changedText: _fixTabs(response.text,
-                        editor.document.getLine(selection.start.line), selection.start.ch),
+                    changedText: _fixTabs(response.text, padding, firstLinePadding),
                     ranges: {
                         replaceStart: selection.start,
                         replaceEnd: selection.end
