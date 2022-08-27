@@ -67,7 +67,8 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
     let pluginURLS = {
         php: `${Phoenix.baseURL}thirdparty/prettier/php/standalone.js`,
         yaml: `${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`,
-        markdown: `${Phoenix.baseURL}thirdparty/prettier/parser-markdown.js`
+        markdown: `${Phoenix.baseURL}thirdparty/prettier/parser-markdown.js`,
+        typescript: `${Phoenix.baseURL}thirdparty/prettier/parser-typescript.js`
     };
     let builtinPlugins = ["babel", "json-stringify", "html", "css", "less", "scss"];
     function _loadPlugin(pluginName) {
