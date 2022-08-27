@@ -24,8 +24,6 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/standalone.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-babel.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-html.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-markdown.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
 
 (function () {
     // see https://prettier.io/docs/en/options.html#parser for more parsers available
@@ -66,5 +64,23 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
         return _identifyChangedRange(params.text, prettyText, options.rangeStart, options.rangeEnd);
     }
 
+    let pluginURLS = {
+        php: `${Phoenix.baseURL}thirdparty/prettier/php/standalone.js`,
+        yaml: `${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`,
+        markdown: `${Phoenix.baseURL}thirdparty/prettier/parser-markdown.js`,
+        typescript: `${Phoenix.baseURL}thirdparty/prettier/parser-typescript.js`
+    };
+    let builtinPlugins = ["babel", "json-stringify", "html", "css", "less", "scss"];
+    function _loadPlugin(pluginName) {
+        if(pluginURLS[pluginName]){
+            importScripts(pluginURLS[pluginName]);
+            return;
+        }
+        if(!builtinPlugins.includes(pluginName)){
+            console.log("no plugin loaded for", pluginName);
+        }
+    }
+
     WorkerComm.setExecHandler("prettify", prettify);
+    WorkerComm.setExecHandler("loadPrettierPlugin", _loadPlugin);
 }());

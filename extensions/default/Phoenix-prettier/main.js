@@ -116,9 +116,6 @@ define(function (require, exports, module) {
     });
 
     const parsersForLanguage = {
-        javascript: "babel",
-        jsx: "babel",
-        json: "json-stringify",
         html: "html",
         xml: "html",
         handlebars: "html",
@@ -126,6 +123,11 @@ define(function (require, exports, module) {
         css: "css",
         less: "less",
         scss: "scss",
+        javascript: "babel",
+        jsx: "babel",
+        json: "json-stringify",
+        typescript: "typescript",
+        php: "php",
         markdown: "markdown",
         gfm: "markdown",
         yaml: "yaml"
@@ -247,6 +249,7 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject)=>{
             let filepath = editor.document.file.fullPath;
             let languageId = LanguageManager.getLanguageForPath(filepath).getId();
+            _loadPlugins(languageId);
             console.log("Beautifying with language id: ", languageId);
 
             let selection = editor.getSelections();
@@ -292,18 +295,19 @@ define(function (require, exports, module) {
 
     ExtensionUtils.loadStyleSheet(module, "prettier.css");
 
-    function _createExtensionStatusBarIcon() {
-        // create prettier ui elements here.
+    let loadedPlugins = {};
+    function _loadPlugins(languageId) {
+        if(!loadedPlugins[languageId] && parsersForLanguage[languageId]){
+            ExtensionsWorker.execPeer("loadPrettierPlugin", parsersForLanguage[languageId]).catch(err=>{
+                console.error("Error Loading Prettier Plugin", err);
+            });
+        }
+        loadedPlugins[languageId] = true;
     }
 
     AppInit.appReady(function () {
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
-        BeautificationManager.registerBeautificationProvider(exports,
-            ["javascript", "html", 'svg', 'xml', 'jsx', 'handlebars',
-                "css", 'less', 'scss',
-                "markdown", "gfm",
-                'yaml', 'json']);
-        _createExtensionStatusBarIcon();
+        BeautificationManager.registerBeautificationProvider(exports, Object.keys(parsersForLanguage));
     });
 
     exports.beautify = beautify;
