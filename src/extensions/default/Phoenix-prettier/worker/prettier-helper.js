@@ -26,6 +26,7 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-html.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-markdown.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`);
+importScripts(`${Phoenix.baseURL}thirdparty/prettier/php/standalone.js`);
 
 (function () {
     // see https://prettier.io/docs/en/options.html#parser for more parsers available
