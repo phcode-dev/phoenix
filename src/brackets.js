@@ -174,6 +174,7 @@ define(function (require, exports, module) {
     require("features/JumpToDefManager");
     require("features/QuickViewManager");
     require("features/SelectionViewManager");
+    require("features/BeautificationManager");
 
     // Load modules that self-register and just need to get included in the main project
     require("command/DefaultMenus");
@@ -226,6 +227,7 @@ define(function (require, exports, module) {
         // in the modules since they would run in context of the unit test window,
         // and would not have access to the app html/css.
         brackets.test = {
+            BeautificationManager: require("features/BeautificationManager"),
             CodeHintManager: require("editor/CodeHintManager"),
             CodeInspection: require("language/CodeInspection"),
             CommandManager: require("command/CommandManager"),

@@ -406,6 +406,13 @@ define(function (require, exports, module) {
                 createTestEditor(makeDummyLines(10).join("\n"), "unknown");
             });
 
+            describe("getEndingCursorPos", function () {
+                it("should return ending cursor", function () {
+                    expect(myEditor.getEndingCursorPos().line).toBe(9);
+                    expect(myEditor.getEndingCursorPos().ch).toBe(14);
+                });
+            });
+
             describe("hasSelection", function () {
                 it("should return false for a single cursor", function () {
                     myEditor._codeMirror.setCursor(0, 2);

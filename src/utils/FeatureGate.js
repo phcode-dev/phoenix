@@ -106,7 +106,7 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function isFeatureEnabled(featureName) {
-        let userOverRide = localStorage.getItem(`feature.${featureName}`);
+        let userOverRide = localStorage.getItem(`${featureName}`);
         if(userOverRide === ENABLED){
             return true;
         } else if(userOverRide === DISABLED){

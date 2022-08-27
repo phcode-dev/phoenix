@@ -649,14 +649,17 @@ define(function (require, exports, module) {
 
     /**
      * Gets the current cursor position within the editor.
-     * @param {?boolean} [expandTabs]  If true, return the actual visual column number instead of the character offset in
+     *
+     * Cursor positions can be converted to index(0 based character offsets in editor text string)
+     * using `editor.indexFromPos` API.
+     * @param {boolean} [expandTabs]  If true, return the actual visual column number instead of the character offset in
      *      the "ch" property.
-     * @param {?string} [which] Optional string indicating which end of the
+     * @param {string} [which] Optional string indicating which end of the
      *  selection to return. It may be "start", "end", "head" (the side of the
      *  selection that moves when you press shift+arrow), or "anchor" (the
      *  fixed side of the selection). Omitting the argument is the same as
      *  passing "head". A {line, ch} object will be returned.)
-     * @return {!{line:number, ch:number}}
+     * @return {{line:number, ch:number}}
      */
     Editor.prototype.getCursorPos = function (expandTabs, which) {
         // Translate "start" and "end" to the official CM names (it actually
@@ -668,6 +671,25 @@ define(function (require, exports, module) {
             which = "to";
         }
         var cursor = _copyPos(this._codeMirror.getCursor(which));
+
+        if (expandTabs) {
+            cursor.ch = this.getColOffset(cursor);
+        }
+        return cursor;
+    };
+
+    /**
+     * Gets the cursor position of the last charected in the editor.
+     * @param {boolean} [expandTabs]  If true, return the actual visual column number instead of the character offset in
+     *      the "ch" property.
+     * @return {{line:number, ch:number}}
+     */
+    Editor.prototype.getEndingCursorPos = function (expandTabs) {
+        let lastLine = this._codeMirror.lastLine();
+        let cursor = {
+            line: lastLine,
+            ch: this._codeMirror.getLine(lastLine).length
+        };
 
         if (expandTabs) {
             cursor.ch = this.getColOffset(cursor);
@@ -818,13 +840,18 @@ define(function (require, exports, module) {
 
     /**
      * Given a position, returns its index within the text (assuming \n newlines)
-     * @param {{line:number, ch:number}}
+     * @param {{line:number, ch:number}} cursorPos
      * @return {number}
      */
-    Editor.prototype.indexFromPos = function (coords) {
-        return this._codeMirror.indexFromPos(coords);
+    Editor.prototype.indexFromPos = function (cursorPos) {
+        return this._codeMirror.indexFromPos(cursorPos);
     };
 
+    /**
+     * Given a position, returns its index within the text (assuming \n newlines)
+     * @param {number} index
+     * @return {{line:number, ch:number}}
+     */
     Editor.prototype.posFromIndex = function (index) {
         return this._codeMirror.posFromIndex(index);
     };
@@ -1015,16 +1042,16 @@ define(function (require, exports, module) {
      * @param {?{line: number, ch: number}} [cursor] - Optional cursor position
      *      at which to retrieve a token. If not provided, the current position will be used.
      * @param {boolean} [precise] If given, results in more current results. Suppresses caching.
-     * @return {{end: number, start:number, string: string, type: string}} -
+     * @return {{end: number, start:number, line: number, string: string, type: string|null}} -
      * the CodeMirror token at the given cursor position
      */
     Editor.prototype.getToken = function (cursor, precise) {
         let cm = this._codeMirror;
+        cursor = Object.assign({}, cursor || this.getCursorPos());
 
-        if (cursor) {
-            return TokenUtils.getTokenAt(cm, cursor, precise);
-        }
-        return TokenUtils.getTokenAt(cm, this.getCursorPos(), precise);
+        let token = TokenUtils.getTokenAt(cm, cursor, precise);
+        token.line = cursor.line;
+        return token;
     };
 
     /**
@@ -1034,14 +1061,15 @@ define(function (require, exports, module) {
      *      which a token should be retrieved
      * @param {boolean} [skipWhitespace] - true if this should skip over whitespace tokens. Default is true.
      * @param {boolean} [precise] If given, results in more current results. Suppresses caching.
-     * @return {{end: number, start:number, string: string, type: string}} -
+     * @return {{end: number, start:number, line: number,string: string, type: string}} -
      * the CodeMirror token after the one at the given cursor position
      */
     Editor.prototype.getNextToken = function (cursor, skipWhitespace = true, precise) {
-        cursor = cursor || this.getCursorPos();
+        cursor = Object.assign({}, cursor || this.getCursorPos());
         let token   = this.getToken(cursor, precise),
             next    = token,
             doc     = this.document;
+        next.line = cursor.line;
 
         do {
             if (next.end < doc.getLine(cursor.line).length) {
@@ -1054,6 +1082,7 @@ define(function (require, exports, module) {
                 break;
             }
             next = this.getToken(cursor, precise);
+            next.line = cursor.line;
         } while (skipWhitespace && !/\S/.test(next.string));
 
         return next;
@@ -1066,14 +1095,15 @@ define(function (require, exports, module) {
      *      which a token should be retrieved
      * @param {boolean} [skipWhitespace] - true if this should skip over whitespace tokens. Default is true.
      * @param {boolean} [precise] If given, results in more current results. Suppresses caching.
-     * @return {{end: number, start:number, string: string, type: string}} - the CodeMirror token before
+     * @return {{end: number, start:number, line: number,string: string, type: string}} - the CodeMirror token before
      * the one at the given cursor position
      */
     Editor.prototype.getPreviousToken = function (cursor, skipWhitespace = true, precise) {
-        cursor = cursor || this.getCursorPos();
+        cursor = Object.assign({}, cursor || this.getCursorPos());
         let token   = this.getToken(cursor, precise),
             prev    = token,
             doc     = this.document;
+        prev.line = cursor.line;
 
         do {
             if (prev.start < cursor.ch) {
@@ -1085,6 +1115,7 @@ define(function (require, exports, module) {
                 break;
             }
             prev = this.getToken(cursor, precise);
+            prev.line = cursor.line;
         } while (skipWhitespace && !/\S/.test(prev.string));
 
         return prev;
@@ -1280,15 +1311,26 @@ define(function (require, exports, module) {
      * end of the selection range. Optionally centers around the cursor after
      * making the selection
      *
-     * @param {!{line:number, ch:number}} start
-     * @param {{line:number, ch:number}=} end If not specified, defaults to start.
-     * @param {boolean} center true to center the viewport
-     * @param {number} centerOptions Option value, or 0 for no options; one of the BOUNDARY_* constants above.
-     * @param {?string} origin An optional string that describes what other selection or edit operations this
+     * @param {{line:number, ch:number}} start
+     * @param {{line:number, ch:number}} [end] If not specified, defaults to start.
+     * @param {boolean} [center] true to center the viewport
+     * @param {number} [centerOptions] Option value, or 0 for no options; one of the BOUNDARY_* constants above.
+     * @param {?string} [origin] An optional string that describes what other selection or edit operations this
      *      should be merged with for the purposes of undo. See {@link Document#replaceRange} for more details.
      */
     Editor.prototype.setSelection = function (start, end, center, centerOptions, origin) {
         this.setSelections([{start: start, end: end || start}], center, centerOptions, origin);
+    };
+
+    /**
+     * Replace the selection with the given string.
+     * @param {string} replacement the text to replace the current selection
+     * @param {string} [select] The optional select argument can be used to change selection. Passing "around"
+     * will cause the new text to be selected, passing "start" will collapse the selection to the start
+     * of the inserted text.
+     */
+    Editor.prototype.replaceSelection = function (replacement, select) {
+        this._codeMirror.replaceSelection(replacement, select);
     };
 
     /**
