@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Відкрити рядок нижче",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Автозакривання дужок",
   "CMD_SHOW_CODE_HINTS": "Показувати поради до коду",
+  "CMD_BEAUTIFY_CODE": "Прикрасити код",
   "FIND_MENU": "Знайти",
   "CMD_FIND": "Знайти",
   "CMD_FIND_NEXT": "Знайти наступний",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Виберіть HTML-файл </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Зробіть деякі зміни в коді і збережіть файл, щоб побачити попередній перегляд. </br> <a href='#' style='float:right;'>ОК</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Натисніть цю кнопку, щоб випливати попередній перегляд на новій вкладці. </br> <a href='#' style='float:right;'>гаразд</a>",
-  "TEST_TRANSLATE": "використовуйте це для перевірки перекладів"
+  "TEST_TRANSLATE": "використовуйте це для перевірки перекладів",
+  "BEAUTIFY_OPTIONS": "Параметри, які керують тим, як працює Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Вкажіть довжину лінії, на яку буде обертатися прикраса",
+  "BEAUTIFY_OPTION_SEMICOLON": "Додайте крапку з комою в кінці кожного твердження",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Використовуйте одинарні лапки замість подвійних лапок",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Зміна при лапках властивостей об'єктів",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Помістіть > багаторядкового HTML (HTML, JSX, Vue, Angular) елемент в кінці останнього рядка замість того, щоб бути поодинці на наступному рядку (не застосовується до самозакриваються елементів)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Примусове виконання одного атрибута на рядок у HTML, Vue та JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Загорніть прозу, якщо вона перевищує ширину друку у файлах уцінки",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Вивести кінцеві коми, де це можливо, у багаторядкових синтаксичних структурах, розділених комами"
 });

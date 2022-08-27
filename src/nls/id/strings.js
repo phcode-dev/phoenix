@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Buka Baris di Bawah",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Tutup Kurung Otomatis",
   "CMD_SHOW_CODE_HINTS": "Tampilkan Petunjuk Kode",
+  "CMD_BEAUTIFY_CODE": "Mempercantik Kode",
   "FIND_MENU": "Temukan",
   "CMD_FIND": "Temukan",
   "CMD_FIND_NEXT": "Temukan Berikutnya",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Pilih file HTML </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Buat beberapa perubahan kode dan simpan file untuk melihat pratinjau. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klik tombol ini untuk popout live preview ke tab baru. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "gunakan ini untuk menguji terjemahan"
+  "TEST_TRANSLATE": "gunakan ini untuk menguji terjemahan",
+  "BEAUTIFY_OPTIONS": "Opsi yang mengontrol cara kerja Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Tentukan panjang garis yang akan dibungkus oleh beautifier",
+  "BEAUTIFY_OPTION_SEMICOLON": "Tambahkan titik koma di akhir setiap pernyataan",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Gunakan tanda kutip tunggal, bukan tanda kutip ganda",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Ubah ketika properti dalam objek dikutip",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Menempatkan > dari multi-baris HTML (HTML, JSX, Vue, Angular) elemen di akhir baris terakhir bukannya sendirian di baris berikutnya (tidak berlaku untuk diri menutup elemen)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Menegakkan atribut tunggal per baris dalam HTML, Vue dan JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Bungkus prosa jika melebihi lebar cetak dalam file penurunan harga",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Cetak koma trailing sedapat mungkin dalam struktur sintaksis multi-baris yang dipisahkan koma"
 });

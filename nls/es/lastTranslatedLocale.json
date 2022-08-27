@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "Crear línea abajo",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Completar paréntesis automáticamente",
   "CMD_SHOW_CODE_HINTS": "Mostrar sugerencias de código",
+  "CMD_BEAUTIFY_CODE": "Embellecer código",
   "FIND_MENU": "Buscar",
   "CMD_FIND": "Buscar",
   "CMD_FIND_NEXT": "Buscar siguiente",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Seleccione un archivo HTML</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Realice algunos cambios en el código y guarde el archivo para ver la vista previa. </br><a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Haga clic en este botón para mostrar la vista previa en vivo en una nueva pestaña. </br><a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "usa esto para probar las traducciones"
+  "TEST_TRANSLATE": "usa esto para probar las traducciones",
+  "BEAUTIFY_OPTIONS": "Opciones que controlan cómo funciona Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Especificar la longitud de línea que se ajustará el embellecedor",
+  "BEAUTIFY_OPTION_SEMICOLON": "Agregue un punto y coma al final de cada declaración",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Usar comillas simples en lugar de comillas dobles",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Cambiar cuando se citan las propiedades de los objetos",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Coloque el > de un elemento HTML multilínea (HTML, JSX, Vue, Angular) al final de la última línea en lugar de estar solo en la siguiente línea (no se aplica a los elementos de cierre automático)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Aplicar un solo atributo por línea en HTML, Vue y JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Ajustar la prosa si supera el ancho de impresión en los archivos markdown",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprima comas finales siempre que sea posible en estructuras sintácticas de varias líneas separadas por comas"
 }

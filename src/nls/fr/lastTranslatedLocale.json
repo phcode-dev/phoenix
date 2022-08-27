@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "Ouvrir une ligne en dessous",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Fermeture automatique des accolades",
   "CMD_SHOW_CODE_HINTS": "Afficher les indicateurs de code",
+  "CMD_BEAUTIFY_CODE": "Code d'embellissement",
   "FIND_MENU": "Rechercher",
   "CMD_FIND": "Rechercher",
   "CMD_FIND_NEXT": "Rechercher suivant",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Sélectionnez un fichier HTML</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Apportez quelques modifications au code et enregistrez le fichier pour voir l'aperçu. </br><a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Cliquez sur ce bouton pour afficher l'aperçu en direct dans un nouvel onglet. </br><a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "utilisez ceci pour tester les traductions"
+  "TEST_TRANSLATE": "utilisez ceci pour tester les traductions",
+  "BEAUTIFY_OPTIONS": "Options qui contrôlent le fonctionnement de Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Spécifiez la longueur de ligne sur laquelle l'embellisseur va envelopper",
+  "BEAUTIFY_OPTION_SEMICOLON": "Ajoutez un point-virgule à la fin de chaque instruction",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Utilisez des guillemets simples au lieu de guille",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Modifier le moment où les propriétés des objets sont citées",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Placer le > d'un élément HTML multiligne (HTML, JSX, Vue, Angular) à la fin de la dernière ligne au lieu d'être seul sur la ligne suivante (ne s'applique pas aux éléments à fermeture automatique)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Appliquer un seul attribut par ligne dans HTML, Vue et JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Envelopper la prose si elle dépasse la largeur d'impression dans les fichiers Markdown",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprimez des virgules de fin dans la mesure du possible dans des structures syntaxiques séparées par des virgules sur plusieurs lignes"
 }

@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "باز کردن خط زیرین",
   "CMD_TOGGLE_CLOSE_BRACKETS": "پرانتزها را خودکار ببند",
   "CMD_SHOW_CODE_HINTS": "نمایش نکات کد",
+  "CMD_BEAUTIFY_CODE": "زیباسازی کد",
   "FIND_MENU": "یافتن",
   "CMD_FIND": "یافتن",
   "CMD_FIND_NEXT": "یافتن بعدی",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "یک فایل HTML را <a href='#' style='float:right;'>خوب</a>انتخاب </br> کنید",
   "GUIDED_LIVE_PREVIEW": "برخی از تغییرات کد را انجام دهید و فایل را برای دیدن پیش نمایش ذخیره کنید. </br> <a href='#' style='float:right;'>باشه</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "برای نمایش پیش نمایش زنده به یک برگه جدید، روی این دکمه کلیک کنید. </br> <a href='#' style='float:right;'>باشه</a>",
-  "TEST_TRANSLATE": "از این برای تست ترجمه ها استفاده کنید"
+  "TEST_TRANSLATE": "از این برای تست ترجمه ها استفاده کنید",
+  "BEAUTIFY_OPTIONS": "گزینه هایی که نحوه زیباسازی کد را کنترل می کنند",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "طول خطی را که زیباسازی روی آن قرار می گیرد مشخص کنید",
+  "BEAUTIFY_OPTION_SEMICOLON": "یک نقطه ویرگول در انتهای هر بیانیه اضافه کنید",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "استفاده از نقل قول های تک به جای نقل قول دو",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "تغییر زمانی که خواص در اشیاء نقل قول",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "قرار دادن > از یک HTML چند خط (HTML، JSX، Vue، Angular) عنصر در پایان آخرین خط به جای تنها بودن در خط بعدی (به عناصر بسته شدن خود اعمال نمی شود)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "اجرای ویژگی تک در هر خط در HTML، لانگ وو و JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "اگر بیش از عرض چاپ در پرونده های مارک داون باشد، نثر را بپیچید",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "در ساختارهای نحوی جدا شده با کاما چند خطی، هر جا که ممکن باشد، کاماهای انتهایی را چاپ کنید"
 });

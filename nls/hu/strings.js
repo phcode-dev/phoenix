@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Sor Nyitása Alul",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Zárójelek Automatikus Bezárása",
   "CMD_SHOW_CODE_HINTS": "Kód Súgó megjelenítése",
+  "CMD_BEAUTIFY_CODE": "Szépítsd a kódot",
   "FIND_MENU": "Keres",
   "CMD_FIND": "Keres",
   "CMD_FIND_NEXT": "Következő találat",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Válasszon egy HTML fájlt </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Végezzen el néhány kódmódosítást, és mentse a fájlt az előnézet megtekintéséhez. </br> <a href='#' style='float:right;'>rendben</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Kattintson erre a gombra az élő előnézet új lapra történő megjelenítéséhez. </br> <a href='#' style='float:right;'>rendben</a>",
-  "TEST_TRANSLATE": "használja ezt a fordítások teszteléséhez"
+  "TEST_TRANSLATE": "használja ezt a fordítások teszteléséhez",
+  "BEAUTIFY_OPTIONS": "Opciók, amelyek szabályozzák a Beautify Code működését",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Adja meg azt a vonalhosszt, amelyen a szépítő beborul",
+  "BEAUTIFY_OPTION_SEMICOLON": "Adjon hozzá pontosvesszőt minden utasítás végén",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Használjon egyszeres idézőjeleket dupla idézőjelek helyett",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Az objektumok tulajdonságainak idézésének módosítása",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Helyezze a > egy többsoros HTML (HTML, JSX, Vue, Angular) elemet az utolsó sor végére ahelyett, hogy egyedül lenne a következő sorban (nem vonatkozik az önzáró elemekre)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Egyetlen attribútum érvényesítése soronként HTML, Vue és JSX formátumban",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Wrap próza, ha meghaladja a nyomtatási szélességet a markdown fájlokban",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Nyomtasson záró vesszőket, ahol csak lehetséges, többsoros vesszővel elválasztott szintaktikai struktúrákban"
 });

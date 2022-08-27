@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Abrir linha abaixo",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Fechar chaves automaticamente",
   "CMD_SHOW_CODE_HINTS": "Mostrar dicas de código",
+  "CMD_BEAUTIFY_CODE": "Embelezar código",
   "FIND_MENU": "Localizar",
   "CMD_FIND": "Localizar",
   "CMD_FIND_NEXT": "Localizar próximo",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Selecione um arquivo HTML</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Faça algumas alterações no código e salve o arquivo para ver a visualização. </br><a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Clique nesse botão para exibir a visualização ao vivo em uma nova guia. </br><a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "use isso para testar traduções"
+  "TEST_TRANSLATE": "use isso para testar traduções",
+  "BEAUTIFY_OPTIONS": "Opções que controlam como o Beautify Code funciona",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Especifique o comprimento da linha que o embelezador envolverá",
+  "BEAUTIFY_OPTION_SEMICOLON": "Adicione um ponto-e-vírgula no final de cada instrução",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Use aspas simples em vez de aspas duplas",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Alterar quando as propriedades em objetos são citadas",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Coloque o > de um elemento HTML de várias linhas (HTML, JSX, Vue, Angular) no final da última linha em vez de ficar sozinho na próxima linha (não se aplica a elementos de fechamento automático)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Impor um único atributo por linha em HTML, Vue e JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Embrulhe a prosa se exceder a largura de impressão em arquivos markdown",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprima vírgulas à direita sempre que possível em estruturas sintáticas separadas por vírgulas de várias linhas"
 });

@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "नीचे लाइन खोलें",
   "CMD_TOGGLE_CLOSE_BRACKETS": "ऑटो क्लोज ब्रेसेस",
   "CMD_SHOW_CODE_HINTS": "कोड संकेत दिखाएँ",
+  "CMD_BEAUTIFY_CODE": "कोड सुशोभित करें",
   "FIND_MENU": "ढूँढें",
   "CMD_FIND": "ढूँढें",
   "CMD_FIND_NEXT": "अगला ढूँढें",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "एक HTML फ़ाइल <a href='#' style='float:right;'>ठीक</a> चुनें</br>",
   "GUIDED_LIVE_PREVIEW": "पूर्वावलोकन देखने के लिए कुछ कोड परिवर्तन करें और फ़ाइल सहेजें। </br><a href='#' style='float:right;'>ठीक</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "लाइव पूर्वावलोकन को एक नए टैब पर पॉपआउट करने के लिए इस बटन पर क्लिक करें। </br><a href='#' style='float:right;'>ठीक है</a>",
-  "TEST_TRANSLATE": "अनुवाद का परीक्षण करने के लिए इसका उपयोग करें"
+  "TEST_TRANSLATE": "अनुवाद का परीक्षण करने के लिए इसका उपयोग करें",
+  "BEAUTIFY_OPTIONS": "विकल्प जो कि Beautify Code कैसे काम करता है,",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "उस लाइन की लंबाई निर्दिष्ट करें जिस पर ब्यूटीफायर लपेटेगा",
+  "BEAUTIFY_OPTION_SEMICOLON": "हर कथन के अंत में एक अर्धविराम जोड़ें",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "डबल कोट्स के बजाय सिंगल कोट्स का इस्तेमाल करें",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "जब ऑब्जेक्ट में गुणों को उद्धृत किया जाता है तो बदलें",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "अगली पंक्ति पर अकेले रहने के बजाय अंतिम पंक्ति के अंत में एक बहु-पंक्ति HTML (HTML, JSX, Vue, Angular) तत्व का > रखें (स्वयं समापन तत्वों पर लागू नहीं होता है)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML, Vue और JSX में प्रति पंक्ति एकल विशेषता लागू करें",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "यदि यह मार्कडाउन फ़ाइलों में प्रिंट चौड़ाई से अधिक है तो गद्य लपेटें",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "बहु-पंक्ति अल्पविराम से अलग वाक्यविन्यास संरचनाओं में जहां भी संभव हो, पीछे वाले अल्पविराम को प्रिंट करें"
 }

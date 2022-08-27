@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "Otvori red ispod",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Automatski zatvori zagrade",
   "CMD_SHOW_CODE_HINTS": "Prikaži naznake (hintove) kôda",
+  "CMD_BEAUTIFY_CODE": "Uljepšajte kod",
   "FIND_MENU": "Pronađi",
   "CMD_FIND": "Pronađi",
   "CMD_FIND_NEXT": "Pronađi sljedeće",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Odaberite HTML datoteku </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Napravite neke promjene koda i spremite datoteku da biste vidjeli pregled. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Kliknite ovaj gumb da biste prikazali pregled uživo na novu karticu. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "upotrijebite ovo za testiranje prijevoda"
+  "TEST_TRANSLATE": "upotrijebite ovo za testiranje prijevoda",
+  "BEAUTIFY_OPTIONS": "Opcije koje kontroliraju kako funkcionira Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Navedite duljinu linije na koju će uljepšavanje završiti",
+  "BEAUTIFY_OPTION_SEMICOLON": "Dodajte točku sa zarezom na kraju svake izjave",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Upotrijebite pojedinačne citate umjesto dvostrukih citata",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Promijenite kada se citiraju svojstva u objektima",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Staviti> od multi-line HTML (HTML, JSX, Vue, Angular) element na kraju posljednjeg retka umjesto da bude sam na sljedećem retku (ne odnosi se na samo zatvaranje elemenata)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Provođenje jednog atributa po retku u HTML, Vue i JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Zamotajte prozu ako prelazi širinu ispisa u datotekama s oznakama",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Ispiši zareze gdje god je to moguće u sintaktičkim strukturama odvojenim zarezima s više linija"
 }

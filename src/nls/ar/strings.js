@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "افتح الخط أدناه",
   "CMD_TOGGLE_CLOSE_BRACKETS": "أقواس الإغلاق التلقائي",
   "CMD_SHOW_CODE_HINTS": "إظهار تلميحات التعليمات البرمجية",
+  "CMD_BEAUTIFY_CODE": "كود تجميل",
   "FIND_MENU": "البحث",
   "CMD_FIND": "البحث",
   "CMD_FIND_NEXT": "البحث عن التالي",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "حدد ملف HTML</br> <a href='#' style='float:right;'>موافق</a>",
   "GUIDED_LIVE_PREVIEW": "قم بإجراء بعض التغييرات في التعليمات البرمجية وحفظ الملف لمشاهدة المعاينة. </br><a href='#' style='float:right;'>موافق</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "انقر فوق هذا الزر لبدء المعاينة المباشرة لعلامة تبويب جديدة. </br><a href='#' style='float:right;'>موافق</a>",
-  "TEST_TRANSLATE": "استخدم هذا لاختبار الترجمات"
+  "TEST_TRANSLATE": "استخدم هذا لاختبار الترجمات",
+  "BEAUTIFY_OPTIONS": "الخيارات التي تتحكم في كيفية عمل كود تجميل",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "حدد طول الخط الذي سوف يلتف عليه جهاز التجميل",
+  "BEAUTIFY_OPTION_SEMICOLON": "إضافة فاصلة منقوطة في نهاية كل عبارة",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "استخدم علامات اقتباس مفردة بدلاً من علامات الاقتباس المزدوجة",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "التغيير عندما يتم اقتباس الخصائص في الكائنات",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "ضع عنصر HTML متعدد الأسطر (HTML، JSX، Vue، Angular) في نهاية السطر الأخير بدلاً من أن تكون وحيدًا في السطر التالي (لا ينطبق على عناصر الإغلاق الذاتي)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "فرض سمة واحدة لكل سطر في HTML و Vue و JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "التفاف النثر إذا تجاوز عرض الطباعة في ملفات تخفيض السعر",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "اطبع الفواصل اللاحقة حيثما أمكن ذلك في الهياكل النحوية متعددة الأسطر المفصولة بفواصل"
 });

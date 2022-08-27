@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "O řádek níže",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Uzavírat závorky",
   "CMD_SHOW_CODE_HINTS": "Zobrazit nápovědy kódu",
+  "CMD_BEAUTIFY_CODE": "Zkrášlit kód",
   "FIND_MENU": "Najít",
   "CMD_FIND": "Najít",
   "CMD_FIND_NEXT": "Najít další",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Vyberte soubor HTML </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Proveďte některé změny kódu a uložte soubor, abyste viděli náhled. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Kliknutím na toto tlačítko zobrazíte živý náhled na novou kartu. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "použijte k testování překladů"
+  "TEST_TRANSLATE": "použijte k testování překladů",
+  "BEAUTIFY_OPTIONS": "Možnosti, které řídí, jak funguje Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Určete délku čáry, na kterou se zkrášlovač zabalí",
+  "BEAUTIFY_OPTION_SEMICOLON": "Přidejte středník na konec každého příkazu",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Použijte jednoduché uvozovky místo dvojitých uvozovek",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Změna při citování vlastností objektů",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Umístěte > víceřádkového HTML (HTML, JSX, Vue, Angular) prvek na konec posledního řádku místo toho, aby byl sám na dalším řádku (nevztahuje se na samouzavírací prvky)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Vynutit jeden atribut na řádek v HTML, Vue a JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Obtékání prózy, pokud přesahuje šířku tisku v souborech markdown",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tisk koncových čárek všude tam, kde je to možné, ve víceřádkových syntaktických strukturách oddělených čárkami"
 }

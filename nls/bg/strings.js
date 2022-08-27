@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Нов ред отдолу",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Автоматично затваряне на скобите",
   "CMD_SHOW_CODE_HINTS": "Показване на подсказки за кода",
+  "CMD_BEAUTIFY_CODE": "Разкрасяване на кода",
   "FIND_MENU": "Търсене",
   "CMD_FIND": "Търсене",
   "CMD_FIND_NEXT": "Търсене на следващото",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Изберете HTML файл </br> <a href='#' style='float:right;'>ОК</a>",
   "GUIDED_LIVE_PREVIEW": "Направете някои промени в кода и запазете файла, за да видите визуализация. </br> <a href='#' style='float:right;'>ОК</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Щракнете върху този бутон, за да изскачаш визуализация на живо в нов раздел. </br> <a href='#' style='float:right;'>ОК</a>",
-  "TEST_TRANSLATE": "използвайте това, за да тествате преводите"
+  "TEST_TRANSLATE": "използвайте това, за да тествате преводите",
+  "BEAUTIFY_OPTIONS": "Опции, които контролират как работи Code за разкрасяване",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Посочете дължината на линията, на която ще се увие разкрася",
+  "BEAUTIFY_OPTION_SEMICOLON": "Добавете точка и запетая в края на всяко изявление",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Използвайте единични кавички вместо двойни кавички",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Промяна, когато се цитират свойствата в обектите",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Поставете > на мулти-ред HTML (HTML, JSX, Vue, Angular) елемент в края на последния ред, вместо да бъде сам на следващия ред (не се отнася за самостоятелно затваряне елементи)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Прилагане на единичен атрибут на ред в HTML, Vue и JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Увийте прозата, ако надвишава ширината на печат във файловете за маркиране",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Отпечатване на задни запетаи, когато е възможно, в синтактични структури, разделени със запетая с множество"
 });
