@@ -32,20 +32,6 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
         let newRangeStart = start,
             newRangeEnd = newText.length - charsToEndIndex,
             rangeEndInOldText = oldText.length - charsToEndIndex;
-        // diff from start to see if there is any changes before newRangeStart
-        for (let i = 0; i < oldText.length && i < newText.length && i <= newRangeStart; i++) {
-            if(oldText[i] !== newText[i]){
-                newRangeStart = i;
-                break;
-            }
-        }
-        for (let i = 0; i < oldText.length && i < newText.length && i < charsToEndIndex; i++) {
-            if(oldText[oldText.length - i - 1] !== newText[newText.length - i -1]){
-                newRangeEnd = newText.length - i;
-                rangeEndInOldText = oldText.length - i;
-                break;
-            }
-        }
         return {
             text: newText,
             changedText: newText.substring(newRangeStart, newRangeEnd),
@@ -57,10 +43,13 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
 
     function prettify(params) {
         let options = params.options || {};
+        options.plugins= prettierPlugins;
+        // options.cursorOffset this option doesnt work well and prettier.formatWithCursor is buggy causing hangs
+        // unpredictably in worker thread. Hangs noted in large html, js and json files. test thoroughly before
+        // trying to implement again.
         options.rangeStart = options.rangeStart || 0;
         options.rangeEnd = options.rangeEnd || params.text.length;
-        options.plugins= prettierPlugins;
-        let prettyText = prettier.format(params.text, params.options);
+        let prettyText = prettier.format(params.text, options);
         return _identifyChangedRange(params.text, prettyText, options.rangeStart, options.rangeEnd);
     }
 
