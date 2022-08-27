@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "在下方插入新行",
   "CMD_TOGGLE_CLOSE_BRACKETS": "括号自动补全",
   "CMD_SHOW_CODE_HINTS": "显示代码提示",
+  "CMD_BEAUTIFY_CODE": "美化代码",
   "FIND_MENU": "查找",
   "CMD_FIND": "查找",
   "CMD_FIND_NEXT": "查找下一个",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "选择一个 HTML 文件</br><a href='#' style='float:right;'>好的</a>",
   "GUIDED_LIVE_PREVIEW": "进行一些代码更改并保存文件以查看预览。</br><a href='#' style='float:right;'>好的</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "单击此按钮可将实时预览弹出到新选项卡。</br><a href='#' style='float:right;'>好的</a>",
-  "TEST_TRANSLATE": "用它来测试翻译"
+  "TEST_TRANSLATE": "用它来测试翻译",
+  "BEAUTIFY_OPTIONS": "控制美化代码工作方式的选项",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "指定美化器将环绕的线长",
+  "BEAUTIFY_OPTION_SEMICOLON": "在每条语句的末尾添加一个分号",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "使用单引号代替双引号",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "当对象中的属性被引用时更改",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "将多行 HTML（HTML、JSX、Vue、Angular）元素的 > 放在最后一行的末尾，而不是单独放在下一行（不适用于自闭元素）",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "在 HTML、Vue 和 JSX 中强制执行每行单个属性",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "如果散文超过了 markdown 文件中的打印宽度，则封装散文",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "尽可能在多行逗号分隔的语法结构中打印尾随逗号"
 }

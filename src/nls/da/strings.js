@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Åbn linjen nedenunder",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Luk parenteser automatisk",
   "CMD_SHOW_CODE_HINTS": "Vis kodehjælp",
+  "CMD_BEAUTIFY_CODE": "Forskønne kode",
   "FIND_MENU": "Søg",
   "CMD_FIND": "Søg",
   "CMD_FIND_NEXT": "Find næste",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Vælg en HTML-fil </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Foretag nogle kodeændringer, og gem filen for at se forhåndsvisning. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klik på denne knap for at popout live preview til en ny fane. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "bruge dette til at teste oversættelser"
+  "TEST_TRANSLATE": "bruge dette til at teste oversættelser",
+  "BEAUTIFY_OPTIONS": "Valgmuligheder, der styrer, hvordan Beautify Code fungerer",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Angiv den linjelængde, som beautifier vil ombryde på",
+  "BEAUTIFY_OPTION_SEMICOLON": "Tilføj et semikolon i slutningen af hver sætning",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Brug enkelt citater i stedet for dobbelt anførselstegn",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Ændre, når egenskaber i objekter citeres",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Sæt> af en multi-line HTML (HTML, JSX, Vue, Angular) element i slutningen af den sidste linje i stedet for at være alene på den næste linje (gælder ikke for selvlukkende elementer)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Håndhæv enkelt attribut per linje i HTML, Vue og JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Wrap prosa, hvis den overstiger udskriftsbredden i markdown-filer",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Udskriv efterfølgende kommaer, hvor det er muligt, i kommaseparerede syntaktiske strukturer med flere linjer"
 });

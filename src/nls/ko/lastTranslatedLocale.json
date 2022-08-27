@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "하단에 라인 열기",
   "CMD_TOGGLE_CLOSE_BRACKETS": "자동 괄호",
   "CMD_SHOW_CODE_HINTS": "코드 힌트 표시",
+  "CMD_BEAUTIFY_CODE": "코드 아름답게하기",
   "FIND_MENU": "찾기",
   "CMD_FIND": "찾기",
   "CMD_FIND_NEXT": "다음 찾기",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "HTML 파일 선택</br> <a href='#' style='float:right;'>확인</a>",
   "GUIDED_LIVE_PREVIEW": "코드를 약간 변경하고 파일을 저장하여 미리보기를 확인합니다.</br><a href='#' style='float:right;'>오케이</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "이 버튼을 클릭하면 실시간 미리보기가 새 탭으로 표시됩니다.</br><a href='#' style='float:right;'>괜찮아</a>",
-  "TEST_TRANSLATE": "번역을 테스트하는 데 사용"
+  "TEST_TRANSLATE": "번역을 테스트하는 데 사용",
+  "BEAUTIFY_OPTIONS": "코드 아름답게 하기 작동 방식을 제어하는 옵션",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "뷰파이어가 줄 바꿈할 선 길이를 지정합니다.",
+  "BEAUTIFY_OPTION_SEMICOLON": "모든 문장 끝에 세미콜론을 추가합니다.",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "큰따옴표 대신 작은 따옴표 사용",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "개체의 속성을 인용할 때 변경",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "여러 줄 HTML (HTML, JSX, Vue, Angular) 요소의 >를 다음 줄에 단독으로 놓지 않고 마지막 줄의 끝에 놓습니다 (자체 닫는 요소에는 적용되지 않음).",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML, Vue 및 JSX에서 한 줄당 단일 속성 적용",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "마크다운 파일의 인쇄 너비를 초과하는 경우 산문 줄 바꿈",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "가능한 한 여러 줄의 쉼표로 구분된 구문 구조로 후행 쉼표를 인쇄합니다."
 }

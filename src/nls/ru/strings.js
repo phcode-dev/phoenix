@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Открыть строку снизу",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Автоматически закрывать скобки",
   "CMD_SHOW_CODE_HINTS": "Показывать подсказки в коде",
+  "CMD_BEAUTIFY_CODE": "Украсьте код",
   "FIND_MENU": "Найти",
   "CMD_FIND": "Найти",
   "CMD_FIND_NEXT": "Найти след.",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Выберите HTML-файл</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Внесите некоторые изменения в код и сохраните файл для предварительного просмотра. </br><a href='#' style='float:right;'>ок</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Нажмите эту кнопку, чтобы открыть предварительный просмотр в новой вкладке. </br><a href='#' style='float:right;'>хорошо</a>",
-  "TEST_TRANSLATE": "используйте это для тестирования переводов"
+  "TEST_TRANSLATE": "используйте это для тестирования переводов",
+  "BEAUTIFY_OPTIONS": "Опции, управляющие работой Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Укажите длину линии, на которую будет натягиваться краситель",
+  "BEAUTIFY_OPTION_SEMICOLON": "Добавляйте точку с запятой в конце каждой инструкции",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Используйте одинарные кавычки вместо двойных",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Изменение, когда свойства в объектах заключены в кавычки",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Поместите > многострочного элемента HTML (HTML, JSX, Vue, Angular) в конце последней строки вместо одиночества в следующей строке (не относится к самозакрывающимся элементам)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Применение одного атрибута в строке в HTML, Vue и JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Обтекание прозы, если она превышает ширину печати в файлах markdown",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Выводите конечные запятые везде, где это возможно, в многострочных синтаксических структурах, разделенных"
 });

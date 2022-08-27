@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "O riadok nižšie",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Uzatvárať zátvorky",
   "CMD_SHOW_CODE_HINTS": "Zobraziť tipy",
+  "CMD_BEAUTIFY_CODE": "Skrášliť kód",
   "FIND_MENU": "Vyhľadať",
   "CMD_FIND": "Vyhľadať",
   "CMD_FIND_NEXT": "Vyhľadať nasledujúci",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Vyberte súbor HTML </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Vykonajte nejaké zmeny kódu a uložte súbor, aby ste videli náhľad. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Kliknutím na toto tlačidlo zobrazíte živý náhľad na novú kartu. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "použiť na testovanie prekladov"
+  "TEST_TRANSLATE": "použiť na testovanie prekladov",
+  "BEAUTIFY_OPTIONS": "Možnosti, ktoré riadia, ako funguje Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Zadajte dĺžku čiary, na ktorú sa skrášľovač zabalí",
+  "BEAUTIFY_OPTION_SEMICOLON": "Pridajte bodkočiarku na koniec každého vyhlásenia",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Použite jednoduché úvodzovky namiesto dvojitých úvod",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Zmena, keď sú citované vlastnosti objektov",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Vložte > viacriadkového HTML (HTML, JSX, Vue, Angular) prvok na konci posledného riadku namiesto toho, aby bol sám na ďalšom riadku (nevzťahuje sa na samozatváracie prvky)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Vynútiť jeden atribút na riadok v HTML, Vue a JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Zabaľte prózu, ak presahuje šírku tlače v súboroch s označením",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tlač koncové čiarky všade tam, kde je to možné, vo viacriadkových syntaktických štruktúrach oddelených čiarkami"
 }

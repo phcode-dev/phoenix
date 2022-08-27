@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Zeile darunter öffnen",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Klammern automatisch schließen",
   "CMD_SHOW_CODE_HINTS": "Code Hints anzeigen",
+  "CMD_BEAUTIFY_CODE": "Code verschönern",
   "FIND_MENU": "Suchen",
   "CMD_FIND": "Suchen",
   "CMD_FIND_NEXT": "Weitersuchen (vorwärts)",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Wählen Sie eine HTML-Datei</br> aus <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Nehmen Sie einige Codeänderungen vor und speichern Sie die Datei, um die Vorschau anzuzeigen </br><a href='#' style='float:right;'>in Ordnung</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klicken Sie auf diese Schaltfläche, um die Live-Vorschau auf einer neuen Registerkarte anzuzeigen. </br><a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "benutze dies, um Übersetzungen zu testen"
+  "TEST_TRANSLATE": "benutze dies, um Übersetzungen zu testen",
+  "BEAUTIFY_OPTIONS": "Optionen, die steuern, wie Beautify Code funktioniert",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Geben Sie die Linienlänge an, die der Verschönerer umbrechen soll",
+  "BEAUTIFY_OPTION_SEMICOLON": "Fügen Sie am Ende jeder Anweisung ein Semikolon hinzu",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Verwenden Sie einfache Anführungszeichen statt Anführungszeichen",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Ändern, wenn Eigenschaften in Objekten zitiert werden",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Setzen Sie das > eines mehrzeiligen HTML-Elements (HTML, JSX, Vue, Angular) an das Ende der letzten Zeile, anstatt alleine in der nächsten Zeile zu sein (gilt nicht für selbstschließende Elemente)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Erzwingen eines einzelnen Attributs pro Zeile in HTML, Vue und JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Wickeln Sie Prosa ein, wenn sie die Druckbreite in Markdown-Dateien überschreitet",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Drucken Sie nach Möglichkeit nachfolgende Kommas in mehrzeiligen, kommagetrennten syntaktischen Strukturen"
 });

@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "Deschide rândul de mai jos",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Închide automat perechile de caractere",
   "CMD_SHOW_CODE_HINTS": "Arată sugestiile de cod",
+  "CMD_BEAUTIFY_CODE": "Înfrumuseța Cod",
   "FIND_MENU": "Caută",
   "CMD_FIND": "Caută",
   "CMD_FIND_NEXT": "Caută următorul",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Selectați un fișier HTML </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Efectuați unele modificări de cod și salvați fișierul pentru a vedea previzualizarea. </br> <a href='#' style='float:right;'>O.K</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Faceți clic pe acest buton pentru a popuut previzualizare live la o filă nouă. </br> <a href='#' style='float:right;'>O.K</a>",
-  "TEST_TRANSLATE": "utilizați acest lucru pentru a testa traducerile"
+  "TEST_TRANSLATE": "utilizați acest lucru pentru a testa traducerile",
+  "BEAUTIFY_OPTIONS": "Opțiuni care controlează modul în care funcționează Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Specificați lungimea liniei pe care o va înfășura înfrumusețatorul",
+  "BEAUTIFY_OPTION_SEMICOLON": "Adăugați un punct și virgulă la sfârșitul fiecărei declarații",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Utilizați citate simple în loc de ghilimele duble",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Modificați când proprietățile din obiecte sunt citate",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Pune > a unui HTML multi-line (HTML, JSX, Vue, Angular) element de la sfârșitul ultimei linii în loc de a fi singur pe linia următoare (nu se aplică elementelor de auto-închidere)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Aplicaţi un singur atribut pe linie în HTML, Vue şi JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Înfășurați proza dacă depășește lățimea de imprimare în fișierele de marcare",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprimați virgule finale ori de câte ori este posibil în structuri sintactice separate prin virgulă multi-linie"
 }

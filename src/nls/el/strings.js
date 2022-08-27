@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Δημιουργία Γραμμής από κάτω",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Αυτόματο Κλείσιμο Αγκίστρων",
   "CMD_SHOW_CODE_HINTS": "Προβολή Υποδείξεων Κώδικα",
+  "CMD_BEAUTIFY_CODE": "Ομορφοποιήστε τον κώδικα",
   "FIND_MENU": "Εύρεση",
   "CMD_FIND": "Εύρεση",
   "CMD_FIND_NEXT": "Εύρεση Επόμενου",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Επιλέξτε ένα αρχείο HTML </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Κάντε μερικές αλλαγές κώδικα και αποθηκεύστε το αρχείο για να δείτε την προεπισκόπηση. </br> <a href='#' style='float:right;'>οκ</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Κάντε κλικ σε αυτό το κουμπί για να αναδυθεί η ζωντανή προεπισκόπηση σε μια νέα καρτέλα. </br> <a href='#' style='float:right;'>οκ</a>",
-  "TEST_TRANSLATE": "χρησιμοποιήστε αυτό για να ελέγξετε μεταφράσεις"
+  "TEST_TRANSLATE": "χρησιμοποιήστε αυτό για να ελέγξετε μεταφράσεις",
+  "BEAUTIFY_OPTIONS": "Επιλογές που ελέγχουν πώς λειτουργεί ο Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Καθορίστε το μήκος γραμμής στο οποίο θα αναδιπλωθεί ο εξωραϊστής",
+  "BEAUTIFY_OPTION_SEMICOLON": "Προσθήκη ερωτηματικού στο τέλος κάθε πρότασης",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Χρήση μονών εισαγωγικών αντί για διπλά εισαγωγικά",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Αλλαγή όταν παρατίθενται ιδιότητες σε αντικείμενα",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Τοποθετήστε το > ενός στοιχείου HTML (HTML, JSX, Vue, Angular) στο τέλος της τελευταίας γραμμής αντί να είστε μόνοι στην επόμενη γραμμή (δεν ισχύει για στοιχεία αυτόματου κλεισίματος)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Επιβολή μεμονωμένου χαρακτηριστικού ανά γραμμή σε HTML, Vue και JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Αναδίπλωση πεζογραφίας αν υπερβαίνει το πλάτος εκτύπωσης σε αρχεία markdown",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Εκτύπωση τελικών κομμών όπου είναι δυνατόν σε συντακτικές δομές διαχωρισμένες με κόμματα πολλών γραμμών"
 });

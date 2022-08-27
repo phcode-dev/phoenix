@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "往下新增一行",
   "CMD_TOGGLE_CLOSE_BRACKETS": "自動插入右括號",
   "CMD_SHOW_CODE_HINTS": "顯示程式提示",
+  "CMD_BEAUTIFY_CODE": "美化代碼",
   "FIND_MENU": "尋找",
   "CMD_FIND": "尋找",
   "CMD_FIND_NEXT": "找下一個",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "選擇一個 HTML 文件</br> <a href='#' style='float:right;'> 確定</a>",
   "GUIDED_LIVE_PREVIEW": "進行一些代碼更改並保存文件以查看預覽。</br><a href='#' style='float:right;'>好</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "按一下此按鈕可將即時預覽快顯至新分頁。</br><a href='#' style='float:right;'>好</a>",
-  "TEST_TRANSLATE": "用這個來測試翻譯"
+  "TEST_TRANSLATE": "用這個來測試翻譯",
+  "BEAUTIFY_OPTIONS": "控制美化程式碼運作方式的選項",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "指定美化器將換行的長度",
+  "BEAUTIFY_OPTION_SEMICOLON": "在每個語句的末尾添加一個分號",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "使用單引號而不是雙引號",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "變更引用物件內容的時間",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "將多行 HTML（HTML，JSX，Vue，Angular）元素的 > 放在最後一行的末尾，而不是單獨在下一行（不適用於自閉元素）",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "在 HTML，Vue 和 JSX 中每行強制執行單個屬性",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "如果超過降價文件中的打印寬度，則包裝散文",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "在多行逗號分隔的語法結構中盡可能打印尾隨逗號"
 });

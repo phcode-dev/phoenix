@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "Open regel beneden",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Automatisch accolades sluiten",
   "CMD_SHOW_CODE_HINTS": "Toon code hints",
+  "CMD_BEAUTIFY_CODE": "Code verfraaien",
   "FIND_MENU": "Zoek",
   "CMD_FIND": "Zoek",
   "CMD_FIND_NEXT": "Zoek volgende",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Selecteer een HTML-bestand</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Breng enkele codewijzigingen aan en sla het bestand op om een voorbeeld te zien. </br><a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klik op deze knop om live preview naar een nieuw tabblad te openen. </br><a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "gebruik dit om vertalingen te testen"
+  "TEST_TRANSLATE": "gebruik dit om vertalingen te testen",
+  "BEAUTIFY_OPTIONS": "Opties die bepalen hoe Beautify Code werkt",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Specificeer de lijnlengte waarop de verfraaier zich zal wikkelen",
+  "BEAUTIFY_OPTION_SEMICOLON": "Voeg een puntkomma toe aan het einde van elke instructie",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Gebruik enkele aanhalingstekens in plaats van dubbele",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Wijzigen wanneer eigenschappen in objecten worden aangehaald",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Zet de > van een HTML-element met meerdere regels (HTML, JSX, Vue, Angular) aan het einde van de laatste regel in plaats van alleen op de volgende regel te staan (geldt niet voor zelfsluitende elementen)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Eén kenmerk per regel afdwingen in HTML, Vue en JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Verpak proza als het de afdrukbreedte in markdownbestanden overschrijdt",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Druk waar mogelijk achterliggende komma's af in syntactische structuren met meerdere regels, gescheiden door komma's"
 }
