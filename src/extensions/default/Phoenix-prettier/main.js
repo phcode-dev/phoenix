@@ -249,6 +249,7 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject)=>{
             let filepath = editor.document.file.fullPath;
             let languageId = LanguageManager.getLanguageForPath(filepath).getId();
+            _loadPlugins(languageId);
             console.log("Beautifying with language id: ", languageId);
 
             let selection = editor.getSelections();
@@ -295,22 +296,18 @@ define(function (require, exports, module) {
     ExtensionUtils.loadStyleSheet(module, "prettier.css");
 
     let loadedPlugins = {};
-    function _onActiveEditorChange(_evt, current) {
-        if(current){
-            let languageID = LanguageManager.getLanguageForPath(current.document.file.fullPath).getId() || "none";
-            if(!loadedPlugins[languageID] && parsersForLanguage[languageID]){
-                ExtensionsWorker.execPeer("loadPrettierPlugin", parsersForLanguage[languageID]).catch(err=>{
-                    console.error("Error Loading Prettier Plugin", err);
-                });
-            }
-            loadedPlugins[languageID] = true;
+    function _loadPlugins(languageId) {
+        if(!loadedPlugins[languageId] && parsersForLanguage[languageId]){
+            ExtensionsWorker.execPeer("loadPrettierPlugin", parsersForLanguage[languageId]).catch(err=>{
+                console.error("Error Loading Prettier Plugin", err);
+            });
         }
+        loadedPlugins[languageId] = true;
     }
 
     AppInit.appReady(function () {
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
         BeautificationManager.registerBeautificationProvider(exports, Object.keys(parsersForLanguage));
-        EditorManager.on("activeEditorChange", _onActiveEditorChange);
     });
 
     exports.beautify = beautify;
