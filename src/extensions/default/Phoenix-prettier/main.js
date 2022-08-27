@@ -53,6 +53,7 @@ define(function (require, exports, module) {
         LanguageManager = brackets.getModule("language/LanguageManager"),
         BeautificationManager = brackets.getModule("features/BeautificationManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
+        Editor = brackets.getModule("editor/Editor").Editor,
         ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
 
     const prefs = PreferencesManager.getExtensionPrefs("beautify");
@@ -240,7 +241,8 @@ define(function (require, exports, module) {
 
     function beautify(editor) {
         return new Promise((resolve, reject)=>{
-            let languageId = LanguageManager.getLanguageForPath(editor.document.file.fullPath).getId();
+            let filepath = editor.document.file.fullPath;
+            let languageId = LanguageManager.getLanguageForPath(filepath).getId();
             console.log("Beautifying with language id: ", languageId);
 
             let selection = editor.getSelections();
@@ -251,11 +253,12 @@ define(function (require, exports, module) {
             }
 
             let options = prefs.get("options");
+            let indentWithTabs = Editor.getUseTabChar(filepath);
             Object.assign(options, {
                 parser: parsersForLanguage[languageId],
-                tabWidth: 4,
-                useTabs: false,
-                filepath: editor.document.file.fullPath
+                tabWidth: indentWithTabs ? Editor.getTabSize() : Editor.getSpaceUnits(),
+                useTabs: indentWithTabs,
+                filepath: filepath
             });
             let prettierParams ={
                 text: editor.document.getText(),
