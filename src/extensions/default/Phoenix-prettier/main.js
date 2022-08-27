@@ -54,6 +54,7 @@ define(function (require, exports, module) {
         BeautificationManager = brackets.getModule("features/BeautificationManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Editor = brackets.getModule("editor/Editor").Editor,
+        EditorManager = brackets.getModule("editor/EditorManager"),
         ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
 
     const prefs = PreferencesManager.getExtensionPrefs("beautify");
@@ -293,14 +294,23 @@ define(function (require, exports, module) {
 
     ExtensionUtils.loadStyleSheet(module, "prettier.css");
 
-    function _createExtensionStatusBarIcon() {
-        // create prettier ui elements here.
+    let loadedPlugins = {};
+    function _onActiveEditorChange(_evt, current) {
+        if(current){
+            let languageID = LanguageManager.getLanguageForPath(current.document.file.fullPath).getId() || "none";
+            if(!loadedPlugins[languageID] && parsersForLanguage[languageID]){
+                ExtensionsWorker.execPeer("loadPrettierPlugin", parsersForLanguage[languageID]).catch(err=>{
+                    console.error("Error Loading Prettier Plugin", err);
+                });
+            }
+            loadedPlugins[languageID] = true;
+        }
     }
 
     AppInit.appReady(function () {
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
         BeautificationManager.registerBeautificationProvider(exports, Object.keys(parsersForLanguage));
-        _createExtensionStatusBarIcon();
+        EditorManager.on("activeEditorChange", _onActiveEditorChange);
     });
 
     exports.beautify = beautify;
