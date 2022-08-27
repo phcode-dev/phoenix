@@ -976,6 +976,8 @@ define({
     "GUIDED_LIVE_PREVIEW_POPOUT": "Click this button to popout live preview to a new tab. </br> <a href='#' style='float:right;'>ok</a>",
     "TEST_TRANSLATE": "use this to test translations",
     //beautify extension
+    "BEAUTIFY_ERROR": "Could not beautify code. Check Syntax.",
+    "BEAUTIFY_ERROR_SELECTION": "Could not beautify.</br>Selected code block incomplete or invalid syntax.",
     "BEAUTIFY_OPTIONS": "Options that control how Beautify Code works",
     "BEAUTIFY_OPTION_PRINT_WIDTH": "Specify the line length that beautifier will wrap on",
     "BEAUTIFY_OPTION_SEMICOLON": "Add a semicolon at the end of every statement",

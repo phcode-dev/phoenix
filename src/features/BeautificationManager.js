@@ -68,26 +68,31 @@
  * provider.beautify = function(editor) {
  *         return new Promise((resolve, reject)=>{
  *             resolve({
- *                 changedText: "partial or full text that changed. If partial, specify the range options below",
+ *                 changedText: "partial or full text that changed.",
+ *                 // Optional: If range is specified, only the given range will be replaced. else full text is replaced
  *                 ranges:{
  *                     replaceStart: {line,ch},
  *                     replaceEnd: {line,ch}
- *                 }
+ *                 },
+ *                 // optional cursorIndex enable `beautify on save feature` if provided.
+ *                 cursorIndex: number
  *             });
  *         });
  *     };
  * ```
  *
  * #### The resoved promise object
- * The resolved promise should contain the following details:
- * 1. changedText - string, this should be the fully prettified text of the whole file or a fragment of pretty text
- *    if a range was selected. If a range is selected, then the resolved object must contain a ranges attribute.
- *    This may also be null if the extension itself has prettified the code and doesn't want
- *    any further processing from BeautificationManager.
- * 1. ranges - is a set of 2 cursors that gives details on what range to replace with given changed text
- *    it has 4 fields:
- *    1. replaceStart - the start of range to replace
- *    1. replaceEnd - the end of range to replace
+ * The resolved promise should either be `null`(indicating that the extension itself has prettified the code and
+ * doesn't want any further processing from BeautificationManager.) or contain the following details:
+ * 1. `changedText` - string, this should be the fully prettified text of the whole file or a fragment of pretty text
+ *    if a range was selected.
+ *    - If a range is returned, then the beautification manger will replace only the range with changed text in editor.
+ *    - Providing optional `cursorIndex` will enable `beautify on save feature`.
+ * 1. `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
+ *    If range is not specified, the full text in the editor will be replaced. range has 2 fields:
+ *    1. `replaceStart{line,ch}` - the start of range to replace
+ *    1. `replaceEnd{line,ch}` - the end of range to replace
+ * 1. `cursorIndex{number}` - Where to place the cursor after the text is replaced in editor. Note: this is number offset.
  * @module features/BeautificationManager
  */
 define(function (require, exports, module) {
@@ -100,6 +105,7 @@ define(function (require, exports, module) {
         LanguageManager = require("language/LanguageManager"),
         Menus = require("command/Menus"),
         EditorManager = require("editor/EditorManager"),
+        DocumentManager = require("document/DocumentManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     let _providerRegistrationHandler = new ProviderRegistrationHandler(),
@@ -132,7 +138,7 @@ define(function (require, exports, module) {
                 // providers reject if they didn't beautify the code. We do nothing in the case as expected failure.
             }
         }
-        return null;
+        throw new Error("No Providers beautified text");
     }
 
     function _onActiveEditorChange(_evt, current) {
@@ -141,6 +147,21 @@ define(function (require, exports, module) {
             return;
         }
         beautifyCommand.setEnabled(false);
+    }
+
+    function _replaceText(editor, beautyObject) {
+        if(beautyObject.ranges){
+            let ranges = beautyObject.ranges;
+            if(editor.document.getRange(ranges.replaceStart, ranges.replaceEnd) !== beautyObject.changedText){
+                editor.setSelection(ranges.replaceStart, ranges.replaceEnd);
+                editor.replaceSelection(beautyObject.changedText, 'around');
+            }
+        } else {
+            if(editor.document.getRange({line: 0, ch: 0}, editor.getEndingCursorPos()) !== beautyObject.changedText){
+                editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
+                editor.replaceSelection(beautyObject.changedText, 'around');
+            }
+        }
     }
 
     function _prettify() {
@@ -153,32 +174,46 @@ define(function (require, exports, module) {
                 return;
             }
             editor.operation(function () {
-                if(beautyObject.ranges){
-                    let ranges = beautyObject.ranges;
-                    editor.setSelection(ranges.replaceStart, ranges.replaceEnd);
-                    if(editor.getSelectedText() !== beautyObject.changedText){
-                        editor.replaceSelection(beautyObject.changedText, 'around');
-                    }
-                } else {
-                    editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
-                    if(editor.getSelectedText() !== beautyObject.changedText){
-                        editor.replaceSelection(beautyObject.changedText, 'around');
-                    }
-                }
+                _replaceText(editor, beautyObject);
             });
         }).catch(e=>{
+            let message = editor.hasSelection() ? Strings.BEAUTIFY_ERROR_SELECTION : Strings.BEAUTIFY_ERROR;
+            editor.displayErrorMessageAtCursor(message);
             console.log("No beautify providers responded", e);
         });
     }
 
+    function _prettifyOnSave(_evt, doc) {
+        let editor = EditorManager.getActiveEditor();
+        if(!editor || editor.document.file.fullPath !== doc.file.fullPath){
+            return;
+        }
+        editor.clearSelection();
+        _getBeautifiedCodeDetails(editor).then(beautyObject => {
+            if(!beautyObject || !beautyObject.changedText || !beautyObject.cursorIndex){
+                return;
+            }
+            editor.operation(function () {
+                _replaceText(editor, beautyObject);
+                let cursor = editor.posFromIndex(beautyObject.cursorIndex);
+                editor.setCursorPos(cursor.line, cursor.ch);
+            });
+        }).catch(e=>{
+            console.log("No beautify providers responded for prettify on save", e);
+        });
+    }
+
     AppInit.appReady(function () {
-        beautifyCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE, Commands.EDIT_BEAUTIFY_CODE, _prettify);
+        beautifyCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE, Commands.EDIT_BEAUTIFY_CODE, ()=>{
+            _prettify();
+        });
         let editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
         editMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "");
 
         let editorContextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
         editorContextMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "", Menus.AFTER, Commands.EDIT_SELECT_ALL);
         EditorManager.on("activeEditorChange", _onActiveEditorChange);
+        DocumentManager.on('documentSaved.beautificationManager', _prettifyOnSave);
     });
 
     exports.registerBeautificationProvider = registerBeautificationProvider;

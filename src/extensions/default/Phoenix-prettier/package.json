@@ -1,6 +1,7 @@
 {
   "name": "Phoenix-prettier",
   "version": "1.0.0",
+  "author": "arun, core.ai",
   "dependencies": {
   }
 }
