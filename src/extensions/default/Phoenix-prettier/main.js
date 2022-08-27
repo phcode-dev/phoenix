@@ -117,17 +117,18 @@ define(function (require, exports, module) {
     });
 
     const parsersForLanguage = {
-        javascript: "babel",
-        jsx: "babel",
-        json: "json-stringify",
         html: "html",
         xml: "html",
         handlebars: "html",
         svg: "html",
-        php: "php",
         css: "css",
         less: "less",
         scss: "scss",
+        javascript: "babel",
+        jsx: "babel",
+        json: "json-stringify",
+        typescript: "typescript",
+        php: "php",
         markdown: "markdown",
         gfm: "markdown",
         yaml: "yaml"
