@@ -124,6 +124,9 @@ let copyThirdPartyLibs = series(
     copyFiles.bind(copyFiles, ['node_modules/prettier/*.js'],
         'src/thirdparty/prettier'),
     copyLicence.bind(copyLicence, 'node_modules/prettier/LICENSE', 'prettier'),
+    copyFiles.bind(copyFiles, ['node_modules/@prettier/plugin-php/*.js'],
+        'src/thirdparty/prettier/php'),
+    copyLicence.bind(copyLicence, 'node_modules/@prettier/plugin-php/LICENSE', 'prettier-php'),
     // font-awesome
     copyFiles.bind(copyFiles, ['node_modules/@fortawesome/fontawesome-free/css/*'],
         'src/thirdparty/fontawesome/css'),

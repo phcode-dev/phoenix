@@ -123,6 +123,7 @@ define(function (require, exports, module) {
         xml: "html",
         handlebars: "html",
         svg: "html",
+        php: "php",
         css: "css",
         less: "less",
         scss: "scss",
@@ -298,11 +299,7 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
-        BeautificationManager.registerBeautificationProvider(exports,
-            ["javascript", "html", 'svg', 'xml', 'jsx', 'handlebars',
-                "css", 'less', 'scss',
-                "markdown", "gfm",
-                'yaml', 'json']);
+        BeautificationManager.registerBeautificationProvider(exports, Object.keys(parsersForLanguage));
         _createExtensionStatusBarIcon();
     });
 
