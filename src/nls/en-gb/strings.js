@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Open Line Below",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Auto Close Braces",
   "CMD_SHOW_CODE_HINTS": "Show Code Hints",
+  "CMD_BEAUTIFY_CODE": "Beautify Code",
   "FIND_MENU": "Find",
   "CMD_FIND": "Find",
   "CMD_FIND_NEXT": "Find Next",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Select an HTML file </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Make some code changes and save file to see preview. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Click this button to popout live preview to a new tab. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "use this to test translations"
+  "TEST_TRANSLATE": "use this to test translations",
+  "BEAUTIFY_OPTIONS": "Options that control how Beautify Code works",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Specify the line length that beautifier will wrap on",
+  "BEAUTIFY_OPTION_SEMICOLON": "Add a semicolon at the end of every statement",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Use single quotes instead of double quotes",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Change when properties in objects are quoted",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Put the > of a multi-line HTML (HTML, JSX, Vue, Angular) element at the end of the last line instead of being alone on the next line (does not apply to self closing elements)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Enforce single attribute per line in HTML, Vue and JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Wrap prose if it exceeds the print width in markdown files",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Print trailing commas wherever possible in multi-line comma-separated syntactic structures"
 });

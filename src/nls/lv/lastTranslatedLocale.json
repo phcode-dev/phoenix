@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "Atvērt apakšējo rindu",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Automātiski aizvērt figūriekavas",
   "CMD_SHOW_CODE_HINTS": "Rādīt koda ieteikumus",
+  "CMD_BEAUTIFY_CODE": "Izdaiļot kodu",
   "FIND_MENU": "Meklēt",
   "CMD_FIND": "Meklēt",
   "CMD_FIND_NEXT": "Meklēt nākamo",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Atlasiet HTML failu </br> <a href='#' style='float:right;'>labi</a>",
   "GUIDED_LIVE_PREVIEW": "Veiciet dažas koda izmaiņas un saglabājiet failu, lai skatītu priekšskatījumu. </br> <a href='#' style='float:right;'>labi</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Noklikšķiniet uz šīs pogas, lai iznirstošo tiešo priekšskatījumu uz jaunu cilni. </br> <a href='#' style='float:right;'>labi</a>",
-  "TEST_TRANSLATE": "izmantot šo, lai pārbaudītu tulkojumus"
+  "TEST_TRANSLATE": "izmantot šo, lai pārbaudītu tulkojumus",
+  "BEAUTIFY_OPTIONS": "Opcijas, kas kontrolē, kā darbojas izdaiļot kodu",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Norādiet līnijas garumu, ko aptins beautifier",
+  "BEAUTIFY_OPTION_SEMICOLON": "Semikola pievienošana katra paziņojuma beigās",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Izmantojiet atsevišķas pēdiņas, nevis dubultās pēdiņas",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Mainīt, kad objektos tiek citēti rekvizīti",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Ievietojiet vairākrindu HTML (HTML, JSX, Vue, Leņķveida) elementu pēdējās rindas beigās, nevis tikai nākamajā rindā (neattiecas uz pašaizvēršanās elementiem)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Iedarbināt vienu atribūtu katrā rindā HTML, Vue un JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Aptiniet prozu, ja tas pārsniedz drukas platumu atzīmes failos",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Kad vien iespējams, drukāt beigu komatus vairākrindu ar komatu atdalītās sintaktiskās struktūrās"
 }

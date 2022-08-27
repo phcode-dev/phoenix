@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "Öppna rad nedanför",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Stäng parenteser automatiskt",
   "CMD_SHOW_CODE_HINTS": "Visa kodförslag",
+  "CMD_BEAUTIFY_CODE": "Försköna kod",
   "FIND_MENU": "Sök",
   "CMD_FIND": "Sök",
   "CMD_FIND_NEXT": "Sök nästa",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Välj en HTML-fil </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Gör några kodändringar och spara filen för att se förhandsgranskning. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klicka på den här knappen för att visa direktförhandsvisning till en ny flik. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "använd detta för att testa översättningar"
+  "TEST_TRANSLATE": "använd detta för att testa översättningar",
+  "BEAUTIFY_OPTIONS": "Alternativ som styr hur Beautify Code fungerar",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Ange linjelängden som förskönaren ska slå på",
+  "BEAUTIFY_OPTION_SEMICOLON": "Lägg till ett semikolon i slutet av varje programsats",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Använd enkla citat istället för dubbla citattecken",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Ändra när egenskaper i objekt citeras",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Sätt > av ett flerradigt HTML-element (HTML, JSX, Vue, Angular) i slutet av den sista raden istället för att vara ensam på nästa rad (gäller inte självstängande element)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Tvinga enstaka attribut per rad i HTML, Vue och JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Wrap prosa om den överskrider utskriftsbredden i markdown-filer",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Skriv ut efterföljande kommatecken när det är möjligt i syntaktiska strukturer med flera rader med kommaavgränsade"
 }

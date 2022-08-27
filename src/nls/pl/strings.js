@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Otwórz linię niżej",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Automatycznie zamykaj nawiasy",
   "CMD_SHOW_CODE_HINTS": "Pokaż podpowiedź",
+  "CMD_BEAUTIFY_CODE": "Upiększ kod",
   "FIND_MENU": "Znajdź",
   "CMD_FIND": "Znajdź",
   "CMD_FIND_NEXT": "Znajdź następny",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Wybierz plik HTML </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Wprowadź pewne zmiany kodu i zapisz plik, aby zobaczyć podgląd. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Kliknij ten przycisk, aby wyświetlić podgląd na żywo do nowej karty. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "użyj tego do testowania tłumaczeń"
+  "TEST_TRANSLATE": "użyj tego do testowania tłumaczeń",
+  "BEAUTIFY_OPTIONS": "Opcje, które kontrolują sposób działania Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Określ długość linii, na którą zawija się upiększacz",
+  "BEAUTIFY_OPTION_SEMICOLON": "Dodaj średnik na końcu każdej instrukcji",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Użyj pojedynczych cudzysłowów zamiast cudzysłow",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Zmiana, gdy właściwości w obiektach są cytowane",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Umieść > wielowierszowego elementu HTML (HTML, JSX, Vue, Angular) na końcu ostatniej linii zamiast być sam w następnej linii (nie dotyczy elementów samozamykających)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Wymuszanie pojedynczego atrybutu na linię w HTML, Vue i JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Owiń prozę, jeśli przekracza szerokość wydruku w plikach przecen",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Drukuj przecinki końcowe tam, gdzie to możliwe, w wieloliniowych strukturach składniowych rozdzielonych przecinkami"
 });

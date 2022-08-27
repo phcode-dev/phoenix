@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Aşağıda Açık Hat",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Parantezleri Otomatik Tamamla",
   "CMD_SHOW_CODE_HINTS": "Kod İpuçlarını Göster",
+  "CMD_BEAUTIFY_CODE": "Kodu Güzelleştirin",
   "FIND_MENU": "Bul",
   "CMD_FIND": "Bul",
   "CMD_FIND_NEXT": "Sonrakini Bul",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Bir HTML dosyası seçin </br> <a href='#' style='float:right;'>tamam</a>",
   "GUIDED_LIVE_PREVIEW": "Önizlemeyi görmek için bazı kod değişiklikleri yapın ve dosyayı kaydedin. </br> <a href='#' style='float:right;'>tamam</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Canlı önizlemeyi yeni bir sekmeye açmak için bu düğmeyi tıklayın. </br> <a href='#' style='float:right;'>tamam</a>",
-  "TEST_TRANSLATE": "çevirileri test etmek için bunu kullanın"
+  "TEST_TRANSLATE": "çevirileri test etmek için bunu kullanın",
+  "BEAUTIFY_OPTIONS": "Beautify Code nasıl çalıştığını kontrol eden seçenekler",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Güzelleştiricinin saracağı çizgi uzunluğunu belirtin",
+  "BEAUTIFY_OPTION_SEMICOLON": "Her ifadenin sonuna noktalı virgül ekleyin",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Çift tırnak yerine tek tırnak kullanın",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Nesnelerdeki özellikler kote edildiğinde değiştir",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Bir sonraki satırda yalnız kalmak yerine son satırın sonuna çok satırlı bir HTML (HTML, JSX, Vue, Angular) öğesinin > öğesini koyun (kendi kendine kapanan elemanlar için geçerli değildir)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML, Vue ve JSX'te satır başına tek bir öznitelik uygulayın",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Markdown dosyalarında yazdırma genişliğini aşarsa nesir sarın",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Çok satırlı virgülle ayrılmış sözdizimsel yapılarda mümkün olan her yerde sondaki virgülleri yazdırın"
 });

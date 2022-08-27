@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "نیچے لائن کھولیں",
   "CMD_TOGGLE_CLOSE_BRACKETS": "آٹو بند بریسیز",
   "CMD_SHOW_CODE_HINTS": "کوڈ اشارے دکھائیں",
+  "CMD_BEAUTIFY_CODE": "کوڈ کو خوبصورت بنانا",
   "FIND_MENU": "ڈھونڈیں",
   "CMD_FIND": "ڈھونڈیں",
   "CMD_FIND_NEXT": "اگلا تلاش کریں",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "ایک HTML فائل <a href='#' style='float:right;'>ٹھیک ہے</a>منتخب </br> کریں",
   "GUIDED_LIVE_PREVIEW": "کچھ کوڈ میں تبدیلی کریں اور پیش نظارہ دیکھنے کے لئے فائل محفوظ کریں. </br> <a href='#' style='float:right;'>ٹھیک ہے</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "ایک نئے ٹیب پر لائیو پیش منظر کو پاپ آؤٹ کرنے کیلئے اس بٹن پر کلک کریں۔ </br> <a href='#' style='float:right;'>ٹھیک ہے</a>",
-  "TEST_TRANSLATE": "ترجمہ ٹیسٹ کرنے کے لئے اس کا استعمال"
+  "TEST_TRANSLATE": "ترجمہ ٹیسٹ کرنے کے لئے اس کا استعمال",
+  "BEAUTIFY_OPTIONS": "اختیارات جو کنٹرول کرتے ہیں کہ کس طرح خوبصورت کوڈ کام کرتا ہے",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "لائن کی لمبائی کی وضاحت کریں جو خوبصورتی پر لپیٹ جائے گی",
+  "BEAUTIFY_OPTION_SEMICOLON": "ہر بیان کے آخر میں ایک نیم وقفہ شامل کریں",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "ڈبل کوٹس کے بجائے سنگل کوٹس استعمال کریں",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "جب اشیاء میں خصوصیات کا حوالہ دیا جاتا ہے تو تبدیل کریں",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "اگلی لائن پر اکیلے ہونے کی بجائے آخری لائن کے اختتام پر ایک کثیر لائن ایچ ٹی ایم ایل (ایچ ٹی ایم ایل، جے ایس ایکس، ویو، کونیی) عنصر کے > رکھو (خود بند کرنے والے عناصر پر لاگو نہیں ہوتا)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "ایچ ٹی ایم ایل، ویو اور جے ایس ایکس میں فی لائن واحد خصوصیت کو نافذ کریں",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "اگر یہ مارک ڈاؤن فائلوں میں پرنٹ کی چوڑائی سے زیادہ ہے تو نثر لپیٹ دیں",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "کثیر لائن کوما علیحدہ نحوی ڈھانچے میں جہاں بھی ممکن ہو پیچھا کمانا پرنٹ"
 });

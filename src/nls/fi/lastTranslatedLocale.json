@@ -294,6 +294,7 @@
   "CMD_OPEN_LINE_BELOW": "Avaa rivi alla",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Sulje sulkeet automaattisesti",
   "CMD_SHOW_CODE_HINTS": "Näytä koodivihjeet",
+  "CMD_BEAUTIFY_CODE": "Kaunista Koodi",
   "FIND_MENU": "Etsi",
   "CMD_FIND": "Etsi",
   "CMD_FIND_NEXT": "Etsi seuraava",
@@ -783,5 +784,14 @@
   "GUIDED_FILES_SIDEBAR": "Valitse HTML-tiedosto </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Tee joitain koodimuutoksia ja tallenna tiedosto nähdäksesi esikatselun. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Napsauta tätä painiketta ponnahtaaksesi live-esikatselun uuteen välilehteen. </br> <a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "Käytä tätä käännösten testaamiseen"
+  "TEST_TRANSLATE": "Käytä tätä käännösten testaamiseen",
+  "BEAUTIFY_OPTIONS": "Vaihtoehdot, jotka ohjaavat kaunistuskoodin toimintaa",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Määritä viivan pituus, johon kaunistaja kääri",
+  "BEAUTIFY_OPTION_SEMICOLON": "Lisää puolipiste jokaisen lauseen loppuun",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Käytä yksittäisiä lainausmerkkejä kaksinkertaisten lainausmerkkien sijaan",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Muuta, kun objektien ominaisuuksia lainataan",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Laittaa> on multi-line HTML (HTML, JSX, Vue, Kulmikas) elementti lopussa viimeisen rivin sijaan yksin seuraavalla rivillä (ei koske itse sulkeutuvat elementit)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Valvoa yksittäinen attribuutti riviä kohti HTML, Vue ja JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Kääri proosaa, jos se ylittää tulostusleveyden markdown-tiedostoissa",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tulosta perään pilkkuja mahdollisuuksien mukaan monirivisissä pilkuilla erotetuissa syntaktisissa rakenteissa"
 }

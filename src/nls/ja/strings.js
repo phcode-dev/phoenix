@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "下の行を開く",
   "CMD_TOGGLE_CLOSE_BRACKETS": "自動閉じカッコ",
   "CMD_SHOW_CODE_HINTS": "コードヒントを表示",
+  "CMD_BEAUTIFY_CODE": "美化コード",
   "FIND_MENU": "検索",
   "CMD_FIND": "検索",
   "CMD_FIND_NEXT": "次を検索",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "HTML ファイルを選択してください</br> <a href='#' style='float:right;'>OK</a>",
   "GUIDED_LIVE_PREVIEW": "コードを変更し、ファイルを保存してプレビューを表示します。</br><a href='#' style='float:right;'>わかった</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "このボタンをクリックすると、新しいタブにライブプレビューが表示されます。</br><a href='#' style='float:right;'>わかりました</a>",
-  "TEST_TRANSLATE": "これを使って翻訳をテストする"
+  "TEST_TRANSLATE": "これを使って翻訳をテストする",
+  "BEAUTIFY_OPTIONS": "Beautify Codeの動作を制御するオプション",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Beautifierが折り返す線の長さを指定してください",
+  "BEAUTIFY_OPTION_SEMICOLON": "すべてのステートメントの最後にセミコロンを追加します",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "二重引用符の代わりに一重引用符を使用する",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "オブジェクトのプロパティがいつ引用されるかを変更する",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "複数行の HTML (HTML、JSX、Vue、Angular) 要素の>を次の行に単独で配置するのではなく、最後の行の最後に配置します (自己終了要素には適用されません)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML、Vue、JSX で 1 行につき 1 つの属性を強制する",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "マークダウンファイルの印刷幅を超える場合は散文をラップする",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "複数行のカンマ区切りの構文構造で、末尾のカンマを可能な限り表示する"
 });

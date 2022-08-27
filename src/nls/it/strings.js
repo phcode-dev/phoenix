@@ -314,6 +314,7 @@ define({
   "CMD_OPEN_LINE_BELOW": "Apri linea sotto",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Chiudi le parentesi automaticamente",
   "CMD_SHOW_CODE_HINTS": "Mostra suggerimenti",
+  "CMD_BEAUTIFY_CODE": "Abbellisci codice",
   "FIND_MENU": "Cerca",
   "CMD_FIND": "Cerca",
   "CMD_FIND_NEXT": "Cerca il successivo",
@@ -803,5 +804,14 @@ define({
   "GUIDED_FILES_SIDEBAR": "Seleziona un file HTML</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW": "Apporta alcune modifiche al codice e salva il file per vedere l'anteprima. </br><a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Fare clic su questo pulsante per visualizzare l'anteprima dal vivo in una nuova scheda. </br><a href='#' style='float:right;'>ok</a>",
-  "TEST_TRANSLATE": "usalo per testare le traduzioni"
+  "TEST_TRANSLATE": "usalo per testare le traduzioni",
+  "BEAUTIFY_OPTIONS": "Opzioni che controllano il funzionamento di Beautify Code",
+  "BEAUTIFY_OPTION_PRINT_WIDTH": "Specificare la lunghezza della linea su cui verrà avvolto l'abbellitore",
+  "BEAUTIFY_OPTION_SEMICOLON": "Aggiungere un punto e virgola alla fine di ogni istruzione",
+  "BEAUTIFY_OPTION_SINGLE_QUOTE": "Usa virgolette singole anziché doppie",
+  "BEAUTIFY_OPTION_QUOTE_PROPS": "Modifica quando vengono citate le proprietà negli oggetti",
+  "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Metti il > di un elemento HTML multilinea (HTML, JSX, Vue, Angular) alla fine dell'ultima riga invece di essere solo sulla riga successiva (non si applica agli elementi a chiusura automatica)",
+  "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Applica un singolo attributo per riga in HTML, Vue e JSX",
+  "BEAUTIFY_OPTION_PROSE_WRAP": "Avvolgi la prosa se supera la larghezza di stampa nei file markdown",
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Stampa le virgole finali ove possibile in strutture sintattiche separate da virgole su più righe"
 });
