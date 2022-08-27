@@ -97,7 +97,8 @@ define(function (require, exports, module) {
         Strings = require("strings"),
         AppInit = require("utils/AppInit"),
         CommandManager = require("command/CommandManager"),
-        Menus = brackets.getModule("command/Menus"),
+        LanguageManager = require("language/LanguageManager"),
+        Menus = require("command/Menus"),
         EditorManager = require("editor/EditorManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
@@ -105,11 +106,17 @@ define(function (require, exports, module) {
         registerBeautificationProvider = _providerRegistrationHandler
             .registerProvider.bind(_providerRegistrationHandler),
         removeBeautificationProvider = _providerRegistrationHandler
-            .removeProvider.bind(_providerRegistrationHandler);
+            .removeProvider.bind(_providerRegistrationHandler),
+        beautifyCommand;
+
+    function _getEnabledProviders(editor) {
+        let filepath = editor.document.file.fullPath;
+        let language = LanguageManager.getLanguageForPath(filepath);
+        return _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
+    }
 
     async function _getBeautifiedCodeDetails(editor) {
-        let language = editor.getLanguageForSelection(),
-            enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
+        let enabledProviders = _getEnabledProviders(editor);
 
         for(let item of enabledProviders){
             if(!item.provider.beautify){
@@ -126,6 +133,14 @@ define(function (require, exports, module) {
             }
         }
         return null;
+    }
+
+    function _onActiveEditorChange(_evt, current) {
+        if(current && _getEnabledProviders(current).length){
+            beautifyCommand.setEnabled(true);
+            return;
+        }
+        beautifyCommand.setEnabled(false);
     }
 
     function _prettify() {
@@ -157,13 +172,13 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
-        CommandManager.register(Strings.CMD_BEAUTIFY_CODE, Commands.EDIT_BEAUTIFY_CODE, _prettify);
+        beautifyCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE, Commands.EDIT_BEAUTIFY_CODE, _prettify);
         let editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
         editMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "");
 
         let editorContextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
         editorContextMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "", Menus.AFTER, Commands.EDIT_SELECT_ALL);
-        // todo active editor change and disable beautify if not supported
+        EditorManager.on("activeEditorChange", _onActiveEditorChange);
     });
 
     exports.registerBeautificationProvider = registerBeautificationProvider;

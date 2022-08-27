@@ -117,8 +117,12 @@ define(function (require, exports, module) {
 
     const parsersForLanguage = {
         javascript: "babel",
+        jsx: "babel",
         json: "json-stringify",
         html: "html",
+        xml: "html",
+        handlebars: "html",
+        svg: "html",
         css: "css",
         less: "less",
         scss: "scss",
@@ -295,11 +299,10 @@ define(function (require, exports, module) {
     AppInit.appReady(function () {
         ExtensionsWorker.loadScriptInWorker(`${module.uri}/../worker/prettier-helper.js`);
         BeautificationManager.registerBeautificationProvider(exports,
-            ["javascript", "html",
+            ["javascript", "html", 'svg', 'xml', 'jsx', 'handlebars',
                 "css", 'less', 'scss',
                 "markdown", "gfm",
                 'yaml', 'json']);
-
         _createExtensionStatusBarIcon();
     });
 
