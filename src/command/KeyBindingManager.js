@@ -821,6 +821,7 @@ define(function (require, exports, module) {
      * @type {(string)[]}
      */
     let UN_SWALLOWED_EVENTS = [
+        Commands.EDIT_SELECT_ALL,
         Commands.EDIT_UNDO,
         Commands.EDIT_REDO,
         Commands.EDIT_CUT,

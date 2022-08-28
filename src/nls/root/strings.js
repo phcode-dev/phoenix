@@ -977,6 +977,7 @@ define({
     "TEST_TRANSLATE": "use this to test translations",
     //beautify extension
     "BEAUTIFY_ERROR": "Could not beautify code. Check Syntax.",
+    "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Beautifying File {0}",
     "BEAUTIFY_ERROR_SELECTION": "Could not beautify.</br>Selected code block incomplete or invalid syntax.",
     "BEAUTIFY_OPTIONS": "Options that control how Beautify Code works",
     "BEAUTIFY_OPTION_PRINT_WIDTH": "Specify the line length that beautifier will wrap on",

@@ -1237,7 +1237,8 @@ define(function (require, exports, module) {
      * Inserts a bookmark, a handle that follows the text around it as it is being edited, at the given position.
      * Similar to mark text, but for just a point instead of range.
      * @param {string} markType - A String that can be used to label the mark type.
-     * @param {{line: number, ch: number}} cursorPos - Where to place the mark
+     * @param {{line: number, ch: number}} [cursorPos] - Where to place the mark. Optional, if not specified, will
+     * use current pos
      * @param {Object} [options] - When given, it should be an object that may contain the following
      * configuration options:
      * @param {Element} [options.widget] - Can be used to display a DOM node at the current location of the bookmark
@@ -1251,6 +1252,7 @@ define(function (require, exports, module) {
      * position of the bookmark, if it is still in the document, and `clear` explicitly removes the bookmark.
      */
     Editor.prototype.setBookmark = function (markType, cursorPos, options) {
+        cursorPos = cursorPos || this.getCursorPos();
         let newMark = this._codeMirror.setBookmark(cursorPos, options);
         newMark.markType = markType;
         return newMark;
@@ -1331,6 +1333,20 @@ define(function (require, exports, module) {
      */
     Editor.prototype.replaceSelection = function (replacement, select) {
         this._codeMirror.replaceSelection(replacement, select);
+    };
+
+    /**
+     * Replace the part of the document between from and to with the given string.
+     * @param {string} replacement the text to replace the current selection
+     * @param {{line:number, ch:number}} from the strat position to replace
+     * @param {{line:number, ch:number}} [to] the end position to replace. to can be left off to simply
+     * insert the string at position from.
+     * @param {string} origin When origin is given, it will be passed on to "change" events, and its first
+     * letter will be used to determine whether this change can be merged with previous history events
+     * of the inserted text.
+     */
+    Editor.prototype.replaceRange = function (replacement, from, to, origin) {
+        this._codeMirror.replaceRange(replacement, from, to, origin);
     };
 
     /**
