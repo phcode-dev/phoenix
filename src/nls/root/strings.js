@@ -406,6 +406,7 @@ define({
     "CMD_TOGGLE_CLOSE_BRACKETS": "Auto Close Braces",
     "CMD_SHOW_CODE_HINTS": "Show Code Hints",
     "CMD_BEAUTIFY_CODE": "Beautify Code",
+    "CMD_BEAUTIFY_CODE_ON_SAVE": "Beautify Code On Save",
 
     // Search menu commands
     "FIND_MENU": "Find",

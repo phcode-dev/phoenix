@@ -90,6 +90,7 @@ define(function (require, exports, module) {
     exports.TOGGLE_CLOSE_BRACKETS       = "edit.autoCloseBrackets";     // EditorOptionHandlers.js      _getToggler()
     exports.SHOW_CODE_HINTS             = "edit.showCodeHints";         // CodeHintManager.js           _startNewSession()
     exports.EDIT_BEAUTIFY_CODE          = "edit.beautifyCode";         // CodeHintManager.js           _startNewSession()
+    exports.EDIT_BEAUTIFY_CODE_ON_SAVE  = "edit.beautifyOnSave";         // CodeHintManager.js           _startNewSession()
 
     // FIND
     exports.CMD_FIND                    = "cmd.find";                   // FindReplace.js               _launchFind()
