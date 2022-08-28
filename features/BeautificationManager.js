@@ -73,9 +73,7 @@
  *                 ranges:{
  *                     replaceStart: {line,ch},
  *                     replaceEnd: {line,ch}
- *                 },
- *                 // optional cursorIndex if given will place cursor on given position.
- *                 cursorIndex: number
+ *                 }
  *             });
  *         });
  *     };
@@ -87,13 +85,10 @@
  * 1. `changedText` - string, this should be the fully prettified text of the whole file or a fragment of pretty text
  *    if a range was selected.
  *    - If a range is returned, then the beautification manger will replace only the range with changed text in editor.
- *      range takes precedence over cursor index.
- *    - optional cursorIndex if given will place cursor on given position.
  * 1. `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
  *    If range is not specified, the full text in the editor will be replaced. range has 2 fields:
  *    1. `replaceStart{line,ch}` - the start of range to replace
  *    1. `replaceEnd{line,ch}` - the end of range to replace
- * 1. `cursorIndex{number}` - Where to place the cursor after the text is replaced in editor. Note: this is number offset.
  * @module features/BeautificationManager
  */
 define(function (require, exports, module) {
@@ -116,7 +111,8 @@ define(function (require, exports, module) {
             .registerProvider.bind(_providerRegistrationHandler),
         removeBeautificationProvider = _providerRegistrationHandler
             .removeProvider.bind(_providerRegistrationHandler),
-        beautifyCommand;
+        beautifyCommand,
+        beautifyOnSaveCommand;
 
     function _getEnabledProviders(editor) {
         let filepath = editor.document.file.fullPath;
@@ -161,9 +157,12 @@ define(function (require, exports, module) {
             }
         } else {
             if(editor.document.getRange({line: 0, ch: 0}, editor.getEndingCursorPos()) !== beautyObject.changedText){
+                let cursor = editor.getCursorPos();
                 editor.replaceRange(beautyObject.changedText, {line: 0, ch: 0}, editor.getEndingCursorPos());
-                let cursor = editor.posFromIndex(beautyObject.cursorIndex);
                 editor.setCursorPos(cursor.line, cursor.ch);
+                // this cursor is not accurate. Trying to place this accurately is taking time,
+                // tried diff parsing which worked, but parser taking lots of time to complete, diff parsing line wise
+                // was giving better results but couldn't make it consistent.
             }
         }
     }
@@ -194,22 +193,41 @@ define(function (require, exports, module) {
 
     function _prettifyOnSave(_evt, doc) {
         let editor = EditorManager.getActiveEditor();
-        if(!editor || editor.document.file.fullPath !== doc.file.fullPath){
+        if(!_isBeautifyOnSaveEnabled() || !editor || editor.document.file.fullPath !== doc.file.fullPath){
             return;
         }
         editor.clearSelection();
         _prettify();
     }
 
+    function _isBeautifyOnSaveEnabled() {
+        return localStorage.getItem("BeautifyOnSave") === "true";
+    }
+
+    function _toggleBeautifyOnSave() {
+        let beautifyOnSave = _isBeautifyOnSaveEnabled();
+        localStorage.setItem("BeautifyOnSave", `${!beautifyOnSave}`);
+        beautifyOnSaveCommand.setChecked(!beautifyOnSave);
+    }
+
     AppInit.appReady(function () {
-        beautifyCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE, Commands.EDIT_BEAUTIFY_CODE, ()=>{
-            _prettify();
-        });
+        beautifyCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE,
+            Commands.EDIT_BEAUTIFY_CODE, ()=>{
+                _prettify();
+            });
+        beautifyOnSaveCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE_ON_SAVE,
+            Commands.EDIT_BEAUTIFY_CODE_ON_SAVE, ()=>{
+                _toggleBeautifyOnSave();
+            });
         let editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
         editMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "");
+        editMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE_ON_SAVE, "");
 
         let editorContextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
         editorContextMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "", Menus.AFTER, Commands.EDIT_SELECT_ALL);
+        editorContextMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE_ON_SAVE, "",
+            Menus.AFTER, Commands.EDIT_BEAUTIFY_CODE);
+        beautifyOnSaveCommand.setChecked(_isBeautifyOnSaveEnabled());
         EditorManager.on("activeEditorChange", _onActiveEditorChange);
         DocumentManager.on('documentSaved.beautificationManager', _prettifyOnSave);
     });

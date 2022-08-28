@@ -242,15 +242,13 @@ define(function (require, exports, module) {
                     reject(error);
                 });
             } else {
-                prettierParams.cursorOffset = editor.indexFromPos(editor.getCursorPos());
                 ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
                     if(!response){
                         reject();
                         return;
                     }
                     resolve({
-                        changedText: response.text,
-                        cursorIndex: response.cursorOffset
+                        changedText: response.text
                     });
                 }).catch(err=>{
                     console.log("Could not prettify text", err);
