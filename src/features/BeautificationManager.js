@@ -74,20 +74,21 @@
  *                     replaceStart: {line,ch},
  *                     replaceEnd: {line,ch}
  *                 },
- *                 // optional cursorIndex enable `beautify on save feature` if provided.
+ *                 // optional cursorIndex if given will place cursor on given position.
  *                 cursorIndex: number
  *             });
  *         });
  *     };
  * ```
  *
- * #### The resoved promise object
+ * #### The resolved promise object
  * The resolved promise should either be `null`(indicating that the extension itself has prettified the code and
  * doesn't want any further processing from BeautificationManager.) or contain the following details:
  * 1. `changedText` - string, this should be the fully prettified text of the whole file or a fragment of pretty text
  *    if a range was selected.
  *    - If a range is returned, then the beautification manger will replace only the range with changed text in editor.
- *    - Providing optional `cursorIndex` will enable `beautify on save feature`.
+ *      range takes precedence over cursor index.
+ *    - optional cursorIndex if given will place cursor on given position.
  * 1. `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
  *    If range is not specified, the full text in the editor will be replaced. range has 2 fields:
  *    1. `replaceStart{line,ch}` - the start of range to replace
@@ -192,24 +193,12 @@ define(function (require, exports, module) {
     }
 
     function _prettifyOnSave(_evt, doc) {
-        // todo: add beautify on save feature and menu items/commands.
-        // let editor = EditorManager.getActiveEditor();
-        // if(!editor || editor.document.file.fullPath !== doc.file.fullPath){
-        //     return;
-        // }
-        // editor.clearSelection();
-        // _getBeautifiedCodeDetails(editor).then(beautyObject => {
-        //     if(!beautyObject || !beautyObject.changedText || !beautyObject.cursorIndex){
-        //         return;
-        //     }
-        //     editor.operation(function () {
-        //         _replaceText(editor, beautyObject);
-        //         let cursor = editor.posFromIndex(beautyObject.cursorIndex);
-        //         editor.setCursorPos(cursor.line, cursor.ch);
-        //     });
-        // }).catch(e=>{
-        //     console.log("No beautify providers responded for prettify on save", e);
-        // });
+        let editor = EditorManager.getActiveEditor();
+        if(!editor || editor.document.file.fullPath !== doc.file.fullPath){
+            return;
+        }
+        editor.clearSelection();
+        _prettify();
     }
 
     AppInit.appReady(function () {

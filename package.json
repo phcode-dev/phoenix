@@ -72,20 +72,20 @@
         "@highlightjs/cdn-assets": "^11.5.1",
         "@phcode/fs": "^1.0.17",
         "@pixelbrackets/gfm-stylesheet": "^1.1.0",
+        "@prettier/plugin-php": "0.18.9",
         "bootstrap": "^5.1.3",
         "browser-mime": "^1.0.1",
         "codemirror": "^5.65.7",
         "devicon": "^2.15.1",
+        "jshint": "^2.13.5",
         "jszip": "^3.7.1",
         "less": "^4.1.3",
+        "lodash": "^4.17.21",
         "marked": "^4.0.18",
         "mime-db": "^1.52.0",
-        "tern": "^0.24.3",
-        "underscore": "^1.13.4",
         "prettier": "^2.7.1",
-        "@prettier/plugin-php": "0.18.9",
-        "jshint": "^2.13.5",
-        "lodash": "^4.17.21",
-        "requirejs": "^2.3.6"
+        "requirejs": "^2.3.6",
+        "tern": "^0.24.3",
+        "underscore": "^1.13.4"
     }
 }
