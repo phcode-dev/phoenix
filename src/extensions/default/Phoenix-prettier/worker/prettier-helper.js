@@ -46,7 +46,7 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
         options.plugins= prettierPlugins;
         // options.cursorOffset this option doesnt work well and prettier.formatWithCursor is buggy causing hangs
         // unpredictably in worker thread. Hangs noted in large html, js and json files. test thoroughly before
-        // trying to implement again.
+        // trying to implement again. https://github.com/prettier/prettier/issues/13387
         options.rangeStart = options.rangeStart || 0;
         options.rangeEnd = options.rangeEnd || params.text.length;
         let prettyText = prettier.format(params.text, options);

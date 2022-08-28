@@ -192,24 +192,24 @@ define(function (require, exports, module) {
     }
 
     function _prettifyOnSave(_evt, doc) {
-        return;
-        let editor = EditorManager.getActiveEditor();
-        if(!editor || editor.document.file.fullPath !== doc.file.fullPath){
-            return;
-        }
-        editor.clearSelection();
-        _getBeautifiedCodeDetails(editor).then(beautyObject => {
-            if(!beautyObject || !beautyObject.changedText || !beautyObject.cursorIndex){
-                return;
-            }
-            editor.operation(function () {
-                _replaceText(editor, beautyObject);
-                let cursor = editor.posFromIndex(beautyObject.cursorIndex);
-                editor.setCursorPos(cursor.line, cursor.ch);
-            });
-        }).catch(e=>{
-            console.log("No beautify providers responded for prettify on save", e);
-        });
+        // todo: add beautify on save feature and menu items/commands.
+        // let editor = EditorManager.getActiveEditor();
+        // if(!editor || editor.document.file.fullPath !== doc.file.fullPath){
+        //     return;
+        // }
+        // editor.clearSelection();
+        // _getBeautifiedCodeDetails(editor).then(beautyObject => {
+        //     if(!beautyObject || !beautyObject.changedText || !beautyObject.cursorIndex){
+        //         return;
+        //     }
+        //     editor.operation(function () {
+        //         _replaceText(editor, beautyObject);
+        //         let cursor = editor.posFromIndex(beautyObject.cursorIndex);
+        //         editor.setCursorPos(cursor.line, cursor.ch);
+        //     });
+        // }).catch(e=>{
+        //     console.log("No beautify providers responded for prettify on save", e);
+        // });
     }
 
     AppInit.appReady(function () {
