@@ -18,7 +18,7 @@
  *
  */
 
-/*global Phoenix, WorkerComm, prettier, prettierPlugins*/
+/*global Phoenix, WorkerComm, prettier, prettierPlugins, FastDiff, Diff*/
 
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/standalone.js`);
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-babel.js`);
@@ -50,6 +50,12 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
         options.rangeStart = options.rangeStart || 0;
         options.rangeEnd = options.rangeEnd || params.text.length;
         let prettyText = prettier.format(params.text, options);
+        if(params.cursorOffset){
+            return {
+                text: prettyText,
+                cursorOffset: params.cursorOffset
+            };
+        }
         return _identifyChangedRange(params.text, prettyText, options.rangeStart, options.rangeEnd);
     }
 
