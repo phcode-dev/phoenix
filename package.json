@@ -15,7 +15,6 @@
     "devDependencies": {
         "@commitlint/cli": "^16.0.2",
         "@commitlint/config-conventional": "^16.0.0",
-        "@prettier/plugin-php": "0.18.9",
         "aws-sdk": "^2.1155.0",
         "del": "^6.0.0",
         "documentation": "^13.2.5",
@@ -37,11 +36,7 @@
         "husky": "^7.0.4",
         "jasmine-core": "^4.2.0",
         "jasmine-reporters": "^2.5.0",
-        "jshint": "^2.13.5",
-        "lodash": "^4.17.21",
-        "prettier": "^2.7.1",
         "readable-stream": "^3.6.0",
-        "requirejs": "^2.3.6",
         "through2": "^4.0.2"
     },
     "scripts": {
@@ -86,6 +81,11 @@
         "marked": "^4.0.18",
         "mime-db": "^1.52.0",
         "tern": "^0.24.3",
-        "underscore": "^1.13.4"
+        "underscore": "^1.13.4",
+        "prettier": "^2.7.1",
+        "@prettier/plugin-php": "0.18.9",
+        "jshint": "^2.13.5",
+        "lodash": "^4.17.21",
+        "requirejs": "^2.3.6"
     }
 }

@@ -100,12 +100,14 @@ define(function (require, exports, module) {
 
     const Commands = require("command/Commands"),
         Strings = require("strings"),
+        StringUtils = require("utils/StringUtils"),
         AppInit = require("utils/AppInit"),
         CommandManager = require("command/CommandManager"),
         LanguageManager = require("language/LanguageManager"),
         Menus = require("command/Menus"),
         EditorManager = require("editor/EditorManager"),
         DocumentManager = require("document/DocumentManager"),
+        ProjectManager = require("project/ProjectManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     let _providerRegistrationHandler = new ProviderRegistrationHandler(),
@@ -158,8 +160,9 @@ define(function (require, exports, module) {
             }
         } else {
             if(editor.document.getRange({line: 0, ch: 0}, editor.getEndingCursorPos()) !== beautyObject.changedText){
-                editor.setSelection({line: 0, ch: 0}, editor.getEndingCursorPos());
-                editor.replaceSelection(beautyObject.changedText, 'around');
+                editor.replaceRange(beautyObject.changedText, {line: 0, ch: 0}, editor.getEndingCursorPos());
+                let cursor = editor.posFromIndex(beautyObject.cursorIndex);
+                editor.setCursorPos(cursor.line, cursor.ch);
             }
         }
     }
@@ -169,6 +172,8 @@ define(function (require, exports, module) {
         if(!editor){
             return;
         }
+        let busyMessage = StringUtils.format(Strings.BEAUTIFY_PROJECT_BUSY_MESSAGE, editor.getFile().name);
+        ProjectManager.setProjectBusy(true, busyMessage);
         _getBeautifiedCodeDetails(editor).then(beautyObject => {
             if(!beautyObject || !beautyObject.changedText){
                 return;
@@ -176,14 +181,18 @@ define(function (require, exports, module) {
             editor.operation(function () {
                 _replaceText(editor, beautyObject);
             });
+            ProjectManager.setProjectBusy(false, busyMessage);
+            console.log("Beautified");
         }).catch(e=>{
             let message = editor.hasSelection() ? Strings.BEAUTIFY_ERROR_SELECTION : Strings.BEAUTIFY_ERROR;
             editor.displayErrorMessageAtCursor(message);
+            ProjectManager.setProjectBusy(false, busyMessage);
             console.log("No beautify providers responded", e);
         });
     }
 
     function _prettifyOnSave(_evt, doc) {
+        return;
         let editor = EditorManager.getActiveEditor();
         if(!editor || editor.document.file.fullPath !== doc.file.fullPath){
             return;

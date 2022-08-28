@@ -54,11 +54,14 @@ the beautified code details or rejects if there is nothing to beautify for the p
 provider.beautify = function(editor) {
         return new Promise((resolve, reject)=>{
             resolve({
-                changedText: "partial or full text that changed. If partial, specify the range options below",
+                changedText: "partial or full text that changed.",
+                // Optional: If range is specified, only the given range will be replaced. else full text is replaced
                 ranges:{
                     replaceStart: {line,ch},
                     replaceEnd: {line,ch}
-                }
+                },
+                // optional cursorIndex enable `beautify on save feature` if provided.
+                cursorIndex: number
             });
         });
     };
@@ -66,13 +69,15 @@ provider.beautify = function(editor) {
 
 #### The resoved promise object
 
-The resolved promise should contain the following details:
+The resolved promise should either be `null`(indicating that the extension itself has prettified the code and
+doesn't want any further processing from BeautificationManager.) or contain the following details:
 
-1.  changedText - string, this should be the fully prettified text of the whole file or a fragment of pretty text
-    if a range was selected. If a range is selected, then the resolved object must contain a ranges attribute.
-    This may also be null if the extension itself has prettified the code and doesn't want
-    any further processing from BeautificationManager.
-2.  ranges - is a set of 2 cursors that gives details on what range to replace with given changed text
-    it has 4 fields:
-    1.  replaceStart - the start of range to replace
-    2.  replaceEnd - the end of range to replace
+1.  `changedText` - string, this should be the fully prettified text of the whole file or a fragment of pretty text
+    if a range was selected.
+    *   If a range is returned, then the beautification manger will replace only the range with changed text in editor.
+    *   Providing optional `cursorIndex` will enable `beautify on save feature`.
+2.  `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
+    If range is not specified, the full text in the editor will be replaced. range has 2 fields:
+    1.  `replaceStart{line,ch}` - the start of range to replace
+    2.  `replaceEnd{line,ch}` - the end of range to replace
+3.  `cursorIndex{number}` - Where to place the cursor after the text is replaced in editor. Note: this is number offset.
