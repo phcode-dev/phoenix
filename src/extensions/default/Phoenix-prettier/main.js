@@ -46,8 +46,7 @@
 
 define(function (require, exports, module) {
 
-    const ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        AppInit = brackets.getModule("utils/AppInit"),
+    const AppInit = brackets.getModule("utils/AppInit"),
         Strings = brackets.getModule("strings"),
         FileUtils  = brackets.getModule("file/FileUtils"),
         LanguageManager = brackets.getModule("language/LanguageManager"),
@@ -132,40 +131,6 @@ define(function (require, exports, module) {
         gfm: "markdown",
         yaml: "yaml"
     };
-
-    function _trySelectionWithFullText(editor, prettierParams) {
-        return new Promise((resolve, reject)=>{
-            console.log("beautifying selection with full text");
-            let selection = editor.getSelection();
-            prettierParams.options.rangeStart = editor.indexFromPos(selection.start);
-            prettierParams.options.rangeEnd = editor.indexFromPos(selection.end);
-
-            // fix prettier bug where it was not prettifying if something starts with comment
-            let token = editor.getToken(selection.start);
-            while(token && (token.type === null || token.type === "comment")){
-                token = editor.getNextToken({line: token.line, ch: token.end});
-            }
-            let tokensIndex = editor.indexFromPos({line: token.line, ch: token.start});
-            if(tokensIndex> prettierParams.options.rangeStart
-                && tokensIndex < prettierParams.options.rangeEnd){
-                prettierParams.options.rangeStart = tokensIndex;
-            }
-
-            ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
-                if(!response || prettierParams.text === response.text){
-                    reject();
-                    return;
-                }
-                resolve({
-                    changedText: response.changedText,
-                    ranges: {
-                        replaceStart: editor.posFromIndex(response.rangeStart),
-                        replaceEnd: editor.posFromIndex(response.rangeEndInOldText)
-                    }
-                });
-            }).catch(reject);
-        });
-    }
 
     function _computePaddingForSelection(selectionLineText, chToStart) {
         let trimmedLine = selectionLineText.trim();
@@ -272,28 +237,28 @@ define(function (require, exports, module) {
                 options: options
             };
             if(editor.hasSelection()){
-                _trySelectionWithPartialText(editor, _clone(prettierParams)).then(resolve).catch(function () {
-                    _trySelectionWithFullText(editor, prettierParams).then(resolve).catch(error=>{
-                        console.error("Could not prettify selection", error);
-                        reject(error);
-                    });
+                _trySelectionWithPartialText(editor, _clone(prettierParams)).then(resolve).catch(error=>{
+                    console.log("Could not prettify selection", error);
+                    reject(error);
                 });
             } else {
+                prettierParams.cursorOffset = editor.indexFromPos(editor.getCursorPos());
                 ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
-                    if(!response || prettierParams.text === response.text){
+                    if(!response){
                         reject();
                         return;
                     }
-                    resolve({changedText: response.text});
+                    resolve({
+                        changedText: response.text,
+                        cursorIndex: response.cursorOffset
+                    });
                 }).catch(err=>{
-                    console.error("Could not prettify", err);
+                    console.log("Could not prettify text", err);
                     reject(err);
                 });
             }
         });
     }
-
-    ExtensionUtils.loadStyleSheet(module, "prettier.css");
 
     let loadedPlugins = {};
     function _loadPlugins(languageId) {

@@ -1368,8 +1368,8 @@ define(function (require, exports, module) {
             projectBusyMessages.push(message);
         } else{
             _numPendingOperations--;
-            console.log(projectBusyMessages);
-            console.log("removing: ", message);
+            console.log("ProjectBusy marked by: ", projectBusyMessages);
+            console.log("removing busy status: ", message);
             const index = projectBusyMessages.indexOf(message);
             if (index > -1) {
                 // can't use array.filter here as it will filter all similar messages like ["copy","copy"]

@@ -2322,6 +2322,19 @@ define(function (require, exports, module) {
                 expect(mark.length).toBe(0);
             });
 
+            it("should setBookmark without options and cursor", function () {
+                let markType = "mark5";
+                myEditor.setCursorPos(0, 3);
+                myEditor.setBookmark(markType);
+                let mark = myEditor.findMarksAt({line: 0, ch: 3});
+                expect(mark.length).toBe(1);
+                expect(mark[0].markType).toBe(markType);
+                expect(mark[0].type).toBe("bookmark");
+
+                mark = myEditor.findMarksAt({line: 0, ch: 1});
+                expect(mark.length).toBe(0);
+            });
+
             it("should findMarksAt get bookmarks and range marks", function () {
                 let markType = "mark6";
                 myEditor.setBookmark(markType, {line: 0, ch: 3});
