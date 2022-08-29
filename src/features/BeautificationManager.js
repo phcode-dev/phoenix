@@ -196,20 +196,42 @@ define(function (require, exports, module) {
         }
     }
 
-    function _prettify() {
+    /**
+     * Beautifies text in the given editor with available providers.
+     * @param editor
+     * @return {Promise} - A promise that will be resolved to null if the selected text is beautified or rejects
+     * if beautification failed.
+     * @type {function}
+     */
+    function beautifyEditor(editor){
+        return new Promise((resolve, reject)=>{
+            if(!editor){
+                reject();
+                return;
+            }
+            _getBeautifiedCodeDetails(editor).then(beautyObject => {
+                if(!beautyObject || !beautyObject.changedText){
+                    reject();
+                    return;
+                }
+                editor.operation(function () {
+                    _replaceText(editor, beautyObject);
+                    resolve();
+                });
+            }).catch(e => {
+                reject(e);
+            });
+        });
+    }
+
+    function _beautifyCommand() {
         let editor = EditorManager.getActiveEditor();
         if(!editor){
             return;
         }
         let busyMessage = StringUtils.format(Strings.BEAUTIFY_PROJECT_BUSY_MESSAGE, editor.getFile().name);
         ProjectManager.setProjectBusy(true, busyMessage);
-        _getBeautifiedCodeDetails(editor).then(beautyObject => {
-            if(!beautyObject || !beautyObject.changedText){
-                return;
-            }
-            editor.operation(function () {
-                _replaceText(editor, beautyObject);
-            });
+        beautifyEditor(editor).then( () => {
             ProjectManager.setProjectBusy(false, busyMessage);
             console.log("Beautified");
         }).catch(e=>{
@@ -220,13 +242,13 @@ define(function (require, exports, module) {
         });
     }
 
-    function _prettifyOnSave(_evt, doc) {
+    function _beautifyOnSave(_evt, doc) {
         let editor = EditorManager.getActiveEditor();
         if(!_isBeautifyOnSaveEnabled() || !editor || editor.document.file.fullPath !== doc.file.fullPath){
             return;
         }
         editor.clearSelection();
-        _prettify();
+        _beautifyCommand();
     }
 
     function _isBeautifyOnSaveEnabled() {
@@ -242,7 +264,7 @@ define(function (require, exports, module) {
     AppInit.appReady(function () {
         beautifyCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE,
             Commands.EDIT_BEAUTIFY_CODE, ()=>{
-                _prettify();
+                _beautifyCommand();
             });
         beautifyOnSaveCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE_ON_SAVE,
             Commands.EDIT_BEAUTIFY_CODE_ON_SAVE, ()=>{
@@ -256,7 +278,7 @@ define(function (require, exports, module) {
         editorContextMenu.addMenuItem(Commands.EDIT_BEAUTIFY_CODE, "", Menus.AFTER, Commands.EDIT_SELECT_ALL);
         beautifyOnSaveCommand.setChecked(_isBeautifyOnSaveEnabled());
         EditorManager.on("activeEditorChange", _onActiveEditorChange);
-        DocumentManager.on('documentSaved.beautificationManager', _prettifyOnSave);
+        DocumentManager.on('documentSaved.beautificationManager', _beautifyOnSave);
     });
 
     exports.registerBeautificationProvider = registerBeautificationProvider;
