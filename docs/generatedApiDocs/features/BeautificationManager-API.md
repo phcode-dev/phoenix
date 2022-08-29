@@ -18,7 +18,7 @@ BeautificationManager.registerBeautificationProvider(provider, supportedLanguage
 
 The API requires three parameters:
 
-1.  `provider`: must implement a  `beautify` function which will be invoked to beautify code in editor. See doc below.
+1.  `provider`: must implement a  `beautifyEditorProvider` and `beautifyTextProvider` function. See doc below:
 2.  `supportedLanguages`: An array of languages that the provider supports. If `["all"]` is supplied, then the
     provider will be invoked for all languages. Restrict to specific languages: Eg: `["javascript", "html", "php"]`
 3.  `priority`: Used to break ties among providers for a particular language. Providers with a higher number
@@ -26,7 +26,7 @@ The API requires three parameters:
 
 ```js
 // to register a provider that will be invoked for all languages. where provider is any object that implements
-// a beautify function
+// a `beautifyEditorProvider` and `beautifyTextProvider` function
 BeautificationManager.registerBeautificationProvider(provider, ["all"]);
 
 // to register a provider that will be invoked for specific languages
@@ -44,14 +44,14 @@ BeautificationManager.removeBeautificationProvider(provider, supportedLanguages)
 BeautificationManager.removeBeautificationProvider(provider, ["javascript", "html"]);
 ```
 
-### beautify
+### provider.beautifyEditorProvider
 
-Each provider must implement the `beautify` function that returns a promise. The promise either resolves with
+Each provider must implement the `beautifyEditorProvider` function that returns a promise. The promise either resolves with
 the beautified code details or rejects if there is nothing to beautify for the provider.
 
 ```js
 // function signature
-provider.beautify = function(editor) {
+provider.beautifyEditorProvider = function(editor) {
         return new Promise((resolve, reject)=>{
             resolve({
                 changedText: "partial or full text that changed.",
@@ -77,3 +77,54 @@ doesn't want any further processing from BeautificationManager.) or contain the 
     If range is not specified, the full text in the editor will be replaced. range has 2 fields:
     1.  `replaceStart{line,ch}` - the start of range to replace
     2.  `replaceEnd{line,ch}` - the end of range to replace
+
+### provider.beautifyTextProvider
+
+Each provider must implement the `beautifyTextProvider` function that returns a promise.
+The promise either resolves with the beautified code details(same as beautifyEditorProvider) or rejects if
+there is nothing to beautify for the provider.
+
+```js
+// function signature.
+provider.beautifyTextProvider = function(textToBeautify, filePathOrFileName) {
+        return new Promise((resolve, reject)=>{
+            resolve({
+                changedText: "partial or full text that changed.",
+                // Optional: If range is specified, only the given range is assumed changed. else full text changed.
+                ranges:{
+                    replaceStart: {line,ch},
+                    replaceEnd: {line,ch}
+                }
+            });
+        });
+    };
+```
+
+#### Parameters
+
+The `beautifyTextProvider` callback will receive the following arguments.
+
+1.  textToBeautify - string
+2.  filePathOrFileName - string. This will either be a valid file path, or a file name to deduce which language the
+    beautifier is dealing with.
+
+#### The resolved promise object
+
+The resolved object takes the same structure as beautifyEditorProvider
+
+## beautifyEditor
+
+Beautifies text in the given editor with available providers.
+
+Type: [function][1]
+
+### Parameters
+
+*   `editor`  
+
+Returns **[Promise][2]** A promise that will be resolved to null if the selected text is beautified or rejects
+if beautification failed.
+
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
