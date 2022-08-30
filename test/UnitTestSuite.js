@@ -98,6 +98,7 @@ define(function (require, exports, module) {
     require("spec/FindInFiles-integ-test");
     require("spec/QuickViewManager-test");
     require("spec/SelectionViewManager-test");
+    require("spec/BeautificationManager-test");
     // todo TEST_MODERN
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
     // require("spec/ExtensionInstallation-test"); To Remove after new extension manager framework

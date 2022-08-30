@@ -42,7 +42,7 @@ define(function (require, exports, module) {
         EDITOR_SPACE_UNITS      = 4,
         OPEN_TAG                = "{{",
         RE_MARKER               = /\{\{(\d+)\}\}/g,
-        absPathPrefix           = (brackets.platform === "win" ? "c:/" : "/"),
+        absPathPrefix           = "/",
         _testSuites             = {},
         _testWindow,
         _doLoadExtensions,
@@ -443,11 +443,12 @@ define(function (require, exports, module) {
      * @param {string=} initialContent
      * @param {string=} languageId
      * @param {{startLine: number, endLine: number}=} visibleRange
+     * @param {{filename:string}} options
      * @return {!{doc:!Document, editor:!Editor}}
      */
-    function createMockEditor(initialContent, languageId, visibleRange) {
+    function createMockEditor(initialContent, languageId, visibleRange, options={}) {
         // create dummy Document, then Editor tied to it
-        var doc = createMockDocument(initialContent, languageId);
+        var doc = createMockDocument(initialContent, languageId, options.filename);
         return { doc: doc, editor: createMockEditorForDocument(doc, visibleRange) };
     }
 

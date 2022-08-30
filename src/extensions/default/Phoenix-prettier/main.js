@@ -189,6 +189,7 @@ define(function (require, exports, module) {
                 selectionLineText = editor.document.getLine(selection.start.line);
             let {padding, firstLinePadding} = _computePaddingForSelection(selectionLineText, selection.start.ch);
             _adjustPrintWidthOption(prettierParams, padding);
+            let originalText = editor.document.getText();
             prettierParams.text = editor.getSelectedText();
             ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
                 if(!response || !response.text){
@@ -196,6 +197,7 @@ define(function (require, exports, module) {
                     return;
                 }
                 resolve({
+                    originalText: originalText,
                     changedText: _fixTabs(response.text, padding, firstLinePadding),
                     ranges: {
                         replaceStart: selection.start,
@@ -210,7 +212,7 @@ define(function (require, exports, module) {
         return Object.assign({}, obj);
     }
 
-    function beautify(editor) {
+    function beautifyEditorProvider(editor) {
         return new Promise((resolve, reject)=>{
             let filepath = editor.document.file.fullPath;
             let languageId = LanguageManager.getLanguageForPath(filepath).getId();
@@ -248,6 +250,7 @@ define(function (require, exports, module) {
                         return;
                     }
                     resolve({
+                        originalText: prettierParams.text,
                         changedText: response.text
                     });
                 }).catch(err=>{
@@ -273,7 +276,41 @@ define(function (require, exports, module) {
         BeautificationManager.registerBeautificationProvider(exports, Object.keys(parsersForLanguage));
     });
 
-    exports.beautify = beautify;
+    function beautifyTextProvider(textToBeautify, filePathOrFileName) {
+        return new Promise((resolve, reject)=>{
+            let languageId = LanguageManager.getLanguageForPath(filePathOrFileName).getId();
+            _loadPlugins(languageId);
+            console.log("Beautifying text with language id: ", languageId);
+            let options = prefs.get("options");
+            let indentWithTabs = Editor.getUseTabChar(filePathOrFileName);
+            Object.assign(options, {
+                parser: parsersForLanguage[languageId],
+                tabWidth: indentWithTabs ? Editor.getTabSize() : Editor.getSpaceUnits(),
+                useTabs: indentWithTabs,
+                filepath: filePathOrFileName
+            });
+            let prettierParams ={
+                text: textToBeautify,
+                options: options
+            };
+            ExtensionsWorker.execPeer("prettify", prettierParams).then(response => {
+                if(!response){
+                    reject();
+                    return;
+                }
+                resolve({
+                    originalText: textToBeautify,
+                    changedText: response.text
+                });
+            }).catch(err=>{
+                console.log("Could not prettify text", err);
+                reject(err);
+            });
+        });
+    }
+
+    exports.beautifyEditorProvider = beautifyEditorProvider;
+    exports.beautifyTextProvider = beautifyTextProvider;
 });
 
 
