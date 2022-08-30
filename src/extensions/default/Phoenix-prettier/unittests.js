@@ -226,6 +226,14 @@ define(function (require, exports, module) {
                 expect(testEditor.document.getText()).toBe(lessPrettyFile);
             });
 
+            it("should beautify editor for scss", async function () {
+                createMockEditor("body{$font-stack: Helvetica, sans-serif;}", "scss", "/test.scss");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe("body {\n" +
+                    "    $font-stack: Helvetica, sans-serif;\n" +
+                    "}\n");
+            });
+
             it("should beautify editor for json", async function () {
                 createMockEditor(jsonFile, "json", "/test.json");
                 await BeautificationManager.beautifyEditor(testEditor);
