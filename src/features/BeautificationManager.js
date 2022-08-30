@@ -134,9 +134,11 @@ define(function (require, exports, module) {
         EditorManager = require("editor/EditorManager"),
         DocumentManager = require("document/DocumentManager"),
         ProjectManager = require("project/ProjectManager"),
+        PreferencesManager = require("preferences/PreferencesManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
-    const FAILED_EDITOR_TEXT_CHANGED = "Beautify failed- editorTextChanged";
+    const PREFERENCES_BEAUTIFY_ON_SAVE = "BeautifyOnSave",
+        FAILED_EDITOR_TEXT_CHANGED = "Beautify failed- editorTextChanged";
 
     let _providerRegistrationHandler = new ProviderRegistrationHandler(),
         registerBeautificationProvider = _providerRegistrationHandler
@@ -312,12 +314,13 @@ define(function (require, exports, module) {
     }
 
     function _isBeautifyOnSaveEnabled() {
-        return localStorage.getItem("BeautifyOnSave") === "true";
+        return PreferencesManager.getViewState(PREFERENCES_BEAUTIFY_ON_SAVE) === "true";
     }
 
     function _toggleBeautifyOnSave() {
         let beautifyOnSave = _isBeautifyOnSaveEnabled();
-        localStorage.setItem("BeautifyOnSave", `${!beautifyOnSave}`);
+
+        PreferencesManager.setViewState(PREFERENCES_BEAUTIFY_ON_SAVE, `${!beautifyOnSave}`);
         beautifyOnSaveCommand.setChecked(!beautifyOnSave);
     }
 
