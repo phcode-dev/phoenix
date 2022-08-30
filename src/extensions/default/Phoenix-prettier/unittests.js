@@ -44,7 +44,11 @@ define(function (require, exports, module) {
         htmlPrettySingleSpace = require("text!./test-files/html/test-pretty-single-space.html"),
         htmlPrettyTabs = require("text!./test-files/html/test-pretty-tabs.txt");
 
-    describe("unit: Phoenix Prettier", function () {
+    const cssFile = require("text!./test-files/css/test.css"),
+        cssPrettyFile = require("text!./test-files/css/test-pretty.css"),
+        cssPrettySelection = require("text!./test-files/css/test-pretty-selection.css");
+
+    describe("extension: Phoenix Prettier", function () {
         let testEditor, testDocument;
 
         function createMockEditor(text, language, filename) {
@@ -160,6 +164,38 @@ define(function (require, exports, module) {
                     expect("should have not beautified").toBeFalsy();
                 } catch (e) {
                     expect(testEditor.document.getText()).toBe(htmlFile);
+                }
+            });
+        });
+
+        describe("CSS Beautify", function (){
+            afterEach(async function () {
+                SpecRunnerUtils.destroyMockEditor(testDocument);
+                Editor.setUseTabChar(false);
+                Editor.setSpaceUnits(4);
+            });
+
+            it("should beautify editor for css", async function () {
+                createMockEditor(cssFile, "css", "/test.css");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe(cssPrettyFile);
+            });
+
+            it("should beautify editor selection for css", async function () {
+                createMockEditor(cssFile, "css", "/test.css");
+                testEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 39});
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe(cssPrettySelection);
+            });
+
+            it("should not beautify editor on incomplete syntax selection for css", async function () {
+                createMockEditor(cssFile, "css", "/test.css");
+                testEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 10});
+                try{
+                    await BeautificationManager.beautifyEditor(testEditor);
+                    expect("should have not beautified").toBeFalsy();
+                } catch (e) {
+                    expect(testEditor.document.getText()).toBe(cssFile);
                 }
             });
         });
