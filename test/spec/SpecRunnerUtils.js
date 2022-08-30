@@ -446,7 +446,7 @@ define(function (require, exports, module) {
      * @param {{filename:string}} options
      * @return {!{doc:!Document, editor:!Editor}}
      */
-    function createMockEditor(initialContent, languageId, visibleRange, options) {
+    function createMockEditor(initialContent, languageId, visibleRange, options={}) {
         // create dummy Document, then Editor tied to it
         var doc = createMockDocument(initialContent, languageId, options.filename);
         return { doc: doc, editor: createMockEditorForDocument(doc, visibleRange) };
