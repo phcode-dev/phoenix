@@ -158,6 +158,7 @@ define(function (require, exports, module) {
     require("JSUtils/Session");
     require("JSUtils/ScopeManager");
     require("widgets/InlineMenu");
+    require("worker/ExtensionsWorker");
 
     // Load modules that self-register and just need to get included in the test-runner window
     require("document/ChangedDocumentTracker");
