@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, awaitsForDone*/
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone*/
 
 define(function (require, exports, module) {
 
@@ -30,12 +30,15 @@ define(function (require, exports, module) {
         BeautificationManager = require("features/BeautificationManager");
 
     describe("unit: BeautificationManager", function () {
-        let providerRangesOverride;
+        let providerRangesOverride, rejectOverride;
 
         function getProvider(changedText, ranges) {
             return {
-                beautifyTextProvider: function (textToBeautify, filePathOrFileName) {
+                beautifyTextProvider: function (textToBeautify) {
                     return new Promise((resolve, reject) => {
+                        if(rejectOverride){
+                            reject(rejectOverride);
+                        }
                         resolve({
                             originalText: textToBeautify,
                             changedText: changedText
@@ -44,6 +47,9 @@ define(function (require, exports, module) {
                 },
                 beautifyEditorProvider: function (editor) {
                     return new Promise((resolve, reject) => {
+                        if(rejectOverride){
+                            reject(rejectOverride);
+                        }
                         resolve({
                             originalText: editor.document.getText(),
                             changedText: changedText,
@@ -118,6 +124,20 @@ define(function (require, exports, module) {
             } catch (e) {
                 expect(e).toBeDefined();
             }
+        });
+
+        it("should not beautify editor if provider rejects", async function () {
+            BeautificationManager.registerBeautificationProvider(provider, ["csharp"]);
+            rejectOverride = true;
+            expect(testEditor.document.getText()).toBe("csharp code");
+            try {
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect("should not beautify editor reach here").toBeFalsy();
+            } catch (e) {
+                expect(e).toBeDefined();
+            }
+            BeautificationManager.removeBeautificationProvider(provider, ["csharp"]);
+            rejectOverride = false;
         });
 
         it("should beautify editor only replace range if provider returns range", async function () {
