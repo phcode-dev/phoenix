@@ -728,7 +728,10 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_SHOW_PERF_DATA,            DEBUG_SHOW_PERF_DATA,            handleShowPerfData);
 
-    CommandManager.register(Strings.CMD_SWITCH_LANGUAGE,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage);
+    let switchLanguageStr = Strings.CMD_SWITCH_LANGUAGE === "Switch Language" ?
+        Strings.CMD_SWITCH_LANGUAGE :
+        `${Strings.CMD_SWITCH_LANGUAGE} (Switch Language)`;
+    CommandManager.register(switchLanguageStr,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage);
 
     CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
     CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
