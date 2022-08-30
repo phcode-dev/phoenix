@@ -287,7 +287,7 @@ define(function (require, exports, module) {
      * Convenience function that gets a view state
      *
      * @param {string} id preference to get
-     * @param {?Object} context Optional additional information about the request
+     * @param {Object} [context] Optional additional information about the request
      */
     function getViewState(id, context) {
         return PreferencesImpl.stateManager.get(id, context);
@@ -298,8 +298,8 @@ define(function (require, exports, module) {
      *
      * @param {string} id preference to set
      * @param {*} value new value for the preference
-     * @param {?Object} context Optional additional information about the request
-     * @param {boolean=} doNotSave If it is undefined or false, then save the
+     * @param {Object} [context] Optional additional information about the request
+     * @param {boolean} [doNotSave] If it is undefined or false, then save the
      *      view state immediately.
      */
     function setViewState(id, value, context, doNotSave) {

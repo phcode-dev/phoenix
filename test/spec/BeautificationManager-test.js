@@ -169,5 +169,14 @@ define(function (require, exports, module) {
             expect(cursor).toEql({line: 0, ch: 3, sticky: null});
             BeautificationManager.removeBeautificationProvider(provider, ["csharp"]);
         });
+
+        it("should toggle beautify editor on save", async function () {
+            let beautifyOnSaveCmd = CommandManager.get(Commands.EDIT_BEAUTIFY_CODE_ON_SAVE);
+            let initialState = !!beautifyOnSaveCmd.getChecked();
+            await awaitsForDone(CommandManager.execute(Commands.EDIT_BEAUTIFY_CODE_ON_SAVE), "beautify on save");
+            expect(beautifyOnSaveCmd.getChecked()).toBe(!initialState);
+            await awaitsForDone(CommandManager.execute(Commands.EDIT_BEAUTIFY_CODE_ON_SAVE), "beautify on save");
+            expect(beautifyOnSaveCmd.getChecked()).toBe(initialState);
+        });
     });
 });
