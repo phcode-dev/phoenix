@@ -91,18 +91,18 @@ define(function (require, exports, module) {
 
         it("should register and unregister beautifier honor priority", async function () {
             let provider1 = getProvider("priority1");
-            BeautificationManager.registerBeautificationProvider(provider, ["javascript"]);
-            BeautificationManager.registerBeautificationProvider(provider1, ["javascript"], 1);
-            let beauty = await BeautificationManager.beautifyText("console.log();", "test.js");
+            BeautificationManager.registerBeautificationProvider(provider, ["csharp"]);
+            BeautificationManager.registerBeautificationProvider(provider1, ["csharp"], 1);
+            let beauty = await BeautificationManager.beautifyText("console.log();", "test.cs");
             expect(beauty.changedText).toBe("priority1");
 
-            BeautificationManager.removeBeautificationProvider(provider1, ["javascript"]);
-            beauty = await BeautificationManager.beautifyText("console.log();", "test.js");
+            BeautificationManager.removeBeautificationProvider(provider1, ["csharp"]);
+            beauty = await BeautificationManager.beautifyText("console.log();", "test.cs");
             expect(beauty.changedText).toBe("changedText");
 
-            BeautificationManager.removeBeautificationProvider(provider, ["javascript"]);
+            BeautificationManager.removeBeautificationProvider(provider, ["csharp"]);
             try {
-                await BeautificationManager.beautifyText("hello", "test.js");
+                await BeautificationManager.beautifyText("hello", "test.cs");
                 expect("should not beautify text reach here").toBeFalsy();
             } catch (e) {
                 expect(e).toBeDefined();
