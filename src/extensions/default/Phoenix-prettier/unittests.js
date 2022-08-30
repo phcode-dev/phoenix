@@ -48,6 +48,13 @@ define(function (require, exports, module) {
         cssPrettyFile = require("text!./test-files/css/test-pretty.css"),
         cssPrettySelection = require("text!./test-files/css/test-pretty-selection.css");
 
+    const mdFile = require("text!./test-files/test.md"),
+        mdPrettyFile = require("text!./test-files/test-pretty.md"),
+        lessFile = require("text!./test-files/test.less"),
+        lessPrettyFile = require("text!./test-files/test-pretty.less"),
+        jsonFile = require("text!./test-files/test.json"),
+        jsonPrettyFile = require("text!./test-files/test-pretty.json");
+
     describe("extension: Phoenix Prettier", function () {
         let testEditor, testDocument;
 
@@ -197,6 +204,73 @@ define(function (require, exports, module) {
                 } catch (e) {
                     expect(testEditor.document.getText()).toBe(cssFile);
                 }
+            });
+        });
+
+        describe("MD, less, json Beautify", function (){
+            afterEach(async function () {
+                SpecRunnerUtils.destroyMockEditor(testDocument);
+                Editor.setUseTabChar(false);
+                Editor.setSpaceUnits(4);
+            });
+
+            it("should beautify editor for markdown", async function () {
+                createMockEditor(mdFile, "css", "/test.md");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe(mdPrettyFile);
+            });
+
+            it("should beautify editor for less", async function () {
+                createMockEditor(lessFile, "less", "/test.less");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe(lessPrettyFile);
+            });
+
+            it("should beautify editor for json", async function () {
+                createMockEditor(jsonFile, "json", "/test.json");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe(jsonPrettyFile);
+            });
+
+            it("should beautify editor for xml", async function () {
+                createMockEditor("<a id='1'></a>", "xml", "/test.xml");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe('<a id="1"></a>\n');
+            });
+
+            it("should beautify editor for svg", async function () {
+                createMockEditor("<svg id='1'></svg>", "svg", "/test.svg");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe('<svg id="1"></svg>\n');
+            });
+
+            it("should beautify editor for yaml", async function () {
+                createMockEditor("x:\n y", "typescript", "/test.yaml");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe('x: y\n');
+            });
+
+            it("should beautify editor for jsx", async function () {
+                createMockEditor("const element = <h1>\nHello, {name}</h1>;", "jsx", "/test.jsx");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe('const element = <h1>Hello, {name}</h1>;\n');
+            });
+
+            it("should beautify editor for typescript", async function () {
+                createMockEditor("function x(){x;}", "typescript", "/test.ts");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe('function x() {\n' +
+                    '    x;\n' +
+                    '}\n');
+            });
+
+            it("should beautify editor for php", async function () {
+                createMockEditor("<?php\n" +
+                    "echo \"Hello World!\";\n" +
+                    "?> ", "php", "/test.php");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe("<?php\n" +
+                    "echo \"Hello World!\"; ?>  ?>");
             });
         });
     });
