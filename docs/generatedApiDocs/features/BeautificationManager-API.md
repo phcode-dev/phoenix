@@ -54,6 +54,7 @@ the beautified code details or rejects if there is nothing to beautify for the p
 provider.beautifyEditorProvider = function(editor) {
         return new Promise((resolve, reject)=>{
             resolve({
+                originalText: "the original text sent to beautify",
                 changedText: "partial or full text that changed.",
                 // Optional: If range is specified, only the given range will be replaced. else full text is replaced
                 ranges:{
@@ -70,10 +71,11 @@ provider.beautifyEditorProvider = function(editor) {
 The resolved promise should either be `null`(indicating that the extension itself has prettified the code and
 doesn't want any further processing from BeautificationManager.) or contain the following details:
 
-1.  `changedText` - string, this should be the fully prettified text of the whole file or a fragment of pretty text
-    if a range was selected.
-    *   If a range is returned, then the beautification manger will replace only the range with changed text in editor.
-2.  `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
+1.  `originalText` - string, the original text sent to beautify
+2.  `changedText` - string, this should be the fully prettified text of the whole `originalText` or a fragment of
+    pretty text in `originalText` if a range was selected. If a `fragment` is returned, then the
+    `ranges` object must be specified.
+3.  `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
     If range is not specified, the full text in the editor will be replaced. range has 2 fields:
     1.  `replaceStart{line,ch}` - the start of range to replace
     2.  `replaceEnd{line,ch}` - the end of range to replace
@@ -89,6 +91,7 @@ there is nothing to beautify for the provider.
 provider.beautifyTextProvider = function(textToBeautify, filePathOrFileName) {
         return new Promise((resolve, reject)=>{
             resolve({
+                originalText: "the original text sent to beautify",
                 changedText: "partial or full text that changed.",
                 // Optional: If range is specified, only the given range is assumed changed. else full text changed.
                 ranges:{
@@ -110,7 +113,7 @@ The `beautifyTextProvider` callback will receive the following arguments.
 
 #### The resolved promise object
 
-The resolved object takes the same structure as beautifyEditorProvider
+The resolved object has the same structure as beautifyEditorProvider resolved promise object.
 
 ## beautifyEditor
 
@@ -125,6 +128,28 @@ Type: [function][1]
 Returns **[Promise][2]** A promise that will be resolved to null if the selected text is beautified or rejects
 if beautification failed.
 
+## beautifyText
+
+Beautifies text in the given editor with available providers.
+
+Type: [function][1]
+
+### Parameters
+
+*   `textToBeautify` **[string][3]** 
+*   `filePathOrFileName` **[string][3]** Note that the file path may not actually exist on disk. It is just used to
+    infer what language beautifier is to be applied.
+
+Returns **[Promise][2]** A promise that will be resolved to null if the selected text is beautified or rejects
+if beautification failed..#### The resolved promise objectThe resolved promise object contain the following details:1.  `originalText` - string, the original text sent to beautify
+2.  `changedText` - string, the prettified text.
+3.  `ranges` - Optional. if range object is returned, it means that only a part of the original text changed in
+    the original text `textToBeautify`. The part that changed is supplied by two cursor positions below:
+    1.  `replaceStart{line,ch}` - the start of range to replace
+    2.  `replaceEnd{line,ch}` - the end of range to replace
+
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

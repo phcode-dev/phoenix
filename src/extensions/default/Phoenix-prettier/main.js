@@ -189,6 +189,7 @@ define(function (require, exports, module) {
                 selectionLineText = editor.document.getLine(selection.start.line);
             let {padding, firstLinePadding} = _computePaddingForSelection(selectionLineText, selection.start.ch);
             _adjustPrintWidthOption(prettierParams, padding);
+            let originalText = editor.document.getText();
             prettierParams.text = editor.getSelectedText();
             ExtensionsWorker.execPeer("prettify", prettierParams).then(response=>{
                 if(!response || !response.text){
@@ -196,6 +197,7 @@ define(function (require, exports, module) {
                     return;
                 }
                 resolve({
+                    originalText: originalText,
                     changedText: _fixTabs(response.text, padding, firstLinePadding),
                     ranges: {
                         replaceStart: selection.start,
@@ -248,6 +250,7 @@ define(function (require, exports, module) {
                         return;
                     }
                     resolve({
+                        originalText: prettierParams.text,
                         changedText: response.text
                     });
                 }).catch(err=>{
@@ -296,6 +299,7 @@ define(function (require, exports, module) {
                     return;
                 }
                 resolve({
+                    originalText: textToBeautify,
                     changedText: response.text
                 });
             }).catch(err=>{
