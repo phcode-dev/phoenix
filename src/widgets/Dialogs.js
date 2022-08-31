@@ -29,6 +29,7 @@ define(function (require, exports, module) {
 
     let KeyBindingManager = require("command/KeyBindingManager"),
         KeyEvent          = require("utils/KeyEvent"),
+        EditorManager     = require("editor/EditorManager"),
         Strings           = require("strings"),
         DialogTemplate    = require("text!htmlContent/dialog-template.html"),
         WorkspaceManager  = require("view/WorkspaceManager"),
@@ -60,6 +61,16 @@ define(function (require, exports, module) {
      */
     let zIndex = 1050;
 
+    function _isAnyDialogShown() {
+        let dialogueShown = false;
+        $(".modal" + ".instance").each(function () {
+            if ($(this).is(":visible")) {   // Bootstrap breaks if try to hide dialog that's already hidden
+                dialogueShown = true;
+            }
+        });
+        return dialogueShown;
+    }
+
     /**
      * @private
      * Dismises a modal dialog
@@ -69,6 +80,10 @@ define(function (require, exports, module) {
     function _dismissDialog($dlg, buttonId) {
         $dlg.data("buttonId", buttonId);
         $dlg.modal("hide");
+
+        if(!_isAnyDialogShown() && EditorManager.getActiveEditor()){
+            EditorManager.getActiveEditor().focus();
+        }
     }
 
     /**
@@ -421,13 +436,7 @@ define(function (require, exports, module) {
     }
 
     function _dontToggleWorkspacePanel() {
-        let dialogueShown = false;
-        $(".modal" + ".instance").each(function () {
-            if ($(this).is(":visible")) {   // Bootstrap breaks if try to hide dialog that's already hidden
-                dialogueShown = true;
-            }
-        });
-        return dialogueShown;
+        return _isAnyDialogShown();
     }
 
     AppInit.htmlReady(function () {
