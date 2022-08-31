@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Sulje sulkeet automaattisesti",
   "CMD_SHOW_CODE_HINTS": "Näytä koodivihjeet",
   "CMD_BEAUTIFY_CODE": "Kaunista Koodi",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Kaunistaa Koodi Tallenna",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Kaunista koodi tallennuksen jälkeen",
   "FIND_MENU": "Etsi",
   "CMD_FIND": "Etsi",
   "CMD_FIND_NEXT": "Etsi seuraava",

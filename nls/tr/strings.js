@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Parantezleri Otomatik Tamamla",
   "CMD_SHOW_CODE_HINTS": "Kod İpuçlarını Göster",
   "CMD_BEAUTIFY_CODE": "Kodu Güzelleştirin",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Kaydetme Kodu Güzelleştirin",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Kaydettikten Sonra Kodu Güzelleştirin",
   "FIND_MENU": "Bul",
   "CMD_FIND": "Bul",
   "CMD_FIND_NEXT": "Sonrakini Bul",

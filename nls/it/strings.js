@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Chiudi le parentesi automaticamente",
   "CMD_SHOW_CODE_HINTS": "Mostra suggerimenti",
   "CMD_BEAUTIFY_CODE": "Abbellisci codice",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Abbellisci il codice al salvataggio",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Abbellisci codice dopo il salvataggio",
   "FIND_MENU": "Cerca",
   "CMD_FIND": "Cerca",
   "CMD_FIND_NEXT": "Cerca il successivo",

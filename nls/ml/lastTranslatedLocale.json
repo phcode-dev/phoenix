@@ -295,7 +295,7 @@
   "CMD_TOGGLE_CLOSE_BRACKETS": "ഓട്ടോ അടയ്ക്കുക വലയം",
   "CMD_SHOW_CODE_HINTS": "കോഡ് സൂചനകൾ കാണിക്കുക",
   "CMD_BEAUTIFY_CODE": "ബ്യൂട്ടിഫൈ കോഡ്",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "സംരക്ഷിക്കുക ന് ഭംഗിയാക്കുക കോഡ്",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "സേവ് ചെയ്ത ശേഷം കോഡ് മനോഹരമാക്കുക",
   "FIND_MENU": "കണ്ടെത്തുക",
   "CMD_FIND": "കണ്ടെത്തുക",
   "CMD_FIND_NEXT": "അടുത്തത് കണ്ടെത്തുക",

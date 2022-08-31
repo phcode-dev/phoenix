@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Fermeture automatique des accolades",
   "CMD_SHOW_CODE_HINTS": "Afficher les indicateurs de code",
   "CMD_BEAUTIFY_CODE": "Code d'embellissement",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Beautify Code lors de la sauvegarde",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Embellissez le code après l'enregistrement",
   "FIND_MENU": "Rechercher",
   "CMD_FIND": "Rechercher",
   "CMD_FIND_NEXT": "Rechercher suivant",

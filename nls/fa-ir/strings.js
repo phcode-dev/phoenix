@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "پرانتزها را خودکار ببند",
   "CMD_SHOW_CODE_HINTS": "نمایش نکات کد",
   "CMD_BEAUTIFY_CODE": "زیباسازی کد",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "زیباسازی کد در ذخیره",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "زیباسازی کد پس از ذخیره",
   "FIND_MENU": "یافتن",
   "CMD_FIND": "یافتن",
   "CMD_FIND_NEXT": "یافتن بعدی",

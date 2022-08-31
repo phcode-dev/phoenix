@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Stäng parenteser automatiskt",
   "CMD_SHOW_CODE_HINTS": "Visa kodförslag",
   "CMD_BEAUTIFY_CODE": "Försköna kod",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Försköna kod på Spara",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Försköna kod efter spara",
   "FIND_MENU": "Sök",
   "CMD_FIND": "Sök",
   "CMD_FIND_NEXT": "Sök nästa",

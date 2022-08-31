@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "آٹو بند بریسیز",
   "CMD_SHOW_CODE_HINTS": "کوڈ اشارے دکھائیں",
   "CMD_BEAUTIFY_CODE": "کوڈ کو خوبصورت بنانا",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "محفوظ کرنے پر کوڈ کو خوبصورت",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "محفوظ کرنے کے بعد کوڈ کو خوبصورت بنانا",
   "FIND_MENU": "ڈھونڈیں",
   "CMD_FIND": "ڈھونڈیں",
   "CMD_FIND_NEXT": "اگلا تلاش کریں",

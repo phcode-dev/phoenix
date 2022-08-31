@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Автозакривання дужок",
   "CMD_SHOW_CODE_HINTS": "Показувати поради до коду",
   "CMD_BEAUTIFY_CODE": "Прикрасити код",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Прикрасити код на Зберегти",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Прикрасити код після збереження",
   "FIND_MENU": "Знайти",
   "CMD_FIND": "Знайти",
   "CMD_FIND_NEXT": "Знайти наступний",

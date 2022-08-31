@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Automatisch accolades sluiten",
   "CMD_SHOW_CODE_HINTS": "Toon code hints",
   "CMD_BEAUTIFY_CODE": "Code verfraaien",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Code verfraaien bij opslaan",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Verfraai de code na het opslaan",
   "FIND_MENU": "Zoek",
   "CMD_FIND": "Zoek",
   "CMD_FIND_NEXT": "Zoek volgende",

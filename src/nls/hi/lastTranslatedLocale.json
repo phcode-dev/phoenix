@@ -295,7 +295,7 @@
   "CMD_TOGGLE_CLOSE_BRACKETS": "ऑटो क्लोज ब्रेसेस",
   "CMD_SHOW_CODE_HINTS": "कोड संकेत दिखाएँ",
   "CMD_BEAUTIFY_CODE": "कोड सुशोभित करें",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "सेव पर कोड सुशोभित करें",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "सहेजने के बाद कोड सुशोभित करें",
   "FIND_MENU": "ढूँढें",
   "CMD_FIND": "ढूँढें",
   "CMD_FIND_NEXT": "अगला ढूँढें",

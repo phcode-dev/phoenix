@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "自動插入右括號",
   "CMD_SHOW_CODE_HINTS": "顯示程式提示",
   "CMD_BEAUTIFY_CODE": "美化代碼",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "美化代碼保存",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "保存後美化代碼",
   "FIND_MENU": "尋找",
   "CMD_FIND": "尋找",
   "CMD_FIND_NEXT": "找下一個",

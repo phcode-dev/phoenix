@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Автоматично затваряне на скобите",
   "CMD_SHOW_CODE_HINTS": "Показване на подсказки за кода",
   "CMD_BEAUTIFY_CODE": "Разкрасяване на кода",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Разкрасяване на кода при запазване",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Разкрасяване на кода след запазване",
   "FIND_MENU": "Търсене",
   "CMD_FIND": "Търсене",
   "CMD_FIND_NEXT": "Търсене на следващото",

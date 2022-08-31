@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "أقواس الإغلاق التلقائي",
   "CMD_SHOW_CODE_HINTS": "إظهار تلميحات التعليمات البرمجية",
   "CMD_BEAUTIFY_CODE": "كود تجميل",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "رمز تجميل عند الحفظ",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "تجميل الكود بعد الحفظ",
   "FIND_MENU": "البحث",
   "CMD_FIND": "البحث",
   "CMD_FIND_NEXT": "البحث عن التالي",

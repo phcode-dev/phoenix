@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Tutup Kurung Otomatis",
   "CMD_SHOW_CODE_HINTS": "Tampilkan Petunjuk Kode",
   "CMD_BEAUTIFY_CODE": "Mempercantik Kode",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Mempercantik Kode Di Simpan",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Mempercantik Kode Setelah Simpan",
   "FIND_MENU": "Temukan",
   "CMD_FIND": "Temukan",
   "CMD_FIND_NEXT": "Temukan Berikutnya",

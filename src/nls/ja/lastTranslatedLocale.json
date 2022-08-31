@@ -295,7 +295,7 @@
   "CMD_TOGGLE_CLOSE_BRACKETS": "自動閉じカッコ",
   "CMD_SHOW_CODE_HINTS": "コードヒントを表示",
   "CMD_BEAUTIFY_CODE": "美化コード",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "保存時にコードを美化",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "保存後にコードを美化",
   "FIND_MENU": "検索",
   "CMD_FIND": "検索",
   "CMD_FIND_NEXT": "次を検索",

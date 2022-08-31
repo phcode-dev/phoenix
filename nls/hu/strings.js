@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Zárójelek Automatikus Bezárása",
   "CMD_SHOW_CODE_HINTS": "Kód Súgó megjelenítése",
   "CMD_BEAUTIFY_CODE": "Szépítsd a kódot",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Szépítsd a kódot a mentéshez",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Szépítse a kódot mentés után",
   "FIND_MENU": "Keres",
   "CMD_FIND": "Keres",
   "CMD_FIND_NEXT": "Következő találat",

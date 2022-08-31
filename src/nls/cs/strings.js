@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Uzavírat závorky",
   "CMD_SHOW_CODE_HINTS": "Zobrazit nápovědy kódu",
   "CMD_BEAUTIFY_CODE": "Zkrášlit kód",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Zkrášlit kód při uložení",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Zkrášlit kód po uložení",
   "FIND_MENU": "Najít",
   "CMD_FIND": "Najít",
   "CMD_FIND_NEXT": "Najít další",

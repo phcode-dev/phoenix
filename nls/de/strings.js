@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Klammern automatisch schließen",
   "CMD_SHOW_CODE_HINTS": "Code Hints anzeigen",
   "CMD_BEAUTIFY_CODE": "Code verschönern",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Code beim Speichern verschönern",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Code nach dem Speichern verschönern",
   "FIND_MENU": "Suchen",
   "CMD_FIND": "Suchen",
   "CMD_FIND_NEXT": "Weitersuchen (vorwärts)",
