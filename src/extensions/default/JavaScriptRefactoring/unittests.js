@@ -34,7 +34,6 @@ define(function (require, exports, module) {
         ProjectManager       = brackets.getModule("project/ProjectManager"),
         FileSystem           = brackets.getModule("filesystem/FileSystem"),
         ExtractToFunction    = require("ExtractToFunction"),
-        TokenUtils           = brackets.getModule("utils/TokenUtils"),
         WrapSelection        = require("WrapSelection"),
         RenameIdentifier     = require("RenameIdentifier"),
         HighLightReferences  = require("HighLightReferences");
@@ -616,9 +615,7 @@ define(function (require, exports, module) {
 
 
                 await _waitForRename(selections.length, function() {
-                    var selections = testEditor.getSelections(),
-                        token1 = TokenUtils.getTokenAt(testEditor._codeMirror, {line: 132, ch: 14}, {line: 132, ch: 14}),
-                        token2 = TokenUtils.getTokenAt(testEditor._codeMirror, {line: 140, ch: 17}, {line: 140, ch: 17});
+                    let selections = testEditor.getSelections();
 
                     expect(selections[0].start.line).toEqual(132);
                     expect(selections[1].start.line).toEqual(140);
@@ -634,14 +631,41 @@ define(function (require, exports, module) {
 
 
                 await _waitForRename(selections.length, function() {
-                    var selections = testEditor.getSelections(),
-                        token1 = TokenUtils.getTokenAt(testEditor._codeMirror, {line: 149, ch: 6}, {line: 149, ch: 6}),
-                        token2 = TokenUtils.getTokenAt(testEditor._codeMirror, {line: 150, ch: 13}, {line: 150, ch: 13});
+                    let selections = testEditor.getSelections();
 
                     expect(selections[0].start.line).toEqual(165);
                     expect(selections[1].start.line).toEqual(168);
                 });
             });
+
+            it("should highlight border on renamed variable if there is more than one reference", async function() {
+                testEditor.setSelection({line: 165, ch: 6}, {line: 165, ch: 6});
+
+                var selections = testEditor.getSelections();
+
+                RenameIdentifier.handleRename();
+
+
+                await _waitForRename(selections.length, function() {
+                    let marks = testEditor.getAllMarks(RenameIdentifier._MARK_TYPE_RENAME);
+                    expect(marks.length).toBe(1);
+                });
+
+                // now change the selection so that rename outline is removed.
+                testEditor.setCursorPos(0, 0);
+                let marks = testEditor.getAllMarks(RenameIdentifier._MARK_TYPE_RENAME);
+                expect(marks.length).toBe(0);
+            }, 10000);
+
+            it("should not highlight border on renamed variable if there is only one reference", async function() {
+                testEditor.setSelection({line: 162, ch: 11}, {line: 162, ch: 11});
+
+                RenameIdentifier.handleRename();
+
+                await awaits(1000); // wait for rename to give some time. This is not a good way to do this
+                let marks = testEditor.getAllMarks(RenameIdentifier._MARK_TYPE_RENAME);
+                expect(marks.length).toBe(0);
+            }, 5000);
         });
 
         describe("Highlight References", function () {

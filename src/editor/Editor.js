@@ -1147,6 +1147,13 @@ define(function (require, exports, module) {
             className: "editor-text-fragment-hover"
         }, MARK_OPTION_MATCHING_REFS = {
             className: "editor-text-fragment-matching-refs"
+        }, MARK_OPTION_RENAME_OUTLINE ={
+            className: "editor-text-rename-outline",
+            startStyle: "editor-text-rename-outline-left",
+            endStyle: "editor-text-rename-outline-right",
+            clearWhenEmpty: false,
+            inclusiveLeft: true,
+            inclusiveRight: true
         };
 
     /**
@@ -2390,6 +2397,7 @@ define(function (require, exports, module) {
     Editor.MARK_OPTION_UNDERLINE_SPELLCHECK = MARK_OPTION_UNDERLINE_SPELLCHECK;
     Editor.MARK_OPTION_HYPERLINK_TEXT = MARK_OPTION_HYPERLINK_TEXT;
     Editor.MARK_OPTION_MATCHING_REFS = MARK_OPTION_MATCHING_REFS;
+    Editor.MARK_OPTION_RENAME_OUTLINE = MARK_OPTION_RENAME_OUTLINE;
 
     /**
      * Each Editor instance object dispatches the following events:
