@@ -22,16 +22,19 @@
 define(function (require, exports, module) {
 
 
-    let EditorManager        = brackets.getModule("editor/EditorManager"),
+    const EditorManager        = brackets.getModule("editor/EditorManager"),
         ScopeManager         = brackets.getModule("JSUtils/ScopeManager"),
         Session              = brackets.getModule("JSUtils/Session"),
         MessageIds           = JSON.parse(brackets.getModule("text!JSUtils/MessageIds.json")),
         TokenUtils           = brackets.getModule("utils/TokenUtils"),
         Strings              = brackets.getModule("strings"),
-        ProjectManager      = brackets.getModule("project/ProjectManager");
+        Editor               = brackets.getModule("editor/Editor").Editor,
+        ProjectManager       = brackets.getModule("project/ProjectManager");
 
     let session             = null,  // object that encapsulates the current session state
         keywords = ["define", "alert", "exports", "require", "module", "arguments"];
+
+    const MARK_TYPE_RENAME = "renameVar";
 
     //Create new session
     function initializeSession(editor) {
@@ -120,6 +123,21 @@ define(function (require, exports, module) {
             // references properly. This sadly needs refactoring the current tern integration heavily
         }
 
+        function _outlineText(currentEditor) {
+            let selections = currentEditor.getSelections();
+            if(selections.length > 1 ){
+                let primary = currentEditor.getSelection();
+                currentEditor.markText(MARK_TYPE_RENAME, primary.start, primary.end, Editor.MARK_OPTION_RENAME_OUTLINE);
+                currentEditor.off(Editor.EVENT_BEFORE_SELECTION_CHANGE + ".renameVar");
+                currentEditor.on(Editor.EVENT_BEFORE_SELECTION_CHANGE + ".renameVar", function (_evt, newSelections) {
+                    if(newSelections.ranges && newSelections.ranges.length === 1) {
+                        currentEditor.clearAllMarks(MARK_TYPE_RENAME);
+                        currentEditor.off(Editor.EVENT_BEFORE_SELECTION_CHANGE + ".renameVar");
+                    }
+                });
+            }
+        }
+
         /**
          * Check if references are in this file only
          * If yes then select all references
@@ -165,6 +183,7 @@ define(function (require, exports, module) {
             primaryRef.primary = true;
 
             editor.setSelections(refsArray);
+            _outlineText(editor);
         }
 
         /**
@@ -189,5 +208,9 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    // for tests
+    exports._MARK_TYPE_RENAME = MARK_TYPE_RENAME;
+
+    // public api
     exports.handleRename = handleRename;
 });
