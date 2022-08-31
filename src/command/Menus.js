@@ -529,8 +529,7 @@ define(function (require, exports, module) {
      * @return {MenuItem} the newly created MenuItem
      */
     Menu.prototype.addMenuItem = function (command, keyBindings, position, relativeID) {
-        let menuID = this.id,
-            id,
+        let id,
             $menuItem,
             menuItem,
             name,
