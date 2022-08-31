@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Fechar chaves automaticamente",
   "CMD_SHOW_CODE_HINTS": "Mostrar dicas de código",
   "CMD_BEAUTIFY_CODE": "Embelezar código",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Embelezar código ao salvar",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Embelezar código após salvar",
   "FIND_MENU": "Localizar",
   "CMD_FIND": "Localizar",
   "CMD_FIND_NEXT": "Localizar próximo",
