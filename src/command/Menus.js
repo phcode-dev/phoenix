@@ -22,26 +22,27 @@
 define(function (require, exports, module) {
 
 
-    var _ = require("thirdparty/lodash");
+    let _ = require("thirdparty/lodash");
 
     // Load dependent modules
-    var Commands            = require("command/Commands"),
+    let Commands            = require("command/Commands"),
         EventDispatcher     = require("utils/EventDispatcher"),
         KeyBindingManager   = require("command/KeyBindingManager"),
         StringUtils         = require("utils/StringUtils"),
         CommandManager      = require("command/CommandManager"),
         PopUpManager        = require("widgets/PopUpManager"),
         ViewUtils           = require("utils/ViewUtils"),
+        Metrics             = require("utils/Metrics"),
         DeprecationWarning  = require("utils/DeprecationWarning");
 
-    // make sure the global brackets variable is loaded
+    // make sure the global brackets letiable is loaded
     require("utils/Global");
 
     /**
      * Brackets Application Menu Constants
      * @enum {string}
      */
-    var AppMenuBar = {
+    let AppMenuBar = {
         FILE_MENU: "file-menu",
         EDIT_MENU: "edit-menu",
         FIND_MENU: "find-menu",
@@ -54,7 +55,7 @@ define(function (require, exports, module) {
      * Brackets Context Menu Constants
      * @enum {string}
      */
-    var ContextMenuIds = {
+    let ContextMenuIds = {
         EDITOR_MENU: "editor-context-menu",
         INLINE_EDITOR_MENU: "inline-editor-context-menu",
         PROJECT_MENU: "project-context-menu",
@@ -74,7 +75,7 @@ define(function (require, exports, module) {
      *
      * Menu sections are denoted by dividers or the beginning/end of a menu
      */
-    var MenuSection = {
+    let MenuSection = {
         // Menu Section                     Command ID to mark the section
         FILE_OPEN_CLOSE_COMMANDS: {sectionMarker: Commands.FILE_NEW},
         FILE_SAVE_COMMANDS: {sectionMarker: Commands.FILE_SAVE},
@@ -111,7 +112,7 @@ define(function (require, exports, module) {
      * specify the relative position of a newly created menu object
      * @enum {string}
      */
-    var BEFORE           = "before",
+    let BEFORE           = "before",
         AFTER            = "after",
         FIRST            = "first",
         LAST             = "last",
@@ -121,14 +122,14 @@ define(function (require, exports, module) {
     /**
      * Other constants
      */
-    var DIVIDER = "---";
-    var SUBMENU = "SUBMENU";
+    let DIVIDER = "---";
+    let SUBMENU = "SUBMENU";
 
     /**
      * Error Codes from Brackets Shell
      * @enum {number}
      */
-    var NO_ERROR           = 0,
+    let NO_ERROR           = 0,
         ERR_UNKNOWN        = 1,
         ERR_INVALID_PARAMS = 2,
         ERR_NOT_FOUND      = 3;
@@ -137,19 +138,19 @@ define(function (require, exports, module) {
      * Maps menuID's to Menu objects
      * @type {Object.<string, Menu>}
      */
-    var menuMap = {};
+    let menuMap = {};
 
     /**
      * Maps contextMenuID's to ContextMenu objects
      * @type {Object.<string, ContextMenu>}
      */
-    var contextMenuMap = {};
+    let contextMenuMap = {};
 
     /**
      * Maps menuItemID's to MenuItem objects
      * @type {Object.<string, MenuItem>}
      */
-    var menuItemMap = {};
+    let menuItemMap = {};
 
     /**
      * Retrieves the Menu object for the corresponding id.
@@ -208,7 +209,7 @@ define(function (require, exports, module) {
     }
 
     function _addKeyBindingToMenuItem($menuItem, key, displayKey) {
-        var $shortcut = $menuItem.find(".menu-shortcut");
+        let $shortcut = $menuItem.find(".menu-shortcut");
 
         if ($shortcut.length === 0) {
             $shortcut = $("<span class='menu-shortcut' />");
@@ -220,7 +221,7 @@ define(function (require, exports, module) {
     }
 
     function _addExistingKeyBinding(menuItem) {
-        var bindings = KeyBindingManager.getKeyBindings(menuItem.getCommand().getID()),
+        let bindings = KeyBindingManager.getKeyBindings(menuItem.getCommand().getID()),
             binding = null;
 
         if (bindings.length > 0) {
@@ -232,7 +233,7 @@ define(function (require, exports, module) {
         return binding;
     }
 
-    var _menuDividerIDCount = 1;
+    let _menuDividerIDCount = 1;
     function _getNextMenuItemDividerID() {
         return "brackets-menuDivider-" + _menuDividerIDCount++;
     }
@@ -240,7 +241,7 @@ define(function (require, exports, module) {
     // Help function for inserting elements into a list
     function _insertInList($list, $element, position, $relativeElement) {
         // Determine where to insert. Default is LAST.
-        var inserted = false;
+        let inserted = false;
         if (position) {
 
             // Adjust relative position for menu section positions since $relativeElement
@@ -346,7 +347,7 @@ define(function (require, exports, module) {
         if (!command) {
             return null;
         }
-        var foundMenuItem = menuItemMap[this._getMenuItemId(command.getID())];
+        let foundMenuItem = menuItemMap[this._getMenuItemId(command.getID())];
         if (!foundMenuItem) {
             return null;
         }
@@ -361,7 +362,7 @@ define(function (require, exports, module) {
      * @return {?HTMLLIElement} menu item list element
      */
     Menu.prototype._getRelativeMenuItem = function (relativeID, position) {
-        var $relativeElement;
+        let $relativeElement;
 
         if (relativeID) {
             if (position === FIRST_IN_SECTION || position === LAST_IN_SECTION) {
@@ -373,13 +374,13 @@ define(function (require, exports, module) {
                 // Determine the $relativeElement by traversing the sibling list and
                 // stop at the first divider found
                 // TODO: simplify using nextUntil()/prevUntil()
-                var $sectionMarker = this._getMenuItemForCommand(CommandManager.get(relativeID.sectionMarker));
+                let $sectionMarker = this._getMenuItemForCommand(CommandManager.get(relativeID.sectionMarker));
                 if (!$sectionMarker) {
                     console.error("_getRelativeMenuItem(): MenuSection " + relativeID.sectionMarker +
                                   " not found in Menu " + this.id);
                     return null;
                 }
-                var $listElem = $sectionMarker;
+                let $listElem = $sectionMarker;
                 $relativeElement = $listElem;
                 while (true) {
                     $listElem = (position === FIRST_IN_SECTION ? $listElem.prev() : $listElem.next());
@@ -399,7 +400,7 @@ define(function (require, exports, module) {
                 }
 
                 // handle FIRST, LAST, BEFORE, & AFTER
-                var command = CommandManager.get(relativeID);
+                let command = CommandManager.get(relativeID);
                 if (command) {
                     // Lookup Command for this Command id
                     // Find MenuItem that has this command
@@ -429,7 +430,7 @@ define(function (require, exports, module) {
      * @param {!string | Command} command - command the menu would execute if we weren't deleting it.
      */
     Menu.prototype.removeMenuItem = function (command) {
-        var menuItemID,
+        let menuItemID,
             commandID;
 
         if (!command) {
@@ -438,7 +439,7 @@ define(function (require, exports, module) {
         }
 
         if (typeof (command) === "string") {
-            var commandObj = CommandManager.get(command);
+            let commandObj = CommandManager.get(command);
             if (!commandObj) {
                 console.error("removeMenuItem(): command not found: " + command);
                 return;
@@ -449,7 +450,7 @@ define(function (require, exports, module) {
         }
         menuItemID = this._getMenuItemId(commandID);
 
-        var menuItem = getMenuItem(menuItemID);
+        let menuItem = getMenuItem(menuItemID);
         removeMenuItemEventListeners(menuItem);
 
         $(_getHTMLMenuItem(menuItemID)).parent().remove();
@@ -463,7 +464,7 @@ define(function (require, exports, module) {
      * @param {!string} menuItemID - the menu item id of the divider to remove.
      */
     Menu.prototype.removeMenuDivider = function (menuItemID) {
-        var menuItem,
+        let menuItem,
             $HTMLMenuItem;
 
         if (!menuItemID) {
@@ -528,7 +529,7 @@ define(function (require, exports, module) {
      * @return {MenuItem} the newly created MenuItem
      */
     Menu.prototype.addMenuItem = function (command, keyBindings, position, relativeID) {
-        var menuID = this.id,
+        let menuID = this.id,
             id,
             $menuItem,
             menuItem,
@@ -578,17 +579,18 @@ define(function (require, exports, module) {
             $menuItem = $("<li><a href='#' id='" + id + "'> <span class='menu-name'></span></a></li>");
 
             $menuItem.on("click", function () {
+                Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
                 menuItem._command.execute();
             });
 
-            var self = this;
+            let self = this;
             $menuItem.on("mouseenter", function () {
                 self.closeSubMenu();
             });
         }
 
         // Insert menu item
-        var $relativeElement = this._getRelativeMenuItem(relativeID, position);
+        let $relativeElement = this._getRelativeMenuItem(relativeID, position);
         _insertInList($("li#" + StringUtils.jQueryIdEscape(this.id) + " > ul.dropdown-menu"),
                       $menuItem, position, $relativeElement);
 
@@ -715,10 +717,10 @@ define(function (require, exports, module) {
             return null;
         }
 
-        var menu = new ContextMenu(id);
+        let menu = new ContextMenu(id);
         contextMenuMap[id] = menu;
 
-        var menuItemID = this.id + "-" + id;
+        let menuItemID = this.id + "-" + id;
 
         if (menuItemMap[menuItemID]) {
             console.log("MenuItem added with same id of existing MenuItem: " + id);
@@ -726,19 +728,19 @@ define(function (require, exports, module) {
         }
 
         // create MenuItem
-        var menuItem = new MenuItem(menuItemID, SUBMENU);
+        let menuItem = new MenuItem(menuItemID, SUBMENU);
         menuItemMap[menuItemID] = menuItem;
 
         menu.parentMenuItem = menuItem;
 
         // create MenuItem DOM
         // Create the HTML MenuItem
-        var $menuItem = $("<li><a href='#' id='" + menuItemID + "'> "   +
+        let $menuItem = $("<li><a href='#' id='" + menuItemID + "'> "   +
                          "<span class='menu-name'>" + name + "</span>" +
                          "<span style='float: right'>&rtrif;</span>"   +
                          "</a></li>");
 
-        var self = this;
+        let self = this;
         $menuItem.on("mouseenter", function(e) {
             if (self.openSubMenu && self.openSubMenu.id === menu.id) {
                 return;
@@ -749,7 +751,7 @@ define(function (require, exports, module) {
         });
 
         // Insert menu item
-        var $relativeElement = this._getRelativeMenuItem(relativeID, position);
+        let $relativeElement = this._getRelativeMenuItem(relativeID, position);
         _insertInList($("li#" + StringUtils.jQueryIdEscape(this.id) + " > ul.dropdown-menu"),
         $menuItem, position, $relativeElement);
 
@@ -767,7 +769,7 @@ define(function (require, exports, module) {
      * @param {!string} subMenuID - the menu id of the submenu to remove.
      */
     Menu.prototype.removeSubMenu = function (subMenuID) {
-        var subMenu,
+        let subMenu,
             parentMenuItem,
             commandID = "";
 
@@ -842,7 +844,7 @@ define(function (require, exports, module) {
      * @return {Menu}
      */
     MenuItem.prototype.getParentMenu = function () {
-        var parent = $(_getHTMLMenuItem(this.id)).parents(".dropdown").get(0);
+        let parent = $(_getHTMLMenuItem(this.id)).parents(".dropdown").get(0);
         if (!parent) {
             return null;
         }
@@ -854,9 +856,9 @@ define(function (require, exports, module) {
      * Synchronizes MenuItem checked state with underlying Command checked state
      */
     MenuItem.prototype._checkedChanged = function () {
-        var checked = !!this._command.getChecked();
+        let checked = !!this._command.getChecked();
         if (this.isNative) {
-            var enabled = !!this._command.getEnabled();
+            let enabled = !!this._command.getEnabled();
             brackets.app.setMenuItemState(this._command.getID(), enabled, checked, function (err) {
                 if (err) {
                     console.log("Error setting menu item state: " + err);
@@ -872,8 +874,8 @@ define(function (require, exports, module) {
      */
     MenuItem.prototype._enabledChanged = function () {
         if (this.isNative) {
-            var enabled = !!this._command.getEnabled();
-            var checked = !!this._command.getChecked();
+            let enabled = !!this._command.getEnabled();
+            let checked = !!this._command.getChecked();
             brackets.app.setMenuItemState(this._command.getID(), enabled, checked, function (err) {
                 if (err) {
                     console.log("Error setting menu item state: " + err);
@@ -905,7 +907,7 @@ define(function (require, exports, module) {
      */
     MenuItem.prototype._keyBindingAdded = function (event, keyBinding) {
         if (this.isNative) {
-            var shortcutKey = keyBinding.displayKey || keyBinding.key;
+            let shortcutKey = keyBinding.displayKey || keyBinding.key;
             brackets.app.setMenuItemShortcut(this._command.getID(), shortcutKey, KeyBindingManager.formatKeyDescriptor(shortcutKey), function (err) {
                 if (err) {
                     console.error("Error setting menu item shortcut key " + shortcutKey + " : " + err );
@@ -928,7 +930,7 @@ define(function (require, exports, module) {
                 }
             });
         } else {
-            var $shortcut = $(_getHTMLMenuItem(this.id)).find(".menu-shortcut");
+            let $shortcut = $(_getHTMLMenuItem(this.id)).find(".menu-shortcut");
 
             if ($shortcut.length > 0 && $shortcut.data("key") === keyBinding.key) {
                 // check for any other bindings
@@ -963,7 +965,7 @@ define(function (require, exports, module) {
      */
     function addMenu(name, id, position, relativeID) {
         name = _.escape(name);
-        var $menubar = $("#titlebar .nav"),
+        let $menubar = $("#titlebar .nav"),
             menu;
 
         if (!name || !id) {
@@ -981,12 +983,12 @@ define(function (require, exports, module) {
         menuMap[id] = menu;
 
 
-        var $toggle = $("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>" + name + "</a>"),
+        let $toggle = $("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>" + name + "</a>"),
             $popUp = $("<ul class='dropdown-menu'></ul>"),
             $newMenu = $("<li class='dropdown' id='" + id + "'></li>").append($toggle).append($popUp);
 
         // Insert menu
-        var $relativeElement = relativeID && $(_getHTMLMenu(relativeID));
+        let $relativeElement = relativeID && $(_getHTMLMenu(relativeID));
         _insertInList($menubar, $newMenu, position, $relativeElement);
 
         // Install ESC key handling
@@ -1005,7 +1007,7 @@ define(function (require, exports, module) {
      *      Extensions should use the following format: "author.myextension.mymenuname".
      */
     function removeMenu(id) {
-        var menu,
+        let menu,
             commandID = "";
 
         if (!id) {
@@ -1056,7 +1058,7 @@ define(function (require, exports, module) {
     function ContextMenu(id) {
         Menu.apply(this, arguments);
 
-        var $newMenu = $("<li class='dropdown context-menu' id='" + StringUtils.jQueryIdEscape(id) + "'></li>"),
+        let $newMenu = $("<li class='dropdown context-menu' id='" + StringUtils.jQueryIdEscape(id) + "'></li>"),
             $popUp = $("<ul class='dropdown-menu'></ul>"),
             $toggle = $("<a href='#' class='dropdown-toggle' data-toggle='dropdown'></a>").hide();
 
@@ -1066,7 +1068,7 @@ define(function (require, exports, module) {
         // insert into DOM
         $("#context-menu-bar > ul").append($newMenu);
 
-        var self = this;
+        let self = this;
         PopUpManager.addPopUp($popUp,
             function () {
                 self.close();
@@ -1099,14 +1101,14 @@ define(function (require, exports, module) {
      *      displayed at a position relative to the parent menu.
      */
     ContextMenu.prototype.open = function (mouseOrLocation) {
-
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "contextMenuOpen", this.id);
         if (!this.parentMenuItem &&
            (!mouseOrLocation || !mouseOrLocation.hasOwnProperty("pageX") || !mouseOrLocation.hasOwnProperty("pageY"))) {
             console.error("ContextMenu open(): missing required parameter");
             return;
         }
 
-        var $window = $(window),
+        let $window = $(window),
             escapedId = StringUtils.jQueryIdEscape(this.id),
             $menuAnchor = $("#" + escapedId),
             $menuWindow = $("#" + escapedId + " > ul"),
@@ -1124,12 +1126,12 @@ define(function (require, exports, module) {
 
             this.trigger("beforeSubMenuOpen");
 
-            var $parentMenuItem = $(_getHTMLMenuItem(this.parentMenuItem.id));
+            let $parentMenuItem = $(_getHTMLMenuItem(this.parentMenuItem.id));
 
             posTop = $parentMenuItem.offset().top;
             posLeft = $parentMenuItem.offset().left + $parentMenuItem.outerWidth();
 
-            var elementRect = {
+            let elementRect = {
                     top: posTop,
                     left: posLeft,
                     height: $menuWindow.height() + 25,
@@ -1156,7 +1158,7 @@ define(function (require, exports, module) {
             posTop  = mouseOrLocation.pageY;
             posLeft = mouseOrLocation.pageX;
 
-            var elementRect = {
+            let elementRect = {
                     top: posTop,
                     left: posLeft,
                     height: $menuWindow.height() + 25,
@@ -1210,7 +1212,7 @@ define(function (require, exports, module) {
      */
     ContextMenu.assignContextMenuToSelector = function (selector, cmenu) {
         $(selector).on("click", function (e) {
-            var buttonOffset,
+            let buttonOffset,
                 buttonHeight;
 
             e.stopPropagation();
@@ -1266,7 +1268,7 @@ define(function (require, exports, module) {
             return null;
         }
 
-        var cmenu = new ContextMenu(id);
+        let cmenu = new ContextMenu(id);
         contextMenuMap[id] = cmenu;
         return cmenu;
     }
