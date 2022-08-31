@@ -1,29 +1,24 @@
-name: Deploying to dev.phcode.dev for dev testing in this repo
-# All changes to the main branch is instantly deployed to dev in this repo
+name: Deploy Notification To staging.phcode.dev
+
 on:
   push:
-    branches: [ main ]
+    branches: [ staging ]
 
 jobs:
   build-tasks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Building phoenix release artifacts
+      - uses: actions/checkout@v2
+      - name: Npm Install
         run: |
           npm install
-          npm run release:dev
-          npm run test
-          cp -r dist distToDeploy/
-          cp -r dist distToDeploy/src/
-          cp -r test distToDeploy/test/
-        shell: bash
-
-      - name: Deploy dist folder to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
+      - name: Verifying release artifact build
+        run: |
+          npm run release:staging
+      - name: Deploy Notification To staging.phcode.dev repository
+        uses: peter-evans/repository-dispatch@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./distToDeploy
-          cname: dev.phcode.dev
+          token: ${{ secrets.PAT_PHOENIX_BOT_PUBLIC_REPO_ACCESS }}
+          repository: phcode-dev/staging.phcode.dev
+          event-type: deploy-staging
+          client-payload: '{"source":"${{github.repositoryUrl}}", "workflow":"${{github.workflow}}", "run_id":"${{github.run_id}}", "run_number":"${{github.run_number}}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
