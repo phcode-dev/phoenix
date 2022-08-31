@@ -386,8 +386,8 @@ define(function (require, exports, module) {
      * will no stop the event bubbling, that has to be controlled with the event parameter forwarded to the handler.
      * @param {string} consumerName a unique name for your consumer
      * @param {function(event)} eventHandler If the eventHandler returns true for this callback, the escape key event
+     *        will not lead to panel toggle default behavior.
      * @return {boolean} true if added
-     * will not lead to panel toggle default behavior.
      */
     function addEscapeKeyEventHandler(consumerName, eventHandler) {
         if(_escapeKeyConsumers[consumerName]){
