@@ -32,7 +32,9 @@ define(function (require, exports, module) {
         ProjectManager,          // loaded from brackets.test
         FileSystem,              // loaded from brackets.test
         Dialogs,                 // loaded from brackets.test
+        DefaultDialogs,
         WorkspaceManager,
+        Menus,
         SpecRunnerUtils          = require("spec/SpecRunnerUtils"),
         KeyEvent                 = require("utils/KeyEvent");
 
@@ -54,11 +56,13 @@ define(function (require, exports, module) {
             Commands                = testWindow.brackets.test.Commands;
             DocumentManager         = testWindow.brackets.test.DocumentManager;
             EditorManager           = testWindow.brackets.test.EditorManager;
+            DefaultDialogs          = testWindow.brackets.test.DefaultDialogs;
             MainViewManager         = testWindow.brackets.test.MainViewManager;
             ProjectManager          = testWindow.brackets.test.ProjectManager;
             WorkspaceManager        = testWindow.brackets.test.WorkspaceManager;
             FileSystem              = testWindow.brackets.test.FileSystem;
-            Dialogs                 = testWindow.brackets.test.Dialogs;
+            Dialogs                 = testWindow.brackets.test.Dialogs,
+            Menus                   = testWindow.brackets.test.Menus;
             _$                      = testWindow.$;
         }
 
@@ -847,7 +851,7 @@ define(function (require, exports, module) {
                panel2.hide();
             });
 
-            function _testPanelDoesntToggle() {
+            function _testPanelDoesntToggleBlocked() {
                 panel1.show();
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
                 expect(panel1.isVisible()).toBeTrue();
@@ -856,7 +860,7 @@ define(function (require, exports, module) {
             }
 
             it("should bottom panel not toggle visibility on escape when there is no editor", async function () {
-                _testPanelDoesntToggle();
+                _testPanelDoesntToggleBlocked();
             });
 
             async function _testPanelToggleSuccess() {
@@ -875,6 +879,45 @@ define(function (require, exports, module) {
 
             it("should bottom panel toggle visibility on escape on focus in code editor", async function () {
                 await _testPanelToggleSuccess();
+            });
+
+            it("should bottom panel not toggle visibility on escape if modal dialog shown", async function () {
+                panel1.show();
+                expect(panel1.isVisible()).toBeTrue();
+
+                expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+
+                Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, "title", "message");
+
+                // first escape key will dismiss dialog instead of panel
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeTrue();
+
+                // now panel will be dismissed
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeFalse();
+            });
+
+            it("should bottom panel not toggle visibility on escape if popup shown", async function () {
+                panel1.show();
+                expect(panel1.isVisible()).toBeTrue();
+
+                expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+
+                // show editor context menu
+                Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU).open({pageX: 0, pageY: 0});
+
+                // first escape key will dismiss the editor context menu
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeTrue();
+
+                // now panel will be dismissed
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                expect(panel1.isVisible()).toBeFalse();
             });
 
             it("should bottom panel not toggle visibility on escape if focused editor has selection", async function () {
@@ -918,7 +961,7 @@ define(function (require, exports, module) {
             it("should not dismiss panel if EscapeKeyEventHandler returns true", async function () {
                 function escapeHandler() {return true;}
                 expect(WorkspaceManager.addEscapeKeyEventHandler("x", escapeHandler)).toBeTrue();
-                _testPanelDoesntToggle();
+                _testPanelDoesntToggleBlocked();
 
                 // cleanup
                 expect(WorkspaceManager.removeEscapeKeyEventHandler("x")).toBeTrue();
