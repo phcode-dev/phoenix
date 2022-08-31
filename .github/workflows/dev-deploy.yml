@@ -1,8 +1,8 @@
-name: Deploy Notification To staging.phcode.dev
+name: Deploy Notification To dev.phcode.dev
 
 on:
   push:
-    branches: [ staging ]
+    branches: [ main ]
 
 jobs:
   build-tasks:
@@ -14,11 +14,11 @@ jobs:
           npm install
       - name: Verifying release artifact build
         run: |
-          npm run release:staging
-      - name: Deploy Notification To staging.phcode.dev repository
+          npm run release:dev
+      - name: Deploy Notification To dev.phcode.dev repository
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PAT_PHOENIX_BOT_PUBLIC_REPO_ACCESS }}
-          repository: phcode-dev/staging.phcode.dev
-          event-type: deploy-staging
+          repository: phcode-dev/dev.phcode.dev
+          event-type: deploy-dev
           client-payload: '{"source":"${{github.repositoryUrl}}", "workflow":"${{github.workflow}}", "run_id":"${{github.run_id}}", "run_number":"${{github.run_number}}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
