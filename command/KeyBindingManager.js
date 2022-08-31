@@ -31,7 +31,7 @@ define(function (require, exports, module) {
 
     require("utils/Global");
 
-    var AppInit             = require("utils/AppInit"),
+    let AppInit             = require("utils/AppInit"),
         Commands            = require("command/Commands"),
         CommandManager      = require("command/CommandManager"),
         DefaultDialogs      = require("widgets/DefaultDialogs"),
@@ -42,12 +42,13 @@ define(function (require, exports, module) {
         KeyEvent            = require("utils/KeyEvent"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
+        Metrics             = require("utils/Metrics"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         _                   = require("thirdparty/lodash");
 
-    var KeyboardPrefs       = JSON.parse(require("text!base-config/keyboard.json"));
+    let KeyboardPrefs       = JSON.parse(require("text!base-config/keyboard.json"));
 
-    var KEYMAP_FILENAME     = "keymap.json",
+    let KEYMAP_FILENAME     = "keymap.json",
         _userKeyMapFilePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME);
 
     /**
@@ -55,7 +56,7 @@ define(function (require, exports, module) {
      * Maps normalized shortcut descriptor to key binding info.
      * @type {!Object.<string, {commandID: string, key: string, displayKey: string}>}
      */
-    var _keyMap            = {},    // For the actual key bindings including user specified ones
+    let _keyMap            = {},    // For the actual key bindings including user specified ones
         // For the default factory key bindings, cloned from _keyMap after all extensions are loaded.
         _defaultKeyMap     = {};
 
@@ -69,7 +70,7 @@ define(function (require, exports, module) {
      * Maps shortcut descriptor to a command id.
      * @type {UserKeyBinding}
      */
-    var _customKeyMap      = {},
+    let _customKeyMap      = {},
         _customKeyMapCache = {};
 
     /**
@@ -77,7 +78,7 @@ define(function (require, exports, module) {
      * Maps commandID to the list of shortcuts that are bound to it.
      * @type {!Object.<string, Array.<{key: string, displayKey: string}>>}
      */
-    var _commandMap  = {};
+    let _commandMap  = {};
 
     /**
      * @private
@@ -85,20 +86,20 @@ define(function (require, exports, module) {
      * of installed extensions.
      * @type {Array.<string>}
      */
-    var _allCommands = [];
+    let _allCommands = [];
 
     /**
      * @private
      * Maps key names to the corresponding unicode symols
      * @type {{key: string, displayKey: string}}
      */
-    var _displayKeyMap        = { "up": "\u2191",
+    let _displayKeyMap        = { "up": "\u2191",
         "down": "\u2193",
         "left": "\u2190",
         "right": "\u2192",
         "-": "\u2212" };
 
-    var _specialCommands      = [Commands.EDIT_UNDO, Commands.EDIT_REDO, Commands.EDIT_SELECT_ALL,
+    let _specialCommands      = [Commands.EDIT_UNDO, Commands.EDIT_REDO, Commands.EDIT_SELECT_ALL,
             Commands.EDIT_CUT, Commands.EDIT_COPY, Commands.EDIT_PASTE],
         _reservedShortcuts    = ["Ctrl-Z", "Ctrl-Y", "Ctrl-A", "Ctrl-X", "Ctrl-C", "Ctrl-V"],
         _macReservedShortcuts = ["Cmd-,", "Cmd-H", "Cmd-Alt-H", "Cmd-M", "Cmd-Shift-Z", "Cmd-Q"],
@@ -114,35 +115,35 @@ define(function (require, exports, module) {
      *
      * @type {boolean}
      */
-    var _showErrors = true;
+    let _showErrors = true;
 
     /**
      * @private
      * Allow clients to toggle key binding
      * @type {boolean}
      */
-    var _enabled = true;
+    let _enabled = true;
 
     /**
      * @private
      * Stack of registered global keydown hooks.
      * @type {Array.<function(Event): boolean>}
      */
-    var _globalKeydownHooks = [];
+    let _globalKeydownHooks = [];
 
     /**
      * @private
      * Forward declaration for JSLint.
      * @type {Function}
      */
-    var _loadUserKeyMap;
+    let _loadUserKeyMap;
 
     /**
      * @private
      * States of Ctrl key down detection
      * @enum {number}
      */
-    var CtrlDownStates = {
+    let CtrlDownStates = {
         "NOT_YET_DETECTED": 0,
         "DETECTED": 1,
         "DETECTED_AND_IGNORED": 2   // For consecutive ctrl keydown events while a Ctrl key is being hold down
@@ -158,7 +159,7 @@ define(function (require, exports, module) {
      *
      * @type {CtrlDownStates|boolean}
      */
-    var _ctrlDown = CtrlDownStates.NOT_YET_DETECTED,
+    let _ctrlDown = CtrlDownStates.NOT_YET_DETECTED,
         _altGrDown = false;
 
     /**
@@ -166,14 +167,14 @@ define(function (require, exports, module) {
      * Used to record the timeStamp property of the last keydown event.
      * @type {number}
      */
-    var _lastTimeStamp;
+    let _lastTimeStamp;
 
     /**
      * @private
      * Used to record the keyIdentifier property of the last keydown event.
      * @type {string}
      */
-    var _lastKeyIdentifier;
+    let _lastKeyIdentifier;
 
     /*
      * @private
@@ -182,14 +183,14 @@ define(function (require, exports, module) {
      * the user is pressing Control key and then Alt key, the interval will be larger than 30 ms.
      * @type {number}
      */
-    var MAX_INTERVAL_FOR_CTRL_ALT_KEYS = 30;
+    let MAX_INTERVAL_FOR_CTRL_ALT_KEYS = 30;
 
     /**
      * @private
      * Forward declaration for JSLint.
      * @type {Function}
      */
-    var _onCtrlUp;
+    let _onCtrlUp;
 
     /**
      * @private
@@ -214,7 +215,7 @@ define(function (require, exports, module) {
      * @param {!KeyboardEvent} e keyboard event object
      */
     _onCtrlUp = function (e) {
-        var key = e.keyCode || e.which;
+        let key = e.keyCode || e.which;
         if (_altGrDown && key === KeyEvent.DOM_VK_CONTROL) {
             _quitAltGrMode();
         }
@@ -303,7 +304,7 @@ define(function (require, exports, module) {
             return "";
         }
 
-        var keyDescriptor = [];
+        let keyDescriptor = [];
 
         if (hasMacCtrl) {
             keyDescriptor.push("Ctrl");
@@ -336,7 +337,7 @@ define(function (require, exports, module) {
      * @return {string} The normalized key descriptor or null if the descriptor invalid
      */
     function normalizeKeyDescriptorString(origDescriptor) {
-        var hasMacCtrl = false,
+        let hasMacCtrl = false,
             hasCtrl = false,
             hasAlt = false,
             hasShift = false,
@@ -484,7 +485,7 @@ define(function (require, exports, module) {
      * Takes a keyboard event and translates it into a key in a key map
      */
     function _translateKeyboardEvent(event) {
-        var hasMacCtrl = (brackets.platform === "mac") ? (event.ctrlKey) : false,
+        let hasMacCtrl = (brackets.platform === "mac") ? (event.ctrlKey) : false,
             hasCtrl = (brackets.platform !== "mac") ? (event.ctrlKey) : (event.metaKey),
             hasAlt = (event.altKey),
             hasShift = (event.shiftKey),
@@ -494,7 +495,7 @@ define(function (require, exports, module) {
         //As that will let us use keys like then function keys "F5" for commands. The
         //full set of values we can use is here
         // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-        var ident = event.key;
+        let ident = event.key;
         if (ident) {
             if (ident.charAt(0) === "U" && ident.charAt(1) === "+") {
                 //This is a unicode code point like "U+002A", get the 002A and use that
@@ -538,7 +539,7 @@ define(function (require, exports, module) {
      * @return {!string} Display/Operating system appropriate string
      */
     function formatKeyDescriptor(descriptor) {
-        var displayStr;
+        let displayStr;
 
         if (brackets.platform === "mac") {
             displayStr = descriptor.replace(/-(?!$)/g, "");     // remove dashes
@@ -585,12 +586,12 @@ define(function (require, exports, module) {
             return;
         }
 
-        var normalizedKey = normalizeKeyDescriptorString(key);
+        let normalizedKey = normalizeKeyDescriptorString(key);
 
         if (!normalizedKey) {
             console.log("Failed to normalize " + key);
         } else if (_isKeyAssigned(normalizedKey)) {
-            var binding = _keyMap[normalizedKey],
+            let binding = _keyMap[normalizedKey],
                 command = CommandManager.get(binding.commandID),
                 bindings = _commandMap[binding.commandID];
 
@@ -647,7 +648,7 @@ define(function (require, exports, module) {
      *     or is already assigned.
      */
     function _addBinding(commandID, keyBinding, platform, userBindings) {
-        var key,
+        let key,
             result = null,
             normalized,
             normalizedDisplay,
@@ -728,7 +729,7 @@ define(function (require, exports, module) {
         // (1) replacing a windows-compatible binding with a generic or
         //     platform-specific binding
         // (2) replacing a generic binding with a platform-specific binding
-        var existingBindings = _commandMap[commandID] || [],
+        let existingBindings = _commandMap[commandID] || [],
             isWindowsCompatible,
             isReplaceGeneric,
             ignoreGeneric;
@@ -837,6 +838,8 @@ define(function (require, exports, module) {
      */
     function _handleKey(key) {
         if (_enabled && _keyMap[key]) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "shortcut", key);
+            Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "command", _keyMap[key].commandID);
             let promise = CommandManager.execute(_keyMap[key].commandID);
             if(UN_SWALLOWED_EVENTS.includes(_keyMap[key].commandID)){
                 return (promise.state() !== "rejected");
@@ -856,7 +859,7 @@ define(function (require, exports, module) {
      * before objects without a platform property.
      */
     function _sortByPlatform(a, b) {
-        var a1 = (a.platform) ? 1 : 0,
+        let a1 = (a.platform) ? 1 : 0,
             b1 = (b.platform) ? 1 : 0;
         return b1 - a1;
     }
@@ -878,7 +881,7 @@ define(function (require, exports, module) {
      *     Returns record(s) for valid key binding(s)
      */
     function addBinding(command, keyBindings, platform) {
-        var commandID = "",
+        let commandID = "",
             results;
 
         if (!command) {
@@ -895,7 +898,7 @@ define(function (require, exports, module) {
         }
 
         if (Array.isArray(keyBindings)) {
-            var keyBinding;
+            let keyBinding;
             results = [];
 
             // process platform-specific bindings first
@@ -923,7 +926,7 @@ define(function (require, exports, module) {
      * @return {!Array.<{{key: string, displayKey: string}}>} An array of associated key bindings.
      */
     function getKeyBindings(command) {
-        var bindings    = [],
+        let bindings    = [],
             commandID   = "";
 
         if (!command) {
@@ -947,7 +950,7 @@ define(function (require, exports, module) {
      * @param {Command} command Newly registered command
      */
     function _handleCommandRegistered(event, command) {
-        var commandId   = command.getID(),
+        let commandId   = command.getID(),
             defaults    = KeyboardPrefs[commandId];
 
         if (defaults) {
@@ -992,7 +995,7 @@ define(function (require, exports, module) {
      * @param {function(Event): boolean} hook The global hook to remove.
      */
     function removeGlobalKeydownHook(hook) {
-        var index = _globalKeydownHooks.indexOf(hook);
+        let index = _globalKeydownHooks.indexOf(hook);
         if (index !== -1) {
             _globalKeydownHooks.splice(index, 1);
         }
@@ -1004,7 +1007,7 @@ define(function (require, exports, module) {
      * @param {Event} The keydown event to handle.
      */
     function _handleKeyEvent(event) {
-        var i, handled = false;
+        let i, handled = false;
         for (i = _globalKeydownHooks.length - 1; i >= 0; i--) {
             if (_globalKeydownHooks[i](event)) {
                 handled = true;
@@ -1041,7 +1044,7 @@ define(function (require, exports, module) {
     function _showErrorsAndOpenKeyMap(err, message) {
         // Asynchronously loading Dialogs module to avoid the circular dependency
         require(["widgets/Dialogs"], function (Dialogs) {
-            var errorMessage = Strings.ERROR_KEYMAP_CORRUPT;
+            let errorMessage = Strings.ERROR_KEYMAP_CORRUPT;
 
             if (err === FileSystemError.UNSUPPORTED_ENCODING) {
                 errorMessage = Strings.ERROR_LOADING_KEYMAP;
@@ -1112,7 +1115,7 @@ define(function (require, exports, module) {
      * @return {string} the html text version of the list
      */
     function _getBulletList(list) {
-        var message = "<ul class='dialog-list'>";
+        let message = "<ul class='dialog-list'>";
         list.forEach(function (info) {
             message += "<li>" + info + "</li>";
         });
@@ -1129,7 +1132,7 @@ define(function (require, exports, module) {
      *                  Otherwise, the corresponding unicode symbol is returned.
      */
     function _getDisplayKey(key) {
-        var displayKey = "",
+        let displayKey = "",
             match = key ? key.match(/(Up|Down|Left|Right|\-)$/i) : null;
         if (match && !/Page(Up|Down)/.test(key)) {
             displayKey = key.substr(0, match.index) + _displayKeyMap[match[0].toLowerCase()];
@@ -1151,7 +1154,7 @@ define(function (require, exports, module) {
      *     - A key binding is referring to a non-existent command ID.
      */
     function _applyUserKeyBindings() {
-        var remappedCommands   = [],
+        let remappedCommands   = [],
             remappedKeys       = [],
             restrictedCommands = [],
             restrictedKeys     = [],
@@ -1162,7 +1165,7 @@ define(function (require, exports, module) {
             errorMessage       = "";
 
         _.forEach(_customKeyMap, function (commandID, key) {
-            var normalizedKey    = normalizeKeyDescriptorString(key),
+            let normalizedKey    = normalizeKeyDescriptorString(key),
                 existingBindings = _commandMap[commandID] || [];
 
             // Skip this since we don't allow user to update key binding of a special
@@ -1220,7 +1223,7 @@ define(function (require, exports, module) {
             if (commandID) {
                 if (_allCommands.indexOf(commandID) !== -1) {
                     if (remappedCommands.indexOf(commandID) === -1) {
-                        var keybinding = { key: normalizedKey };
+                        let keybinding = { key: normalizedKey };
 
                         keybinding.displayKey = _getDisplayKey(normalizedKey);
                         _addBinding(commandID, keybinding.displayKey ? keybinding : normalizedKey, brackets.platform, true);
@@ -1271,7 +1274,7 @@ define(function (require, exports, module) {
      */
     function _undoPriorUserKeyBindings() {
         _.forEach(_customKeyMapCache, function (commandID, key) {
-            var normalizedKey  = normalizeKeyDescriptorString(key),
+            let normalizedKey  = normalizeKeyDescriptorString(key),
                 defaults       = _.find(_.toArray(_defaultKeyMap), { "commandID": commandID }),
                 defaultCommand = _defaultKeyMap[normalizedKey];
 
@@ -1333,17 +1336,17 @@ define(function (require, exports, module) {
      * then the promise is rejected with an error.
      */
     function _readUserKeyMap() {
-        var file   = FileSystem.getFileForPath(_getUserKeyMapFilePath()),
+        let file   = FileSystem.getFileForPath(_getUserKeyMapFilePath()),
             result = new $.Deferred();
 
         file.exists(function (err, doesExist) {
             if (doesExist) {
                 FileUtils.readAsText(file)
                     .done(function (text) {
-                        var keyMap = {};
+                        let keyMap = {};
                         try {
                             if (text) {
-                                var json = JSON.parse(text);
+                                let json = JSON.parse(text);
                                 // If no overrides, return an empty key map.
                                 result.resolve((json && json.overrides) || keyMap);
                             } else {
@@ -1403,13 +1406,13 @@ define(function (require, exports, module) {
      * if it does not exist.
      */
     function _openUserKeyMap() {
-        var userKeyMapPath = _getUserKeyMapFilePath(),
+        let userKeyMapPath = _getUserKeyMapFilePath(),
             file = FileSystem.getFileForPath(userKeyMapPath);
         file.exists(function (err, doesExist) {
             if (doesExist) {
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: userKeyMapPath });
             } else {
-                var defaultContent = "{\n    \"documentation\": \"https://github.com/adobe/brackets/wiki/User-Key-Bindings\"," +
+                let defaultContent = "{\n    \"documentation\": \"https://github.com/adobe/brackets/wiki/User-Key-Bindings\"," +
                                      "\n    \"overrides\": {" +
                                      "\n        \n    }\n}\n";
 
@@ -1459,7 +1462,7 @@ define(function (require, exports, module) {
     }
 
     AppInit.extensionsLoaded(function () {
-        var params  = new UrlParams();
+        let params  = new UrlParams();
         params.parse();
         if (params.get("reloadWithoutUserExts") === "true") {
             _showErrors = false;

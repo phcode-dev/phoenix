@@ -27,17 +27,20 @@ define(function (require, exports, module) {
 
     require("utils/Global");
 
-    var KeyBindingManager = require("command/KeyBindingManager"),
+    let KeyBindingManager = require("command/KeyBindingManager"),
         KeyEvent          = require("utils/KeyEvent"),
+        EditorManager     = require("editor/EditorManager"),
         Strings           = require("strings"),
         DialogTemplate    = require("text!htmlContent/dialog-template.html"),
+        WorkspaceManager  = require("view/WorkspaceManager"),
+        AppInit           = require("utils/AppInit"),
         Mustache          = require("thirdparty/mustache/mustache");
 
     /**
      * Dialog Buttons IDs
      * @const {string}
      */
-    var DIALOG_BTN_CANCEL           = "cancel",
+    let DIALOG_BTN_CANCEL           = "cancel",
         DIALOG_BTN_OK               = "ok",
         DIALOG_BTN_DONTSAVE         = "dontsave",
         DIALOG_BTN_SAVE_AS          = "save_as",
@@ -48,7 +51,7 @@ define(function (require, exports, module) {
      * Dialog Buttons Class Names
      * @const {string}
      */
-    var DIALOG_BTN_CLASS_PRIMARY    = "primary",
+    let DIALOG_BTN_CLASS_PRIMARY    = "primary",
         DIALOG_BTN_CLASS_NORMAL     = "",
         DIALOG_BTN_CLASS_LEFT       = "left";
 
@@ -56,7 +59,17 @@ define(function (require, exports, module) {
      * The z-index used for the dialogs. Each new dialog increase this number by 2
      * @type {number}
      */
-    var zIndex = 1050;
+    let zIndex = 1050;
+
+    function _isAnyDialogShown() {
+        let dialogueShown = false;
+        $(".modal" + ".instance").each(function () {
+            if ($(this).is(":visible")) {   // Bootstrap breaks if try to hide dialog that's already hidden
+                dialogueShown = true;
+            }
+        });
+        return dialogueShown;
+    }
 
     /**
      * @private
@@ -67,6 +80,10 @@ define(function (require, exports, module) {
     function _dismissDialog($dlg, buttonId) {
         $dlg.data("buttonId", buttonId);
         $dlg.modal("hide");
+
+        if(!_isAnyDialogShown() && EditorManager.getActiveEditor()){
+            EditorManager.getActiveEditor().focus();
+        }
     }
 
     /**
@@ -104,7 +121,7 @@ define(function (require, exports, module) {
      * @param {$.Element} $dlg
      */
     function _handleTab(event, $dlg) {
-        var $inputs = $(":input:enabled, a", $dlg).filter(":visible");
+        let $inputs = $(":input:enabled, a", $dlg).filter(":visible");
 
         function stopEvent() {
             event.stopPropagation();
@@ -137,8 +154,8 @@ define(function (require, exports, module) {
      * @param {boolean} autoDismiss
      * @return {boolean}
      */
-    var _keydownHook = function (e, autoDismiss) {
-        var $primaryBtn     = this.find(".primary"),
+    let _keydownHook = function (e, autoDismiss) {
+        let $primaryBtn     = this.find(".primary"),
             buttonId        = null,
             which           = String.fromCharCode(e.which),
             $focusedElement = this.find(".dialog-button:focus, a:focus");
@@ -149,7 +166,7 @@ define(function (require, exports, module) {
         }
 
         // There might be a textfield in the dialog's UI; don't want to mistake normal typing for dialog dismissal
-        var inTextArea    = (e.target.tagName === "TEXTAREA"),
+        let inTextArea    = (e.target.tagName === "TEXTAREA"),
             inTypingField = inTextArea || ($(e.target).filter(":text, :password").length > 0);
 
         if (e.which === KeyEvent.DOM_VK_TAB) {
@@ -256,7 +273,7 @@ define(function (require, exports, module) {
      * Don't allow dialog to exceed viewport size
      */
     function setDialogMaxSize() {
-        var maxWidth, maxHeight,
+        let maxWidth, maxHeight,
             $dlgs = $(".modal-inner-wrapper > .instance");
 
         // Verify 1 or more modal dialogs are showing
@@ -289,7 +306,7 @@ define(function (require, exports, module) {
 
         $("body").append("<div class='modal-wrapper'><div class='modal-inner-wrapper'></div></div>");
 
-        var result  = new $.Deferred(),
+        let result  = new $.Deferred(),
             promise = result.promise(),
             $dlg    = $(template)
                 .addClass("instance")
@@ -301,16 +318,16 @@ define(function (require, exports, module) {
         // Save the dialog promise for unit tests
         $dlg.data("promise", promise);
 
-        var keydownHook = function (e) {
+        let keydownHook = function (e) {
             return _keydownHook.call($dlg, e, autoDismiss);
         };
 
         // Store current focus
-        var lastFocus = window.document.activeElement;
+        let lastFocus = window.document.activeElement;
 
         // Pipe dialog-closing notification back to client code
         $dlg.one("hidden", function () {
-            var buttonId = $dlg.data("buttonId");
+            let buttonId = $dlg.data("buttonId");
             if (!buttonId) {    // buttonId will be undefined if closed via Bootstrap's "x" button
                 buttonId = DIALOG_BTN_CANCEL;
             }
@@ -336,7 +353,7 @@ define(function (require, exports, module) {
             //Remove wrapper
             $(".modal-wrapper:last").remove();
         }).one("shown", function () {
-            var $primaryBtn = $dlg.find(".primary:enabled"),
+            let $primaryBtn = $dlg.find(".primary:enabled"),
                 $otherBtn   = $dlg.find(".modal-footer .dialog-button:enabled:eq(0)");
 
             // Set focus to the primary button, to any other button, or to the dialog depending
@@ -393,13 +410,13 @@ define(function (require, exports, module) {
      * @return {Dialog}
      */
     function showModalDialog(dlgClass, title, message, buttons, autoDismiss) {
-        var templateVars = {
+        let templateVars = {
             dlgClass: dlgClass,
             title: title   || "",
             message: message || "",
             buttons: buttons || [{ className: DIALOG_BTN_CLASS_PRIMARY, id: DIALOG_BTN_OK, text: Strings.OK }]
         };
-        var template = Mustache.render(DialogTemplate, templateVars);
+        let template = Mustache.render(DialogTemplate, templateVars);
 
         return showModalDialogUsingTemplate(template, autoDismiss);
     }
@@ -418,20 +435,28 @@ define(function (require, exports, module) {
         });
     }
 
+    function _dontToggleWorkspacePanel() {
+        return _isAnyDialogShown();
+    }
+
+    AppInit.htmlReady(function () {
+        WorkspaceManager.addEscapeKeyEventHandler("ModalDialog", _dontToggleWorkspacePanel);
+    });
+
     /**
      * Ensures that all <a> tags with a URL have a tooltip showing the same URL
      * @param {!jQueryObject|Dialog} elementOrDialog  Dialog intance, or root of other DOM tree to add tooltips to
      */
     function addLinkTooltips(elementOrDialog) {
-        var $element;
+        let $element;
         if (elementOrDialog.getElement) {
             $element = elementOrDialog.getElement().find(".dialog-message");
         } else {
             $element = elementOrDialog;
         }
         $element.find("a").each(function (index, elem) {
-            var $elem = $(elem);
-            var url = $elem.attr("href");
+            let $elem = $(elem);
+            let url = $elem.attr("href");
             if (url && url !== "#" && !$elem.attr("title")) {
                 $elem.attr("title", url);
             }

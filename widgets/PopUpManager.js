@@ -25,12 +25,13 @@
 define(function (require, exports, module) {
 
 
-    var AppInit         = require("utils/AppInit"),
+    let AppInit         = require("utils/AppInit"),
         EventDispatcher = require("utils/EventDispatcher"),
+        WorkspaceManager = require("view/WorkspaceManager"),
         CommandManager  = require("command/CommandManager"),
         KeyEvent        = require("utils/KeyEvent");
 
-    var _popUps = [];
+    let _popUps = [];
 
     /**
      * Add Esc key handling for a popup DOM element.
@@ -60,7 +61,7 @@ define(function (require, exports, module) {
         // check visible first to help protect against recursive calls
         // via removeHandler
         if ($popUp.find(":visible").length > 0) {
-            var removeHandler = $popUp.data("PopUpManager-removeHandler");
+            let removeHandler = $popUp.data("PopUpManager-removeHandler");
             if (removeHandler) {
                 removeHandler();
             }
@@ -68,9 +69,9 @@ define(function (require, exports, module) {
 
         // check index after removeHandler is done processing to protect
         // against recursive calls
-        var index = _popUps.indexOf($popUp[0]);
+        let index = _popUps.indexOf($popUp[0]);
         if (index >= 0) {
-            var autoRemove = $popUp.data("PopUpManager-autoRemove");
+            let autoRemove = $popUp.data("PopUpManager-autoRemove");
             if (autoRemove) {
                 $popUp.remove();
                 _popUps.splice(index, 1);
@@ -86,7 +87,7 @@ define(function (require, exports, module) {
      */
     function removeCurrentPopUp(keyEvent) {
         // allow the popUp to prevent closing
-        var $popUp,
+        let $popUp,
             i,
             event = new $.Event("popUpClose");
 
@@ -119,7 +120,7 @@ define(function (require, exports, module) {
     }
 
     function _keydownCaptureListener(keyEvent) {
-         // Escape key or Alt key (Windows-only)
+        // Escape key or Alt key (Windows-only)
         if (keyEvent.keyCode !== KeyEvent.DOM_VK_ESCAPE &&
                 !(keyEvent.keyCode === KeyEvent.DOM_VK_ALT && brackets.platform === "win")) {
             return;
@@ -138,6 +139,16 @@ define(function (require, exports, module) {
      */
     function _beforeMenuPopup() {
         removeCurrentPopUp();
+    }
+
+    function _dontToggleWorkspacePanel() {
+        for(let popUp of _popUps){
+            let $popUp = $(popUp);
+            if ($popUp.find(":visible").length > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -160,6 +171,8 @@ define(function (require, exports, module) {
         CommandManager.on("beforeExecuteCommand", function (event, commandId) {
             removeCurrentPopUp();
         });
+
+        WorkspaceManager.addEscapeKeyEventHandler("PopUpManager", _dontToggleWorkspacePanel);
     });
 
 
