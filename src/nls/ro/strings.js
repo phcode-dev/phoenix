@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Închide automat perechile de caractere",
   "CMD_SHOW_CODE_HINTS": "Arată sugestiile de cod",
   "CMD_BEAUTIFY_CODE": "Înfrumuseța Cod",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Înfrumusețați codul la salvare",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Înfrumusețați codul după salvare",
   "FIND_MENU": "Caută",
   "CMD_FIND": "Caută",
   "CMD_FIND_NEXT": "Caută următorul",

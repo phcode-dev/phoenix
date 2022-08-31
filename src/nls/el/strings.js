@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Αυτόματο Κλείσιμο Αγκίστρων",
   "CMD_SHOW_CODE_HINTS": "Προβολή Υποδείξεων Κώδικα",
   "CMD_BEAUTIFY_CODE": "Ομορφοποιήστε τον κώδικα",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Ομορφοποιήστε τον κώδικα κατά την αποθήκευση",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Ομορφοποίηση κώδικα μετά την αποθήκευση",
   "FIND_MENU": "Εύρεση",
   "CMD_FIND": "Εύρεση",
   "CMD_FIND_NEXT": "Εύρεση Επόμενου",

@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Luk parenteser automatisk",
   "CMD_SHOW_CODE_HINTS": "Vis kodehjælp",
   "CMD_BEAUTIFY_CODE": "Forskønne kode",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Forskøn kode på Gem",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Forskøn kode efter Gem",
   "FIND_MENU": "Søg",
   "CMD_FIND": "Søg",
   "CMD_FIND_NEXT": "Find næste",

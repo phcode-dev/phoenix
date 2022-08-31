@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "자동 괄호",
   "CMD_SHOW_CODE_HINTS": "코드 힌트 표시",
   "CMD_BEAUTIFY_CODE": "코드 아름답게하기",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "저장 시 코드 아름답게",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "저장 후 코드 아름답게",
   "FIND_MENU": "찾기",
   "CMD_FIND": "찾기",
   "CMD_FIND_NEXT": "다음 찾기",

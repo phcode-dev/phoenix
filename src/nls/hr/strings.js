@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Automatski zatvori zagrade",
   "CMD_SHOW_CODE_HINTS": "Prikaži naznake (hintove) kôda",
   "CMD_BEAUTIFY_CODE": "Uljepšajte kod",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Uljepšati kod na spremanje",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Uljepšajte kod nakon spremanja",
   "FIND_MENU": "Pronađi",
   "CMD_FIND": "Pronađi",
   "CMD_FIND_NEXT": "Pronađi sljedeće",

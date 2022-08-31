@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Автоматически закрывать скобки",
   "CMD_SHOW_CODE_HINTS": "Показывать подсказки в коде",
   "CMD_BEAUTIFY_CODE": "Украсьте код",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Украсьте код при сохранении",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Украсьте код после сохранения",
   "FIND_MENU": "Найти",
   "CMD_FIND": "Найти",
   "CMD_FIND_NEXT": "Найти след.",

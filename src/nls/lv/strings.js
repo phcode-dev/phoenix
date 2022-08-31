@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Automātiski aizvērt figūriekavas",
   "CMD_SHOW_CODE_HINTS": "Rādīt koda ieteikumus",
   "CMD_BEAUTIFY_CODE": "Izdaiļot kodu",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Izdaiļot kodu Saglabāt",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Izdaiļot kodu pēc Saglabāt",
   "FIND_MENU": "Meklēt",
   "CMD_FIND": "Meklēt",
   "CMD_FIND_NEXT": "Meklēt nākamo",

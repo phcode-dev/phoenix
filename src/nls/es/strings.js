@@ -315,7 +315,7 @@ define({
   "CMD_TOGGLE_CLOSE_BRACKETS": "Completar paréntesis automáticamente",
   "CMD_SHOW_CODE_HINTS": "Mostrar sugerencias de código",
   "CMD_BEAUTIFY_CODE": "Embellecer código",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Embellecer código al guardar",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Embellecer código después de guardar",
   "FIND_MENU": "Buscar",
   "CMD_FIND": "Buscar",
   "CMD_FIND_NEXT": "Buscar siguiente",

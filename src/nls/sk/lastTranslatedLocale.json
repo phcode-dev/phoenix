@@ -295,7 +295,7 @@
   "CMD_TOGGLE_CLOSE_BRACKETS": "Uzatvárať zátvorky",
   "CMD_SHOW_CODE_HINTS": "Zobraziť tipy",
   "CMD_BEAUTIFY_CODE": "Skrášliť kód",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "Skrášliť kód na uloženie",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "Skrášliť kód po uložení",
   "FIND_MENU": "Vyhľadať",
   "CMD_FIND": "Vyhľadať",
   "CMD_FIND_NEXT": "Vyhľadať nasledujúci",
