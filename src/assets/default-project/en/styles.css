@@ -1,11 +1,10 @@
-
 body {
-    background: #000A2E;
+    background: #000a2e;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
 }
 
 img {
@@ -38,8 +37,8 @@ img {
     z-index: 8;
     align-items: center;
     justify-content: center;
-    display: flex!important;
-    flex-direction: column!important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 #logo {
@@ -47,7 +46,6 @@ img {
     vertical-align: middle;
     border-style: none;
     box-sizing: border-box;
-
 }
 @media screen and (max-width: 720px) {
     #mainDiv {
@@ -59,19 +57,19 @@ img {
         z-index: 8;
         align-items: center;
         justify-content: center;
-        display: flex!important;
-        flex-direction: column!important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     #logo {
         height: 125px;
         vertical-align: middle;
         position: relative;
-     }
+    }
 }
 #MainText {
     color: #ffffffef;
-    text-align: center!important;
+    text-align: center !important;
 }
 
 h1 {
@@ -82,11 +80,16 @@ h1 {
 }
 
 @keyframes Animation {
-    0%{background-position:0% 0%}
-    50%{background-position:100% 0%}
-    100%{background-position:0% 0%}
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
 }
-
 
 .clouds {
     position: absolute;
@@ -121,12 +124,14 @@ h1 {
     top: 50%;
     width: 100px;
     height: 1px;
-    background: linear-gradient(-45deg, rgba(95, 145, 255, 1), rgba(0, 0, 255, 0));
+    background: linear-gradient(
+        -45deg,
+        rgba(95, 145, 255, 1),
+        rgba(0, 0, 255, 0)
+    );
     border-radius: 999px;
     filter: drop-shadow(0 0 6px rgba(105, 155, 255, 1));
-    animation:
-            tail 3000ms ease-in-out ,
-            shooting 3000ms ease-in-out ;
+    animation: tail 3000ms ease-in-out, shooting 3000ms ease-in-out;
     animation-fill-mode: forwards;
 }
 
@@ -170,15 +175,15 @@ h1 {
     text-align: center;
     overflow: hidden;
 }
-.slide:first-child{
+.slide:first-child {
     left: 0;
 }
-.video{
+.video {
     height: 100%;
     width: 100%;
-    border:0;
+    border: 0;
 }
-.slide-arrow{
+.slide-arrow {
     position: absolute;
     top: 0;
     left: 0;
@@ -187,10 +192,10 @@ h1 {
     cursor: pointer;
     opacity: 100%;
 }
-.slide-arrow:hover{
+.slide-arrow:hover {
     opacity: 1;
 }
-.slide-arrow:after{
+.slide-arrow:after {
     content: "\003c";
     text-align: center;
     display: block;
@@ -201,10 +206,10 @@ h1 {
     left: 0;
     font-size: 3em;
 }
-.slide-arrow.right:after{
+.slide-arrow.right:after {
     content: "\003e";
 }
-.slide-arrow.right{
+.slide-arrow.right {
     left: auto;
     right: 0;
 }
