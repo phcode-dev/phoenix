@@ -29,6 +29,7 @@ Phoenix is in early alpha.
 
 ## Tenets
 1. Targeted for web development. Js, html and CSS enjoy special status.
+2. Game UX - Approach code editing like a game that a school kid would play after skipping the tutorial.
 2. Light-weight editor.
 3. Extension support maintaining full compatibility with Brackets extensions (except brackets-node extensions).
 4. Uncompromised local development experience.
