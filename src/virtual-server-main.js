@@ -51,10 +51,10 @@ workbox.routing.registerRoute(
                 ? JSONFormatter
                 : HtmlFormatter;
 
-        // Allow passing `?download` or `dl` to have the file downloaded vs. displayed
-        const download =
-            url.searchParams.get('download') !== null ||
-            url.searchParams.get('dl') !== null;
+        const download = false;
+        // commented Allow passing `?download` or `dl` to have the file downloaded vs. displayed
+        // url.searchParams.get('download') !== null ||
+        // url.searchParams.get('dl') !== null;
 
         return Serve.serve(path, formatter, download);
     },
