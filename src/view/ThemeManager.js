@@ -409,6 +409,9 @@ define(function (require, exports, module) {
         // listen to system dark/light theme changes
         console.log(`System theme changed to ${e.matches ? "dark" : "light"} mode`);
         refresh(true);
+        
+        // Report os preference change also as a theme change
+        exports.trigger("themeChange", getCurrentTheme());
     });
 
     prefs.on("change", "theme", function () {
