@@ -28,16 +28,20 @@
 if(!self.mime){
     self.mime ={};
     let db = {};
-    fetch("thirdparty/mime-db.json")
-        .then(response => response.json())
-        .then(data => {
-            db = data;
-            // Populate the extensions/types maps
-            populateMaps(self.mime.extensions, self.mime.types);
-        })
-        .catch((err) => {
-            console.error("could not fetch mime-deb", err);
-        });
+    function populateMimeTypes() {
+        fetch("thirdparty/mime-db.json")
+            .then(response => response.json())
+            .then(data => {
+                db = data;
+                // Populate the extensions/types maps
+                populateMaps(self.mime.extensions, self.mime.types);
+            })
+            .catch((err) => {
+                console.error("could not fetch mime-deb. Trying again in 1 seconds.", err);
+                setTimeout(populateMimeTypes, 1000);
+            });
+    }
+    populateMimeTypes();
     if (!self.path) {
         console.error("Phoenix fs lib should be loaded before mime type.");
     }
@@ -59,9 +63,19 @@ if(!self.mime){
     self.mime.charsets = {lookup: charset};
     self.mime.contentType = contentType;
     self.mime.extension = extension;
-    self.mime.extensions = Object.create(null);
+    self.mime.extensions = {
+        "text/html": [
+            "html",
+            "htm",
+            "shtml"
+        ]
+    };
     self.mime.lookup = lookup;
-    self.mime.types = Object.create(null);
+    self.mime.types = {
+        htm: "text/html",
+        html: "text/html",
+        shtml: "text/html"
+    };
 
     /**
      * Get the default charset for a MIME type.

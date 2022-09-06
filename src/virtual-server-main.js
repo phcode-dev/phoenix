@@ -26,19 +26,40 @@ importScripts('phoenix/virtualServer/webserver.js');
 importScripts('phoenix/virtualServer/json-formatter.js');
 importScripts('phoenix/virtualServer/html-formatter.js');
 
+const VIRTUAL_SERVER_URLS = [];
+importScripts('service-worker-core.js');
 
-// TODO: include this via package.json
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.1.1/workbox-sw.js');
-
-workbox.setConfig({debug: Config.debug});
+let baseURL = location.href;
+if(location.href.indexOf( "?")>-1){
+    baseURL = location.href.substring( 0, location.href.indexOf( "?")); // remove query string params
+}
+if(location.href.indexOf( "#")>-1){
+    baseURL = baseURL.substring( 0, baseURL.indexOf( "#")); // remove hrefs in page
+}
+if(location.href.indexOf( "/")>-1){
+    baseURL = baseURL.substring( 0, baseURL.lastIndexOf( "/"));
+}
 
 // Route with trailing slash (i.e., /path/into/filesystem)
 const wwwRegex = new RegExp(`${Config.route}(/.*)`);
 // Route minus the trailing slash
 const wwwPartialRegex = new RegExp(`${Config.route}$`);
 
+function _isVirtualServing(url) {
+    for(let serverBaseURL of VIRTUAL_SERVER_URLS){
+        if(url.startsWith(serverBaseURL)){
+            return true;
+        }
+    }
+    return false;
+}
+
+function _shouldServe(request) {
+    return _isVirtualServing(request.url.href);
+}
+
 workbox.routing.registerRoute(
-    wwwRegex,
+    _shouldServe,
     ({url}) => {
         // Pull the filesystem path off the url
         let path = url.pathname.match(wwwRegex)[1];
@@ -63,7 +84,7 @@ workbox.routing.registerRoute(
 
 // Redirect if missing the / on our expected route
 workbox.routing.registerRoute(
-    wwwPartialRegex,
+    _shouldServe,
     ({url}) => {
         url.pathname = `${Config.route}/`;
         return Promise.resolve(Response.redirect(url, 302));
@@ -71,5 +92,4 @@ workbox.routing.registerRoute(
     'GET'
 );
 
-workbox.core.skipWaiting();
 workbox.core.clientsClaim();

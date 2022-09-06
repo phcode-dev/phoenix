@@ -17,7 +17,6 @@
  */
 
 // jshint ignore: start
-/*global navigator*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
@@ -29,7 +28,7 @@
  * **/
 
 
-import { Workbox } from 'https://storage.googleapis.com/workbox-cdn/releases/4.0.0/workbox-window.prod.mjs';
+import {Workbox} from 'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-window.prod.mjs';
 
 function getRoute(){
     const pathName = window.location.pathname;
@@ -39,24 +38,70 @@ function getRoute(){
 
 window.fsServerUrl = window.location.origin + getRoute();
 
-function serverReady() {
-    console.log(`Server ready! Serving files on url: ${window.location.origin + getRoute()}`);
+function _isServiceWorkerLoaderPage() {
+    // only http(s)://x.y.z/ or http(s)://x.y.z/index.html can load service worker, or localhost/src for dev builds
+    let indexUrl = `${location.origin}/index.html`,
+        baseUrl = `${location.origin}/`,
+        devURL = 'http://localhost:8000/src/';
+    return (location.href === baseUrl || location.href === indexUrl || location.href === devURL);
 }
 
-function serverInstall() {
-    console.log('Web server Worker installed.');
+async function shouldUpdate() {
+    // service workers are always updated in phoenix instantly.
+    return true;
 }
 
 /**
- * Register the nohost service worker, passing `route` or other options.
+ * Register Phoenix PWA and nohost web server service worker, passing `route` or other options.
  */
-if ('serviceWorker' in navigator) {
-    console.log(window.location.href);
-
+if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
+    console.log("Service worker loader: Loading  from page...", window.location.href);
     const wb = new Workbox(`virtual-server-main.js?debug=${window.logToConsolePref === 'true'}&route=${getRoute()}`);
-    // for debug, use this URL`nohost-sw.js?debug&route=${basePath}/phoenix/vfs`
 
-    // Wait on the server to be fully ready to handle routing requests
+    function serverReady() {
+        console.log(`Service worker loader: Registering virtual web server on url: ${window.fsServerUrl}`);
+        wb.messageSW({
+            type: 'REGISTER_FS_SERVER_URL',
+            fsServerUrl: window.fsServerUrl
+        }).then((fsServerUrl)=>{
+            console.log(`Service worker loader: Server ready! Serving files on url: ${fsServerUrl}`);
+        }).catch(err=>{
+            console.error("Service worker loader: Error while registering virtual server with service worker", err);
+        });
+    }
+
+    function serverInstall() {
+        console.log('Service worker loader: Web server Worker installed.');
+    }
+
+    const showSkipWaitingPrompt = async (event) => {
+        // Assuming the user accepted the update, set up a listener
+        // that will reload the page as soon as the previously waiting
+        // service worker has taken control.
+
+        // When `event.wasWaitingBeforeRegister` is true, a previously
+        // updated service worker is still waiting.
+        // You may want to customize the UI prompt accordingly.
+
+        // This code assumes your app has a promptForUpdate() method,
+        // which returns true if the user wants to update.
+        // Implementing this is app-specific; some examples are:
+        // https://open-ui.org/components/alert.research or
+        // https://open-ui.org/components/toast.research
+        const updateAccepted = await shouldUpdate();
+
+        if (updateAccepted) {
+            wb.messageSkipWaiting();
+        }
+    };
+
+    // Add an event listener to detect when the registered
+    // service worker has installed but is waiting to activate.
+    wb.addEventListener('waiting', (event) => {
+        console.log("Service worker loader: A new service worker is pending load. Trying to update the worker now.");
+        showSkipWaitingPrompt(event);
+    });
+
     wb.controlling.then(serverReady);
 
     // Deal with first-run install, if necessary
@@ -68,4 +113,3 @@ if ('serviceWorker' in navigator) {
 
     wb.register();
 }
-
