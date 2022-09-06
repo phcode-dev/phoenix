@@ -124,7 +124,7 @@ function _clearCache() {
 
 const DONT_CACHE_BASE_URLS = [`${cacheBaseURL}/src/`, `${cacheBaseURL}/test/`, `${cacheBaseURL}/dist/`];
 
-function _registerVirtualServerURL(event) {
+function _registerServerURLs(event) {
     let fsServerUrl = event.data.fsServerUrl;
     console.log("service worker: adding virtual web server service worker: ", fsServerUrl);
     if(!DONT_CACHE_BASE_URLS.includes(fsServerUrl)) {
@@ -143,7 +143,7 @@ addEventListener('message', (event) => {
         case 'SKIP_WAITING': self.skipWaiting(); break;
         case 'GET_SW_BASE_URL': event.ports[0].postMessage(cacheBaseURL); break;
         case 'CLEAR_CACHE': _clearCache(); break;
-        case 'REGISTER_FS_SERVER_URL': _registerVirtualServerURL(event); break;
+        case 'REGISTER_FS_SERVER_URL': _registerServerURLs(event); break;
         default: console.error("Service worker cannot process, received unknown message: ", event);
     }
 });
