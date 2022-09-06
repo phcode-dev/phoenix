@@ -58,7 +58,18 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     console.log("Service worker loader: Loading  from page...", window.location.href);
     const wb = new Workbox(`virtual-server-main.js?debug=${window.logToConsolePref === 'true'}&route=${getRoute()}`);
 
-    function serverReady() {
+    function _refreshCache() {
+        console.log(`Service worker loader: triggering REFRESH_CACHE`);
+        wb.messageSW({
+            type: 'REFRESH_CACHE'
+        }).then(()=>{
+            console.log(`Service worker loader: Cache refresh Scheduled`);
+        }).catch(err=>{
+            console.error("Service worker loader: Error while triggering cache refresh", err);
+        });
+    }
+
+    function _registerVirtualServer() {
         console.log(`Service worker loader: Registering virtual web server on url: ${window.fsServerUrl}`);
         wb.messageSW({
             type: 'REGISTER_FS_SERVER_URL',
@@ -68,6 +79,12 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         }).catch(err=>{
             console.error("Service worker loader: Error while registering virtual server with service worker", err);
         });
+    }
+
+    function serverReady() {
+        console.log('Service worker loader: Server ready.');
+        _registerVirtualServer();
+        _refreshCache();
     }
 
     function serverInstall() {

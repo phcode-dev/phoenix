@@ -36,10 +36,13 @@ workbox.setConfig({debug: _debugSWCacheLogs && Config.debug});
 const cacheBaseURL = `${location.origin}`;
 const Route = workbox.routing.Route;
 // other strategies include CacheFirst, NetworkFirst Etc..
+const cacheFirst = workbox.strategies.CacheFirst;
 const StaleWhileRevalidate = workbox.strategies.StaleWhileRevalidate;
 const ExpirationPlugin = workbox.expiration.ExpirationPlugin;
 const DAYS_30_IN_SEC = 60 * 60 * 24 * 30;
+const CACHE_REFRESH_SCHEDULE_TIME = 10 * 1000;
 const CACHE_NAME_EVERYTHING = "everything";
+const CACHE_NAME_CORE_SCRIPTS = "coreScripts";
 
 function _debugCacheLog(...args) {
     if(_debugSWCacheLogs){
@@ -122,6 +125,33 @@ function _clearCache() {
     });
 }
 
+function _ScheduleCacheRefresh(cacheName) {
+    console.log("Service worker: Refreshing cache: ", cacheName);
+    caches.open(cacheName).then((cache) => {
+        cache.keys().then((keys) => {
+            let cacheURLS = [];
+            keys.forEach((request, index, array) => {
+                cacheURLS.push(request.url);
+            });
+            console.log(`Service worker: scheduling cache update for ${cacheURLS.length} URLS in ${cacheName}`);
+            cache.addAll(cacheURLS).then(()=>{
+                console.log(`Service worker: cache refresh complete for ${cacheURLS.length} URLS in ${cacheName}`);
+            }).catch(err=>{
+                console.error(`Service worker: cache refresh failed for ${cacheURLS.length} URLS in ${cacheName}`, err);
+            });
+        });
+    });
+}
+
+function _refreshCache(event) {
+    console.log("Service worker: Scheduling Refreshing cache in ms:", CACHE_REFRESH_SCHEDULE_TIME);
+    setTimeout(()=>{
+        _ScheduleCacheRefresh(CACHE_NAME_EVERYTHING);
+        _ScheduleCacheRefresh(CACHE_NAME_CORE_SCRIPTS);
+    }, CACHE_REFRESH_SCHEDULE_TIME);
+    event.ports[0].postMessage("cache refresh scheduled");
+}
+
 const DONT_CACHE_BASE_URLS = [`${cacheBaseURL}/src/`, `${cacheBaseURL}/test/`, `${cacheBaseURL}/dist/`];
 
 function _registerServerURLs(event) {
@@ -143,6 +173,7 @@ addEventListener('message', (event) => {
         case 'SKIP_WAITING': self.skipWaiting(); break;
         case 'GET_SW_BASE_URL': event.ports[0].postMessage(cacheBaseURL); break;
         case 'CLEAR_CACHE': _clearCache(); break;
+        case 'REFRESH_CACHE': _refreshCache(event); break;
         case 'REGISTER_FS_SERVER_URL': _registerServerURLs(event); break;
         default: console.error("Service worker cannot process, received unknown message: ", event);
     }
@@ -171,6 +202,18 @@ function _isNotCacheableUrl(url) {
     return false;
 }
 
+// we always try to load main worker scripts and index html from core
+const CORE_SCRIPTS_URLS = [`${cacheBaseURL}/index.html`, `${cacheBaseURL}/`,
+    `${cacheBaseURL}/virtual-server-main.js`, `${cacheBaseURL}/phoenix/virtual-server-loader.js`];
+function _isCoreScript(url) {
+    for(let coreScript of CORE_SCRIPTS_URLS){
+        if(url === coreScript){
+            return true;
+        }
+    }
+    return false;
+}
+
 function _shouldCache(request) {
     // now do url checks, Remove # ,http://localhost:9000/dist/styles/images/sprites.svg#leftArrowDisabled.
     // we cache entries with query string parameters in static pages with base url starting with phoenix base
@@ -181,6 +224,10 @@ function _shouldCache(request) {
     }
     if(_isNotCacheableUrl(href)){
         _debugCacheLog("Not Caching un cacheable URL: ", request);
+        return false;
+    }
+    if(_isCoreScript(href)){
+        _debugCacheLog("Not Caching core scripts: ", request);
         return false;
     }
     let disAllowedExtensions =  /.zip$|.map$/i;
@@ -197,7 +244,7 @@ function _shouldCache(request) {
 // handle all document
 const allCachedRoutes = new Route(({ request }) => {
     return _shouldCache(request);
-}, new StaleWhileRevalidate({
+}, new cacheFirst({
     cacheName: CACHE_NAME_EVERYTHING,
     plugins: [
         new ExpirationPlugin({
@@ -206,7 +253,18 @@ const allCachedRoutes = new Route(({ request }) => {
     ]
 }));
 
+const freshnessPreferredRoutes = new Route(({ request }) => {
+    return _isCoreScript(request.url);
+}, new StaleWhileRevalidate({
+    cacheName: CACHE_NAME_CORE_SCRIPTS,
+    plugins: [
+        new ExpirationPlugin({
+            maxAgeSeconds: DAYS_30_IN_SEC
+        })
+    ]
+}));
 
 workbox.routing.registerRoute(allCachedRoutes);
+workbox.routing.registerRoute(freshnessPreferredRoutes);
 
 workbox.core.clientsClaim();
