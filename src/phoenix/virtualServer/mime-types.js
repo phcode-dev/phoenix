@@ -19,7 +19,8 @@
  *
  */
 
-/*globals path*/
+/*globals path, MIME_TYPE_DATABASE_REFERENCE*/
+importScripts('phoenix/virtualServer/mime-db.js');
 
 /**
  * Web worker env
@@ -27,21 +28,8 @@
  */
 if(!self.mime){
     self.mime ={};
-    let db = {};
-    function populateMimeTypes() {
-        fetch("thirdparty/mime-db.json")
-            .then(response => response.json())
-            .then(data => {
-                db = data;
-                // Populate the extensions/types maps
-                populateMaps(self.mime.extensions, self.mime.types);
-            })
-            .catch((err) => {
-                console.error("could not fetch mime-deb. Trying again in 1 seconds.", err);
-                setTimeout(populateMimeTypes, 1000);
-            });
-    }
-    populateMimeTypes();
+    let db = MIME_TYPE_DATABASE_REFERENCE;
+
     if (!self.path) {
         console.error("Phoenix fs lib should be loaded before mime type.");
     }
@@ -224,4 +212,6 @@ if(!self.mime){
             }
         });
     }
+
+    populateMaps(self.mime.extensions, self.mime.types);
 }
