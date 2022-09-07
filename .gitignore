@@ -3,9 +3,10 @@ Thumbs.db
 # ignore jenkins build info
 /build.prop
 
-# ignore node_modules created by grunt, but not more deeply-nested node_modules
+# ignore node_modules created by gulp and other build scripts
 /node_modules
 /npm-debug.log
+/src/cacheManifest.json
 
 # ignore node_modules inside src
 /src/node_modules

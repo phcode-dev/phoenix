@@ -56,7 +56,10 @@ async function shouldUpdate() {
  */
 if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     console.log("Service worker loader: Loading  from page...", window.location.href);
-    const wb = new Workbox(`virtual-server-main.js?debug=${window.logToConsolePref === 'true'}&route=${getRoute()}`);
+    const wb = new Workbox(`virtual-server-main.js?debug=${window.logToConsolePref === 'true'}&route=${getRoute()}`, {
+        // https://developer.chrome.com/blog/fresher-sw/#updateviacache
+        updateViaCache: 'none'
+    });
 
     function _refreshCache() {
         console.log(`Service worker loader: triggering REFRESH_CACHE`);

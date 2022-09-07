@@ -31,7 +31,9 @@ const jsDocGenerate = require('./jsDocGenerate');
 const Translate = require("./translateStrings");
 const copyThirdPartyLibs = require("./thirdparty-lib-copy");
 const minify = require('gulp-minify');
+const glob = require("glob");
 const sourcemaps = require('gulp-sourcemaps');
+const crypto = require("crypto");
 
 function cleanDist() {
     return del(['dist']);
@@ -211,12 +213,115 @@ function translateStrings() {
     });
 }
 
-exports.build = series(copyThirdPartyLibs.copyAll, zipDefaultProjectFiles, zipSampleProjectFiles);
+function _listFilesInDir(dir) {
+    return new Promise((resolve, reject)=>{
+        glob(dir + '/**/*', {
+            nodir: true
+        }, (err, res)=>{
+            if(err){
+                reject(err);
+                return;
+            }
+            resolve(res);
+        });
+    });
+}
+
+const ALLOWED_EXTENSIONS_TO_CACHE = ["js", "html", "htm", "css", "less", "scss", "ttf", "woff", "woff2", "eot",
+    "txt", "otf",
+    "json", "config",
+    "zip",
+    "png", "svg", "jpg", "jpeg", "gif", "ico",
+    "mustache", "md", "markdown"];
+const DISALLOWED_EXTENSIONS_TO_CACHE = ["map", "nuspec", "partial", "pre", "post", "webmanifest", "rb"];
+
+function _isCacheableFile(path) {
+    if(path.indexOf(".") === -1){
+        // no extension. dont cache
+        return false;
+    }
+    let ext = path.split(".");
+    ext = ext[ext.length - 1];
+    if(ALLOWED_EXTENSIONS_TO_CACHE.includes(ext.toLocaleString())){
+        return true;
+    }
+    if(!DISALLOWED_EXTENSIONS_TO_CACHE.includes(ext.toLocaleString())){
+        // please add newly found extensions either in ALLOWED_EXTENSIONS_TO_CACHE or DISALLOWED_EXTENSIONS_TO_CACHE
+        // if you wound this Warning. These extensions determine which file extensions ends up in
+        // browser cache for progressive web app (PWA). Be mindful that only cache what is absolutely necessary
+        // as we expect to see cache size to be under 100MB MAX.
+        console.warn("WARNING: Please update disallowed extensions. New extension type found: ", ext, path);
+        throw new Error("WARNING: Please update file types for PWA cache in build script. New extension type found");
+    }
+    return false;
+}
+
+function _fixAndFilterPaths(basePath, entries) {
+    let filtered = [];
+    for(let entry of entries){
+        if(_isCacheableFile(entry)){
+            filtered.push(entry.replace(`${basePath}/`, ""));
+        }
+    }
+    return filtered;
+}
+
+function _getFileDetails(path) {
+    const data = fs.readFileSync(path,
+        {encoding: null});
+    return {
+        sizeBytes: data.length,
+        hash: crypto.createHash("md5").update(data).digest("hex")
+    };
+}
+
+function _computeCacheManifest(baseDir, filePaths) {
+    let manifest = {}, fileDetails, totalSize = 0;
+    for(let filePath of filePaths){
+        fileDetails = _getFileDetails(baseDir + "/" + filePath);
+        manifest[filePath] = fileDetails.hash;
+        totalSize += fileDetails.sizeBytes;
+    }
+    totalSize = Math.round(totalSize/1024); // KB
+    console.log("Total size of cache in KB: ", totalSize);
+    if(totalSize > 75000){
+        throw new Error("The total size of the src or dist folder core assets exceeds 75MB." +
+            "\nPlease review and trim storage. This significantly impacts the distribution size." +
+            "\nEither trim down the size or increase the limit after careful review.");
+    }
+    return manifest;
+}
+
+function createCacheManifest(srcFolder) {
+    return new Promise((resolve, reject)=>{
+        _listFilesInDir(srcFolder).then((files)=>{
+            files = _fixAndFilterPaths(srcFolder, files);
+            console.log("Files in cache: ", files.length);
+            let cache = _computeCacheManifest(srcFolder, files);
+            fs.writeFileSync(srcFolder + "/cacheManifest.json", JSON.stringify(cache, null, 2));
+            resolve();
+        }).catch(reject);
+    });
+}
+
+function createSrcCacheManifest() {
+    return createCacheManifest("src");
+}
+
+function createDistCacheManifest() {
+    return createCacheManifest("dist");
+}
+
+exports.build = series(copyThirdPartyLibs.copyAll, zipDefaultProjectFiles, zipSampleProjectFiles,
+    createSrcCacheManifest);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
-exports.releaseDev = series(cleanDist, exports.build, makeDistAll);
-exports.releaseStaging = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseStaging);
-exports.releaseProd = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseProd);
+exports.releaseDev = series(cleanDist, exports.build, makeDistAll,
+    createDistCacheManifest);
+exports.releaseStaging = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseStaging,
+    createDistCacheManifest);
+exports.releaseProd = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseProd,
+    createDistCacheManifest);
 exports.serve = series(exports.build, serve);
 exports.test = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
