@@ -246,7 +246,7 @@
   "CMD_PROJECT_NEW": "New Project",
   "CMD_FILE_NEW_FOLDER": "New Folder",
   "CMD_FILE_OPEN": "Open…",
-  "CMD_RECENT_FILES_OPEN": "Open Recent…",
+  "CMD_RECENT_FILES_OPEN": "Recent Files…",
   "CMD_ADD_TO_WORKING_SET": "Open To Working Set",
   "CMD_OPEN_DROPPED_FILES": "Open Dropped Files",
   "CMD_OPEN_FOLDER": "Open Folder…",

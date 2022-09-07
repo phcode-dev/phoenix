@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Nouveau projet",
   "CMD_FILE_NEW_FOLDER": "Nouveau dossier",
   "CMD_FILE_OPEN": "Ouvrir…",
-  "CMD_RECENT_FILES_OPEN": "Ouvrir les fichiers récents…",
+  "CMD_RECENT_FILES_OPEN": "Fichiers récents...",
   "CMD_ADD_TO_WORKING_SET": "Ouvrir dans l’ensemble de travail",
   "CMD_OPEN_DROPPED_FILES": "Ouvrir les fichiers déposés",
   "CMD_OPEN_FOLDER": "Ouvrir un dossier…",

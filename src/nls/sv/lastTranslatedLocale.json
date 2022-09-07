@@ -246,7 +246,7 @@
   "CMD_PROJECT_NEW": "Nytt projekt",
   "CMD_FILE_NEW_FOLDER": "Ny mapp",
   "CMD_FILE_OPEN": "Öppna…",
-  "CMD_RECENT_FILES_OPEN": "Öppna Senaste...",
+  "CMD_RECENT_FILES_OPEN": "Senaste filer...",
   "CMD_ADD_TO_WORKING_SET": "Lägg till i arbetsyta",
   "CMD_OPEN_DROPPED_FILES": "Öppna släppta filer",
   "CMD_OPEN_FOLDER": "Öppna mapp…",

@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Novi projekat",
   "CMD_FILE_NEW_FOLDER": "Нови директоријум",
   "CMD_FILE_OPEN": "Отвори…",
-  "CMD_RECENT_FILES_OPEN": "Otvorite Nedavna...",
+  "CMD_RECENT_FILES_OPEN": "Nedavne datoteke...",
   "CMD_ADD_TO_WORKING_SET": "Додај у радни сет",
   "CMD_OPEN_DROPPED_FILES": "Open Dropped Files",
   "CMD_OPEN_FOLDER": "Отвори директоријум…",

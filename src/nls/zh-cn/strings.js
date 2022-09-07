@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "新项目",
   "CMD_FILE_NEW_FOLDER": "新建目录",
   "CMD_FILE_OPEN": "打开…",
-  "CMD_RECENT_FILES_OPEN": "打开最近",
+  "CMD_RECENT_FILES_OPEN": "最近的文件...",
   "CMD_ADD_TO_WORKING_SET": "添加至工作集合",
   "CMD_OPEN_DROPPED_FILES": "打开拖放的文件",
   "CMD_OPEN_FOLDER": "打开目录…",

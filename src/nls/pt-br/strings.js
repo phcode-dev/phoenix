@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Novo projeto",
   "CMD_FILE_NEW_FOLDER": "Nova pasta",
   "CMD_FILE_OPEN": "Abrir…",
-  "CMD_RECENT_FILES_OPEN": "Abrir recente...",
+  "CMD_RECENT_FILES_OPEN": "Arquivos recentes...",
   "CMD_ADD_TO_WORKING_SET": "Adicionar ao conjunto de trabalho",
   "CMD_OPEN_DROPPED_FILES": "Abrir arquivos largados",
   "CMD_OPEN_FOLDER": "Abrir pasta…",

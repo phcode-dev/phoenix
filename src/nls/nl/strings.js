@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Nieuw project",
   "CMD_FILE_NEW_FOLDER": "Nieuwe map",
   "CMD_FILE_OPEN": "Bestand openen…",
-  "CMD_RECENT_FILES_OPEN": "Recent openen...",
+  "CMD_RECENT_FILES_OPEN": "Recente bestanden...",
   "CMD_ADD_TO_WORKING_SET": "Voeg toe aan werkset",
   "CMD_OPEN_DROPPED_FILES": "Open gesloten bestanden",
   "CMD_OPEN_FOLDER": "Open map…",

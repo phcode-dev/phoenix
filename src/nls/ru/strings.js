@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Новый проект",
   "CMD_FILE_NEW_FOLDER": "Новая директория",
   "CMD_FILE_OPEN": "Открыть…",
-  "CMD_RECENT_FILES_OPEN": "Открыть недавние...",
+  "CMD_RECENT_FILES_OPEN": "Недавние файлы...",
   "CMD_ADD_TO_WORKING_SET": "Добавить в рабочий набор",
   "CMD_OPEN_DROPPED_FILES": "Открыть перетащенные файлы",
   "CMD_OPEN_FOLDER": "Открыть директорию…",

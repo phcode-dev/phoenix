@@ -246,7 +246,7 @@
   "CMD_PROJECT_NEW": "Új projekt",
   "CMD_FILE_NEW_FOLDER": "Új Mappa",
   "CMD_FILE_OPEN": "Megnyitás…",
-  "CMD_RECENT_FILES_OPEN": "Legutóbbi megnyitása...",
+  "CMD_RECENT_FILES_OPEN": "Legutóbbi fájlok...",
   "CMD_ADD_TO_WORKING_SET": "Hozzáadás a Munkakészlethez",
   "CMD_OPEN_DROPPED_FILES": "Eldobott fájlok megnyitása",
   "CMD_OPEN_FOLDER": "Mappa Megnyitása…",

@@ -246,7 +246,7 @@
   "CMD_PROJECT_NEW": "Proiect nou",
   "CMD_FILE_NEW_FOLDER": "Dosar nou",
   "CMD_FILE_OPEN": "Deschide…",
-  "CMD_RECENT_FILES_OPEN": "Deschide recent...",
+  "CMD_RECENT_FILES_OPEN": "Fișiere recente...",
   "CMD_ADD_TO_WORKING_SET": "Adaugă la setul de lucru și deschide",
   "CMD_OPEN_DROPPED_FILES": "Deschide fișierele depuse",
   "CMD_OPEN_FOLDER": "Deshide un dosar…",

@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Νέο Έργο",
   "CMD_FILE_NEW_FOLDER": "Νέος Φάκελος",
   "CMD_FILE_OPEN": "Άνοιγμα…",
-  "CMD_RECENT_FILES_OPEN": "Άνοιγμα πρόσφατου...",
+  "CMD_RECENT_FILES_OPEN": "Πρόσφατα αρχεία...",
   "CMD_ADD_TO_WORKING_SET": "Προσθήκη στα Αρχεία Εργασίας",
   "CMD_OPEN_DROPPED_FILES": "Άνοιγμα Αρχείων που ρίχτηκαν",
   "CMD_OPEN_FOLDER": "Άνοιγμα Φακέλου…",
