@@ -39,10 +39,19 @@ const Route = workbox.routing.Route;
 const cacheFirst = workbox.strategies.CacheFirst;
 const StaleWhileRevalidate = workbox.strategies.StaleWhileRevalidate;
 const ExpirationPlugin = workbox.expiration.ExpirationPlugin;
+const CacheExpiration = workbox.expiration.CacheExpiration;
 const DAYS_30_IN_SEC = 60 * 60 * 24 * 30;
 const CACHE_REFRESH_SCHEDULE_TIME = 10 * 1000;
 const CACHE_NAME_EVERYTHING = "everything";
 const CACHE_NAME_CORE_SCRIPTS = "coreScripts";
+const ExpirationManager ={
+    "everything": new CacheExpiration(CACHE_NAME_EVERYTHING, {
+            maxAgeSeconds: DAYS_30_IN_SEC
+        }),
+    "coreScripts": new CacheExpiration(CACHE_NAME_CORE_SCRIPTS, {
+            maxAgeSeconds: DAYS_30_IN_SEC
+        })
+};
 
 function _debugCacheLog(...args) {
     if(_debugSWCacheLogs){
@@ -125,6 +134,13 @@ function _clearCache() {
     });
 }
 
+async function _updateTTL(cacheName, urls) {
+    console.log(`Service worker: Updating expiry for ${urls.length} urls in cache: ${cacheName}`);
+    for(let url of urls){
+        ExpirationManager[cacheName].updateTimestamp(url);
+    }
+}
+
 function _ScheduleCacheRefresh(cacheName) {
     console.log("Service worker: Refreshing cache: ", cacheName);
     caches.open(cacheName).then((cache) => {
@@ -136,6 +152,7 @@ function _ScheduleCacheRefresh(cacheName) {
             console.log(`Service worker: scheduling cache update for ${cacheURLS.length} URLS in ${cacheName}`);
             cache.addAll(cacheURLS).then(()=>{
                 console.log(`Service worker: cache refresh complete for ${cacheURLS.length} URLS in ${cacheName}`);
+                _updateTTL(cacheName, cacheURLS);
             }).catch(err=>{
                 console.error(`Service worker: cache refresh failed for ${cacheURLS.length} URLS in ${cacheName}`, err);
             });
@@ -248,7 +265,8 @@ const allCachedRoutes = new Route(({ request }) => {
     cacheName: CACHE_NAME_EVERYTHING,
     plugins: [
         new ExpirationPlugin({
-            maxAgeSeconds: DAYS_30_IN_SEC
+            maxAgeSeconds: DAYS_30_IN_SEC,
+            purgeOnQuotaError: true
         })
     ]
 }));
@@ -259,7 +277,8 @@ const freshnessPreferredRoutes = new Route(({ request }) => {
     cacheName: CACHE_NAME_CORE_SCRIPTS,
     plugins: [
         new ExpirationPlugin({
-            maxAgeSeconds: DAYS_30_IN_SEC
+            maxAgeSeconds: DAYS_30_IN_SEC,
+            purgeOnQuotaError: true
         })
     ]
 }));
