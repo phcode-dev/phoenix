@@ -35,7 +35,7 @@ define(function (require, exports, module) {
         Mustache     = brackets.getModule("thirdparty/mustache/mustache"),
         unSupportedBrowserTemplate     = require("text!html/unsupported-browser.html");
 
-    const PERSIST_STORAGE_DIALOG_DELAY_SECS = 30000;
+    const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
     let $icon, unsupportedBrowserDialogShown;
 
     function _addToolbarIcon() {
