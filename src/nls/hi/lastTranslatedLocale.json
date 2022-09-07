@@ -246,7 +246,7 @@
   "CMD_PROJECT_NEW": "नया प्रोजेक्ट",
   "CMD_FILE_NEW_FOLDER": "नया फोल्डर",
   "CMD_FILE_OPEN": "खोलें...",
-  "CMD_RECENT_FILES_OPEN": "हाल ही में खोलें...",
+  "CMD_RECENT_FILES_OPEN": "हाल की फ़ाइलें...",
   "CMD_ADD_TO_WORKING_SET": "वर्किंग सेट के लिए खोलें",
   "CMD_OPEN_DROPPED_FILES": "गिराई गई फ़ाइलें खोलें",
   "CMD_OPEN_FOLDER": "फोल्डर खोलें...",

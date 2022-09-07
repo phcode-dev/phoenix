@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "新建項目",
   "CMD_FILE_NEW_FOLDER": "新增資料夾",
   "CMD_FILE_OPEN": "開啟…",
-  "CMD_RECENT_FILES_OPEN": "開啟最近的...",
+  "CMD_RECENT_FILES_OPEN": "最近使用的檔案...",
   "CMD_ADD_TO_WORKING_SET": "開啟進工作集",
   "CMD_OPEN_DROPPED_FILES": "開啟拖放的檔案",
   "CMD_OPEN_FOLDER": "開啟資料夾…",

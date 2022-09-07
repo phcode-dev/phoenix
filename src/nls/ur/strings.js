@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "نیا پروجیکٹ",
   "CMD_FILE_NEW_FOLDER": "نیا فولڈر",
   "CMD_FILE_OPEN": "کھولیں...",
-  "CMD_RECENT_FILES_OPEN": "حالیہ کھولیں...",
+  "CMD_RECENT_FILES_OPEN": "حالیہ فائلیں...",
   "CMD_ADD_TO_WORKING_SET": "کام کرنے والے سیٹ پر کھولیں",
   "CMD_OPEN_DROPPED_FILES": "ڈراپ فائلیں کھولیں",
   "CMD_OPEN_FOLDER": "فولڈر کھولیں...",

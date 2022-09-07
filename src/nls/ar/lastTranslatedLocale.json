@@ -246,7 +246,7 @@
   "CMD_PROJECT_NEW": "مشروع جديد",
   "CMD_FILE_NEW_FOLDER": "مجلد جديد",
   "CMD_FILE_OPEN": "افتح...",
-  "CMD_RECENT_FILES_OPEN": "فتح أحدث...",
+  "CMD_RECENT_FILES_OPEN": "الملفات الأخيرة...",
   "CMD_ADD_TO_WORKING_SET": "فتح لمجموعة العمل",
   "CMD_OPEN_DROPPED_FILES": "افتح الملفات المسقطة",
   "CMD_OPEN_FOLDER": "افتح المجلد...",

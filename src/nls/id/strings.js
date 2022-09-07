@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Proyek Baru",
   "CMD_FILE_NEW_FOLDER": "Folder Baru",
   "CMD_FILE_OPEN": "Buka…",
-  "CMD_RECENT_FILES_OPEN": "Buka Terbaru...",
+  "CMD_RECENT_FILES_OPEN": "File Terbaru...",
   "CMD_ADD_TO_WORKING_SET": "Buka di Daftar Kerja",
   "CMD_OPEN_DROPPED_FILES": "Buka File yang Didrop",
   "CMD_OPEN_FOLDER": "Buka Folder…",

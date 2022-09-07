@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Nový projekt",
   "CMD_FILE_NEW_FOLDER": "Nová složka",
   "CMD_FILE_OPEN": "Otevřít…",
-  "CMD_RECENT_FILES_OPEN": "Otevřít Nedávné...",
+  "CMD_RECENT_FILES_OPEN": "Nedávné soubory...",
   "CMD_ADD_TO_WORKING_SET": "Přidat k pracovní sadě",
   "CMD_OPEN_DROPPED_FILES": "Otevřít opuštěné soubory",
   "CMD_OPEN_FOLDER": "Otevřít složku…",

@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "پروژه جدید",
   "CMD_FILE_NEW_FOLDER": "پوشه جدید",
   "CMD_FILE_OPEN": "باز کردن…",
-  "CMD_RECENT_FILES_OPEN": "باز کردن اخیر...",
+  "CMD_RECENT_FILES_OPEN": "فایل های اخیر...",
   "CMD_ADD_TO_WORKING_SET": "افزودن به محیط کاری و باز کردن آن",
   "CMD_OPEN_DROPPED_FILES": "باز کردن پرونده های در نظر گرفته نشده",
   "CMD_OPEN_FOLDER": "باز کردن پوشه…",

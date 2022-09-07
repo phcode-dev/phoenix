@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "Jauns projekts",
   "CMD_FILE_NEW_FOLDER": "Jauna mape",
   "CMD_FILE_OPEN": "Atvērt…",
-  "CMD_RECENT_FILES_OPEN": "Atvērt neseno...",
+  "CMD_RECENT_FILES_OPEN": "Nesenie faili...",
   "CMD_ADD_TO_WORKING_SET": "Atvērt darba kopā",
   "CMD_OPEN_DROPPED_FILES": "Atvērt nomestās datnes",
   "CMD_OPEN_FOLDER": "Atvērt mapi…",

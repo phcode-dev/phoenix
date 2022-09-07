@@ -266,7 +266,7 @@ define({
   "CMD_PROJECT_NEW": "新しいプロジェクト",
   "CMD_FILE_NEW_FOLDER": "新しいフォルダー",
   "CMD_FILE_OPEN": "開く…",
-  "CMD_RECENT_FILES_OPEN": "最近使用したファイルを開く…",
+  "CMD_RECENT_FILES_OPEN": "最近使用したファイル...",
   "CMD_ADD_TO_WORKING_SET": "ワーキングセットに開く",
   "CMD_OPEN_DROPPED_FILES": "ドロップしたファイルを開く",
   "CMD_OPEN_FOLDER": "フォルダーを開く…",

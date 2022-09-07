@@ -246,7 +246,7 @@
   "CMD_PROJECT_NEW": "새 프로젝트",
   "CMD_FILE_NEW_FOLDER": "폴더 만들기",
   "CMD_FILE_OPEN": "파일 열기…",
-  "CMD_RECENT_FILES_OPEN": "최근 항목 열기...",
+  "CMD_RECENT_FILES_OPEN": "최근 파일...",
   "CMD_ADD_TO_WORKING_SET": "작업세트에 추가",
   "CMD_OPEN_DROPPED_FILES": "드롭한 파일 열기",
   "CMD_OPEN_FOLDER": "폴더 열기…",
