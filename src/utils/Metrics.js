@@ -76,6 +76,7 @@ define(function (require, exports, module) {
         SEARCH: "search",
         SHARING: "sharing",
         PERFORMANCE: "performance",
+        STORAGE: "storage",
         NEW_PROJECT: "new-project"
     };
 

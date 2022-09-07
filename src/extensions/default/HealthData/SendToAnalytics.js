@@ -29,7 +29,8 @@ define(function (require, exports, module) {
         themesPref          = PreferencesManager.getExtensionPrefs("themes");
 
     const PLATFORM = Metrics.EVENT_TYPE.PLATFORM,
-        PERFORMANCE = Metrics.EVENT_TYPE.PERFORMANCE;
+        PERFORMANCE = Metrics.EVENT_TYPE.PERFORMANCE,
+        STORAGE = Metrics.EVENT_TYPE.STORAGE;
 
     // Platform metrics to be sent at startup
     function _emitDeviceTypeMetrics() {
@@ -76,6 +77,20 @@ define(function (require, exports, module) {
             Metrics.countEvent(PLATFORM, "browser", "operaChromium");
         }
     }
+
+    // web storage
+    async function _sendStorageMetrics() {
+        if (navigator.storage && navigator.storage.estimate) {
+            const quota = await navigator.storage.estimate();
+            // quota.usage -> Number of bytes used.
+            // quota.quota -> Maximum number of bytes available.
+            const percentageUsed = Math.round((quota.usage / quota.quota) * 100);
+            const usedMB = Math.round(quota.usage / 1024 / 1024);
+            console.log(`Web Storage quota used: ${percentageUsed}%, ${usedMB}MB`);
+            Metrics.valueEvent(STORAGE, "browserQuota", "percentUsed", percentageUsed);
+            Metrics.valueEvent(STORAGE, "browserQuota", "usedMB", usedMB);
+        }
+    }
     function sendPlatformMetrics() {
         Metrics.countEvent(PLATFORM, "os", brackets.platform);
         Metrics.countEvent(PLATFORM, "os.flavor", brackets.getPlatformInfo());
@@ -86,6 +101,7 @@ define(function (require, exports, module) {
         _emitDeviceTypeMetrics();
         _emitBrowserMetrics();
         _emitMobileMetricsIfPresent();
+        _sendStorageMetrics();
     }
 
     // Performance
