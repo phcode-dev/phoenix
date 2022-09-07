@@ -24,7 +24,7 @@
 /* jshint ignore:start */
 
 define(function (require, exports, module) {
-    let Survey       = require("survey"),
+    const Survey       = require("survey"),
         serverSync   = require("serverSync"),
         newProject   = require("new-project"),
         defaultProjects   = require("default-projects"),
@@ -35,6 +35,7 @@ define(function (require, exports, module) {
         Mustache     = brackets.getModule("thirdparty/mustache/mustache"),
         unSupportedBrowserTemplate     = require("text!html/unsupported-browser.html");
 
+    const PERSIST_STORAGE_DIALOG_DELAY_SECS = 5000;
     let $icon, unsupportedBrowserDialogShown;
 
     function _addToolbarIcon() {
@@ -74,10 +75,12 @@ define(function (require, exports, module) {
     async function _persistBrowserStorage() {
         if(navigator.storage && navigator.storage.persist){
             let isPersisted = await navigator.storage.persisted();
-            if(!isPersisted){
-                isPersisted = await navigator.storage.persist();
-            }
-            console.log(`Browser Persisted storage granted?: ${isPersisted}`);
+            setTimeout(async ()=>{
+                if(!isPersisted){
+                    isPersisted = await navigator.storage.persist();
+                }
+                console.log(`Browser Persisted storage granted?: ${isPersisted}`);
+            }, PERSIST_STORAGE_DIALOG_DELAY_SECS);
         } else {
             console.error("Browser does not support storage persistence APIs");
             _showUnSupportedBrowserDialogue();
