@@ -53,6 +53,8 @@ const ExpirationManager ={
         })
 };
 
+let recentlyAccessedURLS = {};
+
 function _debugCacheLog(...args) {
     if(_debugSWCacheLogs){
         console.log(...args);
@@ -135,13 +137,15 @@ function _clearCache() {
 }
 
 async function _updateTTL(cacheName, urls) {
+    // this is needed for workbox to purge cache by ttl. purge behaviour is not part of w3c spec, but done by workbox.
+    // cache.addall browser api will not update expiry ttls that workbox lib needs. So we add it here.
     console.log(`Service worker: Updating expiry for ${urls.length} urls in cache: ${cacheName}`);
     for(let url of urls){
         ExpirationManager[cacheName].updateTimestamp(url);
     }
 }
 
-function _ScheduleCacheRefresh(cacheName) {
+function _refreshCacheNow(cacheName) {
     console.log("Service worker: Refreshing cache: ", cacheName);
     caches.open(cacheName).then((cache) => {
         cache.keys().then((keys) => {
@@ -149,7 +153,10 @@ function _ScheduleCacheRefresh(cacheName) {
             keys.forEach((request, index, array) => {
                 cacheURLS.push(request.url);
             });
-            console.log(`Service worker: scheduling cache update for ${cacheURLS.length} URLS in ${cacheName}`);
+            console.log(`Service worker: Filtering caching from ${cacheURLS.length} URLS in ${cacheName}`);
+            cacheURLS = cacheURLS.filter(url => recentlyAccessedURLS[url] === true);
+            recentlyAccessedURLS = {};
+            console.log(`Service worker: scheduling cache update for ${cacheURLS.length} filtered URLS in ${cacheName}`);
             cache.addAll(cacheURLS).then(()=>{
                 console.log(`Service worker: cache refresh complete for ${cacheURLS.length} URLS in ${cacheName}`);
                 _updateTTL(cacheName, cacheURLS);
@@ -163,8 +170,7 @@ function _ScheduleCacheRefresh(cacheName) {
 function _refreshCache(event) {
     console.log("Service worker: Scheduling Refreshing cache in ms:", CACHE_REFRESH_SCHEDULE_TIME);
     setTimeout(()=>{
-        _ScheduleCacheRefresh(CACHE_NAME_EVERYTHING);
-        _ScheduleCacheRefresh(CACHE_NAME_CORE_SCRIPTS);
+        _refreshCacheNow(CACHE_NAME_EVERYTHING);
     }, CACHE_REFRESH_SCHEDULE_TIME);
     event.ports[0].postMessage("cache refresh scheduled");
 }
@@ -260,7 +266,11 @@ function _shouldCache(request) {
 
 // handle all document
 const allCachedRoutes = new Route(({ request }) => {
-    return _shouldCache(request);
+    let shouldCache = _shouldCache(request);
+    if(shouldCache){
+        recentlyAccessedURLS[request.url] = true;
+    }
+    return shouldCache;
 }, new cacheFirst({
     cacheName: CACHE_NAME_EVERYTHING,
     plugins: [
