@@ -72,21 +72,15 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         });
     }
 
-    function _registerVirtualServer() {
-        console.log(`Service worker loader: Registering virtual web server on url: ${window.fsServerUrl}`);
-        wb.messageSW({
-            type: 'REGISTER_FS_SERVER_URL',
-            fsServerUrl: window.fsServerUrl
-        }).then((fsServerUrl)=>{
-            console.log(`Service worker loader: Server ready! Serving files on url: ${fsServerUrl}`);
-        }).catch(err=>{
-            console.error("Service worker loader: Error while registering virtual server with service worker", err);
-        });
-    }
-
     function serverReady() {
         console.log('Service worker loader: Server ready.');
-        _registerVirtualServer();
+        wb.messageSW({
+            type: 'GET_SW_BASE_URL'
+        }).then((fsServerUrl)=>{
+            console.log(`Service worker loader: Server ready! Service worker initialised at base url: ${fsServerUrl}`);
+        }).catch(err=>{
+            console.error("Service worker loader: Error while init of service worker", err);
+        });
         _refreshCache();
     }
 
