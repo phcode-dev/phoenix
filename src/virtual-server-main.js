@@ -33,7 +33,6 @@ const _debugSWCacheLogs = false; // change debug to true to see more logs
 
 workbox.setConfig({debug: _debugSWCacheLogs && Config.debug});
 
-const cacheBaseURL = `${location.origin}`;
 const Route = workbox.routing.Route;
 // other strategies include CacheFirst, NetworkFirst Etc..
 const cacheFirst = workbox.strategies.CacheFirst;
@@ -61,7 +60,7 @@ function _debugCacheLog(...args) {
     }
 }
 
-// virtual server route
+// service worker controlling route base url. This will be something like https://phcode.dev/ or http://localhost:8000/
 let baseURL = location.href;
 if(location.href.indexOf( "?")>-1){
     baseURL = location.href.substring( 0, location.href.indexOf( "?")); // remove query string params
@@ -72,27 +71,34 @@ if(location.href.indexOf( "#")>-1){
 if(location.href.indexOf( "/")>-1){
     baseURL = baseURL.substring( 0, baseURL.lastIndexOf( "/"));
 }
+console.log("Service worker: base URL is: ", baseURL);
+
+// this is the base url where our file system virtual server lives. http://phcode.dev/phoenix/vfs in phoenix or
+// http://localhost:8000/phoenix/vfs in dev builds
+const virtualServerBaseURL = `${baseURL}${Config.route}`;
+console.log("Service worker: Virtual server base URL is: ", virtualServerBaseURL);
+
+// Cache base URL is different from baseURL. Phoenix only cache pages routed at the origin https://Something.x.y/ .
+// If we try to load phoenix from another url, say https://Something.x.y/dev/phoenix.html, That will never have its own
+// cache and rely on the top level service worker to cache. For Eg, any of the sub urls
+// that also hosts development versions of phoenix like phcode.dev/src/index.html will not recursively end up in cache.
+const cacheBaseURL = `${location.origin}`;
+console.log("service worker: cache base URL:", cacheBaseURL);
 
 // Route with trailing slash (i.e., /path/into/filesystem)
 const wwwRegex = new RegExp(`${Config.route}(/.*)`);
 // Route minus the trailing slash
-const wwwPartialRegex = new RegExp(`${Config.route}$`);
 
 function _isVirtualServing(url) {
-    for(let serverBaseURL of VIRTUAL_SERVER_URLS){
-        if(url.startsWith(serverBaseURL)){
-            return true;
-        }
-    }
-    return false;
+    return url.startsWith(virtualServerBaseURL);
 }
 
-function _shouldServe(request) {
+function _shouldVirtualServe(request) {
     return _isVirtualServing(request.url.href);
 }
 
 workbox.routing.registerRoute(
-    _shouldServe,
+    _shouldVirtualServe,
     ({url}) => {
         // Pull the filesystem path off the url
         let path = url.pathname.match(wwwRegex)[1];
@@ -117,7 +123,7 @@ workbox.routing.registerRoute(
 
 // Redirect if missing the / on our expected route
 workbox.routing.registerRoute(
-    _shouldServe,
+    _shouldVirtualServe,
     ({url}) => {
         url.pathname = `${Config.route}/`;
         return Promise.resolve(Response.redirect(url, 302));
@@ -175,34 +181,22 @@ function _refreshCache(event) {
     event.ports[0].postMessage("cache refresh scheduled");
 }
 
-const DONT_CACHE_BASE_URLS = [`${cacheBaseURL}/src/`, `${cacheBaseURL}/test/`, `${cacheBaseURL}/dist/`];
-
-function _registerServerURLs(event) {
-    let fsServerUrl = event.data.fsServerUrl;
-    console.log("service worker: adding virtual web server service worker: ", fsServerUrl);
-    if(!DONT_CACHE_BASE_URLS.includes(fsServerUrl)) {
-        DONT_CACHE_BASE_URLS.push(fsServerUrl);
-    }
-    if(!VIRTUAL_SERVER_URLS.includes(fsServerUrl)) {
-        VIRTUAL_SERVER_URLS.push(fsServerUrl);
-    }
-    event.ports[0].postMessage(fsServerUrl);
-    console.log("service worker: dont cache urls updates: ", DONT_CACHE_BASE_URLS);
-}
-
 addEventListener('message', (event) => {
+    // NB: Do not expect anything to persist in the service worker variables, the service worker may be reset at
+    // any time by the browser if it is not in use, and only load it when required. This means that if there is a
+    // long inactivity in the page, even if the tab is opened, the service worker will be unloaded by chrome. Then will
+    // be re-enabled when needed. Hens some of our stored variables transferred from browser tabs was being erased
+    // leading to live preview failures before. Use indexDB persistent storage only inside worker is you want to keep
+    // track of data transferred from the main browser tabs, never hold it in variables here!
     let eventType = event.data && event.data.type;
     switch (eventType) {
         case 'SKIP_WAITING': self.skipWaiting(); break;
         case 'GET_SW_BASE_URL': event.ports[0].postMessage(cacheBaseURL); break;
         case 'CLEAR_CACHE': _clearCache(); break;
         case 'REFRESH_CACHE': _refreshCache(event); break;
-        case 'REGISTER_FS_SERVER_URL': _registerServerURLs(event); break;
         default: console.error("Service worker cannot process, received unknown message: ", event);
     }
 });
-
-console.log("service worker base URL:", cacheBaseURL);
 
 function _isCacheableThirdPartyUrl(url) {
     let THIRD_PARTY_URLS = [
@@ -216,6 +210,7 @@ function _isCacheableThirdPartyUrl(url) {
     return false;
 }
 
+const DONT_CACHE_BASE_URLS = [`${cacheBaseURL}/src/`, `${cacheBaseURL}/test/`, `${cacheBaseURL}/dist/`];
 function _isNotCacheableUrl(url) {
     for(let start of DONT_CACHE_BASE_URLS){
         if(url.startsWith(start)){
@@ -266,7 +261,7 @@ function _shouldCache(request) {
 
 // handle all document
 const allCachedRoutes = new Route(({ request }) => {
-    let shouldCache = _shouldCache(request);
+    let shouldCache = _shouldCache(request) && !_isVirtualServing(request.url);
     if(shouldCache){
         recentlyAccessedURLS[request.url] = true;
     }
@@ -281,8 +276,9 @@ const allCachedRoutes = new Route(({ request }) => {
     ]
 }));
 
+// core scripts route
 const freshnessPreferredRoutes = new Route(({ request }) => {
-    return _isCoreScript(request.url);
+    return _isCoreScript(request.url) && !_isVirtualServing(request.url);
 }, new StaleWhileRevalidate({
     cacheName: CACHE_NAME_CORE_SCRIPTS,
     plugins: [
