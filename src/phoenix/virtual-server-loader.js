@@ -30,13 +30,28 @@
 
 import {Workbox} from 'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-window.prod.mjs';
 
-function getRoute(){
-    const pathName = window.location.pathname;
-    const basePath = pathName.substring(0, pathName.lastIndexOf("/"));
-    return `${basePath}/phoenix/vfs`;
+function _getBaseURL() {
+    let baseURL = window.location.href;
+    if(location.href.indexOf( "?")>-1){
+        baseURL = location.href.substring( 0, location.href.indexOf( "?")); // remove query string params
+    }
+    if(location.href.indexOf( "#")>-1){
+        baseURL = baseURL.substring( 0, baseURL.indexOf( "#")); // remove hrefs in page
+    }
+    if(location.href.indexOf( "/")>-1){
+        baseURL = baseURL.substring( 0, baseURL.lastIndexOf( "/"));
+    }
+    if(!baseURL.endsWith('/')){
+        baseURL = baseURL + '/';
+    }
+    return baseURL;
 }
 
-window.fsServerUrl = window.location.origin + getRoute();
+function getRoute(){
+    return `phoenix/vfs`;
+}
+
+window.fsServerUrl = _getBaseURL() + getRoute();
 
 function _isServiceWorkerLoaderPage() {
     // only http(s)://x.y.z/ or http(s)://x.y.z/index.html can load service worker, or localhost/src for dev builds

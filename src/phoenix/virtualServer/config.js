@@ -50,7 +50,7 @@ if(!self.Config){
         let route = url.searchParams.get('route') || 'fs';
 
         // Only a single / at the front of the route
-        route = route.replace(/^\/*/, '/');
+        route = route.replace(/^\/*/, '');
         // Only a single / at the end of the route
         route = route.replace(/\/*$/, '');
 

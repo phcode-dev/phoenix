@@ -27,8 +27,6 @@ importScripts('phoenix/virtualServer/json-formatter.js');
 importScripts('phoenix/virtualServer/html-formatter.js');
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
 
-const VIRTUAL_SERVER_URLS = [];
-
 const _debugSWCacheLogs = false; // change debug to true to see more logs
 
 workbox.setConfig({debug: _debugSWCacheLogs && Config.debug});
@@ -71,19 +69,15 @@ if(location.href.indexOf( "#")>-1){
 if(location.href.indexOf( "/")>-1){
     baseURL = baseURL.substring( 0, baseURL.lastIndexOf( "/"));
 }
+if(!baseURL.endsWith('/')){
+    baseURL = baseURL + '/';
+}
 console.log("Service worker: base URL is: ", baseURL);
 
 // this is the base url where our file system virtual server lives. http://phcode.dev/phoenix/vfs in phoenix or
 // http://localhost:8000/phoenix/vfs in dev builds
 const virtualServerBaseURL = `${baseURL}${Config.route}`;
 console.log("Service worker: Virtual server base URL is: ", virtualServerBaseURL);
-
-// Cache base URL is different from baseURL. Phoenix only cache pages routed at the origin https://Something.x.y/ .
-// If we try to load phoenix from another url, say https://Something.x.y/dev/phoenix.html, That will never have its own
-// cache and rely on the top level service worker to cache. For Eg, any of the sub urls
-// that also hosts development versions of phoenix like phcode.dev/src/index.html will not recursively end up in cache.
-const cacheBaseURL = `${location.origin}`;
-console.log("service worker: cache base URL:", cacheBaseURL);
 
 // Route with trailing slash (i.e., /path/into/filesystem)
 const wwwRegex = new RegExp(`${Config.route}(/.*)`);
@@ -191,7 +185,7 @@ addEventListener('message', (event) => {
     let eventType = event.data && event.data.type;
     switch (eventType) {
         case 'SKIP_WAITING': self.skipWaiting(); break;
-        case 'GET_SW_BASE_URL': event.ports[0].postMessage(cacheBaseURL); break;
+        case 'GET_SW_BASE_URL': event.ports[0].postMessage(baseURL); break;
         case 'CLEAR_CACHE': _clearCache(); break;
         case 'REFRESH_CACHE': _refreshCache(event); break;
         default: console.error("Service worker cannot process, received unknown message: ", event);
@@ -210,7 +204,10 @@ function _isCacheableThirdPartyUrl(url) {
     return false;
 }
 
-const DONT_CACHE_BASE_URLS = [`${cacheBaseURL}/src/`, `${cacheBaseURL}/test/`, `${cacheBaseURL}/dist/`];
+const DONT_CACHE_BASE_URLS = [
+    `${location.origin}/src/`, `${location.origin}/test/`, `${location.origin}/dist/`, // https://phcode.dev/src or other
+    // https://phcode.dev/subfolder/src/ or other when phoenix is loaded from https://phcode.dev/subfolder/index.html
+    `${baseURL}src/`, `${baseURL}test/`, `${baseURL}dist/`];
 function _isNotCacheableUrl(url) {
     for(let start of DONT_CACHE_BASE_URLS){
         if(url.startsWith(start)){
@@ -221,8 +218,11 @@ function _isNotCacheableUrl(url) {
 }
 
 // we always try to load main worker scripts and index html from core
-const CORE_SCRIPTS_URLS = [`${cacheBaseURL}/index.html`, `${cacheBaseURL}/`,
-    `${cacheBaseURL}/virtual-server-main.js`, `${cacheBaseURL}/phoenix/virtual-server-loader.js`];
+const CORE_SCRIPTS_URLS = [`${location.origin}/index.html`, `${location.origin}/`, // https://phcode.dev/src or other
+    `${location.origin}/virtual-server-main.js`, `${location.origin}/phoenix/virtual-server-loader.js`,
+    // https://phcode.dev/subfolder/src/ or other when phoenix is loaded from https://phcode.dev/subfolder/index.html
+    `${baseURL}index.html`, `${baseURL}`,
+    `${baseURL}virtual-server-main.js`, `${baseURL}phoenix/virtual-server-loader.js`];
 function _isCoreScript(url) {
     for(let coreScript of CORE_SCRIPTS_URLS){
         if(url === coreScript){
@@ -252,7 +252,7 @@ function _shouldCache(request) {
     if(request.method === 'GET' && _isCacheableThirdPartyUrl(href)) {
         return true;
     }
-    if(request.method === 'GET' && href.startsWith(cacheBaseURL) && !disAllowedExtensions.test(href)) {
+    if(request.method === 'GET' && href.startsWith(baseURL) && !disAllowedExtensions.test(href)) {
         return true;
     }
     _debugCacheLog("Not Caching URL: ", request);
