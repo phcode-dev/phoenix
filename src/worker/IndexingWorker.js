@@ -66,8 +66,8 @@
  * @module worker/IndexingWorker
  */
 define(function (require, exports, module) {
-    const WorkerComm = require("worker/WorkerComm"),
-        EventDispatcher = require("utils/EventDispatcher");
+    const EventDispatcher = require("utils/EventDispatcher"),
+        WorkerComm = require("worker/WorkerComm");
 
     const _FileIndexingWorker = new Worker(
         `${Phoenix.baseURL}worker/file-Indexing-Worker-thread.js?debug=${window.logToConsolePref === 'true'}`);
