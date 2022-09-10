@@ -41,13 +41,17 @@ const DAYS_30_IN_SEC = 60 * 60 * 24 * 30;
 const CACHE_REFRESH_SCHEDULE_TIME = 10 * 1000;
 const CACHE_NAME_EVERYTHING = "everything";
 const CACHE_NAME_CORE_SCRIPTS = "coreScripts";
+const CACHE_NAME_EXTERNAL = "external";
 const ExpirationManager ={
     "everything": new CacheExpiration(CACHE_NAME_EVERYTHING, {
             maxAgeSeconds: DAYS_30_IN_SEC
         }),
     "coreScripts": new CacheExpiration(CACHE_NAME_CORE_SCRIPTS, {
             maxAgeSeconds: DAYS_30_IN_SEC
-        })
+        }),
+    "external": new CacheExpiration(CACHE_NAME_EXTERNAL, {
+        maxAgeSeconds: DAYS_30_IN_SEC
+    })
 };
 
 let recentlyAccessedURLS = {};
@@ -192,11 +196,11 @@ addEventListener('message', (event) => {
     }
 });
 
-function _isCacheableThirdPartyUrl(url) {
-    let THIRD_PARTY_URLS = [
+function _isCacheableExternalUrl(url) {
+    let EXTERNAL_URLS = [
         'https://storage.googleapis.com/workbox-cdn/'
     ];
-    for(let start of THIRD_PARTY_URLS){
+    for(let start of EXTERNAL_URLS){
         if(url.startsWith(start)){
             return true;
         }
@@ -204,10 +208,12 @@ function _isCacheableThirdPartyUrl(url) {
     return false;
 }
 
+// queue cache update
+
 const DONT_CACHE_BASE_URLS = [
     `${location.origin}/src/`, `${location.origin}/test/`, `${location.origin}/dist/`, // https://phcode.dev/src or other
     // https://phcode.dev/subfolder/src/ or other when phoenix is loaded from https://phcode.dev/subfolder/index.html
-    `${baseURL}src/`, `${baseURL}test/`, `${baseURL}dist/`];
+    `${baseURL}src/`, `${baseURL}test/`, `${baseURL}dist/`, `${baseURL}cacheManifest.json`];
 function _isNotCacheableUrl(url) {
     for(let start of DONT_CACHE_BASE_URLS){
         if(url.startsWith(start)){
@@ -217,7 +223,8 @@ function _isNotCacheableUrl(url) {
     return false;
 }
 
-// we always try to load main worker scripts and index html from core
+// we always try to load main worker scripts and index html from core scripts cache which uses stale while revalidate
+// to get aggressive updates.
 const CORE_SCRIPTS_URLS = [`${location.origin}/index.html`, `${location.origin}/`, // https://phcode.dev/src or other
     `${location.origin}/virtual-server-main.js`, `${location.origin}/phoenix/virtual-server-loader.js`,
     // https://phcode.dev/subfolder/src/ or other when phoenix is loaded from https://phcode.dev/subfolder/index.html
@@ -232,7 +239,7 @@ function _isCoreScript(url) {
     return false;
 }
 
-function _shouldCache(request) {
+function _belongsToEverythingCache(request) {
     // now do url checks, Remove # ,http://localhost:9000/dist/styles/images/sprites.svg#leftArrowDisabled.
     // we cache entries with query string parameters in static pages with base url starting with phoenix base
     let href = request.url.split("#")[0];
@@ -241,18 +248,19 @@ function _shouldCache(request) {
         return false;
     }
     if(_isNotCacheableUrl(href)){
-        _debugCacheLog("Not Caching un cacheable URL: ", request);
+        _debugCacheLog("Not Caching un cacheable URL in everything cache: ", request);
         return false;
     }
     if(_isCoreScript(href)){
-        _debugCacheLog("Not Caching core scripts: ", request);
+        _debugCacheLog("Not Caching core scripts in everything cache: ", request);
+        return false;
+    }
+    if(_isCacheableExternalUrl(href)){
+        _debugCacheLog("Not Caching external url in everything cache: ", request);
         return false;
     }
     let disAllowedExtensions =  /.zip$|.map$/i;
-    if(request.method === 'GET' && _isCacheableThirdPartyUrl(href)) {
-        return true;
-    }
-    if(request.method === 'GET' && href.startsWith(baseURL) && !disAllowedExtensions.test(href)) {
+    if(href.startsWith(baseURL) && !disAllowedExtensions.test(href)) {
         return true;
     }
     _debugCacheLog("Not Caching URL: ", request);
@@ -261,7 +269,8 @@ function _shouldCache(request) {
 
 // handle all document
 const allCachedRoutes = new Route(({ request }) => {
-    let shouldCache = _shouldCache(request) && !_isVirtualServing(request.url);
+    let shouldCache = (request.method === 'GET'
+        && _belongsToEverythingCache(request) && !_isVirtualServing(request.url));
     if(shouldCache){
         recentlyAccessedURLS[request.url] = true;
     }
@@ -278,7 +287,7 @@ const allCachedRoutes = new Route(({ request }) => {
 
 // core scripts route
 const freshnessPreferredRoutes = new Route(({ request }) => {
-    return _isCoreScript(request.url) && !_isVirtualServing(request.url);
+    return request.method === 'GET' && _isCoreScript(request.url) && !_isVirtualServing(request.url);
 }, new StaleWhileRevalidate({
     cacheName: CACHE_NAME_CORE_SCRIPTS,
     plugins: [
@@ -289,7 +298,21 @@ const freshnessPreferredRoutes = new Route(({ request }) => {
     ]
 }));
 
+// scripts with a different origin like third party libs
+const externalCachedRoutes = new Route(({ request }) => {
+    return request.method === 'GET' && _isCacheableExternalUrl(request.url) && !_isVirtualServing(request.url);
+}, new StaleWhileRevalidate({
+    cacheName: CACHE_NAME_EXTERNAL,
+    plugins: [
+        new ExpirationPlugin({
+            maxAgeSeconds: DAYS_30_IN_SEC,
+            purgeOnQuotaError: true
+        })
+    ]
+}));
+
 workbox.routing.registerRoute(allCachedRoutes);
 workbox.routing.registerRoute(freshnessPreferredRoutes);
+workbox.routing.registerRoute(externalCachedRoutes);
 
 workbox.core.clientsClaim();
