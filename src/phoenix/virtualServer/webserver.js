@@ -17,7 +17,7 @@
  *
  */
 
-/* global Config, importScripts*/
+/* global Config, virtualServerBaseURL*/
 
 importScripts('phoenix/virtualServer/config.js');
 
@@ -127,7 +127,7 @@ if(!self.Serve){
                             return serveError(path, err);
                         }
 
-                        const responseData = formatter.formatDir(Config.route, path, entries);
+                        const responseData = formatter.formatDir(virtualServerBaseURL, path, entries);
                         resolve(new Response(responseData.body, responseData.config));
                     });
                 }

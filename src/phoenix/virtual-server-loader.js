@@ -51,7 +51,7 @@ function getRoute(){
     return `phoenix/vfs`;
 }
 
-window.fsServerUrl = _getBaseURL() + getRoute();
+window.fsServerUrl = _getBaseURL() + getRoute() + "/";
 
 function _isServiceWorkerLoaderPage() {
     // only http(s)://x.y.z/ or http(s)://x.y.z/index.html can load service worker, or localhost/src for dev builds
@@ -80,8 +80,8 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         console.log(`Service worker loader: triggering REFRESH_CACHE`);
         wb.messageSW({
             type: 'REFRESH_CACHE'
-        }).then(()=>{
-            console.log(`Service worker loader: Cache refresh Scheduled`);
+        }).then((msg)=>{
+            console.log(`Service worker loader: `, msg);
         }).catch(err=>{
             console.error("Service worker loader: Error while triggering cache refresh", err);
         });
