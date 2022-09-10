@@ -66,6 +66,7 @@ define(function (require, exports, module) {
     require("thirdparty/CodeMirror/addon/selection/mark-selection");
     require("thirdparty/CodeMirror/keymap/sublime");
 
+    // Event dispatcher must be loaded before worker comm https://github.com/phcode-dev/phoenix/pull/678
     require("utils/EventDispatcher");
     require("worker/WorkerComm");
 
