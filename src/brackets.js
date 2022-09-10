@@ -66,6 +66,9 @@ define(function (require, exports, module) {
     require("thirdparty/CodeMirror/addon/selection/mark-selection");
     require("thirdparty/CodeMirror/keymap/sublime");
 
+    require("utils/EventDispatcher");
+    require("worker/WorkerComm");
+
     // Load dependent modules
     const AppInit             = require("utils/AppInit"),
         LanguageManager     = require("language/LanguageManager"),

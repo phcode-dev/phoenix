@@ -63,8 +63,8 @@
  * @module worker/ExtensionsWorker
  */
 define(function (require, exports, module) {
-    const WorkerComm = require("worker/WorkerComm"),
-        EventDispatcher = require("utils/EventDispatcher");
+    const EventDispatcher = require("utils/EventDispatcher"),
+        WorkerComm = require("worker/WorkerComm");
 
     const _ExtensionsWorker = new Worker(
         `${Phoenix.baseURL}worker/extensions-worker-thread.js?debug=${window.logToConsolePref === 'true'}`);
