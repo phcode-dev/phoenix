@@ -137,7 +137,8 @@ define(function (require) {
 
 
     // Load compatibility shims--these need to load early, be careful moving this
-    require(["utils/Compatibility"], function () {
+    // Event dispatcher must be loaded before worker comm https://github.com/phcode-dev/phoenix/pull/678
+    require(["utils/Compatibility", "utils/EventDispatcher"], function () {
         // Load the brackets module. This is a self-running module that loads and runs the entire application.
         try{
             require(["brackets"]);
