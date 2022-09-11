@@ -239,7 +239,7 @@ async function _refreshCache(event) {
     }
     refreshInProgress = true;
     try{
-        console.log("Service worker: Scheduling Refreshing cache in ms:", CACHE_REFRESH_SCHEDULE_TIME);
+        console.log("Service worker: Refreshing browser cache for app updates.");
         const currentCacheManifest = await _getCurrentCacheManifest();
         const newCacheManifest = await _getNewCacheManifest();
         if(!newCacheManifest){
