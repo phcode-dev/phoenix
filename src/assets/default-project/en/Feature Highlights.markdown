@@ -20,3 +20,21 @@ Live preview but for markdown files!
 <iframe allow="fullscreen;" width="100%" height="315"
 src="https://www.youtube.com/embed/buDeBgf-B60">
 </iframe>
+
+## Beautify code
+
+Beautify HTML, CSS, JS, Json, Markdown, Typescript and other language code with `Ctrl-B` (`Cmd-B` in mac.).
+
+<iframe allow="fullscreen;" width="100%" height="315"
+src="https://www.youtube.com/embed/DMMPfIuUGGs">
+</iframe>
+
+## Instant Search and Large Projects Support in browsers
+`Added on June,2022`
+
+Open large projects right from your browser.
+Instant search across all files in your project (Click on the search icon at top left).
+
+<iframe allow="fullscreen;" width="100%" height="315"
+src="https://www.youtube.com/embed/pw7vJ_l5A44">
+</iframe>
