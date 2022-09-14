@@ -11,7 +11,7 @@ List of features added to phoenix:
 
 * Blazing fast load of Phoenix code editor in the browser after first launch.
 * Limited offline support: Load Phoenix in the browser without an internet connection after the first launch.
-  Workflows that has been used atleast once before will be accesible in offline mode.
+  Workflows that has been used at least once before will be accessible in offline mode.
 
 ## Beautify code
 `Added on August,2022`
