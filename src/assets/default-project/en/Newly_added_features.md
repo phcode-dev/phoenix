@@ -60,6 +60,9 @@ We have applied a fresh coat of paint to the icons in files panel.
 Open local folders and projects from GitHub; Quick start templates with HTML, blog, and bootstrap projects.
 More templates coming soon.
 
+<iframe allow="fullscreen;" width="100%" height="315"
+src="https://www.youtube.com/embed/Nqukd9oU060">
+</iframe>
 
 ## Share and Publish your Website
 `Added on Apr,2022`
