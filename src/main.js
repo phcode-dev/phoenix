@@ -90,7 +90,7 @@ window.jsPromise = function (jqueryOrJSPromise) {
 
 // splash screen updates for initial install which could take time, or slow networks.
 let trackedScriptCount = 0;
-function _setSplashScreenStatusUpdate(message) {
+function _setSplashScreenStatusUpdate(message1, message2) {
     let splashScreenFrame = document.getElementById("splash-screen-frame");
     if(!splashScreenFrame){
         if(!window.debugMode){
@@ -101,8 +101,10 @@ function _setSplashScreenStatusUpdate(message) {
         }
         return false;
     }
-    let displayBtn = splashScreenFrame.contentDocument.getElementById("load-status-display-btn");
-    displayBtn.textContent = message;
+    let displayBtn1 = splashScreenFrame.contentDocument.getElementById("load-status-display-btn");
+    let displayText2 = splashScreenFrame.contentDocument.getElementById("load-status-display-text");
+    displayBtn1.textContent = message1;
+    displayText2.textContent = message2;
     return true;
 }
 
@@ -114,7 +116,7 @@ const callback = function(mutationsList) {
             let scriptAddedSplit = mutation.addedNodes[0].src.split("/");
             if(scriptAddedSplit.length > 0){
                 _setSplashScreenStatusUpdate(
-                    `Loading (${trackedScriptCount}) ${scriptAddedSplit[scriptAddedSplit.length-1]}`);
+                    `Loading (${trackedScriptCount})` , `${scriptAddedSplit[scriptAddedSplit.length-1]}`);
             }
         }
     }
@@ -128,8 +130,7 @@ window.scriptObserver = new MutationObserver(callback);
 window.scriptObserver.observe(mainScripts, config);
 
 window.onerror = function (msg, url, line, ...err) {
-    console.error("Caught Critical error from: "
-        + url + ":" + line + " message: " + msg, ...err);
+    console.error("Caught Critical error from: " + url + ":" + line + " message: " + msg, ...err);
     return true; // same as preventDefault
 };
 
@@ -148,3 +149,4 @@ define(function (require) {
         }
     });
 });
+
