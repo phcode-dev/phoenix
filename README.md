@@ -23,7 +23,6 @@ Phoenix is a modern open-source and [free software](https://www.gnu.org/philosop
 </a>
 
 Phoenix is in early alpha.  
-* Please subscribe to our [notification list](https://core.ai/) to get notified when Phoenix goes live. 
 
 ![Screenshot from 2022-09-20 13-35-03](https://user-images.githubusercontent.com/5336369/191202975-6069d270-526a-443d-bd76-903353ae1222.png)
 
