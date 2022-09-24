@@ -48,7 +48,7 @@ define(function (require, exports, module) {
     function format(str) {
         // arguments[0] is the base string, so we need to adjust index values here
         var args = [].slice.call(arguments, 1);
-        return str.replace(/\{(\d+)\}/g, function (match, num) {
+        return str.replace(/\{\s*(\d+)\s*\}/g, function (match, num) {
             return typeof args[num] !== "undefined" ? args[num] : match;
         });
     }
