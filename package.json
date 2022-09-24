@@ -17,7 +17,7 @@
         "@commitlint/config-conventional": "^16.0.0",
         "@google-cloud/translate": "^7.0.3",
         "del": "^6.0.0",
-        "documentation": "^13.2.5",
+        "documentation": "^14.0.0",
         "eslint": "^8.18.0",
         "glob": "^8.0.3",
         "gulp": "^4.0.2",
