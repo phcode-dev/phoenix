@@ -19,28 +19,25 @@
  */
 
 /* eslint-env node */
-const AWS = require('aws-sdk');
 const fs = require('fs');
-AWS.config.update({region: "eu-central-1"});
+const projectId = process.env.GCP_PROJECT_ID;
+const API_KEY = process.env.GCP_API_KEY;
+// Imports the Google Cloud client library
+const {Translate} = require('@google-cloud/translate').v2;
 
-let AWSTranslate = new AWS.Translate();
+// See git history for old impl using AWS translate. We moved to google translate for better quality of translations.
+const GoogleTranslate = new Translate({
+    projectId,
+    key: API_KEY
+});
 
-function _translateStringWithAWS(text, srcLang, dstLang) {
+function _translateString(text, dstLang) {
     return new Promise((resolve, reject)=>{
-        let params = {
-            SourceLanguageCode: srcLang,
-            TargetLanguageCode: dstLang,
-            Text: text
-        };
-
-        AWSTranslate.translateText(params, function (err, data) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data['TranslatedText']);
-            }
-        });
-
+        GoogleTranslate.translate(text, dstLang)
+            .then(([translation]) => {
+                resolve(translation);
+            })
+            .catch(reject);
     });
 }
 
@@ -180,9 +177,9 @@ async function _processLang(lang) {
                 // prefer expert translations over machine translations
                 translations[rootKey] = expertTranslations[englishStringToTranslate];
             } else {
-                let awsTranslation = await _translateStringWithAWS(englishStringToTranslate, "en", lang);
-                console.log(awsTranslation);
-                translations[rootKey] = awsTranslation;
+                let translatedText = await _translateString(englishStringToTranslate, lang);
+                console.log(lang, translatedText);
+                translations[rootKey] = translatedText;
             }
         }
         newTranslationsInRoot[rootKey] = englishStringToTranslate;
