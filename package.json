@@ -15,7 +15,7 @@
     "devDependencies": {
         "@commitlint/cli": "^16.0.2",
         "@commitlint/config-conventional": "^16.0.0",
-        "aws-sdk": "^2.1155.0",
+        "@google-cloud/translate": "^7.0.3",
         "del": "^6.0.0",
         "documentation": "^13.2.5",
         "eslint": "^8.18.0",
