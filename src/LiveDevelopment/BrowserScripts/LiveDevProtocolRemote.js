@@ -153,7 +153,7 @@
      */
     var CSS = {
 
-        setStylesheetText: function (msg) {
+        setStylesheetText : function (msg) {
 
             if (!msg || !msg.params || !msg.params.text || !msg.params.url) {
                 return;
@@ -374,7 +374,7 @@
     window.addEventListener('load', function () {
         ProtocolManager.enable();
     });
-
+    
     /**
     * Sends the message containing tagID which is being clicked
     * to the editor in order to change the cursor position to
