@@ -210,6 +210,10 @@ define(function (require, exports, module) {
     require("worker/IndexingWorker");
     require("worker/ExtensionsWorker");
 
+    // live preview
+    require("LiveDevelopment/Servers/FileServer");
+    require("LiveDevelopment/Servers/UserServer");
+
     PerfUtils.addMeasurement("brackets module dependencies resolved");
 
     // Local variables
@@ -240,7 +244,6 @@ define(function (require, exports, module) {
             DocumentCommandHandlers: require("document/DocumentCommandHandlers"),
             DocumentManager: require("document/DocumentManager"),
             DocumentModule: require("document/Document"),
-            DOMAgent: require("LiveDevelopment/Agents/DOMAgent"),
             DragAndDrop: require("utils/DragAndDrop"),
             EditorManager: require("editor/EditorManager"),
             EventManager: require("utils/EventManager"),
@@ -258,12 +261,10 @@ define(function (require, exports, module) {
             FindInFilesUI: require("search/FindInFilesUI"),
             FindUtils: require("search/FindUtils"),
             HTMLInstrumentation: require("language/HTMLInstrumentation"),
-            Inspector: require("LiveDevelopment/Inspector/Inspector"),
             InstallExtensionDialog: require("extensibility/InstallExtensionDialog"),
             JSUtils: require("language/JSUtils"),
             KeyBindingManager: require("command/KeyBindingManager"),
             LanguageManager: require("language/LanguageManager"),
-            LiveDevelopment: require("LiveDevelopment/LiveDevelopment"),
             LiveDevMultiBrowser: require("LiveDevelopment/LiveDevMultiBrowser"),
             LiveDevServerManager: require("LiveDevelopment/LiveDevServerManager"),
             MainViewFactory: require("view/MainViewFactory"),
@@ -277,7 +278,6 @@ define(function (require, exports, module) {
             QuickViewManager: require("features/QuickViewManager"),
             SelectionViewManager: require("features/SelectionViewManager"),
             WorkspaceManager: require("view/WorkspaceManager"),
-            RemoteAgent: require("LiveDevelopment/Agents/RemoteAgent"),
             SearchResultsView: require("search/SearchResultsView"),
             ScrollTrackMarkers: require("search/ScrollTrackMarkers"),
             WorkingSetView: require("project/WorkingSetView"),

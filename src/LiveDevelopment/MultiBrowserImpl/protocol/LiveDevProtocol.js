@@ -42,9 +42,9 @@ define(function (require, exports, module) {
     var EventDispatcher = require("utils/EventDispatcher");
 
     // Text of the script we'll inject into the browser that handles protocol requests.
-    var LiveDevProtocolRemote = require("text!LiveDevelopment/MultiBrowserImpl/protocol/remote/LiveDevProtocolRemote.js"),
-        DocumentObserver      = require("text!LiveDevelopment/MultiBrowserImpl/protocol/remote/DocumentObserver.js"),
-        RemoteFunctions       = require("text!LiveDevelopment/Agents/RemoteFunctions.js"),
+    var LiveDevProtocolRemote = require("text!LiveDevelopment/BrowserScripts/LiveDevProtocolRemote.js"),
+        DocumentObserver      = require("text!LiveDevelopment/BrowserScripts/DocumentObserver.js"),
+        RemoteFunctions       = require("text!LiveDevelopment/BrowserScripts/RemoteFunctions.js"),
         EditorManager         = require("editor/EditorManager"),
         LiveDevMultiBrowser   = require("LiveDevelopment/LiveDevMultiBrowser"),
         HTMLInstrumentation   = require("language/HTMLInstrumentation");

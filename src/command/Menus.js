@@ -858,9 +858,10 @@ define(function (require, exports, module) {
         let checked = !!this._command.getChecked();
         if (this.isNative) {
             let enabled = !!this._command.getEnabled();
+            let command = this._command;
             brackets.app.setMenuItemState(this._command.getID(), enabled, checked, function (err) {
                 if (err) {
-                    console.log("Error setting menu item state: " + err);
+                    console.log("Error setting menu item checked state for " + command + ": " + err);
                 }
             });
         } else {
@@ -875,9 +876,10 @@ define(function (require, exports, module) {
         if (this.isNative) {
             let enabled = !!this._command.getEnabled();
             let checked = !!this._command.getChecked();
+            let command = this._command;
             brackets.app.setMenuItemState(this._command.getID(), enabled, checked, function (err) {
                 if (err) {
-                    console.log("Error setting menu item state: " + err);
+                    console.log("Error setting menu item enabled state for " + command + ": " + err);
                 }
             });
         } else {
@@ -890,9 +892,10 @@ define(function (require, exports, module) {
      */
     MenuItem.prototype._nameChanged = function () {
         if (this.isNative) {
+            let command = this._command;
             brackets.app.setMenuTitle(this._command.getID(), this._command.getName(), function (err) {
                 if (err) {
-                    console.log("Error setting menu title: " + err);
+                    console.log("Error setting menu title for " + command + ": " + err);
                 }
             });
         } else {
@@ -906,10 +909,11 @@ define(function (require, exports, module) {
      */
     MenuItem.prototype._keyBindingAdded = function (event, keyBinding) {
         if (this.isNative) {
-            let shortcutKey = keyBinding.displayKey || keyBinding.key;
+            let shortcutKey = keyBinding.displayKey || keyBinding.key,
+                command = this._command;
             brackets.app.setMenuItemShortcut(this._command.getID(), shortcutKey, KeyBindingManager.formatKeyDescriptor(shortcutKey), function (err) {
                 if (err) {
-                    console.error("Error setting menu item shortcut key " + shortcutKey + " : " + err );
+                    console.error("Error setting menu item shortcut key " + shortcutKey + ", " + command + " : " + err );
                 }
             });
         } else {
@@ -923,9 +927,11 @@ define(function (require, exports, module) {
      */
     MenuItem.prototype._keyBindingRemoved = function (event, keyBinding) {
         if (this.isNative) {
+            let shortcutKey = keyBinding.displayKey || keyBinding.key,
+                command = this._command;
             brackets.app.setMenuItemShortcut(this._command.getID(), "", "", function (err) {
                 if (err) {
-                    console.error("Error setting menu item shortcut: " + err);
+                    console.error("Error setting menu item shortcut: " + err, shortcutKey, command);
                 }
             });
         } else {
