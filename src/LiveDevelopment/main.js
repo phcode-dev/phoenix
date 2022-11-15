@@ -49,7 +49,7 @@ define(function main(require, exports, module) {
     var config = {
         experimental: false, // enable experimental features
         debug: true, // enable debug output and helpers
-        autoconnect: false, // go live automatically after startup?
+        autoconnect: true, // go live automatically after startup?
         highlight: true, // enable highlighting?
         highlightConfig: { // the highlight configuration for the Inspector
             borderColor:  {r: 255, g: 229, b: 153, a: 0.66},
@@ -129,29 +129,15 @@ define(function main(require, exports, module) {
         }
     }
 
-    /**
-     * Toggles LiveDevelopment and synchronizes the state of UI elements that reports LiveDevelopment status
-     *
-     * Stop Live Dev when in an active state (ACTIVE, OUT_OF_SYNC, SYNC_ERROR).
-     * Start Live Dev when in an inactive state (ERROR, INACTIVE).
-     * Do nothing when in a connecting state (CONNECTING, LOADING_AGENTS).
-     */
-    function _handleGoLiveCommand() {
+    function closeLivePreview() {
         if (LiveDevImpl.status >= LiveDevImpl.STATUS_ACTIVE) {
             LiveDevImpl.close();
-        } else if (LiveDevImpl.status <= LiveDevImpl.STATUS_INACTIVE) {
-            if (!params.get("skipLiveDevelopmentInfo") && !PreferencesManager.getViewState("livedev.afterFirstLaunch")) {
-                PreferencesManager.setViewState("livedev.afterFirstLaunch", "true");
-                Dialogs.showModalDialog(
-                    DefaultDialogs.DIALOG_ID_INFO,
-                    Strings.LIVE_DEVELOPMENT_INFO_TITLE,
-                    Strings.LIVE_DEVELOPMENT_INFO_MESSAGE
-                ).done(function (id) {
-                    LiveDevImpl.open();
-                });
-            } else {
-                LiveDevImpl.open();
-            }
+        }
+    }
+
+    function openLivePreview() {
+        if (LiveDevImpl.status <= LiveDevImpl.STATUS_INACTIVE) {
+            LiveDevImpl.open();
         }
     }
 
@@ -189,9 +175,6 @@ define(function main(require, exports, module) {
     function _setupGoLiveButton() {
         if (!_$btnGoLive) {
             _$btnGoLive = $("#toolbar-go-live");
-            _$btnGoLive.click(function onGoLive() {
-                _handleGoLiveCommand();
-            });
         }
         LiveDevImpl.on("statusChange", function statusChange(event, status, reason) {
             // status starts at -1 (error), so add one when looking up name and style
@@ -281,10 +264,8 @@ define(function main(require, exports, module) {
         }
 
         // trigger autoconnect
-        if (config.autoconnect &&
-                window.sessionStorage.getItem("live.enabled") === "true" &&
-                DocumentManager.getCurrentDocument()) {
-            _handleGoLiveCommand();
+        if (config.autoconnect) {
+            openLivePreview();
         }
 
         remoteHighlightPref
@@ -307,11 +288,12 @@ define(function main(require, exports, module) {
     config.highlight = PreferencesManager.getViewState("livedev.highlight");
 
     // init commands
-    CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, _handleGoLiveCommand);
     CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, _handlePreviewHighlightCommand);
     CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
 
     CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setEnabled(false);
 
     // Export public functions
+    exports.openLivePreview = openLivePreview;
+    exports.closeLivePreview = closeLivePreview;
 });

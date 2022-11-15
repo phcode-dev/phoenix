@@ -34,5 +34,6 @@
   "HealthData",
   "Phoenix-extension-store",
   "Phoenix-live-preview",
-  "icons"
+  "icons",
+  "StaticServer"
 ]
