@@ -87,6 +87,11 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         });
     }
 
+    // Hoist service worker comm to window for everyone be able to communicate with the sw.
+    window.messageSW = function (params) {
+        return wb.messageSW(params);
+    };
+
     function serverReady() {
         console.log('Service worker loader: Server ready.');
         wb.messageSW({
