@@ -22,8 +22,11 @@
 importScripts('phoenix/virtualServer/config.js');
 
 if(!self.Serve){
-    let fs = self.fs;
-    let Path = self.path;
+    const fs = self.fs;
+    const Path = self.path;
+    const INSTRUMENTED_URL_FILE = "/livePreviewInstrumentedURLs.json";
+    let instrumentedURLs = null;
+
 // https://tools.ietf.org/html/rfc2183
     function formatContentDisposition(path, stats) {
         const filename = Path.basename(path);
@@ -157,8 +160,46 @@ if(!self.Serve){
         });
     };
 
+    async function loadInstrumentedURLs() {
+        return new Promise((resolve)=>{
+            fs.readFile(INSTRUMENTED_URL_FILE, "utf8", function (err, data) {
+                if (err) {
+                    instrumentedURLs = {};
+                } else {
+                    instrumentedURLs = JSON.parse(data);
+                }
+                resolve();
+            });
+        });
+    }
+
+    async function setInstrumentedURLs(event) {
+        const data = event.data;
+        const root = data.root,
+            paths = data.paths;
+        self._debugLivePreviewLog("Service worker: setInstrumentedURLs", data);
+        if(!instrumentedURLs){
+            await loadInstrumentedURLs();
+        }
+        instrumentedURLs[root] = paths;
+        fs.writeFile(INSTRUMENTED_URL_FILE, JSON.stringify(instrumentedURLs, null, 2), "UTF8", function (err) {
+            if (err) {
+                console.error("Service worker: Failed while writing instrumentedURLs", err);
+            }
+            event.ports[0].postMessage(!err);// acknowledge for the other side to resolve promise
+        });
+    }
+
+    function processVirtualServerMessage(event) {
+        let eventType = event.data && event.data.type;
+        switch (eventType) {
+        case 'setInstrumentedURLs': setInstrumentedURLs(event); return true;
+        }
+    }
+
     self.Serve = {
-        serve
+        serve,
+        processVirtualServerMessage
     };
 
 }

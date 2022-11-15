@@ -23,22 +23,9 @@
 
 define(function (require, exports, module) {
 
-    var BaseServer           = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
+    const BaseServer           = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
-        PreferencesManager   = brackets.getModule("preferences/PreferencesManager"),
-        Strings              = brackets.getModule("strings");
-
-
-    /**
-     * @private
-     *
-     * Preferences manager for this extension
-     */
-    var _prefs = PreferencesManager.getExtensionPrefs("staticserver");
-
-    _prefs.definePreference("port", "number", 0, {
-        description: Strings.DESCRIPTION_STATIC_SERVER_PORT
-    });
+        broadcastChannel = new BroadcastChannel('sw-virtual-server-msgs');
 
     /**
      * @constructor
@@ -53,8 +40,6 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        this._onRequestFilter = this._onRequestFilter.bind(this);
-
         BaseServer.call(this, config);
     }
 
@@ -88,17 +73,17 @@ define(function (require, exports, module) {
      * Update the list of paths that fire "request" events
      * @return {jQuery.Promise} Resolved by the StaticServer domain when the message is acknowledged.
      */
-    StaticServer.prototype._updateRequestFilterPaths = function () {
+    StaticServer.prototype._updateInstrumentedURLSInWorker = function () {
         let paths = Object.keys(this._liveDocuments);
 
         window.messageSW({
-            type: 'setRequestFilterPaths',
+            type: 'setInstrumentedURLs',
             root: this._root,
             paths
-        }).then((msg)=>{
-            console.log(`Service worker loader: `, msg);
+        }).then((status)=>{
+            console.log(`Static server received msg from Service worker: setInstrumentedURLs done: `, status);
         }).catch(err=>{
-            console.error("Service worker loader: Error while triggering cache refresh", err);
+            console.error("Static server received msg from Service worker: Error while setInstrumentedURLs", err);
         });
     };
 
@@ -127,7 +112,7 @@ define(function (require, exports, module) {
         BaseServer.prototype.add.call(this, liveDocument);
 
         // update the paths to watch
-        this._updateRequestFilterPaths();
+        this._updateInstrumentedURLSInWorker();
     };
 
     /**
@@ -136,7 +121,7 @@ define(function (require, exports, module) {
     StaticServer.prototype.remove = function (liveDocument) {
         BaseServer.prototype.remove.call(this, liveDocument);
 
-        this._updateRequestFilterPaths();
+        this._updateInstrumentedURLSInWorker();
     };
 
     /**
@@ -145,7 +130,7 @@ define(function (require, exports, module) {
     StaticServer.prototype.clear = function () {
         BaseServer.prototype.clear.call(this);
 
-        this._updateRequestFilterPaths();
+        this._updateInstrumentedURLSInWorker();
     };
 
     /**
@@ -158,11 +143,17 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Event handler for StaticServerDomain requestFilter event
-     * @param {jQuery.Event} event
+     * Events raised by broadcast channel from the service worker will be captured here. The service worker will ask
+     * all phoenix instances if the url to be served should be replaced with instrumented content here or served
+     * as static file from disk.
+     * @param {jQuery.Event} event the event raised by the service worker
      * @param {{hostname: string, pathname: string, port: number, root: string, id: number}} request
      */
-    StaticServer.prototype._onRequestFilter = function (event, request) {
+    StaticServer.prototype.handleEvent = function (event) {
+        switch (event.data.type){
+        default: console.error("StaticServer Extn, received unknown message: ", event);
+        }
+        /* TODO: enable below code for next stage of live preview
         var key             = request.location.pathname,
             liveDocument    = this._liveDocuments[key],
             response;
@@ -175,21 +166,21 @@ define(function (require, exports, module) {
         }
         response.id = request.id;
 
-        this._send(request.location, response);
+        this._send(request.location, response);*/
     };
 
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = function () {
-        this._nodeDomain.on("requestFilter", this._onRequestFilter);
+        broadcastChannel.addEventListener('message', this);
     };
 
     /**
      * See BaseServer#stop. Remove event handlers from StaticServerDomain.
      */
     StaticServer.prototype.stop = function () {
-        this._nodeDomain.off("requestFilter", this._onRequestFilter);
+        broadcastChannel.removeEventListener('message', this);
     };
 
     module.exports = StaticServer;

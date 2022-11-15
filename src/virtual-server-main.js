@@ -28,6 +28,7 @@ importScripts('phoenix/virtualServer/html-formatter.js');
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
 
 const _debugSWCacheLogs = false; // change debug to true to see more logs
+const _debugSWLivePreviewLogs = false; // change debug to true to see more logs
 const CACHE_FILE_NAME = "cacheManifest.json";
 const CACHE_FS_PATH = `/${CACHE_FILE_NAME}`;
 
@@ -58,6 +59,12 @@ const ExpirationManager ={
 
 function _debugCacheLog(...args) {
     if(_debugSWCacheLogs){
+        console.log(...args);
+    }
+}
+
+self._debugLivePreviewLog = function (...args) {
+    if(_debugSWLivePreviewLogs){
         console.log(...args);
     }
 }
@@ -275,7 +282,12 @@ addEventListener('message', (event) => {
         case 'GET_SW_BASE_URL': event.ports[0].postMessage(baseURL); break;
         case 'CLEAR_CACHE': _clearCache(); break;
         case 'REFRESH_CACHE': _refreshCache(event); break;
-        default: console.error("Service worker cannot process, received unknown message: ", event);
+        default:
+            let msgProcessed = self.Serve && self.Serve.processVirtualServerMessage &&
+                self.Serve.processVirtualServerMessage(event);
+            if(!msgProcessed){
+                console.error("Service worker cannot process, received unknown message: ", event);
+            }
     }
 });
 
