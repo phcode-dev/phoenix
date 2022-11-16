@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Ανοίξτε ένα αρχείο HTML έτσι ώστε να ξεκινήσει η άμεση προεπισκόπηση (Live Preview).",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Για να ανοίξετε το Live Preview με ένα αρχείο από κάποιον server, πρέπει να προσδιορίσετε μια διεύθυνση (Base URL) για αυτό το project.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Σφάλμα κατά τη διαδικασία εκκίνησης του HTTP server για την άμεση επεξεργασία αρχείων. Παρακαλούμε προσπαθήστε ξανά.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Καλώς ήρθατε στο Live Preview!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Το Live Preview συνδέει το {APP_NAME} με τον browser σας. Ανοίγει μια προεπισκόπηση του HTML αρχείου σας στον browser, και την ανανεώνει στιγμιαία ενώ επεξεργάζεστε τον κώδικα.<br /><br />Σε τούτη την πρώιμη έκδοση του {APP_NAME}, το Live Preview δουλεύει μόνο με <strong>Google Chrome</strong> και ανανεώνει άμεσα την σελίδα ενώ επεξεργάζεστε <strong>αρχεία CSS ή HTML</strong>. Αλλαγές σε αρχεία JavaScript ανανεώνονται αυτόματα όταν κάνετε αποθήκευση.<br /><br />(Το μήνυμα αυτό θα αυτοκαταστραφεί μετά την πρώτη εμφάνιση του.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Για περισσότερες πληροφορίες δείτε εδώ: <a href='{0}' title='{0}'>Troubleshooting Live Development connection errors</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Σύνδεση…",

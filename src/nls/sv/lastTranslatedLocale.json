@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Öppna en HTML-fil eller kontrollera att det finns en fil med namnet index.html i din projektmapp för att kunna starta förhandsvisningen.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "För att starta förhandsvisningen med en fil innehållande serverkod måste du ange en bas-URL för detta projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Ett fel uppstod när webbsevern för förhandsvisningen skulle startas. Vänligen försök igen.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Välkommen till förhandsvisningen!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Förhandsvisningen ansluter {APP_NAME} till din webbläsare. Den öppnar en förhandsvisning av din HTML-fil i webbläsaren och uppdaterar förhandsvisningen så fort ändringar skett i koden.<br /><br />I denna tidiga version av {APP_NAME} fungerar förhandsvisningen endast för redigering av <strong>CSS- och HTML-filer</strong> och endast med <strong>Google Chrome</strong>. Vid ändringar i JavaScript-kod laddas webbläsaren om när du sparar filen.<br /><br />(Du kommer bara se detta meddelande en gång.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "För mer information se <a href='{0}' title='{0}'>Troubleshooting Live Development connection errors</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Förhandsvisning",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Förhandsvisning: Ansluter…",

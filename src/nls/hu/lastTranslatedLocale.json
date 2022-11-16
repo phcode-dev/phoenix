@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Nyiss meg egy HTML fájlt az Élő Előnézet indításához.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Az Élő Előnézet használatához szerver-oldali fájlokkal meg kell adni az alap URL-t a projekthez.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Hiba a HTTP szerver indításakor az Élő Fejlesztéshez. Kérlek próbáld újra később.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Üdv az Élő Előnézetben!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Az Élő Előnézet összeköti a {APP_NAME}-et a böngésződdel. Megnyitja a HTML fájl előnézetét a Böngészőben, majd rögtön frissül amikor szerkeszted a kódodat.<br /><br />Ebben a kezdetleges {APP_NAME} verzióban, az Élő Előnézet csak a <strong>Google Chrome</strong>-ban működik és élőben változik<strong>CSS fájlok</strong> szerkesztésekor. A HTML vagy JavaScript változások automatikusan frissülnek mentéskor.<br /><br />(Ezt az üzenetet csak egyszer fogod látni.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "További információért lásd: <a href='{0}' title='{0}'>Élő Előnézet csatlakozási hibák kiküszöbölése</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Élő Előnézet",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Élő Előnézet: Csatlakozás…",

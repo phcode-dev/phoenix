@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "Abra um arquivo HTML para iniciar Live Preview.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Para iniciar um live preview com um arquivo server-side, é preciso especificar uma URL Base para este projeto.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Erro ao iniciar o servidor HTTP para os arquivos do desenvolvimento em tempo real. Por favor, tente novamente.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Bem-vindo à Live Preview!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "O Live Preview conecta o {APP_NAME} ao seu navegador. Ele abre uma prévia do seu arquivo HTML no navegador e atualiza a visualização em tempo real, enquanto você edita o código.<br /><br />Nesta versão inicial do {APP_NAME}, o Live Preview só funciona com o <strong>Google Chrome</strong> e atualiza em tempo real enquanto você edita <strong>arquivos CSS</strong>. Alterações em arquivos HTML ou JavaScript são automaticamente recarregados ao salvar.<br /><br />(Você só verá esta mensagem uma vez.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Para mais informações, veja <a href='{0}' title='{0}'>Solucionando erros de conexão com Live Development</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Conectando…",

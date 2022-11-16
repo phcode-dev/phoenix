@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "Avaa HTML-tiedosto tai varmista, että projektissa on tiedosto index.html, niin voit aloittaa esikatselun.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Jotta voit käynnistää esikatselun palvelimen tiedostolla, täytyy tämän projektin URL-osoite määrittää.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Virhe käynnistettäessä HTTP-palvelinta esikatselun tiedostoille. Yritä uudelleen.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Tervetuloa esikatseluun!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Esikatselu yhdistää {APP_NAME}in selaimeesi. Se avaa selaimessa HTML-tiedoston esikatselun, joka päivittyy välittömästi muokatessasi koodia.<br /><br />Tässä varhaisessa {APP_NAME}-versiossa esikatselu toimii vain <strong>Google Chromella</strong> ja päivittyy heti, kun muokkaat <strong>CSS- tai HTML-tiedostoja</strong>. JavaScript-tiedostojen muutokset päivittyvät, kun ne tallennetaan.<br /><br />(Tämä viesti näkyy vain kerran.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Saat lisätietoja tutustumalla ohjeeseen <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Esikatselu",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Esikatselu: yhdistetään…",

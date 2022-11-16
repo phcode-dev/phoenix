@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "افتح ملف HTML أو تأكد من وجود ملف index.html في مشروعك لبدء المعاينة المباشرة.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "لبدء المعاينة المباشرة بملف من جانب الخادم ، تحتاج إلى تحديد عنوان URL أساسي لهذا المشروع.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "خطأ في بدء تشغيل خادم HTTP لملفات المعاينة المباشرة. حاول مرة اخرى.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "مرحبًا بك في Live Preview!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "يربط Live Preview {APP_NAME} بالمتصفح الخاص بك. يقوم بتشغيل معاينة لملف HTML الخاص بك في المتصفح ، ثم يقوم بتحديث المعاينة على الفور بينما تقوم بتحرير التعليمات البرمجية الخاصة بك.<br /><br /> في هذا الإصدار المبكر من {APP_NAME} ، تعمل المعاينة المباشرة فقط مع <strong>Google Chrome</strong> وتقوم بالتحديثات مباشرة أثناء تحرير <strong>ملفات CSS أو HTML</strong> . يتم إعادة تحميل التغييرات التي تم إجراؤها على ملفات JavaScript تلقائيًا عند الحفظ.<br /><br /> (سترى هذه الرسالة مرة واحدة فقط.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "لمزيد من المعلومات ، راجع <a href='{0}' title=\"{0}\">استكشاف أخطاء اتصال Live Preview وإصلاحها</a> .",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "المعاينة الحية",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "المعاينة المباشرة: جارٍ الاتصال ...",

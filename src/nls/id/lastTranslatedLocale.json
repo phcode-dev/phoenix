@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Buka file HTML atau pastikan di dalam proyek Anda ada file index.html agar bisa menjalankan tinjauan langsung.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Untuk menjalankan tinjauan langsung dengan file sisi-server, Anda perlu mengatur URL Dasar untuk proyek ini.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Gagal menjalankan server HTTP untuk meninjau langsung file. Coba lagi.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Selamat Datang di Tinjauan Langsung!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Tinjauan Langsung menghubungkan {APP_NAME} ke peramban Anda, menjalankan file HTML Anda di peramban dan memperbarui tampilannya selagi Anda mengedit kode.<br /><br />Di versi awal {APP_NAME} ini, Tinjauan Langsung hanya bekerja pada <strong>Google Chrome</strong> dan memperbarui langsung selagi Anda mengedit <strong>file CSS atau HTML</strong>. Perubahan pada file JavaScript secara otomatis dimuat ulang saat Anda menyimpannya.<br /><br />(Anda hanya melihat pesan ini sekali.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Untuk informasi selengkapnya, lihat <a href='{0}' title='{0}'>Mengatasi masalah sambungan Tinjauan Langsung</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Tinjauan Langsung",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Tinjauan Langsung: Menyambung…",

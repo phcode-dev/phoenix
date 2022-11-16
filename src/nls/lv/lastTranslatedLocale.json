@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Atveriet HTML datni vai pārliecinieties, ka jūsu projektā ir datne index.html, lai palaistu tiešo priekšskatījumu.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Lai palaistu tiešo priekšskatījumu ar serverī importētu datni, nepieciešams norādīt šī projekta bāzes URL.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Kļūda, startējot HTTP serveri tiešā priekšskatījuma datnēm. Lūdzu, mēģiniet vēlreiz. ",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Laipni lūgts tiešajā priekšskatījumā!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Tiešais priekšskatījums savieno {APP_NAME} ar pārlūku. Tas palaiž HTML datnes priekšskatījumu pārlūkā, tad atjaunina priekšskatījumu, kad tiek rediģēts kods.<br /><br />Šajā agrīnajā {APP_NAME} versijā tiešais priekšskatījums darbojas tikai ar <strong>Google Chrome</strong> un atjauninās, kad tiek rediģētas <strong>CSS vai HTML datnes</strong>. Izmaiņas JavaScript datnēs tiek automātiski pārlādētas saglabājot.<br /><br />(Šis paziņojums paradīsies tikai vienreiz.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Sīkākai informācijai skatiet <a href='{0}' title='{0}'>Tiešā priekšskatījuma savienojuma kļūdu novēršana</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Tiešais priekšskatījums",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Tiešais priekšskatījums: savienojas…",

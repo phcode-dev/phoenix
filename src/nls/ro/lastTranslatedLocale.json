@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Deschideți un fișier HTML sau asigurați-vă că există un fișier index.html în proiect pentru a lansa Live Preview.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Pentru a lansa Live Preview cu un fișier server-side, e necesar de a specifica un URL de bază pentru acest proiect.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Eroare la lansarea serverului HTTP pentru editarea în direct a fișierelor. Mai încercați o dată.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Bun venit la Live Preview!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Live Preview conectează {APP_NAME} la browser-ul tău. El lansează o previzualizare a fișierului HTML, apoi, imediat, la editare codului actualizează previzualizarea.<br /><br />În această versiune timpurie {APP_NAME}, Live Preview funcționează doar cu <strong>Google Chrome</strong> și actualizează imediat <strong>fișierele CSS sau HTML</strong>. Schimbările în fișierele JavaScript sunt reîncărcate automat la salvare.<br /><br />(Veți vedea acest mesaj o singură dată.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Pentru mai multe informații, vezi <a href='{0}' title='{0}'>Depanarea erorilor de conexiune în Live Development</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Previzualizare interactivă",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Conectare…",

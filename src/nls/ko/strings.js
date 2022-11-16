@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "실시간 미리보기를 시작하려면 HTML 파일을 열거나 index.html 파일이 프로젝트에 포함되어 있는지 확인하십시오.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "서버 측 파일 실시간 미리보기를 시작하려면 이 프로젝트의 기본 URL을 지정해야 합니다.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "실시간 미리보기에 사용되는 HTTP 서버를 시작할 때 에러가 발생했습니다. 잠시 후에 다시 시도하세요.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "실시간 미리보기에 오신 것을 환영합니다",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "{APP_NAME}가 실시간 미리보기를 통해 브라우저에 연결됐습니다. HTML 파일이 수정되면 브라우저에서 미리보기가 즉시 업데이트됩니다. <br />현재 사용 중인 {APP_NAME}의 초기 버전에서는 <strong>Google Chrome</strong> 에서만 실시간 미리보기를 지원하며, <strong>CSS 또는 HTML 파일</strong>을 편집할 때만 실시간으로 업데이트됩니다. 자바스크립트 파일에 대한 변경 사항은 저장할 때 자동으로 다시 로드됩니다. (이 메시지는 한 번만 표시됩니다)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "자세한 내용은 <a href='{0}' title='{0}'> Live Development 연결 오류 문제 해결 </a>를 참조하세요.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "실시간 미리보기",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "실시간 미리보기: 연결 중 …",

@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "Otevřete HTML soubor pro zobrazení v živém náhledu.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Pro spuštění živého náhledu se vzdáleným souborem, musíte specifikovat URL pro tento projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Chyba při spouštění HTTP serveru pro soubory živého náhledu. Prosím, zkuste to znovu.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Vítejte v živém náhledu!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Živý náhled připojí {APP_NAME} k vašemu prohlížeči. Spustí náhled HTML souboru, který se aktualizuje pokaždé, kdy editujete svůj kód.<br /><br />V této verzi {APP_NAME}, živý náhled funguje pouze v <strong>Google Chrome</strong> a aktualizuje změny v <strong>CSS souborech</strong>. Změny v HTML nebo JavaScript souborech jsou automaticky načteny, když soubor uložíte.<br /><br />(Tato zpráva se zobrazí pouze jednou.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Pro více informací navštivte stránku <a href='{0}' title='{0}'>řešení problémů s připojením v Živém náhledu</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Živý náhled",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Živý náhled: Připojování…",

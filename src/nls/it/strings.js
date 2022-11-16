@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "Apri un file HTML per lanciare l’Anteprima Live.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Per avviare l'Anteprima Live con un file server-side, è necessario specificare un URL di base per questo progetto.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Errore durante l’avvio del server HTTP server per i file di sviluppo in tempo reale. Riprova ancora.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Benvenuto nell’Anteprima Live!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Anteprima Live connette {APP_NAME} al tuo browser. Lancia una anteprima del tuo file HTML nel browser e dopo ogni tua modifica l’anteprima verrà aggiornata istantaneamente per riflettere le modifiche del tuo codice.<br /><br />In questa versione preliminare di {APP_NAME}, Anteprima Live funziona solo per le modifiche su <strong>file CSS</strong> e solo con <strong>Google Chrome</strong>. Verrà implementata presto anche per HTML e JavaScript!<br /><br />(Vedrai questo messaggio una sola volta.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Per maggiori informazioni leggi <a href='{0}' title='{0}'>Risoluzione dei problemi di connessione a Anteprima Live</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Anteprima Live",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Anteprima Live: Connessione…",

@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "Open een HTML bestand om Live Voorbeeld te starten.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Om live voorbeeld te starten met een server-side bestand, moet je een Start URL voor dit project definiëren.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Er is een fout opgetreden bij het opstarten van de HTTP server voor live ontwikkeling bestanden. Probeer alsjeblieft opnieuw.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Welkom bij Live Voorbeeld!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Live Voorbeeld verbindt {APP_NAME} met je browser. Het toont een voorbeeld van je HTML bestand in de browser, vervolgens updatet het voorbeeld onmiddelijk bij het wijzigen van je code.<br /><br />In deze vroege versie van {APP_NAME}, werkt Live Voorbeeld enkel met <strong>Google Chrome</strong> en updatet live bij het wijzigen van <strong>CSS of HTML bestanden</strong>. Wijzigingen aan JavaScript bestanden worden automatisch herladen wanneer je bewaart.<br /><br />(Je zal dit bericht slechts eenmaal zien.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Voor meer informatie, zie <a href='{0}' title='{0}'>oplossen van Live Voorbeeld verbindingsproblemen</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Voorbeeld",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Voorbeeld: Bezig met verbinden…",
