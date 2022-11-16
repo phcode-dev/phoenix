@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Åbn en HTML-fil, eller sørg for at der er en fil ved navn <span class='dialog-filename'>index.html</span> i dit projekt, før du starter Live-Forhåndsvisning.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "For at bruge Live-Forhåndsvisning på en server-side fil, bliver du nødt til at angive en basis-URL for dette projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Fejl ved opstart af HTTP-serveren for Live-Forhåndsvisning. Prøv igen.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Velkommen til Live-Forhåndsvisning!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Live-Forhåndsvisning forbinder {APP_NAME} til din browser. Der åbnes en forhåndsvisning af din HTML-fil i browseren, som opdateres samtidig med at du redigerer i koden.<br /><br />I denne tidlige version af {APP_NAME}, virker Live-Forhåndsvisning kun med <strong>Google Chrome</strong> og opdaterer direkte imens du redigerer i <strong>CSS- eller HTML-filer</strong>. Ændringer i JavaScript-filer bliver automatisk genindlæst når du gemmer.<br /><br />(Denne besked bliver ikke vist igen.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "For yderligere information, se <a href='{0}' title='{0}'>Løsningsforslag til forbindelsesfejl vedrørende Live-Forhåndsvisning</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live-Forhåndsvisning",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live-Forhåndsvisning: Forbinder…",

@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Aby uruchomić podgląd na żywo, otwórz plik HTML lub upewnij się, że w Twoim projekcie jest plik index.html.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Aby uruchomić podgląd na żywo na plikach serwerowych, musisz podać główny adres dla tego projektu (Base URL).",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Błąd przy próbie uruchomienia serwera HTTP dla podglądu na żywo. Spróbuj ponownie.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Witaj w podglądzie na żywo (Live Preview)!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Podgląd na żywo został podłączony do twojej przeglądarki. Umożliwia on podgląd twojego pliku HTML w przeglądarce oraz aktualizuje go za każdym razem, gdy edytujesz swój kod.<br /><br />W aktualnej wersji {APP_NAME}, podgląd na żywo działa tylko w <strong>Google Chrome</strong> i aktualizuje w czasie rzeczywistym <strong>pliki CSS lub HTML</strong>. Zmiany w JavaScript są automatycznie odświeżane po zapisie pliku.<br /><br />(Zobaczysz tę wiadomość tylko raz.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Więcej informacji znajdziesz na stronie <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Podgląd na żywo",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Podgląd na żywo: łączenie…",

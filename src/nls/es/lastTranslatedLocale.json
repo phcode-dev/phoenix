@@ -81,8 +81,6 @@
   "LIVE_DEV_NEED_HTML_MESSAGE": "Abra un archivo HTML o asegúrate de que haya un index.html en tu proyecto para poder iniciar el modo de Vista previa dinámica.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Necesitas especificar una URL base en este proyecto para poder iniciar la Vista previa dinámica con archivos de servidor.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Error iniciando el servidor HTTP para la Vista previa dinámica. Vuelve a intentarlo, por favor.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "¡Bienvenido a la Vista previa dinámica!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Vista previa dinámica conecta {APP_NAME} con tu navegador. Lanza una vista previa de tu archivo HTML en el navegador y la actualiza a medida que modificas tu código.<br><br>En esta versión preliminar de {APP_NAME}, el modo de Vista previa dinámica sólo funciona para cambios de <strong>archivos CSS o HTML</strong> y únicamente con <strong>Google Chrome</strong>. Los cambios en los archivos Javascript son recargados automáticamente cuando se guardan.<br><br>(No volverás a ver este mensaje.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Para más información, consulta <a href='{0}' title='{0}'>Resolución de Problemas de conexión en Vista previa dinámica</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Vista previa dinámica",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Vista previa dinámica: Conectando…",

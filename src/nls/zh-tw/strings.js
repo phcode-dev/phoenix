@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "請開啟 HTML 檔，或是確定專案中有 index.html 檔才能啟動即時預覽功能。",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "您需要指定專案的 URL 根位址，才能啟動包含伺服器端資源的即時預覽功能。",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "無法啟動即時預覽用的 HTTP 伺服器。請再試一次。",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "歡迎使用即時預覽!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "即時預覽將 {APP_NAME} 與您的瀏覽器連線。讓您在瀏覽器中預覽 HTML 檔案，編輯的內容也會即時反應在預覽畫面上。<br /><br />因為 {APP_NAME} 才剛起步，即時預覽目前只能在 <strong>Google Chrome</strong> 上面執行，<strong>CSS 或 HTML 檔案</strong>的異動會即時反應。修改 JavaScript 檔案並儲存後會重新載入頁面。<br /><br />(您只會看到一次這段訊息。)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "想了解更多，請參考<a href='{0}' title='{0}'>即時預覽連結錯誤排解</a>。",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "即時預覽",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "即時預覽: 連線中…",

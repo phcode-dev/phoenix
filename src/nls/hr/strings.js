@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "Otvorite HTML datoteku ili budite sigurni da postoji index.html datoteka u vašem projektu kako bi se pokrenuo živi prikaz.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Za pokretanje prikaza uživo sa datotekom koja je na serveru, morate navesti osnovnu URL adresu za ovaj projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Greška prilikom pokretanja HTTP servera za prikaz datoteka uživo. Pokušajte ponovo.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Dobro došli u Prikaz Uživo!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Prikaz uživo spaja {APP_NAME} sa vašim preglednikom. On pokreće prikaz vaše HTML datoteke u pregledniku, te potom trenutno ažurira prikaz, kako Vi mijenjate vaš kôd.<br /><br />U ovoj ranoj verziji aplikacije {APP_NAME}, Prikaz uživo radi samo sa <strong>Google Chrome</strong> preglednikom i ažurira prikaz dok mijenjate <strong>CSS ili HTML datoteke</strong>. Izmjene načinjene u JavaScript datotekama su automatski ponovo učitane kada ih spremite.<br /><br />(Ova poruka će biti prikazana samo jednom.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Za više informacija, pogledajte <a href='{0}' title='{0}'>Rješavanje grešaka u povezivanju prilikom Prikaza uživo.</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Prikaz uživo",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Prikaz uživo: Povezivanje…",

@@ -101,8 +101,6 @@ define({
   "LIVE_DEV_NEED_HTML_MESSAGE": "Откройте HTML файл или убедитесь в наличии index.html в проекте для того чтобы запустить интерактивную разработку.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Для запуска Live Preview с серверным файлом, вы должны указать базовый URL проекта.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Ошибка запуска HTTP сервера для Live Preview. Попытайтесь снова.",
-  "LIVE_DEVELOPMENT_INFO_TITLE": "Добро пожаловать в Live Preview!",
-  "LIVE_DEVELOPMENT_INFO_MESSAGE": "Live Preview, функция синхронного предпросмотра, подключает браузер к среде разработки {APP_NAME}. Эта функция загружает HTML файл для предварительного просмотра в браузере и мгновенно отображает все изменения при редактировании кода.<br /><br />В данной версии {APP_NAME}, функция Live Preview пока что работает только с <strong>Google Chrome</strong> и обновления в реальном времени отображаются только при редактировании <strong>CSS или HTML файлов</strong>. Изменения в JavaScript файлах автоматически перезагружают страницу при сохранении.<br /><br />(Это сообщение будет показано только один раз.)",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Для дополнительной информации, смотрите <a href='{0}' title='{0}'>Поиск и устранение неисправностей ошибок подключения Live Preview</a>.",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Подключение…",
