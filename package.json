@@ -16,6 +16,7 @@
         "@commitlint/cli": "^16.0.2",
         "@commitlint/config-conventional": "^16.0.0",
         "@google-cloud/translate": "^7.0.3",
+        "@tauri-apps/cli": "1.2.0",
         "del": "^6.0.0",
         "documentation": "^13.2.5",
         "eslint": "^8.18.0",
@@ -40,6 +41,7 @@
         "through2": "^4.0.2"
     },
     "scripts": {
+        "tauri": "tauri",
         "eslint": "npm run lint",
         "eslint:fix": "npm run lint:fix",
         "lint": "eslint --quiet src test",
