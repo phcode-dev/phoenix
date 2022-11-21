@@ -24,8 +24,7 @@ importScripts('phoenix/virtualServer/config.js');
 if(!self.Serve){
     const fs = self.fs;
     const Path = self.path;
-    const INSTRUMENTED_URL_FILE = "/livePreviewInstrumentedURLs.json";
-    let instrumentedURLs = null,
+    let instrumentedURLs = {},
         responseListeners = {};
 
     let requestIDCounter = 0;
@@ -195,34 +194,13 @@ if(!self.Serve){
         });
     };
 
-    async function loadInstrumentedURLs() {
-        return new Promise((resolve)=>{
-            fs.readFile(INSTRUMENTED_URL_FILE, "utf8", function (err, data) {
-                if (err) {
-                    instrumentedURLs = {};
-                } else {
-                    instrumentedURLs = JSON.parse(data);
-                }
-                resolve();
-            });
-        });
-    }
-
     async function setInstrumentedURLs(event) {
         const data = event.data;
         const root = data.root,
             paths = data.paths;
         self._debugLivePreviewLog("Service worker: setInstrumentedURLs", data);
-        if(!instrumentedURLs){
-            await loadInstrumentedURLs();
-        }
         instrumentedURLs[root] = paths;
-        fs.writeFile(INSTRUMENTED_URL_FILE, JSON.stringify(instrumentedURLs, null, 2), "UTF8", function (err) {
-            if (err) {
-                console.error("Service worker: Failed while writing instrumentedURLs", err);
-            }
-            event.ports[0].postMessage(!err);// acknowledge for the other side to resolve promise
-        });
+        event.ports[0].postMessage(true);// acknowledge for the other side to resolve promise
     }
 
     // service-worker.js
