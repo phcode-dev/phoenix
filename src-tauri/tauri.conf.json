@@ -4,7 +4,8 @@
     "beforeBuildCommand": "",
     "beforeDevCommand": "",
     "devPath": "../src-desktop",
-    "distDir": "../src-desktop"
+    "distDir": "../src-desktop",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "phoenix",
@@ -38,7 +39,23 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "../src/",
+        "../.brackets.json",
+        "../.commitlintrc.json",
+        "../.eslintignore",
+        "../.eslintrc.js",
+        "../CODE_OF_CONDUCT.md",
+        "../CONTRIBUTING.md",
+        "../ISSUE_TEMPLATE.md",
+        "../LICENSE",
+        "../NOTICE",
+        "../package.json",
+        "../package-lock.json",
+        "../README.md",
+        "../require.min.config.js",
+        "../SECURITY.md"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {

@@ -7,5 +7,51 @@
 </head>
 <body>
 <h1>Welcome from Tauri!</h1>
+
+<script type="module">
+    //import {Command} from "@tauri-apps/api/shell";
+    //
+    //  const Command = window.__TAURI__.shell.Command;
+    //  const command = new Command('node');
+    //  const fs = window.__TAURI__.fs;
+    //  const downloadFile = (async (url, path) => {
+    //      const res = await fetch(url);
+    //      const fileStream = fs.createWriteStream(path);
+    //      await new Promise((resolve, reject) => {
+    //          res.body.pipe(fileStream);
+    //          res.body.on("error", reject);
+    //          fileStream.on("finish", resolve);
+    //      });
+    //  });
+    // // fetch('https://nodejs.org/dist/v18.12.1/node-v18.12.1-linux-x64.tar.xz');
+    //  await downloadFile('https://nodejs.org/dist/v18.12.1/node-v18.12.1-linux-x64.tar.xz','/home/charly/' );
+    //  command.on('close', data => {
+    //      window.location = 'http://127.0.0.1:8000/src',
+    //
+    //      console.log(`command finished with code ${data.code} and signal ${data.signal}`)
+    //  });
+    //  command.on('error', error => console.error(`command error: "${error}"`));
+    //  command.stdout.on('data', line => console.log(`command stdout: "${line}"`));
+    //  command.stderr.on('data', line => console.log(`command stderr: "${line}"`));
+    //
+    //  const child = await command.spawn();
+    //  console.log('pid:', child.pid);
+
+
+    // access the pre-bundled global API functions
+    const { invoke } = window.__TAURI__.tauri;
+
+    // now we can call our Command!
+    // Right-click the application background and open the developer tools.
+    // You will see "Hello, World!" printed in the console!
+    // invoke("greet", { name: "World" })
+    //     // `invoke` returns a Promise
+    //     .then((response) => console.log(response));
+    // invoke("greet1", { name: "World" })
+    //     // `invoke` returns a Promise
+    //     .then((response) => console.log(response));
+    window.location = 'http://127.0.0.1:8000/src';
+
+</script>
 </body>
 </html>
