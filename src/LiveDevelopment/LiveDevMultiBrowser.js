@@ -81,7 +81,7 @@ define(function (require, exports, module) {
         _                    = require("thirdparty/lodash"),
         LiveDevelopmentUtils = require("LiveDevelopment/LiveDevelopmentUtils"),
         LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
-        NodeSocketTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport"),
+        ServiceWorkerTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/ServiceWorkerTransport"),
         LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
         DefaultLauncher      = require("LiveDevelopment/MultiBrowserImpl/launchers/Launcher");
 
@@ -824,7 +824,7 @@ define(function (require, exports, module) {
             .on("beforeProjectClose beforeAppClose", close);
 
         // Default transport for live connection messages - can be changed
-        setTransport(NodeSocketTransport);
+        setTransport(ServiceWorkerTransport);
 
         // Default launcher for preview browser - can be changed
         setLauncher(DefaultLauncher);

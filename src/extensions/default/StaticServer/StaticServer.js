@@ -25,7 +25,7 @@ define(function (require, exports, module) {
 
     const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
-        NodeSocketTransport = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport"),
+        ServiceWorkerTransport = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/ServiceWorkerTransport"),
         FileUtils = brackets.getModule("file/FileUtils");
 
     /**
@@ -215,14 +215,14 @@ define(function (require, exports, module) {
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = function () {
-        NodeSocketTransport.on("getInstrumentedContent", this._getInstrumentedContent);
+        ServiceWorkerTransport.on("getInstrumentedContent", this._getInstrumentedContent);
     };
 
     /**
      * See BaseServer#stop. Remove event handlers from StaticServerDomain.
      */
     StaticServer.prototype.stop = function () {
-        NodeSocketTransport.off("getInstrumentedContent", this._getInstrumentedContent);
+        ServiceWorkerTransport.off("getInstrumentedContent", this._getInstrumentedContent);
     };
 
     module.exports = StaticServer;
