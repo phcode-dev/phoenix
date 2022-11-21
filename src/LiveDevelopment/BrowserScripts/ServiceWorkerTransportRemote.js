@@ -53,7 +53,7 @@
         },
 
         /**
-         * Connects to the NodeSocketTransport in Brackets at the given WebSocket URL.
+         * Connects to the ServiceWorkerTransport in Brackets at the given WebSocket URL.
          */
         connect: function () {
             const self = this;

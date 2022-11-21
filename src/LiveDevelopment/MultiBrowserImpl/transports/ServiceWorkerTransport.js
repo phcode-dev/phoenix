@@ -28,7 +28,7 @@ define(function (require, exports, module) {
     const EventDispatcher = require("utils/EventDispatcher");
 
     // The script that will be injected into the previewed HTML to handle the other side of the socket connection.
-    const NodeSocketTransportRemote = require("text!LiveDevelopment/MultiBrowserImpl/transports/remote/NodeSocketTransportRemote.js");
+    const ServiceWorkerTransportRemote = require("text!LiveDevelopment/BrowserScripts/ServiceWorkerTransportRemote.js");
 
     /**
      * Returns the script that should be injected into the browser to handle the other end of the transport.
@@ -36,7 +36,7 @@ define(function (require, exports, module) {
      */
     function getRemoteScript() {
         return "<script>\n" +
-            NodeSocketTransportRemote +
+            ServiceWorkerTransportRemote +
             "</script>\n";
     }
 
@@ -74,7 +74,7 @@ define(function (require, exports, module) {
             case 'BROWSER_CONNECT': exports.trigger('connect', [event.data.clientID, event.data.url]); break;
             case 'BROWSER_MESSAGE': exports.trigger('message', [event.data.clientID, event.data.message]); break;
             case 'BROWSER_CLOSE': exports.trigger('close', [event.data.clientID]); break;
-            default: console.error("NodeSocketTransport received unknown message from service worker", event);
+            default: console.error("ServiceWorkerTransport received unknown message from service worker", event);
             }
         };
     };
