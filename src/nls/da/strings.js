@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live-Forhåndsvisning: Forbinder…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live-Forhåndsvisning: Starter op…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Afbryd Live-Forhåndsvisning",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live-Forhåndsvisning (gem fil for at genindlæse)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live-Forhåndsvisning",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Vælg Fil til Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Genindlæs siden",
   "LIVE_DEV_CLICK_POPOUT": "Popout Live Preview til nyt vindue",

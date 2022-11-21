@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Voorbeeld: Bezig met verbinden…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Voorbeeld: Initialiseren…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Verbreek verbinding met Live Voorbeeld",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Voorbeeld (sla bestand op om te verversen)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Voorbeeld",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selecteer bestand voor live voorbeeld",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Herlaad pagina",
   "LIVE_DEV_CLICK_POPOUT": "Pop-out live voorbeeld naar nieuw venster",

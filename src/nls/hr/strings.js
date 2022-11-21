@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Prikaz uživo: Povezivanje…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Prikaz uživo: Inicijalizacija…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Napusti prikaz uživo",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Prikaz uživo (sačuvaj datoteku za osvježavanje)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Prikaz uživo",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Odaberite datoteku za pregled uživo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Ponovno učitaj stranicu",
   "LIVE_DEV_CLICK_POPOUT": "Skočni pregled uživo u novi prozor",

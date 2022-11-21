@@ -86,7 +86,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Canlı Önizleme: Bağlanılıyor…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Canlı Önizleme: Başlıyor…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Canlı Önizleme'den Çık",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Canlı Önizleme: Kapatmak için tıklayın (Yenilemek için dosyayı kaydedin)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Canlı Önizleme",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Canlı Önizleme için Dosyayı Seçin",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "SAYFAYI yeniden yuklemek",
   "LIVE_DEV_CLICK_POPOUT": "Yeni Pencereye Popout Canlı Önizleme",

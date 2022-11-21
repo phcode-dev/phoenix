@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Conectare…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Inițializare…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Deconectare Live Preview",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview (salvează fișierul pentru actualizare)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Previzualizare interactivă",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selectați File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Reîncarcă pagina",
   "LIVE_DEV_CLICK_POPOUT": "Previzualizare în timp real la o fereastră nouă",

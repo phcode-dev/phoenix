@@ -86,7 +86,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Conectando…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Inicializando…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Desconectar Live Preview",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview (salve o arquivo para recarregar)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selecione o arquivo para visualização ao vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Recarregar página",
   "LIVE_DEV_CLICK_POPOUT": "Visualização ao vivo de pop-up para nova janela",

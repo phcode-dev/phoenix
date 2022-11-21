@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live-Vorschau: Verbinden…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live-Vorschau: Initialisieren…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Live-Vorschau trennen",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live-Vorschau (Datei speichern zum Aktualisieren)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live-Vorschau",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Wählen Sie Datei für Live-Vorschau",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Seite neuladen",
   "LIVE_DEV_CLICK_POPOUT": "Popout-Live-Vorschau in neues Fenster",

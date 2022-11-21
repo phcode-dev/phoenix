@@ -86,7 +86,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "即時預覽: 連線中…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "即時預覽: 初始化中…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "關閉即時預覽",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "即時預覽 (檔案儲存後重新載入)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "即時預覽",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "選擇要實時預覽的文件",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "重新加載頁面",
   "LIVE_DEV_CLICK_POPOUT": "彈出實時預覽到新窗口",

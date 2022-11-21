@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Živý náhled: Připojování…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Živý náhled: Spouštění…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Zrušit živý náhled",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Živý náhled (uložte soubor k obnovení)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Živý náhled",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Vyberte Soubor do živého náhledu",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Znovu načíst stránku",
   "LIVE_DEV_CLICK_POPOUT": "Vyskakovat živý náhled do nového okna",
