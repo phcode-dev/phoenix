@@ -32,19 +32,17 @@
 define(function main(require, exports, module) {
 
 
-    var DocumentManager     = require("document/DocumentManager"),
-        Commands            = require("command/Commands"),
+    const Commands            = require("command/Commands"),
         AppInit             = require("utils/AppInit"),
         MultiBrowserLiveDev = require("LiveDevelopment/LiveDevMultiBrowser"),
         CommandManager      = require("command/CommandManager"),
         PreferencesManager  = require("preferences/PreferencesManager"),
-        Dialogs             = require("widgets/Dialogs"),
-        DefaultDialogs      = require("widgets/DefaultDialogs"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         Strings             = require("strings"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
         StringUtils         = require("utils/StringUtils");
 
+    const isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
     var params = new UrlParams();
     var config = {
         experimental: false, // enable experimental features
@@ -136,7 +134,7 @@ define(function main(require, exports, module) {
     }
 
     function openLivePreview() {
-        if (LiveDevImpl.status <= LiveDevImpl.STATUS_INACTIVE) {
+        if (LiveDevImpl.status <= LiveDevImpl.STATUS_INACTIVE && !isTestWindow) {
             LiveDevImpl.open();
         }
     }
@@ -263,7 +261,6 @@ define(function main(require, exports, module) {
             _setupDebugHelpers();
         }
 
-        let isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
         // trigger autoconnect
         if (config.autoconnect && !isTestWindow) {
             openLivePreview();
