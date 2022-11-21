@@ -277,11 +277,11 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Removes the trailing slash from a path, if it has one.
+     * Removes the trailing slash from a path or URL, if it has one.
      * Warning: this differs from the format of most paths used in Brackets! Use paths ending in "/"
      * normally, as this is the format used by Directory.fullPath.
      *
-     * @param {string} path
+     * @param {string} path or URL
      * @return {string}
      */
     function stripTrailingSlash(path) {

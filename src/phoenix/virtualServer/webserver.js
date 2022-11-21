@@ -87,7 +87,7 @@ if(!self.Serve){
                     }
                 }
                 if(allURLs.includes(path)){
-                    console.error(allURLs);
+                    self._debugLivePreviewLog("Service worker: serving instrumented file", path);
                     const requestID = _getNewRequestID();
                     phoenixWindowPort.postMessage({
                         type: "getInstrumentedContent",

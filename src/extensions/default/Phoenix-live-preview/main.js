@@ -53,6 +53,7 @@ define(function (require, exports, module) {
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         Metrics             = brackets.getModule("utils/Metrics"),
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
+        LiveDevelopment = brackets.getModule("LiveDevelopment/main"),
         marked = require('thirdparty/marked.min'),
         utils = require('utils');
 
@@ -165,6 +166,7 @@ define(function (require, exports, module) {
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
+            LiveDevelopment.openLivePreview();
             _loadPreview(true);
         });
     }
@@ -273,6 +275,8 @@ define(function (require, exports, module) {
         if(tab && !tab.closed){
             tab.location = utils.getNoPreviewURL();
         }
+        LiveDevelopment.closeLivePreview();
+        LiveDevelopment.openLivePreview();
         if(!panel.isVisible()){
             return;
         }

@@ -42,7 +42,8 @@
 define(function (require, exports, module) {
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
         DocumentManager     = brackets.getModule("document/DocumentManager"),
-        FileSystem         = brackets.getModule("filesystem/FileSystem");
+        FileSystem         = brackets.getModule("filesystem/FileSystem"),
+        FileUtils = brackets.getModule("file/FileUtils");
 
     function getExtension(filePath) {
         filePath = filePath || '';
@@ -69,7 +70,7 @@ define(function (require, exports, module) {
             // async is explicitly caught
             try{
                 let projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${window.fsServerUrl.replace(/\/+$/, '')}${projectRoot}`;
+                const projectRootUrl = `${FileUtils.stripTrailingSlash(window.fsServerUrl)}${projectRoot}`;
                 let indexFiles = ['index.html', "index.htm"];
                 for(let indexFile of indexFiles){
                     let file = FileSystem.getFileForPath(`${projectRoot}${indexFile}`);
@@ -99,7 +100,7 @@ define(function (require, exports, module) {
             // async is explicitly caught
             try {
                 const projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${window.fsServerUrl.replace(/\/+$/, '')}${projectRoot}`;
+                const projectRootUrl = `${FileUtils.stripTrailingSlash(window.fsServerUrl)}${projectRoot}`;
                 const currentDocument = DocumentManager.getCurrentDocument();
                 const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
                 if(currentFile){

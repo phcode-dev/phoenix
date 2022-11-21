@@ -25,7 +25,8 @@ define(function (require, exports, module) {
 
     const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
-        NodeSocketTransport = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport");
+        NodeSocketTransport = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport"),
+        FileUtils = brackets.getModule("file/FileUtils");
 
     /**
      * @constructor
@@ -40,7 +41,7 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        config.baseUrl = window.fsServerUrl.replace(/\/+$/, ''); // remove trailing slash
+        config.baseUrl = FileUtils.stripTrailingSlash(window.fsServerUrl);
         this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -55,7 +56,7 @@ define(function (require, exports, module) {
      *  Returns null if the path is not a descendant of the project root.
      */
     StaticServer.prototype.pathToUrl = function (path) {
-        var baseUrl         = this.getBaseUrl(),
+        const baseUrl         = this.getBaseUrl(),
             relativePath    = this._pathResolver(path);
 
         // See if base url has been specified and path is within project
@@ -75,7 +76,7 @@ define(function (require, exports, module) {
      *  not a descendant of the project.
      */
     StaticServer.prototype.urlToPath = function (url) {
-        var path,
+        let path,
             baseUrl = "";
 
         baseUrl = this.getBaseUrl();
