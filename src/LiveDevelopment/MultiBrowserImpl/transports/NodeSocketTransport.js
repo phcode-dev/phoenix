@@ -19,30 +19,16 @@
  *
  */
 
-// This transport provides a WebSocket connection between Brackets and a live browser preview.
-// This is just a thin wrapper around the Node extension (NodeSocketTransportDomain) that actually
-// provides the WebSocket server and handles the communication. We also rely on an injected script in
-// the browser for the other end of the transport.
+// This transport provides a connection between Brackets and a live browser preview via service worker
+// as the intermediary. We also rely on an injected script in the browser for the other end of the transport.
 
 define(function (require, exports, module) {
 
 
-    var FileUtils       = require("file/FileUtils"),
-        EventDispatcher = require("utils/EventDispatcher"),
-        NodeDomain      = require("utils/NodeDomain");
+    const EventDispatcher = require("utils/EventDispatcher");
 
     // The script that will be injected into the previewed HTML to handle the other side of the socket connection.
-    var NodeSocketTransportRemote = require("text!LiveDevelopment/MultiBrowserImpl/transports/remote/NodeSocketTransportRemote.js");
-
-    // The node extension that actually provides the WebSocket server.
-
-    var domainPath = FileUtils.getNativeBracketsDirectoryPath() + "/" + FileUtils.getNativeModuleDirectoryPath(module) + "/node/NodeSocketTransportDomain";
-
-    var NodeSocketTransportDomain = new NodeDomain("nodeSocketTransport", domainPath);
-
-    // This must match the port declared in NodeSocketTransportDomain.js.
-    // TODO: randomize this?
-    var SOCKET_PORT = 8123;
+    const NodeSocketTransportRemote = require("text!LiveDevelopment/MultiBrowserImpl/transports/remote/NodeSocketTransportRemote.js");
 
     /**
      * Returns the script that should be injected into the browser to handle the other end of the transport.
@@ -51,37 +37,57 @@ define(function (require, exports, module) {
     function getRemoteScript() {
         return "<script>\n" +
             NodeSocketTransportRemote +
-            "this._Brackets_LiveDev_Socket_Transport_URL = 'ws://localhost:" + SOCKET_PORT + "';\n" +
             "</script>\n";
     }
 
-    // Events
-
-    // We can simply retrigger the events we receive from the node domain directly, since they're in
-    // the same format expected by clients of the transport.
-
-    ["connect", "message", "close"].forEach(function (type) {
-        NodeSocketTransportDomain.on(type, function () {
-            console.log("NodeSocketTransport - event - " + type + " - " + JSON.stringify(Array.prototype.slice.call(arguments, 1)));
-            // Remove the event object from the argument list.
-            exports.trigger(type, Array.prototype.slice.call(arguments, 1));
-        });
-    });
+    // Events - setup the service worker communication channel.
+    let _swMessageChannel = null;
 
     EventDispatcher.makeEventDispatcher(exports);
 
     // Exports
     exports.getRemoteScript = getRemoteScript;
 
-    // Proxy the node domain methods directly through, since they have exactly the same
-    // signatures as the ones we're supposed to provide.
-    ["start", "send", "close"].forEach(function (method) {
-        exports[method] = function () {
-            var args = Array.prototype.slice.call(arguments);
-            args.unshift(method);
-            console.log("NodeSocketTransport - " + args);
-            NodeSocketTransportDomain.exec.apply(NodeSocketTransportDomain, args);
+    exports.start = function () {
+        _swMessageChannel = new MessageChannel();// message channel to the service worker
+        // connect on load itself. First we initialize the channel by sending the port to the Service Worker (this also
+        // transfers the ownership of the port)
+        navigator.serviceWorker.controller.postMessage({
+            type: 'PHOENIX_CONNECT'
+        }, [_swMessageChannel.port2]);
+        // attach to browser tab/window closing event so that we send a cleanup request
+        // to the service worker for the comm ports
+        addEventListener( 'beforeunload', function() {
+            navigator.serviceWorker.controller.postMessage({
+                type: 'PHOENIX_CLOSE'
+            });
+        });
+
+
+        // Listen to the response
+        _swMessageChannel.port1.onmessage = (event) => {
+            // Print the result
+            console.log("Phoenix received event from worker: ", event.data);
+            const type = event.data.type;
+            switch (type) {
+            case 'getInstrumentedContent': exports.trigger(type, event.data); break;
+            case 'BROWSER_CONNECT': exports.trigger('connect', [event.data.clientID, event.data.url]); break;
+            case 'BROWSER_MESSAGE': exports.trigger('message', [event.data.clientID, event.data.message]); break;
+            case 'BROWSER_CLOSE': exports.trigger('close', [event.data.clientID]); break;
+            default: console.error("NodeSocketTransport received unknown message from service worker", event);
+            }
         };
-    });
+    };
+
+    exports.close = function () {
+        // no-op the connection to service worker is never broken even though live preview may be on or off.
+    };
+
+    exports.send = function (...args) {
+        navigator.serviceWorker.controller.postMessage({
+            type: 'PHOENIX_SEND',
+            args
+        });
+    };
 
 });

@@ -28,7 +28,7 @@ importScripts('phoenix/virtualServer/html-formatter.js');
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
 
 const _debugSWCacheLogs = false; // change debug to true to see more logs
-const _debugSWLivePreviewLogs = false; // change debug to true to see more logs
+const _debugSWLivePreviewLogs = true; // change debug to true to see more logs
 const CACHE_FILE_NAME = "cacheManifest.json";
 const CACHE_FS_PATH = `/${CACHE_FILE_NAME}`;
 

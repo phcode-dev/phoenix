@@ -263,8 +263,9 @@ define(function main(require, exports, module) {
             _setupDebugHelpers();
         }
 
+        let isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
         // trigger autoconnect
-        if (config.autoconnect) {
+        if (config.autoconnect && !isTestWindow) {
             openLivePreview();
         }
 

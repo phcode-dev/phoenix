@@ -23,9 +23,9 @@
 
 define(function (require, exports, module) {
 
-    const BaseServer           = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
+    const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
-        broadcastChannel = new BroadcastChannel('sw-virtual-server-msgs');
+        NodeSocketTransport = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport");
 
     /**
      * @constructor
@@ -40,11 +40,56 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
+        config.baseUrl = window.fsServerUrl.replace(/\/+$/, ''); // remove trailing slash
+        this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
 
     StaticServer.prototype = Object.create(BaseServer.prototype);
     StaticServer.prototype.constructor = StaticServer;
+
+    /**
+     * Returns a URL for a given path
+     * @param {string} path Absolute path to covert to a URL
+     * @return {?string} Converts a path within the project root to a URL.
+     *  Returns null if the path is not a descendant of the project root.
+     */
+    StaticServer.prototype.pathToUrl = function (path) {
+        var baseUrl         = this.getBaseUrl(),
+            relativePath    = this._pathResolver(path);
+
+        // See if base url has been specified and path is within project
+        if (relativePath !== path) {
+            // Map to server url. Base url is already encoded, so don't encode again.
+
+            return `${baseUrl}${encodeURI(path)}`;
+        }
+
+        return null;
+    };
+
+    /**
+     * Convert a URL to a local full file path
+     * @param {string} url
+     * @return {?string} The absolute path for given URL or null if the path is
+     *  not a descendant of the project.
+     */
+    StaticServer.prototype.urlToPath = function (url) {
+        var path,
+            baseUrl = "";
+
+        baseUrl = this.getBaseUrl();
+
+        if (baseUrl !== "" && url.indexOf(baseUrl) === 0) {
+            // Use base url to translate to local file path.
+            // Need to use encoded project path because it's decoded below.
+            path = url.replace(baseUrl, "");
+
+            return decodeURI(path);
+        }
+
+        return null;
+    };
 
     /**
      * Determines whether we can serve local file.
@@ -149,38 +194,34 @@ define(function (require, exports, module) {
      * @param {jQuery.Event} event the event raised by the service worker
      * @param {{hostname: string, pathname: string, port: number, root: string, id: number}} request
      */
-    StaticServer.prototype.handleEvent = function (event) {
-        switch (event.data.type){
-        default: console.error("StaticServer Extn, received unknown message: ", event);
-        }
-        /* TODO: enable below code for next stage of live preview
-        var key             = request.location.pathname,
-            liveDocument    = this._liveDocuments[key],
-            response;
-
-        // send instrumented response or null to fallback to static file
+    StaticServer.prototype._getInstrumentedContent = function (event, data) {
+        let path = this._documentKey(data.path),
+            requestID = data.requestID,
+            liveDocument = this._liveDocuments[path];
+        let response = {};
         if (liveDocument && liveDocument.getResponseData) {
             response = liveDocument.getResponseData();
-        } else {
-            response = {};  // let server fall back on loading file off disk
         }
-        response.id = request.id;
-
-        this._send(request.location, response);*/
+        navigator.serviceWorker.controller.postMessage({
+            type: 'REQUEST_RESPONSE',
+            requestID, // pass along the request ID so that the appropriate callback will be hit at the service worker
+            path,
+            contents: response.body
+        });
     };
 
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = function () {
-        broadcastChannel.addEventListener('message', this);
+        NodeSocketTransport.on("getInstrumentedContent", this._getInstrumentedContent);
     };
 
     /**
      * See BaseServer#stop. Remove event handlers from StaticServerDomain.
      */
     StaticServer.prototype.stop = function () {
-        broadcastChannel.removeEventListener('message', this);
+        NodeSocketTransport.off("getInstrumentedContent", this._getInstrumentedContent);
     };
 
     module.exports = StaticServer;

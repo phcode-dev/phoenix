@@ -25,9 +25,15 @@ if(!self.Serve){
     const fs = self.fs;
     const Path = self.path;
     const INSTRUMENTED_URL_FILE = "/livePreviewInstrumentedURLs.json";
-    let instrumentedURLs = null;
+    let instrumentedURLs = null,
+        responseListeners = {};
 
-// https://tools.ietf.org/html/rfc2183
+    let requestIDCounter = 0;
+    function _getNewRequestID() {
+        return requestIDCounter++;
+    }
+
+    // https://tools.ietf.org/html/rfc2183
     function formatContentDisposition(path, stats) {
         const filename = Path.basename(path);
         const modified = stats.mtime.toUTCString();
@@ -57,9 +63,10 @@ if(!self.Serve){
         });
     }
     const FILE_READ_RETRY_COUNT = 5,
-          BACKOFF_TIME_MS = 10;
+        BACKOFF_TIME_MS = 10;
 
     const serve = async function (path, formatter, download) {
+        path = Path.normalize(path);
         return new Promise(async (resolve, reject) => { // eslint-disable-line
             function buildResponse(responseData) {
                 return new Response(responseData.body, responseData.config);
@@ -72,7 +79,35 @@ if(!self.Serve){
                 resolve(buildResponse(formatter.format500(path, err)));
             }
 
+            async function serveInstrumentedFile(path, stats) {
+                let allURLs = [];
+                for(let rootPaths of Object.keys(instrumentedURLs)){
+                    for(let subPath of instrumentedURLs[rootPaths]){
+                        allURLs.push(Path.normalize(rootPaths + subPath));
+                    }
+                }
+                if(allURLs.includes(path)){
+                    console.error(allURLs);
+                    const requestID = _getNewRequestID();
+                    phoenixWindowPort.postMessage({
+                        type: "getInstrumentedContent",
+                        path,
+                        requestID
+                    });
+                    responseListeners[requestID] = function (response) {
+                        const responseData = formatter.formatFile(path, response.contents, stats);
+                        resolve(new Response(responseData.body, responseData.config));
+                    };
+                    return true;
+                }
+                return false;
+            }
+
             async function serveFile(path, stats) {
+                let fileServed = await serveInstrumentedFile(path, stats);
+                if(fileServed){
+                    return;
+                }
                 let err = null;
                 for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
                     // sometimes there is read after write contention in native fs between main thread and worker.
@@ -149,9 +184,9 @@ if(!self.Serve){
                     }
                     if (fileStat.stats.isDirectory()) {
                         return serveDir(path);
-                    } else {
-                        return serveFile(path, fileStat.stats);
                     }
+                    return serveFile(path, fileStat.stats);
+
                 }
                 return serveError(path, err);
             } catch (e) {
@@ -190,10 +225,60 @@ if(!self.Serve){
         });
     }
 
+    // service-worker.js
+    let phoenixWindowPort;
+    let clientPorts = {};
+
     function processVirtualServerMessage(event) {
         let eventType = event.data && event.data.type;
         switch (eventType) {
         case 'setInstrumentedURLs': setInstrumentedURLs(event); return true;
+        case 'PHOENIX_CONNECT': phoenixWindowPort = event.ports[0]; return true;
+        case 'PHOENIX_SEND':
+            const clientIDs = event.data.args[0],
+                message = event.data.args[1];
+            for(let clientID of clientIDs){
+                if(clientPorts[clientID]){
+                    clientPorts[clientID].postMessage({
+                        type: "MESSAGE_FROM_PHOENIX",
+                        clientID: event.data.clientID,
+                        message: message
+                    });
+                }  else {
+                    console.error("unknown client ID for event: ", clientID, event);
+                }
+            }
+            return true;
+        case 'BROWSER_CONNECT':
+            clientPorts[event.data.clientID] = event.ports[0];
+            phoenixWindowPort.postMessage({
+                type: "BROWSER_CONNECT",
+                clientID: event.data.clientID,
+                url: event.data.url
+            });
+            return true;
+        case 'BROWSER_MESSAGE':
+            phoenixWindowPort.postMessage({
+                type: "BROWSER_MESSAGE",
+                clientID: event.data.clientID,
+                message: event.data.message
+            });
+            return true;
+        case 'BROWSER_CLOSE':
+            phoenixWindowPort.postMessage({
+                type: "BROWSER_CLOSE",
+                clientID: event.data.clientID
+            });
+            delete clientPorts[event.data.clientID];
+            return true;
+        case 'PHOENIX_CLOSE': self._debugLivePreviewLog("Service worker: main phoenixWindowPort closing."); return true;
+        case 'REQUEST_RESPONSE':
+            const requestID = event.data.requestID;
+            if(event.data.requestID && responseListeners[requestID]){
+                responseListeners[requestID](event.data);
+                delete responseListeners[requestID];
+                return true;
+            }
         }
     }
 

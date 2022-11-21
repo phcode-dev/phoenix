@@ -20,25 +20,13 @@
  */
 
 define(function (require, exports, module) {
-
-
-    var FileUtils  = require("file/FileUtils"),
-        NodeDomain = require("utils/NodeDomain");
-
-    var _bracketsPath   = FileUtils.getNativeBracketsDirectoryPath(),
-        _modulePath     = FileUtils.getNativeModuleDirectoryPath(module),
-        _nodePath       = "node/LauncherDomain",
-        _domainPath     = [_bracketsPath, _modulePath, _nodePath].join("/"),
-        _nodeDomain     = new NodeDomain("launcher", _domainPath);
-
-
     /**
      * Launch the given URL in the system default browser.
      * @param {string} url
      */
     function launch(url) {
         // launch from node domain
-        _nodeDomain.exec("launch", url);
+        //window.open(url);
     }
 
     // Exports

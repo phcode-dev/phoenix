@@ -26,14 +26,11 @@
 
 (function (global) {
 
-
-    var WebSocketTransport = {
-        /**
-         * @private
-         * The WebSocket that we communicate with Brackets over.
-         * @type {?WebSocket}
-         */
-        _ws: null,
+    const WebSocketTransport = {
+        _channelOpen: false,
+        _clientID: Math.round( Math.random()*1000000000),
+        // message channel used to communicate with service worker
+        _swMessageChannel: null,
 
         /**
          * @private
@@ -52,57 +49,62 @@
          *      close - called when Brackets closes the connection
          */
         setCallbacks: function (callbacks) {
-            if (!global._Brackets_LiveDev_Socket_Transport_URL) {
-                console.error("[Brackets LiveDev] No socket transport URL injected");
-            } else {
-                this._callbacks = callbacks;
-            }
+            this._callbacks = callbacks;
         },
 
         /**
          * Connects to the NodeSocketTransport in Brackets at the given WebSocket URL.
-         * @param {string} url
          */
-        connect: function (url) {
-            var self = this;
-            this._ws = new WebSocket(url);
+        connect: function () {
+            const self = this;
+            self._swMessageChannel = new MessageChannel();// message channel to the service worker
+            // connect on load itself. First we initialize the channel by sending the port to the Service Worker (this also
+            // transfers the ownership of the port)
+            navigator.serviceWorker.controller.postMessage({
+                type: 'BROWSER_CONNECT',
+                url: global.location.href,
+                clientID: self._clientID
+            }, [self._swMessageChannel.port2]);
 
-            // One potential source of confusion: the transport sends two "types" of messages -
-            // these are distinct from the protocol's own messages. This is because this transport
-            // needs to send an initial "connect" message telling the Brackets side of the transport
-            // the URL of the page that it's connecting from, distinct from the actual protocol
-            // message traffic. Actual protocol messages are sent as a JSON payload in a message of
-            // type "message".
-            //
-            // Other transports might not need to do this - for example, a transport that simply
-            // talks to an iframe within the same process already knows what URL that iframe is
-            // pointing to, so the only comunication that needs to happen via postMessage() is the
-            // actual protocol message strings, and no extra wrapping is necessary.
+            // Listen to the response
+            self._swMessageChannel.port1.onmessage = (event) => {
+                // Print the result
+                console.log("Browser received event from worker: ", event.data);
+                const type = event.data.type;
+                console.log(event);
+                switch (type) {
+                case 'MESSAGE_FROM_PHOENIX': console.log("[Brackets LiveDev] Got message: " + event.data);
+                    if (self._callbacks && self._callbacks.message) {
+                        self._callbacks.message(event.data.message);
+                    }
+                    break;
+                case 'CLOSE': console.log("[Brackets LiveDev] Got message: " + event.data);
+                    self._channelOpen = false;
+                    self._swMessageChannel.port1.close();
+                    if (self._callbacks && self._callbacks.close) {
+                        self._callbacks.close();
+                    }
+                    break;
+                default: console.error("Unknown event type for event", event);
+                }
+            };
 
-            this._ws.onopen = function (event) {
-                // Send the initial "connect" message to tell the other end what URL we're from.
-                self._ws.send(JSON.stringify({
-                    type: "connect",
-                    url: global.location.href
-                }));
-                console.log("[Brackets LiveDev] Connected to Brackets at " + url);
-                if (self._callbacks && self._callbacks.connect) {
-                    self._callbacks.connect();
+            self._channelOpen = true;
+            if (self._callbacks && self._callbacks.connect) {
+                self._callbacks.connect();
+            }
+
+            // attach to browser tab/window closing event so that we send a cleanup request
+            // to the service worker for the comm ports
+            addEventListener( 'beforeunload', function() {
+                if(self._channelOpen){
+                    self._channelOpen = false;
+                    navigator.serviceWorker.controller.postMessage({
+                        type: 'BROWSER_CLOSE',
+                        clientID: self._clientID
+                    });
                 }
-            };
-            this._ws.onmessage = function (event) {
-                console.log("[Brackets LiveDev] Got message: " + event.data);
-                if (self._callbacks && self._callbacks.message) {
-                    self._callbacks.message(event.data);
-                }
-            };
-            this._ws.onclose = function (event) {
-                self._ws = null;
-                if (self._callbacks && self._callbacks.close) {
-                    self._callbacks.close();
-                }
-            };
-            // TODO: onerror
+            });
         },
 
         /**
@@ -110,23 +112,19 @@
          * @param {string} msgStr The message to send.
          */
         send: function (msgStr) {
-            if (this._ws) {
-                // See comment in `connect()` above about why we wrap the message in a transport message
-                // object.
-                this._ws.send(JSON.stringify({
-                    type: "message",
-                    message: msgStr
-                }));
-            } else {
-                console.log("[Brackets LiveDev] Tried to send message over closed connection: " + msgStr);
-            }
+            const self = this;
+            navigator.serviceWorker.controller.postMessage({
+                type: 'BROWSER_MESSAGE',
+                clientID: self._clientID,
+                message: msgStr
+            });
         },
 
         /**
          * Establish web socket connection.
          */
         enable: function () {
-            this.connect(global._Brackets_LiveDev_Socket_Transport_URL);
+            this.connect();
         }
     };
     global._Brackets_LiveDev_Transport = WebSocketTransport;

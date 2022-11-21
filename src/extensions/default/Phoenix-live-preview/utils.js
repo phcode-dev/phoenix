@@ -69,7 +69,7 @@ define(function (require, exports, module) {
             // async is explicitly caught
             try{
                 let projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${window.fsServerUrl}${projectRoot}`;
+                const projectRootUrl = `${window.fsServerUrl.replace(/\/+$/, '')}${projectRoot}`;
                 let indexFiles = ['index.html', "index.htm"];
                 for(let indexFile of indexFiles){
                     let file = FileSystem.getFileForPath(`${projectRoot}${indexFile}`);
@@ -99,7 +99,7 @@ define(function (require, exports, module) {
             // async is explicitly caught
             try {
                 const projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${window.fsServerUrl}${projectRoot}`;
+                const projectRootUrl = `${window.fsServerUrl.replace(/\/+$/, '')}${projectRoot}`;
                 const currentDocument = DocumentManager.getCurrentDocument();
                 const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
                 if(currentFile){
