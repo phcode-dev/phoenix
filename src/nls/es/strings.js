@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Vista previa dinámica: Conectando…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Vista previa dinámica: Inicializando…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Terminar la Vista previa dinámica",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Vista previa dinámica (guarda el archivo para actualizar)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Vista previa dinámica",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Seleccionar archivo para vista previa en vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Recargar página",
   "LIVE_DEV_CLICK_POPOUT": "Vista previa emergente en vivo a una nueva ventana",

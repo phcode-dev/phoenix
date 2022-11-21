@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Подключение…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Инициализация…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Отсоединить Live Preview",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview (Для отображения изменений сохраните их)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Выберите файл для просмотра в реальном времени",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Перезагрузить страницу",
   "LIVE_DEV_CLICK_POPOUT": "Всплывающий предварительный просмотр в новом окне",

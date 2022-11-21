@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Anteprima Live: Connessione…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Anteprima Live: Inizializzazione…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Disconnetti Anteprima Live",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Anteprima Live: clicca per disconnettere (Salva il file per aggiornare)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Anteprima Live",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Seleziona File in anteprima dal vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Ricarica la pagina",
   "LIVE_DEV_CLICK_POPOUT": "Anteprima dal vivo popout in una nuova finestra",

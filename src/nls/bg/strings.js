@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Преглед на живо: свързване…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Преглед на живо: установка…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Разкачане на прегледа на живо",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Преглед на живо (запазете файла, за да опресните)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Преглед на живо",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Изберете File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Презареди страницата",
   "LIVE_DEV_CLICK_POPOUT": "Изскачащ преглед на живо в нов прозорец",

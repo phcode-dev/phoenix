@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Σύνδεση…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Εκκίνηση…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Αποσύνδεση Live Preview",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview (κάντε αποθήκευση για να ανανεωθεί)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Επιλέξτε Αρχείο σε ζωντανή προεπισκόπηση",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Επαναφόρτωση σελίδας",
   "LIVE_DEV_CLICK_POPOUT": "Αναδυόμενη ζωντανή προεπισκόπηση σε νέο παράθυρο",

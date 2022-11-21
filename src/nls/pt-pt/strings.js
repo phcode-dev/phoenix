@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: A ligar…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: A iniciar…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Live Preview: Desligar",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview: Clique para desligar (Guarde o ficheiro para atualizar)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selecione o arquivo para visualização ao vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Recarregar página",
   "LIVE_DEV_CLICK_POPOUT": "Visualização ao vivo de pop-up para nova janela",

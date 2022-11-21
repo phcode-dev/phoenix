@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Tiešais priekšskatījums: savienojas…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Tiešais priekšskatījums: inicializē…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Izslēgt tiešo priekšskatījumu",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Tiešais priekšskatījums (saglabājiet datni, lai atsvaidzinātu)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Tiešais priekšskatījums",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Atlasiet File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Pārlādēt lapu",
   "LIVE_DEV_CLICK_POPOUT": "Iznirst tiešraides priekšskatījums jaunā logā",

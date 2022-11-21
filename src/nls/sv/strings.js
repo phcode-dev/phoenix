@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Förhandsvisning: Ansluter…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Förhandsvisning: Initierar…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Koppla från förhandsvisningen",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Förhandsvisning (spara filen för att uppdatera)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Förhandsvisning",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Välj File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Ladda om sidan",
   "LIVE_DEV_CLICK_POPOUT": "Popout Live Preview till nytt fönster",

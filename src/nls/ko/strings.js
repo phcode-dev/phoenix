@@ -106,7 +106,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "실시간 미리보기: 연결 중 …",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "실시간 미리보기: 초기화 중…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "실시간 미리보기가 연결되었습니다.",
-  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "실시간 미리보기 (파일을 저장하고 업데이트)",
+  "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "실시간 미리보기",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "라이브 미리 보기로 파일 선택",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "페이지 새로고침",
   "LIVE_DEV_CLICK_POPOUT": "새 창으로 실시간 미리보기 팝업",
