@@ -71,7 +71,8 @@ IDEs from this link before raising a pull request: https://www.sonarlint.org/
 ## Building Release artifacts
 
 * run `npm install`
-* To build the release artifacts: `npm run release`
+* To build the release artifacts, run one of the following commands depending on what build you want:
+  * `npm run release:dev`, `npm run release:staging`, `npm run release:prod`
 * The release artifacts to host will be in `dist` folder.
 
 ## Running tests
