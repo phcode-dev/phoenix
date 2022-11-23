@@ -520,6 +520,7 @@
   "CMD_RUN_UNIT_TESTS": "Uruchom testy",
   "CMD_SHOW_PERF_DATA": "Pokaż informacje o wydajności",
   "CMD_ENABLE_LOGGING": "Włącz szczegółowe dzienniki",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Dzienniki podglądu na żywo",
   "CMD_OPEN_BRACKETS_SOURCE": "Otwórz kod źródłowy {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Skrót do wiersza poleceń {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Błąd podczas instalacji skrótu wiersza poleceń. Przeczytaj artykuł <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>z propozycjami rozwiązania tego problemu.</a>.<br/><br/>Powód: {0}",

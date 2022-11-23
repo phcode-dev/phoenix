@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "테스트 실행",
   "CMD_SHOW_PERF_DATA": "성능 데이터를 표시",
   "CMD_ENABLE_LOGGING": "상세 로그 활성화",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "실시간 미리보기 로그",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} 소스 열기",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} 명령 줄 바로가기",
   "ERROR_CREATING_LAUNCH_SCRIPT": "명령 줄 바로가기를 설치하는 동안 오류가 발생했습니다. <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>이런 문제를 해결하기 위한 제안</a>을 시도해 보세요.<br/><br/>원인: {0}",

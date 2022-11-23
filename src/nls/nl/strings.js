@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Start testen",
   "CMD_SHOW_PERF_DATA": "Toon prestatiedata",
   "CMD_ENABLE_LOGGING": "Gedetailleerde logboeken inschakelen",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live voorbeeldlogboeken",
   "CMD_OPEN_BRACKETS_SOURCE": "Open broncode van {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Command Line Shortcut",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Er is een fout opgetreden bij het installeren van de opdrachtprompt snelkoppeling. Kijk op <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>deze pagina</a> voor mogelijke foutoplossing.<br/><br/>Reden: {0}",

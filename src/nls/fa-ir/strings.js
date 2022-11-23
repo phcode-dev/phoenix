@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "بررسی برای اجرا",
   "CMD_SHOW_PERF_DATA": "نمایش داده های عملکردی",
   "CMD_ENABLE_LOGGING": "گزارش های تفصیلی را فعال کنید",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "گزارش های پیش نمایش زنده",
   "CMD_OPEN_BRACKETS_SOURCE": "باز کردن منبع براکتس",
   "CREATING_LAUNCH_SCRIPT_TITLE": "میانبر خط فرمان {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "هنگام نصب میانبر خط فرمان خطایی روی داد. لطفاً <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>این پیشنهادات عیب‌یابی</a> را امتحان کنید.<br/><br/> دلیل: {0}",

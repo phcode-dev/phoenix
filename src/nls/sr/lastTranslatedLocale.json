@@ -520,6 +520,7 @@
   "CMD_RUN_UNIT_TESTS": "Изврши тестове",
   "CMD_SHOW_PERF_DATA": "Прикажи податке о перформансама",
   "CMD_ENABLE_LOGGING": "Омогући детаљне евиденције",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Дневници прегледа уживо",
   "CMD_OPEN_BRACKETS_SOURCE": "Отвори изворни кôд Brackets-а",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{АПП_НАМЕ} пречица командне линије",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Дошло је до грешке приликом инсталирања пречице командне линије. Испробајте <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ове предлоге за решавање проблема</a> .<br/><br/> Разлог: {0}",

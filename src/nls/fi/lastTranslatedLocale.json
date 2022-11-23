@@ -520,6 +520,7 @@
   "CMD_RUN_UNIT_TESTS": "Suorita testejä",
   "CMD_SHOW_PERF_DATA": "Näytä suorituskykytiedot",
   "CMD_ENABLE_LOGGING": "Ota käyttöön yksityiskohtaiset lokit",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live-esikatselulokit",
   "CMD_OPEN_BRACKETS_SOURCE": "Avaa {APP_NAME}in lähdekoodi",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME}in komentorivin oikotie",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Tapahtui virhe asennettaessa komentorivin oikotietä. Kokeile <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>näitä vianmääritysohjeita</a>.<br/><br/>Syy: {0}",

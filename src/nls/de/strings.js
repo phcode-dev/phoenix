@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Tests durchführen",
   "CMD_SHOW_PERF_DATA": "Performance-Analyse",
   "CMD_ENABLE_LOGGING": "Aktivieren Sie detaillierte Protokolle",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live-Vorschauprotokolle",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME}-Quellcode anzeigen",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME}-Befehlszeilenverknüpfung",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Beim Einrichten der Befehlszeilenverknüpfung ist ein Fehler aufgetreten. Bitte probieren Sie <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>diese Schritte zur Fehlerbehebung</a>.<br/><br/>Fehler: {0}",

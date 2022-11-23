@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "परीक्षण चलाएं",
   "CMD_SHOW_PERF_DATA": "प्रदर्शन डेटा दिखाएं",
   "CMD_ENABLE_LOGGING": "विस्तृत लॉग सक्षम करें",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "लाइव पूर्वावलोकन लॉग",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} स्रोत खोलें",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} कमांड लाइन शॉर्टकट",
   "ERROR_CREATING_LAUNCH_SCRIPT": "कमांड लाइन शॉर्टकट स्थापित करते समय एक त्रुटि हुई। कृपया <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>इन समस्या निवारण सुझावों</a> का प्रयास करें।<br/><br/> कारण: {0}",

@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Testiraj",
   "CMD_SHOW_PERF_DATA": "Prikaži podatke o performansama",
   "CMD_ENABLE_LOGGING": "Omogući detaljne zapisnike",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Dnevnici pregleda uživo",
   "CMD_OPEN_BRACKETS_SOURCE": "Otvori Brackets izvor",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Prečac naredbenog retka",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Došlo je do pogreške prilikom instaliranja prečaca naredbenog retka. Isprobajte <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ove prijedloge za rješavanje problema</a> .<br/><br/> Razlog: {0}",
