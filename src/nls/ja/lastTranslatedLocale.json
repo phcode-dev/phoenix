@@ -520,6 +520,7 @@
   "CMD_RUN_UNIT_TESTS": "テストを実行",
   "CMD_SHOW_PERF_DATA": "パフォーマンスデータを表示",
   "CMD_ENABLE_LOGGING": "詳細ログを有効にする",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "ライブ プレビュー ログ",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} ソースを開く",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} コマンドラインショートカット",
   "ERROR_CREATING_LAUNCH_SCRIPT": "コマンドラインショートカットのインストール中にエラーが発生しました。<a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>これらのトラブルシューティングの提案</a>をお試しください。<br/><br/>理由 : {0}",

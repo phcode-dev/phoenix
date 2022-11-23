@@ -520,6 +520,7 @@
   "CMD_RUN_UNIT_TESTS": "Esegui i test",
   "CMD_SHOW_PERF_DATA": "Mostra dati sulla performance",
   "CMD_ENABLE_LOGGING": "Abilita registri dettagliati",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Registri di anteprima dal vivo",
   "CMD_OPEN_BRACKETS_SOURCE": "Apri {APP_NAME} sorgente",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Scorciatoia da riga di comando di {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Si è verificato un errore durante la creazione della scorciatoia da riga di comando. Per favore, leggi la <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>guida della linea di comando</a> per la risoluzione dei problemi.<br/><br/>Motivo: ",

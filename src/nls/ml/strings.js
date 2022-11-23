@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "ടെസ്റ്റുകൾ പ്രവർത്തിപ്പിക്കുക",
   "CMD_SHOW_PERF_DATA": "പ്രകടന ഡാറ്റ കാണിക്കുക",
   "CMD_ENABLE_LOGGING": "വിശദമായ ലോഗുകൾ പ്രവർത്തനക്ഷമമാക്കുക",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "തത്സമയ പ്രിവ്യൂ ലോഗുകൾ",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} ഉറവിടം തുറക്കുക",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} കമാൻഡ് ലൈൻ കുറുക്കുവഴി",
   "ERROR_CREATING_LAUNCH_SCRIPT": "കമാൻഡ് ലൈൻ കുറുക്കുവഴി ഇൻസ്റ്റാൾ ചെയ്യുമ്പോൾ ഒരു പിശക് സംഭവിച്ചു. ദയവായി <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ഈ ട്രബിൾഷൂട്ടിംഗ് നിർദ്ദേശങ്ങൾ</a> പരീക്ഷിക്കുക.<br/><br/> കാരണം: {0}",

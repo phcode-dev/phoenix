@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Testleri Çalıştır",
   "CMD_SHOW_PERF_DATA": "Performans Bilgisini Göster",
   "CMD_ENABLE_LOGGING": "Ayrıntılı Günlükleri Etkinleştir",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Canlı Önizleme Günlükleri",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} Kaynağını Aç",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Komut Satırı Kısayolu",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Komut satırı kısayolu yüklenirken bir hata oluştu. Lütfen <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>bu sorun giderme önerilerini</a> deneyin.<br/><br/> Neden: {0}",

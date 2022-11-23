@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "執行測試",
   "CMD_SHOW_PERF_DATA": "顯示效能資料",
   "CMD_ENABLE_LOGGING": "啟用詳細日誌",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "實時預覽日誌",
   "CMD_OPEN_BRACKETS_SOURCE": "開啟 {APP_NAME} 原始碼",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} 命令列捷徑",
   "ERROR_CREATING_LAUNCH_SCRIPT": "安裝命令列捷徑時發生錯誤。請嘗試<a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>這些疑難排解建議</a>。<br/><br/>原因: {0}",
