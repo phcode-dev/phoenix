@@ -67,7 +67,7 @@ define(function (require, exports, module) {
         // Listen to the response
         _swMessageChannel.port1.onmessage = (event) => {
             // Print the result
-            console.log("Phoenix received event from worker: ", event.data);
+            console.log("Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
             const type = event.data.type;
             switch (type) {
             case 'getInstrumentedContent': exports.trigger(type, event.data); break;

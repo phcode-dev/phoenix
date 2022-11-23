@@ -234,6 +234,11 @@ if(!self.Serve){
                 clientID: event.data.clientID,
                 url: event.data.url
             });
+            if(self._debugSWLivePreviewLogs){
+                event.ports[0].postMessage({ // set debug mode logs to the connecting client
+                    type: "LIVE_PREVIEW_DEBUG_ENABLE"
+                });
+            }
             return true;
         case 'BROWSER_MESSAGE':
             phoenixWindowPort.postMessage({

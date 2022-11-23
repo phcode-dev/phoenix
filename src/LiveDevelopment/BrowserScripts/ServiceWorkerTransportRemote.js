@@ -32,6 +32,13 @@
         // message channel used to communicate with service worker
         _swMessageChannel: null,
 
+        _debugEnabled: false,
+        _debugLog: function (...args) {
+            if(this._debugEnabled) {
+                console.log(...args);
+            }
+        },
+
         /**
          * @private
          * An object that contains callbacks to handle various transport events. See `setCallbacks()`.
@@ -69,16 +76,18 @@
             // Listen to the response
             self._swMessageChannel.port1.onmessage = (event) => {
                 // Print the result
-                console.log("Browser received event from worker: ", event.data);
+                self._debugLog("Live Preview: Browser received event from Phoenix: ", event.data);
                 const type = event.data.type;
-                console.log(event);
                 switch (type) {
-                case 'MESSAGE_FROM_PHOENIX': console.log("[Brackets LiveDev] Got message: " + event.data);
+                case 'MESSAGE_FROM_PHOENIX':
                     if (self._callbacks && self._callbacks.message) {
                         self._callbacks.message(event.data.message);
                     }
                     break;
-                case 'CLOSE': console.log("[Brackets LiveDev] Got message: " + event.data);
+                case 'LIVE_PREVIEW_DEBUG_ENABLE':
+                    self._debugEnabled = true;
+                    break;
+                case 'CLOSE':
                     self._channelOpen = false;
                     self._swMessageChannel.port1.close();
                     if (self._callbacks && self._callbacks.close) {
