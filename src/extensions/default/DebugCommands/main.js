@@ -66,16 +66,20 @@ define(function (require, exports, module) {
       * Debug commands IDs
       * @enum {string}
       */
-    var DEBUG_REFRESH_WINDOW                  = "debug.refreshWindow", // string must MATCH string in native code (brackets_extensions)
+    const DEBUG_REFRESH_WINDOW                  = "debug.refreshWindow", // string must MATCH string in native code (brackets_extensions)
         DEBUG_RUN_UNIT_TESTS                  = "debug.runUnitTests",
         DEBUG_SHOW_PERF_DATA                  = "debug.showPerfData",
         DEBUG_RELOAD_WITHOUT_USER_EXTS        = "debug.reloadWithoutUserExts",
         DEBUG_NEW_BRACKETS_WINDOW             = "debug.newBracketsWindow",
         DEBUG_SWITCH_LANGUAGE                 = "debug.switchLanguage",
         DEBUG_ENABLE_LOGGING                  = "debug.enableLogging",
+        DEBUG_LIVE_PREVIEW_LOGGING            = "debug.livePreviewLogging",
         DEBUG_OPEN_VFS                        = "debug.openVFS",
         DEBUG_OPEN_VIRTUAL_SERVER             = "debug.openVirtualServer",
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
+
+    const LOG_TO_CONSOLE_KEY = "logToConsole",
+        LOG_LIVE_PREVIEW_KEY = "logLivePreview"; // check for "logLivePreview" usage before renaming.
 
     // define a preference to turn off opening preferences in split-view.
     var prefs = PreferencesManager.getExtensionPrefs("preferencesView");
@@ -691,16 +695,18 @@ define(function (require, exports, module) {
     function _updateLogToConsoleMenuItemChecked() {
         const isLogging = window.setupLogging();
         CommandManager.get(DEBUG_ENABLE_LOGGING).setChecked(isLogging);
+        CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setEnabled(isLogging);
+        window.loggingOptions.logLivePreview = window.isLoggingEnabled(LOG_LIVE_PREVIEW_KEY);
+        CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setChecked(window.loggingOptions.logLivePreview);
     }
 
     function _handleLogging() {
-        let logToConsolePref = localStorage.getItem("logToConsole") || "false";
-        if(logToConsolePref.toLowerCase() === 'true'){
-            logToConsolePref = 'false';
-        } else {
-            logToConsolePref = 'true';
-        }
-        localStorage.setItem("logToConsole", logToConsolePref);
+        window.toggleLoggingKey(LOG_TO_CONSOLE_KEY);
+        _updateLogToConsoleMenuItemChecked();
+    }
+
+    function _handleLivePreviewLogging() {
+        window.toggleLoggingKey(LOG_LIVE_PREVIEW_KEY);
         _updateLogToConsoleMenuItemChecked();
     }
 
@@ -734,6 +740,7 @@ define(function (require, exports, module) {
     CommandManager.register(switchLanguageStr,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage);
 
     CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
+    CommandManager.register(Strings.CMD_ENABLE_LIVE_PREVIEW_LOGS, DEBUG_LIVE_PREVIEW_LOGGING, _handleLivePreviewLogging);
     CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
     CommandManager.register(Strings.CMD_OPEN_VIRTUAL_SERVER, DEBUG_OPEN_VIRTUAL_SERVER,   _openVirtualServer);
 
@@ -752,6 +759,8 @@ define(function (require, exports, module) {
     menu.addMenuItem(DEBUG_SHOW_PERF_DATA);
     menu.addMenuDivider();
     menu.addMenuItem(DEBUG_ENABLE_LOGGING);
+    menu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
+    menu.addMenuDivider();
     menu.addMenuItem(DEBUG_OPEN_VFS);
     menu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER);
     menu.addMenuDivider();

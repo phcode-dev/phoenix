@@ -71,6 +71,19 @@
                 return false;
             }
         };
+        window.loggingOptions = {};
+        window.isLoggingEnabled = function (key) {
+            let loggingEnabled = localStorage.getItem(key) || "false";
+            return loggingEnabled.toLowerCase() === 'true';
+        }
+
+        window.toggleLoggingKey = function(key) {
+            if(window.isLoggingEnabled(key)){
+                localStorage.setItem(key, 'false');
+            } else {
+                localStorage.setItem(key, 'true');
+            }
+        }
 
         window.setupLogging();
     </script>
