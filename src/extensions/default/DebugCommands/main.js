@@ -79,7 +79,7 @@ define(function (require, exports, module) {
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
 
     const LOG_TO_CONSOLE_KEY = "logToConsole",
-        LOG_LIVE_PREVIEW_KEY = "logLivePreview"; // check for "logLivePreview" usage before renaming.
+        LOG_LIVE_PREVIEW_KEY = window.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW;
 
     // define a preference to turn off opening preferences in split-view.
     var prefs = PreferencesManager.getExtensionPrefs("preferencesView");

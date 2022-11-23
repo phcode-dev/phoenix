@@ -71,7 +71,7 @@
                 return false;
             }
         };
-        window.loggingOptions = {};
+
         window.isLoggingEnabled = function (key) {
             let loggingEnabled = localStorage.getItem(key) || "false";
             return loggingEnabled.toLowerCase() === 'true';
@@ -84,6 +84,14 @@
                 localStorage.setItem(key, 'true');
             }
         }
+
+        window.loggingOptions = {
+            LOCAL_STORAGE_KEYS: {
+                LOG_LIVE_PREVIEW: "logLivePreview"
+            },
+        };
+        window.loggingOptions.logLivePreview = window.isLoggingEnabled(
+            window.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW);
 
         window.setupLogging();
     </script>
