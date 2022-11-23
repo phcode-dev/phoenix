@@ -107,7 +107,8 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         console.log('Service worker loader: Server ready.');
         wb.messageSW({
             type: 'INIT_PHOENIX_CONFIG',
-            debugMode: window.logToConsolePref === 'true'
+            debugMode: window.logToConsolePref === 'true',
+            logLivePreview: window.isLoggingEnabled("logLivePreview")
         }).then((config)=>{
             console.log(`Service worker loader: Server ready! Service worker inited at base url: ${config.baseURL}`);
         }).catch(err=>{

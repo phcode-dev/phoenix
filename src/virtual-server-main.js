@@ -28,7 +28,6 @@ importScripts('phoenix/virtualServer/html-formatter.js');
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
 
 const _debugSWCacheLogs = false; // change debug to true to see more logs
-self._debugSWLivePreviewLogs = false; // change debug to true to see more logs
 const CACHE_FILE_NAME = "cacheManifest.json";
 const CACHE_FS_PATH = `/${CACHE_FILE_NAME}`;
 
@@ -63,7 +62,7 @@ function _debugCacheLog(...args) {
 }
 
 self._debugLivePreviewLog = function (...args) {
-    if(self._debugSWLivePreviewLogs){
+    if(self._debugSWLivePreviewLogs){ // this is set from the debug menu
         console.log(...args);
     }
 }
@@ -280,6 +279,7 @@ addEventListener('message', (event) => {
         case 'SKIP_WAITING': self.skipWaiting(); break;
         case 'INIT_PHOENIX_CONFIG':
             Config.debug = event.data.debugMode;
+            self._debugSWLivePreviewLogs = event.data.logLivePreview;
             self.__WB_DISABLE_DEV_LOGS = Config.debug && _debugSWCacheLogs;
             event.ports[0].postMessage({baseURL}); break;
         case 'CLEAR_CACHE': _clearCache(); break;

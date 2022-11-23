@@ -662,6 +662,7 @@ define({
     "CMD_RUN_UNIT_TESTS": "Run Tests",
     "CMD_SHOW_PERF_DATA": "Show Performance Data",
     "CMD_ENABLE_LOGGING": "Enable Detailed Logs",
+    "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview Logs",
     "CMD_OPEN_BRACKETS_SOURCE": "Open {APP_NAME} Source",
 
     "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Command Line Shortcut",
