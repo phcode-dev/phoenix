@@ -60,6 +60,6 @@ if(!self.Config){
     self.Config = {
         route: getNormalizeRoute(),
         disableIndexes: url.searchParams.get('disableIndexes') !== null,
-        debug: url.searchParams.get('debug') === 'true'
+        debug: false // this is set via sw messages from phoenix
     };
 }

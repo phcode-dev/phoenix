@@ -71,10 +71,21 @@ async function shouldUpdate() {
  */
 if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     console.log("Service worker loader: Loading  from page...", window.location.href);
-    const wb = new Workbox(`virtual-server-main.js?debug=${window.logToConsolePref === 'true'}&route=${getRoute()}`, {
+    // We cannot realistically change the url of the service worker without causing major problems in service worker
+    // load. We will have to unregister and load a new service worker and there is no way to stop the already running
+    // service worker. As such, the below debug=false is unused, but kept there for legacy purposes to not change
+    // sw url without bombing the installation base.
+    // debug=false below is unused and kept for the above reason!!!!!
+    const wb = new Workbox(`virtual-server-main.js?debug=false&route=${getRoute()}`, {
         // https://developer.chrome.com/blog/fresher-sw/#updateviacache
         updateViaCache: 'none'
     });
+
+    setInterval(function(){
+        // keep the service worker alive by long polling
+        // https://stackoverflow.com/questions/29741922/prevent-service-worker-from-automatically-stopping
+        fetch(window.location.href);
+    }, 15000);
 
     function _refreshCache() {
         console.log(`Service worker loader: triggering REFRESH_CACHE`);
@@ -95,9 +106,10 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     function serverReady() {
         console.log('Service worker loader: Server ready.');
         wb.messageSW({
-            type: 'GET_SW_BASE_URL'
-        }).then((fsServerUrl)=>{
-            console.log(`Service worker loader: Server ready! Service worker initialised at base url: ${fsServerUrl}`);
+            type: 'INIT_PHOENIX_CONFIG',
+            debugMode: window.logToConsolePref === 'true'
+        }).then((config)=>{
+            console.log(`Service worker loader: Server ready! Service worker inited at base url: ${config.baseURL}`);
         }).catch(err=>{
             console.error("Service worker loader: Error while init of service worker", err);
         });

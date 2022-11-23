@@ -60,7 +60,7 @@
             if (!msg.method) {
                 // no message type, ignoring it
                 // TODO: should we trigger a generic event?
-                console.log("[Brackets LiveDev] Received message without method.");
+                console.error("[Brackets LiveDev] Received message without method.");
                 return;
             }
             // get handlers for msg.method
@@ -74,15 +74,14 @@
                         handler(msg);
                         return;
                     } catch (e) {
-                        console.log("[Brackets LiveDev] Error executing a handler for " + msg.method);
-                        console.log(e.stack);
+                        console.error("[Brackets LiveDev] Error executing a handler for " + msg.method, e.stack);
                         return;
                     }
                 });
             } else {
                 // no subscribers, ignore it.
                 // TODO: any other default handling? (eg. specific respond, trigger as a generic event, etc.);
-                console.log("[Brackets LiveDev] No subscribers for message " + msg.method);
+                console.warn("[Brackets LiveDev] No subscribers for message " + msg.method);
                 return;
             }
         },
@@ -95,7 +94,7 @@
          */
         respond: function (orig, response) {
             if (!orig.id) {
-                console.log("[Brackets LiveDev] Trying to send a response for a message with no ID");
+                console.error("[Brackets LiveDev] Trying to send a response for a message with no ID");
                 return;
             }
             response.id = orig.id;
@@ -137,7 +136,6 @@
          * Evaluate an expresion and return its result.
          */
         evaluate: function (msg) {
-            console.log("Runtime.evaluate");
             var result = eval(msg.params.expression);
             MessageBroker.respond(msg, {
                 result: JSON.stringify(result) // TODO: in original protocol this is an object handle
@@ -353,7 +351,7 @@
             try {
                 msg = JSON.parse(msgStr);
             } catch (e) {
-                console.log("[Brackets LiveDev] Malformed message received: ", msgStr);
+                console.error("[Brackets LiveDev] Malformed message received: ", msgStr);
                 return;
             }
             // delegates handling/routing to MessageBroker.

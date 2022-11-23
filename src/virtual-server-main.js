@@ -28,11 +28,11 @@ importScripts('phoenix/virtualServer/html-formatter.js');
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
 
 const _debugSWCacheLogs = false; // change debug to true to see more logs
-const _debugSWLivePreviewLogs = false; // change debug to true to see more logs
+self._debugSWLivePreviewLogs = false; // change debug to true to see more logs
 const CACHE_FILE_NAME = "cacheManifest.json";
 const CACHE_FS_PATH = `/${CACHE_FILE_NAME}`;
 
-workbox.setConfig({debug: _debugSWCacheLogs && Config.debug});
+workbox.setConfig({debug: _debugSWCacheLogs});
 
 const Route = workbox.routing.Route;
 // other strategies include CacheFirst, NetworkFirst Etc..
@@ -41,7 +41,6 @@ const StaleWhileRevalidate = workbox.strategies.StaleWhileRevalidate;
 const ExpirationPlugin = workbox.expiration.ExpirationPlugin;
 const CacheExpiration = workbox.expiration.CacheExpiration;
 const DAYS_30_IN_SEC = 60 * 60 * 24 * 30;
-const CACHE_REFRESH_SCHEDULE_TIME = 10 * 1000;
 const CACHE_NAME_EVERYTHING = "everything";
 const CACHE_NAME_CORE_SCRIPTS = "coreScripts";
 const CACHE_NAME_EXTERNAL = "external";
@@ -64,7 +63,7 @@ function _debugCacheLog(...args) {
 }
 
 self._debugLivePreviewLog = function (...args) {
-    if(_debugSWLivePreviewLogs){
+    if(self._debugSWLivePreviewLogs){
         console.log(...args);
     }
 }
@@ -279,7 +278,10 @@ addEventListener('message', (event) => {
     let eventType = event.data && event.data.type;
     switch (eventType) {
         case 'SKIP_WAITING': self.skipWaiting(); break;
-        case 'GET_SW_BASE_URL': event.ports[0].postMessage(baseURL); break;
+        case 'INIT_PHOENIX_CONFIG':
+            Config.debug = event.data.debugMode;
+            self.__WB_DISABLE_DEV_LOGS = Config.debug && _debugSWCacheLogs;
+            event.ports[0].postMessage({baseURL}); break;
         case 'CLEAR_CACHE': _clearCache(); break;
         case 'REFRESH_CACHE': _refreshCache(event); break;
         default:
