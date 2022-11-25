@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "ٹیسٹ چلائیں۔",
   "CMD_SHOW_PERF_DATA": "کارکردگی کا ڈیٹا دکھائیں۔",
   "CMD_ENABLE_LOGGING": "تفصیلی لاگز کو فعال کریں۔",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "لائیو پیش نظارہ لاگز",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} سورس کھولیں۔",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} کمانڈ لائن شارٹ کٹ",
   "ERROR_CREATING_LAUNCH_SCRIPT": "کمانڈ لائن شارٹ کٹ انسٹال کرتے وقت ایک خرابی پیش آگئی۔ براہ کرم <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ان ٹربل شوٹنگ تجاویز</a> کو آزمائیں۔<br/><br/> وجہ: {0}",

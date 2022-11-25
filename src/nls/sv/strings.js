@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Kör tester",
   "CMD_SHOW_PERF_DATA": "Visa prestandadata",
   "CMD_ENABLE_LOGGING": "Aktivera detaljerade loggar",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview-loggar",
   "CMD_OPEN_BRACKETS_SOURCE": "Öppna Brackets källkod",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} kommandotolk-genväg",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Ett fel inträffade under installationen av kommandotolk-genvägen. Vänligen prova <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>dessa felsökningsförslag</a>.<br/><br/>Anledning: {0}",

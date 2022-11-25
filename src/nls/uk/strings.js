@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Запустити тестування",
   "CMD_SHOW_PERF_DATA": "Показати дані продуктивності",
   "CMD_ENABLE_LOGGING": "Увімкнути докладні журнали",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Журнали попереднього перегляду",
   "CMD_OPEN_BRACKETS_SOURCE": "Відкрити код Brackets",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Ярлик командного рядка {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Під час встановлення ярлика командного рядка сталася помилка. Будь ласка, спробуйте <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ці пропозиції щодо усунення несправностей</a> .<br/><br/> Причина: {0}",

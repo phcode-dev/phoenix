@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Exécuter des tests",
   "CMD_SHOW_PERF_DATA": "Afficher les données de performances",
   "CMD_ENABLE_LOGGING": "Activer les journaux détaillés",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Journaux d'aperçu en direct",
   "CMD_OPEN_BRACKETS_SOURCE": "Ouvrir la source de {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Raccourci de ligne de commande {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Une erreur est survenue lors de l’installation du raccourci de ligne de commande. Essayez d’appliquer <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ces suggestions pour résoudre le problème</a>.<br/><br/>Motif : {0}",

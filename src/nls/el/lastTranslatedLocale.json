@@ -520,6 +520,7 @@
   "CMD_RUN_UNIT_TESTS": "Τρέξε Tests",
   "CMD_SHOW_PERF_DATA": "Προβολή Δεδομένων Επίδοσης",
   "CMD_ENABLE_LOGGING": "Ενεργοποίηση λεπτομερών αρχείων καταγραφής",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Ζωντανά αρχεία καταγραφής προεπισκόπησης",
   "CMD_OPEN_BRACKETS_SOURCE": "Άνοιξε τον κώδικα του {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Συντόμευση γραμμής εντολών",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Ένα σφάλμα προέκυψε κατά την εγκατάσταση της συντόμευσης για την γραμμή εντολών. Παρακαλώ δοκίμασε <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>αυτές τις προτείνομενες λύσεις</a>.<br/><br/>Αιτιολογία: {0}",

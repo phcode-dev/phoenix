@@ -520,6 +520,7 @@
   "CMD_RUN_UNIT_TESTS": "Spustit testy",
   "CMD_SHOW_PERF_DATA": "Zobrazit údaje o výkonnosti",
   "CMD_ENABLE_LOGGING": "Povolit podrobné protokoly",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Záznamy živého náhledu",
   "CMD_OPEN_BRACKETS_SOURCE": "Otevřít zdroj {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Zástupce {APP_NAME} v příkazové řádce",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Při instalaci zástupce do příkazové řádky se vyskytla chyba. Prosím vyzkoušejte řešení <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>na této stránce</a>.<br/><br/>Důvod: {0}",

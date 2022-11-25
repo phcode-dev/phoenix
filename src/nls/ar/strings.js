@@ -540,6 +540,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "تشغيل الاختبارات",
   "CMD_SHOW_PERF_DATA": "إظهار بيانات الأداء",
   "CMD_ENABLE_LOGGING": "تمكين السجلات التفصيلية",
+  "CMD_ENABLE_LIVE_PREVIEW_LOGS": "سجلات المعاينة الحية",
   "CMD_OPEN_BRACKETS_SOURCE": "افتح مصدر {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "اختصار سطر أوامر {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "حدث خطأ أثناء تثبيت اختصار سطر الأوامر. يرجى محاولة <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>هذه الاقتراحات استكشاف الأخطاء وإصلاحها</a> .<br/><br/> السبب: {0}",
