@@ -40,7 +40,8 @@
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
-    const ExtensionUtils     = brackets.getModule("utils/ExtensionUtils"),
+    const ExtensionUtils   = brackets.getModule("utils/ExtensionUtils"),
+        EditorManager      = brackets.getModule("editor/EditorManager"),
         CommandManager     = brackets.getModule("command/CommandManager"),
         Commands           = brackets.getModule("command/Commands"),
         Menus              = brackets.getModule("command/Menus"),
@@ -275,12 +276,14 @@ define(function (require, exports, module) {
         if(tab && !tab.closed){
             tab.location = utils.getNoPreviewURL();
         }
-        LiveDevelopment.closeLivePreview();
-        LiveDevelopment.openLivePreview();
         if(!panel.isVisible()){
             return;
         }
         _loadPreview(true);
+    }
+
+    function _activeDocChanged() {
+        LiveDevelopment.openLivePreview();
     }
 
     function _showPopoutNotificationIfNeeded(path) {
@@ -300,10 +303,10 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         _createExtensionPanel();
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
         MainViewManager.on("currentFileChange", _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
+        EditorManager.on("activeEditorChange", _activeDocChanged);
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
             _toggleVisibility();
         });
@@ -317,6 +320,7 @@ define(function (require, exports, module) {
                 _setPanelVisibility(true);
             }
         }, 1000);
+        LiveDevelopment.openLivePreview();
     });
 });
 

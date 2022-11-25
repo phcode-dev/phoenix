@@ -27,9 +27,8 @@ if(!self.Serve){
     let instrumentedURLs = {},
         responseListeners = {};
 
-    let requestIDCounter = 0;
     function _getNewRequestID() {
-        return requestIDCounter++;
+        return Math.round( Math.random()*1000000000000);
     }
 
     // https://tools.ietf.org/html/rfc2183
@@ -94,6 +93,12 @@ if(!self.Serve){
                         requestID
                     });
                     responseListeners[requestID] = function (response) {
+                        if(!response.contents){
+                            self._debugLivePreviewLog(
+                                "Service worker: no instrumented file received from phoenix!", path);
+                            serveFileContent(path, stats);
+                            return;
+                        }
                         const responseData = formatter.formatFile(path, response.contents, stats);
                         resolve(new Response(responseData.body, responseData.config));
                     };
@@ -102,11 +107,7 @@ if(!self.Serve){
                 return false;
             }
 
-            async function serveFile(path, stats) {
-                let fileServed = await serveInstrumentedFile(path, stats);
-                if(fileServed){
-                    return;
-                }
+            async function serveFileContent(path, stats) {
                 let err = null;
                 for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
                     // sometimes there is read after write contention in native fs between main thread and worker.
@@ -129,6 +130,14 @@ if(!self.Serve){
                     return;
                 }
                 serveError(path, err);
+            }
+
+            async function serveFile(path, stats) {
+                let fileServed = await serveInstrumentedFile(path, stats);
+                if(fileServed){
+                    return;
+                }
+                serveFileContent(path, stats);
             }
 
             // Either serve /index.html (default index) or / (directory listing)
@@ -207,7 +216,14 @@ if(!self.Serve){
     let phoenixWindowPort;
     let clientPorts = {};
 
+    let workerShutdownFlag;
+    console.log("service worker init");
+
     function processVirtualServerMessage(event) {
+        if(!workerShutdownFlag){
+            workerShutdownFlag = true;
+            console.log("service worker shutdown and reboot");
+        }
         let eventType = event.data && event.data.type;
         switch (eventType) {
         case 'setInstrumentedURLs': setInstrumentedURLs(event); return true;
@@ -252,6 +268,7 @@ if(!self.Serve){
                 type: "BROWSER_CLOSE",
                 clientID: event.data.clientID
             });
+            clientPorts[event.data.clientID].close();
             delete clientPorts[event.data.clientID];
             return true;
         case 'PHOENIX_CLOSE': self._debugLivePreviewLog("Service worker: main phoenixWindowPort closing."); return true;
