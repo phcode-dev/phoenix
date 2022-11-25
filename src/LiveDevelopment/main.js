@@ -47,7 +47,6 @@ define(function main(require, exports, module) {
     var config = {
         experimental: false, // enable experimental features
         debug: true, // enable debug output and helpers
-        autoconnect: true, // go live automatically after startup?
         highlight: true, // enable highlighting?
         highlightConfig: { // the highlight configuration for the Inspector
             borderColor:  {r: 255, g: 229, b: 153, a: 0.66},
@@ -180,9 +179,6 @@ define(function main(require, exports, module) {
             // various status codes.
             _setLabel(_$btnGoLive, null, _status[status + 1].style, _status[status + 1].tooltip);
             _showStatusChangeReason(reason);
-            if (config.autoconnect) {
-                window.sessionStorage.setItem("live.enabled", status === 3);
-            }
         });
 
         // Initialize tooltip for 'not connected' state
@@ -259,11 +255,6 @@ define(function main(require, exports, module) {
 
         if (config.debug) {
             _setupDebugHelpers();
-        }
-
-        // trigger autoconnect
-        if (config.autoconnect && !isTestWindow) {
-            openLivePreview();
         }
 
         remoteHighlightPref

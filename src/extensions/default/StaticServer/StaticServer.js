@@ -215,14 +215,15 @@ define(function (require, exports, module) {
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = function () {
-        ServiceWorkerTransport.on("getInstrumentedContent", this._getInstrumentedContent);
+        ServiceWorkerTransport.off("getInstrumentedContent.staticServer");
+        ServiceWorkerTransport.on("getInstrumentedContent.staticServer", this._getInstrumentedContent);
     };
 
     /**
      * See BaseServer#stop. Remove event handlers from StaticServerDomain.
      */
     StaticServer.prototype.stop = function () {
-        ServiceWorkerTransport.off("getInstrumentedContent", this._getInstrumentedContent);
+        ServiceWorkerTransport.off("getInstrumentedContent.staticServer");
     };
 
     module.exports = StaticServer;
