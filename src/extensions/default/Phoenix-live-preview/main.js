@@ -111,6 +111,9 @@ define(function (require, exports, module) {
     function _toggleVisibility() {
         let visible = !panel.isVisible();
         _setPanelVisibility(visible);
+        if(visible) {
+            LiveDevelopment.openLivePreview();
+        }
     }
 
     function _togglePinUrl() {
@@ -167,6 +170,7 @@ define(function (require, exports, module) {
         $pinUrlBtn.click(_togglePinUrl);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
+            LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
             _loadPreview(true);
         });
@@ -268,10 +272,12 @@ define(function (require, exports, module) {
         }
     }
 
+    let livePreviewShownOnProjectSwitch = false;
     function _projectOpened() {
         if(urlPinned){
             _togglePinUrl();
         }
+        EditorManager.on("activeEditorChange", _activeDocChanged);
         $iframe[0].src = utils.getNoPreviewURL();
         if(tab && !tab.closed){
             tab.location = utils.getNoPreviewURL();
@@ -282,8 +288,17 @@ define(function (require, exports, module) {
         _loadPreview(true);
     }
 
+    function _projectClosed() {
+        EditorManager.off("activeEditorChange", _activeDocChanged);
+        LiveDevelopment.closeLivePreview();
+        livePreviewShownOnProjectSwitch = false;
+    }
+
     function _activeDocChanged() {
-        LiveDevelopment.openLivePreview();
+        if(!livePreviewShownOnProjectSwitch) {
+            LiveDevelopment.openLivePreview();
+            livePreviewShownOnProjectSwitch = true;
+        }
     }
 
     function _showPopoutNotificationIfNeeded(path) {
@@ -306,7 +321,7 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
         MainViewManager.on("currentFileChange", _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
-        EditorManager.on("activeEditorChange", _activeDocChanged);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_CLOSE, _projectClosed);
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
             _toggleVisibility();
         });

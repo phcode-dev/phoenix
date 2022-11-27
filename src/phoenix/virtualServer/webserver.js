@@ -22,6 +22,7 @@
 importScripts('phoenix/virtualServer/config.js');
 
 if(!self.Serve){
+    const _serverBroadcastChannel = new BroadcastChannel("virtual_server_broadcast");
     const fs = self.fs;
     const Path = self.path;
     let instrumentedURLs = {},
@@ -87,7 +88,7 @@ if(!self.Serve){
                 if(allURLs.includes(path)){
                     self._debugLivePreviewLog("Service worker: serving instrumented file", path);
                     const requestID = _getNewRequestID();
-                    phoenixWindowPort.postMessage({
+                    _serverBroadcastChannel.postMessage({
                         type: "getInstrumentedContent",
                         path,
                         requestID
@@ -212,66 +213,11 @@ if(!self.Serve){
         event.ports[0].postMessage(true);// acknowledge for the other side to resolve promise
     }
 
-    // service-worker.js
-    let phoenixWindowPort;
-    let clientPorts = {};
-
-    let workerShutdownFlag;
     console.log("service worker init");
 
     function processVirtualServerMessage(event) {
-        if(!workerShutdownFlag){
-            workerShutdownFlag = true;
-            console.log("service worker shutdown and reboot");
-        }
         let eventType = event.data && event.data.type;
         switch (eventType) {
-        case 'setInstrumentedURLs': setInstrumentedURLs(event); return true;
-        case 'PHOENIX_CONNECT': phoenixWindowPort = event.ports[0]; return true;
-        case 'PHOENIX_SEND':
-            const clientIDs = event.data.args[0],
-                message = event.data.args[1];
-            for(let clientID of clientIDs){
-                if(clientPorts[clientID]){
-                    clientPorts[clientID].postMessage({
-                        type: "MESSAGE_FROM_PHOENIX",
-                        clientID: event.data.clientID,
-                        message: message
-                    });
-                }  else {
-                    console.error("unknown client ID for event: ", clientID, event);
-                }
-            }
-            return true;
-        case 'BROWSER_CONNECT':
-            clientPorts[event.data.clientID] = event.ports[0];
-            phoenixWindowPort.postMessage({
-                type: "BROWSER_CONNECT",
-                clientID: event.data.clientID,
-                url: event.data.url
-            });
-            if(self._debugSWLivePreviewLogs){
-                event.ports[0].postMessage({ // set debug mode logs to the connecting client
-                    type: "LIVE_PREVIEW_DEBUG_ENABLE"
-                });
-            }
-            return true;
-        case 'BROWSER_MESSAGE':
-            phoenixWindowPort.postMessage({
-                type: "BROWSER_MESSAGE",
-                clientID: event.data.clientID,
-                message: event.data.message
-            });
-            return true;
-        case 'BROWSER_CLOSE':
-            phoenixWindowPort.postMessage({
-                type: "BROWSER_CLOSE",
-                clientID: event.data.clientID
-            });
-            clientPorts[event.data.clientID].close();
-            delete clientPorts[event.data.clientID];
-            return true;
-        case 'PHOENIX_CLOSE': self._debugLivePreviewLog("Service worker: main phoenixWindowPort closing."); return true;
         case 'REQUEST_RESPONSE':
             const requestID = event.data.requestID;
             if(event.data.requestID && responseListeners[requestID]){
@@ -282,9 +228,11 @@ if(!self.Serve){
         }
     }
 
+    _serverBroadcastChannel.onmessage = processVirtualServerMessage;
+
     self.Serve = {
         serve,
-        processVirtualServerMessage
+        setInstrumentedURLs
     };
 
 }

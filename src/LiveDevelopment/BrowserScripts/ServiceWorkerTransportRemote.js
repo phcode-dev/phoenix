@@ -28,13 +28,12 @@
 
     const WebSocketTransport = {
         _channelOpen: false,
-        _clientID: Math.round( Math.random()*1000000000),
+        _clientID: "" + Math.round( Math.random()*1000000000),
         // message channel used to communicate with service worker
-        _swMessageChannel: null,
+        _broadcastMessageChannel: null,
 
-        _debugEnabled: false,
         _debugLog: function (...args) {
-            if(this._debugEnabled) {
+            if(window.LIVE_PREVIEW_DEBIG_ENABLED) {
                 console.log(...args);
             }
         },
@@ -64,32 +63,37 @@
          */
         connect: function () {
             const self = this;
-            self._swMessageChannel = new MessageChannel();// message channel to the service worker
-            // connect on load itself. First we initialize the channel by sending the port to the Service Worker (this also
-            // transfers the ownership of the port)
-            navigator.serviceWorker.controller.postMessage({
+            // message channel to phoenix connect on load itself. The channel id is injected from phoenix
+            // via ServiceWorkerTransport.js while serving the instrumented html file
+            self._broadcastMessageChannel = new BroadcastChannel(window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID);
+            self._broadcastMessageChannel.postMessage({
                 type: 'BROWSER_CONNECT',
                 url: global.location.href,
                 clientID: self._clientID
-            }, [self._swMessageChannel.port2]);
+            });
 
             // Listen to the response
-            self._swMessageChannel.port1.onmessage = (event) => {
+            self._broadcastMessageChannel.onmessage = (event) => {
                 // Print the result
-                self._debugLog("Live Preview: Browser received event from Phoenix: ", event.data);
+                self._debugLog("Live Preview: Browser received event from Phoenix: ", JSON.stringify(event.data));
                 const type = event.data.type;
                 switch (type) {
+                case 'BROWSER_CONNECT': break; // do nothing. This is a loopback message from another live preview tab
+                case 'BROWSER_MESSAGE': break; // do nothing. This is a loopback message from another live preview tab
+                case 'BROWSER_CLOSE': break; // do nothing. This is a loopback message from another live preview tab
                 case 'MESSAGE_FROM_PHOENIX':
                     if (self._callbacks && self._callbacks.message) {
-                        self._callbacks.message(event.data.message);
+                        const clientIDs = event.data.args[0],
+                            message = event.data.args[1];
+                        if(clientIDs.includes(self._clientID) || clientIDs.length === 0){
+                            // clientIDs.length = 0 if the message is intended for all clients
+                            self._callbacks.message(message);
+                        }
                     }
                     break;
-                case 'LIVE_PREVIEW_DEBUG_ENABLE':
-                    self._debugEnabled = true;
-                    break;
-                case 'CLOSE':
+                case 'PHOENIX_CLOSE':
                     self._channelOpen = false;
-                    self._swMessageChannel.port1.close();
+                    self._broadcastMessageChannel.close();
                     if (self._callbacks && self._callbacks.close) {
                         self._callbacks.close();
                     }
@@ -108,7 +112,7 @@
             addEventListener( 'beforeunload', function() {
                 if(self._channelOpen){
                     self._channelOpen = false;
-                    navigator.serviceWorker.controller.postMessage({
+                    self._broadcastMessageChannel.postMessage({
                         type: 'BROWSER_CLOSE',
                         clientID: self._clientID
                     });
@@ -122,7 +126,7 @@
          */
         send: function (msgStr) {
             const self = this;
-            navigator.serviceWorker.controller.postMessage({
+            self._broadcastMessageChannel.postMessage({
                 type: 'BROWSER_MESSAGE',
                 clientID: self._clientID,
                 message: msgStr
