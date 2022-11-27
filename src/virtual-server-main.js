@@ -284,6 +284,7 @@ addEventListener('message', (event) => {
             event.ports[0].postMessage({baseURL}); break;
         case 'CLEAR_CACHE': _clearCache(); break;
         case 'REFRESH_CACHE': _refreshCache(event); break;
+        case 'setInstrumentedURLs': self.Serve.setInstrumentedURLs(event); return true;
         default:
             let msgProcessed = self.Serve && self.Serve.processVirtualServerMessage &&
                 self.Serve.processVirtualServerMessage(event);

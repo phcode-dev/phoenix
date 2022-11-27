@@ -25,8 +25,9 @@ define(function (require, exports, module) {
 
     const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
-        ServiceWorkerTransport = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/ServiceWorkerTransport"),
         FileUtils = brackets.getModule("file/FileUtils");
+
+    const _serverBroadcastChannel = new BroadcastChannel("virtual_server_broadcast");
 
     /**
      * @constructor
@@ -42,7 +43,7 @@ define(function (require, exports, module) {
      */
     function StaticServer(config) {
         config.baseUrl = FileUtils.stripTrailingSlash(window.fsServerUrl);
-        this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
+        this._sendInstrumentedContent = this._sendInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
 
@@ -121,6 +122,7 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype._updateInstrumentedURLSInWorker = function () {
         let paths = Object.keys(this._liveDocuments);
+        console.log(`Static server _updateInstrumentedURLSInWorker: `, this._root, paths);
 
         window.messageSW({
             type: 'setInstrumentedURLs',
@@ -192,38 +194,43 @@ define(function (require, exports, module) {
      * Events raised by broadcast channel from the service worker will be captured here. The service worker will ask
      * all phoenix instances if the url to be served should be replaced with instrumented content here or served
      * as static file from disk.
-     * @param {jQuery.Event} event the event raised by the service worker
      * @param {{hostname: string, pathname: string, port: number, root: string, id: number}} request
      */
-    StaticServer.prototype._getInstrumentedContent = function (event, data) {
+    StaticServer.prototype._sendInstrumentedContent = function (data) {
         let path = this._documentKey(data.path),
             requestID = data.requestID,
             liveDocument = this._liveDocuments[path];
         let response = {};
         if (liveDocument && liveDocument.getResponseData) {
             response = liveDocument.getResponseData();
+            _serverBroadcastChannel.postMessage({
+                type: 'REQUEST_RESPONSE',
+                requestID, //pass along the requestID so that the appropriate callback will be hit at the service worker
+                path,
+                contents: response.body
+            });
         }
-        navigator.serviceWorker.controller.postMessage({
-            type: 'REQUEST_RESPONSE',
-            requestID, // pass along the request ID so that the appropriate callback will be hit at the service worker
-            path,
-            contents: response.body
-        });
     };
 
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = function () {
-        ServiceWorkerTransport.off("getInstrumentedContent.staticServer");
-        ServiceWorkerTransport.on("getInstrumentedContent.staticServer", this._getInstrumentedContent);
+        const self = this;
+        _serverBroadcastChannel.onmessage = (event) => {
+            if (event.data.type === "getInstrumentedContent") {
+                // localStorage is domain specific so when it changes in one window it changes in the other
+                self._sendInstrumentedContent(event.data);
+            }
+        };
+
     };
 
     /**
      * See BaseServer#stop. Remove event handlers from StaticServerDomain.
      */
     StaticServer.prototype.stop = function () {
-        ServiceWorkerTransport.off("getInstrumentedContent.staticServer");
+        _serverBroadcastChannel.onmessage = undefined;
     };
 
     module.exports = StaticServer;

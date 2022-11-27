@@ -30,18 +30,21 @@ define(function (require, exports, module) {
     // The script that will be injected into the previewed HTML to handle the other side of the socket connection.
     const ServiceWorkerTransportRemote = require("text!LiveDevelopment/BrowserScripts/ServiceWorkerTransportRemote.js");
 
+    // Events - setup the service worker communication channel.
+    const BROADCAST_CHANNEL_ID = `${Math.round( Math.random()*1000000000000)}_livePreview`;
+    let _broadcastChannel = new BroadcastChannel(BROADCAST_CHANNEL_ID);
+
     /**
      * Returns the script that should be injected into the browser to handle the other end of the transport.
      * @return {string}
      */
     function getRemoteScript() {
         return "<script>\n" +
+            `window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${BROADCAST_CHANNEL_ID}";\n` +
+            `window.LIVE_PREVIEW_DEBIG_ENABLED = ${window.loggingOptions.logLivePreview};\n` +
             ServiceWorkerTransportRemote +
             "</script>\n";
     }
-
-    // Events - setup the service worker communication channel.
-    let _swMessageChannel = null;
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -49,45 +52,35 @@ define(function (require, exports, module) {
     exports.getRemoteScript = getRemoteScript;
 
     exports.start = function () {
-        _swMessageChannel = new MessageChannel();// message channel to the service worker
-        // connect on load itself. First we initialize the channel by sending the port to the Service Worker (this also
-        // transfers the ownership of the port)
-        navigator.serviceWorker.controller.postMessage({
-            type: 'PHOENIX_CONNECT'
-        }, [_swMessageChannel.port2]);
+        // Listen to the response
         // attach to browser tab/window closing event so that we send a cleanup request
         // to the service worker for the comm ports
         addEventListener( 'beforeunload', function() {
-            navigator.serviceWorker.controller.postMessage({
+            _broadcastChannel.postMessage({
                 type: 'PHOENIX_CLOSE'
             });
         });
-
-
-        // Listen to the response
-        _swMessageChannel.port1.onmessage = (event) => {
-            // Print the result
+        _broadcastChannel.onmessage = (event) => {
             if(window.loggingOptions.logLivePreview){
                 console.log("Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
             }
             const type = event.data.type;
             switch (type) {
-            case 'getInstrumentedContent': exports.trigger(type, event.data); break;
             case 'BROWSER_CONNECT': exports.trigger('connect', [event.data.clientID, event.data.url]); break;
             case 'BROWSER_MESSAGE': exports.trigger('message', [event.data.clientID, event.data.message]); break;
             case 'BROWSER_CLOSE': exports.trigger('close', [event.data.clientID]); break;
-            default: console.error("ServiceWorkerTransport received unknown message from service worker", event);
+            default: console.error("ServiceWorkerTransport received unknown message from Browser preview:", event);
             }
         };
     };
 
     exports.close = function () {
-        // no-op the connection to service worker is never broken even though live preview may be on or off.
+        // no-op the broadcast channel is never broken even though live preview may be on or off.
     };
 
     exports.send = function (...args) {
-        navigator.serviceWorker.controller.postMessage({
-            type: 'PHOENIX_SEND',
+        _broadcastChannel.postMessage({
+            type: 'MESSAGE_FROM_PHOENIX',
             args
         });
     };
