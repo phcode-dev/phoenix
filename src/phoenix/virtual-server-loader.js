@@ -87,7 +87,35 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         fetch(window.location.href);
     }, 15000);
 
+    /**
+     * This will cause a full cache reset in the browser for the phoenix scripts.
+     * This will help the user to load the latest version of phoenix on the next load.
+     * @return {boolean}
+     * @private
+     */
+    function _forceClearCacheIfNeeded() {
+        const cacheKey = "browserCacheVersionKey";
+        const newCacheVersion = "V1"; // just increment this number to V2, v3 etc. to force clear the cached content.
+        if(window.Phoenix.firstBoot){
+            localStorage.setItem(cacheKey, newCacheVersion);
+            return false;
+        }
+        const lastClearedVersion = window.localStorage.getItem(cacheKey);
+        if(lastClearedVersion !== newCacheVersion) {
+            console.log(`Service worker loader: triggering CLEAR_CACHE for live preview service worker upgrade`);
+            wb.messageSW({
+                type: 'CLEAR_CACHE'
+            });
+            localStorage.setItem(cacheKey, newCacheVersion);
+            return true;
+        }
+        return false;
+    }
+
     function _refreshCache() {
+        if(_forceClearCacheIfNeeded()){
+            return;
+        }
         console.log(`Service worker loader: triggering REFRESH_CACHE`);
         wb.messageSW({
             type: 'REFRESH_CACHE'
