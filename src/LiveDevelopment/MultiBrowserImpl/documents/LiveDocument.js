@@ -64,10 +64,10 @@ define(function (require, exports, module) {
         this._onCursorActivity = this._onCursorActivity.bind(this);
         this._onHighlightPrefChange = this._onHighlightPrefChange.bind(this);
 
-        EditorManager.on("activeEditorChange", this._onActiveEditorChange);
+        EditorManager.on(`activeEditorChange.LiveDocument-${this.doc.file.fullPath}`, this._onActiveEditorChange);
 
         PreferencesManager.stateManager.getPreference("livedev.highlight")
-            .on("change", this._onHighlightPrefChange);
+            .on(`change.LiveDocument-${this.doc.file.fullPath}`, this._onHighlightPrefChange);
 
         // Redraw highlights when window gets focus. This ensures that the highlights
         // will be in sync with any DOM changes that may have occurred.
@@ -88,9 +88,9 @@ define(function (require, exports, module) {
 
         this._clearErrorDisplay();
         this._detachFromEditor();
-        EditorManager.off("activeEditorChange", this._onActiveEditorChange);
+        EditorManager.off(`activeEditorChange.LiveDocument-${this.doc.file.fullPath}`);
         PreferencesManager.stateManager.getPreference("livedev.highlight")
-            .off("change", this._onHighlightPrefChange);
+            .off(`change.LiveDocument-${this.doc.file.fullPath}`);
     };
 
     /**

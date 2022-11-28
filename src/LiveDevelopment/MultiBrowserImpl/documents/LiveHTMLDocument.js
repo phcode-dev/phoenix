@@ -135,6 +135,12 @@ define(function (require, exports, module) {
      */
     LiveHTMLDocument.prototype.close = function () {
         this.doc.off("change", this._onChange);
+        this.protocol.off("DocumentRelated", this._onRelated);
+        this.protocol.off("StylesheetAdded", this._onStylesheetAdded);
+        this.protocol.off("StylesheetRemoved", this._onStylesheetRemoved);
+        this.protocol.off("ScriptAdded", this._onScriptAdded);
+        this.protocol.off("ScriptRemoved", this._onScriptRemoved);
+
         this.parentClass.close.call(this);
     };
 
