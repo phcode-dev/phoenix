@@ -78,7 +78,6 @@
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "A conectar ao navegador",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Para que a Live Preview funcione, o Google Chrome deve ser aberto com a opção de depuração(debug) remota ativada.<br /><br />Gostaria de reabrir Goggle Chrome e permitir a depuração remota?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Não foi possível carregar a página de visualização ao vivo.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Abra um ficheiro HTML de modo a executar o Live Preview.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Para iniciar a visualização ao vivo com um arquivo do lado do servidor, você precisa especificar uma URL base para este projeto.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Erro ao iniciar o servidor HTTP para arquivos de visualização ao vivo. Por favor, tente novamente.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Para obter mais informações, consulte <a href='{0}' title=\"{0}\">Solucionando problemas de erros de conexão do Live Preview</a> .",

@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Menyambung ke Peramban",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Agar Tinjauan Langsung dapat tersambung, Chrome harus dijalankan ulang dengan mode Remote Debugging.<br /><br />Apakah Anda ingin menjalankan ulang Chrome dan mengaktifkan Remote Debugging?<br /><br />",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Tidak dapat memuat halaman Tinjauan Langsung",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Buka file HTML atau pastikan di dalam proyek Anda ada file index.html agar bisa menjalankan tinjauan langsung.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Untuk menjalankan tinjauan langsung dengan file sisi-server, Anda perlu mengatur URL Dasar untuk proyek ini.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Gagal menjalankan server HTTP untuk meninjau langsung file. Coba lagi.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Untuk informasi selengkapnya, lihat <a href='{0}' title='{0}'>Mengatasi masalah sambungan Tinjauan Langsung</a>.",

@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Łączenie z przeglądarką",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Aby podgląd na żywo mógł się połączyć, Chrome musi zostać zrestartowany z włączonym zdalnym debugowaniem.<br /><br />Czy chcesz zrestartować Chrome i uaktywnić zdalne debugowanie?<br /><br />",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Nie można wczytać strony podglądu na żywo.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Aby uruchomić podgląd na żywo, otwórz plik HTML lub upewnij się, że w Twoim projekcie jest plik index.html.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Aby uruchomić podgląd na żywo na plikach serwerowych, musisz podać główny adres dla tego projektu (Base URL).",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Błąd przy próbie uruchomienia serwera HTTP dla podglądu na żywo. Spróbuj ponownie.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Więcej informacji znajdziesz na stronie <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",

@@ -78,7 +78,6 @@
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Savienojas ar pārlūku",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Lai savienotos ar tiešo priekšskatījumu, nepieciešams pārlādēt Chrome ar iespējotu attālo atkļūdošanu.<br /><br />Vai vēlaties pārlādēt Chrome un iespējot attālo atkļūdošanu?<br /><br />",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Neizdevās ielādēt tiešā priekšskatījuma lapu.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Atveriet HTML datni vai pārliecinieties, ka jūsu projektā ir datne index.html, lai palaistu tiešo priekšskatījumu.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Lai palaistu tiešo priekšskatījumu ar serverī importētu datni, nepieciešams norādīt šī projekta bāzes URL.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Kļūda, startējot HTTP serveri tiešā priekšskatījuma datnēm. Lūdzu, mēģiniet vēlreiz. ",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Sīkākai informācijai skatiet <a href='{0}' title='{0}'>Tiešā priekšskatījuma savienojuma kļūdu novēršana</a>.",

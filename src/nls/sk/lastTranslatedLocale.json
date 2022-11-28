@@ -78,7 +78,6 @@
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Pripojovanie k prehliadaču",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "V prípade využitia živého náhľadu je treba reštarovať Chrome zo zapnutým vzdialeným ladením.<br /><br />Chceli by ste reštartovať Chrome a zapnúť vzdialené ladenie?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Nie je možné načítať stránku zo živým náhľadom",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Otvorte HTML súbor pre spustenie živého náhľadu.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Pre spustenie živého náhľadu zo súborom na serveri, musíte špecifikovať URL pre tento projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Chyba pri spúšťaní HTTP severa pre súbory živého náhľadu. Prosím, skúste to znovu.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Pre viac informácií pozrite <a class=\"clickable-link\" data-href=\"{0}\">Riešenie chýb pri pripojení do živého náhľadu</a>.",

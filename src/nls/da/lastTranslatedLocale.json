@@ -78,7 +78,6 @@
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Forbinder til browser",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "For at Live-Forhåndsvisning kan forbinde, bliver Chrome nødt til at blive genstartet med fjern-fejlsøgning slået til.<br /><br />Ønsker du at genstarte Chrome med fjern-fejlsøgning slået til?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Kan ikke indlæse siden for Live-Forhåndsvisning",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Åbn en HTML-fil, eller sørg for at der er en fil ved navn <span class='dialog-filename'>index.html</span> i dit projekt, før du starter Live-Forhåndsvisning.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "For at bruge Live-Forhåndsvisning på en server-side fil, bliver du nødt til at angive en basis-URL for dette projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Fejl ved opstart af HTTP-serveren for Live-Forhåndsvisning. Prøv igen.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "For yderligere information, se <a href='{0}' title='{0}'>Løsningsforslag til forbindelsesfejl vedrørende Live-Forhåndsvisning</a>.",

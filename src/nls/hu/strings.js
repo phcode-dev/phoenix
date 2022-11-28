@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Csatlakozás a Böngészőhöz",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Az Élő Előnézet használatához muszály újraindítani a Chrome-ot a megfelelő beállításokkal.<br /><br />Szeretnéd most újraindítani a Chrome-ot ezekkel a beállításokkal?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Nem lehet betölteni az Élő Fejlesztő oldalt",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Nyiss meg egy HTML fájlt az Élő Előnézet indításához.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Az Élő Előnézet használatához szerver-oldali fájlokkal meg kell adni az alap URL-t a projekthez.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Hiba a HTTP szerver indításakor az Élő Fejlesztéshez. Kérlek próbáld újra később.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "További információért lásd: <a href='{0}' title='{0}'>Élő Előnézet csatlakozási hibák kiküszöbölése</a>.",

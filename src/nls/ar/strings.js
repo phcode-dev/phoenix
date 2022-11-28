@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "الاتصال بالمستعرض",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "من أجل الاتصال Live Preview ، يجب إعادة تشغيل Chrome مع تمكين التصحيح عن بُعد.<br /><br /> هل ترغب في إعادة تشغيل Chrome وتمكين تصحيح الأخطاء عن بُعد؟<br /><br />",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "تعذر تحميل صفحة المعاينة المباشرة.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "افتح ملف HTML أو تأكد من وجود ملف index.html في مشروعك لبدء المعاينة المباشرة.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "لبدء المعاينة المباشرة بملف من جانب الخادم ، تحتاج إلى تحديد عنوان URL أساسي لهذا المشروع.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "خطأ في بدء تشغيل خادم HTTP لملفات المعاينة المباشرة. حاول مرة اخرى.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "لمزيد من المعلومات ، راجع <a href='{0}' title=\"{0}\">استكشاف أخطاء اتصال Live Preview وإصلاحها</a> .",

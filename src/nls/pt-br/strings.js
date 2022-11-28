@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Conectando-se ao navegador",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Para que o Live Preview conecte-se, o Chrome deve ser reiniciado com a opção de depuração remota ativada.<br /><br />Gostaria de abrir o Chrome novamente e permitir a depuração remota?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Não foi possível carregar a página de Live Preview",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Abra um arquivo HTML para iniciar Live Preview.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Para iniciar um live preview com um arquivo server-side, é preciso especificar uma URL Base para este projeto.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Erro ao iniciar o servidor HTTP para os arquivos do desenvolvimento em tempo real. Por favor, tente novamente.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Para mais informações, veja <a href='{0}' title='{0}'>Solucionando erros de conexão com Live Development</a>.",

@@ -78,7 +78,6 @@
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Conectare la browser",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Pentru a lansa Live Preview Google Chrome trebuie să fie relansat cu opțiunea de depanarea la distanță activată.<br /><br />Doriți ca Google Chrome să fie relansat cu opțiunea de depanare la distanță activată?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Imposibil de a încărca pagina Live Development",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Deschideți un fișier HTML sau asigurați-vă că există un fișier index.html în proiect pentru a lansa Live Preview.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Pentru a lansa Live Preview cu un fișier server-side, e necesar de a specifica un URL de bază pentru acest proiect.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Eroare la lansarea serverului HTTP pentru editarea în direct a fișierelor. Mai încercați o dată.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Pentru mai multe informații, vezi <a href='{0}' title='{0}'>Depanarea erorilor de conexiune în Live Development</a>.",

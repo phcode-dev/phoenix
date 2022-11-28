@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Повезивање са веб претраживачем",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Да би се живи приказ повезао, потребно је да поново покренете Chrome са укљученим подешавањима за \"remote debugging\".<br /><br />Да ли желите поново да покренете Chrome са укљученим подешавањима за \"remote debugging\"?<br /><br />",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Није могуће учитати страницу са живим приказом.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Отворите HTML датотеку како бисте били сигурни да постоји index.html датотека у Вашем пројекту како бисте покренули живи приказ.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "За покретање живог приказа са датотеком која је \"server-side\", морате навести основну URL адресу за овај пројекат.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Грешка приликом покретања HTTP сервера за \"живе\" развојне датотеке. Молимо покушајте поново.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "За више информација, погледајте <a href='{0}' title='{0}'>Отклањање грешака у конекцији приликом развоја уживо</a>.",

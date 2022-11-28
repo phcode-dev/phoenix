@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "正在连接浏览器",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "要使用实时预览, 需要重启 Chrome 并打开远程调试功能。<br /><br />你确定重新启动 Chrome 浏览器, 并且打开远程调试功能吗？",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "无法加载实时预览页面",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "打开一个 HTML 文件或确认项目中包含 index.html 文件以启动实时预览.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "实时预览需要一个服务端, 您需要为这个项目指定一个基本 URL 地址。 (如http://127.0.0.1/)",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "试图启动实时预览 HTTP 服务器时出现错误, 请再试一次。",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "更多信息, 请参考<a href='{0}' title='{0}'>实时预览连接错误信息</a>。",

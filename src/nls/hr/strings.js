@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Povezivanje sa preglednikom",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Da bi se Prikaz Uživo povezao, potrebno je ponovo pokrenuti Chrome sa uključenim podešavanjima za remote debugging.<br /><br />Da li želite ponovo pokrenuti Chrome i omogućiti remote debugging?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Nije moguće učitati živi prikaz stranice",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Otvorite HTML datoteku ili budite sigurni da postoji index.html datoteka u vašem projektu kako bi se pokrenuo živi prikaz.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Za pokretanje prikaza uživo sa datotekom koja je na serveru, morate navesti osnovnu URL adresu za ovaj projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Greška prilikom pokretanja HTTP servera za prikaz datoteka uživo. Pokušajte ponovo.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Za više informacija, pogledajte <a href='{0}' title='{0}'>Rješavanje grešaka u povezivanju prilikom Prikaza uživo.</a>.",
