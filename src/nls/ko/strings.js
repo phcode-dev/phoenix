@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "브라우저에 연결합니다",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "실시간 미리보기에 연결하려면 원격 디버깅을 사용하여 Chrome을 다시 시작해야 합니다. <br /> Chrome을 다시 시작하고 원격 디버깅을 사용하시겠습니까?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "실시간 미리보기 페이지를 읽을 수 없습니다.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "실시간 미리보기를 시작하려면 HTML 파일을 열거나 index.html 파일이 프로젝트에 포함되어 있는지 확인하십시오.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "서버 측 파일 실시간 미리보기를 시작하려면 이 프로젝트의 기본 URL을 지정해야 합니다.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "실시간 미리보기에 사용되는 HTTP 서버를 시작할 때 에러가 발생했습니다. 잠시 후에 다시 시도하세요.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "자세한 내용은 <a href='{0}' title='{0}'> Live Development 연결 오류 문제 해결 </a>를 참조하세요.",

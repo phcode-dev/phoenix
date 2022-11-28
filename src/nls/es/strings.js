@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Conectando con el navegador",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Para poder iniciar el modo de Vista previa dinámica, Chrome debe ser iniciado habilitando la depuración remota.<br><br>¿Quieres reiniciar Chrome y habilitar la depuración remota?<br><br>",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "No se pudo cargar la página para la Vista previa dinámica.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Abra un archivo HTML o asegúrate de que haya un index.html en tu proyecto para poder iniciar el modo de Vista previa dinámica.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Necesitas especificar una URL base en este proyecto para poder iniciar la Vista previa dinámica con archivos de servidor.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Error iniciando el servidor HTTP para la Vista previa dinámica. Vuelve a intentarlo, por favor.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Para más información, consulta <a href='{0}' title='{0}'>Resolución de Problemas de conexión en Vista previa dinámica</a>.",

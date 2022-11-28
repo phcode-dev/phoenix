@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Ansluter till webbläsaren",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "För att förhandsvisningen ska lyckas måste Chrome startas om med fjärrfelsökning aktiverad.<br /><br />Vill du starta om Chrome och aktivera fjärrfelsökning?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Lyckades inte ladda förhandsvisningssidan.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Öppna en HTML-fil eller kontrollera att det finns en fil med namnet index.html i din projektmapp för att kunna starta förhandsvisningen.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "För att starta förhandsvisningen med en fil innehållande serverkod måste du ange en bas-URL för detta projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Ett fel uppstod när webbsevern för förhandsvisningen skulle startas. Vänligen försök igen.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "För mer information se <a href='{0}' title='{0}'>Troubleshooting Live Development connection errors</a>.",

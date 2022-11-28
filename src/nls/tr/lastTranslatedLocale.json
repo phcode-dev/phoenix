@@ -78,7 +78,6 @@
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Tarayıcıya bağlanılıyor",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Canlı önizleme özelliğini kullanabilmek için uzaktan hata ayıklayıcı ile Chrome'un tekrardan açılması gerekiyor.<br /><br />Chrome'u uzaktan hata ayıklayıcı ile tekrardan açılmasını ister misiniz?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Canlı Önizleme sayfası yüklenemiyor.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Canlı önizlemeyi çalıştırabilmeniz için html dosyası açmanız gerekiyor",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Canlı Önizlemeyi server-side dosyalarınız ile açmak istiyorsanız, lütfen bu proje için kullanılabilir bir link belirtiniz.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Canlı önizleme dosyaları için HTTP sunucusu başlatılırken hata oluştu. Lütfen tekrar deneyin.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Detaylı bilgi için lütfen <a href='{0}' title='{0}'>Troubleshooting Live Development connection errors</a> sayfasına bakınız.",

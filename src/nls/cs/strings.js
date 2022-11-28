@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Připojování k prohlížeči",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Aby se mohl živý náhled připojit, je třeba restartovat Chrome s povolenou možností vzdálené ladění.<br /><br />Chcete restartovat Chrome a povolit vzdálené ladění?<br /><br />",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Nelze načíst stránku s živým náhledem",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Otevřete HTML soubor pro zobrazení v živém náhledu.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Pro spuštění živého náhledu se vzdáleným souborem, musíte specifikovat URL pro tento projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Chyba při spouštění HTTP serveru pro soubory živého náhledu. Prosím, zkuste to znovu.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Pro více informací navštivte stránku <a href='{0}' title='{0}'>řešení problémů s připojením v Živém náhledu</a>.",

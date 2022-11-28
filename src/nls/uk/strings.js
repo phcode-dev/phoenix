@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Підключення до броузера",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Live Preview потребує перезапустити Chrome з увімкненням віддаленого відлагодження.<br /><br />Бажаєте виконати це?<br /><br />",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Помилка завантаження сторінки Live Preview.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Відкрийте файл HTML або ж переконайтесь, що для запуску live preview у вашому проекті існує файл index.html.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Аби запустити live preview з серверним файлом, вам варто вказати базову адресу для цього проекту.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Помилка запуску HTTP-сервера для live preview. Будь ласка, спробуйте пізніше.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Для докладнішої інформації погляньте на <a href='{0}' title='{0}'>пошук та усунення помилок підключення Live Preview</a>.",

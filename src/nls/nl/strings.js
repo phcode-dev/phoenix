@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Bezig met verbinden met de browser",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Om met Live Voorbeeld te verbinden, moet Chrome opnieuw gestart worden met debugging op afstand ingeschakeld.<br /><br />Wil je Chrome herstarten en debugging op afstand inschakelen?",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Onmogelijk om de Live Ontwikkeling pagina te laden",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Open een HTML bestand om Live Voorbeeld te starten.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Om live voorbeeld te starten met een server-side bestand, moet je een Start URL voor dit project definiëren.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Er is een fout opgetreden bij het opstarten van de HTTP server voor live ontwikkeling bestanden. Probeer alsjeblieft opnieuw.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Voor meer informatie, zie <a href='{0}' title='{0}'>oplossen van Live Voorbeeld verbindingsproblemen</a>.",

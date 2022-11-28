@@ -98,7 +98,6 @@ define({
   "LIVE_DEVELOPMENT_RELAUNCH_TITLE": "Yhdistetään selaimeen",
   "LIVE_DEVELOPMENT_ERROR_MESSAGE": "Jotta esikatselu voi muodostaa yhteyden, pitää Chromen käynnistyä uudelleen etävirheenjäljitys käytössä.<br /><br />Käynnistetäänkö Chrome uudelleen ja aktivoidaan etävirheenjäljitys?<br /><br />",
   "LIVE_DEV_LOADING_ERROR_MESSAGE": "Esikatselun sivua ei voitu ladata.",
-  "LIVE_DEV_NEED_HTML_MESSAGE": "Avaa HTML-tiedosto tai varmista, että projektissa on tiedosto index.html, niin voit aloittaa esikatselun.",
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Jotta voit käynnistää esikatselun palvelimen tiedostolla, täytyy tämän projektin URL-osoite määrittää.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Virhe käynnistettäessä HTTP-palvelinta esikatselun tiedostoille. Yritä uudelleen.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Saat lisätietoja tutustumalla ohjeeseen <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",
