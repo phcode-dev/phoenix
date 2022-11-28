@@ -169,6 +169,7 @@ define(function (require, exports, module) {
      */
     function _closeDocument(liveDocument) {
         liveDocument.off(".livedev");
+        _protocol.off(".livedev");
         liveDocument.close();
     }
 
@@ -471,18 +472,6 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Displays an error when no HTML file can be found to preview.
-     */
-    function _showWrongDocError() {
-        Dialogs.showModalDialog(
-            DefaultDialogs.DIALOG_ID_ERROR,
-            Strings.LIVE_DEVELOPMENT_ERROR_TITLE,
-            Strings.LIVE_DEV_NEED_HTML_MESSAGE
-        );
-    }
-
-    /**
-     * @private
      * Displays an error when the server for live development files can't be started.
      */
     function _showLiveDevServerNotReadyError() {
@@ -709,7 +698,7 @@ define(function (require, exports, module) {
                     _doLaunchAfterServerReady(doc);
                 })
                 .fail(function () {
-                    _showWrongDocError();
+                    console.log("Live preview: no document to preview.");
                 });
         });
     }
