@@ -452,9 +452,7 @@ function RemoteFunctions(config, remoteWSPort) {
                 "border-right": elementStyling.getPropertyValue('border-right'),		
                 "border-left": elementStyling.getPropertyValue('border-left'),		
                 "border-top": elementStyling.getPropertyValue('border-top'),		
-                "border-bottom": elementStyling.getPropertyValue('border-bottom'),		
-                "transform": elementStyling.getPropertyValue('transform'),		
-                "transform-origin": elementStyling.getPropertyValue('transform-origin'),		
+                "border-bottom": elementStyling.getPropertyValue('border-bottom'),
                 "border-color": config.remoteHighlight.borderColor
             };
             
