@@ -430,22 +430,18 @@ function RemoteFunctions(config, remoteWSPort) {
 
             var offset = _screenOffset(element);
             		
-            var el = element,		
-            offsetLeft = 0,		
-            offsetTop  = 0;		
-             		
-            // Probably the easiest way to get elements position without including transform		
-            do {		
-               offsetLeft += el.offsetLeft;		
-               offsetTop  += el.offsetTop;		
-               el = el.offsetParent;		
-            } while(el);
+            // some code to find element left/top was removed here. This seems to be relevant to box model
+            // live highlights. firether reading: https://github.com/adobe/brackets/pull/13357/files
+            // we removed this in phoenix because it was throwing the rendering of live highlight boxes in phonix
+            // default project at improper places. Some other cases might fail as the above code said they
+            // introduces that removed computation for fixing some box-model regression. If you are here to fix a
+            // related bug, check history of this changes in git.
 
             var stylesToSet = {
-                "left": offsetLeft + "px",
-                "top": offsetTop + "px",
-                "width": innerWidth + "px",
-                "height": innerHeight + "px",
+                "left": offset.left + "px",
+                "top": offset.top + "px",
+                "width": elementBounds.width + "px",
+                "height": elementBounds.height + "px",
                 "z-index": 2000000,
                 "margin": 0,
                 "padding": 0,
