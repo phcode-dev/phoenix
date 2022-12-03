@@ -61,9 +61,8 @@ define(function (require, exports, module) {
             });
         });
         _broadcastChannel.onmessage = (event) => {
-            if(window.loggingOptions.logLivePreview){
-                console.log("Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
-            }
+            window.loggingOptions.livePreview.log(
+                "Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
             const type = event.data.type;
             switch (type) {
             case 'BROWSER_CONNECT': exports.trigger('connect', [event.data.clientID, event.data.url]); break;
