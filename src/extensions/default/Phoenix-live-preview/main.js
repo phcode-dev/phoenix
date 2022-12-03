@@ -136,11 +136,14 @@ define(function (require, exports, module) {
     }
 
     function _setTitle(fileName) {
-        let message = Strings.LIVE_DEV_SELECT_FILE_TO_PREVIEW;
+        let message = Strings.LIVE_DEV_SELECT_FILE_TO_PREVIEW,
+            tooltip = message;
         if(fileName){
             message = `${fileName} - ${Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC}`;
+            tooltip = `${Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC} - ${fileName}`;
         }
-        document.getElementById("panel-live-preview-title").textContent = `${message}`;
+        document.getElementById("panel-live-preview-title").textContent = message;
+        document.getElementById("live-preview-plugin-toolbar").title = tooltip;
     }
 
     async function _createExtensionPanel() {
