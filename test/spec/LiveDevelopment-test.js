@@ -57,7 +57,7 @@ define(function (require, exports, module) {
         CSSAgentModule                = require("LiveDevelopment/Agents/CSSAgent"),
         HighlightAgentModule          = require("LiveDevelopment/Agents/HighlightAgent"),
         HTMLDocumentModule            = require("LiveDevelopment/Documents/HTMLDocument"),
-        HTMLInstrumentationModule     = require("language/HTMLInstrumentation"),
+        HTMLInstrumentationModule     = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
         NativeAppModule               = require("utils/NativeApp"),
         CSSPreprocessorDocumentModule = require("LiveDevelopment/Documents/CSSPreprocessorDocument");
 

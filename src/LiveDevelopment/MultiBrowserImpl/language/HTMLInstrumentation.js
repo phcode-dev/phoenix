@@ -51,7 +51,8 @@ define(function (require, exports, module) {
 
     var DocumentManager = require("document/DocumentManager"),
         HTMLDOMDiff     = require("language/HTMLDOMDiff"),
-        HTMLSimpleDOM   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLSimpleDOM");
+        HTMLSimpleDOM   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLSimpleDOM"),
+        _               = require("thirdparty/lodash");
 
     var allowIncremental = true;
 
@@ -842,6 +843,20 @@ define(function (require, exports, module) {
         _cachedValues = {};
     }
 
+    function getPositionFromTagId(editor, tagId) {
+        var marks = editor._codeMirror.getAllMarks(),
+            markFound;
+
+        markFound = _.find(marks, function (mark) {
+            return (mark.tagID === tagId);
+        });
+        if (markFound) {
+            return markFound.find().from;
+        }
+        return null;
+
+    }
+
     // private methods
     exports._markText                   = _markText;
     exports._getMarkerAtDocumentPos     = _getMarkerAtDocumentPos;
@@ -851,6 +866,7 @@ define(function (require, exports, module) {
     exports._allowIncremental           = allowIncremental;
     exports._getBrowserDiff             = _getBrowserDiff;
     exports._resetCache                 = _resetCache;
+    exports.getPositionFromTagId        = getPositionFromTagId;
 
     // public API
     exports.scanDocument                = scanDocument;

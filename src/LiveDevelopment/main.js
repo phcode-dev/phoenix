@@ -138,6 +138,10 @@ define(function main(require, exports, module) {
         }
     }
 
+    function setLivePreviewPinned(urlPinned) {
+        LiveDevImpl.setLivePreviewPinned(urlPinned);
+    }
+
     /** Called on status change */
     function _showStatusChangeReason(reason) {
         // Destroy the previous twipsy (options are not updated otherwise)
@@ -285,4 +289,5 @@ define(function main(require, exports, module) {
     // Export public functions
     exports.openLivePreview = openLivePreview;
     exports.closeLivePreview = closeLivePreview;
+    exports.setLivePreviewPinned = setLivePreviewPinned;
 });

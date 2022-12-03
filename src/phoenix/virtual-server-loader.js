@@ -81,12 +81,6 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         updateViaCache: 'none'
     });
 
-    setInterval(function(){
-        // keep the service worker alive by long polling
-        // https://stackoverflow.com/questions/29741922/prevent-service-worker-from-automatically-stopping
-        fetch(window.location.href);
-    }, 15000);
-
     /**
      * This will cause a full cache reset in the browser for the phoenix scripts.
      * This will help the user to load the latest version of phoenix on the next load.

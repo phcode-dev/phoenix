@@ -121,7 +121,7 @@ define(function (require, exports, module) {
                 waitsForLiveDevelopmentToOpen();
 
                 runs(function () {
-                    expect(LiveDevelopment._getCurrentLiveDoc().doc.url).toMatch(/\/index\.html$/);
+                    expect(LiveDevelopment.getCurrentLiveDoc().doc.url).toMatch(/\/index\.html$/);
                 });
             });
 
@@ -132,7 +132,7 @@ define(function (require, exports, module) {
                 });
                 waitsForLiveDevelopmentToOpen();
                 runs(function () {
-                    liveDoc = LiveDevelopment._getCurrentLiveDoc();
+                    liveDoc = LiveDevelopment.getCurrentLiveDoc();
                 });
                 waitsFor(
                     function relatedDocsReceived() {
@@ -156,7 +156,7 @@ define(function (require, exports, module) {
                 });
                 waitsForLiveDevelopmentToOpen();
                 runs(function () {
-                    liveDoc = LiveDevelopment._getCurrentLiveDoc();
+                    liveDoc = LiveDevelopment.getCurrentLiveDoc();
                 });
                 waitsFor(
                     function relatedDocsReceived() {
@@ -178,7 +178,7 @@ define(function (require, exports, module) {
                 waitsForLiveDevelopmentToOpen();
 
                 runs(function () {
-                    liveDoc = LiveDevelopment._getCurrentLiveDoc();
+                    liveDoc = LiveDevelopment.getCurrentLiveDoc();
                 });
                 waitsFor(
                     function relatedDocsReceived() {
@@ -200,7 +200,7 @@ define(function (require, exports, module) {
                 waitsForLiveDevelopmentToOpen();
 
                 runs(function () {
-                    liveDoc = LiveDevelopment._getCurrentLiveDoc();
+                    liveDoc = LiveDevelopment.getCurrentLiveDoc();
                 });
 
                 runs(function () {
