@@ -49,6 +49,7 @@ define(function (require, exports, module) {
      */
     function LiveHTMLDocument(protocol, urlResolver, doc, editor) {
         LiveDocument.apply(this, arguments);
+        this.doc.addRef();
 
         this._instrumentationEnabled = false;
         this._relatedDocuments = {
@@ -98,13 +99,14 @@ define(function (require, exports, module) {
      * TODO: this doesn't seem necessary...if we're a live document, we should
      * always have instrumentation on anyway.
      * @param {boolean} enabled
+     * @param {boolean} [force]
      */
-    LiveHTMLDocument.prototype.setInstrumentationEnabled = function (enabled) {
+    LiveHTMLDocument.prototype.setInstrumentationEnabled = function (enabled, force) {
         if (!this.editor) {
             // TODO: error
             return;
         }
-        if (enabled && !this._instrumentationEnabled) {
+        if (enabled && (force || !this._instrumentationEnabled)) {
             // TODO: not clear why we do this here instead of waiting for the next time we want to
             // generate the instrumented HTML. This won't work if the dom offsets are out of date.
             HTMLInstrumentation.scanDocument(this.doc);
@@ -134,6 +136,7 @@ define(function (require, exports, module) {
      * Closes the live document, terminating its connection to the browser.
      */
     LiveHTMLDocument.prototype.close = function () {
+        this.doc.releaseRef();
         this.doc.off("change", this._onChange);
         this.protocol.off("DocumentRelated", this._onRelated);
         this.protocol.off("StylesheetAdded", this._onStylesheetAdded);

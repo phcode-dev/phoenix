@@ -260,7 +260,7 @@ define(function (require, exports, module) {
             FindInFiles: require("search/FindInFiles"),
             FindInFilesUI: require("search/FindInFilesUI"),
             FindUtils: require("search/FindUtils"),
-            HTMLInstrumentation: require("language/HTMLInstrumentation"),
+            HTMLInstrumentation: require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
             InstallExtensionDialog: require("extensibility/InstallExtensionDialog"),
             JSUtils: require("language/JSUtils"),
             KeyBindingManager: require("command/KeyBindingManager"),

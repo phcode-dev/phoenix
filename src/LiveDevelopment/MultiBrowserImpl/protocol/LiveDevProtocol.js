@@ -47,7 +47,8 @@ define(function (require, exports, module) {
         RemoteFunctions       = require("text!LiveDevelopment/BrowserScripts/RemoteFunctions.js"),
         EditorManager         = require("editor/EditorManager"),
         LiveDevMultiBrowser   = require("LiveDevelopment/LiveDevMultiBrowser"),
-        HTMLInstrumentation   = require("language/HTMLInstrumentation");
+        HTMLInstrumentation   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
+        FileViewController    = require("project/FileViewController");
 
     /**
      * @private
@@ -111,10 +112,24 @@ define(function (require, exports, module) {
                 }
             }
         } else if (msg.tagId) {
-            var editor = EditorManager.getActiveEditor(),
-                position = HTMLInstrumentation.getPositionFromTagId(editor, parseInt(msg.tagId, 10));
-            if (position) {
-                editor.setCursorPos(position.line, position.ch, true);
+            const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc(),
+                editor = EditorManager.getActiveEditor();
+            const liveDocPath = liveDoc ? liveDoc.doc.file.fullPath : null,
+                activeEditorDocPath = editor ? editor.document.file.fullPath : null;
+            function selectInActiveDocument() {
+                const activeFullEditor = EditorManager.getCurrentFullEditor();
+                const masterEditor = activeFullEditor && activeFullEditor.document._masterEditor?
+                    activeFullEditor.document._masterEditor : activeFullEditor;
+                const position = HTMLInstrumentation.getPositionFromTagId(masterEditor, parseInt(msg.tagId, 10));
+                if (position) {
+                    activeFullEditor.setCursorPos(position.line, position.ch, true);
+                }
+            }
+            if(liveDocPath !== activeEditorDocPath) {
+                FileViewController.openAndSelectDocument(liveDocPath, FileViewController.PROJECT_MANAGER)
+                    .done(selectInActiveDocument);
+            } else {
+                selectInActiveDocument();
             }
         } else {
             // enrich received message with clientId

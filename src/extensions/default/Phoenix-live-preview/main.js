@@ -124,6 +124,7 @@ define(function (require, exports, module) {
             $pinUrlBtn.removeClass('unpin-icon').addClass('pin-icon');
         }
         urlPinned = !pinStatus;
+        LiveDevelopment.setLivePreviewPinned(urlPinned);
         _loadPreview();
     }
 

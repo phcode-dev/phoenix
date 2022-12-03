@@ -58,15 +58,15 @@ define(function (require, exports, module) {
 
 
     // Status Codes
-    var STATUS_INACTIVE      = exports.STATUS_INACTIVE       =  0;
-    var STATUS_CONNECTING    = exports.STATUS_CONNECTING     =  1;
-    var STATUS_ACTIVE        = exports.STATUS_ACTIVE         =  2;
-    var STATUS_OUT_OF_SYNC   = exports.STATUS_OUT_OF_SYNC    =  3;
-    var STATUS_SYNC_ERROR    = exports.STATUS_SYNC_ERROR     =  4;
-    var STATUS_RELOADING     = exports.STATUS_RELOADING      =  5;
-    var STATUS_RESTARTING    = exports.STATUS_RESTARTING     =  6;
+    const STATUS_INACTIVE      = exports.STATUS_INACTIVE       =  0;
+    const STATUS_CONNECTING    = exports.STATUS_CONNECTING     =  1;
+    const STATUS_ACTIVE        = exports.STATUS_ACTIVE         =  2;
+    const STATUS_OUT_OF_SYNC   = exports.STATUS_OUT_OF_SYNC    =  3;
+    const STATUS_SYNC_ERROR    = exports.STATUS_SYNC_ERROR     =  4;
+    const STATUS_RELOADING     = exports.STATUS_RELOADING      =  5;
+    const STATUS_RESTARTING    = exports.STATUS_RESTARTING     =  6;
 
-    var CommandManager       = require("command/CommandManager"),
+    const CommandManager       = require("command/CommandManager"),
         Commands             = require("command/Commands"),
         Dialogs              = require("widgets/Dialogs"),
         DefaultDialogs       = require("widgets/DefaultDialogs"),
@@ -86,7 +86,7 @@ define(function (require, exports, module) {
         DefaultLauncher      = require("LiveDevelopment/MultiBrowserImpl/launchers/Launcher");
 
     // Documents
-    var LiveCSSDocument      = require("LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument"),
+    const LiveCSSDocument      = require("LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument"),
         LiveHTMLDocument     = require("LiveDevelopment/MultiBrowserImpl/documents/LiveHTMLDocument");
 
     /**
@@ -95,6 +95,12 @@ define(function (require, exports, module) {
      * @type {LiveHTMLDocument}
      */
     var _liveDocument;
+
+    /**
+     * Live preview only tracks the pinned document.
+     * @type {boolean}
+     */
+    let livePreviewUrlPinned = false;
 
     /**
      * @private
@@ -652,7 +658,7 @@ define(function (require, exports, module) {
      */
     function _onFileChange() {
         var doc = DocumentManager.getCurrentDocument();
-        if (!isActive() || !doc) {
+        if (!isActive() || !doc || livePreviewUrlPinned) {
             return;
         }
 
@@ -876,6 +882,13 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @param urlPinned {boolean}
+     */
+    function setLivePreviewPinned(urlPinned) {
+        livePreviewUrlPinned = urlPinned;
+    }
+
+    /**
      * Returns current project server config. Copied from original LiveDevelopment.
      */
     function getCurrentProjectServerConfig() {
@@ -897,7 +910,7 @@ define(function (require, exports, module) {
     }
 
     // for unit testing only
-    function _getCurrentLiveDoc() {
+    function getCurrentLiveDoc() {
         return _liveDocument;
     }
 
@@ -905,7 +918,6 @@ define(function (require, exports, module) {
 
     // For unit testing
     exports._server                   = _server;
-    exports._getCurrentLiveDoc        = _getCurrentLiveDoc;
     exports._getInitialDocFromCurrent = _getInitialDocFromCurrent;
 
     // Export public functions
@@ -919,7 +931,9 @@ define(function (require, exports, module) {
     exports.redrawHighlight     = redrawHighlight;
     exports.init                = init;
     exports.isActive            = isActive;
+    exports.setLivePreviewPinned= setLivePreviewPinned;
     exports.getServerBaseUrl    = getServerBaseUrl;
+    exports.getCurrentLiveDoc   = getCurrentLiveDoc;
     exports.getCurrentProjectServerConfig = getCurrentProjectServerConfig;
     exports.setTransport        = setTransport;
     exports.setLauncher         = setLauncher;

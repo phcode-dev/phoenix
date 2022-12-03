@@ -151,7 +151,7 @@ define(function (require, exports, module) {
         //       Temporarily disabling this code to make JS editing work.
 //      this._detachFromEditor();
 
-        if (newActive && newActive.document === this.doc) {
+        if (newActive && newActive.document.file.fullPath === this.doc.file.fullPath) {
             this._attachToEditor(newActive);
         }
     };
@@ -165,6 +165,7 @@ define(function (require, exports, module) {
         this.editor = editor;
 
         if (this.editor) {
+            this.setInstrumentationEnabled(true, true);
             this.editor.on("cursorActivity", this._onCursorActivity);
             this.updateHighlight();
         }
