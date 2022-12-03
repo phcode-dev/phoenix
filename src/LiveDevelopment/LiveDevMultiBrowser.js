@@ -545,15 +545,9 @@ define(function (require, exports, module) {
                         }
                     })
                     .on("ConnectionClose.livedev", function (event, msg) {
-                        // close session when the last connection was closed
-                        if (_protocol.getConnectionIds().length === 0) {
-                            setTimeout(function () {
-                                if (_protocol.getConnectionIds().length === 0 &&
-                                        exports.status <= STATUS_ACTIVE) {
-                                    _close(false, "detached_target_closed");
-                                }
-                            }, 5000);
-                        }
+                        window.loggingOptions.livePreview.log(
+                            "Live Preview: Phoenix received ConnectionClose, live preview left: ",
+                            _protocol.getConnectionIds().length);
                     })
                     // extract stylesheets and create related LiveCSSDocument instances
                     .on("DocumentRelated.livedev", function (event, msg) {

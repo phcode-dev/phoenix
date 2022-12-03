@@ -89,6 +89,13 @@
             LOCAL_STORAGE_KEYS: {
                 LOG_LIVE_PREVIEW: "logLivePreview"
             },
+            livePreview: {
+                log: function (...args) {
+                    if(window.loggingOptions.logLivePreview){
+                        console.log(...args);
+                    }
+                }
+            }
         };
         window.loggingOptions.logLivePreview = window.isLoggingEnabled(
             window.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW);
