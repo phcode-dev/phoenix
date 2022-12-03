@@ -37,7 +37,6 @@ function RemoteFunctions(config, remoteWSPort) {
     } else {
         experimental = config.experimental;    
     }
-    var lastKeepAliveTime = Date.now();
     var req, timeout;
     var animateHighlight = function (time) {
         if(req) {
@@ -57,8 +56,7 @@ function RemoteFunctions(config, remoteWSPort) {
      */
     var _editHandler;
 
-    var HIGHLIGHT_CLASSNAME = "__brackets-ld-highlight",
-        KEEP_ALIVE_TIMEOUT  = 3000;   // Keep alive timeout value, in milliseconds
+    var HIGHLIGHT_CLASSNAME = "__brackets-ld-highlight";
 
     // determine whether an event should be processed for Live Development
     function _validEvent(event) {
@@ -624,13 +622,6 @@ function RemoteFunctions(config, remoteWSPort) {
 
     /** Public Commands **********************************************************/
 
-    // keep alive. Called once a second when a Live Development connection is active.
-    // If several seconds have passed without this method being called, we can assume
-    // that the connection has been severed and we should remove all our code/hooks.
-    function keepAlive() {
-        lastKeepAliveTime = Date.now();
-    }
-
     // show goto
     function showGoto(targets) {
         if (!_currentMenu) {
@@ -697,20 +688,6 @@ function RemoteFunctions(config, remoteWSPort) {
     }
 
     window.addEventListener("scroll", _scrollHandler, true);
-
-    var aliveTest = window.setInterval(function () {
-        if (Date.now() > lastKeepAliveTime + KEEP_ALIVE_TIMEOUT) {
-            // Remove highlights
-            hideHighlight();
-
-            // Remove listeners
-            window.removeEventListener("resize", redrawHighlights);
-            window.removeEventListener("scroll", _scrollHandler, true);
-
-            // Clear this interval
-            window.clearInterval(aliveTest);
-        }
-    }, 1000);
 
     /**
      * Constructor
@@ -1056,7 +1033,6 @@ function RemoteFunctions(config, remoteWSPort) {
     
     return {
         "DOMEditHandler"        : DOMEditHandler,
-        "keepAlive"             : keepAlive,
         "showGoto"              : showGoto,
         "hideHighlight"         : hideHighlight,
         "highlight"             : highlight,
