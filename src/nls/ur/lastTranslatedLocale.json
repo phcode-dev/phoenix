@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs اور MDN گرافیکل لوگو کو Creative Commons Attribution لائسنس، <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> کے تحت لائسنس دیا گیا ہے۔",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME} کی ایک نئی تعمیر دستیاب ہے! تفصیلات کے لئے یہاں کلک کریں.",
   "UPDATE_AVAILABLE_TITLE": "اپ ڈیٹ دستیاب ہے۔",
+  "UPDATE_RELOAD_APP": "تازہ ترین ورژن حاصل کرنے کے لیے براہ کرم سبھی {APP_NAME} ونڈوز/ٹیبز کو بند کریں اور {APP_NAME} کو دوبارہ کھولیں۔",
   "UPDATE_MESSAGE": "ارے، {APP_NAME} کی ایک نئی تعمیر دستیاب ہے۔ یہاں کچھ نئی خصوصیات ہیں:",
   "GET_IT_NOW": "اب اسے لےاو!",
   "PROJECT_SETTINGS_TITLE": "پروجیکٹ کی ترتیبات برائے: {0}",

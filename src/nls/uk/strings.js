@@ -404,6 +404,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "Документація та логотип MDN Docs поширюється на умовах ліцензії Creative Commons Attribution, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Доступна нова збірка {APP_NAME}! Натисніть тут аби дізнатись деталі.",
   "UPDATE_AVAILABLE_TITLE": "Доступне оновлення",
+  "UPDATE_RELOAD_APP": "Закрийте всі вікна/вкладки {APP_NAME} і знову відкрийте {APP_NAME}, щоб отримати останню версію.",
   "UPDATE_MESSAGE": "Агов! Доступна нова збірка {APP_NAME}. Ось кілька функцій, що з’явилися:",
   "GET_IT_NOW": "Забрати негайно!",
   "PROJECT_SETTINGS_TITLE": "Налаштування проекту для: {0}",

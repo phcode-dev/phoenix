@@ -404,6 +404,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs a the MDN grafické logo sú licencované pod Creative Commons Attribution license, <a class=\"clickable-link\" data-href=\"{MDN_DOCS_LICENSE}\">CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Je dostupná nová verzia {APP_NAME}! Kliknite sem pre viac detailov.",
   "UPDATE_AVAILABLE_TITLE": "Dostupná aktualizácia",
+  "UPDATE_RELOAD_APP": "Zatvorte všetky okná/karty aplikácie {APP_NAME} a znova otvorte aplikáciu {APP_NAME}, aby ste získali najnovšiu verziu.",
   "UPDATE_MESSAGE": "Hey, je dostupná nová verzia {APP_NAME}. Zoznam niektorých nových vylepšení:",
   "GET_IT_NOW": "Stiahnuť!",
   "PROJECT_SETTINGS_TITLE": "Nastavenia projketu pre: {0}",

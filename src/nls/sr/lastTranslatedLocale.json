@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "\"MDN Docs\" и \"MDN\" логотип су заштићени \"Creative Commons Attribution\" лиценцом, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Објављена је нова верзија {APP_NAME}-а! Кликните овде за више информација.",
   "UPDATE_AVAILABLE_TITLE": "Нова верзија доступна",
+  "UPDATE_RELOAD_APP": "Затворите све прозоре/картице апликације {АПП_НАМЕ} и поново отворите {АПП_НАМЕ} да бисте добили најновију верзију.",
   "UPDATE_MESSAGE": "Хеј, нова верзија {APP_NAME}-а је доступна. Ово су нека од најновијих унапређења:",
   "GET_IT_NOW": "Преузми сада!",
   "PROJECT_SETTINGS_TITLE": "Подешавања пројекта за: {0}",

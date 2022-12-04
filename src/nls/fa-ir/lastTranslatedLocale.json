@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "اسناد و مدارک صفحات وب و آرم اصلی گرافیکی تحت مجوز , <a href='#' class='clickable-link' data-href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 .پایه ریزی شده است</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "ساخته ی جدیدی از {APP_NAME} هم اکنون در دسترس است! جهت مشاهده جزئیات کلیک کنید.",
   "UPDATE_AVAILABLE_TITLE": "بروزرسانی جدید در دسترس است",
+  "UPDATE_RELOAD_APP": "لطفاً همه پنجره‌ها/برگه‌های {APP_NAME} را ببندید و برای دریافت آخرین نسخه، {APP_NAME} را دوباره باز کنید.",
   "UPDATE_MESSAGE": "نسخه جدیدی از {APP_NAME} هم اکنون در دسترس است. برخی از مشخصه های آن:",
   "GET_IT_NOW": "اکنون برو به!",
   "PROJECT_SETTINGS_TITLE": "تنظیمات پروژه برای: {0}",

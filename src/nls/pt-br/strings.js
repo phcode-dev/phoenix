@@ -404,6 +404,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs e logo gráfico MDN são licenciados sob a licença Creative Commons Attribution, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Há uma nova versão do {APP_NAME} disponível! Clique aqui para mais detalhes.",
   "UPDATE_AVAILABLE_TITLE": "Atualização Disponível",
+  "UPDATE_RELOAD_APP": "Feche todas as janelas/guias do {APP_NAME} e reabra o {APP_NAME} para obter a versão mais recente.",
   "UPDATE_MESSAGE": "Ei, há uma nova versão do {APP_NAME} disponível. Aqui estão alguns dos novos recursos:",
   "GET_IT_NOW": "Obtenha agora!",
   "PROJECT_SETTINGS_TITLE": "Configurações do projeto para: {0}",

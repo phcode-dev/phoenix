@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN-dokumentit ja graafinen MDN-logo on lisensoitu Creative Commons Attribution ‑lisenssillä, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Uusi {APP_NAME}-versio on saatavilla! Saat lisätietoja napsauttamalla tästä.",
   "UPDATE_AVAILABLE_TITLE": "Päivitys saatavilla",
+  "UPDATE_RELOAD_APP": "Sulje kaikki sovelluksen {APP_NAME} ikkunat/välilehdet ja avaa {APP_NAME} uudelleen saadaksesi uusimman version.",
   "UPDATE_MESSAGE": "Hei, uusi {APP_NAME}-versio on saatavilla. Tässä on joitakin uusista ominaisuuksista:",
   "GET_IT_NOW": "Hae nyt!",
   "PROJECT_SETTINGS_TITLE": "Projektin asetukset kohteelle: {0}",

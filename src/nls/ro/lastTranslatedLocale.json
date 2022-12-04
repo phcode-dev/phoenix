@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs și logotipul MDN sunt licențiați sub licența Creative Commons Attribution, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Există o versiune nouă {APP_NAME} disponibilă! Clic aici pentru detalii.",
   "UPDATE_AVAILABLE_TITLE": "Înnoire disponibilă",
+  "UPDATE_RELOAD_APP": "Închideți toate ferestrele/filele {APP_NAME} și redeschideți {APP_NAME} pentru a obține cea mai recentă versiune.",
   "UPDATE_MESSAGE": "Hei, o nouă versiune {APP_NAME} disponibilă. Aici sunt o parte din noile posibilități:",
   "GET_IT_NOW": "Descarcă acum!",
   "PROJECT_SETTINGS_TITLE": "Setările pentru proiectul \"{0}\"",

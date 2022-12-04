@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN 文档和图形 logo 遵循<a href='{MDN_DOCS_LICENSE}'>署名-相同方式共享 3.0 未本地化</a>协议。",
   "UPDATE_NOTIFICATION_TOOLTIP": "有一个新版本的 {APP_NAME}! 点此查看详情。",
   "UPDATE_AVAILABLE_TITLE": "可用的更新",
+  "UPDATE_RELOAD_APP": "请关闭所有 {APP_NAME} 窗口/标签并重新打开 {APP_NAME} 以获取最新版本。",
   "UPDATE_MESSAGE": "有一个新版本的 {APP_NAME}，增加了一些功能：",
   "GET_IT_NOW": "马上获取！",
   "PROJECT_SETTINGS_TITLE": "项目设置: {0}",

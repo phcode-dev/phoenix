@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "تم ترخيص مستندات MDN والشعار الرسومي MDN بموجب ترخيص Creative Commons Attribution ، <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> .",
   "UPDATE_NOTIFICATION_TOOLTIP": "يتوفر إصدار جديد من {APP_NAME}! اضغط هنا للتفاصيل.",
   "UPDATE_AVAILABLE_TITLE": "التحديث متاح",
+  "UPDATE_RELOAD_APP": "الرجاء إغلاق جميع نوافذ / علامات تبويب {APP_NAME} وإعادة فتح {APP_NAME} للحصول على أحدث إصدار.",
   "UPDATE_MESSAGE": "مرحبًا ، يتوفر إصدار جديد من {APP_NAME}. فيما يلي بعض الميزات الجديدة:",
   "GET_IT_NOW": "احصل عليها الآن!",
   "PROJECT_SETTINGS_TITLE": "إعدادات المشروع لـ: {0}",
