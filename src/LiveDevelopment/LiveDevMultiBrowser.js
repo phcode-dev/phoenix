@@ -66,6 +66,10 @@ define(function (require, exports, module) {
     const STATUS_RELOADING     = exports.STATUS_RELOADING      =  5;
     const STATUS_RESTARTING    = exports.STATUS_RESTARTING     =  6;
 
+    // events
+    const EVENT_OPEN_PREVIEW_URL = "openPreviewURL",
+        EVENT_STATUS_CHANGE = "statusChange";
+
     const CommandManager       = require("command/CommandManager"),
         Commands             = require("command/Commands"),
         Dialogs              = require("widgets/Dialogs"),
@@ -82,8 +86,7 @@ define(function (require, exports, module) {
         LiveDevelopmentUtils = require("LiveDevelopment/LiveDevelopmentUtils"),
         LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
         ServiceWorkerTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/ServiceWorkerTransport"),
-        LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
-        DefaultLauncher      = require("LiveDevelopment/MultiBrowserImpl/launchers/Launcher");
+        LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol");
 
     // Documents
     const LiveCSSDocument      = require("LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument"),
@@ -115,12 +118,6 @@ define(function (require, exports, module) {
      * Protocol handler that provides the actual live development API on top of the current transport.
      */
     var _protocol = LiveDevProtocol;
-
-    /**
-     * @private
-     * Current browser launcher for preview.
-     */
-    var _launcher;
 
     /**
      * @private
@@ -212,7 +209,7 @@ define(function (require, exports, module) {
         exports.status = status;
 
         var reason = status === STATUS_INACTIVE ? closeReason : null;
-        exports.trigger("statusChange", status, reason);
+        exports.trigger(EVENT_STATUS_CHANGE, status, reason);
     }
 
     /**
@@ -505,13 +502,14 @@ define(function (require, exports, module) {
      /**
      * Launches the given URL in the default browser.
      * @param {string} url
+      * @param {string} fullPath
      * TODO: launchers for multiple browsers
      */
-    function _launch(url) {
-        // open default browser
-        // TODO: fail?
-        //
-        _launcher.launch(url);
+    function _launch(url, fullPath) {
+        exports.trigger(EVENT_OPEN_PREVIEW_URL, {
+            url,
+            fullPath
+        });
     }
 
     /**
@@ -526,7 +524,7 @@ define(function (require, exports, module) {
                 // Launch the URL in the browser. If it's the first one to connect back to us,
                 // our status will transition to ACTIVE once it does so.
                 if (exports.status < STATUS_ACTIVE) {
-                    _launch(_server.pathToUrl(doc.file.fullPath));
+                    _launch(_server.pathToUrl(doc.file.fullPath), doc.file.fullPath);
                 }
                 if (exports.status === STATUS_RESTARTING) {
                     // change page in browser
@@ -783,23 +781,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Sets the current browser launcher mechanism to be used by live development
-     * (e.g., default browser, iframe-based browser, etc.)
-     * The launcher must provide the following method:
-     *
-     * - launch(url): Launch the given URL in the appropriate browser.
-     *
-     * @param {{launch: function(string)}} launcher
-     */
-    function setLauncher(launcher) {
-        if (!(launcher && launcher.launch)) {
-            console.log("Invalid launcher object: ", launcher, new Error("LiveDevMultiBrowser.setLauncher()"));
-            return;
-        }
-        _launcher = launcher;
-    }
-
-    /**
      * Initialize the LiveDevelopment module.
      */
     function init(config) {
@@ -814,9 +795,6 @@ define(function (require, exports, module) {
 
         // Default transport for live connection messages - can be changed
         setTransport(ServiceWorkerTransport);
-
-        // Default launcher for preview browser - can be changed
-        setLauncher(DefaultLauncher);
 
         // Initialize exports.status
         _setStatus(STATUS_INACTIVE);
@@ -914,6 +892,10 @@ define(function (require, exports, module) {
     exports._server                   = _server;
     exports._getInitialDocFromCurrent = _getInitialDocFromCurrent;
 
+    // Events
+    exports.EVENT_OPEN_PREVIEW_URL = EVENT_OPEN_PREVIEW_URL;
+    exports.EVENT_STATUS_CHANGE = EVENT_STATUS_CHANGE;
+
     // Export public functions
     exports.open                = open;
     exports.close               = close;
@@ -930,5 +912,4 @@ define(function (require, exports, module) {
     exports.getCurrentLiveDoc   = getCurrentLiveDoc;
     exports.getCurrentProjectServerConfig = getCurrentProjectServerConfig;
     exports.setTransport        = setTransport;
-    exports.setLauncher         = setLauncher;
 });
