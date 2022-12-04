@@ -88,7 +88,7 @@ define(function (require, exports, module) {
         LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
         ServiceWorkerTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/ServiceWorkerTransport"),
         LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
-        Metrics              = require("utils/Metrics");;
+        Metrics              = require("utils/Metrics");
 
     // Documents
     const LiveCSSDocument      = require("LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument"),
