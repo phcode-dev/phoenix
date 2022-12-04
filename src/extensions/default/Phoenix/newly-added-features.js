@@ -18,11 +18,14 @@
  *
  */
 
-/*globals Phoenix, JSZip, Filer*/
+/*globals Phoenix*/
 
 define(function (require, exports, module) {
     const CommandManager     = brackets.getModule("command/CommandManager"),
-        Commands           = brackets.getModule("command/Commands");
+        Commands           = brackets.getModule("command/Commands"),
+        Dialogs = brackets.getModule("widgets/Dialogs"),
+        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
+        Strings = brackets.getModule("strings");
 
     const NEW_FEATURE_MARKDOWN_SHOWN_HASH = "Newly_added_features.md.shown.hash";
 
@@ -64,6 +67,18 @@ define(function (require, exports, module) {
         }, 3000);
     }
 
+    function _showReloadForUpdateDialog() {
+        setTimeout(()=>{
+            if(window.Phoenix.updatePendingReload){
+                Dialogs.showModalDialog(
+                    DefaultDialogs.DIALOG_ID_INFO,
+                    Strings.UPDATE_AVAILABLE_TITLE,
+                    Strings.UPDATE_RELOAD_APP
+                );
+            }
+        }, 5000);
+    }
+
     async function _showNewUpdatesIfPresent() {
         let markdownText = await _getUpdateMarkdownText();
         const hash = await _digestMessage(markdownText);
@@ -72,6 +87,7 @@ define(function (require, exports, module) {
             _showNewFeatureMarkdownDoc();
             await _setUpdateShown();
         }
+        _showReloadForUpdateDialog();
     }
 
     exports.init = function () {
