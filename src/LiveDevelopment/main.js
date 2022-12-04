@@ -137,7 +137,11 @@ define(function main(require, exports, module) {
     }
 
     function isInactive() {
-        return MultiBrowserLiveDev.status <= MultiBrowserLiveDev.STATUS_INACTIVE;
+        return MultiBrowserLiveDev.status === MultiBrowserLiveDev.STATUS_INACTIVE;
+    }
+
+    function isActive() {
+        return MultiBrowserLiveDev.status === MultiBrowserLiveDev.STATUS_ACTIVE;
     }
 
     function setLivePreviewPinned(urlPinned) {
@@ -305,6 +309,7 @@ define(function main(require, exports, module) {
     exports.openLivePreview = openLivePreview;
     exports.closeLivePreview = closeLivePreview;
     exports.isInactive = isInactive;
+    exports.isActive = isActive;
     exports.setLivePreviewPinned = setLivePreviewPinned;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
 });

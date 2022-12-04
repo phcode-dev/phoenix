@@ -52,7 +52,8 @@ define(function (require, exports, module) {
         DocumentManager    = brackets.getModule("document/DocumentManager"),
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
-        Metrics             = brackets.getModule("utils/Metrics"),
+        Metrics            = brackets.getModule("utils/Metrics"),
+        FileViewController = brackets.getModule("project/FileViewController"),
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
         LiveDevelopment = brackets.getModule("LiveDevelopment/main"),
         marked = require('thirdparty/marked.min'),
@@ -290,7 +291,7 @@ define(function (require, exports, module) {
     }
 
     let livePreviewEnabledOnProjectSwitch = false;
-    function _projectOpened() {
+    async function _projectOpened() {
         if(urlPinned){
             _togglePinUrl();
         }
@@ -301,6 +302,15 @@ define(function (require, exports, module) {
         if(!panel.isVisible()){
             return;
         }
+        let previewDetails = await utils.getPreviewDetails();
+        if(previewDetails.fullPath){
+            FileViewController.openAndSelectDocument(previewDetails.fullPath, FileViewController.PROJECT_MANAGER)
+                .done(()=>{
+                    LiveDevelopment.closeLivePreview();
+                    LiveDevelopment.openLivePreview();
+                    _loadPreview(true);
+                });
+        }
         _loadPreview(true);
     }
 
@@ -310,11 +320,12 @@ define(function (require, exports, module) {
     }
 
     function _activeDocChanged() {
-        if(!LiveDevelopment.isInactive()){
-            livePreviewEnabledOnProjectSwitch = true;
-        }
-        if(!livePreviewEnabledOnProjectSwitch && (panel.isVisible() || (tab && !tab.closed))) {
+        if(!LiveDevelopment.isActive() && !livePreviewEnabledOnProjectSwitch
+            && (panel.isVisible() || (tab && !tab.closed))) {
+            // we do this only once after project switch if live preview for a doc is not active.
+            LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
+            livePreviewEnabledOnProjectSwitch = true;
         }
     }
 
