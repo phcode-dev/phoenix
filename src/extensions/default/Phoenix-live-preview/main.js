@@ -136,6 +136,7 @@ define(function (require, exports, module) {
         urlPinned = !pinStatus;
         LiveDevelopment.setLivePreviewPinned(urlPinned);
         _loadPreview();
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "pinURLBtn", "click");
     }
 
     function _popoutLivePreview() {
@@ -188,6 +189,7 @@ define(function (require, exports, module) {
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
             _loadPreview(true);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
     }
 
