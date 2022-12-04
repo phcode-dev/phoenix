@@ -404,6 +404,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs ve MDN grafik logosu, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> Creative Commons Attribution lisansı altında lisanslanmıştır.",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME} programının yeni versiyonu bulunmakta! Detaylar için tıklayın.",
   "UPDATE_AVAILABLE_TITLE": "Yeni versiyon hazır",
+  "UPDATE_RELOAD_APP": "En son sürümü almak için lütfen tüm {APP_NAME} pencerelerini/sekmelerini kapatın ve {APP_NAME} uygulamasını yeniden açın.",
   "UPDATE_MESSAGE": "Hey, {APP_NAME} programının yeni versiyonu hazır. İşte bazı yeni özellikler:",
   "GET_IT_NOW": "Şimdi Yükle!",
   "PROJECT_SETTINGS_TITLE": "{0} için Proje Ayarları",

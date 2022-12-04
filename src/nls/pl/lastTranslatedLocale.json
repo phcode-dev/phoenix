@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "Dokumentacja MDN oraz logo MDN są objęte licencją Creative Commons Attribution, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Dostępna jest nowa wersja {APP_NAME}! Kliknij tutaj i dowiedz się więcej.",
   "UPDATE_AVAILABLE_TITLE": "Dostępna nowa aktualizacja",
+  "UPDATE_RELOAD_APP": "Zamknij wszystkie okna/karty aplikacji {APP_NAME} i ponownie otwórz aplikację {APP_NAME}, aby pobrać najnowszą wersję.",
   "UPDATE_MESSAGE": "Hej, dostępna jest już nowa wersja {APP_NAME}. Oto kilka nowych funkcjonalności:",
   "GET_IT_NOW": "Pobierz teraz!",
   "PROJECT_SETTINGS_TITLE": "Ustawienia projektu dla: {0}",

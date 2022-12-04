@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN dokumenti un MDN grafiskais logo ir licencēti saskaņā ar \"Creative Commons\" licenci <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME} ir pieejams jauns būvējums! Spiediet šeit, lai saņemtu sīkāku informāciju.",
   "UPDATE_AVAILABLE_TITLE": "Pieejams atjauninājums",
+  "UPDATE_RELOAD_APP": "Lūdzu, aizveriet visus {APP_NAME} logus/cilnes un atkārtoti atveriet lietotni {APP_NAME}, lai iegūtu jaunāko versiju.",
   "UPDATE_MESSAGE": "{APP_NAME} ir pieejams jauns būvējums. Dažas no jaunajām funkcijām:",
   "GET_IT_NOW": "Iegūt to tagad!",
   "PROJECT_SETTINGS_TITLE": "Projekta iestatījumi priekš: {0}",

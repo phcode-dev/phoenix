@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN 문서와 MDN 로고는 크리에이티브 커먼즈 저작자표시 라이선스, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> 로 배포됩니다.",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME}의 새로운 빌드를 사용할 수 있습니다. 자세한 내용은 여기를 클릭하세요.",
   "UPDATE_AVAILABLE_TITLE": "사용 가능한 업데이트가 있습니다",
+  "UPDATE_RELOAD_APP": "모든 {APP_NAME} 창/탭을 닫고 {APP_NAME}을(를) 다시 열어 최신 버전을 받으세요.",
   "UPDATE_MESSAGE": "{APP_NAME}의 새로운 빌드를 사용할 수 있습니다. 새로운 기능의 일부를 다음에 소개합니다 :",
   "GET_IT_NOW": "지금 다운로드",
   "PROJECT_SETTINGS_TITLE": "프로젝트 설정 : {0}",

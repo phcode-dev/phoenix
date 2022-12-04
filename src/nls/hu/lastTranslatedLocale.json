@@ -384,6 +384,7 @@
   "ABOUT_TEXT_MDN_DOCS": "A MDN Dokumentáció és a  MDN grafikai logó a Creative Commons Attribution license alatt vannak licencelve, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Új {APP_NAME} verzió elérhető! Kattints ide a részletekért.",
   "UPDATE_AVAILABLE_TITLE": "Új verzió elérhető",
+  "UPDATE_RELOAD_APP": "Kérjük, zárja be az összes {APP_NAME} ablakot/lapot, és nyissa meg újra a(z) {APP_NAME} alkalmazást a legújabb verzió beszerzéséhez.",
   "UPDATE_MESSAGE": "Hé, új {APP_NAME} verzió elérhető. Íme néhány kulcsfontosságú frissítés:",
   "GET_IT_NOW": "Szerezd meg most!",
   "PROJECT_SETTINGS_TITLE": "Projekt Beállítások a következőhöz: {0}",

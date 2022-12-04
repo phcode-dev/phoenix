@@ -404,6 +404,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN डॉक्स और MDN ग्राफिकल लोगो को Creative Commons एट्रिब्यूशन लाइसेंस, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> के तहत लाइसेंस दिया गया है।",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME} का एक नया निर्माण उपलब्ध है! जानकारी के लिए यहाँ क्लिक करें।",
   "UPDATE_AVAILABLE_TITLE": "उपलब्ध अद्यतन",
+  "UPDATE_RELOAD_APP": "नवीनतम संस्करण प्राप्त करने के लिए कृपया सभी {APP_NAME} विंडो/टैब बंद करें और {APP_NAME} को फिर से खोलें।",
   "UPDATE_MESSAGE": "अरे, {APP_NAME} का एक नया निर्माण उपलब्ध है। यहां कुछ नई विशेषताएं दी गई हैं:",
   "GET_IT_NOW": "अब समझे!",
   "PROJECT_SETTINGS_TITLE": "इसके लिए प्रोजेक्ट सेटिंग: {0}",
