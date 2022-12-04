@@ -108,12 +108,22 @@ define(function (require, exports, module) {
         }
     }
 
+    function _startOrStopLivePreviewIfRequired() {
+        let visible = panel.isVisible();
+        if(visible && LiveDevelopment.isInactive()) {
+            LiveDevelopment.openLivePreview();
+        } else if(visible) {
+            LiveDevelopment.closeLivePreview();
+            LiveDevelopment.openLivePreview();
+        } else if(!visible && LiveDevelopment.getConnectionIds().length === 1) {
+            // there is only one live preview, which is this panel iframe itself. close live preview session.
+            LiveDevelopment.closeLivePreview();
+        }
+    }
     function _toggleVisibility() {
         let visible = !panel.isVisible();
         _setPanelVisibility(visible);
-        if(visible) {
-            LiveDevelopment.openLivePreview();
-        }
+        _startOrStopLivePreviewIfRequired();
     }
 
     function _togglePinUrl() {
@@ -276,12 +286,11 @@ define(function (require, exports, module) {
         }
     }
 
-    let livePreviewShownOnProjectSwitch = false;
+    let livePreviewEnabledOnProjectSwitch = false;
     function _projectOpened() {
         if(urlPinned){
             _togglePinUrl();
         }
-        EditorManager.on("activeEditorChange", _activeDocChanged);
         $iframe[0].src = utils.getNoPreviewURL();
         if(tab && !tab.closed){
             tab.location = utils.getNoPreviewURL();
@@ -293,15 +302,16 @@ define(function (require, exports, module) {
     }
 
     function _projectClosed() {
-        EditorManager.off("activeEditorChange", _activeDocChanged);
         LiveDevelopment.closeLivePreview();
-        livePreviewShownOnProjectSwitch = false;
+        livePreviewEnabledOnProjectSwitch = false;
     }
 
     function _activeDocChanged() {
-        if(!livePreviewShownOnProjectSwitch) {
+        if(!LiveDevelopment.isInactive()){
+            livePreviewEnabledOnProjectSwitch = true;
+        }
+        if(!livePreviewEnabledOnProjectSwitch && (panel.isVisible() || (tab && !tab.closed))) {
             LiveDevelopment.openLivePreview();
-            livePreviewShownOnProjectSwitch = true;
         }
     }
 
@@ -345,6 +355,7 @@ define(function (require, exports, module) {
         MainViewManager.on("currentFileChange", _loadPreview);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_CLOSE, _projectClosed);
+        EditorManager.on("activeEditorChange", _activeDocChanged);
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
             _toggleVisibility();
         });
@@ -352,6 +363,7 @@ define(function (require, exports, module) {
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "");
         // We always show the live preview panel on startup if there is a preview file
         setTimeout(async ()=>{
+            LiveDevelopment.openLivePreview();
             let previewDetails = await utils.getPreviewDetails();
             if(previewDetails.filePath){
                 // only show if there is some file to preview and not the default no-preview preview on startup
@@ -359,7 +371,7 @@ define(function (require, exports, module) {
             }
         }, 1000);
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
-        LiveDevelopment.openLivePreview();
+        LiveDevelopment.on(LiveDevelopment.EVENT_CONNECTION_CLOSE, _startOrStopLivePreviewIfRequired);
     });
 });
 

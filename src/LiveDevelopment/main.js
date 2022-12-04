@@ -136,6 +136,10 @@ define(function main(require, exports, module) {
         }
     }
 
+    function isInactive() {
+        return MultiBrowserLiveDev.status <= MultiBrowserLiveDev.STATUS_INACTIVE;
+    }
+
     function setLivePreviewPinned(urlPinned) {
         MultiBrowserLiveDev.setLivePreviewPinned(urlPinned);
     }
@@ -270,6 +274,9 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL, function (event, previewDetails) {
             exports.trigger(exports.EVENT_OPEN_PREVIEW_URL, previewDetails);
         });
+        MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE, function (event, {clientId}) {
+            exports.trigger(exports.EVENT_CONNECTION_CLOSE, {clientId});
+        });
 
     });
 
@@ -292,9 +299,12 @@ define(function main(require, exports, module) {
 
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
+    exports.EVENT_CONNECTION_CLOSE = MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE;
 
     // Export public functions
     exports.openLivePreview = openLivePreview;
     exports.closeLivePreview = closeLivePreview;
+    exports.isInactive = isInactive;
     exports.setLivePreviewPinned = setLivePreviewPinned;
+    exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
 });

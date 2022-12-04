@@ -86,6 +86,34 @@ define(function (require, exports, module) {
         return Object.keys(_connections);
     }
 
+    function _tagSelectedInLivePreview(tagId) {
+        const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc(),
+            editor = EditorManager.getActiveEditor();
+        const liveDocPath = liveDoc ? liveDoc.doc.file.fullPath : null,
+            activeEditorDocPath = editor ? editor.document.file.fullPath : null;
+        function selectInActiveDocument() {
+            // activeEditor can be either a full or inline(Eg. css inline within html) editor
+            const activeEditor = EditorManager.getActiveEditor();
+            const activeFullEditor = EditorManager.getCurrentFullEditor(); // always full editor
+            const position = HTMLInstrumentation.getPositionFromTagId(activeFullEditor, parseInt(tagId, 10));
+            // should we scan all editors for the file path and update selections on every editor?
+            // currently we do it only for active / full editor.
+            if(position &&
+                activeEditor && activeEditor.document.file.fullPath === activeFullEditor.document.file.fullPath) {
+                activeEditor.setCursorPos(position.line, position.ch, true);
+            }
+            if(position && activeFullEditor) {
+                activeFullEditor.setCursorPos(position.line, position.ch, true);
+            }
+        }
+        if(liveDocPath !== activeEditorDocPath) {
+            FileViewController.openAndSelectDocument(liveDocPath, FileViewController.PROJECT_MANAGER)
+                .done(selectInActiveDocument);
+        } else {
+            selectInActiveDocument();
+        }
+    }
+
     /**
      * @private
      * Handles a message received from the remote protocol handler via the transport.
@@ -112,25 +140,7 @@ define(function (require, exports, module) {
                 }
             }
         } else if (msg.tagId) {
-            const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc(),
-                editor = EditorManager.getActiveEditor();
-            const liveDocPath = liveDoc ? liveDoc.doc.file.fullPath : null,
-                activeEditorDocPath = editor ? editor.document.file.fullPath : null;
-            function selectInActiveDocument() {
-                const activeFullEditor = EditorManager.getCurrentFullEditor();
-                const masterEditor = activeFullEditor && activeFullEditor.document._masterEditor?
-                    activeFullEditor.document._masterEditor : activeFullEditor;
-                const position = HTMLInstrumentation.getPositionFromTagId(masterEditor, parseInt(msg.tagId, 10));
-                if (position) {
-                    activeFullEditor.setCursorPos(position.line, position.ch, true);
-                }
-            }
-            if(liveDocPath !== activeEditorDocPath) {
-                FileViewController.openAndSelectDocument(liveDocPath, FileViewController.PROJECT_MANAGER)
-                    .done(selectInActiveDocument);
-            } else {
-                selectInActiveDocument();
-            }
+            _tagSelectedInLivePreview(msg.tagId);
         } else {
             // enrich received message with clientId
             msg.clientId = clientId;

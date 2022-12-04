@@ -78,7 +78,8 @@ define(function (require, exports, module) {
                         const relativePath = path.relative(projectRoot, file.fullPath);
                         resolve({
                             URL: `${projectRootUrl}${relativePath}`,
-                            filePath: relativePath
+                            filePath: relativePath,
+                            fullPath: file.fullPath
                         });
                         return;
                     }
