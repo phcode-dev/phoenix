@@ -320,6 +320,25 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * EVENT_OPEN_PREVIEW_URL triggers this once live preview infrastructure is instrumented and ready to accept live
+     * preview connections from browsers. So, if we have loaded an earlier live preview, that is most likely not
+     * instrumented code and just plain html for the previewed file. We force load the live preview again here to
+     * load the instrumented live preview code.
+     * @param _event
+     * @param previewDetails
+     * @return {Promise<void>}
+     * @private
+     */
+    async function _openLivePreviewURL(_event, previewDetails) {
+        _loadPreview(true);
+        const currentPreviewDetails = await utils.getPreviewDetails();
+        if(!currentPreviewDetails.isMarkdownFile && currentPreviewDetails.fullPath !== previewDetails.fullPath){
+            console.error("Live preview URLs differ between phoenix live preview extension and core live preview",
+                currentPreviewDetails, previewDetails);
+        }
+    }
+
     AppInit.appReady(function () {
         _createExtensionPanel();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
@@ -339,6 +358,7 @@ define(function (require, exports, module) {
                 _setPanelVisibility(true);
             }
         }, 1000);
+        LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.openLivePreview();
     });
 });

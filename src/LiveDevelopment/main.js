@@ -40,7 +40,8 @@ define(function main(require, exports, module) {
         UrlParams           = require("utils/UrlParams").UrlParams,
         Strings             = require("strings"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
-        StringUtils         = require("utils/StringUtils");
+        StringUtils         = require("utils/StringUtils"),
+        EventDispatcher      = require("utils/EventDispatcher");
 
     const isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
     var params = new UrlParams();
@@ -61,9 +62,6 @@ define(function main(require, exports, module) {
         _allStatusStyles = ["warning", "info", "success", "out-of-sync", "sync-error"].join(" ");
 
     var _$btnGoLive; // reference to the GoLive button
-
-    // current selected implementation (LiveDevelopment | LiveDevMultiBrowser)
-    var LiveDevImpl;
 
     var prefs = PreferencesManager.getExtensionPrefs("livedev");
 
@@ -127,19 +125,19 @@ define(function main(require, exports, module) {
     }
 
     function closeLivePreview() {
-        if (LiveDevImpl.status >= LiveDevImpl.STATUS_ACTIVE) {
-            LiveDevImpl.close();
+        if (MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+            MultiBrowserLiveDev.close();
         }
     }
 
     function openLivePreview() {
-        if (LiveDevImpl.status <= LiveDevImpl.STATUS_INACTIVE && !isTestWindow) {
-            LiveDevImpl.open();
+        if (MultiBrowserLiveDev.status <= MultiBrowserLiveDev.STATUS_INACTIVE && !isTestWindow) {
+            MultiBrowserLiveDev.open();
         }
     }
 
     function setLivePreviewPinned(urlPinned) {
-        LiveDevImpl.setLivePreviewPinned(urlPinned);
+        MultiBrowserLiveDev.setLivePreviewPinned(urlPinned);
     }
 
     /** Called on status change */
@@ -177,7 +175,7 @@ define(function main(require, exports, module) {
         if (!_$btnGoLive) {
             _$btnGoLive = $("#toolbar-go-live");
         }
-        LiveDevImpl.on("statusChange", function statusChange(event, status, reason) {
+        MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_STATUS_CHANGE, function statusChange(event, status, reason) {
             // status starts at -1 (error), so add one when looking up name and style
             // See the comments at the top of LiveDevelopment.js for details on the
             // various status codes.
@@ -191,11 +189,13 @@ define(function main(require, exports, module) {
 
     /** Maintains state of the Live Preview menu item */
     function _setupGoLiveMenu() {
-        LiveDevImpl.on("statusChange", function statusChange(event, status) {
+        MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_STATUS_CHANGE, function statusChange(event, status) {
             // Update the checkmark next to 'Live Preview' menu item
             // Add checkmark when status is STATUS_ACTIVE; otherwise remove it
-            CommandManager.get(Commands.FILE_LIVE_FILE_PREVIEW).setChecked(status === LiveDevImpl.STATUS_ACTIVE);
-            CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setEnabled(status === LiveDevImpl.STATUS_ACTIVE);
+            CommandManager.get(Commands.FILE_LIVE_FILE_PREVIEW)
+                .setChecked(status === MultiBrowserLiveDev.STATUS_ACTIVE);
+            CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT)
+                .setEnabled(status === MultiBrowserLiveDev.STATUS_ACTIVE);
         });
     }
 
@@ -207,9 +207,9 @@ define(function main(require, exports, module) {
         config.highlight = !config.highlight;
         _updateHighlightCheckmark();
         if (config.highlight) {
-            LiveDevImpl.showHighlight();
+            MultiBrowserLiveDev.showHighlight();
         } else {
-            LiveDevImpl.hideHighlight();
+            MultiBrowserLiveDev.hideHighlight();
         }
         PreferencesManager.setViewState("livedev.highlight", config.highlight);
     }
@@ -221,8 +221,8 @@ define(function main(require, exports, module) {
 
     /** force reload the live preview currently only with shortcut ctrl-shift-R */
     function _handleReloadLivePreviewCommand() {
-        if (LiveDevImpl.status >= LiveDevImpl.STATUS_ACTIVE) {
-            LiveDevImpl.reload();
+        if (MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+            MultiBrowserLiveDev.reload();
         }
     }
 
@@ -240,8 +240,6 @@ define(function main(require, exports, module) {
         _loadStyles();
         _updateHighlightCheckmark();
 
-        // set implemenation
-        LiveDevImpl = MultiBrowserLiveDev;
         // update styles for UI status
         _status = [
             { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: "warning" },
@@ -264,10 +262,14 @@ define(function main(require, exports, module) {
         remoteHighlightPref
             .on("change", function () {
                 config.remoteHighlight = prefs.get(PREF_REMOTEHIGHLIGHT);
-                if (LiveDevImpl && LiveDevImpl.status >= LiveDevImpl.STATUS_ACTIVE) {
-                    LiveDevImpl.agents.remote.call("updateConfig",JSON.stringify(config));
+                if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+                    MultiBrowserLiveDev.agents.remote.call("updateConfig",JSON.stringify(config));
                 }
             });
+
+        MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL, function (event, previewDetails) {
+            exports.trigger(exports.EVENT_OPEN_PREVIEW_URL, previewDetails);
+        });
 
     });
 
@@ -285,6 +287,11 @@ define(function main(require, exports, module) {
     CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
 
     CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setEnabled(false);
+
+    EventDispatcher.makeEventDispatcher(exports);
+
+    // public events
+    exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
 
     // Export public functions
     exports.openLivePreview = openLivePreview;
