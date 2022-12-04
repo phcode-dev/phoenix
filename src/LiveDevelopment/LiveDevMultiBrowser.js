@@ -87,7 +87,8 @@ define(function (require, exports, module) {
         LiveDevelopmentUtils = require("LiveDevelopment/LiveDevelopmentUtils"),
         LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
         ServiceWorkerTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/ServiceWorkerTransport"),
-        LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol");
+        LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
+        Metrics              = require("utils/Metrics");;
 
     // Documents
     const LiveCSSDocument      = require("LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument"),
@@ -542,6 +543,8 @@ define(function (require, exports, module) {
                                 _setStatus(STATUS_ACTIVE);
                             }
                         }
+                        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "connect",
+                            `${_protocol.getConnectionIds().length}-preview`);
                     })
                     .on("ConnectionClose.livedev", function (event, {clientId}) {
                         exports.trigger(EVENT_CONNECTION_CLOSE, {clientId});
