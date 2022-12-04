@@ -507,6 +507,7 @@ define({
     "ABOUT_TEXT_MDN_DOCS": "MDN Docs and the MDN graphical logo are licensed under a Creative Commons Attribution license, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
     "UPDATE_NOTIFICATION_TOOLTIP": "There's a new build of {APP_NAME} available! Click here for details.",
     "UPDATE_AVAILABLE_TITLE": "Update Available",
+    "UPDATE_RELOAD_APP": "Please close all {APP_NAME} windows/tabs and reopen {APP_NAME} to get the latest version.",
     "UPDATE_MESSAGE": "Hey, there's a new build of {APP_NAME} available. Here are some of the new features:",
     "GET_IT_NOW": "Get it now!",
     "PROJECT_SETTINGS_TITLE": "Project Settings for: {0}",

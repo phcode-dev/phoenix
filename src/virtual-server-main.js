@@ -226,7 +226,7 @@ function _fixCache(currentCacheManifest, newCacheManifest) {
                 cache.addAll(changedContentURLs).then(()=>{
                     console.log(`Service worker: cache refresh complete for ${changedContentURLs.length} URLS in ${CACHE_NAME_EVERYTHING}`);
                     _updateTTL(CACHE_NAME_EVERYTHING, changedContentURLs);
-                    resolve();
+                    resolve(changedContentURLs.length);
                 }).catch(err=>{
                     console.error(`Service worker: cache refresh failed for ${changedContentURLs.length} URLS in ${CACHE_NAME_EVERYTHING}`, err);
                     reject();
@@ -258,9 +258,9 @@ async function _refreshCache(event) {
             refreshInProgress = false;
             return;
         }
-        await _fixCache(currentCacheManifest, newCacheManifest);
+        const updatedFilesCount = await _fixCache(currentCacheManifest, newCacheManifest);
         await _putCurrentCacheManifest(newCacheManifest);
-        event.ports[0].postMessage("cache refresh completed");
+        event.ports[0].postMessage({updatedFilesCount});
     } catch (e) {
         console.error("Service worker: error while refreshing cache", e);
     }
