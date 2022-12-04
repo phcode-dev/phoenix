@@ -68,6 +68,7 @@ define(function (require, exports, module) {
 
     // events
     const EVENT_OPEN_PREVIEW_URL = "openPreviewURL",
+        EVENT_CONNECTION_CLOSE = "ConnectionClose",
         EVENT_STATUS_CHANGE = "statusChange";
 
     const CommandManager       = require("command/CommandManager"),
@@ -542,10 +543,11 @@ define(function (require, exports, module) {
                             }
                         }
                     })
-                    .on("ConnectionClose.livedev", function (event, msg) {
+                    .on("ConnectionClose.livedev", function (event, {clientId}) {
+                        exports.trigger(EVENT_CONNECTION_CLOSE, {clientId});
                         window.loggingOptions.livePreview.log(
                             "Live Preview: Phoenix received ConnectionClose, live preview left: ",
-                            _protocol.getConnectionIds().length);
+                            _protocol.getConnectionIds().length, clientId);
                     })
                     // extract stylesheets and create related LiveCSSDocument instances
                     .on("DocumentRelated.livedev", function (event, msg) {
@@ -886,6 +888,14 @@ define(function (require, exports, module) {
         return _liveDocument;
     }
 
+    /**
+     * Returns an array of the client IDs that are being managed by this live document.
+     * @return {Array.<number>}
+     */
+    function getConnectionIds() {
+        return _protocol.getConnectionIds();
+    }
+
     EventDispatcher.makeEventDispatcher(exports);
 
     // For unit testing
@@ -894,6 +904,7 @@ define(function (require, exports, module) {
 
     // Events
     exports.EVENT_OPEN_PREVIEW_URL = EVENT_OPEN_PREVIEW_URL;
+    exports.EVENT_CONNECTION_CLOSE = EVENT_CONNECTION_CLOSE;
     exports.EVENT_STATUS_CHANGE = EVENT_STATUS_CHANGE;
 
     // Export public functions
@@ -911,5 +922,6 @@ define(function (require, exports, module) {
     exports.getServerBaseUrl    = getServerBaseUrl;
     exports.getCurrentLiveDoc   = getCurrentLiveDoc;
     exports.getCurrentProjectServerConfig = getCurrentProjectServerConfig;
+    exports.getConnectionIds = getConnectionIds;
     exports.setTransport        = setTransport;
 });
