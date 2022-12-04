@@ -141,6 +141,7 @@ define(function (require, exports, module) {
     function _popoutLivePreview() {
         if(!tab || tab.closed){
             tab = open();
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
         }
         _loadPreview(true);
     }

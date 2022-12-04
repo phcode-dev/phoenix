@@ -25,7 +25,25 @@
 define(function (require, exports, module) {
 
 
-    const EventDispatcher = require("utils/EventDispatcher");
+    const EventDispatcher = require("utils/EventDispatcher"),
+        Metrics = require("utils/Metrics");
+
+    const METRIC_SEND_INTERVAL_MS = 1000;
+
+    let transportMessagesCount = 0,
+        transportMessagesSizeB = 0;
+
+    // mix panel and Google Analytics is sending too many request and seems to not have client side aggregation
+    // like core analytics. So we do our own aggregation and send metrics only atmost once a second.
+    // We could remove this once we moe fully to core analytics.
+    setInterval(()=>{
+        if(transportMessagesCount > 0){
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "transport", "msgCount", transportMessagesCount);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "transport", "msgSizeB", transportMessagesSizeB);
+            transportMessagesCount = 0;
+            transportMessagesSizeB = 0;
+        }
+    }, METRIC_SEND_INTERVAL_MS);
 
     // The script that will be injected into the previewed HTML to handle the other side of the socket connection.
     const ServiceWorkerTransportRemote = require("text!LiveDevelopment/BrowserScripts/ServiceWorkerTransportRemote.js");
@@ -66,10 +84,15 @@ define(function (require, exports, module) {
             const type = event.data.type;
             switch (type) {
             case 'BROWSER_CONNECT': exports.trigger('connect', [event.data.clientID, event.data.url]); break;
-            case 'BROWSER_MESSAGE': exports.trigger('message', [event.data.clientID, event.data.message]); break;
+            case 'BROWSER_MESSAGE':
+                const message = event.data.message || "";
+                exports.trigger('message', [event.data.clientID, message]);
+                transportMessagesSizeB = transportMessagesSizeB + message.length;
+                break;
             case 'BROWSER_CLOSE': exports.trigger('close', [event.data.clientID]); break;
             default: console.error("ServiceWorkerTransport received unknown message from Browser preview:", event);
             }
+            transportMessagesCount++;
         };
     };
 
