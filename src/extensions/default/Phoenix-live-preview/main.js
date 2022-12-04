@@ -104,26 +104,26 @@ define(function (require, exports, module) {
             _loadPreview(true);
         } else {
             $icon.toggleClass("active");
+            $iframe.attr('src', 'about:blank');
             panel.hide();
         }
     }
 
-    function _startOrStopLivePreviewIfRequired() {
+    function _startOrStopLivePreviewIfRequired(explicitClickOnLPIcon) {
         let visible = panel.isVisible();
         if(visible && LiveDevelopment.isInactive()) {
             LiveDevelopment.openLivePreview();
-        } else if(visible) {
+        } else if(visible && explicitClickOnLPIcon) {
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
-        } else if(!visible && LiveDevelopment.getConnectionIds().length === 1) {
-            // there is only one live preview, which is this panel iframe itself. close live preview session.
+        } else if(!visible && LiveDevelopment.getConnectionIds().length === 0 && (!tab || tab.closed)) {
             LiveDevelopment.closeLivePreview();
         }
     }
-    function _toggleVisibility() {
+    function _toggleVisibilityOnClick() {
         let visible = !panel.isVisible();
         _setPanelVisibility(visible);
-        _startOrStopLivePreviewIfRequired();
+        _startOrStopLivePreviewIfRequired(true);
     }
 
     function _togglePinUrl() {
@@ -167,7 +167,7 @@ define(function (require, exports, module) {
         const PANEL_MIN_SIZE = 50;
         const INITIAL_PANEL_SIZE = document.body.clientWidth/2.5;
         $icon = $("#toolbar-go-live");
-        $icon.click(_toggleVisibility);
+        $icon.click(_toggleVisibilityOnClick);
         $panel = $(Mustache.render(panelHTML, templateVars));
         $iframe = $panel.find("#panel-live-preview-frame");
         $pinUrlBtn = $panel.find("#pinURLButton");
@@ -357,7 +357,7 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_CLOSE, _projectClosed);
         EditorManager.on("activeEditorChange", _activeDocChanged);
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
-            _toggleVisibility();
+            _toggleVisibilityOnClick();
         });
         let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "");
@@ -371,7 +371,10 @@ define(function (require, exports, module) {
             }
         }, 1000);
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
-        LiveDevelopment.on(LiveDevelopment.EVENT_CONNECTION_CLOSE, _startOrStopLivePreviewIfRequired);
+        LiveDevelopment.on(LiveDevelopment.EVENT_CONNECTION_CLOSE, function () {
+            // the connection close pool will take some time to settle
+            setTimeout(_startOrStopLivePreviewIfRequired, 15000);
+        });
     });
 });
 
