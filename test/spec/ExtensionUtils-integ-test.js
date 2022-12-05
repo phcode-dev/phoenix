@@ -118,7 +118,7 @@ define(function (require, exports, module) {
                 var result;
 
                 var indexLocation = testWindow.location.origin + testWindow.location.pathname,
-                    bracketsLocation = indexLocation.substring(0, indexLocation.length - "src/index.html".length),
+                    bracketsLocation = indexLocation.substring(0, indexLocation.length - "src/".length),
                     basicLessLocation = bracketsLocation + "test/spec/ExtensionUtils-test-files/basic.less";
 
                 result =await loadStyleSheet(testWindow.document, basicLessLocation);
