@@ -143,7 +143,7 @@
             //        http://stackoverflow.com/questions/11425209/are-dom-mutation-observers-slower-than-dom-mutation-events
             //
             // TODO: This is just a temporary 'cross-browser' solution, it needs optimization.
-            let currentPollTime = 0, maxPollTime = 10000, pollInterval = 50;
+            let currentPollTime = 0, maxPollTime = 20000, pollInterval = 50;
             self.loadTimers[href] = setInterval(function () {
                 let i;
                 if(currentPollTime > maxPollTime) {
