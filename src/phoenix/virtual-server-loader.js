@@ -55,10 +55,12 @@ window.fsServerUrl = _getBaseURL() + getRoute() + "/";
 
 function _isServiceWorkerLoaderPage() {
     // only http(s)://x.y.z/ or http(s)://x.y.z/index.html can load service worker, or localhost/src for dev builds
-    let indexUrl = `${location.origin}/index.html`,
+    const indexUrl = `${location.origin}/index.html`,
         baseUrl = `${location.origin}/`,
-        devURL = 'http://localhost:8000/src/';
-    return (location.href === baseUrl || location.href === indexUrl || location.href === devURL);
+        devURL = 'http://localhost:8000/src/',
+        currentURL = _getBaseURL();
+    console.log("currentURL", currentURL, indexUrl, baseUrl, devURL);
+    return (currentURL === baseUrl || currentURL === indexUrl || currentURL === devURL);
 }
 
 async function shouldUpdate() {

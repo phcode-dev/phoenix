@@ -588,7 +588,7 @@ define(function (require, exports, module) {
             }
         }
 
-        let _testWindowURL = getBracketsSourceRoot() + "/index.html?" + params.toString();
+        let _testWindowURL = getBracketsSourceRoot() + "?" + params.toString();
         if(!_testWindow){
             _testWindow = window.open(_testWindowURL, "_blank", optionsStr);
         } else{
