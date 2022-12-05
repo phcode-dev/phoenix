@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         });
     });
 
-    describe("integration:integration test framework suite test", function() {
+    describe("integration:integration test category works test", function() {
 
         it("should pass", function() {
             expect(true).toBeTruthy();
