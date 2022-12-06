@@ -91,12 +91,6 @@ define(function (require, exports, module) {
     }
 
     function openFolder () {
-        if(!window.showOpenFilePicker){
-            showErrorDialogue(
-                Strings.UNSUPPORTED_BROWSER,
-                Strings.UNSUPPORTED_BROWSER_OPEN_FOLDER
-            );
-        }
         CommandManager.execute(Commands.FILE_OPEN_FOLDER).then(closeDialogue);
     }
 
