@@ -302,7 +302,7 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                 "SpecRunnerUtils.openProjectFiles " + fileName, 1000);
 
-            await awaits(500);
+            await awaits(300);
             expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
 
             let curDoc =  DocumentManager.getCurrentDocument();
@@ -325,6 +325,45 @@ define(function (require, exports, module) {
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world awesome!");
+            await endPreviewSession();
+        });
+
+        it("should Live preview push html class changes to browser", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html", 1000);
+
+            await awaits(300);
+
+            expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
+
+            let curDoc =  DocumentManager.getCurrentDocument();
+
+            // add a class
+            curDoc.replaceRange("addClass ", {line: 11, ch: 22});
+            let testId = testWindow.document.getElementById("panel-live-preview-frame")
+                .contentDocument.getElementById("testId");
+            await awaitsFor(
+                function isClassChanged() {
+                    return testId.classList.contains("addClass");
+                },
+                "replaceClass",
+                2000
+            );
+
+            // remove a class
+            curDoc.replaceRange("", {line: 11, ch: 22}, {line: 11, ch: 31});
+            await awaitsFor(
+                function isClassChanged() {
+                    return !testId.classList.contains("addClass");
+                },
+                "replaceClass",
+                2000
+            );
+
             await endPreviewSession();
         });
 
