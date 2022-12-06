@@ -752,7 +752,7 @@ define({
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "現在のフォルダーには、{APP_NAME}でサポートされていないタイプのグラフィックファイルがあります。<br/>ここで、特定のファイルタイプを外部エディターに関連付けることができます。関連付けが完了すると、xd、.psd、.jpg、.png、.ai、.svgなどのグラフィックファイルをファイルツリーでダブルクリックすることで、デフォルトのアプリケーションで開くことができます。<br/><br/>「OK」ボタンをクリックして、グラフィックファイルタイプをそれぞれのデフォルトアプリケーションに関連付けてください。",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "次のファイルタイプが、デフォルトのアプリケーションに関連付けられました。<br/>{0} この設定は、brackets.json でファイルタイプの関連付けを削除し、新しい関連付けを追加するか、デバッグ／環境設定ファイルを開くメニューにアクセスして変更できます。",
   "UNSUPPORTED_BROWSER": "ブラウザはサポートされていません",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "ブラウザはフォルダを開くことをサポートしていません",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "ブラウザはフォルダを開くことをサポートしていません。ローカル フォルダを開くには、Chrome、Edge、または Opera を使用してください。",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "以下のサポートされているブラウザのいずれかを使用してください。",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " より多くのブラウザーで Phoenix を利用できるようにするために、私たちは懸命に取り組んでいます。このダイアログを閉じることはできますが、このブラウザーでは Phoenix の一部の機能が動作しません。",
   "CANNOT_PUBLISH_LARGE_PROJECT": "大規模なプロジェクトを発行できません",

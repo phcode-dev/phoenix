@@ -752,7 +752,7 @@ define({
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Geçerli klasörünüzde {APP_NAME} tarafından desteklenmeyen grafik dosyası türleri var.<br/> Artık belirli dosya türlerini harici düzenleyicilerle ilişkilendirebilirsiniz. İlişkilendirildikten sonra, Dosya Ağacındaki dosyalara çift tıklayarak .xd, .psd, .jpg, .png, .ai, .svg gibi grafik dosyalarını varsayılan uygulamalarında açabilirsiniz.<br/><br/> Grafik dosya türlerini ilgili varsayılan uygulamalarıyla ilişkilendirmek için lütfen &#39;Tamam&#39; düğmesine tıklayın.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Aşağıdaki dosya türleri, varsayılan uygulamalarla başarıyla ilişkilendirilmiştir.<br/> {0} &quot;Debug-&gt;Open Preferences File&quot; menüsüne giderek parantez.json içindeki yeni dosya türü ilişkilendirmelerini silme/ekleme konusundaki tercihinizi değiştirebilirsiniz.",
   "UNSUPPORTED_BROWSER": "Tarayıcı Desteklenmiyor",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Tarayıcı Açık klasörü desteklemiyor",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Tarayıcı Açık klasörü desteklemiyor. Yerel klasörleri açmak için lütfen Chrome, Edge veya Opera kullanın.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Lütfen aşağıdaki desteklenen tarayıcılardan birini kullanın.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Phoenix'i daha fazla tarayıcıda kullanılabilir hale getirmek için çok çalışıyoruz. Bu diyaloğu kapatabilirsiniz, ancak Phoenix'teki bazı özellikler bu tarayıcıda çalışmayacaktır.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "Büyük Proje Yayınlanamıyor",

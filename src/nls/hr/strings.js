@@ -752,7 +752,7 @@ define({
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Vaša trenutačna mapa sadrži vrste grafičkih datoteka koje {APP_NAME} ne podržava.<br/> Sada možete pridružiti određene vrste datoteka s vanjskim uređivačima. Nakon povezivanja, možete otvoriti grafičke datoteke kao što su .xd, .psd, .jpg, .png, .ai, .svg u njihovim zadanim aplikacijama dvostrukim klikom na datoteke u stablu datoteka.<br/><br/> Molimo kliknite na gumb &#39;U redu&#39; da povežete vrste grafičkih datoteka s njihovim odgovarajućim zadanim aplikacijama.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Sljedeće vrste datoteka uspješno su povezane sa zadanim aplikacijama.<br/> {0} Imate opciju promijeniti svoje preferencije o tome želite li izbrisati/dodati nove asocijacije vrsta datoteka u brackets.json odlaskom na izbornik &quot;Debug-&gt;Open Preferences File&quot;.",
   "UNSUPPORTED_BROWSER": "Preglednik nije podržan",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Preglednik ne podržava Open folder",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Preglednik ne podržava Open folder. Koristite Chrome, Edge ili Operu za otvaranje lokalnih mapa.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Koristite jedan od podržanih preglednika u nastavku.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Radimo na tome da Phoenix bude dostupan u više preglednika. Možete zatvoriti ovaj dijalog, ali neke značajke u Phoenixu neće raditi u ovom pregledniku.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "Nije moguće objaviti veliki projekt",

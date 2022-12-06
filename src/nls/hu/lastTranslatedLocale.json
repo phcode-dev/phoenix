@@ -732,7 +732,7 @@
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Jelenlegi mappájában olyan grafikus fájltípusok találhatók, amelyeket a(z) {APP_NAME} nem támogat.<br/> Mostantól bizonyos fájltípusokat társíthat külső szerkesztőkkel. A társítás után megnyithat olyan grafikus fájlokat, mint az .xd, .psd, .jpg, .png, .ai, .svg az alapértelmezett alkalmazásokban, ha duplán kattint a fájlokra a Fájlfában.<br/><br/> Kattintson az &#39;Ok&#39; gombra, hogy a grafikus fájltípusokat a megfelelő alapértelmezett alkalmazásokhoz társítsa.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "A következő fájltípusok sikeresen társításra kerültek az alapértelmezett alkalmazásokhoz.<br/> {0} A „Debug-&gt;Open Preferences File” menüben módosíthatja a brackets.json fájltípus-társítások törlésére/adására vonatkozó beállításait.",
   "UNSUPPORTED_BROWSER": "A böngésző nem támogatott",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "A böngésző nem támogatja a Mappa megnyitását",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "A böngésző nem támogatja a Mappa megnyitását. A helyi mappák megnyitásához használja a Chrome, Edge vagy Opera alkalmazást.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Kérjük, használja az alábbi támogatott böngészők egyikét.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Keményen dolgozunk azon, hogy a Phoenix több böngészőben is elérhető legyen. Bezárhatja ezt a párbeszédpanelt, de a Phoenix egyes funkciói nem működnek ebben a böngészőben.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "A nagy projektet nem lehet közzétenni",

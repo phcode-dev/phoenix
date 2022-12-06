@@ -752,7 +752,7 @@ define({
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Jūsu pašreizējā mapē ir grafisko failu tipi, kurus neatbalsta lietotne {APP_NAME}.<br/> Tagad konkrētus failu tipus varat saistīt ar ārējiem redaktoriem. Pēc pievienošanas varat atvērt grafiskos failus, piemēram, .xd, .psd, .jpg, .png, .ai, .svg to noklusējuma lietojumprogrammās, veicot dubultklikšķi uz failiem failu kokā.<br/><br/> Lūdzu, noklikšķiniet uz pogas &quot;Labi&quot;, lai saistītu grafisko failu tipus ar to attiecīgajām noklusējuma lietojumprogrammām.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Tālāk norādītie failu tipi ir veiksmīgi saistīti ar noklusējuma lietojumprogrammām.<br/> {0} Jums ir iespēja mainīt preferences attiecībā uz to, vai failā brackets.json dzēst/pievienot jaunas failu tipu asociācijas, atverot izvēlni “Atkļūdošana-&gt; Atvērt preferenču failu”.",
   "UNSUPPORTED_BROWSER": "Pārlūkprogramma netiek atbalstīta",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Pārlūks neatbalsta Atvērt mapi",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Pārlūkprogramma neatbalsta Atvērt mapi. Lūdzu, izmantojiet pārlūku Chrome, Edge vai Opera, lai atvērtu vietējās mapes.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Lūdzu, izmantojiet kādu no tālāk norādītajām atbalstītajām pārlūkprogrammām.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Mēs smagi strādājam, lai Phoenix būtu pieejams vairākās pārlūkprogrammās. Varat aizvērt šo dialogu, taču dažas Phoenix funkcijas nedarbosies šajā pārlūkprogrammā.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "Nevar publicēt lielu projektu",

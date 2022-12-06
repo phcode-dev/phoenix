@@ -732,7 +732,7 @@
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "현재 폴더에 {APP_NAME}에서 지원하지 않는 그래픽 파일 형식이 있습니다.<br/> 이제 특정 파일 형식을 외부 편집기와 연결할 수 있습니다. 연결되면 파일 트리에서 파일을 두 번 클릭하여 기본 응용 프로그램에서 .xd, .psd, .jpg, .png, .ai, .svg와 같은 그래픽 파일을 열 수 있습니다.<br/><br/> 그래픽 파일 형식을 해당 기본 응용 프로그램과 연결하려면 &#39;확인&#39; 버튼을 클릭하십시오.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "다음 파일 형식이 기본 응용 프로그램과 성공적으로 연결되었습니다.<br/> {0} &#39;디버그-&gt;기본 설정 파일 열기&#39; 메뉴로 이동하여 brackets.json에서 새 파일 유형 연결을 삭제/추가할지 여부에 대한 기본 설정을 변경할 수 있는 옵션이 있습니다.",
   "UNSUPPORTED_BROWSER": "브라우저가 지원되지 않음",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "브라우저는 폴더 열기를 지원하지 않습니다",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "브라우저는 폴더 열기를 지원하지 않습니다. 로컬 폴더를 열려면 Chrome, Edge 또는 Opera를 사용하세요.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "아래 지원되는 브라우저 중 하나를 사용하십시오.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " 우리는 더 많은 브라우저에서 Phoenix를 사용할 수 있도록 열심히 노력하고 있습니다. 이 대화 상자를 닫을 수 있지만 Phoenix의 일부 기능은 이 브라우저에서 작동하지 않습니다.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "대규모 프로젝트를 게시할 수 없음",
