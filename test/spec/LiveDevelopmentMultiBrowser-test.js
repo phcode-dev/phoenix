@@ -19,12 +19,13 @@
  *
  */
 
-/*global describe, xit, beforeAll, afterAll, afterEach, awaitsFor, it, awaitsForDone, expect */
+/*global describe, xit, beforeAll, afterAll, afterEach, awaitsFor, it, awaitsForDone, expect, awaits */
 
 define(function (require, exports, module) {
 
 
-    const SpecRunnerUtils = require("spec/SpecRunnerUtils");
+    const SpecRunnerUtils = require("spec/SpecRunnerUtils"),
+        PhoenixCommSpecRunner = require("utils/PhoenixComm");
 
     describe("livepreview:MultiBrowser Live Preview", function () {
 
@@ -42,6 +43,17 @@ define(function (require, exports, module) {
             return str.replace(allSpacesRE, " ");
         }
 
+        async function getSourceFromBrowser(liveDoc) {
+            let doneSyncing = false, browserText;
+            liveDoc.getSourceFromBrowser().done(function (text) {
+                browserText = text;
+            }).always(function () {
+                doneSyncing = true;
+            });
+            await awaitsFor(function () { return doneSyncing; }, "Browser to sync changes", 5000);
+            return browserText;
+        }
+
         beforeAll(async function () {
             // Create a new window that will be shared by ALL tests in this spec.
             if (!testWindow) {
@@ -57,8 +69,8 @@ define(function (require, exports, module) {
         });
 
         afterAll(function () {
-            //LiveDevelopment.close(); todo remove this
-            //SpecRunnerUtils.closeTestWindow();
+            LiveDevMultiBrowser.close();
+            SpecRunnerUtils.closeTestWindow();
             testWindow = null;
             brackets = null;
             LiveDevMultiBrowser = null;
@@ -71,8 +83,7 @@ define(function (require, exports, module) {
                 "closing all file");
         });
 
-        async function waitsForLiveDevelopmentToOpen() {
-            LiveDevMultiBrowser.open();
+        async function waitsForLiveDevelopmentFileSwitch() {
             await awaitsFor(
                 function isLiveDevelopmentActive() {
                     return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
@@ -81,6 +92,24 @@ define(function (require, exports, module) {
                 5000
             );
         }
+
+        async function waitsForLiveDevelopmentToOpen() {
+            LiveDevMultiBrowser.open();
+            await waitsForLiveDevelopmentFileSwitch();
+        }
+
+        it("should there be no phoenix window open for live preview test to work", async function () {
+            let instanceDetails = PhoenixCommSpecRunner.getAllInstanceDetails();
+            expect(Object.keys(instanceDetails).length).toEqual(1);
+            //open a file
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+
+            expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
+            LiveDevMultiBrowser.close();
+        });
 
         it("should establish a browser connection for an opened html file", async function () {
             //open a file
@@ -228,16 +257,8 @@ define(function (require, exports, module) {
             localText += styleTextAdd;
             curDoc.setText(localText);
             liveDoc = LiveDevMultiBrowser.getLiveDocForPath(testFolder + "/simple1.css");
-            let doneSyncing = false;
-            liveDoc.getSourceFromBrowser().done(function (text) {
-                browserText = text;
-                // In LiveDocument._updateBrowser, we replace relative url()s with an absolute equivalent
-                // Strip the leading http://127.0.0.1:port part so we can compare browser and editor text
-                browserText = browserText.replace(/url\('http:\/\/127\.0\.0\.1:\d+\/import1\.css'\);/, "url('import1.css');");
-            }).always(function () {
-                doneSyncing = true;
-            });
-            await awaitsFor(function () { return doneSyncing; }, "Browser to sync changes", 5000);
+            browserText = await getSourceFromBrowser(liveDoc);
+            browserText = browserText.replace(/url\('http:\/\/127\.0\.0\.1:\d+\/import1\.css'\);/, "url('import1.css');");
 
             expect(fixSpaces(browserText).includes(fixSpaces(styleTextAdd))).toBeTrue();
             LiveDevMultiBrowser.close();
@@ -261,13 +282,7 @@ define(function (require, exports, module) {
             localText += "\n .testClass { background-color:#090; }\n";
             curDoc.setText(localText);
             liveDoc = LiveDevMultiBrowser.getLiveDocForPath(testFolder + "/sub/test.css");
-            var doneSyncing = false;
-            liveDoc.getSourceFromBrowser().done(function (text) {
-                browserText = text;
-            }).always(function () {
-                doneSyncing = true;
-            });
-            await awaitsFor(function () { return doneSyncing; }, "Browser to sync changes", 5000);
+            browserText = await getSourceFromBrowser(liveDoc);
 
             // Drop the port from 127.0.0.1:port so it's easier to work with
             browserText = browserText.replace(/127\.0\.0\.1:\d+/, "127.0.0.1");
@@ -278,5 +293,70 @@ define(function (require, exports, module) {
             expect(browserText).toContain(".sub { background: url(file:///fake.png); }");
             LiveDevMultiBrowser.close();
         });
+
+        async function _editFileAndVerifyLivePreview(fileName, location, editText, verifyID, verifyText) {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                "SpecRunnerUtils.openProjectFiles " + fileName, 1000);
+
+            await awaits(500);
+            expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
+
+            let curDoc =  DocumentManager.getCurrentDocument();
+            curDoc.replaceRange(editText, location);
+            let testId = testWindow.document.getElementById("panel-live-preview-frame")
+                .contentDocument.getElementById(verifyID);
+            await awaitsFor(
+                function isTextChanged() {
+                    return testId.textContent === verifyText;
+                },
+                "relatedDocuments.done.received",
+                2000
+            );
+        }
+
+        it("should Live preview push html file changes to browser", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world awesome!");
+            LiveDevMultiBrowser.close();
+        });
+
+        it("should Live preview work even if we switch html files", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world awesome!");
+            await _editFileAndVerifyLivePreview("simple2.html", {line: 11, ch: 45}, 'hello world ',
+                "simpId", "Brackets is hello world awesome!");
+            // now switch back to old file
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world hello world awesome!");
+            LiveDevMultiBrowser.close();
+        }, 5000);
+
+        it("should Markdown files be previewed and switched between live previews", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world awesome!");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+            await awaits(500);
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.srcdoc.includes("This is a markdown file")).toBeTrue();
+
+            // now switch back to old file
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world hello world awesome!");
+            LiveDevMultiBrowser.close();
+        }, 5000);
     });
 });
