@@ -281,11 +281,16 @@ define(function (require, exports, module) {
         }
     }
 
-    function _projectFileChanges(evt, changedFile) {
+    async function _projectFileChanges(evt, changedFile) {
         if(changedFile && changedFile.isFile && changedFile.fullPath && changedFile.fullPath !== '/fs/app/state.json'){
             // we are getting this change event somehow.
             // bug, investigate why we get this change event as a project file change.
-            _loadPreview(true);
+            const previewDetails = await utils.getPreviewDetails();
+            if(!(LiveDevelopment.isActive() && previewDetails.isHTMLFile)) {
+                // We force reload live preview on save for all non html preview-able file or
+                // if html file and live preview isnt active.
+                _loadPreview(true);
+            }
             _showPopoutNotificationIfNeeded(changedFile.fullPath);
         }
     }
