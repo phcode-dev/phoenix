@@ -71,8 +71,8 @@ define(function (require, exports, module) {
         });
 
         afterAll(function () {
-            //LiveDevMultiBrowser.close(); todo
-            //SpecRunnerUtils.closeTestWindow();
+            LiveDevMultiBrowser.close();
+            SpecRunnerUtils.closeTestWindow();
             testWindow = null;
             brackets = null;
             LiveDevMultiBrowser = null;
@@ -361,6 +361,45 @@ define(function (require, exports, module) {
                     return !testId.classList.contains("addClass");
                 },
                 "replaceClass",
+                2000
+            );
+
+            await endPreviewSession();
+        });
+
+        it("should Live preview push html attribute changes to browser", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html", 1000);
+
+            await awaits(300);
+
+            expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
+
+            let curDoc =  DocumentManager.getCurrentDocument();
+
+            // add an attribute
+            curDoc.replaceRange(' hello="world" ', {line: 11, ch: 15});
+            let testId = testWindow.document.getElementById("panel-live-preview-frame")
+                .contentDocument.getElementById("testId");
+            await awaitsFor(
+                function isAttributeAdded() {
+                    return testId.getAttribute("hello") === "world";
+                },
+                "attribute add",
+                2000
+            );
+
+            // remove the attribute
+            curDoc.replaceRange("", {line: 11, ch: 15}, {line: 11, ch: 30});
+            await awaitsFor(
+                function isClassChanged() {
+                    return testId.getAttribute("hello") !== "world";
+                },
+                "attribute remove",
                 2000
             );
 
