@@ -752,7 +752,7 @@ define({
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Vaše aktuální složka obsahuje typy grafických souborů, které aplikace {APP_NAME} nepodporuje.<br/> Nyní můžete přidružit konkrétní typy souborů k externím editorům. Po přiřazení můžete otevřít grafické soubory jako .xd, .psd, .jpg, .png, .ai, .svg v jejich výchozích aplikacích dvojitým kliknutím na soubory ve Stromu souborů.<br/><br/> Kliknutím na tlačítko „OK“ přiřadíte typy grafických souborů k jejich příslušným výchozím aplikacím.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Následující typy souborů byly úspěšně spojeny s výchozími aplikacemi.<br/> (",
   "UNSUPPORTED_BROWSER": "Prohlížeč není podporován",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Prohlížeč nepodporuje Otevřít složku",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Prohlížeč nepodporuje Otevřít složku. K otevření místních složek použijte Chrome, Edge nebo Opera.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Použijte prosím jeden z níže uvedených podporovaných prohlížečů.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Usilovně pracujeme na zpřístupnění Phoenixu ve více prohlížečích. Tento dialog můžete zavřít, ale některé funkce ve Phoenixu nebudou v tomto prohlížeči fungovat.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "Nelze publikovat velký projekt",

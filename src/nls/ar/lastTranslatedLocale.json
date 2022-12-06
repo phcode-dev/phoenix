@@ -732,7 +732,7 @@
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "يحتوي مجلدك الحالي على أنواع ملفات رسومية لا يدعمها {APP_NAME}.<br/> يمكنك الآن ربط أنواع ملفات معينة بالمحررين الخارجيين. بمجرد الارتباط ، يمكنك فتح ملفات الرسوم مثل .xd ، .psd ، .jpg ، .png ، .ai ، .svg في تطبيقاتهم الافتراضية عن طريق النقر المزدوج على الملفات الموجودة في File Tree.<br/><br/> الرجاء النقر فوق الزر &quot;موافق&quot; لربط أنواع ملفات الرسوم بالتطبيقات الافتراضية الخاصة بكل منها.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "تم ربط أنواع الملفات التالية بالتطبيقات الافتراضية بنجاح.<br/> {0} لديك خيار تغيير تفضيلاتك بشأن ما إذا كنت ستحذف / تضيف اقترانات نوع ملف جديد في brackets.json بالانتقال إلى قائمة &quot;Debug-&gt; Open Preferences File&quot;.",
   "UNSUPPORTED_BROWSER": "المستعرض غير مدعوم",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "لا يدعم المستعرض فتح المجلد",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "لا يدعم المستعرض فتح المجلد. الرجاء استخدام Chrome أو Edge أو Opera لفتح المجلدات المحلية.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "الرجاء استخدام أحد المتصفحات المدعومة أدناه.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " نحن نعمل بجد لجعل Phoenix متاحًا في المزيد من المتصفحات. يمكنك إغلاق هذا الحوار ، لكن بعض الميزات في Phoenix لن تعمل في هذا المستعرض.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "لا يمكن نشر مشروع كبير",

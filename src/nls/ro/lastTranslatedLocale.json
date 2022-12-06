@@ -732,7 +732,7 @@
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Dosarul dvs. actual are tipuri de fișiere grafice care nu sunt acceptate de {APP_NAME}.<br/> Acum puteți asocia anumite tipuri de fișiere cu editori externi. Odată asociate, puteți deschide fișiere grafice precum .xd, .psd, .jpg, .png, .ai, .svg în aplicațiile lor implicite făcând dublu clic pe fișierele din Arborele de fișiere.<br/><br/> Vă rugăm să faceți clic pe butonul „Ok” pentru a asocia tipurile de fișiere grafice cu aplicațiile implicite respective.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Următoarele tipuri de fișiere au fost asociate cu succes cu aplicațiile implicite.<br/> {0} Aveți opțiunea de a vă schimba preferințele dacă ștergeți/adăugați noi asociații de tip de fișier în brackets.json, accesând meniul „Debug-&gt;Open Preferences File”.",
   "UNSUPPORTED_BROWSER": "Browserul nu este acceptat",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browserul nu acceptă Open folder",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browserul nu acceptă Open folder. Utilizați Chrome, Edge sau Opera pentru a deschide folderele locale.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Vă rugăm să utilizați unul dintre browserele acceptate de mai jos.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Lucrăm din greu pentru a face Phoenix disponibil în mai multe browsere. Puteți închide acest dialog, dar unele funcții din Phoenix nu vor funcționa în acest browser.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "Nu se poate publica un proiect mare",

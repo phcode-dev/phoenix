@@ -732,7 +732,7 @@
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Je huidige map bevat grafische bestandstypen die niet worden ondersteund door {APP_NAME}.<br/> U kunt nu specifieke bestandstypen koppelen aan externe editors. Eenmaal gekoppeld, kunt u grafische bestanden zoals .xd, .psd, .jpg, .png, .ai, .svg openen in hun standaardtoepassingen door te dubbelklikken op de bestanden in de bestandsstructuur.<br/><br/> Klik op de knop &#39;Ok&#39; om de grafische bestandstypen te koppelen aan hun respectievelijke standaardtoepassingen.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "De volgende bestandstypen zijn met succes gekoppeld aan standaardtoepassingen.<br/> {0} U heeft de mogelijkheid om uw voorkeur voor het verwijderen/toevoegen van nieuwe bestandstypeassociaties tussen haakjes.json te wijzigen door naar het menu &quot;Debug-&gt;Open voorkeurenbestand&quot; te gaan.",
   "UNSUPPORTED_BROWSER": "Browser wordt niet ondersteund",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser ondersteunt Map openen niet",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser ondersteunt Open map niet. Gebruik Chrome, Edge of Opera om lokale mappen te openen.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Gebruik een van de onderstaande ondersteunde browsers.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " We werken er hard aan om Phoenix in meer browsers beschikbaar te maken. U kunt dit dialoogvenster sluiten, maar sommige functies in Phoenix werken niet in deze browser.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "Kan groot project niet publiceren",

@@ -732,7 +732,7 @@
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Ihr aktueller Ordner enthält Grafikdateitypen, die von {APP_NAME} nicht unterstützt werden.<br/> Sie können jetzt bestimmte Dateitypen mit externen Editoren verknüpfen. Nach der Zuordnung können Sie Grafikdateien wie .xd, .psd, .jpg, .png, .ai, .svg in ihren Standardanwendungen öffnen, indem Sie auf die Dateien im Dateibaum doppelklicken.<br/><br/> Bitte klicken Sie auf die Schaltfläche „Ok“, um die Grafikdateitypen mit ihren jeweiligen Standardanwendungen zu verknüpfen.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Die folgenden Dateitypen wurden erfolgreich Standardanwendungen zugeordnet.<br/> {0} Sie haben die Möglichkeit, Ihre Einstellung zu ändern, ob Sie neue Dateitypzuordnungen in Brackets.json löschen/hinzufügen, indem Sie zum Menü „Debuggen -&gt; Voreinstellungsdatei öffnen“ gehen.",
   "UNSUPPORTED_BROWSER": "Browser wird nicht unterstützt",
-  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser unterstützt Ordner öffnen nicht",
+  "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser unterstützt Ordner öffnen nicht. Bitte verwenden Sie Chrome, Edge oder Opera, um lokale Ordner zu öffnen.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Bitte verwenden Sie einen der unten unterstützten Browser.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Wir arbeiten hart daran, Phoenix in mehr Browsern verfügbar zu machen. Sie können diesen Dialog schließen, aber einige Funktionen in Phoenix funktionieren in diesem Browser nicht.",
   "CANNOT_PUBLISH_LARGE_PROJECT": "Großes Projekt kann nicht veröffentlicht werden",
