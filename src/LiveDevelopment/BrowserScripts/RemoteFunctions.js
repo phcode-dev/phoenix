@@ -271,6 +271,8 @@ function RemoteFunctions(config, remoteWSPort) {
                 elementStyling = window.getComputedStyle(element),
                 transitionDuration = parseFloat(elementStyling.getPropertyValue('transition-duration')),
                 animationDuration = parseFloat(elementStyling.getPropertyValue('animation-duration'));
+
+            highlight.trackingElement = element; // save which node are we highlighting
             
             if (transitionDuration) {
                 animateHighlight(transitionDuration);
