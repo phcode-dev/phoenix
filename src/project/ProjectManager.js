@@ -1149,6 +1149,16 @@ define(function (require, exports, module) {
 
         var result = new $.Deferred();
 
+        if(!path && !window.showOpenFilePicker){
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.UNSUPPORTED_BROWSER,
+                Strings.UNSUPPORTED_BROWSER_OPEN_FOLDER
+            );
+            result.reject();
+            return result.promise();
+        }
+
         // Confirm any unsaved changes first. We run the command in "prompt-only" mode, meaning it won't
         // actually close any documents even on success; we'll do that manually after the user also oks
         // the folder-browse dialog.

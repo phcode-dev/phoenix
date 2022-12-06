@@ -919,7 +919,7 @@ define({
 
     // Phoenix extension
     "UNSUPPORTED_BROWSER": "Browser Is Not Supported",
-    "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser does not support Open folder",
+    "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser does not support Open folder. Please use Chrome, Edge or Opera to open local folders.",
     "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Please use one of the supported browsers below.",
     "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " We are working hard to make Phoenix available in more browsers. You may close this dialogue, but some features in Phoenix won't work in this browser.",
     "CANNOT_PUBLISH_LARGE_PROJECT": "Cannot Publish Large Project",
