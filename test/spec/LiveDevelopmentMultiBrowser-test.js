@@ -353,13 +353,13 @@ define(function (require, exports, module) {
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                 "readme.md", 1000);
-            await awaits(500);
+            await awaits(300);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.srcdoc.includes("This is a markdown file")).toBeTrue();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "icon_chevron.png", 1000);
-            await awaits(500);
+            await awaits(300);
             iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith("sub/icon_chevron.png")).toBeTrue();
 
@@ -382,13 +382,13 @@ define(function (require, exports, module) {
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "icon_chevron.png", 1000);
-            await awaits(500);
+            await awaits(300);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith("simple1.html")).toBeTrue();
 
             pinURLBtn.click();
 
-            await awaits(500);
+            await awaits(300);
             iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith("sub/icon_chevron.png")).toBeTrue();
 
@@ -407,7 +407,7 @@ define(function (require, exports, module) {
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
-            await awaits(500);
+            await awaits(300);
             highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
             expect(highlights.length).toBe(1);
             expect(highlights[0].trackingElement.id).toBe("testId");
@@ -429,7 +429,7 @@ define(function (require, exports, module) {
             let editor = EditorManager.getActiveEditor();
             editor.setCursorPos({ line: 2, ch: 6 });
 
-            await awaits(500);
+            await awaits(300);
             highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
             expect(highlights.length).toBe(3);
             expect(highlights[0].trackingElement.classList[0]).toBe("testClass");
@@ -439,7 +439,7 @@ define(function (require, exports, module) {
             editor = EditorManager.getActiveEditor();
             editor.setCursorPos({ line: 0, ch: 1 });
 
-            await awaits(500);
+            await awaits(300);
             highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
             expect(highlights.length).toBe(2);
             expect(highlights[0].trackingElement.classList[0]).toBe("testClass2");
@@ -459,7 +459,7 @@ define(function (require, exports, module) {
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
-            await awaits(500);
+            await awaits(300);
             highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
             expect(highlights.length).toBe(1);
             let originalWidth = highlights[0].style.width;
@@ -469,6 +469,61 @@ define(function (require, exports, module) {
             iFrame.style.width = "100%";
             await awaits(100);
             expect(highlights[0].style.width).toBe(originalWidth);
+
+            await endPreviewSession();
+        }, 5000);
+
+        it("should reverse highlight on clicking on live preview", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+
+            await waitsForLiveDevelopmentToOpen();
+            let editor = EditorManager.getActiveEditor();
+
+            await awaits(300);
+            let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
+            expect(highlights.length).toBe(0);
+
+            iFrame.contentDocument.getElementById("testId2").click();
+            await awaits(300);
+            highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
+            expect(highlights.length).toBe(1);
+            expect(highlights[0].trackingElement.id).toBe("testId2");
+            expect(editor.getCursorPos()).toEql({ line: 12, ch: 0, sticky: null });
+
+            await endPreviewSession();
+        }, 5000);
+
+        it("should reverse highlight open previewed html file if not open on clicking live preview", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaits(300);
+            let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
+            expect(highlights.length).toBe(0);
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all file");
+
+            iFrame.contentDocument.getElementById("testId2").click();
+
+            await awaits(300);
+            // The live previewed file should now be opened in the editor
+            let editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.fullPath.endsWith("simple1.html")).toBeTrue();
+
+            // live highlights should still work
+            iFrame.contentDocument.getElementById("testId").click();
+            await awaits(300);
+
+            highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
+            expect(highlights.length).toBe(1);
+            expect(highlights[0].trackingElement.id).toBe("testId");
+            expect(editor.getCursorPos()).toEql({ line: 11, ch: 0, sticky: null });
 
             await endPreviewSession();
         }, 5000);
