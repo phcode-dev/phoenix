@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, xit, beforeAll, afterAll, awaitsFor, it, awaitsForDone, expect */
+/*global describe, xit, beforeAll, afterAll, afterEach, awaitsFor, it, awaitsForDone, expect */
 
 define(function (require, exports, module) {
 
@@ -32,7 +32,8 @@ define(function (require, exports, module) {
             brackets,
             DocumentManager,
             LiveDevMultiBrowser,
-            LiveDevProtocol;
+            CommandManager,
+            Commands;
 
         var testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
             allSpacesRE = /\s+/gi;
@@ -48,19 +49,26 @@ define(function (require, exports, module) {
                 brackets = testWindow.brackets;
                 DocumentManager = brackets.test.DocumentManager;
                 LiveDevMultiBrowser = brackets.test.LiveDevMultiBrowser;
-                LiveDevProtocol = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol");
+                CommandManager      = brackets.test.CommandManager;
+                Commands            = brackets.test.Commands;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
             }
         });
 
         afterAll(function () {
-            //LiveDevelopment.close();
+            //LiveDevelopment.close(); todo remove this
             //SpecRunnerUtils.closeTestWindow();
             testWindow = null;
             brackets = null;
             LiveDevMultiBrowser = null;
-            LiveDevProtocol = null;
+            CommandManager      = null;
+            Commands            = null;
+        });
+
+        afterEach(async function () {
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all file");
         });
 
         async function waitsForLiveDevelopmentToOpen() {
