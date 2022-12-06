@@ -61,6 +61,11 @@ define(function (require, exports, module) {
         return ['md', 'markdown'].includes(extension.toLowerCase());
     }
 
+    function _isHTMLFile(filePath) {
+        let extension = getExtension(filePath);
+        return ['html', 'htm'].includes(extension.toLowerCase());
+    }
+
     function getNoPreviewURL(){
         return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html`;
     }
@@ -79,7 +84,8 @@ define(function (require, exports, module) {
                         resolve({
                             URL: `${projectRootUrl}${relativePath}`,
                             filePath: relativePath,
-                            fullPath: file.fullPath
+                            fullPath: file.fullPath,
+                            isHTMLFile: _isHTMLFile(file.fullPath)
                         });
                         return;
                     }
@@ -116,7 +122,8 @@ define(function (require, exports, module) {
                             URL: httpFilePath || `${projectRootUrl}${filePath}`,
                             filePath: filePath,
                             fullPath: fullPath,
-                            isMarkdownFile: _isMarkdownFile(fullPath)
+                            isMarkdownFile: _isMarkdownFile(fullPath),
+                            isHTMLFile: _isHTMLFile(fullPath)
                         });
                     } else {
                         resolve({}); // not a previewable file
