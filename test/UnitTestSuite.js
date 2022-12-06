@@ -101,6 +101,7 @@ define(function (require, exports, module) {
     require("spec/BeautificationManager-test");
     require("spec/Template-for-integ-test");
     require("spec/LiveDevelopmentMultiBrowser-test");
+    require("spec/PhoenixComm-integ-test");
     // require("spec/LiveDevelopment-test"); reevaluate after new live preview
     // todo TEST_MODERN
     // require("spec/LanguageTools-test"); LSP tests. disabled for now

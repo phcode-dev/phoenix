@@ -19,7 +19,7 @@
  *
  */
 
-/*global less */
+/*global less, Phoenix */
 
 /**
  * main integrates LiveDevelopment into Brackets
@@ -43,7 +43,6 @@ define(function main(require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         EventDispatcher      = require("utils/EventDispatcher");
 
-    const isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
     var params = new UrlParams();
     var config = {
         experimental: false, // enable experimental features
@@ -131,7 +130,8 @@ define(function main(require, exports, module) {
     }
 
     function openLivePreview() {
-        if (MultiBrowserLiveDev.status <= MultiBrowserLiveDev.STATUS_INACTIVE && !isTestWindow) {
+        if (MultiBrowserLiveDev.status <= MultiBrowserLiveDev.STATUS_INACTIVE
+            && !Phoenix.isTestWindow) {
             MultiBrowserLiveDev.open();
         }
     }

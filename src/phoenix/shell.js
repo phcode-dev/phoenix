@@ -41,9 +41,16 @@ function _getBaseURL() {
     return base;
 }
 
+function _isTestWindow() {
+    const isTestPhoenixWindow = !!(new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
+    const isSpecRunnerWindow = window.location.pathname.endsWith("/SpecRunner.html");
+    return isTestPhoenixWindow || isSpecRunnerWindow;
+}
+
 let Phoenix = {
     browser: getBrowserDetails(),
-    baseURL: _getBaseURL()
+    baseURL: _getBaseURL(),
+    isTestWindow: _isTestWindow()
 };
 let startTime = Date.now();
 

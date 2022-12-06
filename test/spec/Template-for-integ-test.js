@@ -31,6 +31,8 @@ define(function (require, exports, module) {
     let FileViewController,     // loaded from brackets.test
         ProjectManager,         // loaded from brackets.test;
         MainViewManager,
+        CommandManager,
+        Commands,
         testWindow,
         brackets;
 
@@ -39,10 +41,12 @@ define(function (require, exports, module) {
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
-            brackets        = testWindow.brackets;
+            brackets            = testWindow.brackets;
             FileViewController  = brackets.test.FileViewController;
             ProjectManager      = brackets.test.ProjectManager;
             MainViewManager     = brackets.test.MainViewManager;
+            CommandManager      = brackets.test.CommandManager;
+            Commands            = brackets.test.Commands;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
@@ -64,6 +68,8 @@ define(function (require, exports, module) {
                 ));
             const selected = ProjectManager.getSelectedItem();
             expect(selected.fullPath).toBe(testPath + "/simple.js");
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all file");
         });
 
         it("Should open file in project and add to working set", async function () { // #2813
