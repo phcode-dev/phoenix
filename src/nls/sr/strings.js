@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Живи приказ",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Изаберите Филе То Ливе Превиев",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Поново учитај страницу",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Укључи Истакнуто у прегледу уживо",
   "LIVE_DEV_CLICK_POPOUT": "Искачући преглед уживо у новом прозору",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закачи на страницу за преглед откачи",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Живи приказ (не освежава се због грешке у синтакси)",

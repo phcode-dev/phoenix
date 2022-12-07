@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "실시간 미리보기",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "라이브 미리 보기로 파일 선택",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "페이지 새로고침",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "실시간 미리보기 하이라이트 전환",
   "LIVE_DEV_CLICK_POPOUT": "새 창으로 실시간 미리보기 팝업",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "미리보기 페이지 고정 해제에 있는 핀",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "실시간 프리 (구문 오류로 인해 업데이트되지 않습니다)",

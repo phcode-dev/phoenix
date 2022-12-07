@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Živý náhled",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Vyberte Soubor do živého náhledu",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Znovu načíst stránku",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Přepnout zvýraznění živého náhledu",
   "LIVE_DEV_CLICK_POPOUT": "Vyskakovat živý náhled do nového okna",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Připnout na stránku náhledu Odepnout",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Živý náhled (neaktualizováno kvůli chybě v syntaxi)",

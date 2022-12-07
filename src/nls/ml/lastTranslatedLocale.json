@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "തത്സമയ പ്രിവ്യൂ",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "തത്സമയ പ്രിവ്യൂവിലേക്ക് ഫയൽ തിരഞ്ഞെടുക്കുക",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "പേജ് റീലോഡ് ചെയ്യുക",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "ലൈവ് പ്രിവ്യൂ ഹൈലൈറ്റുകൾ ടോഗിൾ ചെയ്യുക",
   "LIVE_DEV_CLICK_POPOUT": "പുതിയ വിൻഡോയിലേക്ക് തത്സമയ പ്രിവ്യൂ പോപ്പ്ഔട്ട് ചെയ്യുക",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "അൺപിൻ പ്രിവ്യൂ പേജിൽ പിൻ ചെയ്യുക",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "തത്സമയ പ്രിവ്യൂ (വാക്യഘടന പിശക് കാരണം അപ്‌ഡേറ്റ് ചെയ്യുന്നില്ല)",

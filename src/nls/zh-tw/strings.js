@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "即時預覽",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "選擇要實時預覽的文件",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "重新加載頁面",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Toggle 實時預覽亮點",
   "LIVE_DEV_CLICK_POPOUT": "彈出實時預覽到新窗口",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "在取消固定預覽頁面上固定",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "即時預覽 (語法錯誤，不更新)",

@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live-Vorschau",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Wählen Sie Datei für Live-Vorschau",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Seite neuladen",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Live-Vorschau-Highlights umschalten",
   "LIVE_DEV_CLICK_POPOUT": "Popout-Live-Vorschau in neues Fenster",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin auf Vorschauseite lösen",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live-Vorschau (Es wird aufgrund eines Syntax-Fehlers nicht aktualisiert)",

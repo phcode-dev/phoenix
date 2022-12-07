@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Prikaz uživo",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Odaberite datoteku za pregled uživo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Ponovno učitaj stranicu",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Uključi/isključi istaknute preglede uživo",
   "LIVE_DEV_CLICK_POPOUT": "Skočni pregled uživo u novi prozor",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Prikvači na Otkvači stranicu pregleda",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Prikaz uživo (ne osvježava se zbog greške u sintaksi)",

@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Podgląd na żywo",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Wybierz plik do podglądu na żywo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Odśwież stronę",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Przełącz najciekawsze podglądy na żywo",
   "LIVE_DEV_CLICK_POPOUT": "Wyskakujący podgląd na żywo w nowym oknie",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Przypnij na Odepnij stronę podglądu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Podgląd na żywo (bez odświeżania - wystąpiły błędy składniowe)",

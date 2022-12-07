@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Преглед на живо",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Изберете File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Презареди страницата",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Превключване на акценти за преглед на живо",
   "LIVE_DEV_CLICK_POPOUT": "Изскачащ преглед на живо в нов прозорец",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Фиксиране на Unpin Preview Page",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Преглед на живо (без обновяване, поради синтактична грешка)",
