@@ -55,3 +55,11 @@
 .reload-icon {
     background: url("./images/sprites.svg#reload-icon") center no-repeat;
 }
+
+.pointer-fill-icon {
+    background: url("./images/sprites.svg#pointer-fill-icon") center no-repeat;
+}
+
+.pointer-icon {
+    background: url("./images/sprites.svg#pointer-icon") center no-repeat;
+}

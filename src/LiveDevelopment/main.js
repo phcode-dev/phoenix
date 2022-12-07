@@ -43,6 +43,8 @@ define(function main(require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         EventDispatcher      = require("utils/EventDispatcher");
 
+    const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
+
     var params = new UrlParams();
     var config = {
         experimental: false, // enable experimental features
@@ -209,6 +211,7 @@ define(function main(require, exports, module) {
 
     function _updateHighlightCheckmark() {
         CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setChecked(config.highlight);
+        exports.trigger(EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, config.highlight);
     }
 
     function _handlePreviewHighlightCommand() {
@@ -304,6 +307,7 @@ define(function main(require, exports, module) {
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
     exports.EVENT_CONNECTION_CLOSE = MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE;
+    exports.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = EVENT_LIVE_HIGHLIGHT_PREF_CHANGED;
 
     // Export public functions
     exports.openLivePreview = openLivePreview;

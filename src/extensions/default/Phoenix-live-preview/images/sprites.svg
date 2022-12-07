@@ -21,8 +21,16 @@
     </g>
 
     <g class="sprite" id="reload-icon" transform="translate(1 2)">
-        <path transform="translate(1 2)" fill="#a0a0a0" fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-        <path transform="translate(1 2)" fill="#a0a0a0"  d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+        <path transform="translate(2 2)" fill="#a0a0a0" fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+        <path transform="translate(2 2)" fill="#a0a0a0"  d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+    </g>
+
+    <g class="sprite" id="pointer-fill-icon" transform="translate(1 2)">
+        <path transform="translate(2 1)" fill="#a0a0a0" d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"/>
+    </g>
+
+    <g class="sprite" id="pointer-icon" transform="translate(1 2)">
+        <path transform="translate(2 1)" fill="#a0a0a0" d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z"/>
     </g>
 
 </svg>
