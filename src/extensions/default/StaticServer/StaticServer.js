@@ -21,6 +21,8 @@
  *
  */
 
+/*global Phoenix */
+
 define(function (require, exports, module) {
 
     const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
@@ -197,6 +199,9 @@ define(function (require, exports, module) {
      * @param {{hostname: string, pathname: string, port: number, root: string, id: number}} request
      */
     StaticServer.prototype._sendInstrumentedContent = function (data) {
+        if(data.phoenixInstanceID && data.phoenixInstanceID !== Phoenix.PHOENIX_INSTANCE_ID) {
+            return;
+        }
         let path = this._documentKey(data.path),
             requestID = data.requestID,
             liveDocument = this._liveDocuments[path];

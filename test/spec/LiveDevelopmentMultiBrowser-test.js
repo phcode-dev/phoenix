@@ -24,8 +24,7 @@
 define(function (require, exports, module) {
 
 
-    const SpecRunnerUtils = require("spec/SpecRunnerUtils"),
-        PhoenixCommSpecRunner = require("utils/PhoenixComm");
+    const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     describe("livepreview:MultiBrowser Live Preview", function () {
 
@@ -101,19 +100,6 @@ define(function (require, exports, module) {
             LiveDevMultiBrowser.open();
             await waitsForLiveDevelopmentFileSwitch();
         }
-
-        it("should there be no phoenix window open for live preview test to work", async function () {
-            let instanceDetails = PhoenixCommSpecRunner.getAllInstanceDetails();
-            expect(Object.keys(instanceDetails).length).toEqual(1);
-            //open a file
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
-
-            await waitsForLiveDevelopmentToOpen();
-
-            expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
-            await endPreviewSession();
-        });
 
         it("should establish a browser connection for an opened html file", async function () {
             //open a file
@@ -462,7 +448,8 @@ define(function (require, exports, module) {
                 "icon_chevron.png", 1000);
             await awaits(300);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith("simple1.html")).toBeTrue();
+            expect(iFrame.src.endsWith(`simple1.html?PHOENIX_INSTANCE_ID=${testWindow.Phoenix.PHOENIX_INSTANCE_ID}`))
+                .toBeTrue();
 
             pinURLBtn.click();
 
