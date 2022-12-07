@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Aperçu en direct",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Sélectionnez le fichier pour l'aperçu en direct",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Rafraîchir la page",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Basculer les faits saillants de l'aperçu en direct",
   "LIVE_DEV_CLICK_POPOUT": "Aperçu instantané en direct dans une nouvelle fenêtre",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Épingler sur la page d'aperçu de détachement",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Aperçu en direct (échec de la mise à jour en raison d’une erreur de syntaxe)",

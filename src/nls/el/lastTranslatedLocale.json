@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Επιλέξτε Αρχείο σε ζωντανή προεπισκόπηση",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Επαναφόρτωση σελίδας",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Εναλλαγή Ζωντανής Προεπισκόπησης Βασικά σημεία",
   "LIVE_DEV_CLICK_POPOUT": "Αναδυόμενη ζωντανή προεπισκόπηση σε νέο παράθυρο",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Καρφίτσωμα στη σελίδα προεπισκόπησης Ξεκαρφίτσωμα",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (αδυναμία ανανέωσης λόγο συντακτικού λάθους)",

@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Vista previa dinámica",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Seleccionar archivo para vista previa en vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Recargar página",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Toggle Destacados de vista previa en vivo",
   "LIVE_DEV_CLICK_POPOUT": "Vista previa emergente en vivo a una nueva ventana",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin en Unpin Preview Page",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Vista previa dinámica (no se está actualizando debido a un error de sintaxis)",

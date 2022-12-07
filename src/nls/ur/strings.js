@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "لائیو پیش نظارہ",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "براہ راست پیش نظارہ کے لیے فائل کو منتخب کریں۔",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "صفحہ دوبارہ لوڈ کریں۔",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "لائیو پیش نظارہ کی جھلکیاں ٹوگل کریں۔",
   "LIVE_DEV_CLICK_POPOUT": "نئی ونڈو میں لائیو پیش نظارہ پاپ آؤٹ کریں۔",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "ان پن پیش نظارہ صفحہ پر پن کریں۔",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "لائیو پیش نظارہ (نحوی غلطی کی وجہ سے اپ ڈیٹ نہیں ہو رہا)",

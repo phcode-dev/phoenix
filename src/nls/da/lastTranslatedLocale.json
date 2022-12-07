@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live-Forhåndsvisning",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Vælg Fil til Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Genindlæs siden",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Slå Live Preview-højdepunkter til/fra",
   "LIVE_DEV_CLICK_POPOUT": "Popout Live Preview til nyt vindue",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fastgør på Unpin preview-siden",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live-Forhåndsvisning (opdatering standset grundet syntaksfejl)",

@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "ライブプレビュー",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "プレビューするファイルを選択",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "ページのリロード",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "ライブ プレビュー ハイライトの切り替え",
   "LIVE_DEV_CLICK_POPOUT": "ライブプレビューを新しいウィンドウにポップアウト",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "ボード「Preview Page」のピン",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "ライブプレビュー (シンタックスエラーのため更新されません)",

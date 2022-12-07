@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Esikatselu",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Valitse Tiedosto live-esikatseluun",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Lataa sivu uudelleen",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Vaihda live-esikatselun kohokohdat päälle/pois",
   "LIVE_DEV_CLICK_POPOUT": "Avaa live-esikatselu uuteen ikkunaan",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Kiinnitä esikatselusivulle",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Esikatselu (ei päivity syntaksivirheen takia)",

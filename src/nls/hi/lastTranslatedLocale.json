@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "सजीव पूर्वावलोकन",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "लाइव पूर्वावलोकन के लिए फ़ाइल का चयन करें",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "पृष्ठ पुनः लोड करें",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "लाइव पूर्वावलोकन हाइलाइट्स को टॉगल करें",
   "LIVE_DEV_CLICK_POPOUT": "नई विंडो में पॉपआउट लाइव पूर्वावलोकन",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "पूर्वावलोकन पृष्ठ को अनपिन करें पर पिन करें",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "लाइव पूर्वावलोकन (सिंटैक्स त्रुटि के कारण अपडेट नहीं हो रहा है)",

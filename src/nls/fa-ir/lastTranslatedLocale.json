@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "پیش نمایش زنده",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "File To Live Preview را انتخاب کنید",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "بارگذاری مجدد صفحه",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "موارد برجسته پیش‌نمایش زنده را تغییر دهید",
   "LIVE_DEV_CLICK_POPOUT": "پیش نمایش زنده پنجره بازشو به پنجره جدید",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "پین کردن صفحه پیش‌نمایش لغو پین",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "پیش نمایش زنده (به دلیل خطا در سینتکس، بروزرسانی نشده است)",

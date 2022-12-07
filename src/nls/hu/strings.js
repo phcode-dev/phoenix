@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Élő Előnézet",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Válassza a File To Live Preview lehetőséget",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Oldal újratöltése",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Kapcsolja be az Élő előnézeti kiemeléseket",
   "LIVE_DEV_CLICK_POPOUT": "Élő előnézet megnyitása új ablakba",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Rögzítés a rögzítés feloldása előnézeti oldalon",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Élő előnézet (szintaktikai hiba miatt nem frissül)",

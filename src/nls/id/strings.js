@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Tinjauan Langsung",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Pilih File Untuk Pratinjau Langsung",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Muat Ulang Halaman",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Alihkan Sorotan Pratinjau Langsung",
   "LIVE_DEV_CLICK_POPOUT": "Pratinjau Langsung Popout Ke Jendela Baru",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin di Lepas sematan Halaman Pratinjau",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Tinjauan Langsung (gagal memperbarui karena kesalahan sintaks)",

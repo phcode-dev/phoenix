@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Виберіть «Файл для попереднього перегляду».",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Перезавантажити сторінку",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Увімкнути/перемкнути попередній перегляд основних моментів",
   "LIVE_DEV_CLICK_POPOUT": "Попередній перегляд у спливаючому режимі в новому вікні",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закріпити на сторінці попереднього перегляду",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (не оновлюється, якщо є помилки)",

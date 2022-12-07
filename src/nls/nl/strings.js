@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Voorbeeld",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selecteer bestand voor live voorbeeld",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Herlaad pagina",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Schakel Live Preview-hoogtepunten in",
   "LIVE_DEV_CLICK_POPOUT": "Pop-out live voorbeeld naar nieuw venster",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin op Preview Page losmaken",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Voorbeeld (niet bezig met updaten door een verkeerde syntax)",

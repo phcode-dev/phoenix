@@ -108,6 +108,7 @@ define({
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Previzualizare interactivă",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selectați File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Reîncarcă pagina",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Comutați Previzualizarea live",
   "LIVE_DEV_CLICK_POPOUT": "Previzualizare în timp real la o fereastră nouă",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fixați pe Anulați fixarea paginii de previzualizare",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (nu poate fi reînnoit din cauza unei erori de sintaxă)",

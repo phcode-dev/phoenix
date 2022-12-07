@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selecione o arquivo para visualização ao vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Recarregar página",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Alternar destaques da visualização ao vivo",
   "LIVE_DEV_CLICK_POPOUT": "Visualização ao vivo de pop-up para nova janela",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fixar na página de visualização de desafixação",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (atualização interrompida devido a erro de sintaxe)",

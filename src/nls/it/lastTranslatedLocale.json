@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Anteprima Live",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Seleziona File in anteprima dal vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Ricarica la pagina",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Attiva/disattiva i momenti salienti dell'anteprima dal vivo",
   "LIVE_DEV_CLICK_POPOUT": "Anteprima dal vivo popout in una nuova finestra",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Appunta sulla pagina di anteprima Sblocca",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Anteprima Live (non aggiorna a causa di un errore di sintassi)",

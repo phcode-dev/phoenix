@@ -88,6 +88,7 @@
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Canlı Önizleme",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Canlı Önizleme için Dosyayı Seçin",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "SAYFAYI yeniden yuklemek",
+  "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Canlı Önizleme Vurgularını Değiştir",
   "LIVE_DEV_CLICK_POPOUT": "Yeni Pencereye Popout Canlı Önizleme",
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Önizleme Sayfasının Sabitlemesini Kaldır",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Canlı Önizleme (sözdizimi hatası nedeniyle güncellenmiyor)",
