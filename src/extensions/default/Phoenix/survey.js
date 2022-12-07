@@ -21,7 +21,7 @@
 define(function (require, exports, module) {
 
     const TIME_TO_WAIT_BEFORE_SURVEY_SHOW_SEC = 300,
-        SHOWN_VERSION='v3'; // If you like to show the same survey again, just increase the version number to v4...
+        SHOWN_VERSION='v4'; // If you like to show the same survey again, just increase the version number to v5...
     let Dialogs     = brackets.getModule("widgets/Dialogs"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         SurveyTemplate     = require("text!html/survey-template.html"),
