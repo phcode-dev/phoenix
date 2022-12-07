@@ -90,6 +90,7 @@ define(function (require, exports, module) {
         $iframe,
         $panel,
         $pinUrlBtn,
+        $highlightBtn,
         $livePreviewPopBtn,
         $reloadBtn;
 
@@ -140,6 +141,20 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "pinURLBtn", "click");
     }
 
+    function _updateLiveHighlightToggleStatus() {
+        let isHighlightEnabled = CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
+        if(isHighlightEnabled){
+            $highlightBtn.removeClass('pointer-icon').addClass('pointer-fill-icon');
+        } else {
+            $highlightBtn.removeClass('pointer-fill-icon').addClass('pointer-icon');
+        }
+    }
+
+    function _toggleLiveHighlights() {
+        CommandManager.execute(Commands.FILE_LIVE_HIGHLIGHT);
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
+    }
+
     function _popoutLivePreview() {
         if(!tab || tab.closed){
             tab = open();
@@ -164,6 +179,7 @@ define(function (require, exports, module) {
             Strings: Strings,
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
+            toggleLiveHighlight: Strings.LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
             clickToPinUnpin: Strings.LIVE_DEV_CLICK_TO_PIN_UNPIN
         };
@@ -174,7 +190,8 @@ define(function (require, exports, module) {
         $panel = $(Mustache.render(panelHTML, templateVars));
         $iframe = $panel.find("#panel-live-preview-frame");
         $pinUrlBtn = $panel.find("#pinURLButton");
-        $reloadBtn = $panel.find("#reloadButton");
+        $highlightBtn = $panel.find("#highlightLPButton");
+        $reloadBtn = $panel.find("#reloadLivePreviewButton");
         $livePreviewPopBtn = $panel.find("#livePreviewPopoutButton");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
@@ -184,7 +201,9 @@ define(function (require, exports, module) {
             PANEL_MIN_SIZE, $icon, INITIAL_PANEL_SIZE);
 
         WorkspaceManager.recomputeLayout(false);
+        _updateLiveHighlightToggleStatus();
         $pinUrlBtn.click(_togglePinUrl);
+        $highlightBtn.click(_toggleLiveHighlights);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
             LiveDevelopment.closeLivePreview();
@@ -394,6 +413,7 @@ define(function (require, exports, module) {
             // the connection close pool will take some time to settle
             setTimeout(_startOrStopLivePreviewIfRequired, 15000);
         });
+        LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
     });
 });
 

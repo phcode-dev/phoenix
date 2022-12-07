@@ -131,6 +131,7 @@ define({
     "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
     "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Select File To Live Preview",
     "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Reload Page",
+    "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Toggle Live Preview Highlights",
     "LIVE_DEV_CLICK_POPOUT": "Popout Live Preview To New Window",
     "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin on Unpin Preview Page",
     "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (not updating due to syntax error)",
