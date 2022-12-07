@@ -64,7 +64,7 @@ if(!self.Serve){
     const FILE_READ_RETRY_COUNT = 5,
         BACKOFF_TIME_MS = 10;
 
-    const serve = async function (path, formatter, download) {
+    const serve = async function (path, formatter, download, phoenixInstanceID) {
         path = Path.normalize(path);
         return new Promise(async (resolve, reject) => { // eslint-disable-line
             function buildResponse(responseData) {
@@ -91,7 +91,8 @@ if(!self.Serve){
                     _serverBroadcastChannel.postMessage({
                         type: "getInstrumentedContent",
                         path,
-                        requestID
+                        requestID,
+                        phoenixInstanceID
                     });
                     responseListeners[requestID] = function (response) {
                         if(!response.contents){

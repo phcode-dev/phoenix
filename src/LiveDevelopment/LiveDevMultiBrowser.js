@@ -539,7 +539,9 @@ define(function (require, exports, module) {
                         // check for the first connection
                         if (_protocol.getConnectionIds().length === 1) {
                             // check the page that connection comes from matches the current live document session
-                            if (_liveDocument && (msg.url === _resolveUrl(_liveDocument.doc.file.fullPath))) {
+                            const urlWithoutQueryParams = msg.url.split("?")[0].split("#")[0];
+                            if (_liveDocument &&
+                                (urlWithoutQueryParams === _resolveUrl(_liveDocument.doc.file.fullPath))) {
                                 _setStatus(STATUS_ACTIVE);
                             }
                         }

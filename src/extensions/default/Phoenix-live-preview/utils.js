@@ -82,7 +82,7 @@ define(function (require, exports, module) {
                     if(await file.existsAsync()){
                         const relativePath = path.relative(projectRoot, file.fullPath);
                         resolve({
-                            URL: `${projectRootUrl}${relativePath}`,
+                            URL: `${projectRootUrl}${relativePath}?PHOENIX_INSTANCE_ID=${Phoenix.PHOENIX_INSTANCE_ID}`,
                             filePath: relativePath,
                             fullPath: file.fullPath,
                             isHTMLFile: _isHTMLFile(file.fullPath)
@@ -118,8 +118,12 @@ define(function (require, exports, module) {
                     }
                     if(_isPreviewableFile(fullPath)){
                         const filePath = httpFilePath || path.relative(projectRoot, fullPath);
+                        let URL = httpFilePath || `${projectRootUrl}${filePath}`;
+                        if(_isHTMLFile(fullPath)){
+                            URL = URL + `?PHOENIX_INSTANCE_ID=${Phoenix.PHOENIX_INSTANCE_ID}`;
+                        }
                         resolve({
-                            URL: httpFilePath || `${projectRootUrl}${filePath}`,
+                            URL,
                             filePath: filePath,
                             fullPath: fullPath,
                             isMarkdownFile: _isMarkdownFile(fullPath),

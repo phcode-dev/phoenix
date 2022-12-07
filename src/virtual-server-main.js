@@ -127,8 +127,9 @@ workbox.routing.registerRoute(
         // commented Allow passing `?download` or `dl` to have the file downloaded vs. displayed
         // url.searchParams.get('download') !== null ||
         // url.searchParams.get('dl') !== null;
+        const phoenixInstanceID = url.searchParams.get("PHOENIX_INSTANCE_ID");
 
-        return Serve.serve(path, formatter, download);
+        return Serve.serve(path, formatter, download, phoenixInstanceID);
     },
     'GET'
 );
