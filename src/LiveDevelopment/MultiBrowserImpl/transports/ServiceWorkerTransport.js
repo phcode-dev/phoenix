@@ -30,18 +30,28 @@ define(function (require, exports, module) {
 
     const METRIC_SEND_INTERVAL_MS = 1000;
 
-    let transportMessagesCount = 0,
-        transportMessagesSizeB = 0;
+    let transportMessagesRecvCount = 0,
+        transportMessagesSendCount = 0,
+        transportMessagesRecvSizeB = 0,
+        transportMessagesSendSizeB = 0;
 
     // mix panel and Google Analytics is sending too many request and seems to not have client side aggregation
     // like core analytics. So we do our own aggregation and send metrics only atmost once a second.
     // We could remove this once we moe fully to core analytics.
     setInterval(()=>{
-        if(transportMessagesCount > 0){
-            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "transport", "msgCount", transportMessagesCount);
-            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "transport", "msgSizeB", transportMessagesSizeB);
-            transportMessagesCount = 0;
-            transportMessagesSizeB = 0;
+        if(transportMessagesRecvCount > 0){
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "message",
+                "sendCount", transportMessagesSendCount);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "message",
+                "recvCount", transportMessagesRecvCount);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "message",
+                "sentBytes", transportMessagesSendSizeB);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "message",
+                "recvBytes", transportMessagesRecvSizeB);
+            transportMessagesRecvCount = 0;
+            transportMessagesSendCount = 0;
+            transportMessagesRecvSizeB = 0;
+            transportMessagesSendSizeB = 0;
         }
     }, METRIC_SEND_INTERVAL_MS);
 
@@ -87,12 +97,12 @@ define(function (require, exports, module) {
             case 'BROWSER_MESSAGE':
                 const message = event.data.message || "";
                 exports.trigger('message', [event.data.clientID, message]);
-                transportMessagesSizeB = transportMessagesSizeB + message.length;
+                transportMessagesRecvSizeB = transportMessagesRecvSizeB + message.length;
                 break;
             case 'BROWSER_CLOSE': exports.trigger('close', [event.data.clientID]); break;
             default: console.error("ServiceWorkerTransport received unknown message from Browser preview:", event);
             }
-            transportMessagesCount++;
+            transportMessagesRecvCount++;
         };
     };
 
@@ -100,11 +110,15 @@ define(function (require, exports, module) {
         // no-op the broadcast channel is never broken even though live preview may be on or off.
     };
 
-    exports.send = function (...args) {
+    exports.send = function (clientIDs, message) {
+        message = message || "";
         _broadcastChannel.postMessage({
             type: 'MESSAGE_FROM_PHOENIX',
-            args
+            clientIDs,
+            message
         });
+        transportMessagesSendCount ++;
+        transportMessagesSendSizeB = transportMessagesSendSizeB + message.length;
     };
 
 });

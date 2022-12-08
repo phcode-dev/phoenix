@@ -83,8 +83,8 @@
                 case 'BROWSER_CLOSE': break; // do nothing. This is a loopback message from another live preview tab
                 case 'MESSAGE_FROM_PHOENIX':
                     if (self._callbacks && self._callbacks.message) {
-                        const clientIDs = event.data.args[0],
-                            message = event.data.args[1];
+                        const clientIDs = event.data.clientIDs,
+                            message = event.data.message;
                         if(clientIDs.includes(self._clientID) || clientIDs.length === 0){
                             // clientIDs.length = 0 if the message is intended for all clients
                             self._callbacks.message(message);
