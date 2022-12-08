@@ -718,10 +718,6 @@ define(function (require, exports, module) {
             installEditorListeners(current, previous);
         }
 
-        function setJumpPosition(curPos) {
-            EditorManager.getCurrentFullEditor().setCursorPos(curPos.line, curPos.ch, true);
-        }
-
         function JSJumpToDefProvider() {
         }
 
