@@ -91,16 +91,10 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
-    /**
-     * variable that tracks is mark is already present in editor to improve redraw performance on mousemove
-     * @type {boolean}
-     */
-    let marksPresent = false;
-
     function _clearHoverMarkers(editor) {
-        if(marksPresent && editor){
+        if(editor && editor.hoverMarksPresent){
             editor.clearAllMarks(JUMP_TO_DEF_MARKER);
-            marksPresent = false;
+            editor.hoverMarksPresent = false;
         }
     }
 
@@ -110,7 +104,7 @@ define(function (require, exports, module) {
             let jumpToDefProvider = _getJumpToDefProvider(editor, pos);
             if(jumpToDefProvider){
                 editor.markToken(JUMP_TO_DEF_MARKER, pos, Editor.MARK_OPTION_HYPERLINK_TEXT);
-                marksPresent = true;
+                editor.hoverMarksPresent = true;
             }
         }
     }

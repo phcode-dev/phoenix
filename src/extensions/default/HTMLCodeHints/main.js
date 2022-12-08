@@ -21,16 +21,18 @@
 
 define(function (require, exports, module) {
 
+    require("HTMLJumpToDef");
 
     // Load dependent modules
-    var AppInit             = brackets.getModule("utils/AppInit"),
+    const AppInit             = brackets.getModule("utils/AppInit"),
         CodeHintManager     = brackets.getModule("editor/CodeHintManager"),
         HTMLUtils           = brackets.getModule("language/HTMLUtils"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Strings             = brackets.getModule("strings"),
         HTMLTags            = require("text!HtmlTags.json"),
-        HTMLAttributes      = require("text!HtmlAttributes.json"),
-        tags,
+        HTMLAttributes      = require("text!HtmlAttributes.json");
+
+    let tags,
         attributes;
 
     PreferencesManager.definePreference("codehint.TagHints", "boolean", true, {
