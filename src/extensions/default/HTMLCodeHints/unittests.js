@@ -25,9 +25,11 @@ define(function (require, exports, module) {
 
 
     // Modules from the SpecRunner window
-    var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
+    const SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
         Editor          = brackets.getModule("editor/Editor").Editor,
         HTMLCodeHints   = require("main");
+
+    require("integ-tests");
 
     describe("unit: HTML Code Hinting", function () {
 
