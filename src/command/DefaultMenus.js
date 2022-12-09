@@ -268,6 +268,7 @@ define(function (require, exports, module) {
         // editor_cmenu.addMenuItem(Commands.NAVIGATE_JUMPTO_DEFINITION);
         editor_cmenu.addMenuItem(Commands.TOGGLE_QUICK_EDIT);
         editor_cmenu.addMenuItem(Commands.TOGGLE_QUICK_DOCS);
+        editor_cmenu.addMenuItem(Commands.NAVIGATE_JUMPTO_DEFINITION);
         editor_cmenu.addMenuItem(Commands.CMD_FIND_ALL_REFERENCES);
         editor_cmenu.addMenuDivider();
         editor_cmenu.addMenuItem(Commands.EDIT_CUT);
