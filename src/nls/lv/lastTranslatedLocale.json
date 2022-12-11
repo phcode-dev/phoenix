@@ -586,6 +586,7 @@
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Ātrais skats uz norādēm",
   "CMD_ENABLE_SELECTION_VIEW": "Atlases skats",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Noklikšķiniet šeit, lai rediģētu krāsu",
   "CMD_TOGGLE_RECENT_PROJECTS": "Nesenie projekti",
   "DOCS_MORE_LINK": "Lasīt vairāk",
   "COLLAPSE_ALL": "Sakļaut visu",

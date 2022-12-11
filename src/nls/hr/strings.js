@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Brzi 'lebdeći' (hover) prikaz",
   "CMD_ENABLE_SELECTION_VIEW": "Pregled odabira",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kliknite ovdje za uređivanje boje",
   "CMD_TOGGLE_RECENT_PROJECTS": "Nedavni projekti",
   "DOCS_MORE_LINK": "Pročitaj više",
   "COLLAPSE_ALL": "Skupi sve",

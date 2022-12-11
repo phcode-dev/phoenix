@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "ЈСХинт",
   "CMD_ENABLE_QUICK_VIEW": "Брзи приказ приликом задржавања миша",
   "CMD_ENABLE_SELECTION_VIEW": "Селецтион Виев",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Кликните овде да бисте уредили боју",
   "CMD_TOGGLE_RECENT_PROJECTS": "Недавни пројекти",
   "DOCS_MORE_LINK": "Прочитај више",
   "COLLAPSE_ALL": "Скупи све",

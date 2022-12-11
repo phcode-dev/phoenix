@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "نظرة سريعة على Hover",
   "CMD_ENABLE_SELECTION_VIEW": "عرض التحديد",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "انقر هنا لتعديل اللون",
   "CMD_TOGGLE_RECENT_PROJECTS": "مشاريع حديثه",
   "DOCS_MORE_LINK": "اقرأ أكثر",
   "COLLAPSE_ALL": "انهيار جميع",

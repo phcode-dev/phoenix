@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Швидкий перегляд під час наведення",
   "CMD_ENABLE_SELECTION_VIEW": "Вид вибору",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Натисніть тут, щоб змінити колір",
   "CMD_TOGGLE_RECENT_PROJECTS": "Останні проекти",
   "DOCS_MORE_LINK": "Докладніше",
   "COLLAPSE_ALL": "Закрити всі",

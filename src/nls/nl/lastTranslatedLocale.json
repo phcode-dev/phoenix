@@ -586,6 +586,7 @@
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Snel bekijken bij muis over",
   "CMD_ENABLE_SELECTION_VIEW": "Selectieweergave",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik hier om de kleur te bewerken",
   "CMD_TOGGLE_RECENT_PROJECTS": "Recente projecten",
   "DOCS_MORE_LINK": "Lees meer",
   "COLLAPSE_ALL": "Alles inklappen",

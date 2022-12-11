@@ -586,6 +586,7 @@
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "ホバー・クイックビュー",
   "CMD_ENABLE_SELECTION_VIEW": "選択ビュー",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "ここをクリックして色を編集します",
   "CMD_TOGGLE_RECENT_PROJECTS": "最近使用したプロジェクト",
   "DOCS_MORE_LINK": "詳細",
   "COLLAPSE_ALL": "すべて折りたたむ",

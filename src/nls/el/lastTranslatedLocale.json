@@ -586,6 +586,7 @@
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Γρήγορη Προβολή στο Hover",
   "CMD_ENABLE_SELECTION_VIEW": "Προβολή επιλογής",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Κάντε κλικ εδώ για να επεξεργαστείτε το χρώμα",
   "CMD_TOGGLE_RECENT_PROJECTS": "Πρόσφατα Project",
   "DOCS_MORE_LINK": "Διαβάστε Περισσότερα",
   "COLLAPSE_ALL": "Σύμπτυξη όλων",

@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Activare Quick View",
   "CMD_ENABLE_SELECTION_VIEW": "Vizualizare selecție",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Faceți clic aici pentru a edita culoarea",
   "CMD_TOGGLE_RECENT_PROJECTS": "Proiecte recente",
   "DOCS_MORE_LINK": "Vezi mai mult",
   "COLLAPSE_ALL": "Restrângeți totul",

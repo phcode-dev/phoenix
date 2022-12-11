@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Rychlý náhled",
   "CMD_ENABLE_SELECTION_VIEW": "Zobrazení výběru",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klikněte zde pro úpravu barvy",
   "CMD_TOGGLE_RECENT_PROJECTS": "Nedávné projekty",
   "DOCS_MORE_LINK": "Více",
   "COLLAPSE_ALL": "Skrýt vše",
