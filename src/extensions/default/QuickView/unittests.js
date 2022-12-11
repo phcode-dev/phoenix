@@ -180,6 +180,15 @@ define(function (require, exports, module) {
                 await expectNoPreviewAtPos(75, 18);    // cursor on white in hyphenated word @bc-bg-highlight
             });
 
+            it("should open quick edit if clicked on colorview",async function () {
+                const color = "#369";
+                var popoverInfo = await getPopoverAtPos(3, 12);
+                let quickViewSwatch = popoverInfo.content.find("#quick-view-color-swatch");
+                expect(quickViewSwatch.attr("data-for-test")).toBe(color);
+                quickViewSwatch.click();
+                expect(EditorManager.getFocusedInlineWidget()._color).toBe(color);
+            });
+
             describe("JavaScript file", function () {
                 testFile = "test.js";
 
@@ -277,6 +286,15 @@ define(function (require, exports, module) {
                 // multiple gradients on a line
                 await checkGradientAtPos("linear-gradient(63deg, transparent 74%, #999 78%)", 136,  50);
                 await checkGradientAtPos("linear-gradient(63deg, transparent 0%, #999 38%, #999 58%, transparent 100%)",   136, 100);
+            });
+
+            it("should not open quick edit if clicked on gradients",async function () {
+                const color = "linear-gradient(63deg, transparent 74%, #999 78%)";
+                var popoverInfo = await getPopoverAtPos(136, 50);
+                let quickViewSwatch = popoverInfo.content.find("#quick-view-color-swatch");
+                expect(quickViewSwatch.attr("data-for-test")).toBe(color);
+                quickViewSwatch.click();
+                expect(EditorManager.getFocusedInlineWidget()).toBeFalsy();
             });
 
             it("Should convert gradients arguments from pixel to percent",async function () {

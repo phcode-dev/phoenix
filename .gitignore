@@ -25,6 +25,7 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/tern
 /src/thirdparty/jszip.js
 /src/thirdparty/jshint.js
+/src/thirdparty/tinycolor.js
 /src/thirdparty/underscore-min.js
 /src/thirdparty/bootstrap
 /src/thirdparty/highlight.js

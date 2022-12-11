@@ -109,6 +109,9 @@ let copyThirdPartyLibs = series(
         'node_modules/bootstrap/dist/css/bootstrap.min.css',
         'node_modules/bootstrap/dist/css/bootstrap.min.css.map'], 'src/thirdparty/bootstrap'),
     copyLicence.bind(copyLicence, 'node_modules/bootstrap/LICENSE', 'bootstrap'),
+    // tinycolor.js
+    copyFiles.bind(copyFiles, ['node_modules/tinycolor2/tinycolor.js'], 'src/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/tinycolor2/LICENSE', 'tinycolor2'),
     // hilightjs
     copyFiles.bind(copyFiles, ['node_modules/@highlightjs/cdn-assets/highlight.min.js'],
         'src/thirdparty/highlight.js'),
