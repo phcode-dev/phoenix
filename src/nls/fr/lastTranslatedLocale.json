@@ -586,6 +586,7 @@
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Affichage rapide au survol",
   "CMD_ENABLE_SELECTION_VIEW": "Vue de sélection",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Cliquez ici pour modifier la couleur",
   "CMD_TOGGLE_RECENT_PROJECTS": "Projets récents",
   "DOCS_MORE_LINK": "En savoir plus",
   "COLLAPSE_ALL": "Réduire tout",

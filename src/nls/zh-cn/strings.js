@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "鼠标悬停时启用快速查看",
   "CMD_ENABLE_SELECTION_VIEW": "选择视图",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "单击此处编辑颜色",
   "CMD_TOGGLE_RECENT_PROJECTS": "最近的项目",
   "DOCS_MORE_LINK": "更多信息",
   "COLLAPSE_ALL": "收起所有",

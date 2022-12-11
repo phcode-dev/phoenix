@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Gyors Nézet rámutatáskor",
   "CMD_ENABLE_SELECTION_VIEW": "Kijelölés nézet",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kattintson ide a szín szerkesztéséhez",
   "CMD_TOGGLE_RECENT_PROJECTS": "Legutóbbi projektek",
   "DOCS_MORE_LINK": "Olvasd tovább",
   "COLLAPSE_ALL": "Összes bezárása",

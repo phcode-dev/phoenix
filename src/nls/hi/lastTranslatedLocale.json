@@ -586,6 +586,7 @@
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "होवर पर त्वरित दृश्य",
   "CMD_ENABLE_SELECTION_VIEW": "चयन दृश्य",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "रंग संपादित करने के लिए यहां क्लिक करें",
   "CMD_TOGGLE_RECENT_PROJECTS": "हाल ही में की परियोजनाएं",
   "DOCS_MORE_LINK": "अधिक पढ़ें",
   "COLLAPSE_ALL": "सभी को संकुचित करें",

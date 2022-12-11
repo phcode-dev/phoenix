@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Vista rápida con cursor",
   "CMD_ENABLE_SELECTION_VIEW": "Vista de selección",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Haga clic aquí para editar el color",
   "CMD_TOGGLE_RECENT_PROJECTS": "Proyectos recientes",
   "DOCS_MORE_LINK": "Más",
   "COLLAPSE_ALL": "Colapsar todo",

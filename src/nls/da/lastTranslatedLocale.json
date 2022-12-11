@@ -586,6 +586,7 @@
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Lyn-visning af det du peger på",
   "CMD_ENABLE_SELECTION_VIEW": "Udvalgsvisning",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik her for at redigere farve",
   "CMD_TOGGLE_RECENT_PROJECTS": "Seneste projekter",
   "DOCS_MORE_LINK": "Læs mere",
   "COLLAPSE_ALL": "Skjul alle",

@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Pikanäkymä osoitettaessa",
   "CMD_ENABLE_SELECTION_VIEW": "Valintanäkymä",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Napsauta tästä muokataksesi väriä",
   "CMD_TOGGLE_RECENT_PROJECTS": "Viimeaikaiset projektit",
   "DOCS_MORE_LINK": "Lue lisää",
   "COLLAPSE_ALL": "Pienennä kaikki",

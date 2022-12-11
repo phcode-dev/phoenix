@@ -606,6 +606,7 @@ define({
   "JSHINT_NAME": "JSHint",
   "CMD_ENABLE_QUICK_VIEW": "Tampilkan Cepat Saat Hover",
   "CMD_ENABLE_SELECTION_VIEW": "Tampilan Pilihan",
+  "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik di sini untuk mengedit warna",
   "CMD_TOGGLE_RECENT_PROJECTS": "Proyek Terkini",
   "DOCS_MORE_LINK": "Baca selengkapnya",
   "COLLAPSE_ALL": "Ciutkan Semua",
