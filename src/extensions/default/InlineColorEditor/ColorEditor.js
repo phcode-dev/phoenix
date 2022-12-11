@@ -29,7 +29,7 @@ define(function (require, exports, module) {
         StringUtils        = brackets.getModule("utils/StringUtils"),
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
-        tinycolor          = require("thirdparty/tinycolor");
+        tinycolor          = brackets.getModule("thirdparty/tinycolor");
 
     /** Mustache template that forms the bare DOM structure of the UI */
     var ColorEditorTemplate = require("text!ColorEditorTemplate.html");

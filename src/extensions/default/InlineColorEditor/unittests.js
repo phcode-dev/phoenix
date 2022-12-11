@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         provider           = require("main").inlineColorEditorProvider,
         InlineColorEditor  = require("InlineColorEditor").InlineColorEditor,
         ColorEditor        = require("ColorEditor").ColorEditor,
-        tinycolor          = require("thirdparty/tinycolor");
+        tinycolor          = brackets.getModule("thirdparty/tinycolor");
 
     // Helper functions for testing cursor position / selection range
     function fixPos(pos) {

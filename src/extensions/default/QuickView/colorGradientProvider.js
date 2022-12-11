@@ -29,7 +29,10 @@ define(function (require, exports, module) {
         CSSUtils            = brackets.getModule("language/CSSUtils"),
         TokenUtils          = brackets.getModule("utils/TokenUtils"),
         AppInit             = brackets.getModule("utils/AppInit"),
-        QuickView           = brackets.getModule("features/QuickViewManager");
+        QuickView           = brackets.getModule("features/QuickViewManager"),
+        Strings             = brackets.getModule("strings"),
+        CommandManager      = brackets.getModule("command/CommandManager"),
+        Commands            = brackets.getModule("command/Commands");
 
     let styleLanguages = ["css", "text/x-less", "sass", "text/x-scss", "stylus"];
 
@@ -250,6 +253,8 @@ define(function (require, exports, module) {
                 gradientMatch = execGradientMatch(line, parensBalanced),
                 match = gradientMatch.match || execColorMatch(editor, line, pos);
 
+            let previewCSS, startPos, endPos, found = false;
+
             while (match) {
                 if (pos.ch < match.index) {
                     // Gradients are matched first, then colors, so...
@@ -262,23 +267,11 @@ define(function (require, exports, module) {
                     }
                 } else if (pos.ch <= match.index + match[0].length) {
                     // build the css for previewing the gradient from the regex result
-                    let previewCSS = gradientMatch.prefix + (gradientMatch.colorValue || match[0]);
-
-                    // normalize the arguments to something that we can display to the user
-                    // NOTE: we need both the div and the popover's _previewCSS member
-                    //          (used by unit tests) to match so normalize the css for both
-                    previewCSS = normalizeGradientExpressionForQuickview(ensureHexFormat(previewCSS));
-
-                    let preview = "<div id='quick-view-color-swatch' data-for-test='"+previewCSS+"' class='color-swatch' style='background:" + previewCSS + "'>" + "</div>";
-                    let startPos = {line: pos.line, ch: match.index},
-                        endPos = {line: pos.line, ch: match.index + match[0].length};
-
-                    resolve({
-                        start: startPos,
-                        end: endPos,
-                        content: preview
-                    });
-                    return;
+                    previewCSS = gradientMatch.prefix + (gradientMatch.colorValue || match[0]);
+                    startPos = {line: pos.line, ch: match.index};
+                    endPos = {line: pos.line, ch: match.index + match[0].length};
+                    found = true;
+                    break;
                 }
 
                 // Get next match
@@ -286,6 +279,31 @@ define(function (require, exports, module) {
                     gradientMatch = execGradientMatch(line, parensBalanced);
                 }
                 match = gradientMatch.match || execColorMatch(editor, line, pos);
+            }
+
+            if(found){
+                // normalize the arguments to something that we can display to the user
+                // NOTE: we need both the div and the popover's _previewCSS member
+                //          (used by unit tests) to match so normalize the css for both
+                let tooltip = gradientMatch.match ? "" : Strings.TOOLTIP_CLICK_TO_EDIT_COLOR;
+                previewCSS = normalizeGradientExpressionForQuickview(ensureHexFormat(previewCSS));
+                let preview = $(`<div id='quick-view-color-swatch' data-for-test='${previewCSS}' class='color-swatch'
+                        style='background: ${previewCSS}' title="${tooltip}">
+                        </div>`);
+                preview.click(function () {
+                    if(gradientMatch.match) {
+                        return;
+                    }
+                    editor.setCursorPos(startPos);
+                    CommandManager.execute(Commands.TOGGLE_QUICK_EDIT);
+                });
+
+                resolve({
+                    start: startPos,
+                    end: endPos,
+                    content: preview
+                });
+                return;
             }
 
             reject();

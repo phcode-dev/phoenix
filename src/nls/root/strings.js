@@ -741,9 +741,10 @@ define({
     // extensions/default/JSLint
     "JSHINT_NAME": "JSHint",
 
-    // Features/QuickView
+    // Features/QuickView and quick view extensions
     "CMD_ENABLE_QUICK_VIEW": "Quick View on Hover",
     "CMD_ENABLE_SELECTION_VIEW": "Selection View",
+    "TOOLTIP_CLICK_TO_EDIT_COLOR": "Click here to edit color",
 
     // extensions/default/RecentProjects
     "CMD_TOGGLE_RECENT_PROJECTS": "Recent Projects",
