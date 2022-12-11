@@ -36,6 +36,7 @@ define(function (require, exports, module) {
             brackets,
             CommandManager,
             Commands,
+            MainViewManager,
             EditorManager,
             QuickView,
             editor,
@@ -56,6 +57,7 @@ define(function (require, exports, module) {
             Commands = brackets.test.Commands;
             EditorManager = brackets.test.EditorManager;
             QuickView = brackets.test.QuickViewManager;
+            MainViewManager = brackets.test.MainViewManager;
 
             if (testFile !== oldFile) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
@@ -72,6 +74,7 @@ define(function (require, exports, module) {
             Commands         = null;
             EditorManager    = null;
             QuickView        = null;
+            MainViewManager  = null;
             await SpecRunnerUtils.closeTestWindow();
         });
 
@@ -314,6 +317,11 @@ define(function (require, exports, module) {
         });
 
         describe("Quick view images", function () {
+            beforeEach(async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
+
+                editor  = EditorManager.getCurrentFullEditor();
+            }, 30000);
             it("Should show image preview for file path inside url()",async function () {
                 await checkImagePathAtPos("img/grabber_color-well.png", 140, 26);
                 await checkImagePathAtPos("img/Color.png",              141, 26);
@@ -321,8 +329,35 @@ define(function (require, exports, module) {
                 await checkImagePathAtPos("img/update_large_icon.svg",  143, 26);
             });
 
+            it("Should click on image preview open the corresponding file", async function () {
+                const popoverInfo = await getPopoverAtPos(140, 26),
+                    imagePreview = popoverInfo.content.find("#quick-view-image-preview"),
+                    imagePath = imagePreview.attr("data-for-test"),
+                    expectedPathEnding = "img/grabber_color-well.png";
+
+                // Just check end of path - local drive location prefix unimportant
+                expect(imagePath.substr(imagePath.length - expectedPathEnding.length)).toBe(expectedPathEnding);
+                imagePreview.click();
+                let currentFile = MainViewManager.getCurrentlyViewedFile();
+                expect(currentFile.fullPath.endsWith(expectedPathEnding))
+                    .toBeTrue();
+            });
+
             it("Should show image preview for urls with http/https",async function () {
                 await checkImagePathAtPos("https://raw.github.com/gruehle/HoverPreview/master/screenshots/Image.png", 145, 26);
+            });
+
+            it("Should click on http image preview not open file in editor", async function () {
+                const popoverInfo = await getPopoverAtPos(145, 26),
+                    imagePreview = popoverInfo.content.find("#quick-view-image-preview"),
+                    imagePath = imagePreview.attr("data-for-test"),
+                    expectedPathEnding = "https://raw.github.com/gruehle/HoverPreview/master/screenshots/Image.png";
+
+                // Just check end of path - local drive location prefix unimportant
+                expect(imagePath.substr(imagePath.length - expectedPathEnding.length)).toBe(expectedPathEnding);
+                imagePreview.click();
+                let currentFile = MainViewManager.getCurrentlyViewedFile();
+                expect(currentFile.fullPath.endsWith(testFile)).toBeTrue();
             });
 
             it("Should show image preview for file path inside single or double quotes",async function () {

@@ -32,7 +32,8 @@ define(function (require, exports, module) {
         Strings             = brackets.getModule("strings"),
         PathUtils           = brackets.getModule("thirdparty/path-utils/path-utils"),
         AppInit             = brackets.getModule("utils/AppInit"),
-        QuickView           = brackets.getModule("features/QuickViewManager");
+        QuickView           = brackets.getModule("features/QuickViewManager"),
+        FileViewController  = brackets.getModule("project/FileViewController");
 
     let enabled,                             // Only show preview if true
         prefs                      = null,   // Preferences
@@ -184,6 +185,10 @@ define(function (require, exports, module) {
                 let imageFile = FileSystem.getFileForPath(loadFromDisk);
                 _imageToDataURI(imageFile, function (err, dataURL){
                     if(!err){
+                        $imgPreview.click(function () {
+                            FileViewController.openAndSelectDocument(imageFile.fullPath,
+                                FileViewController.PROJECT_MANAGER);
+                        });
                         showHandlerWithImageURL(dataURL);
                         resolve(previewPopup);
                     } else {
