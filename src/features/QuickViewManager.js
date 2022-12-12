@@ -107,7 +107,8 @@
  *                 start: {line: pos.line, ch:token.start},
  *                 end: {line: pos.line, ch:token.end},
  *                 content: "<div>hello world</div>",
- *                 exclusive: false // this is optional. See details below:
+ *                 exclusive: false, // this is optional. See details below:
+ *                 editsDoc: false // this is optional if the quick view edits the current doc
  *             });
  *         });
  *     };
@@ -126,8 +127,9 @@
  * 1. `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
  *    the hovered section of the text in the editor.
  * 1. `content`: Either `HTML` as text, a `DOM Node` or a `Jquery Element`.
- * 1. `exclusive`: Set to true if only this popup should be shown if multiple providers returns a valid popup.
+ * 1. `exclusive`: Optional, set to true if only this popup should be shown if multiple providers returns a valid popup.
  *     If multiple providers return `exclusive` flag, the provider with the highest priority wins.
+ * 1. `editsDoc`: Optional, set to true if the quick view can edit the active document.
  *
  * #### Modifying the QuickView content after resolving `getQuickView` promise
  * Some advanced/interactive extensions may need to do dom operations on the quick view content.
@@ -328,6 +330,9 @@ define(function (require, exports, module) {
                 }
                 if(_isResultAfterPopoverEnd(editor, popover, result)){
                     popover.end = result.end;
+                }
+                if(result.editsDoc){
+                    popover.editsDoc = true;
                 }
                 popover.content.append(result.content);
             }
@@ -557,16 +562,22 @@ define(function (require, exports, module) {
         }
     }
 
+    function docChanged() {
+        if(popoverState && !popoverState.editsDoc){
+            hidePreview();
+        }
+    }
+
     function onActiveEditorChange(event, current, previous) {
         // Hide preview when editor changes
         hidePreview();
 
         if (previous && previous.document) {
-            previous.document.off("change", hidePreview);
+            previous.document.off("change", docChanged);
         }
 
         if (current && current.document) {
-            current.document.on("change", hidePreview);
+            current.document.on("change", docChanged);
         }
     }
 
