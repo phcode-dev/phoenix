@@ -44,8 +44,9 @@ exports.getQuickView = function(editor, pos, token, line) {
 When QuickViewManager determines that the user intents to see QuickView on hover, `getQuickView` function on all
 registered QuickView providers are invoked to get the quick view popup. `getQuickView` should return a promise
 that resolves to the popup contents if the provider has a quick view. Else just reject the promise. If multiple
-providers returns QuickView, all of them are displayed one by one. See detailed API docs for implementation
-details below:
+providers returns QuickView, all of them are displayed stacked one by one. Alternatively, you can return
+an `exclusive` flag from a provider to force only a particular popup to be displayed.
+See detailed API docs for implementation details below:
 
 ## API
 
@@ -96,7 +97,8 @@ provider.getQuickView = function(editor, pos, token, line) {
             resolve({
                 start: {line: pos.line, ch:token.start},
                 end: {line: pos.line, ch:token.end},
-                content: "<div>hello world</div>"
+                content: "<div>hello world</div>",
+                exclusive: false // this is optional. See details below:
             });
         });
     };
@@ -119,6 +121,8 @@ The promise returned should resolve to an object with the following contents:
 2.  `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
     the hovered section of the text in the editor.
 3.  `content`: Either `HTML` as text, a `DOM Node` or a `Jquery Element`.
+4.  `exclusive`: Set to true if only this popup should be shown if multiple providers returns a valid popup.
+    If multiple providers return `exclusive` flag, the provider with the highest priority wins.
 
 #### Modifying the QuickView content after resolving `getQuickView` promise
 
@@ -134,7 +138,9 @@ performing any operations.
     handler takes time to resolve the QuickView, resolve a dummy quick once you are sure that a QuickView needs
     to be shown to the user. The div contents can be later updated as and when more details are available.
 2.  Note that the QuickView could be hidden/removed any time by the QuickViewManager.
-3.  If multiple providers returns a valid popup, all of them are displayed.
+3.  If multiple providers returns a valid popup, all of them are displayed except if the `exclusive` flag is
+    returned from one of the popups. If multiple providers return `exclusive` flag, the provider with the
+    highest priority wins.
 
 ## isQuickViewShown
 

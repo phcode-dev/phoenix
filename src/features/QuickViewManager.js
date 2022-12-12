@@ -61,8 +61,9 @@
  * When QuickViewManager determines that the user intents to see QuickView on hover, `getQuickView` function on all
  * registered QuickView providers are invoked to get the quick view popup. `getQuickView` should return a promise
  * that resolves to the popup contents if the provider has a quick view. Else just reject the promise. If multiple
- * providers returns QuickView, all of them are displayed one by one. See detailed API docs for implementation
- * details below:
+ * providers returns QuickView, all of them are displayed stacked one by one. Alternatively, you can return
+ * an `exclusive` flag from a provider to force only a particular popup to be displayed.
+ * See detailed API docs for implementation details below:
  *
  * ## API
  * ### registerQuickViewProvider
@@ -105,7 +106,8 @@
  *             resolve({
  *                 start: {line: pos.line, ch:token.start},
  *                 end: {line: pos.line, ch:token.end},
- *                 content: "<div>hello world</div>"
+ *                 content: "<div>hello world</div>",
+ *                 exclusive: false // this is optional. See details below:
  *             });
  *         });
  *     };
@@ -124,6 +126,8 @@
  * 1. `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
  *    the hovered section of the text in the editor.
  * 1. `content`: Either `HTML` as text, a `DOM Node` or a `Jquery Element`.
+ * 1. `exclusive`: Set to true if only this popup should be shown if multiple providers returns a valid popup.
+ *     If multiple providers return `exclusive` flag, the provider with the highest priority wins.
  *
  * #### Modifying the QuickView content after resolving `getQuickView` promise
  * Some advanced/interactive extensions may need to do dom operations on the quick view content.
@@ -137,7 +141,9 @@
  *    handler takes time to resolve the QuickView, resolve a dummy quick once you are sure that a QuickView needs
  *    to be shown to the user. The div contents can be later updated as and when more details are available.
  * 1. Note that the QuickView could be hidden/removed any time by the QuickViewManager.
- * 1. If multiple providers returns a valid popup, all of them are displayed.
+ * 1. If multiple providers returns a valid popup, all of them are displayed except if the `exclusive` flag is
+ *    returned from one of the popups. If multiple providers return `exclusive` flag, the provider with the
+ *    highest priority wins.
  *
  * @module features/QuickViewManager
  */
@@ -172,7 +178,7 @@ define(function (require, exports, module) {
             enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
 
         for(let item of enabledProviders){
-            quickViewProviders.push(item.provider);
+            quickViewProviders.push(item);
         }
         return quickViewProviders;
     }
@@ -344,6 +350,33 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Returns a popover array with the list of popovers to be rendered. If exclusive popovers are present, then
+     * the highest priority popover with `exclusive` property set is returned. Else returns list of all valid popovers.
+     * @param results
+     * @param resultPriorities
+     * @return {*[]}
+     * @private
+     */
+    function _getPopover(results, resultPriorities) {
+        let popovers = [], exclusivePopovers = [], currentExclusivePopoverPriority = 0;
+        for(let i = 0; i< results.length; i++){
+            let result = results[i],
+                resultPriority = resultPriorities[i];
+            if(result.status === "fulfilled" && result.value){
+                popovers.push(result.value);
+                if(result.value.exclusive && resultPriority >= currentExclusivePopoverPriority) {
+                    exclusivePopovers = [result.value];
+                    currentExclusivePopoverPriority = resultPriority;
+                }
+            }
+        }
+        if(exclusivePopovers.length){
+            return exclusivePopovers;
+        }
+        return popovers;
+    }
+
+    /**
      * Returns a 'ready for use' popover state object:
      * { visible: false, editor, start, end, content, ?onShow, xpos, ytop, ybot }
      * Lacks only hoverTimer (supplied by handleMouseMove()) and marker (supplied by showPreview()).
@@ -351,23 +384,20 @@ define(function (require, exports, module) {
      */
     async function queryPreviewProviders(editor, pos, token) {
         let line = editor.document.getLine(pos.line);
-        let providers = _getQuickViewProviders(editor);
-        let popovers = [], providerPromises = [];
-        for(let provider of providers){
+        let providerInfos = _getQuickViewProviders(editor);
+        let providerPromises = [], resultPriorities = [];
+        for(let providerInfo of providerInfos){
+            let provider = providerInfo.provider;
             if(!provider.getQuickView){
                 console.error("Quickview provider does not implement the required getQuickView function", provider);
                 continue;
             }
             providerPromises.push(provider.getQuickView(editor, pos, token, line));
+            resultPriorities.push(providerInfo.priority);
         }
         let results = await Promise.allSettled(providerPromises);
-        for(let result of results){
-            if(result.status === "fulfilled" && result.value){
-                popovers.push(result.value);
-            }
-        }
 
-        return _createPopoverState(editor, popovers);
+        return _createPopoverState(editor, _getPopover(results, resultPriorities));
     }
 
     /**

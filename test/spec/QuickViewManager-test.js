@@ -206,7 +206,7 @@ define(function (require, exports, module) {
         describe("Quick view register provider", function (){
             let pos, token, line;
 
-            function getProvider(html, noPreview) {
+            function getProvider(html, noPreview, exclusive = false) {
                 return {
                     getQuickView: function(editor, posx, tokenx, linex) {
                         expect(editor).toBeDefined();
@@ -219,7 +219,8 @@ define(function (require, exports, module) {
                             resolve({
                                 start: {line: posx.line, ch:tokenx.start},
                                 end: {line: posx.line, ch:tokenx.end},
-                                content: html
+                                content: html,
+                                exclusive
                             });
                         });
                     }
@@ -229,6 +230,8 @@ define(function (require, exports, module) {
             let provider = getProvider("<div id='blinker-fluid'>hello world</div>");
             let provider2 = getProvider("<div id='blinker-fluid2'>hello world</div>");
             let providerNoPreview = getProvider("<div id='blinker-fluid3'>hello world</div>", true);
+            let exclusiveProvider1 = getProvider("<div id='blinker-fluid4'>hello world</div>", false, true);
+            let exclusiveProvider2 = getProvider("<div id='blinker-fluid5'>hello world</div>", false, true);
 
             beforeEach(async function () {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
@@ -281,6 +284,40 @@ define(function (require, exports, module) {
                 popoverInfo = await getPopoverAtPos(4, 14);
                 expect(popoverInfo.content.find("#blinker-fluid1").length).toBe(0);
                 expect(popoverInfo.content.find("#blinker-fluid2").length).toBe(0);
+            });
+
+            it("should exclusive provider provide preview if multiple providers returned previews", async function () {
+                QuickViewManager.registerQuickViewProvider(provider, ["all"]);
+                QuickViewManager.registerQuickViewProvider(exclusiveProvider1, ["all"]);
+                let popoverInfo = await getPopoverAtPos(4, 14);
+                expect(popoverInfo.content.find("#blinker-fluid").length).toBe(0);
+                expect(popoverInfo.content.find("#blinker-fluid4").length).toBe(1);
+
+                QuickViewManager.removeQuickViewProvider(exclusiveProvider1, ["all"]);
+                popoverInfo = await getPopoverAtPos(4, 14);
+                expect(popoverInfo.content.find("#blinker-fluid").length).toBe(1);
+
+                QuickViewManager.removeQuickViewProvider(provider, ["all"]);
+            });
+
+            it("should multiple exclusive preview provider resolve to highest priority", async function () {
+                QuickViewManager.registerQuickViewProvider(provider, ["all"]);
+                QuickViewManager.registerQuickViewProvider(exclusiveProvider1, ["all"]);
+                QuickViewManager.registerQuickViewProvider(exclusiveProvider2, ["all"], 3);
+                let popoverInfo = await getPopoverAtPos(4, 14);
+                expect(popoverInfo.content.find("#blinker-fluid").length).toBe(0);
+                expect(popoverInfo.content.find("#blinker-fluid5").length).toBe(1);
+
+                // increase priority of exclusive provider 1
+                QuickViewManager.removeQuickViewProvider(exclusiveProvider1, ["all"]);
+                QuickViewManager.registerQuickViewProvider(exclusiveProvider1, ["all"], 5);
+                popoverInfo = await getPopoverAtPos(4, 14);
+                expect(popoverInfo.content.find("#blinker-fluid").length).toBe(0);
+                expect(popoverInfo.content.find("#blinker-fluid4").length).toBe(1);
+
+                QuickViewManager.removeQuickViewProvider(provider, ["all"]);
+                QuickViewManager.removeQuickViewProvider(exclusiveProvider1, ["all"]);
+                QuickViewManager.removeQuickViewProvider(exclusiveProvider2, ["all"]);
             });
 
             it("should show preview if some providers didnt give preview", async function () {
