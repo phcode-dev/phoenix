@@ -693,10 +693,10 @@
                             && kc !== 189                   // -
                             && (kc !== 190
                                 || s.$.val().match(/\./))   // . allowed once
-                            && e.preventDefault();
+                            ;
 
                             // arrows
-                            if ($.inArray(kc,[37,38,39,40]) > -1) {
+                            if ($.inArray(kc,[38,40]) > -1) {
                                 e.preventDefault();
 
                                 var v = s.o.parse(s.$.val()) + kv[kc] * m;
@@ -725,8 +725,8 @@
                             }
                         } else {
                             // kval postcond
-                            (s.$.val() > s.o.max && s.$.val(s.o.max))
-                            || (s.$.val() < s.o.min && s.$.val(s.o.min));
+                            (s.o.stopper && s.$.val() > s.o.max && s.$.val(s.o.max))
+                            || (s.o.stopper && s.$.val() < s.o.min && s.$.val(s.o.min));
                         }
                     }
                 );
