@@ -318,7 +318,43 @@
 
                 if (v == s.cv) return;
 
-                s.change(s._validate(v));
+                let period = s.o.max-s.o.min;
+                let cv = s.cv;
+                if(cv > s.o.max){
+                    cv =cv % period;
+                } else if(cv < s.o.min){
+                    cv = period + cv % period;
+                }
+                let oldAngle = s.angle(cv), newAngle = s.angle(v);
+                let direction = "", PI2= 2*Math.PI, driftAngle;
+                if(newAngle > oldAngle){
+                    let distance = newAngle - oldAngle,
+                        complimentaryDistance = PI2 - distance;
+                    if(distance<complimentaryDistance){
+                        driftAngle = distance;
+                        direction = "forward";
+                    } else {
+                        direction = "reverse";
+                        driftAngle = complimentaryDistance;
+                    }
+                } else {
+                    let distance = oldAngle - newAngle,
+                        complimentaryDistance = PI2 - distance;
+                    if(distance<complimentaryDistance){
+                        driftAngle = distance;
+                        direction = "reverse";
+                    } else {
+                        driftAngle = complimentaryDistance;
+                        direction = "forward";
+                    }
+                }
+                let displacement = period * driftAngle/PI2, value;
+                if(direction === "forward"){
+                    value = s.cv + displacement;
+                } else {
+                    value = s.cv - displacement;
+                }
+                s.change(s._validate(value));
                 s._draw();
             };
 
@@ -347,8 +383,43 @@
                 var v = s.xy2val(e.pageX, e.pageY);
 
                 if (v == s.cv) return;
-
-                s.change(s._validate(v));
+                let period = s.o.max-s.o.min;
+                let cv = s.cv;
+                if(cv > s.o.max){
+                    cv =cv % period;
+                } else if(cv < s.o.min){
+                    cv = period + cv % period;
+                }
+                let oldAngle = s.angle(cv), newAngle = s.angle(v);
+                let direction = "", PI2= 2*Math.PI, driftAngle;
+                if(newAngle > oldAngle){
+                    let distance = newAngle - oldAngle,
+                        complimentaryDistance = PI2 - distance;
+                    if(distance<complimentaryDistance){
+                        driftAngle = distance;
+                        direction = "forward";
+                    } else {
+                        direction = "reverse";
+                        driftAngle = complimentaryDistance;
+                    }
+                } else {
+                    let distance = oldAngle - newAngle,
+                        complimentaryDistance = PI2 - distance;
+                    if(distance<complimentaryDistance){
+                        driftAngle = distance;
+                        direction = "reverse";
+                    } else {
+                        driftAngle = complimentaryDistance;
+                        direction = "forward";
+                    }
+                }
+                let displacement = period * driftAngle/PI2, value;
+                if(direction === "forward"){
+                    value = s.cv + displacement;
+                } else {
+                    value = s.cv - displacement;
+                }
+                s.change(s._validate(value));
                 s._draw();
             };
 
