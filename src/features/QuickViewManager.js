@@ -172,9 +172,9 @@ define(function (require, exports, module) {
         registerQuickViewProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler),
         removeQuickViewProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
 
-    function _getQuickViewProviders(editor) {
+    function _getQuickViewProviders(editor, pos) {
         let quickViewProviders = [];
-        let language = editor.getLanguageForSelection(),
+        let language = editor.getLanguageForPosition(pos),
             enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
 
         for(let item of enabledProviders){
@@ -384,7 +384,7 @@ define(function (require, exports, module) {
      */
     async function queryPreviewProviders(editor, pos, token) {
         let line = editor.document.getLine(pos.line);
-        let providerInfos = _getQuickViewProviders(editor);
+        let providerInfos = _getQuickViewProviders(editor, pos);
         let providerPromises = [], resultPriorities = [];
         for(let providerInfo of providerInfos){
             let provider = providerInfo.provider;

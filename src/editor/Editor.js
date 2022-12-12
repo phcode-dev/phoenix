@@ -1792,15 +1792,16 @@ define(function (require, exports, module) {
      * If there are multiple selections, this will return a mode only if all the selections are individually
      * consistent and resolve to the same mode.
      *
+     * @param {{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean}} selection
      * @return {?(Object|string)} Name of syntax-highlighting mode, or object containing a "name" property
      *     naming the mode along with configuration options required by the mode.
      * @see {@link LanguageManager::#getLanguageForPath} and {@link LanguageManager::Language#getMode}.
      */
-    Editor.prototype.getModeForSelection = function () {
+    Editor.prototype.getModeForSelection = function (selection) {
         // Check for mixed mode info
         var self        = this,
-            sels        = this.getSelections(),
-            primarySel  = this.getSelection(),
+            sels        = selection ? [selection] : this.getSelections(),
+            primarySel  = selection || this.getSelection(),
             outerMode   = this._codeMirror.getMode(),
             startMode   = TokenUtils.getModeAt(this._codeMirror, primarySel.start),
             isMixed     = (outerMode.name !== startMode.name);
@@ -1856,6 +1857,17 @@ define(function (require, exports, module) {
      */
     Editor.prototype.getLanguageForSelection = function () {
         return this.document.getLanguage().getLanguageForMode(this.getModeForSelection());
+    };
+
+    /**
+     * gets the language for the selection. (Javascript selected from an HTML document or CSS selected from an HTML
+     * document, etc...)
+     * @return {!Language}
+     */
+    Editor.prototype.getLanguageForPosition = function (pos) {
+        let self = this;
+        pos = pos || self.getCursorPos();
+        return this.document.getLanguage().getLanguageForMode(self.getModeForSelection({start: pos, end: pos}));
     };
 
     /**
