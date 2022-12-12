@@ -27,7 +27,6 @@ define(function (require, exports, module) {
 
     // Brackets modules
     let PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
-        LanguageManager     = brackets.getModule("language/LanguageManager"),
         Strings             = brackets.getModule("strings"),
         AppInit             = brackets.getModule("utils/AppInit"),
         QuickView           = brackets.getModule("features/QuickViewManager");
@@ -85,6 +84,11 @@ define(function (require, exports, module) {
                 fontSize: "1em",
                 format: function(value){
                     return Math.round(value*split.roundTo)/split.roundTo + split.units;
+                },
+                getValue: function(userInput){
+                    let changedSplit = _splitNumber(userInput);
+                    split.units = changedSplit.units;
+                    return changedSplit.number;
                 },
                 change: function (value) {
                     editor.document.batchOperation(function () {
