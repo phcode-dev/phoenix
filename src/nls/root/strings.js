@@ -832,6 +832,7 @@ define({
     "DESCRIPTION_QUICK_VIEW_ENABLED": "true to enable Quick View",
     "DESCRIPTION_SELECTION_VIEW_ENABLED": "true to enable Selection View",
     "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true to show image previews for URLs missing extensions",
+    "DESCRIPTION_NUMBER_QUICK_VIEW": "true to show Quick View on hover over numbers in editor",
     "DESCRIPTION_THEME": "Select a {APP_NAME} theme",
     "DESCRIPTION_USE_THEME_SCROLLBARS": "true to allow custom scroll bars",
     "DESCRIPTION_LINTING_COLLAPSED": "true to collapse linting panel",
