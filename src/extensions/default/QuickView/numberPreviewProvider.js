@@ -40,6 +40,7 @@ define(function (require, exports, module) {
     });
 
     let enabled;                             // Only show preview if true
+    let lastOriginId = 0;
 
     function _splitNumber(numStr) {
         // https://stackoverflow.com/questions/2868947/split1px-into-1px-1-px-in-javascript
@@ -71,6 +72,7 @@ define(function (require, exports, module) {
             }
             let sPos = {line: pos.line, ch: token.start},
                 ePos = {line: pos.line, ch: token.end};
+            let editOrigin = "+NumberQuickView_" + (lastOriginId++);
             let $content = $(`<div><input type="text" value="${token.string}" class="dial"><div>`);
             let split = _splitNumber(token.string);
             $content.find(".dial").knob({
@@ -85,14 +87,22 @@ define(function (require, exports, module) {
                     return Math.round(value*split.roundTo)/split.roundTo + split.units;
                 },
                 change: function (value) {
-                    //console.log(value);
+                    editor.document.batchOperation(function () {
+                        // Replace old color in code with the picker's color, and select it
+                        editor.setSelection(sPos, ePos); // workaround for #2805
+                        let replaceStr = Math.round(value*split.roundTo)/split.roundTo + split.units;
+                        editor.replaceRange(replaceStr, sPos, ePos, editOrigin);
+                        ePos = {line: sPos.line, ch: sPos.ch + replaceStr.length};
+                        editor.setSelection(sPos, ePos);
+                    });
                 }
             });
             resolve({
                 start: sPos,
                 end: ePos,
                 content: $content,
-                exclusive: true
+                exclusive: true,
+                editsDoc: true
             });
         });
     }
