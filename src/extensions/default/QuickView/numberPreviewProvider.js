@@ -85,7 +85,7 @@ define(function (require, exports, module) {
                     return Math.round(value*split.roundTo)/split.roundTo + split.units;
                 },
                 change: function (value) {
-                    console.log(value);
+                    //console.log(value);
                 }
             });
             resolve({
