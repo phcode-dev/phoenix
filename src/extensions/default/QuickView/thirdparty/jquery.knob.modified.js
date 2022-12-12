@@ -695,11 +695,15 @@
                                 || s.$.val().match(/\./))   // . allowed once
                             ;
 
-                            // arrows
-                            if ($.inArray(kc,[38,40]) > -1) {
+                            // arrows, enter
+                            if ($.inArray(kc,[38,40, 13]) > -1) {
                                 e.preventDefault();
 
-                                var v = s.o.parse(s.$.val()) + kv[kc] * m;
+                                let value = s.o.getValue(s.$.val());
+                                var v = s.o.parse(value);
+                                if(kc !== 13){
+                                    v = v + kv[kc] * m;
+                                }
                                 s.o.stopper && (v = max(min(v, s.o.max), s.o.min));
 
                                 s.change(s._validate(v));
