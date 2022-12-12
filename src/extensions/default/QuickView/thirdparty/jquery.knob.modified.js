@@ -699,8 +699,9 @@
                             if ($.inArray(kc,[38,40, 13]) > -1) {
                                 e.preventDefault();
 
-                                let value = s.o.getValue(s.$.val());
+                                let value = (s.o.getValue && s.o.getValue(s.$.val())) || s.$.val();
                                 var v = s.o.parse(value);
+                                console.log(v, kv);
                                 if(kc !== 13){
                                     v = v + kv[kc] * m;
                                 }
