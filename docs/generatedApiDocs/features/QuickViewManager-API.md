@@ -98,7 +98,8 @@ provider.getQuickView = function(editor, pos, token, line) {
                 start: {line: pos.line, ch:token.start},
                 end: {line: pos.line, ch:token.end},
                 content: "<div>hello world</div>",
-                exclusive: false // this is optional. See details below:
+                exclusive: false, // this is optional. See details below:
+                editsDoc: false // this is optional if the quick view edits the current doc
             });
         });
     };
@@ -121,8 +122,9 @@ The promise returned should resolve to an object with the following contents:
 2.  `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
     the hovered section of the text in the editor.
 3.  `content`: Either `HTML` as text, a `DOM Node` or a `Jquery Element`.
-4.  `exclusive`: Set to true if only this popup should be shown if multiple providers returns a valid popup.
+4.  `exclusive`: Optional, set to true if only this popup should be shown if multiple providers returns a valid popup.
     If multiple providers return `exclusive` flag, the provider with the highest priority wins.
+5.  `editsDoc`: Optional, set to true if the quick view can edit the active document.
 
 #### Modifying the QuickView content after resolving `getQuickView` promise
 
