@@ -45,7 +45,7 @@ define(function (require, exports, module) {
         // https://stackoverflow.com/questions/2868947/split1px-into-1px-1-px-in-javascript
         let split = numStr.match(/(^-?)(\d*\.?\d*)(.*)/); // "1px" -> ["1px", "1", "px"]
         let number = split[1] + split[2] || "";
-        let decimalPlaces = number.split(".")[2];
+        let decimalPlaces = number.split(".")[1];
         decimalPlaces = decimalPlaces && decimalPlaces.length || 0;
         let roundTo;
         switch (decimalPlaces) {
