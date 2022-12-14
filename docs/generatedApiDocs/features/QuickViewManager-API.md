@@ -27,7 +27,8 @@ const QuickViewManager = brackets.getModule("features/QuickViewManager");
 // replace `all` with language ID(Eg. javascript) if you want to restrict the preview to js files only.
 QuickViewManager.registerQuickViewProvider(exports, ["all"]);
 
-// provide a helpful name for the QuickView. This will be useful if you have to debug the quick view
+// provide a helpful name for the QuickView. This will be useful if you implement `filterQuickView` function or
+// have to debug the quick view.
 exports.QUICK_VIEW_NAME = "extension.someName";
 // now implement the getQuickView function that will be invoked when ever user hovers over a text in the editor.
 exports.getQuickView = function(editor, pos, token, line) {
@@ -39,6 +40,11 @@ exports.getQuickView = function(editor, pos, token, line) {
             });
         });
     };
+// optional filter quick view function to handle multiple quick views
+exports.filterQuickView = function(popovers){
+    // popovers will be an array of all popovers rendered by providers
+    return popovers; // dont filter show everything in this case
+}
 ```
 
 ### How it works
@@ -46,8 +52,8 @@ exports.getQuickView = function(editor, pos, token, line) {
 When QuickViewManager determines that the user intents to see QuickView on hover, `getQuickView` function on all
 registered QuickView providers are invoked to get the quick view popup. `getQuickView` should return a promise
 that resolves to the popup contents if the provider has a quick view. Else just reject the promise. If multiple
-providers returns QuickView, all of them are displayed stacked one by one. Alternatively, you can return
-an `exclusive` flag from a provider to force only a particular popup to be displayed.
+providers returns QuickView, all of them are displayed stacked one by one. You can alter this behavior by
+providing a `filterQuickView` function in the provider where you can modify what previews will be shown.
 See detailed API docs for implementation details below:
 
 ## API
@@ -100,7 +106,6 @@ provider.getQuickView = function(editor, pos, token, line) {
                 start: {line: pos.line, ch:token.start},
                 end: {line: pos.line, ch:token.end},
                 content: "<div>hello world</div>",
-                exclusive: false, // this is optional. See details below:
                 editsDoc: false // this is optional if the quick view edits the current doc
             });
         });
@@ -124,9 +129,7 @@ The promise returned should resolve to an object with the following contents:
 2.  `end` : Indicates the end cursor position to which the quick view is valid. These are generally used to highlight
     the hovered section of the text in the editor.
 3.  `content`: Either `HTML` as text, a `DOM Node` or a `Jquery Element`.
-4.  `exclusive`: Optional, set to true if only this popup should be shown if multiple providers returns a valid popup.
-    If multiple providers return `exclusive` flag, the provider with the highest priority wins.
-5.  `editsDoc`: Optional, set to true if the quick view can edit the active document.
+4.  `editsDoc`: Optional, set to true if the quick view can edit the active document.
 
 #### Modifying the QuickView content after resolving `getQuickView` promise
 
@@ -142,9 +145,39 @@ performing any operations.
     handler takes time to resolve the QuickView, resolve a dummy quick once you are sure that a QuickView needs
     to be shown to the user. The div contents can be later updated as and when more details are available.
 2.  Note that the QuickView could be hidden/removed any time by the QuickViewManager.
-3.  If multiple providers returns a valid popup, all of them are displayed except if the `exclusive` flag is
-    returned from one of the popups. If multiple providers return `exclusive` flag, the provider with the
-    highest priority wins.
+3.  If multiple providers returns a valid popup, all of them are displayed except if the `filterQuickView` modifies
+    the quick view render list. Note that `filterQuickView` is called only for those providers that
+    provided a quick view.
+
+### filterQuickView
+
+Each provider can optionally implement the `filterQuickView` function to control what among the available
+quick views should be rendered if multiple providers responded with a QuickView. The function will be called
+once all `getQuickView` providers provided a valid preview object.
+
+```js
+// function signature
+provider.filterQuickView = function(popovers) {
+         for(let popover of popovers){
+            // here if we see that a quick view with name `exclusiveQuickView` is present, then we only show that
+            // QuickView. popover.providerInfo object holds details of what provider provided the quick view.
+            if(popover.providerInfo.provider.QUICK_VIEW_NAME === "exclusiveQuickView"){
+                return [popover]
+            }
+        }
+        // if nothing is returned, then the `popovers` param will be used to show popover
+    };
+```
+
+#### parameter
+
+The function will be called with the `popovers` parameter which is an array of popover objects that was returned
+by `getQuickView` function of all succeeded providers. Details of each provider that created a popover
+will be present in `popovers[i].providerInfo` object.
+
+#### return
+
+An array of popovers that needs to be rendered, or nothing(to render the original popover parameter as is).
 
 ## isQuickViewShown
 
