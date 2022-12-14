@@ -33,6 +33,7 @@ define(function (require, exports, module) {
         PathUtils           = brackets.getModule("thirdparty/path-utils/path-utils"),
         AppInit             = brackets.getModule("utils/AppInit"),
         QuickView           = brackets.getModule("features/QuickViewManager"),
+        Metrics             = brackets.getModule("utils/Metrics"),
         FileViewController  = brackets.getModule("project/FileViewController");
 
     let enabled,                             // Only show preview if true
@@ -188,8 +189,10 @@ define(function (require, exports, module) {
                         $imgPreview.click(function () {
                             FileViewController.openAndSelectDocument(imageFile.fullPath,
                                 FileViewController.PROJECT_MANAGER);
+                            Metrics.countEvent(Metrics.EVENT_TYPE.QUICK_VIEW, "image", "click");
                         });
                         showHandlerWithImageURL(dataURL);
+                        Metrics.countEvent(Metrics.EVENT_TYPE.QUICK_VIEW, "image", "show");
                         resolve(previewPopup);
                     } else {
                         reject();

@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         Strings             = brackets.getModule("strings"),
         AppInit             = brackets.getModule("utils/AppInit"),
         QuickView           = brackets.getModule("features/QuickViewManager"),
+        Metrics             = brackets.getModule("utils/Metrics"),
         colorGradientProvider = require("./colorGradientProvider");
 
     const PREF_ENABLED_KEY = "numberEditor";
@@ -75,6 +76,7 @@ define(function (require, exports, module) {
             let editOrigin = "+NumberQuickView_" + (lastOriginId++);
             let $content = $(`<div><input type="text" value="${token.string}" class="dial"><div>`);
             let split = _splitNumber(token.string);
+            let changedMetricSent = false;
             $content.find(".dial").knob({
                 stopper: false,
                 step: 1/split.roundTo,
@@ -100,6 +102,10 @@ define(function (require, exports, module) {
                         ePos = {line: sPos.line, ch: sPos.ch + replaceStr.length};
                         editor.setSelection(sPos, ePos);
                     });
+                    if(!changedMetricSent){
+                        Metrics.countEvent(Metrics.EVENT_TYPE.QUICK_VIEW, "num", "changed");
+                        changedMetricSent = true;
+                    }
                 }
             });
             resolve({
@@ -109,6 +115,7 @@ define(function (require, exports, module) {
                 exclusive: true,
                 editsDoc: true
             });
+            Metrics.countEvent(Metrics.EVENT_TYPE.QUICK_VIEW, "num", "show");
         });
     }
 
