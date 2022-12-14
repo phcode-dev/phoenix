@@ -160,9 +160,9 @@ define(function (require, exports, module) {
             });
 
             it("should NOT show preview of unsupported hsl/hsla colors",async function () {
-                await expectNoPreviewAtPos(38, 25);    // cursor on hsla(90, 100%, 50%, 2)
-                await expectNoPreviewAtPos(39, 24);    // cursor on hsla(0, 200%, 50%, 0.5)
-                await expectNoPreviewAtPos(40, 25);    // cursor on hsla(0.0, 100%, 50%, .5)
+                await expectNoPreviewAtPos(38, 14);    // cursor on hsla(90, 100%, 50%, 2)
+                await expectNoPreviewAtPos(39, 14);    // cursor on hsla(0, 200%, 50%, 0.5)
+                await expectNoPreviewAtPos(40, 14);    // cursor on hsla(0.0, 100%, 50%, .5)
             });
 
             it("should show preview of colors with valid names", async function () {

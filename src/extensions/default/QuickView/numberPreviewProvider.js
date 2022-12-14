@@ -29,7 +29,8 @@ define(function (require, exports, module) {
     let PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Strings             = brackets.getModule("strings"),
         AppInit             = brackets.getModule("utils/AppInit"),
-        QuickView           = brackets.getModule("features/QuickViewManager");
+        QuickView           = brackets.getModule("features/QuickViewManager"),
+        colorGradientProvider = require("./colorGradientProvider");
 
     const PREF_ENABLED_KEY = "numberEditor";
 
@@ -111,6 +112,23 @@ define(function (require, exports, module) {
         });
     }
 
+    function filterQuickView(popovers){
+        // rgb(10 , 100, 20), hover over these kind of numbers should open color quick view if present over number view
+        let numberQuickView, colorQuickView;
+        for(let popover of popovers){
+            if(popover.providerInfo.provider.QUICK_VIEW_NAME === exports.QUICK_VIEW_NAME){
+                numberQuickView = popover;
+            } else if(popover.providerInfo.provider.QUICK_VIEW_NAME === colorGradientProvider.QUICK_VIEW_NAME){
+                colorQuickView = popover;
+            }
+        }
+        if(colorQuickView){
+            return [colorQuickView];
+        }
+
+        return [numberQuickView] || popovers;
+    }
+
     prefs.on("change", PREF_ENABLED_KEY, function () {
         enabled = prefs.get(PREF_ENABLED_KEY);
     });
@@ -121,6 +139,7 @@ define(function (require, exports, module) {
     });
 
     exports.getQuickView = getQuickView;
+    exports.filterQuickView = filterQuickView;
     exports.QUICK_VIEW_NAME = "numberPreviewProvider";
 
 });

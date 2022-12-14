@@ -206,9 +206,10 @@ define(function (require, exports, module) {
         describe("Quick view register provider", function (){
             let pos, token, line;
 
-            function getProvider(html, {noPreview, exclusive, name}) {
+            function getProvider(html, {noPreview, filterQuickView, name}) {
                 return {
                     QUICK_VIEW_NAME: name,
+                    filterQuickView,
                     getQuickView: function(editor, posx, tokenx, linex) {
                         expect(editor).toBeDefined();
                         pos = posx; token = tokenx; line = linex;
@@ -220,8 +221,7 @@ define(function (require, exports, module) {
                             resolve({
                                 start: {line: posx.line, ch:tokenx.start},
                                 end: {line: posx.line, ch:tokenx.end},
-                                content: html,
-                                exclusive
+                                content: html
                             });
                         });
                     }
@@ -234,10 +234,6 @@ define(function (require, exports, module) {
                 {name: "provider2"});
             let providerNoPreview = getProvider("<div id='blinker-fluid3'>hello world</div>",
                 {noPreview:true, name: "providerNoPreview"});
-            let exclusiveProvider1 = getProvider("<div id='blinker-fluid4'>hello world</div>",
-                {exclusive:true, name: "exclusiveProvider1"});
-            let exclusiveProvider2 = getProvider("<div id='blinker-fluid5'>hello world</div>",
-                {exclusive:true, name: "exclusiveProvider2"});
 
             beforeEach(async function () {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
@@ -292,38 +288,90 @@ define(function (require, exports, module) {
                 expect(popoverInfo.content.find("#blinker-fluid2").length).toBe(0);
             });
 
-            it("should exclusive provider provide preview if multiple providers returned previews", async function () {
+            it("should filterQuickView filter preview if multiple providers returned previews", async function () {
+                let filterPopoverNames, filterCalled = false;
+                let filteredProvider1 = getProvider("<div id='blinker-fluid4'>hello world</div>",
+                    {filterQuickView: function (popovers) {
+                        let popoverToReturn = popovers;
+                        filterCalled = true;
+                        filterPopoverNames = [];
+                        for(let popover of popovers){
+                            if(popover.providerInfo.provider.QUICK_VIEW_NAME === "filteredProvider1"){
+                                popoverToReturn = [popover];
+                            }
+                            filterPopoverNames.push(popover.providerInfo.provider.QUICK_VIEW_NAME);
+                        }
+                        return popoverToReturn;
+                    }, name: "filteredProvider1"});
                 QuickViewManager.registerQuickViewProvider(provider, ["all"]);
-                QuickViewManager.registerQuickViewProvider(exclusiveProvider1, ["all"]);
+                QuickViewManager.registerQuickViewProvider(filteredProvider1, ["all"]);
                 let popoverInfo = await getPopoverAtPos(4, 14);
                 expect(popoverInfo.content.find("#blinker-fluid").length).toBe(0);
                 expect(popoverInfo.content.find("#blinker-fluid4").length).toBe(1);
+                expect(filterPopoverNames.includes("filteredProvider1")).toBeTrue();
+                expect(filterPopoverNames.includes("provider")).toBeTrue();
+                expect(filterCalled).toBeTrue();
 
-                QuickViewManager.removeQuickViewProvider(exclusiveProvider1, ["all"]);
+                filterCalled = false;
+                QuickViewManager.removeQuickViewProvider(filteredProvider1, ["all"]);
                 popoverInfo = await getPopoverAtPos(4, 14);
                 expect(popoverInfo.content.find("#blinker-fluid").length).toBe(1);
+                expect(filterPopoverNames.includes("filteredProvider1")).toBeTrue();
+                expect(filterPopoverNames.includes("provider")).toBeTrue();
+                expect(filterCalled).toBeFalse();
 
                 QuickViewManager.removeQuickViewProvider(provider, ["all"]);
             });
 
-            it("should multiple exclusive preview provider resolve to highest priority", async function () {
-                QuickViewManager.registerQuickViewProvider(provider, ["all"]);
-                QuickViewManager.registerQuickViewProvider(exclusiveProvider1, ["all"]);
-                QuickViewManager.registerQuickViewProvider(exclusiveProvider2, ["all"], 3);
+            it("should multiple filterQuickView be invoked for each provider", async function () {
+                let filter1Called, filter2Called;
+                let filteredProvider1 = getProvider("<div id='blinker-fluid4'>hello world</div>",
+                    {filterQuickView: function (popovers) {
+                        filter1Called = true;
+                    }, name: "filteredProvider1"});
+                let filteredProvider2 = getProvider("<div id='blinker-fluid5'>hello world</div>",
+                    {filterQuickView: function (popovers) {
+                            filter2Called = true;
+                        }, name: "filteredProvider2"});
+                QuickViewManager.registerQuickViewProvider(filteredProvider1, ["all"]);
+                QuickViewManager.registerQuickViewProvider(filteredProvider2, ["all"]);
                 let popoverInfo = await getPopoverAtPos(4, 14);
-                expect(popoverInfo.content.find("#blinker-fluid").length).toBe(0);
-                expect(popoverInfo.content.find("#blinker-fluid5").length).toBe(1);
-
-                // increase priority of exclusive provider 1
-                QuickViewManager.removeQuickViewProvider(exclusiveProvider1, ["all"]);
-                QuickViewManager.registerQuickViewProvider(exclusiveProvider1, ["all"], 5);
-                popoverInfo = await getPopoverAtPos(4, 14);
-                expect(popoverInfo.content.find("#blinker-fluid").length).toBe(0);
                 expect(popoverInfo.content.find("#blinker-fluid4").length).toBe(1);
+                expect(popoverInfo.content.find("#blinker-fluid5").length).toBe(1);
+                expect(filter1Called).toBeTrue();
+                expect(filter2Called).toBeTrue();
 
-                QuickViewManager.removeQuickViewProvider(provider, ["all"]);
-                QuickViewManager.removeQuickViewProvider(exclusiveProvider1, ["all"]);
-                QuickViewManager.removeQuickViewProvider(exclusiveProvider2, ["all"]);
+                filter1Called = false;
+                filter2Called = false;
+                QuickViewManager.removeQuickViewProvider(filteredProvider1, ["all"]);
+                popoverInfo = await getPopoverAtPos(4, 14);
+                expect(popoverInfo.content.find("#blinker-fluid4").length).toBe(0);
+                expect(popoverInfo.content.find("#blinker-fluid5").length).toBe(1);
+                expect(filter1Called).toBeFalse();
+                expect(filter2Called).toBeTrue();
+
+                QuickViewManager.removeQuickViewProvider(filteredProvider2, ["all"]);
+            });
+
+            it("should multiple filterQuickView be invoked only if a provider provided some results", async function () {
+                let filter1Called = false, filter2Called = false;
+                let filteredProvider1 = getProvider("<div id='blinker-fluid4'>hello world</div>",
+                    {filterQuickView: function (popovers) {
+                        filter1Called = true;
+                    }, noPreview: true, name: "filteredProvider1"});
+                let filteredProvider2 = getProvider("<div id='blinker-fluid5'>hello world</div>",
+                    {filterQuickView: function (popovers) {
+                        filter2Called = true;
+                    }, name: "filteredProvider2"});
+                QuickViewManager.registerQuickViewProvider(filteredProvider1, ["all"]);
+                QuickViewManager.registerQuickViewProvider(filteredProvider2, ["all"]);
+                let popoverInfo = await getPopoverAtPos(4, 14);
+                expect(popoverInfo.content.find("#blinker-fluid4").length).toBe(0);
+                expect(popoverInfo.content.find("#blinker-fluid5").length).toBe(1);
+                expect(filter1Called).toBeFalse();
+                expect(filter2Called).toBeTrue();
+
+                QuickViewManager.removeQuickViewProvider(filteredProvider2, ["all"]);
             });
 
             it("should show preview if some providers didnt give preview", async function () {
