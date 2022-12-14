@@ -121,5 +121,6 @@ define(function (require, exports, module) {
     });
 
     exports.getQuickView = getQuickView;
+    exports.QUICK_VIEW_NAME = "numberPreviewProvider";
 
 });

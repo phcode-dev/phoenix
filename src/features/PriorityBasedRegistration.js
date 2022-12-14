@@ -65,26 +65,13 @@ define(function (require, exports, module) {
             },
             self = this;
 
-        if (languageIds.indexOf("all") !== -1) {
-            // Ignore anything else in languageIds and just register for every language. This includes
-            // the special "all" language since its key is in the hintProviders map from the beginning.
-            var languageId;
-            for (languageId in self._providers) {
-                if (self._providers.hasOwnProperty(languageId)) {
-                    self._providers[languageId].push(providerObj);
-                    self._providers[languageId].sort(_providerSort);
-                }
+        languageIds.forEach(function (languageId) {
+            if (!self._providers[languageId]) {
+                self._providers[languageId] = [];
             }
-        } else {
-            languageIds.forEach(function (languageId) {
-                if (!self._providers[languageId]) {
-                    // Initialize provider list with any existing all-language providers
-                    self._providers[languageId] = Array.prototype.concat(self._providers.all);
-                }
-                self._providers[languageId].push(providerObj);
-                self._providers[languageId].sort(_providerSort);
-            });
-        }
+            self._providers[languageId].push(providerObj);
+            self._providers[languageId].sort(_providerSort);
+        });
     };
 
     /**
@@ -122,7 +109,8 @@ define(function (require, exports, module) {
 
 
     RegistrationHandler.prototype.getProvidersForLanguageId = function (languageId) {
-        var providers = this._providers[languageId] || this._providers.all;
+        var providers = (this._providers[languageId] || []).concat(this._providers.all || [])
+            .sort(_providerSort);
 
         // Exclude providers that are explicitly disabled in the preferences.
         // All providers that do not have their constructor

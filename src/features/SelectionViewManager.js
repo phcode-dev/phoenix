@@ -46,6 +46,8 @@
  * // replace `all` with language ID(Eg. javascript) if you want to restrict the preview to js files only.
  * SelectionViewManager.registerSelectionViewProvider(exports, ["all"]);
  *
+ * // provide a helpful name for the SelectionView. This will be useful if you have to debug the selection view
+ * exports.SELECTION_VIEW_NAME = "extension.someName";
  * // now implement the getSelectionView function that will be invoked when ever user selection changes in the editor.
  * exports.getSelectionView = function(editor, selections) {
  *         return new Promise((resolve, reject)=>{
