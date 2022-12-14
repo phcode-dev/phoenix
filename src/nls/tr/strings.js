@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "Hızlı Görünümü etkinleştirmek için true",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "Seçim Görünümünü etkinleştirmek için true",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "Uzantıları eksik olan URL'ler için resim önizlemelerini göstermek için true .",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true düzenleyicide sayıların üzerine gelindiğinde Hızlı Görünüm'ü göstermek için",
   "DESCRIPTION_THEME": "Bir {APP_NAME} teması seçin",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "özel kaydırma çubuklarına izin vermek için true",
   "DESCRIPTION_LINTING_COLLAPSED": "astar panelini daraltmak için true",

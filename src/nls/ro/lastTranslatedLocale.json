@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true pentru a activa Vizualizare rapidă",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true pentru a activa vizualizarea selecției",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true pentru a afișa previzualizările imaginilor pentru adresele URL care lipsesc extensii",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true pentru a afișa Vizualizare rapidă la trecerea cursorului peste numere în editor",
   "DESCRIPTION_THEME": "Selectați o temă pentru {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true pentru a permite bare de defilare personalizate",
   "DESCRIPTION_LINTING_COLLAPSED": "adevărat pentru a se prăbuși panoul de scame",

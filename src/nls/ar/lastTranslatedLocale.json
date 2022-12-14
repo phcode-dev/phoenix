@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "صحيح لتمكين العرض السريع",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "صحيح لتمكين عرض التحديد",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "صحيح لإظهار معاينات الصور لعناوين URL التي تفتقد إلى الامتدادات",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "صحيح لإظهار العرض السريع عند التمرير فوق الأرقام في المحرر",
   "DESCRIPTION_THEME": "حدد سمة {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "صحيح للسماح بأشرطة التمرير المخصصة",
   "DESCRIPTION_LINTING_COLLAPSED": "صحيح لطي لوحة الفحص",

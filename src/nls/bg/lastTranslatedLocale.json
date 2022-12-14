@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "Задайте true за включване на бързия преглед",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true, за да активирате изгледа за избор",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "Задайте true за показване на изображения за адресите с лепсващи разширения",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true за показване на бърз изглед при задържане на курсора на мишката върху числа в редактора",
   "DESCRIPTION_THEME": "Изберете тема за {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "Задайте true за позволяване на персонализирани ленти за превъртане",
   "DESCRIPTION_LINTING_COLLAPSED": "Задайте true за скриване на панела за проверки",

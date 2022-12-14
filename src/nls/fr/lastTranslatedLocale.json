@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "vrai pour activer l’affichage rapide",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true pour activer la vue de sélection",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "vrai pour afficher les aperçus d’images pour les extensions sans URL",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true pour afficher Quick View lors du survol des nombres dans l'éditeur",
   "DESCRIPTION_THEME": "Sélectionner un thème {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "vrai pour autoriser les barres de défilement personnalisées",
   "DESCRIPTION_LINTING_COLLAPSED": "vrai pour réduire le panneau d’analyse lint",

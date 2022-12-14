@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true 代表啟用「快速檢視」",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true 啟用選擇視圖",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true 代表對沒有副檔名的 URL 顯示圖片預覽",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "在編輯器中將鼠標懸停在數字上時顯示快速查看",
   "DESCRIPTION_THEME": "選用 {APP_NAME} 佈景主題",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true 代表允許自訂捲軸",
   "DESCRIPTION_LINTING_COLLAPSED": "true 代表收合檢查面板",

@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "αληθές για να ενεργοποιήσετε τη γρήγορη προβολή",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "αληθές για να ενεργοποιήσετε την Προβολή επιλογής",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true για εμφάνιση προεπισκοπήσεων εικόνων για διευθύνσεις URL που λείπουν επεκτάσεις",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true για εμφάνιση Γρήγορης προβολής κατά την τοποθέτηση του δείκτη πάνω από αριθμούς στο πρόγραμμα επεξεργασίας",
   "DESCRIPTION_THEME": "Επιλέξτε ένα θέμα {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "αληθές για να επιτρέπονται προσαρμοσμένες γραμμές κύλισης",
   "DESCRIPTION_LINTING_COLLAPSED": "πιστό στην κατάρρευση του πίνακα με χνούδι",

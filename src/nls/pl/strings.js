@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true, by włączyć Quick View",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true aby włączyć widok wyboru",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true, by wyświetlać podgląd dla grafiki, która nie posiada rozszerzenia w adresie URL",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true , aby wyświetlić Szybki podgląd po najechaniu kursorem na liczby w edytorze",
   "DESCRIPTION_THEME": "Wybierz motyw dla {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true, by zezwolić na modyfikacje pasków przewijania przez motyw",
   "DESCRIPTION_LINTING_COLLAPSED": "true, by zwijać (ukrywać) panel inspekcji kodu",

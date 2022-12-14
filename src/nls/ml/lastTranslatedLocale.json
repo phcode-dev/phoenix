@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "ദ്രുത കാഴ്‌ച പ്രവർത്തനക്ഷമമാക്കുന്നത് ശരിയാണ്",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "തിരഞ്ഞെടുക്കൽ കാഴ്‌ച പ്രവർത്തനക്ഷമമാക്കുന്നതിന് ശരി",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "വിപുലീകരണങ്ങൾ നഷ്‌ടമായ URL-കൾക്കായുള്ള ഇമേജ് പ്രിവ്യൂ കാണിക്കുന്നത് ശരിയാണ്",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "എഡിറ്ററിലെ നമ്പറുകളിൽ ഹോവർ ചെയ്യുമ്പോൾ ദ്രുത കാഴ്‌ച കാണിക്കുന്നത് ശരിയാണ്",
   "DESCRIPTION_THEME": "ഒരു {APP_NAME} തീം തിരഞ്ഞെടുക്കുക",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "ഇഷ്‌ടാനുസൃത സ്ക്രോൾ ബാറുകൾ അനുവദിക്കുന്നത് ശരിയാണ്",
   "DESCRIPTION_LINTING_COLLAPSED": "ലിന്റിങ് പാനൽ പൊളിക്കുന്നത് ശരിയാണ്",

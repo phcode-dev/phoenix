@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "クイックビューを有効にするには true",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "選択ビューを有効にする場合は true",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "URL のない拡張機能の画像プレビューを表示するには true",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "エディターで数値の上にマウスを移動するとクイック ビューを表示する場合は true",
   "DESCRIPTION_THEME": "{APP_NAME} のテーマを選択",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "カスタムスクロールバーを許可するには true",
   "DESCRIPTION_LINTING_COLLAPSED": "構文チェックパネルを閉じるには true",

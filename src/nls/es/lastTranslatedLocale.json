@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true para habilitar la Vista rápida",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true para habilitar la vista de selección",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true para mostrar vistas previas de imágenes para URLs sin extensión",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "verdadero para mostrar Vista rápida al pasar el mouse sobre los números en el editor",
   "DESCRIPTION_THEME": "Seleccionar un tema para {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true para habilitar la barra de desplazamiento customizada",
   "DESCRIPTION_LINTING_COLLAPSED": "true para colapsar el panel de inspección de código",

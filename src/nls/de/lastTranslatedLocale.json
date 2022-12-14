@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "Aktiviert die Schnelle Farbansicht",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true, um die Auswahlansicht zu aktivieren",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "Aktiviert die Bildvorschau auch bei URLs, die keine Dateierweiterung haben",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true , um die Schnellansicht anzuzeigen, wenn der Mauszeiger über Zahlen im Editor bewegt wird",
   "DESCRIPTION_THEME": "Wählen eines {APP_NAME}-Designs",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "Erlaubt die Verwendung der Scrollbars vom Design",
   "DESCRIPTION_LINTING_COLLAPSED": "Das Linter-Panel einklappen",

@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "त्वरित दृश्य सक्षम करने के लिए सही है",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "चयन दृश्य को सक्षम करने के लिए सही है",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "उन URL के लिए छवि पूर्वावलोकन दिखाने के लिए सही है जिनमें एक्सटेंशन मौजूद नहीं हैं",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "संपादक में संख्याओं पर होवर करने पर त्वरित दृश्य दिखाने के लिए सही",
   "DESCRIPTION_THEME": "एक {APP_NAME} थीम चुनें",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "कस्टम स्क्रॉल बार को अनुमति देने के लिए सही है",
   "DESCRIPTION_LINTING_COLLAPSED": "लाइनिंग पैनल को ध्वस्त करने के लिए सही",

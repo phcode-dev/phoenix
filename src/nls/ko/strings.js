@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "빠른 보기를 활성화 하려면 true",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "선택 보기를 활성화하려면 true",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "URL 없는 확장 기능의 이미지 미리보기를 표시하려면 true",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "편집기에서 숫자 위로 마우스를 가져가면 빠른 보기를 표시하려면 true",
   "DESCRIPTION_THEME": "{APP_NAME} 테마 선택",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "사용자 정의 스크롤 바를 허용하려면 true",
   "DESCRIPTION_LINTING_COLLAPSED": "구문 검사 패널을 접어 두려면 true",

@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "verdadeiro (true) pra habilitar Visualização Rápida/Quick View",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true para habilitar a exibição de seleção",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "verdadeiro (true) para mostrar uma prévia de imagem para URLs sem extensões",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true para mostrar a visualização rápida ao passar o mouse sobre os números no editor",
   "DESCRIPTION_THEME": "Selecionar um tema para {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "verdadeiro (true) para permitir barras de rolagem customizadas",
   "DESCRIPTION_LINTING_COLLAPSED": "verdadeiro (true) para agrupar painel de sugestões",
