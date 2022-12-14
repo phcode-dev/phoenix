@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "درست است تا نمای سریع را فعال کنید",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "برای فعال کردن نمای انتخابی درست است",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "درست است برای نشان دادن پیش‌نمایش تصویر برای نشانی‌های اینترنتی فاقد پسوند",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "درست است تا نمای سریع را در حالت شناور روی اعداد در ویرایشگر نشان دهد",
   "DESCRIPTION_THEME": "یک طرح زمینه {APP_NAME} را انتخاب کنید",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "درست است تا نوارهای پیمایش سفارشی را مجاز کند",
   "DESCRIPTION_LINTING_COLLAPSED": "درست به فرو ریختن پانل پرزدار",

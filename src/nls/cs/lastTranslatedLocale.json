@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true k povolení rychlého náhledu",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true pro povolení zobrazení výběru",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true ke zobrazení náhledů obrázků pro chybějící přípony URL",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true pro zobrazení rychlého náhledu po najetí myší na čísla v editoru",
   "DESCRIPTION_THEME": "Vybrat motiv {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true k povolení vlastních posuvníků",
   "DESCRIPTION_LINTING_COLLAPSED": "true ke skrytí panelu linteru",

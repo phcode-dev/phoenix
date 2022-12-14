@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true per abilitare Quick View",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true per abilitare la visualizzazione selezione",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true per visualizzare le anteprime delle immagini anche se non hanno un'estensione",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true per visualizzare l'anteprima al passaggio del mouse sui numeri nell'editor",
   "DESCRIPTION_THEME": "Seleziona un tema di {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true per consentire le barre di scorrimento su misura",
   "DESCRIPTION_LINTING_COLLAPSED": "true per non mostrare il pannello del controllo del codice",

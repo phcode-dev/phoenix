@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "值为真时，开启快速查看",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true 启用选择视图",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "值为真时，为缺少 URL 的扩展程序显示图像预览",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "在编辑器中将鼠标悬停在数字上时显示快速查看",
   "DESCRIPTION_THEME": "选择一个 {APP_NAME} 主题",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "值为真时，允许自定义滚动条",
   "DESCRIPTION_LINTING_COLLAPSED": "值为真时，折叠提示面板",

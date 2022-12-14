@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "benar untuk mengaktifkan Tampilan Cepat",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "benar untuk mengaktifkan Tampilan Pilihan",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "benar untuk menampilkan pratinjau gambar untuk URL yang tidak memiliki ekstensi",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "benar untuk menampilkan Tampilan Cepat saat mengarahkan kursor ke angka di editor",
   "DESCRIPTION_THEME": "Pilih tema {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "benar untuk mengizinkan bilah gulir khusus",
   "DESCRIPTION_LINTING_COLLAPSED": "benar untuk meruntuhkan panel linting",

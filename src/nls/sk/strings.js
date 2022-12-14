@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true, aby ste povolili rýchly náhľad",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true, ak chcete povoliť zobrazenie výberu",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true, ak chcete zobraziť ukážky obrázkov pre adresy URL bez rozšírení",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true, ak chcete zobraziť rýchly náhľad po umiestnení kurzora myši nad čísla v editore",
   "DESCRIPTION_THEME": "Vyberte motív aplikácie {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true na povolenie vlastných posúvačov",
   "DESCRIPTION_LINTING_COLLAPSED": "verný poťahový panel",

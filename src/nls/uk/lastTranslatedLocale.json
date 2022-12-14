@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true, щоб увімкнути швидкий перегляд",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true, щоб увімкнути перегляд виділення",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true, щоб показати попередній перегляд зображень для URL-адрес без розширень",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true, щоб показувати швидкий перегляд при наведенні курсора на числа в редакторі",
   "DESCRIPTION_THEME": "Виберіть тему {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true, щоб дозволити спеціальні смуги прокрутки",
   "DESCRIPTION_LINTING_COLLAPSED": "правда, щоб згорнути панель лінінгу",

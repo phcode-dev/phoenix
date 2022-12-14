@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true for at aktivere Quick View",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true for at aktivere Selection View",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "sand for at vise billedforhåndsvisninger for webadresser, der mangler udvidelser",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "sandt at vise Hurtig visning ved at holde markøren over tal i editoren",
   "DESCRIPTION_THEME": "Vælg et {APP_NAME}-tema",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "sand for at tillade brugerdefinerede rullepaneler",
   "DESCRIPTION_LINTING_COLLAPSED": "tro mod sammenfaldende fnugpanel",

@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true om Snelle weergave in te schakelen",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true om Selectieweergave in te schakelen",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true om afbeeldingsvoorbeelden weer te geven voor URL's die extensies missen",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true om Snelle weergave weer te geven als u in de editor over getallen beweegt",
   "DESCRIPTION_THEME": "Selecteer een {APP_NAME}-thema",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true om aangepaste schuifbalken toe te staan",
   "DESCRIPTION_LINTING_COLLAPSED": "trouw aan het inklappen van het pluizende paneel",

@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "труе да бисте омогућили брзи преглед",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "труе да бисте омогућили приказ избора",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "труе да би се приказали прегледи слика за УРЛ адресе којима недостају екстензије",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "труе да бисте приказали брзи приказ када пређете курсором преко бројева у уређивачу",
   "DESCRIPTION_THEME": "Изаберите тему за {АПП_НАМЕ}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "труе да дозволи прилагођене траке за померање",
   "DESCRIPTION_LINTING_COLLAPSED": "истинито до колапса лајсни панел",

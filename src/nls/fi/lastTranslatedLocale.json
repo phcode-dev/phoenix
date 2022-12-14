@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true: ota pikanäkymä käyttöön",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true ottaaksesi valintanäkymän käyttöön",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true: näytä kuvien esikatselut päätteettömille URL-osoitteille",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "tosi näyttääksesi Quick View'n viemällä hiiren editorissa numeroiden päälle",
   "DESCRIPTION_THEME": "Valitse {APP_NAME}in teema",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true: salli mukautetut vierityspalkit",
   "DESCRIPTION_LINTING_COLLAPSED": "true: pienennä tarkistuksen paneeli",

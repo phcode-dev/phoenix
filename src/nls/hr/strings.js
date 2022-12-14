@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true za omogućavanje brzog pregleda",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true za omogućavanje prikaza odabira",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true za prikaz pregleda slika za URL-ove kojima nedostaju ekstenzije",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true za prikaz Brzog prikaza kada prijeđete pokazivačem preko brojeva u uređivaču",
   "DESCRIPTION_THEME": "Odaberite temu {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true za dopuštanje prilagođenih traka za pomicanje",
   "DESCRIPTION_LINTING_COLLAPSED": "istinito za kolaps linting panel",

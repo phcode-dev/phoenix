@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "کوئیک ویو کو فعال کرنے کے لیے درست",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "سلیکشن ویو کو فعال کرنے کے لیے درست",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "یو آر ایل غائب ایکسٹینشنز کے لیے تصویری پیش نظارہ دکھانے کے لیے درست",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "ایڈیٹر میں نمبروں پر ہوور پر کوئیک ویو دکھانے کے لیے درست",
   "DESCRIPTION_THEME": "ایک {APP_NAME} تھیم منتخب کریں۔",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "اپنی مرضی کے مطابق اسکرول بار کی اجازت دینے کے لیے درست",
   "DESCRIPTION_LINTING_COLLAPSED": "لنٹنگ پینل کو ختم کرنے کے لئے درست",

@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true, чтобы включить быстрый просмотр",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true, чтобы включить представление выбора",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "Значение true, чтобы показывать превью изображений для URL-адресов без расширений.",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true, чтобы отображать Quick View при наведении курсора на числа в редакторе",
   "DESCRIPTION_THEME": "Выберите тему {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true, чтобы разрешить настраиваемые полосы прокрутки",
   "DESCRIPTION_LINTING_COLLAPSED": "true, чтобы свернуть панель ворса",

@@ -664,6 +664,7 @@
   "DESCRIPTION_QUICK_VIEW_ENABLED": "igaz a Gyorsnézet engedélyezéséhez",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "igaz a Kijelölés nézet engedélyezéséhez",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "igaz, hogy a bővítményt nem tartalmazó URL-ek kép-előnézeteit jelenítse meg",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "igaz, hogy a szerkesztőben a számok fölé vigye az egérmutatót a Gyorsnézet megjelenítéséhez",
   "DESCRIPTION_THEME": "Válasszon egy {APP_NAME} témát",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "igaz az egyéni görgetősávok engedélyezéséhez",
   "DESCRIPTION_LINTING_COLLAPSED": "összecsukható szöszmötölő panel",

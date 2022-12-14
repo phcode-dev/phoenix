@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "true para habilitar a Visualização Rápida",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "true para habilitar a exibição de seleção",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "true para mostrar visualizações de imagens para URLs sem extensões",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "true para mostrar a visualização rápida ao passar o mouse sobre os números no editor",
   "DESCRIPTION_THEME": "Selecione um tema do {APP_NAME}",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "true para permitir barras de rolagem personalizadas",
   "DESCRIPTION_LINTING_COLLAPSED": "true para recolher o painel de fiapos",

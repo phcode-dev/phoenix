@@ -684,6 +684,7 @@ define({
   "DESCRIPTION_QUICK_VIEW_ENABLED": "sant för att aktivera Quick View",
   "DESCRIPTION_SELECTION_VIEW_ENABLED": "sant för att aktivera urvalsvy",
   "DESCRIPTION_EXTENSION_LESS_IMAGE_PREVIEW": "sant för att visa bildförhandsvisningar för webbadresser som saknar tillägg",
+  "DESCRIPTION_NUMBER_QUICK_VIEW": "sant för att visa snabbvy när du håller muspekaren över siffror i editorn",
   "DESCRIPTION_THEME": "Välj ett {APP_NAME}-tema",
   "DESCRIPTION_USE_THEME_SCROLLBARS": "sant för att tillåta anpassade rullningslister",
   "DESCRIPTION_LINTING_COLLAPSED": "sann att kollapsa luddpanel",
