@@ -31,6 +31,7 @@ define(function (require, exports, module) {
         AppInit             = brackets.getModule("utils/AppInit"),
         QuickView           = brackets.getModule("features/QuickViewManager"),
         Strings             = brackets.getModule("strings"),
+        Metrics             = brackets.getModule("utils/Metrics"),
         CommandManager      = brackets.getModule("command/CommandManager"),
         Commands            = brackets.getModule("command/Commands");
 
@@ -296,8 +297,10 @@ define(function (require, exports, module) {
                     }
                     editor.setCursorPos(startPos);
                     CommandManager.execute(Commands.TOGGLE_QUICK_EDIT);
+                    Metrics.countEvent(Metrics.EVENT_TYPE.QUICK_VIEW, "color", "click");
                 });
 
+                Metrics.countEvent(Metrics.EVENT_TYPE.QUICK_VIEW, "color", "show");
                 resolve({
                     start: startPos,
                     end: endPos,

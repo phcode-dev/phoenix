@@ -73,6 +73,7 @@ define(function (require, exports, module) {
         KEYBOARD: "keyboard",
         CODE_HINTS: "code-hints",
         EDITOR: "editor",
+        QUICK_VIEW: "quickView",
         SEARCH: "search",
         SHARING: "sharing",
         PERFORMANCE: "performance",

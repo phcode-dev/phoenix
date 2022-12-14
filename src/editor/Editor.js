@@ -82,6 +82,7 @@ define(function (require, exports, module) {
         TokenUtils         = require("utils/TokenUtils"),
         HTMLUtils          = require("language/HTMLUtils"),
         MainViewManager    = require("view/MainViewManager"),
+        Metrics            = require("utils/Metrics"),
         _                  = require("thirdparty/lodash");
 
     /** Editor helpers */
@@ -307,6 +308,7 @@ define(function (require, exports, module) {
             if(event.ctrlKey || event.metaKey){
                 setTimeout(()=>{
                     CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION);
+                    Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "ctrlClick", _cm.getMode().name);
                 }, 100);
             }
             return {
