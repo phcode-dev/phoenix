@@ -928,7 +928,8 @@ define(function (require, exports, module) {
         toggleCollapsed(prefs.get(PREF_COLLAPSED), true);
 
         QuickViewManager.registerQuickViewProvider({
-            getQuickView
+            getQuickView,
+            QUICK_VIEW_NAME: "CodeInspection"
         }, ["all"]);
     });
 

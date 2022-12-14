@@ -45,6 +45,8 @@
  * // replace `all` with language ID(Eg. javascript) if you want to restrict the preview to js files only.
  * QuickViewManager.registerQuickViewProvider(exports, ["all"]);
  *
+ * // provide a helpful name for the QuickView. This will be useful if you have to debug the quick view
+ * exports.QUICK_VIEW_NAME = "extension.someName";
  * // now implement the getQuickView function that will be invoked when ever user hovers over a text in the editor.
  * exports.getQuickView = function(editor, pos, token, line) {
  *         return new Promise((resolve, reject)=>{

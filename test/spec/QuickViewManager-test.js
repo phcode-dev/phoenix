@@ -206,8 +206,9 @@ define(function (require, exports, module) {
         describe("Quick view register provider", function (){
             let pos, token, line;
 
-            function getProvider(html, noPreview, exclusive = false) {
+            function getProvider(html, {noPreview, exclusive, name}) {
                 return {
+                    QUICK_VIEW_NAME: name,
                     getQuickView: function(editor, posx, tokenx, linex) {
                         expect(editor).toBeDefined();
                         pos = posx; token = tokenx; line = linex;
@@ -227,11 +228,16 @@ define(function (require, exports, module) {
                 };
             }
 
-            let provider = getProvider("<div id='blinker-fluid'>hello world</div>");
-            let provider2 = getProvider("<div id='blinker-fluid2'>hello world</div>");
-            let providerNoPreview = getProvider("<div id='blinker-fluid3'>hello world</div>", true);
-            let exclusiveProvider1 = getProvider("<div id='blinker-fluid4'>hello world</div>", false, true);
-            let exclusiveProvider2 = getProvider("<div id='blinker-fluid5'>hello world</div>", false, true);
+            let provider = getProvider("<div id='blinker-fluid'>hello world</div>",
+                {name: "provider"});
+            let provider2 = getProvider("<div id='blinker-fluid2'>hello world</div>",
+                {name: "provider2"});
+            let providerNoPreview = getProvider("<div id='blinker-fluid3'>hello world</div>",
+                {noPreview:true, name: "providerNoPreview"});
+            let exclusiveProvider1 = getProvider("<div id='blinker-fluid4'>hello world</div>",
+                {exclusive:true, name: "exclusiveProvider1"});
+            let exclusiveProvider2 = getProvider("<div id='blinker-fluid5'>hello world</div>",
+                {exclusive:true, name: "exclusiveProvider2"});
 
             beforeEach(async function () {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
