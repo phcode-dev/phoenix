@@ -25,7 +25,8 @@ define(function (require, exports, module) {
         Commands           = brackets.getModule("command/Commands"),
         Dialogs = brackets.getModule("widgets/Dialogs"),
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
-        Strings = brackets.getModule("strings");
+        Strings = brackets.getModule("strings"),
+        Metrics = brackets.getModule("utils/Metrics");
 
     const NEW_FEATURE_MARKDOWN_SHOWN_HASH = "Newly_added_features.md.shown.hash";
 
@@ -64,6 +65,7 @@ define(function (require, exports, module) {
             CommandManager.execute(Commands.FILE_OPEN, {
                 fullPath: _getUpdateMarkdownPath()
             });
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "newFeatMD", "shown");
         }, 3000);
     }
 
@@ -75,6 +77,7 @@ define(function (require, exports, module) {
                     Strings.UPDATE_AVAILABLE_TITLE,
                     Strings.UPDATE_RELOAD_APP
                 );
+                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "updateDlg", "shown");
             }
         }, 5000);
     }

@@ -742,6 +742,8 @@ define(function (require, exports, module) {
     /**
      * locks the current quickview if shown to be prenatally displayed on screen till the `unlockQuickView` function
      * is called or document changes.
+     *
+     * @type {function}
      */
     function lockQuickView() {
         if(isQuickViewShown()){
@@ -751,6 +753,8 @@ define(function (require, exports, module) {
 
     /**
      * unlocks the current quickview locked by `lockQuickView` fucntion.
+     *
+     * @type {function}
      */
     function unlockQuickView() {
         quickViewLocked = false;
