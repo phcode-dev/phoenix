@@ -189,14 +189,14 @@ Returns **[boolean][6]**
 
 ## lockQuickView
 
-locks the current quickview if shown to be prenatally displayed on screen till the `unlockQuickView` function
+locks the current QuickView if shown to be permanently displayed on screen till the `unlockQuickView` function
 is called or document changes.
 
 Type: [function][5]
 
 ## unlockQuickView
 
-unlocks the current quickview locked by `lockQuickView` fucntion.
+unlocks the current QuickView locked by `lockQuickView` fucntion.
 
 Type: [function][5]
 

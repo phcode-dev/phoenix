@@ -581,7 +581,10 @@ define(function (require, exports, module) {
             clientY: event.clientY
         };
 
-        if (!enabled || quickViewLocked) {
+        if (!enabled || quickViewLocked
+            || $previewContainer[0].contains(window.document.activeElement)) {
+            // activeElement check as, if the popup has an active element, say a text input, user may
+            // move the mouse outside popup to type in the input, in which case we should not close popup.
             return;
         }
 
@@ -740,7 +743,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * locks the current quickview if shown to be prenatally displayed on screen till the `unlockQuickView` function
+     * locks the current QuickView if shown to be permanently displayed on screen till the `unlockQuickView` function
      * is called or document changes.
      *
      * @type {function}
@@ -752,7 +755,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * unlocks the current quickview locked by `lockQuickView` fucntion.
+     * unlocks the current QuickView locked by `lockQuickView` fucntion.
      *
      * @type {function}
      */
