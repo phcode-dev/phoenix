@@ -175,6 +175,7 @@ define(function (require, exports, module) {
 
     // Load JUnitXMLReporter
     require("test/thirdparty/jasmine-reporters/junit_reporter");
+    require("thirdparty/jquery.knob.modified");
 
     // Load CodeMirror add-ons--these attach themselves to the CodeMirror module
     require("thirdparty/CodeMirror/addon/fold/xml-fold");

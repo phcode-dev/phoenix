@@ -23,8 +23,6 @@
 
 define(function (require, exports, module) {
 
-    require("./thirdparty/jquery.knob.modified");
-
     // Brackets modules
     let PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Strings             = brackets.getModule("strings"),
