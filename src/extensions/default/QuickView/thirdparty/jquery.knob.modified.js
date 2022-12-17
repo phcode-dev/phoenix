@@ -372,6 +372,7 @@
                     function () {
                         k.c.d.unbind('touchmove.k touchend.k');
                         s.val(s.cv);
+                        s.o.changeEnd && s.o.changeEnd("touchend");
                     }
                 );
 
@@ -448,6 +449,7 @@
                     function (e) {
                         k.c.d.unbind('mousemove.k mouseup.k keyup.k');
                         s.val(s.cv);
+                        s.o.changeEnd && s.o.changeEnd("mouseup");
                     }
                 );
 
@@ -470,6 +472,7 @@
                         function (e) {
                             e.preventDefault();
                             s._xy()._mouse(e);
+                            s.o.changeStart && s.o.changeStart("mousedown");
                         }
                     )
                     .bind(
@@ -477,6 +480,7 @@
                         function (e) {
                             e.preventDefault();
                             s._xy()._touch(e);
+                            s.o.changeStart && s.o.changeStart("touchstart");
                         }
                     );
 
