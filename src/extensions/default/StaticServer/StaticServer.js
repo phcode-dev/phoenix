@@ -36,15 +36,9 @@ define(function (require, exports, module) {
 
     let _staticServerInstance;
 
-    // TODO markdown advanced rendering options https://marked.js.org/using_advanced
+    // see markdown advanced rendering options at https://marked.js.org/using_advanced
     marked.setOptions({
         renderer: new marked.Renderer(),
-        // highlight: function(code, lang) {
-        //     const hljs = require('highlight.js');
-        //     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-        //     return hljs.highlight(code, { language }).value;
-        // },
-        // langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
         pedantic: false,
         gfm: true,
         breaks: false,
