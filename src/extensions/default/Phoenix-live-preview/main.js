@@ -49,40 +49,19 @@ define(function (require, exports, module) {
         AppInit            = brackets.getModule("utils/AppInit"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         MainViewManager    = brackets.getModule("view/MainViewManager"),
-        DocumentManager    = brackets.getModule("document/DocumentManager"),
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         Metrics            = brackets.getModule("utils/Metrics"),
         FileViewController = brackets.getModule("project/FileViewController"),
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
         LiveDevelopment = brackets.getModule("LiveDevelopment/main"),
-        marked = require('thirdparty/marked.min'),
         utils = require('utils');
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
 
-    // TODO markdown advanced rendering options https://marked.js.org/using_advanced
-    marked.setOptions({
-        renderer: new marked.Renderer(),
-        // highlight: function(code, lang) {
-        //     const hljs = require('highlight.js');
-        //     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-        //     return hljs.highlight(code, { language }).value;
-        // },
-        // langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
-        pedantic: false,
-        gfm: true,
-        breaks: false,
-        sanitize: false,
-        smartLists: true,
-        smartypants: false,
-        xhtml: false
-    });
-
 
     // Templates
-    let panelHTML       = require("text!panel.html"),
-        markdownHTMLTemplate = require("text!markdown.html");
+    let panelHTML       = require("text!panel.html");
     ExtensionUtils.loadStyleSheet(module, "live-preview.css");
 
     // jQuery objects
@@ -213,42 +192,33 @@ define(function (require, exports, module) {
         });
     }
 
-    function _renderMarkdown(fullPath) {
-        DocumentManager.getDocumentForPath(fullPath)
-            .done(function (doc) {
-                let text = doc.getText();
-                let markdownHtml = marked.parse(text);
-                let templateVars = {
-                    markdownContent: markdownHtml,
-                    BOOTSTRAP_LIB_CSS: `${window.parent.Phoenix.baseURL}thirdparty/bootstrap/bootstrap.min.css`,
-                    HIGHLIGHT_JS_CSS: `${window.parent.Phoenix.baseURL}thirdparty/highlight.js/styles/github.min.css`,
-                    HIGHLIGHT_JS: `${window.parent.Phoenix.baseURL}thirdparty/highlight.js/highlight.min.js`,
-                    GFM_CSS: `${window.parent.Phoenix.baseURL}thirdparty/gfm.min.css`
-                };
-                let html = Mustache.render(markdownHTMLTemplate, templateVars);
-                $iframe.attr('srcdoc', html);
-                if(tab && !tab.closed){
-                    tab.location = "about:blank";
-                    setTimeout(()=>{
-                        tab.window.document.write(html);
-                    }, 10); // timer hack, location and content cannot be set in a row,
-                    // we should move to iframe embedded controls
-                }
-            })
-            .fail(function (err) {
-                console.error(`Markdown rendering failed for ${fullPath}: `, err);
-            });
+    function _renderMarkdown(fullPath, newSrc) {
+        console.log(`Markdown Static server _updateInstrumentedURLSInWorker: `, [fullPath], newSrc);
+        window.messageSW({
+            type: 'setInstrumentedURLs',
+            root: "",
+            paths: [fullPath]
+        }).then((status)=>{
+            console.log(`Markdown server received msg from Service worker: setInstrumentedURLs done: `, status);
+            $iframe.attr('srcdoc', null);
+            $iframe.attr('src', newSrc);
+            if(tab && !tab.closed){
+                tab.location = newSrc;
+            }
+        }).catch(err=>{
+            console.error(`Markdown error while from sw rendering failed for ${fullPath}: `, err);
+        });
     }
 
     function _renderPreview(previewDetails, newSrc) {
         let fullPath = previewDetails.fullPath;
         if(previewDetails.isMarkdownFile){
-            $iframe.attr('src', 'about:blank');
-            _renderMarkdown(fullPath);
+            _renderMarkdown(fullPath, newSrc);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "markdown");
         } else {
             $iframe.attr('srcdoc', null);
             $iframe.attr('src', newSrc);
+            $iframe[0].src = newSrc;
             if(tab && !tab.closed){
                 tab.location = newSrc;
             }

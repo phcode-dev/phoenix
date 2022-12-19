@@ -526,11 +526,11 @@ define(function (require, exports, module) {
                 // Launch the URL in the browser. If it's the first one to connect back to us,
                 // our status will transition to ACTIVE once it does so.
                 if (exports.status < STATUS_ACTIVE) {
-                    _launch(_server.pathToUrl(doc.file.fullPath), doc.file.fullPath);
+                    _launch(_resolveUrl(doc.file.fullPath), doc.file.fullPath);
                 }
                 if (exports.status === STATUS_RESTARTING) {
                     // change page in browser
-                    _protocol.navigate(_server.pathToUrl(doc.file.fullPath));
+                    _protocol.navigate(_resolveUrl(doc.file.fullPath));
                 }
 
                 _protocol
@@ -539,9 +539,7 @@ define(function (require, exports, module) {
                         // check for the first connection
                         if (_protocol.getConnectionIds().length === 1) {
                             // check the page that connection comes from matches the current live document session
-                            const urlWithoutQueryParams = msg.url.split("?")[0].split("#")[0];
-                            if (_liveDocument &&
-                                (urlWithoutQueryParams === _resolveUrl(_liveDocument.doc.file.fullPath))) {
+                            if (_liveDocument &&  msg.url === _resolveUrl(_liveDocument.doc.file.fullPath)) {
                                 _setStatus(STATUS_ACTIVE);
                             }
                         }
@@ -662,7 +660,7 @@ define(function (require, exports, module) {
         }
 
         // close the current session and begin a new session
-        var docUrl = _server && _server.pathToUrl(doc.file.fullPath),
+        var docUrl = _resolveUrl(doc.file.fullPath),
             isViewable = _server && _server.canServe(doc.file.fullPath);
 
         if (_liveDocument.doc.url !== docUrl && isViewable) {

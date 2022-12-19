@@ -102,6 +102,8 @@ if(!self.Serve){
                             return;
                         }
                         const responseData = formatter.formatFile(path, response.contents, stats);
+                        const headers = response.headers || {};
+                        responseData.config.headers = { ...responseData.config.headers, ...headers};
                         resolve(new Response(responseData.body, responseData.config));
                     };
                     return true;

@@ -147,7 +147,7 @@ let copyThirdPartyLibs = series(
     copyLicence.bind(copyLicence, 'node_modules/mime-db/LICENSE', 'mime-db'),
     // marked.js markdown rendering
     copyFiles.bind(copyFiles, ['node_modules/marked/marked.min.js'],
-        'src/extensions/default/Phoenix-live-preview/thirdparty'),
+        'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/marked/LICENSE.md', 'marked'),
     // @floating-ui for notification ui widget  floating-ui.dom.umd.min.js
     copyFiles.bind(copyFiles, ['node_modules/@floating-ui/core/dist/floating-ui.core.umd.min.js'],

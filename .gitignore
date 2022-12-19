@@ -37,7 +37,7 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/fontawesome
 /src/thirdparty/devicon
 /src/thirdparty/prettier
-src/extensions/default/Phoenix-live-preview/thirdparty
+/src/thirdparty/marked.min.js
 test/thirdparty/jasmine-core
 test/thirdparty/jasmine-reporters
 

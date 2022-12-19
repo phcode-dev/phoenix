@@ -127,7 +127,13 @@ workbox.routing.registerRoute(
         // commented Allow passing `?download` or `dl` to have the file downloaded vs. displayed
         // url.searchParams.get('download') !== null ||
         // url.searchParams.get('dl') !== null;
-        const phoenixInstanceID = url.searchParams.get("PHOENIX_INSTANCE_ID");
+        let phoenixInstanceID;
+        if(path.startsWith("/PHOENIX_LIVE_PREVIEW_")){
+            let pathSplit = path.split("/");
+            phoenixInstanceID = pathSplit[1].replace("PHOENIX_LIVE_PREVIEW_","");
+            pathSplit.shift();pathSplit.shift();
+            path = `/${pathSplit.join("/")}`;
+        }
 
         return Serve.serve(path, formatter, download, phoenixInstanceID);
     },
