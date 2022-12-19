@@ -209,9 +209,6 @@ define(function (require, exports, module) {
     };
 
     function _sendMarkdown(fullPath, requestID) {
-        marked.setOptions({
-            baseUrl: "newSrc"
-        });
         DocumentManager.getDocumentForPath(fullPath)
             .done(function (doc) {
                 let text = doc.getText();
