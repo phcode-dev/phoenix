@@ -94,6 +94,8 @@ define(function (require, exports, module) {
                 "livedevelopment.done.opened",
                 5000
             );
+            let editor = EditorManager.getActiveEditor();
+            editor && editor.setCursorPos({ line: 0, ch: 0 });
         }
 
         async function waitsForLiveDevelopmentToOpen() {
@@ -419,7 +421,7 @@ define(function (require, exports, module) {
                 "readme.md", 1000);
             await awaits(300);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.srcdoc.includes("This is a markdown file")).toBeTrue();
+            expect(iFrame.src.endsWith("readme.md")).toBeTrue();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "icon_chevron.png", 1000);
@@ -430,6 +432,28 @@ define(function (require, exports, module) {
             // now switch back to old file
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world hello world awesome!");
+            await endPreviewSession();
+        }, 5000);
+
+        it("should Markdown preview hyperlinks be proper", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "readme.md", 1000);
+
+            await awaits(300);
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith("readme.md")).toBeTrue();
+
+            // check hrefs
+            let href = iFrame.contentDocument.getElementsByTagName("a")[0].href;
+            expect(href.endsWith("LiveDevelopment-MultiBrowser-test-files/readme.md#title-link")).toBeTrue();
+            href = iFrame.contentDocument.getElementsByTagName("img")[0].src;
+            expect(href.endsWith("LiveDevelopment-MultiBrowser-test-files/sub/icon_chevron.png")).toBeTrue();
+
             await endPreviewSession();
         }, 5000);
 
@@ -448,7 +472,7 @@ define(function (require, exports, module) {
                 "icon_chevron.png", 1000);
             await awaits(300);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith(`simple1.html?PHOENIX_INSTANCE_ID=${testWindow.Phoenix.PHOENIX_INSTANCE_ID}`))
+            expect(iFrame.src.endsWith(`simple1.html`))
                 .toBeTrue();
 
             pinURLBtn.click();

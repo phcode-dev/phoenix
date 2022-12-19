@@ -27,9 +27,32 @@ define(function (require, exports, module) {
 
     const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
-        FileUtils = brackets.getModule("file/FileUtils");
+        marked = brackets.getModule('thirdparty/marked.min'),
+        DocumentManager = brackets.getModule("document/DocumentManager"),
+        Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        markdownHTMLTemplate = require("text!markdown.html");
 
     const _serverBroadcastChannel = new BroadcastChannel("virtual_server_broadcast");
+
+    let _staticServerInstance;
+
+    // TODO markdown advanced rendering options https://marked.js.org/using_advanced
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        // highlight: function(code, lang) {
+        //     const hljs = require('highlight.js');
+        //     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        //     return hljs.highlight(code, { language }).value;
+        // },
+        // langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
+        pedantic: false,
+        gfm: true,
+        breaks: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false,
+        xhtml: false
+    });
 
     /**
      * @constructor
@@ -44,7 +67,7 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        config.baseUrl = FileUtils.stripTrailingSlash(window.fsServerUrl);
+        config.baseUrl = `${window.fsServerUrl}PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`;
         this._sendInstrumentedContent = this._sendInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -191,6 +214,46 @@ define(function (require, exports, module) {
         this._nodeDomain.exec("writeFilteredResponse", location.root, location.pathname, response);
     };
 
+    function _sendMarkdown(fullPath, requestID) {
+        marked.setOptions({
+            baseUrl: "newSrc"
+        });
+        DocumentManager.getDocumentForPath(fullPath)
+            .done(function (doc) {
+                let text = doc.getText();
+                let markdownHtml = marked.parse(text);
+                let templateVars = {
+                    markdownContent: markdownHtml,
+                    BOOTSTRAP_LIB_CSS: `${window.parent.Phoenix.baseURL}thirdparty/bootstrap/bootstrap.min.css`,
+                    HIGHLIGHT_JS_CSS: `${window.parent.Phoenix.baseURL}thirdparty/highlight.js/styles/github.min.css`,
+                    HIGHLIGHT_JS: `${window.parent.Phoenix.baseURL}thirdparty/highlight.js/highlight.min.js`,
+                    GFM_CSS: `${window.parent.Phoenix.baseURL}thirdparty/gfm.min.css`
+                };
+                let html = Mustache.render(markdownHTMLTemplate, templateVars);
+                _serverBroadcastChannel.postMessage({
+                    type: 'REQUEST_RESPONSE',
+                    requestID, //pass along the requestID to call the appropriate callback at service worker
+                    fullPath,
+                    contents: html,
+                    headers: {'Content-Type': 'text/html'}
+                });
+            })
+            .fail(function (err) {
+                console.error(`Markdown rendering failed for ${fullPath}: `, err);
+            });
+    }
+
+    function _getExtension(filePath) {
+        filePath = filePath || '';
+        let pathSplit = filePath.split('.');
+        return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : '';
+    }
+
+    function _isMarkdownFile(filePath) {
+        let extension = _getExtension(filePath);
+        return ['md', 'markdown'].includes(extension.toLowerCase());
+    }
+
     /**
      * @private
      * Events raised by broadcast channel from the service worker will be captured here. The service worker will ask
@@ -217,25 +280,33 @@ define(function (require, exports, module) {
         }
     };
 
+    _serverBroadcastChannel.onmessage = (event) => {
+        console.log("sss", event.data, Phoenix.PHOENIX_INSTANCE_ID);
+        if (event.data.type === "getInstrumentedContent"
+            && event.data.phoenixInstanceID === Phoenix.PHOENIX_INSTANCE_ID) {
+            // localStorage is domain specific so when it changes in one window it changes in the other
+            if(_isMarkdownFile(event.data.path)){
+                _sendMarkdown(event.data.path, event.data.requestID);
+                return;
+            }
+            if(_staticServerInstance){
+                _staticServerInstance._sendInstrumentedContent(event.data);
+            }
+        }
+    };
+
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = function () {
-        const self = this;
-        _serverBroadcastChannel.onmessage = (event) => {
-            if (event.data.type === "getInstrumentedContent") {
-                // localStorage is domain specific so when it changes in one window it changes in the other
-                self._sendInstrumentedContent(event.data);
-            }
-        };
-
+        _staticServerInstance = this;
     };
 
     /**
      * See BaseServer#stop. Remove event handlers from StaticServerDomain.
      */
     StaticServer.prototype.stop = function () {
-        _serverBroadcastChannel.onmessage = undefined;
+        _staticServerInstance = undefined;
     };
 
     module.exports = StaticServer;

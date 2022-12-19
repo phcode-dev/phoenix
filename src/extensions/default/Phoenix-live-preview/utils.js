@@ -75,14 +75,14 @@ define(function (require, exports, module) {
             // async is explicitly caught
             try{
                 let projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${FileUtils.stripTrailingSlash(window.fsServerUrl)}${projectRoot}`;
+                const projectRootUrl = `${window.fsServerUrl}PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}${projectRoot}`;
                 let indexFiles = ['index.html', "index.htm"];
                 for(let indexFile of indexFiles){
                     let file = FileSystem.getFileForPath(`${projectRoot}${indexFile}`);
                     if(await file.existsAsync()){
                         const relativePath = path.relative(projectRoot, file.fullPath);
                         resolve({
-                            URL: `${projectRootUrl}${relativePath}?PHOENIX_INSTANCE_ID=${Phoenix.PHOENIX_INSTANCE_ID}`,
+                            URL: `${projectRootUrl}${relativePath}`,
                             filePath: relativePath,
                             fullPath: file.fullPath,
                             isHTMLFile: _isHTMLFile(file.fullPath)
@@ -107,7 +107,7 @@ define(function (require, exports, module) {
             // async is explicitly caught
             try {
                 const projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${FileUtils.stripTrailingSlash(window.fsServerUrl)}${projectRoot}`;
+                const projectRootUrl = `${window.fsServerUrl}PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}${projectRoot}`;
                 const currentDocument = DocumentManager.getCurrentDocument();
                 const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
                 if(currentFile){
@@ -119,9 +119,6 @@ define(function (require, exports, module) {
                     if(_isPreviewableFile(fullPath)){
                         const filePath = httpFilePath || path.relative(projectRoot, fullPath);
                         let URL = httpFilePath || `${projectRootUrl}${filePath}`;
-                        if(_isHTMLFile(fullPath)){
-                            URL = URL + `?PHOENIX_INSTANCE_ID=${Phoenix.PHOENIX_INSTANCE_ID}`;
-                        }
                         resolve({
                             URL,
                             filePath: filePath,

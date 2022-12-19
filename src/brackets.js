@@ -49,6 +49,7 @@ define(function (require, exports, module) {
     require("widgets/bootstrap-modal");
     require("widgets/bootstrap-twipsy-mod");
     require("thirdparty/jquery.knob.modified");
+    require('thirdparty/marked.min');
 
     // Load CodeMirror add-ons--these attach themselves to the CodeMirror module
     require("thirdparty/CodeMirror/addon/comment/continuecomment");
