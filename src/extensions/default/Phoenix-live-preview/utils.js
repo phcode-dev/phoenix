@@ -42,8 +42,7 @@
 define(function (require, exports, module) {
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
         DocumentManager     = brackets.getModule("document/DocumentManager"),
-        FileSystem         = brackets.getModule("filesystem/FileSystem"),
-        FileUtils = brackets.getModule("file/FileUtils");
+        FileSystem         = brackets.getModule("filesystem/FileSystem");
 
     function getExtension(filePath) {
         filePath = filePath || '';

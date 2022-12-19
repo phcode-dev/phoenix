@@ -654,13 +654,13 @@ define(function (require, exports, module) {
      * When switching documents, close the current preview and open a new one.
      */
     function _onFileChange() {
-        var doc = DocumentManager.getCurrentDocument();
+        let doc = DocumentManager.getCurrentDocument();
         if (!isActive() || !doc || livePreviewUrlPinned) {
             return;
         }
 
         // close the current session and begin a new session
-        var docUrl = _resolveUrl(doc.file.fullPath),
+        let docUrl = _resolveUrl(doc.file.fullPath),
             isViewable = _server && _server.canServe(doc.file.fullPath);
 
         if (_liveDocument.doc.url !== docUrl && isViewable) {
