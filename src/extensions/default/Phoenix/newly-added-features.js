@@ -21,17 +21,21 @@
 /*globals Phoenix*/
 
 define(function (require, exports, module) {
-    const CommandManager     = brackets.getModule("command/CommandManager"),
-        Commands           = brackets.getModule("command/Commands"),
+    const FileViewController    = brackets.getModule("project/FileViewController"),
+        DocumentManager = brackets.getModule("document/DocumentManager"),
+        FileSystem = brackets.getModule("filesystem/FileSystem"),
+        FileUtils = brackets.getModule("file/FileUtils"),
         Dialogs = brackets.getModule("widgets/Dialogs"),
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
         Strings = brackets.getModule("strings"),
         Metrics = brackets.getModule("utils/Metrics");
 
-    const NEW_FEATURE_MARKDOWN_SHOWN_HASH = "Newly_added_features.md.shown.hash";
-
-    function _getUpdateMarkdownPath() {
+    function _getUpdateMarkdownURL() {
         return Phoenix.baseURL + "assets/default-project/en/Newly_added_features.md";
+    }
+
+    function _getUpdateMarkdownLocalPath() {
+        return Phoenix.VFS.getDefaultProjectDir() + "Newly_added_features.md";
     }
 
     async function _digestMessage(message) {
@@ -44,7 +48,7 @@ define(function (require, exports, module) {
 
     async function _getUpdateMarkdownText() {
         return new Promise((resolve, reject)=>{
-            fetch(_getUpdateMarkdownPath())
+            fetch(_getUpdateMarkdownURL())
                 .then(response => response.text())
                 .then(async function (text) {
                     resolve(text);
@@ -53,18 +57,10 @@ define(function (require, exports, module) {
         });
     }
 
-    async function _setUpdateShown() {
-        let markdownText = await _getUpdateMarkdownText();
-        const hash = await _digestMessage(markdownText);
-        localStorage.setItem(NEW_FEATURE_MARKDOWN_SHOWN_HASH, hash);
-    }
-
     function _showNewFeatureMarkdownDoc() {
         // We wait for few seconds after boot to grab user attention
         setTimeout(()=>{
-            CommandManager.execute(Commands.FILE_OPEN, {
-                fullPath: _getUpdateMarkdownPath()
-            });
+            FileViewController.openFileAndAddToWorkingSet(_getUpdateMarkdownLocalPath());
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "newFeatMD", "shown");
         }, 3000);
     }
@@ -82,13 +78,28 @@ define(function (require, exports, module) {
         }, 5000);
     }
 
+    async function _readMarkdownTextFile() {
+        try{
+            let markdownFile = FileSystem.getFileForPath(_getUpdateMarkdownLocalPath());
+            return await window.jsPromise(DocumentManager.getDocumentText(markdownFile));
+        } catch(e){
+            return "";
+        }
+    }
+
     async function _showNewUpdatesIfPresent() {
-        let markdownText = await _getUpdateMarkdownText();
-        const hash = await _digestMessage(markdownText);
-        const lastShownHash = localStorage.getItem(NEW_FEATURE_MARKDOWN_SHOWN_HASH);
+        let newMarkdownText = await _getUpdateMarkdownText();
+        let currentMarkdownText = await _readMarkdownTextFile();
+        const hash = await _digestMessage(newMarkdownText);
+        const lastShownHash = await _digestMessage(currentMarkdownText);
         if(hash !== lastShownHash){
-            _showNewFeatureMarkdownDoc();
-            await _setUpdateShown();
+            let markdownFile = FileSystem.getFileForPath(_getUpdateMarkdownLocalPath());
+            // if the user overwrites the markdown file, then the user edited content will be nuked here.
+            FileUtils.writeText(markdownFile, newMarkdownText, true)
+                .done(_showNewFeatureMarkdownDoc)
+                .fail((e)=>{
+                    console.error("Error while showing new feature markdown on update", e);
+                });
         }
         _showReloadForUpdateDialog();
     }
@@ -98,6 +109,5 @@ define(function (require, exports, module) {
             _showNewUpdatesIfPresent();
             return;
         }
-        _setUpdateShown();
     };
 });
