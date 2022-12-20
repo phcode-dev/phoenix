@@ -6,6 +6,19 @@ We are continuously adding features every week to improve the life of web develo
 
 List of features added to phoenix:
 
+## Number Widget for Live Preview
+`Added on December,2022`
+
+* Hover over any number value in css to get the all new number widget for fine-tuning numeric values in live preview.
+  ![number preview](https://user-images.githubusercontent.com/5336369/208715497-781e8dfc-1939-4dac-82e8-c7e517be4d9c.gif)
+
+## True Live Preview
+`Added on November,2022`
+
+* See changes as you change your web page in the editor with live preview.
+* Multiple Live previews are now supported if there are multiple Phoenix Editor windows open.
+  ![live preview color](https://user-images.githubusercontent.com/5336369/208713746-ce82f307-3388-46d2-9f72-4fb085b226b5.gif)
+
 ## Progressive Web App and Offline Support
 `Added on September,2022`
 
@@ -35,7 +48,7 @@ Detect errors and potential problems in your JavaScript code while editing your 
 * Javascript code hints, auto complete.
 * Javascript variable refactoring(press `f2` to rename variable).
 * Highlight Variable references under cursor.
-* `Ctrl+Click`(Windows) or `Cmd+Click`(Mac) to jump to variable/function definition.
+* `Ctrl+Click`(Windows/Linux) or `Cmd+Click`(Mac) to jump to variable/function definition.
 
 ![refactor](https://user-images.githubusercontent.com/5336369/190147482-691e2fd2-84d4-4d27-b37b-cfbae3c335a6.gif)
 
