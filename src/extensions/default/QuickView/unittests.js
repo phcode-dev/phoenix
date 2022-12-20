@@ -75,7 +75,7 @@ define(function (require, exports, module) {
             EditorManager    = null;
             QuickView        = null;
             MainViewManager  = null;
-            await SpecRunnerUtils.closeTestWindow();
+            //await SpecRunnerUtils.closeTestWindow();
         });
 
         async function getPopoverAtPos(lineNum, columnNum) {
@@ -111,6 +111,12 @@ define(function (require, exports, module) {
 
             // Just check end of path - local drive location prefix unimportant
             expect(imagePath.substr(imagePath.length - expectedPathEnding.length)).toBe(expectedPathEnding);
+        }
+
+        async function checkNumberPopoverAtPos(expectedData, line, ch) {
+            var popoverInfo = await getPopoverAtPos(line, ch),
+                input = popoverInfo.content.find(".dial");
+            expect(input.attr("value")).toBe(expectedData);
         }
 
         async function checkImageDataAtPos(expectedData, line, ch) {
@@ -431,6 +437,16 @@ define(function (require, exports, module) {
 
             it("Should show image preview for a data URI inside url()", async function () {
                 await checkImageDataAtPos("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAABq0lEQVQoU11RPUgcURD+Zt/unnrcCf4QIugRMcS7a2xjmmArRlRIFRBFgrVtGgmBRFCwTBoLsQiBGMxiJ4iksLRSFEzQRC2EAwm5g727feP3LpyFy1tm5s33zcz7RnDvG4x0zFgMJRY/jiewhy/w8FKSJkyaTuG7Fumvi+ARbQiLpcMDvH/Qj1S6Bf6vI5SxKPUG4fGm5kMf6wr08MKHILCKldoZlk0OIeuHjNuDBBcNAqvvENTLwKii1ZFoF/7G2PQDpNo8dFUt1AcSGfymz42PVfI8ghxht1bHh9MpucCiegMFdJoUOtSD+MxLPtI5T/GaHWhg+NjRk3G5utPikwb5bjzhq40JSChs6Sx1eOYAojg/fCFv7yvnBLGCLPMqxS2dZrtXnDthhySuYebnpFw3ST2RtmUVIx5z1sIKdX9qgDcOTJAj7WsNa8eTUhrY0Gwqg2FldeZiduH5r9JHvqEDigzDS/4VJvYJfMh9VLmbNO9+s9hNg5D/qjkJ8I6uW0yFtkrwHydCg+AhVgsp/8Pnu00XI+0jYJ7gjANRiEsmQ3aNOXuJhG035i1QA6g+uONCrgAAAABJRU5ErkJggg==",  159, 26);
+            });
+        });
+
+        describe("Quick view numeric", function () {
+            testFile = "test.css";
+
+            it("Should show numeric quick view on numbers except gradients or colors", async function () {
+                await checkNumberPopoverAtPos("7px", 135, 60);
+                await checkGradientAtPos("linear-gradient(63deg, #999 23%, transparent 23%)", 135, 27);
+                await checkColorAtPos("hsla(0, 100%, 50%, 0.5)", 32, 18);
             });
         });
     });
