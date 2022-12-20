@@ -444,6 +444,9 @@ define(function (require, exports, module) {
             testFile = "test.css";
 
             it("Should show numeric quick view on numbers except gradients or colors", async function () {
+                // We should do the following test too in the future.
+                // should increment based on decimal places count:  0.7 + .1,  0.07 + .01
+
                 await checkNumberPopoverAtPos("7px", 135, 60);
                 await checkGradientAtPos("linear-gradient(63deg, #999 23%, transparent 23%)", 135, 27);
                 await checkColorAtPos("hsla(0, 100%, 50%, 0.5)", 32, 18);
