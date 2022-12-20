@@ -75,7 +75,7 @@ define(function (require, exports, module) {
             EditorManager    = null;
             QuickView        = null;
             MainViewManager  = null;
-            //await SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.closeTestWindow();
         });
 
         async function getPopoverAtPos(lineNum, columnNum) {
