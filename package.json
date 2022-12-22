@@ -1,7 +1,7 @@
 {
     "name": "phoenix",
-    "version": "2.0.0-0",
-    "apiVersion": "2.0.0",
+    "version": "3.0.0-0",
+    "apiVersion": "3.0.0",
     "homepage": "https://core.ai",
     "issues": {
         "url": "https://github.com/phcode-dev/phoenix/issues"
@@ -54,6 +54,7 @@
         "release:dev": "gulp releaseDev",
         "release:staging": "gulp releaseStaging",
         "release:prod": "gulp releaseProd",
+        "patchVersionBump": "gulp patchVersionBump",
         "serve": "http-server . -p 8000 -c-1",
         "serveWithWebCache": "http-server ./src -p 8000 -c-1",
         "serveExternal": "http-server . -p 8000 -a 0.0.0.0 --log-ip true -c-1",
