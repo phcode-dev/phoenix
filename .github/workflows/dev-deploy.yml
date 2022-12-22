@@ -8,10 +8,9 @@ jobs:
   build-tasks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
-          path: main
-          fetch-depth: 0 # this is needed to compute build version numbers correctly
+          fetch-depth: 0
       - name: Npm Install
         run: |
           npm install
