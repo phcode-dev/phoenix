@@ -34,7 +34,6 @@ const minify = require('gulp-minify');
 const glob = require("glob");
 const sourcemaps = require('gulp-sourcemaps');
 const crypto = require("crypto");
-const configFile = require("../src/config.json");
 const execSync = require('child_process').execSync;
 
 function cleanDist() {
