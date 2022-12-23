@@ -22,7 +22,7 @@ Phoenix is a modern open-source and [free software](https://www.gnu.org/philosop
   <img src="https://badgen.net/badge/git-commit-msg-linter/3.0.0/green" alt="commit msg linted by git-commit-msg-linter" />
 </a>
 
-Phoenix is currently in alpha.
+#### Development status:  Stable/Release-candidate.
 
 ![Screenshot from 2022-09-20 13-35-03](https://user-images.githubusercontent.com/5336369/191202975-6069d270-526a-443d-bd76-903353ae1222.png)
 
@@ -39,10 +39,6 @@ Phoenix is currently in alpha.
 AGPL/Libre license guards your right to audit and change code that handles your data.
 Phoenix usually loads up in under one second and loading it faster at the expense of making it hard
 to read and develop is a noop. We prioritize simplicity and eaze of development. 
-
-## Status
-Phoenix is in alpha and is under active development.
-* [Phoenix Alpha development status](https://github.com/phcode-dev/phoenix/issues/11).
 
 ## Contributing/ Feedback
 * [Get in touch with our community](https://github.com/phcode-dev/phoenix/discussions).
