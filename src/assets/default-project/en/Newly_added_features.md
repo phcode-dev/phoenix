@@ -4,7 +4,7 @@
 
 We are continuously adding features every week to improve the life of web developers.
 
-**Development status:** `Alpha`
+**Development status:** `Stable/Active Development`
 
 List of features added to phoenix:
 
