@@ -28,6 +28,7 @@
 import init from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
 import getBrowserDetails from "./browserDetails.js";
+import initTauriShell from "./tauriShell.js";
 
 function _getBaseURL() {
     // strip query string
@@ -76,4 +77,9 @@ Phoenix.app = {
 
 if(!window.appshell){
     window.appshell = Phoenix;
+}
+
+if(window.__TAURI__) {
+    // the __TAURI__ object will be present if we are in a tauri window
+    initTauriShell();
 }
