@@ -17,14 +17,15 @@
  */
 
 // jshint ignore: start
-/*globals __TAURI__*/
+/*globals*/
+const TAURI = window.__TAURI__;
 
 const TAURI_KEYS = {
     LAST_WINDOW_WIDTH: "tauri.LAST_WINDOW_WIDTH",
     LAST_WINDOW_HEIGHT: "tauri.LAST_WINDOW_HEIGHT"
 };
 
-const appWindow = __TAURI__.window.appWindow;
+const appWindow = TAURI && TAURI.window.appWindow;
 
 function _setupWindowResizeListeners() {
     appWindow.onResized(async ({ payload: size }) => {
@@ -40,7 +41,7 @@ async function positionWindow() {
     const phoenixAspectRatio = 1.6,  // phoenix looks good in aspect ratio 1.6w:1h
         minWidth = 800,
         minHeight = 600;
-    let monitorSize = (await __TAURI__.window.currentMonitor()).size,
+    let monitorSize = (await TAURI.window.currentMonitor()).size,
         targetWindowHeight = monitorSize.height * 2/3,
         targetWindowWidth = targetWindowHeight * phoenixAspectRatio;
     let targetHeight = parseInt(localStorage.getItem(TAURI_KEYS.LAST_WINDOW_HEIGHT) || `${targetWindowHeight}`),
@@ -57,7 +58,7 @@ async function positionWindow() {
     if(targetWidth < minWidth){
         targetWidth = minWidth;
     }
-    await appWindow.setSize(new __TAURI__.window.PhysicalSize(targetWidth, targetHeight));
+    await appWindow.setSize(new TAURI.window.PhysicalSize(targetWidth, targetHeight));
     _setupWindowResizeListeners();
 }
 
