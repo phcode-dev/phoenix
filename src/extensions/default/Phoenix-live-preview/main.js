@@ -239,7 +239,7 @@ define(function (require, exports, module) {
             };
             return {scrollX, scrollY, currentSrc};
         }catch (e) {
-            return {scrollX: 0, scrollY: 0 , currentSrc};
+            return {scrollX: 0, scrollY: 0, currentSrc};
         }
     }
 
@@ -254,6 +254,13 @@ define(function (require, exports, module) {
                 _setTitle(previewDetails.filePath);
             }
             $iframe[0].onload = function () {
+                $iframe[0].contentDocument.savePageCtrlSDisabledByPhoenix = true;
+                $iframe[0].contentDocument.addEventListener("keydown", function(e) {
+                    // inside live preview iframe, we disable ctrl-s browser save page dialog
+                    if (e.key === 's' && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                        e.preventDefault();
+                    }
+                }, false);
                 if(saved.currentSrc === newSrc){
                     $iframe[0].contentWindow.scrollTo(saved.scrollX, saved.scrollY);
                 } else {

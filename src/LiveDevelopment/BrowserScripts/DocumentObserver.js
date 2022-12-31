@@ -29,6 +29,24 @@
     var _document = null;
     var _transport;
 
+    function inIframe () {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+
+    if(inIframe()) {
+        // inside iframes, we disable ctrl-s browser save page workflow as it may be inside the phoenix window
+        // It will confuse the use seeing the browser save dialog inside phoenix.
+        document.savePageCtrlSDisabledByPhoenix = true;
+        document.addEventListener("keydown", function(e) {
+            if (e.key === 's' && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                e.preventDefault();
+            }
+        }, false);
+    }
 
     /**
      * Retrieves related documents (external CSS and JS files)

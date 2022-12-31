@@ -616,5 +616,32 @@ define(function (require, exports, module) {
 
             await endPreviewSession();
         }, 5000);
+
+        it("should ctrl-s to save page be disabled inside live preview iframes", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world awesome!");
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "readme.md", 1000);
+            await awaits(300);
+            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith("readme.md")).toBeTrue();
+            expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+                "icon_chevron.png", 1000);
+            await awaits(300);
+            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith("sub/icon_chevron.png")).toBeTrue();
+            expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
+
+            await endPreviewSession();
+        }, 5000);
     });
 });
