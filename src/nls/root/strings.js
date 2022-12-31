@@ -922,9 +922,10 @@ define({
 
     // Phoenix extension
     "UNSUPPORTED_BROWSER": "Browser Is Not Supported",
+    "UNSUPPORTED_BROWSER_MOBILE": "Mobile and Tablet devices are currently not fully supported. You may close this dialogue, but some features in Phoenix will not work in this browser.",
     "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Browser does not support Open folder. Please use Chrome, Edge or Opera to open local folders.",
     "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Please use one of the supported browsers below.",
-    "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " We are working hard to make Phoenix available in more browsers. You may close this dialogue, but some features in Phoenix won't work in this browser.",
+    "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " We are working hard to make Phoenix available in more browsers. You may close this dialogue, but some features in Phoenix will not work in this browser.",
     "CANNOT_PUBLISH_LARGE_PROJECT": "Cannot Publish Large Project",
     "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix is still in experimental alpha. We have not yet enabled sync of projects with greater than 500 files.",
     "SHARE_WEBSITE": "Publish and Share Website?",
