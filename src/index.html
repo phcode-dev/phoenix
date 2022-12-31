@@ -137,15 +137,19 @@
             MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
     </script>
     <script>
-        function _removeSplashScreenIfTest() {
-            if(testEnvironment){
+        window.splashScreenPresent = true;
+
+        function _removeSplashScreenIfNeeded() {
+            if(testEnvironment || window.__TAURI__){
+                // tauri means local builds and, it loads up pretty fast, so splash screen
                 document.getElementById('phoenix-loading-splash-screen-overlay').remove();
                 document.getElementById('safari_splash_screen').remove();
+                window.splashScreenPresent = false;
             }
         }
 
         function _loadPhoenixAfterSplashScreen() {
-            _removeSplashScreenIfTest();
+            _removeSplashScreenIfNeeded();
             var loadJS = function(url, implementationCode, location, dataMainValue){
                 //url is URL of external file, implementationCode is the code
                 //to be called from the file, location is the location to

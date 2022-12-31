@@ -38,14 +38,6 @@ define(function (require, exports, module) {
         return Phoenix.VFS.getDefaultProjectDir() + "Newly_added_features.md";
     }
 
-    async function _digestMessage(message) {
-        const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
-        const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
-        return hashHex;
-    }
-
     async function _getUpdateMarkdownText() {
         return new Promise((resolve, reject)=>{
             fetch(_getUpdateMarkdownURL())
@@ -88,11 +80,10 @@ define(function (require, exports, module) {
     }
 
     async function _showNewUpdatesIfPresent() {
-        let newMarkdownText = await _getUpdateMarkdownText();
-        let currentMarkdownText = await _readMarkdownTextFile();
-        const hash = await _digestMessage(newMarkdownText);
-        const lastShownHash = await _digestMessage(currentMarkdownText);
-        if(hash !== lastShownHash){
+        // codemirror documents are always \n instead of \r\n line endings. so we strip here too
+        let newMarkdownText = (await _getUpdateMarkdownText()).replace(/[\r]/g, '');
+        let currentMarkdownText = (await _readMarkdownTextFile()).replace(/[\r]/g, '');
+        if(newMarkdownText !== currentMarkdownText){
             let markdownFile = FileSystem.getFileForPath(_getUpdateMarkdownLocalPath());
             // if the user overwrites the markdown file, then the user edited content will be nuked here.
             FileUtils.writeText(markdownFile, newMarkdownText, true)
@@ -107,7 +98,6 @@ define(function (require, exports, module) {
     exports.init = function () {
         if(!Phoenix.firstBoot && !window.testEnvironment){
             _showNewUpdatesIfPresent();
-            return;
         }
     };
 });
