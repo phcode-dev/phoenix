@@ -17,8 +17,9 @@
  *
  */
 
-/* global Config, virtualServerBaseURL*/
+/* global Config, virtualServerBaseURL, HtmlFormatter*/
 
+importScripts('phoenix/virtualServer/html-formatter.js');
 importScripts('phoenix/virtualServer/config.js');
 
 if(!self.Serve){
@@ -30,6 +31,16 @@ if(!self.Serve){
 
     function _getNewRequestID() {
         return Math.round( Math.random()*1000000000000);
+    }
+
+    function _getAllInstrumentedFullPaths() {
+        let allURLs = [];
+        for(let rootPaths of Object.keys(instrumentedURLs)){
+            for(let subPath of instrumentedURLs[rootPaths]){
+                allURLs.push(Path.normalize(rootPaths + subPath));
+            }
+        }
+        return allURLs;
     }
 
     // https://tools.ietf.org/html/rfc2183
@@ -64,7 +75,7 @@ if(!self.Serve){
     const FILE_READ_RETRY_COUNT = 5,
         BACKOFF_TIME_MS = 10;
 
-    const serve = async function (path, formatter, download, phoenixInstanceID) {
+    const serve = async function (path, download, phoenixInstanceID) {
         path = Path.normalize(path);
         return new Promise(async (resolve, reject) => { // eslint-disable-line
             function buildResponse(responseData) {
@@ -73,45 +84,40 @@ if(!self.Serve){
 
             function serveError(path, err) {
                 if (err.code === 'ENOENT') {
-                    return resolve(buildResponse(formatter.format404(path)));
+                    return resolve(buildResponse(HtmlFormatter.format404(path)));
                 }
-                resolve(buildResponse(formatter.format500(path, err)));
+                resolve(buildResponse(HtmlFormatter.format500(path, err)));
             }
 
-            async function serveInstrumentedFile(path, stats) {
-                let allURLs = [];
-                for(let rootPaths of Object.keys(instrumentedURLs)){
-                    for(let subPath of instrumentedURLs[rootPaths]){
-                        allURLs.push(Path.normalize(rootPaths + subPath));
+            function serveInstrumentedFile(path) {
+                let allURLs = _getAllInstrumentedFullPaths();
+                if(!allURLs.includes(path)){
+                    self._debugLivePreviewLog("Service worker: cannot serve, no such instrumented file", path);
+                    return false;
+                }
+                self._debugLivePreviewLog("Service worker: serving instrumented file", path);
+                const requestID = _getNewRequestID();
+                _serverBroadcastChannel.postMessage({
+                    type: "getInstrumentedContent",
+                    path,
+                    requestID,
+                    phoenixInstanceID
+                });
+                responseListeners[requestID] = function (response) {
+                    if(!response.contents){
+                        self._debugLivePreviewLog(
+                            "Service worker: no instrumented file received from phoenix!", path);
+                        return resolve(buildResponse(HtmlFormatter.format404(path)));
                     }
-                }
-                if(allURLs.includes(path)){
-                    self._debugLivePreviewLog("Service worker: serving instrumented file", path);
-                    const requestID = _getNewRequestID();
-                    _serverBroadcastChannel.postMessage({
-                        type: "getInstrumentedContent",
-                        path,
-                        requestID,
-                        phoenixInstanceID
-                    });
-                    responseListeners[requestID] = function (response) {
-                        if(!response.contents){
-                            self._debugLivePreviewLog(
-                                "Service worker: no instrumented file received from phoenix!", path);
-                            serveFileContent(path, stats);
-                            return;
-                        }
-                        const responseData = formatter.formatFile(path, response.contents, stats);
-                        const headers = response.headers || {};
-                        responseData.config.headers = { ...responseData.config.headers, ...headers};
-                        resolve(new Response(responseData.body, responseData.config));
-                    };
-                    return true;
-                }
-                return false;
+                    const responseData = HtmlFormatter.formatFile(path, response.contents);
+                    const headers = response.headers || {};
+                    responseData.config.headers = { ...responseData.config.headers, ...headers};
+                    resolve(new Response(responseData.body, responseData.config));
+                };
+                return true;
             }
 
-            async function serveFileContent(path, stats) {
+            async function serveFile(path, stats) {
                 let err = null;
                 for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
                     // sometimes there is read after write contention in native fs between main thread and worker.
@@ -122,7 +128,7 @@ if(!self.Serve){
                         await _wait(i * BACKOFF_TIME_MS);
                         continue;
                     }
-                    const responseData = formatter.formatFile(path, fileResponse.contents, stats);
+                    const responseData = HtmlFormatter.formatFile(path, fileResponse.contents);
 
                     // If we are supposed to serve this file or download, add headers
                     if (responseData.config.status === 200 && download) {
@@ -134,14 +140,6 @@ if(!self.Serve){
                     return;
                 }
                 serveError(path, err);
-            }
-
-            async function serveFile(path, stats) {
-                let fileServed = await serveInstrumentedFile(path, stats);
-                if(fileServed){
-                    return;
-                }
-                serveFileContent(path, stats);
             }
 
             // Either serve /index.html (default index) or / (directory listing)
@@ -177,7 +175,7 @@ if(!self.Serve){
                             return serveError(path, err);
                         }
 
-                        const responseData = formatter.formatDir(virtualServerBaseURL, path, entries);
+                        const responseData = HtmlFormatter.formatDir(virtualServerBaseURL, path, entries);
                         resolve(new Response(responseData.body, responseData.config));
                     });
                 }
@@ -187,6 +185,9 @@ if(!self.Serve){
 
             let err = null;
             try{
+                if(serveInstrumentedFile(path)){
+                    return;
+                }
                 for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
                     let fileStat = await _resolvingStat(path);
                     if(fileStat.error){

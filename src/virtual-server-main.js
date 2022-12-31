@@ -17,14 +17,12 @@
  *
  */
 
-/* global workbox, importScripts, Serve, JSONFormatter, HtmlFormatter, Config*/
+/* global workbox, importScripts, Serve, HtmlFormatter, Config*/
 importScripts('phoenix/virtualfs.js');
 importScripts('phoenix/virtualServer/mime-types.js');
 importScripts('phoenix/virtualServer/config.js');
 importScripts('phoenix/virtualServer/content-type.js');
 importScripts('phoenix/virtualServer/webserver.js');
-importScripts('phoenix/virtualServer/json-formatter.js');
-importScripts('phoenix/virtualServer/html-formatter.js');
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
 
 const _debugSWCacheLogs = false; // change debug to true to see more logs
@@ -117,12 +115,6 @@ workbox.routing.registerRoute(
         // Deal with encoding in the filename (e.g., spaces as %20)
         path = decodeURI(path);
 
-        // Allow passing `?json` on URL to get back JSON vs. raw response
-        const formatter =
-            url.searchParams.get('json') !== null
-                ? JSONFormatter
-                : HtmlFormatter;
-
         const download = false;
         // commented Allow passing `?download` or `dl` to have the file downloaded vs. displayed
         // url.searchParams.get('download') !== null ||
@@ -135,7 +127,7 @@ workbox.routing.registerRoute(
             path = `/${pathSplit.join("/")}`;
         }
 
-        return Serve.serve(path, formatter, download, phoenixInstanceID);
+        return Serve.serve(path, download, phoenixInstanceID);
     },
     'GET'
 );
