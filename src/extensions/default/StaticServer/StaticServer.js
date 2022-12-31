@@ -140,7 +140,8 @@ define(function (require, exports, module) {
      * @return {jQuery.Promise} Resolved by the StaticServer domain when the message is acknowledged.
      */
     StaticServer.prototype._updateInstrumentedURLSInWorker = function () {
-        let paths = Object.keys(this._liveDocuments);
+        let paths = Object.keys(this._liveDocuments)
+            .concat(Object.keys(this._virtualServingDocuments));
         console.log(`Static server _updateInstrumentedURLSInWorker: `, this._root, paths);
 
         window.messageSW({
@@ -167,6 +168,17 @@ define(function (require, exports, module) {
     };
 
     /**
+     * This will add the given text to be served when the path is hit in server. use this to either serve a file
+     * that doesn't exist in project, or to override a given path to the contents you give.
+     */
+    StaticServer.prototype.addVirtualContentAtPath = function (path, docText) {
+        BaseServer.prototype.addVirtualContentAtPath.call(this, path, docText);
+
+        // update the paths to watch
+        this._updateInstrumentedURLSInWorker();
+    };
+
+    /**
      * See BaseServer#add. StaticServer ignores documents that do not have
      * a setInstrumentationEnabled method. Updates request filters.
      */
@@ -188,6 +200,16 @@ define(function (require, exports, module) {
     StaticServer.prototype.remove = function (liveDocument) {
         BaseServer.prototype.remove.call(this, liveDocument);
 
+        this._updateInstrumentedURLSInWorker();
+    };
+
+    /**
+     * removes path added by addVirtualContentAtPath()
+     */
+    StaticServer.prototype.removeVirtualContentAtPath = function (path) {
+        BaseServer.prototype.removeVirtualContentAtPath.call(this, path);
+
+        // update the paths to watch
         this._updateInstrumentedURLSInWorker();
     };
 
@@ -258,17 +280,27 @@ define(function (require, exports, module) {
         }
         let path = this._documentKey(data.path),
             requestID = data.requestID,
-            liveDocument = this._liveDocuments[path];
-        let response = {};
-        if (liveDocument && liveDocument.getResponseData) {
+            liveDocument = this._liveDocuments[path],
+            virtualDocument = this._virtualServingDocuments[path];
+        let response = {
+            body: "instrumented document not found at static server"
+        };
+
+        if (virtualDocument) {
+            // virtual document overrides takes precedence over live preview docs
+            response = {
+                body: virtualDocument
+            };
+        } else if (liveDocument && liveDocument.getResponseData) {
             response = liveDocument.getResponseData();
-            _serverBroadcastChannel.postMessage({
-                type: 'REQUEST_RESPONSE',
-                requestID, //pass along the requestID so that the appropriate callback will be hit at the service worker
-                path,
-                contents: response.body
-            });
         }
+
+        _serverBroadcastChannel.postMessage({
+            type: 'REQUEST_RESPONSE',
+            requestID, //pass along the requestID so that the appropriate callback will be hit at the service worker
+            path,
+            contents: response.body
+        });
     };
 
     _serverBroadcastChannel.onmessage = (event) => {

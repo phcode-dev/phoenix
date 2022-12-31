@@ -39,16 +39,18 @@
 define(function (require, exports, module) {
 
 
-    var EventDispatcher = require("utils/EventDispatcher");
+    const EventDispatcher = require("utils/EventDispatcher");
 
     // Text of the script we'll inject into the browser that handles protocol requests.
-    var LiveDevProtocolRemote = require("text!LiveDevelopment/BrowserScripts/LiveDevProtocolRemote.js"),
+    const LiveDevProtocolRemote = require("text!LiveDevelopment/BrowserScripts/LiveDevProtocolRemote.js"),
         DocumentObserver      = require("text!LiveDevelopment/BrowserScripts/DocumentObserver.js"),
         RemoteFunctions       = require("text!LiveDevelopment/BrowserScripts/RemoteFunctions.js"),
         EditorManager         = require("editor/EditorManager"),
         LiveDevMultiBrowser   = require("LiveDevelopment/LiveDevMultiBrowser"),
         HTMLInstrumentation   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
         FileViewController    = require("project/FileViewController");
+
+    const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = "phoenix_live_preview_scripts_instrumented_345Tt96G4.js";
 
     /**
      * @private
@@ -232,13 +234,27 @@ define(function (require, exports, module) {
      * Includes the <script> tags.
      * @return {string}
      */
-    function getRemoteFunctionsScript() {
-        var script = "";
+    function _getRemoteFunctionsScript() {
+        let script = "";
         // Inject DocumentObserver into the browser (tracks related documents)
         script += DocumentObserver;
         // Inject remote functions into the browser.
-        script += "window._LD=(" + RemoteFunctions + "(" + JSON.stringify(LiveDevMultiBrowser.config) + "))";
-        return "<script>\n" + script + "</script>\n";
+        script += "\nwindow._LD=(" + RemoteFunctions + "(" + JSON.stringify(LiveDevMultiBrowser.config) + "))";
+        return "\n" + script + "\n";
+    }
+
+    /**
+     * Returns a script that should be injected into the HTML that's launched in the
+     * browser in order to handle protocol requests. Includes the <script> tags.
+     * This script will also include the script required by the transport, if any.
+     * @return {string}
+     */
+    function getRemoteScriptContents() {
+        const transportScript = _transport.getRemoteScript() || "";
+        const remoteFunctionsScript = _getRemoteFunctionsScript() || "";
+        return transportScript +
+            "\n" + LiveDevProtocolRemote + "\n" +
+            remoteFunctionsScript;
     }
 
     /**
@@ -248,11 +264,8 @@ define(function (require, exports, module) {
      * @return {string}
      */
     function getRemoteScript() {
-        var transportScript = _transport.getRemoteScript() || "";
-        var remoteFunctionsScript = getRemoteFunctionsScript() || "";
-        return transportScript +
-            "<script>\n" + LiveDevProtocolRemote + "</script>\n" +
-            remoteFunctionsScript;
+        // give a wrong random file name that wont have a possibility of an actual file name
+        return `\n\t\t<script src="${LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME}"></script>`;
     }
 
     /**
@@ -374,6 +387,7 @@ define(function (require, exports, module) {
     // public API
     exports.setTransport = setTransport;
     exports.getRemoteScript = getRemoteScript;
+    exports.getRemoteScriptContents = getRemoteScriptContents;
     exports.evaluate = evaluate;
     exports.setStylesheetText = setStylesheetText;
     exports.getStylesheetText = getStylesheetText;
@@ -382,4 +396,5 @@ define(function (require, exports, module) {
     exports.close = close;
     exports.getConnectionIds = getConnectionIds;
     exports.closeAllConnections = closeAllConnections;
+    exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
 });

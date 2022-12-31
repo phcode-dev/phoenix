@@ -498,6 +498,9 @@ define(function (require, exports, module) {
         doc._ensureMasterEditor();
         _liveDocument = _createLiveDocument(doc, doc._masterEditor);
         _server.add(_liveDocument);
+        _server.addVirtualContentAtPath(
+            `${_liveDocument.doc.file.parentPath}${LiveDevProtocol.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME}`,
+            _protocol.getRemoteScriptContents());
     }
 
 

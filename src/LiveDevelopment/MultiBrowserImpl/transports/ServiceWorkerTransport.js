@@ -67,11 +67,11 @@ define(function (require, exports, module) {
      * @return {string}
      */
     function getRemoteScript() {
-        return "<script>\n" +
+        return "\n" +
             `window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${BROADCAST_CHANNEL_ID}";\n` +
             `window.LIVE_PREVIEW_DEBIG_ENABLED = ${window.loggingOptions.logLivePreview};\n` +
             ServiceWorkerTransportRemote +
-            "</script>\n";
+            "\n";
     }
 
     EventDispatcher.makeEventDispatcher(exports);

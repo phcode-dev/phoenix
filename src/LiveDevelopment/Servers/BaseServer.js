@@ -40,6 +40,7 @@ define(function (require, exports, module) {
         this._root          = config.root;          // ProjectManager.getProjectRoot().fullPath
         this._pathResolver  = config.pathResolver;  // ProjectManager.makeProjectRelativeIfPossible(doc.file.fullPath)
         this._liveDocuments = {};
+        this._virtualServingDocuments = {};
     }
 
     /**
@@ -177,6 +178,15 @@ define(function (require, exports, module) {
     };
 
     /**
+     * This will add the given text to be served when the path is hit in server. You can use this to either
+     * serve a file that doesn't exist in project, or to override a given path to the contents you give.
+     */
+    BaseServer.prototype.addVirtualContentAtPath = function (fullPath, docText) {
+        let key = this._documentKey(fullPath);
+        this._virtualServingDocuments[key] = docText;
+    };
+
+    /**
      * Removes a live document from the server
      * @param {Object} liveDocument
      */
@@ -189,6 +199,16 @@ define(function (require, exports, module) {
 
         if (key) {
             delete this._liveDocuments[key];
+        }
+    };
+
+    /**
+     * removes path added by addVirtualContentAtPath()
+     */
+    BaseServer.prototype.removeVirtualContentAtPath = function (fullPath) {
+        let key = this._documentKey(fullPath);
+        if(this._virtualServingDocuments[key]) {
+            delete this._virtualServingDocuments[key];
         }
     };
 
@@ -207,6 +227,7 @@ define(function (require, exports, module) {
      */
     BaseServer.prototype.clear = function () {
         this._liveDocuments = {};
+        this._virtualServingDocuments = {};
     };
 
     /**
