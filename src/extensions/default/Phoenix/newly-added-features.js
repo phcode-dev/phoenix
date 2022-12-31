@@ -81,8 +81,8 @@ define(function (require, exports, module) {
 
     async function _showNewUpdatesIfPresent() {
         // codemirror documents are always \n instead of \r\n line endings. so we strip here too
-        let newMarkdownText = (await _getUpdateMarkdownText()).replace(/[\r]/g, '');
-        let currentMarkdownText = (await _readMarkdownTextFile()).replace(/[\r]/g, '');
+        let newMarkdownText = (await _getUpdateMarkdownText()).replace(/\r/g, '');
+        let currentMarkdownText = (await _readMarkdownTextFile()).replace(/\r/g, '');
         if(newMarkdownText !== currentMarkdownText){
             let markdownFile = FileSystem.getFileForPath(_getUpdateMarkdownLocalPath());
             // if the user overwrites the markdown file, then the user edited content will be nuked here.
