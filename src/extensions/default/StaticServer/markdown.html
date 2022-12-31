@@ -9,6 +9,26 @@
     <link href="{{{HIGHLIGHT_JS_CSS}}}" rel="stylesheet">
     <script src="{{{HIGHLIGHT_JS}}}"></script>
     <link rel="stylesheet" href="{{{GFM_CSS}}}" />
+    <script type="text/javascript">
+        function inIframe () {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+
+        if(inIframe()) {
+            // inside iframes, we disable ctrl-s browser save page workflow as it may be inside the phoenix window
+            // It will confuse the use seeing the browser save dialog inside phoenix.
+            $iframe[0].contentDocument.savePageCtrlSDisabledByPhoenix = true;
+            document.addEventListener("keydown", function(e) {
+                if (e.key === 's' && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                    e.preventDefault();
+                }
+            }, false);
+        }
+    </script>
     <style>
 
         *{

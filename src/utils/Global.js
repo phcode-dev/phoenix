@@ -73,7 +73,7 @@ define(function (require, exports, module) {
     global.brackets.shellAPI = require("utils/ShellAPI");
 
     // Determine OS/platform
-    if (global.navigator.platform === "MacIntel" || global.navigator.platform === "MacPPC") {
+    if (global.navigator.platform.match("Mac")) {
         global.brackets.platform = "mac";
     } else if (global.navigator.platform.indexOf("Linux") >= 0) {
         global.brackets.platform = "linux";
