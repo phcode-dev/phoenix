@@ -13,9 +13,9 @@ body:
         3. Make sure it's an issue with Tauri and not something else you are using.
         4. Remember to follow our community guidelines and be friendly.
         5. Gif screen recordings help more if present. You can use one of the below free screen recorders:
-           1. windows: https://www.screentogif.com/
-           2. mac: https://apps.apple.com/au/app/giphy-capture-the-gif-maker/id668208984?mt=12
-           3. linux:  https://github.com/phw/peek
+        6. windows gif recorder- https://www.screentogif.com/
+        7. mac gif recorder- https://apps.apple.com/au/app/giphy-capture-the-gif-maker/id668208984?mt=12
+        8. linux gif recorder-  https://github.com/phw/peek
 
   - type: textarea
     id: description
