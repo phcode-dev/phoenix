@@ -755,6 +755,7 @@ define({
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Nykyisessä kansiossasi on grafiikkatiedostotyyppejä, joita {APP_NAME} ei tue.<br/> Voit nyt liittää tiettyjä tiedostotyyppejä ulkoisiin muokkausohjelmiin. Kun olet liitetty, voit avata graafisia tiedostoja, kuten .xd, .psd, .jpg, .png, .ai, .svg, oletussovelluksissa kaksoisnapsauttamalla tiedostoja tiedostopuussa.<br/><br/> Napsauta &#39;Ok&#39;-painiketta liittääksesi grafiikkatiedostotyypit vastaaviin oletussovelluksiin.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Seuraavat tiedostotyypit on yhdistetty onnistuneesti oletussovelluksiin.<br/> {0} Voit muuttaa valintaasi, haluatko poistaa/lisätäkö uusia tiedostotyyppiyhdistelmiä brackets.json-tiedostoon menemällä &quot;Debug-&gt;Open Preferences File&quot; -valikkoon.",
   "UNSUPPORTED_BROWSER": "Selainta ei tueta",
+  "UNSUPPORTED_BROWSER_MOBILE": "Mobiili- ja tablet-laitteita ei tällä hetkellä tueta täysin. Voit sulkea tämän valintaikkunan, mutta jotkin Phoenixin ominaisuudet eivät toimi tässä selaimessa.",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Selain ei tue Avaa kansiota. Käytä Chromea, Edgeä tai Operaa paikallisten kansioiden avaamiseen.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Käytä jotakin alla olevista tuetuista selaimista.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Teemme kovasti töitä saadaksemme Phoenixin saataville useammille selaimille. Voit sulkea tämän valintaikkunan, mutta jotkin Phoenixin ominaisuudet eivät toimi tässä selaimessa.",
