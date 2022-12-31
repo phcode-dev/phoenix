@@ -735,6 +735,7 @@
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "您当前的文件夹包含 {APP_NAME} 不支持的图形文件类型。<br/>您现在可以将特定文件类型与外部编辑器相关联。关联后，您可以通过双击文件树中的文件在其默认应用程序中打开 .xd、.psd、.jpg、.png、.ai、.svg 等图形文件。<br/><br/>请单击“确定”按钮将图形文件类型与其各自的默认应用程序相关联。",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "以下文件类型已成功与默认应用程序关联。<br/> {0}您可以通过转到“调试-&gt;打开首选项文件”菜单来更改您是否在括号.json 中删除/添加新文件类型关联的首选项。",
   "UNSUPPORTED_BROWSER": "不支持浏览器",
+  "UNSUPPORTED_BROWSER_MOBILE": "目前不完全支持移动和平板设备。您可以关闭此对话框，但 Phoenix 中的某些功能将无法在此浏览器中使用。",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "浏览器不支持打开文件夹。请使用 Chrome、Edge 或 Opera 打开本地文件夹。",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "请使用以下支持的浏览器之一。",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " 我们正在努力使 Phoenix 在更多浏览器中可用。您可以关闭此对话框，但 Phoenix 中的某些功能将无法在此浏览器中使用。",

@@ -735,6 +735,7 @@
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Váš aktuálny priečinok obsahuje typy grafických súborov, ktoré aplikácia {APP_NAME} nepodporuje.<br/> Teraz môžete priradiť konkrétne typy súborov k externým editorom. Po priradení môžete otvárať grafické súbory ako .xd, .psd, .jpg, .png, .ai, .svg v ich predvolených aplikáciách dvojitým kliknutím na súbory v strome súborov.<br/><br/> Kliknutím na tlačidlo „OK“ priradíte typy grafických súborov k ich príslušným predvoleným aplikáciám.",
   "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Nasledujúce typy súborov boli úspešne priradené k predvoleným aplikáciám.<br/> (",
   "UNSUPPORTED_BROWSER": "Prehliadač nie je podporovaný",
+  "UNSUPPORTED_BROWSER_MOBILE": "Mobilné zariadenia a tablety momentálne nie sú plne podporované. Tento dialóg môžete zavrieť, ale niektoré funkcie vo Phoenixe nebudú v tomto prehliadači fungovať.",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Prehliadač nepodporuje otvorenie priečinka. Na otvorenie miestnych priečinkov použite prehliadač Chrome, Edge alebo Opera.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE1": "Použite jeden z podporovaných prehliadačov nižšie.",
   "UNSUPPORTED_BROWSER_MESSAGE_LINE2": " Usilovne pracujeme na tom, aby bol Phoenix dostupný vo viacerých prehliadačoch. Tento dialóg môžete zavrieť, ale niektoré funkcie vo Phoenixe nebudú v tomto prehliadači fungovať.",
