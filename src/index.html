@@ -45,6 +45,14 @@
 
     <!-- JavaScript -->
     <script type="text/javascript">
+        if(["dev.phcode.dev", "staging.phcode.dev"].includes(location.hostname)
+            && localStorage.getItem("devDomainsEnabled") !== "true"){
+            alert("Hello explorer, you have reached a development version of phcode.dev that is not for general use and could be very unstable." +
+                `\n\nIf you know what you are doing and what to visit the dev site, please go to https://${location.hostname}/devEnable.html to enable dev site and visit again.` +
+                "\n\nYou will now be redirected to phcode.dev.");
+            window.location = "https://phcode.dev";
+        }
+
         // logger setup
         function swallowLogs() {
             // Do nothing

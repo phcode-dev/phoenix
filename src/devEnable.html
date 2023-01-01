@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Enable Phoenix development site</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script>
+            function showEnabledStatus() {
+                let enabled = localStorage.getItem("devDomainsEnabled") === "true",
+                    statusMessage = `Dev site at ${location.hostname} is currently disabled`,
+                    btnMessage = `Enable ${location.hostname}`,
+                    color = "red";
+                if(enabled){
+                    statusMessage = `Dev site at ${location.hostname} is currently Enabled`;
+                    btnMessage = `Disable ${location.hostname}`;
+                    color = "green";
+                }
+                document.getElementById("heading").textContent = `Enable or Disable Phoenix Development site at: ${location.hostname}`;
+                document.getElementById("enableStatus").textContent = statusMessage;
+                document.getElementById('enableStatus').style.color = color;
+                document.getElementById("enableBtn").textContent = btnMessage;
+            }
+            function buttonClicked() {
+                let enabled = localStorage.getItem("devDomainsEnabled") === "true";
+                enabled = "" + (!enabled);
+                localStorage.setItem("devDomainsEnabled", enabled);
+                showEnabledStatus();
+            }
+        </script>
+    </head>
+    <body onload="showEnabledStatus()">
+        <h1 id="heading">Enable or Disable Phoenix Dev site.</h1>
+        <div id="enableStatus">Checking if dev site is enabled...</div>
+        <br />
+        <button id="enableBtn" onclick="buttonClicked()">Click me</button>
+    </body>
+</html>
