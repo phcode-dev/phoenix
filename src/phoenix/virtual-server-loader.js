@@ -100,6 +100,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         if(lastClearedVersion !== newCacheVersion) {
             console.log(`Service worker loader: triggering CLEAR_CACHE for live preview service worker upgrade`);
             window.Phoenix.updatePendingReload = true;
+            window.Phoenix.updatePendingReloadReason = "clearCache";
             wb.messageSW({
                 type: 'CLEAR_CACHE'
             });
@@ -120,6 +121,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
             console.log(`Service worker loader: updatedFilesCount: `, updatedFilesCount);
             if(updatedFilesCount >0) {
                 window.Phoenix.updatePendingReload = true;
+                window.Phoenix.updatePendingReloadReason = "refreshCache";
             }
         }).catch(err=>{
             console.error("Service worker loader: Error while triggering cache refresh", err);
@@ -174,7 +176,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     // service worker has installed but is waiting to activate.
     wb.addEventListener('waiting', (event) => {
         console.log("Service worker loader: A new service worker is pending load. Trying to update the worker now.");
-        window.Phoenix.updatePendingReload = true;
+        // window.Phoenix.updatePendingReload = true; not set here to not show too many update dialogues.
         showSkipWaitingPrompt(event);
     });
 
