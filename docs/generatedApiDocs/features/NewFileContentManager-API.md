@@ -7,7 +7,7 @@ Extensions can register to provide content with `NewFileContentManager.registerC
 
 ## Usage
 
-Let's say whenever a user creates a new js file, we have to prefill the contents to "console.log("hello")"
+Let's say whenever a user creates a new js file, we have to prefill the contents to "sample content"
 
 ```js
 const NewFileContentManager = brackets.getModule("features/NewFileContentManager");
@@ -17,7 +17,7 @@ NewFileContentManager.registerContentProvider(exports, ["js"], 1);
 
 // provide a helpful name for the ContentProvider. This will be useful if you have to debug.
 exports.CONTENT_PROVIDER_NAME = "extension.someName";
-// now implement the getContent function that will be invoked when ever creates a new empty file.
+// now implement the getContent function that will be invoked when ever user creates a new empty file.
 exports.getContent = function(fullPath) {
         return new Promise((resolve, reject)=>{
             resolve("sample content");
@@ -96,10 +96,18 @@ all the content providers. If no text is returned by any providers, it will retu
 
 ### Parameters
 
-*   `fullPath`  
+*   `fullPath` **[string][1]** 
 
-Returns **[Promise][1]<[string][2]>** The text contents
+### Examples
 
-[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+To get the default content given a path
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+```javascript
+NewFileContentManager.getInitialContentForFile("/path/to/file.jsx");
+```
+
+Returns **[Promise][2]<[string][1]>** The text contents
+
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
