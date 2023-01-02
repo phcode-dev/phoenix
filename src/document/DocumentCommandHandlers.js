@@ -760,7 +760,7 @@ define(function (require, exports, module) {
         function createWithSuggestedName(suggestedName) {
             return ProjectManager.createNewItem(baseDirEntry, suggestedName, false, isFolder)
                 .done(function (fileOrStatus) {
-                    if(!(typeof fileOrStatus === 'object' && fileOrStatus.fullPath)){
+                    if(!(typeof fileOrStatus === 'object' && fileOrStatus.isFile && fileOrStatus.fullPath)){
                         return;
                     }
                     DocumentManager.getDocumentForPath(fileOrStatus.fullPath)
