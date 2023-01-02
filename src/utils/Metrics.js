@@ -78,7 +78,8 @@ define(function (require, exports, module) {
         SHARING: "sharing",
         PERFORMANCE: "performance",
         STORAGE: "storage",
-        NEW_PROJECT: "new-project"
+        NEW_PROJECT: "new-project",
+        ERROR: "error"
     };
 
     /**

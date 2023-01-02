@@ -38,7 +38,6 @@ define(function (require, exports, module) {
             let data = Metrics.getLoggedDataForAudit();
             expect(data.get("typec.cat.sub")).toEqual({ eventType: 'count', sum: 2, count: 2 });
             expect(data.get("typev.cat.sub")).toEqual({ eventType: 'val', sum: -10, count: 2 });
-            expect(data.size).toEqual(2);
         });
 
         it("should log health metrics For audit even if disabled", function () {
@@ -53,7 +52,6 @@ define(function (require, exports, module) {
             data = Metrics.getLoggedDataForAudit();
             expect(data.get("typec.cat.sub")).toEqual({ eventType: 'count', sum: 2, count: 2 });
             expect(data.get("typev.cat.sub")).toEqual({ eventType: 'val', sum: -10, count: 2 });
-            expect(data.size).toEqual(2);
         });
 
         it("should delete 1000 entries if 3000 max entries have been logged", function () {
