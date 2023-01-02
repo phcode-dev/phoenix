@@ -27,7 +27,7 @@
  * Extensions can register to provide content with `NewFileContentManager.registerContentProvider` API.
  *
  * ## Usage
- * Let's say whenever a user creates a new js file, we have to prefill the contents to "console.log("hello")"
+ * Let's say whenever a user creates a new js file, we have to prefill the contents to "sample content"
  * ```js
  * const NewFileContentManager = brackets.getModule("features/NewFileContentManager");
  * // replace `js` with language ID(Eg. javascript) if you want to restrict the preview to js files only. use `all` for
@@ -36,7 +36,7 @@
  *
  * // provide a helpful name for the ContentProvider. This will be useful if you have to debug.
  * exports.CONTENT_PROVIDER_NAME = "extension.someName";
- * // now implement the getContent function that will be invoked when ever creates a new empty file.
+ * // now implement the getContent function that will be invoked when ever user creates a new empty file.
  * exports.getContent = function(fullPath) {
  *         return new Promise((resolve, reject)=>{
  *             resolve("sample content");
@@ -127,7 +127,9 @@ define(function (require, exports, module) {
     /**
      * Returns a promise that resolves to the default text content of the given file after querying
      * all the content providers. If no text is returned by any providers, it will return an empty string "".
-     * @param fullPath
+     * @example <caption>To get the default content given a path</caption>
+     * NewFileContentManager.getInitialContentForFile("/path/to/file.jsx");
+     * @param {string} fullPath
      * @returns {Promise<string>} The text contents
      */
     async function getInitialContentForFile(fullPath) {
