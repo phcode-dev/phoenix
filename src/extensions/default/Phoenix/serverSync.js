@@ -51,7 +51,7 @@ define(function (require, exports, module) {
     function _setupUserContext() {
         userContext = localStorage.getItem(USER_CONTEXT);
         if(!userContext){
-            userContext = crypto.randomUUID().split("-")[0];
+            userContext = "p-" + Math.round( Math.random()*10000000000000).toString(16);
             localStorage.setItem(USER_CONTEXT, userContext);
         }
     }
