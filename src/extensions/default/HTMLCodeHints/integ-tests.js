@@ -63,8 +63,7 @@ define(function (require, exports, module) {
             ProjectManager      = null;
             testWindow = null;
             brackets = null;
-            // comment out below line if you want to debug the test window post running tests
-            //SpecRunnerUtils.closeTestWindow();
+            SpecRunnerUtils.closeTestWindow();
         });
 
         async function closeSession() {
@@ -167,12 +166,21 @@ define(function (require, exports, module) {
         async function createAndVerifyFileContents(fileName, firstLineOfContent) {
             await awaitsForDone(CommandManager.execute(Commands.FILE_NEW),
                 "new file");
-            await awaits(300);
+            await awaitsFor(function () {
+                return !!$(".jstree-rename-input")[0];
+            }, "input to come");
             let fileNameInput = $(".jstree-rename-input");
+            expect(fileNameInput[0]).toBeDefined();
             await _deleteFile(fileName);
             fileNameInput.val(fileName);
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", fileNameInput[0]);
-            await awaits(100);
+
+            await awaitsFor(function () {
+                return !$(".jstree-rename-input")[0];
+            }, "input to go away");
+            await awaitsFor(function () {
+                return !!EditorManager.getActiveEditor();
+            }, "wait for editor to be active");
             expect(EditorManager.getActiveEditor().document.getText().split("\n")[0])
                 .toBe(firstLineOfContent);
             await closeSession();
