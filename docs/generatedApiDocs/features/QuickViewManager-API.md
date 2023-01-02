@@ -84,7 +84,7 @@ QuickViewManager.registerQuickViewProvider(provider, ["javascript", "html", "php
 
 ### removeQuickViewProvider
 
-Removes a registered code hint provider. The API takes the same arguments as `registerQuickViewProvider`.
+Removes a registered QuickView provider. The API takes the same arguments as `registerQuickViewProvider`.
 
 ```js
 // syntax

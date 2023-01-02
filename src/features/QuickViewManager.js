@@ -96,7 +96,7 @@
  * ```
  *
  * ### removeQuickViewProvider
- * Removes a registered code hint provider. The API takes the same arguments as `registerQuickViewProvider`.
+ * Removes a registered QuickView provider. The API takes the same arguments as `registerQuickViewProvider`.
  * ```js
  * // syntax
  * QuickViewManager.removeQuickViewProvider(provider, supportedLanguages);
@@ -205,14 +205,8 @@ define(function (require, exports, module) {
         removeQuickViewProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
 
     function _getQuickViewProviders(editor, pos) {
-        let quickViewProviders = [];
-        let language = editor.getLanguageForPosition(pos),
-            enabledProviders = _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
-
-        for(let item of enabledProviders){
-            quickViewProviders.push(item);
-        }
-        return quickViewProviders;
+        let language = editor.getLanguageForPosition(pos);
+        return  _providerRegistrationHandler.getProvidersForLanguageId(language.getId());
     }
 
     let enabled,                             // Only show preview if true

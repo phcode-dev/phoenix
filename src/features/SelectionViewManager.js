@@ -88,7 +88,7 @@
  * ```
  *
  * ### removeSelectionViewProvider
- * Removes a registered code hint provider. The API takes the same arguments as `registerSelectionViewProvider`.
+ * Removes a registered SelectionView provider. The API takes the same arguments as `registerSelectionViewProvider`.
  * ```js
  * // syntax
  * SelectionViewManager.removeSelectionViewProvider(provider, supportedLanguages);

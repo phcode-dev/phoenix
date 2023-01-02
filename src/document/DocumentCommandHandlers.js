@@ -55,6 +55,7 @@ define(function (require, exports, module) {
         StatusBar           = require("widgets/StatusBar"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         LanguageManager     = require("language/LanguageManager"),
+        NewFileContentManager     = require("features/NewFileContentManager"),
         _                   = require("thirdparty/lodash");
 
     /**
@@ -758,6 +759,15 @@ define(function (require, exports, module) {
         // of validating file name, creating the new file and selecting.
         function createWithSuggestedName(suggestedName) {
             return ProjectManager.createNewItem(baseDirEntry, suggestedName, false, isFolder)
+                .done(function (file) {
+                    DocumentManager.getDocumentForPath(file.fullPath)
+                        .done(doc =>{
+                            NewFileContentManager.getInitialContentForFile(file.fullPath).then(content =>{
+                                doc.setText(content);
+                            });
+                        })
+                        .fail(console.error);
+                })
                 .always(function () { fileNewInProgress = false; });
         }
 

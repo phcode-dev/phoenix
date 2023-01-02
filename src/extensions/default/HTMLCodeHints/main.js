@@ -29,8 +29,11 @@ define(function (require, exports, module) {
         HTMLUtils           = brackets.getModule("language/HTMLUtils"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Strings             = brackets.getModule("strings"),
+        NewFileContentManager = brackets.getModule("features/NewFileContentManager"),
         HTMLTags            = require("text!HtmlTags.json"),
-        HTMLAttributes      = require("text!HtmlAttributes.json");
+        HTMLAttributes      = require("text!HtmlAttributes.json"),
+        HTMLTemplate        = require("text!template.html"),
+        XHTMLTemplate       = require("text!template.xhtml");
 
     let tags,
         attributes;
@@ -553,16 +556,35 @@ define(function (require, exports, module) {
         return false;
     };
 
+    /**
+     * @constructor
+     */
+    function NewDocContentProvider() {
+        this.CONTENT_PROVIDER_NAME = "HTMLCodeHints";
+    }
+
+    NewDocContentProvider.prototype.getContent = function(fileName) {
+        return new Promise((resolve, reject)=>{
+            if(fileName.endsWith(".xhtml")){
+                resolve(XHTMLTemplate);
+                return;
+            }
+            resolve(HTMLTemplate);
+        });
+    };
+
     AppInit.appReady(function () {
         // Parse JSON files
         tags = JSON.parse(HTMLTags);
         attributes = JSON.parse(HTMLAttributes);
 
         // Register code hint providers
-        var tagHints = new TagHints();
-        var attrHints = new AttrHints();
+        let tagHints = new TagHints();
+        let attrHints = new AttrHints();
+        let newDocContentProvider = new NewDocContentProvider();
         CodeHintManager.registerHintProvider(tagHints, ["html"], 0);
         CodeHintManager.registerHintProvider(attrHints, ["html"], 0);
+        NewFileContentManager.registerContentProvider(newDocContentProvider, ["html"], 0);
 
         // For unit testing
         exports.tagHintProvider = tagHints;
