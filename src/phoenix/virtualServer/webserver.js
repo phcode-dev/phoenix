@@ -104,7 +104,7 @@ if(!self.Serve){
                     phoenixInstanceID
                 });
                 responseListeners[requestID] = function (response) {
-                    if(!response.contents){
+                    if(response.contents !== "" && !response.contents){
                         self._debugLivePreviewLog(
                             "Service worker: no instrumented file received from phoenix!", path);
                         return resolve(buildResponse(HtmlFormatter.format404(path)));

@@ -44,7 +44,7 @@ define(function (require, exports, module) {
             expect(ExtensionInterface.isExistsExtensionInterface(INTERFACE_1)).toEqual(true);
             await awaitsFor(function () {
                 return notified === INTERFACE_1 && interfaceObjNotified === INTERFACE_OBJ;
-            }, 100, "extension interface registration notification");
+            }, "extension interface registration notification", 100);
         });
 
         it("should await and get the extension interface", async function () {
@@ -57,7 +57,7 @@ define(function (require, exports, module) {
             ExtensionInterface.registerExtensionInterface(INTERFACE_2, INTERFACE_OBJ);
             await awaitsFor(function () {
                 return extensionInterface === INTERFACE_OBJ;
-            }, 100, "awaiting extension interface");
+            }, "awaiting extension interface", 100);
         });
     });
 });

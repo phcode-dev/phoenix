@@ -182,6 +182,7 @@ define(function (require, exports, module) {
     require("features/QuickViewManager");
     require("features/SelectionViewManager");
     require("features/BeautificationManager");
+    require("features/NewFileContentManager");
 
     // Load modules that self-register and just need to get included in the main project
     require("command/DefaultMenus");

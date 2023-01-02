@@ -2,6 +2,7 @@
 The list of all APIs for phoenix.
 
 1. [features/BeautificationManager](BeautificationManager-API)
+1. [features/NewFileContentManager](NewFileContentManager-API)
 1. [features/QuickViewManager](QuickViewManager-API)
 1. [features/SelectionViewManager](SelectionViewManager-API)
 1. [utils/EventDispatcher](EventDispatcher-API)

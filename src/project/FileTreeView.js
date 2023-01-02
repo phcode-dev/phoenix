@@ -172,6 +172,7 @@ define(function (require, exports, module) {
          * the rename or create operation that is underway.
          */
         handleKeyDown: function (e) {
+            this.props.actions.setRenameValue(this.props.parentPath + this.refs.name.value.trim());
             if (e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
                 this.props.actions.cancelRename();
             } else if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
