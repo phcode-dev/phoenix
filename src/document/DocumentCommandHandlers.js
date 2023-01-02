@@ -759,10 +759,13 @@ define(function (require, exports, module) {
         // of validating file name, creating the new file and selecting.
         function createWithSuggestedName(suggestedName) {
             return ProjectManager.createNewItem(baseDirEntry, suggestedName, false, isFolder)
-                .done(function (file) {
-                    DocumentManager.getDocumentForPath(file.fullPath)
+                .done(function (fileOrStatus) {
+                    if(!(typeof fileOrStatus === 'object' && fileOrStatus.fullPath)){
+                        return;
+                    }
+                    DocumentManager.getDocumentForPath(fileOrStatus.fullPath)
                         .done(doc =>{
-                            NewFileContentManager.getInitialContentForFile(file.fullPath).then(content =>{
+                            NewFileContentManager.getInitialContentForFile(fileOrStatus.fullPath).then(content =>{
                                 doc.setText(content);
                             });
                         })
