@@ -32,7 +32,7 @@
  * loading.
  */
 define(function (require, exports, module) {
-
+    const Metrics = require("utils/Metrics");
 
     /*
      * Fires when the base htmlContent/main-view.html is loaded
@@ -88,6 +88,7 @@ define(function (require, exports, module) {
         } catch (e) {
             console.error("Exception when calling a 'brackets done loading' handler: " + e);
             console.log(e.stack);
+            Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "appInit", "doneLoading");
         }
     }
 
