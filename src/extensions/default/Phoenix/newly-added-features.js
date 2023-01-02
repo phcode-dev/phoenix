@@ -65,7 +65,8 @@ define(function (require, exports, module) {
                     Strings.UPDATE_AVAILABLE_TITLE,
                     Strings.UPDATE_RELOAD_APP
                 );
-                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "updateDlg", "shown");
+                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "updateDlg",
+                    window.Phoenix.updatePendingReloadReason || "shown");
             }
         }, 5000);
     }
