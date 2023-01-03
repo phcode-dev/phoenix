@@ -25,6 +25,10 @@
  * Based on https://github.com/humphd/nohost
  *
  * This module should be functionally as light weight as possible with minimal deps as it is a shell component.
+ *
+ * This file is always loaded fresh from network if available bypassing cache to help better resilience
+ * against stale caches in service worker. So you can assume that this file will get loaded in its most recent
+ * form despite the cache state in the browser.
  * **/
 
 
@@ -83,13 +87,17 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         updateViaCache: 'none'
     });
 
+    let isServerReady = false;
+
+    window.Phoenix.cache = {};
+
     /**
      * This will cause a full cache reset in the browser for the phoenix scripts.
      * This will help the user to load the latest version of phoenix on the next load.
      * @return {boolean}
      * @private
      */
-    function _forceClearCacheIfNeeded() {
+    function _forceClearCacheIfNeeded(doneCB) {
         const cacheKey = "browserCacheVersionKey";
         const newCacheVersion = "V1"; // just increment this number to V2, v3 etc. to force clear the cached content.
         if(window.Phoenix.firstBoot){
@@ -99,34 +107,48 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         const lastClearedVersion = window.localStorage.getItem(cacheKey);
         if(lastClearedVersion !== newCacheVersion) {
             console.log(`Service worker loader: triggering CLEAR_CACHE for live preview service worker upgrade`);
-            window.Phoenix.updatePendingReload = true;
-            window.Phoenix.updatePendingReloadReason = "clearCache";
             wb.messageSW({
                 type: 'CLEAR_CACHE'
+            }).then(({updatedFilesCount})=>{
+                console.log(`Service worker loader: clear cache updatedFilesCount: `, updatedFilesCount);
+                window.Phoenix.cache.updatePendingReloadReason = "clearCache";
+                window.Phoenix.cache.showUpdateDialogue = true;
+                window.Phoenix.cache.updatedFilesCount = updatedFilesCount;
+                localStorage.setItem(cacheKey, newCacheVersion);
+                doneCB();
+            }).catch(err=>{
+                console.error("Service worker loader: Error while triggering clear cache", err);
+                doneCB("CLEAR_CACHE Error");
             });
-            localStorage.setItem(cacheKey, newCacheVersion);
             return true;
         }
         return false;
     }
 
-    function _refreshCache() {
-        if(_forceClearCacheIfNeeded()){
+    // refreshServiceWorkerCache should be done after app load to prevent mixed js script content load. Ie,
+    // if we do the cache reset now, some scripts loaded may be from cache and some from the new version.
+    window.refreshServiceWorkerCache = function (doneCB) {
+        if(!isServerReady){
+            setTimeout(()=>{
+                window.refreshServiceWorkerCache(doneCB);
+            }, 100);
+        }
+        if(_forceClearCacheIfNeeded(doneCB)){
             return;
         }
         console.log(`Service worker loader: triggering REFRESH_CACHE`);
         wb.messageSW({
             type: 'REFRESH_CACHE'
         }).then(({updatedFilesCount})=>{
-            console.log(`Service worker loader: updatedFilesCount: `, updatedFilesCount);
-            if(updatedFilesCount >0) {
-                window.Phoenix.updatePendingReload = true;
-                window.Phoenix.updatePendingReloadReason = "refreshCache";
-            }
+            console.log(`Service worker loader: refresh cache updatedFilesCount: `, updatedFilesCount);
+            window.Phoenix.cache.updatePendingReloadReason = "refreshCache";
+            window.Phoenix.cache.updatedFilesCount = updatedFilesCount;
+            doneCB();
         }).catch(err=>{
-            console.error("Service worker loader: Error while triggering cache refresh", err);
+            console.error("Service worker loader: Error while triggering refresh cache", err);
+            doneCB("REFRESH_CACHE Error");
         });
-    }
+    };
 
     // Hoist service worker comm to window for everyone be able to communicate with the sw.
     window.messageSW = function (params) {
@@ -135,6 +157,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
 
     function serverReady() {
         console.log('Service worker loader: Server ready.');
+        isServerReady = true;
         wb.messageSW({
             type: 'INIT_PHOENIX_CONFIG',
             debugMode: window.logToConsolePref === 'true',
@@ -144,7 +167,6 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         }).catch(err=>{
             console.error("Service worker loader: Error while init of service worker", err);
         });
-        _refreshCache();
     }
 
     function serverInstall() {
@@ -176,7 +198,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     // service worker has installed but is waiting to activate.
     wb.addEventListener('waiting', (event) => {
         console.log("Service worker loader: A new service worker is pending load. Trying to update the worker now.");
-        // window.Phoenix.updatePendingReload = true; not set here to not show too many update dialogues.
+        window.Phoenix.cache.updatePendingReloadReason = "skipWait";
         showSkipWaitingPrompt(event);
     });
 
