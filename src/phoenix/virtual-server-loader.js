@@ -113,7 +113,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
                 console.log(`Service worker loader: clear cache updatedFilesCount: `, updatedFilesCount);
                 window.Phoenix.cache.updatePendingReloadReason = "clearCache";
                 window.Phoenix.cache.showUpdateDialogue = true;
-                window.Phoenix.cache.updatedFilesCount = updatedFilesCount;
+                window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
                 localStorage.setItem(cacheKey, newCacheVersion);
                 doneCB();
             }).catch(err=>{
@@ -142,7 +142,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         }).then(({updatedFilesCount})=>{
             console.log(`Service worker loader: refresh cache updatedFilesCount: `, updatedFilesCount);
             window.Phoenix.cache.updatePendingReloadReason = "refreshCache";
-            window.Phoenix.cache.updatedFilesCount = updatedFilesCount;
+            window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
             doneCB();
         }).catch(err=>{
             console.error("Service worker loader: Error while triggering refresh cache", err);
