@@ -30,7 +30,7 @@ const savedLoggingFn = console.log;
 const savedInfoFn = console.info;
 
 window.setupLogging = function () {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search || "");
     const logToConsoleOverride = urlParams.get('logToConsole');
     const logToConsolePref = localStorage.getItem("logToConsole");
     window.testEnvironment = (urlParams.get('testEnvironment') === 'true');
@@ -48,6 +48,7 @@ window.setupLogging = function () {
         return false;
     }
 };
+window.setupLogging();
 
 window.isLoggingEnabled = function (key) {
     let loggingEnabled = localStorage.getItem(key) || "false";
@@ -86,8 +87,6 @@ window.loggingOptions = {
 window.loggingOptions.logLivePreview = window.isLoggingEnabled(
     window.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW);
 
-window.setupLogging();
-
 function onError(event) {
     // for mroe info https://docs.bugsnag.com/platforms/javascript/customizing-error-reports
     // change health logger popup string before changing the below line to anything other than "Caught Critical error"
@@ -103,16 +102,17 @@ function onError(event) {
     }
 }
 
-const isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
+let isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
-if(!isTestWindow) {
+if(!window.testEnvironment && !isLocalHost) {
     Bugsnag.start({
         apiKey: 'a899c29d251bfdf30c3222016a2a7ea7',
         appType: window.__TAURI__ ? "tauri" : "browser",
         collectUserIp: false,
         appVersion: AppConfig.version,
-        enabledReleaseStages: [ 'development', 'production', 'staging' ],
-        releaseStage: AppConfig.config.bugsnagEnv,
+        enabledReleaseStages: [ 'development', 'production', 'staging',
+            'tauri-development', 'tauri-production', 'tauri-staging'],
+        releaseStage: window.__TAURI__ ? "tauri-" + AppConfig.config.bugsnagEnv : AppConfig.config.bugsnagEnv,
         // https://docs.bugsnag.com/platforms/javascript/#logging-breadcrumbs
         // breadcrumbs is disabled as it seems a bit intrusive in Pheonix even-though it might help with debugging.
         enabledBreadcrumbTypes: [],
@@ -120,4 +120,6 @@ if(!isTestWindow) {
         maxEvents: 10,
         onError
     });
+} else {
+    console.warn("Logging to Bugsnag is disabled as current environment is localhost.");
 }
