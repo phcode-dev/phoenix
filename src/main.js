@@ -129,38 +129,20 @@ window.scriptObserver = new MutationObserver(callback);
 // Start observing the target node for configured mutations
 window.scriptObserver.observe(mainScripts, config);
 
-let Metrics = null;
-
-window.onerror = function (msg, url, line, ...err) {
-    console.error("Caught Critical error from: " + url + ":" + line + " message: " + msg, ...err);
-    if(Metrics) {
-        Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "uncaught", "main.js");
-    }
-    return true; // same as preventDefault
-};
-
-window.addEventListener("unhandledrejection", function (event){
-    console.error("Caught unhandledrejection from: ", event);
-    if(Metrics) {
-        Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "unhandled", "rejection");
-    }
-    return true; // same as preventDefault
-});
-
 define(function (require) {
 
 
     // Load compatibility shims--these need to load early, be careful moving this
     // Event dispatcher must be loaded before worker comm https://github.com/phcode-dev/phoenix/pull/678
     require(["utils/Metrics", "utils/Compatibility", "utils/EventDispatcher"], function () {
-        Metrics = require("utils/Metrics");
+        window.Metrics = require("utils/Metrics");
         // Load the brackets module. This is a self-running module that loads and runs the entire application.
         try{
             require(["brackets"]);
         } catch (e) {
             console.error('Critical error when loading brackets. Trying to reload again.');
-            if(Metrics) {
-                Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "loadErr", "reload");
+            if(window.Metrics) {
+                window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, "loadErr", "reload");
             }
             window.location.reload();
         }

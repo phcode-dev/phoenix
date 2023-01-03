@@ -7,6 +7,7 @@ Thumbs.db
 /node_modules
 /npm-debug.log
 /src/cacheManifest.json
+/src/loggerConfig.js
 
 # ignore node_modules inside src
 /src/node_modules

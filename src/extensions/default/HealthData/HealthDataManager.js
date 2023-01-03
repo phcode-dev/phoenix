@@ -45,6 +45,7 @@ define(function (require, exports, module) {
     prefs.on("change", "healthDataTracking", function () {
         let healthDataDisabled = !prefs.get("healthDataTracking");
         Metrics.setDisabled(healthDataDisabled);
+        window.loggingOptions.healthDataDisabled = healthDataDisabled;
     });
 
     AppInit.appReady(function () {
