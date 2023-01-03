@@ -57,18 +57,25 @@ define(function (require, exports, module) {
         }, 3000);
     }
 
-    function _showReloadForUpdateDialog() {
+    function _cacheUpdatedCB(err) {
+        if(err) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache", "errorRefresh");
+            return;
+        }
         setTimeout(()=>{
-            if(window.Phoenix.updatePendingReload){
+            if(window.Phoenix.cache.showUpdateDialogue){
                 Dialogs.showModalDialog(
                     DefaultDialogs.DIALOG_ID_INFO,
                     Strings.UPDATE_AVAILABLE_TITLE,
                     Strings.UPDATE_RELOAD_APP
                 );
-                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "updateDlg",
-                    window.Phoenix.updatePendingReloadReason || "shown");
+                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "updateDlg", "shown");
             }
         }, 5000);
+        Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache",
+            `${window.Phoenix.cache.updatePendingReloadReason}.done`);
+        Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache", `updateCount`,
+            window.Phoenix.cache.updatedFilesCount||0);
     }
 
     async function _readMarkdownTextFile() {
@@ -93,12 +100,13 @@ define(function (require, exports, module) {
                     console.error("Error while showing new feature markdown on update", e);
                 });
         }
-        _showReloadForUpdateDialog();
     }
 
     exports.init = function () {
         if(!Phoenix.firstBoot && !window.testEnvironment){
             _showNewUpdatesIfPresent();
         }
+        Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache", "doRefresh");
+        window.refreshServiceWorkerCache(_cacheUpdatedCB);
     };
 });

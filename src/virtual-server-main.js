@@ -143,12 +143,13 @@ workbox.routing.registerRoute(
 );
 
 // cache and offline access route
-function _clearCache() {
+function _clearCache(event) {
     caches.open(CACHE_NAME_EVERYTHING).then((cache) => {
         cache.keys().then((keys) => {
             keys.forEach((request, index, array) => {
                 cache.delete(request);
             });
+            event.ports[0].postMessage({updatedFilesCount: keys.length});
         });
     });
 }
@@ -281,7 +282,7 @@ addEventListener('message', (event) => {
             self._debugSWLivePreviewLogs = event.data.logLivePreview;
             self.__WB_DISABLE_DEV_LOGS = Config.debug && _debugSWCacheLogs;
             event.ports[0].postMessage({baseURL}); break;
-        case 'CLEAR_CACHE': _clearCache(); break;
+        case 'CLEAR_CACHE': _clearCache(event); break;
         case 'REFRESH_CACHE': _refreshCache(event); break;
         case 'setInstrumentedURLs': self.Serve.setInstrumentedURLs(event); return true;
         default:
