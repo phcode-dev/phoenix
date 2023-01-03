@@ -4,5 +4,6 @@
     "coreAnalyticsID"            : "phoenix",
     "coreAnalyticsAppName"       : "phoenix-stage",
     "environment"                : "stage",
-    "buildtype"                  : "staging"
+    "buildtype"                  : "staging",
+    "bugsnagEnv"                 : "staging"
 }

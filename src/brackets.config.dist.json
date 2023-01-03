@@ -4,5 +4,6 @@
     "coreAnalyticsID"         : "phoenix",
     "coreAnalyticsAppName"    : "phoenix-prod",
     "environment"             : "production",
-    "buildtype"               : "production"
+    "buildtype"               : "production",
+    "bugsnagEnv"              : "production"
 }
