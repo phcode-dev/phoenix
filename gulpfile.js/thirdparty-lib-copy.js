@@ -83,6 +83,10 @@ let copyThirdPartyLibs = series(
     // lessjs
     copyFiles.bind(copyFiles, ['node_modules/less/dist/less.min.js', 'node_modules/less/dist/less.min.js.map'],
         'src/thirdparty'),
+    // bugsnag
+    copyFiles.bind(copyFiles, ['node_modules/@bugsnag/browser/dist/bugsnag.min.js',
+        'node_modules/@bugsnag/browser/dist/bugsnag.min.js.map'], 'src/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/@bugsnag/browser/LICENSE.txt', 'bugsnag'),
     // tern js
     copyFiles.bind(copyFiles, ['node_modules/tern/defs/**/*'], 'src/thirdparty/tern/defs'),
     copyFiles.bind(copyFiles, ['node_modules/tern/lib/**/*'], 'src/thirdparty/tern/lib'),
