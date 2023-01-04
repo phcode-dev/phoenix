@@ -46,6 +46,30 @@ require.config({
     }
 });
 
+window.logger = {
+    error: console.error,
+    warn: console.warn,
+    reportError: function (error, message) {
+        console.error(error, message);
+    },
+    leaveTrail: function (message) {
+        console.log("[Trail] : ", message);
+    },
+
+    loggingOptions: {
+        LOCAL_STORAGE_KEYS: {
+            LOG_LIVE_PREVIEW: "logLivePreview"
+        },
+        healthDataDisabled: false,
+        logLivePreview: false // logLivePreview will be setup below
+    },
+    livePreview: {
+        log: function (...args) {
+            console.log(...args);
+        }
+    }
+};
+
 const EXTRACT_TEST_ASSETS_KEY = 'EXTRACT_TEST_ASSETS_KEY';
 const EXTRACT = 'EXTRACT';
 const DONT_EXTRACT = 'DONT_EXTRACT';
