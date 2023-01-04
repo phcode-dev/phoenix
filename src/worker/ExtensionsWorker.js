@@ -67,7 +67,7 @@ define(function (require, exports, module) {
         WorkerComm = require("worker/WorkerComm");
 
     const _ExtensionsWorker = new Worker(
-        `${Phoenix.baseURL}worker/extensions-worker-thread.js?debug=${window.logToConsolePref === 'true'}`);
+        `${Phoenix.baseURL}worker/extensions-worker-thread.js?debug=${window.logger.logToConsolePref === 'true'}`);
 
     if(!_ExtensionsWorker){
         console.error("Could not load Extensions worker! Some extensions may not work as expected.");

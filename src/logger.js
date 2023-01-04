@@ -18,9 +18,39 @@
  *
  */
 
-/*globals Bugsnag*/
+/*globals Bugsnag, logger*/
 
 import AppConfig from "./loggerConfig.js";
+
+const logger = {
+    error: console.error,
+    warn: console.warn,
+    /**
+     * By default all uncaught exceptions and promise rejections are sent to logger utility. But in some cases
+     * you may want to sent handled errors too if it is critical. use this function to report those
+     * @param error
+     */
+    reportError: function (error) {
+        Bugsnag.notify(error);
+    },
+
+    loggingOptions: {
+        LOCAL_STORAGE_KEYS: {
+            LOG_LIVE_PREVIEW: "logLivePreview"
+        },
+        healthDataDisabled: false,
+        logLivePreview: false // logLivePreview will be setup below
+    },
+    livePreview: {
+        log: function (...args) {
+            if(logger.loggingOptions.logLivePreview){
+                logger.log(...args);
+            }
+        }
+    }
+    // other API setup below
+};
+window.logger = logger;
 
 // logger setup
 function swallowLogs() {
@@ -29,6 +59,10 @@ function swallowLogs() {
 const savedLoggingFn = console.log;
 const savedInfoFn = console.info;
 
+/**
+ * interceptors for console.log and info
+ * @returns {boolean}
+ */
 window.setupLogging = function () {
     const urlParams = new URLSearchParams(window.location.search || "");
     const logToConsoleOverride = urlParams.get('logToConsole');
@@ -38,12 +72,15 @@ window.setupLogging = function () {
         || (logToConsolePref && logToConsolePref.toLowerCase() === 'true' && !logToConsoleOverride)){
         console.log= savedLoggingFn;
         console.info= savedInfoFn;
-        window.logToConsolePref = 'true';
+        logger.log = console.log;
+        logger.info = console.info;
+        logger.logToConsolePref = 'true';
         window.debugMode = true;
         return true;
     } else {
         console.info = console.log = swallowLogs;
-        window.logToConsolePref = 'false';
+        logger.info = logger.log = swallowLogs;
+        logger.logToConsolePref = 'false';
         window.debugMode = false;
         return false;
     }
@@ -63,40 +100,20 @@ window.toggleLoggingKey = function(key) {
     }
 };
 
-window.loggingOptions = {
-    LOCAL_STORAGE_KEYS: {
-        LOG_LIVE_PREVIEW: "logLivePreview"
-    },
-    livePreview: {
-        log: function (...args) {
-            if(window.loggingOptions.logLivePreview){
-                console.log(...args);
-            }
-        }
-    },
-    healthDataDisabled: false,
-    /**
-     * By default all uncaught exceptions and promise rejections are sent to logger utility. But in some cases
-     * you may want to sent handled errors too if it is critical. use this function to report those
-     * @param error
-     */
-    reportError: function (error) {
-        Bugsnag.notify(error);
-    }
-};
-window.loggingOptions.logLivePreview = window.isLoggingEnabled(
-    window.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW);
+
+logger.loggingOptions.logLivePreview = window.isLoggingEnabled(
+    logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW);
 
 function onError(event) {
     // for mroe info https://docs.bugsnag.com/platforms/javascript/customizing-error-reports
     // change health logger popup string before changing the below line to anything other than "Caught Critical error"
-    let reportedStatus = window.loggingOptions.healthDataDisabled? "Not Reported as health data disabled." : "Reported";
+    let reportedStatus = logger.loggingOptions.healthDataDisabled? "Not Reported as health data disabled." : "Reported";
 
     console.error(`Caught Critical error, ${reportedStatus}: `, event);
     if(window.Metrics) {
         window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, "uncaught", "logger");
     }
-    if(window.loggingOptions.healthDataDisabled){
+    if(logger.loggingOptions.healthDataDisabled){
         // don't log anything as user disabled health tracking
         return false;
     }

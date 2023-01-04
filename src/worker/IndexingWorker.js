@@ -70,7 +70,7 @@ define(function (require, exports, module) {
         WorkerComm = require("worker/WorkerComm");
 
     const _FileIndexingWorker = new Worker(
-        `${Phoenix.baseURL}worker/file-Indexing-Worker-thread.js?debug=${window.logToConsolePref === 'true'}`);
+        `${Phoenix.baseURL}worker/file-Indexing-Worker-thread.js?debug=${window.logger.logToConsolePref === 'true'}`);
 
     if(!_FileIndexingWorker){
         console.error("Could not load find in files worker! Search will be disabled.");
