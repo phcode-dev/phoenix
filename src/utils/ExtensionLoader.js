@@ -31,7 +31,7 @@
  *          extension root.
  */
 // jshint ignore: start
-/*global fs, Phoenix*/
+/*global logger, Phoenix*/
 /*eslint-env es6*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
@@ -233,14 +233,15 @@ define(function (require, exports, module) {
      *              (Note: if extension contains a JS syntax error, promise is resolved not rejected).
      */
     function loadExtensionModule(name, config, entryPoint) {
-        var extensionConfig = {
+        let extensionConfig = {
             context: name,
             baseUrl: config.baseUrl,
             paths: globalPaths,
             locale: brackets.getLocale(),
             waitSeconds: EXTENSION_LOAD_TIMOUT_SECONDS
         };
-
+        const isDefaultExtensionModule =( extensionConfig.baseUrl
+            && extensionConfig.baseUrl.startsWith(`${location.href}extensions/default/`));
         // Read optional requirejs-config.json
         return _mergeConfig(extensionConfig).then(function (mergedConfig) {
             // Create new RequireJS context and load extension entry point
@@ -265,6 +266,7 @@ define(function (require, exports, module) {
                 } catch (err) {
                     // Synchronous error while initializing extension
                     console.error("[Extension] Error -- error thrown during initExtension for " + name + ": " + err);
+                    logger.reportError(err);
                     return new $.Deferred().reject(err).promise();
                 }
 
@@ -275,10 +277,15 @@ define(function (require, exports, module) {
                     // promise. Currently, the promise is wrapped via Async.withTimeout(),
                     // so the call is safe as-is.
                     initPromise.fail(function (err) {
+                        let errorMessage = "[Extension] Error -- timeout during initExtension for " + name;
                         if (err === Async.ERROR_TIMEOUT) {
-                            console.error("[Extension] Error -- timeout during initExtension for " + name);
+                            console.error(errorMessage);
                         } else {
-                            console.error("[Extension] Error -- failed initExtension for " + name + (err ? ": " + err : ""));
+                            errorMessage = "[Extension] Error -- failed initExtension for " + name;
+                            console.error(errorMessage + (err ? ": " + err : ""));
+                        }
+                        if(isDefaultExtensionModule){
+                            logger.reportError(err, errorMessage);
                         }
                     });
 
@@ -293,6 +300,9 @@ define(function (require, exports, module) {
                 additionalInfo = "Module does not exist: " + err.originalError.target.src;
             }
             console.error("[Extension] failed to load " + config.baseUrl + " - " + additionalInfo);
+            if(isDefaultExtensionModule){
+                logger.reportError(err, "[Extension] failed to load " + config.baseUrl + " - " + additionalInfo);
+            }
 
             if (err.requireType === "define") {
                 // This type has a useful stack (exception thrown by ext code or info on bad getModule() call)
@@ -478,7 +488,7 @@ define(function (require, exports, module) {
 
         $.get(extensionsToLoadURL).done(function (extensionNames) {
             Async.doInParallel(extensionNames, function (extensionName) {
-                console.log("loading default extension: ", extensionName);
+                logger.leaveTrail("loading default extension: " + extensionName);
                 var extConfig = {
                     baseUrl: baseUrl + extensionPath + "/" + extensionName
                 };

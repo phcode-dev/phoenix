@@ -18,6 +18,7 @@
  * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  *
  */
+/*global logger*/
 
 define(function (require, exports, module) {
 
@@ -579,6 +580,7 @@ define(function (require, exports, module) {
 
             $menuItem.on("click", function () {
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
+                logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
                 menuItem._command.execute();
             });
 

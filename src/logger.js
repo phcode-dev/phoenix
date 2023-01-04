@@ -22,16 +22,46 @@
 
 import AppConfig from "./loggerConfig.js";
 
+const isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const urlParams = new URLSearchParams(window.location.search || "");
+window.testEnvironment = (urlParams.get('testEnvironment') === 'true');
+const isBugsnagEnabled = (!window.testEnvironment && !isLocalHost);
+
+class CustomBugSnagError extends Error {
+    constructor(message, err){
+        super(message + (err.message || ""));
+        this.name = (err.constructor && err.constructor.name) || this.constructor.name;
+        this.stack= message +" : "+ err.stack;
+    }
+}
+
 const logger = {
     error: console.error,
     warn: console.warn,
     /**
      * By default all uncaught exceptions and promise rejections are sent to logger utility. But in some cases
      * you may want to sent handled errors too if it is critical. use this function to report those
-     * @param error
+     * @param {Error} error
+     * @param {string} [message] optional message
      */
-    reportError: function (error) {
-        Bugsnag.notify(error);
+    reportError: function (error, message) {
+        if(isBugsnagEnabled) {
+            Bugsnag.notify(message?
+                new CustomBugSnagError(message, error)
+                :error);
+        }
+    },
+
+    /**
+     * This will help to provide additional context to error reporting. The trail will serve as a series of
+     * events that happened before an error and will help to backtrack the error.
+     * @param {string} message
+     */
+    leaveTrail: function (message) {
+        console.log("[Trail] : ", message);
+        if(isBugsnagEnabled) {
+            Bugsnag.leaveBreadcrumb(message);
+        }
     },
 
     loggingOptions: {
@@ -64,10 +94,8 @@ const savedInfoFn = console.info;
  * @returns {boolean}
  */
 window.setupLogging = function () {
-    const urlParams = new URLSearchParams(window.location.search || "");
     const logToConsoleOverride = urlParams.get('logToConsole');
     const logToConsolePref = localStorage.getItem("logToConsole");
-    window.testEnvironment = (urlParams.get('testEnvironment') === 'true');
     if((logToConsoleOverride && logToConsoleOverride.toLowerCase() === 'true')
         || (logToConsolePref && logToConsolePref.toLowerCase() === 'true' && !logToConsoleOverride)){
         console.log= savedLoggingFn;
@@ -119,9 +147,7 @@ function onError(event) {
     }
 }
 
-let isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-
-if(!window.testEnvironment && !isLocalHost) {
+if(isBugsnagEnabled) {
     Bugsnag.start({
         apiKey: 'a899c29d251bfdf30c3222016a2a7ea7',
         appType: window.__TAURI__ ? "tauri" : "browser",
@@ -132,9 +158,11 @@ if(!window.testEnvironment && !isLocalHost) {
         releaseStage: window.__TAURI__ ? "tauri-" + AppConfig.config.bugsnagEnv : AppConfig.config.bugsnagEnv,
         // https://docs.bugsnag.com/platforms/javascript/#logging-breadcrumbs
         // breadcrumbs is disabled as it seems a bit intrusive in Pheonix even-though it might help with debugging.
-        enabledBreadcrumbTypes: [],
+        // only manual explicit privacy ready breadcrumbs are allowed
+        enabledBreadcrumbTypes: ['manual'],
         // https://docs.bugsnag.com/platforms/javascript/configuration-options/#maxevents
         maxEvents: 10,
+        maxBreadcrumbs: 50,
         onError
     });
 } else {
