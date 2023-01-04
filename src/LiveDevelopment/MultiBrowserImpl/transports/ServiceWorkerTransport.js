@@ -21,7 +21,7 @@
 
 // This transport provides a connection between Brackets and a live browser preview via service worker
 // as the intermediary. We also rely on an injected script in the browser for the other end of the transport.
-
+/*globals logger*/
 define(function (require, exports, module) {
 
 
@@ -69,7 +69,7 @@ define(function (require, exports, module) {
     function getRemoteScript() {
         return "\n" +
             `window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${BROADCAST_CHANNEL_ID}";\n` +
-            `window.LIVE_PREVIEW_DEBIG_ENABLED = ${window.loggingOptions.logLivePreview};\n` +
+            `window.LIVE_PREVIEW_DEBIG_ENABLED = ${logger.loggingOptions.logLivePreview};\n` +
             ServiceWorkerTransportRemote +
             "\n";
     }
@@ -89,7 +89,7 @@ define(function (require, exports, module) {
             });
         });
         _broadcastChannel.onmessage = (event) => {
-            window.loggingOptions.livePreview.log(
+            window.logger.livePreview.log(
                 "Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
             const type = event.data.type;
             switch (type) {

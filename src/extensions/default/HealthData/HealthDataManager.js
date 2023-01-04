@@ -24,7 +24,7 @@
  *
  */
 
-/*global */
+/*global logger*/
 define(function (require, exports, module) {
     var AppInit             = brackets.getModule("utils/AppInit"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
@@ -45,7 +45,7 @@ define(function (require, exports, module) {
     prefs.on("change", "healthDataTracking", function () {
         let healthDataDisabled = !prefs.get("healthDataTracking");
         Metrics.setDisabled(healthDataDisabled);
-        window.loggingOptions.healthDataDisabled = healthDataDisabled;
+        logger.loggingOptions.healthDataDisabled = healthDataDisabled;
     });
 
     AppInit.appReady(function () {

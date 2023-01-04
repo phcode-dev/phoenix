@@ -551,7 +551,7 @@ define(function (require, exports, module) {
                     })
                     .on("ConnectionClose.livedev", function (event, {clientId}) {
                         exports.trigger(EVENT_CONNECTION_CLOSE, {clientId});
-                        window.loggingOptions.livePreview.log(
+                        window.logger.livePreview.log(
                             "Live Preview: Phoenix received ConnectionClose, live preview left: ",
                             _protocol.getConnectionIds().length, clientId);
                     })

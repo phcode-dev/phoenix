@@ -19,7 +19,7 @@
  *
  */
 
-/*globals path*/
+/*globals path, logger*/
 /*jslint regexp: true */
 
 define(function (require, exports, module) {
@@ -79,7 +79,7 @@ define(function (require, exports, module) {
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
 
     const LOG_TO_CONSOLE_KEY = "logToConsole",
-        LOG_LIVE_PREVIEW_KEY = window.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW;
+        LOG_LIVE_PREVIEW_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW;
 
     // define a preference to turn off opening preferences in split-view.
     var prefs = PreferencesManager.getExtensionPrefs("preferencesView");
@@ -696,8 +696,8 @@ define(function (require, exports, module) {
         const isLogging = window.setupLogging();
         CommandManager.get(DEBUG_ENABLE_LOGGING).setChecked(isLogging);
         CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setEnabled(isLogging);
-        window.loggingOptions.logLivePreview = window.isLoggingEnabled(LOG_LIVE_PREVIEW_KEY);
-        CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setChecked(window.loggingOptions.logLivePreview);
+        logger.loggingOptions.logLivePreview = window.isLoggingEnabled(LOG_LIVE_PREVIEW_KEY);
+        CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setChecked(logger.loggingOptions.logLivePreview);
     }
 
     function _handleLogging() {
