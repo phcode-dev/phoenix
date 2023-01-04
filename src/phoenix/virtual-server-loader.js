@@ -18,6 +18,7 @@
 
 // jshint ignore: start
 /*eslint no-console: 0*/
+/*global logger*/
 /*eslint strict: ["error", "global"]*/
 
 
@@ -76,7 +77,7 @@ async function shouldUpdate() {
  * Register Phoenix PWA and nohost web server service worker, passing `route` or other options.
  */
 if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
-    console.log("Service worker loader: Loading  from page...", window.location.href);
+    logger.leaveTrail("Service worker loader: Loading  from page..." + window.location.href);
     // We cannot realistically change the url of the service worker without causing major problems in service worker
     // load. We will have to unregister and load a new service worker and there is no way to stop the already running
     // service worker. As such, the below debug=false is unused, but kept there for legacy purposes to not change
@@ -106,11 +107,11 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
         }
         const lastClearedVersion = window.localStorage.getItem(cacheKey);
         if(lastClearedVersion !== newCacheVersion) {
-            console.log(`Service worker loader: triggering CLEAR_CACHE for live preview service worker upgrade`);
+            logger.leaveTrail(`Service worker loader: triggering CLEAR_CACHE for live preview service worker upgrade`);
             wb.messageSW({
                 type: 'CLEAR_CACHE'
             }).then(({updatedFilesCount})=>{
-                console.log(`Service worker loader: clear cache updatedFilesCount: `, updatedFilesCount);
+                logger.leaveTrail(`Service worker loader: clear cache updatedFilesCount: `+ updatedFilesCount);
                 window.Phoenix.cache.updatePendingReloadReason = "clearCache";
                 window.Phoenix.cache.showUpdateDialogue = true;
                 window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
@@ -132,15 +133,16 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
             setTimeout(()=>{
                 window.refreshServiceWorkerCache(doneCB);
             }, 100);
+            return;
         }
         if(_forceClearCacheIfNeeded(doneCB)){
             return;
         }
-        console.log(`Service worker loader: triggering REFRESH_CACHE`);
+        logger.leaveTrail(`Service worker loader: triggering REFRESH_CACHE`);
         wb.messageSW({
             type: 'REFRESH_CACHE'
         }).then(({updatedFilesCount})=>{
-            console.log(`Service worker loader: refresh cache updatedFilesCount: `, updatedFilesCount);
+            logger.leaveTrail(`Service worker loader: refresh cache updatedFilesCount: `+ updatedFilesCount);
             window.Phoenix.cache.updatePendingReloadReason = "refreshCache";
             window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
             doneCB();
@@ -163,14 +165,15 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
             debugMode: window.logger.logToConsolePref === 'true',
             logLivePreview: window.logger.loggingOptions.logLivePreview
         }).then((config)=>{
-            console.log(`Service worker loader: Server ready! Service worker inited at base url: ${config.baseURL}`);
+            logger.leaveTrail(
+                `Service worker loader: Server ready! Service worker inited at base url: ${config.baseURL}`);
         }).catch(err=>{
             console.error("Service worker loader: Error while init of service worker", err);
         });
     }
 
     function serverInstall() {
-        console.log('Service worker loader: Web server Worker installed.');
+        logger.leaveTrail('Service worker loader: Web server Worker installed.');
     }
 
     const showSkipWaitingPrompt = async (event) => {
@@ -197,7 +200,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     // Add an event listener to detect when the registered
     // service worker has installed but is waiting to activate.
     wb.addEventListener('waiting', (event) => {
-        console.log("Service worker loader: A new service worker is pending load. Trying to update the worker now.");
+        logger.leaveTrail("Service worker loader: A new service worker is pending load. Trying to update worker now.");
         window.Phoenix.cache.updatePendingReloadReason = "skipWait";
         showSkipWaitingPrompt(event);
     });

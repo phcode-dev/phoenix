@@ -19,7 +19,7 @@
  *
  */
 
-/*globals path*/
+/*globals path, logger*/
 /*jslint regexp: true */
 /*unittests: KeyBindingManager */
 
@@ -840,6 +840,7 @@ define(function (require, exports, module) {
         if (_enabled && _keyMap[key]) {
             Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "shortcut", key);
             Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "command", _keyMap[key].commandID);
+            logger.leaveTrail("Keyboard shortcut: " + key + "command" + _keyMap[key].commandID);
             let promise = CommandManager.execute(_keyMap[key].commandID);
             if(UN_SWALLOWED_EVENTS.includes(_keyMap[key].commandID)){
                 return (promise.state() !== "rejected");
