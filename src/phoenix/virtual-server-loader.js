@@ -40,7 +40,8 @@ if(!window.logger){
     // logger, the variable was not found causing exceptions below and cache not being refreshed.
     console.error("Could not find logger.");
     window.logger = {
-        leaveTrail: console.log
+        leaveTrail: console.log,
+        loggingOptions: {}
     };
 }
 
