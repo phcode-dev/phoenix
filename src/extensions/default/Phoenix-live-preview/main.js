@@ -349,7 +349,7 @@ define(function (require, exports, module) {
             return;
         }
         let previewDetails = await utils.getPreviewDetails();
-        if(previewDetails.fullPath){
+        if(previewDetails.fullPath && ProjectManager.isWithinProject(previewDetails.fullPath)){
             FileViewController.openAndSelectDocument(previewDetails.fullPath, FileViewController.PROJECT_MANAGER)
                 .done(()=>{
                     LiveDevelopment.closeLivePreview();
