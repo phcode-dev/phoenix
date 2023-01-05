@@ -108,9 +108,9 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
      * @return {boolean}
      * @private
      */
-    function _forceClearCacheIfNeeded(doneCB) {
+    function _forceClearCacheIfNeeded() {
         const cacheKey = "browserCacheVersionKey";
-        const newCacheVersion = "V1"; // just increment this number to V2, v3 etc. to force clear the cached content.
+        const newCacheVersion = "V2"; // just increment this number to V2, v3 etc. to force clear the cached content.
         if(window.Phoenix.firstBoot){
             localStorage.setItem(cacheKey, newCacheVersion);
             return false;
@@ -126,10 +126,8 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
                 window.Phoenix.cache.showUpdateDialogue = true;
                 window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
                 localStorage.setItem(cacheKey, newCacheVersion);
-                doneCB();
             }).catch(err=>{
                 console.error("Service worker loader: Error while triggering clear cache", err);
-                doneCB("CLEAR_CACHE Error");
             });
             return true;
         }
@@ -145,9 +143,6 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
             }, 100);
             return;
         }
-        if(_forceClearCacheIfNeeded(doneCB)){
-            return;
-        }
         logger.leaveTrail(`Service worker loader: triggering REFRESH_CACHE`);
         wb.messageSW({
             type: 'REFRESH_CACHE'
@@ -155,10 +150,14 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
             logger.leaveTrail(`Service worker loader: refresh cache updatedFilesCount: `+ updatedFilesCount);
             window.Phoenix.cache.updatePendingReloadReason = "refreshCache";
             window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
-            doneCB();
+            if(doneCB) {
+                doneCB();
+            }
         }).catch(err=>{
             console.error("Service worker loader: Error while triggering refresh cache", err);
-            doneCB("REFRESH_CACHE Error");
+            if(doneCB) {
+                doneCB("REFRESH_CACHE Error");
+            }
         });
     };
 
@@ -170,6 +169,7 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     function serverReady() {
         console.log('Service worker loader: Server ready.');
         isServerReady = true;
+        _forceClearCacheIfNeeded();
         wb.messageSW({
             type: 'INIT_PHOENIX_CONFIG',
             debugMode: window.logger.logToConsolePref === 'true',
