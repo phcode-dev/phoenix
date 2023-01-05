@@ -36,7 +36,7 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global define, brackets */
+/*global Phoenix, logger*/
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
@@ -57,12 +57,12 @@ define(function (require, exports, module) {
         LiveDevelopment = brackets.getModule("LiveDevelopment/main"),
         utils = require('utils');
 
-    const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
-
-
-    // Templates
-    let panelHTML       = require("text!panel.html");
-    ExtensionUtils.loadStyleSheet(module, "live-preview.css");
+    const LIVE_PREVIEW_PANEL_ID = "live-preview-panel",
+        NAVIGATOR_REDIRECT_PAGE = "REDIRECT_PAGE",
+        LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID = `${Phoenix.PHOENIX_INSTANCE_ID}-nav-live-preview`,
+        _livePreviewNavigationChannel = new BroadcastChannel(LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID),
+        livePreviewTabs = new Map();
+    window.livePreviewTabs = livePreviewTabs;
 
     // jQuery objects
     let $icon,
@@ -73,10 +73,40 @@ define(function (require, exports, module) {
         $livePreviewPopBtn,
         $reloadBtn;
 
+    _livePreviewNavigationChannel.onmessage = (event) => {
+        const type = event.data.type;
+        switch (type) {
+        case 'TAB_ONLINE': livePreviewTabs.set(event.data.clientID, {
+            lastSeen: new Date(),
+            URL: event.data.URL
+        }); break;
+        default: console.error("Live Preview Navigation Channel: received unknown message:", event);
+        }
+    };
+
+    // If we didn't receive heartbeat message from a tab for 5 seconds, we assume tab closed
+    const TAB_HEARTBEAT_TIMEOUT = 5000; // in millis secs
+    setInterval(()=>{
+        let endTime = new Date();
+        for(let tab of livePreviewTabs.keys()){
+            let timeDiff = endTime - livePreviewTabs.get(tab).lastSeen; // in ms
+            if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
+                livePreviewTabs.delete(tab);
+            }
+        }
+        if(livePreviewTabs.size === 0){
+            _startOrStopLivePreviewIfRequired();
+        }
+    }, 1000);
+
+
+    // Templates
+    let panelHTML       = require("text!panel.html");
+    ExtensionUtils.loadStyleSheet(module, "live-preview.css");
     // Other vars
     let panel,
         urlPinned,
-        tab = null;
+        currentLivePreviewURL = "";
 
     function _setPanelVisibility(isVisible) {
         if (isVisible) {
@@ -97,7 +127,7 @@ define(function (require, exports, module) {
         } else if(visible && explicitClickOnLPIcon) {
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
-        } else if(!visible && LiveDevelopment.getConnectionIds().length === 0 && (!tab || tab.closed)) {
+        } else if(!visible && livePreviewTabs.size === 0) {
             LiveDevelopment.closeLivePreview();
         }
     }
@@ -134,11 +164,28 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
     }
 
-    function _popoutLivePreview() {
-        if(!tab || tab.closed){
-            tab = open();
-            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
+    function _getTabNavigationURL(url) {
+        let details = LiveDevelopment.getLivePreviewDetails(),
+            openURL = url;
+        if(details.URL !== url) {
+            openURL = `${location.href}LiveDevelopment/pageLoader.html?`
+                +`broadcastChannel=${LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID}&URL=${url}`;
         }
+        return openURL;
+    }
+
+    function _redirectAllTabs(newURL) {
+        const openURL = _getTabNavigationURL(newURL);
+        _livePreviewNavigationChannel.postMessage({
+            type: NAVIGATOR_REDIRECT_PAGE,
+            URL: openURL
+        });
+    }
+
+    function _popoutLivePreview() {
+        const openURL = _getTabNavigationURL(currentLivePreviewURL);
+        open(openURL, "livePreview", "noopener,noreferrer");
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
         _loadPreview(true);
     }
 
@@ -193,6 +240,7 @@ define(function (require, exports, module) {
     }
 
     function _renderMarkdown(fullPath, newSrc) {
+        currentLivePreviewURL = newSrc;
         console.log(`Markdown Static server _updateInstrumentedURLSInWorker: `, [fullPath], newSrc);
         window.messageSW({
             type: 'setInstrumentedURLs',
@@ -200,11 +248,11 @@ define(function (require, exports, module) {
             paths: [fullPath]
         }).then((status)=>{
             console.log(`Markdown server received msg from Service worker: setInstrumentedURLs done: `, status);
-            $iframe.attr('srcdoc', null);
-            $iframe.attr('src', newSrc);
-            if(tab && !tab.closed){
-                tab.location = newSrc;
+            if(panel.isVisible()){
+                $iframe.attr('srcdoc', null);
+                $iframe.attr('src', newSrc);
             }
+            _redirectAllTabs(newSrc);
         }).catch(err=>{
             console.error(`Markdown error while from sw rendering failed for ${fullPath}: `, err);
         });
@@ -216,12 +264,12 @@ define(function (require, exports, module) {
             _renderMarkdown(fullPath, newSrc);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "markdown");
         } else {
-            $iframe.attr('srcdoc', null);
-            $iframe.attr('src', newSrc);
-            $iframe[0].src = newSrc;
-            if(tab && !tab.closed){
-                tab.location = newSrc;
+            currentLivePreviewURL = newSrc;
+            if(panel.isVisible()){
+                $iframe.attr('srcdoc', null);
+                $iframe.attr('src', newSrc);
             }
+            _redirectAllTabs(newSrc);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", utils.getExtension(fullPath));
         }
     }
@@ -244,7 +292,7 @@ define(function (require, exports, module) {
     }
 
     async function _loadPreview(force) {
-        if(panel.isVisible() || (tab && !tab.closed)){
+        if(panel.isVisible() || (livePreviewTabs.size > 0)){
             let saved = _saveScrollPositionsIfPossible();
             // panel-live-preview-title
             let previewDetails = await utils.getPreviewDetails();
@@ -297,9 +345,6 @@ define(function (require, exports, module) {
             _togglePinUrl();
         }
         $iframe[0].src = utils.getNoPreviewURL();
-        if(tab && !tab.closed){
-            tab.location = utils.getNoPreviewURL();
-        }
         if(!panel.isVisible()){
             return;
         }
@@ -322,7 +367,7 @@ define(function (require, exports, module) {
 
     function _activeDocChanged() {
         if(!LiveDevelopment.isActive() && !livePreviewEnabledOnProjectSwitch
-            && (panel.isVisible() || (tab && !tab.closed))) {
+            && (panel.isVisible() || (livePreviewTabs.size > 0))) {
             // we do this only once after project switch if live preview for a doc is not active.
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
@@ -386,10 +431,6 @@ define(function (require, exports, module) {
             }
         }, 1000);
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
-        LiveDevelopment.on(LiveDevelopment.EVENT_CONNECTION_CLOSE, function () {
-            // the connection close pool will take some time to settle
-            setTimeout(_startOrStopLivePreviewIfRequired, 15000);
-        });
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
     });
 });

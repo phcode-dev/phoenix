@@ -51,6 +51,7 @@ define(function (require, exports, module) {
         FileViewController    = require("project/FileViewController");
 
     const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = "phoenix_live_preview_scripts_instrumented_345Tt96G4.js";
+    const LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "pageLoaderWorker_345Tt96G4.js";
 
     /**
      * @private
@@ -397,4 +398,5 @@ define(function (require, exports, module) {
     exports.getConnectionIds = getConnectionIds;
     exports.closeAllConnections = closeAllConnections;
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
+    exports.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME;
 });
