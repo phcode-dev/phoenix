@@ -70,8 +70,8 @@ define(function (require, exports, module) {
         });
 
         afterAll(function () {
-            LiveDevMultiBrowser.close();
-            SpecRunnerUtils.closeTestWindow();
+            // LiveDevMultiBrowser.close();
+            // SpecRunnerUtils.closeTestWindow();
             testWindow = null;
             brackets = null;
             LiveDevMultiBrowser = null;
@@ -324,9 +324,8 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "simple1.html", 1000);
 
-            await awaits(300);
-
-            expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
+            await awaitsFor(()=> LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
+                "status active");
 
             let curDoc =  DocumentManager.getCurrentDocument();
 
@@ -363,9 +362,8 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "simple1.html", 1000);
 
-            await awaits(300);
-
-            expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
+            await awaitsFor(()=> LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
+                "status active");
 
             let curDoc =  DocumentManager.getCurrentDocument();
 
@@ -445,7 +443,8 @@ define(function (require, exports, module) {
                 "readme.md", 1000);
 
             await awaits(300);
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let iFrame = outerIFrame.contentDocument.getElementById("contentFrame");
             expect(iFrame.src.endsWith("readme.md")).toBeTrue();
 
             // check hrefs
@@ -478,7 +477,8 @@ define(function (require, exports, module) {
             pinURLBtn.click();
 
             await awaits(300);
-            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            iFrame = outerIFrame.contentDocument.getElementById("contentFrame");
             expect(iFrame.src.endsWith("sub/icon_chevron.png")).toBeTrue();
 
             await endPreviewSession();
@@ -491,14 +491,20 @@ define(function (require, exports, module) {
 
             await waitsForLiveDevelopmentToOpen();
             let editor = EditorManager.getActiveEditor();
+            editor.setCursorPos({ line: 0, ch: 0 });
             let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
             expect(highlights.length).toBe(0);
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
-            await awaits(300);
-            highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(1);
+            await awaitsFor(
+                function isHilighted() {
+                    highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
+                    return highlights.length === 1;
+                },
+                "hilighted",
+                2000
+            );
             expect(highlights[0].trackingElement.id).toBe("testId");
 
             await endPreviewSession();
@@ -570,12 +576,12 @@ define(function (require, exports, module) {
             await waitsForLiveDevelopmentToOpen();
             let editor = EditorManager.getActiveEditor();
 
-            await awaits(300);
+            await awaits(500);
             let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
             expect(highlights.length).toBe(0);
 
             iFrame.contentDocument.getElementById("testId2").click();
-            await awaits(300);
+            await awaits(500);
             highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
             expect(highlights.length).toBe(1);
             expect(highlights[0].trackingElement.id).toBe("testId2");
