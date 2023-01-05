@@ -91,8 +91,9 @@ if(!self.Serve){
 
             function serveInstrumentedFile(path) {
                 let allURLs = _getAllInstrumentedFullPaths();
-                if(!allURLs.includes(path)){
-                    self._debugLivePreviewLog("Service worker: cannot serve, no such instrumented file", path);
+                // html and htm files are always served by phoenix to prevent non instrumented transient content
+                if(!phoenixInstanceID ||
+                    (!allURLs.includes(path) && !path.endsWith("htm") && !path.endsWith("html"))){
                     return false;
                 }
                 self._debugLivePreviewLog("Service worker: serving instrumented file", path);

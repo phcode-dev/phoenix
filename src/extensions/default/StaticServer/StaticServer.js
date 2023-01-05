@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         marked = brackets.getModule('thirdparty/marked.min'),
         DocumentManager = brackets.getModule("document/DocumentManager"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        FileSystem = brackets.getModule("filesystem/FileSystem"),
         markdownHTMLTemplate = require("text!markdown.html");
 
     const _serverBroadcastChannel = new BroadcastChannel("virtual_server_broadcast");
@@ -293,6 +294,17 @@ define(function (require, exports, module) {
             };
         } else if (liveDocument && liveDocument.getResponseData) {
             response = liveDocument.getResponseData();
+        } else {
+            const file = FileSystem.getFileForPath(data.path);
+            DocumentManager.getDocumentText(file).done(function (docText) {
+                _serverBroadcastChannel.postMessage({
+                    type: 'REQUEST_RESPONSE',
+                    requestID, //pass along the requestID
+                    path,
+                    contents: docText
+                });
+            });
+            return;
         }
 
         _serverBroadcastChannel.postMessage({
