@@ -35,6 +35,15 @@
 
 import {Workbox} from 'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-window.prod.mjs';
 
+if(!logger){
+    // this will idealy never happen but since this file is always network first instead of cached, as we introduced
+    // logger, the variable was not found causing exceptions below and cache not being refreshed.
+    console.error("Could not find logger.");
+    window.logger = {
+        leaveTrail: console.log
+    };
+}
+
 function _getBaseURL() {
     let baseURL = window.location.href;
     if(location.href.indexOf( "?")>-1){
