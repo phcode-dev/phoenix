@@ -164,11 +164,21 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
     }
 
+    function _stripURL(url) {
+        if(url.includes("?")){
+            url = url.split("?")[0];
+        }
+        if(url.includes("#")){
+            url = url.split("#")[0];
+        }
+        return url;
+    }
+
     function _getTabNavigationURL(url) {
         let details = LiveDevelopment.getLivePreviewDetails(),
             openURL = url;
         if(details.URL !== url) {
-            openURL = `${location.href}LiveDevelopment/pageLoader.html?`
+            openURL = `${_stripURL(location.href)}LiveDevelopment/pageLoader.html?`
                 +`broadcastChannel=${LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID}&URL=${url}`;
         }
         return openURL;
