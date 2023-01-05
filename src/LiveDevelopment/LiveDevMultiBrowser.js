@@ -88,7 +88,8 @@ define(function (require, exports, module) {
         LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
         ServiceWorkerTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/ServiceWorkerTransport"),
         LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
-        Metrics              = require("utils/Metrics");
+        Metrics              = require("utils/Metrics"),
+        PageLoaderWorkerScript = require("text!LiveDevelopment/BrowserScripts/pageLoaderWorker.js");
 
     // Documents
     const LiveCSSDocument      = require("LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument"),
@@ -501,6 +502,9 @@ define(function (require, exports, module) {
         _server.addVirtualContentAtPath(
             `${_liveDocument.doc.file.parentPath}${LiveDevProtocol.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME}`,
             _protocol.getRemoteScriptContents());
+        _server.addVirtualContentAtPath(
+            `${_liveDocument.doc.file.parentPath}${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}`,
+            PageLoaderWorkerScript);
     }
 
 
@@ -902,6 +906,13 @@ define(function (require, exports, module) {
         return _protocol.getConnectionIds();
     }
 
+    function getLivePreviewDetails() {
+        return {
+            liveDocument: _liveDocument,
+            URL: _liveDocument ? _resolveUrl(_liveDocument.doc.file.fullPath) : null
+        };
+    }
+
     EventDispatcher.makeEventDispatcher(exports);
 
     // For unit testing
@@ -927,6 +938,7 @@ define(function (require, exports, module) {
     exports.setLivePreviewPinned= setLivePreviewPinned;
     exports.getServerBaseUrl    = getServerBaseUrl;
     exports.getCurrentLiveDoc   = getCurrentLiveDoc;
+    exports.getLivePreviewDetails = getLivePreviewDetails;
     exports.getCurrentProjectServerConfig = getCurrentProjectServerConfig;
     exports.getConnectionIds = getConnectionIds;
     exports.setTransport        = setTransport;

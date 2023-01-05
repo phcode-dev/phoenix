@@ -26,17 +26,33 @@
 
 (function (global) {
 
+    function _debugLog(...args) {
+        if(window.LIVE_PREVIEW_DEBUG_ENABLED) {
+            console.log(...args);
+        }
+    }
+
+    const clientID = "" + Math.round( Math.random()*1000000000);
+    const LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID = `${window.PHOENIX_INSTANCE_ID}-nav-live-preview`;
+
+    const worker = new Worker(window.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME);
+    worker.onmessage = (event) => {
+        const type = event.data.type;
+        switch (type) {
+        case 'REDIRECT_CONTENT_FRAME': document.getElementById("contentFrame").src = event.data.URL; break;
+        case 'REDIRECT_PAGE': location.href = event.data.URL; break;
+        default: console.error("Live Preview page loader: received unknown message from worker:", event);
+        }
+    };
+    worker.postMessage({
+        type: "setupBroadcast",
+        broadcastChannel: LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID,
+        clientID});
+
     const WebSocketTransport = {
         _channelOpen: false,
-        _clientID: "" + Math.round( Math.random()*1000000000),
         // message channel used to communicate with service worker
         _broadcastMessageChannel: null,
-
-        _debugLog: function (...args) {
-            if(window.LIVE_PREVIEW_DEBIG_ENABLED) {
-                console.log(...args);
-            }
-        },
 
         /**
          * @private
@@ -69,13 +85,13 @@
             self._broadcastMessageChannel.postMessage({
                 type: 'BROWSER_CONNECT',
                 url: global.location.href,
-                clientID: self._clientID
+                clientID: clientID
             });
 
             // Listen to the response
             self._broadcastMessageChannel.onmessage = (event) => {
                 // Print the result
-                self._debugLog("Live Preview: Browser received event from Phoenix: ", JSON.stringify(event.data));
+                _debugLog("Live Preview: Browser received event from Phoenix: ", JSON.stringify(event.data));
                 const type = event.data.type;
                 switch (type) {
                 case 'BROWSER_CONNECT': break; // do nothing. This is a loopback message from another live preview tab
@@ -85,7 +101,7 @@
                     if (self._callbacks && self._callbacks.message) {
                         const clientIDs = event.data.clientIDs,
                             message = event.data.message;
-                        if(clientIDs.includes(self._clientID) || clientIDs.length === 0){
+                        if(clientIDs.includes(clientID) || clientIDs.length === 0){
                             // clientIDs.length = 0 if the message is intended for all clients
                             self._callbacks.message(message);
                         }
@@ -114,7 +130,7 @@
                     self._channelOpen = false;
                     self._broadcastMessageChannel.postMessage({
                         type: 'BROWSER_CLOSE',
-                        clientID: self._clientID
+                        clientID: clientID
                     });
                 }
             });
@@ -128,7 +144,7 @@
             const self = this;
             self._broadcastMessageChannel.postMessage({
                 type: 'BROWSER_MESSAGE',
-                clientID: self._clientID,
+                clientID: clientID,
                 message: msgStr
             });
         },

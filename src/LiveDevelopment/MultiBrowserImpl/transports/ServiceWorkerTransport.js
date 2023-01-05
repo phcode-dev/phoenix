@@ -21,11 +21,12 @@
 
 // This transport provides a connection between Brackets and a live browser preview via service worker
 // as the intermediary. We also rely on an injected script in the browser for the other end of the transport.
-/*globals logger*/
+/*globals logger, Phoenix*/
 define(function (require, exports, module) {
 
 
-    const EventDispatcher = require("utils/EventDispatcher"),
+    const LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
+        EventDispatcher = require("utils/EventDispatcher"),
         Metrics = require("utils/Metrics");
 
     const METRIC_SEND_INTERVAL_MS = 1000;
@@ -68,8 +69,10 @@ define(function (require, exports, module) {
      */
     function getRemoteScript() {
         return "\n" +
+            `window.PHOENIX_INSTANCE_ID = "${Phoenix.PHOENIX_INSTANCE_ID}";\n` +
             `window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${BROADCAST_CHANNEL_ID}";\n` +
-            `window.LIVE_PREVIEW_DEBIG_ENABLED = ${logger.loggingOptions.logLivePreview};\n` +
+            `window.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}";\n` +
+            `window.LIVE_PREVIEW_DEBUG_ENABLED = ${logger.loggingOptions.logLivePreview};\n` +
             ServiceWorkerTransportRemote +
             "\n";
     }

@@ -316,4 +316,5 @@ define(function main(require, exports, module) {
     exports.isActive = isActive;
     exports.setLivePreviewPinned = setLivePreviewPinned;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
+    exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
 });

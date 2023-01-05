@@ -304,7 +304,7 @@ define(function (require, exports, module) {
     };
 
     _serverBroadcastChannel.onmessage = (event) => {
-        console.log("sss", event.data, Phoenix.PHOENIX_INSTANCE_ID);
+        window.logger.livePreview.log("Static server: ", event.data, Phoenix.PHOENIX_INSTANCE_ID);
         if (event.data.type === "getInstrumentedContent"
             && event.data.phoenixInstanceID === Phoenix.PHOENIX_INSTANCE_ID) {
             // localStorage is domain specific so when it changes in one window it changes in the other
