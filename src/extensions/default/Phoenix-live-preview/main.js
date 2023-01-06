@@ -121,7 +121,7 @@ define(function (require, exports, module) {
     }
 
     function _startOrStopLivePreviewIfRequired(explicitClickOnLPIcon) {
-        let visible = panel.isVisible();
+        let visible = panel && panel.isVisible();
         if(visible && LiveDevelopment.isInactive()) {
             LiveDevelopment.openLivePreview();
         } else if(visible && explicitClickOnLPIcon) {

@@ -25,9 +25,6 @@ define(function (require, exports, module) {
         DocumentManager = brackets.getModule("document/DocumentManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         FileUtils = brackets.getModule("file/FileUtils"),
-        Dialogs = brackets.getModule("widgets/Dialogs"),
-        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
-        Strings = brackets.getModule("strings"),
         Metrics = brackets.getModule("utils/Metrics");
 
     function _getUpdateMarkdownURL() {
@@ -62,16 +59,6 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache", "errorRefresh");
             return;
         }
-        setTimeout(()=>{
-            if(window.Phoenix.cache.showUpdateDialogue){
-                Dialogs.showModalDialog(
-                    DefaultDialogs.DIALOG_ID_INFO,
-                    Strings.UPDATE_AVAILABLE_TITLE,
-                    Strings.UPDATE_RELOAD_APP
-                );
-                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "updateDlg", "shown");
-            }
-        }, 5000);
         Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache",
             `${window.Phoenix.cache.updatePendingReloadReason}.done`);
         Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache", `updateCount`,
