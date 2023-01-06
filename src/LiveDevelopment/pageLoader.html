@@ -50,7 +50,7 @@
                 broadcastChannel: params.broadcastChannel,
                 clientID});
             if(params.URL){
-                document.getElementById("contentFrame").src = params.URL;
+                document.getElementById("contentFrame").src = decodeURIComponent(params.URL);
                 const path = params.URL.replace(/\/$/, "").split("/");
                 document.title = path[path.length -1];
             }

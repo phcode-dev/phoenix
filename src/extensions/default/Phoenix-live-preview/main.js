@@ -179,7 +179,7 @@ define(function (require, exports, module) {
             openURL = url;
         if(details.URL !== url) {
             openURL = `${_stripURL(location.href)}LiveDevelopment/pageLoader.html?`
-                +`broadcastChannel=${LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID}&URL=${url}`;
+                +`broadcastChannel=${LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID}&URL=${encodeURIComponent(url)}`;
         }
         return openURL;
     }
@@ -312,6 +312,9 @@ define(function (require, exports, module) {
                 _setTitle(previewDetails.filePath);
             }
             $iframe[0].onload = function () {
+                if(!$iframe[0].contentDocument){
+                    return;
+                }
                 $iframe[0].contentDocument.savePageCtrlSDisabledByPhoenix = true;
                 $iframe[0].contentDocument.addEventListener("keydown", function(e) {
                     // inside live preview iframe, we disable ctrl-s browser save page dialog
@@ -357,15 +360,6 @@ define(function (require, exports, module) {
         $iframe[0].src = utils.getNoPreviewURL();
         if(!panel.isVisible()){
             return;
-        }
-        let previewDetails = await utils.getPreviewDetails();
-        if(previewDetails.fullPath && ProjectManager.isWithinProject(previewDetails.fullPath)){
-            FileViewController.openAndSelectDocument(previewDetails.fullPath, FileViewController.PROJECT_MANAGER)
-                .done(()=>{
-                    LiveDevelopment.closeLivePreview();
-                    LiveDevelopment.openLivePreview();
-                    _loadPreview(true);
-                });
         }
         _loadPreview(true);
     }

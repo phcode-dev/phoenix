@@ -41,8 +41,8 @@
 
 define(function (require, exports, module) {
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
-        DocumentManager     = brackets.getModule("document/DocumentManager"),
-        FileSystem         = brackets.getModule("filesystem/FileSystem");
+        Strings                   = brackets.getModule("strings"),
+        DocumentManager     = brackets.getModule("document/DocumentManager");
 
     function getExtension(filePath) {
         filePath = filePath || '';
@@ -66,34 +66,9 @@ define(function (require, exports, module) {
     }
 
     function getNoPreviewURL(){
-        return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html`;
-    }
-
-    async function _getDefaultPreviewDetails() {
-        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
-            // async is explicitly caught
-            try{
-                let projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${window.fsServerUrl}PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}${projectRoot}`;
-                let indexFiles = ['index.html', "index.htm"];
-                for(let indexFile of indexFiles){
-                    let file = FileSystem.getFileForPath(`${projectRoot}${indexFile}`);
-                    if(await file.existsAsync()){
-                        const relativePath = path.relative(projectRoot, file.fullPath);
-                        resolve({
-                            URL: `${projectRootUrl}${relativePath}`,
-                            filePath: relativePath,
-                            fullPath: file.fullPath,
-                            isHTMLFile: _isHTMLFile(file.fullPath)
-                        });
-                        return;
-                    }
-                }
-                resolve({URL: getNoPreviewURL()});
-            } catch (e) {
-                reject(e);
-            }
-        });
+        return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html?jsonInput=`+
+            encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
+                +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
     }
 
     /**
@@ -125,11 +100,10 @@ define(function (require, exports, module) {
                             isMarkdownFile: _isMarkdownFile(fullPath),
                             isHTMLFile: _isHTMLFile(fullPath)
                         });
-                    } else {
-                        resolve({}); // not a previewable file
+                        return;
                     }
                 }
-                resolve(await _getDefaultPreviewDetails());
+                resolve({URL: getNoPreviewURL()});
             }catch (e) {
                 reject(e);
             }
