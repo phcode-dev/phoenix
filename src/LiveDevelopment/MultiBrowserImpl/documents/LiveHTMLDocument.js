@@ -185,6 +185,10 @@ define(function (require, exports, module) {
         // TODO: Not implemented.
     };
 
+    function _isSamePos(position, line, char) {
+        return position.line === line && position.ch === char;
+    }
+
     /**
      * @private
      * Handles edits to the document. Determines what's changed in the source and sends DOM diffs to the browser.
@@ -212,13 +216,21 @@ define(function (require, exports, module) {
             applyEditsPromise;
 
         if (result.edits) {
-            applyEditsPromise = this.protocol.evaluate("_LD.applyDOMEdits(" + JSON.stringify(result.edits) + ")");
+            let changedLineCount = change.length === 1 ? (change[0].to.line - change[0].from.line + 1) : null;
+            if(changedLineCount && changedLineCount > 1 && changedLineCount === change[0].removed.length
+                && _isSamePos( change[0].from, 0, 0)){
+                // whole file change.
+                this.protocol.reload();
+                PerfUtils.addMeasurement(perfTimerName);
+            } else {
+                applyEditsPromise = this.protocol.evaluate("_LD.applyDOMEdits(" + JSON.stringify(result.edits) + ")");
 
-            applyEditsPromise.always(function () {
-                if (!isNestedTimer) {
-                    PerfUtils.addMeasurement(perfTimerName);
-                }
-            });
+                applyEditsPromise.always(function () {
+                    if (!isNestedTimer) {
+                        PerfUtils.addMeasurement(perfTimerName);
+                    }
+                });
+            }
         }
 
         this.errors = result.errors || [];

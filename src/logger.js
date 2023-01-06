@@ -24,7 +24,6 @@ import AppConfig from "./loggerConfig.js";
 
 const isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 const urlParams = new URLSearchParams(window.location.search || "");
-window.testEnvironment = (urlParams.get('testEnvironment') === 'true');
 const isBugsnagEnabled = (!window.testEnvironment && !isLocalHost);
 
 class CustomBugSnagError extends Error {

@@ -561,10 +561,10 @@ define(function (require, exports, module) {
      *     more information on the format of these edits.
      */
     function getUnappliedEditList(editor, changeList) {
-        var cachedValue = _cachedValues[editor.document.file.fullPath];
+        const cachedValue = _cachedValues[editor.document.file.fullPath];
 
         // We might not have a previous DOM if the document was empty before this edit.
-        if (!cachedValue || !cachedValue.dom || _cachedValues[editor.document.file.fullPath].invalid) {
+        if (!cachedValue || !cachedValue.dom || cachedValue.invalid) {
             // We were in an invalid state, so do a full rebuild.
             changeList = null;
         }

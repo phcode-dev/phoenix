@@ -40,6 +40,8 @@
     -->
     <script type="module">
         // this is a nuke cache option. Though mostly safe, Use it wisely to prevent slow startup when resetting.
+        const urlParams = new URLSearchParams(window.location.search || "");
+        window.testEnvironment = (urlParams.get('testEnvironment') === 'true');
         const CACHE_NAME_EVERYTHING = "everything";
         function _resetCacheIfNeeded() {
             window.cacheClearError;
@@ -149,7 +151,7 @@
         window.splashScreenPresent = true;
 
         function _removeSplashScreenIfNeeded() {
-            if(testEnvironment || window.__TAURI__){
+            if(window.testEnvironment || window.__TAURI__){
                 // tauri means local builds and, it loads up pretty fast, so splash screen
                 document.getElementById('phoenix-loading-splash-screen-overlay').remove();
                 document.getElementById('safari_splash_screen').remove();
