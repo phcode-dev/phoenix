@@ -35,16 +35,6 @@
 
 import {Workbox} from 'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-window.prod.mjs';
 
-if(!window.logger){
-    // this will idealy never happen but since this file is always network first instead of cached, as we introduced
-    // logger, the variable was not found causing exceptions below and cache not being refreshed.
-    console.error("Could not find logger.");
-    window.logger = {
-        leaveTrail: console.log,
-        loggingOptions: {}
-    };
-}
-
 function _getBaseURL() {
     let baseURL = window.location.href;
     if(location.href.indexOf( "?")>-1){
@@ -102,38 +92,6 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
 
     window.Phoenix.cache = {};
 
-    /**
-     * This will cause a full cache reset in the browser for the phoenix scripts.
-     * This will help the user to load the latest version of phoenix on the next load.
-     * @return {boolean}
-     * @private
-     */
-    function _forceClearCacheIfNeeded() {
-        const cacheKey = "browserCacheVersionKey";
-        const newCacheVersion = "V2"; // just increment this number to V2, v3 etc. to force clear the cached content.
-        if(window.Phoenix.firstBoot){
-            localStorage.setItem(cacheKey, newCacheVersion);
-            return false;
-        }
-        const lastClearedVersion = window.localStorage.getItem(cacheKey);
-        if(lastClearedVersion !== newCacheVersion) {
-            logger.leaveTrail(`Service worker loader: triggering CLEAR_CACHE for live preview service worker upgrade`);
-            wb.messageSW({
-                type: 'CLEAR_CACHE'
-            }).then(({updatedFilesCount})=>{
-                logger.leaveTrail(`Service worker loader: clear cache updatedFilesCount: `+ updatedFilesCount);
-                window.Phoenix.cache.updatePendingReloadReason = "clearCache";
-                window.Phoenix.cache.showUpdateDialogue = true;
-                window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
-                localStorage.setItem(cacheKey, newCacheVersion);
-            }).catch(err=>{
-                console.error("Service worker loader: Error while triggering clear cache", err);
-            });
-            return true;
-        }
-        return false;
-    }
-
     // refreshServiceWorkerCache should be done after app load to prevent mixed js script content load. Ie,
     // if we do the cache reset now, some scripts loaded may be from cache and some from the new version.
     window.refreshServiceWorkerCache = function (doneCB) {
@@ -169,7 +127,6 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     function serverReady() {
         console.log('Service worker loader: Server ready.');
         isServerReady = true;
-        _forceClearCacheIfNeeded();
         wb.messageSW({
             type: 'INIT_PHOENIX_CONFIG',
             debugMode: window.logger.logToConsolePref === 'true',

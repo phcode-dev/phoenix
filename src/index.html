@@ -34,9 +34,64 @@
     <meta name="msapplication-TileColor" content="#47484B">
     <title>Phoenix</title>
 
-    <!-- CSS/LESS -->
+    <!-- Bootstrap cache check. since index.html is always loaded network first, the cache reset code will always
+    be guaranteed to be hit on app update.
+    Note that this cannot be moved to a separate file and should be in index.html due to above reason.
+    -->
+    <script type="module">
+        // this is a nuke cache option. Though mostly safe, Use it wisely to prevent slow startup when resetting.
+        const CACHE_NAME_EVERYTHING = "everything";
+        function _resetCacheIfNeeded() {
+            window.cacheClearError;
+            const cacheKey = "browserCacheVersionKey";
+            const newCacheVersion = "V3"; // just increment this number to V2, v3 etc. to force clear the cached content.
+            const lastClearedVersion = window.localStorage.getItem(cacheKey);
+            if(lastClearedVersion === null){
+                // First load, no cache, return.
+                localStorage.setItem(cacheKey, newCacheVersion);
+                return;
+            }
+            if(!window.caches){
+                console.error("CacheStorage Reset: API not supported by browser.");
+            }
+            if(lastClearedVersion !== newCacheVersion) {
+                window.cacheRefreshInProgress = true;
+                let openedCache;
+                console.log("CacheStorage Reset: Reset cache in progress..");
+                caches.open(CACHE_NAME_EVERYTHING)
+                    .then(cache => {
+                        openedCache = cache;
+                        return cache.keys();
+                    })
+                    .then(keys => {
+                        let promises = []
+                        for(let key of keys){
+                            promises.push(openedCache.delete(key));
+                        }
+                        console.log(`CacheStorage Reset: Deleting ${promises.length} cache entries from ${CACHE_NAME_EVERYTHING}`);
+                        return Promise.all(promises);
+                    }).then(() => {
+                        console.log("CacheStorage Reset: Cache successfully reset");
+                        localStorage.setItem(cacheKey, newCacheVersion);
+                        location.reload();
+                    }).catch( e => {
+                        console.error("Error while resetting cache", e);
+                        window.cacheClearError = e;
+                        window.cacheRefreshInProgress = false;
+                        // try our luck loading phoenix as cache reset failed
+                        if(window._loadPhoenixAfterSplashScreen) {
+                            window._loadPhoenixAfterSplashScreen();
+                        }
+                        // throw again so that bugsnag can report if initialised. else bugsnag
+                        // will report the error when it comes online via window.cacheClearError
+                        throw e;
+                    });
+            }
+        }
+        _resetCacheIfNeeded();
+    </script>
 
-    <!-- NOTE: All scripts must be external for Chrome App support: http://developer.chrome.com/apps/app_csp.html -->
+    <!-- CSS/LESS -->
 
     <link rel="stylesheet" type="text/css" href="thirdparty/fontawesome/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="thirdparty/devicon/devicon.min.css">
@@ -104,12 +159,17 @@
 
         function _loadPhoenixAfterSplashScreen() {
             _removeSplashScreenIfNeeded();
+            if(window.cacheRefreshInProgress){
+                // We should not load anything while the cache is inconsistent.
+                // A page reload will be scheduled on successful clear.
+                return;
+            }
             var loadJS = function(url, implementationCode, location, dataMainValue){
                 //url is URL of external file, implementationCode is the code
                 //to be called from the file, location is the location to
                 //insert the <script> element
 
-                var scriptTag = document.createElement('script');
+                const scriptTag = document.createElement('script');
                 if(dataMainValue){
                     scriptTag.setAttribute('data-main', dataMainValue);
                 }

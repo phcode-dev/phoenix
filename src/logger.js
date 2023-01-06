@@ -165,6 +165,9 @@ if(isBugsnagEnabled) {
         maxBreadcrumbs: 50,
         onError
     });
+    if(window.cacheClearError){
+        logger.reportError(window.cacheClearError);
+    }
 } else {
     console.warn("Logging to Bugsnag is disabled as current environment is localhost.");
 }

@@ -38,7 +38,7 @@ const StaleWhileRevalidate = workbox.strategies.StaleWhileRevalidate;
 const ExpirationPlugin = workbox.expiration.ExpirationPlugin;
 const CacheExpiration = workbox.expiration.CacheExpiration;
 const DAYS_30_IN_SEC = 60 * 60 * 24 * 30;
-const CACHE_NAME_EVERYTHING = "everything";
+const CACHE_NAME_EVERYTHING = "everything"; // This is referenced in index.html as well if you are changing te name.
 const CACHE_NAME_CORE_SCRIPTS = "coreScripts";
 const CACHE_NAME_EXTERNAL = "external";
 const ExpirationManager ={
@@ -141,18 +141,6 @@ workbox.routing.registerRoute(
     },
     'GET'
 );
-
-// cache and offline access route
-function _clearCache(event) {
-    caches.open(CACHE_NAME_EVERYTHING).then((cache) => {
-        cache.keys().then((keys) => {
-            keys.forEach((request, index, array) => {
-                cache.delete(request);
-            });
-            event.ports[0].postMessage({updatedFilesCount: keys.length});
-        });
-    });
-}
 
 function _updateTTL(cacheName, urls) {
     // this is needed for workbox to purge cache by ttl. purge behaviour is not part of w3c spec, but done by workbox.
@@ -282,7 +270,6 @@ addEventListener('message', (event) => {
             self._debugSWLivePreviewLogs = event.data.logLivePreview;
             self.__WB_DISABLE_DEV_LOGS = Config.debug && _debugSWCacheLogs;
             event.ports[0].postMessage({baseURL}); break;
-        case 'CLEAR_CACHE': _clearCache(event); break;
         case 'REFRESH_CACHE': _refreshCache(event); break;
         case 'setInstrumentedURLs': self.Serve.setInstrumentedURLs(event); return true;
         default:
