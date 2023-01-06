@@ -685,6 +685,8 @@
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "WebSocket-palvelimen käyttämä portti esikatselua varten",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Esikatselun korostuksen asetukset",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false reaaliaikaisen esikatselun käänteisen tarkastuksen poistamiseksi käytöstä",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Ei mitään esikatseltavaa!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Valitse esikatselu HTML-tiedosto",
   "DOWNLOAD_FAILED": "Lataus epäonnistui.",
   "DOWNLOAD_COMPLETE": "Lataus valmis!",
   "UPDATE_SUCCESSFUL": "Päivitys onnistui!",

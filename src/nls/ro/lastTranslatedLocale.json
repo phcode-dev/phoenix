@@ -685,6 +685,8 @@
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Portul pe care rulează WebSocket Server pentru Live Preview",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Previzualizare live Evidențiați setări",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false pentru a dezactiva inspectarea inversă a previzualizării live",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nimic de previzualizat!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Vă rugăm să selectați un fișier HTML pentru previzualizare",
   "DOWNLOAD_FAILED": "Descarcare esuata.",
   "DOWNLOAD_COMPLETE": "Descarcare completa!",
   "UPDATE_SUCCESSFUL": "Actualizare cu succes!",

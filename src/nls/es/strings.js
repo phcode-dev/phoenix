@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Puerto en el que se ejecuta WebSocket Server para Live Preview",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Configuración de resaltado de vista previa en vivo",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false para deshabilitar la vista previa en vivo, la inspección inversa",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "¡Nada que previsualizar!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Seleccione un archivo HTML para obtener una vista previa",
   "DOWNLOAD_FAILED": "Descarga fracasó.",
   "DOWNLOAD_COMPLETE": "¡Descarga completa!",
   "UPDATE_SUCCESSFUL": "¡Actualización exitosa!",

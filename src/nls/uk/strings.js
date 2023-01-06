@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Порт, на якому працює WebSocket Server для Live Preview",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Налаштування підсвічування попереднього перегляду",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false, щоб вимкнути попередній перегляд у реальному часі",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Немає нічого для попереднього перегляду!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Виберіть файл HTML для попереднього перегляду",
   "DOWNLOAD_FAILED": "Помилка завантаження.",
   "DOWNLOAD_COMPLETE": "Завантаження завершено!",
   "UPDATE_SUCCESSFUL": "Оновлення успішне!",

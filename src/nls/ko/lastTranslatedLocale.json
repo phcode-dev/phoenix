@@ -685,6 +685,8 @@
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "라이브 미리 보기를 위해 WebSocket 서버가 실행되는 포트",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "라이브 미리보기 하이라이트 설정",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "라이브 미리보기 역방향 검사를 비활성화하려면 false",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "미리보기가 없습니다!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "미리 볼 HTML 파일을 선택하십시오",
   "DOWNLOAD_FAILED": "다운로드 실패.",
   "DOWNLOAD_COMPLETE": "다운로드를 완료하였습니다!",
   "UPDATE_SUCCESSFUL": "업데이트 성공!",

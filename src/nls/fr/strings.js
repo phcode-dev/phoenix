@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Port sur lequel s’exécute le serveur WebSocket pour le mode Aperçu en direct",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Paramètres de surbrillance de l'Aperçu en direct",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "faux pour désactiver l’inspection inverse de l’Aperçu en direct",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Rien à prévoir !",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Veuillez sélectionner un fichier HTML pour prévisualiser",
   "DOWNLOAD_FAILED": "Échec du téléchargement.",
   "DOWNLOAD_COMPLETE": "Téléchargement terminé.",
   "UPDATE_SUCCESSFUL": "Mise à jour effectuée.",

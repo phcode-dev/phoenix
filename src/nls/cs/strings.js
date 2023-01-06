@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Port, na kterém běží WebSocket Server pro živý náhled",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Živý náhled Nastavení zvýraznění",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false pro zakázání zpětné kontroly živého náhledu",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nic k náhledu!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Vyberte soubor HTML pro náhled",
   "DOWNLOAD_FAILED": "Stažení se nezdařilo.",
   "DOWNLOAD_COMPLETE": "Stahování dokončeno!",
   "UPDATE_SUCCESSFUL": "Aktualizace proběhla úspěšně!",

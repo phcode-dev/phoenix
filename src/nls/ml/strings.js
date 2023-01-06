@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "തത്സമയ പ്രിവ്യൂവിനായി വെബ്‌സോക്കറ്റ് സെർവർ പ്രവർത്തിക്കുന്ന പോർട്ട്",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "തത്സമയ പ്രിവ്യൂ ഹൈലൈറ്റ് ക്രമീകരണം",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "ലൈവ് പ്രിവ്യൂ റിവേഴ്‌സ് ഇൻസ്‌പെക്റ്റ് പ്രവർത്തനരഹിതമാക്കുന്നത് തെറ്റാണ്",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "പ്രിവ്യൂ ചെയ്യാൻ ഒന്നുമില്ല!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "പ്രിവ്യൂ ചെയ്യുന്നതിന് ദയവായി ഒരു HTML ഫയൽ തിരഞ്ഞെടുക്കുക",
   "DOWNLOAD_FAILED": "ഡൗൺലോഡ് പരാജയപ്പെട്ടു.",
   "DOWNLOAD_COMPLETE": "ഡൗൺലോഡ് പൂർത്തിയായി!",
   "UPDATE_SUCCESSFUL": "അപ്‌ഡേറ്റ് വിജയകരം!",
