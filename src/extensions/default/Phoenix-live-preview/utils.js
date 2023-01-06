@@ -50,7 +50,7 @@ define(function (require, exports, module) {
         return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : '';
     }
 
-    function _isPreviewableFile(filePath) {
+    function isPreviewableFile(filePath) {
         let extension = getExtension(filePath);
         return ['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf', 'md', 'markdown'].includes(extension.toLowerCase());
     }
@@ -90,7 +90,7 @@ define(function (require, exports, module) {
                     if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
                         httpFilePath = fullPath;
                     }
-                    if(_isPreviewableFile(fullPath)){
+                    if(isPreviewableFile(fullPath)){
                         const filePath = httpFilePath || path.relative(projectRoot, fullPath);
                         let URL = httpFilePath || `${projectRootUrl}${filePath}`;
                         resolve({
@@ -113,6 +113,7 @@ define(function (require, exports, module) {
     exports.getPreviewDetails = getPreviewDetails;
     exports.getNoPreviewURL = getNoPreviewURL;
     exports.getExtension = getExtension;
+    exports.isPreviewableFile = isPreviewableFile;
 });
 
 
