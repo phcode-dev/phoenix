@@ -52,7 +52,6 @@ define(function (require, exports, module) {
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         Metrics            = brackets.getModule("utils/Metrics"),
-        FileViewController = brackets.getModule("project/FileViewController"),
         NotificationUI = brackets.getModule("widgets/NotificationUI"),
         LiveDevelopment = brackets.getModule("LiveDevelopment/main"),
         utils = require('utils');
