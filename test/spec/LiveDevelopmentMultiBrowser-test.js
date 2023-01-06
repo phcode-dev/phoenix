@@ -34,6 +34,7 @@ define(function (require, exports, module) {
             LiveDevMultiBrowser,
             EditorManager,
             CommandManager,
+            BeautificationManager,
             Commands;
 
         var testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
@@ -64,14 +65,15 @@ define(function (require, exports, module) {
                 CommandManager      = brackets.test.CommandManager;
                 Commands            = brackets.test.Commands;
                 EditorManager       = brackets.test.EditorManager;
+                BeautificationManager       = brackets.test.BeautificationManager;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
             }
         });
 
         afterAll(function () {
-            // LiveDevMultiBrowser.close();
-            // SpecRunnerUtils.closeTestWindow();
+            LiveDevMultiBrowser.close();
+            SpecRunnerUtils.closeTestWindow();
             testWindow = null;
             brackets = null;
             LiveDevMultiBrowser = null;
@@ -646,6 +648,31 @@ define(function (require, exports, module) {
             iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith("sub/icon_chevron.png")).toBeTrue();
             expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
+
+            await endPreviewSession();
+        }, 5000);
+
+        it("should beautify and undo not corrupt live preview", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world awesome!");
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
+
+            let editor = EditorManager.getActiveEditor();
+            await BeautificationManager.beautifyEditor(editor);
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 73}, 'yo',
+                "testId", "Brackets is hello world awesome!yo");
+
+            await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
+            await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
+            await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
+
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world awesome!");
 
             await endPreviewSession();
         }, 5000);
