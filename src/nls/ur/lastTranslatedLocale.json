@@ -685,6 +685,8 @@
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "پورٹ جس پر ویب ساکٹ سرور لائیو پیش نظارہ کے لیے چلتا ہے۔",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "لائیو پیش نظارہ ہائی لائٹ کی ترتیبات",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "لائیو پیش نظارہ ریورس معائنہ کو غیر فعال کرنے کے لئے غلط",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "پیش نظارہ کرنے کے لئے کچھ نہیں!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "براہ کرم پیش نظارہ کرنے کے لیے ایک HTML فائل منتخب کریں۔",
   "DOWNLOAD_FAILED": "ڈاؤن لوڈ ناکام ہو گیا۔",
   "DOWNLOAD_COMPLETE": "ڈاؤن لوڈ مکمل!",
   "UPDATE_SUCCESSFUL": "کامیاب اپ ڈیٹ!",

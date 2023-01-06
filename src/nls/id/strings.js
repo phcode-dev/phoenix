@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Port tempat Server WebSocket berjalan untuk Live Preview",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Pengaturan Sorotan Pratinjau Langsung",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false untuk menonaktifkan inspeksi terbalik pratinjau langsung",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Tidak ada yang perlu dipratinjau!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Harap pilih file HTML untuk dipratinjau",
   "DOWNLOAD_FAILED": "Unduhan gagal.",
   "DOWNLOAD_COMPLETE": "Unduh selesai!",
   "UPDATE_SUCCESSFUL": "Pembaruan berhasil!",

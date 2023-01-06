@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Poort waarop WebSocket Server draait voor Live Preview",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Instellingen voor live preview-markeringen",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false om live preview reverse inspect uit te schakelen",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Niets om te bekijken!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Selecteer een HTML-bestand om een voorbeeld te bekijken",
   "DOWNLOAD_FAILED": "Download mislukt.",
   "DOWNLOAD_COMPLETE": "Download compleet!",
   "UPDATE_SUCCESSFUL": "Update succesvol!",

@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Порт, на който WebSocket Server работи за преглед на живо",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Настройки за подчертаване на преглед на живо",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "невярно, за да деактивирате обратната проверка на предварителен преглед на живо",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Няма нищо за преглед!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Моля, изберете HTML файл за преглед",
   "DOWNLOAD_FAILED": "Изтеглянето се провали.",
   "DOWNLOAD_COMPLETE": "Изтеглянето завърши!",
   "UPDATE_SUCCESSFUL": "Обновлението успешно!",

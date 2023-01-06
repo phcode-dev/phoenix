@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Ports, kurā WebSocket Server darbojas tiešraides priekšskatījumam",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Tiešraides priekšskatījuma izcelšanas iestatījumi",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false, lai atspējotu tiešā priekšskatījuma apgriezto pārbaudi",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nav ko priekšskatīt!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Lūdzu, atlasiet priekšskatīšanai HTML failu",
   "DOWNLOAD_FAILED": "Lejupielāde neizdevās.",
   "DOWNLOAD_COMPLETE": "Lejupielāde ir pabeigta!",
   "UPDATE_SUCCESSFUL": "Atjaunināšana ir veiksmīga!",

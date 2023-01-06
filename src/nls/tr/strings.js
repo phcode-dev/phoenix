@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "WebSocket Sunucusunun Canlı Önizleme için çalıştığı bağlantı noktası",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Canlı Önizleme Vurgu ayarları",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "canlı önizleme ters incelemeyi devre dışı bırakmak için false",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Önizlenecek bir şey yok!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Lütfen önizlemek için bir HTML dosyası seçin",
   "DOWNLOAD_FAILED": "Yükleme başarısız.",
   "DOWNLOAD_COMPLETE": "İndirme tamamlandı!",
   "UPDATE_SUCCESSFUL": "Güncelleme başarılı!",

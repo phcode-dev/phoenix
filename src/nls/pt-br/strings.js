@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Porta na qual o WebSocket Server é executado para visualização ao vivo",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Configurações de realce de visualização ao vivo",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false para desabilitar a inspeção reversa da visualização ao vivo",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nada para visualizar!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Selecione um arquivo HTML para visualizar",
   "DOWNLOAD_FAILED": "Download falhou.",
   "DOWNLOAD_COMPLETE": "Download completo!",
   "UPDATE_SUCCESSFUL": "Atualização bem sucedida!",

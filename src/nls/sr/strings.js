@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Порт на коме ради ВебСоцкет Сервер за Ливе Превиев",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Ливе Превиев Хигхлигхт подешавања",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "нетачно да бисте онемогућили обрнути преглед прегледа уживо",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Нема шта за преглед!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Изаберите ХТМЛ датотеку за преглед",
   "DOWNLOAD_FAILED": "Преузимање није успело.",
   "DOWNLOAD_COMPLETE": "Скидање завршено!",
   "UPDATE_SUCCESSFUL": "Ажурирање је успешно!",

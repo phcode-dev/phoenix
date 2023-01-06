@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Port na kojem WebSocket poslužitelj radi za Live Preview",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Live Preview Highlight postavke",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false za onemogućavanje pregleda uživo obrnuti pregled",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Ništa za pregled!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Odaberite HTML datoteku za pregled",
   "DOWNLOAD_FAILED": "Preuzimanje nije uspjelo.",
   "DOWNLOAD_COMPLETE": "Skidanje dovršeno!",
   "UPDATE_SUCCESSFUL": "Uspješno ažurirano!",

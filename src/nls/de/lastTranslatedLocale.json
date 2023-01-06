@@ -685,6 +685,8 @@
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Der Port, der für den WebSocket-Server der Live-Vorschau genutzt wird",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Live-Vorschau Highlight-Einstellungen",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false, um die Reverse-Inspection in der Live-Vorschau zu deaktivieren",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nichts zur Vorschau!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Bitte wählen Sie eine HTML-Datei für die Vorschau aus",
   "DOWNLOAD_FAILED": "Herunterladen fehlgeschlagen.",
   "DOWNLOAD_COMPLETE": "Download abgeschlossen!",
   "UPDATE_SUCCESSFUL": "Aktualisierung erfolgreich!",

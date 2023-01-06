@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "पोर्ट जिस पर वेबसॉकेट सर्वर लाइव पूर्वावलोकन के लिए चलता है",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "लाइव पूर्वावलोकन हाइलाइट सेटिंग्स",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "लाइव पूर्वावलोकन रिवर्स निरीक्षण को अक्षम करने के लिए गलत",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "पूर्वावलोकन के लिए कुछ नहीं!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "पूर्वावलोकन के लिए कृपया एक HTML फ़ाइल चुनें",
   "DOWNLOAD_FAILED": "डाउनलोड विफल।",
   "DOWNLOAD_COMPLETE": "डाउनलोड सम्पन्न हुआ!",
   "UPDATE_SUCCESSFUL": "अद्यतन सफल!",

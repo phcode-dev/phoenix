@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Port, na którym będzie uruchomiony serwer WebSocket podczas podglądu na żywo",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Ustawienia podświetlenia podglądu na żywo",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false, aby wyłączyć odwrotną inspekcję podglądu na żywo",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nie ma nic do podglądu!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Wybierz plik HTML do podglądu",
   "DOWNLOAD_FAILED": "Pobieranie nie udane.",
   "DOWNLOAD_COMPLETE": "Pobieranie zakończone!",
   "UPDATE_SUCCESSFUL": "Aktualizacja przeprowadzona pomyślnie!",

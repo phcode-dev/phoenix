@@ -685,6 +685,8 @@
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "المنفذ الذي يعمل عليه WebSocket Server من أجل Live Preview",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "إعدادات تمييز المعاينة المباشرة",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "خطأ لتعطيل المعاينة المباشرة المعاينة العكسية",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "لا شيء للمعاينة!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "الرجاء تحديد ملف HTML للمعاينة",
   "DOWNLOAD_FAILED": "التحميل فشل.",
   "DOWNLOAD_COMPLETE": "تم التحميل!",
   "UPDATE_SUCCESSFUL": "تم التحديث بنجاح!",

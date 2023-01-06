@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Port på vilken WebSocket Server körs för Live Preview",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Inställningar för Live Preview Highlight",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false för att inaktivera liveförhandsgranskning omvänd inspektera",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Inget att förhandsgranska!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Välj en HTML-fil att förhandsgranska",
   "DOWNLOAD_FAILED": "Nedladdning misslyckad.",
   "DOWNLOAD_COMPLETE": "Nedladdning klar!",
   "UPDATE_SUCCESSFUL": "Uppdatering lyckades!",

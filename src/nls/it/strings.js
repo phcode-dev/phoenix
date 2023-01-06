@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Porta su cui viene eseguito WebSocket Server per l'anteprima dal vivo",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Impostazioni di evidenziazione in anteprima dal vivo",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false per disabilitare l'ispezione inversa dell'anteprima dal vivo",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Niente da vedere in anteprima!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Seleziona un file HTML per l'anteprima",
   "DOWNLOAD_FAILED": "Scaricamento fallito.",
   "DOWNLOAD_COMPLETE": "Download completato!",
   "UPDATE_SUCCESSFUL": "Aggiornamento riuscito!",

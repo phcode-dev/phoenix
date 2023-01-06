@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "ライブプレビューで WebSocket サーバーが実行されるポート",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "ライブプレビューハイライト設定",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false にすると、ライブプレビューでのリバースインスペクトが無効になります",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "プレビューするものがありません!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "プレビューする HTML ファイルを選択してください",
   "DOWNLOAD_FAILED": "ダウンロードに失敗しました。",
   "DOWNLOAD_COMPLETE": "ダウンロードが完了しました。",
   "UPDATE_SUCCESSFUL": "アップデートが正常に完了しました。",

@@ -705,6 +705,8 @@ define({
   "DESCRIPTION_LIVEDEV_WEBSOCKET_PORT": "Port, amelyen a WebSocket Server fut az élő előnézethez",
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Élő előnézeti kiemelés beállításai",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false az élő előnézeti fordított ellenőrzés letiltásához",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nincs mit megnézni!",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Kérjük, válasszon egy HTML-fájlt az előnézethez",
   "DOWNLOAD_FAILED": "Sikertelen letöltés.",
   "DOWNLOAD_COMPLETE": "Letöltés kész!",
   "UPDATE_SUCCESSFUL": "Frissítés sikeres!",
