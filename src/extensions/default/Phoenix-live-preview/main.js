@@ -339,7 +339,7 @@ define(function (require, exports, module) {
     }
 
     async function _projectFileChanges(evt, changedFile) {
-        if(changedFile && changedFile.isFile && changedFile.fullPath && changedFile.fullPath !== '/fs/app/state.json'){
+        if(changedFile && utils.isPreviewableFile(changedFile.fullPath)){
             // we are getting this change event somehow.
             // bug, investigate why we get this change event as a project file change.
             const previewDetails = await utils.getPreviewDetails();
@@ -413,10 +413,16 @@ define(function (require, exports, module) {
         }
     }
 
+    function _currentFileChanged(_event, newFile) {
+        if(newFile && utils.isPreviewableFile(newFile.fullPath)){
+            _loadPreview();
+        }
+    }
+
     AppInit.appReady(function () {
         _createExtensionPanel();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
-        MainViewManager.on("currentFileChange", _loadPreview);
+        MainViewManager.on("currentFileChange", _currentFileChanged);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_CLOSE, _projectClosed);
         EditorManager.on("activeEditorChange", _activeDocChanged);
