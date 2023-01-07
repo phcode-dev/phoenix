@@ -25,7 +25,7 @@
  *
  * This module should be functionally as light weight as possible with minimal deps as it is a shell component.
  * **/
-import init from "./init_vfs.js";
+import initVFS from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
 import getBrowserDetails from "./browserDetails.js";
 import initTauriShell from "./tauriShell.js";
@@ -51,13 +51,14 @@ function _isTestWindow() {
 let Phoenix = {
     browser: getBrowserDetails(),
     baseURL: _getBaseURL(),
-    isTestWindow: _isTestWindow()
+    isTestWindow: _isTestWindow(),
+    firstBoot: window.phoenixFirstBoot
 };
 let startTime = Date.now();
 
 window.Phoenix = Phoenix;
 
-init(Phoenix);
+initVFS();
 
 Phoenix.app = {
     getNodeState: function (cbfn){
@@ -67,6 +68,7 @@ Phoenix.app = {
         window.open(url);
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
+    getExtensionDirectory: Phoenix.VFS.getExtensionDir,
     getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,
     ERR_CODES: ERR_CODES,
     getElapsedMilliseconds: function () {

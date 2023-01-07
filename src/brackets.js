@@ -301,6 +301,86 @@ define(function (require, exports, module) {
         _removePhoenixLoadingOverlay();
     });
 
+    function _startupBrackets() {
+        // Load all extensions. This promise will complete even if one or more
+        // extensions fail to load.
+        const extensionPathOverride = params.get("extensions");  // used by unit tests
+        const extensionLoaderPromise = ExtensionLoader.init(extensionPathOverride ? extensionPathOverride.split(",") : null);
+
+        // Finish UI initialization
+        ViewCommandHandlers.restoreFontSize();
+        ProjectManager.getStartupProjectPath().then((initialProjectPath)=>{
+            ProjectManager.openProject(initialProjectPath).always(function () {
+                _initTest();
+
+                // If this is the first launch, and we have an index.html file in the project folder (which should be
+                // the samples folder on first launch), open it automatically. (We explicitly check for the
+                // samples folder in case this is the first time we're launching Brackets after upgrading from
+                // an old version that might not have set the "afterFirstLaunch" pref.)
+                const deferred = new $.Deferred();
+
+                if (!params.get("skipSampleProjectLoad") && !PreferencesManager.getViewState("afterFirstLaunch")) {
+                    PreferencesManager.setViewState("afterFirstLaunch", "true");
+                    if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
+                        FileSystem.resolve(initialProjectPath + "index.html", function (err, file) {
+                            if (!err) {
+                                const promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
+                                promise.then(deferred.resolve, deferred.reject);
+                            } else {
+                                deferred.reject();
+                            }
+                        });
+                    } else {
+                        deferred.resolve();
+                    }
+                } else {
+                    deferred.resolve();
+                }
+
+                deferred.always(function () {
+                    extensionLoaderPromise.always(function () {
+                        // Signal that extensions are loaded
+                        AppInit._dispatchReady(AppInit.EXTENSIONS_LOADED);
+                        // Signal that Brackets is loaded
+                        AppInit._dispatchReady(AppInit.APP_READY);
+                        _removePhoenixLoadingOverlay();
+
+                        PerfUtils.addMeasurement("Application Startup");
+
+                        if (PreferencesManager._isUserScopeCorrupt()) {
+                            const userPrefFullPath = PreferencesManager.getUserPrefFile();
+                            // user scope can get corrupt only if the file exists, is readable,
+                            // but malformed. no need to check for its existance.
+                            const info = MainViewManager.findInAllWorkingSets(userPrefFullPath);
+                            let paneId;
+                            if (info.length) {
+                                paneId = info[0].paneId;
+                            }
+                            FileViewController.openFileAndAddToWorkingSet(userPrefFullPath, paneId)
+                                .done(function () {
+                                    Dialogs.showModalDialog(
+                                        DefaultDialogs.DIALOG_ID_ERROR,
+                                        Strings.ERROR_PREFS_CORRUPT_TITLE,
+                                        Strings.ERROR_PREFS_CORRUPT
+                                    ).done(function () {
+                                        // give the focus back to the editor with the pref file
+                                        MainViewManager.focusActivePane();
+                                    });
+                                });
+                        }
+                    });
+                });
+
+                // See if any startup files were passed to the application
+                if (brackets.app.getPendingFilesToOpen) {
+                    brackets.app.getPendingFilesToOpen(function (err, paths) {
+                        DragAndDrop.openDroppedFiles(paths);
+                    });
+                }
+            });
+        });
+    }
+
     /**
      * Setup Brackets
      */
@@ -324,83 +404,7 @@ define(function (require, exports, module) {
 
         // Load default languages and preferences
         Async.waitForAll([LanguageManager.ready, PreferencesManager.ready]).always(function () {
-            // Load all extensions. This promise will complete even if one or more
-            // extensions fail to load.
-            const extensionPathOverride = params.get("extensions");  // used by unit tests
-            const extensionLoaderPromise = ExtensionLoader.init(extensionPathOverride ? extensionPathOverride.split(",") : null);
-
-            // Finish UI initialization
-            ViewCommandHandlers.restoreFontSize();
-            ProjectManager.getStartupProjectPath().then((initialProjectPath)=>{
-                ProjectManager.openProject(initialProjectPath).always(function () {
-                    _initTest();
-
-                    // If this is the first launch, and we have an index.html file in the project folder (which should be
-                    // the samples folder on first launch), open it automatically. (We explicitly check for the
-                    // samples folder in case this is the first time we're launching Brackets after upgrading from
-                    // an old version that might not have set the "afterFirstLaunch" pref.)
-                    const deferred = new $.Deferred();
-
-                    if (!params.get("skipSampleProjectLoad") && !PreferencesManager.getViewState("afterFirstLaunch")) {
-                        PreferencesManager.setViewState("afterFirstLaunch", "true");
-                        if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
-                            FileSystem.resolve(initialProjectPath + "index.html", function (err, file) {
-                                if (!err) {
-                                    const promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
-                                    promise.then(deferred.resolve, deferred.reject);
-                                } else {
-                                    deferred.reject();
-                                }
-                            });
-                        } else {
-                            deferred.resolve();
-                        }
-                    } else {
-                        deferred.resolve();
-                    }
-
-                    deferred.always(function () {
-                        extensionLoaderPromise.always(function () {
-                            // Signal that extensions are loaded
-                            AppInit._dispatchReady(AppInit.EXTENSIONS_LOADED);
-                            // Signal that Brackets is loaded
-                            AppInit._dispatchReady(AppInit.APP_READY);
-                            _removePhoenixLoadingOverlay();
-
-                            PerfUtils.addMeasurement("Application Startup");
-
-                            if (PreferencesManager._isUserScopeCorrupt()) {
-                                const userPrefFullPath = PreferencesManager.getUserPrefFile();
-                                // user scope can get corrupt only if the file exists, is readable,
-                                // but malformed. no need to check for its existance.
-                                const info = MainViewManager.findInAllWorkingSets(userPrefFullPath);
-                                let paneId;
-                                if (info.length) {
-                                    paneId = info[0].paneId;
-                                }
-                                FileViewController.openFileAndAddToWorkingSet(userPrefFullPath, paneId)
-                                    .done(function () {
-                                        Dialogs.showModalDialog(
-                                            DefaultDialogs.DIALOG_ID_ERROR,
-                                            Strings.ERROR_PREFS_CORRUPT_TITLE,
-                                            Strings.ERROR_PREFS_CORRUPT
-                                        ).done(function () {
-                                            // give the focus back to the editor with the pref file
-                                            MainViewManager.focusActivePane();
-                                        });
-                                    });
-                            }
-                        });
-                    });
-
-                    // See if any startup files were passed to the application
-                    if (brackets.app.getPendingFilesToOpen) {
-                        brackets.app.getPendingFilesToOpen(function (err, paths) {
-                            DragAndDrop.openDroppedFiles(paths);
-                        });
-                    }
-                });
-            });
+            window._phoenixfsAppDirsCreatePromise.finally(_startupBrackets);
         });
     }
 

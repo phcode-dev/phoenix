@@ -18,7 +18,7 @@
  */
 
 // jshint ignore: start
-/*global fs*/
+/*global fs, Phoenix, logger*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
 
@@ -31,11 +31,12 @@
  * This module should be functionally as light weight as possible with minimal deps as it is a shell component.
  * **/
 
-function _setupVFS(Phoenix, fsLib, pathLib){
+function _setupVFS(fsLib, pathLib){
     Phoenix.VFS = {
         getRootDir: () => '/fs/',
         getMountDir: () => '/mnt/',
         getAppSupportDir: () => '/fs/app/',
+        getExtensionDir: () => '/fs/app/extensions',
         getLocalDir: () => '/fs/local/',
         getTrashDir: () => '/fs/trash/',
         getDefaultProjectDir: () => '/fs/local/default project/',
@@ -120,28 +121,6 @@ const _getFsEncoding = function (encoding){
     return encoding;
 };
 
-
-const _FS_ERROR_MESSAGE = 'Oops. Phoenix could not be started due to missing file system library.';
-
-const alertError = function (message, err){
-    window.alert(message);
-    throw new Error(err || message);
-};
-
-const errorCb = function (err){
-    if(err) {
-        alertError(_FS_ERROR_MESSAGE, err);
-    }
-};
-
-const _createAppDirs = function (vfs) {
-    // Create phoenix app dirs
-    vfs.ensureExistsDir(vfs.getRootDir(), errorCb);
-    vfs.ensureExistsDir(vfs.getAppSupportDir(), errorCb);
-    vfs.ensureExistsDir(vfs.getLocalDir(), errorCb);
-    vfs.ensureExistsDir(vfs.getTrashDir(), errorCb);
-};
-
 const _SAMPLE_HTML = `<!DOCTYPE html>
 <html>
     <head>
@@ -150,36 +129,56 @@ const _SAMPLE_HTML = `<!DOCTYPE html>
  
     <body>
         <h1>Welcome to Phoenix</h1>
-        <p> Phoenix is in alpha and is under active development.</p>
-        <p> Use Google Chrome/ Microsoft Edge/ Opera browser for opening projects in your system using the 
-         [File Menu > Open Folder] Option or by pressing Ctrl+Shift+O/ cmd+shift+O shortcut</p>
+        <p> Modern, Open-source, IDE For The Web.</p>
     </body>
 </html>`;
 
-const _createDefaultProject = function (vfs, Phoenix) {
+// always resolves even if error
+function _tryCreateDefaultProject() {
     // Create phoenix app dirs
     // Create Phoenix default project if it doesnt exist
-    let projectDir = vfs.getDefaultProjectDir();
-    Phoenix.firstBoot = false;
-    vfs.exists(projectDir, (exists)=>{
-        if(!exists){
-            vfs.ensureExistsDir(projectDir, (err)=>{
-                errorCb(err); // just alert and proceed hoping for the best
-                let indexFile = vfs.path.normalize(`${projectDir}/index.html`);
-                Phoenix.firstBoot = true;
-                fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', errorCb);
-            });
-        }
+    return new Promise((resolve)=>{
+        let projectDir = Phoenix.VFS.getDefaultProjectDir();
+        Phoenix.VFS.exists(projectDir, (exists)=>{
+            if(!exists){
+                Phoenix.VFS.ensureExistsDir(projectDir, (err)=>{
+                    if(err){
+                        logger.reportError(err, "Error creating default project");
+                    }
+                    let indexFile = Phoenix.VFS.path.normalize(`${projectDir}/index.html`);
+                    Phoenix.VFS.fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8');
+                    resolve();
+                });
+                return;
+            }
+            resolve();
+        });
     });
+}
+
+const _createAppDirs = function () {
+    // Create phoenix app dirs
+    return Promise.all([
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getRootDir()),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getAppSupportDir()),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getLocalDir()),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getTrashDir()),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()+"/user"),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()+"/dev"),
+        _tryCreateDefaultProject()
+    ]);
 };
 
-export default function init(Phoenix) {
-    if(!window.fs || !window.path || !Phoenix){
-        alertError(_FS_ERROR_MESSAGE);
+
+const _FS_ERROR_MESSAGE = 'Oops. Phoenix could not be started due to missing file system library.';
+export default function initVFS() {
+    if(!window.fs || !window.path || !window.Phoenix){
+        window.alert(_FS_ERROR_MESSAGE);
+        throw new Error(_FS_ERROR_MESSAGE);
     }
 
-    const vfs = _setupVFS(Phoenix, window.fs, window.path);
-    _createAppDirs(vfs);
-    _createDefaultProject(vfs, Phoenix);
+    const vfs = _setupVFS(window.fs, window.path);
+    window._phoenixfsAppDirsCreatePromise = _createAppDirs(vfs);
 }
 

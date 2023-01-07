@@ -64,7 +64,8 @@
             const newCacheVersion = "V3"; // just increment this number to V2, v3 etc. to force clear the cached content.
             const lastClearedVersion = window.localStorage.getItem(cacheKey);
             if(lastClearedVersion === null){
-                // First load, no cache, return.
+                // setup First load flag, no cache, return.
+                window.phoenixFirstBoot = true;
                 localStorage.setItem(cacheKey, newCacheVersion);
                 return;
             }
