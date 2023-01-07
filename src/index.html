@@ -34,14 +34,8 @@
     <meta name="msapplication-TileColor" content="#47484B">
     <title>Phoenix Code</title>
 
-    <!-- start non deferred inline javascript
-     https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer
-     Ensure that inline javascript should not have any dependency on any other defer loaded script. If there is, then
-     the inline script may be executed before the dependent file is loaded causing unexpected behavior.
-     All modules are loaded deferred by default, and we were seeing lots of bugsnag errors signalling inconsistent
-     order between inline and src loaded scripts.
-     Deferred loading also seems to improve load time by a lot.
-    -->
+    <!-- start inline javascript and non module bootstrap scripts. you must add module scripts to the
+     javascript module section only!!-->
     <script>
         if(["dev.phcode.dev", "staging.phcode.dev"].includes(location.hostname)
             && localStorage.getItem("devDomainsEnabled") !== "true"){
@@ -164,18 +158,21 @@
             MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
     </script>
 
-    <!-- end non deferred inline javascript-->
-    <!-- Deferred JavaScript -->
+    <!-- start inline javascript and non module bootstrap scripts-->
+
+    <!-- start javascript module scripts-->
     <!--
-    All script tags must be marked with defer as we use both module and non module scripts mixed. Since module scripts
-    are marked as defer by default, this can lead to unpredictable ordering with mixed scripts. So we have to defer
-    all scripts. This will give the added benefit of parallel fetch.
+    All module script tags comes here. If there are non module scripts that depend on modules, they must be
+    marked with defer Since module scripts are marked as defer by default. If not done, this can lead to
+     unpredictable ordering with mixed scripts as the non module script without defer attribute
+     will get loaded before the module scripts.
     https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer
     -->
     <!-- Import the phoenix browser virtual file system -->
     <script src="phoenix/virtualfs.js" defer></script>
     <script src="phoenix/shell.js" type="module" defer></script>
     <script src="phoenix/virtual-server-loader.js" type="module" defer></script>
+    <!-- end javascript module scripts-->
 
     <!-- CSS/LESS -->
 
@@ -184,23 +181,24 @@
     <link rel="stylesheet" type="text/css" href="thirdparty/CodeMirror/lib/codemirror.css">
     <link rel="stylesheet/less" type="text/css" href="styles/brackets.less">
 
-    <!-- Pre-load third party scripts that cannot be async loaded. -->
+    <!-- Pre-load third party scripts that cannot be async loaded. Defer loading of all below scripts
+     caused increase in boot time with cache as observed from analytics. so we don't defer third party deps-->
     <script>
         // https://lesscss.org/usage/#using-less-in-the-browser-setting-options
         less = {
             math: 'always'
         };
     </script>
-    <script src="thirdparty/less.min.js" defer></script>
-    <script src="thirdparty/jquery-2.1.3.min.js" defer></script>
-    <script src="thirdparty/underscore-min.js" defer></script>
-    <script src="thirdparty/floating-ui.core.umd.min.js" defer></script>
-    <script src="thirdparty/floating-ui.dom.umd.min.js" defer></script>
-    <script type="text/javascript" src="thirdparty/jszip.js" defer></script>
-    <script type="text/javascript" src="thirdparty/jszip-utils-phoenix.js" defer></script>
+    <script src="thirdparty/less.min.js"></script>
+    <script src="thirdparty/jquery-2.1.3.min.js"></script>
+    <script src="thirdparty/underscore-min.js"></script>
+    <script src="thirdparty/floating-ui.core.umd.min.js"></script>
+    <script src="thirdparty/floating-ui.dom.umd.min.js"></script>
+    <script type="text/javascript" src="thirdparty/jszip.js"></script>
+    <script type="text/javascript" src="thirdparty/jszip-utils-phoenix.js"></script>
 
     <!-- Warn about failed cross origin requests in Chrome -->
-    <script type="application/javascript" src="xorigin.js" defer></script>
+    <script type="application/javascript" src="xorigin.js"></script>
 
 </head>
 <body onload="_loadPhoenixAfterSplashScreen()">
