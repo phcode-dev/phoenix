@@ -109,6 +109,11 @@
         _resetCacheIfNeeded();
     </script>
 
+    <!-- load bugsnag error reporter as soon as cache handling code is done-->
+    <script src="thirdparty/bugsnag.min.js"></script>
+    <script src="appConfig.js"></script>
+    <script src="logger.js"></script>
+
     <script>
         window.splashScreenPresent = true;
 
@@ -160,6 +165,17 @@
     </script>
 
     <!-- end non deferred inline javascript-->
+    <!-- Deferred JavaScript -->
+    <!--
+    All script tags must be marked with defer as we use both module and non module scripts mixed. Since module scripts
+    are marked as defer by default, this can lead to unpredictable ordering with mixed scripts. So we have to defer
+    all scripts. This will give the added benefit of parallel fetch.
+    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer
+    -->
+    <!-- Import the phoenix browser virtual file system -->
+    <script src="phoenix/virtualfs.js" defer></script>
+    <script src="phoenix/shell.js" type="module" defer></script>
+    <script src="phoenix/virtual-server-loader.js" type="module" defer></script>
 
     <!-- CSS/LESS -->
 
@@ -168,18 +184,7 @@
     <link rel="stylesheet" type="text/css" href="thirdparty/CodeMirror/lib/codemirror.css">
     <link rel="stylesheet/less" type="text/css" href="styles/brackets.less">
 
-    <!-- JavaScript -->
-    <!--
-    All script tags must be marked with defer as we use both module and non module scripts mixed. Since module scripts
-    are marked as defer by default, this can lead to unpredictable ordering with mixed scripts. So we have to defer
-    all scripts. This will give the added benefit of parallel fetch.
-    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer
-    -->
-    <script src="thirdparty/bugsnag.min.js" defer></script>
-    <script src="logger.js" type="module" defer></script>
-
     <!-- Pre-load third party scripts that cannot be async loaded. -->
-    <!-- build:js thirdparty/thirdparty.min.js -->
     <script>
         // https://lesscss.org/usage/#using-less-in-the-browser-setting-options
         less = {
@@ -191,20 +196,11 @@
     <script src="thirdparty/underscore-min.js" defer></script>
     <script src="thirdparty/floating-ui.core.umd.min.js" defer></script>
     <script src="thirdparty/floating-ui.dom.umd.min.js" defer></script>
-    <script src="phoenix/virtualfs.js" defer></script>
     <script type="text/javascript" src="thirdparty/jszip.js" defer></script>
     <script type="text/javascript" src="thirdparty/jszip-utils-phoenix.js" defer></script>
-    <!-- endbuild -->
 
-
-    <!-- Import the phoenix browser virtual file system -->
-    <script src="phoenix/shell.js" type="module" defer></script>
-    <script src="phoenix/virtual-server-loader.js" type="module" defer></script>
-
-    <!--build:js utils.min.js -->
     <!-- Warn about failed cross origin requests in Chrome -->
     <script type="application/javascript" src="xorigin.js" defer></script>
-    <!-- endbuild -->
 
 </head>
 <body onload="_loadPhoenixAfterSplashScreen()">
