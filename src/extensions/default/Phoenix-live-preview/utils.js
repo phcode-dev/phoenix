@@ -103,7 +103,10 @@ define(function (require, exports, module) {
                         return;
                     }
                 }
-                resolve({URL: getNoPreviewURL()});
+                resolve({
+                    URL: getNoPreviewURL(),
+                    isNoPreview: true
+                });
             }catch (e) {
                 reject(e);
             }

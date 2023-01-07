@@ -406,7 +406,7 @@ define(function (require, exports, module) {
     async function _openLivePreviewURL(_event, previewDetails) {
         _loadPreview(true);
         const currentPreviewDetails = await utils.getPreviewDetails();
-        if(!currentPreviewDetails.isMarkdownFile && currentPreviewDetails.fullPath !== previewDetails.fullPath){
+        if(currentPreviewDetails.isHTMLFile && currentPreviewDetails.fullPath !== previewDetails.fullPath){
             console.error("Live preview URLs differ between phoenix live preview extension and core live preview",
                 currentPreviewDetails, previewDetails);
         }

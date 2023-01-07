@@ -178,7 +178,7 @@ export default function initVFS() {
         throw new Error(_FS_ERROR_MESSAGE);
     }
 
-    const vfs = _setupVFS(window.fs, window.path);
-    window._phoenixfsAppDirsCreatePromise = _createAppDirs(vfs);
+    _setupVFS(window.fs, window.path);
+    window._phoenixfsAppDirsCreatePromise = _createAppDirs();
 }
 

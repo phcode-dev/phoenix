@@ -689,17 +689,7 @@ define(function (require, exports, module) {
         // TODO: need to run _onDocumentChange() after load if doc != currentDocument here? Maybe not, since activeEditorChange
         // doesn't trigger it, while inline editors can still cause edits in doc other than currentDoc...
         _getInitialDocFromCurrent().done(function (doc) {
-            var prepareServerPromise = (doc && _prepareServer(doc)) || new $.Deferred().reject(),
-                otherDocumentsInWorkingFiles;
-
-            if (doc && !doc._masterEditor) {
-                otherDocumentsInWorkingFiles = MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES);
-                MainViewManager.addToWorkingSet(MainViewManager.ACTIVE_PANE, doc.file);
-
-                if (!otherDocumentsInWorkingFiles) {
-                    CommandManager.execute(Commands.CMD_OPEN, { fullPath: doc.file.fullPath });
-                }
-            }
+            var prepareServerPromise = (doc && _prepareServer(doc)) || new $.Deferred().reject();
 
             // wait for server (StaticServer, Base URL or file:)
             prepareServerPromise
