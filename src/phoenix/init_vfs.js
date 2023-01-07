@@ -36,7 +36,7 @@ function _setupVFS(fsLib, pathLib){
         getRootDir: () => '/fs/',
         getMountDir: () => '/mnt/',
         getAppSupportDir: () => '/fs/app/',
-        getExtensionDir: () => '/fs/app/extensions',
+        getExtensionDir: () => '/fs/app/extensions/',
         getLocalDir: () => '/fs/local/',
         getTrashDir: () => '/fs/trash/',
         getDefaultProjectDir: () => '/fs/local/default project/',
@@ -164,8 +164,8 @@ const _createAppDirs = function () {
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getLocalDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getTrashDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()),
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()+"/user"),
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()+"/dev"),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()+"user"),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()+"dev"),
         _tryCreateDefaultProject()
     ]);
 };
