@@ -91,7 +91,7 @@ define(function (require, exports, module) {
      * Returns the full path to the development extensions directory.
      */
     function getExtensionPath() {
-        return pathLib.normalize(brackets.app.getApplicationSupportDirectory() + "/extensions");
+        return pathLib.normalize(brackets.app.getExtensionDirectory());
     }
 
     /**
