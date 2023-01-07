@@ -34,12 +34,27 @@
     <meta name="msapplication-TileColor" content="#47484B">
     <title>Phoenix</title>
 
-    <!-- Bootstrap cache check. since index.html is always loaded network first, the cache reset code will always
-    be guaranteed to be hit on app update.
-    Note that this cannot be moved to a separate file and should be in index.html due to above reason.
+    <!-- start non deferred inline javascript
+     https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer
+     Ensure that inline javascript should not have any dependency on any other defer loaded script. If there is, then
+     the inline script may be executed before the dependent file is loaded causing unexpected behavior.
+     All modules are loaded deferred by default, and we were seeing lots of bugsnag errors signalling inconsistent
+     order between inline and src loaded scripts.
+     Deferred loading also seems to improve load time by a lot.
     -->
-    <script type="module">
-        // this is a nuke cache option. Though mostly safe, Use it wisely to prevent slow startup when resetting.
+    <script>
+        if(["dev.phcode.dev", "staging.phcode.dev"].includes(location.hostname)
+            && localStorage.getItem("devDomainsEnabled") !== "true"){
+            alert("Hello explorer, you have reached a development version of phcode.dev that is not for general use and could be very unstable." +
+                `\n\nIf you know what you are doing and what to visit the dev site, please go to https://${location.hostname}/devEnable.html to enable dev site and visit again.` +
+                "\n\nYou will now be redirected to phcode.dev.");
+            window.location = "https://phcode.dev";
+        }
+        /*Bootstrap cache check. since index.html is always loaded network first, the cache reset code will always
+        be guaranteed to be hit on app update.
+        Note that this cannot be moved to a separate file and should be in index.html due to above reason.
+        This is a nuke cache option. Though mostly safe, Use it wisely to prevent slow startup when resetting.
+        */
         const urlParams = new URLSearchParams(window.location.search || "");
         window.testEnvironment = (urlParams.get('testEnvironment') === 'true');
         const CACHE_NAME_EVERYTHING = "everything";
@@ -93,60 +108,6 @@
         _resetCacheIfNeeded();
     </script>
 
-    <!-- CSS/LESS -->
-
-    <link rel="stylesheet" type="text/css" href="thirdparty/fontawesome/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="thirdparty/devicon/devicon.min.css">
-    <link rel="stylesheet" type="text/css" href="thirdparty/CodeMirror/lib/codemirror.css">
-    <link rel="stylesheet/less" type="text/css" href="styles/brackets.less">
-
-    <!-- JavaScript -->
-    <script src="thirdparty/bugsnag.min.js"></script>
-    <script src="logger.js" type="module"></script>
-    <script type="text/javascript">
-        //Bugsnag.notify(new Error('Test error'));
-        if(["dev.phcode.dev", "staging.phcode.dev"].includes(location.hostname)
-            && localStorage.getItem("devDomainsEnabled") !== "true"){
-            alert("Hello explorer, you have reached a development version of phcode.dev that is not for general use and could be very unstable." +
-                `\n\nIf you know what you are doing and what to visit the dev site, please go to https://${location.hostname}/devEnable.html to enable dev site and visit again.` +
-                "\n\nYou will now be redirected to phcode.dev.");
-            window.location = "https://phcode.dev";
-        }
-    </script>
-
-    <!-- Pre-load third party scripts that cannot be async loaded. -->
-    <!-- build:js thirdparty/thirdparty.min.js -->
-    <script>
-        // https://lesscss.org/usage/#using-less-in-the-browser-setting-options
-        less = {
-            math: 'always'
-        };
-    </script>
-    <script src="thirdparty/less.min.js"></script>
-    <script src="thirdparty/jquery-2.1.3.min.js"></script>
-    <script src="thirdparty/underscore-min.js"></script>
-    <script src="thirdparty/floating-ui.core.umd.min.js"></script>
-    <script src="thirdparty/floating-ui.dom.umd.min.js"></script>
-    <script src="phoenix/virtualfs.js"></script>
-    <script type="text/javascript" src="thirdparty/jszip.js"></script>
-    <script type="text/javascript" src="thirdparty/jszip-utils-phoenix.js"></script>
-    <!-- endbuild -->
-
-
-    <!-- Import the phoenix browser virtual file system -->
-    <script src="phoenix/shell.js" type="module"></script>
-    <script src="phoenix/virtual-server-loader.js" type="module"></script>
-
-    <!--build:js utils.min.js -->
-    <!-- Warn about failed cross origin requests in Chrome -->
-    <script type="application/javascript" src="xorigin.js"></script>
-    <!-- endbuild -->
-    <script type="text/javascript">
-        // Mixpanel analytics
-        (function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]=[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (stub)");return d};a.people.toString=function(){return a.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
-            for(h=0;h<i.length;h++)g(a,i[h]);var j="set set_once union unset remove delete".split(" ");a.get_group=function(){function b(c){d[c]=function(){call2_args=arguments;call2=[c].concat(Array.prototype.slice.call(call2_args,0));a.push([e,call2])}}for(var d={},e=["get_group"].concat(Array.prototype.slice.call(arguments,0)),c=0;c<j.length;c++)b(j[c]);return d};b._i.push([e,f,c])};b.__SV=1.2;e=f.createElement("script");e.type="text/javascript";e.async=!0;e.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
-            MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
-    </script>
     <script>
         window.splashScreenPresent = true;
 
@@ -159,6 +120,8 @@
             }
         }
 
+        // this function is called onload so it is safe to be deferred loaded inline script as it is guarented to only
+        // get executed after all deferred scripts has been loaded
         function _loadPhoenixAfterSplashScreen() {
             _removeSplashScreenIfNeeded();
             if(window.cacheRefreshInProgress){
@@ -187,6 +150,60 @@
             loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
         }
     </script>
+
+    <script type="text/javascript">
+        // Mixpanel analytics
+        (function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]=[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (stub)");return d};a.people.toString=function(){return a.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+            for(h=0;h<i.length;h++)g(a,i[h]);var j="set set_once union unset remove delete".split(" ");a.get_group=function(){function b(c){d[c]=function(){call2_args=arguments;call2=[c].concat(Array.prototype.slice.call(call2_args,0));a.push([e,call2])}}for(var d={},e=["get_group"].concat(Array.prototype.slice.call(arguments,0)),c=0;c<j.length;c++)b(j[c]);return d};b._i.push([e,f,c])};b.__SV=1.2;e=f.createElement("script");e.type="text/javascript";e.async=!0;e.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
+            MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
+    </script>
+
+    <!-- end non deferred inline javascript-->
+
+    <!-- CSS/LESS -->
+
+    <link rel="stylesheet" type="text/css" href="thirdparty/fontawesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="thirdparty/devicon/devicon.min.css">
+    <link rel="stylesheet" type="text/css" href="thirdparty/CodeMirror/lib/codemirror.css">
+    <link rel="stylesheet/less" type="text/css" href="styles/brackets.less">
+
+    <!-- JavaScript -->
+    <!--
+    All script tags must be marked with defer as we use both module and non module scripts mixed. Since module scripts
+    are marked as defer by default, this can lead to unpredictable ordering with mixed scripts. So we have to defer
+    all scripts. This will give the added benefit of parallel fetch.
+    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer
+    -->
+    <script src="thirdparty/bugsnag.min.js" defer></script>
+    <script src="logger.js" type="module" defer></script>
+
+    <!-- Pre-load third party scripts that cannot be async loaded. -->
+    <!-- build:js thirdparty/thirdparty.min.js -->
+    <script>
+        // https://lesscss.org/usage/#using-less-in-the-browser-setting-options
+        less = {
+            math: 'always'
+        };
+    </script>
+    <script src="thirdparty/less.min.js" defer></script>
+    <script src="thirdparty/jquery-2.1.3.min.js" defer></script>
+    <script src="thirdparty/underscore-min.js" defer></script>
+    <script src="thirdparty/floating-ui.core.umd.min.js" defer></script>
+    <script src="thirdparty/floating-ui.dom.umd.min.js" defer></script>
+    <script src="phoenix/virtualfs.js" defer></script>
+    <script type="text/javascript" src="thirdparty/jszip.js" defer></script>
+    <script type="text/javascript" src="thirdparty/jszip-utils-phoenix.js" defer></script>
+    <!-- endbuild -->
+
+
+    <!-- Import the phoenix browser virtual file system -->
+    <script src="phoenix/shell.js" type="module" defer></script>
+    <script src="phoenix/virtual-server-loader.js" type="module" defer></script>
+
+    <!--build:js utils.min.js -->
+    <!-- Warn about failed cross origin requests in Chrome -->
+    <script type="application/javascript" src="xorigin.js" defer></script>
+    <!-- endbuild -->
 
 </head>
 <body onload="_loadPhoenixAfterSplashScreen()">
