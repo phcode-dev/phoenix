@@ -283,10 +283,7 @@ define(function (require, exports, module) {
         loadedThemes[theme.name] = theme;
         ThemeSettings._setThemes(loadedThemes);
 
-        // For themes that are loaded after ThemeManager has been loaded,
-        // we should check if it's the current theme.  If it is, then we just
-        // load it.
-        if (currentTheme && currentTheme.name === theme.name) {
+        if (getCurrentTheme() && getCurrentTheme().name === theme.name) {
             refresh(true);
         }
         return theme;
