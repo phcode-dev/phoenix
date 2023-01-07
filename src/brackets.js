@@ -404,7 +404,11 @@ define(function (require, exports, module) {
 
         // Load default languages and preferences
         Async.waitForAll([LanguageManager.ready, PreferencesManager.ready]).always(function () {
-            window._phoenixfsAppDirsCreatePromise.finally(_startupBrackets);
+            if(window._phoenixfsAppDirsCreatePromise){
+                window._phoenixfsAppDirsCreatePromise.finally(_startupBrackets);
+            } else {
+                _startupBrackets();
+            }
         });
     }
 

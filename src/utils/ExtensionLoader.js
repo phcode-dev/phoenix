@@ -90,7 +90,7 @@ define(function (require, exports, module) {
     /**
      * Returns the full path to the development extensions directory.
      */
-    function getExtensionPath() {
+    function _getExtensionPath() {
         return pathLib.normalize(brackets.app.getExtensionDirectory());
     }
 
@@ -98,7 +98,7 @@ define(function (require, exports, module) {
      * Returns the full path to the development extensions directory.
      */
     function getDevExtensionPath() {
-        return getExtensionPath() + "/dev";
+        return _getExtensionPath() + "/dev";
     }
 
     /**
@@ -109,7 +109,7 @@ define(function (require, exports, module) {
      */
     function getUserExtensionPath() {
         if (brackets.app.getApplicationSupportDirectory) {
-            return getExtensionPath()+ "/user";
+            return _getExtensionPath()+ "/user";
         }
 
         return null;
@@ -529,7 +529,7 @@ define(function (require, exports, module) {
     function testAllExtensionsInNativeDirectory(directory) {
         var result = new $.Deferred();
         var virtualServerURL = window.fsServerUrl,
-            extensionsDir = getExtensionPath() + "/" + directory,
+            extensionsDir = _getExtensionPath() + "/" + directory,
             config = {
                 baseUrl: virtualServerURL + extensionsDir
             };
