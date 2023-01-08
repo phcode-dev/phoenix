@@ -1,3 +1,18 @@
+/* Brackets Fonts */
+
+/* Alternative weights */
+
+:root {
+    --sansFontFamily: 'SourceSansPro', Helvetica, Arial, "Meiryo UI", "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+}
+
+/* SourceSansPro Regular */
+@font-face {
+    font-family: 'SourceSansPro';
+    src: url('../../styles/fonts/SourceSansPro/SourceSansPro-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
 
 body {
     background: #000A2E;
@@ -5,7 +20,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Montserrat';
+    font-family: var(--sansFontFamily) ;
     font-size: 22px;
 }
 
@@ -72,6 +87,7 @@ h1 {
     width: 200px;
     height: 45px;
     background: linear-gradient(90deg, #FAAA47 0%, #FA1801 100%);
+    font-family: var(--sansFontFamily) ;
     background-size: 200% 200%;
     border-radius: 5px;
     border: none;
