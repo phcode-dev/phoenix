@@ -1,9 +1,22 @@
+:root {
+    --sansFontFamily: 'SourceSansPro', Helvetica, Arial, "Meiryo UI", "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+}
+
+/* SourceSansPro Regular */
+@font-face {
+    font-family: 'SourceSansPro';
+    src: url('../../../../styles/fonts/SourceSansPro/SourceSansPro-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 html {
     height: 100%;
 }
 
 body {
-    font-family: 'Urbanist', sans-serif;
+    font-family: var(--sansFontFamily);
     overflow: hidden;
     background-color: #fff;
     height: 100%;
