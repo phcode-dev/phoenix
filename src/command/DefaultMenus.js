@@ -75,11 +75,9 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.FILE_SAVE);
         menu.addMenuItem(Commands.FILE_SAVE_ALL);
         // menu.addMenuItem(Commands.FILE_SAVE_AS); not yet available in phoenix
-        menu.addMenuDivider();
-        //menu.addMenuItem(Commands.TOGGLE_LIVE_PREVIEW_MB_MODE); remove this mode as its not in phcode
         // menu.addMenuItem(Commands.FILE_PROJECT_SETTINGS); not yet available in phoenix
-        //menu.addMenuDivider(); not yet available in phoenix
-        // menu.addMenuItem(Commands.FILE_EXTENSION_MANAGER); not yet available in phoenix
+        menu.addMenuDivider();
+        menu.addMenuItem(Commands.FILE_EXTENSION_MANAGER);
 
         /*
          * Edit  menu

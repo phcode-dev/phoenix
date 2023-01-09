@@ -34,13 +34,13 @@ define(function (require, exports, module) {
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         FileUtils = brackets.getModule("file/FileUtils"),
+        ZipUtils = brackets.getModule("utils/ZipUtils"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         EventDispatcher     = brackets.getModule("utils/EventDispatcher"),
         createProjectDialogue = require("text!html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
         replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
-        guidedTour = require("guided-tour"),
-        utils = require("utils");
+        guidedTour = require("guided-tour");
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -249,7 +249,7 @@ define(function (require, exports, module) {
     function _unzipProject(data, projectPath, flattenFirstLevelInZip, progressCb) {
         return new Promise((resolve, reject)=>{
             _updateCreateProjectDialogueMessage(Strings.UNZIP_IN_PROGRESS, Strings.DOWNLOAD_COMPLETE);
-            utils.unzipFileToLocation(data, projectPath, flattenFirstLevelInZip, progressCb)
+            ZipUtils.unzipBinDataToLocation(data, projectPath, flattenFirstLevelInZip, progressCb)
                 .then(resolve)
                 .catch(reject);
         });

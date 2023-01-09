@@ -35,7 +35,8 @@ define(function (require, exports, module) {
         ExtensionLoader      = require("utils/ExtensionLoader"),
         NodeConnection       = require("utils/NodeConnection"),
         PreferencesManager   = require("preferences/PreferencesManager"),
-        PathUtils            = require("thirdparty/path-utils/path-utils");
+        PathUtils            = require("thirdparty/path-utils/path-utils"),
+        ExtensionDownloader  = require("extensibility/ExtensionDownloader");
 
     PreferencesManager.definePreference("proxy", "string", undefined, {
         description: Strings.DESCRIPTION_PROXY
@@ -154,45 +155,42 @@ define(function (require, exports, module) {
      *          rejected with an error object.
      */
     function install(path, nameHint, _doUpdate) {
-        return _extensionManagerCall(function (extensionManager) {
-            var d                       = new $.Deferred(),
-                destinationDirectory    = ExtensionLoader.getUserExtensionPath(),
-                disabledDirectory       = destinationDirectory.replace(/\/user$/, "/disabled"),
-                systemDirectory         = FileUtils.getNativeBracketsDirectoryPath() + "/extensions/default/";
+        var d                       = new $.Deferred(),
+            destinationDirectory    = ExtensionLoader.getUserExtensionPath(),
+            disabledDirectory       = destinationDirectory.replace(/\/user$/, "/disabled"),
+            systemDirectory         = FileUtils.getNativeBracketsDirectoryPath() + "/extensions/default/";
 
-            var operation = _doUpdate ? "update" : "install";
-            extensionManager[operation](path, destinationDirectory, {
-                disabledDirectory: disabledDirectory,
-                systemExtensionDirectory: systemDirectory,
-                apiVersion: brackets.metadata.apiVersion,
-                nameHint: nameHint,
-                proxy: PreferencesManager.get("proxy")
-            })
-                .done(function (result) {
-                    result.keepFile = false;
+        var operation = _doUpdate ? "update" : "install";
+        ExtensionDownloader[operation](path, destinationDirectory, {
+            disabledDirectory: disabledDirectory,
+            systemExtensionDirectory: systemDirectory,
+            apiVersion: brackets.metadata.apiVersion,
+            nameHint: nameHint,
+            proxy: PreferencesManager.get("proxy")
+        })
+            .done(function (result) {
 
-                    if (result.installationStatus !== InstallationStatuses.INSTALLED || _doUpdate) {
+                if (result.installationStatus !== InstallationStatuses.INSTALLED || _doUpdate) {
+                    d.resolve(result);
+                } else {
+                    // This was a new extension and everything looked fine.
+                    // We load it into Brackets right away.
+                    ExtensionLoader.loadExtension(result.name, {
+                        // On Windows, it looks like Node converts Unix-y paths to backslashy paths.
+                        // We need to convert them back.
+                        baseUrl: FileUtils.convertWindowsPathToUnixPath(result.installedTo)
+                    }, "main").then(function () {
                         d.resolve(result);
-                    } else {
-                        // This was a new extension and everything looked fine.
-                        // We load it into Brackets right away.
-                        ExtensionLoader.loadExtension(result.name, {
-                            // On Windows, it looks like Node converts Unix-y paths to backslashy paths.
-                            // We need to convert them back.
-                            baseUrl: FileUtils.convertWindowsPathToUnixPath(result.installedTo)
-                        }, "main").then(function () {
-                            d.resolve(result);
-                        }, function () {
-                            d.reject(Errors.ERROR_LOADING);
-                        });
-                    }
-                })
-                .fail(function (error) {
-                    d.reject(error);
-                });
+                    }, function () {
+                        d.reject(Errors.ERROR_LOADING);
+                    });
+                }
+            })
+            .fail(function (error) {
+                d.reject(error);
+            });
 
-            return d.promise();
-        });
+        return d.promise();
     }
 
 
@@ -234,42 +232,40 @@ define(function (require, exports, module) {
      * @param {number} downloadId Unique number to identify this request
      * @return {$.Promise}
      */
-    function download(url, downloadId) {
-        return _extensionManagerCall(function (extensionManager) {
-            var d = new $.Deferred();
+    function _download(url, downloadId) {
+        var d = new $.Deferred();
 
-            // Validate URL
-            // TODO: PathUtils fails to parse URLs that are missing the protocol part (e.g. starts immediately with "www...")
-            var parsed = PathUtils.parseUrl(url);
-            if (!parsed.hostname) {  // means PathUtils failed to parse at all
-                d.reject(Errors.MALFORMED_URL);
-                return d.promise();
-            }
-            if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-                d.reject(Errors.UNSUPPORTED_PROTOCOL);
-                return d.promise();
-            }
-
-            var urlInfo = { url: url, parsed: parsed, filenameHint: parsed.filename };
-            githubURLFilter(urlInfo);
-
-            // Decide download destination
-            var filename = urlInfo.filenameHint;
-            filename = filename.replace(/[^a-zA-Z0-9_\- \(\)\.]/g, "_"); // make sure it's a valid filename
-            if (!filename) {  // in case of URL ending in "/"
-                filename = "extension.zip";
-            }
-
-            // Download the bits (using Node since brackets-shell doesn't support binary file IO)
-            var r = extensionManager.downloadFile(downloadId, urlInfo.url, PreferencesManager.get("proxy"));
-            r.done(function (result) {
-                d.resolve({ localPath: FileUtils.convertWindowsPathToUnixPath(result), filenameHint: urlInfo.filenameHint });
-            }).fail(function (err) {
-                d.reject(err);
-            });
-
+        // Validate URL
+        // TODO: PathUtils fails to parse URLs that are missing the protocol part (e.g. starts immediately with "www...")
+        var parsed = PathUtils.parseUrl(url);
+        if (!parsed.hostname) {  // means PathUtils failed to parse at all
+            d.reject(Errors.MALFORMED_URL);
             return d.promise();
+        }
+        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+            d.reject(Errors.UNSUPPORTED_PROTOCOL);
+            return d.promise();
+        }
+
+        var urlInfo = { url: url, parsed: parsed, filenameHint: parsed.filename };
+        githubURLFilter(urlInfo);
+
+        // Decide download destination
+        var filename = urlInfo.filenameHint;
+        filename = filename.replace(/[^a-zA-Z0-9_\- \(\)\.]/g, "_"); // make sure it's a valid filename
+        if (!filename) {  // in case of URL ending in "/"
+            filename = "extension.zip";
+        }
+
+        // Download the bits (using Node since brackets-shell doesn't support binary file IO)
+        var r = ExtensionDownloader.downloadFile(downloadId, urlInfo, PreferencesManager.get("proxy"));
+        r.done(function (result) {
+            d.resolve({ localPath: FileUtils.convertWindowsPathToUnixPath(result), filenameHint: urlInfo.filenameHint });
+        }).fail(function (err) {
+            d.reject(err);
         });
+
+        return d.promise();
     }
 
     /**
@@ -279,9 +275,7 @@ define(function (require, exports, module) {
      * @param {number} downloadId Identifier previously passed to download()
      */
     function cancelDownload(downloadId) {
-        return _extensionManagerCall(function (extensionManager) {
-            return extensionManager.abortDownload(downloadId);
-        });
+        ExtensionDownloader.abortDownload(downloadId);
     }
 
     /**
@@ -304,7 +298,6 @@ define(function (require, exports, module) {
 
         install(path, filenameHint)
             .done(function (result) {
-                result.keepFile = true;
 
                 var installationStatus = result.installationStatus;
                 if (installationStatus === InstallationStatuses.ALREADY_INSTALLED ||
@@ -357,23 +350,14 @@ define(function (require, exports, module) {
         var state = STATE_DOWNLOADING;
 
         var downloadId = (_uniqueId++);
-        download(url, downloadId)
+        _download(url, downloadId)
             .done(function (downloadResult) {
                 state = STATE_INSTALLING;
 
                 installFromPath(downloadResult.localPath, downloadResult.filenameHint)
                     .done(function (result) {
-                        var installationStatus = result.installationStatus;
-
                         state = STATE_SUCCEEDED;
                         result.localPath = downloadResult.localPath;
-                        result.keepFile = false;
-
-                        if (installationStatus === InstallationStatuses.INSTALLED) {
-                            // Delete temp file
-                            FileSystem.getFileForPath(downloadResult.localPath).unlink();
-                        }
-
                         d.resolve(result);
                     })
                     .fail(function (err) {

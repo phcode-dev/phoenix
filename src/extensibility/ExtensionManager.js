@@ -20,6 +20,7 @@
  */
 
 /*jslint regexp: true */
+/*global path*/
 /*unittests: ExtensionManager*/
 
 /**
@@ -35,7 +36,7 @@
 define(function (require, exports, module) {
 
 
-    var _                   = require("thirdparty/lodash"),
+    const _                   = require("thirdparty/lodash"),
         EventDispatcher     = require("utils/EventDispatcher"),
         Package             = require("extensibility/Package"),
         AppInit             = require("utils/AppInit"),
@@ -47,8 +48,11 @@ define(function (require, exports, module) {
         PreferencesManager  = require("preferences/PreferencesManager"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
-        ThemeManager        = require("view/ThemeManager");
+        ThemeManager        = require("view/ThemeManager"),
+        Metrics = require("utils/Metrics");
 
+    const EXTENSION_REGISTRY_LOCAL_STORAGE_KEY = "extension_registry",
+        EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY = "extension_registry_version";
     // semver.browser is an AMD-compatible module
     var semver = require("thirdparty/semver.browser");
 
@@ -193,6 +197,41 @@ define(function (require, exports, module) {
         _idsToDisable = {};
     }
 
+    function _populateExtensions(registry) {
+        Object.keys(registry).forEach(function (id) {
+            if (!extensions[id]) {
+                extensions[id] = {};
+            }
+            extensions[id].registryInfo = registry[id];
+            synchronizeEntry(id);
+        });
+        exports.trigger("registryDownload");
+    }
+
+    function _shouldUpdateExtensionRegistry() {
+        return new Promise((resolve, reject)=>{
+            const currentRegistryVersion = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY);
+            Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "registryVersion",
+                `${currentRegistryVersion || 1}`);
+            $.ajax({
+                url: brackets.config.extension_registry_version,
+                dataType: "json",
+                cache: false
+            })
+                .done(function (registryVersion) {
+                    if(registryVersion.version !== currentRegistryVersion){
+                        resolve(registryVersion.version);
+                    } else {
+                        reject();
+                    }
+                })
+                .fail(function (err) {
+                    console.error("error Fetching Extension Registry version", err);
+                    reject();
+                });
+        });
+    }
+
     /**
      * Downloads the registry of Brackets extensions and stores the information in our
      * extension info.
@@ -207,30 +246,46 @@ define(function (require, exports, module) {
 
         pendingDownloadRegistry = new $.Deferred();
 
-        $.ajax({
-            url: brackets.config.extension_registry,
-            dataType: "json",
-            cache: false
-        })
-            .done(function (data) {
-                exports.hasDownloadedRegistry = true;
-                Object.keys(data).forEach(function (id) {
-                    if (!extensions[id]) {
-                        extensions[id] = {};
+        function _updateRegistry(newVersion) {
+            $.ajax({
+                url: brackets.config.extension_registry,
+                dataType: "json",
+                cache: false
+            })
+                .done(function (registry) {
+                    localStorage.setItem(EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY, newVersion);
+                    localStorage.setItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY, JSON.stringify(registry));
+                    if(!pendingDownloadRegistry.alreadyResolvedFromCache){
+                        _populateExtensions(registry);
+                        pendingDownloadRegistry.resolve();
                     }
-                    extensions[id].registryInfo = data[id];
-                    synchronizeEntry(id);
+                })
+                .fail(function (err) {
+                    console.error("error Fetching Extension Registry", err);
+                    if(!pendingDownloadRegistry.alreadyResolvedFromCache){
+                        pendingDownloadRegistry.reject();
+                    }
+                })
+                .always(function () {
+                    // Make sure to clean up the pending registry so that new requests can be made.
+                    pendingDownloadRegistry = null;
                 });
-                exports.trigger("registryDownload");
+        }
+
+        const registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+        if(registryJson) {
+            // we always immediately but after the promise chain is setup after function return (some bug sigh)
+            // resolve for ui responsiveness and then check for updates.
+            setTimeout(()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "registry", "cachedUse");
+                _populateExtensions(JSON.parse(registryJson));
                 pendingDownloadRegistry.resolve();
-            })
-            .fail(function () {
-                pendingDownloadRegistry.reject();
-            })
-            .always(function () {
-                // Make sure to clean up the pending registry so that new requests can be made.
-                pendingDownloadRegistry = null;
-            });
+            }, 0);
+            pendingDownloadRegistry.alreadyResolvedFromCache = true;
+        }
+        // check for latest updates even if we have cache
+        _shouldUpdateExtensionRegistry()
+            .then(_updateRegistry);
 
         return pendingDownloadRegistry.promise();
     }
@@ -919,8 +974,6 @@ define(function (require, exports, module) {
     exports.updateExtensions        = updateExtensions;
     exports.getAvailableUpdates     = getAvailableUpdates;
     exports.cleanAvailableUpdates   = cleanAvailableUpdates;
-
-    exports.hasDownloadedRegistry   = false;
 
     exports.ENABLED       = ENABLED;
     exports.DISABLED      = DISABLED;

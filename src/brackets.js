@@ -71,6 +71,7 @@ define(function (require, exports, module) {
 
     require("worker/WorkerComm");
     require("utils/PhoenixComm");
+    require("utils/ZipUtils");
 
     // Load dependent modules
     const AppInit             = require("utils/AppInit"),
@@ -191,6 +192,7 @@ define(function (require, exports, module) {
     require("editor/EditorOptionHandlers");
     require("editor/EditorStatusBar");
     require("editor/ImageViewer");
+    require("extensibility/ExtensionDownloader");
     require("extensibility/InstallExtensionDialog");
     require("extensibility/ExtensionManagerDialog");
     require("help/HelpCommandHandlers");

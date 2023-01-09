@@ -456,7 +456,8 @@ define(function (require, exports, module) {
                 Async.doInParallel(extensions, function (item) {
                     var extConfig = {
                         // we load extensions in virtual file system from our virtual server URL
-                        baseUrl: window.fsServerUrl + config.baseUrl + "/" + item,
+                        // fsServerUrl always ends with a /
+                        baseUrl: window.fsServerUrl.slice(0, -1) + config.baseUrl + "/" + item,
                         paths: config.paths
                     };
                     console.log("Loading Extension from virtual fs: ", extConfig);
