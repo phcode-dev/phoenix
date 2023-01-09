@@ -657,6 +657,13 @@ define(function (require, exports, module) {
             it("should have a user documents directory", function () {
                 expect(brackets.app.getUserDocumentsDirectory().length).not.toBe(0);
             });
+            it("should get virtual serving directory from virtual serving URL", async function () {
+                expect(brackets.VFS.getPathForVirtualServingURL(`${window.fsServerUrl}blinker`)).toBe("/blinker");
+                expect(brackets.VFS.getPathForVirtualServingURL(`${window.fsServerUrl}path/to/file_x.mp3`))
+                    .toBe("/path/to/file_x.mp3");
+                expect(brackets.VFS.getPathForVirtualServingURL("/some/path")).toBe(null);
+                expect(brackets.VFS.getPathForVirtualServingURL("/fs")).toBe(null);
+            });
         });
     });
 });

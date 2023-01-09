@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /**
  * FileSystem is a model object representing a complete file system. This object creates
  * and manages File and Directory instances, dispatches events when the file system changes,
@@ -635,6 +637,13 @@ define(function (require, exports, module) {
      * @return {File} The File object. This file may not yet exist on disk.
      */
     FileSystem.prototype.getFileForPath = function (path) {
+        let virtualServingPath = Phoenix.VFS.getPathForVirtualServingURL(path);
+        if(virtualServingPath) {
+            // this is so that extensions that load from an http path can figure out the actual file system path
+            // from just the virtual serving URL.
+            // FileSystem.getDirectoryForPath(ExtensionUtils.getModulePath(module, "some FolderInModule/"))
+            path = virtualServingPath;
+        }
         var protocol = PathUtils.parseUrl(path).protocol,
             protocolAdapter = _getProtocolAdapter(protocol);
 
@@ -743,6 +752,13 @@ define(function (require, exports, module) {
      * @return {Directory} The Directory object. This directory may not yet exist on disk.
      */
     FileSystem.prototype.getDirectoryForPath = function (path) {
+        let virtualServingPath = Phoenix.VFS.getPathForVirtualServingURL(path);
+        if(virtualServingPath) {
+            // this is so that extensions that load from an http path can figure out the actual file system path
+            // from just the virtual serving URL.
+            // FileSystem.getDirectoryForPath(ExtensionUtils.getModulePath(module, "some FolderInModule/"))
+            path = virtualServingPath;
+        }
         return this._getEntryForPath(Directory, path);
     };
 
