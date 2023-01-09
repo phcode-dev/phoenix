@@ -178,7 +178,7 @@ define(function (require, exports, module) {
                     ExtensionLoader.loadExtension(result.name, {
                         // On Windows, it looks like Node converts Unix-y paths to backslashy paths.
                         // We need to convert them back.
-                        baseUrl: FileUtils.convertWindowsPathToUnixPath(result.installedTo)
+                        baseUrl: window.fsServerUrl.slice(0, -1) + result.installedTo
                     }, "main").then(function () {
                         d.resolve(result);
                     }, function () {
