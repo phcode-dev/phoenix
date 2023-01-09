@@ -33,7 +33,8 @@ define(function (require, exports, module) {
         Package                = require("extensibility/Package"),
         NativeApp              = require("utils/NativeApp"),
         InstallDialogTemplate  = require("text!htmlContent/install-extension-dialog.html"),
-        Mustache               = require("thirdparty/mustache/mustache");
+        Mustache               = require("thirdparty/mustache/mustache"),
+        ExtensionDownloader    = require("extensibility/ExtensionDownloader");;
 
     var STATE_CLOSED              = 0,
         STATE_START               = 1,
@@ -166,7 +167,8 @@ define(function (require, exports, module) {
             url = this.$url.val().trim();
             this.$inputArea.hide();
             this.$browseExtensionsButton.hide();
-            this.$msg.text(StringUtils.format(Strings.INSTALLING_FROM, url))
+            this._messageText = StringUtils.format(Strings.INSTALLING_FROM, url);
+            this.$msg.text(this._messageText)
                 .append("<span class='spinner inline spin'/>");
             this.$msgArea.show();
             this.$okButton.prop("disabled", true);
@@ -257,6 +259,8 @@ define(function (require, exports, module) {
 
         case STATE_CLOSED:
             $(window.document.body).off(".installDialog");
+            ExtensionDownloader.off(ExtensionDownloader.EVENT_DOWNLOAD_FILE_PROGRESS);
+            ExtensionDownloader.off(ExtensionDownloader.EVENT_EXTRACT_FILE_PROGRESS);
 
            // Only resolve as successful if we actually installed something.
             Dialogs.cancelModalDialogIfOpen("install-extension-dialog");
@@ -354,6 +358,7 @@ define(function (require, exports, module) {
      *     has finished installing, or rejected if the dialog is cancelled.
      */
     InstallExtensionDialog.prototype.show = function (urlToInstall) {
+        const self = this;
         if (this._state !== STATE_CLOSED) {
             // Somehow the dialog got invoked twice. Just ignore this.
             return this._dialogDeferred.promise();
@@ -385,6 +390,17 @@ define(function (require, exports, module) {
             NativeApp.openURLInDefaultBrowser(brackets.config.extension_listing_url);
         });
         $(window.document.body).on("keyup.installDialog", this._handleKeyUp.bind(this));
+
+        ExtensionDownloader.on(ExtensionDownloader.EVENT_DOWNLOAD_FILE_PROGRESS, (_evt, progress)=>{
+            self.$msg.text(self._messageText + ` ${Strings.DOWNLOADING} ${Math.round(progress)}%`)
+                .append("<span class='spinner inline spin'/>");
+        });
+
+        ExtensionDownloader.on(ExtensionDownloader.EVENT_EXTRACT_FILE_PROGRESS, (_evt, done, total)=>{
+            let message = StringUtils.format(Strings.EXTRACTING_FILES_PROGRESS, done, total);
+            self.$msg.text(self._messageText + ` ${message}`)
+                .append("<span class='spinner inline spin'/>");
+        });
 
         this._enterState(STATE_START);
         if (urlToInstall) {

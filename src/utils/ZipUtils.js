@@ -22,6 +22,8 @@
 
 define(function (require, exports, module) {
 
+    const ignoredFolders = [ "__MACOSX" ];
+
     async function _ensureExistsAsync(path) {
         return new Promise((resolve, reject)=>{
             Phoenix.VFS.ensureExistsDir(path, (err)=>{
@@ -34,7 +36,7 @@ define(function (require, exports, module) {
         });
     }
 
-    function _copyZippedItemToFS(path, item, destProjectDir, flattenFirstLevel) {
+    function _copyZippedItemToFS(path, item, destProjectDir, flattenFirstLevel, zipControl) {
         return new Promise(async (resolve, reject) =>{ // eslint-disable-line
             try {
                 let destPath = `${destProjectDir}${path}`;
@@ -50,6 +52,10 @@ define(function (require, exports, module) {
                 } else {
                     await _ensureExistsAsync(window.path.dirname(destPath));
                     item.async("uint8array").then(function (data) {
+                        if(zipControl && !zipControl.continueExtraction){
+                            reject();
+                            return;
+                        }
                         window.fs.writeFile(destPath, Filer.Buffer.from(data), writeErr=>{
                             if(writeErr){
                                 reject(writeErr);
@@ -67,8 +73,29 @@ define(function (require, exports, module) {
         });
     }
 
+    function _isNestedContentDir(zip) {
+        let keys = Object.keys(zip.files);
+        let rootEntries = {};
+        for(let path of keys){
+            let filePath = path.endsWith("/") ? path.slice(0, -1) : path; // trim last slah if present
+            let item = zip.files[path];
+            if(!item.dir && !filePath.includes("/")) { // file in root folder means not nested zip
+                return false;
+            }
+            let baseName = filePath.split("/")[0];
+            if(!ignoredFolders.includes(baseName)){
+                rootEntries[baseName] = true;
+            }
+        }
+        if(Object.keys(rootEntries).length === 1) {
+            // lone content folder
+            return true;
+        }
+        return false;
+    }
+
     /**
-     *
+     * extracts a given binary zip data array to given location
      * @param zipData binary UInt8Array zip data
      * @param projectDir To extract to
      * @param flattenFirstLevel if set to true, then if zip contents are nested inside a directory, the nexted dir will
@@ -82,7 +109,7 @@ define(function (require, exports, module) {
      * it will continue extraction.
      * @returns {Promise}
      */
-    function unzipFileToLocation(zipData, projectDir, flattenFirstLevel = false, progressControlCallback) {
+    function unzipBinDataToLocation(zipData, projectDir, flattenFirstLevel = false, progressControlCallback) {
         if(!projectDir.endsWith('/')){
             projectDir = projectDir + "/";
         }
@@ -91,18 +118,23 @@ define(function (require, exports, module) {
                 let keys = Object.keys(zip.files);
                 try{
                     const extractBatchSize = 500;
+                    const isNestedContent = _isNestedContentDir(zip);
                     let totalCount = keys.length,
                         doneCount = 0,
                         extractPromises = [],
-                        continueExtraction = true;
+                        zipControl = {
+                            continueExtraction: true
+                        };
                     for(let path of keys){
                         // This is intentionally batched as fs access api hangs on large number of file access
-                        let extractPromise = _copyZippedItemToFS(path, zip.files[path], projectDir, flattenFirstLevel);
+                        let extractPromise = _copyZippedItemToFS(path, zip.files[path], projectDir,
+                            isNestedContent && flattenFirstLevel, zipControl);
                         // eslint-disable-next-line no-loop-func
                         extractPromise.then(()=>{
                             doneCount ++;
                             if(progressControlCallback){
-                                continueExtraction = progressControlCallback(doneCount, totalCount);
+                                zipControl.continueExtraction = zipControl.continueExtraction
+                                    && progressControlCallback(doneCount, totalCount);
                             }
                         });
                         extractPromises.push(extractPromise);
@@ -110,7 +142,7 @@ define(function (require, exports, module) {
                             await Promise.all(extractPromises);
                             extractPromises = [];
                         }
-                        if(continueExtraction === false){
+                        if(zipControl.continueExtraction === false){
                             reject(`Extraction cancelled by progress controller`);
                             return;
                         }
@@ -146,13 +178,13 @@ define(function (require, exports, module) {
                     console.error(`could not load zip from URL: ${url}\n `, err);
                     reject();
                 } else {
-                    unzipFileToLocation(data, projectDir, flattenFirstLevel)
+                    unzipBinDataToLocation(data, projectDir, flattenFirstLevel)
                         .then(resolve)
                         .catch(reject);
                 }
             });
         });
     }
-    exports.unzipFileToLocation = unzipFileToLocation;
+    exports.unzipBinDataToLocation = unzipBinDataToLocation;
     exports.unzipURLToLocation = unzipURLToLocation;
 });
