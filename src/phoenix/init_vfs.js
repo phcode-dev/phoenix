@@ -59,6 +59,19 @@ function _setupVFS(fsLib, pathLib){
                 });
             });
         },
+        /**
+         * Converts a phoenix virtual serving url to absolute path in file system or null
+         * http://localhost:8000/src/phoenix/vfs/fs/app/extensions/user/themesforbrackets/requirejs-config.json
+         * to /fs/app/extensions/user/themesforbrackets/requirejs-config.json
+         * @param fullPath
+         * @returns {string|null}
+         */
+        getPathForVirtualServingURL: function (fullPath) {
+            if(window.fsServerUrl && fullPath.startsWith(window.fsServerUrl)){
+                return fullPath.replace(window.fsServerUrl, "/");
+            }
+            return null;
+        },
         ensureExistsDirAsync: async function (path) {
             return new Promise((resolve, reject)=>{
                 Phoenix.VFS.ensureExistsDir(path, (err) =>{

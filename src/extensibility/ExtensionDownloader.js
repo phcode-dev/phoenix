@@ -24,6 +24,7 @@ define(function (require, exports, module) {
     const EventDispatcher = require("utils/EventDispatcher"),
         ExtensionLoader = require("utils/ExtensionLoader"),
         Package  = require("extensibility/Package"),
+        FileSystem = require("filesystem/FileSystem"),
         ZipUtils = require("utils/ZipUtils");
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -63,14 +64,17 @@ define(function (require, exports, module) {
                         exports.trigger(EVENT_EXTRACT_FILE_PROGRESS, done, total);
                         return !downloadCancelled[downloadId]; // continueExtraction id not download cancelled
                     }
-                    _unzipExtension(data, destinationDirectory + "/" + guessedName, true, _progressCB)
-                        .then(()=>{
-                            d.resolve(destinationDirectory + "/" + guessedName);
-                        })
-                        .catch((err)=>{
-                            console.error("Error extracting extension zip", err);
-                            d.reject();
-                        });
+                    FileSystem.getFileForPath(destinationDirectory + "/" + guessedName).unlink(()=>{
+                        // we dont mind the error if there is any to delete the folder
+                        _unzipExtension(data, destinationDirectory + "/" + guessedName, true, _progressCB)
+                            .then(()=>{
+                                d.resolve(destinationDirectory + "/" + guessedName);
+                            })
+                            .catch((err)=>{
+                                console.error("Error extracting extension zip", err);
+                                d.reject();
+                            });
+                    });
                 }
             },
             progress: function (status){
@@ -103,6 +107,7 @@ define(function (require, exports, module) {
     exports.downloadFile = downloadFile;
     exports.abortDownload = abortDownload;
     exports.install = install;
+    exports.update = install;
     exports.EVENT_DOWNLOAD_FILE_PROGRESS = EVENT_DOWNLOAD_FILE_PROGRESS;
     exports.EVENT_EXTRACT_FILE_PROGRESS = EVENT_EXTRACT_FILE_PROGRESS;
 });
