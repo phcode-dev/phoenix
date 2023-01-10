@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, waits, waitsFor, runs, spyOn, beforeFirst, afterLast */
+/*global describe, it, expect, beforeEach, afterEach, awaits, awaitsFor, spyOn, beforeAll, afterAll */
 /*unittests: Install Extension Dialog*/
 
 define(function (require, exports, module) {
@@ -30,47 +30,41 @@ define(function (require, exports, module) {
         FileSystem,
         Strings         = require("strings");
 
-    describe("Install Extension Dialog", function () {
-        var testWindow, dialog, fields, closed,
-            url = "http://brackets.io/extensions/myextension.zip";
+    describe("integration:Install Extension Dialog", function () {
+        let testWindow, dialog, fields, closed,
+            url = "https://brackets.io/extensions/myextension.zip";
 
-        this.category = "integration";
-
-        beforeFirst(function () {
-            SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
-                testWindow = w;
-                FileSystem = testWindow.brackets.test.FileSystem;
-            });
+        beforeAll(async function () {
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            // Load module instances from brackets.test
+            FileSystem      = testWindow.brackets.test.FileSystem;
         });
 
-        afterLast(function () {
+        afterAll(async function () {
             testWindow = null;
-            SpecRunnerUtils.closeTestWindow();
+            FileSystem = null;
+            await SpecRunnerUtils.closeTestWindow();
         });
 
-        afterEach(function () {
+        afterEach(async function () {
             testWindow.brackets.config.extension_listing_url = brackets.config.extension_listing_url;
-            runs(function () {
-                if (dialog) {
-                    dialog._close();
-                } else {
-                    closed = true;
-                }
-            });
-            waitsFor(function () { return closed; }, "dialog closing");
-            runs(function () {
-                fields = null;
-                closed = false;
-                dialog = null;
-            });
+            if (dialog) {
+                dialog._close();
+            } else {
+                closed = true;
+            }
+            await awaitsFor(function () { return closed; }, "dialog closing");
+            fields = null;
+            closed = false;
+            dialog = null;
         });
 
-        var successfulResult = {
+        let successfulResult = {
             installationStatus: "INSTALLED"
         };
 
         function makeInstaller(succeed, deferred) {
-            var installer = {
+            let installer = {
                 install: function () {
                     if (!deferred) {
                         deferred = new $.Deferred();
@@ -85,7 +79,7 @@ define(function (require, exports, module) {
                 cancel: function () {
                 }
             };
-            spyOn(installer, "install").andCallThrough();
+            spyOn(installer, "install").and.callThrough();
             spyOn(installer, "cancel");
             dialog._installer = installer;
             return installer;
@@ -112,6 +106,33 @@ define(function (require, exports, module) {
                 spyOn(NativeApp, "openURLInDefaultBrowser");
                 fields.$browseExtensionsButton.click();
                 expect(NativeApp.openURLInDefaultBrowser).toHaveBeenCalledWith(extensionListingURL);
+            });
+        });
+
+        describe("when initiated from Extension Manager", function () {
+            var url = "https://my.repository.io/my-extension.zip", installer;
+            beforeEach(function () {
+                closed = false;
+            });
+
+            it("should immediately start installing from the given url, and in the correct UI state", function () {
+                var deferred = new $.Deferred();
+                dialog = new testWindow.brackets.test.InstallExtensionDialog._Dialog();
+                installer = makeInstaller(null, deferred);
+                dialog.show(url)
+                    .always(function () {
+                        closed = true;
+                    });
+                fields = {
+                    $dlg: dialog.$dlg,
+                    $okButton: dialog.$okButton,
+                    $cancelButton: dialog.$cancelButton,
+                    $url: dialog.$url
+                };
+                expect(installer.install).toHaveBeenCalledWith(url);
+                expect(fields.$okButton.prop("disabled")).toBe(true);
+                expect(fields.$url.is(":visible")).toBe(false);
+                deferred.resolve(successfulResult);
             });
         });
 
@@ -227,7 +248,7 @@ define(function (require, exports, module) {
                     installer = makeInstaller(null, deferred);
                 setUrl();
                 fields.$okButton.click();
-                installer.install.reset();
+                installer.install.calls.reset();
 
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", fields.$dlg[0]);
                 expect(installer.install).not.toHaveBeenCalled();
@@ -479,206 +500,160 @@ define(function (require, exports, module) {
 
             // Cancellation timing
 
-            it("should time out and re-enable close button if cancel doesn't complete quickly", function () {
+            it("should time out and re-enable close button if cancel doesn't complete quickly", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    expect(fields.$okButton.prop("disabled")).toBe(false);
-                    deferred.reject("CANCELED");
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                expect(fields.$okButton.prop("disabled")).toBe(false);
+                deferred.reject("CANCELED");
             });
 
-            it("should close when clicking Close button after timing out if cancel doesn't complete quickly", function () {
+            it("should close when clicking Close button after timing out if cancel doesn't complete quickly", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    fields.$okButton.click();
-                    expect(fields.$dlg.is(":visible")).toBe(false);
-                    deferred.reject("CANCELED");
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                fields.$okButton.click();
+                expect(fields.$dlg.is(":visible")).toBe(false);
+                deferred.reject("CANCELED");
             });
 
-            it("should close when hitting Enter after timing out if cancel doesn't complete quickly", function () {
+            it("should close when hitting Enter after timing out if cancel doesn't complete quickly", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    fields.$okButton.click();
-                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", fields.$dlg[0]);
-                    deferred.reject("CANCELED");
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                fields.$okButton.click();
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", fields.$dlg[0]);
+                deferred.reject("CANCELED");
             });
 
-            it("should close when hitting Esc after timing out if cancel doesn't complete quickly", function () {
+            it("should close when hitting Esc after timing out if cancel doesn't complete quickly", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    fields.$okButton.click();
-                    SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keyup", fields.$dlg[0]);
-                    deferred.reject("CANCELED");
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                fields.$okButton.click();
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keyup", fields.$dlg[0]);
+                deferred.reject("CANCELED");
             });
 
             // Cancelation vs. successful install race conditions
-            it("should keep close button enabled and not throw an exception if install succeeds quickly after cancelation", function () {
+            it("should keep close button enabled and not throw an exception if install succeeds quickly after cancelation", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                    deferred.resolve(successfulResult);
-                    expect(fields.$okButton.prop("disabled")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                deferred.resolve(successfulResult);
+                expect(fields.$okButton.prop("disabled")).toBe(false);
             });
-            it("should keep close button enabled and not throw an exception if install succeeds slowly after cancelation", function () {
+            it("should keep close button enabled and not throw an exception if install succeeds slowly after cancelation", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    deferred.resolve(successfulResult);
-                    expect(fields.$okButton.prop("disabled")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                deferred.resolve(successfulResult);
+                expect(fields.$okButton.prop("disabled")).toBe(false);
             });
-            it("should stay closed and not throw an exception if install succeeds after cancelation & force close", function () {
+            it("should stay closed and not throw an exception if install succeeds after cancelation & force close", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    fields.$okButton.click();  // force close
-                    deferred.resolve(successfulResult);
-                    expect(fields.$dlg.is(":visible")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                fields.$okButton.click();  // force close
+                deferred.resolve(successfulResult);
+                expect(fields.$dlg.is(":visible")).toBe(false);
             });
 
             // Cancelation vs. failed install race conditions
             it("should keep close button enabled and not throw an exception if install fails quickly after cancelation", function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                    deferred.reject();
-                    expect(fields.$okButton.prop("disabled")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                deferred.reject();
+                expect(fields.$okButton.prop("disabled")).toBe(false);
             });
-            it("should keep close button enabled and not throw an exception if install fails slowly after cancelation", function () {
+            it("should keep close button enabled and not throw an exception if install fails slowly after cancelation", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    deferred.reject();
-                    expect(fields.$okButton.prop("disabled")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                deferred.reject();
+                expect(fields.$okButton.prop("disabled")).toBe(false);
             });
-            it("should stay closed and not throw an exception if install fails after cancelation & force close", function () {
+            it("should stay closed and not throw an exception if install fails after cancelation & force close", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    fields.$okButton.click();  // force close
-                    deferred.reject();
-                    expect(fields.$dlg.is(":visible")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                fields.$okButton.click();  // force close
+                deferred.reject();
+                expect(fields.$dlg.is(":visible")).toBe(false);
             });
 
             // Cancelation actually suceeding
             it("should keep close button enabled and not throw an exception if install cancelation completes quickly after cancelation", function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                    deferred.reject("CANCELED");
-                    expect(fields.$okButton.prop("disabled")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                deferred.reject("CANCELED");
+                expect(fields.$okButton.prop("disabled")).toBe(false);
             });
-            it("should keep close button enabled and not throw an exception if install cancelation completes slowly after cancelation", function () {
+            it("should keep close button enabled and not throw an exception if install cancelation completes slowly after cancelation", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    deferred.reject("CANCELED");
-                    expect(fields.$okButton.prop("disabled")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                deferred.reject("CANCELED");
+                expect(fields.$okButton.prop("disabled")).toBe(false);
             });
-            it("should stay closed and not throw an exception if install cancelation completes after cancelation & force close", function () {
+            it("should stay closed and not throw an exception if install cancelation completes after cancelation & force close", async function () {
                 var deferred = new $.Deferred();
                 makeInstaller(null, deferred);
-                runs(function () {
-                    setUrl();
-                    dialog._cancelTimeout = 50;
-                    fields.$okButton.click();
-                    fields.$cancelButton.click();
-                });
-                waits(100);
-                runs(function () {
-                    fields.$okButton.click();  // force close
-                    deferred.reject("CANCELED");
-                    expect(fields.$dlg.is(":visible")).toBe(false);
-                });
+                setUrl();
+                dialog._cancelTimeout = 50;
+                fields.$okButton.click();
+                fields.$cancelButton.click();
+                await awaits(100);
+                fields.$okButton.click();  // force close
+                deferred.reject("CANCELED");
+                expect(fields.$dlg.is(":visible")).toBe(false);
             });
 
 
@@ -802,31 +777,5 @@ define(function (require, exports, module) {
             });
         });
 
-        describe("when initiated from Extension Manager", function () {
-            var url = "https://my.repository.io/my-extension.zip", installer;
-            beforeEach(function () {
-                closed = false;
-            });
-
-            it("should immediately start installing from the given url, and in the correct UI state", function () {
-                var deferred = new $.Deferred();
-                dialog = new testWindow.brackets.test.InstallExtensionDialog._Dialog();
-                installer = makeInstaller(null, deferred);
-                dialog.show(url)
-                    .always(function () {
-                        closed = true;
-                    });
-                fields = {
-                    $dlg: dialog.$dlg,
-                    $okButton: dialog.$okButton,
-                    $cancelButton: dialog.$cancelButton,
-                    $url: dialog.$url
-                };
-                expect(installer.install).toHaveBeenCalledWith(url);
-                expect(fields.$okButton.prop("disabled")).toBe(true);
-                expect(fields.$url.is(":visible")).toBe(false);
-                deferred.resolve(successfulResult);
-            });
-        });
     });
 });
