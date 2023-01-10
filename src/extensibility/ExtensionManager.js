@@ -51,8 +51,10 @@ define(function (require, exports, module) {
         ThemeManager        = require("view/ThemeManager"),
         Metrics = require("utils/Metrics");
 
-    const EXTENSION_REGISTRY_LOCAL_STORAGE_KEY = "extension_registry",
-        EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY = "extension_registry_version";
+    const EXTENSION_REGISTRY_LOCAL_STORAGE_KEY = Phoenix.isTestWindow ?
+            "test_extension_registry" : "extension_registry",
+        EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY = Phoenix.isTestWindow ?
+            "test_extension_registry_version" : "extension_registry_version";
     // semver.browser is an AMD-compatible module
     var semver = require("thirdparty/semver.browser");
 
@@ -236,10 +238,11 @@ define(function (require, exports, module) {
      * Downloads the registry of Brackets extensions and stores the information in our
      * extension info.
      *
+     * @param {boolean} force - true to fetch registry from server fresh every time
      * @return {$.Promise} a promise that's resolved with the registry JSON data
      * or rejected if the server can't be reached.
      */
-    function downloadRegistry() {
+    function downloadRegistry(force) {
         if (pendingDownloadRegistry) {
             return pendingDownloadRegistry.promise();
         }
@@ -270,6 +273,11 @@ define(function (require, exports, module) {
                     // Make sure to clean up the pending registry so that new requests can be made.
                     pendingDownloadRegistry = null;
                 });
+        }
+
+        if(force){
+            _updateRegistry();
+            return pendingDownloadRegistry.promise();
         }
 
         const registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
@@ -318,6 +326,8 @@ define(function (require, exports, module) {
                     locationType = LOCATION_DEV;
                 } else if (parent === "default") {
                     locationType = LOCATION_DEFAULT;
+                } else if (parent === "user") {
+                    locationType = LOCATION_USER;
                 } else {
                     locationType = LOCATION_UNKNOWN;
                 }
@@ -992,4 +1002,7 @@ define(function (require, exports, module) {
     exports._getAutoInstallFiles    = _getAutoInstallFiles;
     exports._reset                  = _reset;
     exports._setExtensions          = _setExtensions;
+    if(Phoenix.isTestWindow){
+        exports.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY = EXTENSION_REGISTRY_LOCAL_STORAGE_KEY;
+    }
 });
