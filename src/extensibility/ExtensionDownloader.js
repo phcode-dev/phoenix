@@ -70,9 +70,16 @@ define(function (require, exports, module) {
                             .then(()=>{
                                 d.resolve(destinationDirectory + "/" + guessedName);
                             })
-                            .catch((err)=>{
-                                console.error("Error extracting extension zip", err);
-                                d.reject();
+                            .catch((extractErr)=>{
+                                console.error("Error extracting extension zip, cleaning up", extractErr);
+                                FileSystem.getFileForPath(destinationDirectory + "/" + guessedName)
+                                    .unlink((unlinkError)=>{
+                                        if(unlinkError){
+                                            console.error("Error cleaning up extenstion folder: ",
+                                                destinationDirectory + "/" + unlinkError);
+                                        }
+                                        d.reject();
+                                    });
                             });
                     });
                 }
