@@ -78,9 +78,11 @@ define(function (require, exports, module) {
                 }
             },
             progress: function (status){
-                if(status.percent > 0){
-                    exports.trigger(EVENT_DOWNLOAD_FILE_PROGRESS, status.percent);
+                if(status.percent === 100) {
+                    exports.trigger(EVENT_EXTRACT_FILE_PROGRESS, 0);
+                    return;
                 }
+                exports.trigger(EVENT_DOWNLOAD_FILE_PROGRESS, status.percent || 0);
             },
             abortCheck: function () {
                 return downloadCancelled[downloadId];
@@ -104,9 +106,29 @@ define(function (require, exports, module) {
         return d.promise();
     }
 
+    /**
+     * Removes the extension at the given path.
+     *
+     * @param {string} path The absolute path to the extension to remove.
+     * @return {$.Promise} A promise that's resolved when the extension is removed, or
+     *     rejected if there was an error.
+     */
+    function remove(path) {
+        const d = new $.Deferred();
+        FileSystem.getFileForPath(path).unlink(err=>{
+            if(err){
+                d.reject();
+                return;
+            }
+            d.resolve();
+        });
+        return d.promise();
+    }
+
     exports.downloadFile = downloadFile;
     exports.abortDownload = abortDownload;
     exports.install = install;
+    exports.remove = remove;
     exports.update = install;
     exports.EVENT_DOWNLOAD_FILE_PROGRESS = EVENT_DOWNLOAD_FILE_PROGRESS;
     exports.EVENT_EXTRACT_FILE_PROGRESS = EVENT_EXTRACT_FILE_PROGRESS;

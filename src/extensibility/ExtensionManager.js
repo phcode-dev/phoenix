@@ -20,7 +20,7 @@
  */
 
 /*jslint regexp: true */
-/*global path*/
+/*global Phoenix*/
 /*unittests: ExtensionManager*/
 
 /**
@@ -295,13 +295,17 @@ define(function (require, exports, module) {
      * @private
      * When an extension is loaded, fetches the package.json and stores the extension in our map.
      * @param {$.Event} e The event object
-     * @param {string} path The local path of the loaded extension's folder.
+     * @param {string} baseURL The http base url from which the extension is loaded
      */
-    function _handleExtensionLoad(e, path) {
+    function _handleExtensionLoad(e, baseURL) {
         function setData(metadata) {
             let locationType,
                 id = metadata.name,
-                userExtensionPath = ExtensionLoader.getUserExtensionPath();
+                userExtensionPath = ExtensionLoader.getUserExtensionPath(),
+                path = baseURL;
+            if(Phoenix.VFS.getPathForVirtualServingURL(baseURL)){
+                path = Phoenix.VFS.getPathForVirtualServingURL(baseURL);
+            }
             metadata.title = metadata.title || metadata.name;
             if (path.indexOf(userExtensionPath) === 0) {
                 locationType = LOCATION_USER;
@@ -323,7 +327,7 @@ define(function (require, exports, module) {
             }
             extensions[id].installInfo = {
                 metadata: metadata,
-                path: path,
+                path: baseURL,
                 locationType: locationType,
                 status: (e.type === "loadFailed" ? START_FAILED : (e.type === "disabled" ? DISABLED : ENABLED))
             };
@@ -334,13 +338,13 @@ define(function (require, exports, module) {
         }
 
         function deduceMetadata() {
-            var match = path.match(/\/([^\/]+)$/),
-                name = (match && match[1]) || path,
+            var match = baseURL.match(/\/([^\/]+)$/),
+                name = (match && match[1]) || baseURL,
                 metadata = { name: name, title: name };
             return metadata;
         }
 
-        ExtensionUtils.loadMetadata(path)
+        ExtensionUtils.loadMetadata(baseURL)
             .done(function (metadata) {
                 setData(metadata);
             })

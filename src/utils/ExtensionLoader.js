@@ -83,8 +83,11 @@ define(function (require, exports, module) {
     /**
      * Returns the path to the default extensions directory relative to Phoenix base URL
      */
+    const DEFAULT_EXTENSIONS_PATH_BASE = "/extensions/default";
     function getDefaultExtensionPath() {
-        return pathLib.normalize("/extensions/default");
+        const href = window.location.href;
+        const baseUrl = href.substring(0, href.lastIndexOf("/")); // trim all query string params
+        return baseUrl + DEFAULT_EXTENSIONS_PATH_BASE;
     }
 
     /**
@@ -482,16 +485,14 @@ define(function (require, exports, module) {
      */
     function loadAllDefaultExtensions() {
         const extensionPath = getDefaultExtensionPath();
-        const href = window.location.href;
-        const baseUrl = href.substring(0, href.lastIndexOf("/"));
-        const extensionsToLoadURL = baseUrl + extensionPath + "/DefaultExtensions.json";
+        const extensionsToLoadURL = extensionPath + "/DefaultExtensions.json";
         var result = new $.Deferred();
 
         $.get(extensionsToLoadURL).done(function (extensionNames) {
             Async.doInParallel(extensionNames, function (extensionName) {
                 logger.leaveTrail("loading default extension: " + extensionName);
                 var extConfig = {
-                    baseUrl: baseUrl + extensionPath + "/" + extensionName
+                    baseUrl: extensionPath + "/" + extensionName
                 };
                 return loadExtension(extensionName, extConfig, 'main');
             }).always(function () {
@@ -592,12 +593,11 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
     function testAllDefaultExtensions() {
-        const extensionPath = getDefaultExtensionPath();
         const bracketsPath = FileUtils.getNativeBracketsDirectoryPath();
         const href = window.location.href;
         const baseUrl = href.substring(0, href.lastIndexOf("/"));
         const srcBaseUrl = new URL(baseUrl + '/../src').href;
-        const extensionsToLoadURL = srcBaseUrl + extensionPath + "/DefaultExtensions.json";
+        const extensionsToLoadURL = srcBaseUrl + DEFAULT_EXTENSIONS_PATH_BASE + "/DefaultExtensions.json";
         var result = new $.Deferred();
 
         $.get(extensionsToLoadURL).done(function (extensionNames) {
@@ -605,7 +605,7 @@ define(function (require, exports, module) {
                 console.log("Testing default extension: ", extensionName);
                 var extConfig = {
                     basePath: 'extensions/default',
-                    baseUrl: new URL(srcBaseUrl + extensionPath + "/" + extensionName).href,
+                    baseUrl: new URL(srcBaseUrl + DEFAULT_EXTENSIONS_PATH_BASE + "/" + extensionName).href,
                     paths: {
                         "perf": bracketsPath + "/perf",
                         "spec": bracketsPath + "/spec"

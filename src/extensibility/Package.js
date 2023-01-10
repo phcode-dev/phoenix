@@ -42,10 +42,7 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_PROXY
     });
 
-    var PREF_EXTENSIONS_DEFAULT_DISABLED = "extensions.default.disabled";
-    PreferencesManager.definePreference(PREF_EXTENSIONS_DEFAULT_DISABLED, "array", [], {
-        description: Strings.DESCRIPTION_DISABLED_DEFAULT_EXTENSIONS
-    });
+    const DISABLED_EXTENSIONS_KEY = "extensions.disabled";
 
     var Errors = {
         ERROR_LOADING: "ERROR_LOADING",
@@ -418,26 +415,21 @@ define(function (require, exports, module) {
      *     rejected if there was an error.
      */
     function remove(path) {
-        return _extensionManagerCall(function (extensionManager) {
-            return extensionManager.remove(path);
-        });
+        return ExtensionDownloader.remove(path);
     }
 
     /**
-     * This function manages the PREF_EXTENSIONS_DEFAULT_DISABLED preference
-     * holding an array of default extension paths that should not be loaded
-     * on Brackets startup
+     * function manages state weather an extension is enabled or disabled
      */
-    function toggleDefaultExtension(path, enabled) {
-        var arr = PreferencesManager.get(PREF_EXTENSIONS_DEFAULT_DISABLED);
-        if (!Array.isArray(arr)) { arr = []; }
+    function _toggleDisabledExtension(path, enabled) {
+        let arr = JSON.parse(localStorage.getItem(DISABLED_EXTENSIONS_KEY) || "[]");
         var io = arr.indexOf(path);
         if (enabled === true && io !== -1) {
             arr.splice(io, 1);
         } else if (enabled === false && io === -1) {
             arr.push(path);
         }
-        PreferencesManager.set(PREF_EXTENSIONS_DEFAULT_DISABLED, arr);
+        localStorage.setItem(DISABLED_EXTENSIONS_KEY, JSON.stringify(arr));
     }
 
     /**
@@ -448,22 +440,9 @@ define(function (require, exports, module) {
      *      rejected if there was an error.
      */
     function disable(path) {
-        var result = new $.Deferred(),
-            file = FileSystem.getFileForPath(path + "/.disabled");
-
-        var defaultExtensionPath = ExtensionLoader.getDefaultExtensionPath();
-        if (file.fullPath.indexOf(defaultExtensionPath) === 0) {
-            toggleDefaultExtension(path, false);
-            result.resolve();
-            return result.promise();
-        }
-
-        file.write("", function (err) {
-            if (err) {
-                return result.reject(err);
-            }
-            result.resolve();
-        });
+        var result = new $.Deferred();
+        _toggleDisabledExtension(path, false);
+        result.resolve();
         return result.promise();
     }
 
@@ -475,28 +454,11 @@ define(function (require, exports, module) {
      *      rejected if there was an error.
      */
     function enable(path) {
-        var result = new $.Deferred(),
-            file = FileSystem.getFileForPath(path + "/.disabled");
-
-        function afterEnable() {
-            ExtensionLoader.loadExtension(FileUtils.getBaseName(path), { baseUrl: path }, "main")
-                .done(result.resolve)
-                .fail(result.reject);
-        }
-
-        var defaultExtensionPath = ExtensionLoader.getDefaultExtensionPath();
-        if (file.fullPath.indexOf(defaultExtensionPath) === 0) {
-            toggleDefaultExtension(path, true);
-            afterEnable();
-            return result.promise();
-        }
-
-        file.unlink(function (err) {
-            if (err) {
-                return result.reject(err);
-            }
-            afterEnable();
-        });
+        const result = new $.Deferred();
+        _toggleDisabledExtension(path, true);
+        ExtensionLoader.loadExtension(FileUtils.getBaseName(path), { baseUrl: path }, "main")
+            .done(result.resolve)
+            .fail(result.reject);
         return result.promise();
     }
 
@@ -578,4 +540,5 @@ define(function (require, exports, module) {
     exports.installUpdate           = installUpdate;
     exports.formatError             = formatError;
     exports.InstallationStatuses    = InstallationStatuses;
+    exports.DEFAULT_DISABLED_EXTENSIONS_KEY = DISABLED_EXTENSIONS_KEY;
 });
