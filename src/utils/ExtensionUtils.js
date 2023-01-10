@@ -19,7 +19,7 @@
  *
  */
 
-/*global less */
+/*global less, path */
 // jshint ignore: start
 
 /**
@@ -233,7 +233,7 @@ define(function (require, exports, module) {
         const packageJSONFile = baseExtensionUrl + "/package.json";
         const result = new $.Deferred();
         let json = {
-            name: extensionName
+            name: extensionName || path.basename(baseExtensionUrl)
         };
         $.get(packageJSONFile)
             .then(function (packageResult) {
@@ -263,15 +263,15 @@ define(function (require, exports, module) {
      * will be augmented with disabled property set to true. It will override whatever value of
      * disabled might be set.
      *
-     * @param {string} folder The extension folder/base url for default extensions.
+     * @param {string} metadataURL The extension folder/base url for default extensions.
      * @return {$.Promise} A promise object that is resolved with the parsed contents of the package.json file,
      *     or rejected if there is no package.json with the boolean indicating whether .disabled file exists.
      */
-    function loadMetadata(folder, extensionName) {
-        if(folder.startsWith("http://") || folder.startsWith("https://")) {
-            return _loadExtensionMetadata(folder, extensionName);
+    function loadMetadata(metadataURL, extensionName) {
+        if(metadataURL.startsWith("http://") || metadataURL.startsWith("https://")) {
+            return _loadExtensionMetadata(metadataURL, extensionName);
         }
-        throw new Error(`Cannot load extension metadata for ${extensionName} at path ${folder}`);
+        throw new Error(`Cannot load extension metadata for ${extensionName} at path ${metadataURL}`);
     }
 
 

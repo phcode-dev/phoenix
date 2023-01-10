@@ -124,7 +124,7 @@ define(function (require, exports, module) {
             ExtensionManager.on("statusChange.mock-load", function () {
                 numStatusChanges++;
             });
-            var mockPath = SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+            var mockPath = window.fsServerUrl + SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
             names = names || ["default/mock-extension-1", "dev/mock-extension-2", "user/mock-legacy-extension"];
             names.forEach(function (name) {
                 ExtensionLoader.trigger(shouldFail ? "loadFailed" : (shouldDisable ? "disabled" : "load"), mockPath + "/" + name);
@@ -214,7 +214,7 @@ define(function (require, exports, module) {
 
         describe("ExtensionManager", function () {
             it("should download the extension list from the registry", async function () {
-                await awaitsForDone(ExtensionManager.downloadRegistry(), "fetching registry");
+                await awaitsForDone(ExtensionManager.downloadRegistry(true), "fetching registry");
 
                 expect(mockSettings.response).toHaveBeenCalled();
                 Object.keys(ExtensionManager.extensions).forEach(function (id) {
@@ -222,13 +222,10 @@ define(function (require, exports, module) {
                 });
             });
 
-            it("should trigger a registryUpdate event when updating the extension list from the registry", async function () {
-                var registryUpdateSpy;
-                registryUpdateSpy = jasmine.createSpy();
-                ExtensionManager.on("registryUpdate", registryUpdateSpy);
-                await awaitsForDone(ExtensionManager.downloadRegistry(), "fetching registry");
-                await mockLoadExtensions();
-                expect(registryUpdateSpy).toHaveBeenCalled();
+            it("should registry update cache registry locally", async function () {
+                localStorage.removeItem(ExtensionManager.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+                await awaitsForDone(ExtensionManager.downloadRegistry(true), "fetching registry");
+                expect(localStorage.getItem(ExtensionManager.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY)).not.toBeNull();
             });
 
             it("should fail if it can't access the registry", async function () {
@@ -238,7 +235,7 @@ define(function (require, exports, module) {
                     url: brackets.config.extension_registry,
                     isTimeout: true
                 });
-                ExtensionManager.downloadRegistry()
+                ExtensionManager.downloadRegistry(true)
                     .done(function () {
                         gotDone = true;
                     })
@@ -254,7 +251,7 @@ define(function (require, exports, module) {
             it("should fail if registry content is malformed", async function () {
                 var gotDone = false, gotFail = false;
                 mockRegistry = "{malformed json";
-                ExtensionManager.downloadRegistry()
+                ExtensionManager.downloadRegistry(true)
                     .done(function () {
                         gotDone = true;
                     })
@@ -268,7 +265,7 @@ define(function (require, exports, module) {
             });
 
             it("should correctly list which extensions are installed", async function () {
-                await awaitsForDone(ExtensionManager.downloadRegistry(), "loading registry");
+                await awaitsForDone(ExtensionManager.downloadRegistry(true), "loading registry");
                 await mockLoadExtensions();
                 Object.keys(mockRegistry).forEach(function (extId) {
                     if (extId === "mock-extension-1" || extId === "mock-extension-2") {
@@ -280,13 +277,13 @@ define(function (require, exports, module) {
             });
 
             it("should list an extension that is installed but failed to load", async function () {
-                await awaitsForDone(ExtensionManager.downloadRegistry(), "loading registry");
+                await awaitsForDone(ExtensionManager.downloadRegistry(true), "loading registry");
                 await mockLoadExtensions(["user/mock-extension-3"], true);
                 expect(ExtensionManager.extensions["mock-extension-3"].installInfo.status).toEqual(ExtensionManager.START_FAILED);
             });
 
             it("should list an extension that is installed but disabled", async function () {
-                await awaitsForDone(ExtensionManager.downloadRegistry(), "loading registry");
+                await awaitsForDone(ExtensionManager.downloadRegistry(true), "loading registry");
                 await mockLoadExtensions(["user/mock-extension-3"], "disabled");
                 expect(ExtensionManager.extensions["mock-extension-3"].installInfo.status).toEqual(ExtensionManager.DISABLED);
             });
@@ -322,7 +319,7 @@ define(function (require, exports, module) {
                 await mockLoadExtensions(["user/mock-extension-3"]);
                 ExtensionManager.on("statusChange.unit-test", spy);
                 await awaitsForDone(ExtensionManager.remove("mock-extension-3"));
-                var mockPath = SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+                var mockPath = window.fsServerUrl + SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
                 expect(removedPath).toBe(mockPath + "/user/mock-extension-3");
                 expect(spy).toHaveBeenCalledWith(jasmine.any(Object), "mock-extension-3");
                 expect(ExtensionManager.extensions["mock-extension-3"].installInfo).toBeFalsy();
@@ -333,7 +330,7 @@ define(function (require, exports, module) {
                 await mockLoadExtensions(["user/mock-extension-3"]);
                 ExtensionManager.on("statusChange.unit-test", spy);
                 await awaitsForDone(ExtensionManager.disable("mock-extension-3"));
-                var mockPath = SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+                var mockPath = window.fsServerUrl + SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
                 expect(disabledFilePath).toBe(mockPath + "/user/mock-extension-3" + "/.disabled");
                 expect(spy).toHaveBeenCalledWith(jasmine.any(Object), "mock-extension-3");
                 expect(ExtensionManager.extensions["mock-extension-3"].installInfo.status).toEqual(ExtensionManager.DISABLED);
@@ -344,7 +341,7 @@ define(function (require, exports, module) {
                 await mockLoadExtensions(["user/mock-extension-2"], "disable");
                 ExtensionManager.on("statusChange.unit-test", spy);
                 await awaitsForDone(ExtensionManager.enable("mock-extension-2"));
-                var mockPath = SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+                var mockPath = window.fsServerUrl + SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
                 expect(disabledFilePath).toBe(mockPath + "/user/mock-extension-2" + "/.disabled");
                 expect(spy).toHaveBeenCalledWith(jasmine.any(Object), "mock-extension-2");
                 expect(ExtensionManager.extensions["mock-extension-2"].installInfo.status).toEqual(ExtensionManager.ENABLED);
@@ -469,6 +466,7 @@ define(function (require, exports, module) {
                 var model;
 
                 beforeEach(async function () {
+                    localStorage.removeItem(ExtensionManager.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
                     mockRegistry = JSON.parse(mockRegistryForSearch);
                     model = new ExtensionManagerViewModel.RegistryViewModel();
                     await awaitsForDone(model.initialize(), "model initialization");
@@ -564,6 +562,7 @@ define(function (require, exports, module) {
                 var model;
 
                 beforeEach(async function () {
+                    localStorage.removeItem(ExtensionManager.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
                     mockRegistry = JSON.parse(mockRegistryThemesText);
                     model = new ExtensionManagerViewModel.ThemesViewModel();
                     await awaitsForDone(model.initialize(), "model initialization");
