@@ -338,7 +338,7 @@ define(function (require, exports, module) {
         }
 
         function deduceMetadata() {
-            var match = baseURL.match(/\/([^\/]+)$/),
+            const match = baseURL.match(/\/([^\/]+)$/),
                 name = (match && match[1]) || baseURL,
                 metadata = { name: name, title: name };
             return metadata;

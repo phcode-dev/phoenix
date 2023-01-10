@@ -28,12 +28,9 @@
 define(function (require, exports, module) {
 
 
-    var Async              = require("utils/Async"),
-        FileSystem         = require("filesystem/FileSystem"),
-        FileUtils          = require("file/FileUtils"),
+    const FileSystem         = require("filesystem/FileSystem"),
         PathUtils          = require("thirdparty/path-utils/path-utils"),
-        Package                     = require("extensibility/Package"),
-        PreferencesManager = require("preferences/PreferencesManager");
+        Package                     = require("extensibility/Package");
 
     /**
      * Appends a <style> tag to the document's head.
@@ -233,27 +230,27 @@ define(function (require, exports, module) {
      *     or rejected if there is no package.json with the boolean indicating whether .disabled file exists.
      */
     function _loadExtensionMetadata(baseExtensionUrl, extensionName) {
-        var packageJSONFile = baseExtensionUrl + "/package.json";
-        var result = new $.Deferred();
-        var json = {
+        const packageJSONFile = baseExtensionUrl + "/package.json";
+        const result = new $.Deferred();
+        let json = {
             name: extensionName
         };
         $.get(packageJSONFile)
-            .then(function (result) {
-                json = result;
+            .then(function (packageResult) {
+                json = packageResult;
             }).always(function () {
-            // if we don't have any metadata for the extension
-            // we should still create an empty one, so we can attach
-            // disabled property on it in case it's disabled
-            var disabled;
-            var defaultDisabled = JSON.parse(localStorage.getItem(Package.DEFAULT_DISABLED_EXTENSIONS_KEY) || "[]");
-            if (Array.isArray(defaultDisabled) && defaultDisabled.indexOf(baseExtensionUrl) !== -1) {
-                console.warn("Default extension has been disabled on startup: " + baseExtensionUrl);
-                disabled = true;
-            }
-            json.disabled = disabled;
-            result.resolve(json);
-        });
+                // if we don't have any metadata for the extension
+                // we should still create an empty one, so we can attach
+                // disabled property on it in case it's disabled
+                let disabled,
+                    defaultDisabled = JSON.parse(localStorage.getItem(Package.DEFAULT_DISABLED_EXTENSIONS_KEY) || "[]");
+                if (Array.isArray(defaultDisabled) && defaultDisabled.indexOf(baseExtensionUrl) !== -1) {
+                    console.warn("Default extension has been disabled on startup: " + baseExtensionUrl);
+                    disabled = true;
+                }
+                json.disabled = disabled;
+                result.resolve(json);
+            });
 
         return result.promise();
     }
