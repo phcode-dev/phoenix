@@ -227,9 +227,10 @@ define(function (require, exports, module) {
      *
      * @param {string} url URL of the file to be downloaded
      * @param {number} downloadId Unique number to identify this request
+     * @param {string} destinationDirectory Optional path to download extension to. Defaults to user extension folder
      * @return {$.Promise}
      */
-    function _download(url, downloadId) {
+    function _download(url, downloadId, destinationDirectory) {
         const d = new $.Deferred();
 
         // Validate URL
@@ -244,7 +245,7 @@ define(function (require, exports, module) {
             return d.promise();
         }
 
-        const urlInfo = { url: url, parsed: parsed, filenameHint: parsed.filename };
+        const urlInfo = { url: url, parsed: parsed, filenameHint: parsed.filename, destinationDirectory };
         githubURLFilter(urlInfo);
 
         // Decide download destination
@@ -339,7 +340,7 @@ define(function (require, exports, module) {
      *
      * @return {{promise: $.Promise, cancel: function():boolean}}
      */
-    function installFromURL(url) {
+    function installFromURL(url, destinationDirectory) {
         const STATE_DOWNLOADING = 1,
             STATE_INSTALLING = 2,
             STATE_SUCCEEDED = 3,
@@ -349,7 +350,7 @@ define(function (require, exports, module) {
         let state = STATE_DOWNLOADING;
 
         var downloadId = (_uniqueId++);
-        _download(url, downloadId)
+        _download(url, downloadId, destinationDirectory)
             .done(function (downloadResult) {
                 state = STATE_INSTALLING;
 

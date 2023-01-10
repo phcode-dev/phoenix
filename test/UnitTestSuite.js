@@ -103,10 +103,10 @@ define(function (require, exports, module) {
     require("spec/LiveDevelopmentMultiBrowser-test");
     require("spec/PhoenixComm-integ-test");
     require("spec/NewFileContentManager-test");
-    require("spec/InstallExtensionDialog-test");
+    require("spec/InstallExtensionDialog-integ-test");
+    require("spec/ExtensionInstallation-test");
     // todo TEST_MODERN
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
-    // require("spec/ExtensionInstallation-test"); To Remove after new extension manager framework
     // require("spec/NodeConnection-test"); deprecate and remove node connection
     // require("spec/Menu-native-integ-test"); evaluate after we have native menus in os installed builds
 });
