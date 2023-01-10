@@ -397,7 +397,7 @@ define(function (require, exports, module) {
         });
 
         ExtensionDownloader.on(ExtensionDownloader.EVENT_EXTRACT_FILE_PROGRESS, (_evt, done, total)=>{
-            let message = StringUtils.format(Strings.EXTRACTING_FILES_PROGRESS, done, total);
+            let message = StringUtils.format(Strings.EXTRACTING_FILES_PROGRESS, done, total || "...");
             self.$msg.text(self._messageText + ` ${message}`)
                 .append("<span class='spinner inline spin'/>");
         });

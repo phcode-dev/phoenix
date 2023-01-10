@@ -21,7 +21,7 @@
  *
  */
 
-/*global define*/
+/*global Phoenix*/
 define(function (require, exports, module) {
     const Metrics = brackets.getModule("utils/Metrics"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
@@ -107,7 +107,11 @@ define(function (require, exports, module) {
     // Performance
     function sendStartupPerformanceMetrics() {
         const healthReport = PerfUtils.getHealthReport();
-        Metrics.valueEvent(PERFORMANCE, "startup", "AppStartupTime",
+        let labelAppStart = "AppStartupTime";
+        if(Phoenix.firstBoot){
+            labelAppStart = "FirstBootTime";
+        }
+        Metrics.valueEvent(PERFORMANCE, "startup", labelAppStart,
             Number(healthReport["AppStartupTime"]));
         Metrics.valueEvent(PERFORMANCE, "startup", "ModuleDepsResolved",
             Number(healthReport["ModuleDepsResolved"]));
