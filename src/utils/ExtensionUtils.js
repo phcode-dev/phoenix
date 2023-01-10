@@ -245,7 +245,7 @@ define(function (require, exports, module) {
                 let disabled,
                     defaultDisabled = JSON.parse(localStorage.getItem(Package.DEFAULT_DISABLED_EXTENSIONS_KEY) || "[]");
                 if (Array.isArray(defaultDisabled) && defaultDisabled.indexOf(baseExtensionUrl) !== -1) {
-                    console.warn("Default extension has been disabled on startup: " + baseExtensionUrl);
+                    console.warn("Extension has been disabled on startup: " + baseExtensionUrl);
                     disabled = true;
                 }
                 json.disabled = disabled;

@@ -159,8 +159,9 @@ define(function (require, exports, module) {
 
         // Optional JSON config for require.js
         $.get(extensionConfigFile).done(function (extensionConfig) {
-            if(!extensionConfig){
-                extensionConfig = {};
+            if(Object.keys(extensionConfig || {}).length === 0){
+                deferred.resolve(baseConfig);
+                return;
             }
             try {
                 if(!extensionConfig.paths){
@@ -177,8 +178,13 @@ define(function (require, exports, module) {
                 // Failed to parse requirejs-config.json
                 deferred.reject("failed to parse requirejs-config.json");
             }
-        }).fail(function () {
-            // If requirejs-config.json isn't specified, resolve with the baseConfig only
+        }).fail(function (err) {
+            // If requirejs-config.json isn't specified or if there is a bad config, resolve with the baseConfig
+            // to try loading the extension
+            if(err.status === 200) {
+                // we received the file, but its invalid json
+                console.error("[Extension] The require config file provided is invalid", extensionConfigFile);
+            }
             deferred.resolve(baseConfig);
         });
 
@@ -195,34 +201,7 @@ define(function (require, exports, module) {
         if(baseConfig.baseUrl.startsWith("http://") || baseConfig.baseUrl.startsWith("https://")) {
             return _mergeConfigFromURL(baseConfig);
         }
-        var deferred = new $.Deferred(),
-            extensionConfigFile = FileSystem.getFileForPath(baseConfig.baseUrl + "/requirejs-config.json");
-
-        // Optional JSON config for require.js
-        FileUtils.readAsText(extensionConfigFile).done(function (text) {
-            try {
-                var extensionConfig = JSON.parse(text);
-                if(!extensionConfig.paths){
-                    extensionConfig.paths = {};
-                }
-
-                // baseConfig.paths properties will override any extension config paths
-                _.extend(extensionConfig.paths, baseConfig.paths);
-
-                // Overwrite baseUrl, context, locale (paths is already merged above)
-                _.extend(extensionConfig, _.omit(baseConfig, "paths"));
-
-                deferred.resolve(extensionConfig);
-            } catch (err) {
-                // Failed to parse requirejs-config.json
-                deferred.reject("failed to parse requirejs-config.json");
-            }
-        }).fail(function () {
-            // If requirejs-config.json isn't specified, resolve with the baseConfig only
-            deferred.resolve(baseConfig);
-        });
-
-        return deferred.promise();
+        throw new Error("Config can only be loaded from an http url, but got" + baseConfig.baseUrl);
     }
 
     /**
