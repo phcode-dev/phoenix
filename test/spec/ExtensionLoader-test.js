@@ -29,7 +29,7 @@ define(function (require, exports, module) {
     var ExtensionLoader = require("utils/ExtensionLoader"),
         SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
-    var testPath = SpecRunnerUtils.getTestPath("/spec/ExtensionLoader-test-files");
+    const testPath = SpecRunnerUtils.getTestPath("/spec/ExtensionLoader-test-files");
 
     describe("ExtensionLoader", function () {
 
@@ -38,7 +38,7 @@ define(function (require, exports, module) {
         async function testLoadExtension(name, promiseState, error) {
             var promise,
                 config = {
-                    baseUrl: testPath + "/" + name
+                    baseUrl: window.fsServerUrl + testPath + "/" + name
                 },
                 consoleErrors = [];
 
@@ -53,7 +53,7 @@ define(function (require, exports, module) {
             });
             promise = ExtensionLoader.loadExtension(name, config, "main");
 
-            if (error) {
+            if (promiseState !== "resolved") {
                 await awaitsForFail(promise, "loadExtension", 10000);
             } else {
                 await awaitsForDone(promise, "loadExtension");
@@ -122,7 +122,7 @@ define(function (require, exports, module) {
         });
 
         it("should log an error if an extension uses an invalid requirejs-config.json", async function () {
-            await testLoadExtension("BadRequireConfig", "rejected", /\[Extension\] failed to load.*BadRequireConfig.*failed to parse requirejs-config.json/);
+            await testLoadExtension("BadRequireConfig", "resolved", /^\[Extension\] The require config file provided is invalid/);
         });
 
     });
