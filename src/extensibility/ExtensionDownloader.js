@@ -46,10 +46,10 @@ define(function (require, exports, module) {
         return guessedName; //rain.monokai-dark-soda
     }
 
-    function downloadFile(downloadId, {url, filenameHint}, _proxy) {
-        const d = new $.Deferred(),
-            destinationDirectory = ExtensionLoader.getUserExtensionPath();
+    function downloadFile(downloadId, {url, filenameHint, destinationDirectory}, _proxy) {
+        const d = new $.Deferred();
         let guessedName = _getExtensionName(filenameHint);
+        destinationDirectory = destinationDirectory || ExtensionLoader.getUserExtensionPath();
         console.log("Download extension", downloadId, url, filenameHint, guessedName);
         window.JSZipUtils.getBinaryContent(url, {
             callback: async function(err, data) {
@@ -66,8 +66,10 @@ define(function (require, exports, module) {
                     }
                     FileSystem.getFileForPath(destinationDirectory + "/" + guessedName).unlink(()=>{
                         // we dont mind the error if there is any to delete the folder
+                        console.log("[Extension] extracting", downloadId, url, filenameHint, guessedName);
                         _unzipExtension(data, destinationDirectory + "/" + guessedName, true, _progressCB)
                             .then(()=>{
+                                console.log("[Extension] extraction done", downloadId, url, filenameHint, guessedName);
                                 d.resolve(destinationDirectory + "/" + guessedName);
                             })
                             .catch((extractErr)=>{
