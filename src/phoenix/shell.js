@@ -68,7 +68,6 @@ Phoenix.app = {
         window.open(url);
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
-    getExtensionDirectory: Phoenix.VFS.getExtensionDir,
     getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,
     ERR_CODES: ERR_CODES,
     getElapsedMilliseconds: function () {

@@ -94,14 +94,14 @@ define(function (require, exports, module) {
      * Returns the full path to the development extensions directory.
      */
     function _getExtensionPath() {
-        return pathLib.normalize(brackets.app.getExtensionDirectory());
+        return pathLib.normalize(Phoenix.VFS.getExtensionDir());
     }
 
     /**
      * Returns the full path to the development extensions directory.
      */
     function getDevExtensionPath() {
-        return _getExtensionPath() + "/dev";
+        return pathLib.normalize(Phoenix.VFS.getDevExtensionDir());
     }
 
     /**
@@ -111,11 +111,7 @@ define(function (require, exports, module) {
      * C:\Users\<user>\AppData\Roaming\Brackets\extensions\user on windows.
      */
     function getUserExtensionPath() {
-        if (brackets.app.getApplicationSupportDirectory) {
-            return _getExtensionPath()+ "/user";
-        }
-
-        return null;
+        return pathLib.normalize(Phoenix.VFS.getUserExtensionDir());
     }
 
     /**
