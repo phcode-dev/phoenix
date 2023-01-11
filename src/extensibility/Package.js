@@ -20,6 +20,7 @@
  */
 
 /*jslint regexp: true */
+/*global logger*/
 
 /**
  * Functions for working with extension packages
@@ -364,7 +365,11 @@ define(function (require, exports, module) {
                         // File IO errors, internal error in install()/validate(), or extension startup crashed
                         state = STATE_FAILED;
                         FileSystem.getFileForPath(downloadResult.localPath).unlink();
-                        d.reject(err);  // TODO: needs to be err.message ?
+                        if(!url || url.startsWith(brackets.config.extension_url)) {
+                            // privacy, log error for extensions in registry
+                            logger.reportError(err, "Failed to install " + url);
+                        }
+                        d.reject(err);
                     });
             })
             .fail(function (err) {

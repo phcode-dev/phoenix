@@ -40,7 +40,8 @@ define(function (require, exports, module) {
         ExtensionManager            = require("extensibility/ExtensionManager"),
         ExtensionManagerView        = require("extensibility/ExtensionManagerView").ExtensionManagerView,
         ExtensionManagerViewModel   = require("extensibility/ExtensionManagerViewModel"),
-        PreferencesManager          = require("preferences/PreferencesManager");
+        PreferencesManager          = require("preferences/PreferencesManager"),
+        Metrics                     = require("utils/Metrics");
 
     var dialogTemplate    = require("text!htmlContent/extension-manager-dialog.html");
 
@@ -207,12 +208,17 @@ define(function (require, exports, module) {
     }
 
 
+    const installFromZipSupported = false;
     /**
      * @private
      * Install extensions from the local file system using the install dialog.
      * @return {$.Promise}
      */
-    function _installUsingDragAndDrop() {
+    function _installUsingDragAndDrop(files) {
+        Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "install", "dropZip");
+        if(!installFromZipSupported){
+            return new $.Deferred().reject(files).promise();
+        }
         var installZips = [],
             updateZips = [],
             deferred = new $.Deferred(),
@@ -303,6 +309,7 @@ define(function (require, exports, module) {
      * Show a dialog that allows the user to browse and manage extensions.
      */
     function _showDialog() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "dialogue", "shown");
 
         var dialog,
             $dlg,
@@ -514,6 +521,7 @@ define(function (require, exports, module) {
         // Handle the 'Install from URL' button.
         $(".extension-manager-dialog .install-from-url")
             .click(function () {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "install", "fromURL");
                 InstallExtensionDialog.showDialog().done(ExtensionManager.updateFromDownload);
             });
 
@@ -529,18 +537,15 @@ define(function (require, exports, module) {
                     return;
                 }
 
-                var items = event.originalEvent.dataTransfer.items,
-                    isValidDrop = false;
+                let items = event.originalEvent.dataTransfer.items,
+                    isValidDrop = false,
+                    zipMimeTypes = ["application/zip",
+                        "application/x-zip",
+                        "application/octet-stream",
+                        "application/x-zip-compressed"];
 
                 isValidDrop = _.every(items, function (item) {
-                    if (item.kind === "file") {
-                        var entry = item.webkitGetAsEntry(),
-                            extension = FileUtils.getFileExtension(entry.fullPath);
-
-                        return entry.isFile && extension === "zip";
-                    }
-
-                    return false;
+                    return item.kind === "file" && zipMimeTypes.includes(item.type);
                 });
 
                 if (isValidDrop) {
@@ -570,15 +575,15 @@ define(function (require, exports, module) {
 
                 if (event.originalEvent.dataTransfer.files) {
                     // Attempt install
-                    _installUsingDragAndDrop().fail(function (errorArray) {
+                    _installUsingDragAndDrop(event.originalEvent.dataTransfer.files).fail(function (errorFiles) {
                         var message = Strings.INSTALL_EXTENSION_DROP_ERROR;
 
                         message += "<ul class='dialog-list'>";
-                        errorArray.forEach(function (info) {
+                        for(let fileKey of Object.keys(errorFiles)){
                             message += "<li><span class='dialog-filename'>";
-                            message += StringUtils.breakableUrl(info.item);
-                            message += "</span>: " + info.error + "</li>";
-                        });
+                            message += StringUtils.breakableUrl(errorFiles[fileKey].name);
+                            message += "</span>: " + Strings.CANT_DROP_ZIP + "</li>";
+                        }
                         message += "</ul>";
 
                         Dialogs.showModalDialog(

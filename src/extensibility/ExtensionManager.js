@@ -452,7 +452,7 @@ define(function (require, exports, module) {
      * @return {string} The URL to download the extension from.
      */
     function getExtensionURL(id, version) {
-        return StringUtils.format(brackets.config.extension_url, id, version);
+        return `${brackets.config.extension_url}${id}-${version}.zip`;
     }
 
     /**
