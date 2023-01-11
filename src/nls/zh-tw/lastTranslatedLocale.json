@@ -410,6 +410,7 @@
   "DISABLE": "停用",
   "ENABLE": "啟用",
   "OVERWRITE": "覆寫",
+  "CANT_DROP_ZIP": "很快將支持刪除 zip 文件...",
   "CANT_REMOVE_DEV": "在 \"dev\" 資料夾中的擴充功能必需手動刪除。",
   "CANT_UPDATE": "這項更新不相容於這一版的 {APP_NAME}。",
   "CANT_UPDATE_DEV": "在 \"dev\" 資料夾中的擴充功能無法自動更新。",

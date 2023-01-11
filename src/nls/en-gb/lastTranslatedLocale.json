@@ -410,6 +410,7 @@
   "DISABLE": "Disable",
   "ENABLE": "Enable",
   "OVERWRITE": "Overwrite",
+  "CANT_DROP_ZIP": "Dropping zip files will be supported soon...",
   "CANT_REMOVE_DEV": "Extensions in the \"dev\" folder must be manually deleted.",
   "CANT_UPDATE": "The update isn't compatible with this version of {APP_NAME}.",
   "CANT_UPDATE_DEV": "Extensions in the \"dev\" folder can't be updated automatically.",

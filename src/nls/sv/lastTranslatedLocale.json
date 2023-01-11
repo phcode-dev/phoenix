@@ -410,6 +410,7 @@
   "DISABLE": "Avaktivera",
   "ENABLE": "Aktivera",
   "OVERWRITE": "Skriv över",
+  "CANT_DROP_ZIP": "Att släppa zip-filer kommer att stödjas snart...",
   "CANT_REMOVE_DEV": "Tillägg i mappen \"dev\" måste raderas manuellt.",
   "CANT_UPDATE": "Uppdateringen är inte kompatibel med denna version av {APP_NAME}.",
   "CANT_UPDATE_DEV": "Tilläggen i mappen \"dev\" kan inte uppdateras automatiskt.",

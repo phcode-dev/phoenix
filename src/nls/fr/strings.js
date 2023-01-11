@@ -430,6 +430,7 @@ define({
   "DISABLE": "Désactiver",
   "ENABLE": "Activer",
   "OVERWRITE": "Remplacer",
+  "CANT_DROP_ZIP": "La suppression de fichiers zip sera bientôt prise en charge...",
   "CANT_REMOVE_DEV": "Les extensions du dossier \"dev\" doivent être supprimées manuellement.",
   "CANT_UPDATE": "La mise à jour n’est pas disponible avec cette version de l’application {APP_NAME}.",
   "CANT_UPDATE_DEV": "Les extensions du dossier « dev » ne peuvent pas être mises à jour automatiquement.",

@@ -430,6 +430,7 @@ define({
   "DISABLE": "Deaktiver",
   "ENABLE": "Aktiver",
   "OVERWRITE": "Overskriv",
+  "CANT_DROP_ZIP": "Slipning af zip-filer vil snart blive understøttet...",
   "CANT_REMOVE_DEV": "Udvidelser i \"dev\"-mappen skal slettes manuelt.",
   "CANT_UPDATE": "Opdateringen er ikke kompatibel med denne version af {APP_NAME}.",
   "CANT_UPDATE_DEV": "Udvidelser i \"dev\"-mappen kan ikke opdateres automatisk.",

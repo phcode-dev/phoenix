@@ -410,6 +410,7 @@
   "DISABLE": "Deaktivieren",
   "ENABLE": "Aktivieren",
   "OVERWRITE": "Überschreiben",
+  "CANT_DROP_ZIP": "Das Ablegen von ZIP-Dateien wird bald unterstützt...",
   "CANT_REMOVE_DEV": "Erweiterungen im \"dev\"-Ordner müssen manuell gelöscht werden.",
   "CANT_UPDATE": "Das Update ist nicht kompatibel mit dieser Version von {APP_NAME}.",
   "CANT_UPDATE_DEV": "Erweiterungen im \"dev\"-Ordner können nicht automatisch aktualisiert werden.",

@@ -430,6 +430,7 @@ define({
   "DISABLE": "Desativar",
   "ENABLE": "Permitir",
   "OVERWRITE": "Substituir",
+  "CANT_DROP_ZIP": "A eliminação de arquivos zip será suportada em breve...",
   "CANT_REMOVE_DEV": "As extensões na pasta \"dev\" devem ser excluídas manualmente.",
   "CANT_UPDATE": "A atualização não é compatível com esta versão do {APP_NAME}.",
   "CANT_UPDATE_DEV": "Extensões na pasta \"dev\" não podem ser atualizadas automaticamente.",

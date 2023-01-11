@@ -430,6 +430,7 @@ define({
   "DISABLE": "Onemogući",
   "ENABLE": "Omogući",
   "OVERWRITE": "Piši preko",
+  "CANT_DROP_ZIP": "Uskoro će biti podržano ispuštanje zip datoteka...",
   "CANT_REMOVE_DEV": "Extenzije u \"dev\" mapi moraju biti ručno obrisane.",
   "CANT_UPDATE": "Novija verzija nije kompatibilna sa trenutnom verzijom aplikacije {APP_NAME}.",
   "CANT_UPDATE_DEV": "Extenzije u \"dev\" mapi ne mogu biti automatski ažurirane.",

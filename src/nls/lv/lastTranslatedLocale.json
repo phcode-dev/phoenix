@@ -410,6 +410,7 @@
   "DISABLE": "Atspējot",
   "ENABLE": "Iespējot",
   "OVERWRITE": "Pārrakstīt",
+  "CANT_DROP_ZIP": "Drīzumā tiks atbalstīta ZIP failu nomešana...",
   "CANT_REMOVE_DEV": "Paplašinājumi mapē \"dev\" ir jādzēš manuāli.",
   "CANT_UPDATE": "Atjauninājums nesader ar šo {APP_NAME} versiju.",
   "CANT_UPDATE_DEV": "Paplašinājumi mapē \"dev\" nevar tikt atjaunoti automātiski.",

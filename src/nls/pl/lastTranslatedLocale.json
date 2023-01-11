@@ -410,6 +410,7 @@
   "DISABLE": "Wyłącz",
   "ENABLE": "Włącz",
   "OVERWRITE": "Nadpisz",
+  "CANT_DROP_ZIP": "Upuszczanie plików ZIP będzie obsługiwane wkrótce...",
   "CANT_REMOVE_DEV": "Rozszerzenia w folderze \"dev\" muszą być usunięte ręcznie.",
   "CANT_UPDATE": "Aktualizacja nie jest kompatybilna z tą wersją {APP_NAME}.",
   "CANT_UPDATE_DEV": "Rozszerzenia w folderze \"dev\" nie mogą być automatycznie zaktualizowane.",

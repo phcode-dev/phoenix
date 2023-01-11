@@ -410,6 +410,7 @@
   "DISABLE": "비활성",
   "ENABLE": "활성",
   "OVERWRITE": "덮어쓰기",
+  "CANT_DROP_ZIP": "zip 파일 삭제는 곧 지원될 예정입니다...",
   "CANT_REMOVE_DEV": "\"dev\" 폴더의 확장 기능은 수동으로 제거해야 합니다.",
   "CANT_UPDATE": "업데이트가 이 버전의 {APP_NAME}와 호환되지 않습니다.",
   "CANT_UPDATE_DEV": "\"dev\" 폴더의 확장 기능은 자동으로 업데이트 할 수 없습니다.",

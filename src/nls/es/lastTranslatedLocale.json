@@ -410,6 +410,7 @@
   "DISABLE": "Deshabilitar",
   "ENABLE": "Habilitar",
   "OVERWRITE": "Sobrescribir",
+  "CANT_DROP_ZIP": "Pronto se admitirá la eliminación de archivos zip...",
   "CANT_REMOVE_DEV": "Las extensiones en la carpeta \"dev\" se deben eliminar manualmente.",
   "CANT_UPDATE": "La actualización no es compatible con esta versión de {APP_NAME}.",
   "CANT_UPDATE_DEV": "Las extensiones en la carpeta \"dev\" no se pueden actualizar automáticamente.",

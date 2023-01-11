@@ -410,6 +410,7 @@
   "DISABLE": "禁用",
   "ENABLE": "启用",
   "OVERWRITE": "覆盖",
+  "CANT_DROP_ZIP": "很快将支持删除 zip 文件...",
   "CANT_REMOVE_DEV": "\"dev\" 文件夹中扩展必须手动删除。",
   "CANT_UPDATE": "升级与当前版本的 {APP_NAME} 不兼容。",
   "CANT_UPDATE_DEV": "\"dev\" 文件夹中的扩展无法自动升级。",

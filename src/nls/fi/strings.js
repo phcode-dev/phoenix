@@ -430,6 +430,7 @@ define({
   "DISABLE": "Poista käytöstä",
   "ENABLE": "Ota käyttöön",
   "OVERWRITE": "Korvaa",
+  "CANT_DROP_ZIP": "Zip-tiedostojen pudottamista tuetaan pian...",
   "CANT_REMOVE_DEV": "Kansion ”dev” laajennukset on poistettava käsin.",
   "CANT_UPDATE": "Laajennus ei ole yhteensopiva tämän {APP_NAME}-version kanssa.",
   "CANT_UPDATE_DEV": "Kansion ”dev” laajennuksia ei voi päivittää automaattisesti.",

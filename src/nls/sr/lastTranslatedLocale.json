@@ -410,6 +410,7 @@
   "DISABLE": "Онемогући",
   "ENABLE": "Омогући",
   "OVERWRITE": "Пресними",
+  "CANT_DROP_ZIP": "Испуштање зип датотека ће ускоро бити подржано...",
   "CANT_REMOVE_DEV": "Екстензије у \"dev\" директоријуму морају бити ручно обрисане.",
   "CANT_UPDATE": "Нова верзија није компатибилна са тренутном верзијом {APP_NAME}-а.",
   "CANT_UPDATE_DEV": "Extensions in the \"dev\" folder can't be updated automatically.",
