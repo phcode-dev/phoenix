@@ -8,6 +8,15 @@ We are continuously adding features every week to improve the life of web develo
 
 List of features added to phoenix:
 
+## Extensions and Themes Store
+`Added on January,2023`
+
+* Browse and install extensions and themes from the store. Click on the `extensions icon` or select `File > Extension Manager` from menu item to view store.
+* To apply themes after installing, click on menu `View > Themes` and select Theme to apply.
+* Most extensions from [Brackets](https://brackets.io) is available in Phoenix Web except few that requires native privileges. 
+  ![extensions](https://user-images.githubusercontent.com/5336369/211729611-1b8f4097-6f74-4eac-9721-e2447fb68be6.gif)
+
+
 ## Number Widget for Live Preview
 `Added on December,2022`
 

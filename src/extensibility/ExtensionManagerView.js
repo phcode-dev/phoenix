@@ -35,7 +35,8 @@ define(function (require, exports, module) {
         Mustache                  = require("thirdparty/mustache/mustache"),
         PathUtils                 = require("thirdparty/path-utils/path-utils"),
         itemTemplate              = require("text!htmlContent/extension-manager-view-item.html"),
-        PreferencesManager        = require("preferences/PreferencesManager");
+        PreferencesManager        = require("preferences/PreferencesManager"),
+        Metrics                   = require("utils/Metrics");
 
 
     /**
@@ -197,18 +198,23 @@ define(function (require, exports, module) {
                 }
             }.bind(this))
             .on("click", "button.install", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "install");
                 self._installUsingDialog($(e.target).attr("data-extension-id"));
             })
             .on("click", "button.update", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "update");
                 self._installUsingDialog($(e.target).attr("data-extension-id"), true);
             })
             .on("click", "button.remove", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "remove");
                 ExtensionManager.markForRemoval($(e.target).attr("data-extension-id"), true);
             })
             .on("click", "button.disable", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "disable");
                 ExtensionManager.markForDisabling($(e.target).attr("data-extension-id"), true);
             })
             .on("click", "button.enable", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "enable");
                 ExtensionManager.enable($(e.target).attr("data-extension-id"));
             });
     };

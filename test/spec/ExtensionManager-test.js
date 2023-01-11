@@ -63,7 +63,7 @@ define(function (require, exports, module) {
             origRegistryURL = brackets.config.extension_registry;
             origExtensionUrl = brackets.config.extension_url;
             brackets.config.extension_registry = "http://fake-registry.com/registry.json";
-            brackets.config.extension_url = "http://fake-repository.com/{0}/{0}-{1}.zip";
+            brackets.config.extension_url = "http://fake-repository.com/";
 
             // Return a canned registry when requested. Individual tests can override this
             // at any point before the request is actually made.
@@ -457,7 +457,7 @@ define(function (require, exports, module) {
 
             it("should return the correct download URL for an extension", function () {
                 expect(ExtensionManager.getExtensionURL("my-cool-extension", "1.2.3"))
-                    .toBe("http://fake-repository.com/my-cool-extension/my-cool-extension-1.2.3.zip");
+                    .toBe("http://fake-repository.com/my-cool-extension-1.2.3.zip");
             });
         });
 
