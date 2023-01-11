@@ -816,19 +816,37 @@ define(function (require, exports, module) {
         return $.extend({}, defaults ? _defaultKeyMap : _keyMap);
     }
 
+    function _makeMapFromArray(map, arr){
+        for(let item of arr) {
+            map[item] = true;
+        }
+        return map;
+    }
+
     /**
      * If there is a registered and enabled key event, we always mark the event as processed
      * except the ones in UN_SWALLOWED_EVENTS.
      * @type {(string)[]}
      */
-    let UN_SWALLOWED_EVENTS = [
+    const UN_SWALLOWED_EVENTS = _makeMapFromArray({}, [
         Commands.EDIT_SELECT_ALL,
         Commands.EDIT_UNDO,
         Commands.EDIT_REDO,
         Commands.EDIT_CUT,
         Commands.EDIT_COPY,
         Commands.EDIT_PASTE
-    ];
+    ]);
+
+    // single keys except function keys and key combinations are never swallowed. Áka we want default behavior
+    // for the below keys if the command handler for the registered key didnt do anything.
+    let UN_SWALLOWED_KEYS = _makeMapFromArray({},
+        _keyNames.concat(_reservedShortcuts)
+            .concat(_macReservedShortcuts));
+    function _isUnSwallowedKeys(key) {
+        return UN_SWALLOWED_KEYS[key]
+            || (key >= 'A' && key <= 'Z')
+            || (key >= '0' && key <= '9');
+    }
 
     /**
      * Process the keybinding for the current key.
@@ -841,13 +859,14 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "shortcut", key);
             Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "command", _keyMap[key].commandID);
             logger.leaveTrail("Keyboard shortcut: " + key + "command" + _keyMap[key].commandID);
-            let promise = CommandManager.execute(_keyMap[key].commandID);
-            if(UN_SWALLOWED_EVENTS.includes(_keyMap[key].commandID)){
-                return (promise.state() !== "rejected");
-            }
-            // If there is a registered and enabled key event, we always mark the event as processed and return true.
+            // If there is a registered and enabled key event except the swallowed key events,
+            // we always mark the event as processed and return true.
             // We don't want multiple behavior tied to the same key event. For Instance, in browser, if `ctrl-k`
             // is not handled by quick edit, it will open browser url bar if we return false here(which is bad ux).
+            let promise = CommandManager.execute(_keyMap[key].commandID);
+            if(UN_SWALLOWED_EVENTS[_keyMap[key].commandID] || _isUnSwallowedKeys(key)){
+                return (promise.state() !== "rejected");
+            }
             return true;
         }
         return false;
