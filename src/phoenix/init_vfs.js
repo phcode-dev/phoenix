@@ -31,12 +31,16 @@
  * This module should be functionally as light weight as possible with minimal deps as it is a shell component.
  * **/
 
+const EXTENSION_DIR = '/fs/app/extensions/';
+
 function _setupVFS(fsLib, pathLib){
     Phoenix.VFS = {
         getRootDir: () => '/fs/',
         getMountDir: () => '/mnt/',
         getAppSupportDir: () => '/fs/app/',
-        getExtensionDir: () => '/fs/app/extensions/',
+        getExtensionDir: () => EXTENSION_DIR,
+        getUserExtensionDir: () => `${EXTENSION_DIR}user`,
+        getDevExtensionDir: () => `${EXTENSION_DIR}dev`,
         getLocalDir: () => '/fs/local/',
         getTempDir: () => '/temp/',
         getTrashDir: () => '/fs/trash/',

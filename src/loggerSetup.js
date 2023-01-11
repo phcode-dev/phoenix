@@ -131,18 +131,64 @@
     logger.loggingOptions.logLivePreview = window.isLoggingEnabled(
         logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW);
 
+    function _shouldDiscardError(errors = []) {
+        if(!window.fsServerUrl || !window.Phoenix || !window.Phoenix.VFS){
+            return false;
+        }
+        let fileURL, extensionName, userFsURLFound = false,
+            userExtensionsURL = window.fsServerUrl.slice(0, -1) + window.Phoenix.VFS.getUserExtensionDir() + "/";
+
+        // errors with stacks originating from any folder or files from the user file system are not logged for privacy
+        for(let error of errors){
+            if(error.stacktrace && error.stacktrace[0]) {
+                for(let stack of error.stacktrace){
+                    fileURL = stack.file || "";
+                    if(fileURL.startsWith(userExtensionsURL)) {
+                        // an extension installed from extension store has error. we dont log, but raise metric
+                        extensionName = fileURL.replace(userExtensionsURL, "");
+                        extensionName = extensionName.split("/")[0];
+                        window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, `extn-${extensionName}`,
+                            error.type);
+                        window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, `extn-${extensionName}`,
+                            error.errorClass);
+                        logger.leaveTrail(`Extension Error for ${extensionName} of type ${error.type} class ${error.errorClass}`);
+                        return true;
+                    }
+                    if(fileURL.startsWith(window.fsServerUrl)) {
+                        userFsURLFound = true;
+                    }
+                }
+            }
+        }
+        if(userFsURLFound) {
+            return true;
+        }
+        return false;
+    }
+
     function onError(event) {
         // for more info https://docs.bugsnag.com/platforms/javascript/customizing-error-reports
-        // change health logger popup string before changing the below line to anything other than "Caught Critical error"
-        let reportedStatus = logger.loggingOptions.healthDataDisabled? "Not Reported as health data disabled." : "Reported";
+        try{
+            let reportedStatus =  "Reported";
+            let shouldReport = true;
+            if(logger.loggingOptions.healthDataDisabled){
+                reportedStatus = "Not Reported as health data disabled.";
+                shouldReport = false;
+            } else if(_shouldDiscardError(event.errors)){
+                reportedStatus = "Not Reported error from user extension or fs.";
+                shouldReport = false;
+            }
 
-        console.error(`Caught Critical error, ${reportedStatus}: `, event);
-        if(window.Metrics) {
-            window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, "uncaught", "logger");
-        }
-        if(logger.loggingOptions.healthDataDisabled){
-            // don't log anything as user disabled health tracking
-            return false;
+            // change health logger popup string before changing the below to anything other than "Caught Critical error"
+            console.error(`Caught Critical error, ${reportedStatus}: `, event);
+            if(window.Metrics) {
+                window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, "uncaught", "logger");
+            }
+
+            return shouldReport;
+        } catch (e) {
+            console.error("exception occurred while reposting error: ", e);
+            event.addMetadata('onError', 'exception', e.message);
         }
     }
 
