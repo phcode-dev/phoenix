@@ -410,6 +410,7 @@
   "DISABLE": "Letiltás",
   "ENABLE": "Engedélyezze",
   "OVERWRITE": "Felülírás",
+  "CANT_DROP_ZIP": "A zip fájlok eldobása hamarosan támogatott lesz...",
   "CANT_REMOVE_DEV": "Bővítmények a \"dev\" mappában csak manuálisan távolíthatóak el.",
   "CANT_UPDATE": "A frissítés nem kompatibilis a(z) {APP_NAME} ezen verziójával.",
   "CANT_UPDATE_DEV": "A „dev” mappában lévő bővítmények nem frissíthetők automatikusan.",

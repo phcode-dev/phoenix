@@ -410,6 +410,7 @@
   "DISABLE": "Cacat",
   "ENABLE": "Memungkinkan",
   "OVERWRITE": "Timpa",
+  "CANT_DROP_ZIP": "Menjatuhkan file zip akan segera didukung...",
   "CANT_REMOVE_DEV": "Ekstensi pada folder \"dev\" harus dihapus secara manual.",
   "CANT_UPDATE": "Pembaruan tidak kompatibel dengan {APP_NAME} versi ini.",
   "CANT_UPDATE_DEV": "Ekstensi pada folder \"dev\" tidak dapat diperbarui secara otomatis.",

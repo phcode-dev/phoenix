@@ -410,6 +410,7 @@
   "DISABLE": "Deaktivovat",
   "ENABLE": "Aktivovat",
   "OVERWRITE": "Přepsat",
+  "CANT_DROP_ZIP": "Brzy bude podporováno vyhazování souborů zip...",
   "CANT_REMOVE_DEV": "Doplněk ve složce \"dev\" musí být smazán manuálně.",
   "CANT_UPDATE": "Aktualizace není kompatibilní s touto verzí {APP_NAME}.",
   "CANT_UPDATE_DEV": "Doplňky ve složce \"dev\" nemohou být aktualizovány automaticky.",

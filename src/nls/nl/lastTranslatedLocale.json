@@ -410,6 +410,7 @@
   "DISABLE": "Uitzetten",
   "ENABLE": "Inschakelen",
   "OVERWRITE": "Overschrijf",
+  "CANT_DROP_ZIP": "Het droppen van zip-bestanden wordt binnenkort ondersteund...",
   "CANT_REMOVE_DEV": "Extensies in de \"dev\" map moeten met de hand verwijderd worden.",
   "CANT_UPDATE": "De update is niet compatibel met deze versie van {APP_NAME}.",
   "CANT_UPDATE_DEV": "Extensies in de \"dev\" map kunnen niet automatisch geupdate worden.",

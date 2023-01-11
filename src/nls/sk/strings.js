@@ -430,6 +430,7 @@ define({
   "DISABLE": "Zakázať",
   "ENABLE": "Povoliť",
   "OVERWRITE": "Prepísať",
+  "CANT_DROP_ZIP": "Čoskoro bude podporované zrušenie súborov zip...",
   "CANT_REMOVE_DEV": "Doplnky v \"dev\" priečinku musia byť manuálne odstránené.",
   "CANT_UPDATE": "Aktualizácia nie je kompatibilná s touto verziou {APP_NAME}.",
   "CANT_UPDATE_DEV": "Rozšírenia v priečinku „dev“ nie je možné aktualizovať automaticky.",

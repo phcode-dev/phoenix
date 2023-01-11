@@ -410,6 +410,7 @@
   "DISABLE": "Dezactivați",
   "ENABLE": "Permite",
   "OVERWRITE": "Rescriere",
+  "CANT_DROP_ZIP": "Eliminarea fișierelor zip va fi acceptată în curând...",
   "CANT_REMOVE_DEV": "Extensiile din dosarul \"dev\" trebuie să fie șterse manual.",
   "CANT_UPDATE": "Înnoirea nu e compatibilă cu versiunea curentă {APP_NAME}.",
   "CANT_UPDATE_DEV": "Extensiile din mapa \"dev\" nu pot fi înnoite automat.",

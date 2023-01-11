@@ -430,6 +430,7 @@ define({
   "DISABLE": "Disabilita",
   "ENABLE": "Abilita",
   "OVERWRITE": "Sovrascrivi",
+  "CANT_DROP_ZIP": "Il rilascio di file zip sarà presto supportato...",
   "CANT_REMOVE_DEV": "Le estensioni nella cartella \"dev\" devono essere eliminate manualmente.",
   "CANT_UPDATE": "L’aggiornamento non è compatibile con questa versione di {APP_NAME}.",
   "CANT_UPDATE_DEV": "Le estensioni nella cartella \"dev\" non possono essere aggiornate automaticamente.",

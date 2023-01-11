@@ -430,6 +430,7 @@ define({
   "DISABLE": "無効",
   "ENABLE": "有効",
   "OVERWRITE": "上書き",
+  "CANT_DROP_ZIP": "zip ファイルのドロップは、まもなくサポートされる予定です...",
   "CANT_REMOVE_DEV": "dev フォルダーの拡張機能は手動で削除する必要があります。",
   "CANT_UPDATE": "アップデートはこのバージョンの {APP_NAME} と互換性がありません。",
   "CANT_UPDATE_DEV": "dev フォルダーの拡張機能は自動的に更新されません。",

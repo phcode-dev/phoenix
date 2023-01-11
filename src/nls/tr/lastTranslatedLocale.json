@@ -410,6 +410,7 @@
   "DISABLE": "Devre dışı bırakmak",
   "ENABLE": "Olanak vermek",
   "OVERWRITE": "üzerine yaz",
+  "CANT_DROP_ZIP": "Zip dosyalarının düşürülmesi yakında desteklenecektir...",
   "CANT_REMOVE_DEV": "\"dev\" klasöründeki uzantılar manuel olarak silinmelidir.",
   "CANT_UPDATE": "Güncelleme, {APP_NAME} uygulamasının bu sürümüyle uyumlu değil.",
   "CANT_UPDATE_DEV": "\"dev\" klasöründeki uzantılar otomatik olarak güncellenemez.",
