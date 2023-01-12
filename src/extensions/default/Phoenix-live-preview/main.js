@@ -347,7 +347,6 @@ define(function (require, exports, module) {
                 // if html file and live preview isnt active.
                 _loadPreview(true);
             }
-            _showPopoutNotificationIfNeeded(changedFile.fullPath);
         }
     }
 
@@ -378,11 +377,10 @@ define(function (require, exports, module) {
         }
     }
 
-    function _showPopoutNotificationIfNeeded(path) {
+    function _showPopoutNotificationIfNeeded() {
         let notificationKey = 'livePreviewPopoutShown';
         let popoutMessageShown = localStorage.getItem(notificationKey);
-        if(!popoutMessageShown && WorkspaceManager.isPanelVisible(LIVE_PREVIEW_PANEL_ID)
-            && (path.endsWith('.html') || path.endsWith('.htm'))){
+        if(!popoutMessageShown && WorkspaceManager.isPanelVisible(LIVE_PREVIEW_PANEL_ID)){
             NotificationUI.createFromTemplate(Strings.GUIDED_LIVE_PREVIEW_POPOUT,
                 "livePreviewPopoutButton", {
                     allowedPlacements: ['bottom'],
@@ -391,6 +389,7 @@ define(function (require, exports, module) {
             );
             localStorage.setItem(notificationKey, "true");
         }
+        LiveDevelopment.off(LiveDevelopment.EVENT_LIVE_PREVIEW_CLICKED, _showPopoutNotificationIfNeeded);
     }
 
     /**
@@ -441,6 +440,7 @@ define(function (require, exports, module) {
         }, 1000);
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
+        LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_PREVIEW_CLICKED, _showPopoutNotificationIfNeeded);
     });
 });
 

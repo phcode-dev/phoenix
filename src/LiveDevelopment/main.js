@@ -284,6 +284,9 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE, function (event, {clientId}) {
             exports.trigger(exports.EVENT_CONNECTION_CLOSE, {clientId});
         });
+        MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_CLICKED, function (_event, clickDetails) {
+            exports.trigger(exports.EVENT_LIVE_PREVIEW_CLICKED, clickDetails);
+        });
 
     });
 
@@ -307,6 +310,7 @@ define(function main(require, exports, module) {
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
     exports.EVENT_CONNECTION_CLOSE = MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE;
+    exports.EVENT_LIVE_PREVIEW_CLICKED = MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_CLICKED;
     exports.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = EVENT_LIVE_HIGHLIGHT_PREF_CHANGED;
 
     // Export public functions

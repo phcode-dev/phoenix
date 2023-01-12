@@ -5,9 +5,25 @@
         <title>Enable Phoenix development site</title>
         <link rel="stylesheet" href="styles.css" />
         <script>
+            function showDebugStatuses(localStorageKey, descriptionID, buttonID) {
+                let enabled = localStorage.getItem(localStorageKey) === "true",
+                    statusMessage = `Debug logs for ${localStorageKey} are currently Disabled`,
+                    btnMessage = `Enable debug logs for ${localStorageKey}`,
+                    color = "red";
+                if(enabled){
+                    statusMessage = `Debug logs for ${localStorageKey} are currently Enabled`;
+                    btnMessage = `Disable debug logs for ${localStorageKey}`;
+                    color = "green";
+                }
+
+                document.getElementById(descriptionID).textContent = statusMessage;
+                document.getElementById(descriptionID).style.color = color;
+                document.getElementById(buttonID).textContent = btnMessage;
+            }
+
             function showEnabledStatus() {
                 let enabled = localStorage.getItem("devDomainsEnabled") === "true",
-                    statusMessage = `Dev site at ${location.hostname} is currently disabled`,
+                    statusMessage = `Dev site at ${location.hostname} is currently Disabled`,
                     btnMessage = `Enable ${location.hostname}`,
                     color = "red";
                 if(enabled){
@@ -19,11 +35,13 @@
                 document.getElementById("enableStatus").textContent = statusMessage;
                 document.getElementById('enableStatus').style.color = color;
                 document.getElementById("enableBtn").textContent = btnMessage;
+                showDebugStatuses("logToConsole", "enableStatusDebugLogs", "enableBtnDebugLogs");
+                showDebugStatuses("logLivePreview", "enableStatusDebugLivePreview", "enableBtnDebugLivePreview");
             }
-            function buttonClicked() {
-                let enabled = localStorage.getItem("devDomainsEnabled") === "true";
+            function toggleLocalStorageItem(key) {
+                let enabled = localStorage.getItem(key) === "true";
                 enabled = "" + (!enabled);
-                localStorage.setItem("devDomainsEnabled", enabled);
+                localStorage.setItem(key, enabled);
                 showEnabledStatus();
             }
         </script>
@@ -32,6 +50,16 @@
         <h1 id="heading">Enable or Disable Phoenix Dev site.</h1>
         <div id="enableStatus">Checking if dev site is enabled...</div>
         <br />
-        <button id="enableBtn" onclick="buttonClicked()">Click me</button>
+        <button id="enableBtn" onclick="toggleLocalStorageItem('devDomainsEnabled')">Click me</button>
+
+        <h2>Enable or disable debug logs.</h2>
+        <div id="enableStatusDebugLogs">Checking if debug logs are enabled...</div>
+        <br />
+        <button id="enableBtnDebugLogs" onclick="toggleLocalStorageItem('logToConsole')">Click me</button>
+
+        <h2>Enable or disable debug live preview logs.</h2>
+        <div id="enableStatusDebugLivePreview">Checking if debug logs are enabled...</div>
+        <br />
+        <button id="enableBtnDebugLivePreview" onclick="toggleLocalStorageItem('logLivePreview')">Click me</button>
     </body>
 </html>

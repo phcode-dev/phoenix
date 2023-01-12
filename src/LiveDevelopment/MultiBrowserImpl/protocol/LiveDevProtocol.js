@@ -53,6 +53,8 @@ define(function (require, exports, module) {
     const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = "phoenix_live_preview_scripts_instrumented_345Tt96G4.js";
     const LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "pageLoaderWorker_345Tt96G4.js";
 
+    const EVENT_LIVE_PREVIEW_CLICKED = "livePreviewClicked";
+
     /**
      * @private
      * Active connections.
@@ -142,8 +144,9 @@ define(function (require, exports, module) {
                     deferred.resolve(msg);
                 }
             }
-        } else if (msg.tagId) {
+        } else if (msg.clicked && msg.tagId) {
             _tagSelectedInLivePreview(msg.tagId);
+            exports.trigger(EVENT_LIVE_PREVIEW_CLICKED, msg);
         } else {
             // enrich received message with clientId
             msg.clientId = clientId;
@@ -399,4 +402,5 @@ define(function (require, exports, module) {
     exports.closeAllConnections = closeAllConnections;
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
     exports.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME;
+    exports.EVENT_LIVE_PREVIEW_CLICKED = EVENT_LIVE_PREVIEW_CLICKED;
 });
