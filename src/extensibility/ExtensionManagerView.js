@@ -429,8 +429,11 @@ define(function (require, exports, module) {
 
             // TODO: this should set .done on the returned promise
             if (_isUpdate) {
+                // save to metric id as it is from public extension store.
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "install", id);
                 InstallExtensionDialog.updateUsingDialog(url).done(ExtensionManager.updateFromDownload);
             } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "update", id);
                 InstallExtensionDialog.installUsingDialog(url);
             }
         }
