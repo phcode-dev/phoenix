@@ -78,7 +78,7 @@ define(function (require, exports, module) {
         DEBUG_OPEN_VIRTUAL_SERVER             = "debug.openVirtualServer",
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
 
-    const LOG_TO_CONSOLE_KEY = "logToConsole",
+    const LOG_TO_CONSOLE_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY,
         LOG_LIVE_PREVIEW_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW;
 
     // define a preference to turn off opening preferences in split-view.

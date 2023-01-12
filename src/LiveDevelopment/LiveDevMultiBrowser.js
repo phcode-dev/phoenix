@@ -69,11 +69,10 @@ define(function (require, exports, module) {
     // events
     const EVENT_OPEN_PREVIEW_URL = "openPreviewURL",
         EVENT_CONNECTION_CLOSE = "ConnectionClose",
-        EVENT_STATUS_CHANGE = "statusChange";
+        EVENT_STATUS_CHANGE = "statusChange",
+        EVENT_LIVE_PREVIEW_CLICKED= "livePreviewClicked";
 
-    const CommandManager       = require("command/CommandManager"),
-        Commands             = require("command/Commands"),
-        Dialogs              = require("widgets/Dialogs"),
+    const Dialogs              = require("widgets/Dialogs"),
         DefaultDialogs       = require("widgets/DefaultDialogs"),
         DocumentManager      = require("document/DocumentManager"),
         EditorManager        = require("editor/EditorManager"),
@@ -574,6 +573,9 @@ define(function (require, exports, module) {
                     // remove LiveCSSDocument instance when stylesheet is removed
                     .on("StylesheetRemoved.livedev", function (event, msg) {
                         _handleRelatedDocumentDeleted(msg.href);
+                    })
+                    .on(LiveDevProtocol.EVENT_LIVE_PREVIEW_CLICKED + ".livedev", function (event, msg) {
+                        exports.trigger(EVENT_LIVE_PREVIEW_CLICKED, msg);
                     });
             } else {
                 console.error("LiveDevelopment._open(): No server active");
@@ -913,6 +915,7 @@ define(function (require, exports, module) {
     exports.EVENT_OPEN_PREVIEW_URL = EVENT_OPEN_PREVIEW_URL;
     exports.EVENT_CONNECTION_CLOSE = EVENT_CONNECTION_CLOSE;
     exports.EVENT_STATUS_CHANGE = EVENT_STATUS_CHANGE;
+    exports.EVENT_LIVE_PREVIEW_CLICKED = EVENT_LIVE_PREVIEW_CLICKED;
 
     // Export public functions
     exports.open                = open;

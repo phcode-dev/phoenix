@@ -65,6 +65,8 @@
 
         loggingOptions: {
             LOCAL_STORAGE_KEYS: {
+                // change these keys in devEnable.html too
+                LOG_TO_CONSOLE_KEY: "logToConsole",
                 LOG_LIVE_PREVIEW: "logLivePreview"
             },
             healthDataDisabled: false,
@@ -93,8 +95,8 @@
      * @returns {boolean}
      */
     window.setupLogging = function () {
-        const logToConsoleOverride = urlParams.get('logToConsole');
-        const logToConsolePref = localStorage.getItem("logToConsole");
+        const logToConsoleOverride = urlParams.get(logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY);
+        const logToConsolePref = localStorage.getItem(logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY);
         if((logToConsoleOverride && logToConsoleOverride.toLowerCase() === 'true')
             || (logToConsolePref && logToConsolePref.toLowerCase() === 'true' && !logToConsoleOverride)){
             console.log= savedLoggingFn;
