@@ -64,6 +64,11 @@
 define(function (require, exports, module) {
     const EVENT_EXTENSION_INTERFACE_REGISTERED = "extensionInterfaceRegistered";
 
+    /* standard named interfaces registered by default extensions*/
+    const _DEFAULT_EXTENSIONS_INTERFACE_NAMES = {
+        PHOENIX_LIVE_PREVIEW: "Extn.Phoenix.livePreview"
+    };
+
     let EventDispatcher = require("utils/EventDispatcher");
 
     let _extensionInterfaceMap = {};
@@ -127,10 +132,15 @@ define(function (require, exports, module) {
     }
 
     EventDispatcher.makeEventDispatcher(exports);
+
+    // private API to be used inside phoenix codebase only
+    exports._DEFAULT_EXTENSIONS_INTERFACE_NAMES = _DEFAULT_EXTENSIONS_INTERFACE_NAMES;
+
     // Public API
     exports.registerExtensionInterface = registerExtensionInterface;
     exports.waitAndGetExtensionInterface = waitAndGetExtensionInterface;
     exports.isExistsExtensionInterface = isExistsExtensionInterface;
+
     // Events
     exports.EVENT_EXTENSION_INTERFACE_REGISTERED = EVENT_EXTENSION_INTERFACE_REGISTERED;
 });

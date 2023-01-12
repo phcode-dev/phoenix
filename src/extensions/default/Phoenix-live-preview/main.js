@@ -36,12 +36,13 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global Phoenix, logger*/
+/*global Phoenix*/
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
     const ExtensionUtils   = brackets.getModule("utils/ExtensionUtils"),
         EditorManager      = brackets.getModule("editor/EditorManager"),
+        ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
         CommandManager     = brackets.getModule("command/CommandManager"),
         Commands           = brackets.getModule("command/Commands"),
         Menus              = brackets.getModule("command/Menus"),
@@ -52,8 +53,7 @@ define(function (require, exports, module) {
         Strings            = brackets.getModule("strings"),
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         Metrics            = brackets.getModule("utils/Metrics"),
-        NotificationUI = brackets.getModule("widgets/NotificationUI"),
-        LiveDevelopment = brackets.getModule("LiveDevelopment/main"),
+        LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
         utils = require('utils');
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel",
@@ -62,6 +62,9 @@ define(function (require, exports, module) {
         _livePreviewNavigationChannel = new BroadcastChannel(LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID),
         livePreviewTabs = new Map();
     window.livePreviewTabs = livePreviewTabs;
+
+    ExtensionInterface.registerExtensionInterface(
+        ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW, exports);
 
     // jQuery objects
     let $icon,
@@ -377,21 +380,6 @@ define(function (require, exports, module) {
         }
     }
 
-    function _showPopoutNotificationIfNeeded() {
-        let notificationKey = 'livePreviewPopoutShown';
-        let popoutMessageShown = localStorage.getItem(notificationKey);
-        if(!popoutMessageShown && WorkspaceManager.isPanelVisible(LIVE_PREVIEW_PANEL_ID)){
-            NotificationUI.createFromTemplate(Strings.GUIDED_LIVE_PREVIEW_POPOUT,
-                "livePreviewPopoutButton", {
-                    allowedPlacements: ['bottom'],
-                    autoCloseTimeS: 15,
-                    dismissOnClick: true}
-            );
-            localStorage.setItem(notificationKey, "true");
-        }
-        LiveDevelopment.off(LiveDevelopment.EVENT_LIVE_PREVIEW_CLICKED, _showPopoutNotificationIfNeeded);
-    }
-
     /**
      * EVENT_OPEN_PREVIEW_URL triggers this once live preview infrastructure is instrumented and ready to accept live
      * preview connections from browsers. So, if we have loaded an earlier live preview, that is most likely not
@@ -440,8 +428,10 @@ define(function (require, exports, module) {
         }, 1000);
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
-        LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_PREVIEW_CLICKED, _showPopoutNotificationIfNeeded);
     });
+
+    // private API to be used inside phoenix codebase only
+    exports.LIVE_PREVIEW_PANEL_ID = LIVE_PREVIEW_PANEL_ID;
 });
 
 
