@@ -116,7 +116,7 @@ const callback = function(mutationsList) {
             let scriptAddedSplit = mutation.addedNodes[0].src.split("/");
             if(scriptAddedSplit.length > 0){
                 let message = `Loading (${trackedScriptCount})`;
-                if(window.Phoenix.firstBoot) {
+                if(window.Phoenix && window.Phoenix.firstBoot) {
                     message = `Installing (${trackedScriptCount})`;
                 }
                 _setSplashScreenStatusUpdate(message, `${scriptAddedSplit[scriptAddedSplit.length-1]}`);
