@@ -22,6 +22,8 @@
  *
  */
 
+/*global Phoenix*/
+
 define(function (require, exports, module) {
 
     var PreferencesManager           = brackets.getModule("preferences/PreferencesManager"),
@@ -29,12 +31,21 @@ define(function (require, exports, module) {
         HealthDataPreview            = require("HealthDataPreview"),
         HealthDataPopup              = require("HealthDataPopup");
 
-    const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject";
-    let newProjectExtn;
+    const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject",
+        // Since we don't have any user accounts or trackable ID to uniquely identify a user on first launch,
+        // we should be ok GDPR wise to delay showing the health data popup to 3 minutes after launch.
+        // The popup will show immediately if the user launches app again and, popup not shown before.
+        // This will also give time for the user to actually read the popup instead of having to dismiss a
+        // bunch of popups at startup.
+        POPUP_FIRST_LAUNCH_SHOW_DELAY = Phoenix.firstBoot ? 180000 : 5000;
+
+    let newProjectExtension;
     ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
         .then(interfaceObj => {
-            newProjectExtn = interfaceObj;
-            interfaceObj.on(interfaceObj.EVENT_NEW_PROJECT_DIALOGUE_CLOSED, _showFirstLaunchPopup);
+            newProjectExtension = interfaceObj;
+            interfaceObj.on(interfaceObj.EVENT_NEW_PROJECT_DIALOGUE_CLOSED, ()=>{
+                setTimeout(_showFirstLaunchPopup, POPUP_FIRST_LAUNCH_SHOW_DELAY);
+            });
         });
 
     function handleHealthDataStatistics() {
@@ -42,11 +53,12 @@ define(function (require, exports, module) {
     }
 
     function _showFirstLaunchPopup() {
+        // call this only after newProjectExtn interface is available
         // Check whether the notification dialog should be shown. It will be shown only one time.
-        newProjectExtn.off(newProjectExtn.EVENT_NEW_PROJECT_DIALOGUE_CLOSED, _showFirstLaunchPopup);
+        newProjectExtension.off(newProjectExtension.EVENT_NEW_PROJECT_DIALOGUE_CLOSED, _showFirstLaunchPopup);
         if(!window.testEnvironment){
-            var alreadyShown = PreferencesManager.getViewState("healthDataNotificationShown");
-            var prefs = PreferencesManager.getExtensionPrefs("healthData");
+            const alreadyShown = PreferencesManager.getViewState("healthDataNotificationShown");
+            const prefs = PreferencesManager.getExtensionPrefs("healthData");
             if (!alreadyShown && prefs.get("healthDataTracking")) {
                 HealthDataPopup.showFirstLaunchTooltip()
                     .done(function () {
@@ -54,8 +66,7 @@ define(function (require, exports, module) {
                     });
             }
         }
-    };
-
+    }
 
     exports.handleHealthDataStatistics       = handleHealthDataStatistics;
 });
