@@ -49,6 +49,11 @@
         height: 530px;
     }
 
+    .no-project-card {
+        padding: 15px 15px;
+        height: 530px;
+    }
+
     .project-content-right {
         width: 330px;
     }
