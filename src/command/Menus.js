@@ -65,6 +65,11 @@ define(function (require, exports, module) {
         SPLITVIEW_MENU: "splitview-menu"
     };
 
+    const EVENT_BEFORE_CONTEXT_MENU_OPEN = "beforeContextMenuOpen",
+        EVENT_BEFORE_CONTEXT_MENU_CLOSE = "beforeContextMenuClose",
+        EVENT_BEFORE_SUB_MENU_OPEN = "beforeSubMenuOpen",
+        EVENT_BEFORE_SUB_MENU_CLOSE = "beforeSubMenuClose";
+
     /**
      * Brackets Application Menu Section Constants
      * It is preferred that plug-ins specify the location of new MenuItems
@@ -1131,7 +1136,7 @@ define(function (require, exports, module) {
         // adjust positioning so menu is not clipped off bottom or right
         if (this.parentMenuItem) { // If context menu is a submenu
 
-            this.trigger("beforeSubMenuOpen");
+            this.trigger(EVENT_BEFORE_SUB_MENU_OPEN);
 
             let $parentMenuItem = $(_getHTMLMenuItem(this.parentMenuItem.id));
 
@@ -1157,7 +1162,7 @@ define(function (require, exports, module) {
                 posLeft = Math.max(0, posLeft - $parentMenuItem.outerWidth() - $menuWindow.outerWidth());
             }
         } else {
-            this.trigger("beforeContextMenuOpen");
+            this.trigger(EVENT_BEFORE_CONTEXT_MENU_OPEN);
 
             // close all other dropdowns
             closeAll();
@@ -1196,9 +1201,9 @@ define(function (require, exports, module) {
      */
     ContextMenu.prototype.close = function () {
         if (this.parentMenuItem) {
-            this.trigger("beforeSubMenuClose");
+            this.trigger(EVENT_BEFORE_SUB_MENU_CLOSE);
         } else {
-            this.trigger("beforeContextMenuClose");
+            this.trigger(EVENT_BEFORE_CONTEXT_MENU_CLOSE);
         }
         this.closeSubMenu();
         $("#" + StringUtils.jQueryIdEscape(this.id)).removeClass("open");
@@ -1306,4 +1311,9 @@ define(function (require, exports, module) {
     exports.Menu = Menu;
     exports.MenuItem = MenuItem;
     exports.ContextMenu = ContextMenu;
+    // public events
+    exports.EVENT_BEFORE_CONTEXT_MENU_OPEN = EVENT_BEFORE_CONTEXT_MENU_OPEN;
+    exports.EVENT_BEFORE_CONTEXT_MENU_CLOSE = EVENT_BEFORE_CONTEXT_MENU_CLOSE;
+    exports.EVENT_BEFORE_SUB_MENU_OPEN = EVENT_BEFORE_SUB_MENU_OPEN;
+    exports.EVENT_BEFORE_SUB_MENU_CLOSE = EVENT_BEFORE_SUB_MENU_CLOSE;
 });
