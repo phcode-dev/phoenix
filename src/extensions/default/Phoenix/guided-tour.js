@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         Menus = brackets.getModule("command/Menus"),
         StringUtils = brackets.getModule("utils/StringUtils"),
         KeyBindingManager = brackets.getModule("command/KeyBindingManager"),
+        Metrics = brackets.getModule("utils/Metrics"),
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
@@ -91,6 +92,7 @@ define(function (require, exports, module) {
                 keyboardShortcut = (keyboardShortcut && keyboardShortcut[0]) ? keyboardShortcut[0].displayKey : "-";
                 userAlreadyDidAction.beautifyCodeShown =  true;
                 localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+                Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "beautify");
                 currentlyShowingNotification = NotificationUI.createFromTemplate(
                     StringUtils.format(Strings.BEAUTIFY_CODE_NOTIFICATION, keyboardShortcut),
                     "editor-context-menu-edit.beautifyCode", {
@@ -117,6 +119,7 @@ define(function (require, exports, module) {
             if(currentlyShowingNotification){
                 return;
             }
+            Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "newProj");
             currentlyShowingNotification = NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
                 "newProject", {
                     allowedPlacements: ['top', 'bottom'],
@@ -148,6 +151,7 @@ define(function (require, exports, module) {
                     return;
                 }
                 if(WorkspaceManager.isPanelVisible(livePreviewExtension.LIVE_PREVIEW_PANEL_ID)){
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "lp_popout");
                     currentlyShowingNotification = NotificationUI.createFromTemplate(Strings.GUIDED_LIVE_PREVIEW_POPOUT,
                         "livePreviewPopoutButton", {
                             allowedPlacements: ['bottom'],
