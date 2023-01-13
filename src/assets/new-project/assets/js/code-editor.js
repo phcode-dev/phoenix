@@ -90,6 +90,12 @@ function _updateProjectCards() {
     }
     if(!showRecentProjects){
         $("#recentProjectsContainer").addClass("forced-hidden");
+        $("#noProjectContainer").removeClass("forced-hidden");
+        let videoHtml = `<iframe style="align-items: center" src="https://www.youtube.com/embed/Nqukd9oU060" title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen></iframe>`;
+        document.getElementById("YTVideoFrame").innerHTML = videoHtml;
     }
 }
 

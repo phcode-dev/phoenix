@@ -51,14 +51,20 @@
         </div>
     </div>
     <div class="editor-project-content d-flex justify-content-between">
-        <div id="recentProjectsContainer" class="project-content-left">
-            <div class="recent-project-card">
+        <div class="project-content-left">
+            <div id="recentProjectsContainer" class="recent-project-card">
                 <div class="recent-head">
                     <h5 class="localize">{{CMD_TOGGLE_RECENT_PROJECTS}}</h5>
                 </div>
                 <ul id="recentProjectList" class="recent-project-list">
 
                 </ul>
+            </div>
+            <div id="noProjectContainer" class="no-project-card forced-hidden" style="overflow: hidden;">
+                <!-- Do not load any heavy youtube assets here-->
+                <h5 class="localize">{{PROJECTS_AT_A_GLANCE}}</h5>
+                <div id="YTVideoFrame" style="display: flex; justify-content: center"></div>
+                <span class="localize">{{PROJECT_AT_GLANCE_DESCRIPTION}}</span>
             </div>
         </div>
         <div class="project-content-right">
