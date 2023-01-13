@@ -232,7 +232,7 @@ img {
 
 .ex-tabs li a span {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 14px;
 
     color: #FFFFFF;
@@ -713,7 +713,7 @@ img {
 
 .project-type-list li a span {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 14px;
     color: #FFFFFF;
     margin-top: 10px;
@@ -739,6 +739,13 @@ img {
 }
 
 .recent-project-card {
+    background: #2E3031;
+    border-radius: 10px;
+    max-height: 370px;
+    padding: 20px 30px;
+}
+
+.no-project-card {
     background: #2E3031;
     border-radius: 10px;
     max-height: 370px;
@@ -784,13 +791,27 @@ img {
     text-align: center;
 }
 
+.no-project-card  h5 {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.no-project-card  span {
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+}
+
 .project-content-right {
     width: 400px;
 }
 
 .project-name {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 14px;
     color: #FFFFFF;
 }
