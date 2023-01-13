@@ -142,12 +142,12 @@ define(function (require) {
         // Load the brackets module. This is a self-running module that loads and runs the entire application.
         try{
             require(["brackets"]);
-        } catch (e) {
-            console.error('Critical error when loading brackets. Trying to reload again.');
-            if(window.Metrics) {
-                window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, "loadErr", "reload");
-            }
-            window.location.reload();
+        } catch (err) {
+            // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
+            window.logger && window.logger.reportError(err,
+                'Critical error when loading brackets. Trying to reload again.');
+            // wait for 3 seconds for bugsnag to send report.
+            setTimeout(window.location.reload, 3000);
         }
     });
 });
