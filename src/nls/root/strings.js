@@ -969,6 +969,7 @@ define({
     "BUILD_WEBSITE": "Build Website",
     "VIEW_MORE": "View More...",
     "NEW_PROJECT_NOTIFICATION": "Click this icon to<br/>create a new project. </br> <a href='#' style='float:right;'>ok</a>",
+    "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to Beautify code. </br> <img src=\"extensions/default/Phoenix/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
     "DEFAULT_PROJECT_NOTIFICATION": "Click here to open the <br/><b>default project</b> in phoenix. </br> <a href='#' style='float:right;'>ok</a>",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
     "BUILD_WEBSITE_SECTION": "Build Website",
@@ -978,7 +979,7 @@ define({
     "WEBPAGE_DASHBOARD": "HTML Dashboard",
     "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap Examples",
     "PROJECTS_AT_A_GLANCE": "Your Projects at a glance",
-    "PROJECT_AT_GLANCE_DESCRIPTION": "Create new projects or open existing project folders from your device here.",
+    "PROJECT_AT_GLANCE_DESCRIPTION": "Watch video to get started.",
     // Guided tour
     "GUIDED_LIVE_PREVIEW": "Make some code changes in the HTML file to see live preview. </br> <a href='#' style='float:right;'>ok</a>",
     "GUIDED_LIVE_PREVIEW_POPOUT": "Click this button to popout live preview to a new tab. </br> <a href='#' style='float:right;'>ok</a>",

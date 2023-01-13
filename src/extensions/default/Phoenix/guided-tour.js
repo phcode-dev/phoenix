@@ -27,13 +27,17 @@ define(function (require, exports, module) {
         CommandManager = brackets.getModule("command/CommandManager"),
         Commands = brackets.getModule("command/Commands"),
         Strings = brackets.getModule("strings"),
+        Menus = brackets.getModule("command/Menus"),
+        StringUtils = brackets.getModule("utils/StringUtils"),
+        KeyBindingManager = brackets.getModule("command/KeyBindingManager"),
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
     const userAlreadyDidAction = localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
         ? JSON.parse(localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
             version: 1,
-            clickedNewProjectIcon: false
+            clickedNewProjectIcon: false,
+            beautifyCodeShown: false
         };
 
     // we should only show one notification at a time
@@ -44,13 +48,16 @@ define(function (require, exports, module) {
     }
 
     function _startCommandTracking() {
-        if(!_shouldContinueCommandTracking){
+        if(!_shouldContinueCommandTracking()){
             return;
         }
         function commandTracker(_event, commandID) {
+            let write = false;
             switch(commandID) {
-            case Commands.FILE_NEW_PROJECT: userAlreadyDidAction.clickedNewProjectIcon = true;
-                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction)); break;
+            case Commands.FILE_NEW_PROJECT: userAlreadyDidAction.clickedNewProjectIcon = true; write = true; break;
+            }
+            if(write){
+                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
             }
             if(!_shouldContinueCommandTracking()){
                 CommandManager.off(CommandManager.EVENT_BEFORE_EXECUTE_COMMAND, commandTracker);
@@ -66,7 +73,39 @@ define(function (require, exports, module) {
     *     this will continue showing every session until user clicks on the new project icon
     *  4. After about 3 minutes, the health popup will show up.
     *  5. When user clicks on live preview, we show "click here to popout live preview"
+    *  6. Beautification notification when user opened the editor context menu and have not done any beautification yet.
     * */
+
+    // 3. Beautification notification when user opened the editor context menu for the first time
+    function _showBeautifyNotification() {
+        if(userAlreadyDidAction.beautifyCodeShown){
+            return;
+        }
+        let editorContextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
+        function _showNotification() {
+            if(currentlyShowingNotification){
+                return;
+            }
+            setTimeout(()=>{
+                let keyboardShortcut = KeyBindingManager.getKeyBindings(Commands.EDIT_BEAUTIFY_CODE);
+                keyboardShortcut = (keyboardShortcut && keyboardShortcut[0]) ? keyboardShortcut[0].displayKey : "-";
+                userAlreadyDidAction.beautifyCodeShown =  true;
+                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+                currentlyShowingNotification = NotificationUI.createFromTemplate(
+                    StringUtils.format(Strings.BEAUTIFY_CODE_NOTIFICATION, keyboardShortcut),
+                    "editor-context-menu-edit.beautifyCode", {
+                        allowedPlacements: ['left', 'right'],
+                        autoCloseTimeS: 15,
+                        dismissOnClick: true}
+                );
+                currentlyShowingNotification.done(()=>{
+                    currentlyShowingNotification = null;
+                });
+                editorContextMenu.off(Menus.EVENT_BEFORE_CONTEXT_MENU_OPEN, _showNotification);
+            }, 500);
+        }
+        editorContextMenu.on(Menus.EVENT_BEFORE_CONTEXT_MENU_OPEN, _showNotification);
+    }
 
     // 3. When user changes file by clicking on files panel, we show "click here to open new project window"
     // this will continue showing every session until user clicks on the new project icon
@@ -156,5 +195,6 @@ define(function (require, exports, module) {
         _showPopoutLivePreviewNotification();
         _showNewProjectNotification();
         _startCommandTracking();
+        _showBeautifyNotification();
     };
 });
