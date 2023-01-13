@@ -23,51 +23,101 @@ define(function (require, exports, module) {
         LiveDevelopment  = brackets.getModule("LiveDevelopment/main"),
         ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
         WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
-        Strings = brackets.getModule("strings");
+        MainViewManager  = brackets.getModule("view/MainViewManager"),
+        CommandManager = brackets.getModule("command/CommandManager"),
+        Commands = brackets.getModule("command/Commands"),
+        Strings = brackets.getModule("strings"),
+        NOTIFICATION_BACKOFF = 10000,
+        GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
+
+    const userAlreadyDidAction = localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
+        ? JSON.parse(localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
+            version: 1,
+            clickedNewProjectIcon: false
+        };
+
+    // we should only show one notification at a time
+    let currentlyShowingNotification;
+
+    function _shouldContinueCommandTracking() {
+        return (!userAlreadyDidAction.clickedNewProjectIcon); // use or ||
+    }
+
+    function _startCommandTracking() {
+        if(!_shouldContinueCommandTracking){
+            return;
+        }
+        function commandTracker(_event, commandID) {
+            switch(commandID) {
+            case Commands.FILE_NEW_PROJECT: userAlreadyDidAction.clickedNewProjectIcon = true;
+                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction)); break;
+            }
+            if(!_shouldContinueCommandTracking()){
+                CommandManager.off(CommandManager.EVENT_BEFORE_EXECUTE_COMMAND, commandTracker);
+            }
+        }
+        CommandManager.on(CommandManager.EVENT_BEFORE_EXECUTE_COMMAND, commandTracker);
+    }
 
     /* Order of things in first boot now:
-    *  1. First we show the popup in new project window to select default project - see the html in asets folder
+    *  1. First we show the popup in new project window to select default project - see the html in assets folder
     *  2. Then after user opens default project, we show "edit code for live preview popup"
-    *  3. We then wait for 30 seconds after above popup is dismissed and show "click here to open new project window"
+    *  3. When user changes file by clicking on files panel, we show "click here to open new project window"
+    *     this will continue showing every session until user clicks on the new project icon
     *  4. After about 3 minutes, the health popup will show up.
     *  5. When user clicks on live preview, we show "click here to popout live preview"
     * */
 
+    // 3. When user changes file by clicking on files panel, we show "click here to open new project window"
+    // this will continue showing every session until user clicks on the new project icon
     function _showNewProjectNotification() {
-        NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
-            "newProject", {
-                allowedPlacements: ['top', 'bottom'],
-                autoCloseTimeS: 15,
-                dismissOnClick: true}
-        );
+        if(userAlreadyDidAction.clickedNewProjectIcon){
+            return;
+        }
+        function _showNotification() {
+            if(currentlyShowingNotification){
+                return;
+            }
+            currentlyShowingNotification = NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
+                "newProject", {
+                    allowedPlacements: ['top', 'bottom'],
+                    autoCloseTimeS: 15,
+                    dismissOnClick: true}
+            );
+            currentlyShowingNotification.done(()=>{
+                currentlyShowingNotification = null;
+            });
+            MainViewManager.off(MainViewManager.EVENT_CURRENT_FILE_CHANGE, _showNotification);
+        }
+        MainViewManager.on(MainViewManager.EVENT_CURRENT_FILE_CHANGE, _showNotification);
     }
 
-    function _showLivePreviewTour() {
-        NotificationUI.createFromTemplate(Strings.GUIDED_LIVE_PREVIEW,
-            "main-toolbar", {
-                allowedPlacements: ['left'],
-                autoCloseTimeS: 15,
-                dismissOnClick: true}
-        ).done(()=>{
-            setTimeout(_showNewProjectNotification, 30000);
-        });
-    }
-
-    // When user clicks on live preview, we show "click here to popout live preview"
+    // 1. When user clicks on live preview, we show "click here to popout live preview". only shown once.
     function _showPopoutLivePreviewNotification() {
         ExtensionInterface.waitAndGetExtensionInterface(
             ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW).then((livePreviewExtension)=>{
             function _showNotification() {
+                // legacy key. cant change without triggering the user base
                 let notificationKey = 'livePreviewPopoutShown', version = "v1";
                 let popoutMessageShown = localStorage.getItem(notificationKey);
-                if(popoutMessageShown !== version
-                    && WorkspaceManager.isPanelVisible(livePreviewExtension.LIVE_PREVIEW_PANEL_ID)){
-                    NotificationUI.createFromTemplate(Strings.GUIDED_LIVE_PREVIEW_POPOUT,
+                if(popoutMessageShown === version){
+                    // already shown
+                    LiveDevelopment.off(LiveDevelopment.EVENT_LIVE_PREVIEW_CLICKED, _showNotification);
+                    return;
+                }
+                if(currentlyShowingNotification){
+                    return;
+                }
+                if(WorkspaceManager.isPanelVisible(livePreviewExtension.LIVE_PREVIEW_PANEL_ID)){
+                    currentlyShowingNotification = NotificationUI.createFromTemplate(Strings.GUIDED_LIVE_PREVIEW_POPOUT,
                         "livePreviewPopoutButton", {
                             allowedPlacements: ['bottom'],
                             autoCloseTimeS: 15,
                             dismissOnClick: true}
                     );
+                    currentlyShowingNotification.done(()=>{
+                        currentlyShowingNotification = null;
+                    });
                     localStorage.setItem(notificationKey, version);
                 }
                 LiveDevelopment.off(LiveDevelopment.EVENT_LIVE_PREVIEW_CLICKED, _showNotification);
@@ -76,14 +126,35 @@ define(function (require, exports, module) {
         });
     }
 
-    exports.startTourIfNeeded = function () {
-        _showPopoutLivePreviewNotification();
-
-        let newProjectNotificationShown = localStorage.getItem("newProjectNotificationShown");
-        if(newProjectNotificationShown){
+    // only shown once on first boot
+    // order: 2. Then after user opens default project, we show "edit code for live preview popup"
+    function _showLivePreviewNotification() {
+        // legacy reasons live preview notification is called new project notification.
+        const livePreviewNotificationKey = "newProjectNotificationShown";
+        const livePreviewNotificationShown = localStorage.getItem(livePreviewNotificationKey);
+        if(livePreviewNotificationShown){
             return;
         }
-        _showLivePreviewTour();
-        localStorage.setItem("newProjectNotificationShown", "true");
+        if(currentlyShowingNotification){
+            setTimeout(_showLivePreviewNotification, NOTIFICATION_BACKOFF);
+            return;
+        }
+        currentlyShowingNotification = NotificationUI.createFromTemplate(Strings.GUIDED_LIVE_PREVIEW,
+            "main-toolbar", {
+                allowedPlacements: ['left'],
+                autoCloseTimeS: 15,
+                dismissOnClick: true}
+        );
+        localStorage.setItem(livePreviewNotificationKey, "true");
+        currentlyShowingNotification.done(()=>{
+            currentlyShowingNotification = null;
+        });
+    }
+
+    exports.startTourIfNeeded = function () {
+        _showLivePreviewNotification();
+        _showPopoutLivePreviewNotification();
+        _showNewProjectNotification();
+        _startCommandTracking();
     };
 });

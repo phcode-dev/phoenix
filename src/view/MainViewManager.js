@@ -95,6 +95,8 @@ define(function (require, exports, module) {
         Pane                = require("view/Pane").Pane,
         KeyBindingManager   = brackets.getModule("command/KeyBindingManager");
 
+    const EVENT_CURRENT_FILE_CHANGE = "currentFileChange";
+
     /**
      * Preference setting name for the MainView Saved State
      * @const
@@ -392,7 +394,7 @@ define(function (require, exports, module) {
             _activePaneId = newPaneId;
 
             exports.trigger("activePaneChange", newPaneId, oldPaneId);
-            exports.trigger("currentFileChange", _getPane(ACTIVE_PANE).getCurrentlyViewedFile(),
+            exports.trigger(EVENT_CURRENT_FILE_CHANGE, _getPane(ACTIVE_PANE).getCurrentlyViewedFile(),
                                                             newPaneId,
                                                             oldPane.getCurrentlyViewedFile(),
                                                             oldPaneId);
@@ -1131,7 +1133,7 @@ define(function (require, exports, module) {
             newPane.on("currentViewChange.mainview", function (e, newView, oldView) {
                 _updatePaneHeaders();
                 if (_activePaneId === newPane.id) {
-                    exports.trigger("currentFileChange",
+                    exports.trigger(EVENT_CURRENT_FILE_CHANGE,
                                                newView && newView.getFile(),
                                                newPane.id, oldView && oldView.getFile(),
                                                newPane.id);
@@ -1649,7 +1651,7 @@ define(function (require, exports, module) {
         //  to the event before we've been initialized
         WorkspaceManager.on("workspaceUpdateLayout", _updateLayout);
 
-        exports.on("currentFileChange", _scheduleViewStateSave);
+        exports.on(EVENT_CURRENT_FILE_CHANGE, _scheduleViewStateSave);
         exports.on("paneLayoutChange", _scheduleViewStateSave);
 
         // Listen to key Alt-W to toggle between panes
@@ -1715,7 +1717,7 @@ define(function (require, exports, module) {
 
     EventDispatcher.makeEventDispatcher(exports);
     // currentFileChange has a large number of listeners. so we raise warning threshold to 25
-    EventDispatcher.setLeakThresholdForEvent("currentFileChange", 25);
+    EventDispatcher.setLeakThresholdForEvent(EVENT_CURRENT_FILE_CHANGE, 25);
 
     // Unit Test Helpers
     exports._initialize                   = _initialize;
@@ -1785,4 +1787,5 @@ define(function (require, exports, module) {
     exports.ACTIVE_PANE                   = ACTIVE_PANE;
     exports.FIRST_PANE                    = FIRST_PANE;
     exports.SECOND_PANE                   = SECOND_PANE;
+    exports.EVENT_CURRENT_FILE_CHANGE     = EVENT_CURRENT_FILE_CHANGE;
 });

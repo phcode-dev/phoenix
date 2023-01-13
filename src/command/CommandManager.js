@@ -30,21 +30,23 @@
 define(function (require, exports, module) {
 
 
-    var EventDispatcher = require("utils/EventDispatcher");
+    const EventDispatcher = require("utils/EventDispatcher");
+
+    const EVENT_BEFORE_EXECUTE_COMMAND = "beforeExecuteCommand";
 
 
     /**
      * Map of all registered global commands
      * @type {Object.<commandID: string, Command>}
      */
-    var _commands = {};
+    let _commands = {};
 
     /**
      * Temporary copy of commands map for restoring after testing
      * TODO (issue #1039): implement separate require contexts for unit tests
      * @type {Object.<commandID: string, Command>}
      */
-    var _commandsOriginal = {};
+    let _commandsOriginal = {};
 
     /**
      * Events:
@@ -277,7 +279,7 @@ define(function (require, exports, module) {
 
         if (command) {
             try {
-                exports.trigger("beforeExecuteCommand", id);
+                exports.trigger(EVENT_BEFORE_EXECUTE_COMMAND, id);
             } catch (err) {
                 console.error(err);
             }
@@ -298,4 +300,5 @@ define(function (require, exports, module) {
     exports.getAll              = getAll;
     exports._testReset          = _testReset;
     exports._testRestore        = _testRestore;
+    exports.EVENT_BEFORE_EXECUTE_COMMAND = EVENT_BEFORE_EXECUTE_COMMAND;
 });
