@@ -321,8 +321,6 @@ define(function (require, exports, module) {
         options.dismissOnClick = options.dismissOnClick || true;
         notificationWidgetCount++;
         const widgetID = `notification-toast-${notificationWidgetCount}`,
-            TOP_MARGIN = 7,
-            popupTop = $("#editor-holder").offset().top + TOP_MARGIN,
             $NotificationPopup = $(Mustache.render(ToastPopupHtml,
                 {id: widgetID, title: title}));
         $NotificationPopup.find(".notification-dialog-content")
@@ -330,8 +328,7 @@ define(function (require, exports, module) {
 
         Dialogs.addLinkTooltips($NotificationPopup);
 
-        $NotificationPopup.appendTo("body").hide()
-            .css("top", popupTop)
+        $NotificationPopup.appendTo("#toast-notification-container").hide()
             .find(".notification-popup-close-button").click(function () {
                 _closeToastNotification($NotificationPopup, CLOSE_REASON.CLOSE_BTN_CLICK);
                 MainViewManager.focusActivePane();
