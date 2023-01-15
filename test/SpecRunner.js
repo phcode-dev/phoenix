@@ -185,6 +185,7 @@ define(function (require, exports, module) {
     require("widgets/InlineMenu");
     require("worker/ExtensionsWorker");
     require("thirdparty/tinycolor");
+    require("widgets/NotificationUI");
 
     // Load modules that self-register and just need to get included in the test-runner window
     require("document/ChangedDocumentTracker");

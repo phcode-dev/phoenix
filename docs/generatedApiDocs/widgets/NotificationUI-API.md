@@ -61,6 +61,10 @@ Closes the Notification if is visible and destroys then dom nodes
 
 Type: [function][3]
 
+### Parameters
+
+*   `closeType` **[string][4]** an optional reason as to why the notification is closed.
+
 ## Notification.done
 
 Adds a done callback to the Notification promise. The promise will be resolved
@@ -94,7 +98,7 @@ Type: [function][3]
     *   `allowedPlacements` - Optional String array with values restricting where the notification will be shown.
         Values can be a mix of `['top', 'bottom', 'left', 'right']`
     *   `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
-    *   `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
+    *   `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss). (optional, default `{}`)
 
 ### Examples
 
@@ -107,6 +111,39 @@ Creating a notification popup
 let notification1 = NotificationUI.createFromTemplate(
   "<div>Click me to </br>locate the file in file tree</div>", "showInfileTree",{
       allowedPlacements: ['top', 'bottom'],
+      dismissOnClick: false,
+      autoCloseTimeS: 300 // auto close the popup after 5 minutes
+  });
+```
+````
+
+Returns **[Notification][6]** Object with a done handler that resolves when the notification closes.
+
+## createToastFromTemplate
+
+Creates a new toast notification popup from given title and html message.
+The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
+
+Type: [function][3]
+
+### Parameters
+
+*   `title` **[string][4]** The title for the notification.
+*   `template` **([string][4] | [Element][5])** A string template or HTML Element to use as the dialog HTML.
+*   `options` **[Object][2]?** optional, supported*   options are:
+    *   `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
+    *   `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss). (optional, default `{}`)
+
+### Examples
+
+Creating a toast notification popup
+
+````javascript
+```js
+// note that you can even provide an HTML Element node with
+// custom event handlers directly here instead of HTML text.
+let notification1 = NotificationUI.createToastFromTemplate( "Title here",
+  "<div>Click me to </br>locate the file in file tree</div>", {
       dismissOnClick: false,
       autoCloseTimeS: 300 // auto close the popup after 5 minutes
   });

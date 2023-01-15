@@ -101,9 +101,6 @@ define(function (require, exports, module) {
     }
 
     function _closeToastNotification($NotificationPopup, endCB) {
-        if (!$NotificationPopup.hasClass("animateOpen")) {
-            return;
-        }
         // Animate out
         $NotificationPopup.removeClass("animateOpen");
         $NotificationPopup
@@ -310,7 +307,7 @@ define(function (require, exports, module) {
      *
      * @param {string} title The title for the notification.
      * @param {string|Element} template A string template or HTML Element to use as the dialog HTML.
-     * @param {Object} [options] optional, supported
+     * @param {{dismissOnClick, autoCloseTimeS}} [options] optional, supported
      *   * options are:
      *   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
      *   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
