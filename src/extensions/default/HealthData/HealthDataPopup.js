@@ -25,55 +25,14 @@
 define(function (require, exports, module) {
 
     // Load dependent modules
-    var MainViewManager             = brackets.getModule("view/MainViewManager"),
-        Dialogs                     = brackets.getModule("widgets/Dialogs"),
-        Strings                     = brackets.getModule("strings"),
-        Mustache                    = brackets.getModule("thirdparty/mustache/mustache"),
-        HealthDataNotificationHtml  = require("text!htmlContent/healthdata-popup.html");
-
-    function closeCallout() {
-        var $callout = $("#healthdata-firstlaunch-popup");
-
-        if (!$callout.hasClass("animateOpen")) {
-            return;
-        }
-
-        // Animate out
-        $callout.removeClass("animateOpen");
-        $callout
-            .addClass("animateClose")
-            .one("webkitTransitionEnd", function () {
-                // Normally we'd use AnimationUtils for this, but due to an apparent Chrome bug, calling .is(":hidden")
-                // causes the animation not to play (even though it returns false and that early-exit branch isn't taken).
-                $callout.removeClass("animateClose");
-                $callout.remove();
-            });
-    }
+    const NotificationUI = brackets.getModule("widgets/NotificationUI"),
+        Strings = brackets.getModule("strings");
 
     function showFirstLaunchTooltip() {
-        var TOP_MARGIN = 7,
-            popupTop = $("#editor-holder").offset().top + TOP_MARGIN,
-            result = new $.Deferred(),
-            $firstLaunchPopup = $(Mustache.render(HealthDataNotificationHtml, {"Strings": Strings}));
-
-        Dialogs.addLinkTooltips($firstLaunchPopup);
-
-        $firstLaunchPopup.appendTo("body").hide()
-                         .css("top", popupTop)
-                         .find(".healthdata-popup-close-button").click(function () {
-                closeCallout();
-                MainViewManager.focusActivePane();
-                result.resolve();
-            });
-        $firstLaunchPopup.show();
-
-        // Animate in
-        // Must wait a cycle for the "display: none" to drop out before CSS transitions will work
-        setTimeout(function () {
-            $("#healthdata-firstlaunch-popup").addClass("animateOpen");
-        }, 0);
-
-        return result.promise();
+        const deferred = new $.Deferred();
+        NotificationUI.createToastFromTemplate(Strings.HEALTH_FIRST_POPUP_TITLE,
+            `<div id="healthdata-firstlaunch-popup">${Strings.HEALTH_DATA_NOTIFICATION_MESSAGE}</div>`).done(deferred.resolve);
+        return deferred.promise();
     }
 
     exports.showFirstLaunchTooltip          = showFirstLaunchTooltip;
