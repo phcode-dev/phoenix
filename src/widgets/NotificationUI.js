@@ -62,7 +62,20 @@
 define(function (require, exports, module) {
 
 
-    let WorkspaceManager  = require("view/WorkspaceManager");
+    const WorkspaceManager  = require("view/WorkspaceManager"),
+        Mustache = require("thirdparty/mustache/mustache"),
+        ToastPopupHtml  = require("text!widgets/html/toast-popup.html"),
+        Dialogs = require("widgets/Dialogs"),
+        MainViewManager = require("view/MainViewManager");
+
+    const NOTIFICATION_TYPE_ARROW = "arrow",
+        NOTIFICATION_TYPE_TOAST = "toast";
+
+    const CLOSE_REASON ={
+        TIMEOUT: 'closeTimeout',
+        CLICK_DISMISS: 'clickDismiss',
+        CLOSE_BTN_CLICK: 'closeBtnClick'
+    };
 
     /**
      * This section outlines the properties and methods available in this module
@@ -80,31 +93,60 @@ define(function (require, exports, module) {
      * @constructor
      * @private
      */
-    function Notification(tooltip) {
-        this.$tooltip    = tooltip;
+    function Notification($notification, type) {
+        this.$notification    = $notification;
+        this.type = type;
         this._result  = new $.Deferred();
         this._promise = this._result.promise();
     }
 
+    function _closeToastNotification($NotificationPopup, endCB) {
+        if (!$NotificationPopup.hasClass("animateOpen")) {
+            return;
+        }
+        // Animate out
+        $NotificationPopup.removeClass("animateOpen");
+        $NotificationPopup
+            .addClass("animateClose")
+            .one("transitionend", function () {
+                // Normally we'd use AnimationUtils for this, but due to an apparent Chrome bug, calling .is(":hidden")
+                // causes the animation not to play (even though it returns false and that early-exit branch isn't taken).
+                $NotificationPopup.removeClass("animateClose");
+                $NotificationPopup.remove();
+                endCB();
+            });
+    }
+
+    function _closeArrowNotification($NotificationPopup, endCB) {
+        $NotificationPopup.removeClass('notification-ui-visible')
+            .addClass('notification-ui-hidden')
+            .one("transitionend", function () {
+                // wait for the animation to complete before removal
+                $NotificationPopup.remove();
+                WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $NotificationPopup[0].update);
+                endCB();
+            });
+    }
+
     /**
      * Closes the Notification if is visible and destroys then dom nodes
+     * @param {string} closeType - an optional reason as to why the notification is closed.
      * @type {function}
      * @name Notification.close
      */
     Notification.prototype.close = function (closeType) {
-        let $tooltip = this.$tooltip;
-        if(!$tooltip){
+        let self = this,
+            $notification = this.$notification;
+        if(!$notification){
             return this; // if already closed
         }
-        $tooltip.removeClass('notification-ui-visible')
-            .addClass('notification-ui-hidden');
-        setTimeout(()=>{
-            // wait for the animation to complete before removal
-            $tooltip.remove();
-            this.$tooltip = null;
-            WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $tooltip[0].update);
-            this._result.resolve(closeType);
-        }, 1000);
+        function _popupClosed() {
+            self._result.resolve(closeType);
+        }
+        this.$notification = null;
+        this.type === NOTIFICATION_TYPE_TOAST ?
+            _closeToastNotification($notification, _popupClosed) :
+            _closeArrowNotification($notification, _popupClosed);
         return this;
     };
 
@@ -150,7 +192,7 @@ define(function (require, exports, module) {
      * @return {Notification} Object with a done handler that resolves when the notification closes.
      * @type {function}
      */
-    function createFromTemplate(template, elementID, options) {
+    function createFromTemplate(template, elementID, options= {}) {
         // https://floating-ui.com/docs/tutorial
         options.allowedPlacements = options.allowedPlacements || ['top', 'bottom', 'left', 'right'];
         options.dismissOnClick = options.dismissOnClick || true;
@@ -159,17 +201,17 @@ define(function (require, exports, module) {
         }
         const tooltip = _createDomElementWithArrowElement(template, elementID, options);
         tooltip.addClass('notification-ui-visible');
-        let notification = (new Notification(tooltip));
+        let notification = (new Notification(tooltip, NOTIFICATION_TYPE_ARROW));
 
         if(options.autoCloseTimeS){
             setTimeout(()=>{
-                notification.close(exports.CLOSE_TIMEOUT);
+                notification.close(CLOSE_REASON.TIMEOUT);
             }, options.autoCloseTimeS * 1000);
         }
 
         if(options.dismissOnClick){
             tooltip.click(()=>{
-                notification.close(exports.CLOSE_CLICK_DISMISS);
+                notification.close(CLOSE_REASON.CLICK_DISMISS);
             });
         }
         return notification;
@@ -251,7 +293,74 @@ define(function (require, exports, module) {
         return floatingDom;
     }
 
+    /**
+     * Creates a new toast notification popup from given title and html message.
+     * The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
+     *
+     * @example <caption>Creating a toast notification popup</caption>
+     * ```js
+     * // note that you can even provide an HTML Element node with
+     * // custom event handlers directly here instead of HTML text.
+     * let notification1 = NotificationUI.createToastFromTemplate( "Title here",
+     *   "<div>Click me to </br>locate the file in file tree</div>", {
+     *       dismissOnClick: false,
+     *       autoCloseTimeS: 300 // auto close the popup after 5 minutes
+     *   });
+     * ```
+     *
+     * @param {string} title The title for the notification.
+     * @param {string|Element} template A string template or HTML Element to use as the dialog HTML.
+     * @param {Object} [options] optional, supported
+     *   * options are:
+     *   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
+     *   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
+     * @return {Notification} Object with a done handler that resolves when the notification closes.
+     * @type {function}
+     */
+    function createToastFromTemplate(title, template, options = {}) {
+        options.dismissOnClick = options.dismissOnClick || true;
+        notificationWidgetCount++;
+        const widgetID = `notification-toast-${notificationWidgetCount}`,
+            TOP_MARGIN = 7,
+            popupTop = $("#editor-holder").offset().top + TOP_MARGIN,
+            $NotificationPopup = $(Mustache.render(ToastPopupHtml,
+                {id: widgetID, title: title}));
+        $NotificationPopup.find(".notification-dialog-content")
+            .append($(template));
+
+        Dialogs.addLinkTooltips($NotificationPopup);
+
+        $NotificationPopup.appendTo("body").hide()
+            .css("top", popupTop)
+            .find(".notification-popup-close-button").click(function () {
+                _closeToastNotification($NotificationPopup, CLOSE_REASON.CLOSE_BTN_CLICK);
+                MainViewManager.focusActivePane();
+            });
+        $NotificationPopup.show();
+
+        // Animate in
+        // Must wait a cycle for the "display: none" to drop out before CSS transitions will work
+        setTimeout(function () {
+            $NotificationPopup.addClass("animateOpen");
+        }, 0);
+
+        let notification = (new Notification($NotificationPopup, NOTIFICATION_TYPE_TOAST));
+
+        if(options.autoCloseTimeS){
+            setTimeout(()=>{
+                notification.close(CLOSE_REASON.TIMEOUT);
+            }, options.autoCloseTimeS * 1000);
+        }
+
+        if(options.dismissOnClick){
+            $NotificationPopup.click(()=>{
+                notification.close(CLOSE_REASON.CLICK_DISMISS);
+            });
+        }
+        return notification;
+    }
+
     exports.createFromTemplate = createFromTemplate;
-    exports.CLOSE_TIMEOUT = 'closeTimeout';
-    exports.CLOSE_CLICK_DISMISS = 'clickDismiss';
+    exports.createToastFromTemplate = createToastFromTemplate;
+    exports.CLOSE_REASON = CLOSE_REASON;
 });
