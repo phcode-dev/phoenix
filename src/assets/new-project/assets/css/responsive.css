@@ -78,11 +78,13 @@
 
 @media (max-width: 720px) {
     .project-content-left {
-        margin-left:0px;
+        margin-left: 0px;
+        width: 300px;
     }
   
     .project-content-right {
-        margin-left:15px;
+        margin-left: 15px;
+        width: 300px;
 
     }
     
@@ -90,6 +92,11 @@
         width: 242px;
         height: 42px;
     }
+    
+    #noProjectIframe {
+        width: 267px;
+    }
+    
 }
 
 @media (max-width: 650px) {
