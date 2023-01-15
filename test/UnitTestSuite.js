@@ -105,6 +105,7 @@ define(function (require, exports, module) {
     require("spec/NewFileContentManager-test");
     require("spec/InstallExtensionDialog-integ-test");
     require("spec/ExtensionInstallation-test");
+    require("spec/NotificationUI-test");
     // todo TEST_MODERN
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
     // require("spec/NodeConnection-test"); deprecate and remove node connection
