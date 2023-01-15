@@ -157,4 +157,5 @@ function initCodeEditor() {
     };
     _updateProjectCards();
     _showFirstTimeExperience();
+    $("body").append($(`<script async defer src="https://buttons.github.io/buttons.js"></script>`));
 }
