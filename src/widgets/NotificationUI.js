@@ -166,7 +166,6 @@ define(function (require, exports, module) {
      * The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
      *
      * @example <caption>Creating a notification popup</caption>
-     * ```js
      * // note that you can even provide an HTML Element node with
      * // custom event handlers directly here instead of HTML text.
      * let notification1 = NotificationUI.createFromTemplate(
@@ -175,7 +174,6 @@ define(function (require, exports, module) {
      *       dismissOnClick: false,
      *       autoCloseTimeS: 300 // auto close the popup after 5 minutes
      *   });
-     * ```
      *
      * @param {string|Element} template A string template or HTML Element to use as the dialog HTML.
      * @param {String} [elementID] optional id string if provided will show the notification pointing to the element.
@@ -295,7 +293,6 @@ define(function (require, exports, module) {
      * The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
      *
      * @example <caption>Creating a toast notification popup</caption>
-     * ```js
      * // note that you can even provide an HTML Element node with
      * // custom event handlers directly here instead of HTML text.
      * let notification1 = NotificationUI.createToastFromTemplate( "Title here",
@@ -303,7 +300,6 @@ define(function (require, exports, module) {
      *       dismissOnClick: false,
      *       autoCloseTimeS: 300 // auto close the popup after 5 minutes
      *   });
-     * ```
      *
      * @param {string} title The title for the notification.
      * @param {string|Element} template A string template or HTML Element to use as the dialog HTML.

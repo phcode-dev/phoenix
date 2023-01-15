@@ -104,8 +104,7 @@ Type: [function][3]
 
 Creating a notification popup
 
-````javascript
-```js
+```javascript
 // note that you can even provide an HTML Element node with
 // custom event handlers directly here instead of HTML text.
 let notification1 = NotificationUI.createFromTemplate(
@@ -115,7 +114,6 @@ let notification1 = NotificationUI.createFromTemplate(
       autoCloseTimeS: 300 // auto close the popup after 5 minutes
   });
 ```
-````
 
 Returns **[Notification][6]** Object with a done handler that resolves when the notification closes.
 
@@ -130,7 +128,7 @@ Type: [function][3]
 
 *   `title` **[string][4]** The title for the notification.
 *   `template` **([string][4] | [Element][5])** A string template or HTML Element to use as the dialog HTML.
-*   `options` **[Object][2]?** optional, supported*   options are:
+*   `options` **{dismissOnClick, autoCloseTimeS}?** optional, supported*   options are:
     *   `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
     *   `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss). (optional, default `{}`)
 
@@ -138,8 +136,7 @@ Type: [function][3]
 
 Creating a toast notification popup
 
-````javascript
-```js
+```javascript
 // note that you can even provide an HTML Element node with
 // custom event handlers directly here instead of HTML text.
 let notification1 = NotificationUI.createToastFromTemplate( "Title here",
@@ -148,7 +145,6 @@ let notification1 = NotificationUI.createToastFromTemplate( "Title here",
       autoCloseTimeS: 300 // auto close the popup after 5 minutes
   });
 ```
-````
 
 Returns **[Notification][6]** Object with a done handler that resolves when the notification closes.
 
