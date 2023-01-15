@@ -92,6 +92,8 @@
         width: 242px;
         height: 42px;
     }
+    #noProjectContainer #YTVideoFrame {
+        width: 267px;
 }
 
 @media (max-width: 650px) {
