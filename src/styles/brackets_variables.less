@@ -54,10 +54,11 @@
 @z-index-brackets-max: @z-index-brackets-toolbar;
 @z-index-brackets-modalbar: (@z-index-brackets-toolbar - 1);
 @z-index-brackets-main-toolbar: (@z-index-brackets-toolbar + 1);
+@z-index-brackets-main-content: (@z-index-brackets-main-toolbar + 1);
 
-@z-index-brackets-sidebar-resizer: (@z-index-brackets-ui + 2);
+@z-index-brackets-sidebar-resizer: (@z-index-brackets-main-content + 3);
 @z-index-brackets-resizer-div: (@z-index-brackets-sidebar-resizer + 1);
-@z-index-brackets-panel-resizer: (@z-index-brackets-ui + 2);
+@z-index-brackets-panel-resizer: (@z-index-brackets-resizer-div + 2);
 
 @z-index-brackets-drag-ghost:            999;
 @z-index-brackets-context-menu-base:    1000;
