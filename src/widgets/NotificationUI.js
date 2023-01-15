@@ -110,7 +110,7 @@ define(function (require, exports, module) {
                 // causes the animation not to play (even though it returns false and that early-exit branch isn't taken).
                 $NotificationPopup.removeClass("animateClose");
                 $NotificationPopup.remove();
-                endCB();
+                endCB && endCB();
             });
     }
 
@@ -121,7 +121,7 @@ define(function (require, exports, module) {
                 // wait for the animation to complete before removal
                 $NotificationPopup.remove();
                 WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $NotificationPopup[0].update);
-                endCB();
+                endCB && endCB();
             });
     }
 
@@ -137,13 +137,15 @@ define(function (require, exports, module) {
         if(!$notification){
             return this; // if already closed
         }
-        function _popupClosed() {
-            self._result.resolve(closeType);
-        }
         this.$notification = null;
         this.type === NOTIFICATION_TYPE_TOAST ?
-            _closeToastNotification($notification, _popupClosed) :
-            _closeArrowNotification($notification, _popupClosed);
+            _closeToastNotification($notification, ()=>{
+                // do not move out this function. bugsnag error. see history
+                self._result.resolve(closeType);
+            }) :
+            _closeArrowNotification($notification, ()=>{
+                self._result.resolve(closeType);
+            });
         return this;
     };
 
