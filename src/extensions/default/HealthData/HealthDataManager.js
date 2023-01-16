@@ -36,7 +36,8 @@ define(function (require, exports, module) {
         TEN_SECOND          = 10 * ONE_SECOND,
         ONE_MINUTE          = 60000,
         MAX_DAYS_TO_KEEP_COUNTS = 60,
-        USAGE_COUNTS_KEY    = "healthDataUsage"; // this is used in other places tho private to phoenix
+        // 'healthDataUsage' key is used in other places tho private to phoenix. search for other usage before rename
+        USAGE_COUNTS_KEY    = "healthDataUsage";
 
     let healthDataDisabled;
 
@@ -55,7 +56,7 @@ define(function (require, exports, module) {
         let usageData = PreferencesManager.getViewState(USAGE_COUNTS_KEY) || {},
             dateKeys = Object.keys(usageData),
             dateBefore60Days = new Date();
-        dateBefore60Days.setDate(dateBefore60Days.getDate()-60);
+        dateBefore60Days.setDate(dateBefore60Days.getDate() - MAX_DAYS_TO_KEEP_COUNTS);
         if(dateKeys.length > MAX_DAYS_TO_KEEP_COUNTS) {
             for(let dateKey of dateKeys){
                 let date = new Date(dateKey);
