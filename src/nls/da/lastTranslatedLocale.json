@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>Dine anmeldelser holder vores lille team motiveret til at gøre <b>phcode.dev</b> endnu bedre.<br/> Stjerne os venligst på GitHub:",
   "GITHUB_STARS_POPUP_TWITTER": "Giv feedback eller spred ordet på Twitter:",
   "TEST_TRANSLATE": "brug dette til at teste oversættelser",
+  "POWER_USER_POPUP_TITLE": "Hvordan kan vi gøre {APP_NAME} bedre for dig?",
+  "POWER_USER_POPUP_TEXT": "<div>Vi vil meget gerne have din feedback. Din feedback hjælper os med at beslutte, hvilke funktioner vi skal bygge, og hvilke forbedringer der skal foretages på vores platform.<br/> <a>Udfyld venligst denne korte undersøgelse.</a></div>",
   "BEAUTIFY_ERROR": "Koden kunne ikke forskønnes. Tjek syntaks.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Kunne ikke forskønne. Redaktørtekst ændret efter forskønnelse.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Forskønnende fil {0}",

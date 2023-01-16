@@ -817,6 +817,8 @@ define({
   "GITHUB_STARS_POPUP": "<div>Uw beoordelingen houden ons kleine team gemotiveerd om <b>phcode.dev</b> nog beter te maken.<br/> Geef ons een ster op GitHub:",
   "GITHUB_STARS_POPUP_TWITTER": "Geef feedback of vertel het op Twitter:",
   "TEST_TRANSLATE": "gebruik dit om vertalingen te testen",
+  "POWER_USER_POPUP_TITLE": "Hoe kunnen we {APP_NAME} beter voor je maken?",
+  "POWER_USER_POPUP_TEXT": "<div>We ontvangen graag uw feedback. Uw feedback helpt ons te beslissen welke functies moeten worden gebouwd en welke verbeteringen aan ons platform moeten worden aangebracht.<br/> <a>Vul dan deze korte enquête in.</a></div>",
   "BEAUTIFY_ERROR": "Kon de code niet verfraaien. Controleer syntaxis.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Kon niet verfraaien. Editor tekst gewijzigd na verfraaiing.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Verfraai bestand {0}",

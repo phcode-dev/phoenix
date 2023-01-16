@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>Arvostelusi pitävät pienen tiimimme motivoituneena tekemään <b>phcode.devistä</b> entistä paremman.<br/> Merkitse meidät tähdellä GitHubissa:",
   "GITHUB_STARS_POPUP_TWITTER": "Anna palautetta tai levitä sanaa Twitterissä:",
   "TEST_TRANSLATE": "käytä tätä käännösten testaamiseen",
+  "POWER_USER_POPUP_TITLE": "Miten voimme tehdä sovelluksesta APP_NAME} paremman?",
+  "POWER_USER_POPUP_TEXT": "<div>Haluaisimme mielellämme palautettasi. Palautteesi auttaa meitä päättämään, mitä ominaisuuksia rakentaa ja mitä parannuksia alustaamme tulisi tehdä.<br/> <a>Ole hyvä ja täytä tämä lyhyt kysely.</a></div>",
   "BEAUTIFY_ERROR": "Koodia ei voitu kaunistaa. Tarkista syntaksi.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Ei voinut kaunistaa. Editorin tekstiä on muutettu kaunistamisen jälkeen.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Kaunistava tiedosto {0}",

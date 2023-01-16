@@ -817,6 +817,8 @@ define({
   "GITHUB_STARS_POPUP": "<div>Ulasan Anda membuat tim kecil kami termotivasi untuk membuat <b>phcode.dev</b> menjadi lebih baik.<br/> Harap bintangi kami di GitHub:",
   "GITHUB_STARS_POPUP_TWITTER": "Berikan umpan balik atau sebarkan berita di Twitter:",
   "TEST_TRANSLATE": "gunakan ini untuk menguji terjemahan",
+  "POWER_USER_POPUP_TITLE": "Bagaimana kami dapat menjadikan {APP_NAME} lebih baik untuk Anda?",
+  "POWER_USER_POPUP_TEXT": "<div>Kami akan senang untuk mendapatkan umpan balik Anda. Umpan balik Anda membantu kami memutuskan fitur mana yang akan dibuat, dan peningkatan apa yang harus dilakukan pada platform kami.<br/> <a>Silakan isi survei singkat ini.</a></div>",
   "BEAUTIFY_ERROR": "Tidak dapat mempercantik kode. Periksa Sintaks.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Tidak bisa mempercantik. Teks editor diubah setelah mempercantik.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Mempercantik Berkas {0}",

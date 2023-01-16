@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>귀하의 리뷰는 소규모 팀이 <b>phcode.dev</b> 를 더욱 개선할 수 있도록 동기를 부여합니다.<br/> GitHub에서 별표 표시해 주세요:",
   "GITHUB_STARS_POPUP_TWITTER": "피드백을 제공하거나 Twitter에서 소식을 전하세요.",
   "TEST_TRANSLATE": "이것을 사용하여 번역을 테스트하십시오",
+  "POWER_USER_POPUP_TITLE": "{APP_NAME}을(를) 어떻게 개선할 수 있을까요?",
+  "POWER_USER_POPUP_TEXT": "<div>우리는 귀하의 피드백을 받고 싶습니다. 귀하의 피드백은 어떤 기능을 구축하고 플랫폼에 어떤 개선이 필요한지 결정하는 데 도움이 됩니다.<br/> <a>이 짧은 설문 조사를 작성해 주십시오.</a></div>",
   "BEAUTIFY_ERROR": "코드를 아름답게 할 수 없습니다. 구문을 확인하십시오.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "미화할 수 없습니다. 미화 후 에디터 텍스트가 변경되었습니다.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "파일 미화 {0}",

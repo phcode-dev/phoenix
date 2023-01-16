@@ -817,6 +817,8 @@ define({
   "GITHUB_STARS_POPUP": "<div style=\";text-align:right;direction:rtl\">آپ کے جائزے ہماری چھوٹی ٹیم کو <b>phcode.dev</b> کو مزید بہتر بنانے کے لیے متحرک رکھتے ہیں۔<br/> براہ کرم ہمیں GitHub پر اسٹار کریں:",
   "GITHUB_STARS_POPUP_TWITTER": "رائے دیں یا ٹویٹر پر لفظ پھیلائیں:",
   "TEST_TRANSLATE": "ترجمہ کو جانچنے کے لیے اس کا استعمال کریں۔",
+  "POWER_USER_POPUP_TITLE": "ہم آپ کے لیے {APP_NAME} کو کیسے بہتر بنا سکتے ہیں؟",
+  "POWER_USER_POPUP_TEXT": "<div style=\";text-align:right;direction:rtl\">ہم آپ کی رائے حاصل کرنا پسند کریں گے۔ آپ کے تاثرات سے ہمیں یہ فیصلہ کرنے میں مدد ملتی ہے کہ کون سی خصوصیات کو بنانا ہے، اور ہمارے پلیٹ فارم میں کیا بہتری لانی چاہیے۔<br/> <a>براہ کرم اس مختصر سروے کو پُر کریں۔</a></div>",
   "BEAUTIFY_ERROR": "کوڈ کو خوبصورت نہیں بنایا جا سکا۔ نحو چیک کریں۔",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "آرائش نہیں کر سکے۔ خوبصورتی کے بعد ایڈیٹر کا متن بدل گیا۔",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "فائل کو خوبصورت بنانا {0}",

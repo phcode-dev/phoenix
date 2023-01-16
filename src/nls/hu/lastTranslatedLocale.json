@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>Az Ön véleménye motiválja kis csapatunkat a <b>phcode.dev</b> még jobbá tételére.<br/> Kérjük, csillagozzon meg minket a GitHubon:",
   "GITHUB_STARS_POPUP_TWITTER": "Adjon visszajelzést, vagy terjessze az igét a Twitteren:",
   "TEST_TRANSLATE": "használja ezt a fordítások tesztelésére",
+  "POWER_USER_POPUP_TITLE": "Hogyan tehetjük jobbá a(z) {APP_NAME} alkalmazást az Ön számára?",
+  "POWER_USER_POPUP_TEXT": "<div>Szeretnénk visszajelzését kérni. Visszajelzése segít eldönteni, hogy mely funkciókat építsük ki, és milyen fejlesztéseket kell végrehajtani platformunkon.<br/> <a>Kérjük, töltse ki ezt a rövid kérdőívet.</a></div>",
   "BEAUTIFY_ERROR": "Nem sikerült szépíteni a kódot. Ellenőrizze a szintaxist.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Nem lehetett szépíteni. A szerkesztő szövege a szépítés után megváltozott.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Szépítő fájl {0}",

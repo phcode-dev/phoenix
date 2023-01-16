@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>Jūsu atsauksmes motivē mūsu mazo komandu, lai padarītu <b>vietni phcode.dev</b> vēl labāku.<br/> Lūdzu, atzīmējiet mūs ar zvaigznīti GitHub:",
   "GITHUB_STARS_POPUP_TWITTER": "Sniedziet atsauksmes vai izplatiet informāciju pakalpojumā Twitter:",
   "TEST_TRANSLATE": "izmantojiet to, lai pārbaudītu tulkojumus",
+  "POWER_USER_POPUP_TITLE": "Kā mēs varam uzlabot lietotni {APP_NAME}?",
+  "POWER_USER_POPUP_TEXT": "<div>Mēs labprāt saņemtu jūsu atsauksmes. Jūsu atsauksmes palīdz mums izlemt, kuras funkcijas izveidot un kādi uzlabojumi būtu jāveic mūsu platformā.<br/> <a>Lūdzu, aizpildiet šo īso aptauju.</a></div>",
   "BEAUTIFY_ERROR": "Nevarēja izdaiļot kodu. Pārbaudiet sintakse.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Nevarēja izdaiļot. Redaktora teksts mainīts pēc izdaiļošanas.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Skaistuma fails {0}",

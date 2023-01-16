@@ -817,6 +817,8 @@ define({
   "GITHUB_STARS_POPUP": "<div>Vos avis motivent notre petite équipe à rendre <b>phcode.dev</b> encore meilleur.<br/> Veuillez nous suivre sur GitHub :",
   "GITHUB_STARS_POPUP_TWITTER": "Donnez votre avis ou faites passer le mot sur Twitter :",
   "TEST_TRANSLATE": "utilisez ceci pour tester les traductions",
+  "POWER_USER_POPUP_TITLE": "Comment pouvons-nous améliorer {APP_NAME} pour vous ?",
+  "POWER_USER_POPUP_TEXT": "<div>Nous adorerions recevoir votre avis. Vos commentaires nous aident à décider des fonctionnalités à créer et des améliorations à apporter à notre plateforme.<br/> <a>Veuillez remplir ce court sondage.</a></div>",
   "BEAUTIFY_ERROR": "Impossible d'embellir le code. Vérifiez la syntaxe.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Impossible d'embellir. Le texte de l'éditeur a été modifié après l'embellissement.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Fichier d'embellissement {0}",

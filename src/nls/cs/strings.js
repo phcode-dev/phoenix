@@ -817,6 +817,8 @@ define({
   "GITHUB_STARS_POPUP": "<div>Vaše recenze udržují náš malý tým motivovaný k tomu, aby byl <b>phcode.dev</b> ještě lepší.<br/> Označte nás hvězdičkou na GitHubu:",
   "GITHUB_STARS_POPUP_TWITTER": "Poskytněte zpětnou vazbu nebo ji rozšiřte na Twitteru:",
   "TEST_TRANSLATE": "použijte k testování překladů",
+  "POWER_USER_POPUP_TITLE": "Jak pro vás můžeme vylepšit aplikaci {APP_NAME}?",
+  "POWER_USER_POPUP_TEXT": "<div>Rádi bychom od vás dostali zpětnou vazbu. Vaše zpětná vazba nám pomáhá rozhodnout se, které funkce vytvořit a jaká vylepšení by měla být na naší platformě provedena.<br/> <a>Vyplňte prosím tento krátký dotazník.</a></div>",
   "BEAUTIFY_ERROR": "Kód se nepodařilo zkrášlit. Zkontrolujte syntaxi.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Nešlo zkrášlit. Text editoru změněn po zkrášlení.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Zkrášlující soubor {0}",

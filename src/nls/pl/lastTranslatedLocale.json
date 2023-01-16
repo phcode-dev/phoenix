@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>Twoje recenzje motywują nasz mały zespół do <b>ulepszania phcode.dev</b> .<br/> Oznacz nas gwiazdką na GitHub:",
   "GITHUB_STARS_POPUP_TWITTER": "Przekaż opinię lub podziel się opinią na Twitterze:",
   "TEST_TRANSLATE": "użyj tego do testowania tłumaczeń",
+  "POWER_USER_POPUP_TITLE": "Jak możemy ulepszyć {APP_NAME} dla Ciebie?",
+  "POWER_USER_POPUP_TEXT": "<div>Chcielibyśmy poznać Twoją opinię. Twoja opinia pomoże nam zdecydować, które funkcje zbudować i jakie ulepszenia należy wprowadzić na naszej platformie.<br/> <a>Prosimy o wypełnienie tej krótkiej ankiety.</a></div>",
   "BEAUTIFY_ERROR": "Nie udało się upiększyć kodu. Sprawdź składnię.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Nie udało się upiększyć. Tekst edytora zmieniony po upiększeniu.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Plik upiększający {0}",

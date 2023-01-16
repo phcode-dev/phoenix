@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>İncelemeleriniz, küçük ekibimizi <b>phcode.dev&#39;i</b> daha da iyi hale getirmek için motive ediyor.<br/> Lütfen bize GitHub&#39;da yıldız verin:",
   "GITHUB_STARS_POPUP_TWITTER": "Geri bildirimde bulunun veya Twitter'da duyurun:",
   "TEST_TRANSLATE": "çevirileri test etmek için bunu kullanın",
+  "POWER_USER_POPUP_TITLE": "{APP_NAME} uygulamasını sizin için nasıl daha iyi hale getirebiliriz?",
+  "POWER_USER_POPUP_TEXT": "<div>Geri bildiriminizi almak isteriz. Geri bildiriminiz, hangi özelliklerin geliştirileceğine ve platformumuzda hangi iyileştirmelerin yapılması gerektiğine karar vermemize yardımcı olur.<br/> <a>Lütfen bu kısa anketi doldurunuz.</a></div>",
   "BEAUTIFY_ERROR": "Kod güzelleştirilemedi. Sözdizimini kontrol edin.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "güzelleştiremedi. Editör metni güzelleştirmeden sonra değişti.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Güzelleştirici Dosya {0}",
