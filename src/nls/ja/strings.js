@@ -817,6 +817,8 @@ define({
   "GITHUB_STARS_POPUP": "<div>あなたのレビューは、私たちの小さなチームが<b>phcode.dev</b>をより良くするためのモチベーションを保っています。<br/> GitHub でスターを付けてください:",
   "GITHUB_STARS_POPUP_TWITTER": "フィードバックを送信するか、Twitter でその言葉を広めてください。",
   "TEST_TRANSLATE": "これを使用して翻訳をテストします",
+  "POWER_USER_POPUP_TITLE": "{APP_NAME} をより便利にするにはどうすればよいですか?",
+  "POWER_USER_POPUP_TEXT": "<div>フィードバックをお待ちしております。あなたのフィードバックは、どの機能を構築するか、プラットフォームにどのような改善を加える必要があるかを決定するのに役立ちます。<br/><a>この簡単なアンケートにご記入ください。</a></div>",
   "BEAUTIFY_ERROR": "コードを美化できませんでした。構文を確認してください。",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "美化できませんでした。美化後にエディターのテキストが変更されました。",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "美化ファイル {0}",

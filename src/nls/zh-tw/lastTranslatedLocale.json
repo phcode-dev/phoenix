@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>您的評論讓我們的小團隊充滿動力，讓<b>phcode.dev</b>變得更好。<br/>請在 GitHub 上給我們加星標：",
   "GITHUB_STARS_POPUP_TWITTER": "提供反饋或在 Twitter 上傳播信息：",
   "TEST_TRANSLATE": "用它來測試翻譯",
+  "POWER_USER_POPUP_TITLE": "我們怎樣才能讓 {APP_NAME} 更適合您？",
+  "POWER_USER_POPUP_TEXT": "<div>我們很樂意收到您的反饋。您的反饋有助於我們決定構建哪些功能，以及應該對我們的平台進行哪些改進。<br/><a>請填寫這份簡短的調查問卷。</a></div>",
   "BEAUTIFY_ERROR": "無法美化代碼。檢查語法。",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "無法美化。美化後編輯器文字發生變化。",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "美化檔案{0}",

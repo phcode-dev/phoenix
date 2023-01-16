@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div style=\";text-align:right;direction:rtl\">نظرات شما انگیزه تیم کوچک ما را برای بهتر کردن <b>phcode.dev حفظ</b> می کند.<br/> لطفا ما را در GitHub ستاره دار کنید:",
   "GITHUB_STARS_POPUP_TWITTER": "بازخورد بدهید یا این خبر را در توییتر پخش کنید:",
   "TEST_TRANSLATE": "از این برای تست ترجمه ها استفاده کنید",
+  "POWER_USER_POPUP_TITLE": "چگونه می‌توانیم {APP_NAME} را برای شما بهتر کنیم؟",
+  "POWER_USER_POPUP_TEXT": "<div style=\";text-align:right;direction:rtl\">ما دوست داریم بازخورد شما را دریافت کنیم. بازخورد شما به ما کمک می‌کند تا تصمیم بگیریم کدام ویژگی‌ها را بسازیم، و چه پیشرفت‌هایی باید در پلتفرم خود ایجاد کنیم.<br/> <a>لطفا این نظرسنجی کوتاه را پر کنید.</a></div>",
   "BEAUTIFY_ERROR": "نمی تواند کد را زیبا کند. Syntax را بررسی کنید.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "نمی تواند زیبا شود. متن ویرایشگر پس از زیباسازی تغییر کرد.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "فایل زیباسازی {0}",

@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>Recenziile dvs. mențin echipa noastră mică motivată pentru a face <b>phcode.dev</b> și mai bun.<br/> Vă rugăm să ne scrieți cu stea pe GitHub:",
   "GITHUB_STARS_POPUP_TWITTER": "Dați feedback sau răspândiți cuvântul pe Twitter:",
   "TEST_TRANSLATE": "utilizați acest lucru pentru a testa traducerile",
+  "POWER_USER_POPUP_TITLE": "Cum putem îmbunătăți {APP_NAME} pentru tine?",
+  "POWER_USER_POPUP_TEXT": "<div>Ne-ar plăcea să primim feedback-ul dvs. Feedbackul dvs. ne ajută să decidem ce caracteristici să construim și ce îmbunătățiri ar trebui aduse platformei noastre.<br/> <a>Vă rugăm să completați acest scurt sondaj.</a></div>",
   "BEAUTIFY_ERROR": "Codul nu a putut fi înfrumusețat. Verificați Sintaxa.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Nu s-a putut înfrumuseța. Textul editorului a fost modificat după înfrumusețare.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Fișier de înfrumusețare {0}",

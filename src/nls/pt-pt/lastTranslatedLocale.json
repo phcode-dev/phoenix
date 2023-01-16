@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>Suas avaliações mantêm nossa pequena equipe motivada a tornar o <b>phcode.dev</b> ainda melhor.<br/> Por favor, marque-nos no GitHub:",
   "GITHUB_STARS_POPUP_TWITTER": "Dê feedback ou divulgue no Twitter:",
   "TEST_TRANSLATE": "use isso para testar traduções",
+  "POWER_USER_POPUP_TITLE": "Como podemos tornar o {APP_NAME} melhor para você?",
+  "POWER_USER_POPUP_TEXT": "<div>Nós adoraríamos ter sua opinião. Seu feedback nos ajuda a decidir quais recursos desenvolver e quais melhorias devem ser feitas em nossa plataforma.<br/> <a>Por favor, preencha esta breve pesquisa.</a></div>",
   "BEAUTIFY_ERROR": "Não foi possível embelezar o código. Verifique a sintaxe.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Não foi possível embelezar. O texto do editor foi alterado após o embelezamento.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Arquivo de Embelezamento {0}",

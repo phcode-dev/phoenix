@@ -797,6 +797,8 @@
   "GITHUB_STARS_POPUP": "<div>Vaše recenzije motiviraju naš mali tim da <b>phcode.dev</b> učini još boljim.<br/> Označite nas zvjezdicom na GitHubu:",
   "GITHUB_STARS_POPUP_TWITTER": "Pošaljite povratne informacije ili proširite vijest na Twitteru:",
   "TEST_TRANSLATE": "koristite ovo za testiranje prijevoda",
+  "POWER_USER_POPUP_TITLE": "Kako {APP_NAME} možemo učiniti boljom za vas?",
+  "POWER_USER_POPUP_TEXT": "<div>Voljeli bismo dobiti vaše povratne informacije. Vaše povratne informacije pomažu nam da odlučimo koje značajke izgraditi i koja poboljšanja treba napraviti na našoj platformi.<br/> <a>Ispunite ovu kratku anketu.</a></div>",
   "BEAUTIFY_ERROR": "Nije moguće uljepšati kôd. Provjerite sintaksu.",
   "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Nije se moglo uljepšati. Tekst urednika promijenjen nakon uljepšavanja.",
   "BEAUTIFY_PROJECT_BUSY_MESSAGE": "Datoteka za uljepšavanje {0}",
