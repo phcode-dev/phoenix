@@ -56,8 +56,7 @@ to read and develop is a noop. We prioritize simplicity and eaze of development.
 
 ## Running phoenix
 * run `npm run serve` in the terminal.
-  * NB: To test Phoenix from an external mobile or machine, use `npm run serveExternal` instead of `serve`   
-* Use chrome/edge browser to navigate to [http://localhost:8000/](http://localhost:8000/)
+* Use chrome/edge browser to navigate to [http://localhost:8000/src](http://localhost:8000/src)
 
 ## IDE Setup
 SonarLint static code analysis checker is not yet available as a Brackets
