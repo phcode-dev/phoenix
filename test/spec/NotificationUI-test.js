@@ -76,12 +76,13 @@ define(function (require, exports, module) {
         });
 
         it("Should not dismiss on click if option specified", async function () {
-            let notification = NotificationUI.createToastFromTemplate("hello", "world" ,  {dismissOnClick:false});
+            let notification = NotificationUI.createToastFromTemplate("hello", "world" ,
+                {dismissOnClick: false});
             await awaitsFor(()=>{
                 return $("#toast-notification-container").children().length === 1;
             }, "waiting for notification to appear");
             $(".notification-dialog-content").click();
-            await awaits(200);
+            await awaits(500);
             await awaitsFor(()=>{
                 return $("#toast-notification-container").children().length === 1;
             }, "waiting for notification to be there");

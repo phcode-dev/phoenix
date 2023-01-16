@@ -102,27 +102,29 @@ define(function (require, exports, module) {
 
     function _closeToastNotification($NotificationPopup, endCB) {
         // Animate out
+        function cleanup() {
+            $NotificationPopup.removeClass("animateClose");
+            $NotificationPopup.remove();
+            endCB && endCB();
+        }
         $NotificationPopup.removeClass("animateOpen");
         $NotificationPopup
             .addClass("animateClose")
-            .one("transitionend", function () {
-                // Normally we'd use AnimationUtils for this, but due to an apparent Chrome bug, calling .is(":hidden")
-                // causes the animation not to play (even though it returns false and that early-exit branch isn't taken).
-                $NotificationPopup.removeClass("animateClose");
-                $NotificationPopup.remove();
-                endCB && endCB();
-            });
+            .one("transitionend", cleanup)
+            .one("transitioncancel", cleanup);
     }
 
     function _closeArrowNotification($NotificationPopup, endCB) {
+        function cleanup() {
+            // wait for the animation to complete before removal
+            $NotificationPopup.remove();
+            WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $NotificationPopup[0].update);
+            endCB && endCB();
+        }
         $NotificationPopup.removeClass('notification-ui-visible')
             .addClass('notification-ui-hidden')
-            .one("transitionend", function () {
-                // wait for the animation to complete before removal
-                $NotificationPopup.remove();
-                WorkspaceManager.off(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, $NotificationPopup[0].update);
-                endCB && endCB();
-            });
+            .one("transitionend", cleanup)
+            .one("transitioncancel", cleanup);
     }
 
     /**
@@ -138,14 +140,12 @@ define(function (require, exports, module) {
             return this; // if already closed
         }
         this.$notification = null;
+        function doneCB() {
+            self._result.resolve(closeType);
+        }
         this.type === NOTIFICATION_TYPE_TOAST ?
-            _closeToastNotification($notification, ()=>{
-                // do not move out this function. bugsnag error. see history
-                self._result.resolve(closeType);
-            }) :
-            _closeArrowNotification($notification, ()=>{
-                self._result.resolve(closeType);
-            });
+            _closeToastNotification($notification, doneCB) :
+            _closeArrowNotification($notification, doneCB);
         return this;
     };
 
@@ -192,7 +192,7 @@ define(function (require, exports, module) {
     function createFromTemplate(template, elementID, options= {}) {
         // https://floating-ui.com/docs/tutorial
         options.allowedPlacements = options.allowedPlacements || ['top', 'bottom', 'left', 'right'];
-        options.dismissOnClick = options.dismissOnClick || true;
+        options.dismissOnClick = options.dismissOnClick === undefined ? true : options.dismissOnClick;
         if(!elementID){
             elementID = 'notificationUIDefaultAnchor';
         }
@@ -313,7 +313,7 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function createToastFromTemplate(title, template, options = {}) {
-        options.dismissOnClick = options.dismissOnClick || true;
+        options.dismissOnClick = options.dismissOnClick === undefined ? true : options.dismissOnClick;
         notificationWidgetCount++;
         const widgetID = `notification-toast-${notificationWidgetCount}`,
             $NotificationPopup = $(Mustache.render(ToastPopupHtml,
@@ -322,10 +322,11 @@ define(function (require, exports, module) {
             .append($(template));
 
         Dialogs.addLinkTooltips($NotificationPopup);
+        let notification = (new Notification($NotificationPopup, NOTIFICATION_TYPE_TOAST));
 
         $NotificationPopup.appendTo("#toast-notification-container").hide()
             .find(".notification-popup-close-button").click(function () {
-                _closeToastNotification($NotificationPopup, CLOSE_REASON.CLOSE_BTN_CLICK);
+                notification.close(CLOSE_REASON.CLOSE_BTN_CLICK);
                 MainViewManager.focusActivePane();
             });
         $NotificationPopup.show();
@@ -335,8 +336,6 @@ define(function (require, exports, module) {
         setTimeout(function () {
             $NotificationPopup.addClass("animateOpen");
         }, 0);
-
-        let notification = (new Notification($NotificationPopup, NOTIFICATION_TYPE_TOAST));
 
         if(options.autoCloseTimeS){
             setTimeout(()=>{
