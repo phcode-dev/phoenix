@@ -243,6 +243,7 @@ define(function (require, exports, module) {
         let currentDate = new Date();
         if(!lastShownDate || currentDate >= nextShowDate){
             setTimeout(()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star", 1);
                 _openStarsPopup();
                 userAlreadyDidAction.lastShownGithubStarsDate = Date.now();
                 localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
@@ -258,6 +259,7 @@ define(function (require, exports, module) {
                 surveyURL: "https://s.surveyplanet.com/6208d1eccd51c561fc8e59ca"
             };
             if(userAlreadyDidAction.generalSurveyShownVersion !== surveyVersion){
+                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "generalShown", 1);
                 Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
                 userAlreadyDidAction.generalSurveyShownVersion = surveyVersion;
                 localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
@@ -284,6 +286,7 @@ define(function (require, exports, module) {
     }
 
     function _openPowerUserSurvey() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerShown", 1);
         const templateVars = {
             Strings: Strings,
             surveyURL: "https://s.surveyplanet.com/2dgk0hbn"
@@ -293,6 +296,7 @@ define(function (require, exports, module) {
 
     function _showPowerUserSurvey() {
         if(_isPowerUser()) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
             let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
             let nextShowDate = new Date(lastShownDate);
             nextShowDate.setDate(nextShowDate.getDate() + TWO_WEEKS_IN_DAYS);
@@ -301,6 +305,7 @@ define(function (require, exports, module) {
                 return;
             }
             setTimeout(()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "powerSurvey", 1);
                 let $content = $(Strings.POWER_USER_POPUP_TEXT);
                 $content.find("a").click(_openPowerUserSurvey);
                 NotificationUI.createToastFromTemplate(Strings.POWER_USER_POPUP_TITLE, $content);
