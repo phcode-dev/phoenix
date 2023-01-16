@@ -24,8 +24,7 @@
 /* jshint ignore:start */
 
 define(function (require, exports, module) {
-    const Survey       = require("survey"),
-        serverSync   = require("serverSync"),
+    const serverSync   = require("serverSync"),
         newProject   = require("new-project"),
         defaultProjects   = require("default-projects"),
         newFeature   = require("newly-added-features"),
@@ -100,7 +99,6 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         _addToolbarIcon();
-        Survey.init();
         serverSync.init();
         defaultProjects.init();
         newProject.init();
