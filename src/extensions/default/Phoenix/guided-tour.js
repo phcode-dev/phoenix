@@ -85,10 +85,12 @@ define(function (require, exports, module) {
     *     this will continue showing every session until user clicks on the new project icon
     *  4. After about 2 minutes, the GitHub stars popup will show, if not shown in the past two weeks. Repeats 2 weeks.
     *  5. After about 3 minutes, the health popup will show up.
-    *  6. After about 10 minutes, survey shows up.
+    *  6. power user survey shows up if the user has used brackets for 3 days or 8 hours in the last two weeks after 3
+    *     minutes. This will not coincide with health popup due to the power user check.
+    *  7. After about 10 minutes, survey shows up.
     *  // the rest are by user actions
-    *  7. When user clicks on live preview, we show "click here to popout live preview"
-    *  8. Beautification notification when user opened the editor context menu and have not done any beautification yet.
+    *  a. When user clicks on live preview, we show "click here to popout live preview"
+    *  b. Beautification notification when user opened the editor context menu and have not done any beautification yet.
     * */
 
     // 3. Beautification notification when user opened the editor context menu for the first time
