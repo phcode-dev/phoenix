@@ -33,13 +33,16 @@ define(function (require, exports, module) {
         Metrics = brackets.getModule("utils/Metrics"),
         Dialogs = brackets.getModule("widgets/Dialogs"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
         SurveyTemplate = require("text!html/survey-template.html"),
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
     const GITHUB_STARS_POPUP_TIME = 120000, // 2 min
+        POWER_USER_SURVEY_TIME = 180000, // 3 min
         GENERAL_SURVEY_TIME = 600000, // 10 min
-        TWO_WEEKS_IN_DAYS = 14;
+        TWO_WEEKS_IN_DAYS = 14,
+        USAGE_COUNTS_KEY    = "healthDataUsage"; // private to phoenix, set from health data extension
 
     const userAlreadyDidAction = localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
         ? JSON.parse(localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
@@ -262,6 +265,51 @@ define(function (require, exports, module) {
         }, GENERAL_SURVEY_TIME);
     }
 
+    // a power user is someone who has used Phoenix at least 3 days or 8 hours in the last two weeks
+    function _isPowerUser() {
+        let usageData = PreferencesManager.getViewState(USAGE_COUNTS_KEY) || {},
+            dateKeys = Object.keys(usageData),
+            dateBefore14Days = new Date(),
+            totalUsageMinutes = 0,
+            totalUsageDays = 0;
+        dateBefore14Days.setDate(dateBefore14Days.getDate()-14);
+        for(let dateKey of dateKeys){
+            let date = new Date(dateKey);
+            if(date >= dateBefore14Days) {
+                totalUsageDays ++;
+                totalUsageMinutes = totalUsageMinutes + usageData[dateKey];
+            }
+        }
+        return totalUsageDays >= 3 || (totalUsageMinutes/60) >= 8;
+    }
+
+    function _openPowerUserSurvey() {
+        const templateVars = {
+            Strings: Strings,
+            surveyURL: "https://s.surveyplanet.com/2dgk0hbn"
+        };
+        Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
+    }
+
+    function _showPowerUserSurvey() {
+        if(_isPowerUser()) {
+            let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
+            let nextShowDate = new Date(lastShownDate);
+            nextShowDate.setDate(nextShowDate.getDate() + TWO_WEEKS_IN_DAYS);
+            let currentDate = new Date();
+            if(currentDate < nextShowDate){
+                return;
+            }
+            setTimeout(()=>{
+                let $content = $(Strings.POWER_USER_POPUP_TEXT);
+                $content.find("a").click(_openPowerUserSurvey);
+                NotificationUI.createToastFromTemplate(Strings.POWER_USER_POPUP_TITLE, $content);
+                userAlreadyDidAction.lastShownPowerSurveyDate = Date.now();
+                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+            }, POWER_USER_SURVEY_TIME);
+        }
+    }
+
     let tourStarted = false;
     exports.startTourIfNeeded = function () {
         if(tourStarted) {
@@ -275,5 +323,6 @@ define(function (require, exports, module) {
         _showBeautifyNotification();
         _showRequestStarsPopup();
         _showGeneralSurvey();
+        _showPowerUserSurvey();
     };
 });

@@ -28,32 +28,68 @@
 define(function (require, exports, module) {
     var AppInit             = brackets.getModule("utils/AppInit"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
-        UrlParams           = brackets.getModule("utils/UrlParams").UrlParams,
         Strings             = brackets.getModule("strings"),
         Metrics             = brackets.getModule("utils/Metrics"),
         SendToAnalytics     = require("SendToAnalytics"),
         prefs               = PreferencesManager.getExtensionPrefs("healthData"),
-        params              = new UrlParams(),
         ONE_SECOND          = 1000,
-        TEN_SECOND          = 10 * ONE_SECOND;
+        TEN_SECOND          = 10 * ONE_SECOND,
+        ONE_MINUTE          = 60000,
+        MAX_DAYS_TO_KEEP_COUNTS = 60,
+        USAGE_COUNTS_KEY    = "healthDataUsage"; // this is used in other places tho private to phoenix
+
+    let healthDataDisabled;
 
     prefs.definePreference("healthDataTracking", "boolean", true, {
         description: Strings.DESCRIPTION_HEALTH_DATA_TRACKING
     });
-    params.parse();
 
     prefs.on("change", "healthDataTracking", function () {
-        let healthDataDisabled = !prefs.get("healthDataTracking");
+        healthDataDisabled = !prefs.get("healthDataTracking");
         Metrics.setDisabled(healthDataDisabled);
         logger.loggingOptions.healthDataDisabled = healthDataDisabled;
     });
 
+    // we delete all usage counts greater than MAX_DAYS_TO_KEEP_COUNTS days
+    function _pruneUsageData() {
+        let usageData = PreferencesManager.getViewState(USAGE_COUNTS_KEY) || {},
+            dateKeys = Object.keys(usageData),
+            dateBefore60Days = new Date();
+        dateBefore60Days.setDate(dateBefore60Days.getDate()-60);
+        if(dateKeys.length > MAX_DAYS_TO_KEEP_COUNTS) {
+            for(let dateKey of dateKeys){
+                let date = new Date(dateKey);
+                if(date < dateBefore60Days) {
+                    delete usageData[dateKey];
+                }
+            }
+        }
+        // low priority, we do not want to save this right now
+        PreferencesManager.setViewState(USAGE_COUNTS_KEY, usageData, undefined, true);
+    }
+
+    function _trackUsageInfo() {
+        _pruneUsageData();
+        setInterval(()=>{
+            if(healthDataDisabled){
+                return;
+            }
+            let usageData = PreferencesManager.getViewState(USAGE_COUNTS_KEY) || {};
+            let dateNow = new Date();
+            let today = dateNow.toISOString().split('T')[0]; // yyyy-mm-dd format
+            usageData[today] = (usageData[today] || 0) + 1;
+            // low priority, we do not want to save this right now
+            PreferencesManager.setViewState(USAGE_COUNTS_KEY, usageData, undefined, true);
+        }, ONE_MINUTE);
+    }
+
     AppInit.appReady(function () {
         Metrics.init();
-        let healthDataDisabled = !prefs.get("healthDataTracking");
+        healthDataDisabled = !prefs.get("healthDataTracking");
         Metrics.setDisabled(healthDataDisabled);
         SendToAnalytics.sendPlatformMetrics();
         SendToAnalytics.sendThemesMetrics();
+        _trackUsageInfo();
         setTimeout(SendToAnalytics.sendStartupPerformanceMetrics, TEN_SECOND);
     });
 });

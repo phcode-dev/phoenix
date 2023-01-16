@@ -304,7 +304,7 @@ define(function (require, exports, module) {
      */
     function setViewState(id, value, context, doNotSave) {
 
-        PreferencesImpl.stateManager.set(id, value, context);
+        PreferencesImpl.stateManager.set(id, value, context, doNotSave);
 
         if (!doNotSave) {
             PreferencesImpl.stateManager.save();
