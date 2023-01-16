@@ -983,6 +983,9 @@ define({
     // Guided tour
     "GUIDED_LIVE_PREVIEW": "Make some code changes in the HTML file to see live preview. </br> <a href='#' style='float:right;'>ok</a>",
     "GUIDED_LIVE_PREVIEW_POPOUT": "Click this button to popout live preview to a new tab. </br> <a href='#' style='float:right;'>ok</a>",
+    "ENJOYING_APP": "Enjoying {APP_NAME}?",
+    "GITHUB_STARS_POPUP": "<div>Your reviews keep our small team motivated to make <b>phcode.dev</b> even better.<br/>Please star us on GitHub:",
+    "GITHUB_STARS_POPUP_TWITTER": "Give feedback or spread the word on Twitter:",
     "TEST_TRANSLATE": "use this to test translations",
     //beautify extension
     "BEAUTIFY_ERROR": "Could not beautify code. Check Syntax.",

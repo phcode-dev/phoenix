@@ -34,6 +34,8 @@ define(function (require, exports, module) {
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
+    const TIME_5_MINUTES = 600000;
+
     const userAlreadyDidAction = localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
         ? JSON.parse(localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
             version: 1,
@@ -73,8 +75,11 @@ define(function (require, exports, module) {
     *  3. When user changes file by clicking on files panel, we show "click here to open new project window"
     *     this will continue showing every session until user clicks on the new project icon
     *  4. After about 3 minutes, the health popup will show up.
-    *  5. When user clicks on live preview, we show "click here to popout live preview"
-    *  6. Beautification notification when user opened the editor context menu and have not done any beautification yet.
+    *  5. After about 5 minutes, the GitHub stars popup will show, if not shown in the past two weeks. Repeats 2 weeks.
+    *  6. After about 10 minutes, survey shows up.
+    *  // the rest are by user actions
+    *  7. When user clicks on live preview, we show "click here to popout live preview"
+    *  8. Beautification notification when user opened the editor context menu and have not done any beautification yet.
     * */
 
     // 3. Beautification notification when user opened the editor context menu for the first time
@@ -194,11 +199,61 @@ define(function (require, exports, module) {
         });
     }
 
+    function _openStarsPopup() {
+        let html = `${Strings.GITHUB_STARS_POPUP}
+                        <div style="display: flex;justify-content: space-around;margin-top: 6px;">
+                            <a class="github-button"
+                             href="https://github.com/phcode-dev/phoenix"
+                             data-color-scheme="no-preference: dark; light: dark; dark: dark;"
+                             data-icon="octicon-star"
+                             data-size="large"
+                             data-show-count="true"
+                             title="Star phcode.dev on GitHub"
+                             aria-label="Star phcode-dev/phoenix on GitHub">Star</a>
+                           <script async defer src="https://buttons.github.io/buttons.js"></script>
+                        </div>
+                       ${Strings.GITHUB_STARS_POPUP_TWITTER}
+                       <div style="display: flex;justify-content: space-around;margin-top: 6px;">
+                            <a href="https://twitter.com/intent/tweet?screen_name=phcodedev&ref_src=twsrc%5Etfw"
+                             class="twitter-mention-button"
+                             data-size="large"
+                             data-related="BracketsCont,brackets"
+                             data-show-count="false">Tweet to @phcodedev</a>
+                             <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                       </div>
+                    </div>`;
+        NotificationUI.createToastFromTemplate(Strings.ENJOYING_APP, html, {
+            dismissOnClick: false
+        });
+    }
+
+    const TWO_WEEKS_IN_DAYS = 14;
+    function _showRequestStarsPopup() {
+        let lastShownDate = userAlreadyDidAction.lastShownGithubStarsDate;
+        let nextShowDate = new Date(lastShownDate);
+        nextShowDate.setDate(nextShowDate.getDate() + TWO_WEEKS_IN_DAYS);
+        let currentDate = new Date();
+        if(!lastShownDate || currentDate >= nextShowDate){
+            setTimeout(()=>{
+                _openStarsPopup();
+                userAlreadyDidAction.lastShownGithubStarsDate = Date.now();
+                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+            }, TIME_5_MINUTES);
+        }
+    }
+
+    let tourStarted = false;
+
     exports.startTourIfNeeded = function () {
+        if(tourStarted) {
+            return;
+        }
+        tourStarted = true;
         _showLivePreviewNotification();
         _showPopoutLivePreviewNotification();
         _showNewProjectNotification();
         _startCommandTracking();
         _showBeautifyNotification();
+        _showRequestStarsPopup();
     };
 });
