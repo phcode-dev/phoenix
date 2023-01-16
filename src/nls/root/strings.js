@@ -987,6 +987,8 @@ define({
     "GITHUB_STARS_POPUP": "<div>Your reviews keep our small team motivated to make <b>phcode.dev</b> even better.<br/>Please star us on GitHub:",
     "GITHUB_STARS_POPUP_TWITTER": "Give feedback or spread the word on Twitter:",
     "TEST_TRANSLATE": "use this to test translations",
+    "POWER_USER_POPUP_TITLE": "How can we make {APP_NAME} better for you?",
+    "POWER_USER_POPUP_TEXT": "<div>We would love to get your feedback. Your feedback helps us decide which features to build, and what improvements should be made to our platform. <br/><a>Please fill this short survey.</a></div>",
     //beautify extension
     "BEAUTIFY_ERROR": "Could not beautify code. Check Syntax.",
     "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Could not beautify. Editor text changed after beautification.",
