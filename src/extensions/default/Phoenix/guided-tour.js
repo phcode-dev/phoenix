@@ -31,16 +31,22 @@ define(function (require, exports, module) {
         StringUtils = brackets.getModule("utils/StringUtils"),
         KeyBindingManager = brackets.getModule("command/KeyBindingManager"),
         Metrics = brackets.getModule("utils/Metrics"),
+        Dialogs = brackets.getModule("widgets/Dialogs"),
+        Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        SurveyTemplate = require("text!html/survey-template.html"),
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
-    const TIME_5_MINUTES = 600000;
+    const GITHUB_STARS_POPUP_TIME = 120000, // 2 min
+        GENERAL_SURVEY_TIME = 600000, // 10 min
+        TWO_WEEKS_IN_DAYS = 14;
 
     const userAlreadyDidAction = localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
         ? JSON.parse(localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
             version: 1,
             clickedNewProjectIcon: false,
-            beautifyCodeShown: false
+            beautifyCodeShown: false,
+            generalSurveyShownVersion: 0
         };
 
     // we should only show one notification at a time
@@ -74,8 +80,8 @@ define(function (require, exports, module) {
     *  2. Then after user opens default project, we show "edit code for live preview popup"
     *  3. When user changes file by clicking on files panel, we show "click here to open new project window"
     *     this will continue showing every session until user clicks on the new project icon
-    *  4. After about 3 minutes, the health popup will show up.
-    *  5. After about 5 minutes, the GitHub stars popup will show, if not shown in the past two weeks. Repeats 2 weeks.
+    *  4. After about 2 minutes, the GitHub stars popup will show, if not shown in the past two weeks. Repeats 2 weeks.
+    *  5. After about 3 minutes, the health popup will show up.
     *  6. After about 10 minutes, survey shows up.
     *  // the rest are by user actions
     *  7. When user clicks on live preview, we show "click here to popout live preview"
@@ -227,7 +233,6 @@ define(function (require, exports, module) {
         });
     }
 
-    const TWO_WEEKS_IN_DAYS = 14;
     function _showRequestStarsPopup() {
         let lastShownDate = userAlreadyDidAction.lastShownGithubStarsDate;
         let nextShowDate = new Date(lastShownDate);
@@ -238,12 +243,26 @@ define(function (require, exports, module) {
                 _openStarsPopup();
                 userAlreadyDidAction.lastShownGithubStarsDate = Date.now();
                 localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-            }, TIME_5_MINUTES);
+            }, GITHUB_STARS_POPUP_TIME);
         }
     }
 
-    let tourStarted = false;
+    function _showGeneralSurvey() {
+        setTimeout(()=>{
+            let surveyVersion = 5; // increment this if you want to show this again
+            var templateVars = {
+                Strings: Strings,
+                surveyURL: "https://s.surveyplanet.com/6208d1eccd51c561fc8e59ca"
+            };
+            if(userAlreadyDidAction.generalSurveyShownVersion !== surveyVersion){
+                Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
+                userAlreadyDidAction.generalSurveyShownVersion = surveyVersion;
+                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+            }
+        }, GENERAL_SURVEY_TIME);
+    }
 
+    let tourStarted = false;
     exports.startTourIfNeeded = function () {
         if(tourStarted) {
             return;
@@ -255,5 +274,6 @@ define(function (require, exports, module) {
         _startCommandTracking();
         _showBeautifyNotification();
         _showRequestStarsPopup();
+        _showGeneralSurvey();
     };
 });
