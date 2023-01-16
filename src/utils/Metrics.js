@@ -79,7 +79,8 @@ define(function (require, exports, module) {
         PERFORMANCE: "performance",
         STORAGE: "storage",
         NEW_PROJECT: "new-project",
-        ERROR: "error"
+        ERROR: "error",
+        USER: "user"
     };
 
     /**
