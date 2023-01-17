@@ -134,7 +134,7 @@ define(function (require, exports, module) {
                         }
                     }
                     function _extractFailed(err) {
-                        extractError = err;
+                        extractError = err || "extract failed";
                     }
                     for(let path of keys){
                         // This is intentionally batched as fs access api hangs on large number of file access
