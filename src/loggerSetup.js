@@ -268,5 +268,22 @@
         }
     } else {
         console.warn("Logging to Bugsnag is disabled as current environment is localhost.");
+        let Metrics = null;
+
+        window.onerror = function (msg, url, line, ...err) {
+            console.error("Caught Critical error from: " + url + ":" + line + " message: " + msg, ...err);
+            if(Metrics) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "uncaught", "main.js");
+            }
+            return true; // same as preventDefault
+        };
+
+        window.addEventListener("unhandledrejection", function (event){
+            console.error("Caught unhandledrejection from: ", event);
+            if(Metrics) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "unhandled", "rejection");
+            }
+            return true; // same as preventDefault
+        });
     }
 }());
