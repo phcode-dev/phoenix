@@ -153,7 +153,7 @@ define(function (require, exports, module) {
                             return;
                         }
                         if(extractError){
-                            reject(`Extraction error`, extractError);
+                            reject(extractError);
                             return;
                         }
                     }
@@ -161,7 +161,7 @@ define(function (require, exports, module) {
                         await Promise.allSettled(extractPromises);
                     }
                     if(extractError){
-                        reject(`Extraction error`, extractError);
+                        reject(extractError);
                         return;
                     }
                     console.log("Unzip complete: ", projectDir);
