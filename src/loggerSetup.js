@@ -149,14 +149,14 @@
                         // an extension installed from extension store has error. we dont log, but raise metric
                         extensionName = fileURL.replace(userExtensionsURL, "");
                         extensionName = extensionName.split("/")[0];
-                        let supportStatus = "+";
+                        let supportStatus = "Y";
                         if(!Phoenix.isSupportedBrowser){
-                            supportStatus = "-";
+                            supportStatus = "N";
                         }
                         window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR,
-                            `extn-${supportStatus}${extensionName}`, error.type);
+                            `extn-${supportStatus}-${extensionName}`, error.type);
                         window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR,
-                            `extn-${supportStatus}${extensionName}`, error.errorClass);
+                            `extn-${supportStatus}-${extensionName}`, error.errorClass);
                         logger.leaveTrail(
                             `Extension Error for ${extensionName} of type ${error.type} class ${error.errorClass}`);
                         return true;
