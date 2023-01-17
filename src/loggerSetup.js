@@ -25,6 +25,9 @@
     const isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
     const urlParams = new URLSearchParams(window.location.search || "");
     const isBugsnagEnabled = (!window.testEnvironment && !isLocalHost);
+    const MAX_ERR_SENT_RESET_INTERVAL = 60000,
+        MAX_ERR_SENT_FIRST_MINUTE = 10,
+        MAX_ERR_ALLOWED_IN_MINUTE = 2;
     let firstMinuteElapsed = false, errorsSentThisMinute = 0;
 
     class CustomBugSnagError extends Error {
@@ -179,7 +182,8 @@
         try{
             let reportedStatus =  "Reported";
             let shouldReport = true;
-            if(logger.loggingOptions.healthDataDisabled || (firstMinuteElapsed && errorsSentThisMinute > 2)){
+            if(logger.loggingOptions.healthDataDisabled
+                || (firstMinuteElapsed && errorsSentThisMinute > MAX_ERR_ALLOWED_IN_MINUTE)){
                 // after the first minute which allows up to 10 error reports,
                 // we restrict error reports to 2 per minute after that.
                 reportedStatus = "Not Reported as health data disabled or max reports per minute breached.";
@@ -265,7 +269,7 @@
             // only manual explicit privacy ready breadcrumbs are allowed
             enabledBreadcrumbTypes: ['manual'],
             // https://docs.bugsnag.com/platforms/javascript/configuration-options/#maxevents
-            maxEvents: 10,
+            maxEvents: MAX_ERR_SENT_FIRST_MINUTE,
             maxBreadcrumbs: 50,
             onError
         });
@@ -273,27 +277,20 @@
             Bugsnag.resetEventCount();
             firstMinuteElapsed = true;
             errorsSentThisMinute = 0;
-        }, 60000);
+        }, MAX_ERR_SENT_RESET_INTERVAL);
         if(window.cacheClearError){
             logger.reportError(window.cacheClearError);
         }
     } else {
         console.warn("Logging to Bugsnag is disabled as current environment is localhost.");
-        let Metrics = null;
 
         window.onerror = function (msg, url, line, ...err) {
             console.error("Caught Critical error from: " + url + ":" + line + " message: " + msg, ...err);
-            if(Metrics) {
-                Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "uncaught", "main.js");
-            }
             return true; // same as preventDefault
         };
 
         window.addEventListener("unhandledrejection", function (event){
             console.error("Caught unhandledrejection from: ", event);
-            if(Metrics) {
-                Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "unhandled", "rejection");
-            }
             return true; // same as preventDefault
         });
     }
