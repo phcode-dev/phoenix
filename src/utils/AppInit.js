@@ -88,7 +88,11 @@ define(function (require, exports, module) {
         } catch (e) {
             console.error("Exception when calling a 'brackets done loading' handler: " + e);
             console.log(e.stack);
-            Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "appInit", "doneLoading");
+            let supportStatus = "+";
+            if(!window.Phoenix.isSupportedBrowser){
+                supportStatus = "-";
+            }
+            Metrics.countEvent(Metrics.EVENT_TYPE.ERROR, "appInit", `${supportStatus}handlerFail`);
         }
     }
 

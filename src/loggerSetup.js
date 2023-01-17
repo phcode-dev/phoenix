@@ -149,11 +149,16 @@
                         // an extension installed from extension store has error. we dont log, but raise metric
                         extensionName = fileURL.replace(userExtensionsURL, "");
                         extensionName = extensionName.split("/")[0];
-                        window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, `extn-${extensionName}`,
-                            error.type);
-                        window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, `extn-${extensionName}`,
-                            error.errorClass);
-                        logger.leaveTrail(`Extension Error for ${extensionName} of type ${error.type} class ${error.errorClass}`);
+                        let supportStatus = "+";
+                        if(!Phoenix.isSupportedBrowser){
+                            supportStatus = "-";
+                        }
+                        window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR,
+                            `extn-${supportStatus}${extensionName}`, error.type);
+                        window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR,
+                            `extn-${supportStatus}${extensionName}`, error.errorClass);
+                        logger.leaveTrail(
+                            `Extension Error for ${extensionName} of type ${error.type} class ${error.errorClass}`);
                         return true;
                     }
                     if(fileURL.startsWith(window.fsServerUrl)) {
@@ -184,7 +189,11 @@
             // change health logger popup string before changing the below to anything other than "Caught Critical error"
             console.error(`Caught Critical error, ${reportedStatus}: `, event);
             if(window.Metrics) {
-                window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, "uncaught", "logger");
+                let supportStatus = "supportedBrowser";
+                if(!Phoenix.isSupportedBrowser){
+                    supportStatus = "unsupportedBrowser";
+                }
+                window.Metrics.countEvent(window.Metrics.EVENT_TYPE.ERROR, "uncaught", supportStatus);
             }
 
             return shouldReport;
