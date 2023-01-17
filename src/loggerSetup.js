@@ -18,7 +18,7 @@
  *
  */
 
-/*globals Bugsnag, AppConfig*/
+/*globals Bugsnag, AppConfig, Phoenix*/
 // window.AppConfig comes from appConfig.js built by gulp scripts at build time
 
 (function(){
@@ -194,10 +194,52 @@
         }
     }
 
+    let context = 'desktop';
+    if(Phoenix.browser.isTablet) {
+        context = 'tablet';
+    } else if(Phoenix.browser.isMobile) {
+        context = 'mobile';
+    }
+    if(Phoenix.browser.isTauri) {
+        context = `tauri-${context}`;
+    }
+    if(Phoenix.browser.isMobile || Phoenix.browser.isTablet) {
+        let device = 'unknownDevice';
+        if(Phoenix.browser.mobile.isAndroid){
+            device = 'android';
+        } else if(Phoenix.browser.mobile.isIos){
+            device = 'ios';
+        } else if(Phoenix.browser.mobile.isWindows){
+            device = 'windows';
+        }
+        context = `${context}-${device}`;
+    }
+    if(Phoenix.browser.isDeskTop) {
+        let browser = 'unknownBrowser';
+        if(Phoenix.browser.desktop.isOperaChromium){
+            browser = 'operaChrome';
+        } else if(Phoenix.browser.desktop.isEdgeChromium){
+            browser = 'edgeChrome';
+        } else if(Phoenix.browser.desktop.isChrome){
+            browser = 'googleChrome';
+        } else if(Phoenix.browser.desktop.isChromeBased){
+            browser = 'chromeLike';
+        } else if(Phoenix.browser.desktop.isFirefox){
+            browser = 'firefox';
+        } else if(Phoenix.browser.desktop.isOpera){
+            browser = 'operaLegacy';
+        }
+        context = `${context}-${Phoenix.platform}-${browser}`;
+    }
+    context = Phoenix.isSupportedBrowser ? `supported-${context}` : `unsupported-${context}`;
+    Phoenix.supportContextName = context;
+    console.log("BugSnag context is - ", context);
+
     if(isBugsnagEnabled) {
         Bugsnag.start({
             apiKey: 'a899c29d251bfdf30c3222016a2a7ea7',
-            appType: window.__TAURI__ ? "tauri" : "browser",
+            context: context,
+            appType: Phoenix.browser && Phoenix.browser.isTauri ? "tauri" : "browser",
             collectUserIp: false,
             appVersion: AppConfig.version,
             enabledReleaseStages: [ 'development', 'production', 'staging',
