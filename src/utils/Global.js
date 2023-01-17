@@ -72,33 +72,6 @@ define(function (require, exports, module) {
     // TODO: (issue #266) load conditionally
     global.brackets.shellAPI = require("utils/ShellAPI");
 
-    // Determine OS/platform
-    if (global.navigator.platform.match("Mac")) {
-        global.brackets.platform = "mac";
-    } else if (global.navigator.platform.indexOf("Linux") >= 0) {
-        global.brackets.platform = "linux";
-    } else {
-        global.brackets.platform = "win";
-    }
-
-    // Expose platform info for build applicability consumption
-    global.brackets.getPlatformInfo = function () {
-        var OS = "";
-
-        if (/Windows|Win32|WOW64|Win64/.test(window.navigator.userAgent)) {
-            OS = "WIN";
-        } else if (/Mac/.test(window.navigator.userAgent)) {
-            OS = "OSX";
-        } else if (/Linux|X11/.test(window.navigator.userAgent)) {
-            OS = "LINUX32";
-            if (/x86_64/.test(window.navigator.appVersion + window.navigator.userAgent)) {
-                OS = "LINUX64";
-            }
-        }
-
-        return OS;
-    };
-
     global.brackets.nativeMenus = false;
 
     // Locale-related APIs

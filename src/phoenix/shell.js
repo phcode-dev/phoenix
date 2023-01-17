@@ -19,6 +19,7 @@
 // jshint ignore: start
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
+/*global Phoenix*/
 
 
 /** Setup phoenix shell components
@@ -27,36 +28,7 @@
  * **/
 import initVFS from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
-import getBrowserDetails from "./browserDetails.js";
 import initTauriShell from "./tauriShell.js";
-
-function _getBaseURL() {
-    // strip query string
-    let base = window.location.href.split('?')[0];
-    if(base.endsWith(".html")){
-        base = base.slice(0, base.lastIndexOf('/'));
-    }
-    if(!base.endsWith("/")){
-        base = `${base}/`;
-    }
-    return base;
-}
-
-function _isTestWindow() {
-    const isTestPhoenixWindow = !!(new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
-    const isSpecRunnerWindow = window.location.pathname.endsWith("/SpecRunner.html");
-    return isTestPhoenixWindow || isSpecRunnerWindow;
-}
-
-let Phoenix = {
-    browser: getBrowserDetails(),
-    baseURL: _getBaseURL(),
-    isTestWindow: _isTestWindow(),
-    firstBoot: window.phoenixFirstBoot
-};
-let startTime = Date.now();
-
-window.Phoenix = Phoenix;
 
 initVFS();
 
@@ -71,7 +43,7 @@ Phoenix.app = {
     getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,
     ERR_CODES: ERR_CODES,
     getElapsedMilliseconds: function () {
-        return Date.now() - startTime; // milliseconds elapsed since app start
+        return Date.now() - Phoenix.startTime; // milliseconds elapsed since app start
     },
     language: navigator.language
 };
@@ -80,7 +52,6 @@ if(!window.appshell){
     window.appshell = Phoenix;
 }
 
-if(window.__TAURI__) {
-    // the __TAURI__ object will be present if we are in a tauri window
+if(Phoenix.browser.isTauri) {
     initTauriShell();
 }

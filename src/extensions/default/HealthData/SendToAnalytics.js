@@ -91,9 +91,26 @@ define(function (require, exports, module) {
             Metrics.valueEvent(STORAGE, "browserQuota", "usedMB", usedMB);
         }
     }
+
+    function _getPlatformInfo() {
+        let OS = "";
+        if (/Windows|Win32|WOW64|Win64/.test(window.navigator.userAgent)) {
+            OS = "WIN";
+        } else if (/Mac/.test(window.navigator.userAgent)) {
+            OS = "OSX";
+        } else if (/Linux|X11/.test(window.navigator.userAgent)) {
+            OS = "LINUX32";
+            if (/x86_64/.test(window.navigator.appVersion + window.navigator.userAgent)) {
+                OS = "LINUX64";
+            }
+        }
+
+        return OS;
+    }
+
     function sendPlatformMetrics() {
         Metrics.countEvent(PLATFORM, "os", brackets.platform);
-        Metrics.countEvent(PLATFORM, "os.flavor", brackets.getPlatformInfo());
+        Metrics.countEvent(PLATFORM, "os.flavor", _getPlatformInfo());
         Metrics.countEvent(PLATFORM, "userAgent", window.navigator.userAgent);
         Metrics.countEvent(PLATFORM, "languageOS", brackets.app.language);
         Metrics.countEvent(PLATFORM, "languageBrackets", brackets.getLocale());
