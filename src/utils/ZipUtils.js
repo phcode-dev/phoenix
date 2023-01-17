@@ -53,7 +53,7 @@ define(function (require, exports, module) {
                     await _ensureExistsAsync(window.path.dirname(destPath));
                     item.async("uint8array").then(function (data) {
                         if(zipControl && !zipControl.continueExtraction){
-                            reject();
+                            reject("aborted");
                             return;
                         }
                         window.fs.writeFile(destPath, Filer.Buffer.from(data), writeErr=>{
@@ -119,36 +119,50 @@ define(function (require, exports, module) {
                 try{
                     const extractBatchSize = 500;
                     const isNestedContent = _isNestedContentDir(zip);
+                    let extractError;
                     let totalCount = keys.length,
                         doneCount = 0,
                         extractPromises = [],
                         zipControl = {
                             continueExtraction: true
                         };
+                    function _unzipProgress() {
+                        doneCount ++;
+                        if(progressControlCallback){
+                            zipControl.continueExtraction = zipControl.continueExtraction
+                                && progressControlCallback(doneCount, totalCount);
+                        }
+                    }
+                    function _extractFailed(err) {
+                        extractError = err;
+                    }
                     for(let path of keys){
                         // This is intentionally batched as fs access api hangs on large number of file access
                         let extractPromise = _copyZippedItemToFS(path, zip.files[path], projectDir,
                             isNestedContent && flattenFirstLevel, zipControl);
                         // eslint-disable-next-line no-loop-func
-                        extractPromise.then(()=>{
-                            doneCount ++;
-                            if(progressControlCallback){
-                                zipControl.continueExtraction = zipControl.continueExtraction
-                                    && progressControlCallback(doneCount, totalCount);
-                            }
-                        });
+                        extractPromise.then(_unzipProgress)
+                            .catch(_extractFailed);
                         extractPromises.push(extractPromise);
                         if(extractPromises.length === extractBatchSize){
-                            await Promise.all(extractPromises);
+                            await Promise.allSettled(extractPromises);
                             extractPromises = [];
                         }
                         if(zipControl.continueExtraction === false){
                             reject(`Extraction cancelled by progress controller`);
                             return;
                         }
+                        if(extractError){
+                            reject(`Extraction error`, extractError);
+                            return;
+                        }
                     }
                     if(extractPromises.length) {
-                        await Promise.all(extractPromises);
+                        await Promise.allSettled(extractPromises);
+                    }
+                    if(extractError){
+                        reject(`Extraction error`, extractError);
+                        return;
                     }
                     console.log("Unzip complete: ", projectDir);
                     resolve();
