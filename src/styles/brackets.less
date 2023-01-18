@@ -719,6 +719,28 @@ a, img {
     cursor: col-resize;
 }
 
+@keyframes fadeInFromNone {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.horz-resizer:hover {
+    background-color: @bc-primary-btn-bg;
+    opacity: 1;
+    animation: fadeInFromNone 0.5s ease-out;
+}
+
+.vert-resizer:hover {
+    background-color: @bc-primary-btn-bg;
+    opacity: 1;
+    animation: fadeInFromNone 0.5s ease-out;
+}
+
 .bottom-panel {
     background-color: @bc-panel-bg;
     display: none;
