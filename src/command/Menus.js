@@ -297,8 +297,10 @@ define(function (require, exports, module) {
      * @param {string} id
      * @param {string|Command} command - the Command this MenuItem will reflect.
      *                                   Use DIVIDER to specify a menu divider
+     * @param [options]
+     * @param {boolean} options.hideWhenCommandDisabled will not show the menu item if command is disabled.
      */
-    function MenuItem(id, command) {
+    function MenuItem(id, command, options = {}) {
         this.id = id;
         this.isDivider = (command === DIVIDER);
         this.isNative = false;
@@ -312,6 +314,7 @@ define(function (require, exports, module) {
             this._keyBindingRemoved = this._keyBindingRemoved.bind(this);
 
             this._command = command;
+            this._hideWhenCommandDisabled = options.hideWhenCommandDisabled;
             this._command
                 .on("enabledStateChange", this._enabledChanged)
                 .on("checkedStateChange", this._checkedChanged)
@@ -531,10 +534,13 @@ define(function (require, exports, module) {
      *          - Relative to a MenuSection, use FIRST_IN_SECTION or LAST_IN_SECTION (required)
      * @param {?string} [relativeID] - command id OR one of the MenuSection.* constants. Required
      *      for all position constants except FIRST and LAST.
+     * @param [options]
+     * @param {boolean} options.hideWhenCommandDisabled will not show the menu item if command is disabled. Helps to
+     *   clear the clutter on greyed out menu items if not applicable to context.
      *
      * @return {MenuItem} the newly created MenuItem
      */
-    Menu.prototype.addMenuItem = function (command, keyBindings, position, relativeID) {
+    Menu.prototype.addMenuItem = function (command, keyBindings, position, relativeID, options = {}) {
         let id,
             $menuItem,
             menuItem,
@@ -573,7 +579,9 @@ define(function (require, exports, module) {
         }
 
         // create MenuItem
-        menuItem = new MenuItem(id, command);
+        menuItem = new MenuItem(id, command, {
+            hideWhenCommandDisabled: options.hideWhenCommandDisabled
+        });
         menuItemMap[id] = menuItem;
 
 
@@ -891,6 +899,9 @@ define(function (require, exports, module) {
             });
         } else {
             ViewUtils.toggleClass($(_getHTMLMenuItem(this.id)), "disabled", !this._command.getEnabled());
+            if(this._hideWhenCommandDisabled){
+                ViewUtils.toggleClass($(_getHTMLMenuItem(this.id)), "forced-hidden", !this._command.getEnabled());
+            }
         }
     };
 

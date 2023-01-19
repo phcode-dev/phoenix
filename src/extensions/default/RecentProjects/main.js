@@ -316,6 +316,8 @@ define(function (require, exports, module) {
                     CommandManager.execute(Commands.FILE_OPEN_FOLDER);
                 } else if (id === "new-project-link") {
                     CommandManager.execute(Commands.FILE_NEW_PROJECT);
+                } else if (id === "download-project-link") {
+                    CommandManager.execute(Commands.FILE_DOWNLOAD_PROJECT);
                 }
 
             })
@@ -369,11 +371,13 @@ define(function (require, exports, module) {
      * @return {string} The html content
      */
     function renderList() {
-        var recentProjects = getRecentProjects(),
+        const recentProjects = getRecentProjects(),
+            downloadProjectCommand = CommandManager.get(Commands.FILE_DOWNLOAD_PROJECT),
             currentProject = FileUtils.stripTrailingSlash(ProjectManager.getProjectRoot().fullPath),
             templateVars   = {
                 projectList: [],
-                Strings: Strings
+                Strings: Strings,
+                downloadProjectClass: downloadProjectCommand.getEnabled() ? "": "forced-hidden"
             };
 
         recentProjects.forEach(function (root) {
