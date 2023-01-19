@@ -210,9 +210,30 @@ define(function (require, exports, module) {
         });
     }
 
+    function _loadTwitterScripts() {
+        // https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/javascript-api
+        // we maily do this to metric the users who clicked on the tweet button
+        if(window.twttr){
+            return;
+        }
+        const twitterScript = document.createElement( 'script' );
+        twitterScript.setAttribute( 'src', "https://platform.twitter.com/widgets.js" );
+        document.body.appendChild( twitterScript );
+        twitterScript.addEventListener("load", ()=>{
+            if(!window.twttr){
+                console.error("twitter scripts not loaded");
+                return;
+            }
+            window.twttr.events.bind('click', function (ev) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "twit.click", 1);
+            });
+        });
+    }
+
     function _openStarsPopup() {
-        let html = `${Strings.GITHUB_STARS_POPUP}
-                        <div style="display: flex;justify-content: space-around;margin-top: 6px;">
+        _loadTwitterScripts();
+        let notification = $(`${Strings.GITHUB_STARS_POPUP}
+                        <div class="gtstarph" style="display: flex;justify-content: space-around;margin-top: 6px;">
                             <a class="github-button"
                              href="https://github.com/phcode-dev/phoenix"
                              data-color-scheme="no-preference: dark; light: dark; dark: dark;"
@@ -224,16 +245,18 @@ define(function (require, exports, module) {
                            <script async defer src="https://buttons.github.io/buttons.js"></script>
                         </div>
                        ${Strings.GITHUB_STARS_POPUP_TWITTER}
-                       <div style="display: flex;justify-content: space-around;margin-top: 6px;">
+                       <div class="twbnpop" style="display: flex;justify-content: space-around;margin-top: 6px;">
                             <a href="https://twitter.com/intent/tweet?screen_name=phcodedev&ref_src=twsrc%5Etfw"
                              class="twitter-mention-button"
                              data-size="large"
                              data-related="BracketsCont,brackets"
                              data-show-count="false">Tweet to @phcodedev</a>
-                             <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                        </div>
-                    </div>`;
-        NotificationUI.createToastFromTemplate(Strings.ENJOYING_APP, html, {
+                    </div>`);
+        notification.find(".gtstarph").click(()=>{
+            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star.click", 1);
+        });
+        NotificationUI.createToastFromTemplate(Strings.ENJOYING_APP, notification, {
             dismissOnClick: false
         });
     }
