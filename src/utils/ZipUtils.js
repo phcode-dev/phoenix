@@ -18,9 +18,10 @@
  *
  */
 
-/*globals Phoenix, JSZip, Filer*/
+/*globals Phoenix, JSZip, Filer, path*/
 
 define(function (require, exports, module) {
+    const FileSystem = require("filesystem/FileSystem");
 
     const ignoredFolders = [ "__MACOSX" ];
 
@@ -174,6 +175,43 @@ define(function (require, exports, module) {
         });
     }
 
+    function readContent(fileEntry) {
+        return new Promise((resolve, reject)=>{
+            fileEntry.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
+                if (err){
+                    reject(err);
+                    return;
+                }
+                let blob = new Blob([content], {type:"application/octet-stream"});
+                resolve(blob);
+            });
+        });
+    }
+
+    /**
+     * Zips a given folder located at path to a jsZip object.
+     * @param {string} fullPath to zip
+     * @return {Promise<JSZip>} zip object
+     */
+    function zipFolder(fullPath) {
+        return new Promise((resolve, reject)=>{
+            const zip = new JSZip();
+            let directory = FileSystem.getDirectoryForPath(fullPath);
+            FileSystem.getAllDirectoryContents(directory).then(async contents => {
+                for(let entry of contents){
+                    let relativePath = path.relative(fullPath, entry.fullPath);
+                    if(entry.isDirectory){
+                        zip.folder(relativePath);
+                    } else {
+                        let blob = await readContent(entry);
+                        zip.file(relativePath, blob);
+                    }
+                }
+                resolve(zip);
+            }).catch(reject);
+        });
+    }
+
     /**
      *
      * @param url the zip fle URL
@@ -201,4 +239,5 @@ define(function (require, exports, module) {
     }
     exports.unzipBinDataToLocation = unzipBinDataToLocation;
     exports.unzipURLToLocation = unzipURLToLocation;
+    exports.zipFolder = zipFolder;
 });

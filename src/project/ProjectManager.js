@@ -37,7 +37,7 @@
  *    ProjectManager.on("eventname", handler);
  */
 
-/*global fs, Phoenix*/
+/*global Phoenix, path*/
 
 define(function (require, exports, module) {
 
@@ -73,6 +73,7 @@ define(function (require, exports, module) {
         FileTreeView        = require("project/FileTreeView"),
         WorkingSetView      = require("project/WorkingSetView"),
         ViewUtils           = require("utils/ViewUtils"),
+        ZipUtils            = require("utils/ZipUtils"),
         Metrics             = require("utils/Metrics");
 
     // Needed to ensure that menus are set up when we need them.
@@ -121,7 +122,7 @@ define(function (require, exports, module) {
      * Error context to show the correct error message
      * @type {int}
      */
-    var ERR_TYPE_CREATE                 = 1,
+    const ERR_TYPE_CREATE                 = 1,
         ERR_TYPE_CREATE_EXISTS          = 2,
         ERR_TYPE_RENAME                 = 3,
         ERR_TYPE_DELETE                 = 4,
@@ -133,7 +134,8 @@ define(function (require, exports, module) {
         ERR_TYPE_MOVE                   = 10,
         ERR_TYPE_PASTE                  = 11,
         ERR_TYPE_PASTE_FAILED           = 12,
-        ERR_TYPE_DUPLICATE_FAILED       = 13;
+        ERR_TYPE_DUPLICATE_FAILED       = 13,
+        ERR_TYPE_DOWNLOAD_FAILED       = 14;
 
     /**
      * @private
@@ -700,6 +702,10 @@ define(function (require, exports, module) {
         case ERR_TYPE_DUPLICATE_FAILED:
             title = StringUtils.format(Strings.CANNOT_DUPLICATE_TITLE, titleType);
             message = StringUtils.format(Strings.ERR_TYPE_DUPLICATE_FAILED, path);
+            break;
+        case ERR_TYPE_DOWNLOAD_FAILED:
+            title = StringUtils.format(Strings.CANNOT_DOWNLOAD_TITLE, titleType);
+            message = StringUtils.format(Strings.ERR_TYPE_DOWNLOAD_FAILED, path);
             break;
         }
 
@@ -1437,23 +1443,46 @@ define(function (require, exports, module) {
         }
     }
 
+    function _zipFailed(fullPath) {
+        _showErrorDialog(ERR_TYPE_DOWNLOAD_FAILED, false, "err",
+            _getProjectRelativePathForCopy(fullPath));
+    }
+
+    function _downloadFolderCommand(downloadPath) {
+        downloadPath = downloadPath || getProjectRoot().fullPath;
+        let projectName = path.basename(downloadPath);
+        let message = StringUtils.format(Strings.DOWNLOADING_FILE, projectName);
+        setProjectBusy(true, message);
+        ZipUtils.zipFolder(downloadPath).then(zip=>{
+            return zip.generateAsync({type:"blob"});
+        }).then(function (blob) {
+            window.saveAs(blob, `${projectName}.zip`);
+        }).catch(()=>{
+            _zipFailed(downloadPath);
+        }).finally(()=>{
+            setProjectBusy(false, message);
+        });
+    }
+
     function _downloadCommand() {
         let context = getContext();
         if(context){
             let name = _getProjectRelativePathForCopy(context.fullPath);
-            let message = StringUtils.format(Strings.DUPLICATING, name);
-            setProjectBusy(true, message);
-            FileSystem.getFreePath(context.fullPath, (err, dupePath)=>{
-                FileSystem.copy(context.fullPath, dupePath, (err, copiedStats)=>{
-                    setProjectBusy(false, message);
-                    if(err){
-                        _showErrorDialog(ERR_TYPE_DUPLICATE_FAILED, false, "err",
-                            _getProjectRelativePathForCopy(context.fullPath));
+            let message = StringUtils.format(Strings.DOWNLOADING_FILE, name);
+            if(context.isFile){
+                setProjectBusy(true, message);
+                context.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, blobContent) {
+                    if (err){
+                        _zipFailed(context.fullPath);
                         return;
                     }
-                    queuePathForSelection = copiedStats.realPath;
+                    setProjectBusy(false, message);
+                    let blob = new Blob([blobContent], {type:"application/octet-stream"});
+                    window.saveAs(blob, path.basename(context.fullPath));
                 });
-            });
+            } else {
+                _downloadFolderCommand(context.fullPath);
+            }
         }
     }
 
@@ -1726,7 +1755,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_FILE_COPY_PATH, Commands.FILE_COPY_PATH, _copyProjectRelativePath);
     CommandManager.register(Strings.CMD_FILE_PASTE, Commands.FILE_PASTE, _pasteFileCMD);
     CommandManager.register(Strings.CMD_FILE_DUPLICATE, Commands.FILE_DUPLICATE, _duplicateFileCMD);
-    CommandManager.register(Strings.CMD_FILE_DOWNLOAD_PROJECT, Commands.FILE_DOWNLOAD_PROJECT, _downloadCommand);
+    CommandManager.register(Strings.CMD_FILE_DOWNLOAD_PROJECT, Commands.FILE_DOWNLOAD_PROJECT, _downloadFolderCommand);
     CommandManager.register(Strings.CMD_FILE_DOWNLOAD, Commands.FILE_DOWNLOAD, _downloadCommand);
 
     // Define the preference to decide how to sort the Project Tree files

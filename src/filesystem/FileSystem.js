@@ -1046,6 +1046,30 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Recursively gets all files and directories given a root path.
+     * @param {Directory} directory To get all descendant contents from
+     * @return {Promise<Array[File|Directory]>} A promise that resolves with the file and directory contents
+     */
+    FileSystem.prototype.getAllDirectoryContents = function (directory, _traversedPaths= []) {
+        const self = this;
+        return new Promise((resolve, reject)=>{
+            let contents = [];
+            function visitor(entry) {
+                if(directory.fullPath !== entry.fullPath){
+                    contents.push(entry);
+                }
+                return true;
+            }
+            directory.visit(visitor, (err)=>{
+                if(err){
+                    reject();
+                    return;
+                }
+                resolve(contents);
+            });
+        });
+    };
+    /**
      * Clears all cached content. Because of the performance implications of this, this should only be used if
      * there is a suspicion that the file system has not been updated through the normal file watchers
      * mechanism.
@@ -1216,6 +1240,7 @@ define(function (require, exports, module) {
     exports.getFreePath = _wrap(FileSystem.prototype.getFreePath);
     exports.copy = _wrap(FileSystem.prototype.copy);
     exports.existsAsync = _wrap(FileSystem.prototype.existsAsync);
+    exports.getAllDirectoryContents = _wrap(FileSystem.prototype.getAllDirectoryContents);
 
     // Static public utility methods
     exports.isAbsolutePath = FileSystem.isAbsolutePath;

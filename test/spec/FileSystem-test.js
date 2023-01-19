@@ -821,6 +821,106 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("FileSystemEntry.getAllDirectoryContents", function () {
+            beforeEach(async function () {
+                async function initEntry(entry, command, args) {
+                    var cb = getContentsCallback();
+
+                    args.push(cb);
+                    entry[command].apply(entry, args);
+                    await awaitsFor(function () { return cb.wasCalled; });
+                    expect(cb.error).toBeFalsy();
+                }
+
+                async function initDir(path) {
+                    await initEntry(fileSystem.getDirectoryForPath(path), "create", []);
+                }
+
+                async function initFile(path) {
+                    await initEntry(fileSystem.getFileForPath(path), "write", ["abc"]);
+                }
+
+                await initDir("/visit/");
+                await initFile("/visit/file.txt");
+                await initDir("/visit/subdir1/");
+                await initDir("/visit/subdir2/");
+                await initFile("/visit/subdir1/subfile11.txt");
+                await initFile("/visit/subdir1/subfile12.txt");
+                await initFile("/visit/subdir2/subfile21.txt");
+                await initFile("/visit/subdir2/subfile22.txt");
+            });
+
+            it("should return all entries by default", async function () {
+                const directory = fileSystem.getDirectoryForPath("/visit/");
+
+                const contents = await FileSystem.getAllDirectoryContents(directory);
+                expect(contents.length).toBe(7);
+                let results = ["/visit/file.txt", "/visit/subdir1/", "/visit/subdir2/",
+                    "/visit/subdir1/subfile11.txt", "/visit/subdir1/subfile12.txt", "/visit/subdir2/subfile21.txt",
+                    "/visit/subdir2/subfile22.txt", "/"];
+                for(let entry of contents){
+                    if(!results.includes(entry.fullPath)){
+                        expect(entry.fullPath).toBeFalsy();
+                    }
+                }
+            });
+
+            it("should converge when visiting directories with symlink cycles", async function () {
+
+                function addSymbolicLink(dir, name, target) {
+
+                    // Add the symbolic link to the base directory
+                    MockFileSystemImpl.when("readdir", dir, function (cb) {
+                        return function (err, contents, contentsStats, contentsStatsErrors) {
+                            contents.push("/" + name);
+                            contentsStats.push(new FileSystemStats({
+                                isFile: false,
+                                mtime: new Date(),
+                                realPath: target
+                            }));
+
+                            cb(err, contents, contentsStats, contentsStatsErrors);
+                        };
+                    });
+
+                    // use the target's contents when listing the contents of the link
+                    MockFileSystemImpl.when("readdir", dir + name + "/", function (cb) {
+                        return function (err, contents, contentsStats, contentsStatsErrors) {
+                            MockFileSystemImpl.readdir(target, cb);
+                        };
+                    });
+
+                    // clear cached data for the base directory so readdir will be called
+                    fileSystem.getDirectoryForPath(dir)._clearCachedData();
+                }
+
+                addSymbolicLink("/visit/subdir1/", "subdir2link", "/visit/subdir2/");
+                addSymbolicLink("/visit/subdir2/", "subdir1link", "/visit/subdir1/");
+
+                var directory = fileSystem.getDirectoryForPath("/visit/"),
+                    results = {},
+                    visitor = function (entry) {
+                        results[entry.fullPath] = entry;
+                        return true;
+                    };
+
+                var cb = getContentsCallback();
+                directory.visit(visitor, cb);
+                await awaitsFor(function () { return cb.wasCalled; });
+                expect(cb.error).toBeFalsy();
+                expect(Object.keys(results).length).toBe(8);
+                expect(results["/visit/"]).toBeTruthy();
+                expect(results["/visit/file.txt"]).toBeTruthy();
+                expect(results["/visit/subdir1/"] || results["/visit/subdir2/subdir1link/"]).toBeTruthy();
+                expect(results["/visit/subdir2/"] || results["/visit/subdir1/subdir2link/"]).toBeTruthy();
+                expect(results["/visit/subdir1/"] && results["/visit/subdir2/subdir1link/"]).not.toBeTruthy();
+                expect(results["/visit/subdir2/"] && results["/visit/subdir1/subdir2link/"]).not.toBeTruthy();
+                expect(results["/visit/subdir1/subdir2link/subdir1link/"]).not.toBeTruthy();
+                expect(results["/visit/subdir1/subdir1link/subdir2link/"]).not.toBeTruthy();
+                expect(results["/"]).not.toBeTruthy();
+            });
+        });
+
         describe("Event ordering", function () {
 
             async function eventOrderingTest(eventName, implOpName, entry, methodName) {
