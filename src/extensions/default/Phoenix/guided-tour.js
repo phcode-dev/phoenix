@@ -264,7 +264,7 @@ define(function (require, exports, module) {
     function _showRequestStarsPopup() {
         let lastShownDate = userAlreadyDidAction.lastShownGithubStarsDate;
         let nextShowDate = new Date(lastShownDate);
-        nextShowDate.setDate(nextShowDate.getDate() + TWO_WEEKS_IN_DAYS);
+        nextShowDate.setUTCDate(nextShowDate.getUTCDate() + TWO_WEEKS_IN_DAYS);
         let currentDate = new Date();
         if(!lastShownDate || currentDate >= nextShowDate){
             setTimeout(()=>{
@@ -299,7 +299,7 @@ define(function (require, exports, module) {
             dateBefore14Days = new Date(),
             totalUsageMinutes = 0,
             totalUsageDays = 0;
-        dateBefore14Days.setDate(dateBefore14Days.getDate()-14);
+        dateBefore14Days.setUTCDate(dateBefore14Days.getUTCDate()-14);
         for(let dateKey of dateKeys){
             let date = new Date(dateKey);
             if(date >= dateBefore14Days) {
@@ -324,7 +324,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
             let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
             let nextShowDate = new Date(lastShownDate);
-            nextShowDate.setDate(nextShowDate.getDate() + TWO_WEEKS_IN_DAYS);
+            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + TWO_WEEKS_IN_DAYS);
             let currentDate = new Date();
             if(currentDate < nextShowDate){
                 return;

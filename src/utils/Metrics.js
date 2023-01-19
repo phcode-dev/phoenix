@@ -39,10 +39,28 @@
  * @module utils/Metrics
  */
 define(function (require, exports, module) {
-    const MAX_AUDIT_ENTRIES = 3000;
+    const MAX_AUDIT_ENTRIES = 3000,
+        ONE_DAY = 24 * 60* 60 * 1000;
     let initDone = false,
         disabled = false,
         loggedDataForAudit = new Map();
+
+    let isFirstUseDay;
+    function _setFirstDayFlag() {
+        let firstUseDay= localStorage.getItem("healthData.firstUseDay");
+        if(!firstUseDay){
+            firstUseDay = new Date();
+            localStorage.setItem("healthData.firstUseDay", `${firstUseDay.getTime()}`);
+        } else {
+            firstUseDay = new Date(parseInt(firstUseDay));
+        }
+        let dayAfterFirstUse = new Date(firstUseDay);
+        dayAfterFirstUse.setUTCDate(firstUseDay.getUTCDate() + 1);
+        let today = new Date();
+        isFirstUseDay = today < dayAfterFirstUse;
+    }
+    _setFirstDayFlag();
+    setInterval(_setFirstDayFlag, ONE_DAY);
 
     /**
      * This section outlines the properties and methods available in this module
@@ -246,6 +264,13 @@ define(function (require, exports, module) {
         }
     }
 
+    function _decorateRepeatUserEvent(eventType) {
+        if(isFirstUseDay){
+            return eventType;
+        }
+        return `R.${eventType}`;
+    }
+
     /**
      * log a numeric count >=0
      * @example <caption>To log that user clicked searchButton 5 times:</caption>
@@ -262,6 +287,7 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function countEvent(eventType, eventCategory, eventSubCategory, count= 1) {
+        eventType= _decorateRepeatUserEvent(eventType);
         _logEventForAudit(eventType, eventCategory, eventSubCategory, count, AUDIT_TYPE_COUNT);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, count);
         _sendToMixPanel(eventType, eventCategory, eventSubCategory, count);
@@ -283,6 +309,7 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function valueEvent(eventType, eventCategory, eventSubCategory, value) {
+        eventType= _decorateRepeatUserEvent(eventType);
         _logEventForAudit(eventType, eventCategory, eventSubCategory, value, AUDIT_TYPE_VALUE);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, value);
         _sendToMixPanel(eventType, eventCategory, eventSubCategory, 1, value);
