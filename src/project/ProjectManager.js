@@ -1437,6 +1437,26 @@ define(function (require, exports, module) {
         }
     }
 
+    function _downloadCommand() {
+        let context = getContext();
+        if(context){
+            let name = _getProjectRelativePathForCopy(context.fullPath);
+            let message = StringUtils.format(Strings.DUPLICATING, name);
+            setProjectBusy(true, message);
+            FileSystem.getFreePath(context.fullPath, (err, dupePath)=>{
+                FileSystem.copy(context.fullPath, dupePath, (err, copiedStats)=>{
+                    setProjectBusy(false, message);
+                    if(err){
+                        _showErrorDialog(ERR_TYPE_DUPLICATE_FAILED, false, "err",
+                            _getProjectRelativePathForCopy(context.fullPath));
+                        return;
+                    }
+                    queuePathForSelection = copiedStats.realPath;
+                });
+            });
+        }
+    }
+
     const OPERATION_CUT = 'cut',
         OPERATION_COPY = 'copy';
 
@@ -1680,8 +1700,16 @@ define(function (require, exports, module) {
     // Init default project path to welcome project
     PreferencesManager.stateManager.definePreference("projectPath", "string", getWelcomeProjectPath());
 
+    function _setProjectDownloadCommandEnabled(_event, projectRoot) {
+        CommandManager.get(Commands.FILE_DOWNLOAD_PROJECT)
+            .setEnabled(!Phoenix.VFS.isLocalDiscPath(projectRoot.fullPath));
+        CommandManager.get(Commands.FILE_DOWNLOAD)
+            .setEnabled(!Phoenix.VFS.isLocalDiscPath(projectRoot.fullPath));
+    }
+
     exports.on(EVENT_PROJECT_OPEN, _reloadProjectPreferencesScope);
     exports.on(EVENT_PROJECT_OPEN, _saveProjectPath);
+    exports.on(EVENT_PROJECT_OPEN, _setProjectDownloadCommandEnabled);
     exports.on("beforeAppClose", _unwatchProjectRoot);
 
     // Due to circular dependencies, not safe to call on() directly for other modules' events
@@ -1698,6 +1726,8 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_FILE_COPY_PATH, Commands.FILE_COPY_PATH, _copyProjectRelativePath);
     CommandManager.register(Strings.CMD_FILE_PASTE, Commands.FILE_PASTE, _pasteFileCMD);
     CommandManager.register(Strings.CMD_FILE_DUPLICATE, Commands.FILE_DUPLICATE, _duplicateFileCMD);
+    CommandManager.register(Strings.CMD_FILE_DOWNLOAD_PROJECT, Commands.FILE_DOWNLOAD_PROJECT, _downloadCommand);
+    CommandManager.register(Strings.CMD_FILE_DOWNLOAD, Commands.FILE_DOWNLOAD, _downloadCommand);
 
     // Define the preference to decide how to sort the Project Tree files
     PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, "boolean", true, {

@@ -357,6 +357,24 @@ define(function (require, exports, module) {
                 expect($listItems.length).toBe(1);
                 expect(menuItem).toBeNull();
             });
+
+            it("should hideWhenCommandDisabled", async function () {
+                let hideCommand = CommandManager.register("Brackets Test Command Custom hide", "Menu-test.commandHide", function () {});
+                let menu = Menus.addMenu("Custom hide", "menuitem-hide");
+                let menuItem = menu.addMenuItem("Menu-test.commandHide", undefined, undefined, undefined, {
+                    hideWhenCommandDisabled: true
+                });
+                expect(menuItem).toBeTruthy();
+                let element = testWindow.document.getElementById("menuitem-hide");
+
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(0);
+
+                hideCommand.setEnabled(false);
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(1);
+
+                hideCommand.setEnabled(true);
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(0);
+            });
         });
 
 
@@ -712,6 +730,40 @@ define(function (require, exports, module) {
                     expect(menu).toBeTruthy();
                 });
             });
+
+            it("should context submenu hideWhenCommandDisabled", async function () {
+                let hideCommand = CommandManager.register("Brackets Test Command Custom hide", "Menu-test.commandHideContextSub", function () {});
+                menuId = "context-menu-custom-removeSubmenu-hide";
+                menu = Menus.registerContextMenu(menuId);
+
+                subMenuId = "submenu-custom-removeSubmenu-hide";
+                subMenu = menu.addSubMenu("submenu", subMenuId);
+                let menuItem = subMenu.addMenuItem("Menu-test.commandHideContextSub", undefined, undefined, undefined, {
+                    hideWhenCommandDisabled: true
+                });
+                expect(menuItem).toBeTruthy();
+                subMenu.open({pageX: 0, pageY: 0});
+
+                // verify dropdown is open
+                let isOpen = subMenu.isOpen();
+                expect(isOpen).toBe(true);
+                let element = testWindow.document.getElementById("submenu-custom-removeSubmenu-hide");
+
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(0);
+
+                // verify close event
+                subMenu.close();
+
+                // verify all dropdowns are closed
+                isOpen = subMenu.isOpen();
+                expect(isOpen).toBe(false);
+
+                hideCommand.setEnabled(false);
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(1);
+
+                hideCommand.setEnabled(true);
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(0);
+            });
         });
 
         describe("Menu Item synchronizing", function () {
@@ -949,6 +1001,36 @@ define(function (require, exports, module) {
                 // verify all dropdowns are closed
                 isOpen = cmenu.isOpen();
                 expect(isOpen).toBe(false);
+            });
+
+            it("should context menu hideWhenCommandDisabled", async function () {
+                let hideCommand = CommandManager.register("Brackets Test Command Custom hide", "Menu-test.commandHideContext", function () {});
+                var cmenu = Menus.registerContextMenu("test-cmenu-hide-context");
+                let menuItem = cmenu.addMenuItem("Menu-test.commandHideContext", undefined, undefined, undefined, {
+                    hideWhenCommandDisabled: true
+                });
+                expect(menuItem).toBeTruthy();
+                cmenu.open({pageX: 0, pageY: 0});
+
+                // verify dropdown is open
+                let isOpen = cmenu.isOpen();
+                expect(isOpen).toBe(true);
+                let element = testWindow.document.getElementById("test-cmenu-hide-context");
+
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(0);
+
+                // verify close event
+                cmenu.close();
+
+                // verify all dropdowns are closed
+                isOpen = cmenu.isOpen();
+                expect(isOpen).toBe(false);
+
+                hideCommand.setEnabled(false);
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(1);
+
+                hideCommand.setEnabled(true);
+                expect(element.getElementsByClassName("forced-hidden").length).toBe(0);
             });
         });
     });

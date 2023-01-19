@@ -345,6 +345,8 @@ define({
     "CMD_FILE_NEW_UNTITLED": "New",
     "CMD_FILE_NEW": "New File",
     "CMD_FILE_DUPLICATE": "Duplicate",
+    "CMD_FILE_DOWNLOAD_PROJECT": "Download Project",
+    "CMD_FILE_DOWNLOAD": "Download",
     "CMD_FILE_CUT": "Cut",
     "CMD_FILE_COPY": "Copy",
     "CMD_FILE_COPY_PATH": "Copy Path",

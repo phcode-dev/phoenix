@@ -46,6 +46,17 @@ function _setupVFS(fsLib, pathLib){
         getTrashDir: () => '/fs/trash/',
         getDefaultProjectDir: () => '/fs/local/default project/',
         getUserDocumentsDirectory: () => '/fs/local/Documents/',
+        /**
+         * Check if a given full path is located in the users local machine drive. For eg. fs access paths are accounted
+         * as local disc path, as well as tauri fs paths.
+         * @param fullPath
+         */
+        isLocalDiscPath: function (fullPath) {
+            if(fullPath && fullPath.startsWith(Phoenix.VFS.getMountDir())){
+                return true;
+            }
+            return false;
+        },
         ensureExistsDir: function (path, cb) {
             Phoenix.VFS.exists(path, (exists) =>{
                 // We have to do the exists check explicitly here instead of only using fs.mkdir call check EEXIST code

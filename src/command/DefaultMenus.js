@@ -74,6 +74,9 @@ define(function (require, exports, module) {
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_SAVE);
         menu.addMenuItem(Commands.FILE_SAVE_ALL);
+        menu.addMenuItem(Commands.FILE_DOWNLOAD_PROJECT, undefined, undefined, undefined, {
+            hideWhenCommandDisabled: true
+        });
         // menu.addMenuItem(Commands.FILE_SAVE_AS); not yet available in phoenix
         // menu.addMenuItem(Commands.FILE_PROJECT_SETTINGS); not yet available in phoenix
         menu.addMenuDivider();
@@ -253,6 +256,9 @@ define(function (require, exports, module) {
         project_cmenu.addMenuItem(Commands.FILE_COPY_PATH);
         project_cmenu.addMenuItem(Commands.FILE_PASTE);
         project_cmenu.addMenuItem(Commands.FILE_DUPLICATE);
+        project_cmenu.addMenuItem(Commands.FILE_DOWNLOAD, undefined, undefined, undefined, {
+            hideWhenCommandDisabled: true
+        });
         project_cmenu.addMenuDivider();
         project_cmenu.addMenuItem(Commands.FILE_RENAME);
         project_cmenu.addMenuItem(Commands.FILE_DELETE);
