@@ -101,6 +101,9 @@ let copyThirdPartyLibs = series(
     // jszip
     copyFiles.bind(copyFiles, ['node_modules/jszip/dist/jszip.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/jszip/LICENSE.markdown', 'jsZip'),
+    // filesaver
+    copyFiles.bind(copyFiles, ['node_modules/file-saver/dist/FileSaver.min.js', 'node_modules/file-saver/dist/FileSaver.min.js.map'], 'src/thirdparty/fileSaver'),
+    copyLicence.bind(copyLicence, 'node_modules/file-saver/LICENSE.md', 'fileSaver'),
     // jsHint
     copyFiles.bind(copyFiles, ['node_modules/jshint/dist/jshint.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/jshint/LICENSE', 'jshint'),

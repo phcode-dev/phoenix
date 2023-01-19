@@ -80,6 +80,7 @@
         "browser-mime": "^1.0.1",
         "codemirror": "^5.65.7",
         "devicon": "^2.15.1",
+        "file-saver": "^2.0.5",
         "jshint": "^2.13.5",
         "jszip": "^3.8.0",
         "less": "^4.1.3",
