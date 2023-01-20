@@ -66,7 +66,7 @@ function _setupVFS(fsLib, pathLib){
                     cb();
                     return;
                 }
-                fs.mkdirs(path, 777, true, function(err) {
+                Phoenix.fs.mkdirs(path, 777, true, function(err) {
                     if (err && err.code !== 'EEXIST') {
                         cb(err);
                     }
@@ -125,7 +125,7 @@ function _setupVFS(fsLib, pathLib){
 }
 
 const _getFsEncoding = function (encoding){
-    const encodingStr = encoding.toLowerCase();
+    const encodingStr = encoding && encoding.toLowerCase();
     switch (encodingStr){
     case "utf8":
     case "utf-8":

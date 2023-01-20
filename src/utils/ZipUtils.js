@@ -57,13 +57,14 @@ define(function (require, exports, module) {
                             reject("aborted");
                             return;
                         }
-                        window.fs.writeFile(destPath, Filer.Buffer.from(data), writeErr=>{
-                            if(writeErr){
-                                reject(writeErr);
-                            } else {
-                                resolve(destPath);
-                            }
-                        });
+                        window.fs.writeFile(destPath, Filer.Buffer.from(data),
+                            {encoding: window.fs.BYTE_ARRAY_ENCODING}, writeErr=>{
+                                if(writeErr){
+                                    reject(writeErr);
+                                } else {
+                                    resolve(destPath);
+                                }
+                            });
                     }).catch(error=>{
                         reject(error);
                     });

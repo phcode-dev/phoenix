@@ -212,23 +212,34 @@ define(function (require, exports, module) {
 
     function _shouldUpdateExtensionRegistry() {
         return new Promise((resolve, reject)=>{
-            const currentRegistryVersion = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY);
+            const currentRegistryVersion = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY) || "1";
             Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "registryVersion",
-                `${currentRegistryVersion || 1}`);
+                `${currentRegistryVersion}`);
             $.ajax({
                 url: brackets.config.extension_registry_version,
                 dataType: "json",
                 cache: false
             })
                 .done(function (registryVersion) {
-                    if(registryVersion.version !== currentRegistryVersion){
+                    if(registryVersion.version !== parseInt(currentRegistryVersion)){
                         resolve(registryVersion.version);
                     } else {
+                        const registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+                        if(!registryJson) {
+                            resolve(registryVersion.version);
+                            // if we dont have anything, best to atlest try to fetch the registry now.
+                            return;
+                        }
                         reject();
                     }
                 })
                 .fail(function (err) {
                     console.error("error Fetching Extension Registry version", err);
+                    const registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+                    if(!registryJson) {
+                        resolve(1); // if we dont have anything, best to atlest try to fetch the registry now.
+                        return;
+                    }
                     reject();
                 });
         });
@@ -293,7 +304,10 @@ define(function (require, exports, module) {
         }
         // check for latest updates even if we have cache
         _shouldUpdateExtensionRegistry()
-            .then(_updateRegistry);
+            .then(_updateRegistry)
+            .catch(()=>{
+                pendingDownloadRegistry = null;
+            });
 
         return pendingDownloadRegistry.promise();
     }
