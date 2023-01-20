@@ -563,6 +563,23 @@ define(function (require, exports, module) {
                 expect(zip.files["interiorfile.js"].dir).toBeFalse();
                 testWindow.saveAs = restore;
             });
+
+            it("should download error message be displayed", async function () {
+                let restore = testWindow.saveAs;
+                let blob, name;
+                let folderToDownload = FileSystem.getDirectoryForPath(tempDir + "/directory");
+                testWindow.saveAs =  function (b, n) {
+                    blob = b; name = n;
+                    throw "test-forced-err";
+                };
+                CommandManager.execute(Commands.FILE_DOWNLOAD, folderToDownload);
+                await awaitsFor(()=>{
+                    return !!blob;
+                }, "download folder");
+                await waitForDialog();
+                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
+                testWindow.saveAs = restore;
+            });
         });
 
         describe("Project Busy spinner", function () {
