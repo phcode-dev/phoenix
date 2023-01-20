@@ -534,12 +534,15 @@ define({
     "FONT_SIZE": "Font Size",
     "FONT_FAMILY": "Font Family",
     "THEMES_SETTINGS": "Themes Settings",
+    "THEMES_ERROR": "Themes Error",
+    "THEMES_ERROR_CANNOT_APPLY": "Could not apply theme due to an error.",
 
     // CSS Quick Edit
     "BUTTON_NEW_RULE": "New Rule",
 
     // Extension Management strings
     "INSTALL": "Install",
+    "APPLY": "Apply",
     "UPDATE": "Update",
     "REMOVE": "Remove",
     "DISABLE": "Disable",
