@@ -71,7 +71,7 @@ define(function (require, exports, module) {
                 await openRecentProjectDropDown();
 
                 var $dropDown = $("#project-dropdown");
-                expect($dropDown.children().length).toEqual(2); // new project and open project menu item
+                expect($dropDown.children().length).toEqual(3); // new project and open project, download project item
             });
 
             it("should open the recent project list and show 5 recent projects", async function () {
@@ -93,7 +93,7 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DELETE, "keydown", $dropDown[0]);
 
                 var $dropDown = $("#project-dropdown");
-                expect($dropDown.find(".recent-folder-link").length).toEqual(4);
+                expect($dropDown.find(".recent-folder-link").length).toEqual(5);
             });
         });
     });
