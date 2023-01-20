@@ -1464,8 +1464,8 @@ define(function (require, exports, module) {
         });
     }
 
-    function _downloadCommand() {
-        let context = getContext();
+    function _downloadCommand(entryToDownload) {
+        let context = entryToDownload || getContext();
         if(context){
             let name = _getProjectRelativePathForCopy(context.fullPath);
             let message = StringUtils.format(Strings.DOWNLOADING_FILE, name);

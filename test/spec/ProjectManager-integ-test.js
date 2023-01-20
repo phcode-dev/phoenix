@@ -508,6 +508,63 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Project, file and folder download", function () {
+            it("should download project command work", async function () {
+                let restore = testWindow.saveAs;
+                let blob, name;
+                testWindow.saveAs =  function (b, n) {
+                    blob = b; name = n;
+                };
+                CommandManager.execute(Commands.FILE_DOWNLOAD_PROJECT);
+                await awaitsFor(()=>{
+                    return !!blob;
+                }, "download project");
+                expect(name).toBe("temp.zip");
+                expect(blob).toBeDefined();
+                const zipContent = new testWindow.JSZip();
+                let zip = await zipContent.loadAsync(blob);
+                expect(zip.files["directory/"].dir).toBeTrue();
+                expect(zip.files["directory/interiorfile.js"].dir).toBeFalse();
+                expect(zip.files["file.js"].dir).toBeFalse();
+                testWindow.saveAs = restore;
+            });
+
+            it("should download a file", async function () {
+                let restore = testWindow.saveAs;
+                let blob, name;
+                let fileToDownload = FileSystem.getFileForPath(tempDir + "/file.js");
+                testWindow.saveAs =  function (b, n) {
+                    blob = b; name = n;
+                };
+                CommandManager.execute(Commands.FILE_DOWNLOAD, fileToDownload);
+                await awaitsFor(()=>{
+                    return !!blob;
+                }, "download file");
+                expect(name).toBe("file.js");
+                expect(blob.size).toBe(0);
+                testWindow.saveAs = restore;
+            });
+
+            it("should download a folder", async function () {
+                let restore = testWindow.saveAs;
+                let blob, name;
+                let folderToDownload = FileSystem.getDirectoryForPath(tempDir + "/directory");
+                testWindow.saveAs =  function (b, n) {
+                    blob = b; name = n;
+                };
+                CommandManager.execute(Commands.FILE_DOWNLOAD, folderToDownload);
+                await awaitsFor(()=>{
+                    return !!blob;
+                }, "download folder");
+                expect(name).toBe("directory.zip");
+                expect(blob).toBeDefined();
+                const zipContent = new testWindow.JSZip();
+                let zip = await zipContent.loadAsync(blob);
+                expect(zip.files["interiorfile.js"].dir).toBeFalse();
+                testWindow.saveAs = restore;
+            });
+        });
+
         describe("Project Busy spinner", function () {
             it("should show project busy spinner", function () {
                 let spinner = testWindow.$("#project-operations-spinner");
