@@ -1051,7 +1051,6 @@ define(function (require, exports, module) {
      * @return {Promise<Array[File|Directory]>} A promise that resolves with the file and directory contents
      */
     FileSystem.prototype.getAllDirectoryContents = function (directory, _traversedPaths= []) {
-        const self = this;
         return new Promise((resolve, reject)=>{
             let contents = [];
             function visitor(entry) {
