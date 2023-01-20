@@ -67,6 +67,11 @@
                     {{Strings.UPDATE}}
                 </button>
             {{/showUpdateButton}}
+            {{#showApplyButton}}
+            <button class="btn btn-mini apply primary" data-extension-id="{{metadata.name}}" title="{{updateNotAllowedReason}}">
+                {{Strings.APPLY}}
+            </button>
+            {{/showApplyButton}}
             {{#disablingAllowed}}
                 {{#showUpdateButton}}
                 </div><div>

@@ -448,6 +448,24 @@ define(function (require, exports, module) {
         refresh();
     });
 
+    /**
+     * Sets the current theme for the given theme id if present.
+     * @param {string} themeID
+     * @return {boolean} true if the theme was applied, else false
+     */
+    function setCurrentTheme(themeID) {
+        let themeIDs = [];
+        for(let theme of getAllThemes()){
+            themeIDs.push(theme.name);
+        }
+        if(themeIDs.includes(themeID)){
+            prefs.set("theme", themeID);
+            return true;
+        }
+        console.error("Cannot set theme that doesnt exist: ", themeID);
+        return false;
+    }
+
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -457,6 +475,7 @@ define(function (require, exports, module) {
     exports.getCurrentTheme = getCurrentTheme;
     exports.getAllThemes    = getAllThemes;
     exports.isOSInDarkTheme = isOSInDarkTheme;
+    exports.setCurrentTheme = setCurrentTheme;
 
     // Exposed for testing purposes
     exports._toDisplayName     = toDisplayName;

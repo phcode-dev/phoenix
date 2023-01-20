@@ -29,6 +29,11 @@ define(function (require, exports, module) {
         StringUtils               = require("utils/StringUtils"),
         ExtensionManager          = require("extensibility/ExtensionManager"),
         registry_utils            = require("extensibility/registry_utils"),
+        Commands                  = require("command/Commands"),
+        CommandManager            = require("command/CommandManager"),
+        ThemeManager              = require("view/ThemeManager"),
+        DefaultDialogs            = require("widgets/DefaultDialogs"),
+        Dialogs                   = require("widgets/Dialogs"),
         InstallExtensionDialog    = require("extensibility/InstallExtensionDialog"),
         LocalizationUtils         = require("utils/LocalizationUtils"),
         LanguageManager           = require("language/LanguageManager"),
@@ -195,6 +200,8 @@ define(function (require, exports, module) {
                     this._toggleDescription($target.attr("data-extension-id"), $target, true);
                 } else if ($target.data("toggle-desc") === "trunc-desc") {
                     this._toggleDescription($target.attr("data-extension-id"), $target, false);
+                } else if ($target.hasClass("theme_settings")) {
+                    CommandManager.execute(Commands.CMD_THEMES_OPEN_SETTINGS);
                 }
             }.bind(this))
             .on("click", "button.install", function (e) {
@@ -216,6 +223,15 @@ define(function (require, exports, module) {
             .on("click", "button.enable", function (e) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "enable");
                 ExtensionManager.enable($(e.target).attr("data-extension-id"));
+            })
+            .on("click", "button.apply", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "apply");
+                const themeID = $(e.target).attr("data-extension-id");
+                let themeApplied = ThemeManager.setCurrentTheme(themeID);
+                if(!themeApplied) {
+                    Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, Strings.THEMES_ERROR,
+                        Strings.THEMES_ERROR_CANNOT_APPLY);
+                }
             });
     };
 
@@ -288,6 +304,7 @@ define(function (require, exports, module) {
 
         context.showInstallButton = (this.model.source === this.model.SOURCE_REGISTRY || this.model.source === this.model.SOURCE_THEMES) && !context.updateAvailable;
         context.showUpdateButton = context.updateAvailable && !context.isMarkedForUpdate && !context.isMarkedForRemoval;
+        context.showApplyButton = !!context.metadata.theme && !context.disabled;
 
         context.allowInstall = context.isCompatible && !context.isInstalled;
 
@@ -342,8 +359,10 @@ define(function (require, exports, module) {
             !context.failedToStart && !hasPendingAction;
         var isDefaultOrInstalled = this.model.source === "default" || this.model.source === "installed";
         var isDefaultAndTheme = this.model.source === "default" && context.metadata.theme;
-        context.disablingAllowed = isDefaultOrInstalled && !isDefaultAndTheme && !context.disabled && !hasPendingAction;
-        context.enablingAllowed = isDefaultOrInstalled && !isDefaultAndTheme && context.disabled && !hasPendingAction;
+        context.disablingAllowed = isDefaultOrInstalled && !isDefaultAndTheme && !context.disabled
+            && !hasPendingAction && !context.metadata.theme;
+        context.enablingAllowed = isDefaultOrInstalled && !isDefaultAndTheme && context.disabled
+            && !hasPendingAction && !context.metadata.theme;
 
         // Copy over helper functions that we share with the registry app.
         ["lastVersionDate", "authorInfo"].forEach(function (helper) {
