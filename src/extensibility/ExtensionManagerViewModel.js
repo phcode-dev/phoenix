@@ -585,7 +585,7 @@ define(function (require, exports, module) {
      */
     function ThemesViewModel() {
         ExtensionManagerViewModel.call(this);
-        this.infoMessage = `To <a class="theme_settings">select default themes</a> or modify other theme settings, <a class="theme_settings">click here</a>.`;
+        this.infoMessage = Strings.EXTENSION_MANAGER_THEMES_INFO;
     }
 
     // Inheritance setup
