@@ -265,7 +265,7 @@ define(function (require, exports, module) {
     }
 
     function _decorateRepeatUserEvent(eventType) {
-        if(isFirstUseDay){
+        if(isFirstUseDay || window.Phoenix.isTestWindow){
             return eventType;
         }
         return `R.${eventType}`;
