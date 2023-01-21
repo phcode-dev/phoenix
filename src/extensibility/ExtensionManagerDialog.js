@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         Commands                    = require("command/Commands"),
         CommandManager              = require("command/CommandManager"),
         InstallExtensionDialog      = require("extensibility/InstallExtensionDialog"),
+        ThemeManager                = require("view/ThemeManager"),
         AppInit                     = require("utils/AppInit"),
         Async                       = require("utils/Async"),
         KeyEvent                    = require("utils/KeyEvent"),
@@ -311,14 +312,15 @@ define(function (require, exports, module) {
     function _showDialog() {
         Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "dialogue", "shown");
 
-        var dialog,
+        let dialog,
             $dlg,
             views   = [],
             $search,
             $searchClear,
             $modalDlg,
             context = { Strings: Strings, showRegistry: !!brackets.config.extension_registry },
-            models  = [];
+            models  = [],
+            originalTheme = ThemeManager.getCurrentTheme();
 
         // Load registry only if the registry URL exists
         if (context.showRegistry) {
@@ -356,13 +358,20 @@ define(function (require, exports, module) {
         dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(dialogTemplate, context));
 
         // On dialog close: clean up listeners & models, and commit changes
-        dialog.done(function () {
+        dialog.done(function (buttonID) {
             $(window.document).off(".extensionManager");
 
             models.forEach(function (model) {
                 model.dispose();
             });
 
+            if(buttonID === 'cancel') {
+                ThemeManager.setCurrentTheme(originalTheme.name);
+                ExtensionManager.cleanupUpdates();
+                ExtensionManager.unmarkAllForRemoval();
+                ExtensionManager.unmarkAllForDisabling();
+                return;
+            }
             _performChanges();
         });
 
