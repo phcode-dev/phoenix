@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Deaktivovat doplněk",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Nelze deaktivovat jeden nebo více doplňků: {0}. Aplikace {APP_NAME} se i přesto restartuje.",
   "EXTENSION_MANAGER_THEMES_INFO": "Chcete-li <a class=\"theme_settings\">vybrat výchozí motivy</a> nebo upravit jiná nastavení motivu, <a class=\"theme_settings\">klikněte sem</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Vrátit se k předchozímu tématu",
   "MARKED_FOR_REMOVAL": "Označeno k odstranění",
   "UNDO_REMOVE": "Zpět",
   "MARKED_FOR_UPDATE": "Označeno k aktualizaci",

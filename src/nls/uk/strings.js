@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Вимкнути розширення",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Неможливо вимкнути одне або кілька розширень: {0}. {APP_NAME} усе одно перезавантажиться.",
   "EXTENSION_MANAGER_THEMES_INFO": "Щоб <a class=\"theme_settings\">вибрати теми за замовчуванням</a> або змінити інші налаштування теми, <a class=\"theme_settings\">натисніть тут</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Повернутися до попередньої теми",
   "MARKED_FOR_REMOVAL": "Помічено для вилучення",
   "UNDO_REMOVE": "Відмінити",
   "MARKED_FOR_UPDATE": "Помічено для оновлення",

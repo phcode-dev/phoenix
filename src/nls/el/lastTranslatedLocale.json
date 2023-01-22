@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Απενεργοποιήστε την επέκταση",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Δεν είναι δυνατή η απενεργοποίηση μίας ή περισσότερων επεκτάσεων: {0}. Η εφαρμογή {APP_NAME} θα συνεχίσει να φορτώνει ξανά.",
   "EXTENSION_MANAGER_THEMES_INFO": "Για να <a class=\"theme_settings\">επιλέξετε προεπιλεγμένα θέματα</a> ή να τροποποιήσετε άλλες ρυθμίσεις θέματος, <a class=\"theme_settings\">κάντε κλικ εδώ</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Επιστροφή στο προηγούμενο θέμα",
   "MARKED_FOR_REMOVAL": "Επιλεγμένο για κατάργηση",
   "UNDO_REMOVE": "Αναίρεση",
   "MARKED_FOR_UPDATE": "Επιλεγμένο για αναβάθμιση",

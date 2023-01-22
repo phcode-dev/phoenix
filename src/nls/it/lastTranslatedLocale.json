@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Disabilita estensione",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Impossibile disattivare una o più estensioni: {0}. {APP_NAME} si riavvierà comunque.",
   "EXTENSION_MANAGER_THEMES_INFO": "Per <a class=\"theme_settings\">selezionare temi predefiniti</a> o modificare altre impostazioni del tema, <a class=\"theme_settings\">fai clic qui</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Ripristina tema precedente",
   "MARKED_FOR_REMOVAL": "Marcato per la rimozione",
   "UNDO_REMOVE": "Annulla",
   "MARKED_FOR_UPDATE": "Marcato per l’aggiornamento",

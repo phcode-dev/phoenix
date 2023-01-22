@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Отключить расширение",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Не удалось отключить одно или несколько расширений: {0}. {APP_NAME} все равно перезагрузится.",
   "EXTENSION_MANAGER_THEMES_INFO": "Чтобы <a class=\"theme_settings\">выбрать темы по умолчанию</a> или изменить другие настройки темы, <a class=\"theme_settings\">нажмите здесь</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Вернуться к предыдущей теме",
   "MARKED_FOR_REMOVAL": "Отмечено для удаления",
   "UNDO_REMOVE": "Не обновлять",
   "MARKED_FOR_UPDATE": "Отмечено для обновления",

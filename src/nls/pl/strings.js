@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Wyłącz rozszerzenie",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Nie udało się wyłączyć rozszerzeń: {0}. {APP_NAME} zostanie zrestartowany.",
   "EXTENSION_MANAGER_THEMES_INFO": "Aby <a class=\"theme_settings\">wybrać motywy domyślne</a> lub zmodyfikować inne ustawienia motywu, <a class=\"theme_settings\">kliknij tutaj</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Wróć do poprzedniego motywu",
   "MARKED_FOR_REMOVAL": "Zaznaczono do usunięcia",
   "UNDO_REMOVE": "Cofnij",
   "MARKED_FOR_UPDATE": "Zaznaczono do aktualizacji",

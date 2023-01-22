@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Zakázať rozšírenie",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Nie je možné zakázať jedno alebo viac rozšírení: {0}. Aplikácia {APP_NAME} sa stále znova načíta.",
   "EXTENSION_MANAGER_THEMES_INFO": "Ak chcete <a class=\"theme_settings\">vybrať predvolené témy</a> alebo upraviť iné nastavenia témy, <a class=\"theme_settings\">kliknite sem</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Vrátiť sa k predchádzajúcej téme",
   "MARKED_FOR_REMOVAL": "Označené pre odstránenie",
   "UNDO_REMOVE": "Späť",
   "MARKED_FOR_UPDATE": "Označené pre aktualizáciu",

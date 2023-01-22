@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "禁用扩展",
   "EXTENSION_MANAGER_DISABLE_ERROR": "无法禁用一个或多个扩展: {0}. {APP_NAME} 仍会重新加载。",
   "EXTENSION_MANAGER_THEMES_INFO": "要<a class=\"theme_settings\">选择默认主题</a>或修改其他主题设置，<a class=\"theme_settings\">请单击此处</a>。",
+  "EXTENSION_MANAGER_THEMES_UNDO": "恢复到以前的主题",
   "MARKED_FOR_REMOVAL": "标记为删除",
   "UNDO_REMOVE": "撤销",
   "MARKED_FOR_UPDATE": "标记为升级",

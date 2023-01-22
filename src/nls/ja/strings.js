@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "拡張機能を無効化",
   "EXTENSION_MANAGER_DISABLE_ERROR": "1 つ以上の拡張機能 ({0}) を無効化できません。{APP_NAME} がリロード中です。",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">デフォルトのテーマを選択する</a>か、他のテーマ設定を変更するには、<a class=\"theme_settings\">ここをクリックしてください</a>。",
+  "EXTENSION_MANAGER_THEMES_UNDO": "前のテーマに戻す",
   "MARKED_FOR_REMOVAL": "削除予定",
   "UNDO_REMOVE": "取り消し",
   "MARKED_FOR_UPDATE": "更新予定",

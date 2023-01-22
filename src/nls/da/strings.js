@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Deaktiver udvidelse",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Kan ikke deaktivere en eller flere udvidelser: {0}. {APP_NAME} genindlæses stadig.",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">Klik her</a> for at <a class=\"theme_settings\">vælge standardtemaer</a> eller ændre andre temaindstillinger.",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Vend tilbage til forrige tema",
   "MARKED_FOR_REMOVAL": "Markeret til fjernelse",
   "UNDO_REMOVE": "Fortryd",
   "MARKED_FOR_UPDATE": "Markeret til opdatering",

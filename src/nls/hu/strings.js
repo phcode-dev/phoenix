@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Kiterjesztés letiltása",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Nem lehet letiltani egy vagy több bővítményt: {0}. A {APP_NAME} továbbra is újratöltődik.",
   "EXTENSION_MANAGER_THEMES_INFO": "Az <a class=\"theme_settings\">alapértelmezett témák kiválasztásához</a> vagy más témabeállítások módosításához <a class=\"theme_settings\">kattintson ide</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Visszatérés az előző témához",
   "MARKED_FOR_REMOVAL": "Eltávolításhoz megjelölve",
   "UNDO_REMOVE": "Mégsem",
   "MARKED_FOR_UPDATE": "Frissítéshez megjelölve",

@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Uzantıyı Devre Dışı Bırak",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Bir veya daha fazla uzantı devre dışı bırakılamıyor: {0}. {APP_NAME} yine de yeniden yüklenecek.",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">Varsayılan temaları seçmek</a> veya diğer tema ayarlarını değiştirmek için <a class=\"theme_settings\">burayı tıklayın</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Önceki Temaya Geri Dön",
   "MARKED_FOR_REMOVAL": "Kaldırılmak üzere işaretlendi",
   "UNDO_REMOVE": "Geri Al",
   "MARKED_FOR_UPDATE": "Güncelleme için işaretlendi",

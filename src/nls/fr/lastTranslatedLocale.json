@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Désactiver l’extension",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Impossible de désactiver une ou plusieurs extensions : {0}. {APP_NAME} va être rechargé malgré tout.",
   "EXTENSION_MANAGER_THEMES_INFO": "Pour <a class=\"theme_settings\">sélectionner des thèmes par défaut</a> ou modifier d&#39;autres paramètres de thème, <a class=\"theme_settings\">cliquez ici</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Revenir au thème précédent",
   "MARKED_FOR_REMOVAL": "Marquée pour suppression",
   "UNDO_REMOVE": "Annuler",
   "MARKED_FOR_UPDATE": "Marquée pour mise à jour",

@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Desabilitar extensão",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Não é possível desabilitar uma ou mais extensões: {0}. {APP_NAME} será encerrado mesmo assim.",
   "EXTENSION_MANAGER_THEMES_INFO": "Para <a class=\"theme_settings\">selecionar temas padrão</a> ou modificar outras configurações de tema, <a class=\"theme_settings\">clique aqui</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Reverter para o tema anterior",
   "MARKED_FOR_REMOVAL": "Marcada para remoção",
   "UNDO_REMOVE": "Desfazer",
   "MARKED_FOR_UPDATE": "Marcada para atualização",

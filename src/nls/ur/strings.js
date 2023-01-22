@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "توسیع کو غیر فعال کریں۔",
   "EXTENSION_MANAGER_DISABLE_ERROR": "ایک یا زیادہ ایکسٹینشنز کو غیر فعال کرنے سے قاصر: {0}۔ {APP_NAME} اب بھی دوبارہ لوڈ ہوگا۔",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">پہلے سے طے شدہ تھیمز کو منتخب</a> کرنے یا دیگر تھیم کی ترتیبات میں ترمیم کرنے کے لیے، <a class=\"theme_settings\">یہاں کلک کریں</a> ۔",
+  "EXTENSION_MANAGER_THEMES_UNDO": "پچھلے تھیم پر واپس جائیں۔",
   "MARKED_FOR_REMOVAL": "ہٹانے کے لیے نشان زد",
   "UNDO_REMOVE": "کالعدم",
   "MARKED_FOR_UPDATE": "اپ ڈیٹ کے لیے نشان زد",

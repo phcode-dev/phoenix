@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Изключване на разширението",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Неуспешно изключване на едно или повече разширения: {0}. {APP_NAME} все пак ще се презареди.",
   "EXTENSION_MANAGER_THEMES_INFO": "За да <a class=\"theme_settings\">изберете теми по подразбиране</a> или да промените други настройки на теми, <a class=\"theme_settings\">щракнете тук</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Връщане към предишната тема",
   "MARKED_FOR_REMOVAL": "Отбелязано за премахване",
   "UNDO_REMOVE": "Отмяна",
   "MARKED_FOR_UPDATE": "Отбелязано за обновяване",

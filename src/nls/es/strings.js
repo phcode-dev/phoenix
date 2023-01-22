@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Deshabilitar extensiones",
   "EXTENSION_MANAGER_DISABLE_ERROR": "No se pudo deshabilitar una o más extensiones: {0}. {APP_NAME} se recargará igualmente.",
   "EXTENSION_MANAGER_THEMES_INFO": "Para <a class=\"theme_settings\">seleccionar temas predeterminados</a> o modificar otras configuraciones de temas, <a class=\"theme_settings\">haga clic aquí</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Volver al tema anterior",
   "MARKED_FOR_REMOVAL": "Marcada para eliminar",
   "UNDO_REMOVE": "Deshacer",
   "MARKED_FOR_UPDATE": "Marcada para actualizar",

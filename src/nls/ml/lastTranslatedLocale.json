@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "വിപുലീകരണം പ്രവർത്തനരഹിതമാക്കുക",
   "EXTENSION_MANAGER_DISABLE_ERROR": "ഒന്നോ അതിലധികമോ വിപുലീകരണങ്ങൾ പ്രവർത്തനരഹിതമാക്കാൻ കഴിയുന്നില്ല: {0}. {APP_NAME} ഇപ്പോഴും റീലോഡ് ചെയ്യും.",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">ഡിഫോൾട്ട് തീമുകൾ തിരഞ്ഞെടുക്കുന്നതിനോ</a> മറ്റ് തീം ക്രമീകരണങ്ങൾ പരിഷ്ക്കരിക്കുന്നതിനോ <a class=\"theme_settings\">ഇവിടെ ക്ലിക്ക് ചെയ്യുക</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "മുമ്പത്തെ തീമിലേക്ക് മടങ്ങുക",
   "MARKED_FOR_REMOVAL": "നീക്കം ചെയ്യുന്നതിനായി അടയാളപ്പെടുത്തി",
   "UNDO_REMOVE": "പഴയപടിയാക്കുക",
   "MARKED_FOR_UPDATE": "അപ്ഡേറ്റിനായി അടയാളപ്പെടുത്തി",

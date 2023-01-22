@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Nonaktifkan Ekstensi",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Tidak dapat menonaktifkan satu atau beberapa ekstensi: {0}. {APP_NAME} akan tetap dimuat ulang.",
   "EXTENSION_MANAGER_THEMES_INFO": "Untuk <a class=\"theme_settings\">memilih tema default</a> atau mengubah pengaturan tema lainnya, <a class=\"theme_settings\">klik di sini</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Kembalikan Ke Tema Sebelumnya",
   "MARKED_FOR_REMOVAL": "Ditandai untuk dibuang",
   "UNDO_REMOVE": "Urungkan",
   "MARKED_FOR_UPDATE": "Ditandai untuk diperbarui",
