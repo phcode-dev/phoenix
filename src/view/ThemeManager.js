@@ -290,6 +290,31 @@ define(function (require, exports, module) {
         return theme;
     }
 
+    function _copyPackageJson(packageURL, destPackageFilePath) {
+        return new Promise((resolve, reject)=>{
+            const file = FileSystem.getFileForPath(destPackageFilePath);
+            file.exists(function (err, exists) {
+                if(err){
+                    reject();
+                    return;
+                }
+                if (!exists) {
+                    $.get(packageURL).done(function (packageContent) {
+                        FileUtils.writeText(file, JSON.stringify(packageContent), true).done(function () {
+                            resolve();
+                        }).fail(function (err) {
+                            reject(err);
+                        });
+                    }).fail(function (err) {
+                        reject(err);
+                    });
+                    return;
+                }
+                resolve();
+            });
+        });
+    }
+
     /**
      * Loads a theme from a url.
      *
@@ -302,9 +327,11 @@ define(function (require, exports, module) {
         let deferred         = new $.Deferred();
 
         const themeName = options.name || options.theme.title,
-            fileName = options.theme.file,
-            themeFolder = brackets.app.getApplicationSupportDirectory() + "/extensions/user/",
-            themePath = path.normalize(themeFolder + themeName + '_' + fileName),
+            fileName = options.theme.file || (typeof(options.theme) === 'string'? options.theme: `theme.css`),
+            themeFolder = brackets.app.getApplicationSupportDirectory() + `/extensions/user/${themeName}/`,
+            packageURL = url.substring(0, url.lastIndexOf("/")) + '/package.json',
+            packagePath = path.normalize(themeFolder + 'package.json'),
+            themePath = path.normalize(themeFolder + fileName),
             file = FileSystem.getFileForPath(themePath),
             folder = FileSystem.getDirectoryForPath(themeFolder);
 
@@ -317,10 +344,16 @@ define(function (require, exports, module) {
                     return;
                 }
                 FileUtils.writeText(file, themeContent, true).done(function () {
-                    let theme = _loadThemeFromFile(file, options);
-                    deferred.resolve(theme);
-                }).fail(function (err) {
-                    console.error(err);
+                    _copyPackageJson(packageURL, packagePath)
+                        .catch(error=>{
+                            console.error("Error copying package.json for theme " + themePath, error);
+                        })
+                        .finally(()=>{
+                            let theme = _loadThemeFromFile(file, options);
+                            deferred.resolve(theme);
+                        });
+                }).fail(function (error) {
+                    console.error(error);
                     deferred.reject();
                 });
             });
