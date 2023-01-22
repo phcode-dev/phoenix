@@ -165,11 +165,7 @@ define(function (require, exports, module) {
             $(".currentThemeText").not(".forced-hidden").addClass("forced-hidden");
             $(`[data-extension-id="${theme.name}"].currentThemeText`).removeClass("forced-hidden");
             if(theme.name !== originalTheme.name){
-                $("#ThemeViewThemeRevert").text(StringUtils.format(Strings.EXTENSION_MANAGER_THEMES_UNDO,
-                    originalTheme.displayName));
                 $("#ThemeViewThemeRevert").removeClass("forced-hidden");
-                $("#InstalledViewThemeRevert").text(StringUtils.format(Strings.EXTENSION_MANAGER_THEMES_UNDO,
-                    originalTheme.displayName));
                 $("#InstalledViewThemeRevert").removeClass("forced-hidden");
             } else {
                 $("#ThemeViewThemeRevert").addClass("forced-hidden");
