@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Onemogući proširenje",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Nije moguće onemogućiti jedno ili više proširenja: {0}. {APP_NAME} će se ipak ponovno učitati.",
   "EXTENSION_MANAGER_THEMES_INFO": "Za <a class=\"theme_settings\">odabir zadanih tema</a> ili izmjenu drugih postavki teme <a class=\"theme_settings\">kliknite ovdje</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Vrati na prethodnu temu",
   "MARKED_FOR_REMOVAL": "Označeno za uklanjanje",
   "UNDO_REMOVE": "Poništi",
   "MARKED_FOR_UPDATE": "Označeno za ažuriranje",

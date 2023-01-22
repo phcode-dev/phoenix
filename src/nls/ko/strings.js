@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "확장 기능 비활성",
   "EXTENSION_MANAGER_DISABLE_ERROR": "하나 이상의 확장 기능을 ({0}) 비활성화 할 수 없습니다. {APP_NAME}가 종료 중입니다.",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">기본 테마를 선택</a> 하거나 다른 테마 설정을 수정하려면 여기를 <a class=\"theme_settings\">클릭하십시오</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "이전 테마로 되돌리기",
   "MARKED_FOR_REMOVAL": "삭제 예정",
   "UNDO_REMOVE": "비활성화 취소",
   "MARKED_FOR_UPDATE": "업데이트 예정",

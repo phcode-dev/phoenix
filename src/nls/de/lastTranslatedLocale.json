@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Erweiterung deaktivieren",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Fehler beim Deaktivieren einer oder mehrerer Erweiterung(en): {0}. {APP_NAME} wird trotzdem neu geladen.",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">Klicken Sie hier</a> , <a class=\"theme_settings\">um Standarddesigns auszuwählen</a> oder andere Designeinstellungen zu ändern.",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Zum vorherigen Thema zurückkehren",
   "MARKED_FOR_REMOVAL": "Zur Entfernung markiert",
   "UNDO_REMOVE": "Rückgängig",
   "MARKED_FOR_UPDATE": "Zum Update markiert",

@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Dezactivați extensia",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Nu se pot dezactiva una sau mai multe extensii: {0}. {APP_NAME} se va reîncărca în continuare.",
   "EXTENSION_MANAGER_THEMES_INFO": "Pentru a <a class=\"theme_settings\">selecta teme implicite</a> sau pentru a modifica alte setări ale temei, <a class=\"theme_settings\">faceți clic aici</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Reveniți la tema anterioară",
   "MARKED_FOR_REMOVAL": "Marcată pentru ștergere",
   "UNDO_REMOVE": "Refă",
   "MARKED_FOR_UPDATE": "Marcată pentru actualizare",

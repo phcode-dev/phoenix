@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "停用擴充功能",
   "EXTENSION_MANAGER_DISABLE_ERROR": "無法停用擴充功能: {0}。 {APP_NAME} 還是會重新載入。",
   "EXTENSION_MANAGER_THEMES_INFO": "要<a class=\"theme_settings\">選擇默認主題</a>或修改其他主題設置，<a class=\"theme_settings\">請單擊此處</a>。",
+  "EXTENSION_MANAGER_THEMES_UNDO": "恢復到以前的主題",
   "MARKED_FOR_REMOVAL": "標為待移除",
   "UNDO_REMOVE": "復原",
   "MARKED_FOR_UPDATE": "標為待更新",

@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Extensie uitschakelen",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Kan een of meer extensies niet uitschakelen: {0}. {APP_NAME} wordt nog steeds opnieuw geladen.",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">Klik hier</a> <a class=\"theme_settings\">om standaardthema&#39;s te selecteren</a> of andere thema-instellingen te wijzigen.",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Keer terug naar vorig thema",
   "MARKED_FOR_REMOVAL": "Aangeduid voor verwijder",
   "UNDO_REMOVE": "Herstel",
   "MARKED_FOR_UPDATE": "Aangeduid voor update",

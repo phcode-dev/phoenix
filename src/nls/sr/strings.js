@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Онемогући проширење",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Није могуће онемогућити један или више екстензија: {0}. {АПП_НАМЕ} ће се и даље поново учитавати.",
   "EXTENSION_MANAGER_THEMES_INFO": "Да бисте <a class=\"theme_settings\">изабрали подразумеване теме</a> или изменили друга подешавања теме, <a class=\"theme_settings\">кликните овде</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Вратите се на претходну тему",
   "MARKED_FOR_REMOVAL": "Означено за уклањање",
   "UNDO_REMOVE": "Опозови",
   "MARKED_FOR_UPDATE": "Означено за ажурирање",

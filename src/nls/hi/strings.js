@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "एक्सटेंशन अक्षम करें",
   "EXTENSION_MANAGER_DISABLE_ERROR": "एक या अधिक एक्सटेंशन अक्षम करने में असमर्थ: {0}. {APP_NAME} अब भी पुनः लोड होगा।",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">डिफ़ॉल्ट थीम चुनने</a> या अन्य थीम सेटिंग संशोधित करने के लिए, <a class=\"theme_settings\">यहां क्लिक करें</a> ।",
+  "EXTENSION_MANAGER_THEMES_UNDO": "पिछली थीम पर वापस लौटें",
   "MARKED_FOR_REMOVAL": "हटाने के लिए चिह्नित",
   "UNDO_REMOVE": "पूर्ववत",
   "MARKED_FOR_UPDATE": "अद्यतन के लिए चिह्नित",

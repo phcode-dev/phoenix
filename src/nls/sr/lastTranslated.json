@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Disable Extension",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Unable to disable one or more extensions: {0}. {APP_NAME} will still reload.",
   "EXTENSION_MANAGER_THEMES_INFO": "To <a class=\"theme_settings\">select default themes</a> or modify other theme settings, <a class=\"theme_settings\">click here</a>.",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Revert To Previous Theme",
   "MARKED_FOR_REMOVAL": "Marked for removal",
   "UNDO_REMOVE": "Undo",
   "MARKED_FOR_UPDATE": "Marked for update",

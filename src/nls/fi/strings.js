@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Poista laajennus käytöstä",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Ainakaan yhtä laajennusta ei voitu poistaa käytöstä: {0}. {APP_NAME} latautuu silti uudelleen.",
   "EXTENSION_MANAGER_THEMES_INFO": "Voit <a class=\"theme_settings\">valita oletusteemoja</a> tai muokata muita teemaasetuksia <a class=\"theme_settings\">napsauttamalla tätä</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Palaa edelliseen teemaan",
   "MARKED_FOR_REMOVAL": "Merkitty poistettavaksi",
   "UNDO_REMOVE": "Kumoa",
   "MARKED_FOR_UPDATE": "Merkitty päivitettäväksi",

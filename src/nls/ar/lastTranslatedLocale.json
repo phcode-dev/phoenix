@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "تعطيل التمديد",
   "EXTENSION_MANAGER_DISABLE_ERROR": "تعذر تعطيل ملحق واحد أو أكثر: {0}. سيستمر {APP_NAME} في إعادة التحميل.",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">لتحديد السمات الافتراضية</a> أو تعديل إعدادات السمات الأخرى ، <a class=\"theme_settings\">انقر هنا</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "العودة إلى الموضوع السابق",
   "MARKED_FOR_REMOVAL": "ملحوظ للإزالة",
   "UNDO_REMOVE": "الغاء التحميل",
   "MARKED_FOR_UPDATE": "مميزة للتحديث",

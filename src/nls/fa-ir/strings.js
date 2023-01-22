@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "برنامه افزودنی را غیرفعال کنید",
   "EXTENSION_MANAGER_DISABLE_ERROR": "غیرفعال کردن یک یا چند برنامه افزودنی امکان‌پذیر نیست: {0}. {APP_NAME} همچنان بارگیری مجدد خواهد شد.",
   "EXTENSION_MANAGER_THEMES_INFO": "برای <a class=\"theme_settings\">انتخاب تم‌های پیش‌فرض</a> یا اصلاح سایر تنظیمات طرح زمینه، <a class=\"theme_settings\">اینجا را کلیک کنید</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "بازگشت به تم قبلی",
   "MARKED_FOR_REMOVAL": "نشانه گذاری جهت حذف",
   "UNDO_REMOVE": "مرحله قبل",
   "MARKED_FOR_UPDATE": "انتخاب شده برای بروزرسانی",

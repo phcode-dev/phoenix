@@ -509,6 +509,7 @@ define({
   "EXTENSION_MANAGER_DISABLE": "Atspējot paplašinājumu",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Neizdevās atspējot vienu vai vairākus paplašinājumus: {0}. {APP_NAME} tik un tā pārlādēsies.",
   "EXTENSION_MANAGER_THEMES_INFO": "Lai <a class=\"theme_settings\">atlasītu noklusējuma motīvus</a> vai mainītu citus motīvu iestatījumus, <a class=\"theme_settings\">noklikšķiniet šeit</a> .",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Atgriezties uz iepriekšējo tēmu",
   "MARKED_FOR_REMOVAL": "Atzīmēts noņemšanai",
   "UNDO_REMOVE": "Atsaukt",
   "MARKED_FOR_UPDATE": "Atzīmēts atjaunināšanai",

@@ -489,6 +489,7 @@
   "EXTENSION_MANAGER_DISABLE": "Avaktivera tillägg",
   "EXTENSION_MANAGER_DISABLE_ERROR": "Kan inte avaktivera ett eller flera tillägg: {0}. {APP_NAME} kommer fortfarande att startas om.",
   "EXTENSION_MANAGER_THEMES_INFO": "<a class=\"theme_settings\">Klicka här</a> för att <a class=\"theme_settings\">välja standardteman</a> eller ändra andra temainställningar.",
+  "EXTENSION_MANAGER_THEMES_UNDO": "Återgå till föregående tema",
   "MARKED_FOR_REMOVAL": "Markerad för borttagning",
   "UNDO_REMOVE": "Ångra",
   "MARKED_FOR_UPDATE": "Markerad för uppdatering",
