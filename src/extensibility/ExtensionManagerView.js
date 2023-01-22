@@ -217,6 +217,10 @@ define(function (require, exports, module) {
                 $("#ThemeViewThemeRevert").addClass("forced-hidden");
                 $("#InstalledViewThemeRevert").addClass("forced-hidden");
                 ThemeManager.setCurrentTheme(originalTheme.name);
+                $(".current-theme-apply-hide").removeClass("current-theme-apply-hide");
+                $(`[data-extension-id="${originalTheme.name}"].apply`).addClass("current-theme-apply-hide");
+                $(".currentThemeText").not(".forced-hidden").addClass("forced-hidden");
+                $(`[data-extension-id="${originalTheme.name}"].currentThemeText`).removeClass("forced-hidden");
                 e.preventDefault();
                 e.stopPropagation();
             })
@@ -252,6 +256,10 @@ define(function (require, exports, module) {
                     $("#ThemeViewThemeRevert").addClass("forced-hidden");
                     $("#InstalledViewThemeRevert").addClass("forced-hidden");
                 }
+                $(".current-theme-apply-hide").removeClass("current-theme-apply-hide");
+                $(".currentThemeText").not(".forced-hidden").addClass("forced-hidden");
+                $(`[data-extension-id="${themeID}"].apply`).addClass("current-theme-apply-hide");
+                $(`[data-extension-id="${themeID}"].currentThemeText`).removeClass("forced-hidden");
             });
     };
 
@@ -325,6 +333,8 @@ define(function (require, exports, module) {
         context.showInstallButton = (this.model.source === this.model.SOURCE_REGISTRY || this.model.source === this.model.SOURCE_THEMES) && !context.updateAvailable;
         context.showUpdateButton = context.updateAvailable && !context.isMarkedForUpdate && !context.isMarkedForRemoval;
         context.showApplyButton = !!context.metadata.theme && !context.disabled;
+        context.isCurrentTheme = entry.installInfo &&
+            (entry.installInfo.metadata.name === ThemeManager.getCurrentTheme().name);
 
         context.allowInstall = context.isCompatible && !context.isInstalled;
 

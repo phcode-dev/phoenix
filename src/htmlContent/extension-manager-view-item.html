@@ -67,8 +67,9 @@
                     {{Strings.UPDATE}}
                 </button>
             {{/showUpdateButton}}
+            <div class="currentThemeText {{^isCurrentTheme}}forced-hidden{{/isCurrentTheme}}" data-extension-id="{{metadata.name}}">{{Strings.CURRENT_THEME}}</div>
             {{#showApplyButton}}
-            <button class="btn btn-mini apply primary" data-extension-id="{{metadata.name}}">
+            <button class="btn btn-mini apply primary {{#isCurrentTheme}} current-theme-apply-hide {{/isCurrentTheme}}" data-extension-id="{{metadata.name}}">
                 {{Strings.APPLY}}
             </button>
             {{/showApplyButton}}
