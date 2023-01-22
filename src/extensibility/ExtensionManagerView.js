@@ -156,7 +156,8 @@ define(function (require, exports, module) {
      * Attaches our event handlers. We wait to do this until we've fully fetched the extension list.
      */
     ExtensionManagerView.prototype._setupEventHandlers = function () {
-        var self = this;
+        const self = this,
+            originalTheme = ThemeManager.getCurrentTheme();
 
         // Listen for model data and filter changes.
         this.model
@@ -212,6 +213,13 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "update");
                 self._installUsingDialog($(e.target).attr("data-extension-id"), true);
             })
+            .on("click", "button.undoTheme", function (e) {
+                $("#ThemeViewThemeRevert").addClass("forced-hidden");
+                $("#InstalledViewThemeRevert").addClass("forced-hidden");
+                ThemeManager.setCurrentTheme(originalTheme.name);
+                e.preventDefault();
+                e.stopPropagation();
+            })
             .on("click", "button.remove", function (e) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "remove");
                 ExtensionManager.markForRemoval($(e.target).attr("data-extension-id"), true);
@@ -231,6 +239,18 @@ define(function (require, exports, module) {
                 if(!themeApplied) {
                     Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, Strings.THEMES_ERROR,
                         Strings.THEMES_ERROR_CANNOT_APPLY);
+                    return;
+                }
+                if(themeID !== originalTheme.name){
+                    $("#ThemeViewThemeRevert").text(StringUtils.format(Strings.EXTENSION_MANAGER_THEMES_UNDO,
+                        originalTheme.displayName));
+                    $("#ThemeViewThemeRevert").removeClass("forced-hidden");
+                    $("#InstalledViewThemeRevert").text(StringUtils.format(Strings.EXTENSION_MANAGER_THEMES_UNDO,
+                        originalTheme.displayName));
+                    $("#InstalledViewThemeRevert").removeClass("forced-hidden");
+                } else {
+                    $("#ThemeViewThemeRevert").addClass("forced-hidden");
+                    $("#InstalledViewThemeRevert").addClass("forced-hidden");
                 }
             });
     };
@@ -355,7 +375,7 @@ define(function (require, exports, module) {
             context.updateNotAllowedReason = isInstalledInUserFolder ? Strings.CANT_UPDATE : Strings.CANT_UPDATE_DEV;
         }
 
-        context.removalAllowed = this.model.source === "installed" &&
+        context.removalAllowed = context.isInstalled &&
             !context.failedToStart && !hasPendingAction;
         var isDefaultOrInstalled = this.model.source === "default" || this.model.source === "installed";
         var isDefaultAndTheme = this.model.source === "default" && context.metadata.theme;

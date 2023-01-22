@@ -358,20 +358,12 @@ define(function (require, exports, module) {
         dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(dialogTemplate, context));
 
         // On dialog close: clean up listeners & models, and commit changes
-        dialog.done(function (buttonID) {
+        dialog.done(function () {
             $(window.document).off(".extensionManager");
 
             models.forEach(function (model) {
                 model.dispose();
             });
-
-            if(buttonID === 'cancel') {
-                ThemeManager.setCurrentTheme(originalTheme.name);
-                ExtensionManager.cleanupUpdates();
-                ExtensionManager.unmarkAllForRemoval();
-                ExtensionManager.unmarkAllForDisabling();
-                return;
-            }
             _performChanges();
         });
 

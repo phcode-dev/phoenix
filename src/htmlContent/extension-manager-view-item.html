@@ -56,7 +56,7 @@
     <td class="ext-action">
         <div>
         {{#showInstallButton}}
-            <button class="btn btn-mini install" data-extension-id="{{metadata.name}}" {{^allowInstall}}disabled{{/allowInstall}}>
+            <button class="btn btn-mini install {{^allowInstall}}forced-hidden{{/allowInstall}}" data-extension-id="{{metadata.name}}">
                 {{^isInstalled}}{{Strings.INSTALL}}{{/isInstalled}}
                 {{#isInstalled}}{{Strings.EXTENSION_INSTALLED}}{{/isInstalled}}
             </button>
@@ -86,7 +86,7 @@
                 </button>
             {{/enablingAllowed}}
             {{#removalAllowed}}
-                <button class="btn btn-mini remove" data-extension-id="{{metadata.name}}" {{^allowRemove}}disabled title="{{Strings.CANT_REMOVE_DEV}}"{{/allowRemove}}>
+                <button class="btn btn-mini remove danger {{^allowRemove}}forced-hidden{{/allowRemove}}" data-extension-id="{{metadata.name}}">
                     {{Strings.REMOVE}}
                 </button>
             {{/removalAllowed}}
