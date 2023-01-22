@@ -159,10 +159,33 @@ define(function (require, exports, module) {
         const self = this,
             originalTheme = ThemeManager.getCurrentTheme();
 
+        function _handleThemeChange(_event, theme) {
+            $(".current-theme-apply-hide").removeClass("current-theme-apply-hide");
+            $(`[data-extension-id="${theme.name}"].apply`).addClass("current-theme-apply-hide");
+            $(".currentThemeText").not(".forced-hidden").addClass("forced-hidden");
+            $(`[data-extension-id="${theme.name}"].currentThemeText`).removeClass("forced-hidden");
+            if(theme.name !== originalTheme.name){
+                $("#ThemeViewThemeRevert").text(StringUtils.format(Strings.EXTENSION_MANAGER_THEMES_UNDO,
+                    originalTheme.displayName));
+                $("#ThemeViewThemeRevert").removeClass("forced-hidden");
+                $("#InstalledViewThemeRevert").text(StringUtils.format(Strings.EXTENSION_MANAGER_THEMES_UNDO,
+                    originalTheme.displayName));
+                $("#InstalledViewThemeRevert").removeClass("forced-hidden");
+            } else {
+                $("#ThemeViewThemeRevert").addClass("forced-hidden");
+                $("#InstalledViewThemeRevert").addClass("forced-hidden");
+            }
+        }
+
+        ThemeManager.on(ThemeManager.EVENT_THEME_CHANGE, _handleThemeChange);
+
         // Listen for model data and filter changes.
         this.model
             .on("filter", function () {
                 self._render();
+            })
+            .on("dispose", function () {
+                ThemeManager.off(ThemeManager.EVENT_THEME_CHANGE, _handleThemeChange);
             })
             .on("change", function (e, id) {
                 var extensions = self.model.extensions,
@@ -217,10 +240,6 @@ define(function (require, exports, module) {
                 $("#ThemeViewThemeRevert").addClass("forced-hidden");
                 $("#InstalledViewThemeRevert").addClass("forced-hidden");
                 ThemeManager.setCurrentTheme(originalTheme.name);
-                $(".current-theme-apply-hide").removeClass("current-theme-apply-hide");
-                $(`[data-extension-id="${originalTheme.name}"].apply`).addClass("current-theme-apply-hide");
-                $(".currentThemeText").not(".forced-hidden").addClass("forced-hidden");
-                $(`[data-extension-id="${originalTheme.name}"].currentThemeText`).removeClass("forced-hidden");
                 e.preventDefault();
                 e.stopPropagation();
             })
@@ -243,23 +262,7 @@ define(function (require, exports, module) {
                 if(!themeApplied) {
                     Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, Strings.THEMES_ERROR,
                         Strings.THEMES_ERROR_CANNOT_APPLY);
-                    return;
                 }
-                if(themeID !== originalTheme.name){
-                    $("#ThemeViewThemeRevert").text(StringUtils.format(Strings.EXTENSION_MANAGER_THEMES_UNDO,
-                        originalTheme.displayName));
-                    $("#ThemeViewThemeRevert").removeClass("forced-hidden");
-                    $("#InstalledViewThemeRevert").text(StringUtils.format(Strings.EXTENSION_MANAGER_THEMES_UNDO,
-                        originalTheme.displayName));
-                    $("#InstalledViewThemeRevert").removeClass("forced-hidden");
-                } else {
-                    $("#ThemeViewThemeRevert").addClass("forced-hidden");
-                    $("#InstalledViewThemeRevert").addClass("forced-hidden");
-                }
-                $(".current-theme-apply-hide").removeClass("current-theme-apply-hide");
-                $(".currentThemeText").not(".forced-hidden").addClass("forced-hidden");
-                $(`[data-extension-id="${themeID}"].apply`).addClass("current-theme-apply-hide");
-                $(`[data-extension-id="${themeID}"].currentThemeText`).removeClass("forced-hidden");
             });
     };
 

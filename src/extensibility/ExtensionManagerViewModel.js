@@ -143,6 +143,7 @@ define(function (require, exports, module) {
      * Unregisters listeners when we're done.
      */
     ExtensionManagerViewModel.prototype.dispose = function () {
+        this.trigger("dispose");
         ExtensionManager.off("." + this.source);
     };
 

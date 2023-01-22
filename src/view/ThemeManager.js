@@ -27,7 +27,7 @@
 define(function (require, exports, module) {
 
 
-    var _                  = require("thirdparty/lodash"),
+    const _                  = require("thirdparty/lodash"),
         EventDispatcher    = require("utils/EventDispatcher"),
         FileSystem         = require("filesystem/FileSystem"),
         FileUtils          = require("file/FileUtils"),
@@ -38,13 +38,14 @@ define(function (require, exports, module) {
         PreferencesManager = require("preferences/PreferencesManager"),
         prefs              = PreferencesManager.getExtensionPrefs("themes");
 
-    var loadedThemes    = {},
+    let loadedThemes    = {},
         currentTheme    = null,
         styleNode       = $(ExtensionUtils.addEmbeddedStyleSheet("")),
         commentRegex    = /\/\*([\s\S]*?)\*\//mg,
         scrollbarsRegex = /((?:[^}|,]*)::-webkit-scrollbar(?:[^{]*)[{](?:[^}]*?)[}])/mgi,
         stylesPath      = FileUtils.getNativeBracketsDirectoryPath() + "/styles/";
 
+    const EVENT_THEME_CHANGE = "themeChange";
 
     /**
      * @private
@@ -408,7 +409,7 @@ define(function (require, exports, module) {
         refresh(true);
         
         // Report os preference change also as a theme change
-        exports.trigger("themeChange", getCurrentTheme());
+        exports.trigger(EVENT_THEME_CHANGE, getCurrentTheme());
     });
 
     prefs.on("change", "theme", function () {
@@ -424,7 +425,7 @@ define(function (require, exports, module) {
         ThemeView.updateScrollbars(getCurrentTheme());
 
         // Expose event for theme changes
-        exports.trigger("themeChange", getCurrentTheme());
+        exports.trigger(EVENT_THEME_CHANGE, getCurrentTheme());
     });
 
     prefs.on("change", "themeScrollbars", function () {
@@ -476,6 +477,7 @@ define(function (require, exports, module) {
     exports.getAllThemes    = getAllThemes;
     exports.isOSInDarkTheme = isOSInDarkTheme;
     exports.setCurrentTheme = setCurrentTheme;
+    exports.EVENT_THEME_CHANGE = EVENT_THEME_CHANGE;
 
     // Exposed for testing purposes
     exports._toDisplayName     = toDisplayName;
