@@ -22,6 +22,11 @@ Phoenix is a modern open-source and [free software](https://www.gnu.org/philosop
   <img src="https://badgen.net/badge/git-commit-msg-linter/3.0.0/green" alt="commit msg linted by git-commit-msg-linter" />
 </a>
 
+##### Error and App stability monitoring powered by
+<a href="https://www.bugsnag.com/">
+<img src="https://assets-global.website-files.com/607f4f6df411bd01527dc7d5/63bc40cd9d502eda8ea74ce7_Bugsnag%20Full%20Color.svg" alt="bugsnag" style="width:200px;"/>
+</a>
+
 #### Development status:  Stable/Release-candidate.
 
 ![Screenshot from 2022-09-20 13-35-03](https://user-images.githubusercontent.com/5336369/191202975-6069d270-526a-443d-bd76-903353ae1222.png)
