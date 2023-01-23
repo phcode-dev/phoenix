@@ -41,14 +41,15 @@ define(function (require, exports, module) {
 
     require("utils/Global");
 
-    var _              = require("thirdparty/lodash"),
+    const _              = require("thirdparty/lodash"),
         EventDispatcher = require("utils/EventDispatcher"),
         FileSystem     = require("filesystem/FileSystem"),
         FileUtils      = require("file/FileUtils"),
         Async          = require("utils/Async"),
         ExtensionUtils = require("utils/ExtensionUtils"),
         UrlParams      = require("utils/UrlParams").UrlParams,
-        PathUtils      = require("thirdparty/path-utils/path-utils");
+        PathUtils      = require("thirdparty/path-utils/path-utils"),
+        DefaultExtensionsList = JSON.parse(require("text!extensions/default/DefaultExtensions.json"));
 
     // default async initExtension timeout
     var EXTENSION_LOAD_TIMOUT_SECONDS = 60,
@@ -460,26 +461,22 @@ define(function (require, exports, module) {
      */
     function loadAllDefaultExtensions() {
         const extensionPath = getDefaultExtensionPath();
-        const extensionsToLoadURL = extensionPath + "/DefaultExtensions.json";
-        var result = new $.Deferred();
+        const result = new $.Deferred();
 
-        $.get(extensionsToLoadURL).done(function (extensionNames) {
-            Async.doInParallel(extensionNames, function (extensionName) {
-                logger.leaveTrail("loading default extension: " + extensionName);
-                var extConfig = {
-                    baseUrl: extensionPath + "/" + extensionName
-                };
-                return loadExtension(extensionName, extConfig, 'main');
-            }).always(function () {
-                // Always resolve the promise even if some extensions had errors
-                result.resolve();
-            });
-
-        })
-            .fail(function (err) {
-                console.error("[Extension] Error -- could not read default extension list from" + extensionsToLoadURL);
-                result.reject();
-            });
+        Async.doInParallel(DefaultExtensionsList, function (extensionEntry) {
+            if(typeof extensionEntry !== 'string') {
+                // ignore extensionStoreExtensionIDs section
+                return new $.Deferred().resolve().promise();
+            }
+            logger.leaveTrail("loading default extension: " + extensionEntry);
+            var extConfig = {
+                baseUrl: extensionPath + "/" + extensionEntry
+            };
+            return loadExtension(extensionEntry, extConfig, 'main');
+        }).always(function () {
+            // Always resolve the promise even if some extensions had errors
+            result.resolve();
+        });
 
         return result.promise();
 
@@ -572,29 +569,25 @@ define(function (require, exports, module) {
         const href = window.location.href;
         const baseUrl = href.substring(0, href.lastIndexOf("/"));
         const srcBaseUrl = new URL(baseUrl + '/../src').href;
-        const extensionsToLoadURL = srcBaseUrl + DEFAULT_EXTENSIONS_PATH_BASE + "/DefaultExtensions.json";
         var result = new $.Deferred();
 
-        $.get(extensionsToLoadURL).done(function (extensionNames) {
-            for (let extensionName of extensionNames){
-                console.log("Testing default extension: ", extensionName);
-                var extConfig = {
-                    basePath: 'extensions/default',
-                    baseUrl: new URL(srcBaseUrl + DEFAULT_EXTENSIONS_PATH_BASE + "/" + extensionName).href,
-                    paths: {
-                        "perf": bracketsPath + "/perf",
-                        "spec": bracketsPath + "/spec"
-                    }
-                };
-                _testExtensionByURL(extensionName, extConfig, 'unittests');
+        for (let extensionEntry of DefaultExtensionsList){
+            if(typeof extensionEntry !== 'string') {
+                // ignore extensionStoreExtensionIDs section
+                continue;
             }
-            result.resolve();
-        })
-            .fail(function (err) {
-                console.error("[Extension Load Test] Error -- could not read default extension list from"
-                    + extensionsToLoadURL);
-                result.reject();
-            });
+            console.log("Testing default extension: ", extensionEntry);
+            var extConfig = {
+                basePath: 'extensions/default',
+                baseUrl: new URL(srcBaseUrl + DEFAULT_EXTENSIONS_PATH_BASE + "/" + extensionEntry).href,
+                paths: {
+                    "perf": bracketsPath + "/perf",
+                    "spec": bracketsPath + "/spec"
+                }
+            };
+            _testExtensionByURL(extensionEntry, extConfig, 'unittests');
+        }
+        result.resolve();
 
         return result.promise();
     }
@@ -678,4 +671,5 @@ define(function (require, exports, module) {
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;
     exports.testAllExtensionsInNativeDirectory = testAllExtensionsInNativeDirectory;
     exports.testAllDefaultExtensions = testAllDefaultExtensions;
+    exports.DefaultExtensions = DefaultExtensionsList;
 });

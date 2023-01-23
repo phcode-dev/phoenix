@@ -353,7 +353,7 @@ define(function (require, exports, module) {
                             deferred.resolve(theme);
                         });
                 }).fail(function (error) {
-                    console.error(error);
+                    console.error("Error writing " + themePath, error);
                     deferred.reject();
                 });
             });
