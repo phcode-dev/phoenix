@@ -165,8 +165,16 @@
                         return Promise.all(promises);
                     }).then(() => {
                         console.log("CacheStorage Reset: Cache successfully reset");
-                        localStorage.setItem(cacheKey, newCacheVersion);
-                        location.reload();
+                        setInterval(()=>{
+                            // wait for less to get loaded. less caches css in local storage in production urls
+                            // and might not load new css classes if we don't reset. less doesn't cache in localhost.
+                            if(window.less){
+                                less.refresh(true).finally(()=>{
+                                    localStorage.setItem(cacheKey, newCacheVersion);
+                                    location.reload();
+                                });
+                            }
+                        }, 100);
                     }).catch( e => {
                         console.error("Error while resetting cache", e);
                         window.cacheClearError = e;
@@ -196,7 +204,6 @@
             if(window.testEnvironment || window.__TAURI__){
                 // tauri means local builds and, it loads up pretty fast, so splash screen
                 document.getElementById('phoenix-loading-splash-screen-overlay').remove();
-                document.getElementById('safari_splash_screen').remove();
                 window.splashScreenPresent = false;
             }
         }

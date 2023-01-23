@@ -242,6 +242,8 @@ async function _refreshCache(event) {
         }
         if(!currentCacheManifest && newCacheManifest){
             console.log(`Service worker: Fresh install, writing cache manifest with ${Object.keys(newCacheManifest).length} entries`);
+            // do less.refresh(true) here. that is only possible in main thread and to be done once we move to new
+            // service worker management framework
             await _putCurrentCacheManifest(newCacheManifest);
             refreshInProgress = false;
             return;
