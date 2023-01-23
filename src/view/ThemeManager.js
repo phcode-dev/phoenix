@@ -45,8 +45,7 @@ define(function (require, exports, module) {
         scrollbarsRegex = /((?:[^}|,]*)::-webkit-scrollbar(?:[^{]*)[{](?:[^}]*?)[}])/mgi,
         stylesPath      = FileUtils.getNativeBracketsDirectoryPath() + "/styles/";
 
-    const EVENT_THEME_CHANGE = "themeChange",
-        EVENT_THEME_APPLIED = "themeApplied";
+    const EVENT_THEME_CHANGE = "themeChange";
 
     /**
      * @private
@@ -243,7 +242,6 @@ define(function (require, exports, module) {
             .then(function (cssContent) {
                 $("body").toggleClass("dark", theme.dark);
                 styleNode.text(cssContent);
-                exports.trigger(EVENT_THEME_APPLIED, theme);
                 return theme;
             });
 
@@ -513,7 +511,6 @@ define(function (require, exports, module) {
     exports.isOSInDarkTheme = isOSInDarkTheme;
     exports.setCurrentTheme = setCurrentTheme;
     exports.EVENT_THEME_CHANGE = EVENT_THEME_CHANGE;
-    exports.EVENT_THEME_APPLIED = EVENT_THEME_APPLIED;
 
     // Exposed for testing purposes
     exports._toDisplayName     = toDisplayName;
