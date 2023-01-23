@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "Dátum",
   "EXTENSION_INCOMPATIBLE_NEWER": "Ez a bővítmény csak a {APP_NAME} újabb verziójához jó.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Ez a bővítmény csak a {APP_NAME} régebbi verziójához jó",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Lehet, hogy nincs szüksége erre a bővítményre. A(z) {APP_NAME} már rendelkezik ezzel a funkcióval.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "A bővítmény {0}. verziójához a(z) {APP_NAME} újabb verziója szükséges. De telepítheti a korábbi verziót ({1}).",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "A bővítmény {0} verziója csak a {APP_NAME} régebbi verzióival működik. De telepítheti a korábbi verziót ({1}).",
   "EXTENSION_NO_DESCRIPTION": "Nincs leírás",

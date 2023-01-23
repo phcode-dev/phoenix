@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "Datum",
   "EXTENSION_INCOMPATIBLE_NEWER": "Detta tillägg kräver en nyare version av {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Detta tillägg fungerar för närvarande bara med äldre versioner av {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Du kanske inte behöver detta tillägg. {APP_NAME} har redan den här funktionen.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Version {0} av detta tillägg kräver en nyare version av {APP_NAME} men du kan installera den äldre versionen {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Version {0} av detta tillägg fungerar endast med äldre versioner av {APP_NAME} men du kan installera den äldre versionen {1}.",
   "EXTENSION_NO_DESCRIPTION": "Ingen beskrivning",

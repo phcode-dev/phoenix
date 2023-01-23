@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "തീയതി",
   "EXTENSION_INCOMPATIBLE_NEWER": "ഈ വിപുലീകരണത്തിന് {APP_NAME}-ന്റെ പുതിയ പതിപ്പ് ആവശ്യമാണ്.",
   "EXTENSION_INCOMPATIBLE_OLDER": "ഈ വിപുലീകരണം നിലവിൽ {APP_NAME}-ന്റെ പഴയ പതിപ്പുകളിൽ മാത്രമേ പ്രവർത്തിക്കൂ.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "നിങ്ങൾക്ക് ഈ വിപുലീകരണം ആവശ്യമില്ലായിരിക്കാം. {APP_NAME-ന് ഇതിനകം ഈ സവിശേഷതയുണ്ട്.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "ഈ വിപുലീകരണത്തിന്റെ {0} പതിപ്പിന് {APP_NAME}-ന്റെ പുതിയ പതിപ്പ് ആവശ്യമാണ്. എന്നാൽ നിങ്ങൾക്ക് മുമ്പത്തെ പതിപ്പ് {1} ഇൻസ്റ്റാൾ ചെയ്യാം.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "ഈ വിപുലീകരണത്തിന്റെ {0} പതിപ്പ് {APP_NAME}-ന്റെ പഴയ പതിപ്പുകളിൽ മാത്രമേ പ്രവർത്തിക്കൂ. എന്നാൽ നിങ്ങൾക്ക് മുമ്പത്തെ പതിപ്പ് {1} ഇൻസ്റ്റാൾ ചെയ്യാം.",
   "EXTENSION_NO_DESCRIPTION": "വിവരണം ഇല്ല",

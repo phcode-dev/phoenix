@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "Päivämäärä",
   "EXTENSION_INCOMPATIBLE_NEWER": "Tämä laajennus vaatii uudemman {APP_NAME}-version.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Tämä laajennus toimii tällä hetkellä vain vanhemmilla {APP_NAME}-versioilla.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Et ehkä tarvitse tätä laajennusta. {APP_NAME} sisältää jo tämän ominaisuuden.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Tämän laajennuksen versio {0} vaatii uudemman {APP_NAME}-version, mutta voit asentaa aikaisemman version {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Tämän laajennuksen versio {0} toimii vain vanhemmilla {APP_NAME}-versioilla, mutta voit asentaa aikaisemman version {1}.",
   "EXTENSION_NO_DESCRIPTION": "Ei kuvausta",

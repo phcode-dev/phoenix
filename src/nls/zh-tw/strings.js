@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "日期",
   "EXTENSION_INCOMPATIBLE_NEWER": "這個擴充功能需要較新版的 {APP_NAME} 才能使用。",
   "EXTENSION_INCOMPATIBLE_OLDER": "這個擴充功能目前只能在舊版 {APP_NAME} 中使用。",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "您可能不需要此擴展。 {APP_NAME} 已有此功能。",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "這個擴充功能 {0} 版只能在新版 {APP_NAME} 中使用。不過您可以選擇安裝較舊的 {1} 版。",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "這個擴充功能 {0} 版只能在舊版 {APP_NAME} 中使用。不過您可以選擇安裝較舊的 {1} 版。",
   "EXTENSION_NO_DESCRIPTION": "沒有描述資訊",

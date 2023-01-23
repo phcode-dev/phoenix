@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "Dátum",
   "EXTENSION_INCOMPATIBLE_NEWER": "Tento doplnok vyžaduje novšiu verziu {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Tento doplnok momentálne funguje iba zo staršími verziami {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Toto rozšírenie možno nebudete potrebovať. Aplikácia {APP_NAME} už túto funkciu obsahuje.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Verzia {0} tohto rozšírenia vyžaduje novšiu verziu aplikácie {APP_NAME}. Môžete si však nainštalovať staršiu verziu {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Verzia {0} tohto rozšírenia funguje iba so staršími verziami aplikácie {APP_NAME}. Môžete si však nainštalovať staršiu verziu {1}.",
   "EXTENSION_NO_DESCRIPTION": "Bez popisu",

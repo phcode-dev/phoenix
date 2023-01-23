@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "Датум",
   "EXTENSION_INCOMPATIBLE_NEWER": "Ова екстензија захтева новиу верзију {APP_NAME}-а.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Ова екстензија тренутно ради само у старијим верзијама {APP_NAME}-а.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Можда вам неће требати ово проширење. {АПП_НАМЕ} већ има ову функцију.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Верзија {0} ове екстензије захтева новију верзију апликације {APP_NAME}. Али можете инсталирати ранију верзију {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Верзија {0} ове екстензије ради искључиво са старијим верзијама апликације {APP_NAME}. Али можете инсталирати ранију верзију {1}.",
   "EXTENSION_NO_DESCRIPTION": "Не постоји опис",

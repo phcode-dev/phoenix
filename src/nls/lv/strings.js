@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "Datums",
   "EXTENSION_INCOMPATIBLE_NEWER": "Šim paplašinājumam nepieciešama jaunāka {APP_NAME} versija.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Pašlaik šis paplašinājums darbojas tikai ar vecākām {APP_NAME} versijām.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Jums var nebūt nepieciešams šis paplašinājums. Lietotnei APP_NAME} jau ir šī funkcija.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Šai paplašinājuma versijai {0} nepieciešama jaunāka {APP_NAME} versija. Bet jūs varat instalēt agrāko versiju {1}. ",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Šī paplašinājuma versija {0} darbojas tikai ar vecākām {APP_NAME} versijām. Bet jūs varat instalēt agrāko versiju {1}.",
   "EXTENSION_NO_DESCRIPTION": "Nav apraksta",
