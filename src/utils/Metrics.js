@@ -264,11 +264,11 @@ define(function (require, exports, module) {
         }
     }
 
-    function _decorateRepeatUserEvent(eventType) {
-        if(isFirstUseDay || window.Phoenix.isTestWindow){
-            return eventType;
-        }
-        return `R.${eventType}`;
+    function _countEvent(eventType, eventCategory, eventSubCategory, count= 1) {
+        _logEventForAudit(eventType, eventCategory, eventSubCategory, count, AUDIT_TYPE_COUNT);
+        _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, count);
+        _sendToMixPanel(eventType, eventCategory, eventSubCategory, count);
+        _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, count);
     }
 
     /**
@@ -287,11 +287,18 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function countEvent(eventType, eventCategory, eventSubCategory, count= 1) {
-        eventType= _decorateRepeatUserEvent(eventType);
-        _logEventForAudit(eventType, eventCategory, eventSubCategory, count, AUDIT_TYPE_COUNT);
-        _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, count);
-        _sendToMixPanel(eventType, eventCategory, eventSubCategory, count);
-        _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, count);
+        if(!isFirstUseDay){
+            // emit repeat user metrics too
+            _countEvent(`R-${eventType}`, eventCategory, eventSubCategory, count);
+        }
+        _countEvent(eventType, eventCategory, eventSubCategory, count);
+    }
+
+    function _valueEvent(eventType, eventCategory, eventSubCategory, value) {
+        _logEventForAudit(eventType, eventCategory, eventSubCategory, value, AUDIT_TYPE_VALUE);
+        _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, value);
+        _sendToMixPanel(eventType, eventCategory, eventSubCategory, 1, value);
+        _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, 1, value);
     }
 
     /**
@@ -309,11 +316,11 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function valueEvent(eventType, eventCategory, eventSubCategory, value) {
-        eventType= _decorateRepeatUserEvent(eventType);
-        _logEventForAudit(eventType, eventCategory, eventSubCategory, value, AUDIT_TYPE_VALUE);
-        _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, value);
-        _sendToMixPanel(eventType, eventCategory, eventSubCategory, 1, value);
-        _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, 1, value);
+        if(!isFirstUseDay){
+            // emit repeat user metrics too
+            _valueEvent(`R-${eventType}`, eventCategory, eventSubCategory, value);
+        }
+        _valueEvent(eventType, eventCategory, eventSubCategory, value);
     }
 
     function setDisabled(shouldDisable) {
