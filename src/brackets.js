@@ -293,7 +293,6 @@ define(function (require, exports, module) {
     function _removePhoenixLoadingOverlay() {
         if(window.splashScreenPresent){
             document.getElementById('phoenix-loading-splash-screen-overlay').remove();
-            document.getElementById('safari_splash_screen').remove();
             window.splashScreenPresent = false;
             ProjectManager.off(ProjectManager.EVENT_PROJECT_OPEN_FAILED, _removePhoenixLoadingOverlay);
             ProjectManager.off(ProjectManager.EVENT_PROJECT_OPEN, _removePhoenixLoadingOverlay);
