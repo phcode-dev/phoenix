@@ -90,8 +90,7 @@ define(function (require, exports, module) {
         DeprecationWarning  = require("utils/DeprecationWarning"),
         ViewCommandHandlers = require("view/ViewCommandHandlers"),
         NotificationUI      = require("widgets/NotificationUI"),
-        MainViewManager     = require("view/MainViewManager"),
-        ThemeManager     = require("view/ThemeManager");
+        MainViewManager     = require("view/MainViewManager");
 
     window.EventManager = EventManager; // Main event intermediary between brackets and other web pages.
     /**
@@ -297,14 +296,14 @@ define(function (require, exports, module) {
             document.getElementById('safari_splash_screen').remove();
             window.splashScreenPresent = false;
             ProjectManager.off(ProjectManager.EVENT_PROJECT_OPEN_FAILED, _removePhoenixLoadingOverlay);
-            ThemeManager.off(ThemeManager.EVENT_THEME_APPLIED, _removePhoenixLoadingOverlay);
+            ProjectManager.off(ProjectManager.EVENT_PROJECT_OPEN, _removePhoenixLoadingOverlay);
         }
     }
 
     // when project load fails, Phoenix shown a failure dialogue. Drop splash screen for the user to see it.
     ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN_FAILED, _removePhoenixLoadingOverlay);
     // as soon as the first theme loads up, phoenix is safe to view
-    ThemeManager.on(ThemeManager.EVENT_THEME_APPLIED, _removePhoenixLoadingOverlay);
+    ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _removePhoenixLoadingOverlay);
 
     function _startupBrackets() {
         // Load all extensions. This promise will complete even if one or more
