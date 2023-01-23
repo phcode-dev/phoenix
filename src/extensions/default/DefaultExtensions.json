@@ -1,5 +1,7 @@
 {
   "defaultExtensionsList": [
+    "DarkTheme",
+    "LightTheme",
     "CloseOthers",
     "CodeFolding",
     "NoDistractions",
@@ -30,8 +32,6 @@
     "RemoteFileAdapter",
     "SVGCodeHints",
     "UrlCodeHints",
-    "DarkTheme",
-    "LightTheme",
     "HealthData",
     "Phoenix-extension-store",
     "Phoenix-live-preview",

@@ -37,14 +37,6 @@
  */
 define(function (require, exports, module) {
 
-    function _removePhoenixLoadingOverlay() {
-        if(window.splashScreenPresent){
-            document.getElementById('phoenix-loading-splash-screen-overlay').remove();
-            document.getElementById('safari_splash_screen').remove();
-            window.splashScreenPresent = false;
-        }
-    }
-
     // Load dependent non-module scripts
     require("widgets/bootstrap-dropdown");
     require("widgets/bootstrap-modal");
@@ -98,7 +90,8 @@ define(function (require, exports, module) {
         DeprecationWarning  = require("utils/DeprecationWarning"),
         ViewCommandHandlers = require("view/ViewCommandHandlers"),
         NotificationUI      = require("widgets/NotificationUI"),
-        MainViewManager     = require("view/MainViewManager");
+        MainViewManager     = require("view/MainViewManager"),
+        ThemeManager     = require("view/ThemeManager");
 
     window.EventManager = EventManager; // Main event intermediary between brackets and other web pages.
     /**
@@ -298,10 +291,20 @@ define(function (require, exports, module) {
         });
     }
 
-    ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN_FAILED, function () {
-        // when project load fails, Phoenix shown a failure dialogue. Drop splash screen for the user to see it.
-        _removePhoenixLoadingOverlay();
-    });
+    function _removePhoenixLoadingOverlay() {
+        if(window.splashScreenPresent){
+            document.getElementById('phoenix-loading-splash-screen-overlay').remove();
+            document.getElementById('safari_splash_screen').remove();
+            window.splashScreenPresent = false;
+            ProjectManager.off(ProjectManager.EVENT_PROJECT_OPEN_FAILED, _removePhoenixLoadingOverlay);
+            ThemeManager.off(ThemeManager.EVENT_THEME_APPLIED, _removePhoenixLoadingOverlay);
+        }
+    }
+
+    // when project load fails, Phoenix shown a failure dialogue. Drop splash screen for the user to see it.
+    ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN_FAILED, _removePhoenixLoadingOverlay);
+    // as soon as the first theme loads up, phoenix is safe to view
+    ThemeManager.on(ThemeManager.EVENT_THEME_APPLIED, _removePhoenixLoadingOverlay);
 
     function _startupBrackets() {
         // Load all extensions. This promise will complete even if one or more
@@ -345,7 +348,6 @@ define(function (require, exports, module) {
                         AppInit._dispatchReady(AppInit.EXTENSIONS_LOADED);
                         // Signal that Brackets is loaded
                         AppInit._dispatchReady(AppInit.APP_READY);
-                        _removePhoenixLoadingOverlay();
 
                         PerfUtils.addMeasurement("Application Startup");
 
