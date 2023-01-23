@@ -15,6 +15,9 @@
     <td class="ext-desc">
         {{#showInstallButton}}
             <!-- Warnings when trying to install extension where latest/all versions not compatible -->
+            {{#defaultFeature}}
+                <div class="alert warning">{{Strings.EXTENSION_DEFAULT_FEATURE_PRESENT}}</div>
+            {{/defaultFeature}}
             {{^isCompatible}}
                 <div class="alert warning">
                     {{#requiresNewer}}{{Strings.EXTENSION_INCOMPATIBLE_NEWER}}{{/requiresNewer}}

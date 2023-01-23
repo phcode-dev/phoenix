@@ -49,7 +49,8 @@ define(function (require, exports, module) {
         ExtensionUtils = require("utils/ExtensionUtils"),
         UrlParams      = require("utils/UrlParams").UrlParams,
         PathUtils      = require("thirdparty/path-utils/path-utils"),
-        DefaultExtensionsList = JSON.parse(require("text!extensions/default/DefaultExtensions.json"));
+        DefaultExtensionsList = JSON.parse(require("text!extensions/default/DefaultExtensions.json"))
+            .defaultExtensionsList;
 
     // default async initExtension timeout
     var EXTENSION_LOAD_TIMOUT_SECONDS = 60,
@@ -464,10 +465,6 @@ define(function (require, exports, module) {
         const result = new $.Deferred();
 
         Async.doInParallel(DefaultExtensionsList, function (extensionEntry) {
-            if(typeof extensionEntry !== 'string') {
-                // ignore extensionStoreExtensionIDs section
-                return new $.Deferred().resolve().promise();
-            }
             logger.leaveTrail("loading default extension: " + extensionEntry);
             var extConfig = {
                 baseUrl: extensionPath + "/" + extensionEntry
@@ -572,10 +569,6 @@ define(function (require, exports, module) {
         var result = new $.Deferred();
 
         for (let extensionEntry of DefaultExtensionsList){
-            if(typeof extensionEntry !== 'string') {
-                // ignore extensionStoreExtensionIDs section
-                continue;
-            }
             console.log("Testing default extension: ", extensionEntry);
             var extConfig = {
                 basePath: 'extensions/default',
@@ -671,5 +664,4 @@ define(function (require, exports, module) {
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;
     exports.testAllExtensionsInNativeDirectory = testAllExtensionsInNativeDirectory;
     exports.testAllDefaultExtensions = testAllDefaultExtensions;
-    exports.DefaultExtensions = DefaultExtensionsList;
 });

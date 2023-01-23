@@ -41,6 +41,8 @@ define(function (require, exports, module) {
         PathUtils                 = require("thirdparty/path-utils/path-utils"),
         itemTemplate              = require("text!htmlContent/extension-manager-view-item.html"),
         PreferencesManager        = require("preferences/PreferencesManager"),
+        warnExtensionIDs = JSON.parse(require("text!extensions/default/DefaultExtensions.json"))
+            .warnExtensionStoreExtensions.extensionIDs,
         Metrics                   = require("utils/Metrics");
 
 
@@ -334,6 +336,8 @@ define(function (require, exports, module) {
         context.showApplyButton = !!context.metadata.theme && !context.disabled;
         context.isCurrentTheme = entry.installInfo &&
             (entry.installInfo.metadata.name === ThemeManager.getCurrentTheme().name);
+
+        context.defaultFeature = warnExtensionIDs.includes(info.metadata.name);
 
         context.allowInstall = context.isCompatible && !context.isInstalled;
 
