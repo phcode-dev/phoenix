@@ -53,7 +53,7 @@ define(function (require, exports, module) {
         });
     }
     function _showUnSupportedBrowserDialogue() {
-        if(unsupportedBrowserDialogShown){
+        if(unsupportedBrowserDialogShown || Phoenix.isTestWindow){
             return;
         }
         unsupportedBrowserDialogShown = true;
