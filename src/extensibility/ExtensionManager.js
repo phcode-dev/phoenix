@@ -968,9 +968,9 @@ define(function (require, exports, module) {
 
     // Listen to extension load and loadFailed events
     ExtensionLoader
-        .on("load", _handleExtensionLoad)
-        .on("loadFailed", _handleExtensionLoad)
-        .on("disabled", _handleExtensionLoad);
+        .on(ExtensionLoader.EVENT_EXTENSION_LOADED, _handleExtensionLoad)
+        .on(ExtensionLoader.EVENT_EXTENSION_LOAD_FAILED, _handleExtensionLoad)
+        .on(ExtensionLoader.EVENT_EXTENSION_DISABLED, _handleExtensionLoad);
 
 
     EventDispatcher.makeEventDispatcher(exports);

@@ -54,7 +54,10 @@ define(function (require, exports, module) {
 
     // default async initExtension timeout
     var EXTENSION_LOAD_TIMOUT_SECONDS = 60,
-        INIT_EXTENSION_TIMEOUT = EXTENSION_LOAD_TIMOUT_SECONDS * 1000;
+        INIT_EXTENSION_TIMEOUT = EXTENSION_LOAD_TIMOUT_SECONDS * 1000,
+        EVENT_EXTENSION_LOADED = "load",
+        EVENT_EXTENSION_DISABLED = "disabled",
+        EVENT_EXTENSION_LOAD_FAILED = "loadFailed";
 
     var _init       = false,
         _extensions = {},
@@ -321,12 +324,12 @@ define(function (require, exports, module) {
 
             })
             .then(function () {
-                exports.trigger("load", config.baseUrl);
+                exports.trigger(EVENT_EXTENSION_LOADED, config.baseUrl);
             }, function (err) {
                 if (err === "disabled") {
-                    exports.trigger("disabled", config.baseUrl);
+                    exports.trigger(EVENT_EXTENSION_DISABLED, config.baseUrl);
                 } else {
-                    exports.trigger("loadFailed", config.baseUrl);
+                    exports.trigger(EVENT_EXTENSION_LOAD_FAILED, config.baseUrl);
                 }
             });
     }
@@ -606,9 +609,9 @@ define(function (require, exports, module) {
 
             if (params.get("reloadWithoutUserExts") !== "true") {
                 paths = [
+                    "default",
                     getUserExtensionPath(),
-                    getDevExtensionPath(),
-                    "default"
+                    getDevExtensionPath()
                 ];
             } else {
                 paths = [];
@@ -664,4 +667,7 @@ define(function (require, exports, module) {
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;
     exports.testAllExtensionsInNativeDirectory = testAllExtensionsInNativeDirectory;
     exports.testAllDefaultExtensions = testAllDefaultExtensions;
+    exports.EVENT_EXTENSION_LOADED = EVENT_EXTENSION_LOADED;
+    exports.EVENT_EXTENSION_DISABLED = EVENT_EXTENSION_DISABLED;
+    exports.EVENT_EXTENSION_LOAD_FAILED = EVENT_EXTENSION_LOAD_FAILED;
 });
