@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "日期",
   "EXTENSION_INCOMPATIBLE_NEWER": "这个扩展需要更新版本的 {APP_NAME}。",
   "EXTENSION_INCOMPATIBLE_OLDER": "这个扩展目前只能在旧版本的 {APP_NAME} 上运行。",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "您可能不需要此扩展。 {APP_NAME} 已有此功能。",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "扩展版本为 {0} 需要一个更新版本的 {APP_NAME}，但你可以安装旧版本的扩展 {1}。",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "扩展版本为 {0} 需要一个更旧版本的 {APP_NAME}，但你可以安装旧版本的扩展 {1}。",
   "EXTENSION_NO_DESCRIPTION": "没有描述",

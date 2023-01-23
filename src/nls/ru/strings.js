@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "Дата",
   "EXTENSION_INCOMPATIBLE_NEWER": "Это расширение требует новой версии {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Это расширение работает только с предыдущими версиями {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Вам может не понадобиться это расширение. В {APP_NAME} уже есть эта функция.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Версия {0} данного расширения требует новой версии {APP_NAME}. Вы можете установить предыдущую версию расширения{1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Версия {0} данного расширения требует предыдущей версии {APP_NAME}. Вы можете установить предыдущую версию {1}.",
   "EXTENSION_NO_DESCRIPTION": "Описание отсутвует",

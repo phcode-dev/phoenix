@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "Tarih",
   "EXTENSION_INCOMPATIBLE_NEWER": "Bu uzantı, {APP_NAME} uygulamasının daha yeni bir sürümünü gerektiriyor.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Bu uzantı şu anda yalnızca {APP_NAME} uygulamasının eski sürümleriyle çalışır.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Bu uzantıya ihtiyacınız olmayabilir. {APP_NAME} bu özelliğe zaten sahip.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Bu uzantının {0} sürümü, {APP_NAME} uygulamasının daha yeni bir sürümünü gerektiriyor. Ancak {1} önceki sürümünü yükleyebilirsiniz.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Bu uzantının {0} sürümü, yalnızca {APP_NAME} uygulamasının eski sürümleriyle çalışır. Ancak {1} önceki sürümünü yükleyebilirsiniz.",
   "EXTENSION_NO_DESCRIPTION": "açıklama yok",

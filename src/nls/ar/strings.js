@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "تاريخ",
   "EXTENSION_INCOMPATIBLE_NEWER": "تتطلب هذه الإضافة إصدارًا أحدث من {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "تعمل هذه الإضافة حاليًا فقط مع الإصدارات الأقدم من {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "قد لا تحتاج هذا التمديد. يحتوي {APP_NAME} بالفعل على هذه الميزة.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "يتطلب الإصدار {0} من هذه الإضافة إصدارًا أحدث من {APP_NAME}. ولكن يمكنك تثبيت الإصدار السابق {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "الإصدار {0} من هذه الإضافة يعمل فقط مع الإصدارات الأقدم من {APP_NAME}. ولكن يمكنك تثبيت الإصدار السابق {1}.",
   "EXTENSION_NO_DESCRIPTION": "بدون وصف",

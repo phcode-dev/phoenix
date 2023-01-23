@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "Dato",
   "EXTENSION_INCOMPATIBLE_NEWER": "Denne udvidelse kræver en nyere version af {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Denne udvidelse virker i øjeblikket kun med ældre versioner af {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Du har muligvis ikke brug for denne udvidelse. {APP_NAME} har allerede denne funktion.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Version {0} af denne udvidelse kræver en nyere version af {APP_NAME}. Men du kan installere den tidligere version {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Version {0} af denne udvidelse virker kun med en ældre version af {APP_NAME}. Men du kan installere den tidligere version {1}.",
   "EXTENSION_NO_DESCRIPTION": "Ingen beskrivelse",

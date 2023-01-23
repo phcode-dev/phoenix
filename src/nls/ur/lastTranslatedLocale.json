@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "تاریخ",
   "EXTENSION_INCOMPATIBLE_NEWER": "اس ایکسٹینشن کو {APP_NAME} کے نئے ورژن کی ضرورت ہے۔",
   "EXTENSION_INCOMPATIBLE_OLDER": "یہ ایکسٹینشن فی الحال صرف {APP_NAME} کے پرانے ورژن کے ساتھ کام کرتی ہے۔",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "ہو سکتا ہے آپ کو اس توسیع کی ضرورت نہ ہو۔ {APP_NAME} میں یہ خصوصیت پہلے سے موجود ہے۔",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "اس ایکسٹینشن کے ورژن {0} کے لیے {APP_NAME} کے نئے ورژن کی ضرورت ہے۔ لیکن آپ پہلے والا ورژن {1} انسٹال کر سکتے ہیں۔",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "اس ایکسٹینشن کا ورژن {0} صرف {APP_NAME} کے پرانے ورژن کے ساتھ کام کرتا ہے۔ لیکن آپ پہلے والا ورژن {1} انسٹال کر سکتے ہیں۔",
   "EXTENSION_NO_DESCRIPTION": "کوئی وضاحت نہیں",

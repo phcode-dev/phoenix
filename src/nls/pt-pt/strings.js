@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "Encontro",
   "EXTENSION_INCOMPATIBLE_NEWER": "Esta extensão requer uma versão mais recente do {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Esta extensão atualmente só funciona com versões mais antigas do {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Você pode não precisar desta extensão. {APP_NAME} já tem este recurso.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "A versão {0} desta extensão requer uma versão mais recente do {APP_NAME}. Mas você pode instalar a versão anterior {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "A versão {0} desta extensão só funciona com versões mais antigas do {APP_NAME}. Mas você pode instalar a versão anterior {1}.",
   "EXTENSION_NO_DESCRIPTION": "Sem descrição",

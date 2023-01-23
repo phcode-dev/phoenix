@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "Fecha",
   "EXTENSION_INCOMPATIBLE_NEWER": "Esta extensión necesita una versión más actualizada de {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "En estos momentos esta extensión sólo funciona con versiones anteriores de {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Es posible que no necesite esta extensión. {APP_NAME} ya tiene esta función.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "La versión {0} de esta extensión necesita una versión superior de {APP_NAME}. Puedes instalar la versión anterior {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "La versión {0} de esta extensión sólo funciona con versiones anteriores de {APP_NAME}. Puedes instalar la versión anterior {1}.",
   "EXTENSION_NO_DESCRIPTION": "Sin descripción",

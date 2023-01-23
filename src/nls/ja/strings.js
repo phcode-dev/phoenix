@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "日付",
   "EXTENSION_INCOMPATIBLE_NEWER": "この拡張機能には新しいバージョンの {APP_NAME} が必要です。",
   "EXTENSION_INCOMPATIBLE_OLDER": "この拡張機能は現在、古いバージョンの {APP_NAME} でしか動作しません。",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "この拡張機能は必要ない場合があります。 {APP_NAME} にはすでにこの機能があります。",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "この拡張機能のバージョン {0} には {APP_NAME} の新しいバージョンが必要です。ただし、以前のバージョン {1} をインストールすることができます。",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "この拡張機能のバージョン {0} は {APP_NAME} の古いバージョンでのみ動作します。ただし、以前のバージョン {1} をインストールすることができます。",
   "EXTENSION_NO_DESCRIPTION": "説明なし",

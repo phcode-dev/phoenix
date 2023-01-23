@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "Datum",
   "EXTENSION_INCOMPATIBLE_NEWER": "Deze extensie vereist een nieuwere versie van {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Deze extensie werkt momenteel enkel met oudere versies van {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Mogelijk hebt u deze extensie niet nodig. {APP_NAME} heeft deze functie al.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Versie {0} van deze extensie vereist een nieuwere versie van {APP_NAME}. Je kan wel de oudere versie {1} installeren.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Versie {0} van deze extensie werkt alleen met oudere versies van {APP_NAME}. Je kan wel de oudere versie {1} installeren.",
   "EXTENSION_NO_DESCRIPTION": "Geen beschrijving",

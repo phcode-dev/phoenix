@@ -468,6 +468,7 @@
   "EXTENSION_DATE": "Dată",
   "EXTENSION_INCOMPATIBLE_NEWER": "Această extensie necesită o vesiune mai nouă {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Această extensie funcționează doar cu versiunile mai vechi {APP_NAME}.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Este posibil să nu aveți nevoie de această extensie. {APP_NAME} are deja această funcție.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Versiunea {0} a acestei extensii necesită o vesiune mai nouă {APP_NAME}. Dar puteți instala versiunea {1} a extensiei.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Versiunea {0} a acestei extensii funcționează doar cu versiunile vechi {APP_NAME}. Dar puteți instala versiunea {1} a extensiei.",
   "EXTENSION_NO_DESCRIPTION": "Nicio descriere",

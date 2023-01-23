@@ -488,6 +488,7 @@ define({
   "EXTENSION_DATE": "Tanggal",
   "EXTENSION_INCOMPATIBLE_NEWER": "Ekstensi ini membutuhkan versi {APP_NAME} yang lebih baru.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Ekstensi ini hanya  kompatibel dengan versi {APP_NAME} yang lama.",
+  "EXTENSION_DEFAULT_FEATURE_PRESENT": "Anda mungkin tidak memerlukan ekstensi ini. {APP_NAME} sudah memiliki fitur ini.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Versi {0} dari ekstensi ini membutuhkan versi terbaru dari {APP_NAME}. Tapi Anda dapat menginstal versi sebelumnya {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Versi {0} hanya kompatibel dengan versi {APP_NAME} yang lama. Tapi Anda dapat menginstal versi sebelumnya {1}.",
   "EXTENSION_NO_DESCRIPTION": "Tanpa keterangan",
