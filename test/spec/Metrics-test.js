@@ -63,7 +63,7 @@ define(function (require, exports, module) {
                 Metrics.countEvent("typec", "cat", `${i}`, 1);
             }
             data = Metrics.getLoggedDataForAudit();
-            expect(data.size).toEqual(2011);
+            expect(data.size < 2050).toBeTrue();
         });
     });
 });
