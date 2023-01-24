@@ -579,7 +579,7 @@ define(function (require, exports, module) {
      * Remove a key binding from _keymap
      *
      * @param {!string} key - a key-description string that may or may not be normalized.
-     * @param {?string} platform - OS from which to remove the binding (all platforms if unspecified)
+     * @param {?string} [platform] - OS from which to remove the binding (all platforms if unspecified)
      */
     function removeBinding(key, platform) {
         if (!key || ((platform !== null) && (platform !== undefined) && (platform !== brackets.platform))) {
@@ -843,9 +843,7 @@ define(function (require, exports, module) {
         _keyNames.concat(_reservedShortcuts)
             .concat(_macReservedShortcuts));
     function _isUnSwallowedKeys(key) {
-        return UN_SWALLOWED_KEYS[key]
-            || (key >= 'A' && key <= 'Z')
-            || (key >= '0' && key <= '9');
+        return UN_SWALLOWED_KEYS[key] || key.length === 1; // keys like a-z, 0-9 etc
     }
 
     /**
@@ -865,6 +863,9 @@ define(function (require, exports, module) {
             // is not handled by quick edit, it will open browser url bar if we return false here(which is bad ux).
             let promise = CommandManager.execute(_keyMap[key].commandID);
             if(UN_SWALLOWED_EVENTS[_keyMap[key].commandID] || _isUnSwallowedKeys(key)){
+                // The execute() function returns a promise because some commands are async.
+                // Generally, commands decide whether they can run or not synchronously,
+                // and reject immediately, so we can test for that synchronously.
                 return (promise.state() !== "rejected");
             }
             return true;

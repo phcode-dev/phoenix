@@ -46,8 +46,8 @@ define(function (require, exports, module) {
 
 
         enabledProviders.some(function (item, index) {
-            // position is optional
-            if (item.provider.canJumpToDef(editor, position)) {
+            // if canJumpToDef is not provided, we assume that the provicer can jump to definition.
+            if (!item.provider.canJumpToDef || item.provider.canJumpToDef(editor, position)) {
                 jumpToDefProvider = item.provider;
                 return true;
             }

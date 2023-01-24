@@ -709,7 +709,7 @@ define(function (require, exports, module) {
                 var keymap = KeyBindingManager.getKeymap(),
                     reassignedKey1 = (platform === "mac") ? "Alt-Cmd-Backspace" : "Ctrl-Alt-Backspace",
                     reassignedKey2 = (platform === "mac") ? "Alt-Cmd-O" : "Ctrl-Alt-O",
-                    reassignedKey3 = (platform === "mac") ? "Cmd-T" : "Ctrl-T";
+                    reassignedKey3 = (platform === "mac") ? "Alt-Cmd-L" : "Ctrl-Alt-L";
 
                 expect(called).toBeFalse();
                 expect(keymap["Ctrl-2"].commandID).toEqual("view.toggleSidebar");
@@ -740,13 +740,57 @@ define(function (require, exports, module) {
                 expect(fooCalled).toBe(true);
             });
 
+            let commandID = 1;
+            function _testCommandProcessed(shortCut, commandPromiseToReturn, expectedToBeProcessed) {
+                let fooCalled = false;
+                commandID++;
+                CommandManager.register("Foo" + commandID, "test.foo" + commandID, function () {
+                    fooCalled = true;
+                    return commandPromiseToReturn;
+                });
+
+                KeyBindingManager.addBinding("test.foo" + commandID, shortCut);
+                expect(fooCalled).toBe(false);
+
+                let processed = KeyBindingManager._handleKey(shortCut);
+                expect(fooCalled).toBe(true);
+                expect(processed).toBe(expectedToBeProcessed);
+                KeyBindingManager.removeBinding(shortCut);
+            }
+
+            it("should mark commands as processed even if command execution failed for unswallowed commands", function () {
+                _testCommandProcessed("Ctrl-P", new $.Deferred().reject(), true);
+                _testCommandProcessed("Ctrl-P", new $.Deferred().resolve(), true);
+            });
+
+            it("should not mark commands as processed if command execution failed for keys A-Z 0-9", function () {
+                for(let i = "A".charCodeAt(0); i<= "Z".charCodeAt(0); i++) {
+                    let letter = String.fromCharCode(i);
+                    _testCommandProcessed(letter, new $.Deferred().reject(), false);
+                    _testCommandProcessed(letter, new $.Deferred().resolve(), true);
+                }
+                for(let i = "0".charCodeAt(0); i<= "9".charCodeAt(0); i++) {
+                    let letter = String.fromCharCode(i);
+                    _testCommandProcessed(letter, new $.Deferred().reject(), false);
+                    _testCommandProcessed(letter, new $.Deferred().resolve(), true);
+                }
+            });
+
+            it("should not mark commands as processed if command execution failed for special keys", function () {
+                let specialKeys = ["Ctrl-Z", "Ctrl-A", "Ctrl-X", "Ctrl-C", "Ctrl-V"];
+                for(let key of specialKeys){
+                    _testCommandProcessed(key, new $.Deferred().reject(), false);
+                    _testCommandProcessed(key, new $.Deferred().resolve(), true);
+                }
+            });
+
         });
 
         describe("handle AltGr key", function () {
             var commandCalled, ctrlAlt1Event, ctrlAltEvents;
             var ctrlEvent = {
                 ctrlKey: true,
-                keyIdentifier: "Control",
+                key: "Control",
                 keyCode: KeyEvent.DOM_VK_CONTROL,
                 immediatePropagationStopped: false,
                 propagationStopped: false,
@@ -766,7 +810,7 @@ define(function (require, exports, module) {
                 var altGrEvents = [],
                     altEvent = _.cloneDeep(ctrlEvent);
 
-                altEvent.keyIdentifier = "Alt";
+                altEvent.key = "Alt";
                 altEvent.altKey = true;
                 altEvent.keyCode = KeyEvent.DOM_VK_ALT;
 
