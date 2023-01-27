@@ -200,9 +200,9 @@ unlocks the current QuickView locked by `lockQuickView` fucntion.
 
 Type: [function][5]
 
-[1]: https://phcode-dev.github.io/doc-images/phcode-sdk/quick-view-image.png
+[1]: https://docs-images.phcode.dev/phcode-sdk/quick-view-image.png
 
-[2]: https://phcode-dev.github.io/doc-images/phcode-sdk/quick-view-youtube.png
+[2]: https://docs-images.phcode.dev/phcode-sdk/quick-view-youtube.png
 
 [3]: https://github.com/phcode-dev/phoenix/wiki/SelectionViewManager-API
 
