@@ -290,11 +290,20 @@ define(function (require, exports, module) {
         context.disabled = (entry.installInfo && entry.installInfo.status === ExtensionManager.DISABLED);
         context.hasVersionInfo = !!info.versions;
 
+        let isVerified = false;
+        if(context.ownershipVerifiedByGitHub){
+            context.verified = StringUtils.format(Strings.EXTENSION_VERIFIED_PUBLISHER,
+                context.ownershipVerifiedByGitHub[0].replace("https://", ""));
+            context.verifiedURL = context.ownershipVerifiedByGitHub[0];
+            isVerified = true;
+        }
+
         if (entry.registryInfo) {
             var latestVerCompatInfo = ExtensionManager.getCompatibilityInfo(entry.registryInfo, brackets.metadata.apiVersion);
             context.isCompatible = latestVerCompatInfo.isCompatible;
             context.requiresNewer = latestVerCompatInfo.requiresNewer;
             context.isCompatibleLatest = latestVerCompatInfo.isLatestVersion;
+            entry.registryInfo.isVerified = isVerified ? 1 : 0;
             if (!context.isCompatibleLatest) {
                 var installWarningBase = context.requiresNewer ? Strings.EXTENSION_LATEST_INCOMPATIBLE_NEWER : Strings.EXTENSION_LATEST_INCOMPATIBLE_OLDER;
                 context.installWarning = StringUtils.format(installWarningBase, entry.registryInfo.versions[entry.registryInfo.versions.length - 1].version, latestVerCompatInfo.compatibleVersion);
