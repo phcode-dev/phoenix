@@ -591,6 +591,8 @@ define({
     "UNKNOWN_ERROR": "Unknown internal error.",
     "EXTENSION_VERIFIED_PUBLISHER": "This publisher has verified ownership of {0}",
     "EXTENSION_VERIFIED_SORT": "Verified",
+    "EXTENSION_STAR": "Star",
+    "EXTENSION_STAR_SORT": "Star Rating",
     // For NOT_FOUND_ERR, see generic strings above
     "EXTENSION_MANAGER_TITLE": "Extension Manager",
     "EXTENSION_MANAGER_ERROR_LOAD": "Unable to access the extension registry. Please try again later.",
