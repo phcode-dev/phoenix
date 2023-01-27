@@ -106,7 +106,8 @@ define(function (require, exports, module) {
             result = htmlEscape(userId);
         }
         if (ownerLink) {
-            result = "<a href='" + htmlEscape(ownerLink) + "' title='" + htmlEscape(ownerLink) + "'>" + result + "</a>";
+            result = `<a class="no-active-border" href='`
+                + htmlEscape(ownerLink) + "' title='" + htmlEscape(ownerLink) + "'>" + result + "</a>";
         }
         return result;
     };
