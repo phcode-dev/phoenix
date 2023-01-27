@@ -17,6 +17,7 @@
         "extension_listing_url": "",
         "extension_registry": "https://extensions.phcode.dev/registry.json",
         "extension_registry_version": "https://extensions.phcode.dev/registry_version.json",
+        "extension_registry_popularity": "https://extensions.phcode.dev/popularity.json",
         "extension_url": "https://extensions.phcode.dev/extensions/",
         "extension_store_url": "https://store.core.ai/src/",
         "linting.enabled_by_default": true,
