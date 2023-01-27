@@ -145,7 +145,7 @@ Returns **[boolean][6]**
 
 [3]: https://github.com/phcode-dev/phoenix/wiki/QuickViewManager-API
 
-[4]: generatedDocs/images/quick-view-youtube.png
+[4]: https://phcode-dev.github.io/doc-images/phcode-sdk/quick-view-youtube.png
 
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
