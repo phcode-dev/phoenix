@@ -1,6 +1,6 @@
 The icons in the file tree can be customised. Even add icons for unsupported extensions!
 
-![file-Icon.png](https://phcode-dev.github.io/doc-images/phcode-sdk/file-Icon.png)
+![file-Icon.png](https://docs-images.phcode.dev/phcode-sdk/file-Icon.png)
 
 ## How to add custom icons
 In the Brackets preferences(`Debug Menu` > `Open preferences file`) file you'll need to add this to the bottom:
