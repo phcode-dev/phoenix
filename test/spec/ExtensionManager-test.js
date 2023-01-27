@@ -483,7 +483,7 @@ define(function (require, exports, module) {
                 });
 
                 it("should start with the full set sorted in reverse download count order", function () {
-                    PreferencesManager.set("extensions.sort", "downloadCount");
+                    PreferencesManager.set("extensions.sort", "totalDownloads");
                     model._setSortedExtensionList(ExtensionManager.extensions, false);
                     expect(model.filterSet).toEqual(["item-6", "item-4", "item-3", "find-uniq1-in-name", "item-2", "item-5"]);
                 });
@@ -583,7 +583,7 @@ define(function (require, exports, module) {
                 });
 
                 it("should start with the full set sorted in reverse download count order", function () {
-                    PreferencesManager.set("extensions.sort", "downloadCount");
+                    PreferencesManager.set("extensions.sort", "totalDownloads");
                     model._setSortedExtensionList(ExtensionManager.extensions, true);
                     expect(model.filterSet).toEqual(["theme-2", "theme-1"]);
                 });
