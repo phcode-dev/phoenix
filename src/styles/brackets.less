@@ -207,6 +207,10 @@ a, img {
     display: none !important;
 }
 
+.forced-inVisible {
+    visibility: hidden !important;
+}
+
 .busyCursor {
     cursor: wait !important;
 }
@@ -2727,4 +2731,172 @@ label input {
 
 .notification-dialog-content a {
     color: #00ccff;
+}
+
+.github-stars-button {
+    .starContainer {
+        --fa-style-family-brands: "Font Awesome 6 Brands";
+        --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+        --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+        --fa-style-family-classic: "Font Awesome 6 Free";
+        --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
+        Helvetica, Arial, sans-serif;
+        display: inline-flex;
+        height: 14px;
+        padding: 2px 5px;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 14px;
+        vertical-align: bottom;
+        cursor: pointer;
+        user-select: none;
+        background-repeat: repeat-x;
+        background-position: -1px -1px;
+        background-size: 110% 110%;
+        color: #24292f;
+        background-color: #ebf0f4;
+        border: 1px solid rgba(27, 31, 36, .15);
+        background-image:  linear-gradient(180deg, #e5e9e9, #e5e9e9 90%);
+        border-radius: 0.25em 0 0 0.25em;
+    }
+    .starContainer:hover{
+        color: darkgoldenrod;
+    }
+    .star{
+        margin-right: 4px;
+        margin-top: 1px;
+    }
+    .count {
+        --fa-style-family-brands: "Font Awesome 6 Brands";
+        --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+        --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+        --fa-style-family-classic: "Font Awesome 6 Free";
+        --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
+        Helvetica, Arial, sans-serif;
+        display: inline-flex;
+        height: 14px;
+        padding: 2px 5px;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 14px;
+        vertical-align: bottom;
+        cursor: pointer;
+        user-select: none;
+        background-repeat: repeat-x;
+        background-position: -1px -1px;
+        background-size: 110% 110%;
+        border-radius: 0 0.25em 0.44em 0;
+        color: #24292f;
+        background-color: #e5e9e9;
+        border: 1px solid rgba(27, 31, 36, .15);
+        border-left-width: 0;
+    }
+    .count:hover{
+        color: darkgoldenrod;
+    }
+    .parent {
+        --fa-style-family-brands: "Font Awesome 6 Brands";
+        --fa-font-brands: normal 400 -2em/1 "Font Awesome 6 Brands";
+        --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+        --fa-style-family-classic: "Font Awesome 6 Free";
+        --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+        display: inline-block;
+        overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
+        Helvetica, Arial, sans-serif;
+        font-size: 0;
+        line-height: 0;
+        white-space: nowrap;
+    }
+
+    .dark & {
+        .starContainer {
+            --fa-style-family-brands: "Font Awesome 6 Brands";
+            --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+            --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+            --fa-style-family-classic: "Font Awesome 6 Free";
+            --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
+            Helvetica, Arial, sans-serif;
+            white-space: nowrap;
+            text-decoration: none;
+            outline: 0;
+            position: relative;
+            display: inline-flex;
+            height: 14px;
+            padding: 2px 5px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 14px;
+            vertical-align: bottom;
+            cursor: pointer;
+            user-select: none;
+            background-repeat: repeat-x;
+            background-position: -1px -1px;
+            background-size: 110% 110%;
+            border: 1px solid;
+            color: #c9d1d9;
+            background-color: #0d1117;
+            border-color: rgba(240, 246, 252, 0.1);
+            background-image: linear-gradient(180deg, #333, #333 90%);
+            border-radius: 0.25em 0 0 0.25em;
+        }
+        .starContainer:hover{
+            color: darkgoldenrod;
+        }
+        .star{
+            margin-right: 4px;
+            margin-top: 1px;
+        }
+        .count {
+            --fa-style-family-brands: "Font Awesome 6 Brands";
+            --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+            --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+            --fa-style-family-classic: "Font Awesome 6 Free";
+            --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
+            Helvetica, Arial, sans-serif;
+            white-space: nowrap;
+            text-decoration: none;
+            outline: 0;
+            position: relative;
+            display: inline-flex;
+            height: 14px;
+            padding: 2px 5px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 14px;
+            vertical-align: bottom;
+            cursor: pointer;
+            user-select: none;
+            background-repeat: repeat-x;
+            background-position: -1px -1px;
+            background-size: 110% 110%;
+            border: 1px solid;
+            border-left: 0;
+            border-radius: 0 0.25em 0.44em 0;
+            color: #c9d1d9;
+            background-color: #333;
+            border-color: rgba(240, 246, 252, 0.1);
+        }
+        .count:hover{
+            color: darkgoldenrod;
+        }
+        .parent {
+            --fa-style-family-brands: "Font Awesome 6 Brands";
+            --fa-font-brands: normal 400 -2em/1 "Font Awesome 6 Brands";
+            --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+            --fa-style-family-classic: "Font Awesome 6 Free";
+            --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+            display: inline-block;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI,
+            Helvetica, Arial, sans-serif;
+            font-size: 0;
+            line-height: 0;
+            white-space: nowrap;
+        }
+    }
 }

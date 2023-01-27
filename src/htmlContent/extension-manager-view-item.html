@@ -2,15 +2,37 @@
     <td class="ext-info">
         <span class="ext-name">{{#metadata.title}}{{metadata.title}}{{/metadata.title}}{{^metadata.title}}{{metadata.name}}{{/metadata.title}}</span>
         {{#authorInfo}}
-            <span class="muted ext-author">{{{authorInfo}}}</span>
+            <span class="muted ext-author">
+                {{{authorInfo}}}
+                {{#verified}}
+                <img class="extn-verified" title="This publisher has verified ownership of {{verified}}" src="styles/images/verified.svg" style="width:1.5em;">
+                {{/verified}}
+            </span>
         {{/authorInfo}}
-        <span class="muted ext-version">{{metadata.version}}</span>
-        {{#hasVersionInfo}}
-            <span class="muted ext-date"> &mdash; {{lastVersionDate}}</span>
-        {{/hasVersionInfo}}
-        {{#downloadCount}}
-            <p title="{{downloadCount}} {{Strings.EXTENSIONS_DOWNLOADS}}"><img src="styles/images/download-icon.svg"/> {{downloadCount}}</p>
-        {{/downloadCount}}
+        <div style="display: flex; flex-direction: row; justify-content: space-between; width: 280px;">
+            <div>
+                <span class="muted ext-version">{{metadata.version}}</span>
+                {{#hasVersionInfo}}
+                <span class="muted ext-date"> &mdash; {{lastVersionDate}}</span>
+                {{/hasVersionInfo}}
+            </div>
+            <div>
+                {{#downloadCount}}
+                <p class="extn-download-count" title="{{downloadCount}} {{Strings.EXTENSIONS_DOWNLOADS}}"><img src="styles/images/download-icon.svg"/> {{downloadCount}}</p>
+                {{/downloadCount}}
+            </div>
+            <div class="{{^githubStarCount}} forced-inVisible {{/githubStarCount}}">
+                <div class="github-stars-button">
+                    <div class="parent">
+                        <span class="starContainer">
+                            <i class="fa-regular fa-star star"></i>
+                            <span>Star</span>
+                        </span>
+                        <span class="count"> {{githubStarCount}} </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </td>
     <td class="ext-desc">
         {{#showInstallButton}}
