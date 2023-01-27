@@ -5,7 +5,9 @@
             <span class="muted ext-author">
                 {{{authorInfo}}}
                 {{#verified}}
-                <img class="extn-verified" title="This publisher has verified ownership of {{verified}}" src="styles/images/verified.svg" style="width:1.5em;">
+                <a href="{{verifiedURL}}">
+                    <img class="extn-verified" title="{{verified}}" src="styles/images/verified.svg" style="width:1.5em;">
+                </a>
                 {{/verified}}
             </span>
         {{/authorInfo}}

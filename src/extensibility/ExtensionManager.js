@@ -112,7 +112,7 @@ define(function (require, exports, module) {
         _idsToDisable = {};
 
     PreferencesManager.stateManager.definePreference(FOLDER_AUTOINSTALL, "object", undefined);
-    PreferencesManager.definePreference("extensions.sort", "string", "downloadCount", {
+    PreferencesManager.definePreference("extensions.sort", "string", "totalDownloads", {
         description: Strings.SORT_EXTENSION_METHOD
     });
 

@@ -136,7 +136,7 @@ define(function (require, exports, module) {
         sortedEntries.sort(function (entry1, entry2) {
             if (sortBy !== "publishedDate") {
                 if (entry1.registryInfo && entry2.registryInfo) {
-                    return entry2.registryInfo.totalDownloads - entry1.registryInfo.totalDownloads;
+                    return entry2.registryInfo[sortBy] - entry1.registryInfo[sortBy];
                 }
                 return Number.NEGATIVE_INFINITY;
 
