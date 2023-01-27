@@ -246,7 +246,7 @@ define(function (require, exports, module) {
     }
 
     function _patchDownloadCounts() {
-        const registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+        let registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
         if(!registryJson){
             return;
         }
@@ -255,6 +255,7 @@ define(function (require, exports, module) {
             dataType: "json",
             cache: false
         }).done(function (popularity) {
+            registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
             let registry = JSON.parse(registryJson);
             for(let key of Object.keys(popularity)){
                 if(registry[key]) {
