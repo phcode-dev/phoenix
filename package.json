@@ -48,7 +48,7 @@
     "prepare": "husky install",
     "serveTest": "http-server . -p 5000 -c-1",
     "zipTestFiles": "gulp zipTestFiles",
-    "test": "npx playwright test",
+    "test": "npx playwright install --with-deps && npx playwright test",
     "testDebug": "npx playwright test --debug",
     "testChromium": "npx playwright test --project=chromium",
     "testFirefox": "npx playwright test --project=firefox",
