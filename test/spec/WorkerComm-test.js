@@ -48,7 +48,7 @@ define(function (require, exports, module) {
         });
 
         afterAll(function () {
-            //_myWorker.terminate();
+            _myWorker.terminate();
         });
 
         describe("execPeer API tests", function () {
@@ -69,7 +69,7 @@ define(function (require, exports, module) {
                 } catch (e) {
                     thrown = e;
                 }
-                expect(thrown.startsWith("Error: oops")).toBeTrue();
+                expect(thrown.message).toBe("oops");
             });
 
             it("Should throw if promise rejected in worker", async function () {
@@ -95,7 +95,7 @@ define(function (require, exports, module) {
                     throw new Error("throw_me");
                 });
                 let result = await exports.execPeer("execAndRejectInMainThread");
-                expect(result.startsWith("Error: throw_me")).toBeTrue();
+                expect(result.message).toBe("throw_me");
             });
         });
 
