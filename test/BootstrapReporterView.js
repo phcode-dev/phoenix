@@ -23,6 +23,10 @@
 
 define(function (require, exports, module) {
 
+    window.testResults = {
+        // this is for playwright
+        errors: {}
+    };
 
     var _ = require("thirdparty/lodash");
 
@@ -234,6 +238,7 @@ define(function (require, exports, module) {
         if (this.$info) {
             this.$info.toggleClass("alert-info", false);
 
+            window.testResults.passed = reporter.passed;
             if (reporter.passed) {
                 this.$info.toggleClass("alert-success", true).text("Complete. No failures.");
             } else {
@@ -241,6 +246,7 @@ define(function (require, exports, module) {
                     "Complete. See failures Below. If all tests have passed and no failures are seen below," +
                     "Check the debug console for errors. (search for 'Spec Error:' in console)");
             }
+            window.playWrightRunComplete = true;
         }
     };
 
@@ -348,9 +354,19 @@ define(function (require, exports, module) {
             $specLink = $('<a href="' + hyperlink + '"/>').text(specData.description);
             $resultDisplay = $('<div class="alert alert-error"/>').append($specLink);
 
+            if(!window.testResults.errors[suiteData.name]){
+                window.testResults.errors[suiteData.name] = {};
+            }
+            let errorSuiteData = window.testResults.errors[suiteData.name];
+            if(!errorSuiteData[specData.description]){
+                errorSuiteData[specData.description] = [];
+            }
+
             // print failure details
             if (specData.messages) {
+
                 specData.messages.forEach(function (message) {
+                    errorSuiteData[specData.description].push(message);
                     // Render with clickable links if parent Brackets window available; plain text otherwise
                     if (window.opener) {
                         var htmlMessage = self._linkerizeStack(message);
