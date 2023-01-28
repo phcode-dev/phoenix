@@ -542,7 +542,7 @@ define(function (require, exports, module) {
                     console.log("Loading Extension Test from virtual fs: ", extConfig);
                     _testExtensionByURL(extensionName, extConfig, 'unittests').always(function () {
                         // Always resolve the promise even if some extensions had errors
-                        console.log("lc", extensionName);
+                        console.log("tested", extensionName);
                         loadResult.resolve();
                     });
                     return loadResult.promise();
@@ -571,9 +571,9 @@ define(function (require, exports, module) {
         const srcBaseUrl = new URL(baseUrl + '/../src').href;
         var result = new $.Deferred();
 
-        for (let extensionEntry of DefaultExtensionsList){
-            console.log("Testing default extension: ", extensionEntry);
-            var extConfig = {
+        Async.doInParallel(DefaultExtensionsList, function (extensionEntry) {
+            const loadResult = new $.Deferred();
+            const extConfig = {
                 basePath: 'extensions/default',
                 baseUrl: new URL(srcBaseUrl + DEFAULT_EXTENSIONS_PATH_BASE + "/" + extensionEntry).href,
                 paths: {
@@ -581,9 +581,17 @@ define(function (require, exports, module) {
                     "spec": bracketsPath + "/spec"
                 }
             };
-            _testExtensionByURL(extensionEntry, extConfig, 'unittests');
-        }
-        result.resolve();
+            console.log("Testing default extension: ", extensionEntry);
+            _testExtensionByURL(extensionEntry, extConfig, 'unittests').always(function () {
+                // Always resolve the promise even if some extensions had errors
+                console.log("load complete", extensionEntry);
+                loadResult.resolve();
+            });
+            return loadResult.promise();
+        }).always(function () {
+            // Always resolve the promise even if some extensions had errors
+            result.resolve();
+        });
 
         return result.promise();
     }
