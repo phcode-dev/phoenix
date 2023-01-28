@@ -47,7 +47,7 @@
     "lint:fix": "eslint --quiet --fix src test",
     "prepare": "husky install",
     "serveTest": "http-server . -p 5000 -c-1",
-    "zipTestFiles": "gulp test",
+    "zipTestFiles": "gulp zipTestFiles",
     "test": "npx playwright test",
     "testChromium": "npx playwright test --project=chromium",
     "testFirefox": "npx playwright test --project=firefox",
