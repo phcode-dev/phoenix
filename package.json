@@ -48,6 +48,8 @@
     "prepare": "husky install",
     "serveTest": "http-server . -p 5000 -c-1",
     "test": "gulp test",
+    "testChromium": "npx playwright test --project=chromium",
+    "testFirefox": "npx playwright test --project=firefox",
     "buildonly": "gulp build",
     "vulnerabilityCheck": "echo Scanning for vulnarabilities && npm audit --prod",
     "build": "npm run buildonly && npm run createJSDocs && npm run test && npm run lint && npm run vulnerabilityCheck",
