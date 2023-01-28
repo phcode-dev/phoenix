@@ -1,4 +1,4 @@
-name: chromium Run unit tests suite with Playwright Tests
+name: Chromium run unit tests suite with Playwright
 on:
   push:
     branches: [ main ]

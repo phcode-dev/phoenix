@@ -1,4 +1,4 @@
-name: FireFox Run unit tests suite with Playwright Tests
+name: Firefox run unit tests suite with Playwright
 on:
   push:
     branches: [ main ]
