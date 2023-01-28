@@ -374,7 +374,7 @@ exports.releaseStaging = series(cleanDist, exports.build, makeDistNonJS, makeJSD
 exports.releaseProd = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseProd,
     createDistCacheManifest);
 exports.serve = series(exports.build, serve);
-exports.test = series(zipTestFiles);
+exports.zipTestFiles = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
 exports.createJSDocs = series(cleanDocs, createJSDocs, generateDocIndex);
 exports.translateStrings = series(translateStrings);

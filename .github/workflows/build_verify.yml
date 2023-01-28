@@ -18,9 +18,6 @@ jobs:
       - name: eslint using npm run eslint
         run: |
           npm run lint
-      - name: building Phoenix with npm run buildonly
+      - name: building Phoenix with npm run build
         run: |
-          npm run buildonly
-      - name: Testing Phoenix with npm run test
-        run: |
-          npm run test
+          npm run build

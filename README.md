@@ -76,7 +76,7 @@ IDEs from this link before raising a pull request: https://www.sonarlint.org/
 * The release artifacts to host will be in `dist` folder.
 
 ## Running tests
-* run `npm run test` in the terminal.
+* run `npm run zipTestFiles` in the terminal.
   * NB: this will setup all the required files for test 
 * Use chrome/edge browser to navigate to Phoenix[http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
 * In Phoenix Menu, select `Debug > run Tests` To open the test runner.
