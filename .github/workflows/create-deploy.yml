@@ -1,8 +1,8 @@
-name: Deploy Notification To production phcode.dev
+name: Deploy Notification To authoring production create.phcode.dev
 # Please note to add branch protection rules for the prod branch in your repository.
 on:
   push:
-    branches: [ prod ]
+    branches: [ create ]
 
 jobs:
   build-tasks:
@@ -15,10 +15,10 @@ jobs:
       - name: Verifying release artifact build
         run: |
           npm run release:prod
-      - name: Deploy Notification To production repository phcode.dev
+      - name: Deploy Notification To authoring production repository create.phcode.dev
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PAT_PHOENIX_BOT_PUBLIC_REPO_ACCESS }}
-          repository: phcode-dev/phcode.dev
+          repository: phcode-dev/create.phcode.dev
           event-type: deploy-production
           client-payload: '{"source":"${{github.repositoryUrl}}", "workflow":"${{github.workflow}}", "run_id":"${{github.run_id}}", "run_number":"${{github.run_number}}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
