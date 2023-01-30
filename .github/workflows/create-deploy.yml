@@ -2,7 +2,7 @@ name: Deploy Notification To authoring production create.phcode.dev
 # Please note to add branch protection rules for the prod branch in your repository.
 on:
   push:
-    branches: [ create ]
+    branches: [ prod ]
 
 jobs:
   build-tasks:
