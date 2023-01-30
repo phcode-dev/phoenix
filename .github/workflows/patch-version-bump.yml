@@ -13,7 +13,7 @@ jobs:
           ref: main
       - name: Bump patch version
         run: |
-          npm install
+          npm ci
           npm run patchVersionBump
           git status
           phoenix_version=`node -p "require('./package.json').apiVersion"`

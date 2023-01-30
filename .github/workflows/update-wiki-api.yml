@@ -16,7 +16,7 @@ jobs:
           pwd
           ls -al
           cd phoenixSrc
-          npm install
+          npm ci
           npm run build
           ls -al docs
         shell: bash
