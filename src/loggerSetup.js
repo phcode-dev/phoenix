@@ -256,7 +256,7 @@
 
     if(isBugsnagEnabled) {
         Bugsnag.start({
-            apiKey: 'a899c29d251bfdf30c3222016a2a7ea7',
+            apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
             context: context,
             appType: Phoenix.browser && Phoenix.browser.isTauri ? "tauri" : "browser",
             collectUserIp: false,
