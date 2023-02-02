@@ -132,6 +132,8 @@
         This is a nuke cache option. Though mostly safe, Use it wisely to prevent slow startup when resetting.
         */
         const urlParams = new URLSearchParams(window.location.search || "");
+        const LESS_REFRESH_SCHEDULED_KEY = "lessRefreshScheduled";
+        const shouldRefreshLess = window.localStorage.getItem(LESS_REFRESH_SCHEDULED_KEY) === 'yes';
         const CACHE_NAME_EVERYTHING = "everything";
         function _resetCacheIfNeeded() {
             window.cacheClearError;
@@ -165,16 +167,24 @@
                         return Promise.all(promises);
                     }).then(() => {
                         console.log("CacheStorage Reset: Cache successfully reset");
-                        setInterval(()=>{
+                        let totalWaitTime = 0, waitTime = 100, maxWaitTime = 3000;
+                        let intervalTimer = setInterval(()=>{
                             // wait for less to get loaded. less caches css in local storage in production urls
                             // and might not load new css classes if we don't reset. less doesn't cache in localhost.
-                            if(window.less){
+                            totalWaitTime += waitTime;
+                            if(window.less && less.refresh){
                                 less.refresh(true).finally(()=>{
                                     localStorage.setItem(cacheKey, newCacheVersion);
                                     location.reload();
                                 });
+                                clearInterval(intervalTimer);
+                            } else if(totalWaitTime > maxWaitTime){
+                                // ignore less refresh, the app load itself is critical. less refresh we will try later
+                                localStorage.setItem(cacheKey, newCacheVersion);
+                                localStorage.setItem(LESS_REFRESH_SCHEDULED_KEY, "yes");
+                                location.reload();
                             }
-                        }, 100);
+                        }, waitTime);
                     }).catch( e => {
                         console.error("Error while resetting cache", e);
                         window.cacheClearError = e;
@@ -187,6 +197,18 @@
                         // will report the error when it comes online via window.cacheClearError
                         throw e;
                     });
+            }
+            if(shouldRefreshLess){
+                let lessRefreshInterval = setInterval(()=>{
+                    // wait for less to get loaded. less caches css in local storage in production urls
+                    // and might not load new css classes if we don't reset. less doesn't cache in localhost.
+                    if(window.less && less.refresh){
+                        less.refresh(true).finally(()=>{
+                            localStorage.setItem(LESS_REFRESH_SCHEDULED_KEY, "no");
+                        });
+                        clearInterval(lessRefreshInterval);
+                    }
+                }, 500);
             }
         }
         _resetCacheIfNeeded();
