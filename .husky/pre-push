@@ -2,3 +2,8 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run build
+if [[ -z "${SKIP_TEST_RUN_GITHUB}" ]]; then
+  npm run test
+else
+  echo "skipping test run as GitHub Actions environment test run skip is set"
+fi

@@ -26,8 +26,8 @@
 /**
  * QuickViewManager provides support to add interactive preview popups on hover over the main editors.
  * Extensions can register to provide previews with `QuickViewManager.registerQuickViewProvider` API.
- * ![quick-view-image.png](generatedDocs/images/quick-view-image.png)
- * ![quick-view-youtube.png](generatedDocs/images/quick-view-youtube.png)
+ * ![quick-view-image.png](https://docs-images.phcode.dev/phcode-sdk/quick-view-image.png)
+ * ![quick-view-youtube.png](https://docs-images.phcode.dev/phcode-sdk/quick-view-youtube.png)
  *
  * ### See Related: SelectionViewManager
  * [features/SelectionViewManager](https://github.com/phcode-dev/phoenix/wiki/SelectionViewManager-API) is similar to

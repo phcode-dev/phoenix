@@ -1,4 +1,4 @@
-name: Deploy Notification To prodution phcode.dev
+name: Deploy Notification To production phcode.dev
 # Please note to add branch protection rules for the prod branch in your repository.
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Npm Install
         run: |
-          npm install
+          npm ci
       - name: Verifying release artifact build
         run: |
           npm run release:prod

@@ -36,7 +36,7 @@
  * SelectionViewManager API.
  * * SelectionViews popup only once user selects a text by mouse or hover over a region with text selection.
  * * Quickviews popup on mouse hover.
- * ![quick-view-youtube.png](generatedDocs/images/quick-view-youtube.png)
+ * ![quick-view-youtube.png](https://docs-images.phcode.dev/phcode-sdk/quick-view-youtube.png)
  *
  * ## Usage
  * Lets build a "hello world" extension that displays "hello world" above selected text in the editor.

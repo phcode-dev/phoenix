@@ -293,7 +293,9 @@
                     }
                 }
             } catch (err) {
-                response.err = err.stack || err.toString();
+                response.err = err.message || err.stack ?
+                    {message: err.message, stack: err.stack}
+                    : err.toString();
             }
             postTarget.postMessage(JSON.stringify(response));
         }

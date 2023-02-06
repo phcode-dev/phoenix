@@ -1,6 +1,6 @@
 The icons in the file tree can be customised. Even add icons for unsupported extensions!
 
-![file-Icon.png](generatedDocs/images/file-Icon.png)
+![file-Icon.png](https://docs-images.phcode.dev/phcode-sdk/file-Icon.png)
 
 ## How to add custom icons
 In the Brackets preferences(`Debug Menu` > `Open preferences file`) file you'll need to add this to the bottom:
@@ -42,3 +42,4 @@ You can also add an extension that's not already supported the same way.
 ## credits
 * Based on extension by https://github.com/ivogabe/Brackets-Icons
 * Ionicons (MIT license), Font Awesome (GPL license) and Devicons (MIT license) are included in Brackets-Icons.
+* Material icons are also licence compatible with brackets, but not directly integrated in source. Please download individual SVGs from https://fonts.google.com/icons as required. 

@@ -1161,6 +1161,11 @@ a[href^="http"] {
     background-color: @bc-panel-bg-promoted;
     min-width: @extension-manager-min-width;
 
+    .no-active-border:focus{
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
+
     .current-theme-apply-hide{
         display: none;
     }
@@ -1170,6 +1175,7 @@ a[href^="http"] {
         .info-message {
             position: fixed;
             width: 720px;
+            z-index: 1;
         }
         .table {
             margin-top: 65px;
@@ -1181,6 +1187,7 @@ a[href^="http"] {
         .info-message {
             position: fixed;
             width: 720px;
+            z-index: 1;
         }
         .table {
             margin-top: 65px;

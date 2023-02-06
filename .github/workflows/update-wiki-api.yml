@@ -16,12 +16,12 @@ jobs:
           pwd
           ls -al
           cd phoenixSrc
-          npm install
+          npm ci
           npm run build
           ls -al docs
         shell: bash
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
            repository: ${{github.repository}}.wiki    # specify the wiki repo name here.
            path: wiki

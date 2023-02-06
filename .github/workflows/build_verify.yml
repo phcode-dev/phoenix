@@ -11,16 +11,13 @@ jobs:
   build-tasks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Npm Install
         run: |
-          npm install
+          npm ci
       - name: eslint using npm run eslint
         run: |
           npm run lint
-      - name: building Phoenix with npm run buildonly
+      - name: building Phoenix with npm run build
         run: |
-          npm run buildonly
-      - name: Testing Phoenix with npm run test
-        run: |
-          npm run test
+          npm run build

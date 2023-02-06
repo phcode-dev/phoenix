@@ -106,7 +106,8 @@ define(function (require, exports, module) {
             result = htmlEscape(userId);
         }
         if (ownerLink) {
-            result = "<a href='" + htmlEscape(ownerLink) + "' title='" + htmlEscape(ownerLink) + "'>" + result + "</a>";
+            result = `<a class="no-active-border" href='`
+                + htmlEscape(ownerLink) + "' title='" + htmlEscape(ownerLink) + "'>" + result + "</a>";
         }
         return result;
     };
@@ -136,7 +137,7 @@ define(function (require, exports, module) {
         sortedEntries.sort(function (entry1, entry2) {
             if (sortBy !== "publishedDate") {
                 if (entry1.registryInfo && entry2.registryInfo) {
-                    return entry2.registryInfo.totalDownloads - entry1.registryInfo.totalDownloads;
+                    return entry2.registryInfo[sortBy] - entry1.registryInfo[sortBy];
                 }
                 return Number.NEGATIVE_INFINITY;
 

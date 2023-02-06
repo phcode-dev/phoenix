@@ -520,7 +520,7 @@ define(function (require, exports, module) {
             let JSZip = require("thirdparty/jszip");
             window.JSZipUtils.getBinaryContent('test_folders.zip', function(err, data) {
                 if(err) {
-                    alert("Please run 'npm run test' before starting this test. " +
+                    alert("Please run 'npm run zipTestFiles' before starting this test. " +
                         "Could not create test files in phoenix virtual fs. Some tests may fail");
                     _showLoading(false);
                     init();

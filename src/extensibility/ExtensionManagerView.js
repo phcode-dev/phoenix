@@ -295,6 +295,17 @@ define(function (require, exports, module) {
             context.isCompatible = latestVerCompatInfo.isCompatible;
             context.requiresNewer = latestVerCompatInfo.requiresNewer;
             context.isCompatibleLatest = latestVerCompatInfo.isLatestVersion;
+            if(entry.registryInfo.ownerRepo){
+                context.githubStarCount = entry.registryInfo.gihubStars || "0";
+                context.ownerRepo = entry.registryInfo.ownerRepo;
+            }
+            entry.registryInfo.isVerified = 0;
+            if(entry.registryInfo.ownershipVerifiedByGitHub){
+                context.verified = StringUtils.format(Strings.EXTENSION_VERIFIED_PUBLISHER,
+                    entry.registryInfo.ownershipVerifiedByGitHub[0].replace("https://", ""));
+                context.verifiedURL = entry.registryInfo.ownershipVerifiedByGitHub[0];
+                entry.registryInfo.isVerified = 1;
+            }
             if (!context.isCompatibleLatest) {
                 var installWarningBase = context.requiresNewer ? Strings.EXTENSION_LATEST_INCOMPATIBLE_NEWER : Strings.EXTENSION_LATEST_INCOMPATIBLE_OLDER;
                 context.installWarning = StringUtils.format(installWarningBase, entry.registryInfo.versions[entry.registryInfo.versions.length - 1].version, latestVerCompatInfo.compatibleVersion);

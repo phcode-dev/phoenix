@@ -75,13 +75,23 @@ IDEs from this link before raising a pull request: https://www.sonarlint.org/
   * `npm run release:dev`, `npm run release:staging`, `npm run release:prod`
 * The release artifacts to host will be in `dist` folder.
 
-## Running tests
-* run `npm run test` in the terminal.
+## Running and debugging tests in browser
+This is the easiest and preferred way to run Phoenix tests.
+* run `npm run zipTestFiles` in the terminal.
   * NB: this will setup all the required files for test 
 * Use chrome/edge browser to navigate to Phoenix[http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
 * In Phoenix Menu, select `Debug > run Tests` To open the test runner.
 * Run tests as required. 
   * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
+* You can use the browser dev tools to debug. 
+
+## Running and debugging tests in headless mode or in GitHub Actions
+We use [Playwright](https://playwright.dev/) to run the headless version of our tests.
+Please note that we do not use Playwright as our actual test framework, but as a headless browser(chrome and firefox)
+to run our tests written in Jasmine/Mocha.
+* run `npm run test` in the terminal to run the tests run in GitHub actions.
+* To debug the tests, `npm run testDebug`. However, we recommend using the
+above `Running tests in browser` section to actually fix/debug tests that are failing in the pipeline.
 
 ### Running tests in dev staging and prod stacks
 * To run tests against these stacks go to the following url: 

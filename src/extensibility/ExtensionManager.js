@@ -112,7 +112,7 @@ define(function (require, exports, module) {
         _idsToDisable = {};
 
     PreferencesManager.stateManager.definePreference(FOLDER_AUTOINSTALL, "object", undefined);
-    PreferencesManager.definePreference("extensions.sort", "string", "downloadCount", {
+    PreferencesManager.definePreference("extensions.sort", "string", "totalDownloads", {
         description: Strings.SORT_EXTENSION_METHOD
     });
 
@@ -245,6 +245,30 @@ define(function (require, exports, module) {
         });
     }
 
+    function _patchDownloadCounts() {
+        let registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+        if(!registryJson){
+            return;
+        }
+        $.ajax({
+            url: brackets.config.extension_registry_popularity,
+            dataType: "json",
+            cache: false
+        }).done(function (popularity) {
+            registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+            let registry = JSON.parse(registryJson);
+            for(let key of Object.keys(popularity)){
+                if(registry[key]) {
+                    registry[key].totalDownloads = popularity[key].totalDownloads || registry[key].totalDownloads
+                        || null; // null to not show the section if the counts are 0 or not present
+                    registry[key].gihubStars = popularity[key].gihubStars || registry[key].gihubStars
+                        || null;
+                }
+            }
+            localStorage.setItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY, JSON.stringify(registry));
+        });
+    }
+
     /**
      * Downloads the registry of Brackets extensions and stores the information in our
      * extension info.
@@ -308,6 +332,7 @@ define(function (require, exports, module) {
             .catch(()=>{
                 pendingDownloadRegistry = null;
             });
+        _patchDownloadCounts();
 
         return pendingDownloadRegistry.promise();
     }
