@@ -78,6 +78,7 @@ test/thirdparty/jasmine-reporters
 /test/results
 /test/temp
 test/test_folders.zip
+playwright-report
 
 # Netbeans
 /nbproject
