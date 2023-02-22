@@ -224,7 +224,9 @@ define(function (require, exports, module) {
         
         let PANEL_MIN_SIZE = 50;
         let INITIAL_PANEL_SIZE = document.body.clientWidth;
-        if (INITIAL_PANEL_SIZE > 600)  INITIAL_PANEL_SIZE = INITIAL_PANEL_SIZE/2.5;
+        if (INITIAL_PANEL_SIZE > 600) {
+            INITIAL_PANEL_SIZE = INITIAL_PANEL_SIZE/2.5;
+        };
         
         $icon = $("#toolbar-go-live");
         $icon.click(_toggleVisibilityOnClick);
