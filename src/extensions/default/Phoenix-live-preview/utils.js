@@ -52,7 +52,8 @@ define(function (require, exports, module) {
 
     function isPreviewableFile(filePath) {
         let extension = getExtension(filePath);
-        return ['html', 'htm', 'jpg', 'jpeg', 'png', 'svg', 'pdf', 'md', 'markdown'].includes(extension.toLowerCase());
+        return ['html', 'xhtml', 'htm', 'jpg', 'jpeg', 'png', 'svg',
+            'pdf', 'md', 'markdown'].includes(extension.toLowerCase());
     }
 
     function _isMarkdownFile(filePath) {
@@ -62,7 +63,7 @@ define(function (require, exports, module) {
 
     function _isHTMLFile(filePath) {
         let extension = getExtension(filePath);
-        return ['html', 'htm'].includes(extension.toLowerCase());
+        return ['html', 'htm', 'xhtml'].includes(extension.toLowerCase());
     }
 
     function getNoPreviewURL(){
