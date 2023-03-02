@@ -91,7 +91,7 @@ function _updateProjectCards() {
     if(!showRecentProjects){
         $("#recentProjectsContainer").addClass("forced-hidden");
         $("#noProjectContainer").removeClass("forced-hidden");
-        let videoHtml = `<iframe id="noProjectIframe" style="align-items: center" src="https://www.youtube.com/embed/Nqukd9oU060" title="YouTube video player"
+        let videoHtml = `<iframe id="noProjectIframe" style="align-items: center" src="https://www.youtube.com/embed/vtks0cus0hA" title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen></iframe>`;
