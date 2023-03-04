@@ -100,7 +100,12 @@ define(function (require, exports, module) {
         var result = "",
             ownerLink = exports.ownerLink.call(this),
             userId = exports.formatUserId.call(this);
-        if (this.metadata && this.metadata.author) {
+        if(this.verified && this.verifiedURL) {
+            // https://emmet.io/x/y => emmet.io
+            let displayText = this.verifiedURL.replace("https://", "").replace("http://", "").split("/")[0];
+            result = htmlEscape(displayText);
+            ownerLink = this.verifiedURL;
+        } else if (this.metadata && this.metadata.author) {
             result = htmlEscape(this.metadata.author.name || this.metadata.author);
         } else if (userId) {
             result = htmlEscape(userId);

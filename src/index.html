@@ -136,7 +136,6 @@
         const shouldRefreshLess = window.localStorage.getItem(LESS_REFRESH_SCHEDULED_KEY) === 'yes';
         const CACHE_NAME_EVERYTHING = "everything";
         function _resetCacheIfNeeded() {
-            window.cacheClearError;
             const cacheKey = "browserCacheVersionKey";
             const newCacheVersion = "V8"; // just increment this number to V2, v3 etc. to force clear the cached content.
             const lastClearedVersion = window.localStorage.getItem(cacheKey);
