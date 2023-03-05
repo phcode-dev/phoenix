@@ -32,6 +32,7 @@ define(function (require, exports, module) {
         FileSystem         = require("filesystem/FileSystem"),
         FileUtils          = require("file/FileUtils"),
         EditorManager      = require("editor/EditorManager"),
+        DocumentManager    = require("document/DocumentManager"),
         ExtensionUtils     = require("utils/ExtensionUtils"),
         ThemeSettings      = require("view/ThemeSettings"),
         ThemeView          = require("view/ThemeView"),
@@ -193,6 +194,19 @@ define(function (require, exports, module) {
     }
 
 
+    let currentTrackingDoc;
+    function _trackLivePreviewDevThemeFile(themeFilePath, devTheme) {
+        DocumentManager.getDocumentForPath(themeFilePath).done(doc =>{
+            if(currentTrackingDoc){
+                currentTrackingDoc.off("change.ThemeManager");
+            }
+            currentTrackingDoc = doc;
+            doc.on("change.ThemeManager", ()=>{
+                _applyThemeCSS(doc.getText(), devTheme);
+            });
+        }).fail(console.error);
+    }
+
     /**
      * Extension developers can load their custom themes using debug menu> load project as extension. in this case
      * a query strin param will ge specified with the dev extension path. we will always load that theme as default
@@ -231,12 +245,18 @@ define(function (require, exports, module) {
         // check if a dev theme is loaded via query string parameter. If so that will be the current theme.
         let devTheme = _getCurrentlyLoadedDevTheme();
         if(devTheme){
-            return devTheme;
-        }
-        if (!currentTheme) {
+            currentTheme = devTheme;
+        } else if (!currentTheme) {
             currentTheme = loadedThemes[prefs.get("theme")] || loadedThemes[defaultTheme];
         }
 
+        if(currentTheme){
+            _trackLivePreviewDevThemeFile(currentTheme.file.fullPath, currentTheme);
+            EditorManager.off(EditorManager.EVENT_ACTIVE_EDITOR_CHANGED + ".ThemeManager");
+            EditorManager.on(EditorManager.EVENT_ACTIVE_EDITOR_CHANGED + ".ThemeManager", ()=>{
+                _trackLivePreviewDevThemeFile(currentTheme.file.fullPath, currentTheme);
+            });
+        }
         return currentTheme;
     }
 
