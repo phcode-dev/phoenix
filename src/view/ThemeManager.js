@@ -22,7 +22,7 @@
  */
 
 /*jslint regexp: true */
-/*global less, path */
+/*global less, path, Phoenix */
 
 define(function (require, exports, module) {
 
@@ -36,6 +36,7 @@ define(function (require, exports, module) {
         ThemeSettings      = require("view/ThemeSettings"),
         ThemeView          = require("view/ThemeView"),
         PreferencesManager = require("preferences/PreferencesManager"),
+        UrlParams          = require("utils/UrlParams").UrlParams,
         prefs              = PreferencesManager.getExtensionPrefs("themes");
 
     let loadedThemes    = {},
@@ -193,6 +194,32 @@ define(function (require, exports, module) {
 
 
     /**
+     * Extension developers can load their custom themes using debug menu> load project as extension. in this case
+     * a query strin param will ge specified with the dev extension path. we will always load that theme as default
+     * as th user intent would be to develop the theme in that case.
+     * @return {null|*}
+     * @private
+     */
+    function _getCurrentlyLoadedDevTheme() {
+        const params  = new UrlParams();
+        params.parse();
+        let devThemePaths = params.get("loadDevExtensionPath");
+        if(!devThemePaths){
+            return null;
+        }
+        devThemePaths = devThemePaths.split(","); // paths are a comma seperated list
+        for(let themeID of Object.keys(loadedThemes)){
+            let themeFilePath = loadedThemes[themeID].file.fullPath;
+            for(let devThemePath of devThemePaths){
+                if(themeFilePath.startsWith(devThemePath)){
+                    return loadedThemes[themeID];
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Get current theme object that is loaded in the editor.
      *
      * @return {Theme} the current theme instance
@@ -201,6 +228,11 @@ define(function (require, exports, module) {
         let defaultTheme = isOSInDarkTheme() ?
             ThemeSettings.DEFAULTS.darkTheme:
             ThemeSettings.DEFAULTS.lightTheme;
+        // check if a dev theme is loaded via query string parameter. If so that will be the current theme.
+        let devTheme = _getCurrentlyLoadedDevTheme();
+        if(devTheme){
+            return devTheme;
+        }
         if (!currentTheme) {
             currentTheme = loadedThemes[prefs.get("theme")] || loadedThemes[defaultTheme];
         }
@@ -220,6 +252,15 @@ define(function (require, exports, module) {
     }
 
 
+    async function _applyThemeCSS(lessContent, theme) {
+        const content =  await window.jsPromise(lessifyTheme(lessContent.replace(commentRegex, ""), theme));
+        const result = extractScrollbars(content);
+        theme.scrollbar = result.scrollbar;
+        const cssContent = result.content;
+        $("body").toggleClass("dark", theme.dark);
+        styleNode.text(cssContent);
+    }
+
     /**
      * @private
      * Process and load the current theme into the editor
@@ -232,17 +273,10 @@ define(function (require, exports, module) {
 
         var pending = theme && FileUtils.readAsText(theme.file)
             .then(function (lessContent) {
-                return lessifyTheme(lessContent.replace(commentRegex, ""), theme);
-            })
-            .then(function (content) {
-                var result = extractScrollbars(content);
-                theme.scrollbar = result.scrollbar;
-                return result.content;
-            })
-            .then(function (cssContent) {
-                $("body").toggleClass("dark", theme.dark);
-                styleNode.text(cssContent);
-                return theme;
+                const deferred = new $.Deferred();
+                _applyThemeCSS(lessContent, theme)
+                    .then(deferred.resolve)
+                    .catch(deferred.reject);
             });
 
         return $.when(pending);
@@ -385,7 +419,11 @@ define(function (require, exports, module) {
      */
     function loadFile(fileName, options) {
         if(fileName.startsWith("http://") || fileName.startsWith("https://")) {
-            return _loadFileFromURL(fileName, options);
+            if(Phoenix.VFS.getPathForVirtualServingURL(fileName)){
+                fileName = Phoenix.VFS.getPathForVirtualServingURL(fileName);
+            } else {
+                return _loadFileFromURL(fileName, options);
+            }
         }
 
         var deferred         = new $.Deferred(),
@@ -440,7 +478,7 @@ define(function (require, exports, module) {
         // listen to system dark/light theme changes
         console.log(`System theme changed to ${e.matches ? "dark" : "light"} mode`);
         refresh(true);
-        
+
         // Report os preference change also as a theme change
         exports.trigger(EVENT_THEME_CHANGE, getCurrentTheme());
     });

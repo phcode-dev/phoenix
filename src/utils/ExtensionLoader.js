@@ -501,7 +501,7 @@ define(function (require, exports, module) {
     function loadExtensionFromNativeDirectory(directory) {
         logger.leaveTrail("loading custom extension from path: " + directory);
         const extConfig = {
-            baseUrl: window.fsServerUrl.slice(0, -1) + directory
+            baseUrl: window.fsServerUrl.slice(0, -1) + directory.replace(/\/$/, "")
         };
         return loadExtension("ext" + directory.replace("/", "-"), // /fs/user/extpath to ext-fs-user-extpath
             extConfig, 'main');
