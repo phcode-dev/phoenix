@@ -21,6 +21,7 @@
 
 // jshint ignore: start
 /*jslint regexp: true */
+/*globals logger*/
 
 define(function (require, exports, module) {
 
@@ -1777,21 +1778,41 @@ define(function (require, exports, module) {
      * Restarts brackets Handler
      * @param {boolean=} loadWithoutExtensions - true to restart without extensions,
      *                                           otherwise extensions are loadeed as it is durning a typical boot
+     * @param {Array<String>|string} loadDevExtensionPath If specified, will load the extension from the path. IF
+     * and empty array is specified, it will unload all dev extensions on reload.
      */
-    function handleReload(loadWithoutExtensions) {
+    function handleReload(loadWithoutExtensions, loadDevExtensionPath) {
         var href    = window.location.href,
             params  = new UrlParams();
 
         // Make sure the Reload Without User Extensions parameter is removed
         params.parse();
 
+        function _removeLoadDevExtensionPathParam() {
+            if (params.get("loadDevExtensionPath")) {
+                params.remove("loadDevExtensionPath");
+                // only remove logging flag if the flag is set for loadDevExtensionPath
+                if (params.get(logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY)) {
+                    params.remove(logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY);
+                }
+            }
+        }
+
         if (loadWithoutExtensions) {
             if (!params.get("reloadWithoutUserExts")) {
                 params.put("reloadWithoutUserExts", true);
             }
+            _removeLoadDevExtensionPathParam();
         } else {
             if (params.get("reloadWithoutUserExts")) {
                 params.remove("reloadWithoutUserExts");
+            }
+            if(loadDevExtensionPath && loadDevExtensionPath.length){
+                params.put("loadDevExtensionPath", loadDevExtensionPath);
+                // since we are loading a development extension, we have to enable detailed logs too on reload
+                params.put(logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY, "true");
+            } else if (loadDevExtensionPath && loadDevExtensionPath.length === 0) {
+                _removeLoadDevExtensionPathParam();
             }
         }
 

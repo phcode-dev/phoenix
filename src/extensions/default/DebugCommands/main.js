@@ -44,6 +44,7 @@ define(function (require, exports, module) {
         Mustache               = brackets.getModule("thirdparty/mustache/mustache"),
         Locales                = brackets.getModule("nls/strings"),
         ProjectManager         = brackets.getModule("project/ProjectManager"),
+        extensionDevelopment   = require("extensionDevelopment"),
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
 
@@ -66,7 +67,9 @@ define(function (require, exports, module) {
       * Debug commands IDs
       * @enum {string}
       */
-    const DEBUG_REFRESH_WINDOW                  = "debug.refreshWindow", // string must MATCH string in native code (brackets_extensions)
+    const DEBUG_REFRESH_WINDOW                = "debug.refreshWindow", // string must MATCH string in native code (brackets_extensions)
+        DEBUG_LOAD_CURRENT_EXTENSION          = "debug.loadCurrentExtension",
+        DEBUG_UNLOAD_CURRENT_EXTENSION        = "debug.unloadCurrentExtension",
         DEBUG_RUN_UNIT_TESTS                  = "debug.runUnitTests",
         DEBUG_SHOW_PERF_DATA                  = "debug.showPerfData",
         DEBUG_RELOAD_WITHOUT_USER_EXTS        = "debug.reloadWithoutUserExts",
@@ -725,6 +728,12 @@ define(function (require, exports, module) {
     }
 
     /* Register all the command handlers */
+    let loadOrReloadString = extensionDevelopment.isProjectLoadedAsExtension() ?
+        Strings.CMD_RELOAD_CURRENT_EXTENSION : Strings.CMD_LOAD_CURRENT_EXTENSION;
+    CommandManager.register(loadOrReloadString,     DEBUG_LOAD_CURRENT_EXTENSION,
+        extensionDevelopment.loadCurrentExtension);
+    CommandManager.register(Strings.CMD_UNLOAD_CURRENT_EXTENSION,     DEBUG_UNLOAD_CURRENT_EXTENSION,
+        extensionDevelopment.unloadCurrentExtension);
     CommandManager.register(Strings.CMD_REFRESH_WINDOW,             DEBUG_REFRESH_WINDOW,           handleReload);
     CommandManager.register(Strings.CMD_RELOAD_WITHOUT_USER_EXTS,   DEBUG_RELOAD_WITHOUT_USER_EXTS, handleReloadWithoutUserExts);
     CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,        DEBUG_NEW_BRACKETS_WINDOW,      handleNewBracketsWindow);
@@ -751,6 +760,10 @@ define(function (require, exports, module) {
     var menu = Menus.addMenu(Strings.DEBUG_MENU, DEBUG_MENU, Menus.BEFORE, Menus.AppMenuBar.HELP_MENU);
     menu.addMenuItem(DEBUG_REFRESH_WINDOW, KeyboardPrefs.refreshWindow);
     menu.addMenuItem(DEBUG_RELOAD_WITHOUT_USER_EXTS, KeyboardPrefs.reloadWithoutUserExts);
+    menu.addMenuItem(DEBUG_LOAD_CURRENT_EXTENSION);
+    menu.addMenuItem(DEBUG_UNLOAD_CURRENT_EXTENSION, undefined, undefined, undefined, {
+        hideWhenCommandDisabled: true
+    });
     menu.addMenuItem(DEBUG_NEW_BRACKETS_WINDOW);
     menu.addMenuDivider();
     menu.addMenuItem(DEBUG_SWITCH_LANGUAGE);
@@ -767,6 +780,8 @@ define(function (require, exports, module) {
     menu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW); // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
     menu.addMenuItem(Commands.FILE_OPEN_KEYMAP);      // this command is defined in core, but exposed only in Debug menu for now
 
+    CommandManager.get(DEBUG_UNLOAD_CURRENT_EXTENSION)
+        .setEnabled(extensionDevelopment.isProjectLoadedAsExtension());
     _updateLogToConsoleMenuItemChecked();
     // exposed for convenience, but not official API
     exports._runUnitTests = _runUnitTests;
