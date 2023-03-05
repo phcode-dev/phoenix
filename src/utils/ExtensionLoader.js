@@ -494,6 +494,20 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Loads a given extension at the path from native directory.
+     * @param directory
+     * @return {!Promise}
+     */
+    function loadExtensionFromNativeDirectory(directory) {
+        logger.leaveTrail("loading custom extension from path: " + directory);
+        const extConfig = {
+            baseUrl: window.fsServerUrl.slice(0, -1) + directory
+        };
+        return loadExtension("ext" + directory.replace("/", "-"), // /fs/user/extpath to ext-fs-user-extpath
+            extConfig, 'main');
+    }
+
+    /**
      * Runs unit test for the extension that lives at baseUrl into its own Require.js context
      *
      * @param {!string} directory, an absolute native path that contains a directory of extensions.
@@ -624,6 +638,12 @@ define(function (require, exports, module) {
             } else {
                 paths = [];
             }
+            if(params.get("loadDevExtensionPath")){
+                let customLoadPaths = params.get("loadDevExtensionPath").split(",");
+                for(let customPath of customLoadPaths){
+                    paths.push("custom:" + customPath);
+                }
+            }
         }
 
         // Load extensions before restoring the project
@@ -646,6 +666,8 @@ define(function (require, exports, module) {
         var promise = Async.doInParallel(paths, function (extPath) {
             if(extPath === "default"){
                 return loadAllDefaultExtensions();
+            } else if(extPath.startsWith("custom:")){
+                return loadExtensionFromNativeDirectory(extPath.replace("custom:", ""));
             } else {
                 return loadAllExtensionsInNativeDirectory(extPath);
             }
