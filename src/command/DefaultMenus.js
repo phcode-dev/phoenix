@@ -277,8 +277,9 @@ define(function (require, exports, module) {
         editor_cmenu.addMenuDivider();
         editor_cmenu.addMenuItem(Commands.EDIT_CUT);
         editor_cmenu.addMenuItem(Commands.EDIT_COPY);
-        editor_cmenu.addMenuItem(Commands.EDIT_PASTE);
-
+        if(!(!window.Phoenix.browser.isTauri && window.Phoenix.browser.desktop.isFirefox)){
+            editor_cmenu.addMenuItem(Commands.EDIT_PASTE);
+        }
         editor_cmenu.addMenuDivider();
         editor_cmenu.addMenuItem(Commands.EDIT_SELECT_ALL);
 
