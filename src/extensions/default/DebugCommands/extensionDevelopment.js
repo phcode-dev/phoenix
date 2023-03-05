@@ -51,6 +51,9 @@ define(function (require, exports, module) {
                     missingFields.push(requiredField);
                 }
             }
+            if(packageJson.engines && !packageJson.engines.brackets){
+                missingFields.push(`engines:{"brackets": ">=2.0.0"}`);
+            }
             if(missingFields.length){
                 _showError(StringUtils.format(Strings.ERROR_INVALID_EXTENSION_PACKAGE_FIELDS, missingFields));
                 return false;
