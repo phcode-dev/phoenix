@@ -20,13 +20,14 @@
  */
 
 /*jslint regexp: true */
-/*global describe, it, spyOn, expect, beforeEach, afterEach, awaitsForFail, awaitsForDone */
+/*global describe, it, spyOn, expect, beforeEach, afterEach, awaitsForFail, awaitsForDone, awaitsFor */
 
 define(function (require, exports, module) {
 
 
     // Load dependent modules
     var ExtensionLoader = require("utils/ExtensionLoader"),
+        ThemeManager     = require("view/ThemeManager"),
         SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     const testPath = SpecRunnerUtils.getTestPath("/spec/ExtensionLoader-test-files");
@@ -125,5 +126,23 @@ define(function (require, exports, module) {
             await testLoadExtension("BadRequireConfig", "resolved", /^\[Extension\] The require config file provided is invalid/);
         });
 
+        it("should load a custom extension", async function () {
+            await awaitsForDone(ExtensionLoader.loadExtensionFromNativeDirectory(`${testPath}/extension`));
+            expect(window.extensionLoaderTestExtensionLoaded).toBeTrue();
+        });
+
+        it("should load a custom theme", async function () {
+            await awaitsForDone(ExtensionLoader.loadExtensionFromNativeDirectory(`${testPath}/theme`));
+            expect(window.extensionLoaderTestExtensionLoaded).toBeTrue();
+            await awaitsFor(function () {
+                let themes = ThemeManager.getAllThemes();
+                for(let theme of themes){
+                    if(theme.name === "da-theme"){
+                        return true;
+                    }
+                }
+                return false;
+            }, "custom theme to be loaded");
+        });
     });
 });

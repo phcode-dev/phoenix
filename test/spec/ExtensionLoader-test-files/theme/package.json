@@ -1,0 +1,16 @@
+{
+  "title": "da theme",
+  "name": "da-theme",
+  "description": "da theme",
+  "version": "1.0.1",
+  "license": "MIT",
+  "author": "da theme",
+  "homepage": "da theme",
+  "engines": {
+    "brackets": ">=0.42.0"
+  },
+  "theme": {
+    "file": "theme.css",
+    "dark": true
+  }
+}
