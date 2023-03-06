@@ -93,7 +93,9 @@ define(function (require, exports, module) {
         // TODO: add js handlers for copy and paste using browser standards.
         menu.addMenuItem(Commands.EDIT_CUT);
         menu.addMenuItem(Commands.EDIT_COPY);
-        menu.addMenuItem(Commands.EDIT_PASTE);
+        if(window.Phoenix.browser.isTauri || !window.Phoenix.browser.desktop.isFirefox){
+            menu.addMenuItem(Commands.EDIT_PASTE);
+        }
         menu.addMenuDivider();
 
         menu.addMenuItem(Commands.EDIT_SELECT_ALL);
@@ -277,7 +279,7 @@ define(function (require, exports, module) {
         editor_cmenu.addMenuDivider();
         editor_cmenu.addMenuItem(Commands.EDIT_CUT);
         editor_cmenu.addMenuItem(Commands.EDIT_COPY);
-        if(!(!window.Phoenix.browser.isTauri && window.Phoenix.browser.desktop.isFirefox)){
+        if(window.Phoenix.browser.isTauri || !window.Phoenix.browser.desktop.isFirefox){
             editor_cmenu.addMenuItem(Commands.EDIT_PASTE);
         }
         editor_cmenu.addMenuDivider();
