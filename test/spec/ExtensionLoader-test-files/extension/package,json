@@ -1,0 +1,20 @@
+{
+    "name": "hello.test",
+    "title": "All New Extension Store Test Extension.",
+    "description": "Test extension for new extension publish workflow.",
+    "homepage": "https://github.com/test/repo",
+    "version": "0.0.8",
+    "author": "Arun",
+    "license": "MIT",
+    "categories": "demo",
+    "keywords": [
+        "phcode", "extension", "demo"
+    ],
+    "files": [
+        "main.js"
+    ],
+    "engines": {
+        "brackets": ">=0.34.0"
+    }
+}
+

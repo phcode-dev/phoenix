@@ -494,7 +494,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Loads a given extension at the path from native directory.
+     * Loads a given extension at the path from virtual fs.
      * @param directory
      * @return {!Promise}
      */
@@ -695,6 +695,7 @@ define(function (require, exports, module) {
     exports.loadExtension = loadExtension;
     exports.testExtension = testExtension;
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;
+    exports.loadExtensionFromNativeDirectory = loadExtensionFromNativeDirectory;
     exports.testAllExtensionsInNativeDirectory = testAllExtensionsInNativeDirectory;
     exports.testAllDefaultExtensions = testAllDefaultExtensions;
     exports.EVENT_EXTENSION_LOADED = EVENT_EXTENSION_LOADED;
