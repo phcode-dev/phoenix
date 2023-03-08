@@ -5,6 +5,11 @@
       "licenseURL": "https://github.com/twbs/bootstrap/blob/main/LICENSE",
       "credits": "https://getbootstrap.com/",
       "creditsURL": "https://getbootstrap.com/"
+    },"phcode": {
+      "license": "MIT",
+      "licenseURL": "https://github.com/twbs/bootstrap/blob/main/LICENSE",
+      "credits": "https://phcode.dev/",
+      "creditsURL": "https://phcode.dev/"
     }
   },
   "sections": {
@@ -31,13 +36,14 @@
         "title": "WEBPAGE_BOOTSTRAP_EXAMPLES",
         "zipURL": "assets/sample-projects/zips/bootstrap.zip"
       }
-    }, "CREATE_EXTENSION_SECTION": {
-      "CREATE_EXTENSION": {"LICENCES": "bootstrap",
+    },
+    "CREATE_EXTENSION_SECTION": {
+      "CREATE_EXTENSION": {"LICENCES": "phcode",
         "iconURL": "appLogo",
         "title": "CREATE_EXTENSION",
         "externalURL": "https://github.com/phcode-dev/extension-template"
       },
-      "CREATE_THEME": {"LICENCES": "bootstrap",
+      "CREATE_THEME": {"LICENCES": "phcode",
         "iconURL": "appLogo",
         "title": "CREATE_THEME",
         "externalURL": "https://github.com/phcode-dev/theme-template"
