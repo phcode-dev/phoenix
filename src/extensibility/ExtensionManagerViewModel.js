@@ -325,7 +325,14 @@ define(function (require, exports, module) {
      */
     function RegistryViewModel() {
         ExtensionManagerViewModel.call(this);
-        this.infoMessage = Strings.REGISTRY_SANITY_CHECK_WARNING;
+        this.infoMessage = `<div style="display: flex; justify-content: space-between;">
+            <div style="margin-top: 3px; width: 80%;">${Strings.REGISTRY_SANITY_CHECK_WARNING}</div>
+            <div>
+                <button class="dialog-button btn primary btn-mini createExtesnion"
+                style="white-space: nowrap;">
+                ${Strings.EXTENSION_MANAGER_CREATE_EXTENSION}</button>
+            </div>
+            </div>`;
     }
 
     RegistryViewModel.prototype = Object.create(ExtensionManagerViewModel.prototype);
@@ -598,6 +605,9 @@ define(function (require, exports, module) {
             <div>
                 <button id="ThemeViewThemeRevert" class="dialog-button btn btn-mini undoTheme forced-hidden">
                 ${Strings.EXTENSION_MANAGER_THEMES_UNDO}</button>
+                <button class="dialog-button btn btn-mini createTheme primary"
+                style="white-space: nowrap;">
+                ${Strings.EXTENSION_MANAGER_CREATE_THEME}</button>
             </div>
             </div>`;
     }

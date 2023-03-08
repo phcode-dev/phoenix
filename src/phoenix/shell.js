@@ -37,7 +37,7 @@ Phoenix.app = {
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
     openURLInDefaultBrowser: function (url){
-        window.open(url);
+        window.open(url, '_blank', 'noopener,noreferrer');
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
     getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,
