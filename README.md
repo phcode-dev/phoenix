@@ -107,12 +107,24 @@ To view/edit the files in the browser virtual file system in Phoenix:
 * clean builds only: `npm run clean`
 * Reset everything including node modules: `npm run reset`
 
+## Previewing changes in dev and staging
+One a pull request is merged, it will be automatically deployed to dev.phcode.dev . To view the changes:
+1. goto https://dev.phcode.dev/devEnable.html and click `enable dev.phcode.dev` . only needs to be done once.
+2. goto https://dev.phcode.dev to preview your changes. If it is a recent change, you might need to wait for
+up to 15 minutes before the changes are deployed to the dev stage. Reload page a few times to get the latest
+dev build and reset cached content.
+
+The process is the same for `staging.phcode.dev`. Builds that are verified in development will be pushed
+periodically to staging. To view staging:
+1. goto https://staging.phcode.dev/devEnable.html and click `enable staging.phcode.dev` . only needs to be done once.
+2. goto https://staging.phcode.dev to preview your changes.  If it is a recent change, you might need to wait for
+   up to 15 minutes before the changes are deployed to the dev stage. Reload page a few times to get the latest
+   dev build and reset cached content.
+
 ## Deployment to phcore.dev
-* All changes pushed to the main branch are automatically published to https://dev.phcode.dev
+* All changes pushed to the main branch are automatically published to https://dev.phcode.dev 
 * To publish the changes to https://staging.phcode.dev , push changes to the `staging` branch in this repo with a pull request.
 * Once the changes are validated and tested, trigger a prod deployment by pushing to the `prod` branch.
-
-Note: Pre-prod is still work in progress.
 
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).
