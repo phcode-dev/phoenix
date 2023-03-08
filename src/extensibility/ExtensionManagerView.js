@@ -243,12 +243,12 @@ define(function (require, exports, module) {
                 e.stopPropagation();
             })
             .on("click", "button.createTheme", function (e) {
-                NativeApp.openURLInDefaultBrowser("https://github.com/phcode-dev/theme-template/generate");
+                NativeApp.openURLInDefaultBrowser("https://github.com/phcode-dev/theme-template");
                 e.preventDefault();
                 e.stopPropagation();
             })
             .on("click", "button.createExtesnion", function (e) {
-                NativeApp.openURLInDefaultBrowser("https://github.com/phcode-dev/extension-template/generate");
+                NativeApp.openURLInDefaultBrowser("https://github.com/phcode-dev/extension-template");
                 e.preventDefault();
                 e.stopPropagation();
             })

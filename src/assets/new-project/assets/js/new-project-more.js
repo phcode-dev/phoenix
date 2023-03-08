@@ -28,6 +28,8 @@ let $sampleProjectsList;
 function _getIconURL(iconURL) {
     if(iconURL === 'bootstrap'){
         return 'images/Bootstrap_logo.svg';
+    } else if(iconURL === 'appLogo'){
+        return 'images/logo.png';
     } else if(iconURL && (iconURL.startsWith("https://") || iconURL.startsWith("http://"))){
         return iconURL;
     }
@@ -46,6 +48,16 @@ function _addProjectEntries($projectList, sampleProjectsList, sectionTag) {
         let licenseDetails = sampleProjectsList.LICENCES[projectDetails.LICENCES];
         let translatedTitle = Strings[projectDetails.title] || projectDetails.title || project;
         let previewURL = getPhoenixAbsURL(projectDetails.previewURL);
+        if(projectDetails.externalURL){
+            $projectList.append(`<li>
+                <a class="tabable" tabindex="1" href="#"
+                 onclick="window.parent.brackets.app.openURLInDefaultBrowser('${projectDetails.externalURL}')">
+                    <img alt="image" src="${_getIconURL(projectDetails.iconURL)}">
+                    <span>${translatedTitle}</span>
+                </a>
+            </li>`);
+            continue;
+        }
         let zipURL = getPhoenixAbsURL(projectDetails.zipURL);
         let url = getNewProjectFromURL(zipURL, translatedTitle, translatedTitle,
             {
