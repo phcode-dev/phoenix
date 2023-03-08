@@ -31,6 +31,17 @@
         "title": "WEBPAGE_BOOTSTRAP_EXAMPLES",
         "zipURL": "assets/sample-projects/zips/bootstrap.zip"
       }
+    }, "CREATE_EXTENSION_SECTION": {
+      "CREATE_EXTENSION": {"LICENCES": "bootstrap",
+        "iconURL": "appLogo",
+        "title": "CREATE_EXTENSION",
+        "externalURL": "https://github.com/phcode-dev/extension-template"
+      },
+      "CREATE_THEME": {"LICENCES": "bootstrap",
+        "iconURL": "appLogo",
+        "title": "CREATE_THEME",
+        "externalURL": "https://github.com/phcode-dev/theme-template"
+      }
     }
   }
 }
