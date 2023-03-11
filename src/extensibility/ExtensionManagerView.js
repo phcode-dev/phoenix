@@ -236,6 +236,7 @@ define(function (require, exports, module) {
                 self._installUsingDialog($(e.target).attr("data-extension-id"), true);
             })
             .on("click", "button.undoTheme", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "undoTheme");
                 $("#ThemeViewThemeRevert").addClass("forced-hidden");
                 $("#InstalledViewThemeRevert").addClass("forced-hidden");
                 ThemeManager.setCurrentTheme(originalTheme.name);
@@ -243,11 +244,13 @@ define(function (require, exports, module) {
                 e.stopPropagation();
             })
             .on("click", "button.createTheme", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "createTheme");
                 NativeApp.openURLInDefaultBrowser("https://github.com/phcode-dev/theme-template");
                 e.preventDefault();
                 e.stopPropagation();
             })
             .on("click", "button.createExtesnion", function (e) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "btnClick", "createExtension");
                 NativeApp.openURLInDefaultBrowser("https://github.com/phcode-dev/extension-template");
                 e.preventDefault();
                 e.stopPropagation();

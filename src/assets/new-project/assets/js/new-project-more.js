@@ -41,6 +41,11 @@ function navigateToURL(url, metricLabel) {
     location.href = url;
 }
 
+function _openURL(title, url) {
+    Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "moreProjects.Click", title);
+    window.parent.brackets.app.openURLInDefaultBrowser(url);
+}
+
 function _addProjectEntries($projectList, sampleProjectsList, sectionTag) {
     let projects = sampleProjectsList.sections[sectionTag];
     for(let project of Object.keys(projects)){
@@ -51,7 +56,7 @@ function _addProjectEntries($projectList, sampleProjectsList, sectionTag) {
         if(projectDetails.externalURL){
             $projectList.append(`<li>
                 <a class="tabable" tabindex="1" href="#"
-                 onclick="window.parent.brackets.app.openURLInDefaultBrowser('${projectDetails.externalURL}')">
+                 onclick="_openURL('${projectDetails.title}', '${projectDetails.externalURL}')">
                     <img alt="image" src="${_getIconURL(projectDetails.iconURL)}">
                     <span>${translatedTitle}</span>
                 </a>
