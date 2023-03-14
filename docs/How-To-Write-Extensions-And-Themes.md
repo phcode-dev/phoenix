@@ -5,6 +5,15 @@ Click on one of the below links and follow the instructions there to start:
 * [Create a theme](https://github.com/phcode-dev/theme-template)
 * [Create an extension](https://github.com/phcode-dev/extension-template)
 
+# API docs
+This is an evolving document, please refer the below links for extension API docs and how tos.
+* Phoenix APIs - https://github.com/phcode-dev/phoenix/wiki#phoenix-api-docs
+  * This is a work in progress. As we improve our documentation for phcode.dev, please check out the Brackets API docs too. 
+* Brackets APIs are also supported- https://brackets.io/docs/current/
+* Common How-Tos: https://github.com/brackets-cont/brackets/wiki/How-to-Write-Extensions#common-how-tos
+* Take a look at our default extensions for code reference: https://github.com/phcode-dev/phoenix/tree/main/src/extensions/default
+
+
 # Publishing to the extension/theme store
 Extensions created from the above GitHub template can be easily published from your GitHub repo to the store.
 
