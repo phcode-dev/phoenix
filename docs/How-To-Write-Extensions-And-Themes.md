@@ -29,7 +29,8 @@ Just creating a release in GitHub with an attached `extensions.zip` file. Follow
    > See Eg. https://github.com/phcode-dev/extension-template/issues/2
 1. If there are any errors in publishing, please visit the link in the issue to 
 fix and retry publishing the release.
-1. Once the extension is published, you should be able to see it in the extension store in https://phcode.dev![image](https://user-images.githubusercontent.com/5336369/224892317-c55ddec2-599e-4df2-8ee5-4e50f262dee7.png)
+1. Once the extension is published, you should be able to see it in the extension store in https://phcode.dev
+![image](https://user-images.githubusercontent.com/5336369/224892317-c55ddec2-599e-4df2-8ee5-4e50f262dee7.png)
  
 > NB: Your repository must be **public** to be able to be published to the Phoenix Extension store.
 See this link on [understanding how to change repo visibility](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility#changing-a-repositorys-visibility) to public in GitHub.
