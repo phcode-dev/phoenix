@@ -11,7 +11,7 @@ List of features added to phoenix:
 ## Create and Publish extensions
 `Added on March,2023`
 
-Creating extensions and themes is now easier than ever with a single click to create an extension in GitHub. We have added workflows to:
+Creating extensions and themes is now easier than ever with a single click in GitHub. We have added workflows to:
 * Create a [Theme](https://github.com/phcode-dev/theme-template) or [Extension](https://github.com/phcode-dev/extension-template) in a single click.
 * Load/unload development extensions with new `Debug> Reload With Extensions` menu. ![image](https://user-images.githubusercontent.com/5336369/224746152-0416a862-891a-4fe1-b9dd-09add25a6cc0.png)
 * [Publish an extension](https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes#publishing-to-the-extensiontheme-store)
