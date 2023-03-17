@@ -47,7 +47,7 @@ or old Brackets extensions, please follow the below steps:
 1. Create a GitHub repo for your extension if it is not present.
 2. Create a file `.github/workflows/publishToPhcode.yml` in your repo with the following contents: https://github.com/phcode-dev/theme-template/blob/main/.github/workflows/publishToPhcode.yml
 
-That's all, you can now follow the above `Publishing to the extension/theme store` section.
+That's all, you can now follow the above [Publishing to the extension/theme store](#publishing-to-the-extensiontheme-store) section.
 
 ## FAQ
 ### Why is my extension is not being published?
