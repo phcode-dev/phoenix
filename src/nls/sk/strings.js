@@ -789,7 +789,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix je stále v experimentálnej verzii alfa. Zatiaľ sme nepovolili synchronizáciu projektov s viac ako 500 súbormi.",
   "SHARE_WEBSITE": "Zverejniť a zdieľať webovú stránku?",
   "PUBLISH": "Publikovať",
-  "PUBLISH_CONSENT_MESSAGE": "Rýchlo ukážte zmeny a zdieľajte svoje webové stránky s ostatnými. Spoločnosť Phoenix vám môže zverejniť túto webovú stránku na adrese {0}. Zverejnené odkazy budú platné po dobu 7 dní. </br>Chcete zverejniť a zdieľať svoje webové stránky?",
+  "PUBLISH_CONSENT_MESSAGE": "Rýchlo ukážte zmeny a zdieľajte svoje webové stránky s ostatnými. Spoločnosť Phoenix vám môže zverejniť túto webovú stránku na adrese {0}. Zverejnené odkazy budú platné po dobu 30 dní. </br>Chcete zverejniť a zdieľať svoje webové stránky?",
   "PUBLISH_SYNC_IN_PROGRESS": "Prebieha synchronizácia pre ukážku...",
   "PUBLISH_PAGE": "Kliknutím zverejníte a zdieľate túto stránku",
   "PUBLISH_VIEW_PAGE": "Kliknutím zobrazíte zverejnenú stránku",

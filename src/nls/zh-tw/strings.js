@@ -789,7 +789,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix 仍處於實驗性 alpha 階段。我們尚未啟用超過 500 個文件的項目同步。",
   "SHARE_WEBSITE": "發布和共享網站？",
   "PUBLISH": "發布",
-  "PUBLISH_CONSENT_MESSAGE": "快速預覽更改並與他人共享您的網站。 Phoenix 可以在 {0} 為您發布此網站。發布的鏈接有效期為 7 天。 </br>您想發布和分享您的網站嗎？",
+  "PUBLISH_CONSENT_MESSAGE": "快速預覽更改並與他人共享您的網站。 Phoenix 可以在 {0} 為您發布此網站。發布的鏈接有效期為 30 天。 </br>您想發布和分享您的網站嗎？",
   "PUBLISH_SYNC_IN_PROGRESS": "正在同步以進行預覽...",
   "PUBLISH_PAGE": "點擊發布和分享本站",
   "PUBLISH_VIEW_PAGE": "點擊查看發布頁面",

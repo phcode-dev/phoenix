@@ -769,7 +769,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix er stadig i eksperimentel alfa. Vi har endnu ikke aktiveret synkronisering af projekter med mere end 500 filer.",
   "SHARE_WEBSITE": "Udgive og dele websted?",
   "PUBLISH": "Offentliggøre",
-  "PUBLISH_CONSENT_MESSAGE": "Se hurtigt et eksempel på ændringer og del dit websted med andre. Phoenix kan udgive denne hjemmeside for dig på {0}. De offentliggjorte links vil være gyldige i en periode på 7 dage. </br>Ønsker du at udgive og dele dit websted?",
+  "PUBLISH_CONSENT_MESSAGE": "Se hurtigt eksempler på ændringer og del dit websted med andre. Phoenix kan udgive denne hjemmeside for dig på {0}. De offentliggjorte links vil være gyldige i en periode på 30 dage. </br>Ønsker du at udgive og dele dit websted?",
   "PUBLISH_SYNC_IN_PROGRESS": "Synkronisering er i gang for forhåndsvisning...",
   "PUBLISH_PAGE": "Klik for at udgive og dele dette websted",
   "PUBLISH_VIEW_PAGE": "Klik for at se den offentliggjorte side",

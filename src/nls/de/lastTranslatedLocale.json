@@ -769,7 +769,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix befindet sich noch in der experimentellen Alpha. Wir haben die Synchronisierung von Projekten mit mehr als 500 Dateien noch nicht aktiviert.",
   "SHARE_WEBSITE": "Website veröffentlichen und teilen?",
   "PUBLISH": "Veröffentlichen",
-  "PUBLISH_CONSENT_MESSAGE": "Zeigen Sie Änderungen schnell in der Vorschau an und teilen Sie Ihre Website mit anderen. Phoenix kann diese Website unter {0} für Sie veröffentlichen. Die veröffentlichten Links sind für einen Zeitraum von 7 Tagen gültig. </br>Möchten Sie Ihre Website veröffentlichen und teilen?",
+  "PUBLISH_CONSENT_MESSAGE": "Zeigen Sie Änderungen schnell in der Vorschau an und teilen Sie Ihre Website mit anderen. Phoenix kann diese Website unter {0} für Sie veröffentlichen. Die veröffentlichten Links sind für einen Zeitraum von 30 Tagen gültig. </br>Möchten Sie Ihre Website veröffentlichen und teilen?",
   "PUBLISH_SYNC_IN_PROGRESS": "Synchronisierung für Vorschau läuft...",
   "PUBLISH_PAGE": "Klicken Sie hier, um diese Website zu veröffentlichen und zu teilen",
   "PUBLISH_VIEW_PAGE": "Klicken Sie hier, um die veröffentlichte Seite anzuzeigen",

@@ -789,7 +789,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix est toujours en version alpha expérimentale. Nous n'avons pas encore activé la synchronisation des projets avec plus de 500 fichiers.",
   "SHARE_WEBSITE": "Publier et partager le site Web ?",
   "PUBLISH": "Publier",
-  "PUBLISH_CONSENT_MESSAGE": "Prévisualisez rapidement les modifications et partagez votre site Web avec d'autres. Phoenix peut publier ce site Web pour vous à {0}. Les liens publiés seront valables pendant une période de 7 jours. </br>Vous souhaitez publier et partager votre site ?",
+  "PUBLISH_CONSENT_MESSAGE": "Prévisualisez rapidement les modifications et partagez votre site Web avec d'autres. Phoenix peut publier ce site Web pour vous à {0}. Les liens publiés seront valables pendant une période de 30 jours. </br>Vous souhaitez publier et partager votre site ?",
   "PUBLISH_SYNC_IN_PROGRESS": "Synchronisation en cours pour l'aperçu...",
   "PUBLISH_PAGE": "Cliquez pour publier et partager ce site",
   "PUBLISH_VIEW_PAGE": "Cliquez pour voir la page publiée",

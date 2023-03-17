@@ -789,7 +789,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix este încă în alfa experimentală. Nu am activat încă sincronizarea proiectelor cu mai mult de 500 de fișiere.",
   "SHARE_WEBSITE": "Publicați și partajați site-ul web?",
   "PUBLISH": "Publica",
-  "PUBLISH_CONSENT_MESSAGE": "Previzualizează rapid modificările și partajează site-ul tău altora. Phoenix poate publica acest site web pentru dvs. la {0}. Linkurile publicate vor fi valabile pentru o perioadă de 7 zile. </br>Doriți să publicați și să distribuiți site-ul dvs. web?",
+  "PUBLISH_CONSENT_MESSAGE": "Previzualizează rapid modificările și partajează site-ul tău altora. Phoenix poate publica acest site web pentru dvs. la {0}. Linkurile publicate vor fi valabile pentru o perioadă de 30 de zile. </br>Doriți să publicați și să distribuiți site-ul dvs. web?",
   "PUBLISH_SYNC_IN_PROGRESS": "Sincronizare în curs pentru previzualizare...",
   "PUBLISH_PAGE": "Faceți clic pentru a publica și partaja acest site",
   "PUBLISH_VIEW_PAGE": "Faceți clic pentru a vizualiza pagina publicată",
