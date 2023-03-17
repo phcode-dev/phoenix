@@ -22,13 +22,22 @@ Just creating a release in GitHub with an attached `extensions.zip` file. Follow
 1. Update `package.json` file before publishing
    * increment the `version` field.
    * Ensure that the `name` field is correct and all other fields like `title` and `description` are updated.
-1. Compress the extension folder into a zip file with name `extension.zip`. **NB: It is important to name the file as exactly `extension.zip`**
-1. Create a new release in GitHub and attach the above `extension.zip` file in the release. [See how to create GitHub releases by following this link](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
-   > See Release Eg. https://github.com/phcode-dev/extension-template/releases/tag/0.0.1
+1. Compress the extension folder into a zip file with name `extension.zip`. **NB: It is important to name the file as exactly `extension.zip`** ![image](https://user-images.githubusercontent.com/5336369/225952199-64a94252-d87c-4e6d-9e0f-92dadcd91a22.png)
+1. Create a new release in GitHub and attach the above `extension.zip` file in the release.
+   1. On GitHub.com, navigate to the main page of the repository.
+   2. To the right of the list of files, click `Releases`. ![image](https://user-images.githubusercontent.com/5336369/225949727-615f1e47-6bef-4588-a2ad-8ff171a365f2.png)
+   3. Click on `Draft New Release` ![image](https://user-images.githubusercontent.com/5336369/225950622-7a2be0c7-50ae-492b-9c4b-0e7561a5d6db.png)
+   4. Select `choose a tag` and type in your new extension version and `Create new tag`. ![image](https://user-images.githubusercontent.com/5336369/225951176-de9fefa2-8460-4a1d-a655-906e8f6f66ee.png)
+   5. Fill out the remaining fields.
+   6. Drag and drop the `extension.zip` file to the release. ![new extension](https://user-images.githubusercontent.com/5336369/225951658-ac388712-0128-463e-85cf-c66746a360f7.gif)
+   7. Click on `Publish release` button.
+   2. [Learn more on how to create GitHub releases here.](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
+   >    See Release Example: https://github.com/phcode-dev/extension-template/releases/tag/0.0.1
 1. You will get an issue in your issue tab regarding the publishing status of the extension/theme.
-   > See Eg. https://github.com/phcode-dev/extension-template/issues/2
+   > See Example: https://github.com/phcode-dev/extension-template/issues/2
 1. If there are any errors in publishing, please visit the link in the issue to 
-fix and retry publishing the release.
+see the errors. Fix and `retry` publishing the release.
+   ![image](https://user-images.githubusercontent.com/5336369/222446467-534f67de-5342-444a-bba5-708011e7024d.png)
 1. Once the extension is published, you should be able to see it in the extension store in https://phcode.dev
 ![image](https://user-images.githubusercontent.com/5336369/224892317-c55ddec2-599e-4df2-8ee5-4e50f262dee7.png)
  
