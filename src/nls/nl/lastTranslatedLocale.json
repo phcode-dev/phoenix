@@ -769,7 +769,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix bevindt zich nog in experimentele alfa. We hebben de synchronisatie van projecten met meer dan 500 bestanden nog niet ingeschakeld.",
   "SHARE_WEBSITE": "Website publiceren en delen?",
   "PUBLISH": "Publiceren",
-  "PUBLISH_CONSENT_MESSAGE": "Bekijk snel een voorbeeld van wijzigingen en deel uw website met anderen. Phoenix kan deze website voor u publiceren op {0}. De gepubliceerde links zijn 7 dagen geldig. </br>Wilt u uw website publiceren en delen?",
+  "PUBLISH_CONSENT_MESSAGE": "Bekijk snel wijzigingen en deel uw website met anderen. Phoenix kan deze website voor u publiceren op {0}. De gepubliceerde links zijn 30 dagen geldig. </br>Wilt u uw website publiceren en delen?",
   "PUBLISH_SYNC_IN_PROGRESS": "Synchronisatie bezig voor voorbeeld...",
   "PUBLISH_PAGE": "Klik om deze site te publiceren en te delen",
   "PUBLISH_VIEW_PAGE": "Klik om de gepubliceerde pagina te bekijken",

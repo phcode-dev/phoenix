@@ -769,7 +769,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix on edelleen kokeellisessa alfassa. Emme ole vielä ottaneet käyttöön yli 500 tiedostoa sisältävien projektien synkronointia.",
   "SHARE_WEBSITE": "Julkaise ja jaa verkkosivusto?",
   "PUBLISH": "Julkaista",
-  "PUBLISH_CONSENT_MESSAGE": "Esikatsele muutokset nopeasti ja jaa verkkosivustosi muiden kanssa. Phoenix voi julkaista tämän verkkosivuston puolestasi osoitteessa {0}. Julkaistut linkit ovat voimassa 7 päivää. </br>Haluatko julkaista ja jakaa verkkosivustosi?",
+  "PUBLISH_CONSENT_MESSAGE": "Esikatsele muutoksia nopeasti ja jaa verkkosivustosi muiden kanssa. Phoenix voi julkaista tämän verkkosivuston puolestasi osoitteessa {0}. Julkaistut linkit ovat voimassa 30 päivää. </br>Haluatko julkaista ja jakaa verkkosivustosi?",
   "PUBLISH_SYNC_IN_PROGRESS": "Synkronointi käynnissä esikatselua varten...",
   "PUBLISH_PAGE": "Napsauta julkaistaksesi ja jakaaksesi tämän sivuston",
   "PUBLISH_VIEW_PAGE": "Napsauta nähdäksesi julkaistun sivun",

@@ -789,7 +789,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "A Phoenix még mindig kísérleti alfában van. Még nem engedélyeztük az 500 fájlnál nagyobb projektek szinkronizálását.",
   "SHARE_WEBSITE": "Webhely közzététele és megosztása?",
   "PUBLISH": "Közzététel",
-  "PUBLISH_CONSENT_MESSAGE": "Gyorsan megtekintheti a változások előnézetét, és megoszthatja webhelyét másokkal. A Phoenix közzéteheti ezt a webhelyet a következő címen: {0}. A közzétett linkek 7 napig érvényesek. </br>Szeretné közzétenni és megosztani webhelyét?",
+  "PUBLISH_CONSENT_MESSAGE": "Gyorsan megtekintheti a változások előnézetét, és megoszthatja webhelyét másokkal. A Phoenix közzéteheti ezt a webhelyet a következő címen: {0}. A közzétett linkek 30 napig érvényesek. </br>Szeretné közzétenni és megosztani webhelyét?",
   "PUBLISH_SYNC_IN_PROGRESS": "Szinkronizálás az előnézethez...",
   "PUBLISH_PAGE": "Kattintson ide az oldal közzétételéhez és megosztásához",
   "PUBLISH_VIEW_PAGE": "Kattintson a közzétett oldal megtekintéséhez",
