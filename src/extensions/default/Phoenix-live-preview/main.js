@@ -199,6 +199,7 @@ define(function (require, exports, module) {
         open(openURL, "livePreview", "noopener,noreferrer");
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
         _loadPreview(true);
+        panel && panel.hide();
     }
 
     function _setTitle(fileName) {
