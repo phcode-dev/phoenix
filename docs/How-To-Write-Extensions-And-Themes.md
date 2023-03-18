@@ -13,6 +13,25 @@ This is an evolving document, please refer the below links for extension API doc
 * Common How-Tos: https://github.com/brackets-cont/brackets/wiki/How-to-Write-Extensions#common-how-tos
 * Take a look at our default extensions for code reference: https://github.com/phcode-dev/phoenix/tree/main/src/extensions/default
 
+# Running and Debugging your extension
+Follow the below step to run and debug your Extension/Theme:
+* Clone your extension Repository into a folder. See [this link](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) to lean how to clone a repository from GitHub.
+* Go to https://create.phcode.dev .This is a special development centric website of phcode.dev which shows non minified js/css files in the browser developer tools.
+* Open the cloned folder and select `Debug > Load Project As Extension`
+
+![image](https://user-images.githubusercontent.com/5336369/224746152-0416a862-891a-4fe1-b9dd-09add25a6cc0.png)
+
+* The Theme/Extension will be loaded in Phoenix Editor now.
+* You can now make code changes to your theme and live preview theme changes as you edit your theme css.
+
+![theme dev](https://user-images.githubusercontent.com/5336369/222974377-e3c04920-dd2b-4eab-be35-57df403ff249.gif)
+* You can also select `Debug> Reload With Extensions` to test the new code changes.
+* When you are done developing the extension/theme, select `Debug> Unload Project As Extension` to unload the extension.
+
+![image](https://user-images.githubusercontent.com/5336369/224747590-556dff1d-5b29-41c3-88a0-3ce72ab643d0.png)
+* You can use the browser developer tools to debug the extension/theme.
+
+
 
 # Publishing to the extension/theme store
 Extensions created from the above GitHub template can be easily published from your GitHub repo to the store.
@@ -57,6 +76,6 @@ See this link on [understanding how to change repo visibility](https://docs.gith
 ### How do i get a Verified Badge for my extension?
 The `verified` extension badge(tick mark) will be automatically granted to verified GitHub Organizations.
 
-### How do i delete my extension from the store
+### How do I delete my extension from the store
 Please raise an issue here: https://github.com/phcode-dev/phoenix/issues/new/choose , mention your extension repository.
 
