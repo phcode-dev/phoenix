@@ -221,21 +221,21 @@
     ],
     "view.increaseFontSize":  [
         {
-            "key": "Ctrl-=",
-            "displayKey": "Ctrl-+"
+            "key": "Ctrl-Shift-=",
+            "displayKey": "Ctrl-Shift-+"
         },
         {
-            "key": "Ctrl-+"
+            "key": "Ctrl-Shift-+"
         }
     ],
     "view.decreaseFontSize":  [
         {
-            "key": "Ctrl--",
-            "displayKey": "Ctrl-−"
+            "key": "Ctrl-Shift--",
+            "displayKey": "Ctrl-Shift-−"
         }
     ],
     "view.restoreFontSize":  [
-        "Ctrl-0"
+        "Ctrl-Shift-0"
     ],
     "view.scrollLineUp":  [
         {
