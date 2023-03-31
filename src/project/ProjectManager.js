@@ -1428,8 +1428,7 @@ define(function (require, exports, module) {
         let context = getContext();
         let fullPath = context && context.fullPath;
         if(!fullPath){
-            let editor = EditorManager.getCurrentFullEditor();
-            fullPath = editor && editor.document.file.fullPath;
+            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
         }
         if(fullPath && isWithinProject(fullPath)){
             let name = _getProjectRelativePathForCopy(fullPath);
@@ -1443,10 +1442,12 @@ define(function (require, exports, module) {
                             _getProjectRelativePathForCopy(fullPath));
                         return;
                     }
-                    queuePathForSelection = copiedStats.realPath;
                     FileSystem.resolve(dupePath, function (err, file) {
                         if(!err) {
-                            showInTree(file);
+                            // we have to wait a bit for the tree to be in sync before locating file in tree
+                            setTimeout(()=>{
+                                showInTree(file);
+                            }, 200);
                         }
                     });
                 });
@@ -1485,8 +1486,7 @@ define(function (require, exports, module) {
         let context = entryToDownload || getContext();
         let fullPath = context && context.fullPath;
         if(!fullPath){
-            let editor = EditorManager.getCurrentFullEditor();
-            fullPath = editor && editor.document.file.fullPath;
+            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
         }
         if(fullPath){
             FileSystem.resolve(fullPath, function (err, fileOrFolder) {
@@ -1564,8 +1564,7 @@ define(function (require, exports, module) {
         let context = getContext();
         let fullPath = context && context.fullPath;
         if(!fullPath){
-            let editor = EditorManager.getCurrentFullEditor();
-            fullPath = editor && editor.document.file.fullPath;
+            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
         }
         if(fullPath){
             let projectRoot = getProjectRoot().fullPath;
@@ -1579,8 +1578,7 @@ define(function (require, exports, module) {
         let context = getContext();
         let fullPath = context && context.fullPath;
         if(!fullPath){
-            let editor = EditorManager.getCurrentFullEditor();
-            fullPath = editor && editor.document.file.fullPath;
+            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
         }
         if(fullPath){
             _registerPathWithClipboard(fullPath, OPERATION_CUT);
@@ -1591,8 +1589,7 @@ define(function (require, exports, module) {
         let context = getContext();
         let fullPath = context && context.fullPath;
         if(!fullPath){
-            let editor = EditorManager.getCurrentFullEditor();
-            fullPath = editor && editor.document.file.fullPath;
+            fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
         }
         if(fullPath){
             _registerPathWithClipboard(fullPath, OPERATION_COPY);

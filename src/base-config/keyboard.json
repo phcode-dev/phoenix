@@ -291,12 +291,12 @@
     ],
     "navigate.nextDocListOrder":  [
         {
-            "key": "Ctrl-PageDown"
+            "key": "Alt-PageDown"
         }
     ],
     "navigate.prevDocListOrder":  [
         {
-            "key": "Ctrl-PageUp"
+            "key": "Alt-PageUp"
         }
     ],
     "navigate.toggleQuickEdit":  [
