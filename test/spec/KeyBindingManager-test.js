@@ -791,6 +791,7 @@ define(function (require, exports, module) {
             var ctrlEvent = {
                 ctrlKey: true,
                 key: "Control",
+                code: "Control",
                 keyCode: KeyEvent.DOM_VK_CONTROL,
                 immediatePropagationStopped: false,
                 propagationStopped: false,
@@ -813,6 +814,7 @@ define(function (require, exports, module) {
                 altEvent.key = "Alt";
                 altEvent.altKey = true;
                 altEvent.keyCode = KeyEvent.DOM_VK_ALT;
+                altEvent.code = "Alt";
 
                 altGrEvents.push(_.cloneDeep(ctrlEvent));
                 altGrEvents.push(altEvent);
@@ -825,6 +827,7 @@ define(function (require, exports, module) {
                     ctrlKey: true,
                     altKey: true,
                     keyCode: "1".charCodeAt(0),
+                    code: "Digit1",
                     immediatePropagationStopped: false,
                     propagationStopped: false,
                     defaultPrevented: false,
@@ -967,6 +970,7 @@ define(function (require, exports, module) {
                 return {
                     ctrlKey: true,
                     keyCode: "A".charCodeAt(0),
+                    code: "KeyA",
                     immediatePropagationStopped: false,
                     propagationStopped: false,
                     defaultPrevented: false,
