@@ -74,7 +74,6 @@ define(function (require, exports, module) {
         WorkingSetView      = require("project/WorkingSetView"),
         ViewUtils           = require("utils/ViewUtils"),
         ZipUtils            = require("utils/ZipUtils"),
-        EditorManager       = require("editor/EditorManager"),
         Metrics             = require("utils/Metrics");
 
     // Needed to ensure that menus are set up when we need them.
