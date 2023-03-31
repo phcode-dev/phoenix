@@ -1483,23 +1483,34 @@ define(function (require, exports, module) {
 
     function _downloadCommand(entryToDownload) {
         let context = entryToDownload || getContext();
-        if(context){
-            let name = _getProjectRelativePathForCopy(context.fullPath);
-            let message = StringUtils.format(Strings.DOWNLOADING_FILE, name);
-            if(context.isFile){
-                setProjectBusy(true, message);
-                context.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, blobContent) {
-                    if (err){
-                        _zipFailed(context.fullPath);
-                        return;
-                    }
-                    setProjectBusy(false, message);
-                    let blob = new Blob([blobContent], {type:"application/octet-stream"});
-                    window.saveAs(blob, path.basename(context.fullPath));
-                });
-            } else {
-                _downloadFolderCommand(context.fullPath);
-            }
+        let fullPath = context && context.fullPath;
+        if(!fullPath){
+            let editor = EditorManager.getCurrentFullEditor();
+            fullPath = editor && editor.document.file.fullPath;
+        }
+        if(fullPath){
+            FileSystem.resolve(fullPath, function (err, fileOrFolder) {
+                if(err) {
+                    _zipFailed(fullPath);
+                    return;
+                }
+                let name = _getProjectRelativePathForCopy(fullPath);
+                let message = StringUtils.format(Strings.DOWNLOADING_FILE, name);
+                if(fileOrFolder.isFile){
+                    setProjectBusy(true, message);
+                    fileOrFolder.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, blobContent) {
+                        if (err){
+                            _zipFailed(fullPath);
+                            return;
+                        }
+                        setProjectBusy(false, message);
+                        let blob = new Blob([blobContent], {type:"application/octet-stream"});
+                        window.saveAs(blob, path.basename(fullPath));
+                    });
+                } else {
+                    _downloadFolderCommand(fullPath);
+                }
+            });
         }
     }
 
