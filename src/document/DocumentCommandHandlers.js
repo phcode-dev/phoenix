@@ -1716,7 +1716,7 @@ define(function (require, exports, module) {
             Strings.CONFIRM_DELETE_TITLE,
             StringUtils.format(
                 entry.isFile ? Strings.CONFIRM_FILE_DELETE : Strings.CONFIRM_FOLDER_DELETE,
-                StringUtils.breakableUrl(entry.name)
+                StringUtils.breakableUrl(ProjectManager.getProjectRelativePath(entry.fullPath))
             ),
             [
                 {

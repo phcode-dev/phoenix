@@ -229,12 +229,17 @@ define(function (require, exports, module) {
         // created dynamically. Each WorkingSetView attaches its own listeners.
         var workingset_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU);
         workingset_cmenu.addMenuItem(Commands.FILE_SAVE);
-        workingset_cmenu.addMenuItem(Commands.FILE_RENAME);
         workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_COPY);
         workingset_cmenu.addMenuItem(Commands.FILE_COPY_PATH);
         workingset_cmenu.addMenuItem(Commands.FILE_DUPLICATE);
+        workingset_cmenu.addMenuItem(Commands.FILE_DOWNLOAD, undefined, undefined, undefined, {
+            hideWhenCommandDisabled: true
+        });
+        workingset_cmenu.addMenuDivider();
+        workingset_cmenu.addMenuItem(Commands.FILE_RENAME);
+        workingset_cmenu.addMenuItem(Commands.FILE_DELETE);
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.CMD_FIND_IN_SUBTREE);
         workingset_cmenu.addMenuItem(Commands.CMD_REPLACE_IN_SUBTREE);

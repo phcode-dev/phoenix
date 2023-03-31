@@ -481,8 +481,8 @@ define(function (require, exports, module) {
         if(codes[code]){
             return codes[code];
         }
-        // This is pretty much all the keys in a keyboard we usually encounter. If still no match, return keycode
-        return String.fromCharCode(event.keyCode);
+        // This is pretty much all the keys in a keyboard we usually encounter. If still no match, return key as is
+        return event.key;
     }
 
     /**
