@@ -432,53 +432,57 @@ define(function (require, exports, module) {
     /**
      * @private
      * Looks for keycodes that have os-inconsistent keys and fixes them.
-     * @param {number} The keycode from the keyboard event.
-     * @param {string} The current best guess at what the key is.
      * @return {string} If the key is OS-inconsistent, the correct key; otherwise, the original key.
      **/
-    function _mapKeycodeToKey(keycode, key) {
-        // If keycode represents one of the digit keys (0-9), then return the corresponding digit
-        // by subtracting KeyEvent.DOM_VK_0 from keycode. ie. [48-57] --> [0-9]
-        if (keycode >= KeyEvent.DOM_VK_0 && keycode <= KeyEvent.DOM_VK_9) {
-            return String(keycode - KeyEvent.DOM_VK_0);
-        // Do the same with the numpad numbers
-        // by subtracting KeyEvent.DOM_VK_NUMPAD0 from keycode. ie. [96-105] --> [0-9]
-        } else if (keycode >= KeyEvent.DOM_VK_NUMPAD0 && keycode <= KeyEvent.DOM_VK_NUMPAD9) {
-            return String(keycode - KeyEvent.DOM_VK_NUMPAD0);
+    function _mapKeycodeToKey(event) {
+        // key code mapping https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
+        const code = event.code;
+        let codes = {
+            "Tab": "Tab",
+            "Space": "Space",
+            "Backspace": "Backspace",
+            "Insert": "Insert",
+            "Delete": "Delete",
+            "ArrowUp": "Up",
+            "ArrowDown": "Down",
+            "ArrowLeft": "Left",
+            "ArrowRight": "Right",
+            "Semicolon": ";",
+            "Equal": "=",
+            "Add": "+", // Eg. Numpad Add button NumpadAdd
+            "Comma": ",",
+            "Minus": "-",
+            "Period": ".",
+            "Decimal": ".", // NumpadDecimal
+            "Slash": "/",
+            "Divide": "/", //NumpadDivide
+            "Quote": "'",
+            "Backquote": "`",
+            "BracketLeft": "[",
+            "BracketRight": "]",
+            "Backslash": "\\"
+        };
+        let strippedCode;
+        // event.code should be there in all browsers post 2014. But some older browsers don't, so the check `code &&`
+        if(code && code.startsWith("Key")){
+            strippedCode = code.replace("Key", "");
+            return codes[strippedCode] || strippedCode;
         }
-
-
-        switch (keycode) {
-        case KeyEvent.DOM_VK_SEMICOLON:
-            return ";";
-        case KeyEvent.DOM_VK_EQUALS:
-            return "=";
-        case KeyEvent.DOM_VK_COMMA:
-            return ",";
-        case KeyEvent.DOM_VK_SUBTRACT:
-        case KeyEvent.DOM_VK_DASH:
-            return "-";
-        case KeyEvent.DOM_VK_ADD:
-            return "+";
-        case KeyEvent.DOM_VK_DECIMAL:
-        case KeyEvent.DOM_VK_PERIOD:
-            return ".";
-        case KeyEvent.DOM_VK_DIVIDE:
-        case KeyEvent.DOM_VK_SLASH:
-            return "/";
-        case KeyEvent.DOM_VK_BACK_QUOTE:
-            return "`";
-        case KeyEvent.DOM_VK_OPEN_BRACKET:
-            return "[";
-        case KeyEvent.DOM_VK_BACK_SLASH:
-            return "\\";
-        case KeyEvent.DOM_VK_CLOSE_BRACKET:
-            return "]";
-        case KeyEvent.DOM_VK_QUOTE:
-            return "'";
-        default:
-            return key;
+        if(code && code.startsWith("Digit")){
+            strippedCode = code.replace("Digit", "");
+            return codes[strippedCode] || strippedCode;
         }
+        if(code && code.startsWith("Numpad")){
+            // this can either be a simple numpad digit like 'Numpad0'(we should return 0)
+            // or 'NumpadAdd'(for which we should return the mapped + button)
+            strippedCode = code.replace("Numpad", "");
+            return codes[strippedCode] || strippedCode;
+        }
+        if(codes[code]){
+            return codes[code];
+        }
+        // This is pretty much all the keys in a keyboard we usually encounter. If still no match, return keycode
+        return String.fromCharCode(event.keyCode);
     }
 
     /**
@@ -489,47 +493,7 @@ define(function (require, exports, module) {
             hasCtrl = (brackets.platform !== "mac") ? (event.ctrlKey) : (event.metaKey),
             hasAlt = (event.altKey),
             hasShift = (event.shiftKey),
-            key = String.fromCharCode(event.keyCode);
-
-        //From the W3C, if we can get the KeyboardEvent.key then look here
-        //As that will let us use keys like then function keys "F5" for commands. The
-        //full set of values we can use is here
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-        let ident = event.key;
-        if (ident) {
-            if (ident.charAt(0) === "U" && ident.charAt(1) === "+") {
-                //This is a unicode code point like "U+002A", get the 002A and use that
-                key = String.fromCharCode(parseInt(ident.substring(2), 16));
-            } else {
-                //This is some non-character key, just use the raw identifier
-                key = ident;
-            }
-        }
-
-        // Translate some keys to their common names
-        if (key === "\t") {
-            key = "Tab";
-        } else if (key === " ") {
-            key = "Space";
-        } else if (key === "\b") {
-            key = "Backspace";
-        } else if (key === "Help") {
-            key = "Insert";
-        } else if (event.keyCode === KeyEvent.DOM_VK_DELETE) {
-            key = "Delete";
-        } else if (key === "ArrowUp") {
-            key = "Up";
-        } else if (key === "ArrowDown") {
-            key = "Down";
-        } else if (key === "ArrowLeft") {
-            key = "Left";
-        } else if (key === "ArrowRight") {
-            key = "Right";
-        }
-        else {
-            key = _mapKeycodeToKey(event.keyCode, key);
-        }
-
+            key = _mapKeycodeToKey(event);
         return normalizeKeyDescriptorString(_buildKeyDescriptor(hasMacCtrl, hasCtrl, hasAlt, hasShift, key));
     }
 
