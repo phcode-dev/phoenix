@@ -19,7 +19,7 @@
  *
  */
 
-/*global less */
+/*global less, Phoenix */
 
 /**
  * The ViewCommandHandlers object dispatches the following event(s):
@@ -42,6 +42,10 @@ define(function (require, exports, module) {
         ThemeSettings       = require("view/ThemeSettings"),
         MainViewManager     = require("view/MainViewManager"),
         AppInit             = require("utils/AppInit"),
+        Dialogs             = require("widgets/Dialogs"),
+        DefaultDialogs      = require("widgets/DefaultDialogs"),
+        KeyBindingManager   = require("command/KeyBindingManager"),
+        WorkspaceManager    = require("view/WorkspaceManager"),
         _                   = require("thirdparty/lodash"),
         FontRuleTemplate    = require("text!view/fontrules/font-based-rules.less");
 
@@ -354,6 +358,24 @@ define(function (require, exports, module) {
         _adjustFontSize(1);
     }
 
+    function _handleZoom(event) {
+        // if we do set document.body.style=zoom = something, then the new project window or generally any iframes based
+        // ui with in phcode will not be affected by zoom resulting in widely inconsistent ux on zoom.
+        // Further, in Firefox, we cannot programmatically zoom, but user can zoom with Ctrl-+ or - shortcut. So
+        // if user click on ui menu, all we can do is to show a dialogue asking them to press ctrl + / minus
+        if(event.source === CommandManager.SOURCE_KEYBOARD_SHORTCUT){
+            // for keyboard shortcuts, we immediately reject so that the browser zoom kicks in that is the
+            // most reliable zoom for now.
+            return new $.Deferred().reject("use browser zoom");
+        } else {
+            const zoomInKey = KeyBindingManager.getKeyBindings(Commands.VIEW_ZOOM_IN)[0].displayKey,
+                zoomOutKey = KeyBindingManager.getKeyBindings(Commands.VIEW_ZOOM_OUT)[0].displayKey;
+            let message = StringUtils.format(Strings.ZOOM_WITH_SHORTCUTS_DETAILS, zoomInKey, zoomOutKey);
+            Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.ZOOM_WITH_SHORTCUTS, message);
+            return new $.Deferred().resolve();
+        }
+    }
+
     /** Decreases the font size by 1 */
     function _handleDecreaseFontSize() {
         _adjustFontSize(-1);
@@ -524,6 +546,8 @@ define(function (require, exports, module) {
     // Register command handlers
     CommandManager.register(Strings.CMD_INCREASE_FONT_SIZE, Commands.VIEW_INCREASE_FONT_SIZE,  _handleIncreaseFontSize);
     CommandManager.register(Strings.CMD_DECREASE_FONT_SIZE, Commands.VIEW_DECREASE_FONT_SIZE,  _handleDecreaseFontSize);
+    CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleZoom, {eventSource: true});
+    CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleZoom, {eventSource: true});
     CommandManager.register(Strings.CMD_RESTORE_FONT_SIZE,  Commands.VIEW_RESTORE_FONT_SIZE,   _handleRestoreFontSize);
     CommandManager.register(Strings.CMD_SCROLL_LINE_UP,     Commands.VIEW_SCROLL_LINE_UP,      _handleScrollLineUp);
     CommandManager.register(Strings.CMD_SCROLL_LINE_DOWN,   Commands.VIEW_SCROLL_LINE_DOWN,    _handleScrollLineDown);

@@ -60,6 +60,10 @@ define({
     "REQUEST_NATIVE_FILE_SYSTEM_ERROR": "An error occurred when trying to load the directory <span class='dialog-filename'>{0}</span>. (error {1})",
     "READ_DIRECTORY_ENTRIES_ERROR": "An error occurred when reading the contents of the directory <span class='dialog-filename'>{0}</span>. (error {1})",
 
+    // FirefoxZoom Dialogue
+    "ZOOM_WITH_SHORTCUTS": "Use Keyboard Shortcuts to Zoom",
+    "ZOOM_WITH_SHORTCUTS_DETAILS": "Please use keyboard shortcuts <code><i>{0}</i></code> to Zoom In and <code><i>{1}</i></code> to Zoom Out.",
+
     // File open/save error string
     "ERROR_OPENING_FILE_TITLE": "Error Opening File",
     "ERROR_OPENING_FILE": "An error occurred when trying to open the file <span class='dialog-filename'>{0}</span>. {1}",
@@ -433,6 +437,9 @@ define({
     "CMD_TOGGLE_SIDEBAR": "Toggle Sidebar",
     "CMD_TOGGLE_PANELS": "Toggle Panels",
     "CMD_TOGGLE_PURE_CODE": "No Distractions",
+    "CMD_ZOOM_UI": "Zoom UI and Fonts",
+    "CMD_ZOOM_IN": "Zoom In",
+    "CMD_ZOOM_OUT": "Zoom Out",
     "CMD_INCREASE_FONT_SIZE": "Increase Font Size",
     "CMD_DECREASE_FONT_SIZE": "Decrease Font Size",
     "CMD_RESTORE_FONT_SIZE": "Restore Font Size",

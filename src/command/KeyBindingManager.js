@@ -101,8 +101,8 @@ define(function (require, exports, module) {
 
     let _specialCommands      = [Commands.EDIT_UNDO, Commands.EDIT_REDO, Commands.EDIT_SELECT_ALL,
             Commands.EDIT_CUT, Commands.EDIT_COPY, Commands.EDIT_PASTE],
-        _reservedShortcuts    = ["Ctrl-Z", "Ctrl-Y", "Ctrl-A", "Ctrl-X", "Ctrl-C", "Ctrl-V"],
-        _macReservedShortcuts = ["Cmd-,", "Cmd-H", "Cmd-Alt-H", "Cmd-M", "Cmd-Shift-Z", "Cmd-Q"],
+        _reservedShortcuts    = ["Ctrl-Z", "Ctrl-Y", "Ctrl-A", "Ctrl-X", "Ctrl-C", "Ctrl-V", "Ctrl-=", "Ctrl--"],
+        _macReservedShortcuts = ["Cmd-,", "Cmd-H", "Cmd-Alt-H", "Cmd-M", "Cmd-Shift-Z", "Cmd-Q", "Cmd-=", "Cmd--"],
         _keyNames             = ["Up", "Down", "Left", "Right", "Backspace", "Enter", "Space", "Tab",
             "PageUp", "PageDown", "Home", "End", "Insert", "Delete"];
 
@@ -437,6 +437,7 @@ define(function (require, exports, module) {
     function _mapKeycodeToKey(event) {
         // key code mapping https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
         const code = event.code;
+        console.log(code);
         let codes = {
             "Tab": "Tab",
             "Space": "Space",
@@ -825,7 +826,15 @@ define(function (require, exports, module) {
             // we always mark the event as processed and return true.
             // We don't want multiple behavior tied to the same key event. For Instance, in browser, if `ctrl-k`
             // is not handled by quick edit, it will open browser url bar if we return false here(which is bad ux).
-            let promise = CommandManager.execute(_keyMap[key].commandID);
+            let command = CommandManager.get(_keyMap[key].commandID);
+            let eventDetails = undefined;
+            if(command._options.eventSource){
+                eventDetails = {
+                    source: CommandManager.SOURCE_KEYBOARD_SHORTCUT,
+                    sourceType: key
+                };
+            }
+            let promise = CommandManager.execute(_keyMap[key].commandID, eventDetails);
             if(UN_SWALLOWED_EVENTS[_keyMap[key].commandID] || _isUnSwallowedKeys(key)){
                 // The execute() function returns a promise because some commands are async.
                 // Generally, commands decide whether they can run or not synchronously,
@@ -1000,6 +1009,7 @@ define(function (require, exports, module) {
             }
         }
         _detectAltGrKeyDown(event);
+        console.log(event);
         if (!handled && _handleKey(_translateKeyboardEvent(event))) {
             event.stopPropagation();
             event.preventDefault();

@@ -149,9 +149,12 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.VIEW_HIDE_SIDEBAR);
         menu.addMenuItem(Commands.TOGGLE_SEARCH_AUTOHIDE);
         menu.addMenuDivider();
-        menu.addMenuItem(Commands.VIEW_INCREASE_FONT_SIZE);
-        menu.addMenuItem(Commands.VIEW_DECREASE_FONT_SIZE);
-        menu.addMenuItem(Commands.VIEW_RESTORE_FONT_SIZE);
+        let subMenu = menu.addSubMenu(Strings.CMD_ZOOM_UI, "zoom-view-submenu");
+        subMenu.addMenuItem(Commands.VIEW_ZOOM_IN);
+        subMenu.addMenuItem(Commands.VIEW_ZOOM_OUT);
+        subMenu.addMenuItem(Commands.VIEW_INCREASE_FONT_SIZE);
+        subMenu.addMenuItem(Commands.VIEW_DECREASE_FONT_SIZE);
+        subMenu.addMenuItem(Commands.VIEW_RESTORE_FONT_SIZE);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.TOGGLE_ACTIVE_LINE);
         menu.addMenuItem(Commands.TOGGLE_LINE_NUMBERS);

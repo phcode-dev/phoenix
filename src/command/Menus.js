@@ -541,6 +541,7 @@ define(function (require, exports, module) {
      * @return {MenuItem} the newly created MenuItem
      */
     Menu.prototype.addMenuItem = function (command, keyBindings, position, relativeID, options = {}) {
+        const self = this;
         let id,
             $menuItem,
             menuItem,
@@ -571,7 +572,7 @@ define(function (require, exports, module) {
         }
 
         // Internal id is the a composite of the parent menu id and the command id.
-        id = this._getMenuItemId(commandID);
+        id = self._getMenuItemId(commandID);
 
         if (menuItemMap[id]) {
             console.log("MenuItem added with same id of existing MenuItem: " + id);
@@ -594,7 +595,14 @@ define(function (require, exports, module) {
             $menuItem.on("click", function () {
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
                 logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
-                menuItem._command.execute();
+                if(menuItem._command._options.eventSource){
+                    menuItem._command.execute({
+                        source: CommandManager.SOURCE_UI_MENU_CLICK,
+                        sourceType: self.id
+                    });
+                } else {
+                    menuItem._command.execute();
+                }
             });
 
             let self = this;
