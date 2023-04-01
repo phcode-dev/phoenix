@@ -437,7 +437,6 @@ define(function (require, exports, module) {
     function _mapKeycodeToKey(event) {
         // key code mapping https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
         const code = event.code;
-        console.log(code);
         let codes = {
             "Tab": "Tab",
             "Space": "Space",
@@ -1009,7 +1008,6 @@ define(function (require, exports, module) {
             }
         }
         _detectAltGrKeyDown(event);
-        console.log(event);
         if (!handled && _handleKey(_translateKeyboardEvent(event))) {
             event.stopPropagation();
             event.preventDefault();
