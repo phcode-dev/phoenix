@@ -108,7 +108,7 @@ define(function (require, exports, module) {
             expect(command.getName()).toBe("newName");
         });
         it("execute a command with optional source event", function () {
-            let event = {source: "hello"};
+            let event = {eventSource: "hello"};
             let receivedEvent;
             let command = CommandManager.register("test command", commandID, (event)=>{
                 receivedEvent = event;
@@ -121,7 +121,7 @@ define(function (require, exports, module) {
             expect(receivedEvent).toBe(event);
         });
         it("execute a command with optional source event and additional exec args", function () {
-            let event = {source: "hello"};
+            let event = {eventSource: "hello"};
             let receivedEvent, receiveArg1, receiveArg2;
             let command = CommandManager.register("test command", commandID, (event, arg1, arg2)=>{
                 receivedEvent = event;
@@ -145,11 +145,11 @@ define(function (require, exports, module) {
                 receivedEvent = event;
             }, {eventSource: true});
             command.execute();
-            expect(receivedEvent).toEql({ source: 'otherExecAction' });
+            expect(receivedEvent).toEql({ eventSource: 'otherExecAction' });
             // now do with command manager exec
             receivedEvent = null;
             CommandManager.execute(commandID);
-            expect(receivedEvent).toEql({ source: 'otherExecAction' });
+            expect(receivedEvent).toEql({ eventSource: 'otherExecAction' });
         });
         it("execute a command will not get eventSource if eventSource option set to false", function () {
             let receivedEvent;

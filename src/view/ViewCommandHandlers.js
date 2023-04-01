@@ -363,7 +363,7 @@ define(function (require, exports, module) {
         // ui with in phcode will not be affected by zoom resulting in widely inconsistent ux on zoom.
         // Further, in Firefox, we cannot programmatically zoom, but user can zoom with Ctrl-+ or - shortcut. So
         // if user click on ui menu, all we can do is to show a dialogue asking them to press ctrl + / minus
-        if(event.source === CommandManager.SOURCE_KEYBOARD_SHORTCUT){
+        if(event.eventSource === CommandManager.SOURCE_KEYBOARD_SHORTCUT){
             // for keyboard shortcuts, we immediately reject so that the browser zoom kicks in that is the
             // most reliable zoom for now.
             return new $.Deferred().reject("use browser zoom");

@@ -99,8 +99,8 @@ define(function (require, exports, module) {
             // This command has been registered with the optional source details set we have to ensure the event
             // argument is inserted first. The event source may be already injected by the executor,
             // if not we have to do it now.
-            if(!args.length || !(typeof args[0] === 'object' && args[0].source)) {
-                const event = {source: SOURCE_OTHER}; // default we don't know the source
+            if(!args.length || !(typeof args[0] === 'object' && args[0].eventSource)) {
+                const event = {eventSource: SOURCE_OTHER}; // default we don't know the source
                 args = [event].concat(args);
             }
         }
@@ -200,7 +200,7 @@ define(function (require, exports, module) {
      *     CommandManager will assume it is synchronous, and return a promise that is already resolved.
      * @param {Object} [options]
      * @param {boolean} options.eventSource If set to true, the commandFn will be called with the first argument `event`
-     * with details about the source(invoker) as event.source(one of the `CommandManager.SOURCE_*`) and
+     * with details about the source(invoker) as event.eventSource(one of the `CommandManager.SOURCE_*`) and
      * event.sourceType(Eg. Ctrl-K) parameter.
      * @return {?Command}
      */
@@ -306,8 +306,8 @@ define(function (require, exports, module) {
                 // This command has been registered with the optional source details set we have to ensure the event
                 // argument is inserted first. The event source may be already injected by the executor,
                 // if not we have to do it now.
-                if(!args.length || !(typeof args[0] === 'object' && args[0].source)) {
-                    const event = {source: SOURCE_OTHER}; // default we don't know the source
+                if(!args.length || !(typeof args[0] === 'object' && args[0].eventSource)) {
+                    const event = {eventSource: SOURCE_OTHER}; // default we don't know the source
                     args = [event].concat(args);
                 }
             }
