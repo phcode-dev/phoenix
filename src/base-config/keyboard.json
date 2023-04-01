@@ -219,6 +219,21 @@
             "platform": "mac"
         }
     ],
+    "view.zoomIn":  [
+        {
+            "key": "Ctrl-=",
+            "displayKey": "Ctrl-+"
+        },
+        {
+            "key": "Ctrl-+"
+        }
+    ],
+    "view.zoomOut":  [
+        {
+            "key": "Ctrl--",
+            "displayKey": "Ctrl-−"
+        }
+    ],
     "view.increaseFontSize":  [
         {
             "key": "Ctrl-Shift-=",
@@ -235,7 +250,7 @@
         }
     ],
     "view.restoreFontSize":  [
-        "Ctrl-Shift-0"
+        "Ctrl-Shift-9"
     ],
     "view.scrollLineUp":  [
         {
