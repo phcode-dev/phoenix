@@ -1975,7 +1975,7 @@ define(function (require, exports, module) {
                 myEditor.setCursorPos(1, 4);
 
                 var lines = cssContent.split("\n");
-                lines[1] = "/*    color: red;*/";
+                lines[1] = "    /*color: red;*/";
                 var expectedText = lines.join("\n");
 
                 testToggleLine(expectedText, {line: 1, ch: 6});
@@ -1985,7 +1985,7 @@ define(function (require, exports, module) {
                 myEditor.setSelection({line: 1, ch: 4}, {line: 1, ch: 9});
 
                 var lines = cssContent.split("\n");
-                lines[1] = "/*    color: red;*/";
+                lines[1] = "    /*color: red;*/";
                 var expectedText = lines.join("\n");
 
                 testToggleLine(expectedText, {start: {line: 1, ch: 6}, end: {line: 1, ch: 11}});
@@ -2006,7 +2006,7 @@ define(function (require, exports, module) {
                 myEditor.setSelection({line: 0, ch: 3}, {line: 1, ch: 10});
 
                 var lines = cssContent.split("\n");
-                lines.splice(2, 0, "*/");
+                lines.splice(2, 0, "    */");
                 lines.splice(0, 0, "/*");
                 var expectedText = lines.join("\n");
 
