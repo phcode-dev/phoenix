@@ -597,7 +597,7 @@ define(function (require, exports, module) {
                 logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
                 if(menuItem._command._options.eventSource){
                     menuItem._command.execute({
-                        source: CommandManager.SOURCE_UI_MENU_CLICK,
+                        eventSource: CommandManager.SOURCE_UI_MENU_CLICK,
                         sourceType: self.id
                     });
                 } else {

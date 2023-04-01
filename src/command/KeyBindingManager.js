@@ -829,7 +829,7 @@ define(function (require, exports, module) {
             let eventDetails = undefined;
             if(command._options.eventSource){
                 eventDetails = {
-                    source: CommandManager.SOURCE_KEYBOARD_SHORTCUT,
+                    eventSource: CommandManager.SOURCE_KEYBOARD_SHORTCUT,
                     sourceType: key
                 };
             }
