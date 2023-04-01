@@ -107,5 +107,71 @@ define(function (require, exports, module) {
             expect(eventTriggered).toBeTruthy();
             expect(command.getName()).toBe("newName");
         });
+        it("execute a command with optional source event", function () {
+            let event = {source: "hello"};
+            let receivedEvent;
+            let command = CommandManager.register("test command", commandID, (event)=>{
+                receivedEvent = event;
+            }, {eventSource: true});
+            command.execute(event);
+            expect(receivedEvent).toBe(event);
+            // now do with command manager exec
+            receivedEvent = null;
+            CommandManager.execute(commandID, event);
+            expect(receivedEvent).toBe(event);
+        });
+        it("execute a command with optional source event and additional exec args", function () {
+            let event = {source: "hello"};
+            let receivedEvent, receiveArg1, receiveArg2;
+            let command = CommandManager.register("test command", commandID, (event, arg1, arg2)=>{
+                receivedEvent = event;
+                receiveArg1 = arg1;
+                receiveArg2 = arg2;
+            }, {eventSource: true});
+            command.execute(event, 42, "arg2");
+            expect(receivedEvent).toBe(event);
+            expect(receiveArg1).toBe(42);
+            expect(receiveArg2).toBe("arg2");
+            // now do with command manager exec
+            receivedEvent = null;
+            CommandManager.execute(commandID, event, 55, "argx");
+            expect(receivedEvent).toBe(event);
+            expect(receiveArg1).toBe(55);
+            expect(receiveArg2).toBe("argx");
+        });
+        it("execute a command registered with eventSource should get event even if execute misses the source", function () {
+            let receivedEvent;
+            let command = CommandManager.register("test command", commandID, (event)=>{
+                receivedEvent = event;
+            }, {eventSource: true});
+            command.execute();
+            expect(receivedEvent).toEql({ source: 'otherExecAction' });
+            // now do with command manager exec
+            receivedEvent = null;
+            CommandManager.execute(commandID);
+            expect(receivedEvent).toEql({ source: 'otherExecAction' });
+        });
+        it("execute a command will not get eventSource if eventSource option set to false", function () {
+            let receivedEvent;
+            let command = CommandManager.register("test command", commandID, (event)=>{
+                receivedEvent = event;
+            }, {eventSource: false});
+            command.execute();
+            expect(receivedEvent).not.toBeDefined();
+            // now do with command manager exec
+            receivedEvent = null;
+            CommandManager.execute(commandID);
+            expect(receivedEvent).not.toBeDefined();
+        });
+        it("execute a command will not get eventSource if eventSource option not given", function () {
+            let receivedEvent;
+            let command = CommandManager.register("test command", commandID, (event)=>{receivedEvent = event;});
+            command.execute();
+            expect(receivedEvent).not.toBeDefined();
+            // now do with command manager exec
+            receivedEvent = null;
+            CommandManager.execute(commandID);
+            expect(receivedEvent).not.toBeDefined();
+        });
     });
 });

@@ -94,8 +94,17 @@ define(function (require, exports, module) {
         if (!this._enabled) {
             return (new $.Deferred()).reject().promise();
         }
-
-        var result = this._commandFn.apply(this, arguments);
+        let args = arguments;
+        if(this._options.eventSource) {
+            // This command has been registered with the optional source details set we have to ensure the event
+            // argument is inserted first. The event source may be already injected by the executor,
+            // if not we have to do it now.
+            if(!args.length || !(typeof args[0] === 'object' && args[0].source)) {
+                const event = {source: SOURCE_OTHER}; // default we don't know the source
+                args = [event].concat(args);
+            }
+        }
+        let result = this._commandFn.apply(this, args);
         if (!result) {
             // If command does not return a promise, assume that it handled the
             // command and return a resolved promise
