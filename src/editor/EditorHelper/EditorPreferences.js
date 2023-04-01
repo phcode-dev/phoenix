@@ -155,7 +155,7 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_SEARCH_AUTOHIDE
     });
 
-    PreferencesManager.definePreference(INDENT_LINE_COMMENT,  "boolean", false, {
+    PreferencesManager.definePreference(INDENT_LINE_COMMENT,  "boolean", true, {
         description: Strings.DESCRIPTION_INDENT_LINE_COMMENT
     });
     PreferencesManager.definePreference(INPUT_STYLE,  "string", "textarea", {

@@ -120,7 +120,7 @@ define(function (require, exports, module) {
         TAB_SIZE            = EditorPreferences.TAB_SIZE,
         USE_TAB_CHAR        = EditorPreferences.USE_TAB_CHAR,
         WORD_WRAP           = EditorPreferences.WORD_WRAP,
-        INDENT_LINE_COMMENT   = EditorPreferences.INDENT_LINE_COMMENT,
+        INDENT_LINE_COMMENT = EditorPreferences.INDENT_LINE_COMMENT,
         INPUT_STYLE         = EditorPreferences.INPUT_STYLE;
 
     const LINE_NUMBER_GUTTER = EditorPreferences.LINE_NUMBER_GUTTER,
