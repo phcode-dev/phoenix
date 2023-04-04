@@ -21,6 +21,9 @@
 
 
 /* Brackets Variables */
+:root {
+ --z-index-parameter-hints: 19;
+}
 
 /* All paddings, gutters, etc. should be multiples of this */
 @base-padding: 10px;
@@ -55,6 +58,7 @@
 @z-index-brackets-modalbar: (@z-index-brackets-toolbar - 1);
 @z-index-brackets-main-toolbar: (@z-index-brackets-toolbar + 1);
 @z-index-brackets-main-content: (@z-index-brackets-main-toolbar + 1);
+// --z-index-parameter-hints css variable here. we should ideally move all these to css variables
 
 @z-index-brackets-sidebar-resizer: (@z-index-brackets-main-content + 3);
 @z-index-brackets-resizer-div: (@z-index-brackets-sidebar-resizer + 1);
