@@ -94,7 +94,7 @@ span.brackets-hints-with-type-details {
 
     background: #fff;
     position: absolute;
-    z-index: 15;
+    z-index: var(--z-index-parameter-hints);
     left: 400px;
     top: 40px;
     height: auto;
