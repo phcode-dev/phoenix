@@ -108,6 +108,16 @@ if (_isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
             logger.leaveTrail(`Service worker loader: refresh cache updatedFilesCount: `+ updatedFilesCount);
             window.Phoenix.cache.updatePendingReloadReason = "refreshCache";
             window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
+            if(updatedFilesCount){
+                let lessRefreshInterval = setInterval(()=>{
+                    // wait for less to get loaded. less caches css in local storage in production urls
+                    // and might not load new css classes if we don't reset. less doesn't cache in localhost.
+                    if(window.less && window.less.refresh){
+                        window.less.refresh(true);
+                        clearInterval(lessRefreshInterval);
+                    }
+                }, 500);
+            }
             if(doneCB) {
                 doneCB();
             }
