@@ -252,7 +252,7 @@ define(function (require, exports, module) {
         var editor = EditorManager.getFocusedEditor();
         if (editor) {
             var cm = editor._codeMirror;
-            CodeMirror.commands.foldToLevel(cm);
+            CodeMirror.commands.foldAll(cm);
         }
     }
 
