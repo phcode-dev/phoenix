@@ -13,7 +13,7 @@
         "SHA": ""
     },
     "devDependencies": {
-        "@commitlint/cli": "^16.0.2",
+        "@commitlint/cli": "^17.6.1",
         "@commitlint/config-conventional": "^16.0.0",
         "@google-cloud/translate": "^7.0.3",
         "@playwright/test": "^1.30.0",
