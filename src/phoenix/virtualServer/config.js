@@ -33,7 +33,6 @@ if(!self.Config){
      *
      * `debug`: if present (i.e., `Boolean`), enable workbox debug logging
      */
-    const url = new URL(location);
 
     /**
      * Given a route string, make sure it follows the pattern we expect:
@@ -47,7 +46,7 @@ if(!self.Config){
      * @param {String} route
      */
     function getNormalizeRoute() {
-        let route = url.searchParams.get('route') || 'fs';
+        let route = (new URL(location)).searchParams.get('route') || 'fs';
 
         // Only a single / at the front of the route
         route = route.replace(/^\/*/, '');
@@ -59,7 +58,7 @@ if(!self.Config){
 
     self.Config = {
         route: getNormalizeRoute(),
-        disableIndexes: url.searchParams.get('disableIndexes') !== null,
+        disableIndexes: (new URL(location)).searchParams.get('disableIndexes') !== null,
         debug: false // this is set via sw messages from phoenix
     };
 }
