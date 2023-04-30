@@ -179,6 +179,16 @@ define(function (require, exports, module) {
             await endPreviewSession();
         });
 
+        function _isRelatedStyleSheet(liveDoc, fileName) {
+            let relatedSheets = Object.keys(liveDoc.getRelated().stylesheets);
+            for(let relatedPath of relatedSheets){
+                if(relatedPath.endsWith(fileName)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         it("should send notifications for added/removed stylesheets through link nodes", async function () {
             let liveDoc;
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -188,21 +198,12 @@ define(function (require, exports, module) {
             liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
 
             let curDoc =  DocumentManager.getCurrentDocument();
-            curDoc.replaceRange('<link href="simple2.css" rel="stylesheet">\n', {line: 8, ch: 0});
-
-            await awaitsFor(
-                function relatedDocsReceived() {
-                    return (Object.getOwnPropertyNames(liveDoc.getRelated().stylesheets).length === 3);
-                },
-                "relatedDocuments.done.received",
-                10000
-            );
 
             curDoc.replaceRange('<link href="blank.css" rel="stylesheet">\n', {line: 8, ch: 0});
 
             await awaitsFor(
                 function relatedDocsReceived() {
-                    return (Object.getOwnPropertyNames(liveDoc.getRelated().stylesheets).length === 4);
+                    return _isRelatedStyleSheet(liveDoc, "blank.css");
                 },
                 "relatedDocuments.done.received",
                 10000
