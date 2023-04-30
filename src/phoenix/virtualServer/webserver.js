@@ -23,221 +23,222 @@ importScripts('phoenix/virtualServer/html-formatter.js');
 importScripts('phoenix/virtualServer/config.js');
 
 if(!self.Serve){
-    const _serverBroadcastChannel = new BroadcastChannel("virtual_server_broadcast");
-    const fs = self.fs;
-    const Path = self.path;
-    let instrumentedURLs = {},
-        responseListeners = {};
+    (function(){
+        const _serverBroadcastChannel = new BroadcastChannel("virtual_server_broadcast");
+        const fs = self.fs;
+        const Path = self.path;
+        let instrumentedURLs = {},
+            responseListeners = {};
 
-    function _getNewRequestID() {
-        return Math.round( Math.random()*1000000000000);
-    }
-
-    function _getAllInstrumentedFullPaths() {
-        let allURLs = [];
-        for(let rootPaths of Object.keys(instrumentedURLs)){
-            for(let subPath of instrumentedURLs[rootPaths]){
-                allURLs.push(Path.normalize(rootPaths + subPath));
-            }
+        function _getNewRequestID() {
+            return Math.round( Math.random()*1000000000000);
         }
-        return allURLs;
-    }
 
-    // https://tools.ietf.org/html/rfc2183
-    function formatContentDisposition(path, stats) {
-        const filename = Path.basename(path);
-        const modified = stats.mtime.toUTCString();
-        return `attachment; filename="${filename}"; modification-date="${modified}"; size=${stats.size};`;
-    }
-
-    async function _wait(timeMs) {
-        return new Promise((resolve)=>{
-            setTimeout(resolve, timeMs);
-        });
-    }
-
-    // fs read that always resolves even if there is error
-    async function _resolvingRead(path, encoding) {
-        return new Promise((resolve)=>{
-            fs.readFile(path, encoding, function (error, contents) {
-                resolve({error, contents});
-            });
-        });
-    }
-    // fs stat that always resolves even if there is error
-    async function _resolvingStat(path) {
-        return new Promise((resolve)=>{
-            fs.stat(path, function (error, stats) {
-                resolve({error, stats});
-            });
-        });
-    }
-    const FILE_READ_RETRY_COUNT = 5,
-        BACKOFF_TIME_MS = 10;
-
-    const serve = async function (path, download, phoenixInstanceID) {
-        path = Path.normalize(path);
-        return new Promise(async (resolve, reject) => { // eslint-disable-line
-            function buildResponse(responseData) {
-                return new Response(responseData.body, responseData.config);
-            }
-
-            function serveError(path, err) {
-                if (err.code === 'ENOENT') {
-                    return resolve(buildResponse(HtmlFormatter.format404(path)));
+        function _getAllInstrumentedFullPaths() {
+            let allURLs = [];
+            for(let rootPaths of Object.keys(instrumentedURLs)){
+                for(let subPath of instrumentedURLs[rootPaths]){
+                    allURLs.push(Path.normalize(rootPaths + subPath));
                 }
-                resolve(buildResponse(HtmlFormatter.format500(path, err)));
             }
+            return allURLs;
+        }
 
-            function serveInstrumentedFile(path) {
-                let allURLs = _getAllInstrumentedFullPaths();
-                // html and htm files are always served by phoenix to prevent non instrumented transient content
-                if(!phoenixInstanceID ||
-                    (!allURLs.includes(path) && !path.endsWith("htm") && !path.endsWith("html"))){
-                    return false;
-                }
-                self._debugLivePreviewLog("Service worker: serving instrumented file", path);
-                const requestID = _getNewRequestID();
-                _serverBroadcastChannel.postMessage({
-                    type: "getInstrumentedContent",
-                    path,
-                    requestID,
-                    phoenixInstanceID
+        // https://tools.ietf.org/html/rfc2183
+        function formatContentDisposition(path, stats) {
+            const filename = Path.basename(path);
+            const modified = stats.mtime.toUTCString();
+            return `attachment; filename="${filename}"; modification-date="${modified}"; size=${stats.size};`;
+        }
+
+        async function _wait(timeMs) {
+            return new Promise((resolve)=>{
+                setTimeout(resolve, timeMs);
+            });
+        }
+
+        // fs read that always resolves even if there is error
+        async function _resolvingRead(path, encoding) {
+            return new Promise((resolve)=>{
+                fs.readFile(path, encoding, function (error, contents) {
+                    resolve({error, contents});
                 });
-                responseListeners[requestID] = function (response) {
-                    if(response.contents !== "" && !response.contents){
-                        self._debugLivePreviewLog(
-                            "Service worker: no instrumented file received from phoenix!", path);
+            });
+        }
+        // fs stat that always resolves even if there is error
+        async function _resolvingStat(path) {
+            return new Promise((resolve)=>{
+                fs.stat(path, function (error, stats) {
+                    resolve({error, stats});
+                });
+            });
+        }
+        const FILE_READ_RETRY_COUNT = 5,
+            BACKOFF_TIME_MS = 10;
+
+        const serve = async function (path, download, phoenixInstanceID) {
+            path = Path.normalize(path);
+            return new Promise(async (resolve, reject) => { // eslint-disable-line
+                function buildResponse(responseData) {
+                    return new Response(responseData.body, responseData.config);
+                }
+
+                function serveError(path, err) {
+                    if (err.code === 'ENOENT') {
                         return resolve(buildResponse(HtmlFormatter.format404(path)));
                     }
-                    const responseData = HtmlFormatter.formatFile(path, response.contents);
-                    const headers = response.headers || {};
-                    responseData.config.headers = { ...responseData.config.headers, ...headers};
-                    resolve(new Response(responseData.body, responseData.config));
-                };
-                return true;
-            }
-
-            async function serveFile(path, stats) {
-                let err = null;
-                for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
-                    // sometimes there is read after write contention in native fs between main thread and worker.
-                    // so we retry
-                    let fileResponse = await _resolvingRead(path, fs.BYTE_ARRAY_ENCODING);
-                    if(fileResponse.error){
-                        err = fileResponse.error;
-                        await _wait(i * BACKOFF_TIME_MS);
-                        continue;
-                    }
-                    const responseData = HtmlFormatter.formatFile(path, fileResponse.contents);
-
-                    // If we are supposed to serve this file or download, add headers
-                    if (responseData.config.status === 200 && download) {
-                        responseData.config.headers['Content-Disposition'] =
-                            formatContentDisposition(path, stats);
-                    }
-
-                    resolve(new Response(responseData.body, responseData.config));
-                    return;
+                    resolve(buildResponse(HtmlFormatter.format500(path, err)));
                 }
-                serveError(path, err);
-            }
 
-            // Either serve /index.html (default index) or / (directory listing)
-            function serveDir(path) {
+                function serveInstrumentedFile(path) {
+                    let allURLs = _getAllInstrumentedFullPaths();
+                    // html and htm files are always served by phoenix to prevent non instrumented transient content
+                    if(!phoenixInstanceID ||
+                        (!allURLs.includes(path) && !path.endsWith("htm") && !path.endsWith("html"))){
+                        return false;
+                    }
+                    self._debugLivePreviewLog("Service worker: serving instrumented file", path);
+                    const requestID = _getNewRequestID();
+                    _serverBroadcastChannel.postMessage({
+                        type: "getInstrumentedContent",
+                        path,
+                        requestID,
+                        phoenixInstanceID
+                    });
+                    responseListeners[requestID] = function (response) {
+                        if(response.contents !== "" && !response.contents){
+                            self._debugLivePreviewLog(
+                                "Service worker: no instrumented file received from phoenix!", path);
+                            return resolve(buildResponse(HtmlFormatter.format404(path)));
+                        }
+                        const responseData = HtmlFormatter.formatFile(path, response.contents);
+                        const headers = response.headers || {};
+                        responseData.config.headers = { ...responseData.config.headers, ...headers};
+                        resolve(new Response(responseData.body, responseData.config));
+                    };
+                    return true;
+                }
 
-                function maybeServeIndexFile() {
-                    if(path.endsWith("//")){
-                        // this is for us to override and show the directory listing if the path ends with //
-                        serveDirListing();
+                async function serveFile(path, stats) {
+                    let err = null;
+                    for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
+                        // sometimes there is read after write contention in native fs between main thread and worker.
+                        // so we retry
+                        let fileResponse = await _resolvingRead(path, fs.BYTE_ARRAY_ENCODING);
+                        if(fileResponse.error){
+                            err = fileResponse.error;
+                            await _wait(i * BACKOFF_TIME_MS);
+                            continue;
+                        }
+                        const responseData = HtmlFormatter.formatFile(path, fileResponse.contents);
+
+                        // If we are supposed to serve this file or download, add headers
+                        if (responseData.config.status === 200 && download) {
+                            responseData.config.headers['Content-Disposition'] =
+                                formatContentDisposition(path, stats);
+                        }
+
+                        resolve(new Response(responseData.body, responseData.config));
                         return;
                     }
+                    serveError(path, err);
+                }
 
-                    const indexPath = Path.join(path, 'index.html');
-                    fs.stat(indexPath, function (err, stats) {
-                        if (err) {
-                            if (err.code === 'ENOENT' && !Config.disableIndexes) {
-                                // Fallback to a directory listing instead
-                                serveDirListing();
+                // Either serve /index.html (default index) or / (directory listing)
+                function serveDir(path) {
+
+                    function maybeServeIndexFile() {
+                        if(path.endsWith("//")){
+                            // this is for us to override and show the directory listing if the path ends with //
+                            serveDirListing();
+                            return;
+                        }
+
+                        const indexPath = Path.join(path, 'index.html');
+                        fs.stat(indexPath, function (err, stats) {
+                            if (err) {
+                                if (err.code === 'ENOENT' && !Config.disableIndexes) {
+                                    // Fallback to a directory listing instead
+                                    serveDirListing();
+                                } else {
+                                    // Let the error (likely 404) pass through instead
+                                    serveError(path, err);
+                                }
                             } else {
-                                // Let the error (likely 404) pass through instead
-                                serveError(path, err);
+                                // Index file found, serve that instead
+                                serveFile(indexPath, stats);
                             }
-                        } else {
-                            // Index file found, serve that instead
-                            serveFile(indexPath, stats);
-                        }
-                    });
-                }
-
-                function serveDirListing() {
-                    fs.readdir(path, function (err, entries) {
-                        if (err) {
-                            return serveError(path, err);
-                        }
-
-                        const responseData = HtmlFormatter.formatDir(virtualServerBaseURL, path, entries);
-                        resolve(new Response(responseData.body, responseData.config));
-                    });
-                }
-
-                maybeServeIndexFile();
-            }
-
-            let err = null;
-            try{
-                if(serveInstrumentedFile(path)){
-                    return;
-                }
-                for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
-                    let fileStat = await _resolvingStat(path);
-                    if(fileStat.error){
-                        err = fileStat.error;
-                        await _wait(i * BACKOFF_TIME_MS);
-                        continue;
+                        });
                     }
-                    if (fileStat.stats.isDirectory()) {
-                        return serveDir(path);
+
+                    function serveDirListing() {
+                        fs.readdir(path, function (err, entries) {
+                            if (err) {
+                                return serveError(path, err);
+                            }
+
+                            const responseData = HtmlFormatter.formatDir(virtualServerBaseURL, path, entries);
+                            resolve(new Response(responseData.body, responseData.config));
+                        });
                     }
-                    return serveFile(path, fileStat.stats);
 
+                    maybeServeIndexFile();
                 }
-                return serveError(path, err);
-            } catch (e) {
-                reject(e);
-            }
-        });
-    };
 
-    async function setInstrumentedURLs(event) {
-        const data = event.data;
-        const root = data.root,
-            paths = data.paths;
-        self._debugLivePreviewLog("Service worker: setInstrumentedURLs", data);
-        instrumentedURLs[root] = paths;
-        event.ports[0].postMessage(true);// acknowledge for the other side to resolve promise
-    }
+                let err = null;
+                try{
+                    if(serveInstrumentedFile(path)){
+                        return;
+                    }
+                    for(let i = 1; i <= FILE_READ_RETRY_COUNT; i++){
+                        let fileStat = await _resolvingStat(path);
+                        if(fileStat.error){
+                            err = fileStat.error;
+                            await _wait(i * BACKOFF_TIME_MS);
+                            continue;
+                        }
+                        if (fileStat.stats.isDirectory()) {
+                            return serveDir(path);
+                        }
+                        return serveFile(path, fileStat.stats);
 
-    console.log("service worker init");
+                    }
+                    return serveError(path, err);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        };
 
-    function processVirtualServerMessage(event) {
-        let eventType = event.data && event.data.type;
-        switch (eventType) {
-        case 'REQUEST_RESPONSE':
-            const requestID = event.data.requestID;
-            if(event.data.requestID && responseListeners[requestID]){
-                responseListeners[requestID](event.data);
-                delete responseListeners[requestID];
-                return true;
+        async function setInstrumentedURLs(event) {
+            const data = event.data;
+            const root = data.root,
+                paths = data.paths;
+            self._debugLivePreviewLog("Service worker: setInstrumentedURLs", data);
+            instrumentedURLs[root] = paths;
+            event.ports[0].postMessage(true);// acknowledge for the other side to resolve promise
+        }
+
+        console.log("service worker init");
+
+        function processVirtualServerMessage(event) {
+            let eventType = event.data && event.data.type;
+            switch (eventType) {
+            case 'REQUEST_RESPONSE':
+                const requestID = event.data.requestID;
+                if(event.data.requestID && responseListeners[requestID]){
+                    responseListeners[requestID](event.data);
+                    delete responseListeners[requestID];
+                    return true;
+                }
             }
         }
-    }
 
-    _serverBroadcastChannel.onmessage = processVirtualServerMessage;
+        _serverBroadcastChannel.onmessage = processVirtualServerMessage;
 
-    self.Serve = {
-        serve,
-        setInstrumentedURLs
-    };
-
+        self.Serve = {
+            serve,
+            setInstrumentedURLs
+        };
+    }());
 }

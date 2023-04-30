@@ -17,46 +17,48 @@
  *
  */
 
-/* global lookup, importScripts*/
+/* global mime, importScripts*/
 
 importScripts('phoenix/virtualServer/mime-types.js');
 
 if(!self.ContentType){
-    function getMimeType(path) {
-        return lookup(path) || 'application/octet-stream';
-    }
-
-    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#Audio_and_video_types
-    function isMedia(path) {
-        let mimeType = lookup(path);
-        if (!mimeType) {
-            return false;
+    (function () {
+        function getMimeType(path) {
+            return mime.lookup(path) || 'application/octet-stream';
         }
 
-        mimeType = mimeType.toLowerCase();
+        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#Audio_and_video_types
+        function isMedia(path) {
+            let mimeType = mime.lookup(path);
+            if (!mimeType) {
+                return false;
+            }
 
-        // Deal with OGG special case
-        if (mimeType === 'application/ogg') {
-            return true;
+            mimeType = mimeType.toLowerCase();
+
+            // Deal with OGG special case
+            if (mimeType === 'application/ogg') {
+                return true;
+            }
+
+            // Anything else with `audio/*` or `video/*` is "media"
+            return mimeType.startsWith('audio/') || mimeType.startsWith('video/');
         }
 
-        // Anything else with `audio/*` or `video/*` is "media"
-        return mimeType.startsWith('audio/') || mimeType.startsWith('video/');
-    }
+        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#Image_types
+        function isImage(path) {
+            const mimeType = mime.lookup(path);
+            if (!mimeType) {
+                return false;
+            }
 
-    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#Image_types
-    function isImage(path) {
-        const mimeType = lookup(path);
-        if (!mimeType) {
-            return false;
+            return mimeType.toLowerCase().startsWith('image/');
         }
 
-        return mimeType.toLowerCase().startsWith('image/');
-    }
-
-    self.ContentType = {
-        isMedia,
-        isImage,
-        getMimeType
-    };
+        self.ContentType = {
+            isMedia,
+            isImage,
+            getMimeType
+        };
+    }());
 }
