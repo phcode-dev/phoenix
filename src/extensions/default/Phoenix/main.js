@@ -32,8 +32,7 @@ define(function (require, exports, module) {
         Strings      = brackets.getModule("strings"),
         Dialogs      = brackets.getModule("widgets/Dialogs"),
         Mustache     = brackets.getModule("thirdparty/mustache/mustache"),
-        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
-        unSupportedBrowserTemplate     = require("text!html/unsupported-browser.html");
+        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs");
 
     const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
     let $icon, unsupportedBrowserDialogShown;
@@ -60,16 +59,20 @@ define(function (require, exports, module) {
         if(Phoenix.browser.isMobile || Phoenix.browser.isTablet){
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
-                Strings.UNSUPPORTED_BROWSER,
+                Strings.UNSUPPORTED_BROWSER_MOBILE_TITLE,
                 Strings.UNSUPPORTED_BROWSER_MOBILE
             );
             return;
         }
-        let templateVars = {
-            Strings: Strings,
-            surveyURL: "https://s.surveyplanet.com/6208d1eccd51c561fc8e59ca"
-        };
-        Dialogs.showModalDialogUsingTemplate(Mustache.render(unSupportedBrowserTemplate, templateVars));
+        if (!("serviceWorker" in navigator)) {
+            // service worker is required for phcode to work
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.UNSUPPORTED_BROWSER_TITLE,
+                Strings.UNSUPPORTED_BROWSER_MESSAGE
+            );
+            throw new Error("Service worker is not supported by the browser.");
+        }
     }
 
     function _detectUnSupportedBrowser() {

@@ -1158,7 +1158,7 @@ define(function (require, exports, module) {
         if(!path && !window.showOpenFilePicker){
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
-                Strings.UNSUPPORTED_BROWSER,
+                Strings.UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE,
                 Strings.UNSUPPORTED_BROWSER_OPEN_FOLDER
             );
             result.reject();
