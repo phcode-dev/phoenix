@@ -71,6 +71,14 @@ define(function (require, exports, module) {
     const NOTIFICATION_TYPE_ARROW = "arrow",
         NOTIFICATION_TYPE_TOAST = "toast";
 
+    const NOTIFICATION_STYLES_CSS_CLASS = {
+        INFO: "style-info",
+        WARNING: "style-warning",
+        SUCCESS: "style-success",
+        ERROR: "style-error",
+        DANGER: "style-danger"
+    };
+
     const CLOSE_REASON ={
         TIMEOUT: 'closeTimeout',
         CLICK_DISMISS: 'clickDismiss',
@@ -305,10 +313,12 @@ define(function (require, exports, module) {
      *
      * @param {string} title The title for the notification.
      * @param {string|Element} template A string template or HTML Element to use as the dialog HTML.
-     * @param {{dismissOnClick, autoCloseTimeS}} [options] optional, supported
+     * @param {{dismissOnClick, autoCloseTimeS, toastStyle}} [options] optional, supported
      *   * options are:
      *   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
      *   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
+     *   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be
+     *     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.
      * @return {Notification} Object with a done handler that resolves when the notification closes.
      * @type {function}
      */
@@ -316,8 +326,9 @@ define(function (require, exports, module) {
         options.dismissOnClick = options.dismissOnClick === undefined ? true : options.dismissOnClick;
         notificationWidgetCount++;
         const widgetID = `notification-toast-${notificationWidgetCount}`,
-            $NotificationPopup = $(Mustache.render(ToastPopupHtml,
-                {id: widgetID, title: title}));
+            $NotificationPopup = $(Mustache.render(ToastPopupHtml, {id: widgetID, title: title,
+                containerStyle: NOTIFICATION_STYLES_CSS_CLASS[options.toastStyle]
+                        || options.toastStyle || NOTIFICATION_STYLES_CSS_CLASS.INFO}));
         $NotificationPopup.find(".notification-dialog-content")
             .append($(template));
 
@@ -354,4 +365,5 @@ define(function (require, exports, module) {
     exports.createFromTemplate = createFromTemplate;
     exports.createToastFromTemplate = createToastFromTemplate;
     exports.CLOSE_REASON = CLOSE_REASON;
+    exports.NOTIFICATION_STYLES_CSS_CLASS = NOTIFICATION_STYLES_CSS_CLASS;
 });

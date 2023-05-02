@@ -2679,17 +2679,33 @@ label input {
 
 .notification-popup-container {
     border-radius: 3px;
-    background: #005f8f;
+    background: var(--bc-toast-info-bg-color);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.24);
     padding: 9px 12px 9px 12px;
     font-family: "SourceSansPro", serif;
-    color: #eee;
+    color: black;
     line-height: 1.5;
     margin-top: 7px;
 
     /* animated properties */
     opacity: 0;
     transform: translateY(-50px);
+}
+
+.notification-popup-container.style-danger {
+    background: var(--bc-toast-danger-bg-color);
+}
+.notification-popup-container.style-error {
+    background: var(--bc-toast-error-bg-color);
+}
+.notification-popup-container.style-info {
+    background: var(--bc-toast-info-bg-color);
+}
+.notification-popup-container.style-success {
+    background: var(--bc-toast-success-bg-color);
+}
+.notification-popup-container.style-warning {
+    background: var(--bc-toast-warning-bg-color);
 }
 
 .notification-popup-container.animateOpen {
@@ -2722,7 +2738,6 @@ label input {
 .notification-dialog-title {
     font-size: 16px;
     font-weight: bold;
-    color: #ddd;
 }
 
 .notification-dialog-content strong {

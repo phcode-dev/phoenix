@@ -92,5 +92,27 @@ define(function (require, exports, module) {
                 return $("#toast-notification-container").children().length === 0;
             }, "waiting for notification to close");
         });
+
+        async function verifyToast(cssClass) {
+            let notification = NotificationUI.createToastFromTemplate("hello", "world", {
+                toastStyle: cssClass
+            });
+            await awaitsFor(()=>{
+                return $(`#toast-notification-container .${cssClass}`).length === 1;
+            }, "waiting for notification to appear");
+            notification.close("test");
+            await awaitsFor(()=>{
+                return $(`#toast-notification-container .${cssClass}`).length === 0;
+            }, "waiting for notification to close");
+        }
+
+        it("Should style toast notification", async function () {
+            await verifyToast(NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.INFO);
+            await verifyToast(NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.WARNING);
+            await verifyToast(NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUCCESS);
+            await verifyToast(NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.ERROR);
+            await verifyToast(NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.DANGER);
+            await verifyToast("custom-class-name");
+        }, 10000);
     });
 });
