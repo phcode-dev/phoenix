@@ -128,9 +128,11 @@ Type: [function][3]
 
 *   `title` **[string][4]** The title for the notification.
 *   `template` **([string][4] | [Element][5])** A string template or HTML Element to use as the dialog HTML.
-*   `options` **{dismissOnClick, autoCloseTimeS}?** optional, supported*   options are:
+*   `options` **{dismissOnClick, autoCloseTimeS, toastStyle}?** optional, supported*   options are:
     *   `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
-    *   `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss). (optional, default `{}`)
+    *   `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
+    *   `toastStyle` - To style the toast notification for error, warning, info etc. Can be
+        one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name. (optional, default `{}`)
 
 ### Examples
 
