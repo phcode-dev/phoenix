@@ -101,7 +101,8 @@ const config = {
     /* Run your local dev server before starting the tests */
     webServer: {
         command: "npm run serveTest",
-        port: 5000
+        port: 5000,
+        reuseExistingServer: true
     }
 };
 
