@@ -2683,13 +2683,17 @@ label input {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.24);
     padding: 9px 12px 9px 12px;
     font-family: "SourceSansPro", serif;
-    color: black;
+    color: black; // text color
     line-height: 1.5;
     margin-top: 7px;
 
     /* animated properties */
     opacity: 0;
     transform: translateY(-50px);
+}
+
+.notification-dialog-content strong {
+    color: black; // text color
 }
 
 .notification-popup-container.style-danger {
@@ -2738,10 +2742,6 @@ label input {
 .notification-dialog-title {
     font-size: 16px;
     font-weight: bold;
-}
-
-.notification-dialog-content strong {
-    color: white;
 }
 
 .notification-dialog-content a {
