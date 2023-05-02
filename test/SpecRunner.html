@@ -108,9 +108,7 @@
         firstBoot: false, // will be set below
         startTime: Date.now()
       };
-      Phoenix.isSupportedBrowser = Phoenix.browser.isDeskTop &&
-              (Phoenix.browser.desktop.isChrome || Phoenix.browser.desktop.isEdgeChromium
-                      || Phoenix.browser.desktop.isOperaChromium);
+      Phoenix.isSupportedBrowser = Phoenix.browser.isDeskTop;
       window.testEnvironment = window.Phoenix.isTestWindow;
     }());
   </script>

@@ -31,7 +31,7 @@ define(function (require, exports, module) {
         AppInit      = brackets.getModule("utils/AppInit"),
         Strings      = brackets.getModule("strings"),
         Dialogs      = brackets.getModule("widgets/Dialogs"),
-        Mustache     = brackets.getModule("thirdparty/mustache/mustache"),
+        NotificationUI  = brackets.getModule("widgets/NotificationUI"),
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs");
 
     const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
@@ -64,20 +64,27 @@ define(function (require, exports, module) {
             );
             return;
         }
+        Dialogs.showModalDialog(
+            DefaultDialogs.DIALOG_ID_ERROR,
+            Strings.UNSUPPORTED_BROWSER_TITLE,
+            Strings.UNSUPPORTED_BROWSER_MESSAGE
+        );
         if (!("serviceWorker" in navigator)) {
             // service worker is required for phcode to work
-            Dialogs.showModalDialog(
-                DefaultDialogs.DIALOG_ID_ERROR,
-                Strings.UNSUPPORTED_BROWSER_TITLE,
-                Strings.UNSUPPORTED_BROWSER_MESSAGE
-            );
-            throw new Error("Service worker is not supported by the browser.");
+            throw new Error("Service worker is not supported by the browser. Phcode cannot continue.");
         }
     }
 
     function _detectUnSupportedBrowser() {
         if(!Phoenix.isSupportedBrowser){
             _showUnSupportedBrowserDialogue();
+        }
+        if(Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos) {
+            NotificationUI.createToastFromTemplate( Strings.ATTENTION_SAFARI_USERS,
+                Strings.ATTENTION_SAFARI_USERS_MESSAGE, {
+                    dismissOnClick: false,
+                    toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.DANGER
+                });
         }
     }
 
