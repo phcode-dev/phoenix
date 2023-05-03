@@ -56,7 +56,7 @@ define(function (require, exports, module) {
         },
         macDefaultKeyBindings = {
             "Ctrl-L": "edit.selectLine",
-            "Alt-Cmd-L": "edit.splitSelIntoLines",
+            "Shift-Cmd-L": "edit.splitSelIntoLines",
             "Alt-Shift-Down": "edit.addCursorToNextLine",
             "Alt-Shift-Up": "edit.addCursorToPrevLine",
             "Cmd-'": "navigate.gotoFirstProblem",
