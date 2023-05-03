@@ -115,7 +115,11 @@ define(function (require, exports, module) {
         });
 
         it("should log an error if an extension init fails with a runtime error", async function () {
-            await testLoadExtension("InitRuntimeError", "rejected", "[Extension] Error -- error thrown during initExtension for InitRuntimeError: ReferenceError: isNotDefined is not defined");
+            let errorMsg = "[Extension] Error -- error thrown during initExtension for InitRuntimeError: ReferenceError: isNotDefined is not defined";
+            if(window.Phoenix.browser.desktop.isSafari || window.Phoenix.browser.mobile.isIos){
+                errorMsg = "[Extension] Error -- error thrown during initExtension for InitRuntimeError: ReferenceError: Can't find variable: isNotDefined";
+            }
+            await testLoadExtension("InitRuntimeError", "rejected", errorMsg);
         });
 
         it("should log an error if an extension fails during RequireJS loading", async function () {
