@@ -820,7 +820,7 @@ define(function (require, exports, module) {
         if (_enabled && _keyMap[key]) {
             Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "shortcut", key);
             Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "command", _keyMap[key].commandID);
-            logger.leaveTrail("Keyboard shortcut: " + key + "command" + _keyMap[key].commandID);
+            logger.leaveTrail("Keyboard shortcut: " + key + " command: " + _keyMap[key].commandID);
             // If there is a registered and enabled key event except the swallowed key events,
             // we always mark the event as processed and return true.
             // We don't want multiple behavior tied to the same key event. For Instance, in browser, if `ctrl-k`

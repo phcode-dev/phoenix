@@ -247,6 +247,8 @@
             browser = 'firefox';
         } else if(Phoenix.browser.desktop.isOpera){
             browser = 'operaLegacy';
+        } else if(Phoenix.browser.desktop.isSafari){
+            browser = 'safari';
         }
         context = `${context}-${Phoenix.platform}-${browser}`;
     }
