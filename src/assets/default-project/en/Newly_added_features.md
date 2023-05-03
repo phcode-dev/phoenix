@@ -3,12 +3,28 @@
 # Newly Added Features
 
 We are continuously adding features every week to improve the life of web developers.
+[Check out our release page!](https://github.com/phcode-dev/phoenix/releases)
 
-**Development status:** `Stable/Active Development`
+Here's a list of top features recently added to Phoenix:
 
-List of features added to phoenix:
+## Safari Support (Beta)
+`Added on May,2023`
 
-## Create and Publish extensions
+Safari browser support is now in beta! Stay tuned for our **upcoming Web and native Mac/iOS apps** for full support. 
+
+### A note to Safari users
+Safari automatically deletes website data if a site is not revisited within 7 days.
+Phoenix relies on browser storage to save your projects, which may be removed due to this policy.
+**To prevent data loss**, please **download** your projects before closing the tab or stay tuned for our **upcoming Web and native Mac/iOS apps** for full support.
+
+## FireFox Support
+`Added on April,2023`
+
+phcode.dev now compatible with Firefox! Although opening local folders is not yet supported,
+you can import projects from GitHub. Stay tuned for upcoming support for uploading local folders.
+
+
+## Create and Publish Extensions
 `Added on March,2023`
 
 Creating extensions and themes is now easier than ever with a single click in GitHub. We have added workflows to:
