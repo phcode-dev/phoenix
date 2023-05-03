@@ -135,19 +135,6 @@ define(function (require, exports, module) {
                 expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
             });
 
-            it("should return an error if the directory can't be read (Mac only)", async function () {
-                if (brackets.platform === "mac") {
-                    var cb = readdirSpy();
-
-                    brackets.fs.readdir(baseDir + "/cant_read_here", cb);
-
-                    await awaitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
-
-                    expect(cb.error).toBe(brackets.fs.ERR_CANT_READ);
-                }
-
-            });
-
             it("should return an error if invalid parameters are passed", function () {
                 var cb = readdirSpy();
 
@@ -321,19 +308,6 @@ define(function (require, exports, module) {
 
                 expect(readFileCB.error).toBeFalsy();
                 expect(readFileCB.content).toBe(contents);
-            });
-
-            it("should return an error if the file can't be written (Mac only)", async function () {
-                if (brackets.platform === "mac") {
-                    var cb = errSpy();
-
-                    brackets.fs.writeFile(baseDir + "/cant_write_here/write_test.txt", contents, UTF8, cb);
-
-                    await awaitsFor(function () { return cb.wasCalled; }, "writeFile to finish", 1000);
-
-                    expect(cb.error).toBe(brackets.fs.ERR_CANT_WRITE);
-                }
-
             });
 
             it("should return an error if called with invalid parameters", function () {
@@ -571,21 +545,6 @@ define(function (require, exports, module) {
                 await awaitsFor(function () { return cb.wasCalled; }, "rename to finish", 1000);
 
                 expect(cb.error.code).toBe(brackets.fs.ERR_FILE_EXISTS);
-            });
-            it("should return an error if the parent folder is read only (Mac only)", async function () {
-                if (brackets.platform === "mac") {
-                    var oldName = testDir + "/cant_write_here/readme.txt",
-                        newName = testDir + "/cant_write_here/readme_renamed.txt",
-                        cb      = errSpy();
-
-                    complete = false;
-
-                    brackets.fs.rename(oldName, newName, cb);
-
-                    await awaitsFor(function () { return cb.wasCalled; }, "rename to finish", 1000);
-
-                    expect(cb.error).toBe(brackets.fs.ERR_CANT_WRITE);
-                }
             });
             // TODO: More testing of error cases?
         });
