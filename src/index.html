@@ -143,7 +143,7 @@
         const CACHE_NAME_EVERYTHING = "everything";
         function _resetCacheIfNeeded() {
             const cacheKey = "browserCacheVersionKey";
-            const newCacheVersion = "V13"; // just increment this number to V2, v3 etc. to force clear the cached content.
+            const newCacheVersion = "V14"; // just increment this number to V2, v3 etc. to force clear the cached content.
             const lastClearedVersion = window.localStorage.getItem(cacheKey);
             if(lastClearedVersion === null){
                 // setup First load flag, no cache, return.
