@@ -35,7 +35,7 @@ define(function (require, exports, module) {
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs");
 
     const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
-    let $icon, unsupportedBrowserDialogShown;
+    let $icon;
 
     function _addToolbarIcon() {
         const helpButtonID = "help-button";
@@ -52,10 +52,6 @@ define(function (require, exports, module) {
         });
     }
     function _showUnSupportedBrowserDialogue() {
-        if(unsupportedBrowserDialogShown || Phoenix.isTestWindow){
-            return;
-        }
-        unsupportedBrowserDialogShown = true;
         if(Phoenix.browser.isMobile || Phoenix.browser.isTablet){
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
@@ -76,6 +72,9 @@ define(function (require, exports, module) {
     }
 
     function _detectUnSupportedBrowser() {
+        if(Phoenix.isTestWindow) {
+            return;
+        }
         if(!Phoenix.isSupportedBrowser){
             _showUnSupportedBrowserDialogue();
         }
