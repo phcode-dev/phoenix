@@ -1,4 +1,4 @@
-name: Firefox run unit tests suite with Playwright
+name: Safari run unit tests suite with Playwright
 on:
   push:
     branches: [ main ]
@@ -19,8 +19,8 @@ jobs:
       run: npm run build
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests in firefox
-      run: npm run testFirefox
+    - name: Run Playwright tests in safari
+      run: npm run testSafari
     - uses: actions/upload-artifact@v3
       if: always()
       with:
