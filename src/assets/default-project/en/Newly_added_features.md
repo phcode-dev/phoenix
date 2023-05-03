@@ -17,12 +17,11 @@ Safari automatically deletes website data if a site is not revisited within 7 da
 Phoenix relies on browser storage to save your projects, which may be removed due to this policy.
 **To prevent data loss**, please **download** your projects before closing the tab or stay tuned for our **upcoming Web and native Mac/iOS apps** for full support.
 
-## FireFox Support
+## Firefox Support
 `Added on April,2023`
 
 phcode.dev now compatible with Firefox! Although opening local folders is not yet supported,
 you can import projects from GitHub. Stay tuned for upcoming support for uploading local folders.
-
 
 ## Create and Publish Extensions
 `Added on March,2023`
