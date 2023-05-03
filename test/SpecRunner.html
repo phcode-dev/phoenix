@@ -55,6 +55,13 @@
                 !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
         let isOperaChromiumBrowser = isChrome && isOpera;
         let isChromeBrowser = isChrome && !isEdgeChromiumBrowser && !isOperaChromiumBrowser;
+          function isSafari() {
+              // Safari 3.0+ "[object HTMLElementConstructor]"
+              return /constructor/i.test(window.HTMLElement)
+                  || (function (p) {
+                      return p.toString() === "[object SafariRemoteNotification]";
+                  })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
+          }
         return{
           isTablet: _mobileAndTabletCheck(),
           isMobile: _mobileCheck(),
@@ -73,7 +80,8 @@
             isChromeBased: isChrome,
             isChrome: isChromeBrowser,
             isEdgeChromium: isEdgeChromiumBrowser,
-            isOperaChromium: isOperaChromiumBrowser
+            isOperaChromium: isOperaChromiumBrowser,
+            isSafari: isSafari()
           }
         };
       }
@@ -108,7 +116,7 @@
         firstBoot: false, // will be set below
         startTime: Date.now()
       };
-      Phoenix.isSupportedBrowser = Phoenix.browser.isDeskTop;
+      Phoenix.isSupportedBrowser = Phoenix.browser.isDeskTop && ("serviceWorker" in navigator);
       window.testEnvironment = window.Phoenix.isTestWindow;
     }());
   </script>
