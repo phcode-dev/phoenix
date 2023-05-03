@@ -3,7 +3,7 @@
 # Newly Added Features
 
 We are continuously adding features every week to improve the life of web developers.
-[Check out our release page!](https://github.com/phcode-dev/phoenix/releases)
+<a href="https://github.com/phcode-dev/phoenix/releases" target="_blank">Check out our release page!</a>
 
 Here's a list of top features recently added to Phoenix:
 
@@ -27,7 +27,7 @@ you can import projects from GitHub. Stay tuned for upcoming support for uploadi
 `Added on March,2023`
 
 Creating extensions and themes is now easier than ever with a single click in GitHub. We have added workflows to:
-* Create a [Theme](https://github.com/phcode-dev/theme-template) or [Extension](https://github.com/phcode-dev/extension-template) with a single click.
+* Create a <a href="https://github.com/phcode-dev/theme-template" target="_blank">Theme</a> or <a href="https://github.com/phcode-dev/extension-template" target="_blank">Extension</a> with a single click.
 * Load/unload development extensions with new `Debug> Reload With Extensions` menu. ![image](https://user-images.githubusercontent.com/5336369/224746152-0416a862-891a-4fe1-b9dd-09add25a6cc0.png)
 * [Publish an extension](https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes#publishing-to-the-extensiontheme-store)
   directly from your GitHub repo by creating a GitHub release!  
