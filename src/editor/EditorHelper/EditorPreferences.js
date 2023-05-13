@@ -151,7 +151,7 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_WORD_WRAP
     });
 
-    PreferencesManager.definePreference(AUTO_HIDE_SEARCH,   "boolean", true, {
+    PreferencesManager.definePreference(AUTO_HIDE_SEARCH,   "boolean", false, {
         description: Strings.DESCRIPTION_SEARCH_AUTOHIDE
     });
 
