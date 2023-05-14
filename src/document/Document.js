@@ -120,6 +120,13 @@ define(function (require, exports, module) {
     Document.prototype.diskTimestamp = null;
 
     /**
+     * Keeps a running timestamp of when the document was last changed. You can use this timestamp to see a
+     * document was recently changed or not.
+     * @type {number}
+     */
+    Document.prototype.lastChangeTimestamp = null;
+
+    /**
      * The timestamp of the document at the point where the user last said to keep changes that conflict
      * with the current disk version. Can also be -1, indicating that the file was deleted on disk at the
      * last point when the user said to keep changes, or null, indicating that the user has not said to
@@ -337,6 +344,7 @@ define(function (require, exports, module) {
      * @param {Object} changeList Changelist in CodeMirror format
      */
     Document.prototype._notifyDocumentChange = function (changeList) {
+        this.lastChangeTimestamp = Date.now();
         this.trigger("change", this, changeList);
         exports.trigger("documentChange", this, changeList);
     };
@@ -501,6 +509,7 @@ define(function (require, exports, module) {
      */
     Document.prototype._updateTimestamp = function (timestamp) {
         this.diskTimestamp = timestamp;
+        this.lastChangeTimestamp = Date.now();
         // Clear the "keep changes" timestamp since it's no longer relevant.
         this.keepChangesTime = null;
     };

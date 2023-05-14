@@ -58,7 +58,7 @@ define(function (require, exports, module) {
                 }
             });
 
-            it("should do a single edit, tracking a beforeEdit selection and preserving reversed flag", function () {
+            function _verifySingleEdit() {
                 var result = myDocument.doMultipleEdits([{edit: {text: "new content", start: {line: 2, ch: 0}, end: {line: 2, ch: 14}},
                     selection: {start: {line: 2, ch: 4}, end: {line: 2, ch: 4}, reversed: true, isBeforeEdit: true}}]);
                 initialContentLines[2] = "new content";
@@ -69,6 +69,17 @@ define(function (require, exports, module) {
                 expect(result[0].end.line).toEqual(2);
                 expect(result[0].end.ch).toEqual(11);
                 expect(result[0].reversed).toBe(true);
+            }
+
+            it("should do a single edit, tracking a beforeEdit selection and preserving reversed flag", function () {
+                _verifySingleEdit();
+            });
+
+            it("should edit update change lastChangeTimestamp", function () {
+                let lastTimestamp = myDocument.lastChangeTimestamp;
+                expect(typeof myDocument.lastChangeTimestamp).toBe('number');
+                _verifySingleEdit();
+                expect(myDocument.lastChangeTimestamp).not.toBe(lastTimestamp);
             });
 
             it("should do a single edit, leaving a non-beforeEdit selection untouched and preserving reversed flag", function () {

@@ -94,6 +94,14 @@ define(function (require, exports, module) {
         ProjectManager      = require("project/ProjectManager"),
         Strings             = require("strings");
 
+    const EVENT_AFTER_DOCUMENT_CREATE = "afterDocumentCreate",
+        EVENT_PATH_DELETED = "pathDeleted",
+        EVENT_FILE_NAME_CHANGE = "fileNameChange",
+        EVENT_BEFORE_DOCUMENT_DELETE = "beforeDocumentDelete",
+        EVENT_DOCUMENT_REFRESHED = "documentRefreshed",
+        EVENT_DOCUMENT_CHANGE = "documentChange",
+        EVENT_DIRTY_FLAG_CHANGED = "dirtyFlagChange";
+
 
     /**
      * @private
@@ -472,7 +480,7 @@ define(function (require, exports, module) {
      */
     function notifyFileDeleted(file) {
         // Notify all editors to close as well
-        exports.trigger("pathDeleted", file.fullPath);
+        exports.trigger(EVENT_PATH_DELETED, file.fullPath);
 
         var doc = getOpenDocumentForPath(file.fullPath);
 
@@ -515,7 +523,7 @@ define(function (require, exports, module) {
             // For images not open in the workingset,
             // FileSyncManager.syncOpenDocuments() will
             //  not tell us to close those views
-            exports.trigger("pathDeleted", fullPath);
+            exports.trigger(EVENT_PATH_DELETED, fullPath);
         }
     }
 
@@ -536,7 +544,7 @@ define(function (require, exports, module) {
         });
 
         // Send a "fileNameChange" event. This will trigger the views to update.
-        exports.trigger("fileNameChange", oldName, newName);
+        exports.trigger(EVENT_FILE_NAME_CHANGE, oldName, newName);
     }
 
 
@@ -578,7 +586,7 @@ define(function (require, exports, module) {
             }
 
             _openDocuments[doc.file.id] = doc;
-            exports.trigger("afterDocumentCreate", doc);
+            exports.trigger(EVENT_AFTER_DOCUMENT_CREATE, doc);
         })
         .on("_beforeDocumentDelete", function (event, doc) {
             if (!_openDocuments[doc.file.id]) {
@@ -586,17 +594,19 @@ define(function (require, exports, module) {
                 return true;
             }
 
-            exports.trigger("beforeDocumentDelete", doc);
+            exports.trigger(EVENT_BEFORE_DOCUMENT_DELETE, doc);
             delete _openDocuments[doc.file.id];
         })
         .on("_documentRefreshed", function (event, doc) {
-            exports.trigger("documentRefreshed", doc);
+            exports.trigger(EVENT_DOCUMENT_REFRESHED, doc);
+        }).on(EVENT_DOCUMENT_CHANGE, function (event, doc, changelist) {
+            exports.trigger(EVENT_DOCUMENT_CHANGE, doc, changelist);
         })
         .on("_dirtyFlagChange", function (event, doc) {
             // Modules listening on the doc instance notified about dirtyflag change
             // To be used internally by Editor
             doc.trigger("_dirtyFlagChange", doc);
-            exports.trigger("dirtyFlagChange", doc);
+            exports.trigger(EVENT_DIRTY_FLAG_CHANGED, doc);
             if (doc.isDirty) {
                 MainViewManager.addToWorkingSet(MainViewManager.ACTIVE_PANE, doc.file);
 
