@@ -1050,7 +1050,7 @@ define(function (require, exports, module) {
      * @param {Directory} directory To get all descendant contents from
      * @return {Promise<Array[File|Directory]>} A promise that resolves with the file and directory contents
      */
-    FileSystem.prototype.getAllDirectoryContents = function (directory, _traversedPaths= []) {
+    FileSystem.prototype.getAllDirectoryContents = function (directory) {
         return new Promise((resolve, reject)=>{
             let contents = [];
             function visitor(entry) {

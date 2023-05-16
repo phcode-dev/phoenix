@@ -19,6 +19,10 @@
  *
  */
 
+/**
+ * Virtualized NativeApp apis that works cross-platform, and in the browser.
+ */
+
 define(function (require, exports, module) {
 
 
@@ -107,10 +111,15 @@ define(function (require, exports, module) {
         brackets.app.openURLInDefaultBrowser(url);
     }
 
+    function getApplicationSupportDirectory() {
+        return brackets.app.getApplicationSupportDirectory();
+    }
+
 
     // Define public API
     exports.openLiveBrowser = openLiveBrowser;
     exports.closeLiveBrowser = closeLiveBrowser;
     exports.closeAllLiveBrowsers = closeAllLiveBrowsers;
+    exports.getApplicationSupportDirectory = getApplicationSupportDirectory;
     exports.openURLInDefaultBrowser = openURLInDefaultBrowser;
 });

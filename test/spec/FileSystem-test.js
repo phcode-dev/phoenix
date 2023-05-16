@@ -423,6 +423,26 @@ define(function (require, exports, module) {
                 expect(cb.contents[0].fullPath).toBe("/subdir/file3.txt");
             });
 
+            it("should read a Directory Async", async function () {
+                let directory = fileSystem.getDirectoryForPath("/subdir/");
+                const {entries, contentStats, contentsStatsErrors} = await directory.getContentsAsync();
+                expect(entries.length).toBe(3);
+                expect(entries[0].fullPath).toBe("/subdir/file3.txt");
+                expect(contentStats[0].isFile).toBe(true);
+                expect(contentsStatsErrors).toBe(undefined);
+            });
+
+            it("should check if directory is empty Async", async function () {
+                let directory = fileSystem.getDirectoryForPath("/subdir/");
+                let isEmpty = await directory.isEmptyAsync();
+                expect(isEmpty).toBe(false);
+                // now create an empty dir
+                let newDirectory = fileSystem.getDirectoryForPath("/subdir/newDir/");
+                await newDirectory.createAsync();
+                isEmpty = await newDirectory.isEmptyAsync();
+                expect(isEmpty).toBe(true);
+            });
+
             it("should return an error if the Directory can't be found", async function () {
                 var directory = fileSystem.getDirectoryForPath("/doesnt-exist/"),
                     cb = getContentsCallback();
@@ -487,6 +507,65 @@ define(function (require, exports, module) {
                     expect(err).toBeFalsy();
                     expect(exists).toBe(true);
                 });
+            });
+            it("should create a Directory Async", async function () {
+                let directory = fileSystem.getDirectoryForPath("/subdir2/");
+
+                let isExists = await directory.existsAsync();
+                expect(isExists).toBeFalse();
+                await directory.createAsync();
+                isExists = await directory.existsAsync();
+                expect(isExists).toBeTrue();
+            });
+        });
+
+        describe("should get stats", function () {
+            it("should get Directory statsAsync", async function () {
+                let directory = fileSystem.getDirectoryForPath("/subdir2/");
+                await directory.createAsync();
+                let stat = await directory.statAsync();
+                expect(stat.isDirectory).toBeTrue();
+            });
+
+            it("should get reject statsAsync is directory doesnt exist", async function () {
+                let directory = fileSystem.getDirectoryForPath("/subdir2/");
+                let isExists = await directory.existsAsync();
+                expect(isExists).toBeFalse();
+
+                let err;
+                try{
+                    await directory.statAsync();
+                } catch (e) {
+                    err = e;
+                }
+                expect(err).toBe(FileSystemError.NOT_FOUND);
+            });
+        });
+
+        describe("should unlinkAsync work as expectes", function () {
+            it("should delete Directory", async function () {
+                let directory = fileSystem.getDirectoryForPath("/subdir2/");
+                await directory.createAsync();
+                let stat = await directory.statAsync();
+                expect(stat.isDirectory).toBeTrue();
+
+                await directory.unlinkAsync();
+                let isExists = await directory.existsAsync();
+                expect(isExists).toBeFalse();
+            });
+
+            it("should unlinkAsync reject if directory doesnt exist", async function () {
+                let directory = fileSystem.getDirectoryForPath("/subdir2/");
+                let isExists = await directory.existsAsync();
+                expect(isExists).toBeFalse();
+
+                let err;
+                try{
+                    await directory.unlinkAsync();
+                } catch (e) {
+                    err = e;
+                }
+                expect(err).toBe(FileSystemError.NOT_FOUND);
             });
         });
 

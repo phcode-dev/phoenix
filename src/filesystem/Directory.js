@@ -121,11 +121,50 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Read the contents of a Directory, returns a promise. If this Directory is under a watch root,
+     * the listing will exclude any items filtered out by the watch root's filter
+     * function.
+     *
+     * @return {Promise<{entries: FileSystemEntry, contentStats: FileSystemStats, contentsStatsErrors}>} An object
+     * with attributes - entries(an array of file system entries), contentStats and contentsStatsErrors(a map from
+     * content name to error if there is any).
+     */
+    Directory.prototype.getContentsAsync = function () {
+        let that = this;
+        return new Promise((resolve, reject)=>{
+            that.getContents((err, contents, contentStats, contentsStatsErrors) =>{
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve({entries: contents, contentStats, contentsStatsErrors});
+            });
+        });
+    };
+
+    /**
+     * Returns true if is a directory exists and is empty.
+     *
+     * @return {Promise<boolean>} True if directory is empty and it exists, else false.
+     */
+    Directory.prototype.isEmptyAsync = function () {
+        let that = this;
+        return new Promise((resolve, reject)=>{
+            that.getContents((err, contents) =>{
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(contents.length === 0);
+            });
+        });
+    };
+
+    /**
      * Read the contents of a Directory. If this Directory is under a watch root,
      * the listing will exclude any items filtered out by the watch root's filter
      * function.
      *
-     * @param {Directory} directory Directory whose contents you want to get
      * @param {function (?string, Array.<FileSystemEntry>=, Array.<FileSystemStats>=, Object.<string, string>=)} callback
      *          Callback that is passed an error code or the stat-able contents
      *          of the directory along with the stats for these entries and a
@@ -210,6 +249,24 @@ define(function (require, exports, module) {
             var callbackArgs = [err, contents, contentsStats, contentsStatsErrors];
             _applyAllCallbacks(currentCallbacks, callbackArgs);
         }.bind(this));
+    };
+
+    /**
+     * Create a directory and returns a promise that will resolve to a stat
+     *
+     * @return {Promise<FileSystemStats>} resolves to the stats of the newly created dir.
+     */
+    Directory.prototype.createAsync = function () {
+        let that = this;
+        return new Promise((resolve, reject)=>{
+            that.create((err, stat)=>{
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(stat);
+            });
+        });
     };
 
     /**

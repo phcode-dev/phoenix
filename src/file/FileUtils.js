@@ -58,7 +58,7 @@ define(function (require, exports, module) {
     var MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;
 
     /**
-     * @const {List} list of File Extensions which will be opened in external Application
+     * @var {List} list of File Extensions which will be opened in external Application
      */
     var extListToBeOpenedInExtApp = [];
 

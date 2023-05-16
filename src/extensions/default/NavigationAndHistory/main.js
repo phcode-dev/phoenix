@@ -44,7 +44,8 @@ define(function (require, exports, module) {
         KeyBindingManager       = brackets.getModule("command/KeyBindingManager"),
         ExtensionUtils          = brackets.getModule("utils/ExtensionUtils"),
         Mustache                = brackets.getModule("thirdparty/mustache/mustache"),
-        NavigationProvider      = require("NavigationProvider");
+        NavigationProvider      = require("NavigationProvider"),
+        FileRecovery      = require("FileRecovery");
 
     var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
@@ -831,6 +832,7 @@ define(function (require, exports, module) {
     });
 
     AppInit.appReady(function () {
+        FileRecovery.init();
         ExtensionUtils.loadStyleSheet(module, "styles/recent-files.css");
         NavigationProvider.init();
     });
