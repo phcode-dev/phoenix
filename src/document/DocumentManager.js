@@ -731,6 +731,15 @@ define(function (require, exports, module) {
     exports.createUntitledDocument      = createUntitledDocument;
     exports.getAllOpenDocuments         = getAllOpenDocuments;
 
+    // public events
+    exports.EVENT_AFTER_DOCUMENT_CREATE = EVENT_AFTER_DOCUMENT_CREATE;
+    exports.EVENT_PATH_DELETED = EVENT_PATH_DELETED;
+    exports.EVENT_FILE_NAME_CHANGE = EVENT_FILE_NAME_CHANGE;
+    exports.EVENT_BEFORE_DOCUMENT_DELETE = EVENT_BEFORE_DOCUMENT_DELETE;
+    exports.EVENT_DOCUMENT_REFRESHED = EVENT_DOCUMENT_REFRESHED;
+    exports.EVENT_DOCUMENT_CHANGE = EVENT_DOCUMENT_CHANGE;
+    exports.EVENT_DIRTY_FLAG_CHANGED = EVENT_DIRTY_FLAG_CHANGED;
+
     // For internal use only
     exports.notifyPathNameChanged       = notifyPathNameChanged;
     exports.notifyPathDeleted           = notifyPathDeleted;

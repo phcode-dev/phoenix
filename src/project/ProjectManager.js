@@ -84,6 +84,7 @@ define(function (require, exports, module) {
         EVENT_PROJECT_CLOSE = "projectClose",
         EVENT_PROJECT_OPEN_FAILED = "projectFileOpenFailed",
         EVENT_PROJECT_OPEN = "projectOpen",
+        EVENT_AFTER_PROJECT_OPEN = "afterProjectOpen",
         EVENT_PROJECT_REFRESH = "projectRefresh",
         EVENT_CONTENT_CHANGED = "contentChanged",
         EVENT_PROJECT_FILE_CHANGED = "projectFileChanged",
@@ -1064,6 +1065,7 @@ define(function (require, exports, module) {
                                 // Allow asynchronous event handlers to finish before resolving result by collecting promises from them
                                 exports.trigger(EVENT_PROJECT_OPEN, model.projectRoot);
                                 result.resolve();
+                                exports.trigger(EVENT_AFTER_PROJECT_OPEN, model.projectRoot);
                             } else {
                                 exports.trigger(EVENT_PROJECT_REFRESH, model.projectRoot);
                                 result.resolve();
@@ -2002,6 +2004,7 @@ define(function (require, exports, module) {
     exports.EVENT_PROJECT_BEFORE_CLOSE = EVENT_PROJECT_BEFORE_CLOSE;
     exports.EVENT_PROJECT_CLOSE = EVENT_PROJECT_CLOSE;
     exports.EVENT_PROJECT_OPEN = EVENT_PROJECT_OPEN;
+    exports.EVENT_AFTER_PROJECT_OPEN = EVENT_AFTER_PROJECT_OPEN;
     exports.EVENT_PROJECT_REFRESH = EVENT_PROJECT_REFRESH;
     exports.EVENT_CONTENT_CHANGED = EVENT_CONTENT_CHANGED;
     exports.EVENT_PROJECT_FILE_CHANGED = EVENT_PROJECT_FILE_CHANGED;

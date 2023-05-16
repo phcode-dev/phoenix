@@ -341,6 +341,24 @@ define(function (require, exports, module) {
         }.bind(this));
     };
 
+    /**
+     * Returns a promise that resolves to the stats for the entry.
+     *
+     * @return {Promise<FileSystemStats>}
+     */
+    FileSystemEntry.prototype.statAsync = async function () {
+        let that = this;
+        return new Promise((resolve, reject)=>{
+            that.stat((err, stat)=>{
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(stat);
+                }
+            });
+        });
+    };
+
     function _ensureTrailingSlash(path) {
         if (path[path.length - 1] !== "/") {
             path += "/";
@@ -390,6 +408,25 @@ define(function (require, exports, module) {
                 this._fileSystem._endChange();
             }
         }.bind(this));
+    };
+
+    /**
+     * Permanently delete this entry. For Directories, this will delete the directory
+     * and all of its contents. For reversible delete, see moveToTrash().
+     *
+     * @return {Promise<>} a promise that resolves when delete is success or rejects.
+     */
+    FileSystemEntry.prototype.unlinkAsync = function () {
+        let that = this;
+        return new Promise((resolve, reject)=>{
+            that.unlink((err)=>{
+                if(err){
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
     };
 
     /**
