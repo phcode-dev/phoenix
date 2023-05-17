@@ -627,6 +627,8 @@
   "RECENT_FILES_DLG_HEADER": "File recenti",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "Chiaro",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Cancella i file non in Working Set",
+  "RECOVER_UNSAVED_FILES_TITLE": "Recuperare file non salvati?",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "Ripristinare i file non salvati dalla sessione precedente?",
   "DESCRIPTION_CLOSE_BRACKETS": "true per chiudere automaticamente le parentesi tonde, quadre e graffe",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false per rimuovere le 'Chiudi tutto al di sopra' dal menu dello spazio di lavoro",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false per rimuovere le 'Chiudi tutto al di sotto' dal menu dello spazio di lavoro",

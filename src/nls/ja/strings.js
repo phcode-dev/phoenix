@@ -647,6 +647,8 @@ define({
   "RECENT_FILES_DLG_HEADER": "最近使用したファイル",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "消去",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "ワーキングセットにないファイルをクリア",
+  "RECOVER_UNSAVED_FILES_TITLE": "保存されていないファイルを回復しますか?",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "前回のセッションから保存されていないファイルを復元しますか?",
   "DESCRIPTION_CLOSE_BRACKETS": "中括弧、角括弧、丸括弧を自動的に閉じるには true",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "「作業中ファイル」コンテキストメニューから「上をすべて閉じる」を削除するには false",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "「作業中ファイル」コンテキストメニューから「下をすべて閉じる」を削除するには false",

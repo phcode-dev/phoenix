@@ -647,6 +647,8 @@ define({
   "RECENT_FILES_DLG_HEADER": "സമീപകാല ഫയലുകൾ",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "ക്ലിയർ",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "വർക്കിംഗ് സെറ്റിൽ ഇല്ലാത്ത ഫയലുകൾ മായ്ക്കുക",
+  "RECOVER_UNSAVED_FILES_TITLE": "സംരക്ഷിക്കാത്ത ഫയലുകൾ വീണ്ടെടുക്കണോ?",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "നിങ്ങളുടെ മുൻ സെഷനിൽ നിന്ന് സംരക്ഷിക്കാത്ത ഫയലുകൾ പുനഃസ്ഥാപിക്കണോ?",
   "DESCRIPTION_CLOSE_BRACKETS": "ബ്രേസുകളും ബ്രാക്കറ്റുകളും പരാൻതീസിസും സ്വയമേവ അടയ്ക്കുന്നതിന് ശരിയാണ്",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "വർക്കിംഗ് ഫയലുകളുടെ സന്ദർഭ മെനുവിൽ നിന്ന് \"മുകളിൽ മറ്റുള്ളവരെ അടയ്‌ക്കുക\" എന്നത് നീക്കംചെയ്യുന്നതിന് തെറ്റ്",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "വർക്കിംഗ് ഫയലുകളുടെ സന്ദർഭ മെനുവിൽ നിന്ന് \"ചുവടെയുള്ള മറ്റുള്ളവരെ അടയ്‌ക്കുക\" എന്നത് നീക്കംചെയ്യുന്നതിന് false",

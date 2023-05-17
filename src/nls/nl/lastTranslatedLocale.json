@@ -627,6 +627,8 @@
   "RECENT_FILES_DLG_HEADER": "Recente documenten",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "Duidelijk",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Bestanden wissen die niet in werkset staan",
+  "RECOVER_UNSAVED_FILES_TITLE": "Niet-opgeslagen bestanden herstellen?",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "Niet-opgeslagen bestanden van uw vorige sessie herstellen?",
   "DESCRIPTION_CLOSE_BRACKETS": "true om accolades, haakjes en haakjes automatisch te sluiten",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false om \"Sluit anderen hierboven\" uit het contextmenu van Werkende bestanden te verwijderen",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false om de \"Sluit anderen hieronder\" uit het contextmenu van Werkende bestanden te verwijderen",
