@@ -647,6 +647,8 @@ define({
   "RECENT_FILES_DLG_HEADER": "最近打开的文件",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "清除",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "清除不在工作区的文件",
+  "RECOVER_UNSAVED_FILES_TITLE": "恢复未保存的文件？",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "从上一个会话中恢复未保存的文件？",
   "DESCRIPTION_CLOSE_BRACKETS": "值为真时，自动闭合括号",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "值为假时，从工作区右键菜单中移除 \"关闭上面的其他文件\" 项",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "值为假时，从工作区右键菜单中移除 \"关闭下面的其他文件\" 项",

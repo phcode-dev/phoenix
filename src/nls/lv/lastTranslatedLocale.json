@@ -627,6 +627,8 @@
   "RECENT_FILES_DLG_HEADER": "Jaunākie faili",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "Skaidrs",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Notīrīt failus, kas nav darba komplektā",
+  "RECOVER_UNSAVED_FILES_TITLE": "Vai atgūt nesaglabātos failus?",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "Vai atjaunot nesaglabātos failus no iepriekšējās sesijas?",
   "DESCRIPTION_CLOSE_BRACKETS": "vērtība true, lai automātiski aizvērtu figūriekavas, iekavas un apaļās iekavas",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "vērtība false, lai noņemtu \"Aizvērt visus augstāk\" no darba datņu kontekstizvēlnes",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "vērtība false, lai noņemtu \"Aizvērt visus zemāk\" no darba datņu kontekstizvēlnes",

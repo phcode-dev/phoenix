@@ -647,6 +647,8 @@ define({
   "RECENT_FILES_DLG_HEADER": "Последни файлове",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "ясно",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Изчистване на файлове, които не са в работния набор",
+  "RECOVER_UNSAVED_FILES_TITLE": "Възстановяване на незапазени файлове?",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "Възстановяване на незапазени файлове от предишната ви сесия?",
   "DESCRIPTION_CLOSE_BRACKETS": "Задайте true за автоматично затваряне на всички видове скоби",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "Задайте false за премахване на възможността за „Затваряне на всички отгоре“ от контекстното меню на работните файлове",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "Задайте false за премахване на възможността за „Затваряне на всички отдолу“ от контекстното меню на работните файлове",

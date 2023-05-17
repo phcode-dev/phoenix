@@ -647,6 +647,8 @@ define({
   "RECENT_FILES_DLG_HEADER": "حالیہ فائلیں۔",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "صاف",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "ورکنگ سیٹ میں موجود فائلوں کو صاف کریں۔",
+  "RECOVER_UNSAVED_FILES_TITLE": "غیر محفوظ شدہ فائلیں بازیافت کریں؟",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "اپنے پچھلے سیشن سے غیر محفوظ شدہ فائلوں کو بحال کریں؟",
   "DESCRIPTION_CLOSE_BRACKETS": "منحنی خطوط وحدانی، بریکٹ اور قوسین کو خود بخود بند کرنے کے لیے درست",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "ورکنگ فائلوں کے سیاق و سباق کے مینو سے \"اوپر بند کریں\" کو ہٹانے کے لیے غلط",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "ورکنگ فائلوں کے سیاق و سباق کے مینو سے \"نیچے دوسروں کو بند کریں\" کو ہٹانے کے لیے غلط",

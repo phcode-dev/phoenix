@@ -647,6 +647,8 @@ define({
   "RECENT_FILES_DLG_HEADER": "فایل های اخیر",
   "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "پاک کردن",
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "فایل‌هایی را که در Working Set نیستند پاک کنید",
+  "RECOVER_UNSAVED_FILES_TITLE": "بازیابی فایل های ذخیره نشده؟",
+  "RECOVER_UNSAVED_FILES_MESSAGE": "فایل های ذخیره نشده از جلسه قبلی خود را بازیابی کنید؟",
   "DESCRIPTION_CLOSE_BRACKETS": "درست برای بستن خودکار پرانتزها، براکت ها و پرانتزها",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false برای حذف \"Close Others Above\" از منوی زمینه فایل های کاری",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false برای حذف \"Close Others Below\" از منوی زمینه فایل های کاری",
