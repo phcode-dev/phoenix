@@ -25,12 +25,22 @@ define(function (require, exports, module) {
     const NativeApp = brackets.getModule("utils/NativeApp"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
+        MainViewManager = brackets.getModule("view/MainViewManager"),
         FileSystemError = brackets.getModule("filesystem/FileSystemError"),
         FileUtils = brackets.getModule("file/FileUtils"),
-        DocumentManager = brackets.getModule("document/DocumentManager");
+        DocumentManager = brackets.getModule("document/DocumentManager"),
+        NotificationUI = brackets.getModule("widgets/NotificationUI"),
+        Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        Strings = brackets.getModule("strings"),
+        FileViewController  = brackets.getModule("project/FileViewController"),
+        recoveryTemplate = require("text!html/recovery-template.html"),
+        EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+        EventManager = brackets.getModule("utils/EventManager");
 
-    const BACKUP_INTERVAL_MS = 3000; // todo change to 20 secs
-    // todo large number of tracked files performance issues?
+    EventDispatcher.makeEventDispatcher(exports);
+    EventManager.registerEventHandler("ph-recovery", exports);
+
+    const BACKUP_INTERVAL_MS = 5000;
     const sessionRestoreDir = FileSystem.getDirectoryForPath(
         path.normalize(NativeApp.getApplicationSupportDirectory() + "/sessionRestore"));
 
@@ -131,6 +141,7 @@ define(function (require, exports, module) {
         let restoreFolder = project.restoreRoot;
         await ensureFolderIsClean(restoreFolder);
         let allEntries = await FileSystem.getAllDirectoryContents(restoreFolder);
+        let backupExists = false;
         for(let entry of allEntries){
             if(entry.isDirectory){
                 continue;
@@ -145,9 +156,20 @@ define(function (require, exports, module) {
                 return;
             }
             project.lastBackedUpFileContents[projectFilePath] = text;
-            console.log(text);
+            backupExists = true;
         }
         project.lastBackedupLoadInProgress = false;
+        if(backupExists) {
+            let notificationHTML = Mustache.render(recoveryTemplate, {
+                Strings: Strings,
+                PROJECT_TO_RECOVER: projectRootPath
+            });
+            project.restoreNotification = NotificationUI.createToastFromTemplate( Strings.RECOVER_UNSAVED_FILES_TITLE,
+                notificationHTML, {
+                    dismissOnClick: false,
+                    toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUCCESS
+                });
+        }
     }
 
     function projectOpened(_event, projectRoot) {
@@ -156,14 +178,21 @@ define(function (require, exports, module) {
             return;
         }
         if(trackedProjects[projectRoot.fullPath]){
-            trackedProjects[projectRoot.fullPath].projectLoadCount++;
+            if(trackedProjects[projectRoot.fullPath].restoreNotification){
+                trackedProjects[projectRoot.fullPath].restoreNotification.close();
+                trackedProjects[projectRoot.fullPath].restoreNotification = null;
+            }
+            trackedProjects[projectRoot.fullPath].projectLoadCount++;// we use this to prevent race conditions
+            // on frequent project switch before all project backup files are loaded.
             trackedProjects[projectRoot.fullPath].lastBackedUpFileContents = {};
             trackedProjects[projectRoot.fullPath].firstEditHandled = false;
             trackedProjects[projectRoot.fullPath].lastBackedupLoadInProgress = true;
             trackedProjects[projectRoot.fullPath].trackedFileUpdateTimestamps = {};
             trackedProjects[projectRoot.fullPath].trackedFileContents = {};
-            loadLastBackedUpFileContents(projectRoot.fullPath);
-            // todo race condition here frequent switch between projects
+            trackedProjects[projectRoot.fullPath].changeErrorReported = false;
+            loadLastBackedUpFileContents(projectRoot.fullPath).catch(err=>{
+                console.error("[recovery] loadLastBackedUpFileContents failed ", err);
+            });
             return;
         }
         trackedProjects[projectRoot.fullPath] = {
@@ -176,9 +205,13 @@ define(function (require, exports, module) {
             lastBackedupLoadInProgress: true, // while the backup is loading, we need to prevent write over the existing
             // backup with backup info of the current session
             trackedFileUpdateTimestamps: {},
-            trackedFileContents: {}
+            trackedFileContents: {},
+            restoreNotification: null,
+            changeErrorReported: false // we only report change errors once to prevent too many Bugsnag reports
         };
-        loadLastBackedUpFileContents(projectRoot.fullPath);
+        loadLastBackedUpFileContents(projectRoot.fullPath).catch(err=>{
+            console.error("[recovery] loadLastBackedUpFileContents failed ", err);
+        });
     }
 
     async function writeFileIgnoreFailure(filePath, contents) {
@@ -189,7 +222,6 @@ define(function (require, exports, module) {
             await jsPromise(FileUtils.writeText(file, contents, true));
         } catch (e) {
             console.error(e);
-            logger.reportError(e); // todo too many error reports prevent every 20 secs
         }
     }
 
@@ -217,6 +249,12 @@ define(function (require, exports, module) {
     }
 
     let backupInProgress = false;
+
+    /**
+     * This gets executed every 5 seconds and should be as light-weight as possible. If there are no changes to be
+     * backed up, then this function should return as soon as possible without waiting for any async flows.
+     * @return {Promise<void>}
+     */
     async function changeScanner() {
         let currentProjectRoot = ProjectManager.getProjectRoot();
         const project = trackedProjects[currentProjectRoot.fullPath];
@@ -255,21 +293,71 @@ define(function (require, exports, module) {
                 await cleanupUntrackedFiles(docPathsToTrack, currentProjectRoot);
             }
         } catch (e) {
-            console.error(e);
-            logger.reportError(e);
+            console.error("[recovery] changeScanner error", e);
+            if(!project.changeErrorReported){
+                project.changeErrorReported = true;
+                // we only report change errors once to prevent too many Bugsnag reports
+                logger.reportError(e);
+            }
         }
         backupInProgress = false;
     }
 
     function beforeProjectClosed() {
-        changeScanner();
+        let currentProjectRoot = ProjectManager.getProjectRoot();
+        const project = trackedProjects[currentProjectRoot.fullPath];
+        if(project.restoreNotification) {
+            project.restoreNotification.close();
+        }
+        changeScanner().catch(err=>{
+            console.error("[recovery] beforeProjectClosed failed which scanning for changes to backup", err);
+        });
+    }
+
+    async function ensureOpenEditors(pathList) {
+        let allOpenFiles = MainViewManager.getAllOpenFiles();
+        let openFilePaths = {};
+        for(let file of allOpenFiles){
+            openFilePaths[file.fullPath] = true;
+        }
+        for(let path of pathList) {
+            if(!openFilePaths[path]){
+                let file = FileSystem.getFileForPath(path);
+                await jsPromise(FileViewController.openFileAndAddToWorkingSet(file.fullPath));
+            }
+        }
+    }
+
+    async function restoreBtnClicked(_event, projectToRestore) {
+        let currentProjectRoot = ProjectManager.getProjectRoot();
+        const project = trackedProjects[currentProjectRoot.fullPath];
+        if(!project || projectToRestore !== currentProjectRoot.fullPath){
+            console.error(`[recovery] current project ${currentProjectRoot.fullPath} != restore ${projectToRestore}`);
+            return;
+        }
+        let pathsToRestore = Object.keys(project.lastBackedUpFileContents);
+        await ensureOpenEditors(pathsToRestore);
+        for(let filePath of pathsToRestore){
+            if(ProjectManager.isWithinProject(filePath)) {
+                console.log("restoring", filePath);
+                let document = await jsPromise(DocumentManager.getDocumentForPath(filePath));
+                document.setText(project.lastBackedUpFileContents[filePath]);
+            } else {
+                console.error("[recovery] Skipping restore of non project file: ", filePath);
+            }
+        }
+        if(project.restoreNotification){
+            project.restoreNotification.close();
+            project.restoreNotification = null;
+        }
     }
 
     function init() {
-        ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, projectOpened);
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_BEFORE_CLOSE, beforeProjectClosed);
-        createDir(sessionRestoreDir);
         if(!window.testEnvironment){
+            ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, projectOpened);
+            ProjectManager.on(ProjectManager.EVENT_PROJECT_BEFORE_CLOSE, beforeProjectClosed);
+            exports.on("restoreProject", restoreBtnClicked);
+            createDir(sessionRestoreDir);
             setInterval(changeScanner, BACKUP_INTERVAL_MS);
         }
     }

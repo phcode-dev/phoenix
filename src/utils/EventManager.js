@@ -38,13 +38,13 @@
  * EventManager = brackets.getModule("utils/EventManager");
  * EventDispatcher.makeEventDispatcher(exports);
  *
- * EventManager.registerEventHandler("drawImageHandler", exports);
+ * EventManager.registerEventHandler("drawImage-Handler", exports);
  * ```
  * Once the event handler is registered, we can trigger events on the named handler anywhere in phoenix
  * (inside or outside the extension) by using:
  *
  * ```js
- * EventManager.triggerEvent("drawImageHandler", "someEventName", "param1", "param2", ...);
+ * EventManager.triggerEvent("drawImage-Handler", "someEventName", "param1", "param2", ...);
  * ```
  * @module utils/EventManager
  */
@@ -60,7 +60,10 @@ define(function (require, exports, module) {
      * const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
      * EventDispatcher.makeEventDispatcher(exports);
      *
-     * EventManager.registerEventHandler("closeDialogueHandler", exports);
+     * // Note: for event handler names, please change the <extensionName> to your extension name
+     * // to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
+     * // and not available for use in extensions.
+     * EventManager.registerEventHandler("<extensionName>-closeDialogueHandler", exports);
      * // Once the event handler is registered, see triggerEvent API on how to raise events
      *
      * @param {string} handlerName a unique name of the handler.
