@@ -34,10 +34,7 @@ define(function (require, exports, module) {
     const sessionRestoreDir = FileSystem.getDirectoryForPath(
         path.normalize(NativeApp.getApplicationSupportDirectory() + "/sessionRestore"));
 
-    let trackingProjectRoot = null,
-        trackingRestoreRoot = null,
-        trackedProjectFilesMap = {},
-        trackedFilesChangeTimestamps = {};
+    const trackedProjects = {};
 
     function simpleHash(str) {
         let hash = 0;
@@ -55,7 +52,7 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject)=>{
             dir.create(function (err) {
                 if (err && err !== FileSystemError.ALREADY_EXISTS) {
-                    console.error("Error creating project crash restore folder " + dir.fullPath, err);
+                    console.error("[recovery] Error creating project crash restore folder " + dir.fullPath, err);
                     reject(err);
                 }
                 resolve();
@@ -74,42 +71,114 @@ define(function (require, exports, module) {
         });
     }
 
-    function setupProjectRestoreRoot(projectPath) {
-        const baseName = path.basename(projectPath);
-        let restoreRootPath = path.normalize(`${sessionRestoreDir.fullPath}/${baseName}_${simpleHash(projectPath)}`);
-        trackingRestoreRoot = FileSystem.getDirectoryForPath(restoreRootPath);
-        createDir(trackingRestoreRoot);
+    function silentlyRemoveDirectory(dir) {
+        return new Promise((resolve)=>{
+            dir.unlink((err)=>{
+                if(err) {
+                    console.error(err);
+                }
+                resolve();
+            });
+        });
     }
 
-    function getRestoreFilePath(projectFilePath) {
-        if(ProjectManager.isWithinProject(projectFilePath)) {
-            return path.normalize(
-                `${trackingRestoreRoot.fullPath}/${ProjectManager.getProjectRelativePath(projectFilePath)}`);
+    function getProjectRestoreRoot(projectPath) {
+        const baseName = path.basename(projectPath),
+            restoreRootPath = path.normalize(`${sessionRestoreDir.fullPath}/${baseName}_${simpleHash(projectPath)}`);
+        return FileSystem.getDirectoryForPath(restoreRootPath);
+    }
+
+    function getRestoreFilePath(projectFilePath, projectRootPath) {
+        if(!projectFilePath.startsWith(projectRootPath) || !trackedProjects[projectRootPath]){
+            console.error(`[recovery] cannot backed up as ${projectRootPath} is not in project ${projectRootPath}`);
+            return null;
         }
-        return null;
+        let pathWithinProject = projectFilePath.replace(projectRootPath, "");
+        let restoreRoot = trackedProjects[projectRootPath].restoreRoot;
+        return path.normalize(`${restoreRoot.fullPath}/${pathWithinProject}`);
     }
 
     // try not to use this
-    function getProjectFilePath(restoreFilePath) {
-        if(!restoreFilePath.startsWith(trackingRestoreRoot.fullPath)){
+    function getProjectFilePath(restoreFilePath, projectRootPath) {
+        const project = trackedProjects[projectRootPath];
+        if(!project || !restoreFilePath.startsWith(project.restoreRoot.fullPath)){
             return null;
         }
-        // Eg. trackingRestoreRoot = "/fs/app/sessionRestore/default project_1944444020/"
-        // and restoreProjectRelativePath = "/fs/app/sessionRestore/default project_1944444020/default project/a.html"
-        let restoreProjectRelativePath = restoreFilePath.replace(trackingRestoreRoot.fullPath, "");
-        // Eg. default project/a.html
-        let restoreProjectName = restoreProjectRelativePath.split("/")[0], // Eg. default project
-            trackingProjectName = path.basename(trackingProjectRoot.fullPath); // default project
-        if(trackingProjectName !== restoreProjectName){
-            return null;
+
+        let filePathInProject = restoreFilePath.replace(project.restoreRoot.fullPath, "");
+        return path.normalize(`${projectRootPath}/${filePathInProject}`);
+    }
+
+    /**
+     * the restore folder may have empty folders as files get deleted according to backup algorithm. This fn will
+     * ensure that there are no empty folders and restore folder exists
+     * @param folder
+     * @return {Promise<void>}
+     */
+    async function ensureFolderIsClean(folder) {
+        await createDir(folder);
+        await folder.unlinkEmptyDirectoryAsync();
+        await createDir(folder);
+    }
+
+    async function loadLastBackedUpFileContents(projectRootPath) {
+        const project = trackedProjects[projectRootPath];
+        if(!project){
+            console.error("[recovery] Cannot load backup, no tracking info of project " + projectRootPath);
+            return;
         }
-        let filePathInProject = restoreProjectRelativePath.replace(`${restoreProjectName}/`, ""); // a.html
-        return path.normalize(`${trackingProjectRoot.fullPath}/${filePathInProject}`);
+        const currentProjectLoadCount = project.projectLoadCount;
+        let restoreFolder = project.restoreRoot;
+        await ensureFolderIsClean(restoreFolder);
+        let allEntries = await FileSystem.getAllDirectoryContents(restoreFolder);
+        for(let entry of allEntries){
+            if(entry.isDirectory){
+                continue;
+            }
+            let text = await jsPromise(FileUtils.readAsText(entry));
+            let projectFilePath = getProjectFilePath(entry.fullPath, projectRootPath);
+            if(currentProjectLoadCount !== project.projectLoadCount){
+                // this means that while we were tying to load a project backup, the user switched to another project
+                // and then switched back to this project, all before the first backup load was complete. so
+                // we just return without doing anything here. This function will be eventually called on projectOpened
+                // event handler.
+                return;
+            }
+            project.lastBackedUpFileContents[projectFilePath] = text;
+            console.log(text);
+        }
+        project.lastBackedupLoadInProgress = false;
     }
 
     function projectOpened(_event, projectRoot) {
-        trackingProjectRoot = projectRoot;
-        setupProjectRestoreRoot(trackingProjectRoot.fullPath);
+        if(projectRoot.fullPath === '/') {
+            console.error("[recovery] Backups will not be done for root folder `/`");
+            return;
+        }
+        if(trackedProjects[projectRoot.fullPath]){
+            trackedProjects[projectRoot.fullPath].projectLoadCount++;
+            trackedProjects[projectRoot.fullPath].lastBackedUpFileContents = {};
+            trackedProjects[projectRoot.fullPath].firstEditHandled = false;
+            trackedProjects[projectRoot.fullPath].lastBackedupLoadInProgress = true;
+            trackedProjects[projectRoot.fullPath].trackedFileUpdateTimestamps = {};
+            trackedProjects[projectRoot.fullPath].trackedFileContents = {};
+            loadLastBackedUpFileContents(projectRoot.fullPath);
+            // todo race condition here frequent switch between projects
+            return;
+        }
+        trackedProjects[projectRoot.fullPath] = {
+            projectLoadCount: 0, // we use this to prevent race conditions on frequent project switch before all
+            // project backup files are loaded.
+            projectRoot: projectRoot,
+            restoreRoot: getProjectRestoreRoot(projectRoot.fullPath),
+            lastBackedUpFileContents: {},
+            firstEditHandled: false, // after a project is loaded, has the first edit by user on any file been handled?
+            lastBackedupLoadInProgress: true, // while the backup is loading, we need to prevent write over the existing
+            // backup with backup info of the current session
+            trackedFileUpdateTimestamps: {},
+            trackedFileContents: {}
+        };
+        loadLastBackedUpFileContents(projectRoot.fullPath);
     }
 
     async function writeFileIgnoreFailure(filePath, contents) {
@@ -124,30 +193,34 @@ define(function (require, exports, module) {
         }
     }
 
-    async function backupChangedDocs(changedDocs) {
-        for(let doc of changedDocs){
-            let restorePath = getRestoreFilePath(doc.file.fullPath);
-            await writeFileIgnoreFailure(restorePath, doc.getText());
-            trackedFilesChangeTimestamps[doc.file.fullPath] = doc.lastChangeTimestamp;
-            trackedProjectFilesMap[doc.file.fullPath] = restorePath;
+    async function backupChangedDocs(projectRoot) {
+        const project = trackedProjects[projectRoot.fullPath];
+        let trackedFilePaths =  Object.keys(project.trackedFileContents);
+        for(let trackedFilePath of trackedFilePaths){
+            const restorePath = getRestoreFilePath(trackedFilePath, projectRoot.fullPath);
+            const content = project.trackedFileContents[trackedFilePath];
+            await writeFileIgnoreFailure(restorePath, content);
+            delete project.trackedFileContents[trackedFilePath];
         }
     }
 
-    async function cleanupUntrackedFiles(docPathsToTrack) {
-        let allTrackingPaths = Object.keys(trackedProjectFilesMap);
+    async function cleanupUntrackedFiles(docPathsToTrack, projectRoot) {
+        const project = trackedProjects[projectRoot.fullPath];
+        let allTrackingPaths = Object.keys(project.trackedFileUpdateTimestamps);
         for(let trackedPath of allTrackingPaths){
             if(!docPathsToTrack[trackedPath]){
-                const restoreFile = trackedProjectFilesMap[trackedPath];
+                const restoreFile = getRestoreFilePath(trackedPath, projectRoot.fullPath);
                 await silentlyRemoveFile(restoreFile);
-                delete trackedProjectFilesMap[trackedPath];
-                delete trackedFilesChangeTimestamps[trackedPath];
+                delete project.trackedFileUpdateTimestamps[trackedPath];
             }
         }
     }
 
     let backupInProgress = false;
     async function changeScanner() {
-        if(backupInProgress || trackingProjectRoot.fullPath === "/"){
+        let currentProjectRoot = ProjectManager.getProjectRoot();
+        const project = trackedProjects[currentProjectRoot.fullPath];
+        if(backupInProgress || currentProjectRoot.fullPath === "/" || !project || project.lastBackedupLoadInProgress){
             // trackingProjectRoot can be "/" if debug>open virtual file system menu is clicked. Don't track root fs
             return;
         }
@@ -155,19 +228,32 @@ define(function (require, exports, module) {
         try{
             // do backup
             const openDocs = DocumentManager.getAllOpenDocuments();
-            let changedDocs = [], docPathsToTrack = {};
+            let docPathsToTrack = {}, dirtyDocsExists = false;
             for(let doc of openDocs){
                 if(doc && doc.isDirty){
+                    dirtyDocsExists = true;
                     docPathsToTrack[doc.file.fullPath] = true;
-                    const lastTrackedTimestamp = trackedFilesChangeTimestamps[doc.file.fullPath];
+                    const lastTrackedTimestamp = project.trackedFileUpdateTimestamps[doc.file.fullPath];
                     if(!lastTrackedTimestamp || lastTrackedTimestamp !== doc.lastChangeTimestamp){
                         // Already backed up, only need to consider it again if its contents changed
-                        changedDocs.push(doc);
+                        project.trackedFileContents[doc.file.fullPath] = doc.getText();
+                        project.trackedFileUpdateTimestamps[doc.file.fullPath] = doc.lastChangeTimestamp;
                     }
                 }
             }
-            await backupChangedDocs(changedDocs);
-            await cleanupUntrackedFiles(docPathsToTrack);
+            if(!project.firstEditHandled && dirtyDocsExists) {
+                // this means that the last backup session has been fully loaded in memory and a new edit has been
+                // done by the user. The user may not have yet clicked on the restore backup button. But as the user
+                // made an edit, we should delete the project restore folder to start a new backup session. The user
+                // can still restore the last backup session from the in memory `project.lastBackedUpFileContents`
+                await silentlyRemoveDirectory(project.restoreRoot);
+                await createDir(project.restoreRoot);
+                await backupChangedDocs(currentProjectRoot);
+                project.firstEditHandled = true;
+            } else {
+                await backupChangedDocs(currentProjectRoot);
+                await cleanupUntrackedFiles(docPathsToTrack, currentProjectRoot);
+            }
         } catch (e) {
             console.error(e);
             logger.reportError(e);
@@ -175,20 +261,13 @@ define(function (require, exports, module) {
         backupInProgress = false;
     }
 
-    function documentChanged(_event, doc) {
-        let restorePath = getRestoreFilePath(doc.file.fullPath);
-        let originalPath = getProjectFilePath(restorePath);
-        //debugger;
-    }
-
-    function documentDirtyFlagChanged(_event, doc) {
-        //debugger;
+    function beforeProjectClosed() {
+        changeScanner();
     }
 
     function init() {
         ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, projectOpened);
-        DocumentManager.on(DocumentManager.EVENT_DOCUMENT_CHANGE, documentChanged);
-        DocumentManager.on(DocumentManager.EVENT_DIRTY_FLAG_CHANGED, documentDirtyFlagChanged);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_BEFORE_CLOSE, beforeProjectClosed);
         createDir(sessionRestoreDir);
         if(!window.testEnvironment){
             setInterval(changeScanner, BACKUP_INTERVAL_MS);
