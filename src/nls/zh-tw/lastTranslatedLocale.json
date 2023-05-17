@@ -629,6 +629,7 @@
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "清除不在工作集中的文件",
   "RECOVER_UNSAVED_FILES_TITLE": "恢復未保存的文件？",
   "RECOVER_UNSAVED_FILES_MESSAGE": "從上一個會話中恢復未保存的文件？",
+  "RECOVER_UNSAVED_FILES_RESTORE": "恢復",
   "DESCRIPTION_CLOSE_BRACKETS": "true 代表自動插入右括號",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false 代表由「工作檔案」內容功能表中移除「關閉上列檔案」",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false 代表由「工作檔案」內容功能表中移除「關閉下列檔案」",

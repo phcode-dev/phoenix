@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Hapus file yang tidak ada di Working Set",
   "RECOVER_UNSAVED_FILES_TITLE": "Pulihkan File yang Tidak Disimpan?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Pulihkan file yang belum disimpan dari sesi Anda sebelumnya?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Memulihkan",
   "DESCRIPTION_CLOSE_BRACKETS": "true untuk menutup kurung, kurung, dan tanda kurung secara otomatis",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false untuk menghapus \"Tutup Lainnya Di Atas\" dari menu konteks File Bekerja",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false untuk menghapus \"Tutup Lainnya Di Bawah\" dari menu konteks File Bekerja",

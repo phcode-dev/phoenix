@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Effacer les fichiers non présents dans l’ensemble de travail",
   "RECOVER_UNSAVED_FILES_TITLE": "Récupérer des fichiers non enregistrés ?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Restaurer les fichiers non enregistrés de votre session précédente ?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Restaurer",
   "DESCRIPTION_CLOSE_BRACKETS": "vrai pour fermer automatiquement les accolades, les crochets et les parenthèses",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "faux pour supprimer l’option « Fermer les autres au-dessus » du menu contextuel Fichiers de travail",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "faux pour supprimer l’option « Fermer les autres en dessous » du menu contextuel Fichiers de travail",

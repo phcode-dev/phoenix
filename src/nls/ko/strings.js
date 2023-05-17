@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "작업 세트에 없는 파일 지우기",
   "RECOVER_UNSAVED_FILES_TITLE": "저장되지 않은 파일을 복구하시겠습니까?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "이전 세션에서 저장되지 않은 파일을 복원하시겠습니까?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "복원하다",
   "DESCRIPTION_CLOSE_BRACKETS": "괄호(), 중괄호{}, 대괄호[]를 자동으로 닫으려면 true",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "작업중인 파일 콘텍스트 메뉴에서 \"위의 목록 닫기\"를 제거하려면 false",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "작업중인 파일 콘텍스트 메뉴에서 \"아래 목록 닫기\"를 제거하려면 false",

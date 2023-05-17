@@ -629,6 +629,7 @@
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Удалить файлы, не входящие в рабочий набор",
   "RECOVER_UNSAVED_FILES_TITLE": "Восстановить несохраненные файлы?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Восстановить несохраненные файлы предыдущего сеанса?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Восстановить",
   "DESCRIPTION_CLOSE_BRACKETS": "true, чтобы автоматически закрывать скобки, квадратные и круглые скобки",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false, чтобы удалить «Закрыть другие выше» из контекстного меню «Рабочие файлы».",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false, чтобы удалить «Закрыть другие ниже» из контекстного меню «Рабочие файлы».",
