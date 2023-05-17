@@ -7,6 +7,15 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
+## Restore Unsaved Files and Crash Recovery
+`Added on May,2023`
+
+We're added enhanced auto-recovery features in phcode.
+This functionality ensures your work is safe even in the event of a crash or if the application is
+closed without saving edited files.
+
+![image](https://github.com/phcode-dev/phoenix/assets/5336369/9cfd5720-947b-4f88-8dfa-cda940d912c6)
+
 ## Safari Support (Beta)
 `Added on May,2023`
 

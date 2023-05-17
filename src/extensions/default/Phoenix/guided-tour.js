@@ -278,10 +278,10 @@ define(function (require, exports, module) {
 
     function _showGeneralSurvey() {
         setTimeout(()=>{
-            let surveyVersion = 5; // increment this if you want to show this again
+            let surveyVersion = 6; // increment this if you want to show this again
             var templateVars = {
                 Strings: Strings,
-                surveyURL: "https://s.surveyplanet.com/6208d1eccd51c561fc8e59ca"
+                surveyURL: "https://s.surveyplanet.com/g837j5k9"
             };
             if(userAlreadyDidAction.generalSurveyShownVersion !== surveyVersion){
                 Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "generalShown", 1);
