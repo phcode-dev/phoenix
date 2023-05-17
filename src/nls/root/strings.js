@@ -796,7 +796,7 @@ define({
     "RECENT_FILES_DLG_CLEAR_BUTTON_LABEL": "Clear",
     "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Clear files not in Working Set",
     "RECOVER_UNSAVED_FILES_TITLE": "Recover Unsaved Files?",
-    "RECOVER_UNSAVED_FILES_MESSAGE": "Restore unsaved files from your previous session with this project?",
+    "RECOVER_UNSAVED_FILES_MESSAGE": "Restore unsaved files from your previous session?",
 
     // Descriptions of core preferences
     "DESCRIPTION_CLOSE_BRACKETS": "true to automatically close braces, brackets and parentheses",
