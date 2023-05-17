@@ -1,0 +1,12 @@
+<div>
+  <span>{{Strings.RECOVER_UNSAVED_FILES_MESSAGE}}</span>
+  <br />
+  <button
+    style="float: right; margin-right: 6px"
+    class="btn btn-mini remove primary"
+    data-project="{{PROJECT_TO_RECOVER}}"
+    onclick="EventManager.triggerEvent('ph-recovery', 'restoreProject', this.getAttribute('data-project'))"
+  >
+    Restore
+  </button>
+</div>
