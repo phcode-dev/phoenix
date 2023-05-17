@@ -21,6 +21,30 @@
 
 /*global path, logger, jsPromise*/
 
+/**
+ * This file outlines the process phcode follows to restore files if the application crashes or if a user closes
+ * the application without saving their files.
+ *
+ * For each project in phcode, there's a unique 'restore' folder located in the appdata directory.
+ * This folder is named according to the pattern <projectName>-<projectPathHash>.
+ *
+ * The restore folder monitors all files being edited in phcode, and this tracking is updated every 5 seconds
+ * by a function called changeScanner. The function backs up changes every 5 seconds, and only unsaved files
+ * that have been modified since the last backup are synced again. When files are saved, they're removed from
+ * the backup during this changeScanner process because there's no need to restore them.
+ *
+ * When opening a project, we first check for the existence of a 'restore' folder associated with that project
+ * and scan for any files within it. If we find any, these files are marked for potential restoration.
+ *
+ * During this process, we load all recoverable file data into memory and temporarily halt any writing activity
+ * to the 'restore' folder. This safeguard is in place to prevent any accidental overwriting of the restore files'
+ * data in case the user edits any files currently marked for restoration.
+ *
+ * Once we've cached the data from the restore files, we present a notification to the user, asking if they would
+ * like these files to be restored. If the user agrees, we then open all of these files in the editor and populate
+ * them with the previously cached, restored content.
+ */
+
 define(function (require, exports, module) {
     const NativeApp = brackets.getModule("utils/NativeApp"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
