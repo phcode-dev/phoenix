@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Ryd filer, der ikke er i arbejdssæt",
   "RECOVER_UNSAVED_FILES_TITLE": "Gendanne ikke-gemte filer?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Vil du gendanne ikke-gemte filer fra din forrige session?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Gendan",
   "DESCRIPTION_CLOSE_BRACKETS": "sand til automatisk at lukke seler, parenteser og parenteser",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false for at fjerne \"Luk andre ovenfor\" fra kontekstmenuen Working Files",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false for at fjerne \"Luk andre nedenfor\" fra kontekstmenuen Working Files",

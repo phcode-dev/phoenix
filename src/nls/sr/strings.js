@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Обришите датотеке које нису у радном скупу",
   "RECOVER_UNSAVED_FILES_TITLE": "Опоравити несачуване датотеке?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Желите ли да вратите несачуване датотеке из претходне сесије?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Ресторе",
   "DESCRIPTION_CLOSE_BRACKETS": "труе за аутоматско затварање заграда, заграда и заграда",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "фалсе да бисте уклонили „Затвори друге изнад“ из контекстног менија Радне датотеке",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "фалсе да бисте уклонили „Затвори друге испод“ из контекстног менија Радне датотеке",

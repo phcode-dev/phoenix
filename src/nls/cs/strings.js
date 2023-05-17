@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Vymažte soubory, které nejsou v pracovní sadě",
   "RECOVER_UNSAVED_FILES_TITLE": "Obnovit neuložené soubory?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Obnovit neuložené soubory z předchozí relace?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Obnovit",
   "DESCRIPTION_CLOSE_BRACKETS": "true k automatickému uzavírání závorek",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false k odebrání \"Zavřít ostatní výše\" z kontextového menu pracovních souborů",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false k odebrání \"Zavřít ostatní níže\" z kontextového menu pracovních souborů",

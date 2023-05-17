@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Очистити файли, яких немає в робочому наборі",
   "RECOVER_UNSAVED_FILES_TITLE": "Відновити незбережені файли?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Відновити незбережені файли з попереднього сеансу?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Відновлення",
   "DESCRIPTION_CLOSE_BRACKETS": "true для автоматичного закриття дужок, дужок і круглих дужок",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false, щоб видалити «Закрити інші вище» з контекстного меню робочих файлів",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false, щоб видалити «Закрити інші нижче» з контекстного меню робочих файлів",

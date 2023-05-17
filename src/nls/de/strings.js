@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Entferne alle Dateien aus der Liste, die nicht im Projekt geöffnet sind",
   "RECOVER_UNSAVED_FILES_TITLE": "Nicht gespeicherte Dateien wiederherstellen?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Nicht gespeicherte Dateien aus Ihrer vorherigen Sitzung wiederherstellen?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Wiederherstellen",
   "DESCRIPTION_CLOSE_BRACKETS": "Aktiviert das automatische Schließen von runden, eckigen und geschweiften Klammern",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "Aktiviert den Eintrag \"Alle darüber schließen\" im Kontextmenü der Offenen Dateien",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "Aktiviert den Eintrag \"Alle darunter schließen\" im Kontextmenü der Offenen Dateien",

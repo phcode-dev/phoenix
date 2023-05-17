@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Çalışma Setinde olmayan dosyaları temizle",
   "RECOVER_UNSAVED_FILES_TITLE": "Kaydedilmemiş Dosyaları Kurtar?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Kaydedilmemiş dosyalar önceki oturumunuzdan geri yüklensin mi?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Eski haline getirmek",
   "DESCRIPTION_CLOSE_BRACKETS": "parantezleri, parantezleri ve parantezleri otomatik olarak kapatmak için true",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "Çalışma Dosyaları bağlam menüsünden \"Yukarıdaki Diğerlerini Kapat\" öğesini kaldırmak için false",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "Çalışma Dosyaları bağlam menüsünden \"Aşağıdaki Diğerlerini Kapat\" öğesini kaldırmak için false",

@@ -649,6 +649,7 @@ define({
   "RECENT_FILES_DLG_CLEAR_BUTTON_TITLE": "Wyczyść pliki (oprócz aktualnie otwartych)",
   "RECOVER_UNSAVED_FILES_TITLE": "Odzyskać niezapisane pliki?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Przywrócić niezapisane pliki z poprzedniej sesji?",
+  "RECOVER_UNSAVED_FILES_RESTORE": "Przywrócić",
   "DESCRIPTION_CLOSE_BRACKETS": "true, by automatycznie zamykać nawiasy okrągłe, kwadratowe i klamrowe",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false, by usunąć pozycję \"Zamknij pliki powyżej\" z menu kontekstowego plików w obszarze roboczym",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false, by usunąć pozycję \"Zamknij pliki poniżej\" z menu kontekstowego plików w obszarze roboczym",
