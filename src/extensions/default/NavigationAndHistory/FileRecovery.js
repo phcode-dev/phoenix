@@ -383,6 +383,12 @@ define(function (require, exports, module) {
             exports.on("restoreProject", restoreBtnClicked);
             createDir(sessionRestoreDir);
             setInterval(changeScanner, BACKUP_INTERVAL_MS);
+            let currentProjectRoot = ProjectManager.getProjectRoot();
+            if(currentProjectRoot) {
+                // At boot, the startup project may be opened and we may never get the projectOpened event triggered
+                // for the startup project. So we call manually.
+                projectOpened(null, currentProjectRoot);
+            }
         }
     }
 
