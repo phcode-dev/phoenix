@@ -111,12 +111,14 @@ define(function (require, exports, module) {
             return false;
         }
 
-        async function initFileRestorer(fileToOpen) {
+        async function initFileRestorer(fileToOpen, scanInterval = 100) {
+            await deletePath(tempRestorePath);
+            await SpecRunnerUtils.waitTillPathNotExists(tempRestorePath);
             await openFile(fileToOpen);
             expect(isFileOpen(fileToOpen)).toBeTrue();
             expect(testWindow._FileRecoveryExtensionForTests).exists;
             expect(await SpecRunnerUtils.pathExists(tempRestorePath, true)).toBeFalse();
-            testWindow._FileRecoveryExtensionForTests.initWith(100,
+            testWindow._FileRecoveryExtensionForTests.initWith(scanInterval,
                 FileSystem.getDirectoryForPath(tempRestorePath));
             await SpecRunnerUtils.waitTillPathExists(tempRestorePath);
 
@@ -175,5 +177,40 @@ define(function (require, exports, module) {
             }, "waiting for restore notification", 5000);
             await closeSession();
         }, 10000);
+
+        // below project switch test case is flakey. need to fix. disable for now.
+        // it("Should show restore on project switch", async function () {
+        //     const readOnlyProject = SpecRunnerUtils.getTestPath("/spec/ProjectManager-test-files");
+        //     await initFileRestorer("toDelete1/file.js", 1000);
+        //     let projectRestorePath = testWindow._FileRecoveryExtensionForTests.getProjectRestoreRoot(testPath);
+        //
+        //     // now edit a file so that its backup is created
+        //     const unsavedText = "hello" + Math.random();
+        //     let editor = EditorManager.getActiveEditor();
+        //     editor.document.setText(unsavedText);
+        //     await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath + "toDelete1/file.js", false);
+        //
+        //     // backup is now present, switch to another project
+        //     let loadPromise = SpecRunnerUtils.loadProjectInTestWindow(readOnlyProject);
+        //     await awaitsFor(()=>{
+        //         return $('button[data-button-id=dontsave]').length >= 1;
+        //     }, "waiting for save changes dialogue", 5000);
+        //     $('button[data-button-id=dontsave]')[0].click();
+        //     await loadPromise;
+        //     await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+        //     await awaits(3000);
+        //     await awaitsFor(()=>{
+        //         return $(".file-recovery-button").length === 1;
+        //     }, "waiting for restore notification", 5000);
+        //
+        //     // now press the recover button to start the recovery
+        //     $(".file-recovery-button").click();
+        //     // check if the file is recovered
+        //     await awaitsFor(()=>{
+        //         editor = EditorManager.getActiveEditor();
+        //         return editor && editor.document.getText() === unsavedText;
+        //     }, "waiting for restore notification", 5000);
+        //     await closeSession();
+        // }, 1000000);
     });
 });

@@ -188,6 +188,10 @@ define(function (require, exports, module) {
                 Strings: Strings,
                 PROJECT_TO_RECOVER: projectRootPath
             });
+            if(project.restoreNotification){
+                project.restoreNotification.close();
+                project.restoreNotification = null;
+            }
             project.restoreNotification = NotificationUI.createToastFromTemplate( Strings.RECOVER_UNSAVED_FILES_TITLE,
                 notificationHTML, {
                     dismissOnClick: false,
@@ -332,6 +336,7 @@ define(function (require, exports, module) {
         const project = trackedProjects[currentProjectRoot.fullPath];
         if(project.restoreNotification) {
             project.restoreNotification.close();
+            project.restoreNotification = null;
         }
         changeScanner().catch(err=>{
             console.error("[recovery] beforeProjectClosed failed which scanning for changes to backup", err);
