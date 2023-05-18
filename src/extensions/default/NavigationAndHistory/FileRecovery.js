@@ -65,7 +65,7 @@ define(function (require, exports, module) {
     EventManager.registerEventHandler("ph-recovery", exports);
 
     const BACKUP_INTERVAL_MS = 5000;
-    const sessionRestoreDir = FileSystem.getDirectoryForPath(
+    let sessionRestoreDir = FileSystem.getDirectoryForPath(
         path.normalize(NativeApp.getApplicationSupportDirectory() + "/sessionRestore"));
 
     const trackedProjects = {};
@@ -376,19 +376,29 @@ define(function (require, exports, module) {
         }
     }
 
+    function initWith(scanIntervalMs, restoreDir) {
+        ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, projectOpened);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_BEFORE_CLOSE, beforeProjectClosed);
+        exports.on("restoreProject", restoreBtnClicked);
+        sessionRestoreDir = restoreDir;
+        createDir(sessionRestoreDir);
+        setInterval(changeScanner, scanIntervalMs);
+        let currentProjectRoot = ProjectManager.getProjectRoot();
+        if(currentProjectRoot) {
+            // At boot, the startup project may be opened and we may never get the projectOpened event triggered
+            // for the startup project. So we call manually.
+            projectOpened(null, currentProjectRoot);
+        }
+    }
+
     function init() {
         if(!window.testEnvironment){
-            ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, projectOpened);
-            ProjectManager.on(ProjectManager.EVENT_PROJECT_BEFORE_CLOSE, beforeProjectClosed);
-            exports.on("restoreProject", restoreBtnClicked);
-            createDir(sessionRestoreDir);
-            setInterval(changeScanner, BACKUP_INTERVAL_MS);
-            let currentProjectRoot = ProjectManager.getProjectRoot();
-            if(currentProjectRoot) {
-                // At boot, the startup project may be opened and we may never get the projectOpened event triggered
-                // for the startup project. So we call manually.
-                projectOpened(null, currentProjectRoot);
-            }
+            initWith(BACKUP_INTERVAL_MS, sessionRestoreDir);
+        } else {
+            // this is a test environment, expose functions to test
+            exports.getProjectRestoreRoot = getProjectRestoreRoot;
+            exports.initWith = initWith;
+            window._FileRecoveryExtensionForTests = exports;
         }
     }
 

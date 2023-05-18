@@ -19,7 +19,7 @@
  *
  */
 
-/*global jsPromise, jasmine, expect, beforeEach, awaitsFor,awaitsForDone, spyOn, KeyboardEvent, waits */
+/*global jsPromise, jasmine, expect, beforeEach, awaitsFor,awaitsForDone, spyOn, KeyboardEvent, waits, awaits */
 
 define(function (require, exports, module) {
 
@@ -1203,6 +1203,34 @@ define(function (require, exports, module) {
         return 0;
     }
 
+    function pathExists(pathToCheck, isFolder = true) {
+        let entry = isFolder ? FileSystem.getDirectoryForPath(pathToCheck)
+            : FileSystem.getFileForPath(pathToCheck);
+        return entry.existsAsync(pathToCheck);
+    }
+
+    async function waitTillPathExists(pathToCheck, isFolder = true, timeout = 2000, pollingInterval = 10) {
+        for(let i=0; i<timeout/pollingInterval; i++){
+            let exists = await pathExists(pathToCheck, isFolder);
+            if(exists){
+                return true;
+            }
+            await awaits(pollingInterval);
+        }
+        throw "Path exist check failed: " + pathToCheck;
+    }
+
+    async function waitTillPathNotExists(pathToCheck, isFolder = true, timeout = 2000, pollingInterval = 10) {
+        for(let i=0; i<timeout/pollingInterval; i++){
+            let exists = await pathExists(pathToCheck, isFolder);
+            if(!exists){
+                return true;
+            }
+            await awaits(pollingInterval);
+        }
+        throw "Path not exist check failed: " + pathToCheck;
+    }
+
     // "global" custom matchers
     function editorHasCursorPosition(editor, line, ch, ignoreSelection) {
         let selection = editor.getSelection();
@@ -1253,6 +1281,9 @@ define(function (require, exports, module) {
     exports.copyFileEntry                   = copyFileEntry;
     exports.copyPath                        = copyPath;
     exports.deletePath                      = deletePath;
+    exports.pathExists                      = pathExists;
+    exports.waitTillPathExists              = waitTillPathExists;
+    exports.waitTillPathNotExists           = waitTillPathNotExists;
     exports.getTestWindow                   = getTestWindow;
     exports.simulateKeyEvent                = simulateKeyEvent;
     exports.setLoadExtensionsInTestWindow   = setLoadExtensionsInTestWindow;
