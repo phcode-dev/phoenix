@@ -47,5 +47,34 @@ define(function (require, exports, module) {
                 return arg1 === 1 && arg2 === "param1";
             }, 100, "awaiting event trigger");
         });
+
+        it("should receive event from embedded iframe", async function () {
+            const HANDLER_NAME = 'test-iframeMessageHandler',
+                EVENT_NAME = "iframeHelloEvent",
+                TEST_MESSAGE = 'world';
+            const SRC_DOC = `<html><head><script>
+                window.top.postMessage({
+                      handlerName: "${HANDLER_NAME}",
+                      eventName: "${EVENT_NAME}",
+                      message: {hello: "${TEST_MESSAGE}"}
+                 }, '*');
+            </script></head></html>`;
+            EventManager.registerEventHandler(HANDLER_NAME, dispatcher);
+            expect(EventManager.isExistsEventHandler(HANDLER_NAME)).toBe(true);
+            let recvdMessageEvent = null;
+            dispatcher.on(EVENT_NAME, (_evt, messageEvent)=>{
+                recvdMessageEvent = messageEvent;
+            });
+            const iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.srcdoc = SRC_DOC;
+            document.body.appendChild(iframe);
+            await awaitsFor(function () {
+                return !!recvdMessageEvent;
+            }, 100, "awaiting message event reception");
+            expect(recvdMessageEvent.data.handlerName).toBe(HANDLER_NAME);
+            expect(recvdMessageEvent.data.eventName).toBe(EVENT_NAME);
+            expect(recvdMessageEvent.data.message).toEql({hello: TEST_MESSAGE});
+        });
     });
 });
