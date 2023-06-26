@@ -11,6 +11,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           path: phoenixSrc
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Building phoenix and phoenix wiki
         run: |
           pwd
