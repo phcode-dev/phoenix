@@ -59,6 +59,7 @@ define(function (require, exports, module) {
         FileViewController  = brackets.getModule("project/FileViewController"),
         recoveryTemplate = require("text!html/recovery-template.html"),
         EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+        Metrics = brackets.getModule("utils/Metrics"),
         EventManager = brackets.getModule("utils/EventManager");
 
     EventDispatcher.makeEventDispatcher(exports);
@@ -197,14 +198,23 @@ define(function (require, exports, module) {
                     dismissOnClick: false,
                     toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUCCESS
                 });
+            Metrics.countEvent(Metrics.EVENT_TYPE.PROJECT, "recovery", "notified");
+        } else {
+            Metrics.countEvent(Metrics.EVENT_TYPE.PROJECT, "recovery", "none");
         }
     }
 
+    let currentProjectRoot = null;
     function projectOpened(_event, projectRoot) {
         if(projectRoot.fullPath === '/') {
             console.error("[recovery] Backups will not be done for root folder `/`");
             return;
         }
+        if(currentProjectRoot && currentProjectRoot.fullPath === projectRoot.fullPath){
+            // If we get a redundant project open event return. This is because of #SEARCH_THIS_TAG_IN_FILE_1
+            return;
+        }
+        currentProjectRoot = projectRoot;
         if(trackedProjects[projectRoot.fullPath]){
             if(trackedProjects[projectRoot.fullPath].restoreNotification){
                 trackedProjects[projectRoot.fullPath].restoreNotification.close();
@@ -360,6 +370,7 @@ define(function (require, exports, module) {
     async function restoreBtnClicked(_event, projectToRestore) {
         let currentProjectRoot = ProjectManager.getProjectRoot();
         const project = trackedProjects[currentProjectRoot.fullPath];
+        Metrics.countEvent(Metrics.EVENT_TYPE.PROJECT, "recovery", "restoreClick");
         if(!project || projectToRestore !== currentProjectRoot.fullPath){
             console.error(`[recovery] current project ${currentProjectRoot.fullPath} != restore ${projectToRestore}`);
             return;
@@ -390,6 +401,7 @@ define(function (require, exports, module) {
         setInterval(changeScanner, scanIntervalMs);
         let currentProjectRoot = ProjectManager.getProjectRoot();
         if(currentProjectRoot) {
+            // ##SEARCH_THIS_TAG_IN_FILE_1
             // At boot, the startup project may be opened and we may never get the projectOpened event triggered
             // for the startup project. So we call manually.
             projectOpened(null, currentProjectRoot);
