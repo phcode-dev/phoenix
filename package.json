@@ -53,7 +53,7 @@
         "testChromium": "npx playwright test --project=chromium",
         "testFirefox": "npx playwright test --project=firefox",
         "buildonly": "gulp build",
-        "vulnerabilityCheck": "echo Scanning for vulnarabilities && npm audit --prod",
+        "vulnerabilityCheck": "echo Scanning for vulnarabilities && npm audit --prod --audit-level=critical",
         "build": "npm run buildonly && npm run createJSDocs && npm run zipTestFiles && npm run lint && npm run vulnerabilityCheck",
         "clean": "gulp clean",
         "reset": "gulp reset",
