@@ -3,7 +3,8 @@
 ## utils/EventManager
 
 The global EventManager can be used to register named EventDispatchers so that events
-can be triggered from anywhere without using require context.
+can be triggered from anywhere without using require context. This should also be used to handle custom
+`window.onmessage` handlers.
 
 A global `window.EventManager` object is made available in phoenix that can be called anytime after AppStart.
 
@@ -48,6 +49,7 @@ To register a close dialogue event handler in an extension:
 // in close-dialogue.js module winthin the extension, do the following:
 const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
 EventDispatcher.makeEventDispatcher(exports);
+const EventManager = brackets.getModule("utils/EventManager");
 
 // Note: for event handler names, please change the <extensionName> to your extension name
 // to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
@@ -92,6 +94,44 @@ const EventManager = brackets.getModule("utils/EventManager");
 EventManager.triggerEvent("closeDialogueHandler", "someEvent", "param1", "param2", ...);
 ```
 
+## onmessage
+
+This function acts as an event handler for all 'message' events targeted at the window object.
+This is useful if you have to send/receive messaged from an embedded cross-domain iframe inside phoenix.
+[https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage][5]
+Instead of directly overriding window.onmessage, extensions or other elements that need to
+listen to these events should register their named eventHandler with `EventManager`.
+
+### Parameters
+
+*   `event` **[MessageEvent][6]** The 'message' event targeted at the window object. The event's
+    'data' property should have a 'handlerName' and `eventName` property that will be triggered in phcode.
+
+### Examples
+
+```javascript
+// We will try to communicate within an embedded iframe and an extension
+
+// In your extension in phoenix, register a handlerName to process a new kind of event.
+const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+EventDispatcher.makeEventDispatcher(exports);
+const EventManager = brackets.getModule("utils/EventManager");
+// Note: for event handler names, please change the <extensionName> to your extension name
+// to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
+// and not available for use in extensions.
+EventManager.registerEventHandler("<extensionName>-iframeMessageHandler", exports);
+exports.on("iframeHelloEvent", function(_ev, event){
+   console.log(event.data.message);
+});
+
+// Now from your iframe, send a message to the above event handler using:
+window.top.postMessage({
+    handlerName: "<extensionName>-iframeMessageHandler",
+    eventName: "iframeHelloEvent",
+    message: "hello world"
+}, '*');
+```
+
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
@@ -99,3 +139,7 @@ EventManager.triggerEvent("closeDialogueHandler", "someEvent", "param1", "param2
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[5]: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
+
+[6]: https://developer.mozilla.org/docs/Web/API/MessageEvent

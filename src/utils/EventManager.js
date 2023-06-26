@@ -25,7 +25,8 @@
 
 /**
  * The global EventManager can be used to register named EventDispatchers so that events
- * can be triggered from anywhere without using require context.
+ * can be triggered from anywhere without using require context. This should also be used to handle custom
+ * `window.onmessage` handlers.
  *
  * A global `window.EventManager` object is made available in phoenix that can be called anytime after AppStart.
  *
@@ -59,6 +60,7 @@ define(function (require, exports, module) {
      * // in close-dialogue.js module winthin the extension, do the following:
      * const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
      * EventDispatcher.makeEventDispatcher(exports);
+     * const EventManager = brackets.getModule("utils/EventManager");
      *
      * // Note: for event handler names, please change the <extensionName> to your extension name
      * // to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
@@ -103,12 +105,56 @@ define(function (require, exports, module) {
      */
     function triggerEvent(handlerName, eventName, ...eventParams) {
         let handler = _eventHandlerMap[handlerName];
-        if(!handler){
+        if(!handler || !eventName){
             console.error(`Could not locate handler for: ${handlerName} eventName: ${eventName} event: ${eventParams}`);
             return;
         }
         handler.trigger(eventName, ...eventParams);
     }
+
+    /**
+     * This function acts as an event handler for all 'message' events targeted at the window object.
+     * This is useful if you have to send/receive messaged from an embedded cross-domain iframe inside phoenix.
+     * https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
+     * Instead of directly overriding window.onmessage, extensions or other elements that need to
+     * listen to these events should register their named eventHandler with `EventManager`.
+     *
+     * @function
+     * @global
+     * @listens window#message
+     *
+     * @param {MessageEvent} event - The 'message' event targeted at the window object. The event's
+     *   'data' property should have a 'handlerName' and `eventName` property that will be triggered in phcode.
+     *
+     * @example
+     * // We will try to communicate within an embedded iframe and an extension
+     *
+     * // In your extension in phoenix, register a handlerName to process a new kind of event.
+     * const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+     * EventDispatcher.makeEventDispatcher(exports);
+     * const EventManager = brackets.getModule("utils/EventManager");
+     * // Note: for event handler names, please change the <extensionName> to your extension name
+     * // to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
+     * // and not available for use in extensions.
+     * EventManager.registerEventHandler("<extensionName>-iframeMessageHandler", exports);
+     * exports.on("iframeHelloEvent", function(_ev, event){
+     *    console.log(event.data.message);
+     * });
+     *
+     * // Now from your iframe, send a message to the above event handler using:
+     * window.top.postMessage({
+     *     handlerName: "<extensionName>-iframeMessageHandler",
+     *     eventName: "iframeHelloEvent",
+     *     message: "hello world"
+     * }, '*');
+     */
+    window.onmessage = function(event) {
+        const handlerName = event.data.handlerName, eventName = event.data.eventName;
+        if(!handlerName) {
+            return;
+        }
+        triggerEvent(handlerName, eventName, event);
+    };
 
     // Public API
     exports.registerEventHandler = registerEventHandler;
