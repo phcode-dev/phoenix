@@ -75,12 +75,12 @@
         },
 
         /**
-         * Connects to the ServiceWorkerTransport in Brackets at the given WebSocket URL.
+         * Connects to the LivePreviewTransport in Brackets.
          */
         connect: function () {
             const self = this;
             // message channel to phoenix connect on load itself. The channel id is injected from phoenix
-            // via ServiceWorkerTransport.js while serving the instrumented html file
+            // via LivePreviewTransport.js while serving the instrumented html file
             self._broadcastMessageChannel = new BroadcastChannel(window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID);
             self._broadcastMessageChannel.postMessage({
                 type: 'BROWSER_CONNECT',

@@ -57,11 +57,11 @@ define(function (require, exports, module) {
     }, METRIC_SEND_INTERVAL_MS);
 
     // The script that will be injected into the previewed HTML to handle the other side of the socket connection.
-    const ServiceWorkerTransportRemote = require("text!LiveDevelopment/BrowserScripts/ServiceWorkerTransportRemote.js");
+    const LivePreviewTransportRemote = require("text!LiveDevelopment/BrowserScripts/LivePreviewTransportRemote.js");
 
     // Events - setup the service worker communication channel.
-    const BROADCAST_CHANNEL_ID = `${Math.round( Math.random()*1000000000000)}_livePreview`;
-    let _broadcastChannel = new BroadcastChannel(BROADCAST_CHANNEL_ID);
+    const BROADCAST_CHANNEL_ID = `${Phoenix.PHOENIX_INSTANCE_ID}_livePreview`;
+    let _transportBridge;
 
     /**
      * Returns the script that should be injected into the browser to handle the other end of the transport.
@@ -73,7 +73,7 @@ define(function (require, exports, module) {
             `window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${BROADCAST_CHANNEL_ID}";\n` +
             `window.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}";\n` +
             `window.LIVE_PREVIEW_DEBUG_ENABLED = ${logger.loggingOptions.logLivePreview};\n` +
-            ServiceWorkerTransportRemote +
+            LivePreviewTransportRemote +
             "\n";
     }
 
@@ -87,26 +87,10 @@ define(function (require, exports, module) {
         // attach to browser tab/window closing event so that we send a cleanup request
         // to the service worker for the comm ports
         addEventListener( 'beforeunload', function() {
-            _broadcastChannel.postMessage({
+            _transportBridge && _transportBridge.messageToLivePreviewTabs({
                 type: 'PHOENIX_CLOSE'
             });
         });
-        _broadcastChannel.onmessage = (event) => {
-            window.logger.livePreview.log(
-                "Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
-            const type = event.data.type;
-            switch (type) {
-            case 'BROWSER_CONNECT': exports.trigger('connect', [event.data.clientID, event.data.url]); break;
-            case 'BROWSER_MESSAGE':
-                const message = event.data.message || "";
-                exports.trigger('message', [event.data.clientID, message]);
-                transportMessagesRecvSizeB = transportMessagesRecvSizeB + message.length;
-                break;
-            case 'BROWSER_CLOSE': exports.trigger('close', [event.data.clientID]); break;
-            default: console.error("ServiceWorkerTransport received unknown message from Browser preview:", event);
-            }
-            transportMessagesRecvCount++;
-        };
     };
 
     exports.close = function () {
@@ -115,7 +99,7 @@ define(function (require, exports, module) {
 
     exports.send = function (clientIDs, message) {
         message = message || "";
-        _broadcastChannel.postMessage({
+        _transportBridge && _transportBridge.messageToLivePreviewTabs({
             type: 'MESSAGE_FROM_PHOENIX',
             clientIDs,
             message
@@ -123,5 +107,42 @@ define(function (require, exports, module) {
         transportMessagesSendCount ++;
         transportMessagesSendSizeB = transportMessagesSendSizeB + message.length;
     };
+
+    function _browserConnect(_ev, event) {
+        window.logger.livePreview.log(
+            "Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
+        exports.trigger('connect', [event.data.message.clientID, event.data.message.url]);
+        transportMessagesRecvCount++;
+    }
+
+    function _browserClose(_ev, event) {
+        window.logger.livePreview.log(
+            "Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
+        exports.trigger('close', [event.data.message.clientID]);
+        transportMessagesRecvCount++;
+    }
+
+    function _browserMessage(_ev, event) {
+        window.logger.livePreview.log(
+            "Live Preview: Phoenix received event from Browser preview tab/iframe: ", event.data);
+        const message = event.data.message.message || "";
+        exports.trigger('message', [event.data.message.clientID, message]);
+        transportMessagesRecvSizeB = transportMessagesRecvSizeB + message.length;
+        transportMessagesRecvCount++;
+    }
+
+    function setLivePreviewTransportBridge(transportBridge) {
+        _transportBridge = transportBridge;
+        transportBridge.off('BROWSER_CONNECT.transport');
+        transportBridge.on('BROWSER_CONNECT.transport', _browserConnect);
+
+        transportBridge.off('BROWSER_CLOSE.transport');
+        transportBridge.on('BROWSER_CLOSE.transport', _browserClose);
+
+        transportBridge.off('BROWSER_MESSAGE.transport');
+        transportBridge.on('BROWSER_MESSAGE.transport', _browserMessage);
+    }
+
+    exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
 
 });
