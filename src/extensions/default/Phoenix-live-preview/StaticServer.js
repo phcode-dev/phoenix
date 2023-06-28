@@ -21,7 +21,7 @@
  *
  */
 
-/*global Phoenix, logger */
+/*global Phoenix, logger, fs */
 
 define(function (require, exports, module) {
 
@@ -254,36 +254,41 @@ define(function (require, exports, module) {
             requestID = data.requestID,
             liveDocument = this._liveDocuments[path],
             virtualDocument = this._virtualServingDocuments[path];
-        let response;
+        let contents;
 
         if (virtualDocument) {
             // virtual document overrides takes precedence over live preview docs
-            response = {
-                body: virtualDocument
-            };
+            contents = virtualDocument;
         } else if (liveDocument && liveDocument.getResponseData) {
-            response = liveDocument.getResponseData();
+            contents = liveDocument.getResponseData().body;
         } else {
             const file = FileSystem.getFileForPath(data.path);
-            let docTextToSend = "instrumented document not found at static server";
-            DocumentManager.getDocumentText(file).done(function (docText) {
-                docTextToSend = docText;
-            }).always(function () {
-                $livepreviewServerIframe[0].contentWindow.postMessage({
-                    type: 'REQUEST_RESPONSE',
-                    requestID, //pass along the requestID
-                    path,
-                    contents: docTextToSend
-                }, '*');
-            });
-            return;
+            let doc = DocumentManager.getOpenDocumentForPath(file.fullPath);
+            if (doc) {
+                // this file is open in some editor, so we sent the edited contents.
+                contents = doc.getText();
+            } else {
+                fs.readFile(data.path, fs.BYTE_ARRAY_ENCODING, function (error, binContent) {
+                    if(error){
+                        contents = null;
+                    }
+                    contents = binContent;
+                    $livepreviewServerIframe[0].contentWindow.postMessage({
+                        type: 'REQUEST_RESPONSE',
+                        requestID, //pass along the requestID
+                        path,
+                        contents
+                    }, '*');
+                });
+                return;
+            }
         }
 
         $livepreviewServerIframe[0].contentWindow.postMessage({
             type: 'REQUEST_RESPONSE',
             requestID, //pass along the requestID so that the appropriate callback will be hit at the service worker
             path,
-            contents: response.body
+            contents: contents
         }, '*');
     };
 
@@ -332,7 +337,7 @@ define(function (require, exports, module) {
         logger.reportError(new Error(event.data.message));
     });
     exports.on("GET_CONTENT", function(_ev, event){
-        console.error(event);
+        window.logger.livePreview.log(event.data);
         getContent(event.data);
     });
 
