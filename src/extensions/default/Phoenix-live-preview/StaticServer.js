@@ -27,6 +27,7 @@ define(function (require, exports, module) {
 
     const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
+        LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
         marked = brackets.getModule('thirdparty/marked.min'),
         DocumentManager = brackets.getModule("document/DocumentManager"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
@@ -52,6 +53,7 @@ define(function (require, exports, module) {
     });
 
     const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001/";
+    const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
     // #LIVE_PREVIEW_STATIC_SERVER_BASE_URL_OVERRIDE uncomment below line if you are developing live preview server.
     // const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001";
     /**
@@ -215,7 +217,7 @@ define(function (require, exports, module) {
                     GFM_CSS: `${window.parent.Phoenix.baseURL}thirdparty/gfm.min.css`
                 };
                 let html = Mustache.render(markdownHTMLTemplate, templateVars);
-                $livepreviewServerIframe[0].contentWindow.postMessage({
+                messageToLivePreviewTabs({
                     type: 'REQUEST_RESPONSE',
                     requestID, //pass along the requestID to call the appropriate callback at service worker
                     fullPath,
@@ -273,7 +275,7 @@ define(function (require, exports, module) {
                         contents = null;
                     }
                     contents = binContent;
-                    $livepreviewServerIframe[0].contentWindow.postMessage({
+                    messageToLivePreviewTabs({
                         type: 'REQUEST_RESPONSE',
                         requestID, //pass along the requestID
                         path,
@@ -284,7 +286,7 @@ define(function (require, exports, module) {
             }
         }
 
-        $livepreviewServerIframe[0].contentWindow.postMessage({
+        messageToLivePreviewTabs({
             type: 'REQUEST_RESPONSE',
             requestID, //pass along the requestID so that the appropriate callback will be hit at the service worker
             path,
@@ -321,6 +323,7 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype.start = function () {
         _staticServerInstance = this;
+        LiveDevelopment.setLivePreviewTransportBridge(exports);
         setupServer();
     };
 
@@ -340,6 +343,24 @@ define(function (require, exports, module) {
         window.logger.livePreview.log(event.data);
         getContent(event.data);
     });
+    exports.on(EVENT_GET_PHOENIX_INSTANCE_ID, function(_ev, event){
+        messageToLivePreviewTabs({
+            type: 'PHOENIX_INSTANCE_ID',
+            PHOENIX_INSTANCE_ID: Phoenix.PHOENIX_INSTANCE_ID
+        }, '*');
+    });
+
+    /**
+     * The message should be and object of the form: {type, ...}. a type attribute is mandatory
+     * @param message
+     */
+    function messageToLivePreviewTabs(message) {
+        if(!message.type){
+            throw new Error('Missing type attribute to send live preview message to tabs');
+        }
+        $livepreviewServerIframe[0].contentWindow.postMessage(message, '*');
+    }
 
     exports.StaticServer = StaticServer;
+    exports.messageToLivePreviewTabs = messageToLivePreviewTabs;
 });
