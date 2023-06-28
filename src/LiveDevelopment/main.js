@@ -35,6 +35,7 @@ define(function main(require, exports, module) {
     const Commands            = require("command/Commands"),
         AppInit             = require("utils/AppInit"),
         MultiBrowserLiveDev = require("LiveDevelopment/LiveDevMultiBrowser"),
+        LivePreviewTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport"),
         CommandManager      = require("command/CommandManager"),
         PreferencesManager  = require("preferences/PreferencesManager"),
         UrlParams           = require("utils/UrlParams").UrlParams,
@@ -148,6 +149,10 @@ define(function main(require, exports, module) {
 
     function setLivePreviewPinned(urlPinned) {
         MultiBrowserLiveDev.setLivePreviewPinned(urlPinned);
+    }
+
+    function setLivePreviewTransportBridge(transportBridge) {
+        LivePreviewTransport.setLivePreviewTransportBridge(transportBridge);
     }
 
     /** Called on status change */
@@ -319,6 +324,7 @@ define(function main(require, exports, module) {
     exports.isInactive = isInactive;
     exports.isActive = isActive;
     exports.setLivePreviewPinned = setLivePreviewPinned;
+    exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.getLivePreviewBaseURL = MultiBrowserLiveDev.getLivePreviewBaseURL;
