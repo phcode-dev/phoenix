@@ -42,7 +42,8 @@
 define(function (require, exports, module) {
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
         Strings                   = brackets.getModule("strings"),
-        DocumentManager     = brackets.getModule("document/DocumentManager");
+        DocumentManager     = brackets.getModule("document/DocumentManager"),
+        LiveDevelopment    = brackets.getModule("LiveDevelopment/main");
 
     function getExtension(filePath) {
         filePath = filePath || '';
@@ -82,7 +83,7 @@ define(function (require, exports, module) {
             // async is explicitly caught
             try {
                 const projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${window.fsServerUrl}PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}${projectRoot}`;
+                const projectRootUrl = `${LiveDevelopment.getLivePreviewBaseURL()}${projectRoot}`;
                 const currentDocument = DocumentManager.getCurrentDocument();
                 const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
                 if(currentFile){

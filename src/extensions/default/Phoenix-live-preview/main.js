@@ -54,10 +54,13 @@ define(function (require, exports, module) {
         Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
         Metrics            = brackets.getModule("utils/Metrics"),
         LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
+        LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
+        StaticServer         = require("StaticServer"),
         utils = require('utils');
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel",
         NAVIGATOR_REDIRECT_PAGE = "REDIRECT_PAGE",
+        IFRAME_EVENT_SERVER_READY = 'SERVER_READY',
         LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID = `${Phoenix.PHOENIX_INSTANCE_ID}-nav-live-preview`,
         _livePreviewNavigationChannel = new BroadcastChannel(LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID),
         livePreviewTabs = new Map();
@@ -65,6 +68,20 @@ define(function (require, exports, module) {
 
     ExtensionInterface.registerExtensionInterface(
         ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW, exports);
+
+    /**
+     * @private
+     * @return {StaticServerProvider} The singleton StaticServerProvider initialized
+     * on app ready.
+     */
+    function _createStaticServer() {
+        var config = {
+            pathResolver: ProjectManager.makeProjectRelativeIfPossible,
+            root: ProjectManager.getProjectRoot().fullPath
+        };
+
+        return new StaticServer.StaticServer(config);
+    }
 
     // jQuery objects
     let $icon,
@@ -408,6 +425,7 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         _createExtensionPanel();
+        LiveDevServerManager.registerServer({ create: _createStaticServer }, 5);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
         MainViewManager.on("currentFileChange", _currentFileChanged);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
@@ -429,6 +447,9 @@ define(function (require, exports, module) {
         }, 1000);
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
+        StaticServer.on(IFRAME_EVENT_SERVER_READY, function (_evt, event) {
+            _loadPreview(true);
+        });
     });
 
     // private API to be used inside phoenix codebase only
