@@ -35,8 +35,7 @@
     "HealthData",
     "Phoenix-extension-store",
     "Phoenix-live-preview",
-    "icons",
-    "StaticServer"
+    "icons"
   ],
  "warnExtensionStoreExtensions": {
    "description": "list extension ids here that you want to show this warning in extension store: 'You may not need this extension. Phoenix comes built in with this feature.'",

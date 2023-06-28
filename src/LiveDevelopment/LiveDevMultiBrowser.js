@@ -905,6 +905,10 @@ define(function (require, exports, module) {
         };
     }
 
+    function getLivePreviewBaseURL() {
+        return _server.getBaseUrl();
+    }
+
     EventDispatcher.makeEventDispatcher(exports);
 
     // For unit testing
@@ -932,6 +936,7 @@ define(function (require, exports, module) {
     exports.getServerBaseUrl    = getServerBaseUrl;
     exports.getCurrentLiveDoc   = getCurrentLiveDoc;
     exports.getLivePreviewDetails = getLivePreviewDetails;
+    exports.getLivePreviewBaseURL = getLivePreviewBaseURL;
     exports.getCurrentProjectServerConfig = getCurrentProjectServerConfig;
     exports.getConnectionIds = getConnectionIds;
     exports.setTransport        = setTransport;
