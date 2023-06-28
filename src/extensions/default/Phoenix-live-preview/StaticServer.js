@@ -21,7 +21,7 @@
  *
  */
 
-/*global Phoenix */
+/*global Phoenix, logger */
 
 define(function (require, exports, module) {
 
@@ -31,11 +31,13 @@ define(function (require, exports, module) {
         DocumentManager = brackets.getModule("document/DocumentManager"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
+        EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+        EventManager = brackets.getModule("utils/EventManager"),
         markdownHTMLTemplate = require("text!markdown.html");
 
-    const _serverBroadcastChannel = new BroadcastChannel("virtual_server_broadcast");
+    EventDispatcher.makeEventDispatcher(exports);
 
-    let _staticServerInstance;
+    let _staticServerInstance, $livepreviewServerIframe;
 
     // see markdown advanced rendering options at https://marked.js.org/using_advanced
     marked.setOptions({
@@ -49,6 +51,9 @@ define(function (require, exports, module) {
         xhtml: false
     });
 
+    const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001/";
+    // #LIVE_PREVIEW_STATIC_SERVER_BASE_URL_OVERRIDE uncomment below line if you are developing live preview server.
+    // const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001";
     /**
      * @constructor
      * @extends {BaseServer}
@@ -62,7 +67,7 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        config.baseUrl = `${window.fsServerUrl}PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`;
+        config.baseUrl=`${LIVE_PREVIEW_STATIC_SERVER_BASE_URL}vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`;
         this._sendInstrumentedContent = this._sendInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -136,27 +141,6 @@ define(function (require, exports, module) {
     };
 
     /**
-     * @private
-     * Update the list of paths that fire "request" events
-     * @return {jQuery.Promise} Resolved by the StaticServer domain when the message is acknowledged.
-     */
-    StaticServer.prototype._updateInstrumentedURLSInWorker = function () {
-        let paths = Object.keys(this._liveDocuments)
-            .concat(Object.keys(this._virtualServingDocuments));
-        console.log(`Static server _updateInstrumentedURLSInWorker: `, this._root, paths);
-
-        window.messageSW({
-            type: 'setInstrumentedURLs',
-            root: this._root,
-            paths
-        }).then((status)=>{
-            console.log(`Static server received msg from Service worker: setInstrumentedURLs done: `, status);
-        }).catch(err=>{
-            console.error("Static server received msg from Service worker: Error while setInstrumentedURLs", err);
-        });
-    };
-
-    /**
      * Gets the server details from the StaticServerDomain in node.
      * The domain itself handles starting a server if necessary (when
      * the staticServer.getServer command is called).
@@ -174,9 +158,6 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype.addVirtualContentAtPath = function (path, docText) {
         BaseServer.prototype.addVirtualContentAtPath.call(this, path, docText);
-
-        // update the paths to watch
-        this._updateInstrumentedURLSInWorker();
     };
 
     /**
@@ -190,9 +171,6 @@ define(function (require, exports, module) {
         }
 
         BaseServer.prototype.add.call(this, liveDocument);
-
-        // update the paths to watch
-        this._updateInstrumentedURLSInWorker();
     };
 
     /**
@@ -200,8 +178,6 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype.remove = function (liveDocument) {
         BaseServer.prototype.remove.call(this, liveDocument);
-
-        this._updateInstrumentedURLSInWorker();
     };
 
     /**
@@ -209,9 +185,6 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype.removeVirtualContentAtPath = function (path) {
         BaseServer.prototype.removeVirtualContentAtPath.call(this, path);
-
-        // update the paths to watch
-        this._updateInstrumentedURLSInWorker();
     };
 
     /**
@@ -219,8 +192,6 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype.clear = function () {
         BaseServer.prototype.clear.call(this);
-
-        this._updateInstrumentedURLSInWorker();
     };
 
     /**
@@ -244,13 +215,13 @@ define(function (require, exports, module) {
                     GFM_CSS: `${window.parent.Phoenix.baseURL}thirdparty/gfm.min.css`
                 };
                 let html = Mustache.render(markdownHTMLTemplate, templateVars);
-                _serverBroadcastChannel.postMessage({
+                $livepreviewServerIframe[0].contentWindow.postMessage({
                     type: 'REQUEST_RESPONSE',
                     requestID, //pass along the requestID to call the appropriate callback at service worker
                     fullPath,
                     contents: html,
                     headers: {'Content-Type': 'text/html'}
-                });
+                }, '*');
             })
             .fail(function (err) {
                 console.error(`Markdown rendering failed for ${fullPath}: `, err);
@@ -298,44 +269,54 @@ define(function (require, exports, module) {
             DocumentManager.getDocumentText(file).done(function (docText) {
                 docTextToSend = docText;
             }).always(function () {
-                _serverBroadcastChannel.postMessage({
+                $livepreviewServerIframe[0].contentWindow.postMessage({
                     type: 'REQUEST_RESPONSE',
                     requestID, //pass along the requestID
                     path,
                     contents: docTextToSend
-                });
+                }, '*');
             });
             return;
         }
 
-        _serverBroadcastChannel.postMessage({
+        $livepreviewServerIframe[0].contentWindow.postMessage({
             type: 'REQUEST_RESPONSE',
             requestID, //pass along the requestID so that the appropriate callback will be hit at the service worker
             path,
             contents: response.body
-        });
+        }, '*');
     };
 
-    _serverBroadcastChannel.onmessage = (event) => {
-        window.logger.livePreview.log("Static server: ", event.data, Phoenix.PHOENIX_INSTANCE_ID);
-        if (event.data.type === "getInstrumentedContent"
-            && event.data.phoenixInstanceID === Phoenix.PHOENIX_INSTANCE_ID) {
+    function getContent(eventData) {
+        window.logger.livePreview.log("Static server: ", eventData, Phoenix.PHOENIX_INSTANCE_ID);
+        if (eventData.eventName === "GET_CONTENT"
+            && eventData.message.phoenixInstanceID === Phoenix.PHOENIX_INSTANCE_ID) {
             // localStorage is domain specific so when it changes in one window it changes in the other
-            if(_isMarkdownFile(event.data.path)){
-                _sendMarkdown(event.data.path, event.data.requestID);
+            if(_isMarkdownFile(eventData.message.path)){
+                _sendMarkdown(eventData.message.path, eventData.message.requestID);
                 return;
             }
             if(_staticServerInstance){
-                _staticServerInstance._sendInstrumentedContent(event.data);
+                _staticServerInstance._sendInstrumentedContent(eventData.message);
             }
         }
     };
+
+    function setupServer() {
+        $livepreviewServerIframe = $("#live-preview-server-iframe");
+        $livepreviewServerIframe.attr("src", LIVE_PREVIEW_STATIC_SERVER_BASE_URL);
+    }
+
+    function teardownServer() {
+        $("#live-preview-server-iframe").attr("src", "about:blank");
+    }
 
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = function () {
         _staticServerInstance = this;
+        setupServer();
     };
 
     /**
@@ -343,7 +324,17 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype.stop = function () {
         _staticServerInstance = undefined;
+        teardownServer();
     };
 
-    module.exports = StaticServer;
+    EventManager.registerEventHandler("ph-liveServer", exports);
+    exports.on("REPORT_ERROR", function(_ev, event){
+        logger.reportError(new Error(event.data.message));
+    });
+    exports.on("GET_CONTENT", function(_ev, event){
+        console.error(event);
+        getContent(event.data);
+    });
+
+    exports.StaticServer = StaticServer;
 });
