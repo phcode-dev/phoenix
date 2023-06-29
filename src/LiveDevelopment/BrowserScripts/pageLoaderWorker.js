@@ -33,7 +33,6 @@ function _setupBroadcastChannel(broadcastChannel, clientID) {
     _livePreviewNavigationChannel.onmessage = (event) => {
         const type = event.data.type;
         switch (type) {
-        case 'REDIRECT_CONTENT_FRAME': postMessage({type, URL: event.data.URL}); break;
         case 'REDIRECT_PAGE': postMessage({type, URL: event.data.URL}); break;
         case 'TAB_ONLINE': break; // do nothing. This is a loopback message from another live preview tab
         }
