@@ -359,8 +359,13 @@ define(function (require, exports, module) {
         if(!message.type){
             throw new Error('Missing type attribute to send live preview message to tabs');
         }
-        $livepreviewServerIframe && $livepreviewServerIframe[0].contentWindow.postMessage(message,
-            LiveDevServerManager.getStaticServerBaseURLs().origin);
+        // The embedded iframe is a trusted origin and hence we use '*'. We can alternatively use
+        // LiveDevServerManager.getStaticServerBaseURLs().origin, but there seems to be a single error on startup
+        // Most likely as we switch frequently between about:blank and the live preview server host page.
+        // Error message in console:
+        // `Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('http://localhost:8001')
+        // does not match the recipient window's origin ('http://localhost:8000').`
+        $livepreviewServerIframe && $livepreviewServerIframe[0].contentWindow.postMessage(message, '*');
     }
 
     exports.StaticServer = StaticServer;
