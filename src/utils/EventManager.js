@@ -18,7 +18,7 @@
  *
  */
 
-/*global less */
+/*global less, Phoenix */
 // jshint ignore: start
 
 // @INCLUDE_IN_API_DOCS
@@ -113,11 +113,15 @@ define(function (require, exports, module) {
     }
 
     /**
-     * This function acts as an event handler for all 'message' events targeted at the window object.
+     * This function acts as a secure event handler for all 'message' events targeted at the window object.
      * This is useful if you have to send/receive messaged from an embedded cross-domain iframe inside phoenix.
      * https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
      * Instead of directly overriding window.onmessage, extensions or other elements that need to
      * listen to these events should register their named eventHandler with `EventManager`.
+     *
+     * By default, only origins part of `window.Phoenix.TRUSTED_ORIGINS` are whitelisted. If your extension is
+     * bringing in a cross-origin ifrmame say `http://mydomain.com`, you should add it to the whitelist by setting
+     * `window.Phoenix.TRUSTED_ORIGINS["http://mydomain.com"]=true;`
      *
      * @function
      * @global
@@ -136,6 +140,7 @@ define(function (require, exports, module) {
      * // Note: for event handler names, please change the <extensionName> to your extension name
      * // to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
      * // and not available for use in extensions.
+     * window.Phoenix.TRUSTED_ORIGINS["http://mydomain.com"]=true;
      * EventManager.registerEventHandler("<extensionName>-iframeMessageHandler", exports);
      * exports.on("iframeHelloEvent", function(_ev, event){
      *    console.log(event.data.message);
@@ -147,8 +152,17 @@ define(function (require, exports, module) {
      *     eventName: "iframeHelloEvent",
      *     message: "hello world"
      * }, '*');
+     * // `you should replace * with the trusted domains list in production for security.` See how this can be
+     * // done securely with this example: https://github.com/phcode-dev/phcode.live/blob/6d64386fbb9d671cdb64622bc48ffe5f71959bff/docs/virtual-server-loader.js#L43
+     * // Abstract is that, pass in the parentOrigin as a query string parameter in iframe, and validate it against
+     * // a trusted domains list in your iframe.
      */
     window.onmessage = function(event) {
+        if(!Phoenix.TRUSTED_ORIGINS[event.origin]){
+            console.error(`Ignoring event from untrusted origin (should be one of `
+                + `${Object.keys(Phoenix.TRUSTED_ORIGINS)}) but got: `, event);
+            return;
+        }
         const handlerName = event.data.handlerName, eventName = event.data.eventName;
         if(!handlerName) {
             return;
