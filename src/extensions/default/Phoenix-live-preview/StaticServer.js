@@ -310,7 +310,9 @@ define(function (require, exports, module) {
     function setupServer() {
         $livepreviewServerIframe = $("#live-preview-server-iframe");
         // this is the hidden iframe that loads the service worker server page
-        $livepreviewServerIframe.attr("src", LiveDevServerManager.getStaticServerBaseURLs().baseURL);
+        let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
+            `?parentOrigin=${location.origin}`;
+        $livepreviewServerIframe.attr("src", url);
     }
 
     function teardownServer() {
