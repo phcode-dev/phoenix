@@ -144,5 +144,6 @@ define(function (require, exports, module) {
     }
 
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
+    exports.BROADCAST_CHANNEL_ID = BROADCAST_CHANNEL_ID;
 
 });

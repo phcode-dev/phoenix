@@ -33,7 +33,6 @@
     }
 
     const clientID = "" + Math.round( Math.random()*1000000000);
-    const LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID = `${window.PHOENIX_INSTANCE_ID}-nav-live-preview`;
 
     const worker = new Worker(window.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME);
     worker.onmessage = (event) => {
@@ -46,7 +45,7 @@
     };
     worker.postMessage({
         type: "setupBroadcast",
-        broadcastChannel: LIVE_PREVIEW_NAVIGATOR_CHANNEL_ID,
+        broadcastChannel: window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID,
         clientID});
 
     const WebSocketTransport = {
@@ -114,7 +113,6 @@
                         self._callbacks.close();
                     }
                     break;
-                default: console.error("Unknown event type for event", event);
                 }
             };
 

@@ -906,7 +906,7 @@ define(function (require, exports, module) {
     }
 
     function getLivePreviewBaseURL() {
-        return _server.getBaseUrl();
+        return LiveDevServerManager.getStaticServerBaseURLs().projectBaseURL;
     }
 
     EventDispatcher.makeEventDispatcher(exports);
