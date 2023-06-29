@@ -161,6 +161,7 @@ define(function (require, exports, module) {
         if(!Phoenix.TRUSTED_ORIGINS[event.origin]){
             console.error(`Ignoring event from untrusted origin (should be one of `
                 + `${Object.keys(Phoenix.TRUSTED_ORIGINS)}) but got: `, event);
+            console.error('Forgot to set window.Phoenix.TRUSTED_ORIGINS["http://<yourdomain.com>"]=true; ?');
             return;
         }
         const handlerName = event.data.handlerName, eventName = event.data.eventName;
