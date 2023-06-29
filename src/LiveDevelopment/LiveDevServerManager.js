@@ -124,7 +124,7 @@ define(function (require, exports, module) {
     // const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001";
     function getStaticServerBaseURLs() {
         return {
-            baseURL : LIVE_PREVIEW_STATIC_SERVER_BASE_URL,
+            baseURL: LIVE_PREVIEW_STATIC_SERVER_BASE_URL,
             projectBaseURL:
                 `${LIVE_PREVIEW_STATIC_SERVER_BASE_URL}vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`
         };
