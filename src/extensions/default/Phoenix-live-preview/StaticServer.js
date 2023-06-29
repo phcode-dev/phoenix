@@ -221,7 +221,7 @@ define(function (require, exports, module) {
                     fullPath,
                     contents: html,
                     headers: {'Content-Type': 'text/html'}
-                }, '*');
+                });
             })
             .fail(function (err) {
                 console.error(`Markdown rendering failed for ${fullPath}: `, err);
@@ -278,7 +278,7 @@ define(function (require, exports, module) {
                         requestID, //pass along the requestID
                         path,
                         contents
-                    }, '*');
+                    });
                 });
                 return;
             }
@@ -289,7 +289,7 @@ define(function (require, exports, module) {
             requestID, //pass along the requestID so that the appropriate callback will be hit at the service worker
             path,
             contents: contents
-        }, '*');
+        });
     };
 
     function getContent(eventData) {
@@ -344,11 +344,11 @@ define(function (require, exports, module) {
         window.logger.livePreview.log(event.data);
         getContent(event.data);
     });
-    exports.on(EVENT_GET_PHOENIX_INSTANCE_ID, function(_ev, event){
+    exports.on(EVENT_GET_PHOENIX_INSTANCE_ID, function(_ev){
         messageToLivePreviewTabs({
             type: 'PHOENIX_INSTANCE_ID',
             PHOENIX_INSTANCE_ID: Phoenix.PHOENIX_INSTANCE_ID
-        }, '*');
+        });
     });
 
     /**
@@ -359,7 +359,8 @@ define(function (require, exports, module) {
         if(!message.type){
             throw new Error('Missing type attribute to send live preview message to tabs');
         }
-        $livepreviewServerIframe && $livepreviewServerIframe[0].contentWindow.postMessage(message, '*');
+        $livepreviewServerIframe && $livepreviewServerIframe[0].contentWindow.postMessage(message,
+            LiveDevServerManager.getStaticServerBaseURLs().origin);
     }
 
     exports.StaticServer = StaticServer;
