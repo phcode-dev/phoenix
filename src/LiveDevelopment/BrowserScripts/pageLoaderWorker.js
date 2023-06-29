@@ -36,7 +36,6 @@ function _setupBroadcastChannel(broadcastChannel, clientID) {
         case 'REDIRECT_CONTENT_FRAME': postMessage({type, URL: event.data.URL}); break;
         case 'REDIRECT_PAGE': postMessage({type, URL: event.data.URL}); break;
         case 'TAB_ONLINE': break; // do nothing. This is a loopback message from another live preview tab
-        default: console.error("Live Preview page loader: received unknown message from Browser preview:", event);
         }
     };
     function _sendOnlineHeartbeat() {
