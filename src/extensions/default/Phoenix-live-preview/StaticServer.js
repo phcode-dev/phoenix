@@ -28,6 +28,7 @@ define(function (require, exports, module) {
     const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
         LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
+        LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
         marked = brackets.getModule('thirdparty/marked.min'),
         DocumentManager = brackets.getModule("document/DocumentManager"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
@@ -52,10 +53,7 @@ define(function (require, exports, module) {
         xhtml: false
     });
 
-    const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001/";
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
-    // #LIVE_PREVIEW_STATIC_SERVER_BASE_URL_OVERRIDE uncomment below line if you are developing live preview server.
-    // const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001";
     /**
      * @constructor
      * @extends {BaseServer}
@@ -69,7 +67,7 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        config.baseUrl=`${LIVE_PREVIEW_STATIC_SERVER_BASE_URL}vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`;
+        config.baseUrl= LiveDevServerManager.getStaticServerBaseURLs().projectBaseURL;
         this._sendInstrumentedContent = this._sendInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -311,7 +309,8 @@ define(function (require, exports, module) {
 
     function setupServer() {
         $livepreviewServerIframe = $("#live-preview-server-iframe");
-        $livepreviewServerIframe.attr("src", LIVE_PREVIEW_STATIC_SERVER_BASE_URL);
+        // this is the hidden iframe that loads the service worker server page
+        $livepreviewServerIframe.attr("src", LiveDevServerManager.getStaticServerBaseURLs().baseURL);
     }
 
     function teardownServer() {
@@ -358,7 +357,7 @@ define(function (require, exports, module) {
         if(!message.type){
             throw new Error('Missing type attribute to send live preview message to tabs');
         }
-        $livepreviewServerIframe[0].contentWindow.postMessage(message, '*');
+        $livepreviewServerIframe && $livepreviewServerIframe[0].contentWindow.postMessage(message, '*');
     }
 
     exports.StaticServer = StaticServer;
