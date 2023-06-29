@@ -38,7 +38,6 @@
     worker.onmessage = (event) => {
         const type = event.data.type;
         switch (type) {
-        case 'REDIRECT_CONTENT_FRAME': document.getElementById("contentFrame").src = event.data.URL; break;
         case 'REDIRECT_PAGE': location.href = event.data.URL; break;
         default: console.error("Live Preview page loader: received unknown message from worker:", event);
         }
