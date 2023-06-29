@@ -64,6 +64,7 @@ define(function (require, exports, module) {
         IFRAME_EVENT_SERVER_READY = 'SERVER_READY',
         livePreviewTabs = new Map();
     window.livePreviewTabs = livePreviewTabs;
+    let serverReady = false;
 
     ExtensionInterface.registerExtensionInterface(
         ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW, exports);
@@ -176,16 +177,6 @@ define(function (require, exports, module) {
     function _toggleLiveHighlights() {
         CommandManager.execute(Commands.FILE_LIVE_HIGHLIGHT);
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
-    }
-
-    function _stripURL(url) {
-        if(url.includes("?")){
-            url = url.split("?")[0];
-        }
-        if(url.includes("#")){
-            url = url.split("#")[0];
-        }
-        return url;
     }
 
     function _getTabNavigationURL(url) {
@@ -317,7 +308,9 @@ define(function (require, exports, module) {
     }
 
     async function _loadPreview(force) {
-        if(panel.isVisible() || (livePreviewTabs.size > 0)){
+        // we wait till the first server ready event is received till we render anything. else a 404-page may
+        // briefly flash on first load of phoenix as we try to load the page before the server is available.
+        if(serverReady && panel.isVisible() || (livePreviewTabs.size > 0)){
             let saved = _saveScrollPositionsIfPossible();
             // panel-live-preview-title
             let previewDetails = await utils.getPreviewDetails();
@@ -443,6 +436,7 @@ define(function (require, exports, module) {
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
         StaticServer.on(IFRAME_EVENT_SERVER_READY, function (_evt, event) {
+            serverReady = true;
             _loadPreview(true);
         });
     });
