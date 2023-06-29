@@ -119,8 +119,8 @@ define(function (require, exports, module) {
         }
     }
 
-    const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001/",
-        LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "http://localhost:8001";
+    const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "https://phcode.live/",
+        LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "http://phcode.live";
     // #LIVE_PREVIEW_STATIC_SERVER_BASE_URL_OVERRIDE uncomment below line if you are developing live preview server.
     // const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001/";
     // const LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "http://localhost:8001";
