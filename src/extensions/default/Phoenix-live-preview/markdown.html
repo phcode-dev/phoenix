@@ -28,6 +28,25 @@
                 }
             }, false);
         }
+
+        window.addEventListener('scroll', function () {
+            // save scroll position
+            sessionStorage.setItem("markdown-scroll-" + location.href, JSON.stringify({
+                scrollX: window.scrollX,
+                scrollY: window.scrollY
+            }));
+        });
+        function scrollToLastPosition() {
+            let saved = JSON.parse(sessionStorage.getItem("markdown-scroll-" + location.href));
+            if(saved){
+                window.scrollTo({
+                    left: saved.scrollX,
+                    top: saved.scrollY,
+                    behavior: "instant"
+                });
+            }
+        }
+
     </script>
     <style>
 
@@ -92,7 +111,7 @@
 
     </style>
 </head>
-<body onload="hljs.highlightAll();">
+<body onload="scrollToLastPosition();hljs.highlightAll();">
 {{{markdownContent}}}
 </body>
 </html>

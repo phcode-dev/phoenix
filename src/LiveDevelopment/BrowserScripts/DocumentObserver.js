@@ -48,6 +48,25 @@
         }, false);
     }
 
+    window.addEventListener('scroll', function () {
+        // save scroll position
+        sessionStorage.setItem("markdown-scroll-" + location.href, JSON.stringify({
+            scrollX: window.scrollX,
+            scrollY: window.scrollY
+        }));
+    });
+    function scrollToLastPosition() {
+        let saved = JSON.parse(sessionStorage.getItem("markdown-scroll-" + location.href));
+        if(saved){
+            window.scrollTo({
+                left: saved.scrollX,
+                top: saved.scrollY,
+                behavior: "instant"
+            });
+        }
+    }
+    window.addEventListener("load", scrollToLastPosition);
+
     /**
      * Retrieves related documents (external CSS and JS files)
      *
