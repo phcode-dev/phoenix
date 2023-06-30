@@ -262,39 +262,15 @@ define(function (require, exports, module) {
         });
     }
 
-    function _renderMarkdown(fullPath, newSrc) {
-        currentLivePreviewURL = newSrc;
-        console.log(`Markdown Static server _updateInstrumentedURLSInWorker: `, [fullPath], newSrc);
-        window.messageSW({
-            type: 'setInstrumentedURLs',
-            root: "",
-            paths: [fullPath]
-        }).then((status)=>{
-            console.log(`Markdown server received msg from Service worker: setInstrumentedURLs done: `, status);
-            if(panel.isVisible()){
-                $iframe.attr('srcdoc', null);
-                $iframe.attr('src', newSrc);
-            }
-            _redirectAllTabs(newSrc);
-        }).catch(err=>{
-            console.error(`Markdown error while from sw rendering failed for ${fullPath}: `, err);
-        });
-    }
-
     function _renderPreview(previewDetails, newSrc) {
         let fullPath = previewDetails.fullPath;
-        if(previewDetails.isMarkdownFile){
-            _renderMarkdown(fullPath, newSrc);
-            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", "markdown");
-        } else {
-            currentLivePreviewURL = newSrc;
-            if(panel.isVisible()){
-                $iframe.attr('srcdoc', null);
-                $iframe.attr('src', newSrc);
-            }
-            _redirectAllTabs(newSrc);
-            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", utils.getExtension(fullPath));
+        currentLivePreviewURL = utils.isImage(fullPath) ? _getTabNavigationURL(newSrc) : newSrc;
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", utils.getExtension(fullPath));
+        if(panel.isVisible()) {
+            $iframe.attr('srcdoc', null);
+            $iframe.attr('src', currentLivePreviewURL);
         }
+        _redirectAllTabs(newSrc);
     }
 
     let savedScrollPositions = {};

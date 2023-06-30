@@ -53,8 +53,14 @@ define(function (require, exports, module) {
 
     function isPreviewableFile(filePath) {
         let extension = getExtension(filePath);
-        return ['html', 'xhtml', 'htm', 'jpg', 'jpeg', 'png', 'svg',
-            'pdf', 'md', 'markdown'].includes(extension.toLowerCase());
+        return isImage(filePath) || _isMarkdownFile(filePath) || _isHTMLFile(filePath) ||
+            ['pdf'].includes(extension.toLowerCase());
+    }
+
+    function isImage(filePath) {
+        let extension = getExtension(filePath);
+        return ["jpg", "jpeg", "png", "gif", "svg", "webp", "bmp", "ico", "avif"]
+            .includes(extension.toLowerCase());
     }
 
     function _isMarkdownFile(filePath) {
@@ -119,6 +125,7 @@ define(function (require, exports, module) {
     exports.getNoPreviewURL = getNoPreviewURL;
     exports.getExtension = getExtension;
     exports.isPreviewableFile = isPreviewableFile;
+    exports.isImage = isImage;
 });
 
 
