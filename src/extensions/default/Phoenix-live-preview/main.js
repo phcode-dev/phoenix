@@ -65,6 +65,13 @@ define(function (require, exports, module) {
         livePreviewTabs = new Map();
     window.livePreviewTabs = livePreviewTabs;
     let serverReady = false;
+    const LIVE_PREVIEW_IFRAME_HTML = `
+    <iframe id="panel-live-preview-frame" title="Live Preview" style="border: none"
+             width="100%" height="100%" seamless="true"
+             src='about:blank'
+             sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-pointer-lock allow-presentation">
+    </iframe>
+    `;
 
     ExtensionInterface.registerExtensionInterface(
         ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW, exports);
@@ -319,6 +326,13 @@ define(function (require, exports, module) {
                 newSrc = encodeURI(previewDetails.URL);
                 _setTitle(previewDetails.filePath);
             }
+            // we have to create a new iframe on every switch as we use cross domain iframes for phcode.live which
+            // the browser sandboxes strictly and sometimes it wont allow a src change on our iframe causing live
+            // preview breaks sporadically. to alleviate this, we create a new iframe every time.
+            let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+            newIframe.insertAfter($iframe);
+            $iframe.remove();
+            $iframe = newIframe;
             $iframe[0].onload = function () {
                 if(!$iframe[0].contentDocument){
                     return;
