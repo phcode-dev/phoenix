@@ -168,7 +168,7 @@ define(function (require, exports, module) {
         }
         urlPinned = !pinStatus;
         LiveDevelopment.setLivePreviewPinned(urlPinned);
-        _loadPreview();
+        _loadPreview(true);
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "pinURLBtn", "click");
     }
 
@@ -298,6 +298,9 @@ define(function (require, exports, module) {
             // panel-live-preview-title
             let previewDetails = await utils.getPreviewDetails();
             let newSrc = saved.currentSrc;
+            if(urlPinned && !force) {
+                return;
+            }
             if (!urlPinned && previewDetails.URL) {
                 newSrc = encodeURI(previewDetails.URL);
                 _setTitle(previewDetails.filePath);
