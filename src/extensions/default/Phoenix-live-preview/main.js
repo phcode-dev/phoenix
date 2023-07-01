@@ -100,9 +100,9 @@ define(function (require, exports, module) {
         $reloadBtn;
 
     StaticServer.on('TAB_ONLINE', function(_ev, event){
-        livePreviewTabs.set(event.data.clientID, {
+        livePreviewTabs.set(event.data.message.clientID, {
             lastSeen: new Date(),
-            URL: event.data.URL
+            URL: event.data.message.URL
         });
     });
 
@@ -130,6 +130,15 @@ define(function (require, exports, module) {
         urlPinned,
         currentLivePreviewURL = "";
 
+    function _blankIframe() {
+        // we have to remove the dom node altog as at time chrome fails to clear workers if we just change
+        // src. so we delete the node itself to eb thorough.
+        let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
+        newIframe.insertAfter($iframe);
+        $iframe.remove();
+        $iframe = newIframe;
+    }
+
     function _setPanelVisibility(isVisible) {
         if (isVisible) {
             $icon.toggleClass("active");
@@ -137,7 +146,7 @@ define(function (require, exports, module) {
             _loadPreview(true);
         } else {
             $icon.toggleClass("active");
-            $iframe.attr('src', 'about:blank');
+            _blankIframe();
             panel.hide();
         }
     }
@@ -205,11 +214,12 @@ define(function (require, exports, module) {
     }
 
     function _popoutLivePreview() {
+        // We cannot use $iframe.src here if panel is hidden
         const openURL = _getTabNavigationURL(currentLivePreviewURL);
         open(openURL, "livePreview", "noopener,noreferrer");
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
         _loadPreview(true);
-        panel && panel.hide();
+        _setPanelVisibility(false);
     }
 
     function _setTitle(fileName) {
@@ -262,81 +272,35 @@ define(function (require, exports, module) {
         });
     }
 
-    function _renderPreview(previewDetails, newSrc) {
-        let fullPath = previewDetails.fullPath;
-        currentLivePreviewURL = utils.isImage(fullPath) ? _getTabNavigationURL(newSrc) : newSrc;
-        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render", utils.getExtension(fullPath));
-        if(panel.isVisible()) {
-            $iframe.attr('srcdoc', null);
-            $iframe.attr('src', currentLivePreviewURL);
-        }
-        _redirectAllTabs(newSrc);
-    }
-
-    let savedScrollPositions = {};
-
-    function _saveScrollPositionsIfPossible() {
-        let currentSrc = $iframe.src || utils.getNoPreviewURL();
-        try{
-            let scrollX = $iframe[0].contentWindow.scrollX;
-            let scrollY = $iframe[0].contentWindow.scrollY;
-            savedScrollPositions[currentSrc] = {
-                scrollX: scrollX,
-                scrollY: scrollY
-            };
-            return {scrollX, scrollY, currentSrc};
-        }catch (e) {
-            return {scrollX: 0, scrollY: 0, currentSrc};
-        }
-    }
-
     async function _loadPreview(force) {
         // we wait till the first server ready event is received till we render anything. else a 404-page may
         // briefly flash on first load of phoenix as we try to load the page before the server is available.
-        if(serverReady && panel.isVisible() || (livePreviewTabs.size > 0)){
-            let saved = _saveScrollPositionsIfPossible();
-            // panel-live-preview-title
-            let previewDetails = await utils.getPreviewDetails();
-            let newSrc = saved.currentSrc;
-            if(urlPinned && !force) {
-                return;
-            }
-            if (!urlPinned && previewDetails.URL) {
-                newSrc = encodeURI(previewDetails.URL);
-                _setTitle(previewDetails.filePath);
-            }
-            // we have to create a new iframe on every switch as we use cross domain iframes for phcode.live which
-            // the browser sandboxes strictly and sometimes it wont allow a src change on our iframe causing live
-            // preview breaks sporadically. to alleviate this, we create a new iframe every time.
+        const isPreviewLoadable = serverReady && (panel.isVisible() || livePreviewTabs.size > 0);
+        if(!isPreviewLoadable){
+            return;
+        }
+        // panel-live-preview-title
+        let previewDetails = await utils.getPreviewDetails();
+        if(urlPinned && !force) {
+            return;
+        }
+        let newSrc = encodeURI(previewDetails.URL);
+        _setTitle(previewDetails.filePath);
+        // we have to create a new iframe on every switch as we use cross domain iframes for phcode.live which
+        // the browser sandboxes strictly and sometimes it wont allow a src change on our iframe causing live
+        // preview breaks sporadically. to alleviate this, we create a new iframe every time.
+        currentLivePreviewURL = newSrc;
+        if(panel.isVisible()) {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
             $iframe.remove();
             $iframe = newIframe;
-            $iframe[0].onload = function () {
-                if(!$iframe[0].contentDocument){
-                    return;
-                }
-                $iframe[0].contentDocument.savePageCtrlSDisabledByPhoenix = true;
-                $iframe[0].contentDocument.addEventListener("keydown", function(e) {
-                    // inside live preview iframe, we disable ctrl-s browser save page dialog
-                    if (e.key === 's' && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-                        e.preventDefault();
-                    }
-                }, false);
-                if(saved.currentSrc === newSrc){
-                    $iframe[0].contentWindow.scrollTo(saved.scrollX, saved.scrollY);
-                } else {
-                    let savedPositions = savedScrollPositions[newSrc];
-                    if(savedPositions){
-                        $iframe[0].contentWindow.scrollTo(savedPositions.scrollX, savedPositions.scrollY);
-                    }
-                }
-            };
-            if(saved.currentSrc !== newSrc || force === true){
-                $iframe.src = newSrc;
-                _renderPreview(previewDetails, newSrc);
-            }
+            const iframeURL = utils.isImage(previewDetails.fullPath) ? _getTabNavigationURL(newSrc) : newSrc;
+            $iframe.attr('src', iframeURL);
         }
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render",
+            utils.getExtension(previewDetails.fullPath));
+        _redirectAllTabs(newSrc);
     }
 
     async function _projectFileChanges(evt, changedFile) {
@@ -357,7 +321,7 @@ define(function (require, exports, module) {
         if(urlPinned){
             _togglePinUrl();
         }
-        $iframe[0].src = utils.getNoPreviewURL();
+        $iframe.attr('src', utils.getNoPreviewURL());
         if(!panel.isVisible()){
             return;
         }

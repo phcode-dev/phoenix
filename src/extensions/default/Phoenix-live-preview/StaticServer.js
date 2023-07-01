@@ -307,25 +307,24 @@ define(function (require, exports, module) {
         }
     };
 
-    function setupServer() {
-        $livepreviewServerIframe = $("#live-preview-server-iframe");
-        // this is the hidden iframe that loads the service worker server page
-        let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
-            `?parentOrigin=${location.origin}`;
-        $livepreviewServerIframe.attr("src", url);
-    }
-
-    function teardownServer() {
-        $("#live-preview-server-iframe").attr("src", "about:blank");
-    }
-
+    let serverStarted = false;
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = function () {
         _staticServerInstance = this;
-        LiveDevelopment.setLivePreviewTransportBridge(exports);
-        setupServer();
+
+        // load the hidden iframe that loads the service worker server page once. we will reuse the same server
+        // as this is a cross-origin server phcode.live, the browser will identify it as a security issue
+        // if we continuously reload the service worker loader page frequently and it will stop working.
+        if(serverStarted){
+            return;
+        }
+        $livepreviewServerIframe = $("#live-preview-server-iframe");
+        let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
+            `?parentOrigin=${location.origin}`;
+        $livepreviewServerIframe.attr("src", url);
+        serverStarted = true;
     };
 
     /**
@@ -333,7 +332,6 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype.stop = function () {
         _staticServerInstance = undefined;
-        teardownServer();
     };
 
     EventManager.registerEventHandler("ph-liveServer", exports);
@@ -368,6 +366,7 @@ define(function (require, exports, module) {
         $livepreviewServerIframe && $livepreviewServerIframe[0].contentWindow.postMessage(message, '*');
     }
 
+    LiveDevelopment.setLivePreviewTransportBridge(exports);
     exports.StaticServer = StaticServer;
     exports.messageToLivePreviewTabs = messageToLivePreviewTabs;
 });
