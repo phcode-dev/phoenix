@@ -79,6 +79,21 @@ define(function (require, exports, module) {
                 +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
     }
 
+    function getLivePreviewNotSupportedURL() {
+        return `${window.Phoenix.baseURL}assets/phoenix-splash/live-preview-error.html?mainHeading=`+
+            encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_HEADING}`) + "&mainSpan="+
+            encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_SPAN}`);
+    }
+
+    function isNotLivePreviewSupported() {
+        // in safari, service workers are disabled in third party iframes. We use phcode.live for secure sandboxing
+        // live previews into its own domain apart from phcode.dev. Since safari doesn't support this, we are left
+        // with using phcode.dev domain directly for live previews. That is a large attack surface for untrusted
+        // code execution. so we will disable live previews in safari instead of shipping a security vulnerability.
+        return !Phoenix.isSupportedBrowser ||
+            (!Phoenix.browser.isTauri && (Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos));
+    }
+
     /**
      * Finds out a {URL,filePath} to live preview from the project. Will return and empty object if the current
      * file is not previewable.
@@ -88,6 +103,13 @@ define(function (require, exports, module) {
         return new Promise(async (resolve, reject)=>{ // eslint-disable-line
             // async is explicitly caught
             try {
+                if(isNotLivePreviewSupported()){
+                    resolve({
+                        URL: getLivePreviewNotSupportedURL(),
+                        isNoPreview: true
+                    });
+                    return;
+                }
                 const projectRoot = ProjectManager.getProjectRoot().fullPath;
                 const projectRootUrl = `${LiveDevelopment.getLivePreviewBaseURL()}${projectRoot}`;
                 const currentDocument = DocumentManager.getCurrentDocument();

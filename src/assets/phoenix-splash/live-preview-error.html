@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Phoenix editor</title>
+        <link rel="stylesheet" href="styles.css">
+        <script type="text/javascript">
+            function applyTranslations() {
+                const urlSearchParams = new URLSearchParams(window.location.search);
+                const params = Object.fromEntries(urlSearchParams.entries());
+                if(params.mainHeading){
+                    document.getElementById("mainHeading").innerHTML = decodeURIComponent(params.mainHeading);
+                }
+                if(params.mainSpan){
+                    document.getElementById("mainSpan").innerHTML = decodeURIComponent(params.mainSpan);
+                }
+            }
+        </script>
+    </head>
+
+    <body onload="applyTranslations()">
+        <img id="starsLeft"  src="images/stars-left.svg"/>
+        <div id="mainDiv">
+            <img id="logo"  src="images/phoenix-logo-broken.svg"/>
+            <div id="MainText" class="safari-text">
+                <h2 id="mainHeading">Uh Oh! <br>Your current browser doesn't support live preview.</h2>
+                <span id="mainSpan">
+                    Get the best live preview experience by downloading our native apps for Windows, Mac, and Linux from <a href="https://phcode.io" style="color: white">phcode.io</a>.<br>
+                </span><br>
+            </div>
+        </div>
+        <img id="cloudLeftTop"  src="images/vector-top-left.png"/>
+        <img id="cloudBottomRight"  src="images/vector-bottom-right.png"/>
+        <img id="starsRight"  src="images/stars-right.svg"/>
+        <img class="clouds" style="z-index: 3; transform: translate(0px, -1.55909px);" src="images/cloud1.svg"/>
+        <img class="clouds" style="z-index: 6; transform: translate(0px, -2.33863px);" src="images/cloud2.svg"/>
+        <img class="clouds" style="z-index: 5; transform: translate(0px, -3.89772px);" src="images/cloud3.svg"/>
+        <img class="clouds" style="z-index: 6; transform: translate(0px, -3.89772px);" src="images/cloud4.svg"/>
+    </body>
+</html>

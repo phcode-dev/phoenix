@@ -16,16 +16,6 @@ closed without saving edited files.
 
 ![image](https://github.com/phcode-dev/phoenix/assets/5336369/9cfd5720-947b-4f88-8dfa-cda940d912c6)
 
-## Safari Support (Beta)
-`Added on May,2023`
-
-Safari browser support is now in beta! Stay tuned for our **upcoming Web and native Mac/iOS apps** for full support. 
-
-### A note to Safari users
-Safari automatically deletes website data if a site is not revisited within 7 days.
-Phoenix relies on browser storage to save your projects, which may be removed due to this policy.
-**To prevent data loss**, please **download** your projects before closing the tab or stay tuned for our **upcoming Web and native Mac/iOS apps** for full support.
-
 ## Firefox Support
 `Added on April,2023`
 
