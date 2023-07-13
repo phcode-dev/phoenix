@@ -114,6 +114,13 @@ if(!self.Serve){
                         const responseData = HtmlFormatter.formatFile(path, response.contents);
                         const headers = response.headers || {};
                         responseData.config.headers = { ...responseData.config.headers, ...headers};
+                        // VFS_SECURITY_POSTURE_X_FRAME_OPTIONS
+                        // prevent iframe embed security vulnerability. Here, a page in live preview hosted from
+                        // phcode.live can embed an iframe with phcode.dev/vfs.project.file url and gain access to
+                        // phcode.dev via iframe to parent frame post message exposing user file system. We prevent
+                        // such acceess. We cannot disable vfs hosting as its used by 'load project as extension'
+                        // workflow. But this should secure the access in most cases.
+                        responseData.config.headers['X-Frame-Options'] = 'SAMEORIGIN';
                         resolve(new Response(responseData.body, responseData.config));
                     };
                     return true;
@@ -137,6 +144,8 @@ if(!self.Serve){
                             responseData.config.headers['Content-Disposition'] =
                                 formatContentDisposition(path, stats);
                         }
+                        // search for VFS_SECURITY_POSTURE_X_FRAME_OPTIONS for details on why this x-frame-opt
+                        responseData.config.headers['X-Frame-Options'] = 'SAMEORIGIN';
 
                         resolve(new Response(responseData.body, responseData.config));
                         return;
