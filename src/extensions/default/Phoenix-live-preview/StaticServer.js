@@ -35,6 +35,8 @@ define(function (require, exports, module) {
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         EventDispatcher = brackets.getModule("utils/EventDispatcher"),
         EventManager = brackets.getModule("utils/EventManager"),
+        ProjectManager = brackets.getModule("project/ProjectManager"),
+        Strings = brackets.getModule("strings"),
         markdownHTMLTemplate = require("text!markdown.html");
 
     EventDispatcher.makeEventDispatcher(exports);
@@ -255,6 +257,16 @@ define(function (require, exports, module) {
             liveDocument = this._liveDocuments[path],
             virtualDocument = this._virtualServingDocuments[path];
         let contents;
+        if(!ProjectManager.isWithinProject(data.path)) {
+            console.error("Security issue prevented: Live preview tried to access non project resource!!!", path);
+            messageToLivePreviewTabs({
+                type: 'REQUEST_RESPONSE',
+                requestID, //pass along the requestID
+                path,
+                contents: Strings.DESCRIPTION_LIVEDEV_SECURITY
+            });
+            return;
+        }
 
         if (virtualDocument) {
             // virtual document overrides takes precedence over live preview docs
