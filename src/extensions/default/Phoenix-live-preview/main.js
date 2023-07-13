@@ -256,6 +256,17 @@ define(function (require, exports, module) {
             $iframe.attr('srcdoc', null);
         };
 
+        const popoutSupported = Phoenix.browser.isTauri || Phoenix.browser.desktop.isChromeBased;
+        if(!popoutSupported){
+            // live preview can be popped out currently in only chrome based browsers. The cross domain iframe
+            // that serves the live preview(phcode.live) is sandboxed to the tab in which phcode.dev resides.
+            // all iframes in the tab can communicate between each other, but when you popout another tab, it forms
+            // its own sandbox and firefox/safari prevents communication from iframe in one tab to another. chrome
+            // doesn't seem to enforce this restriction. Since this is a core usecase, we will try to enable this
+            // workflow whenever possible.
+            $livePreviewPopBtn.addClass("forced-hidden");
+        }
+
         panel = WorkspaceManager.createPluginPanel(LIVE_PREVIEW_PANEL_ID, $panel,
             PANEL_MIN_SIZE, $icon, INITIAL_PANEL_SIZE);
 
