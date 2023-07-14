@@ -114,6 +114,7 @@ define(function (require, exports, module) {
             let timeDiff = endTime - livePreviewTabs.get(tab).lastSeen; // in ms
             if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
                 livePreviewTabs.delete(tab);
+                StaticServer.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
             }
         }
         if(livePreviewTabs.size === 0){

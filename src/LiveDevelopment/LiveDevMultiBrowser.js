@@ -542,8 +542,7 @@ define(function (require, exports, module) {
                 _protocol
                     // TODO: timeout if we don't get a connection within a certain time
                     .on("ConnectionConnect.livedev", function (event, msg) {
-                        // check for the first connection
-                        if (_protocol.getConnectionIds().length === 1) {
+                        if (_protocol.getConnectionIds().length >= 1) {
                             // check the page that connection comes from matches the current live document session
                             if (_liveDocument &&  msg.url === _resolveUrl(_liveDocument.doc.file.fullPath)) {
                                 _setStatus(STATUS_ACTIVE);

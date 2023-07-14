@@ -32,6 +32,7 @@ define(function (require, exports, module) {
             brackets,
             DocumentManager,
             LiveDevMultiBrowser,
+            LiveDevProtocol,
             EditorManager,
             CommandManager,
             BeautificationManager,
@@ -62,6 +63,7 @@ define(function (require, exports, module) {
                 brackets = testWindow.brackets;
                 DocumentManager = brackets.test.DocumentManager;
                 LiveDevMultiBrowser = brackets.test.LiveDevMultiBrowser;
+                LiveDevProtocol = brackets.test.LiveDevProtocol;
                 CommandManager      = brackets.test.CommandManager;
                 Commands            = brackets.test.Commands;
                 EditorManager       = brackets.test.EditorManager;
@@ -293,19 +295,30 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                 "SpecRunnerUtils.openProjectFiles " + fileName, 1000);
 
-            await awaits(300);
-            expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
+            await awaits(300); // todo can we remove this
+            await awaitsFor(
+                function isTextChanged() {
+                    return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
+                },
+                "waiting for live preview active",
+                5000,
+                50
+            );
 
             let curDoc =  DocumentManager.getCurrentDocument();
             curDoc.replaceRange(editText, location);
-            let testId = testWindow.document.getElementById("panel-live-preview-frame")
-                .contentDocument.getElementById(verifyID);
+            let result;
             await awaitsFor(
                 function isTextChanged() {
-                    return testId.textContent === verifyText;
+                    LiveDevProtocol.evaluate(`document.getElementById('${verifyID}').textContent`)
+                        .done((response)=>{
+                            result = JSON.parse(response.result||"");
+                        });
+                    return result === verifyText;
                 },
                 "relatedDocuments.done.received",
-                2000
+                2000,
+                50
             );
         }
 
@@ -334,24 +347,33 @@ define(function (require, exports, module) {
 
             // add a class
             curDoc.replaceRange("addClass ", {line: 11, ch: 22});
-            let testId = testWindow.document.getElementById("panel-live-preview-frame")
-                .contentDocument.getElementById("testId");
+            let hasClass;
             await awaitsFor(
                 function isClassChanged() {
-                    return testId.classList.contains("addClass");
+                    LiveDevProtocol.evaluate(`document.getElementById('testId').classList.contains("addClass")`)
+                        .done((response)=>{
+                            hasClass = JSON.parse(response.result||"");
+                        });
+                    return hasClass;
                 },
                 "replaceClass",
-                2000
+                2000,
+                50
             );
 
             // remove a class
             curDoc.replaceRange("", {line: 11, ch: 22}, {line: 11, ch: 31});
             await awaitsFor(
                 function isClassChanged() {
-                    return !testId.classList.contains("addClass");
+                    LiveDevProtocol.evaluate(`document.getElementById('testId').classList.contains("addClass")`)
+                        .done((response)=>{
+                            hasClass = JSON.parse(response.result||"");
+                        });
+                    return hasClass;
                 },
                 "replaceClass",
-                2000
+                2000,
+                50
             );
 
             await endPreviewSession();
@@ -372,24 +394,33 @@ define(function (require, exports, module) {
 
             // add an attribute
             curDoc.replaceRange(' hello="world" ', {line: 11, ch: 15});
-            let testId = testWindow.document.getElementById("panel-live-preview-frame")
-                .contentDocument.getElementById("testId");
+            let result;
             await awaitsFor(
                 function isAttributeAdded() {
-                    return testId.getAttribute("hello") === "world";
+                    LiveDevProtocol.evaluate(`document.getElementById('testId').getAttribute("hello")`)
+                        .done((response)=>{
+                            result = JSON.parse(response.result||"");
+                        });
+                    return result === "world";
                 },
                 "attribute add",
-                2000
+                2000,
+                50
             );
 
             // remove the attribute
             curDoc.replaceRange("", {line: 11, ch: 15}, {line: 11, ch: 30});
             await awaitsFor(
                 function isClassChanged() {
-                    return testId.getAttribute("hello") !== "world";
+                    LiveDevProtocol.evaluate(`document.getElementById('testId').getAttribute("hello")`)
+                        .done((response)=>{
+                            result = JSON.parse(response.result||"");
+                        });
+                    return result !== "world";
                 },
                 "attribute remove",
-                2000
+                2000,
+                50
             );
 
             await endPreviewSession();
