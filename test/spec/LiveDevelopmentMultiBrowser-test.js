@@ -760,5 +760,17 @@ define(function (require, exports, module) {
 
             await endPreviewSession();
         }, 5000);
+
+        it("should live preview not be able to access a non project file", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["exploit1.html"]),
+                "SpecRunnerUtils.openProjectFiles exploit1.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            await forRemoteExec(`document.fetchedText`, (result)=>{
+                return result && result.startsWith("Security Warning from phcode.dev<br><br>");
+            });
+
+            await endPreviewSession();
+        }, 5000);
     });
 });
