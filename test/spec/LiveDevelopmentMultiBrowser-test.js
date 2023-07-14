@@ -231,9 +231,9 @@ define(function (require, exports, module) {
             await endPreviewSession();
         });
 
-        xit(" todo should send notifications for removed stylesheets through link nodes", async function () {
-            // search for todo #remove_not_working
-        });
+        // search for todo #remove_not_working fix in future
+        // xit(" todo should send notifications for removed stylesheets through link nodes", async function () {
+        // });
 
         it("should push changes through browser connection when editing a related CSS", async function () {
             let localText,
