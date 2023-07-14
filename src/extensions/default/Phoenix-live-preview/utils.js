@@ -85,13 +85,12 @@ define(function (require, exports, module) {
             encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_SPAN}`);
     }
 
-    function isNotLivePreviewSupported() {
+    function _isLivePreviewSupported() {
         // in safari, service workers are disabled in third party iframes. We use phcode.live for secure sandboxing
         // live previews into its own domain apart from phcode.dev. Since safari doesn't support this, we are left
         // with using phcode.dev domain directly for live previews. That is a large attack surface for untrusted
         // code execution. so we will disable live previews in safari instead of shipping a security vulnerability.
-        return !Phoenix.isSupportedBrowser ||
-            (!Phoenix.browser.isTauri && (Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos));
+        return Phoenix.browser.isTauri || !(Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos);
     }
 
     /**
@@ -103,7 +102,7 @@ define(function (require, exports, module) {
         return new Promise(async (resolve, reject)=>{ // eslint-disable-line
             // async is explicitly caught
             try {
-                if(isNotLivePreviewSupported()){
+                if(!_isLivePreviewSupported()){
                     resolve({
                         URL: getLivePreviewNotSupportedURL(),
                         isNoPreview: true
