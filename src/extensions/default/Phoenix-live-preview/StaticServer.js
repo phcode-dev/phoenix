@@ -361,6 +361,27 @@ define(function (require, exports, module) {
         });
     });
 
+    const livePreviewTabs = new Map();
+    exports.on('TAB_ONLINE', function(_ev, event){
+        livePreviewTabs.set(event.data.message.clientID, {
+            lastSeen: new Date(),
+            URL: event.data.message.URL
+        });
+    });
+
+    // If we didn't receive heartbeat message from a tab for 5 seconds, we assume tab closed
+    const TAB_HEARTBEAT_TIMEOUT = 5000; // in millis secs
+    setInterval(()=>{
+        let endTime = new Date();
+        for(let tab of livePreviewTabs.keys()){
+            let timeDiff = endTime - livePreviewTabs.get(tab).lastSeen; // in ms
+            if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
+                livePreviewTabs.delete(tab);
+                exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
+            }
+        }
+    }, 1000);
+
     /**
      * The message should be and object of the form: {type, ...}. a type attribute is mandatory
      * @param message
