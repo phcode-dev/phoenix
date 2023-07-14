@@ -61,9 +61,7 @@ define(function (require, exports, module) {
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel",
         NAVIGATOR_REDIRECT_PAGE = "REDIRECT_PAGE",
-        IFRAME_EVENT_SERVER_READY = 'SERVER_READY',
-        livePreviewTabs = new Map();
-    window.livePreviewTabs = livePreviewTabs;
+        IFRAME_EVENT_SERVER_READY = 'SERVER_READY';
     let serverReady = false;
     const LIVE_PREVIEW_IFRAME_HTML = `
     <iframe id="panel-live-preview-frame" title="Live Preview" style="border: none"
@@ -98,29 +96,6 @@ define(function (require, exports, module) {
         $highlightBtn,
         $livePreviewPopBtn,
         $reloadBtn;
-
-    StaticServer.on('TAB_ONLINE', function(_ev, event){
-        livePreviewTabs.set(event.data.message.clientID, {
-            lastSeen: new Date(),
-            URL: event.data.message.URL
-        });
-    });
-
-    // If we didn't receive heartbeat message from a tab for 5 seconds, we assume tab closed
-    const TAB_HEARTBEAT_TIMEOUT = 5000; // in millis secs
-    setInterval(()=>{
-        let endTime = new Date();
-        for(let tab of livePreviewTabs.keys()){
-            let timeDiff = endTime - livePreviewTabs.get(tab).lastSeen; // in ms
-            if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
-                livePreviewTabs.delete(tab);
-                StaticServer.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
-            }
-        }
-        if(livePreviewTabs.size === 0){
-            _startOrStopLivePreviewIfRequired();
-        }
-    }, 1000);
 
 
     // Templates
@@ -159,7 +134,7 @@ define(function (require, exports, module) {
         } else if(visible && explicitClickOnLPIcon) {
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
-        } else if(!visible && livePreviewTabs.size === 0) {
+        } else if(!visible && LiveDevelopment.getConnectionIds().length === 0) {
             LiveDevelopment.closeLivePreview();
         }
     }
@@ -287,7 +262,7 @@ define(function (require, exports, module) {
     async function _loadPreview(force) {
         // we wait till the first server ready event is received till we render anything. else a 404-page may
         // briefly flash on first load of phoenix as we try to load the page before the server is available.
-        const isPreviewLoadable = serverReady && (panel.isVisible() || livePreviewTabs.size > 0);
+        const isPreviewLoadable = serverReady && (panel.isVisible() || LiveDevelopment.getConnectionIds().length > 0);
         if(!isPreviewLoadable){
             return;
         }
@@ -347,7 +322,7 @@ define(function (require, exports, module) {
 
     function _activeDocChanged() {
         if(!LiveDevelopment.isActive() && !livePreviewEnabledOnProjectSwitch
-            && (panel.isVisible() || (livePreviewTabs.size > 0))) {
+            && (panel.isVisible() || (LiveDevelopment.getConnectionIds().length > 0))) {
             // we do this only once after project switch if live preview for a doc is not active.
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
@@ -408,6 +383,12 @@ define(function (require, exports, module) {
             serverReady = true;
             _loadPreview(true);
         });
+
+        setInterval(()=>{
+            if(LiveDevelopment.getConnectionIds().length === 0){
+                _startOrStopLivePreviewIfRequired();
+            }
+        }, 1000);
     });
 
     // private API to be used inside phoenix codebase only

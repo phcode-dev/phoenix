@@ -200,6 +200,9 @@ define(function (require, exports, module) {
      * @param {number} clientId
      */
     function _close(clientId) {
+        if(!_connections[clientId]){
+            return;
+        }
         delete _connections[clientId];
         exports.trigger("ConnectionClose", {
             clientId: clientId
