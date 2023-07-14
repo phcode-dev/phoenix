@@ -528,7 +528,11 @@ define(function (require, exports, module) {
                         .done((response)=>{
                             result = JSON.parse(response.result||"");
                         });
-                    return compareFn(result);
+                    if(compareFn){
+                        return compareFn(result);
+                    }
+                    // just exec and return if no compare function is specified
+                    return true;
                 },
                 "awaitRemoteExec",
                 2000,
@@ -643,20 +647,24 @@ define(function (require, exports, module) {
         it("should reverse highlight on clicking on live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
 
             await waitsForLiveDevelopmentToOpen();
             let editor = EditorManager.getActiveEditor();
 
             await awaits(500);
-            let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(0);
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 0;
+            });
+            await forRemoteExec(`document.getElementById("testId2").click()`);
 
-            iFrame.contentDocument.getElementById("testId2").click();
             await awaits(500);
-            highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(1);
-            expect(highlights[0].trackingElement.id).toBe("testId2");
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 1;
+            });
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.id`,
+                (result)=>{
+                    return result === 'testId2';
+                });
             expect(editor.getCursorPos()).toEql({ line: 12, ch: 0, sticky: null });
 
             await endPreviewSession();
@@ -670,13 +678,14 @@ define(function (require, exports, module) {
             await waitsForLiveDevelopmentToOpen();
 
             await awaits(300);
-            let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(0);
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 0;
+            });
 
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
                 "closing all file");
 
-            iFrame.contentDocument.getElementById("testId2").click();
+            await forRemoteExec(`document.getElementById("testId2").click()`);
 
             await awaits(300);
             // The live previewed file should now be opened in the editor
@@ -684,12 +693,16 @@ define(function (require, exports, module) {
             expect(editor.document.file.fullPath.endsWith("simple1.html")).toBeTrue();
 
             // live highlights should still work
-            iFrame.contentDocument.getElementById("testId").click();
+            await forRemoteExec(`document.getElementById("testId").click()`);
             await awaits(300);
 
-            highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(1);
-            expect(highlights[0].trackingElement.id).toBe("testId");
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 1;
+            });
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.id`,
+                (result)=>{
+                    return result === 'testId';
+                });
             expect(editor.getCursorPos()).toEql({ line: 11, ch: 0, sticky: null });
 
             await endPreviewSession();
