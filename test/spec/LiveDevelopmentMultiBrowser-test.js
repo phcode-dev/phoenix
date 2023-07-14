@@ -610,21 +610,32 @@ define(function (require, exports, module) {
 
             await waitsForLiveDevelopmentToOpen();
             let editor = EditorManager.getActiveEditor();
-            let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(0);
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 0;
+            });
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
             await awaits(300);
-            highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(1);
-            let originalWidth = highlights[0].style.width;
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 1;
+            });
+            let originalWidth;
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].style.width`, (result)=>{
+                originalWidth = result;
+                return true;
+            });
+
             iFrame.style.width = "100px";
             await awaits(100);
-            expect(highlights[0].style.width).not.toBe(originalWidth);
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].style.width`, (result)=>{
+                return originalWidth !== result;
+            });
             iFrame.style.width = "100%";
             await awaits(100);
-            expect(highlights[0].style.width).toBe(originalWidth);
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].style.width`, (result)=>{
+                return originalWidth === result;
+            });
 
             await endPreviewSession();
         }, 5000);
