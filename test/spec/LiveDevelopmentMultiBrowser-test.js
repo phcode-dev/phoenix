@@ -482,7 +482,8 @@ define(function (require, exports, module) {
             let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(outerIFrame.src.endsWith("LiveDevelopment-MultiBrowser-test-files/readme.md")).toBeTrue();
 
-            // todo check hrefs
+            // todo check hrefs in markdown. currently we do not have mechanism to exec code image and markdown previews
+            // in future we should do this check too.
             // let href = iFrame.contentDocument.getElementsByTagName("a")[0].href;
             // expect(href.endsWith("LiveDevelopment-MultiBrowser-test-files/readme.md#title-link")).toBeTrue();
             // href = iFrame.contentDocument.getElementsByTagName("img")[0].src;
@@ -715,22 +716,24 @@ define(function (require, exports, module) {
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world awesome!");
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
+            await forRemoteExec(`document.savePageCtrlSDisabledByPhoenix`, (result)=>{
+                return result === true;
+            });
 
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
-                "readme.md", 1000);
-            await awaits(300);
-            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith("readme.md")).toBeTrue();
-            expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "icon_chevron.png", 1000);
-            await awaits(300);
-            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith("sub/icon_chevron.png")).toBeTrue();
-            expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
+            // todo: currently we do not have mechanism to exec code image and markdown previews. enable in future.
+            // await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+            //     "readme.md", 1000);
+            // await awaits(300);
+            // iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            // expect(iFrame.src.endsWith("readme.md")).toBeTrue();
+            // expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
+            //
+            // await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+            //     "icon_chevron.png", 1000);
+            // await awaits(300);
+            // iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            // expect(iFrame.src.endsWith("sub/icon_chevron.png")).toBeTrue();
+            // expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
 
             await endPreviewSession();
         }, 5000);
@@ -742,8 +745,6 @@ define(function (require, exports, module) {
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world awesome!");
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
 
             let editor = EditorManager.getActiveEditor();
             await BeautificationManager.beautifyEditor(editor);
