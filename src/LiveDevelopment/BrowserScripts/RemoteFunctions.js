@@ -195,7 +195,7 @@ function RemoteFunctions(config, remoteWSPort) {
 
         show: function () {
             if (!this.body) {
-                this.body = this.createBody();
+                this.createBody();
             }
             if (!this.body.parentNode) {
                 window.document.body.appendChild(this.body);
