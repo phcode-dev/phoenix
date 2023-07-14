@@ -520,6 +520,22 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 5000);
 
+        async function forRemoteExec(script, compareFn) {
+            let result;
+            await awaitsFor(
+                function isClassChanged() {
+                    LiveDevProtocol.evaluate(script)
+                        .done((response)=>{
+                            result = JSON.parse(response.result||"");
+                        });
+                    return compareFn(result);
+                },
+                "awaitRemoteExec",
+                2000,
+                50
+            );
+        }
+
         it("should live highlight html elements", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
@@ -528,20 +544,19 @@ define(function (require, exports, module) {
             await waitsForLiveDevelopmentToOpen();
             let editor = EditorManager.getActiveEditor();
             editor.setCursorPos({ line: 0, ch: 0 });
-            let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(0);
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 0;
+            });
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
-            await awaitsFor(
-                function isHilighted() {
-                    highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-                    return highlights.length === 1;
-                },
-                "hilighted",
-                2000
-            );
-            expect(highlights[0].trackingElement.id).toBe("testId");
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 1;
+            });
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.id`,
+                (result)=>{
+                    return result === 'testId';
+                });
 
             await endPreviewSession();
         }, 5000);
@@ -549,11 +564,11 @@ define(function (require, exports, module) {
         it("should live highlight css classes highlight all elements", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
                 "SpecRunnerUtils.openProjectFiles simple2.html", 1000);
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
 
             await waitsForLiveDevelopmentToOpen();
-            let highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(0);
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 0;
+            });
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
                 "simple1.css", 1000);
@@ -561,9 +576,14 @@ define(function (require, exports, module) {
             editor.setCursorPos({ line: 2, ch: 6 });
 
             await awaits(300);
-            highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(3);
-            expect(highlights[0].trackingElement.classList[0]).toBe("testClass");
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 3;
+            });
+            await forRemoteExec(
+                `document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.classList[0]`,
+                (result)=>{
+                    return result === 'testClass';
+                });
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["import1.css"]),
                 "import1.css", 1000);
@@ -571,9 +591,14 @@ define(function (require, exports, module) {
             editor.setCursorPos({ line: 0, ch: 1 });
 
             await awaits(300);
-            highlights = iFrame.contentDocument.getElementsByClassName("__brackets-ld-highlight");
-            expect(highlights.length).toBe(2);
-            expect(highlights[0].trackingElement.classList[0]).toBe("testClass2");
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 2;
+            });
+            await forRemoteExec(
+                `document.getElementsByClassName("__brackets-ld-highlight")[0].trackingElement.classList[0]`,
+                (result)=>{
+                    return result === 'testClass2';
+                });
 
             await endPreviewSession();
         }, 5000);
