@@ -55,7 +55,6 @@ define(function (require, exports, module) {
         Metrics            = brackets.getModule("utils/Metrics"),
         LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
         LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
-        LivePreviewTransport  = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport"),
         StaticServer         = require("StaticServer"),
         utils = require('utils');
 
@@ -134,7 +133,7 @@ define(function (require, exports, module) {
         } else if(visible && explicitClickOnLPIcon) {
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
-        } else if(!visible && LiveDevelopment.isActive() && LiveDevelopment.getConnectionIds().length === 0) {
+        } else if(!visible && LiveDevelopment.isActive() && StaticServer.livePreviewTabs.size === 0) {
             LiveDevelopment.closeLivePreview();
         }
     }
@@ -173,10 +172,13 @@ define(function (require, exports, module) {
 
     function _getTabNavigationURL(url) {
         let details = LiveDevelopment.getLivePreviewDetails(),
-            openURL = url;
+            openURL = new URL(url);
+        // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
+        // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
+        openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
+        openURL = openURL.href;
         if(details.URL !== url) {
-            openURL = `${LiveDevServerManager.getStaticServerBaseURLs().baseURL}pageLoader.html?`
-                +`broadcastChannel=${LivePreviewTransport.BROADCAST_CHANNEL_ID}&URL=${encodeURIComponent(url)}`;
+            openURL = utils.getPageLoaderURL(url);
         }
         return openURL;
     }
@@ -262,7 +264,7 @@ define(function (require, exports, module) {
     async function _loadPreview(force) {
         // we wait till the first server ready event is received till we render anything. else a 404-page may
         // briefly flash on first load of phoenix as we try to load the page before the server is available.
-        const isPreviewLoadable = serverReady && (panel.isVisible() || LiveDevelopment.getConnectionIds().length > 0);
+        const isPreviewLoadable = serverReady && (panel.isVisible() || StaticServer.livePreviewTabs.size > 0);
         if(!isPreviewLoadable){
             return;
         }
@@ -322,7 +324,7 @@ define(function (require, exports, module) {
 
     function _activeDocChanged() {
         if(!LiveDevelopment.isActive() && !livePreviewEnabledOnProjectSwitch
-            && (panel.isVisible() || (LiveDevelopment.getConnectionIds().length > 0))) {
+            && (panel.isVisible() || (StaticServer.livePreviewTabs.size > 0))) {
             // we do this only once after project switch if live preview for a doc is not active.
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
@@ -386,7 +388,7 @@ define(function (require, exports, module) {
 
         let consecutiveEmptyClientsCount = 0;
         setInterval(()=>{
-            if(LiveDevelopment.getConnectionIds().length === 0){
+            if(StaticServer.livePreviewTabs.size === 0){
                 consecutiveEmptyClientsCount ++;
             } else {
                 consecutiveEmptyClientsCount = 0;

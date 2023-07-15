@@ -43,7 +43,9 @@ define(function (require, exports, module) {
     const ProjectManager          = brackets.getModule("project/ProjectManager"),
         Strings                   = brackets.getModule("strings"),
         DocumentManager     = brackets.getModule("document/DocumentManager"),
-        LiveDevelopment    = brackets.getModule("LiveDevelopment/main");
+        LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
+        LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
+        LivePreviewTransport  = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport");
 
     function getExtension(filePath) {
         filePath = filePath || '';
@@ -83,6 +85,11 @@ define(function (require, exports, module) {
         return `${window.Phoenix.baseURL}assets/phoenix-splash/live-preview-error.html?mainHeading=`+
             encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_HEADING}`) + "&mainSpan="+
             encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_SPAN}`);
+    }
+
+    function getPageLoaderURL(url) {
+        return `${LiveDevServerManager.getStaticServerBaseURLs().baseURL}pageLoader.html?`
+            +`broadcastChannel=${LivePreviewTransport.BROADCAST_CHANNEL_ID}&URL=${encodeURIComponent(url)}`;
     }
 
     function _isLivePreviewSupported() {
@@ -145,6 +152,7 @@ define(function (require, exports, module) {
     exports.getPreviewDetails = getPreviewDetails;
     exports.getNoPreviewURL = getNoPreviewURL;
     exports.getExtension = getExtension;
+    exports.getPageLoaderURL = getPageLoaderURL;
     exports.isPreviewableFile = isPreviewableFile;
     exports.isImage = isImage;
 });

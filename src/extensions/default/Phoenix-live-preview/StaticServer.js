@@ -29,6 +29,7 @@ define(function (require, exports, module) {
         LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
         LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
         LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
+        LiveDevProtocol = brackets.getModule("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
         marked = brackets.getModule('thirdparty/marked.min'),
         DocumentManager = brackets.getModule("document/DocumentManager"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
@@ -37,9 +38,12 @@ define(function (require, exports, module) {
         EventManager = brackets.getModule("utils/EventManager"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         Strings = brackets.getModule("strings"),
-        markdownHTMLTemplate = require("text!markdown.html");
+        markdownHTMLTemplate = require("text!markdown.html"),
+        redirectionHTMLTemplate = require("text!redirectPage.html"),
+        utils = require('utils');
 
     EventDispatcher.makeEventDispatcher(exports);
+    const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
 
     let _staticServerInstance, $livepreviewServerIframe;
 
@@ -242,6 +246,23 @@ define(function (require, exports, module) {
     }
 
     /**
+     * return a page loader url after stripping the PHCODE_LIVE_PREVIEW_QUERY_PARAM
+     * "https://phcode.live/pageLoader.html?broadcastChannel=PH-697797864197_livePreview&URL=https%3A%2...
+     * @param redirectURL
+     * @return {string}
+     * @private
+     */
+    function _getRedirectionPage(redirectURL) {
+        let url = new URL(redirectURL);
+        // strip this query param as the redirection will be done by the page loader and not the content iframe.
+        url.searchParams.delete(PHCODE_LIVE_PREVIEW_QUERY_PARAM);
+        let templateVars = {
+            redirectURL: utils.getPageLoaderURL(url.href)
+        };
+        return Mustache.render(redirectionHTMLTemplate, templateVars);
+    }
+
+    /**
      * @private
      * Events raised by broadcast channel from the service worker will be captured here. The service worker will ask
      * all phoenix instances if the url to be served should be replaced with instrumented content here or served
@@ -268,17 +289,35 @@ define(function (require, exports, module) {
             return;
         }
 
+        let url = new URL(data.url), isLivePreviewPopoutPage = false;
+        if(url.searchParams.get(PHCODE_LIVE_PREVIEW_QUERY_PARAM)) {
+            // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
+            // check if this is a live preview html. If so, then if you are here, it means that users switched
+            // live preview to a different page while we are just about to serve an old live preview page that is
+            // no longer in live preview. If we just serve the raw html here, it will not have any tab navigation
+            // instrumentation on popped out tabs and live preview navigation will stop on this page. So we will
+            // use a page loader url to continue navigation.
+            isLivePreviewPopoutPage = true;
+        }
         if (virtualDocument) {
             // virtual document overrides takes precedence over live preview docs
             contents = virtualDocument;
         } else if (liveDocument && liveDocument.getResponseData) {
             contents = liveDocument.getResponseData().body;
+            if(isLivePreviewPopoutPage && contents.indexOf(LiveDevProtocol.getRemoteScript()) === -1){
+                console.log("serving stale live preview with navigable url", url);
+                contents = _getRedirectionPage(url);
+            }
         } else {
             const file = FileSystem.getFileForPath(data.path);
             let doc = DocumentManager.getOpenDocumentForPath(file.fullPath);
             if (doc) {
                 // this file is open in some editor, so we sent the edited contents.
                 contents = doc.getText();
+                if(isLivePreviewPopoutPage){
+                    console.log("serving stale live preview with navigable url", url);
+                    contents = _getRedirectionPage(url);
+                }
             } else {
                 fs.readFile(data.path, fs.BYTE_ARRAY_ENCODING, function (error, binContent) {
                     if(error){
@@ -402,4 +441,6 @@ define(function (require, exports, module) {
     LiveDevelopment.setLivePreviewTransportBridge(exports);
     exports.StaticServer = StaticServer;
     exports.messageToLivePreviewTabs = messageToLivePreviewTabs;
+    exports.livePreviewTabs = livePreviewTabs;
+    exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
 });
