@@ -544,7 +544,9 @@ define(function (require, exports, module) {
                     .on("ConnectionConnect.livedev", function (event, msg) {
                         if (_protocol.getConnectionIds().length >= 1) {
                             // check the page that connection comes from matches the current live document session
-                            if (_liveDocument &&  msg.url === _resolveUrl(_liveDocument.doc.file.fullPath)) {
+                            let url = new URL(msg.url);
+                            url = `${url.origin}${url.pathname}`;
+                            if (_liveDocument &&  url === _resolveUrl(_liveDocument.doc.file.fullPath)) {
                                 _setStatus(STATUS_ACTIVE);
                             }
                         }
