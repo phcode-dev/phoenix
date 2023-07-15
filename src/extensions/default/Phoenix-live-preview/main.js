@@ -134,7 +134,7 @@ define(function (require, exports, module) {
         } else if(visible && explicitClickOnLPIcon) {
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
-        } else if(!visible && LiveDevelopment.getConnectionIds().length === 0) {
+        } else if(!visible && LiveDevelopment.isActive() && LiveDevelopment.getConnectionIds().length === 0) {
             LiveDevelopment.closeLivePreview();
         }
     }
@@ -384,8 +384,14 @@ define(function (require, exports, module) {
             _loadPreview(true);
         });
 
+        let consecutiveEmptyClientsCount = 0;
         setInterval(()=>{
             if(LiveDevelopment.getConnectionIds().length === 0){
+                consecutiveEmptyClientsCount ++;
+            } else {
+                consecutiveEmptyClientsCount = 0;
+            }
+            if(consecutiveEmptyClientsCount > 5){
                 _startOrStopLivePreviewIfRequired();
             }
         }, 1000);
