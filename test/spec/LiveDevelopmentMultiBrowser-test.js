@@ -772,5 +772,42 @@ define(function (require, exports, module) {
 
             await endPreviewSession();
         }, 5000);
+
+        it("should live preview rememberScrollPositions", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["longPage.html"]),
+                "SpecRunnerUtils.openProjectFiles longPage.html", 1000);
+
+            await waitsForLiveDevelopmentToOpen();
+            // scroll to middile of page element so that the scroll position is saved
+            await forRemoteExec(`document.getElementById("midLine").scrollIntoView();`);
+            let sessionStorageSavedScrollPos, savedWindowScrollY;
+            await forRemoteExec(`window.scrollY`, (result)=>{
+                savedWindowScrollY = result;
+                return result && result !== 0;
+            });
+            await forRemoteExec(`sessionStorage.getItem("saved-scroll-" + location.href)`, (result)=>{
+                sessionStorageSavedScrollPos = result;
+                return !!result;
+            });
+            sessionStorageSavedScrollPos = JSON.parse(sessionStorageSavedScrollPos);
+            expect(sessionStorageSavedScrollPos.scrollY).toBe(savedWindowScrollY);
+
+            // now switch to a different page, its scroll position should not the saved scroll pos of last page
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+            await waitsForLiveDevelopmentToOpen();
+            await forRemoteExec(`window.scrollY`, (result)=>{
+                return result !== savedWindowScrollY;
+            });
+
+            // now switch back to old page and verify if the scroll position was restored
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["longPage.html"]),
+                "SpecRunnerUtils.openProjectFiles longPage.html", 1000);
+            await forRemoteExec(`window.scrollY`, (result)=>{
+                return result === savedWindowScrollY;
+            });
+
+            await endPreviewSession();
+        }, 5000);
     });
 });

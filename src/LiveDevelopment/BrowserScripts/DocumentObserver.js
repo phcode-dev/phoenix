@@ -50,13 +50,13 @@
 
     window.addEventListener('scroll', function () {
         // save scroll position
-        sessionStorage.setItem("markdown-scroll-" + location.href, JSON.stringify({
+        sessionStorage.setItem("saved-scroll-" + location.href, JSON.stringify({
             scrollX: window.scrollX,
             scrollY: window.scrollY
         }));
     });
     function scrollToLastPosition() {
-        let saved = JSON.parse(sessionStorage.getItem("markdown-scroll-" + location.href));
+        let saved = JSON.parse(sessionStorage.getItem("saved-scroll-" + location.href));
         if(saved){
             window.scrollTo({
                 left: saved.scrollX,
