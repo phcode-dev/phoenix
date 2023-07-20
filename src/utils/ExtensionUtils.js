@@ -235,7 +235,7 @@ define(function (require, exports, module) {
         let json = {
             name: extensionName || path.basename(baseExtensionUrl)
         };
-        $.get(packageJSONFile)
+        $.getJSON(packageJSONFile)
             .then(function (packageResult) {
                 json = packageResult;
             }).always(function () {
@@ -268,7 +268,8 @@ define(function (require, exports, module) {
      *     or rejected if there is no package.json with the boolean indicating whether .disabled file exists.
      */
     function loadMetadata(metadataURL, extensionName) {
-        if(metadataURL.startsWith("http://") || metadataURL.startsWith("https://")) {
+        if(metadataURL.startsWith("http://") || metadataURL.startsWith("https://")
+            || metadataURL.startsWith("tauri://") || metadataURL.startsWith("asset://")) {
             return _loadExtensionMetadata(metadataURL, extensionName);
         }
         throw new Error(`Cannot load extension metadata for ${extensionName} at path ${metadataURL}`);

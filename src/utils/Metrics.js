@@ -138,17 +138,6 @@ define(function (require, exports, module) {
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
-    function _initMixPanelAnalytics() {
-        // evaluating mixpanel instead of Google Analytics
-        // Enabling the debug mode flag is useful during implementation,
-        // but it's recommended you remove it for production
-        if(!window.mixpanel){
-            console.error("Mixpanel not found. MixPanel Analytics will not be initialized.");
-            return;
-        }
-        mixpanel.init(brackets.config.mixPanelID, {debug: window.debugMode});
-    }
-
     function _initCoreAnalytics() {
         // Load core analytics scripts
         let script = document.createElement('script');
@@ -176,7 +165,6 @@ define(function (require, exports, module) {
             return;
         }
         _initGoogleAnalytics();
-        _initMixPanelAnalytics();
         _initCoreAnalytics();
         initDone = true;
     }

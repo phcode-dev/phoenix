@@ -88,11 +88,9 @@ define(function (require, exports, module) {
     /**
      * Returns the path to the default extensions directory relative to Phoenix base URL
      */
-    const DEFAULT_EXTENSIONS_PATH_BASE = "/extensions/default";
+    const DEFAULT_EXTENSIONS_PATH_BASE = "extensions/default";
     function getDefaultExtensionPath() {
-        const href = window.location.href;
-        const baseUrl = href.substring(0, href.lastIndexOf("/")); // trim all query string params
-        return baseUrl + DEFAULT_EXTENSIONS_PATH_BASE;
+        return window.PhoenixBaseURL + DEFAULT_EXTENSIONS_PATH_BASE;
     }
 
     /**
@@ -159,7 +157,7 @@ define(function (require, exports, module) {
             extensionConfigFile = baseConfig.baseUrl + "/requirejs-config.json";
 
         // Optional JSON config for require.js
-        $.get(extensionConfigFile).done(function (extensionConfig) {
+        $.getJSON(extensionConfigFile).done(function (extensionConfig) {
             if(Object.keys(extensionConfig || {}).length === 0){
                 deferred.resolve(baseConfig);
                 return;
@@ -199,7 +197,8 @@ define(function (require, exports, module) {
      * @return {$.Promise}
      */
     function _mergeConfig(baseConfig) {
-        if(baseConfig.baseUrl.startsWith("http://") || baseConfig.baseUrl.startsWith("https://")) {
+        if(baseConfig.baseUrl.startsWith("http://") || baseConfig.baseUrl.startsWith("https://")
+            || baseConfig.baseUrl.startsWith("tauri://") || baseConfig.baseUrl.startsWith("asset://")) {
             return _mergeConfigFromURL(baseConfig);
         }
         throw new Error("Config can only be loaded from an http url, but got" + baseConfig.baseUrl);
@@ -224,7 +223,7 @@ define(function (require, exports, module) {
             waitSeconds: EXTENSION_LOAD_TIMOUT_SECONDS
         };
         const isDefaultExtensionModule =( extensionConfig.baseUrl
-            && extensionConfig.baseUrl.startsWith(`${location.href}extensions/default/`));
+            && extensionConfig.baseUrl.startsWith(`${window.PhoenixBaseURL}extensions/default/`));
         // Read optional requirejs-config.json
         return _mergeConfig(extensionConfig).then(function (mergedConfig) {
             // Create new RequireJS context and load extension entry point
@@ -580,10 +579,12 @@ define(function (require, exports, module) {
      */
     function testAllDefaultExtensions() {
         const bracketsPath = FileUtils.getNativeBracketsDirectoryPath();
-        const href = window.location.href;
-        const baseUrl = href.substring(0, href.lastIndexOf("/"));
-        const srcBaseUrl = new URL(baseUrl + '/../src').href;
-        var result = new $.Deferred();
+        const baseUrl = window.PhoenixBaseURL;
+        let srcBaseUrl = new URL(baseUrl + '../src').href;
+        let result = new $.Deferred();
+        if(!srcBaseUrl.endsWith("/")) {
+            srcBaseUrl = srcBaseUrl + "/";
+        }
 
         Async.doInParallel(DefaultExtensionsList, function (extensionEntry) {
             const loadResult = new $.Deferred();
