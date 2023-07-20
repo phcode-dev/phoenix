@@ -371,11 +371,13 @@ define(function (require, exports, module) {
         if(serverStarted){
             return;
         }
-        $livepreviewServerIframe = $("#live-preview-server-iframe");
-        let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
-            `?parentOrigin=${location.origin}`;
-        $livepreviewServerIframe.attr("src", url);
-        serverStarted = true;
+        if(!Phoenix.browser.isTauri) {
+            $livepreviewServerIframe = $("#live-preview-server-iframe");
+            let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
+                `?parentOrigin=${location.origin}`;
+            $livepreviewServerIframe.attr("src", url);
+            serverStarted = true;
+        }
     };
 
     /**
