@@ -130,6 +130,19 @@
       };
       Phoenix.isSupportedBrowser = Phoenix.browser.isDeskTop && ("serviceWorker" in navigator);
       window.testEnvironment = window.Phoenix.isTestWindow;
+
+      // now setup PhoenixBaseURL, which if of the form https://phcode.dev/ or tauri://localhost/
+      const url = new URL(window.location.href);
+      url.search = ''; // remove all query string params.
+      let baseUrl = url.href;
+      if(baseUrl.endsWith(".html")){
+        // http://a.b/index.html -> // http://a.b
+        baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf("/"));
+      }
+      if(!baseUrl.endsWith("/")){
+        baseUrl = baseUrl + "/";
+      }
+      window.PhoenixBaseURL = baseUrl;
     }());
   </script>
 

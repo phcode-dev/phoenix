@@ -286,8 +286,9 @@
     } else {
         console.warn("Logging to Bugsnag is disabled as current environment is localhost.");
 
-        window.onerror = function (msg, url, line, ...err) {
-            console.error("Caught Critical error from: " + url + ":" + line + " message: " + msg, ...err);
+        window.onerror = function (msg, url, line, col, err) {
+            console.error("Caught Critical error from: " + url + ":" + line + "," + col + " message: " + msg, err);
+            console.error("disable this window.onerror message to see detailed error report if the above error line is null");
             return true; // same as preventDefault
         };
 
