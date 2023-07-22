@@ -1,0 +1,29 @@
+name: Deploy Notification To phoenix-desktop repo to update its build src from this tauri branch
+# Aim: Update 'phoenix-desktop' repository with new 'tauri' branch build source.
+# Process:
+# 1. The 'tauri' repository, branch, and commit information are stored in the 'package.json' file in the 'phoenix-desktop' repository.
+# 2. We initiate an action that instructs the 'phoenix-desktop' repository to update its commit ID.
+# 3. Then, a pull request is created to merge the new version.
+# 4. The purpose of these steps is to ensure build consistency.
+on:
+  push:
+    branches: [ tauri ]
+
+jobs:
+  build-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Npm Install
+        run: |
+          npm ci
+      - name: Verifying release artifact build
+        run: |
+          npm run release:prod
+      - name: Deploy Notification To phoenix-desktop repo
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT_PHOENIX_BOT_PUBLIC_REPO_ACCESS }}
+          repository: phcode-dev/phcode.dev
+          event-type: update-phcode-build
+          client-payload: '{"source":"${{github.repositoryUrl}}", "workflow":"${{github.workflow}}", "run_id":"${{github.run_id}}", "run_number":"${{github.run_number}}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
