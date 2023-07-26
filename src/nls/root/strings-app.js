@@ -21,7 +21,7 @@
 
 define({
     // product-specific strings
-    "APP_NAME": "Phoenix",
+    "APP_NAME": "Phoenix Code",
 
     // Self locales (used by Debug > Switch Language)
     "LOCALE_AR": "عربي",
