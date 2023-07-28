@@ -2,7 +2,7 @@ name: Bump patch version
 
 on:
   push:
-    branches: [ staging ]
+    branches: [ staging, tauri ]
 
 jobs:
   build-tasks:
