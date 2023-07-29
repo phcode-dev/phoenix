@@ -61,6 +61,7 @@
         "release:staging": "gulp releaseStaging",
         "release:prod": "gulp releaseProd",
         "patchVersionBump": "gulp patchVersionBump",
+        "majorVersionBump": "gulp majorVersionBump",
         "serve": "http-server . -p 8000 -c-1",
         "serveWithWebCache": "http-server ./src -p 8000 -c-1",
         "serveExternal": "http-server . -p 8000 -a 0.0.0.0 --log-ip true -c-1",
