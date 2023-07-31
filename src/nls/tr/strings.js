@@ -815,7 +815,7 @@ define({
   "PLEASE_FILL_ALL_REQUIRED": "Lütfen kırmızı ile vurgulanan tüm gerekli alanları doldurun",
   "CODE_EDITOR": "Kod Düzenleyici",
   "BUILD_THE_WEB": "Web'i oluşturun",
-  "IMPORT_PROJECT": "İthalat Projesi",
+  "IMPORT_PROJECT": "Proje Ekle",
   "GITHUB_PROJECT": "GitHub Projesi",
   "NEW_PROJECT_FROM_GITHUB": "GitHub'dan Yeni Proje",
   "GITHUB_REPO_URL": "GitHub Repo URL'si:",
