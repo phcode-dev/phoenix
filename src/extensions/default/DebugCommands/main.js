@@ -68,6 +68,7 @@ define(function (require, exports, module) {
       * @enum {string}
       */
     const DEBUG_REFRESH_WINDOW                = "debug.refreshWindow", // string must MATCH string in native code (brackets_extensions)
+        DEBUG_SHOW_DEVELOPER_TOOLS            = "debug.showDeveloperTools",
         DEBUG_LOAD_CURRENT_EXTENSION          = "debug.loadCurrentExtension",
         DEBUG_UNLOAD_CURRENT_EXTENSION        = "debug.unloadCurrentExtension",
         DEBUG_RUN_UNIT_TESTS                  = "debug.runUnitTests",
@@ -727,6 +728,10 @@ define(function (require, exports, module) {
         window.open(window.fsServerUrl);
     }
 
+    function _handleShowDeveloperTools() {
+        brackets.app.toggleDevtools();
+    }
+
     /* Register all the command handlers */
     let loadOrReloadString = extensionDevelopment.isProjectLoadedAsExtension() ?
         Strings.CMD_RELOAD_CURRENT_EXTENSION : Strings.CMD_LOAD_CURRENT_EXTENSION;
@@ -758,6 +763,11 @@ define(function (require, exports, module) {
      * Debug menu
      */
     var menu = Menus.addMenu(Strings.DEBUG_MENU, DEBUG_MENU, Menus.BEFORE, Menus.AppMenuBar.HELP_MENU);
+    // Show Developer Tools (optionally enabled)
+    if(brackets.app.toggleDevtools){
+        CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools);
+        menu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
+    }
     menu.addMenuItem(DEBUG_REFRESH_WINDOW, KeyboardPrefs.refreshWindow);
     menu.addMenuItem(DEBUG_RELOAD_WITHOUT_USER_EXTS, KeyboardPrefs.reloadWithoutUserExts);
     menu.addMenuItem(DEBUG_LOAD_CURRENT_EXTENSION);
