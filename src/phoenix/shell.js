@@ -53,5 +53,5 @@ if(!window.appshell){
 }
 
 if(Phoenix.browser.isTauri) {
-    initTauriShell();
+    initTauriShell(Phoenix.app);
 }

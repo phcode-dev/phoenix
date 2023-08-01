@@ -62,7 +62,15 @@ async function positionWindow() {
     _setupWindowResizeListeners();
 }
 
-function initTauriShell() {
+function injectTauriAPIs(appAPI) {
+    const { invoke } = TAURI.tauri;
+    appAPI.toggleDevtools = async function () {
+        invoke("toggle_devtools", {});
+    };
+}
+
+function initTauriShell(appAPI) {
+    injectTauriAPIs(appAPI);
     positionWindow();
 }
 
