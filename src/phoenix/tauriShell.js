@@ -65,7 +65,7 @@ async function positionWindow() {
 function injectTauriAPIs(appAPI) {
     const { invoke } = TAURI.tauri;
     appAPI.toggleDevtools = async function () {
-        invoke("toggle_devtools", {});
+        return invoke("toggle_devtools", {});
     };
 }
 
