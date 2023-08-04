@@ -20,48 +20,6 @@
 /*globals*/
 const TAURI = window.__TAURI__;
 
-const TAURI_KEYS = {
-    LAST_WINDOW_WIDTH: "tauri.LAST_WINDOW_WIDTH",
-    LAST_WINDOW_HEIGHT: "tauri.LAST_WINDOW_HEIGHT"
-};
-
-const appWindow = TAURI && TAURI.window.appWindow;
-
-function _setupWindowResizeListeners() {
-    appWindow.onResized(async ({ payload: size }) => {
-        const maximized = await appWindow.isMaximized();
-        if(!maximized) {
-            localStorage.setItem(TAURI_KEYS.LAST_WINDOW_HEIGHT, size.height);
-            localStorage.setItem(TAURI_KEYS.LAST_WINDOW_WIDTH, size.width);
-        }
-    });
-}
-
-async function positionWindow() {
-    const phoenixAspectRatio = 1.6,  // phoenix looks good in aspect ratio 1.6w:1h
-        minWidth = 800,
-        minHeight = 600;
-    let monitorSize = (await TAURI.window.currentMonitor()).size,
-        targetWindowHeight = monitorSize.height * 2/3,
-        targetWindowWidth = targetWindowHeight * phoenixAspectRatio;
-    let targetHeight = parseInt(localStorage.getItem(TAURI_KEYS.LAST_WINDOW_HEIGHT) || `${targetWindowHeight}`),
-        targetWidth =  parseInt(localStorage.getItem(TAURI_KEYS.LAST_WINDOW_WIDTH) || `${targetWindowWidth}`);
-    if(targetHeight.height > monitorSize.height || targetWidth.width > monitorSize.width){
-        // our window is larger than the monitor, so just maximise to fit to monitor
-        appWindow.maximize();
-        _setupWindowResizeListeners();
-        return;
-    }
-    if(targetHeight < minHeight){
-        targetHeight = minHeight;
-    }
-    if(targetWidth < minWidth){
-        targetWidth = minWidth;
-    }
-    await appWindow.setSize(new TAURI.window.PhysicalSize(targetWidth, targetHeight));
-    _setupWindowResizeListeners();
-}
-
 function injectTauriAPIs(appAPI) {
     const { invoke } = TAURI.tauri;
     appAPI.toggleDevtools = async function () {
@@ -71,7 +29,6 @@ function injectTauriAPIs(appAPI) {
 
 function initTauriShell(appAPI) {
     injectTauriAPIs(appAPI);
-    positionWindow();
 }
 
 export default initTauriShell;
