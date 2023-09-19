@@ -19,7 +19,7 @@
  *
  */
 
-/*global appshell, window, define, console*/
+/*global appshell, Phoenix*/
 /*eslint-env es6*/
 // jshint ignore: start
 
@@ -81,31 +81,134 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Event handler for file system change event
+     * Register Event handler for file system change event
      *
-     * @param {string} event The type of the event: "changed", "created" or "deleted"
-     * @param {string} parentDirPath The path to the directory holding entry that has changed
-     * @param {string=} entryName The name of the file/directory that has changed
+     * @param {string} pathToWatch the path that is being watched
+     * @param {string} eventEmitter
      * * @param {string=} fullPath The full path that has changed
      * @private
      */
-    function _fileWatcherChangeHandler(event, parentDirPath, entryName, fullPath) {
-        switch (event) {
-        case "changed":
-            stat(fullPath, (err, newStat) => {
+    function _registerChangeEventListeners(pathToWatch, eventEmitter) {
+        function reloadParentDirContents({path}) {
+            const changedPath = path;
+            let pathToReload = _normalise_path(changedPath);
+            if(pathToReload !== pathToWatch) {
+                // if the changed path is the path being watched itself, we don't issue reload on its parent.
+                // else file/directory was created/deleted; fire change on parent to reload contents
+                pathToReload = appshell.path.dirname(changedPath);
+            }
+            _enqueueChange(`${pathToReload}/`, null);
+        }
+        eventEmitter.on(appshell.fs.WATCH_EVENTS.ADD_FILE, reloadParentDirContents);
+        eventEmitter.on(appshell.fs.WATCH_EVENTS.ADD_DIR, reloadParentDirContents);
+        eventEmitter.on(appshell.fs.WATCH_EVENTS.UNLINK_DIR, reloadParentDirContents);
+        eventEmitter.on(appshell.fs.WATCH_EVENTS.UNLINK_FILE, reloadParentDirContents);
+        eventEmitter.on(appshell.fs.WATCH_EVENTS.CHANGE, ({path})=>{
+            const changedPath = path;
+            stat(changedPath, (err, newStat) => {
                 // fire change event irrespective of error. if err, stat will be null.
-                _enqueueChange(fullPath, newStat);
+                _enqueueChange(changedPath, newStat);
             });
-            break;
-        case "created":
-        case "deleted":
-            // file/directory was created/deleted; fire change on parent to reload contents
-            _enqueueChange(`${parentDirPath}/`, null);
-            break;
-        default:
-            console.error("Unexpected 'change' event:", event);
+        });
+    }
+
+    /**
+     * Initialize file watching for this filesystem, using the supplied
+     * changeCallback to provide change notifications. The first parameter of
+     * changeCallback specifies the changed path (either a file or a directory);
+     * if this parameter is null, it indicates that the implementation cannot
+     * specify a particular changed path, and so the callers should consider all
+     * paths to have changed and to update their state accordingly. The second
+     * parameter to changeCallback is an optional FileSystemStats object that
+     * may be provided in case the changed path already exists and stats are
+     * readily available. The offlineCallback will be called in case watchers
+     * are no longer expected to function properly. All watched paths are
+     * cleared when the offlineCallback is called.
+     *
+     * @param {function(?string, FileSystemStats=)} changeCallback
+     * @param {function()=} offlineCallback
+     */
+    function initWatchers(changeCallback, offlineCallback) {
+        _changeCallback = changeCallback;
+        _offlineCallback = offlineCallback;
+
+        if (_offlineCallback) {
+            _offlineCallback();
         }
     }
+
+    const _watchEventListeners = {};
+
+    /**
+     * Start providing change notifications for the file or directory at the
+     * given path, calling back asynchronously with a possibly null FileSystemError
+     * string when the initialization is complete. Notifications are provided
+     * using the changeCallback function provided by the initWatchers method.
+     * Note that change notifications are only provided recursively for directories
+     * when the recursiveWatch property of this module is true.
+     *
+     * @param {string} pathToWatch
+     * @param {Array<string>|string} ignored
+     * @param {function(?string)=} callback
+     */
+    function watchPath(pathToWatch, ignored, callback) {
+        console.log('Watch path: ', pathToWatch, ignored);
+        pathToWatch = _normalise_path(pathToWatch);
+        appshell.fs.watchAsync(pathToWatch, ignored)
+            .then(eventEmitter=>{
+                _watchEventListeners[pathToWatch] = eventEmitter;
+                _registerChangeEventListeners(pathToWatch, eventEmitter);
+                callback(null);
+            })
+            .catch(err=>{
+                callback(_mapError(err));
+            });
+    }
+    /**
+     * Stop providing change notifications for the file or directory at the
+     * given path, calling back asynchronously with a possibly null FileSystemError
+     * string when the operation is complete.
+     * This function needs to mirror the signature of watchPath
+     * because of FileSystem.prototype._watchOrUnwatchEntry implementation.
+     *
+     * @param {string} pathBeingWatched
+     * @param {Array<string>} ignored
+     * @param {function(?string)=} callback
+     */
+    function unwatchPath(pathBeingWatched, ignored, callback) {
+        console.log('unwatch path: ', pathBeingWatched);
+        pathBeingWatched = _normalise_path(pathBeingWatched);
+        const eventEmitter = _watchEventListeners[pathBeingWatched];
+        delete _watchEventListeners[pathBeingWatched];
+        appshell.fs.unwatchAsync(eventEmitter)
+            .then(()=>{
+                callback(null);
+            }).catch(err=>{
+                callback(_mapError(err));
+            });
+    }
+
+    /**
+     * Stop providing change notifications for all previously watched files and
+     * directories, optionally calling back asynchronously with a possibly null
+     * FileSystemError string when the operation is complete.
+     *
+     * @param {function(?string)=} callback
+     */
+    function unwatchAll(callback) {
+        const allUnwatchPromises = [];
+        for(let pathBeingWatched of Object.keys(_watchEventListeners)) {
+            const eventEmitter = _watchEventListeners[pathBeingWatched];
+            delete _watchEventListeners[pathBeingWatched];
+            allUnwatchPromises.push(appshell.fs.unwatchAsync(eventEmitter));
+        }
+        Promise.all(allUnwatchPromises).then(()=>{
+            callback(null);
+        }).catch(err=>{
+            callback(_mapError(err));
+        });
+    }
+
 
     /**
      * Convert appshell error codes to FileSystemError values.
@@ -189,7 +292,17 @@ define(function (require, exports, module) {
      * @param {function(?string, Array.<string>=)} callback
      */
     function showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback) {
-        // TODO: handle more cases relating to multiple selection ans stuff.
+        // TODO: handle more cases relating to multiple selection and stuff.
+        if(Phoenix.browser.isTauri){
+            const wrappedCallback = _wrap(callback);
+            appshell.fs.openTauriFilePickerAsync({
+                directory: true
+            }).then(directory => {
+                // todo, may return null/string/array of strings
+                wrappedCallback(null, [directory]);
+            }).catch(wrappedCallback);
+            return;
+        }
         appshell.fs.mountNativeFolder(_wrap(callback));
     }
 
@@ -547,77 +660,6 @@ define(function (require, exports, module) {
         });
     }
 
-    /**
-     * Initialize file watching for this filesystem, using the supplied
-     * changeCallback to provide change notifications. The first parameter of
-     * changeCallback specifies the changed path (either a file or a directory);
-     * if this parameter is null, it indicates that the implementation cannot
-     * specify a particular changed path, and so the callers should consider all
-     * paths to have changed and to update their state accordingly. The second
-     * parameter to changeCallback is an optional FileSystemStats object that
-     * may be provided in case the changed path already exists and stats are
-     * readily available. The offlineCallback will be called in case watchers
-     * are no longer expected to function properly. All watched paths are
-     * cleared when the offlineCallback is called.
-     *
-     * @param {function(?string, FileSystemStats=)} changeCallback
-     * @param {function()=} offlineCallback
-     */
-    function initWatchers(changeCallback, offlineCallback) {
-        _changeCallback = changeCallback;
-        _offlineCallback = offlineCallback;
-
-        if (_offlineCallback) {
-            _offlineCallback();
-        }
-    }
-
-    /**
-     * Start providing change notifications for the file or directory at the
-     * given path, calling back asynchronously with a possibly null FileSystemError
-     * string when the initialization is complete. Notifications are provided
-     * using the changeCallback function provided by the initWatchers method.
-     * Note that change notifications are only provided recursively for directories
-     * when the recursiveWatch property of this module is true.
-     *
-     * @param {string} path
-     * @param {Array<string>} ignored
-     * @param {function(?string)=} callback
-     */
-    function watchPath(path, ignored, callback) {
-        console.log('Watch path: ', path, ignored);
-        path = _normalise_path(path);
-        appshell.fs.watch(path, ignored, _fileWatcherChangeHandler, callback);
-    }
-    /**
-     * Stop providing change notifications for the file or directory at the
-     * given path, calling back asynchronously with a possibly null FileSystemError
-     * string when the operation is complete.
-     * This function needs to mirror the signature of watchPath
-     * because of FileSystem.prototype._watchOrUnwatchEntry implementation.
-     *
-     * @param {string} path
-     * @param {Array<string>} ignored
-     * @param {function(?string)=} callback
-     */
-    function unwatchPath(path, ignored, callback) {
-        console.log('unwatch path: ', path);
-        path = _normalise_path(path);
-        appshell.fs.unwatch(path, callback);
-    }
-
-    /**
-     * Stop providing change notifications for all previously watched files and
-     * directories, optionally calling back asynchronously with a possibly null
-     * FileSystemError string when the operation is complete.
-     *
-     * @param {function(?string)=} callback
-     */
-    function unwatchAll(callback) {
-        appshell.fs.unwatchAll(callback);
-    }
-
-
     // Export public API
     exports.showOpenDialog  = showOpenDialog;
     exports.showSaveDialog  = showSaveDialog;
@@ -637,14 +679,6 @@ define(function (require, exports, module) {
     exports.unwatchPath     = unwatchPath;
     exports.unwatchAll      = unwatchAll;
     exports.pathLib         = window.Phoenix.VFS.path;
-
-    /**
-     * Indicates whether or not recursive watching notifications are supported
-     * by the watchPath call.
-     *
-     * @type {boolean}
-     */
-    exports.recursiveWatch = true;
 
     /**
      * Indicates whether or not the filesystem should expect and normalize UNC

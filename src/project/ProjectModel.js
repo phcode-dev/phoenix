@@ -57,16 +57,32 @@ define(function (require, exports, module) {
      * @type {RegExp}
      */
     var _exclusionListRegEx = /\.pyc$|^\.git$|^\.gitmodules$|^\.svn$|^\.DS_Store$|^Icon\r|^Thumbs\.db$|^\.hg$|^CVS$|^\.hgtags$|^\.idea$|^\.c9revisions$|^\.SyncArchive$|^\.SyncID$|^\.SyncIgnore$|\~$/;
-    var _cacheExcludeRegEx = /^node_modules$|^bower_components$/;
+    var _cacheExcludeFileNameRegEx = /^node_modules$|^bower_components$|^.npm$|^.yarn$|^__pycache__$/;
 
     /**
      * Glob definition of files and folders that should be excluded directly
      * inside node domain watching with chokidar
      */
-    var defaultIgnoreGlobs = [
-        "**/(.pyc|.git|.gitmodules|.svn|.DS_Store|Thumbs.db|.hg|CVS|.hgtags|.idea|.c9revisions|.SyncArchive|.SyncID|.SyncIgnore)",
-        "**/bower_components",
-        "**/node_modules"
+    const defaultIgnoreGlobs = [
+        "node_modules",
+        "bower_components",
+        ".npm",
+        ".yarn",
+        "__pycache__",
+        ".pyc",
+        ".git",
+        ".gitmodules",
+        ".svn",
+        ".DS_Store",
+        "Thumbs.db",
+        ".hg",
+        "CVS",
+        ".hgtags",
+        ".idea",
+        ".c9revisions",
+        ".SyncArchive",
+        ".SyncID",
+        ".SyncIgnore"
     ];
 
     /**
@@ -131,12 +147,13 @@ define(function (require, exports, module) {
 
     /**
      * Returns false for files and directories that should not be indexed for search or code hints.
+     * If the entry is a directory, its children should be indexed too.
      *
      * @param {!FileSystemEntry} entry File or directory to filter
      * @return {boolean} true if the file should be displayed
      */
     function shouldIndex(entry) {
-        return shouldShow(entry) && !_cacheExcludeRegEx.test(entry.name);
+        return shouldShow(entry) && !_cacheExcludeFileNameRegEx.test(entry.name);
     }
 
     // Constants used by the ProjectModel
