@@ -317,72 +317,21 @@ define(function (require, exports, module) {
      *      or unwatched (false).
      */
     FileSystem.prototype._watchOrUnwatchEntry = function (entry, watchedRoot, callback, shouldWatch) {
-        var impl = this._impl,
-            recursiveWatch = impl.recursiveWatch,
+        const impl = this._impl,
             commandName = shouldWatch ? "watchPath" : "unwatchPath",
-            filterGlobs = watchedRoot.filterGlobs;
+            filterGitIgnore = watchedRoot.filterGitIgnore;
 
-        if (recursiveWatch) {
-            // The impl can watch the entire subtree with one call on the root (we also fall into this case for
-            // unwatch, although that never requires us to do the recursion - see similar final case below)
-            if (entry !== watchedRoot.entry) {
-                // Watch and unwatch calls to children of the watched root are
-                // no-ops if the impl supports recursiveWatch
-                callback(null);
-            } else {
-                // The impl will handle finding all subdirectories to watch.
-                this._enqueueWatchRequest(function (requestCb) {
-                    impl[commandName].call(impl, entry.fullPath, filterGlobs, requestCb);
-                }.bind(this), callback);
-            }
-        } else if (shouldWatch) {
-            // The impl can't handle recursive watch requests, so it's up to the
-            // filesystem to recursively watch all subdirectories.
-            this._enqueueWatchRequest(function (requestCb) {
-                // First construct a list of entries to watch or unwatch
-                var entriesToWatch = [];
-
-                var visitor = function (child) {
-                    if (watchedRoot.filter(child.name, child.parentPath)) {
-                        if (child.isDirectory || child === watchedRoot.entry) {
-                            entriesToWatch.push(child);
-                        }
-                        return true;
-                    }
-                    return false;
-                };
-
-                entry.visit(visitor, function (err) {
-                    if (err) {
-                        // Unexpected error
-                        requestCb(err);
-                        return;
-                    }
-
-                    // Then watch or unwatched all these entries
-                    var count = entriesToWatch.length;
-                    if (count === 0) {
-                        requestCb(null);
-                        return;
-                    }
-
-                    var watchCallback = function () {
-                        if (--count === 0) {
-                            requestCb(null);
-                        }
-                    };
-
-                    entriesToWatch.forEach(function (entry) {
-                        impl.watchPath(entry.fullPath, filterGlobs, watchCallback);
-                    });
-                });
-            }, callback);
+        // The impl can watch the entire subtree with one call on the root (we also fall into this case for
+        // unwatch, although that never requires us to do the recursion - see similar final case below)
+        if (entry !== watchedRoot.entry) {
+            // Watch and unwatch calls to children of the watched root are
+            // no-ops if the impl supports recursiveWatch
+            callback(null);
         } else {
-            // Unwatching never requires enumerating the subfolders (which is good, since after a
-            // delete/rename we may be unable to do so anyway)
+            // The impl will handle finding all subdirectories to watch.
             this._enqueueWatchRequest(function (requestCb) {
-                impl.unwatchPath(entry.fullPath, requestCb);
-            }, callback);
+                impl[commandName].call(impl, entry.fullPath, filterGitIgnore, requestCb);
+            }.bind(this), callback);
         }
     };
 
@@ -1085,17 +1034,17 @@ define(function (require, exports, module) {
      * @param {function(string): boolean} filter - Returns true if a particular item should
      *      be watched, given its name (not full path). Items that are ignored are also
      *      filtered from Directory.getContents() results within this subtree.
-     * @param {Array<string>} filterGlobs - glob compatible string definitions for
+     * @param {string|Array<string>} filterGitIgnore - GitIgnore file contents or as arrayof strings for
      *      filtering out events on the node side.
      * @param {function(?string)=} callback - A function that is called when the watch has
      *      completed. If the watch fails, the function will have a non-null FileSystemError
      *      string parametr.
      */
-    FileSystem.prototype.watch = function (entry, filter, filterGlobs, callback) {
-        // make filterGlobs an optional argument to stay backwards compatible
-        if (typeof callback === "undefined" && typeof filterGlobs === "function") {
-            callback = filterGlobs;
-            filterGlobs = null;
+    FileSystem.prototype.watch = function (entry, filter, filterGitIgnore, callback) {
+        // make filterGitIgnore an optional argument to stay backwards compatible
+        if (typeof callback === "undefined" && typeof filterGitIgnore === "function") {
+            callback = filterGitIgnore;
+            filterGitIgnore = null;
         }
 
         var fullPath = entry.fullPath;
@@ -1124,7 +1073,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        var watchedRoot = new WatchedRoot(entry, filter, filterGlobs);
+        var watchedRoot = new WatchedRoot(entry, filter, filterGitIgnore);
 
         this._watchedRoots[fullPath] = watchedRoot;
 

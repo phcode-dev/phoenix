@@ -132,7 +132,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
 
-                expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(cb.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
 
             it("should return an error if invalid parameters are passed", function () {
@@ -177,15 +177,17 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
 
-                expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(cb.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
 
-            it("should return an error if incorrect parameters are passed", function () {
+            it("should return an error if incorrect parameters are passed", async function () {
                 var cb = statSpy();
 
-                expect(function () {
-                    brackets.fs.stat(42, cb);
-                }).toThrow();
+                brackets.fs.stat(42, cb);
+
+                await awaitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
+
+                expect(cb.error.code).toBe(brackets.fs.ERR_CODES.EINVAL);
             });
 
         }); // describe("stat")
@@ -210,21 +212,24 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
 
-                expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(cb.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
 
             it("should return an error if trying to use an unsppported encoding", function () {
-                brackets.fs.readFile(testDir + "/file_one.txt", UTF16, (a, c)=>{
-                    expect(ArrayBuffer.isView(c)).toBe(true);
+                brackets.fs.readFile(testDir + "/file_one.txt", "NOT_AN_ENCODING", (e, c)=>{
+                    expect(e.code).toBe(brackets.fs.ERR_CODES.ECHARSET);
+                    expect(c).toBeUndefined();
                 });
             });
 
-            it("should return an error if called with invalid parameters", function () {
-                var cb = readFileSpy();
+            it("should readFile error if called with invalid parameters", async function () {
+                let cb = readFileSpy();
 
-                expect(function () {
-                    brackets.fs.readFile(42, [], cb);
-                }).toThrow();
+                brackets.fs.readFile(42, [], cb);
+
+                await awaitsFor(function () { return cb.wasCalled; },  "readFile to finish",  1000);
+
+                expect(cb.error.code).toBeDefined();
             });
 
             it("should return an error if trying to read a directory", async function () {
@@ -234,11 +239,11 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return cb.wasCalled; }, 1000);
 
-                expect(cb.error.code).toBe(brackets.fs.ERR_EISDIR);
+                expect(cb.error.code).toBe(brackets.fs.ERR_CODES.EISDIR);
             });
 
             it("should return an error trying to read a binary file", function () {
-                brackets.fs.readFile(testDir + "/tree.jpg", "bin", (a, c)=> {
+                brackets.fs.readFile(testDir + "/tree.jpg", "binary", (a, c)=> {
                     expect(ArrayBuffer.isView(c)).toBe(true);
                 });
             });
@@ -310,12 +315,14 @@ define(function (require, exports, module) {
                 expect(readFileCB.content).toBe(contents);
             });
 
-            it("should return an error if called with invalid parameters", function () {
+            it("should writeFile return an error if called with invalid parameters", async function () {
                 var cb = errSpy();
 
-                expect(function () {
-                    brackets.fs.writeFile(42, contents, 2, cb);
-                }).toThrow();
+                brackets.fs.writeFile(42, contents, "utf8", cb);
+
+                await awaitsFor(function () { return cb.wasCalled; },  "writeFile to finish",  1000);
+
+                expect(cb.error.code).toBeDefined();
             });
 
             it("should return an error if trying to write a directory", async function () {
@@ -366,7 +373,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return statCB.wasCalled; },  "stat to finish", 1000);
 
-                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(statCB.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
 
             it("should return an error if the file doesn't exist", async function () {
@@ -376,17 +383,17 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return cb.wasCalled; },  "unlink to finish",  1000);
 
-                expect(cb.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(cb.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
 
-            it("should return an error if called with invalid parameters", async function () {
+            it("should unlink return an error if called with invalid parameters", async function () {
                 var cb = errSpy();
 
                 brackets.fs.unlink(42, cb);
 
                 await awaitsFor(function () { return cb.wasCalled; }, "unlink to finish", 1000);
 
-                expect(cb.error.code).toBe(brackets.fs.ERR_EINVAL);
+                expect(cb.error.code).toBe(brackets.fs.ERR_CODES.EINVAL);
             });
 
             it("should remove a directory", async function () {
@@ -422,7 +429,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return statCB.wasCalled; }, 1000, "stat to finish");
 
-                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(statCB.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
         }); // describe("unlink")
 
@@ -479,7 +486,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(statCB.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
 
                 statCB = statSpy();
                 brackets.fs.stat(newName, statCB);
@@ -516,7 +523,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(statCB.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
 
                 statCB = statSpy();
                 brackets.fs.stat(newName, statCB);
@@ -533,7 +540,7 @@ define(function (require, exports, module) {
 
                 expect(renameCB.error).toBe(null);
             });
-            it("should return an error if the new name already exists", async function () {
+            it("should rename return an error if the new name already exists", async function () {
                 var oldName = testDir + "/file_one.txt",
                     newName = testDir + "/file_two.txt",
                     cb      = errSpy();
@@ -544,7 +551,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return cb.wasCalled; }, "rename to finish", 1000);
 
-                expect(cb.error.code).toBe(brackets.fs.ERR_FILE_EXISTS);
+                expect(cb.error.code).toBe(brackets.fs.ERR_CODES.EEXIST);
             });
             // TODO: More testing of error cases?
         });
@@ -567,7 +574,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () { return statCB.wasCalled; }, "stat to finish", 1000);
 
-                expect(statCB.error.code).toBe(brackets.fs.ERR_NOT_FOUND);
+                expect(statCB.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
 
                 // Verify src file exist
                 brackets.fs.stat(fileName, statCBsrc);

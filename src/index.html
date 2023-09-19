@@ -132,7 +132,8 @@
                     'https://create.phcode.dev': true
                 }
             };
-            Phoenix.isSupportedBrowser = Phoenix.browser.isDeskTop && ("serviceWorker" in navigator);
+            Phoenix.isSupportedBrowser = Phoenix.browser.isTauri ||
+                (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));
             window.testEnvironment = window.Phoenix.isTestWindow;
 
             // now setup PhoenixBaseURL, which if of the form https://phcode.dev/ or tauri://localhost/

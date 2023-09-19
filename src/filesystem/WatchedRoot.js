@@ -35,12 +35,12 @@ define(function (require, exports, module) {
      * @constructor
      * @param {File|Directory} entry
      * @param {function(string, string):boolean} filter
-     * @param {Array<string>} filterGlobs
+     * @param {string|Array<string>} filterGitIgnore
      */
-    function WatchedRoot(entry, filter, filterGlobs) {
+    function WatchedRoot(entry, filter, filterGitIgnore) {
         this.entry = entry;
         this.filter = filter;
-        this.filterGlobs = filterGlobs;
+        this.filterGitIgnore = filterGitIgnore;
     }
 
     // Status constants
@@ -59,9 +59,9 @@ define(function (require, exports, module) {
     WatchedRoot.prototype.filter = null;
 
     /**
-     * @type {Array<string>}
+     * @type {string|Array<string>}
      */
-    WatchedRoot.prototype.filterGlobs = null;
+    WatchedRoot.prototype.filterGitIgnore = null;
 
     /**
      * @type {number}

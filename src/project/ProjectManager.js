@@ -1141,6 +1141,10 @@ define(function (require, exports, module) {
         return model.showInTree(entry).then(_saveTreeState);
     }
 
+    function _filePickerSupported() {
+        return Phoenix.browser.isTauri
+            || window.showOpenFilePicker; // fs access file picker
+    }
 
     /**
      * Open a new project. Currently, Brackets must always have a project open, so
@@ -1157,7 +1161,7 @@ define(function (require, exports, module) {
 
         var result = new $.Deferred();
 
-        if(!path && !window.showOpenFilePicker){
+        if(!path && !_filePickerSupported()){
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
                 Strings.UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE,
