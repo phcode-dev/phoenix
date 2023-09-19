@@ -383,6 +383,8 @@ function makeLoggerConfig() {
 
 exports.build = series(copyThirdPartyLibs.copyAll, makeLoggerConfig, zipDefaultProjectFiles, zipSampleProjectFiles,
     createSrcCacheManifest);
+exports.buildDebug = series(copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, zipDefaultProjectFiles,
+    zipSampleProjectFiles, createSrcCacheManifest);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
 exports.releaseDev = series(cleanDist, exports.build, makeDistAll, releaseDev,

@@ -175,6 +175,15 @@ let copyThirdPartyLibs = series(
 
 );
 
+/**
+ * Add thirdparty libs copied to gitignore except the licence file.
+ */
+let copyThirdPartyDebugLibs = series(
+    // @phcode/fs
+    renameFile.bind(renameFile, 'node_modules/@phcode/fs/dist/virtualfs-debug.js', 'virtualfs.js', 'src/phoenix'),
+    renameFile.bind(renameFile, 'node_modules/@phcode/fs/dist/virtualfs-debug.js.map', 'virtualfs.js.map', 'src/phoenix')
+);
+
 function _patchAcornLib() {
     return new Promise(async (resolve)=>{ // eslint-disable-line
         let fpath = "src/thirdparty/acorn/dist/acorn_loose.js";
@@ -199,3 +208,4 @@ function _patchTernLib() {
 }
 
 exports.copyAll = series(copyThirdPartyLibs, _patchAcornLib, _patchTernLib);
+exports.copyAllDebug = series(copyThirdPartyLibs, copyThirdPartyDebugLibs, _patchAcornLib, _patchTernLib);
