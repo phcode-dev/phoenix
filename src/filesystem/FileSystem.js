@@ -1010,7 +1010,7 @@ define(function (require, exports, module) {
             }
             directory.visit(visitor, (err)=>{
                 if(err){
-                    reject();
+                    reject(err);
                     return;
                 }
                 resolve(contents);
@@ -1073,7 +1073,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        var watchedRoot = new WatchedRoot(entry, filter, filterGitIgnore);
+        const watchedRoot = new WatchedRoot(entry, filter, filterGitIgnore);
 
         this._watchedRoots[fullPath] = watchedRoot;
 
