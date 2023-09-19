@@ -30,7 +30,7 @@
     "grunt-css": "0.2.0",
     "grunt-compare-size": "0.1.4",
     "grunt-html": "0.1.1",
-    "request": "2.9.153",
+    "request": "2.88.2",
     "rimraf": "2.0.1",
     "testswarm": "0.2.2"
   },
