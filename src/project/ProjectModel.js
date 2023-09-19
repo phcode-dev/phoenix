@@ -214,17 +214,12 @@ define(function (require, exports, module) {
      * @return {$.Promise} resolved when the file or directory has been created.
      */
     function doCreate(path, isFolder) {
-        var d = new $.Deferred();
-        var filename = FileUtils.getBaseName(path);
+        const d = new $.Deferred();
+        const filename = FileUtils.getBaseName(path);
 
         // Check if filename
-        if (!isValidFilename(filename)){
-            return d.reject(ERROR_INVALID_FILENAME).promise();
-        }
-
-        // Check if fullpath with filename is valid
-        // This check is used to circumvent directory jumps (Like ../..)
-        if (!isValidPath(path)) {
+        // or Check if fullpath with filename is valid - This check is used to circumvent directory jumps (Like ../..)
+        if (!isValidFilename(filename) || !isValidPath(path)){
             return d.reject(ERROR_INVALID_FILENAME).promise();
         }
 
@@ -232,25 +227,25 @@ define(function (require, exports, module) {
             if (!err) {
                 // Item already exists, fail with error
                 d.reject(FileSystemError.ALREADY_EXISTS);
+                return;
+            }
+            if (isFolder) {
+                const directory = FileSystem.getDirectoryForPath(path);
+
+                directory.create(function (err) {
+                    if (err) {
+                        d.reject(err);
+                    } else {
+                        d.resolve(directory);
+                    }
+                });
             } else {
-                if (isFolder) {
-                    var directory = FileSystem.getDirectoryForPath(path);
+                // Create an empty file
+                const file = FileSystem.getFileForPath(path);
 
-                    directory.create(function (err) {
-                        if (err) {
-                            d.reject(err);
-                        } else {
-                            d.resolve(directory);
-                        }
-                    });
-                } else {
-                    // Create an empty file
-                    var file = FileSystem.getFileForPath(path);
-
-                    FileUtils.writeText(file, "").then(function () {
-                        d.resolve(file);
-                    }, d.reject);
-                }
+                FileUtils.writeText(file, "").then(function () {
+                    d.resolve(file);
+                }, d.reject);
             }
         });
 

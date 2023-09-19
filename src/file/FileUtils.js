@@ -113,7 +113,7 @@ define(function (require, exports, module) {
      * file writing completes, or rejected with a FileSystemError string constant.
      */
     function writeText(file, text, allowBlindWrite) {
-        var result = new $.Deferred(),
+        const result = new $.Deferred(),
             options = {};
 
         if (allowBlindWrite) {
