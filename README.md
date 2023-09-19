@@ -57,7 +57,9 @@ to read and develop is a noop. We prioritize simplicity and eaze of development.
 
 * Install gulp globally once.  `npm install -g gulp-cli` (use **sudo** in *nix systems)
 * run `npm install`
-* To build after npm install: `npm run build`
+* To build after npm install: 
+  * `npm run build` - generate builds close to release builds locally.
+  * or `npm run build:debug` to build debug builds for development with more debug symbols.
 
 ## Running phoenix
 * run `npm run serve` in the terminal.

@@ -477,7 +477,7 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject) =>{
             let destPath = `/test/${path}`;
             if(item.dir){
-                window.fs.mkdirs(destPath, '777', true, (err)=>{
+                window.fs.mkdirs(destPath, 0o777, true, (err)=>{
                     if(err){
                         reject();
                     } else {
@@ -503,7 +503,7 @@ define(function (require, exports, module) {
     function makeTestDir() {
         return new Promise((resolve, reject)=>{
             let testPath = `/test/`;
-            window.fs.mkdirs(testPath, '777', true, (err)=>{
+            window.fs.mkdirs(testPath, 0o777, true, (err)=>{
                 if(err){
                     reject();
                 } else {
