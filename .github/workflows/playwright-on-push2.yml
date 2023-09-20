@@ -1,0 +1,32 @@
+name: just an issue
+
+on:
+  push:
+    branches: [ y ]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  testFirefox:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Raise GitHub issue on failure
+        if: failure()
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const issueTitle = "Test failure for Firefox on push: commit ${{github.sha}}";
+            const runURL = `https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}`;
+            const issueBody = `There was a test failure in the Firefox test suite. Please investigate.\n\n[Check the failed run here](${runURL})`;
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody
+            });
