@@ -24,7 +24,7 @@ jobs:
             const issueTitle = "Test failure for Firefox on push: commit ${{github.sha}}";
             const runURL = `https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}`;
             const issueBody = `There was a test failure in the Firefox test suite. Please investigate.\n\n[Check the failed run here](${runURL})`;
-            github.issues.create({
+            github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: issueTitle,
