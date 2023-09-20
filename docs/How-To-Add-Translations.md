@@ -39,9 +39,10 @@ When any string changes are made to `src/nls/root/strings.js` or any `src/nls/<l
 it will automatically be scanned by GitHub Actions and the corresponding translations will be generated.
 A pull request will be raised with the new translations.
 
-You can also run the translation command locally if you have the AWS/GCP keys with the command
+You can also run the translation command locally if you have the AWS/GCP keys with the command. This is
+mostly FYI for phoenix internal devs.
 ```bash
-npm run translateStrings
+npm run _translateStrings
 ```
 
 ### Skipping auto translate
@@ -66,5 +67,6 @@ Say we want to add a new language translation `ko`. We have to do the following
 5. Create three new files `nls/ko/lastTranslated.json`, `nls/ko/lastTranslatedLocale.json` and
 `nls/ko/expertTranslations.json` with the content `{}`
 
-Once the code is checked in, the translation will be auto generated. You may manually generate the translation with 
-`npm run translateStrings` if you have the necessary keys for translation.
+Once the code is checked in, the translation will be auto generated.
+
+> NB: For internal devs, You may manually generate the translation with `npm run _translateStrings` if you have the necessary keys for translation.
