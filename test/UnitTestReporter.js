@@ -253,9 +253,9 @@ define(function (require, exports, module) {
                 if (self.specFilter(self.specIdToSpecMap[result.id])) {
                     console.log('Spec: ' + result.description + ' [status]: ' + result.status);
                     if(result.status === 'passed'){
-                        testRunnerLogToConsole(`\u2714 ${self.getTopLevelSuiteName(result)} : ${result.description}`);
+                        testRunnerLogToConsole(`\u2714 ${self.getTopLevelSuiteName(result)} : ${result.description} - passed`);
                     } else {
-                        testRunnerErrorToConsole(`\u2716 ${self.getTopLevelSuiteName(result)} : ${result.description}`);
+                        testRunnerErrorToConsole(`\u2716 ${self.getTopLevelSuiteName(result)} : ${result.description} - failed`);
                     }
                 }
                 self.reportSpecResults(result);
