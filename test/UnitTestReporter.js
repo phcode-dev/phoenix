@@ -52,6 +52,44 @@ define(function (require, exports, module) {
         "individualrun"
     ];
 
+    let pendingConsoleLogs = [];
+    let pendingConsoleErrors = [];
+
+    function _drainPendingLogs() {
+        if(!window.testRunnerLogToConsole || !window.testRunnerErrorToConsole){
+            return;
+        }
+        for(let i=0; i<pendingConsoleLogs.length; i++){
+            const {args} = pendingConsoleLogs[i];
+            window.testRunnerLogToConsole(...args);
+        }
+        pendingConsoleLogs = [];
+
+        for(let i=0; i<pendingConsoleErrors.length; i++){
+            const {args} = pendingConsoleErrors[i];
+            window.testRunnerErrorToConsole(...args);
+        }
+        pendingConsoleErrors = [];
+        clearInterval(_darinPendingLogsIntervalTimer);
+    }
+    let _darinPendingLogsIntervalTimer = setInterval(_drainPendingLogs, 1000);
+
+    function testRunnerLogToConsole(...args) {
+        if(window.testRunnerLogToConsole) {
+            window.testRunnerLogToConsole(...args);
+        } else {
+            pendingConsoleLogs.push({args});
+        }
+    }
+
+    function testRunnerErrorToConsole(...args) {
+        if(window.testRunnerErrorToConsole) {
+            window.testRunnerErrorToConsole(...args);
+        } else {
+            pendingConsoleErrors.push({args});
+        }
+    }
+
     function _getKnownCategory(name) {
         name = name || '';
         if(name.includes(':')){
@@ -214,6 +252,11 @@ define(function (require, exports, module) {
             specDone: function(result) {
                 if (self.specFilter(self.specIdToSpecMap[result.id])) {
                     console.log('Spec: ' + result.description + ' [status]: ' + result.status);
+                    if(result.status === 'passed'){
+                        testRunnerLogToConsole(`\u2714 ${self.getTopLevelSuiteName(result)} : ${result.description}`);
+                    } else {
+                        testRunnerErrorToConsole(`\u2716 ${self.getTopLevelSuiteName(result)} : ${result.description}`);
+                    }
                 }
                 self.reportSpecResults(result);
                 _afterEachGlobal();
@@ -222,12 +265,24 @@ define(function (require, exports, module) {
             suiteDone: function(result) {
                 if (self.specFilter(self.suiteIdToSuiteMap[result.id])) {
                     console.log('Suite: ' + result.description + ' [status]: ' + result.status);
+                    if(result.status !== 'passed'){
+                        testRunnerLogToConsole(`\u2716 Suite failed!! ${result.description}`);
+                    }
                 }
                 self.reportSuiteResults(result);
             },
 
             jasmineDone: async function(result) {
                 console.log('Finished jasmine: ' + result.overallStatus);
+                testRunnerLogToConsole('Finished jasmine: ' + result.overallStatus);
+                if(self.totalFailedCount === 0){
+                    testRunnerLogToConsole(`\u2714 All(${self.totalSpecCount}) tests passed.`);
+                    if(result.overallStatus !== 'passed') {
+                        testRunnerErrorToConsole(`\u2716 Some suites was detected to have failures outside of the suite tests. This could indicate an underlying problem. please run tests locally to debug.`);
+                    }
+                } else {
+                    testRunnerErrorToConsole(`\u2716 ${self.totalFailedCount} of ${self.totalSpecCount} tests Failed, ${self.totalPassedCount} passed.`);
+                }
                 self.reportRunnerResults(result);
                 await _afterAllGlobal();
             }
@@ -422,10 +477,14 @@ define(function (require, exports, module) {
         this.passed = (suiteResult.status === "passed");
         if(!this.passed){
             console.error('Spec Error: ' + suiteResult.description + ' was ' + suiteResult.status);
+            testRunnerErrorToConsole(`\u2716 Suite failed!!`, suiteResult.description + ' was ' + suiteResult.status);
 
             for(const element of suiteResult.failedExpectations) {
                 console.error('Spec Error: Failure: ', element.message);
                 console.error('Spec Error: Stack: ', element.stack);
+
+                testRunnerErrorToConsole(`\u2716 'Suite Error: Failure: `, element.message);
+                testRunnerErrorToConsole('\u2716 Suite Error: Stack: ', element.stack);
             }
 
             let suiteData = this._addSuiteResults(suiteResult, this._currentPerfRecord);
