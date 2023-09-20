@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   testFirefox:
     timeout-minutes: 60
@@ -26,15 +30,8 @@ jobs:
       - name: Run Playwright integration tests in Firefox
         run: npm run testIntegFirefox
 
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report-Firefox
-          path: playwright-report/
-          retention-days: 30
-
       - name: Raise GitHub issue on failure
-        if: success()
+        if: failure()
         uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -69,13 +66,6 @@ jobs:
 
       - name: Run Playwright integration tests in Chromium
         run: npm run testIntegChromium
-
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report-Chromium
-          path: playwright-report/
-          retention-days: 30
 
       - name: Raise GitHub issue on failure
         if: failure()
