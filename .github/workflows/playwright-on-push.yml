@@ -9,7 +9,7 @@ permissions:
   issues: write
 
 jobs:
-  testFirefox:
+  testFirefoxUnit:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -27,10 +27,25 @@ jobs:
       - name: Run Playwright unit tests in Firefox
         run: npm run testFirefox
 
+  testFirefoxInteg:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build phoenix
+        run: npm run build
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Run Playwright integration tests in Firefox
         run: npm run testIntegFirefox
 
-  testChromium:
+  testChromiumUnit:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -48,11 +63,26 @@ jobs:
       - name: Run Playwright unit tests in Chromium
         run: npm run testChromium
 
+  testChromiumInteg:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build phoenix
+        run: npm run build
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Run Playwright integration tests in Chromium
         run: npm run testIntegChromium
 
   raiseIssue:
-    needs: [ testFirefox, testChromium ]
+    needs: [ testFirefoxUnit, testFirefoxInteg, testChromiumUnit, testChromiumInteg]
     runs-on: ubuntu-latest
     if: always() # This ensures that this job runs even if the previous jobs failed
     steps:
@@ -68,11 +98,17 @@ jobs:
             const runURL = `https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}`;
             let issueBody = `There was a test failure. Please investigate.\n\n[Check the failed run here](${runURL})\n\n`;
             
-            if (needs.testFirefox.result == 'failure') {
-              issueBody += " - Firefox tests failed.\n";
+            if (needs.testFirefoxUnit.result == 'failure') {
+              issueBody += " - Firefox unit tests failed.\n";
             }
-            if (needs.testChromium.result == 'failure') {
-              issueBody += " - Chromium tests failed.\n";
+            if (needs.testFirefoxInteg.result == 'failure') {
+              issueBody += " - Firefox integration tests failed.\n";
+            }
+            if (needs.testChromiumUnit.result == 'failure') {
+              issueBody += " - Chromium unit tests failed.\n";
+            }
+            if (needs.testChromiumInteg.result == 'failure') {
+              issueBody += " - Chromium integration tests failed.\n";
             }
             
             github.rest.issues.create({
