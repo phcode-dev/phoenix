@@ -1,7 +1,5 @@
 name: Chromium run unit tests suite with Playwright
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 jobs:
