@@ -15,7 +15,7 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         run: |
           npm ci
-          npm run translateStrings
+          npm run _translateStrings
           ls -al docs
         shell: bash
 

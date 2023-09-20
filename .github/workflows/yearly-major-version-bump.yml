@@ -15,7 +15,7 @@ jobs:
       - name: Bump major version
         run: |
           npm ci
-          npm run majorVersionBump
+          npm run _majorVersionBump
           git status
           phoenix_version=`node -p "require('./package.json').apiVersion"`
           echo "PHOENIX_VERSION=${phoenix_version}" >> $GITHUB_ENV

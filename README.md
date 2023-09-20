@@ -79,7 +79,7 @@ IDEs from this link before raising a pull request: https://www.sonarlint.org/
 
 ## Running and debugging tests in browser
 This is the easiest and preferred way to run Phoenix tests.
-* run `npm run zipTestFiles` in the terminal.
+* run `npm run build` in the terminal.
   * NB: this will setup all the required files for test 
 * Use chrome/edge browser to navigate to Phoenix[http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
 * In Phoenix Menu, select `Debug > run Tests` To open the test runner.
@@ -107,7 +107,6 @@ To view/edit the files in the browser virtual file system in Phoenix:
 
 ## Clean and reset builds
 * clean builds only: `npm run clean`
-* Reset everything including node modules: `npm run reset`
 
 ## Previewing changes in dev and staging
 One a pull request is merged, it will be automatically deployed to dev.phcode.dev . To view the changes:
