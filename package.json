@@ -52,6 +52,8 @@
         "testDebug": "npx playwright test --debug",
         "testChromium": "npx playwright test --project=chromium",
         "testFirefox": "npx playwright test --project=firefox",
+        "testIntegChromium": "npx cross-env TEST_ENV=integration npx playwright test --project=chromium",
+        "testIntegFirefox": "npx cross-env TEST_ENV=integration npx playwright test --project=firefox",
         "buildonly": "gulp build",
         "buildonlyDebug": "gulp buildDebug",
         "vulnerabilityCheck": "echo Scanning for vulnarabilities && npm audit --prod --audit-level=critical",
@@ -100,6 +102,7 @@
         "requirejs": "^2.3.6",
         "tern": "^0.24.3",
         "tinycolor2": "^1.4.2",
-        "underscore": "^1.13.4"
+        "underscore": "^1.13.4",
+        "cross-env": "^7.0.3"
     }
 }
