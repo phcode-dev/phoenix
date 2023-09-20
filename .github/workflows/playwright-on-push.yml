@@ -30,22 +30,6 @@ jobs:
       - name: Run Playwright integration tests in Firefox
         run: npm run testIntegFirefox
 
-      - name: Raise GitHub issue on failure
-        if: failure()
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const issueTitle = "Test failure for Firefox on push: commit ${{github.sha}}";
-            const runURL = `https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}`;
-            const issueBody = `There was a test failure in the Firefox test suite. Please investigate.\n\n[Check the failed run here](${runURL})`;
-            github.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: issueTitle,
-              body: issueBody
-            });
-
   testChromium:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -67,16 +51,31 @@ jobs:
       - name: Run Playwright integration tests in Chromium
         run: npm run testIntegChromium
 
-      - name: Raise GitHub issue on failure
-        if: failure()
+  raiseIssue:
+    needs: [ testFirefox, testChromium ]
+    runs-on: ubuntu-latest
+    if: always() # This ensures that this job runs even if the previous jobs failed
+    steps:
+      - name: Check for failures and raise an issue
+        if: |
+          always() && 
+          (needs.testFirefox.result == 'failure' || needs.testChromium.result == 'failure')
         uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const issueTitle = "Test failure for Chromium on push: commit ${{github.sha}}";
+            const issueTitle = "Test failure on push: commit ${{github.sha}}";
             const runURL = `https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}`;
-            const issueBody = `There was a test failure in the Chromium test suite. Please investigate.\n\n[Check the failed run here](${runURL})`;
-            github.issues.create({
+            let issueBody = `There was a test failure. Please investigate.\n\n[Check the failed run here](${runURL})\n\n`;
+            
+            if (needs.testFirefox.result == 'failure') {
+              issueBody += " - Firefox tests failed.\n";
+            }
+            if (needs.testChromium.result == 'failure') {
+              issueBody += " - Chromium tests failed.\n";
+            }
+            
+            github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: issueTitle,
