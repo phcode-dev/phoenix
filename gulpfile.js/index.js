@@ -34,10 +34,11 @@ const minify = require('gulp-minify');
 const glob = require("glob");
 const sourcemaps = require('gulp-sourcemaps');
 const crypto = require("crypto");
+const rename = require("gulp-rename");
 const execSync = require('child_process').execSync;
 
 function cleanDist() {
-    return del(['dist']);
+    return del(['dist', 'dist-test']);
 }
 
 function cleanAll() {
@@ -45,6 +46,7 @@ function cleanAll() {
         'node_modules',
         'dist',
         // Test artifacts
+        'dist-test',
         'test/spec/test_folders.zip'
     ]);
 }
@@ -372,6 +374,22 @@ function createDistCacheManifest() {
     return createCacheManifest("dist");
 }
 
+function copyDistToDistTestFolder() {
+    return src('dist/**/*')
+        .pipe(dest('dist-test/src'));
+}
+
+function copyTestToDistTestFolder() {
+    return src('test/**/*')
+        .pipe(dest('dist-test/test'));
+}
+
+function copyIndexToDistTestFolder() {
+    return src('test/index-dist-test.html')
+        .pipe(rename("index.html"))
+        .pipe(dest('dist-test'));
+}
+
 function makeLoggerConfig() {
     return new Promise((resolve)=>{
         const configJsonStr = JSON.stringify(require('../src/config.json'), null, 4);
@@ -380,6 +398,7 @@ function makeLoggerConfig() {
     });
 }
 
+const createDistTest = series(copyDistToDistTestFolder, copyTestToDistTestFolder, copyIndexToDistTestFolder);
 
 exports.build = series(copyThirdPartyLibs.copyAll, makeLoggerConfig, zipDefaultProjectFiles, zipSampleProjectFiles,
     createSrcCacheManifest);
@@ -387,12 +406,13 @@ exports.buildDebug = series(copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, z
     zipSampleProjectFiles, createSrcCacheManifest);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
+
 exports.releaseDev = series(cleanDist, exports.build, makeDistAll, releaseDev,
-    createDistCacheManifest);
+    createDistCacheManifest, createDistTest);
 exports.releaseStaging = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseStaging,
-    createDistCacheManifest);
+    createDistCacheManifest, createDistTest);
 exports.releaseProd = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseProd,
-    createDistCacheManifest);
+    createDistCacheManifest, createDistTest);
 exports.serve = series(exports.build, serve);
 exports.zipTestFiles = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
