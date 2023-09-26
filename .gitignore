@@ -50,6 +50,7 @@ test/thirdparty/jasmine-reporters
 
 # ignore compiled files
 /dist
+/dist-test
 /distToDeploy
 /src/.index.html
 /src/styles/brackets.min.css
