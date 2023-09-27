@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "부트스트랩 예제",
   "PROJECTS_AT_A_GLANCE": "프로젝트 개요",
   "PROJECT_AT_GLANCE_DESCRIPTION": "시작하려면 동영상을 시청하세요.",
+  "PROJECT_FROM_BROWSER": "브라우저에 저장됨",
   "GUIDED_LIVE_PREVIEW": "실시간 미리 보기를 보려면 HTML 파일에서 일부 코드를 변경하십시오.</br> <a href='#' style='float:right;'>좋아요</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "이 버튼을 클릭하면 실시간 미리보기가 새 탭으로 표시됩니다.</br> <a href='#' style='float:right;'>좋아요</a>",
   "ENJOYING_APP": "{APP_NAME}을(를) 즐기고 계신가요?",

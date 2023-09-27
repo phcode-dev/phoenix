@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Примери за стартиране",
   "PROJECTS_AT_A_GLANCE": "Вашите проекти с един поглед",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Гледайте видео, за да започнете.",
+  "PROJECT_FROM_BROWSER": "Съхранява се във вашия браузър",
   "GUIDED_LIVE_PREVIEW": "Направете някои промени в кода в HTML файла, за да видите визуализация на живо.</br> <a href='#' style='float:right;'>Добре</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Щракнете върху този бутон, за да отворите визуализация на живо в нов раздел.</br> <a href='#' style='float:right;'>Добре</a>",
   "ENJOYING_APP": "Харесвате ли {APP_NAME}?",

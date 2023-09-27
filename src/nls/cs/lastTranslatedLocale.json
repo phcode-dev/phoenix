@@ -835,6 +835,7 @@
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Příklady bootstrapu",
   "PROJECTS_AT_A_GLANCE": "Přehled vašich projektů",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Začněte sledováním videa.",
+  "PROJECT_FROM_BROWSER": "Uloženo ve vašem prohlížeči",
   "GUIDED_LIVE_PREVIEW": "Chcete-li zobrazit živý náhled, proveďte v souboru HTML nějaké změny kódu.</br> <a href='#' style='float:right;'>OK</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klepnutím na toto tlačítko zobrazíte živý náhled na novou kartu.</br> <a href='#' style='float:right;'>OK</a>",
   "ENJOYING_APP": "Líbí se vám aplikace {APP_NAME}?",

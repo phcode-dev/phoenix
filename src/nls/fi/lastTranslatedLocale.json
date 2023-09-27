@@ -835,6 +835,7 @@
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap esimerkkejä",
   "PROJECTS_AT_A_GLANCE": "Projektisi yhdellä silmäyksellä",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Aloita katsomalla video.",
+  "PROJECT_FROM_BROWSER": "Tallennettu selaimeesi",
   "GUIDED_LIVE_PREVIEW": "Tee joitain koodimuutoksia HTML-tiedostoon nähdäksesi live-esikatselun.</br> <a href='#' style='float:right;'>okei</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Napsauta tätä painiketta avataksesi esikatselun uudelle välilehdelle.</br> <a href='#' style='float:right;'>okei</a>",
   "ENJOYING_APP": "Pidätkö sovelluksesta {APP_NAME}?",

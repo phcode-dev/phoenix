@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "ബൂട്ട്സ്ട്രാപ്പ് ഉദാഹരണങ്ങൾ",
   "PROJECTS_AT_A_GLANCE": "നിങ്ങളുടെ പദ്ധതികൾ ഒറ്റനോട്ടത്തിൽ",
   "PROJECT_AT_GLANCE_DESCRIPTION": "ആരംഭിക്കാൻ വീഡിയോ കാണുക.",
+  "PROJECT_FROM_BROWSER": "നിങ്ങളുടെ ബ്രൗസറിൽ സംഭരിച്ചു",
   "GUIDED_LIVE_PREVIEW": "തത്സമയ പ്രിവ്യൂ കാണുന്നതിന് HTML ഫയലിൽ ചില കോഡ് മാറ്റങ്ങൾ വരുത്തുക.</br> <a href='#' style='float:right;'>ശരി</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "ഒരു പുതിയ ടാബിലേക്ക് തത്സമയ പ്രിവ്യൂ പോപ്പ്ഔട്ട് ചെയ്യുന്നതിന് ഈ ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.</br> <a href='#' style='float:right;'>ശരി</a>",
   "ENJOYING_APP": "{APP_NAME} ആസ്വദിക്കുകയാണോ?",

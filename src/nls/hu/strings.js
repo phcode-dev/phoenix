@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap példák",
   "PROJECTS_AT_A_GLANCE": "Projektjei egy pillantással",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Nézze meg a videót a kezdéshez.",
+  "PROJECT_FROM_BROWSER": "A böngészőben tárolva",
   "GUIDED_LIVE_PREVIEW": "Az élő előnézet megtekintéséhez hajtson végre néhány kódmódosítást a HTML-fájlban.</br> <a href='#' style='float:right;'>rendben</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Kattintson erre a gombra, hogy az élő előnézetet egy új lapra hozza.</br> <a href='#' style='float:right;'>rendben</a>",
   "ENJOYING_APP": "Tetszik a(z) {APP_NAME}?",

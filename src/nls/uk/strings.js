@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Приклади Bootstrap",
   "PROJECTS_AT_A_GLANCE": "Короткий огляд ваших проектів",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Перегляньте відео, щоб почати.",
+  "PROJECT_FROM_BROWSER": "Зберігається у вашому браузері",
   "GUIDED_LIVE_PREVIEW": "Внесіть деякі зміни у код HTML-файлу, щоб переглянути попередній перегляд.</br> <a href='#' style='float:right;'>добре</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Натисніть цю кнопку, щоб вивести попередній перегляд на нову вкладку.</br> <a href='#' style='float:right;'>в порядку</a>",
   "ENJOYING_APP": "Подобається {APP_NAME}?",
