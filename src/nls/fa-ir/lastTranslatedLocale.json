@@ -835,6 +835,7 @@
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "نمونه های بوت استرپ",
   "PROJECTS_AT_A_GLANCE": "پروژه های شما در یک نگاه",
   "PROJECT_AT_GLANCE_DESCRIPTION": "برای شروع ویدیو را تماشا کنید.",
+  "PROJECT_FROM_BROWSER": "در مرورگر شما ذخیره می شود",
   "GUIDED_LIVE_PREVIEW": "برای مشاهده پیش نمایش زنده، مقداری کد را در فایل HTML تغییر دهید.</br> <a href='#' style='float:right;'>خوب</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "روی این دکمه کلیک کنید تا پیش‌نمایش زنده به یک برگه جدید باز شود.</br> <a href='#' style='float:right;'>خوب</a>",
   "ENJOYING_APP": "از {APP_NAME} لذت می برید؟",

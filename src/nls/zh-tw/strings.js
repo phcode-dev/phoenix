@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "引導示例",
   "PROJECTS_AT_A_GLANCE": "您的項目一覽",
   "PROJECT_AT_GLANCE_DESCRIPTION": "觀看視頻以開始使用。",
+  "PROJECT_FROM_BROWSER": "儲存在您的瀏覽器中",
   "GUIDED_LIVE_PREVIEW": "在 HTML 文件中進行一些代碼更改以查看實時預覽。</br><a href='#' style='float:right;'>行</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "單擊此按鈕可將實時預覽彈出到新選項卡。</br><a href='#' style='float:right;'>好的</a>",
   "ENJOYING_APP": "喜歡{APP_NAME}嗎？",

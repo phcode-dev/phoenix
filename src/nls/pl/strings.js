@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Przykłady Bootstrap",
   "PROJECTS_AT_A_GLANCE": "Twoje projekty w skrócie",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Obejrzyj wideo, aby rozpocząć.",
+  "PROJECT_FROM_BROWSER": "Przechowywane w Twojej przeglądarce",
   "GUIDED_LIVE_PREVIEW": "Wprowadź zmiany w kodzie w pliku HTML, aby wyświetlić podgląd na żywo.</br> <a href='#' style='float:right;'>OK</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Kliknij ten przycisk, aby wyświetlić podgląd na żywo na nowej karcie.</br> <a href='#' style='float:right;'>ok</a>",
   "ENJOYING_APP": "Korzystasz z aplikacji {APP_NAME}?",

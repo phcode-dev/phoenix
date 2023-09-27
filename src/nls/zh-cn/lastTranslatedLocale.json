@@ -835,6 +835,7 @@
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "引导示例",
   "PROJECTS_AT_A_GLANCE": "您的项目一览",
   "PROJECT_AT_GLANCE_DESCRIPTION": "观看视频以开始使用。",
+  "PROJECT_FROM_BROWSER": "存储在您的浏览器中",
   "GUIDED_LIVE_PREVIEW": "在 HTML 文件中进行一些代码更改以查看实时预览。</br><a href='#' style='float:right;'>行</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "单击此按钮可将实时预览弹出到新选项卡。</br><a href='#' style='float:right;'>好的</a>",
   "ENJOYING_APP": "喜欢{APP_NAME}吗？",

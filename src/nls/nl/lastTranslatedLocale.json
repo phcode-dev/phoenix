@@ -835,6 +835,7 @@
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap-voorbeelden",
   "PROJECTS_AT_A_GLANCE": "Uw projecten in één oogopslag",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Bekijk de video om aan de slag te gaan.",
+  "PROJECT_FROM_BROWSER": "Opgeslagen in uw browser",
   "GUIDED_LIVE_PREVIEW": "Breng enkele codewijzigingen aan in het HTML-bestand om een live voorbeeld te zien.</br> <a href='#' style='float:right;'>OK</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klik op deze knop om een livevoorbeeld naar een nieuw tabblad te laten verschijnen.</br> <a href='#' style='float:right;'>OK</a>",
   "ENJOYING_APP": "Geniet je van {APP_NAME}?",

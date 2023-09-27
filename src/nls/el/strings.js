@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Παραδείγματα Bootstrap",
   "PROJECTS_AT_A_GLANCE": "Τα έργα σας με μια ματιά",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Δείτε βίντεο για να ξεκινήσετε.",
+  "PROJECT_FROM_BROWSER": "Αποθηκευμένο στο πρόγραμμα περιήγησής σας",
   "GUIDED_LIVE_PREVIEW": "Κάντε κάποιες αλλαγές κώδικα στο αρχείο HTML για να δείτε ζωντανή προεπισκόπηση.</br> <a href='#' style='float:right;'>Εντάξει</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Κάντε κλικ σε αυτό το κουμπί για να αναδυθεί η ζωντανή προεπισκόπηση σε μια νέα καρτέλα.</br> <a href='#' style='float:right;'>Εντάξει</a>",
   "ENJOYING_APP": "Σας αρέσει η εφαρμογή {APP_NAME};",

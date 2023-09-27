@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Eksempler på bootstrap",
   "PROJECTS_AT_A_GLANCE": "Dine projekter på et øjeblik",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Se video for at komme i gang.",
+  "PROJECT_FROM_BROWSER": "Gemt i din browser",
   "GUIDED_LIVE_PREVIEW": "Foretag nogle kodeændringer i HTML-filen for at se live preview.</br> <a href='#' style='float:right;'>Okay</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klik på denne knap for at popout live forhåndsvisning til en ny fane.</br> <a href='#' style='float:right;'>Okay</a>",
   "ENJOYING_APP": "Nyder du {APP_NAME}?",

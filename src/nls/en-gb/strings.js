@@ -855,6 +855,7 @@ define({
   "WEBPAGE_BOOTSTRAP_EXAMPLES": "Bootstrap Examples",
   "PROJECTS_AT_A_GLANCE": "Your Projects at a glance",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Watch video to get started.",
+  "PROJECT_FROM_BROWSER": "Stored in Your Browser",
   "GUIDED_LIVE_PREVIEW": "Make some code changes in the HTML file to see live preview. </br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Click this button to popout live preview to a new tab. </br> <a href='#' style='float:right;'>ok</a>",
   "ENJOYING_APP": "Enjoying {APP_NAME}?",
