@@ -356,4 +356,7 @@ define(function (require, exports, module) {
     exports.getExploreProjectPath = ProjectManager.getExploreProjectPath;
     exports.getLocalProjectsPath = ProjectManager.getLocalProjectsPath;
     exports.getMountDir = Phoenix.VFS.getMountDir;
+    exports.path = Phoenix.path;
+    exports.getTauriDir = Phoenix.VFS.getTauriDir;
+    exports.getTauriPlatformPath = Phoenix.fs.getTauriPlatformPath;
 });

@@ -24,18 +24,22 @@
 /*eslint strict: ["error", "global"]*/
 /* jshint ignore:start */
 
-function _createRecentProjectCard(projectName, fullPath, nodeId, tabIndex) {
+function _createRecentProjectCard(fullPath, displayLocation, nodeId, tabIndex) {
     let removeBtnDisableStyle = "";
     if(path.normalize(fullPath) === path.normalize(newProjectExtension.getWelcomeProjectPath())){
         removeBtnDisableStyle = "display: none;";
     }
-    return $(`<li>
+    let recentProjectListWidth = document.getElementById('recentProjectList').clientWidth;
+    const fontWidth = 6;
+    const charsToFillFontWidth = recentProjectListWidth/fontWidth;
+    // show title only if the path is longer than the inline display location.
+    const title = displayLocation.length < charsToFillFontWidth ? "" : displayLocation;
+    return $(`<li onclick="openProject('${fullPath}');_recentProjectMetric('open');" style="overflow: hidden" title="${title}">
         <a id="${nodeId}" href="#" 
         class="d-flex align-items-center justify-content-between tabable"
-        tabindex="${tabIndex}"
-        onclick="openProject('${fullPath}');_recentProjectMetric('open');">
+        tabindex="${tabIndex}">
             <div class="project-name">
-                ${projectName}
+                ${newProjectExtension.path.basename(fullPath)}
             </div>
             <button class="remove-btn" onclick="removeProject('${fullPath}');_recentProjectMetric('remove');"
             style="${removeBtnDisableStyle}">
@@ -52,6 +56,9 @@ function _createRecentProjectCard(projectName, fullPath, nodeId, tabIndex) {
                 </svg>
             </button>
         </a>
+        <div style="overflow: hidden;">
+            <p class="recent-project-metadata">${displayLocation}</p>
+        </div>
     </li>`);
 }
 
@@ -59,14 +66,15 @@ function _recentProjectMetric(type) {
     Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "recentProject.btnClick", type);
 }
 
-function getDisplayName(projectPath) {
-    const prefixRemove = [newProjectExtension.getLocalProjectsPath(), newProjectExtension.getMountDir()];
-    for(let prefix of prefixRemove){
-        if(projectPath.startsWith(prefix)){
-            return projectPath.replace(prefix, '');
-        }
+function getDisplayLocation(projectPath) {
+    const tauriDir = newProjectExtension.getTauriDir();
+    if (projectPath.startsWith(tauriDir)) {
+        return newProjectExtension.getTauriPlatformPath(projectPath);
     }
-    return projectPath;
+    if (projectPath.startsWith(newProjectExtension.getMountDir())) {
+        return ""; // we don't show anything if it's stored on user's hard drive for better ui.
+    }
+    return Strings.PROJECT_FROM_BROWSER;
 }
 
 const DEFAULT_PROJECT_PATH = '/fs/local/default project';
@@ -75,7 +83,7 @@ function _updateProjectCards() {
     let recentProjectList = $(document.getElementById('recentProjectList'));
     recentProjectList.empty();
     let recentProjects = recentProjectExtension.getRecentProjects();
-    let tabIndex = 20;
+    let tabIndex = 1;
     let defaultProjects = [DEFAULT_PROJECT_PATH, '/fs/local/explore'],
         omitProjectsInListing = ['/fs/local/explore'],
         showRecentProjects = false;
@@ -84,8 +92,8 @@ function _updateProjectCards() {
             showRecentProjects = true;
         }
         if(!omitProjectsInListing.includes(recentProject)){
-            recentProjectList.append(_createRecentProjectCard(getDisplayName(recentProject),
-                recentProject, `recent-prj-list-${tabIndex}`, tabIndex++));
+            recentProjectList.append(_createRecentProjectCard(recentProject, getDisplayLocation(recentProject),
+                `recent-prj-list-${tabIndex}`, tabIndex++));
         }
     }
     if(!showRecentProjects){

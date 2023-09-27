@@ -37,6 +37,7 @@ function _setupVFS(fsLib, pathLib){
     Phoenix.VFS = {
         getRootDir: () => '/fs/',
         getMountDir: () => '/mnt/',
+        getTauriDir: () => '/tauri/',
         getAppSupportDir: () => '/fs/app/',
         getExtensionDir: () => EXTENSION_DIR,
         getUserExtensionDir: () => `${EXTENSION_DIR}user`,
