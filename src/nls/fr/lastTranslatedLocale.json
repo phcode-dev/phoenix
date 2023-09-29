@@ -836,6 +836,7 @@
   "PROJECTS_AT_A_GLANCE": "Vos projets en un coup d'œil",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Regardez la vidéo pour commencer.",
   "PROJECT_FROM_BROWSER": "Stocké dans votre navigateur",
+  "PROJECT_SHOW_ON_STARTUP": "Afficher cette boîte de dialogue au démarrage",
   "GUIDED_LIVE_PREVIEW": "Apportez quelques modifications au code dans le fichier HTML pour voir l&#39;aperçu en direct.</br> <a href='#' style='float:right;'>d&#39;accord</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Cliquez sur ce bouton pour afficher l&#39;aperçu en direct dans un nouvel onglet.</br> <a href='#' style='float:right;'>d&#39;accord</a>",
   "ENJOYING_APP": "Vous aimez {APP_NAME} ?",

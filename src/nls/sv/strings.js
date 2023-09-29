@@ -856,6 +856,7 @@ define({
   "PROJECTS_AT_A_GLANCE": "Dina projekt i en överblick",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Titta på video för att komma igång.",
   "PROJECT_FROM_BROWSER": "Lagrat i din webbläsare",
+  "PROJECT_SHOW_ON_STARTUP": "Visa denna dialog vid uppstart",
   "GUIDED_LIVE_PREVIEW": "Gör några kodändringar i HTML-filen för att se liveförhandsgranskning.</br> <a href='#' style='float:right;'>ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klicka på den här knappen för att öppna liveförhandsvisningen till en ny flik.</br> <a href='#' style='float:right;'>ok</a>",
   "ENJOYING_APP": "Gillar du {APP_NAME}?",

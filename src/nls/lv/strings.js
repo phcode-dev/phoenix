@@ -856,6 +856,7 @@ define({
   "PROJECTS_AT_A_GLANCE": "Jūsu projekti īsumā",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Lai sāktu, skatieties video.",
   "PROJECT_FROM_BROWSER": "Saglabāts jūsu pārlūkprogrammā",
+  "PROJECT_SHOW_ON_STARTUP": "Rādīt šo dialogu startēšanas laikā",
   "GUIDED_LIVE_PREVIEW": "Veiciet dažas koda izmaiņas HTML failā, lai redzētu tiešo priekšskatījumu.</br> <a href='#' style='float:right;'>labi</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Noklikšķiniet uz šīs pogas, lai tiešraides priekšskatījumu atvērtu jaunā cilnē.</br> <a href='#' style='float:right;'>labi</a>",
   "ENJOYING_APP": "Vai jums patīk lietotne {APP_NAME}?",

@@ -856,6 +856,7 @@ define({
   "PROJECTS_AT_A_GLANCE": "Ваши проекты с первого взгляда",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Посмотрите видео, чтобы начать.",
   "PROJECT_FROM_BROWSER": "Хранится в вашем браузере",
+  "PROJECT_SHOW_ON_STARTUP": "Показать этот диалог при запуске",
   "GUIDED_LIVE_PREVIEW": "Внесите некоторые изменения в код HTML-файла, чтобы увидеть предварительный просмотр в реальном времени.</br> <a href='#' style='float:right;'>Хорошо</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Нажмите эту кнопку, чтобы открыть предварительный просмотр в новой вкладке.</br> <a href='#' style='float:right;'>Ok</a>",
   "ENJOYING_APP": "Нравится {APP_NAME}?",

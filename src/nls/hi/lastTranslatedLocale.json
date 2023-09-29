@@ -836,6 +836,7 @@
   "PROJECTS_AT_A_GLANCE": "आपकी परियोजनाएँ एक नज़र में",
   "PROJECT_AT_GLANCE_DESCRIPTION": "आरंभ करने के लिए वीडियो देखें।",
   "PROJECT_FROM_BROWSER": "आपके ब्राउज़र में संग्रहीत",
+  "PROJECT_SHOW_ON_STARTUP": "स्टार्टअप पर यह संवाद दिखाएँ",
   "GUIDED_LIVE_PREVIEW": "लाइव पूर्वावलोकन देखने के लिए HTML फ़ाइल में कुछ कोड परिवर्तन करें।</br> <a href='#' style='float:right;'>ठीक है</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "लाइव पूर्वावलोकन को नए टैब में पॉपआउट करने के लिए इस बटन पर क्लिक करें।</br> <a href='#' style='float:right;'>ठीक है</a>",
   "ENJOYING_APP": "{APP_NAME} का आनंद ले रहे हैं?",

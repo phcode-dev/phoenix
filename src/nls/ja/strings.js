@@ -856,6 +856,7 @@ define({
   "PROJECTS_AT_A_GLANCE": "プロジェクトの概要",
   "PROJECT_AT_GLANCE_DESCRIPTION": "開始するにはビデオをご覧ください。",
   "PROJECT_FROM_BROWSER": "ブラウザに保存",
+  "PROJECT_SHOW_ON_STARTUP": "起動時にこのダイアログを表示する",
   "GUIDED_LIVE_PREVIEW": "HTML ファイルのコードを変更して、ライブ プレビューを表示します。</br><a href='#' style='float:right;'>わかった</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "このボタンをクリックして、ライブ プレビューを新しいタブにポップアウトします。</br><a href='#' style='float:right;'>わかった</a>",
   "ENJOYING_APP": "{APP_NAME} を楽しんでいますか？",
