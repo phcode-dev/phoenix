@@ -836,6 +836,7 @@
   "PROJECTS_AT_A_GLANCE": "Bir bakışta Projeleriniz",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Başlamak için videoyu izleyin.",
   "PROJECT_FROM_BROWSER": "Tarayıcınızda Saklanır",
+  "PROJECT_SHOW_ON_STARTUP": "Başlangıçta Bu Diyaloğu Göster",
   "GUIDED_LIVE_PREVIEW": "Canlı önizlemeyi görmek için HTML dosyasında bazı kod değişiklikleri yapın.</br> <a href='#' style='float:right;'>Tamam</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Canlı önizlemeyi yeni bir sekmede açmak için bu düğmeye tıklayın.</br> <a href='#' style='float:right;'>tamam</a>",
   "ENJOYING_APP": "{APP_NAME} uygulamasını beğeniyor musunuz?",

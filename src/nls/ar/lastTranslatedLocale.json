@@ -836,6 +836,7 @@
   "PROJECTS_AT_A_GLANCE": "مشاريعك في لمحة",
   "PROJECT_AT_GLANCE_DESCRIPTION": "شاهد الفيديو لتبدأ",
   "PROJECT_FROM_BROWSER": "مخزنة في المتصفح الخاص بك",
+  "PROJECT_SHOW_ON_STARTUP": "إظهار هذا الحوار عند بدء التشغيل",
   "GUIDED_LIVE_PREVIEW": "قم بإجراء بعض تغييرات التعليمات البرمجية في ملف HTML لمشاهدة المعاينة المباشرة.</br> <a href='#' style='float:right;'>موافق</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "انقر فوق هذا الزر لإخراج المعاينة المباشرة إلى علامة تبويب جديدة.</br> <a href='#' style='float:right;'>موافق</a>",
   "ENJOYING_APP": "هل تستمتع بتطبيق {APP_NAME}؟",

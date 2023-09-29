@@ -856,6 +856,7 @@ define({
   "PROJECTS_AT_A_GLANCE": "Vaši projekti na prvi pogled",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Pogledajte video kako biste započeli.",
   "PROJECT_FROM_BROWSER": "Pohranjeno u vašem pregledniku",
+  "PROJECT_SHOW_ON_STARTUP": "Prikaži ovaj dijalog pri pokretanju",
   "GUIDED_LIVE_PREVIEW": "Napravite neke izmjene koda u HTML datoteci da biste vidjeli pregled uživo.</br> <a href='#' style='float:right;'>u redu</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Kliknite ovaj gumb za skočni pregled uživo na novu karticu.</br> <a href='#' style='float:right;'>u redu</a>",
   "ENJOYING_APP": "Uživate li u aplikaciji {APP_NAME}?",

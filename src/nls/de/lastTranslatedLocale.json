@@ -836,6 +836,7 @@
   "PROJECTS_AT_A_GLANCE": "Ihre Projekte auf einen Blick",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Sehen Sie sich das Video an, um loszulegen.",
   "PROJECT_FROM_BROWSER": "In Ihrem Browser gespeichert",
+  "PROJECT_SHOW_ON_STARTUP": "Diesen Dialog beim Start anzeigen",
   "GUIDED_LIVE_PREVIEW": "Nehmen Sie einige Codeänderungen in der HTML-Datei vor, um eine Live-Vorschau anzuzeigen.</br> <a href='#' style='float:right;'>Ok</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Klicken Sie auf diese Schaltfläche, um die Live-Vorschau auf einer neuen Registerkarte anzuzeigen.</br> <a href='#' style='float:right;'>OK</a>",
   "ENJOYING_APP": "Gefällt dir {APP_NAME}?",

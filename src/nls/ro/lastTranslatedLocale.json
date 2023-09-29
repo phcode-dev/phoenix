@@ -836,6 +836,7 @@
   "PROJECTS_AT_A_GLANCE": "Proiectele dvs. dintr-o privire",
   "PROJECT_AT_GLANCE_DESCRIPTION": "Urmăriți videoclipul pentru a începe.",
   "PROJECT_FROM_BROWSER": "Stocat în browserul dvs",
+  "PROJECT_SHOW_ON_STARTUP": "Afișați acest dialog la pornire",
   "GUIDED_LIVE_PREVIEW": "Efectuați câteva modificări de cod în fișierul HTML pentru a vedea previzualizarea live.</br> <a href='#' style='float:right;'>Bine</a>",
   "GUIDED_LIVE_PREVIEW_POPOUT": "Faceți clic pe acest buton pentru a deschide previzualizarea live într-o filă nouă.</br> <a href='#' style='float:right;'>O.K</a>",
   "ENJOYING_APP": "Îți place {APP_NAME}?",
