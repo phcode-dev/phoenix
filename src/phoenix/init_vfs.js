@@ -176,7 +176,7 @@ function _tryCreateDefaultProject() {
                         logger.reportError(err, "Error creating default project");
                     }
                     let indexFile = Phoenix.VFS.path.normalize(`${projectDir}/index.html`);
-                    Phoenix.VFS.fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8');
+                    Phoenix.VFS.fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', ()=>{});
                     resolve();
                 });
                 return;
