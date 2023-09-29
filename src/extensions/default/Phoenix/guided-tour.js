@@ -47,36 +47,13 @@ define(function (require, exports, module) {
     const userAlreadyDidAction = localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
         ? JSON.parse(localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
             version: 1,
-            clickedNewProjectIcon: false,
+            newProjectShown: false,
             beautifyCodeShown: false,
             generalSurveyShownVersion: 0
         };
 
     // we should only show one notification at a time
     let currentlyShowingNotification;
-
-    function _shouldContinueCommandTracking() {
-        return (!userAlreadyDidAction.clickedNewProjectIcon); // use or ||
-    }
-
-    function _startCommandTracking() {
-        if(!_shouldContinueCommandTracking()){
-            return;
-        }
-        function commandTracker(_event, commandID) {
-            let write = false;
-            switch(commandID) {
-            case Commands.FILE_NEW_PROJECT: userAlreadyDidAction.clickedNewProjectIcon = true; write = true; break;
-            }
-            if(write){
-                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-            }
-            if(!_shouldContinueCommandTracking()){
-                CommandManager.off(CommandManager.EVENT_BEFORE_EXECUTE_COMMAND, commandTracker);
-            }
-        }
-        CommandManager.on(CommandManager.EVENT_BEFORE_EXECUTE_COMMAND, commandTracker);
-    }
 
     /* Order of things in first boot now:
     *  1. First we show the popup in new project window to select default project - see the html in assets folder
@@ -126,15 +103,18 @@ define(function (require, exports, module) {
     }
 
     // 3. When user changes file by clicking on files panel, we show "click here to open new project window"
-    // this will continue showing every session until user clicks on the new project icon
+    // Only shown once.
     function _showNewProjectNotification() {
-        if(userAlreadyDidAction.clickedNewProjectIcon){
+        if(userAlreadyDidAction.newProjectShown){
             return;
         }
         function _showNotification() {
             if(currentlyShowingNotification){
+                setTimeout(_showNotification, NOTIFICATION_BACKOFF);
                 return;
             }
+            userAlreadyDidAction.newProjectShown =  true;
+            localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
             Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "newProj");
             currentlyShowingNotification = NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
                 "newProject", {
@@ -349,7 +329,6 @@ define(function (require, exports, module) {
         _showLivePreviewNotification();
         _showPopoutLivePreviewNotification();
         _showNewProjectNotification();
-        _startCommandTracking();
         _showBeautifyNotification();
         _showRequestStarsPopup();
         _showGeneralSurvey();

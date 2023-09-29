@@ -52,9 +52,14 @@ define(function (require, exports, module) {
         HealthDataPreview.previewHealthData();
     }
 
+    let popupShownInThisSession = false;
     function _showFirstLaunchPopup() {
         // call this only after newProjectExtn interface is available
         // Check whether the notification dialog should be shown. It will be shown only one time.
+        if(popupShownInThisSession){
+            return;
+        }
+        popupShownInThisSession = true;
         newProjectExtension.off(newProjectExtension.EVENT_NEW_PROJECT_DIALOGUE_CLOSED, _showFirstLaunchPopup);
         if(!window.testEnvironment){
             const alreadyShown = PreferencesManager.getViewState("healthDataNotificationShown");

@@ -99,6 +99,7 @@ define(function (require, exports, module) {
         const shouldShowWelcome = localStorage.getItem("new-project.showWelcomeScreen") || 'Y';
         if(shouldShowWelcome !== 'Y') {
             Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "disabled");
+            guidedTour.startTourIfNeeded();
             return;
         }
         _showNewProjectDialogue();
