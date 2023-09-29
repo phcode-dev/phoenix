@@ -247,6 +247,15 @@
     .preview-box {
         width: 100%;
     }
+
+    .settings-icon {
+        margin-top: 10px;
+    }
+
+    .dropdown {
+        right: 15px;
+        bottom: 10px;
+    }
 }
 
 @media (max-width: 400px) {

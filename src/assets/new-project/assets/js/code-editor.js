@@ -136,6 +136,53 @@ function _showFirstTimeExperience() {
     }
 }
 
+function _updateDropdown() {
+    let shouldShowWelcome = localStorage.getItem("new-project.showWelcomeScreen") || 'Y';
+    if(shouldShowWelcome === 'Y') {
+        document.getElementById("showWelcomeIndicator").style = "visibility: visible";
+    } else {
+        document.getElementById("showWelcomeIndicator").style = "visibility: hidden";
+    }
+}
+
+function _attachSettingBtnEventListeners() {
+    document.querySelector('.dropdown').addEventListener('click', function() {
+        let content = this.querySelector('.dropdown-content');
+        let dropbtn = this.querySelector('.dropbtn');
+        _updateDropdown();
+        if (content.style.display === 'block') {
+            content.style.display = 'none';
+            dropbtn.classList.remove('dropbtnActive');
+        } else {
+            content.style.display = 'block';
+            dropbtn.classList.add('dropbtnActive');
+        }
+    });
+
+    document.getElementById("showWelcome").addEventListener('click', (event)=>{
+        let shouldShowWelcome = localStorage.getItem("new-project.showWelcomeScreen") || 'Y';
+        shouldShowWelcome = shouldShowWelcome === 'Y'? 'N' : 'Y';
+        localStorage.setItem("new-project.showWelcomeScreen", shouldShowWelcome);
+    });
+
+    document.getElementById("showAbout").addEventListener('click', (event)=>{
+        newProjectExtension.showAboutBox();
+    });
+
+    // Event to close dropdown if clicked outside
+    document.addEventListener('click', function(event) {
+        let dropdown = document.querySelector('.dropdown');
+        let content = dropdown.querySelector('.dropdown-content');
+        let dropbtn = dropdown.querySelector('.dropbtn');
+
+        // If the target of the click isn't the dropdown or a descendant of the dropdown
+        if (!dropdown.contains(event.target)) {
+            content.style.display = 'none';
+            dropbtn.classList.remove('dropbtnActive');
+        }
+    });
+}
+
 function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "open-folder");
@@ -166,4 +213,5 @@ function initCodeEditor() {
     _updateProjectCards();
     _showFirstTimeExperience();
     $("body").append($(`<script async defer src="https://buttons.github.io/buttons.js"></script>`));
+    _attachSettingBtnEventListeners();
 }

@@ -96,6 +96,11 @@ define(function (require, exports, module) {
 
     function init() {
         _addMenuEntries();
+        const shouldShowWelcome = localStorage.getItem("new-project.showWelcomeScreen") || 'Y';
+        if(shouldShowWelcome !== 'Y') {
+            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "disabled");
+            return;
+        }
         _showNewProjectDialogue();
     }
 
@@ -343,6 +348,10 @@ define(function (require, exports, module) {
         });
     }
 
+    function showAboutBox() {
+        CommandManager.execute(Commands.HELP_ABOUT);
+    }
+
     exports.init = init;
     exports.openFolder = openFolder;
     exports.closeDialogue = closeDialogue;
@@ -359,4 +368,5 @@ define(function (require, exports, module) {
     exports.path = Phoenix.path;
     exports.getTauriDir = Phoenix.VFS.getTauriDir;
     exports.getTauriPlatformPath = Phoenix.fs.getTauriPlatformPath;
+    exports.showAboutBox = showAboutBox;
 });
