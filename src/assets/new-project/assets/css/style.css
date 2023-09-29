@@ -1096,3 +1096,53 @@ img {
     transition: opacity 0.5s ease;
     transition-delay:0.2s;
 }
+
+.settings-icon {
+    color: #D0D0D0;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: absolute;
+    right: 25px;
+    bottom: 20px;
+}
+
+.dropbtn {
+    width: 25px;
+    height: 25px;
+    padding: 1px;
+    text-align: center;
+}
+
+.dropbtn:hover {
+    background: #202020;
+}
+
+.dropbtnActive {
+    background: #202020;
+    border: 1px solid #202020;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: relative;
+    background-color: #121314;
+    min-width: 100px;
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content div {
+    color: white;
+    padding: 3px 5px;
+    text-decoration: none;
+    text-align: left;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content div:hover {
+    background-color: #284160;
+    cursor: default;
+}
