@@ -48,7 +48,7 @@ define(function (require, exports, module) {
             })
             .appendTo($("#main-toolbar .bottom-buttons"));
         $icon.on('click', ()=>{
-            window.open(brackets.config.support_url);
+            Phoenix.app.openURLInDefaultBrowser(brackets.config.support_url);
         });
     }
     function _showUnSupportedBrowserDialogue() {

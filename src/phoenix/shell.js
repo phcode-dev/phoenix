@@ -32,12 +32,45 @@ import initTauriShell from "./tauriShell.js";
 
 initVFS();
 
+let windowLabelCount = 0;
 Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
     openURLInDefaultBrowser: function (url){
-        window.open(url, '_blank', 'noopener,noreferrer');
+        return window.open(url, '_blank', 'noopener,noreferrer');
+    },
+    openURLInPhoenixWindow: function (url, {
+        windowTitle, windowLabel, fullscreen, resizable,
+        height, minHeight, width, minWidth, acceptFirstMouse, preferTabs
+    }){
+        const defaultHeight = 900, defaultWidth = 1366;
+        if(window.__TAURI__){
+            const tauriWindow = new window.__TAURI__.window.WebviewWindow(windowLabel || `phcode-win-${windowLabelCount++}`, {
+                url,
+                title: windowTitle || windowLabel || url,
+                fullscreen,
+                resizable: resizable === undefined ? true : resizable,
+                height: height || defaultHeight,
+                minHeight: minHeight || 600,
+                width: width || defaultWidth,
+                minWidth: minWidth || 800,
+                acceptFirstMouse: acceptFirstMouse === undefined ? true : acceptFirstMouse
+            });
+            tauriWindow.isTauriWindow = true;
+            return tauriWindow;
+        }
+        let features = 'toolbar=no,location=no, status=no, menubar=no, scrollbars=yes';
+        features = `${features}, width=${width||defaultWidth}, height=${height||defaultHeight}`;
+        if(resizable === undefined || resizable){
+            features = features + ", resizable=yes";
+        }
+        if(preferTabs) {
+            features = "";
+        }
+        const nativeWindow = window.open(url, '_blank', features);
+        nativeWindow.isTauriWindow = false;
+        return nativeWindow;
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
     getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,

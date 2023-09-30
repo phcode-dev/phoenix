@@ -19,7 +19,7 @@
  *
  */
 
-/*globals path, logger*/
+/*globals path, logger, Phoenix*/
 /*jslint regexp: true */
 
 define(function (require, exports, module) {
@@ -96,7 +96,6 @@ define(function (require, exports, module) {
     });
 
     // Implements the 'Run Tests' menu to bring up the Jasmine unit test window
-    var _testWindow = null;
     function _runUnitTests(spec) {
         let queryString = spec ? "?spec=" + spec : "?suite=unit";
         let testBaseURL = "../test/SpecRunner.html";
@@ -104,16 +103,10 @@ define(function (require, exports, module) {
             // must be a deployed in phcode.dev/other sites. point to site test url
             testBaseURL = "test/SpecRunner.html";
         }
-        if (_testWindow && !_testWindow.closed) {
-            if (_testWindow.location.search !== queryString) {
-                _testWindow.location.href = testBaseURL + queryString;
-            } else {
-                _testWindow.location.reload(true);
-            }
-        } else {
-            _testWindow = window.open(testBaseURL + queryString);
-            _testWindow.location.reload(true); // if it had been opened earlier, force a reload because it will be cached
-        }
+        Phoenix.app.openURLInPhoenixWindow(testBaseURL + queryString, {
+            windowTitle: "Test Runner",
+            preferTabs: true
+        });
     }
 
     function handleReload() {
@@ -125,7 +118,7 @@ define(function (require, exports, module) {
     }
 
     function handleNewBracketsWindow() {
-        window.open(window.location.href);
+        Phoenix.app.openURLInPhoenixWindow(window.location.href);
     }
 
     function handleShowPerfData() {
@@ -725,7 +718,7 @@ define(function (require, exports, module) {
     }
 
     function _openVirtualServer() {
-        window.open(window.fsServerUrl);
+        Phoenix.app.openURLInPhoenixWindow(window.fsServerUrl);
     }
 
     function _handleShowDeveloperTools() {
