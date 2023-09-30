@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "重新加载项目作为扩展",
   "CMD_UNLOAD_CURRENT_EXTENSION": "卸载项目作为扩展",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "以无扩展模式重启",
-  "CMD_NEW_BRACKETS_WINDOW": "新建一个 {APP_NAME} 窗口",
+  "CMD_NEW_BRACKETS_WINDOW": "新窗户",
   "CMD_LAUNCH_SCRIPT_MAC": "安装命令行快捷方式",
   "CMD_SWITCH_LANGUAGE": "切换语言",
   "CMD_RUN_UNIT_TESTS": "运行测试",

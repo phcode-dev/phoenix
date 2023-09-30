@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "Projekt als Erweiterung neu laden",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Projekt als Erweiterung entladen",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Ohne Erweiterungen neu laden",
-  "CMD_NEW_BRACKETS_WINDOW": "Neues {APP_NAME}-Fenster",
+  "CMD_NEW_BRACKETS_WINDOW": "Neues Fenster",
   "CMD_LAUNCH_SCRIPT_MAC": "Kommandozeilenverknüpfung einrichten",
   "CMD_SWITCH_LANGUAGE": "Sprache wechseln",
   "CMD_RUN_UNIT_TESTS": "Tests durchführen",

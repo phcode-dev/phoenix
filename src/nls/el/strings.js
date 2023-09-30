@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "Επαναφόρτωση έργου ως επέκταση",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Κατάργηση φόρτωσης έργου ως επέκταση",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Επαναφόρτωση χωρίς τις επεκτάσεις",
-  "CMD_NEW_BRACKETS_WINDOW": "Νέο Παράθυρο {APP_NAME}",
+  "CMD_NEW_BRACKETS_WINDOW": "Νέο παράθυρο",
   "CMD_LAUNCH_SCRIPT_MAC": "Εγκατάσταση συντόμευσης για την γραμμή εντολών",
   "CMD_SWITCH_LANGUAGE": "Αλλαγή Γλώσσας",
   "CMD_RUN_UNIT_TESTS": "Τρέξε Tests",

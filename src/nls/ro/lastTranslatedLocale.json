@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Reîncărcați proiectul ca extensie",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Descărcați proiectul ca extensie",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Reîncarcă fără extensii",
-  "CMD_NEW_BRACKETS_WINDOW": "Deschide o fereastră nouă {APP_NAME}",
+  "CMD_NEW_BRACKETS_WINDOW": "Fereastră nouă",
   "CMD_LAUNCH_SCRIPT_MAC": "Instalați comanda rapidă în linia de comandă",
   "CMD_SWITCH_LANGUAGE": "Modificare Limbă",
   "CMD_RUN_UNIT_TESTS": "Rulează testele",

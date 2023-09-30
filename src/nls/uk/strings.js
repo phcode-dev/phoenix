@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "Перезавантажте проект як розширення",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Вивантажити проект як розширення",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Перезапустити без розширень",
-  "CMD_NEW_BRACKETS_WINDOW": "Нове вікно {APP_NAME}",
+  "CMD_NEW_BRACKETS_WINDOW": "Нове вікно",
   "CMD_LAUNCH_SCRIPT_MAC": "Встановити ярлик командного рядка",
   "CMD_SWITCH_LANGUAGE": "Змінити мову",
   "CMD_RUN_UNIT_TESTS": "Запустити тестування",

@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Ricarica progetto come estensione",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Scarica progetto come estensione",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Riavvia senza Estensioni",
-  "CMD_NEW_BRACKETS_WINDOW": "Nuova finestra di {APP_NAME}",
+  "CMD_NEW_BRACKETS_WINDOW": "Nuova finestra",
   "CMD_LAUNCH_SCRIPT_MAC": "Aggiungi linea di comando di Brackets",
   "CMD_SWITCH_LANGUAGE": "Cambia la lingua",
   "CMD_RUN_UNIT_TESTS": "Esegui i test",

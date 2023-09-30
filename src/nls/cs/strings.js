@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "Znovu načíst projekt jako rozšíření",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Uvolnit projekt jako rozšíření",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Restartovat bez doplňků",
-  "CMD_NEW_BRACKETS_WINDOW": "Nové okno {APP_NAME}",
+  "CMD_NEW_BRACKETS_WINDOW": "Nové okno",
   "CMD_LAUNCH_SCRIPT_MAC": "Nainstalovat zástupce do příkazové řádky",
   "CMD_SWITCH_LANGUAGE": "Změnit jazyk",
   "CMD_RUN_UNIT_TESTS": "Spustit testy",

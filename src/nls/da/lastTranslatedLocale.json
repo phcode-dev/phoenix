@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Genindlæs projekt som udvidelse",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Aflæs projekt som udvidelse",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Genindlæs uden udvidelser",
-  "CMD_NEW_BRACKETS_WINDOW": "Nyt {APP_NAME} vindue",
+  "CMD_NEW_BRACKETS_WINDOW": "Nyt vindue",
   "CMD_LAUNCH_SCRIPT_MAC": "Installer kommandolinjegenvej",
   "CMD_SWITCH_LANGUAGE": "Skift sprog",
   "CMD_RUN_UNIT_TESTS": "Kør enhedstest",

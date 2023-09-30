@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Projekt újratöltése bővítményként",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Töltse ki a projektet bővítményként",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Újratöltés bővítmények nélkül",
-  "CMD_NEW_BRACKETS_WINDOW": "Új {APP_NAME} Ablak",
+  "CMD_NEW_BRACKETS_WINDOW": "Új ablak",
   "CMD_LAUNCH_SCRIPT_MAC": "Telepítse a parancssori parancsikont",
   "CMD_SWITCH_LANGUAGE": "Nyelv változtatása",
   "CMD_RUN_UNIT_TESTS": "Tesztek Futtatása",

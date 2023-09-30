@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Reload Project As Extension",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Unload Project As Extension",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Reload Without Extensions",
-  "CMD_NEW_BRACKETS_WINDOW": "New {APP_NAME} Window",
+  "CMD_NEW_BRACKETS_WINDOW": "New Window",
   "CMD_LAUNCH_SCRIPT_MAC": "Install Command Line Shortcut",
   "CMD_SWITCH_LANGUAGE": "Switch Language",
   "CMD_RUN_UNIT_TESTS": "Run Tests",

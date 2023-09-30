@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Поново учитај пројекат као проширење",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Скини пројекат као проширење",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Поново учитај без екстензија",
-  "CMD_NEW_BRACKETS_WINDOW": "Нови {APP_NAME} прозор",
+  "CMD_NEW_BRACKETS_WINDOW": "Нови прозор",
   "CMD_LAUNCH_SCRIPT_MAC": "Инсталирајте пречицу командне линије",
   "CMD_SWITCH_LANGUAGE": "Промени језик",
   "CMD_RUN_UNIT_TESTS": "Изврши тестове",

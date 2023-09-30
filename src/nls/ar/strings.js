@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "إعادة تحميل المشروع كامتداد",
   "CMD_UNLOAD_CURRENT_EXTENSION": "تفريغ المشروع كامتداد",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "إعادة التحميل بدون ملحقات",
-  "CMD_NEW_BRACKETS_WINDOW": "نافذة {APP_NAME} جديدة",
+  "CMD_NEW_BRACKETS_WINDOW": "نافذة جديدة",
   "CMD_LAUNCH_SCRIPT_MAC": "تثبيت اختصار سطر الأوامر",
   "CMD_SWITCH_LANGUAGE": "تبديل اللغة",
   "CMD_RUN_UNIT_TESTS": "تشغيل الاختبارات",

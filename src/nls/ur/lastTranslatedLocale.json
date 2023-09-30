@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "توسیع کے طور پر پروجیکٹ کو دوبارہ لوڈ کریں۔",
   "CMD_UNLOAD_CURRENT_EXTENSION": "ایکسٹینشن کے بطور پروجیکٹ ان لوڈ کریں۔",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "ایکسٹینشن کے بغیر دوبارہ لوڈ کریں۔",
-  "CMD_NEW_BRACKETS_WINDOW": "نئی {APP_NAME} ونڈو",
+  "CMD_NEW_BRACKETS_WINDOW": "نئی کھڑکی",
   "CMD_LAUNCH_SCRIPT_MAC": "کمانڈ لائن شارٹ کٹ انسٹال کریں۔",
   "CMD_SWITCH_LANGUAGE": "زبان سوئچ کریں۔",
   "CMD_RUN_UNIT_TESTS": "ٹیسٹ چلائیں۔",
