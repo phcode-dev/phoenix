@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "بارگذاری مجدد پروژه به عنوان پسوند",
   "CMD_UNLOAD_CURRENT_EXTENSION": "بارگیری پروژه به عنوان پسوند",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "بارگذاری مجدد بدون افزونه ها",
-  "CMD_NEW_BRACKETS_WINDOW": "پنجره جدید از {APP_NAME} باز کنید.",
+  "CMD_NEW_BRACKETS_WINDOW": "پنجره جدید",
   "CMD_LAUNCH_SCRIPT_MAC": "میانبر خط فرمان را نصب کنید",
   "CMD_SWITCH_LANGUAGE": "تغییر زبان",
   "CMD_RUN_UNIT_TESTS": "بررسی برای اجرا",

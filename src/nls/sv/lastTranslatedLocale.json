@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Ladda om projektet som tillägg",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Ladda ur projekt som tillägg",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Starta om utan tillägg",
-  "CMD_NEW_BRACKETS_WINDOW": "Nytt {APP_NAME}-fönster",
+  "CMD_NEW_BRACKETS_WINDOW": "Nytt fönster",
   "CMD_LAUNCH_SCRIPT_MAC": "Installera genväg i kommandotolk",
   "CMD_SWITCH_LANGUAGE": "Byt språk",
   "CMD_RUN_UNIT_TESTS": "Kör tester",

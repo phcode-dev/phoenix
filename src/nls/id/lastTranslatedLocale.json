@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Muat Ulang Proyek Sebagai Ekstensi",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Bongkar Proyek Sebagai Ekstensi",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Muat Ulang Tanpa Ekstensi",
-  "CMD_NEW_BRACKETS_WINDOW": "Jendela {APP_NAME} Baru",
+  "CMD_NEW_BRACKETS_WINDOW": "Jendela baru",
   "CMD_LAUNCH_SCRIPT_MAC": "Instal Pintasan Baris Perintah",
   "CMD_SWITCH_LANGUAGE": "Ganti Bahasa",
   "CMD_RUN_UNIT_TESTS": "Jalankan Tes",

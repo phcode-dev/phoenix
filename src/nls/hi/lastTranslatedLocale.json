@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "एक्सटेंशन के रूप में प्रोजेक्ट को रीलोड करें",
   "CMD_UNLOAD_CURRENT_EXTENSION": "एक्सटेंशन के रूप में प्रोजेक्ट को अनलोड करें",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "एक्सटेंशन के बिना पुनः लोड करें",
-  "CMD_NEW_BRACKETS_WINDOW": "नई {APP_NAME} विंडो",
+  "CMD_NEW_BRACKETS_WINDOW": "नई विंडो",
   "CMD_LAUNCH_SCRIPT_MAC": "कमांड लाइन शॉर्टकट स्थापित करें",
   "CMD_SWITCH_LANGUAGE": "भाषा बदलें",
   "CMD_RUN_UNIT_TESTS": "परीक्षण चलाएं",

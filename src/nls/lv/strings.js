@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "Pārlādēt projektu kā paplašinājumu",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Izlādēt projektu kā paplašinājumu",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Pārlādēt bez paplašinājumiem",
-  "CMD_NEW_BRACKETS_WINDOW": "Jauns {APP_NAME} logs",
+  "CMD_NEW_BRACKETS_WINDOW": "Jauns logs",
   "CMD_LAUNCH_SCRIPT_MAC": "Instalēt komandrindas saīsni",
   "CMD_SWITCH_LANGUAGE": "Pārslēgt valodu",
   "CMD_RUN_UNIT_TESTS": "Palaist testus",

@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "Ponovno učitaj projekt kao proširenje",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Učitaj projekt kao proširenje",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Ponovo učitaj bez ekstenzija",
-  "CMD_NEW_BRACKETS_WINDOW": "Novi {APP_NAME} Prozor",
+  "CMD_NEW_BRACKETS_WINDOW": "Novi prozor",
   "CMD_LAUNCH_SCRIPT_MAC": "Instalirajte prečac naredbenog retka",
   "CMD_SWITCH_LANGUAGE": "Promjeni Jezik",
   "CMD_RUN_UNIT_TESTS": "Testiraj",

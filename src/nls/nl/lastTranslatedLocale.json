@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Project opnieuw laden als extensie",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Project als extensie uitladen",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Laad opnieuw zonder extensies",
-  "CMD_NEW_BRACKETS_WINDOW": "Nieuw {APP_NAME} venster",
+  "CMD_NEW_BRACKETS_WINDOW": "Nieuw raam",
   "CMD_LAUNCH_SCRIPT_MAC": "Installeer {APP_NAME} in de opdrachtprompt",
   "CMD_SWITCH_LANGUAGE": "Wijzig taal",
   "CMD_RUN_UNIT_TESTS": "Start testen",

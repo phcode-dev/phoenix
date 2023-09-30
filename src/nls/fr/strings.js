@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "Recharger le projet en tant qu'extension",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Décharger le projet en tant qu'extension",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Recharger sans les extensions",
-  "CMD_NEW_BRACKETS_WINDOW": "Nouvelle fenêtre {APP_NAME}",
+  "CMD_NEW_BRACKETS_WINDOW": "Nouvelle fenetre",
   "CMD_LAUNCH_SCRIPT_MAC": "Installer le raccourci de ligne de commande",
   "CMD_SWITCH_LANGUAGE": "Changer de langue",
   "CMD_RUN_UNIT_TESTS": "Exécuter des tests",

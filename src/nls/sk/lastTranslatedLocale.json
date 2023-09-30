@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Znova načítať projekt ako rozšírenie",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Uvoľniť projekt ako rozšírenie",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Znova načítať bez rozšírení",
-  "CMD_NEW_BRACKETS_WINDOW": "Nové {APP_NAME} okno",
+  "CMD_NEW_BRACKETS_WINDOW": "Nové okno",
   "CMD_LAUNCH_SCRIPT_MAC": "Nainštalujte skratku príkazového riadka",
   "CMD_SWITCH_LANGUAGE": "Zmeniť jazyk",
   "CMD_RUN_UNIT_TESTS": "Spustiť testy",

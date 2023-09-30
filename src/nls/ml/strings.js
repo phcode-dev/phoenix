@@ -562,7 +562,7 @@ define({
   "CMD_RELOAD_CURRENT_EXTENSION": "വിപുലീകരണമായി പ്രോജക്റ്റ് റീലോഡ് ചെയ്യുക",
   "CMD_UNLOAD_CURRENT_EXTENSION": "വിപുലീകരണമായി പ്രോജക്റ്റ് അൺലോഡ് ചെയ്യുക",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "വിപുലീകരണങ്ങളില്ലാതെ വീണ്ടും ലോഡുചെയ്യുക",
-  "CMD_NEW_BRACKETS_WINDOW": "പുതിയ {APP_NAME} വിൻഡോ",
+  "CMD_NEW_BRACKETS_WINDOW": "പുതിയ വിൻഡോ",
   "CMD_LAUNCH_SCRIPT_MAC": "കമാൻഡ് ലൈൻ കുറുക്കുവഴി ഇൻസ്റ്റാൾ ചെയ്യുക",
   "CMD_SWITCH_LANGUAGE": "ഭാഷ മാറുക",
   "CMD_RUN_UNIT_TESTS": "ടെസ്റ്റുകൾ പ്രവർത്തിപ്പിക്കുക",

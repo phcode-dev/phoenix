@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "プロジェクトを拡張子としてリロード",
   "CMD_UNLOAD_CURRENT_EXTENSION": "プロジェクトを拡張子としてアンロード",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "拡張機能なしでリロード",
-  "CMD_NEW_BRACKETS_WINDOW": "新しい {APP_NAME} ウィンドウ",
+  "CMD_NEW_BRACKETS_WINDOW": "新しい窓",
   "CMD_LAUNCH_SCRIPT_MAC": "コマンドラインショートカットをインストール",
   "CMD_SWITCH_LANGUAGE": "言語を切り替える",
   "CMD_RUN_UNIT_TESTS": "テストを実行",

@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Перезагрузить проект как расширение",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Выгрузить проект как расширение",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Перезагрузить без расширений",
-  "CMD_NEW_BRACKETS_WINDOW": "Новое окно {APP_NAME}",
+  "CMD_NEW_BRACKETS_WINDOW": "Новое окно",
   "CMD_LAUNCH_SCRIPT_MAC": "Установить ярлык командной строки",
   "CMD_SWITCH_LANGUAGE": "Изменить язык",
   "CMD_RUN_UNIT_TESTS": "Запустить тесты",

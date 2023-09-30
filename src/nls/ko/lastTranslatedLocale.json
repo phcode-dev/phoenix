@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "확장 프로그램으로 프로젝트 다시 로드",
   "CMD_UNLOAD_CURRENT_EXTENSION": "확장 프로그램으로 프로젝트 언로드",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "확장 기능 없이 재시작",
-  "CMD_NEW_BRACKETS_WINDOW": "새로운 {APP_NAME} 창",
+  "CMD_NEW_BRACKETS_WINDOW": "새창",
   "CMD_LAUNCH_SCRIPT_MAC": "명령 줄 바로가기 설치",
   "CMD_SWITCH_LANGUAGE": "언어 변경",
   "CMD_RUN_UNIT_TESTS": "테스트 실행",

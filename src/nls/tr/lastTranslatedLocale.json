@@ -542,7 +542,7 @@
   "CMD_RELOAD_CURRENT_EXTENSION": "Projeyi Uzantı Olarak Yeniden Yükle",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Projeyi Uzantı Olarak Kaldır",
   "CMD_RELOAD_WITHOUT_USER_EXTS": "Eklentiler Olmadan Yeniden Yükle",
-  "CMD_NEW_BRACKETS_WINDOW": "Yeni {APP_NAME} Ekranı",
+  "CMD_NEW_BRACKETS_WINDOW": "Yeni Pencere",
   "CMD_LAUNCH_SCRIPT_MAC": "Komut Satırı Kısayolunu Yükle",
   "CMD_SWITCH_LANGUAGE": "Dili değiştir",
   "CMD_RUN_UNIT_TESTS": "Testleri Çalıştır",
