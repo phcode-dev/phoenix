@@ -1605,6 +1605,16 @@ define(function (require, exports, module) {
         );
     }
 
+    function handleFileNewWindow() {
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        brackets.app.openURLInPhoenixWindow(location.href, {
+            width,
+            height,
+            preferTabs: true
+        });
+    }
+
     /** Show a textfield to rename whatever is currently selected in the sidebar (or current doc if nothing else selected) */
     function handleFileRename() {
         // Prefer selected sidebar item (which could be a folder)
@@ -1938,6 +1948,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_PREV_DOC_LIST_ORDER,         Commands.NAVIGATE_PREV_DOC_LIST_ORDER,   handleGoPrevDocListOrder);
 
     // Special Commands
+    CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,         Commands.FILE_NEW_WINDOW,                handleFileNewWindow);
     CommandManager.register(quitString,                              Commands.FILE_QUIT,                      handleFileQuit);
     CommandManager.register(Strings.CMD_SHOW_IN_TREE,                Commands.NAVIGATE_SHOW_IN_FILE_TREE,     handleShowInTree);
 

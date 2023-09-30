@@ -64,6 +64,7 @@ define(function (require, exports, module) {
     exports.FILE_OPEN_KEYMAP            = "file.openKeyMap";            // KeyBindingManager.js         _openUserKeyMap()
 
     // File shell callbacks - string must MATCH string in native code (appshell/command_callbacks.h)
+    exports.FILE_NEW_WINDOW             = "file.new_window";            // DocumentCommandHandlers.js   handleFileNewWindow()
     exports.FILE_CLOSE_WINDOW           = "file.close_window";          // DocumentCommandHandlers.js   handleFileCloseWindow()
     exports.FILE_QUIT                   = "file.quit";                  // DocumentCommandHandlers.js   handleFileQuit()
 
