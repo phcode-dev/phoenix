@@ -33,20 +33,44 @@ import initTauriShell from "./tauriShell.js";
 initVFS();
 
 let windowLabelCount = 0;
+// create a unique prefix for each window so that it doesnt collide with
+// new window from other phoenix windows in same app session.
+const labelPrefix = `phcode-${crypto.randomUUID().split("-")[0]}`;
 Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
     openURLInDefaultBrowser: function (url){
-        return window.open(url, '_blank', 'noopener,noreferrer');
+        return new Promise((resolve, reject)=>{
+            if(!window.__TAURI__) {
+                resolve(window.open(url, '_blank', 'noopener,noreferrer'));
+                return;
+            }
+            if( !(url.toLowerCase().startsWith("http://") || url.toLowerCase().startsWith("https://")) ) {
+                reject("openURLInDefaultBrowser: URL should be http or https, but was " + url);
+                return;
+            }
+            window.__TAURI__.shell.open(url)
+                .then(resolve)
+                .catch(reject);
+        });
     },
     openURLInPhoenixWindow: function (url, {
         windowTitle, windowLabel, fullscreen, resizable,
         height, minHeight, width, minWidth, acceptFirstMouse, preferTabs
-    }){
+    } = {}){
         const defaultHeight = 900, defaultWidth = 1366;
         if(window.__TAURI__){
-            const tauriWindow = new window.__TAURI__.window.WebviewWindow(windowLabel || `phcode-win-${windowLabelCount++}`, {
+            let tauriWindow;
+            if(windowLabel) {
+                tauriWindow = window.__TAURI__.window.WebviewWindow.getByLabel(windowLabel);
+                if(tauriWindow) {
+                    console.error(`An existing window already exists for windowLabel:${windowLabel}, please close window and call openURLInPhoenixWindow!`);
+                    return tauriWindow;
+                }
+            }
+
+            tauriWindow = new window.__TAURI__.window.WebviewWindow(windowLabel || `${labelPrefix}-${windowLabelCount++}`, {
                 url,
                 title: windowTitle || windowLabel || url,
                 fullscreen,
@@ -68,7 +92,7 @@ Phoenix.app = {
         if(preferTabs) {
             features = "";
         }
-        const nativeWindow = window.open(url, '_blank', features);
+        const nativeWindow = window.open(url, windowLabel||'_blank', features);
         nativeWindow.isTauriWindow = false;
         return nativeWindow;
     },

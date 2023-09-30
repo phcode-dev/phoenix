@@ -53,7 +53,8 @@ function _setupVFS(fsLib, pathLib){
          * @param fullPath
          */
         isLocalDiscPath: function (fullPath) {
-            if(fullPath && fullPath.startsWith(Phoenix.VFS.getMountDir())){
+            if(fullPath &&
+                (fullPath.startsWith(Phoenix.VFS.getTauriDir()) || fullPath.startsWith(Phoenix.VFS.getMountDir()) )){
                 return true;
             }
             return false;

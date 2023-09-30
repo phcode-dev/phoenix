@@ -2,6 +2,12 @@
     "file.newFile":  [
         "Alt-N"
     ],
+    "file.newFolder":  [
+        "Ctrl-Alt-N"
+    ],
+    "file.new_window":  [
+        "Alt-Shift-N"
+    ],
     "file.open":  [
         "Ctrl-O"
     ],
@@ -36,6 +42,9 @@
     ],
     "file.quit":  [
         "Ctrl-Q"
+    ],
+    "file.duplicateFile": [
+        "Alt-Shift-D"
     ],
     "edit.undo": [
         "Ctrl-Z"
@@ -331,9 +340,6 @@
             "key": "Alt-Down",
             "displayKey": "Alt-↓"
         }
-    ],
-    "navigate.newRule":  [
-        "Ctrl-Alt-N"
     ],
     "file.rename":  [
         "Shift-F2"

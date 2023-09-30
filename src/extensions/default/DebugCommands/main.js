@@ -74,7 +74,6 @@ define(function (require, exports, module) {
         DEBUG_RUN_UNIT_TESTS                  = "debug.runUnitTests",
         DEBUG_SHOW_PERF_DATA                  = "debug.showPerfData",
         DEBUG_RELOAD_WITHOUT_USER_EXTS        = "debug.reloadWithoutUserExts",
-        DEBUG_NEW_BRACKETS_WINDOW             = "debug.newBracketsWindow",
         DEBUG_SWITCH_LANGUAGE                 = "debug.switchLanguage",
         DEBUG_ENABLE_LOGGING                  = "debug.enableLogging",
         DEBUG_LIVE_PREVIEW_LOGGING            = "debug.livePreviewLogging",
@@ -115,10 +114,6 @@ define(function (require, exports, module) {
 
     function handleReloadWithoutUserExts() {
         CommandManager.execute(Commands.APP_RELOAD_WITHOUT_EXTS);
-    }
-
-    function handleNewBracketsWindow() {
-        Phoenix.app.openURLInPhoenixWindow(window.location.href);
     }
 
     function handleShowPerfData() {
@@ -718,7 +713,9 @@ define(function (require, exports, module) {
     }
 
     function _openVirtualServer() {
-        Phoenix.app.openURLInPhoenixWindow(window.fsServerUrl);
+        Phoenix.app.openURLInPhoenixWindow(window.fsServerUrl, {
+            preferTabs: true
+        });
     }
 
     function _handleShowDeveloperTools() {
@@ -734,7 +731,6 @@ define(function (require, exports, module) {
         extensionDevelopment.unloadCurrentExtension);
     CommandManager.register(Strings.CMD_REFRESH_WINDOW,             DEBUG_REFRESH_WINDOW,           handleReload);
     CommandManager.register(Strings.CMD_RELOAD_WITHOUT_USER_EXTS,   DEBUG_RELOAD_WITHOUT_USER_EXTS, handleReloadWithoutUserExts);
-    CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,        DEBUG_NEW_BRACKETS_WINDOW,      handleNewBracketsWindow);
 
     // Start with the "Run Tests" item disabled. It will be enabled later if the test file can be found.
     CommandManager.register(Strings.CMD_RUN_UNIT_TESTS,       DEBUG_RUN_UNIT_TESTS,         _runUnitTests);
@@ -767,7 +763,6 @@ define(function (require, exports, module) {
     menu.addMenuItem(DEBUG_UNLOAD_CURRENT_EXTENSION, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
-    menu.addMenuItem(DEBUG_NEW_BRACKETS_WINDOW);
     menu.addMenuDivider();
     menu.addMenuItem(DEBUG_SWITCH_LANGUAGE);
     menu.addMenuDivider();

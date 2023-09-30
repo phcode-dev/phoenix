@@ -68,6 +68,8 @@ define(function (require, exports, module) {
         menu = Menus.addMenu(Strings.FILE_MENU, Menus.AppMenuBar.FILE_MENU);
         menu.addMenuItem(Commands.FILE_NEW);
         menu.addMenuItem(Commands.FILE_NEW_FOLDER);
+        menu.addMenuItem(Commands.FILE_NEW_WINDOW);
+        menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_OPEN_FOLDER);
         menu.addMenuItem(Commands.FILE_CLOSE);
         menu.addMenuItem(Commands.FILE_CLOSE_ALL);
