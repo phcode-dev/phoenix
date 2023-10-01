@@ -201,7 +201,70 @@
     tr:nth-child(even) {
       background-color: #dddddd;
     }
+
+    #phoenixIframeContainer {
+      position: absolute;
+      right: 10px;
+      bottom: 40px;
+      width: 1366px;
+      height: 900px;
+    }
+
+    .phoenixIframe{
+      width: 100%;
+      height: 100%;
+    }
+
+    #phoenixControlBar{
+      display: flex;
+      justify-content: end;
+      background-color: darkslateblue;
+    }
   </style>
+
+  <script>
+
+    function openIframeRunner(pageURL) {
+      _disposeIframeRunner();
+
+      let iframe = document.createElement('iframe');
+      iframe.src = pageURL;
+      iframe.className = "phoenixIframe";
+
+      let container = document.getElementById('phoenixIframeContainer');
+      container.classList.remove("forced-hidden");
+      container.appendChild(iframe);
+    }
+    function closeIframeRunner() {
+      _disposeIframeRunner();
+      document.getElementById("phoenixIframeContainer").classList.add("forced-hidden");
+    }
+
+    function _reloadIframeRunner() {
+      _disposeIframeRunner();
+      let container = document.getElementById('phoenixIframeContainer');
+      let existingIframes = container.getElementsByClassName('phoenixIframe');
+      let iframe = document.createElement('iframe');
+
+      if (existingIframes.length > 0) {
+        iframe.src = existingIframes[0].src;
+      } else {
+        iframe.src = "../src";
+      }
+
+      iframe.className = "phoenixIframe";
+      container.appendChild(iframe);
+    }
+
+    function _disposeIframeRunner() {
+      let container = document.getElementById('phoenixIframeContainer');
+      let iframes = container.querySelectorAll('iframe.phoenixIframe');
+
+      iframes.forEach(iframe => {
+        iframe.remove();
+      });
+    }
+  </script>
 </head>
 
 <body style="user-select: text !important; display: flex">
@@ -241,6 +304,15 @@
     <div id="loading" style="display: none; margin-top: 100px;">
       Please run <code>npm run build</code> before starting tests at least once or if you are facing issues.
       </p>Extracting test files <span id="loadProgressMessage"></span>.... <img src="../src/styles/images/throbber.gif" alt=".......">
+    </div>
+    <div id="phoenixIframeContainer" class="forced-hidden">
+      <div id="phoenixControlBar">
+        <button onclick="_reloadIframeRunner()">Reload</button>
+        &nbsp;&nbsp;&nbsp;
+        <button onclick="_disposeIframeRunner()">Dispose</button>
+        &nbsp;&nbsp;&nbsp;
+        <button onclick="closeIframeRunner()">x</button>
+      </div>
     </div>
     <div id="mock-main-view" style="position:absolute; height:1000px; width:1000px; left:-10000px; top:-10000px;"></div>
     <div id="toast-notification-container">

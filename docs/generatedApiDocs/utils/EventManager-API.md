@@ -130,7 +130,7 @@ exports.on("iframeHelloEvent", function(_ev, event){
 });
 
 // Now from your iframe, send a message to the above event handler using:
-window.top.postMessage({
+window.parent.postMessage({
     handlerName: "<extensionName>-iframeMessageHandler",
     eventName: "iframeHelloEvent",
     message: "hello world"
