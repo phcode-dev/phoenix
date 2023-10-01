@@ -53,7 +53,7 @@ define(function (require, exports, module) {
                 EVENT_NAME = "iframeHelloEvent",
                 TEST_MESSAGE = 'world';
             const SRC_DOC = `<html><head><script>
-                window.top.postMessage({
+                window.parent.postMessage({
                       handlerName: "${HANDLER_NAME}",
                       eventName: "${EVENT_NAME}",
                       message: {hello: "${TEST_MESSAGE}"}
