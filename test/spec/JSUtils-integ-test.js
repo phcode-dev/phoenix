@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone */
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone,beforeAll */
 
 define(function (require, exports, module) {
 
@@ -37,6 +37,10 @@ define(function (require, exports, module) {
 
         var functions;  // populated by indexAndFind()
 
+        beforeAll(async function () {
+            await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+        }, 30000);
+
         beforeEach(async function () {
             let testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             var brackets        = testWindow.brackets;
@@ -48,13 +52,13 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
 
-        afterEach(function () {
+        afterEach(async function () {
             DocumentManager     = null;
             FileViewController  = null;
             JSUtils             = null;
             ProjectManager      = null;
-            SpecRunnerUtils.closeTestWindow();
-        });
+            await SpecRunnerUtils.closeTestWindow();
+        }, 30000);
 
         async function init(fileName) {
             await awaitsForDone(

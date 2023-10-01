@@ -60,7 +60,7 @@ define(function (require, exports, module) {
         }
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             // Load module instances from brackets.test
             CodeHintManager     = testWindow.brackets.test.CodeHintManager;
             EditorManager       = testWindow.brackets.test.EditorManager;
@@ -75,7 +75,7 @@ define(function (require, exports, module) {
             CommandManager      = null;
             KeyBindingManager   = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         afterEach(function () {
             testWindow.closeAllFiles();

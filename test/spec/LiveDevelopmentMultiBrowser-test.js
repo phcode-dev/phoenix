@@ -73,16 +73,16 @@ define(function (require, exports, module) {
             }
         });
 
-        afterAll(function () {
+        afterAll(async function () {
             LiveDevMultiBrowser.close();
-            SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.closeTestWindow();
             testWindow = null;
             brackets = null;
             LiveDevMultiBrowser = null;
             CommandManager      = null;
             Commands            = null;
             EditorManager       = null;
-        });
+        }, 30000);
 
         async function endPreviewSession() {
             LiveDevMultiBrowser.close();

@@ -234,6 +234,7 @@
       let container = document.getElementById('phoenixIframeContainer');
       container.classList.remove("forced-hidden");
       container.appendChild(iframe);
+      return iframe;
     }
     function closeIframeRunner() {
       _disposeIframeRunner();

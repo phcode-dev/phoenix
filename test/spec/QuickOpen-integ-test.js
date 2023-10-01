@@ -51,7 +51,7 @@ define(function (require, exports, module) {
             EditorManager   = null;
             DocumentManager = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         function getSearchBar() {
             return test$(".modal-bar");

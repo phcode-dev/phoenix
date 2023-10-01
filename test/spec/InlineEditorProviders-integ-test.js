@@ -233,7 +233,7 @@ define(function (require, exports, module) {
                 await awaitsForDone(rewriteProject(), "rewriteProject timeout", 1000);
 
                 // Create a new window that will be shared by ALL tests in this spec.
-                testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+                testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
                 // Load module instances from brackets.test
                 CommandManager      = testWindow.brackets.test.CommandManager;
                 Commands            = testWindow.brackets.test.Commands;
@@ -255,7 +255,7 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.closeTestWindow();
 
                 await SpecRunnerUtils.removeTempDirectory();
-            });
+            }, 30000);
 
             beforeEach(async function () {
                 await SpecRunnerUtils.loadProjectInTestWindow(tempPath);
@@ -1372,7 +1372,7 @@ define(function (require, exports, module) {
             }
 
             beforeEach(async function () {
-                testWindow  = await SpecRunnerUtils.createTestWindowAndRun();
+                testWindow  = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
                 let mock = SpecRunnerUtils.createMockEditor("");
 
                 Commands            = testWindow.brackets.test.Commands;
@@ -1387,7 +1387,7 @@ define(function (require, exports, module) {
                 };
 
                 testMainViewManager._edit(testMainViewManager.ACTIVE_PANE, testDoc);
-            });
+            }, 30000);
 
             afterEach(async function () {
                 await SpecRunnerUtils.destroyMockEditor(testDoc);
@@ -1398,7 +1398,7 @@ define(function (require, exports, module) {
                 testDoc             = null;
                 testMainViewManager = null;
                 testDocumentManager = null;
-            });
+            }, 30000);
 
 
             it("should prefer positive higher priority providers (1)", async function () {

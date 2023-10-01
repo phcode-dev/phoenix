@@ -65,7 +65,7 @@ define(function (require, exports, module) {
             EditorManager       = null;
             FileViewController  = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
 
         function getEditors() {

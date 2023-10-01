@@ -40,7 +40,7 @@ define(function (require, exports, module) {
             $;
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             $ = testWindow.$;
 
             // Load module instances from brackets.test
@@ -64,7 +64,7 @@ define(function (require, exports, module) {
             MainViewManager = null;
             await SpecRunnerUtils.closeTestWindow();
             testWindow = null;
-        });
+        }, 30000);
 
         afterEach(function () {
             testWindow.closeAllFiles();

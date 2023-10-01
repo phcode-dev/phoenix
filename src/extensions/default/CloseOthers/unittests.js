@@ -105,7 +105,7 @@ define(function (require, exports, module) {
             brackets      = null;
             EditorManager = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
 
         async function runCloseOthers() {

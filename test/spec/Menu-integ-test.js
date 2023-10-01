@@ -52,7 +52,7 @@ define(function (require, exports, module) {
             KeyBindingManager = null;
             Menus             = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         describe("Add Menus", function () {
 

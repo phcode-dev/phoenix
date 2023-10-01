@@ -72,7 +72,7 @@ define(function (require, exports, module) {
             ProjectManager  = null;
             FileSystem      = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         describe("Opening and closing Images", function () {
             it("should open an image", async function () {

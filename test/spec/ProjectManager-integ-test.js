@@ -49,7 +49,7 @@ define(function (require, exports, module) {
 
             await awaitsForDone(SpecRunnerUtils.rename(tempDir + "/git/", tempDir + "/.git/"), "move files");
 
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
 
             // Load module instances from brackets.test
             brackets       = testWindow.brackets;
@@ -58,7 +58,7 @@ define(function (require, exports, module) {
             FileSystem     = testWindow.brackets.test.FileSystem;
 
             await SpecRunnerUtils.loadProjectInTestWindow(tempDir);
-        });
+        }, 30000);
 
         afterAll(async function () {
             testWindow     = null;
@@ -67,7 +67,7 @@ define(function (require, exports, module) {
             CommandManager = null;
             await SpecRunnerUtils.closeTestWindow();
             await SpecRunnerUtils.removeTempDirectory();
-        });
+        }, 30000);
 
         afterEach(function () {
             testWindow.closeAllFiles();

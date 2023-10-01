@@ -42,7 +42,7 @@ define(function (require, exports, module) {
     describe("integration:PhoenixComm", function () {
 
         async function _initTestWindow() {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             brackets            = testWindow.brackets;
             FileViewController  = brackets.test.FileViewController;
             ProjectManager      = brackets.test.ProjectManager;
@@ -63,10 +63,10 @@ define(function (require, exports, module) {
             await _initTestWindow();
         }, 30000);
 
-        function _closeTestWindow() {
+        async function _closeTestWindow(force) {
             if(testWindow){
                 // comment out below line if you want to debug the test window post running tests
-                SpecRunnerUtils.closeTestWindow();
+                await SpecRunnerUtils.closeTestWindow(force);
             }
             FileViewController  = null;
             ProjectManager      = null;
@@ -74,9 +74,9 @@ define(function (require, exports, module) {
             brackets = null;
         }
 
-        afterAll(function () {
-            _closeTestWindow();
-        });
+        afterAll(async function () {
+            await _closeTestWindow();
+        }, 30000);
 
         it("Should Not have self instance details in Phoenix comm", async function () { // #2813
             let instanceDetails = PhoenixCommSpecRunner.getAllInstanceDetails();
@@ -101,16 +101,15 @@ define(function (require, exports, module) {
         it("Should remove references from self once test window is closed", async function () { // #2813
             let instanceDetailsAtSpecRunner = PhoenixCommSpecRunner.getAllInstanceDetails();
             let testWindowInstanceID = PhoenixComm.PHOENIX_INSTANCE_ID;
-            _closeTestWindow();
-            await awaits(500);
+            await _closeTestWindow(true);
             // check if we dont the instance details of the test window
+            instanceDetailsAtSpecRunner = PhoenixCommSpecRunner.getAllInstanceDetails();
             expect(instanceDetailsAtSpecRunner[testWindowInstanceID]).not.toBeDefined();
-            await _initTestWindow();
-        });
+        }, 30000);
 
         it("Should update references from self once test window reloaded", async function () { // #2813
             let oldTestWindowInstanceID = PhoenixComm.PHOENIX_INSTANCE_ID;
-            _closeTestWindow();
+            await _closeTestWindow(true);
             await _initTestWindow();
             await awaits(500);
 
@@ -129,7 +128,7 @@ define(function (require, exports, module) {
                 instanceID: PhoenixCommSpecRunner.PHOENIX_INSTANCE_ID,
                 isTestWindow: true
             });
-        });
+        }, 30000);
 
     });
 });

@@ -93,7 +93,7 @@ define(function (require, exports, module) {
             PreferencesManager  = null;
             await SpecRunnerUtils.closeTestWindow();
             await SpecRunnerUtils.removeTempDirectory();
-        });
+        }, 30000);
 
         async function openProject(sourcePath) {
             testPath = sourcePath;

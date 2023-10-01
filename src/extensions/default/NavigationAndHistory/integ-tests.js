@@ -52,8 +52,8 @@ define(function (require, exports, module) {
             await awaitsForDone(promise, "Remove " + pathToDel, 5000);
         }
 
-        async function loadTestWindow() {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+        async function loadTestWindow(force) {
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun(force);
             brackets            = testWindow.brackets;
             $                   = testWindow.$;
             FileViewController  = brackets.test.FileViewController;
@@ -68,7 +68,7 @@ define(function (require, exports, module) {
         }
 
         beforeAll(async function () {
-            await loadTestWindow();
+            await loadTestWindow(true);
         }, 30000);
 
         afterAll(async function () {
@@ -79,7 +79,7 @@ define(function (require, exports, module) {
             await deletePath(testPath);
             await deletePath(tempRestorePath);
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         beforeEach(async function () {
             await deletePath(testPath);
@@ -160,8 +160,8 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath + "toDelete1/file.js", false);
 
             // backup is now present, reload the project
-            await SpecRunnerUtils.closeTestWindow();
-            await loadTestWindow();
+            await SpecRunnerUtils.closeTestWindow(true);
+            await loadTestWindow(true);
             testWindow._FileRecoveryExtensionForTests.initWith(100,
                 FileSystem.getDirectoryForPath(tempRestorePath));
             await awaitsFor(()=>{
@@ -176,7 +176,7 @@ define(function (require, exports, module) {
                 return editor && editor.document.getText() === unsavedText;
             }, "waiting for restore notification", 5000);
             await closeSession();
-        }, 10000);
+        }, 30000);
 
         // below project switch test case is flakey. need to fix. disable for now.
         // it("Should show restore on project switch", async function () {

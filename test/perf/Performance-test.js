@@ -73,15 +73,15 @@ define(function (require, exports, module) {
             }
         }, 30000);
 
-        afterEach(function () {
+        afterEach(async function () {
             testWindow              = null;
             CommandManager          = null;
             Commands                = null;
             DocumentCommandHandlers = null;
             DocumentManager         = null;
             PerfUtils               = null;
-            SpecRunnerUtils.closeTestWindow();
-        });
+            await SpecRunnerUtils.closeTestWindow();
+        }, 30000);
 
 
         // TODO: right now these are in a single test because performance results are

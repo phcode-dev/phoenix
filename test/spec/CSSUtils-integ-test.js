@@ -51,7 +51,7 @@ define(function (require, exports, module) {
             DocumentManager     = null;
             FileViewController  = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         afterEach(function () {
             testWindow.closeAllFiles();

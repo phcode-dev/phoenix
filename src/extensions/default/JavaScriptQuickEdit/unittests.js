@@ -122,7 +122,7 @@ define(function (require, exports, module) {
                 CommandManager      = null;
                 JSUtils             = null;
                 await SpecRunnerUtils.closeTestWindow();
-            });
+            }, 30000);
 
             it("should ignore tokens that are not function calls or references", async function () {
                 var editor,
@@ -435,7 +435,7 @@ define(function (require, exports, module) {
             EditorManager   = null;
             PerfUtils       = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         it("should open inline editors", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
