@@ -68,7 +68,7 @@ define(function (require, exports, module) {
             FindInFilesUI = null;
             CommandManager = null;
             $ = null;
-            await SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.closeTestWindow(true);
         }
 
         // These helper functions are slight variations of the ones in FindInFiles, so need to be

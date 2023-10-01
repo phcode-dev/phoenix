@@ -40,7 +40,7 @@ define(function (require, exports, module) {
     describe("integration:Template for integration tests", function () {
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             brackets            = testWindow.brackets;
             FileViewController  = brackets.test.FileViewController;
             ProjectManager      = brackets.test.ProjectManager;
@@ -51,14 +51,14 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
 
-        afterAll(function () {
+        afterAll(async function () {
             FileViewController  = null;
             ProjectManager      = null;
             testWindow = null;
             brackets = null;
             // comment out below line if you want to debug the test window post running tests
-            SpecRunnerUtils.closeTestWindow();
-        });
+            await SpecRunnerUtils.closeTestWindow();
+        }, 30000);
 
         it("Should open file in project", async function () { // #2813
             await awaitsForDone(

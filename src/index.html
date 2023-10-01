@@ -34,6 +34,12 @@
     <meta name="msapplication-TileColor" content="#47484B">
     <title>Phoenix Code</title>
 
+    <script>
+        if(!window.__TAURI__ && window.parent) {
+            window.__TAURI__ = window.parent.window.__TAURI__;
+        }
+    </script>
+
     <!-- start inline javascript and non module bootstrap scripts. you must add module scripts to the
      javascript module section only!!-->
     <script>

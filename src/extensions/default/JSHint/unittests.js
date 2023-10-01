@@ -51,7 +51,7 @@ define(function (require, exports, module) {
             testWindow    = null;
             $             = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         it("status icon should toggle Errors panel when errors present", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");

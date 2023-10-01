@@ -34,34 +34,35 @@ define(function (require, exports, module) {
 
         var testWindow;
 
+        async function loadStyleSheet(doc, path) {
+            var deferred = new $.Deferred();
+
+            // attach style sheet
+            var promise = ExtensionUtils.loadStyleSheet(module, path);
+            let result;
+            promise.then((res)=>{
+                result = res;
+                deferred.resolve();
+            }, deferred.reject);
+            await awaitsForDone(promise, "loadStyleSheet: " + path);
+
+            return result;
+        }
+
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             // Load module instances from brackets.test
             ExtensionUtils      = testWindow.brackets.test.ExtensionUtils;
-        });
+        }, 30000);
 
         afterAll(async function () {
+            await loadStyleSheet(testWindow.document, "ExtensionUtils-test-files/basic.css");
             testWindow      = null;
             ExtensionUtils  = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         describe("loadStyleSheet", function () {
-
-            async function loadStyleSheet(doc, path) {
-                var deferred = new $.Deferred();
-
-                // attach style sheet
-                var promise = ExtensionUtils.loadStyleSheet(module, path);
-                let result;
-                promise.then((res)=>{
-                    result = res;
-                    deferred.resolve();
-                }, deferred.reject);
-                await awaitsForDone(promise, "loadStyleSheet: " + path);
-
-                return result;
-            }
 
             it("should load CSS style sheets with imports", async function () {
                 await loadStyleSheet(testWindow.document, "ExtensionUtils-test-files/basic.css");

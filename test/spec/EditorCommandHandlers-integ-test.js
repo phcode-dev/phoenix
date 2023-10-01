@@ -61,17 +61,6 @@ define(function (require, exports, module) {
         let testPath = SpecRunnerUtils.getTestPath("/spec/EditorCommandHandlers-test-files"),
             testWindow;
 
-        // Helper function for creating a test window
-        async function createTestWindow(spec) {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
-            // Load module instances from brackets.test
-            CommandManager      = testWindow.brackets.test.CommandManager;
-            Commands            = testWindow.brackets.test.Commands;
-            EditorManager       = testWindow.brackets.test.EditorManager;
-
-            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
-        }
-
         // Helper function to open a new inline editor
         async function openInlineEditor(spec) {
             var promise;
@@ -120,12 +109,18 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }
         beforeAll(async function () {
-            await createTestWindow(this);
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+            // Load module instances from brackets.test
+            CommandManager      = testWindow.brackets.test.CommandManager;
+            Commands            = testWindow.brackets.test.Commands;
+            EditorManager       = testWindow.brackets.test.EditorManager;
+
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
 
         afterAll(async function () {
             await closeTestWindow();
-        });
+        }, 30000);
 
 
         describe("Move Lines Up/Down - inline editor", function () {

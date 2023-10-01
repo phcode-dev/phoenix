@@ -77,7 +77,7 @@ define(function (require, exports, module) {
         afterAll(async function () {
             testWindow    = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
 
         it("Open/close remote https file", async function () {

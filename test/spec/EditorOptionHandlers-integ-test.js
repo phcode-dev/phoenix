@@ -50,7 +50,7 @@ define(function (require, exports, module) {
 
         beforeAll(async function () {
             // Create a new window that will be shared by ALL tests in this spec.
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             // Load module instances from brackets.test
             CommandManager      = testWindow.brackets.test.CommandManager;
             Commands            = testWindow.brackets.test.Commands;
@@ -59,7 +59,7 @@ define(function (require, exports, module) {
             FileViewController  = testWindow.brackets.test.FileViewController;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
-        });
+        }, 30000);
 
         afterAll(async function () {
             testWindow          = null;
@@ -69,7 +69,7 @@ define(function (require, exports, module) {
             DocumentManager     = null;
             FileViewController  = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
 
         afterEach(async function () {

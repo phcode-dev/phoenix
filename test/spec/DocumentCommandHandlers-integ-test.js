@@ -52,7 +52,7 @@ define(function (require, exports, module) {
         var WINDOW_TITLE_DOT = brackets.platform === "mac" ? "\u2014" : "-";
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             _$ = testWindow.$;
 
             // Load module instances from brackets.test
@@ -77,8 +77,8 @@ define(function (require, exports, module) {
             Dialogs                 = null;
             FileViewController      = null;
             EditorManager           = null;
-            await SpecRunnerUtils.closeTestWindow();
-        });
+            await SpecRunnerUtils.closeTestWindow(true);
+        }, 30000);
 
 
         beforeEach(async function () {

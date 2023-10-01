@@ -312,7 +312,7 @@ define(function (require, exports, module) {
         path = path.split("/");
         path = path.slice(0, path.length - 2);
         path.push("src");
-        return path.join("/");
+        return window.location.origin + path.join("/");
     }
 
     /**
@@ -515,6 +515,7 @@ define(function (require, exports, module) {
         await awaitsForDone(promise);
     }
 
+
     function _setupTestWindow() {
         // Displays the primary console messages from the test window in the
         // test runner's console as well.
@@ -528,14 +529,17 @@ define(function (require, exports, module) {
         });
 
         _testWindow.isBracketsTestWindow = true;
+        _testWindow.isBracketsTestWindowSetup = true;
 
         _testWindow.executeCommand = function executeCommand(cmd, args) {
             return _testWindow.brackets.test.CommandManager.execute(cmd, args);
         };
 
         _testWindow.closeAllFiles = async function closeAllFiles() {
-            let promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL);
-
+            let promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL, {
+                _forceClose: true,
+                PaneId: _testWindow.brackets.test.MainViewManager.ALL_PANES
+            });
             _testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
                 _testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
                 _testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
@@ -545,21 +549,11 @@ define(function (require, exports, module) {
         };
     }
 
-    async function createTestWindowAndRun(options) {
-        // Position popup windows in the lower right so they're out of the way
-        let testWindowWid = 1000,
-            testWindowHt  =  700,
-            testWindowX   = window.screen.availWidth - testWindowWid,
-            testWindowY   = window.screen.availHeight - testWindowHt,
-            optionsStr    = "left=" + testWindowX + ",top=" + testWindowY +
-                ",width=" + testWindowWid + ",height=" + testWindowHt;
-
+    // the phoenix test window is only created once, it should be reused for the full suite run.
+    // subsequent calls to this function will only return the existing test window. This is to prevent
+    // browser hangs that was quite frequent as we created and dropped iframes in the DOM.
+    async function createTestWindowAndRun(options={forceReload: false}) {
         let params = new UrlParams();
-
-        // setup extension loading in the test window
-        params.put("extensions", _doLoadExtensions ?
-            "" :// TODO: change this to dev,user for loading vfs extension tests
-            "");
 
         // disable loading of sample project
         params.put("skipSampleProjectLoad", true);
@@ -573,13 +567,7 @@ define(function (require, exports, module) {
         if (options) {
             // option to set the params
             if (options.hasOwnProperty("params")) {
-                var paramObject = options.params || {};
-                var obj;
-                for (obj in paramObject) {
-                    if (paramObject.hasOwnProperty(obj)) {
-                        params.put(obj, paramObject[obj]);
-                    }
-                }
+                throw new Error("unexpected params object on create test window, not supported!");
             }
 
             // option to launch test window with either native or HTML menus
@@ -589,12 +577,18 @@ define(function (require, exports, module) {
         }
 
         let _testWindowURL = getBracketsSourceRoot() + "?" + params.toString();
+        if(options.forceReload && _testWindow) {
+            await closeTestWindow(true);
+        }
+
         if(!_testWindow){
-            _testWindow = window.open(_testWindowURL, "_blank", optionsStr);
-        } else{
-            _testWindow.brackets = null;
+            const testIframe = window.openIframeRunner(_testWindowURL);
+            _testWindow = testIframe.contentWindow;
+        } else if(!_testWindow.brackets){
             _testWindow.location.href = 'about:blank';
             _testWindow.location.href = _testWindowURL;
+        } else {
+            await _testWindow.closeAllFiles();
         }
 
         // FIXME (issue #249): Need an event or something a little more reliable...
@@ -605,8 +599,14 @@ define(function (require, exports, module) {
             "brackets.test.doneLoading",
             60000
         );
+        console.log("test window loaded");
+        if(options.forceReload){
+            //await awaits(3000);
+        }
 
-        _setupTestWindow();
+        if(!_testWindow.isBracketsTestWindowSetup) {
+            _setupTestWindow();
+        }
         return _testWindow;
     }
     async function reloadWindow() {
@@ -639,20 +639,37 @@ define(function (require, exports, module) {
         return _testWindow;
     }
 
-    async function closeTestWindow() {
+    async function closeTestWindow(force) {
         //we need to mark the documents as not dirty before we close
         //or the window will stay open prompting to save
-        let openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
-        openDocs.forEach(function resetDoc(doc) {
-            if (doc.isDirty) {
-                //just refresh it back to it's current text. This will mark it
-                //clean to save
-                doc.refreshText(doc.getText(), doc.diskTimestamp);
-            }
-        });
-        _testWindow.executeCommand = null;
-        _testWindow.location.href = 'about:blank';
-        _testWindow.brackets.test.doneLoading = false;
+        if(!_testWindow){
+            return;
+        }
+        // let openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
+        // openDocs.forEach(function resetDoc(doc) {
+        //     if (doc.isDirty) {
+        //         //just refresh it back to it's current text. This will mark it
+        //         //clean to save
+        //         doc.refreshText(doc.getText(), doc.diskTimestamp);
+        //     }
+        // });
+        await _testWindow.closeAllFiles();
+        await jsPromise(_testWindow.brackets.test.CommandManager.execute(Commands.CMD_SPLITVIEW_NONE));
+        _testWindow.brackets.test.MainViewManager._closeAll(_testWindow.brackets.test.MainViewManager.ALL_PANES);
+        await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
+        await loadProjectInTestWindow("/test/parked");
+        if(force) {
+            _testWindow.executeCommand = null;
+            //_testWindow.location.href = 'about:blank';
+            _testWindow.brackets.test.doneLoading = false;
+            await awaits(3000); // UTS will crap without these time waits, esp in chromium. Browser freezes
+            window.closeIframeRunner();
+            _testWindow = null;
+            await awaits(2000); // UTS will crap without these time waits, esp in chromium. Browser freezes
+        }
+        // _testWindow.executeCommand = null;
+        // _testWindow.location.href = 'about:blank';
+        // _testWindow.brackets.test.doneLoading = false;
         // debug-only to see testWindow state before closing
         // waits(1000);
     }

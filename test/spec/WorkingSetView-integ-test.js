@@ -89,11 +89,11 @@ define(function (require, exports, module) {
 
         beforeAll(async function () {
             await createTestWindow(this, true);
-        });
+        }, 30000);
 
         afterAll(async function () {
             await closeTestWindow();
-        });
+        }, 30000);
 
         beforeEach(async function () {
             workingSetListItemCount = 0;

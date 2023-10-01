@@ -40,7 +40,7 @@ define(function (require, exports, module) {
             promise;
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             _$ = testWindow.$;
 
             // Load module instances from brackets.test
@@ -48,7 +48,7 @@ define(function (require, exports, module) {
             DragAndDrop     = testWindow.brackets.test.DragAndDrop;
             EditorManager   = testWindow.brackets.test.EditorManager;
             MainViewManager = testWindow.brackets.test.MainViewManager;
-        });
+        }, 30000);
 
         afterAll(async function () {
             testWindow      = null;
@@ -57,7 +57,7 @@ define(function (require, exports, module) {
             EditorManager   = null;
             MainViewManager = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
 
         beforeEach(async function () {

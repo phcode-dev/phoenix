@@ -61,7 +61,7 @@ define(function (require, exports, module) {
 
                 await SpecRunnerUtils.createTempDirectory();
 
-                let w = await SpecRunnerUtils.createTestWindowAndRun();
+                let w = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
                 // Load module instances from brackets.test
                 FileSystem = w.brackets.test.FileSystem;
                 LanguageManager = w.brackets.test.LanguageManager;

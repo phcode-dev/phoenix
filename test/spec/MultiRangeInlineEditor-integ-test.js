@@ -43,7 +43,7 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.createTempDirectory();
 
             // Create a new window that will be shared by ALL tests in this spec.
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             // Load module instances from brackets.test
             TWCommandManager         = testWindow.brackets.test.CommandManager;
             TWEditorManager          = testWindow.brackets.test.EditorManager;
@@ -60,7 +60,7 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
 
             await SpecRunnerUtils.removeTempDirectory();
-        });
+        }, 30000);
 
         beforeEach(async function () {
             await awaitsForDone(TWCommandManager.execute(Commands.FILE_NEW_UNTITLED));

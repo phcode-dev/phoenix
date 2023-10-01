@@ -98,7 +98,7 @@ define(function (require, exports, module) {
         afterAll(async function () {
             testWindow.closeAllFiles();
             await closeTestWindow();
-        });
+        }, 30000);
 
         it("should sort list by name", function () {
             // sort list by name

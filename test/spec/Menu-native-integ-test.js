@@ -57,7 +57,7 @@ define(function (require, exports, module) {
             KeyBindingManager = null;
             Menus             = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         describe("Remove Menu", function () {
             it("should add then remove new menu to menu bar with a menu id", function () {

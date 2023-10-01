@@ -230,7 +230,7 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
 
             await SpecRunnerUtils.removeTempDirectory();
-        });
+        }, 30000);
 
         beforeEach(async function () {
             await awaitsForDone(twCommandManager.execute(Commands.FILE_NEW_UNTITLED));

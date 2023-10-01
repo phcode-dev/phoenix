@@ -41,7 +41,7 @@ define(function (require, exports, module) {
         afterEach(async function () {
             await SpecRunnerUtils.closeTestWindow();
             testWindow = null;
-        });
+        }, 30000);
 
 
         describe("Data Send to Server", function () {

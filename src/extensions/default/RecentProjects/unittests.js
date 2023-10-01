@@ -46,7 +46,7 @@ define(function (require, exports, module) {
         afterAll(async function () {
             testWindow = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         async function openRecentProjectDropDown() {
             CommandManager.execute("recentProjects.toggle");

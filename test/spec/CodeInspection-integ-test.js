@@ -109,7 +109,7 @@ define(function (require, exports, module) {
         }
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             // Load module instances from brackets.test
             $ = testWindow.$;
             brackets = testWindow.brackets;
@@ -141,7 +141,7 @@ define(function (require, exports, module) {
             DocumentManager = null;
             EditorManager = null;
             await SpecRunnerUtils.closeTestWindow();
-        });
+        }, 30000);
 
         describe("Unit level tests", function () {
             var simpleJavascriptFileEntry;
