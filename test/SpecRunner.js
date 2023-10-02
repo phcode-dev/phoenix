@@ -399,6 +399,8 @@ define(function (require, exports, module) {
         selectedCategories = (params.get("category")
             || window.localStorage.getItem("SpecRunner.category") || "unit").split(",");
 
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000; // 15 seconds
+
         /*
          * TODO (jason-sanjose): extension unit tests should only load the
          * extension and the extensions dependencies. We should not load
