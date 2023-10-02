@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         MainViewManager,
         FileSystem;
 
-    describe("extension:CloseOthers extension", function () {
+    describe("integration:CloseOthers extension", function () {
         var testPath = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
             testWindow,
             $,

@@ -35,7 +35,7 @@ define(function (require, exports, module) {
 
 
 
-    describe("extension:RemoteFileAdapter", function () {
+    describe("integration:RemoteFileAdapter", function () {
         var testWindow;
 
         function createRemoteFile(filePath) {

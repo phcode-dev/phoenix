@@ -26,7 +26,7 @@ define(function (require, exports, module) {
 
     var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
 
-    describe("extension:JSHint", function () {
+    describe("integration:JSHint", function () {
         var testFolder = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
             testProjectsFolder = SpecRunnerUtils.getTestPath("/spec/JSHintExtensionTest-files/"),
             testWindow,

@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         UrlCodeHints              = require("main");
 
 
-    describe("extension:Url Code Hinting", function () {
+    describe("LegacyInteg:Url Code Hinting", function () {
 
         var extensionTestPath   = SpecRunnerUtils.getTestPath("/spec/extn-urlcodehints-testfiles/"),
             testHtmlPath    = extensionTestPath + "testfiles/test.html",
