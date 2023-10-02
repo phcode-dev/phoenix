@@ -516,6 +516,10 @@ define(function (require, exports, module) {
     }
 
 
+    function _isBracketsDoneLoading() {
+        return _testWindow && _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
+    }
+
     function _setupTestWindow() {
         // Displays the primary console messages from the test window in the
         // test runner's console as well.
@@ -593,16 +597,11 @@ define(function (require, exports, module) {
 
         // FIXME (issue #249): Need an event or something a little more reliable...
         await awaitsFor(
-            function isBracketsDoneLoading() {
-                return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
-            },
+            _isBracketsDoneLoading,
             "brackets.test.doneLoading",
             60000
         );
         console.log("test window loaded");
-        if(options.forceReload){
-            //await awaits(3000);
-        }
 
         if(!_testWindow.isBracketsTestWindowSetup) {
             _setupTestWindow();
@@ -627,9 +626,7 @@ define(function (require, exports, module) {
 
         // FIXME (issue #249): Need an event or something a little more reliable...
         await awaitsFor(
-            function isBracketsDoneLoading() {
-                return _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
-            },
+            _isBracketsDoneLoading,
             "brackets.test.doneLoading",
             60000,
             100
@@ -639,30 +636,31 @@ define(function (require, exports, module) {
         return _testWindow;
     }
 
-    async function closeTestWindow(force) {
+    async function closeTestWindow(force, blankTestWindow) {
         //we need to mark the documents as not dirty before we close
         //or the window will stay open prompting to save
         if(!_testWindow){
             return;
         }
-        // let openDocs = _testWindow.brackets.test.DocumentManager.getAllOpenDocuments();
-        // openDocs.forEach(function resetDoc(doc) {
-        //     if (doc.isDirty) {
-        //         //just refresh it back to it's current text. This will mark it
-        //         //clean to save
-        //         doc.refreshText(doc.getText(), doc.diskTimestamp);
-        //     }
-        // });
-        await _testWindow.closeAllFiles();
-        await jsPromise(_testWindow.brackets.test.CommandManager.execute(Commands.CMD_SPLITVIEW_NONE));
-        _testWindow.brackets.test.MainViewManager._closeAll(_testWindow.brackets.test.MainViewManager.ALL_PANES);
-        await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
-        await loadProjectInTestWindow("/test/parked");
+        if(_isBracketsDoneLoading()) {
+            await _testWindow.closeAllFiles();
+            await jsPromise(_testWindow.brackets.test.CommandManager.execute(Commands.CMD_SPLITVIEW_NONE));
+            _testWindow.brackets.test.MainViewManager._closeAll(_testWindow.brackets.test.MainViewManager.ALL_PANES);
+            await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
+            await loadProjectInTestWindow("/test/parked");
+        }
+
         if(force) {
             _testWindow.executeCommand = null;
-            //_testWindow.location.href = 'about:blank';
-            _testWindow.brackets.test.doneLoading = false;
+            if(_testWindow.brackets) {
+                _testWindow.brackets.test.doneLoading = false;
+            }
             await awaits(3000); // UTS will crap without these time waits, esp in chromium. Browser freezes
+            if(blankTestWindow){
+                _testWindow.brackets = null;
+                _testWindow.location.href = "about:blank";
+                await awaits(2000); // UTS will crap without these time waits, esp in chromium. Browser freezes
+            }
             window.closeIframeRunner();
             _testWindow = null;
             await awaits(2000); // UTS will crap without these time waits, esp in chromium. Browser freezes

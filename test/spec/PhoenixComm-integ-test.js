@@ -63,10 +63,10 @@ define(function (require, exports, module) {
             await _initTestWindow();
         }, 30000);
 
-        async function _closeTestWindow(force) {
+        async function _closeTestWindow(force, blankBeforeClose) {
             if(testWindow){
                 // comment out below line if you want to debug the test window post running tests
-                await SpecRunnerUtils.closeTestWindow(force);
+                await SpecRunnerUtils.closeTestWindow(force, blankBeforeClose);
             }
             FileViewController  = null;
             ProjectManager      = null;
@@ -101,7 +101,7 @@ define(function (require, exports, module) {
         it("Should remove references from self once test window is closed", async function () { // #2813
             let instanceDetailsAtSpecRunner = PhoenixCommSpecRunner.getAllInstanceDetails();
             let testWindowInstanceID = PhoenixComm.PHOENIX_INSTANCE_ID;
-            await _closeTestWindow(true);
+            await _closeTestWindow(true, true);
             // check if we dont the instance details of the test window
             instanceDetailsAtSpecRunner = PhoenixCommSpecRunner.getAllInstanceDetails();
             expect(instanceDetailsAtSpecRunner[testWindowInstanceID]).not.toBeDefined();
@@ -109,7 +109,7 @@ define(function (require, exports, module) {
 
         it("Should update references from self once test window reloaded", async function () { // #2813
             let oldTestWindowInstanceID = PhoenixComm.PHOENIX_INSTANCE_ID;
-            await _closeTestWindow(true);
+            await _closeTestWindow(true, true);
             await _initTestWindow();
             await awaits(500);
 
