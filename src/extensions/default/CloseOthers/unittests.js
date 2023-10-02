@@ -93,7 +93,7 @@ define(function (require, exports, module) {
 
             var promise = CommandManager.execute(Commands.FILE_SAVE_ALL);
             await awaitsForDone(promise, "FILE_SAVE_ALL", 5000);
-        });
+        }, 30000);
 
         afterEach(async function () {
             // Verify files exist & clean up

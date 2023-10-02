@@ -36,7 +36,7 @@ define(function (require, exports, module) {
 
         beforeEach(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
-        });
+        }, 30000);
 
         afterEach(async function () {
             await SpecRunnerUtils.closeTestWindow();

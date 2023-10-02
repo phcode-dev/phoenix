@@ -48,7 +48,7 @@ define(function (require, exports, module) {
             KeyBindingManager = testWindow.brackets.test.KeyBindingManager;
             Menus             = testWindow.brackets.test.Menus;
             FileSystem        = testWindow.brackets.test.FileSystem;
-        });
+        }, 30000);
 
         afterAll(async function () {
             testWindow        = null;

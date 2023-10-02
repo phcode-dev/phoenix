@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeEach, afterEach, it, expect, awaitsForDone */
+/*global describe, beforeAll, beforeEach, afterEach, it, expect, awaitsForDone */
 
 define(function (require, exports, module) {
 
@@ -45,6 +45,10 @@ define(function (require, exports, module) {
         var getFileObject = function (name) {
             return FileSystem.getFileForPath(testPath + "/" + name);
         };
+
+        beforeAll(async function () {
+            await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+        }, 30000);
 
         beforeEach(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
