@@ -31,7 +31,7 @@ define(function (require, exports, module) {
         PreferencesManager,
         testWindow;
 
-    describe("integration:PreferencesManager", function () {
+    describe("LegacyInteg:PreferencesManager", function () {
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});

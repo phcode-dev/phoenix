@@ -36,7 +36,7 @@ define(function (require, exports, module) {
     var testPath = SpecRunnerUtils.getTestPath("/spec/CodeHint-test-files"),
         testWindow;
 
-    describe("integration:CodeHintManager", function () {
+    describe("LegacyInteg:CodeHintManager", function () {
 
         /**
          * Performs setup for a code hint test. Opens a file and set pos.

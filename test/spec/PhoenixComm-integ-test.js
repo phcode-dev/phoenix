@@ -39,7 +39,7 @@ define(function (require, exports, module) {
         PhoenixComm;
 
 
-    describe("integration:PhoenixComm", function () {
+    describe("LegacyInteg:PhoenixComm", function () {
 
         async function _initTestWindow() {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});

@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         MainViewManager,     // loaded from brackets.test
         SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
-    describe("integration:Document Integration", function () {
+    describe("LegacyInteg:Document Integration", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/Document-test-files"),
             testWindow,

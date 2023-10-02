@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         SpecRunnerUtils          = require("spec/SpecRunnerUtils");
 
 
-    describe("integration:DocumentManager", function () {
+    describe("LegacyInteg:DocumentManager", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/DocumentCommandHandlers-test-files"),
             testFile = testPath + "/test.js",

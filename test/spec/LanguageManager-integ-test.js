@@ -29,7 +29,7 @@ define(function (require, exports, module) {
     var LanguageManager     = require("language/LanguageManager"),
         SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
-    describe("integration:LanguageManager", function () {
+    describe("LegacyInteg:LanguageManager", function () {
 
         beforeEach(async function () {
             await awaitsForDone(LanguageManager.ready, "LanguageManager ready", 10000);

@@ -33,7 +33,7 @@ define(function (require, exports, module) {
 
     var PreferencesManager;
 
-    describe("integration:FindInFiles", function () {
+    describe("LegacyInteg:FindInFiles", function () {
 
         var defaultSourcePath = SpecRunnerUtils.getTestPath("/spec/FindReplace-test-files"),
             testPath,

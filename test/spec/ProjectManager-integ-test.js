@@ -34,7 +34,7 @@ define(function (require, exports, module) {
         _                   = require("thirdparty/lodash");
 
 
-    describe("integration:ProjectManager", function () {
+    describe("LegacyInteg:ProjectManager", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/ProjectManager-test-files"),
             tempDir  = SpecRunnerUtils.getTempDirectory(),

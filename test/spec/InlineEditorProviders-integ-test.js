@@ -47,7 +47,7 @@ define(function (require, exports, module) {
         return pos;
     }
 
-    describe("integration:InlineEditorProviders", function () {
+    describe("LegacyInteg:InlineEditorProviders", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/InlineEditorProviders-test-files"),
             tempPath = SpecRunnerUtils.getTempDirectory(),

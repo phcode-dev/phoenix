@@ -39,7 +39,7 @@ define(function (require, exports, module) {
         FileUtils                = require("file/FileUtils"),
         FileSystemError          = require("filesystem/FileSystemError");
 
-    describe("integration: DocumentCommandHandlers", function () {
+    describe("LegacyInteg: DocumentCommandHandlers", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/DocumentCommandHandlers-test-files"),
             testWindow,

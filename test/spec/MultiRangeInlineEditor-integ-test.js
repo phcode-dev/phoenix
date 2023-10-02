@@ -28,7 +28,7 @@ define(function (require, exports, module) {
         Commands                = require("command/Commands");
 
     // TODO: overlaps a lot with CSSInlineEdit-test integration suite
-    describe("integration: MultiRangeInlineEditor", function () {
+    describe("LegacyInteg: MultiRangeInlineEditor", function () {
 
         var inlineEditor,
             hostEditor;

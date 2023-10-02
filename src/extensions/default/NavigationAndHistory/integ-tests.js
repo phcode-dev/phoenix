@@ -26,7 +26,7 @@ define(function (require, exports, module) {
 
     const SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils");
 
-    describe("integration:FileRecovery integration tests", function () {
+    describe("LegacyInteg:FileRecovery integration tests", function () {
 
         const testPathOriginal = SpecRunnerUtils.getTestPath("/spec/ProjectManager-test-files");
         const testPath = SpecRunnerUtils.getTestRoot() + "/navigationTests/";
