@@ -53,7 +53,7 @@ define(function (require, exports, module) {
         }
 
         async function loadTestWindow(force) {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun(force);
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: force});
             brackets            = testWindow.brackets;
             $                   = testWindow.$;
             FileViewController  = brackets.test.FileViewController;
@@ -67,7 +67,10 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }
 
-        beforeAll(async function () {
+        beforeEach(async function () {
+            await closeSession();
+            await deletePath(testPath);
+            await deletePath(tempRestorePath);
             await loadTestWindow(true);
         }, 30000);
 
@@ -78,16 +81,13 @@ define(function (require, exports, module) {
             brackets = null;
             await deletePath(testPath);
             await deletePath(tempRestorePath);
-            await SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.closeTestWindow(true);
         }, 30000);
 
-        beforeEach(async function () {
-            await deletePath(testPath);
-            await deletePath(tempRestorePath);
-            await awaitsForDone(SpecRunnerUtils.copyPath(testPathOriginal, testPath), "copy temp files");
-        });
-
         async function closeSession() {
+            if(!CommandManager){
+                return;
+            }
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
                 "closing all file");
         }

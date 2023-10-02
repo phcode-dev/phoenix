@@ -1,9 +1,9 @@
 // @ts-check
 const { test, expect } = require("@playwright/test");
 
-test("Execute all Integration tests", async ({ page }) => {
+test("Execute LegacyInteg tests", async ({ page }) => {
     await page.goto(
-        "http://localhost:5000/test/SpecRunner.html?spec=all&category=unit" // todo change this to integ after integ test port
+        "http://localhost:5000/test/SpecRunner.html?spec=all&category=LegacyInteg"
     );
 
     // Expose a function to the page
