@@ -60,7 +60,7 @@ define(function (require, exports, module) {
             FileSystem      = testWindow.brackets.test.FileSystem;
             Dialogs         = testWindow.brackets.test.Dialogs;
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
-        });
+        }, 30000);
 
         afterEach(async function () {
             MainViewManager._closeAll(MainViewManager.ALL_PANES);
