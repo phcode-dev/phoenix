@@ -67,7 +67,7 @@ define(function (require, exports, module) {
         }
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             await _init();
         }, 30000);
 

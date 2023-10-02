@@ -71,7 +71,7 @@ define(function (require, exports, module) {
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
             }
-        });
+        }, 30000);
 
         afterAll(async function () {
             LiveDevMultiBrowser.close();
