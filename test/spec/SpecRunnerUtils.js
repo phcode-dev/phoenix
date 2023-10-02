@@ -644,20 +644,31 @@ define(function (require, exports, module) {
         }
         if(_isBracketsDoneLoading()) {
             await _testWindow.closeAllFiles();
-            await jsPromise(_testWindow.brackets.test.CommandManager.execute(Commands.CMD_SPLITVIEW_NONE));
-            _testWindow.brackets.test.MainViewManager._closeAll(_testWindow.brackets.test.MainViewManager.ALL_PANES);
-            await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
-            await loadProjectInTestWindow("/test/parked");
+            if(!force){
+                await jsPromise(_testWindow.brackets.test.CommandManager.execute(Commands.CMD_SPLITVIEW_NONE));
+                _testWindow.brackets.test.MainViewManager._closeAll(_testWindow.brackets.test.MainViewManager.ALL_PANES);
+                await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
+                await loadProjectInTestWindow("/test/parked");
+            }
         }
 
         if(force) {
             _testWindow.executeCommand = null;
-            if(_testWindow.brackets) {
-                _testWindow.brackets.test.doneLoading = false;
-            }
             await awaits(3000); // UTS will crap without these time waits, esp in chromium. Browser freezes
+            if(_testWindow.brackets) {
+                await awaitsFor(function () {
+                    return _testWindow.brackets.test.FindInFiles.isProjectIndexingComplete();
+                }, "Indexing complete", 10000);
+                for(let key of Object.keys(_testWindow.brackets.test)){
+                    delete _testWindow.brackets.test[key];
+                }
+                delete _testWindow.brackets.test;
+                delete _testWindow.brackets;
+                delete _testWindow.appshell;
+                delete _testWindow.fs;
+
+            }
             if(blankTestWindow){
-                _testWindow.brackets = null;
                 _testWindow.location.href = "about:blank";
                 await awaits(2000); // UTS will crap without these time waits, esp in chromium. Browser freezes
             }

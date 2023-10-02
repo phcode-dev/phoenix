@@ -187,6 +187,13 @@ function initCache(fileList) {
     crawlEventSent = false;
     cacheStartTime = Date.now();
     WorkerComm.triggerPeer("crawlStarted");
+    if(files.length === 0) {
+        WorkerComm.triggerPeer("crawlComplete", {
+            numFilesCached: files.length,
+            cacheSizeBytes: 0,
+            crawlTimeMs: 0
+        });
+    }
 }
 
 /**

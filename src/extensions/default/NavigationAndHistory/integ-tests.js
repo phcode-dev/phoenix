@@ -160,7 +160,9 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath + "toDelete1/file.js", false);
 
             // backup is now present, reload the project
-            await SpecRunnerUtils.closeTestWindow(true);
+            testWindow.location.href = "about:blank";
+            await awaits(1000);
+            await SpecRunnerUtils.closeTestWindow(true, true);
             await loadTestWindow(true);
             testWindow._FileRecoveryExtensionForTests.initWith(100,
                 FileSystem.getDirectoryForPath(tempRestorePath));
