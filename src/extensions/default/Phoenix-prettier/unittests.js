@@ -55,7 +55,7 @@ define(function (require, exports, module) {
         jsonFile = require("text!./test-files/test.json"),
         jsonPrettyFile = require("text!./test-files/test-pretty.json");
 
-    describe("extension: Phoenix Prettier", function () {
+    describe("integration: Phoenix Prettier", function () {
         let testEditor, testDocument;
 
         function createMockEditor(text, language, filename) {
