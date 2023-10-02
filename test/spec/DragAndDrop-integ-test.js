@@ -32,7 +32,7 @@ define(function (require, exports, module) {
         SpecRunnerUtils  = require("spec/SpecRunnerUtils");
 
 
-    describe("integration:DragAndDrop", function () {
+    describe("LegacyInteg:DragAndDrop", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/DocumentCommandHandlers-test-files"),
             testWindow,

@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         FileSystem,
         Strings         = require("strings");
 
-    describe("integration:Install Extension Dialog", function () {
+    describe("LegacyInteg:Install Extension Dialog", function () {
         let testWindow, dialog, fields, closed,
             url = "https://brackets.io/extensions/myextension.zip";
 

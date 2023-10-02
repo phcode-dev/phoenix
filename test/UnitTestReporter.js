@@ -44,7 +44,7 @@ define(function (require, exports, module) {
         "all",
         "unit",
         "integration",
-        "search",
+        "LegacyInteg",
         "livepreview",
         "mainview",
         "performance",

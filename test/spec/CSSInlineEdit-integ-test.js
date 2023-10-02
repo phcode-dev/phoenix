@@ -30,7 +30,7 @@ define(function (require, exports, module) {
     var testPath = SpecRunnerUtils.getTestPath("/spec/CSSInlineEdit-test-files");
 
     // TODO: overlaps a lot with MultiRangeInlineEditor-test integration suite
-    describe("integration:CSS Inline Edit", function () {
+    describe("LegacyInteg:CSS Inline Edit", function () {
 
         var testWindow,
             brackets,

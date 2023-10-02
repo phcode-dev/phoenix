@@ -27,7 +27,7 @@ define(function (require, exports, module) {
     const SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils"),
         KeyEvent         = brackets.getModule("utils/KeyEvent");
 
-    describe("integration:HTML Code Hints integration tests", function () {
+    describe("LegacyInteg:HTML Code Hints integration tests", function () {
 
         const testPath = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files");
 

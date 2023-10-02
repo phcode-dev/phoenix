@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
 
-    describe("integration:EditorOptionHandlers", function () {
+    describe("LegacyInteg:EditorOptionHandlers", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/EditorOptionHandlers-test-files"),
             testWindow;

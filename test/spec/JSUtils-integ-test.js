@@ -33,7 +33,7 @@ define(function (require, exports, module) {
 
     var testPath = SpecRunnerUtils.getTestPath("/spec/JSUtils-test-files");
 
-    describe("integration:JS-Utils - JS Indexing", function () {
+    describe("LegacyInteg:JS-Utils - JS Indexing", function () {
 
         var functions;  // populated by indexAndFind()
 

@@ -40,7 +40,9 @@ define(function (require, exports, module) {
     describe("integration:Template for integration tests", function () {
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+            // do not use force option in brackets core integration tests. Tests are assumed to reuse the existing
+            // test window instance for fast runs.
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             brackets            = testWindow.brackets;
             FileViewController  = brackets.test.FileViewController;
             ProjectManager      = brackets.test.ProjectManager;

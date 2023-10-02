@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         Strings          = require("strings"),
         _                = require("thirdparty/lodash");
 
-    describe("integration: Code Inspection", function () {
+    describe("LegacyInteg: Code Inspection", function () {
 
         var testFolder = SpecRunnerUtils.getTestPath("/spec/CodeInspection-test-files/"),
             testWindow,

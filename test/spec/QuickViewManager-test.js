@@ -27,7 +27,7 @@ define(function (require, exports, module) {
     var SpecRunnerUtils    = require("spec/SpecRunnerUtils"),
         KeyEvent           = require("utils/KeyEvent");
 
-    describe("integration:Quick View", function () {
+    describe("LegacyInteg:Quick View", function () {
         let testFolder = SpecRunnerUtils.getTestPath("/spec/quickview-extn-test-files");
 
         // load from testWindow

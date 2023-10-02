@@ -31,7 +31,7 @@ define(function (require, exports, module) {
 
     require("editor/EditorCommandHandlers");
 
-    describe("integration:EditorCommandHandlers Integration", function () {
+    describe("LegacyInteg:EditorCommandHandlers Integration", function () {
         let myDocument, myEditor;
 
         afterEach(function () {

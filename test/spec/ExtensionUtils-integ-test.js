@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         LESS_RESULT         = require("text!spec/ExtensionUtils-test-files/less.text");
 
 
-    describe("integration:Extension Utils", function () {
+    describe("LegacyInteg:Extension Utils", function () {
 
         var testWindow;
 
