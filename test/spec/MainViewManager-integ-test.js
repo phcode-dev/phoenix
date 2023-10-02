@@ -80,8 +80,8 @@ define(function (require, exports, module) {
             EditorManager           = null;
             ProjectManager          = null;
             FileSystem              = null;
-            //await SpecRunnerUtils.closeTestWindow();
-        });
+            await SpecRunnerUtils.closeTestWindow();
+        }, 30000);
 
         beforeEach(async function () {
             MainViewManager._closeAll(MainViewManager.ALL_PANES);
