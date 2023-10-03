@@ -42,7 +42,15 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright integration tests in Firefox
+      - name: Run Playwright integration tests in firefox Attempt 1
+        timeout-minutes: 30
+        id: attempt1
+        continue-on-error: true
+        run: npm run testIntegFirefox
+
+      - name: Run Playwright integration tests in firefox Attempt 2
+        if: steps.attempt1.outcome == 'failure'
+        id: attempt2
         run: npm run testIntegFirefox
 
   testChromiumUnit:
