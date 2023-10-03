@@ -292,6 +292,9 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_CLICKED, function (_event, clickDetails) {
             exports.trigger(exports.EVENT_LIVE_PREVIEW_CLICKED, clickDetails);
         });
+        MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_RELOAD, function (_event, clientDetails) {
+            exports.trigger(exports.EVENT_LIVE_PREVIEW_RELOAD, clientDetails);
+        });
 
     });
 
@@ -316,6 +319,7 @@ define(function main(require, exports, module) {
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
     exports.EVENT_CONNECTION_CLOSE = MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE;
     exports.EVENT_LIVE_PREVIEW_CLICKED = MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_CLICKED;
+    exports.EVENT_LIVE_PREVIEW_RELOAD = MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_RELOAD;
     exports.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = EVENT_LIVE_HIGHLIGHT_PREF_CHANGED;
 
     // Export public functions

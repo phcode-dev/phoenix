@@ -53,7 +53,8 @@ define(function (require, exports, module) {
     const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = "phoenix_live_preview_scripts_instrumented_345Tt96G4.js";
     const LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "pageLoaderWorker_345Tt96G4.js";
 
-    const EVENT_LIVE_PREVIEW_CLICKED = "livePreviewClicked";
+    const EVENT_LIVE_PREVIEW_CLICKED = "livePreviewClicked",
+        EVENT_LIVE_PREVIEW_RELOAD = "livePreviewReload";
 
     /**
      * @private
@@ -344,6 +345,7 @@ define(function (require, exports, module) {
      *      to the method.
      */
     function reload(ignoreCache, clients) {
+        exports.trigger(EVENT_LIVE_PREVIEW_RELOAD, clients);
         return _send(
             {
                 method: "Page.reload",
@@ -406,4 +408,5 @@ define(function (require, exports, module) {
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
     exports.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME;
     exports.EVENT_LIVE_PREVIEW_CLICKED = EVENT_LIVE_PREVIEW_CLICKED;
+    exports.EVENT_LIVE_PREVIEW_RELOAD = EVENT_LIVE_PREVIEW_RELOAD;
 });

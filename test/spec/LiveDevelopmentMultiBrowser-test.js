@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, xit, beforeAll, afterAll, afterEach, awaitsFor, it, awaitsForDone, expect, awaits */
+/*global describe, beforeAll, afterAll, awaitsFor, it, awaitsForDone, expect, awaits, Phoenix */
 
 define(function (require, exports, module) {
 
@@ -59,7 +59,12 @@ define(function (require, exports, module) {
         beforeAll(async function () {
             // Create a new window that will be shared by ALL tests in this spec.
             if (!testWindow) {
-                testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+                // we have to popout a new window and cant use the embedded iframe for live preview integ tests
+                // as Firefox sandbox prevents service worker access from nexted iframes.
+                // In tauri, we use node server, so this limitation doesn't apply in tauri, and we stick to iframes.
+                const useWindowInsteadOfIframe = (Phoenix.browser.desktop.isFirefox && !window.__TAURI__);
+                testWindow = await SpecRunnerUtils.createTestWindowAndRun({
+                    forceReload: true, useWindowInsteadOfIframe});
                 brackets = testWindow.brackets;
                 DocumentManager = brackets.test.DocumentManager;
                 LiveDevMultiBrowser = brackets.test.LiveDevMultiBrowser;
@@ -75,7 +80,7 @@ define(function (require, exports, module) {
 
         afterAll(async function () {
             LiveDevMultiBrowser.close();
-            await SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.closeTestWindow(true);
             testWindow = null;
             brackets = null;
             LiveDevMultiBrowser = null;
@@ -439,7 +444,7 @@ define(function (require, exports, module) {
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world hello world awesome!");
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should Markdown/image files be previewed and switched between live previews", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -467,7 +472,7 @@ define(function (require, exports, module) {
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world hello world awesome!");
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should Markdown preview hyperlinks be proper", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -490,7 +495,7 @@ define(function (require, exports, module) {
             // expect(href.endsWith("LiveDevelopment-MultiBrowser-test-files/sub/icon_chevron.png")).toBeTrue();
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should pin live previews ping html file", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -519,7 +524,7 @@ define(function (require, exports, module) {
             expect(srcURL.searchParams.get("URL").endsWith("sub/icon_chevron.png")).toBeTrue();
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         async function forRemoteExec(script, compareFn) {
             let result;
@@ -564,7 +569,7 @@ define(function (require, exports, module) {
                 });
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should live highlight css classes highlight all elements", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
@@ -606,7 +611,7 @@ define(function (require, exports, module) {
                 });
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should live highlight resize as window size changes", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -643,7 +648,7 @@ define(function (require, exports, module) {
             });
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should reverse highlight on clicking on live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -669,7 +674,7 @@ define(function (require, exports, module) {
             expect(editor.getCursorPos()).toEql({ line: 12, ch: 0, sticky: null });
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should reverse highlight open previewed html file if not open on clicking live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -707,7 +712,7 @@ define(function (require, exports, module) {
             expect(editor.getCursorPos()).toEql({ line: 11, ch: 0, sticky: null });
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should ctrl-s to save page be disabled inside live preview iframes", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -736,7 +741,7 @@ define(function (require, exports, module) {
             // expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should beautify and undo not corrupt live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -759,7 +764,7 @@ define(function (require, exports, module) {
                 "testId", "Brackets is hello world awesome!");
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should live preview not be able to access a non project file", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["exploit1.html"]),
@@ -771,7 +776,7 @@ define(function (require, exports, module) {
             });
 
             await endPreviewSession();
-        }, 5000);
+        });
 
         it("should live preview rememberScrollPositions", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["longPage.html"]),
@@ -808,6 +813,6 @@ define(function (require, exports, module) {
             });
 
             await endPreviewSession();
-        }, 5000);
+        });
     });
 });
