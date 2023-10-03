@@ -23,7 +23,6 @@ jobs:
     - name: Run Playwright integration tests in firefox Attempt 2
       if: steps.attempt1.outcome == 'failure'
       id: attempt2
-      continue-on-error: true
       run: npm run testIntegFirefox
 
     - uses: actions/upload-artifact@v3
