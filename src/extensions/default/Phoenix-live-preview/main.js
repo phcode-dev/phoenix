@@ -381,6 +381,14 @@ define(function (require, exports, module) {
         }, 1000);
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
+        LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_PREVIEW_RELOAD, ()=>{
+            // Usually, this event is listened by live preview iframes/tabs and they initiate a location.reload.
+            // But in firefox, the embedded iframe will throw a 404 when we try to reload from within the iframe as
+            // in firefox security posture, the third party live preview iframe phcode.live itself cannot activate
+            // the service worker. So we have to reload the iframe from its parent- ie. phcode.dev. This is not
+            // required in chrome, but we just keep it just for all platforms behaving the same.
+            _loadPreview(true);
+        });
         StaticServer.on(IFRAME_EVENT_SERVER_READY, function (_evt, event) {
             serverReady = true;
             _loadPreview(true);

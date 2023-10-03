@@ -33,8 +33,13 @@ test("Execute mainview tests", async ({ page }) => {
     await execTests(page, "http://localhost:5000/test/SpecRunner.html?spec=all&category=mainview");
 });
 
-// unfortunately live preview tests doesnt work in playwright :(
-// service workers are supported in playwright, debug this
-// test("Execute livepreview tests", async ({ page }) => {
-//     await execTests(page, "http://localhost:5000/test/SpecRunner.html?spec=all&category=livepreview");
-// });
+test("Execute livepreview tests", async ({ page, browserName }) => {
+    if(browserName !== 'firefox'){
+        // unfortunateley, we can run the live preview integ tests only in chrome
+        // In Firefox, sandbox prevents service worker access from nested iframes. So the virtual server itself will
+        // not be loaded in firefox tests in playwright.
+        // In tauri, we use node server, so this limitation doesn't apply in tauri test runners. This restriction is
+        // only there for firefox tests in playwright.
+        await execTests(page, "http://localhost:5000/test/SpecRunner.html?spec=all&category=livepreview");
+    }
+});

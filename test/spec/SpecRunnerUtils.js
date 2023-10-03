@@ -556,7 +556,10 @@ define(function (require, exports, module) {
     // the phoenix test window is only created once, it should be reused for the full suite run.
     // subsequent calls to this function will only return the existing test window. This is to prevent
     // browser hangs that was quite frequent as we created and dropped iframes in the DOM.
-    async function createTestWindowAndRun(options={forceReload: false}) {
+    async function createTestWindowAndRun(options={
+        forceReload: false,
+        useWindowInsteadOfIframe: false // if this is set,
+    }) {
         let params = new UrlParams();
 
         // disable loading of sample project
@@ -581,13 +584,21 @@ define(function (require, exports, module) {
         }
 
         let _testWindowURL = getBracketsSourceRoot() + "?" + params.toString();
-        if(options.forceReload && _testWindow) {
+        if(_testWindow &&(
+            options.forceReload ||
+            (_testWindow.isActualWindow && !options.useWindowInsteadOfIframe)
+        )) {
             await closeTestWindow(true);
         }
 
         if(!_testWindow){
-            const testIframe = window.openIframeRunner(_testWindowURL);
-            _testWindow = testIframe.contentWindow;
+            if(options.useWindowInsteadOfIframe) {
+                _testWindow = window.open(_testWindowURL, "integTestWindow", "width=1500,height=1024");
+                _testWindow.isActualWindow = true;
+            } else {
+                const testIframe = window.openIframeRunner(_testWindowURL);
+                _testWindow = testIframe.contentWindow;
+            }
         } else if(!_testWindow.brackets){
             _testWindow.location.href = 'about:blank';
             _testWindow.location.href = _testWindowURL;
@@ -672,7 +683,11 @@ define(function (require, exports, module) {
                 _testWindow.location.href = "about:blank";
                 await awaits(2000); // UTS will crap without these time waits, esp in chromium. Browser freezes
             }
-            window.closeIframeRunner();
+            if(_testWindow.isActualWindow){
+                _testWindow.close();
+            } else {
+                window.closeIframeRunner();
+            }
             _testWindow = null;
             await awaits(2000); // UTS will crap without these time waits, esp in chromium. Browser freezes
         }
