@@ -1,0 +1,20 @@
+{
+    "name": "@phcode/node-core",
+    "description": "Phoenix Node Core",
+    "version": "3.2.8-0",
+    "apiVersion": "3.2.8",
+    "keywords": [],
+    "author": "arun@core.ai",
+    "homepage": "https://github.com/phcode-dev/phoenix",
+    "license": "GNU-AGPL3.0",
+    "scripts": {
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/phcode-dev/phoenix"
+    },
+    "IMPORTANT!!": "Adding things here will bloat up the package size",
+    "dependencies": {
+        "@phcode/fs": "^2.0.4"
+    }
+}

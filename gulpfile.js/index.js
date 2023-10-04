@@ -176,6 +176,7 @@ function _majorVersionBumpConfigFile(fileName) {
 function patchVersionBump() {
     return new Promise((resolve)=> {
         _patchBumpConfigFile('./package.json');
+        _patchBumpConfigFile('./src-node/package.json');
         _patchBumpConfigFile('./src/config.json');
         resolve();
     });
@@ -184,6 +185,7 @@ function patchVersionBump() {
 function majorVersionBump() {
     return new Promise((resolve)=> {
         _majorVersionBumpConfigFile('./package.json');
+        _majorVersionBumpConfigFile('./src-node/package.json');
         _majorVersionBumpConfigFile('./src/config.json');
         resolve();
     });

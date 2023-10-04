@@ -27,6 +27,20 @@
   <script type="text/javascript">
     //brackets.app.showDeveloperTools();
     console.warn('Make sure to run this following command before starting tests : npm run build ');
+    if(window.__TAURI__) {
+      window.testRunnerLogToConsole = function (...args) {
+        const message = args.join(' ');
+        __TAURI__.invoke('console_log', { message }).catch(e=>{
+          console.error("Failed to console_log to tauri console", e);
+        });
+      };
+      window.testRunnerErrorToConsole = function (...args) {
+        const message = args.join(' ');
+        __TAURI__.invoke('console_error', { message }).catch(e=>{
+          console.error("Failed to console_error to tauri console", e);
+        });
+      }
+    }
   </script>
 
   <script>
