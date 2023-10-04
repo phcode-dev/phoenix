@@ -104,7 +104,9 @@ define(function (require, exports, module) {
         }
         Phoenix.app.openURLInPhoenixWindow(testBaseURL + queryString, {
             windowTitle: "Test Runner",
-            preferTabs: true
+            preferTabs: true,
+            width: 1670,
+            height: 900
         });
     }
 

@@ -11,6 +11,7 @@ Thumbs.db
 
 # ignore node_modules inside src
 /src/node_modules
+/src-node/node_modules
 /src/JSUtils/node_modules
 /src/JSUtils/node/node_modules
 
