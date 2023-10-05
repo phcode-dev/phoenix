@@ -1228,7 +1228,8 @@ define(function (require, exports, module) {
 
     // attach remote file handlers
     var HTTP_PROTOCOL = "http:",
-        HTTPS_PROTOCOL = "https:";
+        HTTPS_PROTOCOL = "https:",
+        TAURI_PROTOCOL = "tauri:";
 
     var protocolAdapter = {
         priority: 0, // Default priority
@@ -1241,4 +1242,5 @@ define(function (require, exports, module) {
     // Register the custom object as HTTP and HTTPS protocol adapter
     registerProtocolAdapter(HTTP_PROTOCOL, protocolAdapter);
     registerProtocolAdapter(HTTPS_PROTOCOL, protocolAdapter);
+    registerProtocolAdapter(TAURI_PROTOCOL, protocolAdapter);
 });

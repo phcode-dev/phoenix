@@ -409,7 +409,7 @@ exports.buildDebug = series(copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, z
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
 
-exports.releaseDev = series(cleanDist, exports.build, makeDistAll, releaseDev,
+exports.releaseDev = series(cleanDist, exports.buildDebug, makeDistAll, releaseDev,
     createDistCacheManifest, createDistTest);
 exports.releaseStaging = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseStaging,
     createDistCacheManifest, createDistTest);
