@@ -438,7 +438,7 @@ define(function (require, exports, module) {
      * @return {$.Promise} promise object resolved with the theme to be loaded from fileName
      */
     function loadFile(fileName, options) {
-        if(fileName.startsWith("http://") || fileName.startsWith("https://")) {
+        if(fileName.startsWith("http://") || fileName.startsWith("https://") || fileName.startsWith("tauri://")) {
             if(Phoenix.VFS.getPathForVirtualServingURL(fileName)){
                 fileName = Phoenix.VFS.getPathForVirtualServingURL(fileName);
             } else {

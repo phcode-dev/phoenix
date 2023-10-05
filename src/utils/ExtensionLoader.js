@@ -379,7 +379,7 @@ define(function (require, exports, module) {
     function testExtension(name, config, entryPoint) {
         var result = new $.Deferred(),
             extensionPath = config.baseUrl + "/" + entryPoint + ".js";
-        if(extensionPath.startsWith("http://") || extensionPath.startsWith("https://")) {
+        if(extensionPath.startsWith("http://") || extensionPath.startsWith("https://") || extensionPath.startsWith("tauri://")) {
             return _testExtensionByURL(name, config, entryPoint);
         }
 
