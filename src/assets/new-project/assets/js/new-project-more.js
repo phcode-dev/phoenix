@@ -30,7 +30,7 @@ function _getIconURL(iconURL) {
         return 'images/Bootstrap_logo.svg';
     } else if(iconURL === 'appLogo'){
         return 'images/logo.png';
-    } else if(iconURL && (iconURL.startsWith("https://") || iconURL.startsWith("http://"))){
+    } else if(iconURL && (iconURL.startsWith("https://") || iconURL.startsWith("http://") || iconURL.startsWith("tauri://"))){
         return iconURL;
     }
     return 'images/tab-img2.png'; // HTML icon

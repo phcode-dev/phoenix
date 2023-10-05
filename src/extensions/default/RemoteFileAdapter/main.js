@@ -33,7 +33,8 @@ define(function (require, exports, module) {
         Menus           = brackets.getModule("command/Menus");
 
     var HTTP_PROTOCOL = "http:",
-        HTTPS_PROTOCOL = "https:";
+        HTTPS_PROTOCOL = "https:",
+        TAURI_PROTOCOL = "tauri:";
 
     ExtensionUtils.loadStyleSheet(module, "styles.css");
 
@@ -44,6 +45,10 @@ define(function (require, exports, module) {
 
         if (data.fullPath.startsWith("https://")) {
             return "https";
+        }
+
+        if (data.fullPath.startsWith("tauri://")) {
+            return "tauri";
         }
 
         return "";
@@ -124,7 +129,7 @@ define(function (require, exports, module) {
                 },
                 match: function (query) {
                     var protocol = PathUtils.parseUrl(query).protocol;
-                    return [HTTP_PROTOCOL, HTTPS_PROTOCOL].indexOf(protocol) !== -1;
+                    return [HTTP_PROTOCOL, HTTPS_PROTOCOL, TAURI_PROTOCOL].indexOf(protocol) !== -1;
                 },
                 itemFocus: function (query) {
                     // no op
