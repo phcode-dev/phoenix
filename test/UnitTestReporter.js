@@ -101,6 +101,21 @@ define(function (require, exports, module) {
         return '';
     }
 
+    function quitIfNeeded(exitStatus) {
+        if(!window.__TAURI__){
+            return;
+        }
+        const WAIT_TIME_TO_COMPLETE_TEST_LOGGING_SEC = 10;
+        console.log("Scheduled Quit in Seconds: ", WAIT_TIME_TO_COMPLETE_TEST_LOGGING_SEC);
+        setTimeout(()=>{
+            window.__TAURI__.cli.getMatches().then(matches=>{
+                if(matches && matches.args["quit-when-done"] && matches.args["quit-when-done"].occurrences) {
+                    window.__TAURI__.process.exit(exitStatus);
+                }
+            });
+        }, WAIT_TIME_TO_COMPLETE_TEST_LOGGING_SEC * 1000);
+    }
+
     /**
      * @constructor
      * Creates a UnitTestReporter object. This has a number public properties:
@@ -279,9 +294,13 @@ define(function (require, exports, module) {
                     testRunnerLogToConsole(`\u2714 All(${self.totalSpecCount}) tests passed.`);
                     if(result.overallStatus !== 'passed') {
                         testRunnerErrorToConsole(`\u2716 Some suites was detected to have failures outside of the suite tests. This could indicate an underlying problem. please run tests locally to debug.`);
+                        quitIfNeeded(1);
+                    } else {
+                        quitIfNeeded(0);
                     }
                 } else {
                     testRunnerErrorToConsole(`\u2716 ${self.totalFailedCount} of ${self.totalSpecCount} tests Failed, ${self.totalPassedCount} passed.`);
+                    quitIfNeeded(1);
                 }
                 self.reportRunnerResults(result);
                 await _afterAllGlobal();
