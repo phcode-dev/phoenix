@@ -312,7 +312,11 @@ define(function (require, exports, module) {
         path = path.split("/");
         path = path.slice(0, path.length - 2);
         path.push("src");
-        return window.location.origin + path.join("/");
+        let url = window.location.origin + path.join("/");
+        if (!url.endsWith("/")){
+            url = url + "/";
+        }
+        return url;
     }
 
     /**
