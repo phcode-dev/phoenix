@@ -298,11 +298,15 @@ define(function (require, exports, module) {
                         window.externalJasmineFailures = true;
                         testRunnerErrorToConsole(`\u2716 Some suites was detected to have failures outside of the suite tests. This could indicate an underlying problem. please run tests locally to debug.`);
                         for(const element of result.failedExpectations) {
+                            let message = element.message;
+                            if(element.filename) {
+                                message = `In ${element.filename} \n${message}`;
+                            }
                             if(element.stack){
-                                testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, element.message,
+                                testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, message,
                                     '\nStack: ', element.stack);
                             } else {
-                                testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, element.message);
+                                testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, message);
                             }
                         }
                         quitIfNeeded(1);
@@ -502,11 +506,15 @@ define(function (require, exports, module) {
             testRunnerErrorToConsole(`\u2716 'Test suite run failed!! with status: ` + runner.overallStatus);
 
             for(const element of runner.failedExpectations) {
+                let message = element.message;
+                if(element.filename) {
+                    message = `In ${element.filename} \n${message}`;
+                }
                 if(element.stack){
-                    testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, element.message,
+                    testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, message,
                         '\nStack: ', element.stack);
                 } else {
-                    testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, element.message);
+                    testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, message);
                 }
             }
         }
@@ -521,11 +529,15 @@ define(function (require, exports, module) {
             testRunnerErrorToConsole(`\u2716 Suite failed!!`, suiteResult.description + ' was ' + suiteResult.status);
 
             for(const element of suiteResult.failedExpectations) {
+                let message = element.message;
+                if(element.filename) {
+                    message = `In ${element.filename} \n${message}`;
+                }
                 if(element.stack){
-                    testRunnerErrorToConsole(`\u2716 Suite Error: Failure: `, element.message,
+                    testRunnerErrorToConsole(`\u2716 Suite Error: Failure: `, message,
                         '\nStack: ', element.stack);
                 } else {
-                    testRunnerErrorToConsole(`\u2716 Suite Error: Failure: `, element.message);
+                    testRunnerErrorToConsole(`\u2716 Suite Error: Failure: `, message);
                 }
             }
 
@@ -553,11 +565,15 @@ define(function (require, exports, module) {
                 testRunnerErrorToConsole(`\u2716 Spec failed!!`, spec.description + ' was ' + spec.status);
 
                 for(const element of spec.failedExpectations) {
+                    let message = element.message;
+                    if(element.filename) {
+                        message = `In ${element.filename} \n${message}`;
+                    }
                     if(element.stack){
-                        testRunnerErrorToConsole(`\u2716 Spec Error: Failure: `, element.message,
+                        testRunnerErrorToConsole(`\u2716 Spec Error: Failure: `, message,
                             '\nStack: ', element.stack);
                     } else {
-                        testRunnerErrorToConsole(`\u2716 Spec Error: Failure: `, element.message);
+                        testRunnerErrorToConsole(`\u2716 Spec Error: Failure: `, message);
                     }
                 }
             }
