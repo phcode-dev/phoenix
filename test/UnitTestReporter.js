@@ -295,6 +295,7 @@ define(function (require, exports, module) {
                 if(self.totalFailedCount === 0){
                     testRunnerLogToConsole(`\u2714 All(${self.totalSpecCount}) tests passed.`);
                     if(result.overallStatus !== 'passed') {
+                        window.externalJasmineFailures = true;
                         testRunnerErrorToConsole(`\u2716 Some suites was detected to have failures outside of the suite tests. This could indicate an underlying problem. please run tests locally to debug.`);
                         for(const element of result.failedExpectations) {
                             if(element.stack){

@@ -19,6 +19,11 @@ async function execTests(page, url) {
         return Promise.resolve(window.testResults);
     });
     expect(result.errors).toStrictEqual({});
+
+    const externalJasmineFailures = await page.evaluate(() => {
+        return Promise.resolve(window.externalJasmineFailures);
+    });
+    expect(externalJasmineFailures).toEqual(undefined);
 }
 
 test("Execute integration tests", async ({ page }) => {

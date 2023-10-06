@@ -20,4 +20,9 @@ test("Execute all unit tests", async ({ page }) => {
         return Promise.resolve(window.testResults);
     });
     expect(result.errors).toStrictEqual({});
+
+    const externalJasmineFailures = await page.evaluate(() => {
+        return Promise.resolve(window.externalJasmineFailures);
+    });
+    expect(externalJasmineFailures).toEqual(undefined);
 });
