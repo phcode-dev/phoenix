@@ -1,13 +1,16 @@
 {
     "name": "@phcode/node-core",
     "description": "Phoenix Node Core",
-    "version": "3.2.8-0",
-    "apiVersion": "3.2.8",
+    "version": "3.2.9-0",
+    "apiVersion": "3.2.9",
     "keywords": [],
     "author": "arun@core.ai",
     "homepage": "https://github.com/phcode-dev/phoenix",
     "license": "GNU-AGPL3.0",
     "scripts": {
+    },
+    "engines": {
+        "node": "18"
     },
     "repository": {
         "type": "git",
@@ -15,6 +18,7 @@
     },
     "IMPORTANT!!": "Adding things here will bloat up the package size",
     "dependencies": {
-        "@phcode/fs": "^2.0.4"
+        "@phcode/fs": "^2.0.4",
+        "npm": "9.8.1"
     }
 }
