@@ -75,6 +75,7 @@ define(function (require, exports, module) {
     let _darinPendingLogsIntervalTimer = setInterval(_drainPendingLogs, 1000);
 
     function testRunnerLogToConsole(...args) {
+        console.log(...args);
         if(window.testRunnerLogToConsole) {
             window.testRunnerLogToConsole(...args);
         } else {
@@ -83,6 +84,7 @@ define(function (require, exports, module) {
     }
 
     function testRunnerErrorToConsole(...args) {
+        console.error(...args);
         if(window.testRunnerErrorToConsole) {
             window.testRunnerErrorToConsole(...args);
         } else {
@@ -294,6 +296,14 @@ define(function (require, exports, module) {
                     testRunnerLogToConsole(`\u2714 All(${self.totalSpecCount}) tests passed.`);
                     if(result.overallStatus !== 'passed') {
                         testRunnerErrorToConsole(`\u2716 Some suites was detected to have failures outside of the suite tests. This could indicate an underlying problem. please run tests locally to debug.`);
+                        for(const element of result.failedExpectations) {
+                            if(element.stack){
+                                testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, element.message,
+                                    '\nStack: ', element.stack);
+                            } else {
+                                testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, element.message);
+                            }
+                        }
                         quitIfNeeded(1);
                     } else {
                         quitIfNeeded(0);
@@ -487,6 +497,18 @@ define(function (require, exports, module) {
     UnitTestReporter.prototype.reportRunnerResults = function (runner) {
         this.passed = (runner.overallStatus === "passed");
         this.runInfo.endTime = new Date().toString();
+        if(!this.passed){
+            testRunnerErrorToConsole(`\u2716 'Test suite run failed!! with status: ` + runner.overallStatus);
+
+            for(const element of runner.failedExpectations) {
+                if(element.stack){
+                    testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, element.message,
+                        '\nStack: ', element.stack);
+                } else {
+                    testRunnerErrorToConsole(`\u2716 Runner Error: Failure: `, element.message);
+                }
+            }
+        }
         $(this).triggerHandler("runnerEnd", [this]);
         activeReporter = null;
     };
@@ -495,15 +517,15 @@ define(function (require, exports, module) {
         let self = this;
         this.passed = (suiteResult.status === "passed");
         if(!this.passed){
-            console.error('Spec Error: ' + suiteResult.description + ' was ' + suiteResult.status);
             testRunnerErrorToConsole(`\u2716 Suite failed!!`, suiteResult.description + ' was ' + suiteResult.status);
 
             for(const element of suiteResult.failedExpectations) {
-                console.error('Spec Error: Failure: ', element.message);
-                console.error('Spec Error: Stack: ', element.stack);
-
-                testRunnerErrorToConsole(`\u2716 'Suite Error: Failure: `, element.message);
-                testRunnerErrorToConsole('\u2716 Suite Error: Stack: ', element.stack);
+                if(element.stack){
+                    testRunnerErrorToConsole(`\u2716 Suite Error: Failure: `, element.message,
+                        '\nStack: ', element.stack);
+                } else {
+                    testRunnerErrorToConsole(`\u2716 Suite Error: Failure: `, element.message);
+                }
             }
 
             let suiteData = this._addSuiteResults(suiteResult, this._currentPerfRecord);
@@ -526,6 +548,18 @@ define(function (require, exports, module) {
 
     UnitTestReporter.prototype.reportSpecResults = function (spec) {
         if (spec.status !== "excluded") {
+            if(spec.status !== "passed"){
+                testRunnerErrorToConsole(`\u2716 Spec failed!!`, spec.description + ' was ' + spec.status);
+
+                for(const element of spec.failedExpectations) {
+                    if(element.stack){
+                        testRunnerErrorToConsole(`\u2716 Spec Error: Failure: `, element.message,
+                            '\nStack: ', element.stack);
+                    } else {
+                        testRunnerErrorToConsole(`\u2716 Spec Error: Failure: `, element.message);
+                    }
+                }
+            }
             let specData = this._addSpecResults(spec, this._currentPerfRecord);
             $(this).triggerHandler("specEnd", [this, specData, this.suites[this.getTopLevelSuiteName(spec)]]);
         }

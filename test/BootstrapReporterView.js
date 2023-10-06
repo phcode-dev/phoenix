@@ -244,7 +244,7 @@ define(function (require, exports, module) {
             } else {
                 this.$info.toggleClass("alert-error", true).text(
                     "Complete. See failures Below. If all tests have passed and no failures are seen below," +
-                    "Check the debug console for errors. (search for 'Spec Error:' in console)");
+                    "Check the debug console for errors. (search for 'Spec Error:' , 'Suite Error:' or Runner Error: in console)");
             }
             window.playWrightRunComplete = true;
         }
