@@ -50,7 +50,7 @@ function serverInstall() {
 /**
  * Register the nohost service worker, passing `route` or other options.
  */
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && !window.__TAURI__) {
     console.log(window.location.href);
 
     const wb = new Workbox(`virtual-server-test.js?route=${getRoute()}`);
