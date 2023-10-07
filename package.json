@@ -60,7 +60,7 @@
         "_buildonly": "gulp build",
         "_buildonlyDebug": "gulp buildDebug",
         "_vulnerabilityCheck": "echo Scanning for vulnarabilities && npm audit --prod --audit-level=critical",
-        "_create-src-node-pkg-lock": "cd src-node && npm i --package-lock-only && cd..",
+        "_create-src-node-pkg-lock": "cd src-node && npm i --package-lock-only && cd ..",
         "build": "npm run _create-src-node-pkg-lock && npm run _buildonly && npm run createJSDocs && npm run _zipTestFiles && npm run lint && npm run _vulnerabilityCheck",
         "build:debug": "npm run _create-src-node-pkg-lock && npm run _buildonlyDebug && npm run createJSDocs && npm run _zipTestFiles && npm run lint && npm run _vulnerabilityCheck",
         "clean": "gulp clean && gulp reset",
