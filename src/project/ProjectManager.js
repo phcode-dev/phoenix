@@ -1008,16 +1008,15 @@ define(function (require, exports, module) {
             // close all the old files
             MainViewManager._closeAll(MainViewManager.ALL_PANES);
 
-            _unwatchProjectRoot().always(function () {
-                // Done closing old project (if any)
-                if (model.projectRoot) {
-                    LanguageManager._resetPathLanguageOverrides();
-                    PreferencesManager._reloadUserPrefs(model.projectRoot);
-                    exports.trigger(EVENT_PROJECT_CLOSE, model.projectRoot);
-                }
+            _unwatchProjectRoot().fail(console.error);
 
-                startLoad.resolve();
-            });
+            if (model.projectRoot) {
+                LanguageManager._resetPathLanguageOverrides();
+                PreferencesManager._reloadUserPrefs(model.projectRoot);
+                exports.trigger(EVENT_PROJECT_CLOSE, model.projectRoot);
+            }
+
+            startLoad.resolve();
         }
 
         startLoad.done(function () {

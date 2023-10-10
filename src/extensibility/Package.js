@@ -241,7 +241,8 @@ define(function (require, exports, module) {
             d.reject(Errors.MALFORMED_URL);
             return d.promise();
         }
-        if (!(parsed.protocol === "http:" || parsed.protocol === "https:" || parsed.protocol === "tauri:")) {
+        if (!(parsed.protocol === "http:" || parsed.protocol === "https:"
+            || parsed.protocol === "tauri:" || parsed.protocol === "asset:")) {
             d.reject(Errors.UNSUPPORTED_PROTOCOL);
             return d.promise();
         }

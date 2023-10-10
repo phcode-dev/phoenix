@@ -89,6 +89,10 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    async function deletePathAsync(fullPath, silent) {
+        return jsPromise(deletePath(fullPath, silent));
+    }
+
     /**
      * Remove a directory (recursively) or file
      *
@@ -879,6 +883,10 @@ define(function (require, exports, module) {
         return deferred.promise();
     }
 
+    function createTextFileAsync(path, text) {
+        return jsPromise(createTextFile(path, text, _getFileSystem()));
+    }
+
     /**
      * Copy a file source path to a destination
      * @param {!File} source Entry for the source file to copy
@@ -1248,7 +1256,11 @@ define(function (require, exports, module) {
         return 0;
     }
 
-    function pathExists(pathToCheck, isFolder = true) {
+    async function ensureExistsDirAsync(pathToExist) {
+        await window.Phoenix.VFS.ensureExistsDirAsync(pathToExist);
+    }
+
+    async function pathExists(pathToCheck, isFolder = true) {
         let entry = isFolder ? FileSystem.getDirectoryForPath(pathToCheck)
             : FileSystem.getFileForPath(pathToCheck);
         return entry.existsAsync(pathToCheck);
@@ -1322,11 +1334,14 @@ define(function (require, exports, module) {
     exports.openProjectFiles                = openProjectFiles;
     exports.toggleQuickEditAtOffset         = toggleQuickEditAtOffset;
     exports.createTextFile                  = createTextFile;
+    exports.createTextFileAsync             = createTextFileAsync;
     exports.copyDirectoryEntry              = copyDirectoryEntry;
     exports.copyFileEntry                   = copyFileEntry;
     exports.copyPath                        = copyPath;
     exports.deletePath                      = deletePath;
+    exports.deletePathAsync                 = deletePathAsync;
     exports.pathExists                      = pathExists;
+    exports.ensureExistsDirAsync            = ensureExistsDirAsync;
     exports.waitTillPathExists              = waitTillPathExists;
     exports.waitTillPathNotExists           = waitTillPathNotExists;
     exports.getTestWindow                   = getTestWindow;
