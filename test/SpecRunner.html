@@ -44,6 +44,25 @@
         });
       }
     }
+
+    if(window.__TAURI__) {
+      function setupTauriBootVars() {
+        const appNamePromise = window.__TAURI__.app.getName();
+        const documentDirPromise = window.__TAURI__.path.documentDir();
+        const appLocalDirPromise =  window.__TAURI__.path.appLocalDataDir();
+        const tempDirPromise = window.__TAURI__.tauri.invoke('get_temp_dir');
+        window._tauriBootVars = {};
+        window._tauriBootVarsPromise = Promise.all([appNamePromise, documentDirPromise,
+          appLocalDirPromise, tempDirPromise])
+                .then((results) => {
+                  window._tauriBootVars.appname = results[0];
+                  window._tauriBootVars.documentDir = results[1];
+                  window._tauriBootVars.appLocalDir = results[2];
+                  window._tauriBootVars.tempDir = results[3];
+                });
+      }
+      setupTauriBootVars();
+    }
   </script>
 
   <!-- Import the phoenix browser virtual file system -->

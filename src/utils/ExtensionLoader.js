@@ -220,7 +220,17 @@ define(function (require, exports, module) {
             baseUrl: config.baseUrl,
             paths: globalPaths,
             locale: brackets.getLocale(),
-            waitSeconds: EXTENSION_LOAD_TIMOUT_SECONDS
+            waitSeconds: EXTENSION_LOAD_TIMOUT_SECONDS,
+            config: {
+                text: {
+                    useXhr: function(_url, _protocol, _hostname, _port) {
+                        // as we load extensions in cross domain fashion, we have to use xhr
+                        // https://github.com/requirejs/text#xhr-restrictions
+                        // else user installed extension require will fail in tauri
+                        return true;
+                    }
+                }
+            }
         };
         const isDefaultExtensionModule =( extensionConfig.baseUrl
             && extensionConfig.baseUrl.startsWith(`${window.PhoenixBaseURL}extensions/default/`));
@@ -408,14 +418,13 @@ define(function (require, exports, module) {
      * @private
      * Loads a file entryPoint from each extension folder within the baseUrl into its own Require.js context
      *
-     * @param {!string} directory, an absolute native path that contains a directory of extensions.
+     * @param {!string} directory an absolute native path that contains a directory of extensions.
      *                  each subdirectory is interpreted as an independent extension
-     * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension folder
      * @param {!string} entryPoint Module name to load (without .js suffix)
      * @param {function} processExtension
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
-    function _loadAll(directory, config, entryPoint, processExtension) {
+    function _loadAll(directory, entryPoint, processExtension) {
         var result = new $.Deferred();
 
         FileSystem.getDirectoryForPath(directory).getContents(function (err, contents) {
@@ -438,10 +447,9 @@ define(function (require, exports, module) {
 
                 Async.doInParallel(extensions, function (item) {
                     var extConfig = {
-                        // we load extensions in virtual file system from our virtual server URL
-                        // fsServerUrl always ends with a /
-                        baseUrl: window.fsServerUrl.slice(0, -1) + config.baseUrl + "/" + item,
-                        paths: config.paths
+                        // we load user installed extensions in file system from our virtual/asset server URL
+                        baseUrl: Phoenix.VFS.getVirtualServingURLForPath(directory + "/" + item),
+                        paths: {}
                     };
                     console.log("Loading Extension from virtual fs: ", extConfig);
                     return processExtension(item, extConfig, entryPoint);
@@ -490,18 +498,18 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
     function loadAllExtensionsInNativeDirectory(directory) {
-        return _loadAll(directory, {baseUrl: directory}, "main", loadExtension);
+        return _loadAll(directory,  "main", loadExtension);
     }
 
     /**
-     * Loads a given extension at the path from virtual fs.
+     * Loads a given extension at the path from virtual fs. Used by `debug menu> load project as extension`
      * @param directory
      * @return {!Promise}
      */
     function loadExtensionFromNativeDirectory(directory) {
         logger.leaveTrail("loading custom extension from path: " + directory);
         const extConfig = {
-            baseUrl: window.fsServerUrl.slice(0, -1) + directory.replace(/\/$/, "")
+            baseUrl: Phoenix.VFS.getVirtualServingURLForPath(directory.replace(/\/$/, ""))
         };
         return loadExtension("ext" + directory.replace("/", "-"), // /fs/user/extpath to ext-fs-user-extpath
             extConfig, 'main');
@@ -515,21 +523,20 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
     function testAllExtensionsInNativeDirectory(directory) {
-        var result = new $.Deferred();
-        var virtualServerURL = window.fsServerUrl,
-            extensionsDir = _getExtensionPath() + "/" + directory,
+        const result = new $.Deferred();
+        const extensionsDir = _getExtensionPath() + "/" + directory,
             config = {
-                baseUrl: virtualServerURL + extensionsDir
+                baseUrl: Phoenix.VFS.getVirtualServingURLForPath(extensionsDir)
             };
 
         config.paths = {
-            "perf": virtualServerURL + "/test/perf",
-            "spec": virtualServerURL + "/test/spec"
+            "perf": Phoenix.VFS.getVirtualServingURLForPath( "/test/perf"),
+            "spec": Phoenix.VFS.getVirtualServingURLForPath("/test/spec")
         };
 
         FileSystem.getDirectoryForPath(extensionsDir).getContents(function (err, contents) {
             if (!err) {
-                var i,
+                let i,
                     extensions = [];
 
                 for (i = 0; i < contents.length; i++) {

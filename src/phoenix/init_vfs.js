@@ -31,22 +31,28 @@
  * This module should be functionally as light weight as possible with minimal deps as it is a shell component.
  * **/
 
-const EXTENSION_DIR = '/fs/app/extensions/';
+let extensionDIR,
+    appSupportDIR,
+    tauriAssetServeDir,
+    tauriAssetServeBaseURL,
+    documentsDIR,
+    tempDIR,
+    userProjectsDir;
 
 function _setupVFS(fsLib, pathLib){
     Phoenix.VFS = {
         getRootDir: () => '/fs/',
         getMountDir: () => '/mnt/',
         getTauriDir: () => '/tauri/',
-        getAppSupportDir: () => '/fs/app/',
-        getExtensionDir: () => EXTENSION_DIR,
-        getUserExtensionDir: () => `${EXTENSION_DIR}user`,
-        getDevExtensionDir: () => `${EXTENSION_DIR}dev`,
-        getLocalDir: () => '/fs/local/',
-        getTempDir: () => '/temp/',
-        getTrashDir: () => '/fs/trash/',
-        getDefaultProjectDir: () => '/fs/local/default project/',
-        getUserDocumentsDirectory: () => '/fs/local/Documents/',
+        getAppSupportDir: () => appSupportDIR,
+        getExtensionDir: () => extensionDIR,
+        getUserExtensionDir: () => `${extensionDIR}user`,
+        getDevExtensionDir: () => `${extensionDIR}dev`,
+        getTempDir: () => tempDIR,
+        getUserDocumentsDirectory: () => documentsDIR,
+        getUserProjectsDirectory: () => userProjectsDir,
+        _getVirtualDocumentsDirectory: () => '/fs/local/',
+        getDefaultProjectDir: () => `${userProjectsDir}default project/`,
         /**
          * Check if a given full path is located in the users local machine drive. For eg. fs access paths are accounted
          * as local disc path, as well as tauri fs paths.
@@ -80,14 +86,31 @@ function _setupVFS(fsLib, pathLib){
          * Converts a phoenix virtual serving url to absolute path in file system or null
          * http://localhost:8000/src/phoenix/vfs/fs/app/extensions/user/themesforbrackets/requirejs-config.json
          * to /fs/app/extensions/user/themesforbrackets/requirejs-config.json
-         * @param fullPath
+         * @param fullURL
          * @returns {string|null}
          */
-        getPathForVirtualServingURL: function (fullPath) {
-            if(window.fsServerUrl && fullPath.startsWith(window.fsServerUrl)){
-                return fullPath.replace(window.fsServerUrl, "/");
+        getPathForVirtualServingURL: function (fullURL) {
+            if(Phoenix.browser.isTauri) {
+                if(fullURL.startsWith(tauriAssetServeBaseURL)){
+                    const assetRelativePath = decodeURIComponent(fullURL.replace(tauriAssetServeBaseURL, ""));
+                    return `${tauriAssetServeDir}${assetRelativePath}`;
+                }
+                return null;
+            }
+            if(window.fsServerUrl && fullURL.startsWith(window.fsServerUrl)){
+                return fullURL.replace(window.fsServerUrl, "/");
             }
             return null;
+        },
+        getVirtualServingURLForPath: function (fullPath) {
+            if(Phoenix.browser.isTauri) {
+                if(fullPath.startsWith(tauriAssetServeDir)){
+                    const platformPath = fs.getTauriPlatformPath(fullPath);
+                    return decodeURIComponent(window.__TAURI__.tauri.convertFileSrc(platformPath));
+                }
+                return null;
+            }
+            return window.fsServerUrl.slice(0, -1) + fullPath;
         },
         ensureExistsDirAsync: async function (path) {
             return new Promise((resolve, reject)=>{
@@ -187,18 +210,68 @@ function _tryCreateDefaultProject() {
     });
 }
 
-const _createAppDirs = function () {
-    // Create phoenix app dirs
-    return Promise.all([
+async function setupAppSupportAndExtensionsDir() {
+    if(Phoenix.browser.isTauri) {
+        appSupportDIR = fs.getTauriVirtualPath(window._tauriBootVars.appLocalDir);
+        if(!appSupportDIR.endsWith("/")){
+            appSupportDIR = `${appSupportDIR}/`;
+        }
+        tauriAssetServeDir = `${appSupportDIR}assets/`;
+        tauriAssetServeBaseURL = decodeURIComponent(window.__TAURI__.tauri.convertFileSrc(
+            fs.getTauriPlatformPath(tauriAssetServeDir)));
+        extensionDIR = `${tauriAssetServeDir}extensions/`;
+    } else {
+        appSupportDIR = '/fs/app/';
+        extensionDIR = `${appSupportDIR}extensions/`;
+    }
+    await Promise.all([
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getRootDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getAppSupportDir()),
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getLocalDir()),
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getTrashDir()),
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getTempDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()),
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()+"user"),
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()+"dev"),
-        _tryCreateDefaultProject()
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getUserExtensionDir()),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getDevExtensionDir())
+    ]);
+}
+
+async function setupDocumentsDir() {
+    if(Phoenix.browser.isTauri) {
+        documentsDIR = fs.getTauriVirtualPath(window._tauriBootVars.documentDir);
+        if(!documentsDIR.endsWith("/")){
+            documentsDIR = `${documentsDIR}/`;
+        }
+        const appName = window._tauriBootVars.appname;
+        userProjectsDir = `${documentsDIR}${appName}/`;
+    } else {
+        documentsDIR = Phoenix.VFS._getVirtualDocumentsDirectory();
+        userProjectsDir = documentsDIR;
+    }
+    await Phoenix.VFS.ensureExistsDirAsync(documentsDIR);
+    await _tryCreateDefaultProject();
+}
+
+async function setupTempDir() {
+    if(Phoenix.browser.isTauri) {
+        tempDIR = fs.getTauriVirtualPath(window._tauriBootVars.tempDir);
+        if(!tempDIR.endsWith("/")){
+            tempDIR = `${tempDIR}/`;
+        }
+        const appName = window._tauriBootVars.appname;
+        tempDIR = `${tempDIR}${appName}/`;
+    } else {
+        tempDIR = '/temp/';
+    }
+    await Phoenix.VFS.ensureExistsDirAsync(tempDIR);
+}
+
+const _createAppDirs = async function () {
+    if(window._tauriBootVarsPromise) {
+        await window._tauriBootVarsPromise;
+    }
+    // Create phoenix app dirs
+    await Promise.all([
+        setupAppSupportAndExtensionsDir(),
+        setupDocumentsDir(),
+        setupTempDir()
     ]);
 };
 

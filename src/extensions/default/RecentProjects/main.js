@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 define(function (require, exports, module) {
 
 
@@ -347,23 +349,17 @@ define(function (require, exports, module) {
 
     /**
      * Parses the path and returns an object with the full path, the folder name and the path without the folder.
-     * @param {string} path The full path to the folder.
+     * @param {string} fullPath The full path to the folder.
      * @return {{path: string, folder: string, rest: string}}
      */
-    function parsePath(path) {
-        var lastSlash = path.lastIndexOf("/"), folder, rest;
-        if (lastSlash === path.length - 1) {
-            lastSlash = path.slice(0, path.length - 1).lastIndexOf("/");
+    function renderPath(fullPath) {
+        let parentDirPath = window.path.dirname(fullPath);
+        if(parentDirPath.startsWith(Phoenix.VFS.getTauriDir())) {
+            parentDirPath = window.fs.getTauriPlatformPath(parentDirPath);
         }
-        if (lastSlash >= 0) {
-            rest = " - " + (lastSlash ? path.slice(0, lastSlash) : "/");
-            folder = path.slice(lastSlash + 1);
-        } else {
-            rest = "/";
-            folder = path;
-        }
+        const rest = " - " + parentDirPath;
 
-        return {path: path, folder: folder, rest: rest};
+        return {path: fullPath, folder: window.path.basename(fullPath), rest: rest};
     }
 
     /**
@@ -382,7 +378,7 @@ define(function (require, exports, module) {
 
         recentProjects.forEach(function (root) {
             if (root !== currentProject) {
-                templateVars.projectList.push(parsePath(root));
+                templateVars.projectList.push(renderPath(root));
             }
         });
 

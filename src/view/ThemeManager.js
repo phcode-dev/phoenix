@@ -380,9 +380,12 @@ define(function (require, exports, module) {
     function _loadFileFromURL(url, options) {
         let deferred         = new $.Deferred();
 
-        const themeName = options.name || options.theme.title,
-            fileName = options.theme.file || (typeof(options.theme) === 'string'? options.theme: `theme.css`),
-            themeFolder = brackets.app.getApplicationSupportDirectory() + `/extensions/user/${themeName}/`,
+        const  themeName = options.name || options.theme.title,
+            themeFolder = window.__TAURI__ ?
+                brackets.app.getApplicationSupportDirectory() + `/assets/extensions/user/${themeName}/` :
+                brackets.app.getApplicationSupportDirectory() + `/extensions/user/${themeName}/`;
+
+        const fileName = options.theme.file || (typeof(options.theme) === 'string'? options.theme: `theme.css`),
             packageURL = url.substring(0, url.lastIndexOf("/")) + '/package.json',
             packagePath = path.normalize(themeFolder + 'package.json'),
             themePath = path.normalize(themeFolder + fileName),
