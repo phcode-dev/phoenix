@@ -8,6 +8,7 @@
     "homepage": "https://github.com/phcode-dev/phoenix",
     "license": "GNU-AGPL3.0",
     "scripts": {
+        "_watch_src-node": "cd .. && npm run _watch_src-node"
     },
     "engines": {
         "node": "18"
