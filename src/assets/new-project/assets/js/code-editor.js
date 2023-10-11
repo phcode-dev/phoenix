@@ -77,15 +77,13 @@ function getDisplayLocation(projectPath) {
     return Strings.PROJECT_FROM_BROWSER;
 }
 
-const DEFAULT_PROJECT_PATH = '/fs/local/default project';
-
 function _updateProjectCards() {
     let recentProjectList = $(document.getElementById('recentProjectList'));
     recentProjectList.empty();
     let recentProjects = recentProjectExtension.getRecentProjects();
     let tabIndex = 1;
-    let defaultProjects = [DEFAULT_PROJECT_PATH, '/fs/local/explore'],
-        omitProjectsInListing = ['/fs/local/explore'],
+    let defaultProjects = [newProjectExtension.getWelcomeProjectPath(), newProjectExtension.getExploreProjectPath()],
+        omitProjectsInListing = [newProjectExtension.getExploreProjectPath()],
         showRecentProjects = false;
     for(let recentProject of recentProjects){
         if(!defaultProjects.includes(recentProject)){

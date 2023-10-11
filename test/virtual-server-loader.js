@@ -37,7 +37,9 @@ function getRoute(){
     return `${basePath}/phoenix/vfs`;
 }
 
-window.fsServerUrl = window.location.origin + getRoute() + "/";
+if(!window.__TAURI__) {
+    window.fsServerUrl = window.location.origin + getRoute() + "/";
+}
 
 function serverReady() {
     console.log(`Server ready! Serving files on url: ${window.location.origin + getRoute()}`);

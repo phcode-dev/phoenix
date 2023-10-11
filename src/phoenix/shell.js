@@ -97,7 +97,10 @@ Phoenix.app = {
         return nativeWindow;
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
+    getExtensionsDirectory: Phoenix.VFS.getExtensionDir,
     getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,
+    getUserProjectsDirectory: Phoenix.VFS.getUserProjectsDirectory,
+    getTempDirectory: Phoenix.VFS.getTempDir,
     ERR_CODES: ERR_CODES,
     getElapsedMilliseconds: function () {
         return Date.now() - Phoenix.startTime; // milliseconds elapsed since app start

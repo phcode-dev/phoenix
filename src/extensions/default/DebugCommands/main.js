@@ -715,7 +715,11 @@ define(function (require, exports, module) {
     }
 
     function _openVirtualServer() {
-        Phoenix.app.openURLInPhoenixWindow(window.fsServerUrl, {
+        const virtualServingURL = Phoenix.VFS.getVirtualServingURLForPath("/");
+        if(!virtualServingURL) {
+            throw new Error("Unable to find virtual server!");
+        }
+        Phoenix.app.openURLInPhoenixWindow(virtualServingURL, {
             preferTabs: true
         });
     }
@@ -775,13 +779,20 @@ define(function (require, exports, module) {
     menu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
     menu.addMenuDivider();
     menu.addMenuItem(DEBUG_OPEN_VFS);
-    menu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER);
+    menu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER, undefined, undefined, undefined, {
+        hideWhenCommandDisabled: true
+    });
     menu.addMenuDivider();
     menu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW); // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
     menu.addMenuItem(Commands.FILE_OPEN_KEYMAP);      // this command is defined in core, but exposed only in Debug menu for now
 
     CommandManager.get(DEBUG_UNLOAD_CURRENT_EXTENSION)
         .setEnabled(extensionDevelopment.isProjectLoadedAsExtension());
+    if(window.__TAURI__) {
+        // in tauri, virtual server doesnt exist, extensions are served by tauri asset urls.
+        CommandManager.get(DEBUG_OPEN_VIRTUAL_SERVER)
+            .setEnabled(false);
+    }
     _updateLogToConsoleMenuItemChecked();
     // exposed for convenience, but not official API
     exports._runUnitTests = _runUnitTests;

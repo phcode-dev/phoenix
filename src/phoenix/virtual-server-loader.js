@@ -56,7 +56,9 @@ function getRoute(){
     return `phoenix/vfs`;
 }
 
-window.fsServerUrl = _getBaseURL() + getRoute() + "/";
+if(!window.__TAURI__) {
+    window.fsServerUrl = _getBaseURL() + getRoute() + "/";
+}
 
 function _isServiceWorkerLoaderPage() {
     // only http(s)://x.y.z/ or http(s)://x.y.z/index.html can load service worker, or localhost/src for dev builds

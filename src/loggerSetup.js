@@ -138,20 +138,20 @@
         logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW);
 
     function _shouldDiscardError(errors = []) {
-        if(!window.fsServerUrl || !window.Phoenix || !window.Phoenix.VFS){
+        if(!window.Phoenix || !window.Phoenix.VFS){
             return false;
         }
         let fileURL, extensionName, userFsURLFound = false,
-            userExtensionsURL = window.fsServerUrl.slice(0, -1) + window.Phoenix.VFS.getUserExtensionDir() + "/";
+            userExtensionsFolderURL = window.Phoenix.VFS.getVirtualServingURLForPath(window.Phoenix.VFS.getUserExtensionDir()+"/");
 
         // errors with stacks originating from any folder or files from the user file system are not logged for privacy
         for(let error of errors){
             if(error.stacktrace && error.stacktrace[0]) {
                 for(let stack of error.stacktrace){
                     fileURL = stack.file || "";
-                    if(fileURL.startsWith(userExtensionsURL)) {
+                    if(fileURL.startsWith(userExtensionsFolderURL)) {
                         // an extension installed from extension store has error. we dont log, but raise metric
-                        extensionName = fileURL.replace(userExtensionsURL, "");
+                        extensionName = fileURL.replace(userExtensionsFolderURL, "");
                         extensionName = extensionName.split("/")[0];
                         let supportStatus = "Y";
                         if(!Phoenix.isSupportedBrowser){
@@ -165,7 +165,7 @@
                             `Extension Error for ${extensionName} of type ${error.type} class ${error.errorClass}`);
                         return true;
                     }
-                    if(fileURL.startsWith(window.fsServerUrl)) {
+                    if(window.Phoenix.VFS.getPathForVirtualServingURL(fileURL)) {
                         userFsURLFound = true;
                     }
                 }
