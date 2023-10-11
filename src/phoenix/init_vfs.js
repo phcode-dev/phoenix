@@ -92,7 +92,8 @@ function _setupVFS(fsLib, pathLib){
         getPathForVirtualServingURL: function (fullURL) {
             if(Phoenix.browser.isTauri) {
                 if(fullURL.startsWith(tauriAssetServeBaseURL)){
-                    const assetRelativePath = decodeURIComponent(fullURL.replace(tauriAssetServeBaseURL, ""));
+                    const assetRelativePath = decodeURIComponent(fullURL.replace(tauriAssetServeBaseURL, ""))
+                        .replace(/\\/g, "/"); // replace windows path forward slashes \ to /
                     return `${tauriAssetServeDir}${assetRelativePath}`;
                 }
                 return null;
