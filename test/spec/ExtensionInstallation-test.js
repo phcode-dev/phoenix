@@ -19,24 +19,26 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, jsPromise */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, jsPromise, Phoenix*/
 
 define(function (require, exports, module) {
 
 
-    var SpecRunnerUtils  = require("spec/SpecRunnerUtils"),
+    const SpecRunnerUtils  = require("spec/SpecRunnerUtils"),
         ExtensionLoader  = require("utils/ExtensionLoader"),
         FileSystem       = require("filesystem/FileSystem"),
         Package          = require("extensibility/Package");
 
-    var testFilePath = SpecRunnerUtils.getTestPath("/spec/extension-test-files");
+    const testFilePath = SpecRunnerUtils.getTestPath("/spec/extension-test-files");
 
-    var tempDirectory = SpecRunnerUtils.getTempDirectory();
-    var extensionsRoot = tempDirectory + "/extensions";
+    const tempDirectory = window.__TAURI__ ? Phoenix.VFS.getTauriAssetServeDir() + "tests": SpecRunnerUtils.getTempDirectory();
+    const extensionsRoot = tempDirectory + "/extensions";
 
-    var basicValid          = testFilePath + "/basic-valid-extension.zip",
-        missingNameVersion  = testFilePath + "/missing-name-version.zip",
-        incompatibleVersion = testFilePath + "/incompatible-version.zip";
+    const basicValidSrc          = testFilePath + "/basic-valid-extension.zip",
+        missingNameVersionSrc  = testFilePath + "/missing-name-version.zip";
+
+    let basicValid          = basicValidSrc, // this will differ for tauri, see before all
+        missingNameVersion  = missingNameVersionSrc;
 
     describe("Extension Installation", function () {
         // The code that follows mocks out the bits of ExtensionLoader that are
@@ -58,11 +60,17 @@ define(function (require, exports, module) {
         }
 
         beforeAll(async function () {
-            await SpecRunnerUtils.createTempDirectory();
+            await SpecRunnerUtils.ensureExistsDirAsync(tempDirectory);
+            if(window.__TAURI__){
+                basicValid          = tempDirectory + "/basic-valid-extension.zip";
+                missingNameVersion  = tempDirectory + "/missing-name-version.zip";
+                await SpecRunnerUtils.copy(basicValidSrc, basicValid);
+                await SpecRunnerUtils.copy(missingNameVersionSrc, missingNameVersion);
+            }
         });
 
         afterAll(async function () {
-            await SpecRunnerUtils.removeTempDirectory();
+            await SpecRunnerUtils.deletePathAsync(tempDirectory, true);
         });
 
         beforeEach(function () {
@@ -83,11 +91,11 @@ define(function (require, exports, module) {
 
         it("extensions should install and load", async function () {
             let packageData = await jsPromise(Package.installFromURL(
-                window.fsServerUrl + basicValid, extensionsRoot + "/custom").promise);
+                Phoenix.VFS.getVirtualServingURLForPath(basicValid), extensionsRoot + "/custom").promise);
             expect(packageData.installationStatus).toEqual("INSTALLED");
             expect(packageData.name).toEqual("basic-valid");
-            expect(packageData.installedTo).toEqual("/test/temp/extensions/custom/basic-valid");
-            expect(packageData.localPath).toEqual("/test/temp/extensions/custom/basic-valid");
+            expect(packageData.installedTo).toEqual(`${extensionsRoot}/custom/basic-valid`);
+            expect(packageData.localPath).toEqual(`${extensionsRoot}/custom/basic-valid`);
 
             let extension = await jsPromise(Package.install(packageData.installedTo, packageData.name, false));
             expect(extension.name).toEqual("basic");
@@ -95,11 +103,11 @@ define(function (require, exports, module) {
 
         it("extensions should install and load to default location", async function () {
             let packageData = await jsPromise(Package.installFromURL(
-                window.fsServerUrl + basicValid).promise);
+                Phoenix.VFS.getVirtualServingURLForPath(basicValid)).promise);
             expect(packageData.installationStatus).toEqual("INSTALLED");
             expect(packageData.name).toEqual("basic-valid");
-            expect(packageData.installedTo).toEqual("/test/temp/extensions/user/basic-valid");
-            expect(packageData.localPath).toEqual("/test/temp/extensions/user/basic-valid");
+            expect(packageData.installedTo).toEqual(`${extensionsRoot}/user/basic-valid`);
+            expect(packageData.localPath).toEqual(`${extensionsRoot}/user/basic-valid`);
 
             let extension = await jsPromise(Package.install(packageData.installedTo, packageData.name, false));
             expect(extension.name).toEqual("basic");
@@ -107,11 +115,11 @@ define(function (require, exports, module) {
 
         it("extensions should install and load with missing name and version", async function () {
             let packageData = await jsPromise(Package.installFromURL(
-                window.fsServerUrl + missingNameVersion).promise);
+                Phoenix.VFS.getVirtualServingURLForPath(missingNameVersion)).promise);
             expect(packageData.installationStatus).toEqual("INSTALLED");
             expect(packageData.name).toEqual("missing-name");
-            expect(packageData.installedTo).toEqual("/test/temp/extensions/user/missing-name");
-            expect(packageData.localPath).toEqual("/test/temp/extensions/user/missing-name");
+            expect(packageData.installedTo).toEqual(`${extensionsRoot}/user/missing-name`);
+            expect(packageData.localPath).toEqual(`${extensionsRoot}/user/missing-name`);
 
             let extension = await jsPromise(Package.install(packageData.installedTo, packageData.name, false));
             expect(extension.name).toEqual("missing");
@@ -119,11 +127,11 @@ define(function (require, exports, module) {
 
         it("should remove an installed extension", async function () {
             let packageData = await jsPromise(Package.installFromURL(
-                window.fsServerUrl + basicValid).promise);
+                Phoenix.VFS.getVirtualServingURLForPath(basicValid)).promise);
             expect(packageData.installationStatus).toEqual("INSTALLED");
             expect(packageData.name).toEqual("basic-valid");
-            expect(packageData.installedTo).toEqual("/test/temp/extensions/user/basic-valid");
-            expect(packageData.localPath).toEqual("/test/temp/extensions/user/basic-valid");
+            expect(packageData.installedTo).toEqual(`${extensionsRoot}/user/basic-valid`);
+            expect(packageData.localPath).toEqual(`${extensionsRoot}/user/basic-valid`);
 
             let extension = await jsPromise(Package.install(packageData.installedTo, packageData.name, false));
             expect(extension.name).toEqual("basic");
