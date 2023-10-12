@@ -49,6 +49,7 @@ function _setupVFS(fsLib, pathLib){
         getUserExtensionDir: () => `${extensionDIR}user`,
         getDevExtensionDir: () => `${extensionDIR}dev`,
         getTempDir: () => tempDIR,
+        getTauriAssetServeDir: () => tauriAssetServeDir,
         getUserDocumentsDirectory: () => documentsDIR,
         getUserProjectsDirectory: () => userProjectsDir,
         _getVirtualDocumentsDirectory: () => '/fs/local/',
