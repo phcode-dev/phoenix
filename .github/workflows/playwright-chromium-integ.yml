@@ -16,20 +16,21 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright integration tests in Chromium Attempt 1
-      timeout-minutes: 30
       id: attemptC1
+      timeout-minutes: 30
       continue-on-error: true
       run: npm run testIntegChromium
 
     - name: Run Playwright integration tests in Chromium Attempt 2
-      if: steps.attemptC1.outcome == 'failure'
       id: attemptC2
+      if: steps.attemptC1.outcome == 'failure'
+      timeout-minutes: 30
       continue-on-error: true
       run: npm run testIntegChromium
 
     - name: Run Playwright integration tests in Chromium Attempt 3
-      if: steps.attemptC2.outcome == 'failure'
       id: attemptC3
+      if: steps.attemptC2.outcome == 'failure'
       run: npm run testIntegChromium
 
     - uses: actions/upload-artifact@v3

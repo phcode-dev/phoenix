@@ -16,20 +16,21 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright integration tests in firefox Attempt 1
-      timeout-minutes: 30
       id: attempt1
+      timeout-minutes: 30
       continue-on-error: true
       run: npm run testIntegFirefox
 
     - name: Run Playwright integration tests in firefox Attempt 2
+      id: attempt2
       if: steps.attempt1.outcome == 'failure'
       timeout-minutes: 30
-      id: attempt2
+      continue-on-error: true
       run: npm run testIntegFirefox
 
     - name: Run Playwright integration tests in firefox Attempt 3
-      if: steps.attempt2.outcome == 'failure'
       id: attempt3
+      if: steps.attempt2.outcome == 'failure'
       run: npm run testIntegFirefox
 
     - uses: actions/upload-artifact@v3
