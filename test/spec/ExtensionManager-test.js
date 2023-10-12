@@ -20,7 +20,8 @@
  */
 
 /*jslint regexp: true */
-/*global describe, it, expect, beforeEach, afterEach, spyOn, jasmine, awaitsFor, awaitsForDone */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, spyOn,
+ jasmine, awaitsFor, awaitsForDone, Phoenix */
 /*unittests: ExtensionManager*/
 
 define(function (require, exports, module) {
@@ -31,21 +32,16 @@ define(function (require, exports, module) {
     var _ = require("thirdparty/lodash");
 
     var ExtensionManager          = require("extensibility/ExtensionManager"),
-        ExtensionManagerView      = require("extensibility/ExtensionManagerView").ExtensionManagerView,
         ExtensionManagerViewModel = require("extensibility/ExtensionManagerViewModel"),
         ExtensionManagerDialog    = require("extensibility/ExtensionManagerDialog"),
         InstallExtensionDialog    = require("extensibility/InstallExtensionDialog"),
         Package                   = require("extensibility/Package"),
         ExtensionLoader           = require("utils/ExtensionLoader"),
         SpecRunnerUtils           = require("spec/SpecRunnerUtils"),
-        NativeApp                 = require("utils/NativeApp"),
         Dialogs                   = require("widgets/Dialogs"),
         CommandManager            = require("command/CommandManager"),
         Commands                  = require("command/Commands"),
         FileSystem                = require("filesystem/FileSystem"),
-        Strings                   = require("strings"),
-        StringUtils               = require("utils/StringUtils"),
-        LocalizationUtils         = require("utils/LocalizationUtils"),
         PreferencesManager        = require("preferences/PreferencesManager"),
         mockRegistryText          = require("text!spec/ExtensionManager-test-files/mockRegistry.json"),
         mockRegistryThemesText    = require("text!spec/ExtensionManager-test-files/mockRegistryThemes.json"),
@@ -53,9 +49,22 @@ define(function (require, exports, module) {
         mockExtensionList         = require("text!spec/ExtensionManager-test-files/mockExtensionList.json"),
         mockRegistry;
 
+    const testPath = window.__TAURI__ ?
+        Phoenix.VFS.getTauriAssetServeDir() + "tests" :
+        SpecRunnerUtils.getTempDirectory();
+    const testSrc = SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+
     describe("ExtensionManager", function () {
-        var mockId, mockSettings, origRegistryURL, origExtensionUrl, removedPath,
-            view, model, fakeLoadDeferred, modelDisposed, disabledFilePath;
+        var mockId, mockSettings, origRegistryURL, origExtensionUrl, removedPath, disabledFilePath;
+
+        beforeAll(async function () {
+            await SpecRunnerUtils.deletePathAsync(testPath, true);
+            await SpecRunnerUtils.copy(testSrc, testPath);
+        });
+
+        afterAll(async function () {
+            await SpecRunnerUtils.deletePathAsync(testPath, true);
+        });
 
         beforeEach(function () {
             // Use fake URLs for the registry (useful if the registry isn't actually currently
@@ -80,9 +89,8 @@ define(function (require, exports, module) {
             mockId = $.mockjax(mockSettings);
 
             // Set a fake path for user extensions.
-            var mockPath = SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
             spyOn(ExtensionLoader, "getUserExtensionPath").and.callFake(function () {
-                return mockPath + "/user";
+                return testPath + "/user";
             });
 
             // Fake package removal.
@@ -124,7 +132,7 @@ define(function (require, exports, module) {
             ExtensionManager.on("statusChange.mock-load", function () {
                 numStatusChanges++;
             });
-            var mockPath = window.fsServerUrl + SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+            var mockPath = Phoenix.VFS.getVirtualServingURLForPath(testPath);
             names = names || ["default/mock-extension-1", "dev/mock-extension-2", "user/mock-legacy-extension"];
             names.forEach(function (name) {
                 ExtensionLoader.trigger(shouldFail ? "loadFailed" : (shouldDisable ? "disabled" : "load"), mockPath + "/" + name);
@@ -167,49 +175,6 @@ define(function (require, exports, module) {
                 owner: "github:someuser",
                 versions: versions
             };
-        }
-
-        function setupExtensionManagerViewTests(context) {
-            jasmine.addMatchers({
-                toHaveText: function (expected) {
-                    var notText = this.isNot ? " not" : "";
-                    this.message = function () {
-                        return "Expected view" + notText + " to contain text " + expected;
-                    };
-                    return SpecRunnerUtils.findDOMText(this.actual.$el, expected);
-                },
-                toHaveLink: function (expected) {
-                    var notText = this.isNot ? " not" : "";
-                    this.message = function () {
-                        return "Expected view" + notText + " to contain link " + expected;
-                    };
-                    return SpecRunnerUtils.findDOMText(this.actual.$el, expected, true);
-                }
-            });
-            spyOn(InstallExtensionDialog, "installUsingDialog").and.callFake(async function (url) {
-                var id = url.match(/fake-repository\.com\/([^\/]+)/)[1];
-                await mockLoadExtensions(["user/" + id]);
-            });
-        }
-
-        function cleanupExtensionManagerViewTests() {
-            if (view) {
-                view.$el.remove();
-                view = null;
-            }
-            if (model) {
-                model.dispose();
-            }
-        }
-
-        // Sets up the view using the normal (mock) ExtensionManager data.
-        async function setupViewWithMockData(ModelClass) {
-            view = new ExtensionManagerView();
-            model = new ModelClass();
-            modelDisposed = false;
-            await awaitsForDone(view.initialize(model), "view initializing");
-            view.$el.appendTo(window.document.body);
-            spyOn(view.model, "dispose").and.callThrough();
         }
 
         describe("ExtensionManager", function () {
@@ -319,7 +284,7 @@ define(function (require, exports, module) {
                 await mockLoadExtensions(["user/mock-extension-3"]);
                 ExtensionManager.on("statusChange.unit-test", spy);
                 await awaitsForDone(ExtensionManager.remove("mock-extension-3"));
-                var mockPath = window.fsServerUrl + SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+                var mockPath = Phoenix.VFS.getVirtualServingURLForPath(testPath);
                 expect(removedPath).toBe(mockPath + "/user/mock-extension-3");
                 expect(spy).toHaveBeenCalledWith(jasmine.any(Object), "mock-extension-3");
                 expect(ExtensionManager.extensions["mock-extension-3"].installInfo).toBeFalsy();
@@ -330,7 +295,7 @@ define(function (require, exports, module) {
                 await mockLoadExtensions(["user/mock-extension-3"]);
                 ExtensionManager.on("statusChange.unit-test", spy);
                 await awaitsForDone(ExtensionManager.disable("mock-extension-3"));
-                var mockPath = window.fsServerUrl + SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+                var mockPath = Phoenix.VFS.getVirtualServingURLForPath(testPath);
                 expect(disabledFilePath).toBe(mockPath + "/user/mock-extension-3" + "/.disabled");
                 expect(spy).toHaveBeenCalledWith(jasmine.any(Object), "mock-extension-3");
                 expect(ExtensionManager.extensions["mock-extension-3"].installInfo.status).toEqual(ExtensionManager.DISABLED);
@@ -341,7 +306,7 @@ define(function (require, exports, module) {
                 await mockLoadExtensions(["user/mock-extension-2"], "disable");
                 ExtensionManager.on("statusChange.unit-test", spy);
                 await awaitsForDone(ExtensionManager.enable("mock-extension-2"));
-                var mockPath = window.fsServerUrl + SpecRunnerUtils.getTestPath("/spec/ExtensionManager-test-files");
+                var mockPath = Phoenix.VFS.getVirtualServingURLForPath(testPath);
                 expect(disabledFilePath).toBe(mockPath + "/user/mock-extension-2" + "/.disabled");
                 expect(spy).toHaveBeenCalledWith(jasmine.any(Object), "mock-extension-2");
                 expect(ExtensionManager.extensions["mock-extension-2"].installInfo.status).toEqual(ExtensionManager.ENABLED);
