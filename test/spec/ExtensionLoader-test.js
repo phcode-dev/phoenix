@@ -20,7 +20,8 @@
  */
 
 /*jslint regexp: true */
-/*global describe, it, spyOn, expect, beforeEach, afterEach, awaitsForFail, awaitsForDone, awaitsFor */
+/*global describe, it, spyOn, expect, beforeAll, beforeEach, afterEach, afterAll, awaitsForFail, awaitsForDone,
+awaitsFor, Phoenix */
 
 define(function (require, exports, module) {
 
@@ -30,7 +31,8 @@ define(function (require, exports, module) {
         ThemeManager     = require("view/ThemeManager"),
         SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
-    const testPath = SpecRunnerUtils.getTestPath("/spec/ExtensionLoader-test-files");
+    const testPathSrc = SpecRunnerUtils.getTestPath("/spec/ExtensionLoader-test-files");
+    const testPath = window.__TAURI__ ? Phoenix.VFS.getTauriAssetServeDir() + "tests": SpecRunnerUtils.getTempDirectory();
 
     describe("ExtensionLoader", function () {
 
@@ -39,7 +41,7 @@ define(function (require, exports, module) {
         async function testLoadExtension(name, promiseState, error) {
             var promise,
                 config = {
-                    baseUrl: window.fsServerUrl + testPath + "/" + name
+                    baseUrl: Phoenix.VFS.getVirtualServingURLForPath(testPath + "/" + name)
                 },
                 consoleErrors = [];
 
@@ -72,6 +74,15 @@ define(function (require, exports, module) {
 
             expect(promise.state()).toBe(promiseState);
         }
+
+        beforeAll(async function () {
+            await SpecRunnerUtils.deletePathAsync(testPath, true);
+            await SpecRunnerUtils.copy(testPathSrc, testPath);
+        });
+
+        afterAll(async function () {
+            await SpecRunnerUtils.deletePathAsync(testPath, true);
+        });
 
         beforeEach(function () {
             origTimeout = ExtensionLoader._getInitExtensionTimeout();
@@ -116,7 +127,7 @@ define(function (require, exports, module) {
 
         it("should log an error if an extension init fails with a runtime error", async function () {
             let errorMsg = "[Extension] Error -- error thrown during initExtension for InitRuntimeError: ReferenceError: isNotDefined is not defined";
-            if(window.Phoenix.browser.desktop.isSafari || window.Phoenix.browser.mobile.isIos){
+            if(window.Phoenix.browser.desktop.isSafari || window.Phoenix.browser.desktop.isWebKit || window.Phoenix.browser.mobile.isIos){
                 errorMsg = "[Extension] Error -- error thrown during initExtension for InitRuntimeError: ReferenceError: Can't find variable: isNotDefined";
             }
             await testLoadExtension("InitRuntimeError", "rejected", errorMsg);
