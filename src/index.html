@@ -86,6 +86,19 @@
                       return p.toString() === "[object SafariRemoteNotification]";
                   })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
             }
+            function detectEngine() {
+                const userAgent = navigator.userAgent;
+
+                if (/WebKit/.test(userAgent)) {
+                    if (/Chrome|Blink|Edg\//.test(userAgent)) {
+                        return 'Blink';  // Chrome or Edge (based on Blink)
+                    } else {
+                        return 'WebKit'; // Likely Safari or other true WebKit-based browser
+                    }
+                }
+
+                return 'Other';
+            }
             function getBrowserDetails() {
                 let isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
                 let isEdgeBrowser = navigator.userAgent.indexOf("Edg") !== -1;
@@ -113,7 +126,9 @@
                         isChrome: isChromeBrowser,
                         isEdgeChromium: isEdgeChromiumBrowser,
                         isOperaChromium: isOperaChromiumBrowser,
-                        isSafari: isSafari()
+                        isSafari: isSafari(),
+                        isWebKit: detectEngine() === 'WebKit',
+                        isBlink: detectEngine() === 'Blink'
                     }
                 };
             }
