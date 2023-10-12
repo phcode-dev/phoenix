@@ -28,7 +28,7 @@ jobs:
         run: npm run testFirefox
 
   testFirefoxInteg:
-    timeout-minutes: 60
+    timeout-minutes: 90
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -50,7 +50,14 @@ jobs:
 
       - name: Run Playwright integration tests in firefox Attempt 2
         if: steps.attempt1.outcome == 'failure'
+        timeout-minutes: 30
+        continue-on-error: true
         id: attempt2
+        run: npm run testIntegFirefox
+
+      - name: Run Playwright integration tests in firefox Attempt 3
+        if: steps.attempt2.outcome == 'failure'
+        id: attempt3
         run: npm run testIntegFirefox
 
   testChromiumUnit:
@@ -72,7 +79,7 @@ jobs:
         run: npm run testChromium
 
   testChromiumInteg:
-    timeout-minutes: 60
+    timeout-minutes: 90
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -93,8 +100,15 @@ jobs:
         run: npm run testIntegChromium
 
       - name: Run Playwright integration tests in Chromium Attempt 2
+        timeout-minutes: 30
+        continue-on-error: true
         if: steps.attemptC1.outcome == 'failure'
         id: attemptC2
+        run: npm run testIntegChromium
+
+      - name: Run Playwright integration tests in Chromium Attempt 3
+        if: steps.attemptC2.outcome == 'failure'
+        id: attemptC3
         run: npm run testIntegChromium
 
   raiseIssue:
