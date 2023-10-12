@@ -139,23 +139,11 @@ define(function (require, exports, module) {
             });
 
             // Make sure the ExtensionManager has finished reading all the package.jsons before continuing.
-            await awaitsFor(function () { return numStatusChanges === names.length; }, "ExtensionManager status changes");
+            await awaitsFor(function () { return numStatusChanges === names.length; },
+                "ExtensionManager status changes",
+                10000);
 
             ExtensionManager.off(".mock-load");
-        }
-
-        function makeMockInstalledVersion(mockRegistryExtension, installedVersion) {
-            var ref = _.find(mockRegistryExtension.versions, { version: installedVersion });
-            return {
-                locationType: ExtensionManager.LOCATION_USER,
-                metadata: {
-                    name: mockRegistryExtension.metadata.name,
-                    title: mockRegistryExtension.metadata.title,
-                    version: ref.version,
-                    engines: { brackets: ref.brackets }
-                },
-                owner: mockRegistryExtension.owner
-            };
         }
 
         function makeMockExtension(versionRequirements) {

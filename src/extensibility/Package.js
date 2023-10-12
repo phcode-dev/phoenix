@@ -246,7 +246,7 @@ define(function (require, exports, module) {
             d.reject(Errors.UNSUPPORTED_PROTOCOL);
             return d.promise();
         }
-
+        parsed.filename = FileUtils.convertWindowsPathToUnixPath(parsed.filename);
         const urlInfo = { url: url, parsed: parsed, filenameHint: parsed.filename, destinationDirectory };
         githubURLFilter(urlInfo);
 

@@ -107,7 +107,8 @@ function _setupVFS(fsLib, pathLib){
         getVirtualServingURLForPath: function (fullPath) {
             if(Phoenix.browser.isTauri) {
                 if(fullPath.startsWith(tauriAssetServeDir)){
-                    const platformPath = fs.getTauriPlatformPath(fullPath);
+                    const platformPath = fs.getTauriPlatformPath(fullPath)
+                        .replace(/\\/g, "/"); // windows style paths to unix style c:\x\y to c:/x/y
                     return decodeURIComponent(window.__TAURI__.tauri.convertFileSrc(platformPath));
                 }
                 return null;
@@ -220,7 +221,8 @@ async function setupAppSupportAndExtensionsDir() {
         }
         tauriAssetServeDir = `${appSupportDIR}assets/`;
         tauriAssetServeBaseURL = decodeURIComponent(window.__TAURI__.tauri.convertFileSrc(
-            fs.getTauriPlatformPath(tauriAssetServeDir)));
+            fs.getTauriPlatformPath(tauriAssetServeDir)))
+            .replace(/\\/g, "/"); // windows style paths to unix style c:\x\y to c:/x/y
         extensionDIR = `${tauriAssetServeDir}extensions/`;
     } else {
         appSupportDIR = '/fs/app/';
