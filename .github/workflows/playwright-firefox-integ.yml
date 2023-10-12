@@ -17,7 +17,7 @@ jobs:
 
     - name: Run Playwright integration tests in firefox Attempt 1
       id: attempt1
-      timeout-minutes: 30
+      timeout-minutes: 20
       continue-on-error: true
       run: npm run testIntegFirefox
 

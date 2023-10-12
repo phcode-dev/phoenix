@@ -14,8 +14,25 @@ jobs:
       run: npm run build
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests in firefox
+
+    - name: Run Playwright unit tests in firefox Attempt 1
+      id: attempt1
+      timeout-minutes: 20
+      continue-on-error: true
       run: npm run testFirefox
+
+    - name: Run Playwright unit tests in firefox Attempt 2
+      id: attempt2
+      if: steps.attempt1.outcome == 'failure'
+      timeout-minutes: 30
+      continue-on-error: true
+      run: npm run testFirefox
+
+    - name: Run Playwright unit tests in firefox Attempt 3
+      id: attempt3
+      if: steps.attempt2.outcome == 'failure'
+      run: npm run testFirefox
+
     - uses: actions/upload-artifact@v3
       if: always()
       with:

@@ -17,7 +17,7 @@ jobs:
 
     - name: Run Playwright integration tests in Chromium Attempt 1
       id: attemptC1
-      timeout-minutes: 30
+      timeout-minutes: 20
       continue-on-error: true
       run: npm run testIntegChromium
 
