@@ -53,7 +53,7 @@
         const appNamePromise = window.__TAURI__.app.getName();
         const documentDirPromise = window.__TAURI__.path.documentDir();
         const appLocalDirPromise =  window.__TAURI__.path.appLocalDataDir();
-        const tempDirPromise = window.__TAURI__.tauri.invoke('get_temp_dir');
+        const tempDirPromise = window.__TAURI__.os.tempdir();
         window._tauriBootVars = {};
         window._tauriBootVarsPromise = Promise.all([appNamePromise, documentDirPromise,
           appLocalDirPromise, tempDirPromise])
