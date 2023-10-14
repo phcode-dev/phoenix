@@ -274,6 +274,10 @@
       height: 100%;
     }
 
+    #phoenixIframeContainer.hovered {
+      opacity: 0.5;
+    }
+
     #phoenixControlBar{
       display: flex;
       justify-content: end;
@@ -292,7 +296,7 @@
 
       let container = document.getElementById('phoenixIframeContainer');
       container.classList.remove("forced-hidden");
-      container.appendChild(iframe);
+      container.insertBefore(iframe, container.firstChild);
       return iframe;
     }
     function closeIframeRunner() {
@@ -313,7 +317,7 @@
       }
 
       iframe.className = "phoenixIframe";
-      container.appendChild(iframe);
+      container.insertBefore(iframe, container.firstChild);
     }
 
     function _disposeIframeRunner() {
@@ -324,10 +328,25 @@
         iframe.remove();
       });
     }
+
+    function init() {
+      const controlBar = document.getElementById("phoenixControlBar");
+      const iframeContainer = document.getElementById("phoenixIframeContainer");
+
+      controlBar.addEventListener('mouseover', function() {
+        console.log("here")
+        iframeContainer.classList.add('hovered');
+      });
+
+      controlBar.addEventListener('mouseout', function() {
+        iframeContainer.classList.remove('hovered');
+      });
+    }
+
   </script>
 </head>
 
-<body style="user-select: text !important; display: flex">
+<body style="user-select: text !important; display: flex" onload="init()">
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container" style="width: 100%;">
