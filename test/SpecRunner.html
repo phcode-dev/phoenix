@@ -164,6 +164,7 @@
         platform = "linux";
       }
       window.Phoenix = {
+        PHOENIX_INSTANCE_ID: "PH-" + Math.round( Math.random()*1000000000000),
         browser: getBrowserDetails(),
         platform,
         baseURL: _getBaseURL(),
