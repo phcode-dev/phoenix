@@ -42,8 +42,14 @@
     <title>Phoenix Code</title>
 
     <script>
-        if(!window.__TAURI__ && window.parent) {
-            window.__TAURI__ = window.parent.window.__TAURI__;
+        // In Mac !! the window.__TAURI__ object is present in iframes, even if it doesnt works. so we are forced
+        // to use if(window.parent.window !== window) instead of if(!window.__TAURI__) here.
+        if(window.parent.window !== window && window.top.window.__TAURI__) {
+            // This is only intended to be used for in tests where phoenix is loaded inside iframes.
+            // this means that we are loaded in an iframe in the specrunner. Tauri doesnt expose tauri APIs
+            // in its iframes, so we directly use the top most windows tauri api object for tests to run properly.
+            window.__TAURI__ = window.top.window.__TAURI__;
+            console.warn("Phoenix is loaded in iframe, attempting to use tauri APIs from window.top.__TAURI__");
         }
         if(window.__TAURI__) {
             function setupTauriBootVars() {
