@@ -102,7 +102,6 @@ define(function (require, exports, module) {
     require("spec/BeautificationManager-test");
     require("spec/Template-for-integ-test");
     require("spec/LiveDevelopmentMultiBrowser-test");
-    require("spec/PhoenixComm-integ-test");
     require("spec/NewFileContentManager-test");
     require("spec/InstallExtensionDialog-integ-test");
     require("spec/ExtensionInstallation-test");
