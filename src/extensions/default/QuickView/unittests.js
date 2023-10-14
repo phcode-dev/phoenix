@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, awaitsForDone, afterAll */
+/*global describe, it, expect, beforeEach, awaitsFor, awaitsForDone, afterAll */
 
 define(function (require, exports, module) {
 
@@ -344,9 +344,10 @@ define(function (require, exports, module) {
                 // Just check end of path - local drive location prefix unimportant
                 expect(imagePath.substr(imagePath.length - expectedPathEnding.length)).toBe(expectedPathEnding);
                 imagePreview.click();
-                let currentFile = MainViewManager.getCurrentlyViewedFile();
-                expect(currentFile.fullPath.endsWith(expectedPathEnding))
-                    .toBeTrue();
+                await awaitsFor(()=>{
+                    let currentFile = MainViewManager.getCurrentlyViewedFile();
+                    return currentFile.fullPath.endsWith(expectedPathEnding);
+                }, "waits for image to open", 2000);
             });
 
             it("Should show image preview for urls with http/https",async function () {
