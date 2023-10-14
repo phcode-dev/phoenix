@@ -225,14 +225,18 @@ define(function (require, exports, module) {
                     reject();
                     return;
                 }
+                let rejected = false;
                 editor.operation(function () {
                     try{
                         _replaceText(editor, beautyObject);
-                        resolve();
                     } catch (e) {
+                        rejected = true;
                         reject(e);
                     }
                 });
+                if(!rejected){
+                    resolve();
+                }
             }).catch(e => {
                 reject(e);
             });

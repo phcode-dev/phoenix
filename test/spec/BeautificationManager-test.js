@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, awaitsForDone*/
+/*global describe, it, expect, beforeEach, afterEach, awaitsForDone, awaitsFor*/
 
 define(function (require, exports, module) {
 
@@ -156,6 +156,9 @@ define(function (require, exports, module) {
             expect(testEditor.document.getText()).toBe("csharp code");
             BeautificationManager.registerBeautificationProvider(provider, ["csharp"]);
             await awaitsForDone(CommandManager.execute(Commands.EDIT_BEAUTIFY_CODE), "beautify");
+            await awaitsFor(()=>{
+                return testEditor.document.getText() === "changedText";
+            }, "waiting for beautify done", 10000);
             expect(testEditor.document.getText()).toBe("changedText");
             BeautificationManager.removeBeautificationProvider(provider, ["csharp"]);
         });
@@ -170,6 +173,9 @@ define(function (require, exports, module) {
             BeautificationManager.registerBeautificationProvider(rangeProvider, ["csharp"]);
             await awaitsForDone(CommandManager.execute(Commands.EDIT_BEAUTIFY_CODE), "beautify");
             let resultText = "changedRangesharp code";
+            await awaitsFor(()=>{
+                return testEditor.document.getText() === resultText;
+            }, "waiting for beautify done", 10000);
             expect(testEditor.document.getText()).toBe(resultText);
             let selection = testEditor.getSelection();
             expect(selection.start).toEql({line: 0, ch: 0, sticky: null});
@@ -182,6 +188,9 @@ define(function (require, exports, module) {
             testEditor.setCursorPos(0, 3);
             BeautificationManager.registerBeautificationProvider(provider, ["csharp"]);
             await awaitsForDone(CommandManager.execute(Commands.EDIT_BEAUTIFY_CODE), "beautify");
+            await awaitsFor(()=>{
+                return testEditor.document.getText() === "changedText";
+            }, "waiting for beautify done", 10000);
             expect(testEditor.document.getText()).toBe("changedText");
             // ideally we should place the cursor at exactly the position of corresponding changed text than just
             // plainly restoring. but that is hard to do for now. see beautification manager for details.
