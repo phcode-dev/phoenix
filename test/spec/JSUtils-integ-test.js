@@ -38,26 +38,14 @@ define(function (require, exports, module) {
         var functions;  // populated by indexAndFind()
 
         beforeAll(async function () {
-            await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
-        }, 30000);
-
-        beforeEach(async function () {
-            let testWindow = await SpecRunnerUtils.createTestWindowAndRun();
-            var brackets        = testWindow.brackets;
+            let testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+            let brackets        = testWindow.brackets;
             DocumentManager     = brackets.test.DocumentManager;
             FileViewController  = brackets.test.FileViewController;
             ProjectManager      = brackets.test.ProjectManager;
             JSUtils             = brackets.test.JSUtils;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
-        }, 30000);
-
-        afterEach(async function () {
-            DocumentManager     = null;
-            FileViewController  = null;
-            JSUtils             = null;
-            ProjectManager      = null;
-            await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
         async function init(fileName) {
@@ -114,6 +102,25 @@ define(function (require, exports, module) {
 
 
         describe("Working with unsaved changes", function () {
+
+            beforeEach(async function () {
+                let testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+                let brackets        = testWindow.brackets;
+                DocumentManager     = brackets.test.DocumentManager;
+                FileViewController  = brackets.test.FileViewController;
+                ProjectManager      = brackets.test.ProjectManager;
+                JSUtils             = brackets.test.JSUtils;
+
+                await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            }, 30000);
+
+            afterEach(async function () {
+                DocumentManager     = null;
+                FileViewController  = null;
+                JSUtils             = null;
+                ProjectManager      = null;
+                await SpecRunnerUtils.closeTestWindow();
+            }, 30000);
 
             async function fileChangedTest(buildCache) {
                 await init("edit.js");
