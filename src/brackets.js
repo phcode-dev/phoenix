@@ -62,7 +62,6 @@ define(function (require, exports, module) {
     require("thirdparty/CodeMirror/keymap/sublime");
 
     require("worker/WorkerComm");
-    require("utils/PhoenixComm");
     require("utils/ZipUtils");
 
     // Load dependent modules
@@ -274,7 +273,6 @@ define(function (require, exports, module) {
             MultiRangeInlineEditor: require("editor/MultiRangeInlineEditor").MultiRangeInlineEditor,
             NativeApp: require("utils/NativeApp"),
             PerfUtils: require("utils/PerfUtils"),
-            PhoenixComm: require("utils/PhoenixComm"),
             PreferencesManager: require("preferences/PreferencesManager"),
             ProjectManager: require("project/ProjectManager"),
             QuickViewManager: require("features/QuickViewManager"),

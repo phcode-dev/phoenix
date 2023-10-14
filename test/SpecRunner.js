@@ -173,7 +173,6 @@ define(function (require, exports, module) {
     require("language/CodeInspection");
     require("thirdparty/lodash");
     require("thirdparty/jszip");
-    require("utils/PhoenixComm");
     require("editor/CodeHintManager");
     require("utils/Global");
     require("command/Menus");
