@@ -303,7 +303,11 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 22, ch: 12 });
                 CommandManager.execute(Commands.SHOW_CODE_HINTS);
 
-                var hintList = CodeHintManager._getCodeHintList();
+                let hintList = CodeHintManager._getCodeHintList();
+                await awaitsFor(function () {
+                    hintList = CodeHintManager._getCodeHintList();
+                    return hintList.hints.includes("/testfiles/");
+                }, "waiting for code hints to be there", 5000);
                 expect(hintList).toBeTruthy();
                 expect(hintList.hints).toBeTruthy();
                 expect(hintList.hints).toContain("/testfiles/");
