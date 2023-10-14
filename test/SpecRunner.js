@@ -170,6 +170,7 @@ define(function (require, exports, module) {
         NativeApp               = require("utils/NativeApp");
 
     // Load modules for later use
+    require("utils/EventDispatcher");
     require("language/CodeInspection");
     require("thirdparty/lodash");
     require("thirdparty/jszip");
@@ -514,7 +515,8 @@ define(function (require, exports, module) {
         });
     }
 
-    function setupAndRunTests() {
+    async function setupAndRunTests() {
+        await window._tauriBootVarsPromise;
         let shouldExtract = localStorage.getItem(EXTRACT_TEST_ASSETS_KEY);
         if(shouldExtract === EXTRACT || shouldExtract === null) {
             _showLoading(true);

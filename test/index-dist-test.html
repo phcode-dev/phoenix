@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <title>Starting tests...</title>
     <script type="text/javascript">
-        if(window.__TAURI__) {
-            __TAURI__.window.appWindow.setFocus().catch(console.error).finally(()=>{
-                __TAURI__.cli.getMatches().then(matches=>{
-                    const testSuiteToExec = matches.args["run-tests"].value;
-                    if(testSuiteToExec){
-                        location.href = `test/SpecRunner.html?spec=all&category=${testSuiteToExec}`;
-                    } else {
-                        location.href = `test/SpecRunner.html`;
-                    }
-                }).catch(console.error);
-            });
-        } else {
-            location.href = "test/SpecRunner.html";
+        function redirectToTestPage() {
+            if(window.__TAURI__) {
+                __TAURI__.window.appWindow.setFocus().catch(console.error).finally(()=>{
+                    __TAURI__.cli.getMatches().then(matches=>{
+                        const testSuiteToExec = matches.args["run-tests"].value;
+                        if(testSuiteToExec){
+                            location.href = `test/SpecRunner.html?spec=All&category=${testSuiteToExec}`;
+                        } else {
+                            location.href = `test/SpecRunner.html`;
+                        }
+                    }).catch(console.error);
+                });
+            } else {
+                location.href = "test/SpecRunner.html";
+            }
         }
-
     </script>
 </head>
-<body>
+<body onload="redirectToTestPage()">
  Redirecting to test runner....
  Open this page only from `dist-test` folder.
 </body>
