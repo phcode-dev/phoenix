@@ -1,0 +1,41 @@
+name: 'Run full test suite on linux on pull request'
+on: [pull_request]
+
+jobs:
+  test-tauri:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: install dependencies (ubuntu only)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install xvfb
+
+      - name: build phoenix dist-test
+        run: |
+          npm ci
+          npm run build
+          npm run release:dev
+
+      - name: Download phoenix desktop and build test runner
+        run: |
+          cd ..
+          git clone https://github.com/phcode-dev/phoenix-desktop.git
+          cd phoenix-desktop
+          npm ci
+          npm run releaseDistTest
+
+      - name: Run tauri unit tests
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: xvfb-run ./src-tauri/target/release/phoenix-test --run-tests=unit -q
