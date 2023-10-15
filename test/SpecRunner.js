@@ -19,7 +19,8 @@
  *
  */
 
-/*global beforeEach, afterEach, beforeAll, afterAll, jasmine, Filer, Phoenix */
+/*global beforeEach, afterEach, beforeAll, afterAll, jasmine, Filer, Phoenix,
+globalTestRunnerLogToConsole, globalTestRunnerErrorToConsole */
 
 // Set the baseUrl to brackets/src
 require.config({
@@ -516,14 +517,16 @@ define(function (require, exports, module) {
     }
 
     async function setupAndRunTests() {
+        globalTestRunnerLogToConsole("Starting tests...");
         await window._tauriBootVarsPromise;
         let shouldExtract = localStorage.getItem(EXTRACT_TEST_ASSETS_KEY);
         if(shouldExtract === EXTRACT || shouldExtract === null) {
             _showLoading(true);
             let JSZip = require("thirdparty/jszip");
+            globalTestRunnerLogToConsole("Extracting Test Files");
             window.JSZipUtils.getBinaryContent('test_folders.zip', function(err, data) {
                 if(err) {
-                    alert("Please run 'npm run build' before starting this test. " +
+                    globalTestRunnerErrorToConsole("Please run 'npm run build' before starting this test. " +
                         "Could not create test files in phoenix virtual fs. Some tests may fail");
                     _showLoading(false);
                     init();
@@ -531,15 +534,15 @@ define(function (require, exports, module) {
                     JSZip.loadAsync(data).then(function (zip) {
                         let keys = Object.keys(zip.files);
                         let destPath = `/test/`;
-                        console.log("Cleaning test directory: /test/");
+                        globalTestRunnerLogToConsole("Cleaning test directory: /test/");
                         window.fs.unlink(destPath, async function (err) {
                             if(err && err.code !== 'ENOENT'){
                                 console.error("Could not clean test dir. we will try to move ahead", err);
                                 // we will now try to overwrite existing
                             }
-                            console.log("Creating test folder /test/");
+                            globalTestRunnerLogToConsole("Creating test folder /test/");
                             await makeTestDir();
-                            console.log("Copying test assets to /test/", err);
+                            globalTestRunnerLogToConsole("Copying test assets to /test/", err);
                             let progressMessageEl = document.getElementById("loadProgressMessage");
                             for (let i = 0; i < keys.length; i++) {
                                 let path = keys[i];

@@ -41,7 +41,14 @@
     <meta name="msapplication-TileColor" content="#47484B">
     <title>Phoenix Code</title>
 
+    <!-- start inline javascript and non module bootstrap scripts. you must add module scripts to the
+     javascript module section only!!-->
     <script>
+        function _isTestWindow() {
+            const isTestPhoenixWindow = !!(new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
+            const isSpecRunnerWindow = window.location.pathname.endsWith("/SpecRunner.html");
+            return isTestPhoenixWindow || isSpecRunnerWindow;
+        }
         // In Mac !! the window.__TAURI__ object is present in iframes, even if it doesnt works. so we are forced
         // to use if(window.parent.window !== window) instead of if(!window.__TAURI__) here.
         if(window.parent.window !== window && window.top.window.__TAURI__) {
@@ -54,7 +61,15 @@
         if(window.__TAURI__) {
             function setupTauriBootVars() {
                 const appNamePromise = window.__TAURI__.app.getName();
-                const documentDirPromise = window.__TAURI__.path.documentDir();
+                // for running tests, the user document dir is set to app data dir as we dont want to
+                // corrupt user documents dir for tests
+                let documentDirPromise;
+                if(_isTestWindow()){
+                    documentDirPromise = window.__TAURI__.path.appLocalDataDir(); // appdata/testDocuments will be appended below
+                } else {
+                    documentDirPromise = window.__TAURI__.path.documentDir();
+                }
+
                 const appLocalDirPromise =  window.__TAURI__.path.appLocalDataDir();
                 const tempDirPromise = window.__TAURI__.os.tempdir();
                 window._tauriBootVars = {};
@@ -62,18 +77,25 @@
                     appLocalDirPromise, tempDirPromise])
                     .then((results) => {
                         window._tauriBootVars.appname = results[0];
+
                         window._tauriBootVars.documentDir = results[1];
+                        // For tests, documents dir is localAppDataDir/testDocuments to keep user documents garbage free for tests
+                        // Also In github actions, the tauri get doc dir call gets stuck indefinitely
+                        if(_isTestWindow()){
+                            if(!window._tauriBootVars.documentDir.endsWith(window.__TAURI__.path.sep)){
+                                window._tauriBootVars.documentDir = window._tauriBootVars.documentDir + window.__TAURI__.path.sep;
+                            }
+                            window._tauriBootVars.documentDir = `${window._tauriBootVars.documentDir}testDocuments${window.__TAURI__.path.sep}`;
+                        }
+                        //Documents dir special case for tests
+
                         window._tauriBootVars.appLocalDir = results[2];
                         window._tauriBootVars.tempDir = results[3];
                     });
             }
             setupTauriBootVars();
         }
-    </script>
 
-    <!-- start inline javascript and non module bootstrap scripts. you must add module scripts to the
-     javascript module section only!!-->
-    <script>
         // environment setup for boot. do not move out of index html!!
         (function(){
             function _mobileCheck() {
@@ -152,11 +174,7 @@
                 }
                 return base;
             }
-            function _isTestWindow() {
-                const isTestPhoenixWindow = !!(new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
-                const isSpecRunnerWindow = window.location.pathname.endsWith("/SpecRunner.html");
-                return isTestPhoenixWindow || isSpecRunnerWindow;
-            }
+
             // Determine OS/platform
             let platform = "win";
             if (navigator.platform && navigator.platform.match("Mac")) {
