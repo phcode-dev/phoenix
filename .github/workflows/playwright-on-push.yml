@@ -1,4 +1,4 @@
-name: Chromium and firefox run full tests suite with Playwright
+name: Playwright-Chromium and firefox run full tests suite
 
 on:
   push:
@@ -24,23 +24,12 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright unit tests in firefox Attempt 1
-        id: attempt1
-        timeout-minutes: 20
-        continue-on-error: true
-        run: npm run testFirefox
-
-      - name: Run Playwright unit tests in firefox Attempt 2
-        id: attempt2
-        if: steps.attempt1.outcome == 'failure'
-        timeout-minutes: 30
-        continue-on-error: true
-        run: npm run testFirefox
-
-      - name: Run Playwright unit tests in firefox Attempt 3
-        id: attempt3
-        if: steps.attempt2.outcome == 'failure'
-        run: npm run testFirefox
+      - name: Run Playwright unit tests in firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: npm run testFirefox
 
   testFirefoxInteg:
     timeout-minutes: 90
@@ -90,23 +79,12 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright unit tests in Chromium Attempt 1
-        id: attemptC1
-        timeout-minutes: 20
-        continue-on-error: true
-        run: npm run testChromium
-
-      - name: Run Playwright unit tests in Chromium Attempt 2
-        id: attemptC2
-        if: steps.attemptC1.outcome == 'failure'
-        timeout-minutes: 30
-        continue-on-error: true
-        run: npm run testChromium
-
-      - name: Run Playwright unit tests in Chromium Attempt 3
-        id: attemptC3
-        if: steps.attemptC2.outcome == 'failure'
-        run: npm run testChromium
+      - name: Run Playwright unit tests in Chromium
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: npm run testChromium
 
   testChromiumInteg:
     timeout-minutes: 90

@@ -367,9 +367,7 @@ define(function (require, exports, module) {
 
                 specData.messages.forEach(function (message) {
                     errorSuiteData[specData.description].push(message);
-                    if(window.testRunnerErrorToConsole){
-                        window.testRunnerErrorToConsole(message);
-                    }
+                    window.globalTestRunnerErrorToConsole(message);
                     // Render with clickable links if parent Brackets window available; plain text otherwise
                     if (window.opener) {
                         var htmlMessage = self._linkerizeStack(message);

@@ -46,7 +46,54 @@
           console.error("Failed to console_error to tauri console", e);
         });
       }
+      testRunnerLogToConsole(`Tauri test reporters attached.`);
     }
+
+    // in playwright tests, testRunnerLogToConsole is injected by playwright runners
+
+    let pendingConsoleLogs = [];
+    let pendingConsoleErrors = [];
+
+    function _drainPendingLogs() {
+      // this is needed in playwright as playwright attached testRunnerLogToConsole in a differed manner.
+      // so we might get logs to put to console before playwright attaches the logger. No impact in tauri.
+      if(!window.testRunnerLogToConsole || !window.testRunnerErrorToConsole){
+        return;
+      }
+      for(let i=0; i<pendingConsoleLogs.length; i++){
+        const {args} = pendingConsoleLogs[i];
+        window.testRunnerLogToConsole(...args);
+      }
+      pendingConsoleLogs = [];
+
+      for(let i=0; i<pendingConsoleErrors.length; i++){
+        const {args} = pendingConsoleErrors[i];
+        window.testRunnerErrorToConsole(...args);
+      }
+      pendingConsoleErrors = [];
+      clearInterval(_darinPendingLogsIntervalTimer);
+    }
+    let _darinPendingLogsIntervalTimer = setInterval(_drainPendingLogs, 1000);
+
+    window.globalTestRunnerLogToConsole = function(...args) {
+      console.log(...args);
+      if(window.testRunnerLogToConsole) {
+        window.testRunnerLogToConsole(...args);
+      } else {
+        pendingConsoleLogs.push({args});
+      }
+    }
+
+    window.globalTestRunnerErrorToConsole = function (...args) {
+      console.error(...args);
+      if(window.testRunnerErrorToConsole) {
+        window.testRunnerErrorToConsole(...args);
+      } else {
+        pendingConsoleErrors.push({args});
+      }
+    }
+
+    window.globalTestRunnerLogToConsole("Test run URL is: ", location.href);
 
     if(window.__TAURI__) {
       function setupTauriBootVars() {

@@ -2,7 +2,7 @@ name: 'Tauri-Linux full test suite run on pull request'
 on: [pull_request]
 
 jobs:
-  test-tauri:
+  test-tauri-linux:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -31,32 +31,32 @@ jobs:
           git clone https://github.com/phcode-dev/phoenix-desktop.git
           cd phoenix-desktop
           npm ci
-          npm run releaseDistTest
+          npm run releaseDistTestDebug
 
       - name: Run tauri unit tests
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/release/phoenix-test --run-tests=unit -q
+          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=unit -q
 
       - name: Run tauri integration tests
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/release/phoenix-test --run-tests=integration -q
+          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=integration -q
 
       - name: Run tauri mainview tests
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/release/phoenix-test --run-tests=mainview -q
+          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=mainview -q
 
       - name: Run tauri LegacyInteg tests
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 20
           max_attempts: 3
-          command: xvfb-run ../phoenix-desktop/src-tauri/target/release/phoenix-test --run-tests=LegacyInteg -q
+          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=LegacyInteg -q
