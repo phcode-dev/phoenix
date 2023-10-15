@@ -36,7 +36,7 @@ jobs:
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: "src-tauri\target\release\phoenix-test.exe" --run-tests=unit -q > output-unit.txt 2>&1
+          command: ..\phoenix-desktop\src-tauri\target\release\phoenix-test.exe --run-tests=unit -q > output-unit.txt 2>&1
           shell: cmd
 
       - name: Print windows unit test output to console
@@ -50,7 +50,7 @@ jobs:
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: "src-tauri\target\release\phoenix-test.exe" --run-tests=integration -q > output-integration.txt 2>&1
+          command: ..\phoenix-desktop\src-tauri\target\release\phoenix-test.exe --run-tests=integration -q > output-integration.txt 2>&1
           shell: cmd
 
       - name: Print windows integration test output to console
@@ -64,7 +64,7 @@ jobs:
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: "src-tauri\target\release\phoenix-test.exe" --run-tests=mainview -q > output-mainview.txt 2>&1
+          command: ..\phoenix-desktop\src-tauri\target\release\phoenix-test.exe --run-tests=mainview -q > output-mainview.txt 2>&1
           shell: cmd
 
       - name: Print windows mainview test output to console
@@ -78,7 +78,7 @@ jobs:
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: "src-tauri\target\release\phoenix-test.exe" --run-tests=LegacyInteg -q > output-LegacyInteg.txt 2>&1
+          command: ..\phoenix-desktop\src-tauri\target\release\phoenix-test.exe --run-tests=LegacyInteg -q > output-LegacyInteg.txt 2>&1
           shell: cmd
 
       - name: Print windows LegacyInteg test output to console
