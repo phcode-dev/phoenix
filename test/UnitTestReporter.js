@@ -270,9 +270,9 @@ define(function (require, exports, module) {
                 if (self.specFilter(self.specIdToSpecMap[result.id])) {
                     console.log('Spec: ' + result.description + ' [status]: ' + result.status);
                     if(result.status === 'passed'){
-                        testRunnerLogToConsole(`\u2714 ${self.getTopLevelSuiteName(result)} : ${result.description} - passed`);
+                        testRunnerLogToConsole(`\u2714 ${self.getTopLevelSuiteName(result)} : ${result.description} - passed (${result.duration}ms)`);
                     } else {
-                        testRunnerErrorToConsole(`\u2716 ${self.getTopLevelSuiteName(result)} : ${result.description} - failed`);
+                        testRunnerErrorToConsole(`\u2716 ${self.getTopLevelSuiteName(result)} : ${result.description} - failed (${result.duration}ms)`);
                     }
                 }
                 self.reportSpecResults(result);
@@ -283,7 +283,7 @@ define(function (require, exports, module) {
                 if (self.specFilter(self.suiteIdToSuiteMap[result.id])) {
                     console.log('Suite: ' + result.description + ' [status]: ' + result.status);
                     if(result.status !== 'passed'){
-                        testRunnerLogToConsole(`\u2716 Suite failed!! ${result.description}`);
+                        testRunnerLogToConsole(`\u2716 Suite failed!! ${result.description} (after ${result.duration} ms)`);
                     }
                 }
                 self.reportSuiteResults(result);
@@ -293,7 +293,7 @@ define(function (require, exports, module) {
                 console.log('Finished jasmine: ' + result.overallStatus);
                 testRunnerLogToConsole('Finished jasmine: ' + result.overallStatus);
                 if(self.totalFailedCount === 0){
-                    testRunnerLogToConsole(`\u2714 All(${self.totalSpecCount}) tests passed.`);
+                    testRunnerLogToConsole(`\u2714 All(${self.totalSpecCount}) tests passed. (in ${result.totalTime}ms)`);
                     if(result.overallStatus !== 'passed') {
                         window.externalJasmineFailures = true;
                         testRunnerErrorToConsole(`\u2716 Some suites was detected to have failures outside of the suite tests. This could indicate an underlying problem. please run tests locally to debug.`);
@@ -314,7 +314,7 @@ define(function (require, exports, module) {
                         quitIfNeeded(0);
                     }
                 } else {
-                    testRunnerErrorToConsole(`\u2716 ${self.totalFailedCount} of ${self.totalSpecCount} tests Failed, ${self.totalPassedCount} passed.`);
+                    testRunnerErrorToConsole(`\u2716 ${self.totalFailedCount} of ${self.totalSpecCount} tests Failed, ${self.totalPassedCount} passed. (in ${result.totalTime}ms)`);
                     quitIfNeeded(1);
                 }
                 self.reportRunnerResults(result);
