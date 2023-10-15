@@ -1,0 +1,93 @@
+name: 'Desktop-Windows full test suite run on pull request'
+on: [pull_request]
+
+jobs:
+  test-desktop-windows:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: build phoenix dist-test
+        run: |
+          npm ci
+          npm run build
+          npm run release:dev
+
+      - name: Download phoenix desktop and build test runner
+        run: |
+          cd ..
+          git clone https://github.com/phcode-dev/phoenix-desktop.git
+          cd phoenix-desktop
+          npm ci
+          npm run releaseDistTestDebug
+
+      - name: Run tauri unit tests in windows
+        # GUI apps in windows doesn't log on console. so we capture the output to a text file and print it, then fail on error.
+        uses: nick-fields/retry@v2
+        id: windowsRunUnit
+        continue-on-error: true
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: "src-tauri\target\release\phoenix-test.exe" --run-tests=unit -q > output-unit.txt 2>&1
+          shell: cmd
+
+      - name: Print windows unit test output to console
+        run: type output-unit.txt
+        shell: cmd
+
+      - name: Run tauri integration tests in windows
+        uses: nick-fields/retry@v2
+        id: windowsRunIntegration
+        continue-on-error: true
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: "src-tauri\target\release\phoenix-test.exe" --run-tests=integration -q > output-integration.txt 2>&1
+          shell: cmd
+
+      - name: Print windows integration test output to console
+        run: type output-integration.txt
+        shell: cmd
+
+      - name: Run tauri mainview tests in windows
+        uses: nick-fields/retry@v2
+        id: windowsRunMainview
+        continue-on-error: true
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: "src-tauri\target\release\phoenix-test.exe" --run-tests=mainview -q > output-mainview.txt 2>&1
+          shell: cmd
+
+      - name: Print windows mainview test output to console
+        run: type output-mainview.txt
+        shell: cmd
+
+      - name: Run tauri LegacyInteg tests in windows
+        uses: nick-fields/retry@v2
+        id: windowsRunLegacyInteg
+        continue-on-error: true
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: "src-tauri\target\release\phoenix-test.exe" --run-tests=LegacyInteg -q > output-LegacyInteg.txt 2>&1
+          shell: cmd
+
+      - name: Print windows LegacyInteg test output to console
+        run: type output-LegacyInteg.txt
+        shell: cmd
+
+      - name: Fail on test runs failed in windows
+        if: steps.windowsRunUnit.outcome == 'failure' || steps.windowsRunIntegration.outcome == 'failure' || steps.windowsRunMainview.outcome == 'failure' || steps.windowsRunLegacyInteg.outcome == 'failure'
+        run: |
+          echo "Windows tests failed, marking step as failed"
+          exit 1
+        shell: cmd
