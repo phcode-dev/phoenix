@@ -85,7 +85,10 @@ define(function (require, exports, module) {
             }
 
             it("Should not be able to fetch files in documents folder", async function () {
-                await testAssetNotAccessibleFolder(await window.__TAURI__.path.documentDir());
+                // unfortunately for tests, this is set to appdata/testDocuments.
+                // we cant set this to await window.__TAURI__.path.documentDir() as in github actions,
+                // the user documents directory is not defined in rust and throws.
+                await testAssetNotAccessibleFolder(window._tauriBootVars.documentDir);
             });
 
             it("Should not be able to fetch files in appLocalData folder", async function () {

@@ -98,7 +98,9 @@
     if(window.__TAURI__) {
       function setupTauriBootVars() {
         const appNamePromise = window.__TAURI__.app.getName();
-        const documentDirPromise = window.__TAURI__.path.documentDir();
+        // for running tests, the user document dir is set to app data dir as we dont want to
+        // corrupt user documents dir for tests
+        const documentDirPromise = window.__TAURI__.path.appLocalDataDir();
         const appLocalDirPromise =  window.__TAURI__.path.appLocalDataDir();
         const tempDirPromise = window.__TAURI__.os.tempdir();
         window._tauriBootVars = {};
@@ -106,7 +108,14 @@
           appLocalDirPromise, tempDirPromise])
                 .then((results) => {
                   window._tauriBootVars.appname = results[0];
+                  // For tests, documents dir is localAppDataDir/documents to keep user documents garbage free for tests
+                  // Also In github actions, the tauri get doc dir call gets stuck indefinitely
                   window._tauriBootVars.documentDir = results[1];
+                  if(!window._tauriBootVars.documentDir.endsWith(window.__TAURI__.path.sep)){
+                    window._tauriBootVars.documentDir = window._tauriBootVars.documentDir + window.__TAURI__.path.sep;
+                  }
+                  window._tauriBootVars.documentDir = `${window._tauriBootVars.documentDir}documents${window.__TAURI__.path.sep}`;
+                  //Documents dir special case for tests
                   window._tauriBootVars.appLocalDir = results[2];
                   window._tauriBootVars.tempDir = results[3];
                 });
