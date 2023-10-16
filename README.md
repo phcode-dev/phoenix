@@ -87,16 +87,28 @@ This is the easiest and preferred way to run Phoenix tests.
   * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
 * You can use the browser dev tools to debug. 
 
-## Running and debugging tests in headless mode or in GitHub Actions
+## Running and debugging tests in playwright headless mode or in GitHub Actions
 We use [Playwright](https://playwright.dev/) to run the headless version of our tests.
 Please note that we do not use Playwright as our actual test framework, but as a headless browser(chrome and firefox)
 to run our tests written in Jasmine/Mocha.
-* run `npm run test` in the terminal to run the tests run in GitHub actions.
-* To debug the tests, `npm run testDebug`. However, we recommend using the
+* run `npm run test<*>` in the terminal to run the unit tests run in GitHub actions. Eg. `npm run testChromium`.
+* To debug the tests, `npm run test<*>Debug`. Eg. `npm run testFirefoxDebug`. However, we recommend using the
 above `Running tests in browser` section to actually fix/debug tests that are failing in the pipeline.
+It has much better debug UX and fixing it directly in the browser will almost certainly fix it in playwright.
+* To run integration tests use command: `npx cross-env TEST_ENV=<integration suite name> npm run test<*>`
+  * The allowed integration test suite names are: `integration, LegacyInteg, mainview, livepreview`.
+    You can get these suite names from the test runner.
+  * Eg: `npx cross-env TEST_ENV=integration npm run testChromium`
+* To debug integration tests use command: ` npx cross-env TEST_ENV=<integration suite name> npm run test<*>Debug`
+  * Eg: `npx cross-env TEST_ENV=mainview npm run testChromiumDebug` 
 
-### Running tests in dev staging and prod stacks
-* To run tests against these stacks go to the following url: 
+### Running tests in dev staging and prod stacks in playwright
+#### To run tests against these stacks locally, follow these steps:
+1. Build the release using `npm run release:<stage>`. Eg: `npm run release:dev`
+2. Run the unit tests using format: `npm run test<*>Dist`. Eg. `npm run testChromiumDist`.
+3. Run the integration tests using the format: `npx cross-env TEST_ENV=<integration suite name> npm run test<*>Dist`. Eg. `npx cross-env TEST_ENV=mainview npm run testChromiumDist`.
+ 
+#### To run tests against these stacks go to the following url: 
 * dev: https://dev.phcode.dev/test/SpecRunner.html
 * staging: https://staging.phcode.dev/test/SpecRunner.html
 * prod: https://phcode.dev/test/SpecRunner.html

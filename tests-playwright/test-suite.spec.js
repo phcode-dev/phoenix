@@ -2,6 +2,12 @@
 /*global process*/
 const { test, expect } = require("@playwright/test");
 
+const testEnv = process.env.TEST_ENV || "unit";
+if(!process.env.TEST_ENV){
+    console.log("Test environment TEST_ENV not provided. Defaulting to execute unit tests only.");
+}
+console.log("Test environment TEST_ENV is", testEnv);
+
 const testDist = process.env.TEST_DIST === 'true';
 let baseURL = 'http://localhost:5000/test/SpecRunner.html';
 if(testDist){
@@ -35,25 +41,20 @@ async function execTests(page, url) {
     expect(externalJasmineFailures).toEqual(undefined);
 }
 
-test("Execute integration tests", async ({ page }) => {
-    await execTests(page, `${baseURL}?spec=all&category=integration`);
-});
+const LIVE_PREVIEW_CATEGORY = 'livepreview';
 
-test("Execute LegacyInteg tests", async ({ page }) => {
-    await execTests(page, `${baseURL}?spec=all&category=LegacyInteg`);
-});
-
-test("Execute mainview tests", async ({ page }) => {
-    await execTests(page, `${baseURL}?spec=all&category=mainview`);
-});
-
-test("Execute livepreview tests", async ({ page, browserName }) => {
-    if(browserName !== 'firefox'){
+test(`Execute ${testEnv} tests`, async ({ page, browserName }) => {
+    if(testEnv === LIVE_PREVIEW_CATEGORY) {
         // unfortunateley, we can run the live preview integ tests only in chrome
         // In Firefox, sandbox prevents service worker access from nested iframes. So the virtual server itself will
         // not be loaded in firefox tests in playwright.
         // In tauri, we use node server, so this limitation doesn't apply in tauri test runners. This restriction is
         // only there for firefox tests in playwright.
-        await execTests(page, `${baseURL}?spec=all&category=livepreview`);
+        if(browserName !== 'firefox') {
+            await execTests(page, `${baseURL}?spec=all&category=${testEnv}`);
+        }
+        return;
     }
+
+    await execTests(page, `${baseURL}?spec=all&category=${testEnv}`);
 });
