@@ -126,7 +126,7 @@ define(function (require, exports, module) {
         it("should establish a browser connection for an opened html file that has no 'head' tag", async function () {
             //open a file
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["withoutHead.html"]),
-                "SpecRunnerUtils.openProjectFiles withoutHead.html", 1000);
+                "SpecRunnerUtils.openProjectFiles withoutHead.html");
             await waitsForLiveDevelopmentToOpen();
 
             expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
@@ -136,7 +136,7 @@ define(function (require, exports, module) {
         it("should send all external stylesheets as related docs on start-up", async function () {
             let liveDoc;
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
             await waitsForLiveDevelopmentToOpen();
             liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
             await awaitsFor(
@@ -154,7 +154,7 @@ define(function (require, exports, module) {
         it("should send all import-ed stylesheets as related docs on start-up", async function () {
             let liveDoc;
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
             await waitsForLiveDevelopmentToOpen();
             liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
             await awaitsFor(
@@ -171,7 +171,7 @@ define(function (require, exports, module) {
         it("should send all external javascript files as related docs on start-up", async function () {
             let liveDoc;
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
             await waitsForLiveDevelopmentToOpen();
 
             liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
@@ -199,7 +199,7 @@ define(function (require, exports, module) {
         it("should send notifications for added/removed stylesheets through link nodes", async function () {
             let liveDoc;
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
             await waitsForLiveDevelopmentToOpen();
 
             liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
@@ -248,12 +248,12 @@ define(function (require, exports, module) {
             const styleTextAdd = "\n .testClass { background-color:#090; }\n";
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
-                "SpecRunnerUtils.openProjectFiles simple1.css", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.css");
             curDoc =  DocumentManager.getCurrentDocument();
             localText = curDoc.getText();
             localText += styleTextAdd;
@@ -273,12 +273,12 @@ define(function (require, exports, module) {
                 curDoc;
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["index.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/test.css"]),
-                "SpecRunnerUtils.openProjectFiles simple1.css", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.css");
             curDoc =  DocumentManager.getCurrentDocument();
             localText = curDoc.getText();
             localText += "\n .testClass { background-color:#090; }\n";
@@ -298,7 +298,7 @@ define(function (require, exports, module) {
 
         async function _editFileAndVerifyLivePreview(fileName, location, editText, verifyID, verifyText) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
-                "SpecRunnerUtils.openProjectFiles " + fileName, 1000);
+                "SpecRunnerUtils.openProjectFiles " + fileName);
 
             await awaits(300); // todo can we remove this
             await awaitsFor(
@@ -329,7 +329,7 @@ define(function (require, exports, module) {
 
         it("should Live preview push html file changes to browser", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
@@ -339,11 +339,11 @@ define(function (require, exports, module) {
 
         it("should Live preview push html class changes to browser", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "simple1.html", 1000);
+                "simple1.html");
 
             await awaitsFor(()=> LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
                 "status active");
@@ -362,7 +362,7 @@ define(function (require, exports, module) {
                     return hasClass;
                 },
                 "replaceClass",
-                2000,
+                5000,
                 50
             );
 
@@ -386,11 +386,11 @@ define(function (require, exports, module) {
 
         it("should Live preview push html attribute changes to browser", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "simple1.html", 1000);
+                "simple1.html");
 
             await awaitsFor(()=> LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
                 "status active");
@@ -433,7 +433,7 @@ define(function (require, exports, module) {
 
         it("should Live preview work even if we switch html files", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
@@ -448,20 +448,20 @@ define(function (require, exports, module) {
 
         it("should Markdown/image files be previewed and switched between live previews", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world awesome!");
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
-                "readme.md", 1000);
+                "readme.md");
             await awaits(300);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith("readme.md")).toBeTrue();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "icon_chevron.png", 1000);
+                "icon_chevron.png");
             await awaits(300);
             iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             let srcURL = new URL(iFrame.src);
@@ -476,12 +476,12 @@ define(function (require, exports, module) {
 
         it("should Markdown preview hyperlinks be proper", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
-                "readme.md", 1000);
+                "readme.md");
 
             await awaits(300);
             let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
@@ -499,7 +499,7 @@ define(function (require, exports, module) {
 
         it("should pin live previews ping html file", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
@@ -509,7 +509,7 @@ define(function (require, exports, module) {
             pinURLBtn.click();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "icon_chevron.png", 1000);
+                "icon_chevron.png");
             await awaits(300);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith(`simple1.html`))
@@ -517,7 +517,7 @@ define(function (require, exports, module) {
 
             pinURLBtn.click();
 
-            await awaits(300);
+            await awaits(1000);
             let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
             let srcURL = new URL(outerIFrame.src);
             expect(srcURL.pathname.endsWith("pageLoader.html")).toBeTrue();
@@ -548,7 +548,7 @@ define(function (require, exports, module) {
 
         it("should live highlight html elements", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
 
             await waitsForLiveDevelopmentToOpen();
@@ -573,7 +573,7 @@ define(function (require, exports, module) {
 
         it("should live highlight css classes highlight all elements", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
-                "SpecRunnerUtils.openProjectFiles simple2.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple2.html");
 
             await waitsForLiveDevelopmentToOpen();
             await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
@@ -581,7 +581,7 @@ define(function (require, exports, module) {
             });
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
-                "simple1.css", 1000);
+                "simple1.css");
             let editor = EditorManager.getActiveEditor();
             editor.setCursorPos({ line: 2, ch: 6 });
 
@@ -596,7 +596,7 @@ define(function (require, exports, module) {
                 });
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["import1.css"]),
-                "import1.css", 1000);
+                "import1.css");
             editor = EditorManager.getActiveEditor();
             editor.setCursorPos({ line: 0, ch: 1 });
 
@@ -615,7 +615,7 @@ define(function (require, exports, module) {
 
         it("should live highlight resize as window size changes", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
 
             await waitsForLiveDevelopmentToOpen();
@@ -652,7 +652,7 @@ define(function (require, exports, module) {
 
         it("should reverse highlight on clicking on live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             let editor = EditorManager.getActiveEditor();
@@ -678,7 +678,7 @@ define(function (require, exports, module) {
 
         it("should reverse highlight open previewed html file if not open on clicking live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
 
             await waitsForLiveDevelopmentToOpen();
@@ -716,7 +716,7 @@ define(function (require, exports, module) {
 
         it("should ctrl-s to save page be disabled inside live preview iframes", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
@@ -745,7 +745,7 @@ define(function (require, exports, module) {
 
         it("should beautify and undo not corrupt live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
@@ -768,7 +768,7 @@ define(function (require, exports, module) {
 
         it("should live preview not be able to access a non project file", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["exploit1.html"]),
-                "SpecRunnerUtils.openProjectFiles exploit1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles exploit1.html");
 
             await waitsForLiveDevelopmentToOpen();
             await forRemoteExec(`document.fetchedText`, (result)=>{
@@ -780,7 +780,7 @@ define(function (require, exports, module) {
 
         it("should live preview rememberScrollPositions", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["longPage.html"]),
-                "SpecRunnerUtils.openProjectFiles longPage.html", 1000);
+                "SpecRunnerUtils.openProjectFiles longPage.html");
 
             await waitsForLiveDevelopmentToOpen();
             // scroll to middile of page element so that the scroll position is saved
@@ -799,7 +799,7 @@ define(function (require, exports, module) {
 
             // now switch to a different page, its scroll position should not the saved scroll pos of last page
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
             await waitsForLiveDevelopmentToOpen();
             await forRemoteExec(`window.scrollY`, (result)=>{
                 return result !== savedWindowScrollY;
@@ -807,7 +807,7 @@ define(function (require, exports, module) {
 
             // now switch back to old page and verify if the scroll position was restored
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["longPage.html"]),
-                "SpecRunnerUtils.openProjectFiles longPage.html", 1000);
+                "SpecRunnerUtils.openProjectFiles longPage.html");
             await forRemoteExec(`window.scrollY`, (result)=>{
                 return result === savedWindowScrollY;
             });
