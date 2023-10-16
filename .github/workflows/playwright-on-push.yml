@@ -19,17 +19,19 @@ jobs:
         run: npm ci
 
       - name: Build phoenix
-        run: npm run build
+        run: | 
+          npm run build
+          npm run release:prod
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright unit tests in firefox
+      - name: Run Playwright unit tests in firefox for prod stage
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 20
           max_attempts: 3
-          command: npm run testFirefox
+          command: npm run _testFirefoxDist
 
   testFirefoxInteg:
     timeout-minutes: 90
@@ -41,28 +43,30 @@ jobs:
         run: npm ci
 
       - name: Build phoenix
-        run: npm run build
+        run: |
+          npm run build
+          npm run release:prod
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright integration tests in firefox Attempt 1
+      - name: Run Playwright integration tests in firefox for prod stage Attempt 1
         timeout-minutes: 30
         id: attempt1
         continue-on-error: true
-        run: npm run testIntegFirefox
+        run: npm run _testIntegFirefoxDist
 
-      - name: Run Playwright integration tests in firefox Attempt 2
+      - name: Run Playwright integration tests in firefox for prod stage Attempt 2
         if: steps.attempt1.outcome == 'failure'
         timeout-minutes: 30
         continue-on-error: true
         id: attempt2
-        run: npm run testIntegFirefox
+        run: npm run _testIntegFirefoxDist
 
-      - name: Run Playwright integration tests in firefox Attempt 3
+      - name: Run Playwright integration tests in firefox for prod stage Attempt 3
         if: steps.attempt2.outcome == 'failure'
         id: attempt3
-        run: npm run testIntegFirefox
+        run: npm run _testIntegFirefoxDist
 
   testChromiumUnit:
     timeout-minutes: 60
@@ -74,17 +78,19 @@ jobs:
         run: npm ci
 
       - name: Build phoenix
-        run: npm run build
+        run: |
+          npm run build
+          npm run release:prod
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright unit tests in Chromium
+      - name: Run Playwright unit tests in Chromium for prod stage
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 20
           max_attempts: 3
-          command: npm run testChromium
+          command: npm run _testChromiumDist
 
   testChromiumInteg:
     timeout-minutes: 90
@@ -96,28 +102,30 @@ jobs:
         run: npm ci
 
       - name: Build phoenix
-        run: npm run build
+        run: |
+          npm run build
+          npm run release:prod
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright integration tests in Chromium Attempt 1
+      - name: Run Playwright integration tests in Chromium for prod stage Attempt 1
         timeout-minutes: 30
         id: attemptC1
         continue-on-error: true
-        run: npm run testIntegChromium
+        run: npm run _testIntegChromiumDist
 
-      - name: Run Playwright integration tests in Chromium Attempt 2
+      - name: Run Playwright integration tests in Chromium for prod stage Attempt 2
         timeout-minutes: 30
         continue-on-error: true
         if: steps.attemptC1.outcome == 'failure'
         id: attemptC2
-        run: npm run testIntegChromium
+        run: npm run _testIntegChromiumDist
 
-      - name: Run Playwright integration tests in Chromium Attempt 3
+      - name: Run Playwright integration tests in Chromium for prod stage Attempt 3
         if: steps.attemptC2.outcome == 'failure'
         id: attemptC3
-        run: npm run testIntegChromium
+        run: npm run _testIntegChromiumDist
 
   raiseIssue:
     needs: [ testFirefoxUnit, testFirefoxInteg, testChromiumUnit, testChromiumInteg]
