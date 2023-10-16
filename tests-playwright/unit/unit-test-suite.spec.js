@@ -1,9 +1,18 @@
 // @ts-check
+/*global process*/
 const { test, expect } = require("@playwright/test");
+
+const testDist = process.env.TEST_DIST === 'true';
+let baseURL = 'http://localhost:5000/test/SpecRunner.html';
+if(testDist){
+   console.log("Testing distribution in: dist-test folder. Make sure to `npm run release:dev/prod` before running this mode.");
+    baseURL = 'http://localhost:5000/dist-test/test/SpecRunner.html';
+}
+console.log("Playwright using base url for tests: ", baseURL);
 
 test("Execute all unit tests", async ({ page }) => {
     await page.goto(
-        "http://localhost:5000/test/SpecRunner.html?spec=all&category=unit"
+        `${baseURL}?spec=all&category=unit`
     );
 
     // Expose a function to the page
