@@ -36,7 +36,7 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global */
+/*global Phoenix*/
 //jshint-ignore:no-start
 /**
  * This module beautifies HTML/JS/other language code with the help of prettier plugin
@@ -232,7 +232,8 @@ define(function (require, exports, module) {
                 parser: parsersForLanguage[languageId],
                 tabWidth: indentWithTabs ? Editor.getTabSize() : Editor.getSpaceUnits(),
                 useTabs: indentWithTabs,
-                filepath: filepath
+                filepath: filepath,
+                endOfLine: Phoenix.platform === 'win' ? "crlf": "lf"
             });
             let prettierParams ={
                 text: editor.document.getText(),
