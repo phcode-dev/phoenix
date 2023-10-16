@@ -26,7 +26,10 @@ define(function (require, exports, module) {
 
     let SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
         Editor = brackets.getModule("editor/Editor").Editor,
+        FileUtils = brackets.getModule('file/FileUtils'),
         BeautificationManager = brackets.getModule("features/BeautificationManager");
+
+    const PLATFORM_LINE_ENDINGS = (FileUtils.getPlatformLineEndings() === 'CRLF' ? "\r\n" : "\n");
 
     require("./main");
 
@@ -75,7 +78,7 @@ define(function (require, exports, module) {
             it("should beautify editor for js", async function () {
                 createMockEditor(jsFile, "javascript", "/test.js");
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(jsPrettyFile);
+                expect(testEditor.document.getText(true)).toBe(jsPrettyFile);
             });
 
             it("should beautify editor respect space options for js", async function () {
@@ -83,7 +86,7 @@ define(function (require, exports, module) {
                 Editor.setUseTabChar(false);
                 Editor.setSpaceUnits(1);
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(jsPrettySingleSpace);
+                expect(testEditor.document.getText(true)).toBe(jsPrettySingleSpace);
             });
 
             it("should beautify editor respect tab options for js", async function () {
@@ -91,21 +94,21 @@ define(function (require, exports, module) {
                 Editor.setUseTabChar(true);
                 Editor.setTabSize(4);
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(jsPrettyTabs);
+                expect(testEditor.document.getText(true)).toBe(jsPrettyTabs);
             });
 
             it("should beautify editor selection for js", async function () {
                 createMockEditor(jsFile, "javascript", "/test.js");
                 testEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 39});
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(jsPrettySelection);
+                expect(testEditor.document.getText(true)).toBe(jsPrettySelection);
             });
 
             it("should beautify editor selection with offset for js", async function () {
                 createMockEditor(jsFile, "javascript", "/test.js");
                 testEditor.setSelection({line: 4, ch: 0}, {line: 6, ch: 0});
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()+"\n").toBe(jsPrettySelectionOffset);
+                expect(testEditor.document.getText(true)+ PLATFORM_LINE_ENDINGS).toBe(jsPrettySelectionOffset);
             });
 
             it("should not beautify editor on incomplete syntax selection for js", async function () {
@@ -115,7 +118,7 @@ define(function (require, exports, module) {
                     await BeautificationManager.beautifyEditor(testEditor);
                     expect("should have not beautified").toBeFalsy();
                 } catch (e) {
-                    expect(testEditor.document.getText()).toBe(jsFile);
+                    expect(testEditor.document.getText(true)).toBe(jsFile);
                 }
             });
         });
@@ -130,7 +133,7 @@ define(function (require, exports, module) {
             it("should beautify editor for html", async function () {
                 createMockEditor(htmlFile, "html", "/test.html");
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(htmlPrettyFile);
+                expect(testEditor.document.getText(true)).toBe(htmlPrettyFile);
             });
 
             it("should beautify editor respect space options for html", async function () {
@@ -138,7 +141,7 @@ define(function (require, exports, module) {
                 Editor.setUseTabChar(false);
                 Editor.setSpaceUnits(1);
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(htmlPrettySingleSpace);
+                expect(testEditor.document.getText(true)).toBe(htmlPrettySingleSpace);
             });
 
             it("should beautify editor respect tab options for html", async function () {
@@ -146,21 +149,21 @@ define(function (require, exports, module) {
                 Editor.setUseTabChar(true);
                 Editor.setTabSize(4);
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(htmlPrettyTabs);
+                expect(testEditor.document.getText(true)).toBe(htmlPrettyTabs);
             });
 
             it("should beautify editor selection for html", async function () {
                 createMockEditor(htmlFile, "html", "/test.html");
                 testEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 39});
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(htmlPrettySelection);
+                expect(testEditor.document.getText(true)).toBe(htmlPrettySelection);
             });
 
             it("should beautify editor selection with offset for html", async function () {
                 createMockEditor(htmlFile, "html", "/test.html");
                 testEditor.setSelection({line: 4, ch: 0}, {line: 6, ch: 0});
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()+"\n").toBe(htmlPrettySelectionOffset);
+                expect(testEditor.document.getText(true)+ PLATFORM_LINE_ENDINGS).toBe(htmlPrettySelectionOffset);
             });
 
             it("should not beautify editor on incomplete syntax selection for html", async function () {
@@ -170,7 +173,7 @@ define(function (require, exports, module) {
                     await BeautificationManager.beautifyEditor(testEditor);
                     expect("should have not beautified").toBeFalsy();
                 } catch (e) {
-                    expect(testEditor.document.getText()).toBe(htmlFile);
+                    expect(testEditor.document.getText(true)).toBe(htmlFile);
                 }
             });
         });
@@ -185,14 +188,14 @@ define(function (require, exports, module) {
             it("should beautify editor for css", async function () {
                 createMockEditor(cssFile, "css", "/test.css");
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(cssPrettyFile);
+                expect(testEditor.document.getText(true)).toBe(cssPrettyFile);
             });
 
             it("should beautify editor selection for css", async function () {
                 createMockEditor(cssFile, "css", "/test.css");
                 testEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 39});
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(cssPrettySelection);
+                expect(testEditor.document.getText(true)).toBe(cssPrettySelection);
             });
 
             it("should not beautify editor on incomplete syntax selection for css", async function () {
@@ -202,7 +205,7 @@ define(function (require, exports, module) {
                     await BeautificationManager.beautifyEditor(testEditor);
                     expect("should have not beautified").toBeFalsy();
                 } catch (e) {
-                    expect(testEditor.document.getText()).toBe(cssFile);
+                    expect(testEditor.document.getText(true)).toBe(cssFile);
                 }
             });
         });
@@ -217,13 +220,13 @@ define(function (require, exports, module) {
             it("should beautify editor for markdown", async function () {
                 createMockEditor(mdFile, "css", "/test.md");
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(mdPrettyFile);
+                expect(testEditor.document.getText(true)).toBe(mdPrettyFile);
             });
 
             it("should beautify editor for less", async function () {
                 createMockEditor(lessFile, "less", "/test.less");
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(lessPrettyFile);
+                expect(testEditor.document.getText(true)).toBe(lessPrettyFile);
             });
 
             it("should beautify editor for scss", async function () {
@@ -237,7 +240,7 @@ define(function (require, exports, module) {
             it("should beautify editor for json", async function () {
                 createMockEditor(jsonFile, "json", "/test.json");
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText()).toBe(jsonPrettyFile);
+                expect(testEditor.document.getText(true)).toBe(jsonPrettyFile);
             });
 
             it("should beautify editor for xml", async function () {
