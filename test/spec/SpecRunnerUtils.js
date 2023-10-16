@@ -596,6 +596,15 @@ define(function (require, exports, module) {
             options.forceReload ||
             (_testWindow.isActualWindow && !options.useWindowInsteadOfIframe)
         )) {
+            const urlParams = new URLSearchParams(window.location.search || "");
+            if(urlParams.get('category') === 'integration'){
+                const errorString = "Test config error!!\nTests with category `integration` are not" +
+                    " supposed to use `forceReload` when calling `SpecRunnerUtils.createTestWindowAndRun`" +
+                    " This will severally impact test run times for modern phcode tests.\nYou should use" +
+                    " `LegacyInteg` category in such cases!!!";
+                console.error(errorString);
+                alert(errorString);
+            }
             await closeTestWindow(true);
         }
 
