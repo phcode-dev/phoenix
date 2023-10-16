@@ -60,6 +60,17 @@
         }
         if(window.__TAURI__) {
             function setupTauriBootVars() {
+                // increase this version number if you are modifying any boot vars
+                const TAURI_BOOT_VARS_LOCALSTORAGE_KEY = "tauriBootVarsV1";
+                const tauriBootVarsStr = localStorage.getItem(TAURI_BOOT_VARS_LOCALSTORAGE_KEY);
+                if(tauriBootVarsStr) {
+                    try{
+                        window._tauriBootVars = JSON.parse(tauriBootVarsStr);
+                        window._tauriBootVarsPromise = Promise.resolve("Resolved from localstorage.");
+                    } catch (e) {
+                        console.error("Error getting tauri boot vars from localstorage. Falling back to make tauri bootstrap calls.", e);
+                    }
+                }
                 const appNamePromise = window.__TAURI__.app.getName();
                 // for running tests, the user document dir is set to app data dir as we dont want to
                 // corrupt user documents dir for tests
@@ -91,6 +102,7 @@
 
                         window._tauriBootVars.appLocalDir = results[2];
                         window._tauriBootVars.tempDir = results[3];
+                        localStorage.setItem(TAURI_BOOT_VARS_LOCALSTORAGE_KEY, JSON.stringify(window._tauriBootVars));
                     });
             }
             setupTauriBootVars();
