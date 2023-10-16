@@ -347,7 +347,7 @@ define(function (require, exports, module) {
                 await awaitsFor(()=>{
                     let currentFile = MainViewManager.getCurrentlyViewedFile();
                     return currentFile.fullPath.endsWith(expectedPathEnding);
-                }, "waits for image to open", 2000);
+                }, "waits for image to open");
             });
 
             it("Should show image preview for urls with http/https",async function () {

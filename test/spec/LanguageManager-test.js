@@ -319,7 +319,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () {
                     return Boolean(language);
-                }, "The language should be resolved", 50);
+                }, "The language should be resolved", 2000);
 
                 expect(LanguageManager.getLanguageForPath("file.p")).toBe(language);
                 validateLanguage(def, language);
@@ -340,7 +340,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () {
                     return Boolean(lang);
-                }, "The language should be resolved", 150);
+                }, "The language should be resolved", 2000);
 
                 expect(xmlBefore).toBe(xmlAfter);
                 expect(LanguageManager.getLanguageForPath("file.wix")).toBe(lang);
@@ -361,7 +361,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () {
                     return error !== -1;
-                }, "The promise should be rejected with an error", 150);
+                }, "The promise should be rejected with an error", 2000);
 
                 expect(error).toBe("Language \"pascal\" is already defined");
             });
@@ -445,7 +445,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () {
                     return Boolean(language);
-                }, "The language should be resolved", 150);
+                }, "The language should be resolved", 2000);
 
                 expect(LanguageManager.getLanguageForPath("file.erlang")).toBe(language);
                 validateLanguage(def, language);

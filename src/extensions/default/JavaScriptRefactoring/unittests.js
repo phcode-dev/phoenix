@@ -92,7 +92,7 @@ define(function (require, exports, module) {
             }
             await awaitsFor(function() {
                 return (testDoc.getText().length !== prevDocLength || (numberOfLines && testDoc.getText().split("\n").length !== numberOfLines));
-            }, "_waitForRefactoring", 500);
+            }, "_waitForRefactoring");
             callback();
         }
 

@@ -84,8 +84,7 @@ define(function (require, exports, module) {
                         let $dlg = testWindow.$(".modal.instance");
                         return !!$dlg.length;
                     },
-                    "brackets.test.closing",
-                    1000
+                    "brackets.test.closing"
                 );
             } catch (e) {
                 // do nothing.

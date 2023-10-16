@@ -40,7 +40,7 @@ define(function (require, exports, module) {
             expect(FeatureGate.getAllRegisteredFeatures().includes(FEATURE2)).toEqual(true);
             await awaitsFor(function () {
                 return notified === FEATURE2 && featureDefaultValue === true;
-            }, 100, "Feature gate registration notification");
+            }, "Feature gate registration notification");
         });
 
         it("user should be able to override feature in localstorage", function () {

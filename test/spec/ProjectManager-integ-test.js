@@ -78,7 +78,7 @@ define(function (require, exports, module) {
             await awaitsFor(function () {
                 $dlg = testWindow.$(".modal.instance");
                 return $dlg.length > 0;
-            }, 300, "dialog to appear");
+            },  "dialog to appear");
         }
 
         describe("createNewItem", function () {

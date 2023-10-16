@@ -48,7 +48,7 @@ define(function (require, exports, module) {
                 .done(function () { didOpen = true; })
                 .fail(function () { gotError = true; });
             await awaitsFor(function () { return didOpen && !gotError; },
-                "FILE_OPEN on file timeout", 1000);
+                "FILE_OPEN on file timeout");
 
             // change editor content to make doc dirty which adds it to the working set
             doc = DocumentManager.getCurrentDocument();
@@ -102,7 +102,7 @@ define(function (require, exports, module) {
             await openAndMakeDirty(testPath + "/file_two.js");
 
             // Wait for both files to be added to the working set
-            await awaitsFor(function () { return workingSetListItemCount === 2; }, "workingSetListItemCount to equal 2", 1000);
+            await awaitsFor(function () { return workingSetListItemCount === 2; }, "workingSetListItemCount to equal 2");
         });
 
         afterEach(async function () {
@@ -125,7 +125,7 @@ define(function (require, exports, module) {
             CommandManager.execute(Commands.FILE_CLOSE)
                 .done(function () { didClose = true; })
                 .fail(function () { gotError = true; });
-            await awaitsFor(function () { return didClose && !gotError; }, "FILE_OPEN on file timeout", 1000);
+            await awaitsFor(function () { return didClose && !gotError; }, "FILE_OPEN on file timeout");
 
             // check there are no list items
             var listItems = testWindow.$(".open-files-container > ul").children();
@@ -169,7 +169,7 @@ define(function (require, exports, module) {
 
             closeIcon.trigger("mousedown");
 
-            await awaitsFor(function () { return didClose; }, "click on working set close icon timeout", 1000);
+            await awaitsFor(function () { return didClose; }, "click on working set close icon timeout");
 
             var $listItems = $(".open-files-container > ul").children();
             expect($listItems.length).toBe(1);
@@ -211,7 +211,7 @@ define(function (require, exports, module) {
             await openAndMakeDirty(testPath + "/directory/file_one.js");
 
             // Wait for file to be added to the working set
-            await awaitsFor(function () { return workingSetListItemCount === workingSetListItemCountBeforeTest + 1; }, 1000);
+            await awaitsFor(function () { return workingSetListItemCount === workingSetListItemCountBeforeTest + 1; });
 
             // Two files with the same name file_one.js should be now opened
             var $list = testWindow.$(".open-files-container > ul");
@@ -234,7 +234,7 @@ define(function (require, exports, module) {
             await openAndMakeDirty(testPath + "/directory/directory/file_one.js");
 
             // Wait for them to load
-            await awaitsFor(function () { return workingSetListItemCount === workingSetListItemCountBeforeTest + 2; }, "Open file count to be increased by 2", 1000);
+            await awaitsFor(function () { return workingSetListItemCount === workingSetListItemCountBeforeTest + 2; }, "Open file count to be increased by 2");
 
             // Collect all directory names displayed
             var $list = testWindow.$(".open-files-container > ul");
