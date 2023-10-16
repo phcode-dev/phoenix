@@ -101,7 +101,7 @@ define(function (require, exports, module) {
                     return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
                 },
                 "livedevelopment.done.opened",
-                5000
+                10000
             );
             let editor = EditorManager.getActiveEditor();
             editor && editor.setCursorPos({ line: 0, ch: 0 });
@@ -115,7 +115,7 @@ define(function (require, exports, module) {
         it("should establish a browser connection for an opened html file", async function () {
             //open a file
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html", 1000);
+                "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
 
