@@ -44,7 +44,7 @@ define(function (require, exports, module) {
             });
             await awaitsFor(function () {
                 return initDone;
-            }, "waiting for worker to load WorkerComm", 500);
+            }, "waiting for worker to load WorkerComm");
         });
 
         afterAll(function () {
@@ -108,7 +108,7 @@ define(function (require, exports, module) {
                 exports.triggerPeer("echoNotify1", "yo1");
                 await awaitsFor(function () {
                     return echoVal === "yo1";
-                }, "waiting for worker to notify main", 500);
+                }, "waiting for worker to notify main");
             });
 
             it("Should trigger notification in worker and main thread even if some handlers errored", async function () {
@@ -120,14 +120,14 @@ define(function (require, exports, module) {
                 exports.triggerPeer("echoNotify2", "yo2");
                 await awaitsFor(function () {
                     return echoVal === "yo2";
-                }, "waiting for worker to notify main", 500);
+                }, "waiting for worker to notify main");
 
                 // check if the notification works again after error in worker
                 echoVal = "";
                 exports.triggerPeer("echoNotify2", "yo2");
                 await awaitsFor(function () {
                     return echoVal === "yo2";
-                }, "waiting for worker to notify main", 500);
+                }, "waiting for worker to notify main");
             });
         });
 

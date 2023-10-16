@@ -68,7 +68,7 @@ define(function (require, exports, module) {
 
             await awaitsFor(function () {
                 return (testDocument);
-            }, "Unable to open test document", 2000);
+            }, "Unable to open test document");
 
             // create Editor instance (containing a CodeMirror instance)
             testEditor = createMockEditor(testDocument);
@@ -106,7 +106,7 @@ define(function (require, exports, module) {
 
             await awaitsFor(function () {
                 return (!hintsObj || hintsObj.hints);
-            }, "Unable to resolve hints", 2000);
+            }, "Unable to resolve hints");
         }
 
         // Ask provider for hints at current cursor position; expect it NOT to return any
@@ -296,7 +296,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () {
                     return (testDocument);
-                }, "Unable to open test document", 2000);
+                }, "Unable to open test document");
 
                 MainViewManager._edit(MainViewManager.ACTIVE_PANE, testDocument);
                 testEditor = EditorManager.getCurrentFullEditor();

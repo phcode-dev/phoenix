@@ -111,7 +111,7 @@ define(function (require, exports, module) {
 
                 await awaitsFor(function () {
                     return done;
-                }, "The chain should complete", 100);
+                }, "The chain should complete");
                 expect(success).toBe(shouldSucceed);
                 responseComparator(response);
             }

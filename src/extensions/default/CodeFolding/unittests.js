@@ -430,7 +430,7 @@ define(function (require, exports, module) {
 
                         await awaitsFor(function () {
                             return expandTimeoutElapsed;
-                        }, "waiting a moment for gutter markerts to be re-rendered", 500);
+                        }, "waiting a moment for gutter markerts to be re-rendered");
 
                         var marks = getGutterFoldMarks().filter(filterFolded);
                         expect(marks.length).toEqual(0);
@@ -448,7 +448,7 @@ define(function (require, exports, module) {
 
                         await awaitsFor(function () {
                             return expandTimeoutElapsed;
-                        }, "waiting a moment for gutter markerts to be re-rendered", 500);
+                        }, "waiting a moment for gutter markerts to be re-rendered");
 
                         var marks = getGutterFoldMarks().filter(filterFolded);
                         expect(marks.length).toEqual(0);
