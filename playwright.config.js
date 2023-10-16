@@ -13,7 +13,7 @@ const { devices } = require("@playwright/test");
  * @type {import('@playwright/test').PlaywrightTestConfig}
  */
 const config = {
-    testDir: "./tests-playwright/unit",
+    testDir: "./tests-playwright",
     /* Maximum time one test can run for. */
     timeout: 60 * 60 * 1000, // 60 minutes
     expect: {
@@ -106,11 +106,5 @@ const config = {
         reuseExistingServer: true
     }
 };
-
-const testEnv = process.env.TEST_ENV || "unit";
-console.log("test env:", testEnv);
-if (testEnv === 'integration') {
-    config.testDir = "./tests-playwright/integration";
-}
 
 module.exports = config;

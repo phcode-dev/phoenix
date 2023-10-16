@@ -1,0 +1,245 @@
+name: Playwright-Chromium and firefox run full tests suite
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  playwrightChromiumLinux:
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Build phoenix
+        run: |
+          npm run build
+          npm run release:prod
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright unit tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npm run testChromiumDist
+
+      - name: Run Playwright integration tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=integration npm run testChromiumDist
+
+      - name: Run Playwright mainview tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=mainview npm run testChromiumDist
+
+      - name: Run Playwright livepreview tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=livepreview npm run testChromiumDist
+
+      - name: Run Playwright LegacyInteg tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=LegacyInteg npm run testChromiumDist
+
+  playwrightChromiumWindows:
+    timeout-minutes: 90
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Build phoenix
+        run: |
+          npm run build
+          npm run release:prod
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright unit tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npm run testChromiumDist
+
+      - name: Run Playwright integration tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=integration npm run testChromiumDist
+
+      - name: Run Playwright mainview tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=mainview npm run testChromiumDist
+
+      - name: Run Playwright livepreview tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=livepreview npm run testChromiumDist
+
+      - name: Run Playwright LegacyInteg tests in Chromium for prod stage
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=LegacyInteg npm run testChromiumDist
+
+  playwrightFirefoxLinux:
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Build phoenix
+        run: |
+          npm run build
+          npm run release:prod
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright unit tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npm run testFirefoxDist
+
+      - name: Run Playwright integration tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=integration npm run testFirefoxDist
+
+      - name: Run Playwright mainview tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=mainview npm run testFirefoxDist
+
+      - name: Run Playwright livepreview tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=livepreview npm run testFirefoxDist
+
+      - name: Run Playwright LegacyInteg tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefoxDist
+
+  playwrightFirefoxWindows:
+    timeout-minutes: 90
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Build phoenix
+        run: |
+          npm run build
+          npm run release:prod
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright unit tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npm run testFirefoxDist
+
+      - name: Run Playwright integration tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=integration npm run testFirefoxDist
+
+      - name: Run Playwright mainview tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=mainview npm run testFirefoxDist
+
+      - name: Run Playwright livepreview tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=livepreview npm run testFirefoxDist
+
+      - name: Run Playwright LegacyInteg tests in Firefox
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefoxDist
+
+  raiseIssue:
+    needs: [ playwrightChromiumLinux, playwrightChromiumWindows, playwrightFirefoxLinux, playwrightFirefoxWindows]
+    runs-on: ubuntu-latest
+    if: always() # This ensures that this job runs even if the previous jobs failed
+    steps:
+      - name: Check for failures and raise an issue
+        if: |
+          needs.playwrightChromiumLinux.result == 'failure' || 
+          needs.playwrightChromiumWindows.result == 'failure' ||
+          needs.playwrightFirefoxLinux.result == 'failure' || 
+          needs.playwrightFirefoxWindows.result == 'failure'
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const issueTitle = "Test failure on push: commit ${{github.sha}}";
+            const runURL = `https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}`;
+            let issueBody = `There was a test failure. Please investigate.\n\n[Check the failed run here](${runURL})\n\n`;
+            
+            if (needs.playwrightChromiumLinux.result == 'failure') {
+              issueBody += " - Chromium-Linux tests failed.\n";
+            }
+            if (needs.playwrightChromiumWindows.result == 'failure') {
+              issueBody += " - Chromium windows tests failed.\n";
+            }
+            if (needs.playwrightFirefoxLinux.result == 'failure') {
+              issueBody += " - Firefox linux tests failed.\n";
+            }
+            if (needs.playwrightFirefoxWindows.result == 'failure') {
+              issueBody += " - Firefox Windows tests failed.\n";
+            }
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody
+            });
