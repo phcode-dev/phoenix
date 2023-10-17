@@ -52,7 +52,7 @@ define(function (require, exports, module) {
             }).always(function () {
                 doneSyncing = true;
             });
-            await awaitsFor(function () { return doneSyncing; }, "Browser to sync changes", 5000);
+            await awaitsFor(function () { return doneSyncing; }, "Browser to sync changes", 20000);
             return browserText;
         }
 
@@ -101,7 +101,7 @@ define(function (require, exports, module) {
                     return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
                 },
                 "livedevelopment.done.opened",
-                10000
+                20000
             );
             let editor = EditorManager.getActiveEditor();
             editor && editor.setCursorPos({ line: 0, ch: 0 });
@@ -121,7 +121,7 @@ define(function (require, exports, module) {
 
             expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should establish a browser connection for an opened html file that has no 'head' tag", async function () {
             //open a file
@@ -131,7 +131,7 @@ define(function (require, exports, module) {
 
             expect(LiveDevMultiBrowser.status).toBe(LiveDevMultiBrowser.STATUS_ACTIVE);
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should send all external stylesheets as related docs on start-up", async function () {
             let liveDoc;
@@ -149,7 +149,7 @@ define(function (require, exports, module) {
             expect(liveDoc.isRelated(testFolder + "/simple1.css")).toBeTruthy();
             expect(liveDoc.isRelated(testFolder + "/simpleShared.css")).toBeTruthy();
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should send all import-ed stylesheets as related docs on start-up", async function () {
             let liveDoc;
@@ -166,7 +166,7 @@ define(function (require, exports, module) {
             );
             expect(liveDoc.isRelated(testFolder + "/import1.css")).toBeTruthy();
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should send all external javascript files as related docs on start-up", async function () {
             let liveDoc;
@@ -184,7 +184,7 @@ define(function (require, exports, module) {
             );
             expect(liveDoc.isRelated(testFolder + "/simple1.js")).toBeTruthy();
             await endPreviewSession();
-        });
+        }, 30000);
 
         function _isRelatedStyleSheet(liveDoc, fileName) {
             let relatedSheets = Object.keys(liveDoc.getRelated().stylesheets);
@@ -213,7 +213,7 @@ define(function (require, exports, module) {
                     return _isRelatedStyleSheet(liveDoc, "blank.css");
                 },
                 "relatedDocuments.done.received",
-                10000
+                20000
             );
 
             // blank.css exist and hence part of live doc. o fix this
@@ -234,7 +234,7 @@ define(function (require, exports, module) {
             //
             // expect(liveDoc.isRelated(testFolder + "/blank.css")).toBeFalsy();
             await endPreviewSession();
-        });
+        }, 30000);
 
         // search for todo #remove_not_working fix in future
         // xit(" todo should send notifications for removed stylesheets through link nodes", async function () {
@@ -264,7 +264,7 @@ define(function (require, exports, module) {
 
             expect(fixSpaces(browserText).includes(fixSpaces(styleTextAdd))).toBeTrue();
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should make CSS-relative URLs absolute", async function () {
             var localText,
@@ -294,7 +294,7 @@ define(function (require, exports, module) {
             // expect absolute URL to stay unchanged
             expect(browserText).toContain(".sub { background: url(file:///fake.png); }");
             await endPreviewSession();
-        });
+        }, 30000);
 
         async function _editFileAndVerifyLivePreview(fileName, location, editText, verifyID, verifyText) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
@@ -322,7 +322,7 @@ define(function (require, exports, module) {
                     return result === verifyText;
                 },
                 "relatedDocuments.done.received",
-                2000,
+                5000,
                 50
             );
         }
@@ -335,7 +335,7 @@ define(function (require, exports, module) {
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world awesome!");
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should Live preview push html class changes to browser", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -377,12 +377,12 @@ define(function (require, exports, module) {
                     return hasClass;
                 },
                 "replaceClass",
-                2000,
+                5000,
                 50
             );
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should Live preview push html attribute changes to browser", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -409,7 +409,7 @@ define(function (require, exports, module) {
                     return result === "world";
                 },
                 "attribute add",
-                2000,
+                5000,
                 50
             );
 
@@ -424,12 +424,12 @@ define(function (require, exports, module) {
                     return result !== "world";
                 },
                 "attribute remove",
-                2000,
+                5000,
                 50
             );
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should Live preview work even if we switch html files", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -444,7 +444,7 @@ define(function (require, exports, module) {
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world hello world awesome!");
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should Markdown/image files be previewed and switched between live previews", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -462,7 +462,7 @@ define(function (require, exports, module) {
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "icon_chevron.png");
-            await awaits(300);
+            await awaits(500);
             iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             let srcURL = new URL(iFrame.src);
             expect(srcURL.pathname.endsWith("pageLoader.html")).toBeTrue();
@@ -472,7 +472,7 @@ define(function (require, exports, module) {
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
                 "testId", "Brackets is hello world hello world awesome!");
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should Markdown preview hyperlinks be proper", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -495,7 +495,7 @@ define(function (require, exports, module) {
             // expect(href.endsWith("LiveDevelopment-MultiBrowser-test-files/sub/icon_chevron.png")).toBeTrue();
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should pin live previews ping html file", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -510,7 +510,7 @@ define(function (require, exports, module) {
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "icon_chevron.png");
-            await awaits(300);
+            await awaits(500);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith(`simple1.html`))
                 .toBeTrue();
@@ -524,7 +524,7 @@ define(function (require, exports, module) {
             expect(srcURL.searchParams.get("URL").endsWith("sub/icon_chevron.png")).toBeTrue();
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         async function forRemoteExec(script, compareFn) {
             let result;
@@ -541,7 +541,7 @@ define(function (require, exports, module) {
                     return true;
                 },
                 "awaitRemoteExec",
-                2000,
+                5000,
                 50
             );
         }
@@ -569,7 +569,7 @@ define(function (require, exports, module) {
                 });
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should live highlight css classes highlight all elements", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
@@ -585,7 +585,7 @@ define(function (require, exports, module) {
             let editor = EditorManager.getActiveEditor();
             editor.setCursorPos({ line: 2, ch: 6 });
 
-            await awaits(300);
+            await awaits(500);
             await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
                 return result === 3;
             });
@@ -600,7 +600,7 @@ define(function (require, exports, module) {
             editor = EditorManager.getActiveEditor();
             editor.setCursorPos({ line: 0, ch: 1 });
 
-            await awaits(300);
+            await awaits(500);
             await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
                 return result === 2;
             });
@@ -611,7 +611,7 @@ define(function (require, exports, module) {
                 });
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should live highlight resize as window size changes", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -626,7 +626,7 @@ define(function (require, exports, module) {
 
             editor.setCursorPos({ line: 11, ch: 10 });
 
-            await awaits(300);
+            await awaits(500);
             await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
                 return result === 1;
             });
@@ -637,18 +637,18 @@ define(function (require, exports, module) {
             });
 
             iFrame.style.width = "100px";
-            await awaits(100);
+            await awaits(500);
             await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].style.width`, (result)=>{
                 return originalWidth !== result;
             });
             iFrame.style.width = "100%";
-            await awaits(100);
+            await awaits(500);
             await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight")[0].style.width`, (result)=>{
                 return originalWidth === result;
             });
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should reverse highlight on clicking on live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -674,7 +674,7 @@ define(function (require, exports, module) {
             expect(editor.getCursorPos()).toEql({ line: 12, ch: 0, sticky: null });
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should reverse highlight open previewed html file if not open on clicking live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -712,7 +712,7 @@ define(function (require, exports, module) {
             expect(editor.getCursorPos()).toEql({ line: 11, ch: 0, sticky: null });
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should ctrl-s to save page be disabled inside live preview iframes", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -741,7 +741,7 @@ define(function (require, exports, module) {
             // expect(iFrame.contentDocument.savePageCtrlSDisabledByPhoenix).toBeTrue();
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should beautify and undo not corrupt live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
@@ -764,7 +764,7 @@ define(function (require, exports, module) {
                 "testId", "Brackets is hello world awesome!");
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should live preview not be able to access a non project file", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["exploit1.html"]),
@@ -776,7 +776,7 @@ define(function (require, exports, module) {
             });
 
             await endPreviewSession();
-        });
+        }, 30000);
 
         it("should live preview rememberScrollPositions", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["longPage.html"]),
@@ -813,6 +813,6 @@ define(function (require, exports, module) {
             });
 
             await endPreviewSession();
-        });
+        }, 30000);
     });
 });

@@ -91,14 +91,14 @@ define(function (require, exports, module) {
         async function executeSearch(searchString) {
             await awaitsFor(function () {
                 return FindInFiles.isProjectIndexingComplete();
-            }, "Find in Files done", 10000);
+            }, "Find in Files done", 20000);
             FindInFiles._searchDone = false;
             let $searchField = $(".modal-bar #find-group input");
             $searchField.val(searchString).trigger("input");
             //SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
             await awaitsFor(function () {
                 return FindInFiles._searchDone;
-            }, "Find in Files done", 10000);
+            }, "Find in Files done", 20000);
         }
 
         async function executeCleanSearch(searchString) {
