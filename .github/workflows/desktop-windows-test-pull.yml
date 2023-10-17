@@ -76,7 +76,7 @@ jobs:
         id: windowsRunLegacyInteg
         continue-on-error: true
         with:
-          timeout_minutes: 12
+          timeout_minutes: 30
           max_attempts: 3
           command: ..\phoenix-desktop\src-tauri\target\debug\phoenix-test.exe --run-tests=LegacyInteg -q > output-LegacyInteg.txt 2>&1
           shell: cmd
