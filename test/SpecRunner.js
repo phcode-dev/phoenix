@@ -542,12 +542,18 @@ define(function (require, exports, module) {
                             }
                             globalTestRunnerLogToConsole("Creating test folder /test/");
                             await makeTestDir();
-                            globalTestRunnerLogToConsole("Copying test assets to /test/", err);
+                            globalTestRunnerLogToConsole("Copying test assets to /test/");
                             let progressMessageEl = document.getElementById("loadProgressMessage");
+                            let lastPrintedPercent = 0;
                             for (let i = 0; i < keys.length; i++) {
                                 let path = keys[i];
                                 progressMessageEl.textContent = `${i+1} of ${keys.length}`;
                                 await _copyZippedItemToFS(path, zip.files[path]);
+                                const percentCopied = Math.round((i/keys.length)*100);
+                                if(percentCopied % 10 === 0 && lastPrintedPercent !== percentCopied) {
+                                    lastPrintedPercent = percentCopied;
+                                    globalTestRunnerLogToConsole(percentCopied+ "% copied");
+                                }
                             }
                             localStorage.setItem(EXTRACT_TEST_ASSETS_KEY, DONT_EXTRACT);
                             _showLoading(false);
