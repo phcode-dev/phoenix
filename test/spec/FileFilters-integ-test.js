@@ -132,6 +132,7 @@ define(function (require, exports, module) {
             it("should exclude files from search", async function () {
                 await openSearchBar();
                 await setExcludeCSSFiles();
+                await openSearchBar();
                 await executeCleanSearch("{1}");
                 // *.css should have been excluded this time
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
@@ -143,6 +144,7 @@ define(function (require, exports, module) {
                 let dirEntry = FileSystem.getDirectoryForPath(testPath);
                 await openSearchBar(dirEntry);
                 await setExcludeCSSFiles();
+                await openSearchBar(dirEntry);
                 await executeCleanSearch("{1}");
                 // *.css should have been excluded this time
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();

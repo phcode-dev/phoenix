@@ -198,7 +198,7 @@ define(function (require, exports, module) {
 
                 myEditor = EditorManager.getCurrentFullEditor();
                 myEditor.setCursorPos({line: 5, ch: 8});
-                await awaits(200); // for the code intelligence framework to prime up
+                await awaits(1500); // for the code intelligence framework to prime up
                 promise = CommandManager.execute(Commands.NAVIGATE_JUMPTO_DEFINITION);
                 await awaitsForDone(promise, "Jump To Definition");
 
