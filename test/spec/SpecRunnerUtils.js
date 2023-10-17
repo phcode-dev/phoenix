@@ -548,6 +548,9 @@ define(function (require, exports, module) {
         };
 
         _testWindow.closeAllFiles = async function closeAllFiles() {
+            if(!_testWindow.executeCommand) {
+                return;
+            }
             let promise = _testWindow.executeCommand(_testWindow.brackets.test.Commands.FILE_CLOSE_ALL, {
                 _forceClose: true,
                 PaneId: _testWindow.brackets.test.MainViewManager.ALL_PANES
@@ -616,7 +619,7 @@ define(function (require, exports, module) {
                 const testIframe = window.openIframeRunner(_testWindowURL);
                 _testWindow = testIframe.contentWindow;
             }
-        } else if(!_testWindow.brackets){
+        } else if(!_testWindow.brackets || !_testWindow.executeCommand){
             _testWindow.location.href = 'about:blank';
             _testWindow.location.href = _testWindowURL;
         } else {
@@ -708,11 +711,6 @@ define(function (require, exports, module) {
             _testWindow = null;
             await awaits(2000); // UTS will crap without these time waits, esp in chromium. Browser freezes
         }
-        // _testWindow.executeCommand = null;
-        // _testWindow.location.href = 'about:blank';
-        // _testWindow.brackets.test.doneLoading = false;
-        // debug-only to see testWindow state before closing
-        // waits(1000);
     }
 
 
