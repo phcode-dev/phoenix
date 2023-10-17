@@ -44,6 +44,7 @@ if(!debugMode){
 
 let projectCache = [],
     files,
+    currentCrawlID = 0,
     MAX_FILE_SIZE_TO_INDEX = 16777216;
 
 let currentCrawlIndex = 0,
@@ -124,29 +125,42 @@ async function getFileContentsForFile(filePath) {
 }
 
 /**
- * Crawls through the files in the project ans stores them in cache. Since that could take a while
- * we do it in batches so that node wont be blocked.
+ * Crawls through the files in the project and stores them in cache. Since that could take a while
+ * we do it in batches so that node won't be blocked.
+ * @param {string|number} crawlerID a unique id for the crawl to start the crawler. If the global currentCrawlID
+ *    changes, the file crawler will stop and another should be scheduled by the initCache fn.
  */
-async function fileCrawler() {
+async function fileCrawler(crawlerID) {
     if (!files || (files && files.length === 0)) {
-        setTimeout(fileCrawler, 1000);
+        setTimeout(()=>fileCrawler(crawlerID), 1000);
         return;
     }
     const parallelRead = 5;
     let readPromises = [];
+    let crawlingPaths = [];
     for (let i = 0; i < parallelRead && currentCrawlIndex < files.length; i++) {
+        crawlingPaths.push(files[currentCrawlIndex]);
         readPromises.push(getFileContentsForFile(files[currentCrawlIndex]));
         currentCrawlIndex++;
     }
-    let contents = await Promise.all(readPromises) || [];
-    for(let content of contents){
-        if(content && content.length){
-            cacheSize += content.length;
+    try{
+        let contents = await Promise.all(readPromises) || [];
+        for(let content of contents){
+            if(content && content.length){
+                cacheSize += content.length;
+            }
         }
+    } catch (e) {
+        console.error(`Something went wrong when indexing paths:`, crawlingPaths, e);
+    }
+    if(currentCrawlID !== crawlerID) {
+        // The project to crawl switched while we were waiting for previous crawl data.
+        // So stop the current crawler as another crawler will be scheduled by the initCache fn.
+        return;
     }
     if (currentCrawlIndex < files.length) {
         crawlComplete = false;
-        setTimeout(fileCrawler);
+        setTimeout(()=>fileCrawler(crawlerID));
     } else {
         crawlComplete = true;
         if (!crawlEventSent) {
@@ -158,7 +172,7 @@ async function fileCrawler() {
                 crawlTimeMs: crawlTime
             });
         }
-        setTimeout(fileCrawler, 1000);
+        setTimeout(()=>fileCrawler(crawlerID), 1000);
     }
 }
 
@@ -186,6 +200,10 @@ function initCache(fileList) {
     clearProjectCache();
     crawlEventSent = false;
     cacheStartTime = Date.now();
+    setTimeout(()=>{
+        currentCrawlID = currentCrawlID++;
+        fileCrawler(currentCrawlID);
+    }, 3000);
     WorkerComm.triggerPeer("crawlStarted");
     if(files.length === 0) {
         WorkerComm.triggerPeer("crawlComplete", {
@@ -257,5 +275,3 @@ WorkerComm.setExecHandler("initCache", initCache);
 WorkerComm.setExecHandler("filesChanged", addFilesToCache);
 WorkerComm.setExecHandler("documentChanged", documentChanged);
 WorkerComm.setExecHandler("filesRemoved", removeFilesFromCache);
-
-setTimeout(fileCrawler, 3000);
