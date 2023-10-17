@@ -103,7 +103,7 @@ jobs:
       - name: Run Playwright LegacyInteg tests in Chromium for prod stage
         uses: nick-fields/retry@v2
         with:
-          timeout_minutes: 20
+          timeout_minutes: 30
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testChromiumDist
 
