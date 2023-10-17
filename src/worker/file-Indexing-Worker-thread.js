@@ -200,10 +200,8 @@ function initCache(fileList) {
     clearProjectCache();
     crawlEventSent = false;
     cacheStartTime = Date.now();
-    setTimeout(()=>{
-        currentCrawlID = currentCrawlID++;
-        fileCrawler(currentCrawlID);
-    }, 3000);
+    currentCrawlID = currentCrawlID + 1;
+    fileCrawler(currentCrawlID);
     WorkerComm.triggerPeer("crawlStarted");
     if(files.length === 0) {
         WorkerComm.triggerPeer("crawlComplete", {

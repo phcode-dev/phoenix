@@ -305,7 +305,7 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
                 "SpecRunnerUtils.openProjectFiles " + fileName);
 
-            await awaits(300); // todo can we remove this
+            await awaits(1000); // todo can we remove this
             await awaitsFor(
                 function isTextChanged() {
                     return LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE;
@@ -684,11 +684,10 @@ define(function (require, exports, module) {
         it("should reverse highlight open previewed html file if not open on clicking live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
 
             await waitsForLiveDevelopmentToOpen();
 
-            await awaits(300);
+            await awaits(1000);
             await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
                 return result === 0;
             });
@@ -698,14 +697,14 @@ define(function (require, exports, module) {
 
             await forRemoteExec(`document.getElementById("testId2").click()`);
 
-            await awaits(300);
+            await awaits(1000);
             // The live previewed file should now be opened in the editor
             let editor = EditorManager.getActiveEditor();
             expect(editor.document.file.fullPath.endsWith("simple1.html")).toBeTrue();
 
             // live highlights should still work
             await forRemoteExec(`document.getElementById("testId").click()`);
-            await awaits(300);
+            await awaits(1000);
 
             await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
                 return result === 1;
