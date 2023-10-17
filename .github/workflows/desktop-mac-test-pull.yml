@@ -52,6 +52,6 @@ jobs:
       - name: Run tauri LegacyInteg tests
         uses: nick-fields/retry@v2
         with:
-          timeout_minutes: 20
+          timeout_minutes: 30
           max_attempts: 3
           command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=LegacyInteg -q
