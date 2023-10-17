@@ -36,7 +36,8 @@ define(function (require, exports, module) {
             EditorManager,
             CommandManager,
             BeautificationManager,
-            Commands;
+            Commands,
+            WorkspaceManager;
 
         var testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
             allSpacesRE = /\s+/gi;
@@ -72,9 +73,13 @@ define(function (require, exports, module) {
                 CommandManager      = brackets.test.CommandManager;
                 Commands            = brackets.test.Commands;
                 EditorManager       = brackets.test.EditorManager;
+                WorkspaceManager    = brackets.test.WorkspaceManager;
                 BeautificationManager       = brackets.test.BeautificationManager;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+                if(!WorkspaceManager.isPanelVisible('live-preview-panel')){
+                    await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
+                }
             }
         }, 30000);
 
