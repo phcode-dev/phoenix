@@ -21,7 +21,7 @@
 
 // jshint ignore: start
 /*jslint regexp: true */
-/*globals logger*/
+/*globals logger, Phoenix*/
 
 define(function (require, exports, module) {
 
@@ -299,7 +299,7 @@ define(function (require, exports, module) {
                 windowTitle = StringUtils.format(WINDOW_TITLE_STRING_NO_DOC, projectName, brackets.config.app_title);
             }
         }
-        window.document.title = windowTitle;
+        Phoenix.app.setWindowTitle(windowTitle);
     }
 
     /**

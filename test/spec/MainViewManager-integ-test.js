@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeEach, beforeAll, afterAll, afterEach, it, expect, awaitsForDone, spyOn, jasmine */
+/*global describe, beforeEach, beforeAll, afterAll, afterEach, it, expect, awaitsForDone, spyOn, jasmine, Phoenix */
 
 define(function (require, exports, module) {
 
@@ -105,6 +105,38 @@ define(function (require, exports, module) {
             });
             it("Pane should not have a title", function () {
                 expect(MainViewManager.getPaneTitle("first-pane")).toBeFalsy();
+            });
+        });
+
+        describe("Title bar", function () {
+            it("should have a title bar in browser windows", async function () {
+                if(Phoenix.browser.isTauri) {
+                    return;
+                }
+                const $element = testWindow.$('.title-wrapper .title');
+                let isDisplayed = $element.is(":visible");
+                expect(isDisplayed).toBeFalse(); // if no file opened, no html title bar bay
+
+                const promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+
+                isDisplayed = $element.is(":visible");
+                expect(isDisplayed).toBeTrue(); // if no file opened, no html title bar bay
+
+            });
+
+            it("should not have a title bar in tauri windows", async function () {
+                if(!Phoenix.browser.isTauri) {
+                    return;
+                }
+                const $element = testWindow.$('.title-wrapper .title');
+
+                const promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+
+                const isDisplayed = $element.is(":visible");
+                expect(isDisplayed).toBeFalse();
+
             });
         });
 

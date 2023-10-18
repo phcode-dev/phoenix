@@ -40,6 +40,18 @@ Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
+    setWindowTitle: async function (title) {
+        window.document.title = title;
+        if(Phoenix.browser.isTauri) {
+            await window.__TAURI__.window.appWindow.setTitle(title);
+        }
+    },
+    getWindowTitle: async function () {
+        if(Phoenix.browser.isTauri) {
+            return window.__TAURI__.window.appWindow.title();
+        }
+        return window.document.title;
+    },
     openURLInDefaultBrowser: function (url){
         return new Promise((resolve, reject)=>{
             if(!window.__TAURI__) {

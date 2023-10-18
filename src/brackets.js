@@ -23,7 +23,7 @@
 /*eslint-env es6*/
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
-/*global jQuery,fs */
+/*global jQuery, Phoenix*/
 
 // TODO: (issue #264) break out the definition of brackets into a separate module from the application controller logic
 
@@ -419,13 +419,17 @@ define(function (require, exports, module) {
      */
     function _beforeHTMLReady() {
         // Add the platform (mac, win or linux) to the body tag so we can have platform-specific CSS rules
-        $("body").addClass("platform-" + brackets.platform);
+        const $body = $("body");
+        $body.addClass("platform-" + brackets.platform);
+        if(Phoenix.browser.isTauri){
+            $body.addClass("tauri");
+        }
 
         // Browser-hosted version may also have different CSS (e.g. since '#titlebar' is shown)
         if (brackets.inBrowser) {
-            $("body").addClass("in-browser");
+            $body.addClass("in-browser");
         } else {
-            $("body").addClass("in-appshell");
+            $body.addClass("in-appshell");
         }
 
         // Use HTML Menus
@@ -442,7 +446,7 @@ define(function (require, exports, module) {
 
 
         // Localize MainViewHTML and inject into <BODY> tag
-        $("body").append(Mustache.render(MainViewHTML, { shouldAddAA: (brackets.platform === "mac"), Strings: Strings }));
+        $body.append(Mustache.render(MainViewHTML, { shouldAddAA: (brackets.platform === "mac"), Strings: Strings }));
 
         // Update title
         $("title").text(brackets.config.app_title);

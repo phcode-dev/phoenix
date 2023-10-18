@@ -20,7 +20,7 @@
  */
 
 /*global describe, beforeEach, afterEach, it, expect, awaitsForDone, awaitsForFail, spyOn,
-beforeAll, afterAll, jasmine */
+beforeAll, afterAll, jasmine, Phoenix, awaitsFor */
 
 define(function (require, exports, module) {
 
@@ -544,7 +544,12 @@ define(function (require, exports, module) {
             it("should complete without error if no files are open", async function () {
                 promise = CommandManager.execute(Commands.FILE_CLOSE);
                 await awaitsForDone(promise, "FILE_CLOSE");
-                expect(testWindow.document.title).toBe("DocumentCommandHandlers-test-files " + WINDOW_TITLE_DOT + " " + brackets.config.app_title);
+                const expectedTitle = "DocumentCommandHandlers-test-files " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
+                expect(testWindow.document.title).toBe(expectedTitle);
+                if(Phoenix.browser.isTauri) {
+                    const title = await Phoenix.app.getWindowTitle();
+                    await awaitsFor(()=>title === expectedTitle);
+                }
             });
 
             it("should close a file in the editor", async function () {
@@ -554,7 +559,12 @@ define(function (require, exports, module) {
                 await awaitsForDone(promise, "FILE_OPEN");
                 promise = CommandManager.execute(Commands.FILE_CLOSE);
                 await awaitsForDone(promise, "FILE_CLOSE");
-                expect(testWindow.document.title).toBe("DocumentCommandHandlers-test-files " + WINDOW_TITLE_DOT + " " + brackets.config.app_title);
+                const expectedTitle = "DocumentCommandHandlers-test-files " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
+                expect(testWindow.document.title).toBe(expectedTitle);
+                if(Phoenix.browser.isTauri) {
+                    const title = await Phoenix.app.getWindowTitle();
+                    await awaitsFor(()=>title === expectedTitle);
+                }
             });
         });
 
@@ -911,7 +921,12 @@ define(function (require, exports, module) {
                 expect(DocumentManager.getCurrentDocument().isDirty).toBe(false);
 
                 // verify no dot in titlebar
-                expect(testWindow.document.title).toBe("test.js (DocumentCommandHandlers-test-files) " + WINDOW_TITLE_DOT + " " + brackets.config.app_title);
+                const expectedTitle = "test.js (DocumentCommandHandlers-test-files) " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
+                expect(testWindow.document.title).toBe(expectedTitle);
+                if(Phoenix.browser.isTauri) {
+                    const title = await Phoenix.app.getWindowTitle();
+                    await awaitsFor(()=>title === expectedTitle);
+                }
             });
 
             it("should report dirty when modified", async function () {
@@ -924,7 +939,12 @@ define(function (require, exports, module) {
                 expect(doc.isDirty).toBe(true);
 
                 // verify dot in titlebar
-                expect(testWindow.document.title).toBe("• test.js (DocumentCommandHandlers-test-files) " + WINDOW_TITLE_DOT + " " + brackets.config.app_title);
+                const expectedTitle = "• test.js (DocumentCommandHandlers-test-files) " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
+                expect(testWindow.document.title).toBe(expectedTitle);
+                if(Phoenix.browser.isTauri) {
+                    const title = await Phoenix.app.getWindowTitle();
+                    await awaitsFor(()=>title === expectedTitle);
+                }
             });
 
             it("should report dirty after undo and redo", async function () {

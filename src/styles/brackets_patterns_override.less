@@ -176,6 +176,13 @@ a:focus {
         display: none;
     }
 
+    body.tauri & {
+        .title {
+            // In tauri, the window title bar shows the file name fully. so this isn't required.
+            display: none;
+        }
+    }
+
     text-align: center;
     .nav {  // menubar
         float: left;
