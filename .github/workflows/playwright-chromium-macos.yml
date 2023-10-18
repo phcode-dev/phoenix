@@ -2,6 +2,11 @@ name: Chromium-macos run full tests suite
 on:
   pull_request:
     branches: [ main ]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   playwright-chromium-macos:
     timeout-minutes: 90

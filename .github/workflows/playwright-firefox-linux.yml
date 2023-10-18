@@ -2,6 +2,11 @@ name: Firefox-linux run full tests suite
 on:
   pull_request:
     branches: [ main ]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   playwright-firefox-linux:
     timeout-minutes: 90
