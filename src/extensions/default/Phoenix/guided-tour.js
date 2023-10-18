@@ -18,13 +18,14 @@
  *
  */
 
+/*global Phoenix*/
+
 define(function (require, exports, module) {
     const NotificationUI = brackets.getModule("widgets/NotificationUI"),
         LiveDevelopment  = brackets.getModule("LiveDevelopment/main"),
         ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
         WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
         MainViewManager  = brackets.getModule("view/MainViewManager"),
-        CommandManager = brackets.getModule("command/CommandManager"),
         Commands = brackets.getModule("command/Commands"),
         Strings = brackets.getModule("strings"),
         Menus = brackets.getModule("command/Menus"),
@@ -206,6 +207,11 @@ define(function (require, exports, module) {
             }
             window.twttr.events.bind('click', function (ev) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "twit.click", 1);
+                if(Phoenix.browser.isTauri) {
+                    // hyperlinks wont work in tauri, so we have to use tauri apis
+                    window.top.Phoenix.app.openURLInDefaultBrowser(
+                        'https://twitter.com/intent/tweet?screen_name=phcodedev&ref_src=twsrc%5Etfw');
+                }
             });
         });
     }
@@ -235,6 +241,11 @@ define(function (require, exports, module) {
                     </div>`);
         notification.find(".gtstarph").click(()=>{
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star.click", 1);
+            if(Phoenix.browser.isTauri) {
+                // hyperlinks wont work in tauri, so we have to use tauri apis
+                window.top.Phoenix.app.openURLInDefaultBrowser(
+                    'https://github.com/phcode-dev/phoenix');
+            }
         });
         NotificationUI.createToastFromTemplate(Strings.ENJOYING_APP, notification, {
             dismissOnClick: false

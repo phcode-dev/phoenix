@@ -181,6 +181,14 @@ function _attachSettingBtnEventListeners() {
     });
 }
 
+function _openURLInTauri(url) {
+    // in tauri, the <a> tag will not open a browser window. So we have to use phcode apis to do it.
+    // else, the browser itself will open the url. so we dont have to do this in normal browsers.
+    if(window.top.__TAURI__) {
+        window.top.Phoenix.app.openURLInDefaultBrowser(url);
+    }
+}
+
 function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "open-folder");
@@ -190,6 +198,17 @@ function initCodeEditor() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "viewMore");
         window.location.href = 'new-project-more.html';
     };
+    document.getElementById("githubStarsButton").onclick = function() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "githubStars");
+        _openURLInTauri("https://github.com/phcode-dev/phoenix");
+    };
+    const icons = ['githubIcon', 'twitterIcon', 'youtubeIcon'];
+    for(let iconID of icons) {
+        document.getElementById(iconID).onclick = function() {
+            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", iconID);
+            _openURLInTauri(document.getElementById(iconID).getAttribute('href'));
+        };
+    }
     document.getElementById("newGitHubProject").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "github-project");
         window.location.href = 'new-project-github.html';
