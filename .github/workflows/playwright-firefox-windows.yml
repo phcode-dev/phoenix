@@ -1,4 +1,4 @@
-name: Playwright-Firefox-windows run full tests suite
+name: Firefox-windows run full tests suite
 on:
   pull_request:
     branches: [ main ]
