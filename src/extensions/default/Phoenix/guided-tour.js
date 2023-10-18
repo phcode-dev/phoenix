@@ -209,7 +209,7 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "twit.click", 1);
                 if(Phoenix.browser.isTauri) {
                     // hyperlinks wont work in tauri, so we have to use tauri apis
-                    window.top.Phoenix.app.openURLInDefaultBrowser(
+                    Phoenix.app.openURLInDefaultBrowser(
                         'https://twitter.com/intent/tweet?screen_name=phcodedev&ref_src=twsrc%5Etfw');
                 }
             });
@@ -243,7 +243,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star.click", 1);
             if(Phoenix.browser.isTauri) {
                 // hyperlinks wont work in tauri, so we have to use tauri apis
-                window.top.Phoenix.app.openURLInDefaultBrowser(
+                Phoenix.app.openURLInDefaultBrowser(
                     'https://github.com/phcode-dev/phoenix');
             }
         });
