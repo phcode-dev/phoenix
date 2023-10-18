@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeEach, afterEach, afterAll, it, expect, awaits */
+/*global describe, beforeEach, afterEach, afterAll, it, expect, awaits, awaitsFor */
 /*unittests: KeyBindingManager */
 
 define(function (require, exports, module) {
@@ -458,9 +458,7 @@ define(function (require, exports, module) {
                 var imageTestFilesPath = SpecRunnerUtils.getTestPath("/spec/test-image-files");
                 KeyBindingManager._setUserKeyMapFilePath(imageTestFilesPath + "/eye.jpg");
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should show an error when loading a corrupted key map file", async function () {
@@ -472,9 +470,7 @@ define(function (require, exports, module) {
                 };
                 KeyBindingManager._setUserKeyMapFilePath(testPath + "/invalid.json");
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should show an error when loading a key map file with only whitespaces", async function () {
@@ -486,9 +482,7 @@ define(function (require, exports, module) {
                 };
                 KeyBindingManager._setUserKeyMapFilePath(testPath + "/whitespace.json");
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should NOT show any error when loading a user key map file with an empty object", async function () {
@@ -534,9 +528,7 @@ define(function (require, exports, module) {
                 KeyBindingManager._initCommandAndKeyMaps();
                 KeyBindingManager._setUserKeyMapFilePath(testPath + "/reassignCopy.json");
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should show an error when attempting to reassign a restricted shortcut (either bind to a special command or a mac system shortcut)", async function () {
@@ -560,9 +552,7 @@ define(function (require, exports, module) {
                 KeyBindingManager._initCommandAndKeyMaps();
                 KeyBindingManager._setUserKeyMapFilePath(testFilePath);
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should show an error when attempting to assign multiple shortcuts to the same command", async function () {
@@ -580,8 +570,7 @@ define(function (require, exports, module) {
                 KeyBindingManager._initCommandAndKeyMaps();
                 KeyBindingManager._setUserKeyMapFilePath(testPath + "/multipleShortcuts.json");
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should show an error when attempting to set duplicate shortcuts", async function () {
@@ -599,8 +588,7 @@ define(function (require, exports, module) {
                 KeyBindingManager._setUserKeyMapFilePath(testPath + "/duplicateShortcuts.json");
                 KeyBindingManager._initCommandAndKeyMaps();
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should show an error when parsing invalid shortcuts", async function () {
@@ -621,9 +609,7 @@ define(function (require, exports, module) {
                 KeyBindingManager._initCommandAndKeyMaps();
                 KeyBindingManager._setUserKeyMapFilePath(testPath + "/invalidKeys.json");
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should show an error when attempting to set shortcuts to non-existent commands", async function () {
@@ -641,9 +627,7 @@ define(function (require, exports, module) {
                 KeyBindingManager._initCommandAndKeyMaps();
                 KeyBindingManager._setUserKeyMapFilePath(testPath + "/keymap.json");
                 KeyBindingManager._loadUserKeyMap();
-                await awaits(300);
-
-                expect(called).toBeTrue();
+                await awaitsFor(()=>called, "called to be true");
             });
 
             it("should update key map with the user specified key bindings", async function () {
