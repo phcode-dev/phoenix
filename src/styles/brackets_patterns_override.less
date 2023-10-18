@@ -1439,7 +1439,7 @@ a[href^="http"] {
             }
             .ext-info {
                 padding-left: 15px;
-                width: 220px;
+                max-width: 300px;
             }
             .ext-name {
                 color: @bc-text;
@@ -1454,8 +1454,7 @@ a[href^="http"] {
                 }
             }
             .ext-desc {
-                width: auto;
-                max-width: 350px;
+                max-width: 275px;
                 color: @bc-text;
                 font-weight: normal;
                 .user-select(text);
@@ -1464,6 +1463,13 @@ a[href^="http"] {
                 .dark & {
                     color: @dark-bc-text;
                 }
+            }
+            .ext-full-description {
+                width: 100% !important;
+                max-height: 50px; /* Adjust based on your requirements */
+                overflow: hidden;
+                display: block; /* To make sure the width and max-height are respected */
+                white-space: nowrap; /* If you want to prevent wrapping, can be removed otherwise */
             }
             .ext-translated,
             .muted {
