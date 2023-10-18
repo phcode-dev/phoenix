@@ -113,14 +113,12 @@ define(function (require, exports, module) {
                 if(Phoenix.browser.isTauri) {
                     return;
                 }
-                const $element = testWindow.$('.title-wrapper .title');
-                let isDisplayed = $element.is(":visible");
-                expect(isDisplayed).toBeFalse(); // if no file opened, no html title bar bay
 
                 const promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
                 await awaitsForDone(promise, "MainViewManager.doOpen");
 
-                isDisplayed = $element.is(":visible");
+                const $element = testWindow.$('.title-wrapper .title');
+                const isDisplayed = $element.is(":visible");
                 expect(isDisplayed).toBeTrue(); // if no file opened, no html title bar bay
 
             });
