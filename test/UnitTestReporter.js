@@ -80,6 +80,24 @@ define(function (require, exports, module) {
         }, WAIT_TIME_TO_COMPLETE_TEST_LOGGING_SEC * 1000);
     }
 
+    function formatMilliseconds(ms) {
+        const hours = Math.floor(ms / (1000 * 60 * 60));
+        const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+
+        let result = '';
+
+        if (hours) {
+            result = result + `${hours}-Hr `;
+        }
+        if (minutes) {
+            result = result + `${minutes}-Min `;
+        }
+        result = `${result}${seconds}-Sec`;
+
+        return result.trim();
+    }
+
     /**
      * @constructor
      * Creates a UnitTestReporter object. This has a number public properties:
@@ -245,7 +263,7 @@ define(function (require, exports, module) {
                 if (self.specFilter(self.suiteIdToSuiteMap[result.id])) {
                     console.log('Suite: ' + result.description + ' [status]: ' + result.status);
                     if(result.status !== 'passed'){
-                        globalTestRunnerLogToConsole(`\u2716 Suite failed!! ${result.description} (after ${result.duration} ms)`);
+                        globalTestRunnerLogToConsole(`\u2716 Suite failed!! ${result.description} (after ${formatMilliseconds(result.duration)})`);
                     }
                 }
                 self.reportSuiteResults(result);
@@ -255,7 +273,7 @@ define(function (require, exports, module) {
                 console.log('Finished jasmine: ' + result.overallStatus);
                 globalTestRunnerLogToConsole('Finished jasmine: ' + result.overallStatus);
                 if(self.totalFailedCount === 0){
-                    globalTestRunnerLogToConsole(`\u2714 All(${self.totalSpecCount}) tests passed. (in ${result.totalTime}ms)`);
+                    globalTestRunnerLogToConsole(`\u2714 All(${self.totalSpecCount}) tests passed. (in ${formatMilliseconds(result.totalTime)})`);
                     if(result.overallStatus !== 'passed') {
                         window.externalJasmineFailures = true;
                         globalTestRunnerErrorToConsole(`\u2716 Some suites was detected to have failures outside of the suite tests. This could indicate an underlying problem. please run tests locally to debug.`);
@@ -276,7 +294,7 @@ define(function (require, exports, module) {
                         quitIfNeeded(0);
                     }
                 } else {
-                    globalTestRunnerErrorToConsole(`\u2716 ${self.totalFailedCount} of ${self.totalSpecCount} tests Failed, ${self.totalPassedCount} passed. (in ${result.totalTime}ms)`);
+                    globalTestRunnerErrorToConsole(`\u2716 ${self.totalFailedCount} of ${self.totalSpecCount} tests Failed, ${self.totalPassedCount} passed. (in ${formatMilliseconds(result.totalTime)})`);
                     quitIfNeeded(1);
                 }
                 self.reportRunnerResults(result);

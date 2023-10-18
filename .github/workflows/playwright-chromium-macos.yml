@@ -1,11 +1,11 @@
-name: Firefox-linux run full tests suite
+name: Chromium-macos run full tests suite
 on:
   pull_request:
     branches: [ main ]
 jobs:
-  playwright-firefox-linux:
+  playwright-chromium-macos:
     timeout-minutes: 90
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies
@@ -15,37 +15,37 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Run Playwright unit tests in Firefox
+    - name: Run Playwright unit tests in Chromium
       uses: nick-fields/retry@v2
       with:
         timeout_minutes: 12
         max_attempts: 3
-        command: npm run testFirefox
+        command: npm run testChromium
 
-    - name: Run Playwright integration tests in Firefox
+    - name: Run Playwright integration tests in Chromium
       uses: nick-fields/retry@v2
       with:
         timeout_minutes: 12
         max_attempts: 3
-        command: npx cross-env TEST_ENV=integration npm run testFirefox
+        command: npx cross-env TEST_ENV=integration npm run testChromium
 
-    - name: Run Playwright mainview tests in Firefox
+    - name: Run Playwright mainview tests in Chromium
       uses: nick-fields/retry@v2
       with:
         timeout_minutes: 12
         max_attempts: 3
-        command: npx cross-env TEST_ENV=mainview npm run testFirefox
+        command: npx cross-env TEST_ENV=mainview npm run testChromium
 
-    - name: Run Playwright livepreview tests in Firefox
+    - name: Run Playwright livepreview tests in Chromium
       uses: nick-fields/retry@v2
       with:
         timeout_minutes: 15
         max_attempts: 3
-        command: npx cross-env TEST_ENV=livepreview npm run testFirefox
+        command: npx cross-env TEST_ENV=livepreview npm run testChromium
 
-    - name: Run Playwright LegacyInteg tests in Firefox
+    - name: Run Playwright LegacyInteg tests in Chromium
       uses: nick-fields/retry@v2
       with:
         timeout_minutes: 20
         max_attempts: 3
-        command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefox
+        command: npx cross-env TEST_ENV=LegacyInteg npm run testChromium
