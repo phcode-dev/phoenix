@@ -400,10 +400,59 @@ function makeLoggerConfig() {
     });
 }
 
+function validatePackageVersions() {
+    return new Promise((resolve, reject)=>{
+        const mainPackageJson = require("../package.json", "utf8");
+        const nodePackageJson = require("../src-node/package.json", "utf8");
+        if(nodePackageJson.devDependencies){
+            reject("Node package json file(src-node/package.json) should not have any dev dependencies!");
+            return;
+        }
+        const mainDevDeps = mainPackageJson.devDependencies,
+            mainDeps = mainPackageJson.dependencies,
+            nodeDeps = nodePackageJson.dependencies;
+
+        // Create a merged list of all package names
+        const allPackages = new Set([
+            ...Object.keys(mainDevDeps || {}),
+            ...Object.keys(mainDeps || {}),
+            ...Object.keys(nodeDeps || {})
+        ]);
+
+        let hasMismatch = false;
+        for (let packageName of allPackages) {
+            const mainDevVersion = mainDevDeps && mainDevDeps[packageName];
+            const mainVersion = mainDeps && mainDeps[packageName];
+            const nodeVersion = nodeDeps && nodeDeps[packageName];
+
+            if (mainDevVersion && mainVersion && mainDevVersion !== mainVersion) {
+                console.error(`Version mismatch for package ${packageName}: ${mainDevVersion} (package.json devDependencies) vs ${mainVersion} (package.json dependencies)`);
+                hasMismatch = true;
+            }
+
+            if (mainDevVersion && nodeVersion && mainDevVersion !== nodeVersion) {
+                console.error(`Version mismatch for package ${packageName}: ${mainDevVersion} (package.json devDependencies) vs ${nodeVersion} (src-node/package.json dependencies)`);
+                hasMismatch = true;
+            }
+
+            if (mainVersion && nodeVersion && mainVersion !== nodeVersion) {
+                console.error(`Version mismatch for package ${packageName}: ${mainVersion} (package.json dependencies) vs ${nodeVersion} (src-node/package.json dependencies)`);
+                hasMismatch = true;
+            }
+        }
+
+        if (hasMismatch) {
+            reject("Package version mismatch detected. Check the errors above.");
+        } else {
+            resolve();
+        }
+    });
+}
+
 const createDistTest = series(copyDistToDistTestFolder, copyTestToDistTestFolder, copyIndexToDistTestFolder);
 
 exports.build = series(copyThirdPartyLibs.copyAll, makeLoggerConfig, zipDefaultProjectFiles, zipSampleProjectFiles,
-    createSrcCacheManifest);
+    createSrcCacheManifest, validatePackageVersions);
 exports.buildDebug = series(copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, zipDefaultProjectFiles,
     zipSampleProjectFiles, createSrcCacheManifest);
 exports.clean = series(cleanDist);

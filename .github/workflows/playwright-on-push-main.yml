@@ -1,4 +1,4 @@
-name: Playwright-Chromium and firefox run full tests suite
+name: On-Push-Main Chromium and firefox (Win/Mac/Linux) run full tests suite
 
 on:
   push:
@@ -302,16 +302,17 @@ jobs:
   raiseIssue:
     needs: [ playwrightChromiumLinux, playwrightChromiumWindows, playwrightChromiumMacos, playwrightFirefoxLinux, playwrightFirefoxWindows, playwrightFirefoxMacos]
     runs-on: ubuntu-latest
-    if: always() # This ensures that this job runs even if the previous jobs failed
+    if: |
+      always()  && (    # This ensures that this job runs even if the previous jobs failed
+        needs.playwrightChromiumLinux.result == 'failure' || 
+        needs.playwrightChromiumWindows.result == 'failure' ||
+        needs.playwrightChromiumMacos.result == 'failure' ||
+        needs.playwrightFirefoxLinux.result == 'failure' || 
+        needs.playwrightFirefoxWindows.result == 'failure' ||
+        needs.playwrightFirefoxMacos.result == 'failure'
+      )
     steps:
       - name: Check for failures and raise an issue
-        if: |
-          needs.playwrightChromiumLinux.result == 'failure' || 
-          needs.playwrightChromiumWindows.result == 'failure' ||
-          needs.playwrightChromiumMacos.result == 'failure' ||
-          needs.playwrightFirefoxLinux.result == 'failure' || 
-          needs.playwrightFirefoxWindows.result == 'failure' ||
-          needs.playwrightFirefoxMacos.result == 'failure'
         uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
