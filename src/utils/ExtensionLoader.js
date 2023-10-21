@@ -47,10 +47,14 @@ define(function (require, exports, module) {
         FileUtils      = require("file/FileUtils"),
         Async          = require("utils/Async"),
         ExtensionUtils = require("utils/ExtensionUtils"),
+        ThemeManager   = require("view/ThemeManager"),
+        ProjectManager      = require("project/ProjectManager"),
         UrlParams      = require("utils/UrlParams").UrlParams,
         PathUtils      = require("thirdparty/path-utils/path-utils"),
         DefaultExtensionsList = JSON.parse(require("text!extensions/default/DefaultExtensions.json"))
             .defaultExtensionsList;
+
+    const customExtensionLoadPaths = {};
 
     // default async initExtension timeout
     var EXTENSION_LOAD_TIMOUT_SECONDS = 60,
@@ -619,6 +623,81 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    function _ensureTrailingSlash(path) {
+        if(!path.endsWith("/")) {
+            return `${path}/`;
+        }
+        return path;
+    }
+
+    // eg: extensionPath = /tauri/home/home/.local/share/io.phcode.dev/assets/extensions/devTemp/theme/14/theme.css
+    // eg: customExtensionLoadPath = /tauri/home/home/.local/share/io.phcode.dev/assets/extensions/devTemp/theme/14
+    // eg: srcBasePath = /tauri/home/home/myExtension
+    function getSourcePathForExtension(extensionPath) {
+        const devTempExtDir = `${Phoenix.VFS.getDevTempExtensionDir()}/`;
+        if(extensionPath.startsWith(devTempExtDir)) {
+            for(let customExtensionLoadPath of Object.keys(customExtensionLoadPaths)){
+                let srcBasePath = customExtensionLoadPaths[customExtensionLoadPath];
+                if(extensionPath.startsWith(_ensureTrailingSlash(customExtensionLoadPath))) {
+                    const relativePath = extensionPath.replace(_ensureTrailingSlash(customExtensionLoadPath), "");
+                    if(!srcBasePath.endsWith("/")){
+                        srcBasePath = srcBasePath + "/";
+                    }
+                    return `${srcBasePath}${relativePath}`;
+                }
+            }
+        }
+        return extensionPath;
+    }
+
+    function _attachThemeLoadListeners() {
+        ThemeManager.off(`${ThemeManager.EVENT_THEME_LOADED}.extensionLoader`);
+        ThemeManager.on(`${ThemeManager.EVENT_THEME_LOADED}.extensionLoader`, ()=>{
+            ThemeManager.refresh(true);
+        });
+    }
+
+    function _loadCustomExtensionPath(extPath) {
+        const assetsServeDir = Phoenix.VFS.getTauriAssetServeDir();
+        if(assetsServeDir && extPath.startsWith(Phoenix.VFS.getTauriDir()) &&
+            !extPath.startsWith(assetsServeDir)) {
+            const extensionLocalStorageKey = `custom-extension-Version-${extPath}`;
+            // we have to do this version thingy as tauri caches assets and will serve stale assets.
+            const initialVersion = 1;
+            let existingExtVersion = parseInt(localStorage.getItem(extensionLocalStorageKey) || initialVersion);
+            const newExtVersionStr = `${existingExtVersion + 1}`;
+            localStorage.setItem(extensionLocalStorageKey, newExtVersionStr);
+            const extParentPath = `${Phoenix.VFS.getDevTempExtensionDir()}/${Phoenix.path.basename(extPath)}`;
+            const extDestPath = `${extParentPath}/${newExtVersionStr}`;
+            customExtensionLoadPaths[extDestPath] = extPath;
+            Phoenix.fs.unlink(extParentPath, ()=>{
+                // ignore any errors in delete
+                Phoenix.VFS.ensureExistsDirAsync(extParentPath)
+                    .then(()=>{
+                        Phoenix.fs.copy(extPath, extDestPath, function (err, _copiedPath) {
+                            if (err) {
+                                console.error(`Error copying extension from ${extPath} to ${extDestPath}`, err);
+                                result.reject(err);
+                            } else {
+                                _attachThemeLoadListeners();
+                                loadExtensionFromNativeDirectory(extDestPath)
+                                    .fail(console.error);
+                            }
+                        });
+                    }).catch((err)=>{
+                        console.error(`Error creating dir ${extDestPath}`, err);
+                        result.reject(err);
+                    });
+            });
+            // custom extensions are always loaded marked as resolved to prevent the main event loop from taking
+            // too long to load
+            let result = new $.Deferred();
+            result.resolve();
+            return result.promise();
+        }
+        return loadExtensionFromNativeDirectory(extPath);
+    }
+
     /**
      * Load extensions.
      *
@@ -676,7 +755,7 @@ define(function (require, exports, module) {
             if(extPath === "default"){
                 return loadAllDefaultExtensions();
             } else if(extPath.startsWith("custom:")){
-                return loadExtensionFromNativeDirectory(extPath.replace("custom:", ""));
+                return _loadCustomExtensionPath(extPath.replace("custom:", ""));
             } else {
                 return loadAllExtensionsInNativeDirectory(extPath);
             }
@@ -701,6 +780,7 @@ define(function (require, exports, module) {
     exports.getDefaultExtensionPath = getDefaultExtensionPath;
     exports.getUserExtensionPath = getUserExtensionPath;
     exports.getRequireContextForExtension = getRequireContextForExtension;
+    exports.getSourcePathForExtension = getSourcePathForExtension;
     exports.loadExtension = loadExtension;
     exports.testExtension = testExtension;
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;

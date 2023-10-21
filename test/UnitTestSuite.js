@@ -37,6 +37,7 @@ define(function (require, exports, module) {
     require("spec/EventDispatcher-test");
     require("spec/EventManager-test");
     require("spec/ExtensionInterface-test");
+    require("spec/ExtensionLoader-integ-test");
     require("spec/ExtensionLoader-test");
     require("spec/ExtensionManager-test");
     require("spec/FeatureGate-test");

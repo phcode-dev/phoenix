@@ -564,6 +564,16 @@ define(function (require, exports, module) {
         };
     }
 
+    async function waitForBracketsDoneLoading() {
+        // FIXME (issue #249): Need an event or something a little more reliable...
+        await awaitsFor(
+            _isBracketsDoneLoading,
+            "brackets.test.doneLoading",
+            60000
+        );
+        console.log("test window loaded");
+    }
+
     // the phoenix test window is only created once, it should be reused for the full suite run.
     // subsequent calls to this function will only return the existing test window. This is to prevent
     // browser hangs that was quite frequent as we created and dropped iframes in the DOM.
@@ -623,16 +633,13 @@ define(function (require, exports, module) {
             _testWindow.location.href = 'about:blank';
             _testWindow.location.href = _testWindowURL;
         } else {
+            if(!_testWindow.closeAllFiles){
+                _setupTestWindow();
+            }
             await _testWindow.closeAllFiles();
         }
 
-        // FIXME (issue #249): Need an event or something a little more reliable...
-        await awaitsFor(
-            _isBracketsDoneLoading,
-            "brackets.test.doneLoading",
-            60000
-        );
-        console.log("test window loaded");
+        await waitForBracketsDoneLoading();
 
         if(!_testWindow.isBracketsTestWindowSetup) {
             _setupTestWindow();
@@ -674,6 +681,9 @@ define(function (require, exports, module) {
             return;
         }
         if(_isBracketsDoneLoading()) {
+            if(!_testWindow.closeAllFiles){
+                _setupTestWindow();
+            }
             await _testWindow.closeAllFiles();
             if(!force){
                 await jsPromise(_testWindow.brackets.test.CommandManager.execute(Commands.CMD_SPLITVIEW_NONE));
@@ -1351,6 +1361,7 @@ define(function (require, exports, module) {
     exports.ensureExistsDirAsync            = ensureExistsDirAsync;
     exports.waitTillPathExists              = waitTillPathExists;
     exports.waitTillPathNotExists           = waitTillPathNotExists;
+    exports.waitForBracketsDoneLoading      = waitForBracketsDoneLoading;
     exports.getTestWindow                   = getTestWindow;
     exports.simulateKeyEvent                = simulateKeyEvent;
     exports.setLoadExtensionsInTestWindow   = setLoadExtensionsInTestWindow;

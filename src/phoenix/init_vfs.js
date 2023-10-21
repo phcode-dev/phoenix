@@ -48,6 +48,7 @@ function _setupVFS(fsLib, pathLib){
         getExtensionDir: () => extensionDIR,
         getUserExtensionDir: () => `${extensionDIR}user`,
         getDevExtensionDir: () => `${extensionDIR}dev`,
+        getDevTempExtensionDir: () => `${extensionDIR}devTemp`,
         getTempDir: () => tempDIR,
         getTauriAssetServeDir: () => tauriAssetServeDir,
         getUserDocumentsDirectory: () => documentsDIR,
@@ -233,7 +234,8 @@ async function setupAppSupportAndExtensionsDir() {
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getAppSupportDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getUserExtensionDir()),
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getDevExtensionDir())
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getDevExtensionDir()),
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getDevTempExtensionDir())
     ]);
 }
 

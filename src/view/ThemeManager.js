@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         EditorManager      = require("editor/EditorManager"),
         DocumentManager    = require("document/DocumentManager"),
         ExtensionUtils     = require("utils/ExtensionUtils"),
+        ExtensionLoader    = require("utils/ExtensionLoader"),
         ThemeSettings      = require("view/ThemeSettings"),
         ThemeView          = require("view/ThemeView"),
         PreferencesManager = require("preferences/PreferencesManager"),
@@ -47,7 +48,8 @@ define(function (require, exports, module) {
         scrollbarsRegex = /((?:[^}|,]*)::-webkit-scrollbar(?:[^{]*)[{](?:[^}]*?)[}])/mgi,
         stylesPath      = FileUtils.getNativeBracketsDirectoryPath() + "/styles/";
 
-    const EVENT_THEME_CHANGE = "themeChange";
+    const EVENT_THEME_CHANGE = "themeChange",
+        EVENT_THEME_LOADED = "themeLoaded";
 
     /**
      * @private
@@ -196,7 +198,7 @@ define(function (require, exports, module) {
 
     let currentTrackingDoc;
     function _trackLivePreviewDevThemeFile(themeFilePath, devTheme) {
-        DocumentManager.getDocumentForPath(themeFilePath).done(doc =>{
+        DocumentManager.getDocumentForPath(ExtensionLoader.getSourcePathForExtension(themeFilePath)).done(doc =>{
             if(currentTrackingDoc){
                 currentTrackingDoc.off("change.ThemeManager");
             }
@@ -223,7 +225,7 @@ define(function (require, exports, module) {
         }
         devThemePaths = devThemePaths.split(","); // paths are a comma seperated list
         for(let themeID of Object.keys(loadedThemes)){
-            let themeFilePath = loadedThemes[themeID].file.fullPath;
+            let themeFilePath = ExtensionLoader.getSourcePathForExtension(loadedThemes[themeID].file.fullPath);
             for(let devThemePath of devThemePaths){
                 if(themeFilePath.startsWith(devThemePath)){
                     return loadedThemes[themeID];
@@ -337,6 +339,7 @@ define(function (require, exports, module) {
         let theme = new Theme(file, options);
         loadedThemes[theme.name] = theme;
         ThemeSettings._setThemes(loadedThemes);
+        exports.trigger(EVENT_THEME_LOADED, theme.name);
 
         if (getCurrentTheme() && getCurrentTheme().name === theme.name) {
             refresh(true);
@@ -460,6 +463,7 @@ define(function (require, exports, module) {
                 theme = new Theme(file, options);
                 loadedThemes[theme.name] = theme;
                 ThemeSettings._setThemes(loadedThemes);
+                exports.trigger(EVENT_THEME_LOADED, theme.name);
 
                 // For themes that are loaded after ThemeManager has been loaded,
                 // we should check if it's the current theme.  If it is, then we just
@@ -573,6 +577,7 @@ define(function (require, exports, module) {
     exports.isOSInDarkTheme = isOSInDarkTheme;
     exports.setCurrentTheme = setCurrentTheme;
     exports.EVENT_THEME_CHANGE = EVENT_THEME_CHANGE;
+    exports.EVENT_THEME_LOADED = EVENT_THEME_LOADED;
 
     // Exposed for testing purposes
     exports._toDisplayName     = toDisplayName;
