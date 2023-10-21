@@ -41,20 +41,6 @@ async function execTests(page, url) {
     expect(externalJasmineFailures).toEqual(undefined);
 }
 
-const LIVE_PREVIEW_CATEGORY = 'livepreview';
-
-test(`Execute ${testEnv} tests`, async ({ page, browserName }) => {
-    if(testEnv === LIVE_PREVIEW_CATEGORY) {
-        // unfortunateley, we can run the live preview integ tests only in chrome
-        // In Firefox, sandbox prevents service worker access from nested iframes. So the virtual server itself will
-        // not be loaded in firefox tests in playwright.
-        // In tauri, we use node server, so this limitation doesn't apply in tauri test runners. This restriction is
-        // only there for firefox tests in playwright.
-        if(browserName !== 'firefox') {
-            await execTests(page, `${baseURL}?spec=all&category=${testEnv}`);
-        }
-        return;
-    }
-
-    await execTests(page, `${baseURL}?spec=all&category=${testEnv}`);
+test(`Execute ${testEnv} tests`, async ({ page}) => {
+    await execTests(page, `${baseURL}?spec=all&category=${testEnv}&playwrightTests=true`);
 });

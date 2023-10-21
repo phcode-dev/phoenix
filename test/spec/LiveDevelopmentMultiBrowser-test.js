@@ -28,6 +28,15 @@ define(function (require, exports, module) {
 
     describe("livepreview:MultiBrowser Live Preview", function () {
 
+        if(Phoenix.isTestWindowPlaywright && !Phoenix.browser.desktop.isChromeBased) {
+            it("All tests requiring virtual server is disabled in playwright/firefox/safari", async function () {
+                // we dont spawn virtual server in iframe playwright linux/safari as playwright linux/safari fails badly
+                // we dont need virtual server for tests except for live preview and custom extension load tests,
+                // which are disabled in playwright. We test in chrome atleast as chromium support is a baseline.
+            });
+            return;
+        }
+
         var testWindow,
             brackets,
             DocumentManager,

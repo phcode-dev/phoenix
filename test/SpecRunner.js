@@ -124,8 +124,8 @@ function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
                 }
                 lapsedTime = Date.now() - startTime;
                 if(lapsedTime>timeoutms){
-                    console.error("await timed out for", _message);
-                    reject();
+                    globalTestRunnerErrorToConsole("await timed out for", _message);
+                    reject("await timed out waiting for", _message);
                     return;
                 }
                 setTimeout(pollingFn, pollInterval);

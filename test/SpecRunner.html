@@ -212,6 +212,9 @@
         const isSpecRunnerWindow = window.location.pathname.endsWith("/SpecRunner.html");
         return isTestPhoenixWindow || isSpecRunnerWindow;
       }
+      function _isTestWindowPlaywright() {
+        return  !!(new window.URLSearchParams(window.location.search || "")).get("playwrightTests");
+      }
       // Determine OS/platform
       let platform = "win";
       if (navigator.platform && navigator.platform.match("Mac")) {
@@ -225,6 +228,7 @@
         platform,
         baseURL: _getBaseURL(),
         isTestWindow: _isTestWindow(),
+        isTestWindowPlaywright: _isTestWindowPlaywright(),
         firstBoot: false, // will be set below
         startTime: Date.now(),
         TRUSTED_ORIGINS: {
@@ -391,7 +395,6 @@
       const iframeContainer = document.getElementById("phoenixIframeContainer");
 
       controlBar.addEventListener('mouseover', function() {
-        console.log("here")
         iframeContainer.classList.add('hovered');
       });
 
