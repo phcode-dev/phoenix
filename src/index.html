@@ -55,8 +55,59 @@
             // This is only intended to be used for in tests where phoenix is loaded inside iframes.
             // this means that we are loaded in an iframe in the specrunner. Tauri doesnt expose tauri APIs
             // in its iframes, so we directly use the top most windows tauri api object for tests to run properly.
-            window.__TAURI__ = window.top.window.__TAURI__;
             console.warn("Phoenix is loaded in iframe, attempting to use tauri APIs from window.top.__TAURI__");
+            window.__TAURI__ = {
+                invoke: window.top.window.__TAURI__.invoke,
+                convertFileSrc: window.top.window.__TAURI__.convertFileSrc,
+                transformCallback: window.top.window.__TAURI__.transformCallback,
+                app: window.top.window.__TAURI__.app,
+                cli: window.top.window.__TAURI__.cli,
+                clipboard: window.top.window.__TAURI__.clipboard,
+                dialog: window.top.window.__TAURI__.dialog,
+                event: window.top.window.__TAURI__.event,
+                globalShortcut: window.top.window.__TAURI__.globalShortcut,
+                http: window.top.window.__TAURI__.http,
+                mocks: window.top.window.__TAURI__.mocks,
+                notification: window.top.window.__TAURI__.notification,
+                os: window.top.window.__TAURI__.os,
+                path: window.top.window.__TAURI__.path,
+                process: window.top.window.__TAURI__.process,
+                shell: window.top.window.__TAURI__.shell,
+                tauri: window.top.window.__TAURI__.tauri,
+                updater: window.top.window.__TAURI__.updater,
+                window: window.top.window.__TAURI__.window,
+                fs: {} // this needs some special handling and will be assigned below.
+            };
+            // fs special handling start :patch the fs.readBinaryFile and fs.WriteBinaryFile apis to use this windows uint8arrays
+            for (let key in window.top.window.__TAURI__.fs) {
+                if (window.top.window.__TAURI__.fs.hasOwnProperty(key)) {
+                    window.__TAURI__.fs[key] = window.top.window.__TAURI__.fs[key];
+                }
+            }
+
+            const readBinaryFile = window.__TAURI__.fs.readBinaryFile;
+            const writeBinaryFile = window.__TAURI__.fs.writeBinaryFile;
+            window.__TAURI__.fs.readBinaryFile = function (...args) {
+                return new Promise((resolve, reject)=>{
+                    readBinaryFile(...args)
+                        .then(contents=>{
+                            // contents is Uint8Array of parent window instance type. we have to convert it to
+                            // this windows uintarray type
+                            resolve(new Uint8Array(contents))
+                        })
+                        .catch(reject)
+                });
+            }
+            window.__TAURI__.fs.writeBinaryFile = function (platformPath, arrayBuffer, options) {
+                let uint8ArrayOfTop = new window.top.Uint8Array(arrayBuffer); // this will only pass the reference
+                uint8ArrayOfTop = new window.top.Uint8Array(uint8ArrayOfTop); // this will perform a deep copy bitwise
+                return new Promise((resolve, reject)=>{
+                    writeBinaryFile(platformPath, uint8ArrayOfTop.buffer, options)
+                        .then(resolve)
+                        .catch(reject)
+                });
+            }
+            // fs special handling end
         }
         if(window.__TAURI__) {
             function setupTauriBootVars() {

@@ -278,6 +278,7 @@ define(function (require, exports, module) {
             ProjectManager: require("project/ProjectManager"),
             QuickViewManager: require("features/QuickViewManager"),
             SelectionViewManager: require("features/SelectionViewManager"),
+            ThemeManager: require("view/ThemeManager"),
             WorkspaceManager: require("view/WorkspaceManager"),
             SearchResultsView: require("search/SearchResultsView"),
             ScrollTrackMarkers: require("search/ScrollTrackMarkers"),
