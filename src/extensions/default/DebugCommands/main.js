@@ -25,9 +25,9 @@
 define(function (require, exports, module) {
 
 
-    var _ = brackets.getModule("thirdparty/lodash");
+    const _ = brackets.getModule("thirdparty/lodash");
 
-    var Commands               = brackets.getModule("command/Commands"),
+    const Commands               = brackets.getModule("command/Commands"),
         CommandManager         = brackets.getModule("command/CommandManager"),
         Menus                  = brackets.getModule("command/Menus"),
         FileSystem             = brackets.getModule("filesystem/FileSystem"),
@@ -48,20 +48,14 @@ define(function (require, exports, module) {
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
 
-    var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
+    const KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
     // default preferences file name
-    var DEFAULT_PREFERENCES_FILENAME = "defaultPreferences.json",
+    const DEFAULT_PREFERENCES_FILENAME = "defaultPreferences.json",
         SUPPORTED_PREFERENCE_TYPES   = ["number", "boolean", "string", "array", "object"];
 
-    var recomputeDefaultPrefs        = true,
+    let recomputeDefaultPrefs        = true,
         defaultPreferencesFullPath   = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + DEFAULT_PREFERENCES_FILENAME);
-
-    /**
-     * Brackets Application Menu Constant
-     * @const {string}
-     */
-    var DEBUG_MENU = "debug-menu";
 
      /**
       * Debug commands IDs
@@ -743,7 +737,7 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_SHOW_PERF_DATA,            DEBUG_SHOW_PERF_DATA,            handleShowPerfData);
 
-    let switchLanguageStr = Strings.CMD_SWITCH_LANGUAGE === "Switch Language" ?
+    let switchLanguageStr = Strings.CMD_SWITCH_LANGUAGE === "Switch Language\u2026" ?
         Strings.CMD_SWITCH_LANGUAGE :
         `${Strings.CMD_SWITCH_LANGUAGE} (Switch Language)`;
     CommandManager.register(switchLanguageStr,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage);
@@ -757,7 +751,7 @@ define(function (require, exports, module) {
     /*
      * Debug menu
      */
-    var menu = Menus.addMenu(Strings.DEBUG_MENU, DEBUG_MENU, Menus.BEFORE, Menus.AppMenuBar.HELP_MENU);
+    var menu = Menus.addMenu(Strings.DEBUG_MENU, Menus.AppMenuBar.DEBUG_MENU, Menus.BEFORE, Menus.AppMenuBar.HELP_MENU);
     // Show Developer Tools (optionally enabled)
     if(brackets.app.toggleDevtools){
         CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools);
@@ -779,9 +773,6 @@ define(function (require, exports, module) {
     menu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
-    menu.addMenuDivider();
-    menu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW); // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
-    menu.addMenuItem(Commands.FILE_OPEN_KEYMAP);      // this command is defined in core, but exposed only in Debug menu for now
 
     CommandManager.get(DEBUG_UNLOAD_CURRENT_EXTENSION)
         .setEnabled(extensionDevelopment.isProjectLoadedAsExtension());
@@ -794,6 +785,12 @@ define(function (require, exports, module) {
 
     const helpMenu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
     helpMenu.addMenuItem(DEBUG_SWITCH_LANGUAGE, "", Menus.BEFORE, Commands.HELP_ABOUT);
+
+    const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
+    // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
+    fileMenu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, null, Menus.AFTER, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
+    // this command is defined in core, but exposed only in Debug menu for now
+    fileMenu.addMenuItem(Commands.FILE_OPEN_KEYMAP, null, Menus.AFTER, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
 
     // exposed for convenience, but not official API
     exports._runUnitTests = _runUnitTests;

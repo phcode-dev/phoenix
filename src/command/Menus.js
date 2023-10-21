@@ -49,6 +49,7 @@ define(function (require, exports, module) {
         FIND_MENU: "find-menu",
         VIEW_MENU: "view-menu",
         NAVIGATE_MENU: "navigate-menu",
+        DEBUG_MENU: "debug-menu",
         HELP_MENU: "help-menu"
     };
 
@@ -86,7 +87,8 @@ define(function (require, exports, module) {
         FILE_OPEN_CLOSE_COMMANDS: {sectionMarker: Commands.FILE_NEW},
         FILE_SAVE_COMMANDS: {sectionMarker: Commands.FILE_SAVE},
         FILE_LIVE: {sectionMarker: Commands.FILE_LIVE_FILE_PREVIEW},
-        FILE_EXTENSION_MANAGER: {sectionMarker: Commands.FILE_EXTENSION_MANAGER},
+        FILE_SETTINGS: {sectionMarker: Commands.FILE_EXTENSION_MANAGER},
+        FILE_EXTENSION_MANAGER: {sectionMarker: Commands.FILE_EXTENSION_MANAGER}, // deprecated. here for legacy support
 
         EDIT_UNDO_REDO_COMMANDS: {sectionMarker: Commands.EDIT_UNDO},
         EDIT_TEXT_COMMANDS: {sectionMarker: Commands.EDIT_CUT},
@@ -101,7 +103,7 @@ define(function (require, exports, module) {
         FIND_REPLACE_COMMANDS: {sectionMarker: Commands.CMD_REPLACE},
 
         VIEW_HIDESHOW_COMMANDS: {sectionMarker: Commands.VIEW_HIDE_SIDEBAR},
-        VIEW_FONTSIZE_COMMANDS: {sectionMarker: Commands.VIEW_INCREASE_FONT_SIZE},
+        VIEW_FONTSIZE_COMMANDS: {sectionMarker: Commands.VIEW_ZOOM_SUBMENU},
         VIEW_TOGGLE_OPTIONS: {sectionMarker: Commands.TOGGLE_ACTIVE_LINE},
 
         NAVIGATE_GOTO_COMMANDS: {sectionMarker: Commands.NAVIGATE_QUICK_OPEN},
