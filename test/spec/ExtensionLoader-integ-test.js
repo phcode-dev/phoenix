@@ -34,6 +34,15 @@ define(function (require, exports, module) {
 
     describe("LegacyInteg:ExtensionLoader integration tests", function () {
 
+        if(Phoenix.isTestWindowPlaywright && !Phoenix.browser.desktop.isChromeBased) {
+            it("All tests requiring virtual server is disabled in playwright/firefox/safari", async function () {
+                // we dont spawn virtual server in iframe playwright linux/safari as playwright linux/safari fails badly
+                // we dont need virtual server for tests except for live preview and custom extension load tests,
+                // which are disabled in playwright. We test in chrome atleast as chromium support is a baseline.
+            });
+            return;
+        }
+
         let testWindow, CommandManager;
 
         beforeAll(async function () {
@@ -67,7 +76,7 @@ define(function (require, exports, module) {
 
             CommandManager = testWindow.brackets.test.CommandManager;
             CommandManager.execute(DEBUG_UNLOAD_CURRENT_EXTENSION);
-            await awaitsFor(function () { return !testWindow.extensionLoaderTestExtensionLoaded; },
+            await awaitsFor(function () { return testWindow && !testWindow.extensionLoaderTestExtensionLoaded; },
                 "Waiting for extension loaded", 30000);
             await SpecRunnerUtils.waitForBracketsDoneLoading();
             await awaits(3000);
@@ -81,6 +90,9 @@ define(function (require, exports, module) {
 
             // wait for the theme to be loaded
             await awaitsFor(function () {
+                if(!testWindow){
+                    return false;
+                }
                 const ThemeManager = testWindow.brackets && testWindow.brackets.test && testWindow.brackets.test.ThemeManager;
                 if(!ThemeManager){
                     return false;
@@ -93,8 +105,12 @@ define(function (require, exports, module) {
                 }
                 return false;
             }, "custom theme to be loaded", 30000);
-            const element = testWindow.document.getElementById('sidebar');
+
             await awaitsFor(function () {
+                if(!testWindow){
+                    return false;
+                }
+                const element = testWindow.document.getElementById('sidebar');
                 const style = testWindow.getComputedStyle(element);
                 return style.backgroundColor === `rgb(100, 100, 0)`;
             }, "custom theme style to be applied", 10000);
