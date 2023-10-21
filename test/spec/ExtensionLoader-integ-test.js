@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, awaitsFor, beforeAll, afterAll, Phoenix, awaits*/
+/*global describe, it, expect, beforeEach, awaitsFor, beforeAll, afterAll, Phoenix, awaits, awaitsForDone*/
 
 define(function (require, exports, module) {
 
@@ -43,17 +43,19 @@ define(function (require, exports, module) {
             return;
         }
 
-        let testWindow, CommandManager;
+        let testWindow, CommandManager, Commands;
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             CommandManager = testWindow.brackets.test.CommandManager;
+            Commands = testWindow.brackets.test.Commands;
             await SpecRunnerUtils.deletePathAsync(customProjectPath, true);
             await SpecRunnerUtils.copy(testPathSrc, customProjectPath);
         }, 30000);
 
         beforeEach(async function () {
             CommandManager = testWindow.brackets.test.CommandManager;
+            Commands = testWindow.brackets.test.Commands;
         }, 30000);
 
         afterAll(async function () {
@@ -78,13 +80,14 @@ define(function (require, exports, module) {
             CommandManager.execute(DEBUG_UNLOAD_CURRENT_EXTENSION);
             await awaitsFor(function () { return testWindow && !testWindow.extensionLoaderTestExtensionLoaded; },
                 "Waiting for extension loaded", 30000);
-            await SpecRunnerUtils.waitForBracketsDoneLoading();
             await awaits(3000);
+            await SpecRunnerUtils.waitForBracketsDoneLoading();
         }, 30000);
 
-        it("should load a custom theme", async function () {
-            const testExtensionPath = `${customProjectPath}/theme`;
-            await SpecRunnerUtils.loadProjectInTestWindow(testExtensionPath);
+        it("should load a custom theme and live edit the theme", async function () {
+            const testThemePath = `${customProjectPath}/theme`;
+            const testThemeFilePath = `${customProjectPath}/theme/theme.css`;
+            await SpecRunnerUtils.loadProjectInTestWindow(testThemePath);
             await awaits(3000);
             CommandManager.execute(DEBUG_LOAD_CURRENT_EXTENSION);
 
@@ -114,11 +117,28 @@ define(function (require, exports, module) {
                 const style = testWindow.getComputedStyle(element);
                 return style.backgroundColor === `rgb(100, 100, 0)`;
             }, "custom theme style to be applied", 10000);
-
             // Check if the theme style is applied
-            await SpecRunnerUtils.waitForBracketsDoneLoading();
             await awaits(3000);
-        }, 30000);
+            await SpecRunnerUtils.waitForBracketsDoneLoading();
 
+            // now live edit theme changes
+            await SpecRunnerUtils.loadProjectInTestWindow(testThemePath);
+            Commands = testWindow.brackets.test.Commands;
+            CommandManager = testWindow.brackets.test.CommandManager;
+            const EditorManager = testWindow.brackets.test.EditorManager;
+            const promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: testThemeFilePath});
+            await awaitsForDone(promise, "Open theme css into working set");
+            await awaits(3000);
+            const editor = EditorManager.getActiveEditor();
+            editor.document.replaceRange("35", { line: 1, ch: 27 }, { line: 1, ch: 30 });
+            await awaitsFor(function () {
+                if(!testWindow){
+                    return false;
+                }
+                const element = testWindow.document.getElementById('sidebar');
+                const style = testWindow.getComputedStyle(element);
+                return style.backgroundColor === `rgb(35, 100, 0)`;
+            }, "Theme Live edit to be applied", 10000);
+        }, 30000);
     });
 });
