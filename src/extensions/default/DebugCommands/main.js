@@ -748,29 +748,26 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_OPEN_VIRTUAL_SERVER, DEBUG_OPEN_VIRTUAL_SERVER,   _openVirtualServer);
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
-    /*
-     * Debug menu
-     */
-    var menu = Menus.addMenu(Strings.DEBUG_MENU, Menus.AppMenuBar.DEBUG_MENU, Menus.BEFORE, Menus.AppMenuBar.HELP_MENU);
+    const debugMenu = Menus.getMenu(Menus.AppMenuBar.DEBUG_MENU);
     // Show Developer Tools (optionally enabled)
     if(brackets.app.toggleDevtools){
         CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools);
-        menu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
+        debugMenu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
     }
-    menu.addMenuItem(DEBUG_REFRESH_WINDOW, KeyboardPrefs.refreshWindow);
-    menu.addMenuItem(DEBUG_RELOAD_WITHOUT_USER_EXTS, KeyboardPrefs.reloadWithoutUserExts);
-    menu.addMenuItem(DEBUG_LOAD_CURRENT_EXTENSION);
-    menu.addMenuItem(DEBUG_UNLOAD_CURRENT_EXTENSION, undefined, undefined, undefined, {
+    debugMenu.addMenuItem(DEBUG_REFRESH_WINDOW, KeyboardPrefs.refreshWindow);
+    debugMenu.addMenuItem(DEBUG_RELOAD_WITHOUT_USER_EXTS, KeyboardPrefs.reloadWithoutUserExts);
+    debugMenu.addMenuItem(DEBUG_LOAD_CURRENT_EXTENSION);
+    debugMenu.addMenuItem(DEBUG_UNLOAD_CURRENT_EXTENSION, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
-    menu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
-    menu.addMenuItem(DEBUG_SHOW_PERF_DATA);
-    menu.addMenuDivider();
-    menu.addMenuItem(DEBUG_ENABLE_LOGGING);
-    menu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
-    menu.addMenuDivider();
-    menu.addMenuItem(DEBUG_OPEN_VFS);
-    menu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER, undefined, undefined, undefined, {
+    debugMenu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
+    debugMenu.addMenuItem(DEBUG_SHOW_PERF_DATA);
+    debugMenu.addMenuDivider();
+    debugMenu.addMenuItem(DEBUG_ENABLE_LOGGING);
+    debugMenu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
+    debugMenu.addMenuDivider();
+    debugMenu.addMenuItem(DEBUG_OPEN_VFS);
+    debugMenu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
 

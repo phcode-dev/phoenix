@@ -224,6 +224,10 @@ define(function (require, exports, module) {
             menu.addMenuItem(Commands.HELP_ABOUT);
         }
 
+        /*
+        * Debug menu
+        */
+        Menus.addMenu(Strings.DEBUG_MENU, Menus.AppMenuBar.DEBUG_MENU, Menus.BEFORE, Menus.AppMenuBar.HELP_MENU);
 
         /*
          * Context Menus
