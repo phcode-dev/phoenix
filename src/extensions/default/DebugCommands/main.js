@@ -769,9 +769,6 @@ define(function (require, exports, module) {
     menu.addMenuItem(DEBUG_UNLOAD_CURRENT_EXTENSION, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
-    menu.addMenuDivider();
-    menu.addMenuItem(DEBUG_SWITCH_LANGUAGE);
-    menu.addMenuDivider();
     menu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
     menu.addMenuItem(DEBUG_SHOW_PERF_DATA);
     menu.addMenuDivider();
@@ -794,6 +791,10 @@ define(function (require, exports, module) {
             .setEnabled(false);
     }
     _updateLogToConsoleMenuItemChecked();
+
+    const helpMenu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
+    helpMenu.addMenuItem(DEBUG_SWITCH_LANGUAGE, "", Menus.BEFORE, Commands.HELP_ABOUT);
+
     // exposed for convenience, but not official API
     exports._runUnitTests = _runUnitTests;
 });
