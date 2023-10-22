@@ -1,8 +1,8 @@
-name: On-Push-staging Chromium and firefox (Win/Mac/Linux) run full tests suite
+name: On-Push staging or prod Chromium and firefox (Win/Mac/Linux) run full tests suite
 
 on:
   push:
-    branches: [ main ]
+    branches: [ staging, prod ]
 
 permissions:
   contents: read
