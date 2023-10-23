@@ -623,13 +623,6 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
-    function _ensureTrailingSlash(path) {
-        if(!path.endsWith("/")) {
-            return `${path}/`;
-        }
-        return path;
-    }
-
     // eg: extensionPath = /tauri/home/home/.local/share/io.phcode.dev/assets/extensions/devTemp/theme/14/theme.css
     // eg: customExtensionLoadPath = /tauri/home/home/.local/share/io.phcode.dev/assets/extensions/devTemp/theme/14
     // eg: srcBasePath = /tauri/home/home/myExtension
@@ -638,8 +631,8 @@ define(function (require, exports, module) {
         if(extensionPath.startsWith(devTempExtDir)) {
             for(let customExtensionLoadPath of Object.keys(customExtensionLoadPaths)){
                 let srcBasePath = customExtensionLoadPaths[customExtensionLoadPath];
-                if(extensionPath.startsWith(_ensureTrailingSlash(customExtensionLoadPath))) {
-                    const relativePath = extensionPath.replace(_ensureTrailingSlash(customExtensionLoadPath), "");
+                if(extensionPath.startsWith(Phoenix.VFS.ensureTrailingSlash(customExtensionLoadPath))) {
+                    const relativePath = extensionPath.replace(Phoenix.VFS.ensureTrailingSlash(customExtensionLoadPath), "");
                     if(!srcBasePath.endsWith("/")){
                         srcBasePath = srcBasePath + "/";
                     }

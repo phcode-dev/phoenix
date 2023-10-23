@@ -353,11 +353,18 @@ define(function (require, exports, module) {
      * @return {{path: string, folder: string, rest: string}}
      */
     function renderPath(fullPath) {
-        let parentDirPath = window.path.dirname(fullPath);
+        let parentDirPath = Phoenix.VFS.ensureTrailingSlash(window.path.dirname(fullPath));
+        let rest;
         if(parentDirPath.startsWith(Phoenix.VFS.getTauriDir())) {
-            parentDirPath = window.fs.getTauriPlatformPath(parentDirPath);
+            rest = " - " + window.fs.getTauriPlatformPath(parentDirPath);
+        } else if(parentDirPath.startsWith(Phoenix.VFS.getMountDir())) {
+            const displayPath = parentDirPath.replace(Phoenix.VFS.getMountDir(), "");
+            if(displayPath){
+                rest = " - " + displayPath;
+            }
+        } else {
+            rest = " - " + Strings.PROJECT_FROM_BROWSER_TERSE;
         }
-        const rest = " - " + parentDirPath;
 
         return {path: fullPath, folder: window.path.basename(fullPath), rest: rest};
     }
