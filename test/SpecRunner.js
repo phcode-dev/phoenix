@@ -178,7 +178,7 @@ define(function (require, exports, module) {
 
 
     // Utility dependencies
-    var AppInit                 = require("utils/AppInit"),
+    const AppInit               = require("utils/AppInit"),
         SpecRunnerUtils         = require("spec/SpecRunnerUtils"),
         ExtensionLoader         = require("utils/ExtensionLoader"),
         Async                   = require("utils/Async"),
@@ -189,6 +189,7 @@ define(function (require, exports, module) {
         BootstrapReporterView   = require("test/BootstrapReporterView").BootstrapReporterView,
         NativeApp               = require("utils/NativeApp");
 
+    window.Strings = require("strings");
     // Load modules for later use
     require("utils/EventDispatcher");
     require("language/CodeInspection");
