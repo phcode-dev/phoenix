@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /**
  * The view that controls the showing and hiding of the sidebar.
  *
@@ -69,7 +71,7 @@ define(function (require, exports, module) {
         }
 
         $projectTitle.html(_.escape(displayName));
-        $projectTitle.attr("title", fullPath);
+        $projectTitle.attr("title", Phoenix.app.getDisplayPath(fullPath));
 
         // Trigger a scroll on the project files container to
         // reposition the scroller shadows and avoid issue #2255

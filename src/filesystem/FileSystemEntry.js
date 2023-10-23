@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /*
  * To ensure cache coherence, current and future asynchronous state-changing
  * operations of FileSystemEntry and its subclasses should implement the
@@ -359,14 +361,6 @@ define(function (require, exports, module) {
         });
     };
 
-    function _ensureTrailingSlash(path) {
-        if (path[path.length - 1] !== "/") {
-            path += "/";
-        }
-
-        return path;
-    }
-
     /**
      * Rename this entry.
      *
@@ -377,7 +371,7 @@ define(function (require, exports, module) {
     FileSystemEntry.prototype.rename = function (newFullPath, callback) {
         callback = callback || function () {};
         if(this.isDirectory){
-            newFullPath = _ensureTrailingSlash(newFullPath);
+            newFullPath = Phoenix.VFS.ensureTrailingSlash(newFullPath);
         }
 
         // Block external change events until after the write has finished

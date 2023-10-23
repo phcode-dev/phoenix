@@ -55,6 +55,12 @@ function _setupVFS(fsLib, pathLib){
         getUserProjectsDirectory: () => userProjectsDir,
         _getVirtualDocumentsDirectory: () => '/fs/local/',
         getDefaultProjectDir: () => `${userProjectsDir}default project/`,
+        ensureTrailingSlash: function (path) {
+            if(!path.endsWith("/")) {
+                return `${path}/`;
+            }
+            return path;
+        },
         /**
          * Check if a given full path is located in the users local machine drive. For eg. fs access paths are accounted
          * as local disc path, as well as tauri fs paths.

@@ -476,14 +476,6 @@ define(function (require, exports, module) {
         return (fullPath[0] === "/" || (fullPath[1] === ":" && fullPath[2] === "/"));
     };
 
-    function _ensureTrailingSlash(path) {
-        if (path[path.length - 1] !== "/") {
-            path += "/";
-        }
-
-        return path;
-    }
-
     /*
      * Matches continguous groups of forward slashes
      * @const
@@ -526,7 +518,7 @@ define(function (require, exports, module) {
 
         if (isDirectory) {
             // Make sure path DOES include trailing slash
-            path = _ensureTrailingSlash(path);
+            path = Phoenix.VFS.ensureTrailingSlash(path);
         }
 
         if (isUNCPath) {
@@ -723,7 +715,7 @@ define(function (require, exports, module) {
             item = this._index.getEntry(normalizedPath);
 
         if (!item) {
-            normalizedPath = _ensureTrailingSlash(normalizedPath);
+            normalizedPath = Phoenix.VFS.ensureTrailingSlash(normalizedPath);
             item = this._index.getEntry(normalizedPath);
         }
 
