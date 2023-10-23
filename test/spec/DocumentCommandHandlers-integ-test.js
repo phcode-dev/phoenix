@@ -547,8 +547,10 @@ define(function (require, exports, module) {
                 const expectedTitle = "DocumentCommandHandlers-test-files " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
                 expect(testWindow.document.title).toBe(expectedTitle);
                 if(Phoenix.browser.isTauri) {
-                    const title = await Phoenix.app.getWindowTitle();
-                    await awaitsFor(()=>title === expectedTitle);
+                    await awaitsFor(async ()=> {
+                        const title = await Phoenix.app.getWindowTitle();
+                        return title === expectedTitle;
+                    }, "waiting for title to be: " + expectedTitle);
                 }
             });
 
@@ -562,8 +564,10 @@ define(function (require, exports, module) {
                 const expectedTitle = "DocumentCommandHandlers-test-files " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
                 expect(testWindow.document.title).toBe(expectedTitle);
                 if(Phoenix.browser.isTauri) {
-                    const title = await Phoenix.app.getWindowTitle();
-                    await awaitsFor(()=>title === expectedTitle);
+                    await awaitsFor(async ()=> {
+                        const title = await Phoenix.app.getWindowTitle();
+                        return title === expectedTitle;
+                    }, "waiting for title to be: " + expectedTitle);
                 }
             });
         });
@@ -924,8 +928,10 @@ define(function (require, exports, module) {
                 const expectedTitle = "test.js (DocumentCommandHandlers-test-files) " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
                 expect(testWindow.document.title).toBe(expectedTitle);
                 if(Phoenix.browser.isTauri) {
-                    const title = await Phoenix.app.getWindowTitle();
-                    await awaitsFor(()=>title === expectedTitle);
+                    await awaitsFor(async ()=> {
+                        const title = await Phoenix.app.getWindowTitle();
+                        return title === expectedTitle;
+                    }, "waiting for title to be: " + expectedTitle);
                 }
             });
 
@@ -942,8 +948,10 @@ define(function (require, exports, module) {
                 const expectedTitle = "• test.js (DocumentCommandHandlers-test-files) " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
                 expect(testWindow.document.title).toBe(expectedTitle);
                 if(Phoenix.browser.isTauri) {
-                    const title = await Phoenix.app.getWindowTitle();
-                    await awaitsFor(()=>title === expectedTitle);
+                    await awaitsFor(async ()=> {
+                        const title = await Phoenix.app.getWindowTitle();
+                        return title === expectedTitle;
+                    }, "waiting for title to be: " + expectedTitle);
                 }
             });
 

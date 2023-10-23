@@ -97,9 +97,19 @@ function jsPromise(jqueryOrJSPromise) {
     });
 }
 
+function _timeoutPromise(promise, ms, timeoutMessage = '') {
+    const timeout = new Promise((_, reject) => {
+        setTimeout(() => {
+            reject(new Error(timeoutMessage || `Promise timed out after ${ms}ms`));
+        }, ms);
+    });
+
+    return Promise.race([promise, timeout]);
+}
+
 /**
  * global test util to wait for a polling result.
- * @param pollFn return true to indicate sucess and break waiting.
+ * @param pollFn return true or a promise that resolves to true of false to indicate success and break waiting.
  * @param _message - unused
  * @param timeoutms - max timeout to wait for. if not given, will wait for 2 seconds
  * @param pollInterval in millis, default poll interval is 10ms
@@ -116,16 +126,25 @@ function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
     return new Promise((resolve, reject)=>{
         let startTime = Date.now(),
             lapsedTime;
-        function pollingFn() {
+        async function pollingFn() {
             try{
-                if(pollFn()){
+                let result = pollFn();
+
+                // If pollFn returns a promise, await it
+                if (Object.prototype.toString.call(result) === "[object Promise]") {
+                    // we cant simply check for result instanceof Promise as the Promise may be returned from an iframe.
+                    // and iframe has a different instance of Promise than this spec runner.
+                    result = await _timeoutPromise(result, timeoutms, "awaitsFor timed out waiting for "+ _message);
+                }
+
+                if (result) {
                     resolve();
                     return;
                 }
                 lapsedTime = Date.now() - startTime;
                 if(lapsedTime>timeoutms){
-                    globalTestRunnerErrorToConsole("await timed out for", _message);
-                    reject("await timed out waiting for", _message);
+                    globalTestRunnerErrorToConsole("awaitsFor timed out waiting for", _message);
+                    reject("awaitsFor timed out waiting for", _message);
                     return;
                 }
                 setTimeout(pollingFn, pollInterval);
