@@ -27,7 +27,8 @@ define(function (require, exports, module) {
     require("utils/Global");
 
     // Load dependent modules
-    var SpecRunnerUtils     = require("spec/SpecRunnerUtils");
+    const SpecRunnerUtils     = require("spec/SpecRunnerUtils"),
+        Strings     = require("strings");
 
     var UTF8 = "utf8",
         UTF16 = "utf16";
@@ -109,8 +110,8 @@ define(function (require, exports, module) {
             expect(brackets.app.getDisplayLocation("/mnt/apple")).toBe("apple");
             expect(brackets.app.getDisplayLocation("/mnt/apple/x/")).toBe("apple/x/");
             // filer paths
-            expect(brackets.app.getDisplayLocation("/x/apple")).toBe("/x/apple");
-            expect(brackets.app.getDisplayLocation("/y/apple/x/")).toBe("/y/apple/x/");
+            expect(brackets.app.getDisplayLocation("/x/apple")).toBe(Strings.STORED_IN_YOUR_BROWSER);
+            expect(brackets.app.getDisplayLocation("/y/apple/x/")).toBe(Strings.STORED_IN_YOUR_BROWSER);
             // tauri paths
             if(brackets.platform === "win"){
                 expect(brackets.app.getDisplayLocation("/tauri/x")).toBe("x:\\");
