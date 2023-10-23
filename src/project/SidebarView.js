@@ -71,7 +71,7 @@ define(function (require, exports, module) {
         }
 
         $projectTitle.html(_.escape(displayName));
-        $projectTitle.attr("title", Phoenix.app.getDisplayPath(fullPath));
+        $projectTitle.attr("title", Phoenix.app.getDisplayLocation(fullPath));
 
         // Trigger a scroll on the project files container to
         // reposition the scroller shadows and avoid issue #2255

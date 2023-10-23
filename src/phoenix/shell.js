@@ -40,15 +40,17 @@ Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
-    getDisplayPath: function (fullVFSPath) {
-        // retruns a path that can be shown to the user to make some sense of the virtual file path.
+    getDisplayLocation: function (fullVFSPath) {
+        // reruns a user-friendly location that can be shown to the user to make some sense of the virtual file path.
+        // The returned path may not be an actual path if it is not resolvable to a platform path, but a text indicating
+        // its location. Eg: "Stored in Your Browser"
         if (fullVFSPath.startsWith(Phoenix.VFS.getTauriDir())) {
             return Phoenix.fs.getTauriPlatformPath(fullVFSPath);
         }
         if (fullVFSPath.startsWith(Phoenix.VFS.getMountDir())) {
             return fullVFSPath.replace(Phoenix.VFS.getMountDir(), ""); // we don't show anything if it's stored on user's hard drive for better ui.
         }
-        return fullVFSPath;
+        return window.Strings.STORED_IN_YOUR_BROWSER;
     },
     setWindowTitle: async function (title) {
         window.document.title = title;

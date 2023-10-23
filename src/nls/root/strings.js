@@ -32,6 +32,7 @@ define({
     "COPYING": "Copying {0}",
     "DELETING": "Deleting {0}",
     "RENAMING": "Renaming",
+    "STORED_IN_YOUR_BROWSER": "Stored in Your Browser",
     // General file io error strings
     "GENERIC_ERROR": "(error {0})",
     "NOT_FOUND_ERR": "The file/directory could not be found.",

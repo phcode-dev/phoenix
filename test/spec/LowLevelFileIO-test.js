@@ -104,21 +104,21 @@ define(function (require, exports, module) {
             expect(brackets.fs).toBeTruthy();
         });
 
-        it("should getDisplayPath return correct path", function () {
+        it("should getDisplayLocation return correct path", function () {
             // mount paths
-            expect(brackets.app.getDisplayPath("/mnt/apple")).toBe("apple");
-            expect(brackets.app.getDisplayPath("/mnt/apple/x/")).toBe("apple/x/");
+            expect(brackets.app.getDisplayLocation("/mnt/apple")).toBe("apple");
+            expect(brackets.app.getDisplayLocation("/mnt/apple/x/")).toBe("apple/x/");
             // filer paths
-            expect(brackets.app.getDisplayPath("/x/apple")).toBe("/x/apple");
-            expect(brackets.app.getDisplayPath("/y/apple/x/")).toBe("/y/apple/x/");
+            expect(brackets.app.getDisplayLocation("/x/apple")).toBe("/x/apple");
+            expect(brackets.app.getDisplayLocation("/y/apple/x/")).toBe("/y/apple/x/");
             // tauri paths
             if(brackets.platform === "win"){
-                expect(brackets.app.getDisplayPath("/tauri/x")).toBe("x:\\");
-                expect(brackets.app.getDisplayPath("/tauri/x/y")).toBe("x:\\y");
-                expect(brackets.app.getDisplayPath("/tauri/x/y/d.txt")).toBe("x:\\y\\d.txt");
+                expect(brackets.app.getDisplayLocation("/tauri/x")).toBe("x:\\");
+                expect(brackets.app.getDisplayLocation("/tauri/x/y")).toBe("x:\\y");
+                expect(brackets.app.getDisplayLocation("/tauri/x/y/d.txt")).toBe("x:\\y\\d.txt");
             } else {
-                expect(brackets.app.getDisplayPath("/tauri/apple")).toBe("/apple");
-                expect(brackets.app.getDisplayPath("/tauri/apple/x/")).toBe("/apple/x/");
+                expect(brackets.app.getDisplayLocation("/tauri/apple")).toBe("/apple");
+                expect(brackets.app.getDisplayLocation("/tauri/apple/x/")).toBe("/apple/x/");
             }
         });
 
