@@ -43,7 +43,7 @@ Phoenix is a modern open-source and [free software](https://www.gnu.org/philosop
 
 AGPL/Libre license guards your right to audit and change code that handles your data.
 Phoenix usually loads up in under one second and loading it faster at the expense of making it hard
-to read and develop is a noop. We prioritize simplicity and eaze of development. 
+to read and develop is a noop. We prioritize simplicity and ease of development. 
 
 ## Contributing/ Feedback
 * [Get in touch with our community](https://github.com/phcode-dev/phoenix/discussions).
