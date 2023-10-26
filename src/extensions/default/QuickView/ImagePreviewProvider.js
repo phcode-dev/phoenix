@@ -41,7 +41,7 @@ define(function (require, exports, module) {
         extensionlessImagePreview;           // Whether to try and preview extensionless URLs
 
     // List of protocols which we will support for image preview urls
-    let validProtocols = ["data:", "http:", "https:", "tauri:", "asset:", "ftp:", "file:"];
+    let validProtocols = ["data:", "http:", "https:", "phcode:", "asset:", "ftp:", "file:"];
 
     prefs = PreferencesManager.getExtensionPrefs("quickview");
 

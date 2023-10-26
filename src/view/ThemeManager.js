@@ -445,7 +445,7 @@ define(function (require, exports, module) {
      */
     function loadFile(fileName, options) {
         if(fileName.startsWith("http://") || fileName.startsWith("https://")
-            || fileName.startsWith("tauri://") || fileName.startsWith("asset://")) {
+            || fileName.startsWith("phcode://") || fileName.startsWith("asset://")) {
             if(Phoenix.VFS.getPathForVirtualServingURL(fileName)){
                 fileName = Phoenix.VFS.getPathForVirtualServingURL(fileName);
             } else {
