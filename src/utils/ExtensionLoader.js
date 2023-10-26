@@ -650,16 +650,18 @@ define(function (require, exports, module) {
         });
     }
 
+    function _getRandomPrefix() {
+        let uuid = crypto.randomUUID();
+        // for example "36b8f84d-df4e-4d49-b662-bcde71a8764f"
+        return uuid.split("-")[0]; // Eg. return 36b8f84d
+    }
     function _loadCustomExtensionPath(extPath) {
         const assetsServeDir = Phoenix.VFS.getTauriAssetServeDir();
         if(assetsServeDir && extPath.startsWith(Phoenix.VFS.getTauriDir()) &&
             !extPath.startsWith(assetsServeDir)) {
-            const extensionLocalStorageKey = `custom-extension-Version-${extPath}`;
-            // we have to do this version thingy as tauri caches assets and will serve stale assets.
-            const initialVersion = 1;
-            let existingExtVersion = parseInt(localStorage.getItem(extensionLocalStorageKey) || initialVersion);
-            const newExtVersionStr = `${existingExtVersion + 1}`;
-            localStorage.setItem(extensionLocalStorageKey, newExtVersionStr);
+            // we have to do this random number thingy as tauri caches assets and will serve stale assets.
+            // this is problematic when the user is editing extension code and he cant see the updates on reload.
+            const newExtVersionStr = _getRandomPrefix();
             const extParentPath = `${Phoenix.VFS.getDevTempExtensionDir()}/${Phoenix.path.basename(extPath)}`;
             const extDestPath = `${extParentPath}/${newExtVersionStr}`;
             customExtensionLoadPaths[extDestPath] = extPath;
