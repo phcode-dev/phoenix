@@ -279,6 +279,9 @@ define(function (require, exports, module) {
         var project_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.PROJECT_MENU);
         project_cmenu.addMenuItem(Commands.FILE_NEW);
         project_cmenu.addMenuItem(Commands.FILE_NEW_FOLDER);
+        if(Phoenix.browser.isTauri){
+            project_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
+        }
         project_cmenu.addMenuDivider();
         project_cmenu.addMenuItem(Commands.FILE_CUT);
         project_cmenu.addMenuItem(Commands.FILE_COPY);
@@ -296,9 +299,6 @@ define(function (require, exports, module) {
         project_cmenu.addMenuItem(Commands.CMD_REPLACE_IN_SUBTREE);
         project_cmenu.addMenuDivider();
         project_cmenu.addMenuItem(Commands.FILE_REFRESH);
-        if(Phoenix.browser.isTauri){
-            project_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
-        }
 
         var editor_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
         // editor_cmenu.addMenuItem(Commands.NAVIGATE_JUMPTO_DEFINITION);
