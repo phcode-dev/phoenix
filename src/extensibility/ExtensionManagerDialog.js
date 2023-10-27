@@ -26,8 +26,6 @@ define(function (require, exports, module) {
         Mustache                    = require("thirdparty/mustache/mustache"),
         Dialogs                     = require("widgets/Dialogs"),
         DefaultDialogs              = require("widgets/DefaultDialogs"),
-        FileSystem                  = require("filesystem/FileSystem"),
-        FileUtils                   = require("file/FileUtils"),
         Package                     = require("extensibility/Package"),
         Strings                     = require("strings"),
         StringUtils                 = require("utils/StringUtils"),
@@ -50,11 +48,6 @@ define(function (require, exports, module) {
     require("widgets/bootstrap-tab");
 
     var _activeTabIndex;
-
-    function _stopEvent(event) {
-        event.stopPropagation();
-        event.preventDefault();
-    }
 
     /**
      * @private
