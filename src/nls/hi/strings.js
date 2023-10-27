@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "ओएस में दिखाएं",
   "CMD_SWITCH_PANE_FOCUS": "फलक फोकस स्विच करें",
   "CMD_OPEN_VFS": "वर्चुअल फाइल सिस्टम खोलें",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "एक्सटेंशन फ़ोल्डर खोलें…",
   "CMD_OPEN_VIRTUAL_SERVER": "वर्चुअल सर्वर खोलें",
   "HELP_MENU": "मदद करना",
   "CMD_CHECK_FOR_UPDATE": "अद्यतन के लिए जाँच",

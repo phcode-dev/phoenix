@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "Toon in besturingssysteem",
   "CMD_SWITCH_PANE_FOCUS": "Paneelfocus wisselen",
   "CMD_OPEN_VFS": "Virtueel bestandssysteem openen",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Map Extensies openen…",
   "CMD_OPEN_VIRTUAL_SERVER": "Virtuele server openen",
   "HELP_MENU": "Help",
   "CMD_CHECK_FOR_UPDATE": "Controleer op updates",

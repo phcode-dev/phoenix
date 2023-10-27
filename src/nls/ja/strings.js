@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "OS で表示",
   "CMD_SWITCH_PANE_FOCUS": "ペインフォーカスの切り替え",
   "CMD_OPEN_VFS": "仮想ファイル システムを開く",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "拡張機能フォルダーを開く…",
   "CMD_OPEN_VIRTUAL_SERVER": "仮想サーバーを開く",
   "HELP_MENU": "ヘルプ",
   "CMD_CHECK_FOR_UPDATE": "更新をチェックする",

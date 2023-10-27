@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "Показать в операционной системе",
   "CMD_SWITCH_PANE_FOCUS": "Переключить фокус панели",
   "CMD_OPEN_VFS": "Открытая виртуальная файловая система",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Открыть папку расширений…",
   "CMD_OPEN_VIRTUAL_SERVER": "Открытый виртуальный сервер",
   "HELP_MENU": "Помощь",
   "CMD_CHECK_FOR_UPDATE": "Проверить наличие обновлений",

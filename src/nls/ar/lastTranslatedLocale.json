@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "تظهر في نظام التشغيل",
   "CMD_SWITCH_PANE_FOCUS": "التركيز على جزء التبديل",
   "CMD_OPEN_VFS": "افتح نظام الملفات الافتراضي",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "فتح مجلد الملحقات...",
   "CMD_OPEN_VIRTUAL_SERVER": "افتح الخادم الافتراضي",
   "HELP_MENU": "مساعدة",
   "CMD_CHECK_FOR_UPDATE": "تحقق من وجود تحديثات",

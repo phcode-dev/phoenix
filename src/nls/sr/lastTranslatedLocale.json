@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Прикажи у оперативном систему",
   "CMD_SWITCH_PANE_FOCUS": "Пребаците фокус на окно",
   "CMD_OPEN_VFS": "Отворите виртуелни систем датотека",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Отвори фасциклу екстензија…",
   "CMD_OPEN_VIRTUAL_SERVER": "Отворите виртуелни сервер",
   "HELP_MENU": "Помоћ",
   "CMD_CHECK_FOR_UPDATE": "Провери да ли постоји новијa верзија",

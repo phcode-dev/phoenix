@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "نمایش در OS",
   "CMD_SWITCH_PANE_FOCUS": "سوئیچ پانل فوکوس",
   "CMD_OPEN_VFS": "سیستم فایل مجازی را باز کنید",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "باز کردن پوشه برنامه های افزودنی…",
   "CMD_OPEN_VIRTUAL_SERVER": "سرور مجازی را باز کنید",
   "HELP_MENU": "راهنما",
   "CMD_CHECK_FOR_UPDATE": "بررسی بروزرسانی ها",

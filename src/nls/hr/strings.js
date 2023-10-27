@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "Prikaži u OS-u",
   "CMD_SWITCH_PANE_FOCUS": "Promjena fokusa okna",
   "CMD_OPEN_VFS": "Otvorite virtualni datotečni sustav",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Otvorite mapu s proširenjima...",
   "CMD_OPEN_VIRTUAL_SERVER": "Otvorite virtualni poslužitelj",
   "HELP_MENU": "Pomoć",
   "CMD_CHECK_FOR_UPDATE": "Provjeri postoji li novija verzija",

@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "在作業系統中顯示",
   "CMD_SWITCH_PANE_FOCUS": "切換窗格焦點",
   "CMD_OPEN_VFS": "打開虛擬文件系統",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "開啟擴充資料夾...",
   "CMD_OPEN_VIRTUAL_SERVER": "打開虛擬服務器",
   "HELP_MENU": "說明",
   "CMD_CHECK_FOR_UPDATE": "檢查是否有更新",

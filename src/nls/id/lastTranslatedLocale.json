@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Tampilkan di OS",
   "CMD_SWITCH_PANE_FOCUS": "Beralih Fokus Panel",
   "CMD_OPEN_VFS": "Buka Sistem File Virtual",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Buka Folder Ekstensi…",
   "CMD_OPEN_VIRTUAL_SERVER": "Buka Server Virtual",
   "HELP_MENU": "Bantuan",
   "CMD_CHECK_FOR_UPDATE": "Periksa Pembaruan",

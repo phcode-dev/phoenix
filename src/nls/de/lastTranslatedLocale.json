@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Im Dateisystem anzeigen",
   "CMD_SWITCH_PANE_FOCUS": "In andere Ansicht wechseln",
   "CMD_OPEN_VFS": "Öffnen Sie das virtuelle Dateisystem",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Erweiterungsordner öffnen…",
   "CMD_OPEN_VIRTUAL_SERVER": "Öffnen Sie den virtuellen Server",
   "HELP_MENU": "Hilfe",
   "CMD_CHECK_FOR_UPDATE": "Nach Updates suchen",

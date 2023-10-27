@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Parādīt operētājsistēmā",
   "CMD_SWITCH_PANE_FOCUS": "Pārslēgt rūts fokusu",
   "CMD_OPEN_VFS": "Atveriet virtuālo failu sistēmu",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Atvērt paplašinājumu mapi…",
   "CMD_OPEN_VIRTUAL_SERVER": "Atveriet virtuālo serveri",
   "HELP_MENU": "Palīdzība",
   "CMD_CHECK_FOR_UPDATE": "Pārbaudīt atjauninājumus",

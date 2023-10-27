@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Vis i OS",
   "CMD_SWITCH_PANE_FOCUS": "Skift rudefokus",
   "CMD_OPEN_VFS": "Åbn Virtual File System",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Åbn mappen med udvidelser...",
   "CMD_OPEN_VIRTUAL_SERVER": "Åbn Virtual Server",
   "HELP_MENU": "Hjælp",
   "CMD_CHECK_FOR_UPDATE": "Kontrollér for opdateringer",
