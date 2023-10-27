@@ -484,6 +484,7 @@ define({
 
     // Debug menu commands
     "CMD_OPEN_VFS": "Open Virtual File System",
+    "CMD_OPEN_EXTENSIONS_FOLDER": "Open Extensions Folder\u2026",
     "CMD_OPEN_VIRTUAL_SERVER": "Open Virtual Server",
 
     // Help menu commands

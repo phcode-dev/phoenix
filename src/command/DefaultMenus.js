@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /**
  * Initializes the default brackets menu items.
  */
@@ -55,7 +57,8 @@ define(function (require, exports, module) {
                 if (err) {
                     return err;
                 }
-                _setContextMenuItemsVisible(isPresent, [Commands.FILE_RENAME, Commands.NAVIGATE_SHOW_IN_FILE_TREE]);
+                _setContextMenuItemsVisible(isPresent, [Commands.FILE_RENAME,
+                    Commands.NAVIGATE_SHOW_IN_FILE_TREE, Commands.NAVIGATE_SHOW_IN_OS]);
             });
         }
     }
@@ -287,6 +290,9 @@ define(function (require, exports, module) {
         project_cmenu.addMenuItem(Commands.CMD_REPLACE_IN_SUBTREE);
         project_cmenu.addMenuDivider();
         project_cmenu.addMenuItem(Commands.FILE_REFRESH);
+        if(Phoenix.browser.isTauri){
+            project_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
+        }
 
         var editor_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
         // editor_cmenu.addMenuItem(Commands.NAVIGATE_JUMPTO_DEFINITION);

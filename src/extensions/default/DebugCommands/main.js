@@ -44,6 +44,7 @@ define(function (require, exports, module) {
         Mustache               = brackets.getModule("thirdparty/mustache/mustache"),
         Locales                = brackets.getModule("nls/strings"),
         ProjectManager         = brackets.getModule("project/ProjectManager"),
+        ExtensionLoader        = brackets.getModule("utils/ExtensionLoader"),
         extensionDevelopment   = require("extensionDevelopment"),
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
@@ -72,6 +73,7 @@ define(function (require, exports, module) {
         DEBUG_ENABLE_LOGGING                  = "debug.enableLogging",
         DEBUG_LIVE_PREVIEW_LOGGING            = "debug.livePreviewLogging",
         DEBUG_OPEN_VFS                        = "debug.openVFS",
+        DEBUG_OPEN_EXTENSION_FOLDER           = "debug.openExtensionFolders",
         DEBUG_OPEN_VIRTUAL_SERVER             = "debug.openVirtualServer",
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
 
@@ -708,6 +710,10 @@ define(function (require, exports, module) {
         ProjectManager.openProject("/");
     }
 
+    function _openExtensionsFolder() {
+        Phoenix.app.openPathInFileBrowser(ExtensionLoader.getUserExtensionPath());
+    }
+
     function _openVirtualServer() {
         const virtualServingURL = Phoenix.VFS.getVirtualServingURLForPath("/");
         if(!virtualServingURL) {
@@ -745,6 +751,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
     CommandManager.register(Strings.CMD_ENABLE_LIVE_PREVIEW_LOGS, DEBUG_LIVE_PREVIEW_LOGGING, _handleLivePreviewLogging);
     CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
+    CommandManager.register(Strings.CMD_OPEN_EXTENSIONS_FOLDER, DEBUG_OPEN_EXTENSION_FOLDER,   _openExtensionsFolder);
     CommandManager.register(Strings.CMD_OPEN_VIRTUAL_SERVER, DEBUG_OPEN_VIRTUAL_SERVER,   _openVirtualServer);
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
@@ -767,17 +774,20 @@ define(function (require, exports, module) {
     debugMenu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
     debugMenu.addMenuDivider();
     debugMenu.addMenuItem(DEBUG_OPEN_VFS);
+    debugMenu.addMenuItem(DEBUG_OPEN_EXTENSION_FOLDER, undefined, undefined, undefined, {
+        hideWhenCommandDisabled: true
+    });
     debugMenu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
 
     CommandManager.get(DEBUG_UNLOAD_CURRENT_EXTENSION)
         .setEnabled(extensionDevelopment.isProjectLoadedAsExtension());
-    if(window.__TAURI__) {
-        // in tauri, virtual server doesnt exist, extensions are served by tauri asset urls.
-        CommandManager.get(DEBUG_OPEN_VIRTUAL_SERVER)
-            .setEnabled(false);
-    }
+    CommandManager.get(DEBUG_OPEN_EXTENSION_FOLDER)
+        .setEnabled(Phoenix.browser.isTauri); // only show in tauri
+    CommandManager.get(DEBUG_OPEN_VIRTUAL_SERVER)
+        .setEnabled(!Phoenix.browser.isTauri); // don't show in tauri as there is no virtual server in tauri
+
     _updateLogToConsoleMenuItemChecked();
 
     const helpMenu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
