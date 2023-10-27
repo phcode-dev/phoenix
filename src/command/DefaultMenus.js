@@ -283,10 +283,10 @@ define(function (require, exports, module) {
             project_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
         }
         project_cmenu.addMenuDivider();
+        project_cmenu.addMenuItem(Commands.FILE_CUT);
         project_cmenu.addMenuItem(Commands.FILE_COPY);
         project_cmenu.addMenuItem(Commands.FILE_COPY_PATH);
         project_cmenu.addMenuItem(Commands.FILE_DUPLICATE);
-        project_cmenu.addMenuItem(Commands.FILE_CUT);
         project_cmenu.addMenuItem(Commands.FILE_PASTE);
         project_cmenu.addMenuItem(Commands.FILE_DOWNLOAD, undefined, undefined, undefined, {
             hideWhenCommandDisabled: true
