@@ -1,6 +1,6 @@
 This document outlines how to add support for various local languages in Phoenix.
 
-Phoenix currently supports over 35 languages and are mostly automatically translated with AWS/Google translate.
+Phoenix currently supports over 35 languages, primarily through automatic translations using AWS/Google Translate.
 
 ## Quick start
 
@@ -22,7 +22,7 @@ This folder contains all the localised strings. Each sub folder corresponds to a
 A special folder called the `root` folder houses the reference english translations from which all other locale
 translations are derived. The `root` folder has three main files:
 1. `strings.js` - The full list of translated text.
-2. `strings-app.js` - The list of language code to localised language name mapping. This will be used in the switch
+2. `strings-app.js` - The list of language code to localized language name mapping. This will be used in the switch
 language dialogue in debug menu.
 3. `urls.js` - local specific URLs.
 
@@ -69,4 +69,4 @@ Say we want to add a new language translation `ko`. We have to do the following
 
 Once the code is checked in, the translation will be auto generated.
 
-> NB: For internal devs, You may manually generate the translation with `npm run _translateStrings` if you have the necessary keys for translation.
+> NB: For internal developers, You may manually generate the translation with `npm run _translateStrings` if you have the necessary keys for translation.
