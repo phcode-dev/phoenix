@@ -44,7 +44,6 @@ define(function (require, exports, module) {
         ExtensionLoader     = require("utils/ExtensionLoader"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
         FileSystem          = require("filesystem/FileSystem"),
-        FileUtils           = require("file/FileUtils"),
         PreferencesManager  = require("preferences/PreferencesManager"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
