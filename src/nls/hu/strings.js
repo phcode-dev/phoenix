@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "Megjelenítés Intézőben",
   "CMD_SWITCH_PANE_FOCUS": "Switch Pane Focus",
   "CMD_OPEN_VFS": "Nyissa meg a Virtuális fájlrendszert",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Nyissa meg a Bővítmények mappát…",
   "CMD_OPEN_VIRTUAL_SERVER": "Nyissa meg a Virtuális szervert",
   "HELP_MENU": "Súgó",
   "CMD_CHECK_FOR_UPDATE": "Frissítések keresése",

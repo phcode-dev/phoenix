@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Zobraziť v OS",
   "CMD_SWITCH_PANE_FOCUS": "Prepnúť zameranie tably",
   "CMD_OPEN_VFS": "Otvorte virtuálny súborový systém",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Otvoriť priečinok rozšírení…",
   "CMD_OPEN_VIRTUAL_SERVER": "Otvorte virtuálny server",
   "HELP_MENU": "Nápoveda",
   "CMD_CHECK_FOR_UPDATE": "Skontrolovať aktualizácie",

@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "Näytä käyttöjärjestelmässä",
   "CMD_SWITCH_PANE_FOCUS": "Vaihda ruudun valinta",
   "CMD_OPEN_VFS": "Avaa Virtual File System",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Avaa laajennuskansio…",
   "CMD_OPEN_VIRTUAL_SERVER": "Avaa Virtual Server",
   "HELP_MENU": "Ohje",
   "CMD_CHECK_FOR_UPDATE": "Tarkista päivitykset",

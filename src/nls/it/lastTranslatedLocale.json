@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Mostra in SO",
   "CMD_SWITCH_PANE_FOCUS": "Cambia lo stato attivo del riquadro",
   "CMD_OPEN_VFS": "Apri il file system virtuale",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Apri la cartella Estensioni...",
   "CMD_OPEN_VIRTUAL_SERVER": "Apri il server virtuale",
   "HELP_MENU": "Aiuto",
   "CMD_CHECK_FOR_UPDATE": "Controlla aggiornamenti",

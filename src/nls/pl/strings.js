@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "Pokaż w systemie plików",
   "CMD_SWITCH_PANE_FOCUS": "Zmień aktywny panel",
   "CMD_OPEN_VFS": "Otwórz wirtualny system plików",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Otwórz folder rozszerzeń…",
   "CMD_OPEN_VIRTUAL_SERVER": "Otwórz serwer wirtualny",
   "HELP_MENU": "Pomoc",
   "CMD_CHECK_FOR_UPDATE": "Sprawdź aktualizacje",

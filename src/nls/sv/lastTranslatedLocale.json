@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Visa i operativsystemet",
   "CMD_SWITCH_PANE_FOCUS": "Växla panelfokus",
   "CMD_OPEN_VFS": "Öppna Virtual File System",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Öppna tilläggsmappen...",
   "CMD_OPEN_VIRTUAL_SERVER": "Öppna Virtual Server",
   "HELP_MENU": "Hjälp",
   "CMD_CHECK_FOR_UPDATE": "Sök efter uppdateringar",

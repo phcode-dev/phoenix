@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "Mostrar no SO",
   "CMD_SWITCH_PANE_FOCUS": "Mudar o foco do painel",
   "CMD_OPEN_VFS": "Abrir sistema de arquivos virtuais",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Abra a pasta de extensões…",
   "CMD_OPEN_VIRTUAL_SERVER": "Abrir servidor virtual",
   "HELP_MENU": "Ajuda",
   "CMD_CHECK_FOR_UPDATE": "Verificar atualizações",

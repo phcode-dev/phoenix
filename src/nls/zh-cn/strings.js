@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "打开文件所在目录",
   "CMD_SWITCH_PANE_FOCUS": "切换窗格焦点",
   "CMD_OPEN_VFS": "打开虚拟文件系统",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "打开扩展文件夹...",
   "CMD_OPEN_VIRTUAL_SERVER": "打开虚拟服务器",
   "HELP_MENU": "帮助",
   "CMD_CHECK_FOR_UPDATE": "检查更新",

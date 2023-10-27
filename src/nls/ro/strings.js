@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "Arată în sistemul de operare",
   "CMD_SWITCH_PANE_FOCUS": "Comutare Panoul Focus",
   "CMD_OPEN_VFS": "Deschide Virtual File System",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Deschideți dosarul cu extensii...",
   "CMD_OPEN_VIRTUAL_SERVER": "Deschide serverul virtual",
   "HELP_MENU": "Ajutor",
   "CMD_CHECK_FOR_UPDATE": "Verifică pentru actualizări",

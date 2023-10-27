@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "파일 위치 열기",
   "CMD_SWITCH_PANE_FOCUS": "창 초점 전환",
   "CMD_OPEN_VFS": "가상 파일 시스템 열기",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "확장 폴더 열기…",
   "CMD_OPEN_VIRTUAL_SERVER": "가상 서버 열기",
   "HELP_MENU": "도움말",
   "CMD_CHECK_FOR_UPDATE": "업데이트 확인",

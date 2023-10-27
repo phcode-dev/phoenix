@@ -383,6 +383,7 @@ define({
   "CMD_SHOW_IN_OS": "OS میں دکھائیں۔",
   "CMD_SWITCH_PANE_FOCUS": "پین فوکس سوئچ کریں۔",
   "CMD_OPEN_VFS": "ورچوئل فائل سسٹم کھولیں۔",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "ایکسٹینشنز فولڈر کھولیں…",
   "CMD_OPEN_VIRTUAL_SERVER": "ورچوئل سرور کھولیں۔",
   "HELP_MENU": "مدد",
   "CMD_CHECK_FOR_UPDATE": "اپ ڈیٹ کے لیے چیک کریں",

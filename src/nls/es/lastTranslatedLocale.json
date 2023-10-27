@@ -363,6 +363,7 @@
   "CMD_SHOW_IN_OS": "Mostrar en el Sistema Operativo",
   "CMD_SWITCH_PANE_FOCUS": "Cambiar el enfoque del panel",
   "CMD_OPEN_VFS": "Sistema de archivos virtual abierto",
+  "CMD_OPEN_EXTENSIONS_FOLDER": "Abrir carpeta de extensiones...",
   "CMD_OPEN_VIRTUAL_SERVER": "Abrir servidor virtual",
   "HELP_MENU": "Ayuda",
   "CMD_CHECK_FOR_UPDATE": "Buscar actualizaciones",
