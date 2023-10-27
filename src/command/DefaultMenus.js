@@ -73,6 +73,9 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.FILE_NEW_FOLDER);
         menu.addMenuItem(Commands.FILE_NEW_WINDOW);
         menu.addMenuDivider();
+        if(Phoenix.browser.isTauri){
+            menu.addMenuItem(Commands.FILE_OPEN);
+        }
         menu.addMenuItem(Commands.FILE_OPEN_FOLDER);
         menu.addMenuItem(Commands.FILE_CLOSE);
         menu.addMenuItem(Commands.FILE_CLOSE_ALL);
@@ -242,6 +245,9 @@ define(function (require, exports, module) {
         var workingset_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU);
         workingset_cmenu.addMenuItem(Commands.FILE_SAVE);
         workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+        if(Phoenix.browser.isTauri){
+            workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
+        }
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_COPY);
         workingset_cmenu.addMenuItem(Commands.FILE_COPY_PATH);

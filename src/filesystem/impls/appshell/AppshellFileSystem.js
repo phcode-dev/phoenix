@@ -292,18 +292,31 @@ define(function (require, exports, module) {
      * @param {function(?string, Array.<string>=)} callback
      */
     function showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback) {
-        // TODO: handle more cases relating to multiple selection and stuff.
+        const wrappedCallback = _wrap(callback);
         if(Phoenix.browser.isTauri){
-            const wrappedCallback = _wrap(callback);
             appshell.fs.openTauriFilePickerAsync({
-                directory: true
+                multiple: allowMultipleSelection,
+                directory: chooseDirectories,
+                title,
+                defaultPath: Phoenix.fs.getTauriPlatformPath(initialPath),
+                filters: fileTypes ? [{
+                    name: "openDialog",
+                    extensions: fileTypes || []
+                }] : undefined
             }).then(directory => {
-                // todo, may return null/string/array of strings
-                wrappedCallback(null, [directory]);
+                if(!directory) {
+                    wrappedCallback(FileSystemError.NOT_READABLE);
+                    return;
+                }
+                if(typeof directory === 'string') {
+                    wrappedCallback(null, [directory]);
+                    return;
+                }
+                wrappedCallback(null, directory); // is an array of paths
             }).catch(wrappedCallback);
             return;
         }
-        appshell.fs.mountNativeFolder(_wrap(callback));
+        appshell.fs.mountNativeFolder(wrappedCallback);
     }
 
     /**
