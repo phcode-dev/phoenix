@@ -64,6 +64,26 @@ Phoenix.app = {
         }
         return window.document.title;
     },
+    openPathInFileBrowser: function (fullVFSPath){
+        return new Promise((resolve, reject)=>{
+            if(!window.__TAURI__ ||
+                !fullVFSPath.startsWith(Phoenix.VFS.getTauriDir())) {
+                reject("openPathInFileBrowser is only currently supported in Native builds for tauri paths!");
+                return;
+            }
+            if(fullVFSPath.toLowerCase().startsWith("http://")
+                || fullVFSPath.toLowerCase().startsWith("https://")
+                || fullVFSPath.toLowerCase().startsWith("file://")) {
+                reject("Please use openPathInFileBrowser API to open URLs");
+                return;
+            }
+            const platformPath = Phoenix.fs.getTauriPlatformPath(fullVFSPath);
+            window.__TAURI__.tauri
+                .invoke('show_in_folder', {path: platformPath})
+                .then(resolve)
+                .catch(reject);
+        });
+    },
     openURLInDefaultBrowser: function (url){
         return new Promise((resolve, reject)=>{
             if(!window.__TAURI__) {
