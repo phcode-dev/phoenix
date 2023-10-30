@@ -33,7 +33,7 @@ Phoenix is a modern open-source and [free software](https://www.gnu.org/philosop
 
 ## Tenets
 1. Targeted for web development. Js, html and CSS enjoy special status.
-2. Game UX - Approach code editing like a game that a school kid would play after skipping the tutorial.
+2. Game UX - Approach code editing with a user-friendly game-like experience, as if a school kid were playing after skipping the tutorial.
 2. Light-weight editor.
 3. Extension support maintaining full compatibility with Brackets extensions (except brackets-node extensions).
 4. Uncompromised local development experience.
