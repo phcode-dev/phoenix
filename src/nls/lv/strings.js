@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Parādīt datņu kokā",
   "CMD_SHOW_IN_EXPLORER": "Parādīt pārlūkā",
   "CMD_SHOW_IN_FINDER": "Parādīt meklētājā",
-  "CMD_SHOW_IN_OS": "Parādīt operētājsistēmā",
+  "CMD_SHOW_IN_OS": "Rādīt OS failos",
   "CMD_SWITCH_PANE_FOCUS": "Pārslēgt rūts fokusu",
   "CMD_OPEN_VFS": "Atveriet virtuālo failu sistēmu",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Atvērt paplašinājumu mapi…",

@@ -360,7 +360,7 @@
   "CMD_SHOW_IN_TREE": "Zobraziť stromovú štruktúru",
   "CMD_SHOW_IN_EXPLORER": "Ukázať v prehliadači",
   "CMD_SHOW_IN_FINDER": "Zobraziť vo Finderi",
-  "CMD_SHOW_IN_OS": "Zobraziť v OS",
+  "CMD_SHOW_IN_OS": "Zobraziť v súboroch OS",
   "CMD_SWITCH_PANE_FOCUS": "Prepnúť zameranie tably",
   "CMD_OPEN_VFS": "Otvorte virtuálny súborový systém",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Otvoriť priečinok rozšírení…",

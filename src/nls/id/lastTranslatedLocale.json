@@ -360,7 +360,7 @@
   "CMD_SHOW_IN_TREE": "Tampilkan di Daftar File",
   "CMD_SHOW_IN_EXPLORER": "Tampilkan di Penelusur",
   "CMD_SHOW_IN_FINDER": "Tampilkan di Pencari",
-  "CMD_SHOW_IN_OS": "Tampilkan di OS",
+  "CMD_SHOW_IN_OS": "Tampilkan di File OS",
   "CMD_SWITCH_PANE_FOCUS": "Beralih Fokus Panel",
   "CMD_OPEN_VFS": "Buka Sistem File Virtual",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Buka Folder Ekstensi…",

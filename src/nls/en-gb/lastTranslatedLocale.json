@@ -360,7 +360,7 @@
   "CMD_SHOW_IN_TREE": "Show in File Tree",
   "CMD_SHOW_IN_EXPLORER": "Show in Explorer",
   "CMD_SHOW_IN_FINDER": "Show in Finder",
-  "CMD_SHOW_IN_OS": "Show in OS",
+  "CMD_SHOW_IN_OS": "Show in OS Files",
   "CMD_SWITCH_PANE_FOCUS": "Switch Pane Focus",
   "CMD_OPEN_VFS": "Open Virtual File System",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Open Extensions Folder…",

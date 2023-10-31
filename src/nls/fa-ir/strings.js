@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "نمایش در پرونده ها به صورت درختی",
   "CMD_SHOW_IN_EXPLORER": "نمایش در پیمایشگر",
   "CMD_SHOW_IN_FINDER": "نمایش در جستجوگر",
-  "CMD_SHOW_IN_OS": "نمایش در OS",
+  "CMD_SHOW_IN_OS": "نمایش در فایل های سیستم عامل",
   "CMD_SWITCH_PANE_FOCUS": "سوئیچ پانل فوکوس",
   "CMD_OPEN_VFS": "سیستم فایل مجازی را باز کنید",
   "CMD_OPEN_EXTENSIONS_FOLDER": "باز کردن پوشه برنامه های افزودنی…",

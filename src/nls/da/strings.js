@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Vis i filtræ",
   "CMD_SHOW_IN_EXPLORER": "Vis i Stifinder",
   "CMD_SHOW_IN_FINDER": "Vis i Finder",
-  "CMD_SHOW_IN_OS": "Vis i OS",
+  "CMD_SHOW_IN_OS": "Vis i OS-filer",
   "CMD_SWITCH_PANE_FOCUS": "Skift rudefokus",
   "CMD_OPEN_VFS": "Åbn Virtual File System",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Åbn mappen med udvidelser...",

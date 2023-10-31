@@ -360,7 +360,7 @@
   "CMD_SHOW_IN_TREE": "Dosya Listesinde Göster",
   "CMD_SHOW_IN_EXPLORER": "Explorer'da göster",
   "CMD_SHOW_IN_FINDER": "Finder'da Göster",
-  "CMD_SHOW_IN_OS": "Bulunduğu Konumu Aç",
+  "CMD_SHOW_IN_OS": "İşletim Sistemi Dosyalarında Göster",
   "CMD_SWITCH_PANE_FOCUS": "Bölme Odağı Değiştir",
   "CMD_OPEN_VFS": "Sanal Dosya Sistemini Açın",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Uzantılar Klasörünü Aç…",

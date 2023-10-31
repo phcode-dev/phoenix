@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Arată în arborele de fișiere",
   "CMD_SHOW_IN_EXPLORER": "Arată în Explorer",
   "CMD_SHOW_IN_FINDER": "Arată în Finder",
-  "CMD_SHOW_IN_OS": "Arată în sistemul de operare",
+  "CMD_SHOW_IN_OS": "Afișați în fișierele OS",
   "CMD_SWITCH_PANE_FOCUS": "Comutare Panoul Focus",
   "CMD_OPEN_VFS": "Deschide Virtual File System",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Deschideți dosarul cu extensii...",

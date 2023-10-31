@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "在侧边栏显示",
   "CMD_SHOW_IN_EXPLORER": "在资源管理器中显示",
   "CMD_SHOW_IN_FINDER": "在 Finder 中显示",
-  "CMD_SHOW_IN_OS": "打开文件所在目录",
+  "CMD_SHOW_IN_OS": "在操作系统文件中显示",
   "CMD_SWITCH_PANE_FOCUS": "切换窗格焦点",
   "CMD_OPEN_VFS": "打开虚拟文件系统",
   "CMD_OPEN_EXTENSIONS_FOLDER": "打开扩展文件夹...",

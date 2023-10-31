@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Näytä tiedostopuussa",
   "CMD_SHOW_IN_EXPLORER": "Näytä Resurssienhallinnassa",
   "CMD_SHOW_IN_FINDER": "Näytä Finderissä",
-  "CMD_SHOW_IN_OS": "Näytä käyttöjärjestelmässä",
+  "CMD_SHOW_IN_OS": "Näytä käyttöjärjestelmätiedostoissa",
   "CMD_SWITCH_PANE_FOCUS": "Vaihda ruudun valinta",
   "CMD_OPEN_VFS": "Avaa Virtual File System",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Avaa laajennuskansio…",

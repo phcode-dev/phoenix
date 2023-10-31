@@ -360,7 +360,7 @@
   "CMD_SHOW_IN_TREE": "Prikaži u stablu datoteka",
   "CMD_SHOW_IN_EXPLORER": "Prikaži u pregledniku",
   "CMD_SHOW_IN_FINDER": "Prikaži u pretraživaču",
-  "CMD_SHOW_IN_OS": "Prikaži u OS-u",
+  "CMD_SHOW_IN_OS": "Prikaži u OS datotekama",
   "CMD_SWITCH_PANE_FOCUS": "Promjena fokusa okna",
   "CMD_OPEN_VFS": "Otvorite virtualni datotečni sustav",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Otvorite mapu s proširenjima...",

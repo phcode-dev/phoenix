@@ -360,7 +360,7 @@
   "CMD_SHOW_IN_TREE": "Im Dateibaum anzeigen",
   "CMD_SHOW_IN_EXPLORER": "Im Explorer anzeigen",
   "CMD_SHOW_IN_FINDER": "Im Finder anzeigen",
-  "CMD_SHOW_IN_OS": "Im Dateisystem anzeigen",
+  "CMD_SHOW_IN_OS": "In Betriebssystemdateien anzeigen",
   "CMD_SWITCH_PANE_FOCUS": "In andere Ansicht wechseln",
   "CMD_OPEN_VFS": "Öffnen Sie das virtuelle Dateisystem",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Erweiterungsordner öffnen…",

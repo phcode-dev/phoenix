@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Zobrazit stromovou strukturu",
   "CMD_SHOW_IN_EXPLORER": "Zobrazit v průzkumníkovi",
   "CMD_SHOW_IN_FINDER": "Zobrazit ve vyhledávači",
-  "CMD_SHOW_IN_OS": "Zobrazit v OS",
+  "CMD_SHOW_IN_OS": "Zobrazit v souborech OS",
   "CMD_SWITCH_PANE_FOCUS": "Přepnout zaměření podokna",
   "CMD_OPEN_VFS": "Otevřete virtuální souborový systém",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Otevřít složku Rozšíření…",
