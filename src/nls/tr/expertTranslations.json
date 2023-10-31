@@ -193,5 +193,6 @@
   "Reload {APP_NAME}": "{APP_NAME} Yenile",
   "Jump to Definition": "Tanıma Atla",
   "Show Parameter Hint": "Parametre İpuçlarını Göster",
-  "<no parameters>": "<parametre yok>"
+  "<no parameters>": "<parametre yok>",
+  "Import Project": "Proje Ekle"
 }
