@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test tauri apis accessible</title>
+    <script>
+        window.__TAURI__.event.emit('TAURI_API_WORKING', { data: 'Hello from Window!' });
+    </script>
+</head>
+<body>
+sending event with tauri api...
+</body>
+</html>
