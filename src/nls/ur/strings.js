@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "فائل ٹری میں دکھائیں۔",
   "CMD_SHOW_IN_EXPLORER": "ایکسپلورر میں دکھانا",
   "CMD_SHOW_IN_FINDER": "فائنڈر میں دکھائیں۔",
-  "CMD_SHOW_IN_OS": "OS میں دکھائیں۔",
+  "CMD_SHOW_IN_OS": "OS فائلوں میں دکھائیں۔",
   "CMD_SWITCH_PANE_FOCUS": "پین فوکس سوئچ کریں۔",
   "CMD_OPEN_VFS": "ورچوئل فائل سسٹم کھولیں۔",
   "CMD_OPEN_EXTENSIONS_FOLDER": "ایکسٹینشنز فولڈر کھولیں…",

@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Mostrar en el árbol de directorios",
   "CMD_SHOW_IN_EXPLORER": "Mostrar en el Explorador",
   "CMD_SHOW_IN_FINDER": "Mostrar en Finder",
-  "CMD_SHOW_IN_OS": "Mostrar en el Sistema Operativo",
+  "CMD_SHOW_IN_OS": "Mostrar en archivos del sistema operativo",
   "CMD_SWITCH_PANE_FOCUS": "Cambiar el enfoque del panel",
   "CMD_OPEN_VFS": "Sistema de archivos virtual abierto",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Abrir carpeta de extensiones...",

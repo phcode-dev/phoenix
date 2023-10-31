@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Προβολή στο Δέντρο Αρχείων",
   "CMD_SHOW_IN_EXPLORER": "Εμφάνιση στον Explorer",
   "CMD_SHOW_IN_FINDER": "Εμφάνιση στο Finder",
-  "CMD_SHOW_IN_OS": "Προβολή στο Λειτουργικό Σύστημα",
+  "CMD_SHOW_IN_OS": "Εμφάνιση στα Αρχεία OS",
   "CMD_SWITCH_PANE_FOCUS": "Εναλλαγή εστίασης παραθύρου",
   "CMD_OPEN_VFS": "Ανοίξτε το εικονικό σύστημα αρχείων",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Άνοιγμα φακέλου επεκτάσεων…",

@@ -360,7 +360,7 @@
   "CMD_SHOW_IN_TREE": "Прикажи у стаблу датотека",
   "CMD_SHOW_IN_EXPLORER": "Прикажи у Explorer-у",
   "CMD_SHOW_IN_FINDER": "Прикажи у Проналазачу",
-  "CMD_SHOW_IN_OS": "Прикажи у оперативном систему",
+  "CMD_SHOW_IN_OS": "Прикажи у ОС датотекама",
   "CMD_SWITCH_PANE_FOCUS": "Пребаците фокус на окно",
   "CMD_OPEN_VFS": "Отворите виртуелни систем датотека",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Отвори фасциклу екстензија…",

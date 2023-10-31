@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "파일트리에서 보기",
   "CMD_SHOW_IN_EXPLORER": "탐색기에서 보기",
   "CMD_SHOW_IN_FINDER": "파인더에서 보기",
-  "CMD_SHOW_IN_OS": "파일 위치 열기",
+  "CMD_SHOW_IN_OS": "OS 파일에 표시",
   "CMD_SWITCH_PANE_FOCUS": "창 초점 전환",
   "CMD_OPEN_VFS": "가상 파일 시스템 열기",
   "CMD_OPEN_EXTENSIONS_FOLDER": "확장 폴더 열기…",

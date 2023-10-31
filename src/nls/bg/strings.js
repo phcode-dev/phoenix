@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Показване в дървото на файловете",
   "CMD_SHOW_IN_EXPLORER": "Показване в Explorer",
   "CMD_SHOW_IN_FINDER": "Показване във Finder",
-  "CMD_SHOW_IN_OS": "Показване в ОС",
+  "CMD_SHOW_IN_OS": "Показване в OS файлове",
   "CMD_SWITCH_PANE_FOCUS": "Превключване на фокуса на екрана",
   "CMD_OPEN_VFS": "Отворете виртуална файлова система",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Отворете папката с разширения...",

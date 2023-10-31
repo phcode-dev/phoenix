@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "ഫയൽ ട്രീയിൽ കാണിക്കുക",
   "CMD_SHOW_IN_EXPLORER": "എക്സ്പ്ലോററിൽ കാണിക്കുക",
   "CMD_SHOW_IN_FINDER": "ഫൈൻഡറിൽ കാണിക്കുക",
-  "CMD_SHOW_IN_OS": "OS-ൽ കാണിക്കുക",
+  "CMD_SHOW_IN_OS": "OS ഫയലുകളിൽ കാണിക്കുക",
   "CMD_SWITCH_PANE_FOCUS": "പാൻ ഫോക്കസ് മാറുക",
   "CMD_OPEN_VFS": "വെർച്വൽ ഫയൽ സിസ്റ്റം തുറക്കുക",
   "CMD_OPEN_EXTENSIONS_FOLDER": "വിപുലീകരണ ഫോൾഡർ തുറക്കുക...",

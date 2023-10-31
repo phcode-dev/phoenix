@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "إظهار في شجرة الملفات",
   "CMD_SHOW_IN_EXPLORER": "تظهر في Explorer",
   "CMD_SHOW_IN_FINDER": "اظهر في الباحث",
-  "CMD_SHOW_IN_OS": "تظهر في نظام التشغيل",
+  "CMD_SHOW_IN_OS": "تظهر في ملفات نظام التشغيل",
   "CMD_SWITCH_PANE_FOCUS": "التركيز على جزء التبديل",
   "CMD_OPEN_VFS": "افتح نظام الملفات الافتراضي",
   "CMD_OPEN_EXTENSIONS_FOLDER": "فتح مجلد الملحقات...",

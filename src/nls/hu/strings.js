@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Megjelenítés a Fastruktúrában",
   "CMD_SHOW_IN_EXPLORER": "Megjelenítés az Intézőben",
   "CMD_SHOW_IN_FINDER": "Megjelenítés a Finderben",
-  "CMD_SHOW_IN_OS": "Megjelenítés Intézőben",
+  "CMD_SHOW_IN_OS": "Megjelenítés az OS-fájlokban",
   "CMD_SWITCH_PANE_FOCUS": "Switch Pane Focus",
   "CMD_OPEN_VFS": "Nyissa meg a Virtuális fájlrendszert",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Nyissa meg a Bővítmények mappát…",

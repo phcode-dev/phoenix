@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Visa i filträdet",
   "CMD_SHOW_IN_EXPLORER": "Visa i Utforskaren",
   "CMD_SHOW_IN_FINDER": "Visa i Finder",
-  "CMD_SHOW_IN_OS": "Visa i operativsystemet",
+  "CMD_SHOW_IN_OS": "Visa i OS-filer",
   "CMD_SWITCH_PANE_FOCUS": "Växla panelfokus",
   "CMD_OPEN_VFS": "Öppna Virtual File System",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Öppna tilläggsmappen...",

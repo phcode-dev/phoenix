@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Toon in bestandsboom",
   "CMD_SHOW_IN_EXPLORER": "Toon in Verkenner",
   "CMD_SHOW_IN_FINDER": "Toon in Finder",
-  "CMD_SHOW_IN_OS": "Toon in besturingssysteem",
+  "CMD_SHOW_IN_OS": "Weergeven in besturingssysteembestanden",
   "CMD_SWITCH_PANE_FOCUS": "Paneelfocus wisselen",
   "CMD_OPEN_VFS": "Virtueel bestandssysteem openen",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Map Extensies openen…",

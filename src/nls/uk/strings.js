@@ -380,7 +380,7 @@ define({
   "CMD_SHOW_IN_TREE": "Показати у дереві файлів",
   "CMD_SHOW_IN_EXPLORER": "Показати у провіднику",
   "CMD_SHOW_IN_FINDER": "Показати у Finder",
-  "CMD_SHOW_IN_OS": "Показати у ОС",
+  "CMD_SHOW_IN_OS": "Показати у файлах ОС",
   "CMD_SWITCH_PANE_FOCUS": "Переключити фокус панелі",
   "CMD_OPEN_VFS": "Відкрийте віртуальну файлову систему",
   "CMD_OPEN_EXTENSIONS_FOLDER": "Відкрити папку розширень…",
