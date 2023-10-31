@@ -1888,8 +1888,14 @@ define(function (require, exports, module) {
         };
     }
 
+    let closeInProgress;
     function attachTauriUnloadHandler() {
         window.__TAURI__.window.appWindow.onCloseRequested((event)=>{
+            if(closeInProgress){
+                event.preventDefault();
+                return;
+            }
+            closeInProgress = true;
             PreferencesManager.setViewState("windowClosingTime", new Date().getTime(), {}, false);
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
@@ -1897,6 +1903,7 @@ define(function (require, exports, module) {
                 Phoenix.app.closeWindow();
             }, closeFail=>{
                 console.log('close fail: ', closeFail);
+                closeInProgress = false;
             });
         });
     }
