@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, fs, path*/
+/*global describe, it, expect, beforeEach, afterEach, fs, path, Phoenix*/
 
 define(function (require, exports, module) {
     if(!window.__TAURI__) {
@@ -94,6 +94,41 @@ define(function (require, exports, module) {
             it("Should not be able to fetch files in appLocalData folder", async function () {
                 await testAssetNotAccessibleFolder(await window.__TAURI__.path.appLocalDataDir());
             });
+
+            function createWebView() {
+                return new Promise((resolve, reject)=>{
+                    let currentURL = new URL(location.href);
+                    let pathParts = currentURL.pathname.split('/');
+                    pathParts[pathParts.length - 1] = 'spec/Tauri-platform-test.html';
+                    currentURL.pathname = pathParts.join('/');
+
+                    let newURL = currentURL.href;
+                    Phoenix.app.openURLInPhoenixWindow(newURL)
+                        .then(tauriWindow =>{
+                            expect(tauriWindow.label.startsWith("phcode-")).toBeTrue();
+                            tauriWindow.listen('TAURI_API_WORKING', function () {
+                                resolve(tauriWindow);
+                            });
+                        }).catch(reject);
+                });
+
+            }
+
+            it("Should be able to spawn tauri windows", async function () {
+                const tauriWindow = await createWebView();
+                await tauriWindow.close();
+            });
+
+            const maxWindows = 25;
+            it(`Should be able to spawn ${maxWindows} tauri windows`, async function () {
+                const tauriWindows = [];
+                for(let i=0; i<maxWindows; i++){
+                    tauriWindows.push(await createWebView());
+                }
+                for(let i=0; i<maxWindows; i++){
+                    await tauriWindows[i].close();
+                }
+            }, 120000);
         });
     });
 });

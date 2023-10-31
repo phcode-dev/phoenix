@@ -32,10 +32,27 @@ import initTauriShell from "./tauriShell.js";
 
 initVFS();
 
-let windowLabelCount = 0;
-// create a unique prefix for each window so that it doesnt collide with
-// new window from other phoenix windows in same app session.
-const labelPrefix = `phcode-${crypto.randomUUID().split("-")[0]}`;
+// We can only have a maximum of 30 windows that have access to tauri apis
+// This limit is set in file `tauri.conf.json` in phoenix-desktop repo at json paths
+// this limit is there due to our use of phcode:// custom protocol.
+// /tauri/security/dangerousRemoteDomainIpcAccess/0/windows and
+// /tauri/security/dangerousRemoteDomainIpcAccess/1/windows
+let MAX_ALLOWED_TAURI_WINDOWS = 30;
+
+async function getTauriWindowLabel() {
+    const tauriWindows = await window.__TAURI__.window.getAll();
+    const windowLabels = {};
+    for(let {label} of tauriWindows) {
+        windowLabels[label]=true;
+    }
+    for(let i=1; i<=MAX_ALLOWED_TAURI_WINDOWS; i++){
+        const windowLabel = `phcode-${i}`;
+        if(!windowLabels[windowLabel]){
+            return windowLabel;
+        }
+    }
+    throw new Error("Could not get a free window label to create tauri window");
+}
 Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
@@ -99,22 +116,14 @@ Phoenix.app = {
                 .catch(reject);
         });
     },
-    openURLInPhoenixWindow: function (url, {
-        windowTitle, windowLabel, fullscreen, resizable,
+    openURLInPhoenixWindow: async function (url, {
+        windowTitle, fullscreen, resizable,
         height, minHeight, width, minWidth, acceptFirstMouse, preferTabs
     } = {}){
         const defaultHeight = 900, defaultWidth = 1366;
         if(window.__TAURI__){
-            let tauriWindow;
-            if(windowLabel) {
-                tauriWindow = window.__TAURI__.window.WebviewWindow.getByLabel(windowLabel);
-                if(tauriWindow) {
-                    console.error(`An existing window already exists for windowLabel:${windowLabel}, please close window and call openURLInPhoenixWindow!`);
-                    return tauriWindow;
-                }
-            }
-
-            tauriWindow = new window.__TAURI__.window.WebviewWindow(windowLabel || `${labelPrefix}-${windowLabelCount++}`, {
+            const windowLabel = await getTauriWindowLabel();
+            const tauriWindow = new window.__TAURI__.window.WebviewWindow(windowLabel, {
                 url,
                 title: windowTitle || windowLabel || url,
                 fullscreen,
@@ -136,7 +145,7 @@ Phoenix.app = {
         if(preferTabs) {
             features = "";
         }
-        const nativeWindow = window.open(url, windowLabel||'_blank', features);
+        const nativeWindow = window.open(url, '_blank', features);
         nativeWindow.isTauriWindow = false;
         return nativeWindow;
     },
