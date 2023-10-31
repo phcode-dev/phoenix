@@ -57,6 +57,12 @@ Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
+    closeWindow: function () {
+        if(!Phoenix.browser.isTauri){
+            throw new Error("closeWindow is not supported in browsers");
+        }
+        window.__TAURI__.window.appWindow.close();
+    },
     getDisplayLocation: function (fullVFSPath) {
         // reruns a user-friendly location that can be shown to the user to make some sense of the virtual file path.
         // The returned path may not be an actual path if it is not resolvable to a platform path, but a text indicating

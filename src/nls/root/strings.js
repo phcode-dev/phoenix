@@ -162,8 +162,8 @@ define({
     "EXT_DELETED_MESSAGE": "<span class='dialog-filename'>{0}</span> has been deleted on disk outside of {APP_NAME}, but has unsaved changes in {APP_NAME}.<br /><br />Do you want to keep your changes?",
 
     // Window unload warning messages
-    "WINDOW_UNLOAD_WARNING": "Are you sure you want to navigate to a different URL and leave Brackets?",
-    "WINDOW_UNLOAD_WARNING_WITH_UNSAVED_CHANGES": "You have unsaved changes! Are you sure you want to navigate to a different URL and leave Brackets?",
+    "WINDOW_UNLOAD_WARNING": "Are you sure you want to navigate to a different URL and leave {APP_NAME}?",
+    "WINDOW_UNLOAD_WARNING_WITH_UNSAVED_CHANGES": "You have unsaved changes! Are you sure you want to navigate to a different URL and leave {APP_NAME}?",
 
     // Generic dialog/button labels
     "DONE": "Done",
