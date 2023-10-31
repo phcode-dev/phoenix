@@ -1863,14 +1863,13 @@ define(function (require, exports, module) {
      * Make sure we don't attach this handler if the current window is actually a test window
     **/
 
-    var isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
-    if (!isTestWindow) {
+    function attachBrowserUnloadHandler() {
         window.onbeforeunload = function(e) {
             PreferencesManager.setViewState("windowClosingTime", new Date().getTime(), {}, false);
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
             }, closeFail=>{
-                console.log('close success: ', closeFail);
+                console.log('close fail: ', closeFail);
             });
             var openDocs = DocumentManager.getAllOpenDocuments();
 
@@ -1887,6 +1886,28 @@ define(function (require, exports, module) {
                 return Strings.WINDOW_UNLOAD_WARNING;
             }
         };
+    }
+
+    function attachTauriUnloadHandler() {
+        window.__TAURI__.window.appWindow.onCloseRequested((event)=>{
+            PreferencesManager.setViewState("windowClosingTime", new Date().getTime(), {}, false);
+            event.preventDefault();
+            _handleWindowGoingAway(null, closeSuccess=>{
+                console.log('close success: ', closeSuccess);
+                Phoenix.app.closeWindow();
+            }, closeFail=>{
+                console.log('close fail: ', closeFail);
+            });
+        });
+    }
+
+    let isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
+    if (!isTestWindow) {
+        if(Phoenix.browser.isTauri) {
+            attachTauriUnloadHandler();
+        } else {
+            attachBrowserUnloadHandler();
+        }
     }
 
     /** Do some initialization when the DOM is ready **/
