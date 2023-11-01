@@ -160,8 +160,13 @@ define(function (require, exports, module) {
         let subMenu = menu.addSubMenu(Strings.CMD_ZOOM_UI, Commands.VIEW_ZOOM_SUBMENU);
         subMenu.addMenuItem(Commands.VIEW_ZOOM_IN);
         subMenu.addMenuItem(Commands.VIEW_ZOOM_OUT);
-        subMenu.addMenuItem(Commands.VIEW_INCREASE_FONT_SIZE);
-        subMenu.addMenuItem(Commands.VIEW_DECREASE_FONT_SIZE);
+        if(!Phoenix.browser.isTauri) {
+            // tauri doesnt support zoomin/out and the document.body.style.zoom = 1.5 trick didnt work
+            // as code mirror doesnt support css transform styles. so we just show increase and decrease
+            // font size as zoom. so we wont register redundant VIEW_INCREASE_FONT_SIZE commands in tauri
+            subMenu.addMenuItem(Commands.VIEW_INCREASE_FONT_SIZE);
+            subMenu.addMenuItem(Commands.VIEW_DECREASE_FONT_SIZE);
+        }
         subMenu.addMenuItem(Commands.VIEW_RESTORE_FONT_SIZE);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.TOGGLE_ACTIVE_LINE);
