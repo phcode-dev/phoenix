@@ -546,8 +546,16 @@ define(function (require, exports, module) {
     // Register command handlers
     CommandManager.register(Strings.CMD_INCREASE_FONT_SIZE, Commands.VIEW_INCREASE_FONT_SIZE,  _handleIncreaseFontSize);
     CommandManager.register(Strings.CMD_DECREASE_FONT_SIZE, Commands.VIEW_DECREASE_FONT_SIZE,  _handleDecreaseFontSize);
-    CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleZoom, {eventSource: true});
-    CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleZoom, {eventSource: true});
+    if(Phoenix.browser.isTauri){
+        // tauri doesnt support zoomin/out and the document.body.style.zoom = 1.5 trick didnt work
+        // as code mirror doesnt support css transform styles. so we just show increase and decrease
+        // font size as zoom.
+        CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleIncreaseFontSize, {eventSource: true});
+        CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleDecreaseFontSize, {eventSource: true});
+    } else {
+        CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleZoom, {eventSource: true});
+        CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleZoom, {eventSource: true});
+    }
     CommandManager.register(Strings.CMD_RESTORE_FONT_SIZE,  Commands.VIEW_RESTORE_FONT_SIZE,   _handleRestoreFontSize);
     CommandManager.register(Strings.CMD_SCROLL_LINE_UP,     Commands.VIEW_SCROLL_LINE_UP,      _handleScrollLineUp);
     CommandManager.register(Strings.CMD_SCROLL_LINE_DOWN,   Commands.VIEW_SCROLL_LINE_DOWN,    _handleScrollLineDown);
