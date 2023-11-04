@@ -111,7 +111,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build phoenix
-        run: npm run build
+        run: |
+          npm run build
+          npm run release:prod
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
@@ -120,35 +122,35 @@ jobs:
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: npm run testChromium
+          command: npm run testChromiumDist
 
       - name: Run Playwright integration tests in Chromium
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: npx cross-env TEST_ENV=integration npm run testChromium
+          command: npx cross-env TEST_ENV=integration npm run testChromiumDist
 
       - name: Run Playwright mainview tests in Chromium
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: npx cross-env TEST_ENV=mainview npm run testChromium
+          command: npx cross-env TEST_ENV=mainview npm run testChromiumDist
 
       - name: Run Playwright livepreview tests in Chromium
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
           max_attempts: 3
-          command: npx cross-env TEST_ENV=livepreview npm run testChromium
+          command: npx cross-env TEST_ENV=livepreview npm run testChromiumDist
 
       - name: Run Playwright LegacyInteg tests in Chromium
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 20
           max_attempts: 3
-          command: npx cross-env TEST_ENV=LegacyInteg npm run testChromium
+          command: npx cross-env TEST_ENV=LegacyInteg npm run testChromiumDist
 
   playwrightFirefoxLinux:
     timeout-minutes: 90
@@ -256,7 +258,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build phoenix
-        run: npm run build
+        run: |
+          npm run build
+          npm run release:prod
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
@@ -265,32 +269,32 @@ jobs:
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: npm run testFirefox
+          command: npm run testFirefoxDist
 
       - name: Run Playwright integration tests in Firefox
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: npx cross-env TEST_ENV=integration npm run testFirefox
+          command: npx cross-env TEST_ENV=integration npm run testFirefoxDist
 
       - name: Run Playwright mainview tests in Firefox
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 12
           max_attempts: 3
-          command: npx cross-env TEST_ENV=mainview npm run testFirefox
+          command: npx cross-env TEST_ENV=mainview npm run testFirefoxDist
 
       - name: Run Playwright livepreview tests in Firefox
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
           max_attempts: 3
-          command: npx cross-env TEST_ENV=livepreview npm run testFirefox
+          command: npx cross-env TEST_ENV=livepreview npm run testFirefoxDist
 
       - name: Run Playwright LegacyInteg tests in Firefox
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 20
           max_attempts: 3
-          command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefox
+          command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefoxDist
