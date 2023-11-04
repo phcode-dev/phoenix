@@ -1,5 +1,7 @@
 name: 'Desktop-Linux full test suite run on pull request'
-on: [pull_request]
+on:
+  pull_request:
+    branches: [ main ]
 
 concurrency:
   group: pr-desktop-linux-${{ github.event.pull_request.number }}
