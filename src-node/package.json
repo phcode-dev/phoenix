@@ -11,7 +11,7 @@
         "_watch_src-node": "cd .. && npm run _watch_src-node"
     },
     "engines": {
-        "node": "18"
+        "node": "20"
     },
     "repository": {
         "type": "git",
@@ -20,6 +20,6 @@
     "IMPORTANT!!": "Adding things here will bloat up the package size",
     "dependencies": {
         "@phcode/fs": "^2.0.5",
-        "npm": "9.8.1"
+        "npm": "10.1.0"
     }
 }
