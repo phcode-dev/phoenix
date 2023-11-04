@@ -1,12 +1,8 @@
-name: On-Push staging or prod Chromium and firefox (Win/Mac/Linux) run full tests suite
+name: On pull request on staging or prod branch, Chromium and firefox (Win/Mac/Linux) run full tests suite
 
 on:
-  push:
+  pull_request:
     branches: [ staging, prod ]
-
-permissions:
-  contents: read
-  issues: write
 
 jobs:
   playwrightChromiumLinux:
@@ -298,51 +294,3 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefox
-
-  raiseIssue:
-    needs: [ playwrightChromiumLinux, playwrightChromiumWindows, playwrightChromiumMacos, playwrightFirefoxLinux, playwrightFirefoxWindows, playwrightFirefoxMacos]
-    runs-on: ubuntu-latest
-    if: |
-      always()  && (    # This ensures that this job runs even if the previous jobs failed
-        needs.playwrightChromiumLinux.result == 'failure' || 
-        needs.playwrightChromiumWindows.result == 'failure' ||
-        needs.playwrightChromiumMacos.result == 'failure' ||
-        needs.playwrightFirefoxLinux.result == 'failure' || 
-        needs.playwrightFirefoxWindows.result == 'failure' ||
-        needs.playwrightFirefoxMacos.result == 'failure'
-      )
-    steps:
-      - name: Check for failures and raise an issue
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const issueTitle = "Test failure on push: commit ${{github.sha}}";
-            const runURL = `https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}`;
-            let issueBody = `There was a test failure. Please investigate.\n\n[Check the failed run here](${runURL})\n\n`;
-            
-            if (needs.playwrightChromiumLinux.result == 'failure') {
-              issueBody += " - Chromium-Linux tests failed.\n";
-            }
-            if (needs.playwrightChromiumWindows.result == 'failure') {
-              issueBody += " - Chromium windows tests failed.\n";
-            }
-            if (needs.playwrightChromiumMacos.result == 'failure') {
-              issueBody += " - Chromium MacOS tests failed.\n";
-            }
-            if (needs.playwrightFirefoxLinux.result == 'failure') {
-              issueBody += " - Firefox linux tests failed.\n";
-            }
-            if (needs.playwrightFirefoxWindows.result == 'failure') {
-              issueBody += " - Firefox Windows tests failed.\n";
-            }
-            if (needs.playwrightFirefoxMacos.result == 'failure') {
-              issueBody += " - Firefox MacOS tests failed.\n";
-            }
-            
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: issueTitle,
-              body: issueBody
-            });
