@@ -65,11 +65,14 @@ function _isServiceWorkerLoaderPage() {
     const indexUrl = `${location.origin}/index.html`,
         baseUrl = `${location.origin}/`,
         devURL = 'http://localhost:8000/src/',
+        distTestURL = 'http://localhost:8000/dist-test/src/',
         playwrightDevURL = 'http://localhost:5000/src/',
+        playwrightDistTestURL = 'http://localhost:5000/dist-test/src/',
         currentURL = _getBaseURL();
     console.log("currentURL", currentURL, indexUrl, baseUrl, devURL);
-    return (currentURL === baseUrl || currentURL === indexUrl || currentURL === devURL ||
-        (currentURL === playwrightDevURL && window.Phoenix.browser.desktop.isChromeBased));
+    return (currentURL === baseUrl || currentURL === indexUrl || currentURL === devURL || currentURL === distTestURL ||
+        (currentURL === playwrightDevURL && window.Phoenix.browser.desktop.isChromeBased) ||
+        (currentURL === playwrightDistTestURL && window.Phoenix.browser.desktop.isChromeBased));
         // we dont spawn virtual server in iframe playwright linux/safari as playwright linux/safari fails badly
         // we dont need virtual server for tests except for live preview and custom extension load tests,
         // which are disabled in playwright. We test in chrome atleast as chromium support is a baseline.
