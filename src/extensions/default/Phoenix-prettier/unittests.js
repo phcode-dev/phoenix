@@ -33,30 +33,30 @@ define(function (require, exports, module) {
 
     require("./main");
 
-    const jsFile = require("text!./test-files/js/test.js"),
-        jsPrettyFile = require("text!./test-files/js/test-pretty.js"),
-        jsPrettySelection = require("text!./test-files/js/test-pretty-selection.js"),
-        jsPrettySelectionOffset = require("text!./test-files/js/test-pretty-selection-offset.js"),
-        jsPrettySingleSpace = require("text!./test-files/js/test-pretty-single-space.js"),
-        jsPrettyTabs = require("text!./test-files/js/test-pretty-tabs.txt");
+    const jsFile = require("text!../../../../test/spec/prettier-test-files/js/test.js"),
+        jsPrettyFile = require("text!../../../../test/spec/prettier-test-files/js/test-pretty.js"),
+        jsPrettySelection = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-selection.js"),
+        jsPrettySelectionOffset = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-selection-offset.js"),
+        jsPrettySingleSpace = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-single-space.js"),
+        jsPrettyTabs = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-tabs.txt");
 
-    const htmlFile = require("text!./test-files/html/test.html"),
-        htmlPrettyFile = require("text!./test-files/html/test-pretty.html"),
-        htmlPrettySelection = require("text!./test-files/html/test-pretty-selection.html"),
-        htmlPrettySelectionOffset = require("text!./test-files/html/test-pretty-selection-offset.html"),
-        htmlPrettySingleSpace = require("text!./test-files/html/test-pretty-single-space.html"),
-        htmlPrettyTabs = require("text!./test-files/html/test-pretty-tabs.txt");
+    const htmlFile = require("text!../../../../test/spec/prettier-test-files/html/test.html"),
+        htmlPrettyFile = require("text!../../../../test/spec/prettier-test-files/html/test-pretty.html"),
+        htmlPrettySelection = require("text!../../../../test/spec/prettier-test-files/html/test-pretty-selection.html"),
+        htmlPrettySelectionOffset = require("text!../../../../test/spec/prettier-test-files/html/test-pretty-selection-offset.html"),
+        htmlPrettySingleSpace = require("text!../../../../test/spec/prettier-test-files/html/test-pretty-single-space.html"),
+        htmlPrettyTabs = require("text!../../../../test/spec/prettier-test-files/html/test-pretty-tabs.txt");
 
-    const cssFile = require("text!./test-files/css/test.css"),
-        cssPrettyFile = require("text!./test-files/css/test-pretty.css"),
-        cssPrettySelection = require("text!./test-files/css/test-pretty-selection.css");
+    const cssFile = require("text!../../../../test/spec/prettier-test-files/css/test.css"),
+        cssPrettyFile = require("text!../../../../test/spec/prettier-test-files/css/test-pretty.css"),
+        cssPrettySelection = require("text!../../../../test/spec/prettier-test-files/css/test-pretty-selection.css");
 
-    const mdFile = require("text!./test-files/test.md"),
-        mdPrettyFile = require("text!./test-files/test-pretty.md"),
-        lessFile = require("text!./test-files/test.less"),
-        lessPrettyFile = require("text!./test-files/test-pretty.less"),
-        jsonFile = require("text!./test-files/test.json"),
-        jsonPrettyFile = require("text!./test-files/test-pretty.json");
+    const mdFile = require("text!../../../../test/spec/prettier-test-files/test.md"),
+        mdPrettyFile = require("text!../../../../test/spec/prettier-test-files/test-pretty.md"),
+        lessFile = require("text!../../../../test/spec/prettier-test-files/test.less"),
+        lessPrettyFile = require("text!../../../../test/spec/prettier-test-files/test-pretty.less"),
+        jsonFile = require("text!../../../../test/spec/prettier-test-files/test.json"),
+        jsonPrettyFile = require("text!../../../../test/spec/prettier-test-files/test-pretty.json");
 
     describe("integration: Phoenix Prettier", function () {
         let testEditor, testDocument;
