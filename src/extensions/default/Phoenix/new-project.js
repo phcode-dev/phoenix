@@ -102,6 +102,9 @@ define(function (require, exports, module) {
             guidedTour.startTourIfNeeded();
             return;
         }
+        if(ProjectManager.getProjectRoot().fullPath !== ProjectManager.getWelcomeProjectPath()){
+            return;
+        }
         _showNewProjectDialogue();
     }
 
