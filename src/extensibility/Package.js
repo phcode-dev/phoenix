@@ -179,7 +179,7 @@ define(function (require, exports, module) {
             return d.promise();
         }
         if (!(parsed.protocol === "http:" || parsed.protocol === "https:"
-            || parsed.protocol === "phcode:" || parsed.protocol === "asset:")) {
+            || parsed.protocol === "phtauri:" || parsed.protocol === "asset:")) {
             d.reject(Errors.UNSUPPORTED_PROTOCOL);
             return d.promise();
         }

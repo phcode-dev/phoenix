@@ -269,7 +269,7 @@ define(function (require, exports, module) {
      */
     function loadMetadata(metadataURL, extensionName) {
         if(metadataURL.startsWith("http://") || metadataURL.startsWith("https://")
-            || metadataURL.startsWith("phcode://") || metadataURL.startsWith("asset://")) {
+            || metadataURL.startsWith("phtauri://") || metadataURL.startsWith("asset://")) {
             return _loadExtensionMetadata(metadataURL, extensionName);
         }
         throw new Error(`Cannot load extension metadata for ${extensionName} at path ${metadataURL}`);

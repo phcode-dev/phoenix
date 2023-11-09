@@ -202,7 +202,7 @@ define(function (require, exports, module) {
      */
     function _mergeConfig(baseConfig) {
         if(baseConfig.baseUrl.startsWith("http://") || baseConfig.baseUrl.startsWith("https://")
-            || baseConfig.baseUrl.startsWith("phcode://") || baseConfig.baseUrl.startsWith("asset://")) {
+            || baseConfig.baseUrl.startsWith("phtauri://") || baseConfig.baseUrl.startsWith("asset://")) {
             return _mergeConfigFromURL(baseConfig);
         }
         throw new Error("Config can only be loaded from an http url, but got" + baseConfig.baseUrl);
@@ -394,7 +394,7 @@ define(function (require, exports, module) {
         var result = new $.Deferred(),
             extensionPath = config.baseUrl + "/" + entryPoint + ".js";
         if(extensionPath.startsWith("http://") || extensionPath.startsWith("https://")
-            || extensionPath.startsWith("phcode://") || extensionPath.startsWith("asset://")) {
+            || extensionPath.startsWith("phtauri://") || extensionPath.startsWith("asset://")) {
             return _testExtensionByURL(name, config, entryPoint);
         }
 

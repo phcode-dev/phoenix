@@ -59,7 +59,7 @@ define(function (require, exports, module) {
 
     function _openFile(fileRelativePath, mainDocPath) {
         if(fileRelativePath.startsWith("http://") || fileRelativePath.startsWith("https://")
-            || fileRelativePath.startsWith("phcode://") || fileRelativePath.startsWith("asset://")){
+            || fileRelativePath.startsWith("phtauri://") || fileRelativePath.startsWith("asset://")){
             return FileViewController.openAndSelectDocument(fileRelativePath, FileViewController.PROJECT_MANAGER);
         }
         const targetPath = path.resolve(mainDocPath, fileRelativePath);

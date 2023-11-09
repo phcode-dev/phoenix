@@ -1221,7 +1221,7 @@ define(function (require, exports, module) {
     // attach remote file handlers
     var HTTP_PROTOCOL = "http:",
         HTTPS_PROTOCOL = "https:",
-        TAURI_PROTOCOL = "phcode:",
+        TAURI_PROTOCOL = "phtauri:",
         TAURI_ASSET_PROTOCOL = "asset:";
 
     var protocolAdapter = {
