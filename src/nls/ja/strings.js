@@ -842,7 +842,7 @@ define({
   "PREVIEW": "プレビュー",
   "BUILD_WEBSITE": "ウェブサイトの構築",
   "VIEW_MORE": "もっと見る...",
-  "NEW_PROJECT_NOTIFICATION": "このアイコンをクリックして<br/>新しいプロジェクトを作成します。</br><a href='#' style='float:right;'>わかった</a>",
+  "NEW_PROJECT_NOTIFICATION": "新しいプロジェクトを作成するには、このアイコンをクリックします。</br><img src=\"extensions/default/Phoenix/images/new_project.png\"><br/><a href='#' style='float:right;'>わかりました</a>",
   "BEAUTIFY_CODE_NOTIFICATION": "ここをクリックするか、 <b>`{0}`</b>を押してコードを整形します。</br><img src=\"extensions/default/Phoenix/images/beautify.gif\"><br/><a href='#' style='float:right;'>わかった</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "ここをクリックして開きます<br/>phoenix の<b>デフォルト プロジェクト</b>。</br><a href='#' style='float:right;'>わかった</a>",
   "DIRECTORY_REPLACE_MESSAGE": "選択したフォルダー<span class='dialog-filename'>{0}</span>は空ではありません。フォルダーの内容をプロジェクトに置き換えてよろしいですか?",

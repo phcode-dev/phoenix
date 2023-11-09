@@ -842,7 +842,7 @@ define({
   "PREVIEW": "previzualizare",
   "BUILD_WEBSITE": "Construiește site-ul web",
   "VIEW_MORE": "Vezi mai mult...",
-  "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a<br/> creați un nou proiect.</br> <a href='#' style='float:right;'>O.K</a>",
+  "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a crea un proiect nou.</br><img src=\"extensions/default/Phoenix/images/new_project.png\"><br/> <a href='#' style='float:right;'>Bine</a>",
   "BEAUTIFY_CODE_NOTIFICATION": "Faceți clic aici sau apăsați <b>`{0}`</b> pentru a înfrumuseța codul.</br><img src=\"extensions/default/Phoenix/images/beautify.gif\"><br/> <a href='#' style='float:right;'>Bine</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Faceți clic aici pentru a deschide<br/> <b>proiect implicit</b> în Phoenix.</br> <a href='#' style='float:right;'>O.K</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Dosarul selectat <span class='dialog-filename'>{0}</span> nu este gol. Sigur doriți să înlocuiți conținutul folderului cu proiectul?",
