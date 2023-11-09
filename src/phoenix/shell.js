@@ -34,7 +34,7 @@ initVFS();
 
 // We can only have a maximum of 30 windows that have access to tauri apis
 // This limit is set in file `tauri.conf.json` in phoenix-desktop repo at json paths
-// this limit is there due to our use of phcode:// custom protocol.
+// this limit is there due to our use of phtauri:// custom protocol.
 // /tauri/security/dangerousRemoteDomainIpcAccess/0/windows and
 // /tauri/security/dangerousRemoteDomainIpcAccess/1/windows
 let MAX_ALLOWED_TAURI_WINDOWS = 30;

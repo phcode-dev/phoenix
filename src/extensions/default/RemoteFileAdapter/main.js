@@ -34,7 +34,7 @@ define(function (require, exports, module) {
 
     const HTTP_PROTOCOL = "http:",
         HTTPS_PROTOCOL = "https:",
-        TAURI_PROTOCOL = "phcode:",
+        TAURI_PROTOCOL = "phtauri:",
         TAURI_ASSET_PROTOCOL = "asset:";
 
     ExtensionUtils.loadStyleSheet(module, "styles.css");
@@ -48,8 +48,8 @@ define(function (require, exports, module) {
             return "https";
         }
 
-        if (data.fullPath.startsWith("phcode://")) {
-            return "phcode";
+        if (data.fullPath.startsWith("phtauri://")) {
+            return "phtauri";
         }
 
         if (data.fullPath.startsWith("asset://")) {

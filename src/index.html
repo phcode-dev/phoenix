@@ -45,7 +45,7 @@
      javascript module section only!!-->
     <script>
         if(location.href.startsWith("tauri://") || location.href.startsWith('https://tauri.localhost')){
-            const errorMessage = `You should use custom protocol phcode:// instead of tauri protocol ${location.href} .`;
+            const errorMessage = `You should use custom protocol phtauri:// instead of tauri protocol ${location.href} .`;
             alert(errorMessage);
             console.error(errorMessage);
             throw new Error(errorMessage);
@@ -268,8 +268,8 @@
                     'http://127.0.0.1:8000': true, // phcode dev server
                     'http://127.0.0.1:8001': true, // phcode dev live preview server
                     'http://127.0.0.1:5000': true, // playwright tests
-                    'phcode://localhost': true, // tauri prod app
-                    'https://phcode.localhost': true, // tauri
+                    'phtauri://localhost': true, // tauri prod app
+                    'https://phtauri.localhost': true, // tauri
                     'https://phcode.live': true, // phcode prod live preview server
                     'https://phcode.dev': true,
                     'https://dev.phcode.dev': true,
