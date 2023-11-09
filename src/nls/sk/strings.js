@@ -842,7 +842,7 @@ define({
   "PREVIEW": "Náhľad",
   "BUILD_WEBSITE": "Vytvoriť webovú stránku",
   "VIEW_MORE": "Vidieť viac...",
-  "NEW_PROJECT_NOTIFICATION": "Kliknite na túto ikonu<br/> vytvoriť nový projekt.</br> <a href='#' style='float:right;'>ok</a>",
+  "NEW_PROJECT_NOTIFICATION": "Kliknutím na túto ikonu vytvoríte nový projekt.</br><img src=\"extensions/default/Phoenix/images/new_project.png\"><br/> <a href='#' style='float:right;'>ok</a>",
   "BEAUTIFY_CODE_NOTIFICATION": "Ak chcete skrášliť kód, kliknite sem alebo stlačte <b>`{0}`</b> .</br><img src=\"extensions/default/Phoenix/images/beautify.gif\"><br/> <a href='#' style='float:right;'>ok</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Kliknutím sem otvoríte<br/> <b>predvolený projekt</b> vo Phoenixe.</br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybratý priečinok <span class='dialog-filename'>{0}</span> nie je prázdny. Naozaj chcete nahradiť obsah priečinka projektom?",

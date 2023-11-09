@@ -842,7 +842,7 @@ define({
   "PREVIEW": "Ön izleme",
   "BUILD_WEBSITE": "Web Sitesi Oluştur",
   "VIEW_MORE": "Daha fazla göster...",
-  "NEW_PROJECT_NOTIFICATION": "için bu simgeye tıklayın<br/> yeni bir proje oluşturun.</br> <a href='#' style='float:right;'>tamam</a>",
+  "NEW_PROJECT_NOTIFICATION": "Yeni bir proje oluşturmak için bu simgeye tıklayın.</br><img src=\"extensions/default/Phoenix/images/new_project.png\"><br/> <a href='#' style='float:right;'>Tamam</a>",
   "BEAUTIFY_CODE_NOTIFICATION": "Kodu Güzelleştirmek için burayı tıklayın veya <b>`{0}`</b> tuşuna basın.</br><img src=\"extensions/default/Phoenix/images/beautify.gif\"><br/> <a href='#' style='float:right;'>Tamam</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "açmak için buraya tıklayın<br/> phoenix&#39;te <b>varsayılan proje</b> .</br> <a href='#' style='float:right;'>tamam</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Seçilen klasör <span class='dialog-filename'>{0}</span> boş değil. Klasör içeriğini projeyle değiştirmek istediğinizden emin misiniz?",
