@@ -25,6 +25,7 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/CodeMirror
 /src/thirdparty/acorn
 /src/thirdparty/tern
+/src/thirdparty/mustache
 /src/thirdparty/jszip.js
 /src/thirdparty/fileSaver
 /src/thirdparty/jshint.js

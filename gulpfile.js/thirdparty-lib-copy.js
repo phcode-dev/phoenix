@@ -119,6 +119,9 @@ let copyThirdPartyLibs = series(
     // tinycolor.js
     copyFiles.bind(copyFiles, ['node_modules/tinycolor2/tinycolor.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/tinycolor2/LICENSE', 'tinycolor2'),
+    // mustache.js
+    copyFiles.bind(copyFiles, ['node_modules/mustache/mustache.js'], 'src/thirdparty/mustache'),
+    copyLicence.bind(copyLicence, 'node_modules/mustache/LICENSE', 'mustache'),
     // hilightjs
     copyFiles.bind(copyFiles, ['node_modules/@highlightjs/cdn-assets/highlight.min.js'],
         'src/thirdparty/highlight.js'),
