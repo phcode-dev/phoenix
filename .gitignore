@@ -55,6 +55,9 @@ test/thirdparty/jasmine-reporters
 /dist-test
 /distToDeploy
 /src/.index.html
+/src/brackets-min.js
+/src/styles/brackets-all.css
+/src/styles/brackets-all.css.map
 /src/styles/brackets.min.css
 /src/styles/brackets.min.css.map
 /src/assets/default-project/*.zip
