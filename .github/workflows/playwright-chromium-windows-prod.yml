@@ -5,11 +5,11 @@ on:
     branches: [ main ]
 
 concurrency:
-  group: pr-chromium-windows-${{ github.event.pull_request.number }}
+  group: pr-chromium-windows-prod-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  playwright-chromium-windows:
+  playwright-chromium-windows-prod:
     timeout-minutes: 90
     runs-on: windows-latest
     steps:

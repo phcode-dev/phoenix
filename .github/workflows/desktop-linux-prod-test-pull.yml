@@ -5,11 +5,11 @@ on:
     branches: [ main ]
 
 concurrency:
-  group: pr-desktop-linux-${{ github.event.pull_request.number }}
+  group: pr-desktop-linux-prod-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  test-desktop-linux:
+  test-desktop-linux-prod:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
