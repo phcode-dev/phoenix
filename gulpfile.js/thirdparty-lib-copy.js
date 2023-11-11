@@ -114,7 +114,9 @@ let copyThirdPartyLibs = series(
     copyFiles.bind(copyFiles, ['node_modules/bootstrap/dist/js/bootstrap.min.js',
         'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
         'node_modules/bootstrap/dist/css/bootstrap.min.css',
-        'node_modules/bootstrap/dist/css/bootstrap.min.css.map'], 'src/thirdparty/bootstrap'),
+        'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+        'node_modules/bootstrap/dist/css/bootstrap-grid.min.css',
+        'node_modules/bootstrap/dist/css/bootstrap-grid.min.css.map'], 'src/thirdparty/bootstrap'),
     copyLicence.bind(copyLicence, 'node_modules/bootstrap/LICENSE', 'bootstrap'),
     // tinycolor.js
     copyFiles.bind(copyFiles, ['node_modules/tinycolor2/tinycolor.js'], 'src/thirdparty'),

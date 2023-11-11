@@ -92,13 +92,13 @@ define(function (require, exports, module) {
 
         // build DOM immediately
         var container = $(
-            '<div id="interactiveReport" class="container-fluid" style="height: 95%; overflow: scroll; width: 100%;">' +
-                '<div class="row-fluid">' +
-                    '<div class="span4">' +
-                        '<ul id="suite-list" class="nav nav-pills nav-stacked">' +
+            '<div id="interactiveReport" class="container-fluid" style="overflow: scroll; width: 100%;">' +
+                '<div class="row">' +
+                    '<div class="col-md-4">' +
+                        '<ul id="suite-list" class="nav nav-pills flex-column">' +
                         '</ul>' +
                     '</div>' +
-                    '<div id="results-container" class="span8">' +
+                    '<div id="results-container" class="col-md-8">' +
                     '</div>' +
                 '</div>' +
                 '</div>'

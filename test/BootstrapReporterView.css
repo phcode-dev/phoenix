@@ -30,6 +30,9 @@ pre {
     .nav-pills > li > a {
         font-size: 11px;
     }
+    .container-fluid {
+        margin-top: 11.5em;
+    }
 }
 
 .link-to-source {
@@ -41,13 +44,25 @@ pre {
 }
 
 /* Add some space between the menu and the list of tests.  */
-.container-fluid {
-    margin-top: 1.5em;
+@media (min-width: 1200px) {
+    /* Reduce font size for smaller viewport */
+    .container-fluid {
+        margin-top: 2.5em;
+    }
 }
 
+@media (min-width: 1400px) {
+    /* Reduce font size for smaller viewport */
+    .container-fluid {
+        margin-top: 0.5em;
+    }
+}
 @media (min-width: 728px) and (max-width: 1199px) {
     .navbar-fixed-top .container,
     .navbar-fixed-bottom .container {
         width: 800px;
+    }
+    .container-fluid {
+        margin-top: 5.5em;
     }
 }
