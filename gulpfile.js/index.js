@@ -403,6 +403,9 @@ function listAllJsFilesRecursively(dirPath) {
 function makeBracketsConcatJS() {
     return new Promise((resolve)=>{
         const srcDir = "src/";
+        const DO_NOT_CONCATENATE = [
+            `${srcDir}preferences/PreferencesImpl.js` // tests does require magic on prefs, so exclude
+        ];
         const pathsToMerge = [];
         const PathsToIgnore = ["assets", "thirdparty", "extensions"];
         for(let dir of fs.readdirSync(srcDir, {withFileTypes: true})){
@@ -420,7 +423,7 @@ function makeBracketsConcatJS() {
                 const requirePath = file.replace(srcDir, "").replace(".js", "");
                 let content = fs.readFileSync(file, "utf8");
                 const count = content.split("define(").length - 1;
-                if(count === 0) {
+                if(count === 0 || DO_NOT_CONCATENATE.includes(file)) {
                     notConcatenatedJS.push(file);
                     continue;
                 }
