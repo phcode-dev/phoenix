@@ -420,8 +420,8 @@ function makeBracketsConcatJS() {
         for(let mergePath of pathsToMerge){
             let files = listAllJsFilesRecursively(`${srcDir}${mergePath}`);
             for(let file of files){
+                file = file.replaceAll("\\", "/"); // windows style paths to webby paths
                 let requirePath = file.replace(srcDir, "").replace(".js", "");
-                requirePath = requirePath.replaceAll("\\", "/"); // windows style paths to webby paths
                 let content = fs.readFileSync(file, "utf8");
                 const count = content.split("define(").length - 1;
                 if(count === 0 || DO_NOT_CONCATENATE.includes(file)) {
