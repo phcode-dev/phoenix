@@ -277,8 +277,8 @@
   <script src="../src/phoenix/shell.js" type="module"></script>
   <script src="virtual-server-loader.js" type="module"></script>
 
-  <link href="thirdparty/bootstrap2/css/bootstrap.min.css" rel="stylesheet">
-  <link href="thirdparty/bootstrap2/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="../src/thirdparty/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="../src/thirdparty/bootstrap/bootstrap-grid.min.css" rel="stylesheet">
   <link href="BootstrapReporterView.css" rel="stylesheet">
 
   <!-- Pre-load third party scripts that cannot be async loaded. -->
@@ -293,7 +293,7 @@
   </script>
   <link rel="stylesheet/less" type="text/css" href="../src/styles/brackets.less">
   <script src="../src/thirdparty/less.min.js"></script>
-  <script src="thirdparty/bootstrap2/js/bootstrap.min.js"></script>
+  <script src="../src/thirdparty/bootstrap/bootstrap.min.js"></script>
 
   <script src="thirdparty/jasmine-core/jasmine.js"></script>
   <script src="thirdparty/jasmine-core/jasmine-html.js"></script>
@@ -329,6 +329,7 @@
     }
 
     #phoenixIframeContainer {
+      z-index: 1;
       position: absolute;
       right: 10px;
       bottom: 40px;
@@ -413,8 +414,8 @@
 </head>
 
 <body style="user-select: text !important; display: flex" onload="init()">
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
+    <div class="navbar navbar-fixed-top" style="padding-top: 0;">
+      <div class="navbar-inner" style="width: 100%;">
         <div class="container" style="width: 100%;">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
