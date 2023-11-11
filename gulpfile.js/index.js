@@ -545,6 +545,20 @@ function validatePackageVersions() {
     });
 }
 
+function _patchMinifiedCSSInDistIndex() {
+    return new Promise((resolve)=>{
+        let content = fs.readFileSync("dist/index.html", "utf8");
+        if(!content.includes(`<link rel="stylesheet/less" type="text/css" href="styles/brackets.less">`)){
+            throw new Error(`Could not locate string <link rel="stylesheet/less" type="text/css" href="styles/brackets.less"> in file dist/index.html`)
+        }
+        content = content.replace(
+            `<link rel="stylesheet/less" type="text/css" href="styles/brackets.less">`,
+            `<link rel="stylesheet" type="text/css" href="styles/brackets-all.css">`)
+        fs.writeFileSync("dist/index.html", content, "utf8");
+        resolve();
+    });
+}
+
 const createDistTest = series(copyDistToDistTestFolder, copyTestToDistTestFolder, copyIndexToDistTestFolder);
 
 exports.build = series(copyThirdPartyLibs.copyAll, makeLoggerConfig, zipDefaultProjectFiles, zipSampleProjectFiles,
@@ -560,10 +574,10 @@ exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS,
     makeDistAll, releaseDev,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
-    makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, releaseStaging,
+    makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseStaging,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
-    makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, releaseProd,
+    makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseProd,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.serve = series(exports.build, serve);
 exports.zipTestFiles = series(zipTestFiles);
