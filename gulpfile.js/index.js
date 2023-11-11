@@ -553,7 +553,7 @@ function _patchMinifiedCSSInDistIndex() {
         }
         content = content.replace(
             `<link rel="stylesheet/less" type="text/css" href="styles/brackets.less">`,
-            `<link rel="stylesheet" type="text/css" href="styles/brackets-all.css">`)
+            `<link rel="stylesheet" type="text/css" href="styles/brackets-all.css">`);
         fs.writeFileSync("dist/index.html", content, "utf8");
         resolve();
     });
