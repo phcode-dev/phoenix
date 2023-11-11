@@ -71,7 +71,7 @@ define(function (require, exports, module) {
         var self = this,
             result = new $.Deferred();
         this.model = model;
-        this._itemTemplate = Mustache.compile(itemTemplate);
+        this._itemTemplate = itemTemplate;
         this._itemViews = {};
         this.$el = $("<div class='extension-list tab-pane' id='" + this.model.source + "'/>");
         this._$emptyMessage = $("<div class='empty-message'/>")
@@ -118,7 +118,7 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * @type {function} The compiled template we use for rendering items in the extension list.
+     * @type {string} The compiled template we use for rendering items in the extension list.
      */
     ExtensionManagerView.prototype._itemTemplate = null;
 
@@ -445,7 +445,7 @@ define(function (require, exports, module) {
             }
         }
 
-        return $(this._itemTemplate(context));
+        return $(Mustache.render(this._itemTemplate, context));
     };
 
     /**

@@ -23,6 +23,7 @@
 const del = require('del');
 const _ = require('lodash');
 const fs = require('fs');
+const path = require('path');
 const webserver = require('gulp-webserver');
 const { src, dest, series } = require('gulp');
 // removed require('merge-stream') node module. it gives wired glob behavior and some files goes missing
@@ -41,13 +42,23 @@ function cleanDist() {
     return del(['dist', 'dist-test']);
 }
 
+const RELEASE_BUILD_ARTEFACTS = [
+    'src/brackets-min.js',
+    'src/styles/brackets-all.css',
+    'src/styles/brackets-all.css.map'
+];
+function _cleanReleaseBuildArtefactsInSrc() {
+    return del(RELEASE_BUILD_ARTEFACTS);
+}
+
 function cleanAll() {
     return del([
         'node_modules',
         'dist',
         // Test artifacts
         'dist-test',
-        'test/spec/test_folders.zip'
+        'test/spec/test_folders.zip',
+        ...RELEASE_BUILD_ARTEFACTS
     ]);
 }
 
@@ -195,6 +206,13 @@ function _getBuildNumber() {
     // we count the number of commits in branch. which should give a incrementing
     // build number counter if there are any changes. Provided no one does a force push deleting commits.
     return execSync('git rev-list --count HEAD').toString().trim();
+}
+
+function _compileLessSrc() {
+    return new Promise((resolve)=> {
+        execSync('npm run _compileLessSrc');
+        resolve();
+    });
 }
 
 function _getAppConfigJS(configJsonStr) {
@@ -356,6 +374,84 @@ function _computeCacheManifest(baseDir, filePaths) {
     return manifest;
 }
 
+function listAllJsFilesRecursively(dirPath) {
+    const allFiles = [];
+
+    // Read the contents of the directory.
+    const files = fs.readdirSync(dirPath);
+
+    // Iterate over the files.
+    files.forEach(file => {
+        // Get the full path to the file.
+        const filePath = path.join(dirPath, file);
+
+        // Check if the file is a directory.
+        if (fs.statSync(filePath).isDirectory()) {
+            // Recursively list all JS files in the directory.
+            const nestedFiles = listAllJsFilesRecursively(filePath);
+            allFiles.push(...nestedFiles);
+        } else if (file.endsWith('.js')) {
+            // Add the JS file to the array.
+            allFiles.push(filePath);
+        }
+    });
+
+    // Return the array of all JS files.
+    return allFiles;
+}
+
+function makeBracketsConcatJS() {
+    return new Promise((resolve)=>{
+        const srcDir = "src/";
+        const pathsToMerge = [];
+        const PathsToIgnore = ["assets", "thirdparty", "extensions"];
+        for(let dir of fs.readdirSync(srcDir, {withFileTypes: true})){
+            if(dir.isDirectory() && !PathsToIgnore.includes(dir.name)){
+                pathsToMerge.push(dir.name);
+            }
+        }
+        console.log("Processing the following dirs for brackets-min.js", pathsToMerge);
+        let concatenatedFile = fs.readFileSync(`${srcDir}brackets.js`, "utf8");
+        let mergeCount = 0;
+        const notConcatenatedJS = [];
+        for(let mergePath of pathsToMerge){
+            let files = listAllJsFilesRecursively(`${srcDir}${mergePath}`);
+            for(let file of files){
+                const requirePath = file.replace(srcDir, "").replace(".js", "");
+                let content = fs.readFileSync(file, "utf8");
+                const count = content.split("define(").length - 1;
+                if(count === 0) {
+                    notConcatenatedJS.push(file);
+                    continue;
+                }
+                if(count !== 1){
+                    throw new Error("multiple define statements detected in file!!!" + file);
+                }
+                console.log("Merging: ", requirePath);
+                mergeCount ++;
+                content = content.replace("define(", `define("${requirePath}", `);
+                concatenatedFile = concatenatedFile + "\n" + content;
+            }
+        }
+        console.log("Not concatenated: ", notConcatenatedJS);
+        console.log(`Merged ${mergeCount} files into ${srcDir}brackets-min.js`);
+        fs.writeFileSync(`${srcDir}brackets-min.js`, concatenatedFile);
+        resolve();
+    });
+}
+
+function _renameBracketsConcatAsBracketsJSInDist() {
+    return new Promise((resolve)=>{
+        fs.unlinkSync("dist/brackets.js");
+        fs.copyFileSync("dist/brackets-min.js", "dist/brackets.js");
+        fs.copyFileSync("dist/brackets-min.js.map", "dist/brackets.js.map");
+        // cleanup minifed files
+        fs.unlinkSync("dist/brackets-min.js");
+        fs.unlinkSync("dist/brackets-min.js.map");
+        resolve();
+    });
+}
+
 function createCacheManifest(srcFolder) {
     return new Promise((resolve, reject)=>{
         _listFilesInDir(srcFolder).then((files)=>{
@@ -452,18 +548,23 @@ function validatePackageVersions() {
 const createDistTest = series(copyDistToDistTestFolder, copyTestToDistTestFolder, copyIndexToDistTestFolder);
 
 exports.build = series(copyThirdPartyLibs.copyAll, makeLoggerConfig, zipDefaultProjectFiles, zipSampleProjectFiles,
+    makeBracketsConcatJS, _compileLessSrc, _cleanReleaseBuildArtefactsInSrc, // these are here only as sanity check so as to catch release build minify fails not too late
     createSrcCacheManifest, validatePackageVersions);
 exports.buildDebug = series(copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, zipDefaultProjectFiles,
+    makeBracketsConcatJS, _compileLessSrc, _cleanReleaseBuildArtefactsInSrc, // these are here only as sanity check so as to catch release build minify fails not too late
     zipSampleProjectFiles, createSrcCacheManifest);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
 
-exports.releaseDev = series(cleanDist, exports.buildDebug, makeDistAll, releaseDev,
-    createDistCacheManifest, createDistTest);
-exports.releaseStaging = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseStaging,
-    createDistCacheManifest, createDistTest);
-exports.releaseProd = series(cleanDist, exports.build, makeDistNonJS, makeJSDist, releaseProd,
-    createDistCacheManifest, createDistTest);
+exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS, _compileLessSrc,
+    makeDistAll, releaseDev,
+    createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
+exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
+    makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, releaseStaging,
+    createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
+exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
+    makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, releaseProd,
+    createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.serve = series(exports.build, serve);
 exports.zipTestFiles = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);

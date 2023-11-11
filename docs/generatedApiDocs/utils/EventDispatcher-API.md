@@ -63,7 +63,7 @@ self.EventDispatcher.trigger("someEvent"); // within web worker
 
 ```js
 // in your extension js file.
-define(function (require, exports, module) {
+define (function (require, exports, module) {
     const EventDispatcher     = brackets.getModule("utils/EventDispatcher");
     EventDispatcher.makeEventDispatcher(exports); // This extension triggers some events
     let eventHandler = function (event, paramObject, paramVal) {

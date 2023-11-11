@@ -48,7 +48,8 @@ function generateDocs() {
 function processFile(file, cb) {
     // For file properties https://gulpjs.com/docs/en/api/vinyl/
     const code = file.contents.toString();
-    if(!code.includes("@"+ TAG_INCLUDE_IN_API_DOCS)) {
+    if(!code.includes("@"+ TAG_INCLUDE_IN_API_DOCS) ||
+        file.path.endsWith("brackets-min.js")) {
         cb(null, null); // omit this file
         return;
     }
