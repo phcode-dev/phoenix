@@ -55,7 +55,9 @@ to read and develop is a noop. We prioritize simplicity and eaze of development.
 ## Building Phoenix
 [Source Repository](https://github.com/phcode-dev/phoenix) 
 
-* Install gulp globally once.  `npm install -g gulp-cli` (use **sudo** in *nix systems)
+* Install gulp globally once. 
+  * In Mac/Linux: `sudo npm install -g gulp-cli`
+  * In Windows: `npm install -g gulp-cli`
 * run `npm install`
 * To build after npm install: 
   * `npm run build` - generate builds close to release builds locally.
