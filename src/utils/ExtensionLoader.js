@@ -207,6 +207,7 @@ define(function (require, exports, module) {
         }
         throw new Error("Config can only be loaded from an http url, but got" + baseConfig.baseUrl);
     }
+    const savedFSlib = window.fs;
 
     /**
      * Loads the extension module that lives at baseUrl into its own Require.js context
@@ -250,6 +251,13 @@ define(function (require, exports, module) {
             return extensionRequireDeferred.promise();
         }).then(function (module) {
             // Extension loaded normally
+            if(savedFSlib !== window.fs) {
+                console.error("fslib overwrite detected while loading extension. This means that" +
+                    " some extension tried to modify a core library. reverting to original lib..");
+                // note that the extension name here may not be that actual extension that did the
+                // overwrite. So we dont log the extension name here.
+                window.fs = savedFSlib;
+            }
             var initPromise;
 
             _extensions[name] = module;

@@ -288,12 +288,27 @@ const _createAppDirs = async function () {
 };
 
 
+const CORE_LIB_GUARD_INTERVAL = 5000;
 const _FS_ERROR_MESSAGE = 'Oops. Phoenix could not be started due to missing file system library.';
 export default function initVFS() {
     if(!window.fs || !window.path || !window.Phoenix){
         window.alert(_FS_ERROR_MESSAGE);
         throw new Error(_FS_ERROR_MESSAGE);
     }
+    const savedfs = window.fs, savedPath = window.path;
+    setInterval(()=>{
+        if(window.fs !== savedfs){
+            console.error("window.fs overwrite detected!! Some extension may have corrupted this." +
+                " attempting to revert to original lib.");
+            window.fs=savedfs;
+        }
+        if(window.path !== savedPath){
+            console.error("window.path overwrite detected!! Some extension may have corrupted this." +
+                " attempting to revert to original lib.");
+            window.path=savedPath;
+        }
+
+    }, CORE_LIB_GUARD_INTERVAL);
 
     _setupVFS(window.fs, window.path);
     window._phoenixfsAppDirsCreatePromise = _createAppDirs();
