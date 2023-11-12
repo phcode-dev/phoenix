@@ -400,6 +400,58 @@ function listAllJsFilesRecursively(dirPath) {
     return allFiles;
 }
 
+function extractRequireTextFragments(fileContent) {
+    // Regular expression to match "require('text!...')" patterns with optional spaces
+    const regex = /require\s*\(\s*"text!([^"]+)"\s*\)/g;
+
+    const result = [];
+    let match;
+
+    // Loop through all matches in the fileContent
+    while ((match = regex.exec(fileContent)) !== null) {
+        // Add the captured fragment to the fragments array
+        result.push({
+            requirePath: match[1],
+            requireStatement: match[0]
+        });
+    }
+
+    return result;
+}
+
+const textContentMap = {};
+function inlineTextRequire(file, content, srcDir) {
+    if(content.includes(`'text!`) || content.includes("`text!")) {
+        throw new Error(`in file ${file} require("text!...") should always use a double quote "text! instead of " or \``);
+    }
+    if(content.includes(`"text!`)) {
+        const requireFragments = extractRequireTextFragments(content);
+        for (const {requirePath, requireStatement} of requireFragments) {
+            let textContent = textContentMap[requirePath];
+            if(!textContent){
+                let filePath = srcDir + requirePath;
+                if(requirePath.startsWith("./")) {
+                    filePath = path.join(path.dirname(file), requirePath);
+                }
+                console.log("reading file at path: ", filePath);
+                const fileContent = fs.readFileSync(filePath, "utf8");
+                textContentMap[requirePath] = fileContent;
+                textContent = fileContent;
+            }
+            if(textContent.includes("`")) {
+                console.log("Not inlining file as it contains a backquote(`) :", requirePath);
+            } else if(requirePath.endsWith(".js") || requirePath.endsWith(".json")) {
+                console.log("Not inlining JS/JSON file:", requirePath);
+            } else {
+                console.log("Inlining", requireStatement);
+                content = content.replaceAll(requireStatement, "`"+textContent+"`");
+            }
+        }
+
+    }
+    return content;
+}
+
 function makeBracketsConcatJS() {
     return new Promise((resolve)=>{
         const srcDir = "src/";
@@ -434,6 +486,7 @@ function makeBracketsConcatJS() {
                 console.log("Merging: ", requirePath);
                 mergeCount ++;
                 content = content.replace("define(", `define("${requirePath}", `);
+                content = inlineTextRequire(file, content, srcDir);
                 concatenatedFile = concatenatedFile + "\n" + content;
             }
         }
