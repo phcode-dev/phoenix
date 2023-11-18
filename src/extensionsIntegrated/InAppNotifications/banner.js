@@ -98,7 +98,7 @@ define(function (require, exports, module) {
                     // One time notification. mark as shown and never show again
                     _markAsShownAndDone(notificationID);
                 }
-                await showBannerAndWaitForDismiss(notification.HTML_CONTENT, notificationID, notification);
+                await showBannerAndWaitForDismiss(notification.HTML_CONTENT, notificationID);
                 if(!notification.DANGER_SHOW_ON_EVERY_BOOT){
                     _markAsShownAndDone(notificationID);
                 }
