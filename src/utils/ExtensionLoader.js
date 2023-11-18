@@ -48,7 +48,6 @@ define(function (require, exports, module) {
         Async          = require("utils/Async"),
         ExtensionUtils = require("utils/ExtensionUtils"),
         ThemeManager   = require("view/ThemeManager"),
-        ProjectManager      = require("project/ProjectManager"),
         UrlParams      = require("utils/UrlParams").UrlParams,
         PathUtils      = require("thirdparty/path-utils/path-utils"),
         DefaultExtensionsList = JSON.parse(require("text!extensions/default/DefaultExtensions.json"))
@@ -710,6 +709,7 @@ define(function (require, exports, module) {
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
     function init(paths) {
+        require("extensionsIntegrated/loader");
         var params = new UrlParams();
 
         if (_init) {

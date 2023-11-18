@@ -5,5 +5,6 @@
     "coreAnalyticsAppName"       : "phoenix-stage",
     "environment"                : "stage",
     "buildtype"                  : "staging",
-    "bugsnagEnv"                 : "staging"
+    "bugsnagEnv"                 : "staging",
+    "app_notification_url"       : "https://updates.phcode.io/appNotifications/staging/"
 }

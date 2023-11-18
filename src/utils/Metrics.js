@@ -82,6 +82,7 @@ define(function (require, exports, module) {
         PROJECT: "project",
         THEMES: "themes",
         EXTENSIONS: "extensions",
+        NOTIFICATIONS: "notifications",
         UI: "phoenix.UI",
         UI_MENU: "phoenix.UIMenu",
         UI_DIALOG: "ui-dialog",
