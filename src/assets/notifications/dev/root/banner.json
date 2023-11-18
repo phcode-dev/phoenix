@@ -1,0 +1,8 @@
+{
+  "WELCOME_DEVELOPER": {
+    "DANGER_SHOW_ON_EVERY_BOOT" : false,
+    "HTML_CONTENT": "<div>Welcome to Phoenix Code dev community! Click here to <a class='notification_ack' href='https://discord.com/invite/rBpTBPttca'> chat with our Discord Community.</a></div>",
+    "FOR_VERSIONS": ">=3.0.0",
+    "PLATFORM" : "all"
+  }
+}
