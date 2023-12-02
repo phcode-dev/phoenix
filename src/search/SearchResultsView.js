@@ -196,6 +196,9 @@ define(function (require, exports, module) {
             const selectedElement = self._$selectedRow[0];
             let nextElement = selectedElement.nextElementSibling;
             let searchItem = self._searchList[self._$selectedRow.data("file-index")];
+            if(!self._model.results[searchItem.fullPath]){
+                return;
+            }
             let collapsed = self._model.results[searchItem.fullPath].collapsed;
             while(nextElement && (collapsed || !$(nextElement).hasClass('file-search-item'))){
                 // skip collapsed elements too
@@ -249,6 +252,9 @@ define(function (require, exports, module) {
             let selectedElement = self._$selectedRow[0];
             let prevElement = selectedElement.previousElementSibling;
             let searchItem = self._searchList[self._$selectedRow.data("file-index")];
+            if(!self._model.results[searchItem.fullPath]){
+                return;
+            }
             let collapsed = self._model.results[searchItem.fullPath].collapsed;
             while(prevElement && (collapsed || !$(prevElement).hasClass('file-search-item'))){
                 // skip collapsed elements too

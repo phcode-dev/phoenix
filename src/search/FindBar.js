@@ -363,6 +363,11 @@ define(function (require, exports, module) {
             })
             .on("keydown", "#find-what, #replace-with", function (e) {
                 if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
+                    if(self._options.multifile && e.shiftKey) {
+                        // In multi file search, if we press shift+return key, we enter the multi line ssearch mode and
+                        // the text input will receive the enter key to create a new line in text field.
+                        return;
+                    }
                     e.preventDefault();
                     e.stopPropagation();
                     self._addElementToSearchHistory(self.$("#find-what").val());
@@ -388,11 +393,11 @@ define(function (require, exports, module) {
                         self.trigger("doFind", e.shiftKey);
                     }
                     historyIndex = 0;
-                } else if (e.keyCode === KeyEvent.DOM_VK_DOWN) {
+                } else if (e.keyCode === KeyEvent.DOM_VK_DOWN && self._options.multifile) {
                     e.preventDefault();
                     e.stopPropagation();
                     self.trigger("selectNextResult");
-                } else if (e.keyCode === KeyEvent.DOM_VK_UP) {
+                } else if (e.keyCode === KeyEvent.DOM_VK_UP && self._options.multifile) {
                     e.preventDefault();
                     e.stopPropagation();
                     self.trigger("selectPrevResult");
@@ -470,12 +475,16 @@ define(function (require, exports, module) {
             maxResults: 20,
             firstHighlightIndex: null,
             resultProvider: function (query) {
-                var asyncResult = new $.Deferred();
-                asyncResult.resolve(PreferencesManager.getViewState("searchHistory"));
+                const asyncResult = new $.Deferred();
+                const history = PreferencesManager.getViewState("searchHistory");
+                const filteredHistory = history.filter(function(item) {
+                    return item.toLowerCase().includes(query.toLowerCase());
+                });
+                asyncResult.resolve(filteredHistory);
                 return asyncResult.promise();
             },
             formatter: function (item, query) {
-                return "<li>" + item + "</li>";
+                return $("<li>").text(item);
             },
             onCommit: function (selectedItem, query) {
                 if (selectedItem) {
@@ -691,8 +700,7 @@ define(function (require, exports, module) {
         var selectionText = editor.getSelectedText();
         if (selectionText) {
             return selectionText
-                .replace(/^\n*/, "") // Trim possible newlines at the very beginning of the selection
-                .split("\n")[0];
+                .replace(/^\n*/, ""); // Trim possible newlines at the very beginning of the selection
         }
         return "";
     };

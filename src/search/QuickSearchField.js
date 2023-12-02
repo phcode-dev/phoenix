@@ -141,7 +141,12 @@ define(function (require, exports, module) {
 
     /** Handle special keys: Enter, Up/Down */
     QuickSearchField.prototype._handleKeyDown = function (event) {
-        if (event.keyCode === KeyEvent.DOM_VK_RETURN) {
+        let dropdownIsVisible = false;
+        if(this._$dropdown && this._$dropdown.is(":visible")){
+            dropdownIsVisible = true; // up and down arrow key press is swallowed only if the dropdown is visible
+        }
+        if (event.keyCode === KeyEvent.DOM_VK_RETURN && !event.shiftKey) {
+            // if shift key is pressed, it means multi line text is being entered in search input text area
             // Enter should always act on the latest results. If input has changed and we're still waiting for
             // new results, just flag the 'commit' for later
             if (this._displayedQuery === this.$input.val()) {
@@ -151,7 +156,7 @@ define(function (require, exports, module) {
                 // Once the current wait resolves, _render() will run the commit
                 this._commitPending = true;
             }
-        } else if (event.keyCode === KeyEvent.DOM_VK_DOWN) {
+        } else if (event.keyCode === KeyEvent.DOM_VK_DOWN && dropdownIsVisible) {
             // Highlight changes are always done synchronously on the currently shown result list. If the list
             // later changes, the highlight is reset to the top
             if (this._displayedResults && this._displayedResults.length) {
@@ -164,7 +169,7 @@ define(function (require, exports, module) {
             }
             event.preventDefault(); // treated as Home key otherwise
 
-        } else if (event.keyCode === KeyEvent.DOM_VK_UP) {
+        } else if (event.keyCode === KeyEvent.DOM_VK_UP && dropdownIsVisible) {
             if (this._displayedResults && this._displayedResults.length) {
                 if (this._highlightIndex === null || this._highlightIndex === 0) {
                     this._highlightIndex = this._displayedResults.length - 1;
@@ -247,10 +252,9 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Open dropdown result list & populate with the given content
-     * @param {!string} htmlContent
+     * Open dropdown result list & returns the dropdown to pupulate the contents
      */
-    QuickSearchField.prototype._openDropdown = function (htmlContent) {
+    QuickSearchField.prototype._openDropdown = function () {
         if (!this._$dropdown) {
             var self = this;
             this._$dropdown = $("<ol class='quick-search-container'/>").appendTo("body")
@@ -268,7 +272,8 @@ define(function (require, exports, module) {
                     }
                 });
         }
-        this._$dropdown.html(htmlContent);
+        this._$dropdown.html(""); // clear existing contents if any
+        return this._$dropdown;
     };
 
     /**
@@ -303,13 +308,12 @@ define(function (require, exports, module) {
                 this.$input.removeClass("no-results");
             }
 
-            var count = Math.min(results.length, this.options.maxResults),
-                html = "",
+            let count = Math.min(results.length, this.options.maxResults),
+                $dropdown = this._openDropdown(),
                 i;
             for (i = 0; i < count; i++) {
-                html += this.options.formatter(results[i], query);
+                $dropdown.append($(this.options.formatter(results[i], query)));
             }
-            this._openDropdown(html);
 
             // Highlight top item and trigger highlight callback
             this._updateHighlight(false);
