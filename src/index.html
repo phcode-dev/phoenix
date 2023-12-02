@@ -86,9 +86,7 @@
             };
             // fs special handling start :patch the fs.readBinaryFile and fs.WriteBinaryFile apis to use this windows uint8arrays
             for (let key in window.top.window.__TAURI__.fs) {
-                if (window.top.window.__TAURI__.fs.hasOwnProperty(key)) {
-                    window.__TAURI__.fs[key] = window.top.window.__TAURI__.fs[key];
-                }
+                window.__TAURI__.fs[key] = window.top.window.__TAURI__.fs[key];
             }
 
             const readBinaryFile = window.__TAURI__.fs.readBinaryFile;
