@@ -36,6 +36,9 @@
  */
 
 /* Define some variables used in multiple places */
+// This is the default theme. Only add code mirror editor surface related styles here.
+// !!!!   for styling any other UI related styles, please use brackets_theme_default.less !!!!!!!!!!!!!!!!!!!!!!!
+
 @background: #1d1f21;
 @foreground: #ddd;
 @accent-property: #ddd;
@@ -48,24 +51,6 @@
 @matching-bracket: #2e5c00;
 
 /* Code Styling */
-
-.CodeMirror-focused .CodeMirror-activeline-background {
-    background: #2f2f2f;
-}
-
-.show-line-padding .CodeMirror-focused .CodeMirror-activeline-background {
-    box-shadow: inset 15px 0 0 0 #000;
-}
-
-.CodeMirror-focused .CodeMirror-activeline {
-    .CodeMirror-gutter-elt {
-        background: rgba(0, 0, 0, 0.2);
-        color: #fff;
-    }
-    .inline-widget .CodeMirror-gutter-elt {
-        color: #767676;
-    }
-}
 
 .editor-text-fragment-matching-refs{
     background-color: @matching-bracket;
@@ -101,27 +86,6 @@
     }
 }
 
-
-.CodeMirror-cursor {
-    border-left: 1px solid #c5c8c6 !important;
-}
-
-.CodeMirror-gutters {
-    background-color: @background;
-    border-right: none;
-}
-
-.CodeMirror-linenumber {
-    color: #767676;
-}
-
-.CodeMirror .CodeMirror-selected {
-    background: #333f48;
-}
-.CodeMirror-focused .CodeMirror-selected {
-    background: #0050a0;
-}
-
 .CodeMirror-matchingbracket, .CodeMirror-matchingtag {
     /* Ensure visibility against gray inline editor background */
     background-color: @matching-bracket;
@@ -131,51 +95,6 @@
 .CodeMirror-overwrite .CodeMirror-cursor {
     border-left: none !important;
     border-bottom: 1px solid #fff;
-}
-
-/*
-    CodeMirror's use of descendant selectors for certain styling causes problems when editors are
-    nested because, for items in the inner editor, the left-hand clause in the selector will now
-    match either the actual containing CodeMirror instance *OR* the outer "host" CodeMirror instance.
-
-    TODO (issue #324): We'll still have problems if editors can be nested more than one level deep,
-    or if any other descendant-selector-driven CM styles can differ between inner & outer editors
-    (potential problem areas include line wrap and coloring theme: basically, anything in codemirror.css
-    that uses a descandant selector where the CSS class name to the left of the space is something
-    other than a vanilla .CodeMirror)
- */
-.CodeMirror {
-    background-color: @background;
-    color: @foreground;
-
-    .CodeMirror {
-        background: transparent;
-    }
-
-    .CodeMirror .CodeMirror-gutters {
-        background: transparent;
-        border-right: none;
-    }
-
-    .CodeMirror .CodeMirror-activeline-background {
-        background: transparent;
-    }
-
-    .CodeMirror .CodeMirror-activeline .CodeMirror-gutter-elt {
-        background: transparent;
-        color: #767676;
-    }
-
-    .CodeMirror-focused .CodeMirror-activeline-background {
-        background: #2f2f2f;
-    }
-
-    .CodeMirror-focused .CodeMirror-activeline {
-        .CodeMirror-gutter-elt {
-            background: rgba(0, 0, 0, 0.2);
-            color: #fff;
-        }
-    }
 }
 
 .CodeMirror-foldgutter-open:after {

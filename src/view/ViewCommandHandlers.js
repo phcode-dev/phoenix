@@ -293,23 +293,6 @@ define(function (require, exports, module) {
         }
     }
 
-
-    /**
-     * Font smoothing setter to set the anti-aliasing type for the code area on Mac.
-     * @param {string} aaType The antialiasing type to be set. It can take either "subpixel-antialiased" or "antialiased"
-     */
-    function setMacFontSmoothingType(aaType) {
-        var $editor_holder  = $("#editor-holder");
-
-        // Add/Remove the class based on the preference. Also
-        // default to subpixel AA in case of invalid entries.
-        if (aaType === "antialiased") {
-            $editor_holder.removeClass("subpixel-aa");
-        } else {
-            $editor_holder.addClass("subpixel-aa");
-        }
-    }
-
     /**
      * Font family getter to get the currently configured font family for the document editor
      * @return {string} The font family for the document editor
@@ -571,20 +554,6 @@ define(function (require, exports, module) {
     }).on("change", function () {
         setFontFamily(prefs.get("fontFamily"));
     });
-
-    // Define a preference for font smoothing mode on Mac.
-    // By default fontSmoothing is set to "subpixel-antialiased"
-    // for the text inside code editor. It can be overridden
-    // to "antialiased", that would set text rendering AA to use
-    // gray scale antialiasing.
-    if (brackets.platform === "mac") {
-        prefs.definePreference("fontSmoothing", "string", "subpixel-antialiased", {
-            description: Strings.DESCRIPTION_FONT_SMOOTHING,
-            values: ["subpixel-antialiased", "antialiased"]
-        }).on("change", function () {
-            setMacFontSmoothingType(prefs.get("fontSmoothing"));
-        });
-    }
 
     // Update UI when opening or closing a document
     MainViewManager.on("currentFileChange", _updateUI);

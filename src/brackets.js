@@ -110,9 +110,6 @@ define(function (require, exports, module) {
      */
     window.NotificationUI = NotificationUI;
 
-
-    const MainViewHTML        = require("text!htmlContent/main-view.html");
-
     // load modules for later use
     require("utils/Global");
     require("editor/CSSInlineEditor");
@@ -445,9 +442,8 @@ define(function (require, exports, module) {
             };
         }());
 
-
-        // Localize MainViewHTML and inject into <BODY> tag
-        $body.append(Mustache.render(MainViewHTML, { shouldAddAA: (brackets.platform === "mac"), Strings: Strings }));
+        $('#toolbar-extension-manager').prop('title', Strings.EXTENSION_MANAGER_TITLE);
+        $('#update-notification').prop('title', Strings.UPDATE_NOTIFICATION_TOOLTIP);
 
         // Update title
         $("title").text(brackets.config.app_title);
