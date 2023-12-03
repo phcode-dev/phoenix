@@ -29,10 +29,8 @@ define(function (require, exports, module) {
 
 
     var AppInit          = require("utils/AppInit"),
-        StatusBarHTML    = require("text!widgets/StatusBar.html"),
         Strings          = require("strings"),
-        WorkspaceManager = require("view/WorkspaceManager"),
-        Mustache         = require("thirdparty/mustache/mustache");
+        WorkspaceManager = require("view/WorkspaceManager");
 
     var _init = false;
 
@@ -246,9 +244,7 @@ define(function (require, exports, module) {
     }
 
     AppInit.htmlReady(function () {
-        var $parent = $(".main-view .content");
-        $parent.append(Mustache.render(StatusBarHTML, Strings));
-
+        $("#status-overwrite").text(Strings.STATUSBAR_INSERT);
         // Initialize items dependent on HTML DOM
         $statusBar          = $("#status-bar");
         $indicators         = $("#status-indicators");
