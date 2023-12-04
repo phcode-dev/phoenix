@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Bewertung in Sternen",
   "EXTENSION_MANAGER_TITLE": "Erweiterungs-Verwaltung",
   "EXTENSION_MANAGER_ERROR_LOAD": "Fehler beim Zugriff auf das Verzeichnis der Erweiterungen. Bitte später erneut versuchen.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Zum Aktualisieren neu starten",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Um aktualisierte Erweiterungen zu laden, schließen Sie bitte alle laufenden Instanzen von {APP_NAME} und starten Sie die Anwendung neu.",
   "INSTALL_EXTENSION_DRAG": ".zip hierhin ziehen oder",
   "INSTALL_EXTENSION_DROP": ".zip zum Installieren ablegen",
   "INSTALL_EXTENSION_DROP_ERROR": "Das Installieren/Aktualisieren schlug fehl, da die folgenden Fehler aufgetreten sind:",

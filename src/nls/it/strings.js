@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Stelle",
   "EXTENSION_MANAGER_TITLE": "Manager delle Estensioni",
   "EXTENSION_MANAGER_ERROR_LOAD": "Impossibile accedere al registro delle estensioni. Riprova più tardi.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Riavvia per aggiornare",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Per caricare le estensioni aggiornate, chiudi tutte le istanze in esecuzione di {APP_NAME} e riavvia l'applicazione.",
   "INSTALL_EXTENSION_DRAG": "Trascina il file .zip qui o",
   "INSTALL_EXTENSION_DROP": "Rilascia il file .zip per l'installazione",
   "INSTALL_EXTENSION_DROP_ERROR": "Installazione/Aggiornamento interrotto a causa dei seguenti errori:",

@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Sterrenclassificatie",
   "EXTENSION_MANAGER_TITLE": "Extensiebeheer",
   "EXTENSION_MANAGER_ERROR_LOAD": "Er is momenteel geen toegang mogelijk tot het extensieregister. Probeer later opnieuw.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Opnieuw opstarten om bij te werken",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Als u bijgewerkte extensies wilt laden, sluit u alle actieve exemplaren van {APP_NAME} en start u de applicatie opnieuw.",
   "INSTALL_EXTENSION_DRAG": "Sleep .zip hier of",
   "INSTALL_EXTENSION_DROP": "Sleep .zip hier voor installatie",
   "INSTALL_EXTENSION_DROP_ERROR": "Installatie/update afgebroken vanwege de volgende fouten:",

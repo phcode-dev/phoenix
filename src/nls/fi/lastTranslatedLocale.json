@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Tähtiluokitus",
   "EXTENSION_MANAGER_TITLE": "Laajennusten hallinta",
   "EXTENSION_MANAGER_ERROR_LOAD": "Virhe käytettäessä laajennusten rekisteriä. Yritä myöhemmin uudelleen.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Käynnistä uudelleen päivittääksesi",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Lataa päivitetyt laajennukset sulkemalla kaikki käynnissä olevat sovelluksen {APP_NAME} esiintymät ja käynnistämällä sovellus uudelleen.",
   "INSTALL_EXTENSION_DRAG": "Vedä .zip-paketti tähän tai",
   "INSTALL_EXTENSION_DROP": "Asenna pudottamalla .zip-paketti",
   "INSTALL_EXTENSION_DROP_ERROR": "Asennus tai päivitys keskeytyi seuraaviin virheisiin:",

@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Hodnotenie hviezdičkami",
   "EXTENSION_MANAGER_TITLE": "Správca doplnkov",
   "EXTENSION_MANAGER_ERROR_LOAD": "Nie je možné získať prístup k registrom doplnkov. Prosím, skúste to znovu neskôr.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Reštartujte na aktualizáciu",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Ak chcete načítať aktualizované rozšírenia, zatvorte všetky spustené inštancie aplikácie {APP_NAME} a reštartujte aplikáciu.",
   "INSTALL_EXTENSION_DRAG": "Potiahnite sem .zip alebo",
   "INSTALL_EXTENSION_DROP": "Ak chcete nainštalovať, presuňte súbor .zip",
   "INSTALL_EXTENSION_DROP_ERROR": "Inštalácia/aktualizácia bola prerušená z dôvodu nasledujúcich chýb:",

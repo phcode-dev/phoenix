@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "星級",
   "EXTENSION_MANAGER_TITLE": "擴充功能管理員",
   "EXTENSION_MANAGER_ERROR_LOAD": "無法存取擴充功能登錄庫。請稍後再試。",
+  "EXTENSION_UPDATE_RESTART_TITLE": "重啟更新",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "若要載入更新的擴充程序，請關閉「{APP_NAME}」的所有正在執行的實例，然後重新啟動該應用程式。",
   "INSTALL_EXTENSION_DRAG": "將 .zip 拖過來，或",
   "INSTALL_EXTENSION_DROP": "放開 .zip 開始安裝",
   "INSTALL_EXTENSION_DROP_ERROR": "下列原因造成安裝或是更新失敗:",

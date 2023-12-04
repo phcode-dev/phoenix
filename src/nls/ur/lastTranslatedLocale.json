@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "اسٹار کی درجہ بندی",
   "EXTENSION_MANAGER_TITLE": "ایکسٹینشن مینیجر",
   "EXTENSION_MANAGER_ERROR_LOAD": "ایکسٹینشن رجسٹری تک رسائی حاصل کرنے سے قاصر۔ براہ کرم کچھ دیر بعد کوشش کریں.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "اپ ڈیٹ کرنے کے لیے دوبارہ شروع کریں۔",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "اپ ڈیٹ شدہ ایکسٹینشنز لوڈ کرنے کے لیے، براہ کرم {APP_NAME} کے چلنے والے تمام واقعات کو بند کریں اور ایپلیکیشن کو دوبارہ شروع کریں۔",
   "INSTALL_EXTENSION_DRAG": ".zip کو یہاں گھسیٹیں یا",
   "INSTALL_EXTENSION_DROP": "انسٹال کرنے کے لیے .zip ڈالیں۔",
   "INSTALL_EXTENSION_DROP_ERROR": "انسٹال/اپ ڈیٹ درج ذیل خرابیوں کی وجہ سے روک دیا گیا:",

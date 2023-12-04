@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Csillagok értékelése",
   "EXTENSION_MANAGER_TITLE": "Bővítménykezelő",
   "EXTENSION_MANAGER_ERROR_LOAD": "Nem lehet elérni a bővítmény adatbázist. Kérlek próbáld meg később.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Újraindítás a frissítéshez",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "A frissített bővítmények betöltéséhez zárja be a(z) {APP_NAME} összes futó példányát, és indítsa újra az alkalmazást.",
   "INSTALL_EXTENSION_DRAG": "Húzza ide a .zip fájlt vagy",
   "INSTALL_EXTENSION_DROP": "A telepítéshez dobja a .zip fájlt",
   "INSTALL_EXTENSION_DROP_ERROR": "A telepítés/frissítés megszakadt a következő hibák miatt:",

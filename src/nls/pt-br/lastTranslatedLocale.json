@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Classificação por estrelas",
   "EXTENSION_MANAGER_TITLE": "Gerenciador de Extensões",
   "EXTENSION_MANAGER_ERROR_LOAD": "Não foi possível acessar o registro de extensões. Por favor,tente novamente mais tarde.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Reinicie para atualizar",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Para carregar extensões atualizadas, feche todas as instâncias em execução do {APP_NAME} e reinicie o aplicativo.",
   "INSTALL_EXTENSION_DRAG": "Arraste o .zip aqui ou",
   "INSTALL_EXTENSION_DROP": "Solte o .zip aqui ou",
   "INSTALL_EXTENSION_DROP_ERROR": "Instalação/atualização cancelada devido aos seguintes erros:",

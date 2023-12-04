@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Зірковий рейтинг",
   "EXTENSION_MANAGER_TITLE": "Менеджер розширень",
   "EXTENSION_MANAGER_ERROR_LOAD": "Помилка отримання доступу до реєстру розширення. Будь ласка, спробуйте пізніше.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Перезапустіть для оновлення",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Щоб завантажити оновлені розширення, закрийте всі запущені екземпляри {APP_NAME} і перезапустіть програму.",
   "INSTALL_EXTENSION_DRAG": "Перетягніть сюди .zip або",
   "INSTALL_EXTENSION_DROP": "Перетягніть .zip для встановлення",
   "INSTALL_EXTENSION_DROP_ERROR": "Встановлення/оновлення скасовано через наступні помилки:",

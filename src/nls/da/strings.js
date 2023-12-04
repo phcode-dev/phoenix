@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Stjernebedømmelse",
   "EXTENSION_MANAGER_TITLE": "Udvidelseshåndtering",
   "EXTENSION_MANAGER_ERROR_LOAD": "Ikke i stand til at tilgå udvidelsesregistret. Prøv igen senere.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Genstart for at opdatere",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "For at indlæse opdaterede udvidelser skal du lukke alle kørende forekomster af {APP_NAME} og genstarte applikationen.",
   "INSTALL_EXTENSION_DRAG": "Træk .zip her eller",
   "INSTALL_EXTENSION_DROP": "Slip .zip for at installere",
   "INSTALL_EXTENSION_DROP_ERROR": "Installation/opdatering afbrudt på grund af følgende fejl:",

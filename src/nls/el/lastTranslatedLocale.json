@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Αξιολόγηση με αστέρια",
   "EXTENSION_MANAGER_TITLE": "Διαχειριστής Επεκτάσεων",
   "EXTENSION_MANAGER_ERROR_LOAD": "Αδυναμία πρόσβασης στο μητρώο επεκτάσεων. Παρακαλώ προσπαθήστε αργότερα.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Επανεκκίνηση για ενημέρωση",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Για να φορτώσετε ενημερωμένες επεκτάσεις, κλείστε όλες τις εκτελούμενες εμφανίσεις της εφαρμογής {APP_NAME} και επανεκκινήστε την εφαρμογή.",
   "INSTALL_EXTENSION_DRAG": "Σύρετε το .zip εδώ ή",
   "INSTALL_EXTENSION_DROP": "Αποθέστε το .zip για εγκατάσταση",
   "INSTALL_EXTENSION_DROP_ERROR": "Η εγκατάσταση/ενημέρωση ματαιώθηκε λόγω των ακόλουθων σφαλμάτων:",

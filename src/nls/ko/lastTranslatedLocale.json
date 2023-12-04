@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "별점 매기기",
   "EXTENSION_MANAGER_TITLE": "확장 기능 관리자",
   "EXTENSION_MANAGER_ERROR_LOAD": "확장 기능 레지스트리에 액세스 할 수 없습니다. 나중에 다시 시도하십시오.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "업데이트하려면 다시 시작하세요",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "업데이트된 확장 프로그램을 로드하려면 실행 중인 {APP_NAME} 인스턴스를 모두 닫고 애플리케이션을 다시 시작하세요.",
   "INSTALL_EXTENSION_DRAG": "여기에 .zip 파일을 드래그하거나",
   "INSTALL_EXTENSION_DROP": "파일을 드롭하면 설치를 시작합니다.",
   "INSTALL_EXTENSION_DROP_ERROR": "에러가 발생하여 설치/업데이트가 종료되었습니다:",

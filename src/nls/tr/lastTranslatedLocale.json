@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Yıldız Değerlendirmesi",
   "EXTENSION_MANAGER_TITLE": "Eklenti Yöneticisi",
   "EXTENSION_MANAGER_ERROR_LOAD": "Uzantı kayıt defterine erişilemiyor. Lütfen daha sonra tekrar deneyiniz.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Güncellemek İçin Yeniden Başlatın",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Güncellenen uzantıları yüklemek için lütfen çalışan tüm {APP_NAME} örneklerini kapatın ve uygulamayı yeniden başlatın.",
   "INSTALL_EXTENSION_DRAG": ".zip dosyasını buraya sürükleyin veya",
   "INSTALL_EXTENSION_DROP": "Yüklemek için .zip dosyasını bırakın",
   "INSTALL_EXTENSION_DROP_ERROR": "Aşağıdaki hatalar nedeniyle Yükleme/Güncelleme iptal edildi:",

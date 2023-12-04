@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Evaluare cu stele",
   "EXTENSION_MANAGER_TITLE": "Manager de extensii",
   "EXTENSION_MANAGER_ERROR_LOAD": "La moment este imposibil de accesat registrul extensiilor. Încercați mai târziu.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Reporniți pentru a actualiza",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Pentru a încărca extensii actualizate, închideți toate instanțele {APP_NAME} care rulează și reporniți aplicația.",
   "INSTALL_EXTENSION_DRAG": "Glisați .zip aici sau",
   "INSTALL_EXTENSION_DROP": "Plasați .zip pentru a instala",
   "INSTALL_EXTENSION_DROP_ERROR": "Instalare/Actualizare întreruptă din cauza următoarelor erori:",

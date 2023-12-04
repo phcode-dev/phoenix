@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Zvaigžņu vērtējums",
   "EXTENSION_MANAGER_TITLE": "Paplašinājumu pārvaldnieks",
   "EXTENSION_MANAGER_ERROR_LOAD": "Neizdevās piekļūt paplašinājumu reģistram. Lūdzu, mēģiniet vēlreiz.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Restartēt, lai atjauninātu",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Lai ielādētu atjauninātus paplašinājumus, lūdzu, aizveriet visas lietojumprogrammas {APP_NAME} darbības un restartējiet lietojumprogrammu.",
   "INSTALL_EXTENSION_DRAG": "Ievelciet šeit .zip vai",
   "INSTALL_EXTENSION_DROP": "Nometiet .zip, lai instalētu",
   "INSTALL_EXTENSION_DROP_ERROR": "Instalēšana/atjaunināšana pārtraukta šādu kļūdu dēļ:",

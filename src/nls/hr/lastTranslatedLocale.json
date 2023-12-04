@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Ocjena zvjezdicama",
   "EXTENSION_MANAGER_TITLE": "Manager ekstenzija",
   "EXTENSION_MANAGER_ERROR_LOAD": "Pristupanje registru ekstenzije nije moguće. Pokušajte kasnije.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Ponovo pokrenite za ažuriranje",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Za učitavanje ažuriranih proširenja zatvorite sve pokrenute instance aplikacije {APP_NAME} i ponovno pokrenite aplikaciju.",
   "INSTALL_EXTENSION_DRAG": "Dovuci .zip ovdje ili",
   "INSTALL_EXTENSION_DROP": "ispusti .zip da instaliraš",
   "INSTALL_EXTENSION_DROP_ERROR": "Instalacija/ažuriranje prekinuto zbog sljedećih grešaka:",

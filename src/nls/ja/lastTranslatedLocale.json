@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "星評価",
   "EXTENSION_MANAGER_TITLE": "拡張機能マネージャー",
   "EXTENSION_MANAGER_ERROR_LOAD": "拡張機能レジストリにアクセスできません。後でもう一度試してください。",
+  "EXTENSION_UPDATE_RESTART_TITLE": "再起動してアップデートする",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "更新された拡張機能を読み込むには、実行中の {APP_NAME} のインスタンスをすべて閉じて、アプリケーションを再起動してください。",
   "INSTALL_EXTENSION_DRAG": ".zip をここにドラッグするか、",
   "INSTALL_EXTENSION_DROP": ".zip をドロップしてインストール",
   "INSTALL_EXTENSION_DROP_ERROR": "次のエラーのため、インストール / アンインストールが中止されました :",
