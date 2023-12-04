@@ -20,6 +20,7 @@
  */
 
 /*unittests: ExtensionManager*/
+/*global Phoenix*/
 
 define(function (require, exports, module) {
 
@@ -500,6 +501,7 @@ define(function (require, exports, module) {
      */
     ExtensionManagerView.prototype._installUsingDialog = function (id, _isUpdate) {
         var entry = this.model.extensions[id];
+        const self = this;
         if (entry && entry.registryInfo) {
             const compatInfo = ExtensionManager.getCompatibilityInfo(entry.registryInfo, brackets.metadata.apiVersion),
                 url = ExtensionManager.getExtensionURL(id, compatInfo.compatibleVersion),
@@ -510,10 +512,26 @@ define(function (require, exports, module) {
             // TODO: this should set .done on the returned promise
             if (_isUpdate) {
                 // save to metric id as it is from public extension store.
-                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "install", id);
-                InstallExtensionDialog.updateUsingDialog(url).done(ExtensionManager.updateFromDownload);
-            } else {
                 Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "update", id);
+                InstallExtensionDialog.updateUsingDialog(url).done((installResult)=>{
+                    if(Phoenix.browser.isTauri) {
+                        // in tauri, due to browser cache for asset urls, updates to extensions will still load old
+                        // extension through the http cache. So we show a restart app for the update to take effect
+                        // message.
+                        entry.installInfo.metadata = entry.registryInfo.metadata;
+                        self.model._getEntry(id).updateAvailable   = false;
+                        // this is a hack as we will drop this extnsion manager and move to new one. so this will do.
+                        self.model.trigger("change", id);
+                        Dialogs.showModalDialog(
+                            DefaultDialogs.DIALOG_ID_INFO,
+                            Strings.EXTENSION_UPDATE_RESTART_TITLE,
+                            Strings.EXTENSION_UPDATE_RESTART_MESSAGE
+                        );
+                    }
+                    ExtensionManager.updateFromDownload(installResult);
+                });
+            } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "install", id);
                 InstallExtensionDialog.installUsingDialog(url);
             }
         }
