@@ -607,6 +607,8 @@ define({
     // For NOT_FOUND_ERR, see generic strings above
     "EXTENSION_MANAGER_TITLE": "Extension Manager",
     "EXTENSION_MANAGER_ERROR_LOAD": "Unable to access the extension registry. Please try again later.",
+    "EXTENSION_UPDATE_RESTART_TITLE": "Restart To Update",
+    "EXTENSION_UPDATE_RESTART_MESSAGE": "To load updated extensions, please close all running instances of {APP_NAME} and restart the application.",
     "INSTALL_EXTENSION_DRAG": "Drag .zip here or",
     "INSTALL_EXTENSION_DROP": "Drop .zip to install",
     "INSTALL_EXTENSION_DROP_ERROR": "Install/Update aborted due to the following errors:",
