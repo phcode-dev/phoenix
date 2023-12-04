@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Stjärnbetyg",
   "EXTENSION_MANAGER_TITLE": "Tilläggshanteraren",
   "EXTENSION_MANAGER_ERROR_LOAD": "Kunde inte nå tilläggsregistret. Vänligen försök igen senare.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Starta om för att uppdatera",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "För att ladda uppdaterade tillägg, stäng alla körande instanser av {APP_NAME} och starta om appen.",
   "INSTALL_EXTENSION_DRAG": "Dra .zip hit eller",
   "INSTALL_EXTENSION_DROP": "Släpp .zip här för att installera",
   "INSTALL_EXTENSION_DROP_ERROR": "Installation/Uppdatering avbröts på grund av följande fel:",

@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "رتبه بندی ستاره ای",
   "EXTENSION_MANAGER_TITLE": "مدیریت افزونه ها",
   "EXTENSION_MANAGER_ERROR_LOAD": "ناتوان در دسترسی به افزونه های ثبت شده. لطفا بعدا تلاش کنید.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "راه اندازی مجدد برای به روز رسانی",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "برای بارگیری برنامه های افزودنی به روز شده، لطفاً همه نمونه های در حال اجرا {APP_NAME} را ببندید و برنامه را مجدداً راه اندازی کنید.",
   "INSTALL_EXTENSION_DRAG": "پرونده زیپ را اینجا بکشید و یا",
   "INSTALL_EXTENSION_DROP": "پرونده زیپ را رها کنید تا نصب شود",
   "INSTALL_EXTENSION_DROP_ERROR": "نصب/بروزرسانی لغو شد، لطفا خطاهای زیر را بررسی کنید:",

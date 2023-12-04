@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Звездный рейтинг",
   "EXTENSION_MANAGER_TITLE": "Менеджер расширений",
   "EXTENSION_MANAGER_ERROR_LOAD": "Невозможно подсоединиться к каталогу расширений. Пожалуйста, попытайтесь еще раз.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Перезагрузить для обновления",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Чтобы загрузить обновленные расширения, закройте все запущенные экземпляры {APP_NAME} и перезапустите приложение.",
   "INSTALL_EXTENSION_DRAG": "Перетащите .zip сюда или",
   "INSTALL_EXTENSION_DROP": "Перетащите .zip для установки",
   "INSTALL_EXTENSION_DROP_ERROR": "Установка/обновление прервано из-за следующих ошибок:",

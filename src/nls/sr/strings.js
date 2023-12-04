@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Звјездице",
   "EXTENSION_MANAGER_TITLE": "Менаџер екстензија",
   "EXTENSION_MANAGER_ERROR_LOAD": "Приступање регистру екстензије није могуће. Молимо покушајте касније.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Поново покрените за ажурирање",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Да бисте учитали ажуриране екстензије, затворите све покренуте инстанце апликације {АПП_НАМЕ} и поново покрените апликацију.",
   "INSTALL_EXTENSION_DRAG": "Превуци .zip овде или",
   "INSTALL_EXTENSION_DROP": "Пусти .zip за инсталирање",
   "INSTALL_EXTENSION_DROP_ERROR": "Инсталирање/Ажурирање прекинуто услед следећих грешака:",

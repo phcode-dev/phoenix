@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Hodnocení hvězdičkami",
   "EXTENSION_MANAGER_TITLE": "Správce doplňků",
   "EXTENSION_MANAGER_ERROR_LOAD": "Nelze získat přístup k registru doplňků. Prosím, zkuste to znovu později.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Restartovat a aktualizovat",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Chcete-li načíst aktualizovaná rozšíření, zavřete všechny spuštěné instance aplikace {APP_NAME} a restartujte aplikaci.",
   "INSTALL_EXTENSION_DRAG": "Přetáhněte .zip zde nebo",
   "INSTALL_EXTENSION_DROP": "Pusťte .zip pro instalaci",
   "INSTALL_EXTENSION_DROP_ERROR": "Instalace/aktualizace byla zrušena kvůli následujících chyb:",

@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "सितारा रेटिंग",
   "EXTENSION_MANAGER_TITLE": "विस्तार प्रबंधक",
   "EXTENSION_MANAGER_ERROR_LOAD": "एक्सटेंशन रजिस्ट्री तक पहुंचने में असमर्थ। बाद में पुन: प्रयास करें।",
+  "EXTENSION_UPDATE_RESTART_TITLE": "अद्यतन करने के लिए पुनः प्रारंभ करें",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "अपडेट किए गए एक्सटेंशन लोड करने के लिए, कृपया {APP_NAME} के सभी चल रहे इंस्टेंस को बंद करें और एप्लिकेशन को पुनरारंभ करें।",
   "INSTALL_EXTENSION_DRAG": ".zip को यहां खींचें या",
   "INSTALL_EXTENSION_DROP": "स्थापित करने के लिए .zip ड्रॉप करें",
   "INSTALL_EXTENSION_DROP_ERROR": "निम्नलिखित त्रुटियों के कारण स्थापित/अद्यतन निरस्त किया गया:",

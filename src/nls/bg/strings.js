@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Рейтинг със звезди",
   "EXTENSION_MANAGER_TITLE": "Управител на разширенията",
   "EXTENSION_MANAGER_ERROR_LOAD": "Неуспешен достъп до регистъра на разширенията. Моля, опитайте отново по-късно.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Рестартирайте, за да актуализирате",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "За да заредите актуализирани разширения, моля, затворете всички работещи копия на {APP_NAME} и рестартирайте приложението.",
   "INSTALL_EXTENSION_DRAG": "Завлачете .zip тук или",
   "INSTALL_EXTENSION_DROP": "Пуснете .zip за инсталиране",
   "INSTALL_EXTENSION_DROP_ERROR": "Инсталирането/обновяването беше прекъснато поради следните грешки:",

@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Clasificación de estrellas",
   "EXTENSION_MANAGER_TITLE": "Gestor de extensiones",
   "EXTENSION_MANAGER_ERROR_LOAD": "No se pudo acceder al registro de extensiones. Vuelve a intentarlo más tarde, por favor.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Reiniciar para actualizar",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Para cargar extensiones actualizadas, cierre todas las instancias en ejecución de {APP_NAME} y reinicie la aplicación.",
   "INSTALL_EXTENSION_DRAG": "Arrastrar el .zip aquí ó",
   "INSTALL_EXTENSION_DROP": "Soltar el .zip para instalarlo",
   "INSTALL_EXTENSION_DROP_ERROR": "La instalación/actualización fue abortada por los siguientes errores:",

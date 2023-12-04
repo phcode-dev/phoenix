@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "星级",
   "EXTENSION_MANAGER_TITLE": "扩展管理器",
   "EXTENSION_MANAGER_ERROR_LOAD": "无法连接到扩展仓库。请稍后重试。",
+  "EXTENSION_UPDATE_RESTART_TITLE": "重启更新",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "要加载更新的扩展程序，请关闭“{APP_NAME}”的所有正在运行的实例，然后重新启动该应用程序。",
   "INSTALL_EXTENSION_DRAG": "拖拽 .zip 到此处或者",
   "INSTALL_EXTENSION_DROP": "Drop .zip to install",
   "INSTALL_EXTENSION_DROP_ERROR": "安装/更新由于以下错误终止:",

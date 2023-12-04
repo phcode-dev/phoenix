@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Peringkat Bintang",
   "EXTENSION_MANAGER_TITLE": "Pengelola Ekstensi",
   "EXTENSION_MANAGER_ERROR_LOAD": "Gagal membuka daftar ekstensi. Coba lagi nanti.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Mulai Ulang Untuk Memperbarui",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Untuk memuat ekstensi yang diperbarui, tutup semua instance {APP_NAME} yang berjalan dan mulai ulang aplikasi.",
   "INSTALL_EXTENSION_DRAG": "Tarik .zip ke sini atau",
   "INSTALL_EXTENSION_DROP": "Jatuhkan .zip untuk menginstal",
   "INSTALL_EXTENSION_DROP_ERROR": "Instal/Pembaruan dibatalkan karena kesalahan berikut:",

@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "Évaluation étoilée",
   "EXTENSION_MANAGER_TITLE": "Gestionnaire d’extensions",
   "EXTENSION_MANAGER_ERROR_LOAD": "Impossible d’accéder au registre de l’extension. Réessayez ultérieurement.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Redémarrer pour mettre à jour",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Pour charger les extensions mises à jour, veuillez fermer toutes les instances en cours d'exécution de {APP_NAME} et redémarrer l'application.",
   "INSTALL_EXTENSION_DRAG": "Faire glisser le fichier .zip ici ou",
   "INSTALL_EXTENSION_DROP": "Déposer le fichier .zip pour lancer l’installation",
   "INSTALL_EXTENSION_DROP_ERROR": "Installation/Mise à jour interrompue en raison des erreurs suivantes :",

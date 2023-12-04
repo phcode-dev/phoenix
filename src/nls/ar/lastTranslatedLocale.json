@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "تصنيف النجوم",
   "EXTENSION_MANAGER_TITLE": "مدير الإرشاد",
   "EXTENSION_MANAGER_ERROR_LOAD": "تعذر الوصول إلى سجل الامتداد. الرجاء معاودة المحاولة في وقت لاحق.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "إعادة التشغيل للتحديث",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "لتحميل الملحقات المحدثة، يرجى إغلاق جميع مثيلات {APP_NAME} قيد التشغيل وإعادة تشغيل التطبيق.",
   "INSTALL_EXTENSION_DRAG": "اسحب .zip هنا أو",
   "INSTALL_EXTENSION_DROP": "قم بإسقاط .zip للتثبيت",
   "INSTALL_EXTENSION_DROP_ERROR": "تم إحباط التثبيت / التحديث بسبب الأخطاء التالية:",

@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Ocena w skali gwiazdkowej",
   "EXTENSION_MANAGER_TITLE": "Menedżer rozszerzeń",
   "EXTENSION_MANAGER_ERROR_LOAD": "Nie udało się dostać do rejestru rozszerzeń. Spróbuj ponownie później.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Uruchom ponownie, aby zaktualizować",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Aby załadować zaktualizowane rozszerzenia, zamknij wszystkie działające wystąpienia aplikacji {APP_NAME} i uruchom ją ponownie.",
   "INSTALL_EXTENSION_DRAG": "Przenieś plik .zip lub",
   "INSTALL_EXTENSION_DROP": "Przenieś plik .zip aby zainstalować",
   "INSTALL_EXTENSION_DROP_ERROR": "Instalacja/aktualizacja przerwana z powodu błędów:",

@@ -472,6 +472,8 @@
   "EXTENSION_STAR_SORT": "സ്റ്റാർ റേറ്റിംഗ്",
   "EXTENSION_MANAGER_TITLE": "എക്സ്റ്റൻഷൻ മാനേജർ",
   "EXTENSION_MANAGER_ERROR_LOAD": "എക്സ്റ്റൻഷൻ രജിസ്ട്രി ആക്സസ് ചെയ്യാൻ കഴിയുന്നില്ല. ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "അപ്ഡേറ്റ് ചെയ്യാൻ പുനരാരംഭിക്കുക",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "അപ്‌ഡേറ്റ് ചെയ്‌ത വിപുലീകരണങ്ങൾ ലോഡുചെയ്യാൻ, {APP_NAME}-ന്റെ പ്രവർത്തിക്കുന്ന എല്ലാ സന്ദർഭങ്ങളും അടച്ച് അപ്ലിക്കേഷൻ പുനരാരംഭിക്കുക.",
   "INSTALL_EXTENSION_DRAG": "ഇവിടെ .zip വലിച്ചിടുക അല്ലെങ്കിൽ",
   "INSTALL_EXTENSION_DROP": "ഇൻസ്റ്റാൾ ചെയ്യാൻ .zip ഇടുക",
   "INSTALL_EXTENSION_DROP_ERROR": "ഇനിപ്പറയുന്ന പിശകുകൾ കാരണം ഇൻസ്റ്റാളുചെയ്യൽ/അപ്‌ഡേറ്റ് നിർത്തലാക്കി:",

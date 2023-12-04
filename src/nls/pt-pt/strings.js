@@ -492,6 +492,8 @@ define({
   "EXTENSION_STAR_SORT": "Classificação por estrelas",
   "EXTENSION_MANAGER_TITLE": "gerenciador de extensão",
   "EXTENSION_MANAGER_ERROR_LOAD": "Não é possível acessar o registro de extensão. Por favor, tente novamente mais tarde.",
+  "EXTENSION_UPDATE_RESTART_TITLE": "Reinicie para atualizar",
+  "EXTENSION_UPDATE_RESTART_MESSAGE": "Para carregar extensões atualizadas, feche todas as instâncias em execução do {APP_NAME} e reinicie o aplicativo.",
   "INSTALL_EXTENSION_DRAG": "Arraste .zip aqui ou",
   "INSTALL_EXTENSION_DROP": "Solte .zip para instalar",
   "INSTALL_EXTENSION_DROP_ERROR": "A instalação/atualização foi cancelada devido aos seguintes erros:",
