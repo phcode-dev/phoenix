@@ -605,7 +605,7 @@ define(function (require, exports, module) {
                 doNotOpen = true;
             }
             this.props.actions.setSelected(this.myPath(), doNotOpen);
-            render();
+            this.render();
         },
 
         /**
