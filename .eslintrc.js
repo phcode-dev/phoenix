@@ -100,5 +100,11 @@ module.exports = {
             "blockBindings": true,
             "classes": true
         }
-    }
+    },
+    "overrides": [{
+        "files": ["src-node/**/*.js", "src-node/*.js"],
+        "env": {
+            "node": true
+        }
+    }]
 };

@@ -269,6 +269,12 @@ function documentChanged(updateObject) {
     projectCache[updateObject.filePath] = updateObject.docContents;
 }
 
+function setTauriWsFS(nodeWSURL) {
+    fs.setNodeWSEndpoint(nodeWSURL);
+    fs.forceUseNodeWSEndpoint(true);
+}
+
+WorkerComm.setExecHandler("setTauriFSWS", setTauriWsFS);
 WorkerComm.setExecHandler("initCache", initCache);
 WorkerComm.setExecHandler("filesChanged", addFilesToCache);
 WorkerComm.setExecHandler("documentChanged", documentChanged);
