@@ -552,6 +552,7 @@
   "CMD_RUN_UNIT_TESTS": "テストを実行",
   "CMD_SHOW_PERF_DATA": "パフォーマンスデータを表示",
   "CMD_ENABLE_LOGGING": "詳細ログを有効にする",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode インスペクターを有効にする",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "ライブ プレビュー ログ",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} ソースを開く",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} コマンドラインショートカット",

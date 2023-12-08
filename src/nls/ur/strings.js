@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "ٹیسٹ چلائیں۔",
   "CMD_SHOW_PERF_DATA": "کارکردگی کا ڈیٹا دکھائیں۔",
   "CMD_ENABLE_LOGGING": "تفصیلی لاگز کو فعال کریں۔",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "پی ایچ نوڈ انسپکٹر کو فعال کریں۔",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "لائیو پیش نظارہ لاگز",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} سورس کھولیں۔",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} کمانڈ لائن شارٹ کٹ",

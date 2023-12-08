@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Изврши тестове",
   "CMD_SHOW_PERF_DATA": "Прикажи податке о перформансама",
   "CMD_ENABLE_LOGGING": "Омогући детаљне евиденције",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "Омогућите ПхНоде Инспецтор",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Дневници прегледа уживо",
   "CMD_OPEN_BRACKETS_SOURCE": "Отвори изворни кôд Brackets-а",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{АПП_НАМЕ} пречица командне линије",

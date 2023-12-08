@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Пускане на тестовете",
   "CMD_SHOW_PERF_DATA": "Показване на данните за производителността",
   "CMD_ENABLE_LOGGING": "Активиране на подробни регистрационни файлове",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "Активирайте PhNode Inspector",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Журнали за предварителен преглед на живо",
   "CMD_OPEN_BRACKETS_SOURCE": "Отваряне на изходния код на {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Пряк път към {APP_NAME} за командния ред",

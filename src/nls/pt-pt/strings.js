@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Executar testes",
   "CMD_SHOW_PERF_DATA": "Mostrar dados de desempenho",
   "CMD_ENABLE_LOGGING": "Ativar registros detalhados",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "Habilitar Inspetor PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Registros de visualização ao vivo",
   "CMD_OPEN_BRACKETS_SOURCE": "Abrir fonte {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Atalho da linha de comando {APP_NAME}",
