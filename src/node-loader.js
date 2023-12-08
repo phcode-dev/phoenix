@@ -26,7 +26,6 @@ if(Phoenix.browser.isTauri) {
             TERMINATE: "terminate",
             PING: "ping",
             SET_DEBUG_MODE: "setDebugMode",
-            SET_PHOENIX_FS_DEBUG_MODE: "setPhoenixFSDebugMode",
             HEART_BEAT: "heartBeat",
             GET_ENDPOINTS: "getEndpoints"
         };
@@ -53,7 +52,7 @@ if(Phoenix.browser.isTauri) {
                     window.isNodeTerminated = true;
                     console.log(`PhNode: command finished with code ${data.code} and signal ${data.signal}`);
                     if(!resolved) {
-                        reject();
+                        reject("PhNode: closed - Terminated.");
                     }
                 });
                 command.on('error', error => console.error(`PhNode: command error: "${error}"`));
@@ -98,6 +97,7 @@ if(Phoenix.browser.isTauri) {
                         fs.forceUseNodeWSEndpoint(true);
                         resolve(message);
                     });
+                execNode(NODE_COMMANDS.SET_DEBUG_MODE, window.debugMode);
                 setInterval(()=>{
                     if(!window.isNodeTerminated) {
                         execNode(NODE_COMMANDS.HEART_BEAT);

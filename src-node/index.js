@@ -81,12 +81,10 @@ function processCommand(line) {
         case "setDebugMode":
             if(jsonCmd.commandData) {
                 console.log = savedConsoleLog;
+                console.log("Debug Mode Enabled");
             } else {
                 console.log = function () {}; // swallow logs
             }
-            _sendResponse("done", jsonCmd.commandID); return;
-        case "setPhoenixFSDebugMode":
-            PhoenixFS.setDebugMode(jsonCmd.commandData);
             _sendResponse("done", jsonCmd.commandID); return;
         case "getEndpoints":
             serverPortPromise.then(port =>{
@@ -131,6 +129,8 @@ getFreePort().then((port) => {
     console.log('Server Opened on port: ', port);
 
     PhoenixFS.CreatePhoenixFsServer(server, PHOENIX_FS_URL);
+    // PhoenixFS.setDebugMode(true); // uncomment this line to enable more logging in phoenix fs lib
+
     // Start the HTTP server on port 3000
     server.listen(port, () => {
         serverPortResolve(port);
