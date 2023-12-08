@@ -44,9 +44,14 @@ if(Phoenix.browser.isTauri) {
             return !!prefs.inspectEnabled;
         }
 
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
         window.__TAURI__.path.resolveResource("src-node/index.js")
             .then(async nodeSrcPath=>{
-                const argsArray = isInspectEnabled() ? ['--inspect', nodeSrcPath] : [nodeSrcPath, ''];
+                const inspectPort = Phoenix.isTestWindow ? getRandomNumber(5000, 50000) : 9229;
+                const argsArray = isInspectEnabled() ? [`--inspect=${inspectPort}`, nodeSrcPath] : [nodeSrcPath, ''];
                 command = window.__TAURI__.shell.Command.sidecar('phnode', argsArray);
                 command.on('close', data => {
                     window.isNodeTerminated = true;
@@ -88,6 +93,9 @@ if(Phoenix.browser.isTauri) {
                     isInspectEnabled,
                     terminateNode: function () {
                         execNode(NODE_COMMANDS.TERMINATE);
+                    },
+                    getInspectPort: function () {
+                        return inspectPort;
                     }
                 };
 

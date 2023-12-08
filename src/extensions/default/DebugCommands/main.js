@@ -35,6 +35,7 @@ define(function (require, exports, module) {
         PerfUtils              = brackets.getModule("utils/PerfUtils"),
         StringUtils            = brackets.getModule("utils/StringUtils"),
         Dialogs                = brackets.getModule("widgets/Dialogs"),
+        DefaultDialogs         = brackets.getModule("widgets/DefaultDialogs"),
         Strings                = brackets.getModule("strings"),
         PreferencesManager     = brackets.getModule("preferences/PreferencesManager"),
         LocalizationUtils      = brackets.getModule("utils/LocalizationUtils"),
@@ -72,6 +73,7 @@ define(function (require, exports, module) {
         DEBUG_SWITCH_LANGUAGE                 = "debug.switchLanguage",
         DEBUG_ENABLE_LOGGING                  = "debug.enableLogging",
         DEBUG_ENABLE_PHNODE_INSPECTOR         = "debug.enablePhNodeInspector",
+        DEBUG_GET_PHNODE_INSPECTOR_URL        = "debug.getPhNodeInspectorURL",
         DEBUG_LIVE_PREVIEW_LOGGING            = "debug.livePreviewLogging",
         DEBUG_OPEN_VFS                        = "debug.openVFS",
         DEBUG_OPEN_EXTENSION_FOLDER           = "debug.openExtensionFolders",
@@ -702,6 +704,25 @@ define(function (require, exports, module) {
         _updateLogToConsoleMenuItemChecked();
     }
 
+    function _handleGetPhNodeInspectURL() {
+        Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.CMD_GET_PHNODE_INSPECTOR_URL,
+            `<div id="instructions">
+  <p>
+    1. Go to <a href="chrome://inspect/" target="_blank">chrome://inspect/#devices</a>
+    <button onclick="Phoenix.app.copyToClipboard('chrome://inspect/')">
+      <i class="fas fa-copy"></i> Copy
+    </button>
+  </p>
+  <p>2. Select Option 'Open dedicated DevTools for Node'</p>
+  <p>
+    3. Use the URL in connection tab'<code>localhost:${window.PhNodeEngine.getInspectPort()}</code>'
+    <button onclick="Phoenix.app.copyToClipboard('localhost:${window.PhNodeEngine.getInspectPort()}')">
+      <i class="fas fa-copy"></i> Copy
+    </button>
+  </p>
+</div>`);
+    }
+
     function _handleLivePreviewLogging() {
         window.toggleLoggingKey(LOG_LIVE_PREVIEW_KEY);
         _updateLogToConsoleMenuItemChecked();
@@ -757,6 +778,7 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
     CommandManager.register(Strings.CMD_ENABLE_PHNODE_INSPECTOR, DEBUG_ENABLE_PHNODE_INSPECTOR, _handlePhNodeInspectEnable);
+    CommandManager.register(Strings.CMD_GET_PHNODE_INSPECTOR_URL, DEBUG_GET_PHNODE_INSPECTOR_URL, _handleGetPhNodeInspectURL);
     CommandManager.register(Strings.CMD_ENABLE_LIVE_PREVIEW_LOGS, DEBUG_LIVE_PREVIEW_LOGGING, _handleLivePreviewLogging);
     CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
     CommandManager.register(Strings.CMD_OPEN_EXTENSIONS_FOLDER, DEBUG_OPEN_EXTENSION_FOLDER,   _openExtensionsFolder);
@@ -782,6 +804,9 @@ define(function (require, exports, module) {
     debugMenu.addMenuItem(DEBUG_ENABLE_PHNODE_INSPECTOR, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
+    debugMenu.addMenuItem(DEBUG_GET_PHNODE_INSPECTOR_URL, undefined, undefined, undefined, {
+        hideWhenCommandDisabled: true
+    });
     debugMenu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
     debugMenu.addMenuDivider();
     debugMenu.addMenuItem(DEBUG_OPEN_VFS);
@@ -797,6 +822,8 @@ define(function (require, exports, module) {
     CommandManager.get(DEBUG_OPEN_EXTENSION_FOLDER)
         .setEnabled(Phoenix.browser.isTauri); // only show in tauri
     CommandManager.get(DEBUG_ENABLE_PHNODE_INSPECTOR)
+        .setEnabled(Phoenix.browser.isTauri); // only show in tauri
+    CommandManager.get(DEBUG_GET_PHNODE_INSPECTOR_URL)
         .setEnabled(Phoenix.browser.isTauri); // only show in tauri
     CommandManager.get(DEBUG_OPEN_VIRTUAL_SERVER)
         .setEnabled(!Phoenix.browser.isTauri); // don't show in tauri as there is no virtual server in tauri

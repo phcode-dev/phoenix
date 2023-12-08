@@ -697,6 +697,7 @@ define({
     "CMD_SHOW_PERF_DATA": "Show Performance Data",
     "CMD_ENABLE_LOGGING": "Enable Detailed Logs",
     "CMD_ENABLE_PHNODE_INSPECTOR": "Enable PhNode Inspector",
+    "CMD_GET_PHNODE_INSPECTOR_URL": "How to Inspect PhNode",
     "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview Logs",
     "CMD_OPEN_BRACKETS_SOURCE": "Open {APP_NAME} Source",
 
