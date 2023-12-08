@@ -1790,6 +1790,7 @@ define(function (require, exports, module) {
 
             // Defer for a more successful reload - issue #11539
             window.setTimeout(function () {
+                window.PhNodeEngine && window.PhNodeEngine.terminateNode();
                 window.location.href = href;
             }, 1000);
         }).fail(function () {
@@ -1900,6 +1901,7 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
+                window.PhNodeEngine.terminateNode();
                 Phoenix.app.closeWindow();
             }, closeFail=>{
                 console.log('close fail: ', closeFail);

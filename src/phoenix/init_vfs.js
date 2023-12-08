@@ -82,7 +82,7 @@ function _setupVFS(fsLib, pathLib){
                     cb();
                     return;
                 }
-                Phoenix.fs.mkdirs(path, 777, true, function(err) {
+                Phoenix.fs.mkdirs(path, 0o755, true, function(err) {
                     if (err && err.code !== 'EEXIST') {
                         cb(err);
                     }

@@ -77,6 +77,11 @@ define(function (require, exports, module) {
     }
     EventDispatcher.makeEventDispatcher(exports);
     WorkerComm.createWorkerComm(_FileIndexingWorker, exports);
+    if(window.nodeSetupDonePromise){
+        window.nodeSetupDonePromise.then(nodeConfig =>{
+            exports.execPeer("setTauriFSWS", nodeConfig.phoenixFSURL);
+        });
+    }
     /**
      * To communicate between the IndexingWorker and Phoenix, the following methods are available:
      * `loadScriptInWorker`, `execPeer`, `setExecHandler`, `triggerPeer` and other APIs described

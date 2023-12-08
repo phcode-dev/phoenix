@@ -536,6 +536,9 @@ define(function (require, exports, module) {
             _testWindow.console[method] = function () {
                 var log = ["[testWindow] "].concat(Array.prototype.slice.call(arguments, 0));
                 console[method].apply(console, log);
+                if(!_testWindow){
+                    return;
+                }
                 originalMethod.apply(_testWindow.console, arguments);
             };
         });

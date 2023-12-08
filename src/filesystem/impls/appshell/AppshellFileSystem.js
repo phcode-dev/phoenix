@@ -469,7 +469,7 @@ define(function (require, exports, module) {
         path = _normalise_path(path);
         if (typeof mode === "function") {
             callback = mode;
-            mode = parseInt("0755", 8);
+            mode = 0o755;
         }
         appshell.fs.mkdirs(path, mode, true, function (err) {
             if (err) {

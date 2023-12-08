@@ -71,6 +71,7 @@ define(function (require, exports, module) {
         DEBUG_RELOAD_WITHOUT_USER_EXTS        = "debug.reloadWithoutUserExts",
         DEBUG_SWITCH_LANGUAGE                 = "debug.switchLanguage",
         DEBUG_ENABLE_LOGGING                  = "debug.enableLogging",
+        DEBUG_ENABLE_PHNODE_INSPECTOR         = "debug.enablePhNodeInspector",
         DEBUG_LIVE_PREVIEW_LOGGING            = "debug.livePreviewLogging",
         DEBUG_OPEN_VFS                        = "debug.openVFS",
         DEBUG_OPEN_EXTENSION_FOLDER           = "debug.openExtensionFolders",
@@ -688,10 +689,16 @@ define(function (require, exports, module) {
         CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setEnabled(isLogging);
         logger.loggingOptions.logLivePreview = window.isLoggingEnabled(LOG_LIVE_PREVIEW_KEY);
         CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setChecked(logger.loggingOptions.logLivePreview);
+        CommandManager.get(DEBUG_ENABLE_PHNODE_INSPECTOR).setChecked(window.PhNodeEngine && window.PhNodeEngine.isInspectEnabled());
     }
 
     function _handleLogging() {
         window.toggleLoggingKey(LOG_TO_CONSOLE_KEY);
+        _updateLogToConsoleMenuItemChecked();
+    }
+
+    function _handlePhNodeInspectEnable() {
+        window.PhNodeEngine.setInspectEnabled(!window.PhNodeEngine.isInspectEnabled());
         _updateLogToConsoleMenuItemChecked();
     }
 
@@ -749,6 +756,7 @@ define(function (require, exports, module) {
     CommandManager.register(switchLanguageStr,           DEBUG_SWITCH_LANGUAGE,           handleSwitchLanguage);
 
     CommandManager.register(Strings.CMD_ENABLE_LOGGING, DEBUG_ENABLE_LOGGING,   _handleLogging);
+    CommandManager.register(Strings.CMD_ENABLE_PHNODE_INSPECTOR, DEBUG_ENABLE_PHNODE_INSPECTOR, _handlePhNodeInspectEnable);
     CommandManager.register(Strings.CMD_ENABLE_LIVE_PREVIEW_LOGS, DEBUG_LIVE_PREVIEW_LOGGING, _handleLivePreviewLogging);
     CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
     CommandManager.register(Strings.CMD_OPEN_EXTENSIONS_FOLDER, DEBUG_OPEN_EXTENSION_FOLDER,   _openExtensionsFolder);
@@ -771,6 +779,9 @@ define(function (require, exports, module) {
     debugMenu.addMenuItem(DEBUG_SHOW_PERF_DATA);
     debugMenu.addMenuDivider();
     debugMenu.addMenuItem(DEBUG_ENABLE_LOGGING);
+    debugMenu.addMenuItem(DEBUG_ENABLE_PHNODE_INSPECTOR, undefined, undefined, undefined, {
+        hideWhenCommandDisabled: true
+    });
     debugMenu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
     debugMenu.addMenuDivider();
     debugMenu.addMenuItem(DEBUG_OPEN_VFS);
@@ -784,6 +795,8 @@ define(function (require, exports, module) {
     CommandManager.get(DEBUG_UNLOAD_CURRENT_EXTENSION)
         .setEnabled(extensionDevelopment.isProjectLoadedAsExtension());
     CommandManager.get(DEBUG_OPEN_EXTENSION_FOLDER)
+        .setEnabled(Phoenix.browser.isTauri); // only show in tauri
+    CommandManager.get(DEBUG_ENABLE_PHNODE_INSPECTOR)
         .setEnabled(Phoenix.browser.isTauri); // only show in tauri
     CommandManager.get(DEBUG_OPEN_VIRTUAL_SERVER)
         .setEnabled(!Phoenix.browser.isTauri); // don't show in tauri as there is no virtual server in tauri

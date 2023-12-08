@@ -427,7 +427,7 @@ define(function (require, exports, module) {
                     statCB      = statSpy(),
                     unlinkCB    = errSpy();
 
-                brackets.fs.mkdir(delDirName, parseInt("777", 0), cb);
+                brackets.fs.mkdir(delDirName, 0o777, cb);
 
                 await awaitsFor(function () { return cb.wasCalled; }, "makeDir to finish");
 
@@ -466,7 +466,7 @@ define(function (require, exports, module) {
                     statCB      = statSpy(),
                     trashCB     = errSpy();
 
-                brackets.fs.mkdir(newDirName, parseInt("777", 0), cb);
+                brackets.fs.mkdir(newDirName, 0o777, cb);
 
                 await awaitsFor(function () { return cb.wasCalled; }, "makedir to finish");
 
