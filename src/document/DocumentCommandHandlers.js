@@ -1901,7 +1901,7 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
-                window.PhNodeEngine.terminateNode();
+                window.PhNodeEngine && window.PhNodeEngine.terminateNode();
                 Phoenix.app.closeWindow();
             }, closeFail=>{
                 console.log('close fail: ', closeFail);
