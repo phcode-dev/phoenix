@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "Προβολή Δεδομένων Επίδοσης",
   "CMD_ENABLE_LOGGING": "Ενεργοποίηση λεπτομερών αρχείων καταγραφής",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Ενεργοποιήστε το PhNode Inspector",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "Πώς να επιθεωρήσετε το PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Ζωντανά αρχεία καταγραφής προεπισκόπησης",
   "CMD_OPEN_BRACKETS_SOURCE": "Άνοιξε τον κώδικα του {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Συντόμευση γραμμής εντολών",

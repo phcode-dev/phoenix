@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "Afficher les données de performances",
   "CMD_ENABLE_LOGGING": "Activer les journaux détaillés",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Activer l'inspecteur PhNode",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "Comment inspecter PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Journaux d'aperçu en direct",
   "CMD_OPEN_BRACKETS_SOURCE": "Ouvrir la source de {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Raccourci de ligne de commande {APP_NAME}",

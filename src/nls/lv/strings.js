@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "Rādīt veiktspējas informāciju",
   "CMD_ENABLE_LOGGING": "Iespējot detalizētus žurnālus",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Iespējot PhNode inspektoru",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "Kā pārbaudīt PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Tiešraides priekšskatījuma žurnāli",
   "CMD_OPEN_BRACKETS_SOURCE": "Atvērt {APP_NAME} avotu",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} komandrindas saīsne",

@@ -553,6 +553,7 @@
   "CMD_SHOW_PERF_DATA": "نمایش داده های عملکردی",
   "CMD_ENABLE_LOGGING": "گزارش های تفصیلی را فعال کنید",
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode Inspector را فعال کنید",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "نحوه بازرسی PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "گزارش های پیش نمایش زنده",
   "CMD_OPEN_BRACKETS_SOURCE": "باز کردن منبع براکتس",
   "CREATING_LAUNCH_SCRIPT_TITLE": "میانبر خط فرمان {APP_NAME}",

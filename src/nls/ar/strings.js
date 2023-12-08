@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "إظهار بيانات الأداء",
   "CMD_ENABLE_LOGGING": "تمكين السجلات التفصيلية",
   "CMD_ENABLE_PHNODE_INSPECTOR": "تمكين PhNode المفتش",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "كيفية فحص PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "سجلات المعاينة الحية",
   "CMD_OPEN_BRACKETS_SOURCE": "افتح مصدر {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "اختصار سطر أوامر {APP_NAME}",

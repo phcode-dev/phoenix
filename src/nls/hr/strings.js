@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "Prikaži podatke o performansama",
   "CMD_ENABLE_LOGGING": "Omogući detaljne zapisnike",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Omogući PhNode Inspector",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "Kako pregledati PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Dnevnici pregleda uživo",
   "CMD_OPEN_BRACKETS_SOURCE": "Otvori Brackets izvor",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Prečac naredbenog retka",
