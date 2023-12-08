@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Kør enhedstest",
   "CMD_SHOW_PERF_DATA": "Vis ydelsesdata",
   "CMD_ENABLE_LOGGING": "Aktiver detaljerede logfiler",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "Aktiver PhNode Inspector",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview Logs",
   "CMD_OPEN_BRACKETS_SOURCE": "Åbn {APP_NAME}-kilden",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Kommandolinjegenvej",

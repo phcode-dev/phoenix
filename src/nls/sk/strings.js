@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Spustiť testy",
   "CMD_SHOW_PERF_DATA": "Zobraziť údaje o výkone",
   "CMD_ENABLE_LOGGING": "Povoliť podrobné denníky",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "Povoliť PhNode Inspector",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Záznamy živého náhľadu",
   "CMD_OPEN_BRACKETS_SOURCE": "Otvorte zdroj aplikácie {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Skratka príkazového riadka aplikácie {APP_NAME}",

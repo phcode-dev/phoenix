@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Запустить тесты",
   "CMD_SHOW_PERF_DATA": "Показать данные о производительности",
   "CMD_ENABLE_LOGGING": "Включить подробные журналы",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "Включить инспектор PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Журналы просмотра в реальном времени",
   "CMD_OPEN_BRACKETS_SOURCE": "Откройте источник {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Ярлык командной строки {APP_NAME}",

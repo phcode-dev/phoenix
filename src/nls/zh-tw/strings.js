@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "執行測試",
   "CMD_SHOW_PERF_DATA": "顯示效能資料",
   "CMD_ENABLE_LOGGING": "啟用詳細日誌",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "啟用 PhNode 檢查器",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "實時預覽日誌",
   "CMD_OPEN_BRACKETS_SOURCE": "開啟 {APP_NAME} 原始碼",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} 命令列捷徑",

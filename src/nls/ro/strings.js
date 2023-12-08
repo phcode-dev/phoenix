@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Rulează testele",
   "CMD_SHOW_PERF_DATA": "Arată datele despre performanță",
   "CMD_ENABLE_LOGGING": "Activați jurnalele detaliate",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "Activați PhNode Inspector",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Jurnalele de previzualizare live",
   "CMD_OPEN_BRACKETS_SOURCE": "Deschide sursa Brackets",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Comandă rapidă pentru linia de comandă {APP_NAME}",

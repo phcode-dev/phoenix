@@ -572,6 +572,7 @@ define({
   "CMD_RUN_UNIT_TESTS": "Tesztek Futtatása",
   "CMD_SHOW_PERF_DATA": "Teljesítmény adatok megjelenítése",
   "CMD_ENABLE_LOGGING": "Részletes naplók engedélyezése",
+  "CMD_ENABLE_PHNODE_INSPECTOR": "A PhNode Inspector engedélyezése",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Élő előnézeti naplók",
   "CMD_OPEN_BRACKETS_SOURCE": "Nyissa meg a(z) {APP_NAME} forrását",
   "CREATING_LAUNCH_SCRIPT_TITLE": "A {APP_NAME} parancssori parancsikonja",
