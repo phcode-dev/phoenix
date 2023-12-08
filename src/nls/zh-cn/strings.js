@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "显示性能数据",
   "CMD_ENABLE_LOGGING": "启用详细日志",
   "CMD_ENABLE_PHNODE_INSPECTOR": "启用 PhNode 检查器",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "如何检查 PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "实时预览日志",
   "CMD_OPEN_BRACKETS_SOURCE": "打开 Brackets 源码",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} 命令行快捷方式",

@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "Visa prestandadata",
   "CMD_ENABLE_LOGGING": "Aktivera detaljerade loggar",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktivera PhNode Inspector",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "Hur man inspekterar PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview-loggar",
   "CMD_OPEN_BRACKETS_SOURCE": "Öppna Brackets källkod",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} kommandotolk-genväg",

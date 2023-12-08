@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "성능 데이터를 표시",
   "CMD_ENABLE_LOGGING": "상세 로그 활성화",
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode 검사기 활성화",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "PhNode를 검사하는 방법",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "실시간 미리보기 로그",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} 소스 열기",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} 명령 줄 바로가기",

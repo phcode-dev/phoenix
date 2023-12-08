@@ -573,6 +573,7 @@ define({
   "CMD_SHOW_PERF_DATA": "Mostrar dados de desempenho",
   "CMD_ENABLE_LOGGING": "Ativar registros detalhados",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Habilitar Inspetor PhNode",
+  "CMD_GET_PHNODE_INSPECTOR_URL": "Como inspecionar PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Registros de visualização ao vivo",
   "CMD_OPEN_BRACKETS_SOURCE": "Abrir local do Brackets",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Atalho de {APP_NAME} na linha de comando",
