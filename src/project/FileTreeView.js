@@ -497,9 +497,7 @@ define(function (require, exports, module) {
          * Ensures that we always have a state object.
          */
         getInitialState: function () {
-            return {
-                clickTimer: null
-            };
+            return {};
         },
 
         /**
@@ -527,17 +525,6 @@ define(function (require, exports, module) {
                 // project-files-container and then the file tree will be one self-contained
                 // functional unit.
                 ViewUtils.scrollElementIntoView($("#project-files-container"), $(Preact.findDOMNode(this)), true);
-            } else if (!isSelected && wasSelected && this.state.clickTimer !== null) {
-                this.clearTimer();
-            }
-        },
-
-        clearTimer: function () {
-            if (this.state.clickTimer !== null) {
-                window.clearTimeout(this.state.clickTimer);
-                this.setState({
-                    clickTimer: null
-                });
             }
         },
 
@@ -545,7 +532,6 @@ define(function (require, exports, module) {
             if (!this.props.entry.get("rename")) {
                 this.props.actions.startRename(this.myPath());
             }
-            this.clearTimer();
         },
 
         /**
@@ -563,14 +549,7 @@ define(function (require, exports, module) {
                 return;
             }
 
-            if (this.props.entry.get("selected") && !e.ctrlKey) {
-                if (this.state.clickTimer === null && !this.props.entry.get("rename")) {
-                    var timer = window.setTimeout(this.startRename, CLICK_RENAME_MINIMUM);
-                    this.setState({
-                        clickTimer: timer
-                    });
-                }
-            } else {
+            if (!(this.props.entry.get("selected") && !e.ctrlKey)) {
                 var language = LanguageManager.getLanguageForPath(this.myPath()),
                     doNotOpen = false;
                 if (language && language.isBinary() && "image" !== language.getId() &&
@@ -614,9 +593,6 @@ define(function (require, exports, module) {
          */
         handleDoubleClick: function () {
             if (!this.props.entry.get("rename")) {
-                if (this.state.clickTimer !== null) {
-                    this.clearTimer();
-                }
                 if (FileUtils.shouldOpenInExternalApplication(
                         FileUtils.getFileExtension(this.myPath()).toLowerCase()
                       )) {
