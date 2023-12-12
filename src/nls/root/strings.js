@@ -438,6 +438,7 @@ define({
     "CMD_TOGGLE_SIDEBAR": "Toggle Sidebar",
     "CMD_TOGGLE_PANELS": "Toggle Panels",
     "CMD_TOGGLE_PURE_CODE": "No Distractions",
+    "CMD_TOGGLE_FULLSCREEN": "Fullscreen",
     "CMD_ZOOM_UI": "Zoom UI and Fonts",
     "CMD_ZOOM_IN": "Zoom In",
     "CMD_ZOOM_OUT": "Zoom Out",
