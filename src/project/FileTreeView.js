@@ -63,11 +63,10 @@ define(function (require, exports, module) {
     // Constants
 
     // Time range from first click to second click to invoke renaming.
-    var CLICK_RENAME_MINIMUM  = 500,
-        RIGHT_MOUSE_BUTTON    = 2,
+    const RIGHT_MOUSE_BUTTON    = 2,
         LEFT_MOUSE_BUTTON     = 0;
 
-    var INDENTATION_WIDTH     = 10;
+    const INDENTATION_WIDTH     = 10;
 
     /**
      * @private
