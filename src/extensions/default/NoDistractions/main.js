@@ -35,6 +35,7 @@ define(function (require, exports, module) {
     // Constants
     var PREFS_PURE_CODE           = "noDistractions",
         CMD_TOGGLE_PURE_CODE      = "view.togglePureCode",
+        CMD_TOGGLE_FULLSCREEN     = "view.toggleFullscreen",
         CMD_TOGGLE_PANELS         = "view.togglePanels";
 
     //key binding keys
@@ -50,12 +51,17 @@ define(function (require, exports, module) {
         panelsToggled = false,
         layoutUpdated = false;
 
+    function isInFullScreen() {
+        return !!document.fullscreenElement;
+    }
+
     /**
      * @private
      * Updates the command checked status based on the preference for noDestraction mode
      */
     function _updateCheckedState() {
         CommandManager.get(CMD_TOGGLE_PURE_CODE).setChecked(PreferencesManager.get(PREFS_PURE_CODE));
+        CommandManager.get(CMD_TOGGLE_FULLSCREEN).setChecked(isInFullScreen());
     }
 
     /**
@@ -65,6 +71,16 @@ define(function (require, exports, module) {
     function _togglePureCode() {
         PreferencesManager.set(PREFS_PURE_CODE, !PreferencesManager.get(PREFS_PURE_CODE));
         Metrics.countEvent(Metrics.EVENT_TYPE.UI, 'noDistractions', 'toggle');
+    }
+
+    async function _toggleFullScreen() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, 'fullscreen', 'toggle');
+        if (!isInFullScreen()) {
+            await document.documentElement.requestFullscreen();
+        } else if (document.exitFullscreen) {
+            await document.exitFullscreen();
+        }
+        _updateCheckedState();
     }
 
     /**
@@ -145,10 +161,12 @@ define(function (require, exports, module) {
      */
     function initializeCommands() {
         CommandManager.register(Strings.CMD_TOGGLE_PURE_CODE, CMD_TOGGLE_PURE_CODE, _togglePureCode);
+        CommandManager.register(Strings.CMD_TOGGLE_FULLSCREEN, CMD_TOGGLE_FULLSCREEN, _toggleFullScreen);
         CommandManager.register(Strings.CMD_TOGGLE_PANELS, CMD_TOGGLE_PANELS, _togglePanels);
 
         Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(CMD_TOGGLE_PANELS, "", Menus.AFTER, Commands.VIEW_HIDE_SIDEBAR);
         Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(CMD_TOGGLE_PURE_CODE, "", Menus.AFTER, CMD_TOGGLE_PANELS);
+        Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(CMD_TOGGLE_FULLSCREEN, "F11", Menus.AFTER, CMD_TOGGLE_PURE_CODE);
 
         KeyBindingManager.addBinding(CMD_TOGGLE_PURE_CODE, [ {key: togglePureCodeKey}, {key: togglePureCodeKeyMac, platform: "mac"} ]);
 
