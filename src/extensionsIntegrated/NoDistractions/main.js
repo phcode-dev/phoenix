@@ -24,24 +24,25 @@
 define(function (require, exports, module) {
 
 
-    var Menus               = brackets.getModule("command/Menus"),
-        CommandManager      = brackets.getModule("command/CommandManager"),
-        Commands            = brackets.getModule("command/Commands"),
-        Strings             = brackets.getModule("strings"),
-        PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
-        ViewUtils           = brackets.getModule("utils/ViewUtils"),
-        KeyBindingManager   = brackets.getModule("command/KeyBindingManager"),
-        Metrics             = brackets.getModule("utils/Metrics"),
-        WorkspaceManager    = brackets.getModule("view/WorkspaceManager");
+    const AppInit                 = require("utils/AppInit"),
+        Menus               = require("command/Menus"),
+        CommandManager      = require("command/CommandManager"),
+        Commands            = require("command/Commands"),
+        Strings             = require("strings"),
+        PreferencesManager  = require("preferences/PreferencesManager"),
+        ViewUtils           = require("utils/ViewUtils"),
+        KeyBindingManager   = require("command/KeyBindingManager"),
+        Metrics             = require("utils/Metrics"),
+        WorkspaceManager    = require("view/WorkspaceManager");
 
     // Constants
-    var PREFS_PURE_CODE           = "noDistractions",
+    const PREFS_PURE_CODE           = "noDistractions",
         CMD_TOGGLE_PURE_CODE      = "view.togglePureCode",
         CMD_TOGGLE_FULLSCREEN     = "view.toggleFullscreen",
         CMD_TOGGLE_PANELS         = "view.togglePanels";
 
     //key binding keys
-    var togglePureCodeKey         = "Ctrl-Shift-2",
+    const togglePureCodeKey         = "Ctrl-Shift-2",
         togglePureCodeKeyMac      = "Cmd-Shift-2",
         togglePanelsKey           = "Ctrl-Shift-1",
         togglePanelsKeyMac        = "Cmd-Shift-1",
@@ -49,7 +50,7 @@ define(function (require, exports, module) {
         togglePanelsKeyMac_EN     = "Cmd-Shift-`";
 
     //locals
-    var _previouslyOpenPanelIDs = [],
+    let _previouslyOpenPanelIDs = [],
         panelsToggled = false,
         layoutUpdated = false;
 
@@ -139,25 +140,12 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_PURE_CODING_SURFACE
     });
 
-    PreferencesManager.on("change", PREFS_PURE_CODE, function () {
-        if (PreferencesManager.get(PREFS_PURE_CODE)) {
-            ViewUtils.hideMainToolBar();
-            CommandManager.execute(Commands.HIDE_SIDEBAR);
-            _hidePanelsIfRequired();
-        } else {
-            ViewUtils.showMainToolBar();
-            CommandManager.execute(Commands.SHOW_SIDEBAR);
-            _showPanelsIfRequired();
-        }
-        _updateCheckedState();
-    });
-
     WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_PANEL_SHOWN, _updateLayout);
 
     /**
      * Register the Commands , add the Menu Items and key bindings
      */
-    function initializeCommands() {
+    AppInit.appReady(function () {
         CommandManager.register(Strings.CMD_TOGGLE_PURE_CODE, CMD_TOGGLE_PURE_CODE, _togglePureCode);
         CommandManager.register(Strings.CMD_TOGGLE_FULLSCREEN, CMD_TOGGLE_FULLSCREEN, _toggleFullScreen);
         CommandManager.register(Strings.CMD_TOGGLE_PANELS, CMD_TOGGLE_PANELS, _togglePanels);
@@ -172,8 +160,19 @@ define(function (require, exports, module) {
         //from IQE team than non-English keyboards does not have the ` char. So added one more shortcut ctrl+shift+1 which will be preferred
         KeyBindingManager.addBinding(CMD_TOGGLE_PANELS, [ {key: togglePanelsKey}, {key: togglePanelsKeyMac, platform: "mac"} ]);
         KeyBindingManager.addBinding(CMD_TOGGLE_PANELS, [ {key: togglePanelsKey_EN}, {key: togglePanelsKeyMac_EN, platform: "mac"} ]);
-    }
 
-    initializeCommands();
+        PreferencesManager.on("change", PREFS_PURE_CODE, function () {
+            if (PreferencesManager.get(PREFS_PURE_CODE)) {
+                ViewUtils.hideMainToolBar();
+                CommandManager.execute(Commands.HIDE_SIDEBAR);
+                _hidePanelsIfRequired();
+            } else {
+                ViewUtils.showMainToolBar();
+                CommandManager.execute(Commands.SHOW_SIDEBAR);
+                _showPanelsIfRequired();
+            }
+            _updateCheckedState();
+        });
+    });
 
 });
