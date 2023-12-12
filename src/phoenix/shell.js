@@ -63,6 +63,26 @@ Phoenix.app = {
         }
         window.__TAURI__.window.appWindow.close();
     },
+    isFullscreen: function () {
+        if(!Phoenix.browser.isTauri) {
+            // use browser full screen api in browsers.
+            return Promise.resolve(!!document.fullscreenElement);
+        }
+        return window.__TAURI__.window.appWindow.isFullscreen();
+    },
+    setFullscreen: function (enable) {
+        if(!Phoenix.browser.isTauri) {
+            // use browser full screen api in browsers.
+            if (enable) {
+                return document.documentElement.requestFullscreen();
+            } else if (document.exitFullscreen) {
+                return  document.exitFullscreen();
+            } else {
+                return Promise.resolve();
+            }
+        }
+        return window.__TAURI__.window.appWindow.setFullscreen(enable);
+    },
     getDisplayLocation: function (fullVFSPath) {
         // reruns a user-friendly location that can be shown to the user to make some sense of the virtual file path.
         // The returned path may not be an actual path if it is not resolvable to a platform path, but a text indicating

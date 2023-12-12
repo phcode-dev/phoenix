@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 define(function (require, exports, module) {
 
 
@@ -51,17 +53,15 @@ define(function (require, exports, module) {
         panelsToggled = false,
         layoutUpdated = false;
 
-    function isInFullScreen() {
-        return !!document.fullscreenElement;
-    }
-
     /**
      * @private
      * Updates the command checked status based on the preference for noDestraction mode
      */
     function _updateCheckedState() {
         CommandManager.get(CMD_TOGGLE_PURE_CODE).setChecked(PreferencesManager.get(PREFS_PURE_CODE));
-        CommandManager.get(CMD_TOGGLE_FULLSCREEN).setChecked(isInFullScreen());
+        Phoenix.app.isFullscreen().then(isFullScreen =>{
+            CommandManager.get(CMD_TOGGLE_FULLSCREEN).setChecked(isFullScreen);
+        });
     }
 
     /**
@@ -75,12 +75,10 @@ define(function (require, exports, module) {
 
     async function _toggleFullScreen() {
         Metrics.countEvent(Metrics.EVENT_TYPE.UI, 'fullscreen', 'toggle');
-        if (!isInFullScreen()) {
-            await document.documentElement.requestFullscreen();
-        } else if (document.exitFullscreen) {
-            await document.exitFullscreen();
-        }
-        _updateCheckedState();
+        Phoenix.app.isFullscreen().then(isFullScreen =>{
+            Phoenix.app.setFullscreen(!isFullScreen)
+                .then(_updateCheckedState);
+        });
     }
 
     /**
