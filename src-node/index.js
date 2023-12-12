@@ -40,6 +40,7 @@ function randomNonce(byteLength) {
     return randomId;
 }
 
+let debugMode = false;
 const COMMAND_RESPONSE_PREFIX = 'phnodeResp:';
 // Generate a random 64-bit url. This should take 100 million+ of years to crack with current http connection speed.
 const PHOENIX_FS_URL = `/PhoenixFS${randomNonce(8)}`;
@@ -66,25 +67,33 @@ function _sendResponse(responseMessage, commandID) {
     }) + "\n");
 }
 
+function resetOrphanExitTimer() {
+    const timeout = debugMode ? 60000 * 15 : 60000;
+    // in debug mode, we wait for more minutes to not exit node if phcode doesn't send heartbeats on break point debug
+    clearTimeout(orphanExitTimer);
+    orphanExitTimer = setTimeout(()=>{
+        process.exit(1);
+    }, timeout);
+}
+
 function processCommand(line) {
     try{
         let jsonCmd = JSON.parse(line);
         switch (jsonCmd.commandCode) {
         case "terminate": process.exit(0); return;
         case "heartBeat":
-            clearTimeout(orphanExitTimer);
-            orphanExitTimer = setTimeout(()=>{
-                process.exit(1);
-            }, 60000);
+            resetOrphanExitTimer();
             return;
         case "ping": _sendResponse("pong", jsonCmd.commandID); return;
         case "setDebugMode":
-            if(jsonCmd.commandData) {
+            debugMode = jsonCmd.commandData;
+            if(debugMode) {
                 console.log = savedConsoleLog;
                 console.log("Debug Mode Enabled");
             } else {
                 console.log = function () {}; // swallow logs
             }
+            resetOrphanExitTimer();
             _sendResponse("done", jsonCmd.commandID); return;
         case "getEndpoints":
             serverPortPromise.then(port =>{

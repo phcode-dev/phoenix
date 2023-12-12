@@ -19,7 +19,7 @@
  *
  */
 
-/*global jsPromise, jasmine, expect, beforeEach, awaitsFor,awaitsForDone, spyOn, KeyboardEvent, waits, awaits */
+/*global Phoenix, jsPromise, jasmine, expect, awaitsFor,awaitsForDone, spyOn, awaits */
 
 define(function (require, exports, module) {
 
@@ -216,10 +216,16 @@ define(function (require, exports, module) {
     }
 
     function getTestRoot() {
+        if(Phoenix.browser.isTauri){
+            return Phoenix.app.getApplicationSupportDirectory() + "test";
+        }
         return '/test';
     }
 
-    function getTestPath(path) {
+    function getTestPath(path = '') {
+        if(path && !path.startsWith("/")){
+            throw new Error("getTestPath path should start with a /");
+        }
         return getTestRoot() + path;
     }
 
@@ -712,6 +718,7 @@ define(function (require, exports, module) {
                 delete _testWindow.fs;
 
             }
+            _testWindow.PhNodeEngine && _testWindow.PhNodeEngine.terminateNode();
             if(blankTestWindow){
                 _testWindow.location.href = "about:blank";
                 await awaits(2000); // UTS will crap without these time waits, esp in chromium. Browser freezes

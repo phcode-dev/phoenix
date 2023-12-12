@@ -78,6 +78,9 @@ if(Phoenix.browser.isTauri) {
                 child = await command.spawn();
 
                 const execNode = function (commandCode, commandData) {
+                    if(window.isNodeTerminated){
+                        return Promise.reject("Node is terminated! Cannot execute: " + commandCode);
+                    }
                     const newCommandID = commandID ++;
                     child.write(JSON.stringify({
                         commandCode: commandCode, commandID: newCommandID, commandData
@@ -92,7 +95,9 @@ if(Phoenix.browser.isTauri) {
                     setInspectEnabled,
                     isInspectEnabled,
                     terminateNode: function () {
-                        execNode(NODE_COMMANDS.TERMINATE);
+                        if(!window.isNodeTerminated) {
+                            execNode(NODE_COMMANDS.TERMINATE);
+                        }
                     },
                     getInspectPort: function () {
                         return inspectPort;

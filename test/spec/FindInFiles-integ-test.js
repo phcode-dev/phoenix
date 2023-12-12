@@ -313,19 +313,19 @@ define(function (require, exports, module) {
                 let editor;
                 await awaitsFor(function () {
                     editor = SearchResultsView._previewEditorForTests;
-                    return (editor && editor.document.file.fullPath === "/test/spec/FindReplace-test-files/css/foo.css");
-                }, "keyboard nav", 1000);
+                    return (editor && editor.document.file.fullPath === SpecRunnerUtils.getTestPath("/spec/FindReplace-test-files/css/foo.css"));
+                }, "file open");
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $searchField[0]);
                 await awaitsFor(function () {
                     editor = SearchResultsView._previewEditorForTests;
-                    return (editor && editor.document.file.fullPath === "/test/spec/FindReplace-test-files/foo.js");
-                }, "keyboard nav", 1000);
+                    return (editor && editor.document.file.fullPath === SpecRunnerUtils.getTestPath("/spec/FindReplace-test-files/foo.js"));
+                }, "keyboard nav down");
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $searchField[0]);
                 await awaitsFor(function () {
                     editor = SearchResultsView._previewEditorForTests;
                     console.log(editor && editor.document.file.fullPath);
-                    return (editor && editor.document.file.fullPath === "/test/spec/FindReplace-test-files/css/foo.css");
-                }, "keyboard nav", 1000);
+                    return (editor && editor.document.file.fullPath === SpecRunnerUtils.getTestPath("/spec/FindReplace-test-files/css/foo.css"));
+                }, "keyboard nav up");
             });
 
             it("should find start and end positions", async function () {
