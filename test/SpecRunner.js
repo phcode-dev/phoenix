@@ -498,7 +498,7 @@ define(function (require, exports, module) {
 
     function _copyZippedItemToFS(path, item) {
         return new Promise((resolve, reject) =>{
-            let destPath = `/test/${path}`;
+            let destPath = `${SpecRunnerUtils.getTestPath()}/${path}`;
             if(item.dir){
                 window.fs.mkdirs(destPath, 0o777, true, (err)=>{
                     if(err){
@@ -525,7 +525,7 @@ define(function (require, exports, module) {
 
     function makeTestDir() {
         return new Promise((resolve, reject)=>{
-            let testPath = `/test/`;
+            let testPath = SpecRunnerUtils.getTestPath();
             window.fs.mkdirs(testPath, 0o777, true, (err)=>{
                 if(err){
                     reject();
@@ -553,16 +553,16 @@ define(function (require, exports, module) {
                 } else {
                     JSZip.loadAsync(data).then(function (zip) {
                         let keys = Object.keys(zip.files);
-                        let destPath = `/test/`;
-                        globalTestRunnerLogToConsole("Cleaning test directory: /test/");
+                        let destPath = SpecRunnerUtils.getTestPath();
+                        globalTestRunnerLogToConsole("Cleaning test directory: " + destPath);
                         window.fs.unlink(destPath, async function (err) {
                             if(err && err.code !== 'ENOENT'){
                                 console.error("Could not clean test dir. we will try to move ahead", err);
                                 // we will now try to overwrite existing
                             }
-                            globalTestRunnerLogToConsole("Creating test folder /test/");
+                            globalTestRunnerLogToConsole("Creating test folder " + destPath);
                             await makeTestDir();
-                            globalTestRunnerLogToConsole("Copying test assets to /test/");
+                            globalTestRunnerLogToConsole("Copying test assets to " + destPath);
                             let progressMessageEl = document.getElementById("loadProgressMessage");
                             let lastPrintedPercent = 0;
                             for (let i = 0; i < keys.length; i++) {

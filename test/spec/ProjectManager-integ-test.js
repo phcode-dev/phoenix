@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, afterEach, awaitsFor, awaitsForDone, beforeAll, afterAll, awaits */
+/*global describe, it, expect, afterEach, awaitsFor, awaitsForDone, beforeAll, afterAll, awaits, Phoenix */
 
 define(function (require, exports, module) {
 
@@ -509,6 +509,10 @@ define(function (require, exports, module) {
         });
 
         describe("Project, file and folder download", function () {
+            if(Phoenix.browser.isTauri) {
+                it("Not tested: download project is not present desktop local file system", async function () {});
+                return;
+            }
             it("should download project command work", async function () {
                 let restore = testWindow.saveAs;
                 let blob, name;

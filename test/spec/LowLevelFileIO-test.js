@@ -155,7 +155,7 @@ define(function (require, exports, module) {
 
                 brackets.fs.readdir("/This/directory/doesnt/exist", cb);
 
-                await awaitsFor(function () { return cb.wasCalled; }, "readdir to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readdir to finish");
 
                 expect(cb.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
@@ -200,7 +200,7 @@ define(function (require, exports, module) {
 
                 brackets.fs.stat("/This/directory/doesnt/exist", cb);
 
-                await awaitsFor(function () { return cb.wasCalled; }, "stat to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "stat to finish");
 
                 expect(cb.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
@@ -235,7 +235,7 @@ define(function (require, exports, module) {
 
                 brackets.fs.readFile("/This/file/doesnt/exist.txt", UTF8, cb);
 
-                await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish", 1000);
+                await awaitsFor(function () { return cb.wasCalled; }, "readFile to finish");
 
                 expect(cb.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
@@ -406,7 +406,7 @@ define(function (require, exports, module) {
 
                 brackets.fs.unlink("/This/file/doesnt/exist.txt", cb);
 
-                await awaitsFor(function () { return cb.wasCalled; },  "unlink to finish",  1000);
+                await awaitsFor(function () { return cb.wasCalled; },  "unlink to finish");
 
                 expect(cb.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
             });
