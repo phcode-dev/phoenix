@@ -925,7 +925,7 @@ define(function (require, exports, module) {
                 expect(DocumentManager.getCurrentDocument().isDirty).toBe(false);
 
                 // verify no dot in titlebar
-                const expectedTitle = "test.js (DocumentCommandHandlers-test-files) " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
+                const expectedTitle = `DocumentCommandHandlers-test-files ${WINDOW_TITLE_DOT} test.js`;
                 expect(testWindow.document.title).toBe(expectedTitle);
                 if(Phoenix.browser.isTauri) {
                     await awaitsFor(async ()=> {
@@ -945,7 +945,7 @@ define(function (require, exports, module) {
                 expect(doc.isDirty).toBe(true);
 
                 // verify dot in titlebar
-                const expectedTitle = "• test.js (DocumentCommandHandlers-test-files) " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
+                const expectedTitle = `• DocumentCommandHandlers-test-files ${WINDOW_TITLE_DOT} test.js`;
                 expect(testWindow.document.title).toBe(expectedTitle);
                 if(Phoenix.browser.isTauri) {
                     await awaitsFor(async ()=> {
