@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "切換側邊欄",
   "CMD_TOGGLE_PANELS": "切換面板",
   "CMD_TOGGLE_PURE_CODE": "沒有分心",
+  "CMD_TOGGLE_FULLSCREEN": "全螢幕",
   "CMD_ZOOM_UI": "Zoom 用戶界面和字體",
   "CMD_ZOOM_IN": "放大",
   "CMD_ZOOM_OUT": "縮小",

@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "显示/隐藏边栏",
   "CMD_TOGGLE_PANELS": "显示/隐藏面板",
   "CMD_TOGGLE_PURE_CODE": "无干扰模式",
+  "CMD_TOGGLE_FULLSCREEN": "全屏",
   "CMD_ZOOM_UI": "Zoom 用户界面和字体",
   "CMD_ZOOM_IN": "放大",
   "CMD_ZOOM_OUT": "缩小",

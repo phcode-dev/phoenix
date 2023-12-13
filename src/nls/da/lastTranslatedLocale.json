@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Skift sidebjælke",
   "CMD_TOGGLE_PANELS": "Skift paneler",
   "CMD_TOGGLE_PURE_CODE": "Ingen distraktioner",
+  "CMD_TOGGLE_FULLSCREEN": "Fuld skærm",
   "CMD_ZOOM_UI": "Zoom UI og skrifttyper",
   "CMD_ZOOM_IN": "Zoom ind",
   "CMD_ZOOM_OUT": "Zoome ud",

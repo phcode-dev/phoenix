@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "साइडबार टॉगल करें",
   "CMD_TOGGLE_PANELS": "पैनल टॉगल करें",
   "CMD_TOGGLE_PURE_CODE": "कोई विकर्षण नहीं",
+  "CMD_TOGGLE_FULLSCREEN": "पूर्ण स्क्रीन",
   "CMD_ZOOM_UI": "ज़ूम यूआई और फ़ॉन्ट्स",
   "CMD_ZOOM_IN": "ज़ूम इन",
   "CMD_ZOOM_OUT": "ज़ूम आउट",

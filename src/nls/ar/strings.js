@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "تبديل الشريط الجانبي",
   "CMD_TOGGLE_PANELS": "تبديل اللوحات",
   "CMD_TOGGLE_PURE_CODE": "لا مشتتات",
+  "CMD_TOGGLE_FULLSCREEN": "تكبير الشاشة",
   "CMD_ZOOM_UI": "تكبير واجهة المستخدم والخطوط",
   "CMD_ZOOM_IN": "تكبير",
   "CMD_ZOOM_OUT": "تصغير",

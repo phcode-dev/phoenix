@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "സൈഡ്‌ബാർ ടോഗിൾ ചെയ്യുക",
   "CMD_TOGGLE_PANELS": "പാനലുകൾ ടോഗിൾ ചെയ്യുക",
   "CMD_TOGGLE_PURE_CODE": "ശല്യപ്പെടുത്തലുകളൊന്നുമില്ല",
+  "CMD_TOGGLE_FULLSCREEN": "പൂർണ്ണ സ്ക്രീൻ",
   "CMD_ZOOM_UI": "സൂം യുഐയും ഫോണ്ടുകളും",
   "CMD_ZOOM_IN": "വലുതാക്കുക",
   "CMD_ZOOM_OUT": "സൂം ഔട്ട്",

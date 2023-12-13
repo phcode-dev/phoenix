@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Przełącz pasek boczny",
   "CMD_TOGGLE_PANELS": "Przełącz panele",
   "CMD_TOGGLE_PURE_CODE": "Tryb bez przeszkadzania",
+  "CMD_TOGGLE_FULLSCREEN": "Pełny ekran",
   "CMD_ZOOM_UI": "Zoom UI i czcionki",
   "CMD_ZOOM_IN": "Zbliżenie",
   "CMD_ZOOM_OUT": "Pomniejsz",

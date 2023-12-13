@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Kapcsolja be az oldalsávot",
   "CMD_TOGGLE_PANELS": "Panelek váltása",
   "CMD_TOGGLE_PURE_CODE": "Nincsenek zavaró tényezők",
+  "CMD_TOGGLE_FULLSCREEN": "Teljes képernyő",
   "CMD_ZOOM_UI": "Zoom felhasználói felület és betűtípusok",
   "CMD_ZOOM_IN": "Nagyítás",
   "CMD_ZOOM_OUT": "Kicsinyítés",

@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Укључите бочну траку",
   "CMD_TOGGLE_PANELS": "Пребаци панеле",
   "CMD_TOGGLE_PURE_CODE": "Без ометања",
+  "CMD_TOGGLE_FULLSCREEN": "Цео екран",
   "CMD_ZOOM_UI": "Зум корисничко сучеље и фонтови",
   "CMD_ZOOM_IN": "Увеличати",
   "CMD_ZOOM_OUT": "Зоом Оут",

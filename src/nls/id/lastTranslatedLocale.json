@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Alihkan Bilah Sisi",
   "CMD_TOGGLE_PANELS": "Beralih Panel",
   "CMD_TOGGLE_PURE_CODE": "Tidak Ada Gangguan",
+  "CMD_TOGGLE_FULLSCREEN": "Layar penuh",
   "CMD_ZOOM_UI": "Zoom UI dan Font",
   "CMD_ZOOM_IN": "Perbesar",
   "CMD_ZOOM_OUT": "Perkecil",

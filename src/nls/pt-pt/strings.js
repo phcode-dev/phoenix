@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Alternar barra lateral",
   "CMD_TOGGLE_PANELS": "Alternar painéis",
   "CMD_TOGGLE_PURE_CODE": "Sem distrações",
+  "CMD_TOGGLE_FULLSCREEN": "Tela cheia",
   "CMD_ZOOM_UI": "IU de zoom e fontes",
   "CMD_ZOOM_IN": "Mais Zoom",
   "CMD_ZOOM_OUT": "Reduzir o zoom",

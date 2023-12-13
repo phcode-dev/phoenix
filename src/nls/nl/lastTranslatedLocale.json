@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Schakel zijbalk in",
   "CMD_TOGGLE_PANELS": "Schakel panelen",
   "CMD_TOGGLE_PURE_CODE": "Geen afleiding",
+  "CMD_TOGGLE_FULLSCREEN": "Volledig scherm",
   "CMD_ZOOM_UI": "Zoom-gebruikersinterface en lettertypen",
   "CMD_ZOOM_IN": "In zoomen",
   "CMD_ZOOM_OUT": "Uitzoomen",

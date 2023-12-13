@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Переключить боковую панель",
   "CMD_TOGGLE_PANELS": "Переключить панели",
   "CMD_TOGGLE_PURE_CODE": "Никаких отвлекающих факторов",
+  "CMD_TOGGLE_FULLSCREEN": "Полноэкранный",
   "CMD_ZOOM_UI": "Пользовательский интерфейс и шрифты Zoom",
   "CMD_ZOOM_IN": "Приблизить",
   "CMD_ZOOM_OUT": "Уменьшить",

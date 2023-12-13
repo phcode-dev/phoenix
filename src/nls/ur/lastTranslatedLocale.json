@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "سائڈبار کو ٹوگل کریں۔",
   "CMD_TOGGLE_PANELS": "ٹوگل پینلز",
   "CMD_TOGGLE_PURE_CODE": "کوئی خلفشار نہیں۔",
+  "CMD_TOGGLE_FULLSCREEN": "مکمل اسکرین یا بڑی اسکرین",
   "CMD_ZOOM_UI": "زوم UI اور فونٹس",
   "CMD_ZOOM_IN": "زوم ان",
   "CMD_ZOOM_OUT": "دور کرنا",

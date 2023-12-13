@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Zobrazit/skrýt boční menu",
   "CMD_TOGGLE_PANELS": "Zobrazit/skrýt panely",
   "CMD_TOGGLE_PURE_CODE": "Žádné rozptylování",
+  "CMD_TOGGLE_FULLSCREEN": "Celá obrazovka",
   "CMD_ZOOM_UI": "Zoom UI a písma",
   "CMD_ZOOM_IN": "Přiblížit",
   "CMD_ZOOM_OUT": "Oddálit",

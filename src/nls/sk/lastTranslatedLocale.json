@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Prepnúť bočný panel",
   "CMD_TOGGLE_PANELS": "Prepnúť panely",
   "CMD_TOGGLE_PURE_CODE": "Žiadne rozptýlenie",
+  "CMD_TOGGLE_FULLSCREEN": "Celá obrazovka",
   "CMD_ZOOM_UI": "Zoom UI a fonty",
   "CMD_ZOOM_IN": "Priblížiť",
   "CMD_ZOOM_OUT": "Oddialiť",
