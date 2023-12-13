@@ -63,6 +63,26 @@ Phoenix.app = {
         }
         window.__TAURI__.window.appWindow.close();
     },
+    clipboardReadText: function () {
+        if(Phoenix.browser.isTauri){
+            return window.__TAURI__.clipboard.readText();
+        } else if(window.navigator && window.navigator.clipboard){
+            return window.navigator.clipboard.readText();
+        }
+        return Promise.reject(new Error("clipboardReadText: Unable to access clipboard text."));
+    },
+    copyToClipboard: function (textToCopy) {
+        if(Phoenix.browser.isTauri){
+            return window.__TAURI__.clipboard.writeText(textToCopy);
+        }
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        return Promise.resolve();
+    },
     isFullscreen: function () {
         if(!Phoenix.browser.isTauri) {
             // use browser full screen api in browsers.
@@ -174,14 +194,6 @@ Phoenix.app = {
         const nativeWindow = window.open(url, '_blank', features);
         nativeWindow.isTauriWindow = false;
         return nativeWindow;
-    },
-    copyToClipboard: function (textToCopy) {
-        const textArea = document.createElement("textarea");
-        textArea.value = textToCopy;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
     getExtensionsDirectory: Phoenix.VFS.getExtensionDir,
