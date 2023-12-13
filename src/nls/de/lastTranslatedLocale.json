@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Seitenleiste anzeigen/verbergen",
   "CMD_TOGGLE_PANELS": "Panels anzeigen/verbergen",
   "CMD_TOGGLE_PURE_CODE": "Ablenkungsfreier Modus",
+  "CMD_TOGGLE_FULLSCREEN": "Ganzer Bildschirm",
   "CMD_ZOOM_UI": "Zoom-Benutzeroberfläche und Schriftarten",
   "CMD_ZOOM_IN": "Hineinzoomen",
   "CMD_ZOOM_OUT": "Rauszoomen",

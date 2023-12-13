@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Comutați bara laterală",
   "CMD_TOGGLE_PANELS": "Comutați panouri",
   "CMD_TOGGLE_PURE_CODE": "Fără distrageri",
+  "CMD_TOGGLE_FULLSCREEN": "Ecran complet",
   "CMD_ZOOM_UI": "Zoom UI și Fonturi",
   "CMD_ZOOM_IN": "A mari",
   "CMD_ZOOM_OUT": "A micsora",

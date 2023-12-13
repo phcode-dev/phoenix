@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Превключване на страничната лента",
   "CMD_TOGGLE_PANELS": "Превключване на панелите",
   "CMD_TOGGLE_PURE_CODE": "Без разсейвания",
+  "CMD_TOGGLE_FULLSCREEN": "Цял екран",
   "CMD_ZOOM_UI": "Zoom UI и шрифтове",
   "CMD_ZOOM_IN": "Увеличавам",
   "CMD_ZOOM_OUT": "Отдалечавам",

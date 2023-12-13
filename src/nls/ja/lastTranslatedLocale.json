@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "サイドバーの切り替え",
   "CMD_TOGGLE_PANELS": "パネルの表示切り替え",
   "CMD_TOGGLE_PURE_CODE": "簡易表示",
+  "CMD_TOGGLE_FULLSCREEN": "全画面表示",
   "CMD_ZOOM_UI": "ZoomのUIとフォント",
   "CMD_ZOOM_IN": "ズームイン",
   "CMD_ZOOM_OUT": "ズームアウトする",

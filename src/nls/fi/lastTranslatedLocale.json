@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Näytä tai piilota sivupalkki",
   "CMD_TOGGLE_PANELS": "Näytä tai piilota paneelit",
   "CMD_TOGGLE_PURE_CODE": "Ei häiriötekijöitä",
+  "CMD_TOGGLE_FULLSCREEN": "Koko näyttö",
   "CMD_ZOOM_UI": "Zoomaa käyttöliittymä ja fontit",
   "CMD_ZOOM_IN": "Lähennä",
   "CMD_ZOOM_OUT": "Loitontaa",

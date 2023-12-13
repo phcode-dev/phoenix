@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "نوار کناری را تغییر دهید",
   "CMD_TOGGLE_PANELS": "پانل ها را تغییر دهید",
   "CMD_TOGGLE_PURE_CODE": "بدون حواس پرتی",
+  "CMD_TOGGLE_FULLSCREEN": "تمام صفحه",
   "CMD_ZOOM_UI": "زوم UI و فونت",
   "CMD_ZOOM_IN": "بزرگنمایی",
   "CMD_ZOOM_OUT": "کوچک نمایی",

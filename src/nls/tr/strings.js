@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Kenar Çubuğunu Aç/Kapat",
   "CMD_TOGGLE_PANELS": "Panelleri Aç/Kapat",
   "CMD_TOGGLE_PURE_CODE": "Dikkat Dağıtıcı Yok",
+  "CMD_TOGGLE_FULLSCREEN": "Tam ekran",
   "CMD_ZOOM_UI": "Yakınlaştırma Kullanıcı Arayüzü ve Yazı Tipleri",
   "CMD_ZOOM_IN": "Yakınlaştır",
   "CMD_ZOOM_OUT": "Uzaklaştır",

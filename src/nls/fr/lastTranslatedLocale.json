@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Afficher/Masquer la barre latérale",
   "CMD_TOGGLE_PANELS": "Afficher/Masquer les panneaux",
   "CMD_TOGGLE_PURE_CODE": "Pas de distraction",
+  "CMD_TOGGLE_FULLSCREEN": "Plein écran",
   "CMD_ZOOM_UI": "Interface utilisateur et polices de zoom",
   "CMD_ZOOM_IN": "Agrandir",
   "CMD_ZOOM_OUT": "Dézoomer",

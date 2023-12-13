@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Перемкнути бічну панель",
   "CMD_TOGGLE_PANELS": "Перемикати панелі",
   "CMD_TOGGLE_PURE_CODE": "Ніяких відволікань",
+  "CMD_TOGGLE_FULLSCREEN": "Повноекранний",
   "CMD_ZOOM_UI": "Zoom UI та шрифти",
   "CMD_ZOOM_IN": "Збільшувати",
   "CMD_ZOOM_OUT": "Зменшення",

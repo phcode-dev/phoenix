@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "사이드바 표시 전환",
   "CMD_TOGGLE_PANELS": "패널 표시 전환",
   "CMD_TOGGLE_PURE_CODE": "코드만 보기",
+  "CMD_TOGGLE_FULLSCREEN": "전체 화면",
   "CMD_ZOOM_UI": "줌 UI 및 글꼴",
   "CMD_ZOOM_IN": "확대",
   "CMD_ZOOM_OUT": "축소",

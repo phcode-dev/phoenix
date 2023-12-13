@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Växla på/av sidomeny",
   "CMD_TOGGLE_PANELS": "Växla på/av paneler",
   "CMD_TOGGLE_PURE_CODE": "Inga distraktioner",
+  "CMD_TOGGLE_FULLSCREEN": "Fullskärm",
   "CMD_ZOOM_UI": "Zoom UI och teckensnitt",
   "CMD_ZOOM_IN": "Zooma in",
   "CMD_ZOOM_OUT": "Zooma ut",

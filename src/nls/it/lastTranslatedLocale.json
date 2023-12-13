@@ -321,6 +321,7 @@
   "CMD_TOGGLE_SIDEBAR": "Apri/Chiudi la barra laterale",
   "CMD_TOGGLE_PANELS": "Apri/Chiudi i pannelli",
   "CMD_TOGGLE_PURE_CODE": "Nessuna distrazione",
+  "CMD_TOGGLE_FULLSCREEN": "A schermo intero",
   "CMD_ZOOM_UI": "Ingrandisci l'interfaccia utente e i caratteri",
   "CMD_ZOOM_IN": "Ingrandire",
   "CMD_ZOOM_OUT": "Zoom indietro",

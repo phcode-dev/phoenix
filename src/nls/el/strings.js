@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Εναλλαγή πλευρικής γραμμής",
   "CMD_TOGGLE_PANELS": "Εναλλαγή Πίνακες",
   "CMD_TOGGLE_PURE_CODE": "Χωρίς περισπασμούς",
+  "CMD_TOGGLE_FULLSCREEN": "ΠΛΗΡΗΣ ΟΘΟΝΗ",
   "CMD_ZOOM_UI": "Ζουμ UI και γραμματοσειρές",
   "CMD_ZOOM_IN": "Μεγέθυνση",
   "CMD_ZOOM_OUT": "Σμίκρυνση",

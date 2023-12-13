@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Toggle bočnu traku",
   "CMD_TOGGLE_PANELS": "Toggle panele",
   "CMD_TOGGLE_PURE_CODE": "Bez odvraćanja pažnje",
+  "CMD_TOGGLE_FULLSCREEN": "Puni zaslon",
   "CMD_ZOOM_UI": "Zoom UI i fontovi",
   "CMD_ZOOM_IN": "Povećaj",
   "CMD_ZOOM_OUT": "Smanji",

@@ -341,6 +341,7 @@ define({
   "CMD_TOGGLE_SIDEBAR": "Rādīt/slēpt sānjoslu",
   "CMD_TOGGLE_PANELS": "Rādīt/slēpt paneļus",
   "CMD_TOGGLE_PURE_CODE": "Rādīt/slēpt palīgjoslas",
+  "CMD_TOGGLE_FULLSCREEN": "Pilnekrāna režīms",
   "CMD_ZOOM_UI": "Tālummaiņas lietotāja saskarne un fonti",
   "CMD_ZOOM_IN": "Pietuvināt",
   "CMD_ZOOM_OUT": "Attālināt",
