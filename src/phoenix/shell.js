@@ -74,6 +74,8 @@ Phoenix.app = {
     copyToClipboard: function (textToCopy) {
         if(Phoenix.browser.isTauri){
             return window.__TAURI__.clipboard.writeText(textToCopy);
+        } else if(window.navigator && window.navigator.clipboard){
+            return window.navigator.clipboard.writeText(textToCopy);
         }
         const textArea = document.createElement("textarea");
         textArea.value = textToCopy;
