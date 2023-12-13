@@ -19,6 +19,8 @@
  *
  */
 
+/*global Phoenix*/
+
 /**
  * Text-editing commands that apply to whichever Editor is currently focused
  */
@@ -1185,24 +1187,34 @@ define(function (require, exports, module) {
     function _execCommandCopy() {
         _execCommand("copy");
     }
-    function _execCommandPaste() {
-        if(window.navigator && window.navigator.clipboard){
-            window.navigator.clipboard.readText().then(function (text) {
-                var editor = EditorManager.getFocusedEditor();
-                if(editor){
-                    var doc = editor._codeMirror.getDoc();
-                    var selection = doc.getSelection();
-                    var cursor = doc.getCursor();
-                    if(selection){
-                        doc.replaceSelection(text);
-                    } else {
-                        doc.replaceRange(text, cursor);
-                    }
-                }
-            });
-        } else {
-            _execCommand("paste");
+
+    function _applyPaste(text) {
+        var editor = EditorManager.getFocusedEditor();
+        if(editor){
+            var doc = editor._codeMirror.getDoc();
+            var selection = doc.getSelection();
+            var cursor = doc.getCursor();
+            if(selection){
+                doc.replaceSelection(text);
+            } else {
+                doc.replaceRange(text, cursor);
+            }
         }
+    }
+
+    function _execCommandPaste() {
+        const result = new $.Deferred();
+        Phoenix.app.clipboardReadText()
+            .then(_applyPaste)
+            .catch(err =>{
+                console.error(err);
+                _execCommand("paste");
+            })
+            .finally(()=>{
+                // always resolve as we don't know if the _execCommand("paste") did its work or not.
+                result.resolve();
+            });
+        return result.promise();
     }
 
     // Register commands

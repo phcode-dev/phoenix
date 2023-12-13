@@ -210,6 +210,53 @@ define(function (require, exports, module) {
             });
         });
 
+        if(window.Phoenix.browser.isTauri) {
+            // unfortunately, browsers don't allow unattended clip board access as its a secure context. Clipboard API
+            // will usually popup a clipboard access popup which the user have to click agree manually. So
+            // we do this test only in tauri.
+            describe("Editor copy paste Commands Test", function () {
+                let savedClipboardText = '';
+                beforeAll(async function () {
+                    try{
+                        // we don't want to nuke the users clipboard text just for running the test runner.
+                        // So save and restore clipboard.
+                        savedClipboardText = await testWindow.Phoenix.app.clipboardReadText();
+                    } catch (e) {
+                        //ignore this error.
+                        console.error("Could not read clipboard text", e);
+                    }
+                });
+
+                afterAll(async function () {
+                    try{
+                        // we don't want to nuke the users clipboard text just for running the test runner.
+                        // So save and restore clipboard.
+                        await testWindow.Phoenix.app.copyToClipboard(savedClipboardText || '');
+                    } catch (e) {
+                        //ignore this error.
+                        console.error("Could not read clipboard text", e);
+                    }
+                });
+
+                it("should copy and paste without selection", async function () {
+                    let promise;
+                    promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: testPath + "/test.js"});
+                    await awaitsForDone(promise, "Open into working set");
+
+                    myEditor = EditorManager.getCurrentFullEditor();
+                    myEditor.setSelection({line: 5, ch: 8}, {line: 5, ch: 10});
+
+                    const textToCopy = "#Phcode_Copy_test";
+                    await testWindow.Phoenix.app.copyToClipboard(textToCopy);
+
+                    promise = CommandManager.execute(Commands.EDIT_PASTE);
+                    await awaitsForDone(promise, "pasted");
+
+                    myEditor.setSelection({line: 5, ch: 8}, {line: 5, ch: 8 + textToCopy.length});
+                    expect(myEditor.getSelectedText()).toEql(textToCopy);
+                });
+            });
+        }
 
         describe("Open Line Above and Below - inline editor", function () {
 
