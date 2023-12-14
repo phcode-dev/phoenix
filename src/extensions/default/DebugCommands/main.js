@@ -52,6 +52,8 @@ define(function (require, exports, module) {
 
     const KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
+    const DIAGNOSTICS_SUBMENU = "debug-diagnostics-sub-menu";
+
     // default preferences file name
     const DEFAULT_PREFERENCES_FILENAME = "defaultPreferences.json",
         SUPPORTED_PREFERENCE_TYPES   = ["number", "boolean", "string", "array", "object"];
@@ -786,34 +788,36 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
     const debugMenu = Menus.getMenu(Menus.AppMenuBar.DEBUG_MENU);
-    // Show Developer Tools (optionally enabled)
-    if(brackets.app.toggleDevtools){
-        CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools);
-        debugMenu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
-    }
     debugMenu.addMenuItem(DEBUG_REFRESH_WINDOW, KeyboardPrefs.refreshWindow);
     debugMenu.addMenuItem(DEBUG_RELOAD_WITHOUT_USER_EXTS, KeyboardPrefs.reloadWithoutUserExts);
     debugMenu.addMenuItem(DEBUG_LOAD_CURRENT_EXTENSION);
     debugMenu.addMenuItem(DEBUG_UNLOAD_CURRENT_EXTENSION, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
-    debugMenu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
-    debugMenu.addMenuItem(DEBUG_SHOW_PERF_DATA);
-    debugMenu.addMenuDivider();
-    debugMenu.addMenuItem(DEBUG_ENABLE_LOGGING);
-    debugMenu.addMenuItem(DEBUG_ENABLE_PHNODE_INSPECTOR, undefined, undefined, undefined, {
-        hideWhenCommandDisabled: true
-    });
-    debugMenu.addMenuItem(DEBUG_GET_PHNODE_INSPECTOR_URL, undefined, undefined, undefined, {
-        hideWhenCommandDisabled: true
-    });
-    debugMenu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
-    debugMenu.addMenuDivider();
-    debugMenu.addMenuItem(DEBUG_OPEN_VFS);
     debugMenu.addMenuItem(DEBUG_OPEN_EXTENSION_FOLDER, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
-    debugMenu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER, undefined, undefined, undefined, {
+    debugMenu.addMenuDivider();
+    // Show Developer Tools (optionally enabled)
+    if(brackets.app.toggleDevtools){
+        CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools);
+        debugMenu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
+    }
+    const diagnosticsSubmenu = debugMenu.addSubMenu(Strings.CMD_DIAGNOSTIC_TOOLS, DIAGNOSTICS_SUBMENU);
+    diagnosticsSubmenu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
+    diagnosticsSubmenu.addMenuDivider();
+    diagnosticsSubmenu.addMenuItem(DEBUG_ENABLE_LOGGING);
+    diagnosticsSubmenu.addMenuItem(DEBUG_ENABLE_PHNODE_INSPECTOR, undefined, undefined, undefined, {
+        hideWhenCommandDisabled: true
+    });
+    diagnosticsSubmenu.addMenuItem(DEBUG_GET_PHNODE_INSPECTOR_URL, undefined, undefined, undefined, {
+        hideWhenCommandDisabled: true
+    });
+    diagnosticsSubmenu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
+    diagnosticsSubmenu.addMenuDivider();
+    diagnosticsSubmenu.addMenuItem(DEBUG_SHOW_PERF_DATA);
+    diagnosticsSubmenu.addMenuItem(DEBUG_OPEN_VFS);
+    diagnosticsSubmenu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
 
