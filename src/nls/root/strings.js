@@ -485,6 +485,7 @@ define({
 
     // Debug menu commands
     "CMD_OPEN_VFS": "Open Virtual File System",
+    "CMD_DIAGNOSTIC_TOOLS": "{APP_NAME} Diagnostic Tools",
     "CMD_OPEN_EXTENSIONS_FOLDER": "Open Extensions Folder\u2026",
     "CMD_OPEN_VIRTUAL_SERVER": "Open Virtual Server",
 
@@ -685,7 +686,7 @@ define({
     // extensions/default/DebugCommands
     "DEBUG_MENU": "Debug",
     "ERRORS": "Errors",
-    "CMD_SHOW_DEV_TOOLS": "Show Developer Tools",
+    "CMD_SHOW_DEV_TOOLS": "{APP_NAME} Developer Tools",
     "CMD_REFRESH_WINDOW": "Reload With Extensions",
     "CMD_LOAD_CURRENT_EXTENSION": "Load Project As Extension",
     "CMD_RELOAD_CURRENT_EXTENSION": "Reload Project As Extension",
@@ -694,7 +695,7 @@ define({
     "CMD_NEW_BRACKETS_WINDOW": "New Window",
     "CMD_LAUNCH_SCRIPT_MAC": "Install Command Line Shortcut",
     "CMD_SWITCH_LANGUAGE": "Switch Language\u2026",
-    "CMD_RUN_UNIT_TESTS": "Run Tests",
+    "CMD_RUN_UNIT_TESTS": "Run {APP_NAME} Tests",
     "CMD_SHOW_PERF_DATA": "Show Performance Data",
     "CMD_ENABLE_LOGGING": "Enable Detailed Logs",
     "CMD_ENABLE_PHNODE_INSPECTOR": "Enable PhNode Inspector",
