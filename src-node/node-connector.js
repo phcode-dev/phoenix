@@ -403,6 +403,9 @@ async function createNodeConnector(nodeConnectorID, moduleExports) {
             if ((dataBuffer && !(dataBuffer instanceof ArrayBuffer)) || dataObjectToSend instanceof ArrayBuffer) {
                 throw new Error("execPeer should be called with exactly 3 or less arguments (FnName:string, data:Object|string, buffer:ArrayBuffer)");
             }
+            if (dataBuffer instanceof ArrayBuffer && !_isObject(dataObjectToSend)) {
+                throw new Error("execPeer second argument should be an object if sending binary data (FnName:string, data:Object, buffer:ArrayBuffer)");
+            }
             return new Promise((resolve, reject) =>{
                 currentCommandID ++;
                 pendingExecPromiseMap[currentCommandID] = {resolve, reject};

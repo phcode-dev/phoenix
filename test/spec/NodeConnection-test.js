@@ -28,6 +28,8 @@ define(function (require, exports, module) {
         return;
     }
 
+    const NodeConnector = require("NodeConnector");
+
     function toArrayBuffer(text) {
         const textEncoder = new TextEncoder();
         const uint8Array = textEncoder.encode(text);
@@ -62,7 +64,7 @@ define(function (require, exports, module) {
         });
 
         beforeAll(async function () {
-            nodeConnector = await window.PhNodeEngine.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);
+            nodeConnector = await NodeConnector.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);
             exports.echoTestPhcode = function (data, buffer) {
                 console.log("Node fn called testFnCall");
                 return new Promise(resolve =>{
@@ -148,6 +150,13 @@ define(function (require, exports, module) {
         it("Should fail if the connector is given invalid params", async function () {
             await shouldErrorOut(toArrayBuffer("g"));
             await shouldErrorOut({}, 34);
+        });
+
+        it("Should execPeer error out if object is not second parameter while sending binary data", async function () {
+            let buffer = toArrayBuffer("Hello, World!");
+            await shouldErrorOut("", buffer);
+            await shouldErrorOut(34, buffer);
+            await shouldErrorOut(null, buffer);
         });
 
         it("Should fail if the connector is given invalid params in node side", async function () {

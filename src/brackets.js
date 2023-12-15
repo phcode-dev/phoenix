@@ -64,6 +64,7 @@ define(function (require, exports, module) {
     require("utils/EventDispatcher");
     require("worker/WorkerComm");
     require("utils/ZipUtils");
+    require("NodeConnector");
 
     // Load dependent modules
     const AppInit             = require("utils/AppInit"),

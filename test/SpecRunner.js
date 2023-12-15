@@ -248,6 +248,9 @@ define(function (require, exports, module) {
     require("features/ParameterHintsManager");
     require("features/JumpToDefManager");
 
+    //node connector
+    require("NodeConnector");
+
     var selectedCategories,
         params          = new UrlParams(),
         reporter,
