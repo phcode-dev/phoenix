@@ -42,6 +42,10 @@ function nodeLoader() {
         NODE_CONNECTOR_ANNOUNCE: "nodeConnectorCreated"
     };
 
+    const WS_ERR_CODES = {
+        NO_SUCH_FN: "NoSuchFn"
+    };
+
     /**
      *
      * @param metadata {Object} Max size can be 4GB
@@ -239,8 +243,10 @@ function nodeLoader() {
         }
         try{
             if(typeof moduleExports[execHandlerFnName] !== 'function'){
-                throw new Error("execHandlerFnName: " + execHandlerFnName
+                const err = new Error("execHandlerFnName: " + execHandlerFnName
                     + " no such function in node connector module: " + nodeConnectorID);
+                err.code = WS_ERR_CODES.NO_SUCH_FN;
+                throw err;
             }
             const response = moduleExports[execHandlerFnName](metadata.data, dataBuffer);
             if(!(response instanceof Promise)) {
@@ -347,8 +353,8 @@ function nodeLoader() {
              * @throws {Error} - If `dataBuffer` is provided and is not an instance of `ArrayBuffer`.
              */
             execPeer: function (execHandlerFnName, dataObjectToSend = null, dataBuffer = null) {
-                if (dataBuffer && !(dataBuffer instanceof ArrayBuffer)) {
-                    throw new Error("execPeer should be called with exactly 3 arguments (FnName:string, data:Object|string, buffer:ArrayBuffer)");
+                if ((dataBuffer && !(dataBuffer instanceof ArrayBuffer)) || dataObjectToSend instanceof ArrayBuffer) {
+                    throw new Error("execPeer should be called with exactly 3 arguments or less (FnName:string, data:Object|string, buffer:ArrayBuffer)");
                 }
                 return new Promise((resolve, reject) =>{
                     currentCommandID ++;

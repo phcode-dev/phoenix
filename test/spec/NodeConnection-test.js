@@ -109,5 +109,38 @@ define(function (require, exports, module) {
         it("Should node be able to execute function in phcode and get responses", async function () {
             await nodeConnector.execPeer("echoTestOnPhoenixNodeConnector");
         });
+
+        it("Should fail if the connector doesnt have that api in node", async function () {
+            let err;
+            try{
+                await nodeConnector.execPeer("noopAPI");
+            } catch (e) {
+                err = e;
+            }
+            expect(err.code).toEql("NoSuchFn");
+        });
+
+        it("Should fail if the connector doesnt have that api from node to phcode", async function () {
+            await nodeConnector.execPeer("testFnNotThere");
+        });
+
+        async function shouldErrorOut(a,b) {
+            let err;
+            try{
+                await nodeConnector.execPeer("echoTest", a, b);
+            } catch (e) {
+                err = e;
+            }
+            expect(typeof err.message).toEql("string");
+        }
+
+        it("Should fail if the connector is given invalid params", async function () {
+            await shouldErrorOut(toArrayBuffer("g"));
+            await shouldErrorOut({}, 34);
+        });
+
+        it("Should fail if the connector is given invalid params in node side", async function () {
+            await nodeConnector.execPeer("testErrExecCases");
+        });
     });
 });

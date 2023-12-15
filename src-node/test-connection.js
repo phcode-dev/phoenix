@@ -123,3 +123,28 @@ exports.echoTestOnPhoenixNodeConnector = async function () {
     expectEqual(areArrayBuffersEqual(result.buffer, buffer), true);
     expectEqual(result.otherData, 42);
 };
+
+exports.testFnNotThere = async function () {
+    let err;
+    try{
+        await nodeConnector.execPeer("noopAPI");
+    } catch (e) {
+        err = e;
+    }
+    expectEqual(err.code, "NoSuchFn");
+};
+
+async function _shouldErrorOut(a,b) {
+    let err;
+    try{
+        await nodeConnector.execPeer("echoTest", a, b);
+    } catch (e) {
+        err = e;
+    }
+    expectEqual(typeof err.message, "string");
+}
+
+exports.testErrExecCases = async function () {
+    await _shouldErrorOut(toArrayBuffer("g"));
+    await _shouldErrorOut({}, 34);
+};
