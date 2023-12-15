@@ -6,6 +6,10 @@ NodeConnector.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports)
     .then(nodeConnectorObj =>{
         nodeConnector = nodeConnectorObj;
         nodeConnector.on("hello", console.log);
+        nodeConnector.on("testEventInNode", (_evt, data, buffer)=>{
+            console.log(_evt, data, buffer);
+            nodeConnector.triggerPeer("testEventInPhoenix", data, buffer);
+        });
     });
 
 exports.echoTest = function (data, buffer) {
