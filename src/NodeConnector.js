@@ -22,114 +22,139 @@
 // @INCLUDE_IN_API_DOCS
 
 /**
- * Use this module to communicate easily with node and vice versa. A `NodeConnector` is an intermediary between a
- * module in node and a module in phcode. With a `NodeConnector` interface, you can execute a function in node
- * from phoenix by simply calling `await nodeConnectorObject.execPeer("namedFunctionInNodeModule, argObject")` and
- * the resolved promise will have the result. No need to do any complex IPC or anything else. See a step by step
- * example below on how this is done.
+ * Node Connector Communication Module
  *
- * ## The setup
- * Assume that you have a module in phcode `x.js` and another module in node `y.js`. To communicate between `x` and `y`
- * we have to first create a `NodeConnector` on both sides. A `NodeConnector` will have a unique ID that will be
- * same in both sides. In this example, lets set the id as `ext_x_y` where `ext` is your extension id to prevent
- * name collision with other extensions. Phoenix core reserves the prefix `ph_` for internal use.
+ * This module simplifies communication between Node.js and Phoenix (phcode). A `NodeConnector` acts as an intermediary,
+ * allowing you to execute functions in Node.js from Phoenix and vice versa. You can use the `execPeer` method to call
+ * functions on the other side and handle communication seamlessly. Use `triggerPeer` to trigger events
+ * on the other side.
  *
- * ### Create `NodeConnector` in Phoenix side `x.js`
+ * ## Setting Up a `NodeConnector`
+ *
+ * To establish communication between two modules, such as `x.js` in Phoenix and `y.js` in Node.js, follow these steps:
+ *
+ * ### Create `NodeConnector` in Phoenix (`x.js`)
+ *
  * ```js
  * const NodeConnector = require('NodeConnector');
- * const XY_NODE_CONNECTOR_ID = 'ext_x_y';
+ * const XY_NODE_CONNECTOR_ID = 'ext_x_y'; // Use a unique ID
  * let nodeConnector;
- * const nodeConnectedPromise = NodeConnector.createNodeConnector(XY_NODE_CONNECTOR_ID, exports).then(connector=>{
- *  nodeConnector = connector;
+ *
+ * const nodeConnectedPromise = NodeConnector.createNodeConnector(XY_NODE_CONNECTOR_ID, exports).then(connector => {
+ *   nodeConnector = connector;
  * });
  *
- * exports.modifyImage = async functions(imageName, imageArrayBugger){
- *   // do some image ops with the imageArrayBugger
- *   // to return an arry buffer, you should return an object that contains a key `buffer` with the `ArrayBuffer` contents.
+ * exports.modifyImage = async function(imageName, imageArrayBuffer) {
+ *   // Perform image operations with the imageArrayBuffer
+ *   // To return an ArrayBuffer, return an object with a `buffer` key.
  *   return {
- *     operationDone: "colored,cropped",
- *     buffer: imageArrayBugger
+ *     operationDone: 'colored, cropped',
+ *     buffer: imageArrayBuffer,
  *   };
  * };
  * ```
  *
- * ### Create `NodeConnector` in Node `y.js`
+ * ### Create `NodeConnector` in Node.js (`y.js`)
+ *
  * ```js
- * const XY_NODE_CONNECTOR_ID = 'ext_x_y';
+ * const XY_NODE_CONNECTOR_ID = 'ext_x_y'; // Use the same unique ID
  * let nodeConnector;
- * const nodeConnectedPromise = global.createNodeConnector(XY_NODE_CONNECTOR_ID, exports).then(connector=>{
- *  nodeConnector = connector;
+ *
+ * const nodeConnectedPromise = global.createNodeConnector(XY_NODE_CONNECTOR_ID, exports).then(connector => {
+ *   nodeConnector = connector;
  * });
  *
- * exports.getPWDRelative = async functions(subPath){
- *   return process.cwd + "/" + subPath;
+ * exports.getPWDRelative = async function(subPath) {
+ *   return process.cwd + '/' + subPath;
  * };
  * ```
  *
- * After the above, a node connector is now setup and available to use for 2 way communication.
+ * With these steps, a `NodeConnector` is set up, enabling two-way communication.
  *
- * ## Executing Functions in Node from Phcode.
- * Suppose that you need to execute a function `getPWDRelative` in node module `y` from Phoenix.
- * Note that functions that are called with `execPeer` must be async and only takes a single argument.
- * A second optional argument can be passed which should be an ArrayBuffer to transfer large binary data(See below.).
+ * ## Executing Functions
  *
- * ### Calling `y.getPWDRelative` node module function from phoenix module `x.js`
+ * To call a Node.js function from Phoenix, use the `execPeer` method. Ensure that `nodeConnector` is set before using it.
+ *
  * ```js
- * // in x.js
- * // treat it like just any other function call. The internal RPC bits are handled by the NodeConnector.
- * // This makes working with node APIs very eazy in phcode.
- * // ensure that `nodeConnector` is set before using it here as it is returned by a promise!
+ * // In `x.js` (Phoenix)
  * await nodeConnectedPromise;
- * const fullPath = await nodeConnector.execPeer('getPWDRelative', "sub/path.html");
+ * const fullPath = await nodeConnector.execPeer('getPWDRelative', 'sub/path.html');
  * ```
  *
- * ## Executing Functions in Phcode from Node and sending binary data.
- * `execPeer` API accepts a single optional binary data that can be passed to the other side. In this example, we
- * will transfer an ArrayBuffer from node to phcode function `modifyImage` in module `x.js`
+ * To execute a Phoenix function from Node.js and transfer binary data, pass an optional ArrayBuffer.
  *
- * ### Calling `x.modifyImage` phoenix module function from node module `y.js`
  * ```js
- * // in y.js
- * // ensure that `nodeConnector` is set before using it here as it is returned by a promise!
+ * // In `y.js` (Node.js)
  * await nodeConnectedPromise;
- * const {operationDone, buffer} = await nodeConnector.execPeer('modifyImage', "theHills.png", imageAsArrayBuffer);
+ * const { operationDone, buffer } = await nodeConnector.execPeer('modifyImage', {name:'theHills.png'}, imageAsArrayBuffer);
  * ```
  *
- * ## Events - Listening to and raising events between node and phoenix `NodeConnector`.
- * The nodeConnector object is an `EventDispatcher` implementing all the apis supported by `utils.EventDispatcher` API.
- * You can use `nodeConnector.triggerPeer(eventName, data, optionalArrayBuffer)` API to trigger an event on the other side.
+ * ## Event Handling
  *
- * ### using `nodeConnector.triggerPeer(eventName, data, optionalArrayBuffer)`
- * Lets listen to a named `phoenixProjectOpened` event in node that will be raised from phoenix.
+ * The `NodeConnector` object implements all the APIs supported by `utils/EventDispatcher`. You can trigger and listen
+ * to events between Node.js and Phoenix using the `triggerPeer` and `on` methods.
  *
- * In `y.js` in node
  * ```js
- * // in y.js
- * // ensure that `nodeConnector` is set before using it here as it is returned by a promise!
- * nodeConnector.on('phoenixProjectOpened', (_event, projectPath)={
+ * // In `y.js` (Node.js)
+ * nodeConnector.on('phoenixProjectOpened', (_event, projectPath) => {
  *   console.log(projectPath);
  * });
  * ```
  *
- * Now in Phoenix module `x.js`, we can raise the event on node by using the `triggerPeer` API.
+ * To raise an event from Phoenix to Node.js:
  *
  * ```js
- * // in x.js
- * nodeConnector.triggerPeer("phoenixProjectOpened", "/x/project/folder");
- * // this will now trigger the event in node.
+ * // In `x.js` (Phoenix)
+ * nodeConnector.triggerPeer('phoenixProjectOpened', '/x/project/folder');
  * ```
  *
- * To listen, unlisten and see more operations of event handling available in `nodeConnector`, see docs for
- * `utils/EventDispatcher` module.
- *
- * ### Sending binary data in events
- * You can optionally send binary data with `triggerPeer`. See Eg. Below.
+ * To Switch off events
  * ```js
- * nodeConnector.triggerPeer("imageEdited", "name.png", imageArrayBuffer);
+ * nodeConnector.off('phoenixProjectOpened'); // will switch off all event handlers of that name.
  * ```
+ *
+ * To selectively switch off event handlers, please see reference for `utils/EventDispatcher` module.
+ *
+ * ### Handling ArrayBuffer Data in Function Execution
+ *
+ * When executing functions that send or receive binary data, ensure that the functions are asynchronous and accept an
+ * optional ArrayBuffer as a parameter. To return binary data, use an object with a `buffer` key.
+ *
+ * Example of calling a function in Node.js with binary data transfer:
+ *
+ * ```js
+ * // In `y.js` (Node.js)
+ * await nodeConnectedPromise;
+ * const { operationDone, buffer } = await nodeConnector.execPeer('modifyImage', {name:'name.png'}, imageArrayBuffer);
+ * ```
+ *
+ * ### Handling ArrayBuffer Data in Event Handling
+ *
+ * Use the `triggerPeer` method to send binary data in events. Include the ArrayBuffer as an optional parameter.
+ *
+ * Example of sending binary data in an event from Phoenix to Node.js:
+ *
+ * ```js
+ * // In `x.js` (Phoenix)
+ * const imageArrayBuffer = getSomeImageArrayBuffer(); // Get the ArrayBuffer
+ * nodeConnector.triggerPeer('imageEdited', 'name.png', imageArrayBuffer);
+ * ```
+ *
+ * * ## Caveats
+ *
+ * - Ensure that the `nodeConnectedPromise` is resolved before using the `nodeConnector` to avoid potential issues
+ *   related to communication readiness.
+ * - Be cautious when sending large binary data, as it may affect performance and memory usage.
+ * - Properly handle exceptions and errors when executing functions to maintain robust communication.
+ * - Functions called with `execPeer` and `triggerPeer` must be asynchronous and accept a single argument. An optional
+ *   second argument can be used to transfer large binary data as an ArrayBuffer.
+ *
+ *
+ * For more event handling operations and details, refer to the documentation for the `utils/EventDispatcher` module.
  *
  * @module NodeConnector
  */
+
 
 define(function (require, exports, module) {
     /**
