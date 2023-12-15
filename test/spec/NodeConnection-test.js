@@ -57,7 +57,7 @@ define(function (require, exports, module) {
 
         beforeAll(async function () {
             nodeConnector = await window.PhNodeEngine.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);
-            exports.echoTest = function (data, buffer) {
+            exports.echoTestPhcode = function (data, buffer) {
                 console.log("Node fn called testFnCall");
                 return new Promise(resolve =>{
                     if(!(buffer instanceof ArrayBuffer)) {
@@ -104,6 +104,10 @@ define(function (require, exports, module) {
             result = await nodeConnector.execPeer("echoTest", {otherData: 42}, buffer);
             expect(areArrayBuffersEqual(result.buffer, buffer)).toBeTrue();
             expect(result.otherData).toEql(42);
+        });
+
+        it("Should node be able to execute function in phcode and get responses", async function () {
+            await nodeConnector.execPeer("echoTestOnPhoenixNodeConnector");
         });
     });
 });
