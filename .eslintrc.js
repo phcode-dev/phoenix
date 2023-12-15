@@ -73,6 +73,7 @@ module.exports = {
     "globals": {
         "$": false,
         "brackets": false,
+        "Phoenix": false,
         "clearTimeout": false,
         "console": false,
         "define": false,
