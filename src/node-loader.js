@@ -342,7 +342,9 @@ function nodeLoader() {
         phcodeExecHandlerMap[nodeConnectorID] = moduleExports;
         const newNodeConnector = {
             /**
-             * Executes a peer function with specified parameters.
+             * Executes a peer function with specified parameters. Most of the time you would use dataObjectToSend to send
+             * simple JSON serializable objects. But in the event you have to send a binary ArrayBuffer, you can use
+             * the optional `dataBuffer` field. Note that at this time, you can only send and receive a single binary buffer
              *
              * @param {string} execHandlerFnName - The name of the function to execute on the peer.
              * @param {Object|string|null} dataObjectToSend - Optional data to send along with the function call.
@@ -363,7 +365,9 @@ function nodeLoader() {
                 });
             },
             /**
-             * Triggers an event to be sent to a peer.
+             * Triggers an event to be sent to a peer. Most of the time you would use dataObjectToSend to send
+             * simple JSON serializable objects. But in the event you have to send a binary ArrayBuffer, you can use
+             * the optional `dataBuffer` field. Note that at this time, you can only send and receive a single binary buffer
              *
              * @param {string} eventName - The name of the event to trigger.
              * @param {Object|string|null} dataObjectToSend - Optional data associated with the event. Can be an object, string, or null.

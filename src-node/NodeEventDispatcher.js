@@ -25,7 +25,7 @@
 // Phoenix browser for event dispatcher will work in node too.
 
 /**
- * Implements a jQuery-like event dispatch pattern for non-DOM objects (works in web workers as well):
+ * Implements a jQuery-like event dispatch pattern for non-DOM objects (works in web workers and phoenix node as well):
  *  - Listeners are attached via on()/one() & detached via off()
  *  - Listeners can use namespaces for easy removal
  *  - Listeners can attach to multiple events at once via a space-separated list
@@ -60,17 +60,20 @@
  * const EventDispatcher = brackets.getModule("utils/EventDispatcher");
  * ```
  * ### Using the global object
- * The EventDispatcher Object is available within the global context, be it phoenix or phoenix core web workers.
+ * The EventDispatcher Object is available within the global context, be it phoenix or phoenix core web workers or node.
  * ```js
- * window.EventDispatcher.trigger("someEvent"); // within phoenix
- * self.EventDispatcher.trigger("someEvent"); // within web worker
+ * window.EventDispatcher.makeEventDispatcher(exports); // within phoenix require module
+ * self.EventDispatcher.makeEventDispatcher(object); // within web worker
+ * global.EventDispatcher.makeEventDispatcher(exports); // within node module that has an export
  * ```
  *
  * If you wish to import event dispatcher to your custom web worker, use the following
  * ```js
  * importScripts('<relative path from your extension>/utils/EventDispatcher');
  * // this will add the global EventDispatcher to your web-worker. Note that the EventDispatcher in the web worker
- * // is a separate domain and cannot raise or listen to events in phoenix/other workers
+ * // and node is a separate domain and cannot raise or listen to events in phoenix/other workers. For triggering events
+ * // between different domains like between node and phcode, see `nodeConnector.triggerPeer` or
+ * // `WorkerComm.triggerPeer` API for communication between phcode and web workers.
  * self.EventDispatcher.trigger("someEvent"); // within web worker
  * ```
  * ### Sample Usage within extension

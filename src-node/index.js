@@ -19,6 +19,42 @@
  *
  */
 
+/**
+ * Phoenix Node Connector Initialization
+ *
+ * This module initializes the Phoenix Node Connector, which is used to establish communication
+ * between the Phoenix and Tauri Node Sidecar. The Phoenix Node Connector manages the
+ * lifecycle of the `phnode` instance and handles handshake, process commands, and WebSocket
+ * connections.
+ *
+ * Initialization Steps:
+ *
+ * 1. Phoenix loads this module with Tauri Node Sidecar, and an initial handshake occurs via stdio connectors.
+ *    During this handshake, web server URLs for Phoenix Node FS and node connector APIs are exchanged.
+ *
+ * 2. WebSockets are started for further communication. A dynamically detected free port is used for the server.
+ *    A random URL prefix is generated to obfuscate the localhost URL and enhance security.
+ *
+ * Security Considerations:
+ *
+ * - **Port Scanning Attacks**: Port scanning attacks from external sources to discover localhost URLs
+ *   are a security concern. To mitigate this risk, we use a large random URL prefix, making it impossible for
+ *   attackers to guess the URL with brute force scans.
+ *
+ * Available Commands:
+ *
+ * The following commands are supported by the Phoenix Node Connector during its lifecycle:
+ *
+ * - `getEndpoints`: Retrieves available endpoints.
+ * - `terminate`: Terminates the Phoenix Node Connector.
+ * - ... (See the full list in the `processCommand` function below)
+ *
+ * Please refer to the `node-connector.js` file in this directory for details on the
+ * Node Connector architecture and implementation were the majority of the
+ * communication between phoenix and node happens.
+ *
+ */
+
 require("./NodeEventDispatcher");
 const readline = require('readline');
 const http = require('http');
