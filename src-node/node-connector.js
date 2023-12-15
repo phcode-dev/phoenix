@@ -21,6 +21,39 @@
 
 /*global EventDispatcher*/
 
+/**
+ * node-connector Module
+ *
+ * This module manages core communication between Phoenix and the Node(`phnode`) instance. A similar implementation
+ * exists on the Phoenix side, which can be found in `src/node-loader.js`.
+ *
+ * WebSocket Server Setup:
+ *
+ * - When Node starts, a WebSocket server is created at the path `/PhoenixNode<RandomString>`.
+ *   This server is established using the `CreateNodeConnectorWSServer` function below.
+ *
+ * - The server waits for the establishment of two WebSocket connections:
+ *   1. Control Socket: Used primarily for sending messages below 2 MB in size.
+ *   2. Large Data Socket: Used for transmitting data above 2 MB, preventing large data transfers from
+ *      blocking the control socket queue. Phoenix establishes both sockets and specifies the connected
+ *      socket type as the first message.
+ *
+ * Node Connector Creation:
+ *
+ * - Named Node Connectors serve as the foundation for further communication between Node and Phoenix.
+ *   A Node Connector can be created only once via the `global.createNodeConnector` API in node and
+ *   `createNodeConnector` API in `NodeConnector` module.
+ *
+ * - The API returns a promise that resolves to a Node Connector object when the Node Connector with the same ID
+ *   is opened on the other side (Phoenix).
+ *
+ * Usage:
+ *
+ * - Once a `nodeConnector` is obtained, events can be raised, listened to, and functions can be executed
+ *   on the other side of the connector.
+ *
+ */
+
 const WebSocket = require('ws');
 
 const nodeConnectorIDMap = {};
@@ -354,7 +387,9 @@ async function createNodeConnector(nodeConnectorID, moduleExports) {
     nodeExecHandlerMap[nodeConnectorID] = moduleExports;
     const newNodeConnector = {
         /**
-         * Executes a peer function with specified parameters.
+         * Executes a peer function with specified parameters. Most of the time you would use dataObjectToSend to send
+         * simple JSON serializable objects. But in the event you have to send a binary ArrayBuffer, you can use
+         * the optional `dataBuffer` field. Note that at this time, you can only send and receive a single binary buffer
          *
          * @param {string} execHandlerFnName - The name of the function to execute on the peer.
          * @param {Object|string|null} dataObjectToSend - Optional data to send along with the function call.
@@ -375,7 +410,9 @@ async function createNodeConnector(nodeConnectorID, moduleExports) {
             });
         },
         /**
-         * Triggers an event to be sent to a peer.
+         * Triggers an event to be sent to a peer. Most of the time you would use dataObjectToSend to send
+         * simple JSON serializable objects. But in the event you have to send a binary ArrayBuffer, you can use
+         * the optional `dataBuffer` field. Note that at this time, you can only send and receive a single binary buffer
          *
          * @param {string} eventName - The name of the event to trigger.
          * @param {Object|string|null} dataObjectToSend - Optional data associated with the event. Can be an object, string, or null.
