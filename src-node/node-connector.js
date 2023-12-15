@@ -107,6 +107,10 @@ const WS_COMMAND = {
     NODE_CONNECTOR_ANNOUNCE: "nodeConnectorCreated"
 };
 
+const WS_ERR_CODES = {
+    NO_SUCH_FN: "NoSuchFn"
+};
+
 const LARGE_DATA_THRESHOLD = 2*1024*1024; // 2MB
 // binary data larger than 2MB is considered large data and we will try to send it through a large data web socket
 // if present. A client typically makes 2 websockets, one for small control data and another for large data transport.
@@ -239,8 +243,10 @@ function _execNodeConnectorFn(ws, metadata, dataBuffer) {
     }
     try{
         if(typeof moduleExports[execHandlerFnName] !== 'function'){
-            throw new Error("execHandlerFnName: " + execHandlerFnName
+            const err = new Error("execHandlerFnName: " + execHandlerFnName
                 + " no such function in node connector module: " + nodeConnectorID);
+            err.code = WS_ERR_CODES.NO_SUCH_FN;
+            throw err;
         }
         const response = moduleExports[execHandlerFnName](metadata.data, dataBuffer);
         if(!(response instanceof Promise)) {
@@ -359,8 +365,8 @@ async function createNodeConnector(nodeConnectorID, moduleExports) {
          * @throws {Error} - If `dataBuffer` is provided and is not an instance of `ArrayBuffer`.
          */
         execPeer: function (execHandlerFnName, dataObjectToSend = null, dataBuffer = null) {
-            if (dataBuffer && !(dataBuffer instanceof ArrayBuffer)) {
-                throw new Error("execPeer should be called with exactly 3 arguments (FnName:string, data:Object|string, buffer:ArrayBuffer)");
+            if ((dataBuffer && !(dataBuffer instanceof ArrayBuffer)) || dataObjectToSend instanceof ArrayBuffer) {
+                throw new Error("execPeer should be called with exactly 3 or less arguments (FnName:string, data:Object|string, buffer:ArrayBuffer)");
             }
             return new Promise((resolve, reject) =>{
                 currentCommandID ++;
