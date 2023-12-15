@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterEach, waits, waitsFor, runs, ArrayBuffer, DataView, jasmine*/
+/*global describe, it, expect, beforeAll, awaitsFor, beforeEach*/
 
 define(function (require, exports, module) {
 
@@ -54,6 +54,12 @@ define(function (require, exports, module) {
     describe("Node Connection", function () {
         const TEST_NODE_CONNECTOR_ID = "ph_test_connector";
         let nodeConnector = null;
+        let savedData, savedBuffer;
+
+        beforeEach(()=>{
+            savedBuffer = null;
+            savedData = null;
+        });
 
         beforeAll(async function () {
             nodeConnector = await window.PhNodeEngine.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);
@@ -68,6 +74,11 @@ define(function (require, exports, module) {
                     resolve(data);
                 });
             };
+            nodeConnector.on("testEventInPhoenix", (_evt, data, buffer)=>{
+                console.log(_evt, data, buffer);
+                savedData = data;
+                savedBuffer = buffer;
+            });
         });
 
         it("Should have window.PhNodeEngine", async function () {
@@ -141,6 +152,36 @@ define(function (require, exports, module) {
 
         it("Should fail if the connector is given invalid params in node side", async function () {
             await nodeConnector.execPeer("testErrExecCases");
+        });
+
+        it("Should be able to send events from phoenix to node and back", async function () {
+            const sentText = "hello world";
+            nodeConnector.triggerPeer("testEventInNode", sentText);
+            await awaitsFor(function () {
+                return sentText === savedData;
+            }, "waiting for event reception");
+        });
+
+        it("Should be able to send events with arrayBuffer from phoenix to node and back", async function () {
+            const sentText = "hello world";
+            let sentBuffer = toArrayBuffer("Hello, World!");
+            nodeConnector.triggerPeer("testEventInNode", sentText, sentBuffer);
+            await awaitsFor(function () {
+                return sentText === savedData;
+            }, "waiting for event reception");
+            expect(areArrayBuffersEqual(savedBuffer, sentBuffer)).toBeTrue();
+        });
+
+        const parallelism = 1000, numBatch = 10;
+        it(`Should load test execute function in node and get response ${parallelism*numBatch} times`, async function () {
+            let sentBuffer = toArrayBuffer("Hello, World!");
+            for(let j=0;j<numBatch; j++){
+                const allPromises = [];
+                for(let i=0;i<parallelism;i++){
+                    allPromises.push(nodeConnector.execPeer("echoTest", {hello: "world"}, sentBuffer));
+                }
+                await Promise.all(allPromises);
+            }
         });
     });
 });
