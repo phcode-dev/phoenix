@@ -109,8 +109,9 @@ define(function (require, exports, module) {
     require("spec/NotificationUI-test");
     // Integrated extension tests
     require("spec/InAppNotifications-integ-test");
+    // Node Tests
+    require("spec/NodeConnection-test");
     // todo TEST_MODERN
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
-    // require("spec/NodeConnection-test"); deprecate and remove node connection
     // require("spec/Menu-native-integ-test"); evaluate after we have native menus in os installed builds
 });

@@ -208,6 +208,28 @@ function _sendError(defaultWS, metadata, err= { }, defaultMessage = "Operation f
     _sendExecResponse(defaultWS, metadata);
 }
 
+function _isObject(variable) {
+    return typeof variable === 'object' && variable !== null;
+}
+
+function _extractBuffer(result) {
+    if(_isObject(result) && result.buffer instanceof ArrayBuffer) {
+        const buffer = result.buffer;
+        delete result.buffer;
+        return buffer;
+    }
+    return null;
+}
+
+function _isJSONStringifiable(result) {
+    try {
+        JSON.stringify(result);
+        return true;
+    } catch (e){
+        return false;
+    }
+}
+
 function _execNodeConnectorFn(ws, metadata, dataBuffer) {
     const nodeConnectorID = metadata.nodeConnectorID;
     const execHandlerFnName = metadata.execHandlerFnName;
@@ -222,12 +244,17 @@ function _execNodeConnectorFn(ws, metadata, dataBuffer) {
         }
         const response = moduleExports[execHandlerFnName](metadata.data, dataBuffer);
         if(!(response instanceof Promise)) {
-            throw new Error(`execHandlerFnName: ${nodeConnectorID}::${execHandlerFnName} : ` +
+            throw new Error(`execHandlerFnName: ${nodeConnectorID}::${execHandlerFnName} : `
                 + " is expected to return a promise that resolve to (data, optional_arrayBuffer)");
         }
         response
-            .then((responseData, responseDataBuffer)=>{
-                _sendExecResponse(ws, metadata, responseData, responseDataBuffer);
+            .then((result)=>{
+                const buffer = _extractBuffer(result);
+                if(!_isJSONStringifiable(result)) {
+                    throw new Error(`execHandlerFnName: ${nodeConnectorID}::${execHandlerFnName} : `
+                        + " is expected to return a promise that resolve to an object that can be JSON.stringify -ed. To pass an array buffer, use resolve({buffer:arrayBufferObj})");
+                }
+                _sendExecResponse(ws, metadata, result, buffer);
             }).catch(err =>{
                 _sendError(ws, metadata, err,
                     `Node Error executing function in: ${nodeConnectorID}:${execHandlerFnName}`);
@@ -283,10 +310,18 @@ function processWSCommand(ws, metadata, dataBuffer) {
                 throw new Error("Unable to find response handler for "+ JSON.stringify(metadata));
             }
             if(metadata.error) {
-                pendingExecPromise.reject(metadata.error);
+                const error = new Error(metadata.error.message, {cause: metadata.error.stack});
+                error.code = metadata.error.code;
+                error.phoenixStack = metadata.error.stack;
+                pendingExecPromise.reject(error);
             } else {
-                pendingExecPromise.resolve(metadata.data, dataBuffer);
+                const result = metadata.data;
+                if(dataBuffer instanceof ArrayBuffer) {
+                    result.buffer = dataBuffer;
+                }
+                pendingExecPromise.resolve(result);
             }
+            delete pendingExecPromiseMap[commandID];
             break;
         default: console.error("unknown command: "+ metadata);
         }
@@ -413,3 +448,4 @@ function CreateNodeConnectorWSServer(server, wssPath) {
 
 exports.CreateNodeConnectorWSServer = CreateNodeConnectorWSServer;
 exports.createNodeConnector = createNodeConnector;
+global.createNodeConnector = createNodeConnector; //Add to global namespace for future node extensions
