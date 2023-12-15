@@ -392,7 +392,7 @@ function CreateNodeConnectorWSServer(server, wssPath) {
 
         // Listen for messages from the client
         ws.on('message', (message) => {
-            console.log(`node-connector: Received message ${message} of size: ${message.byteLength}, type: ${typeof message}, isArrayBuffer: ${message instanceof ArrayBuffer}, isBuffer: ${Buffer.isBuffer(message)}`);
+            //console.log(`node-connector: Received message ${message} of size: ${message.byteLength}, type: ${typeof message}, isArrayBuffer: ${message instanceof ArrayBuffer}, isBuffer: ${Buffer.isBuffer(message)}`);
             processWebSocketMessage(ws, message);
         });
 
