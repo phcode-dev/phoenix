@@ -19,11 +19,13 @@
  *
  */
 
+require("./NodeEventDispatcher");
 const readline = require('readline');
 const http = require('http');
 const net = require('net');
 const PhoenixFS = require('@phcode/fs/dist/phoenix-fs');
-
+const NodeConnector = require("./node-connector");
+require("./test-connection");
 function randomNonce(byteLength) {
     const randomBuffer = new Uint8Array(byteLength);
     crypto.getRandomValues(randomBuffer);
@@ -135,16 +137,18 @@ const server = http.createServer((req, res) => {
 });
 
 getFreePort().then((port) => {
-    console.log('Server Opened on port: ', port);
+    savedConsoleLog('Server Opened on port: ', port);
 
     PhoenixFS.CreatePhoenixFsServer(server, PHOENIX_FS_URL);
+    NodeConnector.CreateNodeConnectorWSServer(server, PHOENIX_NODE_URL);
     // PhoenixFS.setDebugMode(true); // uncomment this line to enable more logging in phoenix fs lib
 
     // Start the HTTP server on port 3000
     server.listen(port, () => {
         serverPortResolve(port);
-        console.log(`Server running on http://localhost:${port}`);
-        console.log(`Phoenix node tauri FS url is ws://localhost:${port}${PHOENIX_FS_URL}`);
+        savedConsoleLog(`Server running on http://localhost:${port}`);
+        savedConsoleLog(`Phoenix node tauri FS url is ws://localhost:${port}${PHOENIX_FS_URL}`);
+        savedConsoleLog(`Phoenix node connector url is ws://localhost:${port}${PHOENIX_NODE_URL}`);
     });
 
 });
