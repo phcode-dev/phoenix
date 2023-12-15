@@ -151,4 +151,8 @@ async function _shouldErrorOut(a,b) {
 exports.testErrExecCases = async function () {
     await _shouldErrorOut(toArrayBuffer("g"));
     await _shouldErrorOut({}, 34);
+    let buffer = toArrayBuffer("Hello, World!");
+    await _shouldErrorOut("", buffer);
+    await _shouldErrorOut(34, buffer);
+    await _shouldErrorOut(null, buffer);
 };
