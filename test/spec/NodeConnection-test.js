@@ -23,12 +23,18 @@
 
 define(function (require, exports, module) {
 
+    const NodeConnector = require("NodeConnector");
+
     if(!Phoenix.browser.isTauri) {
-        // node is only available in desktop builds
+        describe("Node Connection", function () {
+            it("Should not have node engine", async function () {
+                expect(window.PhNodeEngine).not.toBeDefined();
+                expect(NodeConnector.isNodeAvailable()).toBeFalse();
+            });
+        });
+        // node is only available in desktop builds, so dont run node tests in browser
         return;
     }
-
-    const NodeConnector = require("NodeConnector");
 
     function toArrayBuffer(text) {
         const textEncoder = new TextEncoder();
@@ -64,7 +70,7 @@ define(function (require, exports, module) {
         });
 
         beforeAll(async function () {
-            nodeConnector = await NodeConnector.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);
+            nodeConnector = NodeConnector.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);
             exports.echoTestPhcode = function (data, buffer) {
                 console.log("Node fn called testFnCall");
                 return new Promise(resolve =>{
@@ -86,6 +92,28 @@ define(function (require, exports, module) {
         it("Should have window.PhNodeEngine", async function () {
             expect(window.PhNodeEngine).toBeDefined();
             expect(nodeConnector).toBeDefined();
+            expect(NodeConnector.isNodeAvailable()).toBeTrue();
+        });
+
+        function _verifyFailToCreateNodeConnector(id, exp) {
+            let err;
+            try{
+                NodeConnector.createNodeConnector(id, exp);
+            } catch (e) {
+                err = e;
+            }
+            expect(err).toBeDefined();
+        }
+
+        it("Should node connector be not created for invalid args", async function () {
+            _verifyFailToCreateNodeConnector(TEST_NODE_CONNECTOR_ID, exports); // already there
+            _verifyFailToCreateNodeConnector("noExportsTest"); // no exports
+            _verifyFailToCreateNodeConnector("invalidExports", 45); // invalid exports
+            _verifyFailToCreateNodeConnector("invalidExports", null); // invalid exports
+        });
+
+        it("Should node connector be not created for invalid args in node side", async function () {
+            await nodeConnector.execPeer("testInvalidArgsNodeConnector");
         });
 
         it("Should be able to execute function in node and get response for normal objects", async function () {
