@@ -138,9 +138,8 @@ function nodeLoader() {
         const copyPendingSendBuffer = pendingSendBuffer;
         // empty to prevent race conditions
         pendingSendBuffer = [];
-        for(let i=0; i<copyPendingSendBuffer.length; i++) {
-            // Execute in order as we received the event
-            const {commandObject, dataBuffer} = copyPendingSendBuffer[i];
+        // Using a for...of loop for better readability
+        for(let {commandObject, dataBuffer} of copyPendingSendBuffer) {
             _sendWithAppropriateSocket(commandObject, dataBuffer);
         }
     }
@@ -256,10 +255,11 @@ function nodeLoader() {
     function _errNClearQueue(nodeConnectorID) {
         const pendingExecList = pendingNodeConnectorExecMap[nodeConnectorID];
         pendingNodeConnectorExecMap[nodeConnectorID] = [];
-        for(let i=0; i<pendingExecList.length; i++) {
-            const {ws, metadata} = pendingExecList[i];
-            _sendError(ws, metadata,
-                new Error(`NodeConnector ${nodeConnectorID} not found to exec function ${metadata.execHandlerFnName}`));
+        for(const { ws, metadata } of pendingExecList) {
+            _sendError(
+                ws, metadata,
+                new Error(`NodeConnector ${nodeConnectorID} not found to exec function ${metadata.execHandlerFnName}`)
+            );
         }
     }
 
@@ -288,8 +288,7 @@ function nodeLoader() {
     function _drainExecQueue(nodeConnectorID) {
         let pendingExecList = pendingNodeConnectorExecMap[nodeConnectorID] || [];
         pendingNodeConnectorExecMap[nodeConnectorID] = [];
-        for(let i=0; i<pendingExecList.length; i++) {
-            const {ws, metadata, bufferData} = pendingExecList[i];
+        for(const {ws, metadata, bufferData} of pendingExecList) {
             _execPhcodeConnectorFn(ws, metadata, bufferData);
         }
     }
@@ -357,8 +356,7 @@ function nodeLoader() {
     function _drainEventQueue(nodeConnectorID) {
         let pendingEventList = pendingNodeConnectorEventMap[nodeConnectorID] || [];
         pendingNodeConnectorEventMap[nodeConnectorID] = [];
-        for(let i=0; i<pendingEventList.length; i++) {
-            const {ws, metadata, bufferData} = pendingEventList[i];
+        for(const {ws, metadata, bufferData} of pendingEventList) {
             _triggerEvent(ws, metadata, bufferData);
         }
     }
