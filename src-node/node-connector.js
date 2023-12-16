@@ -59,9 +59,27 @@ const WebSocket = require('ws');
 const nodeConnectorIDMap = {};
 const nodeExecHandlerMap = {};
 let currentCommandID = 0;
+// This holds the list {resolve, reject} for all waiting exec functions executed with execPeer here.
 const pendingExecPromiseMap = {};
-const pendingPeerNodeConnectorSetupResolveMap = {};
-const isPeerNodeConnectorSetupMap = {};
+
+// If a NodeConnector has been created on this end, we can promptly process events and exec messages. However,
+// in cases where a NodeConnector hasn't been created yet on this end, we temporarily queue execs and event triggers
+// for up to 10 seconds. This approach ensures that the other side remains unaware of the status of the NodeConnector
+// at both ends, allowing them to initiate message transmission via the WebSocket as soon as they invoke the
+// createNodeConnector API on their side.
+
+// Timeout duration for NodeConnector creation (10 seconds)
+const NODE_CONNECTOR_CREATE_TIMEOUT = 10000;
+// Max number of messages to queue for a single node connector.
+const MAX_QUEUE_LENGTH = 2000;
+
+// These arrays hold queues of event and exec messages received from the other side while a NodeConnector
+// was not yet created on this end. Messages are queued for up to 10 seconds.
+const pendingNodeConnectorExecMap = {};
+const pendingNodeConnectorEventMap = {};
+
+// This timer clears the pending maps above if a NodeConnector is not created within 10 seconds.
+const isTimerRunningMap = {};
 
 /**
  *
@@ -136,8 +154,7 @@ const WS_COMMAND = {
     EXEC: "exec",
     EVENT: "event",
     LARGE_DATA_SOCKET_ANNOUNCE: "largeDataSock",
-    CONTROL_SOCKET_ANNOUNCE: "controlSock",
-    NODE_CONNECTOR_ANNOUNCE: "nodeConnectorCreated"
+    CONTROL_SOCKET_ANNOUNCE: "controlSock"
 };
 
 const WS_ERR_CODES = {
@@ -158,8 +175,9 @@ function _drainPendingSendBuffer() {
     const copyPendingSendBuffer = pendingSendBuffer;
     // empty to prevent race conditions
     pendingSendBuffer = [];
-    while (copyPendingSendBuffer.length > 0) {
-        const {commandObject, dataBuffer} = copyPendingSendBuffer.pop();
+    for(let i=0; i<copyPendingSendBuffer.length; i++) {
+        // Execute in order as we received the event
+        const {commandObject, dataBuffer} = copyPendingSendBuffer[i];
         _sendWithAppropriateSocket(commandObject, dataBuffer);
     }
 }
@@ -178,18 +196,6 @@ function _sendWithAppropriateSocket(commandObject, dataBuffer) {
         socketToUse = largeDataSocketMain;
     }
     socketToUse.send(mergeMetadataAndArrayBuffer(commandObject, dataBuffer));
-}
-
-function _sendCommand(commandCode, dataObjectToSend = null, dataBuffer = null) {
-    currentCommandID++;
-    const commandID = currentCommandID;
-    const command = {
-        commandCode: commandCode,
-        commandID: commandID,
-        data: dataObjectToSend
-    };
-    _sendWithAppropriateSocket(command, dataBuffer);
-    return commandID;
 }
 
 function _sendExec(nodeConnectorID, commandID, execHandlerFnName, dataObjectToSend = null, dataBuffer = null) {
@@ -267,12 +273,55 @@ function _isJSONStringifiable(result) {
     }
 }
 
+function _errNClearQueue(nodeConnectorID) {
+    const pendingExecList = pendingNodeConnectorExecMap[nodeConnectorID];
+    pendingNodeConnectorExecMap[nodeConnectorID] = [];
+    for(let i=0; i<pendingExecList.length; i++) {
+        const {ws, metadata} = pendingExecList[i];
+        _sendError(ws, metadata,
+            new Error(`NodeConnector ${nodeConnectorID} not found to exec function ${metadata.execHandlerFnName}`));
+    }
+}
+
+function _queueExec(nodeConnectorID, ws, metadata, bufferData) {
+    let pendingExecList = pendingNodeConnectorExecMap[nodeConnectorID];
+    if(!pendingExecList){
+        pendingExecList = [];
+        pendingNodeConnectorExecMap[nodeConnectorID] = pendingExecList;
+    }
+    if(pendingExecList.length > MAX_QUEUE_LENGTH) {
+        _sendError(ws, metadata,
+            new Error(`Too Many exec while waiting for NodeConnector ${nodeConnectorID} creation to exec fn ${metadata.execHandlerFnName}`));
+        return;
+    }
+    pendingExecList.push({ws, metadata, bufferData});
+    if(!isTimerRunningMap[nodeConnectorID]){
+        isTimerRunningMap[nodeConnectorID] = true;
+        setTimeout(() => {
+            // the node connector was not established
+            isTimerRunningMap[nodeConnectorID] = false;
+            _errNClearQueue(nodeConnectorID);
+        }, NODE_CONNECTOR_CREATE_TIMEOUT);
+    }
+}
+
+function _drainExecQueue(nodeConnectorID) {
+    let pendingExecList = pendingNodeConnectorExecMap[nodeConnectorID] || [];
+    pendingNodeConnectorExecMap[nodeConnectorID] = [];
+    for(let i=0; i<pendingExecList.length; i++) {
+        const {ws, metadata, bufferData} = pendingExecList[i];
+        _execNodeConnectorFn(ws, metadata, bufferData);
+    }
+}
+
 function _execNodeConnectorFn(ws, metadata, dataBuffer) {
     const nodeConnectorID = metadata.nodeConnectorID;
     const execHandlerFnName = metadata.execHandlerFnName;
     const moduleExports = nodeExecHandlerMap[nodeConnectorID];
     if(!moduleExports){
-        throw new Error("Unable to find moduleExports to exec function for "+ JSON.stringify(metadata));
+        // node connector not yet created. Queue it.
+        _queueExec(nodeConnectorID, ws, metadata, dataBuffer);
+        return;
     }
     try{
         if(typeof moduleExports[execHandlerFnName] !== 'function'){
@@ -303,11 +352,44 @@ function _execNodeConnectorFn(ws, metadata, dataBuffer) {
     }
 }
 
+function _queueEvent(nodeConnectorID, ws, metadata, bufferData) {
+    let pendingEventList = pendingNodeConnectorEventMap[nodeConnectorID];
+    if(!pendingEventList){
+        pendingEventList = [];
+        pendingNodeConnectorEventMap[nodeConnectorID] = pendingEventList;
+    }
+    if(pendingEventList.length > MAX_QUEUE_LENGTH) {
+        _sendError(ws, metadata,
+            new Error(`Too Many events: ${metadata.eventName} while waiting for NodeConnector ${nodeConnectorID} creation`));
+        return;
+    }
+    pendingEventList.push({ws, metadata, bufferData});
+    if(!isTimerRunningMap[nodeConnectorID]){
+        isTimerRunningMap[nodeConnectorID] = true;
+        setTimeout(() => {
+            // the node connector was not established
+            isTimerRunningMap[nodeConnectorID] = false;
+            _errNClearQueue(nodeConnectorID);
+        }, NODE_CONNECTOR_CREATE_TIMEOUT);
+    }
+}
+
+function _drainEventQueue(nodeConnectorID) {
+    let pendingEventList = pendingNodeConnectorEventMap[nodeConnectorID] || [];
+    pendingNodeConnectorEventMap[nodeConnectorID] = [];
+    for(let i=0; i<pendingEventList.length; i++) {
+        const {ws, metadata, bufferData} = pendingEventList[i];
+        _triggerEvent(ws, metadata, bufferData);
+    }
+}
+
 function _triggerEvent(ws, metadata, dataBuffer) {
     const nodeConnectorID = metadata.nodeConnectorID;
     const nodeConnector = nodeConnectorIDMap[nodeConnectorID];
     if(!nodeConnector){
-        throw new Error("Unable to find nodeConnectorID to _triggerEvent for "+ JSON.stringify(metadata));
+        // node connector not yet created. Queue it.
+        _queueEvent(nodeConnectorID, ws, metadata, dataBuffer);
+        return;
     }
     nodeConnector.trigger(metadata.eventName, metadata.data, dataBuffer);
 }
@@ -326,15 +408,6 @@ function processWSCommand(ws, metadata, dataBuffer) {
             ws.isLargeData = false;
             controlSocketMain = ws;
             _drainPendingSendBuffer();
-            return;
-        case WS_COMMAND.NODE_CONNECTOR_ANNOUNCE:
-            const nodeConnectorID = metadata.data;
-            // this message signals that a node connector with the given nodeConnectorID is setup at the other side.
-            if(pendingPeerNodeConnectorSetupResolveMap[nodeConnectorID]) {
-                // this means that createNodeConnector in this side is waiting for this message. So resolve it.
-                pendingPeerNodeConnectorSetupResolveMap[nodeConnectorID]();
-            }
-            isPeerNodeConnectorSetupMap[nodeConnectorID] = true;
             return;
         case WS_COMMAND.EXEC:
             _execNodeConnectorFn(ws, metadata, dataBuffer);
@@ -369,19 +442,12 @@ function processWSCommand(ws, metadata, dataBuffer) {
     }
 }
 
-/*Returns a promise that resolves when a node connector for the given nodeConnectorID is created in the other side*/
-function _waitForPeerNodeConnector(nodeConnectorID) {
-    if(isPeerNodeConnectorSetupMap[nodeConnectorID]){
-        return Promise.resolve();
-    }
-    return new Promise((resolve)=>{
-        pendingPeerNodeConnectorSetupResolveMap[nodeConnectorID] = resolve;
-    });
-}
-
-async function createNodeConnector(nodeConnectorID, moduleExports) {
+function createNodeConnector(nodeConnectorID, moduleExports) {
     if(nodeConnectorIDMap[nodeConnectorID]) {
         throw new Error("A node connector of the name is already registered: " + nodeConnectorID);
+    }
+    if(!_isObject(moduleExports) || !nodeConnectorID) {
+        throw new Error("Invalid Argument. Expected createNodeConnector(string, module/Object) for " + nodeConnectorID);
     }
 
     nodeExecHandlerMap[nodeConnectorID] = moduleExports;
@@ -433,12 +499,20 @@ async function createNodeConnector(nodeConnectorID, moduleExports) {
     EventDispatcher.makeEventDispatcher(newNodeConnector);
     nodeConnectorIDMap[nodeConnectorID] = newNodeConnector;
 
-    // now if phoenix is waiting for WS_COMMAND.NODE_CONNECTOR_ANNOUNCE to setup node connector on its side, we
-    // raise it here. If phoenix NODE_CONNECTOR_ANNOUNCE call happens after this fn is called in node, then
-    // it will be handled at processWSCommand fn.
-    const peerConnectionPromise = _waitForPeerNodeConnector(nodeConnectorID);
-    _sendCommand(WS_COMMAND.NODE_CONNECTOR_ANNOUNCE, nodeConnectorID);
-    await peerConnectionPromise;
+    // At this point, it's possible that a node connector has been created on the other end, and it might have sent
+    // us exec and trigger events that need to be processed. These events will be queued for execution, and we will
+    // handle them after the current event loop call.
+    // We use a setTimeout with a zero-millisecond delay to ensure that the event queues are drained during the
+    // next tick of the event loop.
+    setTimeout(() => {
+        _drainExecQueue(nodeConnectorID);
+        _drainEventQueue(nodeConnectorID);
+    }, 0);
+
+
+    // At this time, the node connector at the other side may not be created, but it is still safe to use this
+    // node connector now as the events will be queued at the other end for up to 10 seconds for a node connector
+    // to be created at the other end.
     return newNodeConnector;
 }
 

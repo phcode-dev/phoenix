@@ -142,13 +142,10 @@
  *
  * * ## Caveats
  *
- * - Ensure that the `nodeConnectedPromise` is resolved before using the `nodeConnector` to avoid potential issues
- *   related to communication readiness.
  * - Be cautious when sending large binary data, as it may affect performance and memory usage.
  * - Properly handle exceptions and errors when executing functions to maintain robust communication.
  * - Functions called with `execPeer` and `triggerPeer` must be asynchronous and accept a single argument. An optional
  *   second argument can be used to transfer large binary data as an ArrayBuffer.
- *
  *
  * For more event handling operations and details, refer to the documentation for the `utils/EventDispatcher` module.
  *
@@ -174,13 +171,23 @@ define(function (require, exports, module) {
      * @param {string} nodeConnectorID - The unique identifier for the new node connector.
      * @param {Object} moduleExports - The exports of the module that contains the functions to be executed on the other side.
      *
-     * @returns {Promise} - A promise that resolves to an NodeConnector Object.
+     * @returns {{execPeer:function, triggerPeer:function, trigger:function, on:function, off:function, one:function}} - A NodeConnector Object. Also contains all the APIs supported by `utils/EventDispatcher` module.
      *
-     * @throws {Error} - If a node connector with the same ID already exists.
+     * @throws {Error} - If a node connector with the same ID already exists/invalid args passed.
      */
     function createNodeConnector(nodeConnectorID, moduleExports) {
         return window.PhNodeEngine.createNodeConnector(nodeConnectorID, moduleExports);
     }
 
+    /**
+     * Checks if Node.js Engine is available.
+     *
+     * @returns {boolean} Returns true if Node.js Engine is available.
+     */
+    function isNodeAvailable() {
+        return !!window.PhNodeEngine;
+    }
+
     exports.createNodeConnector = createNodeConnector;
+    exports.isNodeAvailable = isNodeAvailable;
 });

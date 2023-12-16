@@ -158,7 +158,7 @@ two-way communication (exec function, send/receive events) with the other side.
 
 *   Throws **[Error][3]** If a node connector with the same ID already exists.
 
-Returns **[Promise][4]** A promise that resolves to an NodeConnector Object.
+Returns **{execPeer: [function][4], triggerPeer: [function][4], on: [function][4], off: [function][4]}** A promise that resolves to an NodeConnector Object.
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
@@ -166,4 +166,4 @@ Returns **[Promise][4]** A promise that resolves to an NodeConnector Object.
 
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

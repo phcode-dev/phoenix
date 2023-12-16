@@ -1,16 +1,12 @@
 const NodeConnector = require("./node-connector");
 
-let nodeConnector;
 const TEST_NODE_CONNECTOR_ID = "ph_test_connector";
-NodeConnector.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports)
-    .then(nodeConnectorObj =>{
-        nodeConnector = nodeConnectorObj;
-        nodeConnector.on("hello", console.log);
-        nodeConnector.on("testEventInNode", (_evt, data, buffer)=>{
-            console.log(_evt, data, buffer);
-            nodeConnector.triggerPeer("testEventInPhoenix", data, buffer);
-        });
-    });
+const nodeConnector = NodeConnector.createNodeConnector(TEST_NODE_CONNECTOR_ID, exports);
+nodeConnector.on("hello", console.log);
+nodeConnector.on("testEventInNode", (_evt, data, buffer)=>{
+    console.log(_evt, data, buffer);
+    nodeConnector.triggerPeer("testEventInPhoenix", data, buffer);
+});
 
 exports.echoTest = function (data, buffer) {
     console.log("Node fn called echoTest");
@@ -155,4 +151,22 @@ exports.testErrExecCases = async function () {
     await _shouldErrorOut("", buffer);
     await _shouldErrorOut(34, buffer);
     await _shouldErrorOut(null, buffer);
+};
+
+
+function _verifyFailToCreateNodeConnector(id, exp) {
+    let err;
+    try{
+        NodeConnector.createNodeConnector(id, exp);
+    } catch (e) {
+        err = e;
+    }
+    expectEqual(typeof err.message, "string");
+}
+
+exports.testInvalidArgsNodeConnector = async function () {
+    _verifyFailToCreateNodeConnector(TEST_NODE_CONNECTOR_ID, exports); // already there
+    _verifyFailToCreateNodeConnector("noExportsTest"); // no exports
+    _verifyFailToCreateNodeConnector("invalidExports", 45); // invalid exports
+    _verifyFailToCreateNodeConnector("invalidExports", null); // invalid exports
 };
