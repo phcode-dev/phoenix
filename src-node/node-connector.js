@@ -41,11 +41,15 @@
  * Node Connector Creation:
  *
  * - Named Node Connectors serve as the foundation for further communication between Node and Phoenix.
- *   A Node Connector can be created only once via the `global.createNodeConnector` API in node and
- *   `createNodeConnector` API in `NodeConnector` module.
+ *   A named Node Connector can be created only once via the `global.createNodeConnector` API in node and
+ *   `createNodeConnector` API in `NodeConnector` module. Note that multiple `NodeConnector` can be created with
+ *   different names.
  *
- * - The API returns a promise that resolves to a Node Connector object when the Node Connector with the same ID
- *   is opened on the other side (Phoenix).
+ * - The API returns Node Connector object that can be immediately used to execute `execPeer` and `triggerPeer` APIs.
+ *   When the Node Connector with the same ID is opened on the other side (Phoenix), it will receive the events.
+ *
+ * Note:  Events or execPeer requests will be queued for upto 10 seconds to give time for the connector to be
+ *  created at the other end before it calls quites and rejects all exec requests at timeout.
  *
  * Usage:
  *
