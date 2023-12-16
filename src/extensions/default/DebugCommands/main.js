@@ -46,6 +46,7 @@ define(function (require, exports, module) {
         Locales                = brackets.getModule("nls/strings"),
         ProjectManager         = brackets.getModule("project/ProjectManager"),
         ExtensionLoader        = brackets.getModule("utils/ExtensionLoader"),
+        NodeConnector          = brackets.getModule("NodeConnector"),
         extensionDevelopment   = require("extensionDevelopment"),
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
@@ -693,7 +694,7 @@ define(function (require, exports, module) {
         CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setEnabled(isLogging);
         logger.loggingOptions.logLivePreview = window.isLoggingEnabled(LOG_LIVE_PREVIEW_KEY);
         CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setChecked(logger.loggingOptions.logLivePreview);
-        CommandManager.get(DEBUG_ENABLE_PHNODE_INSPECTOR).setChecked(window.PhNodeEngine && window.PhNodeEngine.isInspectEnabled());
+        CommandManager.get(DEBUG_ENABLE_PHNODE_INSPECTOR).setChecked(NodeConnector.isInspectEnabled());
     }
 
     function _handleLogging() {
@@ -702,7 +703,7 @@ define(function (require, exports, module) {
     }
 
     function _handlePhNodeInspectEnable() {
-        window.PhNodeEngine.setInspectEnabled(!window.PhNodeEngine.isInspectEnabled());
+        NodeConnector.setInspectEnabled(!NodeConnector.isInspectEnabled());
         _updateLogToConsoleMenuItemChecked();
     }
 
@@ -717,8 +718,8 @@ define(function (require, exports, module) {
   </p>
   <p>2. Select Option 'Open dedicated DevTools for Node'</p>
   <p>
-    3. Use the URL in connection tab'<code>localhost:${window.PhNodeEngine.getInspectPort()}</code>'
-    <button onclick="Phoenix.app.copyToClipboard('localhost:${window.PhNodeEngine.getInspectPort()}')">
+    3. Use the URL in connection tab'<code>localhost:${NodeConnector.getInspectPort()}</code>'
+    <button onclick="Phoenix.app.copyToClipboard('localhost:${NodeConnector.getInspectPort()}')">
       <i class="fas fa-copy"></i> Copy
     </button>
   </p>
