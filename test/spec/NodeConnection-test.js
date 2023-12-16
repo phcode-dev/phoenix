@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, awaitsFor, beforeEach*/
+/*global describe, it, expect, beforeAll, awaitsFor, beforeEach, awaits*/
 
 define(function (require, exports, module) {
 
@@ -219,6 +219,39 @@ define(function (require, exports, module) {
                 }
                 await Promise.all(allPromises);
             }
+        });
+
+        it("Should be able to exec function even if node connector is created only later in node", async function () {
+            const newNodeConnName = "ph_exec_Q_test";
+            const newExport = {};
+            const newNodeConn = NodeConnector.createNodeConnector(newNodeConnName, newExport);
+            // now the newNodeConn is not yet created in node. We will send an exec message to node and it should still
+            // go through and be queued.
+            const expectedResult = "hello";
+            const newNodeConnResult = newNodeConn.execPeer("echoTest", expectedResult);
+            // now we wait for 1 seconds just to be sure that the exec wasnt rejected and is queued.
+            await awaits(1000);
+            await nodeConnector.execPeer("createNodeConnector", newNodeConnName);
+            //now we wait for the result as the queue will likeley be drained and the result available now
+            const result = await newNodeConnResult;
+            expect(result).toEql(expectedResult);
+        });
+
+        it("Should be able to send events even if node connector is created only later in node", async function () {
+            const newNodeConnName = "ph_event_Q_test";
+            const newExport = {};
+            const newNodeConn = NodeConnector.createNodeConnector(newNodeConnName, newExport);
+            // now the newNodeConn is not yet created in node. We will send an exec message to node and it should still
+            // go through and be queued.
+            const sentText = "hello world";
+            newNodeConn.triggerPeer("testEventInNode", sentText);
+            // now we wait for 1 seconds just to be sure that the event wasnt rejected and is queued.
+            await awaits(1000);
+            await nodeConnector.execPeer("createNodeConnector", newNodeConnName);
+            //now we wait for the result as the queue will likeley be drained and the result available now
+            await awaitsFor(function () {
+                return sentText === savedData;
+            }, "waiting for event reception");
         });
     });
 });

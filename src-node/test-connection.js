@@ -170,3 +170,11 @@ exports.testInvalidArgsNodeConnector = async function () {
     _verifyFailToCreateNodeConnector("invalidExports", 45); // invalid exports
     _verifyFailToCreateNodeConnector("invalidExports", null); // invalid exports
 };
+
+exports.createNodeConnector = async function (connectorName) {
+    NodeConnector.createNodeConnector(connectorName, exports)
+        .on("testEventInNode", (_evt, data, buffer)=>{
+            console.log(_evt, data, buffer);
+            nodeConnector.triggerPeer("testEventInPhoenix", data, buffer);
+        });
+};
