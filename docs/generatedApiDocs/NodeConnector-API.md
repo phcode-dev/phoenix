@@ -18,11 +18,7 @@ To establish communication between two modules, such as `x.js` in Phoenix and `y
 ```js
 const NodeConnector = require('NodeConnector');
 const XY_NODE_CONNECTOR_ID = 'ext_x_y'; // Use a unique ID
-let nodeConnector;
-
-const nodeConnectedPromise = NodeConnector.createNodeConnector(XY_NODE_CONNECTOR_ID, exports).then(connector => {
-  nodeConnector = connector;
-});
+let nodeConnector = NodeConnector.createNodeConnector(XY_NODE_CONNECTOR_ID, exports);
 
 exports.modifyImage = async function(imageName, imageArrayBuffer) {
   // Perform image operations with the imageArrayBuffer
@@ -38,11 +34,7 @@ exports.modifyImage = async function(imageName, imageArrayBuffer) {
 
 ```js
 const XY_NODE_CONNECTOR_ID = 'ext_x_y'; // Use the same unique ID
-let nodeConnector;
-
-const nodeConnectedPromise = global.createNodeConnector(XY_NODE_CONNECTOR_ID, exports).then(connector => {
-  nodeConnector = connector;
-});
+let nodeConnector = global.createNodeConnector(XY_NODE_CONNECTOR_ID, exports);
 
 exports.getPWDRelative = async function(subPath) {
   return process.cwd + '/' + subPath;
@@ -53,11 +45,10 @@ With these steps, a `NodeConnector` is set up, enabling two-way communication.
 
 ## Executing Functions
 
-To call a Node.js function from Phoenix, use the `execPeer` method. Ensure that `nodeConnector` is set before using it.
+To call a Node.js function from Phoenix, use the `execPeer` method.
 
 ```js
 // In `x.js` (Phoenix)
-await nodeConnectedPromise;
 const fullPath = await nodeConnector.execPeer('getPWDRelative', 'sub/path.html');
 ```
 
@@ -65,19 +56,22 @@ To execute a Phoenix function from Node.js and transfer binary data, pass an opt
 
 ```js
 // In `y.js` (Node.js)
-await nodeConnectedPromise;
 const { operationDone, buffer } = await nodeConnector.execPeer('modifyImage', {name:'theHills.png'}, imageAsArrayBuffer);
 ```
 
 ## Event Handling
 
 The `NodeConnector` object implements all the APIs supported by `utils/EventDispatcher`. You can trigger and listen
-to events between Node.js and Phoenix using the `triggerPeer` and `on` methods.
+to events between Node.js and Phoenix using the `triggerPeer` and (`on`, `one` or `off`) methods.
 
 ```js
 // In `y.js` (Node.js)
 nodeConnector.on('phoenixProjectOpened', (_event, projectPath) => {
   console.log(projectPath);
+});
+
+nodeConnector.one('phoenixProjectOpened', (_event, projectPath) => {
+  console.log(projectPath + "will be received only once");
 });
 ```
 
@@ -94,6 +88,7 @@ To Switch off events
 nodeConnector.off('phoenixProjectOpened'); // will switch off all event handlers of that name.
 ```
 
+By Default, all events handlers with the eventName is removed when you call `nodeConnector.off(eventName)` fn.
 To selectively switch off event handlers, please see reference for `utils/EventDispatcher` module.
 
 ### Handling ArrayBuffer Data in Function Execution
@@ -105,7 +100,6 @@ Example of calling a function in Node.js with binary data transfer:
 
 ```js
 // In `y.js` (Node.js)
-await nodeConnectedPromise;
 const { operationDone, buffer } = await nodeConnector.execPeer('modifyImage', {name:'name.png'}, imageArrayBuffer);
 ```
 
@@ -125,10 +119,8 @@ nodeConnector.triggerPeer('imageEdited', 'name.png', imageArrayBuffer);
 
 <!---->
 
-*   Ensure that the `nodeConnectedPromise` is resolved before using the `nodeConnector` to avoid potential issues
-    related to communication readiness.
-*   Be cautious when sending large binary data, as it may affect performance and memory usage.
-*   Properly handle exceptions and errors when executing functions to maintain robust communication.
+*   Be cautious when sending large binary data, as it may affect performance and memory usage. Transferring large
+    data is fully supported, but be mindful of performance.
 *   Functions called with `execPeer` and `triggerPeer` must be asynchronous and accept a single argument. An optional
     second argument can be used to transfer large binary data as an ArrayBuffer.
 
@@ -138,12 +130,17 @@ For more event handling operations and details, refer to the documentation for t
 
 Creates a new node connector with the specified ID and module exports.
 
-Returns a promise that resolves to an NodeConnector Object (which is an EventDispatcher with
+Returns a NodeConnector Object (which is an EventDispatcher with
 additional `execPeer` and `triggerPeer` methods. `peer` here means, if you are executing `execPeer`
-in Phoenix, it will execute the named function in node side, and vice versa.
-The promise will be resolved only after a call to `createNodeConnector` on the other side with the
-same `nodeConnectorID` is made. This is so that once the  promise is resolved, you can right away start
-two-way communication (exec function, send/receive events) with the other side.
+in Phoenix, it will execute the named function in node side, and vice versa. You can right away start
+using `execPeer`, `triggerPeer`(to send/receive events) APIs without waiting to check if the
+other side nodeConnector is created.
+
+Note: If the NodeConnector has not been created on the other end, requests made with `execPeer` or
+`triggerPeer` will be temporarily queued for up to 10 seconds to allow time for the connector to be created.
+If the connector is not created within this timeout period, all queued `execPeer` requests will be rejected,
+and all queued events will be dropped. It is recommended to call the `createNodeConnector` API on both ends
+within a timeframe of less than 10 seconds(ideally same time) for seamless communication.
 
 *   execPeer: A function that executes a peer function with specified parameters.
 *   triggerPeer: A function that triggers an event to be sent to a peer.
@@ -156,9 +153,15 @@ two-way communication (exec function, send/receive events) with the other side.
 
 <!---->
 
-*   Throws **[Error][3]** If a node connector with the same ID already exists.
+*   Throws **[Error][3]** If a node connector with the same ID already exists/invalid args passed.
 
-Returns **{execPeer: [function][4], triggerPeer: [function][4], on: [function][4], off: [function][4]}** A promise that resolves to an NodeConnector Object.
+Returns **{execPeer: [function][4], triggerPeer: [function][4], trigger: [function][4], on: [function][4], off: [function][4], one: [function][4]}** A NodeConnector Object. Also contains all the APIs supported by `utils/EventDispatcher` module.
+
+## isNodeAvailable
+
+Checks if Node.js Engine is available.
+
+Returns **[boolean][5]** Returns true if Node.js Engine is available.
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
@@ -167,3 +170,5 @@ Returns **{execPeer: [function][4], triggerPeer: [function][4], on: [function][4
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
