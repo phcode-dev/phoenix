@@ -27,7 +27,7 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var AppInit             = require("utils/AppInit"),
+    const AppInit             = require("utils/AppInit"),
         CommandManager      = require("command/CommandManager"),
         Commands            = require("command/Commands"),
         DeprecationWarning  = require("utils/DeprecationWarning"),
@@ -57,6 +57,7 @@ define(function (require, exports, module) {
         WorkspaceManager    = require("view/WorkspaceManager"),
         LanguageManager     = require("language/LanguageManager"),
         NewFileContentManager     = require("features/NewFileContentManager"),
+        NodeConnector = require("NodeConnector"),
         _                   = require("thirdparty/lodash");
 
     /**
@@ -1790,7 +1791,7 @@ define(function (require, exports, module) {
 
             // Defer for a more successful reload - issue #11539
             window.setTimeout(function () {
-                window.PhNodeEngine && window.PhNodeEngine.terminateNode();
+                NodeConnector.terminateNode();
                 window.location.href = href;
             }, 1000);
         }).fail(function () {
@@ -1901,7 +1902,7 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
-                window.PhNodeEngine && window.PhNodeEngine.terminateNode();
+                NodeConnector.terminateNode();
                 Phoenix.app.closeWindow();
             }, closeFail=>{
                 console.log('close fail: ', closeFail);

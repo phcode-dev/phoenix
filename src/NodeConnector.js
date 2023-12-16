@@ -187,6 +187,51 @@ define(function (require, exports, module) {
         return !!window.PhNodeEngine;
     }
 
+    /**
+     * Terminate the PhNodeEngine node if it is available. Else does nothing.
+     *
+     * @return {void}
+     */
+    function terminateNode() {
+        if(isNodeAvailable()){
+            window.PhNodeEngine.terminateNode();
+        }
+    }
+
+    /**
+     * Sets weather to enable node inspector in next boot.
+     *
+     * @param {boolean} enabled - true to enable, else false.
+     */
+    function setInspectEnabled(enabled) {
+        window.PhNodeEngine.setInspectEnabled(enabled);
+    }
+
+    /**
+     * Returns whether node inspector is enabled. If node is not present, always returns false.
+     *
+     * @returns {boolean} True if inspect mode is enabled, false otherwise.
+     */
+    function isInspectEnabled() {
+        if(isNodeAvailable()){
+            return window.PhNodeEngine.isInspectEnabled();
+        }
+        return false;
+    }
+
+    /**
+     * Retrieves the node inspector port for the Phoenix Node.js engine.
+     *
+     * @returns {number} The inspection port number.
+     */
+    function getInspectPort() {
+        return window.PhNodeEngine.getInspectPort();
+    }
+
     exports.createNodeConnector = createNodeConnector;
     exports.isNodeAvailable = isNodeAvailable;
+    exports.terminateNode = terminateNode;
+    exports.isInspectEnabled = isInspectEnabled;
+    exports.setInspectEnabled = setInspectEnabled;
+    exports.getInspectPort = getInspectPort;
 });
