@@ -82,6 +82,14 @@ define(function (require, exports, module) {
                     resolve(data);
                 });
             };
+            exports.createNodeConnector = async function (connectorName) {
+                NodeConnector.createNodeConnector(connectorName, exports)
+                    .on("testEventInPhoenix", (_evt, data, buffer)=>{
+                        console.log(_evt, data, buffer);
+                        savedData = data;
+                        savedBuffer = buffer;
+                    });
+            };
             nodeConnector.on("testEventInPhoenix", (_evt, data, buffer)=>{
                 console.log(_evt, data, buffer);
                 savedData = data;
@@ -237,6 +245,10 @@ define(function (require, exports, module) {
             expect(result).toEql(expectedResult);
         });
 
+        it("Should be able to exec function even if node connector is created only later in phoenix side", async function () {
+            await nodeConnector.execPeer("testDelayedNodeConnectorCreateExec");
+        });
+
         it("Should be able to send events even if node connector is created only later in node", async function () {
             const newNodeConnName = "ph_event_Q_test";
             const newExport = {};
@@ -248,6 +260,15 @@ define(function (require, exports, module) {
             // now we wait for 1 seconds just to be sure that the event wasnt rejected and is queued.
             await awaits(1000);
             await nodeConnector.execPeer("createNodeConnector", newNodeConnName);
+            //now we wait for the result as the queue will likeley be drained and the result available now
+            await awaitsFor(function () {
+                return sentText === savedData;
+            }, "waiting for event reception");
+        });
+
+        it("Should be able to raise event even if node connector is created only later in phoenix side", async function () {
+            const sentText = "hello world delay";
+            await nodeConnector.execPeer("testDelayedNodeConnectorCreateEvent");
             //now we wait for the result as the queue will likeley be drained and the result available now
             await awaitsFor(function () {
                 return sentText === savedData;

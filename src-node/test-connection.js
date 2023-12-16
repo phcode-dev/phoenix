@@ -178,3 +178,38 @@ exports.createNodeConnector = async function (connectorName) {
             nodeConnector.triggerPeer("testEventInPhoenix", data, buffer);
         });
 };
+
+function awaits(waitTimeMs){
+    return new Promise((resolve)=>{
+        setTimeout(resolve, waitTimeMs);
+    });
+}
+
+exports.testDelayedNodeConnectorCreateExec = async function (connectorName) {
+    const newNodeConnName = "node_exec_Q_test";
+    const newExport = {};
+    const newNodeConn = NodeConnector.createNodeConnector(newNodeConnName, newExport);
+    // now the newNodeConn is not yet created in node. We will send an exec message to node and it should still
+    // go through and be queued.
+    const expectedResult = "hello";
+    const newNodeConnResult = newNodeConn.execPeer("echoTestPhcode", expectedResult);
+    // now we wait for 1 seconds just to be sure that the exec wasnt rejected and is queued.
+    await awaits(1000);
+    await nodeConnector.execPeer("createNodeConnector", newNodeConnName);
+    //now we wait for the result as the queue will likeley be drained and the result available now
+    const result = await newNodeConnResult;
+    expectEqual(result, expectedResult);
+};
+
+exports.testDelayedNodeConnectorCreateEvent = async function (connectorName) {
+    const newNodeConnName = "node_event_Q_test";
+    const newExport = {};
+    const newNodeConn = NodeConnector.createNodeConnector(newNodeConnName, newExport);
+    // now the newNodeConn is not yet created in node. We will send an exec message to node and it should still
+    // go through and be queued.
+    const sentText = "hello world delay";
+    newNodeConn.triggerPeer("testEventInPhoenix", sentText);
+    // now we wait for 1 seconds just to be sure that the event wasnt rejected and is queued.
+    await awaits(1000);
+    await nodeConnector.execPeer("createNodeConnector", newNodeConnName);
+};
