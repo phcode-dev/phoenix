@@ -129,6 +129,7 @@ define(function (require, exports, module) {
         script.onload = function(){
             gtag('js', new Date());
 
+            // TODO use googleAnalyticsIDDesktop for desktop analytics
             gtag('config', brackets.config.googleAnalyticsID, {
                 'page_title': 'Phoenix editor',
                 'page_path': '/index.html',
@@ -198,25 +199,6 @@ define(function (require, exports, module) {
         });
     }
 
-    function _sendToMixPanel(category, action, label, count, value) {
-        if(disabled || window.testEnvironment){
-            return;
-        }
-        category = category || "category";
-        action = action || "action";
-        if(!label){
-            label = action;
-        }
-        count = count || 1;
-        value = value || 1;
-        if(!window.mixpanel || !mixpanel.track) {
-            return;
-        }
-        mixpanel.track(category, {
-            action, label, count, value
-        });
-    }
-
     function _sendToCoreAnalytics(category, action, label, count, value) {
         // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
         if(disabled || window.testEnvironment){
@@ -256,7 +238,6 @@ define(function (require, exports, module) {
     function _countEvent(eventType, eventCategory, eventSubCategory, count= 1) {
         _logEventForAudit(eventType, eventCategory, eventSubCategory, count, AUDIT_TYPE_COUNT);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, count);
-        _sendToMixPanel(eventType, eventCategory, eventSubCategory, count);
         _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, count);
     }
 
@@ -286,7 +267,6 @@ define(function (require, exports, module) {
     function _valueEvent(eventType, eventCategory, eventSubCategory, value) {
         _logEventForAudit(eventType, eventCategory, eventSubCategory, value, AUDIT_TYPE_VALUE);
         _sendToGoogleAnalytics(eventType, eventCategory, eventSubCategory, value);
-        _sendToMixPanel(eventType, eventCategory, eventSubCategory, 1, value);
         _sendToCoreAnalytics(eventType, eventCategory, eventSubCategory, 1, value);
     }
 

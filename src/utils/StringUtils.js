@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /* The hash code routne is taken from http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
    @CC wiki attribution: esmiralha
 */
@@ -29,6 +31,7 @@
 /**
  *  Utilities functions related to string manipulation
  *
+ * @module utils/StringUtils
  */
 define(function (require, exports, module) {
 
@@ -243,6 +246,30 @@ define(function (require, exports, module) {
         return hash;
     }
 
+    /**
+     * Generates a random nonce string of the specified length.
+     *
+     * !!!Should not be used for crypto secure workflows.!!!
+     *
+     * @param {number} stringLength - The length of the nonce in bytes.
+     * @returns {string} - The randomly generated nonce.
+     */
+    function randomString(stringLength) {
+        const randomBuffer = new Uint8Array(stringLength);
+        crypto.getRandomValues(randomBuffer);
+
+        // Define the character set for the random string
+        const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+        // Convert the ArrayBuffer to a case-sensitive random string with numbers
+        let randomId = '';
+        Array.from(randomBuffer).forEach(byte => {
+            randomId += charset[byte % charset.length];
+        });
+
+        return randomId;
+    }
+
     // Define public API
     exports.format              = format;
     exports.regexEscape         = regexEscape;
@@ -256,4 +283,5 @@ define(function (require, exports, module) {
     exports.prettyPrintBytes    = prettyPrintBytes;
     exports.truncate            = truncate;
     exports.hashCode            = hashCode;
+    exports.randomString        = randomString;
 });
