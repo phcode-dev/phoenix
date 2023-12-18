@@ -163,6 +163,32 @@ Checks if Node.js Engine is available.
 
 Returns **[boolean][5]** Returns true if Node.js Engine is available.
 
+## terminateNode
+
+Terminate the PhNodeEngine node if it is available. Else does nothing.
+
+Returns **void** 
+
+## setInspectEnabled
+
+Sets weather to enable node inspector in next boot.
+
+### Parameters
+
+*   `enabled` **[boolean][5]** true to enable, else false.
+
+## isInspectEnabled
+
+Returns whether node inspector is enabled. If node is not present, always returns false.
+
+Returns **[boolean][5]** True if inspect mode is enabled, false otherwise.
+
+## getInspectPort
+
+Retrieves the node inspector port for the Phoenix Node.js engine.
+
+Returns **[number][6]** The inspection port number.
+
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
@@ -172,3 +198,5 @@ Returns **[boolean][5]** Returns true if Node.js Engine is available.
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
