@@ -19,9 +19,29 @@
  *
  */
 
-// The main persistent storage apis used to store preferences, setting etc. This is synced across all running phoenix
-// tabs in the browser and processes in the desktop app.
-// Data is eventually consistent with sync delays up to a few seconds.
+/** The main persistent storage apis used to store preferences, setting etc. This is synced across all running phoenix
+ * tabs in the browser and processes in the desktop app.
+ * Data is eventually consistent with sync delays up to a few seconds.
+ *
+ * Storage API that seamlessly works in both web browsers and Tauri. In web browsers, the API utilizes local storage,
+ * providing a consistent and reliable key-value store for small configuration data with persistence guarantees and
+ * efficient read-write performance. It's important to note that this storage API is not suitable for storing
+ * large data, such as file content or debug-related information.
+ *
+ * Features:
+ * - Synchronous reads with in-memory caching for optimized performance.
+ * - Read-after-write consistency within a single instance.
+ * - Eventual consistency (within approximately 3 seconds) when used across multiple processes or tabs.
+ *
+ * The motivation behind implementing this unified storage API is to address the limitations and potential data loss
+ * issues associated with using local storage and IndexedDB in our desktop builds. Specifically, certain scenarios,
+ * like WebKit's data clearing in Linux and macOS Tauri builds as part of Intelligent Tracking Prevention (ITP),
+ * could lead to data loss.
+ *
+ * The main aim is to have data durability guarantees in desktop builds.
+ * In bowser, we can only overcome this if we have cloud login. Eventually we can have a cloud backend that will sync
+ * with this storage implementation.
+ */
 
 /*global EventDispatcher*/
 

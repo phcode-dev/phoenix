@@ -107,6 +107,7 @@ define(function (require, exports, module) {
     require("spec/InstallExtensionDialog-integ-test");
     require("spec/ExtensionInstallation-test");
     require("spec/NotificationUI-test");
+    require("spec/Storage-integ-test");
     // Integrated extension tests
     require("spec/InAppNotifications-integ-test");
     // Node Tests
