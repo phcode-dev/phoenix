@@ -109,8 +109,24 @@
         globalObject = global; //nodejs
     }
 
+    function defineRequire() {
+        globalObject.EventDispatcher.requireDefined = true;
+        define(function (require, exports, module) {
+            exports.makeEventDispatcher = globalObject.EventDispatcher.makeEventDispatcher;
+            exports.triggerWithArray    = globalObject.EventDispatcher.triggerWithArray;
+            exports.on_duringInit       = globalObject.EventDispatcher.on_duringInit;
+            exports.markDeprecated      = globalObject.EventDispatcher.markDeprecated;
+            exports.setLeakThresholdForEvent = globalObject.EventDispatcher.setLeakThresholdForEvent;
+        });
+    }
+
     if(globalObject.EventDispatcher){
         // already created
+        if(globalObject.define && !globalObject.EventDispatcher.requireDefined){
+            // requirejs is present, but this module is not defined. This may happen if the module was loaded twice
+            // - once as a normal script and once as a require js lib.
+            defineRequire();
+        }
         return;
     }
 
@@ -291,13 +307,13 @@
      * @type {function}
      */
     var trigger = function (eventName) {
-        var event = { type: eventName, target: this },
-            handlerList = this._eventHandlers && this._eventHandlers[eventName],
-            i;
-
+        let handlerList = this._eventHandlers && this._eventHandlers[eventName];
         if (!handlerList) {
             return;
         }
+
+        let event = { type: eventName, target: this },
+            i;
 
         // Use a clone of the list in case handlers call on()/off() while we're still in the loop
         handlerList = handlerList.slice();
@@ -397,13 +413,7 @@
 
     if(globalObject.define){
         // for requirejs support
-        define(function (require, exports, module) {
-            exports.makeEventDispatcher = globalObject.EventDispatcher.makeEventDispatcher;
-            exports.triggerWithArray    = globalObject.EventDispatcher.triggerWithArray;
-            exports.on_duringInit       = globalObject.EventDispatcher.on_duringInit;
-            exports.markDeprecated      = globalObject.EventDispatcher.markDeprecated;
-            exports.setLeakThresholdForEvent = globalObject.EventDispatcher.setLeakThresholdForEvent;
-        });
+        defineRequire();
     }
 }());
 
