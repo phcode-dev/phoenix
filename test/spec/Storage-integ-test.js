@@ -19,7 +19,7 @@
  *
  */
 
-/*global PhStore, describe, it, expect, beforeAll, afterAll, awaitsForDone */
+/*global PhStore, describe, it, expect, beforeAll, afterAll, awaits, awaitsFor, afterEach */
 
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
@@ -32,6 +32,7 @@ define(function (require, exports, module) {
 
 
     describe("integration:Storage integration tests", function () {
+        const testKey = "test_storage_key";
 
         beforeAll(async function () {
             // do not use force option in brackets core integration tests. Tests are assumed to reuse the existing
@@ -44,8 +45,90 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
-        it("Should PhStore APIs be available", async function () { // #2813
+        afterEach(async function () {
+            PhStore.unwatchExternalChanges(testKey);
+            PhStore.off(testKey);
+            testWindow.PhStore.unwatchExternalChanges(testKey);
+        });
+
+        it("Should PhStore APIs be available", async function () {
             expect(PhStore).toBeDefined();
+            expect(PhStore.setItem).toBeDefined();
+            expect(PhStore.getItem).toBeDefined();
+            expect(PhStore.watchExternalChanges).toBeDefined();
+            expect(PhStore.unwatchExternalChanges).toBeDefined();
+        });
+
+        function expectSetGetSuccess(value) {
+            PhStore.setItem(testKey, value);
+            expect(PhStore.getItem(testKey)).toEql(value);
+        }
+
+        it("Should be able to get and set different value types", async function () {
+            expectSetGetSuccess(1);
+            expectSetGetSuccess("");
+            expectSetGetSuccess(0);
+            expectSetGetSuccess("hello");
+            expectSetGetSuccess({hello: {message: "world"}});
+            expectSetGetSuccess([1, "3"]);
+        });
+
+        it("Should mutating the item got from get API not change the actual object for next get", async function () {
+            PhStore.setItem(testKey, {hello: "world"});
+            const item = PhStore.getItem(testKey);
+            item.hello = "new World";
+            const itemAgain = PhStore.getItem(testKey);
+            // each get should get a clone of the object, so mutations on previous get shouldn't affect the getItem call
+            expect(itemAgain.hello).toEqual("world");
+        });
+
+        it("Should return cached content if we are not watching for external changes", async function () {
+            const internal = "internal", external = "external";
+            PhStore.setItem(testKey, internal);
+            expect(PhStore.getItem(testKey)).toEql(internal); // this will cache value locally
+
+            testWindow.PhStore.watchExternalChanges(testKey); // watch in phcode window, should not affect cache in this window
+            testWindow.PhStore.setItem(testKey, external);
+            await awaits(1000);
+            expect(PhStore.getItem(testKey)).toEql(internal);
+            expect(testWindow.PhStore.getItem(testKey)).toEql(external);
+        });
+
+        it("Should get changed notification in this window, not watching external changes", async function () {
+            PhStore.setItem(testKey, 1);
+            let changeType;
+            PhStore.on(testKey, (_event, type)=>{
+                changeType = type;
+            });
+            const newValue = "hello";
+            PhStore.setItem(testKey, newValue);
+            expect(PhStore.getItem(testKey)).toEql(newValue);
+            expect(changeType).toEql("Internal"); // this event raising is synchronous
+        });
+
+        it("Should get changed notification in this window, if watching for external changes", async function () {
+            const currentWinVal = "currentwindow";
+            PhStore.setItem(testKey, currentWinVal);
+            expect(PhStore.getItem(testKey)).toEql(currentWinVal);
+
+            PhStore.watchExternalChanges(testKey);
+            testWindow.PhStore.watchExternalChanges(testKey);
+
+            let changeType, changedValue;
+            PhStore.on(testKey, (_event, type)=>{
+                changeType = type;
+                changedValue = PhStore.getItem(testKey); // the new key should be updated when you get the event
+            });
+
+            const newValue = "hello";
+            await awaits(3);// let 3ms time pass as the lowest resolution for time check in browser is 1 ms
+            testWindow.PhStore.setItem(testKey, newValue); // set in phoenix, it should eventually come to this window
+            expect(testWindow.PhStore.getItem(testKey)).toEql(newValue);
+            await awaitsFor(function () {
+                return changedValue === newValue;
+            });
+            expect(changeType).toEql("External");
+            expect(changedValue).toEql(newValue);
         });
 
     });

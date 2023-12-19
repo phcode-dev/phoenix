@@ -62,7 +62,7 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
-        it("Should open file in project", async function () { // #2813
+        it("Should open file in project", async function () {
             await awaitsForDone(
                 FileViewController.openAndSelectDocument(
                     testPath + "/simple.js",
@@ -74,7 +74,7 @@ define(function (require, exports, module) {
                 "closing all file");
         });
 
-        it("Should open file in project and add to working set", async function () { // #2813
+        it("Should open file in project and add to working set", async function () {
             await awaitsForDone(FileViewController.openFileAndAddToWorkingSet(testPath + "/edit.js"));
             const selected = MainViewManager.findInAllWorkingSets(testPath + "/edit.js");
             expect(selected.length >= 1 ).toBe(true);

@@ -57,23 +57,37 @@ function setupGlobalStorageBrowser() {
         CHANGE_TYPE_INTERNAL = "Internal";
     const MGS_CHANGE = 'change';
     const cache = {};
-    let pendingBroadcast = {},
+    let pendingBroadcastKV = {}, // map from watched keys that was set in this instance to
+        // modified time and value - key->{t,v}
         watchExternalKeys = {},
         externalWatchKeyList = [];
 
     const storageChannel = new BroadcastChannel(PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME);
-    function _broadcastPendingChanges() {
-        storageChannel.postMessage({type: MGS_CHANGE, keys: Object.keys(pendingBroadcast)});
-        pendingBroadcast = {};
-    }
-    setInterval(_broadcastPendingChanges, EXTERNAL_CHANGE_BROADCAST_INTERVAL);
+    setInterval(()=>{
+        // broadcast all changes made to watched keys in this instance to others
+        storageChannel.postMessage({type: MGS_CHANGE, keys: pendingBroadcastKV});
+        pendingBroadcastKV = {};
+
+    }, EXTERNAL_CHANGE_BROADCAST_INTERVAL);
     // Listen for messages on the channel
     storageChannel.onmessage = (event) => {
         const message = event.data;
         if(message.type === MGS_CHANGE){
-            for(let key of message.keys){
-                PhStore.trigger(key, CHANGE_TYPE_EXTERNAL);
-                delete cache[key]; // clear cache for changed data
+            const changedKV = message.keys;
+            for(let key of Object.keys(changedKV)){
+                // we only update the key and trigger if the key is being watched here.
+                // If unwatched keys are updated from another window, for eg, theme change pulled in from a new
+                // theme installed in another window cannot be applied in this window. So the code has to
+                // explicitly support external changes by calling watchExternalChanges API.
+                if(watchExternalKeys[key]) {
+                    const externalChange = changedKV[key]; // {t,v} in new value, t = changed time
+                    // if the change time of the external event we got is more recent than what we have,
+                    // only then accept the change. else we have more recent data.
+                    if(!cache[key] || (externalChange.t > cache[key].t)) {
+                        cache[key] = externalChange;
+                        PhStore.trigger(key, CHANGE_TYPE_EXTERNAL);
+                    }
+                }
             }
         }
     };
@@ -93,7 +107,7 @@ function setupGlobalStorageBrowser() {
     function getItem(key) {
         let cachedResult = cache[key];
         if(cachedResult){
-            return cachedResult;
+            return JSON.parse(cachedResult.v);
         }
         const jsonStr = localStorage.getItem(PH_LOCAL_STORE_PREFIX + key);
         if(jsonStr === null){
@@ -102,7 +116,7 @@ function setupGlobalStorageBrowser() {
         try {
             cachedResult = JSON.parse(jsonStr);
             cache[key] = cachedResult;
-            return cachedResult;
+            return JSON.parse(cachedResult.v); // clone. JSON.Parse is faster than structured object clone.
         } catch (e) {
             return null;
         }
@@ -116,10 +130,16 @@ function setupGlobalStorageBrowser() {
      *
      */
     function setItem(key, value) {
-        localStorage.setItem(PH_LOCAL_STORE_PREFIX + key, JSON.stringify(value));
-        cache[key] = value;
+        const valueToStore = {
+            t: Date.now(), // modified time
+            // we store value as string here as during get operation, we can use json.parse to clone instead of
+            // using slower structured object clone.
+            v: JSON.stringify(value)
+        };
+        localStorage.setItem(PH_LOCAL_STORE_PREFIX + key, JSON.stringify(valueToStore));
+        cache[key] = valueToStore;
         if(watchExternalKeys[key]){
-            pendingBroadcast[key] = true;
+            pendingBroadcastKV[key] = valueToStore;
         }
         PhStore.trigger(key, CHANGE_TYPE_INTERNAL);
     }
