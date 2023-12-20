@@ -18,7 +18,7 @@
  *
  */
 
-/*global Phoenix, fs*/
+/*global Phoenix, fs, logger*/
 
 function nodeLoader() {
     const phcodeExecHandlerMap = {};
@@ -584,7 +584,8 @@ function nodeLoader() {
             HEART_BEAT: "heartBeat",
             GET_ENDPOINTS: "getEndpoints"
         };
-        const COMMAND_RESPONSE_PREFIX = 'phnodeResp:';
+        const COMMAND_RESPONSE_PREFIX = 'phnodeResp_1!5$:'; // a string thats not likely to just start with in
+        const COMMAND_ERROR_PREFIX = 'phnodeErr_1!5$:';
         let command, child;
         let resolved = false;
         let commandID = 0, pendingCommands = {};
@@ -624,6 +625,11 @@ function nodeLoader() {
                             const jsonMsg = JSON.parse(line);
                             pendingCommands[jsonMsg.commandID].resolve(jsonMsg.message);
                             delete pendingCommands[jsonMsg.commandID];
+                        } else if(line.startsWith(COMMAND_ERROR_PREFIX)){
+                            // its a js response object
+                            line = line.replace(COMMAND_ERROR_PREFIX, "");
+                            const err = JSON.parse(line);
+                            logger.reportError(err, `PhNode ${err.type}:${err.code?err.code:''}`);
                         } else {
                             console.log(`PhNode: ${line}`);
                         }

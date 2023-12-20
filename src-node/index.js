@@ -58,6 +58,8 @@
 require("./NodeEventDispatcher");
 const readline = require('readline');
 const http = require('http');
+const os = require('os');
+const path = require('path');
 const net = require('net');
 const PhoenixFS = require('@phcode/fs/dist/phoenix-fs');
 const NodeConnector = require("./node-connector");
@@ -79,7 +81,8 @@ function randomNonce(byteLength) {
 }
 
 let debugMode = false;
-const COMMAND_RESPONSE_PREFIX = 'phnodeResp:';
+const COMMAND_RESPONSE_PREFIX = 'phnodeResp_1!5$:'; // a prefix thats not likely to just start with in stdio
+const COMMAND_ERROR_PREFIX = 'phnodeErr_1!5$:';
 // Generate a random 64-bit url. This should take 100 million+ of years to crack with current http connection speed.
 const PHOENIX_FS_URL = `/PhoenixFS${randomNonce(8)}`;
 const PHOENIX_NODE_URL = `/PhoenixNode${randomNonce(8)}`;
@@ -104,6 +107,44 @@ function _sendResponse(responseMessage, commandID) {
         commandID
     }) + "\n");
 }
+
+let nodeBinPath='', nodeSrcPath='';
+if(path.isAbsolute(process.argv[0])){
+    nodeBinPath = path.dirname(process.argv[0]);
+}
+if(path.isAbsolute(process.argv[1])){
+    nodeSrcPath = path.dirname(process.argv[1]);
+}
+const userHomeDir = os.homedir();
+
+function _stripSensitiveInfo(message) {
+    message = message || '';
+    message = nodeBinPath && message.replace(nodeBinPath, ''); // remove sensitive user path info from stack
+    message = nodeSrcPath && message.replace(nodeSrcPath, '');
+    message = userHomeDir && message.replace(userHomeDir, '');
+    return message;
+}
+
+function _sendError(err, type) {
+    err.stack = err.stack || "";
+    savedConsoleLog(COMMAND_ERROR_PREFIX + JSON.stringify({
+        message: _stripSensitiveInfo(err.message),
+        stack: _stripSensitiveInfo(err.stack),
+        code: err.code,
+        type: type
+    }) + "\n");
+}
+
+process.on('unhandledRejection', (reason, promise) => {
+    // we dont exit here.
+    console.error('Unhandled PhNode Promise Rejection:', reason);
+    _sendError(reason, "unhandledRejection");
+});
+process.on('uncaughtException', (error) => {
+    // we dont exit here.
+    console.error('Uncaught PhNode Exception:', error);
+    _sendError(error, "uncaughtException");
+});
 
 function resetOrphanExitTimer() {
     const timeout = debugMode ? 60000 * 15 : 60000;
