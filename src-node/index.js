@@ -195,11 +195,12 @@ rl.on('line', (line) => {
     processCommand(line);
 });
 
+const localhostOnly = 'localhost';
 function getFreePort() {
     return new Promise((resolve)=>{
         const server = net.createServer();
 
-        server.listen(0, () => {
+        server.listen(0, localhostOnly, () => {
             const port = server.address().port;
             server.close(() => {
                 resolve(port);
@@ -222,7 +223,7 @@ getFreePort().then((port) => {
     // PhoenixFS.setDebugMode(true); // uncomment this line to enable more logging in phoenix fs lib
 
     // Start the HTTP server on port 3000
-    server.listen(port, () => {
+    server.listen(port, localhostOnly, () => {
         serverPortResolve(port);
         savedConsoleLog(`Server running on http://localhost:${port}`);
         savedConsoleLog(`Phoenix node tauri FS url is ws://localhost:${port}${PHOENIX_FS_URL}`);
