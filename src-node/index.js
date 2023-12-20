@@ -81,7 +81,7 @@ function randomNonce(byteLength) {
 }
 
 let debugMode = false;
-const COMMAND_RESPONSE_PREFIX = 'phnodeResp_1!5$:'; // a prefix thats not likely to just start with in stdio
+const COMMAND_RESPONSE_PREFIX = 'phnodeResp_1!5$:'; // a string thats not likely to just start with in stdio
 const COMMAND_ERROR_PREFIX = 'phnodeErr_1!5$:';
 // Generate a random 64-bit url. This should take 100 million+ of years to crack with current http connection speed.
 const PHOENIX_FS_URL = `/PhoenixFS${randomNonce(8)}`;
@@ -119,8 +119,9 @@ const userHomeDir = os.homedir();
 
 function _stripSensitiveInfo(message) {
     message = message || '';
-    message = nodeBinPath && message.replace(nodeBinPath, ''); // remove sensitive user path info from stack
-    message = nodeSrcPath && message.replace(nodeSrcPath, '');
+    // remove sensitive user path info from stack
+    message = nodeSrcPath && message.replace(nodeSrcPath, '');// this should be first in order due to a windows path quirk
+    message = nodeBinPath && message.replace(nodeBinPath, '');
     message = userHomeDir && message.replace(userHomeDir, '');
     return message;
 }
