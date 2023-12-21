@@ -56,6 +56,7 @@
  */
 
 require("./NodeEventDispatcher");
+const lmdb = require("./lmdb");
 const readline = require('readline');
 const http = require('http');
 const os = require('os');
@@ -160,7 +161,13 @@ function processCommand(line) {
     try{
         let jsonCmd = JSON.parse(line);
         switch (jsonCmd.commandCode) {
-        case "terminate": process.exit(0); return;
+        case "terminate":
+            lmdb.dumpDBToFileAndCloseDB()
+                .catch(console.error)
+                .finally(()=>{
+                    process.exit(0);
+                });
+            return;
         case "heartBeat":
             resetOrphanExitTimer();
             return;

@@ -170,11 +170,22 @@ function setupGlobalStorageBrowser() {
     }
 
 
+    const storageReadyPromise = new Promise((resolve) => {
+        if(!Phoenix.browser.isTauri){
+            // in browsers its immediately ready as we use localstorage
+            resolve();
+            return;
+        }
+        // todo: in tauri, we have to read it from app local data dump.
+        resolve();
+    });
+
     const PhStore = {
         getItem,
         setItem,
         watchExternalChanges,
-        unwatchExternalChanges
+        unwatchExternalChanges,
+        storageReadyPromise
     };
     EventDispatcher.makeEventDispatcher(PhStore);
     window.PhStore = PhStore;

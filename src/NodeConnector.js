@@ -190,12 +190,13 @@ define(function (require, exports, module) {
     /**
      * Terminate the PhNodeEngine node if it is available. Else does nothing.
      *
-     * @return {void}
+     * @return {Promise} promise that resolves when node process is terminated and exits.
      */
     function terminateNode() {
         if(isNodeAvailable()){
-            window.PhNodeEngine.terminateNode();
+            return window.PhNodeEngine.terminateNode();
         }
+        return Promise.resolve("Node not available to terminate");
     }
 
     /**

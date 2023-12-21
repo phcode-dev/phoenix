@@ -21,6 +21,7 @@
 /*global Phoenix, fs, logger*/
 
 function nodeLoader() {
+    const nodeLoadstartTime = Date.now();
     const phcodeExecHandlerMap = {};
     const nodeConnectorIDMap = {};
     // This holds the list {resolve, reject} for all waiting exec functions executed with execPeer here.
@@ -604,6 +605,9 @@ function nodeLoader() {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
+        let nodeTerminationResolve;
+        const nodeTerminationPromise = new Promise((resolve) => { nodeTerminationResolve = resolve;});
+
         window.__TAURI__.path.resolveResource("src-node/index.js")
             .then(async nodeSrcPath=>{
                 const inspectPort = Phoenix.isTestWindow ? getRandomNumber(5000, 50000) : 9229;
@@ -611,12 +615,20 @@ function nodeLoader() {
                 command = window.__TAURI__.shell.Command.sidecar('phnode', argsArray);
                 command.on('close', data => {
                     window.isNodeTerminated = true;
+                    nodeTerminationResolve();
                     console.log(`PhNode: command finished with code ${data.code} and signal ${data.signal}`);
                     if(!resolved) {
                         reject("PhNode: closed - Terminated.");
                     }
                 });
-                command.on('error', error => console.error(`PhNode: command error: "${error}"`));
+                command.on('error', error => {
+                    window.isNodeTerminated = true;
+                    nodeTerminationResolve();
+                    console.error(`PhNode: command error: "${error}"`);
+                    if(!resolved) {
+                        reject("PhNode: closed - Terminated.");
+                    }
+                });
                 command.stdout.on('data', line => {
                     if(line){
                         if(line.startsWith(COMMAND_RESPONSE_PREFIX)){
@@ -660,6 +672,7 @@ function nodeLoader() {
                         if(!window.isNodeTerminated) {
                             execNode(NODE_COMMANDS.TERMINATE);
                         }
+                        return nodeTerminationPromise;
                     },
                     getInspectPort: function () {
                         return inspectPort;
@@ -672,6 +685,7 @@ function nodeLoader() {
                         fs.forceUseNodeWSEndpoint(true);
                         setNodeWSEndpoint(message.phoenixNodeURL);
                         resolve(message);
+                        window.PhNodeEngine._nodeLoadTime = Date.now() - nodeLoadstartTime;
                     });
                 execNode(NODE_COMMANDS.SET_DEBUG_MODE, window.debugMode);
                 setInterval(()=>{
