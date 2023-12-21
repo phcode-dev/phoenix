@@ -542,6 +542,7 @@ define(function (require, exports, module) {
     async function setupAndRunTests() {
         globalTestRunnerLogToConsole("Starting tests...");
         await window._tauriBootVarsPromise;
+        await window.PhStore.storageReadyPromise;
         let shouldExtract = localStorage.getItem(EXTRACT_TEST_ASSETS_KEY);
         if(shouldExtract === EXTRACT || shouldExtract === null) {
             _showLoading(true);

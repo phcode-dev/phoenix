@@ -312,6 +312,9 @@
         const shouldRefreshLess = window.localStorage.getItem(LESS_REFRESH_SCHEDULED_KEY) === 'yes';
         const CACHE_NAME_EVERYTHING = "everything";
         function _resetCacheIfNeeded() {
+            if(Phoenix.browser.isTauri) {
+                // no web cache in desktop builds
+            }
             const cacheKey = "browserCacheVersionKey";
             const newCacheVersion = "V16"; // just increment this number to V2, v3 etc. to force clear the cached content.
             const lastClearedVersion = window.localStorage.getItem(cacheKey);
@@ -396,7 +399,6 @@
     <script src="appConfig.js"></script>
     <script src="loggerSetup.js"></script>
     <script src="utils/EventDispatcher.js"></script>
-    <script src="storage.js"></script>
 
     <script>
         window.splashScreenPresent = true;
@@ -461,7 +463,9 @@
     <script src="phoenix/virtualfs.js" defer></script>
     <script src="phoenix/shell.js" type="module" defer></script>
     <script src="phoenix/virtual-server-loader.js" type="module" defer></script>
+<!--    node loader should come only after fs libs are loaded as we init fs libs with node fs urls-->
     <script src="node-loader.js" defer></script>
+    <script src="storage.js" defer></script>
     <!-- end javascript module scripts-->
 
     <!-- CSS/LESS -->
