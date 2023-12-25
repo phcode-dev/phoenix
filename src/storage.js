@@ -68,7 +68,6 @@
     const PH_LOCAL_STORE_PREFIX = "Ph_";
     const PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME = "ph-storage";
     const EXTERNAL_CHANGE_BROADCAST_INTERVAL = 500;
-    const EXTERNAL_CACHE_CLEAR_INTERVAL = 2000;
     // Since this is a sync API, performance is critical. So we use a memory map in cache. This limits the size
     // of what can be stored in this storage as if fully in memory.
     const CHANGE_TYPE_EXTERNAL = "External",
@@ -77,8 +76,7 @@
     let cache = {};
     let pendingBroadcastKV = {}, // map from watched keys that was set in this instance to
         // modified time and value - key->{t,v}
-        watchExternalKeys = {},
-        externalWatchKeyList = [];
+        watchExternalKeys = {};
 
     const storageChannel = new BroadcastChannel(PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME);
     setInterval(()=>{
@@ -110,12 +108,6 @@
         }
     };
 
-    setInterval(()=>{
-        for(let key of externalWatchKeyList){
-            delete cache[key];
-        }
-    }, EXTERNAL_CACHE_CLEAR_INTERVAL);
-
     /**
      * Retrieves the value associated with the specified key from the browser's local storage.
      *
@@ -126,6 +118,9 @@
         let cachedResult = cache[key];
         if(cachedResult){
             return JSON.parse(cachedResult.v);
+        }
+        if(Phoenix.isTestWindow){
+            return null;
         }
         const jsonStr = localStorage.getItem(PH_LOCAL_STORE_PREFIX + key);
         if(jsonStr === null){
@@ -154,7 +149,9 @@
             // using slower structured object clone.
             v: JSON.stringify(value)
         };
-        localStorage.setItem(PH_LOCAL_STORE_PREFIX + key, JSON.stringify(valueToStore));
+        if(!Phoenix.isTestWindow) {
+            localStorage.setItem(PH_LOCAL_STORE_PREFIX + key, JSON.stringify(valueToStore));
+        }
         cache[key] = valueToStore;
         if(watchExternalKeys[key]){
             pendingBroadcastKV[key] = valueToStore;
@@ -163,17 +160,17 @@
     }
 
     /**
-     * Enables monitoring of external changes to the specified key when there are multiple Phoenix windows/instances.
-     * By default, PhStore.on(<key name>, fn) only triggers for key value changes within the current instance.
-     * Calling this function will activate change events when changes occur in other instances as well.
-     * Note that there may be eventual consistent delays of up to 1 second.
+     * Enables best effort monitoring of external changes to the specified key when there are multiple Phoenix
+     * windows/instances. By default, PhStore.on(<key name>, fn) only triggers for key value changes within
+     * the current instance. Calling this function will activate change events when changes occur in other
+     * instances as well. Note that this is a best effort service, there may be eventual consistent delays of
+     * up to 1 second or the event may not be received at all.
      *
      * @param {string} key - The key to observe changes for.
      */
 
     function watchExternalChanges(key) {
         watchExternalKeys[key] = true;
-        externalWatchKeyList = Object.keys(watchExternalKeys);
     }
 
     /**
@@ -184,13 +181,13 @@
      */
     function unwatchExternalChanges(key) {
         delete watchExternalKeys[key];
-        externalWatchKeyList = Object.keys(watchExternalKeys);
     }
 
 
     const storageReadyPromise = new Promise((resolve) => {
-        if(!Phoenix.browser.isTauri){
+        if(!Phoenix.browser.isTauri || Phoenix.isTestWindow){
             // in browsers its immediately ready as we use localstorage
+            // in tests, immediately resolve with empty storage.
             resolve();
             return;
         }

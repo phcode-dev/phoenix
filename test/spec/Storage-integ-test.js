@@ -19,7 +19,7 @@
  *
  */
 
-/*global PhStore, describe, it, expect, beforeAll, afterAll, awaits, awaitsFor, afterEach */
+/*global PhStore, describe, it, expect, beforeAll, afterAll, awaits, awaitsFor, beforeEach */
 
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
@@ -43,9 +43,11 @@ define(function (require, exports, module) {
 
         afterAll(async function () {
             await SpecRunnerUtils.closeTestWindow();
+            PhStore.unwatchExternalChanges(testKey);
+            PhStore.off(testKey);
         }, 30000);
 
-        afterEach(async function () {
+        beforeEach(async function () {
             PhStore.unwatchExternalChanges(testKey);
             PhStore.off(testKey);
             testWindow.PhStore.unwatchExternalChanges(testKey);
