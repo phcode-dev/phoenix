@@ -45,7 +45,25 @@
 
 /*global EventDispatcher*/
 
-function setupGlobalStorageBrowser() {
+(function setupGlobalStorage() {
+    if(window.PhStore){
+        console.error(`window.PhStore already setup. Ignoring.`);
+        return;
+    }
+    let storageNodeConnector;
+    let nodeStoragePhoenixApis = {};
+    if(Phoenix.browser.isTauri){
+        if(window.nodeSetupDonePromise){
+            window.nodeSetupDonePromise.then(nodeConfig =>{
+                const STORAGE_NODE_CONNECTOR_ID = "ph_storage";
+                storageNodeConnector = window.PhNodeEngine.createNodeConnector(
+                    STORAGE_NODE_CONNECTOR_ID, nodeStoragePhoenixApis);
+                storageNodeConnector.execPeer("openDB", window._tauriBootVars.appLocalDir);
+            });
+        } else {
+            alert("Critical Error! Node Storage could not be started.");
+        }
+    }
 
     const PH_LOCAL_STORE_PREFIX = "Ph_";
     const PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME = "ph-storage";
@@ -56,7 +74,7 @@ function setupGlobalStorageBrowser() {
     const CHANGE_TYPE_EXTERNAL = "External",
         CHANGE_TYPE_INTERNAL = "Internal";
     const MGS_CHANGE = 'change';
-    const cache = {};
+    let cache = {};
     let pendingBroadcastKV = {}, // map from watched keys that was set in this instance to
         // modified time and value - key->{t,v}
         watchExternalKeys = {},
@@ -176,8 +194,18 @@ function setupGlobalStorageBrowser() {
             resolve();
             return;
         }
-        // todo: in tauri, we have to read it from app local data dump.
-        resolve();
+        // In tauri, we have to read it from app local data dump(which is usually written at app close time. This
+        // will help the storage to quick start from a json dump instead of waiting for node to boot up and init lmdb)
+        window._tauriStorageRestorePromise
+            .then((jsonData)=>{
+                cache = JSON.parse(jsonData);
+            })
+            .catch(err =>{
+                window.Phoenix.firstBoot = true;
+                console.error("First boot detected or Failed to init storage from cache." +
+                    " If first boot, ignore this error", err);
+            })
+            .finally(resolve);
     });
 
     const PhStore = {
@@ -189,15 +217,4 @@ function setupGlobalStorageBrowser() {
     };
     EventDispatcher.makeEventDispatcher(PhStore);
     window.PhStore = PhStore;
-}
-
-function setupGlobalStorageTauri(){
-    // todo passing in browser storage for now. we should change this for tauri.
-    setupGlobalStorageBrowser();
-}
-
-if(Phoenix.browser.isTauri){
-    setupGlobalStorageTauri();
-} else {
-    setupGlobalStorageBrowser();
-}
+}());

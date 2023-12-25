@@ -103,6 +103,9 @@
 
     if(window.__TAURI__) {
       function setupTauriBootVars() {
+        // this is used by storage.js (window.PhStore) to restore our persistent storage layer in tauri.
+        window._tauriStorageRestorePromise = window.__TAURI__.fs.readTextFile(
+                "storageDB/storageDBDump.json", { dir: window.__TAURI__.fs.BaseDirectory.AppLocalData });
         const appNamePromise = window.__TAURI__.app.getName();
         // for running tests, the user document dir is set to app data dir as we dont want to
         // corrupt user documents dir for tests

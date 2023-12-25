@@ -115,6 +115,9 @@
         }
         if(window.__TAURI__) {
             function setupTauriBootVars() {
+                // this is used by storage.js (window.PhStore) to restore our persistent storage layer in tauri.
+                window._tauriStorageRestorePromise = window.__TAURI__.fs.readTextFile(
+                    "storageDB/storageDBDump.json", { dir: window.__TAURI__.fs.BaseDirectory.AppLocalData });
                 // increase this version number if you are modifying any boot vars
                 const TAURI_BOOT_VARS_LOCALSTORAGE_KEY = "tauriBootVarsV1";
                 const tauriBootVarsStr = localStorage.getItem(TAURI_BOOT_VARS_LOCALSTORAGE_KEY);
@@ -314,13 +317,13 @@
         function _resetCacheIfNeeded() {
             if(Phoenix.browser.isTauri) {
                 // no web cache in desktop builds
+                return;
             }
             const cacheKey = "browserCacheVersionKey";
             const newCacheVersion = "V16"; // just increment this number to V2, v3 etc. to force clear the cached content.
             const lastClearedVersion = window.localStorage.getItem(cacheKey);
             if(lastClearedVersion === null){
-                // setup First load flag, no cache, return.
-                window.Phoenix.firstBoot = true;
+                // First load, no cache, return.
                 localStorage.setItem(cacheKey, newCacheVersion);
                 return;
             }
