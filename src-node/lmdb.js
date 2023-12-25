@@ -19,14 +19,7 @@ async function openDB(lmdbDir) {
     dumpFileLocation = path.join(lmdbDir, "storageDBDump.json");
 }
 
-/**
- * Takes the current state of the storage database, writes it to a file in JSON format,
- * and then closes the database. This is multi-process safe, ie, if multiple processes tries to write the
- * dump file at the same time, only one process will be allowed at a time while the others wait in a critical session.
- *
- * @returns {Promise<string>} - A promise that resolves to the path of the dumped file.
- */
-async function dumpDBToFileAndCloseDB() {
+async function dumpDBToFile() {
     if(!storageDB){
         throw new Error("LMDB Storage operation called before openDB call");
     }
@@ -40,6 +33,18 @@ async function dumpDBToFileAndCloseDB() {
         // if there are multiple instances trying to dump the file. Multi process safe.
         fs.writeFileSync(dumpFileLocation, JSON.stringify(storageMap));
     });
+    return dumpFileLocation;
+}
+
+/**
+ * Takes the current state of the storage database, writes it to a file in JSON format,
+ * and then closes the database. This is multi-process safe, ie, if multiple processes tries to write the
+ * dump file at the same time, only one process will be allowed at a time while the others wait in a critical session.
+ *
+ * @returns {Promise<string>} - A promise that resolves to the path of the dumped file.
+ */
+async function dumpDBToFileAndCloseDB() {
+    await dumpDBToFile();
     await storageDB.close();
     return dumpFileLocation;
 }
@@ -72,6 +77,7 @@ async function getItem(key) {
 }
 
 exports.openDB = openDB;
+exports.dumpDBToFile = dumpDBToFile;
 exports.dumpDBToFileAndCloseDB = dumpDBToFileAndCloseDB;
 exports.putItem = putItem;
 exports.getItem = getItem;
