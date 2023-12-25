@@ -181,7 +181,7 @@ define(function (require, exports, module) {
             });
 
             const newValue = "hello";
-            await awaits(3);// let 3ms time pass as the lowest resolution for time check in browser is 1 ms
+            await awaits(500);// let time pass as the lowest resolution for time check in browser is 1 ms
             testWindow.PhStore.setItem(testKey, newValue); // set in phoenix, it should eventually come to this window
             expect(testWindow.PhStore.getItem(testKey)).toEql(newValue);
             await awaitsFor(function () {
