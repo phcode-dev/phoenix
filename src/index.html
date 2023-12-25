@@ -117,7 +117,12 @@
             function setupTauriBootVars() {
                 // this is used by storage.js (window.PhStore) to restore our persistent storage layer in tauri.
                 window._tauriStorageRestorePromise = window.__TAURI__.fs.readTextFile(
-                    "storageDB/storageDBDump.json", { dir: window.__TAURI__.fs.BaseDirectory.AppLocalData });
+                    "storageDB/storageDBDump.json", { dir: window.__TAURI__.fs.BaseDirectory.AppLocalData })
+                    .catch(err =>{
+                        window.Phoenix.firstBoot = true;
+                        console.error("First boot detected or Failed to init storage from cache." +
+                            " If first boot, ignore this error", err);
+                    });
                 // increase this version number if you are modifying any boot vars
                 const TAURI_BOOT_VARS_LOCALSTORAGE_KEY = "tauriBootVarsV1";
                 const tauriBootVarsStr = localStorage.getItem(TAURI_BOOT_VARS_LOCALSTORAGE_KEY);

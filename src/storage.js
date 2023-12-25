@@ -184,6 +184,7 @@
      */
 
     function watchExternalChanges(key) {
+        // todo watch in tauri and can we waitch without broadcast channel in desktop and tauri?
         watchExternalKeys[key] = true;
     }
 
@@ -210,11 +211,6 @@
         window._tauriStorageRestorePromise
             .then((jsonData)=>{
                 cache = JSON.parse(jsonData);
-            })
-            .catch(err =>{
-                window.Phoenix.firstBoot = true;
-                console.error("First boot detected or Failed to init storage from cache." +
-                    " If first boot, ignore this error", err);
             })
             .finally(resolve);
     });
