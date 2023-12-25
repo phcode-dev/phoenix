@@ -59,6 +59,9 @@
                 storageNodeConnector = window.PhNodeEngine.createNodeConnector(
                     STORAGE_NODE_CONNECTOR_ID, nodeStoragePhoenixApis);
                 storageNodeConnector.execPeer("openDB", window._tauriBootVars.appLocalDir);
+                if(Phoenix.isTestWindow) {
+                    window.storageNodeConnector = storageNodeConnector;
+                }
             });
         } else {
             alert("Critical Error! Node Storage could not be started.");

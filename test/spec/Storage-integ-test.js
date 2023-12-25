@@ -75,6 +75,43 @@ define(function (require, exports, module) {
             expectSetGetSuccess([1, "3"]);
         });
 
+        it("Should be able to get and set with lmdb node connector in tauri", async function () {
+            if(!Phoenix.browser.isTauri){
+                return;
+            }
+            const key = "test_suite_storage_key";
+            const expectedValue = {
+                v: crypto.randomUUID(),
+                n: 123
+            };
+            await window.storageNodeConnector.execPeer("putItem", {
+                key,
+                value: expectedValue
+            });
+            const val = await window.storageNodeConnector.execPeer("getItem", key);
+            expect(val).toEql(expectedValue);
+        });
+
+        it("Should be able to create lmdb dumps in tauri", async function () {
+            if(!Phoenix.browser.isTauri){
+                return;
+            }
+            const key = "test_suite_storage_key_dump_test";
+            const expectedValue = {
+                v: crypto.randomUUID(),
+                n: 123
+            };
+            await window.storageNodeConnector.execPeer("putItem", {
+                key,
+                value: expectedValue
+            });
+
+            const dumpFileLocation = await window.storageNodeConnector.execPeer("dumpDBToFile");
+            const dumpFileText = await window.__TAURI__.fs.readTextFile(dumpFileLocation);
+            const dumpObj = JSON.parse(dumpFileText);
+            expect(dumpObj[key]).toEql(expectedValue);
+        });
+
         it("Should mutating the item got from get API not change the actual object for next get", async function () {
             PhStore.setItem(testKey, {hello: "world"});
             const item = PhStore.getItem(testKey);
