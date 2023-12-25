@@ -6,16 +6,18 @@ const NodeConnector = require("./node-connector");
 const STORAGE_NODE_CONNECTOR = "ph_storage";
 NodeConnector.createNodeConnector(STORAGE_NODE_CONNECTOR, exports);
 
-const LMDB_DIR = path.join(__dirname, "storageDB");
-const LMDB_DUMP_FILE = path.join(__dirname, "storageDBDump.json");
-
-console.log("storageDB location is :", LMDB_DIR);
-
-// see LMDB api docs in https://www.npmjs.com/package/lmdb?activeTab=readme
-const storageDB = lmdb.open({
-    path: LMDB_DIR,
-    compression: false
-});
+let storageDB,
+    dumpFileLocation;
+async function openDB(lmdbDir) {
+    // see LMDB api docs in https://www.npmjs.com/package/lmdb?activeTab=readme
+    lmdbDir = path.join(lmdbDir, "storageDB");
+    storageDB = lmdb.open({
+        path: lmdbDir,
+        compression: false
+    });
+    console.log("storageDB location is :", lmdbDir);
+    dumpFileLocation = path.join(lmdbDir, "storageDBDump.json");
+}
 
 /**
  * Takes the current state of the storage database, writes it to a file in JSON format,
@@ -25,6 +27,9 @@ const storageDB = lmdb.open({
  * @returns {Promise<string>} - A promise that resolves to the path of the dumped file.
  */
 async function dumpDBToFileAndCloseDB() {
+    if(!storageDB){
+        throw new Error("LMDB Storage operation called before openDB call");
+    }
     await storageDB.flushed; // wait for disk write complete
     await storageDB.transaction(() => {
         const storageMap = {};
@@ -33,10 +38,10 @@ async function dumpDBToFileAndCloseDB() {
         }
         // this is a critical session, so its guarenteed that only one file write operation will be done
         // if there are multiple instances trying to dump the file. Multi process safe.
-        fs.writeFileSync(LMDB_DUMP_FILE, JSON.stringify(storageMap));
+        fs.writeFileSync(dumpFileLocation, JSON.stringify(storageMap));
     });
     await storageDB.close();
-    return LMDB_DUMP_FILE;
+    return dumpFileLocation;
 }
 
 /**
@@ -47,6 +52,9 @@ async function dumpDBToFileAndCloseDB() {
  * @returns {Promise} - A promise that resolves when the put is persisted to disc.
  */
 function putItem(key, value) {
+    if(!storageDB){
+        throw new Error("LMDB Storage operation called before openDB call");
+    }
     return storageDB.put(key, value);
 }
 
@@ -57,9 +65,13 @@ function putItem(key, value) {
  * @returns {Promise<*>} A promise that resolves with the retrieved item.
  */
 async function getItem(key) {
+    if(!storageDB){
+        throw new Error("LMDB Storage operation called before openDB call");
+    }
     return storageDB.get(key);
 }
 
+exports.openDB = openDB;
 exports.dumpDBToFileAndCloseDB = dumpDBToFileAndCloseDB;
 exports.putItem = putItem;
 exports.getItem = getItem;
