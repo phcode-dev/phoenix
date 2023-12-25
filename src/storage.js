@@ -119,7 +119,12 @@
         if(cachedResult){
             return JSON.parse(cachedResult.v);
         }
-        if(Phoenix.isTestWindow){
+        if(Phoenix.isTestWindow || Phoenix.browser.isTauri){
+            // in tauri, once we load the db dump from file, we dont ever touch the storage apis again for
+            // get operations. This is because in tauri, the get operation is async via node. in future,
+            // we can write a async refresh key api to update values that has been cached if the need arises.
+            // but rn, there is no need for the same as every phoenix instance will use its own cached storage
+            // that guarantees read after write constancy within an instance, and for external changes, use watch.
             return null;
         }
         const jsonStr = localStorage.getItem(PH_LOCAL_STORE_PREFIX + key);
@@ -150,7 +155,13 @@
             v: JSON.stringify(value)
         };
         if(!Phoenix.isTestWindow) {
-            localStorage.setItem(PH_LOCAL_STORE_PREFIX + key, JSON.stringify(valueToStore));
+            if(Phoenix.browser.isTauri) {
+                storageNodeConnector.execPeer("putItem", {key, value});
+            }
+            if(window.debugMode || !Phoenix.browser.isTauri) {
+                // in debug mode, we write to local storage in tauri too to help eazy debug of storage values.
+                localStorage.setItem(PH_LOCAL_STORE_PREFIX + key, JSON.stringify(valueToStore));
+            }
         }
         cache[key] = valueToStore;
         if(watchExternalKeys[key]){

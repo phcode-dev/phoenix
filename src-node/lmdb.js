@@ -51,7 +51,7 @@ async function dumpDBToFileAndCloseDB() {
  * @param {*} value - The value of the item.
  * @returns {Promise} - A promise that resolves when the put is persisted to disc.
  */
-function putItem(key, value) {
+function putItem({key, value}) {
     if(!storageDB){
         throw new Error("LMDB Storage operation called before openDB call");
     }
