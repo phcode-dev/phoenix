@@ -92,6 +92,25 @@ define(function (require, exports, module) {
             expect(val).toEql(expectedValue);
         });
 
+        it("Should be able to get and set with lmdb node connector in two node processes in tauri", async function () {
+            if(!Phoenix.browser.isTauri){
+                return;
+            }
+            const key = "test_suite_storage_key";
+            const expectedValue = {
+                v: crypto.randomUUID(),
+                n: 123
+            };
+            // now write using the spec runners node process
+            await window.storageNodeConnector.execPeer("putItem", {
+                key,
+                value: expectedValue
+            });
+            // now read using the iframe test phcode windows node process, lmdb should multi process sync.
+            const val = await testWindow.storageNodeConnector.execPeer("getItem", key);
+            expect(val).toEql(expectedValue);
+        });
+
         it("Should be able to create lmdb dumps in tauri", async function () {
             if(!Phoenix.browser.isTauri){
                 return;
