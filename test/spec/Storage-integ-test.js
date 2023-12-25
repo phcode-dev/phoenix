@@ -39,6 +39,8 @@ define(function (require, exports, module) {
             // test window instance for fast runs.
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            PhStore._setTestKey(testKey);
+            testWindow.PhStore._setTestKey(testKey);
         }, 30000);
 
         afterAll(async function () {
