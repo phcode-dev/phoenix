@@ -215,9 +215,24 @@
             .finally(resolve);
     });
 
+    /**
+     * Waits till all pending changes are written to disk. This will not trigger a flush operation, but just waits
+     * on db to flush all operations to disk that has happened till this call.
+     * @returns {Promise<void>|Promise|*}
+     */
+    function flushDB() {
+        if(Phoenix.browser.isTauri) {
+            // since node connector web socket messages are queued, sending this message will only execute after all
+            // outstanding messages are sent to node with web socket.
+            return storageNodeConnector.execPeer("flushDB");
+        }
+        return Promise.resolve();
+    }
+
     const PhStore = {
         getItem,
         setItem,
+        flushDB,
         watchExternalChanges,
         unwatchExternalChanges,
         storageReadyPromise

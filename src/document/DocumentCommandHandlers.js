@@ -1791,9 +1791,12 @@ define(function (require, exports, module) {
 
             // Defer for a more successful reload - issue #11539
             window.setTimeout(function () {
-                NodeConnector.terminateNode()
+                window.PhStore.flushDB()
                     .finally(()=>{
-                        window.location.href = href;
+                        NodeConnector.terminateNode()
+                            .finally(()=>{
+                                window.location.href = href;
+                            });
                     });
             }, 1000);
         }).fail(function () {
@@ -1904,9 +1907,12 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
-                NodeConnector.terminateNode()
+                window.PhStore.flushDB()
                     .finally(()=>{
-                        Phoenix.app.closeWindow();
+                        NodeConnector.terminateNode()
+                            .finally(()=>{
+                                Phoenix.app.closeWindow();
+                            });
                     });
             }, closeFail=>{
                 console.log('close fail: ', closeFail);
