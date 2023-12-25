@@ -51,14 +51,66 @@
         return;
     }
     let storageNodeConnector;
+    let _testKey;
     let nodeStoragePhoenixApis = {};
-    if(Phoenix.browser.isTauri){
+    const isBrowser = !Phoenix.browser.isTauri;
+    const isDesktop = Phoenix.browser.isTauri;
+
+    const PH_LOCAL_STORE_PREFIX = "Ph_";
+    const PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME = "ph-storage";
+    const EXTERNAL_CHANGE_BROADCAST_INTERVAL = 500;
+    const EXTERNAL_CHANGE_POLL_INTERVAL = 800;
+    // Since this is a sync API, performance is critical. So we use a memory map in cache. This limits the size
+    // of what can be stored in this storage as if fully in memory.
+    const CHANGE_TYPE_EXTERNAL = "External",
+        CHANGE_TYPE_INTERNAL = "Internal";
+    const MGS_CHANGE = 'change';
+    let cache = {};
+    // map from watched keys that was set in this instance to
+    // modified time and value - key->{t,v}
+    let pendingBroadcastKV = {},
+        watchExternalKeys = {}; // boolean map
+
+    function commitExternalChanges(changedKV) {
+        for(let key of Object.keys(changedKV)){
+            // we only update the key and trigger if the key is being watched here.
+            // If unwatched keys are updated from another window, for eg, theme change pulled in from a new
+            // theme installed in another window cannot be applied in this window. So the code has to
+            // explicitly support external changes by calling watchExternalChanges API.
+            if(watchExternalKeys[key]) {
+                const externalChange = changedKV[key]; // {t,v} in new value, t = changed time
+                // if the change time of the external event we got is more recent than what we have,
+                // only then accept the change. else we have more recent data.
+                if(!cache[key] || (externalChange.t > cache[key].t)) {
+                    cache[key] = externalChange;
+                    PhStore.trigger(key, CHANGE_TYPE_EXTERNAL);
+                }
+            }
+        }
+    }
+
+    function updateExternalChangesFromLMDB() {
+        const watchedKeys = Object.keys(watchExternalKeys);
+        if(!watchedKeys.length) {
+            return;
+        }
+        const query = [];
+        for(let key of watchedKeys){
+            query.push({key, t: (cache[key] && cache[key].t) || 0});
+        }
+        storageNodeConnector.execPeer("getChanges", query)
+            .then(commitExternalChanges)
+            .catch(console.error);
+    }
+
+    if(isDesktop){
         if(window.nodeSetupDonePromise){
             window.nodeSetupDonePromise.then(nodeConfig =>{
                 const STORAGE_NODE_CONNECTOR_ID = "ph_storage";
                 storageNodeConnector = window.PhNodeEngine.createNodeConnector(
                     STORAGE_NODE_CONNECTOR_ID, nodeStoragePhoenixApis);
                 storageNodeConnector.execPeer("openDB", window._tauriBootVars.appLocalDir);
+                setInterval(updateExternalChangesFromLMDB, EXTERNAL_CHANGE_POLL_INTERVAL);
                 if(Phoenix.isTestWindow) {
                     window.storageNodeConnector = storageNodeConnector;
                 }
@@ -68,48 +120,22 @@
         }
     }
 
-    const PH_LOCAL_STORE_PREFIX = "Ph_";
-    const PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME = "ph-storage";
-    const EXTERNAL_CHANGE_BROADCAST_INTERVAL = 500;
-    // Since this is a sync API, performance is critical. So we use a memory map in cache. This limits the size
-    // of what can be stored in this storage as if fully in memory.
-    const CHANGE_TYPE_EXTERNAL = "External",
-        CHANGE_TYPE_INTERNAL = "Internal";
-    const MGS_CHANGE = 'change';
-    let cache = {};
-    let pendingBroadcastKV = {}, // map from watched keys that was set in this instance to
-        // modified time and value - key->{t,v}
-        watchExternalKeys = {};
+    if(isBrowser) {
+        const storageChannel = new BroadcastChannel(PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME);
+        setInterval(()=>{
+            // broadcast all changes made to watched keys in this instance to others
+            storageChannel.postMessage({type: MGS_CHANGE, keys: pendingBroadcastKV});
+            pendingBroadcastKV = {};
 
-    const storageChannel = new BroadcastChannel(PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME);
-    setInterval(()=>{
-        // broadcast all changes made to watched keys in this instance to others
-        storageChannel.postMessage({type: MGS_CHANGE, keys: pendingBroadcastKV});
-        pendingBroadcastKV = {};
-
-    }, EXTERNAL_CHANGE_BROADCAST_INTERVAL);
-    // Listen for messages on the channel
-    storageChannel.onmessage = (event) => {
-        const message = event.data;
-        if(message.type === MGS_CHANGE){
-            const changedKV = message.keys;
-            for(let key of Object.keys(changedKV)){
-                // we only update the key and trigger if the key is being watched here.
-                // If unwatched keys are updated from another window, for eg, theme change pulled in from a new
-                // theme installed in another window cannot be applied in this window. So the code has to
-                // explicitly support external changes by calling watchExternalChanges API.
-                if(watchExternalKeys[key]) {
-                    const externalChange = changedKV[key]; // {t,v} in new value, t = changed time
-                    // if the change time of the external event we got is more recent than what we have,
-                    // only then accept the change. else we have more recent data.
-                    if(!cache[key] || (externalChange.t > cache[key].t)) {
-                        cache[key] = externalChange;
-                        PhStore.trigger(key, CHANGE_TYPE_EXTERNAL);
-                    }
-                }
+        }, EXTERNAL_CHANGE_BROADCAST_INTERVAL);
+        // Listen for messages on the channel
+        storageChannel.onmessage = (event) => {
+            const message = event.data;
+            if(message.type === MGS_CHANGE){
+                commitExternalChanges(message.keys);
             }
-        }
-    };
+        };
+    }
 
     /**
      * Retrieves the value associated with the specified key from the browser's local storage.
@@ -122,7 +148,7 @@
         if(cachedResult){
             return JSON.parse(cachedResult.v);
         }
-        if(Phoenix.isTestWindow || Phoenix.browser.isTauri){
+        if(Phoenix.isTestWindow || isDesktop){
             // in tauri, once we load the db dump from file, we dont ever touch the storage apis again for
             // get operations. This is because in tauri, the get operation is async via node. in future,
             // we can write a async refresh key api to update values that has been cached if the need arises.
@@ -157,17 +183,19 @@
             // using slower structured object clone.
             v: JSON.stringify(value)
         };
-        if(!Phoenix.isTestWindow) {
-            if(Phoenix.browser.isTauri) {
-                storageNodeConnector.execPeer("putItem", {key, value});
+        if(!Phoenix.isTestWindow || key === _testKey) {
+            if(isDesktop) {
+                storageNodeConnector.execPeer("putItem", {key, value: valueToStore});
             }
-            if(window.debugMode || !Phoenix.browser.isTauri) {
-                // in debug mode, we write to local storage in tauri too to help eazy debug of storage values.
+            if(window.debugMode || isBrowser) {
+                // in debug mode, we write to local storage in tauri and browser builds for eazy debug of storage.
                 localStorage.setItem(PH_LOCAL_STORE_PREFIX + key, JSON.stringify(valueToStore));
             }
         }
         cache[key] = valueToStore;
-        if(watchExternalKeys[key]){
+        if(watchExternalKeys[key] && isBrowser){
+            // Broadcast channel is only used in browser, in tauri with multiple tauri process windows,
+            // BroadcastChnnel wont work. So we poll LMDB for changes in tauri.
             pendingBroadcastKV[key] = valueToStore;
         }
         PhStore.trigger(key, CHANGE_TYPE_INTERNAL);
@@ -184,7 +212,6 @@
      */
 
     function watchExternalChanges(key) {
-        // todo watch in tauri and can we waitch without broadcast channel in desktop and tauri?
         watchExternalKeys[key] = true;
     }
 
@@ -200,7 +227,7 @@
 
 
     const storageReadyPromise = new Promise((resolve) => {
-        if(!Phoenix.browser.isTauri || Phoenix.isTestWindow){
+        if(isBrowser || Phoenix.isTestWindow){
             // in browsers its immediately ready as we use localstorage
             // in tests, immediately resolve with empty storage.
             resolve();
@@ -220,13 +247,12 @@
      * on db to flush all operations to disk that has happened till this call.
      * @returns {Promise<void>|Promise|*}
      */
-    function flushDB() {
-        if(Phoenix.browser.isTauri) {
+    async function flushDB() {
+        if(isDesktop) {
             // since node connector web socket messages are queued, sending this message will only execute after all
             // outstanding messages are sent to node with web socket.
-            return storageNodeConnector.execPeer("flushDB");
+            await storageNodeConnector.execPeer("flushDB");
         }
-        return Promise.resolve();
     }
 
     const PhStore = {
@@ -237,6 +263,11 @@
         unwatchExternalChanges,
         storageReadyPromise
     };
+    if(Phoenix.isTestWindow) {
+        PhStore._setTestKey = function (testKey) {
+            _testKey = testKey;
+        };
+    }
     EventDispatcher.makeEventDispatcher(PhStore);
     window.PhStore = PhStore;
 }());

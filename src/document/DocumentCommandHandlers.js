@@ -1758,6 +1758,16 @@ define(function (require, exports, module) {
         }
     }
 
+    function raceAgainstTime(promise, timeout = 3000) {
+        const timeoutPromise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject(new Error("Timed out after 3 seconds"));
+            }, timeout);
+        });
+
+        return Promise.race([promise, timeoutPromise]);
+    }
+
     /**
     * Does a full reload of the browser window
     * @param {string} href The url to reload into the window
@@ -1791,9 +1801,9 @@ define(function (require, exports, module) {
 
             // Defer for a more successful reload - issue #11539
             window.setTimeout(function () {
-                window.PhStore.flushDB()
+                raceAgainstTime(window.PhStore.flushDB()) // wither wait for flush or time this out
                     .finally(()=>{
-                        NodeConnector.terminateNode()
+                        raceAgainstTime(NodeConnector.terminateNode(), 5000)
                             .finally(()=>{
                                 window.location.href = href;
                             });
@@ -1907,9 +1917,9 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
-                window.PhStore.flushDB()
+                raceAgainstTime(window.PhStore.flushDB())
                     .finally(()=>{
-                        NodeConnector.terminateNode()
+                        raceAgainstTime(NodeConnector.terminateNode())
                             .finally(()=>{
                                 Phoenix.app.closeWindow();
                             });
