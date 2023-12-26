@@ -1803,7 +1803,7 @@ define(function (require, exports, module) {
             window.setTimeout(function () {
                 raceAgainstTime(window.PhStore.flushDB()) // wither wait for flush or time this out
                     .finally(()=>{
-                        raceAgainstTime(NodeConnector.terminateNode(), 5000)
+                        raceAgainstTime(NodeConnector.terminateNode(), 8000)
                             .finally(()=>{
                                 window.location.href = href;
                             });
@@ -1917,7 +1917,7 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
-                raceAgainstTime(window.PhStore.flushDB())
+                raceAgainstTime(window.PhStore.flushDB(), 8000)
                     .finally(()=>{
                         raceAgainstTime(NodeConnector.terminateNode())
                             .finally(()=>{
