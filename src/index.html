@@ -119,7 +119,6 @@
                 window._tauriStorageRestorePromise = window.__TAURI__.fs.readTextFile(
                     "storageDB/storageDBDump.json", { dir: window.__TAURI__.fs.BaseDirectory.AppLocalData })
                     .catch(err =>{
-                        window.Phoenix.firstBoot = true;
                         console.error("First boot detected or Failed to init storage from cache." +
                             " If first boot, ignore this error", err);
                     });

@@ -51,6 +51,7 @@
         return;
     }
     const EVENT_CHANGED = "change";
+    const FIRST_BOOT_TIME = "firstBootTime";
     let storageNodeConnector;
     let _testKey;
     let nodeStoragePhoenixApis = {};
@@ -220,12 +221,20 @@
         }
     }
 
+    function setupFirstBoot() {
+        const firstBootTime = getItem(FIRST_BOOT_TIME);
+        if(!firstBootTime){
+            window.Phoenix.firstBoot = true;
+            setItem(FIRST_BOOT_TIME, Date.now());
+        }
+    }
 
     const storageReadyPromise = new Promise((resolve) => {
         if(isBrowser || Phoenix.isTestWindow){
             // in browsers its immediately ready as we use localstorage
             // in tests, immediately resolve with empty storage.
             resolve();
+            setupFirstBoot();
             return;
         }
         // In tauri, we have to read it from app local data dump(which is usually written at app close time. This
@@ -233,6 +242,7 @@
         window._tauriStorageRestorePromise
             .then((jsonData)=>{
                 cache = JSON.parse(jsonData);
+                setupFirstBoot();
             })
             .finally(resolve);
     });
