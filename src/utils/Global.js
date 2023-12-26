@@ -63,15 +63,6 @@ define(function (require, exports, module) {
         console.log(err);
     }
 
-    // Uncomment the following line to force all low level file i/o routines to complete
-    // asynchronously. This should only be done for testing/debugging.
-    // NOTE: Make sure this line is commented out again before committing!
-    //brackets.forceAsyncCallbacks = true;
-
-    // Load native shell when brackets is run in a native shell rather than the browser
-    // TODO: (issue #266) load conditionally
-    global.brackets.shellAPI = require("utils/ShellAPI");
-
     global.brackets.nativeMenus = false;
 
     // Locale-related APIs

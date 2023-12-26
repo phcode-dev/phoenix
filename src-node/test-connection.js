@@ -185,7 +185,7 @@ function awaits(waitTimeMs){
     });
 }
 
-exports.testDelayedNodeConnectorCreateExec = async function (connectorName) {
+exports.testDelayedNodeConnectorCreateExec = async function () {
     const newNodeConnName = "node_exec_Q_test";
     const newExport = {};
     const newNodeConn = NodeConnector.createNodeConnector(newNodeConnName, newExport);
@@ -201,7 +201,7 @@ exports.testDelayedNodeConnectorCreateExec = async function (connectorName) {
     expectEqual(result, expectedResult);
 };
 
-exports.testDelayedNodeConnectorCreateEvent = async function (connectorName) {
+exports.testDelayedNodeConnectorCreateEvent = async function () {
     const newNodeConnName = "node_event_Q_test";
     const newExport = {};
     const newNodeConn = NodeConnector.createNodeConnector(newNodeConnName, newExport);

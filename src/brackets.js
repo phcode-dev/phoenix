@@ -123,6 +123,7 @@ define(function (require, exports, module) {
     require("LiveDevelopment/main");
     require("utils/NodeConnection");
     require("utils/NodeDomain");
+    require("utils/NodeUtils");
     require("utils/ColorUtils");
     require("view/ThemeManager");
     require("thirdparty/lodash");
