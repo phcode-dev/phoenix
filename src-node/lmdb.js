@@ -90,22 +90,6 @@ async function getItem(key) {
     return storageDB.get(key);
 }
 
-/**
- * get all changes with respect to the given array containing {key, t}, where t is modified time that we have.
- * @param {Array<{key, t}>} keyTimeArray
- */
-async function getChanges(keyTimeArray) {
-    const changedKV = {};
-    for(let keyTime of keyTimeArray) {
-        const newVal = storageDB.get(keyTime.key);
-        if(newVal && (newVal.t > keyTime.t)){
-            // this is newer
-            changedKV[keyTime.key] = newVal;
-        }
-    }
-    return changedKV;
-}
-
 async function watchExternalChanges({key, t}) {
     if(!storageDB){
         throw new Error("LMDB Storage operation called before openDB call");
@@ -150,7 +134,6 @@ exports.dumpDBToFileAndCloseDB = dumpDBToFileAndCloseDB;
 exports.putItem = putItem;
 exports.getItem = getItem;
 exports.flushDB = flushDB;
-exports.getChanges = getChanges;
 exports.watchExternalChanges = watchExternalChanges;
 exports.unwatchExternalChanges = unwatchExternalChanges;
 
