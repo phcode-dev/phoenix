@@ -4,7 +4,10 @@ const fs= require("fs");
 const NodeConnector = require("./node-connector");
 
 const STORAGE_NODE_CONNECTOR = "ph_storage";
-NodeConnector.createNodeConnector(STORAGE_NODE_CONNECTOR, exports);
+const EXTERNAL_CHANGE_POLL_INTERVAL = 800;
+const EVENT_CHANGED = "change";
+const nodeConnector = NodeConnector.createNodeConnector(STORAGE_NODE_CONNECTOR, exports);
+const watchExternalKeys = {};
 
 let storageDB,
     dumpFileLocation;
@@ -68,6 +71,9 @@ function putItem({key, value}) {
     if(!storageDB){
         throw new Error("LMDB Storage operation called before openDB call");
     }
+    if(watchExternalKeys[key] && typeof value === 'object' && value.t) {
+        watchExternalKeys[key] = value.t;
+    }
     return storageDB.put(key, value);
 }
 
@@ -100,6 +106,44 @@ async function getChanges(keyTimeArray) {
     return changedKV;
 }
 
+async function watchExternalChanges({key, t}) {
+    if(!storageDB){
+        throw new Error("LMDB Storage operation called before openDB call");
+    }
+    watchExternalKeys[key] = t;
+}
+
+async function unwatchExternalChanges(key) {
+    if(!storageDB){
+        throw new Error("LMDB Storage operation called before openDB call");
+    }
+    delete watchExternalKeys[key];
+}
+
+function updateExternalChangesFromLMDB() {
+    const watchedKeys = Object.keys(watchExternalKeys);
+    if(!watchedKeys.length) {
+        return;
+    }
+    const changedKV = {};
+    let changesPresent = false
+    for(let key of watchedKeys) {
+        const t = watchExternalKeys[key];
+        const newVal = storageDB.get(key);
+        if(newVal && (newVal.t > t)){
+            // this is newer
+            watchExternalKeys[key]= newVal.t;
+            changedKV[key] = newVal;
+            changesPresent = true;
+        }
+    }
+    if(changesPresent) {
+        nodeConnector.triggerPeer(EVENT_CHANGED, changedKV);
+    }
+}
+
+setInterval(updateExternalChangesFromLMDB, EXTERNAL_CHANGE_POLL_INTERVAL);
+
 exports.openDB = openDB;
 exports.dumpDBToFile = dumpDBToFile;
 exports.dumpDBToFileAndCloseDB = dumpDBToFileAndCloseDB;
@@ -107,4 +151,6 @@ exports.putItem = putItem;
 exports.getItem = getItem;
 exports.flushDB = flushDB;
 exports.getChanges = getChanges;
+exports.watchExternalChanges = watchExternalChanges;
+exports.unwatchExternalChanges = unwatchExternalChanges;
 

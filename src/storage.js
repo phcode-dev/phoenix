@@ -50,6 +50,7 @@
         console.error(`window.PhStore already setup. Ignoring.`);
         return;
     }
+    const EVENT_CHANGED = "change";
     let storageNodeConnector;
     let _testKey;
     let nodeStoragePhoenixApis = {};
@@ -59,7 +60,6 @@
     const PH_LOCAL_STORE_PREFIX = "Ph_";
     const PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME = "ph-storage";
     const EXTERNAL_CHANGE_BROADCAST_INTERVAL = 500;
-    const EXTERNAL_CHANGE_POLL_INTERVAL = 800;
     // Since this is a sync API, performance is critical. So we use a memory map in cache. This limits the size
     // of what can be stored in this storage as if fully in memory.
     const CHANGE_TYPE_EXTERNAL = "External",
@@ -89,20 +89,6 @@
         }
     }
 
-    function updateExternalChangesFromLMDB() {
-        const watchedKeys = Object.keys(watchExternalKeys);
-        if(!watchedKeys.length) {
-            return;
-        }
-        const query = [];
-        for(let key of watchedKeys){
-            query.push({key, t: (cache[key] && cache[key].t) || 0});
-        }
-        storageNodeConnector.execPeer("getChanges", query)
-            .then(commitExternalChanges)
-            .catch(console.error);
-    }
-
     if(isDesktop){
         if(window.nodeSetupDonePromise){
             window.nodeSetupDonePromise.then(nodeConfig =>{
@@ -110,10 +96,12 @@
                 storageNodeConnector = window.PhNodeEngine.createNodeConnector(
                     STORAGE_NODE_CONNECTOR_ID, nodeStoragePhoenixApis);
                 storageNodeConnector.execPeer("openDB", window._tauriBootVars.appLocalDir);
-                setInterval(updateExternalChangesFromLMDB, EXTERNAL_CHANGE_POLL_INTERVAL);
                 if(Phoenix.isTestWindow) {
                     window.storageNodeConnector = storageNodeConnector;
                 }
+                storageNodeConnector.on(EVENT_CHANGED, (_evt, changedKV)=>{
+                    commitExternalChanges(changedKV);
+                });
             });
         } else {
             alert("Critical Error! Node Storage could not be started.");
@@ -213,6 +201,10 @@
 
     function watchExternalChanges(key) {
         watchExternalKeys[key] = true;
+        if(isDesktop) {
+            const t = (cache[key] && cache[key].t ) || 0;
+            storageNodeConnector.execPeer("watchExternalChanges", {key, t});
+        }
     }
 
     /**
@@ -223,6 +215,9 @@
      */
     function unwatchExternalChanges(key) {
         delete watchExternalKeys[key];
+        if(isDesktop) {
+            storageNodeConnector.execPeer("unwatchExternalChanges", key);
+        }
     }
 
 
