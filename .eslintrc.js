@@ -74,6 +74,8 @@ module.exports = {
         "$": false,
         "brackets": false,
         "Phoenix": false,
+        "iconv": false,
+        "Buffer": true,
         "clearTimeout": false,
         "console": false,
         "define": false,

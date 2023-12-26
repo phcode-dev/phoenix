@@ -199,6 +199,7 @@ define(function (require, exports, module) {
     require("utils/Global");
     require("command/Menus");
     require("utils/NodeDomain");
+    require("utils/NodeUtils");
     require("utils/ColorUtils");
     require("preferences/PreferencesBase");
     require("JSUtils/Session");

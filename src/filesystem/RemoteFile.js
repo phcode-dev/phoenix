@@ -22,10 +22,11 @@
 define(function (require, exports, module) {
 
 
-    var FileSystemError = require("filesystem/FileSystemError"),
-        FileSystemStats = require("filesystem/FileSystemStats");
+    const FileSystemError = require("filesystem/FileSystemError"),
+        FileSystemStats = require("filesystem/FileSystemStats"),
+        NodeUtils = require("utils/NodeUtils");
 
-    var SESSION_START_TIME = new Date();
+    const SESSION_START_TIME = new Date();
 
     /**
      * Create a new file stat. See the FileSystemStats class for more details.
@@ -164,19 +165,41 @@ define(function (require, exports, module) {
         // no-op
     };
 
+    function _nodeConnectorRead(url, encoding, successCB, errorCB) {
+        NodeUtils.fetchURLText(url, encoding)
+            .then(successCB)
+            .catch(err=>{
+                console.error("failed fetch url: ", url, err);
+                errorCB(err);
+            });
+    }
+
+    function isTauriResource(url) {
+        const startingURLs = [
+            "phtauri://", "https://phtauri.localhost", "asset://", "https://asset.localhost",
+            "tauri://", "https://tauri.localhost"
+        ];
+        for(let start of startingURLs){
+            if(url.startsWith(start)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     function _remoteRead(url, encoding, successCB, errorCB) {
+        if(Phoenix.browser.isTauri && !isTauriResource(url)) {
+            _nodeConnectorRead(url, encoding, successCB, errorCB);
+            return;
+        }
         let xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", url, true);
         xmlhttp.responseType = "arraybuffer";
 
         xmlhttp.onload = function(oEvent) {
-            var arrayBuffer = xmlhttp.response;
-
-            // if you want to access the bytes:
-            var byteArray = new Uint8Array(arrayBuffer);
-
+            const arrayBuffer = xmlhttp.response;
             try {
-                successCB(new TextDecoder(encoding).decode(byteArray));
+                successCB(iconv.decode(Buffer.from(arrayBuffer), encoding));
             } catch (err) {
                 errorCB(err);
             }

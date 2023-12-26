@@ -65,6 +65,7 @@ const net = require('net');
 const PhoenixFS = require('@phcode/fs/dist/phoenix-fs');
 const NodeConnector = require("./node-connector");
 require("./test-connection");
+require("./utils");
 function randomNonce(byteLength) {
     const randomBuffer = new Uint8Array(byteLength);
     crypto.getRandomValues(randomBuffer);

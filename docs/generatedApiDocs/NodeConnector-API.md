@@ -167,7 +167,7 @@ Returns **[boolean][5]** Returns true if Node.js Engine is available.
 
 Terminate the PhNodeEngine node if it is available. Else does nothing.
 
-Returns **void** 
+Returns **[Promise][6]** promise that resolves when node process is terminated and exits.
 
 ## setInspectEnabled
 
@@ -187,7 +187,7 @@ Returns **[boolean][5]** True if inspect mode is enabled, false otherwise.
 
 Retrieves the node inspector port for the Phoenix Node.js engine.
 
-Returns **[number][6]** The inspection port number.
+Returns **[number][7]** The inspection port number.
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
@@ -199,4 +199,6 @@ Returns **[number][6]** The inspection port number.
 
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
