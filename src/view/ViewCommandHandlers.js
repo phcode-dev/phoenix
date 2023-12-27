@@ -116,6 +116,10 @@ define(function (require, exports, module) {
      */
     var DEFAULT_FONT_FAMILY = "'SourceCodePro-Medium', ＭＳ ゴシック, 'MS Gothic', monospace";
 
+
+    const PREF_DESKTOP_ZOOM_SCALE = "desktopZoomScale";
+    const DEFAULT_ZOOM_SCALE = 1, MIN_ZOOM_SCALE = .5, MAX_ZOOM_SCALE = 2;
+
     /**
      * @private
      * Removes style property from the DOM
@@ -341,7 +345,7 @@ define(function (require, exports, module) {
         _adjustFontSize(1);
     }
 
-    function _handleZoom(event) {
+    function _handleBrowserZoom(event) {
         // if we do set document.body.style=zoom = something, then the new project window or generally any iframes based
         // ui with in phcode will not be affected by zoom resulting in widely inconsistent ux on zoom.
         // Further, in Firefox, we cannot programmatically zoom, but user can zoom with Ctrl-+ or - shortcut. So
@@ -356,6 +360,26 @@ define(function (require, exports, module) {
             let message = StringUtils.format(Strings.ZOOM_WITH_SHORTCUTS_DETAILS, zoomInKey, zoomOutKey);
             Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.ZOOM_WITH_SHORTCUTS, message);
             return new $.Deferred().resolve();
+        }
+    }
+
+    function _handleZoomIn(event) {
+        if(!Phoenix.browser.isTauri) {
+            return _handleBrowserZoom(event);
+        }
+        const currentZoom = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
+        if(currentZoom < MAX_ZOOM_SCALE){
+            prefs.set(PREF_DESKTOP_ZOOM_SCALE, currentZoom + 0.1);
+        }
+    }
+
+    function _handleZoomOut(event) {
+        if(!Phoenix.browser.isTauri) {
+            return _handleBrowserZoom(event);
+        }
+        const currentZoom = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
+        if(currentZoom > MIN_ZOOM_SCALE){
+            prefs.set(PREF_DESKTOP_ZOOM_SCALE, currentZoom - 0.1);
         }
     }
 
@@ -529,16 +553,8 @@ define(function (require, exports, module) {
     // Register command handlers
     CommandManager.register(Strings.CMD_INCREASE_FONT_SIZE, Commands.VIEW_INCREASE_FONT_SIZE,  _handleIncreaseFontSize);
     CommandManager.register(Strings.CMD_DECREASE_FONT_SIZE, Commands.VIEW_DECREASE_FONT_SIZE,  _handleDecreaseFontSize);
-    if(Phoenix.browser.isTauri){
-        // tauri doesnt support zoomin/out and the document.body.style.zoom = 1.5 trick didnt work
-        // as code mirror doesnt support css transform styles. so we just show increase and decrease
-        // font size as zoom.
-        CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleIncreaseFontSize, {eventSource: true});
-        CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleDecreaseFontSize, {eventSource: true});
-    } else {
-        CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleZoom, {eventSource: true});
-        CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleZoom, {eventSource: true});
-    }
+    CommandManager.register(Strings.CMD_ZOOM_IN, Commands.VIEW_ZOOM_IN,  _handleZoomIn, {eventSource: true});
+    CommandManager.register(Strings.CMD_ZOOM_OUT, Commands.VIEW_ZOOM_OUT,  _handleZoomOut, {eventSource: true});
     CommandManager.register(Strings.CMD_RESTORE_FONT_SIZE,  Commands.VIEW_RESTORE_FONT_SIZE,   _handleRestoreFontSize);
     CommandManager.register(Strings.CMD_SCROLL_LINE_UP,     Commands.VIEW_SCROLL_LINE_UP,      _handleScrollLineUp);
     CommandManager.register(Strings.CMD_SCROLL_LINE_DOWN,   Commands.VIEW_SCROLL_LINE_DOWN,    _handleScrollLineDown);
@@ -553,6 +569,23 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_FONT_FAMILY
     }).on("change", function () {
         setFontFamily(prefs.get("fontFamily"));
+    });
+
+    prefs.definePreference(PREF_DESKTOP_ZOOM_SCALE, "number", DEFAULT_ZOOM_SCALE, {
+        description: Strings.DESCRIPTION_DESKTOP_ZOOM_SCALE
+    }).on("change", function () {
+        if(Phoenix.browser.isTauri) {
+            const zoomFactor = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
+            if(zoomFactor < MIN_ZOOM_SCALE || zoomFactor > MAX_ZOOM_SCALE) {
+                console.error(
+                    `Zoom scale should be between ${MIN_ZOOM_SCALE} and ${MAX_ZOOM_SCALE} but got ${zoomFactor}!`);
+                return;
+            }
+            brackets.app.zoomWebView(zoomFactor);
+            const zoomIn = CommandManager.get(Commands.VIEW_ZOOM_IN);
+            const zoomString = StringUtils.format(Strings.CMD_ZOOM_IN_SCALE, Math.round(zoomFactor*100));
+            zoomIn.setName(zoomString);
+        }
     });
 
     // Update UI when opening or closing a document

@@ -197,6 +197,15 @@ Phoenix.app = {
         nativeWindow.isTauriWindow = false;
         return nativeWindow;
     },
+    zoomWebView: async function (scaleFactor = 1) {
+        if(!Phoenix.browser.isTauri){
+            throw new Error("zoomWebView is not supported in browsers");
+        }
+        if(scaleFactor < .1 || scaleFactor > 2) {
+            throw new Error("zoomWebView scale factor should be between .1 and 2");
+        }
+        return window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: scaleFactor});
+    },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
     getExtensionsDirectory: Phoenix.VFS.getExtensionDir,
     getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,
