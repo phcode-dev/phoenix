@@ -30,12 +30,14 @@
     ],
     "navigation.jump.back":  [
         {
-            "key": "Ctrl-Shift-,"
+            "key": "Alt-Left",
+            "displayKey": "Alt-←"
         }
     ],
     "navigation.jump.fwd":  [
         {
-            "key": "Ctrl-Shift-."
+            "key": "Alt-Right",
+            "displayKey": "Alt-→"
         }
     ]
 }
