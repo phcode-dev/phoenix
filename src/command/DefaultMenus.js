@@ -63,15 +63,18 @@ define(function (require, exports, module) {
         }
     }
 
+    const fileNewShortcut = Phoenix.browser.isTauri ? "Ctrl-N" : "Ctrl-1";
+    const fileNewWindowShortcut = Phoenix.browser.isTauri ? "Ctrl-Shift-N" : "Ctrl-3";
+
     AppInit.htmlReady(function () {
         /*
          * File menu
          */
         var menu;
         menu = Menus.addMenu(Strings.FILE_MENU, Menus.AppMenuBar.FILE_MENU);
-        menu.addMenuItem(Commands.FILE_NEW);
+        menu.addMenuItem(Commands.FILE_NEW, fileNewShortcut);
         menu.addMenuItem(Commands.FILE_NEW_FOLDER);
-        menu.addMenuItem(Commands.FILE_NEW_WINDOW);
+        menu.addMenuItem(Commands.FILE_NEW_WINDOW, fileNewWindowShortcut);
         menu.addMenuDivider();
         if(Phoenix.browser.isTauri){
             menu.addMenuItem(Commands.FILE_OPEN);

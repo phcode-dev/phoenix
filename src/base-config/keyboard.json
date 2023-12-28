@@ -1,12 +1,6 @@
 {
-    "file.newFile":  [
-        "Alt-N"
-    ],
     "file.newFolder":  [
-        "Ctrl-Alt-N"
-    ],
-    "file.new_window":  [
-        "Alt-Shift-N"
+        "Ctrl-M"
     ],
     "file.open":  [
         "Ctrl-O"
@@ -30,7 +24,7 @@
         "Ctrl-Shift-S"
     ],
     "file.liveFilePreview":  [
-        "Ctrl-Alt-P"
+        "Ctrl-Alt-L"
     ],
     "file.reloadLivePreview": [
         {
