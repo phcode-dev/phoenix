@@ -67,19 +67,19 @@ define(function (require, exports, module) {
 
     // Locale-related APIs
     global.brackets.isLocaleDefault = function () {
-        return !global.localStorage.getItem("locale");
+        return !global.PhStore.getItem("locale");
     };
 
     global.brackets.getLocale = function () {
         // By default use the locale that was determined in brackets.js
-        return params.get("testEnvironment") ? "en" : (global.localStorage.getItem("locale") || global.require.s.contexts._.config.locale);
+        return params.get("testEnvironment") ? "en" : (global.PhStore.getItem("locale") || global.require.s.contexts._.config.locale);
     };
 
     global.brackets.setLocale = function (locale) {
         if (locale) {
-            global.localStorage.setItem("locale", locale);
+            global.PhStore.setItem("locale", locale);
         } else {
-            global.localStorage.removeItem("locale");
+            global.PhStore.removeItem("locale");
         }
     };
 

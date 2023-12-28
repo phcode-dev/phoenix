@@ -71,10 +71,19 @@ define(function (require, exports, module) {
         it("Should be able to get and set different value types", async function () {
             expectSetGetSuccess(1);
             expectSetGetSuccess("");
+            expectSetGetSuccess(null);
             expectSetGetSuccess(0);
             expectSetGetSuccess("hello");
             expectSetGetSuccess({hello: {message: "world"}});
             expectSetGetSuccess([1, "3"]);
+        });
+
+        it("Should be able to remove item", async function () {
+            const value = "hello";
+            PhStore.setItem(testKey, value);
+            expect(PhStore.getItem(testKey)).toEql(value);
+            PhStore.removeItem(testKey);
+            expect(PhStore.getItem(testKey)).toEql(null);
         });
 
         it("Should be able to get and set with lmdb node connector in tauri", async function () {
@@ -181,7 +190,7 @@ define(function (require, exports, module) {
             });
 
             const newValue = "hello";
-            await awaits(500);// let time pass as the lowest resolution for time check in browser is 1 ms
+            await awaits(500);// let time pass
             testWindow.PhStore.setItem(testKey, newValue); // set in phoenix, it should eventually come to this window
             expect(testWindow.PhStore.getItem(testKey)).toEql(newValue);
             await awaitsFor(function () {
@@ -189,6 +198,34 @@ define(function (require, exports, module) {
             });
             expect(changeType).toEql("External");
             expect(changedValue).toEql(newValue);
+        });
+
+        it("Should get changed notification in this window, if removing watched item in external window", async function () {
+            const currentWinVal = "externalRemove";
+            PhStore.watchExternalChanges(testKey);
+            testWindow.PhStore.watchExternalChanges(testKey);
+
+            PhStore.setItem(testKey, currentWinVal);
+            expect(PhStore.getItem(testKey)).toEql(currentWinVal);
+            await awaitsFor(function () {
+                return testWindow.PhStore.getItem(testKey) === currentWinVal;
+            });
+
+            // now both window has set the value. remove it and see if we get notifications
+
+            let changeType, changedValue = undefined;
+            PhStore.on(testKey, (_event, type)=>{
+                changeType = type;
+                changedValue = PhStore.getItem(testKey); // the new key should be updated when you get the event
+            });
+
+            testWindow.PhStore.removeItem(testKey); // remove in phoenix, it should eventually come to this window
+            expect(testWindow.PhStore.getItem(testKey)).toEql(null);
+            await awaitsFor(function () {
+                return changedValue === null;
+            });
+            expect(changeType).toEql("External");
+            expect(changedValue).toEql(null);
         });
 
     });
