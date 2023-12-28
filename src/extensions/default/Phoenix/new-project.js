@@ -72,7 +72,7 @@ define(function (require, exports, module) {
     function _addMenuEntries() {
         CommandManager.register(Strings.CMD_PROJECT_NEW, Commands.FILE_NEW_PROJECT, _showNewProjectDialogue);
         const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
-        fileMenu.addMenuItem(Commands.FILE_NEW_PROJECT, "Alt-Shift-P", Menus.AFTER, Commands.FILE_NEW_FOLDER);
+        fileMenu.addMenuItem(Commands.FILE_NEW_PROJECT, "Ctrl-Shift-2", Menus.AFTER, Commands.FILE_NEW_FOLDER);
     }
 
     function closeDialogue() {

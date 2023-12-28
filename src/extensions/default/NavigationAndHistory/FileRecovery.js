@@ -125,7 +125,7 @@ define(function (require, exports, module) {
 
     function getRestoreFilePath(projectFilePath, projectRootPath) {
         if(!projectFilePath.startsWith(projectRootPath) || !trackedProjects[projectRootPath]){
-            console.error(`[recovery] cannot backed up as ${projectRootPath} is not in project ${projectRootPath}`);
+            console.error(`[recovery] cannot backed up as ${projectFilePath} is not in project ${projectRootPath}`);
             return null;
         }
         let pathWithinProject = projectFilePath.replace(projectRootPath, "");
@@ -268,8 +268,10 @@ define(function (require, exports, module) {
         let trackedFilePaths =  Object.keys(project.trackedFileContents);
         for(let trackedFilePath of trackedFilePaths){
             const restorePath = getRestoreFilePath(trackedFilePath, projectRoot.fullPath);
-            const content = project.trackedFileContents[trackedFilePath];
-            await writeFileIgnoreFailure(restorePath, content);
+            if(restorePath) {
+                const content = project.trackedFileContents[trackedFilePath];
+                await writeFileIgnoreFailure(restorePath, content);
+            }
             delete project.trackedFileContents[trackedFilePath];
         }
     }
@@ -280,7 +282,9 @@ define(function (require, exports, module) {
         for(let trackedPath of allTrackingPaths){
             if(!docPathsToTrack[trackedPath]){
                 const restoreFile = getRestoreFilePath(trackedPath, projectRoot.fullPath);
-                await silentlyRemoveFile(restoreFile);
+                if(restoreFile) {
+                    await silentlyRemoveFile(restoreFile);
+                }
                 delete project.trackedFileUpdateTimestamps[trackedPath];
             }
         }
