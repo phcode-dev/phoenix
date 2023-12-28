@@ -82,8 +82,8 @@ define(function (require, exports, module) {
                 return;
             }
             setTimeout(()=>{
-                let keyboardShortcut = KeyBindingManager.getKeyBindings(Commands.EDIT_BEAUTIFY_CODE);
-                keyboardShortcut = (keyboardShortcut && keyboardShortcut[0]) ? keyboardShortcut[0].displayKey : "-";
+                let keyboardShortcut = KeyBindingManager.getKeyBindingsDisplay(Commands.EDIT_BEAUTIFY_CODE);
+                keyboardShortcut = keyboardShortcut || "";
                 userAlreadyDidAction.beautifyCodeShown =  true;
                 PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "beautify");

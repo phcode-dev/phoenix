@@ -355,8 +355,8 @@ define(function (require, exports, module) {
             // most reliable zoom for now.
             return new $.Deferred().reject("use browser zoom");
         } else {
-            const zoomInKey = KeyBindingManager.getKeyBindings(Commands.VIEW_ZOOM_IN)[0].displayKey,
-                zoomOutKey = KeyBindingManager.getKeyBindings(Commands.VIEW_ZOOM_OUT)[0].displayKey;
+            const zoomInKey = KeyBindingManager.getKeyBindingsDisplay(Commands.VIEW_ZOOM_IN) || '',
+                zoomOutKey = KeyBindingManager.getKeyBindingsDisplay(Commands.VIEW_ZOOM_OUT) || '';
             let message = StringUtils.format(Strings.ZOOM_WITH_SHORTCUTS_DETAILS, zoomInKey, zoomOutKey);
             Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.ZOOM_WITH_SHORTCUTS, message);
             return new $.Deferred().resolve();
