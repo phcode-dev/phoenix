@@ -130,7 +130,7 @@
      * Retrieves the value associated with the specified key from the browser's local storage.
      *
      * @param {string} key - The key to retrieve the value for.
-     * @returns {object|null} - The value associated with the specified key. Returns null if the key does not exist.
+     * @returns {string|number|boolean|object|null} - The value associated with the specified key. Returns null if the key does not exist.
      */
     function getItem(key) {
         let cachedResult = cache[key];
@@ -162,7 +162,7 @@
      * Sets the value of a specified key in the localStorage.
      *
      * @param {string} key - The key to set the value for.
-     * @param {*} value - The value to be stored. Can be any valid JSON serializable data type.
+     * @param {string|number|boolean|object} value - The value to be stored. Can be any valid JSON serializable data type.
      *
      */
     function setItem(key, value) {
@@ -188,6 +188,16 @@
             pendingBroadcastKV[key] = valueToStore;
         }
         PhStore.trigger(key, CHANGE_TYPE_INTERNAL);
+    }
+
+    /**
+     * Removes an item from storage. This will trigger a change notification on removal if watchers are attached.
+     * Watchers are unaffected on removal, you will still get notifications if the key gets created in the future.
+     *
+     * @param {string} key - The key to remove
+     */
+    function removeItem(key) {
+        setItem(key, null);
     }
 
     /**
@@ -263,6 +273,7 @@
     const PhStore = {
         getItem,
         setItem,
+        removeItem,
         flushDB,
         watchExternalChanges,
         unwatchExternalChanges,

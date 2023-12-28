@@ -47,13 +47,13 @@ define(function (require, exports, module) {
 
     let isFirstUseDay;
     function _setFirstDayFlag() {
-        let firstUseDay= localStorage.getItem("healthData.firstUseDay");
-        if(!firstUseDay){
-            firstUseDay = new Date();
-            localStorage.setItem("healthData.firstUseDay", `${firstUseDay.getTime()}`);
-        } else {
-            firstUseDay = new Date(parseInt(firstUseDay));
+        const firstUseDayKey = "healthData.firstUseDay";
+        let firstBootTime = window.PhStore.getItem(firstUseDayKey);
+        if(!firstBootTime){
+            firstBootTime = Date.now();
+            window.PhStore.setItem(firstUseDayKey, firstBootTime);
         }
+        let firstUseDay= new Date(firstBootTime);
         let dayAfterFirstUse = new Date(firstUseDay);
         dayAfterFirstUse.setUTCDate(firstUseDay.getUTCDate() + 1);
         let today = new Date();
