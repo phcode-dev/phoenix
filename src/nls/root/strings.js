@@ -362,7 +362,7 @@ define({
     "CMD_FILE_PASTE": "Paste",
     "CMD_PROJECT_NEW": "New Project\u2026",
     "CMD_FILE_NEW_FOLDER": "New Folder",
-    "CMD_FILE_OPEN": "Open\u2026",
+    "CMD_FILE_OPEN": "Open Files\u2026",
     "CMD_RECENT_FILES_OPEN": "Recent Files\u2026",
     "CMD_ADD_TO_WORKING_SET": "Open To Working Set",
     "CMD_OPEN_DROPPED_FILES": "Open Dropped Files",

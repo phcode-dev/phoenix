@@ -1596,12 +1596,18 @@ define(function (require, exports, module) {
     function handleFileCloseWindow(commandData) {
         return _handleWindowGoingAway(
             commandData,
-            function () {
-                window.close();
+            function (closeSuccess) {
+                console.log('close success: ', closeSuccess);
+                raceAgainstTime(window.PhStore.flushDB(), 8000)
+                    .finally(()=>{
+                        raceAgainstTime(NodeConnector.terminateNode())
+                            .finally(()=>{
+                                Phoenix.app.closeWindow();
+                            });
+                    });
             },
-            function () {
-                // if fail, tell the app to abort any pending quit operation.
-                brackets.app.abortQuit();
+            function (err) {
+                console.error("Quit failed! ", err);
             }
         );
     }
@@ -1633,12 +1639,18 @@ define(function (require, exports, module) {
     function handleFileQuit(commandData) {
         return _handleWindowGoingAway(
             commandData,
-            function () {
-                brackets.app.quit();
+            function (closeSuccess) {
+                console.log('close success: ', closeSuccess);
+                raceAgainstTime(window.PhStore.flushDB(), 8000)
+                    .finally(()=>{
+                        raceAgainstTime(NodeConnector.terminateNode())
+                            .finally(()=>{
+                                Phoenix.app.closeWindow();
+                            });
+                    });
             },
-            function () {
-                // if fail, don't exit: user canceled (or asked us to save changes first, but we failed to do so)
-                brackets.app.abortQuit();
+            function (err) {
+                console.error("Quit failed! ", err);
             }
         );
     }

@@ -93,6 +93,10 @@ define(function (require, exports, module) {
         // menu.addMenuItem(Commands.FILE_PROJECT_SETTINGS); not yet available in phoenix
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_EXTENSION_MANAGER);
+        if(Phoenix.browser.isTauri){
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.FILE_QUIT);
+        }
 
         /*
          * Edit  menu
