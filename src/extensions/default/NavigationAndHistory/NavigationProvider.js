@@ -652,6 +652,14 @@ define(function (require, exports, module) {
         CommandManager.execute(Commands.FILE_NEW_PROJECT);
     }
 
+    function _getShortcutDisplay(baseStr, commandID) {
+        let shortCut = KeyBindingManager.getKeyBindingsDisplay(commandID);
+        if(shortCut) {
+            return `${baseStr} (${shortCut})`;
+        }
+        return baseStr;
+    }
+
     function _setupNavigationButtons() {
         let $mainNavBarRight = $("#mainNavBarRight");
         let $mainNavBarLeft = $("#mainNavBarLeft");
@@ -662,10 +670,12 @@ define(function (require, exports, module) {
 
         $newProject = $mainNavBarLeft.find("#newProject");
 
-        $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
-        $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
-        $showInTree.attr("title", Strings.CMD_SHOW_IN_TREE);
-        $searchNav.attr("title", Strings.CMD_FIND_IN_FILES);
+
+        $navback.attr("title", _getShortcutDisplay(Strings.CMD_NAVIGATE_BACKWARD, NAVIGATION_JUMP_BACK));
+        $navForward.attr("title", _getShortcutDisplay(Strings.CMD_NAVIGATE_FORWARD, NAVIGATION_JUMP_FWD));
+        $showInTree.attr("title", _getShortcutDisplay(Strings.CMD_SHOW_IN_TREE, Commands.NAVIGATE_SHOW_IN_FILE_TREE));
+        $searchNav.attr("title", _getShortcutDisplay(Strings.CMD_FIND_IN_FILES, Commands.CMD_FIND_IN_FILES));
+        // new project extension is not yet loaded, so we cant show keyboard shortcut here.
         $newProject.attr("title", Strings.CMD_PROJECT_NEW);
 
         $navback.on("click", _navigateBackClicked);
