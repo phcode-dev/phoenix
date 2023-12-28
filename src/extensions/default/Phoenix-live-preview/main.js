@@ -369,8 +369,8 @@ define(function (require, exports, module) {
             _toggleVisibilityOnClick();
         });
         let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
-        fileMenu.addMenuDivider();
-        fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "");
+        fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "", Menus.AFTER, Commands.FILE_EXTENSION_MANAGER);
+        fileMenu.addMenuDivider(Menus.BEFORE, Commands.FILE_LIVE_FILE_PREVIEW);
         // We always show the live preview panel on startup if there is a preview file
         setTimeout(async ()=>{
             LiveDevelopment.openLivePreview();

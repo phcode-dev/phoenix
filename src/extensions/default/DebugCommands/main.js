@@ -840,9 +840,9 @@ define(function (require, exports, module) {
 
     const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
     // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
-    fileMenu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, null, Menus.AFTER, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
+    fileMenu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, null, Menus.BEFORE, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
     // this command is defined in core, but exposed only in Debug menu for now
-    fileMenu.addMenuItem(Commands.FILE_OPEN_KEYMAP, null, Menus.AFTER, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
+    fileMenu.addMenuItem(Commands.FILE_OPEN_KEYMAP, null, Menus.BEFORE, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
 
     // exposed for convenience, but not official API
     exports._runUnitTests = _runUnitTests;
