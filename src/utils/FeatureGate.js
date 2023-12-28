@@ -106,7 +106,7 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function isFeatureEnabled(featureName) {
-        let userOverRide = localStorage.getItem(`${featureName}`);
+        let userOverRide = PhStore.getItem(`FeatureGate-${featureName}`);
         if(userOverRide === ENABLED){
             return true;
         } else if(userOverRide === DISABLED){
@@ -115,11 +115,22 @@ define(function (require, exports, module) {
         return _FeatureGateMap[featureName] === true;
     }
 
+    /**
+     * Sets the enabled state of a specific feature in the application.
+     *
+     * @param {string} featureName - The name of the feature to be modified.
+     * @param {boolean} isEnabled - A boolean flag indicating whether the feature should be enabled (true) or disabled (false).
+     */
+    function setFeatureEnabled(featureName, isEnabled) {
+        PhStore.setItem(`FeatureGate-${featureName}`, isEnabled ? ENABLED : DISABLED);
+    }
+
     EventDispatcher.makeEventDispatcher(exports);
     // Public API
     exports.registerFeatureGate = registerFeatureGate;
     exports.getAllRegisteredFeatures = getAllRegisteredFeatures;
     exports.isFeatureEnabled = isFeatureEnabled;
+    exports.setFeatureEnabled = setFeatureEnabled;
     // Events
     exports.FEATURE_REGISTERED = FEATURE_REGISTERED;
 });
