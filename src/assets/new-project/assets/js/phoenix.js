@@ -28,6 +28,7 @@ const RECENT_PROJECTS_INTERFACE = "Extn.Phoenix.recentProjects";
 const selfFileName = location.href.split('?')[0].split('/').pop();
 window.Strings = window.parent.Strings;
 window.path = window.parent.path;
+window.PhStore = window.parent.PhStore;
 window.parent.ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)
     .then(interfaceObj => {
         window.newProjectExtension = interfaceObj;

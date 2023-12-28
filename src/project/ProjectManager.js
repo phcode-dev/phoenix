@@ -44,10 +44,10 @@ define(function (require, exports, module) {
 
     require("utils/Global");
 
-    var _ = require("thirdparty/lodash");
+    const _ = require("thirdparty/lodash");
 
     // Load dependent modules
-    let AppInit             = require("utils/AppInit"),
+    const AppInit             = require("utils/AppInit"),
         Async               = require("utils/Async"),
         PreferencesDialogs  = require("preferences/PreferencesDialogs"),
         PreferencesManager  = require("preferences/PreferencesManager"),
@@ -91,6 +91,8 @@ define(function (require, exports, module) {
         EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed";
 
     EventDispatcher.setLeakThresholdForEvent(EVENT_PROJECT_OPEN, 25);
+
+    const CLIPBOARD_SYNC_KEY = "phoenix.clipboard";
 
     /**
      * @private
@@ -1521,22 +1523,12 @@ define(function (require, exports, module) {
     const OPERATION_CUT = 'cut',
         OPERATION_COPY = 'copy';
 
-    function _addTextToSystemClipboard(text) {
-        if (!navigator.clipboard) {
-            console.warn('Browser doesnt support clipboard control. system cut/copy/paste may not work');
-            return;
-        }
-        navigator.clipboard.writeText(text).catch(function(err) {
-            console.error('System clipboard error: Could not copy text: ', err);
-        });
-    }
-
     function _registerPathWithClipboard(path, operation) {
-        _addTextToSystemClipboard(window.path.basename(path));
-        localStorage.setItem("phoenix.clipboard", JSON.stringify({
+        Phoenix.app.copyToClipboard(window.path.basename(path));
+        PhStore.setItem(CLIPBOARD_SYNC_KEY, {
             operation: operation,
             path: path
-        }));
+        });
     }
 
     /**
@@ -1575,8 +1567,8 @@ define(function (require, exports, module) {
         if(fullPath){
             let projectRoot = getProjectRoot().fullPath;
             let relativePath = window.path.relative(projectRoot, fullPath);
-            _addTextToSystemClipboard(relativePath);
-            localStorage.setItem("phoenix.clipboard", JSON.stringify({}));
+            Phoenix.app.copyToClipboard(relativePath);
+            PhStore.setItem(CLIPBOARD_SYNC_KEY, {});
         }
     }
 
@@ -1691,11 +1683,10 @@ define(function (require, exports, module) {
         if(context){
             targetPath = context.fullPath;
         }
-        let clipboard = localStorage.getItem("phoenix.clipboard");
+        const clipboard = PhStore.getItem(CLIPBOARD_SYNC_KEY);
         if(!clipboard){
             return;
         }
-        clipboard = JSON.parse(clipboard);
         switch (clipboard.operation) {
         case OPERATION_CUT: _performCut(clipboard.path, targetPath); break;
         case OPERATION_COPY: _performCopy(clipboard.path, targetPath); break;
@@ -1705,6 +1696,7 @@ define(function (require, exports, module) {
 
     // Initialize variables and listeners that depend on the HTML DOM
     AppInit.htmlReady(function () {
+        PhStore.watchExternalChanges(CLIPBOARD_SYNC_KEY);
         $projectTreeContainer = $("#project-files-container");
         $projectTreeContainer.addClass("jstree jstree-brackets");
         $projectTreeContainer.css("overflow", "auto");

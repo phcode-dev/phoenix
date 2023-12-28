@@ -367,14 +367,14 @@ define(function (require, exports, module) {
      * function manages state weather an extension is enabled or disabled
      */
     function _toggleDisabledExtension(path, enabled) {
-        let arr = JSON.parse(localStorage.getItem(DISABLED_EXTENSIONS_KEY) || "[]");
+        let arr = JSON.parse(PhStore.getItem(DISABLED_EXTENSIONS_KEY) || "[]");
         const io = arr.indexOf(path);
         if (enabled === true && io !== -1) {
             arr.splice(io, 1);
         } else if (enabled === false && io === -1) {
             arr.push(path);
         }
-        localStorage.setItem(DISABLED_EXTENSIONS_KEY, JSON.stringify(arr));
+        PhStore.setItem(DISABLED_EXTENSIONS_KEY, JSON.stringify(arr));
     }
 
     /**

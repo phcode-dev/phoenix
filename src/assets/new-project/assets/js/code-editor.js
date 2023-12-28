@@ -122,7 +122,7 @@ function removeProject(fullPath) {
 }
 
 function _showFirstTimeExperience() {
-    let shownBefore = localStorage.getItem('notification.defaultProject.Shown');
+    let shownBefore = PhStore.getItem('notification.defaultProject.Shown');
     if(!shownBefore){
         createNotificationFromTemplate(Strings.DEFAULT_PROJECT_NOTIFICATION,
             "defaultProjectButton", {
@@ -130,12 +130,12 @@ function _showFirstTimeExperience() {
                 autoCloseTimeS: 15,
                 dismissOnClick: true
             });
-        localStorage.setItem('notification.defaultProject.Shown', 'true');
+        PhStore.setItem('notification.defaultProject.Shown', 'true');
     }
 }
 
 function _updateDropdown() {
-    let shouldShowWelcome = localStorage.getItem("new-project.showWelcomeScreen") || 'Y';
+    let shouldShowWelcome = PhStore.getItem("new-project.showWelcomeScreen") || 'Y';
     if(shouldShowWelcome === 'Y') {
         document.getElementById("showWelcomeIndicator").style = "visibility: visible";
     } else {
@@ -158,9 +158,9 @@ function _attachSettingBtnEventListeners() {
     });
 
     document.getElementById("showWelcome").addEventListener('click', (event)=>{
-        let shouldShowWelcome = localStorage.getItem("new-project.showWelcomeScreen") || 'Y';
+        let shouldShowWelcome = PhStore.getItem("new-project.showWelcomeScreen") || 'Y';
         shouldShowWelcome = shouldShowWelcome === 'Y'? 'N' : 'Y';
-        localStorage.setItem("new-project.showWelcomeScreen", shouldShowWelcome);
+        PhStore.setItem("new-project.showWelcomeScreen", shouldShowWelcome);
     });
 
     document.getElementById("showAbout").addEventListener('click', (event)=>{
