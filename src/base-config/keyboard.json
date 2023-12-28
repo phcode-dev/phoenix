@@ -286,6 +286,9 @@
     "navigate.quickOpen":  [
         "Ctrl-Shift-O"
     ],
+    "navigate.showInFileTree":  [
+        "Ctrl-Shift-;"
+    ],
     "navigate.gotoLine":  [
         {
             "key": "Ctrl-G"

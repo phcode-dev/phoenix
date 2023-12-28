@@ -938,6 +938,23 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Retrieves the platform-specific string representation of the key bindings for a specified command.
+     * This function is useful for displaying the keyboard shortcut associated with a given command ID to the user.
+     * If a key binding is found for the command, it returns the formatted key descriptor. Otherwise, it returns null.
+     *
+     * @param {string} commandID - The unique identifier of the command for which the key binding is to be retrieved.
+     * @returns {string|null} The formatted key binding as a string if available; otherwise, null.
+     */
+    function getKeyBindingsDisplay(commandID) {
+        let shortCut = getKeyBindings(commandID);
+        if (shortCut && shortCut[0] && shortCut[0].displayKey) {
+            return formatKeyDescriptor(shortCut[0].displayKey);
+        }
+        return null;
+    }
+
+
+    /**
      * Adds default key bindings when commands are registered to CommandManager
      * @param {$.Event} event jQuery event
      * @param {Command} command Newly registered command
@@ -1479,6 +1496,7 @@ define(function (require, exports, module) {
     exports.removeBinding = removeBinding;
     exports.formatKeyDescriptor = formatKeyDescriptor;
     exports.getKeyBindings = getKeyBindings;
+    exports.getKeyBindingsDisplay = getKeyBindingsDisplay;
     exports.addGlobalKeydownHook = addGlobalKeydownHook;
     exports.removeGlobalKeydownHook = removeGlobalKeydownHook;
 
