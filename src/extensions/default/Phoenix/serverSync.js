@@ -45,11 +45,24 @@ define(function (require, exports, module) {
     let projectSyncCompleted = false;
     let previewURL;
 
+    function _fixLegacyUserContext() {
+        // In earlier versions, user context data was stored in the browser's localStorage. We have since
+        // transitioned to using PhStore for this purpose. This function helps in migrating the user context
+        // from localStorage to PhStore. This ensures that existing users don't lose access to their published projects.
+        // Note: Published projects are retained for only 30 days. This function is primarily intended to support
+        // users during the transition period and is safe to remove 3 months after the date of this implementation,
+        // as users are informed that their published projects are kept for a 30-day period only.
+        if (!PhStore.getItem(USER_CONTEXT) && localStorage.getItem(USER_CONTEXT)) {
+            PhStore.setItem(USER_CONTEXT, localStorage.getItem(USER_CONTEXT));
+        }
+    }
+
     function _setupUserContext() {
-        userContext = localStorage.getItem(USER_CONTEXT);
+        _fixLegacyUserContext();
+        userContext = PhStore.getItem(USER_CONTEXT);
         if(!userContext){
             userContext = "p-" + Math.round( Math.random()*10000000000000).toString(16);
-            localStorage.setItem(USER_CONTEXT, userContext);
+            PhStore.setItem(USER_CONTEXT, userContext);
         }
     }
 

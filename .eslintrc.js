@@ -74,6 +74,7 @@ module.exports = {
         "$": false,
         "brackets": false,
         "Phoenix": false,
+        "PhStore": false,
         "iconv": false,
         "Buffer": true,
         "clearTimeout": false,

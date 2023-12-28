@@ -592,11 +592,14 @@ function nodeLoader() {
         let commandID = 0, pendingCommands = {};
         const PHNODE_PREFERENCES_KEY = "PhNode.Prefs";
         function setInspectEnabled(enabled) {
+            // cannot use PhStore instead of localStorage here as this is required at boot. Should be fine
+            // as this to use non-persistent local storage(due to safari ITP) here as this is a debug flag.
             const prefs = JSON.parse(localStorage.getItem(PHNODE_PREFERENCES_KEY) || "{}");
             prefs.inspectEnabled = enabled;
             localStorage.setItem(PHNODE_PREFERENCES_KEY, JSON.stringify(prefs));
         }
         function isInspectEnabled() {
+            // cannot use PhStore instead of localStorage here as this is required at boot.
             const prefs = JSON.parse(localStorage.getItem(PHNODE_PREFERENCES_KEY) || "{}");
             return !!prefs.inspectEnabled;
         }

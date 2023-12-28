@@ -45,8 +45,8 @@ define(function (require, exports, module) {
         TWO_WEEKS_IN_DAYS = 14,
         USAGE_COUNTS_KEY    = "healthDataUsage"; // private to phoenix, set from health data extension
 
-    const userAlreadyDidAction = localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
-        ? JSON.parse(localStorage.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
+    const userAlreadyDidAction = PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
+        ? JSON.parse(PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
             version: 1,
             newProjectShown: false,
             beautifyCodeShown: false,
@@ -85,7 +85,7 @@ define(function (require, exports, module) {
                 let keyboardShortcut = KeyBindingManager.getKeyBindings(Commands.EDIT_BEAUTIFY_CODE);
                 keyboardShortcut = (keyboardShortcut && keyboardShortcut[0]) ? keyboardShortcut[0].displayKey : "-";
                 userAlreadyDidAction.beautifyCodeShown =  true;
-                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+                PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "beautify");
                 currentlyShowingNotification = NotificationUI.createFromTemplate(
                     StringUtils.format(Strings.BEAUTIFY_CODE_NOTIFICATION, keyboardShortcut),
@@ -115,7 +115,7 @@ define(function (require, exports, module) {
                 return;
             }
             userAlreadyDidAction.newProjectShown =  true;
-            localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+            PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
             Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "newProj");
             currentlyShowingNotification = NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
                 "newProject", {
@@ -138,7 +138,7 @@ define(function (require, exports, module) {
             function _showNotification() {
                 // legacy key. cant change without triggering the user base
                 let notificationKey = 'livePreviewPopoutShown', version = "v1";
-                let popoutMessageShown = localStorage.getItem(notificationKey);
+                let popoutMessageShown = PhStore.getItem(notificationKey);
                 if(popoutMessageShown === version){
                     // already shown
                     LiveDevelopment.off(LiveDevelopment.EVENT_LIVE_PREVIEW_CLICKED, _showNotification);
@@ -158,7 +158,7 @@ define(function (require, exports, module) {
                     currentlyShowingNotification.done(()=>{
                         currentlyShowingNotification = null;
                     });
-                    localStorage.setItem(notificationKey, version);
+                    PhStore.setItem(notificationKey, version);
                 }
                 LiveDevelopment.off(LiveDevelopment.EVENT_LIVE_PREVIEW_CLICKED, _showNotification);
             }
@@ -171,7 +171,7 @@ define(function (require, exports, module) {
     function _showLivePreviewNotification() {
         // legacy reasons live preview notification is called new project notification.
         const livePreviewNotificationKey = "newProjectNotificationShown";
-        const livePreviewNotificationShown = localStorage.getItem(livePreviewNotificationKey);
+        const livePreviewNotificationShown = PhStore.getItem(livePreviewNotificationKey);
         if(livePreviewNotificationShown){
             return;
         }
@@ -185,7 +185,7 @@ define(function (require, exports, module) {
                 autoCloseTimeS: 15,
                 dismissOnClick: true}
         );
-        localStorage.setItem(livePreviewNotificationKey, "true");
+        PhStore.setItem(livePreviewNotificationKey, "true");
         currentlyShowingNotification.done(()=>{
             currentlyShowingNotification = null;
         });
@@ -262,7 +262,7 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star", 1);
                 _openStarsPopup();
                 userAlreadyDidAction.lastShownGithubStarsDate = Date.now();
-                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+                PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
             }, GITHUB_STARS_POPUP_TIME);
         }
     }
@@ -278,7 +278,7 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "generalShown", 1);
                 Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
                 userAlreadyDidAction.generalSurveyShownVersion = surveyVersion;
-                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+                PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
             }
         }, GENERAL_SURVEY_TIME);
     }
@@ -326,7 +326,7 @@ define(function (require, exports, module) {
                 $content.find("a").click(_openPowerUserSurvey);
                 NotificationUI.createToastFromTemplate(Strings.POWER_USER_POPUP_TITLE, $content);
                 userAlreadyDidAction.lastShownPowerSurveyDate = Date.now();
-                localStorage.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+                PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
             }, POWER_USER_SURVEY_TIME);
         }
     }
