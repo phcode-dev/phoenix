@@ -1,15 +1,12 @@
 {
-    "file.newFolder":  [
-        "Ctrl-M"
+    "file.newFile": [
+        "Ctrl-1"
     ],
-    "file.open":  [
-        "Ctrl-O"
+    "file.newFolder":  [
+        "Ctrl-3"
     ],
     "file.close":  [
-        "Alt-W"
-    ],
-    "file.openFolder": [
-        "Ctrl-Alt-O"
+        "Ctrl-`"
     ],
     "file.close_all":  [
         "Alt-Shift-W"
