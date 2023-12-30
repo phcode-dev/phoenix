@@ -66,12 +66,12 @@ define(function (require, exports, module) {
     const isBrowser = !Phoenix.browser.isTauri;
     const isDesktop = Phoenix.browser.isTauri;
     const fileNewShortcut = isDesktop ? "Ctrl-N" : ""; // Ctrl-1 universal shortcut is set in keyboard.json
-    // user can use ctrl-t browser shortcut to create new window in browser, so no shortcut in browser.
+    //`Ctrl-Shift-N` - desktop only. In browser, use can do `ctrl-T` and type phcode.dev using browser shortcuts itself. So we dont make a browser shortcut for this.
     const fileNewWindowShortcut = isDesktop ? "Ctrl-Shift-N" : "";
     const fileCloseShortcut = isDesktop ? "Ctrl-W" : ""; // Ctrl-` universal shortcut is set in keyboard.json
     // In browser open file option is not available, so we assign ctrl-o to open folder in browser
     // open folder has no shortcut in desktop, as this is not a frequently used workflow
-    // and only every used when the user opens a project once in a while.
+    // and only ever used when the user opens a project once in a while.
     const openFileShortcut = isDesktop ? "Ctrl-O" : "";
     const openFolderShortcut = isBrowser ? "Ctrl-O" : "";
 
