@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Vložiť",
   "CMD_PROJECT_NEW": "Nový projekt…",
   "CMD_FILE_NEW_FOLDER": "Nový adresár",
-  "CMD_FILE_OPEN": "Otvoriť…",
+  "CMD_FILE_OPEN": "Otvoriť súbory…",
   "CMD_RECENT_FILES_OPEN": "Posledné súbory…",
   "CMD_ADD_TO_WORKING_SET": "Pridať do pracovnej sady",
   "CMD_OPEN_DROPPED_FILES": "Otvorte zrušené súbory",

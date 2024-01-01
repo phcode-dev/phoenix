@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Вставити",
   "CMD_PROJECT_NEW": "Новий проект…",
   "CMD_FILE_NEW_FOLDER": "Нова тека",
-  "CMD_FILE_OPEN": "Відкрити…",
+  "CMD_FILE_OPEN": "Відкрити файли…",
   "CMD_RECENT_FILES_OPEN": "Останні файли…",
   "CMD_ADD_TO_WORKING_SET": "Відкрити у робочому наборі",
   "CMD_OPEN_DROPPED_FILES": "Відкрити вкинуті файли",

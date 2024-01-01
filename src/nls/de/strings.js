@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Einfügen",
   "CMD_PROJECT_NEW": "Neues Projekt…",
   "CMD_FILE_NEW_FOLDER": "Neuer Ordner",
-  "CMD_FILE_OPEN": "Öffnen…",
+  "CMD_FILE_OPEN": "Dateien öffnen…",
   "CMD_RECENT_FILES_OPEN": "Letzte Dateien…",
   "CMD_ADD_TO_WORKING_SET": "Im Projekt öffnen",
   "CMD_OPEN_DROPPED_FILES": "Abgelegte Dateien öffnen",

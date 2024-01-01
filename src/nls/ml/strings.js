@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "പേസ്റ്റ്",
   "CMD_PROJECT_NEW": "പുതിയ പദ്ധതി…",
   "CMD_FILE_NEW_FOLDER": "പുതിയ ഫോൾഡർ",
-  "CMD_FILE_OPEN": "തുറക്കുക...",
+  "CMD_FILE_OPEN": "ഫയലുകൾ തുറക്കുക...",
   "CMD_RECENT_FILES_OPEN": "സമീപകാല ഫയലുകൾ…",
   "CMD_ADD_TO_WORKING_SET": "വർക്കിംഗ് സെറ്റിലേക്ക് തുറക്കുക",
   "CMD_OPEN_DROPPED_FILES": "ഡ്രോപ്പ് ചെയ്ത ഫയലുകൾ തുറക്കുക",

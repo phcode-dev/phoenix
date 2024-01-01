@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Wklej",
   "CMD_PROJECT_NEW": "Nowy projekt…",
   "CMD_FILE_NEW_FOLDER": "Nowy folder",
-  "CMD_FILE_OPEN": "Otwórz…",
+  "CMD_FILE_OPEN": "Otwórz pliki…",
   "CMD_RECENT_FILES_OPEN": "Ostatnie pliki…",
   "CMD_ADD_TO_WORKING_SET": "Dodaj do folderu roboczego",
   "CMD_OPEN_DROPPED_FILES": "Otwórz przeciągnięte pliki",
