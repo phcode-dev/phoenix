@@ -133,7 +133,8 @@ define(function (require, exports, module) {
                 displayName = suiteName.replace(`${category[0]}:`, '');
             }
         }
-        let hyperlink = `?spec=${encodeURIComponent(suiteName)}`;
+        const platformQueryParam = window._getPlatformOverride() ? `&platform=${window._getPlatformOverride()}` : '';
+        let hyperlink = `?spec=${encodeURIComponent(suiteName)}${platformQueryParam}`;
         if(reporter.selectedCategories.length){
             hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
         }
@@ -162,7 +163,8 @@ define(function (require, exports, module) {
                 displayName = suiteName.replace(`${category[0]}:`, '');
             }
         }
-        let hyperlink = `?spec=${encodeURIComponent(suiteName)}`;
+        const platformQueryParam = window._getPlatformOverride() ? `&platform=${window._getPlatformOverride()}` : '';
+        let hyperlink = `?spec=${encodeURIComponent(suiteName)}${platformQueryParam}`;
         if(reporter.selectedCategories.length){
             hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
         }
@@ -347,7 +349,8 @@ define(function (require, exports, module) {
             }
 
             // print spec name
-            let hyperlink = `?spec=${encodeURIComponent(specData.name)}`;
+            const platformQueryParam = window._getPlatformOverride() ? `&platform=${window._getPlatformOverride()}` : '';
+            let hyperlink = `?spec=${encodeURIComponent(specData.name)}${platformQueryParam}`;
             if(reporter.selectedCategories.length){
                 hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
             }
@@ -386,7 +389,8 @@ define(function (require, exports, module) {
 
         if (specData.passed && specData.perf) {
             // add spec name
-            let hyperlink = `?spec=${encodeURIComponent(specData.name)}`;
+            const platformQueryParam = window._getPlatformOverride() ? `&platform=${window._getPlatformOverride()}` : '';
+            let hyperlink = `?spec=${encodeURIComponent(specData.name)}${platformQueryParam}`;
             if(reporter.selectedCategories.length){
                 hyperlink = `${hyperlink}&category=${reporter.selectedCategories.join(',')}`;
             }

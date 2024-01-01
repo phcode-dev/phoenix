@@ -170,6 +170,17 @@
 
         return 'Other';
       }
+
+      window._getPlatformOverride = function (){
+        const currentUrl = window.location.href;
+        const searchParams = new URLSearchParams(new URL(currentUrl).search);
+        const platform = searchParams.get('platform');
+        const allowedOverRides = ['win', 'mac', 'linux'];
+        if(allowedOverRides.includes(platform)){
+          return platform;
+        }
+        return null;
+      }
       function getBrowserDetails() {
         let isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
         let isEdgeBrowser = navigator.userAgent.indexOf("Edg") !== -1;
@@ -231,7 +242,10 @@
       }
       // Determine OS/platform
       let platform = "win";
-      if (navigator.platform && navigator.platform.match("Mac")) {
+      if(window._getPlatformOverride() && _isTestWindow()){
+        console.warn("using platform override: ", platform);
+        platform = window._getPlatformOverride();
+      } else if (navigator.platform && navigator.platform.match("Mac")) {
         platform = "mac";
       } else if (navigator.platform && navigator.platform.indexOf("Linux") >= 0) {
         platform = "linux";
@@ -419,6 +433,45 @@
       controlBar.addEventListener('mouseout', function() {
         iframeContainer.classList.remove('hovered');
       });
+
+      const simulateOS = document.getElementById("os-select");
+      if(Phoenix.browser.isTauri) {
+        // only available in browsers
+        simulateOS.classList.add("forced-hidden")
+      } else {
+        const platform = window._getPlatformOverride();
+        if(platform){
+          simulateOS.value = platform;
+          document.getElementById("all").setAttribute('href', `?category=all&platform=${platform}`);
+          document.getElementById("unit").setAttribute('href', `?category=unit&platform=${platform}`);
+          document.getElementById("integration").setAttribute('href', `?category=integration&platform=${platform}`);
+          document.getElementById("LegacyInteg").setAttribute('href', `?category=LegacyInteg&platform=${platform}`);
+          document.getElementById("livepreview").setAttribute('href', `?category=livepreview&platform=${platform}`);
+          document.getElementById("mainview").setAttribute('href', `?category=mainview&platform=${platform}`);
+          document.getElementById("performance").setAttribute('href', `?category=performance&platform=${platform}`);
+          document.getElementById("extension").setAttribute('href', `?category=extension&platform=${platform}`);
+          document.getElementById("individualrun").setAttribute('href', `?category=individualrun&platform=${platform}`);
+        }
+        simulateOS.addEventListener('change', function() {
+          const selectedPlatform = this.value;
+          const currentUrl = new URL(window.location.href);
+          // Manually construct the query string. we cant use `currentUrl.searchParams.set` due to + encoding to %20
+          let queryString = '';
+          currentUrl.search.slice(1).split('&').forEach(paramEqValStr => {
+            const [key] = paramEqValStr.split('=');
+            if (key !== 'platform') {
+              queryString += `${paramEqValStr}&`;
+            }
+          });
+
+          const allowedOverRides = ['win', 'mac', 'linux'];
+          if(allowedOverRides.includes(selectedPlatform)){
+            queryString += `platform=${selectedPlatform}`;
+          }
+
+          window.location.href = `${currentUrl.origin}${currentUrl.pathname}?${queryString}`;
+        });
+      }
     }
 
   </script>
@@ -449,6 +502,13 @@
               <li><a id="reload" href="#">Reset and Reload Tests</a></li>
               <li><a id="show-report-to-copy" href="#">Toggle Printable Report</a></li>
             </ul>
+            <select name="Simulate OS" id="os-select" style="width: 100px;">
+              <option value="Simulate OS: None">Simulate OS</option>
+              <option value="none">None</option>
+              <option value="win">Windows</option>
+              <option value="linux">Linux</option>
+              <option value="mac">Mac</option>
+            </select>
           </div>
         </div>
       </div>
