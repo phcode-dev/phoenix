@@ -89,6 +89,15 @@ if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
 
 Returns **[boolean][3]** 
 
+## setFeatureEnabled
+
+Sets the enabled state of a specific feature in the application.
+
+### Parameters
+
+*   `featureName` **[string][2]** The name of the feature to be modified.
+*   `isEnabled` **[boolean][3]** A boolean flag indicating whether the feature should be enabled (true) or disabled (false).
+
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
