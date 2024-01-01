@@ -49,7 +49,7 @@ define(function (require, exports, module) {
             "Alt-Shift-Down": "edit.addCursorToNextLine",
             "Alt-Shift-Up": "edit.addCursorToPrevLine",
             "F8": "navigate.gotoFirstProblem",
-            "Ctrl-Alt-O": "file.openFolder",
+            "Ctrl-1": "file.newFile",
             "Ctrl-Alt-H": "view.toggleSidebar",
             "Ctrl-Shift-O": "navigate.quickOpen",
             "Ctrl-T": "navigate.gotoDefinition"
@@ -60,7 +60,7 @@ define(function (require, exports, module) {
             "Alt-Shift-Down": "edit.addCursorToNextLine",
             "Alt-Shift-Up": "edit.addCursorToPrevLine",
             "Cmd-'": "navigate.gotoFirstProblem",
-            "Alt-Cmd-O": "file.openFolder",
+            "Cmd-1": "file.newFile",
             "Shift-Cmd-H": "view.toggleSidebar",
             "Shift-Cmd-O": "navigate.quickOpen",
             "Cmd-T": "navigate.gotoDefinition"
@@ -618,7 +618,7 @@ define(function (require, exports, module) {
                     called = true;
                     var msgPrefix = Strings.ERROR_NONEXISTENT_COMMANDS.replace("{0}", "");
                     expect(message).toMatch(msgPrefix);
-                    expect(message).toMatch("file.openFolder");
+                    expect(message).toMatch("file.newFile");
                     expect(message).toMatch("view.toggleSidebar");
                     return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
                 };
@@ -652,7 +652,7 @@ define(function (require, exports, module) {
                 let reassignedKey1 = (platform === "mac") ? "Alt-Cmd-Backspace" : "Ctrl-Alt-Backspace",
                     reassignedKey2 = (platform === "mac") ? "Cmd-T" : "Ctrl-T";
                 expect(called).toBeFalse();
-                expect(keymap["Ctrl-2"].commandID).toEqual("file.openFolder");
+                expect(keymap["Ctrl-2"].commandID).toEqual("file.newFile");
                 expect(keymap["Alt-Cmd-O"]).toBeFalsy();
                 expect(keymap["Alt-Ctrl-O"]).toBeFalsy();
 
@@ -692,7 +692,7 @@ define(function (require, exports, module) {
 
                 var keymap = KeyBindingManager.getKeymap(),
                     reassignedKey1 = (platform === "mac") ? "Alt-Cmd-Backspace" : "Ctrl-Alt-Backspace",
-                    reassignedKey2 = (platform === "mac") ? "Alt-Cmd-O" : "Ctrl-Alt-O",
+                    reassignedKey2 = "Ctrl-1",
                     reassignedKey3 = (platform === "mac") ? "Alt-Cmd-L" : "Ctrl-Alt-L";
 
                 expect(called).toBeFalse();
@@ -702,7 +702,7 @@ define(function (require, exports, module) {
                 expect(keymap[reassignedKey1]).toBeFalsy();
 
                 // Default key binding for "file.openFolder" is restored.
-                expect(keymap[reassignedKey2].commandID).toEqual("file.openFolder");
+                expect(keymap[reassignedKey2].commandID).toEqual("file.newFile");
 
                 expect(keymap["Ctrl-L"].commandID).toEqual("navigate.gotoDefinition");
                 expect(keymap[reassignedKey3]).toBeFalsy();
