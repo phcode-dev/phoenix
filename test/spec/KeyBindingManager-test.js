@@ -692,7 +692,7 @@ define(function (require, exports, module) {
 
                 var keymap = KeyBindingManager.getKeymap(),
                     reassignedKey1 = (platform === "mac") ? "Alt-Cmd-Backspace" : "Ctrl-Alt-Backspace",
-                    reassignedKey2 = "Ctrl-1",
+                    reassignedKey2 = (platform === "mac") ? "Cmd-1" : "Ctrl-1",
                     reassignedKey3 = (platform === "mac") ? "Alt-Cmd-L" : "Ctrl-Alt-L";
 
                 expect(called).toBeFalse();
