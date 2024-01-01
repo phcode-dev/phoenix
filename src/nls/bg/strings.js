@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Поставяне",
   "CMD_PROJECT_NEW": "Нов проект…",
   "CMD_FILE_NEW_FOLDER": "Нова папка",
-  "CMD_FILE_OPEN": "Отваряне…",
+  "CMD_FILE_OPEN": "Отваряне на файлове…",
   "CMD_RECENT_FILES_OPEN": "Скорошни файлове...",
   "CMD_ADD_TO_WORKING_SET": "Отваряне в работните файлове",
   "CMD_OPEN_DROPPED_FILES": "Отваряне на пуснати файлове",

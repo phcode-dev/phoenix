@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Colar",
   "CMD_PROJECT_NEW": "Novo projeto…",
   "CMD_FILE_NEW_FOLDER": "Nova pasta",
-  "CMD_FILE_OPEN": "Abrir…",
+  "CMD_FILE_OPEN": "Abrir arquivos…",
   "CMD_RECENT_FILES_OPEN": "Arquivos recentes…",
   "CMD_ADD_TO_WORKING_SET": "Adicionar ao conjunto de trabalho",
   "CMD_OPEN_DROPPED_FILES": "Abrir arquivos descartados",

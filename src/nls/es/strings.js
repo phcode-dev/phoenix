@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Pegar",
   "CMD_PROJECT_NEW": "Nuevo proyecto…",
   "CMD_FILE_NEW_FOLDER": "Nueva carpeta",
-  "CMD_FILE_OPEN": "Abrir…",
+  "CMD_FILE_OPEN": "Abrir archivos…",
   "CMD_RECENT_FILES_OPEN": "Archivos recientes…",
   "CMD_ADD_TO_WORKING_SET": "Abrir en el área de trabajo",
   "CMD_OPEN_DROPPED_FILES": "Abrir archivos soltados",

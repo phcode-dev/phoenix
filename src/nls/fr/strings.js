@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Coller",
   "CMD_PROJECT_NEW": "Nouveau projet…",
   "CMD_FILE_NEW_FOLDER": "Nouveau dossier",
-  "CMD_FILE_OPEN": "Ouvrir…",
+  "CMD_FILE_OPEN": "Ouvrir des fichiers…",
   "CMD_RECENT_FILES_OPEN": "Fichiers récents…",
   "CMD_ADD_TO_WORKING_SET": "Ouvrir dans l’ensemble de travail",
   "CMD_OPEN_DROPPED_FILES": "Ouvrir les fichiers déposés",

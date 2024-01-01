@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "貼上",
   "CMD_PROJECT_NEW": "新項目…",
   "CMD_FILE_NEW_FOLDER": "新增資料夾",
-  "CMD_FILE_OPEN": "開啟…",
+  "CMD_FILE_OPEN": "開啟檔案...",
   "CMD_RECENT_FILES_OPEN": "最近的文件…",
   "CMD_ADD_TO_WORKING_SET": "開啟進工作集",
   "CMD_OPEN_DROPPED_FILES": "開啟拖放的檔案",

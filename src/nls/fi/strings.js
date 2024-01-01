@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Liitä",
   "CMD_PROJECT_NEW": "Uusi projekti…",
   "CMD_FILE_NEW_FOLDER": "Uusi kansio",
-  "CMD_FILE_OPEN": "Avaa…",
+  "CMD_FILE_OPEN": "Avaa tiedostot…",
   "CMD_RECENT_FILES_OPEN": "Viimeaikaiset tiedostot…",
   "CMD_ADD_TO_WORKING_SET": "Avaa työlistaan",
   "CMD_OPEN_DROPPED_FILES": "Avaa pudotetut tiedostot",

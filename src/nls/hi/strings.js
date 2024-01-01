@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "पेस्ट करें",
   "CMD_PROJECT_NEW": "नया काम…",
   "CMD_FILE_NEW_FOLDER": "नया फोल्डर",
-  "CMD_FILE_OPEN": "खुला हुआ…",
+  "CMD_FILE_OPEN": "खुली फ़ाइलें…",
   "CMD_RECENT_FILES_OPEN": "हाल हीं के फाइल…",
   "CMD_ADD_TO_WORKING_SET": "कार्य सेट के लिए खुला",
   "CMD_OPEN_DROPPED_FILES": "छोड़ी गई फ़ाइलें खोलें",
