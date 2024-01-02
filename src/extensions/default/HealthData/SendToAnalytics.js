@@ -136,6 +136,13 @@ define(function (require, exports, module) {
         if(Phoenix.browser.isTauri) {
             Metrics.valueEvent(PERFORMANCE, "startup", "tauriBoot", window._tauriBootVars.bootstrapTime);
         }
+        if(window.nodeSetupDonePromise) {
+            window.nodeSetupDonePromise
+                .then(()=>{
+                    window.PhNodeEngine && window.PhNodeEngine._nodeLoadTime
+                    && Metrics.valueEvent(PERFORMANCE, "startup", "nodeBoot", window.PhNodeEngine._nodeLoadTime);
+                });
+        }
     }
 
     // Themes
