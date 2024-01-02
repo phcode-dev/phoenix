@@ -35,7 +35,7 @@ define(function (require, exports, module) {
      * Flag to enable/disable performance data gathering. Default is true (enabled)
      * @type {boolean} enabled
      */
-    var enabled = brackets && !!brackets.app.getElapsedMilliseconds;
+    var enabled = brackets && !!brackets.app.getTimeSinceStartup;
 
     /**
      * Performance data is stored in this hash object. The key is the name of the
@@ -161,7 +161,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        var time = brackets.app.getElapsedMilliseconds();
+        var time = brackets.app.getTimeSinceStartup();
         var id = _generatePerfMeasurements(name);
         var i;
 
@@ -191,7 +191,7 @@ define(function (require, exports, module) {
             id = new PerfMeasurement(id, id);
         }
 
-        let elapsedTime = brackets.app.getElapsedMilliseconds();
+        let elapsedTime = brackets.app.getTimeSinceStartup();
 
         if (activeTests[id.id]) {
             elapsedTime -= activeTests[id.id].startTime;
@@ -241,7 +241,7 @@ define(function (require, exports, module) {
      * @param {Object} id  Timer id.
      */
     function updateMeasurement(id) {
-        var elapsedTime = brackets.app.getElapsedMilliseconds();
+        var elapsedTime = brackets.app.getTimeSinceStartup();
 
         if (updatableTests[id.id]) {
             // update existing measurement

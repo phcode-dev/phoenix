@@ -277,7 +277,8 @@
         flushDB,
         watchExternalChanges,
         unwatchExternalChanges,
-        storageReadyPromise
+        storageReadyPromise,
+        _storageBootstrapTime: Phoenix.app.getTimeSinceStartup()
     };
     if(Phoenix.isTestWindow) {
         PhStore._setTestKey = function (testKey) {

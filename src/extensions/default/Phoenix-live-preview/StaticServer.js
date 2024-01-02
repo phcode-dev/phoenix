@@ -362,7 +362,7 @@ define(function (require, exports, module) {
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
-    StaticServer.prototype.start = function () {
+    StaticServer.prototype.start = async function () {
         _staticServerInstance = this;
 
         // load the hidden iframe that loads the service worker server page once. we will reuse the same server

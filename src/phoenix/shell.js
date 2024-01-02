@@ -212,7 +212,7 @@ Phoenix.app = {
     getUserProjectsDirectory: Phoenix.VFS.getUserProjectsDirectory,
     getTempDirectory: Phoenix.VFS.getTempDir,
     ERR_CODES: ERR_CODES,
-    getElapsedMilliseconds: function () {
+    getTimeSinceStartup: function () {
         return Date.now() - Phoenix.startTime; // milliseconds elapsed since app start
     },
     language: navigator.language
