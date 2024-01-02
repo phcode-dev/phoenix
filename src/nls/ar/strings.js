@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "معجون",
   "CMD_PROJECT_NEW": "مشروع جديد…",
   "CMD_FILE_NEW_FOLDER": "ملف جديد",
-  "CMD_FILE_OPEN": "فتح…",
+  "CMD_FILE_OPEN": "الملفات المفتوحة…",
   "CMD_RECENT_FILES_OPEN": "أحدث الملفات ...",
   "CMD_ADD_TO_WORKING_SET": "افتح لمجموعة العمل",
   "CMD_OPEN_DROPPED_FILES": "افتح الملفات المسقطة",

@@ -49,12 +49,12 @@ define(function (require, exports, module) {
         GUTTER_NAME             = "CodeMirror-foldgutter",
         CODE_FOLDING_GUTTER_PRIORITY   = Editor.CODE_FOLDING_GUTTER_PRIORITY,
         codeFoldingMenuDivider  = "codefolding.divider",
-        collapseKey             = "Ctrl-Alt-[",
-        expandKey               = "Ctrl-Alt-]",
-        collapseAllKey          = "Alt-1",
-        expandAllKey            = "Shift-Alt-1",
-        collapseAllKeyMac       = "Cmd-1",
-        expandAllKeyMac         = "Cmd-Shift-1";
+        collapseKey             = "Alt-Shift-Left",
+        collapseKeyDisplay      = "Alt-Shift-←",
+        expandKey               = "Alt-Shift-Right",
+        expandKeyDisplay               = "Alt-Shift-→",
+        collapseAllKey          = "Ctrl-Alt-[",
+        expandAllKey            = "Ctrl-Alt-]";
 
     ExtensionUtils.loadStyleSheet(module, "main.less");
 
@@ -362,8 +362,6 @@ define(function (require, exports, module) {
         KeyBindingManager.removeBinding(expandKey);
         KeyBindingManager.removeBinding(collapseAllKey);
         KeyBindingManager.removeBinding(expandAllKey);
-        KeyBindingManager.removeBinding(collapseAllKeyMac);
-        KeyBindingManager.removeBinding(expandAllKeyMac);
 
         //remove menus
         Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).removeMenuDivider(codeFoldingMenuDivider.id);
@@ -421,10 +419,10 @@ define(function (require, exports, module) {
         Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(EXPAND);
 
         //register keybindings
-        KeyBindingManager.addBinding(COLLAPSE_ALL, [ {key: collapseAllKey}, {key: collapseAllKeyMac, platform: "mac"} ]);
-        KeyBindingManager.addBinding(EXPAND_ALL, [ {key: expandAllKey}, {key: expandAllKeyMac, platform: "mac"} ]);
-        KeyBindingManager.addBinding(COLLAPSE, collapseKey);
-        KeyBindingManager.addBinding(EXPAND, expandKey);
+        KeyBindingManager.addBinding(COLLAPSE_ALL, [ {key: collapseAllKey}]);
+        KeyBindingManager.addBinding(EXPAND_ALL, [ {key: expandAllKey}]);
+        KeyBindingManager.addBinding(COLLAPSE, [{key: collapseKey, displayKey: collapseKeyDisplay}]);
+        KeyBindingManager.addBinding(EXPAND, [{key:expandKey, displayKey: expandKeyDisplay}]);
 
 
         // Add gutters & restore saved expand/collapse state in all currently open editors

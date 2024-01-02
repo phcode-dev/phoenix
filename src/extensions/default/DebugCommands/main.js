@@ -789,8 +789,8 @@ define(function (require, exports, module) {
 
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, handleOpenPrefsInSplitView);
     const debugMenu = Menus.getMenu(Menus.AppMenuBar.DEBUG_MENU);
-    debugMenu.addMenuItem(DEBUG_REFRESH_WINDOW, KeyboardPrefs.refreshWindow);
-    debugMenu.addMenuItem(DEBUG_RELOAD_WITHOUT_USER_EXTS, KeyboardPrefs.reloadWithoutUserExts);
+    debugMenu.addMenuItem(DEBUG_REFRESH_WINDOW, window.debugMode ? KeyboardPrefs.refreshWindow : undefined);
+    debugMenu.addMenuItem(DEBUG_RELOAD_WITHOUT_USER_EXTS, window.debugMode ? KeyboardPrefs.reloadWithoutUserExts : undefined);
     debugMenu.addMenuItem(DEBUG_LOAD_CURRENT_EXTENSION);
     debugMenu.addMenuItem(DEBUG_UNLOAD_CURRENT_EXTENSION, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
@@ -840,9 +840,9 @@ define(function (require, exports, module) {
 
     const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
     // this command will enable defaultPreferences and brackets preferences to be open side by side in split view.
-    fileMenu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, null, Menus.AFTER, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
+    fileMenu.addMenuItem(DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW, null, Menus.BEFORE, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
     // this command is defined in core, but exposed only in Debug menu for now
-    fileMenu.addMenuItem(Commands.FILE_OPEN_KEYMAP, null, Menus.AFTER, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
+    fileMenu.addMenuItem(Commands.FILE_OPEN_KEYMAP, null, Menus.BEFORE, Menus.MenuSection.FILE_SETTINGS.sectionMarker);
 
     // exposed for convenience, but not official API
     exports._runUnitTests = _runUnitTests;

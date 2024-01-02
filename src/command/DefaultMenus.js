@@ -63,21 +63,60 @@ define(function (require, exports, module) {
         }
     }
 
+    const isBrowser = !Phoenix.browser.isTauri;
+    const isDesktop = Phoenix.browser.isTauri;
+    const fileNewShortcut = isDesktop ? "Ctrl-N" : ""; // Ctrl-1 universal shortcut is set in keyboard.json
+    //`Ctrl-Shift-N` - desktop only. In browser, use can do `ctrl-T` and type phcode.dev using browser shortcuts itself. So we dont make a browser shortcut for this.
+    const fileNewWindowShortcut = isDesktop ? "Ctrl-Shift-N" : "";
+    const fileCloseShortcut = isDesktop ? "Ctrl-W" : ""; // Ctrl-` universal shortcut is set in keyboard.json
+    // In browser open file option is not available, so we assign ctrl-o to open folder in browser
+    // open folder has no shortcut in desktop, as this is not a frequently used workflow
+    // and only ever used when the user opens a project once in a while.
+    const openFileShortcut = isDesktop ? "Ctrl-O" : "";
+    const openFolderShortcut = isBrowser ? "Ctrl-O" : "";
+
     AppInit.htmlReady(function () {
-        /*
-         * File menu
-         */
+        /**
+         * Rules to follow when figuring out default shortcuts:
+         * 1. Default shortcuts should only be applied for frequently used workflows. If it's rarely used like
+         *    opening a project, etc., we should not allocate a shortcut. Ideally, assign a shortcut if the user is likely
+         *    to use it several times in a five-minute window.
+         * 2. In Windows, shortcuts cannot start with a `Ctrl-Alt-<something>` as it's reserved for special OS functionalities. See wiki.
+         * 3. In macOS, shortcuts can't start with a single Alt-key combo as it's used for unicode typing in Eastern European languages.
+         * 3. Maintain Consistency Across Browser and Desktop Applications: Shortcuts should offer a uniform experience
+         *    in both browser-based and desktop environments, even when accounting for platform-specific restrictions.
+         *    For instance, 'Ctrl-N' is used for creating a new file in the desktop, but this shortcut
+         *    is reserved by the browser, an alternative like 'Ctrl-1' can was used in the browser. To ensure
+         *    consistency, the same 'Ctrl-1' shortcut was also be enabled for creating a new file in the desktop
+         *    app along with `Ctrl-N`. This approach helps users experience predictable across different platforms.
+         *
+         * Additional considerations:
+         * 4. Avoid conflicts with standard OS shortcuts: Ensure that the chosen shortcuts do not conflict with common
+         *    operating system shortcuts. For instance, shortcuts like Alt-F4 in Windows or Cmd-Q in macOS are universally
+         *    used for closing applications and should not be overridden.
+         * 6. Consistency with similar applications: Where possible, align shortcuts with those used in similar applications
+         *    to reduce the learning curve for new users. For example, using Ctrl/Cmd + S for 'save' is a widely recognized standard.
+         * 7. Avoid overloading single keys with multiple modifiers: Combining too many modifier keys (like Ctrl-Shift-Alt-Cmd-K)
+         *    can make shortcuts hard to remember and physically challenging to perform.
+         * 8. Localization and Internationalization: Be aware of how shortcuts might interact with different keyboard layouts
+         *    and languages. For example, what is convenient on a QWERTY keyboard might not be on AZERTY or QWERTZ.
+         * 9. User Customization: Allow users to customize or reassign shortcuts, as personal preferences and workflows vary.
+         *    This also helps users resolve any unforeseen conflicts with other software they use.
+         * 10. Document Shortcuts: See keyboard.json for most shortcuts. Other shortcuts may be set programmatically
+         *    by the phoenix extensions.
+         **/
+
         var menu;
         menu = Menus.addMenu(Strings.FILE_MENU, Menus.AppMenuBar.FILE_MENU);
-        menu.addMenuItem(Commands.FILE_NEW);
+        menu.addMenuItem(Commands.FILE_NEW, fileNewShortcut);
         menu.addMenuItem(Commands.FILE_NEW_FOLDER);
-        menu.addMenuItem(Commands.FILE_NEW_WINDOW);
+        menu.addMenuItem(Commands.FILE_NEW_WINDOW, fileNewWindowShortcut);
         menu.addMenuDivider();
         if(Phoenix.browser.isTauri){
-            menu.addMenuItem(Commands.FILE_OPEN);
+            menu.addMenuItem(Commands.FILE_OPEN, openFileShortcut);
         }
-        menu.addMenuItem(Commands.FILE_OPEN_FOLDER);
-        menu.addMenuItem(Commands.FILE_CLOSE);
+        menu.addMenuItem(Commands.FILE_OPEN_FOLDER, openFolderShortcut);
+        menu.addMenuItem(Commands.FILE_CLOSE, fileCloseShortcut);
         menu.addMenuItem(Commands.FILE_CLOSE_ALL);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_SAVE);
@@ -90,6 +129,10 @@ define(function (require, exports, module) {
         // menu.addMenuItem(Commands.FILE_PROJECT_SETTINGS); not yet available in phoenix
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_EXTENSION_MANAGER);
+        if(Phoenix.browser.isTauri){
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.FILE_QUIT);
+        }
 
         /*
          * Edit  menu

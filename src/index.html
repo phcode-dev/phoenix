@@ -250,8 +250,21 @@
             }
 
             // Determine OS/platform
+            window._getPlatformOverride = function (){
+                const currentUrl = window.location.href;
+                const searchParams = new URLSearchParams(new URL(currentUrl).search);
+                const platform = searchParams.get('platform');
+                const allowedOverRides = ['win', 'mac', 'linux'];
+                if(allowedOverRides.includes(platform)){
+                    return platform;
+                }
+                return null;
+            }
             let platform = "win";
-            if (navigator.platform && navigator.platform.match("Mac")) {
+            if(_getPlatformOverride() && _isTestWindow()){
+                platform = _getPlatformOverride();
+                console.warn("using platform override: ", platform, "This is only expected to run in tests.");
+            } else if (navigator.platform && navigator.platform.match("Mac")) {
                 platform = "mac";
             } else if (navigator.platform && navigator.platform.indexOf("Linux") >= 0) {
                 platform = "linux";

@@ -30,20 +30,14 @@
     ],
     "navigation.jump.back":  [
         {
-            "key": "Alt-I"
-        },
-        {
-            "key": "Cmd-Alt-Left",
-            "platform": "mac"
+            "key": "Alt-Left",
+            "displayKey": "Alt-←"
         }
     ],
     "navigation.jump.fwd":  [
         {
-            "key": "Alt-Shift-I"
-        },
-        {
-            "key": "Cmd-Alt-Right",
-            "platform": "mac"
+            "key": "Alt-Right",
+            "displayKey": "Alt-→"
         }
     ]
 }

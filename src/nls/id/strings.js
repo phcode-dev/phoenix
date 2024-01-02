@@ -272,7 +272,7 @@ define({
   "CMD_FILE_PASTE": "Tempel",
   "CMD_PROJECT_NEW": "Proyek baru…",
   "CMD_FILE_NEW_FOLDER": "Folder Baru",
-  "CMD_FILE_OPEN": "Buka…",
+  "CMD_FILE_OPEN": "Buka File…",
   "CMD_RECENT_FILES_OPEN": "File Terbaru…",
   "CMD_ADD_TO_WORKING_SET": "Buka di Daftar Kerja",
   "CMD_OPEN_DROPPED_FILES": "Buka File yang Didrop",

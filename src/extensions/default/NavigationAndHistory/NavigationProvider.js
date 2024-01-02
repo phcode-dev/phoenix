@@ -51,7 +51,8 @@ define(function (require, exports, module) {
     let $navback = null,
         $navForward = null,
         $searchNav = null,
-        $newProject = null;
+        $newProject = null,
+        $showInTree = null;
 
    /**
     * Contains list of most recently known cursor positions.
@@ -652,21 +653,37 @@ define(function (require, exports, module) {
         CommandManager.execute(Commands.FILE_NEW_PROJECT);
     }
 
+    function _getShortcutDisplay(baseStr, commandID) {
+        let shortCut = KeyBindingManager.getKeyBindingsDisplay(commandID);
+        if(shortCut) {
+            return `${baseStr} (${shortCut})`;
+        }
+        return baseStr;
+    }
+
+    function updateTooltips() {
+        $navback.attr("title", _getShortcutDisplay(Strings.CMD_NAVIGATE_BACKWARD, NAVIGATION_JUMP_BACK));
+        $navForward.attr("title", _getShortcutDisplay(Strings.CMD_NAVIGATE_FORWARD, NAVIGATION_JUMP_FWD));
+        $showInTree.attr("title", _getShortcutDisplay(Strings.CMD_SHOW_IN_TREE, Commands.NAVIGATE_SHOW_IN_FILE_TREE));
+        $searchNav.attr("title", _getShortcutDisplay(Strings.CMD_FIND_IN_FILES, Commands.CMD_FIND_IN_FILES));
+        // new project extension is not yet loaded, so we cant show keyboard shortcut here.
+        $newProject.attr("title", Strings.CMD_PROJECT_NEW);
+    }
+
     function _setupNavigationButtons() {
         let $mainNavBarRight = $("#mainNavBarRight");
         let $mainNavBarLeft = $("#mainNavBarLeft");
-        let $showInTree = $mainNavBarRight.find("#showInfileTree");
+        $showInTree = $mainNavBarRight.find("#showInfileTree");
         $navback = $mainNavBarRight.find("#navBackButton");
         $navForward = $mainNavBarRight.find("#navForwardButton");
         $searchNav = $mainNavBarRight.find("#searchNav");
 
         $newProject = $mainNavBarLeft.find("#newProject");
-
-        $navback.attr("title", Strings.CMD_NAVIGATE_BACKWARD);
-        $navForward.attr("title", Strings.CMD_NAVIGATE_FORWARD);
-        $showInTree.attr("title", Strings.CMD_SHOW_IN_TREE);
-        $searchNav.attr("title", Strings.CMD_FIND_IN_FILES);
-        $newProject.attr("title", Strings.CMD_PROJECT_NEW);
+        updateTooltips();
+        CommandManager.get(NAVIGATION_JUMP_BACK).on(KeyBindingManager.EVENT_KEY_BINDING_ADDED, updateTooltips);
+        CommandManager.get(NAVIGATION_JUMP_FWD).on(KeyBindingManager.EVENT_KEY_BINDING_ADDED, updateTooltips);
+        CommandManager.get(Commands.NAVIGATE_SHOW_IN_FILE_TREE).on(KeyBindingManager.EVENT_KEY_BINDING_ADDED, updateTooltips);
+        CommandManager.get(Commands.CMD_FIND_IN_FILES).on(KeyBindingManager.EVENT_KEY_BINDING_ADDED, updateTooltips);
 
         $navback.on("click", _navigateBackClicked);
         $navForward.on("click", _navigateForwardClicked);

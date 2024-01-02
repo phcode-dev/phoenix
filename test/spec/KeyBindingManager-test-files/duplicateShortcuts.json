@@ -1,8 +1,8 @@
 {
     "documentation": "https://github.com/adobe/brackets/wiki/Key-Bindings",
     "overrides": {
-        "ctrl-2": "file.openFolder",
-        "Ctrl-2": "file.openFolder",
+        "ctrl-2": "file.newFile",
+        "Ctrl-2": "file.newFile",
         "Ctrl-Alt-4": "view.toggleSidebar",
         "Alt-Ctrl-4": "view.toggleSidebar"
     } 

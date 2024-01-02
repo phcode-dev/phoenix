@@ -594,6 +594,9 @@ define(function (require, exports, module) {
 
         // disable loading of sample project
         params.put("skipSampleProjectLoad", true);
+        if(window._getPlatformOverride()){
+            params.put("platform", window._getPlatformOverride());
+        }
 
         // disable initial dialog for live development
         params.put("skipLiveDevelopmentInfo", true);

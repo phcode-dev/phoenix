@@ -51,6 +51,9 @@ define(function (require, exports, module) {
     let KEYMAP_FILENAME     = "keymap.json",
         _userKeyMapFilePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME);
 
+    const EVENT_KEY_BINDING_ADDED = "keyBindingAdded",
+        EVENT_KEY_BINDING_REMOVED = "keyBindingRemoved";
+
     /**
      * @private
      * Maps normalized shortcut descriptor to key binding info.
@@ -569,7 +572,7 @@ define(function (require, exports, module) {
                 });
 
                 if (command) {
-                    command.trigger("keyBindingRemoved", {key: normalizedKey, displayKey: binding.displayKey});
+                    command.trigger(EVENT_KEY_BINDING_REMOVED, {key: normalizedKey, displayKey: binding.displayKey});
                 }
             }
         }
@@ -649,8 +652,16 @@ define(function (require, exports, module) {
 
         // skip if the key binding is invalid
         if (!normalized) {
-            console.error("Unable to parse key binding " + key + ". Permitted modifiers: Ctrl, Cmd, Alt, Opt, Shift; separated by '-' (not '+').");
+            console.error(`Unable to parse key binding '${key}' for command '${commandID}'. Permitted modifiers: Ctrl, Cmd, Alt, Opt, Shift; separated by '-' (not '+').`);
             return null;
+        }
+        function isSingleCharAZ(str) {
+            return /^[A-Z]$/i.test(str);
+        }
+        const keySplit = normalized.split("-");
+        if((keySplit.length ===2 && keySplit[0] === 'Alt' && isSingleCharAZ(keySplit[1])) ||
+            (keySplit.length ===3 && keySplit[0] === 'Alt' && keySplit[1] === 'Shift' && isSingleCharAZ(keySplit[2]))){
+            console.error(`Key binding '${normalized}' for command '${commandID}' may cause issues. The key combinations starting with 'Alt-<letter>' and 'Alt-Shift-<letter>' are reserved. On macOS, they are used for AltGr internationalization, and on Windows/Linux, they are used for menu navigation shortcuts.`);
         }
 
         // check for duplicate key bindings
@@ -763,7 +774,7 @@ define(function (require, exports, module) {
         command = CommandManager.get(commandID);
 
         if (command) {
-            command.trigger("keyBindingAdded", result);
+            command.trigger(EVENT_KEY_BINDING_ADDED, result, commandID);
         }
 
         return result;
@@ -936,6 +947,23 @@ define(function (require, exports, module) {
         bindings = _commandMap[commandID];
         return bindings || [];
     }
+
+    /**
+     * Retrieves the platform-specific string representation of the key bindings for a specified command.
+     * This function is useful for displaying the keyboard shortcut associated with a given command ID to the user.
+     * If a key binding is found for the command, it returns the formatted key descriptor. Otherwise, it returns null.
+     *
+     * @param {string} commandID - The unique identifier of the command for which the key binding is to be retrieved.
+     * @returns {string|null} The formatted key binding as a string if available; otherwise, null.
+     */
+    function getKeyBindingsDisplay(commandID) {
+        let shortCut = getKeyBindings(commandID);
+        if (shortCut && shortCut[0] && shortCut[0].displayKey) {
+            return formatKeyDescriptor(shortCut[0].displayKey);
+        }
+        return null;
+    }
+
 
     /**
      * Adds default key bindings when commands are registered to CommandManager
@@ -1479,8 +1507,13 @@ define(function (require, exports, module) {
     exports.removeBinding = removeBinding;
     exports.formatKeyDescriptor = formatKeyDescriptor;
     exports.getKeyBindings = getKeyBindings;
+    exports.getKeyBindingsDisplay = getKeyBindingsDisplay;
     exports.addGlobalKeydownHook = addGlobalKeydownHook;
     exports.removeGlobalKeydownHook = removeGlobalKeydownHook;
+
+    // public events
+    exports.EVENT_KEY_BINDING_ADDED = EVENT_KEY_BINDING_ADDED;
+    exports.EVENT_KEY_BINDING_REMOVED = EVENT_KEY_BINDING_REMOVED;
 
     /**
      * Use windows-specific bindings if no other are found (e.g. Linux).

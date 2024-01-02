@@ -705,6 +705,12 @@ define(function (require, exports, module) {
 
     function activeEditorChangeHandler(event, current, previous) {
         if (current) {
+            current.off("editorChange", _handleChange);
+            current.off("keydown",  _handleKeydownEvent);
+            current.off("keypress", _handleKeypressEvent);
+            current.off("keyup",    _handleKeyupEvent);
+            current.off("cursorActivity", _handleCursorActivity);
+
             current.on("editorChange", _handleChange);
             current.on("keydown",  _handleKeydownEvent);
             current.on("keypress", _handleKeypressEvent);
