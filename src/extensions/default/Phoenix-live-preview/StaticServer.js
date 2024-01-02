@@ -200,14 +200,6 @@ define(function (require, exports, module) {
         BaseServer.prototype.clear.call(this);
     };
 
-    /**
-     * @private
-     * Send HTTP response data back to the StaticServerSomain
-     */
-    StaticServer.prototype._send = function (location, response) {
-        this._nodeDomain.exec("writeFilteredResponse", location.root, location.pathname, response);
-    };
-
     function _sendMarkdown(fullPath, requestID) {
         DocumentManager.getDocumentForPath(fullPath)
             .done(function (doc) {
