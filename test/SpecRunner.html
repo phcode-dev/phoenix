@@ -117,6 +117,7 @@
         const appLocalDirPromise =  window.__TAURI__.path.appLocalDataDir();
         const tempDirPromise = window.__TAURI__.os.tempdir();
         window._tauriBootVars = {};
+        const tauriBootStartTime = Date.now();
         window._tauriBootVarsPromise = Promise.all([appNamePromise, documentDirPromise,
           appLocalDirPromise, tempDirPromise])
                 .then((results) => {
@@ -131,6 +132,7 @@
                   //Documents dir special case for tests
                   window._tauriBootVars.appLocalDir = results[2];
                   window._tauriBootVars.tempDir = results[3];
+                  window._tauriBootVars.bootstrapTime = Date.now() - tauriBootStartTime;
                 });
       }
       setupTauriBootVars();
