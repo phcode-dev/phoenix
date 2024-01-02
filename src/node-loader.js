@@ -613,6 +613,8 @@ function nodeLoader() {
 
         window.__TAURI__.path.resolveResource("src-node/index.js")
             .then(async nodeSrcPath=>{
+                // node is designed such that it is not required at boot time to lower startup time.
+                // Keep this so to increase boot speed.
                 const inspectPort = Phoenix.isTestWindow ? getRandomNumber(5000, 50000) : 9229;
                 const argsArray = isInspectEnabled() ? [`--inspect=${inspectPort}`, nodeSrcPath] : [nodeSrcPath, ''];
                 command = window.__TAURI__.shell.Command.sidecar('phnode', argsArray);
@@ -688,6 +690,8 @@ function nodeLoader() {
                         fs.forceUseNodeWSEndpoint(true);
                         setNodeWSEndpoint(message.phoenixNodeURL);
                         resolve(message);
+                        // node is designed such that it is not required at boot time to lower startup time.
+                        // Keep this so to increase boot speed.
                         window.PhNodeEngine._nodeLoadTime = Date.now() - nodeLoadstartTime;
                     });
                 execNode(NODE_COMMANDS.SET_DEBUG_MODE, window.debugMode);
