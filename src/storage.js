@@ -278,7 +278,7 @@
         watchExternalChanges,
         unwatchExternalChanges,
         storageReadyPromise,
-        _storageBootstrapTime: Phoenix.app.getTimeSinceStartup()
+        _storageBootstrapTime: Date.now() - Phoenix.startTime
     };
     if(Phoenix.isTestWindow) {
         PhStore._setTestKey = function (testKey) {
