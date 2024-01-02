@@ -606,10 +606,12 @@ define(function (require, exports, module) {
         _createLiveDocumentForFrame(initialDoc);
 
         // start listening for requests
-        _server.start();
+        _server.start()
+            .then(()=>{
+                // open browser to the url
+                _open(initialDoc);
+            });
 
-        // open browser to the url
-        _open(initialDoc);
     }
 
     /**

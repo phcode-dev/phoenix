@@ -132,6 +132,10 @@ define(function (require, exports, module) {
             Number(healthReport["AppStartupTime"]));
         Metrics.valueEvent(PERFORMANCE, "startup", "ModuleDepsResolved",
             Number(healthReport["ModuleDepsResolved"]));
+        Metrics.valueEvent(PERFORMANCE, "startup", "PhStore", PhStore._storageBootstrapTime);
+        if(Phoenix.browser.isTauri) {
+            Metrics.valueEvent(PERFORMANCE, "startup", "tauriBoot", window._tauriBootVars.bootstrapTime);
+        }
     }
 
     // Themes
