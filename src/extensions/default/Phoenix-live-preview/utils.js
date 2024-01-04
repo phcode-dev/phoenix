@@ -44,8 +44,7 @@ define(function (require, exports, module) {
         Strings                   = brackets.getModule("strings"),
         DocumentManager     = brackets.getModule("document/DocumentManager"),
         LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
-        LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
-        LivePreviewTransport  = brackets.getModule("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport");
+        LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager");
 
     function getExtension(filePath) {
         filePath = filePath || '';
@@ -89,8 +88,10 @@ define(function (require, exports, module) {
 
     function getPageLoaderURL(url) {
         return `${Phoenix.baseURL}live-preview-loader.html?`
-            +`virtualServerURL=${encodeURIComponent(LiveDevServerManager.getStaticServerBaseURLs().baseURL)}`+
-            `&phoenixInstanceID=${Phoenix.PHOENIX_INSTANCE_ID}&initialURL=${encodeURIComponent(url)}`;
+            +`virtualServerURL=${encodeURIComponent(LiveDevServerManager.getStaticServerBaseURLs().baseURL)}`
+            +`&phoenixInstanceID=${Phoenix.PHOENIX_INSTANCE_ID}&initialURL=${encodeURIComponent(url)}`
+            +`&localMessage=${encodeURIComponent(Strings.DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE)}`
+            +`&okMessage=${encodeURIComponent(Strings.TRUST_PROJECT)}`;
     }
 
     function _isLivePreviewSupported() {
