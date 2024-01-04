@@ -137,9 +137,9 @@
                 return;
             }
             let livepreviewServerIframe = document.getElementById("live-preview-server-iframe");
-            let url = `${virtualServerURL}?parentOrigin=${location.origin}`;
+            let url = `${decodeURIComponent(virtualServerURL)}?parentOrigin=${location.origin}`;
             livepreviewServerIframe.addEventListener('load', function() {
-                document.getElementById('previewFrame').src = initialURL;
+                document.getElementById('previewFrame').src = decodeURIComponent(initialURL);
                 setupNavigationWatcher(phoenixInstanceID);
             });
             livepreviewServerIframe.setAttribute("src", url);

@@ -70,6 +70,9 @@ define(function (require, exports, module) {
     </iframe>
     `;
 
+    const LOADER_BROADCAST_ID = `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}`;
+    const navigatorChannel = new BroadcastChannel(LOADER_BROADCAST_ID);
+
     ExtensionInterface.registerExtensionInterface(
         ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW, exports);
 
@@ -171,23 +174,17 @@ define(function (require, exports, module) {
     }
 
     function _getTabNavigationURL(url) {
-        let details = LiveDevelopment.getLivePreviewDetails(),
-            openURL = new URL(url);
+        let openURL = new URL(url);
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
         openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        openURL = openURL.href;
-        if(details.URL !== url) {
-            openURL = utils.getPageLoaderURL(url);
-        }
-        return openURL;
+        return  utils.getPageLoaderURL(openURL.href);
     }
 
     function _redirectAllTabs(newURL) {
-        const openURL = _getTabNavigationURL(newURL);
-        StaticServer.messageToLivePreviewTabs({
-            type: NAVIGATOR_REDIRECT_PAGE,
-            URL: openURL
+        navigatorChannel.postMessage({
+            type: 'REDIRECT_PAGE',
+            url: newURL
         });
     }
 
@@ -284,8 +281,7 @@ define(function (require, exports, module) {
             newIframe.insertAfter($iframe);
             $iframe.remove();
             $iframe = newIframe;
-            const iframeURL = utils.isImage(previewDetails.fullPath) ? _getTabNavigationURL(newSrc) : newSrc;
-            $iframe.attr('src', iframeURL);
+            $iframe.attr('src', newSrc);
         }
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render",
             utils.getExtension(previewDetails.fullPath));
