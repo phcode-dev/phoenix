@@ -60,6 +60,7 @@ define(function (require, exports, module) {
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel",
         IFRAME_EVENT_SERVER_READY = 'SERVER_READY';
+    const EVENT_UPDATE_TITLE_ICON = 'UPDATE_TITLE_AND_ICON';
     let serverReady = false;
     const LIVE_PREVIEW_IFRAME_HTML = `
     <iframe id="panel-live-preview-frame" title="Live Preview" style="border: none"
@@ -393,6 +394,15 @@ define(function (require, exports, module) {
         StaticServer.on(IFRAME_EVENT_SERVER_READY, function (_evt, event) {
             serverReady = true;
             _loadPreview(true);
+        });
+        StaticServer.on(EVENT_UPDATE_TITLE_ICON, function(_ev, event){
+            const title = event.data.message.title;
+            const faviconBase64 = event.data.message.faviconBase64;
+            navigatorChannel.postMessage({
+                type: 'UPDATE_TITLE_ICON',
+                title,
+                faviconBase64
+            });
         });
 
         let consecutiveEmptyClientsCount = 0;
