@@ -230,7 +230,8 @@ define(function (require, exports, module) {
             $iframe.attr('srcdoc', null);
         };
 
-        const popoutSupported = Phoenix.browser.isTauri || Phoenix.browser.desktop.isChromeBased;
+        const popoutSupported = Phoenix.browser.isTauri
+            || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
         if(!popoutSupported){
             // live preview can be popped out currently in only chrome based browsers. The cross domain iframe
             // that serves the live preview(phcode.live) is sandboxed to the tab in which phcode.dev resides.
@@ -301,7 +302,11 @@ define(function (require, exports, module) {
     }
 
     let livePreviewEnabledOnProjectSwitch = false;
-    async function _projectOpened() {
+    async function _projectOpened(_evt, projectRoot) {
+        navigatorChannel.postMessage({
+            type: 'PROJECT_SWITCH',
+            projectRoot: projectRoot.fullPath
+        });
         if(urlPinned){
             _togglePinUrl();
         }

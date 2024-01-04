@@ -91,6 +91,7 @@ define(function (require, exports, module) {
             +`virtualServerURL=${encodeURIComponent(LiveDevServerManager.getStaticServerBaseURLs().baseURL)}`
             +`&phoenixInstanceID=${Phoenix.PHOENIX_INSTANCE_ID}&initialURL=${encodeURIComponent(url)}`
             +`&localMessage=${encodeURIComponent(Strings.DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE)}`
+            +`&initialProjectRoot=${encodeURIComponent(ProjectManager.getProjectRoot().fullPath)}`
             +`&okMessage=${encodeURIComponent(Strings.TRUST_PROJECT)}`;
     }
 
