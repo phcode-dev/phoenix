@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phoenix Live Preview Loader...</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Removes the default border around an iframe */
+        }
+    </style>
+    <script>
+        const TRUSTED_ORIGINS = {
+            'http://localhost:8000': true, // phcode dev server
+            'http://localhost:8001': true, // phcode dev live preview server
+            'http://localhost:5000': true, // playwright tests
+            'http://127.0.0.1:8000': true, // phcode dev server
+            'http://127.0.0.1:8001': true, // phcode dev live preview server
+            'http://127.0.0.1:5000': true, // playwright tests
+            'https://phcode.live': true, // phcode prod live preview server
+            'https://phcode.dev': true,
+            'https://dev.phcode.dev': true,
+            'https://staging.phcode.dev': true,
+            'https://create.phcode.dev': true
+        };
+
+        const pageLoaderID = crypto.randomUUID();
+        function setupNavigationWatcher(controllingPhoenixInstanceID) {
+            let livepreviewServerIframe = document.getElementById("live-preview-server-iframe");
+            const LOG_LIVE_PREVIEW_KEY= "logLivePreview";
+            let loggingEnabled = localStorage.getItem(LOG_LIVE_PREVIEW_KEY) || "false";
+            const isLoggingEnabled = loggingEnabled.toLowerCase() === 'true';
+            function _debugLog(...args) {
+                if(isLoggingEnabled) {
+                    console.log(...args);
+                }
+            }
+            const LOADER_BROADCAST_ID = `live-preview-loader-${controllingPhoenixInstanceID}`;
+            const navigatorChannel = new BroadcastChannel(LOADER_BROADCAST_ID);
+            const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${controllingPhoenixInstanceID}`;
+            const livePreviewChannel = new BroadcastChannel(LIVE_PREVIEW_MESSENGER_CHANNEL);
+            navigatorChannel.onmessage = (event) => {
+                _debugLog("Live Preview loader channel: Browser received event from Phoenix: ", JSON.stringify(event.data));
+                const type = event.data.type;
+                switch (type) {
+                    case "REDIRECT_PAGE":
+                        const url = event.data.url;
+                        _debugLog("Loading page: ", url);
+                        document.getElementById("previewFrame").src = url;
+                        break;
+                    default:
+                        console.error("Unknown live preivew broadcast message received!: ", event);
+                }
+            }
+            livePreviewChannel.onmessage = (event) => {
+                _debugLog("Live Preview message channel: Browser received event from Phoenix: ", JSON.stringify(event.data));
+                if(event.data.pageLoaderID && event.data.pageLoaderID !== pageLoaderID){
+                    // this message is not for this page loader window.
+                    return;
+                }
+                // This is intended to the embedded live preview server frame which processes the request. just pass
+                livepreviewServerIframe.contentWindow.postMessage(event.data.data, '*');
+            }
+            // These messages are sent from either the live preview frame or the server frame.
+            window.addEventListener('message', function(event) {
+                // Security check: ensure the message is from the expected domain
+                if (!TRUSTED_ORIGINS[event.origin]) {
+                    return;
+                }
+
+                // The live preview frame will send us its title and favicon for us to set the window
+                // title and favicon. IF its that message, then, set it up
+                if (event.data.title && event.data.faviconBase64) {
+                    // Update the title of the parent page
+                    document.title = event.data.title;
+
+                    // Update the favicon
+                    let link = document.querySelector("link[rel~='icon']");
+                    if (!link) {
+                        link = document.createElement('link');
+                        link.rel = 'icon';
+                        document.getElementsByTagName('head')[0].appendChild(link);
+                    }
+                    link.href = event.data.faviconBase64;
+                } else {
+                    // this is for phoenix to process, pass it on
+                    livePreviewChannel.postMessage({
+                        pageLoaderID: pageLoaderID,
+                        data: event.data
+                    });
+                }
+            });
+
+            // todo how ot send the title and favicon below
+            // function convertImgToBase64(url, callback) {
+            //     var canvas = document.createElement('CANVAS');
+            //     var ctx = canvas.getContext('2d');
+            //     var img = new Image();
+            //     img.crossOrigin = 'Anonymous';
+            //     img.onload = function() {
+            //         canvas.height = img.height;
+            //         canvas.width = img.width;
+            //         ctx.drawImage(img, 0, 0);
+            //         var dataURL = canvas.toDataURL();
+            //         callback(dataURL);
+            //         canvas = null;
+            //     };
+            //     img.src = url;
+            // }
+            //
+            // window.onload = function() {
+            //     var faviconUrl = document.querySelector("link[rel~='icon']").href;
+            //     convertImgToBase64(faviconUrl, function(base64) {
+            //         window.parent.postMessage({
+            //             title: document.title,
+            //             faviconBase64: base64
+            //         }, '*'); // Replace '*' with actual parent origin for security
+            //     });
+            // };
+
+        }
+
+        function navigateToInitialURL() {
+            const queryParams = new URLSearchParams(window.location.search);
+            const initialURL = queryParams.get('initialURL');
+            const phoenixInstanceID = queryParams.get('phoenixInstanceID');
+            const virtualServerURL = queryParams.get('virtualServerURL');
+            if(!phoenixInstanceID || !initialURL || !virtualServerURL){
+                console.error("Expected required query strings: phoenixInstanceID, initialURL, virtualServerURL");
+                return;
+            }
+            let livepreviewServerIframe = document.getElementById("live-preview-server-iframe");
+            let url = `${virtualServerURL}?parentOrigin=${location.origin}`;
+            livepreviewServerIframe.addEventListener('load', function() {
+                document.getElementById('previewFrame').src = initialURL;
+                setupNavigationWatcher(phoenixInstanceID);
+            });
+            livepreviewServerIframe.setAttribute("src", url);
+        }
+
+    </script>
+</head>
+<body onload="navigateToInitialURL()">
+    <iframe id="live-preview-server-iframe"
+            title="live preview server"
+            src="about:blank"
+            style="width:100%;"
+            sandbox="allow-same-origin allow-scripts"
+            hidden>
+    </iframe>
+    <iframe id="previewFrame"
+            title="live preview"
+            src="about:blank"
+            sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-pointer-lock">
+    </iframe>
+</body>
+</html>

@@ -329,7 +329,7 @@ define(function (require, exports, module) {
      * If all you need is the Document's getText() value, use the faster getDocumentText() instead.
      *
      * @param {!string} fullPath
-     * @param {!object} fileObj actual File|RemoteFile or some other protocol adapter handle
+     * @param {object?} fileObj actual File|RemoteFile or some other protocol adapter handle
      * @return {$.Promise} A promise object that will be resolved with the Document, or rejected
      *      with a FileSystemError if the file is not yet open and can't be read from disk.
      */
