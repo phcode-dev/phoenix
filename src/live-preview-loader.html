@@ -130,7 +130,24 @@
                         }
                         _debugLog("Loading page: ", url);
                         document.getElementById("previewFrame").src = url;
-                        break;
+                        return;
+                    case "UPDATE_TITLE_ICON":
+                        // The live preview frame will send us its title and favicon for us to set the window
+                        // title and favicon. If it is that message, then, set it up
+                        const title = event.data.title;
+                        const faviconBase64 = event.data.faviconBase64;
+                        title && (document.title = title);
+                        if(faviconBase64){
+                            // Update the favicon
+                            let link = document.querySelector("link[rel~='icon']");
+                            if (!link) {
+                                link = document.createElement('link');
+                                link.rel = 'icon';
+                                document.getElementsByTagName('head')[0].appendChild(link);
+                            }
+                            link.href = event.data.faviconBase64;
+                        }
+                        return;
                     case "PROJECT_SWITCH":
                         currentProjectRoot = event.data.projectRoot;
                         const dialog = document.getElementById('outer-container');
@@ -146,7 +163,7 @@
                         if(dialog){
                             dialog.style.display = 'flex';
                         }
-                        break;
+                        return;
                     default:
                         console.error("Unknown live preivew broadcast message received!: ", event);
                 }
@@ -167,27 +184,11 @@
                     return;
                 }
 
-                // The live preview frame will send us its title and favicon for us to set the window
-                // title and favicon. IF its that message, then, set it up
-                if (event.data.title && event.data.faviconBase64) {
-                    // Update the title of the parent page
-                    document.title = event.data.title;
-
-                    // Update the favicon
-                    let link = document.querySelector("link[rel~='icon']");
-                    if (!link) {
-                        link = document.createElement('link');
-                        link.rel = 'icon';
-                        document.getElementsByTagName('head')[0].appendChild(link);
-                    }
-                    link.href = event.data.faviconBase64;
-                } else {
-                    // this is for phoenix to process, pass it on
-                    livePreviewChannel.postMessage({
-                        pageLoaderID: pageLoaderID,
-                        data: event.data
-                    });
-                }
+                // this is for phoenix to process, pass it on
+                livePreviewChannel.postMessage({
+                    pageLoaderID: pageLoaderID,
+                    data: event.data
+                });
             });
 
             document.getElementById('okButton').addEventListener('click', function() {
@@ -197,33 +198,6 @@
                 securityAlertAcknowledged = true;
                 trustedProjects[currentProjectRoot] = true;
             });
-
-            // todo how ot send the title and favicon below
-            // function convertImgToBase64(url, callback) {
-            //     var canvas = document.createElement('CANVAS');
-            //     var ctx = canvas.getContext('2d');
-            //     var img = new Image();
-            //     img.crossOrigin = 'Anonymous';
-            //     img.onload = function() {
-            //         canvas.height = img.height;
-            //         canvas.width = img.width;
-            //         ctx.drawImage(img, 0, 0);
-            //         var dataURL = canvas.toDataURL();
-            //         callback(dataURL);
-            //         canvas = null;
-            //     };
-            //     img.src = url;
-            // }
-            //
-            // window.onload = function() {
-            //     var faviconUrl = document.querySelector("link[rel~='icon']").href;
-            //     convertImgToBase64(faviconUrl, function(base64) {
-            //         window.parent.postMessage({
-            //             title: document.title,
-            //             faviconBase64: base64
-            //         }, '*'); // Replace '*' with actual parent origin for security
-            //     });
-            // };
 
         }
 
