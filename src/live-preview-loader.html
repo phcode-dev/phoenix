@@ -102,6 +102,8 @@
         const pageLoaderID = crypto.randomUUID();
         let securityAlertAcknowledged = false;
         let previewURL;
+        let trustedProjects = [];
+        let currentProjectRoot;
         function setupNavigationWatcher(controllingPhoenixInstanceID) {
             let livepreviewServerIframe = document.getElementById("live-preview-server-iframe");
             const LOG_LIVE_PREVIEW_KEY= "logLivePreview";
@@ -128,6 +130,22 @@
                         }
                         _debugLog("Loading page: ", url);
                         document.getElementById("previewFrame").src = url;
+                        break;
+                    case "PROJECT_SWITCH":
+                        currentProjectRoot = event.data.projectRoot;
+                        const dialog = document.getElementById('outer-container');
+                        if(trustedProjects[currentProjectRoot] && dialog){
+                            dialog.style.display = 'none';
+                            document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
+                            securityAlertAcknowledged = true;
+                            return;
+                        }
+                        securityAlertAcknowledged = false;
+                        _debugLog("Project switched. Disable live preview tabs for security on untrusted project.");
+                        document.getElementById("previewFrame").src = 'about:blank';
+                        if(dialog){
+                            dialog.style.display = 'flex';
+                        }
                         break;
                     default:
                         console.error("Unknown live preivew broadcast message received!: ", event);
@@ -172,6 +190,14 @@
                 }
             });
 
+            document.getElementById('okButton').addEventListener('click', function() {
+                const dialog = document.getElementById('outer-container');
+                dialog.style.display = 'none';
+                document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
+                securityAlertAcknowledged = true;
+                trustedProjects[currentProjectRoot] = true;
+            });
+
             // todo how ot send the title and favicon below
             // function convertImgToBase64(url, callback) {
             //     var canvas = document.createElement('CANVAS');
@@ -208,6 +234,7 @@
             const virtualServerURL = queryParams.get('virtualServerURL');
             const localiseMessage = queryParams.get('localMessage');
             const okMessage = queryParams.get('okMessage');
+            currentProjectRoot = queryParams.get('initialProjectRoot');
 
             if(!phoenixInstanceID || !initialURL || !virtualServerURL){
                 console.error("Expected required query strings: phoenixInstanceID, initialURL, virtualServerURL");
@@ -222,13 +249,7 @@
 
             okMessage && (document.getElementById('okButton').textContent = decodeURIComponent(okMessage));
             localiseMessage && (document.getElementById('dialog-message').textContent = decodeURIComponent(localiseMessage));
-            const dialog = document.getElementById('outer-container');
             previewURL = decodeURIComponent(initialURL);
-            document.getElementById('okButton').addEventListener('click', function() {
-                dialog.style.display = 'none';
-                document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
-                securityAlertAcknowledged = true;
-            });
         }
 
     </script>
