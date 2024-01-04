@@ -43,8 +43,7 @@ define(function (require, exports, module) {
         HilightJSText = require("text!../../../thirdparty/highlight.js/highlight.min.js"),
         GFMCSSText = require("text!../../../thirdparty/gfm.min.css"),
         markdownHTMLTemplate = require("text!markdown.html"),
-        redirectionHTMLTemplate = require("text!redirectPage.html"),
-        utils = require('utils');
+        redirectionHTMLTemplate = require("text!redirectPage.html");
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
     const EVENT_GET_CONTENT = 'GET_CONTENT';
@@ -388,6 +387,12 @@ define(function (require, exports, module) {
     };
 
     function getContent(path, url) {
+        if(!_staticServerInstance){
+            return;
+        }
+        if(!url.startsWith(_staticServerInstance._baseUrl)) {
+            return Promise.reject("Not serving content as url belongs to another phcode instance: " + url);
+        }
         if(_isMarkdownFile(path)){
             return _getMarkdown(path);
         }
@@ -472,6 +477,7 @@ define(function (require, exports, module) {
             let timeDiff = endTime - livePreviewTabs.get(tab).lastSeen; // in ms
             if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
                 livePreviewTabs.delete(tab);
+                // todo fix the image load and after five secs live preview off bug
                 exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
             }
         }
