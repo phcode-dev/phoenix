@@ -314,7 +314,7 @@ define(function (require, exports, module) {
         // strip this query param as the redirection will be done by the page loader and not the content iframe.
         url.searchParams.delete(PHCODE_LIVE_PREVIEW_QUERY_PARAM);
         let templateVars = {
-            redirectURL: utils.getPageLoaderURL(url.href)
+            redirectURL: url.href
         };
         return Mustache.render(redirectionHTMLTemplate, templateVars);
     }

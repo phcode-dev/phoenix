@@ -88,8 +88,9 @@ define(function (require, exports, module) {
     }
 
     function getPageLoaderURL(url) {
-        return `${LiveDevServerManager.getStaticServerBaseURLs().baseURL}pageLoader.html?`
-            +`broadcastChannel=${LivePreviewTransport.BROADCAST_CHANNEL_ID}&URL=${encodeURIComponent(url)}`;
+        return `${Phoenix.baseURL}live-preview-loader.html?`
+            +`virtualServerURL=${encodeURIComponent(LiveDevServerManager.getStaticServerBaseURLs().baseURL)}`+
+            `&phoenixInstanceID=${Phoenix.PHOENIX_INSTANCE_ID}&initialURL=${encodeURIComponent(url)}`;
     }
 
     function _isLivePreviewSupported() {
