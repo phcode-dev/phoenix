@@ -214,11 +214,9 @@
                 console.error("Expected required query strings: phoenixInstanceID, initialURL, virtualServerURL");
                 return;
             }
+            setupNavigationWatcher(phoenixInstanceID);
             let livepreviewServerIframe = document.getElementById("live-preview-server-iframe");
             let serverURL = `${decodeURIComponent(virtualServerURL)}?parentOrigin=${location.origin}`;
-            livepreviewServerIframe.addEventListener('load', function() {
-                setupNavigationWatcher(phoenixInstanceID);
-            });
             livepreviewServerIframe.setAttribute("src", serverURL);
 
             okMessage && (document.getElementById('okButton').textContent = decodeURIComponent(okMessage));
