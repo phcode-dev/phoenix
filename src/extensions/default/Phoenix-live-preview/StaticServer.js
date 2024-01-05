@@ -38,6 +38,7 @@ define(function (require, exports, module) {
         EventManager = brackets.getModule("utils/EventManager"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         Strings = brackets.getModule("strings"),
+        utils = require('utils'),
         BootstrapCSSText = require("text!../../../thirdparty/bootstrap/bootstrap.min.css"),
         GithubCSSText = require("text!../../../thirdparty/highlight.js/styles/github.min.css"),
         HilightJSText = require("text!../../../thirdparty/highlight.js/highlight.min.js"),
@@ -49,9 +50,29 @@ define(function (require, exports, module) {
     const EVENT_GET_CONTENT = 'GET_CONTENT';
     const EVENT_TAB_ONLINE = 'TAB_ONLINE';
     const EVENT_REPORT_ERROR = 'REPORT_ERROR';
+    const EVENT_UPDATE_TITLE_ICON = 'UPDATE_TITLE_AND_ICON';
 
     EventDispatcher.makeEventDispatcher(exports);
     const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
+
+    const LOADER_BROADCAST_ID = `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}`;
+    const navigatorChannel = new BroadcastChannel(LOADER_BROADCAST_ID);
+
+    const livePreviewTabs = new Map();
+    navigatorChannel.onmessage = (event) => {
+        window.logger.livePreview.log("Live Preview navigator channel: Phoenix received event from tab: ", event);
+        const type = event.data.type;
+        switch (type) {
+        case 'TAB_LOADER_ONLINE':
+            livePreviewTabs.set(event.data.pageLoaderID, {
+                lastSeen: new Date(),
+                URL: event.data.URL,
+                navigationTab: true
+            });
+            return;
+        default: return; // ignore messages not intended for us.
+        }
+    };
 
     const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
     const livePreviewChannel = new BroadcastChannel(LIVE_PREVIEW_MESSENGER_CHANNEL);
@@ -459,7 +480,6 @@ define(function (require, exports, module) {
         });
     });
 
-    const livePreviewTabs = new Map();
     exports.on(EVENT_TAB_ONLINE, function(_ev, event){
         livePreviewTabs.set(event.data.message.clientID, {
             lastSeen: new Date(),
@@ -472,10 +492,15 @@ define(function (require, exports, module) {
     setInterval(()=>{
         let endTime = new Date();
         for(let tab of livePreviewTabs.keys()){
-            let timeDiff = endTime - livePreviewTabs.get(tab).lastSeen; // in ms
+            const tabInfo = livePreviewTabs.get(tab);
+            let timeDiff = endTime - tabInfo.lastSeen; // in ms
             if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
                 livePreviewTabs.delete(tab);
-                exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
+                // the parent navigationTab `phcode.dev/live-preview-loader.html` which loads the live preview tab also
+                // is in this list. We should not raise browser close event if its just a live-preview-loader tab.
+                if(!tabInfo.navigationTab) {
+                    exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
+                }
             }
         }
     }, 1000);
@@ -498,9 +523,50 @@ define(function (require, exports, module) {
         _sendToLivePreviewServerTabs(message);
     }
 
+    function redirectAllTabs(newURL) {
+        navigatorChannel.postMessage({
+            type: 'REDIRECT_PAGE',
+            url: newURL
+        });
+    }
+
+    function _projectOpened(_evt, projectRoot) {
+        navigatorChannel.postMessage({
+            type: 'PROJECT_SWITCH',
+            projectRoot: projectRoot.fullPath
+        });
+    }
+
+    exports.on(EVENT_UPDATE_TITLE_ICON, function(_ev, event){
+        const title = event.data.message.title;
+        const faviconBase64 = event.data.message.faviconBase64;
+        navigatorChannel.postMessage({
+            type: 'UPDATE_TITLE_ICON',
+            title,
+            faviconBase64
+        });
+    });
+
+    ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
+
+    function getTabPopoutURL(url) {
+        let openURL = new URL(url);
+        // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
+        // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
+        openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
+        return  utils.getPageLoaderURL(openURL.href);
+    }
+
+    function hasActiveLivePreviews() {
+        return livePreviewTabs.size > 0;
+    }
+
     LiveDevelopment.setLivePreviewTransportBridge(exports);
     exports.StaticServer = StaticServer;
     exports.messageToLivePreviewTabs = messageToLivePreviewTabs;
     exports.livePreviewTabs = livePreviewTabs;
+    exports.redirectAllTabs = redirectAllTabs;
+    exports.getTabPopoutURL = getTabPopoutURL;
+    exports.hasActiveLivePreviews = hasActiveLivePreviews;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
 });
