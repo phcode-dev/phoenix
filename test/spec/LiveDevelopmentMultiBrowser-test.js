@@ -479,8 +479,7 @@ define(function (require, exports, module) {
             await awaits(500);
             iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             let srcURL = new URL(iFrame.src);
-            expect(srcURL.pathname.endsWith("pageLoader.html")).toBeTrue();
-            expect(srcURL.searchParams.get("URL").endsWith("sub/icon_chevron.png")).toBeTrue();
+            expect(srcURL.pathname.endsWith("sub/icon_chevron.png")).toBeTrue();
 
             // now switch back to old file
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
@@ -511,7 +510,7 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
-        it("should pin live previews ping html file", async function () {
+        it("should pin live previews pin html file", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
@@ -534,8 +533,7 @@ define(function (require, exports, module) {
             await awaits(1000);
             let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
             let srcURL = new URL(outerIFrame.src);
-            expect(srcURL.pathname.endsWith("pageLoader.html")).toBeTrue();
-            expect(srcURL.searchParams.get("URL").endsWith("sub/icon_chevron.png")).toBeTrue();
+            expect(srcURL.pathname.endsWith("sub/icon_chevron.png")).toBeTrue();
 
             await endPreviewSession();
         }, 30000);

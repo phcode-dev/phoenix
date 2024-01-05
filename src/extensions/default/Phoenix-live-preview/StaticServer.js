@@ -389,7 +389,7 @@ define(function (require, exports, module) {
 
     function getContent(path, url) {
         if(!_staticServerInstance){
-            return;
+            return Promise.reject("Static serve not started!");
         }
         if(!url.startsWith(_staticServerInstance._baseUrl)) {
             return Promise.reject("Not serving content as url belongs to another phcode instance: " + url);
