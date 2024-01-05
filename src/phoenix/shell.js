@@ -149,10 +149,10 @@ Phoenix.app = {
                 .catch(reject);
         });
     },
-    openURLInDefaultBrowser: function (url){
+    openURLInDefaultBrowser: function (url, tabIdentifier='_blank'){
         return new Promise((resolve, reject)=>{
             if(!window.__TAURI__) {
-                resolve(window.open(url, '_blank', 'noopener,noreferrer'));
+                resolve(window.open(url, tabIdentifier, 'noopener,noreferrer'));
                 return;
             }
             if( !(url.toLowerCase().startsWith("http://") || url.toLowerCase().startsWith("https://")) ) {

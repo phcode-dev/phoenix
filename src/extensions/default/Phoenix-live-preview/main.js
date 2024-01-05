@@ -55,12 +55,12 @@ define(function (require, exports, module) {
         Metrics            = brackets.getModule("utils/Metrics"),
         LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
         LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
-        StaticServer         = require("StaticServer"),
+        NativeApp            = brackets.getModule("utils/NativeApp"),
+        StaticServer   = require("StaticServer"),
         utils = require('utils');
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel",
         IFRAME_EVENT_SERVER_READY = 'SERVER_READY';
-    const EVENT_UPDATE_TITLE_ICON = 'UPDATE_TITLE_AND_ICON';
     let serverReady = false;
     const LIVE_PREVIEW_IFRAME_HTML = `
     <iframe id="panel-live-preview-frame" title="Live Preview" style="border: none"
@@ -69,36 +69,6 @@ define(function (require, exports, module) {
              sandbox="allow-same-origin allow-scripts allow-forms allow-modals allow-pointer-lock">
     </iframe>
     `;
-
-    const LOADER_BROADCAST_ID = `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}`;
-    const navigatorChannel = new BroadcastChannel(LOADER_BROADCAST_ID);
-
-    const livePreviewTabs = new Map();
-    navigatorChannel.onmessage = (event) => {
-        window.logger.livePreview.log("Live Preview navigator channel: Phoenix received event from tab: ", event);
-        const type = event.data.type;
-        switch (type) {
-        case 'TAB_LOADER_ONLINE':
-            livePreviewTabs.set(event.data.pageLoaderID, {
-                lastSeen: new Date(),
-                URL: event.data.URL
-            });
-            return;
-        default: return; // ignore messages not intended for us.
-        }
-    };
-
-    // If we didn't receive heartbeat message from a tab for 10 seconds, we assume tab closed
-    const TAB_HEARTBEAT_TIMEOUT = 10000; // in millis secs
-    setInterval(()=>{
-        let endTime = new Date();
-        for(let tab of livePreviewTabs.keys()){
-            let timeDiff = endTime - livePreviewTabs.get(tab).lastSeen; // in ms
-            if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
-                livePreviewTabs.delete(tab);
-            }
-        }
-    }, 1000);
 
     ExtensionInterface.registerExtensionInterface(
         ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW, exports);
@@ -164,7 +134,7 @@ define(function (require, exports, module) {
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
         } else if(!visible && LiveDevelopment.isActive()
-            && StaticServer.livePreviewTabs.size === 0 && livePreviewTabs.size === 0) {
+            && !StaticServer.hasActiveLivePreviews()) {
             LiveDevelopment.closeLivePreview();
         }
     }
@@ -201,25 +171,10 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
     }
 
-    function _getTabNavigationURL(url) {
-        let openURL = new URL(url);
-        // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
-        // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
-        openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        return  utils.getPageLoaderURL(openURL.href);
-    }
-
-    function _redirectAllTabs(newURL) {
-        navigatorChannel.postMessage({
-            type: 'REDIRECT_PAGE',
-            url: newURL
-        });
-    }
-
     function _popoutLivePreview() {
         // We cannot use $iframe.src here if panel is hidden
-        const openURL = _getTabNavigationURL(currentLivePreviewURL);
-        open(openURL, "livePreview", "noopener,noreferrer");
+        const openURL = StaticServer.getTabPopoutURL(currentLivePreviewURL);
+        NativeApp.openURLInDefaultBrowser(openURL, "livePreview");
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
         _loadPreview(true);
         _setPanelVisibility(false);
@@ -290,7 +245,7 @@ define(function (require, exports, module) {
     async function _loadPreview(force) {
         // we wait till the first server ready event is received till we render anything. else a 404-page may
         // briefly flash on first load of phoenix as we try to load the page before the server is available.
-        const isPreviewLoadable = serverReady && (panel.isVisible() || StaticServer.livePreviewTabs.size > 0 || livePreviewTabs.size > 0);
+        const isPreviewLoadable = serverReady && (panel.isVisible() || StaticServer.hasActiveLivePreviews());
         if(!isPreviewLoadable){
             return;
         }
@@ -314,7 +269,7 @@ define(function (require, exports, module) {
         }
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render",
             utils.getExtension(previewDetails.fullPath));
-        _redirectAllTabs(newSrc);
+        StaticServer.redirectAllTabs(newSrc);
     }
 
     async function _projectFileChanges(evt, changedFile) {
@@ -331,11 +286,7 @@ define(function (require, exports, module) {
     }
 
     let livePreviewEnabledOnProjectSwitch = false;
-    async function _projectOpened(_evt, projectRoot) {
-        navigatorChannel.postMessage({
-            type: 'PROJECT_SWITCH',
-            projectRoot: projectRoot.fullPath
-        });
+    async function _projectOpened(_evt) {
         if(urlPinned){
             _togglePinUrl();
         }
@@ -353,7 +304,7 @@ define(function (require, exports, module) {
 
     function _activeDocChanged() {
         if(!LiveDevelopment.isActive() && !livePreviewEnabledOnProjectSwitch
-            && (panel.isVisible() || StaticServer.livePreviewTabs.size > 0 || livePreviewTabs.size > 0)) {
+            && (panel.isVisible() || StaticServer.hasActiveLivePreviews())) {
             // we do this only once after project switch if live preview for a doc is not active.
             LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
@@ -423,19 +374,10 @@ define(function (require, exports, module) {
             serverReady = true;
             _loadPreview(true);
         });
-        StaticServer.on(EVENT_UPDATE_TITLE_ICON, function(_ev, event){
-            const title = event.data.message.title;
-            const faviconBase64 = event.data.message.faviconBase64;
-            navigatorChannel.postMessage({
-                type: 'UPDATE_TITLE_ICON',
-                title,
-                faviconBase64
-            });
-        });
 
         let consecutiveEmptyClientsCount = 0;
         setInterval(()=>{
-            if(StaticServer.livePreviewTabs.size === 0 && livePreviewTabs.size === 0){
+            if(!StaticServer.hasActiveLivePreviews()){
                 consecutiveEmptyClientsCount ++;
             } else {
                 consecutiveEmptyClientsCount = 0;
