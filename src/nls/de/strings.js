@@ -754,6 +754,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_HEADING": "Äh oh!<br> Ihr aktueller Browser unterstützt keine Live-Vorschau.",
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Holen Sie sich das beste Live-Vorschau-Erlebnis, indem Sie unsere nativen Apps für Windows, Mac und Linux von <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> herunterladen.<br>",
   "DESCRIPTION_LIVEDEV_SECURITY": "Sicherheitswarnung von phcode.dev<br><br> Bei dieser Live-Vorschau wurde versucht, auf eine Nicht-Projektdatei zuzugreifen. Zu Ihrer Sicherheit wurde der Zutritt verweigert. Seien Sie bitte vorsichtig, wenn Sie an nicht vertrauenswürdigen Projekten arbeiten.",
+  "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Sie sind dabei, eine Datei für die Live-Vorschau zu öffnen. Bitte fahren Sie nur fort, wenn Sie der Quelle dieses Projekts vertrauen. Klicken Sie auf „Projekt vertrauen“, um fortzufahren, oder schließen Sie dieses Fenster, wenn Sie der Quelle nicht vertrauen.",
+  "TRUST_PROJECT": "Vertrauensprojekt",
   "DOWNLOAD_FAILED": "Herunterladen fehlgeschlagen.",
   "DOWNLOAD_COMPLETE": "Download abgeschlossen!",
   "UPDATE_SUCCESSFUL": "Aktualisierung erfolgreich!",

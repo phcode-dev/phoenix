@@ -734,6 +734,8 @@
   "DESCRIPTION_LIVEDEV_MAIN_HEADING": "Åh åh!<br> Din nuværende browser understøtter ikke live forhåndsvisning.",
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Få den bedste live preview-oplevelse ved at downloade vores indbyggede apps til Windows, Mac og Linux fra <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY": "Sikkerhedsadvarsel fra phcode.dev<br><br> Denne live forhåndsvisning forsøgte at få adgang til en ikke-projektfil. Adgang blev nægtet af hensyn til din sikkerhed. Vær forsigtig, når du arbejder på upålidelige projekter.",
+  "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Du er ved at åbne en fil til live forhåndsvisning. Fortsæt kun, hvis du har tillid til kilden til dette projekt. Klik på 'Trust Project' for at fortsætte, eller luk dette vindue, hvis du ikke har tillid til kilden.",
+  "TRUST_PROJECT": "Tillidsprojekt",
   "DOWNLOAD_FAILED": "Download fejlede.",
   "DOWNLOAD_COMPLETE": "Download fuldført!",
   "UPDATE_SUCCESSFUL": "Opdatering lykkedes!",
