@@ -99,6 +99,18 @@
             'https://create.phcode.dev': true
         };
 
+        function isTrustedURL(url) {
+            if(!url){
+                return false;
+            }
+            for(let trustedUrl of Object.keys(TRUSTED_ORIGINS)){
+                if(url.startsWith(trustedUrl)){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         const pageLoaderID = crypto.randomUUID();
         let securityAlertAcknowledged = false;
         let previewURL;
@@ -121,23 +133,25 @@
             navigatorChannel.onmessage = (event) => {
                 _debugLog("Live Preview loader channel: Browser received event from Phoenix: ", JSON.stringify(event.data));
                 const type = event.data.type;
+                const dialog = document.getElementById('outer-container');
                 switch (type) {
                     case "REDIRECT_PAGE":
-                        const url = event.data.url;
-                        previewURL = url;
+                        previewURL = event.data.url;
                         if(!securityAlertAcknowledged){
                             return;
                         }
-                        _debugLog("Loading page: ", url);
-                        document.getElementById("previewFrame").src = url;
+                        _debugLog("Loading page: ", previewURL);
+                        if(isTrustedURL(previewURL)){
+                            document.getElementById("previewFrame").src = previewURL;
+                        }
                         return;
                     case "UPDATE_TITLE_ICON":
                         // The live preview frame will send us its title and favicon for us to set the window
                         // title and favicon. If it is that message, then, set it up
-                        const title = event.data.title;
-                        const faviconBase64 = event.data.faviconBase64;
-                        title && (document.title = title);
-                        if(faviconBase64){
+                        if(event.data.title || event.data.title === '') {
+                            document.title = event.data.title;
+                        }
+                        if(event.data.faviconBase64){
                             // Update the favicon
                             let link = document.querySelector("link[rel~='icon']");
                             if (!link) {
@@ -150,10 +164,11 @@
                         return;
                     case "PROJECT_SWITCH":
                         currentProjectRoot = event.data.projectRoot;
-                        const dialog = document.getElementById('outer-container');
                         if(trustedProjects[currentProjectRoot] && dialog){
                             dialog.style.display = 'none';
-                            document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
+                            if(isTrustedURL(previewURL)){
+                                document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
+                            }
                             securityAlertAcknowledged = true;
                             return;
                         }
@@ -203,7 +218,9 @@
             document.getElementById('okButton').addEventListener('click', function() {
                 const dialog = document.getElementById('outer-container');
                 dialog.style.display = 'none';
-                document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
+                if(isTrustedURL(previewURL)) {
+                    document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
+                }
                 securityAlertAcknowledged = true;
                 trustedProjects[currentProjectRoot] = true;
             });
@@ -226,7 +243,9 @@
             setupNavigationWatcher(phoenixInstanceID);
             let livepreviewServerIframe = document.getElementById("live-preview-server-iframe");
             let serverURL = `${decodeURIComponent(virtualServerURL)}?parentOrigin=${location.origin}`;
-            livepreviewServerIframe.setAttribute("src", serverURL);
+            if(isTrustedURL(serverURL)) {
+                livepreviewServerIframe.setAttribute("src", serverURL);
+            }
 
             okMessage && (document.getElementById('okButton').textContent = decodeURIComponent(okMessage));
             localiseMessage && (document.getElementById('dialog-message').textContent = decodeURIComponent(localiseMessage));
