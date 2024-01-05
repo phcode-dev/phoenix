@@ -79,17 +79,14 @@ define(function (require, exports, module) {
             }, pageLoaderID);
             return;
         case EVENT_GET_CONTENT:
-            const requestPath = message.path,
-                requestID = message.requestID,
-                url = message.url;
-            getContent(requestPath, url)
+            getContent(message.path,  message.url)
                 .then(response =>{
                     // response has the following attributes set
                     // response.contents: <text or arrayBuffer content>,
                     // response.path
                     // headers: {'Content-Type': 'text/html'} // optional headers
                     response.type = 'REQUEST_RESPONSE';
-                    response.requestID = requestID;
+                    response.requestID = message.requestID;
                     _sendToLivePreviewServerTabs(response, pageLoaderID);
                 })
                 .catch(console.error);
@@ -478,7 +475,6 @@ define(function (require, exports, module) {
             let timeDiff = endTime - livePreviewTabs.get(tab).lastSeen; // in ms
             if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
                 livePreviewTabs.delete(tab);
-                // todo fix the image load and after five secs live preview off bug
                 exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
             }
         }

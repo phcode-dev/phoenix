@@ -49,15 +49,15 @@
     let sentTitle, sentFavIconURL;
 
     function convertImgToBase64(url, callback) {
-        var canvas = document.createElement('CANVAS');
-        var ctx = canvas.getContext('2d');
-        var img = new Image();
+        let canvas = document.createElement('CANVAS');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
         img.crossOrigin = 'Anonymous';
         img.onload = function() {
             canvas.height = img.height;
             canvas.width = img.width;
             ctx.drawImage(img, 0, 0);
-            var dataURL = canvas.toDataURL();
+            const dataURL = canvas.toDataURL();
             callback(dataURL);
             canvas = null;
         };
