@@ -302,8 +302,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * return a page loader url after stripping the PHCODE_LIVE_PREVIEW_QUERY_PARAM
-     * "https://phcode.live/pageLoader.html?broadcastChannel=PH-697797864197_livePreview&URL=https%3A%2...
+     * return a page loader html with redirect script tag that just redirects the page to the given redirectURL.
+     * Strips the PHCODE_LIVE_PREVIEW_QUERY_PARAM in redirectURL also, indicating this is not a live previewed url.
+     *
      * @param redirectURL
      * @return {string}
      * @private
@@ -469,8 +470,8 @@ define(function (require, exports, module) {
         });
     });
 
-    // If we didn't receive heartbeat message from a tab for 5 seconds, we assume tab closed
-    const TAB_HEARTBEAT_TIMEOUT = 5000; // in millis secs
+    // If we didn't receive heartbeat message from a tab for 10 seconds, we assume tab closed
+    const TAB_HEARTBEAT_TIMEOUT = 10000; // in millis secs
     setInterval(()=>{
         let endTime = new Date();
         for(let tab of livePreviewTabs.keys()){
