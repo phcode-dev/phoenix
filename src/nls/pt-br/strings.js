@@ -754,6 +754,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_HEADING": "Ué!<br> Seu navegador atual não suporta visualização ao vivo.",
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Obtenha a melhor experiência de visualização ao vivo baixando nossos aplicativos nativos para Windows, Mac e Linux em <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY": "Aviso de segurança de phcode.dev<br><br> Esta visualização ao vivo tentou acessar um arquivo que não é do projeto. O acesso foi negado para sua segurança. Tenha cuidado ao trabalhar em projetos não confiáveis.",
+  "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Você está prestes a abrir um arquivo para visualização ao vivo. Prossiga apenas se você confiar na fonte deste projeto. Clique em 'Confiar Projeto' para continuar ou feche esta janela se não confiar na fonte.",
+  "TRUST_PROJECT": "Projeto Confiança",
   "DOWNLOAD_FAILED": "Download falhou.",
   "DOWNLOAD_COMPLETE": "Download completo!",
   "UPDATE_SUCCESSFUL": "Atualização bem sucedida!",

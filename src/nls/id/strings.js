@@ -754,6 +754,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_HEADING": "Uh oh!<br> Browser Anda saat ini tidak mendukung pratinjau langsung.",
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Dapatkan pengalaman pratinjau langsung terbaik dengan mengunduh aplikasi asli kami untuk Windows, Mac, dan Linux dari <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY": "Peringatan Keamanan dari phcode.dev<br><br> Pratinjau langsung ini mencoba mengakses file non-proyek. Akses ditolak untuk keselamatan Anda. Harap berhati-hati saat mengerjakan proyek yang tidak dipercaya.",
+  "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Anda akan membuka file untuk pratinjau langsung. Silakan lanjutkan hanya jika Anda memercayai sumber proyek ini. Klik 'Percayai Proyek' untuk melanjutkan, atau tutup jendela ini jika Anda tidak mempercayai sumbernya.",
+  "TRUST_PROJECT": "Proyek Kepercayaan",
   "DOWNLOAD_FAILED": "Unduhan gagal.",
   "DOWNLOAD_COMPLETE": "Unduh selesai!",
   "UPDATE_SUCCESSFUL": "Pembaruan berhasil!",

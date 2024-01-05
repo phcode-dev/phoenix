@@ -754,6 +754,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_HEADING": "Euh Oh !<br> Votre navigateur actuel ne prend pas en charge l&#39;aperçu en direct.",
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Obtenez la meilleure expérience de prévisualisation en direct en téléchargeant nos applications natives pour Windows, Mac et Linux à partir de <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY": "Avertissement de sécurité de phcode.dev<br><br> Cet aperçu en direct a tenté d&#39;accéder à un fichier n&#39;appartenant pas au projet. L&#39;accès a été refusé pour votre sécurité. Veuillez faire preuve de prudence lorsque vous travaillez sur des projets non approuvés.",
+  "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Vous êtes sur le point d'ouvrir un fichier pour un aperçu en direct. Veuillez continuer uniquement si vous faites confiance à la source de ce projet. Cliquez sur « Faire confiance au projet » pour continuer ou fermez cette fenêtre si vous ne faites pas confiance à la source.",
+  "TRUST_PROJECT": "Projet de confiance",
   "DOWNLOAD_FAILED": "Échec du téléchargement.",
   "DOWNLOAD_COMPLETE": "Téléchargement terminé.",
   "UPDATE_SUCCESSFUL": "Mise à jour effectuée.",
