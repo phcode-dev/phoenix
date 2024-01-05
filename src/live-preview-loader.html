@@ -164,10 +164,19 @@
                             dialog.style.display = 'flex';
                         }
                         return;
+                    case 'TAB_LOADER_ONLINE': return; // loop-back message do nothing, this is for phoenix ot process.
                     default:
-                        console.error("Unknown live preivew broadcast message received!: ", event);
+                    console.error("Unknown live preivew broadcast message received!: ", event);
                 }
             }
+            setInterval(()=>{
+                // send page loader heartbeat
+                navigatorChannel.postMessage({
+                    type: 'TAB_LOADER_ONLINE',
+                    pageLoaderID: pageLoaderID,
+                    url: previewURL
+                });
+            }, 3000);
             livePreviewChannel.onmessage = (event) => {
                 _debugLog("Live Preview message channel: Browser received event from Phoenix: ", JSON.stringify(event.data));
                 if(event.data.pageLoaderID && event.data.pageLoaderID !== pageLoaderID){

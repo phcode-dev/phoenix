@@ -49,7 +49,7 @@ function _setupBroadcastChannel(broadcastChannel, clientID) {
     _sendOnlineHeartbeat();
     setInterval(()=>{
         _sendOnlineHeartbeat();
-    }, 1000);
+    }, 3000);
 }
 
 function updateTitleAndFavicon(event) {
