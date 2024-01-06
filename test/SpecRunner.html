@@ -474,6 +474,33 @@
           window.location.href = `${currentUrl.origin}${currentUrl.pathname}?${queryString}`;
         });
       }
+      var loadJS = function(url, implementationCode, location, dataMainValue){
+        //url is URL of external file, implementationCode is the code
+        //to be called from the file, location is the location to
+        //insert the <script> element
+
+        const scriptTag = document.createElement('script');
+        if(dataMainValue){
+          scriptTag.setAttribute('data-main', dataMainValue);
+        }
+        scriptTag.onload = implementationCode;
+        scriptTag.onreadystatechange = implementationCode;
+        scriptTag.src = url;
+
+        location.appendChild(scriptTag);
+      };
+      function _requireDone() {
+        // do nothing
+      }
+      const interval = setInterval(()=>{
+        if(PhStore){
+          clearInterval(interval);
+          PhStore.storageReadyPromise
+                  .finally(()=>{
+                    loadJS('../src/thirdparty/requirejs/require.js', _requireDone, document.body, "SpecRunner");
+                  });
+        }
+      }, 100);
     }
 
   </script>
@@ -536,7 +563,5 @@
     <div id="mock-main-view" style="position:absolute; height:1000px; width:1000px; left:-10000px; top:-10000px;"></div>
     <div id="toast-notification-container">
     </div>
-    <!-- All other scripts are loaded through require. -->
-    <script src="../src/thirdparty/requirejs/require.js" data-main="SpecRunner"></script>
 </body>
 </html>
