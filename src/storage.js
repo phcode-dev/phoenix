@@ -45,6 +45,8 @@
 
 /*global EventDispatcher*/
 
+import {set, entries, createStore} from './thirdparty/idb-keyval.js';
+
 (function setupGlobalStorage() {
     if(window.PhStore){
         console.error(`window.PhStore already setup. Ignoring.`);
@@ -57,8 +59,17 @@
     let nodeStoragePhoenixApis = {};
     const isBrowser = !Phoenix.browser.isTauri;
     const isDesktop = Phoenix.browser.isTauri;
+    const PHSTORE_DB = "PhStore";
+    const PHSTORE_STORE_NAME = "KVStore";
+    let idbStore;
 
-    const PH_LOCAL_STORE_PREFIX = "Ph_";
+    function _getIDBStorage() {
+        if(!idbStore){
+            idbStore = createStore(PHSTORE_DB, PHSTORE_STORE_NAME);
+        }
+        return idbStore;
+    }
+
     const PHOENIX_STORAGE_BROADCAST_CHANNEL_NAME = "ph-storage";
     const EXTERNAL_CHANGE_BROADCAST_INTERVAL = 500;
     // Since this is a sync API, performance is critical. So we use a memory map in cache. This limits the size
@@ -137,25 +148,12 @@
         if(cachedResult){
             return JSON.parse(cachedResult.v);
         }
-        if(Phoenix.isTestWindow || isDesktop){
-            // in tauri, once we load the db dump from file, we dont ever touch the storage apis again for
-            // get operations. This is because in tauri, the get operation is async via node. in future,
-            // we can write a async refresh key api to update values that has been cached if the need arises.
-            // but rn, there is no need for the same as every phoenix instance will use its own cached storage
-            // that guarantees read after write constancy within an instance, and for external changes, use watch.
-            return null;
-        }
-        const jsonStr = localStorage.getItem(PH_LOCAL_STORE_PREFIX + key);
-        if(jsonStr === null){
-            return null;
-        }
-        try {
-            cachedResult = JSON.parse(jsonStr);
-            cache[key] = cachedResult;
-            return JSON.parse(cachedResult.v); // clone. JSON.Parse is faster than structured object clone.
-        } catch (e) {
-            return null;
-        }
+        // once we load the db dump from file, we dont ever touch the storage apis again for
+        // get operations. This is because in, the get operation is async (via node or indexedDB). in future,
+        // we can write a async refresh key api to update values that has been cached if the need arises.
+        // but rn, there is no need for the same as every phoenix instance will use its own cached storage
+        // that guarantees read after write constancy within an instance, and for external changes, use watch.
+        return null;
     }
 
     /**
@@ -177,8 +175,8 @@
                 storageNodeConnector.execPeer("putItem", {key, value: valueToStore});
             }
             if(window.debugMode || isBrowser) {
-                // in debug mode, we write to local storage in tauri and browser builds for eazy debug of storage.
-                localStorage.setItem(PH_LOCAL_STORE_PREFIX + key, JSON.stringify(valueToStore));
+                // in debug mode, we write to browser storage in tauri and browser builds for eazy debug of storage.
+                set(key, valueToStore, _getIDBStorage());
             }
         }
         cache[key] = valueToStore;
@@ -241,10 +239,17 @@
 
     const storageReadyPromise = new Promise((resolve) => {
         if(isBrowser || Phoenix.isTestWindow){
-            // in browsers its immediately ready as we use localstorage
-            // in tests, immediately resolve with empty storage.
-            resolve();
-            setupFirstBoot();
+            entries(_getIDBStorage())
+                .then(kvArrayAll=>{
+                    for(let kvArray of kvArrayAll) {
+                        // Get all entries in the store. Each entry is an array of [key, value].
+                        // Eg: [[123, 456], ['hello', 'world']]
+                        cache[kvArray[0]] = kvArray[1];
+                    }
+                    setupFirstBoot();
+                })
+                .catch(console.error)
+                .finally(resolve); // we never fail, boot with blank storage
             return;
         }
         // In tauri, we have to read it from app local data dump(which is usually written at app close time. This
@@ -254,7 +259,8 @@
                 cache = JSON.parse(jsonData);
                 setupFirstBoot();
             })
-            .finally(resolve);
+            .catch(console.error)
+            .finally(resolve); // we never fail, boot with blank storage
     });
 
     /**

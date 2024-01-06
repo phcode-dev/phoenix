@@ -86,73 +86,70 @@ window.scriptObserver = new MutationObserver(callback);
 // Start observing the target node for configured mutations
 window.scriptObserver.observe(mainScripts, config);
 
-window.PhStore.storageReadyPromise
-    .finally(()=>{
-        /**
-         * The bootstrapping module for brackets. This module sets up the require
-         * configuration and loads the brackets module.
-         */
-        require.config({
-            paths: {
-                "text": "thirdparty/text/text",
-                "i18n": "thirdparty/i18n/i18n",
+/**
+ * The bootstrapping module for brackets. This module sets up the require
+ * configuration and loads the brackets module.
+ */
+require.config({
+    paths: {
+        "text": "thirdparty/text/text",
+        "i18n": "thirdparty/i18n/i18n",
 
-                // The file system implementation. Change this value to use different
-                // implementations (e.g. cloud-based storage).
-                "fileSystemImpl": "filesystem/impls/appshell/AppshellFileSystem",
-                "preact-compat": "thirdparty/preact-compat/preact-compat.min",
-                "preact": "thirdparty/preact/preact"
-            },
-            map: {
-                "*": {
-                    "thirdparty/CodeMirror2": "thirdparty/CodeMirror",
-                    "thirdparty/preact": "preact-compat",
-                    "view/PanelManager": "view/WorkspaceManager"  // For extension compatibility
-                }
-            },
-            waitSeconds: 60
-        });
-
-        if (window.location.search.indexOf("testEnvironment") > -1) {
-            require.config({
-                paths: {
-                    "preferences/PreferencesImpl": "../test/TestPreferencesImpl"
-                },
-                locale: "en" // force English (US)
-            });
-        } else {
-            /**
-             * hack for r.js optimization, move locale to another config call
-             *
-             * Use custom brackets property until CEF sets the correct navigator.language
-             * NOTE: When we change to navigator.language here, we also should change to
-             * navigator.language in ExtensionLoader (when making require contexts for each
-             * extension).
-             */
-            require.config({
-                locale: window.PhStore.getItem("locale") || window.navigator.language
-            });
+        // The file system implementation. Change this value to use different
+        // implementations (e.g. cloud-based storage).
+        "fileSystemImpl": "filesystem/impls/appshell/AppshellFileSystem",
+        "preact-compat": "thirdparty/preact-compat/preact-compat.min",
+        "preact": "thirdparty/preact/preact"
+    },
+    map: {
+        "*": {
+            "thirdparty/CodeMirror2": "thirdparty/CodeMirror",
+            "thirdparty/preact": "preact-compat",
+            "view/PanelManager": "view/WorkspaceManager"  // For extension compatibility
         }
+    },
+    waitSeconds: 60
+});
 
-        define(function (require) {
-
-
-            // Load compatibility shims--these need to load early, be careful moving this
-            // Event dispatcher must be loaded before worker comm https://github.com/phcode-dev/phoenix/pull/678
-            require(["utils/Metrics", "utils/Compatibility", "utils/EventDispatcher"], function () {
-                window.Metrics = require("utils/Metrics");
-                // Load the brackets module. This is a self-running module that loads and runs the entire application.
-                try{
-                    require(["brackets"]);
-                } catch (err) {
-                    // try a cache refresh (not a full reset). this will happen in the service worker in the background
-                    window.refreshServiceWorkerCache && window.refreshServiceWorkerCache();
-                    // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
-                    window.logger && window.logger.reportError(err,
-                        'Critical error when loading brackets. Trying to reload again.');
-                    // wait for 3 seconds for bugsnag to send report.
-                    setTimeout(window.location.reload, 3000);
-                }
-            });
-        });
+if (window.location.search.indexOf("testEnvironment") > -1) {
+    require.config({
+        paths: {
+            "preferences/PreferencesImpl": "../test/TestPreferencesImpl"
+        },
+        locale: "en" // force English (US)
     });
+} else {
+    /**
+     * hack for r.js optimization, move locale to another config call
+     *
+     * Use custom brackets property until CEF sets the correct navigator.language
+     * NOTE: When we change to navigator.language here, we also should change to
+     * navigator.language in ExtensionLoader (when making require contexts for each
+     * extension).
+     */
+    require.config({
+        locale: window.PhStore.getItem("locale") || window.navigator.language
+    });
+}
+
+define(function (require) {
+
+
+    // Load compatibility shims--these need to load early, be careful moving this
+    // Event dispatcher must be loaded before worker comm https://github.com/phcode-dev/phoenix/pull/678
+    require(["utils/Metrics", "utils/Compatibility", "utils/EventDispatcher"], function () {
+        window.Metrics = require("utils/Metrics");
+        // Load the brackets module. This is a self-running module that loads and runs the entire application.
+        try{
+            require(["brackets"]);
+        } catch (err) {
+            // try a cache refresh (not a full reset). this will happen in the service worker in the background
+            window.refreshServiceWorkerCache && window.refreshServiceWorkerCache();
+            // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
+            window.logger && window.logger.reportError(err,
+                'Critical error when loading brackets. Trying to reload again.');
+            // wait for 3 seconds for bugsnag to send report.
+            setTimeout(window.location.reload, 3000);
+        }
+    });
+});

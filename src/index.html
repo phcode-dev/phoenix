@@ -467,7 +467,10 @@
             function _requireDone() {
                 loadJS('verify-dependencies-loaded.js', null, document.body);
             }
-            loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
+            PhStore.storageReadyPromise
+                .finally(()=>{
+                    loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
+                });
         }
     </script>
 
@@ -487,7 +490,7 @@
     <script src="phoenix/virtual-server-loader.js" type="module" defer></script>
 <!--    node loader should come only after fs libs are loaded as we init fs libs with node fs urls-->
     <script src="node-loader.js" defer></script>
-    <script src="storage.js" defer></script>
+    <script src="storage.js" type="module"></script>
     <!-- end javascript module scripts-->
 
     <!-- CSS/LESS -->

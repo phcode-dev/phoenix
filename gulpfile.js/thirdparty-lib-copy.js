@@ -110,6 +110,9 @@ let copyThirdPartyLibs = series(
     // underscore
     copyFiles.bind(copyFiles, ['node_modules/underscore/underscore-min.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/underscore/LICENSE', 'underscore'),
+    // idb-keyval
+    renameFile.bind(renameFile, 'node_modules/idb-keyval/dist/index.js', 'idb-keyval.js', 'src/thirdparty/'),
+    copyLicence.bind(copyLicence, 'node_modules/idb-keyval/LICENCE', 'idb-keyval'),
     // bootstrap
     copyFiles.bind(copyFiles, ['node_modules/bootstrap/dist/js/bootstrap.min.js',
         'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
