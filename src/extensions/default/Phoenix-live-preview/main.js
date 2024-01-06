@@ -63,9 +63,7 @@ define(function (require, exports, module) {
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
     const moduleDir = FileUtils.getNativeModuleDirectoryPath(module);
 
-    const LIVE_PREVIEW_PANEL_ID = "live-preview-panel",
-        IFRAME_EVENT_SERVER_READY = 'SERVER_READY';
-    let serverReady = false;
+    const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_HTML = `
     <iframe id="panel-live-preview-frame" title="Live Preview" style="border: none"
              width="100%" height="100%" seamless="true"
@@ -285,7 +283,7 @@ define(function (require, exports, module) {
     async function _loadPreview(force) {
         // we wait till the first server ready event is received till we render anything. else a 404-page may
         // briefly flash on first load of phoenix as we try to load the page before the server is available.
-        const isPreviewLoadable = serverReady && (panel.isVisible() || StaticServer.hasActiveLivePreviews());
+        const isPreviewLoadable = panel.isVisible() || StaticServer.hasActiveLivePreviews();
         if(!isPreviewLoadable){
             return;
         }
@@ -395,15 +393,7 @@ define(function (require, exports, module) {
         let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "", Menus.AFTER, Commands.FILE_EXTENSION_MANAGER);
         fileMenu.addMenuDivider(Menus.BEFORE, Commands.FILE_LIVE_FILE_PREVIEW);
-        // We always show the live preview panel on startup if there is a preview file
-        setTimeout(async ()=>{
-            LiveDevelopment.openLivePreview();
-            let previewDetails = await utils.getPreviewDetails();
-            if(previewDetails.filePath){
-                // only show if there is some file to preview and not the default no-preview preview on startup
-                _setPanelVisibility(true);
-            }
-        }, 1000);
+        LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_PREVIEW_RELOAD, ()=>{
@@ -414,9 +404,15 @@ define(function (require, exports, module) {
             // required in chrome, but we just keep it just for all platforms behaving the same.
             _loadPreview(true);
         });
-        StaticServer.on(IFRAME_EVENT_SERVER_READY, function (_evt, event) {
-            serverReady = true;
-            _loadPreview(true);
+        StaticServer.on(StaticServer.EVENT_SERVER_READY, function (_evt, event) {
+            // We always show the live preview panel on startup if there is a preview file
+            utils.getPreviewDetails().then(previewDetails =>{
+                if(previewDetails.filePath){
+                    // only show if there is some file to preview and not the default no-preview preview on startup
+                    _setPanelVisibility(true);
+                    _loadPreview(true);
+                }
+            });
         });
 
         let consecutiveEmptyClientsCount = 0;

@@ -51,6 +51,7 @@ define(function (require, exports, module) {
     const EVENT_TAB_ONLINE = 'TAB_ONLINE';
     const EVENT_REPORT_ERROR = 'REPORT_ERROR';
     const EVENT_UPDATE_TITLE_ICON = 'UPDATE_TITLE_AND_ICON';
+    const EVENT_SERVER_READY = 'SERVER_READY';
 
     EventDispatcher.makeEventDispatcher(exports);
     const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
@@ -569,4 +570,5 @@ define(function (require, exports, module) {
     exports.getTabPopoutURL = getTabPopoutURL;
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
+    exports.EVENT_SERVER_READY = EVENT_SERVER_READY;
 });
