@@ -467,10 +467,22 @@
             function _requireDone() {
                 loadJS('verify-dependencies-loaded.js', null, document.body);
             }
-            PhStore.storageReadyPromise
-                .finally(()=>{
-                    loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
-                });
+            if(window.PhStore){
+                window.PhStore.storageReadyPromise
+                    .finally(()=>{
+                        loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
+                    });
+            } else {
+                const interval = setInterval(()=>{
+                    if(PhStore){
+                        clearInterval(interval);
+                        PhStore.storageReadyPromise
+                            .finally(()=>{
+                                loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
+                            });
+                    }
+                }, 50);
+            }
         }
     </script>
 
