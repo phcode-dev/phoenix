@@ -56,8 +56,12 @@ define(function (require, exports, module) {
         LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
         LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
         NativeApp            = brackets.getModule("utils/NativeApp"),
+        FileUtils           = brackets.getModule("file/FileUtils"),
         StaticServer   = require("StaticServer"),
         utils = require('utils');
+
+    const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
+    const moduleDir = FileUtils.getNativeModuleDirectoryPath(module);
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel",
         IFRAME_EVENT_SERVER_READY = 'SERVER_READY';
@@ -69,6 +73,42 @@ define(function (require, exports, module) {
              sandbox="allow-same-origin allow-scripts allow-forms allow-modals allow-pointer-lock">
     </iframe>
     `;
+
+    function _getTrustProjectPage() {
+        return `${moduleDir}/trust-project.html?`
+            +`&localMessage=${encodeURIComponent(Strings.DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE)}`
+            +`&initialProjectRoot=${encodeURIComponent(ProjectManager.getProjectRoot().fullPath)}`
+            +`&okMessage=${encodeURIComponent(Strings.TRUST_PROJECT)}`;
+    }
+
+    function _isProjectPreviewTrusted() {
+        // In desktop builds, each project is securely sandboxed in its own live preview server:port domain.
+        // This setup ensures security within the browser sandbox, eliminating the need for a trust
+        // confirmation dialog. We can display the live preview immediately.
+        if(Phoenix.browser.isTauri || Phoenix.isTestWindow){ // for test windows, we trust all test files
+            return true;
+        }
+        // In browsers, since all live previews for all projects uses the same phcode.live domain,
+        // untrusted projects can access data of past opened projects. So we have to show a trust project?
+        // dialog in live preview in browser.
+        // Future plans for browser versions include adopting a similar approach to dynamically generate
+        // URLs in the format `project-name.phcode.live`. This will streamline the workflow by removing
+        // the current reliance on users to manually verify and trust each project in the browser.
+        const projectPath = ProjectManager.getProjectRoot().fullPath;
+        if(projectPath === ProjectManager.getWelcomeProjectPath() ||
+            projectPath === ProjectManager.getExploreProjectPath()){
+            return true;
+        }
+        const isTrustedProject = `${PREVIEW_TRUSTED_PROJECT_KEY}-${projectPath}`;
+        return !!PhStore.getItem(isTrustedProject);
+    }
+
+    window._trustCurrentProjectForLivePreview = function () {
+        const projectPath = ProjectManager.getProjectRoot().fullPath;
+        const isTrustedProjectKey = `${PREVIEW_TRUSTED_PROJECT_KEY}-${projectPath}`;
+        PhStore.setItem(isTrustedProjectKey, true);
+        _loadPreview(true);
+    };
 
     ExtensionInterface.registerExtensionInterface(
         ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW, exports);
@@ -265,7 +305,11 @@ define(function (require, exports, module) {
             newIframe.insertAfter($iframe);
             $iframe.remove();
             $iframe = newIframe;
-            $iframe.attr('src', newSrc);
+            if(_isProjectPreviewTrusted()){
+                $iframe.attr('src', newSrc);
+            } else {
+                $iframe.attr('src', _getTrustProjectPage());
+            }
         }
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render",
             utils.getExtension(previewDetails.fullPath));
