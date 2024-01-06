@@ -238,25 +238,31 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
     }
 
     const storageReadyPromise = new Promise((resolve) => {
-        if(isBrowser || Phoenix.isTestWindow){
-            entries(_getIDBStorage())
-                .then(kvArrayAll=>{
-                    for(let kvArray of kvArrayAll) {
-                        // Get all entries in the store. Each entry is an array of [key, value].
-                        // Eg: [[123, 456], ['hello', 'world']]
-                        cache[kvArray[0]] = kvArray[1];
-                    }
+        if(Phoenix.isTestWindow){
+            // in test window, we will always use blank storage to init.
+            resolve();
+            return;
+        }
+        if(isDesktop){
+            // In tauri, we have to read it from app local data dump(which is usually written at app close time. This
+            // will help the storage to quick start from a json dump instead of waiting for node to boot up and init lmdb)
+            window._tauriStorageRestorePromise
+                .then((jsonData)=>{
+                    cache = JSON.parse(jsonData);
                     setupFirstBoot();
                 })
                 .catch(console.error)
                 .finally(resolve); // we never fail, boot with blank storage
             return;
         }
-        // In tauri, we have to read it from app local data dump(which is usually written at app close time. This
-        // will help the storage to quick start from a json dump instead of waiting for node to boot up and init lmdb)
-        window._tauriStorageRestorePromise
-            .then((jsonData)=>{
-                cache = JSON.parse(jsonData);
+        // Use browser default storage- IndexedDB
+        entries(_getIDBStorage())
+            .then(kvArrayAll=>{
+                for(let kvArray of kvArrayAll) {
+                    // Get all entries in the store. Each entry is an array of [key, value].
+                    // Eg: [[123, 456], ['hello', 'world']]
+                    cache[kvArray[0]] = kvArray[1];
+                }
                 setupFirstBoot();
             })
             .catch(console.error)
