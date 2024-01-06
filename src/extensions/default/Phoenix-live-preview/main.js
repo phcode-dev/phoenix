@@ -68,7 +68,7 @@ define(function (require, exports, module) {
     <iframe id="panel-live-preview-frame" title="Live Preview" style="border: none"
              width="100%" height="100%" seamless="true"
              src='about:blank'
-             sandbox="allow-same-origin allow-scripts allow-forms allow-modals allow-pointer-lock">
+             sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-modals allow-pointer-lock">
     </iframe>
     `;
 
