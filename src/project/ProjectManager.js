@@ -756,7 +756,7 @@ define(function (require, exports, module) {
     }
 
     function getExploreProjectPath() {
-        return `${getLocalProjectsPath()}explore`;
+        return `${getLocalProjectsPath()}explore/`;
     }
 
     /**

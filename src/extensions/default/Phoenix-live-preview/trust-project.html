@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phoenix Live Preview Loader...</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Removes the default border around an iframe */
+        }
+    </style>
+    <style>
+
+        .outer-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .dialog-container {
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            /* Other styles remain the same */
+        }
+
+        .dialog-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .dialog-message {
+            margin-bottom: 20px;
+        }
+
+        .dialog-buttons {
+            text-align: right;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-left: 10px;
+            background-color: #eee; /* Light background for buttons */
+            color: #000; /* Dark text for buttons */
+            border: 1px solid #ccc; /* Border for buttons */
+        }
+
+        /* Dark theme styles */
+        @media (prefers-color-scheme: dark) {
+
+            .outer-container {
+                background-color: #1e1e1e; /* Dark background for the body */
+                color: #ffffff; /* Light text color for dark theme */
+            }
+
+            .dialog-container {
+                border: 1px solid #444; /* Darker border for the dialog */
+                background-color: #2a2a2a; /* Dark background for the dialog */
+            }
+
+            button {
+                background-color: #4a4a4a; /* Darker background for buttons */
+                color: #fff; /* Light text for buttons */
+                border: 1px solid #6a6a6a; /* Border for buttons */
+            }
+
+            button:hover {
+                background-color: #5a5a5a; /* Lighter background on hover for buttons */
+            }
+        }
+
+    </style>
+    <script>
+        let okMessageTemplate;
+        let currentProjectRoot;
+
+        function getTrustOkButton() {
+            if(! okMessageTemplate){
+                return "Trust Project?";
+            }
+            if(!currentProjectRoot){
+                return okMessageTemplate.replace("{0}", "");
+            }
+            let projectName = currentProjectRoot;
+            if(projectName.endsWith("/")){
+                projectName = projectName.slice(0, -1);
+            }
+            projectName = projectName.split("/");
+            projectName = projectName[projectName.length-1];
+            return okMessageTemplate.replace("{0}", projectName);
+        }
+
+        function navigateToInitialURL() {
+            const queryParams = new URLSearchParams(window.location.search);
+            const localiseMessage = queryParams.get('localMessage');
+            okMessageTemplate = decodeURIComponent(queryParams.get('okMessage'));
+            currentProjectRoot = queryParams.get('initialProjectRoot');
+
+            if(!okMessageTemplate || !currentProjectRoot){
+                console.error("Expected required query strings: okMessageTemplate, currentProjectRoot");
+                return;
+            }
+
+            document.getElementById('okButton').textContent = getTrustOkButton();
+            localiseMessage && (document.getElementById('dialog-message').textContent = decodeURIComponent(localiseMessage));
+            document.getElementById('okButton').addEventListener('click', function() {
+                window.parent._trustCurrentProjectForLivePreview();
+            });
+        }
+
+    </script>
+</head>
+<body onload="navigateToInitialURL()">
+<div id="outer-container" class="outer-container">
+    <div id='dialog-container' class="dialog-container">
+        <div class="dialog-title">Phoenix Code Live Preview</div>
+        <div id="dialog-message" class="dialog-message">
+            You are about to open an HTML file for live preview. Please proceed only if you trust the source of this project. Click 'OK' to continue, or close this window if you do not trust the source.
+        </div>
+        <div class="dialog-buttons">
+            <button id="okButton">Trust Project</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
