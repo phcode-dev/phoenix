@@ -193,7 +193,20 @@ define(function (require, exports, module) {
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
         WorkspaceManager    = require("view/WorkspaceManager"),
+        EventDispatcher     = require("utils/EventDispatcher"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
+
+    EventDispatcher.makeEventDispatcher(exports);
+    const _EVENT_POPUP_CONTENT_MUTATED = "_popupContentMutated";
+    // Create a new MutationObserver instance
+    const observer = new MutationObserver(mutations => {
+        for (let mutation of mutations) {
+            if (mutation.type === 'childList' || mutation.type === 'subtree') {
+                exports.trigger(_EVENT_POPUP_CONTENT_MUTATED, mutations);
+                break; // Optional: Break after the first change if only one change is needed
+            }
+        }
+    });
 
     const previewContainerHTML       = '<div id="quick-view-container">\n' +
         '    <div class="preview-content">\n' +
@@ -454,9 +467,12 @@ define(function (require, exports, module) {
             popoverState.visible = true;
             positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
 
-            $popoverContent[0].addEventListener('DOMSubtreeModified', ()=>{
+            exports.on(_EVENT_POPUP_CONTENT_MUTATED, ()=>{
+                if(!popoverState || !editor){
+                    return;
+                }
                 positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
-            }, false);
+            });
         }
     }
 
@@ -710,6 +726,10 @@ define(function (require, exports, module) {
         // Create the preview container
         $previewContainer = $(previewContainerHTML).appendTo($("body"));
         $previewContent = $previewContainer.find(".preview-content");
+        observer.observe($previewContent[0], {
+            childList: true, // Observe direct children
+            subtree: true // And lower descendants too
+        });
 
         // Register command
         // Insert menu at specific pos since this may load before OR after code folding extension

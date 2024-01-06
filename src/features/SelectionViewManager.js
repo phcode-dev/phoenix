@@ -149,12 +149,25 @@ define(function (require, exports, module) {
         ViewUtils           = require("utils/ViewUtils"),
         AppInit             = require("utils/AppInit"),
         WorkspaceManager    = require("view/WorkspaceManager"),
+        EventDispatcher     = require("utils/EventDispatcher"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
     const previewContainerHTML       = '<div id="selection-view-container">\n' +
         '    <div class="preview-content">\n' +
         '    </div>\n' +
         '</div>';
+
+    EventDispatcher.makeEventDispatcher(exports);
+    const _EVENT_POPUP_CONTENT_MUTATED = "_popupContentMutated";
+    // Create a new MutationObserver instance
+    const observer = new MutationObserver(mutations => {
+        for (let mutation of mutations) {
+            if (mutation.type === 'childList' || mutation.type === 'subtree') {
+                exports.trigger(_EVENT_POPUP_CONTENT_MUTATED, mutations);
+                break; // Optional: Break after the first change if only one change is needed
+            }
+        }
+    });
 
     const _providerRegistrationHandler = new ProviderRegistrationHandler(),
         registerSelectionViewProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler),
@@ -364,9 +377,12 @@ define(function (require, exports, module) {
             popoverState.visible = true;
             positionPreview(editor);
 
-            $popoverContent[0].addEventListener('DOMSubtreeModified', ()=>{
+            exports.on(_EVENT_POPUP_CONTENT_MUTATED, ()=>{
+                if(!popoverState || !editor){
+                    return;
+                }
                 positionPreview(editor);
-            }, false);
+            });
         }
     }
 
@@ -517,6 +533,10 @@ define(function (require, exports, module) {
         // Create the preview container
         $previewContainer = $(previewContainerHTML).appendTo($("body"));
         $previewContent = $previewContainer.find(".preview-content");
+        observer.observe($previewContent[0], {
+            childList: true, // Observe direct children
+            subtree: true // And lower descendants too
+        });
 
         // Register command
         // Insert menu at specific pos since this may load before OR after code folding extension
