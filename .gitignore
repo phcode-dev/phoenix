@@ -32,6 +32,7 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/tinycolor.js
 /src/thirdparty/jquery.knob.min.js
 /src/thirdparty/underscore-min.js
+/src/thirdparty/idb-keyval.js
 /src/thirdparty/bootstrap
 /src/thirdparty/highlight.js
 /src/thirdparty/gfm.min.css
