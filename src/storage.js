@@ -102,22 +102,16 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
     }
 
     if(isDesktop){
-        if(window.nodeSetupDonePromise){
-            window.nodeSetupDonePromise.then(nodeConfig =>{
-                const STORAGE_NODE_CONNECTOR_ID = "ph_storage";
-                storageNodeConnector = window.PhNodeEngine.createNodeConnector(
-                    STORAGE_NODE_CONNECTOR_ID, nodeStoragePhoenixApis);
-                storageNodeConnector.execPeer("openDB", window._tauriBootVars.appLocalDir);
-                if(Phoenix.isTestWindow) {
-                    window.storageNodeConnector = storageNodeConnector;
-                }
-                storageNodeConnector.on(EVENT_CHANGED, (_evt, changedKV)=>{
-                    commitExternalChanges(changedKV);
-                });
-            });
-        } else {
-            alert("Critical Error! Node Storage could not be started.");
+        const STORAGE_NODE_CONNECTOR_ID = "ph_storage";
+        storageNodeConnector = window.PhNodeEngine.createNodeConnector(
+            STORAGE_NODE_CONNECTOR_ID, nodeStoragePhoenixApis);
+        storageNodeConnector.execPeer("openDB", window._tauriBootVars.appLocalDir);
+        if(Phoenix.isTestWindow) {
+            window.storageNodeConnector = storageNodeConnector;
         }
+        storageNodeConnector.on(EVENT_CHANGED, (_evt, changedKV)=>{
+            commitExternalChanges(changedKV);
+        });
     }
 
     if(isBrowser) {

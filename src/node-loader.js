@@ -611,6 +611,14 @@ function nodeLoader() {
         let nodeTerminationResolve;
         const nodeTerminationPromise = new Promise((resolve) => { nodeTerminationResolve = resolve;});
 
+        // createNodeConnector can me immediately used after this, no need to wait for node nodeSetupDonePromise
+        // All messages to be sent to node will be queued and sent when node comes online in its time.
+        window.PhNodeEngine = {
+            createNodeConnector,
+            setInspectEnabled,
+            isInspectEnabled
+        };
+
         window.__TAURI__.path.resolveResource("src-node/index.js")
             .then(async nodeSrcPath=>{
                 // node is designed such that it is not required at boot time to lower startup time.
@@ -669,19 +677,14 @@ function nodeLoader() {
                     return promise;
                 };
 
-                window.PhNodeEngine = {
-                    createNodeConnector,
-                    setInspectEnabled,
-                    isInspectEnabled,
-                    terminateNode: function () {
-                        if(!window.isNodeTerminated) {
-                            execNode(NODE_COMMANDS.TERMINATE);
-                        }
-                        return nodeTerminationPromise;
-                    },
-                    getInspectPort: function () {
-                        return inspectPort;
+                window.PhNodeEngine.terminateNode = function () {
+                    if(!window.isNodeTerminated) {
+                        execNode(NODE_COMMANDS.TERMINATE);
                     }
+                    return nodeTerminationPromise;
+                };
+                window.PhNodeEngine.getInspectPort = function () {
+                    return inspectPort;
                 };
 
                 execNode(NODE_COMMANDS.GET_ENDPOINTS)
