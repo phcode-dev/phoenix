@@ -326,118 +326,6 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Determine an index file that can be used to start Live Development.
-     * This function will inspect all files in a project to find the closest index file
-     * available for currently opened document. We are searching for these files:
-     *  - index.html
-     *  - index.htm
-     *
-     * If the project is configured with a custom base url for live development, then
-     * the list of possible index files is extended to contain these index files too:
-     *  - index.php
-     *  - index.php3
-     *  - index.php4
-     *  - index.php5
-     *  - index.phtm
-     *  - index.phtml
-     *  - index.cfm
-     *  - index.cfml
-     *  - index.asp
-     *  - index.aspx
-     *  - index.jsp
-     *  - index.jspx
-     *  - index.shm
-     *  - index.shml
-     *
-     * If a file was found, the promise will be resolved with the full path to this file. If no file
-     * was found in the whole project tree, the promise will be resolved with null.
-     *
-     * @return {jQuery.Promise} A promise that is resolved with a full path
-     * to a file if one could been determined, or null if there was no suitable index
-     * file.
-     */
-    function _getInitialDocFromCurrent() {
-        var doc = DocumentManager.getCurrentDocument(),
-            refPath,
-            i;
-
-        // Is the currently opened document already a file we can use for Live Development?
-        if (doc) {
-            refPath = doc.file.fullPath;
-            if (LiveDevelopmentUtils.isStaticHtmlFileExt(refPath) || LiveDevelopmentUtils.isServerHtmlFileExt(refPath)) {
-                return new $.Deferred().resolve(doc);
-            }
-        }
-
-        var result = new $.Deferred();
-
-        var baseUrl = ProjectManager.getBaseUrl(),
-            hasOwnServerForLiveDevelopment = (baseUrl && baseUrl.length);
-
-        ProjectManager.getAllFiles().done(function (allFiles) {
-            var projectRoot = ProjectManager.getProjectRoot().fullPath,
-                containingFolder,
-                indexFileFound = false,
-                stillInProjectTree = true;
-
-            if (refPath) {
-                containingFolder = FileUtils.getDirectoryPath(refPath);
-            } else {
-                containingFolder = projectRoot;
-            }
-
-            var filteredFiltered = allFiles.filter(function (item) {
-                var parent = FileUtils.getParentPath(item.fullPath);
-
-                return (containingFolder.indexOf(parent) === 0);
-            });
-
-            var filterIndexFile = function (fileInfo) {
-                if (fileInfo.fullPath.indexOf(containingFolder) === 0) {
-                    if (FileUtils.getFilenameWithoutExtension(fileInfo.name) === "index") {
-                        if (hasOwnServerForLiveDevelopment) {
-                            if ((LiveDevelopmentUtils.isServerHtmlFileExt(fileInfo.name)) ||
-                                    (LiveDevelopmentUtils.isStaticHtmlFileExt(fileInfo.name))) {
-                                return true;
-                            }
-                        } else if (LiveDevelopmentUtils.isStaticHtmlFileExt(fileInfo.name)) {
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-            };
-
-            while (!indexFileFound && stillInProjectTree) {
-                i = _.findIndex(filteredFiltered, filterIndexFile);
-
-                // We found no good match
-                if (i === -1) {
-                    // traverse the directory tree up one level
-                    containingFolder = FileUtils.getParentPath(containingFolder);
-                    // Are we still inside the project?
-                    if (containingFolder.indexOf(projectRoot) === -1) {
-                        stillInProjectTree = false;
-                    }
-                } else {
-                    indexFileFound = true;
-                }
-            }
-
-            if (i !== -1) {
-                DocumentManager.getDocumentForPath(filteredFiltered[i].fullPath).then(result.resolve, result.resolve);
-                return;
-            }
-
-            result.resolve(null);
-        });
-
-        return result.promise();
-    }
-
-    /**
-     * @private
      * Close the connection and the associated window
      * @param {boolean} doCloseWindow Use true to close the window/tab in the browser
      * @param {?string} reason Optional string key suffix to display to user (see LIVE_DEV_* keys)
@@ -496,6 +384,9 @@ define(function (require, exports, module) {
         // create live document
         doc._ensureMasterEditor();
         _liveDocument = _createLiveDocument(doc, doc._masterEditor);
+        if(!_liveDocument){
+            return;
+        }
         _server.add(_liveDocument);
         _server.addVirtualContentAtPath(
             `${_liveDocument.doc.file.parentPath}${LiveDevProtocol.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME}`,
@@ -584,34 +475,9 @@ define(function (require, exports, module) {
                 console.error("LiveDevelopment._open(): No server active");
             }
         } else {
-            // Unlikely that we would get to this state where
             // a connection is in process but there is no current
-            // document
-            close();
+            // document, Eg. A project that has only markdown or images that doesnt have a live html/css document
         }
-    }
-
-    /**
-     * @private
-     * Creates the live document in preparation for launching the
-     * preview of the given document, then launches it. (The live document
-     * must already exist before we launch it so that the server can
-     * ask it for the instrumented version of the document when the browser
-     * requests it.)
-     * TODO: could probably just consolidate this with _open()
-     * @param {Document} doc
-     */
-    function _doLaunchAfterServerReady(initialDoc) {
-
-        _createLiveDocumentForFrame(initialDoc);
-
-        // start listening for requests
-        _server.start()
-            .then(()=>{
-                // open browser to the url
-                _open(initialDoc);
-            });
-
     }
 
     /**
@@ -622,41 +488,24 @@ define(function (require, exports, module) {
      * vs. a user server when there is an app server set in File > Project Settings).
      */
     function _prepareServer(doc) {
-        var deferred = new $.Deferred(),
-            showBaseUrlPrompt = false;
+        var deferred = new $.Deferred();
+        let initialServePath = doc && doc.file.fullPath;
+        if(!initialServePath){
+            initialServePath = `${ProjectManager.getProjectRoot().fullPath}index.html`;
+        }
 
-        _server = LiveDevServerManager.getServer(doc.file.fullPath);
+        _server = LiveDevServerManager.getServer(initialServePath);
 
-        // Optionally prompt for a base URL if no server was found but the
-        // file is a known server file extension
-        showBaseUrlPrompt = !_server && LiveDevelopmentUtils.isServerHtmlFileExt(doc.file.fullPath);
-
-        if (showBaseUrlPrompt) {
-            // Prompt for a base URL
-            PreferencesDialogs.showProjectPreferencesDialog("", Strings.LIVE_DEV_NEED_BASEURL_MESSAGE)
-                .done(function (id) {
-                    if (id === Dialogs.DIALOG_BTN_OK && ProjectManager.getBaseUrl()) {
-                        // If base url is specifed, then re-invoke _prepareServer() to continue
-                        _prepareServer(doc).then(deferred.resolve, deferred.reject);
-                    } else {
-                        deferred.reject();
-                    }
-                });
-        } else if (_server) {
-            // Startup the server
-            var readyPromise = _server.readyToServe();
-            if (!readyPromise) {
+        // Startup the server
+        var readyPromise = _server.readyToServe();
+        if (!readyPromise) {
+            _showLiveDevServerNotReadyError();
+            deferred.reject();
+        } else {
+            readyPromise.then(deferred.resolve, function () {
                 _showLiveDevServerNotReadyError();
                 deferred.reject();
-            } else {
-                readyPromise.then(deferred.resolve, function () {
-                    _showLiveDevServerNotReadyError();
-                    deferred.reject();
-                });
-            }
-        } else {
-            // No server found
-            deferred.reject();
+            });
         }
 
         return deferred.promise();
@@ -677,7 +526,7 @@ define(function (require, exports, module) {
         let docUrl = _resolveUrl(doc.file.fullPath),
             isViewable = _server && _server.canServe(doc.file.fullPath);
 
-        if (_liveDocument.doc.url !== docUrl && isViewable) {
+        if (_liveDocument && _liveDocument.doc.url !== docUrl && isViewable) {
             // clear live doc and related docs
             _closeDocuments();
             // create new live doc
@@ -695,19 +544,31 @@ define(function (require, exports, module) {
     function open() {
         // TODO: need to run _onDocumentChange() after load if doc != currentDocument here? Maybe not, since activeEditorChange
         // doesn't trigger it, while inline editors can still cause edits in doc other than currentDoc...
-        _getInitialDocFromCurrent().done(function (doc) {
-            var prepareServerPromise = (doc && _prepareServer(doc)) || new $.Deferred().reject();
+        const doc = DocumentManager.getCurrentDocument();
 
-            // wait for server (StaticServer, Base URL or file:)
-            prepareServerPromise
-                .done(function () {
-                    _setStatus(STATUS_CONNECTING);
-                    _doLaunchAfterServerReady(doc);
-                })
-                .fail(function () {
-                    console.log("Live preview: no document to preview.");
-                });
-        });
+        // wait for server (StaticServer, Base URL or file:)
+        _prepareServer(doc)
+            .done(function () {
+                if(!_server){
+                    return;
+                }
+                _setStatus(STATUS_CONNECTING);
+                doc && _createLiveDocumentForFrame(doc);
+                if(_server.isActive()){
+                    doc && _open(doc);
+                    return;
+                }
+
+                // start server and listen for requests
+                _server.start()
+                    .then(()=>{
+                        // open browser to the url
+                        doc && _open(doc);
+                    });
+            })
+            .fail(function () {
+                console.log("Live preview: no document to preview.");
+            });
     }
 
     /**
@@ -799,8 +660,6 @@ define(function (require, exports, module) {
         DocumentManager
             .on("documentSaved", _onDocumentSaved)
             .on("dirtyFlagChange", _onDirtyFlagChange);
-        ProjectManager
-            .on("beforeProjectClose beforeAppClose", close);
 
         // Default transport for live connection messages - can be changed
         setTransport(LivePreviewTransport);
@@ -911,14 +770,13 @@ define(function (require, exports, module) {
     }
 
     function getLivePreviewBaseURL() {
-        return LiveDevServerManager.getStaticServerBaseURLs().projectBaseURL;
+        return LiveDevServerManager.getStaticServerBaseURLs().previewBaseURL;
     }
 
     EventDispatcher.makeEventDispatcher(exports);
 
     // For unit testing
     exports._server                   = _server;
-    exports._getInitialDocFromCurrent = _getInitialDocFromCurrent;
 
     // Events
     exports.EVENT_OPEN_PREVIEW_URL = EVENT_OPEN_PREVIEW_URL;

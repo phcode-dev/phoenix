@@ -156,8 +156,10 @@ define(function (require, exports, module) {
         $iframe = newIframe;
     }
 
+    let panelShownOnce = false;
     function _setPanelVisibility(isVisible) {
         if (isVisible) {
+            panelShownOnce = true;
             $icon.toggleClass("active");
             panel.show();
             _loadPreview(true);
@@ -170,10 +172,7 @@ define(function (require, exports, module) {
 
     function _startOrStopLivePreviewIfRequired(explicitClickOnLPIcon) {
         let visible = panel && panel.isVisible();
-        if(visible && LiveDevelopment.isInactive()) {
-            LiveDevelopment.openLivePreview();
-        } else if(visible && explicitClickOnLPIcon) {
-            LiveDevelopment.closeLivePreview();
+        if(visible && (LiveDevelopment.isInactive() || explicitClickOnLPIcon)) {
             LiveDevelopment.openLivePreview();
         } else if(!visible && LiveDevelopment.isActive()
             && !StaticServer.hasActiveLivePreviews()) {
@@ -277,7 +276,6 @@ define(function (require, exports, module) {
         $highlightBtn.click(_toggleLiveHighlights);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
-            LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
             _loadPreview(true);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
@@ -297,6 +295,10 @@ define(function (require, exports, module) {
             return;
         }
         let newSrc = encodeURI(previewDetails.URL);
+        if($iframe.attr('src') === newSrc && !force){
+            // we already have this url loaded in previews!
+            return;
+        }
         _setTitle(previewDetails.filePath);
         // we have to create a new iframe on every switch as we use cross domain iframes for phcode.live which
         // the browser sandboxes strictly and sometimes it wont allow a src change on our iframe causing live
@@ -331,8 +333,12 @@ define(function (require, exports, module) {
         }
     }
 
-    let livePreviewEnabledOnProjectSwitch = false;
     async function _projectOpened(_evt) {
+        if(!LiveDevelopment.isActive()
+            && (panel.isVisible() || StaticServer.hasActiveLivePreviews())) {
+            // we do this only once after project switch if live preview for a doc is not active.
+            LiveDevelopment.openLivePreview();
+        }
         if(urlPinned){
             _togglePinUrl();
         }
@@ -345,16 +351,13 @@ define(function (require, exports, module) {
 
     function _projectClosed() {
         LiveDevelopment.closeLivePreview();
-        livePreviewEnabledOnProjectSwitch = false;
     }
 
     function _activeDocChanged() {
-        if(!LiveDevelopment.isActive() && !livePreviewEnabledOnProjectSwitch
+        if(!LiveDevelopment.isActive()
             && (panel.isVisible() || StaticServer.hasActiveLivePreviews())) {
             // we do this only once after project switch if live preview for a doc is not active.
-            LiveDevelopment.closeLivePreview();
             LiveDevelopment.openLivePreview();
-            livePreviewEnabledOnProjectSwitch = true;
         }
     }
 
@@ -412,11 +415,11 @@ define(function (require, exports, module) {
         StaticServer.on(StaticServer.EVENT_SERVER_READY, function (_evt, event) {
             // We always show the live preview panel on startup if there is a preview file
             utils.getPreviewDetails().then(previewDetails =>{
-                if(previewDetails.filePath){
+                if(previewDetails.filePath && !panelShownOnce){
                     // only show if there is some file to preview and not the default no-preview preview on startup
                     _setPanelVisibility(true);
-                    _loadPreview(true);
                 }
+                _loadPreview(true);
             });
         });
 
