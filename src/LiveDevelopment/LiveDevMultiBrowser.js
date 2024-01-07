@@ -76,12 +76,9 @@ define(function (require, exports, module) {
         DocumentManager      = require("document/DocumentManager"),
         EditorManager        = require("editor/EditorManager"),
         EventDispatcher      = require("utils/EventDispatcher"),
-        FileUtils            = require("file/FileUtils"),
         MainViewManager      = require("view/MainViewManager"),
-        PreferencesDialogs   = require("preferences/PreferencesDialogs"),
         ProjectManager       = require("project/ProjectManager"),
         Strings              = require("strings"),
-        _                    = require("thirdparty/lodash"),
         LiveDevelopmentUtils = require("LiveDevelopment/LiveDevelopmentUtils"),
         LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
         LivePreviewTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport"),
@@ -488,7 +485,7 @@ define(function (require, exports, module) {
      * vs. a user server when there is an app server set in File > Project Settings).
      */
     function _prepareServer(doc) {
-        var deferred = new $.Deferred();
+        const deferred = new $.Deferred();
         let initialServePath = doc && doc.file.fullPath;
         if(!initialServePath){
             initialServePath = `${ProjectManager.getProjectRoot().fullPath}index.html`;
@@ -497,7 +494,7 @@ define(function (require, exports, module) {
         _server = LiveDevServerManager.getServer(initialServePath);
 
         // Startup the server
-        var readyPromise = _server.readyToServe();
+        const readyPromise = _server.readyToServe();
         if (!readyPromise) {
             _showLiveDevServerNotReadyError();
             deferred.reject();
