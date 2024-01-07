@@ -462,6 +462,7 @@ define(function (require, exports, module) {
                 _startOrStopLivePreviewIfRequired();
             }
         }, 1000);
+        _projectOpened();
     });
 
     // private API to be used inside phoenix codebase only
