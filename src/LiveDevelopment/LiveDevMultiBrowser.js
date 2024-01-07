@@ -102,6 +102,7 @@ define(function (require, exports, module) {
      * @type {boolean}
      */
     let livePreviewUrlPinned = false;
+    let currentPreviewFilePath;
 
     /**
      * @private
@@ -539,9 +540,10 @@ define(function (require, exports, module) {
      * Open a live preview on the current docuemnt.
      */
     function open() {
-        // TODO: need to run _onDocumentChange() after load if doc != currentDocument here? Maybe not, since activeEditorChange
-        // doesn't trigger it, while inline editors can still cause edits in doc other than currentDoc...
-        const doc = DocumentManager.getCurrentDocument();
+        let doc = DocumentManager.getCurrentDocument();
+        if(livePreviewUrlPinned){
+            doc = DocumentManager.getDocumentForPath(currentPreviewFilePath);
+        }
 
         // wait for server (StaticServer, Base URL or file:)
         _prepareServer(doc)
@@ -721,8 +723,9 @@ define(function (require, exports, module) {
     /**
      * @param urlPinned {boolean}
      */
-    function setLivePreviewPinned(urlPinned) {
+    function setLivePreviewPinned(urlPinned, currentPinnedFilePath) {
         livePreviewUrlPinned = urlPinned;
+        currentPreviewFilePath = currentPinnedFilePath;
     }
 
     /**

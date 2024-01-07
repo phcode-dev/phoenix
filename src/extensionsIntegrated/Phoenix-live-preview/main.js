@@ -159,7 +159,8 @@ define(function (require, exports, module) {
     // Other vars
     let panel,
         urlPinned,
-        currentLivePreviewURL = "";
+        currentLivePreviewURL = "",
+        currentPreviewFile = '';
 
     function _blankIframe() {
         // we have to remove the dom node altog as at time chrome fails to clear workers if we just change
@@ -207,7 +208,7 @@ define(function (require, exports, module) {
             $pinUrlBtn.removeClass('unpin-icon').addClass('pin-icon');
         }
         urlPinned = !pinStatus;
-        LiveDevelopment.setLivePreviewPinned(urlPinned);
+        LiveDevelopment.setLivePreviewPinned(urlPinned, currentPreviewFile);
         _loadPreview(true);
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "pinURLBtn", "click");
     }
@@ -313,25 +314,28 @@ define(function (require, exports, module) {
             // we already have this url loaded in previews!
             return;
         }
-        _setTitle(previewDetails.filePath);
         // we have to create a new iframe on every switch as we use cross domain iframes for phcode.live which
         // the browser sandboxes strictly and sometimes it wont allow a src change on our iframe causing live
         // preview breaks sporadically. to alleviate this, we create a new iframe every time.
-        currentLivePreviewURL = newSrc;
+        if(!urlPinned) {
+            currentLivePreviewURL = newSrc;
+            currentPreviewFile = previewDetails.filePath;
+        }
+        _setTitle(currentPreviewFile);
         if(panel.isVisible()) {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
             $iframe.remove();
             $iframe = newIframe;
             if(_isProjectPreviewTrusted()){
-                $iframe.attr('src', newSrc);
+                $iframe.attr('src', currentLivePreviewURL);
             } else {
                 $iframe.attr('srcdoc', _getTrustProjectPage());
             }
         }
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render",
             utils.getExtension(previewDetails.fullPath));
-        StaticServer.redirectAllTabs(newSrc);
+        StaticServer.redirectAllTabs(currentLivePreviewURL);
     }
 
     async function _projectFileChanges(evt, changedFile) {
@@ -378,6 +382,9 @@ define(function (require, exports, module) {
     }
 
     function _projectClosed() {
+        if(urlPinned) {
+            _togglePinUrl();
+        }
         LiveDevelopment.closeLivePreview();
     }
 
