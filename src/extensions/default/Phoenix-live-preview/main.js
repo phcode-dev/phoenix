@@ -36,7 +36,7 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global Phoenix*/
+/*global path*/
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
@@ -55,13 +55,13 @@ define(function (require, exports, module) {
         Metrics            = brackets.getModule("utils/Metrics"),
         LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
         LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
-        NativeApp            = brackets.getModule("utils/NativeApp"),
-        FileUtils           = brackets.getModule("file/FileUtils"),
-        StaticServer   = require("StaticServer"),
+        NativeApp           = brackets.getModule("utils/NativeApp"),
+        StringUtils         = brackets.getModule("utils/StringUtils"),
+        StaticServer  = require("StaticServer"),
+        TrustProjectHTML    = require("text!trust-project.html"),
         utils = require('utils');
 
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
-    const moduleDir = FileUtils.getNativeModuleDirectoryPath(module);
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_HTML = `
@@ -73,10 +73,13 @@ define(function (require, exports, module) {
     `;
 
     function _getTrustProjectPage() {
-        return `${moduleDir}/trust-project.html?`
-            +`&localMessage=${encodeURIComponent(Strings.DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE)}`
-            +`&initialProjectRoot=${encodeURIComponent(ProjectManager.getProjectRoot().fullPath)}`
-            +`&okMessage=${encodeURIComponent(Strings.TRUST_PROJECT)}`;
+        const trustProjectMessage = StringUtils.format(Strings.TRUST_PROJECT,
+            path.basename(ProjectManager.getProjectRoot().fullPath));
+        const templateVars = {
+            trustProjectMessage,
+            Strings: Strings
+        };
+        return Mustache.render(TrustProjectHTML, templateVars);
     }
 
     function _isProjectPreviewTrusted() {
@@ -102,6 +105,7 @@ define(function (require, exports, module) {
     }
 
     window._trustCurrentProjectForLivePreview = function () {
+        $iframe.attr('srcdoc', null);
         const projectPath = ProjectManager.getProjectRoot().fullPath;
         const isTrustedProjectKey = `${PREVIEW_TRUSTED_PROJECT_KEY}-${projectPath}`;
         PhStore.setItem(isTrustedProjectKey, true);
@@ -306,7 +310,7 @@ define(function (require, exports, module) {
             if(_isProjectPreviewTrusted()){
                 $iframe.attr('src', newSrc);
             } else {
-                $iframe.attr('src', _getTrustProjectPage());
+                $iframe.attr('srcdoc', _getTrustProjectPage());
             }
         }
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render",
@@ -381,6 +385,7 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         _createExtensionPanel();
+        StaticServer.init();
         LiveDevServerManager.registerServer({ create: _createStaticServer }, 5);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanges);
         MainViewManager.on("currentFileChange", _currentFileChanged);

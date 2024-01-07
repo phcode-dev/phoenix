@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Phoenix Live Preview Loader...</title>
+    <title>Trust Project?</title>
     <style>
         html, body {
             margin: 0;
@@ -85,38 +85,7 @@
 
     </style>
     <script>
-        let okMessageTemplate;
-        let currentProjectRoot;
-
-        function getTrustOkButton() {
-            if(! okMessageTemplate){
-                return "Trust Project?";
-            }
-            if(!currentProjectRoot){
-                return okMessageTemplate.replace("{0}", "");
-            }
-            let projectName = currentProjectRoot;
-            if(projectName.endsWith("/")){
-                projectName = projectName.slice(0, -1);
-            }
-            projectName = projectName.split("/");
-            projectName = projectName[projectName.length-1];
-            return okMessageTemplate.replace("{0}", projectName);
-        }
-
         function navigateToInitialURL() {
-            const queryParams = new URLSearchParams(window.location.search);
-            const localiseMessage = queryParams.get('localMessage');
-            okMessageTemplate = decodeURIComponent(queryParams.get('okMessage'));
-            currentProjectRoot = queryParams.get('initialProjectRoot');
-
-            if(!okMessageTemplate || !currentProjectRoot){
-                console.error("Expected required query strings: okMessageTemplate, currentProjectRoot");
-                return;
-            }
-
-            document.getElementById('okButton').textContent = getTrustOkButton();
-            localiseMessage && (document.getElementById('dialog-message').textContent = decodeURIComponent(localiseMessage));
             document.getElementById('okButton').addEventListener('click', function() {
                 window.parent._trustCurrentProjectForLivePreview();
             });
@@ -127,12 +96,12 @@
 <body onload="navigateToInitialURL()">
 <div id="outer-container" class="outer-container">
     <div id='dialog-container' class="dialog-container">
-        <div class="dialog-title">Phoenix Code Live Preview</div>
+        <div class="dialog-title"> {{{Strings.TRUST_AUTHORS}}}</div>
         <div id="dialog-message" class="dialog-message">
-            You are about to open an HTML file for live preview. Please proceed only if you trust the source of this project. Click 'OK' to continue, or close this window if you do not trust the source.
+            {{{Strings.DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE}}}
         </div>
         <div class="dialog-buttons">
-            <button id="okButton">Trust Project</button>
+            <button id="okButton">{{{trustProjectMessage}}}</button>
         </div>
     </div>
 </div>

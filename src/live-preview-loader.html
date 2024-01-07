@@ -252,11 +252,12 @@
             const phoenixInstanceID = queryParams.get('phoenixInstanceID');
             const virtualServerURL = queryParams.get('virtualServerURL');
             const localiseMessage = queryParams.get('localMessage');
+            const appName = queryParams.get('appName');
             okMessageTemplate = decodeURIComponent(queryParams.get('okMessage'));
             currentProjectRoot = queryParams.get('initialProjectRoot');
 
-            if(!phoenixInstanceID || !initialURL || !virtualServerURL){
-                console.error("Expected required query strings: phoenixInstanceID, initialURL, virtualServerURL");
+            if(!phoenixInstanceID || !initialURL || !virtualServerURL || !appName){
+                console.error("Expected required query strings: phoenixInstanceID, initialURL, virtualServerURL, appName");
                 return;
             }
             setupNavigationWatcher(phoenixInstanceID);
@@ -268,6 +269,7 @@
 
             document.getElementById('okButton').textContent = getTrustOkButton();
             localiseMessage && (document.getElementById('dialog-message').textContent = decodeURIComponent(localiseMessage));
+            appName && (document.getElementById('appName').textContent = decodeURIComponent(appName));
             previewURL = decodeURIComponent(initialURL);
         }
 
@@ -276,7 +278,7 @@
 <body onload="navigateToInitialURL()">
     <div id="outer-container" class="outer-container">
         <div id='dialog-container' class="dialog-container">
-            <div class="dialog-title">Phoenix Code Live Preview</div>
+            <div id="appName" class="dialog-title">Phoenix Code Live Preview</div>
             <div id="dialog-message" class="dialog-message">
                 You are about to open an HTML file for live preview. Please proceed only if you trust the source of this project. Click 'OK' to continue, or close this window if you do not trust the source.
             </div>
