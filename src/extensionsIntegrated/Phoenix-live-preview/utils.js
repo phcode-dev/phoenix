@@ -40,11 +40,11 @@
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
-    const ProjectManager          = brackets.getModule("project/ProjectManager"),
-        Strings                   = brackets.getModule("strings"),
-        DocumentManager     = brackets.getModule("document/DocumentManager"),
-        LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
-        LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager");
+    const ProjectManager          = require("project/ProjectManager"),
+        Strings                   = require("strings"),
+        DocumentManager     = require("document/DocumentManager"),
+        LiveDevelopment    = require("LiveDevelopment/main"),
+        LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager");
 
     function getExtension(filePath) {
         filePath = filePath || '';

@@ -32,7 +32,6 @@
     "UrlCodeHints",
     "HealthData",
     "Phoenix-extension-store",
-    "Phoenix-live-preview",
     "icons"
   ],
  "warnExtensionStoreExtensions": {
