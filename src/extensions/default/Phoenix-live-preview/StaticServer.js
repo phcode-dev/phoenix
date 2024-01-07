@@ -54,29 +54,33 @@ define(function (require, exports, module) {
     const EVENT_SERVER_READY = 'SERVER_READY';
 
     EventDispatcher.makeEventDispatcher(exports);
-    const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
-
-    const LOADER_BROADCAST_ID = `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}`;
-    const navigatorChannel = new BroadcastChannel(LOADER_BROADCAST_ID);
 
     const livePreviewTabs = new Map();
-    navigatorChannel.onmessage = (event) => {
-        window.logger.livePreview.log("Live Preview navigator channel: Phoenix received event from tab: ", event);
-        const type = event.data.type;
-        switch (type) {
-        case 'TAB_LOADER_ONLINE':
-            livePreviewTabs.set(event.data.pageLoaderID, {
-                lastSeen: new Date(),
-                URL: event.data.URL,
-                navigationTab: true
-            });
-            return;
-        default: return; // ignore messages not intended for us.
-        }
-    };
+    const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
 
+    const NAVIGATOR_CHANNEL_ID = `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}`;
+    let navigatorChannel;
     const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
-    const livePreviewChannel = new BroadcastChannel(LIVE_PREVIEW_MESSENGER_CHANNEL);
+    let livePreviewChannel;
+    let _staticServerInstance, $livepreviewServerIframe;
+
+    function _initNavigatorChannel() {
+        navigatorChannel = new BroadcastChannel(NAVIGATOR_CHANNEL_ID);
+        navigatorChannel.onmessage = (event) => {
+            window.logger.livePreview.log("Live Preview navigator channel: Phoenix received event from tab: ", event);
+            const type = event.data.type;
+            switch (type) {
+            case 'TAB_LOADER_ONLINE':
+                livePreviewTabs.set(event.data.pageLoaderID, {
+                    lastSeen: new Date(),
+                    URL: event.data.URL,
+                    navigationTab: true
+                });
+                return;
+            default: return; // ignore messages not intended for us.
+            }
+        };
+    }
 
     // this is the server tabs located at "src/live-preview.html" which embeds the `phcode.live` server and
     // preview iframes.
@@ -87,49 +91,50 @@ define(function (require, exports, module) {
         });
     }
 
-    livePreviewChannel.onmessage = (event) => {
-        window.logger.livePreview.log("StaticServer: Live Preview message channel Phoenix recvd:", event);
-        const pageLoaderID = event.data.pageLoaderID;
-        const data = event.data.data;
-        const eventName =  data.eventName;
-        const message =  data.message;
-        switch (eventName) {
-        case EVENT_GET_PHOENIX_INSTANCE_ID:
-            _sendToLivePreviewServerTabs({
-                type: 'PHOENIX_INSTANCE_ID',
-                PHOENIX_INSTANCE_ID: Phoenix.PHOENIX_INSTANCE_ID
-            }, pageLoaderID);
-            return;
-        case EVENT_GET_CONTENT:
-            getContent(message.path,  message.url)
-                .then(response =>{
-                    // response has the following attributes set
-                    // response.contents: <text or arrayBuffer content>,
-                    // response.path
-                    // headers: {'Content-Type': 'text/html'} // optional headers
-                    response.type = 'REQUEST_RESPONSE';
-                    response.requestID = message.requestID;
-                    _sendToLivePreviewServerTabs(response, pageLoaderID);
-                })
-                .catch(console.error);
-            return;
-        case EVENT_TAB_ONLINE:
-            livePreviewTabs.set(message.clientID, {
-                lastSeen: new Date(),
-                URL: message.URL
-            });
-            return;
-        case EVENT_REPORT_ERROR:
-            logger.reportError(new Error(message));
-            return;
-        default:
-            exports.trigger(eventName, {
-                data
-            });
-        }
-    };
-
-    let _staticServerInstance, $livepreviewServerIframe;
+    function _initLivePreviewChannel() {
+        livePreviewChannel = new BroadcastChannel(LIVE_PREVIEW_MESSENGER_CHANNEL);
+        livePreviewChannel.onmessage = (event) => {
+            window.logger.livePreview.log("StaticServer: Live Preview message channel Phoenix recvd:", event);
+            const pageLoaderID = event.data.pageLoaderID;
+            const data = event.data.data;
+            const eventName =  data.eventName;
+            const message =  data.message;
+            switch (eventName) {
+            case EVENT_GET_PHOENIX_INSTANCE_ID:
+                _sendToLivePreviewServerTabs({
+                    type: 'PHOENIX_INSTANCE_ID',
+                    PHOENIX_INSTANCE_ID: Phoenix.PHOENIX_INSTANCE_ID
+                }, pageLoaderID);
+                return;
+            case EVENT_GET_CONTENT:
+                getContent(message.path,  message.url)
+                    .then(response =>{
+                        // response has the following attributes set
+                        // response.contents: <text or arrayBuffer content>,
+                        // response.path
+                        // headers: {'Content-Type': 'text/html'} // optional headers
+                        response.type = 'REQUEST_RESPONSE';
+                        response.requestID = message.requestID;
+                        _sendToLivePreviewServerTabs(response, pageLoaderID);
+                    })
+                    .catch(console.error);
+                return;
+            case EVENT_TAB_ONLINE:
+                livePreviewTabs.set(message.clientID, {
+                    lastSeen: new Date(),
+                    URL: message.URL
+                });
+                return;
+            case EVENT_REPORT_ERROR:
+                logger.reportError(new Error(message));
+                return;
+            default:
+                exports.trigger(eventName, {
+                    data
+                });
+            }
+        };
+    }
 
     // see markdown advanced rendering options at https://marked.js.org/using_advanced
     marked.setOptions({
@@ -451,7 +456,6 @@ define(function (require, exports, module) {
         _staticServerInstance = undefined;
     };
 
-    EventManager.registerEventHandler("ph-liveServer", exports);
     exports.on(EVENT_REPORT_ERROR, function(_ev, event){
         logger.reportError(new Error(event.data.message));
     });
@@ -488,23 +492,25 @@ define(function (require, exports, module) {
         });
     });
 
-    // If we didn't receive heartbeat message from a tab for 10 seconds, we assume tab closed
-    const TAB_HEARTBEAT_TIMEOUT = 10000; // in millis secs
-    setInterval(()=>{
-        let endTime = new Date();
-        for(let tab of livePreviewTabs.keys()){
-            const tabInfo = livePreviewTabs.get(tab);
-            let timeDiff = endTime - tabInfo.lastSeen; // in ms
-            if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
-                livePreviewTabs.delete(tab);
-                // the parent navigationTab `phcode.dev/live-preview-loader.html` which loads the live preview tab also
-                // is in this list. We should not raise browser close event if its just a live-preview-loader tab.
-                if(!tabInfo.navigationTab) {
-                    exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
+    function _startHeartBeatListeners() {
+        // If we didn't receive heartbeat message from a tab for 10 seconds, we assume tab closed
+        const TAB_HEARTBEAT_TIMEOUT = 10000; // in millis secs
+        setInterval(()=>{
+            let endTime = new Date();
+            for(let tab of livePreviewTabs.keys()){
+                const tabInfo = livePreviewTabs.get(tab);
+                let timeDiff = endTime - tabInfo.lastSeen; // in ms
+                if(timeDiff > TAB_HEARTBEAT_TIMEOUT){
+                    livePreviewTabs.delete(tab);
+                    // the parent navigationTab `phcode.dev/live-preview-loader.html` which loads the live preview tab
+                    // is in the list too. We should not raise browser close for a live-preview-loader tab.
+                    if(!tabInfo.navigationTab) {
+                        exports.trigger('BROWSER_CLOSE', { data: { message: {clientID: tab}}});
+                    }
                 }
             }
-        }
-    }, 1000);
+        }, 1000);
+    }
 
     /**
      * The message should be and object of the form: {type, ...}. a type attribute is mandatory
@@ -548,8 +554,6 @@ define(function (require, exports, module) {
         });
     });
 
-    ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
-
     function getTabPopoutURL(url) {
         let openURL = new URL(url);
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
@@ -562,7 +566,16 @@ define(function (require, exports, module) {
         return livePreviewTabs.size > 0;
     }
 
+    function init() {
+        _initNavigatorChannel();
+        _initLivePreviewChannel();
+        EventManager.registerEventHandler("ph-liveServer", exports);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
+        _startHeartBeatListeners();
+    }
+
     LiveDevelopment.setLivePreviewTransportBridge(exports);
+    exports.init = init;
     exports.StaticServer = StaticServer;
     exports.messageToLivePreviewTabs = messageToLivePreviewTabs;
     exports.livePreviewTabs = livePreviewTabs;
