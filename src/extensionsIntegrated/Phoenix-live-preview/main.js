@@ -415,6 +415,9 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
+        if(Phoenix.isSpecRunnerWindow){
+            return;
+        }
         _createExtensionPanel();
         StaticServer.init();
         LiveDevServerManager.registerServer({ create: _createStaticServer }, 5);

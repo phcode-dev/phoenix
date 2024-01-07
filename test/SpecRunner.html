@@ -259,6 +259,7 @@
         baseURL: _getBaseURL(),
         isTestWindow: _isTestWindow(),
         isTestWindowPlaywright: _isTestWindowPlaywright(),
+        isSpecRunnerWindow: window.location.pathname.endsWith("/SpecRunner.html"),
         firstBoot: false, // will be set below
         startTime: Date.now(),
         TRUSTED_ORIGINS: {
