@@ -41,6 +41,8 @@
  */
 define(function (require, exports, module) {
 
+    const ProjectManager      = require("project/ProjectManager");
+
 
     let _serverProviders   = [];
 
@@ -55,24 +57,33 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Determines which provider can serve a file with a local path.
+     * Determines which provider can serve a file with a local path. If it cant find any, will return
+     * the highest priority live preview server.
      *
      * @param {string} localPath A local path to file being served.
      * @return {?BaseServer} A server no null if no servers can serve the file
      */
     function getServer(localPath) {
-        var provider, server, i;
+        let provider, server, i, highestPriorityServer;
 
         for (i = 0; i < _serverProviders.length; i++) {
             provider = _serverProviders[i];
-            server = provider.create();
+            if(!provider.createedInstance ||
+                (provider.createedInstance.getProjectRoot() !== ProjectManager.getProjectRoot().fullPath)){
+                provider.createedInstance = provider.create();
+            }
+            server = provider.createedInstance;
+
+            if(!highestPriorityServer){
+                highestPriorityServer = server;
+            }
 
             if (server.canServe(localPath)) {
                 return server;
             }
         }
 
-        return null;
+        return highestPriorityServer;
     }
 
     /**
@@ -128,7 +139,7 @@ define(function (require, exports, module) {
         return {
             baseURL: LIVE_PREVIEW_STATIC_SERVER_BASE_URL,
             origin: LIVE_PREVIEW_STATIC_SERVER_ORIGIN,
-            projectBaseURL:
+            previewBaseURL:
                 `${LIVE_PREVIEW_STATIC_SERVER_BASE_URL}vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`
         };
     }

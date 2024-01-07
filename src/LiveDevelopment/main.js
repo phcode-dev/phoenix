@@ -127,14 +127,11 @@ define(function main(require, exports, module) {
     }
 
     function closeLivePreview() {
-        if (MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-            MultiBrowserLiveDev.close();
-        }
+        MultiBrowserLiveDev.close();
     }
 
     function openLivePreview() {
-        if (MultiBrowserLiveDev.status <= MultiBrowserLiveDev.STATUS_INACTIVE
-            && !Phoenix.isTestWindow) {
+        if (!Phoenix.isTestWindow) {
             MultiBrowserLiveDev.open();
         }
     }

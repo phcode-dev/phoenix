@@ -161,7 +161,7 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        config.baseUrl= LiveDevServerManager.getStaticServerBaseURLs().projectBaseURL;
+        config.baseUrl= LiveDevServerManager.getStaticServerBaseURLs().previewBaseURL;
         this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -427,26 +427,16 @@ define(function (require, exports, module) {
         return Promise.reject("Cannot get content");
     };
 
-    let serverStarted = false;
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
      */
     StaticServer.prototype.start = async function () {
         _staticServerInstance = this;
+        // in browsers, the virtual server is always loaded permanently in iframe.
+    };
 
-        // load the hidden iframe that loads the service worker server page once. we will reuse the same server
-        // as this is a cross-origin server phcode.live, the browser will identify it as a security issue
-        // if we continuously reload the service worker loader page frequently and it will stop working.
-        if(serverStarted){
-            return;
-        }
-        if(!Phoenix.browser.isTauri) {
-            $livepreviewServerIframe = $("#live-preview-server-iframe");
-            let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
-                `?parentOrigin=${location.origin}`;
-            $livepreviewServerIframe.attr("src", url);
-            serverStarted = true;
-        }
+    StaticServer.prototype.isActive = function () {
+        return _staticServerInstance === this;
     };
 
     /**
@@ -567,6 +557,15 @@ define(function (require, exports, module) {
     }
 
     function init() {
+        if(!Phoenix.browser.isTauri) {
+            // load the hidden iframe that loads the service worker server page once. we will reuse the same server
+            // as this is a cross-origin server phcode.live, the browser will identify it as a security issue
+            // if we continuously reload the service worker loader page frequently and it will stop working.
+            $livepreviewServerIframe = $("#live-preview-server-iframe");
+            let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
+                `?parentOrigin=${location.origin}`;
+            $livepreviewServerIframe.attr("src", url);
+        }
         _initNavigatorChannel();
         _initLivePreviewChannel();
         EventManager.registerEventHandler("ph-liveServer", exports);

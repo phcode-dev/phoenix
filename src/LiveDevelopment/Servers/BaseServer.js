@@ -54,6 +54,14 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Get path of the current project this server serves
+     * @returns {string} Path of the current project this server serves
+     */
+    BaseServer.prototype.getProjectRoot = function () {
+        return this._root;
+    };
+
+    /**
      * @private
      * Augments the given Brackets document with information that's useful for live development
      * @param {Object} liveDocument
@@ -235,6 +243,10 @@ define(function (require, exports, module) {
      */
     BaseServer.prototype.start = function () {
         // do nothing
+    };
+
+    BaseServer.prototype.isActive = function () {
+        return false;
     };
 
     /**
