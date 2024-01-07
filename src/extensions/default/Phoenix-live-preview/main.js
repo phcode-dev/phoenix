@@ -57,11 +57,13 @@ define(function (require, exports, module) {
         LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
         NativeApp           = brackets.getModule("utils/NativeApp"),
         StringUtils         = brackets.getModule("utils/StringUtils"),
+        FileSystem          = brackets.getModule("filesystem/FileSystem"),
         StaticServer  = require("StaticServer"),
         TrustProjectHTML    = require("text!trust-project.html"),
         utils = require('utils');
 
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
+    const PREVIEW_PROJECT_README_KEY = "preview_readme";
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_HTML = `
@@ -111,6 +113,18 @@ define(function (require, exports, module) {
         PhStore.setItem(isTrustedProjectKey, true);
         _loadPreview(true);
     };
+
+    function _setProjectReadmePreviewdOnce() {
+        const projectPath = ProjectManager.getProjectRoot().fullPath;
+        const previewReadmeKey = `${PREVIEW_PROJECT_README_KEY}-${projectPath}`;
+        PhStore.setItem(previewReadmeKey, true);
+    }
+
+    function _isProjectReadmePreviewdOnce() {
+        const projectPath = ProjectManager.getProjectRoot().fullPath;
+        const previewReadmeKey = `${PREVIEW_PROJECT_README_KEY}-${projectPath}`;
+        return !!PhStore.getItem(previewReadmeKey);
+    }
 
     ExtensionInterface.registerExtensionInterface(
         ExtensionInterface._DEFAULT_EXTENSIONS_INTERFACE_NAMES.PHOENIX_LIVE_PREVIEW, exports);
@@ -333,7 +347,21 @@ define(function (require, exports, module) {
         }
     }
 
+    function _openReadmeMDIfFirstTime() {
+        if(!_isProjectReadmePreviewdOnce() && !Phoenix.isTestWindow){
+            const readmePath = `${ProjectManager.getProjectRoot().fullPath}README.md`;
+            const fileEntry = FileSystem.getFileForPath(readmePath);
+            fileEntry.exists(function (err, exists) {
+                if (!err && exists) {
+                    CommandManager.execute(Commands.FILE_ADD_TO_WORKING_SET, {fullPath: readmePath});
+                    _setProjectReadmePreviewdOnce();
+                }
+            });
+        }
+    }
+
     async function _projectOpened(_evt) {
+        _openReadmeMDIfFirstTime();
         if(!LiveDevelopment.isActive()
             && (panel.isVisible() || StaticServer.hasActiveLivePreviews())) {
             // we do this only once after project switch if live preview for a doc is not active.
