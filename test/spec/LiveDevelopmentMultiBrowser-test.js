@@ -588,6 +588,31 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        it("should unpin live previews on project switch", async function () {
+            LiveDevMultiBrowser.open();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+                "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
+
+            await _waitForIframeSrc("sub/icon_chevron.png");
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+            await awaits(500);
+            await _waitForIframeSrc("sub/icon_chevron.png");
+
+            await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
+            await awaits(500);
+            await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+
+            await _waitForIframeSrc("simple1.html");
+
+            await endPreviewSession();
+        }, 30000);
+
         it("should pin live previews pin html file even on live preview on-off", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
