@@ -40,27 +40,28 @@
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
-    const ExtensionUtils   = brackets.getModule("utils/ExtensionUtils"),
-        EditorManager      = brackets.getModule("editor/EditorManager"),
-        ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
-        CommandManager     = brackets.getModule("command/CommandManager"),
-        Commands           = brackets.getModule("command/Commands"),
-        Menus              = brackets.getModule("command/Menus"),
-        WorkspaceManager   = brackets.getModule("view/WorkspaceManager"),
-        AppInit            = brackets.getModule("utils/AppInit"),
-        ProjectManager     = brackets.getModule("project/ProjectManager"),
-        MainViewManager    = brackets.getModule("view/MainViewManager"),
-        Strings            = brackets.getModule("strings"),
-        Mustache           = brackets.getModule("thirdparty/mustache/mustache"),
-        Metrics            = brackets.getModule("utils/Metrics"),
-        LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
-        LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
-        NativeApp           = brackets.getModule("utils/NativeApp"),
-        StringUtils         = brackets.getModule("utils/StringUtils"),
-        FileSystem          = brackets.getModule("filesystem/FileSystem"),
-        StaticServer  = require("StaticServer"),
-        TrustProjectHTML    = require("text!trust-project.html"),
-        utils = require('utils');
+    const ExtensionUtils   = require("utils/ExtensionUtils"),
+        EditorManager      = require("editor/EditorManager"),
+        ExtensionInterface = require("utils/ExtensionInterface"),
+        CommandManager     = require("command/CommandManager"),
+        Commands           = require("command/Commands"),
+        Menus              = require("command/Menus"),
+        WorkspaceManager   = require("view/WorkspaceManager"),
+        AppInit            = require("utils/AppInit"),
+        ProjectManager     = require("project/ProjectManager"),
+        MainViewManager    = require("view/MainViewManager"),
+        Strings            = require("strings"),
+        Mustache           = require("thirdparty/mustache/mustache"),
+        Metrics            = require("utils/Metrics"),
+        LiveDevelopment    = require("LiveDevelopment/main"),
+        LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
+        NativeApp           = require("utils/NativeApp"),
+        StringUtils         = require("utils/StringUtils"),
+        FileSystem          = require("filesystem/FileSystem"),
+        StaticServer  = require("./StaticServer"),
+        TrustProjectHTML    = require("text!./trust-project.html"),
+        panelHTML       = require("text!./panel.html"),
+        utils = require('./utils');
 
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
     const PREVIEW_PROJECT_README_KEY = "preview_readme";
@@ -154,7 +155,6 @@ define(function (require, exports, module) {
 
 
     // Templates
-    let panelHTML       = require("text!panel.html");
     ExtensionUtils.loadStyleSheet(module, "live-preview.css");
     // Other vars
     let panel,

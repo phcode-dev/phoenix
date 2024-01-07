@@ -25,26 +25,26 @@
 
 define(function (require, exports, module) {
 
-    const BaseServer = brackets.getModule("LiveDevelopment/Servers/BaseServer").BaseServer,
-        LiveDevelopmentUtils = brackets.getModule("LiveDevelopment/LiveDevelopmentUtils"),
-        LiveDevelopment    = brackets.getModule("LiveDevelopment/main"),
-        LiveDevServerManager = brackets.getModule("LiveDevelopment/LiveDevServerManager"),
-        LiveDevProtocol = brackets.getModule("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
-        marked = brackets.getModule('thirdparty/marked.min'),
-        DocumentManager = brackets.getModule("document/DocumentManager"),
-        Mustache = brackets.getModule("thirdparty/mustache/mustache"),
-        FileSystem = brackets.getModule("filesystem/FileSystem"),
-        EventDispatcher = brackets.getModule("utils/EventDispatcher"),
-        EventManager = brackets.getModule("utils/EventManager"),
-        ProjectManager = brackets.getModule("project/ProjectManager"),
-        Strings = brackets.getModule("strings"),
-        utils = require('utils'),
-        BootstrapCSSText = require("text!../../../thirdparty/bootstrap/bootstrap.min.css"),
-        GithubCSSText = require("text!../../../thirdparty/highlight.js/styles/github.min.css"),
-        HilightJSText = require("text!../../../thirdparty/highlight.js/highlight.min.js"),
-        GFMCSSText = require("text!../../../thirdparty/gfm.min.css"),
-        markdownHTMLTemplate = require("text!markdown.html"),
-        redirectionHTMLTemplate = require("text!redirectPage.html");
+    const BaseServer = require("LiveDevelopment/Servers/BaseServer").BaseServer,
+        LiveDevelopmentUtils = require("LiveDevelopment/LiveDevelopmentUtils"),
+        LiveDevelopment    = require("LiveDevelopment/main"),
+        LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
+        LiveDevProtocol = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
+        marked = require('thirdparty/marked.min'),
+        DocumentManager = require("document/DocumentManager"),
+        Mustache = require("thirdparty/mustache/mustache"),
+        FileSystem = require("filesystem/FileSystem"),
+        EventDispatcher = require("utils/EventDispatcher"),
+        EventManager = require("utils/EventManager"),
+        ProjectManager = require("project/ProjectManager"),
+        Strings = require("strings"),
+        utils = require('./utils'),
+        BootstrapCSSText = require("text!thirdparty/bootstrap/bootstrap.min.css"),
+        GithubCSSText = require("text!thirdparty/highlight.js/styles/github.min.css"),
+        HilightJSText = require("text!thirdparty/highlight.js/highlight.min.js"),
+        GFMCSSText = require("text!thirdparty/gfm.min.css"),
+        markdownHTMLTemplate = require("text!./markdown.html"),
+        redirectionHTMLTemplate = require("text!./redirectPage.html");
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
     const EVENT_GET_CONTENT = 'GET_CONTENT';
