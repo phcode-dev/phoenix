@@ -112,7 +112,7 @@ define(function (require, exports, module) {
                 activeFullEditor.setCursorPos(position.line, position.ch, true);
             }
         }
-        if(liveDocPath !== activeEditorDocPath) {
+        if(liveDocPath && liveDocPath !== activeEditorDocPath) {
             FileViewController.openAndSelectDocument(liveDocPath, FileViewController.PROJECT_MANAGER)
                 .done(selectInActiveDocument);
         } else {

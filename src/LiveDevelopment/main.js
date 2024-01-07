@@ -144,8 +144,8 @@ define(function main(require, exports, module) {
         return MultiBrowserLiveDev.status === MultiBrowserLiveDev.STATUS_ACTIVE;
     }
 
-    function setLivePreviewPinned(urlPinned) {
-        MultiBrowserLiveDev.setLivePreviewPinned(urlPinned);
+    function setLivePreviewPinned(urlPinned, currentPinnedFilePath) {
+        MultiBrowserLiveDev.setLivePreviewPinned(urlPinned, currentPinnedFilePath);
     }
 
     function setLivePreviewTransportBridge(transportBridge) {
