@@ -18,4 +18,9 @@ async function getURLContent({url, options}) {
     };
 }
 
+async function setLocaleStrings(localStrings) {
+    exports.Strings = localStrings;
+}
+
 exports.getURLContent = getURLContent;
+exports.setLocaleStrings = setLocaleStrings;
