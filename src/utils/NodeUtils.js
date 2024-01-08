@@ -24,22 +24,43 @@
  */
 
 define(function (require, exports, module) {
-    const Strings             = require("strings");
-
-    if(!Phoenix.browser.isTauri) {
-        // node not available in browser builds, return
-        return;
-    }
+    const Strings             = require("strings"),
+        NodeConnector = require('NodeConnector');
     const UTILS_NODE_CONNECTOR = "ph_utils";
-    const NodeConnector = require('NodeConnector');
-    const utilsConnector = NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
+
+    let utilsConnector;
+    if(Phoenix.browser.isTauri) {
+        // node not available in browser builds!
+        utilsConnector = NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
+    }
 
     async function fetchURLText(url, encoding) {
+        if(!Phoenix.browser.isTauri) {
+            throw new Error("node not available in browser");
+        }
         const {buffer} = await utilsConnector.execPeer("getURLContent", {url});
         return iconv.decode(Buffer.from(buffer), encoding);
     }
 
-    utilsConnector.execPeer("setLocaleStrings", Strings);
+    /**
+     * updates the localized strings in brackets `Strings` to node.
+     * @return {Promise<boolean>} Promise resolves to true if strings was updated in node, else false(in browser.)
+     */
+    async function updateNodeLocaleStrings() {
+        if(!Phoenix.browser.isTauri) {
+            // this does nothing in browser builds.
+            return false;
+        }
+        await utilsConnector.execPeer("setLocaleStrings", Strings);
+        return true;
+    }
+
+    if(NodeConnector.isNodeAvailable()) {
+        // todo we need to update the strings if a user extension adds its translations. Since we dont support
+        // node extensions for now, should consider when we support node extensions.
+        updateNodeLocaleStrings();
+    }
 
     exports.fetchURLText = fetchURLText;
+    exports.updateNodeLocaleStrings = updateNodeLocaleStrings;
 });
