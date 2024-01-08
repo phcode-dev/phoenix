@@ -59,7 +59,9 @@ require("./NodeEventDispatcher");
 const lmdb = require("./lmdb");
 const readline = require('readline');
 const http = require('http');
+const mime = require('mime-types');
 const os = require('os');
+const fs= require("fs");
 const path = require('path');
 const net = require('net');
 const PhoenixFS = require('@phcode/fs/dist/phoenix-fs');
@@ -88,6 +90,7 @@ const COMMAND_RESPONSE_PREFIX = 'phnodeResp_1!5$:'; // a string thats not likely
 const COMMAND_ERROR_PREFIX = 'phnodeErr_1!5$:';
 // Generate a random 64-bit url. This should take 100 million+ of years to crack with current http connection speed.
 const PHOENIX_FS_URL = `/PhoenixFS${randomNonce(8)}`;
+const PHOENIX_STATIC_SERVER_URL = `/Static${randomNonce(8)}`;
 const PHOENIX_NODE_URL = `/PhoenixNode${randomNonce(8)}`;
 const PHOENIX_LIVE_PREVIEW_COMM_URL = `/PreviewComm${randomNonce(8)}`;
 
@@ -191,6 +194,7 @@ function processCommand(line) {
                     port,
                     phoenixFSURL: `ws://localhost:${port}${PHOENIX_FS_URL}`,
                     phoenixNodeURL: `ws://localhost:${port}${PHOENIX_NODE_URL}`,
+                    staticServerURL: `http://localhost:${port}${PHOENIX_STATIC_SERVER_URL}`,
                     livePreviewCommURL: `ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`
                 }, jsonCmd.commandID);
             });
@@ -222,8 +226,40 @@ function getFreePort() {
 
 // Create an HTTP server
 const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('WebSocket server running');
+    if (req.url.startsWith(PHOENIX_STATIC_SERVER_URL)) {
+        // Remove '/Static<rand>' from the beginning of the URL and construct file path
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const cleanPath = url.pathname.replace(PHOENIX_STATIC_SERVER_URL, '');
+        const filePath = path.join(__dirname, 'www', cleanPath);
+
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                if (err.code === 'ENOENT' || err.code === 'EISDIR') {
+                    // File not found
+                    res.writeHead(404);
+                    res.end('Not Found');
+                } else {
+                    // Other server errors
+                    res.writeHead(500);
+                    res.end('Server Error');
+                }
+            } else {
+                // Successfully read the file
+                res.writeHead(200, {
+                    'Content-Type': mime.lookup(filePath),
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+                    'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
+                    "Cache-Control": "no-store"
+                });
+                res.end(data);
+            }
+        });
+
+    } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
+    }
 });
 
 getFreePort().then((port) => {
@@ -238,6 +274,7 @@ getFreePort().then((port) => {
     server.listen(port, localhostOnly, () => {
         serverPortResolve(port);
         savedConsoleLog(`Server running on http://localhost:${port}`);
+        savedConsoleLog(`Phoenix node Static Server url is http://localhost:${port}${PHOENIX_STATIC_SERVER_URL}`);
         savedConsoleLog(`Phoenix node tauri FS url is ws://localhost:${port}${PHOENIX_FS_URL}`);
         savedConsoleLog(`Phoenix node connector url is ws://localhost:${port}${PHOENIX_NODE_URL}`);
         savedConsoleLog(`Phoenix live preview comm url is ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`);
