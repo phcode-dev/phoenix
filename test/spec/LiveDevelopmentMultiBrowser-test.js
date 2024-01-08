@@ -590,6 +590,7 @@ define(function (require, exports, module) {
 
         it("should unpin live previews on project switch", async function () {
             LiveDevMultiBrowser.open();
+            await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
 
