@@ -28,30 +28,18 @@ define(function (require, exports, module) {
      * Base class for live preview servers
      *
      * Configuration parameters for this server:
-     * - baseUrl      - Optional base URL (populated by the current project)
      * - pathResolver - Function to covert absolute native paths to project relative paths
      * - root         - Native path to the project root (and base URL)
      *
      * @constructor
-     * @param {!{baseUrl: string, root: string, pathResolver: function(string): string}} config
+     * @param {!{root: string, pathResolver: function(string): string}} config
      */
     function BaseServer(config) {
-        this._baseUrl       = config.baseUrl;
         this._root          = config.root;          // ProjectManager.getProjectRoot().fullPath
         this._pathResolver  = config.pathResolver;  // ProjectManager.makeProjectRelativeIfPossible(doc.file.fullPath)
         this._liveDocuments = {};
         this._virtualServingDocuments = {};
     }
-
-    /**
-     * Returns a base url for current project.
-     *
-     * @return {string}
-     * Base url for current project.
-     */
-    BaseServer.prototype.getBaseUrl = function () {
-        return this._baseUrl;
-    };
 
     /**
      * Get path of the current project this server serves
@@ -93,51 +81,6 @@ define(function (require, exports, module) {
         if (doc.isDirty && liveDocument._updateBrowser) {
             liveDocument._updateBrowser();
         }
-    };
-
-    /**
-     * Returns a URL for a given path
-     * @param {string} path Absolute path to covert to a URL
-     * @return {?string} Converts a path within the project root to a URL.
-     *  Returns null if the path is not a descendant of the project root.
-     */
-    BaseServer.prototype.pathToUrl = function (path) {
-        var baseUrl         = this.getBaseUrl(),
-            relativePath    = this._pathResolver(path);
-
-        // See if base url has been specified and path is within project
-        if (relativePath !== path) {
-            // Map to server url. Base url is already encoded, so don't encode again.
-            var encodedDocPath = encodeURI(path);
-            var encodedProjectPath = encodeURI(this._root);
-
-            return encodedDocPath.replace(encodedProjectPath, baseUrl);
-        }
-
-        return null;
-    };
-
-    /**
-     * Convert a URL to a local full file path
-     * @param {string} url
-     * @return {?string} The absolute path for given URL or null if the path is
-     *  not a descendant of the project.
-     */
-    BaseServer.prototype.urlToPath = function (url) {
-        var path,
-            baseUrl = "";
-
-        baseUrl = this.getBaseUrl();
-
-        if (baseUrl !== "" && url.indexOf(baseUrl) === 0) {
-            // Use base url to translate to local file path.
-            // Need to use encoded project path because it's decoded below.
-            path = url.replace(baseUrl, encodeURI(this._root));
-
-            return decodeURI(path);
-        }
-
-        return null;
     };
 
     /**

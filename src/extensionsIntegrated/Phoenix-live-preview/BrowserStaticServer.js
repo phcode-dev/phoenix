@@ -248,13 +248,23 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        config.baseUrl= getStaticServerBaseURLs().previewBaseURL;
+        this._baseUrl       = getStaticServerBaseURLs().previewBaseURL;
         this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
 
     StaticServer.prototype = Object.create(BaseServer.prototype);
     StaticServer.prototype.constructor = StaticServer;
+
+    /**
+     * Returns a base url for current project.
+     *
+     * @return {string}
+     * Base url for current project.
+     */
+    StaticServer.prototype.getBaseUrl = function () {
+        return this._baseUrl;
+    };
 
     /**
      * Returns a URL for a given path
@@ -284,9 +294,7 @@ define(function (require, exports, module) {
      */
     StaticServer.prototype.urlToPath = function (url) {
         let path,
-            baseUrl = "";
-
-        baseUrl = this.getBaseUrl();
+            baseUrl = this.getBaseUrl();
 
         if (baseUrl !== "" && url.indexOf(baseUrl) === 0) {
             // Use base url to translate to local file path.
@@ -495,7 +503,7 @@ define(function (require, exports, module) {
         if(!_staticServerInstance){
             return Promise.reject("Static serve not started!");
         }
-        if(!url.startsWith(_staticServerInstance._baseUrl)) {
+        if(!url.startsWith(_staticServerInstance.getBaseUrl())) {
             return Promise.reject("Not serving content as url belongs to another phcode instance: " + url);
         }
         if(utils.isMarkdownFile(path)){
