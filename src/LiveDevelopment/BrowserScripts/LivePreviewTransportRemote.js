@@ -49,6 +49,10 @@
     let sentTitle, sentFavIconURL;
 
     function convertImgToBase64(url, callback) {
+        if(!url){
+            callback(null);
+            return;
+        }
         let canvas = document.createElement('CANVAS');
         const ctx = canvas.getContext('2d');
         const img = new Image();
@@ -70,6 +74,9 @@
         if(sentFavIconURL !== faviconUrl){
             sentFavIconURL = faviconUrl;
             convertImgToBase64(faviconUrl, function(base64) {
+                if(!base64){
+                    base64 = "favicon.ico";
+                }
                 worker.postMessage({
                     type: "updateTitleIcon",
                     faviconBase64: base64

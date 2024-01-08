@@ -58,10 +58,12 @@ define(function (require, exports, module) {
         NativeApp           = require("utils/NativeApp"),
         StringUtils         = require("utils/StringUtils"),
         FileSystem          = require("filesystem/FileSystem"),
-        StaticServer  = require("./StaticServer"),
+        BrowserStaticServer  = require("./BrowserStaticServer"),
         TrustProjectHTML    = require("text!./trust-project.html"),
         panelHTML       = require("text!./panel.html"),
         utils = require('./utils');
+
+    const StaticServer = Phoenix.browser.isTauri? BrowserStaticServer : BrowserStaticServer;
 
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
     const PREVIEW_PROJECT_README_KEY = "preview_readme";
@@ -86,18 +88,20 @@ define(function (require, exports, module) {
     }
 
     function _isProjectPreviewTrusted() {
-        // In desktop builds, each project is securely sandboxed in its own live preview server:port domain.
-        // This setup ensures security within the browser sandbox, eliminating the need for a trust
-        // confirmation dialog. We can display the live preview immediately.
-        if(Phoenix.browser.isTauri || Phoenix.isTestWindow){ // for test windows, we trust all test files
+        // We show a trust project window before executing a live preview as it may call websites on project open
+        // or send analytics data from live preview. The live preview can also instruct phoenix to change project
+        // code. So, do not execute any live preview code even in a browser sandbox without asking the user first.
+        if(Phoenix.isTestWindow){ // for test windows, we trust all test files
             return true;
         }
-        // In browsers, since all live previews for all projects uses the same phcode.live domain,
-        // untrusted projects can access data of past opened projects. So we have to show a trust project?
-        // dialog in live preview in browser.
-        // Future plans for browser versions include adopting a similar approach to dynamically generate
-        // URLs in the format `project-name.phcode.live`. This will streamline the workflow by removing
-        // the current reliance on users to manually verify and trust each project in the browser.
+        // In browsers, The url bar will show up as phcode.dev for live previews and there is a chance that
+        // a malicious project can appear as `phcode.dev` when user live previews. So for every live preview
+        // popout tab which shows `phcode.dev` in browser address bar, we will show a trust live preview
+        // confirm dialog every single time when user opens live preivew project.
+        // Further, since all live previews for all projects uses the same phcode.live domain,
+        // untrusted projects can access data of past opened projects. Future plans for browser versions
+        // include adopting a similar approach to desktop to dynamically generate URLs in the format
+        // `project-name.phcode.live` preventing the past data access problem in browser.
         const projectPath = ProjectManager.getProjectRoot().fullPath;
         if(projectPath === ProjectManager.getWelcomeProjectPath() ||
             projectPath === ProjectManager.getExploreProjectPath()){
