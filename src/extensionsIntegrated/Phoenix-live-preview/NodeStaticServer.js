@@ -47,6 +47,7 @@ define(function (require, exports, module) {
 
     const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
     let liveServerConnector;
+    let staticServerURL;
 
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
@@ -77,7 +78,7 @@ define(function (require, exports, module) {
     }
 
     function getNoPreviewURL(){
-        return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html?jsonInput=`+
+        return `${staticServerURL}phoenix-splash/no-preview.html?jsonInput=`+
             encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
                 +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
     }
@@ -567,8 +568,8 @@ define(function (require, exports, module) {
         });
     });
 
-    function getPageLoaderURL(url) {
-        return `${Phoenix.baseURL}live-preview-loader.html`;
+    function _getPageLoaderURL(url) {
+        return `${staticServerURL}live-preview-loader.html`;
     }
 
     function getTabPopoutURL(url) {
@@ -576,7 +577,7 @@ define(function (require, exports, module) {
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
         openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        return  getPageLoaderURL(openURL.href);
+        return  _getPageLoaderURL(openURL.href);
     }
 
     function hasActiveLivePreviews() {
@@ -626,6 +627,10 @@ define(function (require, exports, module) {
     }
 
     function init() {
+        window.nodeSetupDonePromise.then(nodeConfig =>{
+            staticServerURL = `${nodeConfig.staticServerURL}/`;
+            console.error(staticServerURL);
+        });
         liveServerConnector = NodeConnector.createNodeConnector(LIVE_SERVER_NODE_CONNECTOR_ID, exports);
         LiveDevelopment.setLivePreviewTransportBridge(exports);
         _initNavigatorChannel();
