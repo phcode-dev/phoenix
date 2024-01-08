@@ -59,11 +59,12 @@ define(function (require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         FileSystem          = require("filesystem/FileSystem"),
         BrowserStaticServer  = require("./BrowserStaticServer"),
+        NodeStaticServer  = require("./NodeStaticServer"),
         TrustProjectHTML    = require("text!./trust-project.html"),
         panelHTML       = require("text!./panel.html"),
         utils = require('./utils');
 
-    const StaticServer = Phoenix.browser.isTauri? BrowserStaticServer : BrowserStaticServer;
+    const StaticServer = Phoenix.browser.isTauri? NodeStaticServer : BrowserStaticServer;
 
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
     const PREVIEW_PROJECT_README_KEY = "preview_readme";
