@@ -328,5 +328,4 @@ define(function main(require, exports, module) {
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
-    exports.getLivePreviewBaseURL = MultiBrowserLiveDev.getLivePreviewBaseURL;
 });

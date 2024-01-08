@@ -21,14 +21,13 @@
  *
  */
 
-/*global logger, fs */
+/*global logger, fs, path */
 
 define(function (require, exports, module) {
 
     const BaseServer = require("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = require("LiveDevelopment/LiveDevelopmentUtils"),
         LiveDevelopment    = require("LiveDevelopment/main"),
-        LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
         LiveDevProtocol = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
         marked = require('thirdparty/marked.min'),
         DocumentManager = require("document/DocumentManager"),
@@ -44,7 +43,12 @@ define(function (require, exports, module) {
         HilightJSText = require("text!thirdparty/highlight.js/highlight.min.js"),
         GFMCSSText = require("text!thirdparty/gfm.min.css"),
         markdownHTMLTemplate = require("text!./markdown.html"),
+        NodeConnector = require("NodeConnector"),
         redirectionHTMLTemplate = require("text!./redirectPage.html");
+
+    const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
+    let liveServerConnector;
+
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
     const EVENT_GET_CONTENT = 'GET_CONTENT';
@@ -63,6 +67,25 @@ define(function (require, exports, module) {
     const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
     let livePreviewChannel;
     let _staticServerInstance, $livepreviewServerIframe;
+
+    function getStaticServerBaseURLs() {
+        return {
+            baseURL: "http://localhost:port/", // to dynamic for project
+            origin: "http://localhost:port",
+            previewBaseURL:
+                `http://localhost:port/vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`
+        };
+    }
+
+    function getNoPreviewURL(){
+        return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html?jsonInput=`+
+            encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
+                +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
+    }
+
+    function getLivePreviewBaseURL() {
+        return getStaticServerBaseURLs().previewBaseURL;
+    }
 
     function _initNavigatorChannel() {
         navigatorChannel = new BroadcastChannel(NAVIGATOR_CHANNEL_ID);
@@ -161,7 +184,7 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        config.baseUrl= LiveDevServerManager.getStaticServerBaseURLs().previewBaseURL;
+        config.baseUrl= getStaticServerBaseURLs().previewBaseURL;
         this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -318,17 +341,6 @@ define(function (require, exports, module) {
         });
     }
 
-    function _getExtension(filePath) {
-        filePath = filePath || '';
-        let pathSplit = filePath.split('.');
-        return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : '';
-    }
-
-    function _isMarkdownFile(filePath) {
-        let extension = _getExtension(filePath);
-        return ['md', 'markdown'].includes(extension.toLowerCase());
-    }
-
     /**
      * return a page loader html with redirect script tag that just redirects the page to the given redirectURL.
      * Strips the PHCODE_LIVE_PREVIEW_QUERY_PARAM in redirectURL also, indicating this is not a live previewed url.
@@ -422,7 +434,7 @@ define(function (require, exports, module) {
         if(!url.startsWith(_staticServerInstance._baseUrl)) {
             return Promise.reject("Not serving content as url belongs to another phcode instance: " + url);
         }
-        if(_isMarkdownFile(path)){
+        if(utils.isMarkdownFile(path)){
             return _getMarkdown(path);
         }
         if(_staticServerInstance){
@@ -515,7 +527,7 @@ define(function (require, exports, module) {
             throw new Error('Missing type attribute to send live preview message to tabs');
         }
         // The embedded iframe is a trusted origin and hence we use '*'. We can alternatively use
-        // LiveDevServerManager.getStaticServerBaseURLs().origin, but there seems to be a single error on startup
+        // getStaticServerBaseURLs().origin, but there seems to be a single error on startup
         // Most likely as we switch frequently between about:blank and the live preview server host page.
         // Error message in console:
         // `Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('http://localhost:8001')
@@ -548,19 +560,66 @@ define(function (require, exports, module) {
         });
     });
 
+    function getPageLoaderURL(url) {
+        return `${Phoenix.baseURL}live-preview-loader.html`;
+    }
+
     function getTabPopoutURL(url) {
         let openURL = new URL(url);
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
         openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        return  utils.getPageLoaderURL(openURL.href);
+        return  getPageLoaderURL(openURL.href);
     }
 
     function hasActiveLivePreviews() {
         return livePreviewTabs.size > 0;
     }
 
+    /**
+     * Finds out a {URL,filePath} to live preview from the project. Will return and empty object if the current
+     * file is not previewable.
+     * @return {Promise<*>}
+     */
+    async function getPreviewDetails() {
+        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
+            // async is explicitly caught
+            try {
+                const projectRoot = ProjectManager.getProjectRoot().fullPath;
+                const projectRootUrl = `${getLivePreviewBaseURL()}${projectRoot}`;
+                const currentDocument = DocumentManager.getCurrentDocument();
+                const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+                if(currentFile){
+                    let fullPath = currentFile.fullPath;
+                    let httpFilePath = null;
+                    if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
+                        httpFilePath = fullPath;
+                    }
+                    if(utils.isPreviewableFile(fullPath)){
+                        const filePath = httpFilePath || path.relative(projectRoot, fullPath);
+                        let URL = httpFilePath || `${projectRootUrl}${filePath}`;
+                        resolve({
+                            URL,
+                            filePath: filePath,
+                            fullPath: fullPath,
+                            isMarkdownFile: utils.isMarkdownFile(fullPath),
+                            isHTMLFile: utils.isHTMLFile(fullPath)
+                        });
+                        return;
+                    }
+                }
+                resolve({
+                    URL: getNoPreviewURL(),
+                    isNoPreview: true
+                });
+            }catch (e) {
+                reject(e);
+            }
+        });
+    }
+
     function init() {
+        liveServerConnector = NodeConnector.createNodeConnector(LIVE_SERVER_NODE_CONNECTOR_ID, exports);
         LiveDevelopment.setLivePreviewTransportBridge(exports);
         _initNavigatorChannel();
         _initLivePreviewChannel();
@@ -576,6 +635,8 @@ define(function (require, exports, module) {
     exports.redirectAllTabs = redirectAllTabs;
     exports.getTabPopoutURL = getTabPopoutURL;
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
+    exports.getNoPreviewURL = getNoPreviewURL;
+    exports.getPreviewDetails = getPreviewDetails;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
     exports.EVENT_SERVER_READY = EVENT_SERVER_READY;
 });
