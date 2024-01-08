@@ -21,7 +21,7 @@
  *
  */
 
-/*global Phoenix, logger, fs */
+/*global logger, fs */
 
 define(function (require, exports, module) {
 
@@ -562,13 +562,6 @@ define(function (require, exports, module) {
 
     function init() {
         LiveDevelopment.setLivePreviewTransportBridge(exports);
-        // load the hidden iframe that loads the service worker server page once. we will reuse the same server
-        // as this is a cross-origin server phcode.live, the browser will identify it as a security issue
-        // if we continuously reload the service worker loader page frequently and it will stop working.
-        $livepreviewServerIframe = $("#live-preview-server-iframe");
-        let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
-            `?parentOrigin=${location.origin}`;
-        $livepreviewServerIframe.attr("src", url);
         _initNavigatorChannel();
         _initLivePreviewChannel();
         EventManager.registerEventHandler("ph-liveServer", exports);
