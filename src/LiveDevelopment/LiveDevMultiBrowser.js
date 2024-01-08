@@ -728,27 +728,6 @@ define(function (require, exports, module) {
         currentPreviewFilePath = currentPinnedFilePath;
     }
 
-    /**
-     * Returns current project server config. Copied from original LiveDevelopment.
-     */
-    function getCurrentProjectServerConfig() {
-        return {
-            baseUrl: ProjectManager.getBaseUrl(),
-            pathResolver: ProjectManager.makeProjectRelativeIfPossible,
-            root: ProjectManager.getProjectRoot().fullPath
-        };
-    }
-
-    /**
-     * @private
-     * Returns the base URL of the current server serving the active live document, or null if
-     * there is no active live document.
-     * @return {?string}
-     */
-    function getServerBaseUrl() {
-        return _server && _server.getBaseUrl();
-    }
-
     // for unit testing only
     function getCurrentLiveDoc() {
         return _liveDocument;
@@ -793,10 +772,8 @@ define(function (require, exports, module) {
     exports.init                = init;
     exports.isActive            = isActive;
     exports.setLivePreviewPinned= setLivePreviewPinned;
-    exports.getServerBaseUrl    = getServerBaseUrl;
     exports.getCurrentLiveDoc   = getCurrentLiveDoc;
     exports.getLivePreviewDetails = getLivePreviewDetails;
-    exports.getCurrentProjectServerConfig = getCurrentProjectServerConfig;
     exports.getConnectionIds = getConnectionIds;
     exports.setTransport        = setTransport;
 });

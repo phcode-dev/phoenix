@@ -209,10 +209,6 @@ define(function (require, exports, module) {
     require("worker/IndexingWorker");
     require("worker/ExtensionsWorker");
 
-    // live preview
-    require("LiveDevelopment/Servers/FileServer");
-    require("LiveDevelopment/Servers/UserServer");
-
     PerfUtils.addMeasurement("brackets module dependencies resolved");
 
     // Local variables

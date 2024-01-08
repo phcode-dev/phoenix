@@ -25,15 +25,13 @@
 define(function (require, exports, module) {
 
 
-    var LanguageManager = require("language/LanguageManager"),
-        ProjectManager  = require("project/ProjectManager");
+    var LanguageManager = require("language/LanguageManager");
 
     /**
      * File extensions - hard-coded for now, but may want to make these preferences
      * @const {Array.<string>}
      */
-    var _staticHtmlFileExts = ["htm", "html", "xhtml"],
-        _serverHtmlFileExts = ["php", "php3", "php4", "php5", "phtm", "phtml", "cfm", "cfml", "asp", "aspx", "jsp", "jspx", "shtm", "shtml"];
+    const _staticHtmlFileExts = ["htm", "html", "xhtml"];
 
     /**
      * Determine if file extension is a static html file extension.
@@ -49,30 +47,15 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Determine if file extension is a server html file extension.
-     * @param {string} filePath could be a path, a file name or just a file extension
-     * @return {boolean} Returns true if fileExt is in the list
-     */
-    function isServerHtmlFileExt(filePath) {
-        if (!filePath) {
-            return false;
-        }
-
-        return (_serverHtmlFileExts.indexOf(LanguageManager.getLanguageForPath(filePath).getId()) !== -1);
-    }
-
-    /**
      * Returns true if we think the given extension is for an HTML file.
      * @param {string} ext The extension to check.
      * @return {boolean} true if this is an HTML extension.
      */
     function isHtmlFileExt(ext) {
-        return (isStaticHtmlFileExt(ext) ||
-                (ProjectManager.getBaseUrl() && isServerHtmlFileExt(ext)));
+        return isStaticHtmlFileExt(ext);
     }
 
     // Define public API
     exports.isHtmlFileExt       = isHtmlFileExt;
     exports.isStaticHtmlFileExt = isStaticHtmlFileExt;
-    exports.isServerHtmlFileExt = isServerHtmlFileExt;
 });
