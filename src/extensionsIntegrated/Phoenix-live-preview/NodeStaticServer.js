@@ -34,7 +34,6 @@ define(function (require, exports, module) {
         Mustache = require("thirdparty/mustache/mustache"),
         FileSystem = require("filesystem/FileSystem"),
         EventDispatcher = require("utils/EventDispatcher"),
-        EventManager = require("utils/EventManager"),
         ProjectManager = require("project/ProjectManager"),
         Strings = require("strings"),
         utils = require('./utils'),
@@ -623,7 +622,6 @@ define(function (require, exports, module) {
         LiveDevelopment.setLivePreviewTransportBridge(exports);
         _initNavigatorChannel();
         _initLivePreviewChannel();
-        EventManager.registerEventHandler("ph-liveServer", exports);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         _startHeartBeatListeners();
     }
