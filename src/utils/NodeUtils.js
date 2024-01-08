@@ -24,6 +24,8 @@
  */
 
 define(function (require, exports, module) {
+    const Strings             = require("strings");
+
     if(!Phoenix.browser.isTauri) {
         // node not available in browser builds, return
         return;
@@ -36,6 +38,8 @@ define(function (require, exports, module) {
         const {buffer} = await utilsConnector.execPeer("getURLContent", {url});
         return iconv.decode(Buffer.from(buffer), encoding);
     }
+
+    utilsConnector.execPeer("setLocaleStrings", Strings);
 
     exports.fetchURLText = fetchURLText;
 });
