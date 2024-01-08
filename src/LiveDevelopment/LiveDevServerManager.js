@@ -68,11 +68,11 @@ define(function (require, exports, module) {
 
         for (i = 0; i < _serverProviders.length; i++) {
             provider = _serverProviders[i];
-            if(!provider.createedInstance ||
-                (provider.createedInstance.getProjectRoot() !== ProjectManager.getProjectRoot().fullPath)){
-                provider.createedInstance = provider.create();
+            if(!provider._createdServer ||
+                (provider._createdServer.getProjectRoot() !== ProjectManager.getProjectRoot().fullPath)){
+                provider._createdServer = provider.create();
             }
-            server = provider.createedInstance;
+            server = provider._createdServer;
 
             if(!highestPriorityServer){
                 highestPriorityServer = server;
