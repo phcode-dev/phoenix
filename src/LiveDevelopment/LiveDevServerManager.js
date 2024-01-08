@@ -130,20 +130,6 @@ define(function (require, exports, module) {
         }
     }
 
-    const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "https://phcode.live/",
-        LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "https://phcode.live";
-    // #LIVE_PREVIEW_STATIC_SERVER_BASE_URL_OVERRIDE uncomment below line if you are developing live preview server.
-    // const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001/";
-    // const LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "http://localhost:8001";
-    function getStaticServerBaseURLs() {
-        return {
-            baseURL: LIVE_PREVIEW_STATIC_SERVER_BASE_URL,
-            origin: LIVE_PREVIEW_STATIC_SERVER_ORIGIN,
-            previewBaseURL:
-                `${LIVE_PREVIEW_STATIC_SERVER_BASE_URL}vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`
-        };
-    }
-
     // Backwards compatibility
     exports.getProvider         = getServer;
     exports.registerProvider    = registerServer;
@@ -152,5 +138,4 @@ define(function (require, exports, module) {
     exports.getServer           = getServer;
     exports.registerServer      = registerServer;
     exports.removeServer        = removeServer;
-    exports.getStaticServerBaseURLs = getStaticServerBaseURLs;
 });

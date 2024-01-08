@@ -21,14 +21,13 @@
  *
  */
 
-/*global Phoenix, logger, fs */
+/*global Phoenix, logger, fs, path */
 
 define(function (require, exports, module) {
 
     const BaseServer = require("LiveDevelopment/Servers/BaseServer").BaseServer,
         LiveDevelopmentUtils = require("LiveDevelopment/LiveDevelopmentUtils"),
         LiveDevelopment    = require("LiveDevelopment/main"),
-        LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
         LiveDevProtocol = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
         marked = require('thirdparty/marked.min'),
         DocumentManager = require("document/DocumentManager"),
@@ -63,6 +62,94 @@ define(function (require, exports, module) {
     const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
     let livePreviewChannel;
     let _staticServerInstance, $livepreviewServerIframe;
+
+    const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "https://phcode.live/",
+        LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "https://phcode.live";
+    // #LIVE_PREVIEW_STATIC_SERVER_BASE_URL_OVERRIDE uncomment below line if you are developing -
+    // live preview server for browser.
+    // const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001/";
+    // const LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "http://localhost:8001";
+    function getStaticServerBaseURLs() {
+        return {
+            baseURL: LIVE_PREVIEW_STATIC_SERVER_BASE_URL,
+            origin: LIVE_PREVIEW_STATIC_SERVER_ORIGIN,
+            previewBaseURL:
+                `${LIVE_PREVIEW_STATIC_SERVER_BASE_URL}vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`
+        };
+    }
+
+    function getLivePreviewBaseURL() {
+        return getStaticServerBaseURLs().previewBaseURL;
+    }
+
+    function getLivePreviewNotSupportedURL() {
+        return `${window.Phoenix.baseURL}assets/phoenix-splash/live-preview-error.html?mainHeading=`+
+            encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_HEADING}`) + "&mainSpan="+
+            encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_SPAN}`);
+    }
+
+    function getNoPreviewURL(){
+        return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html?jsonInput=`+
+            encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
+                +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
+    }
+
+    function _isLivePreviewSupported() {
+        // in safari, service workers are disabled in third party iframes. We use phcode.live for secure sandboxing
+        // live previews into its own domain apart from phcode.dev. Since safari doesn't support this, we are left
+        // with using phcode.dev domain directly for live previews. That is a large attack surface for untrusted
+        // code execution. so we will disable live previews in safari instead of shipping a security vulnerability.
+        return Phoenix.browser.isTauri || !(Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos);
+    }
+
+    /**
+     * Finds out a {URL,filePath} to live preview from the project. Will return and empty object if the current
+     * file is not previewable.
+     * @return {Promise<*>}
+     */
+    async function getPreviewDetails() {
+        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
+            // async is explicitly caught
+            try {
+                if(!_isLivePreviewSupported()){
+                    resolve({
+                        URL: getLivePreviewNotSupportedURL(),
+                        isNoPreview: true
+                    });
+                    return;
+                }
+                const projectRoot = ProjectManager.getProjectRoot().fullPath;
+                const projectRootUrl = `${getLivePreviewBaseURL()}${projectRoot}`;
+                const currentDocument = DocumentManager.getCurrentDocument();
+                const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+                if(currentFile){
+                    let fullPath = currentFile.fullPath;
+                    let httpFilePath = null;
+                    if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
+                        httpFilePath = fullPath;
+                    }
+                    if(utils.isPreviewableFile(fullPath)){
+                        const filePath = httpFilePath || path.relative(projectRoot, fullPath);
+                        let URL = httpFilePath || `${projectRootUrl}${filePath}`;
+                        resolve({
+                            URL,
+                            filePath: filePath,
+                            fullPath: fullPath,
+                            isMarkdownFile: utils.isMarkdownFile(fullPath),
+                            isHTMLFile: utils.isHTMLFile(fullPath)
+                        });
+                        return;
+                    }
+                }
+                resolve({
+                    URL: getNoPreviewURL(),
+                    isNoPreview: true
+                });
+            }catch (e) {
+                reject(e);
+            }
+        });
+    }
 
     function _initNavigatorChannel() {
         navigatorChannel = new BroadcastChannel(NAVIGATOR_CHANNEL_ID);
@@ -161,7 +248,7 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        config.baseUrl= LiveDevServerManager.getStaticServerBaseURLs().previewBaseURL;
+        config.baseUrl= getStaticServerBaseURLs().previewBaseURL;
         this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -318,17 +405,6 @@ define(function (require, exports, module) {
         });
     }
 
-    function _getExtension(filePath) {
-        filePath = filePath || '';
-        let pathSplit = filePath.split('.');
-        return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : '';
-    }
-
-    function _isMarkdownFile(filePath) {
-        let extension = _getExtension(filePath);
-        return ['md', 'markdown'].includes(extension.toLowerCase());
-    }
-
     /**
      * return a page loader html with redirect script tag that just redirects the page to the given redirectURL.
      * Strips the PHCODE_LIVE_PREVIEW_QUERY_PARAM in redirectURL also, indicating this is not a live previewed url.
@@ -422,7 +498,7 @@ define(function (require, exports, module) {
         if(!url.startsWith(_staticServerInstance._baseUrl)) {
             return Promise.reject("Not serving content as url belongs to another phcode instance: " + url);
         }
-        if(_isMarkdownFile(path)){
+        if(utils.isMarkdownFile(path)){
             return _getMarkdown(path);
         }
         if(_staticServerInstance){
@@ -515,7 +591,7 @@ define(function (require, exports, module) {
             throw new Error('Missing type attribute to send live preview message to tabs');
         }
         // The embedded iframe is a trusted origin and hence we use '*'. We can alternatively use
-        // LiveDevServerManager.getStaticServerBaseURLs().origin, but there seems to be a single error on startup
+        // getStaticServerBaseURLs().origin, but there seems to be a single error on startup
         // Most likely as we switch frequently between about:blank and the live preview server host page.
         // Error message in console:
         // `Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('http://localhost:8001')
@@ -548,12 +624,22 @@ define(function (require, exports, module) {
         });
     });
 
+    function getPageLoaderURL(url) {
+        return `${Phoenix.baseURL}live-preview-loader.html?`
+            +`virtualServerURL=${encodeURIComponent(getStaticServerBaseURLs().baseURL)}`
+            +`&phoenixInstanceID=${Phoenix.PHOENIX_INSTANCE_ID}&initialURL=${encodeURIComponent(url)}`
+            +`&localMessage=${encodeURIComponent(Strings.DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE)}`
+            +`&appName=${encodeURIComponent(Strings.APP_NAME)}`
+            +`&initialProjectRoot=${encodeURIComponent(ProjectManager.getProjectRoot().fullPath)}`
+            +`&okMessage=${encodeURIComponent(Strings.TRUST_PROJECT)}`;
+    }
+
     function getTabPopoutURL(url) {
         let openURL = new URL(url);
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
         openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        return  utils.getPageLoaderURL(openURL.href);
+        return  getPageLoaderURL(openURL.href);
     }
 
     function hasActiveLivePreviews() {
@@ -566,7 +652,7 @@ define(function (require, exports, module) {
         // as this is a cross-origin server phcode.live, the browser will identify it as a security issue
         // if we continuously reload the service worker loader page frequently and it will stop working.
         $livepreviewServerIframe = $("#live-preview-server-iframe");
-        let url = LiveDevServerManager.getStaticServerBaseURLs().baseURL +
+        let url = getStaticServerBaseURLs().baseURL +
             `?parentOrigin=${location.origin}`;
         $livepreviewServerIframe.attr("src", url);
         _initNavigatorChannel();
@@ -579,10 +665,12 @@ define(function (require, exports, module) {
     exports.init = init;
     exports.StaticServer = StaticServer;
     exports.messageToLivePreviewTabs = messageToLivePreviewTabs;
+    exports.getPreviewDetails = getPreviewDetails;
     exports.livePreviewTabs = livePreviewTabs;
     exports.redirectAllTabs = redirectAllTabs;
     exports.getTabPopoutURL = getTabPopoutURL;
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
+    exports.getNoPreviewURL = getNoPreviewURL;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
     exports.EVENT_SERVER_READY = EVENT_SERVER_READY;
 });

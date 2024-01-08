@@ -35,17 +35,7 @@
  * SOFTWARE.
  */
 
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global define, brackets, fs, Phoenix, path */
-//jshint-ignore:no-start
-
 define(function (require, exports, module) {
-    const ProjectManager          = require("project/ProjectManager"),
-        Strings                   = require("strings"),
-        DocumentManager     = require("document/DocumentManager"),
-        LiveDevelopment    = require("LiveDevelopment/main"),
-        LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager");
-
     function getExtension(filePath) {
         filePath = filePath || '';
         let pathSplit = filePath.split('.');
@@ -54,7 +44,7 @@ define(function (require, exports, module) {
 
     function isPreviewableFile(filePath) {
         let extension = getExtension(filePath);
-        return isImage(filePath) || _isMarkdownFile(filePath) || _isHTMLFile(filePath) ||
+        return isImage(filePath) || isMarkdownFile(filePath) || isHTMLFile(filePath) ||
             ['pdf'].includes(extension.toLowerCase());
     }
 
@@ -64,101 +54,21 @@ define(function (require, exports, module) {
             .includes(extension.toLowerCase());
     }
 
-    function _isMarkdownFile(filePath) {
+    function isMarkdownFile(filePath) {
         let extension = getExtension(filePath);
         return ['md', 'markdown'].includes(extension.toLowerCase());
     }
 
-    function _isHTMLFile(filePath) {
+    function isHTMLFile(filePath) {
         let extension = getExtension(filePath);
         return ['html', 'htm', 'xhtml'].includes(extension.toLowerCase());
     }
 
-    function getNoPreviewURL(){
-        return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html?jsonInput=`+
-            encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
-                +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
-    }
-
-    function getLivePreviewNotSupportedURL() {
-        return `${window.Phoenix.baseURL}assets/phoenix-splash/live-preview-error.html?mainHeading=`+
-            encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_HEADING}`) + "&mainSpan="+
-            encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_SPAN}`);
-    }
-
-    function getPageLoaderURL(url) {
-        return `${Phoenix.baseURL}live-preview-loader.html?`
-            +`virtualServerURL=${encodeURIComponent(LiveDevServerManager.getStaticServerBaseURLs().baseURL)}`
-            +`&phoenixInstanceID=${Phoenix.PHOENIX_INSTANCE_ID}&initialURL=${encodeURIComponent(url)}`
-            +`&localMessage=${encodeURIComponent(Strings.DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE)}`
-            +`&appName=${encodeURIComponent(Strings.APP_NAME)}`
-            +`&initialProjectRoot=${encodeURIComponent(ProjectManager.getProjectRoot().fullPath)}`
-            +`&okMessage=${encodeURIComponent(Strings.TRUST_PROJECT)}`;
-    }
-
-    function _isLivePreviewSupported() {
-        // in safari, service workers are disabled in third party iframes. We use phcode.live for secure sandboxing
-        // live previews into its own domain apart from phcode.dev. Since safari doesn't support this, we are left
-        // with using phcode.dev domain directly for live previews. That is a large attack surface for untrusted
-        // code execution. so we will disable live previews in safari instead of shipping a security vulnerability.
-        return Phoenix.browser.isTauri || !(Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos);
-    }
-
-    /**
-     * Finds out a {URL,filePath} to live preview from the project. Will return and empty object if the current
-     * file is not previewable.
-     * @return {Promise<*>}
-     */
-    async function getPreviewDetails() {
-        return new Promise(async (resolve, reject)=>{ // eslint-disable-line
-            // async is explicitly caught
-            try {
-                if(!_isLivePreviewSupported()){
-                    resolve({
-                        URL: getLivePreviewNotSupportedURL(),
-                        isNoPreview: true
-                    });
-                    return;
-                }
-                const projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${LiveDevelopment.getLivePreviewBaseURL()}${projectRoot}`;
-                const currentDocument = DocumentManager.getCurrentDocument();
-                const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
-                if(currentFile){
-                    let fullPath = currentFile.fullPath;
-                    let httpFilePath = null;
-                    if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
-                        httpFilePath = fullPath;
-                    }
-                    if(isPreviewableFile(fullPath)){
-                        const filePath = httpFilePath || path.relative(projectRoot, fullPath);
-                        let URL = httpFilePath || `${projectRootUrl}${filePath}`;
-                        resolve({
-                            URL,
-                            filePath: filePath,
-                            fullPath: fullPath,
-                            isMarkdownFile: _isMarkdownFile(fullPath),
-                            isHTMLFile: _isHTMLFile(fullPath)
-                        });
-                        return;
-                    }
-                }
-                resolve({
-                    URL: getNoPreviewURL(),
-                    isNoPreview: true
-                });
-            }catch (e) {
-                reject(e);
-            }
-        });
-    }
-
-    exports.getPreviewDetails = getPreviewDetails;
-    exports.getNoPreviewURL = getNoPreviewURL;
     exports.getExtension = getExtension;
-    exports.getPageLoaderURL = getPageLoaderURL;
     exports.isPreviewableFile = isPreviewableFile;
     exports.isImage = isImage;
+    exports.isHTMLFile = isHTMLFile;
+    exports.isMarkdownFile = isMarkdownFile;
 });
 
 
