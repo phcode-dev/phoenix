@@ -29,6 +29,7 @@
 
 const WebSocket = require('ws');
 const http = require('http');
+const mime = require('mime-types');
 const {splitMetadataAndBuffer, mergeMetadataAndArrayBuffer} = require('./ws-utils');
 const NodeConnector = require("./node-connector");
 const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
@@ -98,8 +99,39 @@ function messageAllWebSockets(socketList, data) {
  * @param {ServerResponse} res
  */
 function serverRequestListener(req, res) {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Not Found');
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    liveServerConnector.execPeer('getContent', url.href)
+        .then(data=>{
+            if(data.is404){
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.end('404: Not Found');
+                return;
+            }
+            const defaultHeaders = {
+                'Content-Type': mime.lookup(data.path),
+                "Cache-Control": "no-store"
+            };
+            const customHeaders = data.headers || {};
+            const mergedHeaders = {
+                ...defaultHeaders,
+                ...customHeaders
+            };
+            res.writeHead(200, mergedHeaders);
+            if(data.textContents) {
+                res.end(data.textContents);
+            } else if(data.buffer) {
+                // Convert the array buffer to Buffer and send it as a response
+                const buffer = Buffer.from(data.buffer);
+                res.end(buffer);
+            } else {
+                // most likeley mepty buffer or empty stringss
+                res.end('');
+            }
+        })
+        .catch(()=>{
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('500: Internal Server Error');
+        });
 }
 
 async function startStaticServer({projectRoot, preferredPort}) {
