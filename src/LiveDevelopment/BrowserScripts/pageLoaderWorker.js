@@ -35,8 +35,8 @@ function _setupBroadcastChannel(broadcastChannel, clientID) {
     _livePreviewNavigationChannel.onmessage = (event) => {
         const type = event.data.type;
         switch (type) {
-        case 'REDIRECT_PAGE': postMessage({type, URL: event.data.URL}); break;
         case 'TAB_ONLINE': break; // do nothing. This is a loopback message from another live preview tab
+        default: postMessage(event.data); break;
         }
     };
     function _sendOnlineHeartbeat() {
@@ -66,6 +66,7 @@ onmessage = (event) => {
     switch (type) {
     case 'setupBroadcast': _setupBroadcastChannel(event.data.broadcastChannel, event.data.clientID); break;
     case 'updateTitleIcon': updateTitleAndFavicon(event); break;
+    case 'livePreview': _livePreviewNavigationChannel.postMessage(event.data.message); break;
     default: console.error("Live Preview page worker: received unknown event:", event);
     }
 };
