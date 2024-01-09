@@ -63,7 +63,6 @@ const mime = require('mime-types');
 const os = require('os');
 const fs= require("fs");
 const path = require('path');
-const net = require('net');
 const PhoenixFS = require('@phcode/fs/dist/phoenix-fs');
 const NodeConnector = require("./node-connector");
 const LivePreview = require("./live-preview");
@@ -211,18 +210,6 @@ rl.on('line', (line) => {
 });
 
 const localhostOnly = 'localhost';
-function getFreePort() {
-    return new Promise((resolve)=>{
-        const server = net.createServer();
-
-        server.listen(0, localhostOnly, () => {
-            const port = server.address().port;
-            server.close(() => {
-                resolve(port);
-            });
-        });
-    });
-}
 
 // Create an HTTP server
 const server = http.createServer((req, res) => {
@@ -262,22 +249,19 @@ const server = http.createServer((req, res) => {
     }
 });
 
-getFreePort().then((port) => {
+PhoenixFS.CreatePhoenixFsServer(server, PHOENIX_FS_URL);
+NodeConnector.CreateNodeConnectorWSServer(server, PHOENIX_NODE_URL);
+// PhoenixFS.setDebugMode(true); // uncomment this line to enable more logging in phoenix fs lib
+
+LivePreview.CreateLivePreviewWSServer(server, PHOENIX_LIVE_PREVIEW_COMM_URL);
+// Start the HTTP server on port 3000
+server.listen(0, localhostOnly, () => {
+    const port = server.address().port;
     savedConsoleLog('Server Opened on port: ', port);
-
-    PhoenixFS.CreatePhoenixFsServer(server, PHOENIX_FS_URL);
-    NodeConnector.CreateNodeConnectorWSServer(server, PHOENIX_NODE_URL);
-    // PhoenixFS.setDebugMode(true); // uncomment this line to enable more logging in phoenix fs lib
-
-    LivePreview.CreateLivePreviewWSServer(server, PHOENIX_LIVE_PREVIEW_COMM_URL);
-    // Start the HTTP server on port 3000
-    server.listen(port, localhostOnly, () => {
-        serverPortResolve(port);
-        savedConsoleLog(`Server running on http://localhost:${port}`);
-        savedConsoleLog(`Phoenix node Static Server url is http://localhost:${port}${PHOENIX_STATIC_SERVER_URL}`);
-        savedConsoleLog(`Phoenix node tauri FS url is ws://localhost:${port}${PHOENIX_FS_URL}`);
-        savedConsoleLog(`Phoenix node connector url is ws://localhost:${port}${PHOENIX_NODE_URL}`);
-        savedConsoleLog(`Phoenix live preview comm url is ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`);
-    });
-
+    savedConsoleLog(`Server running on http://localhost:${port}`);
+    savedConsoleLog(`Phoenix node Static Server url is http://localhost:${port}${PHOENIX_STATIC_SERVER_URL}`);
+    savedConsoleLog(`Phoenix node tauri FS url is ws://localhost:${port}${PHOENIX_FS_URL}`);
+    savedConsoleLog(`Phoenix node connector url is ws://localhost:${port}${PHOENIX_NODE_URL}`);
+    savedConsoleLog(`Phoenix live preview comm url is ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`);
+    serverPortResolve(port);
 });

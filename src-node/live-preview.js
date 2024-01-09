@@ -28,12 +28,60 @@
  */
 
 const WebSocket = require('ws');
+const http = require('http');
 const {splitMetadataAndBuffer, mergeMetadataAndArrayBuffer} = require('./ws-utils');
 const NodeConnector = require("./node-connector");
 const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
 const liveServerConnector = NodeConnector.createNodeConnector(LIVE_SERVER_NODE_CONNECTOR_ID, exports);
 
 const navigationSockets = [];
+
+let server;
+const localhostOnly = 'localhost';
+let currentProjectRoot, currentProjectPort;
+
+/**
+ * starts the live preview static server at given port.
+ *
+ * @param desiredPort
+ * @param { RequestListener } requestListener
+ * @return {Promise} resolves if server successfully opened on port, else rejects
+ */
+function startServerAtPort(desiredPort, requestListener) {
+    let resolved = false;
+    return new Promise((resolve)=>{
+        if(server) {
+            server.close(() => {
+                console.log(`Live Preview static Server on port ${server.address().port} closed.`);
+            });
+        }
+        server = http.createServer(requestListener);
+        server.listen(desiredPort, localhostOnly, () => {
+            const port = server.address().port;
+            console.log(`Live Preview static Server is running on http://${localhostOnly}:${port}`);
+            resolved = true;
+            resolve(port);
+        });
+
+        server.on('error', (error) => {
+            console.error('Live Preview static Server error:', error);
+            if(!resolved){
+                resolve(null);
+            }
+        });
+
+    });
+}
+
+async function startOrRestartServerAtPort(desiredPort, requestListener) {
+    desiredPort = desiredPort || 0;
+    let port = await startServerAtPort(desiredPort, requestListener);
+    if(!port){
+        // the port is not available, pick a random port
+        port = await startServerAtPort(0, requestListener);
+    }
+    return port;
+}
 
 function messageAllWebSockets(socketList, data) {
     for(let socket of socketList){
@@ -43,6 +91,25 @@ function messageAllWebSockets(socketList, data) {
             console.error("Failed sending to socket", socket, e);
         }
     }
+}
+
+/**
+ * @param {IncomingMessage} req
+ * @param {ServerResponse} res
+ */
+function serverRequestListener(req, res) {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Not Found');
+}
+
+async function startStaticServer({projectRoot, preferredPort}) {
+    console.log("Live Preview: starting static server for project at port", projectRoot, preferredPort);
+    const port = await startOrRestartServerAtPort(preferredPort, serverRequestListener);
+    currentProjectPort = port;
+    currentProjectRoot = projectRoot;
+    return {
+        port
+    };
 }
 
 async function navMessageProjectOpened(message) {
@@ -116,3 +183,4 @@ function CreateLivePreviewWSServer(server, wssPath) {
 exports.CreateLivePreviewWSServer = CreateLivePreviewWSServer;
 exports.navMessageProjectOpened = navMessageProjectOpened;
 exports.navRedirectAllTabs = navRedirectAllTabs;
+exports.startStaticServer = startStaticServer;
