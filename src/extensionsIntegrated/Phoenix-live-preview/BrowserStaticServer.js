@@ -646,7 +646,7 @@ define(function (require, exports, module) {
         let openURL = new URL(url);
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
-        openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
+        openURL.searchParams.set(PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
         return  getPageLoaderURL(openURL.href);
     }
 

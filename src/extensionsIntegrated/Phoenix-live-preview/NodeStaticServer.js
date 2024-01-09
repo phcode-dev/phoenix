@@ -46,8 +46,19 @@ define(function (require, exports, module) {
         redirectionHTMLTemplate = require("text!./redirectPage.html");
 
     const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
+    const PREVIEW_PORT_KEY = "preview_port";
     let liveServerConnector;
     let staticServerURL, livePreviewCommURL;
+
+    function _getProjectPreferredPort(projectPath) {
+        const preferredPortKey = `${PREVIEW_PORT_KEY}-${projectPath}`;
+        return PhStore.getItem(preferredPortKey);
+    }
+
+    function _setProjectPreferredPort(projectPath, port) {
+        const preferredPortKey = `${PREVIEW_PORT_KEY}-${projectPath}`;
+        PhStore.setItem(preferredPortKey, port);
+    }
 
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
@@ -64,24 +75,12 @@ define(function (require, exports, module) {
     const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
     let livePreviewChannel;
     let _staticServerInstance, $livepreviewServerIframe;
-
-    function getStaticServerBaseURLs() {
-        return {
-            baseURL: "http://localhost:port/", // to dynamic for project
-            origin: "http://localhost:port",
-            previewBaseURL:
-                `http://localhost:port/vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`
-        };
-    }
+    let projectServerPort = 0;
 
     function getNoPreviewURL(){
         return `${staticServerURL}phoenix-splash/no-preview.html?jsonInput=`+
             encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
                 +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
-    }
-
-    function getLivePreviewBaseURL() {
-        return getStaticServerBaseURLs().previewBaseURL;
     }
 
     async function tabLoaderOnline(data) {
@@ -172,7 +171,17 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        this._baseUrl       = getStaticServerBaseURLs().previewBaseURL;
+        const self = this;
+        this._serverStartPromise = liveServerConnector.execPeer('startStaticServer', {
+            projectRoot: config.root,
+            preferredPort: _getProjectPreferredPort(config.root)
+        }).then((projectConfig)=>{
+            projectServerPort = projectConfig.port;
+            self._baseUrl       = `http://localhost:${projectServerPort}`;
+            if(!_getProjectPreferredPort(config.root)){
+                _setProjectPreferredPort(config.root, projectConfig.port);
+            }
+        });
         this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -262,7 +271,11 @@ define(function (require, exports, module) {
      *     the server is ready/failed.
      */
     StaticServer.prototype.readyToServe = function () {
-        return $.Deferred().resolve().promise(); // virtual server is always assumed present in phoenix
+        const result = new $.Deferred();
+        this._serverStartPromise
+            .then(result.resolve)
+            .catch(result.reject);
+        return result.promise();
     };
 
     /**
@@ -550,7 +563,7 @@ define(function (require, exports, module) {
         let openURL = new URL(url);
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
-        openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
+        openURL.searchParams.set(PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
         return `${staticServerURL}live-preview-navigator.html?initialURL=${encodeURIComponent(openURL.href)}`
             + `&livePreviewCommURL=${encodeURIComponent(livePreviewCommURL)}`
             + `&isLoggingEnabled=${logger.loggingOptions.logLivePreview}`;
@@ -569,33 +582,32 @@ define(function (require, exports, module) {
         return new Promise(async (resolve, reject)=>{ // eslint-disable-line
             // async is explicitly caught
             try {
-                const projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${getLivePreviewBaseURL()}${projectRoot}`;
                 const currentDocument = DocumentManager.getCurrentDocument();
                 const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
-                if(currentFile){
-                    let fullPath = currentFile.fullPath;
-                    let httpFilePath = null;
-                    if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
-                        httpFilePath = fullPath;
-                    }
-                    if(utils.isPreviewableFile(fullPath)){
-                        const filePath = httpFilePath || path.relative(projectRoot, fullPath);
-                        let URL = httpFilePath || `${projectRootUrl}${filePath}`;
-                        resolve({
-                            URL,
-                            filePath: filePath,
-                            fullPath: fullPath,
-                            isMarkdownFile: utils.isMarkdownFile(fullPath),
-                            isHTMLFile: utils.isHTMLFile(fullPath)
-                        });
-                        return;
-                    }
+                if(!currentFile || !_staticServerInstance || !_staticServerInstance.getBaseUrl()){
+                    resolve({
+                        URL: getNoPreviewURL(),
+                        isNoPreview: true
+                    });
                 }
-                resolve({
-                    URL: getNoPreviewURL(),
-                    isNoPreview: true
-                });
+                const projectRoot = ProjectManager.getProjectRoot().fullPath;
+                const projectRootUrl = `${_staticServerInstance.getBaseUrl()}${projectRoot}`;
+                let fullPath = currentFile.fullPath;
+                let httpFilePath = null;
+                if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
+                    httpFilePath = fullPath;
+                }
+                if(utils.isPreviewableFile(fullPath)){
+                    const filePath = httpFilePath || path.relative(projectRoot, fullPath);
+                    let URL = httpFilePath || `${projectRootUrl}${filePath}`;
+                    resolve({
+                        URL,
+                        filePath: filePath,
+                        fullPath: fullPath,
+                        isMarkdownFile: utils.isMarkdownFile(fullPath),
+                        isHTMLFile: utils.isHTMLFile(fullPath)
+                    });
+                }
             }catch (e) {
                 reject(e);
             }
