@@ -736,7 +736,7 @@
   "DESCRIPTION_LIVEDEV_SECURITY": "Säkerhetsvarning från phcode.dev<br><br> Den här liveförhandsgranskningen försökte komma åt en icke-projektfil. Tillgång nekades för din säkerhet. Var försiktig när du arbetar med opålitliga projekt.",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Du håller på att öppna en fil för liveförhandsvisning. Fortsätt endast om du litar på källan till detta projekt. Klicka på \"Trust Project\" för att fortsätta, eller stäng det här fönstret om du inte litar på källan.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Du håller på att öppna en fil för liveförhandsvisning. Vänligen fortsätt genom att klicka på \"Trust Project\" endast om du litar på källan till detta projekt!",
-  "TRUST_PROJECT": "Trust & Execute Project - {0}",
+  "TRUST_PROJECT": "Trust & Execute Preview - {0}",
   "TRUST_AUTHORS": "Litar du på författarna till detta projekt?",
   "DOWNLOAD_FAILED": "Nedladdning misslyckad.",
   "DOWNLOAD_COMPLETE": "Nedladdning klar!",

@@ -756,7 +756,7 @@ define({
   "DESCRIPTION_LIVEDEV_SECURITY": "來自 phcode.dev 的安全警告<br><br>此實時預覽嘗試訪問非項目文件。為了您的安全，訪問被拒絕。處理不受信任的項目時請務必小心。",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "您將要開啟一個文件進行即時預覽。只有當您信任該項目的來源時，才請繼續。按一下「信任項目」繼續，或如果您不信任來源，請關閉此視窗。",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "您將要開啟一個文件進行即時預覽。只有當您信任該項目的來源時，請點擊“信任項目”繼續！",
-  "TRUST_PROJECT": "信任並執行項目 - {0}",
+  "TRUST_PROJECT": "信任並執行預覽 - {0}",
   "TRUST_AUTHORS": "您信任該專案的作者嗎？",
   "DOWNLOAD_FAILED": "下載失敗。",
   "DOWNLOAD_COMPLETE": "下載完畢！",

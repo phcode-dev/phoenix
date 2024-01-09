@@ -756,7 +756,7 @@ define({
   "DESCRIPTION_LIVEDEV_SECURITY": "Sicherheitswarnung von phcode.dev<br><br> Bei dieser Live-Vorschau wurde versucht, auf eine Nicht-Projektdatei zuzugreifen. Zu Ihrer Sicherheit wurde der Zutritt verweigert. Seien Sie bitte vorsichtig, wenn Sie an nicht vertrauenswürdigen Projekten arbeiten.",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Sie sind dabei, eine Datei für die Live-Vorschau zu öffnen. Bitte fahren Sie nur fort, wenn Sie der Quelle dieses Projekts vertrauen. Klicken Sie auf „Projekt vertrauen“, um fortzufahren, oder schließen Sie dieses Fenster, wenn Sie der Quelle nicht vertrauen.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Sie sind dabei, eine Datei für die Live-Vorschau zu öffnen. Klicken Sie bitte nur dann auf „Projekt vertrauen“, wenn Sie der Quelle dieses Projekts vertrauen!",
-  "TRUST_PROJECT": "Projekt vertrauen und ausführen – {0}",
+  "TRUST_PROJECT": "Trust & Execute-Vorschau – {0}",
   "TRUST_AUTHORS": "Vertrauen Sie den Autoren dieses Projekts?",
   "DOWNLOAD_FAILED": "Herunterladen fehlgeschlagen.",
   "DOWNLOAD_COMPLETE": "Download abgeschlossen!",

@@ -756,7 +756,7 @@ define({
   "DESCRIPTION_LIVEDEV_SECURITY": "来自 phcode.dev 的安全警告<br><br>此实时预览尝试访问非项目文件。为了您的安全，访问被拒绝。处理不受信任的项目时请务必小心。",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "您将要打开一个文件进行实时预览。仅当您信任该项目的来源时，才请继续。单击“信任项目”继续，或者如果您不信任源，请关闭此窗口。",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "您将要打开一个文件进行实时预览。仅当您信任该项目的来源时，请单击“信任项目”继续！",
-  "TRUST_PROJECT": "信任并执行项目 - {0}",
+  "TRUST_PROJECT": "信任并执行预览 - {0}",
   "TRUST_AUTHORS": "您信任该项目的作者吗？",
   "DOWNLOAD_FAILED": "下载失败。",
   "DOWNLOAD_COMPLETE": "下载完毕！",
