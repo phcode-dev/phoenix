@@ -47,14 +47,13 @@ define(function (require, exports, module) {
 
     const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
     let liveServerConnector;
-    let staticServerURL;
+    let staticServerURL, livePreviewCommURL;
 
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
     const EVENT_GET_CONTENT = 'GET_CONTENT';
     const EVENT_TAB_ONLINE = 'TAB_ONLINE';
     const EVENT_REPORT_ERROR = 'REPORT_ERROR';
-    const EVENT_UPDATE_TITLE_ICON = 'UPDATE_TITLE_AND_ICON';
     const EVENT_SERVER_READY = 'SERVER_READY';
 
     EventDispatcher.makeEventDispatcher(exports);
@@ -62,8 +61,6 @@ define(function (require, exports, module) {
     const livePreviewTabs = new Map();
     const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
 
-    const NAVIGATOR_CHANNEL_ID = `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}`;
-    let navigatorChannel;
     const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
     let livePreviewChannel;
     let _staticServerInstance, $livepreviewServerIframe;
@@ -87,22 +84,13 @@ define(function (require, exports, module) {
         return getStaticServerBaseURLs().previewBaseURL;
     }
 
-    function _initNavigatorChannel() {
-        navigatorChannel = new BroadcastChannel(NAVIGATOR_CHANNEL_ID);
-        navigatorChannel.onmessage = (event) => {
-            window.logger.livePreview.log("Live Preview navigator channel: Phoenix received event from tab: ", event);
-            const type = event.data.type;
-            switch (type) {
-            case 'TAB_LOADER_ONLINE':
-                livePreviewTabs.set(event.data.pageLoaderID, {
-                    lastSeen: new Date(),
-                    URL: event.data.URL,
-                    navigationTab: true
-                });
-                return;
-            default: return; // ignore messages not intended for us.
-            }
-        };
+    async function tabLoaderOnline(data) {
+        window.logger.livePreview.log("Live Preview navigator channel: tabLoaderOnline: ", data);
+        livePreviewTabs.set(data.pageLoaderID, {
+            lastSeen: new Date(),
+            URL: data.URL,
+            navigationTab: true
+        });
     }
 
     // this is the server tabs located at "src/live-preview.html" which embeds the `phcode.live` server and
@@ -545,31 +533,17 @@ define(function (require, exports, module) {
     }
 
     function redirectAllTabs(newURL) {
-        navigatorChannel.postMessage({
+        liveServerConnector.execPeer('navRedirectAllTabs', {
             type: 'REDIRECT_PAGE',
             url: newURL
         });
     }
 
     function _projectOpened(_evt, projectRoot) {
-        navigatorChannel.postMessage({
+        liveServerConnector.execPeer('navMessageProjectOpened', {
             type: 'PROJECT_SWITCH',
             projectRoot: projectRoot.fullPath
         });
-    }
-
-    exports.on(EVENT_UPDATE_TITLE_ICON, function(_ev, event){
-        const title = event.data.message.title;
-        const faviconBase64 = event.data.message.faviconBase64;
-        navigatorChannel.postMessage({
-            type: 'UPDATE_TITLE_ICON',
-            title,
-            faviconBase64
-        });
-    });
-
-    function _getPageLoaderURL(url) {
-        return `${staticServerURL}live-preview-loader.html`;
     }
 
     function getTabPopoutURL(url) {
@@ -577,7 +551,9 @@ define(function (require, exports, module) {
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
         openURL.searchParams.set(StaticServer.PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        return  _getPageLoaderURL(openURL.href);
+        return `${staticServerURL}live-preview-navigator.html?initialURL=${encodeURIComponent(openURL.href)}`
+            + `&livePreviewCommURL=${encodeURIComponent(livePreviewCommURL)}`
+            + `&isLoggingEnabled=${logger.loggingOptions.logLivePreview}`;
     }
 
     function hasActiveLivePreviews() {
@@ -629,11 +605,10 @@ define(function (require, exports, module) {
     function init() {
         window.nodeSetupDonePromise.then(nodeConfig =>{
             staticServerURL = `${nodeConfig.staticServerURL}/`;
-            console.error(staticServerURL);
+            livePreviewCommURL = `${nodeConfig.livePreviewCommURL}`;
         });
         liveServerConnector = NodeConnector.createNodeConnector(LIVE_SERVER_NODE_CONNECTOR_ID, exports);
         LiveDevelopment.setLivePreviewTransportBridge(exports);
-        _initNavigatorChannel();
         _initLivePreviewChannel();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         _startHeartBeatListeners();
@@ -648,6 +623,8 @@ define(function (require, exports, module) {
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
     exports.getNoPreviewURL = getNoPreviewURL;
     exports.getPreviewDetails = getPreviewDetails;
+    // node apis
+    exports.tabLoaderOnline = tabLoaderOnline;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
     exports.EVENT_SERVER_READY = EVENT_SERVER_READY;
 });

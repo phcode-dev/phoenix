@@ -28,14 +28,45 @@
  */
 
 const WebSocket = require('ws');
+const {splitMetadataAndBuffer, mergeMetadataAndArrayBuffer} = require('./ws-utils');
 const NodeConnector = require("./node-connector");
 const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
 const liveServerConnector = NodeConnector.createNodeConnector(LIVE_SERVER_NODE_CONNECTOR_ID, exports);
 
+const navigationSockets = [];
+
+function messageAllWebSockets(socketList, data) {
+    for(let socket of socketList){
+        try{
+            socket.send(data);
+        } catch (e) {
+            console.error("Failed sending to socket", socket, e);
+        }
+    }
+}
+
+async function navMessageProjectOpened(message) {
+    messageAllWebSockets(navigationSockets, mergeMetadataAndArrayBuffer(message));
+}
+
+async function navRedirectAllTabs(message) {
+    messageAllWebSockets(navigationSockets, mergeMetadataAndArrayBuffer(message));
+}
+
 function processWebSocketMessage(ws, message) {
-    const data = JSON.parse(message);
-    switch (data.type) {
-    default: console.error("live-preview: Unknown socket message: ", message);
+    const {metadata, bufferData} = splitMetadataAndBuffer(message);
+    switch (metadata.type) {
+    case 'CHANNEL_TYPE':
+        if(metadata.channelName === 'navigationChannel' && !navigationSockets.includes(ws)) {
+            ws.channelName = 'navigationChannel';
+            ws.pageLoaderID = metadata.pageLoaderID;
+            navigationSockets.push(ws);
+        }
+        return;
+    case 'TAB_LOADER_ONLINE':
+        liveServerConnector.execPeer('tabLoaderOnline', metadata);
+        return;
+    default: console.error("live-preview: Unknown socket message: ", metadata);
     }
 }
 
@@ -61,6 +92,7 @@ function CreateLivePreviewWSServer(server, wssPath) {
     // Set up a connection listener
     wss.on('connection', (ws) => {
         console.log('live-preview: Websocket Client connected');
+        ws.binaryType = 'arraybuffer';
 
         // Listen for messages from the client
         ws.on('message', (message) => {
@@ -72,9 +104,15 @@ function CreateLivePreviewWSServer(server, wssPath) {
 
         // Handle disconnection
         ws.on('close', () => {
-            console.log('live-preview: Websocket Client disconnected');
+            console.log('live-preview: Websocket Client disconnected', ws.channelName);
+            const index = navigationSockets.findIndex(navs => navs === ws);
+            if (index !== -1) {
+                navigationSockets.splice(index, 1);
+            }
         });
     });
 }
 
 exports.CreateLivePreviewWSServer = CreateLivePreviewWSServer;
+exports.navMessageProjectOpened = navMessageProjectOpened;
+exports.navRedirectAllTabs = navRedirectAllTabs;

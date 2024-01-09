@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phoenix Live Preview Loader...</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Removes the default border around an iframe */
+        }
+    </style>
+    <script>
+        const pageLoaderID = crypto.randomUUID();
+        let previewURL;
+        let isLoggingEnabled;
+
+        /**
+         *
+         * @param metadata {Object} Max size can be 4GB
+         * @param bufferData {ArrayBuffer} [optional]
+         * @return {ArrayBuffer}
+         * @private
+         */
+        function mergeMetadataAndArrayBuffer(metadata, bufferData) {
+            if (bufferData instanceof ArrayBuffer) {
+                metadata.hasBufferData = true;
+            }
+            bufferData = bufferData || new ArrayBuffer(0);
+            if (typeof metadata !== 'object') {
+                throw new Error("metadata should be an object, but was " + typeof metadata);
+            }
+            if (!(bufferData instanceof ArrayBuffer)) {
+                throw new Error("Expected bufferData to be an instance of ArrayBuffer, but was " + typeof bufferData);
+            }
+
+            const metadataString = JSON.stringify(metadata);
+            const metadataUint8Array = new TextEncoder().encode(metadataString);
+            const metadataBuffer = metadataUint8Array.buffer;
+            const sizePrefixLength = 4; // 4 bytes for a 32-bit integer
+
+            if (metadataBuffer.byteLength > 4294000000) {
+                throw new Error("metadata too large. Should be below 4,294MB, but was " + metadataBuffer.byteLength);
+            }
+
+            const concatenatedBuffer = new ArrayBuffer(sizePrefixLength + metadataBuffer.byteLength + bufferData.byteLength);
+            const concatenatedUint8Array = new Uint8Array(concatenatedBuffer);
+
+            // Write the length of metadataBuffer as a 32-bit integer
+            new DataView(concatenatedBuffer).setUint32(0, metadataBuffer.byteLength, true);
+
+            // Copy the metadataUint8Array and bufferData (if provided) to the concatenatedUint8Array
+            concatenatedUint8Array.set(metadataUint8Array, sizePrefixLength);
+            if (bufferData.byteLength > 0) {
+                concatenatedUint8Array.set(new Uint8Array(bufferData), sizePrefixLength + metadataBuffer.byteLength);
+            }
+
+            return concatenatedBuffer;
+        }
+
+        function splitMetadataAndBuffer(concatenatedBuffer) {
+            if(!(concatenatedBuffer instanceof ArrayBuffer)){
+                throw new Error("Expected ArrayBuffer message from websocket");
+            }
+            const sizePrefixLength = 4;
+            const buffer1Length = new DataView(concatenatedBuffer).getUint32(0, true); // Little endian
+
+            const buffer1 = concatenatedBuffer.slice(sizePrefixLength, sizePrefixLength + buffer1Length);
+            const metadata = JSON.parse(new TextDecoder().decode(buffer1));
+            let buffer2;
+            if (concatenatedBuffer.byteLength > sizePrefixLength + buffer1Length) {
+                buffer2 = concatenatedBuffer.slice(sizePrefixLength + buffer1Length);
+            }
+            if(!buffer2 && metadata.hasBufferData) {
+                // This happens if the sender is sending 0 length buffer. So we have to create an empty buffer here
+                buffer2 = new ArrayBuffer(0);
+            }
+
+            return {
+                metadata,
+                bufferData: buffer2
+            };
+        }
+
+        function extractFilename(url) {
+            // Remove any URL parameters or hash tags
+            url = url.split('#')[0].split('?')[0];
+
+            // Extract the filename
+            const lastSlashIndex = url.lastIndexOf('/');
+            const filename = lastSlashIndex !== -1 ? url.substring(lastSlashIndex + 1) : url;
+
+            return filename;
+        }
+
+        function setupNavigationWatcher(wssEndpoint) {
+            function _debugLog(...args) {
+                if(isLoggingEnabled) {
+                    console.log(...args);
+                }
+            }
+
+            _debugLog("navigation websocket url: ", wssEndpoint);
+            let ws = new WebSocket(wssEndpoint);
+            ws.binaryType = 'arraybuffer';
+            ws.addEventListener("open", () =>{
+                _debugLog("navigation websocket opened", wssEndpoint);
+                ws.send(mergeMetadataAndArrayBuffer({
+                    type: 'CHANNEL_TYPE',
+                    channelName: 'navigationChannel',
+                    pageLoaderID: pageLoaderID
+                }));
+                setInterval(()=>{
+                    // send page loader heartbeat
+                    ws.send(mergeMetadataAndArrayBuffer({
+                        type: 'TAB_LOADER_ONLINE',
+                        pageLoaderID: pageLoaderID,
+                        url: previewURL
+                    }));
+                }, 3000);
+            });
+
+            ws.addEventListener('message', function (event) {
+                const message = event.data;
+                const {metadata} = splitMetadataAndBuffer(message);
+                _debugLog("Live Preview socket channel: Browser received event from Phoenix: ", metadata);
+                const type = metadata.type;
+                switch (type) {
+                    case "REDIRECT_PAGE":
+                        previewURL = metadata.url;
+                        _debugLog("Loading page: ", previewURL);
+                        document.getElementById("previewFrame").src = previewURL;
+                        document.title = extractFilename(previewURL);
+                        return;
+                    case "PROJECT_SWITCH":
+                        document.getElementById("previewFrame").src = 'phoenix-splash/no-preview.html';
+                        document.title = "no-preview.html";
+                        return;
+                    case 'TAB_LOADER_ONLINE': return; // loop-back message do nothing, this is for phoenix ot process.
+                    default:
+                        console.error("Unknown live preivew navigation message received!: ", metadata);
+                }
+            });
+
+            ws.addEventListener('error', function (event) {
+                console.error("navigation websocket error event: ", event);
+            });
+
+            ws.addEventListener('close', function () {
+                _debugLog("navigation websocket closed");
+            });
+        }
+
+        function navigateToInitialURL() {
+            const queryParams = new URLSearchParams(window.location.search);
+            const initialURL = queryParams.get('initialURL');
+            const livePreviewCommURL = queryParams.get('livePreviewCommURL');
+            isLoggingEnabled = (queryParams.get('isLoggingEnabled') === 'true');
+
+            if(!livePreviewCommURL || !initialURL){
+                console.error("Expected required query strings: livePreviewCommURL, initialURL");
+                return;
+            }
+            setupNavigationWatcher(livePreviewCommURL);
+            previewURL = decodeURIComponent(initialURL);
+            document.getElementById("previewFrame").src = previewURL;
+            document.title = extractFilename(previewURL);
+        }
+
+    </script>
+</head>
+<body onload="navigateToInitialURL()">
+    <iframe id="previewFrame"
+            title="live preview"
+            src="phoenix-splash/no-preview.html"
+            sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-modals allow-pointer-lock">
+    </iframe>
+</body>
+</html>
