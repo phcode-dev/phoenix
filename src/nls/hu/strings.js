@@ -756,7 +756,7 @@ define({
   "DESCRIPTION_LIVEDEV_SECURITY": "Biztonsági figyelmeztetés a phcode.dev webhelyről<br><br> Ez az élő előnézet megpróbált hozzáférni egy nem projektfájlhoz. A hozzáférést az Ön biztonsága érdekében megtagadtuk. Kérjük, legyen óvatos, amikor nem megbízható projekteken dolgozik.",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Egy fájl megnyitására készül az élő előnézethez. Kérjük, csak akkor folytassa, ha megbízik a projekt forrásában. Kattintson a \"Trust Project\" gombra a folytatáshoz, vagy zárja be ezt az ablakot, ha nem bízik a forrásban.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Egy fájl megnyitására készül az élő előnézethez. Kérjük, csak akkor folytassa a \"Trust Project\" gombra kattintva, ha megbízik a projekt forrásában!",
-  "TRUST_PROJECT": "Trust & Execute Project – {0}",
+  "TRUST_PROJECT": "Trust & Execute előnézet – {0}",
   "TRUST_AUTHORS": "Bízol a projekt szerzőiben?",
   "DOWNLOAD_FAILED": "Sikertelen letöltés.",
   "DOWNLOAD_COMPLETE": "Letöltés kész!",

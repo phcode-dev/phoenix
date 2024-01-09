@@ -736,7 +736,7 @@
   "DESCRIPTION_LIVEDEV_SECURITY": "Avviso di sicurezza da phcode.dev<br><br> Questa anteprima dal vivo ha tentato di accedere a un file non di progetto. L&#39;accesso è stato negato per la tua sicurezza. Prestare attenzione quando si lavora su progetti non attendibili.",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Stai per aprire un file per l'anteprima dal vivo. Procedi solo se ritieni attendibile la fonte di questo progetto. Fai clic su \"Progetto attendibile\" per continuare o chiudi questa finestra se non ritieni attendibile la fonte.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Stai per aprire un file per l'anteprima dal vivo. Procedi facendo clic su \"Fidati del progetto\" solo se ritieni attendibile la fonte di questo progetto!",
-  "TRUST_PROJECT": "Affida ed esegui progetto - {0}",
+  "TRUST_PROJECT": "Affida ed esegui anteprima - {0}",
   "TRUST_AUTHORS": "Hai fiducia negli autori di questo progetto?",
   "DOWNLOAD_FAILED": "Scaricamento fallito.",
   "DOWNLOAD_COMPLETE": "Download completato!",

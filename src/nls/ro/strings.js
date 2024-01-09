@@ -756,7 +756,7 @@ define({
   "DESCRIPTION_LIVEDEV_SECURITY": "Avertisment de securitate de la phcode.dev<br><br> Această previzualizare live a încercat să acceseze un fișier non-proiect. Accesul a fost interzis pentru siguranța dvs. Vă rugăm să fiți precaut atunci când lucrați la proiecte care nu sunt de încredere.",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Sunteți pe cale să deschideți un fișier pentru previzualizare live. Vă rugăm să continuați numai dacă aveți încredere în sursa acestui proiect. Faceți clic pe „Trust Project” pentru a continua sau închideți această fereastră dacă nu aveți încredere în sursă.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Sunteți pe cale să deschideți un fișier pentru previzualizare live. Vă rugăm să continuați făcând clic pe „Încredere în proiect” numai dacă aveți încredere în sursa acestui proiect!",
-  "TRUST_PROJECT": "Încredeți și executați proiectul - {0}",
+  "TRUST_PROJECT": "Previzualizare Trust & Execute - {0}",
   "TRUST_AUTHORS": "Ai încredere în autorii acestui proiect?",
   "DOWNLOAD_FAILED": "Descarcare esuata.",
   "DOWNLOAD_COMPLETE": "Descarcare completa!",

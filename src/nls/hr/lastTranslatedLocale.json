@@ -736,7 +736,7 @@
   "DESCRIPTION_LIVEDEV_SECURITY": "Sigurnosno upozorenje od phcode.dev<br><br> Ovaj pregled uživo pokušao je pristupiti datoteci koja nije projekt. Pristup je odbijen zbog vaše sigurnosti. Budite oprezni kada radite na nepouzdanim projektima.",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Upravo ćete otvoriti datoteku za pregled uživo. Nastavite samo ako vjerujete izvoru ovog projekta. Kliknite 'Vjeruj projektu' za nastavak ili zatvorite ovaj prozor ako ne vjerujete izvoru.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Upravo ćete otvoriti datoteku za pregled uživo. Nastavite klikom na 'Vjeruj projektu' samo ako vjerujete izvoru ovog projekta!",
-  "TRUST_PROJECT": "Vjeruj i izvrši projekt - {0}",
+  "TRUST_PROJECT": "Vjeruj i izvrši pregled - {0}",
   "TRUST_AUTHORS": "Vjerujete li autorima ovog projekta?",
   "DOWNLOAD_FAILED": "Preuzimanje nije uspjelo.",
   "DOWNLOAD_COMPLETE": "Skidanje dovršeno!",
