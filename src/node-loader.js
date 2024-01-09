@@ -639,6 +639,7 @@ function nodeLoader() {
                     nodeTerminationResolve();
                     console.error(`PhNode: command error: "${error}"`);
                     if(!resolved) {
+                        logger.reportError(error, `PhNode failed to start!`);
                         reject("PhNode: closed - Terminated.");
                     }
                 });

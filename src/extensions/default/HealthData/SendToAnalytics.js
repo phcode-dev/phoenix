@@ -141,6 +141,10 @@ define(function (require, exports, module) {
                 .then(()=>{
                     window.PhNodeEngine && window.PhNodeEngine._nodeLoadTime
                     && Metrics.valueEvent(PERFORMANCE, "startup", "nodeBoot", window.PhNodeEngine._nodeLoadTime);
+                    Metrics.countEvent(PERFORMANCE, "nodeBoot", "success", 1);
+                })
+                .catch(_err=>{
+                    Metrics.countEvent(PERFORMANCE, "nodeBoot", "fail", 1);
                 });
         }
     }
