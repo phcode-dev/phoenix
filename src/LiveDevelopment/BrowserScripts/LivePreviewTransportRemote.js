@@ -21,8 +21,71 @@
 
 // This is a transport injected into the browser via a script that handles the low
 // level communication between the live development protocol handlers on both sides.
-// This transport provides a web socket mechanism. It's injected separately from the
-// protocol handler so that the transport can be changed separately.
+// The actual communication to phoenix is done via the loaded web worker below. We just post/receive all
+// messages that should be sent/received by live preview to the worker. The worker will use broadcast
+// channels in browser and web sockets in desktop builds to rely on the message to phoenix.
+/**
+ * Communication Architecture in PHCode.dev Browser Environment
+ * ------------------------------------------------------------
+ *
+ * First of all I like to apologize for this complexity, it is how it is due to the browser standards security
+ * policy, intelligent tracking prevention in browsers and the inherent multiprocess communication problem.
+ * The dining philosophers can however take rest as the mechanism is fully lockless thanks to how js handles events.
+ *
+ * Overview:
+ * PHCode.dev operates with a multi-iframe setup to facilitate communication between different components
+ * within the same domain(phcode.dev) and cross domain(phcode.dev<>phcode.live). Live previews have to be domain
+ * isolated to phcode.live domain so that malicious project live previews doesn't steal phcode.dev cookies and
+ * take control of the users account by just opening a live preview.
+ * This setup includes a preview page(phcode.dev/live-preview-loader.html), a server iframe (phcode.live), and an actual
+ * preview iframe where the user's code is rendered(phcode.live/user/projoject/live/preview.html).
+ *
+ * Components:
+ * 1. Preview Page (phcode.dev):
+ *    - Serves as the primary interface for the user. The actual tab.
+ *    - Hosts two iframes: the server iframe and the actual preview iframe.
+ *
+ * 2. Server Iframe (phcode.live):
+ *    - Responsible for installing a service worker for virtual server, sandboxed to its specific tab.
+ *    - Acts as an intermediary in the communication chain.
+ *
+ * 3. Actual Preview Iframe: (phcode.live/user/projoject/live/preview.html)
+ *    - Renders the user's code.
+ *    - Utilizes a broadcast channel within the web worker to send messages. We use a web worker so
+ *      that live preview tab hearbeat messages are sent to the editor even if the user is debugging
+ *      the page causing js execution to halt in the debugging thread but not the worker thread.
+ *
+ * Communication Flow:
+ * 1. Messages originate from the Actual Preview Iframe, where the user's script is loaded.
+ * 2. These messages are sent to the Live Preview Server Iframe via a broadcast channel in the service worker.
+ * 3. The Server Iframe then relays these messages to the parent PHCode.dev frame.
+ * 4. Finally, the PHCode.dev frame forwards these messages to the PHCode.dev editor page.
+ *    - This step occurs if the editor page is loaded in a different tab and not as an in-editor live preview panel.
+ *
+ * Note on Communication Constraints and Solutions:
+ * ------------------------------------------------
+ *  Cross-Domain Communication Limitations:
+ *  - The default security model of web browsers restricts cross-domain communication as a measure to preserve security.
+ *  - This means that iframes from different domains cannot freely communicate with each other due to
+ *    browser-enforced sandboxing.
+ *
+ *  Use of Broadcast Channels within the Same Domain:
+ *  - To circumvent these cross-domain communication restrictions, PHCode.dev employs broadcast channels within
+ *    the same domain.
+ *
+ *  Solution for Cross-Domain Communication:
+ *  - The architecture is designed to avoid direct cross-domain communication, which is restricted by
+ *    the browser's security model.
+ *  - Instead, a 'hoola hoop' method is used where the server Iframe (phcode.live) relays broadcast channel
+ *    messages in phcode.live to its cross domain parent window phcode.dev through window post message apis.
+ *  - The parent PHCode.dev frame further communicates with the PHCode.dev editor page, if its in a different tab.
+ *
+ *  Working within Browser Security Framework:
+ *  - This approach allows the system to operate within the browser's security constraints.
+ *  - It eliminates the need for server-side assistance, thus enabling instant live preview
+ *    feedback in a purely client-side setting.
+ **/
+
 
 (function (global) {
 
@@ -35,17 +98,27 @@
     const clientID = "" + Math.round( Math.random()*1000000000);
 
     const worker = new Worker(window.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME);
+    let _workerMessageProcessor;
     worker.onmessage = (event) => {
         const type = event.data.type;
         switch (type) {
         case 'REDIRECT_PAGE': location.href = event.data.URL; break;
-        default: console.error("Live Preview page loader: received unknown message from worker:", event);
+        default:
+            if(_workerMessageProcessor){
+                return _workerMessageProcessor(event);
+            }
+            console.error("Live Preview page loader: received unknown message from worker:", event);
         }
     };
+    // message channel to phoenix connect on load itself. The channel id is injected from phoenix
+    // via LivePreviewTransport.js while serving the instrumented html file
     worker.postMessage({
         type: "setupBroadcast",
         broadcastChannel: window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID,
         clientID});
+    function _postLivePreviewMessage(message) {
+        worker.postMessage({type: "livePreview", message});
+    }
     let sentTitle, sentFavIconURL;
 
     function convertImgToBase64(url, callback) {
@@ -93,10 +166,8 @@
         }
     }, 1000);
 
-    const WebSocketTransport = {
+    global._Brackets_LiveDev_Transport = {
         _channelOpen: false,
-        // message channel used to communicate with service worker
-        _broadcastMessageChannel: null,
 
         /**
          * @private
@@ -123,17 +194,14 @@
          */
         connect: function () {
             const self = this;
-            // message channel to phoenix connect on load itself. The channel id is injected from phoenix
-            // via LivePreviewTransport.js while serving the instrumented html file
-            self._broadcastMessageChannel = new BroadcastChannel(window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID);
-            self._broadcastMessageChannel.postMessage({
+            _postLivePreviewMessage({
                 type: 'BROWSER_CONNECT',
                 url: global.location.href,
                 clientID: clientID
             });
 
             // Listen to the response
-            self._broadcastMessageChannel.onmessage = (event) => {
+            _workerMessageProcessor = (event) => {
                 // Print the result
                 _debugLog("Live Preview: Browser received event from Phoenix: ", JSON.stringify(event.data));
                 const type = event.data.type;
@@ -153,7 +221,6 @@
                     break;
                 case 'PHOENIX_CLOSE':
                     self._channelOpen = false;
-                    self._broadcastMessageChannel.close();
                     if (self._callbacks && self._callbacks.close) {
                         self._callbacks.close();
                     }
@@ -171,7 +238,7 @@
             addEventListener( 'beforeunload', function() {
                 if(self._channelOpen){
                     self._channelOpen = false;
-                    self._broadcastMessageChannel.postMessage({
+                    _postLivePreviewMessage({
                         type: 'BROWSER_CLOSE',
                         clientID: clientID
                     });
@@ -184,8 +251,7 @@
          * @param {string} msgStr The message to send.
          */
         send: function (msgStr) {
-            const self = this;
-            self._broadcastMessageChannel.postMessage({
+            _postLivePreviewMessage({
                 type: 'BROWSER_MESSAGE',
                 clientID: clientID,
                 message: msgStr
@@ -199,5 +265,4 @@
             this.connect();
         }
     };
-    global._Brackets_LiveDev_Transport = WebSocketTransport;
 }(this));
