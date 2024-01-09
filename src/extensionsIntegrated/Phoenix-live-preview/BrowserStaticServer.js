@@ -500,13 +500,15 @@ define(function (require, exports, module) {
     };
 
     function getContent(path, url) {
+        const currentDocument = DocumentManager.getCurrentDocument();
+        const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
         if(!_staticServerInstance){
             return Promise.reject("Static serve not started!");
         }
         if(!url.startsWith(_staticServerInstance.getBaseUrl())) {
             return Promise.reject("Not serving content as url belongs to another phcode instance: " + url);
         }
-        if(utils.isMarkdownFile(path)){
+        if(utils.isMarkdownFile(path) && currentFile && currentFile.fullPath === path){
             return _getMarkdown(path);
         }
         if(_staticServerInstance){

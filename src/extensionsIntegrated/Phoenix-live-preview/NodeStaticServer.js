@@ -62,7 +62,6 @@ define(function (require, exports, module) {
 
 
     const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
-    const EVENT_GET_CONTENT = 'GET_CONTENT';
     const EVENT_TAB_ONLINE = 'TAB_ONLINE';
     const EVENT_REPORT_ERROR = 'REPORT_ERROR';
     const EVENT_SERVER_READY = 'SERVER_READY';
@@ -115,19 +114,6 @@ define(function (require, exports, module) {
                     type: 'PHOENIX_INSTANCE_ID',
                     PHOENIX_INSTANCE_ID: Phoenix.PHOENIX_INSTANCE_ID
                 }, pageLoaderID);
-                return;
-            case EVENT_GET_CONTENT:
-                getContent(message.path,  message.url)
-                    .then(response =>{
-                        // response has the following attributes set
-                        // response.contents: <text or arrayBuffer content>,
-                        // response.path
-                        // headers: {'Content-Type': 'text/html'} // optional headers
-                        response.type = 'REQUEST_RESPONSE';
-                        response.requestID = message.requestID;
-                        _sendToLivePreviewServerTabs(response, pageLoaderID);
-                    })
-                    .catch(console.error);
                 return;
             case EVENT_TAB_ONLINE:
                 livePreviewTabs.set(message.clientID, {
@@ -339,7 +325,7 @@ define(function (require, exports, module) {
                     };
                     let html = Mustache.render(markdownHTMLTemplate, templateVars);
                     resolve({
-                        contents: html,
+                        textContents: html,
                         headers: {'Content-Type': 'text/html'},
                         path: fullPath
                     });
@@ -384,7 +370,7 @@ define(function (require, exports, module) {
                 console.error("Security issue prevented: Live preview tried to access non project resource!!!", path);
                 resolve({
                     path,
-                    contents: Strings.DESCRIPTION_LIVEDEV_SECURITY
+                    textContents: Strings.DESCRIPTION_LIVEDEV_SECURITY
                 });
                 return;
             }
@@ -418,11 +404,15 @@ define(function (require, exports, module) {
                 } else {
                     fs.readFile(requestedPath, fs.BYTE_ARRAY_ENCODING, function (error, binContent) {
                         if(error){
-                            binContent = null;
+                            resolve({
+                                path,
+                                is404: true
+                            });
+                            return;
                         }
                         resolve({
                             path,
-                            contents: binContent
+                            buffer: binContent
                         });
                     });
                     return;
@@ -431,23 +421,26 @@ define(function (require, exports, module) {
 
             resolve({
                 path,
-                contents: contents
+                textContents: contents
             });
         });
     };
 
-    function getContent(path, url) {
+    function getContent(url) {
+        const currentDocument = DocumentManager.getCurrentDocument();
+        const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
         if(!_staticServerInstance){
             return Promise.reject("Static serve not started!");
         }
         if(!url.startsWith(_staticServerInstance.getBaseUrl())) {
-            return Promise.reject("Not serving content as url belongs to another phcode instance: " + url);
+            return Promise.reject("Not serving content as url invalid: " + url);
         }
-        if(utils.isMarkdownFile(path)){
-            return _getMarkdown(path);
+        const filePath = _staticServerInstance.urlToPath(url);
+        if(utils.isMarkdownFile(filePath) && currentFile && currentFile.fullPath === filePath){
+            return _getMarkdown(filePath);
         }
         if(_staticServerInstance){
-            return _staticServerInstance._getInstrumentedContent(path, url);
+            return _staticServerInstance._getInstrumentedContent(filePath, url);
         }
         return Promise.reject("Cannot get content");
     };
@@ -474,25 +467,7 @@ define(function (require, exports, module) {
     exports.on(EVENT_REPORT_ERROR, function(_ev, event){
         logger.reportError(new Error(event.data.message));
     });
-    exports.on(EVENT_GET_CONTENT, function(_ev, event){
-        window.logger.livePreview.log("Static Server GET_CONTENT", event);
-        if(event.data.message && event.data.message.phoenixInstanceID === Phoenix.PHOENIX_INSTANCE_ID) {
-            const requestPath = event.data.message.path,
-                requestID = event.data.message.requestID,
-                url = event.data.message.url;
-            getContent(requestPath, url)
-                .then(response =>{
-                    // response has the following attributes set
-                    // response.contents: <text or arrayBuffer content>,
-                    // response.path
-                    // headers: {'Content-Type': 'text/html'} // optional headers
-                    response.type = 'REQUEST_RESPONSE';
-                    response.requestID = requestID;
-                    messageToLivePreviewTabs(response);
-                })
-                .catch(console.error);
-        }
-    });
+
     exports.on(EVENT_GET_PHOENIX_INSTANCE_ID, function(_ev){
         messageToLivePreviewTabs({
             type: 'PHOENIX_INSTANCE_ID',
@@ -637,6 +612,7 @@ define(function (require, exports, module) {
     exports.getPreviewDetails = getPreviewDetails;
     // node apis
     exports.tabLoaderOnline = tabLoaderOnline;
+    exports.getContent = getContent;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
     exports.EVENT_SERVER_READY = EVENT_SERVER_READY;
 });
