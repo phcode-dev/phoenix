@@ -89,10 +89,22 @@ define(function (require, exports, module) {
     }
 
     function _isProjectPreviewTrusted() {
-        // We show a trust project window before executing a live preview as it may call websites on project open
-        // or send analytics data from live preview. The live preview can also instruct phoenix to change project
-        // code. So, do not execute any live preview code even in a browser sandbox without asking the user first.
-        if(Phoenix.isTestWindow){ // for test windows, we trust all test files
+        // We Do not show a trust project window before executing a live preview in desktop builds as in
+        // desktop, each project will have its on live preview `server:port` domain isolation.
+        // Live preview is almost the same as opening a url in the browser. The user opening a project by going though
+        // a lot of selection folder picker dialogs should be regarded as enough confirmation that the user
+        // intents to open that file for preview via a browser url. The browser security sandbox should
+        // take care of most of the security issues as much as any other normal browsing in a browser.
+        // Showing a trust window is UI friction for 99% of users. The user confirm dialog also relies on the user
+        // taking the decision that an anti-virus/firewall would make- which is not going to end well; and a lot of
+        // our users are school students or new devs, who we should assist. Phoenix trust model will heavily rely on
+        // us doing the necessary sand boxing whenever possible.
+        // A compromised project can have special html that can instruct phoenix to change editor selections and
+        // edit only the project files. We will have safeguards in place to detect anomalous large change requests
+        // to mitigate DOS attacks coming from the live preview in the future. A malicious project changing its on
+        // text only using its own code should be an acceptable risk for now as it cant affect anything else in the
+        // system.
+        if(Phoenix.isTestWindow || Phoenix.browser.isTauri){ // for test windows, we trust all test files
             return true;
         }
         // In browsers, The url bar will show up as phcode.dev for live previews and there is a chance that
@@ -102,7 +114,8 @@ define(function (require, exports, module) {
         // Further, since all live previews for all projects uses the same phcode.live domain,
         // untrusted projects can access data of past opened projects. Future plans for browser versions
         // include adopting a similar approach to desktop to dynamically generate URLs in the format
-        // `project-name.phcode.live` preventing the past data access problem in browser.
+        // `project-name.phcode.live` preventing the past data access problem in browser. This will also let us drop the
+        // trust project screen an work the same as desktop apps.
         const projectPath = ProjectManager.getProjectRoot().fullPath;
         if(projectPath === ProjectManager.getWelcomeProjectPath() ||
             projectPath === ProjectManager.getExploreProjectPath()){
