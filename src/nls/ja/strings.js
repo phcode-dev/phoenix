@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "ライブプレビュー",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "ライブプレビュー : 接続中…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "ライブプレビュー : 初期化中…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "ライブプレビューの接続を切断します",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "ライブ プレビュー サーバーがアクティブです",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "ライブプレビュー",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "プレビューするファイルを選択",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "ページのリロード",

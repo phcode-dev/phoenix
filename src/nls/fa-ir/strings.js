@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "پیش نمایش زنده",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "پیش نمایش زنده: درحال اتصال…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "پیش نمایش زنده: درحال مقداردهی اولیه…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "قطع اتصال از پیش نمایش زنده",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "سرور پیش نمایش زنده فعال است",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "پیش نمایش زنده",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "File To Live Preview را انتخاب کنید",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "بارگذاری مجدد صفحه",

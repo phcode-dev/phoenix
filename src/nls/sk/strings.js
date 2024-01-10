@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Živý náhľad",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Živý náhľad: Pripájanie…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Živý náhľad: Inicializácia…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Odpojenie živého náhľadu",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Server živého náhľadu je aktívny",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Živý náhľad",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Vyberte položku Súbor na živý náhľad",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Znovu načítať stránku",

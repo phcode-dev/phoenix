@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Підключення…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Ініціалізація…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Відключити Live Preview",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Активний сервер попереднього перегляду",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Виберіть «Файл для попереднього перегляду».",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Перезавантажити сторінку",

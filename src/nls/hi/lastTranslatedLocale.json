@@ -90,7 +90,7 @@
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "सजीव पूर्वावलोकन",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "लाइव पूर्वावलोकन: कनेक्ट हो रहा है…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "लाइव पूर्वावलोकन: प्रारंभ किया जा रहा है...",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "लाइव पूर्वावलोकन डिस्कनेक्ट करें",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "लाइव पूर्वावलोकन सर्वर सक्रिय",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "सजीव पूर्वावलोकन",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "लाइव पूर्वावलोकन के लिए फ़ाइल का चयन करें",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "पृष्ठ पुनः लोड करें",

@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Podgląd na żywo",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Podgląd na żywo: łączenie…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Podgląd na żywo: inicjalizacja…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Rozłącz podgląd na żywo",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Aktywny serwer podglądu na żywo",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Podgląd na żywo",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Wybierz plik do podglądu na żywo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Odśwież stronę",

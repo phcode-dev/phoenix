@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Canlı Önizleme",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Canlı Önizleme: Bağlanılıyor…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Canlı Önizleme: Başlıyor…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Canlı Önizleme'den Çık",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Canlı Önizleme Sunucusu Aktif",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Canlı Önizleme",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Canlı Önizleme için Dosyayı Seçin",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "SAYFAYI yeniden yuklemek",

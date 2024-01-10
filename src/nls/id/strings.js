@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Tinjauan Langsung",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Tinjauan Langsung: Menyambung…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Tinjauan Langsung: Menginisialisasi…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Putuskan sambungan Tinjauan Langsung",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Server Pratinjau Langsung Aktif",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Tinjauan Langsung",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Pilih File Untuk Pratinjau Langsung",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Muat Ulang Halaman",

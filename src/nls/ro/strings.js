@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Previzualizare interactivă",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Conectare…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Inițializare…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Deconectare Live Preview",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Server de previzualizare live activ",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Previzualizare interactivă",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selectați File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Reîncarcă pagina",

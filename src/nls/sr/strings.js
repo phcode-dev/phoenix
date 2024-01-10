@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Живи приказ",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Живи приказ: Успостављање конекције…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Живи приказ: Иницијализација…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Прекини конекцију са живим приказом",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Сервер за преглед уживо активан",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Живи приказ",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Изаберите Филе То Ливе Превиев",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Поново учитај страницу",

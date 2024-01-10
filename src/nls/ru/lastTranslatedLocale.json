@@ -90,7 +90,7 @@
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Подключение…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Инициализация…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Отсоединить Live Preview",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Сервер живого предварительного просмотра активен",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Выберите файл для просмотра в реальном времени",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Перезагрузить страницу",
