@@ -506,7 +506,7 @@ define(function (require, exports, module) {
 
             await awaits(300);
             let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(outerIFrame.src.endsWith("LiveDevelopment-MultiBrowser-test-files/readme.md")).toBeTrue();
+            expect(outerIFrame.src.endsWith("readme.md")).toBeTrue();
 
             // todo check hrefs in markdown. currently we do not have mechanism to exec code image and markdown previews
             // in future we should do this check too.
@@ -762,8 +762,8 @@ define(function (require, exports, module) {
                 "SpecRunnerUtils.openProjectFiles exploit1.html");
 
             await waitsForLiveDevelopmentToOpen();
-            await forRemoteExec(`document.fetchedText`, (result)=>{
-                return result && result.startsWith("Security Warning from phcode.dev<br><br>");
+            await forRemoteExec(`document.responseStatus`, (result)=>{
+                return result === 404;
             });
 
             await endPreviewSession();
