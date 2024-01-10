@@ -73,6 +73,11 @@ define(function (require, exports, module) {
     let projectServerPort = 0;
 
     function getNoPreviewURL(){
+        if(!staticServerURL){
+            return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html?jsonInput=`+
+                encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
+                    +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
+        }
         return `${staticServerURL}phoenix-splash/no-preview.html?jsonInput=`+
             encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
                 +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
@@ -215,7 +220,10 @@ define(function (require, exports, module) {
                 exports.trigger(EVENT_SERVER_READY);
                 result.resolve();
             })
-            .catch(result.reject);
+            .catch((err)=>{
+                logger.reportError(err);
+                result.reject();
+            });
         return result.promise();
     };
 

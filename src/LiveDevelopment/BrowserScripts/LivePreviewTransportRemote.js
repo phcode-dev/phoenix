@@ -197,11 +197,6 @@
          */
         connect: function () {
             const self = this;
-            _postLivePreviewMessage({
-                type: 'BROWSER_CONNECT',
-                url: global.location.href,
-                clientID: clientID
-            });
 
             // Listen to the response
             _workerMessageProcessor = (event) => {
@@ -230,7 +225,11 @@
                     break;
                 }
             };
-
+            _postLivePreviewMessage({
+                type: 'BROWSER_CONNECT',
+                url: global.location.href,
+                clientID: clientID
+            });
             self._channelOpen = true;
             if (self._callbacks && self._callbacks.connect) {
                 self._callbacks.connect();

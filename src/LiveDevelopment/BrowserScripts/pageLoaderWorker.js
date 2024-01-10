@@ -26,7 +26,7 @@
 
 
 let _livePreviewNavigationChannel;
-let _livePreviewWebSocket;
+let _livePreviewWebSocket, _livePreviewWebSocketOpen = false;
 let livePreviewDebugModeEnabled = false;
 function _debugLog(...args) {
     if(livePreviewDebugModeEnabled) {
@@ -101,13 +101,25 @@ function splitMetadataAndBuffer(concatenatedBuffer) {
     };
 }
 
+let messageQueue = [];
 
 function _sendMessage(message) {
-    if(_livePreviewWebSocket) {
+    if(_livePreviewWebSocket && _livePreviewWebSocketOpen) {
         _livePreviewWebSocket.send(mergeMetadataAndArrayBuffer(message));
         return;
+    } else if(_livePreviewNavigationChannel){
+        _livePreviewNavigationChannel.postMessage(message);
     }
-    _livePreviewNavigationChannel.postMessage(message);
+    console.warn("No Channels available for live preview worker messaging, queueing request, waiting for channel..");
+    messageQueue.push(message);
+}
+
+function flushPendingMessages() {
+    const savedMessageQueue = messageQueue;
+    messageQueue = [];
+    for(let message of savedMessageQueue){
+        _sendMessage(message);
+    }
 }
 
 function _setupHearbeatMessenger(clientID) {
@@ -137,23 +149,25 @@ function _setupBroadcastChannel(broadcastChannel, clientID) {
 }
 
 function _setupWebsocketChannel(wssEndpoint, clientID) {
-    _debugLog("live preview websocket url: ", wssEndpoint);
+    _debugLog("live preview worker websocket url: ", wssEndpoint);
     _livePreviewWebSocket = new WebSocket(wssEndpoint);
     _livePreviewWebSocket.binaryType = 'arraybuffer';
     _livePreviewWebSocket.addEventListener("open", () =>{
-        _debugLog("live preview websocket opened", wssEndpoint);
+        _debugLog("live preview worker websocket opened", wssEndpoint);
+        _livePreviewWebSocketOpen = true;
         _sendMessage({
             type: 'CHANNEL_TYPE',
             channelName: 'livePreviewChannel',
             pageLoaderID: clientID
         });
+        flushPendingMessages();
         _setupHearbeatMessenger(clientID);
     });
 
     _livePreviewWebSocket.addEventListener('message', function (event) {
         const message = event.data;
         const {metadata} = splitMetadataAndBuffer(message);
-        _debugLog("Live Preview socket channel: Browser received event from Phoenix: ", metadata);
+        _debugLog("Live Preview worker socket channel: Browser received event from Phoenix: ", metadata);
         const type = metadata.type;
         switch (type) {
         case 'TAB_ONLINE': break; // do nothing. This is a loopback message from another live preview tab
@@ -162,11 +176,12 @@ function _setupWebsocketChannel(wssEndpoint, clientID) {
     });
 
     _livePreviewWebSocket.addEventListener('error', function (event) {
-        console.error("Live Preview socket channel: error event: ", event);
+        console.error("Live Preview worker socket channel: error event: ", event);
     });
 
     _livePreviewWebSocket.addEventListener('close', function () {
-        _debugLog("Live Preview websocket closed");
+        _livePreviewWebSocketOpen = false;
+        _debugLog("Live Preview worker websocket closed");
     });
 }
 
@@ -189,7 +204,7 @@ onmessage = (event) => {
         } else if(event.data.websocketChannelURL) {
             _setupWebsocketChannel(event.data.websocketChannelURL, event.data.clientID);
         } else {
-            console.error("No live preview communication channels! ", event.data);
+            console.error("No live preview worker communication channels! ", event.data);
         }
         break;
     case 'updateTitleIcon': updateTitleAndFavicon(event); break;
