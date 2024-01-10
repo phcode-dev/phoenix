@@ -61,9 +61,7 @@ define(function (require, exports, module) {
     }
 
 
-    const EVENT_GET_PHOENIX_INSTANCE_ID = 'GET_PHOENIX_INSTANCE_ID';
     const EVENT_TAB_ONLINE = 'TAB_ONLINE';
-    const EVENT_REPORT_ERROR = 'REPORT_ERROR';
     const EVENT_SERVER_READY = 'SERVER_READY';
 
     EventDispatcher.makeEventDispatcher(exports);
@@ -71,9 +69,7 @@ define(function (require, exports, module) {
     const livePreviewTabs = new Map();
     const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
 
-    const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
-    let livePreviewChannel;
-    let _staticServerInstance, $livepreviewServerIframe;
+    let _staticServerInstance;
     let projectServerPort = 0;
 
     function getNoPreviewURL(){
@@ -89,47 +85,6 @@ define(function (require, exports, module) {
             URL: data.URL,
             navigationTab: true
         });
-    }
-
-    // this is the server tabs located at "src/live-preview.html" which embeds the `phcode.live` server and
-    // preview iframes.
-    function _sendToLivePreviewServerTabs(data, pageLoaderID=null) {
-        livePreviewChannel.postMessage({
-            pageLoaderID,
-            data
-        });
-    }
-
-    function _initLivePreviewChannel() {
-        livePreviewChannel = new BroadcastChannel(LIVE_PREVIEW_MESSENGER_CHANNEL);
-        livePreviewChannel.onmessage = (event) => {
-            window.logger.livePreview.log("StaticServer: Live Preview message channel Phoenix recvd:", event);
-            const pageLoaderID = event.data.pageLoaderID;
-            const data = event.data.data;
-            const eventName =  data.eventName;
-            const message =  data.message;
-            switch (eventName) {
-            case EVENT_GET_PHOENIX_INSTANCE_ID:
-                _sendToLivePreviewServerTabs({
-                    type: 'PHOENIX_INSTANCE_ID',
-                    PHOENIX_INSTANCE_ID: Phoenix.PHOENIX_INSTANCE_ID
-                }, pageLoaderID);
-                return;
-            case EVENT_TAB_ONLINE:
-                livePreviewTabs.set(message.clientID, {
-                    lastSeen: new Date(),
-                    URL: message.URL
-                });
-                return;
-            case EVENT_REPORT_ERROR:
-                logger.reportError(new Error(message));
-                return;
-            default:
-                exports.trigger(eventName, {
-                    data
-                });
-            }
-        };
     }
 
     // see markdown advanced rendering options at https://marked.js.org/using_advanced
@@ -212,15 +167,12 @@ define(function (require, exports, module) {
      *  not a descendant of the project.
      */
     StaticServer.prototype.urlToPath = function (url) {
-        let path,
-            baseUrl = this.getBaseUrl();
+        let baseUrl = this.getBaseUrl() || "";
 
-        if (baseUrl !== "" && url.indexOf(baseUrl) === 0) {
-            // Use base url to translate to local file path.
-            // Need to use encoded project path because it's decoded below.
-            path = url.replace(baseUrl, "");
+        if (baseUrl !== "" && url.startsWith(baseUrl)) {
+            const urlObj = new URL(url);
 
-            return decodeURI(path);
+            return decodeURI(urlObj.pathname);
         }
 
         return null;
@@ -259,7 +211,10 @@ define(function (require, exports, module) {
     StaticServer.prototype.readyToServe = function () {
         const result = new $.Deferred();
         this._serverStartPromise
-            .then(result.resolve)
+            .then(()=>{
+                exports.trigger(EVENT_SERVER_READY);
+                result.resolve();
+            })
             .catch(result.reject);
         return result.promise();
     };
@@ -464,24 +419,6 @@ define(function (require, exports, module) {
         _staticServerInstance = undefined;
     };
 
-    exports.on(EVENT_REPORT_ERROR, function(_ev, event){
-        logger.reportError(new Error(event.data.message));
-    });
-
-    exports.on(EVENT_GET_PHOENIX_INSTANCE_ID, function(_ev){
-        messageToLivePreviewTabs({
-            type: 'PHOENIX_INSTANCE_ID',
-            PHOENIX_INSTANCE_ID: Phoenix.PHOENIX_INSTANCE_ID
-        });
-    });
-
-    exports.on(EVENT_TAB_ONLINE, function(_ev, event){
-        livePreviewTabs.set(event.data.message.clientID, {
-            lastSeen: new Date(),
-            URL: event.data.message.URL
-        });
-    });
-
     function _startHeartBeatListeners() {
         // If we didn't receive heartbeat message from a tab for 10 seconds, we assume tab closed
         const TAB_HEARTBEAT_TIMEOUT = 10000; // in millis secs
@@ -510,14 +447,20 @@ define(function (require, exports, module) {
         if(!message.type){
             throw new Error('Missing type attribute to send live preview message to tabs');
         }
-        // The embedded iframe is a trusted origin and hence we use '*'. We can alternatively use
-        // getStaticServerBaseURLs().origin, but there seems to be a single error on startup
-        // Most likely as we switch frequently between about:blank and the live preview server host page.
-        // Error message in console:
-        // `Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('http://localhost:8001')
-        // does not match the recipient window's origin ('http://localhost:8000').`
-        $livepreviewServerIframe && $livepreviewServerIframe[0].contentWindow.postMessage(message, '*');
-        _sendToLivePreviewServerTabs(message);
+        liveServerConnector.execPeer('messageToLivePreviewTabs', message);
+    }
+
+    async function onLivePreviewMessage(message) {
+        switch (message.type) {
+        case EVENT_TAB_ONLINE:
+            livePreviewTabs.set(message.clientID, {
+                lastSeen: new Date(),
+                URL: message.URL
+            });
+            return;
+        default:
+            exports.trigger(message.type, { data: { message}});
+        }
     }
 
     function redirectAllTabs(newURL) {
@@ -589,6 +532,10 @@ define(function (require, exports, module) {
         });
     }
 
+    function getRemoteTransportScript() {
+        return `window.LIVE_PREVIEW_WEBSOCKET_CHANNEL_URL = "${livePreviewCommURL}";\n`;
+    }
+
     function init() {
         window.nodeSetupDonePromise.then(nodeConfig =>{
             staticServerURL = `${nodeConfig.staticServerURL}/`;
@@ -596,7 +543,6 @@ define(function (require, exports, module) {
         });
         liveServerConnector = NodeConnector.createNodeConnector(LIVE_SERVER_NODE_CONNECTOR_ID, exports);
         LiveDevelopment.setLivePreviewTransportBridge(exports);
-        _initLivePreviewChannel();
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         _startHeartBeatListeners();
     }
@@ -610,9 +556,11 @@ define(function (require, exports, module) {
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
     exports.getNoPreviewURL = getNoPreviewURL;
     exports.getPreviewDetails = getPreviewDetails;
+    exports.getRemoteTransportScript = getRemoteTransportScript;
     // node apis
     exports.tabLoaderOnline = tabLoaderOnline;
     exports.getContent = getContent;
+    exports.onLivePreviewMessage = onLivePreviewMessage;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
     exports.EVENT_SERVER_READY = EVENT_SERVER_READY;
 });

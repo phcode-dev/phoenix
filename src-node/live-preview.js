@@ -35,7 +35,10 @@ const NodeConnector = require("./node-connector");
 const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
 const liveServerConnector = NodeConnector.createNodeConnector(LIVE_SERVER_NODE_CONNECTOR_ID, exports);
 
+const NAVIGATION_CHANNEL_NAME = "navigationChannel";
 const navigationSockets = [];
+const LIVE_PREVIEW_CHANNEL_NAME = "livePreviewChannel";
+const livePreviewSockets = [];
 
 let server;
 const localhostOnly = 'localhost';
@@ -50,18 +53,19 @@ let currentProjectRoot, currentProjectPort;
  */
 function startServerAtPort(desiredPort, requestListener) {
     let resolved = false;
+    let openedPort;
     return new Promise((resolve)=>{
         if(server) {
             server.close(() => {
-                console.log(`Live Preview static Server on port ${server.address().port} closed.`);
+                console.log(`Live Preview static Server on port ${openedPort} closed.`);
             });
         }
         server = http.createServer(requestListener);
         server.listen(desiredPort, localhostOnly, () => {
-            const port = server.address().port;
-            console.log(`Live Preview static Server is running on http://${localhostOnly}:${port}`);
+            openedPort = server.address().port;
+            console.log(`Live Preview static Server is running on http://${localhostOnly}:${openedPort}`);
             resolved = true;
-            resolve(port);
+            resolve(openedPort);
         });
 
         server.on('error', (error) => {
@@ -156,16 +160,25 @@ function processWebSocketMessage(ws, message) {
     const {metadata, bufferData} = splitMetadataAndBuffer(message);
     switch (metadata.type) {
     case 'CHANNEL_TYPE':
-        if(metadata.channelName === 'navigationChannel' && !navigationSockets.includes(ws)) {
-            ws.channelName = 'navigationChannel';
+        if(metadata.channelName === NAVIGATION_CHANNEL_NAME && !navigationSockets.includes(ws)) {
+            ws.channelName = NAVIGATION_CHANNEL_NAME;
             ws.pageLoaderID = metadata.pageLoaderID;
             navigationSockets.push(ws);
+        } else if(metadata.channelName === LIVE_PREVIEW_CHANNEL_NAME && !livePreviewSockets.includes(ws)) {
+            ws.channelName = LIVE_PREVIEW_CHANNEL_NAME;
+            ws.pageLoaderID = metadata.pageLoaderID;
+            livePreviewSockets.push(ws);
         }
         return;
     case 'TAB_LOADER_ONLINE':
         liveServerConnector.execPeer('tabLoaderOnline', metadata);
         return;
-    default: console.error("live-preview: Unknown socket message: ", metadata);
+    default:
+        if(ws.channelName === LIVE_PREVIEW_CHANNEL_NAME){
+            liveServerConnector.execPeer('onLivePreviewMessage', metadata);
+            return;
+        }
+        console.error("live-preview: Unknown socket message: ", metadata);
     }
 }
 
@@ -204,15 +217,24 @@ function CreateLivePreviewWSServer(server, wssPath) {
         // Handle disconnection
         ws.on('close', () => {
             console.log('live-preview: Websocket Client disconnected', ws.channelName);
-            const index = navigationSockets.findIndex(navs => navs === ws);
+            let socketArray = navigationSockets;
+            if(ws.channelName === LIVE_PREVIEW_CHANNEL_NAME) {
+                socketArray = livePreviewSockets;
+            }
+            const index = socketArray.findIndex(navs => navs === ws);
             if (index !== -1) {
-                navigationSockets.splice(index, 1);
+                socketArray.splice(index, 1);
             }
         });
     });
+}
+
+async function messageToLivePreviewTabs(message) {
+    messageAllWebSockets(livePreviewSockets, mergeMetadataAndArrayBuffer(message));
 }
 
 exports.CreateLivePreviewWSServer = CreateLivePreviewWSServer;
 exports.navMessageProjectOpened = navMessageProjectOpened;
 exports.navRedirectAllTabs = navRedirectAllTabs;
 exports.startStaticServer = startStaticServer;
+exports.messageToLivePreviewTabs = messageToLivePreviewTabs;

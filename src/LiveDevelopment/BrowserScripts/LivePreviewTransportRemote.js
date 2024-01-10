@@ -113,9 +113,12 @@
     // message channel to phoenix connect on load itself. The channel id is injected from phoenix
     // via LivePreviewTransport.js while serving the instrumented html file
     worker.postMessage({
-        type: "setupBroadcast",
-        broadcastChannel: window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID,
-        clientID});
+        type: "setupPhoenixComm",
+        livePreviewDebugModeEnabled: window.LIVE_PREVIEW_DEBUG_ENABLED,
+        broadcastChannel: window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID, // in browser this will be present, but not in tauri
+        websocketChannelURL: window.LIVE_PREVIEW_WEBSOCKET_CHANNEL_URL, // in tauri this will be present. not in browser
+        clientID
+    });
     function _postLivePreviewMessage(message) {
         worker.postMessage({type: "livePreview", message});
     }

@@ -50,6 +50,8 @@ define(function (require, exports, module) {
     const EVENT_TAB_ONLINE = 'TAB_ONLINE';
     const EVENT_REPORT_ERROR = 'REPORT_ERROR';
     const EVENT_UPDATE_TITLE_ICON = 'UPDATE_TITLE_AND_ICON';
+    // In browser the SERVER_READY event is raised by the phcode.live virtual server page. That is why you wouldnt see
+    // this triggered in the phcode.dev codebase. It comes from the embedded iframe. Do not remove as unused.
     const EVENT_SERVER_READY = 'SERVER_READY';
 
     EventDispatcher.makeEventDispatcher(exports);
@@ -57,10 +59,38 @@ define(function (require, exports, module) {
     const livePreviewTabs = new Map();
     const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
 
-    const NAVIGATOR_CHANNEL_ID = `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}`;
+    // Communication Channels for PHCode.dev Editor and Live Preview
+    // -------------------------------------------------------------
+    //
+    // NAVIGATOR_CHANNEL:
+    // - Purpose: To handle navigation messages between the PHCode.dev editor and multiple tabs open
+    //   at phcode.dev/live-preview-loader.html.
+    // - Function: Mainly used to redirect pages in response to user actions, such as clicking on different
+    //   files in the files panel or through other navigational inputs.
+    // - Channel ID: `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}` uniquely identifies this channel
+    //   for a specific phoenix instance. This allows multiple live previews to exist if the user opens the
+    //   same project in multiple phoenix editor instances.
     let navigatorChannel;
-    const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
+    const NAVIGATOR_CHANNEL_ID = `live-preview-loader-${Phoenix.PHOENIX_INSTANCE_ID}`;
+
+    // LIVE_PREVIEW_MESSENGER_CHANNEL:
+    // - Purpose: To facilitate communication of live preview transport messages between the PHCode.dev
+    //   editor and tabs open at phcode.dev/live-preview-loader.html.
+    // - Function: Acts as a relay channel. Messages received here are forwarded to the LIVE_PREVIEW_MAIN_CHANNEL
+    //   in the phcode.live domain.
+    // - Note: This setup ensures that messages are securely relayed within the constraints of the same origin
+    //   communication policy.
     let livePreviewChannel;
+    const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${Phoenix.PHOENIX_INSTANCE_ID}`;
+
+    // LIVE_PREVIEW_MAIN_CHANNEL:
+    // - Purpose: The primary channel for receiving live preview messages in the phcode.live preview iframe.
+    // - Function: Listens to messages forwarded from LIVE_PREVIEW_MESSENGER_CHANNEL and updates the
+    //   live preview accordingly in phcode.live domain.
+    // - Note: This channel is crucial for the real-time update and synchronization of the live preview
+    //   with user actions in the PHCode.dev editor.
+    const LIVE_PREVIEW_BROADCAST_CHANNEL_ID = `${Phoenix.PHOENIX_INSTANCE_ID}_livePreview`;
+
     let _staticServerInstance, $livepreviewServerIframe;
 
     const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "https://phcode.live/",
@@ -293,15 +323,12 @@ define(function (require, exports, module) {
      *  not a descendant of the project.
      */
     StaticServer.prototype.urlToPath = function (url) {
-        let path,
-            baseUrl = this.getBaseUrl();
+        let baseUrl = this.getBaseUrl();
 
         if (baseUrl !== "" && url.indexOf(baseUrl) === 0) {
-            // Use base url to translate to local file path.
-            // Need to use encoded project path because it's decoded below.
-            path = url.replace(baseUrl, "");
+            const urlObj = new URL(url);
 
-            return decodeURI(path);
+            return decodeURI(urlObj.pathname);
         }
 
         return null;
@@ -656,6 +683,10 @@ define(function (require, exports, module) {
         return livePreviewTabs.size > 0;
     }
 
+    function getRemoteTransportScript() {
+        return `window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${LIVE_PREVIEW_BROADCAST_CHANNEL_ID}";\n`;
+    }
+
     function init() {
         LiveDevelopment.setLivePreviewTransportBridge(exports);
         // load the hidden iframe that loads the service worker server page once. we will reuse the same server
@@ -681,6 +712,7 @@ define(function (require, exports, module) {
     exports.getTabPopoutURL = getTabPopoutURL;
     exports.hasActiveLivePreviews = hasActiveLivePreviews;
     exports.getNoPreviewURL = getNoPreviewURL;
+    exports.getRemoteTransportScript = getRemoteTransportScript;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
     exports.EVENT_SERVER_READY = EVENT_SERVER_READY;
 });
