@@ -33,7 +33,7 @@ define(function (require, exports, module) {
                 let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
                 let srcURL = new URL(outerIFrame.src);
                 return srcURL.pathname.endsWith(name) === true;
-            }, "waiting for name");
+            }, "waiting for name- " + name);
         }
 
         if(Phoenix.isTestWindowPlaywright && !Phoenix.browser.desktop.isChromeBased) {
@@ -807,8 +807,10 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should pin live previews pin html file - 1", async function () {
-            LiveDevMultiBrowser.open();
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
@@ -820,7 +822,7 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "icon_chevron.png");
             await awaits(500);
-            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith(`simple1.html`))
                 .toBeTrue();
 
@@ -835,7 +837,10 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should pin live previews pin markdown file", async function () {
-            LiveDevMultiBrowser.open();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles([`readme.md`]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
@@ -856,7 +861,10 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should pin live previews pin image file", async function () {
-            LiveDevMultiBrowser.open();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
 
@@ -914,7 +922,10 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should unpin live previews on project switch", async function () {
-            LiveDevMultiBrowser.open();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
             await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
                 "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
@@ -933,6 +944,7 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "simple1.html");
+            await waitsForLiveDevelopmentToOpen();
 
             await _waitForIframeSrc("simple1.html");
 

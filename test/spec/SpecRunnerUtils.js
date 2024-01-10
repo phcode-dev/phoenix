@@ -179,7 +179,7 @@ define(function (require, exports, module) {
                 })
                 .catch((err)=>{
                     console.error("awaitsForDone failed when expecting to pass for: " + msg, err);
-                    reject(err);
+                    reject(new Error("awaitsForDone failed when expecting to pass for: " + msg + err));
                 });
         });
     };
