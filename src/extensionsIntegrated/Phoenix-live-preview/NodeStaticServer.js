@@ -319,7 +319,7 @@ define(function (require, exports, module) {
         // strip this query param as the redirection will be done by the page loader and not the content iframe.
         url.searchParams.delete(PHCODE_LIVE_PREVIEW_QUERY_PARAM);
         let templateVars = {
-            redirectURL: url.href
+            redirectURL: _getPageLoaderURL(url.href)
         };
         return Mustache.render(redirectionHTMLTemplate, templateVars);
     }
@@ -481,7 +481,7 @@ define(function (require, exports, module) {
     function redirectAllTabs(newURL) {
         liveServerConnector.execPeer('navRedirectAllTabs', {
             type: 'REDIRECT_PAGE',
-            url: newURL
+            URL: getTabPopoutURL(newURL)
         });
     }
 
@@ -492,14 +492,22 @@ define(function (require, exports, module) {
         });
     }
 
+    function _getPageLoaderURL(url) {
+        return `${staticServerURL}live-preview-navigator.html?initialURL=${encodeURIComponent(url)}`
+            + `&livePreviewCommURL=${encodeURIComponent(livePreviewCommURL)}`
+            + `&isLoggingEnabled=${logger.loggingOptions.logLivePreview}`;
+    }
+
     function getTabPopoutURL(url) {
         let openURL = new URL(url);
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
         openURL.searchParams.set(PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        return `${staticServerURL}live-preview-navigator.html?initialURL=${encodeURIComponent(openURL.href)}`
-            + `&livePreviewCommURL=${encodeURIComponent(livePreviewCommURL)}`
-            + `&isLoggingEnabled=${logger.loggingOptions.logLivePreview}`;
+        if(utils.isHTMLFile(openURL.pathname) && url.startsWith(_staticServerInstance.getBaseUrl())){
+            // this is a live preview html with in built navigation, so we can sever it as is.
+            return openURL.href;
+        }
+        return _getPageLoaderURL(openURL.href);
     }
 
     function hasActiveLivePreviews() {

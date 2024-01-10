@@ -238,23 +238,11 @@
         reload: function (msg) {
             // just reload the page
             window.location.reload(msg.params.ignoreCache);
-        },
-
-        /**
-         * Navigate to a different page.
-         * @param {Object} msg
-         */
-        navigate: function (msg) {
-            if (msg.params.url) {
-                // navigate to a new page.
-                window.location.replace(msg.params.url);
-            }
         }
     };
 
     // subscribe handler to method Page.reload
     MessageBroker.on("Page.reload", Page.reload);
-    MessageBroker.on("Page.navigate", Page.navigate);
     MessageBroker.on("ConnectionClose", Page.close);
 
 

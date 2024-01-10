@@ -422,10 +422,6 @@ define(function (require, exports, module) {
                 if (exports.status < STATUS_ACTIVE) {
                     _launch(_resolveUrl(doc.file.fullPath), doc.file.fullPath);
                 }
-                if (exports.status === STATUS_RESTARTING) {
-                    // change page in browser
-                    _protocol.navigate(_resolveUrl(doc.file.fullPath));
-                }
 
                 _protocol
                     // TODO: timeout if we don't get a connection within a certain time

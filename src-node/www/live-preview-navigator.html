@@ -17,6 +17,7 @@
         }
     </style>
     <script>
+        const PHCODE_LIVE_PREVIEW_QUERY_PARAM = "phcodeLivePreview";
         const pageLoaderID = crypto.randomUUID();
         let previewURL;
         let isLoggingEnabled;
@@ -133,7 +134,13 @@
                 const type = metadata.type;
                 switch (type) {
                     case "REDIRECT_PAGE":
-                        previewURL = metadata.url;
+                        previewURL = metadata.URL;
+                        const processURL = new URL(previewURL);
+                        if(processURL.searchParams.get(PHCODE_LIVE_PREVIEW_QUERY_PARAM) === "true"){
+                            // this is an html live preview directly controlled by phcode that has inbuilt navigator.
+                            location.href = previewURL;
+                            return;
+                        }
                         _debugLog("Loading page: ", previewURL);
                         document.getElementById("previewFrame").src = previewURL;
                         document.title = extractFilename(previewURL);

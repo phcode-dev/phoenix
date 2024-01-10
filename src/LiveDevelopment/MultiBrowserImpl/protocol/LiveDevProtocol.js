@@ -358,25 +358,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Protocol method. Navigates current page to the given URL.
-     * @param {number|Array.<number>} clients A client ID or array of client IDs that should navigate to the given URL.
-     * @param {string} url URL to navigate the page to.
-     * @return {$.Promise} A promise that's resolved with the return value from the first client that responds
-     *      to the method.
-     */
-    function navigate(url, clients) {
-        return _send(
-            {
-                method: "Page.navigate",
-                params: {
-                    url: url
-                }
-            },
-            clients
-        );
-    }
-
-    /**
      * Closes the connection to the given client. Proxies to the transport.
      * @param {number} clientId
      */
@@ -401,7 +382,6 @@ define(function (require, exports, module) {
     exports.setStylesheetText = setStylesheetText;
     exports.getStylesheetText = getStylesheetText;
     exports.reload = reload;
-    exports.navigate = navigate;
     exports.close = close;
     exports.getConnectionIds = getConnectionIds;
     exports.closeAllConnections = closeAllConnections;

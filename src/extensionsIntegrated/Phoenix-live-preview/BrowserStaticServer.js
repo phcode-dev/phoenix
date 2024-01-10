@@ -632,7 +632,7 @@ define(function (require, exports, module) {
     function redirectAllTabs(newURL) {
         navigatorChannel.postMessage({
             type: 'REDIRECT_PAGE',
-            url: newURL
+            URL: newURL
         });
     }
 
