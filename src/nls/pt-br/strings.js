@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Conectando…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Inicializando…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Desconectar Live Preview",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Servidor de visualização ao vivo ativo",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Selecione o arquivo para visualização ao vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Recarregar página",

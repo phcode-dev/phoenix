@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Esikatselu",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Esikatselu: yhdistetään…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Esikatselu: alustetaan…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Lopeta esikatselu",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Live-esikatselupalvelin aktiivinen",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Esikatselu",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Valitse Tiedosto live-esikatseluun",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Lataa sivu uudelleen",

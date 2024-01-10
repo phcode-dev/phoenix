@@ -110,7 +110,7 @@ define({
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Élő Előnézet",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Élő Előnézet: Csatlakozás…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Élő Előnézet: Inicializálás…",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "Élő Előnézet lecsatlakozása",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "Élő előnézeti kiszolgáló aktív",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Élő Előnézet",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Válassza a File To Live Preview lehetőséget",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Oldal újratöltése",

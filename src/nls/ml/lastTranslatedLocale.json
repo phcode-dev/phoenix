@@ -90,7 +90,7 @@
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "തത്സമയ പ്രിവ്യൂ",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "തത്സമയ പ്രിവ്യൂ: ബന്ധിപ്പിക്കുന്നു...",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "തത്സമയ പ്രിവ്യൂ: ആരംഭിക്കുന്നു...",
-  "LIVE_DEV_STATUS_TIP_CONNECTED": "തത്സമയ പ്രിവ്യൂ വിച്ഛേദിക്കുക",
+  "LIVE_DEV_STATUS_TIP_CONNECTED": "തത്സമയ പ്രിവ്യൂ സെർവർ സജീവമാണ്",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "തത്സമയ പ്രിവ്യൂ",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "തത്സമയ പ്രിവ്യൂവിലേക്ക് ഫയൽ തിരഞ്ഞെടുക്കുക",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "പേജ് റീലോഡ് ചെയ്യുക",
