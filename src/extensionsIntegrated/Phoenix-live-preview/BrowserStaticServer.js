@@ -93,24 +93,14 @@ define(function (require, exports, module) {
 
     let _staticServerInstance, $livepreviewServerIframe;
 
-    const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "https://phcode.live/",
-        LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "https://phcode.live";
+    const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "https://phcode.live/";
     // #LIVE_PREVIEW_STATIC_SERVER_BASE_URL_OVERRIDE uncomment below line if you are developing -
     // live preview server for browser.
     // const LIVE_PREVIEW_STATIC_SERVER_BASE_URL = "http://localhost:8001/";
     // const LIVE_PREVIEW_STATIC_SERVER_ORIGIN = "http://localhost:8001";
-    function getStaticServerBaseURLs() {
-        return {
-            baseURL: LIVE_PREVIEW_STATIC_SERVER_BASE_URL,
-            origin: LIVE_PREVIEW_STATIC_SERVER_ORIGIN,
-            previewBaseURL:
-                `${LIVE_PREVIEW_STATIC_SERVER_BASE_URL}vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`
-        };
-    }
 
-    function getLivePreviewBaseURL() {
-        return getStaticServerBaseURLs().previewBaseURL;
-    }
+    const PREVIEW_BASE_URL = `${LIVE_PREVIEW_STATIC_SERVER_BASE_URL}vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`;
+    const BASE_URL_PATH_PREFIX = `/vfs/PHOENIX_LIVE_PREVIEW_${Phoenix.PHOENIX_INSTANCE_ID}`;
 
     function getLivePreviewNotSupportedURL() {
         return `${window.Phoenix.baseURL}assets/phoenix-splash/live-preview-error.html?mainHeading=`+
@@ -149,7 +139,7 @@ define(function (require, exports, module) {
                     return;
                 }
                 const projectRoot = ProjectManager.getProjectRoot().fullPath;
-                const projectRootUrl = `${getLivePreviewBaseURL()}${projectRoot}`;
+                const projectRootUrl = `${PREVIEW_BASE_URL}${projectRoot}`;
                 const currentDocument = DocumentManager.getCurrentDocument();
                 const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
                 if(currentFile){
@@ -278,7 +268,7 @@ define(function (require, exports, module) {
      *        root           - Native path to the project root (and base URL)
      */
     function StaticServer(config) {
-        this._baseUrl       = getStaticServerBaseURLs().previewBaseURL;
+        this._baseUrl       = PREVIEW_BASE_URL;
         this._getInstrumentedContent = this._getInstrumentedContent.bind(this);
         BaseServer.call(this, config);
     }
@@ -328,7 +318,9 @@ define(function (require, exports, module) {
         if (baseUrl !== "" && url.indexOf(baseUrl) === 0) {
             const urlObj = new URL(url);
 
-            return decodeURI(urlObj.pathname);
+            const filePath = decodeURI(urlObj.pathname)
+                .replace(BASE_URL_PATH_PREFIX, "");
+            return decodeURI(filePath);
         }
 
         return null;
@@ -663,7 +655,7 @@ define(function (require, exports, module) {
 
     function getPageLoaderURL(url) {
         return `${Phoenix.baseURL}live-preview-loader.html?`
-            +`virtualServerURL=${encodeURIComponent(getStaticServerBaseURLs().baseURL)}`
+            +`virtualServerURL=${encodeURIComponent(LIVE_PREVIEW_STATIC_SERVER_BASE_URL)}`
             +`&phoenixInstanceID=${Phoenix.PHOENIX_INSTANCE_ID}&initialURL=${encodeURIComponent(url)}`
             +`&localMessage=${encodeURIComponent(Strings.DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE)}`
             +`&appName=${encodeURIComponent(Strings.APP_NAME)}`
@@ -693,7 +685,7 @@ define(function (require, exports, module) {
         // as this is a cross-origin server phcode.live, the browser will identify it as a security issue
         // if we continuously reload the service worker loader page frequently and it will stop working.
         $livepreviewServerIframe = $("#live-preview-server-iframe");
-        let url = getStaticServerBaseURLs().baseURL +
+        let url = LIVE_PREVIEW_STATIC_SERVER_BASE_URL +
             `?parentOrigin=${location.origin}`;
         $livepreviewServerIframe.attr("src", url);
         _initNavigatorChannel();
