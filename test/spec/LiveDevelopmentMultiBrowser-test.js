@@ -28,6 +28,14 @@ define(function (require, exports, module) {
 
     describe("livepreview:MultiBrowser Live Preview", function () {
 
+        async function _waitForIframeSrc(name) {
+            await awaitsFor(()=>{
+                let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                let srcURL = new URL(outerIFrame.src);
+                return srcURL.pathname.endsWith(name) === true;
+            }, "waiting for name");
+        }
+
         if(Phoenix.isTestWindowPlaywright && !Phoenix.browser.desktop.isChromeBased) {
             it("All tests requiring virtual server is disabled in playwright/firefox/safari", async function () {
                 // we dont spawn virtual server in iframe playwright linux/safari as playwright linux/safari fails badly
@@ -510,147 +518,6 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
-        it("should pin live previews pin html file", async function () {
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html");
-
-            await waitsForLiveDevelopmentToOpen();
-            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
-                "testId", "Brackets is hello world awesome!");
-
-            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
-            pinURLBtn.click();
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "icon_chevron.png");
-            await awaits(500);
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith(`simple1.html`))
-                .toBeTrue();
-
-            pinURLBtn.click();
-
-            await awaits(1000);
-            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            let srcURL = new URL(outerIFrame.src);
-            expect(srcURL.pathname.endsWith("sub/icon_chevron.png")).toBeTrue();
-
-            await endPreviewSession();
-        }, 30000);
-
-        async function _waitForIframeSrc(name) {
-            await awaitsFor(()=>{
-                let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-                let srcURL = new URL(outerIFrame.src);
-                return srcURL.pathname.endsWith(name) === true;
-            }, "simple2.html preview");
-        }
-
-        it("should pin live previews pin markdown file", async function () {
-            LiveDevMultiBrowser.open();
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles([`readme.md`]),
-                "SpecRunnerUtils.openProjectFiles simple1.html");
-
-            await _waitForIframeSrc(`readme.md`);
-            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
-            pinURLBtn.click();
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "icon_chevron.png");
-            await awaits(500);
-            await _waitForIframeSrc(`readme.md`);
-
-            pinURLBtn.click();
-
-            await _waitForIframeSrc("sub/icon_chevron.png");
-
-            await endPreviewSession();
-        }, 30000);
-
-        it("should pin live previews pin image file", async function () {
-            LiveDevMultiBrowser.open();
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
-
-            await _waitForIframeSrc("sub/icon_chevron.png");
-            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
-            pinURLBtn.click();
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "simple1.html");
-            await awaits(500);
-            await _waitForIframeSrc("sub/icon_chevron.png");
-
-            pinURLBtn.click();
-
-            await _waitForIframeSrc("simple1.html");
-
-            await endPreviewSession();
-        }, 30000);
-
-        it("should unpin live previews on project switch", async function () {
-            LiveDevMultiBrowser.open();
-            await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
-
-            await _waitForIframeSrc("sub/icon_chevron.png");
-            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
-            pinURLBtn.click();
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "simple1.html");
-            await awaits(500);
-            await _waitForIframeSrc("sub/icon_chevron.png");
-
-            await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
-            await awaits(500);
-            await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "simple1.html");
-
-            await _waitForIframeSrc("simple1.html");
-
-            await endPreviewSession();
-        }, 30000);
-
-        it("should pin live previews pin html file even on live preview on-off", async function () {
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html");
-
-            await waitsForLiveDevelopmentToOpen();
-            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
-                "testId", "Brackets is hello world awesome!");
-
-            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
-            pinURLBtn.click();
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
-                "icon_chevron.png");
-            await awaits(500);
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith(`simple1.html`))
-                .toBeTrue();
-
-            // now close the live preview panel by clicking on live preview extension icon
-            let livePreviewBtn = testWindow.$(testWindow.document.getElementById("toolbar-go-live"));
-            livePreviewBtn.click();
-            await awaits(500);
-            livePreviewBtn.click();
-            await awaits(500);
-            expect(iFrame.src.endsWith(`simple1.html`))
-                .toBeTrue();
-
-            pinURLBtn.click();
-
-            await awaits(1000);
-            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            let srcURL = new URL(outerIFrame.src);
-            expect(srcURL.pathname.endsWith("simple2.html")).toBeTrue();
-
-            await endPreviewSession();
-        }, 30000);
-
         async function forRemoteExec(script, compareFn) {
             let result;
             await awaitsFor(
@@ -938,5 +805,139 @@ define(function (require, exports, module) {
 
             await endPreviewSession();
         }, 30000);
+
+        it("should pin live previews pin html file - 1", async function () {
+            LiveDevMultiBrowser.open();
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await _waitForIframeSrc(`simple1.html`);
+
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+                "icon_chevron.png");
+            await awaits(500);
+            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith(`simple1.html`))
+                .toBeTrue();
+
+            pinURLBtn.click();
+
+            await awaits(1000);
+            iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let srcURL = new URL(iFrame.src);
+            expect(srcURL.pathname.endsWith("sub/icon_chevron.png")).toBeTrue();
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("should pin live previews pin markdown file", async function () {
+            LiveDevMultiBrowser.open();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([`readme.md`]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await _waitForIframeSrc(`readme.md`);
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+                "icon_chevron.png");
+            await awaits(500);
+            await _waitForIframeSrc(`readme.md`);
+
+            pinURLBtn.click();
+
+            await _waitForIframeSrc("sub/icon_chevron.png");
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("should pin live previews pin image file", async function () {
+            LiveDevMultiBrowser.open();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+                "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
+
+            await _waitForIframeSrc("sub/icon_chevron.png");
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+            await awaits(500);
+            await _waitForIframeSrc("sub/icon_chevron.png");
+
+            pinURLBtn.click();
+
+            await _waitForIframeSrc("simple1.html");
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("should pin live previews pin html file even on live preview panel open/hide", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith(`simple1.html`))
+                .toBeTrue();
+
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
+                "icon_chevron.png");
+            await awaits(500);
+            expect(iFrame.src.endsWith(`simple1.html`))
+                .toBeTrue();
+
+            // now close the live preview panel by clicking on live preview extension icon
+            let livePreviewBtn = testWindow.$(testWindow.document.getElementById("toolbar-go-live"));
+            livePreviewBtn.click();
+            await awaits(500);
+            livePreviewBtn.click();
+            await awaits(500);
+            expect(iFrame.src.endsWith(`simple1.html`))
+                .toBeTrue();
+
+            pinURLBtn.click();
+
+            await awaits(1000);
+            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            let srcURL = new URL(outerIFrame.src);
+            expect(srcURL.pathname.endsWith("simple2.html")).toBeTrue();
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("should unpin live previews on project switch", async function () {
+            LiveDevMultiBrowser.open();
+            await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+                "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
+
+            await _waitForIframeSrc("sub/icon_chevron.png");
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+            await awaits(500);
+            await _waitForIframeSrc("sub/icon_chevron.png");
+
+            await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
+            await awaits(500);
+            await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+
+            await _waitForIframeSrc("simple1.html");
+
+            await endPreviewSession();
+        }, 30000);
+
     });
 });
