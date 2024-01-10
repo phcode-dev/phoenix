@@ -55,9 +55,20 @@
             const isSpecRunnerWindow = window.location.pathname.endsWith("/SpecRunner.html");
             return isTestPhoenixWindow || isSpecRunnerWindow;
         }
+        let canAccessTauri = false;
+        try {
+            // This is to allow phoenix live previews in phoenix desktop editor so that we can
+            // develop phoenix inside phoenix.
+            // This will throw an error if the live preview iframe and parent are cross-origin which is case in phcode
+            canAccessTauri = window.top.window.__TAURI__;
+            canAccessTauri = true;
+        } catch (e) {
+            // Cross-origin, exception caught, isSameOrigin remains false
+        }
+
         // In Mac !! the window.__TAURI__ object is present in iframes, even if it doesnt works. so we are forced
         // to use if(window.parent.window !== window) instead of if(!window.__TAURI__) here.
-        if(window.parent.window !== window && window.top.window.__TAURI__) {
+        if(canAccessTauri && window.parent.window !== window && window.top.window.__TAURI__) {
             // This is only intended to be used for in tests where phoenix is loaded inside iframes.
             // this means that we are loaded in an iframe in the specrunner. Tauri doesnt expose tauri APIs
             // in its iframes, so we directly use the top most windows tauri api object for tests to run properly.
