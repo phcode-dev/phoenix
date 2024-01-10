@@ -471,7 +471,7 @@ define(function (require, exports, module) {
         StaticServer.on(StaticServer.EVENT_SERVER_READY, function (_evt, event) {
             // We always show the live preview panel on startup if there is a preview file
             StaticServer.getPreviewDetails().then(previewDetails =>{
-                if(previewDetails.filePath && !panelShownOnce){
+                if(previewDetails.URL && !panelShownOnce){
                     // only show if there is some file to preview and not the default no-preview preview on startup
                     _setPanelVisibility(true);
                 }
