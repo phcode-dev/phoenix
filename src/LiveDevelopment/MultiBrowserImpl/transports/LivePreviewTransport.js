@@ -59,8 +59,6 @@ define(function (require, exports, module) {
     // The script that will be injected into the previewed HTML to handle the other side of the socket connection.
     const LivePreviewTransportRemote = require("text!LiveDevelopment/BrowserScripts/LivePreviewTransportRemote.js");
 
-    // Events - setup the service worker communication channel.
-    const BROADCAST_CHANNEL_ID = `${Phoenix.PHOENIX_INSTANCE_ID}_livePreview`;
     let _transportBridge;
 
     /**
@@ -68,21 +66,19 @@ define(function (require, exports, module) {
      * @return {string}
      */
     function getRemoteScript() {
+        const transportScript = (_transportBridge && _transportBridge.getRemoteTransportScript &&
+            _transportBridge.getRemoteTransportScript()) || "";
         return "\n" +
             `window.PHOENIX_INSTANCE_ID = "${Phoenix.PHOENIX_INSTANCE_ID}";\n` +
-            `window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${BROADCAST_CHANNEL_ID}";\n` +
             `window.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}";\n` +
             `window.LIVE_PREVIEW_DEBUG_ENABLED = ${logger.loggingOptions.logLivePreview};\n` +
-            LivePreviewTransportRemote +
-            "\n";
+            transportScript + "\n" +
+            LivePreviewTransportRemote + "\n" ;
     }
 
     EventDispatcher.makeEventDispatcher(exports);
 
-    // Exports
-    exports.getRemoteScript = getRemoteScript;
-
-    exports.start = function () {
+    function start() {
         // Listen to the response
         // attach to browser tab/window closing event so that we send a cleanup request
         // to the service worker for the comm ports
@@ -91,13 +87,13 @@ define(function (require, exports, module) {
                 type: 'PHOENIX_CLOSE'
             });
         });
-    };
+    }
 
-    exports.close = function () {
+    function close() {
         // no-op the broadcast channel is never broken even though live preview may be on or off.
-    };
+    }
 
-    exports.send = function (clientIDs, message) {
+    function send(clientIDs, message) {
         message = message || "";
         _transportBridge && _transportBridge.messageToLivePreviewTabs({
             type: 'MESSAGE_FROM_PHOENIX',
@@ -143,7 +139,10 @@ define(function (require, exports, module) {
         transportBridge.on('BROWSER_MESSAGE.transport', _browserMessage);
     }
 
+    // Exports
+    exports.getRemoteScript = getRemoteScript;
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
-    exports.BROADCAST_CHANNEL_ID = BROADCAST_CHANNEL_ID;
-
+    exports.start = start;
+    exports.close = close;
+    exports.send = send;
 });

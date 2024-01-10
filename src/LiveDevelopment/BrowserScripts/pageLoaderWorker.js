@@ -26,21 +26,93 @@
 
 
 let _livePreviewNavigationChannel;
+let _livePreviewWebSocket;
+let livePreviewDebugModeEnabled = false;
+function _debugLog(...args) {
+    if(livePreviewDebugModeEnabled) {
+        console.log(...args);
+    }
+}
 
-function _setupBroadcastChannel(broadcastChannel, clientID) {
-    if(!broadcastChannel){
+/**
+ *
+ * @param metadata {Object} Max size can be 4GB
+ * @param bufferData {ArrayBuffer?} [optional]
+ * @return {ArrayBuffer}
+ * @private
+ */
+function mergeMetadataAndArrayBuffer(metadata, bufferData) {
+    if (bufferData instanceof ArrayBuffer) {
+        metadata.hasBufferData = true;
+    }
+    bufferData = bufferData || new ArrayBuffer(0);
+    if (typeof metadata !== 'object') {
+        throw new Error("metadata should be an object, but was " + typeof metadata);
+    }
+    if (!(bufferData instanceof ArrayBuffer)) {
+        throw new Error("Expected bufferData to be an instance of ArrayBuffer, but was " + typeof bufferData);
+    }
+
+    const metadataString = JSON.stringify(metadata);
+    const metadataUint8Array = new TextEncoder().encode(metadataString);
+    const metadataBuffer = metadataUint8Array.buffer;
+    const sizePrefixLength = 4; // 4 bytes for a 32-bit integer
+
+    if (metadataBuffer.byteLength > 4294000000) {
+        throw new Error("metadata too large. Should be below 4,294MB, but was " + metadataBuffer.byteLength);
+    }
+
+    const concatenatedBuffer = new ArrayBuffer(sizePrefixLength + metadataBuffer.byteLength + bufferData.byteLength);
+    const concatenatedUint8Array = new Uint8Array(concatenatedBuffer);
+
+    // Write the length of metadataBuffer as a 32-bit integer
+    new DataView(concatenatedBuffer).setUint32(0, metadataBuffer.byteLength, true);
+
+    // Copy the metadataUint8Array and bufferData (if provided) to the concatenatedUint8Array
+    concatenatedUint8Array.set(metadataUint8Array, sizePrefixLength);
+    if (bufferData.byteLength > 0) {
+        concatenatedUint8Array.set(new Uint8Array(bufferData), sizePrefixLength + metadataBuffer.byteLength);
+    }
+
+    return concatenatedBuffer;
+}
+
+function splitMetadataAndBuffer(concatenatedBuffer) {
+    if(!(concatenatedBuffer instanceof ArrayBuffer)){
+        throw new Error("Expected ArrayBuffer message from websocket");
+    }
+    const sizePrefixLength = 4;
+    const buffer1Length = new DataView(concatenatedBuffer).getUint32(0, true); // Little endian
+
+    const buffer1 = concatenatedBuffer.slice(sizePrefixLength, sizePrefixLength + buffer1Length);
+    const metadata = JSON.parse(new TextDecoder().decode(buffer1));
+    let buffer2;
+    if (concatenatedBuffer.byteLength > sizePrefixLength + buffer1Length) {
+        buffer2 = concatenatedBuffer.slice(sizePrefixLength + buffer1Length);
+    }
+    if(!buffer2 && metadata.hasBufferData) {
+        // This happens if the sender is sending 0 length buffer. So we have to create an empty buffer here
+        buffer2 = new ArrayBuffer(0);
+    }
+
+    return {
+        metadata,
+        bufferData: buffer2
+    };
+}
+
+
+function _sendMessage(message) {
+    if(_livePreviewWebSocket) {
+        _livePreviewWebSocket.send(mergeMetadataAndArrayBuffer(message));
         return;
     }
-    _livePreviewNavigationChannel=new BroadcastChannel(broadcastChannel);
-    _livePreviewNavigationChannel.onmessage = (event) => {
-        const type = event.data.type;
-        switch (type) {
-        case 'TAB_ONLINE': break; // do nothing. This is a loopback message from another live preview tab
-        default: postMessage(event.data); break;
-        }
-    };
+    _livePreviewNavigationChannel.postMessage(message);
+}
+
+function _setupHearbeatMessenger(clientID) {
     function _sendOnlineHeartbeat() {
-        _livePreviewNavigationChannel.postMessage({
+        _sendMessage({
             type: 'TAB_ONLINE',
             clientID,
             URL: location.href
@@ -52,8 +124,54 @@ function _setupBroadcastChannel(broadcastChannel, clientID) {
     }, 3000);
 }
 
+function _setupBroadcastChannel(broadcastChannel, clientID) {
+    _livePreviewNavigationChannel=new BroadcastChannel(broadcastChannel);
+    _livePreviewNavigationChannel.onmessage = (event) => {
+        const type = event.data.type;
+        switch (type) {
+        case 'TAB_ONLINE': break; // do nothing. This is a loopback message from another live preview tab
+        default: postMessage(event.data); break;
+        }
+    };
+    _setupHearbeatMessenger(clientID);
+}
+
+function _setupWebsocketChannel(wssEndpoint, clientID) {
+    _debugLog("live preview websocket url: ", wssEndpoint);
+    _livePreviewWebSocket = new WebSocket(wssEndpoint);
+    _livePreviewWebSocket.binaryType = 'arraybuffer';
+    _livePreviewWebSocket.addEventListener("open", () =>{
+        _debugLog("live preview websocket opened", wssEndpoint);
+        _sendMessage({
+            type: 'CHANNEL_TYPE',
+            channelName: 'livePreviewChannel',
+            pageLoaderID: clientID
+        });
+        _setupHearbeatMessenger(clientID);
+    });
+
+    _livePreviewWebSocket.addEventListener('message', function (event) {
+        const message = event.data;
+        const {metadata} = splitMetadataAndBuffer(message);
+        _debugLog("Live Preview socket channel: Browser received event from Phoenix: ", metadata);
+        const type = metadata.type;
+        switch (type) {
+        case 'TAB_ONLINE': break; // do nothing. This is a loopback message from another live preview tab
+        default: postMessage(metadata); break;
+        }
+    });
+
+    _livePreviewWebSocket.addEventListener('error', function (event) {
+        console.error("Live Preview socket channel: error event: ", event);
+    });
+
+    _livePreviewWebSocket.addEventListener('close', function () {
+        _debugLog("Live Preview websocket closed");
+    });
+}
+
 function updateTitleAndFavicon(event) {
-    _livePreviewNavigationChannel.postMessage({
+    _sendMessage({
         type: 'UPDATE_TITLE_AND_ICON',
         title: event.data.title,
         faviconBase64: event.data.faviconBase64,
@@ -64,9 +182,18 @@ function updateTitleAndFavicon(event) {
 onmessage = (event) => {
     const type = event.data.type;
     switch (type) {
-    case 'setupBroadcast': _setupBroadcastChannel(event.data.broadcastChannel, event.data.clientID); break;
+    case 'setupPhoenixComm':
+        livePreviewDebugModeEnabled = event.data.livePreviewDebugModeEnabled;
+        if(event.data.broadcastChannel) {
+            _setupBroadcastChannel(event.data.broadcastChannel, event.data.clientID);
+        } else if(event.data.websocketChannelURL) {
+            _setupWebsocketChannel(event.data.websocketChannelURL, event.data.clientID);
+        } else {
+            console.error("No live preview communication channels! ", event.data);
+        }
+        break;
     case 'updateTitleIcon': updateTitleAndFavicon(event); break;
-    case 'livePreview': _livePreviewNavigationChannel.postMessage(event.data.message); break;
+    case 'livePreview': _sendMessage(event.data.message); break;
     default: console.error("Live Preview page worker: received unknown event:", event);
     }
 };
