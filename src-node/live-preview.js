@@ -154,6 +154,7 @@ async function navMessageProjectOpened(message) {
 
 async function navRedirectAllTabs(message) {
     messageAllWebSockets(navigationSockets, mergeMetadataAndArrayBuffer(message));
+    messageAllWebSockets(livePreviewSockets, mergeMetadataAndArrayBuffer(message));
 }
 
 function processWebSocketMessage(ws, message) {

@@ -154,7 +154,7 @@
                 const dialog = document.getElementById('outer-container');
                 switch (type) {
                     case "REDIRECT_PAGE":
-                        previewURL = event.data.url;
+                        previewURL = event.data.URL;
                         if(!securityAlertAcknowledged){
                             return;
                         }
