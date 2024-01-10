@@ -178,7 +178,7 @@ function processWebSocketMessage(ws, message) {
             liveServerConnector.execPeer('onLivePreviewMessage', metadata);
             return;
         }
-        console.error("live-preview: Unknown socket message: ", metadata);
+        console.error("live-preview: Unknown socket message: ", metadata, ws.channelName);
     }
 }
 
