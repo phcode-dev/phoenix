@@ -106,12 +106,13 @@ let messageQueue = [];
 function _sendMessage(message) {
     if(_livePreviewWebSocket && _livePreviewWebSocketOpen) {
         _livePreviewWebSocket.send(mergeMetadataAndArrayBuffer(message));
-        return;
     } else if(_livePreviewNavigationChannel){
         _livePreviewNavigationChannel.postMessage(message);
+    } else {
+        console.warn("No Channels available for live preview worker messaging," +
+            " queueing request, waiting for channel..");
+        messageQueue.push(message);
     }
-    console.warn("No Channels available for live preview worker messaging, queueing request, waiting for channel..");
-    messageQueue.push(message);
 }
 
 function flushPendingMessages() {
