@@ -47,6 +47,7 @@ define(function (require, exports, module) {
         RemoteFunctions       = require("text!LiveDevelopment/BrowserScripts/RemoteFunctions.js"),
         EditorManager         = require("editor/EditorManager"),
         LiveDevMultiBrowser   = require("LiveDevelopment/LiveDevMultiBrowser"),
+        PreferencesManager  = require("preferences/PreferencesManager"),
         HTMLInstrumentation   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
         StringUtils = require("utils/StringUtils"),
         FileViewController    = require("project/FileViewController");
@@ -94,6 +95,11 @@ define(function (require, exports, module) {
     }
 
     function _tagSelectedInLivePreview(tagId) {
+        const highlightPref = PreferencesManager.getViewState("livedev.highlight");
+        if(!highlightPref){
+            // live preview highlight and reverse highlight feature is disabled
+            return;
+        }
         const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc(),
             editor = EditorManager.getActiveEditor();
         const liveDocPath = liveDoc ? liveDoc.doc.file.fullPath : null,
