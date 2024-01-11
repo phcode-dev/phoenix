@@ -93,9 +93,8 @@
     // LivePreviewTransport.js:getRemoteScript() This is so that the actual live preview page doesnt get hold of
     // any phoenix web socket or broadcast channel ids from this closure programatically for security.
 
-    const TRANSPORT_CONFIG={};
     //Replace dynamic section start
-    //REPLACE_ME_WITH_LIVE_PREVIEW_TRANSPORT_CONFIG_AND_SCRIPT_DYNAMIC
+    const TRANSPORT_CONFIG={};
     //Replace dynamic section end
 
     function _debugLog(...args) {
