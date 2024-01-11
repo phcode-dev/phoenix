@@ -118,6 +118,9 @@ Phoenix.app = {
         return window.Strings.STORED_IN_YOUR_BROWSER;
     },
     getDisplayPath: function (fullOrRelativeVFSPath) {
+        if(!fullOrRelativeVFSPath){
+            return "";
+        }
         // reruns a path that can be shown to the user to make some sense of the virtual file path.
         // The returned path is platform path for tauri,
         // a relative path of the form (folder/file.txt) starting with opened folder name for fs access- /mnt/paths
