@@ -113,9 +113,22 @@ Phoenix.app = {
             return Phoenix.fs.getTauriPlatformPath(fullVFSPath);
         }
         if (fullVFSPath.startsWith(Phoenix.VFS.getMountDir())) {
-            return fullVFSPath.replace(Phoenix.VFS.getMountDir(), ""); // we don't show anything if it's stored on user's hard drive for better ui.
+            return fullVFSPath.replace(Phoenix.VFS.getMountDir(), "");
         }
         return window.Strings.STORED_IN_YOUR_BROWSER;
+    },
+    getDisplayPath: function (fullOrRelativeVFSPath) {
+        // reruns a path that can be shown to the user to make some sense of the virtual file path.
+        // The returned path is platform path for tauri,
+        // a relative path of the form (folder/file.txt) starting with opened folder name for fs access- /mnt/paths
+        // or virtual path if we cant figure out a tauri/fs access path
+        if (fullOrRelativeVFSPath.startsWith(Phoenix.VFS.getTauriDir())) {
+            return Phoenix.fs.getTauriPlatformPath(fullOrRelativeVFSPath);
+        }
+        if (fullOrRelativeVFSPath.startsWith(Phoenix.VFS.getMountDir())) {
+            return fullOrRelativeVFSPath.replace(Phoenix.VFS.getMountDir(), "");
+        }
+        return fullOrRelativeVFSPath;
     },
     setWindowTitle: async function (title) {
         window.document.title = title;

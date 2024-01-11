@@ -318,7 +318,7 @@ define(function (require, exports, module) {
         if (doc.isUntitled()) {
             return fullPath.substring(fullPath.lastIndexOf("/") + 1);
         }
-        return ProjectManager.makeProjectRelativeIfPossible(fullPath);
+        return Phoenix.app.getDisplayPath(ProjectManager.makeProjectRelativeIfPossible(fullPath));
 
     }
 
@@ -334,7 +334,8 @@ define(function (require, exports, module) {
             if (newDocument) {
                 _currentTitlePath = _shortTitleForDocument(newDocument);
             } else {
-                _currentTitlePath = ProjectManager.makeProjectRelativeIfPossible(newFile.fullPath);
+                const filePath = ProjectManager.makeProjectRelativeIfPossible(newFile.fullPath);
+                _currentTitlePath = Phoenix.app.getDisplayPath(filePath);
             }
         } else {
             _currentTitlePath = null;

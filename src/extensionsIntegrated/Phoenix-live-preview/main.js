@@ -339,7 +339,12 @@ define(function (require, exports, module) {
             currentLivePreviewURL = newSrc;
             currentPreviewFile = previewDetails.filePath;
         }
-        _setTitle(currentPreviewFile);
+        let title= currentPreviewFile;
+        if(currentPreviewFile && currentPreviewFile.startsWith("/tauri")){
+            // this is an absolute path, and we should only show platform paths to user
+            title = Phoenix.fs.getTauriPlatformPath(currentPreviewFile);
+        }
+        _setTitle(title);
         if(panel.isVisible()) {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
