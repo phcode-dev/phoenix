@@ -73,10 +73,10 @@ define(function (require, exports, module) {
         }
         let transportScript = (_transportBridge && _transportBridge.getRemoteTransportScript &&
             _transportBridge.getRemoteTransportScript()) || "";
-        transportScript = transportScript + "\n" +
-            `TRANSPORT_CONFIG.PHOENIX_INSTANCE_ID = "${Phoenix.PHOENIX_INSTANCE_ID}";\n` +
+        transportScript = `TRANSPORT_CONFIG.PHOENIX_INSTANCE_ID = "${Phoenix.PHOENIX_INSTANCE_ID}";\n` +
             `TRANSPORT_CONFIG.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}";\n` +
-            `TRANSPORT_CONFIG.LIVE_PREVIEW_DEBUG_ENABLED = ${logger.loggingOptions.logLivePreview};\n`;
+            `TRANSPORT_CONFIG.LIVE_PREVIEW_DEBUG_ENABLED = ${logger.loggingOptions.logLivePreview};\n`+
+            transportScript;
         return LivePreviewTransportRemote.replace(replaceString, transportScript)
             + "\n";
     }
