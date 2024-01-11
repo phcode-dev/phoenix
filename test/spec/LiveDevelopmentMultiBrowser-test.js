@@ -54,7 +54,8 @@ define(function (require, exports, module) {
             CommandManager,
             BeautificationManager,
             Commands,
-            WorkspaceManager;
+            WorkspaceManager,
+            PreferencesManager;
 
         let testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
             prettierTestFolder = SpecRunnerUtils.getTestPath("/spec/prettier-test-files"),
@@ -93,6 +94,7 @@ define(function (require, exports, module) {
                 EditorManager       = brackets.test.EditorManager;
                 WorkspaceManager    = brackets.test.WorkspaceManager;
                 BeautificationManager       = brackets.test.BeautificationManager;
+                PreferencesManager       = brackets.test.PreferencesManager;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
                 if(!WorkspaceManager.isPanelVisible('live-preview-panel')){
@@ -112,7 +114,11 @@ define(function (require, exports, module) {
             EditorManager       = null;
         }, 30000);
 
+        async function _enableLiveHighlights(enable) {
+            PreferencesManager.setViewState("livedev.highlight", enable);
+        }
         async function endPreviewSession() {
+            await _enableLiveHighlights(true);
             LiveDevMultiBrowser.close();
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
                 "closing all file");
@@ -753,6 +759,28 @@ define(function (require, exports, module) {
                 });
             expect(editor.getCursorPos()).toEql({ line: 11, ch: 0, sticky: null });
 
+            await endPreviewSession();
+        }, 30000);
+
+        it("should reverse highlight be disabled if live highlight is disabled", async function () {
+            await _enableLiveHighlights(false);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            let editor = EditorManager.getActiveEditor();
+            editor && editor.setCursorPos({ line: 0, ch: 0 });
+
+            await awaits(500);
+            await forRemoteExec(`document.getElementsByClassName("__brackets-ld-highlight").length`, (result)=>{
+                return result === 0;
+            });
+            await forRemoteExec(`document.getElementById("testId2").click()`);
+
+            await awaits(500);
+            expect(editor.getCursorPos()).toEql({ line: 0, ch: 0, sticky: null });
+
+            await _enableLiveHighlights(true);
             await endPreviewSession();
         }, 30000);
 
