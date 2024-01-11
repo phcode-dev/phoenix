@@ -337,14 +337,11 @@ define(function (require, exports, module) {
         // preview breaks sporadically. to alleviate this, we create a new iframe every time.
         if(!urlPinned) {
             currentLivePreviewURL = newSrc;
-            currentPreviewFile = previewDetails.filePath;
+            currentPreviewFile = previewDetails.fullPath;
         }
-        let title= currentPreviewFile;
-        if(currentPreviewFile && currentPreviewFile.startsWith("/tauri")){
-            // this is an absolute path, and we should only show platform paths to user
-            title = Phoenix.fs.getTauriPlatformPath(currentPreviewFile);
-        }
-        _setTitle(title);
+        let relativeOrFullPath= ProjectManager.makeProjectRelativeIfPossible(currentPreviewFile);
+        relativeOrFullPath = Phoenix.app.getDisplayPath(relativeOrFullPath);
+        _setTitle(relativeOrFullPath);
         if(panel.isVisible()) {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
