@@ -63,6 +63,13 @@ jobs:
           max_attempts: 3
           command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=mainview -q
 
+      - name: Run tauri livepreview tests
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=livepreview -q
+
       - name: Run tauri LegacyInteg tests
         uses: nick-fields/retry@v2
         with:
