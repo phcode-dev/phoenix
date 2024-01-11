@@ -646,7 +646,7 @@ define(function (require, exports, module) {
     }
 
     function getRemoteTransportScript() {
-        return `window.LIVE_PREVIEW_WEBSOCKET_CHANNEL_URL = "${livePreviewCommURL}";\n`;
+        return `TRANSPORT_CONFIG.LIVE_PREVIEW_WEBSOCKET_CHANNEL_URL = "${livePreviewCommURL}";\n`;
     }
 
     function init() {

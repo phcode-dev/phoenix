@@ -109,7 +109,7 @@ function _sendMessage(message) {
     } else if(_livePreviewNavigationChannel){
         _livePreviewNavigationChannel.postMessage(message);
     } else {
-        console.warn("No Channels available for live preview worker messaging," +
+        livePreviewDebugModeEnabled && console.warn("No Channels available for live preview worker messaging," +
             " queueing request, waiting for channel..");
         messageQueue.push(message);
     }

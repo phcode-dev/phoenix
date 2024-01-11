@@ -89,6 +89,15 @@
 
 (function (global) {
 
+    // The below line will be replaced with the transport scripts provided by the static server at
+    // LivePreviewTransport.js:getRemoteScript() This is so that the actual live preview page doesnt get hold of
+    // any phoenix web socket or broadcast channel ids from this closure programatically for security.
+
+    const TRANSPORT_CONFIG={};
+    //Replace dynamic section start
+    //REPLACE_ME_WITH_LIVE_PREVIEW_TRANSPORT_CONFIG_AND_SCRIPT_DYNAMIC
+    //Replace dynamic section end
+
     function _debugLog(...args) {
         if(window.LIVE_PREVIEW_DEBUG_ENABLED) {
             console.log(...args);
@@ -97,7 +106,7 @@
 
     const clientID = "" + Math.round( Math.random()*1000000000);
 
-    const worker = new Worker(window.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME);
+    const worker = new Worker(TRANSPORT_CONFIG.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME);
     let _workerMessageProcessor;
     worker.onmessage = (event) => {
         const type = event.data.type;
@@ -114,9 +123,9 @@
     // via LivePreviewTransport.js while serving the instrumented html file
     worker.postMessage({
         type: "setupPhoenixComm",
-        livePreviewDebugModeEnabled: window.LIVE_PREVIEW_DEBUG_ENABLED,
-        broadcastChannel: window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID, // in browser this will be present, but not in tauri
-        websocketChannelURL: window.LIVE_PREVIEW_WEBSOCKET_CHANNEL_URL, // in tauri this will be present. not in browser
+        livePreviewDebugModeEnabled: TRANSPORT_CONFIG.LIVE_PREVIEW_DEBUG_ENABLED,
+        broadcastChannel: TRANSPORT_CONFIG.LIVE_PREVIEW_BROADCAST_CHANNEL_ID, // in browser this will be present, but not in tauri
+        websocketChannelURL: TRANSPORT_CONFIG.LIVE_PREVIEW_WEBSOCKET_CHANNEL_URL, // in tauri this will be present. not in browser
         clientID
     });
     function _postLivePreviewMessage(message) {

@@ -676,7 +676,7 @@ define(function (require, exports, module) {
     }
 
     function getRemoteTransportScript() {
-        return `window.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${LIVE_PREVIEW_BROADCAST_CHANNEL_ID}";\n`;
+        return `TRANSPORT_CONFIG.LIVE_PREVIEW_BROADCAST_CHANNEL_ID = "${LIVE_PREVIEW_BROADCAST_CHANNEL_ID}";\n`;
     }
 
     function init() {
