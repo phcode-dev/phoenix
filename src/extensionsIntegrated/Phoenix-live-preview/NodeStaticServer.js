@@ -452,6 +452,7 @@ define(function (require, exports, module) {
                 const fullPath = currentFile.fullPath;
                 if(utils.isMarkdownFile(fullPath)) {
                     resolve(_getMarkdown(fullPath));
+                    return;
                 }
                 if(utils.isHTMLFile(fullPath)) {
                     const pageText = _getRedirectionPage(getNoPreviewURL(
@@ -608,6 +609,7 @@ define(function (require, exports, module) {
                         URL: getNoPreviewURL(),
                         isNoPreview: true
                     });
+                    return;
                 }
                 const projectRoot = ProjectManager.getProjectRoot().fullPath;
                 let fullPath = currentFile.fullPath;
@@ -620,6 +622,7 @@ define(function (require, exports, module) {
                         isMarkdownFile: utils.isMarkdownFile(fullPath),
                         isHTMLFile: utils.isHTMLFile(fullPath)
                     });
+                    return;
                 }
                 let httpFilePath = null;
                 if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
