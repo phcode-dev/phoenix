@@ -901,6 +901,8 @@ define({
     "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false to disable live preview reverse inspect",
     "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nothing to preview!",
     "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Please select an HTML file to preview",
+    "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Preview Unavailable!",
+    "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "This HTML file is not part of the current project. For security reasons, only project files can be live-previewed. To preview this file, open its containing folder as a separate project.",
     "DESCRIPTION_LIVEDEV_MAIN_HEADING": "Uh Oh! <br>Your current browser doesn't support live preview.",
     "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Get the best live preview experience by downloading our native apps for Windows, Mac, and Linux from <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a>.<br>",
     "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "You are about to open a file for live preview. Please proceed only if you trust the source of this project. Click 'Trust Project' to continue, or close this window if you do not trust the source.",

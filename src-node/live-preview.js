@@ -98,13 +98,9 @@ function messageAllWebSockets(socketList, data) {
     }
 }
 
-/**
- * @param {IncomingMessage} req
- * @param {ServerResponse} res
- */
-function serverRequestListener(req, res) {
+function _serveData(getContentAPIToUse, req, res) {
     const url = new URL(req.url, `http://${req.headers.host}`);
-    liveServerConnector.execPeer('getContent', url.href)
+    liveServerConnector.execPeer(getContentAPIToUse, url.href)
         .then(data=>{
             if(data.is404){
                 res.writeHead(404, { 'Content-Type': 'text/plain' });
@@ -132,10 +128,27 @@ function serverRequestListener(req, res) {
                 res.end('');
             }
         })
-        .catch(()=>{
+        .catch((err)=>{
+            console.error(err);
             res.writeHead(500, { 'Content-Type': 'text/plain' });
             res.end('500: Internal Server Error');
         });
+}
+
+/**
+ * @param {IncomingMessage} req
+ * @param {ServerResponse} res
+ */
+function serverRequestListener(req, res) {
+    _serveData('getContent', req, res);
+}
+
+/**
+ * @param {IncomingMessage} req
+ * @param {ServerResponse} res
+ */
+function serverExternalProjectResource(req, res) {
+    _serveData('getExternalContent', req, res);
 }
 
 async function startStaticServer({projectRoot, preferredPort}) {
@@ -238,4 +251,5 @@ exports.CreateLivePreviewWSServer = CreateLivePreviewWSServer;
 exports.navMessageProjectOpened = navMessageProjectOpened;
 exports.navRedirectAllTabs = navRedirectAllTabs;
 exports.startStaticServer = startStaticServer;
+exports.serverExternalProjectResource = serverExternalProjectResource;
 exports.messageToLivePreviewTabs = messageToLivePreviewTabs;

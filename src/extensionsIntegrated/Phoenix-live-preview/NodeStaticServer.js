@@ -72,15 +72,18 @@ define(function (require, exports, module) {
     let _staticServerInstance;
     let projectServerPort = 0;
 
-    function getNoPreviewURL(){
+    function getNoPreviewURL(
+        heading = Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW,
+        message = Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS
+    ){
         if(!staticServerURL){
             return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html?jsonInput=`+
-                encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
-                    +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
+                encodeURIComponent(`{"heading":"${heading}",`
+                    +`"details":"${message}"}`);
         }
         return `${staticServerURL}phoenix-splash/no-preview.html?jsonInput=`+
-            encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
-                +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
+            encodeURIComponent(`{"heading":"${heading}",`
+                +`"details":"${message}"}`);
     }
 
     async function tabLoaderOnline(data) {
@@ -413,7 +416,74 @@ define(function (require, exports, module) {
             return _staticServerInstance._getInstrumentedContent(filePath, url);
         }
         return Promise.reject("Cannot get content");
-    };
+    }
+
+    /*getExternalContent - Special Live Preview for External Project Files
+    ------------------------------------------------
+    Overview:
+    - This feature allows for the preview of files that are not part of the current project.
+      It's specifically for files that users open in the editor but which are outside the scope
+      of the project being worked on. Useful when users want to quickly view or edit files that are not
+      part of the project without integrating them into the project's environment.
+
+    Domain Separation:
+    - The previews for these external files are loaded from a static server URL, not the usual live preview
+      server URL.
+    - This separation ensures that the active live preview environment does not have access to resources
+      from external projects.
+
+    Security Measures:
+    - For security reasons, only the content of the currently viewed file is served in this special
+      live preview mode.
+    - HTML files are specifically not served in the live preview of external project files.
+      This decision is a precaution against disk file traversal attacks. For example, if a malicious HTML
+      file from a user's documents folder were allowed in the live preview, it could potentially upload
+      sensitive contents from the appdata folder to a remote server. By restricting the serving of HTML
+      files and isolating the external file preview environment, the system enhances security while still
+      providing the flexibility to view external files to a limited extend.*/
+    function getExternalContent(url) {
+        return new Promise((resolve, reject)=>{
+            const currentDocument = DocumentManager.getCurrentDocument();
+            const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+            url = new URL(url);
+            const requestedFileName = path.basename(url.pathname);
+            if(currentFile && currentFile.fullPath.endsWith(requestedFileName)) {
+                // serve preview
+                const fullPath = currentFile.fullPath;
+                if(utils.isMarkdownFile(fullPath)) {
+                    resolve(_getMarkdown(fullPath));
+                }
+                if(utils.isHTMLFile(fullPath)) {
+                    const pageText = _getRedirectionPage(getNoPreviewURL(
+                        Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED,
+                        Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS));
+                    resolve({
+                        path,
+                        textContents: pageText
+                    });
+                    return;
+                }
+                fs.readFile(fullPath, fs.BYTE_ARRAY_ENCODING, function (error, binContent) {
+                    if(error){
+                        resolve({
+                            path: fullPath,
+                            is404: true
+                        });
+                        return;
+                    }
+                    resolve({
+                        path: fullPath,
+                        buffer: binContent
+                    });
+                });
+                return;
+            }
+            resolve({
+                path: url,
+                is404: true
+            });
+        });
+    }
 
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
@@ -498,6 +568,14 @@ define(function (require, exports, module) {
             + `&isLoggingEnabled=${logger.loggingOptions.logLivePreview}`;
     }
 
+    function _getExternalPreviewURL(fullPath) {
+        if(utils.isHTMLFile(fullPath)) {
+            return getNoPreviewURL(Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED,
+                Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS);
+        }
+        return `${staticServerURL}externalProject/${path.basename(fullPath)}`;
+    }
+
     function getTabPopoutURL(url) {
         let openURL = new URL(url);
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
@@ -533,6 +611,16 @@ define(function (require, exports, module) {
                 }
                 const projectRoot = ProjectManager.getProjectRoot().fullPath;
                 let fullPath = currentFile.fullPath;
+                if(!ProjectManager.isWithinProject(fullPath)){
+                    // external project file. Use secure external preview link.
+                    resolve({
+                        URL: _getExternalPreviewURL(fullPath),
+                        filePath: fullPath,
+                        fullPath: fullPath,
+                        isMarkdownFile: utils.isMarkdownFile(fullPath),
+                        isHTMLFile: utils.isHTMLFile(fullPath)
+                    });
+                }
                 let httpFilePath = null;
                 if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
                     httpFilePath = fullPath;
@@ -582,6 +670,7 @@ define(function (require, exports, module) {
     // node apis
     exports.tabLoaderOnline = tabLoaderOnline;
     exports.getContent = getContent;
+    exports.getExternalContent = getExternalContent;
     exports.onLivePreviewMessage = onLivePreviewMessage;
     exports.PHCODE_LIVE_PREVIEW_QUERY_PARAM = PHCODE_LIVE_PREVIEW_QUERY_PARAM;
     exports.EVENT_SERVER_READY = EVENT_SERVER_READY;

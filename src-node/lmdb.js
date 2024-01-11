@@ -22,11 +22,11 @@ async function openDB(lmdbDir) {
     dumpFileLocation = path.join(lmdbDir, "storageDBDump.json");
 }
 
-function flushDB() {
+async function flushDB() {
     if(!storageDB){
         throw new Error("LMDB Storage operation called before openDB call");
     }
-    return storageDB.flushed; // wait for disk write complete
+    await storageDB.flushed; // wait for disk write complete
 }
 
 

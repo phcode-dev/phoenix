@@ -217,8 +217,18 @@ const server = http.createServer((req, res) => {
         // Remove '/Static<rand>' from the beginning of the URL and construct file path
         const url = new URL(req.url, `http://${req.headers.host}`);
         const cleanPath = url.pathname.replace(PHOENIX_STATIC_SERVER_URL, '');
-        const filePath = path.join(__dirname, 'www', cleanPath);
+        if(cleanPath.startsWith("/externalProject")) {
+            // Special Live Preview for External Project Files
+            // ------------------------------------------------
+            // Overview:
+            // - This feature allows for the preview of files that are not part of the current project.
+            //   It's specifically for files that users open in the editor but which are outside the scope
+            //   of the project being worked on. Useful when users want to quickly view or edit files that are not
+            //   part of the project without integrating them into the project's environment.
+            return LivePreview.serverExternalProjectResource(req, res);
+        }
 
+        const filePath = path.join(__dirname, 'www', cleanPath);
         fs.readFile(filePath, (err, data) => {
             if (err) {
                 if (err.code === 'ENOENT' || err.code === 'EISDIR') {
