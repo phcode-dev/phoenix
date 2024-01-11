@@ -888,6 +888,41 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Opens full file paths in the test window editor
+     * @param {!(Array.<string>|string)} paths absolute file path(s) to open
+     * @return {!$.Promise} A promise resolved with a mapping of project-relative path
+     *  keys to a corresponding Document
+     */
+    function openFiles(paths) {
+        var result = new $.Deferred(),
+            docs = {},
+            FileViewController = _testWindow.brackets.test.FileViewController,
+            DocumentManager = _testWindow.brackets.test.DocumentManager;
+
+        Async.doSequentially(paths, function (path, i) {
+            var one = new $.Deferred();
+
+            FileViewController.openFileAndAddToWorkingSet(path).done(function (file) {
+                docs[i] = DocumentManager.getOpenDocumentForPath(file.fullPath);
+                one.resolve();
+            }).fail(function (err) {
+                one.reject(err);
+            });
+
+            return one.promise();
+        }, false).done(function () {
+            result.resolve(docs);
+        }).fail(function (err) {
+            result.reject(err);
+        }).always(function () {
+            docs = null;
+            FileViewController = null;
+        });
+
+        return result.promise();
+    }
+
+    /**
      * Create or overwrite a text file
      * @param {!string} path Path for a file to be created/overwritten
      * @param {!string} text Text content for the new file
@@ -1362,6 +1397,7 @@ define(function (require, exports, module) {
     exports.destroyMockEditor               = destroyMockEditor;
     exports.loadProjectInTestWindow         = loadProjectInTestWindow;
     exports.openProjectFiles                = openProjectFiles;
+    exports.openFiles                       = openFiles;
     exports.toggleQuickEditAtOffset         = toggleQuickEditAtOffset;
     exports.createTextFile                  = createTextFile;
     exports.createTextFileAsync             = createTextFileAsync;

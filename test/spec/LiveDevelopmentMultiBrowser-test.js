@@ -56,7 +56,8 @@ define(function (require, exports, module) {
             Commands,
             WorkspaceManager;
 
-        var testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
+        let testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
+            prettierTestFolder = SpecRunnerUtils.getTestPath("/spec/prettier-test-files"),
             allSpacesRE = /\s+/gi;
 
         function fixSpaces(str) {
@@ -515,6 +516,56 @@ define(function (require, exports, module) {
             // href = iFrame.contentDocument.getElementsByTagName("img")[0].src;
             // expect(href.endsWith("LiveDevelopment-MultiBrowser-test-files/sub/icon_chevron.png")).toBeTrue();
 
+            await endPreviewSession();
+        }, 30000);
+
+        it("should be able to preview Markdown file not in project", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsForDone(SpecRunnerUtils.openFiles([`${prettierTestFolder}/test.md`]),
+                "external proj/test.md");
+
+            await awaits(300);
+            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(outerIFrame.src.endsWith("test.md")).toBeTrue();
+            await endPreviewSession();
+        }, 30000);
+
+        it("should title of live preview panel be as expected", async function () {
+            const titleEl = testWindow.document.getElementById('panel-live-preview-title');
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+            await waitsForLiveDevelopmentToOpen();
+
+            expect(titleEl.textContent.startsWith("simple1.html")).toBeTrue();
+
+            const fullExternalFilePath = `${prettierTestFolder}/test.md`;
+            await awaitsForDone(SpecRunnerUtils.openFiles([fullExternalFilePath]),
+                "external proj/test.md");
+
+            await awaits(300);
+            expect(titleEl.textContent.startsWith(Phoenix.app.getDisplayPath(fullExternalFilePath))).toBeTrue();
+            await endPreviewSession();
+        }, 30000);
+
+        it("should not be able to preview html file not in project - tauri only", async function () {
+            if(!Phoenix.browser.isTauri) {
+                return;
+            }
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsForDone(SpecRunnerUtils.openFiles([`${prettierTestFolder}/html/test.html`]),
+                "external project html/test.html");
+
+            await awaits(300);
+            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(outerIFrame.src.includes("phoenix-splash/no-preview.html")).toBeTrue();
             await endPreviewSession();
         }, 30000);
 
