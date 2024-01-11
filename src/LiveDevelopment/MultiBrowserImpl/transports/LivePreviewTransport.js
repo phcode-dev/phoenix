@@ -66,14 +66,15 @@ define(function (require, exports, module) {
      * @return {string}
      */
     function getRemoteScript() {
-        const replaceString = "//REPLACE_ME_WITH_LIVE_PREVIEW_TRANSPORT_CONFIG_AND_SCRIPT_DYNAMIC";
+        const replaceString = "const TRANSPORT_CONFIG={};";
         if(!LivePreviewTransportRemote.includes(replaceString)){
             throw new Error("Live preview transport is expected to have replaceable template string:" +
                 " //REPLACE_ME_WITH_LIVE_PREVIEW_TRANSPORT_CONFIG_AND_SCRIPT_DYNAMIC");
         }
         let transportScript = (_transportBridge && _transportBridge.getRemoteTransportScript &&
             _transportBridge.getRemoteTransportScript()) || "";
-        transportScript = `TRANSPORT_CONFIG.PHOENIX_INSTANCE_ID = "${Phoenix.PHOENIX_INSTANCE_ID}";\n` +
+        transportScript = "const TRANSPORT_CONFIG={};" +
+            `TRANSPORT_CONFIG.PHOENIX_INSTANCE_ID = "${Phoenix.PHOENIX_INSTANCE_ID}";\n` +
             `TRANSPORT_CONFIG.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}";\n` +
             `TRANSPORT_CONFIG.LIVE_PREVIEW_DEBUG_ENABLED = ${logger.loggingOptions.logLivePreview};\n`+
             transportScript;
