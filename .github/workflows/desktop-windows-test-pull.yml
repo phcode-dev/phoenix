@@ -106,7 +106,7 @@ jobs:
         shell: cmd
 
       - name: Fail on test runs failed in windows
-        if: steps.windowsRunUnit.outcome == 'failure' || steps.windowsRunIntegration.outcome == 'failure' || steps.windowsRunMainview.outcome == 'failure' || steps.windowsRunLegacyInteg.outcome == 'failure'
+        if: steps.windowsRunUnit.outcome == 'failure' || steps.windowsRunIntegration.outcome == 'failure' || steps.windowsRunMainview.outcome == 'failure' || steps.windowsRunLivepreview.outcome == 'failure' || steps.windowsRunLegacyInteg.outcome == 'failure'
         run: |
           echo "Windows tests failed, marking step as failed"
           exit 1
