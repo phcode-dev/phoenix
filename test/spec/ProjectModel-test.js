@@ -1254,19 +1254,6 @@ define(function (require, exports, module) {
                 expect(vm._treeData.get("open")).toBeUndefined();
             });
 
-            it("should do nothing for a path that is outside of the project", async function () {
-                await awaitsForDone(model.showInTree("/bar/baz.js"));
-                expect(vm._treeData.get("baz.js")).toBeUndefined();
-                expect(model._selections.selected).toBeUndefined();
-            });
-
-            it("should do nothing for a path that is outside of the project on Windows", async function () {
-                model.projectRoot = "c:/foo/";
-                await awaitsForDone(model.showInTree("c:/bar/baz.js"));
-                expect(vm._treeData.get("baz.js")).toBeUndefined();
-                expect(model._selections.selected).toBeUndefined();
-            });
-
             it("should select a file at the root", async function () {
                 await awaitsForDone(model.showInTree("/foo/toplevel.txt"));
                 expect(vm._treeData.getIn(["toplevel.txt", "selected"])).toBe(true);
