@@ -685,12 +685,14 @@ define(function (require, exports, module) {
         path = _getPathFromFSObject(path);
 
         if (!this.isWithinProject(path)) {
-            return d.resolve().promise();
+            Phoenix.app.openPathInFileBrowser(path)
+                .then(d.resolve)
+                .catch(d.reject);
+            return d.promise();
         }
 
-        var parentDirectory = FileUtils.getDirectoryPath(path),
-            self = this;
-        this.setDirectoryOpen(parentDirectory, true).then(function () {
+        const self = this;
+        this.setDirectoryOpen(FileUtils.getDirectoryPath(path), true).then(function () {
             if (_pathIsFile(path)) {
                 self.setSelected(path);
             }
