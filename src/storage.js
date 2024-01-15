@@ -224,10 +224,14 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
     }
 
     function setupFirstBoot() {
-        const firstBootTime = getItem(FIRST_BOOT_TIME);
-        if(!firstBootTime){
-            window.Phoenix.firstBoot = true;
-            setItem(FIRST_BOOT_TIME, Date.now());
+        try{
+            const firstBootTime = getItem(FIRST_BOOT_TIME);
+            if(!firstBootTime){
+                window.Phoenix.firstBoot = true;
+                setItem(FIRST_BOOT_TIME, Date.now());
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
@@ -242,11 +246,15 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
             // will help the storage to quick start from a json dump instead of waiting for node to boot up and init lmdb)
             window._tauriStorageRestorePromise
                 .then((jsonData)=>{
-                    cache = JSON.parse(jsonData);
-                    setupFirstBoot();
+                    if(jsonData){
+                        cache = JSON.parse(jsonData);
+                    }
                 })
                 .catch(console.error)
-                .finally(resolve); // we never fail, boot with blank storage
+                .finally(()=>{
+                    setupFirstBoot();
+                    resolve();
+                }); // we never fail, boot with blank storage
             return;
         }
         // Use browser default storage- IndexedDB
@@ -257,10 +265,12 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
                     // Eg: [[123, 456], ['hello', 'world']]
                     cache[kvArray[0]] = kvArray[1];
                 }
-                setupFirstBoot();
             })
             .catch(console.error)
-            .finally(resolve); // we never fail, boot with blank storage
+            .finally(()=>{
+                setupFirstBoot();
+                resolve();
+            }); // we never fail, boot with blank storage
     });
     const _PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY = "desktopZoomScale";
 
