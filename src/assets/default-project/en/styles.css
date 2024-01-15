@@ -158,12 +158,6 @@ h1 {
     }
 }
 
-.video-slider {
-    width: 100%;
-    height: 15em;
-    position: relative;
-    overflow: hidden;
-}
 .video {
     height: 100%;
     width: 100%;

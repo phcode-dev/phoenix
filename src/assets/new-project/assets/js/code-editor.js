@@ -77,6 +77,17 @@ function getDisplayLocation(projectPath) {
     return Strings.PROJECT_FROM_BROWSER;
 }
 
+const videoHTML = `<iframe id="noProjectIframe" style="align-items: center"
+                src="https://www.youtube.com/embed/vtks0cus0hA" title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen></iframe>`;
+
+const imageHTML = `<img src="images/youtube_video.png" alt="Phoenix Code on YouTube"
+    title="Phoenix Code on YouTube"
+    style="cursor: pointer"
+    onclick="window.parent.brackets.app.openURLInDefaultBrowser('https://www.youtube.com/watch?v=vtks0cus0hA')"/>`;
+
 function _updateProjectCards() {
     let recentProjectList = $(document.getElementById('recentProjectList'));
     recentProjectList.empty();
@@ -86,6 +97,9 @@ function _updateProjectCards() {
         omitProjectsInListing = [newProjectExtension.getExploreProjectPath()],
         showRecentProjects = false;
     for(let recentProject of recentProjects){
+        if(!recentProject.endsWith("/")){
+            recentProject = `${recentProject}/`;
+        }
         if(!defaultProjects.includes(recentProject)){
             showRecentProjects = true;
         }
@@ -94,14 +108,17 @@ function _updateProjectCards() {
                 `recent-prj-list-${tabIndex}`, tabIndex++));
         }
     }
+    const Phoenix = window.top.Phoenix;
     if(!showRecentProjects){
         $("#recentProjectsContainer").addClass("forced-hidden");
         $("#noProjectContainer").removeClass("forced-hidden");
-        let videoHtml = `<iframe id="noProjectIframe" style="align-items: center" src="https://www.youtube.com/embed/vtks0cus0hA" title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen></iframe>`;
-        document.getElementById("YTVideoFrame").innerHTML = videoHtml;
+        if(Phoenix.browser.isTauri && Phoenix.platform === 'linux'){
+            // in desktop linux, tauri app images causes a 2-5 second pause to load the video codecs
+            // We do not show videos in linux in default, except if the user explicitly adds a video in live preview.
+            document.getElementById("YTVideoFrame").innerHTML = imageHTML;
+        } else {
+            document.getElementById("YTVideoFrame").innerHTML = videoHTML;
+        }
     }
 }
 
