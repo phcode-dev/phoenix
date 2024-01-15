@@ -262,7 +262,17 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
             .catch(console.error)
             .finally(resolve); // we never fail, boot with blank storage
     });
+    const _PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY = "desktopZoomScale";
 
+    storageReadyPromise
+        .then(()=>{
+            // do things to do that are critical to user experience here
+            // We try to set window zoom as early as possible to prevent zoom flicker
+            const zoomFactor = PhStore.getItem(_PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY) || 1;
+            if(Phoenix.browser.isTauri){
+                window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: zoomFactor});
+            }
+        });
     /**
      * Waits till all pending changes are written to disk. This will not trigger a flush operation, but just waits
      * on db to flush all operations to disk that has happened till this call.
@@ -284,7 +294,9 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
         watchExternalChanges,
         unwatchExternalChanges,
         storageReadyPromise,
-        _storageBootstrapTime: Date.now() - Phoenix.startTime
+        // private APIs
+        _storageBootstrapTime: Date.now() - Phoenix.startTime,
+        _PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY
     };
     if(Phoenix.isTestWindow) {
         PhStore._setTestKey = function (testKey) {
