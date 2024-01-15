@@ -370,6 +370,7 @@ define(function (require, exports, module) {
         const currentZoom = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
         if(currentZoom < MAX_ZOOM_SCALE){
             prefs.set(PREF_DESKTOP_ZOOM_SCALE, currentZoom + 0.1);
+            PhStore.setItem(PhStore._PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY, currentZoom + 0.1);
         }
     }
 
@@ -380,6 +381,7 @@ define(function (require, exports, module) {
         const currentZoom = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
         if(currentZoom > MIN_ZOOM_SCALE){
             prefs.set(PREF_DESKTOP_ZOOM_SCALE, currentZoom - 0.1);
+            PhStore.setItem(PhStore._PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY, currentZoom - 0.1);
         }
     }
 
@@ -576,6 +578,7 @@ define(function (require, exports, module) {
     }).on("change", function () {
         if(Phoenix.browser.isTauri) {
             const zoomFactor = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
+            PhStore.setItem(PhStore._PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY, zoomFactor);
             if(zoomFactor < MIN_ZOOM_SCALE || zoomFactor > MAX_ZOOM_SCALE) {
                 console.error(
                     `Zoom scale should be between ${MIN_ZOOM_SCALE} and ${MAX_ZOOM_SCALE} but got ${zoomFactor}!`);
