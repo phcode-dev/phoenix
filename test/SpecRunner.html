@@ -31,6 +31,12 @@
            font-src * data: localhost:* asset: https://asset.localhost ;
            frame-src * localhost:* asset: https://asset.localhost ;
            connect-src * localhost:* asset: https://asset.localhost ;">
+  <!--    boot-time styles only here-->
+  <style>
+    .forced-hidden {
+      display: none !important;
+    }
+  </style>
   <script type="text/javascript">
     if(location.href.startsWith("tauri://") || location.href.startsWith('https://tauri.localhost')){
       const errorMessage = `You should use custom protocol phtauri:// instead of tauri protocol ${location.href} .`;

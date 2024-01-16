@@ -1928,7 +1928,8 @@ define(function (require, exports, module) {
      */
     function addIconProvider(callback, priority= 0) {
         WorkingSetView.addIconProvider(callback, priority);
-        return FileTreeView.addIconProvider(callback, priority);
+        FileTreeView.addIconProvider(callback, priority);
+        rerenderTree();
     }
 
     /**
@@ -1942,7 +1943,8 @@ define(function (require, exports, module) {
      */
     function addClassesProvider(callback, priority) {
         WorkingSetView.addClassProvider(callback, priority);
-        return FileTreeView.addClassesProvider(callback, priority);
+        FileTreeView.addClassesProvider(callback, priority);
+        rerenderTree();
     }
 
     /**
