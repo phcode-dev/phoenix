@@ -85,7 +85,7 @@
     }
 }
 
-.platform-linux {
+.platform-linux, .platform-mac {
     // Note: when changing padding/margins, may need to adjust metrics in ScrollTrackMarkers.js
 
     ::-webkit-scrollbar {
@@ -103,7 +103,7 @@
 
     ::-webkit-scrollbar-thumb {
         border-radius: 999px;
-        box-shadow: 0 0 0 4px @linux-scrollbar-thumb inset;
+        box-shadow: 0 0 0 5px @linux-scrollbar-thumb inset;
         border: 2px solid transparent;
     }
 
@@ -179,14 +179,14 @@
         }
     }
 
-    &.platform-linux {
+    &.platform-linux, &.platform-mac {
         .CodeMirror-scrollbar-filler,
         .CodeMirror-gutter-filler {
             background-color: #1d1f21;
         }
 
         ::-webkit-scrollbar-thumb {
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.24) inset;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.24) inset;
         }
 
         ::-webkit-scrollbar-thumb:window-inactive {
