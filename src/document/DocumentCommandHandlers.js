@@ -1592,14 +1592,14 @@ define(function (require, exports, module) {
 
     /**
      * Confirms any unsaved changes, then closes the window
-     * @param {Object} command data
+     * @param {Object} commandData data
      */
     function handleFileCloseWindow(commandData) {
         return _handleWindowGoingAway(
             commandData,
             function (closeSuccess) {
                 console.log('close success: ', closeSuccess);
-                raceAgainstTime(window.PhStore.flushDB(), 8000)
+                raceAgainstTime(window.PhStore.flushDB())
                     .finally(()=>{
                         raceAgainstTime(NodeConnector.terminateNode())
                             .finally(()=>{
@@ -1634,26 +1634,6 @@ define(function (require, exports, module) {
         if (entry) {
             ProjectManager.renameItemInline(entry);
         }
-    }
-
-    /** Closes the window, then quits the app */
-    function handleFileQuit(commandData) {
-        return _handleWindowGoingAway(
-            commandData,
-            function (closeSuccess) {
-                console.log('close success: ', closeSuccess);
-                raceAgainstTime(window.PhStore.flushDB(), 8000)
-                    .finally(()=>{
-                        raceAgainstTime(NodeConnector.terminateNode())
-                            .finally(()=>{
-                                Phoenix.app.closeWindow();
-                            });
-                    });
-            },
-            function (err) {
-                console.error("Quit failed! ", err);
-            }
-        );
     }
 
 
@@ -1771,7 +1751,7 @@ define(function (require, exports, module) {
         }
     }
 
-    function raceAgainstTime(promise, timeout = 3000) {
+    function raceAgainstTime(promise, timeout = 2000) {
         const timeoutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(new Error("Timed out after 3 seconds"));
@@ -1930,7 +1910,7 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
-                raceAgainstTime(window.PhStore.flushDB(), 8000)
+                raceAgainstTime(window.PhStore.flushDB())
                     .finally(()=>{
                         raceAgainstTime(NodeConnector.terminateNode())
                             .finally(()=>{
@@ -2027,7 +2007,7 @@ define(function (require, exports, module) {
     // Special Commands
     CommandManager.register(showInOS,                                Commands.NAVIGATE_SHOW_IN_OS,            handleShowInOS);
     CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,         Commands.FILE_NEW_WINDOW,                handleFileNewWindow);
-    CommandManager.register(quitString,                              Commands.FILE_QUIT,                      handleFileQuit);
+    CommandManager.register(quitString,                              Commands.FILE_QUIT,                      handleFileCloseWindow);
     CommandManager.register(Strings.CMD_SHOW_IN_TREE,                Commands.NAVIGATE_SHOW_IN_FILE_TREE,     handleShowInTree);
 
     // These commands have no UI representation and are only used internally
