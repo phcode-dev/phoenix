@@ -1614,13 +1614,16 @@ define(function (require, exports, module) {
         });
     }
 
-    function _isSubPathOf(dir, subDir) {
+    function _isSameOrSubPathOf(dir, subDir) {
+        if(dir === subDir){
+            return true;
+        }
         const relative = window.path.relative(dir, subDir);
         return relative && !relative.startsWith('..') && !window.path.isAbsolute(relative);
     }
 
     async function _validatePasteTarget(srcEntry, targetEntry) {
-        if(_isSubPathOf(srcEntry.fullPath, targetEntry.fullPath)){
+        if(_isSameOrSubPathOf(srcEntry.fullPath, targetEntry.fullPath)){
             _showErrorDialog(ERR_TYPE_PASTE_FAILED, srcEntry.isDirectory, "err",
                 _getProjectDisplayNameOrPath(srcEntry.fullPath),
                 _getProjectDisplayNameOrPath(targetEntry.fullPath));
