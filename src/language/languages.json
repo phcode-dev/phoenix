@@ -162,7 +162,7 @@
     },
 
     "rust": {
-        "name": "RUST",
+        "name": "Rust",
         "mode": ["rust", "text/x-rustsrc"],
         "fileExtensions": ["rs"],
         "blockComment": ["/*", "*/"],
