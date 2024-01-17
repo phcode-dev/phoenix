@@ -13,7 +13,7 @@ define(function (require, exports, module) {
     // use this cheetsheet for fontawesome icons https://fontawesome.com/v5/cheatsheet/free/brands
     // or https://fontawesome.com/v5/cheatsheet/free/solid or https://fontawesome.com/v5/cheatsheet/free/regular
     // or https://devicon.dev/
-    var languages = {
+    const languagesOrModes = {
         folder: "fa-folder fa-solid",
 
         css: "devicon-css3-plain",
@@ -68,6 +68,7 @@ define(function (require, exports, module) {
 
         c: "devicon-c-plain nocolor",
         cpp: "devicon-cplusplus-plain nocolor",
+        'c++': "devicon-cplusplus-plain nocolor",
         'objective-c': "devicon-objectivec-plain nocolor",
         kotlin: "devicon-kotlin-plain",
         'c#': "devicon-csharp-plain",
@@ -113,6 +114,10 @@ define(function (require, exports, module) {
 
         hs: 'devicon-haskell-plain nocolor',
         lhs: 'devicon-haskell-plain nocolor',
+
+        // latex
+        latex: "devicon-latex-original nocolor",
+        tex: "devicon-latex-original nocolor",
 
         psd: 'devicon-photoshop-plain',
         ai: 'devicon-illustrator-plain',
@@ -170,7 +175,7 @@ define(function (require, exports, module) {
 
         if (!entry.isFile) {
             el.removeClass('fa-solid fa-file');
-            el.addClass(languages.folder);
+            el.addClass(languagesOrModes.folder);
             return span;
         }
 
@@ -183,20 +188,20 @@ define(function (require, exports, module) {
             if(!files[filename].includes('nocolor') && color){
                 el.addClass('colored');
             }
-        } else if (languages[ext]) {
+        } else if (languagesOrModes[ext]) {
             el.removeClass('fa-solid fa-file');
-            el.addClass(languages[ext]);
-            if(!languages[ext].includes('nocolor') && color){
+            el.addClass(languagesOrModes[ext]);
+            if(!languagesOrModes[ext].includes('nocolor') && color){
                 el.addClass('colored');
             }
         } else{
             let lang = LanguageManager.getLanguageForPath(entry.fullPath).getName().toLowerCase();
-            if(!languages[lang]){
+            if(!languagesOrModes[lang]){
                 return span;
             }
             el.removeClass('fa-solid fa-file');
-            el.addClass(languages[lang]);
-            if(!languages[lang].includes('nocolor') && color){
+            el.addClass(languagesOrModes[lang]);
+            if(!languagesOrModes[lang].includes('nocolor') && color){
                 el.addClass('colored');
             }
         }
