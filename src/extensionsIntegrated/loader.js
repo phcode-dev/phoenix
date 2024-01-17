@@ -31,6 +31,7 @@
  *  instead of default extensions folder.
  */
 define(function (require, exports, module) {
+    require("./icons/main");
     require("./InAppNotifications/main");
     require("./NoDistractions/main");
     require("./Phoenix-live-preview/main");
