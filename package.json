@@ -90,6 +90,7 @@
         "@phcode/fs": "^2.0.6",
         "@pixelbrackets/gfm-stylesheet": "^1.1.0",
         "@prettier/plugin-php": "0.18.9",
+        "@uiw/file-icons": "^1.3.2",
         "bootstrap": "^5.1.3",
         "browser-mime": "^1.0.1",
         "codemirror": "^5.65.7",

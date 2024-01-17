@@ -157,6 +157,13 @@ let copyThirdPartyLibs = series(
     copyFiles.bind(copyFiles, ['node_modules/devicon/fonts/*.*'],
         'src/thirdparty/devicon/fonts/'),
     copyLicence.bind(copyLicence, 'node_modules/devicon/LICENSE', 'devicon'),
+    // file-icons https://www.npmjs.com/package/@uiw/file-icons - MIT License
+    copyFiles.bind(copyFiles, ['node_modules/@uiw/file-icons/fonts/ffont.css'],
+        'src/thirdparty/file-icons/'),
+    copyFiles.bind(copyFiles, ['node_modules/@uiw/file-icons/fonts/ffont.ttf'],
+        'src/thirdparty/file-icons/'),
+    copyFiles.bind(copyFiles, ['node_modules/@uiw/file-icons/fonts/ffont.woff2'],
+        'src/thirdparty/file-icons/'),
     // mime-db
     _copyMimeDB,
     copyLicence.bind(copyLicence, 'node_modules/mime-db/LICENSE', 'mime-db'),

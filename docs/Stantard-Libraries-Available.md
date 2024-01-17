@@ -32,7 +32,21 @@ See the following urls for available icons:
 
 devicon is used for iconography in phoenix.
 
-credits: https://devicon.dev/
+>usage: similar to fontawesome
+
+* credits: https://devicon.dev/
+
+## file-icons
+
+file-icon is used for iconography in phoenix.
+ 
+> usage: similar to fontawesome
+
+credits: https://uiwjs.github.io/file-icons/index.html
+
+## Additional icon sources
+This is not included in phoenix, but you can get icons from
+1. [Ionicons](http://ionicons.com)
 
 ### Usage
 
