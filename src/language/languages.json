@@ -106,8 +106,7 @@
         "name": "LaTeX",
         "mode": ["stex", "text/x-stex"],
         "fileExtensions": ["tex", "ltx", "sty", "cls", "bib", "bst"],
-        "blockComment": ["/*", "*/"],
-        "lineComment": ["//"]
+        "lineComment": ["%"]
     },
 
     "dart": {
