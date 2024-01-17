@@ -161,6 +161,14 @@
         "lineComment": ["//"]
     },
 
+    "rust": {
+        "name": "RUST",
+        "mode": ["rust", "text/x-rustsrc"],
+        "fileExtensions": ["rs"],
+        "blockComment": ["/*", "*/"],
+        "lineComment": ["//"]
+    },
+
     "objectivec": {
         "name": "Objective-C",
         "mode": ["clike", "text/x-objectivec"],

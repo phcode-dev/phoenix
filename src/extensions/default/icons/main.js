@@ -92,6 +92,8 @@ define(function (require, exports, module) {
 
         clojure: "devicon-clojure-plain",
 
+        rust: "devicon-rust-plain nocolor",
+
         styl: "devicon-stylus-original nocolor",
 
         dart: "devicon-dart-plain",

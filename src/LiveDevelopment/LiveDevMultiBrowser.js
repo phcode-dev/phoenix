@@ -573,7 +573,7 @@ define(function (require, exports, module) {
      * @param {Document} doc
      */
     function _onDocumentSaved(event, doc) {
-        if (!isActive() || !_server) {
+        if (!isActive() || !_server || !_liveDocument) {
             return;
         }
 
@@ -604,7 +604,7 @@ define(function (require, exports, module) {
      * @param {Document} doc
      */
     function _onDirtyFlagChange(event, doc) {
-        if (!isActive() || !_server) {
+        if (!isActive() || !_server || !_liveDocument) {
             return;
         }
 
