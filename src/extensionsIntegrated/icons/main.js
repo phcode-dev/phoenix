@@ -10,6 +10,7 @@ define(function (require, exports, module) {
     // use this cheetsheet for fontawesome icons https://fontawesome.com/v5/cheatsheet/free/brands
     // or https://fontawesome.com/v5/cheatsheet/free/solid or https://fontawesome.com/v5/cheatsheet/free/regular
     // or https://devicon.dev/
+    // or https://uiwjs.github.io/file-icons/index.html
     const languagesOrModes = {
         folder: "fa-folder fa-solid",
 
@@ -31,8 +32,9 @@ define(function (require, exports, module) {
         txt: "fa-file-alt fa-solid",
         text: "fa-file-alt fa-solid",
 
-        json: "fa-cogs fa-solid",
+        json: "ffont-json",
         yml: "fa-cogs fa-solid",
+        toml: "fa-cogs fa-solid",
         yaml: "fa-cogs fa-solid",
         conf: "fa-cogs fa-solid",
         config: "fa-cogs fa-solid",

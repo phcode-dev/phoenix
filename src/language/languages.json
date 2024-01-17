@@ -310,6 +310,13 @@
         "lineComment": ["#"]
     },
 
+    "toml": {
+        "name": "TOML",
+        "mode": ["toml", "text/x-toml"],
+        "fileExtensions": ["toml"],
+        "lineComment": ["#"]
+    },
+
     "hx": {
         "name": "Haxe",
         "mode": "haxe",
