@@ -102,6 +102,14 @@
         "lineComment": ["//"]
     },
 
+    "tex": {
+        "name": "LaTeX",
+        "mode": ["stex", "text/x-stex"],
+        "fileExtensions": ["tex", "ltx", "sty", "cls", "bib", "bst"],
+        "blockComment": ["/*", "*/"],
+        "lineComment": ["//"]
+    },
+
     "dart": {
         "name": "Dart",
         "mode": ["dart", "application/dart"],
