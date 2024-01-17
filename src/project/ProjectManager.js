@@ -1524,10 +1524,12 @@ define(function (require, exports, module) {
         OPERATION_COPY = 'copy';
 
     function _registerPathWithClipboard(path, operation) {
-        Phoenix.app.copyToClipboard(window.path.basename(path));
+        const clipboardText = window.path.basename(path);
+        Phoenix.app.copyToClipboard(clipboardText);
         PhStore.setItem(CLIPBOARD_SYNC_KEY, {
             operation: operation,
-            path: path
+            path: path,
+            clipboardText: clipboardText
         });
     }
 
@@ -1677,19 +1679,31 @@ define(function (require, exports, module) {
         }
     }
 
-    function _pasteFileCMD() {
+    async function _pasteFileCMD() {
         let targetPath = getProjectRoot().fullPath;
         let context = getContext();
         if(context){
             targetPath = context.fullPath;
         }
+
+        const copiedFiles = await Phoenix.app.clipboardReadFiles();
+        if(copiedFiles) {
+            // there were some files the user copied external, eg. from os file explorer. This takes precedence
+            for(let copiedFileOrFolderPath of copiedFiles){
+                await _performCopy(copiedFileOrFolderPath, targetPath);
+            }
+            return;
+        }
+
+        const clipboardText = await Phoenix.app.clipboardReadText();
         const clipboard = PhStore.getItem(CLIPBOARD_SYNC_KEY);
-        if(!clipboard){
+        if(!clipboard || clipboard.clipboardText !== clipboardText){
+            // either no copied file, or user copied something outside the app.
             return;
         }
         switch (clipboard.operation) {
-        case OPERATION_CUT: _performCut(clipboard.path, targetPath); break;
-        case OPERATION_COPY: _performCopy(clipboard.path, targetPath); break;
+        case OPERATION_CUT: await _performCut(clipboard.path, targetPath); break;
+        case OPERATION_COPY: await _performCopy(clipboard.path, targetPath); break;
         default: console.error("Clipboard unknown Operation: ", clipboard, targetPath);
         }
     }

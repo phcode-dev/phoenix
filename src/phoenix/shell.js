@@ -69,7 +69,27 @@ Phoenix.app = {
         } else if(window.navigator && window.navigator.clipboard){
             return window.navigator.clipboard.readText();
         }
-        return Promise.reject(new Error("clipboardReadText: Unable to access clipboard text."));
+        return Promise.reject(new Error("clipboardReadText: Not supported."));
+    },
+    clipboardReadFiles: function () {
+        return new Promise((resolve, reject)=>{
+            if(Phoenix.browser.isTauri){
+                window.__TAURI__.tauri.invoke('_get_clipboard_files')
+                    .then(files =>{
+                        if(!files){
+                            resolve(files);
+                            return;
+                        }
+                        const vfsPaths = [];
+                        for(let platformPath of files) {
+                            vfsPaths.push(Phoenix.VFS.getTauriVirtualPath(platformPath));
+                        }
+                        resolve(vfsPaths);
+                    }).catch(reject);
+            } else {
+                resolve();
+            }
+        });
     },
     copyToClipboard: function (textToCopy) {
         if(Phoenix.browser.isTauri){
@@ -213,7 +233,7 @@ Phoenix.app = {
         nativeWindow.isTauriWindow = false;
         return nativeWindow;
     },
-    zoomWebView: async function (scaleFactor = 1) {
+    zoomWebView: function (scaleFactor = 1) {
         if(!Phoenix.browser.isTauri){
             throw new Error("zoomWebView is not supported in browsers");
         }
