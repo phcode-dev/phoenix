@@ -26,6 +26,7 @@ define(function (require, exports, module) {
         'css.map': "fa-map-signs fa-solid",
         xml: 'fa-code fa-solid',
         jsx: 'fa-react fa-brands',
+        tsx: 'devicon-typescript-plain',
         hbs: "devicon-handlebars-plain",
         eot: "fa-font fa-solid",
         woff: "fa-font fa-solid",
