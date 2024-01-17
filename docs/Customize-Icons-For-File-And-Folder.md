@@ -22,7 +22,7 @@ Now you're ready to add some customizations. Here's an example icon preference:
 }
 ```
 
-You can use the classes in [Ionicons](http://ionicons.com), [Font Awesome](https://fortawesome.github.io/Font-Awesome/), or [Devicons](https://vorillaz.github.io/devicons/#/main) to specify the icon.
+You can use the classes in [Font Awesome](https://fortawesome.github.io/Font-Awesome/), [Devicons](https://vorillaz.github.io/devicons/#/main) and [file-icons](https://uiwjs.github.io/file-icons/index.html) to specify the icon.
 
 You can also add an extension that's not already supported the same way.
 
@@ -41,5 +41,5 @@ You can also add an extension that's not already supported the same way.
 
 ## credits
 * Based on extension by https://github.com/ivogabe/Brackets-Icons
-* Ionicons (MIT license), Font Awesome (GPL license) and Devicons (MIT license) are included in Brackets-Icons.
+* Font Awesome (GPL license), Devicons (MIT license) and file-icons (MIT license) are included in Brackets-Icons.
 * Material icons are also licence compatible with brackets, but not directly integrated in source. Please download individual SVGs from https://fonts.google.com/icons as required. 

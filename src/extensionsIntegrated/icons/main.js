@@ -3,7 +3,7 @@
 
 define(function (require, exports, module) {
 
-    let fileUtils = require('file/FileUtils'),
+    const fileUtils = require('file/FileUtils'),
         ProjectManager = require('project/ProjectManager'),
         LanguageManager = require("language/LanguageManager");
 
@@ -113,8 +113,8 @@ define(function (require, exports, module) {
         lhs: 'devicon-haskell-plain nocolor',
 
         // latex
-        latex: "devicon-latex-original nocolor",
-        tex: "devicon-latex-original nocolor",
+        latex: "ffont-tex",
+        tex: "ffont-tex",
 
         psd: 'devicon-photoshop-plain',
         ai: 'devicon-illustrator-plain',
@@ -144,7 +144,10 @@ define(function (require, exports, module) {
         zip: "fa-archive fa-solid",
         rar: "fa-archive fa-solid",
         tar: "fa-archive fa-solid",
-        tgz: "fa-archive fa-solid"
+        tgz: "fa-archive fa-solid",
+
+        "binary": "ffont-exe",
+        "other binary": "ffont-exe"
     };
 
     var files = {
@@ -161,7 +164,19 @@ define(function (require, exports, module) {
         return pathSplit && pathSplit.length>1 ? pathSplit[pathSplit.length-1] : '';
     }
 
-    var iconProvider = function (entry) {
+    function _applyStyle(span, el, langOrMode, color) {
+        const style = languagesOrModes[langOrMode];
+        if(!style) {
+            return;
+        }
+        el.removeClass('fa-solid fa-file');
+        el.addClass(style);
+        if(!style.includes('nocolor') && color){
+            el.addClass('colored');
+        }
+    }
+
+    const iconProvider = function (entry) {
         let color = true;
 
         let span = $('<span>');
@@ -186,21 +201,13 @@ define(function (require, exports, module) {
                 el.addClass('colored');
             }
         } else if (languagesOrModes[ext]) {
-            el.removeClass('fa-solid fa-file');
-            el.addClass(languagesOrModes[ext]);
-            if(!languagesOrModes[ext].includes('nocolor') && color){
-                el.addClass('colored');
-            }
+            _applyStyle(span, el, ext, color);
         } else{
             let lang = LanguageManager.getLanguageForPath(entry.fullPath).getName().toLowerCase();
             if(!languagesOrModes[lang]){
                 return span;
             }
-            el.removeClass('fa-solid fa-file');
-            el.addClass(languagesOrModes[lang]);
-            if(!languagesOrModes[lang].includes('nocolor') && color){
-                el.addClass('colored');
-            }
+            _applyStyle(span, el, lang, color);
         }
 
         return span;

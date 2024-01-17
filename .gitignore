@@ -41,6 +41,7 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/floating-ui.dom.umd.min.js
 /src/thirdparty/fontawesome
 /src/thirdparty/devicon
+/src/thirdparty/file-icons
 /src/thirdparty/prettier
 /src/thirdparty/marked.min.js
 test/thirdparty/jasmine-core
