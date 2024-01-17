@@ -94,6 +94,14 @@
         "lineComment": ["//"]
     },
 
+    "tsx": {
+        "name": "Typescript JSX",
+        "mode": ["javascript", "text/typescript-jsx"],
+        "fileExtensions": ["tsx"],
+        "blockComment": ["/*", "*/"],
+        "lineComment": ["//"]
+    },
+
     "dart": {
         "name": "Dart",
         "mode": ["dart", "application/dart"],
