@@ -96,7 +96,7 @@
 
     "tsx": {
         "name": "Typescript JSX",
-        "mode": ["javascript", "text/typescript-jsx"],
+        "mode": ["jsx", "text/typescript-jsx"],
         "fileExtensions": ["tsx"],
         "blockComment": ["/*", "*/"],
         "lineComment": ["//"]
