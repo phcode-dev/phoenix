@@ -3,12 +3,9 @@
 
 define(function (require, exports, module) {
 
-    let extensionUtils = brackets.getModule('utils/ExtensionUtils'),
-        fileUtils = brackets.getModule('file/FileUtils'),
-        ProjectManager = brackets.getModule('project/ProjectManager'),
-        LanguageManager = brackets.getModule("language/LanguageManager");
-
-    extensionUtils.loadStyleSheet(module, 'css/main.css');
+    let fileUtils = require('file/FileUtils'),
+        ProjectManager = require('project/ProjectManager'),
+        LanguageManager = require("language/LanguageManager");
 
     // use this cheetsheet for fontawesome icons https://fontawesome.com/v5/cheatsheet/free/brands
     // or https://fontawesome.com/v5/cheatsheet/free/solid or https://fontawesome.com/v5/cheatsheet/free/regular
