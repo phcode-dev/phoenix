@@ -1690,7 +1690,7 @@ define(function (require, exports, module) {
         if(copiedFiles) {
             // there were some files the user copied external, eg. from os file explorer. This takes precedence
             for(let copiedFileOrFolderPath of copiedFiles){
-                await _performCopy(copiedFileOrFolderPath, targetPath);
+                _performCopy(copiedFileOrFolderPath, targetPath);
             }
             return;
         }
