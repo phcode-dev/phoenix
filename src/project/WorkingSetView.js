@@ -19,6 +19,8 @@
  *
  */
 
+/*global path*/
+
 /**
  * WorkingSetView generates the UI for the list of the files user is editing based on the model provided by EditorManager.
  * The UI allows the user to see what files are open/dirty and allows them to close files and specify the current editor.
@@ -1024,7 +1026,7 @@ define(function (require, exports, module) {
      * @private
      */
     WorkingSetView.prototype._checkForDuplicatesInWorkingTree = function () {
-        var self = this,
+        let self = this,
             map = {},
             fileList = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
 
@@ -1034,12 +1036,12 @@ define(function (require, exports, module) {
         // Go through files and fill map with arrays of files.
         fileList.forEach(function (file) {
             // Use the same function that is used to create html for file.
-            var displayHtml = ViewUtils.getFileEntryDisplay(file);
+            const displayName = path.basename(file.fullPath);
 
-            if (!map[displayHtml]) {
-                map[displayHtml] = [];
+            if (!map[displayName]) {
+                map[displayName] = [];
             }
-            map[displayHtml].push(file);
+            map[displayName].push(file);
         });
 
         // Go through the map and solve the arrays with length over 1. Ignore the rest.
