@@ -61,6 +61,10 @@ function _setupVFS(fsLib, pathLib){
             }
             return path;
         },
+        /**
+         * Gets the tauri virtual path given a platform path.
+         * @throws Error If the system path cannot be converted to virtualPath
+         */
         getTauriVirtualPath: fs.getTauriVirtualPath,
         /**
          * Check if a given full path is located in the users local machine drive. For eg. fs access paths are accounted

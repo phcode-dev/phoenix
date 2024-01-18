@@ -37,7 +37,8 @@ initVFS();
 // this limit is there due to our use of phtauri:// custom protocol.
 // /tauri/security/dangerousRemoteDomainIpcAccess/0/windows and
 // /tauri/security/dangerousRemoteDomainIpcAccess/1/windows
-let MAX_ALLOWED_TAURI_WINDOWS = 30;
+const MAX_ALLOWED_TAURI_WINDOWS = 30;
+let cliArgs;
 
 async function getTauriWindowLabel() {
     const tauriWindows = await window.__TAURI__.window.getAll();
@@ -70,6 +71,30 @@ Phoenix.app = {
             return window.navigator.clipboard.readText();
         }
         return Promise.reject(new Error("clipboardReadText: Not supported."));
+    },
+    /**
+     * Gets the commandline argument in desktop builds and null in browser builds.
+     * @return {Promise<string[]|null>}
+     */
+    getCommandLineArgs: function () {
+        return new Promise((resolve)=>{
+            if(!Phoenix.browser.isTauri){
+                resolve(null);
+                return;
+            }
+            if(cliArgs){
+                resolve(cliArgs);
+                return;
+            }
+            cliArgs = null;
+            window.__TAURI__.invoke('_get_commandline_args')
+                .then(args=>{
+                    cliArgs = args;
+                })
+                .finally(()=>{
+                    resolve(cliArgs);
+                });
+        });
     },
     clipboardReadFiles: function () {
         return new Promise((resolve, reject)=>{

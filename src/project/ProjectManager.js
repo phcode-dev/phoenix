@@ -857,20 +857,51 @@ define(function (require, exports, module) {
         return updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
     }
 
+    async function _getStartupProjectFromCLIArgs() {
+        return new Promise((resolve)=>{
+            Phoenix.app.getCommandLineArgs().then(args=>{
+                if(!args || args.length <= 1){ // the second arg is the folder we have to open
+                    resolve(null);
+                    return;
+                }
+                try{
+                    const folderToOpen = Phoenix.VFS.getTauriVirtualPath(args[1]);
+                    FileSystem.resolveAsync(folderToOpen)
+                        .then(({entry})=>{
+                            if(entry.isDirectory){
+                                resolve(folderToOpen);
+                            } else {
+                                resolve(null);
+                            }
+                        })
+                        .catch((err)=>{
+                            console.error(err);
+                            resolve(null);
+                        });
+                } catch (e) {
+                    resolve(null);
+                }
+            });
+        });
+    }
+
     /**
      * Initial project path is stored in prefs, which defaults to the welcome project on
      * first launch.
      */
-    async function getStartupProjectPath() {
+    function getStartupProjectPath() {
         return new Promise((resolve)=>{
-            let startupProjectPath = updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
-            FileSystem.getDirectoryForPath(startupProjectPath).exists((err, exists)=>{
-                if(exists){
-                    resolve(startupProjectPath);
-                } else {
-                    resolve(getWelcomeProjectPath());
-                }
-            });
+            _getStartupProjectFromCLIArgs()
+                .then(cliProjectPath=>{
+                    let startupProjectPath = cliProjectPath || updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
+                    FileSystem.getDirectoryForPath(startupProjectPath).exists((err, exists)=>{
+                        if(exists){
+                            resolve(startupProjectPath);
+                        } else {
+                            resolve(getWelcomeProjectPath());
+                        }
+                    });
+                });
         });
     }
 
