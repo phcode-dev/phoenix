@@ -27,7 +27,6 @@ define(function (require, exports, module) {
 
     const ProjectManager          = require("project/ProjectManager"),
         DocumentManager     = require("document/DocumentManager"),
-        ExtensionUtils      = require("utils/ExtensionUtils"),
         Dialogs             = require("widgets/Dialogs"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),

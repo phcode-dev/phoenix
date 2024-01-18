@@ -126,6 +126,9 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
+        if(Phoenix.isSpecRunnerWindow){
+            return;
+        }
         _addToolbarIcon();
         serverSync.init();
         defaultProjects.init();
