@@ -99,23 +99,44 @@ define(function (require, exports, module) {
         });
 
         describe("getFileEntryDisplay", function () {
+
+            const TAURI_BASE_PATH = '/tauri/c/d/';
+            const OTHER_BASE_PATH = `/x/c/d/`;
+            function getExpectedTitle(name) {
+
+                if(Phoenix.browser.isTauri){
+                    return window.fs.getTauriPlatformPath(`${TAURI_BASE_PATH}${name}`);
+                }
+                return `${OTHER_BASE_PATH}${name}`;
+            }
             function makeFile(name) {
+                let filePath = `${OTHER_BASE_PATH}${name}`;
+                if(Phoenix.browser.isTauri){
+                    filePath = `${TAURI_BASE_PATH}${name}`;
+                }
                 return {
-                    name: name
+                    name: name,
+                    fullPath: filePath
                 };
             }
 
             it("should do nothing if there's no extension", function () {
-                expect(ViewUtils.getFileEntryDisplay(makeFile("README"))).toBe("README");
+                const name = "README";
+                expect(ViewUtils.getFileEntryDisplay(makeFile(name))).toBe(
+                    `<span title='${getExpectedTitle(name)}' class='baseName'>README</span>`);
             });
 
             it("should add markup for the file extension", function () {
-                expect(ViewUtils.getFileEntryDisplay(makeFile("README.md"))).toBe("README<span class='extension'>.md</span>");
+                const name = "README.md";
+                expect(ViewUtils.getFileEntryDisplay(makeFile(name))).toBe(
+                    `<span title='${getExpectedTitle(name)}' class='baseName'>README</span><span title='${getExpectedTitle(name)}' class='extension'>.md</span>`);
             });
 
             // see https://github.com/adobe/brackets/issues/7905
             it("should not mark up dot files as being an extension", function () {
-                expect(ViewUtils.getFileEntryDisplay(makeFile(".gitignore"))).toBe(".gitignore");
+                const name = ".gitignore";
+                expect(ViewUtils.getFileEntryDisplay(makeFile(name))).toBe(
+                    `<span title='${getExpectedTitle(name)}' class='baseName'>${name}</span>`);
             });
         });
     });

@@ -22,7 +22,8 @@
 define(function (require, exports, module) {
 
 
-    var _                   = require("thirdparty/lodash"),
+    const _                   = require("thirdparty/lodash"),
+        ProjectManager        = require("project/ProjectManager"),
         LanguageManager     = require("language/LanguageManager");
 
     var SCROLL_SHADOW_HEIGHT = 5;
@@ -395,12 +396,18 @@ define(function (require, exports, module) {
         var name = entry.name,
             ext = LanguageManager.getCompoundFileExtension(name),
             i = name.lastIndexOf("." + ext);
-
+        let hoverPath = ProjectManager.makeProjectRelativeIfPossible(entry.fullPath);
+        if(Phoenix.browser.isTauri) {
+            hoverPath = Phoenix.app.getDisplayPath(entry.fullPath);
+        }
+        hoverPath = hoverPath || "";
         if (i > 0) {
+            const baseName = _.escape(name.substring(0, i)),
+                extension = _.escape(name.substring(i));
             // Escape all HTML-sensitive characters in filename.
-            name = _.escape(name.substring(0, i)) + "<span class='extension'>" + _.escape(name.substring(i)) + "</span>";
+            name = `<span title='${hoverPath}' class='baseName'>${baseName}</span><span title='${hoverPath}' class='extension'>${extension}</span>`;
         } else {
-            name = _.escape(name);
+            name = `<span title='${hoverPath}' class='baseName'>${_.escape(name)}</span>`;
         }
 
         return name;
