@@ -110,6 +110,7 @@ define(function (require, exports, module) {
     require("spec/Storage-integ-test");
     // Integrated extension tests
     require("spec/InAppNotifications-integ-test");
+    require("spec/RemoteFileAdapter-integ-test");
     // Node Tests
     require("spec/NodeConnection-test");
     // todo TEST_MODERN

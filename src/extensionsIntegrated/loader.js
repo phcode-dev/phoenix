@@ -32,6 +32,7 @@
  */
 define(function (require, exports, module) {
     require("./icons/main");
+    require("./RemoteFileAdapter/main");
     require("./Phoenix/main");
     require("./InAppNotifications/main");
     require("./NoDistractions/main");
