@@ -25,14 +25,14 @@
 
 define(function (require, exports, module) {
 
-    const ProjectManager          = brackets.getModule("project/ProjectManager"),
-        DocumentManager     = brackets.getModule("document/DocumentManager"),
-        ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
-        Dialogs             = brackets.getModule("widgets/Dialogs"),
-        Strings             = brackets.getModule("strings"),
-        StringUtils         = brackets.getModule("utils/StringUtils"),
-        DefaultDialogs      = brackets.getModule("widgets/DefaultDialogs"),
-        Metrics             = brackets.getModule("utils/Metrics");
+    const ProjectManager          = require("project/ProjectManager"),
+        DocumentManager     = require("document/DocumentManager"),
+        ExtensionUtils      = require("utils/ExtensionUtils"),
+        Dialogs             = require("widgets/Dialogs"),
+        Strings             = require("strings"),
+        StringUtils         = require("utils/StringUtils"),
+        DefaultDialogs      = require("widgets/DefaultDialogs"),
+        Metrics             = require("utils/Metrics");
 
     let syncRoot = "";
     let $icon;
@@ -308,6 +308,4 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
     };
-
-    ExtensionUtils.loadStyleSheet(module, "styles.css");
 });

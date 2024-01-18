@@ -21,11 +21,11 @@
 /*globals Phoenix*/
 
 define(function (require, exports, module) {
-    const FileViewController    = brackets.getModule("project/FileViewController"),
-        DocumentManager = brackets.getModule("document/DocumentManager"),
-        FileSystem = brackets.getModule("filesystem/FileSystem"),
-        FileUtils = brackets.getModule("file/FileUtils"),
-        Metrics = brackets.getModule("utils/Metrics");
+    const FileViewController    = require("project/FileViewController"),
+        DocumentManager = require("document/DocumentManager"),
+        FileSystem = require("filesystem/FileSystem"),
+        FileUtils = require("file/FileUtils"),
+        Metrics = require("utils/Metrics");
 
     function _getUpdateMarkdownURL() {
         return Phoenix.baseURL + "assets/default-project/en/Newly_added_features.md";

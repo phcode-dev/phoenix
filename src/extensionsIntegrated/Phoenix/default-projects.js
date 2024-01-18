@@ -21,8 +21,8 @@
 /*globals Phoenix, JSZip, Filer*/
 
 define(function (require, exports, module) {
-    const ProjectManager          = brackets.getModule("project/ProjectManager"),
-        ZipUtils = brackets.getModule("utils/ZipUtils");
+    const ProjectManager          = require("project/ProjectManager"),
+        ZipUtils = require("utils/ZipUtils");
 
     async function _setupStartupProject() {
         console.log("setting up startup project", ProjectManager.getWelcomeProjectPath());
