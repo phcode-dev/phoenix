@@ -1752,9 +1752,9 @@ define(function (require, exports, module) {
     }
 
     function raceAgainstTime(promise, timeout = 2000) {
-        const timeoutPromise = new Promise((resolve, reject) => {
+        const timeoutPromise = new Promise((_resolve, reject) => {
             setTimeout(() => {
-                reject(new Error("Timed out after 3 seconds"));
+                reject(new Error(`Timed out after ${timeout} seconds`));
             }, timeout);
         });
 
@@ -1898,9 +1898,49 @@ define(function (require, exports, module) {
         };
     }
 
+    async function _safeFlushDB() {
+        // close should not be interrupted.
+        try{
+            await window.PhStore.flushDB();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function _safeNodeTerminate() {
+        // close should not be interrupted.
+        try{
+            await NodeConnector.terminateNode();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     let closeInProgress;
+    let closeClickCounter = 0;
+    const CLOSE_TIMER_RESET_INTERVAL = 3000;
+    let closeTimer = setTimeout(()=>{
+        closeClickCounter = 0;
+        closeTimer = null;
+    }, CLOSE_TIMER_RESET_INTERVAL);
+
+    function _forceQuitIfNeeded() {
+        closeClickCounter++;
+        if(closeTimer){
+            clearTimeout(closeTimer);
+        }
+        closeTimer = setInterval(()=>{
+            closeClickCounter = 0;
+            closeTimer = null;
+        }, CLOSE_TIMER_RESET_INTERVAL);
+        if(closeClickCounter >= 3) {
+            // the user clicked the close button 3 times in the last 4 secs, he's desperate, close the window now!.
+            Phoenix.app.closeWindow();
+        }
+    }
     function attachTauriUnloadHandler() {
         window.__TAURI__.window.appWindow.onCloseRequested((event)=>{
+            _forceQuitIfNeeded();
             if(closeInProgress){
                 event.preventDefault();
                 return;
@@ -1910,10 +1950,11 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
-                raceAgainstTime(window.PhStore.flushDB())
+                raceAgainstTime(_safeFlushDB())
                     .finally(()=>{
-                        raceAgainstTime(NodeConnector.terminateNode())
+                        raceAgainstTime(_safeNodeTerminate())
                             .finally(()=>{
+                                closeInProgress = false;
                                 Phoenix.app.closeWindow();
                             });
                     });
