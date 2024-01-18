@@ -40,9 +40,10 @@ define(function (require, exports, module) {
 
     describe("mainview:MainViewManager", function () {
 
-        var testPath = SpecRunnerUtils.getTestPath("/spec/MainViewManager-test-files"),
+        let testPath = SpecRunnerUtils.getTestPath("/spec/MainViewManager-test-files"),
             testWindow,
             _$,
+            savedIsWithinProject,
             promise;
 
         var getFileObject = function (name) {
@@ -64,6 +65,7 @@ define(function (require, exports, module) {
             Dialogs                 = testWindow.brackets.test.Dialogs,
             Menus                   = testWindow.brackets.test.Menus;
             _$                      = testWindow.$;
+            savedIsWithinProject    = ProjectManager.isWithinProject;
         }
 
         beforeAll(async function () {
@@ -72,6 +74,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         afterAll(async function () {
+            ProjectManager.isWithinProject = savedIsWithinProject;
             MainViewManager._closeAll(MainViewManager.ALL_PANES);
             testWindow              = null;
             CommandManager          = null;
