@@ -37,6 +37,7 @@ define(function (require, exports, module) {
     describe("mainview:WorkingSetView", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/WorkingSetView-test-files"),
+            externalProjectTestPath = SpecRunnerUtils.getTestPath("/spec/MainViewManager-test-files"),
             testWindow,
             workingSetListItemCount;
 
@@ -216,6 +217,30 @@ define(function (require, exports, module) {
             // Two files with the same name file_one.js should be now opened
             var $list = testWindow.$(".open-files-container > ul");
             expect($list.find(".directory").length).toBe(2);
+
+            // Now close last opened file to hide the directories again
+            DocumentManager.getCurrentDocument()._markClean(); // so we can close without a save dialog
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE), "timeout on FILE_CLOSE", 1000);
+
+            // there should be no more directories shown
+            expect($list.find(".directory").length).toBe(0);
+        });
+
+        it("should show full path next to the file name when file is outside current project", async function () {
+            // Count currently opened files
+            var workingSetListItemCountBeforeTest = workingSetListItemCount;
+
+            // First we need to open another file
+            await openAndMakeDirty(externalProjectTestPath + "/test.js");
+
+            // Wait for file to be added to the working set
+            await awaitsFor(function () { return workingSetListItemCount === workingSetListItemCountBeforeTest + 1; });
+
+            // Two files with the same name file_one.js should be now opened
+            var $list = testWindow.$(".open-files-container > ul");
+            const fullPathSpan = $list.find(".directory");
+            expect(fullPathSpan.length).toBe(1);
+            expect(fullPathSpan[0].innerHTML.includes(Phoenix.app.getDisplayPath(externalProjectTestPath))).toBe(true);
 
             // Now close last opened file to hide the directories again
             DocumentManager.getCurrentDocument()._markClean(); // so we can close without a save dialog
