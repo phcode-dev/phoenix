@@ -118,6 +118,8 @@ define(function (require, exports, module) {
         latex: "ffont-tex",
         tex: "ffont-tex",
 
+        pdf: "ffont-pdf",
+
         psd: 'devicon-photoshop-plain',
         ai: 'devicon-illustrator-plain',
         image: 'fa-image fa-solid',
