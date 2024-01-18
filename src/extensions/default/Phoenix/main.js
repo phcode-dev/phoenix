@@ -32,6 +32,8 @@ define(function (require, exports, module) {
         Strings      = brackets.getModule("strings"),
         Dialogs      = brackets.getModule("widgets/Dialogs"),
         NotificationUI  = brackets.getModule("widgets/NotificationUI"),
+        FileSystem  = brackets.getModule("filesystem/FileSystem"),
+        FileViewController  = brackets.getModule("project/FileViewController"),
         DefaultDialogs = brackets.getModule("widgets/DefaultDialogs");
 
     const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
@@ -104,6 +106,25 @@ define(function (require, exports, module) {
         }
     }
 
+    async function _openFilesPassedInFromCLI() {
+        const args= await Phoenix.app.getCommandLineArgs();
+        if(!args || args.length <= 1){
+            return;
+        }
+
+        for(let i=1; i<args.length; i++) { // the first arg is the executable path itself, ignore that
+            try{
+                const fileToOpen = Phoenix.VFS.getTauriVirtualPath(args[i]);
+                const {entry} = await FileSystem.resolveAsync(fileToOpen);
+                if(entry.isFile){
+                    FileViewController.openFileAndAddToWorkingSet(fileToOpen);
+                }
+            } catch (e) {
+                console.error("Error opening file passed in from cli: ", args[i], e);
+            }
+        }
+    }
+
     AppInit.appReady(function () {
         _addToolbarIcon();
         serverSync.init();
@@ -112,5 +133,6 @@ define(function (require, exports, module) {
         newFeature.init();
         _detectUnSupportedBrowser();
         _persistBrowserStorage();
+        _openFilesPassedInFromCLI();
     });
 });
