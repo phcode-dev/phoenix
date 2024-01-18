@@ -21,26 +21,26 @@
 /*global Phoenix*/
 
 define(function (require, exports, module) {
-    const Dialogs = brackets.getModule("widgets/Dialogs"),
-        Mustache = brackets.getModule("thirdparty/mustache/mustache"),
-        newProjectTemplate = require("text!html/new-project-template.html"),
-        Strings = brackets.getModule("strings"),
-        StringUtils = brackets.getModule("utils/StringUtils"),
-        ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
-        CommandManager = brackets.getModule("command/CommandManager"),
-        Commands = brackets.getModule("command/Commands"),
-        Menus = brackets.getModule("command/Menus"),
-        Metrics = brackets.getModule("utils/Metrics"),
-        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
-        FileSystem = brackets.getModule("filesystem/FileSystem"),
-        FileUtils = brackets.getModule("file/FileUtils"),
-        ZipUtils = brackets.getModule("utils/ZipUtils"),
-        ProjectManager = brackets.getModule("project/ProjectManager"),
-        EventDispatcher     = brackets.getModule("utils/EventDispatcher"),
-        createProjectDialogue = require("text!html/create-project-dialogue.html"),
-        replaceProjectDialogue = require("text!html/replace-project-dialogue.html"),
-        replaceKeepProjectDialogue = require("text!html/replace-keep-project-dialogue.html"),
-        guidedTour = require("guided-tour");
+    const Dialogs = require("widgets/Dialogs"),
+        Mustache = require("thirdparty/mustache/mustache"),
+        newProjectTemplate = require("text!./html/new-project-template.html"),
+        Strings = require("strings"),
+        StringUtils = require("utils/StringUtils"),
+        ExtensionInterface = require("utils/ExtensionInterface"),
+        CommandManager = require("command/CommandManager"),
+        Commands = require("command/Commands"),
+        Menus = require("command/Menus"),
+        Metrics = require("utils/Metrics"),
+        DefaultDialogs = require("widgets/DefaultDialogs"),
+        FileSystem = require("filesystem/FileSystem"),
+        FileUtils = require("file/FileUtils"),
+        ZipUtils = require("utils/ZipUtils"),
+        ProjectManager = require("project/ProjectManager"),
+        EventDispatcher     = require("utils/EventDispatcher"),
+        createProjectDialogue = require("text!./html/create-project-dialogue.html"),
+        replaceProjectDialogue = require("text!./html/replace-project-dialogue.html"),
+        replaceKeepProjectDialogue = require("text!./html/replace-keep-project-dialogue.html"),
+        guidedTour = require("./guided-tour");
 
     EventDispatcher.makeEventDispatcher(exports);
 

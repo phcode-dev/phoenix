@@ -24,17 +24,17 @@
 /* jshint ignore:start */
 
 define(function (require, exports, module) {
-    const serverSync   = require("serverSync"),
-        newProject   = require("new-project"),
-        defaultProjects   = require("default-projects"),
-        newFeature   = require("newly-added-features"),
-        AppInit      = brackets.getModule("utils/AppInit"),
-        Strings      = brackets.getModule("strings"),
-        Dialogs      = brackets.getModule("widgets/Dialogs"),
-        NotificationUI  = brackets.getModule("widgets/NotificationUI"),
-        FileSystem  = brackets.getModule("filesystem/FileSystem"),
-        FileViewController  = brackets.getModule("project/FileViewController"),
-        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs");
+    const serverSync   = require("./serverSync"),
+        newProject   = require("./new-project"),
+        defaultProjects   = require("./default-projects"),
+        newFeature   = require("./newly-added-features"),
+        AppInit      = require("utils/AppInit"),
+        Strings      = require("strings"),
+        Dialogs      = require("widgets/Dialogs"),
+        NotificationUI  = require("widgets/NotificationUI"),
+        FileSystem  = require("filesystem/FileSystem"),
+        FileViewController  = require("project/FileViewController"),
+        DefaultDialogs = require("widgets/DefaultDialogs");
 
     const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
     let $icon;
