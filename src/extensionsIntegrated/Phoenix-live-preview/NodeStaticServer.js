@@ -574,6 +574,9 @@ define(function (require, exports, module) {
             return getNoPreviewURL(Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED,
                 Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS);
         }
+        if(!utils.isPreviewableFile(fullPath)){
+            return getNoPreviewURL();
+        }
         return `${staticServerURL}externalProject/${path.basename(fullPath)}`;
     }
 
