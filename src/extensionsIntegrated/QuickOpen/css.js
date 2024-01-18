@@ -22,12 +22,12 @@
 define(function (require, exports, module) {
 
 
-    var EditorManager       = brackets.getModule("editor/EditorManager"),
-        QuickOpen           = brackets.getModule("search/QuickOpen"),
-        QuickOpenHelper     = brackets.getModule("search/QuickOpenHelper"),
-        CSSUtils            = brackets.getModule("language/CSSUtils"),
-        DocumentManager     = brackets.getModule("document/DocumentManager"),
-        StringMatch         = brackets.getModule("utils/StringMatch");
+    const EditorManager       = require("editor/EditorManager"),
+        QuickOpen           = require("search/QuickOpen"),
+        QuickOpenHelper     = require("search/QuickOpenHelper"),
+        CSSUtils            = require("language/CSSUtils"),
+        DocumentManager     = require("document/DocumentManager"),
+        StringMatch         = require("utils/StringMatch");
 
 
     /**
