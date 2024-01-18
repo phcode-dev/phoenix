@@ -2883,3 +2883,34 @@ label input {
         }
     }
 }
+
+// extension RemoteFileAdapter start
+.rf_http a:after,
+.rf_https a:after,
+.rf_phtauri a:after,
+.rf_asset a:after {
+    margin-left: 5px;
+    border: 1px solid;
+    border-radius: 2px;
+    padding: 0px 5px;
+    font-size: 11px;
+    color: #adb9bd;
+}
+
+.rf_http a:after {
+    content: "http";
+}
+
+.rf_https a:after {
+    content: "https";
+}
+
+.rf_phtauri a:after {
+    content: "phtauri";
+}
+
+.rf_asset a:after {
+    content: "asset";
+}
+
+// extension RemoteFileAdapter end

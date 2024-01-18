@@ -22,38 +22,35 @@
 define(function (require, exports, module) {
 
 
-    var AppInit         = brackets.getModule("utils/AppInit"),
-        QuickOpen       = brackets.getModule("search/QuickOpen"),
-        PathUtils       = brackets.getModule("thirdparty/path-utils/path-utils"),
-        CommandManager  = brackets.getModule("command/CommandManager"),
-        Commands        = brackets.getModule("command/Commands"),
-        ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        WorkingSetView = brackets.getModule("project/WorkingSetView"),
-        MainViewManager = brackets.getModule("view/MainViewManager"),
-        Menus           = brackets.getModule("command/Menus");
+    var AppInit         = require("utils/AppInit"),
+        QuickOpen       = require("search/QuickOpen"),
+        PathUtils       = require("thirdparty/path-utils/path-utils"),
+        CommandManager  = require("command/CommandManager"),
+        Commands        = require("command/Commands"),
+        WorkingSetView = require("project/WorkingSetView"),
+        MainViewManager = require("view/MainViewManager"),
+        Menus           = require("command/Menus");
 
     const HTTP_PROTOCOL = "http:",
         HTTPS_PROTOCOL = "https:",
         TAURI_PROTOCOL = "phtauri:",
         TAURI_ASSET_PROTOCOL = "asset:";
 
-    ExtensionUtils.loadStyleSheet(module, "styles.css");
-
     function protocolClassProvider(data) {
         if (data.fullPath.startsWith("http://")) {
-            return "http";
+            return "rf_http";
         }
 
         if (data.fullPath.startsWith("https://")) {
-            return "https";
+            return "rf_https";
         }
 
         if (data.fullPath.startsWith("phtauri://")) {
-            return "phtauri";
+            return "rf_phtauri";
         }
 
         if (data.fullPath.startsWith("asset://")) {
-            return "asset";
+            return "rf_asset";
         }
 
         return "";

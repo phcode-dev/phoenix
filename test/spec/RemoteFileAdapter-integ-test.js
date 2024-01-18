@@ -24,7 +24,7 @@
 define(function (require, exports, module) {
 
 
-    var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
+    var SpecRunnerUtils = require("spec/SpecRunnerUtils"),
         CommandManager,
         Commands,
         Dialogs,
