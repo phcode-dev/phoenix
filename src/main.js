@@ -50,7 +50,7 @@ function _setSplashScreenStatusUpdate(message1, message2) {
         if(!window.debugMode){
             // If not in debug mode & splash screen isn't there, we don't need to observe dom script update status
             // to improve performance.
-            window.scriptObserver.disconnect();
+            window.scriptObserver && window.scriptObserver.disconnect();
             console.log('startup Watcher: Disconnected script load watcher.');
         }
         return false;
@@ -64,27 +64,37 @@ function _setSplashScreenStatusUpdate(message1, message2) {
 
 // Callback function to execute when mutations are observed
 const callback = function(mutationsList) {
-    for(const mutation of mutationsList) {
-        if (mutation.type === 'childList' && mutation.addedNodes.length >0 && mutation.addedNodes[0].src) {
-            trackedScriptCount++;
-            let scriptAddedSplit = mutation.addedNodes[0].src.split("/");
-            if(scriptAddedSplit.length > 0){
-                let message = `Loading (${trackedScriptCount})`;
-                if(window.Phoenix && window.Phoenix.firstBoot) {
-                    message = `Installing (${trackedScriptCount})`;
+    try{
+        // we have to guard here with try catch as this callback is executed on script load and any error
+        // here will break load
+        for(const mutation of mutationsList) {
+            if (mutation.type === 'childList' && mutation.addedNodes.length >0 && mutation.addedNodes[0].src) {
+                trackedScriptCount++;
+                let scriptAddedSplit = mutation.addedNodes[0].src.split("/");
+                if(scriptAddedSplit.length > 0){
+                    let message = `Loading (${trackedScriptCount})`;
+                    if(window.Phoenix && window.Phoenix.firstBoot) {
+                        message = `Installing (${trackedScriptCount})`;
+                    }
+                    _setSplashScreenStatusUpdate(message, `${scriptAddedSplit[scriptAddedSplit.length-1]}`);
                 }
-                _setSplashScreenStatusUpdate(message, `${scriptAddedSplit[scriptAddedSplit.length-1]}`);
             }
         }
+    } catch (e) {
+        console.error("Error in script mutation observer!", e);
     }
 };
 const mainScripts = document.getElementById('main-scripts-head');
 const config = { childList: true};
-// Create an observer instance linked to the callback function
-window.scriptObserver = new MutationObserver(callback);
 
-// Start observing the target node for configured mutations
-window.scriptObserver.observe(mainScripts, config);
+if(!Phoenix.browser.isTauri) {
+    // in tauri, there is no splash screen, so we dont do this.
+    // Create an observer instance linked to the callback function
+    window.scriptObserver = new MutationObserver(callback);
+
+    // Start observing the target node for configured mutations
+    window.scriptObserver.observe(mainScripts, config);
+}
 
 /**
  * The bootstrapping module for brackets. This module sets up the require
