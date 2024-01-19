@@ -439,53 +439,17 @@ define(function (require, exports, module) {
      **/
     function _mapKeycodeToKey(event) {
         // key code mapping https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
-        const code = event.code;
+        const key = event.key;
         let codes = {
-            "Tab": "Tab",
-            "Space": "Space",
-            "Backspace": "Backspace",
-            "Insert": "Insert",
-            "Delete": "Delete",
             "ArrowUp": "Up",
             "ArrowDown": "Down",
             "ArrowLeft": "Left",
-            "ArrowRight": "Right",
-            "Semicolon": ";",
-            "Equal": "=",
-            "Add": "+", // Eg. Numpad Add button NumpadAdd
-            "Comma": ",",
-            "Minus": "-",
-            "Period": ".",
-            "Decimal": ".", // NumpadDecimal
-            "Slash": "/",
-            "Divide": "/", //NumpadDivide
-            "Quote": "'",
-            "Backquote": "`",
-            "BracketLeft": "[",
-            "BracketRight": "]",
-            "Backslash": "\\"
+            "ArrowRight": "Right"
         };
-        let strippedCode;
-        // event.code should be there in all browsers post 2014. But some older browsers don't, so the check `code &&`
-        if(code && code.startsWith("Key")){
-            strippedCode = code.replace("Key", "");
-            return codes[strippedCode] || strippedCode;
+        if(codes[key]){
+            return codes[key];
         }
-        if(code && code.startsWith("Digit")){
-            strippedCode = code.replace("Digit", "");
-            return codes[strippedCode] || strippedCode;
-        }
-        if(code && code.startsWith("Numpad")){
-            // this can either be a simple numpad digit like 'Numpad0'(we should return 0)
-            // or 'NumpadAdd'(for which we should return the mapped + button)
-            strippedCode = code.replace("Numpad", "");
-            return codes[strippedCode] || strippedCode;
-        }
-        if(codes[code]){
-            return codes[code];
-        }
-        // This is pretty much all the keys in a keyboard we usually encounter. If still no match, return key as is
-        return event.key;
+        return key;
     }
 
     /**

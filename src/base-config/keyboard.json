@@ -247,10 +247,13 @@
         {
             "key": "Ctrl-Shift--",
             "displayKey": "Ctrl-Shift-−"
+        },
+        {
+            "key": "Ctrl-Shift-_"
         }
     ],
     "view.restoreFontSize":  [
-        "Ctrl-Shift-9"
+        "Ctrl-Shift-("
     ],
     "view.scrollLineUp":  [
         {
@@ -299,13 +302,7 @@
         "Ctrl-J"
     ],
     "navigate.gotoFirstProblem":  [
-        {
-            "key": "F8"
-        },
-        {
-            "key": "Cmd-'",
-            "platform": "mac"
-        }
+        "Ctrl-'"
     ],
     "navigate.nextDocListOrder":  [
         {
