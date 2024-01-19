@@ -47,8 +47,8 @@ define(function (require, exports, module) {
         toggleFullScreenKeyMac = "Cmd-F11",
         togglePanelsKey           = "Ctrl-Shift-1",
         togglePanelsKeyMac        = "Cmd-Shift-1",
-        togglePanelsKey_EN        = "Ctrl-Shift-`",
-        togglePanelsKeyMac_EN     = "Cmd-Shift-`";
+        togglePanelsKey_EN        = "Ctrl-Shift-~",
+        togglePanelsKeyMac_EN     = "Cmd-Shift-~";
 
     //locals
     let _previouslyOpenPanelIDs = [],
