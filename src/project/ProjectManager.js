@@ -857,52 +857,47 @@ define(function (require, exports, module) {
         return updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
     }
 
+    async function _dirExists(fullPath) {
+        try {
+            const {entry} = await FileSystem.resolveAsync(fullPath);
+            return entry.isDirectory;
+        } catch (e) {
+            return false;
+        }
+    }
+
     async function _getStartupProjectFromCLIArgs() {
-        return new Promise((resolve)=>{
-            Phoenix.app.getCommandLineArgs().then(args=>{
-                if(!args || args.length <= 1){ // the second arg is the folder we have to open
-                    resolve(null);
-                    return;
-                }
-                try{
-                    const folderToOpen = Phoenix.VFS.getTauriVirtualPath(args[1]);
-                    FileSystem.resolveAsync(folderToOpen)
-                        .then(({entry})=>{
-                            if(entry.isDirectory){
-                                resolve(folderToOpen);
-                            } else {
-                                resolve(null);
-                            }
-                        })
-                        .catch((err)=>{
-                            console.error(err);
-                            resolve(null);
-                        });
-                } catch (e) {
-                    resolve(null);
-                }
-            });
-        });
+        const args = await Phoenix.app.getCommandLineArgs();
+        if(!args || args.length <= 1){ // the second arg is the folder we have to open
+            return null;
+        }
+        try{
+            const folderToOpen = Phoenix.VFS.getTauriVirtualPath(args[1]);
+            const dirExists = await _dirExists(folderToOpen);
+            if(dirExists){
+                return folderToOpen;
+            }
+        } catch (e) {
+            console.error("Error getting startupProjectPath from CLI args", e);
+        }
+        return null;
     }
 
     /**
      * Initial project path is stored in prefs, which defaults to the welcome project on
      * first launch.
      */
-    function getStartupProjectPath() {
-        return new Promise((resolve)=>{
-            _getStartupProjectFromCLIArgs()
-                .then(cliProjectPath=>{
-                    let startupProjectPath = cliProjectPath || updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
-                    FileSystem.getDirectoryForPath(startupProjectPath).exists((err, exists)=>{
-                        if(exists){
-                            resolve(startupProjectPath);
-                        } else {
-                            resolve(getWelcomeProjectPath());
-                        }
-                    });
-                });
-        });
+    async function getStartupProjectPath() {
+        let startupProjectPath = await _getStartupProjectFromCLIArgs();
+        if(startupProjectPath){
+            return startupProjectPath;
+        }
+        startupProjectPath = updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
+        const dirExists = await _dirExists(startupProjectPath);
+        if(dirExists){
+            return startupProjectPath;
+        }
+        return getWelcomeProjectPath();
     }
 
     /**

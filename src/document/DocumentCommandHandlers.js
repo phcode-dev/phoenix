@@ -1595,6 +1595,7 @@ define(function (require, exports, module) {
      * @param {Object} commandData data
      */
     function handleFileCloseWindow(commandData) {
+        _forceQuitIfNeeded();
         return _handleWindowGoingAway(
             commandData,
             function (closeSuccess) {
@@ -1613,14 +1614,63 @@ define(function (require, exports, module) {
         );
     }
 
-    function handleFileNewWindow() {
+    function newPhoenixWindow(cliArgsArray = null) {
         let width = window.innerWidth;
         let height = window.innerHeight;
-        brackets.app.openURLInPhoenixWindow(location.href, {
-            width,
-            height,
-            preferTabs: true
-        });
+        Phoenix.app.openNewPhoenixEditorWindow(width, height, cliArgsArray);
+    }
+
+    async function _fileExists(fullPath) {
+        try {
+            const {entry} = await FileSystem.resolveAsync(fullPath);
+            return entry.isFile;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    async function _openFilesPassedInFromCLI(args) {
+        if(!args || args.length <= 1){
+            return;
+        }
+
+        for(let i=1; i<args.length; i++) { // the first arg is the executable path itself, ignore that
+            try{
+                const fileToOpen = Phoenix.VFS.getTauriVirtualPath(args[i]);
+                const {entry} = await FileSystem.resolveAsync(fileToOpen);
+                if(entry.isFile){
+                    FileViewController.openFileAndAddToWorkingSet(fileToOpen);
+                }
+            } catch (e) {
+                console.error("Error opening file passed in from cli: ", args[i], e);
+            }
+        }
+    }
+
+    async function _singleInstanceHandler(args) {
+        const isPrimary = await Phoenix.app.isPrimaryDesktopPhoenixWindow();
+        if(!isPrimary){
+            // only primary phoenix windows can open a new window, else every window is going to make its own
+            // window and cause a runaway phoenix window explosion.
+            return;
+        }
+        if(args.length > 1) {
+            // check if the second arg is a file, if so we just open it and the remaining files in this window
+            const fileToOpen = Phoenix.VFS.getTauriVirtualPath(args[1]);
+            const secondArgIsFile = await _fileExists(fileToOpen);
+            if(secondArgIsFile) {
+                await _openFilesPassedInFromCLI(args);
+                await Phoenix.app.focusWindow();
+                return;
+            }
+        }
+        newPhoenixWindow(args);
+    }
+
+    Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
+
+    function handleFileNewWindow() {
+        newPhoenixWindow();
     }
 
     /** Show a textfield to rename whatever is currently selected in the sidebar (or current doc if nothing else selected) */
@@ -1918,7 +1968,7 @@ define(function (require, exports, module) {
 
     let closeInProgress;
     let closeClickCounter = 0;
-    const CLOSE_TIMER_RESET_INTERVAL = 3000;
+    const CLOSE_TIMER_RESET_INTERVAL = 4000;
     let closeTimer = setTimeout(()=>{
         closeClickCounter = 0;
         closeTimer = null;
@@ -1933,8 +1983,8 @@ define(function (require, exports, module) {
             closeClickCounter = 0;
             closeTimer = null;
         }, CLOSE_TIMER_RESET_INTERVAL);
-        if(closeClickCounter >= 3) {
-            // the user clicked the close button 3 times in the last 4 secs, he's desperate, close the window now!.
+        if(closeClickCounter >= 2) {
+            // the user clicked the close button 2 times in the last 4 secs, he's desperate, close the window now!.
             Phoenix.app.closeWindow();
         }
     }

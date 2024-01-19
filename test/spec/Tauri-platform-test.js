@@ -105,7 +105,7 @@ define(function (require, exports, module) {
                     let newURL = currentURL.href;
                     Phoenix.app.openURLInPhoenixWindow(newURL)
                         .then(tauriWindow =>{
-                            expect(tauriWindow.label.startsWith("phcode-")).toBeTrue();
+                            expect(tauriWindow.label.startsWith("extn-")).toBeTrue();
                             tauriWindow.listen('TAURI_API_WORKING', function () {
                                 resolve(tauriWindow);
                             });
