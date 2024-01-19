@@ -236,12 +236,16 @@ async function setupAppSupportAndExtensionsDir() {
             fs.getTauriPlatformPath(tauriAssetServeDir)))
             .replace(/\\/g, "/"); // windows style paths to unix style c:\x\y to c:/x/y
         extensionDIR = `${tauriAssetServeDir}extensions/`;
+        // in tauri, the /fs/ folder is not a requirement for boot, so we won't fait for it.
+        // also this creates wired indexed db lock bugs in tauri where the boot leads to a blank screen.
+        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getRootDir())
+            .catch(console.error);
     } else {
         appSupportDIR = '/fs/app/';
         extensionDIR = `${appSupportDIR}extensions/`;
+        await Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getRootDir());
     }
     await Promise.all([
-        Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getRootDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getAppSupportDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getExtensionDir()),
         Phoenix.VFS.ensureExistsDirAsync(Phoenix.VFS.getUserExtensionDir()),
@@ -264,6 +268,7 @@ async function setupDocumentsDir() {
     }
     await Phoenix.VFS.ensureExistsDirAsync(documentsDIR);
     await _tryCreateDefaultProject();
+    console.log("Documents dir setup done");
 }
 
 async function setupTempDir() {
@@ -278,18 +283,22 @@ async function setupTempDir() {
         tempDIR = '/temp/';
     }
     await Phoenix.VFS.ensureExistsDirAsync(tempDIR);
+    console.log("Temp dir setup done");
 }
 
 const _createAppDirs = async function () {
+    console.log("Waiting for tauri boot variables...");
     if(window._tauriBootVarsPromise) {
         await window._tauriBootVarsPromise;
     }
+    console.log("Creating appdirs...");
     // Create phoenix app dirs
     await Promise.all([
         setupAppSupportAndExtensionsDir(),
         setupDocumentsDir(),
         setupTempDir()
     ]);
+    console.log("Appdirs created...");
 };
 
 

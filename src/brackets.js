@@ -303,6 +303,7 @@ define(function (require, exports, module) {
     function _startupBrackets() {
         // Load all extensions. This promise will complete even if one or more
         // extensions fail to load.
+        console.log("Starting Brackets...");
         const extensionPathOverride = params.get("extensions");  // used by unit tests
         const extensionLoaderPromise = ExtensionLoader.init(extensionPathOverride ? extensionPathOverride.split(",") : null);
 
