@@ -48,7 +48,7 @@ define(function (require, exports, module) {
             "Ctrl-Shift-L": "edit.splitSelIntoLines",
             "Alt-Shift-Down": "edit.addCursorToNextLine",
             "Alt-Shift-Up": "edit.addCursorToPrevLine",
-            "F8": "navigate.gotoFirstProblem",
+            "Ctrl-'": "navigate.gotoFirstProblem",
             "Ctrl-1": "file.newFile",
             "Ctrl-Alt-H": "view.toggleSidebar",
             "Ctrl-Shift-O": "navigate.quickOpen",
@@ -112,8 +112,7 @@ define(function (require, exports, module) {
             displayKey = KeyBindingManager._getDisplayKey(key);
             if (platform === "mac") {
                 explicitPlatform = undefined;
-                if (commandID === "edit.selectLine" || commandID === "view.toggleSidebar" ||
-                        commandID === "navigate.gotoFirstProblem") {
+                if (commandID === "edit.selectLine" || commandID === "view.toggleSidebar") {
                     explicitPlatform = "mac";
                 }
             }
@@ -810,6 +809,7 @@ define(function (require, exports, module) {
                 return {
                     ctrlKey: true,
                     altKey: true,
+                    key: "1",
                     keyCode: "1".charCodeAt(0),
                     code: "Digit1",
                     immediatePropagationStopped: false,
@@ -954,6 +954,7 @@ define(function (require, exports, module) {
                 return {
                     ctrlKey: true,
                     keyCode: "A".charCodeAt(0),
+                    key: "A",
                     code: "KeyA",
                     immediatePropagationStopped: false,
                     propagationStopped: false,
