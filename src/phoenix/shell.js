@@ -38,22 +38,63 @@ initVFS();
 // /tauri/security/dangerousRemoteDomainIpcAccess/0/windows and
 // /tauri/security/dangerousRemoteDomainIpcAccess/1/windows
 const MAX_ALLOWED_TAURI_WINDOWS = 30;
-let cliArgs;
+const CLI_ARGS_QUERY_PARAM = 'CLI_ARGS';
+let cliArgs, singleInstanceCLIHandler;
+const PHOENIX_WINDOW_PREFIX = 'phcode-';
+const PHOENIX_EXTENSION_WINDOW_PREFIX = 'extn-';
 
-async function getTauriWindowLabel() {
-    const tauriWindows = await window.__TAURI__.window.getAll();
+async function _getTauriWindowLabel(prefix) {
+    // cannot use tauri sync api here as it returns stale window list window.__TAURI__.window.getAll();
+    const tauriWindowLabels = await window.__TAURI__.invoke('_get_window_labels');
     const windowLabels = {};
-    for(let {label} of tauriWindows) {
-        windowLabels[label]=true;
+    for(let label of tauriWindowLabels) {
+        if(label.startsWith(prefix)){
+            windowLabels[label]=true;
+        }
     }
     for(let i=1; i<=MAX_ALLOWED_TAURI_WINDOWS; i++){
-        const windowLabel = `phcode-${i}`;
+        const windowLabel = `${prefix}${i}`;
         if(!windowLabels[windowLabel]){
             return windowLabel;
         }
     }
     throw new Error("Could not get a free window label to create tauri window");
 }
+
+async function openURLInPhoenixWindow(url, {
+    windowTitle, fullscreen, resizable,
+    height, minHeight, width, minWidth, acceptFirstMouse, preferTabs, _prefixPvt = PHOENIX_EXTENSION_WINDOW_PREFIX
+} = {}){
+    const defaultHeight = 900, defaultWidth = 1366;
+    if(window.__TAURI__){
+        const windowLabel = await _getTauriWindowLabel(_prefixPvt);
+        const tauriWindow = new window.__TAURI__.window.WebviewWindow(windowLabel, {
+            url,
+            title: windowTitle || windowLabel || url,
+            fullscreen,
+            resizable: resizable === undefined ? true : resizable,
+            height: height || defaultHeight,
+            minHeight: minHeight || 600,
+            width: width || defaultWidth,
+            minWidth: minWidth || 800,
+            acceptFirstMouse: acceptFirstMouse === undefined ? true : acceptFirstMouse
+        });
+        tauriWindow.isTauriWindow = true;
+        return tauriWindow;
+    }
+    let features = 'toolbar=no,location=no, status=no, menubar=no, scrollbars=yes';
+    features = `${features}, width=${width||defaultWidth}, height=${height||defaultHeight}`;
+    if(resizable === undefined || resizable){
+        features = features + ", resizable=yes";
+    }
+    if(preferTabs) {
+        features = "";
+    }
+    const nativeWindow = window.open(url, '_blank', features);
+    nativeWindow.isTauriWindow = false;
+    return nativeWindow;
+}
+
 Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
@@ -62,7 +103,15 @@ Phoenix.app = {
         if(!Phoenix.browser.isTauri){
             throw new Error("closeWindow is not supported in browsers");
         }
-        window.__TAURI__.window.appWindow.close();
+        window.__TAURI__.window.getCurrent().close();
+    },
+    focusWindow: function () {
+        if(!Phoenix.browser.isTauri){
+            return Promise.reject(new Error("focusWindow is not supported in browsers"));
+        }
+        window.__TAURI__.window.getCurrent().setAlwaysOnTop(true);
+        window.__TAURI__.window.getCurrent().setFocus();
+        window.__TAURI__.window.getCurrent().setAlwaysOnTop(false);
     },
     clipboardReadText: function () {
         if(Phoenix.browser.isTauri){
@@ -82,6 +131,13 @@ Phoenix.app = {
                 resolve(null);
                 return;
             }
+            const phoenixURL = new URL(location.href);
+            const cliQueryParam = phoenixURL.searchParams.get(CLI_ARGS_QUERY_PARAM);
+            if(cliQueryParam){
+                // the cli passed in through the url takes highest precedence as we have a single tauri instance,
+                // new windows will be spawned with the cli query param url.
+                cliArgs = JSON.parse(decodeURIComponent(cliQueryParam));
+            }
             if(cliArgs){
                 resolve(cliArgs);
                 return;
@@ -95,6 +151,27 @@ Phoenix.app = {
                     resolve(cliArgs);
                 });
         });
+    },
+    /**
+     * Only a single instance of the app will be present at any time. When another instacne is opened from either cli or
+     * double clicking a file in file explorer in os, the handler will be called with the command line args with the
+     * file that was double-clicked (or folder using open with) in os file explorer/cli.
+     * @param {function(cliArgs, cwd)} handlerFn - the handler function will receive two args on callback, the cliArgs
+     *  of the other phoenix process that was invoked to open the file and its current working dir.
+     * @return {*}
+     */
+    setSingleInstanceCLIArgsHandler: function (handlerFn) {
+        if(singleInstanceCLIHandler){
+            throw new Error("A single instance handler is already registered!");
+        }
+        if(handlerFn){
+            singleInstanceCLIHandler = handlerFn;
+        }
+        if(Phoenix.browser.isTauri){
+            window.__TAURI__.event.listen("single-instance", ({payload})=> {
+                handlerFn(payload.args, payload.cwd);
+            });
+        }
     },
     clipboardReadFiles: function () {
         return new Promise((resolve, reject)=>{
@@ -225,39 +302,56 @@ Phoenix.app = {
                 .catch(reject);
         });
     },
-    openURLInPhoenixWindow: async function (url, {
-        windowTitle, fullscreen, resizable,
-        height, minHeight, width, minWidth, acceptFirstMouse, preferTabs
-    } = {}){
-        const defaultHeight = 900, defaultWidth = 1366;
-        if(window.__TAURI__){
-            const windowLabel = await getTauriWindowLabel();
-            const tauriWindow = new window.__TAURI__.window.WebviewWindow(windowLabel, {
-                url,
-                title: windowTitle || windowLabel || url,
-                fullscreen,
-                resizable: resizable === undefined ? true : resizable,
-                height: height || defaultHeight,
-                minHeight: minHeight || 600,
-                width: width || defaultWidth,
-                minWidth: minWidth || 800,
-                acceptFirstMouse: acceptFirstMouse === undefined ? true : acceptFirstMouse
-            });
-            tauriWindow.isTauriWindow = true;
-            return tauriWindow;
+    /**
+     * In a multi window setup in desktop, we operate in tauri single window mode. So there may be multiple windows
+     * for different phoenix editors, but only a single tauri process. One of them is a leader who gets to do special
+     * duties like opening a `new window` instance/ anything that needs a single responsibility. Note that the leader
+     * will cycle though as new windows comes and goes. Usually the leader is a phoenix window with the lowest
+     * tauri window label.
+     * @return {Promise<boolean>}
+     */
+    isPrimaryDesktopPhoenixWindow: async function () {
+        if(!Phoenix.browser.isTauri) {
+            // there is no primary window concept in browsers. all are primary for now.
+            console.error("isPrimaryDesktopPhoenixWindow is not supported in browsers!");
+            return true;
         }
-        let features = 'toolbar=no,location=no, status=no, menubar=no, scrollbars=yes';
-        features = `${features}, width=${width||defaultWidth}, height=${height||defaultHeight}`;
-        if(resizable === undefined || resizable){
-            features = features + ", resizable=yes";
+        const currentWindowLabel = window.__TAURI__.window.getCurrent().label;
+        if(currentWindowLabel === 'main'){
+            // main window if there will be the primary
+            return true;
         }
-        if(preferTabs) {
-            features = "";
+        const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
+        if(allTauriWindowsLabels.includes('main')){
+            // we are not main and there is a main window in tauri windows
+            return false;
         }
-        const nativeWindow = window.open(url, '_blank', features);
-        nativeWindow.isTauriWindow = false;
-        return nativeWindow;
+        // the main window has been closed and some other window is the primary now.
+        // the one with the lowest label is primary
+        for(let tauriWindowLabel of allTauriWindowsLabels){
+            if(tauriWindowLabel && tauriWindowLabel.startsWith(PHOENIX_WINDOW_PREFIX) &&
+                currentWindowLabel !== tauriWindowLabel && currentWindowLabel > tauriWindowLabel) {
+                return false;
+            }
+        }
+        return true;
     },
+    openNewPhoenixEditorWindow: async function (preferredWidth, preferredHeight, _cliArgsArray) {
+        const phoenixURL = new URL(location.href);
+        if(_cliArgsArray){
+            const cliVal = encodeURIComponent(JSON.stringify(_cliArgsArray));
+            phoenixURL.searchParams.set(CLI_ARGS_QUERY_PARAM, cliVal);
+        } else {
+            phoenixURL.searchParams.delete(CLI_ARGS_QUERY_PARAM);
+        }
+        await openURLInPhoenixWindow(phoenixURL.href, {
+            width: preferredWidth,
+            height: preferredHeight,
+            preferTabs: true,
+            _prefixPvt: PHOENIX_WINDOW_PREFIX
+        });
+    },
+    openURLInPhoenixWindow: openURLInPhoenixWindow,
     zoomWebView: function (scaleFactor = 1) {
         if(!Phoenix.browser.isTauri){
             throw new Error("zoomWebView is not supported in browsers");
