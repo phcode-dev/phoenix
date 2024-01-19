@@ -33,8 +33,8 @@
         "bugsnagEnv": "development"
     },
     "name": "Phoenix",
-    "version": "3.2.20-0",
-    "apiVersion": "3.2.20",
+    "version": "3.2.21-0",
+    "apiVersion": "3.2.21",
     "homepage": "https://core.ai",
     "issues": {
         "url": "https://github.com/phcode-dev/phoenix/issues"
