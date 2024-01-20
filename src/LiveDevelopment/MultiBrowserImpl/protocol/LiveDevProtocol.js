@@ -94,7 +94,20 @@ define(function (require, exports, module) {
         return Object.keys(_connections);
     }
 
-    function _tagSelectedInLivePreview(tagId) {
+    /**
+     * When user clicks on text boxes or other focusable keyboard elements in live preview, we should not
+     * set focus to editor
+     * @private
+     */
+    function _focusEditorIfNeeded(editor, tagName, contentEditable) {
+        const focusShouldBeInLivePreview = ['INPUT', 'TEXTAREA'].includes(tagName) || contentEditable;
+        if(focusShouldBeInLivePreview){
+            return;
+        }
+        editor.focus();
+    }
+
+    function _tagSelectedInLivePreview(tagId, nodeName, contentEditable) {
         const highlightPref = PreferencesManager.getViewState("livedev.highlight");
         if(!highlightPref){
             // live preview highlight and reverse highlight feature is disabled
@@ -114,9 +127,11 @@ define(function (require, exports, module) {
             if(position &&
                 activeEditor && activeEditor.document.file.fullPath === activeFullEditor.document.file.fullPath) {
                 activeEditor.setCursorPos(position.line, position.ch, true);
+                _focusEditorIfNeeded(activeEditor, nodeName, contentEditable);
             }
             if(position && activeFullEditor) {
                 activeFullEditor.setCursorPos(position.line, position.ch, true);
+                _focusEditorIfNeeded(activeFullEditor, nodeName, contentEditable);
             }
         }
         if(liveDocPath && liveDocPath !== activeEditorDocPath) {
@@ -153,7 +168,7 @@ define(function (require, exports, module) {
                 }
             }
         } else if (msg.clicked && msg.tagId) {
-            _tagSelectedInLivePreview(msg.tagId);
+            _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable);
             exports.trigger(EVENT_LIVE_PREVIEW_CLICKED, msg);
         } else {
             // enrich received message with clientId
