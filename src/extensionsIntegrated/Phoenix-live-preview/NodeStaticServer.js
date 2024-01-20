@@ -35,8 +35,10 @@ define(function (require, exports, module) {
         FileSystem = require("filesystem/FileSystem"),
         EventDispatcher = require("utils/EventDispatcher"),
         ProjectManager = require("project/ProjectManager"),
+        EventManager = require("utils/EventManager"),
         Strings = require("strings"),
         utils = require('./utils'),
+        NativeApp = require("utils/NativeApp"),
         BootstrapCSSText = require("text!thirdparty/bootstrap/bootstrap.min.css"),
         GithubCSSText = require("text!thirdparty/highlight.js/styles/github.min.css"),
         HilightJSText = require("text!thirdparty/highlight.js/highlight.min.js"),
@@ -47,6 +49,7 @@ define(function (require, exports, module) {
 
     const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
     const PREVIEW_PORT_KEY = "preview_port";
+    const EVENT_EMBEDDED_IFRAME_HREF_CLICK = 'embeddedIframeHrefClick';
     let liveServerConnector;
     let staticServerURL, livePreviewCommURL;
 
@@ -228,10 +231,14 @@ define(function (require, exports, module) {
         this._serverStartPromise
             .then(()=>{
                 exports.trigger(EVENT_SERVER_READY);
+                const baseUrl = this.getBaseUrl();
+                EventManager.setTrustedOrigin(baseUrl, true);
                 result.resolve();
             })
             .catch((err)=>{
                 logger.reportError(err);
+                const baseUrl = this.getBaseUrl();
+                EventManager.setTrustedOrigin(baseUrl, false);
                 result.reject();
             });
         return result.promise();
@@ -294,7 +301,8 @@ define(function (require, exports, module) {
                         BOOTSTRAP_LIB_CSS: BootstrapCSSText,
                         HIGHLIGHT_JS_CSS: GithubCSSText,
                         HIGHLIGHT_JS: HilightJSText,
-                        GFM_CSS: GFMCSSText
+                        GFM_CSS: GFMCSSText,
+                        PARENT_ORIGIN: location.origin
                     };
                     let html = Mustache.render(markdownHTMLTemplate, templateVars);
                     resolve({
@@ -652,6 +660,12 @@ define(function (require, exports, module) {
         return `TRANSPORT_CONFIG.LIVE_PREVIEW_WEBSOCKET_CHANNEL_URL = "${livePreviewCommURL}";\n`;
     }
 
+    exports.on(EVENT_EMBEDDED_IFRAME_HREF_CLICK, function(_ev, event){
+        // only in tauri, as in browsers, browser will open the href urls unlike tauri
+        const href = event.data.href;
+        href && NativeApp.openURLInDefaultBrowser(href);
+    });
+
     function init() {
         window.nodeSetupDonePromise.then(nodeConfig =>{
             staticServerURL = `${nodeConfig.staticServerURL}/`;
@@ -661,6 +675,7 @@ define(function (require, exports, module) {
         LiveDevelopment.setLivePreviewTransportBridge(exports);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         _startHeartBeatListeners();
+        EventManager.registerEventHandler("ph-liveServer", exports);
     }
 
     exports.init = init;
