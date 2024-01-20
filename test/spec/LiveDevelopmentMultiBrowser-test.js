@@ -55,7 +55,9 @@ define(function (require, exports, module) {
             BeautificationManager,
             Commands,
             WorkspaceManager,
-            PreferencesManager;
+            PreferencesManager,
+            Dialogs,
+            NativeApp;
 
         let testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
             prettierTestFolder = SpecRunnerUtils.getTestPath("/spec/prettier-test-files"),
@@ -78,6 +80,7 @@ define(function (require, exports, module) {
             return browserText;
         }
 
+        let savedNativeAppOpener;
         beforeAll(async function () {
             // Create a new window that will be shared by ALL tests in this spec.
             if (!testWindow) {
@@ -97,6 +100,9 @@ define(function (require, exports, module) {
                 WorkspaceManager    = brackets.test.WorkspaceManager;
                 BeautificationManager       = brackets.test.BeautificationManager;
                 PreferencesManager       = brackets.test.PreferencesManager;
+                NativeApp       = brackets.test.NativeApp;
+                Dialogs       = brackets.test.Dialogs;
+                savedNativeAppOpener = NativeApp.openURLInDefaultBrowser;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
                 if(!WorkspaceManager.isPanelVisible('live-preview-panel')){
@@ -107,6 +113,7 @@ define(function (require, exports, module) {
 
         afterAll(async function () {
             LiveDevMultiBrowser.close();
+            NativeApp.openURLInDefaultBrowser = savedNativeAppOpener;
             await SpecRunnerUtils.closeTestWindow(true);
             testWindow = null;
             brackets = null;
@@ -593,6 +600,87 @@ define(function (require, exports, module) {
             // expect(href.endsWith("LiveDevelopment-MultiBrowser-test-files/readme.md#title-link")).toBeTrue();
             // href = iFrame.contentDocument.getElementsByTagName("img")[0].src;
             // expect(href.endsWith("LiveDevelopment-MultiBrowser-test-files/sub/icon_chevron.png")).toBeTrue();
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("should embedded html live previews be able to open urls in external browser for a target=_blank", async function () {
+            // test is only for tauri. In browser, browser handles the anchor tags
+            if(!Phoenix.browser.isTauri) {
+                return;
+            }
+            let openURLRequested;
+            NativeApp.openURLInDefaultBrowser = function (_url) {
+                openURLRequested = _url;
+            };
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["hyperlink.html"]),
+                "SpecRunnerUtils.openProjectFiles hyperlink.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith("hyperlink.html")).toBeTrue();
+
+            await forRemoteExec(`document.getElementById("externalLink").click()`);
+            await awaitsFor(function () { return openURLRequested; }, "https://google.com/ open", 2000);
+            expect(openURLRequested).toEqual("https://google.com");
+
+            openURLRequested = null;
+            await forRemoteExec(`document.getElementById("relativeLink").click()`);
+            await awaitsFor(function () { return openURLRequested; }, "simple1.html relative url to open", 2000);
+            expect(openURLRequested.startsWith("http://localhost:")).toBeTrue();
+            expect(openURLRequested.endsWith("/simple1.html")).toBeTrue();
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("should opening 4 target=_blank urls consecutively engage confirm dialog", async function () {
+            async function waitForDialog() {
+                var $dlg;
+                await awaitsFor(function () {
+                    $dlg = testWindow.$(".modal.instance");
+                    return $dlg.length > 0;
+                },  "dialog to appear");
+            }
+            // test is only for tauri. In browser, browser handles the anchor tags
+            if(!Phoenix.browser.isTauri) {
+                return;
+            }
+            let openURLRequested;
+            NativeApp.openURLInDefaultBrowser = function (_url) {
+                openURLRequested = _url;
+            };
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["hyperlink.html"]),
+                "SpecRunnerUtils.openProjectFiles hyperlink.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith("hyperlink.html")).toBeTrue();
+
+            for(let i=0;i<4;i++){
+                await forRemoteExec(`document.getElementById("externalLink").click()`);
+            }
+            await awaitsFor(function () { return openURLRequested; }, "https://google.com/ open", 2000);
+            expect(openURLRequested).toEqual("https://google.com");
+            await waitForDialog();
+
+            // now click on the links a lotta time, no url should be opened
+            openURLRequested = null;
+            for(let i=0;i<40;i++){
+                await forRemoteExec(`document.getElementById("externalLink").click()`);
+            }
+            await awaits(300);
+            expect(openURLRequested).toEqual(null);
+
+            openURLRequested = null;
+            await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
+            expect(openURLRequested).toEqual("https://google.com");
+
+            // after accepting the dialog, new urls should open.
+            openURLRequested = null;
+            await forRemoteExec(`document.getElementById("externalLink").click()`);
+            await awaitsFor(function () { return openURLRequested; }, "https://google.com/ open", 2000);
 
             await endPreviewSession();
         }, 30000);
