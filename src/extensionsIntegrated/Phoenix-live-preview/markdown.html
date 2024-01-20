@@ -35,6 +35,16 @@
                     e.preventDefault();
                 }
             }, false);
+            document.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A' && (event.target.target === '_blank')) {
+                    const href = new URL(event.target.getAttribute('href'));
+                    window.parent.postMessage({
+                        handlerName: "ph-liveServer",
+                        eventName: 'embeddedIframeHrefClick',
+                        href: href.href
+                    }, "{{{PARENT_ORIGIN}}}");
+                }
+            });
         }
 
         window.addEventListener('scroll', function () {

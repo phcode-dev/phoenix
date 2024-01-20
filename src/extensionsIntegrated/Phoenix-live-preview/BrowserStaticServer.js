@@ -417,7 +417,8 @@ define(function (require, exports, module) {
                         BOOTSTRAP_LIB_CSS: BootstrapCSSText,
                         HIGHLIGHT_JS_CSS: GithubCSSText,
                         HIGHLIGHT_JS: HilightJSText,
-                        GFM_CSS: GFMCSSText
+                        GFM_CSS: GFMCSSText,
+                        PARENT_ORIGIN: location.origin
                     };
                     let html = Mustache.render(markdownHTMLTemplate, templateVars);
                     resolve({

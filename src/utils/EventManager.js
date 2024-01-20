@@ -112,6 +112,7 @@ define(function (require, exports, module) {
         handler.trigger(eventName, ...eventParams);
     }
 
+    const eventTrustedOrigins = {};
     /**
      * This function acts as a secure event handler for all 'message' events targeted at the window object.
      * This is useful if you have to send/receive messaged from an embedded cross-domain iframe inside phoenix.
@@ -158,9 +159,9 @@ define(function (require, exports, module) {
      * // a trusted domains list in your iframe.
      */
     window.onmessage = function(event) {
-        if(!Phoenix.TRUSTED_ORIGINS[event.origin]){
+        if(!(Phoenix.TRUSTED_ORIGINS[event.origin] || eventTrustedOrigins[event.origin])){
             console.error(`Ignoring event from untrusted origin (should be one of `
-                + `${Object.keys(Phoenix.TRUSTED_ORIGINS)}) but got: `, event);
+                + `${Object.keys(Phoenix.TRUSTED_ORIGINS)}, ${Object.keys(eventTrustedOrigins)}) but got: `, event);
             console.error('Forgot to set window.Phoenix.TRUSTED_ORIGINS["http://<yourdomain.com>"]=true; ?');
             return;
         }
@@ -171,8 +172,17 @@ define(function (require, exports, module) {
         triggerEvent(handlerName, eventName, event);
     };
 
+    function setTrustedOrigin(origin, isTrusted) {
+        if(!isTrusted){
+            delete eventTrustedOrigins[origin];
+            return;
+        }
+        eventTrustedOrigins[origin] = isTrusted;
+    }
+
     // Public API
     exports.registerEventHandler = registerEventHandler;
     exports.isExistsEventHandler = isExistsEventHandler;
+    exports.setTrustedOrigin = setTrustedOrigin;
     exports.triggerEvent = triggerEvent;
 });
