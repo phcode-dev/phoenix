@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Get the best live preview experience by downloading our native apps for Windows, Mac, and Linux from <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a>.<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "You are about to open a file for live preview. Please proceed only if you trust the source of this project. Click 'Trust Project' to continue, or close this window if you do not trust the source.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "You are about to open a file for live preview. Please proceed by clicking 'Trust Project' only if you trust the source of this project!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Pop-ups Blocked",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Do you want to allow the live preview page to open this URL: {0}?",
   "TRUST_PROJECT": "Trust & Execute Preview - {0}",
   "TRUST_AUTHORS": "Do you trust the authors of this project?",
   "DOWNLOAD_FAILED": "Download failed.",

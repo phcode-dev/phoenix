@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Holen Sie sich das beste Live-Vorschau-Erlebnis, indem Sie unsere nativen Apps für Windows, Mac und Linux von <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> herunterladen.<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Sie sind dabei, eine Datei für die Live-Vorschau zu öffnen. Bitte fahren Sie nur fort, wenn Sie der Quelle dieses Projekts vertrauen. Klicken Sie auf „Projekt vertrauen“, um fortzufahren, oder schließen Sie dieses Fenster, wenn Sie der Quelle nicht vertrauen.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Sie sind dabei, eine Datei für die Live-Vorschau zu öffnen. Klicken Sie bitte nur dann auf „Projekt vertrauen“, wenn Sie der Quelle dieses Projekts vertrauen!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Pop-ups blockiert",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Möchten Sie zulassen, dass die Live-Vorschauseite diese URL öffnet: {0}?",
   "TRUST_PROJECT": "Trust & Execute-Vorschau – {0}",
   "TRUST_AUTHORS": "Vertrauen Sie den Autoren dieses Projekts?",
   "DOWNLOAD_FAILED": "Herunterladen fehlgeschlagen.",

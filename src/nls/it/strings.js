@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Ottieni la migliore esperienza di anteprima dal vivo scaricando le nostre app native per Windows, Mac e Linux da <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Stai per aprire un file per l'anteprima dal vivo. Procedi solo se ritieni attendibile la fonte di questo progetto. Fai clic su \"Progetto attendibile\" per continuare o chiudi questa finestra se non ritieni attendibile la fonte.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Stai per aprire un file per l'anteprima dal vivo. Procedi facendo clic su \"Fidati del progetto\" solo se ritieni attendibile la fonte di questo progetto!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Popup bloccati",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Vuoi consentire alla pagina di anteprima dal vivo di aprire questo URL: {0}?",
   "TRUST_PROJECT": "Affida ed esegui anteprima - {0}",
   "TRUST_AUTHORS": "Hai fiducia negli autori di questo progetto?",
   "DOWNLOAD_FAILED": "Scaricamento fallito.",

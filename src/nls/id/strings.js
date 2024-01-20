@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Dapatkan pengalaman pratinjau langsung terbaik dengan mengunduh aplikasi asli kami untuk Windows, Mac, dan Linux dari <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Anda akan membuka file untuk pratinjau langsung. Silakan lanjutkan hanya jika Anda memercayai sumber proyek ini. Klik 'Percayai Proyek' untuk melanjutkan, atau tutup jendela ini jika Anda tidak mempercayai sumbernya.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Anda akan membuka file untuk pratinjau langsung. Silakan lanjutkan dengan mengklik 'Percayai Proyek' hanya jika Anda memercayai sumber proyek ini!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Pop-up Diblokir",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Apakah Anda ingin mengizinkan laman pratinjau langsung membuka URL ini: {0}?",
   "TRUST_PROJECT": "Pratinjau Percayai & Jalankan - {0}",
   "TRUST_AUTHORS": "Apakah Anda mempercayai penulis proyek ini?",
   "DOWNLOAD_FAILED": "Unduhan gagal.",

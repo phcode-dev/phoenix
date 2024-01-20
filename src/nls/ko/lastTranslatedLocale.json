@@ -737,6 +737,8 @@
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "<a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> 에서 Windows, Mac 및 Linux용 기본 앱을 다운로드하여 최고의 라이브 미리 보기 경험을 얻으십시오.<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "실시간 미리보기용 파일을 열려고 합니다. 이 프로젝트의 소스를 신뢰하는 경우에만 진행하세요. 계속하려면 '프로젝트 신뢰'를 클릭하고, 소스를 신뢰하지 않으면 이 창을 닫으세요.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "실시간 미리보기용 파일을 열려고 합니다. 해당 프로젝트의 소스를 신뢰하시는 경우에만 '프로젝트 신뢰'를 클릭하여 진행해주세요!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "팝업이 차단됨",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "실시간 미리보기 페이지에서 이 URL({0})을 열도록 허용하시겠습니까?",
   "TRUST_PROJECT": "신뢰 및 실행 미리보기 - {0}",
   "TRUST_AUTHORS": "이 프로젝트의 작성자를 신뢰하시나요?",
   "DOWNLOAD_FAILED": "다운로드 실패.",

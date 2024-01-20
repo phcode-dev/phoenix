@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "从<a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a>下载适用于 Windows、Mac 和 Linux 的本机应用程序，获得最佳的实时预览体验。<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "您将要打开一个文件进行实时预览。仅当您信任该项目的来源时，才请继续。单击“信任项目”继续，或者如果您不信任源，请关闭此窗口。",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "您将要打开一个文件进行实时预览。仅当您信任该项目的来源时，请单击“信任项目”继续！",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "弹出窗口被阻止",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "您想要允许实时预览页面打开此 URL：{0} 吗？",
   "TRUST_PROJECT": "信任并执行预览 - {0}",
   "TRUST_AUTHORS": "您信任该项目的作者吗？",
   "DOWNLOAD_FAILED": "下载失败。",

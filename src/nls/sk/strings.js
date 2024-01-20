@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Získajte najlepší zážitok zo živého náhľadu stiahnutím našich natívnych aplikácií pre Windows, Mac a Linux z <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Chystáte sa otvoriť súbor na živý náhľad. Pokračujte, prosím, len ak dôverujete zdroju tohto projektu. Ak chcete pokračovať, kliknite na „Dôverovať projektu“ alebo zatvorte toto okno, ak zdroju nedôverujete.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Chystáte sa otvoriť súbor na živý náhľad. Pokračujte kliknutím na „Dôverovať projektu“ iba vtedy, ak dôverujete zdroju tohto projektu!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Kontextové okná sú zablokované",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Chcete povoliť stránke živého náhľadu otvoriť túto adresu URL: {0}?",
   "TRUST_PROJECT": "Trust & Execute Preview – {0}",
   "TRUST_AUTHORS": "Veríte autorom tohto projektu?",
   "DOWNLOAD_FAILED": "Sťahovanie zlyhalo.",

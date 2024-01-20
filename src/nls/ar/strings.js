@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "احصل على أفضل تجربة معاينة مباشرة عن طريق تنزيل تطبيقاتنا الأصلية لأنظمة Windows و Mac و Linux من <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "أنت على وشك فتح ملف للمعاينة المباشرة. يرجى المتابعة فقط إذا كنت تثق بمصدر هذا المشروع. انقر فوق \"الوثوق بالمشروع\" للمتابعة، أو أغلق هذه النافذة إذا كنت لا تثق بالمصدر.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "أنت على وشك فتح ملف للمعاينة المباشرة. يرجى المتابعة بالنقر فوق \"الوثوق بالمشروع\" فقط إذا كنت تثق بمصدر هذا المشروع!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "النوافذ المنبثقة محظورة",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "هل تريد السماح لصفحة المعاينة المباشرة بفتح عنوان URL هذا: {0}؟",
   "TRUST_PROJECT": "الثقة وتنفيذ المعاينة - {0}",
   "TRUST_AUTHORS": "هل تثق بمؤلفي هذا المشروع؟",
   "DOWNLOAD_FAILED": "التحميل فشل.",
