@@ -44,6 +44,8 @@ define(function (require, exports, module) {
 
     function isPreviewableFile(filePath) {
         let extension = getExtension(filePath);
+        // only svg images should appear in the live preview as it needs text editor.
+        // All other image types should appear in the image previewer
         return isSVG(filePath) || isMarkdownFile(filePath) || isHTMLFile(filePath) ||
             ['pdf'].includes(extension.toLowerCase());
     }

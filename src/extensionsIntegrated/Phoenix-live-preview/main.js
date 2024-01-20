@@ -70,13 +70,34 @@ define(function (require, exports, module) {
     const PREVIEW_PROJECT_README_KEY = "preview_readme";
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
+    const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const LIVE_PREVIEW_IFRAME_HTML = `
-    <iframe id="panel-live-preview-frame" title="Live Preview" style="border: none"
+    <iframe id="${LIVE_PREVIEW_IFRAME_ID}" title="Live Preview" style="border: none"
              width="100%" height="100%" seamless="true"
              src='about:blank'
              sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-modals allow-pointer-lock">
     </iframe>
     `;
+
+    function _isLiveHighlightEnabled() {
+        return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
+    }
+
+    window.addEventListener('blur', function() {
+        setTimeout(function() {
+            const editor  = EditorManager.getActiveEditor();
+            if(!_isLiveHighlightEnabled() || !editor){
+                return;
+            }
+            if (document.activeElement === document.getElementById(LIVE_PREVIEW_IFRAME_ID)
+                && !utils.isHTMLFile(editor.document.file.fullPath)) {
+                // Editor focus is never lost to live preview if live highlights is enabled.
+                // For html files, they have special handling to set focus so that live preview can take inputs in
+                // text fields and text area for user to be able to type in live preview html text areas.
+                editor.focus();
+            }
+        }, 100);
+    });
 
     function _getTrustProjectPage() {
         const trustProjectMessage = StringUtils.format(Strings.TRUST_PROJECT,
@@ -232,7 +253,7 @@ define(function (require, exports, module) {
     }
 
     function _updateLiveHighlightToggleStatus() {
-        let isHighlightEnabled = CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
+        let isHighlightEnabled = _isLiveHighlightEnabled();
         if(isHighlightEnabled){
             $highlightBtn.removeClass('pointer-icon').addClass('pointer-fill-icon');
         } else {
