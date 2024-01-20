@@ -551,6 +551,59 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        async function openPreviewAndClickTextInputsInPreview() {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["hyperlink.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith("hyperlink.html")).toBeTrue();
+            iFrame.focus(); // live preview has focus but it can take html focus, the live preview has to
+            // delegate focus to editor explicitly in case of html files.
+            expect(testWindow.document.activeElement).toEqual(iFrame);
+            // for html, it can take focus, but clicking on any text elemnt will focus file preview
+            await forRemoteExec(`document.getElementById("textArea").click()`);
+            await awaits(300);
+            expect(testWindow.document.activeElement).toEqual(iFrame);
+            await forRemoteExec(`document.getElementById("inputText").click()`);
+            await awaits(300);
+            expect(testWindow.document.activeElement).toEqual(iFrame);
+        }
+
+        it("focus test: should html live previews take focus from editor on text filed click in live preview", async function () {
+            // this test may fail if the test window doesn't have focus
+            await openPreviewAndClickTextInputsInPreview();
+            await endPreviewSession();
+        }, 30000);
+
+        async function triggerEscapeKeyEvent() {
+            // Create a new KeyboardEvent
+            const jsExec= `document.getElementById("inputText").dispatchEvent(new KeyboardEvent("keydown", {
+                key: "Escape",
+                keyCode: 27, // keyCode for Escape key
+                code: "Escape",
+                which: 27,
+                bubbles: true, // Event bubbles up through the DOM
+                cancelable: true // Event can be canceled
+            }))`;
+            await forRemoteExec(jsExec);
+        }
+
+        it("focus test: should pressing escape key on live preview focued input focus editor", async function () {
+            // this test may fail if the test window doesn't have focus
+            await openPreviewAndClickTextInputsInPreview();
+            await triggerEscapeKeyEvent();
+
+            // Editor will gain focus on escape key press
+            await awaits(500);
+            const activeElement = testWindow.document.activeElement;
+            const editorHolder = testWindow.document.getElementById("editor-holder");
+            expect(editorHolder.contains(activeElement)).toBeTrue();
+
+            await endPreviewSession();
+        }, 30000);
+
         it("focus test: should markdown previews never take focus from editor", async function () {
             // this test may fail if the test window doesn't have focus
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),

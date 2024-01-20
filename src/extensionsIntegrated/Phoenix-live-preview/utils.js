@@ -36,6 +36,8 @@
  */
 
 define(function (require, exports, module) {
+    const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
+    const EditorManager      = require("editor/EditorManager");
     function getExtension(filePath) {
         filePath = filePath || '';
         let pathSplit = filePath.split('.');
@@ -71,11 +73,22 @@ define(function (require, exports, module) {
         return ['html', 'htm', 'xhtml'].includes(extension.toLowerCase());
     }
 
+    function focusActiveEditorIfFocusInLivePreview() {
+        const editor  = EditorManager.getActiveEditor();
+        if(!editor){
+            return;
+        }
+        if (document.activeElement === document.getElementById(LIVE_PREVIEW_IFRAME_ID)) {
+            editor.focus();
+        }
+    }
+
     exports.getExtension = getExtension;
     exports.isPreviewableFile = isPreviewableFile;
     exports.isImage = isImage;
     exports.isHTMLFile = isHTMLFile;
     exports.isMarkdownFile = isMarkdownFile;
+    exports.focusActiveEditorIfFocusInLivePreview = focusActiveEditorIfFocusInLivePreview;
 });
 
 
