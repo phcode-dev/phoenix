@@ -708,7 +708,7 @@ define(function (require, exports, module) {
     }
 
     function _handleGetPhNodeInspectURL() {
-        Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.CMD_GET_PHNODE_INSPECTOR_URL,
+        Dialogs.showInfoDialog(Strings.CMD_GET_PHNODE_INSPECTOR_URL,
             `<div id="instructions">
   <p>
     1. Go to <a href="chrome://inspect/" target="_blank">chrome://inspect/#devices</a>

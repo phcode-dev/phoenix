@@ -39,6 +39,8 @@ define(function (require, exports, module) {
         Strings = require("strings"),
         utils = require('./utils'),
         NativeApp = require("utils/NativeApp"),
+        Dialogs = require("widgets/Dialogs"),
+        StringUtils         = require("utils/StringUtils"),
         BootstrapCSSText = require("text!thirdparty/bootstrap/bootstrap.min.css"),
         GithubCSSText = require("text!thirdparty/highlight.js/styles/github.min.css"),
         HilightJSText = require("text!thirdparty/highlight.js/highlight.min.js"),
@@ -660,10 +662,34 @@ define(function (require, exports, module) {
         return `TRANSPORT_CONFIG.LIVE_PREVIEW_WEBSOCKET_CHANNEL_URL = "${livePreviewCommURL}";\n`;
     }
 
+    let urlsOpenedInLast5Secs = 0;
+    const MAX_URLS_OPEN_BEFORE_CONFIRM = 4;
+    setInterval(()=>{
+        urlsOpenedInLast5Secs = 0;
+    }, 5000);
+    let dialogIsShown = false;
     exports.on(EVENT_EMBEDDED_IFRAME_HREF_CLICK, function(_ev, event){
-        // only in tauri, as in browsers, browser will open the href urls unlike tauri
+        if(dialogIsShown) {
+            return;
+        }
+        // only in tauri, as in browsers, browser will open the href urls unlike tauri and
+        // manage too many popups case as well.
         const href = event.data.href;
-        href && NativeApp.openURLInDefaultBrowser(href);
+        urlsOpenedInLast5Secs ++;
+        if(urlsOpenedInLast5Secs >= MAX_URLS_OPEN_BEFORE_CONFIRM) {
+            dialogIsShown = true;
+            Dialogs.showConfirmDialog(Strings.CONFIRM_EXTERNAL_BROWSER_TITLE,
+                StringUtils.format(Strings.CONFIRM_EXTERNAL_BROWSER_MESSAGE, href))
+                .done(id=>{
+                    if (id === Dialogs.DIALOG_BTN_OK) {
+                        urlsOpenedInLast5Secs = 0;
+                        href && NativeApp.openURLInDefaultBrowser(href);
+                    }
+                    dialogIsShown = false;
+                });
+        } else {
+            href && NativeApp.openURLInDefaultBrowser(href);
+        }
     });
 
     function init() {

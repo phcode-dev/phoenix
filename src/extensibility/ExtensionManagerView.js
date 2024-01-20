@@ -522,8 +522,7 @@ define(function (require, exports, module) {
                         self.model._getEntry(id).updateAvailable   = false;
                         // this is a hack as we will drop this extnsion manager and move to new one. so this will do.
                         self.model.trigger("change", id);
-                        Dialogs.showModalDialog(
-                            DefaultDialogs.DIALOG_ID_INFO,
+                        Dialogs.showInfoDialog(
                             Strings.EXTENSION_UPDATE_RESTART_TITLE,
                             Strings.EXTENSION_UPDATE_RESTART_MESSAGE
                         );
