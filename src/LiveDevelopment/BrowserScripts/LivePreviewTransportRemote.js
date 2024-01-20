@@ -275,4 +275,29 @@
             this.connect();
         }
     };
+
+    function getAbsoluteUrl(url) {
+        // Check if the URL is already absolute
+        if (/^(?:[a-z]+:)?\/\//i.test(url)) {
+            return url; // The URL is already absolute
+        }
+
+        // If not, create an absolute URL using the current page's location as the base
+        const absoluteUrl = new URL(url, window.location.href);
+        return absoluteUrl.href;
+    }
+
+    // This is only for tauri builds where the live preview is embedded in the phoenix editor iframe. on clicking
+    // any urls that needs to be open in a browser window, we execute this. In browser, this is no-op as there is
+    // no corresponding listener attached in phoenix browser server.
+    document.addEventListener('click', function(event) {
+        if (event.target.tagName === 'A' && (event.target.target === '_blank')) {
+            const href = getAbsoluteUrl(event.target.getAttribute('href'));
+            window.parent.postMessage({
+                handlerName: "ph-liveServer",
+                eventName: 'embeddedIframeHrefClick',
+                href: href
+            }, "*");
+        }
+    });
 }(this));

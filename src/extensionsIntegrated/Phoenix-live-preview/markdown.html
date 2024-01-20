@@ -35,13 +35,23 @@
                     e.preventDefault();
                 }
             }, false);
+            function getAbsoluteUrl(url) {
+                // Check if the URL is already absolute
+                if (/^(?:[a-z]+:)?\/\//i.test(url)) {
+                    return url; // The URL is already absolute
+                }
+
+                // If not, create an absolute URL using the current page's location as the base
+                const absoluteUrl = new URL(url, window.location.href);
+                return absoluteUrl.href;
+            }
             document.addEventListener('click', function(event) {
                 if (event.target.tagName === 'A' && (event.target.target === '_blank')) {
-                    const href = new URL(event.target.getAttribute('href'));
+                    const href = getAbsoluteUrl(event.target.getAttribute('href'));
                     window.parent.postMessage({
                         handlerName: "ph-liveServer",
                         eventName: 'embeddedIframeHrefClick',
-                        href: href.href
+                        href: href
                     }, "{{{PARENT_ORIGIN}}}");
                 }
             });
