@@ -61,6 +61,8 @@ define(function (require, exports, module) {
             prettierTestFolder = SpecRunnerUtils.getTestPath("/spec/prettier-test-files"),
             allSpacesRE = /\s+/gi;
 
+        const SVG_IMAGE_PATH = "sub/phoenix-logo.svg";
+
         function fixSpaces(str) {
             return str.replace(allSpacesRE, " ");
         }
@@ -475,7 +477,7 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
-        it("should Markdown/image files be previewed and switched between live previews", async function () {
+        it("should Markdown/svg image files be previewed and switched between live previews", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
@@ -489,12 +491,12 @@ define(function (require, exports, module) {
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith("readme.md")).toBeTrue();
 
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
                 "icon_chevron.png");
             await awaits(500);
             iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             let srcURL = new URL(iFrame.src);
-            expect(srcURL.pathname.endsWith("sub/icon_chevron.png")).toBeTrue();
+            expect(srcURL.pathname.endsWith(SVG_IMAGE_PATH)).toBeTrue();
 
             // now switch back to old file
             await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
@@ -898,8 +900,8 @@ define(function (require, exports, module) {
             let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
             pinURLBtn.click();
 
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "icon_chevron.png");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
+                SVG_IMAGE_PATH);
             await awaits(500);
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith(`simple1.html`))
@@ -910,7 +912,7 @@ define(function (require, exports, module) {
             await awaits(1000);
             iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             let srcURL = new URL(iFrame.src);
-            expect(srcURL.pathname.endsWith("sub/icon_chevron.png")).toBeTrue();
+            expect(srcURL.pathname.endsWith(SVG_IMAGE_PATH)).toBeTrue();
 
             await endPreviewSession();
         }, 30000);
@@ -927,34 +929,34 @@ define(function (require, exports, module) {
             let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
             pinURLBtn.click();
 
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "icon_chevron.png");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
+                SVG_IMAGE_PATH);
             await awaits(500);
             await _waitForIframeSrc(`readme.md`);
 
             pinURLBtn.click();
 
-            await _waitForIframeSrc("sub/icon_chevron.png");
+            await _waitForIframeSrc(SVG_IMAGE_PATH);
 
             await endPreviewSession();
         }, 30000);
 
-        it("should pin live previews pin image file", async function () {
+        it("should pin live previews pin svg image file", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
+                "SpecRunnerUtils.openProjectFiles "+ SVG_IMAGE_PATH);
 
-            await _waitForIframeSrc("sub/icon_chevron.png");
+            await _waitForIframeSrc(SVG_IMAGE_PATH);
             let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
             pinURLBtn.click();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "simple1.html");
             await awaits(500);
-            await _waitForIframeSrc("sub/icon_chevron.png");
+            await _waitForIframeSrc(SVG_IMAGE_PATH);
 
             pinURLBtn.click();
 
@@ -976,7 +978,7 @@ define(function (require, exports, module) {
             pinURLBtn.click();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
-                "icon_chevron.png");
+                "simple2.html");
             await awaits(500);
             expect(iFrame.src.endsWith(`simple1.html`))
                 .toBeTrue();
@@ -1006,17 +1008,17 @@ define(function (require, exports, module) {
 
             await waitsForLiveDevelopmentToOpen();
             await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
-                "SpecRunnerUtils.openProjectFiles sub/icon_chevron.png");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
+                "SpecRunnerUtils.openProjectFiles"+SVG_IMAGE_PATH);
 
-            await _waitForIframeSrc("sub/icon_chevron.png");
+            await _waitForIframeSrc(SVG_IMAGE_PATH);
             let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
             pinURLBtn.click();
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "simple1.html");
             await awaits(500);
-            await _waitForIframeSrc("sub/icon_chevron.png");
+            await _waitForIframeSrc(SVG_IMAGE_PATH);
 
             await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
             await awaits(500);
