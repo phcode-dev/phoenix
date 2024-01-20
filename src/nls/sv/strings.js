@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Få den bästa liveförhandsvisningsupplevelsen genom att ladda ner våra inbyggda appar för Windows, Mac och Linux från <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Du håller på att öppna en fil för liveförhandsvisning. Fortsätt endast om du litar på källan till detta projekt. Klicka på \"Trust Project\" för att fortsätta, eller stäng det här fönstret om du inte litar på källan.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Du håller på att öppna en fil för liveförhandsvisning. Vänligen fortsätt genom att klicka på \"Trust Project\" endast om du litar på källan till detta projekt!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Popup-fönster blockerade",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Vill du tillåta att förhandsgranskningssidan öppnar denna webbadress: {0}?",
   "TRUST_PROJECT": "Trust & Execute Preview - {0}",
   "TRUST_AUTHORS": "Litar du på författarna till detta projekt?",
   "DOWNLOAD_FAILED": "Nedladdning misslyckad.",

@@ -737,6 +737,8 @@
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "با دانلود برنامه های بومی ما برای Windows، Mac و Linux از <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> ، بهترین تجربه پیش نمایش زنده را دریافت کنید.<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "شما در حال باز کردن یک فایل برای پیش نمایش زنده هستید. لطفاً فقط در صورتی ادامه دهید که به منبع این پروژه اعتماد دارید. برای ادامه روی \"Trust Project\" کلیک کنید، یا اگر به منبع اعتماد ندارید، این پنجره را ببندید.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "شما در حال باز کردن یک فایل برای پیش نمایش زنده هستید. لطفاً فقط در صورتی که به منبع این پروژه اعتماد دارید، روی «پروژه اعتماد» کلیک کنید!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "پنجره های بازشو مسدود شد",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "آیا می خواهید به صفحه پیش نمایش زنده اجازه دهید این URL را باز کند: {0}؟",
   "TRUST_PROJECT": "اعتماد و اجرای پیش‌نمایش - {0}",
   "TRUST_AUTHORS": "آیا به نویسندگان این پروژه اعتماد دارید؟",
   "DOWNLOAD_FAILED": "دانلود نشد.",

@@ -737,6 +737,8 @@
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Obtenga la mejor experiencia de vista previa en vivo descargando nuestras aplicaciones nativas para Windows, Mac y Linux desde <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Está a punto de abrir un archivo para obtener una vista previa en vivo. Continúe solo si confía en la fuente de este proyecto. Haga clic en 'Confiar en el proyecto' para continuar o cierre esta ventana si no confía en la fuente.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Está a punto de abrir un archivo para obtener una vista previa en vivo. Continúe haciendo clic en 'Confiar en proyecto' solo si confía en la fuente de este proyecto.",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Ventanas emergentes bloqueadas",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "¿Quiere permitir que la página de vista previa en vivo abra esta URL: {0}?",
   "TRUST_PROJECT": "Vista previa de confianza y ejecución: {0}",
   "TRUST_AUTHORS": "¿Confías en los autores de este proyecto?",
   "DOWNLOAD_FAILED": "Descarga fracasó.",

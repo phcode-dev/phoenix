@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Szerezze meg a legjobb élő előnézeti élményt, ha letölti natív alkalmazásainkat Windowsra, Macre és Linuxra <a href=\"https://phcode.io\" style=\"color: white\">a phcode.io</a> webhelyről.<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Egy fájl megnyitására készül az élő előnézethez. Kérjük, csak akkor folytassa, ha megbízik a projekt forrásában. Kattintson a \"Trust Project\" gombra a folytatáshoz, vagy zárja be ezt az ablakot, ha nem bízik a forrásban.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Egy fájl megnyitására készül az élő előnézethez. Kérjük, csak akkor folytassa a \"Trust Project\" gombra kattintva, ha megbízik a projekt forrásában!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Előugró ablakok blokkolva",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Engedélyezi az élő előnézeti oldal számára a következő URL megnyitását: {0}?",
   "TRUST_PROJECT": "Trust & Execute előnézet – {0}",
   "TRUST_AUTHORS": "Bízol a projekt szerzőiben?",
   "DOWNLOAD_FAILED": "Sikertelen letöltés.",

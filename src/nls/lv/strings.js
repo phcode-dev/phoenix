@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Iegūstiet vislabāko tiešraides priekšskatījuma pieredzi, lejupielādējot mūsu vietējās lietotnes operētājsistēmai Windows, Mac un Linux no <a href=\"https://phcode.io\" style=\"color: white\">vietnes phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Jūs gatavojaties atvērt failu tiešraides priekšskatīšanai. Lūdzu, turpiniet tikai tad, ja uzticaties šī projekta avotam. Noklikšķiniet uz Trust Project, lai turpinātu, vai aizveriet šo logu, ja neuzticaties avotam.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Jūs gatavojaties atvērt failu tiešraides priekšskatīšanai. Lūdzu, turpiniet, noklikšķinot uz “Uzticēties projektam” tikai tad, ja uzticaties šī projekta avotam!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Uznirstošie logi ir bloķēti",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Vai vēlaties ļaut tiešraides priekšskatījuma lapai atvērt šo URL: {0}?",
   "TRUST_PROJECT": "Uzticības un izpildes priekšskatījums — {0}",
   "TRUST_AUTHORS": "Vai uzticaties šī projekta autoriem?",
   "DOWNLOAD_FAILED": "Lejupielāde neizdevās.",

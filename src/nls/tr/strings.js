@@ -757,6 +757,8 @@ define({
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "<a href=\"https://phcode.io\" style=\"color: white\">phcode.io&#39;dan</a> Windows, Mac ve Linux için yerel uygulamalarımızı indirerek en iyi canlı önizleme deneyimini elde edin.<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Canlı önizleme için bir dosyayı açmak üzeresiniz. Lütfen yalnızca bu projenin kaynağına güveniyorsanız devam edin. Devam etmek için 'Projeye Güven'i tıklayın veya kaynağa güvenmiyorsanız bu pencereyi kapatın.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Canlı önizleme için bir dosyayı açmak üzeresiniz. Lütfen yalnızca bu projenin kaynağına güveniyorsanız 'Projeye Güven' seçeneğini tıklayarak devam edin!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Açılır Pencereler Engellendi",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Canlı önizleme sayfasının şu URL'yi açmasına izin vermek istiyor musunuz: {0}?",
   "TRUST_PROJECT": "Güven ve Önizlemeyi Yürüt - {0}",
   "TRUST_AUTHORS": "Bu projenin yazarlarına güveniyor musunuz?",
   "DOWNLOAD_FAILED": "Yükleme başarısız.",

@@ -737,6 +737,8 @@
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Få den bedste live preview-oplevelse ved at downloade vores indbyggede apps til Windows, Mac og Linux fra <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Du er ved at åbne en fil til live forhåndsvisning. Fortsæt kun, hvis du har tillid til kilden til dette projekt. Klik på 'Trust Project' for at fortsætte, eller luk dette vindue, hvis du ikke har tillid til kilden.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Du er ved at åbne en fil til live forhåndsvisning. Fortsæt kun ved at klikke på 'Stol på projekt', hvis du har tillid til kilden til dette projekt!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Pop-ups blokeret",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Vil du tillade, at live-eksempelsiden åbner denne webadresse: {0}?",
   "TRUST_PROJECT": "Tillid og udfør forhåndsvisning - {0}",
   "TRUST_AUTHORS": "Har du tillid til forfatterne af dette projekt?",
   "DOWNLOAD_FAILED": "Download fejlede.",

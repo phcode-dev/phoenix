@@ -737,6 +737,8 @@
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Obțineți cea mai bună experiență de previzualizare live descărcând aplicațiile noastre native pentru Windows, Mac și Linux de pe <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "Sunteți pe cale să deschideți un fișier pentru previzualizare live. Vă rugăm să continuați numai dacă aveți încredere în sursa acestui proiect. Faceți clic pe „Trust Project” pentru a continua sau închideți această fereastră dacă nu aveți încredere în sursă.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "Sunteți pe cale să deschideți un fișier pentru previzualizare live. Vă rugăm să continuați făcând clic pe „Încredere în proiect” numai dacă aveți încredere în sursa acestui proiect!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Ferestre pop-up blocate",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Doriți să permiteți paginii de previzualizare live să deschidă această adresă URL: {0}?",
   "TRUST_PROJECT": "Previzualizare Trust & Execute - {0}",
   "TRUST_AUTHORS": "Ai încredere în autorii acestui proiect?",
   "DOWNLOAD_FAILED": "Descarcare esuata.",

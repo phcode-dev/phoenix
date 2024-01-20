@@ -737,6 +737,8 @@
   "DESCRIPTION_LIVEDEV_MAIN_SPAN": "Krijg de beste live preview-ervaring door onze native apps voor Windows, Mac en Linux te downloaden van <a href=\"https://phcode.io\" style=\"color: white\">phcode.io</a> .<br>",
   "DESCRIPTION_LIVEDEV_SECURITY_POPOUT_MESSAGE": "U staat op het punt een bestand te openen voor live voorbeeld. Ga alleen verder als u de bron van dit project vertrouwt. Klik op 'Project vertrouwen' om door te gaan, of sluit dit venster als u de bron niet vertrouwt.",
   "DESCRIPTION_LIVEDEV_SECURITY_TRUST_MESSAGE": "U staat op het punt een bestand te openen voor live voorbeeld. Ga alleen verder door op 'Project vertrouwen' te klikken als u de bron van dit project vertrouwt!",
+  "CONFIRM_EXTERNAL_BROWSER_TITLE": "Pop-ups geblokkeerd",
+  "CONFIRM_EXTERNAL_BROWSER_MESSAGE": "Wilt u toestaan dat de live voorbeeldpagina deze URL opent: {0}?",
   "TRUST_PROJECT": "Voorbeeld vertrouwen en uitvoeren - {0}",
   "TRUST_AUTHORS": "Vertrouw jij de auteurs van dit project?",
   "DOWNLOAD_FAILED": "Download mislukt.",
