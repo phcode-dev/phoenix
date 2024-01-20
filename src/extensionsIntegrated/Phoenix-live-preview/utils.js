@@ -44,8 +44,13 @@ define(function (require, exports, module) {
 
     function isPreviewableFile(filePath) {
         let extension = getExtension(filePath);
-        return isImage(filePath) || isMarkdownFile(filePath) || isHTMLFile(filePath) ||
+        return isSVG(filePath) || isMarkdownFile(filePath) || isHTMLFile(filePath) ||
             ['pdf'].includes(extension.toLowerCase());
+    }
+
+    function isSVG(filePath) {
+        let extension = getExtension(filePath);
+        return extension === "svg";
     }
 
     function isImage(filePath) {
