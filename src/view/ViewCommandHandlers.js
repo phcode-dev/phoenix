@@ -358,7 +358,7 @@ define(function (require, exports, module) {
             const zoomInKey = KeyBindingManager.getKeyBindingsDisplay(Commands.VIEW_ZOOM_IN) || '',
                 zoomOutKey = KeyBindingManager.getKeyBindingsDisplay(Commands.VIEW_ZOOM_OUT) || '';
             let message = StringUtils.format(Strings.ZOOM_WITH_SHORTCUTS_DETAILS, zoomInKey, zoomOutKey);
-            Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.ZOOM_WITH_SHORTCUTS, message);
+            Dialogs.showInfoDialog(Strings.ZOOM_WITH_SHORTCUTS, message);
             return new $.Deferred().resolve();
         }
     }

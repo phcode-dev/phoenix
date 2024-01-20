@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         DialogTemplate    = require("text!htmlContent/dialog-template.html"),
         WorkspaceManager  = require("view/WorkspaceManager"),
         AppInit           = require("utils/AppInit"),
+        DefaultDialogs    = require("widgets/DefaultDialogs"),
         Mustache          = require("thirdparty/mustache/mustache");
 
     /**
@@ -421,6 +422,19 @@ define(function (require, exports, module) {
         return showModalDialogUsingTemplate(template, autoDismiss);
     }
 
+    function showConfirmDialog(title, message, autoDismiss) {
+        const buttons = [
+            { className: DIALOG_BTN_CLASS_NORMAL, id: DIALOG_BTN_CANCEL, text: Strings.CANCEL },
+            { className: DIALOG_BTN_CLASS_PRIMARY, id: DIALOG_BTN_OK, text: Strings.OK }
+        ];
+
+        return showModalDialog(DefaultDialogs.DIALOG_ID_INFO, title, message, buttons, autoDismiss);
+    }
+
+    function showInfoDialog(title, message, autoDismiss) {
+        return showModalDialog(DefaultDialogs.DIALOG_ID_INFO, title, message, null, autoDismiss);
+    }
+
     /**
      * Immediately closes any dialog instances with the given class. The dialog callback for each instance will
      * be called with the special buttonId DIALOG_CANCELED (note: callback is run asynchronously).
@@ -477,6 +491,8 @@ define(function (require, exports, module) {
     exports.DIALOG_BTN_CLASS_LEFT        = DIALOG_BTN_CLASS_LEFT;
 
     exports.showModalDialog              = showModalDialog;
+    exports.showConfirmDialog            = showConfirmDialog;
+    exports.showInfoDialog               = showInfoDialog;
     exports.showModalDialogUsingTemplate = showModalDialogUsingTemplate;
     exports.cancelModalDialogIfOpen      = cancelModalDialogIfOpen;
     exports.addLinkTooltips              = addLinkTooltips;
