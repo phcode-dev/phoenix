@@ -300,4 +300,13 @@
             }, "*");
         }
     });
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' || event.key === 'Esc') { // Check for Escape key
+            // Perform the desired action for the Escape key
+            window.parent.postMessage({
+                handlerName: "ph-liveServer",
+                eventName: 'embeddedEscapeKeyPressed'
+            }, "*");
+        }
+    });
 }(this));

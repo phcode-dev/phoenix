@@ -34,6 +34,8 @@ define(function (require, exports, module) {
         Mustache = require("thirdparty/mustache/mustache"),
         FileSystem = require("filesystem/FileSystem"),
         EventDispatcher = require("utils/EventDispatcher"),
+        CommandManager     = require("command/CommandManager"),
+        Commands           = require("command/Commands"),
         EventManager = require("utils/EventManager"),
         ProjectManager = require("project/ProjectManager"),
         Strings = require("strings"),
@@ -50,6 +52,7 @@ define(function (require, exports, module) {
     const EVENT_TAB_ONLINE = 'TAB_ONLINE';
     const EVENT_REPORT_ERROR = 'REPORT_ERROR';
     const EVENT_UPDATE_TITLE_ICON = 'UPDATE_TITLE_AND_ICON';
+    const EVENT_EMBEDDED_IFRAME_ESCAPE_PRESS = 'embeddedEscapeKeyPressed';
     // In browser the SERVER_READY event is raised by the phcode.live virtual server page. That is why you wouldnt see
     // this triggered in the phcode.dev codebase. It comes from the embedded iframe. Do not remove as unused.
     const EVENT_SERVER_READY = 'SERVER_READY';
@@ -652,6 +655,16 @@ define(function (require, exports, module) {
             title,
             faviconBase64
         });
+    });
+
+    function _isLiveHighlightEnabled() {
+        return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
+    }
+    exports.on(EVENT_EMBEDDED_IFRAME_ESCAPE_PRESS, function () {
+        if(!_isLiveHighlightEnabled()){
+            return;
+        }
+        utils.focusActiveEditorIfFocusInLivePreview();
     });
 
     function getPageLoaderURL(url) {

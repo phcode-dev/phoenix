@@ -36,6 +36,8 @@ define(function (require, exports, module) {
         EventDispatcher = require("utils/EventDispatcher"),
         ProjectManager = require("project/ProjectManager"),
         EventManager = require("utils/EventManager"),
+        CommandManager     = require("command/CommandManager"),
+        Commands           = require("command/Commands"),
         Strings = require("strings"),
         utils = require('./utils'),
         NativeApp = require("utils/NativeApp"),
@@ -52,6 +54,7 @@ define(function (require, exports, module) {
     const LIVE_SERVER_NODE_CONNECTOR_ID = "ph_live_server";
     const PREVIEW_PORT_KEY = "preview_port";
     const EVENT_EMBEDDED_IFRAME_HREF_CLICK = 'embeddedIframeHrefClick';
+    const EVENT_EMBEDDED_IFRAME_ESCAPE_PRESS = 'embeddedEscapeKeyPressed';
     let liveServerConnector;
     let staticServerURL, livePreviewCommURL;
 
@@ -690,6 +693,16 @@ define(function (require, exports, module) {
         } else {
             href && NativeApp.openURLInDefaultBrowser(href);
         }
+    });
+
+    function _isLiveHighlightEnabled() {
+        return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
+    }
+    exports.on(EVENT_EMBEDDED_IFRAME_ESCAPE_PRESS, function () {
+        if(!_isLiveHighlightEnabled()){
+            return;
+        }
+        utils.focusActiveEditorIfFocusInLivePreview();
     });
 
     function init() {
