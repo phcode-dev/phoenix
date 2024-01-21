@@ -123,12 +123,12 @@ define(function (require, exports, module) {
 
         function checkAvailableStylesheets(availableFilesInDropdown) {
             // LESS/SCSS files are sorted above all CSS files. Files are otherwise sorted by path & then filename.
-            expect(availableFilesInDropdown.length).toBe(5);
-            expect(availableFilesInDropdown[0].textContent).toEqual("test.less");
-            expect(availableFilesInDropdown[1].textContent).toEqual("test2.less");
-            expect(availableFilesInDropdown[2].textContent).toEqual("test.scss");
-            expect(availableFilesInDropdown[3].textContent).toEqual("test.css");
-            expect(availableFilesInDropdown[4].textContent).toEqual("test2.css");
+            expect(availableFilesInDropdown.length).toBe(6);
+            expect(availableFilesInDropdown[1].textContent).toEqual("test.less");
+            expect(availableFilesInDropdown[2].textContent).toEqual("test2.less");
+            expect(availableFilesInDropdown[3].textContent).toEqual("test.scss");
+            expect(availableFilesInDropdown[4].textContent).toEqual("test.css");
+            expect(availableFilesInDropdown[5].textContent).toEqual("test2.css");
         }
 
         function getInlineEditorContent(ranges) {
