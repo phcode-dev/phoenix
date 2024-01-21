@@ -102,15 +102,13 @@ define(function (require, exports, module) {
             options = {};
             options.encoding = this._encoding;
         }
-        if(!options.encoding){
-            options.encoding = "utf8";
-        }
+        options.encoding = options.encoding || this._encoding || "utf8";
 
         // We don't need to check isWatched() here because contents are only saved
         // for watched files. Note that we need to explicitly test this._contents
         // for a default value; otherwise it could be the empty string, which is
         // falsey.
-        if (this._contents !== null && this._stat && options.encoding === this._encoding) {
+        if (this._contents !== null && this._stat && options.encoding === this._encoding && !options.bypassCache) {
             callback(null, this._contents, this._encoding, this._stat);
             return;
         }
@@ -169,7 +167,7 @@ define(function (require, exports, module) {
             options.expectedContents = this._contents;
         }
         if (!options.encoding) {
-            options.encoding = "utf8";
+            options.encoding = this._encoding || "utf8";
         }
         options.preserveBOM = this._preserveBOM;
 
