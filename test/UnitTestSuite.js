@@ -108,6 +108,7 @@ define(function (require, exports, module) {
     require("spec/ExtensionInstallation-test");
     require("spec/NotificationUI-test");
     require("spec/Storage-integ-test");
+    require("spec/file-encoding-integ-test");
     // Integrated extension tests
     require("spec/InAppNotifications-integ-test");
     require("spec/RemoteFileAdapter-integ-test");
