@@ -253,9 +253,9 @@ define(function (require, exports, module) {
 
                 let $dropdown = $(".dropdown-menu.dropdownbutton-popup");
                 expect($dropdown.is(":visible")).toBeTruthy();
-                expect($dropdown.children().length).toEqual(2);
-                expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
+                expect($dropdown.children().length).toEqual(3); // 3 including popup search filter
+                expect($($dropdown.children()[1]).text()).toEqual(Strings.NEW_FILE_FILTER);
+                expect($($dropdown.children()[2]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
 
                 FileFilters.closeDropdown();
             }, 10000);
@@ -280,11 +280,11 @@ define(function (require, exports, module) {
 
                 $dropdown = $(".dropdown-menu.dropdownbutton-popup");
                 expect($dropdown.is(":visible")).toBeTruthy();
-                expect($dropdown.children().length).toEqual(4);
-                expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
-                expect($(".recent-filter-name", $($dropdown.children()[3])).text()).toEqual("CSS Files");
-                expect($(".recent-filter-patterns", $($dropdown.children()[3])).text()).toEqual(" - *.css, *.less " + filterSuffix);
+                expect($dropdown.children().length).toEqual(5);
+                expect($($dropdown.children()[1]).text()).toEqual(Strings.NEW_FILE_FILTER);
+                expect($($dropdown.children()[2]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
+                expect($(".recent-filter-name", $($dropdown.children()[4])).text()).toEqual("CSS Files");
+                expect($(".recent-filter-patterns", $($dropdown.children()[4])).text()).toEqual(" - *.css, *.less " + filterSuffix);
 
                 FileFilters.closeDropdown();
             }, 10000);
@@ -310,11 +310,11 @@ define(function (require, exports, module) {
 
                 $dropdown = $(".dropdown-menu.dropdownbutton-popup");
                 expect($dropdown.is(":visible")).toBeTruthy();
-                expect($dropdown.children().length).toEqual(4);
-                expect($($dropdown.children()[0]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
-                expect($(".recent-filter-name", $($dropdown.children()[3])).text()).toEqual("CSS Files");
-                expect($(".recent-filter-patterns", $($dropdown.children()[3])).text()).toEqual(" - *.css, *.less " + filterSuffix);
+                expect($dropdown.children().length).toEqual(5);
+                expect($($dropdown.children()[1]).text()).toEqual(Strings.NEW_FILE_FILTER);
+                expect($($dropdown.children()[2]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
+                expect($(".recent-filter-name", $($dropdown.children()[4])).text()).toEqual("CSS Files");
+                expect($(".recent-filter-patterns", $($dropdown.children()[4])).text()).toEqual(" - *.css, *.less " + filterSuffix);
 
                 FileFilters.closeDropdown();
             }, 10000);
@@ -342,7 +342,7 @@ define(function (require, exports, module) {
 
                 // Click on the edit icon that shows up in the first filter set on mouseover.
                 $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                clickOnMouseOverButton(".filter-edit-icon", $($dropdown.children()[3]));
+                clickOnMouseOverButton(".filter-edit-icon", $($dropdown.children()[4]));
 
                 // Remove the name of the filter set and reduce the filter set to '*.css'.
                 expect($(".modal.instance .exclusions-name").val()).toEqual("CSS Files");
@@ -377,21 +377,21 @@ define(function (require, exports, module) {
                 FileFilters.showDropdown();
 
                 $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                expect($dropdown.children().length).toEqual(6);
+                expect($dropdown.children().length).toEqual(7);
 
                 // Click on the delete icon that shows up in the first filter set on mouseover.
-                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[3]));
+                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[4]));
 
                 expect($dropdown.is(":visible")).toBeTruthy();
                 // Verify that button label is still the same since the deleted one is not the active one.
                 verifyButtonLabel("CSS Files");
 
-                // Verify that the list has one less item (from 6 to 5).
-                expect($dropdown.children().length).toEqual(5);
+                // Verify that the list has one less item (from 7 to 6).
+                expect($dropdown.children().length).toEqual(6);
 
                 // Verify data-index of the two remaining filter sets.
-                expect($("a", $dropdown.children()[3]).data("index")).toBe(3);
-                expect($("a", $dropdown.children()[4]).data("index")).toBe(4);
+                expect($("a", $dropdown.children()[4]).data("index")).toBe(3);
+                expect($("a", $dropdown.children()[5]).data("index")).toBe(4);
 
                 FileFilters.closeDropdown();
             }, 10000);
@@ -403,17 +403,17 @@ define(function (require, exports, module) {
                 FileFilters.showDropdown();
 
                 $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                expect($dropdown.children().length).toEqual(5);
+                expect($dropdown.children().length).toEqual(6);
 
                 // Click on the delete icon that shows up in the last filter set on mouseover.
-                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[4]));
+                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[5]));
 
                 expect($dropdown.is(":visible")).toBeTruthy();
                 // Verify that button label is changed to "No Files Excluded".
                 verifyButtonLabel();
 
                 // Verify that the list has one less item.
-                expect($dropdown.children().length).toEqual(4);
+                expect($dropdown.children().length).toEqual(5);
 
                 FileFilters.closeDropdown();
             }, 10000);
@@ -425,17 +425,17 @@ define(function (require, exports, module) {
                 FileFilters.showDropdown();
 
                 $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                expect($dropdown.children().length).toEqual(4);
+                expect($dropdown.children().length).toEqual(5);
 
                 // Click on the delete icon that shows up in the last filter set on mouseover.
-                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[3]));
+                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[4]));
 
                 expect($dropdown.is(":visible")).toBeTruthy();
                 // Verify that button label still shows "No Files Excluded".
                 verifyButtonLabel();
 
                 // Verify that the list has only two filter commands.
-                expect($dropdown.children().length).toEqual(2);
+                expect($dropdown.children().length).toEqual(3);
 
                 FileFilters.closeDropdown();
             }, 10000);
