@@ -48,13 +48,16 @@ define(function (require, exports, module) {
      * @constructor
      * @param {jQueryObject} $list  associated list object
      * @param {Function} selectionCallback  function called when list item is selected.
+     * @param {Function} closeCallback  function called when list item is selected.
+     * @param {Function} keyDownCallback  function called when list item is selected.
      */
-    function DropdownEventHandler($list, selectionCallback, closeCallback) {
+    function DropdownEventHandler($list, selectionCallback, closeCallback, keyDownCallback) {
 
         this.$list = $list;
         this.$items = $list.find("li");
         this.selectionCallback = selectionCallback;
         this.closeCallback = closeCallback;
+        this.keyDownCallback = keyDownCallback;
         this.scrolling = false;
 
         /**
@@ -110,6 +113,9 @@ define(function (require, exports, module) {
                     // Trigger a click handler to commmit the selected item
                     self._selectionHandler();
                 } else {
+                    if(self.keyDownCallback){
+                        return self.keyDownCallback(event);
+                    }
                     // Let the event bubble.
                     return false;
                 }
@@ -190,7 +196,7 @@ define(function (require, exports, module) {
         }
 
         var $item = this.$items.eq(index);
-        if ($item.hasClass("divider") || $item.find("a.disabled").length) {
+        if ($item.hasClass("divider") || $item.hasClass("sticky-li-top") || $item.find("a.disabled").length || !$item.is(':visible')) {
             // Desired item is ineligible for selection: try next one
             this._tryToSelect(index + direction, direction, noWrap);
         } else {
