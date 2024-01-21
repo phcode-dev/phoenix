@@ -368,7 +368,16 @@ define(function (require, exports, module) {
         if(!this.enableFilter){
             return false;
         }
-        if (event.key.length === 1) {
+        const self = this;
+        if((event.ctrlKey || event.metaKey) && event.key === 'v') {
+            Phoenix.app.clipboardReadText().then(text=>{
+                self.searchStr += text;
+                self.filterDropdown(this.searchStr);
+            });
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            return true;
+        } else if (event.key.length === 1) {
             this.searchStr += event.key;
         } else if (event.key === 'Backspace') {
             // Remove the last character when Backspace is pressed
