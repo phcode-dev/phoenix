@@ -155,40 +155,13 @@ function _setupVFS(fsLib, pathLib){
             });
         },
         fs: fsLib,
-        path: pathLib,
-        getFsEncoding: _getFsEncoding
+        path: pathLib
     };
     Phoenix.fs = fsLib;
     Phoenix.path = pathLib;
 
     return Phoenix.VFS;
 }
-
-const _getFsEncoding = function (encoding){
-    const encodingStr = encoding && encoding.toLowerCase();
-    switch (encodingStr){
-    case "utf8":
-    case "utf-8":
-        return "utf8";
-    case "ascii":
-        return "ascii";
-    case "hex":
-        return "hex";
-    case "ucs2":
-    case "ucs-2":
-        return "ucs2";
-    case "utf16le":
-    case "utf-16le":
-        return "utf16le";
-    case "binary":
-        return "binary";
-    case "latin1":
-        return "latin1";
-    case "ISO8859-1":
-        return "ISO8859-1";
-    }
-    return encoding;
-};
 
 const _SAMPLE_HTML = `<!DOCTYPE html>
 <html>

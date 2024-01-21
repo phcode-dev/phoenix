@@ -773,7 +773,7 @@ define(function (require, exports, module) {
     Document.prototype.reload = function () {
         var $deferred = $.Deferred();
         var self = this;
-        FileUtils.readAsText(this.file)
+        FileUtils.readAsText(this.file, true)
             .done(function (text, readTimestamp) {
                 self.refreshText(text, readTimestamp);
                 $deferred.resolve();
