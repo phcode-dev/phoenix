@@ -19,6 +19,8 @@
  *
  */
 
+/*global fs*/
+
 /**
  * Manages parts of the status bar related to the current editor's state.
  */
@@ -26,7 +28,7 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var _                    = require("thirdparty/lodash"),
+    const _                    = require("thirdparty/lodash"),
         AnimationUtils       = require("utils/AnimationUtils"),
         AppInit              = require("utils/AppInit"),
         DropdownButton       = require("widgets/DropdownButton").DropdownButton,
@@ -38,10 +40,7 @@ define(function (require, exports, module) {
         PreferencesManager   = require("preferences/PreferencesManager"),
         StatusBar            = require("widgets/StatusBar"),
         Strings              = require("strings"),
-        FileUtils            = require("file/FileUtils"),
         InMemoryFile         = require("document/InMemoryFile"),
-        Dialogs              = require("widgets/Dialogs"),
-        DefaultDialogs       = require("widgets/DefaultDialogs"),
         ProjectManager       = require("project/ProjectManager"),
         Async                = require("utils/Async"),
         FileSystem           = require("filesystem/FileSystem"),
@@ -51,8 +50,7 @@ define(function (require, exports, module) {
         StringUtils          = require("utils/StringUtils"),
         Metrics              = require("utils/Metrics");
 
-    var SupportedEncodingsText = require("text!supported-encodings.json"),
-        SupportedEncodings = JSON.parse(SupportedEncodingsText);
+    const SupportedEncodings = fs.SUPPORTED_ENCODINGS.sort();
 
     /* StatusBar indicators */
     var languageSelect, // this is a DropdownButton instance
