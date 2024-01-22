@@ -108,6 +108,8 @@ define({
 
     // Application preferences corrupt error strings
     "ERROR_PREFS_CORRUPT_TITLE": "Error Reading Preferences",
+    "ERROR_PREFS_PROJECT_LINT": "Project Preferences",
+    "ERROR_PREFS_PROJECT_LINT_MESSAGE": "Unable to load `.brackets.json` due to conflict with existing `.phcode.json` in the project. Please remove one of these preference files and reload the project.",
     "ERROR_PREFS_CORRUPT": "Your preferences file is not valid JSON. The file will be opened so that you can correct the format. You will need to restart {APP_NAME} for the changes to take effect.",
     "ERROR_PROJ_PREFS_CORRUPT": "Your project preferences file is not valid JSON. The file will be opened so that you can correct the format. You will need to reload the project for the changes to take effect.",
 
@@ -753,7 +755,7 @@ define({
     "CMD_SHOW_PARAMETER_HINT": "Show Parameter Hint",
     "NO_ARGUMENTS": "<no parameters>",
     "DETECTED_EXCLUSION_TITLE": "JavaScript File Inference Problem",
-    "DETECTED_EXCLUSION_INFO": "{APP_NAME} ran into trouble processing <span class='dialog-filename'>{0}</span>.<br><br>This file will no longer be processed for code hints, Jump to Definition or Quick Edit. To re-enable this file, open <code>.brackets.json</code> in your project and edit <code>jscodehints.detectedExclusions</code>.<br><br>This is likely a {APP_NAME} bug. If you can provide a copy of this file, please <a href='https://github.com/adobe/brackets/wiki/How-to-Report-an-Issue'>file a bug</a> with a link to the file named here.",
+    "DETECTED_EXCLUSION_INFO": "{APP_NAME} ran into trouble processing <span class='dialog-filename'>{0}</span>.<br><br>This file will no longer be processed for code hints, Jump to Definition or Quick Edit. To re-enable this file, open <code>.phcode.json</code> in your project and edit <code>jscodehints.detectedExclusions</code>.<br><br>This is likely a {APP_NAME} bug. If you can provide a copy of this file, please <a href='https://github.com/adobe/brackets/wiki/How-to-Report-an-Issue'>file a bug</a> with a link to the file named here.",
 
     // extensions/default/JavascriptRefactoring
     "CMD_REFACTOR": "Refactor",
@@ -891,7 +893,7 @@ define({
     "DESCRIPTION_OPEN_USER_PREFS_IN_SECOND_PANE": "false to open user preferences file in left/top pane",
     "DESCRIPTION_MERGE_PANES_WHEN_LAST_FILE_CLOSED": "true to collapse panes after the last file from the pane is closed via pane header close button",
     "DESCRIPTION_SHOW_PANE_HEADER_BUTTONS": "Toggle when to show the close and flip-view buttons on the header.",
-    "DEFAULT_PREFERENCES_JSON_HEADER_COMMENT": "/*\n * This is a read-only file with the preferences supported\n * by {APP_NAME}.\n * Use this file as a reference to modify your preferences\n * file \"brackets.json\" opened in the other pane.\n * For more information on how to use preferences inside\n * {APP_NAME}, refer to the web page at https://github.com/adobe/brackets/wiki/How-to-Use-Brackets#preferences\n */",
+    "DEFAULT_PREFERENCES_JSON_HEADER_COMMENT": "/*\n * This is a read-only file with the preferences supported\n * by {APP_NAME}.\n * Use this file as a reference to modify your preferences\n * file \"phcode.json\" opened in the other pane.\n * For more information on how to use preferences inside\n * {APP_NAME}, refer to the web page at https://github.com/adobe/brackets/wiki/How-to-Use-Brackets#preferences\n */",
     "DEFAULT_PREFERENCES_JSON_DEFAULT": "Default",
     "DESCRIPTION_PURE_CODING_SURFACE": "true to enable code only mode and hide all other UI elements in {APP_NAME}",
     "DESCRIPTION_INDENT_LINE_COMMENT": "true to enable indenting of line comments",
@@ -976,7 +978,7 @@ define({
 
     "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_TITLE": "Open Graphic Files in External Editors.",
     "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_MSG": "Your current folder has graphic file types which are not supported by {APP_NAME}.<br/>You can now associate specific file types with external editors. Once associated, you can open graphic files like .xd, .psd, .jpg, .png, .ai, .svg in their default applications by double clicking on the files in File Tree.<br/><br/>Please click on ‘Ok’ button to associate the graphic file types with their respective default applications.",
-    "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Following file types have been successfully associated with default applications.<br/>{0} You have the option to change your preference on whether you delete/add new file type associations in brackets.json by going to “Debug->Open Preferences File” menu.",
+    "ASSOCIATE_GRAPHICS_FILE_TO_DEFAULT_APP_CNF_MSG": "Following file types have been successfully associated with default applications.<br/>{0} You have the option to change your preference on whether you delete/add new file type associations in phcode.json by going to “Debug->Open Preferences File” menu.",
 
     // Phoenix extension
     "UNSUPPORTED_BROWSER_TITLE": "Browser Is Not Supported",

@@ -28,12 +28,13 @@
 define(function (require, exports, module) {
 
 
-    var PreferencesBase = require("./PreferencesBase"),
+    const PreferencesBase = require("./PreferencesBase"),
         Async           = require("utils/Async"),
         FileSystem      = require("filesystem/FileSystem"),
 
         // The SETTINGS_FILENAME is used with a preceding "." within user projects
-        SETTINGS_FILENAME = "brackets.json",
+        SETTINGS_FILENAME = "phcode.json",
+        SETTINGS_FILENAME_BRACKETS = "brackets.json",
         STATE_FILENAME    = "state.json",
 
         // User-level preferences
@@ -85,7 +86,7 @@ define(function (require, exports, module) {
 
     _addScopePromises.push(userScopeLoading);
 
-    // Set up the .brackets.json file handling
+    // Set up the .phcode.json file handling
     userScopeLoading
         .fail(function (err) {
             _addScopePromises.push(manager.addScope("user", new PreferencesBase.MemoryStorage(), {
@@ -146,4 +147,5 @@ define(function (require, exports, module) {
     exports.reloadUserPrefs     = _reloadUserPrefs;
     exports.STATE_FILENAME      = STATE_FILENAME;
     exports.SETTINGS_FILENAME   = SETTINGS_FILENAME;
+    exports.SETTINGS_FILENAME_BRACKETS = SETTINGS_FILENAME_BRACKETS;
 });

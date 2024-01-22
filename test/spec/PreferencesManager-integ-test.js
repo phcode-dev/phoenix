@@ -48,7 +48,7 @@ define(function (require, exports, module) {
         it("should find preferences in the project", async function () {
             var projectWithoutSettings = SpecRunnerUtils.getTestPath("/spec/WorkingSetView-test-files"),
                 FileViewController = testWindow.brackets.test.FileViewController;
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(".brackets.json"));
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(".phcode.json"));
 
             expect(PreferencesManager.get("spaceUnits")).toBe(9);
             await awaitsForDone(FileViewController.openAndSelectDocument(nonProjectFile,

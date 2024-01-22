@@ -35,6 +35,7 @@ define(function (require, exports, module) {
         ThemeManager        = brackets.getModule("view/ThemeManager"),
         CodeInspection      = brackets.getModule("language/CodeInspection"),
         _                   = brackets.getModule("thirdparty/lodash"),
+        ProjectManager      = brackets.getModule("project/ProjectManager"),
         languages           = LanguageManager.getLanguages(),
         isPrefDocument      = false,
         isPrefHintsEnabled  = false;
@@ -90,7 +91,7 @@ define(function (require, exports, module) {
      * @return {Boolean}
      */
     function _isPrefDocument(document) {
-        return (/^\.?brackets\.json$/).test(document.file._name);
+        return (/^\.?brackets\.json$/).test(document.file._name) || (/^\.?phcode\.json$/).test(document.file._name);
     }
 
     // Set listeners on preference, editor and language changes.
@@ -397,6 +398,40 @@ define(function (require, exports, module) {
         }
     };
 
+    const ERROR_MESSAGE = { errors: [{
+        // JSLint returns 1-based line/col numbers
+        pos: { line: 0, ch: 0 },
+        message: Strings.ERROR_PREFS_PROJECT_LINT_MESSAGE,
+        type: CodeInspection.Type.ERROR
+    }]};
+
+    const PHOENIX_PREF_FILE = "."+PreferencesManager.SETTINGS_FILENAME;
+    const BRACKETS_PREF_FILE = "."+PreferencesManager.SETTINGS_FILENAME_BRACKETS;
+
+    async function _hasConflictingPrefFiles() {
+        const root = ProjectManager.getProjectRoot();
+        let bracketsExists = await Phoenix.VFS.existsAsync(root.fullPath+PHOENIX_PREF_FILE);
+        let phoenixExists = await Phoenix.VFS.existsAsync(root.fullPath+BRACKETS_PREF_FILE);
+        if(phoenixExists && bracketsExists) {
+            return true;
+        }
+    }
+
+    function lintOneFile(text, fullPath) {
+        return new Promise((resolve)=>{
+            const root = ProjectManager.getProjectRoot();
+            const fileName = fullPath.replace(root.fullPath, "");
+            if(!(fileName === PHOENIX_PREF_FILE || fileName === BRACKETS_PREF_FILE)){
+                resolve();
+                return;
+            }
+            _hasConflictingPrefFiles()
+                .then(isConflicting=>{
+                    resolve(isConflicting?ERROR_MESSAGE:undefined);
+                });
+        });
+    }
+
     /**
      * @private
      *
@@ -417,6 +452,12 @@ define(function (require, exports, module) {
         var hintProvider = new PrefsCodeHints();
         CodeHintManager.registerHintProvider(hintProvider, ["json"], 0);
         ExtensionUtils.loadStyleSheet(module, "styles/brackets-prefs-hints.css");
+        if(!Phoenix.isSpecRunnerWindow){
+            CodeInspection.register("json", {
+                name: Strings.ERROR_PREFS_PROJECT_LINT,
+                scanFileAsync: lintOneFile
+            });
+        }
 
         // For unit tests only.
         exports.hintProvider            = hintProvider;

@@ -36,10 +36,10 @@
  * * default (the default values for any settings that are explicitly registered)
  * * user (the user's customized settings – the equivalent of Brackets' old
  *   localStorage-based system. This is the settings file that lives in AppData)
- * * Additional scopes for each .brackets.json file going upward in the file tree from the
+ * * Additional scopes for each .phcode.json file going upward in the file tree from the
  *   current file
  *
- * For example, if spaceUnits has a value set in a .brackets.json file near the open file,
+ * For example, if spaceUnits has a value set in a .phcode.json file near the open file,
  * then a call to get("spaceUnits") would return the value from that file. File values come
  * first, user values next, default values last. If the setting is not known
  * at all, undefined is returned.
@@ -1260,7 +1260,7 @@ define(function (require, exports, module) {
         this._nextSaveDeferred = null;
 
         // The objects that define the different kinds of path-based Scope handlers.
-        // Examples could include the handler for .brackets.json files or an .editorconfig
+        // Examples could include the handler for .phcode.json files or an .editorconfig
         // handler.
         this._pathScopeDefinitions = {};
 
