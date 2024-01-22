@@ -134,9 +134,9 @@ define(function (require, exports, module) {
     function _checkIfPathIsWritable(path) {
         // this is needed as for fs access APIs in native folders, the browser will ask an additional write permission
         // to the user. We have to validate that before proceeding.
-        // We do this by writing a file `.brackets.json` to the folder
+        // We do this by writing a file `.phcode.json` to the folder
         return new Promise((resolve, reject)=>{
-            let file = FileSystem.getFileForPath(`${path}/.brackets.json`);
+            let file = FileSystem.getFileForPath(`${path}/.phcode.json`);
             FileUtils.writeText(file, "{}", true)
                 .done(resolve)
                 .fail(reject);

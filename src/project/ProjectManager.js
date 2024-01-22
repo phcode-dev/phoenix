@@ -99,7 +99,8 @@ define(function (require, exports, module) {
      * Filename to use for project settings files.
      * @type {string}
      */
-    var SETTINGS_FILENAME = "." + PreferencesManager.SETTINGS_FILENAME;
+    const SETTINGS_FILENAME = "." + PreferencesManager.SETTINGS_FILENAME,
+        SETTINGS_FILENAME_BRACKETS = "." + PreferencesManager.SETTINGS_FILENAME_BRACKETS;
 
     /**
      * Name of the preferences for sorting directories first
@@ -955,18 +956,92 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    const PREF_OK = "prefOK",
+        PREF_JSON_ERR = "jsonERR",
+        PREF_NO_FILE = "noFile";
+    function _validateProjectPreferencesFile(filePath) {
+        return new Promise((resolve)=>{
+            const file   = FileSystem.getFileForPath(filePath);
+            FileUtils.readAsText(file)
+                .done(function (text) {
+                    try {
+                        if (text) {
+                            JSON.parse(text);
+                        }
+                        resolve(PREF_OK);
+                    } catch (err) {
+                        resolve(PREF_JSON_ERR);
+                    }
+                })
+                .fail(()=>{
+                    resolve(PREF_NO_FILE);
+                });
+        });
+    }
+
     /**
      * @private
      * Reloads the project preferences.
      */
-    function _reloadProjectPreferencesScope() {
-        var root = getProjectRoot();
+    async function _reloadProjectPreferencesScope() {
+        const root = getProjectRoot();
         if (root) {
+            const phoenixPrefFile = root.fullPath + SETTINGS_FILENAME,
+                bracketsPrefFile = root.fullPath + SETTINGS_FILENAME_BRACKETS;
+            const statusPhoenix = await _validateProjectPreferencesFile(phoenixPrefFile);
+            const statusBrackets = await _validateProjectPreferencesFile(bracketsPrefFile);
+            let prefFileToUse = phoenixPrefFile;
+            if(statusPhoenix === PREF_NO_FILE && statusBrackets !== PREF_NO_FILE) {
+                prefFileToUse = bracketsPrefFile;
+            }
+            _alertBrokenPreferenceFile();
             // Alias the "project" Scope to the path Scope for the project-level settings file
-            PreferencesManager._setProjectSettingsFile(root.fullPath + SETTINGS_FILENAME);
+            PreferencesManager._setProjectSettingsFile(prefFileToUse);
         } else {
             PreferencesManager._setProjectSettingsFile();
         }
+    }
+
+    let alertIsShown = false;
+    async function _alertBrokenPreferenceFile() {
+        if(alertIsShown){
+            return;
+        }
+        //Verify that the project preferences file (.phcode.json or brackets.json) is NOT corrupted.
+        //If corrupted, display the error message and open the file in editor for the user to edit.
+        const root = getProjectRoot();
+        const phoenixPrefFile = root.fullPath + SETTINGS_FILENAME,
+            bracketsPrefFile = root.fullPath + SETTINGS_FILENAME_BRACKETS;
+        const statusPhoenix = await _validateProjectPreferencesFile(phoenixPrefFile);
+        const statusBrackets = await _validateProjectPreferencesFile(bracketsPrefFile);
+        let errorPrefFile = null;
+        if(statusPhoenix === PREF_JSON_ERR){
+            errorPrefFile = phoenixPrefFile;
+        } else if(statusPhoenix === PREF_NO_FILE && statusBrackets === PREF_JSON_ERR) {
+            errorPrefFile = bracketsPrefFile;
+        } else {
+            // no error/no pref file
+            return;
+        }
+        // Cannot parse the text read from the project preferences file.
+        const info = MainViewManager.findInAllWorkingSets(errorPrefFile);
+        let paneId;
+        if (info.length) {
+            paneId = info[0].paneId;
+        }
+        alertIsShown = true;
+        FileViewController.openFileAndAddToWorkingSet(errorPrefFile, paneId)
+            .done(function () {
+                Dialogs.showModalDialog(
+                    DefaultDialogs.DIALOG_ID_ERROR,
+                    Strings.ERROR_PREFS_CORRUPT_TITLE,
+                    Strings.ERROR_PROJ_PREFS_CORRUPT
+                ).done(function () {
+                    // give the focus back to the editor with the pref file
+                    alertIsShown = false;
+                    MainViewManager.focusActivePane();
+                });
+            });
     }
 
     /**
@@ -987,38 +1062,6 @@ define(function (require, exports, module) {
 
         // Some legacy code calls this API with a non-canonical path
         rootPath = ProjectModel._ensureTrailingSlash(rootPath);
-
-        var projectPrefFullPath = (rootPath + SETTINGS_FILENAME),
-            file   = FileSystem.getFileForPath(projectPrefFullPath);
-
-        //Verify that the project preferences file (.brackets.json) is NOT corrupted.
-        //If corrupted, display the error message and open the file in editor for the user to edit.
-        FileUtils.readAsText(file)
-            .done(function (text) {
-                try {
-                    if (text) {
-                        JSON.parse(text);
-                    }
-                } catch (err) {
-                    // Cannot parse the text read from the project preferences file.
-                    var info = MainViewManager.findInAllWorkingSets(projectPrefFullPath);
-                    var paneId;
-                    if (info.length) {
-                        paneId = info[0].paneId;
-                    }
-                    FileViewController.openFileAndAddToWorkingSet(projectPrefFullPath, paneId)
-                        .done(function () {
-                            Dialogs.showModalDialog(
-                                DefaultDialogs.DIALOG_ID_ERROR,
-                                Strings.ERROR_PREFS_CORRUPT_TITLE,
-                                Strings.ERROR_PROJ_PREFS_CORRUPT
-                            ).done(function () {
-                                // give the focus back to the editor with the pref file
-                                MainViewManager.focusActivePane();
-                            });
-                        });
-                }
-            });
 
         if (isUpdating) {
             // We're just refreshing. Don't need to unwatch the project root, so we can start loading immediately.
@@ -1817,9 +1860,11 @@ define(function (require, exports, module) {
             .setEnabled(!Phoenix.VFS.isLocalDiscPath(projectRoot.fullPath));
     }
 
-    exports.on(EVENT_PROJECT_OPEN, _reloadProjectPreferencesScope);
-    exports.on(EVENT_PROJECT_OPEN, _saveProjectPath);
-    exports.on(EVENT_PROJECT_OPEN, _setProjectDownloadCommandEnabled);
+    exports.on(EVENT_PROJECT_OPEN, (_evt, projectRoot)=>{
+        _reloadProjectPreferencesScope();
+        _saveProjectPath();
+        _setProjectDownloadCommandEnabled(_evt, projectRoot);
+    });
     exports.on("beforeAppClose", _unwatchProjectRoot);
 
     // Due to circular dependencies, not safe to call on() directly for other modules' events

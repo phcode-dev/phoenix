@@ -69,7 +69,7 @@ define(function (require, exports, module) {
     };
 
     /*
-     * Creates a view of a file (.brackets.json)
+     * Creates a view of a file (.phcode.json)
      * @param {!File} file - the file to create a view for
      * @param {!Pane} pane - the pane where to create the view
      * @private
@@ -98,12 +98,12 @@ define(function (require, exports, module) {
 
     /*
      *  Create a view factory that can create views for the file
-     *  `.brackets.json` in a project's root folder.
+     *  `.phcode.json` in a project's root folder.
      */
     var configViewFactory = {
         canOpenFile: function (fullPath) {
             var filename = fullPath.substr(fullPath.lastIndexOf("/") + 1);
-            return (filename.toLowerCase() === ".brackets.json");
+            return (filename.toLowerCase() === ".phcode.json");
         },
         openFile: function (file, pane) {
             return _createConfigViewOf(file, pane);

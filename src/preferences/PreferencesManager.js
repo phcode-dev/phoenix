@@ -347,6 +347,7 @@ define(function (require, exports, module) {
     exports.stateManager        = PreferencesImpl.stateManager;
     exports.FileStorage         = PreferencesBase.FileStorage;
     exports.SETTINGS_FILENAME   = PreferencesImpl.SETTINGS_FILENAME;
+    exports.SETTINGS_FILENAME_BRACKETS   = PreferencesImpl.SETTINGS_FILENAME_BRACKETS;
     exports.definePreference    = PreferencesImpl.manager.definePreference.bind(PreferencesImpl.manager);
     exports.fileChanged         = PreferencesImpl.manager.fileChanged.bind(PreferencesImpl.manager);
 });

@@ -72,7 +72,7 @@ define(function (require, exports, module) {
             testDocument = mockEditor.doc;
 
             // Rename the file to preferences file.
-            testDocument.file._name = ".brackets.json";
+            testDocument.file._name = ".phcode.json";
 
             // Setup a test environment by loading minimum preferences required to run unit tests.
             PrefsCodeHints._setupTestEnvironment(testDocument, testPreferences);
@@ -153,7 +153,7 @@ define(function (require, exports, module) {
 
         describe("File name based hinting", function () {
 
-            it("it should hint in .brackets.json", function () {
+            it("it should hint in .phcode.json", function () {
                 // Between " and closeBrackets"
                 testEditor.setCursorPos({line: 1, ch: 5});
                 expectHints(PrefsCodeHints.hintProvider);
@@ -162,8 +162,8 @@ define(function (require, exports, module) {
                 expectHints(PrefsCodeHints.hintProvider);
             });
 
-            it("it should hint in brackets.json", function () {
-                testDocument.file._name = "brackets.json";
+            it("it should hint in phcode.json", function () {
+                testDocument.file._name = "phcode.json";
                 PrefsCodeHints._setupTestEnvironment(testDocument, testPreferences);
 
                 // Between " and closeBrackets"

@@ -75,7 +75,7 @@ define(function (require, exports, module) {
                     }
                 };
 
-                var layer = new PreferencesBase.PathLayer("/.brackets.json");
+                var layer = new PreferencesBase.PathLayer("/.phcode.json");
 
                 expect(layer.get(data, "spaceUnits", {
                     path: "/public/index.html"
@@ -112,7 +112,7 @@ define(function (require, exports, module) {
                     }
                 };
 
-                var layer = new PreferencesBase.PathLayer("/.brackets.json");
+                var layer = new PreferencesBase.PathLayer("/.phcode.json");
                 expect(layer.getPreferenceLocation(data, "spaceUnits", {
                     path: "/foo.txt"
                 })).toBeUndefined();
@@ -138,7 +138,7 @@ define(function (require, exports, module) {
 
                 var originalData = _.clone(data, true);
 
-                var layer = new PreferencesBase.PathLayer("/.brackets.json");
+                var layer = new PreferencesBase.PathLayer("/.phcode.json");
                 expect(layer.set(data, "spaceUnits", 10, {
                     path: "/foo.txt"
                 })).toBe(false);
@@ -183,7 +183,7 @@ define(function (require, exports, module) {
                     }
                 };
 
-                var layer = new PreferencesBase.PathLayer("/.brackets.json");
+                var layer = new PreferencesBase.PathLayer("/.phcode.json");
 
                 expect(layer.set(data, "spaceUnits", 11, {
                     path: "/index.html"
@@ -553,7 +553,7 @@ define(function (require, exports, module) {
                     }
                 };
 
-                var pathLayer = new PreferencesBase.PathLayer("/.brackets.json");
+                var pathLayer = new PreferencesBase.PathLayer("/.phcode.json");
                 var languageLayer = new PreferencesBase.LanguageLayer();
                 var scope = new PreferencesBase.Scope(new PreferencesBase.MemoryStorage(data));
                 scope.load();
@@ -605,7 +605,7 @@ define(function (require, exports, module) {
                     }
                 };
 
-                var pathLayer = new PreferencesBase.PathLayer("/.brackets.json");
+                var pathLayer = new PreferencesBase.PathLayer("/.phcode.json");
                 var languageLayer = new PreferencesBase.LanguageLayer();
                 var scope = new PreferencesBase.Scope(new PreferencesBase.MemoryStorage(data));
                 scope.load();
@@ -1432,7 +1432,7 @@ define(function (require, exports, module) {
         });
 
         describe("File Storage", function () {
-            var settingsFile      = FileSystem.getFileForPath(testPath + "/.brackets.json"),
+            var settingsFile      = FileSystem.getFileForPath(testPath + "/.phcode.json"),
                 newSettingsFile   = FileSystem.getFileForPath(testPath + "/new.prefs"),
                 emptySettingsFile = FileSystem.getFileForPath(testPath + "/empty.json"),
                 filestorage,

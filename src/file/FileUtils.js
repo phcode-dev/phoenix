@@ -71,13 +71,7 @@ define(function (require, exports, module) {
      *  constant if the file can not be read.
      */
     function readAsText(file, bypassCache) {
-        var result = new $.Deferred();
-
-        // Measure performance
-        var perfTimerName = PerfUtils.markStart("readAsText:\t" + file.fullPath);
-        result.always(function () {
-            PerfUtils.addMeasurement(perfTimerName);
-        });
+        const result = new $.Deferred();
 
         file.read({bypassCache: bypassCache}, function (err, data, _encoding, stat) {
             if (!err) {
