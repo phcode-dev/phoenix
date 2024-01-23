@@ -27,6 +27,7 @@ define(function (require, exports, module) {
     var Commands            = require("command/Commands"),
         FileUtils           = require("file/FileUtils"),
         Async               = require("utils/Async"),
+        Dialogs             = require("widgets/Dialogs"),
         DocumentManager     = require("document/DocumentManager"),
         Editor              = require("editor/Editor").Editor,
         EditorManager       = require("editor/EditorManager"),
@@ -506,7 +507,7 @@ define(function (require, exports, module) {
      * @param {string} buttonId  One of the Dialogs.DIALOG_BTN_* symbolic constants.
      * @param {boolean=} enableFirst  If true, then enable the button before clicking.
      */
-    async function clickDialogButton(buttonId, enableFirst) {
+    async function clickDialogButton(buttonId = Dialogs.DIALOG_BTN_OK, enableFirst = false) {
         // Make sure there's one and only one dialog open
         var $dlg = _testWindow.$(".modal.instance"),
             promise = $dlg.data("promise");
@@ -527,6 +528,14 @@ define(function (require, exports, module) {
 
         // Dialog should resolve/reject the promise
         await awaitsForDone(promise);
+    }
+
+    async function waitForModalDialog(timeout=2000) {
+        // Make sure there's one and only one dialog open
+        await awaitsFor(()=>{
+            let $dlg = _testWindow.$(".modal.instance");
+            return $dlg.length >= 1;
+        }, timeout);
     }
 
 
@@ -1410,6 +1419,7 @@ define(function (require, exports, module) {
     exports.ensureExistsDirAsync            = ensureExistsDirAsync;
     exports.waitTillPathExists              = waitTillPathExists;
     exports.waitTillPathNotExists           = waitTillPathNotExists;
+    exports.waitForModalDialog              = waitForModalDialog;
     exports.waitForBracketsDoneLoading      = waitForBracketsDoneLoading;
     exports.getTestWindow                   = getTestWindow;
     exports.simulateKeyEvent                = simulateKeyEvent;
