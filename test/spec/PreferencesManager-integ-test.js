@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, beforeAll, afterAll, spyOn, awaitsForDone */
+/*global describe, it, expect, beforeEach, beforeAll, afterAll, awaitsFor, awaitsForDone */
 
 define(function (require, exports, module) {
 
@@ -49,8 +49,9 @@ define(function (require, exports, module) {
             var projectWithoutSettings = SpecRunnerUtils.getTestPath("/spec/WorkingSetView-test-files"),
                 FileViewController = testWindow.brackets.test.FileViewController;
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(".phcode.json"));
-
-            expect(PreferencesManager.get("spaceUnits")).toBe(9);
+            await awaitsFor(()=>{
+                return PreferencesManager.get("spaceUnits") === 9;
+            }, "space units to be 9");
             await awaitsForDone(FileViewController.openAndSelectDocument(nonProjectFile,
                 FileViewController.WORKING_SET_VIEW));
 
