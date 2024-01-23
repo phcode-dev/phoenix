@@ -1029,6 +1029,9 @@ define(function (require, exports, module) {
         if (info.length) {
             paneId = info[0].paneId;
         }
+        if(alertIsShown){ // due to async functions above, we have to check again
+            return;
+        }
         alertIsShown = true;
         FileViewController.openFileAndAddToWorkingSet(errorPrefFile, paneId)
             .done(function () {
