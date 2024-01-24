@@ -84,14 +84,6 @@ define(function (require, exports, module) {
     // Memory storages take no time to initialize
     _prefManagerReadyDeferred.resolve();
 
-    // "State" is stored like preferences but it is not generally intended to be user-editable.
-    // It's for more internal, implicit things like window size, working set, etc.
-    var stateManager = new PreferencesBase.PreferencesSystem();
-    var smUserScope = new PreferencesBase.Scope(new PreferencesBase.MemoryStorage());
-    var stateProjectLayer = new PreferencesBase.ProjectLayer();
-    smUserScope.addLayer(stateProjectLayer);
-    var smUserScopeLoading = stateManager.addScope("user", smUserScope);
-
     function _reloadUserPrefs() {
         return;
     }
@@ -101,9 +93,6 @@ define(function (require, exports, module) {
     exports.projectStorage      = projectStorage;
     exports.projectPathLayer    = projectPathLayer;
     exports.userScopeLoading    = userScopeLoading;
-    exports.stateManager        = stateManager;
-    exports.stateProjectLayer   = stateProjectLayer;
-    exports.smUserScopeLoading  = smUserScopeLoading;
     exports.userPrefFile        = userPrefFile;
     exports.isUserScopeCorrupt  = isUserScopeCorrupt;
     exports.managerReady        = _prefManagerReadyDeferred.promise();

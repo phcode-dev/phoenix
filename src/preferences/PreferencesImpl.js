@@ -112,24 +112,12 @@ define(function (require, exports, module) {
         });
 
 
-    // "State" is stored like preferences but it is not generally intended to be user-editable.
-    // It's for more internal, implicit things like window size, working set, etc.
-    var stateManager = new PreferencesBase.PreferencesSystem();
-    var userStateFile = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + STATE_FILENAME);
-    FileSystem.alwaysIndex(userStateFile);
-    var smUserScope = new PreferencesBase.Scope(new PreferencesBase.FileStorage(userStateFile, true, true));
-    var stateProjectLayer = new PreferencesBase.ProjectLayer();
-    smUserScope.addLayer(stateProjectLayer);
-    var smUserScopeLoading = stateManager.addScope("user", smUserScope);
-
-
     // Listen for times where we might be unwatching a root that contains one of the user-level prefs files,
     // and force a re-read of the file in order to ensure we can write to it later (see #7300).
     function _reloadUserPrefs(rootDir) {
         var prefsDir = path.normalize(brackets.app.getApplicationSupportDirectory() + "/");
         if (prefsDir.indexOf(rootDir.fullPath) === 0) {
             manager.fileChanged(userPrefFile);
-            stateManager.fileChanged(userStateFile);
         }
     }
 
@@ -138,9 +126,6 @@ define(function (require, exports, module) {
     exports.projectStorage      = projectStorage;
     exports.projectPathLayer    = projectPathLayer;
     exports.userScopeLoading    = userScopeLoading;
-    exports.stateManager        = stateManager;
-    exports.stateProjectLayer   = stateProjectLayer;
-    exports.smUserScopeLoading  = smUserScopeLoading;
     exports.userPrefFile        = userPrefFile;
     exports.isUserScopeCorrupt  = isUserScopeCorrupt;
     exports.managerReady        = _prefManagerReadyDeferred.promise();

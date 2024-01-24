@@ -306,8 +306,6 @@ define(function (require, exports, module) {
     exports._setCurrentFile         = _setCurrentFile;
     exports._setCurrentLanguage     = _setCurrentLanguage;
     exports._setProjectSettingsFile = _setProjectSettingsFile;
-    exports._smUserScopeLoading     = PreferencesImpl.smUserScopeLoading;
-    exports._stateProjectLayer      = PreferencesImpl.stateProjectLayer;
     exports._reloadUserPrefs        = PreferencesImpl.reloadUserPrefs;
     exports._buildContext           = _buildContext;
 

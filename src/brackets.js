@@ -520,13 +520,8 @@ define(function (require, exports, module) {
         };
     }
 
-    // Wait for view state to load.
-    const viewStateTimer = PerfUtils.markStart("User viewstate loading");
-    PreferencesManager._smUserScopeLoading.always(function () {
-        PerfUtils.addMeasurement(viewStateTimer);
-        // Dispatch htmlReady event
-        _beforeHTMLReady();
-        AppInit._dispatchReady(AppInit.HTML_READY);
-        $(window.document).ready(_onReady);
-    });
+    // Dispatch htmlReady event
+    _beforeHTMLReady();
+    AppInit._dispatchReady(AppInit.HTML_READY);
+    $(window.document).ready(_onReady);
 });
