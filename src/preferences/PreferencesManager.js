@@ -37,6 +37,7 @@ define(function (require, exports, module) {
         FileSystem              = require("filesystem/FileSystem"),
         Strings                 = require("strings"),
         PreferencesImpl         = require("preferences/PreferencesImpl"),
+        StateManager            = require("preferences/StateManager"),
         _                       = require("thirdparty/lodash");
 
     var currentFilename         = null, // the filename currently being edited
@@ -122,14 +123,6 @@ define(function (require, exports, module) {
      * @type {Object}
      */
     var CURRENT_PROJECT = {};
-
-    /**
-     * Context to look up preferences for the currently edited file.
-     * This is undefined because this is the default behavior of PreferencesSystem.get.
-     *
-     * @type {Object}
-     */
-    var CURRENT_FILE;
 
     /**
      * Cached copy of the scopeOrder with the project Scope
@@ -290,7 +283,7 @@ define(function (require, exports, module) {
      * @param {Object} [context] Optional additional information about the request
      */
     function getViewState(id, context) {
-        return PreferencesImpl.stateManager.get(id, context);
+        return StateManager.get(id, context);
     }
 
     /**
@@ -299,16 +292,9 @@ define(function (require, exports, module) {
      * @param {string} id preference to set
      * @param {*} value new value for the preference
      * @param {Object} [context] Optional additional information about the request
-     * @param {boolean} [doNotSave] If it is undefined or false, then save the
-     *      view state immediately.
      */
-    function setViewState(id, value, context, doNotSave) {
-
-        PreferencesImpl.stateManager.set(id, value, context, doNotSave);
-
-        if (!doNotSave) {
-            PreferencesImpl.stateManager.save();
-        }
+    function setViewState(id, value, context) {
+        return StateManager.set(id, value, context);
     }
 
     AppInit.appReady(function () {
@@ -328,7 +314,6 @@ define(function (require, exports, module) {
     // Public API
 
     // Context names for preference lookups
-    exports.CURRENT_FILE        = CURRENT_FILE;
     exports.CURRENT_PROJECT     = CURRENT_PROJECT;
 
     exports.ready               = PreferencesImpl.managerReady;
@@ -344,7 +329,7 @@ define(function (require, exports, module) {
     exports.getViewState        = getViewState;
     exports.setViewState        = setViewState;
     exports.addScope            = PreferencesImpl.manager.addScope.bind(PreferencesImpl.manager);
-    exports.stateManager        = PreferencesImpl.stateManager;
+    exports.stateManager        = StateManager;
     exports.FileStorage         = PreferencesBase.FileStorage;
     exports.SETTINGS_FILENAME   = PreferencesImpl.SETTINGS_FILENAME;
     exports.SETTINGS_FILENAME_BRACKETS   = PreferencesImpl.SETTINGS_FILENAME_BRACKETS;
