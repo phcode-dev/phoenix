@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach*/
+/*global describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, awaitsFor*/
 
 define(function (require, exports, module) {
 
@@ -27,6 +27,8 @@ define(function (require, exports, module) {
     var MultiRangeInlineEditor  = require("editor/MultiRangeInlineEditor").MultiRangeInlineEditor,
         InlineTextEditor        = require("editor/InlineTextEditor").InlineTextEditor,
         InlineWidget            = require("editor/InlineWidget").InlineWidget,
+        ProjectManager      = require("project/ProjectManager"),
+        PreferencesManager = require("preferences/PreferencesManager"),
         SpecRunnerUtils         = require("spec/SpecRunnerUtils");
 
     // TODO: overlaps a lot with CSSInlineEdit-test integration suite
@@ -37,12 +39,27 @@ define(function (require, exports, module) {
             doc;
 
         describe("unit", function () {
+            let savedGetProjectRoot;
+
+            beforeAll(function () {
+                savedGetProjectRoot = ProjectManager.getProjectRoot;
+                ProjectManager.getProjectRoot = function () {
+                    return {
+                        fullPath: '/mock/project/root'
+                    };
+                };
+            });
+
+            afterAll(function () {
+                ProjectManager.getProjectRoot = savedGetProjectRoot;
+            });
 
             beforeEach(function () {
                 // create dummy Document and Editor
                 var mocks = SpecRunnerUtils.createMockEditor("hostEditor", "");
                 doc = mocks.doc;
                 hostEditor = mocks.editor;
+                PreferencesManager.setViewState("inlineEditor.collapsedFiles", {}, PreferencesManager.STATE_PROJECT_CONTEXT);
             });
 
             afterEach(function () {
