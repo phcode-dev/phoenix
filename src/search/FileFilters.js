@@ -131,7 +131,7 @@ define(function (require, exports, module) {
             oldFilter         = PreferencesManager.getViewState("search.exclusions") || [],
             activeFilter      = null;
 
-        if (activeFilterIndex === undefined && oldFilter.length) {
+        if (activeFilterIndex === null && oldFilter.length) {
             activeFilter = { name: "", patterns: oldFilter };
             activeFilterIndex = _getFilterIndex(filterSets, activeFilter);
 
