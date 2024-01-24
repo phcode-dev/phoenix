@@ -429,15 +429,7 @@ define(function (require, exports, module) {
             if (options && options.encoding) {
                 file._encoding = options.encoding;
             } else {
-                var projectRoot = ProjectManager.getProjectRoot(),
-                    context = {
-                        location: {
-                            scope: "user",
-                            layer: "project",
-                            layerID: projectRoot.fullPath
-                        }
-                    };
-                var encoding = PreferencesManager.getViewState("encoding", context);
+                const encoding = PreferencesManager.getViewState("encoding", PreferencesManager.STATE_PROJECT_CONTEXT);
                 if (encoding && encoding[fullPath]) {
                     file._encoding = encoding[fullPath];
                 }
@@ -1062,17 +1054,9 @@ define(function (require, exports, module) {
 
             // First, write document's current text to new file
             if (doc.file._encoding && doc.file._encoding !== "UTF-8") {
-                var projectRoot = ProjectManager.getProjectRoot(),
-                    context = {
-                        location: {
-                            scope: "user",
-                            layer: "project",
-                            layerID: projectRoot.fullPath
-                        }
-                    };
-                var encoding = PreferencesManager.getViewState("encoding", context);
+                const encoding = PreferencesManager.getViewState("encoding", PreferencesManager.STATE_PROJECT_CONTEXT);
                 encoding[path] = doc.file._encoding;
-                PreferencesManager.setViewState("encoding", encoding, context);
+                PreferencesManager.setViewState("encoding", encoding, PreferencesManager.STATE_PROJECT_CONTEXT);
             }
             newFile = FileSystem.getFileForPath(path);
             newFile._encoding = doc.file._encoding;
@@ -1925,7 +1909,7 @@ define(function (require, exports, module) {
 
     function attachBrowserUnloadHandler() {
         window.onbeforeunload = function(e) {
-            PreferencesManager.setViewState("windowClosingTime", new Date().getTime(), {}, false);
+            PreferencesManager.setViewState("windowClosingTime", new Date().getTime());
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
             }, closeFail=>{
@@ -1996,7 +1980,7 @@ define(function (require, exports, module) {
                 return;
             }
             closeInProgress = true;
-            PreferencesManager.setViewState("windowClosingTime", new Date().getTime(), {}, false);
+            PreferencesManager.setViewState("windowClosingTime", new Date().getTime());
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);

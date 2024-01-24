@@ -344,17 +344,9 @@ define(function (require, exports, module) {
         promise.done(function (text, readTimestamp) {
             encodingSelect.$button.text(document.file._encoding);
             // Store the preferred encoding in the state
-            var projectRoot = ProjectManager.getProjectRoot(),
-                context = {
-                    location: {
-                        scope: "user",
-                        layer: "project",
-                        layerID: projectRoot.fullPath
-                    }
-                };
-            var encoding = PreferencesManager.getViewState("encoding", context);
+            const encoding = PreferencesManager.getViewState("encoding", PreferencesManager.STATE_PROJECT_CONTEXT);
             encoding[document.file.fullPath] = document.file._encoding;
-            PreferencesManager.setViewState("encoding", encoding, context);
+            PreferencesManager.setViewState("encoding", encoding, PreferencesManager.STATE_PROJECT_CONTEXT);
         });
         promise.fail(function (error) {
             console.log("Error reloading contents of " + document.file.fullPath, error);
@@ -531,24 +523,16 @@ define(function (require, exports, module) {
     }
 
     ProjectManager.on("projectOpen", function () {
-        var projectRoot = ProjectManager.getProjectRoot(),
-            context = {
-                location: {
-                    scope: "user",
-                    layer: "project",
-                    layerID: projectRoot.fullPath
-                }
-            };
-        var encoding = PreferencesManager.getViewState("encoding", context);
+        let encoding = PreferencesManager.getViewState("encoding", PreferencesManager.STATE_PROJECT_CONTEXT);
         if (!encoding) {
             encoding = {};
-            PreferencesManager.setViewState("encoding", encoding, context);
+            PreferencesManager.setViewState("encoding", encoding, PreferencesManager.STATE_PROJECT_CONTEXT);
         }
         Async.doSequentially(Object.keys(encoding), function (filePath, index) {
             return _checkFileExistance(filePath, index, encoding);
         }, false)
             .always(function () {
-                PreferencesManager.setViewState("encoding", encoding, context);
+                PreferencesManager.setViewState("encoding", encoding, PreferencesManager.STATE_PROJECT_CONTEXT);
             });
     });
 

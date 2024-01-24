@@ -66,7 +66,7 @@ define(function (require, exports, module) {
             }
         }
         // low priority, we do not want to save this right now
-        PreferencesManager.setViewState(USAGE_COUNTS_KEY, usageData, undefined, true);
+        PreferencesManager.setViewState(USAGE_COUNTS_KEY, usageData);
     }
 
     function _trackUsageInfo() {
@@ -80,7 +80,7 @@ define(function (require, exports, module) {
             let today = dateNow.toISOString().split('T')[0]; // yyyy-mm-dd format
             usageData[today] = (usageData[today] || 0) + 1;
             // low priority, we do not want to save this right now
-            PreferencesManager.setViewState(USAGE_COUNTS_KEY, usageData, undefined, true);
+            PreferencesManager.setViewState(USAGE_COUNTS_KEY, usageData);
         }, ONE_MINUTE);
     }
 

@@ -315,6 +315,9 @@ define(function (require, exports, module) {
 
     // Context names for preference lookups
     exports.CURRENT_PROJECT     = CURRENT_PROJECT;
+    exports.STATE_PROJECT_CONTEXT = StateManager.PROJECT_CONTEXT;
+    exports.STATE_GLOBAL_CONTEXT = StateManager.GLOBAL_CONTEXT;
+    exports.STATE_PROJECT_THEN_GLOBAL_CONTEXT = StateManager.PROJECT_THEN_GLOBAL_CONTEXT;
 
     exports.ready               = PreferencesImpl.managerReady;
     exports.getUserPrefFile     = getUserPrefFile;

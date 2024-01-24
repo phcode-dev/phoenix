@@ -506,17 +506,9 @@ define(function (require, exports, module) {
         //  via notifyFileDeleted
         FileSyncManager.syncOpenDocuments(Strings.FILE_DELETED_TITLE);
 
-        var projectRoot = ProjectManager.getProjectRoot(),
-            context = {
-                location: {
-                    scope: "user",
-                    layer: "project",
-                    layerID: projectRoot.fullPath
-                }
-            };
-        var encoding = PreferencesManager.getViewState("encoding", context);
+        const encoding = PreferencesManager.getViewState("encoding", PreferencesManager.STATE_PROJECT_CONTEXT);
         delete encoding[fullPath];
-        PreferencesManager.setViewState("encoding", encoding, context);
+        PreferencesManager.setViewState("encoding", encoding, PreferencesManager.STATE_PROJECT_CONTEXT);
 
         if (!getOpenDocumentForPath(fullPath) &&
                 !MainViewManager.findInAllWorkingSets(fullPath).length) {

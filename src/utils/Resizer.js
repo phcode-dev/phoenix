@@ -362,7 +362,7 @@ define(function (require, exports, module) {
             $element.trigger(EVENT_PANEL_EXPANDED, [elementSize]);
             elementPrefs.size = elementSize;
             elementPrefs.contentSize = contentSize;
-            PreferencesManager.setViewState(elementID, elementPrefs, null, isResizing);
+            PreferencesManager.setViewState(elementID, elementPrefs);
         });
 
         $element.data("hide", function () {
@@ -384,7 +384,7 @@ define(function (require, exports, module) {
             adjustSibling(0);
 
             $element.trigger(EVENT_PANEL_COLLAPSED, [elementSize]);
-            PreferencesManager.setViewState(elementID, elementPrefs, null, isResizing);
+            PreferencesManager.setViewState(elementID, elementPrefs);
         });
 
 

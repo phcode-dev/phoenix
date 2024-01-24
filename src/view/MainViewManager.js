@@ -1468,14 +1468,10 @@ define(function (require, exports, module) {
         // file root is appended for each project
         var panes,
             promises = [],
-            context = { location: { scope: "user",
-                layer: "project" } },
-            state = PreferencesManager.getViewState(PREFS_NAME, context);
+            state = PreferencesManager.getViewState(PREFS_NAME, PreferencesManager.STATE_PROJECT_CONTEXT);
 
         function convertViewState() {
-            var context = { location: { scope: "user",
-                    layer: "project" } },
-                files = PreferencesManager.getViewState(OLD_PREFS_NAME, context);
+            let files = PreferencesManager.getViewState(OLD_PREFS_NAME, PreferencesManager.STATE_PROJECT_CONTEXT);
 
             if (!files) {
                 // nothing to convert
@@ -1610,23 +1606,19 @@ define(function (require, exports, module) {
             return;
         }
 
-        let context         = { location: { scope: "user",
-                layer: "project",
-                layerID: projectRoot.fullPath } },
-
-            state = {
-                orientation: _orientation,
-                activePaneId: getActivePaneId(),
-                splitPercentage: _computeSplitPercentage(),
-                panes: {
-                }
-            };
+        let state = {
+            orientation: _orientation,
+            activePaneId: getActivePaneId(),
+            splitPercentage: _computeSplitPercentage(),
+            panes: {
+            }
+        };
 
         _.forEach(_panes, function (pane) {
             state.panes[pane.id] = pane.saveState();
         });
 
-        PreferencesManager.setViewState(PREFS_NAME, state, context);
+        PreferencesManager.setViewState(PREFS_NAME, state, PreferencesManager.STATE_PROJECT_CONTEXT);
     }
 
     /**

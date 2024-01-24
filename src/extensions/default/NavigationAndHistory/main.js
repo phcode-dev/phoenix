@@ -82,14 +82,6 @@ define(function (require, exports, module) {
     });
 
     /**
-     * Returns a 'context' object for getting/setting project-specific preferences
-     */
-    function _getPrefsContext() {
-        var projectRoot = ProjectManager.getProjectRoot();
-        return { location: { scope: "user", layer: "project", layerID: projectRoot && projectRoot.fullPath } };
-    }
-
-    /**
      * Opens a full editor for the given context
      * @private
      * @param {Object.<path, paneId, cursor>} contextData - wrapper to provide the information required to open a full editor
@@ -390,7 +382,7 @@ define(function (require, exports, module) {
             $mrofList.empty();
             _createMROFDisplayList(true);
             $currentContext = null;
-            PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, _getPrefsContext(), true);
+            PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, PreferencesManager.STATE_PROJECT_CONTEXT);
         }
 
         if (!refresh) {
@@ -567,7 +559,7 @@ define(function (require, exports, module) {
             _mrofList[index].cursor = cursorPos;
         }
 
-        PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, _getPrefsContext(), true);
+        PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, PreferencesManager.STATE_PROJECT_CONTEXT);
     }
 
     /**
@@ -613,7 +605,7 @@ define(function (require, exports, module) {
         // add it to the front of the list
         _mrofList.unshift(entry);
 
-        PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, _getPrefsContext(), true);
+        PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, PreferencesManager.STATE_PROJECT_CONTEXT);
     }
 
     // To update existing entry if a move has happened
@@ -639,12 +631,12 @@ define(function (require, exports, module) {
 
     // Handle project close or app close to set view state
     function _handleAppClose() {
-        PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, _getPrefsContext(), true);
+        PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, PreferencesManager.STATE_PROJECT_CONTEXT);
         _mrofList = [];
     }
 
     function _initRecentFilesList() {
-        _mrofList = PreferencesManager.getViewState(OPEN_FILES_VIEW_STATE, _getPrefsContext()) || [];
+        _mrofList = PreferencesManager.getViewState(OPEN_FILES_VIEW_STATE, PreferencesManager.STATE_PROJECT_CONTEXT) || [];
 
         _mrofList = _mrofList.filter(function (entry) {
             return entry;
@@ -718,7 +710,7 @@ define(function (require, exports, module) {
         // Clean the null/undefined entries
         _mrofList = _mrofList.filter(function (e) { return e; });
 
-        PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, _getPrefsContext(), true);
+        PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, PreferencesManager.STATE_PROJECT_CONTEXT);
     }
 
     function _initRecentFileMenusAndCommands() {
@@ -816,14 +808,14 @@ define(function (require, exports, module) {
             _initRecentFileMenusAndCommands();
             _mrofList = [];
             _initRecentFilesList();
-            PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, _getPrefsContext(), true);
+            PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, PreferencesManager.STATE_PROJECT_CONTEXT);
             _detachListners();
             _attachListners();
             isRecentFilesNavEnabled = true;
         } else {
             // Reset the view state to empty
             _mrofList = [];
-            PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, _getPrefsContext(), true);
+            PreferencesManager.setViewState(OPEN_FILES_VIEW_STATE, _mrofList, PreferencesManager.STATE_PROJECT_CONTEXT);
             _deregisterSortcutsAndMenus();
             _initDefaultNavigationCommands();
             _detachListners();
