@@ -1080,11 +1080,6 @@ define(function (require, exports, module) {
         }
 
         startLoad.done(function () {
-            // Clear project path map
-            if (!isUpdating) {
-                PreferencesManager._stateProjectLayer.setProjectPath(rootPath);
-            }
-
             // Populate file tree as long as we aren't running in the browser
             if (!brackets.inBrowser) {
                 if (!isUpdating) {

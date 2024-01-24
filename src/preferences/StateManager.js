@@ -34,6 +34,7 @@ define(function (require, exports, module) {
     const GLOBAL_CONTEXT = "global";
     const PROJECT_THEN_GLOBAL_CONTEXT = "any";
     const PHSTORE_STATEMANAGER_PREFIX = "STATE_";
+    const transformDotsInID = {};
 
     const definedPreferences = {};
 
@@ -71,9 +72,13 @@ define(function (require, exports, module) {
      * @param {string?} [context.layer] Eg. project - deprecated, do not use
      * @param {string?} [context.layerID] Eg. /tauri/path/to/project - deprecated, do not use
      */
-    function get(id, context= GLOBAL_CONTEXT) {
+    function getVal(id, context= GLOBAL_CONTEXT) {
         if(Phoenix.config.environment !== 'production' && typeof  context === 'object'){
             console.warn("Use of context object in state is deprecated. Please migrate to StateManager");
+        }
+        if(transformDotsInID[id]){
+            // this is true if
+            id=id.replace(".", "-");
         }
         let item;
         switch (context) {
@@ -94,7 +99,7 @@ define(function (require, exports, module) {
             if(Phoenix.config.environment !== 'production'){
                 console.warn("Use of context object in StateManager.get() is deprecated. Please migrate to StateManager");
             }
-            return get(id, _GET_CONTEXT_FROM_LEGACY_CONTEXT(context));
+            return getVal(id, _GET_CONTEXT_FROM_LEGACY_CONTEXT(context));
         }
     }
 
@@ -110,7 +115,11 @@ define(function (require, exports, module) {
      * @param {string?} [context.layer] Eg. project - deprecated, do not use
      * @param {string?} [context.layerID] Eg. /tauri/path/to/project - deprecated, do not use
      */
-    function set(id, value, context= GLOBAL_CONTEXT) {
+    function setVal(id, value, context= GLOBAL_CONTEXT) {
+        if(transformDotsInID[id]){
+            // this is true if
+            id=id.replace(".", "-");
+        }
         switch (context) {
         case PROJECT_THEN_GLOBAL_CONTEXT:
             throw new Error("Cannot use PROJECT_THEN_GLOBAL_CONTEXT with set");
@@ -124,7 +133,7 @@ define(function (require, exports, module) {
             if(Phoenix.config.environment !== 'production'){
                 console.warn("Use of context object in StateManager.set() is deprecated. Please migrate to StateManager");
             }
-            set(id, value, _GET_CONTEXT_FROM_LEGACY_CONTEXT(context));
+            setVal(id, value, _GET_CONTEXT_FROM_LEGACY_CONTEXT(context));
         }
     }
 
@@ -140,13 +149,19 @@ define(function (require, exports, module) {
      * @param options
      * @return {{}}
      */
-    function definePreference(id, type, initial, options) {
+    function definePreferenceInternal(id, type, initial, options) {
         if (definedPreferences[id]) {
             throw new Error("Preference " + id + " was redefined");
         }
 
         if(id.includes(".")){
-            console.error("StateManager.definePreference cannot be called with an id that has a .", id);
+            // this is a problem as our event Dispatcher treats . as event class names. so listening on is's that have
+            // a dot will fail as instead of listening to events on for Eg. `eventName.hello`, eventDispatcher will only
+            // listen to `eventName`. To mitigate this, we will try to change the id name by replacing `.` with `:`
+            transformDotsInID[id] = true;
+            id=id.replace(".", ":");
+            console.error(`StateManager.definePreference should not be called with an id ${id} that has a` +
+                " `.`- trying to continue...");
         }
 
         // change event processing on key
@@ -167,17 +182,63 @@ define(function (require, exports, module) {
         return preference;
     }
 
-    function getPreference(id) {
+    function getPreferenceInternal(id) {
         if(!definedPreferences[id]){
             throw new Error("getPreference " + id + " no such preference defined.");
         }
         return definedPreferences[id].preference;
     }
 
-    exports.get     = get;
-    exports.set     = set;
-    exports.definePreference = definePreference;
-    exports.getPreference = getPreference;
+    const knownExtensions = {};
+    function createExtensionStateManager(extensionID) {
+        let originalExtensionID = extensionID, i=0;
+        if(extensionID.includes(".")){
+            // this is a problem as our event Dispatcher treats . as event class names. so listening on id's that have
+            // a dot will fail as instead of listening to events on for Eg. `eventName.hello`, eventDispatcher will only
+            // listen to `eventName`. To mitigate this, we will try to change the id name by replacing `.` with `:`
+            extensionID=extensionID.replace(".", ":");
+        }
+        while(knownExtensions[extensionID]){
+            let newID = `${originalExtensionID}_${i++}`;
+            console.warn(`Another extension of the same id ${extensionID} exists in createExtensionStateManager.` +
+                ` Mitigating-Identifying a new free id to use... ${newID}`);
+            extensionID = newID;
+        }
+        knownExtensions[extensionID] = true;
+        const extPrefix = `EXT_${extensionID}`;
+        return {
+            get: function (id, context) {
+                return getVal(`${extPrefix}_${id}`, context);
+            },
+            set: function (id, value, context) {
+                return setVal(`${extPrefix}_${id}`, value, context);
+            },
+            definePreference: function (id, type, initial, options) {
+                return definePreferenceInternal(`${extPrefix}_${id}`, type, initial, options);
+            },
+            getPreference: function (id) {
+                return getPreferenceInternal(`${extPrefix}_${id}`);
+            }
+        };
+    }
+
+    function save() {
+        console.warn("StateManager.save() is deprecated. Settings are auto saved to a high throughput Database");
+    }
+
+    function getPrefixedSystem(prefix) {
+        console.warn("StateManager.getPrefixedSystem() is deprecated. Use StateManager.getExtensionStateManager()");
+        return createExtensionStateManager(prefix);
+    }
+
+    exports.get     = getVal;
+    exports.set     = setVal;
+    exports.definePreference = definePreferenceInternal;
+    exports.getPreference = getPreferenceInternal;
+    exports.createExtensionStateManager = createExtensionStateManager;
+    //deprecated APIs
+    exports.save = save;
+    exports.getPrefixedSystem = getPrefixedSystem;
     // global exports
     exports.PROJECT_CONTEXT = PROJECT_CONTEXT;
     exports.GLOBAL_CONTEXT = GLOBAL_CONTEXT;
