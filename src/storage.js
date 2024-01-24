@@ -306,7 +306,9 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
         storageReadyPromise,
         // private APIs
         _storageBootstrapTime: Date.now() - Phoenix.startTime,
-        _PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY
+        _PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY,
+        CHANGE_TYPE_INTERNAL,
+        CHANGE_TYPE_EXTERNAL
     };
     if(Phoenix.isTestWindow) {
         PhStore._setTestKey = function (testKey) {
