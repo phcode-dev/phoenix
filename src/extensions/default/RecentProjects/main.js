@@ -47,6 +47,9 @@ define(function (require, exports, module) {
     const RECENT_PROJECTS_INTERFACE = "Extn.Phoenix.recentProjects";
 
     ExtensionInterface.registerExtensionInterface(RECENT_PROJECTS_INTERFACE, exports);
+    const RECENT_PROJECT_STATE = "recentProjects";
+    PreferencesManager.stateManager.definePreference(RECENT_PROJECT_STATE, 'array', [])
+        .watchExternalChanges();
 
     var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
@@ -66,7 +69,7 @@ define(function (require, exports, module) {
      * Warning: unlike most paths in Brackets, these lack a trailing "/"
      */
     function getRecentProjects() {
-        var recentProjects = PreferencesManager.getViewState("recentProjects") || [],
+        var recentProjects = PreferencesManager.getViewState(RECENT_PROJECT_STATE) || [],
             i;
 
         for (i = 0; i < recentProjects.length; i++) {
@@ -91,7 +94,7 @@ define(function (require, exports, module) {
         if (recentProjects.length > MAX_PROJECTS) {
             recentProjects = recentProjects.slice(0, MAX_PROJECTS);
         }
-        PreferencesManager.setViewState("recentProjects", recentProjects);
+        PreferencesManager.setViewState(RECENT_PROJECT_STATE, recentProjects);
     }
 
     /**
@@ -122,7 +125,7 @@ define(function (require, exports, module) {
                 newProjects.push(recentProjects[i]);
             }
         }
-        PreferencesManager.setViewState("recentProjects", newProjects);
+        PreferencesManager.setViewState(RECENT_PROJECT_STATE, newProjects);
     }
 
     /**
@@ -199,7 +202,7 @@ define(function (require, exports, module) {
 
         // remove project
         recentProjects.splice(index, 1);
-        PreferencesManager.setViewState("recentProjects", recentProjects);
+        PreferencesManager.setViewState(RECENT_PROJECT_STATE, recentProjects);
         checkHovers(e.pageX, e.pageY);
 
         if (recentProjects.length === 1) {
