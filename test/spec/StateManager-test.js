@@ -19,44 +19,115 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, fs, path, Phoenix*/
+/*global describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, awaitsFor*/
 
 define(function (require, exports, module) {
-    if(!window.__TAURI__) {
-        return;
-    }
+    const StateManager            = require("preferences/StateManager"),
+        ProjectManager        = require("project/ProjectManager");
 
-    const SpecRunnerUtils     = require("spec/SpecRunnerUtils");
+    describe("unit:StateManager Tests", function () {
+        let savedGetProjectRoot, val = 0;
 
-    describe("unit: StateManager Tests", function () {
+        beforeAll(function () {
+            savedGetProjectRoot = ProjectManager.getProjectRoot;
+            ProjectManager.getProjectRoot = function () {
+                return {
+                    fullPath: '/mock/project/root'
+                };
+            };
+        });
+        let testKey= "key";
 
-        beforeEach(async function () {
-
+        beforeEach(function () {
+            val++;
+            testKey = `test-key-${val}`;
         });
 
-        afterEach(async function () {
-
+        afterAll(function () {
+            ProjectManager.getProjectRoot = savedGetProjectRoot;
         });
 
-        it("Should be able to fetch files in {appLocalData}/assets folder", async function () {
-            const appLocalData = fs.getTauriVirtualPath(await window.__TAURI__.path.appLocalDataDir());
-            expect(await SpecRunnerUtils.pathExists(appLocalData, true)).toBeTrue();
-            expect(appLocalData.split("/")[1]).toEql("tauri"); // should be /tauri/applocaldata/path
+        function setupStateManagerTests(stateManager, stateManagerName = "") {
+            it("should be able to set and get state without context"+stateManagerName, async function () {
+                stateManager.set(testKey, val);
+                expect(stateManager.get(testKey)).toEqual(val);
+            });
 
-            // now write a test html file to the assets folder
-            const assetHTMLPath = `${appLocalData}/assets/a9322657236.html`;
-            const assetHtmlText = "Hello world random37834324";
-            await SpecRunnerUtils.ensureExistsDirAsync(path.dirname(assetHTMLPath));
-            await SpecRunnerUtils.createTextFileAsync(assetHTMLPath, assetHtmlText);
+            it("should be able to set and get state in global context"+stateManagerName, async function () {
+                stateManager.set(testKey, val, stateManager.GLOBAL_CONTEXT);
+                expect(stateManager.get(testKey)).toEqual(val);
+                expect(stateManager.get(testKey, stateManager.PROJECT_CONTEXT)).toEqual(null);
+                expect(stateManager.get(testKey, stateManager.PROJECT_THEN_GLOBAL_CONTEXT)).toEqual(val);
+            });
 
-            const appLocalDataPlatformPath = fs.getTauriPlatformPath(assetHTMLPath);
-            const appLocalDataURL = window.__TAURI__.tauri.convertFileSrc(appLocalDataPlatformPath);
+            it("should be able to set and get state in project context"+stateManagerName, async function () {
+                stateManager.set(testKey, val, stateManager.PROJECT_CONTEXT);
+                expect(stateManager.get(testKey)).toEqual(null);
+                expect(stateManager.get(testKey, stateManager.PROJECT_CONTEXT)).toEqual(val);
+                expect(stateManager.get(testKey, stateManager.PROJECT_THEN_GLOBAL_CONTEXT)).toEqual(val);
+            });
 
-            const fetchedData = await ((await fetch(appLocalDataURL)).text());
-            expect(fetchedData).toEqual(assetHtmlText);
+            it("should be able to define preference"+stateManagerName, async function () {
+                const defaultVal = "default val";
+                stateManager.definePreference(testKey, "string", defaultVal);
+                expect(stateManager.get(testKey)).toEqual(defaultVal);
+                expect(stateManager.get(testKey, stateManager.PROJECT_CONTEXT)).toEqual(defaultVal);
+                expect(stateManager.get(testKey, stateManager.PROJECT_THEN_GLOBAL_CONTEXT)).toEqual(defaultVal);
+                // now set a val
+                stateManager.set(testKey, val, stateManager.PROJECT_CONTEXT);
+                expect(stateManager.get(testKey)).toEqual(defaultVal);
+                expect(stateManager.get(testKey, stateManager.PROJECT_CONTEXT)).toEqual(val);
+                expect(stateManager.get(testKey, stateManager.PROJECT_THEN_GLOBAL_CONTEXT)).toEqual(val);
+            });
 
-            // delete test file
-            await SpecRunnerUtils.deletePathAsync(assetHTMLPath);
-        });
+            it("should not be able to define a defined preference"+stateManagerName, async function () {
+                const defaultVal = "default val 2";
+                stateManager.definePreference(testKey, "string", defaultVal);
+                let error;
+                try{
+                    stateManager.definePreference(testKey, "string", defaultVal);
+                } catch (e) {
+                    error = e;
+                }
+                expect(error).toBeDefined();
+            });
+
+            it("should be able to listen to changes on global preference"+stateManagerName, async function () {
+                let changedVal;
+                stateManager.definePreference(testKey, "string", val).on('change', ()=>{
+                    changedVal = stateManager.get(testKey);
+                });
+                stateManager.set(testKey, val);
+                await awaitsFor(()=>{return changedVal === val;}, "For changed pref state");
+            });
+
+            it("should be able to get a defined preference"+stateManagerName, async function () {
+                let changedVal;
+                stateManager.definePreference(testKey, "string", val);
+                stateManager.getPreference(testKey, "string", val).on('change', ()=>{
+                    changedVal = stateManager.get(testKey);
+                });
+                stateManager.set(testKey, val);
+                await awaitsFor(()=>{return changedVal === val;}, "For changed pref state");
+            });
+
+            it("should be able to listen to changes on keys with . in them"+stateManagerName, async function () {
+                let changedVal;
+                testKey = `${testKey}.key`;
+                stateManager.definePreference(testKey, "string", val).on('change', ()=>{
+                    changedVal = stateManager.get(testKey);
+                });
+                stateManager.set(testKey, val);
+                await awaitsFor(()=>{return changedVal === val;}, "For changed pref state");
+            });
+        }
+
+        setupStateManagerTests(StateManager, " default");
+        setupStateManagerTests(StateManager.createExtensionStateManager("extID"), " extension state manager");
+        setupStateManagerTests(StateManager.createExtensionStateManager("extID"), " extension state manager duplicate should work");
+        setupStateManagerTests(StateManager.createExtensionStateManager("ext.ID"), " extension state manager with dots should work");
+        setupStateManagerTests(StateManager.createExtensionStateManager("ext.ID"), " extension state manager with dots x2");
+        // getPrefixedSystem legacy api
+        setupStateManagerTests(StateManager.getPrefixedSystem("ext.ID2"), " getPrefixedSystem legacy api");
     });
 });

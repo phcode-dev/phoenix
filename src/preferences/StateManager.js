@@ -78,7 +78,7 @@ define(function (require, exports, module) {
         }
         if(transformDotsInID[id]){
             // this is true if
-            id=id.replace(".", "-");
+            id=id.replace(".", ":");
         }
         let item;
         switch (context) {
@@ -118,7 +118,7 @@ define(function (require, exports, module) {
     function setVal(id, value, context= GLOBAL_CONTEXT) {
         if(transformDotsInID[id]){
             // this is true if
-            id=id.replace(".", "-");
+            id=id.replace(".", ":");
         }
         switch (context) {
         case PROJECT_THEN_GLOBAL_CONTEXT:
@@ -191,13 +191,14 @@ define(function (require, exports, module) {
 
     const knownExtensions = {};
     function createExtensionStateManager(extensionID) {
-        let originalExtensionID = extensionID, i=0;
+        let i=0;
         if(extensionID.includes(".")){
             // this is a problem as our event Dispatcher treats . as event class names. so listening on id's that have
             // a dot will fail as instead of listening to events on for Eg. `eventName.hello`, eventDispatcher will only
             // listen to `eventName`. To mitigate this, we will try to change the id name by replacing `.` with `:`
             extensionID=extensionID.replace(".", ":");
         }
+        let originalExtensionID = extensionID;
         while(knownExtensions[extensionID]){
             let newID = `${originalExtensionID}_${i++}`;
             console.warn(`Another extension of the same id ${extensionID} exists in createExtensionStateManager.` +
@@ -218,7 +219,10 @@ define(function (require, exports, module) {
             },
             getPreference: function (id) {
                 return getPreferenceInternal(`${extPrefix}_${id}`);
-            }
+            },
+            PROJECT_CONTEXT,
+            GLOBAL_CONTEXT,
+            PROJECT_THEN_GLOBAL_CONTEXT
         };
     }
 
