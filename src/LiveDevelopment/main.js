@@ -224,7 +224,7 @@ define(function main(require, exports, module) {
         } else {
             MultiBrowserLiveDev.hideHighlight();
         }
-        PreferencesManager.setViewState("livedev.highlight", config.highlight);
+        PreferencesManager.setViewState("livedevHighlight", config.highlight);
     }
 
     /** Setup window references to useful LiveDevelopment modules */
@@ -296,13 +296,13 @@ define(function main(require, exports, module) {
     });
 
     // init prefs
-    PreferencesManager.stateManager.definePreference("livedev.highlight", "boolean", true)
+    PreferencesManager.stateManager.definePreference("livedevHighlight", "boolean", true)
         .on("change", function () {
-            config.highlight = PreferencesManager.getViewState("livedev.highlight");
+            config.highlight = PreferencesManager.getViewState("livedevHighlight");
             _updateHighlightCheckmark();
         });
 
-    config.highlight = PreferencesManager.getViewState("livedev.highlight");
+    config.highlight = PreferencesManager.getViewState("livedevHighlight");
 
     // init commands
     CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, _handlePreviewHighlightCommand);

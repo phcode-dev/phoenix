@@ -53,7 +53,7 @@ define(function (require, exports, module) {
     }
 
     function _getItemOrDefault(item, id) {
-        if(!item && definedPreferences[id]){
+        if((item === null || item === undefined) && definedPreferences[id]){
             return definedPreferences[id].initial;
         }
         return item;
@@ -143,6 +143,10 @@ define(function (require, exports, module) {
     function definePreference(id, type, initial, options) {
         if (definedPreferences[id]) {
             throw new Error("Preference " + id + " was redefined");
+        }
+
+        if(id.includes(".")){
+            console.error("StateManager.definePreference cannot be called with an id that has a .", id);
         }
 
         // change event processing on key
