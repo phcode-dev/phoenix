@@ -518,17 +518,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
-     * Creates a context object for doing project view state lookups.
-     */
-    function _getProjectViewStateContext() {
-        return { location: { scope: "user",
-            layer: "project",
-            layerID: model.projectRoot.fullPath } };
-    }
-
-    /**
      * Returns the encoded Base URL of the currently loaded project, or empty string if no project
      * is open (during startup, or running outside of app shell).
      * @return {String}
@@ -542,11 +531,9 @@ define(function (require, exports, module) {
      * @param {String}
      */
     function setBaseUrl(projectBaseUrl) {
-        var context = _getProjectViewStateContext();
-
         projectBaseUrl = model.setBaseUrl(projectBaseUrl);
 
-        PreferencesManager.setViewState("project.baseUrl", projectBaseUrl, context);
+        PreferencesManager.setViewState("project.baseUrl", projectBaseUrl, PreferencesManager.STATE_PROJECT_CONTEXT);
     }
 
     /**
@@ -609,7 +596,7 @@ define(function (require, exports, module) {
         var d = new $.Deferred();
         model.setProjectRoot(rootEntry).then(function () {
             d.resolve();
-            model.reopenNodes(PreferencesManager.getViewState("project.treeState", _getProjectViewStateContext()));
+            model.reopenNodes(PreferencesManager.getViewState("project.treeState", PreferencesManager.STATE_PROJECT_CONTEXT));
         });
         return d.promise();
     }
@@ -629,11 +616,10 @@ define(function (require, exports, module) {
      * Save tree state.
      */
     _saveTreeState = function () {
-        var context = _getProjectViewStateContext(),
-            openNodes = model.getOpenNodes();
+        const openNodes = model.getOpenNodes();
 
         // Store the open nodes by their full path and persist to storage
-        PreferencesManager.setViewState("project.treeState", openNodes, context);
+        PreferencesManager.setViewState("project.treeState", openNodes, PreferencesManager.STATE_PROJECT_CONTEXT);
     };
 
     /**
@@ -1094,9 +1080,6 @@ define(function (require, exports, module) {
         }
 
         startLoad.done(function () {
-            var context = { location: { scope: "user",
-                layer: "project" } };
-
             // Clear project path map
             if (!isUpdating) {
                 PreferencesManager._stateProjectLayer.setProjectPath(rootPath);
@@ -1120,7 +1103,7 @@ define(function (require, exports, module) {
                         _projectWarnedForTooManyFiles = false;
 
                         _setProjectRoot(rootEntry).always(function () {
-                            model.setBaseUrl(PreferencesManager.getViewState("project.baseUrl", context) || "");
+                            model.setBaseUrl(PreferencesManager.getViewState("project.baseUrl", PreferencesManager.STATE_PROJECT_CONTEXT) || "");
 
                             if (projectRootChanged) {
                                 _reloadProjectPreferencesScope();

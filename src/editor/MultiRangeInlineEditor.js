@@ -58,12 +58,6 @@ define(function (require, exports, module) {
         return parseInt($target.css(styleName), 10);
     }
 
-    /** Returns a 'context' object for getting/setting project-specific preferences */
-    function _getPrefsContext() {
-        var projectRoot = ProjectManager.getProjectRoot();  // note: null during unit tests!
-        return { location: { scope: "user", layer: "project", layerID: projectRoot && projectRoot.fullPath } };
-    }
-
 
     /**
      * Stores one search result: its source file, line range, etc. plus the DOM node representing it
@@ -195,13 +189,13 @@ define(function (require, exports, module) {
         this._collapsedFiles[fullPath] = isCollapsing;
         // ...AND persist as per-project view state
         if (!duringInit) {
-            var setting = PreferencesManager.getViewState("inlineEditor.collapsedFiles", _getPrefsContext()) || {};
+            var setting = PreferencesManager.getViewState("inlineEditor.collapsedFiles", PreferencesManager.STATE_PROJECT_CONTEXT) || {};
             if (isCollapsing) {
                 setting[fullPath] = true;
             } else {
                 delete setting[fullPath];
             }
-            PreferencesManager.setViewState("inlineEditor.collapsedFiles", setting, _getPrefsContext());
+            PreferencesManager.setViewState("inlineEditor.collapsedFiles", setting, PreferencesManager.STATE_PROJECT_CONTEXT);
         }
 
         // Show/hide selection indicator if selection was in collapsed section
@@ -303,7 +297,7 @@ define(function (require, exports, module) {
 
         // Determine which sections are initially collapsed (the actual collapsing happens after onAdded(),
         // because jQuery.hide() requires the computed value of 'display' to work properly)
-        var toCollapse = PreferencesManager.getViewState("inlineEditor.collapsedFiles", _getPrefsContext()) || {};
+        var toCollapse = PreferencesManager.getViewState("inlineEditor.collapsedFiles", PreferencesManager.STATE_PROJECT_CONTEXT) || {};
         Object.keys(toCollapse).forEach(function (fullPath) {
             this._collapsedFiles[fullPath] = true;
         }.bind(this));
