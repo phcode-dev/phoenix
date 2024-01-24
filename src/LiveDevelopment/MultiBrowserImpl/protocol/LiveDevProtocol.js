@@ -108,7 +108,7 @@ define(function (require, exports, module) {
     }
 
     function _tagSelectedInLivePreview(tagId, nodeName, contentEditable) {
-        const highlightPref = PreferencesManager.getViewState("livedev.highlight");
+        const highlightPref = PreferencesManager.getViewState("livedevHighlight");
         if(!highlightPref){
             // live preview highlight and reverse highlight feature is disabled
             return;

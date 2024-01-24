@@ -66,7 +66,7 @@ define(function (require, exports, module) {
 
         EditorManager.on(`activeEditorChange.LiveDocument-${this.doc.file.fullPath}`, this._onActiveEditorChange);
 
-        PreferencesManager.stateManager.getPreference("livedev.highlight")
+        PreferencesManager.stateManager.getPreference("livedevHighlight")
             .on(`change.LiveDocument-${this.doc.file.fullPath}`, this._onHighlightPrefChange);
 
         // Redraw highlights when window gets focus. This ensures that the highlights
@@ -89,7 +89,7 @@ define(function (require, exports, module) {
         this._clearErrorDisplay();
         this._detachFromEditor();
         EditorManager.off(`activeEditorChange.LiveDocument-${this.doc.file.fullPath}`);
-        PreferencesManager.stateManager.getPreference("livedev.highlight")
+        PreferencesManager.stateManager.getPreference("livedevHighlight")
             .off(`change.LiveDocument-${this.doc.file.fullPath}`);
     };
 
@@ -266,7 +266,7 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     LiveDocument.prototype.isHighlightEnabled = function () {
-        return PreferencesManager.getViewState("livedev.highlight");
+        return PreferencesManager.getViewState("livedevHighlight");
     };
 
     /**

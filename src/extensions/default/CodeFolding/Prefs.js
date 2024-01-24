@@ -12,7 +12,7 @@ define(function (require, exports, module) {
         PreferencesManager          = brackets.getModule("preferences/PreferencesManager"),
         Strings                     = brackets.getModule("strings"),
         prefs                       = PreferencesManager.getExtensionPrefs("code-folding"),
-        FOLDS_PREF_KEY              = "code-folding.folds",
+        FOLDS_PREF_KEY              = "code-folding-folds",
         // preference key strings are here for now since they are not used in any UI
         ENABLE_CODE_FOLDING         = "Enable code folding",
         MIN_FOLD_SIZE               = "Minimum fold size",

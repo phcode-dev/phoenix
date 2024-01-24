@@ -124,7 +124,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         async function _enableLiveHighlights(enable) {
-            PreferencesManager.setViewState("livedev.highlight", enable);
+            PreferencesManager.setViewState("livedevHighlight", enable);
         }
         async function endPreviewSession() {
             await _enableLiveHighlights(true);
