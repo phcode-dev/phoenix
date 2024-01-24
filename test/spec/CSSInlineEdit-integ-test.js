@@ -141,14 +141,12 @@ define(function (require, exports, module) {
         describe("CSS", function () {
 
             function resetCollapsedPrefs() {
-                var context = null; // for unit tests, we don't really need a project-specific setting
-                PreferencesManager.setViewState("inlineEditor.collapsedFiles", {}, context);
+                PreferencesManager.setViewState("inlineEditor.collapsedFiles", {}, PreferencesManager.STATE_PROJECT_CONTEXT);
             }
             function makeInitiallyCollapsed(fullPath) {
-                var context = null; // for unit tests, we don't really need a project-specific setting
-                var setting = PreferencesManager.getViewState("inlineEditor.collapsedFiles", context) || {};
+                var setting = PreferencesManager.getViewState("inlineEditor.collapsedFiles", PreferencesManager.STATE_PROJECT_CONTEXT) || {};
                 setting[fullPath] = true;
-                PreferencesManager.setViewState("inlineEditor.collapsedFiles", setting, context);
+                PreferencesManager.setViewState("inlineEditor.collapsedFiles", setting, PreferencesManager.STATE_PROJECT_CONTEXT);
             }
 
             beforeEach(async function () {
