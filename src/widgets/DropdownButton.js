@@ -185,7 +185,7 @@ define(function (require, exports, module) {
         let html = "";
         this.searchStr = "";
         if(self.enableFilter){
-            html = `<li class="sticky-li-top forced-hidden"><a class='stylesheet-link'><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span class="searchTextSpan"></spanclass></a></li>`;
+            html = `<li class="sticky-li-top forced-hidden"><a class='stylesheet-link'><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span class="searchTextSpan"></span></a></li>`;
         }
         this.items.forEach(function (item, i) {
             self.itemsSearchFilterText[i] = "";

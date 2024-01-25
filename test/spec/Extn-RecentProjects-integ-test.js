@@ -71,7 +71,7 @@ define(function (require, exports, module) {
                 await openRecentProjectDropDown();
 
                 var $dropDown = $("#project-dropdown");
-                expect($dropDown.children().length).toEqual(3); // new project and open project, download project item
+                expect($dropDown.children().length).toEqual(4); // new project and open project, download project item, search filter field
             });
 
             it("should open the recent project list and show 5 recent projects", async function () {
