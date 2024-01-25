@@ -25,24 +25,22 @@ define(function (require, exports, module) {
 
 
     // Brackets modules
-    var ProjectManager          = brackets.getModule("project/ProjectManager"),
-        SidebarView             = brackets.getModule("project/SidebarView"),
-        PreferencesManager      = brackets.getModule("preferences/PreferencesManager"),
-        Commands                = brackets.getModule("command/Commands"),
-        CommandManager          = brackets.getModule("command/CommandManager"),
-        KeyBindingManager       = brackets.getModule("command/KeyBindingManager"),
-        Menus                   = brackets.getModule("command/Menus"),
-        MainViewManager         = brackets.getModule("view/MainViewManager"),
-        ExtensionUtils          = brackets.getModule("utils/ExtensionUtils"),
-        FileSystem              = brackets.getModule("filesystem/FileSystem"),
-        AppInit                 = brackets.getModule("utils/AppInit"),
-        KeyEvent                = brackets.getModule("utils/KeyEvent"),
-        FileUtils               = brackets.getModule("file/FileUtils"),
-        PopUpManager            = brackets.getModule("widgets/PopUpManager"),
-        Strings                 = brackets.getModule("strings"),
-        Mustache                = brackets.getModule("thirdparty/mustache/mustache"),
-        ProjectsMenuTemplate    = require("text!htmlContent/projects-menu.html"),
-        ExtensionInterface = brackets.getModule("utils/ExtensionInterface");
+    const ProjectManager          = require("project/ProjectManager"),
+        SidebarView             = require("project/SidebarView"),
+        PreferencesManager      = require("preferences/PreferencesManager"),
+        Commands                = require("command/Commands"),
+        CommandManager          = require("command/CommandManager"),
+        Menus                   = require("command/Menus"),
+        MainViewManager         = require("view/MainViewManager"),
+        FileSystem              = require("filesystem/FileSystem"),
+        AppInit                 = require("utils/AppInit"),
+        KeyEvent                = require("utils/KeyEvent"),
+        FileUtils               = require("file/FileUtils"),
+        PopUpManager            = require("widgets/PopUpManager"),
+        Strings                 = require("strings"),
+        Mustache                = require("thirdparty/mustache/mustache"),
+        ProjectsMenuTemplate    = require("text!./htmlContent/projects-menu.html"),
+        ExtensionInterface = require("utils/ExtensionInterface");
 
     const RECENT_PROJECTS_INTERFACE = "Extn.Phoenix.recentProjects";
 
@@ -50,8 +48,6 @@ define(function (require, exports, module) {
     const RECENT_PROJECT_STATE = "recentProjects";
     PreferencesManager.stateManager.definePreference(RECENT_PROJECT_STATE, 'array', [])
         .watchExternalChanges();
-
-    var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
     /** @const {string} Recent Projects commands ID */
     let TOGGLE_DROPDOWN = "recentProjects.toggle";
@@ -468,12 +464,9 @@ define(function (require, exports, module) {
 
     // Register command handlers
     CommandManager.register(Strings.CMD_TOGGLE_RECENT_PROJECTS, TOGGLE_DROPDOWN, handleKeyEvent);
-    KeyBindingManager.addBinding(TOGGLE_DROPDOWN, KeyboardPrefs.recentProjects);
 
     // Initialize extension
     AppInit.appReady(function () {
-        ExtensionUtils.loadStyleSheet(module, "styles/styles.less");
-
         ProjectManager.on("projectOpen", add);
         ProjectManager.on("beforeProjectClose", add);
     });
