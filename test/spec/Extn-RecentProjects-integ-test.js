@@ -29,8 +29,14 @@ define(function (require, exports, module) {
         KeyEvent        = require("utils/KeyEvent"),
         _               = require("thirdparty/lodash");
 
-    describe("extension:Recent Projects", function () {
-        var extensionPath = FileUtils.getNativeModuleDirectoryPath(module),
+    describe("integration:Recent Projects", function () {
+        const testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
+            prettierTestFolder = SpecRunnerUtils.getTestPath("/spec/prettier-test-files"),
+            jsUtilsTestFolder = SpecRunnerUtils.getTestPath("/spec/JSUtils-test-files");
+        const testFolderProjectName = "LiveDevelopment-MultiBrowser-test-files",
+            prettierTestFolderProjectName = "prettier-test-files",
+            jsUtilsTestFolderProjectName = "JSUtils-test-files";
+        let extensionPath = FileUtils.getNativeModuleDirectoryPath(module),
             testWindow,
             $,
             CommandManager,
@@ -55,45 +61,75 @@ define(function (require, exports, module) {
             });
         }
 
-        function setupRecentProjectsSpy(howManyProjects) {
-            spyOn(PreferencesManager, "getViewState").and.callFake(function (prefId) {
-                if (prefId === "recentProjects") {
-                    // return howManyProjects number of fake recent projects entries
-                    return _.map(_.range(1, howManyProjects + 1), function (num) { return extensionPath + "/Test-Project-" + num; });
-                }
-                return [];
-
-            });
-        }
-
         describe("UI", function () {
             it("should open the recent projects list with only the getting started project", async function () {
                 await openRecentProjectDropDown();
 
                 var $dropDown = $("#project-dropdown");
-                expect($dropDown.children().length).toEqual(4); // new project and open project, download project item, search filter field
+                expect($dropDown.children().length>=4).toBeTrue();
             });
 
-            it("should open the recent project list and show 5 recent projects", async function () {
-                setupRecentProjectsSpy(5);
+            it("should open the recent project list and show recent projects", async function () {
+                await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+                await SpecRunnerUtils.loadProjectInTestWindow(prettierTestFolder);
+                await SpecRunnerUtils.loadProjectInTestWindow(jsUtilsTestFolder);
 
                 await openRecentProjectDropDown();
 
-                var $dropDown = $("#project-dropdown");
-                expect($dropDown.find(".recent-folder-link").length).toEqual(5);
+                let $dropDown = $("#project-dropdown");
+                let text = $dropDown.text();
+                expect(text.includes(testFolderProjectName)).toBeTrue();
+                expect(text.includes(prettierTestFolderProjectName)).toBeTrue();
+
+                await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+                await openRecentProjectDropDown();
+                $dropDown = $("#project-dropdown");
+                text = $dropDown.text();
+                expect(text.includes(jsUtilsTestFolderProjectName)).toBeTrue();
             });
 
             it("should delete one project from recent project list when delete key is pressed on", async function () {
-                setupRecentProjectsSpy(5);
+                await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+                await SpecRunnerUtils.loadProjectInTestWindow(prettierTestFolder);
+                await SpecRunnerUtils.loadProjectInTestWindow(jsUtilsTestFolder);
 
                 await openRecentProjectDropDown();
 
                 var $dropDown = $("#project-dropdown");
+                let currentLength = $dropDown.find(".recent-folder-link").length;
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $dropDown[0]);
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DELETE, "keydown", $dropDown[0]);
+
+                expect($dropDown.find(".recent-folder-link").length).toEqual(currentLength - 1);
+            });
+
+            function typeInEncodingPopup(text) {
+                for(let char of text){
+                    testWindow.$("#project-dropdown")[0].dispatchEvent(new KeyboardEvent("keydown", {
+                        key: char,
+                        bubbles: true, // Event bubbles up through the DOM
+                        cancelable: true // Event can be canceled
+                    }));
+                }
+            }
+
+            it("should filter projects on typing", async function () {
+                await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+                await SpecRunnerUtils.loadProjectInTestWindow(prettierTestFolder);
+                await SpecRunnerUtils.loadProjectInTestWindow(jsUtilsTestFolder);
+                await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+
+                await openRecentProjectDropDown();
+                var $dropDown = $("#project-dropdown");
+                let text = $dropDown.text();
+                expect(text.includes(jsUtilsTestFolderProjectName)).toBeTrue();
+                typeInEncodingPopup("JSUtils");
+
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropDown[0]);
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DELETE, "keydown", $dropDown[0]);
 
-                var $dropDown = $("#project-dropdown");
-                expect($dropDown.find(".recent-folder-link").length).toEqual(5);
+                text = $dropDown.text();
+                expect(text.includes(jsUtilsTestFolderProjectName)).toBeFalse();
             });
         });
     });
