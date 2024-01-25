@@ -157,7 +157,7 @@ Phoenix.app = {
      * double clicking a file in file explorer in os, the handler will be called with the command line args with the
      * file that was double-clicked (or folder using open with) in os file explorer/cli.
      * @param {function(cliArgs, cwd)} handlerFn - the handler function will receive two args on callback, the cliArgs
-     *  of the other phoenix process that was invoked to open the file and its current working dir.
+     *  of the other phoenix process that was invoked to open the file and its current working dir. cwd may be null
      * @return {*}
      */
     setSingleInstanceCLIArgsHandler: function (handlerFn) {
@@ -171,10 +171,25 @@ Phoenix.app = {
             window.__TAURI__.event.listen("single-instance", ({payload})=> {
                 handlerFn(payload.args, payload.cwd);
             });
+            window.__TAURI__.tauri.invoke("get_mac_deep_link_requests").then(filesURLList=>{
+                if(!filesURLList.length){
+                    return;
+                }
+                // this is special handling for open with to work from mac finder. Mac will raise and event which will
+                // be buffered in the shell till the app reads the opened file list. Once read, the file list will be
+                // emptied in shell and no other instances will get the data, so we have to process it here.
+                const platformSimulatedArgs = ["macOSBootTimeDeepLink"];
+                for(const fileURL of filesURLList){
+                    platformSimulatedArgs.push(fileURL.replace("file://", ""));
+                }
+                handlerFn(platformSimulatedArgs, "");
+            });
             window.__TAURI__.event.listen("scheme-request-received", (receivedEvent)=> {
                 // this is for mac-os open with processing from finder.
-                console.error("Macos not handled", receivedEvent);
-                alert(JSON.stringify(receivedEvent));
+                console.log("Macos received Event from OS:", receivedEvent);
+                const fileURL = receivedEvent.payload;
+                window.__TAURI__.tauri.invoke("get_mac_deep_link_requests");// this will clear the cached queue in shell
+                handlerFn(["macOSEvent", fileURL.replace("file://", "")], "");
             });
         }
     },
