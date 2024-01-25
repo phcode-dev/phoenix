@@ -167,10 +167,20 @@ define(function (require, exports, module) {
      * @param {number} direction  +1 for next, -1 for prev
      */
     function selectNextItem(direction) {
-        var $links   = $dropdown.find("a"),
+        let $links   = $dropdown.find("a:visible"),
             index    = $dropdownItem ? $links.index($dropdownItem) : (direction > 0 ? -1 : 0),
             $newItem = $links.eq((index + direction) % $links.length);
 
+        if(searchStr && $links.length === 1){
+            // no search result, only the top search field visible
+            return;
+        }
+        if($newItem.parent().hasClass("sticky-li-top")) {
+            if(index === -1){
+                index = 0;
+            }
+            $newItem = $links.eq((index + direction) % $links.length);
+        }
         if ($dropdownItem) {
             $dropdownItem.removeClass("selected");
         }
@@ -178,6 +188,41 @@ define(function (require, exports, module) {
 
         $dropdownItem = $newItem;
         removeDeleteButton();
+    }
+
+    let searchStr ="";
+    /**
+     * hides all elements in popup that doesn't match the given search string, also shows the search bar in popup
+     * @param searchString
+     */
+    function filterDropdown(searchString) {
+        searchStr = searchString;
+        const $stickyLi = $dropdown.find('li.sticky-li-top');
+        if(searchString){
+            $stickyLi.removeClass("forced-hidden");
+        } else {
+            $stickyLi.addClass("forced-hidden");
+        }
+
+        $dropdown.find('li').each(function(index, li) {
+            if(index === 0){
+                // this is the top search box itself
+                return;
+            }
+            const $li = $(li);
+            if(!$li.text().toLowerCase().includes(searchString.toLowerCase())){
+                $li.addClass("forced-hidden");
+            } else {
+                $li.removeClass("forced-hidden");
+            }
+        });
+
+        if(searchString) {
+            $stickyLi.removeClass('forced-hidden');
+            $stickyLi.find('.searchTextSpan').text(searchString);
+        } else {
+            $stickyLi.addClass('forced-hidden');
+        }
     }
 
     /**
@@ -233,7 +278,6 @@ define(function (require, exports, module) {
             }
             keyHandled = true;
             break;
-        case KeyEvent.DOM_VK_BACK_SPACE:
         case KeyEvent.DOM_VK_DELETE:
             if ($dropdownItem) {
                 removeSelectedItem(event);
@@ -241,6 +285,29 @@ define(function (require, exports, module) {
             }
             break;
         }
+
+        if(keyHandled){
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            return keyHandled;
+        } else if((event.ctrlKey || event.metaKey) && event.key === 'v') {
+            Phoenix.app.clipboardReadText().then(text=>{
+                searchStr += text;
+                filterDropdown(searchStr);
+            });
+            keyHandled = true;
+        } else if (event.key.length === 1) {
+            searchStr += event.key;
+            keyHandled = true;
+        } else if (event.key === 'Backspace') {
+            // Remove the last character when Backspace is pressed
+            searchStr  = searchStr.slice(0, -1);
+            keyHandled = true;
+        } else {
+            // bubble up, not for us to handle
+            return false;
+        }
+        filterDropdown(searchStr);
 
         if (keyHandled) {
             event.stopImmediatePropagation();
@@ -260,6 +327,7 @@ define(function (require, exports, module) {
         if ($dropdown) {
             PopUpManager.removePopUp($dropdown);
         }
+        searchStr = "";
     }
 
     /**
