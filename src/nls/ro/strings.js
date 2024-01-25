@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "Recuperați fișierele nesalvate?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Restaurați fișierele nesalvate din sesiunea anterioară?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Restabili",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Aruncă",
   "DESCRIPTION_CLOSE_BRACKETS": "true pentru a închide automat acolade, paranteze și paranteze",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false pentru a elimina „Închide pe alții de mai sus” din meniul contextual Fișiere de lucru",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false pentru a elimina „Închide pe alții de mai jos” din meniul contextual Fișiere de lucru",

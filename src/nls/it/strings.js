@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "Recuperare file non salvati?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Ripristinare i file non salvati dalla sessione precedente?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Ristabilire",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Scartare",
   "DESCRIPTION_CLOSE_BRACKETS": "true per chiudere automaticamente le parentesi tonde, quadre e graffe",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false per rimuovere le 'Chiudi tutto al di sopra' dal menu dello spazio di lavoro",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false per rimuovere le 'Chiudi tutto al di sotto' dal menu dello spazio di lavoro",

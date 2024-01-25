@@ -641,6 +641,7 @@
   "RECOVER_UNSAVED_FILES_TITLE": "Obnoviť neuložené súbory?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Obnoviť neuložené súbory z predchádzajúcej relácie?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Obnoviť",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Zahodiť",
   "DESCRIPTION_CLOSE_BRACKETS": "true na automatické uzatváranie zátvoriek, zátvoriek a zátvoriek",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false, ak chcete odstrániť \"Zavrieť ostatné vyššie\" z kontextovej ponuky Pracovné súbory",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false, ak chcete odstrániť \"Zavrieť ostatné nižšie\" z kontextovej ponuky Pracovné súbory",

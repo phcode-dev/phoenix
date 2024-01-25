@@ -641,6 +641,7 @@
   "RECOVER_UNSAVED_FILES_TITLE": "Recuperar arquivos não salvos?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Restaurar arquivos não salvos da sessão anterior?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Restaurar",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Descartar",
   "DESCRIPTION_CLOSE_BRACKETS": "verdadeiro (true) para fechar chaves, colchetes e parênteses automaticamente",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "falso (false) para remover  \"Fechar outros acima\" do menu de contexto Arquivos abertos",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "falso (false) para remover \"Fechar outros abaixo\" do menu de contexto Arquivos abertos",

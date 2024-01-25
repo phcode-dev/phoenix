@@ -641,6 +641,7 @@
   "RECOVER_UNSAVED_FILES_TITLE": "Återställa osparade filer?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Återställa osparade filer från din tidigare session?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Återställ",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Kassera",
   "DESCRIPTION_CLOSE_BRACKETS": "sant att automatiskt stänga hängslen, parenteser och parenteser",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false för att ta bort \"Stäng andra ovan\" från snabbmenyn för arbetsfiler",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false för att ta bort \"Stäng andra nedan\" från snabbmenyn för arbetsfiler",

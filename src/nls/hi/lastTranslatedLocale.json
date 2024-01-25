@@ -641,6 +641,7 @@
   "RECOVER_UNSAVED_FILES_TITLE": "न सहेजी गई फ़ाइलें पुनर्प्राप्त करें?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "अपने पिछले सत्र से न सहेजी गई फ़ाइलें पुनर्स्थापित करें?",
   "RECOVER_UNSAVED_FILES_RESTORE": "पुनर्स्थापित करना",
+  "DISCARD_UNSAVED_FILES_RESTORE": "खारिज करना",
   "DESCRIPTION_CLOSE_BRACKETS": "ब्रेसिज़, ब्रैकेट और कोष्ठक को स्वचालित रूप से बंद करने के लिए सही है",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "वर्किंग फाइल्स संदर्भ मेनू से \"ऊपर के अन्य लोगों को बंद करें\" को हटाने के लिए गलत है",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "वर्किंग फाइल्स संदर्भ मेनू से \"नीचे अन्य को बंद करें\" को हटाने के लिए गलत है",

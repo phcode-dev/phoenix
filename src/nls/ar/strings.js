@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "استعادة الملفات غير المحفوظة؟",
   "RECOVER_UNSAVED_FILES_MESSAGE": "هل تريد استعادة الملفات غير المحفوظة من جلستك السابقة؟",
   "RECOVER_UNSAVED_FILES_RESTORE": "يعيد",
+  "DISCARD_UNSAVED_FILES_RESTORE": "ينبذ",
   "DESCRIPTION_CLOSE_BRACKETS": "صحيح لإغلاق الأقواس والأقواس والأقواس تلقائيًا",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "خطأ لإزالة \"إغلاق الآخرين أعلاه\" من قائمة سياق ملفات العمل",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "خطأ لإزالة \"إغلاق الآخرين أدناه\" من قائمة سياق ملفات العمل",

@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "¿Recuperar archivos no guardados?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "¿Restaurar archivos no guardados de su sesión anterior?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Restaurar",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Desechar",
   "DESCRIPTION_CLOSE_BRACKETS": "true para cerrar automáticamente las llaves, los corchetes y los paréntesis",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false para eliminar \"Cerrar otros por encima\" del menú contextual del Área de trabajo",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false para eliminar \"Cerrar otros por debajo\" del menú contextual del Área de trabajo",

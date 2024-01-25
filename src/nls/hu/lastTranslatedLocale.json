@@ -641,6 +641,7 @@
   "RECOVER_UNSAVED_FILES_TITLE": "Visszaállítja a nem mentett fájlokat?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Visszaállítja az előző munkamenet nem mentett fájljait?",
   "RECOVER_UNSAVED_FILES_RESTORE": "visszaállítás",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Eldobni",
   "DESCRIPTION_CLOSE_BRACKETS": "igaz a kapcsos zárójelek, zárójelek és zárójelek automatikus bezárásához",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false, hogy eltávolítsa a \"Fent többiek bezárása\" elemet a Working Files helyi menüből",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false, hogy eltávolítsa a \"Mások bezárása lent\" elemet a Working Files helyi menüből",
