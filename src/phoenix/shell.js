@@ -171,6 +171,11 @@ Phoenix.app = {
             window.__TAURI__.event.listen("single-instance", ({payload})=> {
                 handlerFn(payload.args, payload.cwd);
             });
+            window.__TAURI__.event.listen("scheme-request-received", (receivedEvent)=> {
+                // this is for mac-os open with processing from finder.
+                console.error("Macos not handled", receivedEvent);
+                alert(JSON.stringify(receivedEvent));
+            });
         }
     },
     clipboardReadFiles: function () {
