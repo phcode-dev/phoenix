@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "Recover Unsaved Files?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Restore unsaved files from your previous session?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Restore",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Discard",
   "DESCRIPTION_CLOSE_BRACKETS": "true to automatically close braces, brackets and parentheses",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false to remove the \"Close Others Above\" from the Working Files context menu",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false to remove the \"Close Others Below\" from the Working Files context menu",

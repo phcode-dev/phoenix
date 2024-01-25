@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "Oporaviti nespremljene datoteke?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Vratiti nespremljene datoteke iz prethodne sesije?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Vratiti",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Odbaciti",
   "DESCRIPTION_CLOSE_BRACKETS": "true za automatsko zatvaranje zagrada, zagrada i zagrada",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false za uklanjanje \"Zatvori druge iznad\" iz kontekstnog izbornika Radnih datoteka",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false za uklanjanje \"Zatvori ostale ispod\" iz kontekstnog izbornika Radnih datoteka",

@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "Palautetaanko tallentamattomat tiedostot?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Palautetaanko tallentamattomat tiedostot edellisestä istunnosta?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Palauttaa",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Hävitä",
   "DESCRIPTION_CLOSE_BRACKETS": "true: sulje aalto-, haka- ja kaarisulkeet automaattisesti",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false: poista Sulje muut yläpuolelta -valinta työtiedostojen kontekstivalikosta",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false: poista Sulje muut alapuolelta -valinta työtiedostojen kontekstivalikosta",

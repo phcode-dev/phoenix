@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "Recuperar arquivos não salvos?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Restaurar arquivos não salvos da sessão anterior?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Restaurar",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Descartar",
   "DESCRIPTION_CLOSE_BRACKETS": "true para fechar automaticamente colchetes, colchetes e parênteses",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false para remover o \"Fechar Outros Acima\" do menu de contexto Arquivos de Trabalho",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false para remover o \"Fechar outros abaixo\" do menu de contexto Arquivos de trabalho",

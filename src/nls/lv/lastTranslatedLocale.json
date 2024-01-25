@@ -641,6 +641,7 @@
   "RECOVER_UNSAVED_FILES_TITLE": "Vai atgūt nesaglabātos failus?",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Vai atjaunot nesaglabātos failus no iepriekšējās sesijas?",
   "RECOVER_UNSAVED_FILES_RESTORE": "Atjaunot",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Izmest",
   "DESCRIPTION_CLOSE_BRACKETS": "vērtība true, lai automātiski aizvērtu figūriekavas, iekavas un apaļās iekavas",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "vērtība false, lai noņemtu \"Aizvērt visus augstāk\" no darba datņu kontekstizvēlnes",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "vērtība false, lai noņemtu \"Aizvērt visus zemāk\" no darba datņu kontekstizvēlnes",

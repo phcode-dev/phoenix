@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "غیر محفوظ شدہ فائلیں بازیافت کریں؟",
   "RECOVER_UNSAVED_FILES_MESSAGE": "اپنے پچھلے سیشن سے غیر محفوظ شدہ فائلوں کو بحال کریں؟",
   "RECOVER_UNSAVED_FILES_RESTORE": "بحال کریں۔",
+  "DISCARD_UNSAVED_FILES_RESTORE": "رد کر دیں۔",
   "DESCRIPTION_CLOSE_BRACKETS": "منحنی خطوط وحدانی، بریکٹ اور قوسین کو خود بخود بند کرنے کے لیے درست",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "ورکنگ فائلوں کے سیاق و سباق کے مینو سے \"اوپر بند کریں\" کو ہٹانے کے لیے غلط",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "ورکنگ فائلوں کے سیاق و سباق کے مینو سے \"نیچے دوسروں کو بند کریں\" کو ہٹانے کے لیے غلط",

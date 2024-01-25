@@ -661,6 +661,7 @@ define({
   "RECOVER_UNSAVED_FILES_TITLE": "Ανάκτηση μη αποθηκευμένων αρχείων;",
   "RECOVER_UNSAVED_FILES_MESSAGE": "Επαναφορά μη αποθηκευμένων αρχείων από την προηγούμενη συνεδρία σας;",
   "RECOVER_UNSAVED_FILES_RESTORE": "Επαναφέρω",
+  "DISCARD_UNSAVED_FILES_RESTORE": "Απορρίπτω",
   "DESCRIPTION_CLOSE_BRACKETS": "αληθές για να κλείνει αυτόματα αγκύλες, αγκύλες και παρενθέσεις",
   "DESCRIPTION_CLOSE_OTHERS_ABOVE": "false για να αφαιρέσετε το \"Κλείσιμο άλλων παραπάνω\" από το μενού περιβάλλοντος εργασίας Αρχεία",
   "DESCRIPTION_CLOSE_OTHERS_BELOW": "false για να αφαιρέσετε το \"Close Others Below\" από το μενού περιβάλλοντος εργασίας Working Files",
