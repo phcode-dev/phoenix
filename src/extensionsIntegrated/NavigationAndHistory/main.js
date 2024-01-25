@@ -40,7 +40,6 @@ define(function (require, exports, module) {
         WorkingSetView          = require("project/WorkingSetView"),
         PreferencesManager      = require("preferences/PreferencesManager"),
         KeyBindingManager       = require("command/KeyBindingManager"),
-        ExtensionUtils          = require("utils/ExtensionUtils"),
         Mustache                = require("thirdparty/mustache/mustache"),
         NavigationProvider      = require("./NavigationProvider"),
         FileRecovery      = require("./FileRecovery");
@@ -823,7 +822,6 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         FileRecovery.init();
-        ExtensionUtils.loadStyleSheet(module, "styles/recent-files.css");
         NavigationProvider.init();
     });
 });
