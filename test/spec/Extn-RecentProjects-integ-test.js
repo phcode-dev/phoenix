@@ -24,10 +24,10 @@
 define(function (require, exports, module) {
 
 
-    var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
-        FileUtils       = brackets.getModule("file/FileUtils"),
-        KeyEvent        = brackets.getModule("utils/KeyEvent"),
-        _               = brackets.getModule("thirdparty/lodash");
+    var SpecRunnerUtils = require("spec/SpecRunnerUtils"),
+        FileUtils       = require("file/FileUtils"),
+        KeyEvent        = require("utils/KeyEvent"),
+        _               = require("thirdparty/lodash");
 
     describe("extension:Recent Projects", function () {
         var extensionPath = FileUtils.getNativeModuleDirectoryPath(module),
