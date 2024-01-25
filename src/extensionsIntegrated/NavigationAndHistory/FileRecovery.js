@@ -46,21 +46,21 @@
  */
 
 define(function (require, exports, module) {
-    const NativeApp = brackets.getModule("utils/NativeApp"),
-        FileSystem = brackets.getModule("filesystem/FileSystem"),
-        ProjectManager = brackets.getModule("project/ProjectManager"),
-        MainViewManager = brackets.getModule("view/MainViewManager"),
-        FileSystemError = brackets.getModule("filesystem/FileSystemError"),
-        FileUtils = brackets.getModule("file/FileUtils"),
-        DocumentManager = brackets.getModule("document/DocumentManager"),
-        NotificationUI = brackets.getModule("widgets/NotificationUI"),
-        Mustache = brackets.getModule("thirdparty/mustache/mustache"),
-        Strings = brackets.getModule("strings"),
-        FileViewController  = brackets.getModule("project/FileViewController"),
-        recoveryTemplate = require("text!html/recovery-template.html"),
-        EventDispatcher = brackets.getModule("utils/EventDispatcher"),
-        Metrics = brackets.getModule("utils/Metrics"),
-        EventManager = brackets.getModule("utils/EventManager");
+    const NativeApp = require("utils/NativeApp"),
+        FileSystem = require("filesystem/FileSystem"),
+        ProjectManager = require("project/ProjectManager"),
+        MainViewManager = require("view/MainViewManager"),
+        FileSystemError = require("filesystem/FileSystemError"),
+        FileUtils = require("file/FileUtils"),
+        DocumentManager = require("document/DocumentManager"),
+        NotificationUI = require("widgets/NotificationUI"),
+        Mustache = require("thirdparty/mustache/mustache"),
+        Strings = require("strings"),
+        FileViewController  = require("project/FileViewController"),
+        recoveryTemplate = require("text!./html/recovery-template.html"),
+        EventDispatcher = require("utils/EventDispatcher"),
+        Metrics = require("utils/Metrics"),
+        EventManager = require("utils/EventManager");
 
     EventDispatcher.makeEventDispatcher(exports);
     EventManager.registerEventHandler("ph-recovery", exports);
