@@ -24,7 +24,7 @@
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
 
-    const SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils");
+    const SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
     describe("LegacyInteg:FileRecovery integration tests", function () {
 

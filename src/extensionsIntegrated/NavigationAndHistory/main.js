@@ -22,32 +22,30 @@
 define(function (require, exports, module) {
 
 
-    var _                       = brackets.getModule("thirdparty/lodash"),
-        AppInit                 = brackets.getModule("utils/AppInit"),
-        Async                   = brackets.getModule("utils/Async"),
-        Strings                 = brackets.getModule("strings"),
-        MainViewManager         = brackets.getModule("view/MainViewManager"),
-        DocumentManager         = brackets.getModule("document/DocumentManager"),
-        DocumentCommandHandlers = brackets.getModule("document/DocumentCommandHandlers"),
-        EditorManager           = brackets.getModule("editor/EditorManager"),
-        ProjectManager          = brackets.getModule("project/ProjectManager"),
-        CommandManager          = brackets.getModule("command/CommandManager"),
-        Commands                = brackets.getModule("command/Commands"),
-        Dialogs                 = brackets.getModule("widgets/Dialogs"),
-        Menus                   = brackets.getModule("command/Menus"),
-        FileSystem              = brackets.getModule("filesystem/FileSystem"),
-        FileUtils               = brackets.getModule("file/FileUtils"),
-        ViewUtils               = brackets.getModule("utils/ViewUtils"),
-        KeyEvent                = brackets.getModule("utils/KeyEvent"),
-        WorkingSetView          = brackets.getModule("project/WorkingSetView"),
-        PreferencesManager      = brackets.getModule("preferences/PreferencesManager"),
-        KeyBindingManager       = brackets.getModule("command/KeyBindingManager"),
-        ExtensionUtils          = brackets.getModule("utils/ExtensionUtils"),
-        Mustache                = brackets.getModule("thirdparty/mustache/mustache"),
-        NavigationProvider      = require("NavigationProvider"),
-        FileRecovery      = require("FileRecovery");
+    var _                       = require("thirdparty/lodash"),
+        AppInit                 = require("utils/AppInit"),
+        Async                   = require("utils/Async"),
+        Strings                 = require("strings"),
+        MainViewManager         = require("view/MainViewManager"),
+        DocumentManager         = require("document/DocumentManager"),
+        EditorManager           = require("editor/EditorManager"),
+        ProjectManager          = require("project/ProjectManager"),
+        CommandManager          = require("command/CommandManager"),
+        Commands                = require("command/Commands"),
+        Menus                   = require("command/Menus"),
+        FileSystem              = require("filesystem/FileSystem"),
+        FileUtils               = require("file/FileUtils"),
+        ViewUtils               = require("utils/ViewUtils"),
+        KeyEvent                = require("utils/KeyEvent"),
+        WorkingSetView          = require("project/WorkingSetView"),
+        PreferencesManager      = require("preferences/PreferencesManager"),
+        KeyBindingManager       = require("command/KeyBindingManager"),
+        ExtensionUtils          = require("utils/ExtensionUtils"),
+        Mustache                = require("thirdparty/mustache/mustache"),
+        NavigationProvider      = require("./NavigationProvider"),
+        FileRecovery      = require("./FileRecovery");
 
-    var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
+    var KeyboardPrefs = JSON.parse(require("text!./keyboard.json"));
 
     // Command constants for recent files
     var PREFS_RECENT_FILES      = "recent-files.navigation",
@@ -56,7 +54,7 @@ define(function (require, exports, module) {
         PREV_IN_RECENT_FILES    = "recent-files.prev",
         OPEN_FILES_VIEW_STATE   = "openFiles";
 
-    var htmlTemplate = require("text!html/recentfiles-template.html"),
+    var htmlTemplate = require("text!./html/recentfiles-template.html"),
         dirtyDotTemplate = "<div class='file-status-icon dirty' style='position: absolute;margin-left: -2px;'></div>";
 
     var MAX_ENTRY_COUNT    = 50;

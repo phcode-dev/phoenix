@@ -111,8 +111,9 @@ define(function (require, exports, module) {
     require("spec/file-encoding-integ-test");
     require("spec/StateManager-test");
     // Integrated extension tests
-    require("spec/InAppNotifications-integ-test");
-    require("spec/RemoteFileAdapter-integ-test");
+    require("spec/Extn-InAppNotifications-integ-test");
+    require("spec/Extn-RemoteFileAdapter-integ-test");
+    require("spec/Extn-NavigationAndHistory-integ-tests");
     // Node Tests
     require("spec/NodeConnection-test");
     // todo TEST_MODERN

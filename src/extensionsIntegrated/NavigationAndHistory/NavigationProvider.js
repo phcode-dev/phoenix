@@ -27,19 +27,19 @@
 define(function (require, exports, module) {
 
 
-    var Strings                 = brackets.getModule("strings"),
-        MainViewManager         = brackets.getModule("view/MainViewManager"),
-        DocumentManager         = brackets.getModule("document/DocumentManager"),
-        EditorManager           = brackets.getModule("editor/EditorManager"),
-        ProjectManager          = brackets.getModule("project/ProjectManager"),
-        CommandManager          = brackets.getModule("command/CommandManager"),
-        Commands                = brackets.getModule("command/Commands"),
-        Menus                   = brackets.getModule("command/Menus"),
-        KeyBindingManager       = brackets.getModule("command/KeyBindingManager"),
-        FileSystem              = brackets.getModule("filesystem/FileSystem"),
-        Metrics                 = brackets.getModule("utils/Metrics");
+    var Strings                 = require("strings"),
+        MainViewManager         = require("view/MainViewManager"),
+        DocumentManager         = require("document/DocumentManager"),
+        EditorManager           = require("editor/EditorManager"),
+        ProjectManager          = require("project/ProjectManager"),
+        CommandManager          = require("command/CommandManager"),
+        Commands                = require("command/Commands"),
+        Menus                   = require("command/Menus"),
+        KeyBindingManager       = require("command/KeyBindingManager"),
+        FileSystem              = require("filesystem/FileSystem"),
+        Metrics                 = require("utils/Metrics");
 
-    var KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
+    var KeyboardPrefs = JSON.parse(require("text!./keyboard.json"));
 
     // Command constants for navigation history
     var NAVIGATION_JUMP_BACK      = "navigation.jump.back",
