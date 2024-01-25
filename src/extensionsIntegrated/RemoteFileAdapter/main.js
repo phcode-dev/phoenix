@@ -27,7 +27,6 @@ define(function (require, exports, module) {
         PathUtils       = require("thirdparty/path-utils/path-utils"),
         CommandManager  = require("command/CommandManager"),
         Commands        = require("command/Commands"),
-        WorkingSetView = require("project/WorkingSetView"),
         MainViewManager = require("view/MainViewManager"),
         Menus           = require("command/Menus");
 
@@ -35,26 +34,6 @@ define(function (require, exports, module) {
         HTTPS_PROTOCOL = "https:",
         TAURI_PROTOCOL = "phtauri:",
         TAURI_ASSET_PROTOCOL = "asset:";
-
-    function protocolClassProvider(data) {
-        if (data.fullPath.startsWith("http://")) {
-            return "rf_http";
-        }
-
-        if (data.fullPath.startsWith("https://")) {
-            return "rf_https";
-        }
-
-        if (data.fullPath.startsWith("phtauri://")) {
-            return "rf_phtauri";
-        }
-
-        if (data.fullPath.startsWith("asset://")) {
-            return "rf_asset";
-        }
-
-        return "";
-    }
 
     /**
      * Disable context menus which are not useful for remote file
@@ -141,8 +120,6 @@ define(function (require, exports, module) {
                 }
             }
         );
-
-        WorkingSetView.addClassProvider(protocolClassProvider);
     });
 
 });
