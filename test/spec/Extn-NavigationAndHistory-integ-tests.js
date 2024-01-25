@@ -180,6 +180,37 @@ define(function (require, exports, module) {
             await closeSession();
         }, 30000);
 
+        it("Should show restore notification and discard if discard button clicked", async function () {
+            const fileNameToRestore = "toDelete1/file.js";
+            await initFileRestorer(fileNameToRestore);
+            let projectRestorePath = testWindow._FileRecoveryExtensionForTests.getProjectRestoreRoot(testPath);
+
+            // now edit a file so that its backup is created
+            const unsavedText = "hello" + Math.random();
+            let editor = EditorManager.getActiveEditor();
+            editor.document.setText(unsavedText);
+            await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath + fileNameToRestore, false);
+
+            // backup is now present, reload the project
+            testWindow.location.href = "about:blank";
+            await awaits(1000);
+            await SpecRunnerUtils.closeTestWindow(true, true);
+            await loadTestWindow(true);
+            testWindow._FileRecoveryExtensionForTests.initWith(100,
+                FileSystem.getDirectoryForPath(tempRestorePath));
+            await awaitsFor(()=>{
+                return $(".file-recovery-button").length === 1;
+            }, "waiting for restore notification", 5000);
+
+            // now press the discard button to discard the recovery
+            $("#DISCARD_UNSAVED_FILES_RESTORE").click();
+            await SpecRunnerUtils.waitTillPathNotExists(projectRestorePath.fullPath + fileNameToRestore, false);
+            await openFile(fileNameToRestore);
+            editor = EditorManager.getActiveEditor();
+            expect(!!editor.isDirty).toBeFalse();
+            await closeSession();
+        }, 30000);
+
         // below project switch test case is flakey. need to fix. disable for now.
         // it("Should show restore on project switch", async function () {
         //     const readOnlyProject = SpecRunnerUtils.getTestPath("/spec/ProjectManager-test-files");

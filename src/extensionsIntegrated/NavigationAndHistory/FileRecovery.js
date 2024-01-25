@@ -326,10 +326,18 @@ define(function (require, exports, module) {
                 // done by the user. The user may not have yet clicked on the restore backup button. But as the user
                 // made an edit, we should delete the project restore folder to start a new backup session. The user
                 // can still restore the last backup session from the in memory `project.lastBackedUpFileContents`
+                console.log("Discarding old backup for restore...");
                 await silentlyRemoveDirectory(project.restoreRoot);
                 await createDir(project.restoreRoot);
                 await backupChangedDocs(currentProjectRoot);
                 project.firstEditHandled = true;
+                if(project.restoreNotification) {
+                    // this means the user edited a file while the restore dialog was shown. This generally means the
+                    // restore folder has been nuked to make way for the new session, but the old restore contents are still
+                    // available in project.lastBackedUpFileContents. So the contents can be restored, but the restore
+                    // data has already been discarded. We hide the discard option in the case as it's already done.
+                    $("#DISCARD_UNSAVED_FILES_RESTORE").addClass("forced-hidden");
+                }
             } else {
                 await backupChangedDocs(currentProjectRoot);
                 await cleanupUntrackedFiles(docPathsToTrack, currentProjectRoot);
@@ -396,10 +404,33 @@ define(function (require, exports, module) {
         }
     }
 
+    async function discardBtnClicked(_event, projectToRestore) {
+        let currentProjectRoot = ProjectManager.getProjectRoot();
+        const project = trackedProjects[currentProjectRoot.fullPath];
+        Metrics.countEvent(Metrics.EVENT_TYPE.PROJECT, "recovery", "discardClick");
+        if(!project || projectToRestore !== currentProjectRoot.fullPath){
+            console.error(`[recovery] current project ${currentProjectRoot.fullPath} != restore ${projectToRestore}`);
+            return;
+        }
+        trackedProjects[currentProjectRoot.fullPath].lastBackedUpFileContents = {};
+        // if first edit is handled, the restore directory is nuked and the backup discarded.The discard button will
+        // not be shown so this fn should never get called in the case. We also should mark firstEditHandled to true to
+        // indicate a fresh backup start for the project
+        trackedProjects[currentProjectRoot.fullPath].firstEditHandled = true;
+        if(project.restoreNotification) {
+            project.restoreNotification.close();
+            project.restoreNotification = null;
+        }
+        await silentlyRemoveDirectory(project.restoreRoot);
+        await createDir(project.restoreRoot);
+        await backupChangedDocs(currentProjectRoot);
+    }
+
     function initWith(scanIntervalMs, restoreDir) {
         ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_BEFORE_CLOSE, beforeProjectClosed);
         exports.on("restoreProject", restoreBtnClicked);
+        exports.on("discardProject", discardBtnClicked);
         sessionRestoreDir = restoreDir;
         createDir(sessionRestoreDir);
         setInterval(changeScanner, scanIntervalMs);
