@@ -1617,9 +1617,8 @@ define(function (require, exports, module) {
             fullPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
         }
         if(fullPath){
-            let projectRoot = getProjectRoot().fullPath;
-            let relativePath = window.path.relative(projectRoot, fullPath);
-            Phoenix.app.copyToClipboard(relativePath);
+            let pathToCopy = makeProjectRelativeIfPossible(fullPath);
+            Phoenix.app.copyToClipboard(pathToCopy);
             PhStore.setItem(CLIPBOARD_SYNC_KEY, {});
         }
     }
