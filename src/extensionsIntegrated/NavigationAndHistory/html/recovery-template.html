@@ -1,12 +1,21 @@
 <div>
   <span>{{Strings.RECOVER_UNSAVED_FILES_MESSAGE}}</span>
   <br />
-  <button
-    style="float: right; margin-right: 6px"
-    class="btn btn-mini remove primary file-recovery-button"
-    data-project="{{PROJECT_TO_RECOVER}}"
-    onclick="EventManager.triggerEvent('ph-recovery', 'restoreProject', this.getAttribute('data-project'))"
-  >
+    <button
+            style="float: right; margin-right: 6px"
+            class="btn btn-mini primary file-recovery-button"
+            data-project="{{PROJECT_TO_RECOVER}}"
+            onclick="EventManager.triggerEvent('ph-recovery', 'restoreProject', this.getAttribute('data-project'))"
+    >
     {{Strings.RECOVER_UNSAVED_FILES_RESTORE}}
+  </button>
+  <button
+          style="float: right; margin-right: 6px"
+          class="btn btn-mini danger"
+          data-project="{{PROJECT_TO_RECOVER}}"
+          id="DISCARD_UNSAVED_FILES_RESTORE"
+          onclick="EventManager.triggerEvent('ph-recovery', 'discardProject', this.getAttribute('data-project'))"
+  >
+    {{Strings.DISCARD_UNSAVED_FILES_RESTORE}}
   </button>
 </div>
