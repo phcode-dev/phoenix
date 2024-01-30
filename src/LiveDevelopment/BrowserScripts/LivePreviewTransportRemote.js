@@ -291,8 +291,15 @@
     // any urls that needs to be open in a browser window, we execute this. In browser, this is no-op as there is
     // no corresponding listener attached in phoenix browser server.
     document.addEventListener('click', function(event) {
-        if (event.target.tagName === 'A' && (event.target.target === '_blank')) {
-            const href = getAbsoluteUrl(event.target.getAttribute('href'));
+        let targetElement = event.target;
+        // Traverse one level up the DOM to find an anchor element if the target is not the anchor itself
+        // eg when image inside anchor elements etc..: <a><img></img></a>
+        if (targetElement !== null && targetElement.tagName !== 'A') {
+            targetElement = targetElement.parentElement;
+        }
+
+        if (targetElement && targetElement.tagName === 'A' && (targetElement.target === '_blank')) {
+            const href = getAbsoluteUrl(targetElement.getAttribute('href'));
             window.parent.postMessage({
                 handlerName: "ph-liveServer",
                 eventName: 'embeddedIframeHrefClick',
