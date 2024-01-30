@@ -199,7 +199,17 @@ Phoenix.app = {
                 // this is special handling for open with to work from mac finder. Mac will raise and event which will
                 // be buffered in the shell till the app reads the opened file list. Once read, the file list will be
                 // emptied in shell and no other instances will get the data, so we have to process it here.
-                window.__TAURI__.event.emit('scheme-request-received', {fileURLArray: filesURLList});
+                Phoenix.app.isPrimaryDesktopPhoenixWindow().then(isPrimary=>{
+                    if(isPrimary){
+                        const eventToUse = ["macOSEvent"];
+                        for(let fileUrlEntry of filesURLList){
+                            eventToUse.push(fileUrlEntry.replace("file://", ""));
+                        }
+                        handlerFn(eventToUse, "");
+                        return;
+                    }
+                    window.__TAURI__.event.emit('scheme-request-received', {fileURLArray: filesURLList});
+                });
             });
         }
     },
