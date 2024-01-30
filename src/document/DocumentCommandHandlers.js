@@ -1613,7 +1613,10 @@ define(function (require, exports, module) {
         }
     }
 
-    async function _openFilesPassedInFromCLI(args) {
+    async function _openFilesPassedInFromCLI(args=null) {
+        if(!args){
+            args= await Phoenix.app.getCommandLineArgs();
+        }
         if(!args || args.length <= 1){
             return;
         }
@@ -2029,8 +2032,15 @@ define(function (require, exports, module) {
         _$dirtydot = $(".dirty-dot", _$titleWrapper);
     });
 
-    AppInit.appReady(function () {
+
+    let firstProjectOpenHandled = false;
+    ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, ()=>{
+        if(firstProjectOpenHandled){
+            return;
+        }
+        firstProjectOpenHandled = true;
         Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
+        _openFilesPassedInFromCLI();
     });
 
     // Exported for unit testing only
