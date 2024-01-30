@@ -28,7 +28,6 @@
  * **/
 import initVFS from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
-import initTauriShell from "./tauriShell.js";
 
 initVFS();
 
@@ -98,6 +97,12 @@ async function openURLInPhoenixWindow(url, {
 Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
+    },
+    toggleDevtools: async function () {
+        if(!Phoenix.browser.isTauri){
+            throw new Error("toggle_devtools is not supported in browsers");
+        }
+        return window.__TAURI__.invoke("toggle_devtools", {});
     },
     closeWindow: function () {
         if(!Phoenix.browser.isTauri){
@@ -400,8 +405,4 @@ Phoenix.app = {
 
 if(!window.appshell){
     window.appshell = Phoenix;
-}
-
-if(Phoenix.browser.isTauri) {
-    initTauriShell(Phoenix.app);
 }
