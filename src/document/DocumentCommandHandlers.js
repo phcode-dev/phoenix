@@ -2009,7 +2009,6 @@ define(function (require, exports, module) {
     /** Do some initialization when the DOM is ready **/
     AppInit.htmlReady(function () {
         // If in Reload Without User Extensions mode, update UI and log console message
-        Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
         var params      = new UrlParams(),
             $icon       = $("#toolbar-extension-manager"),
             $indicator  = $("<div>" + Strings.STATUSBAR_USER_EXTENSIONS_DISABLED + "</div>");
@@ -2028,6 +2027,10 @@ define(function (require, exports, module) {
         _$titleWrapper = $(".title-wrapper", _$titleContainerToolbar);
         _$title = $(".title", _$titleWrapper);
         _$dirtydot = $(".dirty-dot", _$titleWrapper);
+    });
+
+    AppInit.appReady(function () {
+        Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
     });
 
     // Exported for unit testing only
