@@ -1652,8 +1652,6 @@ define(function (require, exports, module) {
         newPhoenixWindow(args);
     }
 
-    Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
-
     function handleFileNewWindow() {
         newPhoenixWindow();
     }
@@ -2012,6 +2010,7 @@ define(function (require, exports, module) {
     /** Do some initialization when the DOM is ready **/
     AppInit.htmlReady(function () {
         // If in Reload Without User Extensions mode, update UI and log console message
+        Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
         var params      = new UrlParams(),
             $icon       = $("#toolbar-extension-manager"),
             $indicator  = $("<div>" + Strings.STATUSBAR_USER_EXTENSIONS_DISABLED + "</div>");
