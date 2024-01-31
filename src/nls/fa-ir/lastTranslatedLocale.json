@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "فایل <code>package.json</code> در پروژه فعلی شناسایی نشد. آیا پروژه فعلی یک برنامه افزودنی معتبر {APP_NAME} است؟</br> برای جزئیات بیشتر <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>به این لینک</a> مراجعه کنید.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "فایل <code>package.json</code> JSON نامعتبر است.</br> برای جزئیات بیشتر <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>به این لینک</a> مراجعه کنید.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "فیلدهای الزامی موجود در <code>package.json</code> : [{0}]</br> برای جزئیات بیشتر <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>به این لینک</a> مراجعه کنید.",
+  "ERROR_NODE_JS_CRASH_TITLE": "اوه! مشکلی پیش آمد.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "ما با مشکلی مواجه شده‌ایم و باید {APP_NAME} را دوباره راه‌اندازی کنیم. نگران نباشید، ما سعی می‌کنیم همه کارهای شما را قبل از راه‌اندازی مجدد ذخیره کنیم. </br>(خطا: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "تغییر زبان",
   "LANGUAGE_MESSAGE": "زبان:",
   "LANGUAGE_SUBMIT": "بارگذاری مجدد {APP_NAME}",

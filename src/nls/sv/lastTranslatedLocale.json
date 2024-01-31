@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> filen upptäcktes inte i det aktuella projektet. Är det aktuella projektet ett giltigt {APP_NAME}-tillägg?</br> Se <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>denna länk</a> för mer information.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> filen är ogiltig JSON.</br> Se <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>denna länk</a> för mer information.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Obligatoriska fält saknas i <code>package.json</code> : [{0}]</br> Se <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>denna länk</a> för mer information.",
+  "ERROR_NODE_JS_CRASH_TITLE": "hoppsan! Något gick fel.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Vi har stött på ett problem och måste starta om {APP_NAME}. Oroa dig inte, vi försöker spara allt ditt arbete innan du startar om. </br>(Fel: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Byt språk",
   "LANGUAGE_MESSAGE": "Språk:",
   "LANGUAGE_SUBMIT": "Uppdatera {APP_NAME}",

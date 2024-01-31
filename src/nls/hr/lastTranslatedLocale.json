@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "datoteka <code>package.json</code> nije otkrivena u trenutnom projektu. Je li trenutni projekt valjano proširenje {APP_NAME}?</br> Više pojedinosti potražite na <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ovoj poveznici</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> datoteka je nevažeći JSON.</br> Više pojedinosti potražite na <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ovoj poveznici</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "U <code>package.json</code> nedostaju obavezna polja: [{0}]</br> Više pojedinosti potražite na <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ovoj poveznici</a> .",
+  "ERROR_NODE_JS_CRASH_TITLE": "Ups! Nešto je pošlo po zlu.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Naišli smo na problem i moramo ponovno pokrenuti {APP_NAME}. Ne brinite, pokušavamo spremiti sav vaš rad prije ponovnog pokretanja. </br>(Pogreška: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Promjeni Jezik",
   "LANGUAGE_MESSAGE": "Jezik:",
   "LANGUAGE_SUBMIT": "Ponovo učitaj {APP_NAME}",

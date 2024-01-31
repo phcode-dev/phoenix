@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> dosyası mevcut projede algılanmadı. Mevcut proje geçerli bir {APP_NAME} Uzantısı mı?</br> Daha fazla ayrıntı için <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>bu bağlantıya</a> bakın.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> dosyası geçersiz JSON.</br> Daha fazla ayrıntı için <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>bu bağlantıya</a> bakın.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "<code>package.json</code> dosyasında gerekli alanlar eksik: [{0}]</br> Daha fazla ayrıntı için <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>bu bağlantıya</a> bakın.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Hata! Bir şeyler yanlış gitti.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Bir sorunla karşılaştık ve {APP_NAME} uygulamasını yeniden başlatmamız gerekiyor. Endişelenmeyin, yeniden başlatmadan önce tüm çalışmalarınızı kaydetmeye çalışıyoruz. </br>(Hata: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Dili değiştir",
   "LANGUAGE_MESSAGE": "Lütfen aşağıdaki dillerden istediğiniz dili seçin:",
   "LANGUAGE_SUBMIT": "{APP_NAME} Yenile",

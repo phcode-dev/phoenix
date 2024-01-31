@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> फ़ाइल वर्तमान प्रोजेक्ट में नहीं मिली। क्या मौजूदा प्रोजेक्ट एक मान्य {APP_NAME} एक्सटेंशन है?</br> अधिक विवरण के लिए <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>यह लिंक</a> देखें।",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> फ़ाइल अमान्य JSON है।</br> अधिक विवरण के लिए <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>यह लिंक</a> देखें।",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "आवश्यक फ़ील्ड <code>package.json</code> में गायब हैं: [{0}]</br> अधिक विवरण के लिए <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>यह लिंक</a> देखें।",
+  "ERROR_NODE_JS_CRASH_TITLE": "उफ़! कुछ गलत हो गया।",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "हमें एक समस्या का सामना करना पड़ा है और हमें {APP_NAME} को पुनः आरंभ करने की आवश्यकता है। चिंता न करें, हम पुनः आरंभ करने से पहले आपके सभी काम को सहेजने का प्रयास कर रहे हैं। </br>(त्रुटि: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "भाषा बदलें",
   "LANGUAGE_MESSAGE": "भाषा:",
   "LANGUAGE_SUBMIT": "{APP_NAME} को फिर से लोड करें",

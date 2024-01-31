@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> -bestand niet gedetecteerd in huidig project. Is het huidige project een geldige {APP_NAME}-extensie?</br> Zie <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>deze link</a> voor meer details.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> bestand is ongeldig JSON.</br> Zie <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>deze link</a> voor meer details.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Vereiste velden ontbreken in <code>package.json</code> : [{0}]</br> Zie <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>deze link</a> voor meer details.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Oeps! Er is iets fout gegaan.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Er is een probleem opgetreden en we moeten {APP_NAME} opnieuw opstarten. Maak je geen zorgen, we proberen al je werk op te slaan voordat je opnieuw opstart. </br>(Fout: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Wijzig taal",
   "LANGUAGE_MESSAGE": "Taal:",
   "LANGUAGE_SUBMIT": "{APP_NAME} opnieuw laden",

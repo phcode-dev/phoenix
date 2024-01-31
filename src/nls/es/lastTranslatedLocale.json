@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "El archivo <code>package.json</code> no se detectó en el proyecto actual. ¿El proyecto actual es una extensión válida de {APP_NAME}?</br> Vea <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>este enlace</a> para más detalles.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "El archivo <code>package.json</code> no es JSON válido.</br> Vea <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>este enlace</a> para más detalles.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Faltan campos obligatorios en <code>package.json</code> : [{0}]</br> Vea <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>este enlace</a> para más detalles.",
+  "ERROR_NODE_JS_CRASH_TITLE": "¡Ups! Algo salió mal.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Nos encontramos con un problema y necesitamos reiniciar {APP_NAME}. No te preocupes, estamos intentando guardar todo tu trabajo antes de reiniciar. </br>(Error: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Cambiar idioma",
   "LANGUAGE_MESSAGE": "Idioma:",
   "LANGUAGE_SUBMIT": "Reiniciar {APP_NAME}",

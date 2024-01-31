@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "موجودہ پروجیکٹ میں <code>package.json</code> فائل کا پتہ نہیں چلا۔ کیا موجودہ پروجیکٹ ایک درست {APP_NAME} ایکسٹینشن ہے؟</br> مزید تفصیلات کے لیے <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>یہ لنک</a> دیکھیں۔",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> فائل غلط JSON ہے۔</br> مزید تفصیلات کے لیے <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>یہ لنک</a> دیکھیں۔",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "<code>package.json</code> میں مطلوبہ فیلڈز غائب ہیں : [{0}]</br> مزید تفصیلات کے لیے <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>یہ لنک</a> دیکھیں۔",
+  "ERROR_NODE_JS_CRASH_TITLE": "افوہ! کچھ غلط ہو گیا.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "ہمیں ایک مسئلہ درپیش ہے اور ہمیں {APP_NAME} کو دوبارہ شروع کرنے کی ضرورت ہے۔ پریشان نہ ہوں، ہم دوبارہ شروع کرنے سے پہلے آپ کے تمام کام کو محفوظ کرنے کی کوشش کر رہے ہیں۔ </br>(خرابی: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "زبان سوئچ کریں۔",
   "LANGUAGE_MESSAGE": "زبان:",
   "LANGUAGE_SUBMIT": "{APP_NAME} کو دوبارہ لوڈ کریں",

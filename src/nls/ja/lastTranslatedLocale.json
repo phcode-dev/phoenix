@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code>ファイルが現在のプロジェクトで検出されませんでした。現在のプロジェクトは有効な {APP_NAME} 拡張機能ですか?</br>詳細については<a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>、このリンクを</a>参照してください。",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code>ファイルが無効な JSON です。</br>詳細については<a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>、このリンクを</a>参照してください。",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "<code>package.json</code>に必須フィールドがありません: [{0}]</br>詳細については<a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>、このリンクを</a>参照してください。",
+  "ERROR_NODE_JS_CRASH_TITLE": "おっとっと！何か問題が発生しました。",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "問題が発生したため、{APP_NAME} を再起動する必要があります。心配しないでください。再起動する前にすべての作業内容を保存しようとしています。 </br>(エラー: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "言語を切り替える",
   "LANGUAGE_MESSAGE": "言語 :",
   "LANGUAGE_SUBMIT": "{APP_NAME} をリロード",

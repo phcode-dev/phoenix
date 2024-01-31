@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "fișierul <code>package.json</code> nu a fost detectat în proiectul curent. Proiectul actual este o extensie {APP_NAME} validă?</br> Consultați <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>acest link</a> pentru mai multe detalii.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "Fișierul <code>package.json</code> este JSON nevalid.</br> Consultați <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>acest link</a> pentru mai multe detalii.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Câmpuri obligatorii lipsesc în <code>package.json</code> : [{0}]</br> Consultați <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>acest link</a> pentru mai multe detalii.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Hopa! Ceva n-a mers bine.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Am întâmpinat o problemă și trebuie să repornim {APP_NAME}. Nu vă faceți griji, încercăm să vă salvăm toată munca înainte de a reporni. </br>(Eroare: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Modificare Limbă",
   "LANGUAGE_MESSAGE": "Limba:",
   "LANGUAGE_SUBMIT": "Reîncarcă {APP_NAME}",

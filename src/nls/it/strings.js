@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "File <code>package.json</code> non rilevato nel progetto corrente. Il progetto attuale è un&#39;estensione {APP_NAME} valida?</br> Vedi <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>questo link</a> per maggiori dettagli.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "Il file <code>package.json</code> non è un JSON valido.</br> Vedi <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>questo link</a> per maggiori dettagli.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Campi obbligatori mancanti in <code>package.json</code> : [{0}]</br> Vedi <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>questo link</a> per maggiori dettagli.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Ops! Qualcosa è andato storto.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Si è verificato un problema e dobbiamo riavviare {APP_NAME}. Non preoccuparti, stiamo cercando di salvare tutto il tuo lavoro prima di riavviare. </br>(Errore: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Cambia la lingua",
   "LANGUAGE_MESSAGE": "Lingua:",
   "LANGUAGE_SUBMIT": "Riavvia {APP_NAME}",

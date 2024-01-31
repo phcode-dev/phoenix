@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> fájl nem található az aktuális projektben. A jelenlegi projekt érvényes {APP_NAME} bővítmény?</br> További részletekért lásd <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ezt a linket</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> fájl érvénytelen JSON.</br> További részletekért lásd <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ezt a linket</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Hiányoznak a kötelező mezők <code>package.json</code> fájlból: [{0}]</br> További részletekért lásd <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ezt a linket</a> .",
+  "ERROR_NODE_JS_CRASH_TITLE": "Hoppá! Valami elromlott.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Hibába ütköztünk, és újra kell indítanunk a(z) {APP_NAME} alkalmazást. Ne aggódjon, megpróbáljuk menteni az összes munkáját az újraindítás előtt. </br>(Hiba: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Nyelv változtatása",
   "LANGUAGE_MESSAGE": "Nyelv:",
   "LANGUAGE_SUBMIT": "{APP_NAME} újratöltése",

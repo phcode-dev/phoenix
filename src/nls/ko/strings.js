@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "현재 프로젝트에서 <code>package.json</code> 파일이 감지되지 않습니다. 현재 프로젝트가 유효한 {APP_NAME} 확장 프로그램인가요?</br> 자세한 내용은 <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>이 링크를</a> 참조하십시오.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> 파일이 유효하지 않은 JSON입니다.</br> 자세한 내용은 <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>이 링크를</a> 참조하십시오.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "<code>package.json</code> 에 누락된 필수 필드: [{0}]</br> 자세한 내용은 <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>이 링크를</a> 참조하십시오.",
+  "ERROR_NODE_JS_CRASH_TITLE": "이런! 문제가 발생했습니다.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "문제가 발생하여 {APP_NAME}을(를) 다시 시작해야 합니다. 걱정하지 마십시오. 다시 시작하기 전에 모든 작업을 저장하려고 합니다. </br>(오류: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "언어 변경",
   "LANGUAGE_MESSAGE": "언어:",
   "LANGUAGE_SUBMIT": "{APP_NAME} 재시작",

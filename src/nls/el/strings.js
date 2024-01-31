@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "Το αρχείο <code>package.json</code> δεν εντοπίστηκε στο τρέχον έργο. Είναι το τρέχον έργο έγκυρη επέκταση {APP_NAME};</br> Δείτε <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>αυτόν τον σύνδεσμο</a> για περισσότερες λεπτομέρειες.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "Το αρχείο <code>package.json</code> δεν είναι έγκυρο JSON.</br> Δείτε <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>αυτόν τον σύνδεσμο</a> για περισσότερες λεπτομέρειες.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Λείπουν υποχρεωτικά πεδία στο <code>package.json</code> : [{0}]</br> Δείτε <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>αυτόν τον σύνδεσμο</a> για περισσότερες λεπτομέρειες.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Ωχ! Κάτι πήγε στραβά.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Αντιμετωπίσαμε πρόβλημα και πρέπει να επανεκκινήσουμε την εφαρμογή {APP_NAME}. Μην ανησυχείτε, προσπαθούμε να αποθηκεύσουμε όλη την εργασία σας πριν την επανεκκίνηση. </br>(Σφάλμα: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Αλλαγή Γλώσσας",
   "LANGUAGE_MESSAGE": "Γλώσσες:",
   "LANGUAGE_SUBMIT": "Επανεκκίνηση του {APP_NAME}",
