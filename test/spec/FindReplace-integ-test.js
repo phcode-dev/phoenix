@@ -195,6 +195,16 @@ define(function (require, exports, module) {
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", getSearchField()[0]);
         }
 
+        function pressDownArrow() {
+            expectSearchBarOpen();
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", getSearchField()[0]);
+        }
+
+        function pressUpArrow() {
+            expectSearchBarOpen();
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", getSearchField()[0]);
+        }
+
         function toggleCaseSensitive(val) {
             if (tw$("#find-case-sensitive").is(".active") !== val) {
                 tw$("#find-case-sensitive").click();
@@ -397,6 +407,31 @@ define(function (require, exports, module) {
                 expectMatchIndex(1, 3);
             });
 
+            it("Should find next and previous on down and up arrow key press", function () {
+                myEditor.setCursorPos(0, 0);
+
+                twCommandManager.execute(Commands.CMD_FIND);
+
+                enterSearchText("Foo");
+                expectHighlightedMatches(fooExpectedMatches);
+                expectMatchIndex(0, 4);
+
+                pressDownArrow();
+                expectMatchIndex(1, 4);
+                pressDownArrow();
+                expectMatchIndex(2, 4);
+
+                pressUpArrow();
+                expectMatchIndex(1, 4);
+                pressUpArrow();
+                expectMatchIndex(0, 4);
+                pressUpArrow();
+                expectMatchIndex(3, 4);
+
+                pressDownArrow();
+                expectMatchIndex(0, 4);
+
+            });
 
             it("should Find Next after search bar closed, including wraparound", async function () {
                 myEditor.setCursorPos(0, 0);
