@@ -435,6 +435,10 @@ define(function (require, exports, module) {
         return showModalDialog(DefaultDialogs.DIALOG_ID_INFO, title, message, null, autoDismiss);
     }
 
+    function showErrorDialog(title, message, autoDismiss) {
+        return showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, title, message, null, autoDismiss);
+    }
+
     /**
      * Immediately closes any dialog instances with the given class. The dialog callback for each instance will
      * be called with the special buttonId DIALOG_CANCELED (note: callback is run asynchronously).
@@ -493,6 +497,7 @@ define(function (require, exports, module) {
     exports.showModalDialog              = showModalDialog;
     exports.showConfirmDialog            = showConfirmDialog;
     exports.showInfoDialog               = showInfoDialog;
+    exports.showErrorDialog              = showErrorDialog;
     exports.showModalDialogUsingTemplate = showModalDialogUsingTemplate;
     exports.cancelModalDialogIfOpen      = cancelModalDialogIfOpen;
     exports.addLinkTooltips              = addLinkTooltips;

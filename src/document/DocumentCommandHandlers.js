@@ -1586,7 +1586,7 @@ define(function (require, exports, module) {
                 console.log('close success: ', closeSuccess);
                 raceAgainstTime(window.PhStore.flushDB())
                     .finally(()=>{
-                        raceAgainstTime(NodeConnector.terminateNode())
+                        raceAgainstTime(_safeNodeTerminate())
                             .finally(()=>{
                                 Phoenix.app.closeWindow();
                             });
@@ -1831,7 +1831,7 @@ define(function (require, exports, module) {
             window.setTimeout(function () {
                 raceAgainstTime(window.PhStore.flushDB()) // wither wait for flush or time this out
                     .finally(()=>{
-                        raceAgainstTime(NodeConnector.terminateNode(), 8000)
+                        raceAgainstTime(_safeNodeTerminate(), 4000)
                             .finally(()=>{
                                 window.location.href = href;
                             });
@@ -1849,7 +1849,7 @@ define(function (require, exports, module) {
      * @param {Array<String>|string} loadDevExtensionPath If specified, will load the extension from the path. IF
      * and empty array is specified, it will unload all dev extensions on reload.
      */
-    function handleReload(loadWithoutExtensions, loadDevExtensionPath) {
+    function handleReload(loadWithoutExtensions=false, loadDevExtensionPath=[]) {
         var href    = window.location.href,
             params  = new UrlParams();
 
@@ -1942,13 +1942,30 @@ define(function (require, exports, module) {
         }
     }
 
+    let nodeTerminateDueToShutdown = false;
     async function _safeNodeTerminate() {
         // close should not be interrupted.
+        nodeTerminateDueToShutdown = true;
         try{
             await NodeConnector.terminateNode();
         } catch (e) {
             console.error(e);
         }
+    }
+    if(window.nodeTerminationPromise) {
+        window.nodeTerminationPromise
+            .then(()=>{
+                if(nodeTerminateDueToShutdown){
+                    return; // normal shutdown
+                }
+                Metrics.countEvent(Metrics.EVENT_TYPE.NODEJS, 'crash', "dlgShown");
+                window.fs.forceUseNodeWSEndpoint(false);
+                Dialogs
+                    .showErrorDialog(Strings.ERROR_NODE_JS_CRASH_TITLE, Strings.ERROR_NODE_JS_CRASH_MESSAGE)
+                    .done(()=>{
+                        handleReload();
+                    });
+            });
     }
 
     let closeInProgress;
