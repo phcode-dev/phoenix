@@ -610,6 +610,7 @@ function nodeLoader() {
 
         let nodeTerminationResolve;
         const nodeTerminationPromise = new Promise((resolve) => { nodeTerminationResolve = resolve;});
+        window.nodeTerminationPromise = nodeTerminationPromise;
 
         // createNodeConnector can me immediately used after this, no need to wait for node nodeSetupDonePromise
         // All messages to be sent to node will be queued and sent when node comes online in its time.

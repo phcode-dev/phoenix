@@ -99,7 +99,8 @@ define(function (require, exports, module) {
         STORAGE: "storage",
         NEW_PROJECT: "new-project",
         ERROR: "error",
-        USER: "user"
+        USER: "user",
+        NODEJS: "node"
     };
 
     /**
