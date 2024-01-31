@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> filen blev ikke fundet i det aktuelle projekt. Er det aktuelle projekt en gyldig {APP_NAME}-udvidelse?</br> Se <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>dette link</a> for flere detaljer.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> filen er ugyldig JSON.</br> Se <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>dette link</a> for flere detaljer.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Påkrævede felter mangler i <code>package.json</code> : [{0}]</br> Se <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>dette link</a> for flere detaljer.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Ups! Noget gik galt.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Vi er stødt på et problem og skal genstarte {APP_NAME}. Bare rolig, vi forsøger at gemme alt dit arbejde, før du genstarter. </br>(Fejl: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Skift sprog",
   "LANGUAGE_MESSAGE": "Sprog:",
   "LANGUAGE_SUBMIT": "Genindlæs {APP_NAME}",

@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "当前项目中未检测到<code>package.json</code>文件。当前项目是有效的 {APP_NAME} 扩展吗？</br>有关详细信息，请参阅<a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>此链接</a>。",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code>文件是无效的 JSON。</br>有关详细信息，请参阅<a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>此链接</a>。",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "<code>package.json</code>中缺少必填字段：[{0}]</br>有关详细信息，请参阅<a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>此链接</a>。",
+  "ERROR_NODE_JS_CRASH_TITLE": "哎呀！出了些问题。",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "我们遇到了问题，需要重新启动 {APP_NAME}。别担心，我们会尝试在重新启动之前保存您的所有工作。 </br>（错误：ERROR_NODE_JS_CRASH）",
   "LANGUAGE_TITLE": "切换语言",
   "LANGUAGE_MESSAGE": "请从列表中选择所需的语言:",
   "LANGUAGE_SUBMIT": "重新加载 {APP_NAME}",

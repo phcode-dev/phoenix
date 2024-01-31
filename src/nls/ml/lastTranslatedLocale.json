@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> ഫയൽ നിലവിലെ പ്രോജക്റ്റിൽ കണ്ടെത്തിയില്ല. നിലവിലെ പ്രോജക്റ്റ് സാധുവായ {APP_NAME} വിപുലീകരണമാണോ?</br> കൂടുതൽ വിവരങ്ങൾക്ക് <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ഈ ലിങ്ക്</a> കാണുക.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> ഫയൽ JSON അസാധുവാണ്.</br> കൂടുതൽ വിവരങ്ങൾക്ക് <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ഈ ലിങ്ക്</a> കാണുക.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "<code>package.json</code> ൽ ആവശ്യമായ ഫീൽഡുകൾ കാണുന്നില്ല : [{0}]</br> കൂടുതൽ വിവരങ്ങൾക്ക് <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ഈ ലിങ്ക്</a> കാണുക.",
+  "ERROR_NODE_JS_CRASH_TITLE": "ശ്ശോ! എന്തോ കുഴപ്പം സംഭവിച്ചു.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "ഞങ്ങൾ ഒരു പ്രശ്‌നത്തിൽ അകപ്പെട്ടു, {APP_NAME} പുനരാരംഭിക്കേണ്ടതുണ്ട്. വിഷമിക്കേണ്ട, പുനരാരംഭിക്കുന്നതിന് മുമ്പ് നിങ്ങളുടെ എല്ലാ ജോലികളും സംരക്ഷിക്കാൻ ഞങ്ങൾ ശ്രമിക്കുന്നു. </br>(പിശക്: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "ഭാഷ മാറുക",
   "LANGUAGE_MESSAGE": "ഭാഷ:",
   "LANGUAGE_SUBMIT": "{APP_NAME} റീലോഡ് ചെയ്യുക",

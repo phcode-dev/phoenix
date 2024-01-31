@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "Nie wykryto pliku <code>package.json</code> w bieżącym projekcie. Czy bieżący projekt jest prawidłowym rozszerzeniem aplikacji {APP_NAME}?</br> Zobacz <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ten link</a> , aby uzyskać więcej informacji.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "plik <code>package.json</code> ma nieprawidłowy format JSON.</br> Zobacz <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ten link</a> , aby uzyskać więcej informacji.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Brak wymaganych pól w <code>package.json</code> : [{0}]</br> Zobacz <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>ten link</a> , aby uzyskać więcej informacji.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Ups! Coś poszło nie tak.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Wystąpił problem i musimy ponownie uruchomić aplikację {APP_NAME}. Nie martw się, staramy się zapisać całą Twoją pracę przed ponownym uruchomieniem. </br>(Błąd: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Zmień język",
   "LANGUAGE_MESSAGE": "Język:",
   "LANGUAGE_SUBMIT": "Zrestartuj {APP_NAME}",

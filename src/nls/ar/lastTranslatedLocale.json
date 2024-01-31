@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "لم يتم اكتشاف ملف <code>package.json</code> في المشروع الحالي. هل المشروع الحالي امتداد {APP_NAME} صالح؟</br> انظر <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>هذا الرابط</a> لمزيد من التفاصيل.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "ملف <code>package.json</code> غير صالح JSON.</br> انظر <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>هذا الرابط</a> لمزيد من التفاصيل.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "الحقول المطلوبة مفقودة في <code>package.json</code> : [{0}]</br> انظر <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>هذا الرابط</a> لمزيد من التفاصيل.",
+  "ERROR_NODE_JS_CRASH_TITLE": "أُووبس! هناك خطأ ما.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "لقد واجهنا مشكلة ونحتاج إلى إعادة تشغيل {APP_NAME}. لا تقلق، فنحن نحاول حفظ جميع أعمالك قبل إعادة التشغيل. </br>(الخطأ: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "تبديل اللغة",
   "LANGUAGE_MESSAGE": "لغة:",
   "LANGUAGE_SUBMIT": "إعادة تحميل {APP_NAME}",

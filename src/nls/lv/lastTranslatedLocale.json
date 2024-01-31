@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> fails pašreizējā projektā nav atrasts. Vai pašreizējais projekts ir derīgs {APP_NAME} paplašinājums?</br> Plašāku informāciju skatiet <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>šajā saitē</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> fails nav derīgs JSON.</br> Plašāku informāciju skatiet <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>šajā saitē</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "<code>package.json</code> failā trūkst obligāto lauku: [{0}]</br> Plašāku informāciju skatiet <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>šajā saitē</a> .",
+  "ERROR_NODE_JS_CRASH_TITLE": "Hmm! Kaut kas nogāja greizi.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Radās problēma, un ir jārestartē lietotne {APP_NAME}. Neuztraucieties, mēs cenšamies saglabāt visu jūsu darbu pirms restartēšanas. </br>(Kļūda: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Pārslēgt valodu",
   "LANGUAGE_MESSAGE": "Valoda:",
   "LANGUAGE_SUBMIT": "Pārlādēt {APP_NAME}",

@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> -tiedostoa ei löydy nykyisestä projektista. Onko nykyinen projekti kelvollinen laajennus {APP_NAME}?</br> Katso lisätietoja <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>tästä linkistä</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> tiedosto on virheellinen JSON.</br> Katso lisätietoja <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>tästä linkistä</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Pakolliset kentät puuttuvat paketista <code>package.json</code> : [{0}]</br> Katso lisätietoja <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>tästä linkistä</a> .",
+  "ERROR_NODE_JS_CRASH_TITLE": "Oho! Jotain meni pieleen.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Olemme törmänneet ongelmaan, ja {APP_NAME} on käynnistettävä uudelleen. Älä huoli, yritämme tallentaa kaikki työsi ennen uudelleenkäynnistystä. </br>(Virhe: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Vaihda kieltä",
   "LANGUAGE_MESSAGE": "Kieli:",
   "LANGUAGE_SUBMIT": "Päivitä {APP_NAME}",

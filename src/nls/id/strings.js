@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "file <code>package.json</code> tidak terdeteksi dalam proyek saat ini. Apakah proyek saat ini merupakan Ekstensi {APP_NAME} yang valid?</br> Lihat <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>tautan ini</a> untuk detail lebih lanjut.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "file <code>package.json</code> adalah JSON yang tidak valid.</br> Lihat <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>tautan ini</a> untuk detail lebih lanjut.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Kolom yang wajib diisi tidak ada di <code>package.json</code> : [{0}]</br> Lihat <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>tautan ini</a> untuk detail lebih lanjut.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Ups! Ada yang salah.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Kami mengalami masalah dan perlu memulai ulang {APP_NAME}. Jangan khawatir, kami mencoba menyimpan semua pekerjaan Anda sebelum memulai ulang. </br>(Kesalahan: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Ganti Bahasa",
   "LANGUAGE_MESSAGE": "Bahasa:",
   "LANGUAGE_SUBMIT": "Muat ulang {APP_NAME}",

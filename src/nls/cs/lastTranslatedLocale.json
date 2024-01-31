@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "V aktuálním projektu nebyl zjištěn soubor <code>package.json</code> . Je aktuální projekt platným rozšířením {APP_NAME}?</br> Další podrobnosti naleznete <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>na tomto odkazu</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE": "soubor <code>package.json</code> je neplatný JSON.</br> Další podrobnosti naleznete <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>na tomto odkazu</a> .",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "V <code>package.json</code> chybí povinná pole: [{0}]</br> Další podrobnosti naleznete <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>na tomto odkazu</a> .",
+  "ERROR_NODE_JS_CRASH_TITLE": "Jejda! Něco se pokazilo.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Narazili jsme na problém a potřebujeme restartovat {APP_NAME}. Nebojte se, před restartem se snažíme uložit veškerou vaši práci. </br>(Chyba: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Změnit jazyk",
   "LANGUAGE_MESSAGE": "Prosím, vyberte jazyk ze seznamu:",
   "LANGUAGE_SUBMIT": "Restartovat {APP_NAME}",

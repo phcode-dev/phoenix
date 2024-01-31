@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "<code>package.json</code> датотека није откривена у тренутном пројекту. Да ли је тренутни пројекат важећи додатак за {АПП_НАМЕ}?</br> Погледајте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>овај линк</a> за више детаља.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "<code>package.json</code> датотека је неважећи ЈСОН.</br> Погледајте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>овај линк</a> за више детаља.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Недостају обавезна поља у <code>package.json</code> : [{0}]</br> Погледајте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>овај линк</a> за више детаља.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Упс! Нешто није у реду.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Наишли смо на проблем и морамо поново да покренемо {АПП_НАМЕ}. Не брините, покушавамо да сачувамо сав ваш рад пре поновног покретања. </бр>(Грешка: ЕРРОР_НОДЕ_ЈС_ЦРАСХ)",
   "LANGUAGE_TITLE": "Промени језик",
   "LANGUAGE_MESSAGE": "Језик:",
   "LANGUAGE_SUBMIT": "Поново учитај {APP_NAME}",

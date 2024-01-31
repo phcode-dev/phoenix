@@ -593,6 +593,8 @@ define({
   "ERROR_NO_EXTENSION_PACKAGE": "файлът <code>package.json</code> не е открит в текущия проект. Текущият проект валидно разширение {APP_NAME} ли е?</br> Вижте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>тази връзка</a> за повече подробности.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "файлът <code>package.json</code> е невалиден JSON.</br> Вижте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>тази връзка</a> за повече подробности.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "Липсват задължителни полета в <code>package.json</code> : [{0}]</br> Вижте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>тази връзка</a> за повече подробности.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Опа! Нещо се обърка.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "Срещнахме проблем и трябва да рестартираме {APP_NAME}. Не се притеснявайте, опитваме се да запазим цялата ви работа, преди да рестартирате. </br>(Грешка: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Смяна на езика",
   "LANGUAGE_MESSAGE": "Език:",
   "LANGUAGE_SUBMIT": "Презареждане на {APP_NAME}",

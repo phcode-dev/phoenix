@@ -573,6 +573,8 @@
   "ERROR_NO_EXTENSION_PACKAGE": "файл <code>package.json</code> не виявлено в поточному проекті. Чи є поточний проект дійсним розширенням {APP_NAME}?</br> Перегляньте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>це посилання</a> для отримання додаткової інформації.",
   "ERROR_INVALID_EXTENSION_PACKAGE": "файл <code>package.json</code> недійсний JSON.</br> Перегляньте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>це посилання</a> для отримання додаткової інформації.",
   "ERROR_INVALID_EXTENSION_PACKAGE_FIELDS": "У <code>package.json</code> відсутні обов’язкові поля: [{0}]</br> Перегляньте <a href='https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes'>це посилання</a> для отримання додаткової інформації.",
+  "ERROR_NODE_JS_CRASH_TITLE": "Ой! Щось пішло не так.",
+  "ERROR_NODE_JS_CRASH_MESSAGE": "У нас виникла проблема, тому потрібно перезапустити {APP_NAME}. Не хвилюйтеся, ми намагаємося зберегти всю вашу роботу перед перезапуском. </br>(Помилка: ERROR_NODE_JS_CRASH)",
   "LANGUAGE_TITLE": "Змінити мову",
   "LANGUAGE_MESSAGE": "Мова:",
   "LANGUAGE_SUBMIT": "Перезапустити {APP_NAME}",
