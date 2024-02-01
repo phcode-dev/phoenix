@@ -425,18 +425,6 @@ define(function (require, exports, module) {
             $body.addClass("in-appshell");
         }
 
-        // Use HTML Menus
-        // (issue #5310) workaround for bootstrap dropdown: prevent the menu item to grab
-        // the focus -- override jquery focus implementation for top-level menu items
-        (function () {
-            const defaultFocus = $.fn.focus;
-            $.fn.focus = function () {
-                if (!this.hasClass("dropdown-toggle")) {
-                    return defaultFocus.apply(this, arguments);
-                }
-            };
-        }());
-
         $('#toolbar-extension-manager').prop('title', Strings.EXTENSION_MANAGER_TITLE);
         $('#update-notification').prop('title', Strings.UPDATE_NOTIFICATION_TOOLTIP);
 
