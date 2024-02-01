@@ -1,4 +1,4 @@
-name: 'Desktop-mac full test suite run on pull request'
+name: 'Desktop-mac intel and m1 full test suite run on pull request'
 on:
   pull_request:
     branches: [ main ]
@@ -9,10 +9,15 @@ concurrency:
 
 jobs:
   test-desktop-mac:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-14, macos-latest ]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v3
+      - name: macos hardware info
+        run: system_profiler SPSoftwareDataType SPHardwareDataType
       - name: setup node
         uses: actions/setup-node@v3
         with:
