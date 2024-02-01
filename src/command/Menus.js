@@ -586,7 +586,7 @@ define(function (require, exports, module) {
             $menuItem = $("<li><hr class='divider' id='" + id + "' /></li>");
         } else {
             // Create the HTML Menu
-            $menuItem = $("<li><a href='#' id='" + id + "'> <span class='menu-name'></span></a></li>");
+            $menuItem = $("<li><a href='#' class='menuAnchor' id='" + id + "'> <span class='menu-name'></span></a></li>");
 
             $menuItem.on("click", function () {
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
@@ -604,6 +604,12 @@ define(function (require, exports, module) {
             let self = this;
             $menuItem.on("mouseenter", function () {
                 self.closeSubMenu();
+                $menuItem.parent().find(".menuAnchor").removeClass("selected");
+                $menuItem.find(".menuAnchor").addClass("selected");
+            });
+            $menuItem.on("mouseleave", function () {
+                self.closeSubMenu();
+                $menuItem.find(".menuAnchor").removeClass("selected");
             });
         }
 
@@ -1032,9 +1038,9 @@ define(function (require, exports, module) {
             $(this).removeClass('selected');
         });
 
-        $popUp.on("mousemove",function (event) {
-            $popUp.find(".selected").removeClass("selected");
-        });
+        // $popUp.on("mousemove",function (event) {
+        //     $popUp.find(".selected").removeClass("selected");
+        // });
 
         // Insert menu
         let $relativeElement = relativeID && $(_getHTMLMenu(relativeID));
@@ -1075,7 +1081,7 @@ define(function (require, exports, module) {
             if (event.key === KEY.ARROW_DOWN) {
                 let $nextLi = $selected.closest('li').next('li');
                 $next = $nextLi.find('a');
-                while (($next.length === 0 || $next.hasClass('disabled')) && $nextLi.length) {
+                while (($next.length === 0 || $next.hasClass('disabled') || !$next.is(':visible')) && $nextLi.length) {
                     $nextLi = $nextLi.next('li');
                     $next = $nextLi.find('a');
                 }
@@ -1085,7 +1091,7 @@ define(function (require, exports, module) {
             } else if (event.key === KEY.ARROW_UP) {
                 let $prevLi = $selected.closest('li').prev('li');
                 $next = $prevLi.find('a');
-                while (($next.length === 0 || $next.hasClass('disabled')) && $prevLi.length) {
+                while (($next.length === 0 || $next.hasClass('disabled') || !$next.is(':visible')) && $prevLi.length) {
                     $prevLi = $prevLi.prev('li');
                     $next = $prevLi.find('a');
                 }
