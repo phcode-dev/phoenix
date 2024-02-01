@@ -10,7 +10,7 @@ concurrency:
 jobs:
   playwright-firefox-macos:
     timeout-minutes: 90
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - name: setup node
