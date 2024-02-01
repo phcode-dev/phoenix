@@ -29,6 +29,7 @@ define(function (require, exports, module) {
         EventDispatcher = require("utils/EventDispatcher"),
         WorkspaceManager = require("view/WorkspaceManager"),
         CommandManager  = require("command/CommandManager"),
+        MainViewManager     = require("view/MainViewManager"),
         KeyEvent        = require("utils/KeyEvent");
 
     let _popUps = [];
@@ -105,13 +106,10 @@ define(function (require, exports, module) {
 
                     removePopUp($popUp);
 
-                    // TODO: right now Menus and Context Menus do not take focus away from
-                    // the editor. We need to have a focus manager to correctly manage focus
+                    // We need to have a focus manager to correctly manage focus
                     // between editors and other UI elements.
-                    // For now we don't set focus here and assume individual popups
-                    // adjust focus if necessary
-                    // See story in Trello card #404
-                    //EditorManager.focusEditor();
+                    // For now we set focus here
+                    MainViewManager.focusActivePane();
                 }
 
                 break;

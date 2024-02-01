@@ -319,7 +319,8 @@ define(function (require, exports, module) {
      * Focuses the current pane. If the current pane has a current view, then the pane will focus the view.
      */
     function focusActivePane() {
-        _getPane(ACTIVE_PANE).focus();
+        const activePane = _getPane(ACTIVE_PANE);
+        activePane && activePane.focus();
     }
 
     /**

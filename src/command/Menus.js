@@ -34,11 +34,14 @@ define(function (require, exports, module) {
         PopUpManager        = require("widgets/PopUpManager"),
         ViewUtils           = require("utils/ViewUtils"),
         Metrics             = require("utils/Metrics"),
+        MainViewManager     = require("view/MainViewManager"),
+        AppInit                 = require("utils/AppInit"),
         DeprecationWarning  = require("utils/DeprecationWarning");
 
     // make sure the global brackets letiable is loaded
     require("utils/Global");
 
+    const KEY = KeyBindingManager.KEY;
     /**
      * Brackets Application Menu Constants
      * @enum {string}
@@ -1007,9 +1010,27 @@ define(function (require, exports, module) {
         menuMap[id] = menu;
 
 
-        let $toggle = $("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>" + name + "</a>"),
+        let $toggle = $(`<a id="${id}-dropdown-toggle" href='#' class='dropdown-toggle' data-toggle='dropdown'>${name}</a>`),
             $popUp = $("<ul class='dropdown-menu'></ul>"),
-            $newMenu = $("<li class='dropdown' id='" + id + "'></li>").append($toggle).append($popUp);
+            $dropdown = $("<li class='dropdown' id='" + id + "'></li>"),
+            $newMenu = $dropdown.append($toggle).append($popUp);
+
+        $toggle.on("mouseenter", function() {
+            const $this = $(this); // Cache the jQuery object of the current element
+
+            // Check if '#titlebar' or any of its descendants has focus
+            if ($('#titlebar, #titlebar *').is(':focus')) {
+                // If '#titlebar' or a descendant has focus, add 'selected' class and focus the current element
+                $this.addClass('selected').focus();
+            } else {
+                // Otherwise, just add 'selected' class
+                $this.addClass('selected');
+            }
+        });
+
+        $toggle.on("mouseleave", function() {
+            $(this).removeClass('selected');
+        });
 
         // Insert menu
         let $relativeElement = relativeID && $(_getHTMLMenu(relativeID));
@@ -1021,6 +1042,39 @@ define(function (require, exports, module) {
         // todo error handling
 
         return menu;
+    }
+
+    function menuKeyboardNavigationHandler(event) {
+        const allowedKeys = [KEY.ARROW_LEFT, KEY.ARROW_RIGHT, KEY.ARROW_UP, KEY.ARROW_DOWN, KEY.ESCAPE];
+        if (!allowedKeys.includes(event.key)) {
+            return;
+        }
+        if ($('#titlebar, #titlebar *').is(':focus')) {
+            // If '#titlebar' or a descendant has focus, add 'selected' class and focus the current element
+            if(event.key === KEY.ESCAPE){
+                MainViewManager.focusActivePane();
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
+            const $focusedElement = $(':focus');
+            const isDescendantOfTitleBar = $focusedElement.closest('#titlebar').length > 0;
+            if(!isDescendantOfTitleBar){
+                return;
+            }
+            if ($focusedElement.hasClass('dropdown-toggle') &&
+                (event.key === KEY.ARROW_LEFT || event.key === KEY.ARROW_RIGHT)) {
+                // the main menu has focus, like file, edit etc..
+                // If yes, remove the class 'open' from its parent element
+                $focusedElement.parent().removeClass('open');
+                const $dropdownToggles = $('#titlebar .dropdown-toggle');
+                let currentIndex = $dropdownToggles.index($focusedElement);
+                currentIndex = event.key === KEY.ARROW_LEFT ? currentIndex - 1 : currentIndex + 1;
+                const nextIndex = currentIndex%$dropdownToggles.length;
+                $dropdownToggles.eq(nextIndex).parent().addClass('open');
+                $dropdownToggles.eq(nextIndex).focus();
+            }
+        }
     }
 
     /**
@@ -1296,6 +1350,15 @@ define(function (require, exports, module) {
         contextMenuMap[id] = cmenu;
         return cmenu;
     }
+
+    AppInit.htmlReady(function () {
+        $('#titlebar').on('focusin', function() {
+            KeyBindingManager.addGlobalKeydownHook(menuKeyboardNavigationHandler);
+        });
+        $('#titlebar').on('focusout', function() {
+            KeyBindingManager.removeGlobalKeydownHook(menuKeyboardNavigationHandler);
+        });
+    });
 
     // Deprecated menu ids
     DeprecationWarning.deprecateConstant(ContextMenuIds, "WORKING_SET_MENU", "WORKING_SET_CONTEXT_MENU");

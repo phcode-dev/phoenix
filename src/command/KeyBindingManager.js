@@ -54,6 +54,44 @@ define(function (require, exports, module) {
     const EVENT_KEY_BINDING_ADDED = "keyBindingAdded",
         EVENT_KEY_BINDING_REMOVED = "keyBindingRemoved";
 
+    const KEY = {
+        ENTER: "Enter",
+        ESCAPE: "Escape",
+        ARROW_LEFT: "ArrowLeft",
+        ARROW_RIGHT: "ArrowRight",
+        ARROW_UP: "ArrowUp",
+        ARROW_DOWN: "ArrowDown",
+        SPACE: " ",
+        TAB: "Tab",
+        BACKSPACE: "Backspace",
+        DELETE: "Delete",
+        HOME: "Home",
+        END: "End",
+        PAGE_UP: "PageUp",
+        PAGE_DOWN: "PageDown",
+        SHIFT: "Shift",
+        CONTROL: "Control",
+        ALT: "Alt",
+        META: "Meta", // Command key on Mac, Windows key on Windows
+        F1: "F1",
+        F2: "F2",
+        F3: "F3",
+        F4: "F4",
+        F5: "F5",
+        F6: "F6",
+        F7: "F7",
+        F8: "F8",
+        F9: "F9",
+        F10: "F10",
+        F11: "F11",
+        F12: "F12",
+        INSERT: "Insert",
+        CONTEXT_MENU: "ContextMenu", // Usually the menu key or right-click keyboard button
+        NUM_LOCK: "NumLock",
+        SCROLL_LOCK: "ScrollLock",
+        CAPS_LOCK: "CapsLock"
+    };
+
     /**
      * @private
      * Maps normalized shortcut descriptor to key binding info.
@@ -444,7 +482,8 @@ define(function (require, exports, module) {
             "ArrowUp": "Up",
             "ArrowDown": "Down",
             "ArrowLeft": "Left",
-            "ArrowRight": "Right"
+            "ArrowRight": "Right",
+            " ": "Space"
         };
         if(codes[key]){
             return codes[key];
@@ -958,7 +997,8 @@ define(function (require, exports, module) {
      * as usual.
      *
      * Multiple keydown hooks can be registered, and are executed in order,
-     * most-recently-added first.
+     * most-recently-added first. A keydown hook will only be added once if the same
+     * hook is already added before.
      *
      * (We have to have a special API for this because (1) handlers are normally
      * called in least-recently-added order, and we want most-recently-added;
@@ -970,6 +1010,10 @@ define(function (require, exports, module) {
      * @param {function(Event): boolean} hook The global hook to add.
      */
     function addGlobalKeydownHook(hook) {
+        let index = _globalKeydownHooks.indexOf(hook);
+        if (index !== -1) {
+            return;
+        }
         _globalKeydownHooks.push(hook);
     }
 
@@ -1475,6 +1519,8 @@ define(function (require, exports, module) {
     exports.addGlobalKeydownHook = addGlobalKeydownHook;
     exports.removeGlobalKeydownHook = removeGlobalKeydownHook;
 
+    // public constants
+    exports.KEY = KEY;
     // public events
     exports.EVENT_KEY_BINDING_ADDED = EVENT_KEY_BINDING_ADDED;
     exports.EVENT_KEY_BINDING_REMOVED = EVENT_KEY_BINDING_REMOVED;

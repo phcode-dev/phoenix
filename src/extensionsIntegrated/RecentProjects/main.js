@@ -343,6 +343,7 @@ define(function (require, exports, module) {
         MainViewManager.focusActivePane();
 
         $(window).off("keydown", keydownHook);
+        searchStr = "";
     }
 
     function openProjectWithPath(fullPath) {
