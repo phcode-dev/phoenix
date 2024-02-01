@@ -591,6 +591,7 @@ define(function (require, exports, module) {
             $menuItem.on("click", function () {
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
                 logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
+                MainViewManager.focusActivePane();
                 if(menuItem._command._options.eventSource){
                     menuItem._command.execute({
                         eventSource: CommandManager.SOURCE_UI_MENU_CLICK,
@@ -1112,6 +1113,7 @@ define(function (require, exports, module) {
         console.log("checking selected");
         if ($selected.length === 1 && $dropdownMenu.is(':visible')) {
             // something is selected
+            MainViewManager.focusActivePane();
             $selected.click();
             event.preventDefault();
             event.stopPropagation();
