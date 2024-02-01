@@ -1,0 +1,70 @@
+name: 'Desktop-mac M1 full test suite run on pull request'
+on:
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: pr-desktop-mac-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  test-desktop-mac-m1:
+    runs-on: macos-14
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: build phoenix dist-test
+        run: |
+          npm ci
+          npm run build
+          npm run release:dev
+
+      - name: Download phoenix desktop and build test runner
+        run: |
+          cd ..
+          git clone https://github.com/phcode-dev/phoenix-desktop.git
+          cd phoenix-desktop
+          npm ci
+          npm run releaseDistTestDebug
+
+      - name: Run tauri unit tests
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=unit -q
+
+      - name: Run tauri integration tests
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=integration -q
+
+      - name: Run tauri mainview tests
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=mainview -q
+
+      - name: Run tauri livepreview tests
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=livepreview -q
+
+      - name: Run tauri LegacyInteg tests
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=LegacyInteg -q
