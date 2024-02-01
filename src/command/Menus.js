@@ -593,8 +593,14 @@ define(function (require, exports, module) {
         } else {
             // Create the HTML Menu
             $menuItem = $("<li><a href='#' class='menuAnchor' id='" + id + "'> <span class='menu-name'></span></a></li>");
+            const $menuAnchor = $menuItem.find(".menuAnchor");
 
-            $menuItem.on("click", function () {
+            $menuItem.on("click", function (event) {
+                if($menuAnchor.hasClass('disabled')){
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return true;
+                }
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
                 logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
                 MainViewManager.focusActivePane();
@@ -612,7 +618,9 @@ define(function (require, exports, module) {
             $menuItem.on("mouseenter", function () {
                 self.closeSubMenu();
                 $menuItem.parent().find(".menuAnchor").removeClass("selected");
-                $menuItem.find(".menuAnchor").addClass("selected");
+                if(!$menuAnchor.hasClass('disabled')){
+                    $menuAnchor.addClass("selected");
+                }
             });
             $menuItem.on("mouseleave", function () {
                 self.closeSubMenu();
