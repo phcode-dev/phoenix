@@ -800,7 +800,7 @@ define(function (require, exports, module) {
     });
     debugMenu.addMenuDivider();
     // Show Developer Tools (optionally enabled)
-    if(brackets.app.toggleDevtools){
+    if(Phoenix.browser.isTauri){
         CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools);
         debugMenu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
     }
