@@ -1032,6 +1032,10 @@ define(function (require, exports, module) {
             $(this).removeClass('selected');
         });
 
+        $popUp.on("mousemove",function (event) {
+            $popUp.find(".selected").removeClass("selected");
+        });
+
         // Insert menu
         let $relativeElement = relativeID && $(_getHTMLMenu(relativeID));
         _insertInList($menubar, $newMenu, position, $relativeElement);
@@ -1044,12 +1048,79 @@ define(function (require, exports, module) {
         return menu;
     }
 
+    function _switchMenus($menuDropdownToggle, event) {
+        // remove the class 'open' from its parent element
+        $menuDropdownToggle.parent().removeClass('open');
+        const $dropdownToggles = $('#titlebar .dropdown-toggle');
+        let currentIndex = $dropdownToggles.index($menuDropdownToggle);
+        currentIndex = event.key === KEY.ARROW_LEFT ? currentIndex - 1 : currentIndex + 1;
+        const nextIndex = currentIndex % $dropdownToggles.length;
+        $dropdownToggles.eq(nextIndex).parent().addClass('open');
+        $dropdownToggles.eq(nextIndex).focus();
+    }
+
+    function _switchMenuItems($menuDropdownToggle, event) {
+        // change code such that if event.key is KEY.ARROW_UP or KEY.ARROW_DOWN, the selection will move formward or back
+        const $dropdownMenu = $menuDropdownToggle.parent().find(".dropdown-menu");
+        const $selected = $dropdownMenu.find('li a.selected');
+        if ($selected.length === 0) {
+            // If no selected class exists, add it to the first <a> tag
+            $dropdownMenu.find('li a').first().addClass('selected');
+        } else {
+            // Remove the class from the current item
+            $selected.removeClass('selected');
+
+            // Determine the next or previous item based on the arrow key pressed
+            let $next;
+            if (event.key === KEY.ARROW_DOWN) {
+                let $nextLi = $selected.closest('li').next('li');
+                $next = $nextLi.find('a');
+                while (($next.length === 0 || $next.hasClass('disabled')) && $nextLi.length) {
+                    $nextLi = $nextLi.next('li');
+                    $next = $nextLi.find('a');
+                }
+                if($next.length === 0){
+                    $next = $dropdownMenu.find('li a').first();
+                }
+            } else if (event.key === KEY.ARROW_UP) {
+                let $prevLi = $selected.closest('li').prev('li');
+                $next = $prevLi.find('a');
+                while (($next.length === 0 || $next.hasClass('disabled')) && $prevLi.length) {
+                    $prevLi = $prevLi.prev('li');
+                    $next = $prevLi.find('a');
+                }
+                if ($next.length === 0) {
+                    $next = $dropdownMenu.find('li a').last();
+                }
+            }
+
+            // Add the 'selected' class to the next item
+            $next.addClass('selected');
+        }
+    }
+    
+    function _execMenuItem($menuDropdownToggle, event) {
+        // change code such that if event.key is KEY.ARROW_UP or KEY.ARROW_DOWN, the selection will move formward or back
+        const $dropdownMenu = $menuDropdownToggle.parent().find(".dropdown-menu");
+        const $selected = $dropdownMenu.find('li a.selected');
+        console.log("checking selected");
+        if ($selected.length === 1 && $dropdownMenu.is(':visible')) {
+            // something is selected
+            $selected.click();
+            event.preventDefault();
+            event.stopPropagation();
+            return true;
+        }
+    }
+
     function menuKeyboardNavigationHandler(event) {
-        const allowedKeys = [KEY.ARROW_LEFT, KEY.ARROW_RIGHT, KEY.ARROW_UP, KEY.ARROW_DOWN, KEY.ESCAPE];
+        const allowedKeys = [KEY.ARROW_LEFT, KEY.ARROW_RIGHT, KEY.ARROW_UP, KEY.ARROW_DOWN,
+            KEY.ESCAPE, KEY.ENTER, KEY.RETURN];
         if (!allowedKeys.includes(event.key)) {
             return;
         }
         if ($('#titlebar, #titlebar *').is(':focus')) {
+            console.log("checking selected");
             // If '#titlebar' or a descendant has focus, add 'selected' class and focus the current element
             if(event.key === KEY.ESCAPE){
                 MainViewManager.focusActivePane();
@@ -1062,17 +1133,15 @@ define(function (require, exports, module) {
             if(!isDescendantOfTitleBar){
                 return;
             }
-            if ($focusedElement.hasClass('dropdown-toggle') &&
-                (event.key === KEY.ARROW_LEFT || event.key === KEY.ARROW_RIGHT)) {
-                // the main menu has focus, like file, edit etc..
-                // If yes, remove the class 'open' from its parent element
-                $focusedElement.parent().removeClass('open');
-                const $dropdownToggles = $('#titlebar .dropdown-toggle');
-                let currentIndex = $dropdownToggles.index($focusedElement);
-                currentIndex = event.key === KEY.ARROW_LEFT ? currentIndex - 1 : currentIndex + 1;
-                const nextIndex = currentIndex%$dropdownToggles.length;
-                $dropdownToggles.eq(nextIndex).parent().addClass('open');
-                $dropdownToggles.eq(nextIndex).focus();
+            if($focusedElement.hasClass('dropdown-toggle')){
+                if(event.key === KEY.ARROW_LEFT || event.key === KEY.ARROW_RIGHT){
+                    // the main menu has focus, like file, edit etc..
+                    return _switchMenus($focusedElement, event);
+                } else if(event.key === KEY.ARROW_UP || event.key === KEY.ARROW_DOWN){
+                    return _switchMenuItems($focusedElement, event);
+                } else if(event.key === KEY.ENTER || event.key === KEY.RETURN || event.key === KEY.SPACE){
+                    return _execMenuItem($focusedElement, event);
+                }
             }
         }
     }

@@ -56,6 +56,7 @@ define(function (require, exports, module) {
 
     const KEY = {
         ENTER: "Enter",
+        RETURN: "Return",
         ESCAPE: "Escape",
         ARROW_LEFT: "ArrowLeft",
         ARROW_RIGHT: "ArrowRight",
