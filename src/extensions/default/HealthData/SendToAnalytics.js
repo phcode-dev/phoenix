@@ -122,7 +122,7 @@ define(function (require, exports, module) {
     }
 
     function _bugsnagPerformance(key, valueMs) {
-        if(Metrics.isDisabled() || !window.BugsnagPerformance){
+        if(Metrics.isDisabled() || !window.BugsnagPerformance || Phoenix.isTestWindow){
             return;
         }
         let activityStartTime = new Date();
