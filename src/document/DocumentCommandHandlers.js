@@ -1599,10 +1599,10 @@ define(function (require, exports, module) {
         );
     }
 
-    function newPhoenixWindow(cliArgsArray = null) {
+    function newPhoenixWindow(cliArgsArray = null, cwd=null) {
         let width = window.innerWidth;
         let height = window.innerHeight;
-        Phoenix.app.openNewPhoenixEditorWindow(width, height, cliArgsArray);
+        Phoenix.app.openNewPhoenixEditorWindow(width, height, cliArgsArray, cwd);
     }
 
     async function _fileExists(fullPath) {
@@ -1614,28 +1614,68 @@ define(function (require, exports, module) {
         }
     }
 
-    async function _openFilesPassedInFromCLI(args=null) {
+    async function _tryToOpenFile(absOrRelativePath, cwdIfRelativePath) {
+        try{
+            let fileToOpen = absOrRelativePath;
+            if(cwdIfRelativePath){
+                fileToOpen = window.path.join(Phoenix.VFS.getTauriVirtualPath(cwdIfRelativePath), absOrRelativePath);
+            } else {
+                fileToOpen = Phoenix.VFS.getTauriVirtualPath(absOrRelativePath);
+            }
+            let isFile = await _fileExists(fileToOpen);
+            if(isFile){
+                FileViewController.openFileAndAddToWorkingSet(fileToOpen);
+                return true;
+            }
+        } catch (e) {
+            console.warn("Opening file failed ", absOrRelativePath, e);
+        }
+        return false;
+    }
+
+    async function _openFilesPassedInFromCLI(args=null, cwd="") {
         if(!args){
-            args= await Phoenix.app.getCommandLineArgs();
+            const cliArgs= await Phoenix.app.getCommandLineArgs();
+            args = cliArgs.args;
+            cwd = cliArgs.cwd;
         }
         if(!args || args.length <= 1){
             return;
         }
 
         for(let i=1; i<args.length; i++) { // the first arg is the executable path itself, ignore that
-            try{
-                const fileToOpen = Phoenix.VFS.getTauriVirtualPath(args[i]);
-                const {entry} = await FileSystem.resolveAsync(fileToOpen);
-                if(entry.isFile){
-                    FileViewController.openFileAndAddToWorkingSet(fileToOpen);
-                }
-            } catch (e) {
-                console.error("Error opening file passed in from cli: ", args[i], e);
+            const fileArg = args[i];
+            let isOpened = await _tryToOpenFile(fileArg);
+            if(!isOpened){
+                // if here, then, this maybe a relative file path or not a file at all. check if relative path
+                await _tryToOpenFile(fileArg, cwd);
             }
         }
     }
 
-    async function _singleInstanceHandler(args) {
+    async function _safeCheckFileAndGetVirtualPath(absOrRelativePath, relativeToDir=null) {
+        try{
+            let fileToCheck;
+            if(!relativeToDir){
+                fileToCheck = Phoenix.VFS.getTauriVirtualPath(absOrRelativePath);
+                const fileExists = await _fileExists(fileToCheck);
+                if(fileExists){
+                    return fileToCheck;
+                }
+            } else {
+                fileToCheck = window.path.join(Phoenix.VFS.getTauriVirtualPath(relativeToDir), absOrRelativePath);
+                const fileExists = await _fileExists(fileToCheck);
+                if(fileExists){
+                    return fileToCheck;
+                }
+            }
+        } catch (e) {
+            console.warn("error opening folder at path", absOrRelativePath, relativeToDir);
+        }
+        return null;
+    }
+
+    async function _singleInstanceHandler(args, cwd) {
         const isPrimary = await Phoenix.app.isPrimaryDesktopPhoenixWindow();
         if(!isPrimary){
             // only primary phoenix windows can open a new window, else every window is going to make its own
@@ -1644,15 +1684,18 @@ define(function (require, exports, module) {
         }
         if(args.length > 1) {
             // check if the second arg is a file, if so we just open it and the remaining files in this window
-            const fileToOpen = Phoenix.VFS.getTauriVirtualPath(args[1]);
-            const secondArgIsFile = await _fileExists(fileToOpen);
-            if(secondArgIsFile) {
-                await _openFilesPassedInFromCLI(args);
+            let fileToOpen = await _safeCheckFileAndGetVirtualPath(args[1]);
+            if(!fileToOpen){
+                // maybe relative path?
+                fileToOpen = await _safeCheckFileAndGetVirtualPath(args[1], cwd);
+            }
+            if(fileToOpen) {
+                await _openFilesPassedInFromCLI(args, cwd);
                 await Phoenix.app.focusWindow();
                 return;
             }
         }
-        newPhoenixWindow(args);
+        newPhoenixWindow(args, cwd);
     }
 
     function handleFileNewWindow() {

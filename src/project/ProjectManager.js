@@ -853,17 +853,42 @@ define(function (require, exports, module) {
         }
     }
 
+    async function _safeCheckFolder(absOrRelativePath, relativeToDir=null) {
+        try{
+            let folderToOpen;
+            if(!relativeToDir){
+                folderToOpen = Phoenix.VFS.getTauriVirtualPath(absOrRelativePath);
+                const dirExists = await _dirExists(folderToOpen);
+                if(dirExists){
+                    return folderToOpen;
+                }
+            } else {
+                folderToOpen = window.path.join(Phoenix.VFS.getTauriVirtualPath(relativeToDir), absOrRelativePath);
+                const dirExists = await _dirExists(folderToOpen);
+                if(dirExists){
+                    return folderToOpen;
+                }
+            }
+        } catch (e) {
+            console.warn("error opening folder at path", absOrRelativePath, relativeToDir);
+        }
+        return null;
+    }
+
     async function _getStartupProjectFromCLIArgs() {
-        const args = await Phoenix.app.getCommandLineArgs();
+        const cliArgs= await Phoenix.app.getCommandLineArgs();
+        const args = cliArgs.args, cwd = cliArgs.cwd;
         if(!args || args.length <= 1){ // the second arg is the folder we have to open
             return null;
         }
         try{
-            const folderToOpen = Phoenix.VFS.getTauriVirtualPath(args[1]);
-            const dirExists = await _dirExists(folderToOpen);
-            if(dirExists){
+            let folderToOpen = args[1];
+            folderToOpen = await _safeCheckFolder(args[1]);
+            if(folderToOpen){
                 return folderToOpen;
             }
+            folderToOpen = await _safeCheckFolder(args[1], cwd);
+            return folderToOpen;
         } catch (e) {
             console.error("Error getting startupProjectPath from CLI args", e);
         }
