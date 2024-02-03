@@ -435,6 +435,18 @@
     <!-- load bugsnag error reporter as soon as cache handling code is done-->
     <script src="thirdparty/bugsnag.min.js"></script>
     <script src="appConfig.js"></script>
+    <script type="module">
+        import BugsnagPerformance from "./thirdparty/bugsnag-performance.min.js";
+        BugsnagPerformance.start({
+            apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
+            appVersion: AppConfig.version,
+            releaseStage: window.__TAURI__ ? "tauri-" + AppConfig.config.bugsnagEnv : AppConfig.config.bugsnagEnv,
+            autoInstrumentRouteChanges: false,
+            autoInstrumentNetworkRequests: false,
+            autoInstrumentFullPageLoads: false
+        });
+        window.BugsnagPerformance = BugsnagPerformance;
+    </script>
     <script src="loggerSetup.js"></script>
     <script src="utils/EventDispatcher.js"></script>
 

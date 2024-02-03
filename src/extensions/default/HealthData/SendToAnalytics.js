@@ -121,6 +121,17 @@ define(function (require, exports, module) {
         _sendStorageMetrics();
     }
 
+    function _bugsnagPerformance(key, valueMs) {
+        if(Metrics.isDisabled() || !window.BugsnagPerformance){
+            return;
+        }
+        let activityStartTime = new Date();
+        let activityEndTime = new Date(activityStartTime.getTime() + valueMs);
+        window.BugsnagPerformance
+            .startSpan(key, { startTime: activityStartTime })
+            .end(activityEndTime);
+    }
+    
     // Performance
     function sendStartupPerformanceMetrics() {
         const healthReport = PerfUtils.getHealthReport();
@@ -130,17 +141,26 @@ define(function (require, exports, module) {
         }
         Metrics.valueEvent(PERFORMANCE, "startup", labelAppStart,
             Number(healthReport["AppStartupTime"]));
+        _bugsnagPerformance(labelAppStart, Number(healthReport["AppStartupTime"])); // expensive api, use sparsely
         Metrics.valueEvent(PERFORMANCE, "startup", "ModuleDepsResolved",
             Number(healthReport["ModuleDepsResolved"]));
+        _bugsnagPerformance("ModuleDepsResolved", Number(healthReport["ModuleDepsResolved"])); // expensive api, use sparsely
         Metrics.valueEvent(PERFORMANCE, "startup", "PhStore", PhStore._storageBootstrapTime);
+        _bugsnagPerformance("PhStore",
+            PhStore._storageBootstrapTime); // expensive api, use sparsely
         if(Phoenix.browser.isTauri) {
             Metrics.valueEvent(PERFORMANCE, "startup", "tauriBoot", window._tauriBootVars.bootstrapTime);
+            _bugsnagPerformance("tauriBootVars",
+                window._tauriBootVars.bootstrapTime); // expensive api, use sparsely
         }
         if(window.nodeSetupDonePromise) {
             window.nodeSetupDonePromise
                 .then(()=>{
-                    window.PhNodeEngine && window.PhNodeEngine._nodeLoadTime
-                    && Metrics.valueEvent(PERFORMANCE, "startup", "nodeBoot", window.PhNodeEngine._nodeLoadTime);
+                    if(window.PhNodeEngine && window.PhNodeEngine._nodeLoadTime){
+                        Metrics.valueEvent(PERFORMANCE, "startup", "nodeBoot", window.PhNodeEngine._nodeLoadTime);
+                        _bugsnagPerformance("nodeBoot",
+                            window.PhNodeEngine._nodeLoadTime); // expensive api, use sparsely
+                    }
                     Metrics.countEvent(PERFORMANCE, "nodeBoot", "success", 1);
                 })
                 .catch(_err=>{

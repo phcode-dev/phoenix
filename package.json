@@ -105,10 +105,12 @@
         "marked": "^4.0.18",
         "mime-db": "^1.52.0",
         "mustache": "^4.2.0",
+        "node-fetch": "^3.3.2",
         "prettier": "^2.7.1",
         "requirejs": "^2.3.6",
         "tern": "^0.24.3",
         "tinycolor2": "^1.4.2",
-        "underscore": "^1.13.4"
+        "underscore": "^1.13.4",
+        "vinyl-source-stream": "^2.0.0"
     }
 }

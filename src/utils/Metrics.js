@@ -356,6 +356,10 @@ define(function (require, exports, module) {
         disabled = shouldDisable;
     }
 
+    function isDisabled() {
+        return disabled;
+    }
+
     function getLoggedDataForAudit() {
         return loggedDataForAudit;
     }
@@ -381,6 +385,7 @@ define(function (require, exports, module) {
     // Define public API
     exports.init               = init;
     exports.setDisabled        = setDisabled;
+    exports.isDisabled         = isDisabled;
     exports.getLoggedDataForAudit      = getLoggedDataForAudit;
     exports.clearAuditData     = clearAuditData;
     exports.countEvent         = countEvent;
