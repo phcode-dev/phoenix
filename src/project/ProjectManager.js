@@ -877,7 +877,8 @@ define(function (require, exports, module) {
 
     async function _getStartupProjectFromCLIArgs() {
         const cliArgs= await Phoenix.app.getCommandLineArgs();
-        const args = cliArgs.args, cwd = cliArgs.cwd;
+        const args = cliArgs && cliArgs.args,
+            cwd = cliArgs && cliArgs.cwd;
         if(!args || args.length <= 1){ // the second arg is the folder we have to open
             return null;
         }
