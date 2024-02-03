@@ -46,6 +46,18 @@ define(function (require, exports, module) {
         loggedDataForAudit = new Map();
 
     let isFirstUseDay;
+    let userID;
+
+    function _setUserID() {
+        const userIDKey = "phoenixUserPseudoID";
+        userID = window.PhStore.getItem(userIDKey);
+        if(!userID){
+            userID = crypto.randomUUID();
+            window.PhStore.setItem(userIDKey, userID);
+        }
+    }
+    _setUserID();
+
     function _setFirstDayFlag() {
         const firstUseDayKey = "healthData.firstUseDay";
         let firstBootTime = window.PhStore.getItem(firstUseDayKey);
@@ -116,14 +128,65 @@ define(function (require, exports, module) {
             event: function (){window.analytics._initData.push(arguments);}
         };}
         // for google analytics
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function(){window.dataLayer.push(arguments);};
+        if(!Phoenix.browser.isTauri) {
+            // ga is not inpage in tauri builds. see below explanation in _initGoogleAnalytics
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function(){
+                window.dataLayer.push(arguments);
+                if(window.dataLayer.length > 500){
+                    window.dataLayer.splice(0, 250); // remove half the elements(offline queue guard)
+                }
+            };
+        }
     }
 
     _createAnalyticsShims();
 
+    function _sendTauriGAEvent(analyticsID, customUserID, events=[]) {
+        window.__TAURI__.event.emit("health", {
+            analyticsID: analyticsID,
+            customUserID: customUserID,
+            events
+        });
+    }
+
+    let tauriGAEvents = new Map();
+
+    function _sendGaEvent(eventAct, category, label, count) {
+        if(Phoenix.browser.isTauri) {
+            const key = `${eventAct}:${category}:${label}}`;
+            const existingEvent = tauriGAEvents.get(key);
+            if(existingEvent) {
+                existingEvent.count = (existingEvent.count||0) + count;
+                return;
+            }
+            tauriGAEvents.set(key, {eventAct, category, label, count});
+            return;
+        }
+        gtag('event', eventAct, {
+            'event_category': category,
+            'event_label': label,
+            'value': count
+        });
+    }
+
+    const TAURI_GA_EVENT_QUEUE_INTERVAL = 3000;
+    function _sendQueuedTauriGAEvents() {
+        _sendTauriGAEvent(brackets.config.googleAnalyticsIDDesktop, userID, Array.from(tauriGAEvents.values()));
+        tauriGAEvents.clear();
+    }
+
     function _initGoogleAnalytics() {
         // Load google analytics scripts
+        if(Phoenix.browser.isTauri) {
+            // in tauri google analytics is in a hidden window instead of current page as ga only supports http and
+            // https urls and not the tauri custom protocol urls. So we have a hidden window that loads ga from a
+            // http(s) page which is usually `https://phcode.dev/desktop-metrics.html` or
+            // "http://localhost:8000/src/metrics.html" for live dev builds in tauri.
+            _sendTauriGAEvent(brackets.config.googleAnalyticsIDDesktop, userID);
+            setInterval(_sendQueuedTauriGAEvents, TAURI_GA_EVENT_QUEUE_INTERVAL);
+            return;
+        }
         let script = document.createElement('script');
         script.type = 'text/javascript';
         script.async = true;
@@ -193,11 +256,7 @@ define(function (require, exports, module) {
         if(ignoredGAEvents.includes(action)){
             return;
         }
-        gtag('event', eventAct, {
-            'event_category': category,
-            'event_label': label,
-            'value': count
-        });
+        _sendGaEvent(eventAct, category, label, count);
     }
 
     function _sendToCoreAnalytics(category, action, label, count, value) {
