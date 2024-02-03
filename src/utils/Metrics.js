@@ -364,6 +364,20 @@ define(function (require, exports, module) {
         loggedDataForAudit.clear();
     }
 
+    /**
+     * Send all pending metrics, useful before app quit.
+     * Will never throw Error.
+     */
+    async function flushMetrics() {
+        try{
+            if(Phoenix.browser.isTauri) {
+                _sendQueuedTauriGAEvents();
+            }
+        } catch (e) {
+            console.error("Error while flushMetrics: ", e);
+        }
+    }
+
     // Define public API
     exports.init               = init;
     exports.setDisabled        = setDisabled;
@@ -371,6 +385,7 @@ define(function (require, exports, module) {
     exports.clearAuditData     = clearAuditData;
     exports.countEvent         = countEvent;
     exports.valueEvent         = valueEvent;
+    exports.flushMetrics       = flushMetrics;
     exports.EVENT_TYPE = EVENT_TYPE;
     exports.AUDIT_TYPE_COUNT = AUDIT_TYPE_COUNT;
     exports.AUDIT_TYPE_VALUE = AUDIT_TYPE_VALUE;
