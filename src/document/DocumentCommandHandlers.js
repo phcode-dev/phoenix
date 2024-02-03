@@ -1699,7 +1699,7 @@ define(function (require, exports, module) {
     }
 
     function handleFileNewWindow() {
-        newPhoenixWindow();
+        newPhoenixWindow([]);
     }
 
     /** Show a textfield to rename whatever is currently selected in the sidebar (or current doc if nothing else selected) */
