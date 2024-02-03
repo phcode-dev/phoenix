@@ -1636,8 +1636,8 @@ define(function (require, exports, module) {
     async function _openFilesPassedInFromCLI(args=null, cwd="") {
         if(!args){
             const cliArgs= await Phoenix.app.getCommandLineArgs();
-            args = cliArgs.args;
-            cwd = cliArgs.cwd;
+            args = cliArgs && cliArgs.args;
+            cwd = cliArgs && cliArgs.cwd;
         }
         if(!args || args.length <= 1){
             return;
