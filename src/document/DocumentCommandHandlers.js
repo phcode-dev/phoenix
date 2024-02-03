@@ -1535,6 +1535,7 @@ define(function (require, exports, module) {
             //if we get called back while we're closing, then just return
             return (new $.Deferred()).reject().promise();
         }
+        Metrics.flushMetrics();
 
         return CommandManager.execute(Commands.FILE_CLOSE_ALL, { promptOnly: true })
             .done(function () {
