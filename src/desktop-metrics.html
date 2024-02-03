@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Desktop Metrics logger with Google Analytics</title>
+    <script>
+        let gaReady = false;
+        function installGoogleAnalytics(analyticsID, customUserID) {
+            if(!analyticsID || !customUserID || gaReady){
+                return ;
+            }
+            // ga primer scripts
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function() {
+                window.dataLayer.push(arguments);
+                if(window.dataLayer.length > 500){
+                    window.dataLayer.splice(0, 250); // remove half the elements offline queue guard
+                }
+            }
+
+            const gaScript = document.createElement('script');
+            gaScript.async = true;
+            gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsID}`;
+            document.head.appendChild(gaScript);
+
+            gtag('js', new Date());
+            gtag('config', analyticsID, { 'user_id': customUserID });
+            gaReady = true;
+        }
+
+        async function processRequest(event) {
+            const payload = event.payload;
+            if(!gaReady) {
+                installGoogleAnalytics(payload.analyticsID, payload.customUserID);
+            }
+
+            for(let eventPayload of payload.events) {
+                gtag('event', eventPayload.eventAct, {
+                    'event_category': eventPayload.category,
+                    'event_label': eventPayload.label,
+                    'value': eventPayload.count
+                });
+            }
+        }
+        window.__TAURI__.event.listen("health", processRequest);
+        setInterval(async ()=>{
+            // close window if the metrics hidden window is the only one around.
+            const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
+            if(allTauriWindowsLabels.length === 1){
+                window.__TAURI__.window.getCurrent().close();
+            }
+        }, 1000);
+    </script>
+</head>
+<body>
+Phoenix Desktop Metrics emitter to GA.
+</body>
+</html>
