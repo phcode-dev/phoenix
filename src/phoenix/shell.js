@@ -38,7 +38,8 @@ initVFS();
 // /tauri/security/dangerousRemoteDomainIpcAccess/1/windows
 const MAX_ALLOWED_TAURI_WINDOWS = 30;
 const CLI_ARGS_QUERY_PARAM = 'CLI_ARGS';
-let cliArgs, singleInstanceCLIHandler;
+const CLI_CWD_QUERY_PARAM = 'CLI_CWD';
+let cliArgs, cliCWD, singleInstanceCLIHandler;
 const PHOENIX_WINDOW_PREFIX = 'phcode-';
 const PHOENIX_EXTENSION_WINDOW_PREFIX = 'extn-';
 
@@ -128,34 +129,40 @@ Phoenix.app = {
     },
     /**
      * Gets the commandline argument in desktop builds and null in browser builds.
-     * @return {Promise<string[]|null>}
+     * Will always return CLI of the current process only.
+     * @return {Promise<{cwd:string,args:string[]}|null>}
      */
-    getCommandLineArgs: function () {
-        return new Promise((resolve)=>{
-            if(!Phoenix.browser.isTauri){
-                resolve(null);
-                return;
-            }
-            const phoenixURL = new URL(location.href);
-            const cliQueryParam = phoenixURL.searchParams.get(CLI_ARGS_QUERY_PARAM);
-            if(cliQueryParam){
-                // the cli passed in through the url takes highest precedence as we have a single tauri instance,
-                // new windows will be spawned with the cli query param url.
-                cliArgs = JSON.parse(decodeURIComponent(cliQueryParam));
-            }
-            if(cliArgs){
-                resolve(cliArgs);
-                return;
-            }
-            cliArgs = null;
-            window.__TAURI__.invoke('_get_commandline_args')
-                .then(args=>{
-                    cliArgs = args;
-                })
-                .finally(()=>{
-                    resolve(cliArgs);
-                });
-        });
+    getCommandLineArgs: async function () {
+        if(!Phoenix.browser.isTauri){
+            return null;
+        }
+        const phoenixURL = new URL(location.href);
+        const cliQueryParam = phoenixURL.searchParams.get(CLI_ARGS_QUERY_PARAM);
+        // the cli passed in through the url takes highest precedence as we have a single tauri instance,
+        // new windows will be spawned with the cli query param url. Eg. (File>new window, or double clicking
+        // phoenix icon or launching phoenix with cli args) while another phoenix window is open.
+        // So only the first window to open will have the original cli query param, every other window will have
+        // it override with query params.
+        if(cliQueryParam){
+            cliArgs = JSON.parse(decodeURIComponent(cliQueryParam));
+        }
+        const cliCWDQueryParam = phoenixURL.searchParams.get(CLI_CWD_QUERY_PARAM);
+        if(cliCWDQueryParam){
+            cliCWD = JSON.parse(decodeURIComponent(cliCWDQueryParam));
+        }
+        if(cliArgs){
+            return {
+                cwd: cliCWD,
+                args: cliArgs
+            };
+        }
+        cliArgs = null;
+        cliCWD = await window.__TAURI__.invoke("get_current_working_dir");
+        cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
+        return {
+            cwd: cliCWD,
+            args: cliArgs
+        };
     },
     /**
      * Only a single instance of the app will be present at any time. When another instacne is opened from either cli or
@@ -376,13 +383,19 @@ Phoenix.app = {
         }
         return true;
     },
-    openNewPhoenixEditorWindow: async function (preferredWidth, preferredHeight, _cliArgsArray) {
+    openNewPhoenixEditorWindow: async function (preferredWidth, preferredHeight, _cliArgsArray, _cwd) {
         const phoenixURL = new URL(location.href);
         if(_cliArgsArray){
             const cliVal = encodeURIComponent(JSON.stringify(_cliArgsArray));
             phoenixURL.searchParams.set(CLI_ARGS_QUERY_PARAM, cliVal);
         } else {
             phoenixURL.searchParams.delete(CLI_ARGS_QUERY_PARAM);
+        }
+        if(_cwd){
+            const cliVal = encodeURIComponent(JSON.stringify(_cwd));
+            phoenixURL.searchParams.set(CLI_CWD_QUERY_PARAM, cliVal);
+        } else {
+            phoenixURL.searchParams.delete(CLI_CWD_QUERY_PARAM);
         }
         await openURLInPhoenixWindow(phoenixURL.href, {
             width: preferredWidth,
