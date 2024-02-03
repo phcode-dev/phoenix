@@ -42,6 +42,17 @@ function renameFile(path, newName, destPath) {
         .pipe(dest(destPath));
 }
 
+function downloadFile(url, outputPath) {
+    return fetch(url)
+        .then(x => {
+            if(x.status !== 200){
+                throw new Error("Failed to download "+ url);
+            }
+            return x.arrayBuffer();
+        })
+        .then(x => fs.writeFileSync(outputPath, Buffer.from(x)));
+}
+
 function copyFiles(srcPathList, dstPath) {
     console.log(`Copying files ${dstPath}`);
     return src(srcPathList)
@@ -87,6 +98,10 @@ let copyThirdPartyLibs = series(
     copyFiles.bind(copyFiles, ['node_modules/@bugsnag/browser/dist/bugsnag.min.js',
         'node_modules/@bugsnag/browser/dist/bugsnag.min.js.map'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/@bugsnag/browser/LICENSE.txt', 'bugsnag'),
+    downloadFile.bind(downloadFile, 'https://d2wy8f7a9ursnm.cloudfront.net/v2/bugsnag-performance.min.js',
+        'src/thirdparty/bugsnag-performance.min.js'),
+    downloadFile.bind(downloadFile, 'https://d2wy8f7a9ursnm.cloudfront.net/v2/bugsnag-performance.min.js.map',
+        'src/thirdparty/bugsnag-performance.min.js.map'),
     // tern js
     copyFiles.bind(copyFiles, ['node_modules/tern/defs/**/*'], 'src/thirdparty/tern/defs'),
     copyFiles.bind(copyFiles, ['node_modules/tern/lib/**/*'], 'src/thirdparty/tern/lib'),

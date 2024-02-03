@@ -80,6 +80,11 @@ To log that startup time is 200ms:
 Metrics.valueEvent(Metrics.EVENT_TYPE.PERFORMANCE, "startupTime", "ms", 200);
 ```
 
+## flushMetrics
+
+Send all pending metrics, useful before app quit.
+Will never throw Error.
+
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
