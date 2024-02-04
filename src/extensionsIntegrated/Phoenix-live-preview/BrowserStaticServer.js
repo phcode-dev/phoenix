@@ -162,6 +162,22 @@ define(function (require, exports, module) {
                             isHTMLFile: utils.isHTMLFile(fullPath)
                         });
                         return;
+                    } else {
+                        const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
+                        if(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument
+                            &&currentLivePreviewDetails.liveDocument.isRelated(fullPath)){
+                            fullPath = currentLivePreviewDetails.liveDocument.doc.file.fullPath;
+                            const filePath = path.relative(projectRoot, fullPath);
+                            let URL = `${projectRootUrl}${filePath}`;
+                            resolve({
+                                URL,
+                                filePath: filePath,
+                                fullPath: fullPath,
+                                isMarkdownFile: utils.isMarkdownFile(fullPath),
+                                isHTMLFile: utils.isHTMLFile(fullPath)
+                            });
+                            return;
+                        }
                     }
                 }
                 resolve({
