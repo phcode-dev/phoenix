@@ -224,7 +224,7 @@ define(function (require, exports, module) {
     }
 
     function getTestPath(path = '') {
-        if(!path || !path.startsWith("/")){
+        if(path && !path.startsWith("/")){
             throw new Error("getTestPath path should start with a /");
         }
         return getTestRoot() + path;
@@ -244,6 +244,9 @@ define(function (require, exports, module) {
      * @return {*}
      */
     async function getTempTestDirectory(pathInTestDir) {
+        if(!pathInTestDir){
+            throw new Error("getTempTestDirectory should be called with a test folder in test dir");
+        }
         const testDir = getTestPath(pathInTestDir);
         const testTempDir = getTestPath("/tempTest"+pathInTestDir);
         await awaitsForDone(deletePath(testTempDir, true));
