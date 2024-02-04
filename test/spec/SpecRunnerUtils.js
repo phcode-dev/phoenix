@@ -224,7 +224,7 @@ define(function (require, exports, module) {
     }
 
     function getTestPath(path = '') {
-        if(path && !path.startsWith("/")){
+        if(!path || !path.startsWith("/")){
             throw new Error("getTestPath path should start with a /");
         }
         return getTestRoot() + path;
@@ -236,6 +236,19 @@ define(function (require, exports, module) {
      */
     function getTempDirectory() {
         return getTestPath("/temp");
+    }
+
+    /**
+     * creates an editable temp dir with copied contents from the test folder specified
+     * @param pathInTestDir
+     * @return {*}
+     */
+    async function getTempTestDirectory(pathInTestDir) {
+        const testDir = getTestPath(pathInTestDir);
+        const testTempDir = getTestPath("/tempTest"+pathInTestDir);
+        await awaitsForDone(deletePath(testTempDir, true));
+        await awaitsForDone(copyPath(testDir, testTempDir));
+        return testTempDir;
     }
 
     /**
@@ -1388,6 +1401,7 @@ define(function (require, exports, module) {
     exports.getTestRoot                     = getTestRoot;
     exports.getTestPath                     = getTestPath;
     exports.getTempDirectory                = getTempDirectory;
+    exports.getTempTestDirectory            = getTempTestDirectory;
     exports.createTempDirectory             = createTempDirectory;
     exports.getBracketsSourceRoot           = getBracketsSourceRoot;
     exports.makeAbsolute                    = makeAbsolute;
