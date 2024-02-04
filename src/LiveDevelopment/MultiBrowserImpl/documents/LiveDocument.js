@@ -146,10 +146,7 @@ define(function (require, exports, module) {
      * @param {?Editor} oldActive
      */
     LiveDocument.prototype._onActiveEditorChange = function (event, newActive, oldActive) {
-
-        //FIXME: #7 prevents the page to be reloaded when editing JS files.
-        //       Temporarily disabling this code to make JS editing work.
-//      this._detachFromEditor();
+        this._detachFromEditor();
 
         if (newActive && newActive.document.file.fullPath === this.doc.file.fullPath) {
             this._attachToEditor(newActive);
@@ -179,7 +176,6 @@ define(function (require, exports, module) {
         if (this.editor) {
             this.hideHighlight();
             this.editor.off("cursorActivity", this._onCursorActivity);
-            this.editor = null;
         }
     };
 

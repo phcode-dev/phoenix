@@ -654,6 +654,21 @@ define(function (require, exports, module) {
                         isMarkdownFile: utils.isMarkdownFile(fullPath),
                         isHTMLFile: utils.isHTMLFile(fullPath)
                     });
+                } else {
+                    const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
+                    if(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument
+                        &&currentLivePreviewDetails.liveDocument.isRelated(fullPath)){
+                        fullPath = currentLivePreviewDetails.liveDocument.doc.file.fullPath;
+                        const relativeFilePath = httpFilePath || path.relative(projectRoot, fullPath);
+                        let URL = httpFilePath || decodeURI(_staticServerInstance.pathToUrl(fullPath));
+                        resolve({
+                            URL,
+                            filePath: relativeFilePath,
+                            fullPath: fullPath,
+                            isMarkdownFile: utils.isMarkdownFile(fullPath),
+                            isHTMLFile: utils.isHTMLFile(fullPath)
+                        });
+                    }
                 }
             }catch (e) {
                 reject(e);
