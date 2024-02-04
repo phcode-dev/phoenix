@@ -791,7 +791,7 @@ define(function (require, exports, module) {
         async function forRemoteExec(script, compareFn) {
             let result;
             await awaitsFor(
-                function isClassChanged() {
+                function () {
                     LiveDevProtocol.evaluate(script)
                         .done((response)=>{
                             result = JSON.parse(response.result||"");
@@ -1241,6 +1241,27 @@ define(function (require, exports, module) {
             await _waitForIframeSrc("simple1.html");
 
             await endPreviewSession();
+        }, 30000);
+
+        it("should Live preview reload if related JS file changes", async function () {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.js"]),
+                "open simple1.js");
+
+            const jsChangedText = "Edited from js file for live preview js reload.";
+            const code = `document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('testId').textContent = '${jsChangedText}';});`;
+            EditorManager.getActiveEditor().document.setText(code);
+            await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "FILE_SAVE_ALL");
+            await forRemoteExec(`document.getElementById("testId").textContent`, (result)=>{
+                return result === jsChangedText;
+            });
         }, 30000);
 
     });
