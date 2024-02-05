@@ -72,6 +72,7 @@ define(function (require, exports, module) {
     // In browser open file option is not available, so we assign ctrl-o to open folder in browser
     // open folder has no shortcut in desktop, as this is not a frequently used workflow
     // and only ever used when the user opens a project once in a while.
+    const fileCloseAllShortcut = isDesktop ? "Ctrl-Shift-W" : ""; // Ctrl-Alt-Shift-W` universal shortcut is set in keyboard.json
     const openFileShortcut = isDesktop ? "Ctrl-O" : "";
     const openFolderShortcut = isBrowser ? "Ctrl-O" : "";
 
@@ -117,7 +118,7 @@ define(function (require, exports, module) {
         }
         menu.addMenuItem(Commands.FILE_OPEN_FOLDER, openFolderShortcut);
         menu.addMenuItem(Commands.FILE_CLOSE, fileCloseShortcut);
-        menu.addMenuItem(Commands.FILE_CLOSE_ALL);
+        menu.addMenuItem(Commands.FILE_CLOSE_ALL, fileCloseAllShortcut);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_SAVE);
         menu.addMenuItem(Commands.FILE_SAVE_ALL);
