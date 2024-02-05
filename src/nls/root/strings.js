@@ -306,6 +306,7 @@ define({
     "KEYBOARD_INSERT_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_DELETE": "Delete",
     "KEYBOARD_DELETE_DO_NOT_TRANSLATE": "true",
+    "KEYBOARD_OVERLAY_TEXT": "Use arrows to navigate, or type to select UI elements.",
 
     /**
      * StatusBar strings
