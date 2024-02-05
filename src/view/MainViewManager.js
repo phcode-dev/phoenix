@@ -1649,7 +1649,7 @@ define(function (require, exports, module) {
 
         // Listen to key Alt-W to toggle between panes
         CommandManager.register(Strings.CMD_SWITCH_PANE_FOCUS, Commands.CMD_SWITCH_PANE_FOCUS, switchPaneFocus);
-        KeyBindingManager.addBinding(Commands.CMD_SWITCH_PANE_FOCUS, {key: 'Alt-P'});
+        // no shortcut for switch panes by default as its taken care of by double ctrl click workflow.
     }
 
     /**

@@ -632,6 +632,10 @@ define(function (require, exports, module) {
             (keySplit.length ===3 && keySplit[0] === 'Alt' && keySplit[1] === 'Shift' && isSingleCharAZ(keySplit[2]))){
             console.error(`Key binding '${normalized}' for command '${commandID}' may cause issues. The key combinations starting with 'Alt-<letter>' and 'Alt-Shift-<letter>' are reserved. On macOS, they are used for AltGr internationalization, and on Windows/Linux, they are used for menu navigation shortcuts.`);
         }
+        // ctrl-alt-<key> events are allowed in all platforms. In windows ctrl-alt-<key> events are treated as altGr
+        // and used for international keyboards. But we have special handling for detecting alt gr key press that
+        // accounts for this and disables keybinding manager inwindows on detecting altGr key press.
+        // See _detectAltGrKeyDown function in this file.
 
         // check for duplicate key bindings
         existing = _keyMap[normalized];
