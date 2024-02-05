@@ -65,6 +65,8 @@ define(function (require, exports, module) {
     require("worker/WorkerComm");
     require("utils/ZipUtils");
     require("NodeConnector");
+    require("command/KeyboardOverlayMode");
+    require("editor/EditorManager");
 
     // Load dependent modules
     const AppInit             = require("utils/AppInit"),

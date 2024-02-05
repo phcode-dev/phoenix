@@ -29,6 +29,7 @@ define(function (require, exports, module) {
     let Commands            = require("command/Commands"),
         EventDispatcher     = require("utils/EventDispatcher"),
         KeyBindingManager   = require("command/KeyBindingManager"),
+        Keys       = require("command/Keys"),
         StringUtils         = require("utils/StringUtils"),
         CommandManager      = require("command/CommandManager"),
         PopUpManager        = require("widgets/PopUpManager"),
@@ -41,7 +42,7 @@ define(function (require, exports, module) {
     // make sure the global brackets letiable is loaded
     require("utils/Global");
 
-    const KEY = KeyBindingManager.KEY;
+    const KEY = Keys.KEY;
     /**
      * Brackets Application Menu Constants
      * @enum {string}
@@ -1010,6 +1011,22 @@ define(function (require, exports, module) {
         }
     }
 
+    let lastOpenedMenuID = 'file-menu';
+    function openMenu(id) {
+        if(!id){
+            id = lastOpenedMenuID;
+        }
+        if (!menuMap[id]) {
+            console.error("openMenu- no such menu: " + id);
+            return null;
+        }
+        $(`#${getDropdownToggleMenuID(id)}`).click();
+    }
+
+    function getDropdownToggleMenuID(id) {
+        return `${id}-dropdown-toggle`;
+    }
+
     /**
      * Adds a top-level menu to the application menu bar which may be native or HTML-based.
      *
@@ -1045,7 +1062,7 @@ define(function (require, exports, module) {
         menuMap[id] = menu;
 
 
-        let $toggle = $(`<a id="${id}-dropdown-toggle" href='#' class='dropdown-toggle' data-toggle='dropdown'>${name}</a>`),
+        let $toggle = $(`<a id="${getDropdownToggleMenuID(id)}" href='#' class='dropdown-toggle' data-toggle='dropdown'>${name}</a>`),
             $popUp = $("<ul class='dropdown-menu'></ul>"),
             $dropdown = $("<li class='dropdown' id='" + id + "'></li>"),
             $newMenu = $dropdown.append($toggle).append($popUp);
@@ -1093,8 +1110,10 @@ define(function (require, exports, module) {
         let currentIndex = $dropdownToggles.index($menuDropdownToggle);
         currentIndex = event.key === KEY.ARROW_LEFT ? currentIndex - 1 : currentIndex + 1;
         const nextIndex = currentIndex % $dropdownToggles.length;
-        $dropdownToggles.eq(nextIndex).parent().addClass('open');
-        $dropdownToggles.eq(nextIndex).focus();
+        const $nextDropdownToggle = $dropdownToggles.eq(nextIndex);
+        $nextDropdownToggle.parent().addClass('open');
+        $nextDropdownToggle.focus();
+        lastOpenedMenuID = $nextDropdownToggle.parent()[0].id;
         mainMenu && mainMenu.closeSubMenu();
     }
 
@@ -1501,6 +1520,7 @@ define(function (require, exports, module) {
     exports.getContextMenu = getContextMenu;
     exports.addMenu = addMenu;
     exports.removeMenu = removeMenu;
+    exports.openMenu = openMenu;
     exports.registerContextMenu = registerContextMenu;
     exports.closeAll = closeAll;
     exports.Menu = Menu;

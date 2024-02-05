@@ -33,8 +33,9 @@
 define(function (require, exports, module) {
 
 
-    var AppInit                 = require("utils/AppInit"),
+    const AppInit                 = require("utils/AppInit"),
         EventDispatcher         = require("utils/EventDispatcher"),
+        KeyBindingManager = require("command/KeyBindingManager"),
         Resizer                 = require("utils/Resizer"),
         PluginPanelView         = require("view/PluginPanelView"),
         PanelView               = require("view/PanelView"),
@@ -456,7 +457,7 @@ define(function (require, exports, module) {
 
     // pressing escape when focused on editor will toggle the last opened bottom panel
     function _handleKeydown(event) {
-        if(event.keyCode !== KeyEvent.DOM_VK_ESCAPE){
+        if(event.keyCode !== KeyEvent.DOM_VK_ESCAPE || KeyBindingManager.isInOverlayMode()){
             return;
         }
 

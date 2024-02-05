@@ -41,6 +41,8 @@ define(function (require, exports, module) {
         FileUtils           = require("file/FileUtils"),
         KeyEvent            = require("utils/KeyEvent"),
         Strings             = require("strings"),
+        Keys                = require("command/Keys"),
+        KeyboardOverlayMode = require("command/KeyboardOverlayMode"),
         StringUtils         = require("utils/StringUtils"),
         Metrics             = require("utils/Metrics"),
         UrlParams           = require("utils/UrlParams").UrlParams,
@@ -54,44 +56,7 @@ define(function (require, exports, module) {
     const EVENT_KEY_BINDING_ADDED = "keyBindingAdded",
         EVENT_KEY_BINDING_REMOVED = "keyBindingRemoved";
 
-    const KEY = {
-        ENTER: "Enter",
-        RETURN: "Return",
-        ESCAPE: "Escape",
-        ARROW_LEFT: "ArrowLeft",
-        ARROW_RIGHT: "ArrowRight",
-        ARROW_UP: "ArrowUp",
-        ARROW_DOWN: "ArrowDown",
-        SPACE: " ",
-        TAB: "Tab",
-        BACKSPACE: "Backspace",
-        DELETE: "Delete",
-        HOME: "Home",
-        END: "End",
-        PAGE_UP: "PageUp",
-        PAGE_DOWN: "PageDown",
-        SHIFT: "Shift",
-        CONTROL: "Control",
-        ALT: "Alt",
-        META: "Meta", // Command key on Mac, Windows key on Windows
-        F1: "F1",
-        F2: "F2",
-        F3: "F3",
-        F4: "F4",
-        F5: "F5",
-        F6: "F6",
-        F7: "F7",
-        F8: "F8",
-        F9: "F9",
-        F10: "F10",
-        F11: "F11",
-        F12: "F12",
-        INSERT: "Insert",
-        CONTEXT_MENU: "ContextMenu", // Usually the menu key or right-click keyboard button
-        NUM_LOCK: "NumLock",
-        SCROLL_LOCK: "ScrollLock",
-        CAPS_LOCK: "CapsLock"
-    };
+    const KEY = Keys.KEY;
 
     /**
      * @private
@@ -1031,12 +996,90 @@ define(function (require, exports, module) {
         }
     }
 
+    let lastKeyPressTime = 0; // Store the time of the last key press
+    let pressCount = 0; // Counter for consecutive Control key presses
+    const doublePressInterval = 500; // Maximum time interval between presses, in milliseconds, to consider it a double press
+    const ctrlKeyCodes = {
+        ControlLeft: true,
+        ControlRight: true,
+        MetaLeft: true,
+        MetaRight: true,
+        Control: true,
+        Meta: true
+    };
+    function _detectDoubleCtrlKeyPress(event) {
+        if (ctrlKeyCodes[event.code] && ctrlKeyCodes[event.key] && !event.shiftKey && !event.altKey) {
+            const currentTime = new Date().getTime(); // Get the current time
+            pressCount++;
+            if (currentTime - lastKeyPressTime <= doublePressInterval) {
+                if(pressCount === 2) {
+                    KeyboardOverlayMode.startOverlayMode();
+                    event.stopPropagation();
+                    event.preventDefault();
+                    return true;
+                }
+                // ignore all higher order press events like triple/quadruple press
+            } else {
+                pressCount = 1;
+            }
+            lastKeyPressTime = currentTime;
+        }
+    }
+
+    const dontHideMouseOnKeys = {
+        "Escape": true,
+        "ArrowLeft": true,
+        "ArrowRight": true,
+        "ArrowUp": true,
+        "ArrowDown": true,
+        "Home": true,
+        "End": true,
+        "PageUp": true,
+        "PageDown": true,
+        "Shift": true,
+        "Control": true,
+        "Alt": true,
+        "Meta": true,
+        "F1": true,
+        "F2": true,
+        "F3": true,
+        "F4": true,
+        "F5": true,
+        "F6": true,
+        "F7": true,
+        "F8": true,
+        "F9": true,
+        "F10": true,
+        "F11": true,
+        "F12": true,
+        "Insert": true,
+        "ContextMenu": true,
+        "NumLock": true,
+        "ScrollLock": true,
+        "CapsLock": true
+    };
+    let mouseCursorHidden = false;
+    function _hideMouseCursonOnTyping(event) {
+        if(dontHideMouseOnKeys[event.key] || mouseCursorHidden){
+            return;
+        }
+        mouseCursorHidden = true;
+        document.body.classList.add('hide-cursor');
+    }
+    
     /**
      * Handles a given keydown event, checking global hooks first before
      * deciding to handle it ourselves.
-     * @param {Event} The keydown event to handle.
+     * @param {Event} event The keydown event to handle.
      */
     function _handleKeyEvent(event) {
+        _hideMouseCursonOnTyping(event);
+        if(KeyboardOverlayMode.isInOverlayMode()){
+            return KeyboardOverlayMode.processOverlayKeyboardEvent(event);
+        }
+        if(_detectDoubleCtrlKeyPress(event)){
+            return true;
+        }
         let i, handled = false;
         for (i = _globalKeydownHooks.length - 1; i >= 0; i--) {
             if (_globalKeydownHooks[i](event)) {
@@ -1058,6 +1101,13 @@ define(function (require, exports, module) {
             _handleKeyEvent,
             true
         );
+        document.body.addEventListener('mousemove', ()=>{
+            if(!mouseCursorHidden){
+                return;
+            }
+            mouseCursorHidden = false;
+            document.body.classList.remove('hide-cursor');
+        });
 
         exports.useWindowsCompatibleBindings = (brackets.platform !== "mac") &&
             (brackets.platform !== "win");
@@ -1502,6 +1552,10 @@ define(function (require, exports, module) {
         _loadUserKeyMap();
     });
 
+    function isInOverlayMode() {
+        return KeyboardOverlayMode.isInOverlayMode();
+    }
+
     // unit test only
     exports._reset = _reset;
     exports._setUserKeyMapFilePath = _setUserKeyMapFilePath;
@@ -1519,6 +1573,7 @@ define(function (require, exports, module) {
     exports.getKeyBindingsDisplay = getKeyBindingsDisplay;
     exports.addGlobalKeydownHook = addGlobalKeydownHook;
     exports.removeGlobalKeydownHook = removeGlobalKeydownHook;
+    exports.isInOverlayMode = isInOverlayMode;
 
     // public constants
     exports.KEY = KEY;

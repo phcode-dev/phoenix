@@ -72,6 +72,49 @@ html, body {
     }
 }
 
+#ctrl-nav-overlay {
+    position: absolute;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center children vertically */
+    align-items: center; /* Center children horizontally */
+    width: 100%; /* Full width of the container */
+    height: 100vh; /* Full height of the viewport */
+    top: 0; /* Align to top edge */
+    left: 0; /* Align to left edge */
+    color: #FFF; /* Text and icon color, white for contrast */
+    text-align: center; /* Align text centrally */
+    padding: 20px; /* Padding around the content */
+    box-sizing: border-box; /* Include padding in width/height calculations */
+    z-index: @z-index-brackets-topmost-overlay;
+}
+
+.arrowDivs {
+    /* Flex container for the icon - though not necessary if only one icon */
+    display: flex;
+    justify-content: center; /* Center the icon horizontally */
+    align-items: center; /* Center the icon vertically */
+}
+
+/* Style for the Font Awesome icon */
+.arrowDivs > .fa-solid {
+    font-size: xxx-large;
+    margin-bottom: 20px; /* Space between the icon and the text */
+}
+
+/* Style for the instruction text */
+.instruction-text {
+    font-size: 14px; /* Font size for the instruction text */
+    max-width: 80%; /* Max width of the text to maintain readability */
+}
+
+.hide-cursor {
+    cursor: none !important;
+    .CodeMirror .CodeMirror-sizer {
+        cursor: none !important;
+    }
+}
+
 .editor-text-fragment-hover{
     text-decoration-style: solid;
     text-decoration-line: underline;
