@@ -686,6 +686,7 @@ define(function (require, exports, module) {
 
         if (newDoc) {
             PreferencesManager._setCurrentLanguage(newDoc.getLanguage().getId());
+            newDoc.off("languageChanged.DocumentManager");
             newDoc.on("languageChanged.DocumentManager", function (e, oldLang, newLang) {
                 PreferencesManager._setCurrentLanguage(newLang.getId());
                 exports.trigger("currentDocumentLanguageChanged", [oldLang, newLang]);

@@ -845,6 +845,7 @@ define(function (require, exports, module) {
 
         DocumentManager.getDocumentForPath(newFilePath)
             .done(function (newDoc) {
+                newDoc.off("languageChanged.quickFindDefinition");
                 newDoc.on("languageChanged.quickFindDefinition", function () {
                     var changedLanguageId = LanguageManager.getLanguageForPath(newDoc.file.fullPath).getId();
                     _setMenuItemStateForLanguage(changedLanguageId);
