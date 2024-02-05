@@ -175,5 +175,26 @@ define(function (require, exports, module) {
             expect(MainViewManager.getActivePaneId()).toBe(MainViewManager.SECOND_PANE);
         });
 
+        it("Should navigate be able to focus on a pane with no editor", async function () {
+            MainViewManager.setLayoutScheme(1, 2);
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all file");
+            await openAnyFile("/simple.js", MainViewManager.FIRST_PANE);
+            MainViewManager.setActivePaneId(MainViewManager.FIRST_PANE);
+
+            // right arrow to switch to right pane
+            MainViewManager.setActivePaneId(MainViewManager.FIRST_PANE);
+            await _openUiNavMode();
+            keyboardType(Keys.KEY.ARROW_RIGHT);
+            keyboardType(Keys.KEY.ENTER);
+            expect(MainViewManager.getActivePaneId()).toBe(MainViewManager.SECOND_PANE);
+
+            // left arrow to switch to left pane
+            await _openUiNavMode();
+            keyboardType(Keys.KEY.ARROW_LEFT);
+            keyboardType(Keys.KEY.ENTER);
+            expect(MainViewManager.getActivePaneId()).toBe(MainViewManager.FIRST_PANE);
+        });
+
     });
 });
