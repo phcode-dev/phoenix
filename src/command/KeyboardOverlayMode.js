@@ -38,7 +38,7 @@ define(function (require, exports, module) {
     const CONTROL_NAV_OVERLAY_ID = "ctrl-nav-overlay";
     let overlay;
 
-    let editorToFocusOnExit, overlayMode = false,
+    let paneToFocusOnExit, overlayMode = false,
         overlayOrderCentralElement, currentOverlayElement;
 
     function showOverlay(targetId) {
@@ -50,7 +50,7 @@ define(function (require, exports, module) {
         }
         const targetElement = document.getElementById(targetId);
 
-        editorToFocusOnExit = EditorManager.getActiveEditor();
+        paneToFocusOnExit = MainViewManager.getActivePaneId();
         if (targetElement && overlay) {
             // Get the position and dimensions of the target div
             const rect = targetElement.getBoundingClientRect();
@@ -114,16 +114,8 @@ define(function (require, exports, module) {
         const overlay = document.getElementById(CONTROL_NAV_OVERLAY_ID);
         overlay.classList.add('forced-hidden'); // Remove the class that hides the overlay
         overlayMode = false;
-        if(editorToFocusOnExit){
-            editorToFocusOnExit.focus();
-        } else {
-            MainViewManager.setActivePaneId(MainViewManager.FIRST_PANE);
-            MainViewManager.focusActivePane();
-            editorToFocusOnExit = EditorManager.getActiveEditor();
-            if(!editorToFocusOnExit){
-                MainViewManager.setActivePaneId(MainViewManager.SECOND_PANE);
-                MainViewManager.focusActivePane();
-            }
+        if(paneToFocusOnExit){
+            MainViewManager.setActivePaneId(paneToFocusOnExit);
         }
         document.removeEventListener('click', exitOverlayMode, true);
     }
@@ -165,8 +157,7 @@ define(function (require, exports, module) {
         case Keys.KEY.ENTER:
             if(currentOverlayElement && currentOverlayElement.type === ELEM_TYPE_PANE){
                 MainViewManager.setActivePaneId(currentOverlayElement.htmlID);
-                MainViewManager.focusActivePane();
-                editorToFocusOnExit = EditorManager.getActiveEditor();
+                paneToFocusOnExit = MainViewManager.getActivePaneId();
                 exitOverlayMode();
             }
             break;
