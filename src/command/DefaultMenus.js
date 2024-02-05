@@ -177,8 +177,8 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.CMD_FIND);
         menu.addMenuItem(Commands.CMD_FIND_NEXT);
         menu.addMenuItem(Commands.CMD_FIND_PREVIOUS);
-        menu.addMenuItem(Commands.CMD_FIND_ALL_AND_SELECT);
         menu.addMenuItem(Commands.CMD_ADD_NEXT_MATCH);
+        menu.addMenuItem(Commands.CMD_FIND_ALL_AND_SELECT);
         menu.addMenuItem(Commands.CMD_SKIP_CURRENT_MATCH);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.CMD_FIND_IN_FILES);
