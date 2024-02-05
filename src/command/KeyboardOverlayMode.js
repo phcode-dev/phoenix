@@ -22,31 +22,34 @@
 /*global Phoenix*/
 
 /**
- * Initializes the default brackets menu items.
+ * This handles the overlay mode
  */
 define(function (require, exports, module) {
     const EditorManager       = require("editor/EditorManager"),
         AppInit             = require("utils/AppInit"),
         MainViewManager      = require("view/MainViewManager"),
         Menus = require("command/Menus"),
+        Strings     = require("strings"),
         Keys                = require("command/Keys");
 
     const CONTROL_NAV_OVERLAY_ID = "ctrl-nav-overlay";
     let overlay;
 
-    let lastEditorWithFocus, overlayMode = false;
+    let editorToFocusOnExit, overlayMode = false,
+        overlayOrderCentralElement, currentOverlayElement;
 
-    function startOverlayMode(targetId) {
+    function showOverlay(targetId) {
         // Find the target div and the overlay div
         if(!targetId){
-            targetId = MainViewManager.getActivePaneId() || "first-pane";
+            console.error("No target ID for selecting overlay. Ignoring");
+            return;
         }
-        const target = document.getElementById(targetId);
+        const targetElement = document.getElementById(targetId);
 
-        lastEditorWithFocus = EditorManager.getActiveEditor();
-        if (target && overlay) {
+        editorToFocusOnExit = EditorManager.getActiveEditor();
+        if (targetElement && overlay) {
             // Get the position and dimensions of the target div
-            const rect = target.getBoundingClientRect();
+            const rect = targetElement.getBoundingClientRect();
             // Set the overlay div's styles to match the target's dimensions and position
             overlay.style.left = rect.left + 'px';
             overlay.style.top = rect.top + 'px';
@@ -56,39 +59,121 @@ define(function (require, exports, module) {
             overlay.classList.add('hide-cursor'); // Remove the class that hides the overlay
             overlay.focus();
             overlayMode = true;
+            Menus.closeAll();
             document.addEventListener('click', exitOverlayMode, true);
         }
+    }
+
+    function startOverlayMode() {
+        overlayOrderCentralElement = calculateUINavOrder();
+        currentOverlayElement = overlayOrderCentralElement;
+        showOverlay(overlayOrderCentralElement.htmlID);
+    }
+
+    const ELEM_TYPE_PANE = "pane",
+        ELEM_TYPE_TOP_MENU = "topMenu";
+    function addElementUp(element, upElement) {
+        element.up = upElement;
+        upElement.down = element;
+    }
+
+    function addElementRight(element, rightElement) {
+        element.right = rightElement;
+        rightElement.left = element;
+    }
+
+    function calculateUINavOrder() {
+        const firstPane = {
+            type: ELEM_TYPE_PANE,
+            htmlID: MainViewManager.FIRST_PANE
+        };
+        const secondPane = {
+            type: ELEM_TYPE_PANE,
+            htmlID: MainViewManager.SECOND_PANE
+        };
+        addElementUp(firstPane, {type: ELEM_TYPE_TOP_MENU});
+        const paneLayout = MainViewManager.getLayoutScheme();
+        if(paneLayout.rows === 2){
+            addElementUp(secondPane, firstPane);
+        } else if(paneLayout.columns === 2){
+            addElementRight(firstPane, secondPane);
+            addElementUp(secondPane, {type: ELEM_TYPE_TOP_MENU});
+        }
+        const startingPane = MainViewManager.getActivePaneId() || "first-pane";
+        if(startingPane === MainViewManager.FIRST_PANE){
+            return firstPane;
+        }
+        return secondPane;
     }
 
     function exitOverlayMode() {
         const overlay = document.getElementById(CONTROL_NAV_OVERLAY_ID);
         overlay.classList.add('forced-hidden'); // Remove the class that hides the overlay
         overlayMode = false;
-        if(lastEditorWithFocus){
-            lastEditorWithFocus.focus();
+        if(editorToFocusOnExit){
+            editorToFocusOnExit.focus();
+        } else {
+            MainViewManager.setActivePaneId(MainViewManager.FIRST_PANE);
+            MainViewManager.focusActivePane();
+            editorToFocusOnExit = EditorManager.getActiveEditor();
+            if(!editorToFocusOnExit){
+                MainViewManager.setActivePaneId(MainViewManager.SECOND_PANE);
+                MainViewManager.focusActivePane();
+            }
         }
         document.removeEventListener('click', exitOverlayMode, true);
     }
 
     function processOverlayKeyboardEvent(event) {
-        let processed = false;
+        const upElement = currentOverlayElement.up;
+        const downElement = currentOverlayElement.down;
+        const leftElement = currentOverlayElement.left;
+        const rightElement = currentOverlayElement.right;
         switch (event.key) {
         case Keys.KEY.ARROW_UP:
-            exitOverlayMode();
-            Menus.openMenu();
-            processed = true;
+            if(upElement && upElement.type === ELEM_TYPE_TOP_MENU){
+                exitOverlayMode();
+                Menus.openMenu();
+            } else if(upElement && upElement.type === ELEM_TYPE_PANE){
+                currentOverlayElement = upElement;
+                showOverlay(upElement.htmlID);
+            }
+            break;
+        case Keys.KEY.ARROW_DOWN:
+            if(downElement && downElement.type === ELEM_TYPE_PANE){
+                currentOverlayElement = downElement;
+                showOverlay(downElement.htmlID);
+            }
+            break;
+        case Keys.KEY.ARROW_LEFT:
+            if(leftElement && leftElement.type === ELEM_TYPE_PANE){
+                currentOverlayElement = leftElement;
+                showOverlay(leftElement.htmlID);
+            }
+            break;
+        case Keys.KEY.ARROW_RIGHT:
+            if(rightElement && rightElement.type === ELEM_TYPE_PANE){
+                currentOverlayElement = rightElement;
+                showOverlay(rightElement.htmlID);
+            }
+            break;
+        case Keys.KEY.RETURN:
+        case Keys.KEY.ENTER:
+            if(currentOverlayElement && currentOverlayElement.type === ELEM_TYPE_PANE){
+                MainViewManager.setActivePaneId(currentOverlayElement.htmlID);
+                MainViewManager.focusActivePane();
+                editorToFocusOnExit = EditorManager.getActiveEditor();
+                exitOverlayMode();
+            }
             break;
         case Keys.KEY.ESCAPE:
         default:
             exitOverlayMode();
-            processed = true;
             break;
         }
-        if(processed){
-            event.stopPropagation();
-            event.preventDefault();
-        }
-        return processed;
+        event.stopPropagation();
+        event.preventDefault();
+        return true;
     }
 
     function isInOverlayMode() {
@@ -97,6 +182,8 @@ define(function (require, exports, module) {
 
     AppInit.htmlReady(function () {
         overlay = document.getElementById(CONTROL_NAV_OVERLAY_ID);
+        const overlayTextElement = document.getElementById("overlay-instruction-text");
+        overlayTextElement.textContent = Strings.KEYBOARD_OVERLAY_TEXT;
     });
 
     exports.processOverlayKeyboardEvent = processOverlayKeyboardEvent;
