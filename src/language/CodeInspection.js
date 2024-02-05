@@ -478,6 +478,18 @@ define(function (require, exports, module) {
     }
 
     function _editorVieportChangeHandler(_evt, editor, from, to) {
+        if(gutterRegistrationInProgress){
+            if(editor.gutterViewportChangeTimer){
+                clearTimeout(editor.gutterViewportChangeTimer);
+            }
+            editor.gutterViewportChangeTimer = setTimeout(()=>{
+                const vp = editor.getViewport();
+                _editorVieportChangeHandler(_evt, editor, vp.from, vp.to);
+                clearTimeout(editor.gutterViewportChangeTimer);
+                delete editor.gutterViewportChangeTimer;
+            });
+            return;
+        }
         _populateDummyGutterElements(editor, from, to);
     }
 
@@ -673,6 +685,8 @@ define(function (require, exports, module) {
         }
     }
 
+    let gutterRegistrationInProgress = false;
+
     /**
      * The provider is passed the text of the file and its fullPath. Providers should not assume
      * that the file is open (i.e. DocumentManager.getOpenDocumentForPath() may return null) or
@@ -711,7 +725,9 @@ define(function (require, exports, module) {
 
         if(!_registeredLanguageIDs.includes(languageId)){
             _registeredLanguageIDs.push(languageId);
+            gutterRegistrationInProgress = true;
             Editor.unregisterGutter(CODE_INSPECTION_GUTTER);
+            gutterRegistrationInProgress = false;
             Editor.registerGutter(CODE_INSPECTION_GUTTER, CODE_INSPECTION_GUTTER_PRIORITY, _registeredLanguageIDs);
         }
 
