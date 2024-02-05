@@ -173,6 +173,7 @@ define(function (require, exports, module) {
 
         DocumentManager.getDocumentForPath(newFilePath)
             .done(function (newDoc) {
+                newDoc.off("languageChanged.reference-in-files");
                 newDoc.on("languageChanged.reference-in-files", function () {
                     var changedLanguageId = LanguageManager.getLanguageForPath(newDoc.file.fullPath).getId();
                     setMenuItemStateForLanguage(changedLanguageId);
