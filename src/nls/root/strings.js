@@ -462,6 +462,7 @@ define({
     "CMD_WORKING_SORT_TOGGLE_AUTO": "Automatic Sort",
     "CMD_THEMES": "Themes\u2026",
     "CMD_TOGGLE_SEARCH_AUTOHIDE": "Automatically close search",
+    "CMD_KEYBOARD_NAV_OVERLAY": "UI Navigation Mode",
 
     // Navigate menu commands
     "NAVIGATE_MENU": "Navigate",

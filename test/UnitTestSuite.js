@@ -90,6 +90,7 @@ define(function (require, exports, module) {
     require("spec/PreferencesManager-integ-test");
     require("spec/MainViewFactory-integ-test");
     require("spec/MainViewManager-integ-test");
+    require("spec/Keyboard-nav-integ-test");
     require("spec/Menu-integ-test");
     require("spec/ProjectManager-integ-test");
     require("spec/QuickOpen-integ-test");

@@ -28,8 +28,11 @@ define(function (require, exports, module) {
     const EditorManager       = require("editor/EditorManager"),
         AppInit             = require("utils/AppInit"),
         MainViewManager      = require("view/MainViewManager"),
+        Commands            = require("command/Commands"),
+        CommandManager      = require("command/CommandManager"),
         Menus = require("command/Menus"),
         Strings     = require("strings"),
+        Metrics              = require("utils/Metrics"),
         Keys                = require("command/Keys");
 
     const CONTROL_NAV_OVERLAY_ID = "ctrl-nav-overlay";
@@ -40,6 +43,7 @@ define(function (require, exports, module) {
 
     function showOverlay(targetId) {
         // Find the target div and the overlay div
+        Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "ctrlx2", "showOverlay");
         if(!targetId){
             console.error("No target ID for selecting overlay. Ignoring");
             return;
@@ -184,6 +188,10 @@ define(function (require, exports, module) {
         overlay = document.getElementById(CONTROL_NAV_OVERLAY_ID);
         const overlayTextElement = document.getElementById("overlay-instruction-text");
         overlayTextElement.textContent = Strings.KEYBOARD_OVERLAY_TEXT;
+    });
+
+    AppInit.appReady(function () {
+        CommandManager.register(Strings.CMD_KEYBOARD_NAV_OVERLAY,    Commands.CMD_KEYBOARD_NAV_UI_OVERLAY, startOverlayMode);
     });
 
     exports.processOverlayKeyboardEvent = processOverlayKeyboardEvent;

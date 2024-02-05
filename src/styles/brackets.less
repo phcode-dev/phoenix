@@ -82,7 +82,10 @@ html, body {
     height: 100vh; /* Full height of the viewport */
     top: 0; /* Align to top edge */
     left: 0; /* Align to left edge */
-    color: #FFF; /* Text and icon color, white for contrast */
+    color: @overlay-text;
+    .dark &{
+        color: @dark-overlay-text;
+    }
     text-align: center; /* Align text centrally */
     padding: 20px; /* Padding around the content */
     box-sizing: border-box; /* Include padding in width/height calculations */
@@ -106,6 +109,8 @@ html, body {
 .instruction-text {
     font-size: 14px; /* Font size for the instruction text */
     max-width: 80%; /* Max width of the text to maintain readability */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
 }
 
 .hide-cursor {
