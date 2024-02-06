@@ -436,6 +436,53 @@ define(function (require, exports, module) {
         return _buildKeyDescriptor(hasMacCtrl, hasCtrl, hasAlt, hasShift, key);
     }
 
+    function _mapKeycodeToKeyLegacy(keycode) {
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+        // keycode is deprecated. We only use this in one edge case in mac listed in the caller.
+        // If keycode represents one of the digit keys (0-9), then return the corresponding digit
+        // by subtracting KeyEvent.DOM_VK_0 from keycode. ie. [48-57] --> [0-9]
+        if (keycode >= KeyEvent.DOM_VK_0 && keycode <= KeyEvent.DOM_VK_9) {
+            return String(keycode - KeyEvent.DOM_VK_0);
+            // Do the same with the numpad numbers
+            // by subtracting KeyEvent.DOM_VK_NUMPAD0 from keycode. ie. [96-105] --> [0-9]
+        } else if (keycode >= KeyEvent.DOM_VK_NUMPAD0 && keycode <= KeyEvent.DOM_VK_NUMPAD9) {
+            return String(keycode - KeyEvent.DOM_VK_NUMPAD0);
+        }
+
+
+        switch (keycode) {
+        case KeyEvent.DOM_VK_SEMICOLON:
+            return ";";
+        case KeyEvent.DOM_VK_EQUALS:
+            return "=";
+        case KeyEvent.DOM_VK_COMMA:
+            return ",";
+        case KeyEvent.DOM_VK_SUBTRACT:
+        case KeyEvent.DOM_VK_DASH:
+            return "-";
+        case KeyEvent.DOM_VK_ADD:
+            return "+";
+        case KeyEvent.DOM_VK_DECIMAL:
+        case KeyEvent.DOM_VK_PERIOD:
+            return ".";
+        case KeyEvent.DOM_VK_DIVIDE:
+        case KeyEvent.DOM_VK_SLASH:
+            return "/";
+        case KeyEvent.DOM_VK_BACK_QUOTE:
+            return "`";
+        case KeyEvent.DOM_VK_OPEN_BRACKET:
+            return "[";
+        case KeyEvent.DOM_VK_BACK_SLASH:
+            return "\\";
+        case KeyEvent.DOM_VK_CLOSE_BRACKET:
+            return "]";
+        case KeyEvent.DOM_VK_QUOTE:
+            return "'";
+        default:
+            return null;
+        }
+    }
+
     /**
      * @private
      * Looks for keycodes that have os-inconsistent keys and fixes them.
@@ -443,6 +490,15 @@ define(function (require, exports, module) {
      **/
     function _mapKeycodeToKey(event) {
         // key code mapping https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
+        if((event.ctrlKey || event.metaKey) && event.altKey && brackets.platform === "mac"){
+            // in mac, Cmd-alt-<shift?>-key are valid. But alt-key will trigger international keyboard typing and
+            // hence instead of Cmd-Alt-O, mac will get event Cmd-alt-Φ which is not what we want. So we will
+            // fallback to the deprecated keyCode event in the case
+            const key = _mapKeycodeToKeyLegacy(event.keyCode);
+            if(key){
+                return key;
+            }
+        }
         const key = event.key;
         let codes = {
             "ArrowUp": "Up",
