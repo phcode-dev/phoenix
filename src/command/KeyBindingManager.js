@@ -575,15 +575,16 @@ define(function (require, exports, module) {
      *
      * @param {string} commandID
      * @param {string|{{key: string, displayKey: string}}} keyBinding - a single shortcut.
-     * @param {?string} platform
+     * @param {string?} platform
      *     - "all" indicates all platforms, not overridable
      *     - undefined indicates all platforms, overridden by platform-specific binding
-     * @param {boolean=} userBindings true if adding a user key binding or undefined otherwise.
+     * @param {boolean?} userBindings true if adding a user key binding or undefined otherwise.
+     * @param {boolean?} isMenuShortcut
      * @return {?{key: string, displayKey:String}} Returns a record for valid key bindings.
      *     Returns null when key binding platform does not match, binding does not normalize,
      *     or is already assigned.
      */
-    function _addBinding(commandID, keyBinding, platform, userBindings) {
+    function _addBinding(commandID, keyBinding, {platform, userBindings, isMenuShortcut}) {
         let key,
             result = null,
             normalized,
@@ -628,9 +629,9 @@ define(function (require, exports, module) {
             return /^[A-Z]$/i.test(str);
         }
         const keySplit = normalized.split("-");
-        if((keySplit.length ===2 && keySplit[0] === 'Alt' && isSingleCharAZ(keySplit[1])) ||
-            (keySplit.length ===3 && keySplit[0] === 'Alt' && keySplit[1] === 'Shift' && isSingleCharAZ(keySplit[2]))){
-            console.error(`Key binding '${normalized}' for command '${commandID}' may cause issues. The key combinations starting with 'Alt-<letter>' and 'Alt-Shift-<letter>' are reserved. On macOS, they are used for AltGr internationalization, and on Windows/Linux, they are used for menu navigation shortcuts.`);
+        if(!isMenuShortcut && ((keySplit.length ===2 && keySplit[0] === 'Alt' && isSingleCharAZ(keySplit[1])) ||
+            (keySplit.length ===3 && keySplit[0] === 'Alt' && keySplit[1] === 'Shift' && isSingleCharAZ(keySplit[2])))){
+            console.error(`Key binding '${normalized}' for command '${commandID}' may cause issues. The key combinations starting with 'Alt-<letter>' and 'Alt-Shift-<letter>' are reserved. On macOS, they are used for AltGr internationalization, and on Windows/Linux, they are used for menu navigation shortcuts. If this is a menu shortcut, use 'isMenuShortcut' option.`);
         }
         // ctrl-alt-<key> events are allowed in all platforms. In windows ctrl-alt-<key> events are treated as altGr
         // and used for international keyboards. But we have special handling for detecting alt gr key press that
@@ -854,12 +855,15 @@ define(function (require, exports, module) {
      *     "mac", "win" or "linux". If undefined, all platforms not explicitly
      *     defined will use the key binding.
      *     NOTE: If platform is not specified, Ctrl will be replaced by Cmd for "mac" platform
+     * @param {object?} options
+     * @param {boolean?} options.isMenuShortcut this allows alt-key shortcuts to be registered.
      * @return {{key: string, displayKey:String}|Array.<{key: string, displayKey:String}>}
      *     Returns record(s) for valid key binding(s)
      */
-    function addBinding(command, keyBindings, platform) {
+    function addBinding(command, keyBindings, platform, options={}) {
         let commandID = "",
-            results;
+            results,
+            isMenuShortcut = options.isMenuShortcut;
 
         if (!command) {
             console.error("addBinding(): missing required parameter: command");
@@ -883,19 +887,24 @@ define(function (require, exports, module) {
 
             keyBindings.forEach(function addSingleBinding(keyBindingRequest) {
                 // attempt to add keybinding
-                keyBinding = _addBinding(commandID, keyBindingRequest, keyBindingRequest.platform);
+                keyBinding = _addBinding(commandID, keyBindingRequest, {
+                    platform: keyBindingRequest.platform,
+                    isMenuShortcut: isMenuShortcut
+                });
 
                 if (keyBinding) {
                     results.push(keyBinding);
                 }
             });
         } else {
-            results = _addBinding(commandID, keyBindings, platform);
+            results = _addBinding(commandID, keyBindings, {
+                platform: platform,
+                isMenuShortcut: isMenuShortcut
+            });
         }
 
         return results;
     }
-
     /**
      * Retrieve key bindings currently associated with a command
      *
@@ -1310,7 +1319,10 @@ define(function (require, exports, module) {
                         let keybinding = { key: normalizedKey };
 
                         keybinding.displayKey = _getDisplayKey(normalizedKey);
-                        _addBinding(commandID, keybinding.displayKey ? keybinding : normalizedKey, brackets.platform, true);
+                        _addBinding(commandID, keybinding.displayKey ? keybinding : normalizedKey, {
+                            platform: brackets.platform,
+                            userBindings: true
+                        });
                         remappedCommands.push(commandID);
                     } else {
                         multipleKeys.push(commandID);

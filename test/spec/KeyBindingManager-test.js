@@ -742,8 +742,8 @@ define(function (require, exports, module) {
             }
 
             it("should mark commands as processed even if command execution failed for unswallowed commands", function () {
-                _testCommandProcessed("Ctrl-P", new $.Deferred().reject(), true);
-                _testCommandProcessed("Ctrl-P", new $.Deferred().resolve(), true);
+                _testCommandProcessed("Ctrl-Alt-Shift-P", new $.Deferred().reject(), true);
+                _testCommandProcessed("Ctrl-Alt-Shift-P", new $.Deferred().resolve(), true);
             });
 
             it("should not mark commands as processed if command execution failed for keys A-Z 0-9", function () {
