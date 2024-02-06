@@ -65,9 +65,10 @@ Creating extensions and themes is now easier than ever with a single click in Gi
 
 Beautify HTML, CSS, JS, Json, Markdown, Typescript and other language code with `Ctrl-B` (`Cmd-B` in mac.).
 
-<iframe allow="fullscreen;" width="100%" height="315"
-src="https://www.youtube.com/embed/DMMPfIuUGGs">
-</iframe>
+#### Watch the video on YouTube
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=DMMPfIuUGGs" target="_blank">
+ <img src="http://img.youtube.com/vi/DMMPfIuUGGs/mqdefault.jpg" alt="Watch the video" border="10" />
+</a>
 
 ## Javascript Lint with JSHint
 `Added on August,2022`
@@ -92,9 +93,10 @@ Detect errors and potential problems in your JavaScript code while editing your 
 Open large projects right from your browser.
 Instant search across all files in your project (Click on the search icon at top left).
 
-<iframe allow="fullscreen;" width="100%" height="315"
-src="https://www.youtube.com/embed/pw7vJ_l5A44">
-</iframe>
+#### Watch the video on YouTube
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=pw7vJ_l5A44" target="_blank">
+ <img src="http://img.youtube.com/vi/pw7vJ_l5A44/mqdefault.jpg" alt="Watch the video" border="10" />
+</a>
 
 ## File and project icons
 `Added on June,2022`
@@ -107,34 +109,38 @@ We have applied a fresh coat of paint to the icons in files panel.
 Open local folders and projects from GitHub; Quick start templates with HTML, blog, and bootstrap projects.
 More templates coming soon.
 
-<iframe allow="fullscreen;" width="100%" height="315"
-src="https://www.youtube.com/embed/Nqukd9oU060">
-</iframe>
+#### Watch the video on YouTube
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=Nqukd9oU060" target="_blank">
+ <img src="http://img.youtube.com/vi/Nqukd9oU060/mqdefault.jpg" alt="Watch the video" border="10" />
+</a>
 
 ## Share and Publish your Website
 `Added on Apr,2022`
 
 Quickly preview changes and share your website with others on the web with a single click.
 
-
-<iframe allow="fullscreen;" width="100%" height="315"
-src="https://www.youtube.com/embed/dJTZ2iduagg">
-</iframe>
+#### Watch the video on YouTube
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=dJTZ2iduagg" target="_blank">
+ <img src="http://img.youtube.com/vi/dJTZ2iduagg/mqdefault.jpg" alt="Watch the video" border="10" />
+</a>
 
 ## Live HTML Preview
 `Added on Apr,2022`
 
 Code real-time in your browser. Make changes to CSS and HTML and you'll instantly see those changes on screen.
 
-<iframe allow="fullscreen;" width="100%" height="315"
-src="https://www.youtube.com/embed/RIslg6XQwLA">
-</iframe>
+#### Watch the video on YouTube
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=RIslg6XQwLA" target="_blank">
+ <img src="http://img.youtube.com/vi/RIslg6XQwLA/mqdefault.jpg" alt="Watch the video" border="10" />
+</a>
 
 ## Live Markdown Preview
 `Added on Apr,2022`
 
 Live preview but for markdown files!
 
-<iframe allow="fullscreen;" width="100%" height="315"
-src="https://www.youtube.com/embed/buDeBgf-B60">
-</iframe>
+#### Watch the video on YouTube
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=buDeBgf-B60" target="_blank">
+ <img src="http://img.youtube.com/vi/buDeBgf-B60/mqdefault.jpg" alt="Watch the video" border="10" />
+</a>
+
