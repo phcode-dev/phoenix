@@ -998,10 +998,14 @@ define(function (require, exports, module) {
         }
     };
 
+    let lastOpenedMenuID = 'file-menu';
     /**
      * Closes all menus that are open
      */
     function closeAll() {
+        if(getOpenMenu()){
+            lastOpenedMenuID = getOpenMenu();
+        }
         $(".dropdown").removeClass("open");
     }
 
@@ -1011,7 +1015,6 @@ define(function (require, exports, module) {
         }
     }
 
-    let lastOpenedMenuID = 'file-menu';
     function openMenu(id) {
         if(!id){
             id = lastOpenedMenuID;
@@ -1023,8 +1026,92 @@ define(function (require, exports, module) {
         $(`#${getDropdownToggleMenuID(id)}`).click();
     }
 
+    /**
+     * returns the currently open menu id if present or null
+     * @return {null|string}
+     */
+    function getOpenMenu() {
+        const $openDropdownMenuList = $("#titlebar .dropdown.open");
+        if($openDropdownMenuList.length !== 1){
+            return null;
+        }
+        return $openDropdownMenuList[0].id;
+    }
+
     function getDropdownToggleMenuID(id) {
         return `${id}-dropdown-toggle`;
+    }
+
+    let assignedShortcutsMenus = {};
+    let altKeyReleased = true;
+    window.document.body.addEventListener(
+        "keyup",
+        (event)=>{
+            if(event.key === KEY.ALT){
+                altKeyReleased = true;
+            }
+        },
+        true
+    );
+    function _addAltMenuShortcut(menuName, id) {
+        if (brackets.platform === "mac") {
+            // Alt menu shortcuts are unavailable on macOS due to its UI conventions(Alt is reserved for AltGr
+            // international keyboard typing).
+            // On macOS, menus can be accessed by double-pressing the Command key instead.
+            return;
+        }
+        let shortCutKey = menuName[0].toUpperCase();
+        if(assignedShortcutsMenus[shortCutKey]){
+            assignedShortcutsMenus[shortCutKey].push({menuName, id});
+            // now the array may have second leter shortcut like Eg. for like letter i = [Find] sinse File is already
+            // registered with F. So when we try to insert a new menu item say `Inspect` which should ideally take
+            // precedence for the i key shortcut, we have to remove all second elemnts in array that doent start with
+            // the first letter shortcut.
+            const newShortcutList = [];
+            for(let menu of assignedShortcutsMenus[shortCutKey]){
+                if(menu.menuName.toUpperCase().startsWith(shortCutKey)){
+                    // remove all shortcuts that doesnt have the first letter as the shortcut
+                    newShortcutList.push(menu);
+                }
+            }
+            assignedShortcutsMenus[shortCutKey] = newShortcutList;
+            // the shortcut key is already registered, check if can use the second letter to register
+            // an alternate single letter shortcut
+            const secondLetterShortCutKey = menuName[1];
+            if(secondLetterShortCutKey && assignedShortcutsMenus[secondLetterShortCutKey]) {
+                // the second letter is taken too, we dont do anything in this case.
+                return;
+            }
+            shortCutKey = secondLetterShortCutKey;
+        }
+        assignedShortcutsMenus[shortCutKey] = [{menuName, id}];
+        const menuShortcutCommandID = `AltMenu-${shortCutKey}`;
+        console.log(`Registering 'Alt-${shortCutKey}' menu shortcut handler..`);
+        CommandManager.register(`Menu Shortcut For ${shortCutKey}`, menuShortcutCommandID, function () {
+            const menusIdsForShortcut = assignedShortcutsMenus[shortCutKey].map(item => item.id);
+            if(altKeyReleased){
+                // this happens if the user started a new session of pressing alt-followed by key to open menu.
+                // we have to open the first menu item in this case.
+                altKeyReleased = false;
+                openMenu(menusIdsForShortcut[0]);
+                return true;
+            }
+            // if we are here, then another manu is already open as user is trying switch between two menus with same
+            // shortcut. Eg. Alt-F -file menu is open, switch to find menu.
+            let currentIndex = menusIdsForShortcut.indexOf(lastOpenedMenuID);
+            let menuToOpen;
+            // Check if the current menu is the last in the array or if it's not found (-1)
+            if (currentIndex === -1 || currentIndex === menusIdsForShortcut.length - 1) {
+                // If so, circle back to the first menu
+                menuToOpen = menusIdsForShortcut[0];
+            } else {
+                // Otherwise, go to the next menu
+                menuToOpen = menusIdsForShortcut[currentIndex + 1];
+            }
+            openMenu(menuToOpen);
+            return true;
+        });
+        KeyBindingManager.addBinding(menuShortcutCommandID, `Alt-${shortCutKey}`, null, {isMenuShortcut: true});
     }
 
     /**
@@ -1096,7 +1183,7 @@ define(function (require, exports, module) {
         // Install ESC key handling
         PopUpManager.addPopUp($popUp, closeAll, false);
 
-        // todo error handling
+        _addAltMenuShortcut(name, id);
 
         return menu;
     }
@@ -1521,6 +1608,7 @@ define(function (require, exports, module) {
     exports.addMenu = addMenu;
     exports.removeMenu = removeMenu;
     exports.openMenu = openMenu;
+    exports.getOpenMenu = getOpenMenu;
     exports.registerContextMenu = registerContextMenu;
     exports.closeAll = closeAll;
     exports.Menu = Menu;
