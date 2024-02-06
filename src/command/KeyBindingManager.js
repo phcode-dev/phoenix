@@ -447,6 +447,8 @@ define(function (require, exports, module) {
             // by subtracting KeyEvent.DOM_VK_NUMPAD0 from keycode. ie. [96-105] --> [0-9]
         } else if (keycode >= KeyEvent.DOM_VK_NUMPAD0 && keycode <= KeyEvent.DOM_VK_NUMPAD9) {
             return String(keycode - KeyEvent.DOM_VK_NUMPAD0);
+        }  else if (keycode >= KeyEvent.DOM_VK_A && keycode <= KeyEvent.DOM_VK_Z) {
+            return String(keycode);
         }
 
 
