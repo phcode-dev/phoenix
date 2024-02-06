@@ -441,14 +441,13 @@ define(function (require, exports, module) {
         // keycode is deprecated. We only use this in one edge case in mac listed in the caller.
         // If keycode represents one of the digit keys (0-9), then return the corresponding digit
         // by subtracting KeyEvent.DOM_VK_0 from keycode. ie. [48-57] --> [0-9]
-        if (keycode >= KeyEvent.DOM_VK_0 && keycode <= KeyEvent.DOM_VK_9) {
-            return String(keycode - KeyEvent.DOM_VK_0);
+        if ((keycode >= KeyEvent.DOM_VK_0 && keycode <= KeyEvent.DOM_VK_9) ||
+            (keycode >= KeyEvent.DOM_VK_A && keycode <= KeyEvent.DOM_VK_Z)){
+            return String.fromCharCode(keycode);
             // Do the same with the numpad numbers
             // by subtracting KeyEvent.DOM_VK_NUMPAD0 from keycode. ie. [96-105] --> [0-9]
         } else if (keycode >= KeyEvent.DOM_VK_NUMPAD0 && keycode <= KeyEvent.DOM_VK_NUMPAD9) {
-            return String(keycode - KeyEvent.DOM_VK_NUMPAD0);
-        }  else if (keycode >= KeyEvent.DOM_VK_A && keycode <= KeyEvent.DOM_VK_Z) {
-            return String(keycode);
+            return String.fromCharCode(keycode - KeyEvent.DOM_VK_NUMPAD0 + KeyEvent.DOM_VK_0);
         }
 
 
