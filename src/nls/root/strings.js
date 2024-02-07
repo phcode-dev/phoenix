@@ -307,6 +307,7 @@ define({
     "KEYBOARD_DELETE": "Delete",
     "KEYBOARD_DELETE_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_OVERLAY_TEXT": "Use arrows to navigate, or type to select UI elements.",
+    "KEYBOARD_SHORTCUT_CHANGE_TITLE": "Change Keyboard Shortcut\u2026",
 
     /**
      * StatusBar strings

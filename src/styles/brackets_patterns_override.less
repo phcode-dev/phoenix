@@ -519,11 +519,41 @@ a:focus {
         }
     }
 
-    // Ensure a minimum amount of space to the left of the shortcut
-    .menu-shortcut {
-        float: right;
-        margin-left: 15px;
+    .menuAnchor {
+        display: flex;
+        align-items: center; /* Vertically center the items */
     }
+
+    .menu-name {
+        /* Ensures the menu name stays on the left and takes up only the necessary space */
+        white-space: nowrap; /* Prevents the text from wrapping */
+    }
+
+    .right-pusher {
+        margin-left: auto; /* Pushes itself and subsequent items to the right */
+        visibility: hidden;
+    }
+
+    .keyboard-icon {
+        visibility: hidden;
+    }
+
+    .menu-shortcut {
+        margin-left: 15px; /* Spacing between the icon and the shortcut text */
+    }
+}
+
+.menuAnchor.selected .menu-shortcut {
+    display: none;
+}
+
+.menuAnchor.selected .keyboard-icon {
+    cursor: pointer;
+    visibility: visible;
+}
+
+.menuAnchor.selected .keyboard-icon:hover {
+    color: @bc-secondary-btn-border;
 }
 
 

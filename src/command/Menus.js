@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         EventDispatcher     = require("utils/EventDispatcher"),
         KeyBindingManager   = require("command/KeyBindingManager"),
         Keys       = require("command/Keys"),
+        Strings    = require("strings"),
         StringUtils         = require("utils/StringUtils"),
         CommandManager      = require("command/CommandManager"),
         PopUpManager        = require("widgets/PopUpManager"),
@@ -593,8 +594,17 @@ define(function (require, exports, module) {
             $menuItem = $("<li><hr class='divider' id='" + id + "' /></li>");
         } else {
             // Create the HTML Menu
-            $menuItem = $("<li><a href='#' class='menuAnchor' id='" + id + "'> <span class='menu-name'></span></a></li>");
+            $menuItem = $("<li><a href='#' class='menuAnchor' id='" + id + "'> <span class='menu-name'></span>" +
+                `<span class='right-pusher'></span><span class='keyboard-icon' title='${Strings.KEYBOARD_SHORTCUT_CHANGE_TITLE}'><i class="fa-regular fa-keyboard"></i></span>`+
+                "</a></li>");
             const $menuAnchor = $menuItem.find(".menuAnchor");
+
+            $menuItem.find(".keyboard-icon").on("click", (event)=>{
+                console.log("UpdateShortcut");
+                closeAll();
+                event.preventDefault();
+                event.stopPropagation();
+            });
 
             $menuItem.on("click", function (event) {
                 if($menuAnchor.hasClass('disabled')){
@@ -617,13 +627,19 @@ define(function (require, exports, module) {
 
             let self = this;
             $menuItem.on("mouseenter", function () {
+                // This is to prevent size jumps when the keyboard
+                // icon hides and shows as selection changes
+                const currentWidth = $(this).width(); // Get the current width
+                $(this).css('min-width', currentWidth + 'px');
                 self.closeSubMenu();
+                // now show selection
                 $menuItem.parent().find(".menuAnchor").removeClass("selected");
                 if(!$menuAnchor.hasClass('disabled')){
                     $menuAnchor.addClass("selected");
                 }
             });
             $menuItem.on("mouseleave", function () {
+                $(this).css('min-width', '');
                 self.closeSubMenu();
                 $menuItem.find(".menuAnchor").removeClass("selected");
             });
@@ -778,11 +794,14 @@ define(function (require, exports, module) {
         // Create the HTML MenuItem
         let $menuItem = $("<li><a class='sub-menu-item menuAnchor' href='#' id='" + menuItemID + "'> "   +
                          "<span class='menu-name'>" + name + "</span>" +
-                         "<span style='float: right'>&rtrif;</span>"   +
+                         "<span class='right-pusher'></span>" +
+                         "<span>&rtrif;</span>"   +
                          "</a></li>");
 
         let self = this;
         $menuItem.on("mouseenter", function(e) {
+            const currentWidth = $(this).width(); // Get the current width
+            $(this).css('min-width', currentWidth + 'px'); // Set min-width to the current width
             if (self.openSubMenu && self.openSubMenu.id === menu.id) {
                 return;
             }
@@ -794,6 +813,7 @@ define(function (require, exports, module) {
         });
 
         $menuItem.on("mouseleave", function () {
+            $(this).css('min-width', '');
             $menuItem.find(".menuAnchor").removeClass("selected");
         });
 
@@ -1172,10 +1192,6 @@ define(function (require, exports, module) {
             $(this).removeClass('selected');
         });
 
-        // $popUp.on("mousemove",function (event) {
-        //     $popUp.find(".selected").removeClass("selected");
-        // });
-
         // Insert menu
         let $relativeElement = relativeID && $(_getHTMLMenu(relativeID));
         _insertInList($menubar, $newMenu, position, $relativeElement);
@@ -1196,7 +1212,12 @@ define(function (require, exports, module) {
         const $dropdownToggles = $('#titlebar .dropdown-toggle');
         let currentIndex = $dropdownToggles.index($menuDropdownToggle);
         currentIndex = event.key === KEY.ARROW_LEFT ? currentIndex - 1 : currentIndex + 1;
-        const nextIndex = currentIndex % $dropdownToggles.length;
+        let nextIndex = currentIndex;
+        if(nextIndex < 0){
+            nextIndex = 0;
+        } else if (nextIndex >= $dropdownToggles.length){
+            nextIndex = $dropdownToggles.length - 1;
+        }
         const $nextDropdownToggle = $dropdownToggles.eq(nextIndex);
         $nextDropdownToggle.parent().addClass('open');
         $nextDropdownToggle.focus();
@@ -1209,6 +1230,9 @@ define(function (require, exports, module) {
         const menuID = $menuDropdownToggle.parent().get(0).id;
         const $dropdownMenu = $menuDropdownToggle.parent().find(".dropdown-menu");
         const $selected = $dropdownMenu.find('li a.selected');
+        const currentWidth = $dropdownMenu.width();
+        $dropdownMenu.css('min-width', currentWidth + 'px'); // This is to prevent size jumps when the keyboard
+        // icon hides and shows as selection changes
         if ($selected.length === 0) {
             // If no selected class exists, add it to the first <a> tag
             $dropdownMenu.find('li a').first().addClass('selected');
