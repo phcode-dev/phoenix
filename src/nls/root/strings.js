@@ -308,6 +308,11 @@ define({
     "KEYBOARD_DELETE_DO_NOT_TRANSLATE": "true",
     "KEYBOARD_OVERLAY_TEXT": "Use arrows to navigate, or type to select UI elements.",
     "KEYBOARD_SHORTCUT_CHANGE_TITLE": "Change Keyboard Shortcut\u2026",
+    "KEYBOARD_SHORTCUT_CHANGE_DIALOG_TITLE": "Change Keyboard Shortcut",
+    "KEYBOARD_SHORTCUT_CHANGE_DIALOG_TEXT": "Press the new key combination for <b>'{0}'</b> (Current: <b>{1}</b>)",
+    "KEYBOARD_SHORTCUT_CHANGE_DIALOG_DUPLICATE": "Warning: The key combination <b>{0}</b> is already assigned to <b>'{1}'</b>",
+    "KEYBOARD_SHORTCUT_ASSIGN": "Assign",
+    "KEYBOARD_SHORTCUT_NONE": "None",
 
     /**
      * StatusBar strings

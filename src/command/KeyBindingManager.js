@@ -45,10 +45,13 @@ define(function (require, exports, module) {
         KeyboardOverlayMode = require("command/KeyboardOverlayMode"),
         StringUtils         = require("utils/StringUtils"),
         Metrics             = require("utils/Metrics"),
+        Dialogs                 = require("widgets/Dialogs"),
+        Mustache            = require("thirdparty/mustache/mustache"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         _                   = require("thirdparty/lodash");
 
     let KeyboardPrefs       = JSON.parse(require("text!base-config/keyboard.json"));
+    let KeyboardDialogTemplate = require("text!./ChangeShortcutTemplate.html");
 
     let KEYMAP_FILENAME     = "keymap.json",
         _userKeyMapFilePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME);
@@ -1004,6 +1007,7 @@ define(function (require, exports, module) {
     }
 
 
+    const _handledCommands = {};
     /**
      * Adds default key bindings when commands are registered to CommandManager
      * @param {$.Event} event jQuery event
@@ -1014,7 +1018,18 @@ define(function (require, exports, module) {
             defaults    = KeyboardPrefs[commandId];
 
         if (defaults) {
+            _handledCommands[commandId] = true;
             addBinding(commandId, defaults);
+        }
+    }
+
+    function _initDefaultShortcuts() {
+        for(let commandId of _allCommands){
+            let defaults    = KeyboardPrefs[commandId];
+
+            if (defaults && !_handledCommands[commandId]) {
+                addBinding(commandId, defaults);
+            }
         }
     }
 
@@ -1599,6 +1614,7 @@ define(function (require, exports, module) {
     function _initCommandAndKeyMaps() {
         _allCommands = CommandManager.getAll();
         // Keep a copy of the default key bindings before loading user key bindings.
+        _initDefaultShortcuts();
         _defaultKeyMap = _.cloneDeep(_keyMap);
     }
 
@@ -1629,6 +1645,18 @@ define(function (require, exports, module) {
         return KeyboardOverlayMode.isInOverlayMode();
     }
 
+    function showShortcutSelectionDialog(command) {
+        const keyBindings = getKeyBindings(command);
+        const currentShortcut = Strings.KEYBOARD_SHORTCUT_NONE;
+        //debugger
+        Dialogs.showModalDialogUsingTemplate(Mustache.render(KeyboardDialogTemplate, {
+            Strings: Strings,
+            message: StringUtils.format(Strings.KEYBOARD_SHORTCUT_CHANGE_DIALOG_TEXT, command.getName(), currentShortcut)
+        })).done((e)=>{
+            console.log(e) ;
+        });
+    }
+
     // unit test only
     exports._reset = _reset;
     exports._setUserKeyMapFilePath = _setUserKeyMapFilePath;
@@ -1647,6 +1675,7 @@ define(function (require, exports, module) {
     exports.addGlobalKeydownHook = addGlobalKeydownHook;
     exports.removeGlobalKeydownHook = removeGlobalKeydownHook;
     exports.isInOverlayMode = isInOverlayMode;
+    exports.showShortcutSelectionDialog = showShortcutSelectionDialog;
 
     // public constants
     exports.KEY = KEY;

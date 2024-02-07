@@ -1808,12 +1808,11 @@ input[type="color"],
         box-shadow: inset 0 1px @dark-bc-highlight;
     }
 
-    &:hover {
-        background-color: @bc-btn-bg;
+    &:not(:disabled):not(.disabled):hover {
+        background-color: lighten(@bc-btn-bg, 5%);
         color: @bc-text;
-
         .dark & {
-            background-color: @dark-bc-btn-bg;
+            background-color: lighten(@dark-bc-btn-bg, 10%);
             color: @dark-bc-text;
         }
     }
@@ -1905,9 +1904,18 @@ input[type="color"],
             }
         }
 
+        &:not(:disabled):not(.disabled):hover {
+            background-color: lighten(@bc-primary-btn-bg, 10%);
+            color: @bc-text-alt;
+            .dark & {
+                background-color: lighten(@dark-bc-primary-btn-bg, 10%);
+                color: @dark-bc-text-alt
+            }
+        }
+
         &:focus {
             border: 1px solid @bc-primary-btn-border;
-            box-shadow: inset 0 1px 0 @bc-highlight, 0 0 0 1px @bc-btn-border-focused-glow;
+            box-shadow: inset 0 1px 0 @bc-highlight, 0 0 0 1px @bc-primary-btn-border-focused-glow;
             outline: none;
 
             .dark & {
@@ -1934,6 +1942,15 @@ input[type="color"],
             text-shadow: 0 -1px 0 @dark-bc-shadow-small;
         }
 
+        &:not(:disabled):not(.disabled):hover {
+            background-color: lighten(@bc-secondary-btn-bg, 5%);
+            color: @bc-text-alt;
+            .dark & {
+                background-color: lighten(@dark-bc-secondary-btn-bg, 5%);
+                color: @dark-bc-text-alt;
+            }
+        }
+
         &:active {
             background-color: @bc-secondary-btn-bg-down;
             border-color: @bc-secondary-btn-border;
@@ -1945,6 +1962,18 @@ input[type="color"],
                 border-color: @dark-bc-secondary-btn-border;
                 box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
                 color: @dark-bc-text-alt
+            }
+        }
+
+        &:focus {
+            border: 1px solid @bc-primary-btn-border;
+            box-shadow: inset 0 1px 0 @bc-highlight, 0 0 0 1px @bc-btn-border-focused-glow;
+            outline: none;
+            color: @bc-text-alt;
+            .dark & {
+                border: 1px solid @dark-bc-primary-btn-border;
+                box-shadow: inset 0 1px 0 @dark-bc-highlight, 0 0 0 1px @dark-bc-btn-border-focused-glow;
+                color: @dark-bc-text-alt;
             }
         }
     }
@@ -1964,6 +1993,14 @@ input[type="color"],
             box-shadow: inset 0 1px 0 @dark-bc-highlight;
         }
 
+        &:not(:disabled):not(.disabled):hover {
+            background-color: lighten(@bc-danger-btn-bg, 7%);
+            color: @bc-text-alt;
+            .dark & {
+                background-color: lighten(@bc-danger-btn-bg, 7%);
+            }
+        }
+
         &:active {
             background-color: @bc-danger-btn-bg-down;
             border-color: @bc-danger-btn-border;
@@ -1974,6 +2011,17 @@ input[type="color"],
                 background-color: @bc-danger-btn-bg;
                 border-color: @dark-bc-secondary-btn-border;
                 box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+            }
+        }
+
+        &:focus {
+            border: 1px solid @bc-primary-btn-border;
+            box-shadow: inset 0 1px 0 @bc-highlight, 0 0 0 1px @bc-btn-border-focused-glow;
+            outline: none;
+            color: @bc-text-alt;
+            .dark & {
+                border: 1px solid @dark-bc-primary-btn-border;
+                box-shadow: inset 0 1px 0 @dark-bc-highlight, 0 0 0 1px @dark-bc-btn-border-focused-glow;
             }
         }
     }
