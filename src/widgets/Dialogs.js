@@ -354,12 +354,15 @@ define(function (require, exports, module) {
             //Remove wrapper
             $(".modal-wrapper:last").remove();
         }).one("shown", function () {
-            let $primaryBtn = $dlg.find(".primary:enabled"),
+            let $defaultOption   = $dlg.find(".default-option"),
+                $primaryBtn = $dlg.find(".primary:enabled"),
                 $otherBtn   = $dlg.find(".modal-footer .dialog-button:enabled:eq(0)");
 
             // Set focus to the primary button, to any other button, or to the dialog depending
             // if there are buttons
-            if ($primaryBtn.length) {
+            if ($defaultOption.length) {
+                $defaultOption.focus();
+            } else if ($primaryBtn.length) {
                 $primaryBtn.focus();
             } else if ($otherBtn.length) {
                 $otherBtn.focus();

@@ -600,8 +600,7 @@ define(function (require, exports, module) {
             const $menuAnchor = $menuItem.find(".menuAnchor");
 
             $menuItem.find(".keyboard-icon").on("click", (event)=>{
-                console.log("UpdateShortcut");
-                closeAll();
+                KeyBindingManager.showShortcutSelectionDialog(command);
                 event.preventDefault();
                 event.stopPropagation();
             });
@@ -1023,6 +1022,11 @@ define(function (require, exports, module) {
      * Closes all menus that are open
      */
     function closeAll() {
+        const $openDropdownMenuList = $("#titlebar .dropdown.open");
+        if($openDropdownMenuList.length){
+            // this means the title bar has focus on close, and we have to focus editor in this case.
+            MainViewManager.focusActivePane();
+        }
         if(getOpenMenu()){
             lastOpenedMenuID = getOpenMenu();
         }
