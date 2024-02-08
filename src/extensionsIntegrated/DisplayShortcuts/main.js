@@ -38,7 +38,7 @@ define(function (require, exports, module) {
         Mustache            = require("thirdparty/mustache/mustache"),
         EditorManager       = require("editor/EditorManager"),
         Dialogs             = require("widgets/Dialogs"),
-        DefaultDialogs      = require("widgets/DefaultDialogs"),
+        Metrics       = require("utils/Metrics"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         AppInit             = require("utils/AppInit"),
         Strings             = require("strings");
@@ -384,6 +384,7 @@ define(function (require, exports, module) {
             CommandManager.get(TOGGLE_SHORTCUTS_ID).setChecked(false);
             MainViewManager.focusActivePane();
         } else {
+            Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'shortcutPanel', "shown");
             panel.show();
             CommandManager.get(TOGGLE_SHORTCUTS_ID).setChecked(true);
             $filterField.val("").focus();
@@ -445,6 +446,7 @@ define(function (require, exports, module) {
                 Strings.KEYBOARD_SHORTCUT_RESET_DIALOG_MESSAGE
             ).done(function (selection) {
                 if(selection === Dialogs.DIALOG_BTN_OK){
+                    Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'shortcut', "reset");
                     KeyBindingManager.resetUserShortcutsAsync();
                 }
             });

@@ -1762,6 +1762,7 @@ define(function (require, exports, module) {
         keyboardShortcutDialog = null,
         capturedShortcut = null;
     function showShortcutSelectionDialog(command) {
+        Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'shortcut', "DialogShown");
         if(_isSpecialCommand(command.getID())){
             return;
         }
@@ -1789,8 +1790,10 @@ define(function (require, exports, module) {
         keyboardShortcutDialog.done((closeReason)=>{
             if(closeReason === 'remove' && currentShortcut){
                 _addToUserKeymapFile(currentShortcut, null);
+                Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'shortcut', "removed");
             } else if(closeReason === Dialogs.DIALOG_BTN_OK && currentShortcut){
                 _addToUserKeymapFile(capturedShortcut, command.getID());
+                Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'shortcut', "changed");
             } else if(closeReason === 'show'){
                 if(!panelCommand.getChecked()){
                     panelCommand.execute();
