@@ -172,7 +172,7 @@ define(function (require, exports, module) {
         it("Should show keyboard shortcut select dialog on click on keyboard icon", async function () {
             await editShortcut(Commands.EDIT_BEAUTIFY_CODE);
             // escape should exit
-            keyboardType(Keys.KEY.ESCAPE);
+            testWindow.$(".change-shortcut-dialog .Cancel").click();
             await awaitsFor(()=>{
                 return !testWindow.$(".change-shortcut-dialog").is(":visible");
             }, "dialog to be dismissed");
