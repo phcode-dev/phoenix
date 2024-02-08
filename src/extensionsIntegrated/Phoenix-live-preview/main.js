@@ -262,7 +262,7 @@ define(function (require, exports, module) {
     }
 
     function _toggleLiveHighlights() {
-        CommandManager.execute(Commands.FILE_LIVE_HIGHLIGHT);
+        LiveDevelopment.togglePreviewHighlight();
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
     }
 

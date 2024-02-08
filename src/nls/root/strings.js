@@ -310,7 +310,7 @@ define({
     "KEYBOARD_SHORTCUT_CHANGE_TITLE": "Change Keyboard Shortcut\u2026",
     "KEYBOARD_SHORTCUT_CHANGE_DIALOG_TITLE": "Change Keyboard Shortcut",
     "KEYBOARD_SHORTCUT_CHANGE_DIALOG_TEXT": "Press the new key combination for <b>'{0}'</b> (Current: <b>{1}</b>)",
-    "KEYBOARD_SHORTCUT_CHANGE_DIALOG_DUPLICATE": "Warning: The key combination <b>{0}</b> is already assigned to <b>'{1}'</b>",
+    "KEYBOARD_SHORTCUT_CHANGE_DIALOG_DUPLICATE": "Warning: The key combination <b>{0}</b> is already assigned to <b>'{1}'</b>. Reassign to <b>'{2}'</b>?",
     "KEYBOARD_SHORTCUT_ASSIGN": "Assign",
     "KEYBOARD_SHORTCUT_NONE": "None",
 

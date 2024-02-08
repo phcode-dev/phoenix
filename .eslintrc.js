@@ -72,6 +72,7 @@ module.exports = {
     },
     "globals": {
         "$": false,
+        "deferredToPromise": false,
         "brackets": false,
         "Phoenix": false,
         "PhStore": false,

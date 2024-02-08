@@ -216,7 +216,7 @@ define(function main(require, exports, module) {
         exports.trigger(EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, config.highlight);
     }
 
-    function _handlePreviewHighlightCommand() {
+    function togglePreviewHighlight() {
         config.highlight = !config.highlight;
         _updateHighlightCheckmark();
         if (config.highlight) {
@@ -305,7 +305,7 @@ define(function main(require, exports, module) {
     config.highlight = PreferencesManager.getViewState("livedevHighlight");
 
     // init commands
-    CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, _handlePreviewHighlightCommand);
+    CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, togglePreviewHighlight);
     CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
 
     CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setEnabled(false);
@@ -326,6 +326,7 @@ define(function main(require, exports, module) {
     exports.isActive = isActive;
     exports.setLivePreviewPinned = setLivePreviewPinned;
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
+    exports.togglePreviewHighlight = togglePreviewHighlight;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
 });
