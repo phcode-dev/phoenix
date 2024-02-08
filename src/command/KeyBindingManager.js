@@ -1543,7 +1543,7 @@ define(function (require, exports, module) {
 
         file.exists(function (err, doesExist) {
             if (doesExist) {
-                FileUtils.readAsText(file)
+                FileUtils.readAsText(file, true)
                     .done(function (text) {
                         let keyMap = {};
                         try {
@@ -1584,22 +1584,28 @@ define(function (require, exports, module) {
      * by 200 ms. The delay is required because when this function is called some
      * extensions may still be adding some commands and their key bindings asychronously.
      */
-    _loadUserKeyMap = _.debounce(function () {
-        _readUserKeyMap()
-            .then(function (keyMap) {
-                // Some extensions may add a new command without any key binding. So
-                // we always have to get all commands again to ensure that we also have
-                // those from any extensions installed during the current session.
-                _allCommands = CommandManager.getAll();
+    _loadUserKeyMap = _.debounce(_loadUserKeyMapImmediate, 200);
 
-                _customKeyMapCache = _.cloneDeep(_customKeyMap);
-                _customKeyMap = keyMap;
-                _undoPriorUserKeyBindings();
-                _applyUserKeyBindings();
-            }, function (err) {
-                _showErrorsAndOpenKeyMap(err);
-            });
-    }, 200);
+    function _loadUserKeyMapImmediate() {
+        return new Promise((resolve, reject)=>{
+            _readUserKeyMap()
+                .then(function (keyMap) {
+                    // Some extensions may add a new command without any key binding. So
+                    // we always have to get all commands again to ensure that we also have
+                    // those from any extensions installed during the current session.
+                    _allCommands = CommandManager.getAll();
+
+                    _customKeyMapCache = _.cloneDeep(_customKeyMap);
+                    _customKeyMap = keyMap;
+                    _undoPriorUserKeyBindings();
+                    _applyUserKeyBindings();
+                    resolve();
+                }, function (err) {
+                    _showErrorsAndOpenKeyMap(err);
+                    reject(err);
+                });
+        });
+    };
 
     /**
      * @private
@@ -1679,8 +1685,29 @@ define(function (require, exports, module) {
         return KeyboardOverlayMode.isInOverlayMode();
     }
 
+    function _isAnAssignableKey(key) {
+        if(!key){
+            return false;
+        }
+        const split = key.split("-");
+        if(split.length === 1 && key.length > 1 && key[0]==='F'){
+            // F1-12
+            return true;
+        } else if(split.length === 2 && split[0] === "Shift" && split[1].length > 1){
+            // Shift - F1-12, shift-PgUp etc... which are allowed
+            return true;
+        } else if(split.length === 2 && split[0] === "Shift" && split[1].length === 1){
+            // Shift-A, Shift-! etc which are upper case chars -not shortcuts. we don't allow that.
+            return false;
+        } else if(key.includes("-")){
+            // allow all compound shortcuts
+            return true;
+        }
+        return false;
+    }
+
     function updateShortcutSelection(event, key) {
-        if(key && key.includes("-") && normalizeKeyDescriptorString(key)) {
+        if(key && _isAnAssignableKey(key) && normalizeKeyDescriptorString(key)) {
             let normalizedKey = normalizeKeyDescriptorString(key);
             capturedShortcut = normalizedKey;
             let existingBinding = _keyMap[normalizedKey];
@@ -1763,6 +1790,7 @@ define(function (require, exports, module) {
     exports._getUserKeyMapFilePath = _getUserKeyMapFilePath;
     exports._getDisplayKey = _getDisplayKey;
     exports._loadUserKeyMap = _loadUserKeyMap;
+    exports._loadUserKeyMapImmediate = _loadUserKeyMapImmediate;
     exports._initCommandAndKeyMaps = _initCommandAndKeyMaps;
     exports._onCtrlUp = _onCtrlUp;
 
