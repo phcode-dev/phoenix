@@ -32,30 +32,23 @@ define(function (require, exports, module) {
         CodeMirror          = brackets.getModule("thirdparty/CodeMirror2/lib/codemirror"),
         CommandManager      = brackets.getModule("command/CommandManager"),
         Commands            = brackets.getModule("command/Commands"),
-        DocumentManager     = brackets.getModule("document/DocumentManager"),
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         KeyBindingManager   = brackets.getModule("command/KeyBindingManager"),
         MainViewManager     = brackets.getModule("view/MainViewManager"),
         Menus               = brackets.getModule("command/Menus"),
         Mustache            = brackets.getModule("thirdparty/mustache/mustache"),
-        StringUtils         = brackets.getModule("utils/StringUtils"),
         EditorManager           = brackets.getModule("editor/EditorManager"),
         WorkspaceManager    = brackets.getModule("view/WorkspaceManager"),
         Strings             = brackets.getModule("strings");
 
     const panelHtml           = require("text!templates/bottom-panel.html"),
         shortcutsHtml       = require("text!templates/shortcut-table.html"),
-        TOGGLE_SHORTCUTS_ID = Commands.HELP_TOGGLE_SHORTCUTS_PANEL,
-        OVERRIDE_SHORTCUT   = "redmunds-show-shortcuts.context.override",
-        DISABLE_SHORTCUT    = "redmunds-show-shortcuts.context.disable",
-        PANEL_MENU          = "shortcuts-panel-context-menu";
+        TOGGLE_SHORTCUTS_ID = Commands.HELP_TOGGLE_SHORTCUTS_PANEL;
     let keyList = [],
         panel,
         $shortcutsPanel,
         $filterField,
         currentFilter,
-        context_command_id,
-        context_keybinding,
         _updateKeyBindings;
 
     let sortByBase = 1,
@@ -398,90 +391,6 @@ define(function (require, exports, module) {
         WorkspaceManager.recomputeLayout();
     }
 
-    function _insertShortcutTemplate(contextCmd, doc) {
-        let startPos, endPos, match, currLine, remText, remLine, needComma, newText,
-            editor = doc._masterEditor,
-            lines = StringUtils.getLines(doc.getText());
-
-        // Data validation
-        if (!context_command_id || !context_keybinding) {
-            return;
-        }
-
-        // search for "overrides" section
-        for (currLine = 0; currLine < lines.length; currLine++) {
-            match = lines[currLine].match(/"overrides"\s*:\s*\{/);
-            if (match) {
-                break;
-            }
-        }
-        if (!match) {
-            return;
-        }
-        startPos = endPos = {
-            line: currLine,
-            ch: match.index + match[0].length
-        };
-
-        // determine if any other existing shortcut overrides
-        remText = lines[currLine].substr(startPos.ch);
-        for (remLine = currLine + 1; remLine < lines.length; remLine++) {
-            remText += lines[remLine];
-        }
-        needComma = !/^\s*\}/.test(remText);
-
-        // insert template for new shortcut
-        if (contextCmd === OVERRIDE_SHORTCUT) {
-            newText = '\n"[new-shortcut-here]": "' + context_command_id + '"';
-        } else {
-            newText = '\n"' + context_keybinding + '": null';
-        }
-        if (needComma) {
-            newText += ',';
-        }
-        doc.replaceRange(newText, startPos, endPos);
-
-        // indent line based on user settings
-        editor._codeMirror.indentLine(++currLine);
-
-        // select '[new-shortcut-here]' text
-        newText = doc.getLine(currLine);
-        match = newText.match(/\[new\-shortcut\-here\]/);
-        if (match) {
-            startPos = { line: currLine, ch: match.index };
-            endPos   = { line: currLine, ch: match.index + match[0].length };
-            editor.setSelection(startPos, endPos, true);
-        }
-        editor.focus();
-    }
-
-    function _handleUpdateShortcut(contextCmd) {
-        // Open shortcut override file
-        CommandManager.execute(Commands.FILE_OPEN_KEYMAP);
-
-        // KeyBindingManager._openUserKeyMap() does not return a Deferred object (see #11049),
-        // so the Deferred returned from CommandManager.execute(Commands.FILE_OPEN_KEYMAP)
-        // isn't what we want. For now poll until file opens.
-        let userKeyMapPath = brackets.app.getApplicationSupportDirectory() + "/keymap.json";
-        let waitForFileToOpen = function () {
-            let doc = DocumentManager.getOpenDocumentForPath(userKeyMapPath);
-            if (doc) {
-                _insertShortcutTemplate(contextCmd, doc);
-            } else {
-                window.setTimeout(waitForFileToOpen, 250);
-            }
-        };
-
-        waitForFileToOpen();
-    }
-
-    function _handleOverrideShortcut() {
-        _handleUpdateShortcut(OVERRIDE_SHORTCUT);
-    }
-
-    function _handleDisableShortcut() {
-        _handleUpdateShortcut(DISABLE_SHORTCUT);
-    }
 
     function _showCommandIdsInPanelIfNeeded() {
         const editor = EditorManager.getActiveEditor();
@@ -493,14 +402,12 @@ define(function (require, exports, module) {
     }
 
     function init() {
-        let s, help_menu, panel_cmenu;
+        let s, help_menu;
 
         ExtensionUtils.loadStyleSheet(module, "shortcuts.css");
 
         // Register commands
         CommandManager.register(Strings.KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS, TOGGLE_SHORTCUTS_ID, _handleShowHideShortcuts);
-        CommandManager.register(Strings.KEYBOARD_SHORTCUT_CMENU_OVERRIDE, OVERRIDE_SHORTCUT, _handleOverrideShortcut);
-        CommandManager.register(Strings.KEYBOARD_SHORTCUT_CMENU_DISABLE,  DISABLE_SHORTCUT,  _handleDisableShortcut);
 
         // Add command to Help menu, if it exists
         help_menu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
@@ -517,11 +424,6 @@ define(function (require, exports, module) {
         panel.hide();
 
         $shortcutsPanel = $("#shortcuts");
-
-        // Create context menu
-        panel_cmenu = Menus.registerContextMenu(PANEL_MENU);
-        panel_cmenu.addMenuItem(OVERRIDE_SHORTCUT);
-        panel_cmenu.addMenuItem(DISABLE_SHORTCUT);
 
         // Events
         $shortcutsPanel.on("dblclick", function (e) {
