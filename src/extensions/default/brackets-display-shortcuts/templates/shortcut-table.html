@@ -1,4 +1,4 @@
-<table class="table table-striped row-highlight table-condensed">
+<table id="phoenix-keyboard-shortcuts-table" class="table table-striped row-highlight table-condensed hide-third-column">
     <thead>
         <tr>
             <th class="shortcut-base"><a>{{Strings.KEYBOARD_SHORTCUT_TABLE_BASE_KEY}}</a></th>
@@ -11,10 +11,13 @@
     <tbody>
         {{#keyList}}
             {{#filterMatch}}
-                <tr data-commandid="{{commandID}}" data-keybinding="{{keyBinding}}">
+                <tr data-commandid="{{commandID}}" data-keybinding="{{keyBinding}}" title="{{Strings.KEYBOARD_SHORTCUT_TABLE_DOUBLE_CLICK}}">
                     <td class="shortcut-base">{{keyBase}}</td>
                     <td class="shortcut-binding">{{keyBindingDisplay}}</td>
-                    <td class="shortcut-cmd-id">{{commandID}}</td>
+                    <td class="shortcut-cmd-id">
+                        {{commandID}}
+                        <i class="copy-command fa-regular fa-copy" style="float: right; cursor: pointer;" title="{{Strings.CMD_COPY}}" data-commandID="{{commandID}}" ></i>
+                    </td>
                     <td class="shortcut-cmd-name">{{commandName}}</td>
                     <td class="shortcut-orig">{{origin}}</td>
                 </tr>

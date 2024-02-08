@@ -39,6 +39,7 @@ define(function (require, exports, module) {
         Menus               = brackets.getModule("command/Menus"),
         Mustache            = brackets.getModule("thirdparty/mustache/mustache"),
         StringUtils         = brackets.getModule("utils/StringUtils"),
+        EditorManager           = brackets.getModule("editor/EditorManager"),
         WorkspaceManager    = brackets.getModule("view/WorkspaceManager"),
         Strings             = brackets.getModule("strings");
 
@@ -50,6 +51,7 @@ define(function (require, exports, module) {
         PANEL_MENU          = "shortcuts-panel-context-menu";
     let keyList = [],
         panel,
+        $shortcutsPanel,
         $filterField,
         currentFilter,
         context_command_id,
@@ -342,6 +344,11 @@ define(function (require, exports, module) {
         $("thead .shortcut-orig a", $shortcuts).on("click", function () {
             _changeSorting(sortByOrig);
         });
+        _showCommandIdsInPanelIfNeeded();
+        $shortcutsPanel.find(".copy-command").click((event)=>{
+            const commandId = event.target.getAttribute("data-commandID");
+            Phoenix.app.copyToClipboard(commandId);
+        });
     }
 
     function initKeyList() {
@@ -476,8 +483,17 @@ define(function (require, exports, module) {
         _handleUpdateShortcut(DISABLE_SHORTCUT);
     }
 
+    function _showCommandIdsInPanelIfNeeded() {
+        const editor = EditorManager.getActiveEditor();
+        if(editor && editor.document && editor.document.file.fullPath === KeyBindingManager._getUserKeyMapFilePath()){
+            $shortcutsPanel.find("#phoenix-keyboard-shortcuts-table").removeClass("hide-third-column");
+        } else {
+            $shortcutsPanel.find("#phoenix-keyboard-shortcuts-table").addClass("hide-third-column");
+        }
+    }
+
     function init() {
-        let $shortcutsPanel, s, help_menu, panel_cmenu;
+        let s, help_menu, panel_cmenu;
 
         ExtensionUtils.loadStyleSheet(module, "shortcuts.css");
 
@@ -528,6 +544,14 @@ define(function (require, exports, module) {
                 return;
             }
             _showShortcuts();
+        });
+        EditorManager.on("activeEditorChange", (_event, newEditor)=>{
+            if(newEditor && newEditor.document && newEditor.document.file.fullPath === KeyBindingManager._getUserKeyMapFilePath()){
+                if(!CommandManager.get(TOGGLE_SHORTCUTS_ID).getChecked()){
+                    CommandManager.get(TOGGLE_SHORTCUTS_ID).execute();
+                }
+            }
+            _showCommandIdsInPanelIfNeeded();
         });
     }
 
