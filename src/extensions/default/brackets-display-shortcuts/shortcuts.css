@@ -1,0 +1,102 @@
+/*
+* Copyright (c) 2012 Adobe Systems Incorporated. All rights reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+* DEALINGS IN THE SOFTWARE.
+*
+*/
+
+/* All selectors are descendents of #shortcuts to constrain styles to this extension */
+#shortcuts .resizable-content {
+    height: 175px;
+    overflow-x: auto;
+    overflow-y: scroll;
+}
+
+#shortcuts table td {
+    line-height: 14px;
+    padding: 4px 10px;
+}
+
+#shortcuts .shortcut-base { width: 9%; }
+#shortcuts .shortcut-binding { width: 12%; }
+#shortcuts .shortcut-cmd-id { width: 30%; }
+#shortcuts .shortcut-cmd-name { width: 27%; }
+#shortcuts .shortcut-orig { width: 22%; }
+
+#shortcuts thead th {
+    position: relative;
+    background-color: #c2c7c7;
+    padding: 0;
+}
+
+.dark #shortcuts thead th {
+    background-color: #202020;
+}
+
+#shortcuts thead th:before {
+    content: '.';
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    margin-top: -3px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+
+#shortcuts thead th.sort-ascending:before {
+    border-top: 6px solid;
+}
+
+#shortcuts thead th.sort-descending:before {
+    border-bottom: 6px solid;
+}
+
+#shortcuts thead a {
+    position: relative;
+    display: block;
+    color: inherit;
+    padding: 4px 10px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 200ms ease-out;
+}
+
+#shortcuts thead a:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.dark #shortcuts thead a:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#shortcuts .toolbar {
+    display: block;
+    padding-right: 28px;
+}
+
+#shortcuts .toolbar button.copy-table,
+#shortcuts .toolbar .filter {
+    float: right;
+    margin: -2px 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
