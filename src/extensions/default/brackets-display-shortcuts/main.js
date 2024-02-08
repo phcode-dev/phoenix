@@ -508,15 +508,12 @@ define(function (require, exports, module) {
         panel_cmenu.addMenuItem(DISABLE_SHORTCUT);
 
         // Events
-        $shortcutsPanel.on("contextmenu", function (e) {
+        $shortcutsPanel.on("dblclick", function (e) {
             var $rowEl = $(e.target).closest("tr");
             if ($rowEl.length > 0) {
-                context_command_id = $rowEl[0].dataset.commandid;
-                context_keybinding = $rowEl[0].dataset.keybinding;
-                panel_cmenu.open(e);
-            } else {
-                context_command_id = null;
-                context_keybinding = null;
+                KeyBindingManager.showShortcutSelectionDialog(
+                    CommandManager.get($rowEl[0].dataset.commandid)
+                );
             }
         });
 
