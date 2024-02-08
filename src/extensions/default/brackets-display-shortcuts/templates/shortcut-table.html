@@ -1,0 +1,24 @@
+<table class="table table-striped row-highlight table-condensed">
+    <thead>
+        <tr>
+            <th class="shortcut-base"><a>{{Strings.KEYBOARD_SHORTCUT_TABLE_BASE_KEY}}</a></th>
+            <th class="shortcut-binding"><a>{{Strings.KEYBOARD_SHORTCUT_TABLE_KEY_BINDING}}</a></th>
+            <th class="shortcut-cmd-id"><a>{{Strings.KEYBOARD_SHORTCUT_TABLE_COMMAND_ID}}</a></th>
+            <th class="shortcut-cmd-name"><a>{{Strings.KEYBOARD_SHORTCUT_TABLE_COMMAND_NAME}}</a></th>
+            <th class="shortcut-orig"><a>{{Strings.KEYBOARD_SHORTCUT_TABLE_ORIGIN}}</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#keyList}}
+            {{#filterMatch}}
+                <tr data-commandid="{{commandID}}" data-keybinding="{{keyBinding}}">
+                    <td class="shortcut-base">{{keyBase}}</td>
+                    <td class="shortcut-binding">{{keyBindingDisplay}}</td>
+                    <td class="shortcut-cmd-id">{{commandID}}</td>
+                    <td class="shortcut-cmd-name">{{commandName}}</td>
+                    <td class="shortcut-orig">{{origin}}</td>
+                </tr>
+            {{/filterMatch}}
+        {{/keyList}}
+    </tbody>
+</table>

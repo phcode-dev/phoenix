@@ -1772,6 +1772,8 @@ define(function (require, exports, module) {
                 _addToUserKeymapFile(currentShortcut, null);
             } else if(closeReason === Dialogs.DIALOG_BTN_OK && currentShortcut){
                 _addToUserKeymapFile(capturedShortcut, command.getID());
+            } else if(closeReason === 'show'){
+                console.log("show shortcuts");
             }
             capturedShortcut = null;
             keyboardShortcutCaptureInProgress = null;

@@ -313,6 +313,22 @@ define({
     "KEYBOARD_SHORTCUT_CHANGE_DIALOG_DUPLICATE": "Warning: The key combination <b>{0}</b> is already assigned to <b>'{1}'</b>. Reassign to <b>'{2}'</b>?",
     "KEYBOARD_SHORTCUT_ASSIGN": "Assign",
     "KEYBOARD_SHORTCUT_NONE": "None",
+    // keyboard shortcuts panel
+    "KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS": "Show Shortcuts\u2026",
+    // Context Menu
+    "KEYBOARD_SHORTCUT_CMENU_OVERRIDE": "Override Shortcut for Command",
+    "KEYBOARD_SHORTCUT_CMENU_DISABLE": "Disable Shortcut",
+    //Table
+    "KEYBOARD_SHORTCUT_TABLE_BASE_KEY": "Base Key",
+    "KEYBOARD_SHORTCUT_TABLE_KEY_BINDING": "Key Binding",
+    "KEYBOARD_SHORTCUT_TABLE_COMMAND_ID": "Command ID",
+    "KEYBOARD_SHORTCUT_TABLE_COMMAND_NAME": "Command",
+    "KEYBOARD_SHORTCUT_TABLE_ORIGIN": "Origin",
+    //Origins
+    "KEYBOARD_SHORTCUT_ORIG_EXTENSION": "Extension",
+    //Bottom panel
+    "KEYBOARD_SHORTCUT_PANEL_TITLE": "Shortcuts",
+    "KEYBOARD_SHORTCUT_PANEL_FILTER": "Filter&hellip;",
 
     /**
      * StatusBar strings
@@ -654,8 +670,8 @@ define({
     "EXTENSION_MANAGER_UPDATE_ERROR": "Unable to update one or more extensions: {0}. {APP_NAME} will still reload.",
     "EXTENSION_MANAGER_DISABLE": "Disable Extension",
     "EXTENSION_MANAGER_DISABLE_ERROR": "Unable to disable one or more extensions: {0}. {APP_NAME} will still reload.",
-    "EXTENSION_MANAGER_THEMES_INFO":"To <a class=\"theme_settings\">select default themes</a> or modify other theme settings, <a class=\"theme_settings\">click here</a>.",
-    "EXTENSION_MANAGER_THEMES_UNDO":"Revert To Previous Theme",
+    "EXTENSION_MANAGER_THEMES_INFO": "To <a class=\"theme_settings\">select default themes</a> or modify other theme settings, <a class=\"theme_settings\">click here</a>.",
+    "EXTENSION_MANAGER_THEMES_UNDO": "Revert To Previous Theme",
     "MARKED_FOR_REMOVAL": "Marked for removal",
     "UNDO_REMOVE": "Undo",
     "MARKED_FOR_UPDATE": "Marked for update",
@@ -978,10 +994,10 @@ define({
     "CMD_FIND_DOCUMENT_SYMBOLS": "Find Document Symbols",
     "CMD_FIND_PROJECT_SYMBOLS": "Find Project Symbols",
 
-   // Remote debugging enabled
+    // Remote debugging enabled
     "REMOTE_DEBUGGING_ENABLED": "Remote debugging enabled on localhost:",
 
-   // Remote debugging port argument is invalid
+    // Remote debugging port argument is invalid
     "REMOTE_DEBUGGING_PORT_INVALID": "Cannot enable remote debugging on port {0}. Port numbers should be between {1} and {2}.",
 
     //Associate File Type to External App
