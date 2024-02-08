@@ -1149,7 +1149,9 @@ define(function (require, exports, module) {
             return;
         }
         mouseCursorHidden = true;
-        document.body.classList.add('hide-cursor');
+        if(!Phoenix.isSpecRunnerWindow){
+            document.body.classList.add('hide-cursor');
+        }
     }
     
     /**
@@ -1602,7 +1604,9 @@ define(function (require, exports, module) {
                     resolve();
                 }, function (err) {
                     _showErrorsAndOpenKeyMap(err);
-                    reject(err);
+                    console.error(err);
+                    // we always resolve here as the event is handled
+                    resolve();
                 });
         });
     };
