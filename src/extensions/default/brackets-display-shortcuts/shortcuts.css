@@ -33,6 +33,19 @@
     padding: 4px 10px;
 }
 
+.hide-third-column tr th:nth-child(3),
+.hide-third-column tr td:nth-child(3) {
+    display: none;
+}
+
+.shortcut-cmd-id .fa-copy {
+    visibility: hidden;
+}
+
+.shortcut-cmd-id:hover .fa-copy {
+    visibility: visible;
+}
+
 #shortcuts .shortcut-base { width: 9%; }
 #shortcuts .shortcut-binding { width: 12%; }
 #shortcuts .shortcut-cmd-id { width: 30%; }
