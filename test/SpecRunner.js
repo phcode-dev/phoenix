@@ -96,6 +96,7 @@ function jsPromise(jqueryOrJSPromise) {
             .fail(reject);
     });
 }
+window.deferredToPromise = jsPromise;
 
 function _timeoutPromise(promise, ms, timeoutMessage = '') {
     const timeout = new Promise((_, reject) => {

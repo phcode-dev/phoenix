@@ -307,6 +307,9 @@
             }, "*");
         }
     });
+    document.addEventListener('contextmenu', function(event) {
+        (document.activeElement || document.body).focus();
+    });
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape' || event.key === 'Esc') { // Check for Escape key
             // Perform the desired action for the Escape key

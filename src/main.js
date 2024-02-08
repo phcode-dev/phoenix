@@ -41,6 +41,7 @@ window.jsPromise = function (jqueryOrJSPromise) {
             .fail(reject);
     });
 };
+window.deferredToPromise = window.jsPromise;
 
 // splash screen updates for initial install which could take time, or slow networks.
 let trackedScriptCount = 0;

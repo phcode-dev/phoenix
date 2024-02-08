@@ -218,11 +218,14 @@ define(function (require, exports, module) {
         return $("#" + StringUtils.jQueryIdEscape(id)).get(0);
     }
 
-    function _addKeyBindingToMenuItem($menuItem, key, displayKey) {
+    function _addKeyBindingToMenuItem(commandID, $menuItem, key, displayKey) {
         let $shortcut = $menuItem.find(".menu-shortcut");
 
         if ($shortcut.length === 0) {
-            $shortcut = $("<span class='menu-shortcut' />");
+            const html = KeyBindingManager.canAssignBinding(commandID)?
+                "<span class='menu-shortcut' />" :
+                "<span class='menu-shortcut fixed-shortcut' />";
+            $shortcut = $(html);
             $menuItem.append($shortcut);
         }
 
@@ -231,13 +234,14 @@ define(function (require, exports, module) {
     }
 
     function _addExistingKeyBinding(menuItem) {
-        let bindings = KeyBindingManager.getKeyBindings(menuItem.getCommand().getID()),
+        const commandID = menuItem.getCommand().getID();
+        let bindings = KeyBindingManager.getKeyBindings(commandID),
             binding = null;
 
         if (bindings.length > 0) {
             // add the latest key binding
             binding = bindings[bindings.length - 1];
-            _addKeyBindingToMenuItem($(_getHTMLMenuItem(menuItem.id)), binding.key, binding.displayKey);
+            _addKeyBindingToMenuItem(commandID, $(_getHTMLMenuItem(menuItem.id)), binding.key, binding.displayKey);
         }
 
         return binding;
@@ -594,8 +598,12 @@ define(function (require, exports, module) {
             $menuItem = $("<li><hr class='divider' id='" + id + "' /></li>");
         } else {
             // Create the HTML Menu
+            let keyboardIcon = '';
+            if(KeyBindingManager.canAssignBinding(commandID)){
+                keyboardIcon = `<span class='keyboard-icon' title='${Strings.KEYBOARD_SHORTCUT_CHANGE_TITLE}'><i class="fa-regular fa-keyboard"></i></span>`;
+            }
             $menuItem = $("<li><a href='#' class='menuAnchor' id='" + id + "'> <span class='menu-name'></span>" +
-                `<span class='right-pusher'></span><span class='keyboard-icon' title='${Strings.KEYBOARD_SHORTCUT_CHANGE_TITLE}'><i class="fa-regular fa-keyboard"></i></span>`+
+                `<span class='right-pusher'></span>${keyboardIcon}`+
                 "</a></li>");
             const $menuAnchor = $menuItem.find(".menuAnchor");
 
@@ -988,7 +996,7 @@ define(function (require, exports, module) {
                 }
             });
         } else {
-            _addKeyBindingToMenuItem($(_getHTMLMenuItem(this.id)), keyBinding.key, keyBinding.displayKey);
+            _addKeyBindingToMenuItem(this._command.getID(), $(_getHTMLMenuItem(this.id)), keyBinding.key, keyBinding.displayKey);
         }
     };
 
