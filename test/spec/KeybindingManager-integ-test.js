@@ -112,6 +112,11 @@ define(function (require, exports, module) {
 
         afterAll(async function () {
             await KeyBindingManager._loadUserKeyMapImmediate();
+            if(CommandManager.get(Commands.HELP_TOGGLE_SHORTCUTS_PANEL) &&
+                CommandManager.get(Commands.HELP_TOGGLE_SHORTCUTS_PANEL).getChecked()){
+                // hide the shortcuts panel
+                CommandManager.get(Commands.HELP_TOGGLE_SHORTCUTS_PANEL).execute();
+            }
             FileViewController  = null;
             FileSystem      = null;
             testWindow = null;
@@ -176,6 +181,8 @@ define(function (require, exports, module) {
             await awaitsFor(()=>{
                 return !testWindow.$(".change-shortcut-dialog").is(":visible");
             }, "dialog to be dismissed");
+            // the shortcuts panel should also be visible now as we opened the keybinding json in before all.
+            expect(CommandManager.get(Commands.HELP_TOGGLE_SHORTCUTS_PANEL).getChecked()).toBeTrue();
         });
 
         it("Should show keyboard icon on allowed commands", async function () {
