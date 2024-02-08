@@ -1750,6 +1750,7 @@ define(function (require, exports, module) {
         if(_isSpecialCommand(command.getID())){
             return;
         }
+        const panelCommand = CommandManager.get(Commands.HELP_TOGGLE_SHORTCUTS_PANEL);
         capturedShortcut = null;
         const keyBindings = getKeyBindings(command);
         let currentShortcut = Strings.KEYBOARD_SHORTCUT_NONE;
@@ -1767,13 +1768,18 @@ define(function (require, exports, module) {
         if(currentShortcut === Strings.KEYBOARD_SHORTCUT_NONE){
             $(".change-shortcut-dialog .Remove").addClass("forced-hidden");
         }
+        if(panelCommand && panelCommand.getChecked()){
+            $(".change-shortcut-dialog .Show").addClass("forced-hidden");
+        }
         keyboardShortcutDialog.done((closeReason)=>{
             if(closeReason === 'remove' && currentShortcut){
                 _addToUserKeymapFile(currentShortcut, null);
             } else if(closeReason === Dialogs.DIALOG_BTN_OK && currentShortcut){
                 _addToUserKeymapFile(capturedShortcut, command.getID());
             } else if(closeReason === 'show'){
-                console.log("show shortcuts");
+                if(!panelCommand.getChecked()){
+                    panelCommand.execute();
+                }
             }
             capturedShortcut = null;
             keyboardShortcutCaptureInProgress = null;
