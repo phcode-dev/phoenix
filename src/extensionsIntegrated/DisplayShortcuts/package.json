@@ -2,15 +2,15 @@
     "name": "brackets-display-shortcuts",
     "title": "Display Shortcuts",
     "version": "1.4.1",
-    "description": "Display current shortcuts in a bottom panel that can be sorted and filtered. Add and disable shortcuts from context menu.",
+    "description": "Display current shortcuts in a bottom panel that can be sorted and filtered.",
     "homepage": "https://github.com/redmunds/brackets-display-shortcuts",
-    "author": "Randy Edmunds (https://github.com/redmunds)",
+    "author": "phcode.dev(modified), Original Author-Randy Edmunds (https://github.com/redmunds)",
     "license": "MIT",
     "categories": "utility",
     "keywords": [
         "shortcuts", "bindings", "keybindings", "commands"
     ],
     "engines": {
-        "brackets": ">=1.12.0"
+        "brackets": ">=3.2.25"
     }
 }

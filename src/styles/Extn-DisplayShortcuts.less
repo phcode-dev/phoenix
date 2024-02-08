@@ -22,13 +22,13 @@
 */
 
 /* All selectors are descendents of #shortcuts to constrain styles to this extension */
-#shortcuts .resizable-content {
+#shortcuts-panel .resizable-content {
     height: 175px;
     overflow-x: auto;
     overflow-y: scroll;
 }
 
-#shortcuts table td {
+#shortcuts-panel table td {
     line-height: 14px;
     padding: 4px 10px;
 }
@@ -46,23 +46,23 @@
     visibility: visible;
 }
 
-#shortcuts .shortcut-base { width: 9%; }
-#shortcuts .shortcut-binding { width: 12%; }
-#shortcuts .shortcut-cmd-id { width: 30%; }
-#shortcuts .shortcut-cmd-name { width: 27%; }
-#shortcuts .shortcut-orig { width: 22%; }
+#shortcuts-panel .shortcut-base { width: 9%; }
+#shortcuts-panel .shortcut-binding { width: 12%; }
+#shortcuts-panel .shortcut-cmd-id { width: 30%; }
+#shortcuts-panel .shortcut-cmd-name { width: 27%; }
+#shortcuts-panel .shortcut-orig { width: 22%; }
 
-#shortcuts thead th {
+#shortcuts-panel thead th {
     position: relative;
     background-color: #c2c7c7;
     padding: 0;
 }
 
-.dark #shortcuts thead th {
+.dark #shortcuts-panel thead th {
     background-color: #202020;
 }
 
-#shortcuts thead th:before {
+#shortcuts-panel thead th:before {
     content: '.';
     position: absolute;
     top: 50%;
@@ -75,15 +75,15 @@
     border-right: 5px solid transparent;
 }
 
-#shortcuts thead th.sort-ascending:before {
+#shortcuts-panel thead th.sort-ascending:before {
     border-top: 6px solid;
 }
 
-#shortcuts thead th.sort-descending:before {
+#shortcuts-panel thead th.sort-descending:before {
     border-bottom: 6px solid;
 }
 
-#shortcuts thead a {
+#shortcuts-panel thead a {
     position: relative;
     display: block;
     color: inherit;
@@ -93,21 +93,21 @@
     transition: background 200ms ease-out;
 }
 
-#shortcuts thead a:hover {
+#shortcuts-panel thead a:hover {
     background: rgba(0, 0, 0, 0.08);
 }
 
-.dark #shortcuts thead a:hover {
+.dark #shortcuts-panel thead a:hover {
     background: rgba(255, 255, 255, 0.05);
 }
 
-#shortcuts .toolbar {
+#shortcuts-panel .toolbar {
     display: block;
     padding-right: 28px;
 }
 
-#shortcuts .toolbar button.copy-table,
-#shortcuts .toolbar .filter {
+#shortcuts-panel .toolbar button.copy-table,
+#shortcuts-panel .toolbar .filter {
     float: right;
     margin: -2px 10px;
     padding-top: 2px;

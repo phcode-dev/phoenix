@@ -40,4 +40,5 @@ define(function (require, exports, module) {
     require("./Phoenix-live-preview/main");
     require("./NavigationAndHistory/main");
     require("./RecentProjects/main");
+    require("./DisplayShortcuts/main");
 });

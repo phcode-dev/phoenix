@@ -28,21 +28,21 @@
 define(function (require, exports, module) {
     
     // Brackets modules
-    const _                   = brackets.getModule("thirdparty/lodash"),
-        CodeMirror          = brackets.getModule("thirdparty/CodeMirror2/lib/codemirror"),
-        CommandManager      = brackets.getModule("command/CommandManager"),
-        Commands            = brackets.getModule("command/Commands"),
-        ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
-        KeyBindingManager   = brackets.getModule("command/KeyBindingManager"),
-        MainViewManager     = brackets.getModule("view/MainViewManager"),
-        Menus               = brackets.getModule("command/Menus"),
-        Mustache            = brackets.getModule("thirdparty/mustache/mustache"),
-        EditorManager           = brackets.getModule("editor/EditorManager"),
-        WorkspaceManager    = brackets.getModule("view/WorkspaceManager"),
-        Strings             = brackets.getModule("strings");
+    const _                   = require("thirdparty/lodash"),
+        CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
+        CommandManager      = require("command/CommandManager"),
+        Commands            = require("command/Commands"),
+        KeyBindingManager   = require("command/KeyBindingManager"),
+        MainViewManager     = require("view/MainViewManager"),
+        Menus               = require("command/Menus"),
+        Mustache            = require("thirdparty/mustache/mustache"),
+        EditorManager           = require("editor/EditorManager"),
+        WorkspaceManager    = require("view/WorkspaceManager"),
+        AppInit             = require("utils/AppInit"),
+        Strings             = require("strings");
 
-    const panelHtml           = require("text!templates/bottom-panel.html"),
-        shortcutsHtml       = require("text!templates/shortcut-table.html"),
+    const panelHtml           = require("text!./templates/bottom-panel.html"),
+        shortcutsHtml       = require("text!./templates/shortcut-table.html"),
         TOGGLE_SHORTCUTS_ID = Commands.HELP_TOGGLE_SHORTCUTS_PANEL;
     let keyList = [],
         panel,
@@ -300,7 +300,7 @@ define(function (require, exports, module) {
     }
 
     function _clearSortingEventHandlers() {
-        var $shortcuts = $("#shortcuts");
+        var $shortcuts = $("#shortcuts-panel");
         $("thead .shortcut-base a", $shortcuts).off("click");
         $("thead .shortcut-binding a", $shortcuts).off("click");
         $("thead .shortcut-cmd-id a", $shortcuts).off("click");
@@ -309,7 +309,7 @@ define(function (require, exports, module) {
     }
 
     function _showShortcuts() {
-        let $shortcuts = $("#shortcuts");
+        let $shortcuts = $("#shortcuts-panel");
         
         // Apply any active filter
         _filterShortcuts(true);
@@ -401,10 +401,8 @@ define(function (require, exports, module) {
         }
     }
 
-    function init() {
+    AppInit.appReady(function() {
         let s, help_menu;
-
-        ExtensionUtils.loadStyleSheet(module, "shortcuts.css");
 
         // Register commands
         CommandManager.register(Strings.KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS, TOGGLE_SHORTCUTS_ID, _handleShowHideShortcuts);
@@ -423,7 +421,7 @@ define(function (require, exports, module) {
         panel = WorkspaceManager.createBottomPanel(TOGGLE_SHORTCUTS_ID, $(s), 100);
         panel.hide();
 
-        $shortcutsPanel = $("#shortcuts");
+        $shortcutsPanel = $("#shortcuts-panel");
 
         // Events
         $shortcutsPanel.on("dblclick", function (e) {
@@ -455,7 +453,5 @@ define(function (require, exports, module) {
             }
             _showCommandIdsInPanelIfNeeded();
         });
-    }
-
-    init();
+    });
 });
