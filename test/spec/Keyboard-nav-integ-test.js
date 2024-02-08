@@ -55,6 +55,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         afterAll(async function () {
+            MainViewManager.setLayoutScheme(1, 1);
             FileViewController  = null;
             ProjectManager      = null;
             testWindow = null;

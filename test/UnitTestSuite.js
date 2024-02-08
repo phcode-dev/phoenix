@@ -57,6 +57,7 @@ define(function (require, exports, module) {
     require("spec/JSUtils-test");
     require("spec/JSUtils-integ-test");
     require("spec/KeyBindingManager-test");
+    require("spec/KeybindingManager-integ-test");
     require("spec/LanguageManager-test");
     require("spec/LanguageManager-integ-test");
     require("spec/LowLevelFileIO-test");
