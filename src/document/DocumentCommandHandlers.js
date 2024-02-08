@@ -1643,6 +1643,7 @@ define(function (require, exports, module) {
             return;
         }
 
+        let openCount = 0;
         for(let i=1; i<args.length; i++) { // the first arg is the executable path itself, ignore that
             const fileArg = args[i];
             let isOpened = await _tryToOpenFile(fileArg);
@@ -1650,6 +1651,12 @@ define(function (require, exports, module) {
                 // if here, then, this maybe a relative file path or not a file at all. check if relative path
                 await _tryToOpenFile(fileArg, cwd);
             }
+            if(isOpened){
+                openCount++;
+            }
+        }
+        if(openCount){
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, 'openWith', "file", openCount);
         }
     }
 
@@ -1690,6 +1697,7 @@ define(function (require, exports, module) {
                 fileToOpen = await _safeCheckFileAndGetVirtualPath(args[1], cwd);
             }
             if(fileToOpen) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, 'openWith', "file");
                 await _openFilesPassedInFromCLI(args, cwd);
                 await Phoenix.app.focusWindow();
                 return;

@@ -886,9 +886,13 @@ define(function (require, exports, module) {
             let folderToOpen = args[1];
             folderToOpen = await _safeCheckFolder(args[1]);
             if(folderToOpen){
+                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, 'openWith', "folder");
                 return folderToOpen;
             }
             folderToOpen = await _safeCheckFolder(args[1], cwd);
+            if(folderToOpen){
+                Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, 'openWith', "folder");
+            }
             return folderToOpen;
         } catch (e) {
             console.error("Error getting startupProjectPath from CLI args", e);
