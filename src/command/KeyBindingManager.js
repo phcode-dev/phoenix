@@ -1503,6 +1503,14 @@ define(function (require, exports, module) {
             try {
                 if (text) {
                     userKeyMap = JSON.parse(text);
+                    const overrides = userKeyMap.overrides || {};
+                    // check if the same command is already assigned a shortcut, then remove before we add
+                    // a new shortcut
+                    for(let shortcutKey of Object.keys(overrides)) {
+                        if(overrides[shortcutKey] === commandID){
+                            delete overrides[shortcutKey];
+                        }
+                    }
                 }
             } catch (err) {
                 // Cannot parse the text read from the key map file.
