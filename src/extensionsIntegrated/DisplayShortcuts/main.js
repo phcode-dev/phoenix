@@ -36,7 +36,9 @@ define(function (require, exports, module) {
         MainViewManager     = require("view/MainViewManager"),
         Menus               = require("command/Menus"),
         Mustache            = require("thirdparty/mustache/mustache"),
-        EditorManager           = require("editor/EditorManager"),
+        EditorManager       = require("editor/EditorManager"),
+        Dialogs             = require("widgets/Dialogs"),
+        DefaultDialogs      = require("widgets/DefaultDialogs"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         AppInit             = require("utils/AppInit"),
         Strings             = require("strings");
@@ -435,6 +437,17 @@ define(function (require, exports, module) {
 
         $shortcutsPanel.find(".close").click(function () {
             CommandManager.execute(TOGGLE_SHORTCUTS_ID);
+        });
+
+        $shortcutsPanel.find(".reset-to-default").click(function () {
+            Dialogs.showConfirmDialog(
+                Strings.KEYBOARD_SHORTCUT_RESET_DIALOG_TITLE,
+                Strings.KEYBOARD_SHORTCUT_RESET_DIALOG_MESSAGE
+            ).done(function (selection) {
+                if(selection === Dialogs.DIALOG_BTN_OK){
+                    KeyBindingManager.resetUserShortcutsAsync();
+                }
+            });
         });
 
         $filterField = $shortcutsPanel.find(".toolbar .filter");

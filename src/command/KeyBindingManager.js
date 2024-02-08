@@ -1612,6 +1612,26 @@ define(function (require, exports, module) {
     };
 
     /**
+     * resets all user defined shortcuts
+     * @return {Promise|Promise<void>|*}
+     */
+    function resetUserShortcutsAsync() {
+        return new Promise((resolve, reject)=>{
+            let userKeyMapPath = _getUserKeyMapFilePath(),
+                file = FileSystem.getFileForPath(userKeyMapPath);
+            let defaultContent = "{\n    \"documentation\": \"https://github.com/phcode-dev/phoenix/wiki/User-%60keymap.json%60\"," +
+                "\n    \"overrides\": {" +
+                "\n        \n    }\n}\n";
+
+            return FileUtils.writeText(file, defaultContent, true).done(()=>{
+                _loadUserKeyMapImmediate()
+                    .then(resolve)
+                    .catch(reject);
+            }).fail(reject);
+        });
+    }
+
+    /**
      * @private
      *
      * Opens the existing key map file or creates a new one with default content
@@ -1624,14 +1644,9 @@ define(function (require, exports, module) {
             if (doesExist) {
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: userKeyMapPath });
             } else {
-                let defaultContent = "{\n    \"documentation\": \"https://github.com/phcode-dev/phoenix/wiki/User-%60keymap.json%60\"," +
-                                     "\n    \"overrides\": {" +
-                                     "\n        \n    }\n}\n";
-
-                FileUtils.writeText(file, defaultContent, true)
-                    .done(function () {
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: userKeyMapPath });
-                    });
+                resetUserShortcutsAsync().finally(function () {
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: userKeyMapPath });
+                });
             }
         });
     }
@@ -1817,6 +1832,7 @@ define(function (require, exports, module) {
     exports.addGlobalKeydownHook = addGlobalKeydownHook;
     exports.removeGlobalKeydownHook = removeGlobalKeydownHook;
     exports.isInOverlayMode = isInOverlayMode;
+    exports.resetUserShortcutsAsync = resetUserShortcutsAsync;
     exports.showShortcutSelectionDialog = showShortcutSelectionDialog;
 
     // public constants

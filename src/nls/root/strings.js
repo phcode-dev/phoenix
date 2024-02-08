@@ -330,6 +330,10 @@ define({
     //Bottom panel
     "KEYBOARD_SHORTCUT_PANEL_TITLE": "Shortcuts",
     "KEYBOARD_SHORTCUT_PANEL_FILTER": "Filter&hellip;",
+    "KEYBOARD_SHORTCUT_PANEL_RESET": "Reset\u2026",
+    "KEYBOARD_SHORTCUT_PANEL_RESET_DEFAULT": "Reset To Default Shortcuts\u2026",
+    "KEYBOARD_SHORTCUT_RESET_DIALOG_TITLE": "Reset Shortcuts",
+    "KEYBOARD_SHORTCUT_RESET_DIALOG_MESSAGE": "Reset all custom shortcuts to default? This cannot be undone.",
 
     /**
      * StatusBar strings
