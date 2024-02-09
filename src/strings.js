@@ -44,6 +44,7 @@ define(function (require, exports, module) {
 
     additionalGlobals.APP_NAME      = brackets.metadata.name || strings.APP_NAME;
     additionalGlobals.APP_TITLE     = brackets.config.app_title || strings.APP_NAME;
+    strings.APP_TITLE = additionalGlobals.APP_TITLE;
     additionalGlobals.TWITTER_NAME  = brackets.config.twitter_name;
     additionalGlobals.VERSION       = brackets.metadata.version;
     additionalGlobals.VERSION_MAJOR = parsedVersion[1];
