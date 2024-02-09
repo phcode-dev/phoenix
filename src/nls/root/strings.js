@@ -314,7 +314,7 @@ define({
     "KEYBOARD_SHORTCUT_ASSIGN": "Assign",
     "KEYBOARD_SHORTCUT_NONE": "None",
     // keyboard shortcuts panel
-    "KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS": "Show Shortcuts\u2026",
+    "KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS": "Keyboard Shortcuts\u2026",
     // Context Menu
     "KEYBOARD_SHORTCUT_CMENU_OVERRIDE": "Override Shortcut for Command",
     "KEYBOARD_SHORTCUT_CMENU_DISABLE": "Disable Shortcut",
@@ -328,11 +328,11 @@ define({
     //Origins
     "KEYBOARD_SHORTCUT_ORIG_EXTENSION": "Extension",
     //Bottom panel
-    "KEYBOARD_SHORTCUT_PANEL_TITLE": "Shortcuts",
+    "KEYBOARD_SHORTCUT_PANEL_TITLE": "Keyboard Shortcuts",
     "KEYBOARD_SHORTCUT_PANEL_FILTER": "Filter&hellip;",
     "KEYBOARD_SHORTCUT_PANEL_RESET": "Reset\u2026",
     "KEYBOARD_SHORTCUT_PANEL_RESET_DEFAULT": "Reset To Default Shortcuts\u2026",
-    "KEYBOARD_SHORTCUT_RESET_DIALOG_TITLE": "Reset Shortcuts",
+    "KEYBOARD_SHORTCUT_RESET_DIALOG_TITLE": "Reset Keyboard Shortcuts",
     "KEYBOARD_SHORTCUT_RESET_DIALOG_MESSAGE": "Reset all custom shortcuts to default? This cannot be undone.",
 
     /**
@@ -535,7 +535,7 @@ define({
     "CMD_TWITTER": "{TWITTER_NAME} on Twitter",
     "CMD_ABOUT": "About {APP_TITLE}",
     "CMD_OPEN_PREFERENCES": "Open Preferences File",
-    "CMD_OPEN_KEYMAP": "Open User Key Map",
+    "CMD_OPEN_KEYMAP": "Open User Key Map File",
 
     // Strings for main-view.html
     "EXPERIMENTAL_BUILD": "experimental build",
