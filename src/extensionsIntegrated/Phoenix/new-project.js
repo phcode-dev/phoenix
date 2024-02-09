@@ -102,7 +102,10 @@ define(function (require, exports, module) {
             guidedTour.startTourIfNeeded();
             return;
         }
-        if(ProjectManager.getProjectRoot().fullPath !== ProjectManager.getWelcomeProjectPath()){
+        if(ProjectManager.getProjectRoot().fullPath !== ProjectManager.getWelcomeProjectPath() &&
+            Phoenix.browser.isTauri){
+            // in browser we always show the new project dialog even if there is a different startup project open. This
+            // is mainly for users to discover the download native app button in the new project window.
             return;
         }
         _showNewProjectDialogue();
