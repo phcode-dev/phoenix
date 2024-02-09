@@ -163,3 +163,24 @@ h1 {
     width: 100%;
     border: 0;
 }
+
+.video-container {
+    position: relative;
+    display: inline-block; /* Or 'block' depending on layout */
+}
+
+.video-container img {
+    display: block; /* Remove bottom space/margin under the image */
+    width: 100%; /* Adjust based on your needs */
+    height: auto;
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    width: 64px; /* Adjust size of the play button */
+    height: 64px; /* Adjust size of the play button */
+}
