@@ -112,6 +112,7 @@ define(function (require, exports, module) {
     }
 
     function removeFromRecentProject(fullPath) {
+        fullPath = FileUtils.stripTrailingSlash(fullPath);
         let recentProjects = getRecentProjects(),
             index = recentProjects.indexOf(fullPath),
             newProjects = [],
