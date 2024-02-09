@@ -5,9 +5,11 @@ const NodeConnector = require("./node-connector");
 
 const STORAGE_NODE_CONNECTOR = "ph_storage";
 const EXTERNAL_CHANGE_POLL_INTERVAL = 800;
+const DB_DUMP_INTERVAL = 30000;
 const EVENT_CHANGED = "change";
 const nodeConnector = NodeConnector.createNodeConnector(STORAGE_NODE_CONNECTOR, exports);
 const watchExternalKeys = {};
+let changesToDumpAvailable = false;
 
 let storageDB,
     dumpFileLocation;
@@ -44,8 +46,24 @@ async function dumpDBToFile() {
         // if there are multiple instances trying to dump the file. Multi process safe.
         fs.writeFileSync(dumpFileLocation, JSON.stringify(storageMap));
     });
+    // changesToDumpAvailable is eventually consistent. Will write a good copy at app quit eventually.
+    changesToDumpAvailable = false;
     return dumpFileLocation;
 }
+
+let dumpInProgress = false;
+setInterval(()=>{
+    // this is so that the user won't loose large time of work in case of app crash
+    // This should not be called periodically as it's expensive.
+    if(changesToDumpAvailable && !dumpInProgress){
+        changesToDumpAvailable = false;
+        dumpInProgress = true;
+        dumpDBToFile()
+            .finally(()=>{
+                dumpInProgress = false;
+            });
+    }
+}, DB_DUMP_INTERVAL);
 
 /**
  * Takes the current state of the storage database, writes it to a file in JSON format,
@@ -74,6 +92,7 @@ function putItem({key, value}) {
     if(watchExternalKeys[key] && typeof value === 'object' && value.t) {
         watchExternalKeys[key] = value.t;
     }
+    changesToDumpAvailable = true;
     return storageDB.put(key, value);
 }
 

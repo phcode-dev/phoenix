@@ -315,9 +315,7 @@ define({
     "KEYBOARD_SHORTCUT_NONE": "None",
     // keyboard shortcuts panel
     "KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS": "Keyboard Shortcuts\u2026",
-    // Context Menu
-    "KEYBOARD_SHORTCUT_CMENU_OVERRIDE": "Override Shortcut for Command",
-    "KEYBOARD_SHORTCUT_CMENU_DISABLE": "Disable Shortcut",
+    "KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS_BUTTON": "Show All Shortcuts\u2026",
     //Table
     "KEYBOARD_SHORTCUT_TABLE_BASE_KEY": "Base Key",
     "KEYBOARD_SHORTCUT_TABLE_KEY_BINDING": "Shortcut",
