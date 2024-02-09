@@ -77,15 +77,9 @@ function getDisplayLocation(projectPath) {
     return Strings.PROJECT_FROM_BROWSER;
 }
 
-const videoHTML = `<iframe id="noProjectIframe" style="align-items: center"
-                src="https://www.youtube.com/embed/vtks0cus0hA" title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen></iframe>`;
-
-const imageHTML = `<img src="images/youtube_video.png" alt="Phoenix Code on YouTube"
+const imageHTML = `<img src="images/youtube_video.webp" alt="Phoenix Code on YouTube"
     title="Phoenix Code on YouTube"
-    style="cursor: pointer"
+    style="cursor: pointer; width: 100%; height: 100%"
     onclick="window.parent.brackets.app.openURLInDefaultBrowser('https://www.youtube.com/watch?v=vtks0cus0hA')"/>`;
 
 function _updateProjectCards() {
@@ -108,17 +102,10 @@ function _updateProjectCards() {
                 `recent-prj-list-${tabIndex}`, tabIndex++));
         }
     }
-    const Phoenix = window.top.Phoenix;
     if(!showRecentProjects){
         $("#recentProjectsContainer").addClass("forced-hidden");
         $("#noProjectContainer").removeClass("forced-hidden");
-        if(Phoenix.browser.isTauri && Phoenix.platform === 'linux'){
-            // in desktop linux, tauri app images causes a 2-5 second pause to load the video codecs
-            // We do not show videos in linux in default, except if the user explicitly adds a video in live preview.
-            document.getElementById("YTVideoFrame").innerHTML = imageHTML;
-        } else {
-            document.getElementById("YTVideoFrame").innerHTML = videoHTML;
-        }
+        document.getElementById("YTVideoFrame").innerHTML = imageHTML;
     }
 }
 
