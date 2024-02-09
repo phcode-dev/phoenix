@@ -403,15 +403,15 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function() {
-        let s, help_menu;
+        let s, file_menu;
 
         // Register commands
         CommandManager.register(Strings.KEYBOARD_SHORTCUT_MENU_SHOW_SHORTCUTS, TOGGLE_SHORTCUTS_ID, _handleShowHideShortcuts);
 
         // Add command to Help menu, if it exists
-        help_menu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
-        if (help_menu) {
-            help_menu.addMenuItem(TOGGLE_SHORTCUTS_ID, "", Menus.BEFORE, Commands.HELP_ABOUT);
+        file_menu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
+        if (file_menu) {
+            file_menu.addMenuItem(TOGGLE_SHORTCUTS_ID, "", Menus.BEFORE, Commands.FILE_EXTENSION_MANAGER);
         }
 
         // Add the HTML UI
@@ -419,7 +419,7 @@ define(function (require, exports, module) {
 
         // AppInit.htmlReady() has already executed before extensions are loaded
         // so, for now, we need to call this ourself
-        panel = WorkspaceManager.createBottomPanel(TOGGLE_SHORTCUTS_ID, $(s), 100);
+        panel = WorkspaceManager.createBottomPanel(TOGGLE_SHORTCUTS_ID, $(s), 200);
         panel.hide();
 
         $shortcutsPanel = $("#shortcuts-panel");
