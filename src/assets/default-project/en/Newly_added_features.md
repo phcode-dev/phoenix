@@ -7,6 +7,38 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
+## Native Desktop Apps - Windows, Linux, and Mac (Intel/M1)
+`Added on Feb,2024`
+
+Brand new Native Desktop Apps for Mac (M1 and Intel), Linux, and
+Windows, a milestone release that addresses one of our most requested features.
+Built from the ground up with the latest Tauri/Rust technology, this update
+modernizes the core platform with enhanced performance, security, and a
+seamless cross-platform experience.
+
+Download your copy from <a href="https://phcode.io" target="_blank">phcode.io</a>
+
+![captured-div (1)](https://github.com/phcode-dev/phoenix/assets/5336369/9ea4f9cc-5ebd-4d67-bf36-0a6ae7611767)
+
+## Make It Yours: Custom Keyboard Shortcuts
+`Added on Feb,2024`
+
+Now you can make your own shortcuts for any menu, so you don't have to memorize a bunch of
+different ones for every app. Simply hover over a menu item and click the keyboard icon to
+set your preferred shortcuts.
+
+It's like customizing your game controls to play your way!
+
+
+![Screenshot from 2024-02-08 11-04-46](https://github.com/phcode-dev/phoenix/assets/5336369/2562d248-2fd5-4a92-97a8-cdd708c78c7f)
+![image](https://github.com/phcode-dev/phoenix/assets/5336369/2028e67f-bdc9-41f2-877c-bef08f8e7743)
+
+## Zoom in and out
+`Added on Nov,2023`
+
+Adjust the UI and font size to your liking with UI and font zoom controls.
+![image](https://github.com/phcode-dev/phoenix/assets/5336369/b920e4ce-fc7e-4812-a99b-69b33625560c)
+
 ## Restore Unsaved Files and Crash Recovery
 `Added on May,2023`
 
@@ -15,12 +47,6 @@ This functionality ensures your work is safe even in the event of a crash or if 
 closed without saving edited files.
 
 ![image](https://github.com/phcode-dev/phoenix/assets/5336369/9cfd5720-947b-4f88-8dfa-cda940d912c6)
-
-## Firefox Support
-`Added on April,2023`
-
-phcode.dev now compatible with Firefox! Although opening local folders is not yet supported,
-you can import projects from GitHub. Stay tuned for upcoming support for uploading local folders.
 
 ## Create and Publish Extensions
 `Added on March,2023`
@@ -45,20 +71,6 @@ Creating extensions and themes is now easier than ever with a single click in Gi
 
 * Hover over any number value in css to get the all new number widget for fine-tuning numeric values in live preview.
   ![number preview](https://user-images.githubusercontent.com/5336369/208715497-781e8dfc-1939-4dac-82e8-c7e517be4d9c.gif)
-
-## True Live Preview
-`Added on November,2022`
-
-* See changes as you change your web page in the editor with live preview.
-* Multiple Live previews are now supported if there are multiple Phoenix Editor windows open.
-  ![live preview color](https://user-images.githubusercontent.com/5336369/208713746-ce82f307-3388-46d2-9f72-4fb085b226b5.gif)
-
-## Progressive Web App and Offline Support
-`Added on September,2022`
-
-* Blazing fast load of Phoenix code editor in the browser after first launch.
-* Limited offline support: Load Phoenix in the browser without an internet connection after the first launch.
-  Workflows that has been used at least once before will be accessible in offline mode.
 
 ## Beautify code
 `Added on August,2022`
@@ -98,11 +110,6 @@ Instant search across all files in your project (Click on the search icon at top
  <img src="http://img.youtube.com/vi/pw7vJ_l5A44/mqdefault.jpg" alt="Watch the video" border="10" />
 </a>
 
-## File and project icons
-`Added on June,2022`
-
-We have applied a fresh coat of paint to the icons in files panel.
-
 ## New Project Welcome Screen
 `Added on May,2022`
 
@@ -122,16 +129,6 @@ Quickly preview changes and share your website with others on the web with a sin
 #### Watch the video on YouTube
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=dJTZ2iduagg" target="_blank">
  <img src="http://img.youtube.com/vi/dJTZ2iduagg/mqdefault.jpg" alt="Watch the video" border="10" />
-</a>
-
-## Live HTML Preview
-`Added on Apr,2022`
-
-Code real-time in your browser. Make changes to CSS and HTML and you'll instantly see those changes on screen.
-
-#### Watch the video on YouTube
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=RIslg6XQwLA" target="_blank">
- <img src="http://img.youtube.com/vi/RIslg6XQwLA/mqdefault.jpg" alt="Watch the video" border="10" />
 </a>
 
 ## Live Markdown Preview
