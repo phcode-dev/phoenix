@@ -4,6 +4,7 @@
     "mixPanelID"              : "8cb6814f733e37c05cc59b4adad26407",
     "coreAnalyticsID"         : "phoenix",
     "coreAnalyticsAppName"    : "phoenix-prod",
+    "coreAnalyticsAppNameDesktop"    : "desktop-prod",
     "environment"             : "production",
     "buildtype"               : "production",
     "bugsnagEnv"              : "production",

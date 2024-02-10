@@ -212,8 +212,10 @@ define(function (require, exports, module) {
         window.analytics.debugMode = window.debugMode;
         script.onload = function(){
             // replace `your_analytics_account_ID` and `appName` below with your values
-            window.initAnalyticsSession( brackets.config.coreAnalyticsID,
-                brackets.config.coreAnalyticsAppName);
+            const appName = Phoenix.browser.isTauri ?
+                brackets.config.coreAnalyticsAppNameDesktop:
+                brackets.config.coreAnalyticsAppName;
+            window.initAnalyticsSession( brackets.config.coreAnalyticsID, appName);
             window.analytics.event("core-analytics", "client-lib", "loadTime", 1,
                 (new Date().getTime())- window.analytics.loadStartTime);
         };
