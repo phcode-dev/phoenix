@@ -5,11 +5,22 @@
     <meta name="robots" content="noindex, nofollow">
     <title>Desktop Metrics logger with Google Analytics</title>
     <script>
-        let gaReady = false;
-        function installGoogleAnalytics(analyticsID) {
-            if(!analyticsID || gaReady){
+        const SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY = "SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY";
+        let gaReady = false, loadedGoogleAnalyticsID;
+
+        const url = window.location.href;
+        const urlParams = new URLSearchParams(window.location.search);
+        const reloadedOnce = urlParams.get('reloadedOnce');
+        function installGoogleAnalytics() {
+            if(gaReady){
                 return ;
             }
+            const analyticsID = localStorage.getItem(SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY);
+            if(!analyticsID) {
+                console.error("No analytics id found to init ga, waiting for phcode to send ids to init...");
+                return;
+            }
+            loadedGoogleAnalyticsID = analyticsID;
             // ga primer scripts
             window.dataLayer = window.dataLayer || [];
             window.gtag = function() {
@@ -29,10 +40,24 @@
             gaReady = true;
         }
 
+        installGoogleAnalytics();
+
+        function reloadOnce() {
+            // we have to do this as ga seems to miss points in real time analytics dashboard if ga is not inited
+            // at page load time. So we reload once to make metrics show up in ga real time dashboard.
+            let currentUrl = new URL(window.location);
+            if (!currentUrl.searchParams.has('reloadedOnce')) {
+                currentUrl.searchParams.set('reloadedOnce', 'true');
+                window.location.href = currentUrl.href;
+            }
+        }
+
+
         async function processRequest(event) {
             const payload = event.payload;
-            if(!gaReady) {
-                installGoogleAnalytics(payload.analyticsID);
+            if(payload.analyticsID && loadedGoogleAnalyticsID !== payload.analyticsID) {
+                localStorage.setItem(SAVED_GOOGLE_ANALYTICS_DESKTOP_KEY, payload.analyticsID);
+                installGoogleAnalytics();
             }
 
             for(let eventPayload of payload.events) {
@@ -41,6 +66,9 @@
                     'event_label': eventPayload.label,
                     'value': eventPayload.count
                 });
+            }
+            if(!reloadedOnce) {
+                setTimeout(reloadOnce, 1000);
             }
         }
         window.__TAURI__.event.listen("health", processRequest);
