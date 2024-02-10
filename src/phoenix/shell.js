@@ -344,7 +344,7 @@ Phoenix.app = {
                 reject("openURLInDefaultBrowser: URL should be http or https, but was " + url);
                 return;
             }
-            window.__TAURI__.shell.open(url)
+            window.__TAURI__.invoke('open_url_in_browser', {url: url})
                 .then(resolve)
                 .catch(reject);
         });
