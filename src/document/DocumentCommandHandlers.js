@@ -142,7 +142,10 @@ define(function (require, exports, module) {
     /**
      * Event triggered when File Save is cancelled, when prompted to save dirty files
      */
-    var APP_QUIT_CANCELLED = "appQuitCancelled";
+    const APP_QUIT_CANCELLED = "appQuitCancelled";
+    // private event emitted when a file is opened via user right-clicking a file from the os explorer in phcode.
+    const _EVENT_OPEN_WITH_FILE_FROM_OS = "_openWithFileFromOS";
+    let _filesOpenedFromOsCount = 0;
 
 
     /**
@@ -1656,6 +1659,8 @@ define(function (require, exports, module) {
             }
         }
         if(openCount){
+            exports.trigger(_EVENT_OPEN_WITH_FILE_FROM_OS);
+            _filesOpenedFromOsCount++;
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, 'openWith', "file", openCount);
         }
     }
@@ -2124,6 +2129,12 @@ define(function (require, exports, module) {
     } else if (brackets.platform === "mac") {
         showInOS    = Strings.CMD_SHOW_IN_FINDER;
     }
+
+    // private api
+    exports._EVENT_OPEN_WITH_FILE_FROM_OS = _EVENT_OPEN_WITH_FILE_FROM_OS;
+    exports._isOpenWithFileFromOS = function () {
+        return !!_filesOpenedFromOsCount;
+    };
 
     // Define public API
     exports.showFileOpenError = showFileOpenError;

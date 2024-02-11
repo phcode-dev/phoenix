@@ -37,6 +37,7 @@ define(function (require, exports, module) {
         ZipUtils = require("utils/ZipUtils"),
         ProjectManager = require("project/ProjectManager"),
         EventDispatcher     = require("utils/EventDispatcher"),
+        DocumentCommandHandlers = require("document/DocumentCommandHandlers"),
         createProjectDialogue = require("text!./html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!./html/replace-project-dialogue.html"),
         replaceKeepProjectDialogue = require("text!./html/replace-keep-project-dialogue.html"),
@@ -76,7 +77,7 @@ define(function (require, exports, module) {
     }
 
     function closeDialogue() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "close");
         newProjectDialogueObj.close();
         exports.trigger(exports.EVENT_NEW_PROJECT_DIALOGUE_CLOSED);
         guidedTour.startTourIfNeeded();
@@ -94,6 +95,28 @@ define(function (require, exports, module) {
         CommandManager.execute(Commands.FILE_OPEN_FOLDER).then(closeDialogue);
     }
 
+    async function _shouldNotShowDialog() {
+        if(!Phoenix.browser.isTauri){
+            // in browser we always show the new project dialog even if there is a different startup project open. This
+            // is mainly for users to discover the download native app button in the new project window.
+            return false;
+        }
+        // in tauri, we don't show the dialog if its not default project or
+        // if phoenix was opened with a file/folder from os with cli args. In mac, this is done via
+        // setSingleInstanceCLIArgsHandler as it doesnt use cli args for open with like other os.
+        if(ProjectManager.getProjectRoot().fullPath !== ProjectManager.getWelcomeProjectPath() ||
+            DocumentCommandHandlers._isOpenWithFileFromOS()){
+            return true;
+        }
+        // we are in the default project, show the dialog only if we are not opened with a file
+        const cliArgs= await Phoenix.app.getCommandLineArgs();
+        const args = cliArgs && cliArgs.args;
+        if(!args || args.length <= 1){
+            return false;
+        }
+        return true;
+    }
+
     function init() {
         _addMenuEntries();
         const shouldShowWelcome = PhStore.getItem("new-project.showWelcomeScreen") || 'Y';
@@ -102,13 +125,16 @@ define(function (require, exports, module) {
             guidedTour.startTourIfNeeded();
             return;
         }
-        if(ProjectManager.getProjectRoot().fullPath !== ProjectManager.getWelcomeProjectPath() &&
-            Phoenix.browser.isTauri){
-            // in browser we always show the new project dialog even if there is a different startup project open. This
-            // is mainly for users to discover the download native app button in the new project window.
-            return;
-        }
-        _showNewProjectDialogue();
+        _shouldNotShowDialog()
+            .then(notShow=>{
+                if(notShow){
+                    return;
+                }
+                _showNewProjectDialogue();
+                DocumentCommandHandlers.on(DocumentCommandHandlers._EVENT_OPEN_WITH_FILE_FROM_OS, ()=>{
+                    closeDialogue();
+                });
+            });
     }
 
     function _showProjectErrorDialogue(desc, projectPath, err) {
