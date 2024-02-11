@@ -192,7 +192,7 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     function isNodeReady() {
-        return isNodeAvailable() && window.PhNodeEngine.nodeReady;
+        return isNodeAvailable() && window.isNodeReady;
     }
 
     /**
