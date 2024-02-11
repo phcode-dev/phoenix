@@ -159,9 +159,15 @@ Returns **{execPeer: [function][4], triggerPeer: [function][4], trigger: [functi
 
 ## isNodeAvailable
 
-Checks if Node.js Engine is available.
+Checks if Node.js Engine is available. (returns true even if the node instance is terminated)
 
 Returns **[boolean][5]** Returns true if Node.js Engine is available.
+
+## isNodeReady
+
+Node is available and is ready to exec requests
+
+Returns **[boolean][5]** 
 
 ## terminateNode
 
