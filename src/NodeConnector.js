@@ -179,12 +179,20 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Checks if Node.js Engine is available.
+     * Checks if Node.js Engine is available. (returns true even if the node instance is terminated)
      *
      * @returns {boolean} Returns true if Node.js Engine is available.
      */
     function isNodeAvailable() {
         return !!window.PhNodeEngine;
+    }
+
+    /**
+     * Node is available and is ready to exec requests
+     * @return {boolean}
+     */
+    function isNodeReady() {
+        return isNodeAvailable() && window.PhNodeEngine.nodeReady;
     }
 
     /**
@@ -231,6 +239,7 @@ define(function (require, exports, module) {
 
     exports.createNodeConnector = createNodeConnector;
     exports.isNodeAvailable = isNodeAvailable;
+    exports.isNodeReady = isNodeReady;
     exports.terminateNode = terminateNode;
     exports.isInspectEnabled = isInspectEnabled;
     exports.setInspectEnabled = setInspectEnabled;

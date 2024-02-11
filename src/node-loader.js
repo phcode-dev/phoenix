@@ -617,7 +617,8 @@ function nodeLoader() {
         window.PhNodeEngine = {
             createNodeConnector,
             setInspectEnabled,
-            isInspectEnabled
+            isInspectEnabled,
+            nodeReady: false
         };
 
         window.__TAURI__.path.resolveResource("src-node/index.js")
@@ -629,6 +630,7 @@ function nodeLoader() {
                 command = window.__TAURI__.shell.Command.sidecar('phnode', argsArray);
                 command.on('close', data => {
                     window.isNodeTerminated = true;
+                    window.PhNodeEngine.nodeReady = false;
                     nodeTerminationResolve();
                     console.log(`PhNode: command finished with code ${data.code} and signal ${data.signal}`);
                     if(!resolved) {
@@ -637,6 +639,7 @@ function nodeLoader() {
                 });
                 command.on('error', error => {
                     window.isNodeTerminated = true;
+                    window.PhNodeEngine.nodeReady = false;
                     nodeTerminationResolve();
                     console.error(`PhNode: command error: "${error}"`);
                     if(!resolved) {
@@ -694,6 +697,7 @@ function nodeLoader() {
                         fs.setNodeWSEndpoint(message.phoenixFSURL);
                         fs.forceUseNodeWSEndpoint(true);
                         setNodeWSEndpoint(message.phoenixNodeURL);
+                        window.PhNodeEngine.nodeReady = true;
                         resolve(message);
                         // node is designed such that it is not required at boot time to lower startup time.
                         // Keep this so to increase boot speed.

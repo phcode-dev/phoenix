@@ -344,6 +344,15 @@ Phoenix.app = {
                 reject("openURLInDefaultBrowser: URL should be http or https, but was " + url);
                 return;
             }
+            const NodeUtils = window.NodeUtils;
+            if(NodeUtils && NodeUtils.isNodeReady()){
+                // node has first preference as appimages cannot work reliably with tauri open in browser xdg-open
+                // api across various linux distributions
+                NodeUtils.openURLInDefaultBrowser(url)
+                    .then(resolve)
+                    .catch(reject);
+                return;
+            }
             window.__TAURI__.invoke('open_url_in_browser', {url: url})
                 .then(resolve)
                 .catch(reject);
