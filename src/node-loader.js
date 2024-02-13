@@ -623,6 +623,11 @@ function nodeLoader() {
 
         window.__TAURI__.path.resolveResource("src-node/index.js")
             .then(async nodeSrcPath=>{
+                if(Phoenix.platform === "linux") {
+                    // in linux installed distributions, src-node is present in the same dir as the executable.
+                    const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
+                    nodeSrcPath = `${window.path.dirname(cliArgs[0])}/src-node`;
+                }
                 // node is designed such that it is not required at boot time to lower startup time.
                 // Keep this so to increase boot speed.
                 const inspectPort = Phoenix.isTestWindow ? getRandomNumber(5000, 50000) : 9229;
