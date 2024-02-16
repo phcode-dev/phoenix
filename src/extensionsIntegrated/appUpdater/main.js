@@ -105,7 +105,7 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.browser.isTauri || Phoenix.isTestWindow) {
             // app updates are only for desktop builds
             return;
         }
