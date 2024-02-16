@@ -159,6 +159,7 @@ define(function (require, exports, module) {
     exports.HELP_HOMEPAGE               = "help.homepage";              // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_TWITTER                = "help.twitter";               // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_TOGGLE_SHORTCUTS_PANEL = "help.toggleShortcuts";       // shortcuts integrated extension
+    exports.HELP_CHECK_UPDATES          = "help.checkUpdates";       // shortcuts integrated extension
 
     // Working Set Configuration
     exports.CMD_WORKINGSET_SORT_BY_ADDED  = "cmd.sortWorkingSetByAdded";     // WorkingSetSort.js       _handleSort()

@@ -414,6 +414,38 @@ Phoenix.app = {
         }
         return true;
     },
+    /**
+     * Gets the number of phoenix windows open.
+     * @return {Promise<number>}
+     */
+    getPhoenixInstanceCount: async function () {
+        if(!Phoenix.browser.isTauri) {
+            // there is no primary window concept in browsers. all are primary for now.
+            console.error("getPhoenixInstanceCount is not supported in browsers!");
+            return true;
+        }
+        let windowCount = 0;
+        const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
+        for(let tauriWindowLabel of allTauriWindowsLabels){
+            if(tauriWindowLabel && (tauriWindowLabel.startsWith(PHOENIX_WINDOW_PREFIX) || tauriWindowLabel === 'main')) {
+                windowCount ++;
+            }
+        }
+        return windowCount;
+    },
+    /**
+     * Returns the operating system CPU architecture for which the tauri app was compiled. Possible values are
+     * 'x86', 'x86_64', 'arm', 'aarch64', 'mips', 'mips64', 'powerpc', 'powerpc64', 'riscv64', 's390x', 'sparc64'.
+     * @return {Promise<string>}
+     */
+    getPlatformArch: async function () {
+        if(!Phoenix.browser.isTauri) {
+            // there is no primary window concept in browsers. all are primary for now.
+            console.error("getPlatformArch is not supported in browsers!");
+            return true;
+        }
+        return window.__TAURI__.os.arch();
+    },
     openNewPhoenixEditorWindow: async function (preferredWidth, preferredHeight, _cliArgsArray, _cwd) {
         const phoenixURL = new URL(location.href);
         if(_cliArgsArray){
