@@ -231,7 +231,7 @@ define(function (require, exports, module) {
     }
 
     function getPrefixedSystem(prefix) {
-        console.warn("StateManager.getPrefixedSystem() is deprecated. Use StateManager.getExtensionStateManager()");
+        console.warn("StateManager.getPrefixedSystem() is deprecated. Use StateManager.createExtensionStateManager()");
         return createExtensionStateManager(prefix);
     }
 

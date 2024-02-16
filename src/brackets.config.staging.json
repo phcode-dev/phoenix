@@ -8,5 +8,6 @@
     "environment"                : "stage",
     "buildtype"                  : "staging",
     "bugsnagEnv"                 : "staging",
-    "app_notification_url"       : "https://updates.phcode.io/appNotifications/staging/"
+    "app_notification_url"       : "https://updates.phcode.io/appNotifications/staging/",
+    "app_update_url"             : "https://updates.phcode.io/tauri/update-latest-pre-release.json"
 }

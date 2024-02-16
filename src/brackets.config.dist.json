@@ -8,5 +8,6 @@
     "environment"             : "production",
     "buildtype"               : "production",
     "bugsnagEnv"              : "production",
-    "app_notification_url"    : "https://updates.phcode.io/appNotifications/prod/"
+    "app_notification_url"    : "https://updates.phcode.io/appNotifications/prod/",
+    "app_update_url"          : "https://updates.phcode.io/tauri/update-latest-stable-prod.json"
 }
