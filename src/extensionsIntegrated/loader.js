@@ -39,4 +39,5 @@ define(function (require, exports, module) {
     require("./NavigationAndHistory/main");
     require("./RecentProjects/main");
     require("./DisplayShortcuts/main");
+    require("./appUpdater/main");
 });

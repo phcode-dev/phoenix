@@ -1,14 +1,14 @@
 define(function (require, exports, module) {
-    const AppInit = brackets.getModule("utils/AppInit"),
-        Commands = brackets.getModule("command/Commands"),
-        CommandManager  = brackets.getModule("command/CommandManager"),
-        Menus = brackets.getModule("command/Menus"),
-        Dialogs = brackets.getModule("widgets/Dialogs"),
-        DefaultDialogs  = brackets.getModule("widgets/DefaultDialogs"),
-        Strings     = brackets.getModule("strings"),
-        marked = brackets.getModule('thirdparty/marked.min'),
-        semver = brackets.getModule("thirdparty/semver.browser"),
-        PreferencesManager  = brackets.getModule("preferences/PreferencesManager");
+    const AppInit = require("utils/AppInit"),
+        Commands = require("command/Commands"),
+        CommandManager  = require("command/CommandManager"),
+        Menus = require("command/Menus"),
+        Dialogs = require("widgets/Dialogs"),
+        DefaultDialogs  = require("widgets/DefaultDialogs"),
+        Strings     = require("strings"),
+        marked = require('thirdparty/marked.min'),
+        semver = require("thirdparty/semver.browser"),
+        PreferencesManager  = require("preferences/PreferencesManager");
 
     const KEY_LAST_UPDATE_CHECK_TIME = "PH_LAST_UPDATE_CHECK_TIME",
         KEY_UPDATE_AVAILABLE = "PH_UPDATE_AVAILABLE";
