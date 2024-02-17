@@ -305,7 +305,11 @@ a, img {
     }
 }
 
-#status-indicators {
+.hide-status-indicators > *:not(.global-indicator) {
+    display: none !important;
+}
+
+#status-indicators{
     background: @bc-bg-status-bar;
     color: @bc-text;
     position: absolute;
@@ -319,18 +323,16 @@ a, img {
     }
 
     > div {
-        &:not(.spinner) {
-            border-left: 1px solid @bc-panel-border;
+        border-left: 1px solid @bc-panel-border;
 
-            .dark & {
-                border-left: 1px solid @dark-bc-panel-separator;
-            }
+        .dark & {
+            border-left: 1px solid @dark-bc-panel-separator;
         }
         float: right;
         padding: 0 10px;
     }
     .spinner {  // spinner is tiny & usually invisible; reduce margin so gap is less glaring
-        margin: 6px 10px;
+        margin: 6px -5px;
         padding: 0;
     }
 
@@ -424,6 +426,18 @@ a, img {
 }
 
 #status-overwrite {
+    transition: background-color 3s;
+    background-color: rgba(255, 255, 255, 0);
+    color: @bc-text;
+    cursor: pointer;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+#status-tasks {
+    display: flex;
     transition: background-color 3s;
     background-color: rgba(255, 255, 255, 0);
     color: @bc-text;

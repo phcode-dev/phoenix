@@ -52,6 +52,7 @@ define(function (require, exports, module) {
      * @param {boolean} updateCursor Sets the cursor to "wait"
      */
     function showBusyIndicator(updateCursor) {
+        console.warn("StatusBar.showBusyIndicator API is deprecated. Please use new module `features/TaskManager` instead");
         if (!_init) {
             console.error("StatusBar API invoked before status bar created");
             return;
@@ -69,6 +70,7 @@ define(function (require, exports, module) {
      * Hides the 'busy' indicator
      */
     function hideBusyIndicator() {
+        console.warn("StatusBar.hideBusyIndicator API is deprecated. Please use new module `features/TaskManager` instead");
         if (!_init) {
             console.error("StatusBar API invoked before status bar created");
             return;
@@ -185,14 +187,14 @@ define(function (require, exports, module) {
      * Hide the statusbar Indicators
      */
     function hideIndicators() {
-        $indicators.css("display", "none");
+        $indicators.addClass("hide-status-indicators");
     }
 
     /**
      * Show the statusbar Indicators
      */
     function showIndicators() {
-        $indicators.css("display", "");
+        $indicators.removeClass("hide-status-indicators");
     }
 
 
