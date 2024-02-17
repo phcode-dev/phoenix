@@ -359,6 +359,9 @@ define({
     "STATUSBAR_DEFAULT_LANG": "(default)",
     "STATUSBAR_SET_DEFAULT_LANG": "Set as Default for .{0} Files",
     "STATUSBAR_ENCODING_TOOLTIP": "Select the encoding",
+    "STATUSBAR_TASKS": "Tasks",
+    "STATUSBAR_TASKS_TOOLTIP": "Manage Active Tasks",
+    "STATUSBAR_TASKS_HIDE_SPINNER": "Hide Spinner Icon",
 
     // CodeInspection: errors/warnings
     "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems",

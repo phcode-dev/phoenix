@@ -43,6 +43,7 @@ define(function (require, exports, module) {
         InMemoryFile         = require("document/InMemoryFile"),
         ProjectManager       = require("project/ProjectManager"),
         Async                = require("utils/Async"),
+        TaskManager    = require("features/TaskManager"),
         FileSystem           = require("filesystem/FileSystem"),
         CommandManager       = require("command/CommandManager"),
         Commands             = require("command/Commands"),
@@ -55,6 +56,7 @@ define(function (require, exports, module) {
     /* StatusBar indicators */
     var languageSelect, // this is a DropdownButton instance
         encodingSelect, // this is a DropdownButton instance
+        tasksSelect, // this is a DropdownButton instance
         $cursorInfo,
         $fileInfo,
         $indentType,
@@ -418,7 +420,39 @@ define(function (require, exports, module) {
         encodingSelect.$button.addClass("btn-status-bar");
         $("#status-encoding").append(encodingSelect.$button);
         encodingSelect.$button.attr("title", Strings.STATUSBAR_ENCODING_TOOLTIP);
+        let hideSpinner = PreferencesManager.getViewState("StatusBar.HideSpinner");
+        if(hideSpinner){
+            $("#status-tasks .spinner").addClass("forced-hidden");
+        }
 
+        tasksSelect = new DropdownButton(Strings.STATUSBAR_TASKS, [Strings.STATUSBAR_TASKS_HIDE_SPINNER], function (item, index) {
+            if (item === Strings.STATUSBAR_TASKS_HIDE_SPINNER) {
+                if($("#status-tasks .spinner").hasClass("forced-hidden")){
+                    return  "<span class='checked-spinner'></span>" + item;
+                }
+                return item;
+            }
+            return TaskManager._renderItem(item, index);
+        });
+        TaskManager._setTaskSelect(tasksSelect);
+
+        tasksSelect.dropdownExtraClasses = "dropdown-status-bar";
+        tasksSelect.$button.addClass("btn-status-bar");
+        $("#status-tasks").append(tasksSelect.$button);
+        tasksSelect.$button.attr("title", Strings.STATUSBAR_TASKS_TOOLTIP);
+        tasksSelect.on("select", function (e, selection) {
+            if(selection === Strings.STATUSBAR_TASKS_HIDE_SPINNER){
+                hideSpinner = !PreferencesManager.getViewState("StatusBar.HideSpinner");
+                PreferencesManager.setViewState("StatusBar.HideSpinner", hideSpinner);
+                if(!hideSpinner){
+                    $("#status-tasks .spinner").removeClass("forced-hidden");
+                } else {
+                    $("#status-tasks .spinner").addClass("forced-hidden");
+                }
+                return;
+            }
+            return TaskManager._onSelect(e, selection);
+        });
 
         // indentation event handlers
         $indentType.on("click", _toggleIndentType);

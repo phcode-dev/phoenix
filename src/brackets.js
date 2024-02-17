@@ -175,6 +175,7 @@ define(function (require, exports, module) {
     require("features/JumpToDefManager");
     require("features/QuickViewManager");
     require("features/SelectionViewManager");
+    require("features/TaskManager");
     require("features/BeautificationManager");
     require("features/NewFileContentManager");
 
@@ -275,6 +276,7 @@ define(function (require, exports, module) {
             ProjectManager: require("project/ProjectManager"),
             QuickViewManager: require("features/QuickViewManager"),
             SelectionViewManager: require("features/SelectionViewManager"),
+            TaskManager: require("features/TaskManager"),
             ThemeManager: require("view/ThemeManager"),
             WorkspaceManager: require("view/WorkspaceManager"),
             SearchResultsView: require("search/SearchResultsView"),
