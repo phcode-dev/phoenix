@@ -147,36 +147,56 @@ define(function (require, exports, module) {
         if(!task._$html){
             return;
         }
+        $html.find(".progress")
+            .removeClass("progress-bar-foreground")
+            .removeClass("progress-bar-foreground-pulse")
+            .removeClass("progress-bar-foreground-failure")
+            .removeClass("progress-bar-foreground-success");
+
         if(task._completedStatus === STATUS_SUCCESS){
             $html.find(".progress")
-                .removeClass("progress-bar-foreground")
-                .removeClass("progress-bar-foreground-pulse")
-                .removeClass("progress-bar-foreground-failure")
                 .addClass("progress-bar-foreground-success")
                 .css('width', `100%`);
             return;
         }
         if(task._completedStatus === STATUS_FAIL){
             $html.find(".progress")
-                .removeClass("progress-bar-foreground")
-                .removeClass("progress-bar-foreground-pulse")
-                .removeClass("progress-bar-foreground-success")
                 .addClass("progress-bar-foreground-failure")
                 .css('width', `100%`);
             return;
         }
         if(task._percent){
             $html.find(".progress")
-                .removeClass("progress-bar-foreground-pulse")
                 .addClass("progress-bar-foreground")
                 .css('width', `${task._percent}%`);
         } else {
             $html.find(".progress")
-                .removeClass("progress-bar-foreground")
-                .removeClass("progress-bar-foreground-success")
-                .removeClass("progress-bar-foreground-failure")
                 .addClass("progress-bar-foreground-pulse")
-                .css('width', `${task._percent}%`);
+                .css('width', `100%`);
+        }
+    }
+
+    function _renderPlayIcons(task) {
+        const $html = task._$html;
+        if(!task._$html){
+            return;
+        }
+        const iconMap = {
+            ".close-icon": "_showStopIcon",
+            ".pause-icon": "_showPauseIcon",
+            ".play-icon": "_showPlayIcon",
+            ".retry-icon": "_showRestartIcon"
+        };
+        for(let iconClass of Object.keys(iconMap)){
+            const showIconMessage = iconMap[iconClass];
+            if(task[showIconMessage]){
+                $html.find(iconClass)
+                    .removeClass('forced-hidden')
+                    .attr("title", task[showIconMessage]);
+            } else {
+                $html.find(iconClass)
+                    .addClass('forced-hidden');
+            }
         }
     }
 
@@ -191,6 +211,7 @@ define(function (require, exports, module) {
             $html.find(".task-icon").html(task._iconHTML);
         }
         _renderProgressbar(task);
+        _renderPlayIcons(task);
     }
 
     function addNewTask(taskTitle, message, iconHTML, options = {
@@ -208,6 +229,10 @@ define(function (require, exports, module) {
             _id: `${taskTitle}-${StringUtils.randomString(10)}`,
             _title: taskTitle,
             _message: message,
+            _showPauseIcon: null,
+            _showPlayIcon: null,
+            _showStopIcon: null,
+            _showRestartIcon: null,
             onPauseClick: options && options.onPauseClick,
             onPlayClick: options && options.onPlayClick,
             onStopClick: options && options.onStopClick,
@@ -249,6 +274,7 @@ define(function (require, exports, module) {
 
         function setProgressPercent(percent) {
             task._percent = percent;
+            task._completedStatus = STATUS_INCOMPLETE;
             _renderProgressbar(task);
         }
         function getProgressPercent() {
@@ -270,6 +296,39 @@ define(function (require, exports, module) {
             return task._completedStatus === STATUS_SUCCESS;
         }
 
+        function showStopIcon(tooltipMessage) {
+            task._showStopIcon = tooltipMessage || Strings.STATUSBAR_TASKS_STOP;
+            _renderPlayIcons(task);
+        }
+        function showPlayIcon(tooltipMessage) {
+            task._showPlayIcon = tooltipMessage || Strings.STATUSBAR_TASKS_PLAY;
+            _renderPlayIcons(task);
+        }
+        function showPauseIcon(tooltipMessage) {
+            task._showPauseIcon = tooltipMessage || Strings.STATUSBAR_TASKS_PAUSE;
+            _renderPlayIcons(task);
+        }
+        function showRestartIcon(tooltipMessage) {
+            task._showRestartIcon = tooltipMessage || Strings.STATUSBAR_TASKS_RESTART;
+            _renderPlayIcons(task);
+        }
+        function hideStopIcon() {
+            task._showStopIcon = null;
+            _renderPlayIcons(task);
+        }
+        function hidePlayIcon() {
+            task._showPlayIcon = null;
+            _renderPlayIcons(task);
+        }
+        function hidePauseIcon() {
+            task._showPauseIcon = null;
+            _renderPlayIcons(task);
+        }
+        function hideRestartIcon() {
+            task._showRestartIcon = null;
+            _renderPlayIcons(task);
+        }
+
         task.close = close;
         task.setTitle = setTitle;
         task.getTitle = getTitle;
@@ -282,6 +341,14 @@ define(function (require, exports, module) {
         task.setProgressPercent = setProgressPercent;
         task.getProgressPercent = getProgressPercent;
         task.setIconHTML = setIconHTML;
+        task.showStopIcon = showStopIcon;
+        task.hideStopIcon = hideStopIcon;
+        task.showPlayIcon = showPlayIcon;
+        task.hidePlayIcon = hidePlayIcon;
+        task.showPauseIcon = showPauseIcon;
+        task.hidePauseIcon = hidePauseIcon;
+        task.showRestartIcon = showRestartIcon;
+        task.hideRestartIcon = hideRestartIcon;
         taskList[task._id] = task;
         EventDispatcher.makeEventDispatcher(task);
         _showOrHideStatusBarIfNeeded();

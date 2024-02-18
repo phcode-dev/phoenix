@@ -365,6 +365,10 @@ define({
     "STATUSBAR_TASKS_TOOLTIP": "Manage Active Tasks",
     "STATUSBAR_TASKS_HIDE_SPINNER": "Hide Spinner Icon",
     "STATUSBAR_TASKS_UNKNOWN_EXTENSION_TASK": "Unknown Extension Task\u2026",
+    "STATUSBAR_TASKS_PLAY": "Start or Resume",
+    "STATUSBAR_TASKS_PAUSE": "Pause",
+    "STATUSBAR_TASKS_STOP": "Stop",
+    "STATUSBAR_TASKS_RESTART": "Restart",
 
     // CodeInspection: errors/warnings
     "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems",
