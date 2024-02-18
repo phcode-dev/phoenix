@@ -55,10 +55,6 @@ define(function (require, exports, module) {
         return true;
     }
 
-    function openURLInDefaultLinuxBrowser(url) {
-        return utilsConnector.execPeer("openURLInDefaultLinuxBrowser", url);
-    }
-
     function showInLinuxFileExplorer(fileOrFolderPath) {
         return utilsConnector.execPeer("showInLinuxFileExplorer", fileOrFolderPath);
     }
@@ -71,7 +67,6 @@ define(function (require, exports, module) {
 
     exports.fetchURLText = fetchURLText;
     exports.updateNodeLocaleStrings = updateNodeLocaleStrings;
-    exports.openURLInDefaultLinuxBrowser = openURLInDefaultLinuxBrowser;
     exports.showInLinuxFileExplorer = showInLinuxFileExplorer;
     exports.isNodeReady = NodeConnector.isNodeReady;
 
