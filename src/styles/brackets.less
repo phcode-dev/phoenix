@@ -448,6 +448,125 @@ a, img {
     }
 }
 
+.task-status-popup-item {
+    display: flex;
+    color: @bc-text;
+    align-items: center;
+    gap: 10px;
+    min-width: 200px;
+    overflow: hidden;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+
+    .status-container {
+        flex-grow: 1;
+        margin: 2px;
+    }
+
+    .close-icon, .pause-icon, .play-icon, .retry-icon{
+        font-size: 13px;
+        width: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .close-icon:hover, .pause-icon:hover, .play-icon:hover, .retry-icon:hover{
+        color: @bc-secondary-btn-border;
+    }
+    .task-icon {
+        font-size: 22px;
+    }
+
+    .task-heading {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2px;
+    }
+
+    .progress-bar-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .progress-bar-background {
+        background: #555;
+        flex-grow: 1;
+        height: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+
+    .progress-bar-foreground {
+        background: #0a84ff;
+        height: 100%;
+        /* width can be adjusted by JS to reflect progress */
+    }
+
+    .progress-bar-foreground-success {
+        background: @accent-success;
+        height: 100%;
+    }
+
+    .progress-bar-foreground-failure {
+        background: @accent-error;
+        height: 100%;
+    }
+
+    .progress-bar-foreground-pulse {
+        background: repeating-linear-gradient(
+                to right,
+                #003366 0%,
+                #004c99 10%,
+                #0066cc 20%,
+                #007bff 30%,
+                #3399ff 40%,
+                #66b2ff 50%,
+                #3399ff 60%,
+                #007bff 70%,
+                #0066cc 80%,
+                #004c99 90%,
+                #003366 100%
+        );
+        background-size: 200% auto;
+        animation: progress-gradient 2s linear infinite;
+        height: 100%;
+        /* width can be adjusted by JS to reflect progress */
+    }
+
+    @keyframes progress-gradient {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
+    .task-title {
+        white-space: nowrap;
+        max-width: 25vw;
+        overflow: hidden;
+        color: #000;
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+    .task-message {
+        font-size: 0.75em; /* slightly smaller than before */
+        font-weight: normal;
+        max-width: 25vw;
+        overflow: hidden;
+        color: @bc-text;
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+}
+
 #status-overwrite.flash {
     transition: background-color 1s;
     background-color: rgb(120, 178, 242);

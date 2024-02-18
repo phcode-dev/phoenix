@@ -277,6 +277,7 @@ define(function (require, exports, module) {
             QuickViewManager: require("features/QuickViewManager"),
             SelectionViewManager: require("features/SelectionViewManager"),
             TaskManager: require("features/TaskManager"),
+            StatusBar: require("widgets/StatusBar"),
             ThemeManager: require("view/ThemeManager"),
             WorkspaceManager: require("view/WorkspaceManager"),
             SearchResultsView: require("search/SearchResultsView"),
