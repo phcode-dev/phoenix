@@ -5,6 +5,7 @@ The list of all APIs for phoenix.
 1. [features/NewFileContentManager](NewFileContentManager-API)
 1. [features/QuickViewManager](QuickViewManager-API)
 1. [features/SelectionViewManager](SelectionViewManager-API)
+1. [features/TaskManager](TaskManager-API)
 1. [NodeConnector](NodeConnector-API)
 1. [utils/EventDispatcher](EventDispatcher-API)
 1. [utils/EventManager](EventManager-API)

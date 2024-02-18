@@ -117,7 +117,7 @@ define(function (require, exports, module) {
             return;
         }
         const task = taskList[selection];
-        return task.onSelect && task.onSelect(el, selection);
+        return task.onSelect && task.onSelect(el);
     }
 
     function _getDefaultTaskIDs() {
