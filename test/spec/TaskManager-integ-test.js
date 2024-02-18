@@ -115,6 +115,24 @@ define(function (require, exports, module) {
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
         });
 
+        it("Should add two tasks and show popup on clicking statusbar", async function () {
+            const task1 = TaskManager.addNewTask("title1", "message1");
+            const task2 = TaskManager.addNewTask("title2", "message2");
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("title1")).toBeTrue();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("message1")).toBeTrue();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("title2")).toBeTrue();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("message2")).toBeTrue();
+            task1.close();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("title1")).toBeFalse();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("message1")).toBeFalse();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("title2")).toBeTrue();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("message2")).toBeTrue();
+            task2.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        });
+
         it("Should show/hide spinner icon", async function () {
             PreferencesManager.setViewState("StatusBar.HideSpinner", false);
             const task = TaskManager.addNewTask("title", "message");
@@ -135,5 +153,143 @@ define(function (require, exports, module) {
             task.close();
         });
 
+        it("Should be able to change title, message, icon when popup is open", async function () {
+            const task = TaskManager.addNewTask("title", "message", "oldImage");
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            task.setTitle("newTitle");
+            expect(task.getTitle()).toBe("newTitle");
+            task.setMessage("newMessage");
+            expect(task.getMessage()).toBe("newMessage");
+            task.setIconHTML("<image>testImage</image>");
+            expect(testWindow.$(".dropdown-status-bar").text().includes("newTitle")).toBeTrue();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("newMessage")).toBeTrue();
+            expect(testWindow.$(".dropdown-status-bar").text().includes("testImage")).toBeTrue();
+            task.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        });
+
+        function getProgressPercent() {
+            return Math.round((testWindow.$(".dropdown-status-bar .progress").width() /
+                testWindow.$(".dropdown-status-bar .progress").parent().width()) * 100);
+        }
+
+        it("Should be able to add with progress percent", async function () {
+            const progressPercent= 34;
+            const task = TaskManager.addNewTask("title", "message", "oldImage", {
+                progressPercent: progressPercent
+            });
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            expect(getProgressPercent()).toBe(progressPercent);
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground')).toBeTrue();
+            task.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        });
+
+        it("Should be able to change progress percent when popup is open", async function () {
+            const task = TaskManager.addNewTask("title", "message", "oldImage");
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-pulse')).toBeTrue();
+            task.setProgressPercent(0);
+            expect(getProgressPercent()).toBe(100);
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-pulse')).toBeTrue();
+            task.setProgressPercent(10);
+            expect(getProgressPercent()).toBe(10);
+            task.setProgressPercent(70);
+            expect(getProgressPercent()).toBe(70);
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground')).toBeTrue();
+            task.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        });
+
+        it("Should be able to change progress percent when popup is closed", async function () {
+            const task = TaskManager.addNewTask("title", "message", "oldImage");
+            task.setProgressPercent(70);
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+
+            expect(getProgressPercent()).toBe(70);
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground')).toBeTrue();
+            task.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        });
+
+        it("Should be able to set progress to success", async function () {
+            const task = TaskManager.addNewTask("title", "message");
+            task.setSucceded();
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            expect(getProgressPercent()).toBe(100);
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-success')).toBeTrue();
+            task.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        });
+
+        it("Should be able to set progress to failed", async function () {
+            const task = TaskManager.addNewTask("title", "message");
+            task.setFailed();
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            expect(getProgressPercent()).toBe(100);
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-failure')).toBeTrue();
+            task.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        });
+
+        it("Should be able to reset progress after task failed", async function () {
+            const task = TaskManager.addNewTask("title", "message");
+            task.setFailed();
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            expect(getProgressPercent()).toBe(100);
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-failure')).toBeTrue();
+
+            // now try to set progress to reset the failure
+            task.setProgressPercent(70);
+            expect(getProgressPercent()).toBe(70);
+            expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground')).toBeTrue();
+
+            task.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        });
+
+        const iconMapShow = {
+            ".close-icon": "showStopIcon",
+            ".pause-icon": "showPauseIcon",
+            ".play-icon": "showPlayIcon",
+            ".retry-icon": "showRestartIcon"
+        };
+        const iconMapHide = {
+            ".close-icon": "hideStopIcon",
+            ".pause-icon": "hidePauseIcon",
+            ".play-icon": "hidePlayIcon",
+            ".retry-icon": "hideRestartIcon"
+        };
+        function testIcons(iconClass, showFn, hideFn) {
+            const task = TaskManager.addNewTask("title", "message");
+            task.setFailed();
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+
+            expect(testWindow.$(`.dropdown-status-bar ${iconClass}`).is(":visible")).toBeFalse();
+            task[showFn]("tooltip");
+            expect(testWindow.$(`.dropdown-status-bar ${iconClass}`).is(":visible")).toBeTrue();
+            task[hideFn]();
+            expect(testWindow.$(`.dropdown-status-bar ${iconClass}`).is(":visible")).toBeFalse();
+            task[showFn]("tooltip changed");
+            expect(testWindow.$(`.dropdown-status-bar ${iconClass}`).is(":visible")).toBeTrue();
+            expect(testWindow.$(`.dropdown-status-bar ${iconClass}`).attr("title")).toBe("tooltip changed");
+
+            task.close();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+        }
+
+        for(let iconClass of Object.keys(iconMapShow)){
+            it(`Should be able to show and hide ${iconClass} button`, function(){
+                testIcons(iconClass, iconMapShow[iconClass], iconMapHide[iconClass]);
+            });
+        }
     });
 });
