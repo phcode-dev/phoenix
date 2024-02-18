@@ -28,7 +28,7 @@
 define(function (require, exports, module) {
 
 
-    var AppInit           = require("utils/AppInit"),
+    const AppInit           = require("utils/AppInit"),
         CommandManager    = require("command/CommandManager"),
         Commands          = require("command/Commands"),
         Dialogs           = require("widgets/Dialogs"),
@@ -43,12 +43,13 @@ define(function (require, exports, module) {
         InMemoryFile      = require("document/InMemoryFile"),
         ProjectManager    = require("project/ProjectManager"),
         SearchResultsView = require("search/SearchResultsView").SearchResultsView,
-        StatusBar         = require("widgets/StatusBar"),
+        TaskManager  = require("features/TaskManager"),
         Strings           = require("strings"),
         StringUtils       = require("utils/StringUtils"),
         Metrics           = require("utils/Metrics"),
         _                 = require("thirdparty/lodash");
 
+    let searchTask;
 
     /** @const Maximum number of files to do replacements in-memory instead of on disk. */
     var MAX_IN_MEMORY = 20;
@@ -65,6 +66,25 @@ define(function (require, exports, module) {
      * @type {Function}
      */
     var _finishReplaceBatch;
+
+    function _hideBusyIndicator() {
+        if(searchTask){
+            searchTask.close();
+            searchTask=null;
+        }
+    }
+
+    function _showBusyIndicator(scope) {
+        if(searchTask){
+            searchTask.close();
+        }
+        let scopeName = scope ?
+            Phoenix.app.getDisplayPath(scope.fullPath) :
+            Phoenix.app.getDisplayPath(ProjectManager.getProjectRoot().fullPath);
+        scopeName = StringUtils.format(Strings.FIND_IN_FILES_SEARCHING_IN, scopeName);
+        searchTask = TaskManager.addNewTask(Strings.FIND_IN_FILES_SEARCHING, scopeName,
+            `<i class="fa-solid fa-magnifying-glass"></i>`);
+    }
 
     /**
      * Does a search in the given scope with the given filter. Shows the result list once the search is complete.
@@ -104,11 +124,11 @@ define(function (require, exports, module) {
                     }
                 }
 
-                StatusBar.hideBusyIndicator();
+                _hideBusyIndicator();
             })
             .fail(function (err) {
                 console.log("find in files failed: ", err);
-                StatusBar.hideBusyIndicator();
+                _hideBusyIndicator();
             });
     }
 
@@ -135,11 +155,11 @@ define(function (require, exports, module) {
                     }
 
                 }
-                StatusBar.hideBusyIndicator();
+                _hideBusyIndicator();
             })
             .fail(function (err) {
                 console.log("replace all failed: ", err);
-                StatusBar.hideBusyIndicator();
+                _hideBusyIndicator();
             });
     }
 
@@ -226,7 +246,7 @@ define(function (require, exports, module) {
                 disableFindBar = (replaceText ? true : false);
             if (queryInfo && queryInfo.query) {
                 _findBar.enable(!disableFindBar);
-                StatusBar.showBusyIndicator(disableFindBar);
+                _showBusyIndicator(scope);
                 let queryType = "query";
                 if (queryInfo.isRegexp) {
                     queryType = queryType + ":regex";
@@ -346,7 +366,7 @@ define(function (require, exports, module) {
             isRegexp = model.queryInfo.isRegexp;
 
         function processReplace(forceFilesOpen) {
-            StatusBar.showBusyIndicator(true);
+            _showBusyIndicator(model.scope);
             FindInFiles.doReplace(resultsClone, replaceText, { forceFilesOpen: forceFilesOpen, isRegexp: isRegexp })
                 .fail(function (errors) {
                     var message = Strings.REPLACE_IN_FILES_ERRORS + FileUtils.makeDialogFileList(
@@ -369,7 +389,7 @@ define(function (require, exports, module) {
                     );
                 })
                 .always(function () {
-                    StatusBar.hideBusyIndicator();
+                    _hideBusyIndicator();
                 });
         }
 

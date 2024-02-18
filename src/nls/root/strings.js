@@ -227,6 +227,8 @@ define({
     "FIND_IN_FILES_FILE_PATH": "<span class='dialog-filename'>{0}</span> {2} <span class='dialog-path'>{1}</span>", // We should use normal dashes on Windows instead of em dash eventually
     "FIND_IN_FILES_EXPAND_COLLAPSE": "Ctrl/Cmd click to expand/collapse all",
     "FIND_IN_FILES_INDEXING": "Indexing for Instant Search\u2026",
+    "FIND_IN_FILES_SEARCHING": "Searching Files\u2026",
+    "FIND_IN_FILES_SEARCHING_IN": "In {0}",
     "FIND_IN_FILES_INDEXING_PROGRESS": "Indexing {0} of {1} files for Instant Search\u2026",
     "REPLACE_IN_FILES_ERRORS_TITLE": "Replace Errors",
     "REPLACE_IN_FILES_ERRORS": "The following files weren't modified because they changed after the search or couldn't be written.",
@@ -362,6 +364,7 @@ define({
     "STATUSBAR_TASKS": "Tasks",
     "STATUSBAR_TASKS_TOOLTIP": "Manage Active Tasks",
     "STATUSBAR_TASKS_HIDE_SPINNER": "Hide Spinner Icon",
+    "STATUSBAR_TASKS_UNKNOWN_EXTENSION_TASK": "Unknown Extension Task\u2026",
 
     // CodeInspection: errors/warnings
     "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems",
