@@ -55,6 +55,15 @@ define(function (require, exports, module) {
         return true;
     }
 
+    async function getPhoenixBinaryVersion() {
+        if(!Phoenix.browser.isTauri) {
+            throw new Error("getPhoenixBinaryVersion not available in browser");
+        }
+        const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
+        const phoenixBinPath = cliArgs[0];
+        return utilsConnector.execPeer("getPhoenixBinaryVersion", phoenixBinPath);
+    }
+
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -63,6 +72,7 @@ define(function (require, exports, module) {
 
     exports.fetchURLText = fetchURLText;
     exports.updateNodeLocaleStrings = updateNodeLocaleStrings;
+    exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
     exports.isNodeReady = NodeConnector.isNodeReady;
 
     window.NodeUtils = exports;
