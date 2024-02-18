@@ -25,7 +25,6 @@
  * supported by the task.
  * @module features/TaskManager
  */
-
 define(function (require, exports, module) {
     const Strings = require("strings"),
         EventDispatcher = require("utils/EventDispatcher"),
@@ -38,6 +37,7 @@ define(function (require, exports, module) {
     /**
      * This is used by legacy extensions that used StatusBar.showBusyIndicator and hide apis that are deprecated.
      * here for legacy support.
+     * @private
      * @type {boolean}
      */
     let legacyExtensionBusy = false;
@@ -214,7 +214,76 @@ define(function (require, exports, module) {
         _renderPlayIcons(task);
     }
 
-    function addNewTask(taskTitle, message, iconHTML, options = {
+    /**
+     * @typedef {Object} TaskObject
+     * Methods for managing the task's state and UI representation in the TaskManager.
+     *
+     * @property {function(): void} close - Closes the task and removes it from the UI.
+     * @property {function(string): void} setTitle - Sets the task's title.
+     * @property {function(): string} getTitle - Returns the task's title.
+     * @property {function(string): void} setMessage - Sets the task's message.
+     * @property {function(): string} getMessage - Returns the task's message.
+     * @property {function(number): void} setProgressPercent - Sets the task's progress percentage.
+     * @property {function(): number} getProgressPercent - Returns the task's current progress percentage.
+     * @property {function(): void} setFailed - Marks the task as failed.
+     * @property {function(): boolean} isFailed - Returns true if the task is marked as failed.
+     * @property {function(): void} setSucceeded - Marks the task as succeeded.
+     * @property {function(): boolean} isSucceeded - Returns true if the task is marked as succeeded.
+     * @property {function(string): void} showStopIcon - Shows the stop icon with an optional tooltip message.
+     * @property {function(): void} hideStopIcon - Hides the stop icon.
+     * @property {function(string): void} showPlayIcon - Shows the play icon with an optional tooltip message.
+     * @property {function(): void} hidePlayIcon - Hides the play icon.
+     * @property {function(string): void} showPauseIcon - Shows the pause icon with an optional tooltip message.
+     * @property {function(): void} hidePauseIcon - Hides the pause icon.
+     * @property {function(string): void} showRestartIcon - Shows the restart (retry) icon with an optional tooltip message.
+     * @property {function(): void} hideRestartIcon - Hides the restart (retry) icon.
+     */
+
+    /**
+     * The addNewTask is designed for adding new tasks to the task management system. This function is central to
+     * managing long-running tasks, providing a way to visually represent task progress, status, and control actions
+     * directly from the UI in the status bar.
+     *
+     * @param {string} taskTitle - The title of the task. This is a mandatory parameter and is displayed in the UI.
+     * @param {string} message - A message or status associated with the task. Displayed as additional information in the UI.
+     * @param {string} [iconHTML] - Optional HTML string for the task's icon. Used to visually represent the task in the UI.
+     * @param {Object} [options] - Optional settings and callbacks for the task.
+     * @param {Function} [options.onPauseClick] - Callback function triggered when the pause button is clicked.
+     * @param {Function} [options.onPlayClick] - Callback function triggered when the play button is clicked.
+     * @param {Function} [options.onStopClick] - Callback function triggered when the stop button is clicked.
+     * @param {Function} [options.onRetryClick] - Callback function triggered when the retry button is clicked.
+     * @param {Function} [options.onSelect] - Callback function triggered when the task is selected from the dropdown.
+     * @param {number} [options.progressPercent] - Initial progress percentage of the task.
+     * @returns {TaskObject} Returns a task object with methods for updating the task's state and UI representation,
+     * such as `setProgressPercent`, `setMessage`, `setSucceeded`, `setFailed`, and control visibility methods
+     * like `showStopIcon`, `hideStopIcon`, etc.
+     *
+     * @example
+     * // Example: Adding a new task with initial progress and attaching event handlers
+     * const task = TaskManager.addNewTask(
+     *   'Data Processing',
+     *   'Processing data...',
+     *   '<i class="fa fa-spinner fa-spin"></i>',
+     *   {
+     *     onPauseClick: () => console.log('Task paused'),
+     *     onPlayClick: () => console.log('Task resumed'),
+     *     onStopClick: () => console.log('Task stopped'),
+     *     onRetryClick: () => console.log('Task retried'),
+     *     onSelect: () => console.log('Task selected'),
+     *     progressPercent: 20
+     *   }
+     * );
+     *
+     * // Updating task progress
+     * task.setProgressPercent(60);
+     *
+     * // Updating task message
+     * task.setMessage('60% completed');
+     *
+     * // Marking task as succeeded
+     * task.setSucceeded();
+     */
+    function addNewTask(taskTitle, message, iconHTML=null, options = {
         onPauseClick: null,
         onPlayClick: null,
         onStopClick: null,
