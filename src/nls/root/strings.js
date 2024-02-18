@@ -566,6 +566,8 @@ define({
     "UPDATE_NOTIFICATION_TOOLTIP": "There's a new build of {APP_NAME} available! Click here for details.",
     "UPDATE_NOT_AVAILABLE_TITLE": "No Updates Available",
     "UPDATE_AVAILABLE_TITLE": "Update Available",
+    "UPDATE_READY_RESTART_TITLE": "Update Ready: Restart Required",
+    "UPDATE_READY_RESTART_MESSAGE": "{APP_NAME} update is installed. Close all {APP_NAME} windows and restart the app to launch the updated version.",
     "UPDATE_UP_TO_DATE": "{APP_NAME} is up to date.",
     "UPDATE_CLOSE_TO_UPDATE_TITLE": "Cannot Update",
     "UPDATE_CLOSE_TO_UPDATE": "Multiple Editor windows are open. Please ensure that all other {APP_NAME} Editor windows are closed before attempting to update. Close any additional {APP_NAME} windows and try updating again.",
