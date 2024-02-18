@@ -303,6 +303,68 @@ define(function (require, exports, module) {
             expect(testWindow.$(`.dropdown-status-bar .pause-icon`).attr("title")).toBe(Strings.STATUSBAR_TASKS_PAUSE);
             expect(testWindow.$(`.dropdown-status-bar .play-icon`).attr("title")).toBe(Strings.STATUSBAR_TASKS_PLAY);
             expect(testWindow.$(`.dropdown-status-bar .retry-icon`).attr("title")).toBe(Strings.STATUSBAR_TASKS_RESTART);
+            task.close();
         });
+
+        it(`Should get selection event`, async function(){
+            let el;
+            const task = TaskManager.addNewTask("title", "message", null, {
+                onSelect: function (_el) {
+                    el = _el;
+                }
+            });
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            task._$html.click();
+            await awaitsFor(()=>{ return el; }, "select callback");
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+            task.close();
+        });
+
+        const eventHandlerMap = {
+            ".close-icon": "onStopClick",
+            ".pause-icon": "onPauseClick",
+            ".play-icon": "onPlayClick",
+            ".retry-icon": "onRetryClick"
+        };
+        async function validateIconClickEventDontClose(iconClass){
+            let el;
+            const option = {};
+            const eventHandlerName = eventHandlerMap[iconClass];
+            option[eventHandlerName] = function (_el) {
+                el = _el;
+            };
+            const task = TaskManager.addNewTask("title", "message", null, option);
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            const iconShowFn = task[iconMapShow[iconClass]];
+            iconShowFn();
+            task._$html.find(iconClass).click();
+            await awaitsFor(()=>{ return el; }, `${iconClass} click callback`);
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+
+            // no reopen popup
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            let newFnGotEvent;
+            // verify if we can override the event too, to not close the popup on click
+            task[eventHandlerName] = function (event){
+                newFnGotEvent = true;
+                event.preventDefault();
+                event.stopPropagation();
+                return true;
+            };
+            task._$html.find(iconClass).click();
+            await awaitsFor(()=>{ return newFnGotEvent; }, `new ${iconClass} click callback`);
+            // popup should not close as we prevent defaulted the event
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            task.close();
+        }
+
+        for(let iconClass of Object.keys(iconMapShow)){
+            it(`Should be able to attach onclick handlers to ${iconClass} button`, async function(){
+                await validateIconClickEventDontClose(iconClass);
+            });
+        }
     });
 });
