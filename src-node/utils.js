@@ -1,4 +1,5 @@
 const NodeConnector = require("./node-connector");
+const { exec } = require('child_process');
 
 const UTILS_NODE_CONNECTOR = "ph_utils";
 NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
@@ -22,5 +23,22 @@ async function setLocaleStrings(localStrings) {
     exports.Strings = localStrings;
 }
 
+/**
+ * retrieves the phoenix binary version
+ * @param phoenixBinPath
+ */
+async function getPhoenixBinaryVersion(phoenixBinPath) {
+    return new Promise((resolve, reject)=>{
+        exec(`${phoenixBinPath} -v`, (error, stdout, stderr) => {
+            if (error || stderr) {
+                reject(`exec error: ${error||stderr}`);
+                return;
+            }
+            resolve(stdout.trim());
+        });
+    });
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
+exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
