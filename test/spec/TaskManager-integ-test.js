@@ -291,5 +291,18 @@ define(function (require, exports, module) {
                 testIcons(iconClass, iconMapShow[iconClass], iconMapHide[iconClass]);
             });
         }
+
+        it(`Should icons have default tooltips`, function(){
+            const task = TaskManager.addNewTask("title", "message");
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            task.showPlayIcon();
+            task.showPauseIcon();
+            task.showStopIcon();
+            task.showRestartIcon();
+            expect(testWindow.$(`.dropdown-status-bar .close-icon`).attr("title")).toBe(Strings.STATUSBAR_TASKS_STOP);
+            expect(testWindow.$(`.dropdown-status-bar .pause-icon`).attr("title")).toBe(Strings.STATUSBAR_TASKS_PAUSE);
+            expect(testWindow.$(`.dropdown-status-bar .play-icon`).attr("title")).toBe(Strings.STATUSBAR_TASKS_PLAY);
+            expect(testWindow.$(`.dropdown-status-bar .retry-icon`).attr("title")).toBe(Strings.STATUSBAR_TASKS_RESTART);
+        });
     });
 });
