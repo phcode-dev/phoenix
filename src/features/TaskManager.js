@@ -435,7 +435,6 @@ define(function (require, exports, module) {
     exports._onSelect = _onSelect;
     exports._setLegacyExtensionBusy = _setLegacyExtensionBusy;
 
-    window.tm=exports;//todo remove
     // public apis
     exports.addNewTask = addNewTask;
 });
