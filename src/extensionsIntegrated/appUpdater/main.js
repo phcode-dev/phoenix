@@ -4,6 +4,7 @@ define(function (require, exports, module) {
         CommandManager  = require("command/CommandManager"),
         Menus = require("command/Menus"),
         Dialogs = require("widgets/Dialogs"),
+        NodeUtils = require("utils/NodeUtils"),
         DefaultDialogs  = require("widgets/DefaultDialogs"),
         Strings     = require("strings"),
         marked = require('thirdparty/marked.min'),
@@ -56,6 +57,7 @@ define(function (require, exports, module) {
         const updatePlatformKey = await getUpdatePlatformKey();
         const updateDetails = {
             shouldUpdate: false,
+            updatePendingRestart: false,
             downloadURL: null,
             currentVersion: Phoenix.metadata.apiVersion,
             updateVersion: null,
@@ -64,7 +66,9 @@ define(function (require, exports, module) {
         };
         try{
             const updateMetadata = await fetchJSON(brackets.config.app_update_url);
-            if(semver.gt(updateMetadata.version, Phoenix.metadata.apiVersion)){
+            const phoenixBinaryVersion = await NodeUtils.getPhoenixBinaryVersion();
+            const phoenixLoadedAppVersion = Phoenix.metadata.apiVersion;
+            if(semver.gt(updateMetadata.version, phoenixBinaryVersion)){
                 console.log("Update available: ", updateMetadata, "Detected platform: ", updatePlatformKey);
                 PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, true);
                 updateDetails.shouldUpdate = true;
@@ -73,6 +77,11 @@ define(function (require, exports, module) {
                 if(updateMetadata.platforms && updateMetadata.platforms[updatePlatformKey]){
                     updateDetails.downloadURL = updateMetadata.platforms[updatePlatformKey].url;
                 }
+            } else if(semver.eq(updateMetadata.version, phoenixBinaryVersion) &&
+                !semver.eq(phoenixLoadedAppVersion, phoenixBinaryVersion)){
+                console.log("Updates applied, waiting for app restart: ", phoenixBinaryVersion, phoenixLoadedAppVersion);
+                updateDetails.updatePendingRestart = true;
+                PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, true);
             } else {
                 console.log("no updates available for platform: ", updateDetails.updatePlatform);
                 PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, false);
@@ -87,6 +96,10 @@ define(function (require, exports, module) {
     async function checkForUpdates(isAutoUpdate) {
         showOrHideUpdateIcon();
         const updateDetails = await getUpdateDetails();
+        if(updateDetails.updatePendingRestart){
+            (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+            return;
+        }
         if(!updateDetails.shouldUpdate){
             (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_NOT_AVAILABLE_TITLE, Strings.UPDATE_UP_TO_DATE);
             return;
