@@ -35,23 +35,6 @@ async function setLocaleStrings(localStrings) {
     exports.Strings = localStrings;
 }
 
-async function openURLInDefaultLinuxBrowser(url) {
-    return new Promise((resolve, reject)=>{
-        if(url.toLowerCase().startsWith("http://") || url.toLowerCase().startsWith("https://")){
-            const options = { cwd: '/tmp' };
-            exec(`xdg-open "${url}"`, options, (error) => {
-                if (error) {
-                    reject(`Error opening URL: ${error}`);
-                } else {
-                    resolve(`URL opened successfully: ${url}`);
-                }
-            });
-            return;
-        }
-        reject("Only HTTP/S protocol is supported:" + url);
-    });
-}
-
 async function xdgOpenDir(dir) {
     return new Promise((resolve, reject)=>{
         const options = { cwd: '/tmp' };
@@ -110,5 +93,4 @@ function showInLinuxFileExplorer(fileOrFolderPath) {
 
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
-exports.openURLInDefaultLinuxBrowser = openURLInDefaultLinuxBrowser;
 exports.showInLinuxFileExplorer = showInLinuxFileExplorer;
