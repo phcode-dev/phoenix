@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tauri Updater Hidden Window</title>
+    <script>
+        const UPDATE_COMMANDS = {
+            GET_STATUS: "GET_STATUS"
+        };
+        const UPDATE_EVENT = {
+            STATUS: "STATUS"
+        };
+        const UPDATE_STATUS = {
+            STARTED: "STARTED"
+        };
+        let status = UPDATE_STATUS_STARTED;
+        window.__TAURI__.event.listen("updateCommands", (receivedEvent)=> {
+            console.log("Updater received Event updateCommands", receivedEvent);
+            const {command, data} = receivedEvent.payload;
+            if(command === UPDATE_COMMANDS.STATUS){
+                sendUpdateEvent(UPDATE_EVENT.STATUS, status);
+            }
+        });
+        function sendUpdateEvent(eventName, data) {
+            window.__TAURI__.event.emit('updater-event', {eventName, data});
+        }
+        sendUpdateEvent(UPDATE_EVENT.STATUS, status);
+    </script>
+</head>
+<body>
+ Updating App... <br>
+ This should be a hidden window if you are seeing this, something's broken, or you are debugging updates.
+</body>
+</html>

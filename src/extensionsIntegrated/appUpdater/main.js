@@ -9,12 +9,30 @@ define(function (require, exports, module) {
         Strings     = require("strings"),
         marked = require('thirdparty/marked.min'),
         semver = require("thirdparty/semver.browser"),
+        TaskManager = require("features/TaskManager"),
         PreferencesManager  = require("preferences/PreferencesManager");
+    let updaterWindow, updateTask, updatePendingRestart;
 
-    const KEY_LAST_UPDATE_CHECK_TIME = "PH_LAST_UPDATE_CHECK_TIME",
+    const TAURI_UPDATER_WINDOW_LABEL = "updater",
+        KEY_LAST_UPDATE_CHECK_TIME = "PH_LAST_UPDATE_CHECK_TIME",
         KEY_UPDATE_AVAILABLE = "PH_UPDATE_AVAILABLE";
 
     function showOrHideUpdateIcon() {
+        if(!updaterWindow){
+            updaterWindow = window.__TAURI__.window.WebviewWindow.getByLabel(TAURI_UPDATER_WINDOW_LABEL);
+        }
+        if(updaterWindow && !updateTask) {
+            updateTask = TaskManager.addNewTask(Strings.UPDATING_APP, Strings.UPDATING_APP_MESSAGE,
+                `<i class="fa-solid fa-cogs"></i>`, {
+                    onSelect: function () {
+                        if(updatePendingRestart){
+                            Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+                        } else {
+                            Dialogs.showInfoDialog(Strings.UPDATING_APP, Strings.UPDATING_APP_DIALOG_MESSAGE);
+                        }
+                    }
+                });
+        }
         let updateAvailable = PreferencesManager.getViewState(KEY_UPDATE_AVAILABLE);
         if(updateAvailable){
             $("#update-notification").removeClass("forced-hidden");
@@ -33,13 +51,29 @@ define(function (require, exports, module) {
             });
     }
 
-    async function doUpdate() {
-        const windowCount = await Phoenix.app.getPhoenixInstanceCount();
-        if(windowCount !== 1){
-            PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, true);
-            Dialogs.showInfoDialog(Strings.UPDATE_CLOSE_TO_UPDATE_TITLE, Strings.UPDATE_CLOSE_TO_UPDATE);
+    function createTauriUpdateWindow() {
+        if(updaterWindow){
             return;
         }
+        // as we are a single instance app, and there can be multiple phoenix windows that comes in and goes out,
+        // the updater lives in its own independent hidden window.
+        updaterWindow = new window.__TAURI__.window.WebviewWindow(TAURI_UPDATER_WINDOW_LABEL, {
+            url: "tauri-updater.html",
+            title: "Desktop App Updater",
+            fullscreen: false,
+            resizable: false,
+            height: 320,
+            minHeight: 320,
+            width: 240,
+            minWidth: 240,
+            acceptFirstMouse: false,
+            visible: false
+        });
+    }
+
+    async function doUpdate() {
+        createTauriUpdateWindow();
+        showOrHideUpdateIcon();
     }
 
     async function getUpdatePlatformKey() {
@@ -95,8 +129,12 @@ define(function (require, exports, module) {
 
     async function checkForUpdates(isAutoUpdate) {
         showOrHideUpdateIcon();
+        if(updateTask){
+            $("#status-tasks .btn-dropdown").click();
+            return;
+        }
         const updateDetails = await getUpdateDetails();
-        if(updateDetails.updatePendingRestart){
+        if(updatePendingRestart || updateDetails.updatePendingRestart){
             (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
             return;
         }
@@ -108,13 +146,31 @@ define(function (require, exports, module) {
             { className: Dialogs .DIALOG_BTN_CLASS_NORMAL, id: Dialogs .DIALOG_BTN_CANCEL, text: Strings.UPDATE_LATER },
             { className: Dialogs .DIALOG_BTN_CLASS_PRIMARY, id: Dialogs .DIALOG_BTN_OK, text: Strings.GET_IT_NOW }
         ];
-        let markdownHtml = marked.parse(updateDetails.releaseNotesMarkdown);
+        let markdownHtml = marked.parse(updateDetails.releaseNotesMarkdown || "");
         Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.UPDATE_AVAILABLE_TITLE, markdownHtml, buttons)
             .done(option=>{
-                if(option === Dialogs.DIALOG_BTN_OK){
+                if(option === Dialogs.DIALOG_BTN_OK && !updaterWindow){
                     doUpdate();
                 }
             });
+    }
+
+    const UPDATE_COMMANDS = {
+        GET_STATUS: "GET_STATUS"
+    };
+    const UPDATE_EVENT = {
+        STATUS: "STATUS"
+    };
+    const UPDATE_STATUS = {
+        STARTED: "STARTED"
+    };
+
+    function _sendUpdateCommand(command, data) {
+        window.__TAURI__.event.emit('updateCommands', {command, data});
+    }
+
+    function _refreshUpdateStatus() {
+        _sendUpdateCommand(UPDATE_COMMANDS.GET_STATUS);
     }
 
     AppInit.appReady(function () {
@@ -122,6 +178,14 @@ define(function (require, exports, module) {
             // app updates are only for desktop builds
             return;
         }
+        updaterWindow = window.__TAURI__.window.WebviewWindow.getByLabel(TAURI_UPDATER_WINDOW_LABEL);
+        window.__TAURI__.event.listen("updater-event", (receivedEvent)=> {
+            console.log("received Event updater-event", receivedEvent);
+            const {eventName, data} = receivedEvent.payload;
+            if(eventName === UPDATE_EVENT.STATUS) {
+                showOrHideUpdateIcon();
+            }
+        });
         $("#update-notification").click(()=>{
             checkForUpdates();
         });
@@ -132,6 +196,7 @@ define(function (require, exports, module) {
         const helpMenu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
         helpMenu.addMenuItem(commandID, "", Menus.AFTER, Commands.HELP_GET_INVOLVED);
         showOrHideUpdateIcon();
+        _refreshUpdateStatus();
         // check for updates at boot
         let lastUpdateCheckTime = PreferencesManager.getViewState(KEY_LAST_UPDATE_CHECK_TIME);
         if(!lastUpdateCheckTime){
