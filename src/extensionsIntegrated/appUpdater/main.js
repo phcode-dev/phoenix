@@ -1,5 +1,28 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+/*global logger*/
+
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit"),
+        Metrics = require("utils/Metrics"),
         Commands = require("command/Commands"),
         CommandManager  = require("command/CommandManager"),
         Menus = require("command/Menus"),
@@ -55,6 +78,7 @@ define(function (require, exports, module) {
         if(updaterWindow){
             return;
         }
+        Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'window', "create"+Phoenix.platform);
         // as we are a single instance app, and there can be multiple phoenix windows that comes in and goes out,
         // the updater lives in its own independent hidden window.
         updaterWindow = new window.__TAURI__.window.WebviewWindow(TAURI_UPDATER_WINDOW_LABEL, {
@@ -69,6 +93,9 @@ define(function (require, exports, module) {
             acceptFirstMouse: false,
             visible: false
         });
+        if(window.__TAURI__.window.WebviewWindow.getByLabel(TAURI_UPDATER_WINDOW_LABEL)){
+            Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'window', "okCreate"+Phoenix.platform);
+        }
     }
 
     async function doUpdate() {
@@ -147,11 +174,14 @@ define(function (require, exports, module) {
             { className: Dialogs .DIALOG_BTN_CLASS_PRIMARY, id: Dialogs .DIALOG_BTN_OK, text: Strings.GET_IT_NOW }
         ];
         let markdownHtml = marked.parse(updateDetails.releaseNotesMarkdown || "");
+        Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "shown"+Phoenix.platform);
         Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.UPDATE_AVAILABLE_TITLE, markdownHtml, buttons)
             .done(option=>{
                 if(option === Dialogs.DIALOG_BTN_OK && !updaterWindow){
                     doUpdate();
+                    return;
                 }
+                Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "cancel"+Phoenix.platform);
             });
     }
 
@@ -159,10 +189,14 @@ define(function (require, exports, module) {
         GET_STATUS: "GET_STATUS"
     };
     const UPDATE_EVENT = {
-        STATUS: "STATUS"
+        STATUS: "STATUS",
+        LOG_ERROR: "LOG_ERROR"
     };
     const UPDATE_STATUS = {
-        STARTED: "STARTED"
+        STARTED: "STARTED",
+        FAILED: "FAILED",
+        FAILED_UNKNOWN_OS: "FAILED_UNKNOWN_OS",
+        INSTALLED: "INSTALLED"
     };
 
     function _sendUpdateCommand(command, data) {
@@ -183,13 +217,28 @@ define(function (require, exports, module) {
             console.log("received Event updater-event", receivedEvent);
             const {eventName, data} = receivedEvent.payload;
             if(eventName === UPDATE_EVENT.STATUS) {
+                if(data === UPDATE_STATUS.FAILED_UNKNOWN_OS){
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'fail', "Unknown"+Phoenix.platform);
+                    updateTask.setFailed();
+                } else if(data === UPDATE_STATUS.FAILED){
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'fail', Phoenix.platform);
+                    updateTask.setFailed();
+                    Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
+                } else if(data === UPDATE_STATUS.INSTALLED){
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'done', Phoenix.platform);
+                    updatePendingRestart = true;
+                    updateTask.setSucceded();
+                    Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+                }
                 showOrHideUpdateIcon();
+            } if(eventName === UPDATE_EVENT.LOG_ERROR) {
+                logger.reportErrorMessage(data);
             }
         });
         $("#update-notification").click(()=>{
             checkForUpdates();
         });
-        const commandID = Commands.HELP_CHECK_UPDATES || "help.checkUpdates";// todo remove this line after dev
+        const commandID = Commands.HELP_CHECK_UPDATES;
         CommandManager.register(Strings.CMD_CHECK_FOR_UPDATE, commandID, ()=>{
             checkForUpdates();
         });

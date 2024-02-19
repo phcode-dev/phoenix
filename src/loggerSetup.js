@@ -32,9 +32,9 @@
 
     class CustomBugSnagError extends Error {
         constructor(message, err){
-            super(message + (err.message || ""));
-            this.name = (err.constructor && err.constructor.name) || this.constructor.name;
-            this.stack= message +" : "+ err.stack;
+            super(message + ((err && err.message) || ""));
+            this.name = (err && err.constructor && err.constructor.name) || this.constructor.name;
+            this.stack= message +" : "+ (err && err.stack) || "stack not available";
         }
     }
 
@@ -52,6 +52,17 @@
                 Bugsnag.notify(message?
                     new CustomBugSnagError(message, error)
                     :error);
+            }
+        },
+        /**
+         * By default all uncaught exceptions and promise rejections are sent to logger utility. But in some cases
+         * you may want to sent handled errors too if it is critical. use this function to report those
+         * @param {Error} error
+         * @param {string} [message] optional message
+         */
+        reportErrorMessage: function (message) {
+            if(isBugsnagEnabled) {
+                Bugsnag.notify(new CustomBugSnagError(message));
             }
         },
 
