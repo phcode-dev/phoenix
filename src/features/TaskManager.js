@@ -62,7 +62,7 @@ define(function (require, exports, module) {
         const task = taskList[item];
         task._$html = $(`<div class="task-status-popup-item">
             <div class="task-icon">
-                <i class="fa-solid fa-cogs"></i>
+                <i class="fa-solid fa-download"></i>
             </div>
             <div class="status-container">
                 <div class="task-heading">

@@ -105,9 +105,27 @@ Phoenix.app = {
         }
         return window.__TAURI__.invoke("toggle_devtools", {});
     },
-    closeWindow: function () {
+    closeWindow: async function () {
         if(!Phoenix.browser.isTauri){
             throw new Error("closeWindow is not supported in browsers");
+        }
+        let instanceCount = 0;
+        let extensionWindowCount = 0;
+        try{
+            instanceCount = await Phoenix.app.getPhoenixInstanceCount();
+            const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
+            for(let tauriWindowLabel of allTauriWindowsLabels){
+                if(tauriWindowLabel && tauriWindowLabel.startsWith(PHOENIX_EXTENSION_WINDOW_PREFIX)) {
+                    extensionWindowCount ++;
+                }
+            }
+        } catch (e) {
+            console.error("Ignoring Error while Phoenix.app.closeWindow: ", e);
+        }
+        if(instanceCount === 1 && !extensionWindowCount) {
+            // we are the only window, so use process quit as in some os, hidden tauri windows will prevent app quit.
+            window.__TAURI__.process.exit(0);
+            return;
         }
         window.__TAURI__.window.getCurrent().close();
     },
