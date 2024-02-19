@@ -100,6 +100,7 @@ define(function (require, exports, module) {
         UI_DIALOG: "ui-dialog",
         UI_BOTTOM_PANEL: "ui-bottomPanel",
         UI_SIDE_PANEL: "ui-sidePanel",
+        UPDATES: "update",
         LIVE_PREVIEW: "live-preview",
         KEYBOARD: "keyboard",
         CODE_HINTS: "code-hints",

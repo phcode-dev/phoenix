@@ -8,12 +8,16 @@
             GET_STATUS: "GET_STATUS"
         };
         const UPDATE_EVENT = {
-            STATUS: "STATUS"
+            STATUS: "STATUS",
+            LOG_ERROR: "LOG_ERROR"
         };
         const UPDATE_STATUS = {
-            STARTED: "STARTED"
+            STARTED: "STARTED",
+            FAILED: "FAILED",
+            FAILED_UNKNOWN_OS: "FAILED_UNKNOWN_OS",
+            INSTALLED: "INSTALLED"
         };
-        let status = UPDATE_STATUS_STARTED;
+        let status = UPDATE_STATUS.STARTED;
         window.__TAURI__.event.listen("updateCommands", (receivedEvent)=> {
             console.log("Updater received Event updateCommands", receivedEvent);
             const {command, data} = receivedEvent.payload;
@@ -22,9 +26,44 @@
             }
         });
         function sendUpdateEvent(eventName, data) {
-            window.__TAURI__.event.emit('updater-event', {eventName, data});
+            return window.__TAURI__.event.emit('updater-event', {eventName, data});
         }
         sendUpdateEvent(UPDATE_EVENT.STATUS, status);
+
+        async function updateMacOS() {
+            try {
+                await __TAURI__.updater.installUpdate();
+                status = UPDATE_STATUS.INSTALLED;
+                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.INSTALLED);
+            } catch (e) {
+                status = UPDATE_STATUS.FAILED;
+                sendUpdateEvent(UPDATE_EVENT.LOG_ERROR, e.stack);
+                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED);
+            }
+        }
+
+        async function updateLinux() {
+
+        }
+
+        async function updateWindows() {
+
+        }
+
+        async function update() {
+            const platform = await __TAURI__.os.platform();
+            if(platform === 'darwin'){
+                await updateMacOS();
+            } else if(platform === 'linux'){
+                await updateLinux();
+            } else if(platform === 'win32'){
+                await updateWindows();
+            } else {
+                status = UPDATE_STATUS.FAILED_UNKNOWN_OS;
+                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED_UNKNOWN_OS);
+            }
+        }
+        update();
     </script>
 </head>
 <body>

@@ -568,6 +568,8 @@ define({
     "UPDATE_AVAILABLE_TITLE": "Update Available",
     "UPDATE_READY_RESTART_TITLE": "Update Ready: Restart Required",
     "UPDATE_READY_RESTART_MESSAGE": "{APP_NAME} update is installed. Close all {APP_NAME} windows and restart the app to launch the updated version.",
+    "UPDATE_FAILED_TITLE": "Update Failed",
+    "UPDATE_FAILED_MESSAGE": "Please close all {APP_NAME} windows and reopen the application to attempt the update again.",
     "UPDATE_UP_TO_DATE": "{APP_NAME} is up to date.",
     "UPDATE_MESSAGE": "Hey, there's a new build of {APP_NAME} available. Here are some of the new features:",
     "GET_IT_NOW": "Get it now!",
