@@ -422,12 +422,13 @@ define(function (require, exports, module) {
         encodingSelect.$button.attr("title", Strings.STATUSBAR_ENCODING_TOOLTIP);
         let hideSpinner = PreferencesManager.getViewState("StatusBar.HideSpinner");
         if(hideSpinner){
-            $("#status-tasks .spinner").addClass("forced-hidden");
+            $("#status-tasks .spinner").addClass("hide-spinner");
         }
 
         tasksSelect = new DropdownButton(Strings.STATUSBAR_TASKS, [Strings.STATUSBAR_TASKS_HIDE_SPINNER], function (item, index) {
             if (item === Strings.STATUSBAR_TASKS_HIDE_SPINNER) {
-                if($("#status-tasks .spinner").hasClass("forced-hidden")){
+                hideSpinner = PreferencesManager.getViewState("StatusBar.HideSpinner");
+                if(hideSpinner){
                     return  "<span class='checked-spinner'></span>" + item;
                 }
                 return item;
@@ -445,9 +446,9 @@ define(function (require, exports, module) {
                 hideSpinner = !PreferencesManager.getViewState("StatusBar.HideSpinner");
                 PreferencesManager.setViewState("StatusBar.HideSpinner", hideSpinner);
                 if(!hideSpinner){
-                    $("#status-tasks .spinner").removeClass("forced-hidden");
+                    $("#status-tasks .spinner").removeClass("hide-spinner");
                 } else {
-                    $("#status-tasks .spinner").addClass("forced-hidden");
+                    $("#status-tasks .spinner").addClass("hide-spinner");
                 }
                 return;
             }
