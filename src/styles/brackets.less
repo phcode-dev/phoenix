@@ -446,6 +446,10 @@ a, img {
     .dark & {
         color: @dark-bc-text;
     }
+
+    .hide-spinner {
+        display: none !important;
+    }
 }
 
 .task-status-popup-item {
@@ -512,7 +516,10 @@ a, img {
     }
 
     .progress-bar-foreground-failure {
-        background: @accent-error;
+        background: @bc-error;
+        .dark & {
+            background: @accent-error;
+        }
         height: 100%;
     }
 
@@ -2528,6 +2535,53 @@ textarea.exclusions-editor {
 
 
 /* Spinner */
+
+.progress-bar-foreground-success {
+    background: @accent-success;
+    height: 100%;
+}
+
+.spinner.spinner-failure {
+    border-left: 3px solid @bc-error;
+    border-right: 3px solid @bc-error;
+
+    .dark & {
+        border-left: 3px solid @accent-error;
+        border-right: 3px solid @accent-error;
+    }
+
+    &:before,
+    &:after {
+        border-left: 3px solid @bc-error;
+        border-right: 3px solid @bc-error;
+
+        .dark & {
+            border-left: 3px solid @accent-error;
+            border-right: 3px solid @accent-error;
+        }
+    }
+}
+
+.spinner.spinner-success {
+    border-left: 3px solid @accent-success;
+    border-right: 3px solid @accent-success;
+
+    .dark & {
+        border-left: 3px solid @accent-success;
+        border-right: 3px solid @accent-success;
+    }
+
+    &:before,
+    &:after {
+        border-left: 3px solid @accent-success;
+        border-right: 3px solid @accent-success;
+
+        .dark & {
+            border-left: 3px solid @accent-success;
+            border-right: 3px solid @accent-success;
+        }
+    }
+}
 
 .spinner {
     display: inline-block;
