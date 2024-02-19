@@ -34,7 +34,7 @@ define(function (require, exports, module) {
         semver = require("thirdparty/semver.browser"),
         TaskManager = require("features/TaskManager"),
         PreferencesManager  = require("preferences/PreferencesManager");
-    let updaterWindow, updateTask, updatePendingRestart;
+    let updaterWindow, updateTask, updatePendingRestart, updateFailed;
 
     const TAURI_UPDATER_WINDOW_LABEL = "updater",
         KEY_LAST_UPDATE_CHECK_TIME = "PH_LAST_UPDATE_CHECK_TIME",
@@ -50,7 +50,9 @@ define(function (require, exports, module) {
                     onSelect: function () {
                         if(updatePendingRestart){
                             Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
-                        } else {
+                        } else if(updateFailed){
+                            Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
+                        }else {
                             Dialogs.showInfoDialog(Strings.UPDATING_APP, Strings.UPDATING_APP_DIALOG_MESSAGE);
                         }
                     }
@@ -161,6 +163,10 @@ define(function (require, exports, module) {
             return;
         }
         const updateDetails = await getUpdateDetails();
+        if(updateFailed) {
+            (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
+            return;
+        }
         if(updatePendingRestart || updateDetails.updatePendingRestart){
             (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
             return;
@@ -207,6 +213,7 @@ define(function (require, exports, module) {
         _sendUpdateCommand(UPDATE_COMMANDS.GET_STATUS);
     }
 
+    let updateInstalledDialogShown = false, updateFailedDialogShown = false;
     AppInit.appReady(function () {
         if(!Phoenix.browser.isTauri || Phoenix.isTestWindow) {
             // app updates are only for desktop builds
@@ -217,17 +224,26 @@ define(function (require, exports, module) {
             console.log("received Event updater-event", receivedEvent);
             const {eventName, data} = receivedEvent.payload;
             if(eventName === UPDATE_EVENT.STATUS) {
-                if(data === UPDATE_STATUS.FAILED_UNKNOWN_OS){
+                if(data === UPDATE_STATUS.FAILED_UNKNOWN_OS && !updateFailedDialogShown){
+                    updateFailedDialogShown = true;
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'fail', "Unknown"+Phoenix.platform);
+                    updateFailed = true;
                     updateTask.setFailed();
-                } else if(data === UPDATE_STATUS.FAILED){
+                    updateTask.setMessage(Strings.UPDATE_FAILED_TITLE);
+                } else if(data === UPDATE_STATUS.FAILED && !updateFailedDialogShown){
+                    updateFailedDialogShown = true;
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'fail', Phoenix.platform);
+                    updateFailed = true;
                     updateTask.setFailed();
+                    updateTask.setMessage(Strings.UPDATE_FAILED_TITLE);
                     Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
-                } else if(data === UPDATE_STATUS.INSTALLED){
+                } else if(data === UPDATE_STATUS.INSTALLED && !updateInstalledDialogShown){
+                    updateInstalledDialogShown = true;
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'done', Phoenix.platform);
                     updatePendingRestart = true;
                     updateTask.setSucceded();
+                    updateTask.setTitle(Strings.UPDATE_DONE);
+                    updateTask.setMessage(Strings.UPDATE_RESTART);
                     Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
                 }
                 showOrHideUpdateIcon();
