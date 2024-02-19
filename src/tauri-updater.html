@@ -21,7 +21,7 @@
         window.__TAURI__.event.listen("updateCommands", (receivedEvent)=> {
             console.log("Updater received Event updateCommands", receivedEvent);
             const {command, data} = receivedEvent.payload;
-            if(command === UPDATE_COMMANDS.STATUS){
+            if(command === UPDATE_COMMANDS.GET_STATUS){
                 sendUpdateEvent(UPDATE_EVENT.STATUS, status);
             }
         });
@@ -43,7 +43,8 @@
         }
 
         async function updateLinux() {
-
+            status = UPDATE_STATUS.FAILED;
+            sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED);
         }
 
         async function updateWindows() {
