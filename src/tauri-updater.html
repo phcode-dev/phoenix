@@ -43,8 +43,23 @@
         }
 
         async function updateLinux() {
-            status = UPDATE_STATUS.FAILED;
-            sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED);
+            try {
+                const command = new __TAURI__.shell.Command('run-update-linux-command',
+                    ['-e', 'wget -qO- https://updates.phcode.io/linux/installer.sh | bash -s -- --upgrade'])
+                const result = await command.execute();
+                if(result.code !== 0){
+                    status = UPDATE_STATUS.FAILED;
+                    sendUpdateEvent(UPDATE_EVENT.LOG_ERROR, result.stderr);
+                    sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED);
+                    return;
+                }
+                status = UPDATE_STATUS.INSTALLED;
+                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.INSTALLED);
+            } catch (e) {
+                status = UPDATE_STATUS.FAILED;
+                sendUpdateEvent(UPDATE_EVENT.LOG_ERROR, e.stack);
+                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED);
+            }
         }
 
         async function updateWindows() {
