@@ -20,6 +20,9 @@
 
 /*global logger*/
 
+// this file uses tauri APIs directly and is probably the only place where tauri apis are used outside of the
+// shell.js file. This is app updates are pretty core level even though we do it as an extension here.
+
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit"),
         Metrics = require("utils/Metrics"),
@@ -33,6 +36,7 @@ define(function (require, exports, module) {
         marked = require('thirdparty/marked.min'),
         semver = require("thirdparty/semver.browser"),
         TaskManager = require("features/TaskManager"),
+        NativeApp           = require("utils/NativeApp"),
         PreferencesManager  = require("preferences/PreferencesManager");
     let updaterWindow, updateTask, updatePendingRestart, updateFailed;
 
@@ -156,6 +160,32 @@ define(function (require, exports, module) {
         return updateDetails;
     }
 
+    /**
+     * We should only upgrade if the current binary is at an installed location.
+     */
+    async function isUpgradableLocation() {
+        try {
+            if (brackets.platform === "linux") {
+                let homeDir = await window.__TAURI__.path.homeDir(); // Eg. "/home/home/"
+                if(!homeDir.endsWith("/")){
+                   homeDir = homeDir + "/";
+                }
+                const phoenixInstallDir = `${homeDir}.phoenix-code/`;
+                const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
+                const phoenixBinLoadedPath = cliArgs[0];
+                // we only upgrade if the install location is created by the installer
+                return phoenixBinLoadedPath.startsWith(phoenixInstallDir);
+            }
+        } catch (e) {
+            logger.reportError(e);
+            console.error(e);
+            return false;
+        }
+        // for mac, this is handled by tauri APIs, so we always say yes.
+        // for win, this is handled by windows installer nsis exe, so we always say yes.
+        return true;
+    }
+
     async function checkForUpdates(isAutoUpdate) {
         showOrHideUpdateIcon();
         if(updateTask){
@@ -183,11 +213,19 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "shown"+Phoenix.platform);
         Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.UPDATE_AVAILABLE_TITLE, markdownHtml, buttons)
             .done(option=>{
-                if(option === Dialogs.DIALOG_BTN_OK && !updaterWindow){
-                    doUpdate();
-                    return;
-                }
-                Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "cancel"+Phoenix.platform);
+                isUpgradableLocation().then(isUpgradableLoc=>{
+                    if(!isUpgradableLoc) {
+                        // user installed linux as binary without installer, we just open phcode.io
+                        const downloadPage = brackets.config.homepage_url || "https://phcode.io";
+                        NativeApp.openURLInDefaultBrowser(downloadPage);
+                        return;
+                    }
+                    if(option === Dialogs.DIALOG_BTN_OK && !updaterWindow){
+                        doUpdate();
+                        return;
+                    }
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "cancel"+Phoenix.platform);
+                });
             });
     }
 
