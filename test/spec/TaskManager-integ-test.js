@@ -427,5 +427,18 @@ define(function (require, exports, module) {
             task.close();
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
         });
+
+        it(`Should task be able to change spinner type`, async function(){
+            const task = TaskManager.addNewTask("title", "message");
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            task.setFailed();
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeTrue();
+            task.setSucceded();
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-success")).toBeTrue();
+            task.setProgressPercent(10);
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeFalse();
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-success")).toBeFalse();
+            task.close();
+        });
     });
 });
