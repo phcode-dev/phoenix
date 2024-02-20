@@ -539,6 +539,8 @@ define(function (require, exports, module) {
     AppInit.appReady(function () {
         ProjectManager.on("projectOpen", add);
         ProjectManager.on("beforeProjectClose", add);
+        // add the current project at startup.
+        add();
     });
 
     AppInit.htmlReady(function () {

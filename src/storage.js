@@ -167,6 +167,10 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
         if(!Phoenix.isTestWindow || key === _testKey) {
             if(isDesktop) {
                 storageNodeConnector.execPeer("putItem", {key, value: valueToStore});
+                // this is an in-memory tauri store that takes care of multi window case, since we have a single
+                // instance, all windows share this and can reconstruct the full view from the dumb file + this map
+                // when the editor boots up instead of having to write the dump file frequently.
+                window.__TAURI__.invoke('put_item', { key, value: JSON.stringify(valueToStore) });
             }
             if(window.debugMode || isBrowser) {
                 // in debug mode, we write to browser storage in tauri and browser builds for eazy debug of storage.
@@ -242,6 +246,23 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
             return;
         }
         if(isDesktop){
+            async function mergeTauriInMemoryStorage() {
+                // The tauri storeage is mainly used in multi window case, where if there are 2+ windows, each window
+                // is till live and has not commited the dump file to disc(they only do that on exit or 30 every secs).
+                // so the dump file may be stale after window._tauriStorageRestorePromise in the case.
+                // we merge the local memory cache maintained at tauri rust side to address this.
+                try {
+                    const map = await window.__TAURI__.invoke('get_all_items') || {};
+                    for(const key of Object.keys(map)){
+                        cache[key] = JSON.parse(map[key]);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+                // we never fail, boot with blank storage
+                setupFirstBoot();
+                resolve();
+            }
             // In tauri, we have to read it from app local data dump(which is usually written at app close time. This
             // will help the storage to quick start from a json dump instead of waiting for node to boot up and init lmdb)
             window._tauriStorageRestorePromise
@@ -251,10 +272,7 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
                     }
                 })
                 .catch(console.error)
-                .finally(()=>{
-                    setupFirstBoot();
-                    resolve();
-                }); // we never fail, boot with blank storage
+                .finally(mergeTauriInMemoryStorage);
             return;
         }
         // Use browser default storage- IndexedDB
