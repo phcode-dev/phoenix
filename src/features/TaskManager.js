@@ -55,20 +55,12 @@ define(function (require, exports, module) {
         // the persist option is now used only for errors and success tasks that has not been removed from the task
         // manager list(which usually happens if there is some user action needed). Even then on click the spinner will
         // be hidden again.
-        if(currentSpinnerType === SPINNER_FAIL){
-            // error spinner has the highest priority and is persisted until someone click on the spinner.
-            return;
-        }
         if(spinnerType === SPINNER_FAIL) {
             clearTimeout(spinnerHideTimer);
             $spinner.removeClass("forced-hidden");
             $spinner.removeClass(SPINNER_SUCCESS);
             $spinner.addClass(SPINNER_FAIL);
             currentSpinnerType = SPINNER_FAIL;
-            return;
-        }
-        if(currentSpinnerType === SPINNER_SUCCESS){
-            // success spinner has the second highest priority and is persisted until someone click on the spinner.
             return;
         }
         if(spinnerType === SPINNER_SUCCESS) {
@@ -101,7 +93,7 @@ define(function (require, exports, module) {
      * determines what the spinner icon to show(green-for success), red-fail, blue normal based on the active
      * tasks in list and renders. IF the active tasks has already  been notified, it wont notify again.
      */
-    function renderSpinnerIcon() {
+    function renderSpinnerIcon(newTaskAdded) {
         let unackSuccessTaskFound = false;
         if(currentSpinnerType && currentSpinnerType !== SPINNER_NORMAL) {
             // there is a success/fail spinner visible, clean it. For the normal spinner, it will be
@@ -121,8 +113,12 @@ define(function (require, exports, module) {
             _showSpinnerIcon(SPINNER_SUCCESS);
             return;
         }
+
         // for normal spinner, we dont show anything as its only shown briefly till SPINNER_HIDE_TIME
-        // which was already handled
+        // which was already handled, except when newTaskAdded
+        if(newTaskAdded) {
+            _showSpinnerIcon(SPINNER_NORMAL);
+        }
     }
 
     function _onDropdownShown() {
@@ -451,7 +447,7 @@ define(function (require, exports, module) {
             task._completedStatus = STATUS_FAIL;
             _renderProgressbar(task);
             task._spinnerIconAck= false;
-            _showSpinnerIcon(SPINNER_FAIL);
+            renderSpinnerIcon();
         }
         function isFailed(){
             return task._completedStatus === STATUS_FAIL;
@@ -460,7 +456,7 @@ define(function (require, exports, module) {
             task._completedStatus = STATUS_SUCCESS;
             _renderProgressbar(task);
             task._spinnerIconAck= false;
-            _showSpinnerIcon(SPINNER_SUCCESS);
+            renderSpinnerIcon();
         }
         function isSucceeded(){
             return task._completedStatus === STATUS_SUCCESS;
@@ -522,14 +518,14 @@ define(function (require, exports, module) {
         taskList[task._id] = task;
         EventDispatcher.makeEventDispatcher(task);
         _showOrHideStatusBarIfNeeded();
-        _showSpinnerIcon(SPINNER_NORMAL);
+        renderSpinnerIcon(true);
         return task;
     }
 
     function _setLegacyExtensionBusy(busy) {
         legacyExtensionBusy = busy;
         if(busy){
-            _showSpinnerIcon(SPINNER_NORMAL);
+            renderSpinnerIcon(true);
         } else {
             renderSpinnerIcon();
         }
