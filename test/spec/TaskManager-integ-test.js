@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone */
+/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone, awaits */
 
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
@@ -139,15 +139,24 @@ define(function (require, exports, module) {
             // click on task icon to open the popup
             testWindow.$("#status-tasks .btn-status-bar").click();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
-            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            // clicking will hide the spinner
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
             // click on the hide spinner option which is at 2nd position with this setup
             testWindow.$('a[data-index="2"]').click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+
+            // now set task to success so that the green persistant spinner is visible.
+            task.setSucceded();
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
 
-            // click on task icon to open the popup
+            // now disable the hide spinner option
             testWindow.$("#status-tasks .btn-status-bar").click();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
             testWindow.$('a[data-index="2"]').click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
+
+            // now lets see if the icon is shown when the task is marked ass success
+            task.setSucceded();
             expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
 
             task.close();
@@ -366,5 +375,57 @@ define(function (require, exports, module) {
                 await validateIconClickEventDontClose(iconClass);
             });
         }
+
+        it(`Should normal spinner hide after the timeout`, async function(){
+            const task = TaskManager.addNewTask("title", "message");
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            await awaits(TaskManager.SPINNER_HIDE_TIME*2);
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+            task.close();
+        });
+
+        it(`Should success spinner not auto hide on timeout and hide on click`, async function(){
+            const task = TaskManager.addNewTask("title", "message");
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            task.setSucceded();
+            await awaits(TaskManager.SPINNER_HIDE_TIME*2);
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            // clicking on tasks will hide spinner
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+            task.close();
+        });
+
+        it(`Should failure spinner not auto hide on timeout and hide on click`, async function(){
+            const task = TaskManager.addNewTask("title", "message");
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            task.setFailed();
+            await awaits(TaskManager.SPINNER_HIDE_TIME*2);
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            // clicking on tasks will hide spinner
+            testWindow.$("#status-tasks .btn-status-bar").click();
+            expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+            task.close();
+        });
+
+        it(`Should fail spinner take precedence over success spinner`, async function(){
+            const task = TaskManager.addNewTask("title", "message");
+            const task1 = TaskManager.addNewTask("title", "message");
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            task.setSucceded();
+            task1.setFailed();
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeTrue();
+            task1.close();
+            // now close the failed task, the success spinner should now come
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-success")).toBeTrue();
+            task.setFailed();
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeTrue();
+            task.setProgressPercent(10);
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeFalse();
+            task.close();
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+        });
     });
 });

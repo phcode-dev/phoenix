@@ -2535,6 +2535,47 @@ textarea.exclusions-editor {
 
 
 /* Spinner */
+.spinner.spinner-failure {
+    border-left: 3px solid @bc-error;
+    border-right: 3px solid @bc-error;
+
+    .dark & {
+        border-left: 3px solid @accent-error;
+        border-right: 3px solid @accent-error;
+    }
+
+    &:before,
+    &:after {
+        border-left: 3px solid @bc-error;
+        border-right: 3px solid @bc-error;
+
+        .dark & {
+            border-left: 3px solid @accent-error;
+            border-right: 3px solid @accent-error;
+        }
+    }
+}
+
+.spinner.spinner-success {
+    border-left: 3px solid @accent-success;
+    border-right: 3px solid @accent-success;
+
+    .dark & {
+        border-left: 3px solid @accent-success;
+        border-right: 3px solid @accent-success;
+    }
+
+    &:before,
+    &:after {
+        border-left: 3px solid @accent-success;
+        border-right: 3px solid @accent-success;
+
+        .dark & {
+            border-left: 3px solid @accent-success;
+            border-right: 3px solid @accent-success;
+        }
+    }
+}
 
 .progress-bar-foreground-success {
     background: @accent-success;

@@ -31,7 +31,7 @@ define(function (require, exports, module) {
     const _                    = require("thirdparty/lodash"),
         AnimationUtils       = require("utils/AnimationUtils"),
         AppInit              = require("utils/AppInit"),
-        DropdownButton       = require("widgets/DropdownButton").DropdownButton,
+        DropdownButton       = require("widgets/DropdownButton"),
         EditorManager        = require("editor/EditorManager"),
         MainViewManager      = require("view/MainViewManager"),
         Editor               = require("editor/Editor").Editor,
@@ -375,7 +375,7 @@ define(function (require, exports, module) {
         $indentWidthInput   = $("#indent-width-input");
         $statusOverwrite    = $("#status-overwrite");
 
-        languageSelect      = new DropdownButton("", [], function (item, index) {
+        languageSelect      = new DropdownButton.DropdownButton("", [], function (item, index) {
             var document = EditorManager.getActiveEditor().document,
                 defaultLang = LanguageManager.getLanguageForPath(document.file.fullPath, true);
 
@@ -402,7 +402,7 @@ define(function (require, exports, module) {
         languageSelect.$button.attr("title", Strings.STATUSBAR_LANG_TOOLTIP);
 
 
-        encodingSelect = new DropdownButton("", [], function (item, index) {
+        encodingSelect = new DropdownButton.DropdownButton("", [], function (item, index) {
             var document = EditorManager.getActiveEditor().document;
             var html = _.escape(item);
 
@@ -425,7 +425,7 @@ define(function (require, exports, module) {
             $("#status-tasks .spinner").addClass("hide-spinner");
         }
 
-        tasksSelect = new DropdownButton(Strings.STATUSBAR_TASKS, [Strings.STATUSBAR_TASKS_HIDE_SPINNER], function (item, index) {
+        tasksSelect = new DropdownButton.DropdownButton(Strings.STATUSBAR_TASKS, [Strings.STATUSBAR_TASKS_HIDE_SPINNER], function (item, index) {
             if (item === Strings.STATUSBAR_TASKS_HIDE_SPINNER) {
                 hideSpinner = PreferencesManager.getViewState("StatusBar.HideSpinner");
                 if(hideSpinner){
@@ -445,14 +445,17 @@ define(function (require, exports, module) {
             if(selection === Strings.STATUSBAR_TASKS_HIDE_SPINNER){
                 hideSpinner = !PreferencesManager.getViewState("StatusBar.HideSpinner");
                 PreferencesManager.setViewState("StatusBar.HideSpinner", hideSpinner);
-                if(!hideSpinner){
-                    $("#status-tasks .spinner").removeClass("hide-spinner");
-                } else {
+                if(hideSpinner){
                     $("#status-tasks .spinner").addClass("hide-spinner");
+                } else {
+                    $("#status-tasks .spinner").removeClass("hide-spinner");
                 }
                 return;
             }
             return TaskManager._onSelect(e, selection);
+        });
+        tasksSelect.on(DropdownButton.EVENT_DROPDOWN_SHOWN, (evt)=>{
+            return TaskManager._onDropdownShown(evt);
         });
 
         // indentation event handlers
