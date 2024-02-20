@@ -33,6 +33,12 @@ define(function (require, exports, module) {
     const STATUS_SUCCESS = "success",
         STATUS_FAIL ="fail",
         STATUS_INCOMPLETE = "incomplete";
+    const SPINNER_FAIL = "spinner-failure",
+        SPINNER_SUCCESS = "spinner-success",
+        SPINNER_NORMAL = "spinner-normal";
+    const SPINNER_HIDE_TIME = Phoenix.isTestWindow? 5 : 3000; // for tests , we wait only 1 ms
+    let currentSpinnerType = null, spinnerHideTimer;
+    let $spinner;
 
     /**
      * This is used by legacy extensions that used StatusBar.showBusyIndicator and hide apis that are deprecated.
@@ -44,10 +50,96 @@ define(function (require, exports, module) {
 
     let taskSelect;
 
+    function _showSpinnerIcon(spinnerType) {
+        // we only show the icon for a few seconds to be less distracting except if the persist option is specified
+        // the persist option is now used only for errors and success tasks that has not been removed from the task
+        // manager list(which usually happens if there is some user action needed). Even then on click the spinner will
+        // be hidden again.
+        if(currentSpinnerType === SPINNER_FAIL){
+            // error spinner has the highest priority and is persisted until someone click on the spinner.
+            return;
+        }
+        if(spinnerType === SPINNER_FAIL) {
+            clearTimeout(spinnerHideTimer);
+            $spinner.removeClass("forced-hidden");
+            $spinner.removeClass(SPINNER_SUCCESS);
+            $spinner.addClass(SPINNER_FAIL);
+            currentSpinnerType = SPINNER_FAIL;
+            return;
+        }
+        if(currentSpinnerType === SPINNER_SUCCESS){
+            // success spinner has the second highest priority and is persisted until someone click on the spinner.
+            return;
+        }
+        if(spinnerType === SPINNER_SUCCESS) {
+            clearTimeout(spinnerHideTimer);
+            $spinner.removeClass("forced-hidden");
+            $spinner.removeClass(SPINNER_FAIL);
+            $spinner.addClass(SPINNER_SUCCESS);
+            currentSpinnerType = SPINNER_SUCCESS;
+            return;
+        }
+        if(spinnerType === SPINNER_NORMAL) {
+            clearTimeout(spinnerHideTimer);
+            $spinner.removeClass("forced-hidden");
+            $spinner.removeClass(SPINNER_FAIL);
+            $spinner.removeClass(SPINNER_SUCCESS);
+            spinnerHideTimer = setTimeout(hideSpinnerIcon, SPINNER_HIDE_TIME);
+            currentSpinnerType = SPINNER_NORMAL;
+        }
+    }
+
+    function hideSpinnerIcon() {
+        clearTimeout(spinnerHideTimer);
+        currentSpinnerType = null;
+        $spinner.addClass("forced-hidden");
+        $spinner.removeClass(SPINNER_FAIL);
+        $spinner.removeClass(SPINNER_SUCCESS);
+    }
+
+    /**
+     * determines what the spinner icon to show(green-for success), red-fail, blue normal based on the active
+     * tasks in list and renders. IF the active tasks has already  been notified, it wont notify again.
+     */
+    function renderSpinnerIcon() {
+        let unackSuccessTaskFound = false;
+        if(currentSpinnerType && currentSpinnerType !== SPINNER_NORMAL) {
+            // there is a success/fail spinner visible, clean it. For the normal spinner, it will be
+            // auto-cleaned by timer.
+            hideSpinnerIcon();
+        }
+        for(let task of Object.values(taskList)){
+            if(!task._spinnerIconAck && task.isFailed()){
+                _showSpinnerIcon(SPINNER_FAIL);
+                return;
+            }
+            if(!task._spinnerIconAck && task.isSucceeded()){
+                unackSuccessTaskFound = true;
+            }
+        }
+        if(unackSuccessTaskFound) {
+            _showSpinnerIcon(SPINNER_SUCCESS);
+            return;
+        }
+        // for normal spinner, we dont show anything as its only shown briefly till SPINNER_HIDE_TIME
+        // which was already handled
+    }
+
+    function _onDropdownShown() {
+        // the animating icon is a call to action that stops showing after a few seconds normally. On clicking the
+        // task dropdown, the user has checked the notifications and we can hide the distracting spinner.
+        for(let task of Object.values(taskList)){
+            task._spinnerIconAck = true;
+        }
+        hideSpinnerIcon();
+    }
+
     function _setTaskSelect(select) {
         taskSelect = select;
+        $spinner = $("#status-tasks .spinner");
         if(Phoenix.isTestWindow) {
             exports.taskSelect = taskSelect;
+            exports.SPINNER_HIDE_TIME = SPINNER_HIDE_TIME;
         }
     }
     function _renderItem(item, index) {
@@ -227,8 +319,8 @@ define(function (require, exports, module) {
      * @property {function(): number} getProgressPercent - Returns the task's current progress percentage.
      * @property {function(): void} setFailed - Marks the task as failed.
      * @property {function(): boolean} isFailed - Returns true if the task is marked as failed.
-     * @property {function(): void} setSucceeded - Marks the task as succeeded.
-     * @property {function(): boolean} isSucceeded - Returns true if the task is marked as succeeded.
+     * @property {function(): void} setSucceded - Marks the task as succeeded.
+     * @property {function(): boolean} isSucceded - Returns true if the task is marked as succeeded.
      * @property {function(string): void} showStopIcon - Shows the stop icon with an optional tooltip message.
      * @property {function(): void} hideStopIcon - Hides the stop icon.
      * @property {function(string): void} showPlayIcon - Shows the play icon with an optional tooltip message.
@@ -309,11 +401,14 @@ define(function (require, exports, module) {
             onSelect: options && options.onSelect,
             _percent: options && options.progressPercent,
             _completedStatus: STATUS_INCOMPLETE,
-            _iconHTML: iconHTML
+            _iconHTML: iconHTML,
+            _spinnerIconAck: false // This is set when the user has seen the spinner icon spinning and clicked to see
+            // weather the task succeeded or failed.
         };
         function close() {
             delete taskList[task._id];
             _showOrHideStatusBarIfNeeded();
+            renderSpinnerIcon();
         }
 
         function setIconHTML(html) {
@@ -345,6 +440,8 @@ define(function (require, exports, module) {
             task._percent = percent;
             task._completedStatus = STATUS_INCOMPLETE;
             _renderProgressbar(task);
+            task._spinnerIconAck= true; // when progress changes, there is no notification visual in status bar.
+            renderSpinnerIcon();
         }
         function getProgressPercent() {
             return task._percent;
@@ -353,6 +450,8 @@ define(function (require, exports, module) {
         function setFailed(){
             task._completedStatus = STATUS_FAIL;
             _renderProgressbar(task);
+            task._spinnerIconAck= false;
+            _showSpinnerIcon(SPINNER_FAIL);
         }
         function isFailed(){
             return task._completedStatus === STATUS_FAIL;
@@ -360,6 +459,8 @@ define(function (require, exports, module) {
         function setSucceeded(){
             task._completedStatus = STATUS_SUCCESS;
             _renderProgressbar(task);
+            task._spinnerIconAck= false;
+            _showSpinnerIcon(SPINNER_SUCCESS);
         }
         function isSucceeded(){
             return task._completedStatus === STATUS_SUCCESS;
@@ -421,20 +522,28 @@ define(function (require, exports, module) {
         taskList[task._id] = task;
         EventDispatcher.makeEventDispatcher(task);
         _showOrHideStatusBarIfNeeded();
+        _showSpinnerIcon(SPINNER_NORMAL);
         return task;
     }
 
     function _setLegacyExtensionBusy(busy) {
         legacyExtensionBusy = busy;
+        if(busy){
+            _showSpinnerIcon(SPINNER_NORMAL);
+        } else {
+            renderSpinnerIcon();
+        }
         _showOrHideStatusBarIfNeeded();
     }
 
     // private apis
     exports._setTaskSelect = _setTaskSelect;
+    exports._onDropdownShown = _onDropdownShown;
     exports._renderItem = _renderItem;
     exports._onSelect = _onSelect;
     exports._setLegacyExtensionBusy = _setLegacyExtensionBusy;
 
+    window.TaskManager = exports; // todo remove this
     // public apis
     exports.addNewTask = addNewTask;
 });
