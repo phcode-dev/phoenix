@@ -842,6 +842,7 @@ define(function (require, exports, module) {
         );
     }
 
+    let alwaysOverwriteTillProjectSwitch = false;
     /**
      * Saves a document to its existing path. Does NOT support untitled documents.
      * @param {!Document} docToSave
@@ -861,6 +862,10 @@ define(function (require, exports, module) {
         }
 
         function handleContentsModified() {
+            if(alwaysOverwriteTillProjectSwitch){
+                doSave(docToSave, true).then(result.resolve, result.reject);
+                return;
+            }
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
                 Strings.EXT_MODIFIED_TITLE,
@@ -880,6 +885,12 @@ define(function (require, exports, module) {
                         text: Strings.CANCEL
                     },
                     {
+                        className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                        id: "alwaysOverwrite",
+                        text: Strings.ALWAYS_OVERWRITE,
+                        tooltip: Strings.EXT_ALWAYS_MODIFIED_BUTTON_TOOLTIP
+                    },
+                    {
                         className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
                         id: Dialogs.DIALOG_BTN_OK,
                         text: Strings.SAVE_AND_OVERWRITE
@@ -895,6 +906,9 @@ define(function (require, exports, module) {
                     } else if (id === Dialogs.DIALOG_BTN_SAVE_AS) {
                         // Let the user choose a different path at which to write the file
                         handleFileSaveAs({doc: docToSave}).then(result.resolve, result.reject);
+                    } else if (id === 'alwaysOverwrite'){
+                        alwaysOverwriteTillProjectSwitch = true;
+                        doSave(docToSave, true).then(result.resolve, result.reject);
                     }
                 });
         }
@@ -2185,7 +2199,10 @@ define(function (require, exports, module) {
     CommandManager.registerInternal(Commands.APP_RELOAD_WITHOUT_EXTS,   handleReloadWithoutExts);
 
     // Listen for changes that require updating the editor titlebar
-    ProjectManager.on("projectOpen", _updateTitle);
+    ProjectManager.on("projectOpen", ()=>{
+        alwaysOverwriteTillProjectSwitch = false;
+        _updateTitle();
+    });
     DocumentManager.on("dirtyFlagChange", handleDirtyChange);
     DocumentManager.on("fileNameChange", handleCurrentFileChange);
     MainViewManager.on("currentFileChange", handleCurrentFileChange);

@@ -162,6 +162,7 @@ define({
     "EXT_MODIFIED_WARNING": "<span class='dialog-filename'>{0}</span> has been modified on disk outside of {APP_NAME}.<br /><br />Do you want to save the file and overwrite those changes?",
     "EXT_MODIFIED_MESSAGE": "<span class='dialog-filename'>{0}</span> has been modified on disk outside of {APP_NAME}, but also has unsaved changes in {APP_NAME}.<br /><br />Which version do you want to keep?",
     "EXT_DELETED_MESSAGE": "<span class='dialog-filename'>{0}</span> has been deleted on disk outside of {APP_NAME}, but has unsaved changes in {APP_NAME}.<br /><br />Do you want to keep your changes?",
+    "EXT_ALWAYS_MODIFIED_BUTTON_TOOLTIP": "Always overwrite files until project switch or restart",
 
     // Window unload warning messages
     "WINDOW_UNLOAD_WARNING": "Are you sure you want to navigate to a different URL and leave {APP_NAME}?",
@@ -175,6 +176,7 @@ define({
     "SAVE": "Save",
     "SAVE_AS": "Save As\u2026",
     "SAVE_AND_OVERWRITE": "Overwrite",
+    "ALWAYS_OVERWRITE": "Always Overwrite",
     "DELETE": "Delete",
     "BUTTON_YES": "Yes",
     "BUTTON_NO": "No",
