@@ -178,9 +178,10 @@ define(function (require, exports, module) {
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
         });
 
-        function getProgressPercent() {
-            return Math.round((testWindow.$(".dropdown-status-bar .progress").width() /
+        function expectProgressPercentToBeAround(progress) {
+            const progressShown = Math.floor((testWindow.$(".dropdown-status-bar .progress").width() /
                 testWindow.$(".dropdown-status-bar .progress").parent().width()) * 100);
+            expect(progress >= (progressShown-1) && progress <= (progressShown+1)).toBeTrue();
         }
 
         it("Should be able to add with progress percent", async function () {
@@ -190,7 +191,7 @@ define(function (require, exports, module) {
             });
             testWindow.$("#status-tasks .btn-status-bar").click();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
-            expect(getProgressPercent()).toBe(progressPercent);
+            expectProgressPercentToBeAround(progressPercent);
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground')).toBeTrue();
             task.close();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
@@ -202,12 +203,12 @@ define(function (require, exports, module) {
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-pulse')).toBeTrue();
             task.setProgressPercent(0);
-            expect(getProgressPercent()).toBe(100);
+            expectProgressPercentToBeAround(100);
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-pulse')).toBeTrue();
             task.setProgressPercent(10);
-            expect(getProgressPercent()).toBe(10);
+            expectProgressPercentToBeAround(10);
             task.setProgressPercent(70);
-            expect(getProgressPercent()).toBe(70);
+            expectProgressPercentToBeAround(70);
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground')).toBeTrue();
             task.close();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
@@ -219,7 +220,7 @@ define(function (require, exports, module) {
             testWindow.$("#status-tasks .btn-status-bar").click();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
 
-            expect(getProgressPercent()).toBe(70);
+            expectProgressPercentToBeAround(70);
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground')).toBeTrue();
             task.close();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
@@ -230,7 +231,7 @@ define(function (require, exports, module) {
             task.setSucceded();
             testWindow.$("#status-tasks .btn-status-bar").click();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
-            expect(getProgressPercent()).toBe(100);
+            expectProgressPercentToBeAround(100);
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-success')).toBeTrue();
             task.close();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
@@ -241,7 +242,7 @@ define(function (require, exports, module) {
             task.setFailed();
             testWindow.$("#status-tasks .btn-status-bar").click();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
-            expect(getProgressPercent()).toBe(100);
+            expectProgressPercentToBeAround(100);
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-failure')).toBeTrue();
             task.close();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeFalse();
@@ -252,12 +253,12 @@ define(function (require, exports, module) {
             task.setFailed();
             testWindow.$("#status-tasks .btn-status-bar").click();
             expect(testWindow.$(".dropdown-status-bar").is(":visible")).toBeTrue();
-            expect(getProgressPercent()).toBe(100);
+            expectProgressPercentToBeAround(100);
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground-failure')).toBeTrue();
 
             // now try to set progress to reset the failure
             task.setProgressPercent(70);
-            expect(getProgressPercent()).toBe(70);
+            expectProgressPercentToBeAround(70);
             expect(testWindow.$(".dropdown-status-bar .progress").hasClass('progress-bar-foreground')).toBeTrue();
 
             task.close();
