@@ -213,6 +213,10 @@ function initCodeEditor() {
             _openURLInTauri(document.getElementById(iconID).getAttribute('href'));
         };
     }
+    if(window.top.__TAURI__) {
+        // in desktop, we don't show github project option till we have git extension integrated.
+        document.getElementById("newGitHubProject").classList.add("forced-hidden");
+    }
     document.getElementById("newGitHubProject").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "github-project");
         window.location.href = 'new-project-github.html';
