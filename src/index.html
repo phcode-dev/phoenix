@@ -440,7 +440,7 @@
         BugsnagPerformance.start({
             apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
             appVersion: AppConfig.version,
-            releaseStage: window.__TAURI__ ? "tauri-" + AppConfig.config.bugsnagEnv : AppConfig.config.bugsnagEnv,
+            releaseStage: window.__TAURI__ ? `tauri-${AppConfig.config.bugsnagEnv}-${Phoenix.platform}` : AppConfig.config.bugsnagEnv,
             autoInstrumentRouteChanges: false,
             autoInstrumentNetworkRequests: false,
             autoInstrumentFullPageLoads: false
