@@ -26,6 +26,7 @@ define(function (require, exports, module) {
     const Metrics = brackets.getModule("utils/Metrics"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         PerfUtils           = brackets.getModule("utils/PerfUtils"),
+        NodeUtils           = brackets.getModule("utils/NodeUtils"),
         themesPref          = PreferencesManager.getExtensionPrefs("themes");
 
     const PLATFORM = Metrics.EVENT_TYPE.PLATFORM,
@@ -110,11 +111,22 @@ define(function (require, exports, module) {
 
     function sendPlatformMetrics() {
         Metrics.countEvent(PLATFORM, "os", brackets.platform);
-        Metrics.countEvent(PLATFORM, "os.flavor", _getPlatformInfo());
         Metrics.countEvent(PLATFORM, "userAgent", window.navigator.userAgent);
         Metrics.countEvent(PLATFORM, "languageOS", brackets.app.language);
         Metrics.countEvent(PLATFORM, "languageBrackets", brackets.getLocale());
         Metrics.countEvent(PLATFORM, "bracketsVersion", brackets.metadata.version);
+        if(Phoenix.platform === "linux" && Phoenix.browser.isTauri) {
+            NodeUtils.getLinuxOSFlavorName()
+                .then(flavor=>{
+                    if(flavor){
+                        Metrics.countEvent(PLATFORM, "os.flavor", flavor);
+                    } else {
+                        Metrics.countEvent(PLATFORM, "os.flavor", _getPlatformInfo());
+                    }
+                });
+        } else {
+            Metrics.countEvent(PLATFORM, "os.flavor", _getPlatformInfo());
+        }
         _emitDeviceTypeMetrics();
         _emitBrowserMetrics();
         _emitMobileMetricsIfPresent();
