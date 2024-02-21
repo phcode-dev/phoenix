@@ -46,7 +46,7 @@
                         // the event wasnt generated, so we trigger it manually. This is not preferred as the target and
                         // other important properties of the event are readonly and cannot be overwritten.
                         if(!focusCallbackDone){
-                            gaFocusCallback.call(this, focusEvent);
+                            gaFocusCallback.call(window.document.body, focusEvent);
                         }
                     }, 1000);
                 } else if(eventName === 'blur'){
