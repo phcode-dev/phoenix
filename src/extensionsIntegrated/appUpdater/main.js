@@ -155,7 +155,9 @@ define(function (require, exports, module) {
             }
             showOrHideUpdateIcon();
         } catch (e) {
-            console.error("Error getting update metadata");
+            console.error("Error getting update metadata", e);
+            updateFailed = true;
+            Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'fail', "Unknown"+Phoenix.platform);
         }
         return updateDetails;
     }
