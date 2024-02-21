@@ -42,10 +42,23 @@
             }
         }
 
+        function getQueryStringParam(paramName) {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            return urlParams.get(paramName);
+        }
+
         async function updateLinux() {
             try {
-                const command = new __TAURI__.shell.Command('run-update-linux-command',
-                    ['-e', 'wget -qO- https://updates.phcode.io/linux/installer.sh | bash -s -- --upgrade'])
+                const stageValue = getQueryStringParam('stage');
+                console.log('Stage:', stageValue);
+                let execCommand = 'wget -qO- https://updates.phcode.io/linux/installer.sh | bash -s -- --upgrade';
+                let runCommand = 'run-update-linux-command';
+                if(stageValue === 'dev' || stageValue === 'stage'){
+                    runCommand = 'run-update-linux-command-dev';
+                    execCommand = "wget -qO- https://updates.phcode.io/linux/installer-latest-experimental-build.sh | bash -s -- --upgrade";
+                }
+                const command = new __TAURI__.shell.Command(runCommand, ['-e', execCommand])
                 const result = await command.execute();
                 if(result.code !== 0){
                     status = UPDATE_STATUS.FAILED;
