@@ -88,7 +88,7 @@ define(function (require, exports, module) {
         // as we are a single instance app, and there can be multiple phoenix windows that comes in and goes out,
         // the updater lives in its own independent hidden window.
         updaterWindow = new window.__TAURI__.window.WebviewWindow(TAURI_UPDATER_WINDOW_LABEL, {
-            url: "tauri-updater.html",
+            url: "tauri-updater.html?stage=" + Phoenix.config.environment,
             title: "Desktop App Updater",
             fullscreen: false,
             resizable: false,
@@ -196,11 +196,11 @@ define(function (require, exports, module) {
         }
         const updateDetails = await getUpdateDetails();
         if(updateFailed) {
-            (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
+            Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
             return;
         }
         if(updatePendingRestart || updateDetails.updatePendingRestart){
-            (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+            Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
             return;
         }
         if(!updateDetails.shouldUpdate){
@@ -314,6 +314,7 @@ define(function (require, exports, module) {
             console.log("Skipping update check: last update check was within one day");
             return;
         }
+        PreferencesManager.setViewState(KEY_LAST_UPDATE_CHECK_TIME, currentTime);
         checkForUpdates(true);
     });
 });
