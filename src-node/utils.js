@@ -1,5 +1,6 @@
 const NodeConnector = require("./node-connector");
 const { exec } = require('child_process');
+const fs = require('fs');
 
 const UTILS_NODE_CONNECTOR = "ph_utils";
 NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
@@ -39,6 +40,25 @@ async function getPhoenixBinaryVersion(phoenixBinPath) {
     });
 }
 
+async function getLinuxOSFlavorName() {
+    const osReleaseFile = '/etc/os-release';
+
+    try {
+        const data = fs.readFileSync(osReleaseFile, 'utf8');
+        const lines = data.split('\n');
+        const osInfo = {};
+        lines.forEach(line => {
+            const [key, value] = line.split('=');
+            osInfo[key.trim()] = value ? value.replace(/"/g, '') : '';
+        });
+        return osInfo.PRETTY_NAME;
+    } catch (err) {
+        console.error(`Error reading Linux OS Name${osReleaseFile}: ${err.message}`);
+        return null;
+    }
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
+exports.getLinuxOSFlavorName = getLinuxOSFlavorName;

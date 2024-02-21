@@ -64,6 +64,13 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("getPhoenixBinaryVersion", phoenixBinPath);
     }
 
+    async function getLinuxOSFlavorName() {
+        if(Phoenix.platform !== "linux" || !Phoenix.browser.isTauri) {
+            return null;
+        }
+        return utilsConnector.execPeer("getLinuxOSFlavorName");
+    }
+
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -73,6 +80,7 @@ define(function (require, exports, module) {
     exports.fetchURLText = fetchURLText;
     exports.updateNodeLocaleStrings = updateNodeLocaleStrings;
     exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
+    exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
     exports.isNodeReady = NodeConnector.isNodeReady;
 
     window.NodeUtils = exports;
