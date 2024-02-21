@@ -11,6 +11,53 @@
         const url = window.location.href;
         const urlParams = new URLSearchParams(window.location.search);
         const reloadedOnce = urlParams.get('reloadedOnce');
+
+        /**
+         * GA doesn't log engagement metrics if the page is in focus. Since we are a hidden page, we will take over
+         * the global event handlers and trigger synthetic focus events to make ga think that it has focus.
+         */
+        function patchGlobalFocusHandlers() {
+            let gaFocusCallback, focusCallbackDone;
+            window.savedEventListener = window.addEventListener;
+            savedEventListener('focus', (focusEvent)=>{
+                gaFocusCallback.call(this, focusEvent);
+                focusCallbackDone = true;
+            });
+
+            window.addEventListener = function (eventName, fn, globalEvFlag) {
+                if(eventName === 'focus'){
+                    const focusEvent = new Event('focus', {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true,
+                        isTrusted: true,
+                        cancelBubble: false,
+                        composed : false,
+                        defaultPrevented: false,
+                        returnValue: true
+                    });
+                    document.body.focus();
+                    setTimeout(()=>{
+                        gaFocusCallback = fn;
+                        // first lets try to trigger the actual saved savedEventListener programmatically
+                        window.dispatchEvent(focusEvent);
+                    }, 500);
+                    setTimeout(()=>{
+                        // the event wasnt generated, so we trigger it manually. This is not preferred as the target and
+                        // other important properties of the event are readonly and cannot be overwritten.
+                        if(!focusCallbackDone){
+                            gaFocusCallback.call(this, focusEvent);
+                        }
+                    }, 1000);
+                } else if(eventName === 'blur'){
+                    // swallow this event as ga will not track engagement if not focused.
+                } else {
+                    window.savedEventListener(eventName, fn, globalEvFlag);
+                }
+            }
+        }
+        patchGlobalFocusHandlers();
+
         function installGoogleAnalytics() {
             if(gaReady){
                 return ;
