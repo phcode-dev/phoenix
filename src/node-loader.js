@@ -626,7 +626,7 @@ function nodeLoader() {
                 if(Phoenix.platform === "linux") {
                     // in linux installed distributions, src-node is present in the same dir as the executable.
                     const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
-                    nodeSrcPath = `${window.path.dirname(cliArgs[0])}/src-node`;
+                    nodeSrcPath = `${window.path.dirname(cliArgs[0])}/src-node/index.js`;
                 }
                 // node is designed such that it is not required at boot time to lower startup time.
                 // Keep this so to increase boot speed.

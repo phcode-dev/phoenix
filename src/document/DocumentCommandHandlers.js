@@ -2209,4 +2209,12 @@ define(function (require, exports, module) {
 
     // Reset the untitled document counter before changing projects
     ProjectManager.on("beforeProjectClose", function () { _nextUntitledIndexToUse = 1; });
+
+    let windowsUpdateInstallerPlatformLocation;
+    function setWindowsUpdateInstallerLocation(location) {
+        windowsUpdateInstallerPlatformLocation = location;
+    }
+
+    // private api
+    exports._setWindowsUpdateInstallerLocation = setWindowsUpdateInstallerLocation;
 });

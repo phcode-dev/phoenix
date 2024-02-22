@@ -36,7 +36,9 @@ define(function (require, exports, module) {
         marked = require('thirdparty/marked.min'),
         semver = require("thirdparty/semver.browser"),
         TaskManager = require("features/TaskManager"),
+        StringUtils         = require("utils/StringUtils"),
         NativeApp           = require("utils/NativeApp"),
+        DocumentCommandHandlers = require("document/DocumentCommandHandlers"),
         PreferencesManager  = require("preferences/PreferencesManager");
     let updaterWindow, updateTask, updatePendingRestart, updateFailed;
 
@@ -80,15 +82,18 @@ define(function (require, exports, module) {
             });
     }
 
-    function createTauriUpdateWindow() {
+    function createTauriUpdateWindow(downloadURL) {
         if(updaterWindow){
             return;
         }
         Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'window', "create"+Phoenix.platform);
         // as we are a single instance app, and there can be multiple phoenix windows that comes in and goes out,
         // the updater lives in its own independent hidden window.
+        const url = downloadURL ?
+            `tauri-updater.html?stage=${Phoenix.config.environment}&downloadURL=${encodeURIComponent(downloadURL)}` :
+            `tauri-updater.html?stage=${Phoenix.config.environment}`;
         updaterWindow = new window.__TAURI__.window.WebviewWindow(TAURI_UPDATER_WINDOW_LABEL, {
-            url: "tauri-updater.html?stage=" + Phoenix.config.environment,
+            url: url,
             title: "Desktop App Updater",
             fullscreen: false,
             resizable: false,
@@ -104,8 +109,8 @@ define(function (require, exports, module) {
         }
     }
 
-    async function doUpdate() {
-        createTauriUpdateWindow();
+    async function doUpdate(downloadURL) {
+        createTauriUpdateWindow(downloadURL);
         showOrHideUpdateIcon();
     }
 
@@ -223,7 +228,7 @@ define(function (require, exports, module) {
                         return;
                     }
                     if(option === Dialogs.DIALOG_BTN_OK && !updaterWindow){
-                        doUpdate();
+                        doUpdate(updateDetails.downloadURL);
                         return;
                     }
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "cancel"+Phoenix.platform);
@@ -232,14 +237,20 @@ define(function (require, exports, module) {
     }
 
     const UPDATE_COMMANDS = {
-        GET_STATUS: "GET_STATUS"
+        GET_STATUS: "GET_STATUS",
+        GET_DOWNLOAD_PROGRESS: "GET_DOWNLOAD_PROGRESS",
+        GET_INSTALLER_LOCATION: "GET_INSTALLER_LOCATION"
     };
     const UPDATE_EVENT = {
         STATUS: "STATUS",
-        LOG_ERROR: "LOG_ERROR"
+        LOG_ERROR: "LOG_ERROR",
+        DOWNLOAD_PROGRESS: "DOWNLOAD_PROGRESS",
+        INSTALLER_LOCATION: "INSTALLER_LOCATION"
     };
     const UPDATE_STATUS = {
         STARTED: "STARTED",
+        DOWNLOADING: "DOWNLOADING",
+        INSTALLER_DOWNLOADED: "INSTALLER_DOWNLOADED",
         FAILED: "FAILED",
         FAILED_UNKNOWN_OS: "FAILED_UNKNOWN_OS",
         INSTALLED: "INSTALLED"
@@ -285,9 +296,29 @@ define(function (require, exports, module) {
                     updateTask.setTitle(Strings.UPDATE_DONE);
                     updateTask.setMessage(Strings.UPDATE_RESTART);
                     Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+                } else if(data === UPDATE_STATUS.INSTALLER_DOWNLOADED && !updateInstalledDialogShown){
+                    updateInstalledDialogShown = true;
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'downloaded', Phoenix.platform);
+                    updatePendingRestart = true;
+                    updateTask.setSucceded();
+                    updateTask.setTitle(Strings.UPDATE_DONE);
+                    updateTask.setMessage(Strings.UPDATE_RESTART_INSTALL);
+                    Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE);
+                    _sendUpdateCommand(UPDATE_COMMANDS.GET_INSTALLER_LOCATION);
+                } else if(data === UPDATE_STATUS.DOWNLOADING){
+                    updateTask.setMessage(Strings.UPDATE_DOWNLOADING);
+                    _sendUpdateCommand(UPDATE_COMMANDS.GET_DOWNLOAD_PROGRESS);
                 }
                 showOrHideUpdateIcon();
-            } if(eventName === UPDATE_EVENT.LOG_ERROR) {
+            } else if(eventName === UPDATE_EVENT.DOWNLOAD_PROGRESS) {
+                const {progressPercent, fileSize} = data;
+                updateTask.setProgressPercent(progressPercent);
+                updateTask.setMessage(StringUtils.format(Strings.UPDATE_DOWNLOAD_PROGRESS,
+                    Math.floor(fileSize*progressPercent/100),
+                    fileSize));
+            } else if(eventName === UPDATE_EVENT.INSTALLER_LOCATION) {
+                DocumentCommandHandlers._setWindowsUpdateInstallerLocation(data);
+            } else if(eventName === UPDATE_EVENT.LOG_ERROR) {
                 logger.reportErrorMessage(data);
             }
         });
