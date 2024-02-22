@@ -2058,7 +2058,7 @@ define(function (require, exports, module) {
         }, CLOSE_TIMER_RESET_INTERVAL);
         if(closeClickCounter >= 2) {
             // the user clicked the close button 2 times in the last 4 secs, he's desperate, close the window now!.
-            Phoenix.app.closeWindow();
+            Phoenix.app.closeWindow(true);
         }
     }
     function attachTauriUnloadHandler() {
@@ -2209,12 +2209,4 @@ define(function (require, exports, module) {
 
     // Reset the untitled document counter before changing projects
     ProjectManager.on("beforeProjectClose", function () { _nextUntitledIndexToUse = 1; });
-
-    let windowsUpdateInstallerPlatformLocation;
-    function setWindowsUpdateInstallerLocation(location) {
-        windowsUpdateInstallerPlatformLocation = location;
-    }
-
-    // private api
-    exports._setWindowsUpdateInstallerLocation = setWindowsUpdateInstallerLocation;
 });

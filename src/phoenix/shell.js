@@ -39,7 +39,7 @@ initVFS();
 const MAX_ALLOWED_TAURI_WINDOWS = 30;
 const CLI_ARGS_QUERY_PARAM = 'CLI_ARGS';
 const CLI_CWD_QUERY_PARAM = 'CLI_CWD';
-let cliArgs, cliCWD, singleInstanceCLIHandler;
+let cliArgs, cliCWD, singleInstanceCLIHandler, quitTimeAppUpdateHandler;
 const PHOENIX_WINDOW_PREFIX = 'phcode-';
 const PHOENIX_EXTENSION_WINDOW_PREFIX = 'extn-';
 
@@ -99,13 +99,19 @@ Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
+    registerQuitTimeAppUpdateHandler: function (handler) {
+        if(!Phoenix.browser.isTauri){
+            throw new Error("registerQuitTimeAppUpdateHandler is not supported in browsers");
+        }
+        quitTimeAppUpdateHandler = handler;
+    },
     toggleDevtools: async function () {
         if(!Phoenix.browser.isTauri){
             throw new Error("toggle_devtools is not supported in browsers");
         }
         return window.__TAURI__.invoke("toggle_devtools", {});
     },
-    closeWindow: async function () {
+    closeWindow: async function (forceClose) {
         if(!Phoenix.browser.isTauri){
             throw new Error("closeWindow is not supported in browsers");
         }
@@ -124,6 +130,14 @@ Phoenix.app = {
         }
         if(instanceCount === 1 && !extensionWindowCount) {
             // we are the only window, so use process quit as in some os, hidden tauri windows will prevent app quit.
+            if(!forceClose && quitTimeAppUpdateHandler){
+                try{
+                    await quitTimeAppUpdateHandler();
+                }catch (e) {
+                    // we never fail the quit loop, ele the window ill never go away.
+                    console.error(e);
+                }
+            }
             window.__TAURI__.process.exit(0);
             return;
         }

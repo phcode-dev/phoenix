@@ -76,7 +76,7 @@
 
         async function downloadUpdate() {
             const EVENT_PROGRESS= "progress:";
-            const EVENT_INSTALL_PATH= "InstallerPath:";
+            const EVENT_INSTALL_PATH= "InstallerPath,";
             const downloadURL = decodeURIComponent(getQueryStringParam('downloadURL'));
             const appdataDir = await window.__TAURI__.path.appLocalDataDir();
             console.log('InstallerDownloadURL:', downloadURL);
@@ -110,7 +110,7 @@
                             fileSize = parseInt(line.split(":")[2].trim());
                             sendUpdateEvent(UPDATE_EVENT.DOWNLOAD_PROGRESS, {progressPercent, fileSize});
                         } else if(line.startsWith(EVENT_INSTALL_PATH)){
-                            installerLocation = line.split(":")[1].trim();
+                            installerLocation = line.split(",")[1].trim();
                             console.log("Final installer location is: ", installerLocation);
                             sendUpdateEvent(UPDATE_EVENT.INSTALLER_LOCATION, installerLocation);
                         }
