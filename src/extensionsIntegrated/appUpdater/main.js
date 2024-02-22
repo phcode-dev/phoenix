@@ -300,6 +300,23 @@ define(function (require, exports, module) {
         });
     }
 
+    async function launchLinuxUpdater() {
+        const stageValue = Phoenix.config.environment;
+        console.log('Stage:', stageValue);
+        let execCommand = 'wget -qO- https://updates.phcode.io/linux/installer.sh | bash -s -- --upgrade';
+        let runCommand = 'run-update-linux-command';
+        if(stageValue === 'dev' || stageValue === 'stage'){
+            runCommand = 'run-update-linux-command-dev';
+            execCommand = "wget -qO- https://updates.phcode.io/linux/installer-latest-experimental-build.sh | bash -s -- --upgrade";
+        }
+        const command = new window.__TAURI__.shell
+            .Command(runCommand, ['-e', execCommand]);
+        const result = await command.execute();
+        if(result.code !== 0){
+            throw new Error("Update script exit with non-0 exit code: " + result.code);
+        }
+    }
+
     let installerLocation;
     async function quitTimeAppUpdateHandler() {
         if(!installerLocation){
@@ -308,10 +325,36 @@ define(function (require, exports, module) {
         console.log("Installing update from: ", installerLocation);
         return new Promise(resolve=>{
             // this should never reject as it happens in app quit. rejecting wont affect quit, but its unnecessary.
+            let dialog;
+            function failUpdateDialogAndExit(err) {
+                console.error("error updating: ", err);
+                dialog && dialog.close();
+                Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE)
+                    .done(resolve);
+            }
             if (brackets.platform === "win") {
                 launchWindowsInstaller()
                     .then(resolve)
-                    .catch(resolve);
+                    .catch(failUpdateDialogAndExit);
+                return;
+            }
+            dialog = Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_INFO,
+                Strings.UPDATE_INSTALLING,
+                Strings.UPDATE_INSTALLING_MESSAGE,
+                [
+                    {
+                        className: "forced-hidden",
+                        id: Dialogs.DIALOG_BTN_OK,
+                        text: Strings.OK
+                    }
+                ],
+                false
+            );
+            if (brackets.platform === "linux") {
+                launchLinuxUpdater()
+                    .then(resolve)
+                    .catch(failUpdateDialogAndExit);
             } else {
                 resolve();
             }
