@@ -273,7 +273,7 @@ define(function (require, exports, module) {
     async function launchWindowsInstaller() {
         return new Promise((resolve, reject)=>{
             const appdataDir = window._tauriBootVars.appLocalDir;
-            window.__TAURI__.path.resolveResource("src-node/launch-windows-installer.js")
+            window.__TAURI__.path.resolveResource("src-node/installer/launch-windows-installer.js")
                 .then(async nodeSrcPath=>{
                     // this is not supposed to work in linux.
                     const argsArray = [nodeSrcPath, appdataDir];
