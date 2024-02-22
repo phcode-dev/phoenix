@@ -48,30 +48,11 @@
         }
 
         async function updateLinux() {
-            try {
-                const stageValue = getQueryStringParam('stage');
-                console.log('Stage:', stageValue);
-                let execCommand = 'wget -qO- https://updates.phcode.io/linux/installer.sh | bash -s -- --upgrade';
-                let runCommand = 'run-update-linux-command';
-                if(stageValue === 'dev' || stageValue === 'stage'){
-                    runCommand = 'run-update-linux-command-dev';
-                    execCommand = "wget -qO- https://updates.phcode.io/linux/installer-latest-experimental-build.sh | bash -s -- --upgrade";
-                }
-                const command = new __TAURI__.shell.Command(runCommand, ['-e', execCommand])
-                const result = await command.execute();
-                if(result.code !== 0){
-                    status = UPDATE_STATUS.FAILED;
-                    sendUpdateEvent(UPDATE_EVENT.LOG_ERROR, result.stderr);
-                    sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED);
-                    return;
-                }
-                status = UPDATE_STATUS.INSTALLED;
-                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.INSTALLED);
-            } catch (e) {
-                status = UPDATE_STATUS.FAILED;
-                sendUpdateEvent(UPDATE_EVENT.LOG_ERROR, e.stack);
-                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED);
-            }
+            // the actual install happens at app quit, since there is nothing to download at this stage,
+            // we just return a downloaded flag so that the ui can show a dialog to the user.
+            status = UPDATE_STATUS.INSTALLER_DOWNLOADED;
+            installerLocation = "onlineInstaller";
+            sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.INSTALLER_DOWNLOADED);
         }
 
         async function downloadUpdate() {
