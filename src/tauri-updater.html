@@ -81,7 +81,7 @@
             const appdataDir = await window.__TAURI__.path.appLocalDataDir();
             console.log('InstallerDownloadURL:', downloadURL);
             const argJson = JSON.stringify({downloadURL, appdataDir});
-            window.__TAURI__.path.resolveResource("src-node/download-file.js")
+            window.__TAURI__.path.resolveResource("src-node/installer/download-file.js")
                 .then(async nodeSrcPath=>{
                     // this is not supposed to work in linux.
                     const argsArray = [nodeSrcPath, argJson];
