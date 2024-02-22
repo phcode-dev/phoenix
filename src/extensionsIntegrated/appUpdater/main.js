@@ -137,6 +137,9 @@ define(function (require, exports, module) {
             updatePlatform: updatePlatformKey
         };
         try{
+            if(!updaterWindow){
+                updaterWindow = window.__TAURI__.window.WebviewWindow.getByLabel(TAURI_UPDATER_WINDOW_LABEL);
+            }
             const updateMetadata = await fetchJSON(brackets.config.app_update_url);
             const phoenixBinaryVersion = await NodeUtils.getPhoenixBinaryVersion();
             const phoenixLoadedAppVersion = Phoenix.metadata.apiVersion;
@@ -150,7 +153,11 @@ define(function (require, exports, module) {
                     updateDetails.downloadURL = updateMetadata.platforms[updatePlatformKey].url;
                 }
             } else if(semver.eq(updateMetadata.version, phoenixBinaryVersion) &&
-                !semver.eq(phoenixLoadedAppVersion, phoenixBinaryVersion)){
+                !semver.eq(phoenixLoadedAppVersion, phoenixBinaryVersion) && updaterWindow){
+                // the updaterWindow check is here so that it only makes sense to show restart dialog if the update
+                // was actually done. We have a version number mismatch of 0.0.1 between phoenix-desktop and phoenix
+                // repo, and that means that this can get triggered on statup on development builds. Wont happen in
+                // actual pipeline generated build tho.
                 console.log("Updates applied, waiting for app restart: ", phoenixBinaryVersion, phoenixLoadedAppVersion);
                 updateDetails.updatePendingRestart = true;
                 PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, true);
@@ -296,14 +303,16 @@ define(function (require, exports, module) {
                     updateTask.setTitle(Strings.UPDATE_DONE);
                     updateTask.setMessage(Strings.UPDATE_RESTART);
                     Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
-                } else if(data === UPDATE_STATUS.INSTALLER_DOWNLOADED && !updateInstalledDialogShown){
-                    updateInstalledDialogShown = true;
+                } else if(data === UPDATE_STATUS.INSTALLER_DOWNLOADED){
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'downloaded', Phoenix.platform);
                     updatePendingRestart = true;
                     updateTask.setSucceded();
                     updateTask.setTitle(Strings.UPDATE_DONE);
                     updateTask.setMessage(Strings.UPDATE_RESTART_INSTALL);
-                    Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE);
+                    if(!updateInstalledDialogShown){
+                        Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE);
+                        updateInstalledDialogShown = true;
+                    }
                     _sendUpdateCommand(UPDATE_COMMANDS.GET_INSTALLER_LOCATION);
                 } else if(data === UPDATE_STATUS.DOWNLOADING){
                     updateTask.setMessage(Strings.UPDATE_DOWNLOADING);

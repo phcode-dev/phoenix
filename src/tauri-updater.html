@@ -41,18 +41,6 @@
         }
         sendUpdateEvent(UPDATE_EVENT.STATUS, status);
 
-        async function updateMacOS() {
-            try {
-                await __TAURI__.updater.installUpdate();
-                status = UPDATE_STATUS.INSTALLED;
-                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.INSTALLED);
-            } catch (e) {
-                status = UPDATE_STATUS.FAILED;
-                sendUpdateEvent(UPDATE_EVENT.LOG_ERROR, e.stack);
-                sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED);
-            }
-        }
-
         function getQueryStringParam(paramName) {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
@@ -86,7 +74,7 @@
             }
         }
 
-        async function updateWindows() {
+        async function downloadUpdate() {
             const EVENT_PROGRESS= "progress:";
             const EVENT_INSTALL_PATH= "InstallerPath:";
             const downloadURL = decodeURIComponent(getQueryStringParam('downloadURL'));
@@ -134,12 +122,10 @@
 
         async function update() {
             const platform = await __TAURI__.os.platform();
-            if(platform === 'darwin'){
-                await updateMacOS();
-            } else if(platform === 'linux'){
+            if(platform === 'linux'){
                 await updateLinux();
-            } else if(platform === 'win32'){
-                await updateWindows();
+            } else if(platform === 'win32' || platform === 'darwin'){
+                await downloadUpdate();
             } else {
                 status = UPDATE_STATUS.FAILED_UNKNOWN_OS;
                 sendUpdateEvent(UPDATE_EVENT.STATUS, UPDATE_STATUS.FAILED_UNKNOWN_OS);

@@ -2,6 +2,8 @@ const { pipeline } = require('stream/promises');
 const { Transform } = require('stream');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const { exec } = require('child_process');
 
 const args = process.argv.slice(2); // Skip the first two elements
 const {downloadURL, appdataDir} = JSON.parse(args[0]);
@@ -14,6 +16,7 @@ const EVENT_INSTALL_PATH= "InstallerPath:";
 const fileName = path.basename(new URL(downloadURL).pathname);
 const installerFolder = path.join(appdataDir, 'installer');
 const savePath = path.join(appdataDir, 'installer', fileName);
+let extractPath;
 
 async function getFileSize(url) {
     try {
@@ -73,6 +76,60 @@ async function downloadFile(url, outputPath) {
     console.log(`File has been downloaded and saved to ${outputPath}`);
 }
 
+/**
+ * Extracts a .tar.gz file using the tar CLI utility available on macOS/linux.
+ *
+ * @param {string} filePath - The path to the .tar.gz file.
+ * @param {string} absoluteExtractPath - The directory to extract the files into.
+ */
+function extractTar(filePath, absoluteExtractPath) {
+    return new Promise((resolve, reject)=>{
+        const command = `tar -xzf "${filePath}" -C "${absoluteExtractPath}"`;
+
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Extraction error: ${error.message}`);
+                reject(error.message);
+                return;
+            }
+            if (stderr) {
+                console.error(`Extraction stderr: ${stderr}`);
+                reject(stderr);
+                return;
+            }
+            console.log(`Extraction completed to ${absoluteExtractPath}`);
+            resolve();
+        });
+    });
+}
+
+function removeQuarantineAttributeIfMac(extractPath) {
+    return new Promise((resolve)=>{
+        if (os.platform() === 'darwin') {
+            const command = `xattr -rd com.apple.quarantine "${extractPath}"`;
+
+            exec(command, (error, stdout, stderr) => {
+                // we always resolve as the user will be promted by macos if this fails here.
+                if (error) {
+                    console.error(`Error removing quarantine attribute: ${error.message}`);
+                    resolve();
+                    return;
+                }
+                if (stderr) {
+                    console.error(`Error output: ${stderr}`);
+                    resolve();
+                    return;
+                }
+                console.log(`Quarantine attribute removed successfully for ${extractPath}`);
+                resolve();
+            });
+        } else {
+            console.log("Platform is not macOS, no need to remove quarantine attribute.");
+            resolve();
+        }
+    });
+}
+
 async function downloadFileIfNeeded() {
     try {
 
@@ -88,17 +145,27 @@ async function downloadFileIfNeeded() {
             console.log('File already downloaded and complete.');
             const totalSize = Math.floor(totalBytes/1024/1024);
             console.log(`${EVENT_PROGRESS}${100}:${totalSize}`);
-            return;
+        } else {
+            // if we are here, then it is a fresh installer download or there is a partial corrupt download or
+            // a new version installer has to be downloaded while the old outdated installer exists.
+            // we have to clean the installerFolder.
+            await fs.promises.rm(installerFolder, { recursive: true, force: true });
+            fs.mkdirSync(installerFolder, { recursive: true });
+            console.log(`Downloading installer to ${savePath}...`);
+            await downloadFile(downloadURL, savePath);
         }
-
-        // if we are here, then it is a fresh installer download or there is a partial corrupt download or
-        // a new version installer has to be downloaded while the old outdated installer exists.
-        // we have to clean the installerFolder.
-        await fs.promises.rm(installerFolder, { recursive: true, force: true });
-        fs.mkdirSync(installerFolder, { recursive: true });
-        console.log('Downloading installer...');
-        await downloadFile(downloadURL, savePath);
-
+        extractPath = path.join(appdataDir, 'installer', "extracted");
+        await fs.promises.rm(extractPath, { recursive: true, force: true });
+        fs.mkdirSync(extractPath, { recursive: true });
+        if(savePath.endsWith(".tar.gz")){
+            await extractTar(savePath, extractPath);
+        }
+        const dirContents = fs.readdirSync(extractPath);
+        console.log("extracted dir contents: ", dirContents);
+        if(dirContents.length === 1){
+            extractPath = path.join(extractPath, dirContents[0]);
+        }
+        await removeQuarantineAttributeIfMac(extractPath);
     } catch (error) {
         console.error('An error occurred:', error);
     }
@@ -106,6 +173,10 @@ async function downloadFileIfNeeded() {
 
 downloadFileIfNeeded()
     .then(()=>{
-        console.log(`${EVENT_INSTALL_PATH}${savePath}`); // do not change this name
+        if(extractPath){
+            console.log(`${EVENT_INSTALL_PATH}${extractPath}`);
+            return;
+        }
+        console.log(`${EVENT_INSTALL_PATH}${savePath}`);
     })
     .catch(()=>process.exit(1));
