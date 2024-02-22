@@ -11,7 +11,7 @@ console.log("Download URL is: ", downloadURL);
 console.log("AppdataDir is: ", appdataDir);
 
 const EVENT_PROGRESS= "progress:";
-const EVENT_INSTALL_PATH= "InstallerPath:";
+const EVENT_INSTALL_PATH= "InstallerPath,"; // its , here as separator as windows use c:// path style
 
 const fileName = path.basename(new URL(downloadURL).pathname);
 const installerFolder = path.join(appdataDir, 'installer');
@@ -103,6 +103,33 @@ function extractTar(filePath, absoluteExtractPath) {
     });
 }
 
+/**
+ * Extracts a ZIP file to the specified directory on Windows.
+ *
+ * @param {string} zipFilePath - The path to the ZIP file.
+ * @param {string} absoluteExtractPath - The directory to extract the files into.
+ */
+function extractZipFileWindows(zipFilePath, absoluteExtractPath) {
+    return new Promise((resolve, reject)=>{
+        const command = `powershell Expand-Archive -Path "${zipFilePath}" -DestinationPath "${absoluteExtractPath}"`;
+
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error extracting ZIP file: ${error.message}`);
+                reject(error.message);
+                return;
+            }
+            if (stderr) {
+                console.error(`Error output: ${stderr}`);
+                reject(stderr);
+                return;
+            }
+            console.log(`ZIP file extracted successfully to ${absoluteExtractPath}`);
+            resolve();
+        });
+    });
+}
+
 function removeQuarantineAttributeIfMac(extractPath) {
     return new Promise((resolve)=>{
         if (os.platform() === 'darwin') {
@@ -159,6 +186,9 @@ async function downloadFileIfNeeded() {
         fs.mkdirSync(extractPath, { recursive: true });
         if(savePath.endsWith(".tar.gz")){
             await extractTar(savePath, extractPath);
+        }
+        if(savePath.endsWith(".zip")){
+            await extractZipFileWindows(savePath, extractPath);
         }
         const dirContents = fs.readdirSync(extractPath);
         console.log("extracted dir contents: ", dirContents);

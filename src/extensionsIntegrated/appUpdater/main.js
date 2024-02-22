@@ -38,7 +38,6 @@ define(function (require, exports, module) {
         TaskManager = require("features/TaskManager"),
         StringUtils         = require("utils/StringUtils"),
         NativeApp           = require("utils/NativeApp"),
-        DocumentCommandHandlers = require("document/DocumentCommandHandlers"),
         PreferencesManager  = require("preferences/PreferencesManager");
     let updaterWindow, updateTask, updatePendingRestart, updateFailed;
 
@@ -271,6 +270,18 @@ define(function (require, exports, module) {
         _sendUpdateCommand(UPDATE_COMMANDS.GET_STATUS);
     }
 
+    let installerLocation;
+    async function quitTimeAppUpdateHandler() {
+        if(!installerLocation){
+            return;
+        }
+        console.log("Installing update from: ", installerLocation);
+        return new Promise(resolve=>{
+            // this should never reject as it happens in app quit. rejecting wont affect quit, but its unnecessary.
+            resolve();
+        });
+    }
+
     let updateInstalledDialogShown = false, updateFailedDialogShown = false;
     AppInit.appReady(function () {
         if(!Phoenix.browser.isTauri || Phoenix.isTestWindow) {
@@ -326,7 +337,8 @@ define(function (require, exports, module) {
                     Math.floor(fileSize*progressPercent/100),
                     fileSize));
             } else if(eventName === UPDATE_EVENT.INSTALLER_LOCATION) {
-                DocumentCommandHandlers._setWindowsUpdateInstallerLocation(data);
+                installerLocation = data;
+                Phoenix.app.registerQuitTimeAppUpdateHandler(quitTimeAppUpdateHandler);
             } else if(eventName === UPDATE_EVENT.LOG_ERROR) {
                 logger.reportErrorMessage(data);
             }
