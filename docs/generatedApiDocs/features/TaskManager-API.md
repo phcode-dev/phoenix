@@ -6,6 +6,15 @@ TaskManager module deals with managing long running tasks in phcode. It handles 
 bar where the user can see all running tasks, monitor its progress and close/pause the execution of the task if
 supported by the task.
 
+## renderSpinnerIcon
+
+determines what the spinner icon to show(green-for success), red-fail, blue normal based on the active
+tasks in list and renders. IF the active tasks has already  been notified, it wont notify again.
+
+### Parameters
+
+*   `newTaskAdded`  
+
 ## TaskObject
 
 Type: [Object][1]
@@ -21,8 +30,8 @@ Type: [Object][1]
 *   `getProgressPercent` **function (): [number][3]** Returns the task's current progress percentage.
 *   `setFailed` **function (): void** Marks the task as failed.
 *   `isFailed` **function (): [boolean][4]** Returns true if the task is marked as failed.
-*   `setSucceeded` **function (): void** Marks the task as succeeded.
-*   `isSucceeded` **function (): [boolean][4]** Returns true if the task is marked as succeeded.
+*   `setSucceded` **function (): void** Marks the task as succeeded.
+*   `isSucceded` **function (): [boolean][4]** Returns true if the task is marked as succeeded.
 *   `showStopIcon` **function ([string][2]): void** Shows the stop icon with an optional tooltip message.
 *   `hideStopIcon` **function (): void** Hides the stop icon.
 *   `showPlayIcon` **function ([string][2]): void** Shows the play icon with an optional tooltip message.
