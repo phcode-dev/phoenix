@@ -105,7 +105,9 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
         const STORAGE_NODE_CONNECTOR_ID = "ph_storage";
         storageNodeConnector = window.PhNodeEngine.createNodeConnector(
             STORAGE_NODE_CONNECTOR_ID, nodeStoragePhoenixApis);
-        storageNodeConnector.execPeer("openDB", window._tauriBootVars.appLocalDir);
+        window._tauriBootVarsPromise.then(()=>{
+            storageNodeConnector.execPeer("openDB", window._tauriBootVars.appLocalDir);
+        });
         if(Phoenix.isTestWindow) {
             window.storageNodeConnector = storageNodeConnector;
         }
