@@ -466,6 +466,7 @@ define({
   "UPDATE_INSTALLING": "Asentaa päivitystä…",
   "UPDATE_INSTALLING_MESSAGE": "Päivityksen asennus käynnissä: {APP_NAME} asentaa parhaillaan uusimpia päivityksiä. Sovellus sulkeutuu automaattisesti, kun asennus on valmis.",
   "UPDATE_FAILED_MESSAGE": "Sulje kaikki {APP_NAME} -sovellusikkunat ja avaa sovellus uudelleen, jotta voit yrittää päivittää uudelleen.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Yritä uudelleen sulkemalla kaikki sovelluksen {APP_NAME} esiintymät ja käynnistämällä sovellus uudelleen.<br> Sinut ohjataan pian lataussivullemme, josta voit ladata manuaalisesti uusimman version.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} on ajan tasalla.",
   "UPDATE_MESSAGE": "Hei, uusi {APP_NAME}-versio on saatavilla. Tässä on joitakin uusista ominaisuuksista:",
   "GET_IT_NOW": "Hae nyt!",

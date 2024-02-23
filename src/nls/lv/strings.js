@@ -466,6 +466,7 @@ define({
   "UPDATE_INSTALLING": "Notiek atjauninājuma instalēšana…",
   "UPDATE_INSTALLING_MESSAGE": "Notiek atjaunināšanas instalēšana: {APP_NAME} pašlaik instalē jaunākos atjauninājumus. Lietojumprogramma tiks automātiski aizvērta, kad instalēšana būs pabeigta.",
   "UPDATE_FAILED_MESSAGE": "Lūdzu, aizveriet visus {APP_NAME} lietotņu logus un atkārtoti atveriet lietojumprogrammu, lai mēģinātu atjaunināt vēlreiz.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Lai mēģinātu vēlreiz, lūdzu, izejiet no visām lietotnes {APP_NAME} gadījumiem un restartējiet lietojumprogrammu.<br> Drīzumā tiksiet novirzīts uz mūsu lejupielādes lapu, kur varēsit manuāli lejupielādēt jaunāko versiju.",
   "UPDATE_UP_TO_DATE": "Lietotne {APP_NAME} ir atjaunināta.",
   "UPDATE_MESSAGE": "{APP_NAME} ir pieejams jauns būvējums. Dažas no jaunajām funkcijām:",
   "GET_IT_NOW": "Iegūt to tagad!",

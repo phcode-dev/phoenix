@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "Instalando atualização…",
   "UPDATE_INSTALLING_MESSAGE": "Instalação da atualização em andamento: {APP_NAME} está instalando as atualizações mais recentes. O aplicativo será fechado automaticamente assim que a instalação for concluída.",
   "UPDATE_FAILED_MESSAGE": "Feche todas as janelas do aplicativo {APP_NAME} e abra-o novamente para tentar atualizar novamente.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Para tentar novamente, saia de todas as instâncias do {APP_NAME} e reinicie o aplicativo.<br> Em breve você será direcionado para nossa página de download, onde poderá baixar manualmente a versão mais recente.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} está atualizado.",
   "UPDATE_MESSAGE": "Ei, há uma nova versão do {APP_NAME} disponível. Aqui estão alguns dos novos recursos:",
   "GET_IT_NOW": "Obtenha agora!",

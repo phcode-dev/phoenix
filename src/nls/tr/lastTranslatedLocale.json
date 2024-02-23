@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "İndirme güncellemesi…",
   "UPDATE_INSTALLING_MESSAGE": "Güncelleme Kurulumu Devam Ediyor: {APP_NAME} şu anda en son güncellemeleri yüklüyor. Kurulum tamamlandıktan sonra uygulama otomatik olarak kapanacaktır.",
   "UPDATE_FAILED_MESSAGE": "Güncellemeyi tekrar denemek için lütfen tüm {APP_NAME} uygulama pencerelerini kapatın ve uygulamayı yeniden açın.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Yeniden denemek için lütfen tüm {APP_NAME} örneklerinden çıkın ve uygulamayı yeniden başlatın.<br> Kısa süre içinde en son sürümü manuel olarak indirebileceğiniz indirme sayfamıza yönlendirileceksiniz.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} güncel.",
   "UPDATE_MESSAGE": "Hey, {APP_NAME} programının yeni versiyonu hazır. İşte bazı yeni özellikler:",
   "GET_IT_NOW": "Şimdi Yükle!",

@@ -466,6 +466,7 @@ define({
   "UPDATE_INSTALLING": "Frissítés telepítése…",
   "UPDATE_INSTALLING_MESSAGE": "Frissítés telepítése folyamatban: a(z) {APP_NAME} jelenleg a legújabb frissítéseket telepíti. Az alkalmazás automatikusan bezárul, amint a telepítés befejeződött.",
   "UPDATE_FAILED_MESSAGE": "Kérjük, zárja be az összes {APP_NAME} alkalmazásablakát, és nyissa meg újra az alkalmazást a frissítés újbóli próbálkozásához.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Az újrapróbálkozáshoz lépjen ki a(z) {APP_NAME} összes példányából, és indítsa újra az alkalmazást.<br> Hamarosan a letöltési oldalunkra irányítjuk, ahonnan manuálisan letöltheti a legújabb verziót.",
   "UPDATE_UP_TO_DATE": "A {APP_NAME} naprakész.",
   "UPDATE_MESSAGE": "Hé, új {APP_NAME} verzió elérhető. Íme néhány kulcsfontosságú frissítés:",
   "GET_IT_NOW": "Szerezd meg most!",

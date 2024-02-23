@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "Installerer opdatering...",
   "UPDATE_INSTALLING_MESSAGE": "Opdateringsinstallation i gang: {APP_NAME} installerer i øjeblikket de seneste opdateringer. Applikationen lukkes automatisk, når installationen er fuldført.",
   "UPDATE_FAILED_MESSAGE": "Luk alle {APP_NAME}-appvinduer, og åbn appen igen for at prøve opdateringen igen.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "For at prøve igen, skal du afslutte alle forekomster af {APP_NAME} og genstarte applikationen.<br> Du vil om kort tid blive dirigeret til vores downloadside, hvor du manuelt kan downloade den seneste version.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} er opdateret.",
   "UPDATE_MESSAGE": "Hey! Der er en ny version af {APP_NAME} tilgængelig. Her er nogen af de nye funktioner:",
   "GET_IT_NOW": "Hent den nu!",

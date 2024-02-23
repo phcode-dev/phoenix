@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "Instaliranje ažuriranja…",
   "UPDATE_INSTALLING_MESSAGE": "Instalacija ažuriranja u tijeku: {APP_NAME} trenutno instalira najnovija ažuriranja. Aplikacija će se automatski zatvoriti nakon završetka instalacije.",
   "UPDATE_FAILED_MESSAGE": "Zatvorite sve prozore aplikacije {APP_NAME} i ponovno otvorite aplikaciju kako biste ponovno pokušali izvršiti ažuriranje.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Za ponovni pokušaj zatvorite sve instance aplikacije {APP_NAME} i ponovno pokrenite aplikaciju.<br> Uskoro ćete biti preusmjereni na našu stranicu za preuzimanje, gdje možete ručno preuzeti najnoviju verziju.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} je ažurirana.",
   "UPDATE_MESSAGE": "Nova verzija aplikacije {APP_NAME} je dostupna. Ovo su neke od najnovijih izmjena:",
   "GET_IT_NOW": "Preuzmi sada!",

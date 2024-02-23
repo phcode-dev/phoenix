@@ -466,6 +466,7 @@ define({
   "UPDATE_INSTALLING": "Instalacja aktualizacji…",
   "UPDATE_INSTALLING_MESSAGE": "Trwa instalacja aktualizacji: aplikacja {APP_NAME} instaluje obecnie najnowsze aktualizacje. Aplikacja zostanie automatycznie zamknięta po zakończeniu instalacji.",
   "UPDATE_FAILED_MESSAGE": "Zamknij wszystkie okna aplikacji {APP_NAME} i otwórz aplikację ponownie, aby ponowić próbę aktualizacji.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Aby spróbować ponownie, zamknij wszystkie wystąpienia aplikacji {APP_NAME} i uruchom ją ponownie.<br> Wkrótce zostaniesz przekierowany na naszą stronę pobierania, gdzie możesz ręcznie pobrać najnowszą wersję.",
   "UPDATE_UP_TO_DATE": "Aplikacja {APP_NAME} jest aktualna.",
   "UPDATE_MESSAGE": "Hej, dostępna jest już nowa wersja {APP_NAME}. Oto kilka nowych funkcjonalności:",
   "GET_IT_NOW": "Pobierz teraz!",

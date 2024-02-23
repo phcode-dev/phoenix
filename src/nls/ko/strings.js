@@ -466,6 +466,7 @@ define({
   "UPDATE_INSTALLING": "업데이트 설치 중…",
   "UPDATE_INSTALLING_MESSAGE": "업데이트 설치 진행 중: {APP_NAME}이 현재 최신 업데이트를 설치하고 있습니다. 설치가 완료되면 애플리케이션이 자동으로 닫힙니다.",
   "UPDATE_FAILED_MESSAGE": "업데이트를 다시 시도하려면 {APP_NAME} 앱 창을 모두 닫은 후 애플리케이션을 다시 열어보세요.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "다시 시도하려면 {APP_NAME}의 모든 인스턴스를 종료하고 애플리케이션을 다시 시작하세요.<br> 곧 최신 버전을 수동으로 다운로드할 수 있는 다운로드 페이지로 이동하게 됩니다.",
   "UPDATE_UP_TO_DATE": "{APP_NAME}이(가) 최신 상태입니다.",
   "UPDATE_MESSAGE": "{APP_NAME}의 새로운 빌드를 사용할 수 있습니다. 새로운 기능의 일부를 다음에 소개합니다 :",
   "GET_IT_NOW": "지금 다운로드",
