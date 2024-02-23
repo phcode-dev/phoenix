@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Zárja be az összes {APP_NAME} alkalmazásablakát, és indítsa újra az alkalmazást a frissített verzió elindításához.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Frissítés sikeresen letöltve: A legújabb frissítések alkalmazásához zárja be az összes {APP_NAME} alkalmazásablakát.",
   "UPDATE_FAILED_TITLE": "Frissítés sikertelen",
+  "UPDATE_INSTALLING": "Frissítés telepítése…",
+  "UPDATE_INSTALLING_MESSAGE": "Frissítés telepítése folyamatban: a(z) {APP_NAME} jelenleg a legújabb frissítéseket telepíti. Az alkalmazás automatikusan bezárul, amint a telepítés befejeződött.",
   "UPDATE_FAILED_MESSAGE": "Kérjük, zárja be az összes {APP_NAME} alkalmazásablakát, és nyissa meg újra az alkalmazást a frissítés újbóli próbálkozásához.",
   "UPDATE_UP_TO_DATE": "A {APP_NAME} naprakész.",
   "UPDATE_MESSAGE": "Hé, új {APP_NAME} verzió elérhető. Íme néhány kulcsfontosságú frissítés:",

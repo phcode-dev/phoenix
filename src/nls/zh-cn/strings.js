@@ -463,6 +463,8 @@ define({
   "UPDATE_READY_RESTART_MESSAGE": "关闭所有 {APP_NAME} 应用窗口并重新启动应用以启动更新版本。",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "更新已成功下载：请关闭所有“{APP_NAME}”应用窗口以应用最新更新。",
   "UPDATE_FAILED_TITLE": "更新失败",
+  "UPDATE_INSTALLING": "安装更新…",
+  "UPDATE_INSTALLING_MESSAGE": "更新安装正在进行中：{APP_NAME} 当前正在安装最新更新。安装完成后，应用程序将自动关闭。",
   "UPDATE_FAILED_MESSAGE": "请关闭所有“{APP_NAME}”应用窗口，然后重新打开该应用程序以再次尝试更新。",
   "UPDATE_UP_TO_DATE": "{APP_NAME} 是最新的。",
   "UPDATE_MESSAGE": "有一个新版本的 {APP_NAME}，增加了一些功能：",

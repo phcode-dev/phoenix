@@ -463,6 +463,8 @@ define({
   "UPDATE_READY_RESTART_MESSAGE": "Tutup semua jendela aplikasi {APP_NAME} dan mulai ulang aplikasi untuk meluncurkan versi terbaru.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Pembaruan Berhasil Diunduh: Tutup semua jendela aplikasi {APP_NAME} untuk menerapkan pembaruan terkini.",
   "UPDATE_FAILED_TITLE": "Pembaharuan gagal",
+  "UPDATE_INSTALLING": "Menginstal Pembaruan…",
+  "UPDATE_INSTALLING_MESSAGE": "Penginstalan Pembaruan Sedang Berlangsung: {APP_NAME} sedang menginstal pembaruan terkini. Aplikasi akan ditutup secara otomatis setelah instalasi selesai.",
   "UPDATE_FAILED_MESSAGE": "Tutup semua jendela aplikasi {APP_NAME} dan buka kembali aplikasi untuk mencoba memperbarui lagi.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} sudah yang terbaru.",
   "UPDATE_MESSAGE": "Hai, versi terbaru {APP_NAME} sudah ada. Ini fitur terbarunya:",

@@ -463,6 +463,8 @@ define({
   "UPDATE_READY_RESTART_MESSAGE": "Cierre todas las ventanas de la aplicación {APP_NAME} y reiníciela para iniciar la versión actualizada.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Actualización descargada correctamente: cierre todas las ventanas de la aplicación {APP_NAME} para aplicar las últimas actualizaciones.",
   "UPDATE_FAILED_TITLE": "Actualización fallida",
+  "UPDATE_INSTALLING": "Instalando actualización…",
+  "UPDATE_INSTALLING_MESSAGE": "Instalación de actualización en curso: {APP_NAME} está instalando actualmente las últimas actualizaciones. La aplicación se cerrará automáticamente una vez que se complete la instalación.",
   "UPDATE_FAILED_MESSAGE": "Cierra todas las ventanas de la aplicación {APP_NAME} y vuelve a abrir la aplicación para intentar la actualización nuevamente.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} está actualizado.",
   "UPDATE_MESSAGE": "¡Hay una nueva versión de {APP_NAME} disponible! Éstas son algunas de las nuevas características:",

@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Güncellenen sürümü başlatmak için tüm {APP_NAME} uygulama pencerelerini kapatın ve uygulamayı yeniden başlatın.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Güncelleme Başarıyla İndirildi: En son güncellemeleri uygulamak için lütfen tüm {APP_NAME} uygulama pencerelerini kapatın.",
   "UPDATE_FAILED_TITLE": "Güncelleme başarısız oldu",
+  "UPDATE_INSTALLING": "İndirme güncellemesi…",
+  "UPDATE_INSTALLING_MESSAGE": "Güncelleme Kurulumu Devam Ediyor: {APP_NAME} şu anda en son güncellemeleri yüklüyor. Kurulum tamamlandıktan sonra uygulama otomatik olarak kapanacaktır.",
   "UPDATE_FAILED_MESSAGE": "Güncellemeyi tekrar denemek için lütfen tüm {APP_NAME} uygulama pencerelerini kapatın ve uygulamayı yeniden açın.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} güncel.",
   "UPDATE_MESSAGE": "Hey, {APP_NAME} programının yeni versiyonu hazır. İşte bazı yeni özellikler:",

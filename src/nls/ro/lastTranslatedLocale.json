@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Închideți toate ferestrele aplicației {APP_NAME} și reporniți aplicația pentru a lansa versiunea actualizată.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Actualizare descărcată cu succes: închideți toate ferestrele aplicației {APP_NAME} pentru a aplica cele mai recente actualizări.",
   "UPDATE_FAILED_TITLE": "Actualizare esuata",
+  "UPDATE_INSTALLING": "Se instalează actualizarea...",
+  "UPDATE_INSTALLING_MESSAGE": "Instalarea actualizării în curs: {APP_NAME} instalează în prezent cele mai recente actualizări. Aplicația se va închide automat după finalizarea instalării.",
   "UPDATE_FAILED_MESSAGE": "Închideți toate ferestrele aplicației {APP_NAME} și redeschideți aplicația pentru a încerca din nou actualizarea.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} este actualizată.",
   "UPDATE_MESSAGE": "Hei, o nouă versiune {APP_NAME} disponibilă. Aici sunt o parte din noile posibilități:",

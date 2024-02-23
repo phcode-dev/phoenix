@@ -463,6 +463,8 @@ define({
   "UPDATE_READY_RESTART_MESSAGE": "Zatvorite sve prozore aplikacije {APP_NAME} i ponovno pokrenite aplikaciju za pokretanje ažurirane verzije.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Ažuriranje je uspješno preuzeto: zatvorite sve prozore aplikacije {APP_NAME} da biste primijenili najnovija ažuriranja.",
   "UPDATE_FAILED_TITLE": "Ažuriranje nije uspjelo",
+  "UPDATE_INSTALLING": "Instaliranje ažuriranja…",
+  "UPDATE_INSTALLING_MESSAGE": "Instalacija ažuriranja u tijeku: {APP_NAME} trenutno instalira najnovija ažuriranja. Aplikacija će se automatski zatvoriti nakon završetka instalacije.",
   "UPDATE_FAILED_MESSAGE": "Zatvorite sve prozore aplikacije {APP_NAME} i ponovno otvorite aplikaciju kako biste ponovno pokušali izvršiti ažuriranje.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} je ažurirana.",
   "UPDATE_MESSAGE": "Nova verzija aplikacije {APP_NAME} je dostupna. Ovo su neke od najnovijih izmjena:",

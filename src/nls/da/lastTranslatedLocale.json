@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Luk alle {APP_NAME}-appvinduer, og genstart appen for at starte den opdaterede version.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Opdatering blev downloadet: Luk alle {APP_NAME}-appvinduer for at anvende de seneste opdateringer.",
   "UPDATE_FAILED_TITLE": "Opdatering fejlede",
+  "UPDATE_INSTALLING": "Installerer opdatering...",
+  "UPDATE_INSTALLING_MESSAGE": "Opdateringsinstallation i gang: {APP_NAME} installerer i øjeblikket de seneste opdateringer. Applikationen lukkes automatisk, når installationen er fuldført.",
   "UPDATE_FAILED_MESSAGE": "Luk alle {APP_NAME}-appvinduer, og åbn appen igen for at prøve opdateringen igen.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} er opdateret.",
   "UPDATE_MESSAGE": "Hey! Der er en ny version af {APP_NAME} tilgængelig. Her er nogen af de nye funktioner:",

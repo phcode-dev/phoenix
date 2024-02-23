@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "すべての {APP_NAME} アプリ ウィンドウを閉じ、アプリを再起動して更新バージョンを起動します。",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "アップデートが正常にダウンロードされました: 最新のアップデートを適用するには、すべての {APP_NAME} アプリ ウィンドウを閉じてください。",
   "UPDATE_FAILED_TITLE": "アップデートに失敗しました",
+  "UPDATE_INSTALLING": "インストールするアップデート…",
+  "UPDATE_INSTALLING_MESSAGE": "アップデートのインストールが進行中: {APP_NAME} は現在、最新のアップデートをインストール中です。インストールが完了すると、アプリケーションは自動的に終了します。",
   "UPDATE_FAILED_MESSAGE": "すべての {APP_NAME} アプリ ウィンドウを閉じ、アプリケーションを再度開き、アップデートを再試行してください。",
   "UPDATE_UP_TO_DATE": "{APP_NAME} は最新です。",
   "UPDATE_MESSAGE": "{APP_NAME} の新しいビルドが利用できます。新機能の一部を以下にご紹介します :",

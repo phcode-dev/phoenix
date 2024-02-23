@@ -463,6 +463,8 @@ define({
   "UPDATE_READY_RESTART_MESSAGE": "Zatvorte všetky okná aplikácie {APP_NAME} a reštartujte aplikáciu, čím spustíte aktualizovanú verziu.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Aktualizácia bola úspešne stiahnutá: Ak chcete použiť najnovšie aktualizácie, zatvorte všetky okná aplikácie {APP_NAME}.",
   "UPDATE_FAILED_TITLE": "Aktualizacia neuspešná",
+  "UPDATE_INSTALLING": "Inštaluje sa aktualizácia…",
+  "UPDATE_INSTALLING_MESSAGE": "Prebieha inštalácia aktualizácie: Aplikácia {APP_NAME} momentálne inštaluje najnovšie aktualizácie. Po dokončení inštalácie sa aplikácia automaticky zatvorí.",
   "UPDATE_FAILED_MESSAGE": "Zatvorte všetky okná aplikácie {APP_NAME} a znova aplikáciu otvorte, aby ste sa pokúsili o aktualizáciu znova.",
   "UPDATE_UP_TO_DATE": "Aplikácia {APP_NAME} je aktuálna.",
   "UPDATE_MESSAGE": "Hey, je dostupná nová verzia {APP_NAME}. Zoznam niektorých nových vylepšení:",
