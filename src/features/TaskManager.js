@@ -306,6 +306,7 @@ define(function (require, exports, module) {
      * @typedef {Object} TaskObject
      * Methods for managing the task's state and UI representation in the TaskManager.
      *
+     * @property {function(): void} show - Shows the task popup in the ui.
      * @property {function(): void} close - Closes the task and removes it from the UI.
      * @property {function(string): void} setTitle - Sets the task's title.
      * @property {function(): string} getTitle - Returns the task's title.
@@ -432,6 +433,10 @@ define(function (require, exports, module) {
             return task._message;
         }
 
+        function show() {
+            $("#status-tasks .btn-dropdown").click();
+        }
+
         function setProgressPercent(percent) {
             task._percent = percent;
             task._completedStatus = STATUS_INCOMPLETE;
@@ -495,6 +500,7 @@ define(function (require, exports, module) {
             _renderPlayIcons(task);
         }
 
+        task.show = show;
         task.close = close;
         task.setTitle = setTitle;
         task.getTitle = getTitle;
@@ -539,7 +545,7 @@ define(function (require, exports, module) {
     exports._onSelect = _onSelect;
     exports._setLegacyExtensionBusy = _setLegacyExtensionBusy;
 
-    window.TaskManager = exports; // todo remove this
+    window.TaskManager = exports;
     // public apis
     exports.addNewTask = addNewTask;
 });

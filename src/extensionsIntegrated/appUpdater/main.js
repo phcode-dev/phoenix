@@ -62,6 +62,7 @@ define(function (require, exports, module) {
                         }
                     }
                 });
+            updateTask.show();
         }
         let updateAvailable = PreferencesManager.getViewState(KEY_UPDATE_AVAILABLE);
         if(updateAvailable){
@@ -480,13 +481,9 @@ define(function (require, exports, module) {
         _refreshUpdateStatus();
         // check for updates at boot
         let lastUpdateCheckTime = PreferencesManager.getViewState(KEY_LAST_UPDATE_CHECK_TIME);
-        if(!lastUpdateCheckTime){
-            lastUpdateCheckTime = Date.now();
-            PreferencesManager.setViewState(KEY_LAST_UPDATE_CHECK_TIME, lastUpdateCheckTime);
-        }
         const currentTime = Date.now();
         const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-        if ((currentTime - lastUpdateCheckTime) < oneDayInMilliseconds) {
+        if(lastUpdateCheckTime && ((currentTime - lastUpdateCheckTime) < oneDayInMilliseconds)){
             console.log("Skipping update check: last update check was within one day");
             return;
         }
