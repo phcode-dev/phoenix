@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Fermez toutes les fenêtres de l'application {APP_NAME} et redémarrez l'application pour lancer la version mise à jour.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Mise à jour téléchargée avec succès : veuillez fermer toutes les fenêtres de l'application {APP_NAME} pour appliquer les dernières mises à jour.",
   "UPDATE_FAILED_TITLE": "Mise à jour a échoué",
+  "UPDATE_INSTALLING": "Installation de mise à jour…",
+  "UPDATE_INSTALLING_MESSAGE": "Installation de la mise à jour en cours : {APP_NAME} installe actuellement les dernières mises à jour. L'application se fermera automatiquement une fois l'installation terminée.",
   "UPDATE_FAILED_MESSAGE": "Veuillez fermer toutes les fenêtres de l'application {APP_NAME} et rouvrir l'application pour tenter à nouveau la mise à jour.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} est à jour.",
   "UPDATE_MESSAGE": "Une nouvelle version de {APP_NAME} est disponible. Voici quelques-unes des nouvelles fonctionnalités proposées :",

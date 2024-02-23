@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Zamknij wszystkie okna aplikacji {APP_NAME} i uruchom ją ponownie, aby uruchomić zaktualizowaną wersję.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Aktualizacja została pobrana: zamknij wszystkie okna aplikacji {APP_NAME}, aby zastosować najnowsze aktualizacje.",
   "UPDATE_FAILED_TITLE": "Aktualizacja nie powiodła się",
+  "UPDATE_INSTALLING": "Instalacja aktualizacji…",
+  "UPDATE_INSTALLING_MESSAGE": "Trwa instalacja aktualizacji: aplikacja {APP_NAME} instaluje obecnie najnowsze aktualizacje. Aplikacja zostanie automatycznie zamknięta po zakończeniu instalacji.",
   "UPDATE_FAILED_MESSAGE": "Zamknij wszystkie okna aplikacji {APP_NAME} i otwórz aplikację ponownie, aby ponowić próbę aktualizacji.",
   "UPDATE_UP_TO_DATE": "Aplikacja {APP_NAME} jest aktualna.",
   "UPDATE_MESSAGE": "Hej, dostępna jest już nowa wersja {APP_NAME}. Oto kilka nowych funkcjonalności:",

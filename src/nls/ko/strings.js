@@ -463,6 +463,8 @@ define({
   "UPDATE_READY_RESTART_MESSAGE": "업데이트된 버전을 실행하려면 모든 {APP_NAME} 앱 창을 닫고 앱을 다시 시작하세요.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "업데이트 다운로드 성공: 최신 업데이트를 적용하려면 모든 {APP_NAME} 앱 창을 닫으세요.",
   "UPDATE_FAILED_TITLE": "업데이트가 실패",
+  "UPDATE_INSTALLING": "업데이트 설치 중…",
+  "UPDATE_INSTALLING_MESSAGE": "업데이트 설치 진행 중: {APP_NAME}이 현재 최신 업데이트를 설치하고 있습니다. 설치가 완료되면 애플리케이션이 자동으로 닫힙니다.",
   "UPDATE_FAILED_MESSAGE": "업데이트를 다시 시도하려면 {APP_NAME} 앱 창을 모두 닫은 후 애플리케이션을 다시 열어보세요.",
   "UPDATE_UP_TO_DATE": "{APP_NAME}이(가) 최신 상태입니다.",
   "UPDATE_MESSAGE": "{APP_NAME}의 새로운 빌드를 사용할 수 있습니다. 새로운 기능의 일부를 다음에 소개합니다 :",

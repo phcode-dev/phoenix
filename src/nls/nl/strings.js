@@ -463,6 +463,8 @@ define({
   "UPDATE_READY_RESTART_MESSAGE": "Sluit alle app-vensters van {APP_NAME} en start de app opnieuw om de bijgewerkte versie te starten.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Update succesvol gedownload: sluit alle app-vensters van {APP_NAME} om de nieuwste updates toe te passen.",
   "UPDATE_FAILED_TITLE": "Update mislukt",
+  "UPDATE_INSTALLING": "Update installeren…",
+  "UPDATE_INSTALLING_MESSAGE": "Update-installatie wordt uitgevoerd: {APP_NAME} installeert momenteel de nieuwste updates. De applicatie wordt automatisch afgesloten zodra de installatie is voltooid.",
   "UPDATE_FAILED_MESSAGE": "Sluit alle app-vensters van {APP_NAME} en open de applicatie opnieuw om de update opnieuw te proberen.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} is up-to-date.",
   "UPDATE_MESSAGE": "Hey, er is een nieuwe versie van {APP_NAME} beschikbaar. Hier zijn een aantal van de nieuwe functies:",

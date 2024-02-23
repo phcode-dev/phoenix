@@ -463,6 +463,8 @@ define({
   "UPDATE_READY_RESTART_MESSAGE": "Stäng alla appfönster för {APP_NAME} och starta om appen för att starta den uppdaterade versionen.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Uppdateringen har laddats ned: Stäng alla appfönster för {APP_NAME} för att tillämpa de senaste uppdateringarna.",
   "UPDATE_FAILED_TITLE": "Uppdateringen misslyckades",
+  "UPDATE_INSTALLING": "Installerar uppdatering…",
+  "UPDATE_INSTALLING_MESSAGE": "Uppdateringsinstallation pågår: {APP_NAME} installerar för närvarande de senaste uppdateringarna. Applikationen stängs automatiskt när installationen är klar.",
   "UPDATE_FAILED_MESSAGE": "Stäng alla appfönster för {APP_NAME} och öppna appen igen för att försöka uppdatera igen.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} är uppdaterad.",
   "UPDATE_MESSAGE": "Hallå! En ny version av {APP_NAME} är tillgänglig. Här är några av de nya funktionerna:",

@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "關閉所有 {APP_NAME} 應用程式視窗並重新啟動應用程式以啟動更新版本。",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "更新已成功下載：請關閉所有「{APP_NAME}」應用程式視窗以套用最新更新。",
   "UPDATE_FAILED_TITLE": "更新失敗",
+  "UPDATE_INSTALLING": "安裝更新…",
+  "UPDATE_INSTALLING_MESSAGE": "更新安裝正在進行中：{APP_NAME} 目前正在安裝最新更新。安裝完成後，應用程式將自動關閉。",
   "UPDATE_FAILED_MESSAGE": "請關閉所有“{APP_NAME}”應用程式窗口，然後重新開啟該應用程式以再次嘗試更新。",
   "UPDATE_UP_TO_DATE": "{APP_NAME} 是最新的。",
   "UPDATE_MESSAGE": "嗨! 新版的 {APP_NAME} 已經可以下載。新功能有:",

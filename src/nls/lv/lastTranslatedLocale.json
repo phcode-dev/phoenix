@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Aizveriet visus lietotnes {APP_NAME} logus un restartējiet lietotni, lai palaistu atjaunināto versiju.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Atjauninājums ir veiksmīgi lejupielādēts: lūdzu, aizveriet visus lietotnes {APP_NAME} logus, lai lietotu jaunākos atjauninājumus.",
   "UPDATE_FAILED_TITLE": "Atjaunināšana neizdevās",
+  "UPDATE_INSTALLING": "Notiek atjauninājuma instalēšana…",
+  "UPDATE_INSTALLING_MESSAGE": "Notiek atjaunināšanas instalēšana: {APP_NAME} pašlaik instalē jaunākos atjauninājumus. Lietojumprogramma tiks automātiski aizvērta, kad instalēšana būs pabeigta.",
   "UPDATE_FAILED_MESSAGE": "Lūdzu, aizveriet visus {APP_NAME} lietotņu logus un atkārtoti atveriet lietojumprogrammu, lai mēģinātu atjaunināt vēlreiz.",
   "UPDATE_UP_TO_DATE": "Lietotne {APP_NAME} ir atjaunināta.",
   "UPDATE_MESSAGE": "{APP_NAME} ir pieejams jauns būvējums. Dažas no jaunajām funkcijām:",

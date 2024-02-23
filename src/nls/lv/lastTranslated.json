@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Close all {APP_NAME} app windows and restart the app to launch the updated version.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Update Successfully Downloaded: Please close all {APP_NAME} app windows to apply the latest updates.",
   "UPDATE_FAILED_TITLE": "Update Failed",
+  "UPDATE_INSTALLING": "Installing Update…",
+  "UPDATE_INSTALLING_MESSAGE": "Update Installation in Progress: {APP_NAME} is currently installing the latest updates. The application will automatically close once the installation is complete.",
   "UPDATE_FAILED_MESSAGE": "Please close all {APP_NAME} app windows and reopen the application to attempt the update again.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} is up to date.",
   "UPDATE_MESSAGE": "Hey, there's a new build of {APP_NAME} available. Here are some of the new features:",

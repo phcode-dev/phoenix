@@ -443,6 +443,8 @@
   "UPDATE_READY_RESTART_MESSAGE": "Sulje kaikki {APP_NAME} -sovellusikkunat ja käynnistä sovellus uudelleen käynnistääksesi päivitetyn version.",
   "UPDATE_READY_RESTART_INSTALL_MESSAGE": "Päivitys ladattu onnistuneesti: Sulje kaikki sovelluksen {APP_NAME} sovellusikkunat ottaaksesi uusimmat päivitykset käyttöön.",
   "UPDATE_FAILED_TITLE": "Päivitys epäonnistui",
+  "UPDATE_INSTALLING": "Asentaa päivitystä…",
+  "UPDATE_INSTALLING_MESSAGE": "Päivityksen asennus käynnissä: {APP_NAME} asentaa parhaillaan uusimpia päivityksiä. Sovellus sulkeutuu automaattisesti, kun asennus on valmis.",
   "UPDATE_FAILED_MESSAGE": "Sulje kaikki {APP_NAME} -sovellusikkunat ja avaa sovellus uudelleen, jotta voit yrittää päivittää uudelleen.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} on ajan tasalla.",
   "UPDATE_MESSAGE": "Hei, uusi {APP_NAME}-versio on saatavilla. Tässä on joitakin uusista ominaisuuksista:",
