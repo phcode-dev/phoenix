@@ -374,6 +374,7 @@ define(function (require, exports, module) {
                 Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_VISIT_SITE_MESSAGE)
                     .done(()=>{
                         NativeApp.openURLInDefaultBrowser(Phoenix.config.update_download_page)
+                            .catch(console.error)
                             .finally(resolve);
                     });
             }
