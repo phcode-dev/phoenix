@@ -371,8 +371,11 @@ define(function (require, exports, module) {
             function failUpdateDialogAndExit(err) {
                 console.error("error updating: ", err);
                 dialog && dialog.close();
-                Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE)
-                    .done(resolve);
+                Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_VISIT_SITE_MESSAGE)
+                    .done(()=>{
+                        NativeApp.openURLInDefaultBrowser(Phoenix.config.update_download_page)
+                            .finally(resolve);
+                    });
             }
             if (brackets.platform === "win") {
                 launchWindowsInstaller()

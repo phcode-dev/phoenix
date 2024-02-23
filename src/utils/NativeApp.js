@@ -111,7 +111,7 @@ define(function (require, exports, module) {
      *              in browser. Doesn't do anything in tauri.
      */
     function openURLInDefaultBrowser(url, tabIdentifier) {
-        brackets.app.openURLInDefaultBrowser(url, tabIdentifier);
+        return brackets.app.openURLInDefaultBrowser(url, tabIdentifier);
     }
 
     function getApplicationSupportDirectory() {
