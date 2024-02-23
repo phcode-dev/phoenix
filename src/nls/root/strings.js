@@ -575,6 +575,7 @@ define({
     "UPDATE_INSTALLING": "Installing Update\u2026",
     "UPDATE_INSTALLING_MESSAGE": "Update Installation in Progress: {APP_NAME} is currently installing the latest updates. The application will automatically close once the installation is complete.",
     "UPDATE_FAILED_MESSAGE": "Please close all {APP_NAME} app windows and reopen the application to attempt the update again.",
+    "UPDATE_FAILED_VISIT_SITE_MESSAGE": "To retry, please exit all instances of {APP_NAME} and restart the application. <br>You will be directed to our download page shortly, where you can manually download the latest version.",
     "UPDATE_UP_TO_DATE": "{APP_NAME} is up to date.",
     "UPDATE_MESSAGE": "Hey, there's a new build of {APP_NAME} available. Here are some of the new features:",
     "GET_IT_NOW": "Get it now!",

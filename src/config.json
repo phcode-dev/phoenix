@@ -10,6 +10,7 @@
         "glob_help_url": "https://github.com/adobe/brackets/wiki/Using-File-Filters",
         "release_notes_url": "https://github.com/adobe/brackets/wiki/Release-Notes",
         "homepage_url": "https://phcode.io",
+        "update_download_page": "https://phcode.io/downloads",
         "twitter_url": "https://twitter.com/phcodedev",
         "troubleshoot_url": "https://github.com/adobe/brackets/wiki/Troubleshooting#wiki-livedev",
         "twitter_name": "@phcodedev",
