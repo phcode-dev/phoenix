@@ -18,7 +18,7 @@
  *
  */
 
-/*global logger*/
+/*global logger, path*/
 
 // this file uses tauri APIs directly and is probably the only place where tauri apis are used outside of the
 // shell.js file. This is app updates are pretty core level even though we do it as an extension here.
@@ -317,6 +317,48 @@ define(function (require, exports, module) {
         }
     }
 
+    async function getCurrentMacAppPath() {
+        const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
+        let fullPath = cliArgs[0]; // something like /Applications/editor.app/contents/.../Phoenix code
+        const normalizedPath = path.normalize(fullPath);
+        const parts = normalizedPath.split(path.sep);
+        const appIndex = parts.findIndex(part => part.endsWith('.app'));
+
+        // Reconstruct the path up to the .app part
+        if (appIndex !== -1) {
+            const appPathParts = parts.slice(0, appIndex + 1);
+            return appPathParts.join(path.sep); // returns /Applications/editor.app
+        }
+        // .app part is found
+        return null;
+    }
+
+    async function doMacUpdate() {
+        const currentAppPath = await getCurrentMacAppPath();
+        if(!currentAppPath || !installerLocation || !currentAppPath.endsWith(".app") ||
+            !installerLocation.endsWith(".app")){
+            throw new Error("Cannot resolve .app location to copy.");
+        }
+        const removeCommand = new window.__TAURI__.shell
+            .Command(`recursive-rm-unix`, ['-r', currentAppPath]);
+        let result;
+        try {
+            result = removeCommand.execute();
+            if(result.code !== 0){
+                console.error("Could not remove old app", currentAppPath, "Trying to overwrite");
+            }
+        } catch (e) {
+            // we dont fail here, we will try to overwrite now.
+            console.error("Could not remove old app", currentAppPath, "Trying to overwrite", e);
+        }
+        const copyCommand = new window.__TAURI__.shell
+            .Command(`recursive-copy-unix`, ['-r', installerLocation, currentAppPath]);
+        result = await copyCommand.execute();
+        if(result.code !== 0){
+            throw new Error("Update script exit with non-0 exit code: " + result.code);
+        }
+    }
+
     let installerLocation;
     async function quitTimeAppUpdateHandler() {
         if(!installerLocation){
@@ -353,6 +395,10 @@ define(function (require, exports, module) {
             );
             if (brackets.platform === "linux") {
                 launchLinuxUpdater()
+                    .then(resolve)
+                    .catch(failUpdateDialogAndExit);
+            } else if (brackets.platform === "mac") {
+                doMacUpdate()
                     .then(resolve)
                     .catch(failUpdateDialogAndExit);
             } else {
