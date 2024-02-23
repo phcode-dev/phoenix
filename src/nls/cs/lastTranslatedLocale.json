@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "Instalování aktualizace…",
   "UPDATE_INSTALLING_MESSAGE": "Probíhá instalace aktualizace: Aplikace {APP_NAME} aktuálně instaluje nejnovější aktualizace. Po dokončení instalace se aplikace automaticky zavře.",
   "UPDATE_FAILED_MESSAGE": "Zavřete všechna okna aplikace {APP_NAME} a znovu aplikaci otevřete, abyste se mohli pokusit o aktualizaci znovu.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Chcete-li to zkusit znovu, ukončete všechny instance aplikace {APP_NAME} a restartujte aplikaci.<br> Brzy budete přesměrováni na naši stránku pro stahování, kde si můžete ručně stáhnout nejnovější verzi.",
   "UPDATE_UP_TO_DATE": "Aplikace {APP_NAME} je aktuální.",
   "UPDATE_MESSAGE": "Nová verze {APP_NAME} je dostupná. Seznam některých vylepšení:",
   "GET_IT_NOW": "Stáhnout!",

@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "安裝更新…",
   "UPDATE_INSTALLING_MESSAGE": "更新安裝正在進行中：{APP_NAME} 目前正在安裝最新更新。安裝完成後，應用程式將自動關閉。",
   "UPDATE_FAILED_MESSAGE": "請關閉所有“{APP_NAME}”應用程式窗口，然後重新開啟該應用程式以再次嘗試更新。",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "若要重試，請退出 {APP_NAME} 的所有實例並重新啟動該應用程式。<br>您很快就會進入我們的下載頁面，您可以在其中手動下載最新版本。",
   "UPDATE_UP_TO_DATE": "{APP_NAME} 是最新的。",
   "UPDATE_MESSAGE": "嗨! 新版的 {APP_NAME} 已經可以下載。新功能有:",
   "GET_IT_NOW": "馬上取得!",

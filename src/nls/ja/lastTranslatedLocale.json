@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "インストールするアップデート…",
   "UPDATE_INSTALLING_MESSAGE": "アップデートのインストールが進行中: {APP_NAME} は現在、最新のアップデートをインストール中です。インストールが完了すると、アプリケーションは自動的に終了します。",
   "UPDATE_FAILED_MESSAGE": "すべての {APP_NAME} アプリ ウィンドウを閉じ、アプリケーションを再度開き、アップデートを再試行してください。",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "再試行するには、{APP_NAME} のすべてのインスタンスを終了し、アプリケーションを再起動してください。<br>すぐにダウンロード ページに移動します。そこで、最新バージョンを手動でダウンロードできます。",
   "UPDATE_UP_TO_DATE": "{APP_NAME} は最新です。",
   "UPDATE_MESSAGE": "{APP_NAME} の新しいビルドが利用できます。新機能の一部を以下にご紹介します :",
   "GET_IT_NOW": "すぐに入手する",

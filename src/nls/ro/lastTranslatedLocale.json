@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "Se instalează actualizarea...",
   "UPDATE_INSTALLING_MESSAGE": "Instalarea actualizării în curs: {APP_NAME} instalează în prezent cele mai recente actualizări. Aplicația se va închide automat după finalizarea instalării.",
   "UPDATE_FAILED_MESSAGE": "Închideți toate ferestrele aplicației {APP_NAME} și redeschideți aplicația pentru a încerca din nou actualizarea.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Pentru a reîncerca, închideți toate instanțele de {APP_NAME} și reporniți aplicația.<br> Veți fi direcționat către pagina noastră de descărcare în scurt timp, de unde puteți descărca manual cea mai recentă versiune.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} este actualizată.",
   "UPDATE_MESSAGE": "Hei, o nouă versiune {APP_NAME} disponibilă. Aici sunt o parte din noile posibilități:",
   "GET_IT_NOW": "Descarcă acum!",

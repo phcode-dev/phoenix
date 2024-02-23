@@ -446,6 +446,7 @@
   "UPDATE_INSTALLING": "Menginstal Pembaruan…",
   "UPDATE_INSTALLING_MESSAGE": "Penginstalan Pembaruan Sedang Berlangsung: {APP_NAME} sedang menginstal pembaruan terkini. Aplikasi akan ditutup secara otomatis setelah instalasi selesai.",
   "UPDATE_FAILED_MESSAGE": "Tutup semua jendela aplikasi {APP_NAME} dan buka kembali aplikasi untuk mencoba memperbarui lagi.",
+  "UPDATE_FAILED_VISIT_SITE_MESSAGE": "Untuk mencoba lagi, keluar dari semua instance {APP_NAME} dan mulai ulang aplikasi.<br> Anda akan segera diarahkan ke halaman unduh kami, tempat Anda dapat mengunduh versi terbaru secara manual.",
   "UPDATE_UP_TO_DATE": "{APP_NAME} sudah yang terbaru.",
   "UPDATE_MESSAGE": "Hai, versi terbaru {APP_NAME} sudah ada. Ini fitur terbarunya:",
   "GET_IT_NOW": "Dapatkan sekarang!",
