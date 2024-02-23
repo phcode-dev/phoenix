@@ -341,15 +341,10 @@ define(function (require, exports, module) {
         }
         const removeCommand = new window.__TAURI__.shell
             .Command(`recursive-rm-unix`, ['-r', currentAppPath]);
-        let result;
-        try {
-            result = removeCommand.execute();
-            if(result.code !== 0){
-                console.error("Could not remove old app", currentAppPath, "Trying to overwrite");
-            }
-        } catch (e) {
-            // we dont fail here, we will try to overwrite now.
-            console.error("Could not remove old app", currentAppPath, "Trying to overwrite", e);
+        let result = await removeCommand.execute();
+        if(result.code !== 0){
+            console.error("Could not remove old app: ", currentAppPath);
+            throw new Error("Could not remove old app: " + currentAppPath);
         }
         const copyCommand = new window.__TAURI__.shell
             .Command(`recursive-copy-unix`, ['-r', installerLocation, currentAppPath]);
