@@ -21,6 +21,7 @@ Type: [Object][1]
 
 ### Properties
 
+*   `show` **function (): void** Shows the task popup in the ui.
 *   `close` **function (): void** Closes the task and removes it from the UI.
 *   `setTitle` **function ([string][2]): void** Sets the task's title.
 *   `getTitle` **function (): [string][2]** Returns the task's title.
