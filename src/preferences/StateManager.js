@@ -247,7 +247,7 @@ define(function (require, exports, module) {
      * @private
      */
     function _migrateLegacyStateFile() {
-        if(Phoenix.firstBoot){
+        if(Phoenix.firstBoot || Phoenix.isTestWindow){
             // nothing to migrate, fresh install
             setVal(LEGACY_STATE_MANAGER_MIGRATED, true);
             return new $.Deferred().resolve().promise();
