@@ -57,6 +57,14 @@ img {
     -ms-user-select: none;
 }
 
+.recent-project-remove {
+    font-size: small;
+    color: #8A8A8A;
+}
+.recent-project-remove:hover {
+    color: white;
+}
+
 .side-nav {
     background: #5D5F60;
     height: 100vh;
