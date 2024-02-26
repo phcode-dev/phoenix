@@ -851,6 +851,7 @@ define({
 
     // extensions/default/RecentProjects
     "CMD_TOGGLE_RECENT_PROJECTS": "Recent Projects",
+    "REMOVE_FROM_RECENT_PROJECTS": "Remove from Recent Projects",
 
     // extensions/default/MDNDocs
     "DOCS_MORE_LINK": "Read more",
