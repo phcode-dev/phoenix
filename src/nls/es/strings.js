@@ -705,6 +705,7 @@ define({
   "CMD_ENABLE_SELECTION_VIEW": "Vista de selección",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Haga clic aquí para editar el color",
   "CMD_TOGGLE_RECENT_PROJECTS": "Proyectos recientes",
+  "REMOVE_FROM_RECENT_PROJECTS": "Eliminar de proyectos recientes",
   "DOCS_MORE_LINK": "Más",
   "COLLAPSE_ALL": "Colapsar todo",
   "EXPAND_ALL": "Expandir todo",

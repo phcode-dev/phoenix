@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "Seçim Görünümü",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Rengi düzenlemek için buraya tıklayın",
   "CMD_TOGGLE_RECENT_PROJECTS": "Son Projeler",
+  "REMOVE_FROM_RECENT_PROJECTS": "Son Projelerden Kaldır",
   "DOCS_MORE_LINK": "Devamını oku",
   "COLLAPSE_ALL": "Hepsini Daralt",
   "EXPAND_ALL": "Hepsini genişlet",

@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "عرض التحديد",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "انقر هنا لتعديل اللون",
   "CMD_TOGGLE_RECENT_PROJECTS": "مشاريع حديثه",
+  "REMOVE_FROM_RECENT_PROJECTS": "إزالة من المشاريع الأخيرة",
   "DOCS_MORE_LINK": "اقرأ أكثر",
   "COLLAPSE_ALL": "انهيار جميع",
   "EXPAND_ALL": "توسيع الكل",

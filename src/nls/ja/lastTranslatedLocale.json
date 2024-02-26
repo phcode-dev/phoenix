@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "選択ビュー",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "ここをクリックして色を編集します",
   "CMD_TOGGLE_RECENT_PROJECTS": "最近使用したプロジェクト",
+  "REMOVE_FROM_RECENT_PROJECTS": "最近のプロジェクトから削除",
   "DOCS_MORE_LINK": "詳細",
   "COLLAPSE_ALL": "すべて折りたたむ",
   "EXPAND_ALL": "すべて展開",

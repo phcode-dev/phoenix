@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "Auswahlansicht",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klicken Sie hier, um die Farbe zu bearbeiten",
   "CMD_TOGGLE_RECENT_PROJECTS": "Zuletzt verwendete Projekte",
+  "REMOVE_FROM_RECENT_PROJECTS": "Aus aktuellen Projekten entfernen",
   "DOCS_MORE_LINK": "Weiterlesen",
   "COLLAPSE_ALL": "Alle einklappen",
   "EXPAND_ALL": "Alle ausklappen",

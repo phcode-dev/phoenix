@@ -705,6 +705,7 @@ define({
   "CMD_ENABLE_SELECTION_VIEW": "نمای انتخابی",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "برای ویرایش رنگ اینجا را کلیک کنید",
   "CMD_TOGGLE_RECENT_PROJECTS": "پروژه های اخیر",
+  "REMOVE_FROM_RECENT_PROJECTS": "حذف از پروژه های اخیر",
   "DOCS_MORE_LINK": "بیشتر بخوانید",
   "COLLAPSE_ALL": "جمع کردن همه",
   "EXPAND_ALL": "همه را گسترش دهید",

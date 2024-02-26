@@ -705,6 +705,7 @@ define({
   "CMD_ENABLE_SELECTION_VIEW": "Pregled odabira",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kliknite ovdje za uređivanje boje",
   "CMD_TOGGLE_RECENT_PROJECTS": "Nedavni projekti",
+  "REMOVE_FROM_RECENT_PROJECTS": "Ukloni iz nedavnih projekata",
   "DOCS_MORE_LINK": "Pročitaj više",
   "COLLAPSE_ALL": "Skupi sve",
   "EXPAND_ALL": "Proširi sve",

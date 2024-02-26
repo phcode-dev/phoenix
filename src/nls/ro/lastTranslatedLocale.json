@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "Vizualizare selecție",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Faceți clic aici pentru a edita culoarea",
   "CMD_TOGGLE_RECENT_PROJECTS": "Proiecte recente",
+  "REMOVE_FROM_RECENT_PROJECTS": "Eliminați din proiecte recente",
   "DOCS_MORE_LINK": "Vezi mai mult",
   "COLLAPSE_ALL": "Restrângeți totul",
   "EXPAND_ALL": "Extinde toate",

@@ -705,6 +705,7 @@ define({
   "CMD_ENABLE_SELECTION_VIEW": "Kijelölés nézet",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kattintson ide a szín szerkesztéséhez",
   "CMD_TOGGLE_RECENT_PROJECTS": "Legutóbbi projektek",
+  "REMOVE_FROM_RECENT_PROJECTS": "Eltávolítás a legutóbbi projektekből",
   "DOCS_MORE_LINK": "Olvasd tovább",
   "COLLAPSE_ALL": "Összes bezárása",
   "EXPAND_ALL": "Bontsa ki az összeset",

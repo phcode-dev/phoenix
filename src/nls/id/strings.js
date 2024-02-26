@@ -705,6 +705,7 @@ define({
   "CMD_ENABLE_SELECTION_VIEW": "Tampilan Pilihan",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik di sini untuk mengedit warna",
   "CMD_TOGGLE_RECENT_PROJECTS": "Proyek Terkini",
+  "REMOVE_FROM_RECENT_PROJECTS": "Hapus dari Proyek Terbaru",
   "DOCS_MORE_LINK": "Baca selengkapnya",
   "COLLAPSE_ALL": "Ciutkan Semua",
   "EXPAND_ALL": "Melebarkan semua",

@@ -705,6 +705,7 @@ define({
   "CMD_ENABLE_SELECTION_VIEW": "Atlases skats",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Noklikšķiniet šeit, lai rediģētu krāsu",
   "CMD_TOGGLE_RECENT_PROJECTS": "Nesenie projekti",
+  "REMOVE_FROM_RECENT_PROJECTS": "Noņemt no jaunākajiem projektiem",
   "DOCS_MORE_LINK": "Lasīt vairāk",
   "COLLAPSE_ALL": "Sakļaut visu",
   "EXPAND_ALL": "Izvērst visu",

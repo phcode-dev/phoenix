@@ -705,6 +705,7 @@ define({
   "CMD_ENABLE_SELECTION_VIEW": "Представление выбора",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Нажмите здесь, чтобы изменить цвет",
   "CMD_TOGGLE_RECENT_PROJECTS": "Предыдущие проекты",
+  "REMOVE_FROM_RECENT_PROJECTS": "Удалить из последних проектов",
   "DOCS_MORE_LINK": "Подробнее…",
   "COLLAPSE_ALL": "Свернуть все",
   "EXPAND_ALL": "Развернуть все",

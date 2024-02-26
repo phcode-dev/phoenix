@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "Селецтион Виев",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Кликните овде да бисте уредили боју",
   "CMD_TOGGLE_RECENT_PROJECTS": "Недавни пројекти",
+  "REMOVE_FROM_RECENT_PROJECTS": "Уклони из недавних пројеката",
   "DOCS_MORE_LINK": "Прочитај више",
   "COLLAPSE_ALL": "Скупи све",
   "EXPAND_ALL": "Прошири све",
