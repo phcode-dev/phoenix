@@ -20,6 +20,7 @@
  */
 
 /*unittests: Preferences Manager */
+/*global fs*/
 
 /**
  * StateManager
@@ -28,7 +29,11 @@
 define(function (require, exports, module) {
     const _ = require("thirdparty/lodash"),
         EventDispatcher = require("utils/EventDispatcher"),
+        Metrics = require("utils/Metrics"),
         ProjectManager = require("project/ProjectManager");
+
+    const LEGACY_STATE_MANAGER_MIGRATED = "ph_state_manager_migrated";
+    const LEGACY_STATE_FILE_PATH = "/fs/app/state.json";
 
     const PROJECT_CONTEXT = "project";
     const GLOBAL_CONTEXT = "global";
@@ -235,6 +240,68 @@ define(function (require, exports, module) {
         return createExtensionStateManager(prefix);
     }
 
+    /**
+     * We used file based state.json in the earlier state manager impl. no  we moved to phstore. So we have to move
+     * earlier users to phstore to prevent losing their files. This code can be deleted anytime after 4 months
+     * from this commit.
+     * @private
+     */
+    function _migrateLegacyStateFile() {
+        if(Phoenix.firstBoot){
+            // nothing to migrate, fresh install
+            setVal(LEGACY_STATE_MANAGER_MIGRATED, true);
+            return new $.Deferred().resolve().promise();
+        }
+        if(getVal(LEGACY_STATE_MANAGER_MIGRATED)){
+            return new $.Deferred().resolve().promise();
+        }
+        const _migrated = new $.Deferred();
+        console.log("Migrating legacy state file", LEGACY_STATE_FILE_PATH);
+        fs.readFile(LEGACY_STATE_FILE_PATH, "utf8", function (err, data) {
+            setVal(LEGACY_STATE_MANAGER_MIGRATED, true);
+            if (err) {
+                // if error, ignore and continue. state file not found(unlikely to be here)
+                _migrated.resolve();
+                return;
+            }
+            try{
+                const keysToMigrate = [
+                    "afterFirstLaunch",
+                    "sidebar",
+                    "workingSetSortMethod",
+                    "healthDataUsage",
+                    "main-toolbar",
+                    "recentProjects",
+                    "healthDataNotificationShown",
+                    "searchHistory",
+                    "problems-panel"
+                ];
+                const oldState = JSON.parse(data);
+                for(let key of keysToMigrate) {
+                    if(oldState[key]){
+                        console.log("Migrated Legacy state: ", key, oldState[key]);
+                        setVal(key, oldState[key]);
+                    }
+                }
+                fs.unlink(LEGACY_STATE_FILE_PATH, (unlinkErr)=>{
+                    if(unlinkErr){
+                        console.error(`Error deleting legacy state file ${LEGACY_STATE_FILE_PATH}`, unlinkErr);
+                    }
+                });
+            } catch (e) {
+                console.error("Error migrating legacy state file", LEGACY_STATE_FILE_PATH);
+            }
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "legacyState", "migrated");
+            _migrated.resolve();
+            console.log("Legacy state migration completed");
+        });
+        return _migrated.promise();
+    }
+
+    // private API
+    exports._migrateLegacyStateFile = _migrateLegacyStateFile;
+
+    // public api
     exports.get     = getVal;
     exports.set     = setVal;
     exports.definePreference = definePreferenceInternal;
