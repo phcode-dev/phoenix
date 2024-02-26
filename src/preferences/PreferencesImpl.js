@@ -30,7 +30,7 @@ define(function (require, exports, module) {
 
     const PreferencesBase = require("./PreferencesBase"),
         Async           = require("utils/Async"),
-        FileSystem      = require("filesystem/FileSystem"),
+        StateManager            = require("preferences/StateManager"),
 
         // The SETTINGS_FILENAME is used with a preceding "." within user projects
         SETTINGS_FILENAME = "phcode.json",
@@ -85,6 +85,7 @@ define(function (require, exports, module) {
     var userScopeLoading = manager.addScope("user", userScope);
 
     _addScopePromises.push(userScopeLoading);
+    _addScopePromises.push(StateManager._migrateLegacyStateFile());
 
     // Set up the .phcode.json file handling
     userScopeLoading
