@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "Selectieweergave",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik hier om de kleur te bewerken",
   "CMD_TOGGLE_RECENT_PROJECTS": "Recente projecten",
+  "REMOVE_FROM_RECENT_PROJECTS": "Verwijderen uit recente projecten",
   "DOCS_MORE_LINK": "Lees meer",
   "COLLAPSE_ALL": "Alles inklappen",
   "EXPAND_ALL": "Alles uitklappen",

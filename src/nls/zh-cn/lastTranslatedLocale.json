@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "选择视图",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "单击此处编辑颜色",
   "CMD_TOGGLE_RECENT_PROJECTS": "最近的项目",
+  "REMOVE_FROM_RECENT_PROJECTS": "从最近的项目中删除",
   "DOCS_MORE_LINK": "更多信息",
   "COLLAPSE_ALL": "收起所有",
   "EXPAND_ALL": "展开所有",

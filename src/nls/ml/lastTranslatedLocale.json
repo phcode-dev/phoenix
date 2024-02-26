@@ -685,6 +685,7 @@
   "CMD_ENABLE_SELECTION_VIEW": "തിരഞ്ഞെടുക്കൽ കാഴ്ച",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "നിറം എഡിറ്റ് ചെയ്യാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക",
   "CMD_TOGGLE_RECENT_PROJECTS": "സമീപകാല പദ്ധതികൾ",
+  "REMOVE_FROM_RECENT_PROJECTS": "സമീപകാല പദ്ധതികളിൽ നിന്ന് നീക്കം ചെയ്യുക",
   "DOCS_MORE_LINK": "കൂടുതല് വായിക്കുക",
   "COLLAPSE_ALL": "എല്ലാം സങ്കോചിപ്പിക്കുക",
   "EXPAND_ALL": "എല്ലാം വികസിപ്പിക്കുക",
