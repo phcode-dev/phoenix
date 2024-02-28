@@ -56,6 +56,7 @@ test/thirdparty/jasmine-reporters
 
 # ignore compiled files
 /dist
+/dist-web-cache
 /dist-test
 /distToDeploy
 /src/.index.html

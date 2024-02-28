@@ -100,6 +100,21 @@ function makeDistNonJS() {
         .pipe(dest('dist'));
 }
 
+function makeDistWebCache() {
+    return new Promise((resolve)=> {
+        fs.rmSync("./dist/web-cache", {recursive: true, force: true});
+        fs.rmSync("./dist-web-cache", {recursive: true, force: true});
+        fs.cpSync("./dist", "./dist-web-cache", {
+            recursive: true,
+            force: true
+        });
+        let config = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+        fs.mkdirSync("./dist/web-cache");
+        fs.renameSync("./dist-web-cache", `./dist/web-cache/${config.apiVersion}`);
+        resolve();
+    });
+}
+
 function serve() {
     return src('.')
         .pipe(webserver({
@@ -184,20 +199,38 @@ function _majorVersionBumpConfigFile(fileName) {
     fs.writeFileSync(fileName, JSON.stringify(config, null, 4));
 }
 
+function _patchIndexHTML() {
+    let indexHtmlPath = './src/index.html';
+    let config = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+    let indexHTML = fs.readFileSync(indexHtmlPath, 'utf8');
+    let version = config.apiVersion;
+    const replaceStr = '<script>window.PHOENIX_APP_CACHE_VERSION="LATEST";</script>';
+    if(!indexHTML.includes(replaceStr)){
+        throw new Error("Expected index.html to include "+ replaceStr);
+    }
+    indexHTML = indexHTML.replace(replaceStr,
+        `<script>window.PHOENIX_APP_CACHE_VERSION="${version}";</script>`);
+    fs.writeFileSync(indexHtmlPath, indexHTML);
+}
+
 function patchVersionBump() {
+    // adding anything here should be added to patch-version-bump.yml and yearly-major-version-bump.yml
     return new Promise((resolve)=> {
         _patchBumpConfigFile('./package.json');
         _patchBumpConfigFile('./src-node/package.json');
         _patchBumpConfigFile('./src/config.json');
+        _patchIndexHTML();
         resolve();
     });
 }
 
 function majorVersionBump() {
+    // adding anything here should be added to patch-version-bump.yml and yearly-major-version-bump.yml
     return new Promise((resolve)=> {
         _majorVersionBumpConfigFile('./package.json');
         _majorVersionBumpConfigFile('./src-node/package.json');
         _majorVersionBumpConfigFile('./src/config.json');
+        _patchIndexHTML();
         resolve();
     });
 }
@@ -636,6 +669,7 @@ exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, 
 exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
     makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseProd,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
+exports.releaseWebCache = series(makeDistWebCache);
 exports.serve = series(exports.build, serve);
 exports.zipTestFiles = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
