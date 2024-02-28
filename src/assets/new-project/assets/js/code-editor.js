@@ -196,7 +196,8 @@ function initCodeEditor() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "githubStars");
         _openURLInTauri("https://github.com/phcode-dev/phoenix");
     };
-    const icons = ['githubIcon', 'twitterIcon', 'youtubeIcon'];
+    document.getElementById("sponsorIcon").title = Strings.SUPPORT_US_OPEN_COLLECTIVE;
+    const icons = ['githubIcon', 'twitterIcon', 'youtubeIcon', 'sponsorIcon'];
     for(let iconID of icons) {
         document.getElementById(iconID).onclick = function() {
             Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", iconID);
