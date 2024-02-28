@@ -33,6 +33,7 @@ define({
     "DELETING": "Deleting {0}",
     "RENAMING": "Renaming",
     "STORED_IN_YOUR_BROWSER": "Stored in Your Browser",
+    "SUPPORT_US_OPEN_COLLECTIVE": "Support us on Open Collective",
     // General file io error strings
     "GENERIC_ERROR": "(error {0})",
     "NOT_FOUND_ERR": "The file/directory could not be found.",
