@@ -151,16 +151,26 @@ define(function (require) {
     require(["utils/Metrics", "utils/Compatibility", "utils/EventDispatcher"], function () {
         window.Metrics = require("utils/Metrics");
         // Load the brackets module. This is a self-running module that loads and runs the entire application.
-        try{
-            require(["brackets"]);
-        } catch (err) {
-            // try a cache reset
-            window._resetCacheIfNeeded && window._resetCacheIfNeeded();
+        require(["brackets"], ()=>{}, (err)=>{
             // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
             window.logger && window.logger.reportError(err,
                 'Critical error when loading brackets. Trying to reload again.');
-            // wait for 3 seconds for bugsnag to send report.
-            setTimeout(window.location.reload, 3000);
-        }
+            alert("Oops! Something went wrong. Trying to restart app...");
+            // try a cache reset
+            if(window._resetCacheIfNeeded){
+                window._resetCacheIfNeeded(true)
+                    .finally(()=>{
+                        // wait for 3 seconds for bugsnag to send report.
+                        setTimeout(()=>{
+                            location.reload();
+                        }, 3000);
+                    });
+            } else {
+                // wait for 3 seconds for bugsnag to send report.
+                setTimeout(()=>{
+                    location.reload();
+                }, 3000);
+            }
+        });
     });
 });
