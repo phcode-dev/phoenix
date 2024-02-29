@@ -349,7 +349,7 @@
         Note that this cannot be moved to a separate file and should be in index.html due to above reason.
         This is a nuke cache option. Though mostly safe, Use it wisely to prevent slow startup when resetting.
         */
-        async function _resetCacheIfNeeded() {
+        async function _resetCacheIfNeeded(force) {
             if(Phoenix.browser.isTauri || Phoenix.isTestWindow) {
                 // no web cache in desktop builds ot test windows
                 return;
@@ -416,7 +416,7 @@
                 console.log("No cache detected, ignore if first boot or safari ITP.");
                 await _writeFileSafe(WEB_CACHE_FILE_PATH, PHOENIX_APP_CACHE_VERSION);
                 // on next reload, the new cache will be active and populated by service worker
-            } else if(currentCacheName !== PHOENIX_APP_CACHE_VERSION) {
+            } else if(currentCacheName && (currentCacheName !== PHOENIX_APP_CACHE_VERSION || force)) {
                 // This is an upgrade we could in the future use the cacheManifest.json to increase update speed
                 // by only selectively updating the changed files.
                 console.log("Old version cache detected", currentCacheName, "purging and setting", PHOENIX_APP_CACHE_VERSION);
