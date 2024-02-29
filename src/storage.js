@@ -236,6 +236,12 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
                 window.Phoenix.firstBoot = true;
                 setItem(FIRST_BOOT_TIME, Date.now());
             }
+            // legacy first boot. can be removed after sep 2024
+            // this was the original thing we used before we migrated to phStore.
+            let legacyKey = "healthData.firstUseDay";
+            if(localStorage.getItem(legacyKey)){
+                window.Phoenix.firstBoot = false;
+            }
         } catch (e) {
             console.error(e);
         }
