@@ -54,17 +54,6 @@ define(function (require, exports, module) {
         }, 3000);
     }
 
-    function _cacheUpdatedCB(err) {
-        if(err) {
-            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache", "errorRefresh");
-            return;
-        }
-        Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache",
-            `${window.Phoenix.cache.updatePendingReloadReason}.done`);
-        Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache", `updateCount`,
-            window.Phoenix.cache.updatedFilesCount||0);
-    }
-
     async function _readMarkdownTextFile() {
         try{
             let markdownFile = FileSystem.getFileForPath(_getUpdateMarkdownLocalPath());
@@ -92,12 +81,6 @@ define(function (require, exports, module) {
     exports.init = function () {
         if(!Phoenix.firstBoot && !window.testEnvironment){
             _showNewUpdatesIfPresent();
-        }
-        if(!Phoenix.browser.isTauri && window.refreshServiceWorkerCache) {
-            // window.refreshServiceWorkerCache is only present if the page loads service worker. Not available
-            // in integ test windows as they don't load service workers.
-            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "cache", "doRefresh");
-            window.refreshServiceWorkerCache(_cacheUpdatedCB);
         }
     };
 });
