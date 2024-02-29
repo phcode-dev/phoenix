@@ -199,16 +199,27 @@ function _majorVersionBumpConfigFile(fileName) {
     fs.writeFileSync(fileName, JSON.stringify(config, null, 4));
 }
 
+// This regular expression matches the pattern
+// It looks for the specific script tag and version number format
+// \d+ matches one or more digits
+// \. matches the dot literally
+// (\.\d+)* matches zero or more occurrences of ".[digits]"
+// Test the string against the regex
+const PHOENIX_CACHE_VERSION_REGEX = /<script>window\.PHOENIX_APP_CACHE_VERSION="(\d+(\.\d+)*)";<\/script>/;
+function containsPhoenixAppCacheVersion(str) {
+    return PHOENIX_CACHE_VERSION_REGEX.test(str);
+}
+
 function _patchIndexHTML() {
     let indexHtmlPath = './src/index.html';
     let config = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
     let indexHTML = fs.readFileSync(indexHtmlPath, 'utf8');
     let version = config.apiVersion;
-    const replaceStr = '<script>window.PHOENIX_APP_CACHE_VERSION="LATEST";</script>';
-    if(!indexHTML.includes(replaceStr)){
+    const replaceStr = '<script>window.PHOENIX_APP_CACHE_VERSION="<version>";</script>';
+    if(!containsPhoenixAppCacheVersion(indexHTML)){
         throw new Error("Expected index.html to include "+ replaceStr);
     }
-    indexHTML = indexHTML.replace(replaceStr,
+    indexHTML = indexHTML.replace(PHOENIX_CACHE_VERSION_REGEX,
         `<script>window.PHOENIX_APP_CACHE_VERSION="${version}";</script>`);
     fs.writeFileSync(indexHtmlPath, indexHTML);
 }
