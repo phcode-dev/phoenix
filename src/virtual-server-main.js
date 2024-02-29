@@ -26,8 +26,6 @@ importScripts('phoenix/virtualServer/webserver.js');
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
 
 const _debugSWCacheLogs = false; // change debug to true to see more logs
-const CACHE_FILE_NAME = "cacheManifest.json";
-const CACHE_FS_PATH = `/${CACHE_FILE_NAME}`;
 
 workbox.setConfig({debug: _debugSWCacheLogs});
 
@@ -36,22 +34,11 @@ const Route = workbox.routing.Route;
 const cacheFirst = workbox.strategies.CacheFirst;
 const StaleWhileRevalidate = workbox.strategies.StaleWhileRevalidate;
 const ExpirationPlugin = workbox.expiration.ExpirationPlugin;
-const CacheExpiration = workbox.expiration.CacheExpiration;
 const DAYS_30_IN_SEC = 60 * 60 * 24 * 30;
-const CACHE_NAME_EVERYTHING = "everything"; // This is referenced in index.html as well if you are changing te name.
+const CACHE_NAME_EVERYTHING = "everythingV2";
 const CACHE_NAME_CORE_SCRIPTS = "coreScripts";
 const CACHE_NAME_EXTERNAL = "external";
-const ExpirationManager ={
-    "everything": new CacheExpiration(CACHE_NAME_EVERYTHING, {
-            maxAgeSeconds: DAYS_30_IN_SEC
-        }),
-    "coreScripts": new CacheExpiration(CACHE_NAME_CORE_SCRIPTS, {
-            maxAgeSeconds: DAYS_30_IN_SEC
-        }),
-    "external": new CacheExpiration(CACHE_NAME_EXTERNAL, {
-        maxAgeSeconds: DAYS_30_IN_SEC
-    })
-};
+const WEB_CACHE_FILE_PATH = "/webCacheVersion.txt";
 
 function _debugCacheLog(...args) {
     if(_debugSWCacheLogs){
@@ -86,9 +73,6 @@ if(!baseURL.endsWith('/')){
     baseURL = baseURL + '/';
 }
 console.log("Service worker: base URL is: ", baseURL);
-
-const CACHE_MANIFEST_URL = `${baseURL}${CACHE_FILE_NAME}`;
-console.log("Service worker: cache manifest URL is: ", CACHE_MANIFEST_URL);
 
 // this is the base url where our file system virtual server lives. http://phcode.dev/phoenix/vfs in phoenix or
 // http://localhost:8000/phoenix/vfs in dev builds
@@ -142,121 +126,6 @@ workbox.routing.registerRoute(
     'GET'
 );
 
-function _updateTTL(cacheName, urls) {
-    // this is needed for workbox to purge cache by ttl. purge behaviour is not part of w3c spec, but done by workbox.
-    // cache.addall browser api will not update expiry ttls that workbox lib needs. So we add it here.
-    console.log(`Service worker: Updating expiry for ${urls.length} urls in cache: ${cacheName}`);
-    for(let url of urls){
-        ExpirationManager[cacheName].updateTimestamp(url);
-    }
-}
-
-function _getCurrentCacheManifest() {
-    return new Promise((resolve)=>{
-        fs.readFile(CACHE_FS_PATH, "utf8", function (err, data) {
-            if (err) {
-                resolve(null);
-            } else {
-                resolve(JSON.parse(data));
-            }
-        });
-    });
-}
-function _putCurrentCacheManifest(manifestObject) {
-    return new Promise((resolve)=>{
-        fs.writeFile(CACHE_FS_PATH, JSON.stringify(manifestObject, null, 2), "UTF8", function (err) {
-            if (err) {
-                console.error("Service worker: Failed while writing cache manifest", err);
-            }
-            resolve(null);
-        });
-    });
-}
-function _getNewCacheManifest() {
-    return new Promise((resolve) => {
-        fetch(CACHE_MANIFEST_URL)
-            .then((response) => response.json())
-            .then((data) => resolve(data))
-            .catch(err =>{
-                console.error("Service worker: could not fetch cache manifest for app updates", err);
-                resolve(null);
-            });
-    });
-}
-
-function _fixCache(currentCacheManifest, newCacheManifest) {
-    const currentCacheKeys = Object.keys(currentCacheManifest);
-    const newCacheKeys = Object.keys(newCacheManifest);
-    console.log(`Service worker: Fixing Stale Cache Entries in ${CACHE_NAME_EVERYTHING}. num cache entries in manifest:
-    current: ${currentCacheKeys.length} new: ${newCacheKeys.length}`);
-    return new Promise((resolve, reject) => {
-        caches.open(CACHE_NAME_EVERYTHING).then((cache) => {
-            cache.keys().then(async (keys) => {
-                console.log("Service worker: Number of cached entries in everything cache: ", keys.length);
-                let changedContentURLs = [], deletePromises = [];
-                keys.forEach((request, _index, _array) => {
-                    let relativeURL = _removeParams(request.url);
-                    relativeURL = relativeURL.substring(baseURL.length, relativeURL.length);
-                    if(!newCacheManifest[relativeURL]){
-                        _debugCacheLog("Service worker: entry renewed as deleted", relativeURL);
-                        deletePromises.push(cache.delete(request));
-                        return;
-                    }
-                    if(currentCacheManifest[relativeURL] !== newCacheManifest[relativeURL]){
-                        _debugCacheLog("Service worker: entry renewed as changed", relativeURL);
-                        deletePromises.push(cache.delete(request));
-                        changedContentURLs.push(request.url);
-                    }
-                });
-                console.log(`Service worker: deleting ${deletePromises.length} stale cache entries in ${CACHE_NAME_EVERYTHING}`);
-                await Promise.all(deletePromises);
-                console.log(`Service worker: updating cache for ${changedContentURLs.length} in ${CACHE_NAME_EVERYTHING}`);
-                cache.addAll(changedContentURLs).then(()=>{
-                    console.log(`Service worker: cache refresh complete for ${changedContentURLs.length} URLS in ${CACHE_NAME_EVERYTHING}`);
-                    _updateTTL(CACHE_NAME_EVERYTHING, changedContentURLs);
-                    resolve(changedContentURLs.length);
-                }).catch(err=>{
-                    console.error(`Service worker: cache refresh failed for ${changedContentURLs.length} URLS in ${CACHE_NAME_EVERYTHING}`, err);
-                    reject();
-                });
-            });
-        }).catch(reject);
-    });
-}
-
-let refreshInProgress = false;
-async function _refreshCache(event) {
-    if(refreshInProgress){
-        console.log("Another cache refresh is in progress, ignoring.");
-        return;
-    }
-    refreshInProgress = true;
-    try{
-        console.log("Service worker: Refreshing browser cache for app updates.");
-        const currentCacheManifest = await _getCurrentCacheManifest();
-        const newCacheManifest = await _getNewCacheManifest();
-        if(!newCacheManifest){
-            console.log("Service worker: could not fetch new cache manifest. Cache refresh will not be done.");
-            refreshInProgress = false;
-            return;
-        }
-        if(!currentCacheManifest && newCacheManifest){
-            console.log(`Service worker: Fresh install, writing cache manifest with ${Object.keys(newCacheManifest).length} entries`);
-            // do less.refresh(true) here. that is only possible in main thread and to be done once we move to new
-            // service worker management framework
-            await _putCurrentCacheManifest(newCacheManifest);
-            refreshInProgress = false;
-            return;
-        }
-        const updatedFilesCount = await _fixCache(currentCacheManifest, newCacheManifest);
-        await _putCurrentCacheManifest(newCacheManifest);
-        event.ports[0].postMessage({updatedFilesCount});
-    } catch (e) {
-        console.error("Service worker: error while refreshing cache", e);
-    }
-    refreshInProgress = false;
-}
-
 addEventListener('message', (event) => {
     // NB: Do not expect anything to persist in the service worker variables, the service worker may be reset at
     // any time by the browser if it is not in use, and only load it when required. This means that if there is a
@@ -272,7 +141,6 @@ addEventListener('message', (event) => {
             self._debugSWLivePreviewLogs = event.data.logLivePreview;
             self.__WB_DISABLE_DEV_LOGS = Config.debug && _debugSWCacheLogs;
             event.ports[0].postMessage({baseURL}); break;
-        case 'REFRESH_CACHE': _refreshCache(event); break;
         case 'setInstrumentedURLs': self.Serve.setInstrumentedURLs(event); return true;
         default:
             let msgProcessed = self.Serve && self.Serve.processVirtualServerMessage &&
@@ -299,8 +167,11 @@ function _isCacheableExternalUrl(url) {
 
 const DONT_CACHE_BASE_URLS = [
     `${location.origin}/src/`, `${location.origin}/test/`, `${location.origin}/dist/`, // https://phcode.dev/src or other
+    `${location.origin}/cacheManifest.json`, `${location.origin}/web-cache/`,
     // https://phcode.dev/subfolder/src/ or other when phoenix is loaded from https://phcode.dev/subfolder/index.html
-    `${baseURL}src/`, `${baseURL}test/`, `${baseURL}dist/`, `${baseURL}cacheManifest.json`];
+    `${baseURL}src/`, `${baseURL}test/`, `${baseURL}dist/`,
+    `${baseURL}cacheManifest.json`, `${baseURL}web-cache/`,
+];
 function _isNotCacheableUrl(url) {
     for(let start of DONT_CACHE_BASE_URLS){
         if(url.startsWith(start)){
@@ -342,7 +213,7 @@ function _belongsToEverythingCache(request) {
         _debugCacheLog("Not Caching core scripts in everything cache: ", request);
         return false;
     }
-    if(_isCacheableExternalUrl(href)){
+    if(!href.startsWith(baseURL)){
         _debugCacheLog("Not Caching external url in everything cache: ", request);
         return false;
     }
@@ -354,19 +225,92 @@ function _belongsToEverythingCache(request) {
     return false;
 }
 
-// handle all document
+// handle all document caches
+
+/**
+ * The everything cache holds as the name indicates, every web asset that is not external urls and core scripts.
+ * Also excluded are vfs locations and `/web-cache` paths.
+ * When phoenix is started afresh, the default cache CACHE_NAME_EVERYTHING is used. When phoenix is updated,
+ * the latest cache name to use will be updated in WEB_CACHE_FILE_PATH file.
+ */
+
+let _everythingCache, _version;
+function _getLatestCacheName() {
+    return new Promise(resolve=>{
+        fs.readFile(WEB_CACHE_FILE_PATH, "utf8", (err, version)=>{
+            if(err || !version){
+                resolve(CACHE_NAME_EVERYTHING);
+                return;
+            }
+            _version = version;
+            resolve(version);
+        });
+    });
+}
+
+async function _updateEverythingCache() {
+    const cacheToUse = await _getLatestCacheName();
+    _everythingCache = await caches.open(cacheToUse);
+    return _everythingCache;
+}
+
+fs.watchAsync(WEB_CACHE_FILE_PATH)
+    .then(watcher=>{
+        watcher.on(fs.WATCH_EVENTS.ADD_FILE, _updateEverythingCache);
+        watcher.on(fs.WATCH_EVENTS.CHANGE, _updateEverythingCache);
+    }).catch(console.error);
+
+async function _getEverythingCache() {
+    if(_everythingCache){
+        return _everythingCache;
+    }
+    return await _updateEverythingCache();
+}
+const everythingCacheHandler = async ({request, event}) => {
+    let cache = await _getEverythingCache();
+    let cachedResponse = await cache.match(new URL(request.url));
+
+    if (cachedResponse) {
+        return cachedResponse;
+    }
+
+    const versionedBase = `${baseURL}web-cache/${_version}`;
+    _debugCacheLog("cache miss, fetching", request.url, "versioned base is", versionedBase);
+
+    // Modify request URL if it matches the updated version
+    let versionedURL = request.url;
+    // if the url we got starts with versionedBase, then it means that if from a fetch request from this handler
+    // itself during a cache miss, in which case, we should service the request without redirecting again
+    let shouldCache = false;
+    if (_version && !versionedURL.startsWith(versionedBase) && versionedURL.startsWith(baseURL)) {
+        shouldCache = true;
+        versionedURL = versionedURL.replace(baseURL, `${baseURL}web-cache/${_version}/`);
+    }
+
+    // Fetch the updated URL
+    let fetchResponse = await fetch(versionedURL, {method: 'GET'});
+    if(fetchResponse.ok && shouldCache){
+        const responseToCache = fetchResponse.clone();
+        // Cache the response under the original request URL
+        const responseBlob = await responseToCache.blob();
+        const newResponse = new Response(responseBlob, {
+            status: responseToCache.status,
+            statusText: responseToCache.statusText,
+            headers: responseToCache.headers
+        });
+        event.waitUntil(cache.put(new URL(request.url), newResponse));
+    } else if(!fetchResponse.ok){
+        fetchResponse = await fetch(request.url, {method: 'GET'});
+        // we don't cache this as CDN might not deliver build consistency without version.
+    }
+
+    return fetchResponse;
+};
+
 const allCachedRoutes = new Route(({ request }) => {
     return (request.method === 'GET'
         && _belongsToEverythingCache(request) && !_isVirtualServing(request.url));
-}, new cacheFirst({
-    cacheName: CACHE_NAME_EVERYTHING,
-    plugins: [
-        new ExpirationPlugin({
-            maxAgeSeconds: DAYS_30_IN_SEC,
-            purgeOnQuotaError: true
-        })
-    ]
-}));
+}, everythingCacheHandler);
 
 // core scripts route
 const freshnessPreferredRoutes = new Route(({ request }) => {

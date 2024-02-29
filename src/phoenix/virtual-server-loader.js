@@ -98,46 +98,7 @@ if (!window.__TAURI__ && _isServiceWorkerLoaderPage() && 'serviceWorker' in navi
         updateViaCache: 'none'
     });
 
-    let isServerReady = false;
-
     window.Phoenix.cache = {};
-
-    // refreshServiceWorkerCache should be done after app load to prevent mixed js script content load. Ie,
-    // if we do the cache reset now, some scripts loaded may be from cache and some from the new version.
-    window.refreshServiceWorkerCache = function (doneCB) {
-        if(!isServerReady){
-            setTimeout(()=>{
-                window.refreshServiceWorkerCache(doneCB);
-            }, 100);
-            return;
-        }
-        logger.leaveTrail(`Service worker loader: triggering REFRESH_CACHE`);
-        wb.messageSW({
-            type: 'REFRESH_CACHE'
-        }).then(({updatedFilesCount})=>{
-            logger.leaveTrail(`Service worker loader: refresh cache updatedFilesCount: `+ updatedFilesCount);
-            window.Phoenix.cache.updatePendingReloadReason = "refreshCache";
-            window.Phoenix.cache.updatedFilesCount = updatedFilesCount || 0;
-            if(updatedFilesCount){
-                let lessRefreshInterval = setInterval(()=>{
-                    // wait for less to get loaded. less caches css in local storage in production urls
-                    // and might not load new css classes if we don't reset. less doesn't cache in localhost.
-                    if(window.less && window.less.refresh){
-                        window.less.refresh(true);
-                        clearInterval(lessRefreshInterval);
-                    }
-                }, 500);
-            }
-            if(doneCB) {
-                doneCB();
-            }
-        }).catch(err=>{
-            console.error("Service worker loader: Error while triggering refresh cache", err);
-            if(doneCB) {
-                doneCB("REFRESH_CACHE Error");
-            }
-        });
-    };
 
     // Hoist service worker comm to window for everyone be able to communicate with the sw.
     window.messageSW = function (params) {
@@ -146,7 +107,6 @@ if (!window.__TAURI__ && _isServiceWorkerLoaderPage() && 'serviceWorker' in navi
 
     function serverReady() {
         console.log('Service worker loader: Server ready.');
-        isServerReady = true;
         wb.messageSW({
             type: 'INIT_PHOENIX_CONFIG',
             debugMode: window.logger.logToConsolePref === 'true',

@@ -154,8 +154,8 @@ define(function (require) {
         try{
             require(["brackets"]);
         } catch (err) {
-            // try a cache refresh (not a full reset). this will happen in the service worker in the background
-            window.refreshServiceWorkerCache && window.refreshServiceWorkerCache();
+            // try a cache reset
+            window._resetCacheIfNeeded && window._resetCacheIfNeeded();
             // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
             window.logger && window.logger.reportError(err,
                 'Critical error when loading brackets. Trying to reload again.');

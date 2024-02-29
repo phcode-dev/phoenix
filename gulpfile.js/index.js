@@ -386,7 +386,7 @@ function _getFileDetails(path) {
         {encoding: null});
     return {
         sizeBytes: data.length,
-        hash: crypto.createHash("md5").update(data).digest("hex")
+        hash: crypto.createHash("sha256").update(data).digest("hex")
     };
 }
 
