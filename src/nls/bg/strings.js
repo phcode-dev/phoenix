@@ -27,6 +27,7 @@ define({
   "DELETING": "Изтриване на {0}",
   "RENAMING": "Преименуване",
   "STORED_IN_YOUR_BROWSER": "Съхранява се във вашия браузър",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Подкрепете ни в Open Collective",
   "GENERIC_ERROR": "(грешка {0})",
   "NOT_FOUND_ERR": "Файлът/папката не може да бъде открит.",
   "NOT_READABLE_ERR": "Файлът/папката не може да бъде прочетен.",

@@ -7,6 +7,7 @@
   "DELETING": "删除 {0}",
   "RENAMING": "重命名",
   "STORED_IN_YOUR_BROWSER": "存储在您的浏览器中",
+  "SUPPORT_US_OPEN_COLLECTIVE": "在 Open Collective 上支持我们",
   "GENERIC_ERROR": "(错误 {0})",
   "NOT_FOUND_ERR": "未能发现该文件",
   "NOT_READABLE_ERR": "无法读取该文件。",

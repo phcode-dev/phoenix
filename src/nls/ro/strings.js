@@ -27,6 +27,7 @@ define({
   "DELETING": "Se șterge {0}",
   "RENAMING": "Redenumire",
   "STORED_IN_YOUR_BROWSER": "Stocat în browserul dvs",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Sprijină-ne pe Open Collective",
   "GENERIC_ERROR": "(eroare {0})",
   "NOT_FOUND_ERR": "Fișierul nu a fost găsit.",
   "NOT_READABLE_ERR": "Fișierul nu poate fi citit.",

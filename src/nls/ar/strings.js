@@ -27,6 +27,7 @@ define({
   "DELETING": "حذف {0}",
   "RENAMING": "إعادة تسمية",
   "STORED_IN_YOUR_BROWSER": "مخزنة في المتصفح الخاص بك",
+  "SUPPORT_US_OPEN_COLLECTIVE": "ادعمنا في Open Collective",
   "GENERIC_ERROR": "(خطأ {0})",
   "NOT_FOUND_ERR": "تعذر العثور على الملف / الدليل.",
   "NOT_READABLE_ERR": "تعذرت قراءة الملف / الدليل.",

@@ -27,6 +27,7 @@ define({
   "DELETING": "Usuwanie {0}",
   "RENAMING": "Zmiana nazwy",
   "STORED_IN_YOUR_BROWSER": "Przechowywane w Twojej przeglądarce",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Wesprzyj nas w Open Collective",
   "GENERIC_ERROR": "(błąd {0})",
   "NOT_FOUND_ERR": "Nie znaleziono pliku/folderu.",
   "NOT_READABLE_ERR": "Nie można odczytać pliku/folderu.",

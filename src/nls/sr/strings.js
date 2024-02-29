@@ -27,6 +27,7 @@ define({
   "DELETING": "Брисање {0}",
   "RENAMING": "Преименовање",
   "STORED_IN_YOUR_BROWSER": "Чува се у вашем претраживачу",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Подржите нас на Опен Цоллецтиве",
   "GENERIC_ERROR": "(грешка {0})",
   "NOT_FOUND_ERR": "Непостојећа датотека.",
   "NOT_READABLE_ERR": "Датотека не може бити учитана.",

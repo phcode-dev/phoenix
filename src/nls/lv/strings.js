@@ -27,6 +27,7 @@ define({
   "DELETING": "Notiek {0} dzēšana",
   "RENAMING": "Pārdēvēšana",
   "STORED_IN_YOUR_BROWSER": "Saglabāts jūsu pārlūkprogrammā",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Atbalstiet mūs Open Collective",
   "GENERIC_ERROR": "(kļūda {0})",
   "NOT_FOUND_ERR": "Datne/katalogs netika atrasts.",
   "NOT_READABLE_ERR": "Nevar nolasīt datni/katalogu.",

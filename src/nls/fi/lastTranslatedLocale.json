@@ -7,6 +7,7 @@
   "DELETING": "Poistetaan {0}",
   "RENAMING": "Nimetään uudelleen",
   "STORED_IN_YOUR_BROWSER": "Tallennettu selaimeesi",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Tue meitä Open Collectivessa",
   "GENERIC_ERROR": "(virhe {0})",
   "NOT_FOUND_ERR": "Tiedostoa tai hakemistoa ei löytynyt.",
   "NOT_READABLE_ERR": "Tiedostoa tai hakemistoa ei voitu lukea.",

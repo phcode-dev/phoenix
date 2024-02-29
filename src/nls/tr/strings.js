@@ -27,6 +27,7 @@ define({
   "DELETING": "{0} siliniyor",
   "RENAMING": "yeniden adlandırma",
   "STORED_IN_YOUR_BROWSER": "Tarayıcınızda Saklanır",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Open Collective'de bizi destekleyin",
   "GENERIC_ERROR": "(hata {0})",
   "NOT_FOUND_ERR": "Dosya bulunamadı.",
   "NOT_READABLE_ERR": "Dosya okunamadı.",

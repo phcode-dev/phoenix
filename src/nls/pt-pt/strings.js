@@ -27,6 +27,7 @@ define({
   "DELETING": "Excluindo {0}",
   "RENAMING": "Renomeando",
   "STORED_IN_YOUR_BROWSER": "Armazenado em seu navegador",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Apoie-nos no Open Collective",
   "GENERIC_ERROR": "(erro {0})",
   "NOT_FOUND_ERR": "O ficheiro não foi encontrado.",
   "NOT_READABLE_ERR": "O ficheiro não pode ser lido.",
