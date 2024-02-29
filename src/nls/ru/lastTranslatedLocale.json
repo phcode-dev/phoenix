@@ -7,6 +7,7 @@
   "DELETING": "Удаление {0}",
   "RENAMING": "Переименование",
   "STORED_IN_YOUR_BROWSER": "Хранится в вашем браузере",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Поддержите нас в Open Collective",
   "GENERIC_ERROR": "(ошибка {0})",
   "NOT_FOUND_ERR": "Файл не найден",
   "NOT_READABLE_ERR": "Файл не может быть прочитан",

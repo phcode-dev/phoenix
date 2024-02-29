@@ -27,6 +27,7 @@ define({
   "DELETING": "刪除 {0}",
   "RENAMING": "重命名",
   "STORED_IN_YOUR_BROWSER": "儲存在您的瀏覽器中",
+  "SUPPORT_US_OPEN_COLLECTIVE": "在 Open Collective 上支援我們",
   "GENERIC_ERROR": "(錯誤 {0})",
   "NOT_FOUND_ERR": "找不到檔案或目錄。",
   "NOT_READABLE_ERR": "無法讀取檔案或目錄。",

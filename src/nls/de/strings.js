@@ -27,6 +27,7 @@ define({
   "DELETING": "Löschen von {0}",
   "RENAMING": "Umbenennung",
   "STORED_IN_YOUR_BROWSER": "In Ihrem Browser gespeichert",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Unterstützen Sie uns bei Open Collective",
   "GENERIC_ERROR": "(Fehler {0})",
   "NOT_FOUND_ERR": "Die Datei/der Ordner konnte nicht gefunden werden.",
   "NOT_READABLE_ERR": "Die Datei/der Ordner konnte nicht gelesen werden.",

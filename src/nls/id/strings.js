@@ -27,6 +27,7 @@ define({
   "DELETING": "Menghapus {0}",
   "RENAMING": "Mengganti nama",
   "STORED_IN_YOUR_BROWSER": "Disimpan di Browser Anda",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Dukung kami di Open Collective",
   "GENERIC_ERROR": "(kesalahan {0})",
   "NOT_FOUND_ERR": "File/direktori tidak dapat ditemukan.",
   "NOT_READABLE_ERR": "File/direktori tidak dapat dibaca.",

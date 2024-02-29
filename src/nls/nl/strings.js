@@ -27,6 +27,7 @@ define({
   "DELETING": "{0} verwijderen",
   "RENAMING": "Hernoemen",
   "STORED_IN_YOUR_BROWSER": "Opgeslagen in uw browser",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Steun ons op Open Collectief",
   "GENERIC_ERROR": "(fout {0})",
   "NOT_FOUND_ERR": "Het bestand kan niet worden gevonden.",
   "NOT_READABLE_ERR": "Het bestand kan niet worden ingelezen.",

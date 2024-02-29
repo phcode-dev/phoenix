@@ -27,6 +27,7 @@ define({
   "DELETING": "{0} 삭제 중",
   "RENAMING": "이름 바꾸기",
   "STORED_IN_YOUR_BROWSER": "브라우저에 저장됨",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Open Collective에서 우리를 지원하세요",
   "GENERIC_ERROR": "(에러 {0})",
   "NOT_FOUND_ERR": "파일을 찾을 수 없습니다.",
   "NOT_READABLE_ERR": "파일을 읽을 수 없습니다.",

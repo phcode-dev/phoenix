@@ -27,6 +27,7 @@ define({
   "DELETING": "Διαγραφή {0}",
   "RENAMING": "Μετονομασία",
   "STORED_IN_YOUR_BROWSER": "Αποθηκευμένο στο πρόγραμμα περιήγησής σας",
+  "SUPPORT_US_OPEN_COLLECTIVE": "Υποστηρίξτε μας στο Open Collective",
   "GENERIC_ERROR": "(error {0})",
   "NOT_FOUND_ERR": "Το αρχείο δεν βρέθηκε.",
   "NOT_READABLE_ERR": "Το αρχείο δεν μπορεί να διαβαστεί.",
