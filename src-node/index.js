@@ -158,6 +158,7 @@ function resetOrphanExitTimer() {
     // in debug mode, we wait for more minutes to not exit node if phcode doesn't send heartbeats on break point debug
     clearTimeout(orphanExitTimer);
     orphanExitTimer = setTimeout(()=>{
+        console.error(`Node did not receive heartbeat for ${timeout/1000}S, existing as orphan node process detected.`);
         process.exit(1);
     }, timeout);
 }
@@ -170,6 +171,7 @@ function processCommand(line) {
             lmdb.dumpDBToFileAndCloseDB()
                 .catch(console.error)
                 .finally(()=>{
+                    console.log("Node terminated by phcode.");
                     process.exit(0);
                 });
             return;
