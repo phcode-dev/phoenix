@@ -103,10 +103,6 @@ const rl = readline.createInterface({
 let serverPortResolve;
 const serverPortPromise = new Promise((resolve) => { serverPortResolve = resolve; });
 
-let orphanExitTimer = setTimeout(()=>{
-    process.exit(1);
-}, 60000);
-
 function _sendResponse(responseMessage, commandID) {
     savedConsoleLog(COMMAND_RESPONSE_PREFIX + JSON.stringify({
         message: responseMessage,
@@ -153,15 +149,16 @@ process.on('uncaughtException', (error) => {
     _sendError(error, "uncaughtException");
 });
 
-function resetOrphanExitTimer() {
-    const timeout = debugMode ? 60000 * 15 : 60000;
-    // in debug mode, we wait for more minutes to not exit node if phcode doesn't send heartbeats on break point debug
-    clearTimeout(orphanExitTimer);
-    orphanExitTimer = setTimeout(()=>{
-        console.error(`Node did not receive heartbeat for ${timeout/1000}S, existing as orphan node process detected.`);
-        process.exit(1);
-    }, timeout);
-}
+// In the child process
+process.on('disconnect', () => {
+    console.log('Parent process exited, exiting.');
+    process.exit(1);
+});
+
+rl.on('close', () => {
+    console.log('Parent input stream is closed');
+    process.exit(1);
+});
 
 function processCommand(line) {
     try{
@@ -175,9 +172,6 @@ function processCommand(line) {
                     process.exit(0);
                 });
             return;
-        case "heartBeat":
-            resetOrphanExitTimer();
-            return;
         case "ping": _sendResponse("pong", jsonCmd.commandID); return;
         case "setDebugMode":
             debugMode = jsonCmd.commandData;
@@ -187,7 +181,6 @@ function processCommand(line) {
             } else {
                 console.log = function () {}; // swallow logs
             }
-            resetOrphanExitTimer();
             _sendResponse("done", jsonCmd.commandID); return;
         case "getEndpoints":
             serverPortPromise.then(port =>{
