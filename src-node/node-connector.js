@@ -105,23 +105,26 @@ const LARGE_DATA_THRESHOLD = 2*1024*1024; // 2MB
 let controlSocketMain = null,
     largeDataSocketMain = null;
 
-const SOCKET_HEALTH_CHECK_INTERVAL_MS = 10 * 1000; // Interval in milliseconds
+const SOCKET_HEALTH_CHECK_INTERVAL_MS = 3000; // 3 seconds
 let healthCheckFailuresCount = 0; // Count of consecutive health check failures
 const RETRY_HEALTH_CHECK_MAX_COUNT = 2;
-setInterval(() => {
-    if (healthCheckFailuresCount === RETRY_HEALTH_CHECK_MAX_COUNT) {
-        console.error(`No socket connection for ${healthCheckFailuresCount * SOCKET_HEALTH_CHECK_INTERVAL_MS / 1000} seconds. Exiting due to orphan node process detection.`);
-        process.exit(1);
-    }
 
-    if (controlSocketMain || largeDataSocketMain) {
-        // Reset failure count if any socket is connected
-        healthCheckFailuresCount = 0;
-        return;
-    }
-    console.warn(`No active sockets detected, node will be terminated in ${(RETRY_HEALTH_CHECK_MAX_COUNT-healthCheckFailuresCount)*SOCKET_HEALTH_CHECK_INTERVAL_MS/1000} seconds`);
-    healthCheckFailuresCount++;
-}, SOCKET_HEALTH_CHECK_INTERVAL_MS);
+function startOrphanExitDetection() {
+    setInterval(() => {
+        if (healthCheckFailuresCount === RETRY_HEALTH_CHECK_MAX_COUNT) {
+            console.error(`No socket connection for ${healthCheckFailuresCount * SOCKET_HEALTH_CHECK_INTERVAL_MS / 1000} seconds. Exiting due to orphan node process detection.`);
+            process.exit(1);
+        }
+
+        if (controlSocketMain || largeDataSocketMain) {
+            // Reset failure count if any socket is connected
+            healthCheckFailuresCount = 0;
+            return;
+        }
+        console.warn(`No active sockets detected, node will be terminated in ${(RETRY_HEALTH_CHECK_MAX_COUNT-healthCheckFailuresCount)*SOCKET_HEALTH_CHECK_INTERVAL_MS/1000} seconds`);
+        healthCheckFailuresCount++;
+    }, SOCKET_HEALTH_CHECK_INTERVAL_MS);
+}
 
 const MAX_PENDING_SEND_BUFFER = 10000;
 let pendingSendBuffer = [];
@@ -363,6 +366,7 @@ function processWSCommand(ws, metadata, dataBuffer) {
             ws.isLargeData = false;
             controlSocketMain = ws;
             _drainPendingSendBuffer();
+            startOrphanExitDetection();
             return;
         case WS_COMMAND.EXEC:
             _execNodeConnectorFn(ws, metadata, dataBuffer);
