@@ -178,6 +178,16 @@ function nodeLoader() {
         return commandID;
     }
 
+    function _sendInitCommand(socket, commandCode) {
+        currentCommandID++;
+        const commandID = currentCommandID;
+        socket.send(mergeMetadataAndArrayBuffer({
+            commandCode: commandCode,
+            commandID: commandID,
+            data: null
+        }, null));
+    }
+
     function _sendExec(nodeConnectorID, commandID, execHandlerFnName, dataObjectToSend = null, dataBuffer = null) {
         const command = {
             nodeConnectorID: nodeConnectorID,
@@ -521,9 +531,9 @@ function nodeLoader() {
                     firstConnectCB();
                 }
                 if(ws.isLargeDataWS){
-                    _sendCommand(WS_COMMAND.LARGE_DATA_SOCKET_ANNOUNCE);
+                    _sendInitCommand(ws, WS_COMMAND.LARGE_DATA_SOCKET_ANNOUNCE);
                 } else {
-                    _sendCommand(WS_COMMAND.CONTROL_SOCKET_ANNOUNCE);
+                    _sendInitCommand(ws, WS_COMMAND.CONTROL_SOCKET_ANNOUNCE);
                 }
                 _drainPendingSendBuffer();
             });
@@ -582,7 +592,6 @@ function nodeLoader() {
             TERMINATE: "terminate",
             PING: "ping",
             SET_DEBUG_MODE: "setDebugMode",
-            HEART_BEAT: "heartBeat",
             GET_ENDPOINTS: "getEndpoints"
         };
         const COMMAND_RESPONSE_PREFIX = 'phnodeResp_1!5$:'; // a string thats not likely to just start with in
@@ -709,11 +718,6 @@ function nodeLoader() {
                         window.PhNodeEngine._nodeLoadTime = Date.now() - nodeLoadstartTime;
                     });
                 execNode(NODE_COMMANDS.SET_DEBUG_MODE, window.debugMode);
-                setInterval(()=>{
-                    if(!window.isNodeTerminated) {
-                        execNode(NODE_COMMANDS.HEART_BEAT);
-                    }
-                }, 10000);
             });
     });
 }
