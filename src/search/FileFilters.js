@@ -33,9 +33,13 @@ define(function (require, exports, module) {
         StringUtils        = require("utils/StringUtils"),
         Strings            = require("strings"),
         PreferencesManager = require("preferences/PreferencesManager"),
+        ProjectManager     = require("project/ProjectManager"),
         FindUtils          = require("search/FindUtils"),
         EditFilterTemplate = require("text!htmlContent/edit-filter-dialog.html"),
         FilterNameTemplate = require("text!htmlContent/filter-name.html");
+
+    const FILTER_TYPE_EXCLUDE = "excludeFilter",
+        FILTER_TYPE_INCLUDE = "includeFilter";
 
     /**
      * Constant: first filter index in the filter dropdown list
@@ -123,7 +127,7 @@ define(function (require, exports, module) {
     /**
      * A search filter is an array of one or more glob strings. The filter must be 'compiled' via compile()
      * before passing to filterPath()/filterFileList().
-     * @return {?{name: string, patterns: Array.<string>}}
+     * @return {?{name: string, patterns: Array.<string>, type: string}}
      */
     function getActiveFilter() {
         var filterSets        = PreferencesManager.get("fileFilters") || [],
@@ -132,7 +136,7 @@ define(function (require, exports, module) {
             activeFilter      = null;
 
         if (activeFilterIndex === null && oldFilter.length) {
-            activeFilter = { name: "", patterns: oldFilter };
+            activeFilter = { name: "", patterns: oldFilter, type: FILTER_TYPE_EXCLUDE};
             activeFilterIndex = _getFilterIndex(filterSets, activeFilter);
 
             // Migrate the old filter into the new filter storage
@@ -157,7 +161,9 @@ define(function (require, exports, module) {
         var filter = getActiveFilter();
         if (filter && filter.patterns.length) {
             var label = filter.name || _getCondensedForm(filter.patterns);
-            _picker.setButtonLabel(StringUtils.format(Strings.EXCLUDE_FILE_FILTER, label));
+            const filterType = filter.type === FILTER_TYPE_INCLUDE ?
+                Strings.INCLUDE_FILE_FILTER : Strings.EXCLUDE_FILE_FILTER;
+            _picker.setButtonLabel(StringUtils.format(filterType, label));
         } else {
             _picker.setButtonLabel(Strings.NO_FILE_FILTER);
         }
@@ -203,55 +209,14 @@ define(function (require, exports, module) {
      * Converts a user-specified filter object (as chosen in picker or retrieved from getFilters()) to a 'compiled' form
      * that can be used with filterPath()/filterFileList().
      * @param {!Array.<string>} userFilter
-     * @return {!string} 'compiled' filter that can be passed to filterPath()/filterFileList().
+     * @param {string} filterType - one of FILTER_TYPE_EXCLUDE or FILTER_TYPE_INCLUDE
+     * @return {{add: function, filter: function}} a gitIgnoreFilter filter that can be passed to filterPath()/filterFileList().
      */
-    function compile(userFilter) {
-        // Automatically apply ** prefix/suffix to make writing simple substring-match filters more intuitive
-        var wrappedGlobs = userFilter.map(function (glob) {
-            // Automatic "**" prefix if not explicitly present
-            if (glob.substr(0, 2) !== "**") {
-                glob = "**" + glob;
-            }
-            // Automatic "**" suffix if not explicitly present and no "." in last path segment of filter string
-            if (glob.substr(-2, 2) !== "**") {
-                var lastSeg = glob.lastIndexOf("/");
-                if (glob.indexOf(".", lastSeg + 1) === -1) {  // if no "/" present, this treats whole string as 'last segment'
-                    glob += "**";
-                }
-            }
-            return glob;
-        });
-
-        // Convert to regular expression for fast matching
-        var regexStrings = wrappedGlobs.map(function (glob) {
-            var reStr = "", i;
-            for (i = 0; i < glob.length; i++) {
-                var ch = glob[i];
-                if (ch === "*") {
-                    // Check for `**`
-                    if (glob[i + 1] === "*") {
-                        // Special case: `/**/` can collapse - that is, it shouldn't require matching both slashes
-                        if (glob[i + 2] === "/" && glob[i - 1] === "/") {
-                            reStr += "(.*/)?";
-                            i += 2; // skip 2nd * and / after it
-                        } else {
-                            reStr += ".*";
-                            i++;    // skip 2nd *
-                        }
-                    } else {
-                        // Single `*`
-                        reStr += "[^/]*";
-                    }
-                } else if (ch === "?") {
-                    reStr += "[^/]";  // unlike '?' in regexp, in globs this requires exactly 1 char
-                } else {
-                    // Regular char with no special meaning
-                    reStr += StringUtils.regexEscape(ch);
-                }
-            }
-            return "^" + reStr + "$";
-        });
-        return regexStrings.join("|");
+    function compile(userFilter, filterType) {
+        const gitIgnoreFilter = window.fs.utils.ignore();
+        gitIgnoreFilter.add(userFilter);
+        gitIgnoreFilter.filterType = filterType || FILTER_TYPE_EXCLUDE;
+        return gitIgnoreFilter;
     }
 
 
@@ -260,7 +225,7 @@ define(function (require, exports, module) {
      * if the path does not match any of the globs. If filtering many paths at once, use filterFileList()
      * for much better performance.
      *
-     * @param {?string} compiledFilter  'Compiled' filter object as returned by compile(), or null to no-op
+     * @param {object} compiledFilter  'Compiled' filter object as returned by compile(), or null to no-op
      * @param {!string} fullPath
      * @return {boolean}
      */
@@ -269,14 +234,20 @@ define(function (require, exports, module) {
             return true;
         }
 
-        var re = new RegExp(compiledFilter);
-        return !fullPath.match(re);
+        if (!ProjectManager.isWithinProject(fullPath)){
+            return false;
+        }
+        const relativePath = ProjectManager.makeProjectRelativeIfPossible(fullPath);
+        if(compiledFilter.filterType === FILTER_TYPE_INCLUDE){
+            return compiledFilter.ignores(relativePath);
+        }
+        return !compiledFilter.ignores(relativePath);
     }
 
     /**
      * Returns a copy of 'files' filtered to just those that don't match any of the exclusion globs in the filter.
      *
-     * @param {?string} compiledFilter  'Compiled' filter object as returned by compile(), or null to no-op
+     * @param {object} compiledFilter  'Compiled' filter object as returned by compile(), or null to no-op
      * @param {!Array.<File>} files
      * @return {!Array.<File>}
      */
@@ -285,16 +256,22 @@ define(function (require, exports, module) {
             return files;
         }
 
-        var re = new RegExp(compiledFilter);
         return files.filter(function (f) {
-            return !re.test(f.fullPath);
+            if (!ProjectManager.isWithinProject(f.fullPath)){
+                return false;
+            }
+            const relativePath = ProjectManager.makeProjectRelativeIfPossible(f.fullPath);
+            if(compiledFilter.filterType === FILTER_TYPE_INCLUDE){
+                return compiledFilter.ignores(relativePath);
+            }
+            return !compiledFilter.ignores(relativePath);
         });
     }
 
     /**
      * Returns a copy of 'file path' strings that match any of the exclusion globs in the filter.
      *
-     * @param {?string} compiledFilter  'Compiled' filter object as returned by compile(), or null to no-op
+     * @param {object} compiledFilter  'Compiled' filter object as returned by compile(), or null to no-op
      * @param {!Array.<string>} An array with a list of full file paths that matches atleast one of the filter.
      * @return {!Array.<string>}
      */
@@ -303,9 +280,15 @@ define(function (require, exports, module) {
             return filePaths;
         }
 
-        var re = new RegExp(compiledFilter);
-        return filePaths.filter(function (f) {
-            return f.match(re);
+        return filePaths.filter(function (fullPath) {
+            if (!ProjectManager.isWithinProject(fullPath)){
+                return false;
+            }
+            const relativePath = ProjectManager.makeProjectRelativeIfPossible(fullPath);
+            if(compiledFilter.filterType === FILTER_TYPE_INCLUDE){
+                return compiledFilter.ignores(relativePath);
+            }
+            return !compiledFilter.ignores(relativePath);
         });
     }
 
@@ -319,19 +302,33 @@ define(function (require, exports, module) {
      * @return {!$.Promise} Dialog box promise
      */
     function editFilter(filter, index) {
-        var lastFocus = window.document.activeElement;
+        let lastFocus = window.document.activeElement;
+        let isExclusionFilter = (filter.type !== FILTER_TYPE_INCLUDE);
+        function _getInstructionText() {
+            return StringUtils.format(
+                isExclusionFilter ? Strings.FILE_FILTER_INSTRUCTIONS : Strings.FILE_FILTER_INSTRUCTIONS_INCLUDE,
+                "https://git-scm.com/docs/gitignore#_pattern_format");
+        }
 
-        var templateVars = {
-            instruction: StringUtils.format(Strings.FILE_FILTER_INSTRUCTIONS, brackets.config.glob_help_url),
+        let templateVars = {
+            instruction: _getInstructionText(),
             Strings: Strings
         };
-        var dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(EditFilterTemplate, templateVars)),
+        let dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(EditFilterTemplate, templateVars)),
             $nameField = dialog.getElement().find(".exclusions-name"),
             $editField = dialog.getElement().find(".exclusions-editor"),
+            $excludeToggle = dialog.getElement().find(".checkbox"),
             $remainingField = dialog.getElement().find(".exclusions-name-characters-remaining");
 
         $nameField.val(filter.name);
         $editField.val(filter.patterns.join("\n")).focus();
+        $excludeToggle.prop('checked', isExclusionFilter);
+        $excludeToggle.on("click", ()=>{
+            isExclusionFilter = $excludeToggle.is(':checked');
+            dialog.getElement().find(".instruction-text")
+                .html(_getInstructionText());
+            updateFileCount();
+        });
 
         function getValue() {
             var newFilter = $editField.val().split("\n");
@@ -365,8 +362,13 @@ define(function (require, exports, module) {
 
         dialog.done(function (buttonId) {
             if (buttonId === Dialogs.DIALOG_BTN_OK) {
+                let filterType = $excludeToggle.is(':checked') ? FILTER_TYPE_EXCLUDE : FILTER_TYPE_INCLUDE;
                 // Update saved filter preference
-                setActiveFilter({ name: $nameField.val(), patterns: getValue() }, index);
+                setActiveFilter({
+                    name: $nameField.val(),
+                    patterns: getValue(),
+                    type: filterType
+                }, index);
                 _updatePicker();
                 _doPopulate();
             }
@@ -380,7 +382,9 @@ define(function (require, exports, module) {
             _context.promise.done(function (files) {
                 var filter = getValue();
                 if (filter.length) {
-                    var filtered = filterFileList(compile(filter), files);
+                    const filterType = $excludeToggle.is(':checked') ? FILTER_TYPE_EXCLUDE : FILTER_TYPE_INCLUDE;
+                    const compiledFilter = compile(filter, filterType);
+                    var filtered = filterFileList(compiledFilter, files);
                     $fileCount.html(StringUtils.format(Strings.FILTER_FILE_COUNT, filtered.length, files.length, _context.label));
                 } else {
                     $fileCount.html(StringUtils.format(Strings.FILTER_FILE_COUNT_ALL, files.length, _context.label));
@@ -420,7 +424,7 @@ define(function (require, exports, module) {
      */
     function commitPicker(picker) {
         var filter = getActiveFilter();
-        return (filter && filter.patterns.length) ? compile(filter.patterns) : "";
+        return (filter && filter.patterns.length) ? compile(filter.patterns, filter.type) : "";
     }
 
     /**
@@ -462,7 +466,7 @@ define(function (require, exports, module) {
      */
     function _handleEditFilter(e) {
         var filterSets  = PreferencesManager.get("fileFilters") || [],
-            filterIndex = $(e.target).parent().data("index") - FIRST_FILTER_INDEX;
+            filterIndex = $(e.target).parent().parent().data("index") - FIRST_FILTER_INDEX;
 
         // Don't let the click bubble upward.
         e.stopPropagation();
@@ -483,7 +487,7 @@ define(function (require, exports, module) {
      */
     function _handleListRendered(event, $dropdown) {
         var activeFilterIndex = PreferencesManager.getViewState("activeFileFilter"),
-            checkedItemIndex = (activeFilterIndex > -1) ? (activeFilterIndex + FIRST_FILTER_INDEX) : -1;
+            checkedItemIndex = (activeFilterIndex > -1) ? (activeFilterIndex + FIRST_FILTER_INDEX + 1) : -1;
         _picker.setChecked(checkedItemIndex, true);
 
         $dropdown.find(".filter-trash-icon")
@@ -513,8 +517,11 @@ define(function (require, exports, module) {
                 return "<span class='recent-filter-name'></span>" + _.escape(item);
             }
 
+            const filterType = item.type === FILTER_TYPE_INCLUDE ?
+                Strings.INCLUDE_FILE_FILTER_DROPDOWN : Strings.EXCLUDE_FILE_FILTER_DROPDOWN;
             var condensedPatterns = _getCondensedForm(item.patterns),
                 templateVars = {
+                    "filter-type": filterType,
                     "filter-name": _.escape(item.name || condensedPatterns),
                     "filter-patterns": item.name ? " - " + _.escape(condensedPatterns) : ""
                 };
@@ -542,7 +549,7 @@ define(function (require, exports, module) {
                 _picker.closeDropdown();
 
                 // Create a new filter set
-                editFilter({ name: "", patterns: [] }, -1);
+                editFilter({ name: "", patterns: [], type: FILTER_TYPE_EXCLUDE}, -1);
             } else if (itemIndex === 1) {
                 // Uncheck the prior active filter in the dropdown list.
                 _picker.setChecked(itemIndex, false);

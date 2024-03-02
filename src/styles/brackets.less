@@ -2281,24 +2281,23 @@ a, img {
 }
 
 .filter-trash-icon:hover {
-    color: rgba(0, 0, 0, 1);
+    color: @bc-secondary-btn-border;
+    cursor: pointer;
 }
 
 .filter-edit-icon {
     float: right;
     width: 13px;
     height: 13px;
-    background-image: url("images/edit-icon.svg");
-    background-repeat: no-repeat;
-    opacity: 0.5;
+    color: rgba(0, 0, 0, 0.5);
     visibility: hidden;
     position: relative;
-    top: 2px;
     right: -4px;
 }
 
 .filter-edit-icon:hover {
-    opacity: 1;
+    color: @bc-secondary-btn-border;
+    cursor: pointer;
 }
 
 li:hover .filter-trash-icon,
@@ -2306,7 +2305,7 @@ li:hover .filter-edit-icon {
     visibility: visible;
 }
 
-.recent-filter-name {
+.recent-filter-type{
     margin-left: 12px;
 }
 
@@ -3167,5 +3166,99 @@ label input {
             line-height: 0;
             white-space: nowrap;
         }
+    }
+}
+
+.toggle-switch {
+    --width: 90px; // just override this to se custom width
+    --height: 28px;
+    .toggle {
+        position: relative;
+        display: inline-block;
+        width: var(--width);
+        height: var(--height);
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .toggle input {
+        display: none;
+    }
+
+    .toggle .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 3px;
+        .dark & {
+            background-color: #555;
+        }
+        transition: all 0.4s ease-in-out;
+    }
+
+    .toggle .slider::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(var(--height));
+        height: calc(var(--height));
+        border-radius: 3px;
+        background-color: #fff;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease-in-out;
+    }
+
+    .toggle input:checked + .slider {
+        background-color: @dark-bc-primary-btn-bg;
+    }
+
+    .toggle input:checked + .slider::before {
+        transform: translateX(calc(var(--width) - var(--height)));
+    }
+    label{
+        margin-bottom: 0;
+    }
+    /* Adding text in the toggle button */
+    .toggle .labels {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-size: .9em;
+        transition: all 0.4s ease-in-out;
+    }
+
+    .toggle .labels::before {
+        content: attr(data-on);
+        position: absolute;
+        left: 5px;
+        color: @dark-bc-text-alt;
+        opacity: 0;
+        transition: all 0.4s ease-in-out;
+    }
+
+    .toggle .labels::after {
+        content: attr(data-off);
+        position: absolute;
+        right: 5px;
+        color: @bc-text-emphasized;
+        .dark & {
+            color: @dark-bc-text-alt;
+        }
+        opacity: 1;
+        transition: all 0.4s ease-in-out;
+    }
+
+    .toggle input:checked ~ .labels::after {
+        opacity: 0;
+    }
+
+    .toggle input:checked ~ .labels::before {
+        opacity: 1;
     }
 }
