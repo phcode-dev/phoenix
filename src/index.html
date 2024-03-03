@@ -410,6 +410,20 @@
             }
             await clearLegacyCache();
 
+            const shouldRefreshLess = window.localStorage.getItem(LESS_REFRESH_SCHEDULED_KEY) === 'yes';
+            if(shouldRefreshLess){
+                let lessRefreshInterval = setInterval(()=>{
+                    // wait for less to get loaded. less caches css in local storage in production urls
+                    // and might not load new css classes if we don't reset. less doesn't cache in localhost.
+                    if(window.less && less.refresh){
+                        less.refresh(true).finally(()=>{
+                            localStorage.setItem(LESS_REFRESH_SCHEDULED_KEY, "no");
+                        });
+                        clearInterval(lessRefreshInterval);
+                    }
+                }, 500);
+            }
+
             const currentCacheName = await _readFileSafe(WEB_CACHE_FILE_PATH);
             if(!currentCacheName) {
                 // fresh install, no cache
@@ -423,20 +437,10 @@
                 await window.caches.delete(currentCacheName);
                 await _writeFileSafe(WEB_CACHE_FILE_PATH, PHOENIX_APP_CACHE_VERSION);
                 localStorage.setItem(LESS_REFRESH_SCHEDULED_KEY, "yes");
-            }
-
-            const shouldRefreshLess = window.localStorage.getItem(LESS_REFRESH_SCHEDULED_KEY) === 'yes';
-            if(shouldRefreshLess){
-                let lessRefreshInterval = setInterval(()=>{
-                    // wait for less to get loaded. less caches css in local storage in production urls
-                    // and might not load new css classes if we don't reset. less doesn't cache in localhost.
-                    if(window.less && less.refresh){
-                        less.refresh(true).finally(()=>{
-                            localStorage.setItem(LESS_REFRESH_SCHEDULED_KEY, "no");
-                        });
-                        clearInterval(lessRefreshInterval);
-                    }
-                }, 500);
+                if(!force){
+                    location.reload();
+                    // force reload handlers should reload themselves.
+                }
             }
         }
         _resetCacheIfNeeded();
