@@ -1980,26 +1980,31 @@ define(function (require, exports, module) {
      * @param {boolean=} includeWorkingSet If true, include files in the working set
      *          that are not under the project root (*except* for untitled documents).
      * @param {boolean=} sort If true, The files will be sorted by their paths
+     * @param {Object} options optional path within project to narrow down the search
+     * @param {File} options.scope optional path within project to narrow down the search
      *
      * @return {$.Promise} Promise that is resolved with an Array of File objects.
      */
-    function getAllFiles(filter, includeWorkingSet, sort) {
+    function getAllFiles(filter, includeWorkingSet, sort, options) {
         var viewFiles, deferred;
 
         // The filter and includeWorkingSet params are both optional.
         // Handle the case where filter is omitted but includeWorkingSet is
         // specified.
-        if (includeWorkingSet === undefined && typeof (filter) !== "function") {
+        if (typeof (filter) !== "function") {
+            options = sort;
+            sort = includeWorkingSet;
             includeWorkingSet = filter;
             filter = null;
         }
+        options = options || {};
 
         if (includeWorkingSet) {
             viewFiles = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
         }
 
         deferred = new $.Deferred();
-        model.getAllFiles(filter, viewFiles, sort)
+        model.getAllFiles(filter, viewFiles, sort, {scope: options.scope})
             .done(function (fileList) {
                 deferred.resolve(fileList);
             })
