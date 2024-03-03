@@ -1,7 +1,7 @@
 {
     "config": {
-        "app_title": "Phoenix Code Beta",
-        "app_name_about": "Phoenix Code Beta",
+        "app_title": "Phoenix Code",
+        "app_name_about": "Phoenix Code",
         "about_icon": "styles/images/phoenix-icon.svg",
         "how_to_use_url": "https://github.com/adobe/brackets/wiki/How-to-Use-Brackets",
         "support_url": "https://github.com/phcode-dev/phoenix/discussions",
