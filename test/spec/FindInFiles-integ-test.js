@@ -259,6 +259,56 @@ define(function (require, exports, module) {
                 expect(fileResults.matches.length).toBe(3);
             });
 
+            it("should find all occurrences in node_modules folder", async function () {
+                var dirEntry = FileSystem.getDirectoryForPath(testPath + "/node_modules/");
+                await openSearchBar(dirEntry);
+                await executeSearch("foo");
+
+                var fileResults = FindInFiles.searchModel.results[testPath + "/bar.txt"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/foo.html"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/foo.js"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/css/foo.css"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/node_modules/node_modules/test2.js"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/node_modules/test.js"];
+                expect(fileResults).toBeTruthy();
+                expect(fileResults.matches.length).toBe(1);
+            });
+
+            it("should find all occurrences in nested node_modules folder", async function () {
+                var dirEntry = FileSystem.getDirectoryForPath(testPath + "/node_modules/node_modules/");
+                await openSearchBar(dirEntry);
+                await executeSearch("foo");
+
+                var fileResults = FindInFiles.searchModel.results[testPath + "/bar.txt"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/foo.html"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/foo.js"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/css/foo.css"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/node_modules/test.js"];
+                expect(fileResults).toBeFalsy();
+
+                fileResults = FindInFiles.searchModel.results[testPath + "/node_modules/node_modules/test2.js"];
+                expect(fileResults).toBeTruthy();
+                expect(fileResults.matches.length).toBe(1);
+            });
+
             it("should find all occurences in single file", async function () {
                 var fileEntry = FileSystem.getFileForPath(testPath + "/foo.js");
                 await openSearchBar(fileEntry);
