@@ -210,13 +210,48 @@ define(function (require, exports, module) {
      * that can be used with filterPath()/filterFileList().
      * @param {!Array.<string>} userFilter
      * @param {string} filterType - one of FILTER_TYPE_EXCLUDE or FILTER_TYPE_INCLUDE
-     * @return {{add: function, filter: function}} a gitIgnoreFilter filter that can be passed to filterPath()/filterFileList().
+     * @return {{filterType: string, ignores: function}} a globeFilter filter that can be passed to filterPath()/filterFileList().
      */
     function compile(userFilter, filterType) {
-        const gitIgnoreFilter = window.fs.utils.ignore();
-        gitIgnoreFilter.add(userFilter);
-        gitIgnoreFilter.filterType = filterType || FILTER_TYPE_EXCLUDE;
-        return gitIgnoreFilter;
+        // Automatically apply transforms make writing simple filters more intuitive
+        const subStringFilter = [];
+        const wrappedGlobs = [];
+        for(let glob of userFilter){
+            // *.js -> **/*.js; *.config.js -> **/*.config.js; ?.js -> **/?.js;
+            if (glob.startsWith("*.") || glob.startsWith("?.")) {
+                wrappedGlobs.push(`**/${glob}`); // **/*.txt
+                continue;
+            }
+            // ./ will only match in present project root, this is as an escape for the above transform we apply
+            if(glob.startsWith("./")) {
+                wrappedGlobs.push(glob.slice(2)); // ./*.txt to *.txt
+                continue;
+            }
+            // if not a glob string, we should do a string.includes search to match any substring.
+            if(!(glob.includes("?") || glob.includes("*") ||
+                glob.includes("[") || glob.includes("]") ||
+                glob.includes("\\") || glob.includes("!"))) {
+                subStringFilter.push(glob);
+                continue;
+            }
+            wrappedGlobs.push(glob);
+        }
+
+        const isMatch = window.fs.utils.picomatch(wrappedGlobs, {
+            dot: true
+        });
+        function ignores(relativeOrFullPath) {
+            for(let subStr of subStringFilter){
+                if(relativeOrFullPath.includes(subStr)){
+                    return true;
+                }
+            }
+            return isMatch(relativeOrFullPath);
+        }
+        return {
+            ignores: ignores,
+            filterType: filterType || FILTER_TYPE_EXCLUDE
+        };
     }
 
 
@@ -307,7 +342,7 @@ define(function (require, exports, module) {
         function _getInstructionText() {
             return StringUtils.format(
                 isExclusionFilter ? Strings.FILE_FILTER_INSTRUCTIONS : Strings.FILE_FILTER_INSTRUCTIONS_INCLUDE,
-                "https://git-scm.com/docs/gitignore#_pattern_format");
+                "https://docs.phcode.dev/docs/find-in-files/#creating-an-exclusioninclusion-filter");
         }
 
         let templateVars = {
