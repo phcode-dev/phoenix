@@ -65,7 +65,9 @@ define(function (require, exports, module) {
      */
     const defaultIgnoreGlobs = [
         "node_modules",
+        "**/node_modules",
         "bower_components",
+        "**/bower_components",
         ".npm",
         ".yarn",
         "__pycache__",
@@ -338,6 +340,8 @@ define(function (require, exports, module) {
      * ProjectManager.getAllFiles().
      */
     ProjectModel.prototype._allFilesCachePromise = null;
+    ProjectModel.prototype._allFilesScopeCachePromise = null;
+    ProjectModel.prototype._allFilesScope = null;
 
     /**
      * Sets whether the file tree is focused or not.
@@ -457,7 +461,7 @@ define(function (require, exports, module) {
      * starting up. The cache is cleared on every filesystem change event, and
      * also on project load and unload.
      *
-     * @param {boolean} true to sort files by their paths
+     * @param {boolean} sort true to sort files by their paths
      * @return {$.Promise.<Array.<File>>}
      */
     ProjectModel.prototype._getAllFilesCache = function _getAllFilesCache(sort) {
@@ -496,6 +500,49 @@ define(function (require, exports, module) {
         return this._allFilesCachePromise;
     };
 
+    ProjectModel.prototype._getAllFilesInScopeCache = function (sort, scope) {
+        let self = this;
+        if(!this.isWithinProject(scope)){
+            return (new $.Deferred()).reject(
+                new Error(`Scope ${scope.fullPath} should be within project root ${self.projectRoot}`)
+            ).promise();
+        }
+        if (!this._allFilesScopeCachePromise || this._allFilesScope !== scope) {
+            this._allFilesScope = scope;
+            const deferred = new $.Deferred(),
+                allFiles = [],
+                allFilesVisitor = function (entry) {
+                    if (shouldIndex(entry) || entry.fullPath === scope.fullPath) {
+                        if (entry.isFile) {
+                            allFiles.push(entry);
+                        }
+                        return true;
+                    }
+                    return false;
+                };
+
+            this._allFilesScopeCachePromise = deferred.promise();
+
+            const scopeTimer = PerfUtils.markStart("Project scope files cache: " +
+                    scope.fullPath),
+                options = {
+                    sortList: sort
+                };
+
+            scope.visit(allFilesVisitor, options, function (err) {
+                if (err) {
+                    PerfUtils.finalizeMeasurement(scopeTimer);
+                    deferred.reject(err);
+                } else {
+                    PerfUtils.addMeasurement(scopeTimer);
+                    deferred.resolve(allFiles);
+                }
+            }.bind(this));
+        }
+
+        return this._allFilesScopeCachePromise;
+    };
+
     /**
      * Returns an Array of all files for this project, optionally including
      * files additional files provided. Files are filtered out by shouldShow().
@@ -504,18 +551,23 @@ define(function (require, exports, module) {
      *          the file list (does not filter directory traversal). API matches Array.filter().
      * @param {Array.<File>=} additionalFiles Additional files to include (for example, the WorkingSet)
      *          Only adds files that are *not* under the project root or untitled documents.
-     * @param {boolean} true to sort files by their paths
+     * @param {boolean} sort true to sort files by their paths
+     * @param {Object} options optional path within project to narrow down the search
+     * @param {File} options.scope optional path within project to narrow down the search
      *
      * @return {$.Promise} Promise that is resolved with an Array of File objects.
      */
-    ProjectModel.prototype.getAllFiles = function getAllFiles(filter, additionalFiles, sort) {
+    ProjectModel.prototype.getAllFiles = function getAllFiles(filter, additionalFiles, sort, options) {
         // The filter and includeWorkingSet params are both optional.
         // Handle the case where filter is omitted but includeWorkingSet is
         // specified.
-        if (additionalFiles === undefined && typeof (filter) !== "function") {
+        if (typeof (filter) !== "function") {
+            options = sort;
+            sort = additionalFiles;
             additionalFiles = filter;
             filter = null;
         }
+        options = options || {};
 
         var filteredFilesDeferred = new $.Deferred();
 
@@ -523,7 +575,10 @@ define(function (require, exports, module) {
         // Note that with proper promises we may be able to fix this so that we're not doing this
         // anti-pattern of creating a separate deferred rather than just chaining off of the promise
         // from _getAllFilesCache
-        this._getAllFilesCache(sort).done(function (result) {
+        const getAllFilesFn = options.scope ?
+            this._getAllFilesInScopeCache.bind(this) : this._getAllFilesCache.bind(this);
+        getAllFilesFn(sort, options.scope).done(function (result) {
+            result = [...result]; // clone it as the above result is cached and we dont want to modify the cache
             // Add working set entries, if requested
             if (additionalFiles) {
                 additionalFiles.forEach(function (file) {
@@ -565,6 +620,8 @@ define(function (require, exports, module) {
      */
     ProjectModel.prototype._resetCache = function _resetCache() {
         this._allFilesCachePromise = null;
+        this._allFilesScopeCachePromise = null;
+        this._allFilesScope = null;
     };
 
     /**

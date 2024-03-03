@@ -368,7 +368,9 @@ define(function (require, exports, module) {
         if (scope && scope.isFile) {
             return new $.Deferred().resolve(filter(scope) ? [scope] : []).promise();
         }
-        return ProjectManager.getAllFiles(filter, true, true);
+        return ProjectManager.getAllFiles(filter, true, true, {
+            scope
+        });
 
     }
 
@@ -932,7 +934,7 @@ define(function (require, exports, module) {
     var _initCache = function () {
         projectIndexingComplete = false;
         function filter(file) {
-            return _subtreeFilter(file, null) && _isReadableFileType(file.fullPath);
+            return _isReadableFileType(file.fullPath);
         }
         FindUtils.setInstantSearchDisabled(true);
 
