@@ -26,181 +26,83 @@
 define(function (require, exports, module) {
 
 
-    var _                  = require("thirdparty/lodash"),
-        Mustache           = require("thirdparty/mustache/mustache"),
-        Dialogs            = require("widgets/Dialogs"),
-        DropdownButton     = require("widgets/DropdownButton").DropdownButton,
-        StringUtils        = require("utils/StringUtils"),
+    const DropdownButton     = require("widgets/DropdownButton").DropdownButton,
         Strings            = require("strings"),
         PreferencesManager = require("preferences/PreferencesManager"),
         ProjectManager     = require("project/ProjectManager"),
-        FindUtils          = require("search/FindUtils"),
-        EditFilterTemplate = require("text!htmlContent/edit-filter-dialog.html"),
-        FilterNameTemplate = require("text!htmlContent/filter-name.html");
+        FindUtils          = require("search/FindUtils");
+
+    const PREFS_CURRENT_FILTER_STRING = "FIND_IN_FILES_CURRENT_FILTER_STRING";
 
     const FILTER_TYPE_EXCLUDE = "excludeFilter",
-        FILTER_TYPE_INCLUDE = "includeFilter";
+        FILTER_TYPE_INCLUDE = "includeFilter",
+        FILTER_TYPE_NO_FILTER = "noFilter";
 
-    /**
-     * Constant: first filter index in the filter dropdown list
-     * @type {number}
-     */
-    var FIRST_FILTER_INDEX = 3;
-
-    /**
-     * Constant: max number of characters for the filter name
-     * @type {number}
-     */
-    var FILTER_NAME_CHARACTER_MAX = 20;
-
-    /**
-     * Context Info on which files the filter will be applied to.
-     * It will be initialized when createFilterPicker is called and if specified, editing UI will
-     * indicate how many files are excluded by the filter. Label should be of the form "in ..."
-     * @type {?{label:string, promise:$.Promise}}
-     */
-    var _context = null;
+    let currentFilter = null,
+        currentFilterType = FILTER_TYPE_NO_FILTER;
 
     /**
      * @type {DropdownButton}
      */
-    var _picker  = null;
+    let _picker  = null;
+    /**
+     * @type { jQuery }
+     */
+    let $filterContainer = null;
 
     /**
-     * Get the condensed form of the filter set by joining the first two in the set with
-     * a comma separator and appending a short message with the number of filters being clipped.
-     * @param {Array.<string>} filter
-     * @return {string} Condensed form of filter set if `filter` is a valid array.
-     *                  Otherwise, return an empty string.
+     * `*.js,*\,*.css` to ['*.js', '**.css']
+     * @param {string} str
+     * @private
      */
-    function _getCondensedForm(filter) {
-        if (!_.isArray(filter)) {
-            return "";
+    function _filterStringToPatternArray(str) {
+        const randomDigits = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+        str.replaceAll("\\,", randomDigits);
+        let patterns = str.split(",");
+        let finalPatterns = [];
+        for(let i=0; i<patterns.length; i++){
+            patterns[i]=patterns[i].replaceAll(randomDigits, ",");
+            patterns[i] = patterns[i].toLowerCase();
+            if(patterns[i]){
+                finalPatterns.push(patterns[i]);
+            }
         }
-
-        // Format filter in condensed form
-        if (filter.length > 2) {
-            return filter.slice(0, 2).join(", ") + " " +
-                   StringUtils.format(Strings.FILE_FILTER_CLIPPED_SUFFIX, filter.length - 2);
-        }
-        return filter.join(", ");
-    }
-
-    /**
-     * Populate the list of dropdown menu with two filter commands and
-     * the list of saved filter sets.
-     */
-    function _doPopulate() {
-        var dropdownItems = [Strings.NEW_FILE_FILTER, Strings.CLEAR_FILE_FILTER],
-            filterSets = PreferencesManager.get("fileFilters") || [];
-
-        if (filterSets.length) {
-            dropdownItems.push("---");
-
-            // Remove all the empty exclusion sets before concatenating to the dropdownItems.
-            filterSets = filterSets.filter(function (filter) {
-                return (_getCondensedForm(filter.patterns) !== "");
-            });
-
-            // FIRST_FILTER_INDEX needs to stay in sync with the number of static items (plus separator)
-            // ie. the number of items populated so far before we concatenate with the actual filter sets.
-            dropdownItems = dropdownItems.concat(filterSets);
-        }
-        _picker.items = dropdownItems;
-    }
-
-    /**
-     * Find the index of a filter set in the list of saved filter sets.
-     * @param {Array.<{name: string, patterns: Array.<string>}>} filterSets
-     * @return {{name: string, patterns: Array.<string>}} filter
-     */
-    function _getFilterIndex(filterSets, filter) {
-        var index = -1;
-
-        if (!filter || !filterSets.length) {
-            return index;
-        }
-
-        return _.findIndex(filterSets, _.partial(_.isEqual, filter));
+        return finalPatterns;
     }
 
     /**
      * A search filter is an array of one or more glob strings. The filter must be 'compiled' via compile()
      * before passing to filterPath()/filterFileList().
-     * @return {?{name: string, patterns: Array.<string>, type: string}}
+     * @return {{pattern:string, isActive: function, ignores: function}} a globeFilter filter that can be passed to filterPath()/filterFileList().
      */
     function getActiveFilter() {
-        var filterSets        = PreferencesManager.get("fileFilters") || [],
-            activeFilterIndex = PreferencesManager.getViewState("activeFileFilter"),
-            oldFilter         = PreferencesManager.getViewState("search.exclusions") || [],
-            activeFilter      = null;
-
-        if (activeFilterIndex === null && oldFilter.length) {
-            activeFilter = { name: "", patterns: oldFilter, type: FILTER_TYPE_EXCLUDE};
-            activeFilterIndex = _getFilterIndex(filterSets, activeFilter);
-
-            // Migrate the old filter into the new filter storage
-            if (activeFilterIndex === -1) {
-                activeFilterIndex = filterSets.length;
-                filterSets.push(activeFilter);
-                PreferencesManager.set("fileFilters", filterSets);
-            }
-            PreferencesManager.setViewState("activeFileFilter", activeFilterIndex);
-        } else if (activeFilterIndex > -1 && activeFilterIndex < filterSets.length) {
-            activeFilter = filterSets[activeFilterIndex];
+        if(currentFilter){
+            return currentFilter;
         }
-
-        return activeFilter;
-    }
-
-    /**
-     * Update the picker button label with the name/patterns of the selected filter or
-     * No Files Excluded if no filter is selected.
-     */
-    function _updatePicker() {
-        var filter = getActiveFilter();
-        if (filter && filter.patterns.length) {
-            var label = filter.name || _getCondensedForm(filter.patterns);
-            const filterType = filter.type === FILTER_TYPE_INCLUDE ?
-                Strings.INCLUDE_FILE_FILTER : Strings.EXCLUDE_FILE_FILTER;
-            _picker.setButtonLabel(StringUtils.format(filterType, label));
-        } else {
-            _picker.setButtonLabel(Strings.NO_FILE_FILTER);
+        if(currentFilterType === FILTER_TYPE_NO_FILTER) {
+            return {
+                isActive: ()=>false,
+                pattern: "",
+                ignores: ()=>false
+            };
         }
+        const pattern = PreferencesManager.getViewState(PREFS_CURRENT_FILTER_STRING) || "";
+        currentFilter = compile(pattern);
+        return currentFilter;
     }
 
     /**
      * Sets and save the index of the active filter. Automatically set when editFilter() is completed.
      * If no filter is passed in, then clear the last active filter index by setting it to -1.
      *
-     * @param {{name: string, patterns: Array.<string>}=} filter
-     * @param {number=} index The index of the filter set in the list of saved filter sets or -1 if it is a new one
+     * @param {{pattern:string, isActive: function, ignores: function}|string} filter a globeFilter filter that can be passed to filterPath()/filterFileList().
      */
-    function setActiveFilter(filter, index) {
-        var filterSets = PreferencesManager.get("fileFilters") || [];
-
-        if (filter) {
-            if (index === -1) {
-                // Add a new filter set
-                index = filterSets.length;
-                filterSets.push(filter);
-            } else if (index > -1 && index < filterSets.length) {
-                // Update an existing filter set only if the filter set has some changes
-                if (!_.isEqual(filterSets[index], filter)) {
-                    filterSets[index] = filter;
-                }
-            } else {
-                // Should not have been called with an invalid index to the available filter sets.
-                console.log("setActiveFilter is called with an invalid index: " + index);
-                return;
-            }
-
-            PreferencesManager.set("fileFilters", filterSets);
-            PreferencesManager.setViewState("activeFileFilter", index);
-        } else {
-            // Explicitly set to -1 to remove the active file filter
-            PreferencesManager.setViewState("activeFileFilter", -1);
+    function setActiveFilter(filter) {
+        if(typeof filter === 'string'){
+            filter = compile(filter);
         }
+        currentFilter = filter;
+        PreferencesManager.setViewState(PREFS_CURRENT_FILTER_STRING, filter.pattern);
         FindUtils.notifyFileFiltersChanged();
     }
 
@@ -208,39 +110,52 @@ define(function (require, exports, module) {
     /**
      * Converts a user-specified filter object (as chosen in picker or retrieved from getFilters()) to a 'compiled' form
      * that can be used with filterPath()/filterFileList().
-     * @param {!Array.<string>} userFilter
-     * @param {string} filterType - one of FILTER_TYPE_EXCLUDE or FILTER_TYPE_INCLUDE
-     * @return {{filterType: string, ignores: function}} a globeFilter filter that can be passed to filterPath()/filterFileList().
+     * @param {string} userFilterString
+     * @return {{pattern:string, isActive: function, ignores: function}} a globeFilter filter that can be passed to filterPath()/filterFileList().
      */
-    function compile(userFilter, filterType) {
+    function compile(userFilterString) {
         // Automatically apply transforms make writing simple filters more intuitive
+        const userFilter = _filterStringToPatternArray(userFilterString); // this wil lower case too
         const subStringFilter = [];
         const wrappedGlobs = [];
         for(let glob of userFilter){
-            // *.js -> **/*.js; *.config.js -> **/*.config.js; ?.js -> **/?.js;
-            if (glob.startsWith("*.") || glob.startsWith("?.")) {
-                wrappedGlobs.push(`**/${glob}`); // **/*.txt
-                continue;
-            }
             // ./ will only match in present project root, this is as an escape for the above transform we apply
             if(glob.startsWith("./")) {
                 wrappedGlobs.push(glob.slice(2)); // ./*.txt to *.txt
                 continue;
             }
-            // if not a glob string, we should do a string.includes search to match any substring.
-            if(!(glob.includes("?") || glob.includes("*") ||
-                glob.includes("[") || glob.includes("]") ||
-                glob.includes("\\") || glob.includes("!"))) {
-                subStringFilter.push(glob);
+            // *.js -> **/*.js; *.config.js -> **/*.config.js; ?.js -> **/?.js;
+            if (glob.startsWith("*.") || glob.startsWith("?.")) {
+                wrappedGlobs.push(`**/${glob}`); // **/*.txt
                 continue;
             }
-            wrappedGlobs.push(glob);
+
+            // if it's a glob string, add to the glob list
+            if(glob.includes("?") || glob.includes("*") ||
+                glob.includes("[") || glob.includes("]") ||
+                glob.includes("\\") || glob.includes("!")) {
+                if(!glob.startsWith("**/")) {
+                    // make it eazier to search as the user may not know the exact file name and only a part,
+                    // in which case we dont want him to type **/ every time to start
+                    glob = `**/${glob}`;
+                }
+                wrappedGlobs.push(glob);
+            } else {
+                // if not a glob string, we should do a string.includes search to match any substring.
+                subStringFilter.push(glob);
+            }
         }
 
         const isMatch = window.fs.utils.picomatch(wrappedGlobs, {
             dot: true
         });
         function ignores(relativeOrFullPath) {
+            // path search is not case-sensitive
+            relativeOrFullPath = relativeOrFullPath.toLowerCase();
+            if(!userFilter.length){
+                // no filter, ignore nothing.
+                return false;
+            }
             for(let subStr of subStringFilter){
                 if(relativeOrFullPath.includes(subStr)){
                     return true;
@@ -249,8 +164,11 @@ define(function (require, exports, module) {
             return isMatch(relativeOrFullPath);
         }
         return {
-            ignores: ignores,
-            filterType: filterType || FILTER_TYPE_EXCLUDE
+            pattern: userFilterString,
+            isActive: function () {
+                return !!userFilter.length;
+            },
+            ignores: ignores
         };
     }
 
@@ -273,10 +191,19 @@ define(function (require, exports, module) {
             return false;
         }
         const relativePath = ProjectManager.makeProjectRelativeIfPossible(fullPath);
-        if(compiledFilter.filterType === FILTER_TYPE_INCLUDE){
-            return compiledFilter.ignores(relativePath);
+        switch (currentFilterType) {
+        case FILTER_TYPE_INCLUDE:
+            if(compiledFilter.isActive()){
+                return compiledFilter.ignores(relativePath);
+            }
+            return true;
+        case FILTER_TYPE_EXCLUDE:
+            if(compiledFilter.isActive()){
+                return !compiledFilter.ignores(relativePath);
+            }
+            return true;
+        default: return true; // no files excluded
         }
-        return !compiledFilter.ignores(relativePath);
     }
 
     /**
@@ -296,10 +223,19 @@ define(function (require, exports, module) {
                 return false;
             }
             const relativePath = ProjectManager.makeProjectRelativeIfPossible(f.fullPath);
-            if(compiledFilter.filterType === FILTER_TYPE_INCLUDE){
-                return compiledFilter.ignores(relativePath);
+            switch (currentFilterType) {
+            case FILTER_TYPE_INCLUDE:
+                if(compiledFilter.isActive()){
+                    return compiledFilter.ignores(relativePath);
+                }
+                return true;
+            case FILTER_TYPE_EXCLUDE:
+                if(compiledFilter.isActive()){
+                    return !compiledFilter.ignores(relativePath);
+                }
+                return true;
+            default: return true; // no files excluded
             }
-            return !compiledFilter.ignores(relativePath);
         });
     }
 
@@ -320,216 +256,41 @@ define(function (require, exports, module) {
                 return false;
             }
             const relativePath = ProjectManager.makeProjectRelativeIfPossible(fullPath);
-            if(compiledFilter.filterType === FILTER_TYPE_INCLUDE){
-                return compiledFilter.ignores(relativePath);
-            }
-            return !compiledFilter.ignores(relativePath);
-        });
-    }
-
-
-    /**
-     * Opens a dialog box to edit the given filter. When editing is finished, the value of getActiveFilter() changes to
-     * reflect the edits. If the dialog was canceled, the preference is left unchanged.
-     * @param {!{name: string, patterns: Array.<string>}} filter
-     * @param {number} index The index of the filter set to be edited or created. The value is -1 if it is for a new one
-     *          to be created.
-     * @return {!$.Promise} Dialog box promise
-     */
-    function editFilter(filter, index) {
-        let lastFocus = window.document.activeElement;
-        let isExclusionFilter = (filter.type !== FILTER_TYPE_INCLUDE);
-        function _getInstructionText() {
-            return StringUtils.format(
-                isExclusionFilter ? Strings.FILE_FILTER_INSTRUCTIONS : Strings.FILE_FILTER_INSTRUCTIONS_INCLUDE,
-                "https://docs.phcode.dev/docs/find-in-files/#creating-an-exclusioninclusion-filter");
-        }
-
-        let templateVars = {
-            instruction: _getInstructionText(),
-            Strings: Strings
-        };
-        let dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(EditFilterTemplate, templateVars)),
-            $nameField = dialog.getElement().find(".exclusions-name"),
-            $editField = dialog.getElement().find(".exclusions-editor"),
-            $excludeToggle = dialog.getElement().find(".checkbox"),
-            $remainingField = dialog.getElement().find(".exclusions-name-characters-remaining");
-
-        $nameField.val(filter.name);
-        $editField.val(filter.patterns.join("\n")).focus();
-        $excludeToggle.prop('checked', isExclusionFilter);
-        $excludeToggle.on("click", ()=>{
-            isExclusionFilter = $excludeToggle.is(':checked');
-            dialog.getElement().find(".instruction-text")
-                .html(_getInstructionText());
-            updateFileCount();
-        });
-
-        function getValue() {
-            var newFilter = $editField.val().split("\n");
-
-            // Remove blank lines
-            return newFilter.filter(function (glob) {
-                return glob.trim().length;
-            });
-        }
-
-        $nameField.bind('input', function () {
-            var remainingCharacters = FILTER_NAME_CHARACTER_MAX - $(this).val().length;
-            if (remainingCharacters < 0.25*FILTER_NAME_CHARACTER_MAX) {
-                $remainingField.show();
-
-                $remainingField.text(StringUtils.format(
-                    Strings.FILTER_NAME_REMAINING,
-                    remainingCharacters
-                ));
-
-                if (remainingCharacters < 0) {
-                    $remainingField.addClass("exclusions-name-characters-limit-reached");
-                } else {
-                    $remainingField.removeClass("exclusions-name-characters-limit-reached");
+            switch (currentFilterType) {
+            case FILTER_TYPE_INCLUDE:
+                if(compiledFilter.isActive()){
+                    return compiledFilter.ignores(relativePath);
                 }
-            }            else {
-                $remainingField.hide();
-            }
-            updatePrimaryButton();
-        });
-
-        dialog.done(function (buttonId) {
-            if (buttonId === Dialogs.DIALOG_BTN_OK) {
-                let filterType = $excludeToggle.is(':checked') ? FILTER_TYPE_EXCLUDE : FILTER_TYPE_INCLUDE;
-                // Update saved filter preference
-                setActiveFilter({
-                    name: $nameField.val(),
-                    patterns: getValue(),
-                    type: filterType
-                }, index);
-                _updatePicker();
-                _doPopulate();
-            }
-            lastFocus.focus();  // restore focus to old pos
-        });
-
-        // Code to update the file count readout at bottom of dialog (if context provided)
-        var $fileCount = dialog.getElement().find(".exclusions-filecount");
-
-        function updateFileCount() {
-            _context.promise.done(function (files) {
-                var filter = getValue();
-                if (filter.length) {
-                    const filterType = $excludeToggle.is(':checked') ? FILTER_TYPE_EXCLUDE : FILTER_TYPE_INCLUDE;
-                    const compiledFilter = compile(filter, filterType);
-                    var filtered = filterFileList(compiledFilter, files);
-                    $fileCount.html(StringUtils.format(Strings.FILTER_FILE_COUNT, filtered.length, files.length, _context.label));
-                } else {
-                    $fileCount.html(StringUtils.format(Strings.FILTER_FILE_COUNT_ALL, files.length, _context.label));
+                return true;
+            case FILTER_TYPE_EXCLUDE:
+                if(compiledFilter.isActive()){
+                    return !compiledFilter.ignores(relativePath);
                 }
-            });
-        }
-
-        // Code to enable/disable the OK button at the bottom of dialog (whether filter is empty or not)
-        var $primaryBtn = dialog.getElement().find(".primary");
-
-        function updatePrimaryButton() {
-            var trimmedValue = $editField.val().trim();
-            var exclusionNameLength = $nameField.val().length;
-
-            $primaryBtn.prop("disabled", !trimmedValue.length || (exclusionNameLength > FILTER_NAME_CHARACTER_MAX));
-        }
-
-        $editField.on("input", updatePrimaryButton);
-        updatePrimaryButton();
-
-        if (_context) {
-            $editField.on("input", _.debounce(updateFileCount, 400));
-            updateFileCount();
-        } else {
-            $fileCount.hide();
-        }
-
-        return dialog.getPromise();
+                return true;
+            default: return true; // no files excluded
+            }
+        });
     }
 
-
-    /**
-     * Marks the filter picker's currently selected item as most-recently used, and returns the corresponding
-     * 'compiled' filter object ready for use with filterPath().
-     * @param {!jQueryObject} picker UI returned from createFilterPicker()
-     * @return {!string} 'compiled' filter that can be passed to filterPath()/filterFileList().
-     */
-    function commitPicker(picker) {
-        var filter = getActiveFilter();
-        return (filter && filter.patterns.length) ? compile(filter.patterns, filter.type) : "";
-    }
-
-    /**
-     * Remove the target item from the filter dropdown list and update dropdown button
-     * and dropdown list UI.
-     * @param {!Event} e Mouse events
-     */
-    function _handleDeleteFilter(e) {
-        // Remove the filter set from the preferences and
-        // clear the active filter set index from view state.
-        var filterSets        = PreferencesManager.get("fileFilters") || [],
-            activeFilterIndex = PreferencesManager.getViewState("activeFileFilter"),
-            filterIndex       = $(e.target).parent().data("index") - FIRST_FILTER_INDEX;
-
-        // Don't let the click bubble upward.
-        e.stopPropagation();
-
-        filterSets.splice(filterIndex, 1);
-        PreferencesManager.set("fileFilters", filterSets);
-
-        if (activeFilterIndex === filterIndex) {
-            // Removing the active filter, so clear the active filter
-            // both in the view state.
-            setActiveFilter(null);
-        } else if (activeFilterIndex > filterIndex) {
-            // Adjust the active filter index after the removal of a filter set before it.
-            --activeFilterIndex;
-            setActiveFilter(filterSets[activeFilterIndex], activeFilterIndex);
+    function _updatePicker() {
+        switch (currentFilterType) {
+        case FILTER_TYPE_NO_FILTER:
+            _picker.setButtonLabel(Strings.NO_FILE_FILTER);
+            $filterContainer && $filterContainer.addClass("forced-hidden");
+            break;
+        case FILTER_TYPE_INCLUDE:
+            _picker.setButtonLabel(Strings.INCLUDE_FILE_FILTER);
+            $filterContainer && $filterContainer.removeClass("forced-hidden");
+            break;
+        case FILTER_TYPE_EXCLUDE:
+            _picker.setButtonLabel(Strings.EXCLUDE_FILE_FILTER);
+            $filterContainer && $filterContainer.removeClass("forced-hidden");
+            break;
         }
-
-        _updatePicker();
-        _doPopulate();
-        _picker.refresh();
-    }
-
-    /**
-     * Close filter dropdwon list and launch edit filter dialog.
-     * @param {!Event} e Mouse events
-     */
-    function _handleEditFilter(e) {
-        var filterSets  = PreferencesManager.get("fileFilters") || [],
-            filterIndex = $(e.target).parent().parent().data("index") - FIRST_FILTER_INDEX;
-
-        // Don't let the click bubble upward.
-        e.stopPropagation();
-
-        // Close the dropdown first before opening the edit filter dialog
-        // so that it will restore focus to the DOM element that has focus
-        // prior to opening it.
-        _picker.closeDropdown();
-
-        editFilter(filterSets[filterIndex], filterIndex);
-    }
-
-    /**
-     * Set up mouse click event listeners for 'Delete' and 'Edit' buttons
-     * when the dropdown is open. Also set check mark on the active filter.
-     * @param {!Event>} event listRendered event triggered when the dropdown is open
-     * @param {!jQueryObject} $dropdown the jQuery DOM node of the dropdown list
-     */
-    function _handleListRendered(event, $dropdown) {
-        var activeFilterIndex = PreferencesManager.getViewState("activeFileFilter"),
-            checkedItemIndex = (activeFilterIndex > -1) ? (activeFilterIndex + FIRST_FILTER_INDEX + 1) : -1;
-        _picker.setChecked(checkedItemIndex, true);
-
-        $dropdown.find(".filter-trash-icon")
-            .on("click", _handleDeleteFilter);
-
-        $dropdown.find(".filter-edit-icon")
-            .on("click", _handleEditFilter);
+        if(!$filterContainer) {
+            return;
+        }
+        $filterContainer.find(".error-filter").hide();
     }
 
     /**
@@ -538,68 +299,53 @@ define(function (require, exports, module) {
      * when the UI containing the filter picker is confirmed (which updates the MRU order) and then use the
      * returned filter object as needed.
      *
-     * @param {?{label:string, promise:$.Promise}} context Info on files that filter will apply to.
-     *      This will be saved as _context for later use in creating a new filter or editing an
-     *      existing filter in Edit Filter dialog.
-     * @return {!jQueryObject} Picker UI. To retrieve the selected value, use commitPicker().
+     * @return {[jQueryObject]} Picker UI.
      */
-    function createFilterPicker(context) {
-
-        function itemRenderer(item, index) {
-            if (index < FIRST_FILTER_INDEX) {
-                // Prefix the two filter commands with 'recent-filter-name' so that
-                // they also get the same margin-left as the actual filters.
-                return "<span class='recent-filter-name'></span>" + _.escape(item);
-            }
-
-            const filterType = item.type === FILTER_TYPE_INCLUDE ?
-                Strings.INCLUDE_FILE_FILTER_DROPDOWN : Strings.EXCLUDE_FILE_FILTER_DROPDOWN;
-            var condensedPatterns = _getCondensedForm(item.patterns),
-                templateVars = {
-                    "filter-type": filterType,
-                    "filter-name": _.escape(item.name || condensedPatterns),
-                    "filter-patterns": item.name ? " - " + _.escape(condensedPatterns) : ""
-                };
-
-            return Mustache.render(FilterNameTemplate, templateVars);
+    function createFilterPicker() {
+        _picker = new DropdownButton("", [
+            Strings.CLEAR_FILE_FILTER,
+            Strings.INCLUDE_FILE_FILTER,
+            Strings.EXCLUDE_FILE_FILTER
+        ], undefined, {
+            cssClasses: "file-filter-picker no-focus"
+        });
+        $filterContainer = $(`<div class="filter-container">
+        <input autocomplete="off" type="text" id="fif-filter-input"
+         placeholder="${Strings.FILTER_PLACEHOLDER}"/>
+        <div class="filter-dropdown-icon"
+         title="${brackets.platform === "mac" ? Strings.FILTER_HISTORY_TOOLTIP_MAC : Strings.FILTER_HISTORY_TOOLTIP}">
+            </div><div class="error-filter"></div><span id="filter-counter"></span>
+        </div>`);
+        const $inputElem = $filterContainer.find("#fif-filter-input");
+        if(currentFilter){
+            $inputElem.val(currentFilter.pattern);
         }
-
-        _context = context;
-        _picker = new DropdownButton("", [], itemRenderer);
+        $filterContainer.find("#fif-filter-input").on('input', function() {
+            setActiveFilter($inputElem.val());
+        });
 
         _updatePicker();
-        _doPopulate();
-
-        // Add 'file-filter-picker' to keep some margin space on the left of the button
-        _picker.$button.addClass("file-filter-picker no-focus");
-
-        // Set up mouse click event listeners for 'Delete' and 'Edit' buttons
-        _picker.on("listRendered", _handleListRendered);
 
         _picker.on("select", function (event, item, itemIndex) {
-            if (itemIndex === 0) {
-                // Close the dropdown first before opening the edit filter dialog
-                // so that it will restore focus to the DOM element that has focus
-                // prior to opening it.
-                _picker.closeDropdown();
-
-                // Create a new filter set
-                editFilter({ name: "", patterns: [], type: FILTER_TYPE_EXCLUDE}, -1);
-            } else if (itemIndex === 1) {
-                // Uncheck the prior active filter in the dropdown list.
-                _picker.setChecked(itemIndex, false);
-
-                // Clear the active filter
-                setActiveFilter(null);
+            if (item === Strings.CLEAR_FILE_FILTER) {
+                currentFilterType = FILTER_TYPE_NO_FILTER;
+                setActiveFilter($inputElem.val());
                 _updatePicker();
-            } else if (itemIndex >= FIRST_FILTER_INDEX && item) {
-                setActiveFilter(item, itemIndex - FIRST_FILTER_INDEX);
-                _picker.setChecked(itemIndex, true);
+                $("#find-what").focus();
+            } else if (item === Strings.INCLUDE_FILE_FILTER) {
+                currentFilterType = FILTER_TYPE_INCLUDE;
+                setActiveFilter($inputElem.val());
                 _updatePicker();
+                $filterContainer.find("#fif-filter-input").focus();
+            } else if(item === Strings.EXCLUDE_FILE_FILTER) {
+                currentFilterType = FILTER_TYPE_EXCLUDE;
+                setActiveFilter($inputElem.val());
+                _updatePicker();
+                $filterContainer.find("#fif-filter-input").focus();
             }
         });
 
-        return _picker.$button;
+        return [_picker.$button, $filterContainer];
     }
 
     /**
@@ -625,10 +371,8 @@ define(function (require, exports, module) {
     exports.closeDropdown      = closeDropdown;
 
     exports.createFilterPicker     = createFilterPicker;
-    exports.commitPicker           = commitPicker;
     exports.getActiveFilter        = getActiveFilter;
     exports.setActiveFilter        = setActiveFilter;
-    exports.editFilter             = editFilter;
     exports.compile                = compile;
     exports.filterPath             = filterPath;
     exports.filterFileList         = filterFileList;

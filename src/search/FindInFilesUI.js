@@ -105,6 +105,8 @@ define(function (require, exports, module) {
 
                     if (_findBar) {
                         _findBar.enable(true);
+                        _findBar.showError(null);
+                        _findBar.showNoResults(false);
                         _findBar.focus();
                     }
 
@@ -116,7 +118,7 @@ define(function (require, exports, module) {
                         _findBar.enable(true);
                         if (zeroFilesToken === FindInFiles.ZERO_FILES_TO_SEARCH) {
                             _findBar.showError(StringUtils.format(Strings.FIND_IN_FILES_ZERO_FILES,
-                                FindUtils.labelForScope(FindInFiles.searchModel.scope)), true);
+                                FindUtils.labelForScope(FindInFiles.searchModel.scope)), true, true);
                         } else {
                             showMessage = true;
                         }
@@ -205,6 +207,7 @@ define(function (require, exports, module) {
             multifile: true,
             replace: showReplace,
             initialQuery: initialQuery.query,
+            historyHelp: brackets.platform === "mac" ? Strings.FIND_HISTORY_TOOLTIP_MAC : Strings.FIND_HISTORY_TOOLTIP,
             initialReplaceText: initialQuery.replaceText,
             queryPlaceholder: Strings.FIND_QUERY_PLACEHOLDER,
             scopeLabel: FindUtils.labelForScope(scope)
@@ -216,12 +219,10 @@ define(function (require, exports, module) {
         // don't close bar when opening Edit Filter dialog either.
         _findBar._modalBar.isLockedOpen = function () {
             // TODO: should have state for whether the search is executing instead of looking at find bar state
-            // TODO: should have API on filterPicker to figure out if dialog is open
             return !_findBar.isEnabled() || $(".modal.instance .exclusions-editor").length > 0;
         };
 
-        var candidateFilesPromise = FindInFiles.getCandidateFiles(scope),  // used for eventual search, and in exclusions editor UI
-            filterPicker;
+        var candidateFilesPromise = FindInFiles.getCandidateFiles(scope);  // used for eventual search, and in exclusions editor UI
 
         function handleQueryChange() {
             // Check the query expression on every input event. This way the user is alerted
@@ -256,9 +257,9 @@ define(function (require, exports, module) {
                 }
                 Metrics.countEvent(Metrics.EVENT_TYPE.SEARCH, "findInFiles", queryType);
 
-                var filter;
-                if (filterPicker) {
-                    filter = FileFilters.commitPicker(filterPicker);
+                let filter;
+                if (_findBar && _findBar._options.multifile) {
+                    filter = FileFilters.getActiveFilter();
                 } else {
                     // Single-file scope: don't use any file filters
                     filter = null;
@@ -319,14 +320,8 @@ define(function (require, exports, module) {
 
         // Show file-exclusion UI *unless* search scope is just a single file
         if (!scope || scope.isDirectory) {
-            var exclusionsContext = {
-                label: FindUtils.labelForScope(scope),
-                promise: candidateFilesPromise
-            };
-
-            filterPicker = FileFilters.createFilterPicker(exclusionsContext);
-            // TODO: include in FindBar? (and disable it when FindBar is disabled)
-            _findBar._modalBar.getRoot().find(".scope-group").append(filterPicker);
+            const filterPicker = FileFilters.createFilterPicker();
+            _findBar._modalBar.getRoot().find(".scope-group").append(...filterPicker);
         }
 
         handleQueryChange();

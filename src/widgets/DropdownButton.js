@@ -67,6 +67,7 @@ define(function (require, exports, module) {
      *          assumed to be plain text strings.
      * @param {Object?} options
      * @param {boolean?} options.enableFilter - true if you need to enable filter by typing
+     * @param {string?} options.cssClasses - space seperated list of css classes to apply to button
      * @param {function(userSearchText, elementText, elementIndex)?} options.customFilter - Optional. When `enableFilter`
      *      is enabled, this function is used as a custom filtering callback. It receives the user's search text, the
      *      text of the element being filtered, and the element's index. Return `true` to display the list item, or `false` to hide it.
@@ -83,7 +84,7 @@ define(function (require, exports, module) {
         this.closeDropdown   = this.closeDropdown.bind(this);
         this._onClickOutside = this._onClickOutside.bind(this);
 
-        this.$button = $("<button class='btn btn-dropdown'/>")
+        this.$button = $(`<button class='btn btn-dropdown ${options.cssClasses ? options.cssClasses : ''}'/>`)
             .text(label)
             .on("click", this._onClick);
     }

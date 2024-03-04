@@ -543,9 +543,14 @@ define(function (require, exports, module) {
      * Show or clear an error message related to the query.
      * @param {?string} error The error message to show, or null to hide the error display.
      * @param {boolean=} isHTML Whether the error message is HTML that should remain unescaped.
+     * @param {boolean=} isFilterError Whether the error related to file filters
      */
-    FindBar.prototype.showError = function (error, isHTML) {
-        var $error = this.$(".error");
+    FindBar.prototype.showError = function (error, isHTML, isFilterError) {
+        const $findError = this.$(".error"),
+            $filterError = this.$(".error-filter");
+        const $error = isFilterError ? $filterError : $findError;
+        $findError.hide();
+        $filterError.hide();
         if (error) {
             if (isHTML) {
                 $error.html(error);
@@ -553,8 +558,6 @@ define(function (require, exports, module) {
                 $error.text(error);
             }
             $error.show();
-        } else {
-            $error.hide();
         }
     };
 
@@ -573,7 +576,15 @@ define(function (require, exports, module) {
      * @param {boolean} showMessage
      */
     FindBar.prototype.showNoResults = function (showIndicator, showMessage) {
-        ViewUtils.toggleClass(this.$("#find-what"), "no-results", showIndicator);
+        const $filterInput = this.$("#fif-filter-input");
+        const $findWhat = this.$("#find-what");
+        $filterInput.removeClass("no-results");
+        $findWhat.removeClass("no-results");
+        let $borderEl = $findWhat;
+        if($filterInput.is(":focus")){
+            $borderEl = $filterInput;
+        }
+        ViewUtils.toggleClass($borderEl, "no-results", showIndicator);
 
         var $msg = this.$(".no-results-message");
         if (showMessage) {
@@ -603,7 +614,10 @@ define(function (require, exports, module) {
     };
 
     FindBar.prototype.focus = function (enable) {
-        this.$("#find-what").focus();
+        if(!this.$("#fif-filter-input").is(':focus')){
+            // the filter find bar text input already has focus
+            this.$("#find-what").focus();
+        }
     };
 
     /**
