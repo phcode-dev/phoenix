@@ -619,6 +619,7 @@ define(function (require, exports, module) {
             multifile: false,
             replace: replace,
             initialQuery: initialQuery.query,
+            historyHelp: brackets.platform === "mac" ? Strings.FIND_HISTORY_TOOLTIP_MAC : Strings.FIND_HISTORY_TOOLTIP,
             initialReplaceText: initialQuery.replaceText,
             queryPlaceholder: Strings.FIND_QUERY_PLACEHOLDER
         });

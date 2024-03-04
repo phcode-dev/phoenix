@@ -2096,11 +2096,11 @@ a, img {
         width: 295px;
     }
 
-    .search-input-container {
+    .search-input-container, .filter-container {
         position: relative;
         display: inline;
 
-        .error {  // "popup" that hangs below search field
+        .error, .error-filter {  // "popup" that hangs below search field
             position: absolute;
             left: 5px;
             top: 24px;
@@ -2126,14 +2126,14 @@ a, img {
             width: 295px - (62px - 6px);  // maintain width, accounting for differing padding
         }
 
-        .dropdown-icon {
+        .dropdown-icon, .filter-dropdown-icon {
             background: url(images/dropdown-icon.svg) no-repeat scroll 15px 15px;
             background-position: center right;
             width: 20px;
             height: 20px;
         }
 
-        #find-counter, .dropdown-icon {
+        #find-counter, #filter-counter, .dropdown-icon, .filter-dropdown-icon{
             position: absolute;
             color: @bc-text-thin-quiet;
             top: 1px;
@@ -2143,6 +2143,16 @@ a, img {
             .dark & {
                 color: @dark-bc-text-thin-quiet;
             }
+        }
+    }
+    .filter-container{
+        margin-left: -11px;
+        #fif-filter-input{
+            border-top-left-radius: unset;
+            border-bottom-left-radius: unset;
+        }
+        .filter-dropdown-icon {
+            right: 10px;
         }
     }
 
@@ -2161,6 +2171,9 @@ a, img {
     .scope-group {
         display: inline-block;
         margin-left: 10px;
+        .file-filter-picker{
+            min-width: 150px;
+        }
     }
 
     .indexing-group {
