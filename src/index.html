@@ -501,7 +501,7 @@
             } else if(currentCacheName && (currentCacheName !== PHOENIX_APP_CACHE_VERSION || force)) {
                 // This is an upgrade we could in the future use the cacheManifest.json to increase update speed
                 // by only selectively updating the changed files.
-                console.log("Old version cache detected", currentCacheName, "updating to", PHOENIX_APP_CACHE_VERSION);
+                console.warn("Old version cache detected", currentCacheName, "updating to", PHOENIX_APP_CACHE_VERSION);
                 await updateCache(PHOENIX_APP_CACHE_VERSION, currentCacheName, CACHE_NAME_EVERYTHING);
                 await _writeFileSafe(WEB_CACHE_FILE_PATH, PHOENIX_APP_CACHE_VERSION);
                 localStorage.setItem(window._CURRENT_CACHE_VERSION_KEY, PHOENIX_APP_CACHE_VERSION);
@@ -536,7 +536,7 @@
     <script>
         window.splashScreenPresent = true;
 
-        function _removeSplashScreenIfNeeded() {
+        function _addOrRemoveSplashScreenIfNeeded() {
             if(!window.__TAURI__) {
                 document.getElementById('phoenix-loading-splash-screen-overlay').classList.remove('forced-hidden')
             }
@@ -554,7 +554,7 @@
                 // Dark mode is enabled
                 document.body.classList.add('dark'); // This will later be overridden by the theme manager as required.
             }
-            _removeSplashScreenIfNeeded();
+            _addOrRemoveSplashScreenIfNeeded();
             var loadJS = function(url, implementationCode, location, dataMainValue){
                 //url is URL of external file, implementationCode is the code
                 //to be called from the file, location is the location to
@@ -666,7 +666,7 @@
 
 </head>
 <body id="Phoenix-Main" onload="_loadPhoenixAfterSplashScreen()">
-<div id="phoenix-loading-splash-screen-overlay" class="forced-hidden">
+<div id="phoenix-loading-splash-screen-overlay" class="forced-hidden" onload="_addOrRemoveSplashScreenIfNeeded()">
     <iframe id="splash-screen-frame" style="width: 100%; height: 100%;border: none" seamless="true"
             title="Phoenix Splash Screen" src="assets/phoenix-splash/index.html"></iframe>
 </div>
