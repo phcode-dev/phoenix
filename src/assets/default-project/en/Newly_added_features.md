@@ -63,7 +63,8 @@ Creating extensions and themes is now easier than ever with a single click in Gi
 * Browse and install extensions and themes from the store. Click on the `extensions icon` or select `File > Extension Manager` from menu item to view store.
 * To apply themes after installing, click on menu `View > Themes` and select Theme to apply.
 * Most extensions from [Brackets](https://brackets.io) is available in Phoenix Web except few that requires native privileges. 
-  ![extensions](https://user-images.githubusercontent.com/5336369/211729611-1b8f4097-6f74-4eac-9721-e2447fb68be6.gif)
+  ![extensions](https://github.com/phcode-dev/phoenix/assets/5336369/a6e7b1bf-4020-489c-8234-e5c270ebe56c)
+
 
 
 ## Number Widget for Live Preview
