@@ -347,8 +347,13 @@
         /*Bootstrap cache check. since index.html is always loaded network first, the cache reset code will always
         be guaranteed to be hit on app update.
         Note that this cannot be moved to a separate file and should be in index.html due to above reason.
-        This is a nuke cache option. Though mostly safe, Use it wisely to prevent slow startup when resetting.
+        There is a nuke cache option. Though mostly safe, Use it wisely to prevent slow startup when resetting.
         */
+        window._CURRENT_CACHE_VERSION_KEY = "currentWebCacheVersion";
+        if(!localStorage.getItem(window._CURRENT_CACHE_VERSION_KEY)){
+            // first boot, no cache
+            localStorage.setItem(window._CURRENT_CACHE_VERSION_KEY, PHOENIX_APP_CACHE_VERSION);
+        }
         async function _resetCacheIfNeeded(force) {
             if(Phoenix.browser.isTauri || Phoenix.isTestWindow) {
                 // no web cache in desktop builds ot test windows
@@ -356,6 +361,62 @@
             }
             if(!window.caches){
                 console.error("CacheStorage: API not supported by browser.");
+            }
+            async function computeSHA256(response) {
+                try {
+                    if (!response.ok) {
+                        return null;
+                    }
+                    const data = await response.arrayBuffer();
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                    // Convert the ArrayBuffer to hex string
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                } catch (error) {
+                    console.error("cache-upgrade: error computing hash:", error);
+                    return null;
+                }
+            }
+
+            async function migrate(oldCache, newCache, newCacheManifest) {
+                try{
+                    const newCacheOpen = await caches.open(newCache);
+                    const oldCacheOpen = await caches.open(oldCache);
+                    const oldCacheKeys = await oldCacheOpen.keys();
+                    let count = 0;
+                    for(let request of oldCacheKeys){
+                        let newResponseCached = await newCacheOpen.match(request);
+                        let relativePath = (new URL(request.url)).pathname.slice(1);
+                        const newSHA = newCacheManifest[relativePath];
+                        if(!newResponseCached && newSHA) {
+                            const oldResponse = await oldCacheOpen.match(request);
+                            const oldResponseClone = oldResponse.clone();
+                            if(!oldResponse){
+                                continue;
+                            }
+                            const oldSHA = await computeSHA256(oldResponse);
+                            if(newSHA === oldSHA) {
+                                count++;
+                                await newCacheOpen.put(request, oldResponseClone);
+                            }
+                        }
+                    }
+                    console.log("cache-upgrade: reused entries from old cache: ", count);
+                    await caches.delete(oldCache);
+                } catch (e) {
+                    console.error("cache-upgrade: Error while migrating cache", e);
+                }
+            }
+
+            async function updateCache(newCacheName, oldCacheName, defaultCacheName) {
+                let newCacheManifest = await fetch(`web-cache/${newCacheName}/cacheManifest.json`);
+                newCacheManifest = await newCacheManifest.json();
+                if(await caches.has(defaultCacheName)){
+                    await migrate(defaultCacheName, newCacheName, newCacheManifest);
+                }
+                if(oldCacheName && await caches.has(oldCacheName)){
+                    await migrate(oldCacheName, newCacheName, newCacheManifest);
+                }
             }
 
             const LESS_REFRESH_SCHEDULED_KEY = "lessRefreshScheduled";
@@ -385,6 +446,7 @@
             }
 
             const WEB_CACHE_FILE_PATH = "/webCacheVersion.txt";
+            const CACHE_NAME_EVERYTHING = "everythingV2"; // this is used in service worker
             /**
              * Clears legacy caches from the browser storage. This function is intended to be used
              * when migrating to a new cache management strategy. Safe to be deleted after sep-2024
@@ -425,17 +487,24 @@
             }
 
             const currentCacheName = await _readFileSafe(WEB_CACHE_FILE_PATH);
+            if(force){
+                // We have to delete and clear cache if force option is given
+                await window.caches.delete(CACHE_NAME_EVERYTHING);
+                currentCacheName && await window.caches.delete(currentCacheName);
+            }
             if(!currentCacheName) {
                 // fresh install, no cache
                 console.log("No cache detected, ignore if first boot or safari ITP.");
+                localStorage.setItem(window._CURRENT_CACHE_VERSION_KEY, PHOENIX_APP_CACHE_VERSION);
                 await _writeFileSafe(WEB_CACHE_FILE_PATH, PHOENIX_APP_CACHE_VERSION);
                 // on next reload, the new cache will be active and populated by service worker
             } else if(currentCacheName && (currentCacheName !== PHOENIX_APP_CACHE_VERSION || force)) {
                 // This is an upgrade we could in the future use the cacheManifest.json to increase update speed
                 // by only selectively updating the changed files.
-                console.log("Old version cache detected", currentCacheName, "purging and setting", PHOENIX_APP_CACHE_VERSION);
-                await window.caches.delete(currentCacheName);
+                console.log("Old version cache detected", currentCacheName, "updating to", PHOENIX_APP_CACHE_VERSION);
+                await updateCache(PHOENIX_APP_CACHE_VERSION, currentCacheName, CACHE_NAME_EVERYTHING);
                 await _writeFileSafe(WEB_CACHE_FILE_PATH, PHOENIX_APP_CACHE_VERSION);
+                localStorage.setItem(window._CURRENT_CACHE_VERSION_KEY, PHOENIX_APP_CACHE_VERSION);
                 localStorage.setItem(LESS_REFRESH_SCHEDULED_KEY, "yes");
                 if(!force){
                     location.reload();
@@ -504,19 +573,31 @@
             function _requireDone() {
                 loadJS('verify-dependencies-loaded.js', null, document.body);
             }
+            function _loadPhoenix() {
+                if(!Phoenix.browser.isTauri) {
+                    const currentCacheVersion = localStorage.getItem(window._CURRENT_CACHE_VERSION_KEY);
+                    if(currentCacheVersion !== PHOENIX_APP_CACHE_VERSION){
+                        // dont load phoenix as the cache is inconsistent, the updater will reload after fixing cache
+                        let splashScreenFrame = document.getElementById("splash-screen-frame");
+                        if(!splashScreenFrame){
+                            return;
+                        }
+                        let displayBtn1 = splashScreenFrame.contentDocument.getElementById("load-status-display-btn");
+                        let displayText2 = splashScreenFrame.contentDocument.getElementById("load-status-display-text");
+                        displayBtn1.textContent = "Updating app...";
+                        displayText2.textContent = "Page will reload after update";
+                        return;
+                    }
+                }
+                loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
+            }
             if(window.PhStore){
-                window.PhStore.storageReadyPromise
-                    .finally(()=>{
-                        loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
-                    });
+                window.PhStore.storageReadyPromise.finally(_loadPhoenix);
             } else {
                 const interval = setInterval(()=>{
                     if(window.PhStore){
                         clearInterval(interval);
-                        PhStore.storageReadyPromise
-                            .finally(()=>{
-                                loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
-                            });
+                        PhStore.storageReadyPromise.finally(_loadPhoenix);
                     }
                 }, 50);
             }
