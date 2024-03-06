@@ -35,7 +35,7 @@ const cacheFirst = workbox.strategies.CacheFirst;
 const StaleWhileRevalidate = workbox.strategies.StaleWhileRevalidate;
 const ExpirationPlugin = workbox.expiration.ExpirationPlugin;
 const DAYS_30_IN_SEC = 60 * 60 * 24 * 30;
-const CACHE_NAME_EVERYTHING = "everythingV2";
+const CACHE_NAME_EVERYTHING = "everythingV2"; // this is used in index.html as well, if changing the cache name.
 const CACHE_NAME_CORE_SCRIPTS = "coreScripts";
 const CACHE_NAME_EXTERNAL = "external";
 const WEB_CACHE_FILE_PATH = "/webCacheVersion.txt";
@@ -234,7 +234,7 @@ function _belongsToEverythingCache(request) {
  * the latest cache name to use will be updated in WEB_CACHE_FILE_PATH file.
  */
 
-let _everythingCache, _version;
+let _everythingCache, _version, _everythingCacheName;
 function _getLatestCacheName() {
     return new Promise(resolve=>{
         fs.readFile(WEB_CACHE_FILE_PATH, "utf8", (err, version)=>{
@@ -250,7 +250,12 @@ function _getLatestCacheName() {
 
 async function _updateEverythingCache() {
     const cacheToUse = await _getLatestCacheName();
+    if(_everythingCacheName === cacheToUse && _everythingCache) {
+        return _everythingCache;
+    }
+    console.log("Service Worker: Using cache", cacheToUse);
     _everythingCache = await caches.open(cacheToUse);
+    _everythingCacheName = cacheToUse;
     return _everythingCache;
 }
 
