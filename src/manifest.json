@@ -1,21 +1,35 @@
 {
-    "name": "Phoenix",
-    "short_name": "Phoenix",
-    "start_url": "index.html",
-    "scope": "./",
+    "short_name": "Phoenix Code",
+    "name": "Install Phoenix Code Editor?",
+    "description": "A text editor designed to make coding as intuitive and fun as playing a video game - specially crafted for web developers, designers, and students.",
+    "start_url": "/",
+    "scope": "/",
     "icons": [
       {
-        "src": "./styles/images/icon_128.png",
-        "sizes": "192x192",
+        "src": "assets/pwa/32x32.png",
+        "sizes": "32x32",
         "type": "image/png"
       },
       {
-        "src": "./styles/images/icon_512.png",
-        "sizes": "512x512",
+        "src": "assets/pwa/128x128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      },
+      {
+        "src": "assets/pwa/Square284x284Logo.png",
+        "sizes": "284x284",
         "type": "image/png"
       }
     ],
     "theme_color": "#47484B",
     "background_color": "#bbb",
-    "display": "standalone"
-  }
+    "display": "standalone",
+  "screenshots": [
+    {
+      "src": "assets/pwa/phoenix.png",
+      "type": "image/png",
+      "sizes": "1235x763",
+      "form_factor": "wide"
+    }
+  ]
+}

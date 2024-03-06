@@ -39,6 +39,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="styles/images/favicons/favicon-16x16.png">
     <link rel="mask-icon" href="styles/images/favicons/safari-pinned-tab.svg" color="#da532c">
     <meta name="msapplication-TileColor" content="#47484B">
+    <link rel="manifest" href="manifest.json">
     <title>Phoenix Code</title>
     <!--    boot-time styles only here-->
     <style>
@@ -676,6 +677,49 @@
             cursor: pointer; /* Add a pointer on hover */
         }
     </style>
+
+    <script type="text/javascript">
+        function _chromeOSPWAHandle() {
+            let deferredPrompt;
+            const PWA_PROMPTED_BEFORE_KEY = "PWA_PROMPTED_BEFORE";
+            function isChromeOS() {
+                return /CrOS/.test(navigator.userAgent);
+            }
+            function showPWAInstallIcon() {
+                if(!window.$ || !window.Strings){
+                    setTimeout(showPWAInstallIcon, 5000);
+                    return;
+                }
+                let $updateIcon = window.$("#update-notification");
+                $updateIcon.removeClass("forced-hidden");
+                $updateIcon.attr("title", Strings.INSTALL_WEBAPP);
+                $updateIcon.click(()=>{
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            deferredPrompt = null;
+                            $updateIcon.addClass("forced-hidden");
+                        } else {
+                            console.log('User dismissed the A2HS prompt');
+                        }
+                    });
+                });
+                if(!localStorage.getItem(PWA_PROMPTED_BEFORE_KEY)){
+                    localStorage.setItem(PWA_PROMPTED_BEFORE_KEY, "yes");
+                    deferredPrompt.prompt();
+                }
+            }
+            window.addEventListener("beforeinstallprompt", (event) => {
+                event.preventDefault(); // no install prompts in any other browser.
+                if(!isChromeOS()){
+                    return;
+                }
+                deferredPrompt = event;
+                showPWAInstallIcon();
+            });
+        }
+        _chromeOSPWAHandle();
+    </script>
 
 </head>
 <body id="Phoenix-Main" onload="_loadPhoenixAfterSplashScreen()">
