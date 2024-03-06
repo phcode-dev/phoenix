@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "Перезапустіть, щоб застосувати оновлення",
   "UPDATE_RESTART_INSTALL": "Перезапустіть, щоб інсталювати оновлення",
   "UPDATE_DOWNLOADING": "Завантаження інсталятора",
+  "INSTALL_WEBAPP": "Установіть {APP_NAME} на свій пристрій",
   "UPDATE_DOWNLOAD_PROGRESS": "Завантаження – {0} із {1} Мб",
   "UPDATING_APP": "Оновлення {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Це може зайняти деякий час",

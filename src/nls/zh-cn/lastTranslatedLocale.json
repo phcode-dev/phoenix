@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "重新启动以应用更新",
   "UPDATE_RESTART_INSTALL": "重新启动以安装更新",
   "UPDATE_DOWNLOADING": "下载安装程序",
+  "INSTALL_WEBAPP": "在您的设备上安装{APP_NAME}",
   "UPDATE_DOWNLOAD_PROGRESS": "正在下载 - {0}，共 {1} MB",
   "UPDATING_APP": "正在更新{APP_NAME}",
   "UPDATING_APP_MESSAGE": "可能还要等一下",

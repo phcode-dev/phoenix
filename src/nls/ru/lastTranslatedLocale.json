@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "Перезапустите, чтобы применить обновления.",
   "UPDATE_RESTART_INSTALL": "Перезапустите, чтобы установить обновления",
   "UPDATE_DOWNLOADING": "Загрузка установщика",
+  "INSTALL_WEBAPP": "Установите {APP_NAME} на свое устройство.",
   "UPDATE_DOWNLOAD_PROGRESS": "Загрузка — {0} из {1} МБ.",
   "UPDATING_APP": "Обновление {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Это может занять некоторое время",

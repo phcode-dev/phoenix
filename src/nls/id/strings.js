@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Mulai ulang untuk menerapkan pembaruan",
   "UPDATE_RESTART_INSTALL": "Mulai ulang untuk menginstal pembaruan",
   "UPDATE_DOWNLOADING": "Mengunduh Penginstal",
+  "INSTALL_WEBAPP": "Instal {APP_NAME} di Perangkat Anda",
   "UPDATE_DOWNLOAD_PROGRESS": "Mengunduh- {0} dari {1} MB",
   "UPDATING_APP": "Memperbarui {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Ini mungkin memakan waktu cukup lama",

@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Start opnieuw op om updates toe te passen",
   "UPDATE_RESTART_INSTALL": "Start opnieuw op om updates te installeren",
   "UPDATE_DOWNLOADING": "Installatieprogramma downloaden",
+  "INSTALL_WEBAPP": "Installeer {APP_NAME} op uw apparaat",
   "UPDATE_DOWNLOAD_PROGRESS": "Downloaden: {0} van {1} MB",
   "UPDATING_APP": "{APP_NAME} updaten",
   "UPDATING_APP_MESSAGE": "Dit kan een tijdje duren",

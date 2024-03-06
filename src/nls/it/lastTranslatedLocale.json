@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "Riavviare per applicare gli aggiornamenti",
   "UPDATE_RESTART_INSTALL": "Riavvia per installare gli aggiornamenti",
   "UPDATE_DOWNLOADING": "Download del programma di installazione",
+  "INSTALL_WEBAPP": "Installa {APP_NAME} sul tuo dispositivo",
   "UPDATE_DOWNLOAD_PROGRESS": "Download in corso: {0} di {1} MB",
   "UPDATING_APP": "Aggiornamento di {APP_NAME}",
   "UPDATING_APP_MESSAGE": "L'operazione potrebbe richiedere del tempo",

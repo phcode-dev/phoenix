@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Restartējiet, lai lietotu atjauninājumus",
   "UPDATE_RESTART_INSTALL": "Restartējiet, lai instalētu atjauninājumus",
   "UPDATE_DOWNLOADING": "Notiek instalēšanas programmas lejupielāde",
+  "INSTALL_WEBAPP": "Instalējiet {APP_NAME} savā ierīcē",
   "UPDATE_DOWNLOAD_PROGRESS": "Notiek lejupielāde — {0} no {1} MB",
   "UPDATING_APP": "Notiek lietotnes {APP_NAME} atjaunināšana",
   "UPDATING_APP_MESSAGE": "Tas var aizņemt kādu laiku",

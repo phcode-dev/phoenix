@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "再起動してアップデートを適用する",
   "UPDATE_RESTART_INSTALL": "再起動してアップデートをインストールする",
   "UPDATE_DOWNLOADING": "インストーラーをダウンロード中",
+  "INSTALL_WEBAPP": "デバイスに {APP_NAME} をインストールします",
   "UPDATE_DOWNLOAD_PROGRESS": "ダウンロード中 - {0}/{1} MB",
   "UPDATING_APP": "{APP_NAME} を更新しています",
   "UPDATING_APP_MESSAGE": "これは時間がかかる場合があります",

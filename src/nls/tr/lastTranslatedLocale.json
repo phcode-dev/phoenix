@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "Güncellemeleri uygulamak için yeniden başlatın",
   "UPDATE_RESTART_INSTALL": "Güncelleştirmeleri yüklemek için yeniden başlatın",
   "UPDATE_DOWNLOADING": "Yükleyici İndiriliyor",
+  "INSTALL_WEBAPP": "{APP_NAME} Cihazınıza Yükleyin",
   "UPDATE_DOWNLOAD_PROGRESS": "İndiriliyor - {0} / {1} MB",
   "UPDATING_APP": "{APP_NAME} güncelleniyor",
   "UPDATING_APP_MESSAGE": "Bu biraz zaman alabilir",

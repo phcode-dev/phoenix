@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "Genstart for at anvende opdateringer",
   "UPDATE_RESTART_INSTALL": "Genstart for at installere opdateringer",
   "UPDATE_DOWNLOADING": "Downloader installationsprogrammet",
+  "INSTALL_WEBAPP": "Installer {APP_NAME} på din enhed",
   "UPDATE_DOWNLOAD_PROGRESS": "Downloader- {0} af {1} MB",
   "UPDATING_APP": "Opdaterer {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Dette kan tage et stykke tid",

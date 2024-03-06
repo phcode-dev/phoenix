@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "Рестартирайте, за да приложите актуализации",
   "UPDATE_RESTART_INSTALL": "Рестартирайте, за да инсталирате актуализации",
   "UPDATE_DOWNLOADING": "Инсталаторът се изтегля",
+  "INSTALL_WEBAPP": "Инсталирайте {APP_NAME} на вашето устройство",
   "UPDATE_DOWNLOAD_PROGRESS": "Изтегля се - {0} от {1} MB",
   "UPDATING_APP": "{APP_NAME} се актуализира",
   "UPDATING_APP_MESSAGE": "Това може да отнеме известно време",

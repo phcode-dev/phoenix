@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Reinicie para aplicar atualizações",
   "UPDATE_RESTART_INSTALL": "Reinicie para instalar atualizações",
   "UPDATE_DOWNLOADING": "Baixando o instalador",
+  "INSTALL_WEBAPP": "Instale o {APP_NAME} no seu dispositivo",
   "UPDATE_DOWNLOAD_PROGRESS": "Baixando - {0} de {1} MB",
   "UPDATING_APP": "Atualizando {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Isso pode demorar um pouco",
