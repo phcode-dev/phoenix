@@ -861,7 +861,7 @@
   "UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE": "브라우저에서 지원하지 않는 로컬 폴더 액세스",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "죄송합니다. 현재 브라우저가 로컬 폴더 열기를 지원하지 않는 것 같습니다. 이 기능을 사용하려면 Chrome, Edge 또는 Opera를 사용하는 것이 좋습니다.<br/><br/> 또는 완전한 지원을 제공하기 위해 Windows, Mac, Linux, iOS 및 Android용 기본 앱을 개발하고 있습니다. <a href=\"https://github.com/phcode-dev/phoenix/discussions/1047\" target=\"_blank\">업데이트를 계속 지켜봐 주세요!</a>",
   "ATTENTION_SAFARI_USERS": "Safari 사용자 주의",
-  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>Safari는 7일 이내에 사이트를 다시 방문하지 않으면 웹사이트 데이터를 자동으로 삭제합니다. {APP_NAME}은(는) 이 정책으로 인해 삭제될 수 있는 프로젝트를 저장하기 위해 브라우저 저장소에 의존합니다.<br/><br/> <strong>데이터 손실을 방지하려면</strong> 탭을 닫기 전에 프로젝트를 <strong>다운로드하거나</strong> 곧 <strong>출시될 웹 및 기본 Mac/iOS 앱을</strong> 계속 지켜봐 주시기 바랍니다.</span>",
+  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>Safari는 7일 이내에 사이트를 다시 방문하지 않으면 웹사이트 데이터를 자동으로 삭제합니다. {APP_NAME}은 프로젝트를 저장하기 위해 브라우저 저장소를 사용하며, 이 정책으로 인해 프로젝트가 삭제될 수 있습니다.<br/><br/> <a href='https://phcode.io' target='_blank' style='color: white'>https://phcode.io</a> 에서 <strong>macOS 데스크탑 앱을 다운로드하는</strong> 것이 좋습니다.</span>",
   "CANNOT_PUBLISH_LARGE_PROJECT": "대규모 프로젝트를 게시할 수 없음",
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "피닉스는 아직 실험적인 알파 단계입니다. 500개 이상의 파일이 있는 프로젝트의 동기화는 아직 활성화하지 않았습니다.",
   "SHARE_WEBSITE": "웹사이트 게시 및 공유?",

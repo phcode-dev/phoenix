@@ -861,7 +861,7 @@
   "UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE": "ブラウザでサポートされていないローカル フォルダ アクセス",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "申し訳ありませんが、現在お使いのブラウザはローカル フォルダを開くことをサポートしていないようです。この機能については、Chrome、Edge、または Opera を使用することをお勧めします。<br/><br/>または、完全なサポートを提供するために、Windows、Mac、Linux、iOS、および Android 用のネイティブ アプリの開発に取り組んでいます。<a href=\"https://github.com/phcode-dev/phoenix/discussions/1047\" target=\"_blank\">最新情報をお楽しみに！</a>",
   "ATTENTION_SAFARI_USERS": "Safariユーザーへの注意",
-  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>Safari は、サイトが 7 日以内に再度アクセスされない場合、Web サイトのデータを自動的に削除します。 {APP_NAME} はブラウザ ストレージに依存してプロジェクトを保存していますが、このポリシーによりプロジェクトが削除される可能性があります。<br/><br/><strong>データの損失を防ぐため</strong>、タブを閉じる前にプロジェクトを<strong>ダウンロードする</strong>か、<strong>今後の Web およびネイティブ Mac/iOS アプリ</strong>にご注目ください。</span>",
+  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>7 日以内にサイトに再アクセスしないと、Safari は Web サイトのデータを自動的に削除します。 {APP_NAME} はブラウザのストレージに依存してプロジェクトを保存しているため、このポリシーにより削除される可能性があります。<br/><br/> <a href='https://phcode.io' target='_blank' style='color: white'>https://phcode.io</a>から<strong>macOS デスクトップ アプリをダウンロードする</strong>ことをお勧めします。</span>",
   "CANNOT_PUBLISH_LARGE_PROJECT": "大規模なプロジェクトを発行できません",
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix はまだ実験的なアルファ版です。 500 を超えるファイルを含むプロジェクトの同期はまだ有効になっていません。",
   "SHARE_WEBSITE": "ウェブサイトを公開して共有しますか?",

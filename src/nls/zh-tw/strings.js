@@ -881,7 +881,7 @@ define({
   "UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE": "瀏覽器不支持本地文件夾訪問",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "抱歉，您當前的瀏覽器似乎不支持打開本地文件夾。對於此功能，我們建議使用 Chrome、Edge 或 Opera。<br/><br/>或者，我們正在致力於為 Windows、Mac、Linux、iOS 和 Android 開發本機應用程序以提供全面支持。<a href=\"https://github.com/phcode-dev/phoenix/discussions/1047\" target=\"_blank\">請繼續關注更新！</a>",
   "ATTENTION_SAFARI_USERS": "Safari 用戶注意",
-  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>如果網站在 7 天內未重新訪問，Safari 會自動刪除網站數據。 {APP_NAME} 依靠瀏覽器存儲來保存您的項目，這些項目可能會因這項政策而被刪除。<br/><br/><strong>為防止數據丟失</strong>，請在關閉選項卡之前<strong>下載</strong>您的項目，或繼續關注我們<strong>即將推出的 Web 和本機 Mac/iOS 應用程序</strong>。</span>",
+  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>如果 7 天內沒有重新造訪某個網站，Safari 會自動刪除網站資料。 {APP_NAME} 依賴瀏覽器儲存空間來儲存您的項目，這些項目可能會因為此政策而被刪除。<br/><br/>建議從<a href='https://phcode.io' target='_blank' style='color: white'>https://phcode.io</a><strong>下載 macOS 桌面應用程式</strong></span>",
   "CANNOT_PUBLISH_LARGE_PROJECT": "無法發布大型項目",
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix 仍處於實驗性 alpha 階段。我們尚未啟用超過 500 個文件的項目同步。",
   "SHARE_WEBSITE": "發布和共享網站？",

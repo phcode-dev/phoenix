@@ -881,7 +881,7 @@ define({
   "UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE": "浏览器不支持本地文件夹访问",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "抱歉，您当前的浏览器似乎不支持打开本地文件夹。对于此功能，我们建议使用 Chrome、Edge 或 Opera。<br/><br/>或者，我们正在致力于为 Windows、Mac、Linux、iOS 和 Android 开发本机应用程序以提供全面支持。<a href=\"https://github.com/phcode-dev/phoenix/discussions/1047\" target=\"_blank\">请继续关注更新！</a>",
   "ATTENTION_SAFARI_USERS": "Safari 用户注意",
-  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>如果网站在 7 天内未重新访问，Safari 会自动删除网站数据。 {APP_NAME} 依靠浏览器存储来保存您的项目，这些项目可能会因这项政策而被删除。<br/><br/><strong>为防止数据丢失</strong>，请在关闭选项卡之前<strong>下载</strong>您的项目，或继续关注我们<strong>即将推出的 Web 和本机 Mac/iOS 应用程序</strong>。</span>",
+  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>如果 7 天内没有重新访问某个网站，Safari 会自动删除网站数据。 {APP_NAME} 依赖浏览器存储来保存您的项目，这些项目可能会由于此政策而被删除。<br/><br/>建议从<a href='https://phcode.io' target='_blank' style='color: white'>https://phcode.io</a><strong>下载 macOS 桌面应用程序</strong></span>",
   "CANNOT_PUBLISH_LARGE_PROJECT": "无法发布大型项目",
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix 仍处于实验性 alpha 阶段。我们尚未启用超过 500 个文件的项目同步。",
   "SHARE_WEBSITE": "发布和共享网站？",
