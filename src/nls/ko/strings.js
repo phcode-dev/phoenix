@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "업데이트를 적용하려면 다시 시작하세요.",
   "UPDATE_RESTART_INSTALL": "업데이트를 설치하려면 다시 시작하세요.",
   "UPDATE_DOWNLOADING": "설치 프로그램 다운로드 중",
+  "INSTALL_WEBAPP": "기기에 {APP_NAME}을(를) 설치하세요",
   "UPDATE_DOWNLOAD_PROGRESS": "다운로드 중 - {1}MB 중 {0}MB",
   "UPDATING_APP": "{APP_NAME} 업데이트 중",
   "UPDATING_APP_MESSAGE": "시간이 좀 걸릴 수 있습니다.",

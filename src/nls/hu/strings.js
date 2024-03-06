@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Indítsa újra a frissítések alkalmazásához",
   "UPDATE_RESTART_INSTALL": "A frissítések telepítéséhez indítsa újra",
   "UPDATE_DOWNLOADING": "Telepítő letöltése",
+  "INSTALL_WEBAPP": "Telepítse a(z) {APP_NAME} alkalmazást eszközére",
   "UPDATE_DOWNLOAD_PROGRESS": "Letöltés – {0}/{1} MB",
   "UPDATING_APP": "{APP_NAME} frissítése",
   "UPDATING_APP_MESSAGE": "Ez eltarthat egy ideig",

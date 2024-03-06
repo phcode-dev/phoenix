@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Käynnistä päivitykset uudelleen",
   "UPDATE_RESTART_INSTALL": "Käynnistä uudelleen asentaaksesi päivitykset",
   "UPDATE_DOWNLOADING": "Ladataan asennusohjelmaa",
+  "INSTALL_WEBAPP": "Asenna {APP_NAME} laitteellesi",
   "UPDATE_DOWNLOAD_PROGRESS": "Ladataan - {0}/{1} Mt",
   "UPDATING_APP": "Päivitetään {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Tämä voi kestää hetken",

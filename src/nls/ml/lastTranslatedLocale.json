@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "അപ്ഡേറ്റുകൾ പ്രയോഗിക്കാൻ പുനരാരംഭിക്കുക",
   "UPDATE_RESTART_INSTALL": "അപ്ഡേറ്റുകൾ ഇൻസ്റ്റാൾ ചെയ്യാൻ പുനരാരംഭിക്കുക",
   "UPDATE_DOWNLOADING": "ഇൻസ്റ്റാളർ ഡൗൺലോഡ് ചെയ്യുന്നു",
+  "INSTALL_WEBAPP": "നിങ്ങളുടെ ഉപകരണത്തിൽ {APP_NAME} ഇൻസ്റ്റാൾ ചെയ്യുക",
   "UPDATE_DOWNLOAD_PROGRESS": "ഡൗൺലോഡ് ചെയ്യുന്നു- {1} MB-ൽ {0}",
   "UPDATING_APP": "{APP_NAME} അപ്‌ഡേറ്റ് ചെയ്യുന്നു",
   "UPDATING_APP_MESSAGE": "ഇതിന് കുറച്ച് സമയമെടുത്തേക്കാം",

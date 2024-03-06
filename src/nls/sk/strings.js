@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Ak chcete použiť aktualizácie, reštartujte",
   "UPDATE_RESTART_INSTALL": "Reštartujte a nainštalujte aktualizácie",
   "UPDATE_DOWNLOADING": "Sťahuje sa inštalátor",
+  "INSTALL_WEBAPP": "Nainštalujte si aplikáciu {APP_NAME} do svojho zariadenia",
   "UPDATE_DOWNLOAD_PROGRESS": "Sťahuje sa – {0} z {1} MB",
   "UPDATING_APP": "Aktualizuje sa aplikácia {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Môže to chvíľu trvať",

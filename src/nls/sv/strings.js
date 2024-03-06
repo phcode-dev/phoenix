@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Starta om för att tillämpa uppdateringar",
   "UPDATE_RESTART_INSTALL": "Starta om för att installera uppdateringar",
   "UPDATE_DOWNLOADING": "Laddar ner installationsprogrammet",
+  "INSTALL_WEBAPP": "Installera {APP_NAME} på din enhet",
   "UPDATE_DOWNLOAD_PROGRESS": "Laddar ned- {0} av {1} MB",
   "UPDATING_APP": "Uppdaterar {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Det här kan ta ett tag",

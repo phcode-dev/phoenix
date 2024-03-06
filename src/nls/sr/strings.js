@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Поново покрените да бисте применили ажурирања",
   "UPDATE_RESTART_INSTALL": "Поново покрените да бисте инсталирали ажурирања",
   "UPDATE_DOWNLOADING": "Довнлоадинг Инсталлер",
+  "INSTALL_WEBAPP": "Инсталирајте {АПП_НАМЕ} на свој уређај",
   "UPDATE_DOWNLOAD_PROGRESS": "Преузимање – {0} од {1} МБ",
   "UPDATING_APP": "Ажурирање апликације {АПП_НАМЕ}",
   "UPDATING_APP_MESSAGE": "Ово може потрајати",

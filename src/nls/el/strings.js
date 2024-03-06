@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Κάντε επανεκκίνηση για να εφαρμόσετε ενημερώσεις",
   "UPDATE_RESTART_INSTALL": "Κάντε επανεκκίνηση για να εγκαταστήσετε ενημερώσεις",
   "UPDATE_DOWNLOADING": "Λήψη προγράμματος εγκατάστασης",
+  "INSTALL_WEBAPP": "Εγκαταστήστε την εφαρμογή {APP_NAME} στη συσκευή σας",
   "UPDATE_DOWNLOAD_PROGRESS": "Λήψη- {0} από {1} MB",
   "UPDATING_APP": "Ενημέρωση {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Αυτό μπορεί να πάρει λίγο χρόνο",

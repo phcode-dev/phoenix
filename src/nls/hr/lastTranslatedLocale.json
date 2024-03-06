@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "Ponovno pokrenite za primjenu ažuriranja",
   "UPDATE_RESTART_INSTALL": "Ponovno pokrenite za instaliranje ažuriranja",
   "UPDATE_DOWNLOADING": "Preuzimanje programa za instalaciju",
+  "INSTALL_WEBAPP": "Instalirajte {APP_NAME} na svoj uređaj",
   "UPDATE_DOWNLOAD_PROGRESS": "Preuzimanje - {0} od {1} MB",
   "UPDATING_APP": "Ažuriranje {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Ovo može potrajati",

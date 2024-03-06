@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Chcete-li použít aktualizace, restartujte",
   "UPDATE_RESTART_INSTALL": "Restartujte pro instalaci aktualizací",
   "UPDATE_DOWNLOADING": "Stahování instalačního programu",
+  "INSTALL_WEBAPP": "Nainstalujte si do zařízení aplikaci {APP_NAME}",
   "UPDATE_DOWNLOAD_PROGRESS": "Stahování – {0} z {1} MB",
   "UPDATING_APP": "Aktualizace aplikace {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Může to chvíli trvat",

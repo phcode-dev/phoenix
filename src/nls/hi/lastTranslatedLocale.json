@@ -460,6 +460,7 @@
   "UPDATE_RESTART": "अपडेट लागू करने के लिए पुनः प्रारंभ करें",
   "UPDATE_RESTART_INSTALL": "अद्यतन स्थापित करने के लिए पुनः प्रारंभ करें",
   "UPDATE_DOWNLOADING": "इंस्टॉलर डाउनलोड हो रहा है",
+  "INSTALL_WEBAPP": "अपने डिवाइस पर {APP_NAME} इंस्टॉल करें",
   "UPDATE_DOWNLOAD_PROGRESS": "डाउनलोडिंग- {1} एमबी में से {0}",
   "UPDATING_APP": "{APP_NAME} को अपडेट किया जा रहा है",
   "UPDATING_APP_MESSAGE": "यह कुछ देर ले सकता है",

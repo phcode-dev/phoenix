@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "Reporniți pentru a aplica actualizările",
   "UPDATE_RESTART_INSTALL": "Reporniți pentru a instala actualizări",
   "UPDATE_DOWNLOADING": "Se descarcă programul de instalare",
+  "INSTALL_WEBAPP": "Instalați {APP_NAME} pe dispozitivul dvs",
   "UPDATE_DOWNLOAD_PROGRESS": "Descărcare - {0} din {1} MB",
   "UPDATING_APP": "Se actualizează {APP_NAME}",
   "UPDATING_APP_MESSAGE": "Acest lucru poate dura ceva timp",

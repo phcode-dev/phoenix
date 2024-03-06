@@ -480,6 +480,7 @@ define({
   "UPDATE_RESTART": "أعد التشغيل لتطبيق التحديثات",
   "UPDATE_RESTART_INSTALL": "أعد التشغيل لتثبيت التحديثات",
   "UPDATE_DOWNLOADING": "تنزيل المثبت",
+  "INSTALL_WEBAPP": "قم بتثبيت {APP_NAME} على جهازك",
   "UPDATE_DOWNLOAD_PROGRESS": "التنزيل- {0} من {1} ميغابايت",
   "UPDATING_APP": "تحديث {APP_NAME}",
   "UPDATING_APP_MESSAGE": "هذا قد يستغرق بعض الوقت",
