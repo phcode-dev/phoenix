@@ -589,6 +589,7 @@ define({
     "UPDATE_RESTART": "Restart to apply updates",
     "UPDATE_RESTART_INSTALL": "Restart to install updates",
     "UPDATE_DOWNLOADING": "Downloading Installer",
+    "INSTALL_WEBAPP": "Install {APP_NAME} on Your Device",
     "UPDATE_DOWNLOAD_PROGRESS": "Downloading- {0} of {1} MB",
     "UPDATING_APP": "Updating {APP_NAME}",
     "UPDATING_APP_MESSAGE": "This may take a while",
