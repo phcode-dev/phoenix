@@ -362,6 +362,15 @@
             if(!window.caches){
                 console.error("CacheStorage: API not supported by browser.");
             }
+
+            function _showUpdateMessage(message) {
+                let splashScreenFrame = document.getElementById("splash-screen-frame");
+                if(splashScreenFrame){
+                    let displayText2 = splashScreenFrame.contentDocument.getElementById("load-status-display-text");
+                    displayText2 && (displayText2.textContent = message);
+                }
+            }
+
             async function computeSHA256(response) {
                 try {
                     if (!response.ok) {
@@ -383,8 +392,9 @@
                     const newCacheOpen = await caches.open(newCache);
                     const oldCacheOpen = await caches.open(oldCache);
                     const oldCacheKeys = await oldCacheOpen.keys();
-                    let count = 0;
+                    let count = 0, totalCount = 0;
                     for(let request of oldCacheKeys){
+                        totalCount++;
                         let newResponseCached = await newCacheOpen.match(request);
                         let relativePath = (new URL(request.url)).pathname.slice(1);
                         const newSHA = newCacheManifest[relativePath];
@@ -394,6 +404,7 @@
                             if(!oldResponse){
                                 continue;
                             }
+                            _showUpdateMessage(`${count} of ${totalCount} files unchanged...`);
                             const oldSHA = await computeSHA256(oldResponse);
                             if(newSHA === oldSHA) {
                                 count++;
@@ -401,7 +412,7 @@
                             }
                         }
                     }
-                    console.log("cache-upgrade: reused entries from old cache: ", count);
+                    console.log("cache-upgrade: reused entries from old cache: ", count, "of", totalCount);
                     await caches.delete(oldCache);
                 } catch (e) {
                     console.error("cache-upgrade: Error while migrating cache", e);
@@ -411,9 +422,11 @@
             async function updateCache(newCacheName, oldCacheName, defaultCacheName) {
                 let newCacheManifest = await fetch(`web-cache/${newCacheName}/cacheManifest.json`);
                 newCacheManifest = await newCacheManifest.json();
+                _showUpdateMessage("Migrating default caches...");
                 if(await caches.has(defaultCacheName)){
                     await migrate(defaultCacheName, newCacheName, newCacheManifest);
                 }
+                _showUpdateMessage("Migrating last version caches...");
                 if(oldCacheName && await caches.has(oldCacheName)){
                     await migrate(oldCacheName, newCacheName, newCacheManifest);
                 }
@@ -584,8 +597,8 @@
                         }
                         let displayBtn1 = splashScreenFrame.contentDocument.getElementById("load-status-display-btn");
                         let displayText2 = splashScreenFrame.contentDocument.getElementById("load-status-display-text");
-                        displayBtn1.textContent = "Updating app...";
-                        displayText2.textContent = "Page will reload after update";
+                        displayBtn1 && (displayBtn1.textContent = "Updating app...");
+                        displayText2 && (displayText2.textContent = "Please wait....");
                         return;
                     }
                 }
