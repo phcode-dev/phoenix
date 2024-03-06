@@ -861,7 +861,7 @@
   "UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE": "دسترسی به پوشه محلی توسط مرورگر پشتیبانی نمی شود",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "متأسفیم، به نظر می رسد مرورگر فعلی شما از باز کردن پوشه های محلی پشتیبانی نمی کند. برای این ویژگی، استفاده از Chrome، Edge یا Opera را توصیه می کنیم.<br/><br/> از طرف دیگر، ما در حال کار بر روی توسعه برنامه‌های بومی برای Windows، Mac، Linux، iOS و Android هستیم تا پشتیبانی کامل را ارائه دهیم. <a href=\"https://github.com/phcode-dev/phoenix/discussions/1047\" target=\"_blank\">منتظر به روز رسانی ها باشید!</a>",
   "ATTENTION_SAFARI_USERS": "قابل توجه کاربران سافاری",
-  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>سافاری به طور خودکار داده‌های وب‌سایت را حذف می‌کند اگر سایتی در عرض 7 روز مجدداً بازدید نشود. {APP_NAME} برای ذخیره پروژه‌های شما به فضای ذخیره‌سازی مرورگر متکی است که ممکن است به دلیل این خط‌مشی حذف شوند.<br/><br/> <strong>برای جلوگیری از از دست رفتن داده‌ها</strong> ، لطفاً پروژه‌های خود را قبل از بستن برگه <strong>دانلود کنید</strong> یا منتظر <strong>وب و برنامه‌های اصلی Mac/iOS</strong> ما باشید.</span>",
+  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>سافاری به طور خودکار داده‌های وب‌سایت را حذف می‌کند اگر سایتی در عرض 7 روز مجدداً بازدید نشود. {APP_NAME} برای ذخیره پروژه‌های شما به فضای ذخیره‌سازی مرورگر متکی است که ممکن است به دلیل این خط‌مشی حذف شوند.<br/><br/> توصیه می شود <strong>برنامه دسکتاپ macOS را</strong> از <a href='https://phcode.io' target='_blank' style='color: white'>https://phcode.io</a> دانلود کنید</span>",
   "CANNOT_PUBLISH_LARGE_PROJECT": "نمی توان پروژه بزرگ را منتشر کرد",
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "فونیکس هنوز در آلفای آزمایشی است. ما هنوز همگام سازی پروژه هایی با بیش از 500 فایل را فعال نکرده ایم.",
   "SHARE_WEBSITE": "وب سایت را منتشر و به اشتراک بگذارید؟",

@@ -881,7 +881,7 @@ define({
   "UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE": "Local Folder Access Unsupported by Browser",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "Sorry, it looks like your current browser doesn't support opening local folders. For this feature, we recommend using Chrome, Edge, or Opera. <br/><br/>Alternatively, we're working on developing native apps for Windows, Mac, Linux, iOS, and Android to provide full support. <a href=\"https://github.com/phcode-dev/phoenix/discussions/1047\" target=\"_blank\">Stay tuned for updates!</a>",
   "ATTENTION_SAFARI_USERS": "Attention Safari Users",
-  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>Safari automatically deletes website data if a site is not revisited within 7 days. {APP_NAME} relies on browser storage to save your projects, which may be removed due to this policy. <br/> <br/><strong>To prevent data loss</strong>, please <strong>download</strong> your projects before closing the tab or stay tuned for our <strong>upcoming Web and native Mac/iOS apps</strong>.</span>",
+  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>Safari automatically deletes website data if a site is not revisited within 7 days. {APP_NAME} relies on browser storage to save your projects, which may be removed due to this policy. <br/> <br/>It is recommended to<strong> download the macOS desktop app</strong> from <a href='https://phcode.io' target='_blank' style='color: white'>https://phcode.io</a></span>",
   "CANNOT_PUBLISH_LARGE_PROJECT": "Cannot Publish Large Project",
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix is still in experimental alpha. We have not yet enabled sync of projects with greater than 500 files.",
   "SHARE_WEBSITE": "Publish and Share Website?",

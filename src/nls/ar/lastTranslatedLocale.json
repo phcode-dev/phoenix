@@ -861,7 +861,7 @@
   "UNSUPPORTED_BROWSER_OPEN_FOLDER_TITLE": "الوصول إلى المجلد المحلي غير مدعوم من قبل المستعرض",
   "UNSUPPORTED_BROWSER_OPEN_FOLDER": "عذرًا ، يبدو أن متصفحك الحالي لا يدعم فتح المجلدات المحلية. بالنسبة لهذه الميزة ، نوصي باستخدام Chrome أو Edge أو Opera.<br/><br/> بدلاً من ذلك ، نعمل على تطوير تطبيقات أصلية لأنظمة Windows و Mac و Linux و iOS و Android لتقديم الدعم الكامل. <a href=\"https://github.com/phcode-dev/phoenix/discussions/1047\" target=\"_blank\">ترقبوا التحديثات!</a>",
   "ATTENTION_SAFARI_USERS": "انتباه مستخدمي Safari",
-  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>يقوم Safari تلقائيًا بحذف بيانات موقع الويب إذا لم تتم إعادة زيارة الموقع في غضون 7 أيام. يعتمد {APP_NAME} على تخزين المتصفح لحفظ مشروعاتك ، والتي قد تتم إزالتها بسبب هذه السياسة.<br/><br/> <strong>لمنع فقدان البيانات</strong> ، يرجى <strong>تنزيل</strong> مشاريعك قبل إغلاق علامة التبويب أو ترقبوا <strong>تطبيقات الويب القادمة وتطبيقات Mac / iOS الأصلية</strong> .</span>",
+  "ATTENTION_SAFARI_USERS_MESSAGE": "<span>يقوم Safari تلقائيًا بحذف بيانات موقع الويب إذا لم تتم إعادة زيارة الموقع خلال 7 أيام. يعتمد {APP_NAME} على سعة تخزين المتصفح لحفظ مشاريعك، والتي قد تتم إزالتها بسبب هذه السياسة.<br/><br/> يوصى <strong>بتنزيل تطبيق macOS لسطح المكتب</strong> من <a href='https://phcode.io' target='_blank' style='color: white'>https://phcode.io</a></span>",
   "CANNOT_PUBLISH_LARGE_PROJECT": "لا يمكن نشر مشروع كبير",
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "فينيكس لا يزال في مرحلة ألفا التجريبية. لم نقم بتمكين مزامنة المشاريع التي تحتوي على أكثر من 500 ملف حتى الآن.",
   "SHARE_WEBSITE": "نشر ومشاركة الموقع؟",
