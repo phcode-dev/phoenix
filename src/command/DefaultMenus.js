@@ -262,14 +262,12 @@ define(function (require, exports, module) {
             menu.addMenuDivider();
         }
 
-        if (brackets.config.homepage_url) {
-            menu.addMenuItem(Commands.HELP_HOMEPAGE);
-        }
-
         if (brackets.config.twitter_url) {
             menu.addMenuItem(Commands.HELP_TWITTER);
         }
-        menu.addMenuDivider();
+        if (brackets.config.homepage_url) {
+            menu.addMenuItem(Commands.HELP_HOMEPAGE);
+        }
         if (hasAboutItem) {
             menu.addMenuItem(Commands.HELP_ABOUT);
         }

@@ -546,7 +546,7 @@ define({
     "CMD_GET_INVOLVED": "Get Involved",
     "CMD_SHOW_EXTENSIONS_FOLDER": "Show Extensions Folder",
     "CMD_HEALTH_DATA_STATISTICS": "Health Report\u2026",
-    "CMD_HOMEPAGE": "{APP_NAME} Homepage",
+    "CMD_HOMEPAGE": "Home Page - Download Apps",
     "CMD_TWITTER": "{TWITTER_NAME} on Twitter",
     "CMD_ABOUT": "About {APP_TITLE}",
     "CMD_OPEN_PREFERENCES": "Open Preferences File",
