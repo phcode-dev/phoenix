@@ -165,10 +165,10 @@ define(function (require, exports, module) {
      * Displays the Notification Bar UI
      *
      */
-    async function showBannerAndWaitForDismiss(html, notificationID) {
+    async function showBannerAndWaitForDismiss(htmlStr, notificationID) {
         let resolved = false;
         return new Promise((resolve)=>{
-            const $htmlContent = $(html),
+            const $htmlContent = $(`<div class="banner-notif-container">${htmlStr}</div>`),
                 $notificationBarElement = $(NotificationBarHtml);
 
             // Remove any SCRIPT tag to avoid secuirity issues
