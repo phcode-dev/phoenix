@@ -419,7 +419,7 @@
   "CMD_GET_INVOLVED": "Bliv involveret",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Vis udvidelsesmappe",
   "CMD_HEALTH_DATA_STATISTICS": "Sundhedsrapport...",
-  "CMD_HOMEPAGE": "Startside for {APP_NAME}",
+  "CMD_HOMEPAGE": "Hjemmeside - Download apps",
   "CMD_TWITTER": "{TWITTER_NAME} på Twitter",
   "CMD_ABOUT": "Om {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Åbn konfigurationsfil",

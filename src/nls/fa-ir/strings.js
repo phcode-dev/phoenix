@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "درگیرش شوید",
   "CMD_SHOW_EXTENSIONS_FOLDER": "نمایش پوشه افزونه ها",
   "CMD_HEALTH_DATA_STATISTICS": "گزارش سلامت…",
-  "CMD_HOMEPAGE": "صفحه اصلی {APP_NAME}",
+  "CMD_HOMEPAGE": "صفحه اصلی - دانلود برنامه ها",
   "CMD_TWITTER": "{TWITTER_NAME} در توییتر",
   "CMD_ABOUT": "درباره {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "تنظیمات باز کردن فایل",

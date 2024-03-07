@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Részt venni",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Bővítmények mappa megjelenítése",
   "CMD_HEALTH_DATA_STATISTICS": "Egészségügyi jelentés…",
-  "CMD_HOMEPAGE": "{APP_NAME} kezdőlap",
+  "CMD_HOMEPAGE": "Kezdőlap - Alkalmazások letöltése",
   "CMD_TWITTER": "{TWITTER_NAME} a Twitter-en",
   "CMD_ABOUT": "A {APP_TITLE}-ről",
   "CMD_OPEN_PREFERENCES": "Nyissa meg a Beállítások fájlt",

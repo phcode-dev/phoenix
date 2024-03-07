@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "參與",
   "CMD_SHOW_EXTENSIONS_FOLDER": "顯示擴充功能資料夾",
   "CMD_HEALTH_DATA_STATISTICS": "健康報告...",
-  "CMD_HOMEPAGE": "{APP_NAME}首頁",
+  "CMD_HOMEPAGE": "首頁 - 下載應用程式",
   "CMD_TWITTER": "Twitter {TWITTER_NAME} 專頁",
   "CMD_ABOUT": "關於 {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "開啟喜好設定檔",

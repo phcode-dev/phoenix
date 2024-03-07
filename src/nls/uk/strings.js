@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Прийняти участь в розробці",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Показати теку розширень",
   "CMD_HEALTH_DATA_STATISTICS": "Звіт про стан здоров’я…",
-  "CMD_HOMEPAGE": "Домашня сторінка {APP_NAME}",
+  "CMD_HOMEPAGE": "Домашня сторінка - завантаження програм",
   "CMD_TWITTER": "{TWITTER_NAME} у Twitter",
   "CMD_ABOUT": "Про {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Відкрити файл налаштувань",

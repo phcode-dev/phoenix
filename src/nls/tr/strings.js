@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Projeye Dahil Ol",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Eklentiler Klasörünü Göster",
   "CMD_HEALTH_DATA_STATISTICS": "Sağlık raporu…",
-  "CMD_HOMEPAGE": "{APP_NAME} Ana Sayfası",
+  "CMD_HOMEPAGE": "Ana Sayfa - Uygulamaları İndirin",
   "CMD_TWITTER": "{TWITTER_NAME} Twitter'da...",
   "CMD_ABOUT": "{APP_TITLE} Hakkında",
   "CMD_OPEN_PREFERENCES": "Ayarlar Dosyasını Aç",

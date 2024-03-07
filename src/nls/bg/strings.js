@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Включете се",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Показване на папката с разширенията",
   "CMD_HEALTH_DATA_STATISTICS": "Здравен доклад…",
-  "CMD_HOMEPAGE": "Начална страница на {APP_NAME}",
+  "CMD_HOMEPAGE": "Начална страница - Изтегляне на приложения",
   "CMD_TWITTER": "{TWITTER_NAME} в Тиутър",
   "CMD_ABOUT": "Относно {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Отваряне на файла с настройките",

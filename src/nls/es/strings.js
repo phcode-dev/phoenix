@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Involúcrese",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Abrir carpeta de extensiones",
   "CMD_HEALTH_DATA_STATISTICS": "Reporte de salud…",
-  "CMD_HOMEPAGE": "Página de inicio de {APP_NAME}",
+  "CMD_HOMEPAGE": "Página de inicio - Descargar aplicaciones",
   "CMD_TWITTER": "{TWITTER_NAME} en Twitter",
   "CMD_ABOUT": "Acerca de {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Abrir archivo de preferencias",

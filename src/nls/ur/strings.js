@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "شامل ہونا",
   "CMD_SHOW_EXTENSIONS_FOLDER": "ایکسٹینشن فولڈر دکھائیں۔",
   "CMD_HEALTH_DATA_STATISTICS": "صحت کی رپورٹ…",
-  "CMD_HOMEPAGE": "{APP_NAME} ہوم پیج",
+  "CMD_HOMEPAGE": "ہوم پیج - ایپس ڈاؤن لوڈ کریں۔",
   "CMD_TWITTER": "ٹویٹر پر {TWITTER_NAME}",
   "CMD_ABOUT": "{APP_TITLE} کے بارے میں",
   "CMD_OPEN_PREFERENCES": "ترجیحات کی فائل کھولیں۔",
