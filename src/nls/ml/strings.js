@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "ഇടപെടുക",
   "CMD_SHOW_EXTENSIONS_FOLDER": "വിപുലീകരണ ഫോൾഡർ കാണിക്കുക",
   "CMD_HEALTH_DATA_STATISTICS": "ആരോഗ്യ റിപ്പോർട്ട്…",
-  "CMD_HOMEPAGE": "{APP_NAME} ഹോംപേജ്",
+  "CMD_HOMEPAGE": "ഹോം പേജ് - ആപ്പുകൾ ഡൗൺലോഡ് ചെയ്യുക",
   "CMD_TWITTER": "Twitter-ൽ {TWITTER_NAME}",
   "CMD_ABOUT": "{APP_TITLE}-നെ കുറിച്ച്",
   "CMD_OPEN_PREFERENCES": "മുൻഗണനാ ഫയൽ തുറക്കുക",

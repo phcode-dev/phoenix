@@ -419,7 +419,7 @@
   "CMD_GET_INVOLVED": "Mach mit",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Erweiterungen-Ordner anzeigen",
   "CMD_HEALTH_DATA_STATISTICS": "Gesundheitsbericht…",
-  "CMD_HOMEPAGE": "{APP_NAME}-Startseite",
+  "CMD_HOMEPAGE": "Startseite – Apps herunterladen",
   "CMD_TWITTER": "{TWITTER_NAME} auf Twitter",
   "CMD_ABOUT": "Über {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Einstellungsdatei öffnen",

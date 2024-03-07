@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Ikut Terlibat",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Tampilkan Folder Ekstensi",
   "CMD_HEALTH_DATA_STATISTICS": "Laporan kesehatan…",
-  "CMD_HOMEPAGE": "Beranda {APP_NAME}",
+  "CMD_HOMEPAGE": "Halaman Beranda - Unduh Aplikasi",
   "CMD_TWITTER": "{TWITTER_NAME} di Twitter",
   "CMD_ABOUT": "Tentang {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Buka File Preferensi",

@@ -419,7 +419,7 @@
   "CMD_GET_INVOLVED": "شارك",
   "CMD_SHOW_EXTENSIONS_FOLDER": "إظهار مجلد الامتدادات",
   "CMD_HEALTH_DATA_STATISTICS": "التقرير الخاص بالصحة…",
-  "CMD_HOMEPAGE": "صفحة {APP_NAME} الرئيسية",
+  "CMD_HOMEPAGE": "الصفحة الرئيسية - تنزيل التطبيقات",
   "CMD_TWITTER": "{TWITTER_NAME} على Twitter",
   "CMD_ABOUT": "حول {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "افتح ملف التفضيلات",

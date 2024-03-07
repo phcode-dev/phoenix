@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Iesaistīties",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Parādīt paplašinājumu mapi",
   "CMD_HEALTH_DATA_STATISTICS": "Pārskats par veselību…",
-  "CMD_HOMEPAGE": "{APP_NAME} sākumlapa",
+  "CMD_HOMEPAGE": "Mājas lapa — Lejupielādēt lietotnes",
   "CMD_TWITTER": "{TWITTER_NAME} tīmekļa vietnē \"Twitter\"",
   "CMD_ABOUT": "Par {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Atvērt iestatījumu datni",

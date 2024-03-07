@@ -419,7 +419,7 @@
   "CMD_GET_INVOLVED": "Прикључи се развоју апликације",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Прикажи директоријум са екстензијама",
   "CMD_HEALTH_DATA_STATISTICS": "Здравствени извештај…",
-  "CMD_HOMEPAGE": "{АПП_НАМЕ} почетна страница",
+  "CMD_HOMEPAGE": "Почетна страница - Преузми апликације",
   "CMD_TWITTER": "{TWITTER_NAME} на Твитеру",
   "CMD_ABOUT": "О апликацији {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Отвори датотеку са подешавањима",

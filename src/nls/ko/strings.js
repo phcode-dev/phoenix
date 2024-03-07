@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "프로젝트 참여",
   "CMD_SHOW_EXTENSIONS_FOLDER": "확장 기능 폴더 열기",
   "CMD_HEALTH_DATA_STATISTICS": "건강 보고서…",
-  "CMD_HOMEPAGE": "{APP_NAME} 홈페이지",
+  "CMD_HOMEPAGE": "홈 페이지 - 앱 다운로드",
   "CMD_TWITTER": "Twitter에서 {TWITTER_NAME} 팔로우하기",
   "CMD_ABOUT": "{APP_TITLE} 정보",
   "CMD_OPEN_PREFERENCES": "환경설정 파일 열기",

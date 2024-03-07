@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "参与",
   "CMD_SHOW_EXTENSIONS_FOLDER": "显示扩展目录",
   "CMD_HEALTH_DATA_STATISTICS": "健康报告...",
-  "CMD_HOMEPAGE": "{APP_NAME}首页",
+  "CMD_HOMEPAGE": "主页 - 下载应用程序",
   "CMD_TWITTER": "在 Twitter 上 {TWITTER_NAME}",
   "CMD_ABOUT": "关于 {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "打开配置文件",

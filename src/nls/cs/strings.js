@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Zapojte se",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Zobrazit složku s doplňky",
   "CMD_HEALTH_DATA_STATISTICS": "Zdravotní zpráva…",
-  "CMD_HOMEPAGE": "Domovská stránka aplikace {APP_NAME}",
+  "CMD_HOMEPAGE": "Domovská stránka – stahování aplikací",
   "CMD_TWITTER": "{TWITTER_NAME} na Twitteru",
   "CMD_ABOUT": "O aplikaci {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Otevřít soubor s preferencemi",

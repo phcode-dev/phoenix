@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Εμπλέκομαι",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Προβολή Φακέλου Επεκτάσεων",
   "CMD_HEALTH_DATA_STATISTICS": "Έκθεση Υγείας…",
-  "CMD_HOMEPAGE": "Αρχική σελίδα {APP_NAME}",
+  "CMD_HOMEPAGE": "Αρχική σελίδα - Λήψη εφαρμογών",
   "CMD_TWITTER": "{TWITTER_NAME} στο Twitter",
   "CMD_ABOUT": "Σχετικά με το {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Άνοιξε το αρχείο προτιμήσεων",

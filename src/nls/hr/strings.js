@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Uključi se",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Prikaži direktorij sa ekstenzijama",
   "CMD_HEALTH_DATA_STATISTICS": "Zdravstveni izvještaj…",
-  "CMD_HOMEPAGE": "Početna stranica {APP_NAME}",
+  "CMD_HOMEPAGE": "Početna stranica - preuzimanje aplikacija",
   "CMD_TWITTER": "{TWITTER_NAME} na Twitteru",
   "CMD_ABOUT": "O programu {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Otvori preferencije",

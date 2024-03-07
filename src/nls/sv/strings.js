@@ -439,7 +439,7 @@ define({
   "CMD_GET_INVOLVED": "Engagera dig",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Visa tilläggsmapp",
   "CMD_HEALTH_DATA_STATISTICS": "Hälsorapport...",
-  "CMD_HOMEPAGE": "Startsida för {APP_NAME}",
+  "CMD_HOMEPAGE": "Hemsida - Ladda ner appar",
   "CMD_TWITTER": "{TWITTER_NAME} på Twitter",
   "CMD_ABOUT": "Om {APP_TITLE}",
   "CMD_OPEN_PREFERENCES": "Öppna inställningsfil",
