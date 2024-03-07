@@ -376,6 +376,46 @@
             // first boot, no cache
             localStorage.setItem(window._CURRENT_CACHE_VERSION_KEY, PHOENIX_APP_CACHE_VERSION);
         }
+
+        function _loadPhoenixMain() {
+            if(window._phoenixMainLoaded){
+                return;
+            }
+            window._phoenixMainLoaded = true;
+            const loadJS = function(url, implementationCode, location, dataMainValue){
+                //url is URL of external file, implementationCode is the code
+                //to be called from the file, location is the location to
+                //insert the <script> element
+
+                const scriptTag = document.createElement('script');
+                if(dataMainValue){
+                    scriptTag.setAttribute('data-main', dataMainValue);
+                }
+                scriptTag.onload = implementationCode;
+                scriptTag.onreadystatechange = implementationCode;
+                scriptTag.src = url;
+
+                location.appendChild(scriptTag);
+            };
+            function _requireDone() {
+                loadJS('verify-dependencies-loaded.js', null, document.body);
+            }
+
+            function _startRequireLoop() {
+                loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
+            }
+            if(window.PhStore){
+                window.PhStore.storageReadyPromise.finally(_startRequireLoop);
+            } else {
+                const interval = setInterval(()=>{
+                    if(window.PhStore){
+                        clearInterval(interval);
+                        PhStore.storageReadyPromise.finally(_startRequireLoop);
+                    }
+                }, 50);
+            }
+        }
+
         async function _resetCacheIfNeeded(force) {
             if(Phoenix.browser.isTauri || Phoenix.isTestWindow) {
                 // no web cache in desktop builds ot test windows
@@ -555,8 +595,9 @@
                         location.reload();
                         // force reload handlers should reload themselves.
                     }
-                } else {
-                    // todo load continue phoenix
+                } else if(location.href.endsWith("/src/") || location.href.endsWith("/dist/") || location.href.endsWith("index.html")){
+                    // load phoenix if its any of the non-cached urls.
+                    _loadPhoenixMain();
                 }
             }
         }
@@ -581,56 +622,22 @@
                 document.body.classList.add('dark'); // This will later be overridden by the theme manager as required.
             }
             _addOrRemoveSplashScreenIfNeeded();
-            var loadJS = function(url, implementationCode, location, dataMainValue){
-                //url is URL of external file, implementationCode is the code
-                //to be called from the file, location is the location to
-                //insert the <script> element
-
-                const scriptTag = document.createElement('script');
-                if(dataMainValue){
-                    scriptTag.setAttribute('data-main', dataMainValue);
-                }
-                scriptTag.onload = implementationCode;
-                scriptTag.onreadystatechange = implementationCode;
-                scriptTag.src = url;
-
-                location.appendChild(scriptTag);
-            };
-            function _requireDone() {
-                loadJS('verify-dependencies-loaded.js', null, document.body);
-            }
-
-            function _startRequireLoop() {
-
-            }
-            function _loadPhoenix() {
-                if(!Phoenix.browser.isTauri) {
-                    const currentCacheVersion = localStorage.getItem(window._CURRENT_CACHE_VERSION_KEY);
-                    if(currentCacheVersion !== PHOENIX_APP_CACHE_VERSION){
-                        // dont load phoenix as the cache is inconsistent, the updater will reload after fixing cache
-                        let splashScreenFrame = document.getElementById("splash-screen-frame");
-                        if(!splashScreenFrame){
-                            return;
-                        }
-                        let displayBtn1 = splashScreenFrame.contentDocument.getElementById("load-status-display-btn");
-                        let displayText2 = splashScreenFrame.contentDocument.getElementById("load-status-display-text");
-                        displayBtn1 && (displayBtn1.textContent = "Updating app...");
-                        displayText2 && (displayText2.textContent = "Please wait....");
+            if(!Phoenix.browser.isTauri) {
+                const currentCacheVersion = localStorage.getItem(window._CURRENT_CACHE_VERSION_KEY);
+                if(currentCacheVersion !== PHOENIX_APP_CACHE_VERSION){
+                    // dont load phoenix as the cache is inconsistent, the updater will reload after fixing cache
+                    let splashScreenFrame = document.getElementById("splash-screen-frame");
+                    if(!splashScreenFrame){
                         return;
                     }
+                    let displayBtn1 = splashScreenFrame.contentDocument.getElementById("load-status-display-btn");
+                    let displayText2 = splashScreenFrame.contentDocument.getElementById("load-status-display-text");
+                    displayBtn1 && (displayBtn1.textContent = "Updating app...");
+                    displayText2 && (displayText2.textContent = "Please wait....");
+                    return;
                 }
-                loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
             }
-            if(window.PhStore){
-                window.PhStore.storageReadyPromise.finally(_loadPhoenix);
-            } else {
-                const interval = setInterval(()=>{
-                    if(window.PhStore){
-                        clearInterval(interval);
-                        PhStore.storageReadyPromise.finally(_loadPhoenix);
-                    }
-                }, 50);
-            }
+            _loadPhoenixMain();
         }
     </script>
 
