@@ -344,7 +344,28 @@
         }());
     </script>
     <script src="phoenix/virtualfs.js"></script>
+
+    <!-- load bugsnag error reporter as soon as cache handling code is done-->
+    <script src="thirdparty/bugsnag.min.js"></script>
+    <script src="appConfig.js"></script>
+    <script type="module">
+        import BugsnagPerformance from "./thirdparty/bugsnag-performance.min.js";
+        BugsnagPerformance.start({
+            apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
+            appVersion: AppConfig.version,
+            releaseStage: window.__TAURI__ ? `tauri-${AppConfig.config.bugsnagEnv}-${Phoenix.platform}` : AppConfig.config.bugsnagEnv,
+            autoInstrumentRouteChanges: false,
+            autoInstrumentNetworkRequests: false,
+            autoInstrumentFullPageLoads: false
+        });
+        window.BugsnagPerformance = BugsnagPerformance;
+    </script>
+    <script src="loggerSetup.js"></script>
+    <script src="utils/EventDispatcher.js"></script>
+
     <script>
+        window.splashScreenPresent = true;
+
         /*Bootstrap cache check. since index.html is always loaded network first, the cache reset code will always
         be guaranteed to be hit on app update.
         Note that this cannot be moved to a separate file and should be in index.html due to above reason.
@@ -423,6 +444,9 @@
             async function updateCache(newCacheName, oldCacheName, defaultCacheName) {
                 try{
                     let newCacheManifest = await fetch(`web-cache/${newCacheName}/cacheManifest.json`);
+                    if(!newCacheManifest.ok){
+                        return false;
+                    }
                     newCacheManifest = await newCacheManifest.json();
                     _showUpdateMessage("Migrating default caches...");
                     if(await caches.has(defaultCacheName)){
@@ -537,28 +561,6 @@
             }
         }
         _resetCacheIfNeeded();
-    </script>
-
-    <!-- load bugsnag error reporter as soon as cache handling code is done-->
-    <script src="thirdparty/bugsnag.min.js"></script>
-    <script src="appConfig.js"></script>
-    <script type="module">
-        import BugsnagPerformance from "./thirdparty/bugsnag-performance.min.js";
-        BugsnagPerformance.start({
-            apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
-            appVersion: AppConfig.version,
-            releaseStage: window.__TAURI__ ? `tauri-${AppConfig.config.bugsnagEnv}-${Phoenix.platform}` : AppConfig.config.bugsnagEnv,
-            autoInstrumentRouteChanges: false,
-            autoInstrumentNetworkRequests: false,
-            autoInstrumentFullPageLoads: false
-        });
-        window.BugsnagPerformance = BugsnagPerformance;
-    </script>
-    <script src="loggerSetup.js"></script>
-    <script src="utils/EventDispatcher.js"></script>
-
-    <script>
-        window.splashScreenPresent = true;
 
         function _addOrRemoveSplashScreenIfNeeded() {
             if(!window.__TAURI__) {
