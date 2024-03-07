@@ -421,16 +421,22 @@
             }
 
             async function updateCache(newCacheName, oldCacheName, defaultCacheName) {
-                let newCacheManifest = await fetch(`web-cache/${newCacheName}/cacheManifest.json`);
-                newCacheManifest = await newCacheManifest.json();
-                _showUpdateMessage("Migrating default caches...");
-                if(await caches.has(defaultCacheName)){
-                    await migrate(defaultCacheName, newCacheName, newCacheManifest);
+                try{
+                    let newCacheManifest = await fetch(`web-cache/${newCacheName}/cacheManifest.json`);
+                    newCacheManifest = await newCacheManifest.json();
+                    _showUpdateMessage("Migrating default caches...");
+                    if(await caches.has(defaultCacheName)){
+                        await migrate(defaultCacheName, newCacheName, newCacheManifest);
+                    }
+                    _showUpdateMessage("Migrating last version caches...");
+                    if(oldCacheName && await caches.has(oldCacheName)){
+                        await migrate(oldCacheName, newCacheName, newCacheManifest);
+                    }
+                    return true;
+                } catch (e) {
+                    console.error("Error updating cache: ", e);
                 }
-                _showUpdateMessage("Migrating last version caches...");
-                if(oldCacheName && await caches.has(oldCacheName)){
-                    await migrate(oldCacheName, newCacheName, newCacheManifest);
-                }
+                return false;
             }
 
             const LESS_REFRESH_SCHEDULED_KEY = "lessRefreshScheduled";
@@ -516,13 +522,17 @@
                 // This is an upgrade we could in the future use the cacheManifest.json to increase update speed
                 // by only selectively updating the changed files.
                 console.warn("Old version cache detected", currentCacheName, "updating to", PHOENIX_APP_CACHE_VERSION);
-                await updateCache(PHOENIX_APP_CACHE_VERSION, currentCacheName, CACHE_NAME_EVERYTHING);
-                await _writeFileSafe(WEB_CACHE_FILE_PATH, PHOENIX_APP_CACHE_VERSION);
-                localStorage.setItem(window._CURRENT_CACHE_VERSION_KEY, PHOENIX_APP_CACHE_VERSION);
-                localStorage.setItem(LESS_REFRESH_SCHEDULED_KEY, "yes");
-                if(!force){
-                    location.reload();
-                    // force reload handlers should reload themselves.
+                const cacheUpdated = await updateCache(PHOENIX_APP_CACHE_VERSION, currentCacheName, CACHE_NAME_EVERYTHING);
+                if(cacheUpdated){
+                    await _writeFileSafe(WEB_CACHE_FILE_PATH, PHOENIX_APP_CACHE_VERSION);
+                    localStorage.setItem(window._CURRENT_CACHE_VERSION_KEY, PHOENIX_APP_CACHE_VERSION);
+                    localStorage.setItem(LESS_REFRESH_SCHEDULED_KEY, "yes");
+                    if(!force){
+                        location.reload();
+                        // force reload handlers should reload themselves.
+                    }
+                } else {
+                    // todo load continue phoenix
                 }
             }
         }
@@ -586,6 +596,10 @@
             };
             function _requireDone() {
                 loadJS('verify-dependencies-loaded.js', null, document.body);
+            }
+
+            function _startRequireLoop() {
+
             }
             function _loadPhoenix() {
                 if(!Phoenix.browser.isTauri) {
