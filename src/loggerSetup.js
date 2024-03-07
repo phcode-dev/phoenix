@@ -293,9 +293,6 @@
             firstMinuteElapsed = true;
             errorsSentThisMinute = 0;
         }, MAX_ERR_SENT_RESET_INTERVAL);
-        if(window.cacheClearError){
-            logger.reportError(window.cacheClearError);
-        }
     } else {
         console.warn("Logging to Bugsnag is disabled as current environment is localhost.");
     }
