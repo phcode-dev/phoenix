@@ -42,13 +42,18 @@ define(function (require, exports, module) {
      * @param {?Boolean} autoRemove - Specify true to indicate the PopUpManager should
      *      remove the popup from the _popUps array when the popup is closed. Specify false
      *      when the popup is always persistant in the _popUps array.
+     * @param {object} options
+     * @param {boolean} options.popupManagesFocus - set to true if the popup manages focus restore on close
      *
      */
-    function addPopUp($popUp, removeHandler, autoRemove) {
+    function addPopUp($popUp, removeHandler, autoRemove, options) {
         autoRemove = autoRemove || false;
+        options = options || {};
+        const popupManagesFocus = options.popupManagesFocus || false;
 
         _popUps.push($popUp[0]);
         $popUp.data("PopUpManager-autoRemove", autoRemove);
+        $popUp.data("PopUpManager-popupManagesFocus", popupManagesFocus);
         $popUp.data("PopUpManager-removeHandler", removeHandler);
     }
 
@@ -104,12 +109,15 @@ define(function (require, exports, module) {
                         keyEvent.stopImmediatePropagation();
                     }
 
+                    let popupManagesFocus = $popUp.data("PopUpManager-popupManagesFocus");
                     removePopUp($popUp);
 
-                    // We need to have a focus manager to correctly manage focus
-                    // between editors and other UI elements.
-                    // For now we set focus here
-                    MainViewManager.focusActivePane();
+                    if(!popupManagesFocus){
+                        // We need to have a focus manager to correctly manage focus
+                        // between editors and other UI elements.
+                        // For now we set focus here if the popup doesnt manage the focus itself
+                        MainViewManager.focusActivePane();
+                    }
                 }
 
                 break;
