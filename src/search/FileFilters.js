@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         Strings            = require("strings"),
         PreferencesManager = require("preferences/PreferencesManager"),
         ProjectManager     = require("project/ProjectManager"),
+        WorkspaceManager      = require("view/WorkspaceManager"),
         FindUtils          = require("search/FindUtils");
 
     const PREFS_CURRENT_FILTER_STRING = "FIND_IN_FILES_CURRENT_FILTER_STRING";
@@ -300,6 +301,7 @@ define(function (require, exports, module) {
             return;
         }
         $filterContainer.find(".error-filter").hide();
+        WorkspaceManager.recomputeLayout();
     }
 
     /**
