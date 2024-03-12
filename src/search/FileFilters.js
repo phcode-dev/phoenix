@@ -96,13 +96,18 @@ define(function (require, exports, module) {
      * If no filter is passed in, then clear the last active filter index by setting it to -1.
      *
      * @param {{pattern:string, isActive: function, ignores: function}|string} filter a globeFilter filter that can be passed to filterPath()/filterFileList().
+     * @param {string} [filterType] - optional, one of FileFilters.FILTER_TYPE_*.
      */
-    function setActiveFilter(filter) {
+    function setActiveFilter(filter, filterType) {
         if(typeof filter === 'string'){
             filter = compile(filter);
         }
         currentFilter = filter;
         PreferencesManager.setViewState(PREFS_CURRENT_FILTER_STRING, filter.pattern);
+        if(filterType) {
+            currentFilterType = filterType;
+            _updatePicker();
+        }
         FindUtils.notifyFileFiltersChanged();
     }
 
@@ -273,6 +278,10 @@ define(function (require, exports, module) {
     }
 
     function _updatePicker() {
+        if(!_picker){
+            console.error("No file filter picker ui to update");
+            return;
+        }
         switch (currentFilterType) {
         case FILTER_TYPE_NO_FILTER:
             _picker.setButtonLabel(Strings.NO_FILE_FILTER);
@@ -377,4 +386,9 @@ define(function (require, exports, module) {
     exports.filterPath             = filterPath;
     exports.filterFileList         = filterFileList;
     exports.getPathsMatchingFilter = getPathsMatchingFilter;
+
+    // filter types
+    exports.FILTER_TYPE_EXCLUDE = FILTER_TYPE_EXCLUDE;
+    exports.FILTER_TYPE_INCLUDE = FILTER_TYPE_INCLUDE;
+    exports.FILTER_TYPE_NO_FILTER = FILTER_TYPE_NO_FILTER;
 });
