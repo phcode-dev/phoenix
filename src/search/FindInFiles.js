@@ -491,10 +491,11 @@ define(function (require, exports, module) {
      * @param {{query: string, caseSensitive: boolean, isRegexp: boolean}} queryInfo Query info object
      * @param {!$.Promise} candidateFilesPromise Promise from getCandidateFiles(), which was called earlier
      * @param {?string} filter A "compiled" filter as returned by FileFilters.compile(), or null for no filter
+     * @param {File} scope the scope to search in
      * @return {?$.Promise} A promise that's resolved with the search results (or ZERO_FILES_TO_SEARCH) or rejected when the find competes.
      *      Will be null if the query is invalid.
      */
-    function _doSearch(queryInfo, candidateFilesPromise, filter) {
+    function _doSearch(queryInfo, candidateFilesPromise, filter, scope) {
         searchModel.filter = filter;
 
         var queryResult = searchModel.setQueryInfo(queryInfo);
@@ -510,7 +511,11 @@ define(function (require, exports, module) {
         return candidateFilesPromise
             .then(function (fileListResult) {
                 // Filter out files/folders that match user's current exclusion filter
-                fileListResult = FileFilters.filterFileList(filter, fileListResult);
+                const isSingleFileScope = scope && scope.isFile;
+                // in single files scope, the file needs to be searched anyway, exclusions wont apply.
+                if (!isSingleFileScope){
+                    fileListResult = FileFilters.filterFileList(filter, fileListResult);
+                }
 
                 if (searchModel.isReplace) {
                     if (fileListResult.length) {
@@ -637,7 +642,7 @@ define(function (require, exports, module) {
             searchModel.replaceText = replaceText;
         }
         candidateFilesPromise = candidateFilesPromise || getCandidateFiles(scope);
-        return _doSearch(queryInfo, candidateFilesPromise, filter);
+        return _doSearch(queryInfo, candidateFilesPromise, filter, scope);
     }
 
     /**

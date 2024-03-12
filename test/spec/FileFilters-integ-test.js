@@ -107,6 +107,10 @@ define(function (require, exports, module) {
             await executeSearch(searchString);
         }
 
+        function _setExclusionFilter(filterString) {
+            FileFilters.setActiveFilter(FileFilters.compile(filterString), FileFilters.FILTER_TYPE_EXCLUDE);
+        }
+
         describe("Find in Files filtering", function () {
             beforeAll(setupTestWindow, 30000);
             afterAll(teardownTestWindow, 30000);
@@ -121,12 +125,7 @@ define(function (require, exports, module) {
 
             // This finishes async, since clickDialogButton() finishes async (dialogs close asynchronously)
             async function setExcludeCSSFiles() {
-                // Launch filter editor
-                FileFilters.editFilter({ name: "", patterns: [] }, -1);
-
-                // Edit the filter & confirm changes
-                $(".modal.instance textarea").val("*.css");
-                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
+                _setExclusionFilter("*.css");
             }
 
             it("should exclude files from search", async function () {
@@ -165,12 +164,8 @@ define(function (require, exports, module) {
 
             it("should show error when filter excludes all files", async function () {
                 await openSearchBar();
-                // Launch filter editor
-                FileFilters.editFilter({ name: "", patterns: [] }, -1);
+                _setExclusionFilter("test1.*,*.css");
 
-                // Edit the filter & confirm changes
-                $(".modal.instance textarea").val("test1.*\n*.css");
-                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
                 await executeCleanSearch("{1}");
                 let $modalBar = $(".modal-bar");
 
@@ -178,7 +173,7 @@ define(function (require, exports, module) {
                 expect($modalBar.length).toBe(1);
 
                 // Error message displayed
-                expect($modalBar.find("#find-group div.error").is(":visible")).toBeTruthy();
+                expect($modalBar.find(".scope-group div.error-filter").is(":visible")).toBeTruthy();
 
                 // Search panel not showing
                 expect($("#find-in-files-results").is(":visible")).toBeFalsy();
