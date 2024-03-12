@@ -171,10 +171,12 @@ define(function (require, exports, module) {
             expect(searchField.options.onHighlight.calls.count()).toEqual(2);
             expect(searchField.options.onHighlight).toHaveBeenCalledWith("two", "", true);
 
+            provider.calls.reset();
+            searchField.options.onHighlight.calls.reset();
             enterSearchText("foo");
-            await awaitsFor(function () { return provider.calls.count() === 2; });
-            expect(searchField.options.onHighlight.calls.count()).toEqual(3);
-            expect(searchField.options.onHighlight).toHaveBeenCalledWith("one", "foo", false);
+            await awaitsFor(function () { return provider.calls.count() === 1; });
+            expect(searchField.options.onHighlight.calls.count()).toEqual(1);
+            expect(searchField.options.onHighlight).toHaveBeenCalledWith("two", "foo", false);
         });
 
         it("re-queries provider when updateResults() called", async function () {
