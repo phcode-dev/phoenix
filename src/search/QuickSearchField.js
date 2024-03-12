@@ -320,7 +320,6 @@ define(function (require, exports, module) {
         } else {
             this._highlightIndex = null;
         }
-        // TODO: fixup to match prev value's item if possible?
 
         if (results.error || results.length === 0) {
             this._closeDropdown();
@@ -346,7 +345,6 @@ define(function (require, exports, module) {
             }
             this._openDropdown(html);
 
-            // Highlight top item and trigger highlight callback
             this._updateHighlight(false);
         }
 
