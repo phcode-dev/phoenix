@@ -182,51 +182,11 @@ define(function (require, exports, module) {
             }, 10000);
 
             it("should ignore known binary file types", async function () {
-                var $dlg, actualMessage, expectedMessage,
-                    exists = false,
-                    done = false,
-                    imageDirPath = testPath + "/images";
-
-                // Set project to have only images
-                await SpecRunnerUtils.loadProjectInTestWindow(imageDirPath);
-
-                // Verify an image exists in folder
-                var file = FileSystem.getFileForPath(testPath + "/images/icon_twitter.png");
-
-                file.exists(function (fileError, fileExists) {
-                    exists = fileExists;
-                    done = true;
-                });
-
-                await awaitsFor(function () {
-                    return done;
-                }, "file.exists");
-
-                expect(exists).toBe(true);
                 await openSearchBar();
+                await executeSearch("foo");
 
-                // Launch filter editor
-                FileFilters.editFilter({ name: "", patterns: [] }, -1);
-
-                // Dialog should state there are 0 files in project
-                $dlg = $(".modal");
-                expectedMessage = StringUtils.format(Strings.FILTER_FILE_COUNT_ALL, 0, Strings.FIND_IN_FILES_NO_SCOPE);
-
-                // Message loads asynchronously, but dialog should eventually state: "Allows all 0 files in project"
-                await awaitsFor(function () {
-                    actualMessage   = $dlg.find(".exclusions-filecount").text();
-                    return (actualMessage === expectedMessage);
-                }, "display file count");
-
-                // Dismiss filter dialog (OK button is disabled, have to click on Cancel)
-                $dlg.find(".dialog-button[data-button-id='cancel']").click();
-
-                // Close search bar
-                var $searchField = $(".modal-bar #find-group input");
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
-
-                // Set project back to main test folder
-                await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+                const fileResults = FindInFiles.searchModel.results[testPath + "/images/text_invalid.png"];
+                expect(fileResults).toBeFalsy();
             });
 
             it("should ignore unreadable files", async function () {
