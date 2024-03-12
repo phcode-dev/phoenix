@@ -622,7 +622,7 @@
                 document.body.classList.add('dark'); // This will later be overridden by the theme manager as required.
             }
             _addOrRemoveSplashScreenIfNeeded();
-            if(!Phoenix.browser.isTauri) {
+            if(!Phoenix.browser.isTauri && !Phoenix.isTestWindow) {
                 const currentCacheVersion = localStorage.getItem(window._CURRENT_CACHE_VERSION_KEY);
                 if(currentCacheVersion !== PHOENIX_APP_CACHE_VERSION){
                     // dont load phoenix as the cache is inconsistent, the updater will reload after fixing cache
