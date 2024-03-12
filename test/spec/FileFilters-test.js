@@ -103,6 +103,36 @@ define(function (require, exports, module) {
                 expectMatch(filter,    "/aaa/bbb/.css");
             });
 
+            it("should match multiple file extensions", function () {
+                let filter = FileFilters.compile("*.css,*.txt");
+                expectMatch(filter,    "/file.css");
+                expectMatch(filter,    "/aaa/bbb/file.css");
+                expectMatch(filter, "/foo/bbb/file.txt");
+                expectNotMatch(filter, "/aaa/bbb/file.cssX");
+                expectNotMatch(filter, "/aaa/bbb/file.Xcss");
+                expectNotMatch(filter, "/aaa/bbb/fileXcss");
+                expectNotMatch(filter, "/aaa/bbb/file.css.min");
+                expectNotMatch(filter, "/aaa/bbb/filecss");
+                expectMatch(filter, "/aaa/bbb.css/file.txt");
+                expectMatch(filter,    "/aaa/bbb.css/file.css");
+                expectMatch(filter,    "/aaa/bbb/.css");
+            });
+
+            it("should do simple string search if not glob filters", function () {
+                let filter = FileFilters.compile("css,txt");
+                expectMatch(filter,    "/file.css");
+                expectMatch(filter,    "/aaa/bbb/file.css");
+                expectMatch(filter, "/foo/bbb/file.txt");
+                expectMatch(filter, "/aaa/bbb/file.cssX");
+                expectMatch(filter, "/aaa/bbb/file.Xcss");
+                expectMatch(filter, "/aaa/bbb/fileXcss");
+                expectMatch(filter, "/aaa/bbb/file.css.min");
+                expectMatch(filter, "/aaa/bbb/filecss");
+                expectMatch(filter, "/aaa/bbb.css/file.txt");
+                expectMatch(filter,    "/aaa/bbb.css/file.css");
+                expectMatch(filter,    "/aaa/bbb/.css");
+            });
+
             it("should match file name", function () {
                 let filter = FileFilters.compile("**/jquery.js");
                 expectMatch(filter,    "/jquery.js");

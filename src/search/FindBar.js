@@ -290,8 +290,32 @@ define(function (require, exports, module) {
         }
         window.document.body.addEventListener("keydown", _handleKeydown, true);
 
+        function _keydownHookForCtrlSpace(event) {
+            const ctrlSpaceEvent = (event.ctrlKey === true || event.metaKey === true) &&
+                (event.keyCode === KeyEvent.DOM_VK_SPACE);
+            if(!ctrlSpaceEvent){
+                return;
+            }
+            if($("#find-what").is(":focus")){
+                self.showSearchHints();
+                event.stopPropagation();
+                event.preventDefault();
+                return true;
+            }
+            if($("#fif-filter-input").is(":focus")){
+                //self.showFilterHints(); // todo
+                event.stopPropagation();
+                event.preventDefault();
+                return true;
+            }
+            return false;
+        }
+
+        KeyBindingManager.addGlobalKeydownHook(_keydownHookForCtrlSpace);
+
         // When the ModalBar closes, clean ourselves up.
         this._modalBar.on("close", function (event) {
+            KeyBindingManager.removeGlobalKeydownHook(_keydownHookForCtrlSpace);
             window.document.body.removeEventListener("keydown", _handleKeydown, true);
 
             // Hide error popup, since it hangs down low enough to make the slide-out look awkward
@@ -350,18 +374,15 @@ define(function (require, exports, module) {
                 }
             })
             .on("click", ".dropdown-icon", function (e) {
-                var quickSearchContainer = $(".quick-search-container");
-                if (!self.searchField) {
-                    self.showSearchHints();
-                } else if (quickSearchContainer.is(':visible')) {
-                    quickSearchContainer.hide();
+                if (self.searchField) {
+                    self.searchField.destroy();
+                    self.searchField = null;
                 } else {
-                    self.searchField.setText(self.$("#find-what").val());
-                    quickSearchContainer.show();
+                    self.showSearchHints();
                 }
                 self.$("#find-what").focus();
             })
-            .on("keydown", "#find-what, #replace-with", function (e) {
+            .on("keydown", "#find-what, #replace-with, #fif-filter-input", function (e) {
                 if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -478,14 +499,19 @@ define(function (require, exports, module) {
             maxResults: 20,
             firstHighlightIndex: null,
             resultProvider: function (query) {
-                var asyncResult = new $.Deferred();
-                asyncResult.resolve(PreferencesManager.getViewState("searchHistory"));
+                query = query || "";
+                const asyncResult = new $.Deferred();
+                let history = PreferencesManager.getViewState("searchHistory") || [];
+                history = history.filter(historyItem=> {
+                    return historyItem.toLowerCase().includes(query.toLowerCase());
+                });
+                asyncResult.resolve(history);
                 return asyncResult.promise();
             },
             formatter: function (item, query) {
                 return "<li>" + item + "</li>";
             },
-            onCommit: function (selectedItem, query) {
+            onCommit: function (selectedItem, query, itemIndex) {
                 if (selectedItem) {
                     self.$("#find-what").val(selectedItem);
                     self.trigger("queryChange");
@@ -493,10 +519,30 @@ define(function (require, exports, module) {
                     self.searchField.setText(query);
                 }
                 self.$("#find-what").focus();
-                $(".quick-search-container").hide();
+                self.searchField.destroy();
+                self.searchField = null;
+                // now move the committed item to top of history as its most recent
+                if(itemIndex){
+                    let history = PreferencesManager.getViewState("searchHistory") || [];
+                    let deletedItem = history.splice(itemIndex, 1);
+                    history.unshift(deletedItem[0]);
+                    PreferencesManager.setViewState("searchHistory", history);
+                }
+            },
+            onDismiss: function () {
+                if(self.searchField){
+                    self.searchField.destroy();
+                    self.searchField = null;
+                }
+            },
+            onDelete: function (deletedIndex) {
+                let history = PreferencesManager.getViewState("searchHistory") || [];
+                history.splice(deletedIndex, 1);
+                PreferencesManager.setViewState("searchHistory", history);
             },
             onHighlight: function (selectedItem, query, explicit) {},
-            highlightZeroResults: false
+            highlightZeroResults: false,
+            focusLastActiveElementOnClose: true
         });
         this.searchField.setText(searchFieldInput.val());
     };
@@ -758,7 +804,7 @@ define(function (require, exports, module) {
     PreferencesManager.stateManager.definePreference("caseSensitive", "boolean", false);
     PreferencesManager.stateManager.definePreference("regexp", "boolean", false);
     PreferencesManager.stateManager.definePreference("searchHistory", "array", []);
-    PreferencesManager.definePreference("maxSearchHistory", "number", 10, {
+    PreferencesManager.definePreference("maxSearchHistory", "number", 50, {
         description: Strings.FIND_HISTORY_MAX_COUNT
     });
 

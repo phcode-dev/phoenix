@@ -35,7 +35,8 @@
 define(function (require, exports, module) {
 
 
-    var KeyEvent = require("utils/KeyEvent");
+    const KeyEvent = require("utils/KeyEvent"),
+        PopUpManager      = require("widgets/PopUpManager");
 
 
     /**
@@ -55,9 +56,9 @@ define(function (require, exports, module) {
      * @param {!function(*, string):string} options.formatter
      *          Converts one result object to a string of HTML text. Passed the item and the current query. The
      *          outermost element must be <li>. The ".highlight" class can be ignored as it is applied automatically.
-     * @param {!function(?*, string):void} options.onCommit
-     *          Called when an item is selected by clicking or pressing Enter. Passed the item and the current
-     *          query. If the current result list is not up to date with the query text at the time Enter is
+     * @param {!function(?*, string, number):void} options.onCommit
+     *          Called when an item is selected by clicking or pressing Enter. Passed the committed item and the current
+     *          query and its index. If the current result list is not up to date with the query text at the time Enter is
      *          pressed, waits until it is before running this callback. If Enter pressed with no results, passed
      *          null. The popup remains open after this event.
      * @param {!function(*, string, boolean):void} options.onHighlight
@@ -65,6 +66,10 @@ define(function (require, exports, module) {
      *          true if the item was highlighted explicitly (arrow keys), not simply due to a results list update. Since
      *          the top item in the list is always initially highlighted, every time the list is updated onHighlight()
      *          is called with the top item and with the explicit flag set to false.
+     * @param {!function(*):void} options.onDelete
+     *          Called when delete key is pressed on a selected item in the list. Passed the item.
+     * @param {!function():void} options.onDismiss
+     *          Called when popup is dismissed with escape key press. Popup is not usable after this point.
      * @param {?number} options.maxResults
      *          Maximum number of items from resultProvider() to display in the popup.
      * @param {?number} options.verticalAdjust
@@ -73,10 +78,13 @@ define(function (require, exports, module) {
      *          before the animation is done.
      * @param {?number} options.firstHighlightIndex
      *          Index of the result that is highlighted by default. null to not highlight any result.
+     * @param {?number} options.focusLastActiveElementOnClose if set to true, focuses the last active element on close.
+     *          By default, the editor is always focused.
+     *
      */
     function QuickSearchField($input, options) {
         this.$input = $input;
-        this.options = options;
+        this.options = options || {};
 
         options.maxResults = options.maxResults || 10;
 
@@ -145,12 +153,20 @@ define(function (require, exports, module) {
             // Enter should always act on the latest results. If input has changed and we're still waiting for
             // new results, just flag the 'commit' for later
             if (this._displayedQuery === this.$input.val()) {
+                event.stopPropagation();
                 event.preventDefault();  // prevents keyup from going to someone else after we close
                 this._doCommit();
             } else {
                 // Once the current wait resolves, _render() will run the commit
                 this._commitPending = true;
             }
+        } else if (event.keyCode === KeyEvent.DOM_VK_DELETE) {
+            if (this.options.onDelete && this._$dropdown && this._highlightIndex !== null) {
+                this.options.onDelete(this._highlightIndex);
+                this.updateResults();
+            }
+            event.stopPropagation();
+            event.preventDefault(); // treated as Home key otherwise
         } else if (event.keyCode === KeyEvent.DOM_VK_DOWN) {
             // Highlight changes are always done synchronously on the currently shown result list. If the list
             // later changes, the highlight is reset to the top
@@ -162,6 +178,7 @@ define(function (require, exports, module) {
                 }
                 this._updateHighlight(true);
             }
+            event.stopPropagation();
             event.preventDefault(); // treated as Home key otherwise
 
         } else if (event.keyCode === KeyEvent.DOM_VK_UP) {
@@ -174,6 +191,7 @@ define(function (require, exports, module) {
                 this._updateHighlight(true);
             }
             event.preventDefault(); // treated as End key otherwise
+            event.stopPropagation();
         }
     };
 
@@ -187,7 +205,7 @@ define(function (require, exports, module) {
                 item = this._displayedResults[this._highlightIndex];
             }
         }
-        this.options.onCommit(item, this._displayedQuery);
+        this.options.onCommit(item, this._displayedQuery, this._highlightIndex);
     };
 
     /** Update display to reflect value of _highlightIndex, & call onHighlight() */
@@ -244,6 +262,10 @@ define(function (require, exports, module) {
             this._$dropdown.remove();
             this._$dropdown = null;
         }
+        if(this.options.focusLastActiveElementOnClose && this._$currentlyFocusedElement
+         && this._$currentlyFocusedElement.is(":visible")) {
+            this._$currentlyFocusedElement.focus();
+        }
     };
 
     /**
@@ -251,8 +273,9 @@ define(function (require, exports, module) {
      * @param {!string} htmlContent
      */
     QuickSearchField.prototype._openDropdown = function (htmlContent) {
+        const self = this;
+        this._$currentlyFocusedElement = $(document.activeElement);
         if (!this._$dropdown) {
-            var self = this;
             this._$dropdown = $("<ol class='quick-search-container'/>").appendTo("body")
                 .css({
                     position: "absolute",
@@ -269,6 +292,14 @@ define(function (require, exports, module) {
                 });
         }
         this._$dropdown.html(htmlContent);
+        PopUpManager.addPopUp(this._$dropdown, ()=>{
+            self.destroy();
+            if(self.options.onDismiss){
+                self.options.onDismiss();
+            }
+        }, true, {
+            popupManagesFocus: this.options.focusLastActiveElementOnClose
+        });
     };
 
     /**
@@ -280,7 +311,11 @@ define(function (require, exports, module) {
     QuickSearchField.prototype._render = function (results, query) {
         this._displayedQuery = query;
         this._displayedResults = results;
-        if (this._firstHighlightIndex >= 0) {
+        if (this._highlightIndex) {
+            if(this._highlightIndex >= results.length){
+                this._highlightIndex = results.length - 1;
+            }
+        } else if (this._firstHighlightIndex >= 0) {
             this._highlightIndex = this._firstHighlightIndex;
         } else {
             this._highlightIndex = null;
@@ -338,6 +373,11 @@ define(function (require, exports, module) {
     QuickSearchField.prototype.destroy = function () {
         this._pending = null;  // immediately invalidate any pending Promise
         this._closeDropdown();
+        if(this.$input){
+            this.$input.off("input", this._handleInput);
+            this.$input.off("keydown", this._handleKeyDown);
+            this.$input = null;
+        }
     };
 
 

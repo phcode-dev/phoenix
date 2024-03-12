@@ -246,10 +246,10 @@ define({
     "EXCLUDE_FILE_FILTER": "Exclude files",
     "INCLUDE_FILE_FILTER": "Search in files",
     "FILTER_PLACEHOLDER": "e.g. index,.css,*.js,src/**/*.css",
-    "FILTER_HISTORY_TOOLTIP": "Press `Ctrl-Space` to view History.\n`Enter` key to save filter to history.",
-    "FILTER_HISTORY_TOOLTIP_MAC": "Press `Cmd-Space` to view History.\n`Return/Enter` key to save filter to history.",
-    "FIND_HISTORY_TOOLTIP": "Press `Ctrl-Space` to view History.\n`Enter` key to save search string to history.",
-    "FIND_HISTORY_TOOLTIP_MAC": "Press `Cmd-Space` to view History.\n`Return/Enter` key to save search string to history.",
+    "FILTER_HISTORY_TOOLTIP": "Press `Ctrl-Space` to view History.",
+    "FILTER_HISTORY_TOOLTIP_MAC": "Press `Cmd-Space` to view History.",
+    "FIND_HISTORY_TOOLTIP": "Press `Ctrl-Space` to view History.",
+    "FIND_HISTORY_TOOLTIP_MAC": "Press `Cmd-Space` to view History.",
 
     // Quick Edit
     "ERROR_QUICK_EDIT_PROVIDER_NOT_FOUND": "No Quick Edit available for current cursor position",
