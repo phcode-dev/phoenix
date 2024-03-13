@@ -27,11 +27,11 @@ define(function (require, exports, module) {
     var SpecRunnerUtils    = require("spec/SpecRunnerUtils"),
         KeyEvent           = require("utils/KeyEvent");
 
-    describe("LegacyInteg:Selection View", function () {
+    describe("integration:Selection View", function () {
         let testFolder = SpecRunnerUtils.getTestPath("/spec/quickview-extn-test-files");
 
         // load from testWindow
-        var testWindow,
+        let testWindow,
             brackets,
             CommandManager,
             Commands,
@@ -43,7 +43,7 @@ define(function (require, exports, module) {
             oldFile;
 
         beforeAll(async function () {
-            await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+            await SpecRunnerUtils.createTestWindowAndRun();
         }, 30000);
 
         beforeEach(async function () {
