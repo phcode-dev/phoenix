@@ -321,7 +321,7 @@ define(function (require, exports, module) {
             cssClasses: "file-filter-picker no-focus"
         });
         $filterContainer = $(`<div class="filter-container">
-        <input autocomplete="off" type="text" id="fif-filter-input"
+        <input autocomplete="off" spellcheck="false" type="text" id="fif-filter-input"
          placeholder="${Strings.FILTER_PLACEHOLDER}"/>
         <div class="filter-dropdown-icon"
          title="${brackets.platform === "mac" ? Strings.FILTER_HISTORY_TOOLTIP_MAC : Strings.FILTER_HISTORY_TOOLTIP}">

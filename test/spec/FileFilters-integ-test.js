@@ -335,6 +335,99 @@ define(function (require, exports, module) {
 
                 await closeSearchBar();
             }, 10000);
+
+            it("should clicking dropdown bring up unfiltered search history", async function () {
+                await openSearchBar();
+                _setNoFilesExcluded();
+                await executeCleanSearch("test_history");
+                await closeSearchBar();
+                await openSearchBar();
+                await executeCleanSearch("test_history2");
+                await closeSearchBar();
+
+                await openSearchBar();
+                await executeCleanSearch("test_history2");
+                $(".search-input-container .dropdown-icon").click();
+                expect($(".quick-search-container").is(":visible")).toBeTrue();
+                expect($(".quick-search-container").text().includes("test_history")).toBeTrue();
+                expect($(".quick-search-container").text().includes("test_history2")).toBeTrue();
+                //now press escape to close the popup
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $("#find-what")[0]);
+                expect($(".quick-search-container").is(":visible")).toBeFalse();
+                expect($("#find-what").is(":visible")).toBeTrue();
+                await closeSearchBar();
+            }, 10000);
+
+            it("should clicking dropdown bring up unfiltered filter history", async function () {
+                await openSearchBar();
+                _setExcludeFiles("*.css");
+                $("#fif-filter-input").val("filter_history");
+                await closeSearchBar();
+                await openSearchBar();
+                $("#fif-filter-input").val("filter_history2");
+                await closeSearchBar();
+
+                await openSearchBar();
+                $("#fif-filter-input").val("filter_history2");
+                $(".filter-dropdown-icon").click();
+                expect($(".quick-search-container").is(":visible")).toBeTrue();
+                expect($(".quick-search-container").text().includes("filter_history")).toBeTrue();
+                expect($(".quick-search-container").text().includes("filter_history2")).toBeTrue();
+                //now press escape to close the popup
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $("#fif-filter-input")[0]);
+                expect($(".quick-search-container").is(":visible")).toBeFalse();
+                expect($("#fif-filter-input").is(":visible")).toBeTrue();
+                await closeSearchBar();
+            }, 10000);
+
+            async function _testFilter(input) {
+                await openSearchBar();
+                _setExcludeFiles("*.css");
+                $(input).val("filter_history1");
+                await closeSearchBar();
+                await openSearchBar();
+                $(input).val("filter_history2");
+                await closeSearchBar();
+
+                await openSearchBar();
+                // press ctrl-space to bring up the hints and type file_history so that 2 matches
+                $(input).val("filter_history");
+                $(input).focus();
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_SPACE, "keydown", $(input)[0], {
+                    ctrlKey: true,
+                    metaKey: true
+                });
+
+                await awaitsFor(function () {
+                    return $(".quick-search-container").text().includes("filter_history1");
+                }, "filter history to show");
+                expect($(".quick-search-container").text().includes("filter_history2")).toBeTrue();
+
+                // now type 2 so that only one element is filtered
+                $(input).val("filter_history2").trigger('input');
+                await awaitsFor(function () {
+                    return !$(".quick-search-container").text().includes("filter_history1");
+                }, "filter history to be applied");
+                expect($(".quick-search-container").is(":visible")).toBeTrue();
+                expect($(".quick-search-container").text().includes("filter_history1")).toBeFalse();
+                expect($(".quick-search-container").text().includes("filter_history2")).toBeTrue();
+
+                //now press escape to close the popup
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $(input)[0]);
+                expect($(".quick-search-container").is(":visible")).toBeFalse();
+                expect($(input).is(":visible")).toBeTrue();
+                await closeSearchBar();
+            }
+
+            it("should pressing ctrl-space bring up filtered filter history:needs window focus", async function () {
+                // focus tests, needs focus on window to work properly
+                await _testFilter("#fif-filter-input");
+            }, 10000);
+
+            it("should pressing ctrl-space bring up filtered search history:needs window focus", async function () {
+                // focus tests, needs focus on window to work properly
+                await _testFilter("#find-what");
+            }, 10000);
         });
     });
 });
