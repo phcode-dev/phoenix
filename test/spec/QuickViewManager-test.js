@@ -27,7 +27,7 @@ define(function (require, exports, module) {
     var SpecRunnerUtils    = require("spec/SpecRunnerUtils"),
         KeyEvent           = require("utils/KeyEvent");
 
-    describe("LegacyInteg:Quick View", function () {
+    describe("integration:Quick View", function () {
         let testFolder = SpecRunnerUtils.getTestPath("/spec/quickview-extn-test-files");
 
         // load from testWindow
@@ -43,7 +43,7 @@ define(function (require, exports, module) {
             oldFile;
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
 
             await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
         }, 30000);
