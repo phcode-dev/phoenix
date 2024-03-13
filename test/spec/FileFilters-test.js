@@ -103,6 +103,14 @@ define(function (require, exports, module) {
                 expectMatch(filter,    "/aaa/bbb/.css");
             });
 
+            it("should match file with , in path", function () {
+                let filter = FileFilters.compile("*.\\,css");
+                expectMatch(filter,    "/file.,css");
+                expectMatch(filter,    "/aaa/bbb/file.,css");
+                expectNotMatch(filter, "/foo/bbb/file.css");
+                expectNotMatch(filter, "/aaa/bbb/file.css");
+            });
+
             it("should match multiple file extensions", function () {
                 let filter = FileFilters.compile("*.css,*.txt");
                 expectMatch(filter,    "/file.css");
