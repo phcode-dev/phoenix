@@ -316,22 +316,22 @@ define(function (require, exports, module) {
 
                 _setNoFilesExcluded();
                 await executeCleanSearch("{1}");
-                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
-                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
+                await awaitsFor(function () {
+                    return !!FindInFiles.searchModel.results[testPath + "/test1.css"] &&
+                        !!FindInFiles.searchModel.results[testPath + "/test1.html"];
+                }, "none excluded");
 
                 _setExcludeFiles("*.css");
                 await awaitsFor(function () {
-                    return !FindInFiles.searchModel.results[testPath + "/test1.css"];
+                    return !FindInFiles.searchModel.results[testPath + "/test1.css"] &&
+                        !!FindInFiles.searchModel.results[testPath + "/test1.html"];
                 }, "css files to be excluded");
-                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
-                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
 
                 _setSearchInFiles("*.css");
                 await awaitsFor(function () {
-                    return !!FindInFiles.searchModel.results[testPath + "/test1.css"];
+                    return !!FindInFiles.searchModel.results[testPath + "/test1.css"] &&
+                        !FindInFiles.searchModel.results[testPath + "/test1.html"];
                 }, "css files to be included");
-                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
-                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeFalsy();
 
                 await closeSearchBar();
             }, 10000);
