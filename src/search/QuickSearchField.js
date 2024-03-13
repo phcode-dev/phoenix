@@ -141,7 +141,7 @@ define(function (require, exports, module) {
         // so slowly that JS execution can't keep up. All the remaining input events are serviced before the
         // first timeout runs; then all the queued-up timeouts run in a row. All except the last one can no-op.
         setTimeout(function () {
-            if (self.$input.val() === valueAtEvent) {
+            if (self.$input && self.$input.val() === valueAtEvent) {
                 self.updateResults();
             }
         }, 0);
