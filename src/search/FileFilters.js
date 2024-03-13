@@ -58,7 +58,7 @@ define(function (require, exports, module) {
      */
     function _filterStringToPatternArray(str) {
         const randomDigits = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-        str.replaceAll("\\,", randomDigits);
+        str = str.replaceAll("\\,", randomDigits);
         let patterns = str.split(",");
         let finalPatterns = [];
         for(let i=0; i<patterns.length; i++){
