@@ -690,7 +690,7 @@ define(function (require, exports, module) {
                 <div class="spinner inline spin"></div>
                 <div id="indexing-spinner-message" class="indexing-message">${Strings.FIND_IN_FILES_INDEXING}</div>
             </div>
-            <input type='text' autocomplete='off' id='quickOpenSearch'
+            <input type='text' autocomplete='off' spellcheck="false" id='quickOpenSearch'
             placeholder='${Strings.CMD_QUICK_OPEN}\u2026' style='width: 30em'>
             <span class='find-dialog-label'></span>
         </div>`;
