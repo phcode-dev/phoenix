@@ -27,9 +27,7 @@ define(function (require, exports, module) {
 
     var Commands        = require("command/Commands"),
         KeyEvent        = require("utils/KeyEvent"),
-        SpecRunnerUtils = require("spec/SpecRunnerUtils"),
-        StringUtils     = require("utils/StringUtils"),
-        Strings         = require("strings");
+        SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     var PreferencesManager;
 

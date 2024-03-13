@@ -31,7 +31,7 @@ define(function (require, exports, module) {
         KeyEvent           = require("utils/KeyEvent"),
         Strings            = require("strings");
 
-    describe("LegacyInteg: FileFilters", function () {
+    describe("integration: FileFilters", function () {
 
         let testPath = SpecRunnerUtils.getTestPath("/spec/InlineEditorProviders-test-files"),
             testWindow,
@@ -66,7 +66,7 @@ define(function (require, exports, module) {
             FindInFilesUI = null;
             CommandManager = null;
             $ = null;
-            await SpecRunnerUtils.closeTestWindow(true);
+            await SpecRunnerUtils.closeTestWindow();
         }
 
         // These helper functions are slight variations of the ones in FindInFiles, so need to be
