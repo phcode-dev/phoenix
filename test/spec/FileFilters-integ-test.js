@@ -28,10 +28,8 @@ define(function (require, exports, module) {
 
 
     let SpecRunnerUtils    = require("spec/SpecRunnerUtils"),
-        Dialogs            = require("widgets/Dialogs"),
         KeyEvent           = require("utils/KeyEvent"),
-        Strings            = require("strings"),
-        StringUtils        = require("utils/StringUtils");
+        Strings            = require("strings");
 
     describe("LegacyInteg: FileFilters", function () {
 
@@ -111,9 +109,80 @@ define(function (require, exports, module) {
             FileFilters.setActiveFilter(FileFilters.compile(filterString), FileFilters.FILTER_TYPE_EXCLUDE);
         }
 
+        function verifyButtonLabel(expectedLabel) {
+            if (expectedLabel) {
+                // Verify filter picker button label is updated with the patterns of the selected filter set.
+                expect($("button.file-filter-picker").text()).toEqual(expectedLabel);
+            } else {
+                expect($("button.file-filter-picker").text()).toEqual(Strings.NO_FILE_FILTER);
+            }
+        }
+
+        function _setNoFilesExcluded() {
+            let $dropdown;
+            FileFilters.showDropdown();
+
+            // Invoke new filter command by pressing down arrow key once and then enter key.
+            $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+            expect($dropdown.is(":visible")).toBeTruthy();
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
+
+            // Verify filter picker button is updated with the name of the new filter.
+            verifyButtonLabel(Strings.NO_FILE_FILTER);
+            expect($(".scope-group .filter-container").is(":visible")).toBeFalse();
+
+            FileFilters.closeDropdown();
+        }
+
+        function _setSearchInFiles(filterStr) {
+            let $dropdown;
+            FileFilters.showDropdown();
+
+            // Invoke new filter command by pressing down arrow key once and then enter key.
+            $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+            expect($dropdown.is(":visible")).toBeTruthy();
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
+
+            // Verify filter picker button is updated with the name of the new filter.
+            verifyButtonLabel(Strings.INCLUDE_FILE_FILTER);
+            expect($(".scope-group .filter-container").is(":visible")).toBeTrue();
+            $("#fif-filter-input").val(filterStr);
+
+            FileFilters.closeDropdown();
+        }
+
+        function _setExcludeFiles(filterStr) {
+            let $dropdown;
+            FileFilters.showDropdown();
+
+            // Invoke new filter command by pressing down arrow key once and then enter key.
+            $dropdown = $(".dropdown-menu.dropdownbutton-popup");
+            expect($dropdown.is(":visible")).toBeTruthy();
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
+
+            // Verify filter picker button is updated with the name of the new filter.
+            verifyButtonLabel(Strings.EXCLUDE_FILE_FILTER);
+            expect($(".scope-group .filter-container").is(":visible")).toBeTrue();
+            $("#fif-filter-input").val(filterStr);
+
+            FileFilters.closeDropdown();
+        }
+
         describe("Find in Files filtering", function () {
             beforeAll(setupTestWindow, 30000);
             afterAll(teardownTestWindow, 30000);
+
+            it("should show 'No files Excluded' in filter picker button by default", async function () {
+                await openSearchBar();
+                verifyButtonLabel();
+                await closeSearchBar();
+            }, 10000);
 
             it("should search all files by default", async function () {
                 await openSearchBar();
@@ -197,242 +266,74 @@ define(function (require, exports, module) {
                 await awaits(800);  // ensure _documentChangeHandler()'s timeout has time to run
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();  // *.css should still be excluded
                 expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
-            }, 30000);
-        });
-
-        describe("Filter picker UI", function () {
-            beforeAll(setupTestWindow, 30000);
-            afterAll(teardownTestWindow, 30000);
-
-            beforeEach(async function () {
-                await openSearchBar();
-            });
-
-            afterEach(async ()=>{
                 await closeSearchBar();
-            });
+            }, 30000);
 
-            function verifyButtonLabel(expectedLabel) {
-                let newButtonLabel  = StringUtils.format(Strings.EXCLUDE_FILE_FILTER, expectedLabel);
-
-                if (expectedLabel) {
-                    // Verify filter picker button label is updated with the patterns of the selected filter set.
-                    expect($("button.file-filter-picker").text()).toEqual(newButtonLabel);
-                } else {
-                    expect($("button.file-filter-picker").text()).toEqual(Strings.NO_FILE_FILTER);
-                }
-            }
-
-            // This finishes async, since clickDialogButton() finishes async (dialogs close asynchronously)
-            async function setExcludeCSSFiles() {
-                // Edit the filter & confirm changes
-                $(".modal.instance .exclusions-name").val("CSS Files");
-                $(".modal.instance .exclusions-editor").val("*.css\n*.less\n*.scss");
-                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-            }
-
-            // Trigger a mouseover event on the 'parent' and then click on the button with the given 'selector'.
-            function clickOnMouseOverButton(selector, parent) {
-                parent.trigger("mouseover");
-                // async here?
-                expect($(selector, parent).is(":visible")).toBeTruthy();
-                $(selector, parent).click();
-            }
-
-            it("should show 'No files Excluded' in filter picker button by default", async function () {
-                verifyButtonLabel();
-            }, 10000);
-
-            it("should show two filter commands by default", async function () {
+            it("should show 3 filter commands by default", async function () {
+                await openSearchBar();
+                _setNoFilesExcluded();
                 FileFilters.showDropdown();
 
                 let $dropdown = $(".dropdown-menu.dropdownbutton-popup");
                 expect($dropdown.is(":visible")).toBeTruthy();
-                expect($dropdown.children().length).toEqual(3); // 3 including popup search filter
-                expect($($dropdown.children()[1]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                expect($($dropdown.children()[2]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
+                expect($dropdown.children().length).toEqual(4); // 3 including popup search filter
+                expect($($dropdown.children()[1]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
+                expect($($dropdown.children()[2]).text()).toEqual(Strings.INCLUDE_FILE_FILTER);
+                expect($($dropdown.children()[3]).text()).toEqual(Strings.EXCLUDE_FILE_FILTER);
+
+                verifyButtonLabel(Strings.NO_FILE_FILTER);
 
                 FileFilters.closeDropdown();
+                await closeSearchBar();
             }, 10000);
 
-            it("should launch filter editor and add a new filter set when invoked from new filter command", async function () {
-                let $dropdown;
-                FileFilters.showDropdown();
-
-                // Invoke new filter command by pressing down arrow key once and then enter key.
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
-                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
-
-                await setExcludeCSSFiles();
-
-                FileFilters.showDropdown();
-
-                let filterSuffix = StringUtils.format(Strings.FILE_FILTER_CLIPPED_SUFFIX, 1);
-
-                // Verify filter picker button is updated with the name of the new filter.
-                verifyButtonLabel("CSS Files");
-
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                expect($dropdown.is(":visible")).toBeTruthy();
-                expect($dropdown.children().length).toEqual(5);
-                expect($($dropdown.children()[1]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                expect($($dropdown.children()[2]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
-                expect($(".recent-filter-name", $($dropdown.children()[4])).text()).toEqual("CSS Files");
-                expect($(".recent-filter-patterns", $($dropdown.children()[4])).text()).toEqual(" - *.css, *.less " + filterSuffix);
-
-                FileFilters.closeDropdown();
+            it("should no filter selector hide filter scope input", async function () {
+                await openSearchBar();
+                _setNoFilesExcluded();
+                await closeSearchBar();
             }, 10000);
 
-            it("should clear the active filter set when invoked from clear filter command", async function () {
-                let $dropdown;
-                FileFilters.showDropdown();
-
-                // Invoke new filter command by pressing down arrow key twice and then enter key.
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
-                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", $dropdown[0]);
-                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
-
-                // Verify filter picker button is updated to show no active filter.
-                verifyButtonLabel();
-                expect($dropdown.is(":visible")).toBeFalsy();
-
-                // Re-open dropdown list and verify that nothing changed.
-                FileFilters.showDropdown();
-
-                let filterSuffix = StringUtils.format(Strings.FILE_FILTER_CLIPPED_SUFFIX, 1);
-
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                expect($dropdown.is(":visible")).toBeTruthy();
-                expect($dropdown.children().length).toEqual(5);
-                expect($($dropdown.children()[1]).text()).toEqual(Strings.NEW_FILE_FILTER);
-                expect($($dropdown.children()[2]).text()).toEqual(Strings.CLEAR_FILE_FILTER);
-                expect($(".recent-filter-name", $($dropdown.children()[4])).text()).toEqual("CSS Files");
-                expect($(".recent-filter-patterns", $($dropdown.children()[4])).text()).toEqual(" - *.css, *.less " + filterSuffix);
-
-                FileFilters.closeDropdown();
+            it("should search in files", async function () {
+                await openSearchBar();
+                _setSearchInFiles("*.css");
+                await executeCleanSearch("{1}");
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeFalsy();
+                await closeSearchBar();
             }, 10000);
 
-            it("should switch the active filter set to the selected one", async function () {
-                let $dropdown;
-                // Verify that there is no active filter (was set from the previous test).
-                verifyButtonLabel();
-                FileFilters.showDropdown();
-
-                // Select the last filter set in the dropdown by pressing up arrow key once and then enter key.
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_UP, "keydown", $dropdown[0]);
-                await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $dropdown[0]);
-
-                // Verify filter picker button label is updated with the name of the selected filter set.
-                verifyButtonLabel("CSS Files");
-                expect($dropdown.is(":visible")).toBeFalsy();
+            it("should search exclude files", async function () {
+                await openSearchBar();
+                _setExcludeFiles("*.css");
+                await executeCleanSearch("{1}");
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
+                await closeSearchBar();
             }, 10000);
 
-            it("should launch filter editor and fill in the text fields with selected filter info", async function () {
-                let $dropdown;
+            it("should switch between various search filters", async function () {
+                await openSearchBar();
 
-                FileFilters.showDropdown();
+                _setNoFilesExcluded();
+                await executeCleanSearch("{1}");
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
 
-                // Click on the edit icon that shows up in the first filter set on mouseover.
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                clickOnMouseOverButton(".filter-edit-icon", $($dropdown.children()[4]));
+                _setExcludeFiles("*.css");
+                await awaitsFor(function () {
+                    return !FindInFiles.searchModel.results[testPath + "/test1.css"];
+                }, "css files to be excluded");
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeFalsy();
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeTruthy();
 
-                // Remove the name of the filter set and reduce the filter set to '*.css'.
-                expect($(".modal.instance .exclusions-name").val()).toEqual("CSS Files");
-                expect($(".modal.instance .exclusions-editor").val()).toEqual("*.css\n*.less\n*.scss");
+                _setSearchInFiles("*.css");
+                await awaitsFor(function () {
+                    return !!FindInFiles.searchModel.results[testPath + "/test1.css"];
+                }, "css files to be included");
+                expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
+                expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeFalsy();
 
-                $(".modal.instance .exclusions-name").val("");
-                $(".modal.instance .exclusions-editor").val("*.css");
-                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-
-                // Verify filter picker button label is updated with the patterns of the selected filter set.
-                verifyButtonLabel("*.css");
-                expect($dropdown.is(":visible")).toBeFalsy();
-            }, 10000);
-
-            it("should remove selected filter from filter sets preferences without changing picker button label", async function () {
-                let $dropdown,
-                    filters = [{name: "Node Modules", patterns: ["node_module"]},
-                        {name: "Mark Down Files", patterns: ["*.md"]},
-                        {name: "CSS Files", patterns: ["*.css", "*.less"]}];
-
-                // Create three filter sets and make the last one active.
-                FileFilters.editFilter(filters[0], 0);
-                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-
-                FileFilters.editFilter(filters[1], -1);
-                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-
-                FileFilters.editFilter(filters[2], -1);
-                await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK, true);
-
-                verifyButtonLabel("CSS Files");
-                FileFilters.showDropdown();
-
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                expect($dropdown.children().length).toEqual(7);
-
-                // Click on the delete icon that shows up in the first filter set on mouseover.
-                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[4]));
-
-                expect($dropdown.is(":visible")).toBeTruthy();
-                // Verify that button label is still the same since the deleted one is not the active one.
-                verifyButtonLabel("CSS Files");
-
-                // Verify that the list has one less item (from 7 to 6).
-                expect($dropdown.children().length).toEqual(6);
-
-                // Verify data-index of the two remaining filter sets.
-                expect($("a", $dropdown.children()[4]).data("index")).toBe(3);
-                expect($("a", $dropdown.children()[5]).data("index")).toBe(4);
-
-                FileFilters.closeDropdown();
-            }, 10000);
-
-            it("should remove selected filter from filter sets preferences plus changing picker button label", async function () {
-                let $dropdown;
-
-                verifyButtonLabel("CSS Files");
-                FileFilters.showDropdown();
-
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                expect($dropdown.children().length).toEqual(6);
-
-                // Click on the delete icon that shows up in the last filter set on mouseover.
-                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[5]));
-
-                expect($dropdown.is(":visible")).toBeTruthy();
-                // Verify that button label is changed to "No Files Excluded".
-                verifyButtonLabel();
-
-                // Verify that the list has one less item.
-                expect($dropdown.children().length).toEqual(5);
-
-                FileFilters.closeDropdown();
-            }, 10000);
-
-            it("should also remove the divider from the dropdown list after removing the last remaining filter set", async function () {
-                let $dropdown;
-
-                verifyButtonLabel();
-                FileFilters.showDropdown();
-
-                $dropdown = $(".dropdown-menu.dropdownbutton-popup");
-                expect($dropdown.children().length).toEqual(5);
-
-                // Click on the delete icon that shows up in the last filter set on mouseover.
-                clickOnMouseOverButton(".filter-trash-icon", $($dropdown.children()[4]));
-
-                expect($dropdown.is(":visible")).toBeTruthy();
-                // Verify that button label still shows "No Files Excluded".
-                verifyButtonLabel();
-
-                // Verify that the list has only two filter commands.
-                expect($dropdown.children().length).toEqual(3);
-
-                FileFilters.closeDropdown();
+                await closeSearchBar();
             }, 10000);
         });
     });
