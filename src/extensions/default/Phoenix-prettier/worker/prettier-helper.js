@@ -21,9 +21,10 @@
 /*global Phoenix, WorkerComm, prettier, prettierPlugins, FastDiff, Diff*/
 
 importScripts(`${Phoenix.baseURL}thirdparty/prettier/standalone.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-babel.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-html.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
+importScripts(`${Phoenix.baseURL}thirdparty/prettier/plugins/babel.js`);
+importScripts(`${Phoenix.baseURL}thirdparty/prettier/plugins/estree.js`);
+importScripts(`${Phoenix.baseURL}thirdparty/prettier/plugins/html.js`);
+importScripts(`${Phoenix.baseURL}thirdparty/prettier/plugins/postcss.js`);
 
 (function () {
     // see https://prettier.io/docs/en/options.html#parser for more parsers available
@@ -41,7 +42,7 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
         };
     }
 
-    function prettify(params) {
+    async function prettify(params) {
         let options = params.options || {};
         options.plugins= prettierPlugins;
         // options.cursorOffset this option doesnt work well and prettier.formatWithCursor is buggy causing hangs
@@ -50,21 +51,21 @@ importScripts(`${Phoenix.baseURL}thirdparty/prettier/parser-postcss.js`);
         let isFullFileBeautify = !options.rangeStart || !options.rangeEnd;
         options.rangeStart = options.rangeStart || 0;
         options.rangeEnd = options.rangeEnd || params.text.length;
-        let prettyText = prettier.format(params.text, options);
+        let { formatted, cursorOffset} = await prettier.formatWithCursor(params.text, options);
         if(isFullFileBeautify){
             return {
-                text: prettyText,
-                cursorOffset: params.cursorOffset
+                text: formatted,
+                cursorOffset: cursorOffset
             };
         }
-        return _identifyChangedRange(params.text, prettyText, options.rangeStart, options.rangeEnd);
+        return _identifyChangedRange(params.text, formatted, options.rangeStart, options.rangeEnd);
     }
 
     let pluginURLS = {
         php: `${Phoenix.baseURL}thirdparty/prettier/php/standalone.js`,
-        yaml: `${Phoenix.baseURL}thirdparty/prettier/parser-yaml.js`,
-        markdown: `${Phoenix.baseURL}thirdparty/prettier/parser-markdown.js`,
-        typescript: `${Phoenix.baseURL}thirdparty/prettier/parser-typescript.js`
+        yaml: `${Phoenix.baseURL}thirdparty/prettier/plugins/yaml.js`,
+        markdown: `${Phoenix.baseURL}thirdparty/prettier/plugins/markdown.js`,
+        typescript: `${Phoenix.baseURL}thirdparty/prettier/plugins/typescript.js`
     };
     let builtinPlugins = ["babel", "json-stringify", "html", "css", "less", "scss"];
     function _loadPlugin(pluginName) {

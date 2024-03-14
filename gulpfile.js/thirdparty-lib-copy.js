@@ -156,7 +156,12 @@ let copyThirdPartyLibs = series(
     // prettier
     copyFiles.bind(copyFiles, ['node_modules/prettier/*.js'],
         'src/thirdparty/prettier'),
+    copyFiles.bind(copyFiles, ['node_modules/prettier/plugins/*.js'],
+        'src/thirdparty/prettier/plugins'),
     copyLicence.bind(copyLicence, 'node_modules/prettier/LICENSE', 'prettier'),
+    copyFiles.bind(copyFiles, ['node_modules/@prettier/plugin-php/*.js'],
+        'src/thirdparty/prettier/php'),
+    copyLicence.bind(copyLicence, 'node_modules/@prettier/plugin-php/LICENSE', 'prettier-php'),
     copyFiles.bind(copyFiles, ['node_modules/@prettier/plugin-php/*.js'],
         'src/thirdparty/prettier/php'),
     copyLicence.bind(copyLicence, 'node_modules/@prettier/plugin-php/LICENSE', 'prettier-php'),
