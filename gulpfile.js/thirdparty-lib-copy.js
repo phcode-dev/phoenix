@@ -154,7 +154,7 @@ let copyThirdPartyLibs = series(
     copyFiles.bind(copyFiles, ['node_modules/@pixelbrackets/gfm-stylesheet/dist/gfm.min.css'],
         'src/thirdparty/'), // AGPL 2.0 license added to licence md
     // prettier
-    copyFiles.bind(copyFiles, ['node_modules/prettier/*.js'],
+    copyFiles.bind(copyFiles, ['node_modules/prettier/standalone.js'],
         'src/thirdparty/prettier'),
     copyFiles.bind(copyFiles, ['node_modules/prettier/plugins/*.js'],
         'src/thirdparty/prettier/plugins'),

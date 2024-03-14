@@ -79,7 +79,7 @@ function makeDistAll() {
 }
 
 function makeJSDist() {
-    return src(['src/**/*.js', '!src/**/unittest-files/**/*'])
+    return src(['src/**/*.js', '!src/**/unittest-files/**/*', "!src/thirdparty/prettier/**/*"])
         .pipe(sourcemaps.init())
         .pipe(minify({
             ext:{
