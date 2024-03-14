@@ -32,5 +32,6 @@ Disallow: /assets/
 
 # XML sitemaps
 Sitemap: https://sitemaps.phcode.io/sitemap-phcode.xml
+Sitemap: https://phcode.dev/sitemap-phcode.xml
 
 # more sitemap urls can be given here, but just 1 for now.
