@@ -353,7 +353,8 @@ function _listFilesInDir(dir) {
     });
 }
 
-const ALLOWED_EXTENSIONS_TO_CACHE = ["js", "html", "htm", "xml", "xhtml", "css", "less", "scss", "ttf", "woff", "woff2", "eot",
+const ALLOWED_EXTENSIONS_TO_CACHE = ["js", "html", "htm", "xml", "xhtml", "mjs",
+    "css", "less", "scss", "ttf", "woff", "woff2", "eot",
     "txt", "otf",
     "json", "config",
     "zip",

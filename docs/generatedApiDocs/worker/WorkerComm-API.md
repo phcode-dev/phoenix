@@ -177,6 +177,7 @@ Type: [function][1]
 ### Parameters
 
 *   `scriptURL` **[string][2]** the Full url to load.
+*   `isModule` **[boolean][5]** if the url is a module url
 
 ### Examples
 
@@ -188,6 +189,8 @@ WorkerComm.createWorkerComm(_myWorker, exports);
 let ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
 let addWorkerScriptPath = ExtensionUtils.getModulePath(module, "add_worker_Script.js")
 await exports.loadScriptInWorker(addWorkerScriptPath);
+// if the worker is an es-module, then set optional isModule to true
+// Eg.loadScriptInWorker(addWorkerScriptPath, true);
 ```
 
 ## EVENT_WORKER_COMM_INIT_COMPLETE
@@ -201,3 +204,5 @@ Raised on main thread when WorkerComm is loaded in the web-worker and is ready.
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean

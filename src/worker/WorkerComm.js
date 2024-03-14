@@ -213,8 +213,8 @@
                 workerCommLoadCompleteInWorker = false;
             function loadPendingScripts() {
                 workerCommLoadCompleteInWorker = true;
-                for(let scriptUrl of loadScriptQueue){
-                    eventDispatcher.loadScriptInWorker(scriptUrl);
+                for(let queuedLoads of loadScriptQueue){
+                    eventDispatcher.loadScriptInWorker(queuedLoads.scriptURL, queuedLoads.isModule);
                 }
                 loadScriptQueue = [];
             }
@@ -228,20 +228,27 @@
              * let ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
              * let addWorkerScriptPath = ExtensionUtils.getModulePath(module, "add_worker_Script.js")
              * await exports.loadScriptInWorker(addWorkerScriptPath);
+             * // if the worker is an es-module, then set optional isModule to true
+             * // Eg.loadScriptInWorker(addWorkerScriptPath, true);
              * @param {string} scriptURL the Full url to load.
+             * @param {boolean} isModule if the url is a module url
              * @type {function}
              */
-            eventDispatcher.loadScriptInWorker = async function (scriptURL) {
+            eventDispatcher.loadScriptInWorker = async function (scriptURL, isModule) {
                 if(!workerCommLoadCompleteInWorker){
-                    loadScriptQueue.push(scriptURL);
+                    loadScriptQueue.push({scriptURL, isModule});
                     return;
                 }
-                await eventDispatcher.execPeer(EXEC_LOAD_SCRIPT, scriptURL);
+                await eventDispatcher.execPeer(EXEC_LOAD_SCRIPT, {scriptURL, isModule});
             };
         } else {
-            function _loadScriptHandler(url) {
-                console.log(`${env}: loading script from url: ${url}`);
-                importScripts(url);
+            function _loadScriptHandler({scriptURL, isModule}) {
+                console.log(`${env}: loading script from url: ${scriptURL}, isModule: ${isModule}`);
+                if(!isModule){
+                    importScripts(scriptURL);
+                } else {
+                    return import(scriptURL);
+                }
             }
             eventDispatcher.setExecHandler(EXEC_LOAD_SCRIPT, _loadScriptHandler);
         }
