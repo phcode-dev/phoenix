@@ -785,6 +785,11 @@ define(function (require, exports, module) {
         return _toggleInlineWidget(_inlineDocsProviders, Strings.ERROR_QUICK_DOCS_PROVIDER_NOT_FOUND);
     });
 
+    $("#phcode-io-main-nav").on("click", ()=>{
+        const editor = getActiveEditor();
+        editor && editor.focus();
+    });
+
     MainViewManager.on("currentFileChange", _handleCurrentFileChange);
     MainViewManager.on("workingSetRemove workingSetRemoveList", _handleRemoveFromPaneView);
 
