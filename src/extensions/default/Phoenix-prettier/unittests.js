@@ -267,6 +267,12 @@ define(function (require, exports, module) {
                 expect(testEditor.document.getText()).toBe('const element = <h1>Hello, {name}</h1>;\n');
             });
 
+            it("should beautify editor for tsx", async function () {
+                createMockEditor("const element = <h1>\nHello, {name}</h1>;", "tsx", "/test.tsx");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText()).toBe('const element = <h1>Hello, {name}</h1>;\n');
+            });
+
             it("should beautify editor for typescript", async function () {
                 createMockEditor("function x(){x;}", "typescript", "/test.ts");
                 await BeautificationManager.beautifyEditor(testEditor);

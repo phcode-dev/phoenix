@@ -124,6 +124,7 @@ define(function (require, exports, module) {
         scss: "scss",
         javascript: "babel",
         jsx: "babel",
+        tsx: "babel",
         json: "json-stringify",
         typescript: "typescript",
         php: "php",
