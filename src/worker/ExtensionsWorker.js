@@ -19,8 +19,10 @@
  */
 
 /*global Phoenix*/
-// @INCLUDE_IN_API_DOCS
 /**
+ * This worker is for internal use inside PHCODE only. We do not want third party extensions breaking the core
+ * extensions.
+ *
  * This is a generic web worker that is available for use by extensions to offload extension related tasks. This
  * should only be used for performing small compute tasks and should not be used for long-running compute tasks.
  *
@@ -67,7 +69,10 @@ define(function (require, exports, module) {
         WorkerComm = require("worker/WorkerComm");
 
     const _ExtensionsWorker = new Worker(
-        `${Phoenix.baseURL}worker/extensions-worker-thread.js?debug=${window.logger.logToConsolePref === 'true'}`);
+        `${Phoenix.baseURL}worker/extensions-worker-thread.js?debug=${window.logger.logToConsolePref === 'true'}`,
+        {
+            type: "module"
+        });
 
     if(!_ExtensionsWorker){
         console.error("Could not load Extensions worker! Some extensions may not work as expected.");

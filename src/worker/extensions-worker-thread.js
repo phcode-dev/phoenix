@@ -23,16 +23,18 @@
 
 const urlParams = new URLSearchParams(location.search);
 const debugMode = (urlParams.get('debug') === 'true');
+// http://localhost:8000/src/worker/extensions-worker-thread.js
+let baseURL = location.origin+location.pathname;
+baseURL = baseURL.substring(0, baseURL.lastIndexOf('/')); // http://localhost:8000/src/worker
+baseURL = baseURL.substring(0, baseURL.lastIndexOf('/') + 1); // http://localhost:8000/src/
 // eslint-disable-next-line no-unused-vars
-const Phoenix = {
+self.Phoenix = {
     // exported to be used by extensions that extend the indexing worker
-    baseURL: '../'
+    baseURL: baseURL
 };
-importScripts('../phoenix/virtualfs.js');
-importScripts('../utils/EventDispatcher.js');
-importScripts('./WorkerComm.js');
 
-virtualfs.debugMode = debugMode;
+import * as EventDispatcher from '../utils/EventDispatcher.js';
+import * as WorkerComm from './WorkerComm.js';
 
 console.log("Extensions worker loaded in debug mode: ", debugMode);
 

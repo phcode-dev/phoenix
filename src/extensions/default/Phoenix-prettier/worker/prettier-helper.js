@@ -18,66 +18,86 @@
  *
  */
 
-/*global Phoenix, WorkerComm, prettier, prettierPlugins, FastDiff, Diff*/
+/*global WorkerComm, prettierPlugins, prettier*/
 
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/standalone.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/plugins/babel.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/plugins/estree.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/plugins/html.js`);
-importScripts(`${Phoenix.baseURL}thirdparty/prettier/plugins/postcss.js`);
+let prettierInit = false;
 
-(function () {
-    // see https://prettier.io/docs/en/options.html#parser for more parsers available
-    function _identifyChangedRange(oldText, newText, start, end) {
-        let charsToEndIndex = oldText.length - end;
-        let newRangeStart = start,
-            newRangeEnd = newText.length - charsToEndIndex,
-            rangeEndInOldText = oldText.length - charsToEndIndex;
+async function initPrettier() {
+    if(prettierInit){
+        return;
+    }
+    prettierInit = true;
+    const prettierURL = `${Phoenix.baseURL}thirdparty/prettier/standalone.js`;
+    await import(prettierURL);
+    const pluginURLS = [
+        `${Phoenix.baseURL}thirdparty/prettier/plugins/babel.js`,
+        `${Phoenix.baseURL}thirdparty/prettier/plugins/estree.js`,
+        `${Phoenix.baseURL}thirdparty/prettier/plugins/html.js`,
+        `${Phoenix.baseURL}thirdparty/prettier/plugins/postcss.js`
+    ];
+    for(let pluginURL of pluginURLS){
+        await import(pluginURL);
+    }
+}
+
+let pluginURLS = {
+    php: `${Phoenix.baseURL}thirdparty/prettier/php/standalone.js`,
+    yaml: `${Phoenix.baseURL}thirdparty/prettier/plugins/yaml.js`,
+    markdown: `${Phoenix.baseURL}thirdparty/prettier/plugins/markdown.js`,
+    typescript: `${Phoenix.baseURL}thirdparty/prettier/plugins/typescript.js`
+};
+let builtinPlugins = ["babel", "json-stringify", "html", "css", "less", "scss"];
+async function _loadPlugin(pluginName) {
+    if(pluginURLS[pluginName]){
+        await import(pluginURLS[pluginName]);
+        return;
+    }
+    if(!builtinPlugins.includes(pluginName)){
+        console.error("no prettier plugin loaded for", pluginName);
+    }
+}
+
+// see https://prettier.io/docs/en/options.html#parser for more parsers available
+function _identifyChangedRange(oldText, newText, start, end) {
+    let charsToEndIndex = oldText.length - end;
+    let newRangeStart = start,
+        newRangeEnd = newText.length - charsToEndIndex,
+        rangeEndInOldText = oldText.length - charsToEndIndex;
+    return {
+        text: newText,
+        changedText: newText.substring(newRangeStart, newRangeEnd),
+        rangeStart: newRangeStart,
+        rangeEnd: newRangeEnd,
+        rangeEndInOldText: rangeEndInOldText
+    };
+}
+
+async function prettify(params) {
+    if(!prettierInit){
+        await initPrettier();
+    }
+    let options = params.options || {};
+    options.plugins= prettierPlugins;
+    // options.cursorOffset this option doesnt work well and prettier.formatWithCursor is buggy causing hangs
+    // unpredictably in worker thread. Hangs noted in large html, js and json files. test thoroughly before
+    // trying to implement again. https://github.com/prettier/prettier/issues/13387
+    let isFullFileBeautify = !options.rangeStart || !options.rangeEnd;
+    options.rangeStart = options.rangeStart || 0;
+    options.rangeEnd = options.rangeEnd || params.text.length;
+    await _loadPlugin(options._usePlugin);
+    let { formatted, cursorOffset} = await prettier.formatWithCursor(params.text, options);
+    if(isFullFileBeautify){
         return {
-            text: newText,
-            changedText: newText.substring(newRangeStart, newRangeEnd),
-            rangeStart: newRangeStart,
-            rangeEnd: newRangeEnd,
-            rangeEndInOldText: rangeEndInOldText
+            text: formatted,
+            cursorOffset: cursorOffset
         };
     }
+    return _identifyChangedRange(params.text, formatted, options.rangeStart, options.rangeEnd);
+}
 
-    async function prettify(params) {
-        let options = params.options || {};
-        options.plugins= prettierPlugins;
-        // options.cursorOffset this option doesnt work well and prettier.formatWithCursor is buggy causing hangs
-        // unpredictably in worker thread. Hangs noted in large html, js and json files. test thoroughly before
-        // trying to implement again. https://github.com/prettier/prettier/issues/13387
-        let isFullFileBeautify = !options.rangeStart || !options.rangeEnd;
-        options.rangeStart = options.rangeStart || 0;
-        options.rangeEnd = options.rangeEnd || params.text.length;
-        let { formatted, cursorOffset} = await prettier.formatWithCursor(params.text, options);
-        if(isFullFileBeautify){
-            return {
-                text: formatted,
-                cursorOffset: cursorOffset
-            };
-        }
-        return _identifyChangedRange(params.text, formatted, options.rangeStart, options.rangeEnd);
-    }
+WorkerComm.setExecHandler("prettify", prettify);
 
-    let pluginURLS = {
-        php: `${Phoenix.baseURL}thirdparty/prettier/php/standalone.js`,
-        yaml: `${Phoenix.baseURL}thirdparty/prettier/plugins/yaml.js`,
-        markdown: `${Phoenix.baseURL}thirdparty/prettier/plugins/markdown.js`,
-        typescript: `${Phoenix.baseURL}thirdparty/prettier/plugins/typescript.js`
-    };
-    let builtinPlugins = ["babel", "json-stringify", "html", "css", "less", "scss"];
-    function _loadPlugin(pluginName) {
-        if(pluginURLS[pluginName]){
-            importScripts(pluginURLS[pluginName]);
-            return;
-        }
-        if(!builtinPlugins.includes(pluginName)){
-            console.log("no plugin loaded for", pluginName);
-        }
-    }
-
-    WorkerComm.setExecHandler("prettify", prettify);
-    WorkerComm.setExecHandler("loadPrettierPlugin", _loadPlugin);
-}());
+initPrettier()
+    .catch(err=>{
+       console.error("Failed to load prettier in worker: ", err);
+    });
