@@ -483,6 +483,7 @@ define(function (require, exports, module) {
                     url = node.getAttribute("href");
                     if (url && !url.match(/^#/)) {
                         NativeApp.openURLInDefaultBrowser(url);
+                        e.stopPropagation();
                     }
                     e.preventDefault();
                     break;
