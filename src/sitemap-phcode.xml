@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Please also modify the file at sitemaps.phcode.io/sitemap-phcode.xml if modifying this file-->
+  <url>
+    <loc>https://phcode.io/</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://phcode.dev/</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://docs.phcode.dev/</loc>
+    <changefreq>daily</changefreq>
+  </url>
+</urlset>
