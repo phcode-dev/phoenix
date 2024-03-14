@@ -1,0 +1,36 @@
+# The use of robots or other automated means to access the sites managed by core.ai
+# without the express permission of Adobe is strictly prohibited.
+# Notwithstanding the foregoing, core.ai may permit automated access to
+# access certain pages but solely for the limited purpose of
+# including content in publicly available search engines. Any other
+# use of robots or failure to obey the robots exclusion standards set
+# forth at http://www.robotstxt.org/ is strictly prohibited.
+
+# Details about Googlebot available at: http://www.google.com/bot.html
+# The Google search engine can see everything
+User-agent: gsa-crawler-www
+Disallow: /assets/
+
+# The Omniture search engine can see everything
+User-agent: Atomz/1.0
+Disallow: /assets/
+
+User-agent: *
+Disallow: /assets/
+
+User-agent: AdsBot-Google
+Disallow: /assets/
+
+User-agent: AdsBot-Google-Mobile
+Disallow: /assets/
+
+User-agent: SearchmetricsBot
+Disallow: /assets/
+
+User-agent: Googlebot
+Disallow: /assets/
+
+# XML sitemaps
+Sitemap: https://sitemaps.phcode.io/sitemap-phcode.xml
+
+# more sitemap urls can be given here, but just 1 for now.
