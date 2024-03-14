@@ -390,7 +390,7 @@ define(function (require, exports, module) {
                         self.searchField.destroy();
                         self.searchField = null;
                     }
-                }, 100); // on clicking the item in history popup, commit is called after focusout which
+                }, 250); // on clicking the item in history popup, commit is called after focusout which
                 // means that if we destroy it here, the commit will never be called. so the delay timer.
             })
             .on("focusout", "#fif-filter-input", function (e) {
@@ -399,7 +399,7 @@ define(function (require, exports, module) {
                         self.filterField.destroy();
                         self.filterField = null;
                     }
-                }, 100); // on clicking the item in history popup, commit is called after focusout which
+                }, 250); // on clicking the item in history popup, commit is called after focusout which
                 // means that if we destroy it here, the commit will never be called. so the delay timer.
             })
             .on("click", ".search-input-container .dropdown-icon", function (e) {

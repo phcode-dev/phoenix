@@ -454,9 +454,9 @@ define(function (require, exports, module) {
      * @private
      * Close the open search bar, if any. For unit tests.
      */
-    function _closeFindBar() {
+    function _closeFindBar(suppressAnimation) {
         if (_findBar) {
-            _findBar.close();
+            _findBar.close(suppressAnimation);
         }
     }
 
@@ -544,7 +544,12 @@ define(function (require, exports, module) {
     });
 
     // Initialize: register listeners
-    ProjectManager.on("beforeProjectClose", function () { _resultsView.close(); });
+    ProjectManager.on("beforeProjectClose", function () {
+        _resultsView.close();
+        if (_findBar && !_findBar.isClosed()) {
+            _closeFindBar(true);
+        }
+    });
 
     // Initialize: command handlers
     CommandManager.register(Strings.CMD_FIND_IN_FILES,       Commands.CMD_FIND_IN_FILES,       _showFindBar);
