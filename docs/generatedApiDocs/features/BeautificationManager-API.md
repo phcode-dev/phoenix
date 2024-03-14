@@ -56,6 +56,9 @@ provider.beautifyEditorProvider = function(editor) {
             resolve({
                 originalText: "the original text sent to beautify",
                 changedText: "partial or full text that changed.",
+                // Optional cursor offset if given will set the editor cursor to the position after beautification.
+                // either `cursorOffset` or `ranges` can be specified, but not both.
+                cursorOffset: number,
                 // Optional: If range is specified, only the given range will be replaced. else full text is replaced
                 ranges:{
                     replaceStart: {line,ch},
@@ -75,7 +78,9 @@ doesn't want any further processing from BeautificationManager.) or contain the 
 2.  `changedText` - string, this should be the fully prettified text of the whole `originalText` or a fragment of
     pretty text in `originalText` if a range was selected. If a `fragment` is returned, then the
     `ranges` object must be specified.
-3.  `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
+3.  `cursorOffset` - Optional number, if given will set the editor cursor to the position after beautification.
+    either `cursorOffset` or `ranges` can be specified, but not both.
+4.  `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
     If range is not specified, the full text in the editor will be replaced. range has 2 fields:
     1.  `replaceStart{line,ch}` - the start of range to replace
     2.  `replaceEnd{line,ch}` - the end of range to replace
@@ -130,7 +135,7 @@ if beautification failed.
 
 ## beautifyText
 
-Beautifies text in the given editor with available providers.
+Beautifies text with available providers.
 
 Type: [function][1]
 

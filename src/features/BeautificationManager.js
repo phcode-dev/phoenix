@@ -66,6 +66,9 @@
  *             resolve({
  *                 originalText: "the original text sent to beautify",
  *                 changedText: "partial or full text that changed.",
+ *                 // Optional cursor offset if given will set the editor cursor to the position after beautification.
+ *                 // either `cursorOffset` or `ranges` can be specified, but not both.
+ *                 cursorOffset: number,
  *                 // Optional: If range is specified, only the given range will be replaced. else full text is replaced
  *                 ranges:{
  *                     replaceStart: {line,ch},
@@ -83,6 +86,8 @@
  * 1. `changedText` - string, this should be the fully prettified text of the whole `originalText` or a fragment of
  *     pretty text in `originalText` if a range was selected. If a `fragment` is returned, then the
  *     `ranges` object must be specified.
+ * 1. `cursorOffset` - Optional number, if given will set the editor cursor to the position after beautification.
+ *      either `cursorOffset` or `ranges` can be specified, but not both.
  * 1. `ranges` - Optional object, set of 2 cursors that gives details on what range to replace with given changed text.
  *    If range is not specified, the full text in the editor will be replaced. range has 2 fields:
  *    1. `replaceStart{line,ch}` - the start of range to replace
@@ -195,10 +200,11 @@ define(function (require, exports, module) {
             } else {
                 let cursor = editor.getCursorPos();
                 editor.replaceRange(beautyObject.changedText, ranges.replaceStart, ranges.replaceEnd);
+                if(beautyObject.cursorOffset || beautyObject.cursorOffset === 0){
+                    // we have accurate cursor positioning from beautifier
+                    cursor = editor.posFromIndex(beautyObject.cursorOffset);
+                }
                 editor.setCursorPos(cursor.line, cursor.ch);
-                // this cursor is not accurate. Trying to place this accurately is taking time,
-                // tried diff parsing which worked, but parser taking lots of time to complete, diff parsing line wise
-                // was giving better results but couldn't make it consistent.
             }
         }
     }
@@ -240,7 +246,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Beautifies text in the given editor with available providers.
+     * Beautifies text with available providers.
      * @param {string} textToBeautify
      * @param {string} filePathOrFileName Note that the file path may not actually exist on disk. It is just used to
      * infer what language beautifier is to be applied.
@@ -298,7 +304,7 @@ define(function (require, exports, module) {
 
             editor.displayErrorMessageAtCursor(message);
             ProjectManager.setProjectBusy(false, busyMessage);
-            console.log("No beautify providers responded", e);
+            console.warn("No beautify providers responded", e);
             result.reject();
         });
         return result.promise();
