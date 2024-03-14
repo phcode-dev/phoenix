@@ -95,6 +95,13 @@ function makeJSDist() {
         .pipe(dest('dist'));
 }
 
+// we had to do this as prettier is non minifiable
+function makeJSPrettierDist() {
+    return src(["src/thirdparty/prettier/**/*"])
+        .pipe(sourcemaps.init())
+        .pipe(dest('dist/thirdparty/prettier'));
+}
+
 function makeDistNonJS() {
     return src(['src/**/*', '!src/**/*.js'])
         .pipe(dest('dist'));
@@ -676,10 +683,10 @@ exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS,
     makeDistAll, releaseDev,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
-    makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseStaging,
+    makeDistNonJS, makeJSDist, makeJSPrettierDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseStaging,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
-    makeDistNonJS, makeJSDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseProd,
+    makeDistNonJS, makeJSDist, makeJSPrettierDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseProd,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseWebCache = series(makeDistWebCache);
 exports.serve = series(exports.build, serve);
