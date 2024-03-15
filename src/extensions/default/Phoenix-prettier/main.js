@@ -99,7 +99,7 @@ define(function (require, exports, module) {
                 type: "string",
                 description: Strings.BEAUTIFY_OPTION_PROSE_WRAP,
                 values: ["always", "never", "preserve"],
-                initial: "always"
+                initial: "preserve"
             },
             bracketSameLine: {
                 type: "boolean",
