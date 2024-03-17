@@ -467,6 +467,7 @@ define(function (require, exports, module) {
             popoverState.visible = true;
             positionPreview(editor, popoverState.xpos, popoverState.ytop, popoverState.ybot);
 
+            exports.off(_EVENT_POPUP_CONTENT_MUTATED);
             exports.on(_EVENT_POPUP_CONTENT_MUTATED, ()=>{
                 if(!popoverState || !editor){
                     return;

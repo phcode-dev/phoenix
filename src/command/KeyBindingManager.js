@@ -1039,7 +1039,9 @@ define(function (require, exports, module) {
      * semi-modal UI elements like dialogs or the code hint list that should
      * execute before normal command bindings are run.
      *
-     * The hook is passed one parameter, the original keyboard event. If the
+     * The hook is passed two parameters, the first param is the original keyboard event.
+     * The second param is the deduced shortcut string like `Ctrl-F` if present for
+     * that event or null if not keyboard shortcut string. If the
      * hook handles the event (or wants to block other global hooks from
      * handling the event), it should return true. Note that this will *only*
      * stop other global hooks and KeyBindingManager from handling the
@@ -1167,15 +1169,15 @@ define(function (require, exports, module) {
         if(_detectDoubleCtrlKeyPress(event)){
             return true;
         }
+        const shortcut = _translateKeyboardEvent(event);
         let i, handled = false;
         for (i = _globalKeydownHooks.length - 1; i >= 0; i--) {
-            if (_globalKeydownHooks[i](event)) {
+            if (_globalKeydownHooks[i](event, shortcut)) {
                 handled = true;
                 break;
             }
         }
         _detectAltGrKeyDown(event);
-        const shortcut = _translateKeyboardEvent(event);
         if(keyboardShortcutCaptureInProgress) {
             return updateShortcutSelection(event, shortcut);
         }

@@ -270,6 +270,10 @@ define(function (require, exports, module) {
         return randomId;
     }
 
+    function isNumber(value) {
+        return parseFloat(value).toString() === value;
+    }
+
     // Define public API
     exports.format              = format;
     exports.regexEscape         = regexEscape;
@@ -284,4 +288,5 @@ define(function (require, exports, module) {
     exports.truncate            = truncate;
     exports.hashCode            = hashCode;
     exports.randomString        = randomString;
+    exports.isNumber            = isNumber;
 });

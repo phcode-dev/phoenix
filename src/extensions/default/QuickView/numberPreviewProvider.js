@@ -43,37 +43,107 @@ define(function (require, exports, module) {
 
     function _splitNumber(numStr) {
         // https://stackoverflow.com/questions/2868947/split1px-into-1px-1-px-in-javascript
-        let split = numStr.match(/(^-?)(\d*\.?\d*)(.*)/); // "1px" -> ["1px", "1", "px"]
-        let number = split[1] + split[2] || "";
-        let decimalPlaces = number.split(".")[1];
-        decimalPlaces = decimalPlaces && decimalPlaces.length || 0;
-        let roundTo;
-        switch (decimalPlaces) {
-        case 0: roundTo = 1; break;
-        case 1: roundTo = 10; break;
-        case 2: roundTo = 100; break;
-        default: roundTo = 100; break;
+        try{
+            let split = numStr.match(/(^-?)(\d*\.?\d*)(.*)/); // "1px" -> ["1px", "1", "px"]
+            let number = split[1] + split[2] || "";
+            let decimalPlaces = number.split(".")[1];
+            decimalPlaces = decimalPlaces && decimalPlaces.length || 0;
+            let roundTo;
+            switch (decimalPlaces) {
+            case 0: roundTo = 1; break;
+            case 1: roundTo = 10; break;
+            case 2: roundTo = 100; break;
+            default: roundTo = 100; break;
+            }
+            return {
+                number,
+                units: split[3] || "",
+                decimalPlaces,
+                roundTo
+            };
+        } catch (e) {
+            return null;
         }
+    }
+
+    function _getWordAfterPos(editor, pos) {
+        // Find the word at the specified position
+        const wordRange = editor.getWordAt(pos);
+        const wordFull = editor.getTextBetween(wordRange.startPos, wordRange.endPos);
+
+        // Calculate effective start position within the word, if startPos is within the word
+        let startChInWord = 0;
+        if (wordRange.startPos.line === pos.line && wordRange.startPos.ch < pos.ch) {
+            startChInWord = pos.ch - wordRange.startPos.ch;
+        }
+
+        // Calculate the effective start and end positions of the trimmed word within the editor
+        const effectiveStartPos = {
+            line: wordRange.startPos.line,
+            ch: wordRange.startPos.ch + startChInWord
+        };
+
+        const effectiveEndPos = wordRange.endPos; // The end position remains the same as the original word's end
+
+        // Trim the word based on the effective start position
+        const trimmedWord = wordFull.substring(startChInWord);
+
+        // Return the trimmed word along with its start and end positions
         return {
-            number,
-            units: split[3] || "",
-            decimalPlaces,
-            roundTo
+            text: trimmedWord,
+            startPos: effectiveStartPos,
+            endPos: effectiveEndPos
         };
     }
 
-    function getQuickView(editor, pos, token, line) {
+    function _isCSSUnit(str) {
+        // Regular expression pattern that matches common CSS units
+        const regexPattern = /^(px|cm|mm|Q|in|pc|pt|em|ex|ch|rem|vw|vh|vmin|vmax|lh|%)$/;
 
+        return regexPattern.test(str);
+    }
+
+    function getQuickView(editor, pos, token, line) {
         return new Promise((resolve, reject)=>{
-            if(token.type !== "number" || !enabled){
+            let startCh = token.start,
+                endCh = token.end,
+                numberStr = token.string;
+            if(token.type === "string" && enabled) {
+                // this is for inline html attributes like style="width:10px;"
+                // if the user hover over the 10 or px part, we should show the preview.
+                const number = editor.getNumberAt(pos);
+                if(number) {
+                    // user hovered over the numeric (Eg.10) part
+                    numberStr = number.text;
+                    startCh = number.startPos.ch;
+                    endCh = number.endPos.ch;
+                    // check if we can extract units
+                    const nextPos = {line: number.endPos.line, ch: number.endPos.ch};
+                    const nextWord = _getWordAfterPos(editor, nextPos);
+                    if(_isCSSUnit(nextWord.text.trim())){
+                        numberStr = editor.getTextBetween(number.startPos, nextWord.endPos);
+                        endCh = nextWord.endPos.ch;
+                    }
+                } else {
+                    // the user hovers on the unit field or this is not a numeric string.
+                    // for the unit field, we could add logic to detect the numeric field, but not doing that
+                    // rn due to resource crunch.
+                    reject();
+                    return;
+                }
+            } else if(token.type !== "number" || !enabled){
                 reject();
                 return;
             }
-            let sPos = {line: pos.line, ch: token.start},
-                ePos = {line: pos.line, ch: token.end};
+            let sPos = {line: pos.line, ch: startCh},
+                ePos = {line: pos.line, ch: endCh};
             let editOrigin = "+NumberQuickView_" + (lastOriginId++);
-            let $content = $(`<div><input type="text" value="${token.string}" class="dial"><div>`);
-            let split = _splitNumber(token.string);
+            let $content = $(`<div><input type="text" value="${numberStr}" class="dial"><div>`);
+            let split = _splitNumber(numberStr);
+            if(!split){
+                reject();
+                return;
+            }
             let changedMetricSent = false;
             $content.find(".dial").knob({
                 stopper: false,
@@ -88,8 +158,8 @@ define(function (require, exports, module) {
                 },
                 getValue: function(userInput){
                     let changedSplit = _splitNumber(userInput);
-                    split.units = changedSplit.units;
-                    return changedSplit.number;
+                    split.units = changedSplit && changedSplit.units;
+                    return changedSplit && changedSplit.number;
                 },
                 change: function (value) {
                     editor.document.batchOperation(function () {
@@ -146,7 +216,8 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         enabled = prefs.get(PREF_ENABLED_KEY);
-        QuickView.registerQuickViewProvider(exports, ["css", "html"]);
+        QuickView.registerQuickViewProvider(exports, ["html", "xhtml", "xml", // xml takes care of html inside tsx/jsx
+            "css", "less", "scss", "sass"]);
     });
 
     exports.getQuickView = getQuickView;

@@ -1416,6 +1416,90 @@ define(function (require, exports, module) {
         this.setSelection(word.anchor, word.head);
     };
 
+    Editor.prototype.getTextBetween = function (startPos, endPos) {
+        const text = this._codeMirror.getRange(startPos, endPos);
+        return text;
+    };
+
+    /**
+     * Gets word at the given pos lies within or adjacent to. If pos isn't touching a word
+     * (e.g. within a token like "//"), returns null
+     * @param pos
+     * @return {{text:string, startPos:{line:number, ch:number}, endPos: {line:number, ch:number}}}
+     */
+    Editor.prototype.getWordAt = function (pos) {
+        const wordRange = this._codeMirror.findWordAt(pos);
+        const text = this._codeMirror.getRange(wordRange.anchor, wordRange.head);
+        return {
+            text,
+            startPos: wordRange.anchor,
+            endPos: wordRange.head
+        };
+    };
+
+    /**
+     * Gets number string of (upto 10 digits default) at the given pos lies within or adjacent to.
+     * If pos isn't touching a number, returns null. If the number in string is greater than max digits
+     *  returns null.
+     * @param pos
+     * @param {number} maxDigits - number of digits allowed. This is to prevent massive digit strings.
+     * @return {{text:string, startPos:{line:number, ch:number}, endPos: {line:number, ch:number}}}
+     */
+    Editor.prototype.getNumberAt = function (pos, maxDigits = 10) {
+        // Eg: string "margin:1.4em;" the position maybe at the location 4, . or 1
+        const token = this._codeMirror.getTokenAt(pos);
+        const maxDigitsOverflow = maxDigits + 1;
+
+        if (token.type === "string" || token.type === "number") {
+            const str = token.string;
+            let left = pos.ch - token.start; // Start scanning from the given position
+            let right = left;
+            let decimalAlreadyFound = false,
+                digitCount = 0;
+
+            // Scan left to find the start of the number
+            while (left - 1 >= 0 && (/\d|\.|-/).test(str[left - 1]) && digitCount < maxDigitsOverflow) {
+                // Make sure not to count multiple decimal points in a number
+                if (str[left - 1] === '.' && !decimalAlreadyFound) {
+                    decimalAlreadyFound =  true;
+                } else if (str[left - 1] === '.' && decimalAlreadyFound) {
+                    break;
+                }  else if (str[left - 1] === '-') {
+                    left--;
+                    break;
+                }
+                digitCount++;
+                left--;
+            }
+
+            // Scan right to find the end of the number
+            while (right < str.length && (/\d|\./).test(str[right]) && digitCount < maxDigitsOverflow) {
+                // Make sure not to count multiple decimal points in a number
+                if (str[right] === '.' && !decimalAlreadyFound) {
+                    decimalAlreadyFound = true;
+                } else if (str[right] === '.' && decimalAlreadyFound) {
+                    break;
+                }
+                digitCount++;
+                right++;
+            }
+
+            // If we found a number, and it is withing the original max digit count, return the result
+            if (left !== right && digitCount !== maxDigitsOverflow) {
+                const text = str.substring(left, right);
+                if(text !== "."){
+                    return {
+                        text: str.substring(left, right),
+                        startPos: {line: pos.line, ch: token.start + left},
+                        endPos: {line: pos.line, ch: token.start + right}
+                    };
+                }
+            }
+        }
+
+        return null;
+    };
+
     /**
      * Gets the total number of lines in the document (includes lines not visible in the viewport)
      * @return {!number}
