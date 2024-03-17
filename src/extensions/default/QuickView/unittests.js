@@ -40,8 +40,7 @@ define(function (require, exports, module) {
             EditorManager,
             QuickView,
             editor,
-            testFile = "test.css",
-            oldFile;
+            testFile = "test.css";
 
         beforeEach(async function () {
             // Create a new window that will be shared by ALL tests in this spec.
@@ -59,12 +58,9 @@ define(function (require, exports, module) {
             QuickView = brackets.test.QuickViewManager;
             MainViewManager = brackets.test.MainViewManager;
 
-            if (testFile !== oldFile) {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
 
-                editor  = EditorManager.getCurrentFullEditor();
-                oldFile = testFile;
-            }
+            editor  = EditorManager.getCurrentFullEditor();
         }, 30000);
 
         afterAll(async function () {
@@ -442,15 +438,32 @@ define(function (require, exports, module) {
         });
 
         describe("Quick view numeric", function () {
-            testFile = "test.css";
+            async function openTextFile(testFile = "test.css") {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([testFile]), "open test file: " + testFile);
+                editor  = EditorManager.getCurrentFullEditor();
+            }
 
             it("Should show numeric quick view on numbers except gradients or colors", async function () {
+                await openTextFile();
                 // We should do the following test too in the future.
                 // should increment based on decimal places count:  0.7 + .1,  0.07 + .01
 
                 await checkNumberPopoverAtPos("7px", 135, 60);
                 await checkGradientAtPos("linear-gradient(63deg, #999 23%, transparent 23%)", 135, 27);
                 await checkColorAtPos("hsla(0, 100%, 50%, 0.5)", 32, 18);
+            });
+
+            it("Should show numeric quick view in html file on numbers except gradients or colors", async function () {
+                await openTextFile("test.html");
+                await checkNumberPopoverAtPos("10px", 7, 28);
+                await checkNumberPopoverAtPos("11px", 8, 28);
+                await checkNumberPopoverAtPos("12%", 9, 28);
+                await checkNumberPopoverAtPos("1", 10, 24);
+                await checkColorAtPos("#000", 7, 53);
+                await checkNumberPopoverAtPos("12%", 11, 28);
+                await checkNumberPopoverAtPos("22%", 12, 28);
+                await checkNumberPopoverAtPos("13px", 12, 32);
+                await checkNumberPopoverAtPos("14em", 12, 37);
             });
         });
     });
