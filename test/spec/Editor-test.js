@@ -2260,6 +2260,42 @@ define(function (require, exports, module) {
                 _expectTokenToBe(myEditor.getPreviousToken({line: 1, ch: 1}), 10, 11, ';', null);
                 _expectTokenToBe(myEditor.getPreviousToken({line: 1, ch: 0}), 10, 11, ';', null);
             });
+
+            function _verifyNumberAtPosition(pos) {
+                const number = myEditor.getNumberAt(pos);
+                expect(number.text).toBe("10");
+                expect(number.startPos).toEql({line: 0, ch: 8});
+                expect(number.endPos).toEql({line: 0, ch: 10});
+            }
+
+            it("should get number at position", function () {
+                _verifyNumberAtPosition({line: 0, ch: 9});
+                _verifyNumberAtPosition({line: 0, ch: 10});
+            });
+
+            it("should get null if no number at position", function () {
+                let number = myEditor.getNumberAt({line: 8, ch: 0});
+                expect(number).toBeNull();
+                number = myEditor.getNumberAt({line: 0, ch: 0});
+                expect(number).toBeNull();
+            });
+
+            it("should get word at position", function () {
+                let word = myEditor.getWordAt({line: 0, ch: 1});
+                expect(word.text).toBe("const");
+                expect(word.startPos).toEql({line: 0, ch: 0, sticky: null});
+                expect(word.endPos).toEql({line: 0, ch: 5, sticky: null});
+
+                word = myEditor.getWordAt({line: 2, ch: 10});
+                expect(word.text).toBe("log");
+                expect(word.startPos).toEql({line: 2, ch: 9, sticky: null});
+                expect(word.endPos).toEql({line: 2, ch: 12, sticky: null});
+
+                word = myEditor.getWordAt({line: 2, ch: 14});
+                expect(word.text).toBe("val");
+                expect(word.startPos).toEql({line: 2, ch: 13, sticky: null});
+                expect(word.endPos).toEql({line: 2, ch: 16, sticky: null});
+            });
         });
 
         describe("Markers", function () {
