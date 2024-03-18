@@ -44,6 +44,10 @@ define(function (require, exports, module) {
     function _splitNumber(numStr) {
         // https://stackoverflow.com/questions/2868947/split1px-into-1px-1-px-in-javascript
         try{
+            if(numStr.length > 15){
+                // empirically, anything larger than 15 chars is not a number we can process
+                return null;
+            }
             let split = numStr.match(/(^-?)(\d*\.?\d*)(.*)/); // "1px" -> ["1px", "1", "px"]
             let number = split[1] + split[2] || "";
             let decimalPlaces = number.split(".")[1];
