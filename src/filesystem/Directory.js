@@ -179,29 +179,12 @@ define(function (require, exports, module) {
     Directory.prototype.getContentsAsync = function () {
         let that = this;
         return new Promise((resolve, reject)=>{
-            that.getContents((err, contents, contentStats, contentsStatsErrors) =>{
+            that.getContents((err, contents, entriesStats, entriesStatsErrors) =>{
                 if(err){
                     reject(err);
                     return;
                 }
-                resolve({entries: contents, contentStats, contentsStatsErrors});
-            });
-        });
-    };
-
-    /**
-     * Read the contents of a Directory and returns a promise.
-     * @return {Promise<{entries: Array.<FileSystemEntry>, entriesStats: Array.<FileSystemEntry>}>}
-     */
-    Directory.prototype.getContentsAsync = function () {
-        let self = this;
-        return new Promise((resolve, reject)=>{
-            self.getContents(async function (err, entries, entriesStats) {
-                if(err){
-                    reject(err);
-                    return;
-                }
-                resolve({entries, entriesStats});
+                resolve({entries: contents, entriesStats, entriesStatsErrors});
             });
         });
     };
