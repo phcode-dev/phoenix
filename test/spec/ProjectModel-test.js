@@ -131,7 +131,9 @@ define(function (require, exports, module) {
                         if (!filelist && error) {
                             errorHandler(error);
                         } else {
-                            filelist.map(visitor);
+                            filelist.map((entry)=>{
+                                return visitor(entry);
+                            });
                         }
                     }
                 };

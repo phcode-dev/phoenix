@@ -426,11 +426,11 @@ define(function (require, exports, module) {
 
             it("should read a Directory Async", async function () {
                 let directory = fileSystem.getDirectoryForPath("/subdir/");
-                const {entries, contentStats, contentsStatsErrors} = await directory.getContentsAsync();
+                const {entries, entriesStats, entriesStatsErrors} = await directory.getContentsAsync();
                 expect(entries.length).toBe(3);
                 expect(entries[0].fullPath).toBe("/subdir/file3.txt");
-                expect(contentStats[0].isFile).toBe(true);
-                expect(contentsStatsErrors).toBe(undefined);
+                expect(entriesStats[0].isFile).toBe(true);
+                expect(entriesStatsErrors).toBe(undefined);
             });
 
             it("should check if directory is empty Async", async function () {
