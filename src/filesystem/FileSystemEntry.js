@@ -504,75 +504,64 @@ define(function (require, exports, module) {
      * @private
      * @param {FileSystemStats} stats - the stats for this entry
      * @param {{string: boolean}} visitedPaths - the set of fullPaths that have already been visited
-     * @param {function(FileSystemEntry): boolean} visitor - A visitor function, which is
+     * @param {function(FileSystemEntry, FileSystemEntry[]): boolean|Promise} visitor - A visitor function, which is
      *      applied to descendent FileSystemEntry objects. If the function returns false for
      *      a particular Directory entry, that directory's descendents will not be visited.
      * @param {{maxDepth: number, maxEntries: number, sortList: boolean}} options
      * @returns {Promise<>} that resolves when the visit is complete
      */
-    FileSystemEntry.prototype._visitHelper = function (stats, visitedPaths, visitor, options, _currentDepth = 0) {
-        return new Promise((resolve, reject)=>{
-            const self = this;
-            let maxDepth = options.maxDepth,
-                maxEntries = options.maxEntries,
-                sortList = options.sortList,
-                totalPathsVisited = visitedPaths._totalPathsVisited || 0;
+    FileSystemEntry.prototype._visitHelper = async function (stats, visitedPaths, visitor, options, _currentDepth = 0, _entries = null) {
+        const self = this;
+        let maxDepth = options.maxDepth,
+            maxEntries = options.maxEntries,
+            sortList = options.sortList,
+            totalPathsVisited = visitedPaths._totalPathsVisited || 0;
 
-            if (self.isDirectory) {
-                var currentPath = stats.realPath || self.fullPath;
+        if (self.isDirectory) {
+            var currentPath = stats.realPath || self.fullPath;
 
-                if (visitedPaths.hasOwnProperty(currentPath)) {
-                    // Link cycle detected
-                    resolve();
-                    return;
-                }
-
-                visitedPaths[currentPath] = true;
-            }
-
-            if (visitedPaths._totalPathsVisited >= maxEntries) {
-                reject(FileSystemError.TOO_MANY_ENTRIES);
+            if (visitedPaths.hasOwnProperty(currentPath)) {
+                // Link cycle detected
                 return;
             }
 
-            visitedPaths._totalPathsVisited = totalPathsVisited + 1;
-            let shouldVisitChildren = visitor(self);
-            if (!shouldVisitChildren || self.isFile || _currentDepth >= maxDepth) {
-                resolve();
-                return;
+            visitedPaths[currentPath] = true;
+        }
+
+        if (visitedPaths._totalPathsVisited >= maxEntries) {
+            throw FileSystemError.TOO_MANY_ENTRIES;
+        }
+
+        visitedPaths._totalPathsVisited = totalPathsVisited + 1;
+        let shouldVisitChildren = visitor(self, _entries);
+        // Check if the result is a promise
+        if (typeof shouldVisitChildren === "object" && shouldVisitChildren instanceof Promise) {
+            shouldVisitChildren =  await shouldVisitChildren;
+        }
+        if (!shouldVisitChildren || self.isFile || _currentDepth >= maxDepth) {
+            return;
+        }
+
+        let {entries, entriesStats} = await self.getContentsAsync();
+
+        for(let i=0; i<entriesStats.length; i++){
+            entries[i]._entryStats = entriesStats[i];
+        }
+
+        //sort entries if required
+        if (sortList) {
+            function compare(entry1, entry2) {
+                return entry1._name.toLocaleLowerCase().localeCompare(entry2._name.toLocaleLowerCase());
             }
+            entries = entries.sort(compare);
+        }
 
-            self.getContents(async function (err, entries, entriesStats) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-
-                for(let i=0; i<entriesStats.length; i++){
-                    entries[i]._entryStats = entriesStats[i];
-                }
-
-                //sort entries if required
-                if (sortList) {
-                    function compare(entry1, entry2) {
-                        return entry1._name.toLocaleLowerCase().localeCompare(entry2._name.toLocaleLowerCase());
-                    }
-                    entries = entries.sort(compare);
-                }
-
-                try{
-                    for(let entry of entries){
-                        // this is left intentionally serial to prevent a chrome crash bug when large number of fs
-                        // access APIs are called. Try to make this parallel in the future after verifying on a large
-                        // folder with more than 100K entries.
-                        await entry._visitHelper(entry._entryStats, visitedPaths, visitor, options, _currentDepth + 1);
-                    }
-                    resolve();
-                } catch (e) {
-                    reject(e);
-                }
-            });
-        });
+        for(let entry of entries){
+            // this is left intentionally serial to prevent a chrome crash bug when large number of fs
+            // access APIs are called. Try to make this parallel in the future after verifying on a large
+            // folder with more than 100K entries.
+            await entry._visitHelper(entry._entryStats, visitedPaths, visitor, options, _currentDepth + 1, entries);
+        }
     };
 
     /**
@@ -584,9 +573,12 @@ define(function (require, exports, module) {
      * entries as desired, and then process them. Whenever possible, deep
      * filesystem traversals should use this method.
      *
-     * @param {function(FileSystemEntry): boolean} visitor - A visitor function, which is
-     *      applied to this entry and all descendent FileSystemEntry objects. If the function returns
-     *      false for a particular Directory entry, that directory's descendents will not be visited.
+     * @param {function(FileSystemEntry): boolean} visitor - A visitor function (can be async), which is
+     *      applied to this entry and all descendent FileSystemEntry objects. It can have two args, the
+     *      first one is the entry being visited, the second is an array of sibling entries that share the
+     *      same parent dir as the given entry. If the function returns
+     *      false (or promise that resolved to false)for a particular Directory entry, that directory's
+     *      descendents will not be visited.
      * @param {{maxDepth: number=, maxEntries: number=}=} options
      * @param {function(?string)=} callback Callback with single FileSystemError string parameter.
      */
