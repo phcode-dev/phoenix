@@ -917,6 +917,54 @@ define(function (require, exports, module) {
         return getWelcomeProjectPath();
     }
 
+    function _mergeProjectGitIgnores(rootPath, gitIgnoreFilters) {
+        // this is an approximation to the gitIgnore spec to transform child git ignores to be
+        // relative to the project root.
+        let mergedGitIgnoreFile= "";
+        for(let filter of gitIgnoreFilters){
+            if(!filter.gitIgnoreContent){
+                continue;
+            }
+            const projectRelativePath = makeProjectRelativeIfPossible(filter.basePath);
+            if(!projectRelativePath){
+                // this is the .gitignore file in the root folder, do nothing.
+                mergedGitIgnoreFile = `${mergedGitIgnoreFile}\n${filter.gitIgnoreContent}`;
+            } else {
+                let lines =[];
+                // Transform each line to be relative to the project directory
+                for(let line of filter.gitIgnoreContent.split('\n')) {
+                    if (!line.trim() || line.startsWith('#')){
+                        lines.push(line); // empty lines and comments push as is
+                    } else {
+                        // Handle negated patterns like `!node_modules`
+                        const isNegated = line.startsWith('!');
+                        const pattern = isNegated ? line.substring(1) : line;
+                        // Patterns starting with a slash are relative to the .gitignore's directory
+                        if (line.startsWith('/')) {
+                            // Remove the leading '/' to correct the path for the new location
+                            lines.push(`${isNegated ? '!' : ''}${projectRelativePath}${pattern.substring(1)}`);
+                        } else {
+                            // For patterns without a leading '/', check if it's a directory-specific pattern
+                            if (line.endsWith('/') && (line.match(/\//g) || []).length === 1) {
+                                // This checks both if the line ends with a slash
+                                // and if there's only one slash in the line, indicating it's
+                                // a top-level directory pattern.. Eg. `dir/`
+                                lines.push(`${isNegated ? '!' : ''}${projectRelativePath}**/${pattern}`);
+                            } else {
+                                // 1. this is a rule of the form `sub/dir/`, which should match exact sub dir
+                                // and children according to git spec
+                                // 2. For global patterns like `sub/dir/other` or `sub/dir/other.txt`
+                                lines.push(`${isNegated ? '!' : ''}${projectRelativePath}${pattern}`);
+                            }
+                        }
+                    }
+                }
+                mergedGitIgnoreFile = `${mergedGitIgnoreFile}\n${lines.join('\n')}`;
+            }
+        }
+        return mergedGitIgnoreFile;
+    }
+
     /**
      * @private
      *
@@ -925,7 +973,7 @@ define(function (require, exports, module) {
     async function _watchProjectRoot(rootPath) {
         FileSystem.on("change", _fileSystemChange);
         FileSystem.on("rename", _fileSystemRename);
-        let gitIgnoreContent = await ProjectModel.getGitIgnoreFileContent(`${rootPath}.gitignore`) || "";
+        let gitIgnoreContent = _mergeProjectGitIgnores(rootPath, await model.computeProjectGitIgnoreAsync());
         const gitIgnoreFilter = `${gitIgnoreContent}\n${ProjectModel.defaultIgnoreGlobs.join("\n")}`;
         FileSystem.watch(FileSystem.getDirectoryForPath(rootPath),
             ProjectModel._shouldShowName, gitIgnoreFilter, function (err) {
@@ -1114,9 +1162,6 @@ define(function (require, exports, module) {
         startLoad.done(function () {
             // Populate file tree as long as we aren't running in the browser
             if (!brackets.inBrowser) {
-                if (!isUpdating) {
-                    _watchProjectRoot(rootPath);
-                }
                 // Point at a real folder structure on local disk
                 var rootEntry = FileSystem.getDirectoryForPath(rootPath);
                 rootEntry.exists(function (err, exists) {
@@ -1135,6 +1180,9 @@ define(function (require, exports, module) {
                             if (projectRootChanged) {
                                 _reloadProjectPreferencesScope();
                                 PreferencesManager._setCurrentFile(rootPath);
+                            }
+                            if (!isUpdating) {
+                                _watchProjectRoot(rootPath);
                             }
 
                             // If this is the most current welcome project, record it. In future launches, we want

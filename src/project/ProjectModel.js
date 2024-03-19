@@ -21,7 +21,7 @@
 
 /* unittests: ProjectModel */
 
-/*global fs, path*/
+/*global fs, path, jsPromise*/
 
 /**
  * Provides the data source for a project and manages the view model for the FileTreeView.
@@ -69,10 +69,6 @@ define(function (require, exports, module) {
     const defaultIgnoreGlobs = [
         "node_modules/**",
         "**/node_modules/**",
-        "target/**",
-        "**/target/**",
-        "dist/**",
-        "**/dist/**",
         "bower_components/**",
         "**/bower_components/**",
         ".npm",
@@ -458,7 +454,7 @@ define(function (require, exports, module) {
         return path;
     };
 
-    function getGitIgnoreFileContent(fullPath) {
+    function _getGitIgnoreFileContent(fullPath) {
         return new Promise(resolve=>{
             DocumentManager.getDocumentForPath(fullPath)
                 .done(function (doc) {
@@ -473,8 +469,9 @@ define(function (require, exports, module) {
     function _gitIgnores(entry, gitIgnoreFilters) {
         try{
             for(let filter of gitIgnoreFilters) {
-                const relativePath = path.relative(filter.base, entry.fullPath);
-                if(relativePath && filter.gitIgnore.ignores(relativePath)){
+                const relativePath = path.relative(filter.basePath, entry.fullPath);
+                if(relativePath && !relativePath.startsWith("..") &&
+                    filter.gitIgnore.ignores(relativePath)){
                     return true;
                 }
             }
@@ -485,12 +482,13 @@ define(function (require, exports, module) {
     }
 
     async function _updateGitIgnoreFromPath(gitIgnorePath, parentFullPath, gitIgnoreSearchedInDir, gitIgnoreFilters) {
-        const gitIgnoreContent = await getGitIgnoreFileContent(gitIgnorePath);
+        const gitIgnoreContent = await _getGitIgnoreFileContent(gitIgnorePath);
         gitIgnoreSearchedInDir[parentFullPath] = true;
         if(gitIgnoreContent){
             gitIgnoreFilters.push({
-                base: parentFullPath,
-                gitIgnore: fs.utils.ignore().add(gitIgnoreContent)
+                basePath: parentFullPath,
+                gitIgnore: fs.utils.ignore().add(gitIgnoreContent),
+                gitIgnoreContent
             });
         }
     }
@@ -509,6 +507,27 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Scans the whole project folder and computes the project wide git ignore
+     * filters to use. If there are nested .gitignore folders in project, that will also be detected.
+     * @return {Promise<{basePath: string, gitIgnore: object, gitIgnoreContent:string}>} returns an array with
+     *          basePath - the parent directory housing the git ignore file Eg: `/tauri/projectRoot/parent/`
+     *          gitIgnore - the git ignore filter fn that can be used to test if a path is ignored by calling
+     *             gitIgnore.ignores(relativePathToBasePath)
+     *          gitIgnoreContent - the textual content of the git ignore file.
+     */
+    ProjectModel.prototype.computeProjectGitIgnoreAsync = async function () {
+        let self = this;
+        return new Promise(resolve=>{
+            let gitIgnoreFilters = [];
+            jsPromise(self._getAllFilesCache(false, gitIgnoreFilters))
+                .catch(console.error)
+                .finally(()=>{
+                    resolve(gitIgnoreFilters);
+                });
+        });
+    };
+
+    /**
      * @private
      *
      * Returns a promise that resolves with a cached copy of all project files.
@@ -521,10 +540,10 @@ define(function (require, exports, module) {
      * @param {boolean} sort true to sort files by their paths
      * @return {$.Promise.<Array.<File>>}
      */
-    ProjectModel.prototype._getAllFilesCache = function _getAllFilesCache(sort) {
+    ProjectModel.prototype._getAllFilesCache = function _getAllFilesCache(sort, _gitIgnoreFiltersOut) {
         let self = this;
         if (!this._allFilesCachePromise) {
-            let gitIgnoreFilters = [], gitIgnoreSearchedInDir = {};
+            let gitIgnoreFilters = _gitIgnoreFiltersOut || [], gitIgnoreSearchedInDir = {};
 
             let deferred = new $.Deferred(),
                 allFiles = [],
@@ -1511,7 +1530,6 @@ define(function (require, exports, module) {
     exports._isWelcomeProjectPath   = _isWelcomeProjectPath;
     exports._ensureTrailingSlash    = _ensureTrailingSlash;
     exports._shouldShowName         = _shouldShowName;
-    exports.getGitIgnoreFileContent = getGitIgnoreFileContent;
     exports._invalidChars           = "? * | : / < > \\ | \" ..";
 
     exports.shouldShow              = shouldShow;
