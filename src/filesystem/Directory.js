@@ -22,7 +22,8 @@
 define(function (require, exports, module) {
 
 
-    var FileSystemEntry = require("filesystem/FileSystemEntry");
+    const FileSystemEntry = require("filesystem/FileSystemEntry"),
+        FileSystem = require("filesystem/FileSystem");
 
     /*
      * Model for a file system Directory.
@@ -190,7 +191,8 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Read the contents of a Directory.
+     * Read the contents of a Directory.If this Directory is under a watch root,
+     * the listing will exclude any items filtered out by the watch root's filter
      *
      * @param {function (?string, Array.<FileSystemEntry>=, Array.<FileSystemStats>=, Object.<string, string>=)} callback
      *          Callback that is passed an error code or the stat-able contents
@@ -231,7 +233,7 @@ define(function (require, exports, module) {
                     var entryPath = this.fullPath + name;
 
                     var entryStats = stats[index];
-                    if (this._fileSystem._indexFilter(entryPath, name, entryStats)) {
+                    if (FileSystem.fileTreeFilter(name)) {
                         var entry;
 
                         // Note: not all entries necessarily have associated stats.

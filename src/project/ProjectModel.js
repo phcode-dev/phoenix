@@ -140,6 +140,8 @@ define(function (require, exports, module) {
         return !_exclusionListRegEx.test(name);
     }
 
+    FileSystem.setFileTreeFilter(_shouldShowName);
+
     /**
      * Returns false for files and directories that are not commonly useful to display.
      *
