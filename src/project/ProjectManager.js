@@ -922,19 +922,21 @@ define(function (require, exports, module) {
      *
      * Watches the project for filesystem changes so that the tree can be updated.
      */
-    function _watchProjectRoot(rootPath) {
+    async function _watchProjectRoot(rootPath) {
         FileSystem.on("change", _fileSystemChange);
         FileSystem.on("rename", _fileSystemRename);
-
-        FileSystem.watch(FileSystem.getDirectoryForPath(rootPath), ProjectModel._shouldShowName, ProjectModel.defaultIgnoreGlobs, function (err) {
-            if (err === FileSystemError.TOO_MANY_ENTRIES) {
-                if (!_projectWarnedForTooManyFiles) {
-                    _showErrorDialog(ERR_TYPE_MAX_FILES);
-                    _projectWarnedForTooManyFiles = true;
+        let gitIgnoreContent = await ProjectModel.getGitIgnoreFileContent(`${rootPath}.gitignore`) || "";
+        const gitIgnoreFilter = `${gitIgnoreContent}\n${ProjectModel.defaultIgnoreGlobs.join("\n")}`;
+        FileSystem.watch(FileSystem.getDirectoryForPath(rootPath),
+            ProjectModel._shouldShowName, gitIgnoreFilter, function (err) {
+                if (err === FileSystemError.TOO_MANY_ENTRIES) {
+                    if (!_projectWarnedForTooManyFiles) {
+                        _showErrorDialog(ERR_TYPE_MAX_FILES);
+                        _projectWarnedForTooManyFiles = true;
+                    }
+                } else if (err) {
+                    console.error("Error watching project root: ", rootPath, err);
                 }
-            } else if (err) {
-                console.error("Error watching project root: ", rootPath, err);
-            }
         });
 
         // Reset allFiles cache

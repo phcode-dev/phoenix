@@ -190,9 +190,24 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Read the contents of a Directory. If this Directory is under a watch root,
-     * the listing will exclude any items filtered out by the watch root's filter
-     * function.
+     * Read the contents of a Directory and returns a promise.
+     * @return {Promise<{entries: Array.<FileSystemEntry>, entriesStats: Array.<FileSystemEntry>}>}
+     */
+    Directory.prototype.getContentsAsync = function () {
+        let self = this;
+        return new Promise((resolve, reject)=>{
+            self.getContents(async function (err, entries, entriesStats) {
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve({entries, entriesStats});
+            });
+        });
+    };
+
+    /**
+     * Read the contents of a Directory.
      *
      * @param {function (?string, Array.<FileSystemEntry>=, Array.<FileSystemStats>=, Object.<string, string>=)} callback
      *          Callback that is passed an error code or the stat-able contents
