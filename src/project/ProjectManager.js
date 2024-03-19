@@ -1119,45 +1119,38 @@ define(function (require, exports, module) {
      *
      * @param {!string} rootPath  Absolute path to the root folder of the project.
      *  A trailing "/" on the path is optional (unlike many Brackets APIs that assume a trailing "/").
-     * @param {boolean=} isUpdating  If true, indicates we're just updating the tree;
-     *  if false, a different project is being loaded.
      * @return {$.Promise} A promise object that will be resolved when the
      *  project is loaded and tree is rendered, or rejected if the project path
      *  fails to load.
      */
-    function _loadProject(rootPath, isUpdating) {
+    function _loadProject(rootPath) {
         var result = new $.Deferred(),
             startLoad = new $.Deferred();
 
         // Some legacy code calls this API with a non-canonical path
         rootPath = ProjectModel._ensureTrailingSlash(rootPath);
 
-        if (isUpdating) {
-            // We're just refreshing. Don't need to unwatch the project root, so we can start loading immediately.
-            startLoad.resolve();
-        } else {
-            if (model.projectRoot && model.projectRoot.fullPath === rootPath) {
-                return (new $.Deferred()).resolve().promise();
-            }
-
-            // About to close current project (if any)
-            if (model.projectRoot) {
-                exports.trigger(EVENT_PROJECT_BEFORE_CLOSE, model.projectRoot);
-            }
-
-            // close all the old files
-            MainViewManager._closeAll(MainViewManager.ALL_PANES);
-
-            _unwatchProjectRoot().fail(console.error);
-
-            if (model.projectRoot) {
-                LanguageManager._resetPathLanguageOverrides();
-                PreferencesManager._reloadUserPrefs(model.projectRoot);
-                exports.trigger(EVENT_PROJECT_CLOSE, model.projectRoot);
-            }
-
-            startLoad.resolve();
+        if (model.projectRoot && model.projectRoot.fullPath === rootPath) {
+            return (new $.Deferred()).resolve().promise();
         }
+
+        // About to close current project (if any)
+        if (model.projectRoot) {
+            exports.trigger(EVENT_PROJECT_BEFORE_CLOSE, model.projectRoot);
+        }
+
+        // close all the old files
+        MainViewManager._closeAll(MainViewManager.ALL_PANES);
+
+        _unwatchProjectRoot().fail(console.error);
+
+        if (model.projectRoot) {
+            LanguageManager._resetPathLanguageOverrides();
+            PreferencesManager._reloadUserPrefs(model.projectRoot);
+            exports.trigger(EVENT_PROJECT_CLOSE, model.projectRoot);
+        }
+
+        startLoad.resolve();
 
         startLoad.done(function () {
             // Populate file tree as long as we aren't running in the browser
@@ -1181,9 +1174,7 @@ define(function (require, exports, module) {
                                 _reloadProjectPreferencesScope();
                                 PreferencesManager._setCurrentFile(rootPath);
                             }
-                            if (!isUpdating) {
-                                _watchProjectRoot(rootPath);
-                            }
+                            _watchProjectRoot(rootPath);
 
                             // If this is the most current welcome project, record it. In future launches, we want
                             // to substitute the latest welcome project from the current build instead of using an
@@ -1309,7 +1300,7 @@ define(function (require, exports, module) {
             .done(function () {
                 if (path) {
                     // use specified path
-                    _loadProject(path, false).then(result.resolve, result.reject);
+                    _loadProject(path).then(result.resolve, result.reject);
                 } else {
                     // Pop up a folder browse dialog
                     FileSystem.showOpenDialog(false, true, Strings.CHOOSE_FOLDER, model.projectRoot.fullPath, null, function (err, files) {
@@ -2144,6 +2135,7 @@ define(function (require, exports, module) {
     exports.deleteItem                    = deleteItem;
     exports.forceFinishRename             = forceFinishRename;
     exports.showInTree                    = showInTree;
+    exports.shouldShowFileNameInTree      = ProjectModel._shouldShowName;
     exports.refreshFileTree               = refreshFileTree;
     exports.getAllFiles                   = getAllFiles;
     exports.getLanguageFilter             = getLanguageFilter;
