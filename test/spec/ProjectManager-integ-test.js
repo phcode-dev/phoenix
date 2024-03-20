@@ -30,16 +30,16 @@ define(function (require, exports, module) {
         Dialogs             = require("widgets/Dialogs"),
         Commands            = require("command/Commands"),
         FileSystemError     = require("filesystem/FileSystemError"),
-        StringUtils         = require("utils/StringUtils"),
         SpecRunnerUtils     = require("spec/SpecRunnerUtils"),
         _                   = require("thirdparty/lodash");
 
 
     describe("LegacyInteg:ProjectManager", function () {
 
-        var testPath = SpecRunnerUtils.getTestPath("/spec/ProjectManager-test-files"),
+        let testPath = SpecRunnerUtils.getTestPath("/spec/ProjectManager-test-files"),
             tempDir  = SpecRunnerUtils.getTempDirectory(),
             testWindow,
+            FileUtils,
             brackets;
 
         beforeAll(async function () {
@@ -56,6 +56,7 @@ define(function (require, exports, module) {
             brackets       = testWindow.brackets;
             ProjectManager = testWindow.brackets.test.ProjectManager;
             CommandManager = testWindow.brackets.test.CommandManager;
+            FileUtils      = testWindow.brackets.test.FileUtils;
             FileSystem     = testWindow.brackets.test.FileSystem;
 
             await SpecRunnerUtils.loadProjectInTestWindow(tempDir);
@@ -594,6 +595,138 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.deletePathAsync(anotherFilePath, true, FileSystem);
             }, 10000);
         });
+
+        async function _createDirTree(baseDir, fileList) {
+            for(let file of fileList){
+                let fileEntry = FileSystem.getFileForPath(baseDir+file);
+                await jsPromise(FileUtils.writeText(fileEntry, "hello", true));
+            }
+        }
+
+        async function _validateNestedGitIgnore(ignorePattern, checkIgnoresFiles, checkNotIgnored) {
+            await SpecRunnerUtils.deletePathAsync(`${tempDir}/ignoreTest`, true, FileSystem);
+            const gitIgnoreFilePath = `${tempDir}/ignoreTest/.gitignore`;
+            await SpecRunnerUtils.deletePathAsync(gitIgnoreFilePath, true, FileSystem);
+            for(let file of checkIgnoresFiles){
+                await SpecRunnerUtils.ensureExistsDirAsync(window.path.dirname(`${tempDir}/ignoreTest/${file}`));
+            }
+            for(let file of checkNotIgnored){
+                await SpecRunnerUtils.ensureExistsDirAsync(window.path.dirname(`${tempDir}/ignoreTest/${file}`));
+            }
+
+            await _createDirTree(`${tempDir}/ignoreTest/`, checkIgnoresFiles);
+            await _createDirTree(`${tempDir}/ignoreTest/`, checkNotIgnored);
+            // now check if we get everything
+            await awaitsFor(async ()=>{
+                const allFiles = await jsPromise(ProjectManager.getAllFiles());
+                let foundItems = 0;
+                for(let file of allFiles) {
+                    for(let fileName of checkIgnoresFiles){
+                        if(`${tempDir}/ignoreTest/${fileName}` === file.fullPath ){
+                            foundItems++;
+                        }
+                    }
+                    for(let fileName of checkNotIgnored){
+                        if(`${tempDir}/ignoreTest/${fileName}` === file.fullPath ){
+                            foundItems++;
+                        }
+                    }
+                }
+                return foundItems === (checkIgnoresFiles.length + checkNotIgnored.length);
+            }, "Getting all files without nested gitignore", 2000, 100);
+            // now create the git ignore file
+            await jsPromise(SpecRunnerUtils.createTextFile(gitIgnoreFilePath, ignorePattern, FileSystem));
+            // now check if ignore is as expected
+            await awaitsFor(async ()=>{
+                const allFiles = await jsPromise(ProjectManager.getAllFiles());
+                let foundItems = 0;
+                for(let file of allFiles) {
+                    for(let fileName of checkIgnoresFiles){
+                        if(`${tempDir}/ignoreTest/${fileName}` === file.fullPath ){
+                            foundItems++;
+                        }
+                    }
+                }
+                return foundItems === 0;
+            }, "Getting all files with nested gitignore", 2000, 100);
+            await awaitsFor(async ()=>{
+                const allFiles = await jsPromise(ProjectManager.getAllFiles());
+                let foundItems = 0;
+                for(let file of allFiles) {
+                    for(let fileName of checkNotIgnored){
+                        if(`${tempDir}/ignoreTest/${fileName}` === file.fullPath ){
+                            foundItems++;
+                        }
+                    }
+                }
+                return foundItems === checkNotIgnored.length;
+            }, "Getting all files that are not ignored", 2000, 100);
+
+            await SpecRunnerUtils.deletePathAsync(`${tempDir}/ignoreTest`, true, FileSystem);
+        }
+
+        it("should gitignore bare pattern in ProjectManager.getAllFiles with nested gitIgnore", async function () {
+            await _validateNestedGitIgnore("xx",[
+                "xx/yy.txt",
+                "yy/xx/yy.txt"
+            ],[
+                "yy/xxs/yy.txt",
+                "xx.txt",
+                "xxs/xxy/yy.txt"
+            ]);
+        }, 10000);
+
+        it("should gitignore base dir pattern in ProjectManager.getAllFiles with nested gitIgnore", async function () {
+            await _validateNestedGitIgnore("/xx",[
+                "xx/yy.txt",
+                "xx/c/yy.txt"
+            ],[
+                "yy/xx/yy.txt",
+                "yy/xx.txt"
+            ]);
+        }, 10000);
+
+        it("should gitignore specific extension pattern in ProjectManager.getAllFiles with nested gitIgnore", async function () {
+            await _validateNestedGitIgnore("/xx/**/*.yml",[
+                "xx/yy.yml",
+                "xx/c/yy.yml"
+            ],[
+                "nonBase/xx/c/yy.yml",
+                "xx/yy.txt",
+                "xx/c/yy.txt"
+            ]);
+        }, 10000);
+
+        it("should gitignore negation pattern in ProjectManager.getAllFiles with nested gitIgnore", async function () {
+            await _validateNestedGitIgnore("!xx",[
+            ],[
+                "xx/yy.txt",
+                "yy/xx/yy.txt",
+                "yy/xxs/yy.txt",
+                "xx.txt",
+                "xxs/xxy/yy.txt"
+            ]);
+
+            await _validateNestedGitIgnore("!/xx",[
+            ],[
+                "xx/yy.txt",
+                "xx/c/yy.txt",
+                "yy/xx/yy.txt",
+                "yy/xx.txt"
+            ]);
+        }, 10000);
+
+        // the below tests should work according to gitignore spec, but the git ignore library we use dont
+        // handle negation very well.
+        // it("should gitignore negated mixed extension pattern in ProjectManager.getAllFiles with nested gitIgnore", async function () {
+        //     await _validateNestedGitIgnore("/xx\n!/xx/**/*.yml",[
+        //         "xx/yy.txt",
+        //         "xx/c/yy.js"
+        //     ],[
+        //         "xx/yy.yml",
+        //         "xx/c/yy.yml"
+        //     ]);
+        // }, 10000);
 
         describe("Project, file and folder download", function () {
             if(Phoenix.browser.isTauri) {
