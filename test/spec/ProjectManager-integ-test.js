@@ -528,6 +528,71 @@ define(function (require, exports, module) {
                     await SpecRunnerUtils.deletePathAsync(controlPath, true, FileSystem);
                 }
             }, 20000);
+
+            it("should ProjectManager.getAllFiles honor gitIgnore filters", async function () {
+                const gitIgnoreFilePath = `${tempDir}/.gitignore`;
+                const newFilePath = `${tempDir}/newFile`;
+                await SpecRunnerUtils.deletePathAsync(gitIgnoreFilePath, true, FileSystem);
+                await jsPromise(SpecRunnerUtils.createTextFile(newFilePath, "newFile", FileSystem));
+                await awaitsFor(async ()=>{
+                    const allFiles = await jsPromise(ProjectManager.getAllFiles());
+                    for(let file of allFiles) {
+                        if(file.name === 'newFile'){
+                            return true;
+                        }
+                    }
+                    return false;
+                }, "Getting all files without gitignore", 2000, 100);
+                await jsPromise(SpecRunnerUtils.createTextFile(gitIgnoreFilePath, "newFile", FileSystem));
+                await awaitsFor(async ()=>{
+                    const allFiles = await jsPromise(ProjectManager.getAllFiles());
+                    for(let file of allFiles) {
+                        if(file.name === 'newFile'){
+                            return false;
+                        }
+                    }
+                    return true;
+                }, "Getting all files with gitignore", 2000, 100);
+                await SpecRunnerUtils.deletePathAsync(gitIgnoreFilePath, true, FileSystem);
+                await SpecRunnerUtils.deletePathAsync(newFilePath, true, FileSystem);
+            }, 10000);
+
+            it("should ProjectManager.getAllFiles honor nested gitIgnore filters", async function () {
+                const gitIgnoreFilePath = `${tempDir}/.gitignore`;
+                const anotherGitIgnoreFilePath = `${tempDir}/directory/.gitignore`;
+                const newFilePath = `${tempDir}/newFile`;
+                const anotherFilePath = `${tempDir}/directory/anotherFile`;
+                await SpecRunnerUtils.deletePathAsync(gitIgnoreFilePath, true, FileSystem);
+                await SpecRunnerUtils.deletePathAsync(anotherGitIgnoreFilePath, true, FileSystem);
+                await jsPromise(SpecRunnerUtils.createTextFile(newFilePath, "newFile", FileSystem));
+                await jsPromise(SpecRunnerUtils.createTextFile(anotherFilePath, "anotherFile", FileSystem));
+                await awaitsFor(async ()=>{
+                    const allFiles = await jsPromise(ProjectManager.getAllFiles());
+                    let foundItems = 0;
+                    for(let file of allFiles) {
+                        if(file.name === 'newFile' || file.name === 'anotherFile'){
+                            foundItems++;
+                        }
+                    }
+                    return foundItems === 2;
+                }, "Getting all files without nested gitignore", 2000, 100);
+                await jsPromise(SpecRunnerUtils.createTextFile(gitIgnoreFilePath, "newFile", FileSystem));
+                await jsPromise(SpecRunnerUtils.createTextFile(anotherGitIgnoreFilePath, "anotherFile", FileSystem));
+                await awaitsFor(async ()=>{
+                    const allFiles = await jsPromise(ProjectManager.getAllFiles());
+                    let foundItems = 0;
+                    for(let file of allFiles) {
+                        if(file.name === 'newFile' || file.name === 'anotherFile'){
+                            foundItems++;
+                        }
+                    }
+                    return foundItems === 0;
+                }, "Getting all files with nested gitignore", 2000, 100);
+                await SpecRunnerUtils.deletePathAsync(gitIgnoreFilePath, true, FileSystem);
+                await SpecRunnerUtils.deletePathAsync(anotherGitIgnoreFilePath, true, FileSystem);
+                await SpecRunnerUtils.deletePathAsync(newFilePath, true, FileSystem);
+                await SpecRunnerUtils.deletePathAsync(anotherFilePath, true, FileSystem);
+            }, 10000);
         });
 
         describe("Project, file and folder download", function () {
