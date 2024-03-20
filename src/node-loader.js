@@ -629,6 +629,18 @@ function nodeLoader() {
             isInspectEnabled
         };
         window.isNodeReady = false;
+        let nodeErrorLogCount = 0;
+        // 10 node error logs are allowed on console every 2 seconds to prevent freeze due to
+        const MAX_NODE_ERROR_LOGS_ALLOWED = 10;
+        const NODE_ERROR_LOGS_RESET_INTERVAL = 2000;
+        setInterval(()=>{
+            // allow only logging up to x log lines in a given interval.
+            if(!window.debugMode && nodeErrorLogCount > MAX_NODE_ERROR_LOGS_ALLOWED){
+                console.error("Too many node Errors, some errors were omitted from console.",
+                    "Please enable `Debug menu> Phoenix code diagnostic tools> enable detailed logs` to view all.");
+            }
+            nodeErrorLogCount = 0;
+        }, NODE_ERROR_LOGS_RESET_INTERVAL);
 
         window.__TAURI__.path.resolveResource("src-node/index.js")
             .then(async nodeSrcPath=>{
@@ -679,7 +691,16 @@ function nodeLoader() {
                         }
                     }
                 });
-                command.stderr.on('data', line => console.error(`PhNode: ${line}`));
+                command.stderr.on('data', line => {
+                    if(window.debugMode || nodeErrorLogCount < MAX_NODE_ERROR_LOGS_ALLOWED){
+                        // in release builds, too many node errors from file system/other sources can
+                        // happen, Eg. user opens a very large project and fs watchers goes bust.
+                        // if that happens, the app may get stuck logging large number of errors to console, so
+                        // we show atmost 10 error lines every 10 seconds in non-debug builds.
+                        console.error(`PhNode: ${line}`);
+                    }
+                    nodeErrorLogCount ++;
+                });
                 child = await command.spawn();
 
                 const execNode = function (commandCode, commandData) {
