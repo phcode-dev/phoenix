@@ -21,7 +21,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, awaits*/
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, jsPromise, awaitsFor, awaitsForDone, awaits*/
 /*unittests: FileFilters*/
 
 define(function (require, exports, module) {
@@ -34,6 +34,8 @@ define(function (require, exports, module) {
     describe("integration: FileFilters", function () {
 
         let testPath = SpecRunnerUtils.getTestPath("/spec/InlineEditorProviders-test-files"),
+            testPathGitIgnore,
+            Commands,
             testWindow,
             FileFilters,
             FileSystem,
@@ -53,9 +55,11 @@ define(function (require, exports, module) {
             FindInFiles     = testWindow.brackets.test.FindInFiles;
             FindInFilesUI   = testWindow.brackets.test.FindInFilesUI;
             CommandManager  = testWindow.brackets.test.CommandManager;
+            Commands        = testWindow.brackets.test.Commands;
             $               = testWindow.$;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            testPathGitIgnore = await SpecRunnerUtils.getTempTestDirectory("/spec/FindReplace-test-files");
         }
 
         async function teardownTestWindow() {
@@ -65,6 +69,7 @@ define(function (require, exports, module) {
             FindInFiles = null;
             FindInFilesUI = null;
             CommandManager = null;
+            Commands = null;
             $ = null;
             await SpecRunnerUtils.closeTestWindow();
         }
@@ -174,9 +179,10 @@ define(function (require, exports, module) {
             FileFilters.closeDropdown();
         }
 
+        beforeAll(setupTestWindow, 30000);
+        afterAll(teardownTestWindow, 30000);
+
         describe("Find in Files filtering", function () {
-            beforeAll(setupTestWindow, 30000);
-            afterAll(teardownTestWindow, 30000);
 
             it("should show 'No files Excluded' in filter picker button by default", async function () {
                 await openSearchBar();
@@ -427,6 +433,82 @@ define(function (require, exports, module) {
             it("should pressing ctrl-space bring up filtered search history:needs window focus", async function () {
                 // focus tests, needs focus on window to work properly
                 await _testFilter("#find-what");
+            }, 10000);
+        });
+
+        describe("Find in Files .gitignore filtering", function (){
+            beforeAll(async function(){
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "closing all file");
+                await jsPromise(SpecRunnerUtils.createTextFile(`${testPathGitIgnore}/.gitignore`,
+                    "bar.txt", FileSystem));
+                await SpecRunnerUtils.loadProjectInTestWindow(testPathGitIgnore);
+            });
+
+            async function _validateBarSearch() {
+                await openSearchBar();
+
+                _setNoFilesExcluded();
+                await executeCleanSearch("bar");
+                await awaitsFor(function () {
+                    return !!FindInFiles.searchModel.results[testPathGitIgnore + "/css/foo.css"];
+                }, "search to be done");
+                expect(FindInFiles.searchModel.results[testPathGitIgnore + "/bar.txt"]).toBeFalsy();
+                await closeSearchBar();
+            }
+
+            it("should find in files ignore git ignored files in top dir", async function () {
+                await _validateBarSearch();
+            }, 10000);
+
+            it("should editing git ignore file be honored in next search in top dir", async function () {
+                await _validateBarSearch();
+                await jsPromise(SpecRunnerUtils.createTextFile(`${testPathGitIgnore}/.gitignore`,
+                    "foo.css", FileSystem));
+                await openSearchBar();
+
+                _setNoFilesExcluded();
+                await executeCleanSearch("bar");
+                await awaitsFor(function () {
+                    return !!FindInFiles.searchModel.results[testPathGitIgnore + "/bar.txt"];
+                }, "search to be done");
+                expect(FindInFiles.searchModel.results[testPathGitIgnore + "/css/foo.css"]).toBeFalsy();
+                await closeSearchBar();
+            }, 10000);
+
+            it("should find in files ignore git ignored files in nested dir", async function () {
+                await jsPromise(SpecRunnerUtils.createTextFile(`${testPathGitIgnore}/.gitignore`,
+                    "", FileSystem));
+                await jsPromise(SpecRunnerUtils.createTextFile(`${testPathGitIgnore}/css/.gitignore`,
+                    "foo.css", FileSystem));
+                await openSearchBar();
+
+                _setNoFilesExcluded();
+                await executeCleanSearch("bar");
+                await awaitsFor(function () {
+                    return !!FindInFiles.searchModel.results[testPathGitIgnore + "/bar.txt"];
+                }, "search to be done");
+                expect(FindInFiles.searchModel.results[testPathGitIgnore + "/css/foo.css"]).toBeFalsy();
+                await closeSearchBar();
+
+            }, 10000);
+
+            it("should find in files ignore git ignored files in all nested dirs", async function () {
+                await jsPromise(SpecRunnerUtils.createTextFile(`${testPathGitIgnore}/.gitignore`,
+                    "bar.txt", FileSystem));
+                await jsPromise(SpecRunnerUtils.createTextFile(`${testPathGitIgnore}/css/.gitignore`,
+                    "foo.css", FileSystem));
+                await openSearchBar();
+
+                _setNoFilesExcluded();
+                await executeCleanSearch("foo");
+                await awaitsFor(function () {
+                    return !!FindInFiles.searchModel.results[testPathGitIgnore + "/foo.js"];
+                }, "search to be done");
+                expect(FindInFiles.searchModel.results[testPathGitIgnore + "/css/foo.css"]).toBeFalsy();
+                expect(FindInFiles.searchModel.results[testPathGitIgnore + "/css/foo.css"]).toBeFalsy();
+                await closeSearchBar();
+
             }, 10000);
         });
     });
