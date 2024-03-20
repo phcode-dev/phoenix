@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN 文件及 MDN 圖示皆以 Creative Commons Attribution 授權條款 <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> 授權。",
   "UPDATE_NOTIFICATION_TOOLTIP": "有新版的 {APP_NAME}! 點這裡了解詳情。",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} 是最新的",
-  "UPDATE_UP_TO_DATE": "您的{APP_NAME}版本是最新、最好的！",
+  "UPDATE_UP_TO_DATE": "您的{APP_NAME}版本是最新的！",
   "UPDATE_AVAILABLE_TITLE": "有新版",
   "UPDATE_READY_RESTART_TITLE": "更新就緒：需要重新啟動",
   "UPDATE_READY_RESTART_MESSAGE": "關閉所有 {APP_NAME} 應用程式視窗並重新啟動應用程式以啟動更新版本。",

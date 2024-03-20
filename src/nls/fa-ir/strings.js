@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "اسناد و مدارک صفحات وب و آرم اصلی گرافیکی تحت مجوز , <a href='#' class='clickable-link' data-href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 .پایه ریزی شده است</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "ساخته ی جدیدی از {APP_NAME} هم اکنون در دسترس است! جهت مشاهده جزئیات کلیک کنید.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} به‌روز است",
-  "UPDATE_UP_TO_DATE": "نسخه {APP_NAME} شما جدیدترین و بهترین است!",
+  "UPDATE_UP_TO_DATE": "نسخه {APP_NAME} شما جدیدترین نسخه است!",
   "UPDATE_AVAILABLE_TITLE": "بروزرسانی جدید در دسترس است",
   "UPDATE_READY_RESTART_TITLE": "به روز رسانی آماده: راه اندازی مجدد لازم است",
   "UPDATE_READY_RESTART_MESSAGE": "همه پنجره‌های برنامه {APP_NAME} را ببندید و برنامه را مجدداً راه‌اندازی کنید تا نسخه به‌روز شده راه‌اندازی شود.",

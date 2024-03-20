@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs și logotipul MDN sunt licențiați sub licența Creative Commons Attribution, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Există o versiune nouă {APP_NAME} disponibilă! Clic aici pentru detalii.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} este actualizată",
-  "UPDATE_UP_TO_DATE": "Versiunea dvs. de {APP_NAME} este cea mai recentă și cea mai bună!",
+  "UPDATE_UP_TO_DATE": "Versiunea dvs. de {APP_NAME} este cea mai recentă!",
   "UPDATE_AVAILABLE_TITLE": "Înnoire disponibilă",
   "UPDATE_READY_RESTART_TITLE": "Actualizare gata: este necesară repornirea",
   "UPDATE_READY_RESTART_MESSAGE": "Închideți toate ferestrele aplicației {APP_NAME} și reporniți aplicația pentru a lansa versiunea actualizată.",

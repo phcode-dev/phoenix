@@ -436,7 +436,7 @@
   "ABOUT_TEXT_MDN_DOCS": "I loghi di 'MDN Docs'e 'MDN' sono sotto licenza Creative Common Attribution, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "È disponibile una nuova versione di {APP_NAME}! Clicca qui per i dettagli.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} è aggiornato",
-  "UPDATE_UP_TO_DATE": "La tua versione di {APP_NAME} è la più recente e la migliore!",
+  "UPDATE_UP_TO_DATE": "La tua versione di {APP_NAME} è la più recente!",
   "UPDATE_AVAILABLE_TITLE": "Aggiornamento Disponibile",
   "UPDATE_READY_RESTART_TITLE": "Aggiornamento pronto: riavvio richiesto",
   "UPDATE_READY_RESTART_MESSAGE": "Chiudi tutte le finestre dell'app {APP_NAME} e riavvia l'app per avviare la versione aggiornata.",

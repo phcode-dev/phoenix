@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "\"MDN Docs\" и \"MDN\" логотип су заштићени \"Creative Commons Attribution\" лиценцом, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Објављена је нова верзија {APP_NAME}-а! Кликните овде за више информација.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{АПП_НАМЕ} је ажурирана",
-  "UPDATE_UP_TO_DATE": "Ваша верзија {АПП_НАМЕ} је најновија и најбоља!",
+  "UPDATE_UP_TO_DATE": "Ваша верзија {АПП_НАМЕ} је најновија!",
   "UPDATE_AVAILABLE_TITLE": "Нова верзија доступна",
   "UPDATE_READY_RESTART_TITLE": "Спремно за ажурирање: потребно је поновно покретање",
   "UPDATE_READY_RESTART_MESSAGE": "Затворите све прозоре апликације {АПП_НАМЕ} и поново покрените апликацију да бисте покренули ажурирану верзију.",

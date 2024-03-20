@@ -436,7 +436,7 @@
   "ABOUT_TEXT_MDN_DOCS": "Dokumentationen og det grafiske logo fra MDN er udgivet under en Creative Commons Attribution licens, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Der ligger en ny version af {APP_NAME} klar! Klik her for at læse mere.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} er opdateret",
-  "UPDATE_UP_TO_DATE": "Din version af {APP_NAME} er den nyeste og bedste!",
+  "UPDATE_UP_TO_DATE": "Din version af {APP_NAME} er den nyeste!",
   "UPDATE_AVAILABLE_TITLE": "Opdatering klar",
   "UPDATE_READY_RESTART_TITLE": "Opdatering klar: Genstart påkrævet",
   "UPDATE_READY_RESTART_MESSAGE": "Luk alle {APP_NAME}-appvinduer, og genstart appen for at starte den opdaterede version.",

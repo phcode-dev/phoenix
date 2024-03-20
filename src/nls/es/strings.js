@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "El contenido de MDN Docs y el logo de MDN están disponibles bajo Licencia de Reconocimiento de Creative Commons, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "¡Hay una nueva versión de {APP_NAME} disponible! Haz clic aquí para ver más detalles.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} está actualizado",
-  "UPDATE_UP_TO_DATE": "¡Tu versión de {APP_NAME} es la última y mejor!",
+  "UPDATE_UP_TO_DATE": "¡Tu versión de {APP_NAME} es la más reciente!",
   "UPDATE_AVAILABLE_TITLE": "Actualización disponible",
   "UPDATE_READY_RESTART_TITLE": "Actualización lista: se requiere reinicio",
   "UPDATE_READY_RESTART_MESSAGE": "Cierre todas las ventanas de la aplicación {APP_NAME} y reiníciela para iniciar la versión actualizada.",

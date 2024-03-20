@@ -436,7 +436,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs i MDN graphical logo su zaštićeni pod Creative Commons Attribution licencom, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Dostupna je nova verzija aplikacije {APP_NAME}! Kliknite ovdje za detalje.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} je ažurirana",
-  "UPDATE_UP_TO_DATE": "Vaša je verzija aplikacije {APP_NAME} najnovija i najbolja!",
+  "UPDATE_UP_TO_DATE": "Vaša je verzija aplikacije {APP_NAME} najnovija!",
   "UPDATE_AVAILABLE_TITLE": "Novija verzija je dostupna",
   "UPDATE_READY_RESTART_TITLE": "Ažuriranje spremno: potrebno ponovno pokretanje",
   "UPDATE_READY_RESTART_MESSAGE": "Zatvorite sve prozore aplikacije {APP_NAME} i ponovno pokrenite aplikaciju za pokretanje ažurirane verzije.",

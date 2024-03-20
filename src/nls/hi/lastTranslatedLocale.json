@@ -436,7 +436,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN डॉक्स और MDN ग्राफिकल लोगो को Creative Commons एट्रिब्यूशन लाइसेंस, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> के तहत लाइसेंस दिया गया है।",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME} का एक नया निर्माण उपलब्ध है! जानकारी के लिए यहाँ क्लिक करें।",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} अद्यतित है",
-  "UPDATE_UP_TO_DATE": "आपका {APP_NAME} संस्करण नवीनतम और महानतम है!",
+  "UPDATE_UP_TO_DATE": "आपका {APP_NAME} संस्करण नवीनतम है!",
   "UPDATE_AVAILABLE_TITLE": "उपलब्ध अद्यतन",
   "UPDATE_READY_RESTART_TITLE": "अद्यतन तैयार: पुनरारंभ आवश्यक",
   "UPDATE_READY_RESTART_MESSAGE": "सभी {APP_NAME} ऐप विंडो बंद करें और अपडेटेड वर्जन लॉन्च करने के लिए ऐप को पुनरारंभ करें।",

@@ -436,7 +436,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN 문서와 MDN 로고는 크리에이티브 커먼즈 저작자표시 라이선스, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> 로 배포됩니다.",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME}의 새로운 빌드를 사용할 수 있습니다. 자세한 내용은 여기를 클릭하세요.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME}이(가) 최신 상태입니다.",
-  "UPDATE_UP_TO_DATE": "귀하의 {APP_NAME} 버전은 최신이자 최고의 버전입니다.",
+  "UPDATE_UP_TO_DATE": "{APP_NAME} 버전이 최신 버전입니다.",
   "UPDATE_AVAILABLE_TITLE": "사용 가능한 업데이트가 있습니다",
   "UPDATE_READY_RESTART_TITLE": "업데이트 준비됨: 다시 시작해야 함",
   "UPDATE_READY_RESTART_MESSAGE": "업데이트된 버전을 실행하려면 모든 {APP_NAME} 앱 창을 닫고 앱을 다시 시작하세요.",

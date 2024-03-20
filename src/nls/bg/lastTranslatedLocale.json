@@ -436,7 +436,7 @@
   "ABOUT_TEXT_MDN_DOCS": "Документацията и логото на MDN са лицензирани под лиценз за признание от вида „Криейтив Комънс“: <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Нелокализиран</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Има ново издание на {APP_NAME}! Щракнете тук за подробности.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} е актуална",
-  "UPDATE_UP_TO_DATE": "Вашата версия на {APP_NAME} е най-новата и най-добрата!",
+  "UPDATE_UP_TO_DATE": "Вашата версия на {APP_NAME} е най-новата!",
   "UPDATE_AVAILABLE_TITLE": "Има ново обновление",
   "UPDATE_READY_RESTART_TITLE": "Актуализацията е готова: Изисква се рестартиране",
   "UPDATE_READY_RESTART_MESSAGE": "Затворете всички прозорци на приложението {APP_NAME} и рестартирайте приложението, за да стартирате актуализираната версия.",
