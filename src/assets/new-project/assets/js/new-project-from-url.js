@@ -37,75 +37,113 @@ const CREDITS = params.credits;
 const CREDITS_URL = params.creditsURL;
 const PREVIEW_URL = params.previewURL;
 const BACK_URL = params.backURL;
+let projectLocation = null, projectName = null;
 
-function _validateProjectLocation() {
-    if(!window.showDirectoryPicker){ // fs access apis not present
-        $(document.getElementById("projectLocation")).addClass("forced-hidden");
-        return true;
+function _computeProjectPath() {
+    if($(projectNameInput).is(":visible")){
+        let suggestedName = projectNameInput.value;
+        if(suggestedName && projectLocation){
+            return projectLocation+suggestedName;
+        }
+        return null;
     }
-    let location = locationInput.value;
-    if( location === Strings.PLEASE_SELECT_A_FOLDER){
+    return projectLocation;
+}
+
+async function _validateProjectLocation() {
+    if($(locationInput).is(":visible")){
+        // this is desktop or browsers with fs access api
+        let isLocationValid = projectLocation &&
+            await newProjectExtension.alreadyExists(projectLocation);
+        if(isLocationValid){
+            $(locationInput).removeClass("error-border");
+            return true;
+        }
         $(locationInput).addClass("error-border");
         return false;
     }
-    $(locationInput).removeClass("error-border");
+    // location input is hidden only in browsers with no fs access API. If its hidden,
+    // we dont need to validate location, as _validateSuggestedName will be in effect
     return true;
 }
 
 async function _validateSuggestedName() {
-    let suggestedName = projectNameInput.value;
-    if(await newProjectExtension.alreadyExists(suggestedName)){
-        $(projectNameInput).addClass("error-border");
-        return;
+    if($(projectNameInput).is(":visible")){
+        // the project name input is only visible in desktop and browsers with no fs access api.
+        let suggestedName = projectNameInput.value;
+        if(!suggestedName || !projectLocation ||
+            await newProjectExtension.alreadyExists(projectLocation+suggestedName)){
+            $(projectNameInput).addClass("error-border");
+            return false;
+        }
+        $(projectNameInput).removeClass("error-border");
     }
-    $(projectNameInput).removeClass("error-border");
+    return true;
+}
+
+async function _validateAll() {
+    const locIsValid = await _validateProjectLocation();
+    const nameIsValid = await _validateSuggestedName();
+    document.getElementById('createProjectBtn').disabled = !(locIsValid && nameIsValid);
+    document.getElementById('createProjectWithNameBtn').disabled = !(locIsValid && nameIsValid);
+    return locIsValid && nameIsValid;
 }
 
 function _selectFolder() {
     newProjectExtension.showFolderSelect()
         .then(file =>{
-            locationInput.fullPath = file;
-            locationInput.value = file.replace(newProjectExtension.getMountDir(), "");
-            _validateProjectLocation();
+            projectLocation = file;
+            if(!projectLocation.endsWith("/")){
+                projectLocation = projectLocation + "/";
+            }
+            locationInput.value = window.parent.Phoenix.app.getDisplayPath(file);
+            _validateAll();
         });
 }
 
-function _createProjectClicked() {
-    if(_validateProjectLocation()){
-        newProjectExtension.downloadAndOpenProject(
-            PARAM_SUGGESTED_URL,
-            locationInput.fullPath, PARAM_SUGGESTED_NAME, FLATTEN_ZIP_FIRST_LEVEL_DIR)
-            .then(()=>{
-                Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "createProject.Click", "create.success");
-                newProjectExtension.closeDialogue();
-            });
-    } else {
+async function _createProjectClicked() {
+    const projectPath = _computeProjectPath();
+    if(!projectPath){
         newProjectExtension.showErrorDialogue(
             Strings.MISSING_FIELDS,
             Strings.PLEASE_FILL_ALL_REQUIRED);
+        return;
     }
+    await window.parent.Phoenix.VFS.ensureExistsDirAsync(projectPath);
+    newProjectExtension.downloadAndOpenProject(
+        PARAM_SUGGESTED_URL,
+        projectPath, PARAM_SUGGESTED_NAME, FLATTEN_ZIP_FIRST_LEVEL_DIR)
+        .then(()=>{
+            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "createProject.Click", "create.success");
+            newProjectExtension.closeDialogue();
+        });
     Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "createProject.Click", "create");
 }
 
 function _showLicensingInfo() {
-    if(LICENSE || LICENSE_URL){
+    if(LICENSE || LICENSE_URL || CREDITS || CREDITS_URL){
         $(document.getElementById("License")).removeClass("forced-hidden");
+    }
+    if(LICENSE || LICENSE_URL){
         let el = document.getElementById("licenseLink");
         el.textContent = LICENSE || LICENSE_URL;
-        let licenseURL = LICENSE_URL || '#';
-        el.href = licenseURL;
-        if(licenseURL === '#'){
-            $(el).attr('target', '');
+        if(LICENSE_URL){
+            $(el).click((evt)=>{
+                window.parent.brackets.app.openURLInDefaultBrowser(LICENSE_URL);
+                evt.preventDefault();
+                evt.stopPropagation();
+            });
         }
     }
     if(CREDITS || CREDITS_URL){
-        $(document.getElementById("Credits")).removeClass("forced-hidden");
         let el = document.getElementById("creditsLink");
         el.textContent = CREDITS || CREDITS_URL;
-        let creditsURL = CREDITS_URL || '#';
-        el.href = creditsURL;
-        if(creditsURL === '#'){
-            $(el).attr('target', '');
+        if(CREDITS_URL){
+            $(el).click((evt)=>{
+                window.parent.brackets.app.openURLInDefaultBrowser(CREDITS_URL);
+                evt.preventDefault();
+                evt.stopPropagation();
+            });
         }
     }
 }
@@ -127,10 +165,16 @@ function _setupNavigation() {
 
 function initNewProjectFromURL() {
     _setupNavigation();
-    if(!window.showDirectoryPicker){ // fs access apis not present
-        $(document.getElementById("projectLocation")).addClass("forced-hidden");
-    } else {
+    if(window.parent.Phoenix.browser.isTauri){ // desktop builds
+        projectLocation = newProjectExtension.getLocalProjectsPath();
+        projectName = PARAM_SUGGESTED_NAME;
+        $(document.getElementById("createProjectBtn")).addClass("forced-inVisible");
+    } else if(window.showDirectoryPicker){ // fs access apis- chrome/opera etc..
         $(document.getElementById("projectName")).addClass("forced-hidden");
+    } else {
+        projectName = PARAM_SUGGESTED_NAME;
+        projectLocation = newProjectExtension.getLocalProjectsPath();
+        $(document.getElementById("projectLocation")).addClass("forced-hidden");
     }
     document.getElementById("titleNewProject").textContent = PARAM_SUGGESTED_TITLE;
     projectNameInput = document.getElementById("projectNameInput");
@@ -139,12 +183,14 @@ function initNewProjectFromURL() {
     createProjectWithNameBtn = document.getElementById("createProjectWithNameBtn");
     createProjectBtn.onclick = _createProjectClicked;
     createProjectWithNameBtn.onclick = _createProjectClicked;
-    $(projectNameInput).keyup(_validateSuggestedName);
+    $(projectNameInput).keyup(_validateAll);
     locationInput.value = Strings.PLEASE_SELECT_A_FOLDER;
-    projectNameInput.value = PARAM_SUGGESTED_NAME;
+    projectNameInput.value = projectName;
     locationInput.onclick = _selectFolder;
+    if(projectLocation){
+        locationInput.value = window.parent.Phoenix.app.getDisplayPath(projectLocation);
+    }
     _showLicensingInfo();
     _showPreview();
-    _validateProjectLocation();
-    _validateSuggestedName();
+    _validateAll();
 }

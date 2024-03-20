@@ -175,7 +175,7 @@ define(function (require, exports, module) {
     async function _validateProjectFolder(projectPath) {
         return new Promise((resolve, reject)=>{
             let dir = FileSystem.getDirectoryForPath(projectPath);
-            let displayPath = projectPath.replace(Phoenix.VFS.getMountDir(), "");
+            let displayPath = Phoenix.app.getDisplayPath(projectPath);
             if(!dir){
                 _showProjectErrorDialogue(Strings.REQUEST_NATIVE_FILE_SYSTEM_ERROR, displayPath, Strings.NOT_FOUND_ERR);
                 reject();
@@ -223,11 +223,6 @@ define(function (require, exports, module) {
                 reject(e);
             }
         });
-    }
-
-    async function alreadyExists(suggestedProjectName) {
-        let projectPath = `${ProjectManager.getLocalProjectsPath()}${suggestedProjectName}`; // try suggested path first
-        return window.Phoenix.VFS.existsAsync(projectPath);
     }
 
     async function _getSuggestedProjectDir(suggestedProjectName) {
@@ -391,7 +386,7 @@ define(function (require, exports, module) {
     exports.downloadAndOpenProject = downloadAndOpenProject;
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
-    exports.alreadyExists = alreadyExists;
+    exports.alreadyExists = window.Phoenix.VFS.existsAsync;
     exports.Metrics = Metrics;
     exports.EVENT_NEW_PROJECT_DIALOGUE_CLOSED = "newProjectDlgClosed";
     exports.getWelcomeProjectPath = ProjectManager.getWelcomeProjectPath;

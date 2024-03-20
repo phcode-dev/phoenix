@@ -964,6 +964,11 @@ img {
     cursor: pointer;
 }
 
+.create-btn:disabled {
+    background: #555555;
+    cursor: unset;
+}
+
 .flex-column-fill{
     display: flex;
     flex-flow: column;
@@ -1069,6 +1074,10 @@ img {
 
 .forced-hidden {
     display: none !important;
+}
+
+.forced-inVisible {
+    visibility: hidden !important;
 }
 
 /* notification ui styles */
