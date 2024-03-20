@@ -1000,6 +1000,7 @@ define(function (require, exports, module) {
 
                 await initDir("/visit/");
                 await initFile("/visit/file.txt");
+                await initFile("/visit/.pyc");
                 await initDir("/visit/subdir1/");
                 await initDir("/visit/subdir2/");
                 await initFile("/visit/subdir1/subfile11.txt");
@@ -1008,7 +1009,7 @@ define(function (require, exports, module) {
                 await initFile("/visit/subdir2/subfile22.txt");
             });
 
-            it("should return all entries by default", async function () {
+            it("should filter entries not shown in file tree by default", async function () {
                 const directory = fileSystem.getDirectoryForPath("/visit/");
 
                 const contents = await FileSystem.getAllDirectoryContents(directory);
@@ -1016,6 +1017,21 @@ define(function (require, exports, module) {
                 let results = ["/visit/file.txt", "/visit/subdir1/", "/visit/subdir2/",
                     "/visit/subdir1/subfile11.txt", "/visit/subdir1/subfile12.txt", "/visit/subdir2/subfile21.txt",
                     "/visit/subdir2/subfile22.txt", "/"];
+                for(let entry of contents){
+                    if(!results.includes(entry.fullPath)){
+                        expect(entry.fullPath).toBeFalsy();
+                    }
+                }
+            });
+
+            it("should return all entries if filter nothing option is specified", async function () {
+                const directory = fileSystem.getDirectoryForPath("/visit/");
+
+                const contents = await FileSystem.getAllDirectoryContents(directory, true);
+                expect(contents.length).toBe(8);
+                let results = ["/visit/file.txt", "/visit/subdir1/", "/visit/subdir2/",
+                    "/visit/subdir1/subfile11.txt", "/visit/subdir1/subfile12.txt", "/visit/subdir2/subfile21.txt",
+                    "/visit/subdir2/subfile22.txt", "/", "/visit/.pyc"];
                 for(let entry of contents){
                     if(!results.includes(entry.fullPath)){
                         expect(entry.fullPath).toBeFalsy();

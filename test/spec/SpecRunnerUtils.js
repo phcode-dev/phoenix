@@ -60,11 +60,13 @@ define(function (require, exports, module) {
      * Delete a path
      * @param {string} fullPath
      * @param {boolean=} silent Defaults to false. When true, ignores ERR_NOT_FOUND when deleting path.
+     * @param {FileSystem} fileSystem optional fs to use
      * @return {$.Promise} Resolved when deletion complete, or rejected if an error occurs
      */
-    function deletePath(fullPath, silent) {
+    function deletePath(fullPath, silent, fileSystem) {
         var result = new $.Deferred();
-        _getFileSystem().resolve(fullPath, function (err, item) {
+        fileSystem = fileSystem || _getFileSystem();
+        fileSystem.resolve(fullPath, function (err, item) {
             if (!err) {
                 item.unlink(function (err) {
                     if (!err) {
@@ -90,8 +92,8 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
-    async function deletePathAsync(fullPath, silent) {
-        return jsPromise(deletePath(fullPath, silent));
+    async function deletePathAsync(fullPath, silent, fileSystem) {
+        return jsPromise(deletePath(fullPath, silent, fileSystem));
     }
 
     /**

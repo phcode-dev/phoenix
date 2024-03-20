@@ -21,7 +21,8 @@
 /*globals Phoenix, JSZip, Filer, path*/
 
 define(function (require, exports, module) {
-    const FileSystem = require("filesystem/FileSystem");
+    const FileSystem = require("filesystem/FileSystem"),
+        FileSystemError = require("filesystem/FileSystemError");
 
     const ignoredFolders = [ "__MACOSX" ];
 
@@ -176,10 +177,15 @@ define(function (require, exports, module) {
         });
     }
 
-    function readContent(fileEntry) {
+    function _readContent(fileEntry) {
         return new Promise((resolve, reject)=>{
             fileEntry.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content, encoding, stat) {
                 if (err){
+                    if(err === FileSystemError.NOT_FOUND){
+                        // this error is ok as the file may have been deleted while we were doing the backup.
+                        resolve(null);
+                        return;
+                    }
                     reject(err);
                     return;
                 }
@@ -198,14 +204,16 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject)=>{
             const zip = new JSZip();
             let directory = FileSystem.getDirectoryForPath(fullPath);
-            FileSystem.getAllDirectoryContents(directory).then(async contents => {
+            FileSystem.getAllDirectoryContents(directory, true).then(async contents => {
                 for(let entry of contents){
                     let relativePath = path.relative(fullPath, entry.fullPath);
                     if(entry.isDirectory){
                         zip.folder(relativePath);
                     } else {
-                        let blob = await readContent(entry);
-                        zip.file(relativePath, blob);
+                        let blob = await _readContent(entry);
+                        if(blob){
+                            zip.file(relativePath, blob);
+                        }
                     }
                 }
                 resolve(zip);

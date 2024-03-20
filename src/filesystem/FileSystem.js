@@ -963,11 +963,14 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Recursively gets all files and directories given a root path.
+     * Recursively gets all files and directories given a root path. It filters out all files
+     * that are not shown in the file tree by default, unless the filterNothing option is specified.
      * @param {Directory} directory To get all descendant contents from
+     * @param {boolean} filterNothing - if specified, will return every thing, including system locations like `.git`
+     *    Use this option to take full backups, or entire disc read workflows.
      * @return {Promise<Array[File|Directory]>} A promise that resolves with the file and directory contents
      */
-    FileSystem.prototype.getAllDirectoryContents = function (directory) {
+    FileSystem.prototype.getAllDirectoryContents = function (directory, filterNothing = false) {
         return new Promise((resolve, reject)=>{
             let contents = [];
             function visitor(entry) {
@@ -976,7 +979,7 @@ define(function (require, exports, module) {
                 }
                 return true;
             }
-            directory.visit(visitor, (err)=>{
+            directory.visit(visitor, {visitHiddenTree: filterNothing}, (err)=>{
                 if(err){
                     reject(err);
                     return;
