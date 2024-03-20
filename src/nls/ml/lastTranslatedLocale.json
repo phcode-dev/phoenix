@@ -436,7 +436,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN ഡോക്‌സും MDN ഗ്രാഫിക്കൽ ലോഗോയും ഒരു ക്രിയേറ്റീവ് കോമൺസ് ആട്രിബ്യൂഷൻ ലൈസൻസിന് കീഴിലാണ്, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> .",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME}-ന്റെ ഒരു പുതിയ ബിൽഡ് ലഭ്യമാണ്! വിശദാംശങ്ങൾക്ക് ഇവിടെ ക്ലിക്ക് ചെയ്യുക.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} അപ് ടു ഡേറ്റ് ആണ്",
-  "UPDATE_UP_TO_DATE": "നിങ്ങളുടെ {APP_NAME} പതിപ്പ് ഏറ്റവും പുതിയതും മികച്ചതുമാണ്!",
+  "UPDATE_UP_TO_DATE": "നിങ്ങളുടെ {APP_NAME} പതിപ്പ് ഏറ്റവും പുതിയതാണ്!",
   "UPDATE_AVAILABLE_TITLE": "അപ്ഡേറ്റ് ലഭ്യമാണ്",
   "UPDATE_READY_RESTART_TITLE": "അപ്‌ഡേറ്റ് തയ്യാറാണ്: പുനരാരംഭിക്കേണ്ടതുണ്ട്",
   "UPDATE_READY_RESTART_MESSAGE": "അപ്‌ഡേറ്റ് ചെയ്‌ത പതിപ്പ് സമാരംഭിക്കുന്നതിന് എല്ലാ {APP_NAME} ആപ്പ് വിൻഡോകളും അടച്ച് ആപ്പ് പുനരാരംഭിക്കുക.",

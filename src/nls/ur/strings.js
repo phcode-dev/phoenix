@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs اور MDN گرافیکل لوگو کو Creative Commons Attribution لائسنس، <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> کے تحت لائسنس دیا گیا ہے۔",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME} کی ایک نئی تعمیر دستیاب ہے! تفصیلات کے لئے یہاں کلک کریں.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} اپ ٹو ڈیٹ ہے۔",
-  "UPDATE_UP_TO_DATE": "آپ کا {APP_NAME} کا ورژن تازہ ترین اور بہترین ہے!",
+  "UPDATE_UP_TO_DATE": "آپ کا {APP_NAME} کا ورژن تازہ ترین ہے!",
   "UPDATE_AVAILABLE_TITLE": "اپ ڈیٹ دستیاب ہے۔",
   "UPDATE_READY_RESTART_TITLE": "اپ ڈیٹ تیار: دوبارہ شروع کرنا ضروری ہے۔",
   "UPDATE_READY_RESTART_MESSAGE": "تمام {APP_NAME} ایپ ونڈوز بند کریں اور اپ ڈیٹ شدہ ورژن لانچ کرنے کے لیے ایپ کو دوبارہ شروع کریں۔",

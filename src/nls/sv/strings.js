@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs och dess logotyp är licenserad under en Creative Commons Attribution-licens, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "En ny version av {APP_NAME} är tillgänglig! Klicka här för fler detaljer.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} är uppdaterad",
-  "UPDATE_UP_TO_DATE": "Din version av {APP_NAME} är den senaste och bästa!",
+  "UPDATE_UP_TO_DATE": "Din version av {APP_NAME} är den senaste!",
   "UPDATE_AVAILABLE_TITLE": "Uppdatering tillgänglig!",
   "UPDATE_READY_RESTART_TITLE": "Uppdatering klar: Omstart krävs",
   "UPDATE_READY_RESTART_MESSAGE": "Stäng alla appfönster för {APP_NAME} och starta om appen för att starta den uppdaterade versionen.",

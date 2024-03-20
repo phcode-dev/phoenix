@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "Τα MDN Docs και το MDN γραφικό logo είναι αδειοδοτημένα κάτω από την άδεια Creative Commons Attribution, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Υπάρχει ένα νέο build του {APP_NAME} διαθέσιμο! Πατήστε εδώ για λεπτομέρειες.",
   "UPDATE_NOT_AVAILABLE_TITLE": "Η εφαρμογή {APP_NAME} είναι ενημερωμένη",
-  "UPDATE_UP_TO_DATE": "Η έκδοση της εφαρμογής {APP_NAME} είναι η πιο πρόσφατη και η καλύτερη!",
+  "UPDATE_UP_TO_DATE": "Η έκδοση της εφαρμογής {APP_NAME} είναι η πιο πρόσφατη!",
   "UPDATE_AVAILABLE_TITLE": "Διαθέσιμη Αναβάθμιση",
   "UPDATE_READY_RESTART_TITLE": "Έτοιμη ενημέρωση: Απαιτείται επανεκκίνηση",
   "UPDATE_READY_RESTART_MESSAGE": "Κλείστε όλα τα παράθυρα της εφαρμογής {APP_NAME} και επανεκκινήστε την εφαρμογή για να ξεκινήσει η ενημερωμένη έκδοση.",

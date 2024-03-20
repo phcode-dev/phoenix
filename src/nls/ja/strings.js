@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs および MDN グラフィックロゴは Creative Commons の帰属ライセンス、<a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> によってライセンス付与されています。",
   "UPDATE_NOTIFICATION_TOOLTIP": "{APP_NAME} の新しいビルドを利用できます。詳細はここをクリックしてください。",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} は最新です",
-  "UPDATE_UP_TO_DATE": "お使いの {APP_NAME} のバージョンは最新かつ最高です。",
+  "UPDATE_UP_TO_DATE": "{APP_NAME} のバージョンは最新です。",
   "UPDATE_AVAILABLE_TITLE": "利用可能なアップデートがあります",
   "UPDATE_READY_RESTART_TITLE": "更新準備完了: 再起動が必要です",
   "UPDATE_READY_RESTART_MESSAGE": "すべての {APP_NAME} アプリ ウィンドウを閉じ、アプリを再起動して更新バージョンを起動します。",

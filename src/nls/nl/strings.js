@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs en het MDN logo zijn gelicentieerd onder een Creative Commons Attribution licentie, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Er is een nieuwe versie van {APP_NAME} beschikbaar! Klik hier voor details.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} is up-to-date",
-  "UPDATE_UP_TO_DATE": "Jouw versie van {APP_NAME} is de nieuwste en beste!",
+  "UPDATE_UP_TO_DATE": "Jouw versie van {APP_NAME} is de nieuwste!",
   "UPDATE_AVAILABLE_TITLE": "Update beschikbaar",
   "UPDATE_READY_RESTART_TITLE": "Update klaar: opnieuw opstarten vereist",
   "UPDATE_READY_RESTART_MESSAGE": "Sluit alle app-vensters van {APP_NAME} en start de app opnieuw om de bijgewerkte versie te starten.",

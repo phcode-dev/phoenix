@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs and the MDN graphical logo are licensed under a Creative Commons Attribution license, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Новая сборка {APP_NAME} доступна! Нажмите здесь для подробностей.",
   "UPDATE_NOT_AVAILABLE_TITLE": "Приложение {APP_NAME} обновлено",
-  "UPDATE_UP_TO_DATE": "Ваша версия {APP_NAME} — самая последняя и лучшая!",
+  "UPDATE_UP_TO_DATE": "Ваша версия {APP_NAME} — последняя!",
   "UPDATE_AVAILABLE_TITLE": "Доступно обновление",
   "UPDATE_READY_RESTART_TITLE": "Обновление готово: требуется перезагрузка",
   "UPDATE_READY_RESTART_MESSAGE": "Закройте все окна приложения {APP_NAME} и перезапустите приложение, чтобы запустить обновленную версию.",

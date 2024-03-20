@@ -436,7 +436,7 @@
   "ABOUT_TEXT_MDN_DOCS": "MDN Docs a MDN logo využívají licenci Creative Commons Attribution, <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a>.",
   "UPDATE_NOTIFICATION_TOOLTIP": "Je dostupná nová verze {APP_NAME}! Klikněte zde pro více informací.",
   "UPDATE_NOT_AVAILABLE_TITLE": "Aplikace {APP_NAME} je aktuální",
-  "UPDATE_UP_TO_DATE": "Vaše verze aplikace {APP_NAME} je nejnovější a nejlepší!",
+  "UPDATE_UP_TO_DATE": "Vaše verze aplikace {APP_NAME} je nejnovější!",
   "UPDATE_AVAILABLE_TITLE": "Dostupná aktualizace",
   "UPDATE_READY_RESTART_TITLE": "Aktualizace připravena: Je vyžadován restart",
   "UPDATE_READY_RESTART_MESSAGE": "Zavřete všechna okna aplikace {APP_NAME} a restartujte aplikaci, aby se spustila aktualizovaná verze.",

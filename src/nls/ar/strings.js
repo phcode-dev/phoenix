@@ -456,7 +456,7 @@ define({
   "ABOUT_TEXT_MDN_DOCS": "تم ترخيص مستندات MDN والشعار الرسومي MDN بموجب ترخيص Creative Commons Attribution ، <a href='{MDN_DOCS_LICENSE}'>CC-BY-SA 2.5 Unported</a> .",
   "UPDATE_NOTIFICATION_TOOLTIP": "يتوفر إصدار جديد من {APP_NAME}! اضغط هنا للتفاصيل.",
   "UPDATE_NOT_AVAILABLE_TITLE": "{APP_NAME} محدث",
-  "UPDATE_UP_TO_DATE": "إصدارك من {APP_NAME} هو الأحدث والأفضل!",
+  "UPDATE_UP_TO_DATE": "الإصدار الخاص بك من {APP_NAME} هو الأحدث!",
   "UPDATE_AVAILABLE_TITLE": "التحديث متاح",
   "UPDATE_READY_RESTART_TITLE": "التحديث جاهز: إعادة التشغيل مطلوبة",
   "UPDATE_READY_RESTART_MESSAGE": "أغلق جميع نوافذ تطبيق {APP_NAME} وأعد تشغيل التطبيق لتشغيل الإصدار المحدث.",
