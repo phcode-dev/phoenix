@@ -507,7 +507,7 @@ define(function (require, exports, module) {
      * @param {function(FileSystemEntry, FileSystemEntry[]): boolean|Promise} visitor - A visitor function, which is
      *      applied to descendent FileSystemEntry objects. If the function returns false for
      *      a particular Directory entry, that directory's descendents will not be visited.
-     * @param {{maxDepth: number, maxEntries: number, sortList: boolean}} options
+     * @param {{maxDepth: number, maxEntries: number, sortList: boolean, visitHiddenTree: boolean}} options
      * @returns {Promise<>} that resolves when the visit is complete
      */
     FileSystemEntry.prototype._visitHelper = async function (stats, visitedPaths, visitor, options, _currentDepth = 0, _entries = null) {
@@ -515,6 +515,7 @@ define(function (require, exports, module) {
         let maxDepth = options.maxDepth,
             maxEntries = options.maxEntries,
             sortList = options.sortList,
+            filterNothing = options.visitHiddenTree,
             totalPathsVisited = visitedPaths._totalPathsVisited || 0;
 
         if (self.isDirectory) {
@@ -542,7 +543,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        let {entries, entriesStats} = await self.getContentsAsync();
+        let {entries, entriesStats} = await self.getContentsAsync(filterNothing);
 
         for(let i=0; i<entriesStats.length; i++){
             entries[i]._entryStats = entriesStats[i];
@@ -571,7 +572,8 @@ define(function (require, exports, module) {
      * order is guaranteed; instead of relying on such an order, it is preferable
      * to use the visit function to build a list of visited entries, sort those
      * entries as desired, and then process them. Whenever possible, deep
-     * filesystem traversals should use this method.
+     * filesystem traversals should use this method. Will not visit all files/dirs
+     * that are not shown in the file tree by default, unless the visitHiddenTree option is specified.
      *
      * @param {function(FileSystemEntry): boolean} visitor - A visitor function (can be async), which is
      *      applied to this entry and all descendent FileSystemEntry objects. It can have two args, the
@@ -579,7 +581,7 @@ define(function (require, exports, module) {
      *      same parent dir as the given entry. If the function returns
      *      false (or promise that resolved to false)for a particular Directory entry, that directory's
      *      descendents will not be visited.
-     * @param {{maxDepth: number=, maxEntries: number=}=} options
+     * @param {{maxDepth: number=, maxEntries: number=, visitHiddenTree: boolean}=} options
      * @param {function(?string)=} callback Callback with single FileSystemError string parameter.
      */
     FileSystemEntry.prototype.visit = function (visitor, options, callback) {

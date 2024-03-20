@@ -169,15 +169,17 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Read the contents of a Directory, returns a promise. If this Directory is under a watch root,
-     * the listing will exclude any items filtered out by the watch root's filter
-     * function.
+     * Read the contents of a Directory, returns a promise. It filters out all files
+     * that are not shown in the file tree by default, unless the filterNothing option is specified.
+     *
+     * @param {boolean} filterNothing - is specified, will return a true contents of dir as shown in disc,
+     *      weather it is shown in the file tree or not. Can be used for backup/restore flows.
      *
      * @return {Promise<{entries: FileSystemEntry, contentStats: FileSystemStats, contentsStatsErrors}>} An object
      * with attributes - entries(an array of file system entries), contentStats and contentsStatsErrors(a map from
      * content name to error if there is any).
      */
-    Directory.prototype.getContentsAsync = function () {
+    Directory.prototype.getContentsAsync = function (filterNothing= false) {
         let that = this;
         return new Promise((resolve, reject)=>{
             that.getContents((err, contents, entriesStats, entriesStatsErrors) =>{
@@ -186,13 +188,13 @@ define(function (require, exports, module) {
                     return;
                 }
                 resolve({entries: contents, entriesStats, entriesStatsErrors});
-            });
+            }, filterNothing);
         });
     };
 
     /**
-     * Read the contents of a Directory.If this Directory is under a watch root,
-     * the listing will exclude any items filtered out by the watch root's filter
+     * Read the contents of a Directory. It filters out all files
+     * that are not shown in the file tree by default, unless the filterNothing option is specified.
      *
      * @param {function (?string, Array.<FileSystemEntry>=, Array.<FileSystemStats>=, Object.<string, string>=)} callback
      *          Callback that is passed an error code or the stat-able contents
@@ -200,22 +202,28 @@ define(function (require, exports, module) {
      *          fullPath-to-FileSystemError string map of unstat-able entries
      *          and their stat errors. If there are no stat errors then the last
      *          parameter shall remain undefined.
+     * @param {boolean} filterNothing - is specified, will return a true contents of dir as shown in disc,
+     *      weather it is shown in the file tree or not. Can be used for backup/restore flows.
      */
-    Directory.prototype.getContents = function (callback) {
-        if (this._contentsCallbacks) {
-            // There is already a pending call for this directory's contents.
-            // Push the new callback onto the stack and return.
-            this._contentsCallbacks.push(callback);
-            return;
-        }
+    Directory.prototype.getContents = function (callback, filterNothing = false) {
+        if(!filterNothing) {
+            if (this._contentsCallbacks) {
+                // There is already a pending call for this directory's contents.
+                // Push the new callback onto the stack and return.
+                this._contentsCallbacks.push(callback);
+                return;
+            }
 
-        // Return cached contents if the directory is watched
-        if (this._contents) {
-            callback(null, this._contents, this._contentsStats, this._contentsStatsErrors);
-            return;
-        }
+            // Return cached contents if the directory is watched
+            // we only cache filtered results, if unfiltered results are needed, do a disc lookup again
+            // as filterNothing is usually used by disc backup flows.
+            if (this._contents) {
+                callback(null, this._contents, this._contentsStats, this._contentsStatsErrors);
+                return;
+            }
 
-        this._contentsCallbacks = [callback];
+            this._contentsCallbacks = [callback];
+        }
 
         this._impl.readdir(this.fullPath, function (err, names, stats) {
             var contents = [],
@@ -233,7 +241,7 @@ define(function (require, exports, module) {
                     var entryPath = this.fullPath + name;
 
                     var entryStats = stats[index];
-                    if (FileSystem.fileTreeFilter(name)) {
+                    if (FileSystem.fileTreeFilter(name) || filterNothing) {
                         var entry;
 
                         // Note: not all entries necessarily have associated stats.
@@ -261,22 +269,26 @@ define(function (require, exports, module) {
                     }
                 }, this);
 
-                if (watched) {
+                if (watched && !filterNothing) {
                     this._contents = contents;
                     this._contentsStats = contentsStats;
                     this._contentsStatsErrors = contentsStatsErrors;
                 }
             }
 
-            // Reset the callback list before we begin calling back so that
-            // synchronous reentrant calls are handled correctly.
-            var currentCallbacks = this._contentsCallbacks;
+            if(!filterNothing){
+                // Reset the callback list before we begin calling back so that
+                // synchronous reentrant calls are handled correctly.
+                var currentCallbacks = this._contentsCallbacks;
 
-            this._contentsCallbacks = null;
+                this._contentsCallbacks = null;
 
-            // Invoke all saved callbacks
-            var callbackArgs = [err, contents, contentsStats, contentsStatsErrors];
-            _applyAllCallbacks(currentCallbacks, callbackArgs);
+                // Invoke all saved callbacks
+                var callbackArgs = [err, contents, contentsStats, contentsStatsErrors];
+                _applyAllCallbacks(currentCallbacks, callbackArgs);
+            } else {
+                callback(err, contents, contentsStats, contentsStatsErrors);
+            }
         }.bind(this));
     };
 
