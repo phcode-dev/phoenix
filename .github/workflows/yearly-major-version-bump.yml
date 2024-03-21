@@ -26,10 +26,10 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: 'ci: bump patch version to ${{ env.PHOENIX_VERSION }}'
+          commit-message: 'ci: bump major version to ${{ env.PHOENIX_VERSION }}'
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          title: '[Release BOT] Bump patch version to ${{ env.PHOENIX_VERSION }}'
+          title: '[Release BOT] Bump major version to ${{ env.PHOENIX_VERSION }}'
           add-paths: |
             package.json
             src/config.json
