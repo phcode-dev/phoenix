@@ -223,10 +223,10 @@ Phoenix.app = {
                 window.__TAURI__.tauri.invoke("get_mac_deep_link_requests");// this will clear the cached queue in shell
                 const eventToUse = ["macOSEvent"];
                 if(typeof fileURL === 'string'){
-                    eventToUse.push(fileURL.replace("file://", ""));
+                    eventToUse.push(decodeURIComponent(fileURL.replace("file://", "")));
                 } else if(fileURLArray){
                     for(let fileUrlEntry of fileURLArray){
-                        eventToUse.push(fileUrlEntry.replace("file://", ""));
+                        eventToUse.push(decodeURIComponent(fileUrlEntry.replace("file://", "")));
                     }
                 }
                 handlerFn(eventToUse, "");
@@ -242,7 +242,7 @@ Phoenix.app = {
                     if(isPrimary){
                         const eventToUse = ["macOSEvent"];
                         for(let fileUrlEntry of filesURLList){
-                            eventToUse.push(fileUrlEntry.replace("file://", ""));
+                            eventToUse.push(decodeURIComponent(fileUrlEntry.replace("file://", "")));
                         }
                         handlerFn(eventToUse, "");
                         return;
