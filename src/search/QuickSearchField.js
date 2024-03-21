@@ -164,9 +164,9 @@ define(function (require, exports, module) {
             if (this.options.onDelete && this._$dropdown && this._highlightIndex !== null) {
                 this.options.onDelete(this._highlightIndex);
                 this.updateResults();
+                event.stopPropagation();
+                event.preventDefault();
             }
-            event.stopPropagation();
-            event.preventDefault(); // treated as Home key otherwise
         } else if (event.keyCode === KeyEvent.DOM_VK_DOWN) {
             // Highlight changes are always done synchronously on the currently shown result list. If the list
             // later changes, the highlight is reset to the top
