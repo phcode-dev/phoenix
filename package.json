@@ -69,6 +69,7 @@
         "release:prod": "gulp releaseProd",
         "_releaseWebCache": "gulp releaseWebCache",
         "_patchVersionBump": "gulp patchVersionBump",
+        "_minorVersionBump": "gulp minorVersionBump",
         "_majorVersionBump": "gulp majorVersionBump",
         "serve": "http-server . -p 8000 -c-1",
         "_serveWithWebCacheHelp": "echo !!!Make sure to npm run release:dev/stageing/prod before testing the cache!!!",
