@@ -7,6 +7,15 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/find-in-files/">Search Filters - Advanced find in files</a></h2>
+
+`Added on March, 2024`
+
+All new search filters to find exactly what you want.
+`Search in files` or `Exclude files` matching the given pattern instantly.
+
+![new find in files](https://github.com/phcode-dev/phoenix/assets/5336369/9a46a6a8-01a2-45db-aebc-9b280977bdc1)
+
 ## Native Desktop Apps - Windows, Linux, and Mac (Intel/M1)
 `Added on Feb,2024`
 
@@ -18,7 +27,7 @@ seamless cross-platform experience.
 
 Download your copy from <a href="https://phcode.io" target="_blank">phcode.io</a>
 
-![captured-div (1)](https://github.com/phcode-dev/phoenix/assets/5336369/9ea4f9cc-5ebd-4d67-bf36-0a6ae7611767)
+![Desktop apps](https://github.com/phcode-dev/phoenix/assets/5336369/9ea4f9cc-5ebd-4d67-bf36-0a6ae7611767)
 
 ## Make It Yours: Custom Keyboard Shortcuts
 `Added on Feb,2024`
