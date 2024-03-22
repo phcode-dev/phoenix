@@ -2,7 +2,6 @@ const { pipeline } = require('stream/promises');
 const { Transform } = require('stream');
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 const { exec } = require('child_process');
 
 const args = process.argv.slice(2); // Skip the first two elements
@@ -16,7 +15,7 @@ const EVENT_INSTALL_PATH= "InstallerPath,"; // its , here as separator as window
 const fileName = path.basename(new URL(downloadURL).pathname);
 const installerFolder = path.join(appdataDir, 'installer');
 const savePath = path.join(appdataDir, 'installer', fileName);
-let extractPath;
+let extractPath = null;
 
 async function getFileSize(url) {
     try {
@@ -77,33 +76,6 @@ async function downloadFile(url, outputPath) {
 }
 
 /**
- * Extracts a .tar.gz file using the tar CLI utility available on macOS/linux.
- *
- * @param {string} filePath - The path to the .tar.gz file.
- * @param {string} absoluteExtractPath - The directory to extract the files into.
- */
-function extractTar(filePath, absoluteExtractPath) {
-    return new Promise((resolve, reject)=>{
-        const command = `tar -xzf "${filePath}" -C "${absoluteExtractPath}"`;
-
-        exec(command, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Extraction error: ${error.message}`);
-                reject(error.message);
-                return;
-            }
-            if (stderr) {
-                console.error(`Extraction stderr: ${stderr}`);
-                reject(stderr);
-                return;
-            }
-            console.log(`Extraction completed to ${absoluteExtractPath}`);
-            resolve();
-        });
-    });
-}
-
-/**
  * Extracts a ZIP file to the specified directory on Windows.
  *
  * @param {string} zipFilePath - The path to the ZIP file.
@@ -127,33 +99,6 @@ function extractZipFileWindows(zipFilePath, absoluteExtractPath) {
             console.log(`ZIP file extracted successfully to ${absoluteExtractPath}`);
             resolve();
         });
-    });
-}
-
-function removeQuarantineAttributeIfMac(extractPath) {
-    return new Promise((resolve)=>{
-        if (os.platform() === 'darwin') {
-            const command = `xattr -rd com.apple.quarantine "${extractPath}"`;
-
-            exec(command, (error, stdout, stderr) => {
-                // we always resolve as the user will be promted by macos if this fails here.
-                if (error) {
-                    console.error(`Error removing quarantine attribute: ${error.message}`);
-                    resolve();
-                    return;
-                }
-                if (stderr) {
-                    console.error(`Error output: ${stderr}`);
-                    resolve();
-                    return;
-                }
-                console.log(`Quarantine attribute removed successfully for ${extractPath}`);
-                resolve();
-            });
-        } else {
-            console.log("Platform is not macOS, no need to remove quarantine attribute.");
-            resolve();
-        }
     });
 }
 
@@ -181,11 +126,17 @@ async function downloadFileIfNeeded() {
             console.log(`Downloading installer to ${savePath}...`);
             await downloadFile(downloadURL, savePath);
         }
+        // extract path is assumed to be appdata/installer/extracted in phoenix side too,
+        // if changing location, update there too.
         extractPath = path.join(appdataDir, 'installer', "extracted");
         await fs.promises.rm(extractPath, { recursive: true, force: true });
         fs.mkdirSync(extractPath, { recursive: true });
         if(savePath.endsWith(".tar.gz")){
-            await extractTar(savePath, extractPath);
+            // mac installer tar.gz will be extracted at phoenix side as if we extract it now, there will be
+            // 2 `phoenix code.app` in the system, and mac will show both in the `open with` section in finder!
+            // so we only extract the app just before install.
+            extractPath = null;
+            return;
         }
         if(savePath.endsWith(".zip")){
             await extractZipFileWindows(savePath, extractPath);
@@ -195,7 +146,6 @@ async function downloadFileIfNeeded() {
         if(dirContents.length === 1){
             extractPath = path.join(extractPath, dirContents[0]);
         }
-        await removeQuarantineAttributeIfMac(extractPath);
     } catch (error) {
         console.error('An error occurred:', error);
     }
