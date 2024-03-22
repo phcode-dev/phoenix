@@ -27,6 +27,7 @@ define(function (require, exports, module) {
     const AppInit = require("utils/AppInit"),
         Metrics = require("utils/Metrics"),
         FileSystem    = require("filesystem/FileSystem"),
+        FileUtils   = require("file/FileUtils"),
         Commands = require("command/Commands"),
         CommandManager  = require("command/CommandManager"),
         Menus = require("command/Menus"),
@@ -358,10 +359,11 @@ define(function (require, exports, module) {
         const extractedVirtualPath = window.fs.getTauriVirtualPath(extractPlatformPath);
         let directory = FileSystem.getDirectoryForPath(extractedVirtualPath);
         const {entries} = await directory.getContentsAsync();
-        if(entries.length !== 1){
+        if(entries.length !== 1 || !entries[0].fullPath.includes(".app")){
             throw new Error("Could not resolve .app to update from extracted folder" + extractedVirtualPath);
         }
-        installerLocation = window.fs.getTauriPlatformPath(entries[0].fullPath);
+        installerLocation = FileUtils.stripTrailingSlash(
+            window.fs.getTauriPlatformPath(entries[0].fullPath));
     }
 
     function _cleanExtractedFolderSilent() {

@@ -718,6 +718,7 @@ function nodeLoader() {
                 };
 
                 window.PhNodeEngine.terminateNode = function () {
+                    fs.forceUseNodeWSEndpoint(false);
                     if(!window.isNodeTerminated) {
                         execNode(NODE_COMMANDS.TERMINATE);
                     }
