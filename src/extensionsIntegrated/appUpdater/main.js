@@ -336,7 +336,6 @@ define(function (require, exports, module) {
     }
 
     async function _extractMacInstaller() {
-        // todo delete .app files already in the install folder
         const appdataDir = window._tauriBootVars.appLocalDir;
         let extractPlatformPath = path.join(appdataDir, 'installer', "extracted");
         // extract the .app file
@@ -378,7 +377,7 @@ define(function (require, exports, module) {
     }
 
     async function doMacUpdate() {
-        await _extractMacInstaller(installerLocation);
+        await _extractMacInstaller();
         const currentAppPath = await getCurrentMacAppPath();
         if(!currentAppPath || !installerLocation || !currentAppPath.endsWith(".app") ||
             !installerLocation.endsWith(".app")){
