@@ -407,6 +407,10 @@ define(function (require, exports, module) {
         if(!installerLocation){
             return;
         }
+        // at this time, the node process have exited and we need to force use tauri apis. This would
+        // normally happen as node responds as terminated, but for updates, this is at quit time and we
+        // cant wait any longer.
+        window.fs.forceUseNodeWSEndpoint(false);
         console.log("Installing update from: ", installerLocation);
         return new Promise(resolve=>{
             // this should never reject as it happens in app quit. rejecting wont affect quit, but its unnecessary.
