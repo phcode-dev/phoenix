@@ -17,6 +17,27 @@
     <style>
         {{{GFM_CSS}}}
     </style>
+    <script>
+        {{{TRUSTED_ORIGINS_EMBED}}}
+        // this is for managing who am i context in iframes embedded in phoenix to have special handling.
+        window.addEventListener('message', function(event) {
+            if (!TRUSTED_ORIGINS_EMBED[event.origin]) {
+                return; // Ignore messages from unexpected origins
+            }
+
+            window.__PHOENIX_EMBED_INFO = {
+                isTauri: event.data.isTauri
+            };
+        });
+        if(window.self !== window.parent){
+            // in an iframe
+            window.parent.postMessage({
+                handlerName: "ph-liveServer",
+                eventName: 'whoAmIframePhoenix',
+                href: location.href
+            }, "{{{PARENT_ORIGIN}}}");
+        }
+    </script>
     <script type="text/javascript">
         function inIframe () {
             try {
@@ -31,7 +52,10 @@
             // It will confuse the use seeing the browser save dialog inside phoenix.
             document.savePageCtrlSDisabledByPhoenix = true;
             document.addEventListener("keydown", function(e) {
-                if (e.key === 's' && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                if (window.__PHOENIX_EMBED_INFO &&
+                    e.key === 's' && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                    // we only do this in iframes embedded directly inside phoenix, in popped out iframes
+                    // we don't need to capture anything.
                     e.preventDefault();
                 }
             }, false);
@@ -46,13 +70,19 @@
                 return absoluteUrl.href;
             }
             document.addEventListener('click', function(event) {
-                if (event.target.tagName === 'A' && (event.target.target === '_blank')) {
-                    const href = getAbsoluteUrl(event.target.getAttribute('href'));
-                    window.parent.postMessage({
-                        handlerName: "ph-liveServer",
-                        eventName: 'embeddedIframeHrefClick',
-                        href: href
-                    }, "{{{PARENT_ORIGIN}}}");
+                // in desktop phoenix builds, tauri will not open anchor tags in browser if it is in
+                // an iframe(except for the intel mac bug)
+                // in normal browsers, we dont need to do this.
+                if (window.__PHOENIX_EMBED_INFO && window.__PHOENIX_EMBED_INFO.isTauri &&
+                    event.target.tagName === 'A' && (event.target.target === '_blank')) {
+                        const href = getAbsoluteUrl(event.target.getAttribute('href'));
+                        window.parent.postMessage({
+                            handlerName: "ph-liveServer",
+                            eventName: 'embeddedIframeHrefClick',
+                            href: href
+                        }, "{{{PARENT_ORIGIN}}}");
+                        event.preventDefault(); // in intel mac desktop, tauri seems to open in browser
+                        // causing 2 tabs to open. in m1 macs its not there. so we prevent default behavior.
                 }
             });
         }
