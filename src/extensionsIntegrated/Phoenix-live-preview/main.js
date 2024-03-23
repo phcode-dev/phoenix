@@ -66,6 +66,8 @@ define(function (require, exports, module) {
 
     const StaticServer = Phoenix.browser.isTauri? NodeStaticServer : BrowserStaticServer;
 
+    const EVENT_EMBEDDED_IFRAME_WHO_AM_I = 'whoAmIframePhoenix';
+
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
     const PREVIEW_PROJECT_README_KEY = "preview_readme";
 
@@ -78,6 +80,24 @@ define(function (require, exports, module) {
              sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-modals allow-pointer-lock">
     </iframe>
     `;
+
+    // jQuery objects
+    let $icon,
+        $iframe,
+        $panel,
+        $pinUrlBtn,
+        $highlightBtn,
+        $livePreviewPopBtn,
+        $reloadBtn;
+
+    StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
+        if($iframe && $iframe[0]) {
+            const iframeDom = $iframe[0];
+            iframeDom.contentWindow.postMessage({
+                isTauri: Phoenix.browser.isTauri
+            }, "*"); // this is not sensitive info, and is only dispatched if requested by the iframe
+        }
+    });
 
     function _isLiveHighlightEnabled() {
         return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
@@ -182,16 +202,6 @@ define(function (require, exports, module) {
 
         return new StaticServer.StaticServer(config);
     }
-
-    // jQuery objects
-    let $icon,
-        $iframe,
-        $panel,
-        $pinUrlBtn,
-        $highlightBtn,
-        $livePreviewPopBtn,
-        $reloadBtn;
-
 
     // Templates
     ExtensionUtils.loadStyleSheet(module, "live-preview.css");

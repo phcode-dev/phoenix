@@ -306,6 +306,8 @@ define(function (require, exports, module) {
                         BOOTSTRAP_LIB_CSS: BootstrapCSSText,
                         HIGHLIGHT_JS_CSS: GithubCSSText,
                         HIGHLIGHT_JS: HilightJSText,
+                        TRUSTED_ORIGINS_EMBED:
+                            `const TRUSTED_ORIGINS_EMBED = ${JSON.stringify(Phoenix.TRUSTED_ORIGINS)};`,
                         GFM_CSS: GFMCSSText,
                         PARENT_ORIGIN: location.origin
                     };
