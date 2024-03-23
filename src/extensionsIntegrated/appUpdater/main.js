@@ -230,17 +230,22 @@ define(function (require, exports, module) {
         Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.UPDATE_AVAILABLE_TITLE, markdownHtml, buttons)
             .done(option=>{
                 isUpgradableLocation().then(isUpgradableLoc=>{
+                    if(option === Dialogs.DIALOG_BTN_CANCEL){
+                        Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "cancel"+Phoenix.platform);
+                        return;
+                    }
                     if(!isUpgradableLoc) {
                         // user installed linux as binary without installer, we just open phcode.io
                         const downloadPage = brackets.config.homepage_url || "https://phcode.io";
                         NativeApp.openURLInDefaultBrowser(downloadPage);
+                        Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "nonUpgradable"+Phoenix.platform);
                         return;
                     }
                     if(option === Dialogs.DIALOG_BTN_OK && !updaterWindow){
+                        Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "okUpdate"+Phoenix.platform);
                         doUpdate(updateDetails.downloadURL);
                         return;
                     }
-                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "cancel"+Phoenix.platform);
                 });
             });
     }
