@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Download Phoenix Code Editor</title>
+    <link rel="stylesheet" type="text/css" href="../thirdparty/fontawesome/css/all.min.css">
+    <style>
+        /* Brackets Fonts */
+
+        /* Alternative weights */
+
+        :root {
+            --sansFontFamily: 'SourceSansPro', Helvetica, Arial, "Meiryo UI", "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+        }
+
+        /* SourceSansPro Regular */
+        @font-face {
+            font-family: 'SourceSansPro';
+            src: url('../styles/fonts/SourceSansPro/SourceSansPro-Regular.ttf');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            background: #000A2E;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--sansFontFamily) ;
+            font-size: 22px;
+        }
+
+        img {
+            vertical-align: middle;
+            border-style: none;
+        }
+
+        #starsLeft {
+            position: absolute;
+            left: 0px;
+            top: 5%;
+            opacity: 0.7;
+            z-index: 2;
+        }
+
+        #starsRight {
+            position: absolute;
+            z-index: 2;
+            right: 0px;
+            top: 5%;
+            opacity: 0.7;
+        }
+
+        #mainDiv {
+            color: #ffffffef;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            z-index: 8;
+            align-items: center;
+            justify-content: center;
+            display: flex!important;
+            flex-direction: column!important;
+        }
+
+        #logo {
+            height: 35vh;
+            vertical-align: middle;
+            border-style: none;
+            box-sizing: border-box;
+
+        }
+
+        #MainText {
+            color: #ffffffef;
+            text-align: center!important;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-top: 0;
+        }
+
+        .primary-button {
+            width: 350px;
+            height: 60px;
+            background: linear-gradient(90deg, #FAAA47 0%, #FA1801 100%);
+            font-family: var(--sansFontFamily) ;
+            background-size: 200% 200%;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            color: #ffffffef;
+            cursor: pointer;
+            box-shadow: 0 0 0 #FAAA47;
+            transition:2s background-color;
+            animation: Animation 2s ease infinite;
+        }
+
+        @keyframes Animation {
+            0%{background-position:0% 0%}
+            50%{background-position:100% 0%}
+            100%{background-position:0% 0%}
+        }
+
+
+        .clouds {
+            position: absolute;
+            bottom: 0;
+            width: 101%;
+        }
+
+        #cloudLeftTop {
+            position: absolute;
+            top: -10%;
+            left: -20px;
+            z-index: 1;
+        }
+
+        #cloudBottomRight {
+            position: absolute;
+            bottom: 10%;
+            right: -20px;
+            z-index: 1;
+        }
+
+        .night {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform: rotateZ(45deg);
+        }
+
+        .shooting_star {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(-45deg, rgba(95, 145, 255, 1), rgba(0, 0, 255, 0));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px rgba(105, 155, 255, 1));
+            animation:
+                    tail 3000ms ease-in-out ,
+                    shooting 3000ms ease-in-out ;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes tail {
+            0% {
+                width: 0;
+            }
+
+            30% {
+                width: 100px;
+            }
+
+            100% {
+                width: 0;
+            }
+        }
+
+        @keyframes shooting {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(300px);
+            }
+        }
+
+    </style>
+    <meta name="robots" content="noindex">
+</head>
+
+<body>
+<img id="starsLeft"  src="../assets/phoenix-splash/images/stars-left.svg"/>
+<div id="mainDiv">
+    <img id="logo"  src="../assets/phoenix-splash/images/phoenix-logo.svg"/>
+    <div id="MainText">
+        <h1>Phoenix Code Editor</h1>
+        <span>A text editor designed to make coding as intuitive and fun as playing a video game - specially
+            crafted for web developers, designers, and students.</span>
+        <br><br>
+        <a href="https://phcode.io">
+            <button id="load-status-display-btn" class="primary-button" style="font-size: x-large">
+                <i class="fa-solid fa-download"></i> &nbsp; Download from phcode.io</button>
+        </a>
+    </div>
+</div>
+<img id="cloudLeftTop"  src="../assets/phoenix-splash/images/vector-top-left.png"/>
+<img id="cloudBottomRight"  src="../assets/phoenix-splash/images/vector-bottom-right.png"/>
+<img id="starsRight"  src="../assets/phoenix-splash/images/stars-right.svg"/>
+<img class="clouds" style="z-index: 3; transform: translate(0px, -1.55909px);" src="../assets/phoenix-splash/images/cloud1.svg"/>
+<img class="clouds" style="z-index: 6; transform: translate(0px, -2.33863px);" src="../assets/phoenix-splash/images/cloud2.svg"/>
+<img class="clouds" style="z-index: 5; transform: translate(0px, -3.89772px);" src="../assets/phoenix-splash/images/cloud3.svg"/>
+<img class="clouds" style="z-index: 6; transform: translate(0px, -3.89772px);" src="../assets/phoenix-splash/images/cloud4.svg"/>
+<div class="night">
+    <div class="shooting_star">
+        <div class="shooting_star"/>
+    </div>
+</div>
+<div class="night">
+    <div class="shooting_star">
+        <div class="shooting_star"/>
+    </div>
+</div>
+<div class="night">
+    <div class="shooting_star">
+        <div class="shooting_star"/>
+    </div>
+</div>
+</body>
+</html>
