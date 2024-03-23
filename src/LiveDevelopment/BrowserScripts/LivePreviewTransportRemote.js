@@ -298,25 +298,51 @@
             targetElement = targetElement.parentElement;
         }
 
-        if (targetElement && targetElement.tagName === 'A' && (targetElement.target === '_blank')) {
+        if (window.__PHOENIX_EMBED_INFO && window.__PHOENIX_EMBED_INFO.isTauri &&
+            targetElement && targetElement.tagName === 'A' && (targetElement.target === '_blank')) {
+            // in desktop phoenix builds, tauri will not open anchor tags in browser if it is in
+            // an iframe(except for the intel mac bug)
+            // in normal browsers, we dont need to do this and the borwser will do its thing.
             const href = getAbsoluteUrl(targetElement.getAttribute('href'));
             window.parent.postMessage({
                 handlerName: "ph-liveServer",
                 eventName: 'embeddedIframeHrefClick',
                 href: href
             }, "*");
+            event.preventDefault(); // in intel mac desktop, tauri seems to open in browser
+            // causing 2 tabs to open. in m1 macs its not there. so we prevent default behavior.
         }
     });
     document.addEventListener('contextmenu', function(event) {
         (document.activeElement || document.body).focus();
     });
     document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' || event.key === 'Esc') { // Check for Escape key
-            // Perform the desired action for the Escape key
+        if (window.__PHOENIX_EMBED_INFO &&
+            (event.key === 'Escape' || event.key === 'Esc')) { // Check for Escape key
+            // Perform the desired action for the Escape key only if its within iframe inside phoenix
             window.parent.postMessage({
                 handlerName: "ph-liveServer",
                 eventName: 'embeddedEscapeKeyPressed'
             }, "*");
         }
     });
+
+    // this is for managing who am i context in iframes embedded in phoenix to have special handling.
+    window.addEventListener('message', function(event) {
+        if (!TRANSPORT_CONFIG.TRUSTED_ORIGINS_EMBED[event.origin]) {
+            return; // Ignore messages from unexpected origins
+        }
+
+        window.__PHOENIX_EMBED_INFO = {
+            isTauri: event.data.isTauri
+        };
+    });
+    if(window.self !== window.parent){
+        // in an iframe
+        window.parent.postMessage({
+            handlerName: "ph-liveServer",
+            eventName: 'whoAmIframePhoenix',
+            href: location.href
+        }, "*");
+    }
 }(this));
