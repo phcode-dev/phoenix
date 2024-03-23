@@ -309,10 +309,12 @@
                 eventName: 'embeddedIframeHrefClick',
                 href: href
             }, "*");
-            event.preventDefault(); // in intel mac desktop, tauri seems to open in browser
+            // in intel mac desktop, tauri seems to open in browser
             // causing 2 tabs to open. in m1 macs its not there. so we prevent default behavior.
+            event.stopImmediatePropagation();
+            event.preventDefault();
         }
-    });
+    }, true);
     document.addEventListener('contextmenu', function(event) {
         (document.activeElement || document.body).focus();
     });
