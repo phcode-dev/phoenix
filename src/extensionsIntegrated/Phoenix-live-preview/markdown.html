@@ -70,6 +70,20 @@
                 return absoluteUrl.href;
             }
             document.addEventListener('click', function(event) {
+                // Get the user's current selection
+                const selection = window.getSelection();
+
+                // Check if there is a selection
+                if (selection.toString().length === 0) {
+                    // there may be selection like text or others Eg: user may select some text
+                    // in live preview to copy, in which case we should not treat it as a live select.
+                    // if there is no selection, then we have set the focus to the editor
+                    window.parent.postMessage({
+                        handlerName: "ph-liveServer",
+                        eventName: 'embeddedIframeFocusEditor',
+                        href: location.href
+                    }, "{{{PARENT_ORIGIN}}}");
+                }
                 // in desktop phoenix builds, tauri will not open anchor tags in browser if it is in
                 // an iframe(except for the intel mac bug)
                 // in normal browsers, we dont need to do this.

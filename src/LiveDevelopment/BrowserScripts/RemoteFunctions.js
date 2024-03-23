@@ -28,7 +28,7 @@
  * modules should define a single function that returns an object of all
  * exported functions.
  */
-function RemoteFunctions(config, remoteWSPort) {
+function RemoteFunctions(config) {
 
 
     var experimental;
@@ -997,42 +997,7 @@ function RemoteFunctions(config, remoteWSPort) {
     if (experimental) {
         window.document.addEventListener("keydown", onKeyDown);
     }
-    
-    var _ws = null;
 
-    function onDocumentClick(event) {
-        var element = event.target,
-            currentDataId,
-            newDataId;
-        
-        if (_ws && element && element.hasAttribute('data-brackets-id')) {
-            _ws.send(JSON.stringify({
-                type: "message",
-                message: element.getAttribute('data-brackets-id')
-            }));
-        }
-    }
-    
-    
-    function createWebSocket() {
-        _ws = new WebSocket("ws://localhost:" + remoteWSPort);
-        _ws.onopen = function () {
-            window.document.addEventListener("click", onDocumentClick);
-        };
-                
-        _ws.onmessage = function (evt) {
-        };
-                
-        _ws.onclose = function () {
-            // websocket is closed
-            window.document.removeEventListener("click", onDocumentClick);
-        };
-    }
-    
-    if (remoteWSPort) {
-        createWebSocket();
-    }
-    
     return {
         "DOMEditHandler"        : DOMEditHandler,
         "showGoto"              : showGoto,

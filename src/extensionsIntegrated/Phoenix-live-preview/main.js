@@ -67,6 +67,7 @@ define(function (require, exports, module) {
     const StaticServer = Phoenix.browser.isTauri? NodeStaticServer : BrowserStaticServer;
 
     const EVENT_EMBEDDED_IFRAME_WHO_AM_I = 'whoAmIframePhoenix';
+    const EVENT_EMBEDDED_IFRAME_FOCUS_EDITOR = 'embeddedIframeFocusEditor';
 
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
     const PREVIEW_PROJECT_README_KEY = "preview_readme";
@@ -98,26 +99,14 @@ define(function (require, exports, module) {
             }, "*"); // this is not sensitive info, and is only dispatched if requested by the iframe
         }
     });
+    StaticServer.on(EVENT_EMBEDDED_IFRAME_FOCUS_EDITOR, function () {
+        const editor  = EditorManager.getActiveEditor();
+        editor.focus();
+    });
 
     function _isLiveHighlightEnabled() {
         return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
     }
-
-    window.addEventListener('blur', function() {
-        setTimeout(function() {
-            const editor  = EditorManager.getActiveEditor();
-            if(!_isLiveHighlightEnabled() || !editor){
-                return;
-            }
-            if (document.activeElement === document.getElementById(LIVE_PREVIEW_IFRAME_ID)
-                && !utils.isHTMLFile(editor.document.file.fullPath)) {
-                // Editor focus is never lost to live preview if live highlights is enabled.
-                // For html files, they have special handling to set focus so that live preview can take inputs in
-                // text fields and text area for user to be able to type in live preview html text areas.
-                editor.focus();
-            }
-        }, 100);
-    });
 
     function _getTrustProjectPage() {
         const trustProjectMessage = StringUtils.format(Strings.TRUST_PROJECT,

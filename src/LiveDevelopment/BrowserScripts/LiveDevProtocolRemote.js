@@ -367,6 +367,16 @@
     * the HTML tag corresponding to the clicked element.
     */
     function onDocumentClick(event) {
+        // Get the user's current selection
+        const selection = window.getSelection();
+
+        // Check if there is a selection
+        if (selection.toString().length > 0) {
+            // if there is any selection like text or others, we don't see it as a live selection event
+            // Eg: user may selects ome text in live preview to copy, in which case we should nt treat it
+            // as a live select.
+            return;
+        }
         var element = event.target;
         if (element && element.hasAttribute('data-brackets-id')) {
             MessageBroker.send({
