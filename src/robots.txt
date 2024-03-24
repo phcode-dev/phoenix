@@ -14,24 +14,30 @@ Disallow: /assets/
 # The Omniture search engine can see everything
 User-agent: Atomz/1.0
 Disallow: /assets/
+Disallow: /test/
 
 User-agent: *
 Disallow: /assets/
+Disallow: /test/
 
 User-agent: AdsBot-Google
 Disallow: /assets/
+Disallow: /test/
 
 User-agent: AdsBot-Google-Mobile
 Disallow: /assets/
+Disallow: /test/
 
 User-agent: SearchmetricsBot
 Disallow: /assets/
+Disallow: /test/
 
 User-agent: Googlebot
 Disallow: /assets/
+Disallow: /test/
 
 # XML sitemaps
-Sitemap: https://sitemaps.phcode.io/sitemap-phcode.xml
 Sitemap: https://phcode.dev/sitemap-phcode.xml
+Sitemap: https://sitemaps.phcode.io/sitemap-phcode.xml
 
 # more sitemap urls can be given here, but just 1 for now.
