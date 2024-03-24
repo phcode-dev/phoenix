@@ -493,6 +493,25 @@ function extractRequireTextFragments(fileContent) {
     return result;
 }
 
+function containsRegExpExcludingEmpty(str) {
+    // This pattern attempts to match a RegExp literal, starting and ending with slashes,
+    // containing at least one character that's not a slash or a space in between,
+    // and possibly followed by RegExp flags. This excludes simple "//".
+    let lines = str.split(("\n"));
+    const regExpPatternEq = /=\s*\/(?!\/\^)(?:[^\/\s]|\\\/)+\/[gimuy]*/; // matched x=/reg/i
+    const regExpPatternProp = /:\s*\/(?!\/\^)(?:[^\/\s]|\\\/)+\/[gimuy]*/; // matched x: /reg/i
+    const regExpPatternCond = /\(\s*\/(?!\/\^)(?:[^\/\s]|\\\/)+\/[gimuy]*/; // matched if(/reg/i
+
+    for(let line of lines) {
+        if(regExpPatternEq.test(line) || regExpPatternProp.test(line) || regExpPatternCond.test(line)) {
+            console.error("detected regular expression in line: ", line);
+            return line;
+        }
+    }
+    return false;
+}
+
+
 const textContentMap = {};
 function inlineTextRequire(file, content, srcDir) {
     if(content.includes(`'text!`) || content.includes("`text!")) {
@@ -518,6 +537,13 @@ function inlineTextRequire(file, content, srcDir) {
                 console.log("Not inlining JS/JSON file:", requirePath);
             } else {
                 console.log("Inlining", requireStatement);
+                if((requireStatement.includes(".html") || requireStatement.includes(".js"))
+                    && containsRegExpExcludingEmpty(textContent)){
+                    console.log(textContent);
+                    const detectedRegEx = containsRegExpExcludingEmpty(textContent);
+                    throw `Error inlining ${requireStatement} in ${file}: Regex: ${detectedRegEx}`+
+                    "\nRegular expression of the form /*/ is not allowed for minification please use RegEx constructor";
+                }
                 content = content.replaceAll(requireStatement, "`"+textContent+"`");
             }
         }
