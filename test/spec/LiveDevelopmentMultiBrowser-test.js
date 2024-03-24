@@ -630,8 +630,55 @@ define(function (require, exports, module) {
                 isTauri: Phoenix.browser.isTauri
             }, "*"); // this is not sensitive info, and is only dispatched if requested by the iframe
 
-            // Editor lost focus, it will gain back as the editor detects it lost focus to live preview pane in 100 ms
+            // Editor lost focus, it will gain back on click on markdown live preview
             await awaits(500);
+
+            const activeElement = testWindow.document.activeElement;
+            const editorHolder = testWindow.document.getElementById("editor-holder");
+            expect(editorHolder.contains(activeElement)).toBeTrue();
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("focus test: should markdown previews take focus from editor if there is selection", async function () {
+            // this test may fail if the test window doesn't have focus
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            await _editFileAndVerifyLivePreview("simple1.html", {line: 11, ch: 45}, 'hello world ',
+                "testId", "Brackets is hello world awesome!");
+
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith("simple1.html")).toBeTrue();
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "readme.md");
+
+            // now make the active editor loose focus and click on the markdown md for it to
+            // trigger focus.
+            await awaits(300);
+            let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(outerIFrame.src.endsWith("readme.md")).toBeTrue();
+            outerIFrame.focus();
+            expect(testWindow.document.activeElement).toEqual(outerIFrame);
+            // now select some /all text in the markdown and click
+            outerIFrame.contentWindow.postMessage({
+                type: "_TEST_SELECT_TEXT_AND_CLICK",
+                isTauri: Phoenix.browser.isTauri
+            }, "*");
+
+            // Editor lost focus,  it should not gain focus as there is an active selection in the markdown
+            await awaits(200);
+            expect(testWindow.document.activeElement).toEqual(outerIFrame);
+
+            // now clear all selections in the markdown and click
+            outerIFrame.contentWindow.postMessage({
+                type: "_TEST_UNSELECT_TEXT_AND_CLICK",
+                isTauri: Phoenix.browser.isTauri
+            }, "*");
+
+            // Editor lost focus,  it should not gain focus as there is an active selection in the markdown
+            await awaits(400);
 
             const activeElement = testWindow.document.activeElement;
             const editorHolder = testWindow.document.getElementById("editor-holder");
