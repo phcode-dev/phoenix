@@ -31,6 +31,16 @@
                 };
             } else if(event.data.type === "_TEST_FOCUS_CLICK") { // for integ tests
                 document.body.click();
+            }  else if(event.data.type === "_TEST_SELECT_TEXT_AND_CLICK") { // for integ tests
+                const selection = window.getSelection();
+                const range = document.createRange();
+                range.selectNodeContents(document.body);
+                selection.removeAllRanges(); // Clear any existing selections
+                selection.addRange(range);
+                document.body.click();
+            }  else if(event.data.type === "_TEST_UNSELECT_TEXT_AND_CLICK") { // for integ tests
+                window.getSelection().removeAllRanges();
+                document.body.click();
             }
         });
         if(window.self !== window.parent){
