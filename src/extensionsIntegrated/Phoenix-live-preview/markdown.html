@@ -75,7 +75,7 @@
             }, false);
             function getAbsoluteUrl(url) {
                 // Check if the URL is already absolute
-                if (/^(?:[a-z]+:)?\/\//i.test(url)) {
+                if (new RegExp("^(?:[a-z]+:)?\\/\\/", "i").test(url)) {
                     return url; // The URL is already absolute
                 }
 
