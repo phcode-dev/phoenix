@@ -95,6 +95,7 @@ define(function (require, exports, module) {
         if($iframe && $iframe[0]) {
             const iframeDom = $iframe[0];
             iframeDom.contentWindow.postMessage({
+                type: "WHO_AM_I_RESPONSE",
                 isTauri: Phoenix.browser.isTauri
             }, "*"); // this is not sensitive info, and is only dispatched if requested by the iframe
         }

@@ -618,11 +618,17 @@ define(function (require, exports, module) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                 "readme.md");
 
+            // now make the active editor loose focus and click on the markdown md for it to
+            // trigger focus.
             await awaits(300);
             let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(outerIFrame.src.endsWith("readme.md")).toBeTrue();
             outerIFrame.focus();
             expect(testWindow.document.activeElement).toEqual(outerIFrame);
+            outerIFrame.contentWindow.postMessage({
+                type: "_TEST_FOCUS_CLICK",
+                isTauri: Phoenix.browser.isTauri
+            }, "*"); // this is not sensitive info, and is only dispatched if requested by the iframe
 
             // Editor lost focus, it will gain back as the editor detects it lost focus to live preview pane in 100 ms
             await awaits(500);
