@@ -550,9 +550,6 @@ define(function (require, exports, module) {
                 var $popover, editor,
                     openFile = "test1.html";
 
-                // Turn off word wrap for next tests
-                await toggleOption(Commands.TOGGLE_WORD_WRAP, "Toggle word-wrap");
-
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([openFile]), "FILE_OPEN timeout", 1000);
 
                 editor = EditorManager.getCurrentFullEditor();
@@ -575,8 +572,6 @@ define(function (require, exports, module) {
                 // verify that page scrolled left
                 expect(editor.getScrollPos().x).toBeGreaterThan(0);
 
-                // restore word wrap
-                await toggleOption(Commands.TOGGLE_WORD_WRAP, "Toggle word-wrap");
             });
 
             it("should increase size based on content", async function () {

@@ -190,7 +190,9 @@ define(function (require, exports, module) {
 
 
         describe("Toggle Word Wrap", function () {
-            it("should wrap long lines in main editor by default", async function () {
+            it("should wrap long lines in main editor if word wrap enabled", async function () {
+                // turn on word wrap
+                await toggleOption(Commands.TOGGLE_WORD_WRAP, "Toggle word-wrap");
                 await openEditor(HTML_FILE);
 
                 var editor = EditorManager.getCurrentFullEditor();
@@ -202,7 +204,7 @@ define(function (require, exports, module) {
                 checkLineWrapping(editor, {line: 8, ch: 0}, {line: 8, ch: 320}, true);
             });
 
-            it("should also wrap long lines in inline editor by default", async function () {
+            it("should also wrap long lines in inline editor", async function () {
                 await openInlineEditor();
 
                 var editor = EditorManager.getCurrentFullEditor().getInlineWidgets()[0].editor;
