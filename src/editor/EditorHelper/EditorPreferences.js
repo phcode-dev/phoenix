@@ -147,7 +147,7 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(USE_TAB_CHAR,       "boolean", false, {
         description: Strings.DESCRIPTION_USE_TAB_CHAR
     });
-    PreferencesManager.definePreference(WORD_WRAP,          "boolean", true, {
+    PreferencesManager.definePreference(WORD_WRAP,          "boolean", false, {
         description: Strings.DESCRIPTION_WORD_WRAP
     });
 
