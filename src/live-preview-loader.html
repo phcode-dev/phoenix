@@ -234,7 +234,7 @@
                 });
             });
 
-            document.getElementById('okButton').addEventListener('click', function() {
+            function securityOk() {
                 const dialog = document.getElementById('outer-container');
                 dialog.style.display = 'none';
                 if(isTrustedURL(previewURL)) {
@@ -242,7 +242,17 @@
                 }
                 securityAlertAcknowledged = true;
                 trustedProjects[currentProjectRoot] = true;
+                sessionStorage.setItem(SESSION_SECURITY_CLEAR_KEY+currentProjectRoot, 'true');
+            }
+
+            document.getElementById('okButton').addEventListener('click', function() {
+                securityOk();
             });
+            const SESSION_SECURITY_CLEAR_KEY = "LIVE_PREVIEW_SESSION_SECURITY_CLEAR";
+            const isAck = sessionStorage.getItem(SESSION_SECURITY_CLEAR_KEY+currentProjectRoot);
+            if(isAck){
+                securityOk();
+            }
 
         }
 
