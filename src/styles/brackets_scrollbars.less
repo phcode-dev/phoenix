@@ -122,7 +122,11 @@
     ::-webkit-scrollbar {
         width: 12px;
         height: 12px;
-        background-color: @win-scrollbar-track;
+        background-color: transparent;
+    }
+
+    ::-webkit-scrollbar:hover {
+        background-color:  @win-scrollbar-track;
     }
 
     ::-webkit-scrollbar-thumb {
@@ -167,7 +171,11 @@
         // Note: when changing padding/margins, may need to adjust metrics in ScrollTrackMarkers.js
 
         ::-webkit-scrollbar {
-            background-color: rgb(15, 15, 15);
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar:hover {
+            background-color: rgba(15, 15, 15, .5);
         }
 
         ::-webkit-scrollbar-thumb {
