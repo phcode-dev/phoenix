@@ -150,28 +150,20 @@ div.CodeMirror-cursors {
     border-right: none;
 }
 
-.platform-mac {
-    .CodeMirror-scrollbar-filler {
-        background-image: url(images/scrollbar-mac-corner.png);
-    }
-    .CodeMirror-gutter-filler {
-        background-image: url(images/scrollbar-mac-bg.png);
-    }
-}
 .platform-win {
     .CodeMirror-scrollbar-filler,
     .CodeMirror-gutter-filler {
-        background-color: @win-scrollbar-track;
+        background-color: transparent;
         height: 12px !important;
     }
     .CodeMirror-scrollbar-filler {
         width: 12px !important;
     }
 }
-.platform-linux {
+.platform-linux, .platform-mac {
     .CodeMirror-scrollbar-filler,
     .CodeMirror-gutter-filler {
-        background-color: @background;
+        background-color: transparent;
         height: 12px !important;
     }
     .CodeMirror-scrollbar-filler {
