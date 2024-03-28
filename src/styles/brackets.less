@@ -2078,7 +2078,7 @@ a, img {
         transition: transform 266ms cubic-bezier(0, 0.56, 0, 1);
     }
 
-    input {
+    input, textarea {
         font-family: @sansFontFamily;
         outline: none;
         width: 20em;
@@ -2103,6 +2103,11 @@ a, img {
     .search-input-container, .filter-container {
         position: relative;
         display: inline;
+        resize: none;
+
+        .textarea-wrapper {
+            display: inline-block;
+        }
 
         .error, .error-filter {  // "popup" that hangs below search field
             position: absolute;
@@ -2125,9 +2130,19 @@ a, img {
             }
         }
 
+        .error-filter{
+            min-width: 276px;
+            left: 9px;
+        }
+
         #find-what {
             padding-right: 78px;  // room for #find-counter overlay
             width: 295px - (62px - 6px);  // maintain width, accounting for differing padding
+            margin-bottom: 1px;
+            height: 18px;
+            resize: none;
+            white-space: nowrap;
+            overflow-x: hidden;
         }
 
         .dropdown-icon, .filter-dropdown-icon {
@@ -2140,13 +2155,19 @@ a, img {
         #find-counter, #filter-counter, .dropdown-icon, .filter-dropdown-icon{
             position: absolute;
             color: @bc-text-thin-quiet;
-            top: 1px;
+            top: 40%;
             right: 2px;
             font-size: 12px;
 
             .dark & {
                 color: @dark-bc-text-thin-quiet;
             }
+        }
+        .dropdown-icon{
+            top: 38%;
+        }
+        .filter-dropdown-icon{
+            top: 1px;
         }
     }
     .filter-container{

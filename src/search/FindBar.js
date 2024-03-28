@@ -422,6 +422,11 @@ define(function (require, exports, module) {
             })
             .on("keydown", "#find-what, #replace-with, #fif-filter-input", function (e) {
                 if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
+                    if(self._options.multifile && e.shiftKey) {
+                        // In multi file search, if we press shift+return key, we enter the multi line ssearch mode and
+                        // the text input will receive the enter key to create a new line in text field.
+                        return;
+                    }
                     e.preventDefault();
                     e.stopPropagation();
                     self._addElementToSearchHistory(
@@ -541,7 +546,8 @@ define(function (require, exports, module) {
                 let history = PreferencesManager.getViewState(stateVarName) || [];
                 if(!self._dontFilterHistory){
                     history = history.filter(historyItem=> {
-                        return historyItem.toLowerCase().includes(query.toLowerCase());
+                        return ((typeof historyItem === 'string') &&
+                            historyItem.toLowerCase().includes(query.toLowerCase()));
                     });
                 }
                 self._dontFilterHistory = false;
@@ -549,7 +555,9 @@ define(function (require, exports, module) {
                 return asyncResult.promise();
             },
             formatter: function (item, query) {
-                return "<li>" + item + "</li>";
+                const $li = $("<li></li>");
+                $li.text(item);
+                return $li;
             },
             onCommit: function (selectedItem, query, itemIndex) {
                 if (selectedItem) {
@@ -816,8 +824,7 @@ define(function (require, exports, module) {
         var selectionText = editor.getSelectedText();
         if (selectionText) {
             return selectionText
-                .replace(/^\n*/, "") // Trim possible newlines at the very beginning of the selection
-                .split("\n")[0];
+                .replace(/^\n*/, ""); // Trim possible newlines at the very beginning of the selection
         }
         return "";
     };
