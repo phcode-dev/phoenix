@@ -149,6 +149,9 @@ define(function (require, exports, module) {
 
     /** Handle special keys: Enter, Up/Down */
     QuickSearchField.prototype._handleKeyDown = function (event) {
+        if(!this._$dropdown || !this._$dropdown.is(":visible")){
+            return; // we dont have any events to handle if dropdown is invisible
+        }
         if (event.keyCode === KeyEvent.DOM_VK_RETURN) {
             // Enter should always act on the latest results. If input has changed and we're still waiting for
             // new results, just flag the 'commit' for later
@@ -274,7 +277,7 @@ define(function (require, exports, module) {
 
     /**
      * Open dropdown result list & populate with the given content
-     * @param {!string} htmlContent
+     * @param {!string|jQueryObject} htmlContent
      */
     QuickSearchField.prototype._openDropdown = function (htmlContent) {
         const self = this;
@@ -341,13 +344,21 @@ define(function (require, exports, module) {
                 this.$input.removeClass("no-results");
             }
 
-            var count = Math.min(results.length, this.options.maxResults),
-                html = "",
+            const createdJqObj = $();
+            let count = Math.min(results.length, this.options.maxResults),
                 i;
             for (i = 0; i < count; i++) {
-                html += this.options.formatter(results[i], query);
+                const result = this.options.formatter(results[i], query);
+                if (typeof result === 'string') {
+                    createdJqObj.push($(result).get(0));
+                } else if (result instanceof $) {
+                    createdJqObj.push(result.get(0));
+                } else {
+                    console.error("QuickSearchFiled formatter should return a string html/jquery object; but got",
+                        result);
+                }
             }
-            this._openDropdown(html);
+            this._openDropdown(createdJqObj);
 
             this._updateHighlight(false);
         }
