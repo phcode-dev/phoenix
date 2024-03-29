@@ -394,7 +394,7 @@ define(function (require, exports, module) {
                 expect($(".modal-bar").length).toBe(1);
 
                 // Close search bar
-                var $searchField = $(".modal-bar #find-group input");
+                var $searchField = $(".modal-bar #find-group textarea");
                 SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
             });
 
