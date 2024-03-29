@@ -696,7 +696,7 @@ define(function (require, exports, module) {
      */
     FindBar.prototype.showNoResults = function (showIndicator, showMessage) {
         const $filterInput = this.$("#fif-filter-input");
-        const $findWhat = this.$("#find-what");
+        const $findWhat = this.$(".find-what-wrapper");
         $filterInput.removeClass("no-results");
         $findWhat.removeClass("no-results");
         let $borderEl = $findWhat;
