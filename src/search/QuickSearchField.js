@@ -76,6 +76,7 @@ define(function (require, exports, module) {
      *          Number of pixels to position the popup below where $input is when constructor is called. Useful
      *          if UI is going to animate position after construction, but QuickSearchField may receive input
      *          before the animation is done.
+     * @param {jQueryObject} options.$positionEl if provided, the popup will be positioned based on this
      * @param {?number} options.firstHighlightIndex
      *          Index of the result that is highlighted by default. null to not highlight any result.
      * @param {?number} options.focusLastActiveElementOnClose if set to true, focuses the last active element on close.
@@ -85,6 +86,7 @@ define(function (require, exports, module) {
     function QuickSearchField($input, options) {
         this.$input = $input;
         this.options = options || {};
+        this.$positionEl = options.$positionEl;
 
         options.maxResults = options.maxResults || 10;
 
@@ -129,6 +131,9 @@ define(function (require, exports, module) {
 
     /** @type {!jQueryObject} */
     QuickSearchField.prototype.$input = null;
+
+    /** @type {!jQueryObject} */
+    QuickSearchField.prototype.$positionEl = null;
 
 
     /** When text field changes, update results list */
@@ -283,12 +288,13 @@ define(function (require, exports, module) {
         const self = this;
         this._$currentlyFocusedElement = $(document.activeElement);
         if (!this._$dropdown) {
+            let $positioningElement = this.$positionEl ? this.$positionEl : this.$input;
             this._$dropdown = $("<ol class='quick-search-container'/>").appendTo("body")
                 .css({
                     position: "absolute",
                     top: this._dropdownTop,
-                    left: this.$input.offset().left,
-                    width: this.$input.outerWidth()
+                    left: $positioningElement.offset().left,
+                    width: $positioningElement.outerWidth()
                 })
                 .click(function (event) {
                     // Unlike the Enter key, where we wait to catch up with typing, clicking commits immediately

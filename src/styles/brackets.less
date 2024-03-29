@@ -2105,8 +2105,21 @@ a, img {
         display: inline;
         resize: none;
 
-        .textarea-wrapper {
-            display: inline-block;
+        .find-what-wrapper {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1px;
+            margin-left: 5px;
+        }
+
+        .no-results {
+            border: 1px solid  @bc-btn-border-error;
+            box-shadow: inset 0 1px 0 @bc-shadow-small, 0 0 0 1px @bc-btn-border-error-glow;
+
+            .dark & {
+                border: 1px solid  @dark-bc-btn-border-error;
+                box-shadow: inset 0 1px 0 @dark-bc-shadow-small, 0 0 0 1px @dark-bc-btn-border-error-glow;
+            }
         }
 
         .error, .error-filter {  // "popup" that hangs below search field
@@ -2136,13 +2149,21 @@ a, img {
         }
 
         #find-what {
-            padding-right: 78px;  // room for #find-counter overlay
-            width: 295px - (62px - 6px);  // maintain width, accounting for differing padding
-            margin-bottom: 1px;
+            top: 0;
+            width: 215px;  // maintain width, accounting for differing padding
+            margin: 0;
             height: 18px;
             resize: none;
             white-space: nowrap;
             overflow-x: hidden;
+            border-right: none;
+            border: 1px solid @bc-btn-border;
+            border-right: none;
+            .dark & {
+                border: 1px solid @dark-bc-btn-border;
+                border-right: none;
+            }
+            box-shadow: none;
         }
 
         .dropdown-icon, .filter-dropdown-icon {
@@ -2152,10 +2173,48 @@ a, img {
             height: 20px;
         }
 
-        #find-counter, #filter-counter, .dropdown-icon, .filter-dropdown-icon{
+        #find-counter, .dropdown-icon{
+            background-color: white;
+            color: @bc-text-thin-quiet;
+            font-size: 12px;
+
+            .dark & {
+                background-color: @dark-bc-input-bg;
+                color: @dark-bc-text-thin-quiet;
+            }
+        }
+        #find-counter {
+            font-weight: @font-weight-semibold;
+            padding: 0 5px;
+            width: 50px;
+            height: 26px;
+            margin: 0;
+            border: 1px solid @bc-btn-border;
+            border-left: none;
+            border-right: none;
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            .dark & {
+                border: 1px solid @dark-bc-btn-border;
+                border-left: none;
+                border-right: none;
+            }
+        }
+        .dropdown-icon{
+            margin: 0;
+            border: 1px solid @bc-btn-border;
+            border-left: none;
+            height: 26px;
+            .dark & {
+                border: 1px solid @dark-bc-btn-border;
+                border-left: none;
+            }
+        }
+        #filter-counter, .filter-dropdown-icon{
+            top: 1px;
             position: absolute;
             color: @bc-text-thin-quiet;
-            top: 40%;
             right: 2px;
             font-size: 12px;
 
@@ -2163,12 +2222,10 @@ a, img {
                 color: @dark-bc-text-thin-quiet;
             }
         }
-        .dropdown-icon{
-            top: 38%;
-        }
-        .filter-dropdown-icon{
-            top: 1px;
-        }
+    }
+
+    .search-input-container {
+        display: inline-flex;
     }
     .filter-container{
         margin-left: -11px;
@@ -2257,6 +2314,10 @@ a, img {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         margin-left: 5px;
+        margin-top: 0;
+    }
+    #find-next {
+        margin-top: 0;
     }
 
     // Make button pairs snug
@@ -2291,7 +2352,17 @@ a, img {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
     }
-    #find-case-sensitive, #replace-yes {
+    #find-case-sensitive {
+        border-left: none;
+        margin-left: -3px;
+        margin-top: 0;
+        border-radius: 0;
+    }
+    #find-regexp {
+        margin-left: -3px;
+        margin-top: 0;
+    }
+    #replace-yes {
         border-left: none;
         margin-left: 0;
         border-radius: 0;
@@ -2358,6 +2429,7 @@ li:hover .filter-edit-icon {
 
 button.file-filter-picker {
     margin-left: 10px;
+    margin-top: 1px;
 }
 
 // File exclusion filter editor dialog
@@ -2418,11 +2490,6 @@ textarea.exclusions-editor {
         border-top-right-radius: @bc-border-radius-small;
         border-bottom-right-radius: @bc-border-radius-small;
     }
-}
-#find-counter {
-    font-weight: @font-weight-semibold;
-    padding: 0 5px;
-    margin-right: 17px;
 }
 
 .tickmark-track {

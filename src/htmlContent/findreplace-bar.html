@@ -1,16 +1,16 @@
 <div class="find-input-group">
-    <div id="find-group"><!--
-        --><div class="search-input-container">
-                <div class="textarea-wrapper">
+    <div id="find-group">
+        <div class="search-input-container">
+                <div class="find-what-wrapper">
                     <textarea id="find-what" spellcheck="false" autocomplete="off"
                               placeholder="{{queryPlaceholder}}" rows="2" >{{initialQuery}}</textarea>
+                    <div id="find-counter"></div>
+                    <div class="dropdown-icon"></div>
                 </div>
-                <div class="dropdown-icon"></div>
-                <span id="find-counter"></span>
                 <div class="error"></div>
-            </div><!--
-        --><button id="find-case-sensitive" class="btn no-focus" tabindex="-1" title="{{Strings.BUTTON_CASESENSITIVE_HINT}}"><div class="button-icon"></div></button><!--
-        --><button id="find-regexp" class="btn no-focus" tabindex="-1" title="{{Strings.BUTTON_REGEXP_HINT}}"><div class="button-icon"></div></button><!--
+        </div>
+        <button id="find-case-sensitive" class="btn no-focus" tabindex="-1" title="{{Strings.BUTTON_CASESENSITIVE_HINT}}"><div class="button-icon"></div></button>
+        <button id="find-regexp" class="btn no-focus" tabindex="-1" title="{{Strings.BUTTON_REGEXP_HINT}}"><div class="button-icon"></div></button><!--
         {{^multifile}}
         --><div class="navigator"><!--
             --><button id="find-prev" class="btn no-focus" tabindex="-1" title="{{Strings.BUTTON_PREV_HINT}}">{{Strings.BUTTON_PREV}}</button><!--
