@@ -384,7 +384,14 @@ define(function (require, exports, module) {
                     self.trigger("doFind");
                 }
             })
+            .on("click", "#find-counter", function (e) {
+                $("#find-what").focus();
+            })
+            .on("focusin", "#find-what", function (e) {
+                $(".find-what-wrapper").addClass("find-what-wrapper-focused");
+            })
             .on("focusout", "#find-what", function (e) {
+                $(".find-what-wrapper").removeClass("find-what-wrapper-focused");
                 setTimeout(()=>{
                     if (self.searchField && !$("#find-what").is(":focus")) {
                         self.searchField.destroy();
