@@ -87,7 +87,7 @@ define(function (require, exports, module) {
         }
 
         function closeSearchBar() {
-            let $searchField = $(".modal-bar #find-group input");
+            let $searchField = $(".modal-bar #find-group textarea");
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
         }
 
@@ -96,7 +96,7 @@ define(function (require, exports, module) {
                 return FindInFiles.isProjectIndexingComplete();
             }, "Find in Files done", 20000);
             FindInFiles._searchDone = false;
-            let $searchField = $(".modal-bar #find-group input");
+            let $searchField = $(".modal-bar #find-group textarea");
             $searchField.val(searchString).trigger("input");
             //SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", $searchField[0]);
             await awaitsFor(function () {
@@ -254,7 +254,7 @@ define(function (require, exports, module) {
                 expect($("#find-in-files-results").is(":visible")).toBeFalsy();
 
                 // Close search bar
-                let $searchField = $modalBar.find("#find-group input");
+                let $searchField = $modalBar.find("#find-group textarea");
                 await SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", $searchField[0]);
             }, 30000);
 
