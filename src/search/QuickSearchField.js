@@ -154,8 +154,9 @@ define(function (require, exports, module) {
 
     /** Handle special keys: Enter, Up/Down */
     QuickSearchField.prototype._handleKeyDown = function (event) {
-        if(!this._$dropdown || !this._$dropdown.is(":visible")){
-            return; // we dont have any events to handle if dropdown is invisible
+        let popupVisible = false;
+        if(this._$dropdown && this._$dropdown.is(":visible")){
+            popupVisible = true;
         }
         if (event.keyCode === KeyEvent.DOM_VK_RETURN) {
             // Enter should always act on the latest results. If input has changed and we're still waiting for
@@ -168,7 +169,7 @@ define(function (require, exports, module) {
                 // Once the current wait resolves, _render() will run the commit
                 this._commitPending = true;
             }
-        } else if (event.keyCode === KeyEvent.DOM_VK_DELETE) {
+        } else if (event.keyCode === KeyEvent.DOM_VK_DELETE && popupVisible) {
             if (this.options.onDelete && this._$dropdown && this._highlightIndex !== null) {
                 this.options.onDelete(this._highlightIndex);
                 this.updateResults();
@@ -179,7 +180,7 @@ define(function (require, exports, module) {
             // will make delete key not work in the search text box text! Eg. Ctrl-shift-o, type text,
             // press delete key to remove text chars will fail is we prevent default here without
             // a valid selection.
-        } else if (event.keyCode === KeyEvent.DOM_VK_DOWN) {
+        } else if (event.keyCode === KeyEvent.DOM_VK_DOWN && popupVisible) {
             // Highlight changes are always done synchronously on the currently shown result list. If the list
             // later changes, the highlight is reset to the top
             if (this._displayedResults && this._displayedResults.length) {
@@ -193,7 +194,7 @@ define(function (require, exports, module) {
             event.stopPropagation();
             event.preventDefault(); // treated as Home key otherwise
 
-        } else if (event.keyCode === KeyEvent.DOM_VK_UP) {
+        } else if (event.keyCode === KeyEvent.DOM_VK_UP && popupVisible) {
             if (this._displayedResults && this._displayedResults.length) {
                 if (this._highlightIndex === null || this._highlightIndex === 0) {
                     this._highlightIndex = this._displayedResults.length - 1;
