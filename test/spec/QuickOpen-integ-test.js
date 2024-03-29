@@ -83,6 +83,12 @@ define(function (require, exports, module) {
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", getSearchField()[0]);
         }
 
+        async function _forPopupVisible() {
+            await awaitsFor(function () {
+                return test$(".quick-search-container").is(":visible");
+            }, "popup to be visible", 1000);
+        }
+
         /**
          * Creates a parameterized quick open test.
          * @param {string} quickOpenQuery The search query to execute after the NAVIGATE_QUICK_OPEN command.
@@ -112,6 +118,7 @@ define(function (require, exports, module) {
                 return getSearchField().val() === quickOpenQuery;
             }, "filename entry timeout", 1000);
 
+            await _forPopupVisible();
             pressEnter();
 
             await awaitsFor(function () {
