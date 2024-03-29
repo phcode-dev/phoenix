@@ -531,7 +531,7 @@ define(function (require, exports, module) {
         this.focusQuery();
     };
 
-    FindBar.prototype._showHintsInternal = function (inputElemId, stateVarName, fieldName, dontFilterHistory) {
+    FindBar.prototype._showHintsInternal = function (positionElement, inputElemId, stateVarName, fieldName, dontFilterHistory) {
         const self = this;
         self._dontFilterHistory = dontFilterHistory;
         let inputField = self.$(inputElemId);
@@ -540,6 +540,7 @@ define(function (require, exports, module) {
             verticalAdjust: inputField.offset().top > 0 ? 0 : this._modalBar.getRoot().outerHeight(),
             maxResults: maxCount,
             firstHighlightIndex: null,
+            $positionEl: positionElement ? self.$(positionElement) : null,
             resultProvider: function (query) {
                 query = query || "";
                 const asyncResult = new $.Deferred();
@@ -600,7 +601,7 @@ define(function (require, exports, module) {
      * Shows the search History in dropdown.
      */
     FindBar.prototype.showSearchHints = function (dontFilterHistory) {
-        return this._showHintsInternal("#find-what", "searchHistory", "searchField", dontFilterHistory);
+        return this._showHintsInternal(".find-what-wrapper", "#find-what", "searchHistory", "searchField", dontFilterHistory);
     };
 
     /**
@@ -608,7 +609,7 @@ define(function (require, exports, module) {
      * Shows the filter History in dropdown.
      */
     FindBar.prototype.showFilterHints = function (dontFilterHistory) {
-        return this._showHintsInternal("#fif-filter-input", "filterHistory", "filterField", dontFilterHistory);
+        return this._showHintsInternal(null, "#fif-filter-input", "filterHistory", "filterField", dontFilterHistory);
     };
 
     /**
