@@ -651,10 +651,10 @@ define(function (require, exports, module) {
      * Returns the current query and parameters.
      * @return {{query: string, caseSensitive: boolean, isRegexp: boolean}}
      */
-    FindBar.prototype.getQueryInfo = function () {
+    FindBar.prototype.getQueryInfo = function (usePlatformLineEndings = true) {
         let query = this.$("#find-what").val() || "";
         const lineEndings = FileUtils.sniffLineEndings(query);
-        if(lineEndings === FileUtils.LINE_ENDINGS_LF && brackets.platform === "win") {
+        if(usePlatformLineEndings && lineEndings === FileUtils.LINE_ENDINGS_LF && brackets.platform === "win") {
             query = query.replace(/\n/g, "\r\n");
         }
         return {
