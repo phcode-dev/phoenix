@@ -43,7 +43,7 @@ define(function (require, exports, module) {
 
     function showOverlay(targetId) {
         // Find the target div and the overlay div
-        Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "ctrlx2", "showOverlay");
+        Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "ctrlx3", "showOverlay");
         if(!targetId){
             console.error("No target ID for selecting overlay. Ignoring");
             return;
@@ -182,7 +182,11 @@ define(function (require, exports, module) {
     });
 
     AppInit.appReady(function () {
-        CommandManager.register(Strings.CMD_KEYBOARD_NAV_OVERLAY,    Commands.CMD_KEYBOARD_NAV_UI_OVERLAY, startOverlayMode);
+        CommandManager.register(Strings.CMD_KEYBOARD_NAV_OVERLAY,
+            Commands.CMD_KEYBOARD_NAV_UI_OVERLAY, startOverlayMode);
+        const viewMenu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
+        viewMenu.addMenuItem(Commands.CMD_KEYBOARD_NAV_UI_OVERLAY, 'Ctrl-P',
+            Menus.AFTER, Commands.VIEW_TOGGLE_INSPECTION);
     });
 
     exports.processOverlayKeyboardEvent = processOverlayKeyboardEvent;

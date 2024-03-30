@@ -1094,12 +1094,12 @@ define(function (require, exports, module) {
         Control: true,
         Meta: true
     };
-    function _detectDoubleCtrlKeyPress(event) {
+    function _detectTripleCtrlKeyPress(event) {
         if (ctrlKeyCodes[event.code] && ctrlKeyCodes[event.key] && !event.shiftKey && !event.altKey) {
             const currentTime = new Date().getTime(); // Get the current time
             pressCount++;
             if (currentTime - lastKeyPressTime <= doublePressInterval) {
-                if(pressCount === 2) {
+                if(pressCount === 3) {
                     KeyboardOverlayMode.startOverlayMode();
                     event.stopPropagation();
                     event.preventDefault();
@@ -1166,7 +1166,7 @@ define(function (require, exports, module) {
         if(KeyboardOverlayMode.isInOverlayMode()){
             return KeyboardOverlayMode.processOverlayKeyboardEvent(event);
         }
-        if(_detectDoubleCtrlKeyPress(event)){
+        if(_detectTripleCtrlKeyPress(event)){
             return true;
         }
         const shortcut = _translateKeyboardEvent(event);
