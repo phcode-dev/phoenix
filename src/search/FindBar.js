@@ -685,7 +685,9 @@ define(function (require, exports, module) {
      * @param {string} count The find count message to show. Can be the empty string to hide it.
      */
     FindBar.prototype.showFindCount = function (count) {
-        this.$("#find-counter").text(count);
+        this.$("#find-counter")
+            .text(count)
+            .attr('title', count);
     };
 
     /**
