@@ -28,6 +28,7 @@ define(function (require, exports, module) {
         MessageIds           = JSON.parse(brackets.getModule("text!JSUtils/MessageIds.json")),
         TokenUtils           = brackets.getModule("utils/TokenUtils"),
         Strings              = brackets.getModule("strings"),
+        Keys                 = brackets.getModule("command/Keys"),
         Editor               = brackets.getModule("editor/Editor").Editor,
         ProjectManager       = brackets.getModule("project/ProjectManager");
 
@@ -123,16 +124,66 @@ define(function (require, exports, module) {
             // references properly. This sadly needs refactoring the current tern integration heavily
         }
 
+        function _isCursorWithinMark(cursorPos, marker) {
+            if(!marker){
+                return false;
+            }
+            // Get the position of the marker
+            var pos = marker.find();
+            if (!pos) {return false;} // The marker doesn't cover any range
+
+            // Check if the cursor is within the mark's range
+            var from = pos.from, to = pos.to;
+            // Check if cursor line is between the start and end lines
+            if (cursorPos.line < from.line || cursorPos.line > to.line) {
+                return false;
+            }
+            // If cursor is on the same line as the start or end, check the character position
+            if (cursorPos.line === from.line && cursorPos.ch < from.ch) {
+                return false;
+            }
+            if (cursorPos.line === to.line && cursorPos.ch > to.ch) {
+                return false;
+            }
+
+            return true; // The cursor is within the mark
+        }
+
+
         function _outlineText(currentEditor) {
             let selections = currentEditor.getSelections();
             if(selections.length > 1 ){
                 let primary = currentEditor.getSelection();
                 currentEditor.markText(MARK_TYPE_RENAME, primary.start, primary.end, Editor.MARK_OPTION_RENAME_OUTLINE);
                 currentEditor.off(Editor.EVENT_BEFORE_SELECTION_CHANGE + ".renameVar");
+                currentEditor.off(Editor.EVENT_CURSOR_ACTIVITY + ".renameVar");
+                currentEditor.off(Editor.EVENT_KEY_DOWN + ".renameVar");
                 currentEditor.on(Editor.EVENT_BEFORE_SELECTION_CHANGE + ".renameVar", function (_evt, newSelections) {
                     if(newSelections.ranges && newSelections.ranges.length === 1) {
                         currentEditor.clearAllMarks(MARK_TYPE_RENAME);
                         currentEditor.off(Editor.EVENT_BEFORE_SELECTION_CHANGE + ".renameVar");
+                    }
+                });
+                currentEditor.on(Editor.EVENT_CURSOR_ACTIVITY + ".renameVar", function (_evt, newSelections) {
+                    const mainCursor = currentEditor.getCursorPos();
+                    let primaryMark = currentEditor.getAllMarks(MARK_TYPE_RENAME);
+                    primaryMark = primaryMark && primaryMark[0];
+                    if(primaryMark && !_isCursorWithinMark(mainCursor, primaryMark)) {
+                        currentEditor.clearAllMarks(MARK_TYPE_RENAME);
+                        currentEditor.off(Editor.EVENT_BEFORE_SELECTION_CHANGE + ".renameVar");
+                        currentEditor.setCursorPos(mainCursor.line, mainCursor.ch);
+                    }
+                });
+                currentEditor.on(Editor.EVENT_KEY_DOWN + ".renameVar", function (_evt, _editor, keyboardEvent) {
+                    const mainCursor = currentEditor.getCursorPos();
+                    let primaryMark = currentEditor.getAllMarks(MARK_TYPE_RENAME);
+                    primaryMark = primaryMark && primaryMark[0];
+                    if(primaryMark && (keyboardEvent.key === Keys.KEY.RETURN || keyboardEvent.key === Keys.KEY.ENTER)){
+                        currentEditor.clearAllMarks(MARK_TYPE_RENAME);
+                        currentEditor.off(Editor.EVENT_KEY_DOWN + ".renameVar");
+                        currentEditor.setCursorPos(mainCursor.line, mainCursor.ch);
+                        keyboardEvent.preventDefault();
+                        keyboardEvent.stopPropagation();
                     }
                 });
             }
