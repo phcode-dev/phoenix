@@ -312,13 +312,39 @@ define(function (require, exports, module) {
             return codeMirrorText;
 
         }
-            // Optimized path that doesn't require creating master editor
+        // Optimized path that doesn't require creating master editor
         if (useOriginalLineEndings) {
             return this._text;
         }
         return Document.normalizeText(this._text);
 
 
+    };
+
+    /**
+     * Returns the document's current selected; may not be saved to disk yet. If editor is not open, will return null.
+     *
+     * @param {boolean=} useOriginalLineEndings If true, line endings in the result depend on the
+     *      Document's line endings setting (based on OS & the original text loaded from disk).
+     *      If false, line endings are always \n (like all the other Document text getter methods).
+     * @param {boolean=} allSelections Whether to return the contents of all selections (separated
+     *     by newlines) instead of just the primary selection. Default false.
+     * @return {string|null} selected text or null if there is no editor.
+     */
+    Document.prototype.getSelectedText = function (useOriginalLineEndings, allSelections) {
+        if (this._masterEditor) {
+            // CodeMirror.getValue() always returns text with LF line endings; fix up to match line
+            // endings preferred by the document, if necessary
+            let codeMirrorText = this._masterEditor.getSelectedText(allSelections);
+            if (useOriginalLineEndings) {
+                if (this._lineEndings === FileUtils.LINE_ENDINGS_CRLF) {
+                    return codeMirrorText.replace(/\n/g, "\r\n");
+                }
+            }
+            return codeMirrorText;
+
+        }
+        return null;
     };
 
     /** Normalizes line endings the same way CodeMirror would */

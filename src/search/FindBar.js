@@ -37,6 +37,7 @@ define(function (require, exports, module) {
         Strings            = require("strings"),
         ViewUtils          = require("utils/ViewUtils"),
         FindUtils          = require("search/FindUtils"),
+        FileUtils          = require("file/FileUtils"),
         QuickSearchField   = require("search/QuickSearchField").QuickSearchField,
         Metrics            = require("utils/Metrics");
 
@@ -651,8 +652,13 @@ define(function (require, exports, module) {
      * @return {{query: string, caseSensitive: boolean, isRegexp: boolean}}
      */
     FindBar.prototype.getQueryInfo = function () {
+        let query = this.$("#find-what").val() || "";
+        const lineEndings = FileUtils.sniffLineEndings(query);
+        if(lineEndings === FileUtils.LINE_ENDINGS_LF && brackets.platform === "win") {
+            query = query.replace(/\n/g, "\r\n");
+        }
         return {
-            query: this.$("#find-what").val() || "",
+            query: query,
             isCaseSensitive: this.$("#find-case-sensitive").is(".active"),
             isRegexp: this.$("#find-regexp").is(".active")
         };
@@ -831,7 +837,7 @@ define(function (require, exports, module) {
      * @return {string} first line of primary selection to populate the find bar
      */
     FindBar._getInitialQueryFromSelection = function(editor) {
-        var selectionText = editor.getSelectedText();
+        const selectionText = editor.document.getSelectedText(true);
         if (selectionText) {
             return selectionText
                 .replace(/^\n*/, ""); // Trim possible newlines at the very beginning of the selection
