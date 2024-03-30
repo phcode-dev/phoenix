@@ -47,13 +47,13 @@ define(function (require, exports, module) {
      * Maximum file size to search within (in chars)
      * @const {number}
      */
-    var FIND_MAX_FILE_SIZE  = 500000;
+    const FIND_MAX_FILE_SIZE  = 16000000; // 16MB files limit
 
     /**
      * If the number of matches exceeds this limit, inline text highlighting and scroll-track tickmarks are disabled
      * @const {number}
      */
-    var FIND_HIGHLIGHT_MAX  = 2000;
+    const FIND_HIGHLIGHT_MAX  = 5000;
 
     /**
      * Currently open Find or Find/Replace bar, if any

@@ -266,12 +266,28 @@ define(function (require, exports, module) {
         });
 
         describe("Search", function () {
-            it("should have the correct match count even if DOM highlighting is turned off when over 2000 matches", async function () {
-                var text = "bbbbbbbbbb", i;
-                // Create a text string that is 2430 (10 x 3^5) characters long
-                for (i = 0; i < 5; i++) {
-                    text += text + text;
-                }
+            it("should search multi line text", async function () {
+                let text = "this is\na test\nof multiline\n".repeat(3);
+                text += "this is another\nunmatched test\nof multiline".repeat(3);
+                myEditor._codeMirror.setValue(text);
+                myEditor.setCursorPos(0, 0);
+
+                twCommandManager.execute(Commands.CMD_FIND);
+
+                enterSearchText("this is\na test");
+
+                expectMatchIndex(0, 3);
+                const expectedMatches = [
+                    {start: {line: 0, ch: 0}, end: {line: 1, ch: 6}},
+                    {start: {line: 3, ch: 0}, end: {line: 4, ch: 6}},
+                    {start: {line: 6, ch: 0}, end: {line: 7, ch: 6}}
+                ];
+                // 6 lines are highlighted though there are only 3 selections.
+                expectHighlightedMatches(expectedMatches, 6);
+            });
+
+            it("should have the correct match count even if DOM highlighting is turned off when over 5000 matches", async function () {
+                let text = "b".repeat(5001);
                 myEditor._codeMirror.setValue(text);
                 myEditor.setCursorPos(0, 0);
 
@@ -279,7 +295,7 @@ define(function (require, exports, module) {
 
                 enterSearchText("b");
 
-                expectMatchIndex(0, 2430);
+                expectMatchIndex(0, 5001);
                 // When exceeding 2000 matches, tickmarks disabled and only the *current* editor highlight is shown
                 expectHighlightedMatches([], 1);
             });

@@ -355,6 +355,26 @@ define(function (require, exports, module) {
                 await closeSearchBar();
             });
 
+            it("should find multi line text", async function () {
+                var filePath = testPath + "/foo.html",
+                    fileEntry = FileSystem.getFileForPath(filePath);
+
+                await openSearchBar(fileEntry);
+                await executeSearch('<li>foo</li>\n' +
+                    '    <li>bar</li>');
+
+                var fileResults = FindInFiles.searchModel.results[filePath];
+                expect(fileResults).toBeTruthy();
+                expect(fileResults.matches.length).toBe(1);
+
+                var match = fileResults.matches[0];
+                expect(match.start.ch).toBe(4);
+                expect(match.start.line).toBe(14);
+                expect(match.end.ch).toBe(16);
+                expect(match.end.line).toBe(15);
+                await closeSearchBar();
+            });
+
             it("should keep dialog and show panel when there are results", async function () {
                 var filePath = testPath + "/foo.js",
                     fileEntry = FileSystem.getFileForPath(filePath);
