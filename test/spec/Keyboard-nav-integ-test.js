@@ -64,7 +64,8 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
-        function doubleControlEvent() {
+        function tripleControlEvent() {
+            keyboardType(Keys.KEY.CONTROL);
             keyboardType(Keys.KEY.CONTROL);
             keyboardType(Keys.KEY.CONTROL);
         }
@@ -103,10 +104,10 @@ define(function (require, exports, module) {
             }, "overlay to be shown");
         }
 
-        it("Should show overlay on double control and exit on escape", async function () {
+        it("Should show overlay on triple control and exit on escape", async function () {
             MainViewManager.setLayoutScheme(1, 1);
             await openAnyFile();
-            doubleControlEvent();
+            tripleControlEvent();
             await awaitsFor(()=>{
                 return testWindow.$('#ctrl-nav-overlay').is(":visible");
             }, "overlay to be shown");
