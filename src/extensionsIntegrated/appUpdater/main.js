@@ -47,6 +47,8 @@ define(function (require, exports, module) {
         KEY_LAST_UPDATE_CHECK_TIME = "PH_LAST_UPDATE_CHECK_TIME",
         KEY_UPDATE_AVAILABLE = "PH_UPDATE_AVAILABLE";
 
+    const PREFS_AUTO_UPDATE = "autoUpdate";
+
     function showOrHideUpdateIcon() {
         if(!updaterWindow){
             updaterWindow = window.__TAURI__.window.WebviewWindow.getByLabel(TAURI_UPDATER_WINDOW_LABEL);
@@ -202,51 +204,73 @@ define(function (require, exports, module) {
         return true;
     }
 
+    function _getButtons(isUpgradableLoc, isAutoUpdate, autoUpdateEnabled) {
+        const updateLater =
+            {className: Dialogs .DIALOG_BTN_CLASS_NORMAL, id: Dialogs .DIALOG_BTN_CANCEL, text: Strings.UPDATE_LATER };
+        const getItNow =
+            { className: Dialogs .DIALOG_BTN_CLASS_PRIMARY, id: Dialogs .DIALOG_BTN_OK, text: Strings.GET_IT_NOW };
+        const updateOnExit =
+            { className: Dialogs .DIALOG_BTN_CLASS_PRIMARY, id: Dialogs .DIALOG_BTN_OK, text: Strings.UPDATE_ON_EXIT };
+        if(!isUpgradableLoc) {
+            return [updateLater, getItNow];
+        }
+        if(isAutoUpdate && autoUpdateEnabled) {
+            return [updateOnExit];
+        }
+        return [updateLater, updateOnExit];
+    }
+
     async function checkForUpdates(isAutoUpdate) {
         showOrHideUpdateIcon();
         if(updateTask){
             $("#status-tasks .btn-dropdown").click();
             return;
         }
-        const updateDetails = await getUpdateDetails();
+        const updateDetails = await getUpdateDetails(); // this will also show update icon if update present
         if(updateFailed) {
             Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
             return;
         }
         if(updatePendingRestart || updateDetails.updatePendingRestart){
-            Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+            if(!isAutoUpdate){
+                Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+                // the dialog will only be shown in explicit check for updates, else its annoying that this comes
+                // up at every new window create from app.
+            }
             return;
         }
         if(!updateDetails.shouldUpdate){
             (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_NOT_AVAILABLE_TITLE, Strings.UPDATE_UP_TO_DATE);
             return;
         }
-        const buttons = [
-            { className: Dialogs .DIALOG_BTN_CLASS_NORMAL, id: Dialogs .DIALOG_BTN_CANCEL, text: Strings.UPDATE_LATER },
-            { className: Dialogs .DIALOG_BTN_CLASS_PRIMARY, id: Dialogs .DIALOG_BTN_OK, text: Strings.GET_IT_NOW }
-        ];
+        const autoUpdateEnabled = PreferencesManager.get(PREFS_AUTO_UPDATE);
+        if(isAutoUpdate && !autoUpdateEnabled){
+            // the update icon is lit at this time for the user to hint that an update is available
+            // but, we don't show the dialog if auto update is off.
+            return;
+        }
+
+        const isUpgradableLoc = await isUpgradableLocation();
+        const buttons = _getButtons(isUpgradableLoc, isAutoUpdate, autoUpdateEnabled);
         let markdownHtml = marked.parse(updateDetails.releaseNotesMarkdown || "");
         Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "shown"+Phoenix.platform);
         Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.UPDATE_AVAILABLE_TITLE, markdownHtml, buttons)
             .done(option=>{
-                isUpgradableLocation().then(isUpgradableLoc=>{
-                    if(option === Dialogs.DIALOG_BTN_CANCEL){
-                        Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "cancel"+Phoenix.platform);
-                        return;
-                    }
-                    if(!isUpgradableLoc) {
-                        // user installed linux as binary without installer, we just open phcode.io
-                        const downloadPage = brackets.config.homepage_url || "https://phcode.io";
-                        NativeApp.openURLInDefaultBrowser(downloadPage);
-                        Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "nonUpgradable"+Phoenix.platform);
-                        return;
-                    }
-                    if(option === Dialogs.DIALOG_BTN_OK && !updaterWindow){
-                        Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "okUpdate"+Phoenix.platform);
-                        doUpdate(updateDetails.downloadURL);
-                        return;
-                    }
-                });
+                if(option === Dialogs.DIALOG_BTN_CANCEL){
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "cancel"+Phoenix.platform);
+                    return;
+                }
+                if(!isUpgradableLoc) {
+                    // user installed linux as binary without installer, we just open phcode.io
+                    const downloadPage = brackets.config.homepage_url || "https://phcode.io";
+                    NativeApp.openURLInDefaultBrowser(downloadPage);
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "nonUpgradable"+Phoenix.platform);
+                    return;
+                }
+                if(option === Dialogs.DIALOG_BTN_OK && !updaterWindow){
+                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "okUpdate"+Phoenix.platform);
+                    doUpdate(updateDetails.downloadURL);
+                }
             });
     }
 
@@ -540,12 +564,24 @@ define(function (require, exports, module) {
         $("#update-notification").click(()=>{
             checkForUpdates();
         });
-        const commandID = Commands.HELP_CHECK_UPDATES;
-        CommandManager.register(Strings.CMD_CHECK_FOR_UPDATE, commandID, ()=>{
+        CommandManager.register(Strings.CMD_CHECK_FOR_UPDATE, Commands.HELP_CHECK_UPDATES, ()=>{
             checkForUpdates();
         });
+        CommandManager.register(Strings.CMD_AUTO_UPDATE, Commands.HELP_AUTO_UPDATE, ()=>{
+            PreferencesManager.set(PREFS_AUTO_UPDATE, !PreferencesManager.get(PREFS_AUTO_UPDATE));
+        });
         const helpMenu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
-        helpMenu.addMenuItem(commandID, "", Menus.AFTER, Commands.HELP_GET_INVOLVED);
+        helpMenu.addMenuItem(Commands.HELP_CHECK_UPDATES, "", Menus.AFTER, Commands.HELP_GET_INVOLVED);
+        helpMenu.addMenuItem(Commands.HELP_AUTO_UPDATE, "", Menus.AFTER, Commands.HELP_CHECK_UPDATES);
+        PreferencesManager.definePreference(PREFS_AUTO_UPDATE, "boolean", true, {
+            description: Strings.DESCRIPTION_AUTO_UPDATE
+        });
+        PreferencesManager.on("change", PREFS_AUTO_UPDATE, function () {
+            CommandManager.get(Commands.HELP_AUTO_UPDATE)
+                .setChecked(PreferencesManager.get(PREFS_AUTO_UPDATE));
+        });
+        CommandManager.get(Commands.HELP_AUTO_UPDATE)
+            .setChecked(PreferencesManager.get(PREFS_AUTO_UPDATE));
         showOrHideUpdateIcon();
         _refreshUpdateStatus();
         // check for updates at boot

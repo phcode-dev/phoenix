@@ -531,7 +531,8 @@ define({
 
     // Help menu commands
     "HELP_MENU": "Help",
-    "CMD_CHECK_FOR_UPDATE": "Check for Updates",
+    "CMD_CHECK_FOR_UPDATE": "Check for Updates\u2026",
+    "CMD_AUTO_UPDATE": "Auto Update",
     "CMD_HOW_TO_USE_BRACKETS": "How to Use {APP_NAME}",
     "CMD_SUPPORT": "{APP_NAME} Support",
     "CMD_SUGGEST": "Suggest a Feature",
@@ -577,6 +578,7 @@ define({
     "UPDATE_FAILED_VISIT_SITE_MESSAGE": "To retry, please exit all instances of {APP_NAME} and restart the application. <br>You will be directed to our download page shortly, where you can manually download the latest version.",
     "UPDATE_MESSAGE": "Hey, there's a new build of {APP_NAME} available. Here are some of the new features:",
     "GET_IT_NOW": "Get it now!",
+    "UPDATE_ON_EXIT": "Update On Exit",
     "UPDATE_LATER": "Remind Me Later",
     "UPDATE_DONE": "Restart to Update {APP_NAME}",
     "UPDATE_RESTART": "Restart to apply updates",
@@ -998,7 +1000,7 @@ define({
     "NETWORK_SLOW_OR_DISCONNECTED": "Network is disconnected or too slow.",
     "RESTART_BUTTON": "Restart",
     "LATER_BUTTON": "Later",
-    "DESCRIPTION_AUTO_UPDATE": "Enable/disable Brackets Auto-update",
+    "DESCRIPTION_AUTO_UPDATE": "Enable/disable {APP_NAME} Auto-update",
     "AUTOUPDATE_ERROR": "Error!",
     "AUTOUPDATE_IN_PROGRESS": "An update is already in progress.",
 
