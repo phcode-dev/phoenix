@@ -572,16 +572,13 @@ define(function (require, exports, module) {
         });
         const helpMenu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
         helpMenu.addMenuItem(Commands.HELP_CHECK_UPDATES, "", Menus.AFTER, Commands.HELP_GET_INVOLVED);
-        helpMenu.addMenuItem(Commands.HELP_AUTO_UPDATE, "", Menus.AFTER, Commands.HELP_CHECK_UPDATES);
+        // auto update is not added to help menu toggle as it will lead to install base version
+        // fragmentation, and we don't want an android version fragment situation. By default, all platforms
+        // are supported at latest version. User still has option to edit preferences manually to disable the auto
+        // update option.
         PreferencesManager.definePreference(PREFS_AUTO_UPDATE, "boolean", true, {
             description: Strings.DESCRIPTION_AUTO_UPDATE
         });
-        PreferencesManager.on("change", PREFS_AUTO_UPDATE, function () {
-            CommandManager.get(Commands.HELP_AUTO_UPDATE)
-                .setChecked(PreferencesManager.get(PREFS_AUTO_UPDATE));
-        });
-        CommandManager.get(Commands.HELP_AUTO_UPDATE)
-            .setChecked(PreferencesManager.get(PREFS_AUTO_UPDATE));
         showOrHideUpdateIcon();
         _refreshUpdateStatus();
         // check for updates at boot
