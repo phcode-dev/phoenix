@@ -204,7 +204,7 @@ define(function (require, exports, module) {
         return true;
     }
 
-    function _getButtons(isUpgradableLoc, isAutoUpdate, autoUpdateEnabled) {
+    function _getButtons(isUpgradableLoc) {
         const updateLater =
             {className: Dialogs .DIALOG_BTN_CLASS_NORMAL, id: Dialogs .DIALOG_BTN_CANCEL, text: Strings.UPDATE_LATER };
         const getItNow =
@@ -213,9 +213,6 @@ define(function (require, exports, module) {
             { className: Dialogs .DIALOG_BTN_CLASS_PRIMARY, id: Dialogs .DIALOG_BTN_OK, text: Strings.UPDATE_ON_EXIT };
         if(!isUpgradableLoc) {
             return [updateLater, getItNow];
-        }
-        if(isAutoUpdate && autoUpdateEnabled) {
-            return [updateOnExit];
         }
         return [updateLater, updateOnExit];
     }
@@ -251,7 +248,7 @@ define(function (require, exports, module) {
         }
 
         const isUpgradableLoc = await isUpgradableLocation();
-        const buttons = _getButtons(isUpgradableLoc, isAutoUpdate, autoUpdateEnabled);
+        const buttons = _getButtons(isUpgradableLoc);
         let markdownHtml = marked.parse(updateDetails.releaseNotesMarkdown || "");
         Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "shown"+Phoenix.platform);
         Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, Strings.UPDATE_AVAILABLE_TITLE, markdownHtml, buttons)
