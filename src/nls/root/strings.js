@@ -144,6 +144,12 @@ define({
     "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Reload Page",
     "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Toggle Live Preview Highlights",
     "LIVE_DEV_CLICK_POPOUT": "Popout Live Preview To New Window",
+    "LIVE_DEV_OPEN_CHROME": "Open In Chrome\u2026",
+    "LIVE_DEV_OPEN_SAFARI": "Open In Safari\u2026",
+    "LIVE_DEV_OPEN_EDGE": "Open In Edge\u2026",
+    "LIVE_DEV_OPEN_FIREFOX": "Open In Firefox\u2026",
+    "LIVE_DEV_OPEN_ERROR_TITLE": "Error Opening Live Preview in {0}",
+    "LIVE_DEV_OPEN_ERROR_MESSAGE": "Make sure that {0} browser is installed and try again.",
     "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin on Unpin Preview Page",
     "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (not updating due to syntax error)",
 

@@ -1,6 +1,15 @@
 const NodeConnector = require("./node-connector");
 const { exec } = require('child_process');
 const fs = require('fs');
+let openModule, open; // dynamic import when needed
+
+async function _importOpen() {
+    if(open){
+        return open;
+    }
+    openModule = await import('open');
+    open = openModule.default;
+}
 
 const UTILS_NODE_CONNECTOR = "ph_utils";
 NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
@@ -58,7 +67,29 @@ async function getLinuxOSFlavorName() {
     }
 }
 
+const ALLOWED_BROWSERS_NAMES = [`chrome`, `firefox`, `safari`, `edge`, `browser`, `browserPrivate`];
+
+/**
+ * Allows opening the given url in one of the supported browsers.
+ * @param url
+ * @param {string} browserName one of `chrome`, `firefox`, `safari`, `edge`, `browser`, `browserPrivate`
+ * @return {Promise<void>}
+ */
+async function openUrlInBrowser({url, browserName}) {
+    if(!ALLOWED_BROWSERS_NAMES.includes(browserName)){
+        throw new Error("openUrlInBrowser: unsupported browser "+browserName+" allowed: "+ALLOWED_BROWSERS_NAMES);
+    }
+    await _importOpen();
+    const appName = browserName === "safari"? "safari":openModule.apps[browserName];
+    await open(url, {
+        app: {
+            name: appName
+        }
+    });
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
 exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
+exports.openUrlInBrowser = openUrlInBrowser;

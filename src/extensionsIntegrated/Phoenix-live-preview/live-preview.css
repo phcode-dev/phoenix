@@ -2,6 +2,18 @@
     --toolbar-height: 30px;
 }
 
+.live-preview-browser-btn {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s, visibility 0s linear 1s; /* Fade-out effect */
+}
+
+#live-preview-plugin-toolbar:hover .live-preview-browser-btn {
+    opacity: 1;
+    visibility: visible;
+    transition: unset;
+}
+
 #panel-live-preview {
     position: relative;
     width: 100%;
@@ -13,7 +25,7 @@
 }
 
 #panel-live-preview-title {
-    max-width: 50%;
+    max-width: 50%%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
