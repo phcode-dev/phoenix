@@ -20,6 +20,7 @@
     "IMPORTANT!!": "Adding things here will bloat up the package size",
     "dependencies": {
         "@phcode/fs": "^3.0.0",
+        "open": "^10.1.0",
         "npm": "10.1.0",
         "ws": "^8.13.0",
         "lmdb": "^2.9.2",

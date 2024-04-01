@@ -173,6 +173,12 @@ let copyThirdPartyLibs = series(
         'src/thirdparty/devicon/'),
     copyFiles.bind(copyFiles, ['node_modules/devicon/fonts/*.*'],
         'src/thirdparty/devicon/fonts/'),
+    copyFiles.bind(copyFiles, ['node_modules/devicon/icons/chrome/chrome-original.svg'],
+        'src/thirdparty/devicon/icons/chrome/'),
+    copyFiles.bind(copyFiles, ['node_modules/devicon/icons/safari/safari-original.svg'],
+        'src/thirdparty/devicon/icons/safari/'),
+    copyFiles.bind(copyFiles, ['node_modules/devicon/icons/firefox/firefox-original.svg'],
+        'src/thirdparty/devicon/icons/firefox/'),
     copyLicence.bind(copyLicence, 'node_modules/devicon/LICENSE', 'devicon'),
     // file-icons https://www.npmjs.com/package/@uiw/file-icons - MIT License
     copyFiles.bind(copyFiles, ['node_modules/@uiw/file-icons/fonts/ffont.css'],

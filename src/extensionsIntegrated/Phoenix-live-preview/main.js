@@ -60,8 +60,11 @@ define(function (require, exports, module) {
         FileSystem          = require("filesystem/FileSystem"),
         BrowserStaticServer  = require("./BrowserStaticServer"),
         NodeStaticServer  = require("./NodeStaticServer"),
+        NodeUtils = require("utils/NodeUtils"),
         TrustProjectHTML    = require("text!./trust-project.html"),
         panelHTML       = require("text!./panel.html"),
+        Dialogs = require("widgets/Dialogs"),
+        DefaultDialogs = require("widgets/DefaultDialogs"),
         utils = require('./utils');
 
     const StaticServer = Phoenix.browser.isTauri? NodeStaticServer : BrowserStaticServer;
@@ -89,7 +92,11 @@ define(function (require, exports, module) {
         $pinUrlBtn,
         $highlightBtn,
         $livePreviewPopBtn,
-        $reloadBtn;
+        $reloadBtn,
+        $chromeButton,
+        $safariButton,
+        $edgeButton,
+        $firefoxButton;
 
     StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
         if($iframe && $iframe[0]) {
@@ -266,13 +273,32 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
     }
 
-    function _popoutLivePreview() {
+    const ALLOWED_BROWSERS_NAMES = [`chrome`, `firefox`, `safari`, `edge`, `browser`, `browserPrivate`];
+    function _popoutLivePreview(browserName) {
         // We cannot use $iframe.src here if panel is hidden
         const openURL = StaticServer.getTabPopoutURL(currentLivePreviewURL);
-        NativeApp.openURLInDefaultBrowser(openURL, "livePreview");
-        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
-        _loadPreview(true);
-        _setPanelVisibility(false);
+        if(browserName && ALLOWED_BROWSERS_NAMES.includes(browserName)){
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popout", browserName);
+            NodeUtils.openUrlInBrowser(openURL, browserName)
+                .then(()=>{
+                    _loadPreview(true);
+                    _setPanelVisibility(false);
+                })
+                .catch(err=>{
+                    console.error("Error opening url in browser: ", browserName, err);
+                    Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popFail", browserName);
+                    Dialogs.showModalDialog(
+                        DefaultDialogs.DIALOG_ID_ERROR,
+                        StringUtils.format(Strings.LIVE_DEV_OPEN_ERROR_TITLE, browserName),
+                        StringUtils.format(Strings.LIVE_DEV_OPEN_ERROR_MESSAGE, browserName)
+                    );
+                });
+        } else {
+            NativeApp.openURLInDefaultBrowser(openURL, "livePreview");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "popoutBtn", "click");
+            _loadPreview(true);
+            _setPanelVisibility(false);
+        }
     }
 
     function _setTitle(fileName) {
@@ -286,6 +312,19 @@ define(function (require, exports, module) {
         document.getElementById("live-preview-plugin-toolbar").title = tooltip;
     }
 
+    function _showOpenBrowserIcons() {
+        if(!Phoenix.browser.isTauri) {
+            return;
+        }
+        // only in desktop builds we show open with browser icons
+        $chromeButton.removeClass("forced-hidden");
+        $edgeButton.removeClass("forced-hidden");
+        $firefoxButton.removeClass("forced-hidden");
+        if (brackets.platform === "mac") {
+            $safariButton.removeClass("forced-hidden");
+        }
+    }
+
     async function _createExtensionPanel() {
         let templateVars = {
             Strings: Strings,
@@ -293,6 +332,10 @@ define(function (require, exports, module) {
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
             toggleLiveHighlight: Strings.LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
+            openInChrome: Strings.LIVE_DEV_OPEN_CHROME,
+            openInSafari: Strings.LIVE_DEV_OPEN_SAFARI,
+            openInEdge: Strings.LIVE_DEV_OPEN_EDGE,
+            openInFirefox: Strings.LIVE_DEV_OPEN_FIREFOX,
             clickToPinUnpin: Strings.LIVE_DEV_CLICK_TO_PIN_UNPIN
         };
         const PANEL_MIN_SIZE = 50;
@@ -305,9 +348,26 @@ define(function (require, exports, module) {
         $highlightBtn = $panel.find("#highlightLPButton");
         $reloadBtn = $panel.find("#reloadLivePreviewButton");
         $livePreviewPopBtn = $panel.find("#livePreviewPopoutButton");
+        $chromeButton = $panel.find("#chromeButton");
+        $safariButton = $panel.find("#safariButton");
+        $edgeButton = $panel.find("#edgeButton");
+        $firefoxButton = $panel.find("#firefoxButton");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
+        $chromeButton.on("click", ()=>{
+            _popoutLivePreview("chrome");
+        });
+        $safariButton.on("click", ()=>{
+            _popoutLivePreview("safari");
+        });
+        $edgeButton.on("click", ()=>{
+            _popoutLivePreview("edge");
+        });
+        $firefoxButton.on("click", ()=>{
+            _popoutLivePreview("firefox");
+        });
+        _showOpenBrowserIcons();
 
         const popoutSupported = Phoenix.browser.isTauri
             || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
