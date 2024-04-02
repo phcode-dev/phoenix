@@ -42,6 +42,7 @@
 define(function (require, exports, module) {
     const ExtensionUtils   = require("utils/ExtensionUtils"),
         EditorManager      = require("editor/EditorManager"),
+        DocumentManager = require("document/DocumentManager"),
         ExtensionInterface = require("utils/ExtensionInterface"),
         CommandManager     = require("command/CommandManager"),
         Commands           = require("command/Commands"),
@@ -66,7 +67,7 @@ define(function (require, exports, module) {
         Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
         utils = require('./utils');
-
+    const isBrowser = !Phoenix.browser.isTauri;
     const StaticServer = Phoenix.browser.isTauri? NodeStaticServer : BrowserStaticServer;
 
     const EVENT_EMBEDDED_IFRAME_WHO_AM_I = 'whoAmIframePhoenix';
@@ -476,6 +477,16 @@ define(function (require, exports, module) {
             _togglePinUrl();
         }
         $iframe.attr('src', StaticServer.getNoPreviewURL());
+        if(!panelShownOnce && !isBrowser){
+            // we dont do this in browser as the virtual server may not yet be started on app start
+            // project open and a 404 page will briefly flash in the browser!
+            const currentDocument = DocumentManager.getCurrentDocument();
+            const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+            const isPreviewable = currentFile ? utils.isPreviewableFile(currentFile.fullPath) : false;
+            if(isPreviewable){
+                _setPanelVisibility(true);
+            }
+        }
         if(!panel.isVisible()){
             return;
         }
@@ -518,10 +529,24 @@ define(function (require, exports, module) {
 
     function _currentFileChanged(_event, newFile) {
         if(newFile && utils.isPreviewableFile(newFile.fullPath)){
+            if(!panelShownOnce){
+                _setPanelVisibility(true);
+            }
             _loadPreview();
         }
     }
 
+    function _showLivePreviewPanelIfNeeded(previewDetails) {
+        // we show the live preview
+        // in browser, we always show the live preview on startup even if its a no preview page
+        // Eg. in mac safari browser we show mac doesnt support live preview page in live preview.
+        if(previewDetails.URL && (isBrowser || !previewDetails.isNoPreview) && !panelShownOnce){
+            // only show if there is some file to preview and not the default no-preview preview on startup
+            _setPanelVisibility(true);
+        }
+        _loadPreview(true);
+    }
+    
     AppInit.appReady(function () {
         if(Phoenix.isSpecRunnerWindow){
             return;
@@ -553,13 +578,7 @@ define(function (require, exports, module) {
         });
         StaticServer.on(StaticServer.EVENT_SERVER_READY, function (_evt, event) {
             // We always show the live preview panel on startup if there is a preview file
-            StaticServer.getPreviewDetails().then(previewDetails =>{
-                if(previewDetails.URL && !panelShownOnce){
-                    // only show if there is some file to preview and not the default no-preview preview on startup
-                    _setPanelVisibility(true);
-                }
-                _loadPreview(true);
-            });
+            StaticServer.getPreviewDetails().then(_showLivePreviewPanelIfNeeded);
         });
 
         let consecutiveEmptyClientsCount = 0;
