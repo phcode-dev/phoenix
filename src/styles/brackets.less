@@ -861,6 +861,10 @@ a, img {
         }
     }
 
+    .CodeMirror-ruler{
+        z-index: 1;
+    }
+
     .active-pane {
 
         .pane-header {
@@ -871,29 +875,6 @@ a, img {
                 color: @dark-bc-menu-text;
             }
         }
-    }
-
-    .guideline {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        z-index: 2;
-        pointer-events: none;
-        margin-right: 0;
-        padding-right: 0;
-    }
-
-    .guideline > pre {
-        height: calc(100% - 15px);
-        background-color: #d0d0d0;
-        .dark & {
-            background-color: #4b4b4b;
-        }
-        -webkit-mask-origin: content;
-        -webkit-mask-image: url("data:image/svg+xml;utf8,<svg class='test' xmlns='http://www.w3.org/2000/svg' width='1' height='1'><rect width='1' height='1'/></svg>");
-        -webkit-mask-position: 80ch 0;
-        -webkit-mask-repeat: repeat-y;
     }
 }
 

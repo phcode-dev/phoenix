@@ -29,8 +29,7 @@ define(function (require, exports, module) {
         PreferencesManager  = require("preferences/PreferencesManager"),
         Strings             = require("strings"),
         EditorManager       = require("editor/EditorManager"),
-        MainViewManager     = require("view/MainViewManager"),
-        WorkspaceManager    = require("view/WorkspaceManager"),
+        ThemeManager        = require("view/ThemeManager"),
         _                   = require("thirdparty/lodash");
 
     // Constants for the preferences referred to in this file
@@ -48,6 +47,8 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS, "array", [120], {
         description: Strings.DESCRIPTION_RULERS_COLUMNS
     });
+
+    let _currentTheme;
     /**
      * @private
      *
@@ -97,63 +98,38 @@ define(function (require, exports, module) {
         };
     }
 
-    const rulerEvents = {
-        "activeEditorChange": true,
-        "change": true,
-        "workingSetMove": true,
-        "paneLayoutChange": true,
-        "workspaceUpdateLayout": true
-    };
-
-    // rulers code adapted from guidelines extension by
-    // "Jake Knerr <jake@yellowhangar.com> (https://github.com/jakeknerr)"
-    function _createGuidelines(event) {
+    function _createRulers(editor) {
         const rulerColumns = PreferencesManager.get(PREFERENCES_EDITOR_RULERS) || [];
         const rulersEnabled = PreferencesManager.get(PREFERENCES_EDITOR_RULERS_ENABLED);
-        if( !rulersEnabled || !rulerEvents[event.type] || !rulerColumns.length){
+        if( !rulersEnabled || !rulerColumns.length || !editor){
             return;
         }
-        // initially I thought I could add the guideline to each pane alone and
-        // not editor instances, however this doesn't work because then the
-        // guideline does not scroll; must add a guideline to each editor
-        // instance
-
-        // loop through each scroller; get the height of each scroller so that
-        // the guideline can be sized to at least fill the viewport
-        // we support multiple rulers in the same document
-        const scrollers = $("div.CodeMirror-scroll");
-        for(let nulerNumber=0; nulerNumber<rulerColumns.length; nulerNumber++) {
-            scrollers.each(function() {
-                const scroller = $(this);
-                const minHeight = scroller.height();
-
-                // add the guideline to the sizer; this will also add guidelines to
-                // inline editors
-                const jSizer = scroller.find("> div.CodeMirror-sizer");
-
-                // reuse guidelines if possible
-                let guideline = jSizer.find(`> div.guideline.${nulerNumber}`);
-                if (!guideline || guideline.length < 1) {
-                    // add the guideline; notice that you must include a <pre> tag
-                    // because when line numbers are disabled, brackets introduces a
-                    // style .show-line-padding that will indent <pre> tags based on
-                    // the theme;
-                    jSizer.append(
-                        `<div class="guideline ${nulerNumber}" tabindex="-1">` +
-                        '<pre class></pre>' +
-                        '</div>'
-                    );
-                    guideline = jSizer.find(`> div.guideline.${nulerNumber}`);
-                }
-                // apply the user selected line color and column
-                const preTag = guideline.find('> pre');
-                preTag.css('-webkit-mask-position', rulerColumns[nulerNumber] + 'ch 0');
-
-                // set the minimum height to the scroller height
-                guideline.css("min-height", minHeight + "px");
-
-            });
+        if(!_currentTheme){
+            _currentTheme = ThemeManager.getCurrentTheme();
         }
+        if(!editor._codeMirror.getOption("rulers")){
+            let rulerOptions = [];
+            for(const element of rulerColumns) {
+                rulerOptions.push({
+                    color: _currentTheme.dark ? "#4b4b4b" : "#d0d0d0",
+                    column: element,
+                    lineStyle: "solid !important"
+                });
+            }
+            editor._codeMirror.setOption("rulers", rulerOptions);
+        }
+    }
+
+    function _resetRulers() {
+        Editor.forEveryEditor(function (editor) {
+            editor._codeMirror.setOption("rulers", null);
+            _createRulers(editor);
+        });
+    }
+
+    function _handleThemeChange() {
+        _currentTheme = ThemeManager.getCurrentTheme();
+        _resetRulers();
     }
 
     CommandManager.register(Strings.CMD_TOGGLE_LINE_NUMBERS, Commands.TOGGLE_LINE_NUMBERS, _getToggler(SHOW_LINE_NUMBERS));
@@ -173,32 +149,13 @@ define(function (require, exports, module) {
         }
 
         // fires for inline editor creation;
-        EditorManager.on('activeEditorChange', _createGuidelines);
-        // theme changes, font changes, folding, line-numbers; should catch settings
-        // that change the gutter width
-        PreferencesManager.on("change", (event)=>{
-            $("div.guideline").remove();
-            _createGuidelines(event);
+        EditorManager.on('activeEditorChange', (_event, newActiveEditor)=>{
+            _createRulers(newActiveEditor);
         });
-
-        // fires when panes are created; works even when the pane isn't focused;
-        // will not fire for inline editors; will add the guideline when a pane
-        // is created but not focused; the primary pane will not dispatch this event
-        // when it is created;
-        // MainViewManager.on('paneCreate', eventHandler);
-
-        // handles the situation when a file is moved to a new pane but not focused
-        MainViewManager.on('workingSetMove', _createGuidelines);
-
-        // catches layout when pane orientation changes; layout event doesn't fire for
-        // this oddly
-        MainViewManager.on("paneLayoutChange", _createGuidelines);
-
-        // doesn't fire for inline editor, new files, or as the scrollable content
-        // changes, orientation changes; surprisingly not that useful; however,
-        // will catch resizes that make the guideline extend out of the viewable
-        // region and trigger scrolling
-        WorkspaceManager.on("workspaceUpdateLayout", _createGuidelines);
+        PreferencesManager.on("change", PREFERENCES_EDITOR_RULERS_ENABLED, _resetRulers);
+        PreferencesManager.on("change", PREFERENCES_EDITOR_RULERS, _resetRulers);
+        ThemeManager.on(ThemeManager.EVENT_THEME_CHANGE, _handleThemeChange);
+        _resetRulers();
     }
 
     AppInit.htmlReady(_init);
