@@ -40,12 +40,16 @@ define(function (require, exports, module) {
         AUTO_HIDE_SEARCH  = "autoHideSearch";
 
     const PREFERENCES_EDITOR_RULERS = "editor.rulers",
+        PREFERENCES_EDITOR_RULER_COLORS = "editor.rulerColors",
         PREFERENCES_EDITOR_RULERS_ENABLED = "editor.rulersEnabled";
     PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS_ENABLED, "boolean", true, {
         description: Strings.DESCRIPTION_RULERS_ENABLED
     });
     PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS, "array", [120], {
         description: Strings.DESCRIPTION_RULERS_COLUMNS
+    });
+    PreferencesManager.definePreference(PREFERENCES_EDITOR_RULER_COLORS, "array", [], {
+        description: Strings.DESCRIPTION_RULERS_COLORS
     });
 
     let _currentTheme;
@@ -100,19 +104,23 @@ define(function (require, exports, module) {
 
     function _createRulers(editor) {
         const rulerColumns = PreferencesManager.get(PREFERENCES_EDITOR_RULERS) || [];
+        const rulerColors = PreferencesManager.get(PREFERENCES_EDITOR_RULER_COLORS) || [];
         const rulersEnabled = PreferencesManager.get(PREFERENCES_EDITOR_RULERS_ENABLED);
         if( !rulersEnabled || !rulerColumns.length || !editor){
             return;
         }
+
         if(!_currentTheme){
             _currentTheme = ThemeManager.getCurrentTheme();
         }
+        const defaultColor = (_currentTheme && _currentTheme.dark) ? "#4b4b4b" : "#d0d0d0";
+
         if(!editor._codeMirror.getOption("rulers")){
             let rulerOptions = [];
-            for(const element of rulerColumns) {
+            for(let i=0; i<rulerColumns.length; i++) {
                 rulerOptions.push({
-                    color: _currentTheme.dark ? "#4b4b4b" : "#d0d0d0",
-                    column: element,
+                    color: rulerColors[i] ? rulerColors[i]: defaultColor,
+                    column: rulerColumns[i],
                     lineStyle: "solid !important"
                 });
             }
