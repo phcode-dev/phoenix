@@ -162,6 +162,7 @@ define(function (require, exports, module) {
         });
         PreferencesManager.on("change", PREFERENCES_EDITOR_RULERS_ENABLED, _resetRulers);
         PreferencesManager.on("change", PREFERENCES_EDITOR_RULERS, _resetRulers);
+        PreferencesManager.on("change", PREFERENCES_EDITOR_RULER_COLORS, _resetRulers);
         ThemeManager.on(ThemeManager.EVENT_THEME_CHANGE, _handleThemeChange);
         _resetRulers();
     }

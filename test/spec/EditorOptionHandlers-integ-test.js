@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         EditorManager,       // loaded from brackets.test
         DocumentManager,     // loaded from brackets.test
         FileViewController,
+        PreferencesManager,
         SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
 
@@ -57,6 +58,7 @@ define(function (require, exports, module) {
             EditorManager       = testWindow.brackets.test.EditorManager;
             DocumentManager     = testWindow.brackets.test.DocumentManager;
             FileViewController  = testWindow.brackets.test.FileViewController;
+            PreferencesManager  = testWindow.brackets.test.PreferencesManager;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
@@ -269,6 +271,62 @@ define(function (require, exports, module) {
 
                 var editor = EditorManager.getCurrentFullEditor();
                 checkActiveLine(editor, 3, true);
+            });
+        });
+
+        describe("Toggle Rulers", function () {
+            function _checkDefaultRuler(editor) {
+                const rulers = editor._codeMirror.getOption("rulers");
+                expect(rulers.length).toBe(1);
+                expect(rulers[0].column).toBe(120);
+            }
+            it("should show ruler in editor by default", async function () {
+                await openEditor(HTML_FILE);
+                _checkDefaultRuler(EditorManager.getCurrentFullEditor());
+            });
+
+            it("should show ruler in inline editor by default", async function () {
+                await openInlineEditor();
+                _checkDefaultRuler(EditorManager.getCurrentFullEditor().getInlineWidgets()[0].editor);
+            });
+
+            it("should be able to toggle ruler preference", async function () {
+                await openEditor(HTML_FILE);
+                const editor = EditorManager.getCurrentFullEditor();
+                _checkDefaultRuler(editor);
+                PreferencesManager.set("editor.rulersEnabled", false);
+                expect(editor._codeMirror.getOption("rulers")).toBeNull();
+                PreferencesManager.set("editor.rulersEnabled", true);
+                _checkDefaultRuler(editor);
+            });
+
+            it("should be able to set multiple rulers without color", async function () {
+                await openEditor(HTML_FILE);
+                const editor = EditorManager.getCurrentFullEditor();
+                _checkDefaultRuler(editor);
+                PreferencesManager.set("editor.rulers", [10, 30, 50]);
+                let rulers = editor._codeMirror.getOption("rulers");
+                expect(rulers.length).toBe(3);
+                expect(rulers[0].column).toBe(10);
+                expect(rulers[1].column).toBe(30);
+                expect(rulers[2].column).toBe(50);
+                PreferencesManager.set("editor.rulers", [120]);
+                _checkDefaultRuler(editor);
+            });
+
+            it("should be able to set multiple rulers with color", async function () {
+                await openEditor(HTML_FILE);
+                const editor = EditorManager.getCurrentFullEditor();
+                _checkDefaultRuler(editor);
+                PreferencesManager.set("editor.rulers", [10, 30, 50]);
+                PreferencesManager.set("editor.rulerColors", ["red", "", "#458"]);
+                let rulers = editor._codeMirror.getOption("rulers");
+                expect(rulers.length).toBe(3);
+                expect(rulers[0].color).toBe("red");
+                expect(rulers[1].color).toBeDefined();
+                expect(rulers[2].color).toBe("#458");
+                PreferencesManager.set("editor.rulers", [120]);
+                _checkDefaultRuler(editor);
             });
         });
 
