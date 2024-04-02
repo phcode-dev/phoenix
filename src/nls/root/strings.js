@@ -932,6 +932,7 @@ define({
     "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Keeps the blinking cursor visible when you have a text selection",
     "DESCRIPTION_SHOW_LINE_NUMBERS": "true to show line numbers in a “gutter” to the left of the code",
     "DESCRIPTION_RULERS_COLUMNS": "An array of column numbers to draw vertical rulers in the editor. Eg: [80, 100]",
+    "DESCRIPTION_RULERS_COLORS": "An array of ruler colors corresponding to the rulers option in the editor. Eg: [\"#3d3d3d\", \"red\"]",
     "DESCRIPTION_RULERS_ENABLED": "true to enable editor rulers, else false",
     "DESCRIPTION_SMART_INDENT": "Automatically indent when creating a new block",
     "DESCRIPTION_SOFT_TABS": "false to turn off soft tabs behavior",
