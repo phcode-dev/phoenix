@@ -503,6 +503,7 @@ define({
     "CMD_WORKING_SORT_TOGGLE_AUTO": "Automatic Sort",
     "CMD_THEMES": "Themes\u2026",
     "CMD_TOGGLE_SEARCH_AUTOHIDE": "Automatically close search",
+    "CMD_TOGGLE_RULERS": "Rulers",
     "CMD_KEYBOARD_NAV_OVERLAY": "Visual Command Palette",
 
     // Navigate menu commands
@@ -930,6 +931,8 @@ define({
     "DESCRIPTION_SHOW_CODE_HINTS": "false to disable all code hints",
     "DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING": "Keeps the blinking cursor visible when you have a text selection",
     "DESCRIPTION_SHOW_LINE_NUMBERS": "true to show line numbers in a “gutter” to the left of the code",
+    "DESCRIPTION_RULERS_COLUMNS": "An array of column numbers to draw vertical rulers in the editor. Eg: [80, 100]",
+    "DESCRIPTION_RULERS_ENABLED": "true to enable editor rulers, else false",
     "DESCRIPTION_SMART_INDENT": "Automatically indent when creating a new block",
     "DESCRIPTION_SOFT_TABS": "false to turn off soft tabs behavior",
     "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true to sort the directories first in the project tree",
