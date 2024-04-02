@@ -656,6 +656,7 @@ define(function (require, exports, module) {
                         isMarkdownFile: utils.isMarkdownFile(fullPath),
                         isHTMLFile: utils.isHTMLFile(fullPath)
                     });
+                    return;
                 } else {
                     const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
                     if(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument
@@ -670,8 +671,13 @@ define(function (require, exports, module) {
                             isMarkdownFile: utils.isMarkdownFile(fullPath),
                             isHTMLFile: utils.isHTMLFile(fullPath)
                         });
+                        return;
                     }
                 }
+                resolve({
+                    URL: getNoPreviewURL(),
+                    isNoPreview: true
+                });
             }catch (e) {
                 reject(e);
             }
