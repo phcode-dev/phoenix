@@ -45,7 +45,7 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS_ENABLED, "boolean", true, {
         description: Strings.DESCRIPTION_RULERS_ENABLED
     });
-    PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS, "array", [100], {
+    PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS, "array", [120], {
         description: Strings.DESCRIPTION_RULERS_COLUMNS
     });
     /**
@@ -120,37 +120,40 @@ define(function (require, exports, module) {
 
         // loop through each scroller; get the height of each scroller so that
         // the guideline can be sized to at least fill the viewport
+        // we support multiple rulers in the same document
         const scrollers = $("div.CodeMirror-scroll");
-        scrollers.each(function() {
-            const scroller = $(this);
-            const minHeight = scroller.height();
+        for(let nulerNumber=0; nulerNumber<rulerColumns.length; nulerNumber++) {
+            scrollers.each(function() {
+                const scroller = $(this);
+                const minHeight = scroller.height();
 
-            // add the guideline to the sizer; this will also add guidelines to
-            // inline editors
-            const jSizer = scroller.find("> div.CodeMirror-sizer");
+                // add the guideline to the sizer; this will also add guidelines to
+                // inline editors
+                const jSizer = scroller.find("> div.CodeMirror-sizer");
 
-            // reuse guidelines if possible
-            let guideline = jSizer.find("> div.guideline");
-            if (!guideline || guideline.length < 1) {
-                // add the guideline; notice that you must include a <pre> tag
-                // because when line numbers are disabled, brackets introduces a
-                // style .show-line-padding that will indent <pre> tags based on
-                // the theme;
-                jSizer.append(
-                    '<div class="guideline" tabindex="-1">' +
-                    '<pre class></pre>' +
-                    '</div>'
-                );
-                guideline = jSizer.find("> div.guideline");
-            }
-            // apply the user selected line color and column
-            const preTag = guideline.find('> pre');
-            preTag.css('-webkit-mask-position', rulerColumns[0] + 'ch 0');
+                // reuse guidelines if possible
+                let guideline = jSizer.find(`> div.guideline.${nulerNumber}`);
+                if (!guideline || guideline.length < 1) {
+                    // add the guideline; notice that you must include a <pre> tag
+                    // because when line numbers are disabled, brackets introduces a
+                    // style .show-line-padding that will indent <pre> tags based on
+                    // the theme;
+                    jSizer.append(
+                        `<div class="guideline ${nulerNumber}" tabindex="-1">` +
+                        '<pre class></pre>' +
+                        '</div>'
+                    );
+                    guideline = jSizer.find(`> div.guideline.${nulerNumber}`);
+                }
+                // apply the user selected line color and column
+                const preTag = guideline.find('> pre');
+                preTag.css('-webkit-mask-position', rulerColumns[nulerNumber] + 'ch 0');
 
-            // set the minimum height to the scroller height
-            guideline.css("min-height", minHeight + "px");
+                // set the minimum height to the scroller height
+                guideline.css("min-height", minHeight + "px");
 
-        });
+            });
+        }
     }
 
     CommandManager.register(Strings.CMD_TOGGLE_LINE_NUMBERS, Commands.TOGGLE_LINE_NUMBERS, _getToggler(SHOW_LINE_NUMBERS));
