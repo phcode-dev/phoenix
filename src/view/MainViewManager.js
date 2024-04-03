@@ -429,6 +429,31 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Retrieves the currently viewed editor of the specified paneId
+     * @param {?string} paneId - the id of the pane in which to retrieve the currently viewed editor
+     * @return {?Editor} currently editor, or null if there isn't one or there's no such pane
+     */
+    function getCurrentlyViewedEditor(paneId) {
+        const pane = _getPane(paneId);
+        return pane ? pane.getCurrentlyViewedEditor() : null;
+    }
+
+    /**
+     * Get an array of editors open in panes with their pane ids. Can return empty if no editor open.
+     * @return {[{editor: Editor, paneId:string}]}
+     */
+    function getAllViewedEditors() {
+        const editorList = [];
+        for(let paneId of getPaneIdList()){
+            const editor = getCurrentlyViewedEditor(paneId);
+            if(editor){
+                editorList.push({editor, paneId});
+            }
+        }
+        return editorList;
+    }
+
+    /**
      * Retrieves the currently viewed path of the pane specified by paneId
      * @param {?string} paneId - the id of the pane in which to retrieve the currently viewed path
      * @return {?string} the path of the currently viewed file or null if there isn't one
@@ -624,7 +649,7 @@ define(function (require, exports, module) {
      * @return {Array.<{pane:string, index:number}>} an array of paneId/index records
      */
     function findInAllWorkingSets(fullPath) {
-        var index,
+        let index,
             result = [];
 
         _.forEach(_panes, function (pane) {
@@ -635,6 +660,24 @@ define(function (require, exports, module) {
         });
 
         return result;
+    }
+
+    /**
+     * Returns the paneId and editor(if present) of the given file on any open and viewable pane. If same file
+     * is open in multiple panes, all matching panes will be returned. If not found in any panes, [] will be returned.
+     * @param {string} fullPath
+     * @return {[{paneId:string, editor:?Editor}]} paneId - array of id of the panes in which the file is open.
+     */
+    function findInOpenPane(fullPath) {
+        const paneList = [];
+        for(let paneId of getPaneIdList()){
+            const file = getCurrentlyViewedFile(paneId);
+            const editor = getCurrentlyViewedEditor(paneId);
+            if(file && file.fullPath === fullPath){
+                paneList.push({paneId, editor});
+            }
+        }
+        return paneList;
     }
 
     /**
@@ -1747,6 +1790,7 @@ define(function (require, exports, module) {
     exports.findInWorkingSetByAddedOrder  = findInWorkingSetByAddedOrder;
     exports.findInWorkingSetByMRUOrder    = findInWorkingSetByMRUOrder;
     exports.findInAllWorkingSets          = findInAllWorkingSets;
+    exports.findInOpenPane                = findInOpenPane;
     exports.findInGlobalMRUList           = _findFileInMRUList;
 
     // Traversal
@@ -1774,6 +1818,8 @@ define(function (require, exports, module) {
     // Convenience
     exports.getCurrentlyViewedFile        = getCurrentlyViewedFile;
     exports.getCurrentlyViewedPath        = getCurrentlyViewedPath;
+    exports.getCurrentlyViewedEditor      = getCurrentlyViewedEditor;
+    exports.getAllViewedEditors           = getAllViewedEditors;
 
     // Constants
     exports.ALL_PANES                     = ALL_PANES;
