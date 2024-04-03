@@ -25,10 +25,11 @@
 }
 
 #panel-live-preview-title {
-    max-width: 50%%;
+    max-width: 80%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .frame-container {

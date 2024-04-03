@@ -154,6 +154,7 @@ define(function (require, exports, module) {
         EventDispatcher     = require("utils/EventDispatcher"),
         FileSystem          = require("filesystem/FileSystem"),
         InMemoryFile        = require("document/InMemoryFile"),
+        Editor              = require("editor/Editor").Editor,
         ViewStateManager    = require("view/ViewStateManager"),
         MainViewManager     = require("view/MainViewManager"),
         PreferencesManager  = require("preferences/PreferencesManager"),
@@ -1264,6 +1265,14 @@ define(function (require, exports, module) {
      */
     Pane.prototype.getCurrentlyViewedFile = function () {
         return this._currentView ? this._currentView.getFile() : null;
+    };
+
+    /**
+     * Retrieves the File object of the current view
+     * @return {?File} the File object of the current view or null if there isn't one
+     */
+    Pane.prototype.getCurrentlyViewedEditor = function () {
+        return this._currentView instanceof Editor ? this._currentView : null;
     };
 
     /**

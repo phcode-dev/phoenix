@@ -50,7 +50,8 @@ define(function (require, exports, module) {
         PreferencesManager  = require("preferences/PreferencesManager"),
         HTMLInstrumentation   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
         StringUtils = require("utils/StringUtils"),
-        FileViewController    = require("project/FileViewController");
+        FileViewController    = require("project/FileViewController"),
+        MainViewManager     = require("view/MainViewManager");
 
     const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = `phoenix_live_preview_scripts_instrumented_${StringUtils.randomString(8)}.js`;
     const LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = `pageLoaderWorker_${StringUtils.randomString(8)}.js`;
@@ -114,31 +115,49 @@ define(function (require, exports, module) {
             return;
         }
         const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc(),
-            editor = EditorManager.getActiveEditor();
+            activeEditor = EditorManager.getActiveEditor(), // this can be an inline editor
+            activeFullEditor = EditorManager.getCurrentFullEditor();
         const liveDocPath = liveDoc ? liveDoc.doc.file.fullPath : null,
-            activeEditorDocPath = editor ? editor.document.file.fullPath : null;
-        function selectInActiveDocument() {
-            // activeEditor can be either a full or inline(Eg. css inline within html) editor
-            const activeEditor = EditorManager.getActiveEditor();
-            const activeFullEditor = EditorManager.getCurrentFullEditor(); // always full editor
-            const position = HTMLInstrumentation.getPositionFromTagId(activeFullEditor, parseInt(tagId, 10));
-            // should we scan all editors for the file path and update selections on every editor?
-            // currently we do it only for active / full editor.
-            if(position &&
-                activeEditor && activeEditor.document.file.fullPath === activeFullEditor.document.file.fullPath) {
-                activeEditor.setCursorPos(position.line, position.ch, true);
-                _focusEditorIfNeeded(activeEditor, nodeName, contentEditable);
-            }
-            if(position && activeFullEditor) {
-                activeFullEditor.setCursorPos(position.line, position.ch, true);
-                _focusEditorIfNeeded(activeFullEditor, nodeName, contentEditable);
+            activeEditorPath = activeEditor ? activeEditor.document.file.fullPath : null,
+            activeFullEditorPath = activeFullEditor ? activeFullEditor.document.file.fullPath : null;
+        if(!liveDocPath){
+            activeEditor && activeEditor.focus(); // restore focus from live preview
+            return;
+        }
+        const openFullEditors = MainViewManager.findInOpenPane(liveDocPath);
+        const openLiveDocEditor = openFullEditors.length ? openFullEditors[0].editor : null;
+        function selectInHTMLEditor(fullHtmlEditor) {
+            const position = HTMLInstrumentation.getPositionFromTagId(fullHtmlEditor, parseInt(tagId, 10));
+            if(position && fullHtmlEditor) {
+                const masterEditor = fullHtmlEditor.document._masterEditor || fullHtmlEditor;
+                masterEditor.setCursorPos(position.line, position.ch, true);
+                _focusEditorIfNeeded(masterEditor, nodeName, contentEditable);
             }
         }
-        if(liveDocPath && liveDocPath !== activeEditorDocPath) {
-            FileViewController.openAndSelectDocument(liveDocPath, FileViewController.PROJECT_MANAGER)
-                .done(selectInActiveDocument);
+        if(liveDocPath === activeFullEditorPath) {
+            // if the active pane is the html being live previewed, select that.
+            selectInHTMLEditor(activeFullEditor);
+        } else if(liveDoc.isRelated(activeEditorPath)) {
+            // the active editor takes the priority in the workflow. If a css related file is active,
+            // then we dont need to open the html live doc.
+            activeEditor.focus();
+            // in this case, see if we need to do any css reverse highlight magic here
+        } else if(openLiveDocEditor) {
+            // If we are on multi pane mode, the html doc was open in an inactive unfocused editor.
+            selectInHTMLEditor(openLiveDocEditor);
         } else {
-            selectInActiveDocument();
+            // no open editor for the live doc in panes, check if there is one in the working set.
+            const foundInWorkingSetPane = MainViewManager.findInAllWorkingSets(liveDocPath);
+            const paneToUse = foundInWorkingSetPane.length ?
+                foundInWorkingSetPane[0].paneId:
+                MainViewManager.ACTIVE_PANE; // if pane id is active pane, then the file is not open in working set
+            const viewToUse = (paneToUse === MainViewManager.ACTIVE_PANE) ?
+                FileViewController.PROJECT_MANAGER:
+                FileViewController.WORKING_SET_VIEW;
+            FileViewController.openAndSelectDocument(liveDocPath, viewToUse, paneToUse)
+                .done(()=>{
+                    selectInHTMLEditor(EditorManager.getActiveEditor());
+                });
         }
     }
 

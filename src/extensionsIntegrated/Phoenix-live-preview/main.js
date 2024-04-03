@@ -42,6 +42,7 @@
 define(function (require, exports, module) {
     const ExtensionUtils   = require("utils/ExtensionUtils"),
         EditorManager      = require("editor/EditorManager"),
+        FileViewController  = require("project/FileViewController"),
         DocumentManager = require("document/DocumentManager"),
         ExtensionInterface = require("utils/ExtensionInterface"),
         CommandManager     = require("command/CommandManager"),
@@ -97,7 +98,8 @@ define(function (require, exports, module) {
         $chromeButton,
         $safariButton,
         $edgeButton,
-        $firefoxButton;
+        $firefoxButton,
+        $panelTitle;
 
     StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
         if($iframe && $iframe[0]) {
@@ -302,15 +304,16 @@ define(function (require, exports, module) {
         }
     }
 
-    function _setTitle(fileName) {
+    function _setTitle(fileName, fullPath) {
         let message = Strings.LIVE_DEV_SELECT_FILE_TO_PREVIEW,
             tooltip = message;
         if(fileName){
             message = `${fileName} - ${Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC}`;
-            tooltip = `${Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC} - ${fileName}`;
+            tooltip = StringUtils.format(Strings.LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR, fileName);
         }
-        document.getElementById("panel-live-preview-title").textContent = message;
-        document.getElementById("live-preview-plugin-toolbar").title = tooltip;
+        $panelTitle.text(message);
+        $panelTitle.attr("title", tooltip);
+        $panelTitle.attr("data-fullPath", fullPath);
     }
 
     function _showOpenBrowserIcons() {
@@ -353,9 +356,19 @@ define(function (require, exports, module) {
         $safariButton = $panel.find("#safariButton");
         $edgeButton = $panel.find("#edgeButton");
         $firefoxButton = $panel.find("#firefoxButton");
+        $panelTitle = $panel.find("#panel-live-preview-title");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
+        $panelTitle.on("click", ()=>{
+            const fullPath = $panelTitle.attr("data-fullPath");
+            const openPanes = MainViewManager.findInAllWorkingSets(fullPath);
+            let paneToUse = MainViewManager.ACTIVE_PANE;
+            if(openPanes.length) {
+                paneToUse = openPanes[0].paneId;
+            }
+            FileViewController.openFileAndAddToWorkingSet(fullPath, paneToUse);
+        });
         $chromeButton.on("click", ()=>{
             _popoutLivePreview("chrome");
         });
@@ -423,7 +436,7 @@ define(function (require, exports, module) {
         }
         let relativeOrFullPath= ProjectManager.makeProjectRelativeIfPossible(currentPreviewFile);
         relativeOrFullPath = Phoenix.app.getDisplayPath(relativeOrFullPath);
-        _setTitle(relativeOrFullPath);
+        _setTitle(relativeOrFullPath, currentPreviewFile);
         if(panel.isVisible()) {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
