@@ -361,6 +361,27 @@
         ProtocolManager.enable();
     });
 
+    function _getAllInheritedSelectorsInOrder(element) {
+        let selectorsFound= new Map();
+        const selectorsList = [];
+        while (element) {
+            if(element.id){
+                selectorsList.push(`#${element.id}`);
+            }
+            if (element.classList) {
+                element.classList.forEach(cls => {
+                    if(!selectorsFound.get(cls)){
+                        selectorsFound.set(cls, true);
+                        selectorsList.push(`.${cls}`);
+                    }
+                });
+            }
+            element = element.parentElement; // Move up to the next parent element
+        }
+        return selectorsList;
+    }
+
+
     /**
     * Sends the message containing tagID which is being clicked
     * to the editor in order to change the cursor position to
@@ -381,7 +402,10 @@
         if (element && element.hasAttribute('data-brackets-id')) {
             MessageBroker.send({
                 "tagId": element.getAttribute('data-brackets-id'),
+                "nodeID": element.id,
+                "nodeClassList": element.classList,
                 "nodeName": element.nodeName,
+                "allSelectors": _getAllInheritedSelectorsInOrder(element),
                 "contentEditable": element.contentEditable === 'true',
                 "clicked": true
             });

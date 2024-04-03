@@ -660,7 +660,8 @@ define(function (require, exports, module) {
                 } else {
                     const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
                     if(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument
-                        &&currentLivePreviewDetails.liveDocument.isRelated(fullPath)){
+                        && currentLivePreviewDetails.liveDocument.isRelated
+                        && currentLivePreviewDetails.liveDocument.isRelated(fullPath)){
                         fullPath = currentLivePreviewDetails.liveDocument.doc.file.fullPath;
                         const relativeFilePath = httpFilePath || path.relative(projectRoot, fullPath);
                         let URL = httpFilePath || decodeURI(_staticServerInstance.pathToUrl(fullPath));
