@@ -44,6 +44,7 @@ define(function (require, exports, module) {
     // Text of the script we'll inject into the browser that handles protocol requests.
     const LiveDevProtocolRemote = require("text!LiveDevelopment/BrowserScripts/LiveDevProtocolRemote.js"),
         DocumentObserver      = require("text!LiveDevelopment/BrowserScripts/DocumentObserver.js"),
+        LanguageManager     = require("language/LanguageManager"),
         RemoteFunctions       = require("text!LiveDevelopment/BrowserScripts/RemoteFunctions.js"),
         EditorManager         = require("editor/EditorManager"),
         LiveDevMultiBrowser   = require("LiveDevelopment/LiveDevMultiBrowser"),
@@ -108,7 +109,36 @@ define(function (require, exports, module) {
         editor.focus();
     }
 
-    function _tagSelectedInLivePreview(tagId, nodeName, contentEditable) {
+    const cssLangIDS = ["css", "scss", "sass", "less"];
+    function _searchAndCursorIfCSS(editor, allSelectors, nodeName) {
+        const codeMirror =  editor._codeMirror;
+        const language = LanguageManager.getLanguageForExtension(editor.document.extension);
+        if(!language || !cssLangIDS.includes(language.getId())){
+            return;
+        }
+
+        // this is a css file
+        if(allSelectors && allSelectors.length){
+            // check if we can find a class selector
+            for(let selector of allSelectors){
+                const cursor = codeMirror.getSearchCursor(selector);
+                const found = cursor.findNext();
+                if (found) {
+                    editor.setCursorPos(cursor.from().line, cursor.from().ch, true);
+                    return;
+                }
+            }
+        }
+        // check if we can do tag matching, html tag selectors are not case-sensitive
+        const htmlTagSearch = new RegExp(nodeName, "i");
+        const cursor = codeMirror.getSearchCursor(htmlTagSearch);
+        const found = cursor.findNext();
+        if (found) {
+            editor.setCursorPos(cursor.from().line, cursor.from().ch, true);
+        }
+    }
+
+    function _tagSelectedInLivePreview(tagId, nodeName, contentEditable, allSelectors) {
         const highlightPref = PreferencesManager.getViewState("livedevHighlight");
         if(!highlightPref){
             // live preview highlight and reverse highlight feature is disabled
@@ -141,6 +171,7 @@ define(function (require, exports, module) {
             // the active editor takes the priority in the workflow. If a css related file is active,
             // then we dont need to open the html live doc.
             activeEditor.focus();
+            _searchAndCursorIfCSS(activeEditor, allSelectors, nodeName);
             // in this case, see if we need to do any css reverse highlight magic here
         } else if(openLiveDocEditor) {
             // If we are on multi pane mode, the html doc was open in an inactive unfocused editor.
@@ -187,7 +218,7 @@ define(function (require, exports, module) {
                 }
             }
         } else if (msg.clicked && msg.tagId) {
-            _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable);
+            _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable, msg.allSelectors);
             exports.trigger(EVENT_LIVE_PREVIEW_CLICKED, msg);
         } else {
             // enrich received message with clientId
