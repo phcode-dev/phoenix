@@ -1023,6 +1023,42 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        it("should open document on clicking on html live preview if no file is present", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLivePreview.html"]),
+                "SpecRunnerUtils.openProjectFiles cssLivePreview.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all file");
+
+            await forRemoteExec(`document.getElementById("testId").click()`);
+            await awaitsFor(()=>{
+                return !!EditorManager.getActiveEditor();
+            }, "Editor to be opened");
+            let editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe("cssLivePreview.html");
+            await endPreviewSession();
+        }, 30000);
+
+        it("should not open document on clicking live preview if related file is present and html not present", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLivePreview.html"]),
+                "SpecRunnerUtils.openProjectFiles cssLivePreview.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all file");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLive.css"]),
+                "SpecRunnerUtils.openProjectFiles cssLive.css");
+
+            await forRemoteExec(`document.getElementById("testId").click()`);
+            await awaits(100); // just wait for some time to verify html file is not opened
+            let editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe("cssLive.css");
+            await endPreviewSession();
+        }, 30000);
+
         it("should reverse highlight open previewed html file if not open on clicking live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
