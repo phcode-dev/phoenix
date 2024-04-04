@@ -880,10 +880,11 @@ define(function (require, exports, module) {
     /**
      * Opens project relative file paths in the test window
      * @param {!(Array.<string>|string)} paths Project relative file path(s) to open
+     * @param {string} [paneId] - optional
      * @return {!$.Promise} A promise resolved with a mapping of project-relative path
      *  keys to a corresponding Document
      */
-    function openProjectFiles(paths) {
+    function openProjectFiles(paths, paneId) {
         var result = new $.Deferred(),
             fullpaths = makeArray(makeAbsolute(paths)),
             keys = makeArray(makeRelative(paths)),
@@ -894,7 +895,7 @@ define(function (require, exports, module) {
         Async.doSequentially(fullpaths, function (path, i) {
             var one = new $.Deferred();
 
-            FileViewController.openFileAndAddToWorkingSet(path).done(function (file) {
+            FileViewController.openFileAndAddToWorkingSet(path, paneId).done(function (file) {
                 docs[keys[i]] = DocumentManager.getOpenDocumentForPath(file.fullPath);
                 one.resolve();
             }).fail(function (err) {
