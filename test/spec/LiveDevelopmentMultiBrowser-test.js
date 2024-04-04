@@ -1008,7 +1008,7 @@ define(function (require, exports, module) {
             }, "waiting for editor reverse selection on "+ id);
         }
 
-        it("should reverse highlight on clicking related CSS on live preview", async function () {
+        async function _verifyCssReverseHighlight(fileName) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLivePreview.html"]),
                 "SpecRunnerUtils.openProjectFiles cssLivePreview.html");
 
@@ -1016,21 +1016,49 @@ define(function (require, exports, module) {
             await awaits(500);
 
             // now open the css file
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLive.css"]),
-                "SpecRunnerUtils.openProjectFiles cssLive.css");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([fileName]),
+                `SpecRunnerUtils.openProjectFiles ${fileName}`);
 
             let editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe(fileName);
 
             await forRemoteExec(`document.getElementById("testId").click()`);
+            editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe(fileName);
             await _forSelection("#testId", editor, { line: 6, ch: 0, sticky: null });
             await forRemoteExec(`document.getElementById("testId2").click()`);
+            editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe(fileName);
             await _forSelection("#testId2", editor, { line: 9, ch: 0, sticky: null });
             await forRemoteExec(`document.getElementsByTagName("span")[0].click()`);
+            editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe(fileName);
             await _forSelection("span", editor, { line: 11, ch: 0, sticky: null });
             await forRemoteExec(`document.getElementsByClassName("notInCss")[0].click()`);
+            editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe(fileName);
             await _forSelection("span", editor, { line: 2, ch: 0, sticky: null });
 
             await endPreviewSession();
+        }
+
+        it("should reverse highlight on related CSS on clicking live preview", async function () {
+            await _verifyCssReverseHighlight("cssLive.css");
+        }, 30000);
+
+        it("should reverse highlight on unrelated less on clicking live preview", async function () {
+            // for less files we dont do the related file check as its is not usually directly linked into the css DOM.
+            await _verifyCssReverseHighlight("cssLive1.less");
+        }, 30000);
+
+        it("should reverse highlight on unrelated scss on clicking live preview", async function () {
+            // for scss files we dont do the related file check as its is not usually directly linked into the css DOM.
+            await _verifyCssReverseHighlight("cssLive1.scss");
+        }, 30000);
+
+        it("should reverse highlight on unrelated sass on clicking live preview", async function () {
+            // for sass files we dont do the related file check as its is not usually directly linked into the css DOM.
+            await _verifyCssReverseHighlight("cssLive1.sass");
         }, 30000);
 
         it("should open document on clicking on html live preview if no file is present", async function () {

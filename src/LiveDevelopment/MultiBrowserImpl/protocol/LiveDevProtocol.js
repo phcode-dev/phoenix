@@ -110,9 +110,18 @@ define(function (require, exports, module) {
     }
 
     const cssLangIDS = ["css", "scss", "sass", "less"];
+    const lessLangIDS = ["scss", "sass", "less"];
+    function _isLessOrSCSS(editor) {
+        if(!editor){
+            return false;
+        }
+        const language = LanguageManager.getLanguageForPath(editor.document.file.fullPath);
+        return language && lessLangIDS.includes(language.getId());
+    }
+
     function _searchAndCursorIfCSS(editor, allSelectors, nodeName) {
         const codeMirror =  editor._codeMirror;
-        const language = LanguageManager.getLanguageForExtension(editor.document.extension);
+        const language = LanguageManager.getLanguageForPath(editor.document.file.fullPath);
         if(!language || !cssLangIDS.includes(language.getId())){
             return;
         }
@@ -167,9 +176,10 @@ define(function (require, exports, module) {
         if(liveDocPath === activeFullEditorPath) {
             // if the active pane is the html being live previewed, select that.
             selectInHTMLEditor(activeFullEditor);
-        } else if(liveDoc.isRelated(activeEditorPath)) {
+        } else if(liveDoc.isRelated(activeEditorPath) || _isLessOrSCSS(activeEditor)) {
             // the active editor takes the priority in the workflow. If a css related file is active,
-            // then we dont need to open the html live doc.
+            // then we dont need to open the html live doc. For less files, we dont check if its related as
+            // its not directly linked usually and needs a compile step. so we just do a fuzzy search.
             activeEditor.focus();
             _searchAndCursorIfCSS(activeEditor, allSelectors, nodeName);
             // in this case, see if we need to do any css reverse highlight magic here
