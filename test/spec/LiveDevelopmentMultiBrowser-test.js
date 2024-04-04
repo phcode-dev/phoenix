@@ -54,6 +54,7 @@ define(function (require, exports, module) {
             CommandManager,
             BeautificationManager,
             Commands,
+            MainViewManager,
             WorkspaceManager,
             PreferencesManager,
             Dialogs,
@@ -102,6 +103,7 @@ define(function (require, exports, module) {
                 PreferencesManager       = brackets.test.PreferencesManager;
                 NativeApp       = brackets.test.NativeApp;
                 Dialogs       = brackets.test.Dialogs;
+                MainViewManager       = brackets.test.MainViewManager;
                 savedNativeAppOpener = NativeApp.openURLInDefaultBrowser;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
@@ -121,6 +123,14 @@ define(function (require, exports, module) {
             CommandManager      = null;
             Commands            = null;
             EditorManager       = null;
+            MainViewManager = null;
+            savedNativeAppOpener = null;
+            Dialogs = null;
+            NativeApp = null;
+            PreferencesManager = null;
+            BeautificationManager = null;
+            DocumentManager = null;
+            WorkspaceManager = null;
         }, 30000);
 
         async function _enableLiveHighlights(enable) {
@@ -1056,6 +1066,69 @@ define(function (require, exports, module) {
             await awaits(100); // just wait for some time to verify html file is not opened
             let editor = EditorManager.getActiveEditor();
             expect(editor.document.file.name).toBe("cssLive.css");
+            await endPreviewSession();
+        }, 30000);
+
+        it("should not focus html on clicking live preview if related css is open in split pane", async function () {
+            MainViewManager.setLayoutScheme(1, 2);
+            MainViewManager.setActivePaneId(MainViewManager.FIRST_PANE);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLivePreview.html"], MainViewManager.FIRST_PANE),
+                "SpecRunnerUtils.openProjectFiles cssLivePreview.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLive.css"], MainViewManager.SECOND_PANE),
+                "SpecRunnerUtils.openProjectFiles cssLive.css");
+
+            MainViewManager.setActivePaneId(MainViewManager.SECOND_PANE);
+            let editor = EditorManager.getActiveEditor();
+            editor.setCursorPos(0, 0);
+            await forRemoteExec(`document.getElementById("testId").click()`);
+            await _forSelection("#testId", editor, { line: 6, ch: 0, sticky: null });
+            editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe("cssLive.css");
+
+            MainViewManager.setActivePaneId(MainViewManager.FIRST_PANE);
+            editor = EditorManager.getActiveEditor();
+            editor.setCursorPos(0, 0);
+            await forRemoteExec(`document.getElementById("testId2").click()`);
+            await _forSelection("#testId", editor, { line: 13, ch: 4, sticky: null });
+            editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe("cssLivePreview.html");
+
+            MainViewManager.setLayoutScheme(1, 1);
+            await endPreviewSession();
+        }, 30000);
+
+        it("should open html in correct pane on clicking live preview in split pane", async function () {
+            MainViewManager.setLayoutScheme(1, 2);
+            MainViewManager.setActivePaneId(MainViewManager.FIRST_PANE);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLivePreview.html"], MainViewManager.FIRST_PANE),
+                "SpecRunnerUtils.openProjectFiles cssLivePreview.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"], MainViewManager.SECOND_PANE),
+                "SpecRunnerUtils.openProjectFiles simple1.css"); // non related file
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["blank.css"], MainViewManager.FIRST_PANE),
+                "SpecRunnerUtils.openProjectFiles blank.css");  // non related file
+
+            // now the live preview page's editor is not visible in any panes, but is already open in first pane
+            // so, on clicking live preview, it should open the file in first pane
+            MainViewManager.setActivePaneId(MainViewManager.SECOND_PANE);
+
+            await forRemoteExec(`document.getElementById("testId2").click()`);
+            let editor = EditorManager.getActiveEditor();
+            await awaitsFor(()=>{
+                editor = EditorManager.getActiveEditor();
+                return editor && editor.document.file.name === "cssLivePreview.html";
+            }, "cssLivePreview.html to open as active editor");
+            await _forSelection("#testId", editor, { line: 13, ch: 4, sticky: null });
+            editor = EditorManager.getActiveEditor();
+            expect(editor.document.file.name).toBe("cssLivePreview.html");
+            expect(MainViewManager.getActivePaneId()).toBe(MainViewManager.FIRST_PANE);
+
+            MainViewManager.setLayoutScheme(1, 1);
             await endPreviewSession();
         }, 30000);
 
