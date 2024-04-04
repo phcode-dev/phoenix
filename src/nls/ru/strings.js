@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Инициализация…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Сервер живого предварительного просмотра активен",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} – Показать в редакторе…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Выберите файл для просмотра в реальном времени",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Перезагрузить страницу",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Toggle Live Preview Highlights",

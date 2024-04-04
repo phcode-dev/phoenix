@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "തത്സമയ പ്രിവ്യൂ: ആരംഭിക്കുന്നു...",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "തത്സമയ പ്രിവ്യൂ സെർവർ സജീവമാണ്",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "തത്സമയ പ്രിവ്യൂ",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - എഡിറ്ററിൽ കാണിക്കുക...",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "തത്സമയ പ്രിവ്യൂവിലേക്ക് ഫയൽ തിരഞ്ഞെടുക്കുക",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "പേജ് റീലോഡ് ചെയ്യുക",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "ലൈവ് പ്രിവ്യൂ ഹൈലൈറ്റുകൾ ടോഗിൾ ചെയ്യുക",

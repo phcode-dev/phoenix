@@ -95,6 +95,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Tinjauan Langsung: Menginisialisasi…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Server Pratinjau Langsung Aktif",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Tinjauan Langsung",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - Tampilkan di Editor…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Pilih File Untuk Pratinjau Langsung",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Muat Ulang Halaman",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Alihkan Sorotan Pratinjau Langsung",

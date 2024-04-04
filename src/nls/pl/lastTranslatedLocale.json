@@ -95,6 +95,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Podgląd na żywo: inicjalizacja…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Aktywny serwer podglądu na żywo",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Podgląd na żywo",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} – Pokaż w edytorze…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Wybierz plik do podglądu na żywo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Odśwież stronę",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Przełącz najciekawsze podglądy na żywo",

@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Tiešais priekšskatījums: inicializē…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Tiešraides priekšskatījuma serveris ir aktīvs",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Tiešais priekšskatījums",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} — Rādīt redaktorā…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Atlasiet File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Pārlādēt lapu",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Pārslēgt tiešraides priekšskatījuma izcēlumus",

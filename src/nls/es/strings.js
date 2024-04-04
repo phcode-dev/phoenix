@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Vista previa dinámica: Inicializando…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Servidor de vista previa en vivo activo",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Vista previa dinámica",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - Mostrar en el editor…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Seleccionar archivo para vista previa en vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Recargar página",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Toggle Destacados de vista previa en vivo",

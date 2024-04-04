@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Aperçu en direct : Initialisation…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Serveur de prévisualisation en direct actif",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Aperçu en direct",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} – Afficher dans l'éditeur…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Sélectionnez le fichier pour l'aperçu en direct",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Rafraîchir la page",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Basculer les faits saillants de l'aperçu en direct",
