@@ -165,6 +165,23 @@ define(function (require, exports, module) {
             });
     }
 
+    function _getScopeLabel(scope, isReplace) {
+        if (scope) {
+            const scopeStr = isReplace ?
+                Strings.FIND_IN_FILES_PROJECT_SCOPE_REPLACE_FILTER :
+                Strings.FIND_IN_FILES_PROJECT_SCOPE_FILTER;
+            return StringUtils.format(
+                scopeStr,
+                StringUtils.breakableUrl(
+                    ProjectManager.makeProjectRelativeIfPossible(scope.fullPath)
+                )
+            );
+        }
+        return isReplace ?
+            Strings.FIND_IN_FILES_PROJECT_SCOPE_REPLACE :
+            Strings.FIND_IN_FILES_PROJECT_SCOPE;
+    }
+
     /**
      * @private
      * Displays a non-modal embedded dialog above the code mirror editor that allows the user to do
@@ -210,7 +227,7 @@ define(function (require, exports, module) {
             historyHelp: brackets.platform === "mac" ? Strings.FIND_HISTORY_TOOLTIP_MAC : Strings.FIND_HISTORY_TOOLTIP,
             initialReplaceText: initialQuery.replaceText,
             queryPlaceholder: Strings.FIND_QUERY_PLACEHOLDER,
-            scopeLabel: FindUtils.labelForScope(scope)
+            scopeLabel: _getScopeLabel(scope, showReplace)
         });
         _findBar.open();
 
