@@ -1,3 +1,9 @@
+{{#multifile}}
+<div id="searchlabel" style="text-align: center; font-weight: bold; font-size: medium; padding-bottom: 5px;">
+    {{{scopeLabel}}}
+</div>
+{{/multifile}}
+
 <div class="find-input-group">
     <div id="find-group">
         <div class="search-input-container">
@@ -17,7 +23,8 @@
             --><button id="find-next" class="btn no-focus" tabindex="-1" title="{{Strings.BUTTON_NEXT_HINT}}">{{Strings.BUTTON_NEXT}}</button><!--
         --></div><!--
         {{/multifile}}
-    --></div>
+    -->
+    </div>
 
     {{#replace}}
     <div id="replace-group" {{#scope}}class="has-scope"{{/scope}}><!--
@@ -35,10 +42,6 @@
 
 {{#multifile}}
 <div class="scope-group">
-    <div class="no-results-message">{{Strings.FIND_NO_RESULTS}}</div>
-    <div class="message">
-        <span id="searchlabel">{{{scopeLabel}}}</span>
-    </div>
     <!-- For Find in Files, the filter picker will be added here programmatically. -->
 </div>
 <div id="indexing-spinner" class="indexing-group forced-hidden">

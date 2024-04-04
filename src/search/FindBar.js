@@ -713,12 +713,8 @@ define(function (require, exports, module) {
         }
         ViewUtils.toggleClass($borderEl, "no-results", showIndicator);
 
-        var $msg = this.$(".no-results-message");
-        if (showMessage) {
-            $msg.show();
-        } else {
-            $msg.hide();
-        }
+        const noResultsMessage = showMessage ? Strings.FIND_NO_RESULTS : "";
+        this.showFindCount(noResultsMessage);
     };
 
     /**
