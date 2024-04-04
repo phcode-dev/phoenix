@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Živý náhled: Spouštění…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Server živého náhledu je aktivní",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Živý náhled",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} – Zobrazit v Editoru…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Vyberte Soubor do živého náhledu",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Znovu načíst stránku",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Přepnout zvýraznění živého náhledu",

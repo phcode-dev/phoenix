@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "即時預覽: 初始化中…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "即時預覽伺服器處於活動狀態",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "即時預覽",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - 在編輯器中顯示...",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "選擇要實時預覽的文件",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "重新加載頁面",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Toggle 實時預覽亮點",

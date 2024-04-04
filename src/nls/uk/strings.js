@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Ініціалізація…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Активний сервер попереднього перегляду",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - Показати в редакторі…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Виберіть «Файл для попереднього перегляду».",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Перезавантажити сторінку",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Увімкнути/перемкнути попередній перегляд основних моментів",

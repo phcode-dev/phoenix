@@ -95,6 +95,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "실시간 미리보기: 초기화 중…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "실시간 미리보기 서버 활성화",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "실시간 미리보기",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - 편집기에 표시…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "라이브 미리 보기로 파일 선택",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "페이지 새로고침",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "실시간 미리보기 하이라이트 전환",

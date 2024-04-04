@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "लाइव पूर्वावलोकन: प्रारंभ किया जा रहा है...",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "लाइव पूर्वावलोकन सर्वर सक्रिय",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "सजीव पूर्वावलोकन",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - संपादक में दिखाएँ...",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "लाइव पूर्वावलोकन के लिए फ़ाइल का चयन करें",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "पृष्ठ पुनः लोड करें",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "लाइव पूर्वावलोकन हाइलाइट्स को टॉगल करें",

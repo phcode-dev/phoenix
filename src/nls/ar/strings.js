@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "المعاينة المباشرة: جارٍ التهيئة…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "خادم المعاينة المباشرة نشط",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "المعاينة الحية",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - إظهار في المحرر...",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "حدد ملف للمعاينة الحية",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "إعادة تحميل الصفحة",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "قم بتبديل ميزات المعاينة المباشرة",

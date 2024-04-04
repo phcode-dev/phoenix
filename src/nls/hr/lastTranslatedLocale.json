@@ -95,6 +95,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Prikaz uživo: Inicijalizacija…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Poslužitelj za pregled uživo aktivan",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Prikaz uživo",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - Prikaži u uređivaču…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Odaberite datoteku za pregled uživo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Ponovno učitaj stranicu",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Uključi/isključi istaknute preglede uživo",

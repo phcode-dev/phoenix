@@ -95,6 +95,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Преглед на живо: установка…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Активен сървър за предварителен преглед на живо",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Преглед на живо",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} – Показване в редактора…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Изберете File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Презареди страницата",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Превключване на акценти за преглед на живо",

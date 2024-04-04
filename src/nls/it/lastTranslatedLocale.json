@@ -95,6 +95,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Anteprima Live: Inizializzazione…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Server di anteprima dal vivo attivo",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Anteprima Live",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - Mostra nell'editor...",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Seleziona File in anteprima dal vivo",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Ricarica la pagina",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Attiva/disattiva i momenti salienti dell'anteprima dal vivo",

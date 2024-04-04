@@ -95,6 +95,7 @@
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "实时预览: 初始化…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "实时预览服务器处于活动状态",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "实时预览",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - 在编辑器中显示...",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "选择要实时预览的文件",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "重新加载页面",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Toggle 实时预览亮点",

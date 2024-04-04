@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Εκκίνηση…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Ενεργός διακομιστής ζωντανής προεπισκόπησης",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Live Preview",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - Εμφάνιση στο πρόγραμμα επεξεργασίας…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Επιλέξτε Αρχείο σε ζωντανή προεπισκόπηση",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Επαναφόρτωση σελίδας",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Εναλλαγή Ζωντανής Προεπισκόπησης Βασικά σημεία",

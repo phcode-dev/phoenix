@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Förhandsvisning: Initierar…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "Live Preview Server aktiv",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "Förhandsvisning",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - Visa i redigeraren...",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "Välj File To Live Preview",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Ladda om sidan",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "Växla Live Preview Highlights",

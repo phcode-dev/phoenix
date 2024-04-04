@@ -115,6 +115,7 @@ define({
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "لائیو پیش نظارہ: شروع کیا جا رہا ہے…",
   "LIVE_DEV_STATUS_TIP_CONNECTED": "لائیو پیش نظارہ سرور فعال",
   "LIVE_DEV_STATUS_TIP_OUT_OF_SYNC": "لائیو پیش نظارہ",
+  "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - ایڈیٹر میں دکھائیں…",
   "LIVE_DEV_SELECT_FILE_TO_PREVIEW": "براہ راست پیش نظارہ کے لیے فائل کو منتخب کریں۔",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "صفحہ دوبارہ لوڈ کریں۔",
   "LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT": "لائیو پیش نظارہ کی جھلکیاں ٹوگل کریں۔",
