@@ -991,6 +991,38 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        async function _forSelection(id, editor, cursor) {
+            await awaitsFor(()=>{
+                const cursorPos = editor.getCursorPos();
+                return cursorPos && cursorPos.line === cursor.line && cursorPos.ch === cursor.ch;
+            }, "waiting for editor reverse selection on "+ id);
+        }
+
+        it("should reverse highlight on clicking related CSS on live preview", async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLivePreview.html"]),
+                "SpecRunnerUtils.openProjectFiles cssLivePreview.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            await awaits(500);
+
+            // now open the css file
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLive.css"]),
+                "SpecRunnerUtils.openProjectFiles cssLive.css");
+
+            let editor = EditorManager.getActiveEditor();
+
+            await forRemoteExec(`document.getElementById("testId").click()`);
+            await _forSelection("#testId", editor, { line: 6, ch: 0, sticky: null });
+            await forRemoteExec(`document.getElementById("testId2").click()`);
+            await _forSelection("#testId2", editor, { line: 9, ch: 0, sticky: null });
+            await forRemoteExec(`document.getElementsByTagName("span")[0].click()`);
+            await _forSelection("span", editor, { line: 11, ch: 0, sticky: null });
+            await forRemoteExec(`document.getElementsByClassName("notInCss")[0].click()`);
+            await _forSelection("span", editor, { line: 2, ch: 0, sticky: null });
+
+            await endPreviewSession();
+        }, 30000);
+
         it("should reverse highlight open previewed html file if not open on clicking live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");

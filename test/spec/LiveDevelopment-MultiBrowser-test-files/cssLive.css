@@ -1,0 +1,12 @@
+@import url('import1.css');
+
+.testClass {
+	color: #000;
+}
+
+#testId{
+}
+
+.testClass2{}
+
+span{}
