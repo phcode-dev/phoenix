@@ -130,9 +130,9 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.close();
     }
 
-    function openLivePreview() {
+    function openLivePreview(doc) {
         if (!Phoenix.isTestWindow) {
-            MultiBrowserLiveDev.open();
+            MultiBrowserLiveDev.open(doc);
         }
     }
 

@@ -36,7 +36,7 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global path*/
+/*global path, jsPromise*/
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
@@ -404,13 +404,12 @@ define(function (require, exports, module) {
         $highlightBtn.click(_toggleLiveHighlights);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
-            LiveDevelopment.openLivePreview();
-            _loadPreview(true);
+            _loadPreview(true, true);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
     }
 
-    async function _loadPreview(force) {
+    async function _loadPreview(force, isReload) {
         // we wait till the first server ready event is received till we render anything. else a 404-page may
         // briefly flash on first load of phoenix as we try to load the page before the server is available.
         const isPreviewLoadable = panel.isVisible() || StaticServer.hasActiveLivePreviews();
@@ -434,6 +433,15 @@ define(function (require, exports, module) {
             currentLivePreviewURL = newSrc;
             currentPreviewFile = previewDetails.fullPath;
         }
+        const existingPreviewFile = $iframe && $iframe.attr('data-original-path');
+        const existingPreviewURL = $iframe && $iframe.attr('data-original-src');
+        if(isReload && previewDetails.isNoPreview && existingPreviewURL &&
+            existingPreviewFile && ProjectManager.isWithinProject(existingPreviewFile)) {
+            currentLivePreviewURL = existingPreviewURL;
+            currentPreviewFile = existingPreviewFile;
+        } else if(isReload){
+            LiveDevelopment.openLivePreview();
+        }
         let relativeOrFullPath= ProjectManager.makeProjectRelativeIfPossible(currentPreviewFile);
         relativeOrFullPath = Phoenix.app.getDisplayPath(relativeOrFullPath);
         _setTitle(relativeOrFullPath, currentPreviewFile);
@@ -444,6 +452,10 @@ define(function (require, exports, module) {
             $iframe = newIframe;
             if(_isProjectPreviewTrusted()){
                 $iframe.attr('src', currentLivePreviewURL);
+                // we have to save src as the iframe src attribute may have redirected, and we cannot read it as its
+                // a third party domain once its redirected.
+                $iframe.attr('data-original-src', currentLivePreviewURL);
+                $iframe.attr('data-original-path', currentPreviewFile);
             } else {
                 $iframe.attr('srcdoc', _getTrustProjectPage());
             }
