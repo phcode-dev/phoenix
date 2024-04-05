@@ -524,13 +524,7 @@ define(function (require, exports, module) {
             isViewable = _server && _server.canServe(doc.file.fullPath);
 
         if (_liveDocument && _liveDocument.doc.url !== docUrl && isViewable) {
-            // clear live doc and related docs
-            _closeDocuments();
-            // create new live doc
-            _createLiveDocumentForFrame(doc);
-            _setStatus(STATUS_RESTARTING);
-            _open(doc);
-
+            open();
         }
     }
 
@@ -551,6 +545,9 @@ define(function (require, exports, module) {
                     return;
                 }
                 _setStatus(STATUS_CONNECTING);
+                // clear live doc and related docs
+                _closeDocuments();
+                // create new live doc
                 doc && _createLiveDocumentForFrame(doc);
                 if(_server.isActive()){
                     doc && _open(doc);
