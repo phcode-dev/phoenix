@@ -251,10 +251,11 @@ define(function (require, exports, module) {
      *
      * !!!Should not be used for crypto secure workflows.!!!
      *
-     * @param {number} stringLength - The length of the nonce in bytes.
+     * @param {number} stringLength - The length of the nonce in bytes. default 10.
+     * @param {string} [prefix] - optional prefix
      * @returns {string} - The randomly generated nonce.
      */
-    function randomString(stringLength) {
+    function randomString(stringLength=10, prefix="") {
         const randomBuffer = new Uint8Array(stringLength);
         crypto.getRandomValues(randomBuffer);
 
@@ -262,7 +263,7 @@ define(function (require, exports, module) {
         const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
         // Convert the ArrayBuffer to a case-sensitive random string with numbers
-        let randomId = '';
+        let randomId = prefix || '';
         Array.from(randomBuffer).forEach(byte => {
             randomId += charset[byte % charset.length];
         });

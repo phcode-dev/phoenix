@@ -54,6 +54,9 @@
  * - "navigated_away" (The browser changed to a location outside of the project)
  * - "detached_target_closed" (The tab or window was closed)
  */
+
+/*global jsPromise */
+
 define(function (require, exports, module) {
 
 
@@ -535,10 +538,10 @@ define(function (require, exports, module) {
     /**
      * Open a live preview on the current docuemnt.
      */
-    function open() {
+    async function open() {
         let doc = DocumentManager.getCurrentDocument();
         if(livePreviewUrlPinned){
-            doc = DocumentManager.getDocumentForPath(currentPreviewFilePath);
+            doc = await jsPromise(DocumentManager.getDocumentForPath(currentPreviewFilePath));
         }
 
         // wait for server (StaticServer, Base URL or file:)

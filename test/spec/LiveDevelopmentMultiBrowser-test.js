@@ -24,7 +24,8 @@
 define(function (require, exports, module) {
 
 
-    const SpecRunnerUtils = require("spec/SpecRunnerUtils");
+    const SpecRunnerUtils = require("spec/SpecRunnerUtils"),
+        StringUtils      = require("utils/StringUtils");
 
     describe("livepreview:MultiBrowser Live Preview", function () {
 
@@ -869,6 +870,7 @@ define(function (require, exports, module) {
                 5000,
                 50
             );
+            return result;
         }
 
         it("should live highlight html elements", async function () {
@@ -1465,6 +1467,14 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        async function _storeInRemotePreview(value) {
+            await forRemoteExec(`window.remoteSetterTest = "${value}"`);
+            await forRemoteExec(`window.remoteSetterTest`, (result)=>{
+                return result === value;
+            });
+        }
+
+
         it("should Live preview reload if related JS file changes", async function () {
             const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
             await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
@@ -1473,6 +1483,7 @@ define(function (require, exports, module) {
                 "open simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
+            await _storeInRemotePreview("jsFileTest1");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.js"]),
                 "open simple1.js");
 
@@ -1484,6 +1495,102 @@ define(function (require, exports, module) {
             await forRemoteExec(`document.getElementById("testId").textContent`, (result)=>{
                 return result === jsChangedText;
             });
+            await endPreviewSession();
+        }, 30000);
+
+        it("should clicking reload button reload Live preview html file", async function () {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            const storedValue = StringUtils.randomString(10, "htmlReload");
+            await _storeInRemotePreview(storedValue);
+
+            testWindow.$("#reloadLivePreviewButton").click();
+
+            await forRemoteExec(`window.remoteSetterTest`, (result)=>{
+                return result !== storedValue;
+            });
+            await endPreviewSession();
+        }, 30000);
+
+        it("should clicking reload button reload pinned Live preview html file", async function () {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            const storedValue = StringUtils.randomString(10, "htmlReload");
+            await _storeInRemotePreview(storedValue);
+
+            testWindow.$("#pinURLButton").click();
+            testWindow.$("#reloadLivePreviewButton").click();
+
+            await forRemoteExec(`window.remoteSetterTest`, (result)=>{
+                return result !== storedValue;
+            });
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith(`simple1.html`))
+                .toBeTrue();
+            testWindow.$("#pinURLButton").click();
+            await endPreviewSession();
+        }, 30000);
+
+        it("should clicking reload button while css file is open reload Live preview html file", async function () {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            const storedValue = StringUtils.randomString(10, "htmlReload");
+            await _storeInRemotePreview(storedValue);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
+                "SpecRunnerUtils.openProjectFiles simple1.css");
+
+            testWindow.$("#reloadLivePreviewButton").click();
+
+            await forRemoteExec(`window.remoteSetterTest`, (result)=>{
+                return result !== storedValue;
+            });
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith(`simple1.html`))
+                .toBeTrue();
+            await endPreviewSession();
+        }, 30000);
+
+        it("should clicking reload button while css file is open reload pinned Live preview html", async function () {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            const storedValue = StringUtils.randomString(10, "htmlReload");
+            await _storeInRemotePreview(storedValue);
+            testWindow.$("#pinURLButton").click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
+                "SpecRunnerUtils.openProjectFiles simple1.css");
+
+            testWindow.$("#reloadLivePreviewButton").click();
+
+            await forRemoteExec(`window.remoteSetterTest`, (result)=>{
+                return result !== storedValue;
+            });
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith(`simple1.html`))
+                .toBeTrue();
+            testWindow.$("#pinURLButton").click();
+            await endPreviewSession();
         }, 30000);
 
     });
