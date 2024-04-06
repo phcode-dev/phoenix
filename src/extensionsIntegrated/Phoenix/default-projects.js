@@ -18,15 +18,32 @@
  *
  */
 
-/*globals Phoenix, JSZip, Filer*/
+/*globals Phoenix, JSZip, Filer, fs*/
 
 define(function (require, exports, module) {
     const ProjectManager          = require("project/ProjectManager"),
+        Strings     = require("strings"),
         ZipUtils = require("utils/ZipUtils");
 
     async function _setupStartupProject() {
         console.log("setting up startup project", ProjectManager.getWelcomeProjectPath());
         await ZipUtils.unzipURLToLocation('assets/default-project/en.zip', ProjectManager.getWelcomeProjectPath());
+        const indexHtmlPath = `${ProjectManager.getWelcomeProjectPath()}index.html`;
+        fs.readFile(indexHtmlPath, 'utf8', function (err, text) {
+            if(err || !text){
+                return;
+            }
+            if(!text.includes("CLICK_HERE")){
+                console.error("Default project index.html doesnt have CLICK_HERE!!!");
+                return;
+            }
+            const newText = text.replace("CLICK_HERE", Strings.DEFAULT_PROJECT_HTML_CLICK_HERE);
+            fs.writeFile(indexHtmlPath, newText, 'utf8', (writErr)=>{
+                if(writErr){
+                    console.error("Error translating default project index.html", writErr);
+                }
+            });
+        });
     }
     async function _setupExploreProject() {
         let exploreProjectPath = ProjectManager.getExploreProjectPath();
