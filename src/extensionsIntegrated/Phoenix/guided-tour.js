@@ -37,10 +37,10 @@ define(function (require, exports, module) {
 
     // All popup notifications will show immediately on boot, we don't want to interrupt user amidst his work
     // by showing it at a later point in time.
-    const BOOT_NOTIFICATION_DELAY = 10000, // 2 min
-        POWER_USER_SURVEY_TIME = 10000, // 10 seconds
+    const BOOT_DIALOG_DELAY = 2000,
         GENERAL_SURVEY_TIME = 600000, // 10 min
         ONE_MONTH_IN_DAYS = 30,
+        POWER_USER_SURVEY_INTERVAL_DAYS = 35,
         USAGE_COUNTS_KEY    = "healthDataUsage"; // private to phoenix, set from health data extension
 
     const userAlreadyDidAction = PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
@@ -198,12 +198,10 @@ define(function (require, exports, module) {
         nextShowDate.setUTCDate(nextShowDate.getUTCDate() + ONE_MONTH_IN_DAYS);
         let currentDate = new Date();
         if(!lastShownDate || currentDate >= nextShowDate){
-            setTimeout(()=>{
-                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star", 1);
-                _openStarsPopup();
-                userAlreadyDidAction.lastShownGithubStarsDate = Date.now();
-                PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-            }, BOOT_NOTIFICATION_DELAY);
+            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star", 1);
+            _openStarsPopup();
+            userAlreadyDidAction.lastShownGithubStarsDate = Date.now();
+            PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
         }
     }
 
@@ -241,33 +239,26 @@ define(function (require, exports, module) {
         return totalUsageDays >= 3 || (totalUsageMinutes/60) >= 8;
     }
 
-    function _openPowerUserSurvey() {
-        Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerShown", 1);
-        const templateVars = {
-            Strings: Strings,
-            surveyURL: "https://s.surveyplanet.com/2dgk0hbn"
-        };
-        Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
-    }
-
     function _showPowerUserSurvey() {
         if(_isPowerUser()) {
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
             let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
             let nextShowDate = new Date(lastShownDate);
-            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + ONE_MONTH_IN_DAYS);
+            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + POWER_USER_SURVEY_INTERVAL_DAYS);
             let currentDate = new Date();
             if(currentDate < nextShowDate){
                 return;
             }
             setTimeout(()=>{
-                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "powerSurvey", 1);
-                let $content = $(Strings.POWER_USER_POPUP_TEXT);
-                $content.find("a").click(_openPowerUserSurvey);
-                NotificationUI.createToastFromTemplate(Strings.POWER_USER_POPUP_TITLE, $content);
+                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerShown", 1);
+                const templateVars = {
+                    Strings: Strings,
+                    surveyURL: "https://s.surveyplanet.com/2dgk0hbn"
+                };
+                Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
                 userAlreadyDidAction.lastShownPowerSurveyDate = Date.now();
                 PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-            }, POWER_USER_SURVEY_TIME);
+            }, BOOT_DIALOG_DELAY);
         }
     }
 
