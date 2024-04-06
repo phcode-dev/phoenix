@@ -35,8 +35,9 @@ define(function (require, exports, module) {
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
-    const GITHUB_STARS_POPUP_TIME = 120000, // 2 min
-        // power user survey will show immediately, we don't want to interrupt user amidst his work.
+    // All popup notifications will show immediately on boot, we don't want to interrupt user amidst his work
+    // by showing it at a later point in time.
+    const BOOT_NOTIFICATION_DELAY = 10000, // 2 min
         POWER_USER_SURVEY_TIME = 10000, // 10 seconds
         GENERAL_SURVEY_TIME = 600000, // 10 min
         ONE_MONTH_IN_DAYS = 30,
@@ -186,6 +187,12 @@ define(function (require, exports, module) {
     }
 
     function _showRequestStarsPopup() {
+        if(Phoenix.firstBoot){
+            // on first boot we don't show the `enjoying phoenix?` popup as user needs more time to evaluate.
+            // GitHub stars/tweet situation isn't improving either. So we show this at the second launch so that we
+            // the users like the product to revisit and then, every 30 days.
+            return;
+        }
         let lastShownDate = userAlreadyDidAction.lastShownGithubStarsDate;
         let nextShowDate = new Date(lastShownDate);
         nextShowDate.setUTCDate(nextShowDate.getUTCDate() + ONE_MONTH_IN_DAYS);
@@ -196,7 +203,7 @@ define(function (require, exports, module) {
                 _openStarsPopup();
                 userAlreadyDidAction.lastShownGithubStarsDate = Date.now();
                 PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-            }, GITHUB_STARS_POPUP_TIME);
+            }, BOOT_NOTIFICATION_DELAY);
         }
     }
 
