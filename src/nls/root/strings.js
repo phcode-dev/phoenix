@@ -799,11 +799,11 @@ define({
 
     // extensions/default/HealthData
     "HEALTH_DATA_NOTIFICATION": "Health Report Preferences",
-    "HEALTH_FIRST_POPUP_TITLE": "{APP_NAME} Health Report",
+    "HEALTH_FIRST_POPUP_TITLE": "Privacy Notice",
     "HEALTH_DATA_DO_TRACK": "Share anonymous information on how I use {APP_NAME}",
     "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to guard your privacy. Anonymous data is exempt from GDPR/CCPA notification requirements, but we believe you need to have a choice to opt out of anonymous data collection as well.<br><br> You can see your data or <strong>choose not to share any anonymous data</strong> by selecting <strong>Help > Health Report</strong>. These <strong>anonymous</strong> app usage statistics and error reports helps prioritize features, find bugs, and spot usability issues for improving your experience with {APP_NAME}. Without this data, we would not know what features it is worth building for you! <br><br>",
     "HEALTH_DATA_PREVIEW": "{APP_NAME} Health Report",
-    "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to guard your privacy. Anonymous data is exempt from GDPR/CCPA notification requirements, but we believe you need to have a choice to opt out of anonymous data collection well.<br> These <strong>anonymous</strong> app usage statistics and error reports helps prioritize features, find bugs, and spot usability issues for your experience with {APP_NAME}.</p> <p>Below is a preview of the data that will be sent in your next Health Report <em>if</em> it is enabled. (Also see developer console for error logs marked 'Caught Critical error'.)</p>",
+    "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to guard your privacy. These <strong>anonymous</strong> app usage statistics and error reports helps prioritize features, find bugs, and spot usability issues for improving your experience with {APP_NAME}.</p> <p>Below is a preview of the data that will be sent in your next Health Report <em>if</em> it is enabled. (Also see developer console for error logs marked 'Caught Critical error'.)</p>",
 
     // extensions/default/InlineTimingFunctionEditor
     "INLINE_TIMING_EDITOR_TIME": "Time",
@@ -1132,8 +1132,6 @@ define({
     "GITHUB_STARS_POPUP": "<div>Your reviews keep our small team motivated to make <b>phcode.dev</b> even better.<br/>Please star us on GitHub:",
     "GITHUB_STARS_POPUP_TWITTER": "Give feedback or spread the word on Twitter:",
     "TEST_TRANSLATE": "use this to test translations",
-    "POWER_USER_POPUP_TITLE": "How can we make {APP_NAME} better for you?",
-    "POWER_USER_POPUP_TEXT": "<div>We would love to get your feedback. Your feedback helps us decide which features to build, and what improvements should be made to our platform. <br/><a>Please fill this short survey.</a></div>",
     //beautify extension
     "BEAUTIFY_ERROR": "Could not beautify code. Check Syntax.",
     "BEAUTIFY_ERROR_ORIGINAL_CHANGED": "Could not beautify. Editor text changed after beautification.",
