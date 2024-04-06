@@ -116,7 +116,8 @@ Generates a random nonce string of the specified length.
 
 ### Parameters
 
-*   `stringLength` **[number][3]** The length of the nonce in bytes.
+*   `stringLength` **[number][3]** The length of the nonce in bytes. default 10. (optional, default `10`)
+*   `prefix` **[string][1]?** optional prefix (optional, default `""`)
 
 Returns **[string][1]** The randomly generated nonce.
 
