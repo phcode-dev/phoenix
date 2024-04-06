@@ -33,11 +33,10 @@ define(function (require, exports, module) {
 
     const NEW_PROJECT_EXTENSION_INTERFACE = "Extn.Phoenix.newProject",
         // Since we don't have any user accounts or trackable ID to uniquely identify a user on first launch,
-        // we should be ok GDPR wise to delay showing the health data popup to 3 minutes after launch.
-        // The popup will show immediately if the user launches app again and, popup not shown before.
-        // This will also give time for the user to actually read the popup instead of having to dismiss a
-        // bunch of popups at startup.
-        POPUP_FIRST_LAUNCH_SHOW_DELAY = Phoenix.firstBoot ? 180000 : 5000;
+        // we should be ok GDPR wise to delay showing the health data popup. But it was found later to be annoying
+        // and a workflow distraction. So we show the health data popup almost immediately so that the user can
+        // close all the popups in on go.
+        POPUP_FIRST_LAUNCH_SHOW_DELAY = 5000;
 
     let newProjectExtension;
     ExtensionInterface.waitAndGetExtensionInterface(NEW_PROJECT_EXTENSION_INTERFACE)

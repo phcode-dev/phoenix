@@ -36,9 +36,10 @@ define(function (require, exports, module) {
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
     const GITHUB_STARS_POPUP_TIME = 120000, // 2 min
-        POWER_USER_SURVEY_TIME = 180000, // 3 min
+        // power user survey will show immediately, we don't want to interrupt user amidst his work.
+        POWER_USER_SURVEY_TIME = 10000, // 10 seconds
         GENERAL_SURVEY_TIME = 600000, // 10 min
-        TWO_WEEKS_IN_DAYS = 14,
+        ONE_MONTH_IN_DAYS = 30,
         USAGE_COUNTS_KEY    = "healthDataUsage"; // private to phoenix, set from health data extension
 
     const userAlreadyDidAction = PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
@@ -187,7 +188,7 @@ define(function (require, exports, module) {
     function _showRequestStarsPopup() {
         let lastShownDate = userAlreadyDidAction.lastShownGithubStarsDate;
         let nextShowDate = new Date(lastShownDate);
-        nextShowDate.setUTCDate(nextShowDate.getUTCDate() + TWO_WEEKS_IN_DAYS);
+        nextShowDate.setUTCDate(nextShowDate.getUTCDate() + ONE_MONTH_IN_DAYS);
         let currentDate = new Date();
         if(!lastShownDate || currentDate >= nextShowDate){
             setTimeout(()=>{
@@ -247,7 +248,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
             let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
             let nextShowDate = new Date(lastShownDate);
-            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + TWO_WEEKS_IN_DAYS);
+            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + ONE_MONTH_IN_DAYS);
             let currentDate = new Date();
             if(currentDate < nextShowDate){
                 return;
