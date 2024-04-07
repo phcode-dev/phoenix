@@ -21,7 +21,7 @@
 
 // jshint ignore: start
 /*jslint regexp: true */
-/*globals logger, Phoenix*/
+/*globals logger, Phoenix, path*/
 
 define(function (require, exports, module) {
 
@@ -152,7 +152,30 @@ define(function (require, exports, module) {
      * JSLint workaround for circular dependency
      * @type {function}
      */
-    var handleFileSaveAs;
+    let handleFileSaveAs;
+
+    // these are files that should be treated separately in metrics for open files.
+    const DEFAULT_PROJECT_FILES = {
+        "index.html": true,
+        "Newly_added_features.md": true,
+        "styles.css": true,
+        "script.js": true
+    };
+
+    const METRIC_FILE_SAVE = "fileSave",
+        METRIC_FILE_OPEN = "fileOpen",
+        METRIC_FILE_CLOSE = "fileClose",
+        METRIC_FILE_OPEN_WS = "fileAddWorkingSet";
+    function _dpIfDefaultProjectEvent(eventCategory, filePath) {
+        const projectRootPath = ProjectManager.getProjectRoot().fullPath;
+        if(filePath && filePath.startsWith(projectRootPath)){
+            const relativePath = path.relative(projectRootPath, filePath);
+            if(DEFAULT_PROJECT_FILES[relativePath] || relativePath.startsWith("images")){
+                return `${eventCategory}.D`;
+            }
+        }
+        return `${eventCategory}.+`;
+    }
 
     /**
      * For analytics. Whenever a file is opened call this function. The function will record the number of times
@@ -164,11 +187,14 @@ define(function (require, exports, module) {
     function _fileOpened(filePath, addedToWorkingSet, encoding) {
         let language = LanguageManager.getLanguageForPath(filePath);
 
-        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileEncoding", encoding || 'UTF-8');
+        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR,
+            _dpIfDefaultProjectEvent("fileEncoding", filePath), encoding || 'UTF-8');
         if(addedToWorkingSet){
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileAddToWorkingSet", language._name.toLowerCase());
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR,
+                _dpIfDefaultProjectEvent(METRIC_FILE_OPEN_WS, filePath), language._name.toLowerCase());
         } else {
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileOpen", language._name.toLowerCase());
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR,
+                _dpIfDefaultProjectEvent(METRIC_FILE_OPEN, filePath), language._name.toLowerCase());
         }
     }
 
@@ -176,21 +202,22 @@ define(function (require, exports, module) {
      * For analytics. Whenever a file is saved call this function.
      * The function will send the analytics Data
      * We only log the standard filetypes and fileSize
-     * @param {String} filePath The path of the file to be registered
+     * @param {Document} docToSave The path of the file to be registered
      */
     function _fileSavedMetrics(docToSave) {
         if (!docToSave) {
             return;
         }
         let fileType = docToSave.language ? docToSave.language._name : "";
-        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileSave", fileType);
+        Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR,
+            _dpIfDefaultProjectEvent(METRIC_FILE_SAVE, docToSave.file && docToSave.file.fullPath), fileType);
     }
 
     /**
      * For analytics. Whenever a file is closed call this function.
      * The function will send the analytics Data.
      * We only log the standard filetypes and fileSize
-     * @param {String} filePath The path of the file to be registered
+     * @param {File} file The path of the file to be registered
      */
     function _fileClosed(file) {
         if (!file) {
@@ -232,7 +259,8 @@ define(function (require, exports, module) {
                 }
             }
 
-            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "fileClose",
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR,
+                _dpIfDefaultProjectEvent(METRIC_FILE_CLOSE, file.fullPath),
                 `${language._name.toLowerCase()}.${subType}`);
         }
 
