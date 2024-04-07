@@ -99,6 +99,10 @@ define(function (require, exports, module) {
         $safariButton,
         $edgeButton,
         $firefoxButton,
+        $chromeButtonBallast,
+        $safariButtonBallast,
+        $edgeButtonBallast,
+        $firefoxButtonBallast,
         $panelTitle;
 
     StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
@@ -322,10 +326,20 @@ define(function (require, exports, module) {
         }
         // only in desktop builds we show open with browser icons
         $chromeButton.removeClass("forced-hidden");
+        $chromeButtonBallast.removeClass("forced-hidden");
+        $chromeButtonBallast.addClass("forced-inVisible");
+
         $edgeButton.removeClass("forced-hidden");
+        $edgeButtonBallast.removeClass("forced-hidden");
+        $edgeButtonBallast.addClass("forced-inVisible");
+
         $firefoxButton.removeClass("forced-hidden");
+        $firefoxButtonBallast.removeClass("forced-hidden");
+        $firefoxButtonBallast.addClass("forced-inVisible");
         if (brackets.platform === "mac") {
             $safariButton.removeClass("forced-hidden");
+            $safariButtonBallast.removeClass("forced-hidden");
+            $safariButtonBallast.addClass("forced-inVisible");
         }
     }
 
@@ -356,6 +370,11 @@ define(function (require, exports, module) {
         $safariButton = $panel.find("#safariButton");
         $edgeButton = $panel.find("#edgeButton");
         $firefoxButton = $panel.find("#firefoxButton");
+        // ok i dont know enough CSS to do this without these Ballast/ this works for the limited dev time I have.
+        $chromeButtonBallast = $panel.find("#chromeButtonBallast");
+        $safariButtonBallast = $panel.find("#safariButtonBallast");
+        $edgeButtonBallast = $panel.find("#edgeButtonBallast");
+        $firefoxButtonBallast = $panel.find("#firefoxButtonBallast");
         $panelTitle = $panel.find("#panel-live-preview-title");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);

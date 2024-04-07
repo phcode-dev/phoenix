@@ -1,15 +1,27 @@
 <div id="panel-live-preview">
     <div id="live-preview-plugin-toolbar" class="plugin-toolbar" title="Live Preview" style="display: flex; align-items: center; flex-direction: row;">
-        <div style="width: 33%;display: flex;">
+        <div style="width: 20%;display: flex;">
             <button id="reloadLivePreviewButton" title="{{clickToReload}}" class="btn-alt-quiet toolbar-button reload-icon"></button>
             <button id="highlightLPButton" title="{{toggleLiveHighlight}}" class="btn-alt-quiet toolbar-button pointer-fill-icon"></button>
         </div>
-        <div style="width: fit-content;min-width: 33%;display: flex;justify-content: center; align-items: center;">
+        <div style="width: fit-content;min-width: 60%;display: flex;justify-content: center; align-items: center;">
+<!--            these are buttons that are always invisible to help central align the panel title-->
+            <button id="safariButtonBallast" title="{{openInSafari}}" class="btn-alt-quiet toolbar-button live-preview-browser-btn forced-hidden">
+                <img src="thirdparty/devicon/icons/safari/safari-original.svg" />
+            </button>
+            <button id="chromeButtonBallast" title="{{openInChrome}}" class="btn-alt-quiet toolbar-button live-preview-browser-btn forced-hidden">
+                <img src="thirdparty/devicon/icons/chrome/chrome-original.svg" />
+            </button>
+            <button id="edgeButtonBallast" title="{{openInEdge}}" class="btn-alt-quiet toolbar-button live-preview-browser-btn forced-hidden">
+                <img src="styles/images/edge-logo.svg" />
+            </button>
+            <button id="firefoxButtonBallast" title="{{openInFirefox}}" class="btn-alt-quiet toolbar-button live-preview-browser-btn forced-hidden">
+                <img src="thirdparty/devicon/icons/firefox/firefox-original.svg" />
+            </button>
+<!--            these are buttons that are always invisible to help central align the panel title-->
             <button id="pinURLButton" title="{{clickToPinUnpin}}" class="btn-alt-quiet toolbar-button unpin-icon"></button>
             <span id="panel-live-preview-title">{{livePreview}}</span>
             <button id="livePreviewPopoutButton" title="{{clickToPopout}}" class="btn-alt-quiet toolbar-button open-icon"></button>
-        </div>
-        <div style="width: 33%;display: flex;align-items: center;">
             <button id="safariButton" title="{{openInSafari}}" class="btn-alt-quiet toolbar-button live-preview-browser-btn forced-hidden">
                 <img src="thirdparty/devicon/icons/safari/safari-original.svg" />
             </button>
@@ -22,6 +34,8 @@
             <button id="firefoxButton" title="{{openInFirefox}}" class="btn-alt-quiet toolbar-button live-preview-browser-btn forced-hidden">
                 <img src="thirdparty/devicon/icons/firefox/firefox-original.svg" />
             </button>
+        </div>
+        <div style="width: 20%;display: flex;align-items: center;">
         </div>
         <iframe id="live-preview-server-iframe"
                 title="live preview server"
