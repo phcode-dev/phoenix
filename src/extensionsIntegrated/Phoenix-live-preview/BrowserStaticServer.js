@@ -37,6 +37,7 @@ define(function (require, exports, module) {
         CommandManager     = require("command/CommandManager"),
         Commands           = require("command/Commands"),
         EventManager = require("utils/EventManager"),
+        LivePreviewSettings  = require("./LivePreviewSettings"),
         ProjectManager = require("project/ProjectManager"),
         Strings = require("strings"),
         utils = require('./utils'),
@@ -151,7 +152,30 @@ define(function (require, exports, module) {
                     if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
                         httpFilePath = fullPath;
                     }
-                    if(utils.isPreviewableFile(fullPath)){
+                    const customServer = LivePreviewSettings.getCustomServerConfig();
+                    let customServeURL, relativePath;
+                    if(customServer && ProjectManager.isWithinProject(fullPath) && !httpFilePath){
+                        relativePath = path.relative(projectRoot, fullPath);
+                        if(customServer.pathInProject === "") { // root
+                            customServeURL = `${customServer.serverURL}${relativePath}`;
+                        } else if(relativePath.startsWith(customServer.pathInProject)){ // eg www/
+                            customServeURL = `${customServer.serverURL}${relativePath.replace(
+                                customServer.pathInProject, ""
+                            )}`; // www/design/index.html -> http://localhost:8000/design/index.html
+                        }
+                    }
+                    if(customServeURL &&
+                        (utils.isServerRenderedFile(fullPath) || utils.isHTMLFile(fullPath) || utils.isPDF(fullPath))){
+                        resolve({
+                            URL: customServeURL,
+                            filePath: relativePath,
+                            fullPath: fullPath,
+                            isMarkdownFile: utils.isMarkdownFile(fullPath),
+                            isHTMLFile: utils.isHTMLFile(fullPath),
+                            isCustomServer: true
+                        });
+                        return;
+                    } else if(utils.isPreviewableFile(fullPath)){
                         const filePath = httpFilePath || path.relative(projectRoot, fullPath);
                         let URL = httpFilePath || `${projectRootUrl}${filePath}`;
                         resolve({
