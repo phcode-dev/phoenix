@@ -316,6 +316,7 @@ define(function (require, exports, module) {
     exports.STATE_PROJECT_CONTEXT = StateManager.PROJECT_CONTEXT;
     exports.STATE_GLOBAL_CONTEXT = StateManager.GLOBAL_CONTEXT;
     exports.STATE_PROJECT_THEN_GLOBAL_CONTEXT = StateManager.PROJECT_THEN_GLOBAL_CONTEXT;
+    exports.PROJECT_SCOPE = { location: { scope: "project" } };
 
     exports.ready               = PreferencesImpl.managerReady;
     exports.getUserPrefFile     = getUserPrefFile;

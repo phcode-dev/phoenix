@@ -10,8 +10,10 @@
             <label id="serveRootLabel" class="forced-hidden">{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT}}</label>
             <input id="serveRoot" type="text" spellcheck="false" autocomplete="off" class="forced-hidden" style="width: 97%"
                    value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_HELP}}">
+            <input id="reloadOnSaveChk" type="checkbox" class="form-check-input forced-hidden" style="margin-top: -2px;">
+            <label id="reloadOnSaveLabel" class="form-check-label forced-hidden" for="reloadOnSaveChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_RELOAD}}</label>
         </div>
-        <div class="form-group form-check">
+        <div class="form-group form-check" style="margin-top: 10px;">
             <input type="checkbox" class="form-check-input" id="showLivePreviewAtStartupChk" style="margin-top: -2px;">
             <label class="form-check-label" for="showLivePreviewAtStartupChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_STARTUP}}</label>
         </div>

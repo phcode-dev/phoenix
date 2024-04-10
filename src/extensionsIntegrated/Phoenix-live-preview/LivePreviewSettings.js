@@ -46,12 +46,28 @@ define(function (require, exports, module) {
         PreferencesManager = require("preferences/PreferencesManager"),
         Mustache            = require("thirdparty/mustache/mustache");
 
-    const PREFERENCE_SHOW_LIVE_PREVIEW_PANEL = "showLivePreviewAtStartup",
-        PREFERENCE_PROJECT_SERVER_URL = "projectLiveServerURL",
-        PREFERENCE_PROJECT_SERVER_PATH = "projectLiveServerPath";
+    const PREFERENCE_SHOW_LIVE_PREVIEW_PANEL = "livePreviewShowAtStartup",
+        PREFERENCE_PROJECT_SERVER_URL = "livePreviewServerURL",
+        PREFERENCE_PROJECT_SERVER_PATH = "livePreviewServerProjectPath",
+        PREFERENCE_PROJECT_PREVIEW_RELOAD = "livePreviewReloadOnSave";
     PreferencesManager.definePreference(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, "boolean", true, {
         description: Strings.LIVE_DEV_SETTINGS_STARTUP
     });
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_PREVIEW_RELOAD, "boolean", true, {
+        description: Strings.LIVE_DEV_SETTINGS_RELOAD_ON_SAVE
+    });
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_URL, "string", "", {
+        description: Strings.LIVE_DEV_SETTINGS_SERVE_PREFERENCE
+    });
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_PATH, "", true, {
+        description: Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_PREF
+    });
+
+    function _saveProjectPreferences(liveServerURL, serveRoot, reloadOnSave) {
+        PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, liveServerURL, PreferencesManager.PROJECT_SCOPE);
+        PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, serveRoot, PreferencesManager.PROJECT_SCOPE);
+        PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_RELOAD, reloadOnSave, PreferencesManager.PROJECT_SCOPE);
+    }
 
     function showSettingsDialog() {
         const currentSettings = {};
@@ -63,31 +79,33 @@ define(function (require, exports, module) {
         const $showLivePreviewAtStartup = $template.find("#showLivePreviewAtStartupChk");
         const $serveRoot = $template.find("#serveRoot");
         const $serveRootLabel = $template.find("#serveRootLabel");
+        const $reloadOnSaveChk = $template.find("#reloadOnSaveChk");
+        const $reloadOnSaveLabel = $template.find("#reloadOnSaveLabel");
         $showLivePreviewAtStartup.prop('checked', PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL));
+        $reloadOnSaveChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_RELOAD));
 
         function refreshValues() {
             if($livePreviewServerURL.val()){
                 $serveRoot.removeClass("forced-hidden");
                 $serveRootLabel.removeClass("forced-hidden");
+                $reloadOnSaveChk.removeClass("forced-hidden");
+                $reloadOnSaveLabel.removeClass("forced-hidden");
             } else {
                 $serveRoot.addClass("forced-hidden");
                 $serveRootLabel.addClass("forced-hidden");
+                $reloadOnSaveChk.addClass("forced-hidden");
+                $reloadOnSaveLabel.addClass("forced-hidden");
             }
         }
 
         $livePreviewServerURL.on("input", refreshValues);
-        $livePreviewServerURL.val(PreferencesManager.getViewState(PREFERENCE_PROJECT_SERVER_URL,
-            PreferencesManager.STATE_PROJECT_CONTEXT));
-        $serveRoot.val(PreferencesManager.getViewState(PREFERENCE_PROJECT_SERVER_PATH,
-            PreferencesManager.STATE_PROJECT_CONTEXT));
+        $livePreviewServerURL.val(PreferencesManager.get(PREFERENCE_PROJECT_SERVER_URL));
+        $serveRoot.val(PreferencesManager.get(PREFERENCE_PROJECT_SERVER_PATH));
         refreshValues();
         Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
             if (id === "save") {
                 PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
-                PreferencesManager.setViewState(PREFERENCE_PROJECT_SERVER_URL, $livePreviewServerURL.val(),
-                    PreferencesManager.STATE_PROJECT_CONTEXT);
-                PreferencesManager.setViewState(PREFERENCE_PROJECT_SERVER_PATH, $serveRoot.val(),
-                    PreferencesManager.STATE_PROJECT_CONTEXT);
+                _saveProjectPreferences($livePreviewServerURL.val(), $serveRoot.val(), $reloadOnSaveChk.is(":checked"));
             }
         });
     }
