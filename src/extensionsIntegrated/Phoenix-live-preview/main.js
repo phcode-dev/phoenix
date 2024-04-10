@@ -590,6 +590,13 @@ define(function (require, exports, module) {
         }
     }
 
+    function _showSettingsDialog() {
+        LivePreviewSettings.showSettingsDialog()
+            .then(()=>{
+                _loadPreview();
+            });
+    }
+
     AppInit.appReady(function () {
         if(Phoenix.isSpecRunnerWindow){
             return;
@@ -607,7 +614,7 @@ define(function (require, exports, module) {
             _toggleVisibilityOnClick();
         });
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW_SETTINGS,
-            Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, LivePreviewSettings.showSettingsDialog);
+            Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, _showSettingsDialog);
         let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "", Menus.AFTER, Commands.FILE_EXTENSION_MANAGER);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, "",

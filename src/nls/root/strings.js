@@ -159,7 +159,7 @@ define({
     "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true to enable custom development server",
     "LIVE_DEV_SETTINGS_STARTUP_PREFERENCE": "true to show Live Preview Panel at startup",
     "LIVE_DEV_SETTINGS_RELOAD_ON_SAVE_PREFERENCE": "true to reload Live Preview on save",
-    "LIVE_DEV_SETTINGS_USE_SERVER": "Use Custom Development Server for Project",
+    "LIVE_DEV_SETTINGS_USE_SERVER": "Use Custom Development Server for This Project",
     "LIVE_DEV_SETTINGS_SERVE_PREFERENCE": "Your Development Server URL for the project, Eg. http://localhost:8000/php",
     "LIVE_DEV_SETTINGS_SERVER_INBUILT": "Eg. http://localhost:8000/php - Currently using built-in Server.",
     "LIVE_DEV_SETTINGS_SERVER_ROOT": "Serving Folder in Project",

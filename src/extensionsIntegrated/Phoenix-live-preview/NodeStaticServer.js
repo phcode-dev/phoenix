@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         Mustache = require("thirdparty/mustache/mustache"),
         FileSystem = require("filesystem/FileSystem"),
         EventDispatcher = require("utils/EventDispatcher"),
+        LivePreviewSettings  = require("./LivePreviewSettings"),
         ProjectManager = require("project/ProjectManager"),
         EventManager = require("utils/EventManager"),
         CommandManager     = require("command/CommandManager"),
@@ -646,7 +647,30 @@ define(function (require, exports, module) {
                 if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
                     httpFilePath = fullPath;
                 }
-                if(utils.isPreviewableFile(fullPath)){
+                const customServer = LivePreviewSettings.getCustomServerConfig();
+                let customServeURL, relativePath;
+                if(customServer && ProjectManager.isWithinProject(fullPath) && !httpFilePath){
+                    relativePath = path.relative(projectRoot, fullPath);
+                    if(customServer.pathInProject === "") { // root
+                        customServeURL = `${customServer.serverURL}${relativePath}`;
+                    } else if(relativePath.startsWith(customServer.pathInProject)){ // eg www/
+                        customServeURL = `${customServer.serverURL}${relativePath.replace(
+                            customServer.pathInProject, ""
+                        )}`; // www/design/index.html -> http://localhost:8000/design/index.html
+                    }
+                }
+                if(customServeURL &&
+                    (utils.isServerRenderedFile(fullPath) || utils.isHTMLFile(fullPath) || utils.isPDF(fullPath))){
+                    resolve({
+                        URL: customServeURL,
+                        filePath: relativePath,
+                        fullPath: fullPath,
+                        isMarkdownFile: utils.isMarkdownFile(fullPath),
+                        isHTMLFile: utils.isHTMLFile(fullPath),
+                        isCustomServer: true
+                    });
+                    return;
+                } else if(utils.isPreviewableFile(fullPath)){
                     const relativeFilePath = httpFilePath || path.relative(projectRoot, fullPath);
                     let URL = httpFilePath || decodeURI(_staticServerInstance.pathToUrl(fullPath));
                     resolve({

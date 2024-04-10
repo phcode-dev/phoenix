@@ -63,7 +63,7 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_URL, "string", "", {
         description: Strings.LIVE_DEV_SETTINGS_SERVE_PREFERENCE
     });
-    PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_PATH, "string", "", {
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_PATH, "string", "/", {
         description: Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_PREF
     });
 
@@ -75,52 +75,55 @@ define(function (require, exports, module) {
     }
 
     function showSettingsDialog() {
-        const currentSettings = {};
-        const $template       = $(Mustache.render(`${livePreviewSettings}`,
-            {"settings": currentSettings, "Strings": Strings}));
+        return new Promise(resolve=>{
+            const currentSettings = {};
+            const $template       = $(Mustache.render(`${livePreviewSettings}`,
+                {"settings": currentSettings, "Strings": Strings}));
 
-        // Select the correct theme.
-        const $livePreviewServerURL = $template.find("#livePreviewServerURL"),
-            $enableCustomServerChk = $template.find("#enableCustomServerChk"),
-            $showLivePreviewAtStartup = $template.find("#showLivePreviewAtStartupChk"),
-            $serveRoot = $template.find("#serveRoot"),
-            $serveRootLabel = $template.find("#serveRootLabel"),
-            $reloadOnSaveChk = $template.find("#reloadOnSaveChk"),
-            $reloadOnSaveLabel = $template.find("#reloadOnSaveLabel");
-        $enableCustomServerChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED));
-        $showLivePreviewAtStartup.prop('checked', PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL));
-        $reloadOnSaveChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_RELOAD));
+            // Select the correct theme.
+            const $livePreviewServerURL = $template.find("#livePreviewServerURL"),
+                $enableCustomServerChk = $template.find("#enableCustomServerChk"),
+                $showLivePreviewAtStartup = $template.find("#showLivePreviewAtStartupChk"),
+                $serveRoot = $template.find("#serveRoot"),
+                $serveRootLabel = $template.find("#serveRootLabel"),
+                $reloadOnSaveChk = $template.find("#reloadOnSaveChk"),
+                $reloadOnSaveLabel = $template.find("#reloadOnSaveLabel");
+            $enableCustomServerChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED));
+            $showLivePreviewAtStartup.prop('checked', PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL));
+            $reloadOnSaveChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_RELOAD));
 
-        function refreshValues() {
-            if($enableCustomServerChk.is(":checked")){
-                $livePreviewServerURL.prop("disabled", false);
-            } else {
-                $livePreviewServerURL.prop("disabled", true);
+            function refreshValues() {
+                if($enableCustomServerChk.is(":checked")){
+                    $livePreviewServerURL.prop("disabled", false);
+                } else {
+                    $livePreviewServerURL.prop("disabled", true);
+                }
+                if($enableCustomServerChk.is(":checked") && $livePreviewServerURL.val()){
+                    $serveRoot.removeClass("forced-hidden");
+                    $serveRootLabel.removeClass("forced-hidden");
+                    $reloadOnSaveChk.removeClass("forced-hidden");
+                    $reloadOnSaveLabel.removeClass("forced-hidden");
+                } else {
+                    $serveRoot.addClass("forced-hidden");
+                    $serveRootLabel.addClass("forced-hidden");
+                    $reloadOnSaveChk.addClass("forced-hidden");
+                    $reloadOnSaveLabel.addClass("forced-hidden");
+                }
             }
-            if($enableCustomServerChk.is(":checked") && $livePreviewServerURL.val()){
-                $serveRoot.removeClass("forced-hidden");
-                $serveRootLabel.removeClass("forced-hidden");
-                $reloadOnSaveChk.removeClass("forced-hidden");
-                $reloadOnSaveLabel.removeClass("forced-hidden");
-            } else {
-                $serveRoot.addClass("forced-hidden");
-                $serveRootLabel.addClass("forced-hidden");
-                $reloadOnSaveChk.addClass("forced-hidden");
-                $reloadOnSaveLabel.addClass("forced-hidden");
-            }
-        }
 
-        $livePreviewServerURL.on("input", refreshValues);
-        $enableCustomServerChk.on("change", refreshValues);
-        $livePreviewServerURL.val(PreferencesManager.get(PREFERENCE_PROJECT_SERVER_URL));
-        $serveRoot.val(PreferencesManager.get(PREFERENCE_PROJECT_SERVER_PATH));
-        refreshValues();
-        Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
-            if (id === "save") {
-                PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
-                _saveProjectPreferences($enableCustomServerChk.is(":checked"), $livePreviewServerURL.val(),
-                    $serveRoot.val(), $reloadOnSaveChk.is(":checked"));
-            }
+            $livePreviewServerURL.on("input", refreshValues);
+            $enableCustomServerChk.on("change", refreshValues);
+            $livePreviewServerURL.val(PreferencesManager.get(PREFERENCE_PROJECT_SERVER_URL));
+            $serveRoot.val(PreferencesManager.get(PREFERENCE_PROJECT_SERVER_PATH));
+            refreshValues();
+            Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
+                if (id === "save") {
+                    PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
+                    _saveProjectPreferences($enableCustomServerChk.is(":checked"), $livePreviewServerURL.val(),
+                        $serveRoot.val(), $reloadOnSaveChk.is(":checked"));
+                }
+                resolve();
+            });
         });
     }
 
@@ -128,6 +131,32 @@ define(function (require, exports, module) {
         return PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL);
     }
 
+    function getCustomServerConfig() {
+        if(!PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED) ||
+            !PreferencesManager.get(PREFERENCE_PROJECT_SERVER_URL)){
+            return null;
+        }
+        let url = PreferencesManager.get(PREFERENCE_PROJECT_SERVER_URL);
+        if(!url.endsWith("/")){
+            url = `${url}/`;
+        }
+        let path = PreferencesManager.get(PREFERENCE_PROJECT_SERVER_PATH) || "/";
+        if(!path){
+            path = "/";
+        }
+        if(!path.endsWith("/")){
+            path = `${path}/`; // www -> www/ and /www -> /www/
+        }
+        if(path.startsWith("/")){
+            path = path.substring(1); // / -> "" , www/ -> www/ and /www -> www/
+        }
+        return {
+            serverURL: url, // guaranteed to end with a slash
+            pathInProject: path // guaranteed to not start with a /, but always ends with a / if there
+        };
+    }
+
     exports.showSettingsDialog = showSettingsDialog;
+    exports.getCustomServerConfig = getCustomServerConfig;
     exports.shouldShowLivePreviewAtStartup = shouldShowLivePreviewAtStartup;
 });
