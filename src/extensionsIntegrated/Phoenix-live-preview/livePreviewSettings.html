@@ -1,0 +1,23 @@
+<div class="live-preview-settings modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.LIVE_DEV_SETTINGS_TITLE}}</h1>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label">{{Strings.LIVE_DEV_SETTINGS_SERVER}}</label>
+            <input id="livePreviewServerURL" type="text" spellcheck="false" autocomplete="off" style="width: 97%"
+                   value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_INBUILT}}">
+            <label id="serveRootLabel" class="forced-hidden">{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT}}</label>
+            <input id="serveRoot" type="text" spellcheck="false" autocomplete="off" class="forced-hidden" style="width: 97%"
+                   value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_HELP}}">
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="showLivePreviewAtStartupChk" style="margin-top: -2px;">
+            <label class="form-check-label" for="showLivePreviewAtStartupChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_STARTUP}}</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="dialog-button btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
+        <button class="dialog-button btn primary" id="theme-settings-done-btn" data-button-id="save">{{Strings.DONE}}</button>
+    </div>
+</div>

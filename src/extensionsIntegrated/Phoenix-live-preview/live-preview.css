@@ -73,6 +73,30 @@
     background: url("./images/sprites.svg#pointer-fill-icon") center no-repeat;
 }
 
+#live-preview-plugin-toolbar:hover .lp-settings-icon {
+    display: flex;
+    align-items: center;
+    color: #a0a0a0;
+    opacity: 1;
+    visibility: visible;
+    transition: unset;
+}
+
+.live-preview-settings input.error, .live-preview-settings input:focus.error{
+    border-color: #f74687;
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.lp-settings-icon {
+    opacity: 0;
+    color: #a0a0a0;
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+    transition: opacity 1s, visibility 0s linear 1s; /* Fade-out effect */
+}
+
 .pointer-icon {
     background: url("./images/sprites.svg#pointer-icon") center no-repeat;
 }

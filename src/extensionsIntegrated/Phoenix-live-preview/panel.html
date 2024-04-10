@@ -1,5 +1,5 @@
 <div id="panel-live-preview">
-    <div id="live-preview-plugin-toolbar" class="plugin-toolbar" title="Live Preview" style="display: flex; align-items: center; flex-direction: row;">
+    <div id="live-preview-plugin-toolbar" class="plugin-toolbar" style="display: flex; align-items: center; flex-direction: row;">
         <div style="width: 20%;display: flex;">
             <button id="reloadLivePreviewButton" title="{{clickToReload}}" class="btn-alt-quiet toolbar-button reload-icon"></button>
             <button id="highlightLPButton" title="{{toggleLiveHighlight}}" class="btn-alt-quiet toolbar-button pointer-fill-icon"></button>
@@ -35,7 +35,9 @@
                 <img src="thirdparty/devicon/icons/firefox/firefox-original.svg" />
             </button>
         </div>
-        <div style="width: 20%;display: flex;align-items: center;">
+        <div style="width: 20%;display: flex;align-items: center; justify-content: flex-end">
+            <button id="livePreviewSettingsBtn" title="{{livePreviewSettings}}"
+                    class="btn-alt-quiet toolbar-button lp-settings-icon"><i class="fa-solid fa-gear"></i></button>
         </div>
         <iframe id="live-preview-server-iframe"
                 title="live preview server"
