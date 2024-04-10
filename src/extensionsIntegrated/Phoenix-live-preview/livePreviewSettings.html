@@ -1,24 +1,27 @@
-<div class="live-preview-settings modal">
-    <div class="modal-header">
-        <h1 class="dialog-title">{{Strings.LIVE_DEV_SETTINGS_TITLE}}</h1>
-    </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label class="control-label">{{Strings.LIVE_DEV_SETTINGS_SERVER}}</label>
-            <input id="livePreviewServerURL" type="text" spellcheck="false" autocomplete="off" style="width: 97%"
-                   value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_INBUILT}}">
-            <label id="serveRootLabel" class="forced-hidden">{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT}}</label>
-            <input id="serveRoot" type="text" spellcheck="false" autocomplete="off" class="forced-hidden" style="width: 97%"
-                   value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_HELP}}">
-            <input id="reloadOnSaveChk" type="checkbox" class="form-check-input forced-hidden" style="margin-top: -2px;">
-            <label id="reloadOnSaveLabel" class="form-check-label forced-hidden" for="reloadOnSaveChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_RELOAD}}</label>
+<div class="live-preview-settings modal" style="min-height: 400px;display: flex; flex-direction: column; justify-content: space-between">
+    <div>
+        <div class="modal-header">
+            <h1 class="dialog-title">{{Strings.LIVE_DEV_SETTINGS_TITLE}}</h1>
         </div>
-        <div class="form-group form-check" style="margin-top: 10px;">
-            <input type="checkbox" class="form-check-input" id="showLivePreviewAtStartupChk" style="margin-top: -2px;">
-            <label class="form-check-label" for="showLivePreviewAtStartupChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_STARTUP}}</label>
+        <div class="modal-body">
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="showLivePreviewAtStartupChk" style="margin-top: -2px;">
+                <label class="form-check-label" for="showLivePreviewAtStartupChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_STARTUP}}</label>
+            </div>
+            <div class="form-group" style="margin-top: 9px;">
+                <input id="enableCustomServerChk" type="checkbox" class="form-check-input" style="margin-top: -1px;">
+                <label id="enableCustomServerLabel" class="form-check-label" for="enableCustomServerChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_USE_SERVER}}</label>
+                <input id="livePreviewServerURL" type="text" spellcheck="false" autocomplete="off" class=""
+                       style="width: 93%; margin-left: 20px;margin-top: 5px;margin-bottom: 0;" value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_INBUILT}}">
+                <label id="serveRootLabel" class="forced-hidden" style="margin-left: 20px;margin-top: 9px;">{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT}}</label>
+                <input id="serveRoot" type="text" spellcheck="false" autocomplete="off" class="forced-hidden" style="width: 93%; margin-left: 20px;"
+                       value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_HELP}}">
+                <input id="reloadOnSaveChk" type="checkbox" class="form-check-input forced-hidden" style="margin-top: -2px; margin-left: 20px;">
+                <label id="reloadOnSaveLabel" class="form-check-label forced-hidden" for="reloadOnSaveChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_RELOAD}}</label>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" style="">
         <button class="dialog-button btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
         <button class="dialog-button btn primary" id="theme-settings-done-btn" data-button-id="save">{{Strings.DONE}}</button>
     </div>
