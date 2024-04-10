@@ -62,6 +62,7 @@ define(function (require, exports, module) {
         FileSystem          = require("filesystem/FileSystem"),
         BrowserStaticServer  = require("./BrowserStaticServer"),
         NodeStaticServer  = require("./NodeStaticServer"),
+        LivePreviewSettings  = require("./LivePreviewSettings"),
         NodeUtils = require("utils/NodeUtils"),
         TrustProjectHTML    = require("text!./trust-project.html"),
         panelHTML       = require("text!./panel.html"),
@@ -89,6 +90,7 @@ define(function (require, exports, module) {
 
     // jQuery objects
     let $icon,
+        $settingsIcon,
         $iframe,
         $panel,
         $pinUrlBtn,
@@ -224,10 +226,10 @@ define(function (require, exports, module) {
         $iframe = newIframe;
     }
 
-    let panelShownOnce = false;
+    let panelShownAtStartup;
     function _setPanelVisibility(isVisible) {
         if (isVisible) {
-            panelShownOnce = true;
+            panelShownAtStartup = true;
             $icon.toggleClass("active");
             panel.show();
             _loadPreview(true);
@@ -349,6 +351,7 @@ define(function (require, exports, module) {
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
             toggleLiveHighlight: Strings.LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT,
+            livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
             openInChrome: Strings.LIVE_DEV_OPEN_CHROME,
             openInSafari: Strings.LIVE_DEV_OPEN_SAFARI,
@@ -376,6 +379,7 @@ define(function (require, exports, module) {
         $edgeButtonBallast = $panel.find("#edgeButtonBallast");
         $firefoxButtonBallast = $panel.find("#firefoxButtonBallast");
         $panelTitle = $panel.find("#panel-live-preview-title");
+        $settingsIcon = $panel.find("#livePreviewSettingsBtn");
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
@@ -401,6 +405,10 @@ define(function (require, exports, module) {
             _popoutLivePreview("firefox");
         });
         _showOpenBrowserIcons();
+        $settingsIcon.click(()=>{
+            CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtn", "click");
+        });
 
         const popoutSupported = Phoenix.browser.isTauri
             || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
@@ -497,12 +505,14 @@ define(function (require, exports, module) {
         }
     }
 
-    function _openReadmeMDIfFirstTime() {
+    function _openReadmeMDIfFirstTime(reload) {
+        reload && _loadPreview(reload);
         if(!_isProjectReadmePreviewdOnce() && !Phoenix.isTestWindow){
             const readmePath = `${ProjectManager.getProjectRoot().fullPath}README.md`;
             const fileEntry = FileSystem.getFileForPath(readmePath);
             fileEntry.exists(function (err, exists) {
                 if (!err && exists) {
+                    _setPanelVisibility(true);
                     CommandManager.execute(Commands.FILE_ADD_TO_WORKING_SET, {fullPath: readmePath});
                     _setProjectReadmePreviewdOnce();
                 }
@@ -521,7 +531,7 @@ define(function (require, exports, module) {
             _togglePinUrl();
         }
         $iframe.attr('src', StaticServer.getNoPreviewURL());
-        if(!panelShownOnce && !isBrowser){
+        if(!panelShownAtStartup && !isBrowser){
             // we dont do this in browser as the virtual server may not yet be started on app start
             // project open and a 404 page will briefly flash in the browser!
             const currentDocument = DocumentManager.getCurrentDocument();
@@ -573,28 +583,18 @@ define(function (require, exports, module) {
 
     function _currentFileChanged(_event, newFile) {
         if(newFile && utils.isPreviewableFile(newFile.fullPath)){
-            if(!panelShownOnce){
+            if(!panelShownAtStartup){
                 _setPanelVisibility(true);
             }
             _loadPreview();
         }
     }
 
-    function _showLivePreviewPanelIfNeeded(previewDetails) {
-        // we show the live preview
-        // in browser, we always show the live preview on startup even if its a no preview page
-        // Eg. in mac safari browser we show mac doesnt support live preview page in live preview.
-        if(previewDetails.URL && (isBrowser || !previewDetails.isNoPreview) && !panelShownOnce){
-            // only show if there is some file to preview and not the default no-preview preview on startup
-            _setPanelVisibility(true);
-        }
-        _loadPreview(true);
-    }
-    
     AppInit.appReady(function () {
         if(Phoenix.isSpecRunnerWindow){
             return;
         }
+        panelShownAtStartup = !LivePreviewSettings.shouldShowLivePreviewAtStartup();
         _createExtensionPanel();
         StaticServer.init();
         LiveDevServerManager.registerServer({ create: _createStaticServer }, 5);
@@ -606,8 +606,12 @@ define(function (require, exports, module) {
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
             _toggleVisibilityOnClick();
         });
+        CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW_SETTINGS,
+            Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, LivePreviewSettings.showSettingsDialog);
         let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "", Menus.AFTER, Commands.FILE_EXTENSION_MANAGER);
+        fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, "",
+            Menus.AFTER, Commands.FILE_LIVE_FILE_PREVIEW);
         fileMenu.addMenuDivider(Menus.BEFORE, Commands.FILE_LIVE_FILE_PREVIEW);
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
@@ -622,7 +626,20 @@ define(function (require, exports, module) {
         });
         StaticServer.on(StaticServer.EVENT_SERVER_READY, function (_evt, event) {
             // We always show the live preview panel on startup if there is a preview file
-            StaticServer.getPreviewDetails().then(_showLivePreviewPanelIfNeeded);
+            StaticServer.getPreviewDetails().then((previewDetails)=>{
+                _openReadmeMDIfFirstTime(true);
+                if(!LivePreviewSettings.shouldShowLivePreviewAtStartup()){
+                    return;
+                }
+                // we show the live preview
+                // in browser, we always show the live preview on startup even if its a no preview page
+                // Eg. in mac safari browser we show mac doesnt support live preview page in live preview.
+                if(previewDetails.URL && (isBrowser || !previewDetails.isNoPreview) && !panelShownAtStartup){
+                    // only show if there is some file to preview and not the default no-preview preview on startup
+                    _setPanelVisibility(true);
+                }
+                _loadPreview(true);
+            });
         });
 
         let consecutiveEmptyClientsCount = 0;
