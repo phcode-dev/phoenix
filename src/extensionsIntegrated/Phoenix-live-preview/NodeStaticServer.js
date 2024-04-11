@@ -647,27 +647,17 @@ define(function (require, exports, module) {
                 if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
                     httpFilePath = fullPath;
                 }
-                const customServer = LivePreviewSettings.getCustomServerConfig();
-                let customServeURL, relativePath;
-                if(customServer && ProjectManager.isWithinProject(fullPath) && !httpFilePath){
-                    relativePath = path.relative(projectRoot, fullPath);
-                    if(customServer.pathInProject === "") { // root
-                        customServeURL = `${customServer.serverURL}${relativePath}`;
-                    } else if(relativePath.startsWith(customServer.pathInProject)){ // eg www/
-                        customServeURL = `${customServer.serverURL}${relativePath.replace(
-                            customServer.pathInProject, ""
-                        )}`; // www/design/index.html -> http://localhost:8000/design/index.html
-                    }
-                }
-                if(customServeURL &&
-                    (utils.isServerRenderedFile(fullPath) || utils.isHTMLFile(fullPath) || utils.isPDF(fullPath))){
+                const customServeURL = LivePreviewSettings.getCustomServerConfig(fullPath);
+                if(customServeURL){
+                    const relativePath = path.relative(projectRoot, fullPath);
                     resolve({
                         URL: customServeURL,
                         filePath: relativePath,
                         fullPath: fullPath,
                         isMarkdownFile: utils.isMarkdownFile(fullPath),
                         isHTMLFile: utils.isHTMLFile(fullPath),
-                        isCustomServer: true
+                        isCustomServer: true,
+                        serverSupportsHotReload: LivePreviewSettings.serverSupportsHotReload()
                     });
                     return;
                 } else if(utils.isPreviewableFile(fullPath)){

@@ -68,7 +68,7 @@ define(function (require, exports, module) {
 
     function isMarkdownFile(filePath) {
         let extension = getExtension(filePath);
-        return ['md', 'markdown'].includes(extension.toLowerCase());
+        return ['md', 'markdown', 'mdx'].includes(extension.toLowerCase());
     }
 
     function isHTMLFile(filePath) {
@@ -106,6 +106,7 @@ define(function (require, exports, module) {
     exports.isPreviewableFile = isPreviewableFile;
     exports.isImage = isImage;
     exports.isPDF = isPDF;
+    exports.isSVG = isSVG;
     exports.isHTMLFile = isHTMLFile;
     exports.isServerRenderedFile = isServerRenderedFile;
     exports.isMarkdownFile = isMarkdownFile;
