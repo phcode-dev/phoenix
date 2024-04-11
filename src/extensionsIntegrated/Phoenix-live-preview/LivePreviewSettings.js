@@ -50,15 +50,16 @@ define(function (require, exports, module) {
         PREFERENCE_PROJECT_SERVER_ENABLED = "livePreviewUseDevServer",
         PREFERENCE_PROJECT_SERVER_URL = "livePreviewServerURL",
         PREFERENCE_PROJECT_SERVER_PATH = "livePreviewServerProjectPath",
-        PREFERENCE_PROJECT_PREVIEW_RELOAD = "livePreviewReloadOnSave";
+        PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED = "livePreviewHotReloadSupported",
+        PREFERENCE_PROJECT_PREVIEW_FRAMEWORK = "livePreviewFramework";
     PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_ENABLED, "boolean", false, {
         description: Strings.LIVE_DEV_SETTINGS_SERVER_PREFERENCE
     });
     PreferencesManager.definePreference(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, "boolean", true, {
         description: Strings.LIVE_DEV_SETTINGS_STARTUP_PREFERENCE
     });
-    PreferencesManager.definePreference(PREFERENCE_PROJECT_PREVIEW_RELOAD, "boolean", true, {
-        description: Strings.LIVE_DEV_SETTINGS_RELOAD_ON_SAVE_PREFERENCE
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, "boolean", null, {
+        description: Strings.LIVE_DEV_SETTINGS_HOT_RELOAD_PREFERENCE
     });
     PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_URL, "string", "", {
         description: Strings.LIVE_DEV_SETTINGS_SERVE_PREFERENCE
@@ -66,12 +67,16 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_PATH, "string", "/", {
         description: Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_PREF
     });
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "string", "", {
+        description: Strings.LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES,
+        values: ["Docusaurus"]
+    });
 
-    function _saveProjectPreferences(useCustomServer, liveServerURL, serveRoot, reloadOnSave) {
+    function _saveProjectPreferences(useCustomServer, liveServerURL, serveRoot, hotReloadSupported) {
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, useCustomServer, PreferencesManager.PROJECT_SCOPE);
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, liveServerURL, PreferencesManager.PROJECT_SCOPE);
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, serveRoot, PreferencesManager.PROJECT_SCOPE);
-        PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_RELOAD, reloadOnSave, PreferencesManager.PROJECT_SCOPE);
+        PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, hotReloadSupported, PreferencesManager.PROJECT_SCOPE);
     }
 
     function showSettingsDialog() {
@@ -86,11 +91,14 @@ define(function (require, exports, module) {
                 $showLivePreviewAtStartup = $template.find("#showLivePreviewAtStartupChk"),
                 $serveRoot = $template.find("#serveRoot"),
                 $serveRootLabel = $template.find("#serveRootLabel"),
-                $reloadOnSaveChk = $template.find("#reloadOnSaveChk"),
-                $reloadOnSaveLabel = $template.find("#reloadOnSaveLabel");
+                $hotReloadChk = $template.find("#hotReloadChk"),
+                $hotReloadLabel = $template.find("#hotReloadLabel"),
+                $frameworkLabel = $template.find("#frameworkLabel"),
+                $frameworkSelect = $template.find("#frameworkSelect");
             $enableCustomServerChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED));
             $showLivePreviewAtStartup.prop('checked', PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL));
-            $reloadOnSaveChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_RELOAD));
+            $hotReloadChk.prop('checked', !!PreferencesManager.get(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED));
+            // figure out the framework
 
             function refreshValues() {
                 if($enableCustomServerChk.is(":checked")){
@@ -101,13 +109,17 @@ define(function (require, exports, module) {
                 if($enableCustomServerChk.is(":checked") && $livePreviewServerURL.val()){
                     $serveRoot.removeClass("forced-hidden");
                     $serveRootLabel.removeClass("forced-hidden");
-                    $reloadOnSaveChk.removeClass("forced-hidden");
-                    $reloadOnSaveLabel.removeClass("forced-hidden");
+                    $hotReloadChk.removeClass("forced-hidden");
+                    $hotReloadLabel.removeClass("forced-hidden");
+                    $frameworkSelect.removeClass("forced-hidden");
+                    $frameworkLabel.removeClass("forced-hidden");
                 } else {
                     $serveRoot.addClass("forced-hidden");
                     $serveRootLabel.addClass("forced-hidden");
-                    $reloadOnSaveChk.addClass("forced-hidden");
-                    $reloadOnSaveLabel.addClass("forced-hidden");
+                    $hotReloadChk.addClass("forced-hidden");
+                    $hotReloadLabel.addClass("forced-hidden");
+                    $frameworkSelect.addClass("forced-hidden");
+                    $frameworkLabel.addClass("forced-hidden");
                 }
             }
 
@@ -120,7 +132,7 @@ define(function (require, exports, module) {
                 if (id === "save") {
                     PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
                     _saveProjectPreferences($enableCustomServerChk.is(":checked"), $livePreviewServerURL.val(),
-                        $serveRoot.val(), $reloadOnSaveChk.is(":checked"));
+                        $serveRoot.val(), $hotReloadChk.is(":checked"));
                 }
                 resolve();
             });
