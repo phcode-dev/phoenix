@@ -42,9 +42,16 @@
 define(function (require, exports, module) {
     const livePreviewSettings    = require("text!./livePreviewSettings.html"),
         Dialogs             = require("widgets/Dialogs"),
+        ProjectManager        = require("project/ProjectManager"),
         Strings = require("strings"),
+        FileSystem         = require("filesystem/FileSystem"),
         PreferencesManager = require("preferences/PreferencesManager"),
         Mustache            = require("thirdparty/mustache/mustache");
+
+    const SUPPORTED_FRAMEWORKS = {
+        "Docusaurus": {configFile: "docusaurus.config.js", hotReloadSupported: true}
+    };
+    const FRAMEWORK_UNKNOWN = "unknown";
 
     const PREFERENCE_SHOW_LIVE_PREVIEW_PANEL = "livePreviewShowAtStartup",
         PREFERENCE_PROJECT_SERVER_ENABLED = "livePreviewUseDevServer",
@@ -67,16 +74,35 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(PREFERENCE_PROJECT_SERVER_PATH, "string", "/", {
         description: Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_PREF
     });
-    PreferencesManager.definePreference(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "string", "", {
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "string", null, {
         description: Strings.LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES,
-        values: ["Docusaurus"]
+        values: Object.keys(SUPPORTED_FRAMEWORKS)
     });
+    
+    async function detectFramework($frameworkSelect, $hotReloadChk) {
+        for(let framework of Object.keys(SUPPORTED_FRAMEWORKS)){
+            const configFile = SUPPORTED_FRAMEWORKS[framework].configFile,
+                hotReloadSupported = SUPPORTED_FRAMEWORKS[framework].hotReloadSupported;
+            let filePath   = path.join(ProjectManager.getProjectRoot().fullPath, configFile);
+            const exists = await FileSystem.existsAsync(filePath);
+            if(exists){
+                $frameworkSelect.val(framework);
+                $hotReloadChk.prop('checked', hotReloadSupported);
+                return;
+            }
+        }
+        $frameworkSelect.val(FRAMEWORK_UNKNOWN);
+        $hotReloadChk.prop('checked', false);
+    }
 
-    function _saveProjectPreferences(useCustomServer, liveServerURL, serveRoot, hotReloadSupported) {
+    function _saveProjectPreferences(useCustomServer, liveServerURL, serveRoot, hotReloadSupported, framework) {
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, useCustomServer, PreferencesManager.PROJECT_SCOPE);
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, liveServerURL, PreferencesManager.PROJECT_SCOPE);
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, serveRoot, PreferencesManager.PROJECT_SCOPE);
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, hotReloadSupported, PreferencesManager.PROJECT_SCOPE);
+        if(framework !== FRAMEWORK_UNKNOWN) {
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, hotReloadSupported, PreferencesManager.PROJECT_SCOPE);
+        }
     }
 
     function showSettingsDialog() {
@@ -99,6 +125,12 @@ define(function (require, exports, module) {
             $showLivePreviewAtStartup.prop('checked', PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL));
             $hotReloadChk.prop('checked', !!PreferencesManager.get(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED));
             // figure out the framework
+
+            if(PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK) === null) {
+                detectFramework($frameworkSelect, $hotReloadChk);
+            } else {
+                $frameworkSelect.val(PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK));
+            }
 
             function refreshValues() {
                 if($enableCustomServerChk.is(":checked")){
@@ -132,7 +164,7 @@ define(function (require, exports, module) {
                 if (id === "save") {
                     PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
                     _saveProjectPreferences($enableCustomServerChk.is(":checked"), $livePreviewServerURL.val(),
-                        $serveRoot.val(), $hotReloadChk.is(":checked"));
+                        $serveRoot.val(), $hotReloadChk.is(":checked"), $frameworkSelect.val());
                 }
                 resolve();
             });
