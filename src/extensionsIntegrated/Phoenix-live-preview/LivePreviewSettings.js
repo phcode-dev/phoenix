@@ -44,14 +44,21 @@ define(function (require, exports, module) {
         Dialogs             = require("widgets/Dialogs"),
         ProjectManager        = require("project/ProjectManager"),
         Strings = require("strings"),
+        utils = require('./utils'),
         FileSystem         = require("filesystem/FileSystem"),
         PreferencesManager = require("preferences/PreferencesManager"),
+        EventDispatcher = require("utils/EventDispatcher"),
         Mustache            = require("thirdparty/mustache/mustache");
 
-    const SUPPORTED_FRAMEWORKS = {
-        "Docusaurus": {configFile: "docusaurus.config.js", hotReloadSupported: true}
-    };
-    const FRAMEWORK_UNKNOWN = "unknown";
+    EventDispatcher.makeEventDispatcher(exports);
+
+    const FRAMEWORK_UNKNOWN = "unknown",
+        FRAMEWORK_DOCUSAURUS = "Docusaurus";
+
+    const EVENT_SERVER_CHANGED = "customServerChanged";
+
+    const SUPPORTED_FRAMEWORKS = {};
+    SUPPORTED_FRAMEWORKS[FRAMEWORK_DOCUSAURUS] = {configFile: "docusaurus.config.js", hotReloadSupported: true};
 
     const PREFERENCE_SHOW_LIVE_PREVIEW_PANEL = "livePreviewShowAtStartup",
         PREFERENCE_PROJECT_SERVER_ENABLED = "livePreviewUseDevServer",
@@ -101,7 +108,7 @@ define(function (require, exports, module) {
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, serveRoot, PreferencesManager.PROJECT_SCOPE);
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, hotReloadSupported, PreferencesManager.PROJECT_SCOPE);
         if(framework !== FRAMEWORK_UNKNOWN) {
-            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, hotReloadSupported, PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, framework, PreferencesManager.PROJECT_SCOPE);
         }
     }
 
@@ -175,7 +182,7 @@ define(function (require, exports, module) {
         return PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL);
     }
 
-    function getCustomServerConfig() {
+    function _resolveServer() {
         if(!PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED) ||
             !PreferencesManager.get(PREFERENCE_PROJECT_SERVER_URL)){
             return null;
@@ -200,7 +207,53 @@ define(function (require, exports, module) {
         };
     }
 
+    function getCustomServerConfig(fullPath) {
+        const customServer = _resolveServer();
+        if(!customServer || !ProjectManager.isWithinProject(fullPath)) {
+            return null;
+        }
+        const projectRoot = ProjectManager.getProjectRoot().fullPath;
+        const relativePath = path.relative(projectRoot, fullPath);
+        const framework = PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK);
+        let pathRelativeToServeRoot = relativePath;
+        if(customServer.pathInProject !== "" &&
+            relativePath.startsWith(customServer.pathInProject)){ // eg www/
+            // www/design/index.html -> design/index.html
+            pathRelativeToServeRoot = relativePath.replace(customServer.pathInProject, "");
+        }
+        const isServerRenderedURL = (utils.isPreviewableFile(fullPath) || utils.isServerRenderedFile(fullPath))
+            && !utils.isMarkdownFile(fullPath) && !utils.isSVG(fullPath);
+        if(framework === FRAMEWORK_DOCUSAURUS && utils.isMarkdownFile(fullPath)) {
+            // for docusaurus, we do not have a reliable way to parse the config file and deduce paths, so we always
+            // return the root url for now.
+            pathRelativeToServeRoot = "";
+        } else if(!isServerRenderedURL){
+            return null;
+        }
+        // www/design/index.html -> http://localhost:8000/design/index.html
+        return `${customServer.serverURL}${pathRelativeToServeRoot}`;
+    }
+
+    function isUsingCustomServer() {
+        return !!_resolveServer();
+    }
+
+    function serverSupportsHotReload() {
+        const customServer = _resolveServer();
+        return customServer && !!PreferencesManager.get(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED);
+    }
+
+    function _serverChanged() {
+        exports.trigger(EVENT_SERVER_CHANGED);
+    }
+
+    PreferencesManager.on("change", PREFERENCE_PROJECT_SERVER_URL, _serverChanged);
+
     exports.showSettingsDialog = showSettingsDialog;
     exports.getCustomServerConfig = getCustomServerConfig;
+    exports.isUsingCustomServer = isUsingCustomServer;
+    exports.serverSupportsHotReload = serverSupportsHotReload;
     exports.shouldShowLivePreviewAtStartup = shouldShowLivePreviewAtStartup;
+    // events
+    exports.EVENT_SERVER_CHANGED = EVENT_SERVER_CHANGED;
 });

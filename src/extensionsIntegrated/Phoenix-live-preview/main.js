@@ -310,14 +310,17 @@ define(function (require, exports, module) {
         }
     }
 
-    function _setTitle(fileName, fullPath) {
+    function _setTitle(fileName, fullPath, currentLivePreviewURL) {
         let message = Strings.LIVE_DEV_SELECT_FILE_TO_PREVIEW,
             tooltip = message;
         if(fileName){
             message = `${fileName} - ${Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC}`;
             tooltip = StringUtils.format(Strings.LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR, fileName);
         }
-        $panelTitle.text(message);
+        if(currentLivePreviewURL){
+            tooltip = `${tooltip}\n${currentLivePreviewURL}`;
+        }
+        $panelTitle.text(currentLivePreviewURL || message);
         $panelTitle.attr("title", tooltip);
         $panelTitle.attr("data-fullPath", fullPath);
     }
@@ -471,7 +474,8 @@ define(function (require, exports, module) {
         }
         let relativeOrFullPath= ProjectManager.makeProjectRelativeIfPossible(currentPreviewFile);
         relativeOrFullPath = Phoenix.app.getDisplayPath(relativeOrFullPath);
-        _setTitle(relativeOrFullPath, currentPreviewFile);
+        _setTitle(relativeOrFullPath, currentPreviewFile,
+            previewDetails.isCustomServer ? currentLivePreviewURL : "");
         if(panel.isVisible()) {
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
@@ -493,20 +497,27 @@ define(function (require, exports, module) {
     }
 
     async function _projectFileChanges(evt, changedFile) {
-        if(changedFile && utils.isPreviewableFile(changedFile.fullPath)){
+        if(changedFile && (utils.isPreviewableFile(changedFile.fullPath) ||
+            utils.isServerRenderedFile(changedFile.fullPath))){
             // we are getting this change event somehow.
             // bug, investigate why we get this change event as a project file change.
             const previewDetails = await StaticServer.getPreviewDetails();
-            if(!(LiveDevelopment.isActive() && previewDetails.isHTMLFile)) {
+            let shouldReload = false;
+            if(previewDetails.isCustomServer && !previewDetails.serverSupportsHotReload){
+                shouldReload = true;
+            }
+            if(!previewDetails.isCustomServer && !(LiveDevelopment.isActive() && previewDetails.isHTMLFile)) {
                 // We force reload live preview on save for all non html preview-able file or
                 // if html file and live preview isnt active.
+                shouldReload = true;
+            }
+            if(shouldReload) {
                 _loadPreview(true);
             }
         }
     }
 
-    function _openReadmeMDIfFirstTime(reload) {
-        reload && _loadPreview(reload);
+    function _openReadmeMDIfFirstTime() {
         if(!_isProjectReadmePreviewdOnce() && !Phoenix.isTestWindow){
             const readmePath = `${ProjectManager.getProjectRoot().fullPath}README.md`;
             const fileEntry = FileSystem.getFileForPath(readmePath);
@@ -555,7 +566,7 @@ define(function (require, exports, module) {
     }
 
     function _activeDocChanged() {
-        if(!LiveDevelopment.isActive()
+        if(!LivePreviewSettings.isUsingCustomServer() && !LiveDevelopment.isActive()
             && (panel.isVisible() || StaticServer.hasActiveLivePreviews())) {
             // we do this only once after project switch if live preview for a doc is not active.
             LiveDevelopment.openLivePreview();
@@ -573,6 +584,9 @@ define(function (require, exports, module) {
      * @private
      */
     async function _openLivePreviewURL(_event, previewDetails) {
+        if(LivePreviewSettings.isUsingCustomServer()){
+            return;
+        }
         _loadPreview(true);
         const currentPreviewDetails = await StaticServer.getPreviewDetails();
         if(currentPreviewDetails.isHTMLFile && currentPreviewDetails.fullPath !== previewDetails.fullPath){
@@ -581,8 +595,12 @@ define(function (require, exports, module) {
         }
     }
 
-    function _currentFileChanged(_event, newFile) {
-        if(newFile && utils.isPreviewableFile(newFile.fullPath)){
+    async function _currentFileChanged(_event, changedFile) {
+        if(urlPinned){
+            return;
+        }
+        if(changedFile && (utils.isPreviewableFile(changedFile.fullPath) ||
+            utils.isServerRenderedFile(changedFile.fullPath))){
             if(!panelShownAtStartup){
                 _setPanelVisibility(true);
             }
@@ -631,10 +649,10 @@ define(function (require, exports, module) {
             // required in chrome, but we just keep it just for all platforms behaving the same.
             _loadPreview(true);
         });
-        StaticServer.on(StaticServer.EVENT_SERVER_READY, function (_evt, event) {
-            // We always show the live preview panel on startup if there is a preview file
+
+        function refreshPreview() {
             StaticServer.getPreviewDetails().then((previewDetails)=>{
-                _openReadmeMDIfFirstTime(true);
+                _openReadmeMDIfFirstTime();
                 if(!LivePreviewSettings.shouldShowLivePreviewAtStartup()){
                     return;
                 }
@@ -647,7 +665,17 @@ define(function (require, exports, module) {
                 }
                 _loadPreview(true);
             });
+        }
+
+        let customServerRefreshedOnce = false;
+        StaticServer.on(StaticServer.EVENT_SERVER_READY, function (_evt, event) {
+            if(LivePreviewSettings.isUsingCustomServer() && customServerRefreshedOnce){
+                return;
+            }
+            customServerRefreshedOnce = true;
+            refreshPreview();
         });
+        LivePreviewSettings.on(LivePreviewSettings.EVENT_SERVER_CHANGED, refreshPreview);
 
         let consecutiveEmptyClientsCount = 0;
         setInterval(()=>{
