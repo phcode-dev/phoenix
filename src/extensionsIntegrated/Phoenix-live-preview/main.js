@@ -493,7 +493,7 @@ define(function (require, exports, module) {
         }
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render",
             utils.getExtension(previewDetails.fullPath));
-        StaticServer.redirectAllTabs(currentLivePreviewURL);
+        StaticServer.redirectAllTabs(currentLivePreviewURL, force);
     }
 
     async function _projectFileChanges(evt, changedFile) {

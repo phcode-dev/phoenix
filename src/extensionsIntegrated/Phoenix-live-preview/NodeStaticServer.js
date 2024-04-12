@@ -565,10 +565,11 @@ define(function (require, exports, module) {
         }
     }
 
-    function redirectAllTabs(newURL) {
+    function redirectAllTabs(newURL, force) {
         liveServerConnector.execPeer('navRedirectAllTabs', {
             type: 'REDIRECT_PAGE',
-            URL: getTabPopoutURL(newURL)
+            URL: getTabPopoutURL(newURL),
+            force
         });
     }
 

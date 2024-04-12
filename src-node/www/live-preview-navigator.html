@@ -142,8 +142,10 @@
                             return;
                         }
                         _debugLog("Loading page: ", previewURL);
-                        document.getElementById("previewFrame").src = previewURL;
-                        document.title = extractFilename(previewURL);
+                        if(metadata.force || document.getElementById("previewFrame").src !== previewURL) {
+                            document.getElementById("previewFrame").src = previewURL;
+                            document.title = extractFilename(previewURL);
+                        }
                         return;
                     case "PROJECT_SWITCH":
                         document.getElementById("previewFrame").src = 'phoenix-splash/no-preview.html';
