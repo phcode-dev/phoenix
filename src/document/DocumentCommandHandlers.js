@@ -171,10 +171,10 @@ define(function (require, exports, module) {
         if(filePath && filePath.startsWith(projectRootPath)){
             const relativePath = path.relative(projectRootPath, filePath);
             if(DEFAULT_PROJECT_FILES[relativePath] || relativePath.startsWith("images")){
-                return `${eventCategory}.D`;
+                return eventCategory === METRIC_FILE_SAVE ? "defaultFileSave" : "defaultFileOp";
             }
         }
-        return `${eventCategory}.+`;
+        return `${eventCategory}`;
     }
 
     /**

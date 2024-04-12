@@ -45,6 +45,7 @@ define(function (require, exports, module) {
         ProjectManager        = require("project/ProjectManager"),
         Strings = require("strings"),
         utils = require('./utils'),
+        Metrics            = require("utils/Metrics"),
         FileSystem         = require("filesystem/FileSystem"),
         PreferencesManager = require("preferences/PreferencesManager"),
         EventDispatcher = require("utils/EventDispatcher"),
@@ -167,6 +168,7 @@ define(function (require, exports, module) {
             $livePreviewServerURL.val(PreferencesManager.get(PREFERENCE_PROJECT_SERVER_URL));
             $serveRoot.val(PreferencesManager.get(PREFERENCE_PROJECT_SERVER_PATH));
             refreshValues();
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settings", "dialog");
             Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
                 if (id === "save") {
                     PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
@@ -234,6 +236,10 @@ define(function (require, exports, module) {
         return `${customServer.serverURL}${pathRelativeToServeRoot}`;
     }
 
+    function getCustomServerFramework() {
+        return PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK);
+    }
+
     function isUsingCustomServer() {
         return !!_resolveServer();
     }
@@ -252,6 +258,7 @@ define(function (require, exports, module) {
     exports.showSettingsDialog = showSettingsDialog;
     exports.getCustomServerConfig = getCustomServerConfig;
     exports.isUsingCustomServer = isUsingCustomServer;
+    exports.getCustomServerFramework = getCustomServerFramework;
     exports.serverSupportsHotReload = serverSupportsHotReload;
     exports.shouldShowLivePreviewAtStartup = shouldShowLivePreviewAtStartup;
     // events
