@@ -533,6 +533,7 @@ define(function (require, exports, module) {
 
     async function _projectOpened(_evt) {
         _openReadmeMDIfFirstTime();
+        _customServerMetrics();
         if(!LiveDevelopment.isActive()
             && (panel.isVisible() || StaticServer.hasActiveLivePreviews())) {
             // we do this only once after project switch if live preview for a doc is not active.
@@ -615,6 +616,17 @@ define(function (require, exports, module) {
             });
     }
 
+    function _customServerMetrics() {
+        if(LivePreviewSettings.isUsingCustomServer()){
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "customServ", "yes");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "framework",
+                LivePreviewSettings.getCustomServerFramework() || "unknown");
+            if(LivePreviewSettings.serverSupportsHotReload()) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "hotReload", "yes");
+            }
+        }
+    }
+
     AppInit.appReady(function () {
         if(Phoenix.isSpecRunnerWindow){
             return;
@@ -675,7 +687,10 @@ define(function (require, exports, module) {
             customServerRefreshedOnce = true;
             refreshPreview();
         });
-        LivePreviewSettings.on(LivePreviewSettings.EVENT_SERVER_CHANGED, refreshPreview);
+        LivePreviewSettings.on(LivePreviewSettings.EVENT_SERVER_CHANGED, ()=>{
+            refreshPreview();
+            _customServerMetrics();
+        });
 
         let consecutiveEmptyClientsCount = 0;
         setInterval(()=>{
