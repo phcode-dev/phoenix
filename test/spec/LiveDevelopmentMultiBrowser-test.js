@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeAll, afterAll, awaitsFor, it, awaitsForDone, expect, awaits, Phoenix */
+/*global describe, beforeAll, afterAll, awaitsFor, it, awaitsForDone, expect, awaits, jsPromise*/
 
 define(function (require, exports, module) {
 
@@ -59,6 +59,7 @@ define(function (require, exports, module) {
             WorkspaceManager,
             PreferencesManager,
             Dialogs,
+            FileSystem,
             NativeApp;
 
         let testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
@@ -105,6 +106,7 @@ define(function (require, exports, module) {
                 NativeApp       = brackets.test.NativeApp;
                 Dialogs       = brackets.test.Dialogs;
                 MainViewManager       = brackets.test.MainViewManager;
+                FileSystem       = brackets.test.FileSystem;
                 savedNativeAppOpener = NativeApp.openURLInDefaultBrowser;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
@@ -131,6 +133,7 @@ define(function (require, exports, module) {
             PreferencesManager = null;
             BeautificationManager = null;
             DocumentManager = null;
+            FileSystem       = null;
             WorkspaceManager = null;
         }, 30000);
 
@@ -1593,5 +1596,102 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        it("should live preview settings work as expected", async function () {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+            await SpecRunnerUtils.deletePathAsync(testTempDir+"/.phcode.json", true);
+
+            testWindow.$("#livePreviewSettingsBtn").click();
+            await SpecRunnerUtils.waitForModalDialog();
+            expect(testWindow.$("#enableCustomServerChk").is(":checked")).toBeFalse();
+            expect(testWindow.$("#livePreviewServerURL").is(":disabled")).toBeTrue();
+            expect(testWindow.$("#serveRoot").is(":visible")).toBeFalse();
+            expect(testWindow.$("#frameworkSelect").is(":visible")).toBeFalse();
+            expect(testWindow.$("#hotReloadChk").is(":visible")).toBeFalse();
+
+            // now edit
+            testWindow.$("#enableCustomServerChk").click();
+            expect(testWindow.$("#livePreviewServerURL").is(":disabled")).toBeFalse();
+            expect(testWindow.$("#serveRoot").is(":visible")).toBeFalse();
+            expect(testWindow.$("#frameworkSelect").is(":visible")).toBeFalse();
+            expect(testWindow.$("#hotReloadChk").is(":visible")).toBeFalse();
+
+            // now type something
+            testWindow.$("#livePreviewServerURL").val("http://localhost:8000");
+            // Create and dispatch the input event
+            const event = new Event('input', {
+                bubbles: true,
+                cancelable: true
+            });
+
+            testWindow.$("#livePreviewServerURL")[0].dispatchEvent(event);
+            expect(testWindow.$("#serveRoot").is(":visible")).toBeTrue();
+            expect(testWindow.$("#frameworkSelect").is(":visible")).toBeTrue();
+            expect(testWindow.$("#hotReloadChk").is(":visible")).toBeTrue();
+            expect(testWindow.$("#frameworkSelect").val()).toBe("unknown");
+
+            // close-cancel dialog
+            await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_CANCEL);
+            await SpecRunnerUtils.waitForNoModalDialog();
+        }, 30000);
+
+        async function _setupAndVerifyDocusaurusProject() {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+            await SpecRunnerUtils.deletePathAsync(testTempDir+"/.phcode.json", true);
+
+            await jsPromise(SpecRunnerUtils.createTextFile(testTempDir+"/docusaurus.config.js", "{}", FileSystem));
+
+            testWindow.$("#livePreviewSettingsBtn").click();
+            await SpecRunnerUtils.waitForModalDialog();
+            // now edit
+            testWindow.$("#enableCustomServerChk").click();
+            // now type something
+            testWindow.$("#livePreviewServerURL").val("http://localhost:8000");
+            // Create and dispatch the input event
+            const event = new Event('input', {
+                bubbles: true,
+                cancelable: true
+            });
+
+            testWindow.$("#livePreviewServerURL")[0].dispatchEvent(event);
+            expect(testWindow.$("#serveRoot").is(":visible")).toBeTrue();
+            await awaitsFor(()=>{
+                return testWindow.$("#frameworkSelect").val() === "Docusaurus";
+            }, "docusaurus framework detection");
+            expect(testWindow.$("#hotReloadChk").is(":checked")).toBeTrue();
+            return testTempDir;
+        }
+
+        it("should live preview settings detect docusaurus framework", async function () {
+            await _setupAndVerifyDocusaurusProject();
+
+            // close-cancel dialog
+            await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_CANCEL);
+            await SpecRunnerUtils.waitForNoModalDialog();
+        }, 30000);
+
+        it("should live preview settings save to phcode.json file in project", async function () {
+            const testTempDir = await _setupAndVerifyDocusaurusProject();
+            testWindow.$("#serveRoot").val("www/");
+
+            // close dialog
+            await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
+            await SpecRunnerUtils.waitForNoModalDialog();
+            // wait for preferences file creation
+            await SpecRunnerUtils.waitTillPathExists(testTempDir+"/.phcode.json");
+            await awaitsFor(async()=>{
+                const settingsJson = await SpecRunnerUtils.readTextFileAsync(testTempDir+"/.phcode.json");
+                return Object.keys(JSON.parse(settingsJson)).length >= 5;
+            }, "all settings to be written", 2000, 100);
+            const settingsJson = JSON.parse(await SpecRunnerUtils.readTextFileAsync(testTempDir+"/.phcode.json"));
+            expect(settingsJson).toEql({
+                "livePreviewUseDevServer": true,
+                "livePreviewServerURL": "http://localhost:8000",
+                "livePreviewServerProjectPath": "www/",
+                "livePreviewHotReloadSupported": true,
+                "livePreviewFramework": "Docusaurus"
+            });
+        }, 30000);
     });
 });

@@ -170,7 +170,7 @@ define(function (require, exports, module) {
             refreshValues();
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settings", "dialog");
             Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
-                if (id === "save") {
+                if (id === Dialogs.DIALOG_BTN_OK) {
                     PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
                     _saveProjectPreferences($enableCustomServerChk.is(":checked"), $livePreviewServerURL.val(),
                         $serveRoot.val(), $hotReloadChk.is(":checked"), $frameworkSelect.val());
