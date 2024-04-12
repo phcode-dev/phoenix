@@ -153,13 +153,24 @@
                 const type = event.data.type;
                 const dialog = document.getElementById('outer-container');
                 switch (type) {
+                    case "INITIAL_URL_NAVIGATE":
+                        previewURL = event.data.URL;
+                        if(!securityAlertAcknowledged || event.data.pageLoaderID !== pageLoaderID){
+                            return;
+                        }
+                        _debugLog("initial URL page: ", previewURL);
+                        // we dont need to check for trusted domain here as the live preview nav channel is only
+                        // accessible by the editor domain phcode.dev/localhost etc. This page will not load any page
+                        // in iframe without explicit permission grant from the editor. same for all uses below
+                        document.getElementById("previewFrame").src = previewURL;
+                        return;
                     case "REDIRECT_PAGE":
                         previewURL = event.data.URL;
                         if(!securityAlertAcknowledged){
                             return;
                         }
                         _debugLog("Loading page: ", previewURL);
-                        if(isTrustedURL(previewURL)){
+                        if(event.data.force || document.getElementById("previewFrame").src !== previewURL) {
                             document.getElementById("previewFrame").src = previewURL;
                         }
                         return;
@@ -185,9 +196,7 @@
                         document.getElementById('okButton').textContent = getTrustOkButton();
                         if(trustedProjects[currentProjectRoot] && dialog){
                             dialog.style.display = 'none';
-                            if(isTrustedURL(previewURL)){
-                                document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
-                            }
+                            document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
                             securityAlertAcknowledged = true;
                             return;
                         }
@@ -211,6 +220,10 @@
                     url: previewURL
                 });
             }, 3000);
+            navigatorChannel.postMessage({
+                type: 'GET_INITIAL_URL',
+                pageLoaderID: pageLoaderID
+            });
             livePreviewChannel.onmessage = (event) => {
                 _debugLog("Live Preview message channel: Browser received event from Phoenix: ", JSON.stringify(event.data));
                 if(event.data.pageLoaderID && event.data.pageLoaderID !== pageLoaderID){
@@ -237,9 +250,7 @@
             function securityOk() {
                 const dialog = document.getElementById('outer-container');
                 dialog.style.display = 'none';
-                if(isTrustedURL(previewURL)) {
-                    document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
-                }
+                document.getElementById('previewFrame').src = decodeURIComponent(previewURL);
                 securityAlertAcknowledged = true;
                 trustedProjects[currentProjectRoot] = true;
                 sessionStorage.setItem(SESSION_SECURITY_CLEAR_KEY+currentProjectRoot, 'true');
@@ -258,16 +269,17 @@
 
         function navigateToInitialURL() {
             const queryParams = new URLSearchParams(window.location.search);
-            const initialURL = queryParams.get('initialURL');
             const phoenixInstanceID = queryParams.get('phoenixInstanceID');
             const virtualServerURL = queryParams.get('virtualServerURL');
             const localiseMessage = queryParams.get('localMessage');
             const appName = queryParams.get('appName');
+            // do not pass in any live preview initial urls as it can lead to spoofing phcode.dev doamin by just
+            // calling this page.
             okMessageTemplate = decodeURIComponent(queryParams.get('okMessage'));
             currentProjectRoot = queryParams.get('initialProjectRoot');
 
-            if(!phoenixInstanceID || !initialURL || !virtualServerURL || !appName){
-                console.error("Expected required query strings: phoenixInstanceID, initialURL, virtualServerURL, appName");
+            if(!phoenixInstanceID || !virtualServerURL || !appName){
+                console.error("Expected required query strings: phoenixInstanceID, virtualServerURL, appName");
                 return;
             }
             setupNavigationWatcher(phoenixInstanceID);
@@ -280,7 +292,6 @@
             document.getElementById('okButton').textContent = getTrustOkButton();
             localiseMessage && (document.getElementById('dialog-message').textContent = decodeURIComponent(localiseMessage));
             appName && (document.getElementById('appName').textContent = decodeURIComponent(appName));
-            previewURL = decodeURIComponent(initialURL);
         }
 
     </script>

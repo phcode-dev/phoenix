@@ -211,6 +211,9 @@ define(function (require, exports, module) {
             window.logger.livePreview.log("Live Preview navigator channel: Phoenix received event from tab: ", event);
             const type = event.data.type;
             switch (type) {
+            case 'GET_INITIAL_URL':
+                _sendInitialURL(event.data.pageLoaderID);
+                return;
             case 'TAB_LOADER_ONLINE':
                 livePreviewTabs.set(event.data.pageLoaderID, {
                     lastSeen: new Date(),
@@ -666,10 +669,24 @@ define(function (require, exports, module) {
         _sendToLivePreviewServerTabs(message);
     }
 
-    function redirectAllTabs(newURL) {
+    let currentPopoutURL;
+    function _sendInitialURL(pageLoaderID) {
+        if(!currentPopoutURL){
+            return;
+        }
+        navigatorChannel.postMessage({
+            type: 'INITIAL_URL_NAVIGATE',
+            URL: currentPopoutURL,
+            pageLoaderID: pageLoaderID
+        });
+    }
+
+    function redirectAllTabs(newURL, force) {
+        currentPopoutURL = newURL;
         navigatorChannel.postMessage({
             type: 'REDIRECT_PAGE',
-            URL: newURL
+            URL: newURL,
+            force
         });
     }
 
