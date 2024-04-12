@@ -162,6 +162,14 @@ define(function (require, exports, module) {
                              data-show-count="true"
                              title="Star phcode.dev on GitHub"
                              aria-label="Star phcode-dev/phoenix on GitHub">Star</a>
+                             <a class="github-button"
+                             href="https://github.com/sponsors/phcode-dev"
+                             data-color-scheme="no-preference: dark; light: dark; dark: dark;"
+                             data-icon="octicon-heart"
+                             data-size="large"
+                             data-show-count="true"
+                             title="Star phcode.dev on GitHub"
+                             aria-label="Sponsor @phcode-dev on GitHub">Sponsor</a>
                            <script async defer src="https://buttons.github.io/buttons.js"></script>
                         </div>
                        ${Strings.GITHUB_STARS_POPUP_TWITTER}
