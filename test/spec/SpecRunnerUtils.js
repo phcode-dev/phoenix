@@ -556,6 +556,14 @@ define(function (require, exports, module) {
         }, timeout);
     }
 
+    async function waitForNoModalDialog(timeout=2000) {
+        // Make sure there's one and only one dialog open
+        await awaitsFor(()=>{
+            let $dlg = _testWindow.$(".modal.instance");
+            return $dlg.length === 0;
+        }, timeout);
+    }
+
 
     function _isBracketsDoneLoading() {
         return _testWindow && _testWindow.brackets && _testWindow.brackets.test && _testWindow.brackets.test.doneLoading;
@@ -980,6 +988,20 @@ define(function (require, exports, module) {
         return jsPromise(createTextFile(path, text, _getFileSystem()));
     }
 
+    function readTextFileAsync(path, fileSystem) {
+        fileSystem = fileSystem || _getFileSystem();
+        return new Promise((resolve, reject)=>{
+            const file = fileSystem.getFileForPath(path);
+            file.read({}, function (err, text) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(text);
+            });
+        });
+    }
+
     /**
      * Copy a file source path to a destination
      * @param {!File} source Entry for the source file to copy
@@ -1359,7 +1381,7 @@ define(function (require, exports, module) {
         return entry.existsAsync(pathToCheck);
     }
 
-    async function waitTillPathExists(pathToCheck, isFolder = true, timeout = 2000, pollingInterval = 10) {
+    async function waitTillPathExists(pathToCheck, isFolder = true, timeout = 2000, pollingInterval = 50) {
         for(let i=0; i<timeout/pollingInterval; i++){
             let exists = await pathExists(pathToCheck, isFolder);
             if(exists){
@@ -1430,6 +1452,7 @@ define(function (require, exports, module) {
     exports.toggleQuickEditAtOffset         = toggleQuickEditAtOffset;
     exports.createTextFile                  = createTextFile;
     exports.createTextFileAsync             = createTextFileAsync;
+    exports.readTextFileAsync             = readTextFileAsync;
     exports.copyDirectoryEntry              = copyDirectoryEntry;
     exports.copyFileEntry                   = copyFileEntry;
     exports.copyPath                        = copyPath;
@@ -1440,6 +1463,7 @@ define(function (require, exports, module) {
     exports.waitTillPathExists              = waitTillPathExists;
     exports.waitTillPathNotExists           = waitTillPathNotExists;
     exports.waitForModalDialog              = waitForModalDialog;
+    exports.waitForNoModalDialog            = waitForNoModalDialog;
     exports.waitForBracketsDoneLoading      = waitForBracketsDoneLoading;
     exports.getTestWindow                   = getTestWindow;
     exports.simulateKeyEvent                = simulateKeyEvent;
