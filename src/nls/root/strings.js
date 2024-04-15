@@ -151,7 +151,7 @@ define({
     "LIVE_DEV_OPEN_FIREFOX": "Open In Firefox\u2026",
     "LIVE_DEV_OPEN_ERROR_TITLE": "Error Opening Live Preview in {0}",
     "LIVE_DEV_OPEN_ERROR_MESSAGE": "Make sure that {0} browser is installed and try again.",
-    "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin on Unpin Preview Page",
+    "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin or Unpin Preview Page",
     "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (not updating due to syntax error)",
     "LIVE_DEV_SETTINGS": "Live Preview Settings\u2026",
     "LIVE_DEV_SETTINGS_TITLE": "Live Preview Settings",
