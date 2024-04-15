@@ -613,5 +613,146 @@ define(function (require, exports, module) {
             }
         }, 30000);
 
+        async function _forSVGLivePreview() {
+            await awaitsFor(()=>{
+                let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                let srcURL = new URL(iFrame.src);
+                return srcURL.pathname.endsWith(SVG_IMAGE_PATH);
+            }, "For svg image to be in live preview");
+        }
+        const SVG_IMAGE_PATH = "sub/phoenix-logo.svg";
+
+        it("should pin live previews pin html file - 1", async function () {
+            await _setupSimpleProject("", false);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
+                SVG_IMAGE_PATH);
+            await awaits(50);
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+
+            pinURLBtn.click();
+
+            await _forSVGLivePreview();
+
+        }, 30000);
+
+        async function _waitForIframeMDFile(name) {
+            await awaitsFor(()=>{
+                let outerIFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                let srcURL = new URL(outerIFrame.src);
+                return srcURL.pathname.endsWith(name) === true;
+            }, "waiting for name- " + name);
+        }
+
+        it("should pin live previews pin markdown file", async function () {
+            await _setupSimpleProject("", false);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([`readme.md`]),
+                "SpecRunnerUtils.openProjectFiles readme.md");
+
+            await _waitForIframeMDFile('readme.md');
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
+                SVG_IMAGE_PATH);
+            await _waitForIframeMDFile('readme.md');
+
+            pinURLBtn.click();
+
+            await _forSVGLivePreview();
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("should pin live previews pin svg image file", async function () {
+            await _setupSimpleProject("", false);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
+                "SpecRunnerUtils.openProjectFiles "+ SVG_IMAGE_PATH);
+
+            await _forSVGLivePreview();
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+            await awaits(50);
+            await _forSVGLivePreview();
+
+            pinURLBtn.click();
+
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+
+            await endPreviewSession();
+        }, 30000);
+
+        it("should pin live previews pin html file even on live preview panel open/hide", async function () {
+            await _setupSimpleProject("", false);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
+                "simple2.html");
+            await awaits(50);
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+
+            // now close the live preview panel by clicking on live preview extension icon
+            let livePreviewBtn = testWindow.$(testWindow.document.getElementById("toolbar-go-live"));
+            livePreviewBtn.click();
+            await awaits(50);
+            livePreviewBtn.click();
+            await awaits(50);
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+
+            pinURLBtn.click();
+
+            await _waitForIframeURL('http://localhost:43768/simple2.html');
+
+        }, 30000);
+
+        it("should unpin live previews on project switch", async function () {
+            const testPath = await _setupSimpleProject("", false);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([SVG_IMAGE_PATH]),
+                "SpecRunnerUtils.openProjectFiles"+SVG_IMAGE_PATH);
+
+            await _forSVGLivePreview();
+            let pinURLBtn = testWindow.$(testWindow.document.getElementById("pinURLButton"));
+            pinURLBtn.click();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+            await awaits(50);
+            await _forSVGLivePreview();
+
+            await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
+            await awaits(50);
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "simple1.html");
+
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+        }, 30000);
+
     });
 });
