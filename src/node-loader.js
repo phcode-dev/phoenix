@@ -160,22 +160,11 @@ function nodeLoader() {
             pendingSendBuffer.push({commandObject, dataBuffer});
             return;
         }
-        if(dataBuffer && dataBuffer.byteLength > LARGE_DATA_THRESHOLD && dataSocket && _isSocketOpen(dataSocket)) {
+        if((dataBuffer && dataBuffer.byteLength > LARGE_DATA_THRESHOLD && dataSocket && _isSocketOpen(dataSocket))
+        || (_isSocketOpen(dataSocket) && !_isSocketOpen(controlSocket))) {
             socketToUse = dataSocket;
         }
         socketToUse.send(mergeMetadataAndArrayBuffer(commandObject, dataBuffer));
-    }
-
-    function _sendCommand(commandCode, dataObjectToSend = null, dataBuffer = null) {
-        currentCommandID++;
-        const commandID = currentCommandID;
-        const command = {
-            commandCode: commandCode,
-            commandID: commandID,
-            data: dataObjectToSend
-        };
-        _sendWithAppropriateSocket(command, dataBuffer);
-        return commandID;
     }
 
     function _sendInitCommand(socket, commandCode) {
