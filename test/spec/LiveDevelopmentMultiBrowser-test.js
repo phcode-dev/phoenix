@@ -1597,7 +1597,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should live preview settings work as expected", async function () {
-            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files", true);
             await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
             await SpecRunnerUtils.deletePathAsync(testTempDir+"/.phcode.json", true);
 
@@ -1914,5 +1914,139 @@ define(function (require, exports, module) {
                 "open sub/sub.html");
             await _waitForIframeURL('http://localhost:43768/sub.html');
         }, 30000);
+
+        it("should custom server always load non docasaurus markdowns with intgrated live preview", async function () {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files", true);
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, true, PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, "http://localhost:43768", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, "", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "unknown", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, true, PreferencesManager.PROJECT_SCOPE);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "readme.md");
+            await awaits(300);
+            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+            expect(iFrame.src.endsWith("readme.md")).toBeTrue();
+
+            // now do html, it should load from the custom server
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub/sub.html");
+            await _waitForIframeURL('http://localhost:43768/sub/sub.html');
+
+            await endPreviewSession();
+
+        }, 30000);
+
+        async function _setupSimpleProject(sub="", supportsHotReload=true) {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files", true);
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await waitsForLiveDevelopmentToOpen();
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, true, PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, "http://localhost:43768", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, sub, PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "unknown", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, supportsHotReload, PreferencesManager.PROJECT_SCOPE);
+            return testTempDir;
+        }
+
+        it("should custom server reload page on save if hot reload not supported", async function () {
+            await _setupSimpleProject("", false);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+            testWindow._livePreviewIntegTest.urlLoadCount = 0;
+            testWindow._livePreviewIntegTest.redirectURL = "";
+
+            EditorManager.getActiveEditor().document.setText("new html text");
+            await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "FILE_SAVE_ALL");
+            await awaitsFor(()=>{
+                return testWindow._livePreviewIntegTest.urlLoadCount === 1;
+            }, "to page reload");
+            EditorManager.getActiveEditor().document.setText("new html text 2");
+            await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "FILE_SAVE_ALL");
+            await awaitsFor(()=>{
+                return testWindow._livePreviewIntegTest.urlLoadCount === 2;
+            }, "to page reload");
+            expect(testWindow._livePreviewIntegTest.redirectURL).toBe('http://localhost:43768/simple1.html');
+            expect(testWindow._livePreviewIntegTest.redirectURLforce).toBeTrue();
+        }, 30000);
+
+        it("should custom server load all server rendered files and reload on save", async function () {
+            const testPath = await _setupSimpleProject("", false);
+            const serverFiles = [
+                "asp",
+                "aspx",
+                "php",
+                "jsp",
+                "jspx",
+                "cfm",
+                "cfc", // ColdFusion Component
+                "rb", // Ruby file, used in Ruby on Rails for views with ERB
+                "erb", // Embedded Ruby, used in Ruby on Rails views
+                "py" // Python file, used in web frameworks like Django or Flask for views
+            ];
+            function _lpReload() {
+                return testWindow._livePreviewIntegTest.urlLoadCount === 1;
+            }
+
+            for(let serverFile of serverFiles) {
+                serverFile =  `${serverFile}.${serverFile}`;
+                await jsPromise(SpecRunnerUtils.createTextFile(`${testPath}/${serverFile}`, "hello", FileSystem));
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([serverFile]),
+                    "open" + serverFile);
+                await _waitForIframeURL('http://localhost:43768/'+serverFile);
+
+                testWindow._livePreviewIntegTest.urlLoadCount = 0;
+                testWindow._livePreviewIntegTest.redirectURL = "";
+
+                EditorManager.getActiveEditor().document.setText("new html text");
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "FILE_SAVE_ALL");
+                await awaitsFor(_lpReload, "to page reload");
+                expect(testWindow._livePreviewIntegTest.redirectURL).toBe('http://localhost:43768/'+serverFile);
+                expect(testWindow._livePreviewIntegTest.redirectURLforce).toBeTrue();
+            }
+        }, 30000);
+
+        it("should custom server load all server rendered files and hot reload", async function () {
+            const testPath = await _setupSimpleProject("", true);
+            const serverFiles = [
+                "asp",
+                "aspx",
+                "php",
+                "jsp",
+                "jspx",
+                "cfm",
+                "cfc", // ColdFusion Component
+                "rb", // Ruby file, used in Ruby on Rails for views with ERB
+                "erb", // Embedded Ruby, used in Ruby on Rails views
+                "py" // Python file, used in web frameworks like Django or Flask for views
+            ];
+
+            for(let serverFile of serverFiles) {
+                serverFile =  `${serverFile}.${serverFile}`;
+                await jsPromise(SpecRunnerUtils.createTextFile(`${testPath}/${serverFile}`, "hello", FileSystem));
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles([serverFile]),
+                    "open" + serverFile);
+                await _waitForIframeURL('http://localhost:43768/'+serverFile);
+
+                testWindow._livePreviewIntegTest.urlLoadCount = 0;
+                testWindow._livePreviewIntegTest.redirectURL = "";
+
+                EditorManager.getActiveEditor().document.setText("new html text");
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "FILE_SAVE_ALL");
+                await awaits(10);
+                expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(0);
+            }
+        }, 30000);
+
     });
 });
