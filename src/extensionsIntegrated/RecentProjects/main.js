@@ -46,8 +46,6 @@ define(function (require, exports, module) {
 
     ExtensionInterface.registerExtensionInterface(RECENT_PROJECTS_INTERFACE, exports);
     const RECENT_PROJECT_STATE = "recentProjects";
-    PreferencesManager.stateManager.definePreference(RECENT_PROJECT_STATE, 'array', [])
-        .watchExternalChanges();
 
     /** @const {string} Recent Projects commands ID */
     let TOGGLE_DROPDOWN = "recentProjects.toggle";
@@ -537,6 +535,8 @@ define(function (require, exports, module) {
 
     // Initialize extension
     AppInit.appReady(function () {
+        PreferencesManager.stateManager.definePreference(RECENT_PROJECT_STATE, 'array', [])
+            .watchExternalChanges();
         ProjectManager.on("projectOpen", add);
         ProjectManager.on("beforeProjectClose", add);
         // add the current project at startup.
