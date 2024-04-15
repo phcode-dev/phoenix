@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "Otevřít ve Firefoxu…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Chyba při otevírání živého náhledu v {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Ujistěte se, že je nainstalován prohlížeč {0}, a zkuste to znovu.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Připnout na stránku náhledu Odepnout",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Připnout nebo odebrat stránku náhledu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Živý náhled (neaktualizováno kvůli chybě v syntaxi)",
   "LIVE_DEV_SETTINGS": "Nastavení živého náhledu…",
   "LIVE_DEV_SETTINGS_TITLE": "Nastavení živého náhledu",

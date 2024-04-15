@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Otvoriť vo Firefoxe…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Chyba pri otváraní živej ukážky v {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Uistite sa, že je nainštalovaný prehliadač {0} a skúste to znova.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pripnúť na stránke s ukážkou Odopnúť",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pripnúť alebo odopnúť stránku s ukážkou",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Živá ukážka (neaktualizuje sa kvôli chybe syntaxe)",
   "LIVE_DEV_SETTINGS": "Nastavenia živého náhľadu…",
   "LIVE_DEV_SETTINGS_TITLE": "Nastavenia živého náhľadu",

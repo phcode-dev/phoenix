@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Ouvrir dans Firefox…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Erreur lors de l'ouverture de l'aperçu en direct dans {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Assurez-vous que le navigateur {0} est installé et réessayez.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Épingler sur la page d'aperçu de détachement",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Épingler ou détacher la page d'aperçu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Aperçu en direct (échec de la mise à jour en raison d’une erreur de syntaxe)",
   "LIVE_DEV_SETTINGS": "Paramètres d'aperçu en direct…",
   "LIVE_DEV_SETTINGS_TITLE": "Paramètres d'aperçu en direct",

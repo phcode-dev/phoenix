@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Otwórz w Firefoksie…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Błąd podczas otwierania podglądu na żywo w {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Upewnij się, że zainstalowana jest przeglądarka {0} i spróbuj ponownie.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Przypnij na Odepnij stronę podglądu",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Przypnij lub odepnij stronę podglądu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Podgląd na żywo (bez odświeżania - wystąpiły błędy składniowe)",
   "LIVE_DEV_SETTINGS": "Ustawienia podglądu na żywo…",
   "LIVE_DEV_SETTINGS_TITLE": "Ustawienia podglądu na żywo",

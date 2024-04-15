@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Apri in Firefox...",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Errore durante l'apertura dell'anteprima dal vivo in {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Assicurati che il browser {0} sia installato e riprova.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Appunta sulla pagina di anteprima Sblocca",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Blocca o sblocca la pagina di anteprima",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Anteprima Live (non aggiorna a causa di un errore di sintassi)",
   "LIVE_DEV_SETTINGS": "Impostazioni dell'anteprima dal vivo...",
   "LIVE_DEV_SETTINGS_TITLE": "Impostazioni dell'anteprima dal vivo",

@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Отворете във Firefox...",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Грешка при отваряне на визуализация на живо в {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Уверете се, че браузърът {0} е инсталиран и опитайте отново.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Фиксиране на Unpin Preview Page",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Фиксиране или откачане на страница за визуализация",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Преглед на живо (без обновяване, поради синтактична грешка)",
   "LIVE_DEV_SETTINGS": "Настройки за преглед на живо...",
   "LIVE_DEV_SETTINGS_TITLE": "Настройки за преглед на живо",

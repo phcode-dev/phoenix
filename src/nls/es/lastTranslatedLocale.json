@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Abrir en Firefox…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Error al abrir la vista previa en vivo en {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Asegúrese de que el navegador {0} esté instalado e inténtelo de nuevo.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin en Unpin Preview Page",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Anclar o desanclar la página de vista previa",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Vista previa dinámica (no se está actualizando debido a un error de sintaxis)",
   "LIVE_DEV_SETTINGS": "Configuración de vista previa en vivo...",
   "LIVE_DEV_SETTINGS_TITLE": "Configuración de vista previa en vivo",

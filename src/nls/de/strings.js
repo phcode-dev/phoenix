@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "In Firefox öffnen…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Fehler beim Öffnen der Live-Vorschau in {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Stellen Sie sicher, dass der Browser {0} installiert ist, und versuchen Sie es erneut.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin auf Vorschauseite lösen",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Vorschauseite anheften oder lösen",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live-Vorschau (Es wird aufgrund eines Syntax-Fehlers nicht aktualisiert)",
   "LIVE_DEV_SETTINGS": "Einstellungen für die Live-Vorschau …",
   "LIVE_DEV_SETTINGS_TITLE": "Live-Vorschau-Einstellungen",

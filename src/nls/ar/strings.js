@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "افتح في فايرفوكس...",
   "LIVE_DEV_OPEN_ERROR_TITLE": "حدث خطأ أثناء فتح المعاينة المباشرة في {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "تأكد من تثبيت المتصفح {0} وحاول مرة أخرى.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "تثبيت على Unpin Preview Page",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "تثبيت أو إزالة تثبيت صفحة المعاينة",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "المعاينة المباشرة (لا يتم التحديث بسبب خطأ في بناء الجملة)",
   "LIVE_DEV_SETTINGS": "إعدادات المعاينة المباشرة...",
   "LIVE_DEV_SETTINGS_TITLE": "إعدادات المعاينة المباشرة",

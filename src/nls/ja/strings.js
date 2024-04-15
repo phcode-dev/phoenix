@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "Firefox で開く…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0} でライブ プレビューを開くときにエラーが発生しました",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "{0} ブラウザがインストールされていることを確認して、もう一度お試しください。",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "ボード「Preview Page」のピン",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "プレビューページをピン留めまたはピン留め解除する",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "ライブプレビュー (シンタックスエラーのため更新されません)",
   "LIVE_DEV_SETTINGS": "ライブプレビュー設定…",
   "LIVE_DEV_SETTINGS_TITLE": "ライブプレビュー設定",

@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Atvērt pārlūkprogrammā Firefox…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Atverot tiešraides priekšskatījumu pakalpojumā {0}, radās kļūda",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Pārliecinieties, vai ir instalēta pārlūkprogramma {0}, un mēģiniet vēlreiz.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Piespraudiet priekšskatījuma lapā Atspraust",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Piespraust vai atspraust priekšskatījuma lapu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Tiešais priekšskatījums (netiek atjaunināts sintakses kļūdas dēļ)",
   "LIVE_DEV_SETTINGS": "Tiešraides priekšskatījuma iestatījumi…",
   "LIVE_DEV_SETTINGS_TITLE": "Tiešraides priekšskatījuma iestatījumi",

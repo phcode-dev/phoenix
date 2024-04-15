@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "Firefox'ta Aç…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0}'da Canlı Önizleme Açılırken Hata Oluştu",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "{0} tarayıcısının kurulu olduğundan emin olun ve tekrar deneyin.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Önizleme Sayfasının Sabitlemesini Kaldır",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Önizleme Sayfasını Sabitleme veya Sabitlemeyi Kaldırma",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Canlı Önizleme (sözdizimi hatası nedeniyle güncellenmiyor)",
   "LIVE_DEV_SETTINGS": "Canlı Önizleme Ayarları…",
   "LIVE_DEV_SETTINGS_TITLE": "Canlı Önizleme Ayarları",
