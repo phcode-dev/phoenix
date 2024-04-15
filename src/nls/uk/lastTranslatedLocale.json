@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Відкрити у Firefox…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Помилка під час відкриття попереднього перегляду в {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Переконайтеся, що браузер {0} встановлено, і повторіть спробу.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закріпити на сторінці попереднього перегляду",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закріпити або відкріпити сторінку попереднього перегляду",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (не оновлюється, якщо є помилки)",
   "LIVE_DEV_SETTINGS": "Налаштування попереднього перегляду в реальному часі…",
   "LIVE_DEV_SETTINGS_TITLE": "Налаштування попереднього перегляду",

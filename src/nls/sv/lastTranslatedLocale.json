@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Öppna i Firefox...",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Fel vid öppning av Live Preview i {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Se till att webbläsaren {0} är installerad och försök igen.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fäst på Unpin Preview Page",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fäst eller lossa förhandsgranskningssida",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Förhandsvisning (uppdateras inte på grund av syntaxfel)",
   "LIVE_DEV_SETTINGS": "Inställningar för liveförhandsvisning...",
   "LIVE_DEV_SETTINGS_TITLE": "Inställningar för liveförhandsvisning",

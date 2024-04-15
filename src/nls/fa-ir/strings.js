@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "باز کردن در فایرفاکس…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "خطا در باز کردن پیش‌نمایش زنده در {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "مطمئن شوید که مرورگر {0} نصب شده است و دوباره امتحان کنید.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "پین کردن صفحه پیش‌نمایش لغو پین",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "پین کردن یا برداشتن پین صفحه پیش نمایش",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "پیش نمایش زنده (به دلیل خطا در سینتکس، بروزرسانی نشده است)",
   "LIVE_DEV_SETTINGS": "تنظیمات پیش‌نمایش زنده…",
   "LIVE_DEV_SETTINGS_TITLE": "تنظیمات پیش نمایش زنده",

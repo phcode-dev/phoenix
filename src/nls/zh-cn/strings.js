@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "在火狐浏览器中打开...",
   "LIVE_DEV_OPEN_ERROR_TITLE": "在 {0} 中打开实时预览时出错",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "确保已安装 {0} 浏览器，然后重试。",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "在取消固定预览页面上固定",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "固定或取消固定预览页面",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "实时预览 (由于语法错误没有更新)",
   "LIVE_DEV_SETTINGS": "实时预览设置...",
   "LIVE_DEV_SETTINGS_TITLE": "实时预览设置",

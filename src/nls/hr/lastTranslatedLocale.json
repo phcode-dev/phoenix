@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Otvori u Firefoxu…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Pogreška pri otvaranju pregleda uživo u {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Provjerite je li preglednik {0} instaliran i pokušajte ponovno.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Prikvači na Otkvači stranicu pregleda",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Prikvači ili otkvači stranicu pregleda",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Prikaz uživo (ne osvježava se zbog greške u sintaksi)",
   "LIVE_DEV_SETTINGS": "Postavke pregleda uživo…",
   "LIVE_DEV_SETTINGS_TITLE": "Postavke pregleda uživo",

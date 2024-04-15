@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Avaa Firefoxissa…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Virhe avattaessa live-esikatselua kohteessa {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Varmista, että {0} selain on asennettu ja yritä uudelleen.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Kiinnitä esikatselusivulle",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Kiinnitä tai irrota esikatselusivu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Esikatselu (ei päivity syntaksivirheen takia)",
   "LIVE_DEV_SETTINGS": "Live-esikatselun asetukset…",
   "LIVE_DEV_SETTINGS_TITLE": "Live-esikatselun asetukset",

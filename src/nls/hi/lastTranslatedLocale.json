@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "फ़ायरफ़ॉक्स में खोलें…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0} में लाइव पूर्वावलोकन खोलने में त्रुटि",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "सुनिश्चित करें कि {0} ब्राउज़र स्थापित है और पुनः प्रयास करें।",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "पूर्वावलोकन पृष्ठ को अनपिन करें पर पिन करें",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "पूर्वावलोकन पृष्ठ पिन या अनपिन करें",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "लाइव पूर्वावलोकन (सिंटैक्स त्रुटि के कारण अपडेट नहीं हो रहा है)",
   "LIVE_DEV_SETTINGS": "लाइव पूर्वावलोकन सेटिंग्स…",
   "LIVE_DEV_SETTINGS_TITLE": "लाइव पूर्वावलोकन सेटिंग्स",

@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "Отвори у Фирефок-у…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Грешка при отварању прегледа уживо у {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Проверите да ли је прегледач {0} инсталиран и покушајте поново.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закачи на страницу за преглед откачи",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закачите или откачите страницу за преглед",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Живи приказ (не освежава се због грешке у синтакси)",
   "LIVE_DEV_SETTINGS": "Подешавања прегледа уживо…",
   "LIVE_DEV_SETTINGS_TITLE": "Подешавања прегледа уживо",

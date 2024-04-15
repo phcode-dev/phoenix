@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "Openen in Firefox...",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Fout bij het openen van live voorbeeld in {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Zorg ervoor dat de browser {0} is geïnstalleerd en probeer het opnieuw.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin op Preview Page losmaken",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Voorbeeldpagina vastzetten of losmaken",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Voorbeeld (niet bezig met updaten door een verkeerde syntax)",
   "LIVE_DEV_SETTINGS": "Instellingen voor livevoorbeelden…",
   "LIVE_DEV_SETTINGS_TITLE": "Instellingen voor livevoorbeelden",

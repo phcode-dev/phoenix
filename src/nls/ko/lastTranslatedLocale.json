@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "파이어폭스에서 열기…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0}에서 실시간 미리보기를 여는 중 오류가 발생했습니다.",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "{0} 브라우저가 설치되어 있는지 확인하고 다시 시도하세요.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "미리보기 페이지 고정 해제에 있는 핀",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "미리보기 페이지 고정 또는 고정 해제",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "실시간 프리 (구문 오류로 인해 업데이트되지 않습니다)",
   "LIVE_DEV_SETTINGS": "실시간 미리보기 설정…",
   "LIVE_DEV_SETTINGS_TITLE": "실시간 미리보기 설정",

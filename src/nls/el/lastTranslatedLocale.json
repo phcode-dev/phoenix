@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Άνοιγμα στον Firefox…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Σφάλμα κατά το άνοιγμα της ζωντανής προεπισκόπησης στο {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Βεβαιωθείτε ότι το πρόγραμμα περιήγησης {0} είναι εγκατεστημένο και δοκιμάστε ξανά.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Καρφίτσωμα στη σελίδα προεπισκόπησης Ξεκαρφίτσωμα",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Καρφιτσώστε ή Ξεκαρφιτσώστε τη σελίδα προεπισκόπησης",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (αδυναμία ανανέωσης λόγο συντακτικού λάθους)",
   "LIVE_DEV_SETTINGS": "Ρυθμίσεις ζωντανής προεπισκόπησης…",
   "LIVE_DEV_SETTINGS_TITLE": "Ρυθμίσεις ζωντανής προεπισκόπησης",

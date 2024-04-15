@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "Buka Di Firefox…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Terjadi Kesalahan Saat Membuka Pratinjau Langsung di {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Pastikan browser {0} terpasang dan coba lagi.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin di Lepas sematan Halaman Pratinjau",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Sematkan atau Lepas Sematan Halaman Pratinjau",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Tinjauan Langsung (gagal memperbarui karena kesalahan sintaks)",
   "LIVE_DEV_SETTINGS": "Pengaturan Pratinjau Langsung…",
   "LIVE_DEV_SETTINGS_TITLE": "Pengaturan Pratinjau Langsung",

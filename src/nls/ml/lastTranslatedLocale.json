@@ -106,7 +106,7 @@
   "LIVE_DEV_OPEN_FIREFOX": "Firefox-ൽ തുറക്കുക...",
   "LIVE_DEV_OPEN_ERROR_TITLE": "{0}-ൽ തത്സമയ പ്രിവ്യൂ തുറക്കുന്നതിൽ പിശക്",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "{0} ബ്രൗസർ ഇൻസ്റ്റാൾ ചെയ്തിട്ടുണ്ടെന്ന് ഉറപ്പുവരുത്തി വീണ്ടും ശ്രമിക്കുക.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "അൺപിൻ പ്രിവ്യൂ പേജിൽ പിൻ ചെയ്യുക",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "പ്രിവ്യൂ പേജ് പിൻ അല്ലെങ്കിൽ അൺപിൻ ചെയ്യുക",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "തത്സമയ പ്രിവ്യൂ (വാക്യഘടന പിശക് കാരണം അപ്‌ഡേറ്റ് ചെയ്യുന്നില്ല)",
   "LIVE_DEV_SETTINGS": "തത്സമയ പ്രിവ്യൂ ക്രമീകരണങ്ങൾ...",
   "LIVE_DEV_SETTINGS_TITLE": "തത്സമയ പ്രിവ്യൂ ക്രമീകരണങ്ങൾ",

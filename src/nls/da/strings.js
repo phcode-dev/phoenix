@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "Åbn i Firefox...",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Fejl ved åbning af Live Preview i {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Sørg for, at browseren {0} er installeret, og prøv igen.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fastgør på Unpin preview-siden",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fastgør eller frigør forhåndsvisningsside",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live-Forhåndsvisning (opdatering standset grundet syntaksfejl)",
   "LIVE_DEV_SETTINGS": "Indstillinger for Live Preview...",
   "LIVE_DEV_SETTINGS_TITLE": "Indstillinger for Live Preview",

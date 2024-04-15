@@ -126,7 +126,7 @@ define({
   "LIVE_DEV_OPEN_FIREFOX": "Megnyitás Firefoxban…",
   "LIVE_DEV_OPEN_ERROR_TITLE": "Hiba az élő előnézet megnyitásakor itt: {0}",
   "LIVE_DEV_OPEN_ERROR_MESSAGE": "Győződjön meg arról, hogy a(z) {0} böngésző telepítve van, és próbálja újra.",
-  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Rögzítés a rögzítés feloldása előnézeti oldalon",
+  "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Előnézeti oldal rögzítése vagy rögzítésének feloldása",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Élő előnézet (szintaktikai hiba miatt nem frissül)",
   "LIVE_DEV_SETTINGS": "Élő előnézet beállításai…",
   "LIVE_DEV_SETTINGS_TITLE": "Élő előnézet beállításai",
