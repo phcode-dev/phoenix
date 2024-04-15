@@ -210,7 +210,7 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
 
     function watchExternalChanges(key) {
         watchExternalKeys[key] = true;
-        if(isDesktop) {
+        if(isDesktop && (!Phoenix.isTestWindow || key === _testKey)) {
             const t = (cache[key] && cache[key].t ) || 0;
             storageNodeConnector.execPeer("watchExternalChanges", {key, t});
         }
@@ -224,7 +224,7 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
      */
     function unwatchExternalChanges(key) {
         delete watchExternalKeys[key];
-        if(isDesktop) {
+        if(isDesktop && (!Phoenix.isTestWindow || key === _testKey)) {
             storageNodeConnector.execPeer("unwatchExternalChanges", key);
         }
     }
