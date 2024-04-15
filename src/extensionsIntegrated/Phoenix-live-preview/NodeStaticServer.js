@@ -602,7 +602,7 @@ define(function (require, exports, module) {
         // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
         // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
         openURL.searchParams.set(PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        if(utils.isHTMLFile(openURL.pathname) && url.startsWith(_staticServerInstance.getBaseUrl())){
+        if(_staticServerInstance && utils.isHTMLFile(openURL.pathname) && url.startsWith(_staticServerInstance.getBaseUrl())){
             // this is a live preview html with in built navigation, so we can sever it as is.
             return openURL.href;
         }
@@ -624,7 +624,7 @@ define(function (require, exports, module) {
             try {
                 const currentDocument = DocumentManager.getCurrentDocument();
                 const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
-                if(!currentFile || !_staticServerInstance || !_staticServerInstance.getBaseUrl()){
+                if(!currentFile){
                     resolve({
                         URL: getNoPreviewURL(),
                         isNoPreview: true
@@ -659,6 +659,12 @@ define(function (require, exports, module) {
                         isHTMLFile: utils.isHTMLFile(fullPath),
                         isCustomServer: true,
                         serverSupportsHotReload: LivePreviewSettings.serverSupportsHotReload()
+                    });
+                    return;
+                } else if(!_staticServerInstance || !_staticServerInstance.getBaseUrl()){
+                    resolve({
+                        URL: getNoPreviewURL(),
+                        isNoPreview: true
                     });
                     return;
                 } else if(utils.isPreviewableFile(fullPath)){
