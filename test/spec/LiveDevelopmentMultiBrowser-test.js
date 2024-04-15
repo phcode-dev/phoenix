@@ -1693,5 +1693,170 @@ define(function (require, exports, module) {
                 "livePreviewFramework": "Docusaurus"
             });
         }, 30000);
+
+        const PREFERENCE_PROJECT_SERVER_ENABLED = "livePreviewUseDevServer",
+            PREFERENCE_PROJECT_SERVER_URL = "livePreviewServerURL",
+            PREFERENCE_PROJECT_SERVER_PATH = "livePreviewServerProjectPath",
+            PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED = "livePreviewHotReloadSupported",
+            PREFERENCE_PROJECT_PREVIEW_FRAMEWORK = "livePreviewFramework";
+        async function _setupDocusaurusProject() {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            await SpecRunnerUtils.deletePathAsync(testTempDir+"/.phcode.json", true);
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+            await jsPromise(SpecRunnerUtils.createTextFile(testTempDir+"/docusaurus.config.js", "{}", FileSystem));
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, true, PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, "http://localhost:43768", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, "", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "Docusaurus", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, true, PreferencesManager.PROJECT_SCOPE);
+            return testTempDir;
+        }
+
+        async function _waitForIframeURL(url) {
+            await awaitsFor(()=>{
+                let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                return iFrame.src === url;
+            }, "external preview server "+ url);
+        }
+
+        async function _waitForlivePreviewPopout(url, path) {
+            let openURLRequested;
+            NativeApp.openURLInDefaultBrowser = function (_url) {
+                openURLRequested = new URL(_url).searchParams.get("initialURL");
+            };
+            testWindow.$("#livePreviewPopoutButton").click();
+            await awaitsFor(()=>{
+                return openURLRequested.startsWith(url);
+            }, "Correct live preview popout url "+url+":" + path||"");
+            // now open back the live preview panel by clicking on live preview extension icon
+            let livePreviewBtn = testWindow.$(testWindow.document.getElementById("toolbar-go-live"));
+            livePreviewBtn.click();
+        }
+        it("should docasaurus project load markdowns always at base urls", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "open readme.md");
+            await _waitForIframeURL('http://localhost:43768/');
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.md"]),
+                "open sub/sub.md");
+            await _waitForIframeURL('http://localhost:43768/');
+
+        }, 30000);
+
+        it("should docasaurus markdowns popout url work", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "open readme.md");
+            await _waitForIframeURL('http://localhost:43768/');
+            await _waitForlivePreviewPopout('http://localhost:43768/', "readme.md");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.md"]),
+                "open sub/sub.md");
+            await _waitForIframeURL('http://localhost:43768/');
+            await _waitForlivePreviewPopout('http://localhost:43768/', "sub/sub.md");
+
+        }, 30000);
+
+        it("should docasaurus markdowns not redirect on switching markdowns", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "open readme.md");
+            await _waitForIframeURL('http://localhost:43768/');
+            testWindow._livePreviewIntegTest.currentLivePreviewURL = "";
+            testWindow._livePreviewIntegTest.urlLoadCount = 0;
+            testWindow._livePreviewIntegTest.redirectURL = "";
+            testWindow._livePreviewIntegTest.redirectURLforce = "";
+
+            // sow switch md file, should reload nothing
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.md"]),
+                "open sub/sub.md");
+            await _waitForIframeURL('http://localhost:43768/');
+            expect(testWindow._livePreviewIntegTest.currentLivePreviewURL).toBeFalsy();
+            expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(0);
+            expect(testWindow._livePreviewIntegTest.redirectURL).toBeFalsy();
+            expect(testWindow._livePreviewIntegTest.redirectURLforce).toBeFalsy();
+
+        }, 30000);
+
+        it("should docasaurus markdowns not reload on edit and save", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "open readme.md");
+            await _waitForIframeURL('http://localhost:43768/');
+            testWindow._livePreviewIntegTest.urlLoadCount = 0;
+
+            EditorManager.getActiveEditor().document.setText("new markdown text");
+            await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "FILE_SAVE_ALL");
+            await awaits(50);
+            expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(0);
+
+        }, 30000);
+
+        it("should docasaurus project load html from relative urls", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub/sub.html");
+            await _waitForIframeURL('http://localhost:43768/sub/sub.html');
+        }, 30000);
+
+        it("should docasaurus html popout url work", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+            await _waitForlivePreviewPopout('http://localhost:43768/simple1.html', "simple1.html");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub/sub.html");
+            await _waitForIframeURL('http://localhost:43768/sub/sub.html');
+            await _waitForlivePreviewPopout('http://localhost:43768/sub/sub.html', "sub/sub.html");
+        }, 30000);
+
+        it("should docasaurus html redirect on switching html", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+            testWindow._livePreviewIntegTest.currentLivePreviewURL = "";
+            testWindow._livePreviewIntegTest.urlLoadCount = 0;
+            testWindow._livePreviewIntegTest.redirectURL = "";
+            testWindow._livePreviewIntegTest.redirectURLforce = "";
+
+            // sow switch md file, should reload nothing
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub/sub.html");
+            await _waitForIframeURL('http://localhost:43768/sub/sub.html');
+            expect(testWindow._livePreviewIntegTest.currentLivePreviewURL).toBe('http://localhost:43768/sub/sub.html');
+            expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(1);
+            expect(testWindow._livePreviewIntegTest.redirectURL).toBe('http://localhost:43768/sub/sub.html');
+            expect(testWindow._livePreviewIntegTest.redirectURLforce).toBeFalsy();
+
+        }, 30000);
+
+        it("should docasaurus html not reload on saving html", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+            testWindow._livePreviewIntegTest.urlLoadCount = 0;
+
+            // now edit html
+            EditorManager.getActiveEditor().document.setText("new html text");
+            await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "FILE_SAVE_ALL");
+            await awaits(50);
+            expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(0);
+        }, 30000);
     });
 });

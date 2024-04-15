@@ -88,6 +88,13 @@ define(function (require, exports, module) {
     </iframe>
     `;
 
+    if(Phoenix.isTestWindow) {
+        // for integ tests
+        window._livePreviewIntegTest = {
+            urlLoadCount: 0
+        };
+    }
+
     // jQuery objects
     let $icon,
         $settingsIcon,
@@ -487,6 +494,10 @@ define(function (require, exports, module) {
                 // a third party domain once its redirected.
                 $iframe.attr('data-original-src', currentLivePreviewURL);
                 $iframe.attr('data-original-path', currentPreviewFile);
+                if(Phoenix.isTestWindow) {
+                    window._livePreviewIntegTest.currentLivePreviewURL = currentLivePreviewURL;
+                    window._livePreviewIntegTest.urlLoadCount++;
+                }
             } else {
                 $iframe.attr('srcdoc', _getTrustProjectPage());
             }
@@ -494,6 +505,11 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "render",
             utils.getExtension(previewDetails.fullPath));
         StaticServer.redirectAllTabs(currentLivePreviewURL, force);
+        if(Phoenix.isTestWindow) {
+            // for integ tests
+            window._livePreviewIntegTest.redirectURL = currentLivePreviewURL;
+            window._livePreviewIntegTest.redirectURLforce = force;
+        }
     }
 
     async function _projectFileChanges(evt, changedFile) {
