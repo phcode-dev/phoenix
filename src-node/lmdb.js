@@ -26,7 +26,7 @@ async function openDB(lmdbDir) {
 
 async function flushDB() {
     if(!storageDB){
-        throw new Error("LMDB Storage operation called before openDB call");
+        throw new Error("LMDB flushDB operation called before openDB call");
     }
     await storageDB.flushed; // wait for disk write complete
 }
@@ -34,7 +34,7 @@ async function flushDB() {
 
 async function dumpDBToFile() {
     if(!storageDB){
-        throw new Error("LMDB Storage operation called before openDB call");
+        throw new Error("LMDB dumpDBToFile operation called before openDB call");
     }
     await storageDB.flushed; // wait for disk write complete
     await storageDB.transaction(() => {
@@ -87,7 +87,7 @@ async function dumpDBToFileAndCloseDB() {
  */
 function putItem({key, value}) {
     if(!storageDB){
-        throw new Error("LMDB Storage operation called before openDB call");
+        throw new Error(`LMDB putItem operation called before openDB call: key- ${key}, value: ${JSON.stringify(value)}`);
     }
     if(watchExternalKeys[key] && typeof value === 'object' && value.t) {
         watchExternalKeys[key] = value.t;
@@ -104,21 +104,21 @@ function putItem({key, value}) {
  */
 async function getItem(key) {
     if(!storageDB){
-        throw new Error("LMDB Storage operation called before openDB call");
+        throw new Error(`LMDB getItem operation called before openDB call: key- ${key}`);
     }
     return storageDB.get(key);
 }
 
 async function watchExternalChanges({key, t}) {
     if(!storageDB){
-        throw new Error("LMDB Storage operation called before openDB call");
+        throw new Error(`LMDB watchExternalChanges operation called before openDB call: key- ${key}`);
     }
     watchExternalKeys[key] = t;
 }
 
 async function unwatchExternalChanges(key) {
     if(!storageDB){
-        throw new Error("LMDB Storage operation called before openDB call");
+        throw new Error(`LMDB unwatchExternalChanges operation called before openDB call: key- ${key}`);
     }
     delete watchExternalKeys[key];
 }
@@ -129,7 +129,7 @@ function updateExternalChangesFromLMDB() {
         return;
     }
     const changedKV = {};
-    let changesPresent = false
+    let changesPresent = false;
     for(let key of watchedKeys) {
         const t = watchExternalKeys[key];
         const newVal = storageDB.get(key);
