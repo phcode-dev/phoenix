@@ -251,6 +251,7 @@ define(function (require, exports, module) {
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, sub, PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "Docusaurus", PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, true, PreferencesManager.PROJECT_SCOPE);
+            await awaits(1000); // here so that the project preferences file is created.
             return testTempDir;
         }
 
@@ -499,6 +500,7 @@ define(function (require, exports, module) {
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, sub, PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "unknown", PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, supportsHotReload, PreferencesManager.PROJECT_SCOPE);
+            await awaits(1000); // this is here so that the preferences json is properly created and loaded
             return testTempDir;
         }
 
@@ -760,8 +762,9 @@ define(function (require, exports, module) {
             await _forSVGLivePreview();
 
             await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
-            await awaits(50);
+            await awaits(500);
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            await awaits(1000); // this is here so that the preferences json is loaded on project switch
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "simple1.html");
 
