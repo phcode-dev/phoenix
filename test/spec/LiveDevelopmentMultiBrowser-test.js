@@ -2048,5 +2048,25 @@ define(function (require, exports, module) {
             }
         }, 30000);
 
+        it("should custom server honor custom server root", async function () {
+            const rootPaths = ["/", ""];
+            for(let rootPath of rootPaths){
+                await _setupSimpleProject(rootPath, false);
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "open simple1.html");
+                await _waitForIframeURL('http://localhost:43768/simple1.html');
+            }
+        }, 30000);
+
+        it("should custom server honor custom server root subPath", async function () {
+            const subPaths = ["/sub", "/sub/", "sub/"];
+            for(let subPath of subPaths){
+                await _setupSimpleProject(subPath, false);
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                    "open sub.html");
+                await _waitForIframeURL('http://localhost:43768/sub.html');
+            }
+        }, 30000);
+
     });
 });
