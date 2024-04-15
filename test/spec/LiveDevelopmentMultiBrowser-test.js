@@ -115,9 +115,8 @@ define(function (require, exports, module) {
         }, 30000);
 
         afterAll(async function () {
-            LiveDevMultiBrowser.close();
             NativeApp.openURLInDefaultBrowser = savedNativeAppOpener;
-            await SpecRunnerUtils.closeTestWindow();
+            // we dont await SpecRunnerUtils.closeTestWindow(); here as tests fail eraticaly if we do this in intel macs
             testWindow = null;
             brackets = null;
             LiveDevMultiBrowser = null;
