@@ -474,9 +474,10 @@ define(function (require, exports, module) {
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
                 "readme.md");
-            await awaits(300);
-            let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
-            expect(iFrame.src.endsWith("readme.md")).toBeTrue();
+            await awaitsFor(()=>{
+                let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                return iFrame.src.endsWith("readme.md");
+            }, "readme.md live preview");
 
             // now do html, it should load from the custom server
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
