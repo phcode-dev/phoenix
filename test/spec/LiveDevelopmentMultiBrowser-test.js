@@ -1636,7 +1636,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         async function _setupAndVerifyDocusaurusProject() {
-            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files", true);
             await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
             await SpecRunnerUtils.deletePathAsync(testTempDir+"/.phcode.json", true);
 
@@ -1699,14 +1699,14 @@ define(function (require, exports, module) {
             PREFERENCE_PROJECT_SERVER_PATH = "livePreviewServerProjectPath",
             PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED = "livePreviewHotReloadSupported",
             PREFERENCE_PROJECT_PREVIEW_FRAMEWORK = "livePreviewFramework";
-        async function _setupDocusaurusProject() {
-            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files");
+        async function _setupDocusaurusProject(sub="") {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory("/spec/LiveDevelopment-MultiBrowser-test-files", true);
             await SpecRunnerUtils.deletePathAsync(testTempDir+"/.phcode.json", true);
             await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
             await jsPromise(SpecRunnerUtils.createTextFile(testTempDir+"/docusaurus.config.js", "{}", FileSystem));
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, true, PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, "http://localhost:43768", PreferencesManager.PROJECT_SCOPE);
-            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, "", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, sub, PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "Docusaurus", PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, true, PreferencesManager.PROJECT_SCOPE);
             return testTempDir;
@@ -1782,6 +1782,29 @@ define(function (require, exports, module) {
 
         }, 30000);
 
+        it("should docasaurus markdowns not redirect on switching images/css etc..", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "open readme.md");
+            await _waitForIframeURL('http://localhost:43768/');
+            testWindow._livePreviewIntegTest.currentLivePreviewURL = "";
+            testWindow._livePreviewIntegTest.urlLoadCount = 0;
+            testWindow._livePreviewIntegTest.redirectURL = "";
+            testWindow._livePreviewIntegTest.redirectURLforce = "";
+
+            // sow switch md file, should reload nothing
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.md"]),
+                "open sub/sub.md");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLive1.less"]),
+                "open cssLive1.less");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["blank.css"]),
+                "open blank.css");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+                "open sub/icon_chevron.png");
+            expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(0);
+        }, 30000);
+
         it("should docasaurus markdowns not reload on edit and save", async function () {
             await _setupDocusaurusProject();
 
@@ -1795,6 +1818,14 @@ define(function (require, exports, module) {
             await awaits(50);
             expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(0);
 
+        }, 30000);
+
+        it("should docasaurus markdown ignore server root", async function () {
+            await _setupDocusaurusProject("sub/");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.md"]),
+                "open sub/sub.md");
+            await _waitForIframeURL('http://localhost:43768/');
         }, 30000);
 
         it("should docasaurus project load html from relative urls", async function () {
@@ -1857,6 +1888,31 @@ define(function (require, exports, module) {
             await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "FILE_SAVE_ALL");
             await awaits(50);
             expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(0);
+        }, 30000);
+
+        it("should docasaurus html not redirect on switching images/css etc..", async function () {
+            await _setupDocusaurusProject();
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+            testWindow._livePreviewIntegTest.urlLoadCount = 0;
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLive1.less"]),
+                "open cssLive1.less");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["blank.css"]),
+                "open blank.css");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/icon_chevron.png"]),
+                "open sub/icon_chevron.png");
+            expect(testWindow._livePreviewIntegTest.urlLoadCount).toBe(0);
+        }, 30000);
+
+        it("should docasaurus html load respect server root", async function () {
+            await _setupDocusaurusProject("sub/");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub/sub.html");
+            await _waitForIframeURL('http://localhost:43768/sub.html');
         }, 30000);
     });
 });

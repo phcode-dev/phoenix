@@ -36,6 +36,7 @@ define(function (require, exports, module) {
         FileSystem          = require("filesystem/FileSystem"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         UrlParams           = require("utils/UrlParams").UrlParams,
+        StringUtils         = require("utils/StringUtils"),
         LanguageManager     = require("language/LanguageManager");
 
     var TEST_PREFERENCES_KEY    = "com.adobe.brackets.test.preferences",
@@ -245,13 +246,16 @@ define(function (require, exports, module) {
      * @param pathInTestDir
      * @return {*}
      */
-    async function getTempTestDirectory(pathInTestDir) {
+    async function getTempTestDirectory(pathInTestDir, ranbomize) {
         if(!pathInTestDir){
             throw new Error("getTempTestDirectory should be called with a test folder in test dir");
         }
+        const tempPrefix = ranbomize ?
+            "/tempTest/"+ StringUtils.randomString(10): "/tempTest";
         const testDir = getTestPath(pathInTestDir);
-        const testTempDir = getTestPath("/tempTest"+pathInTestDir);
-        await awaitsForDone(deletePath(testTempDir, true));
+        const testTempDir = getTestPath(tempPrefix+pathInTestDir);
+        const testTempDirRoot = getTestPath("/tempTest");
+        await awaitsForDone(deletePath(testTempDirRoot, true));
         await awaitsForDone(copyPath(testDir, testTempDir));
         return testTempDir;
     }
