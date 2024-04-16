@@ -108,6 +108,7 @@ define(function (require, exports, module) {
                 savedNativeAppOpener = NativeApp.openURLInDefaultBrowser;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+                await SpecRunnerUtils.deletePathAsync(testFolder+"/.phcode.json", true);
                 if(!WorkspaceManager.isPanelVisible('live-preview-panel')){
                     await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
                 }

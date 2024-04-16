@@ -82,6 +82,7 @@ define(function (require, exports, module) {
                 savedNativeAppOpener = NativeApp.openURLInDefaultBrowser;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+                await SpecRunnerUtils.deletePathAsync(testFolder+"/.phcode.json", true);
                 if(!WorkspaceManager.isPanelVisible('live-preview-panel')){
                     await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
                 }
@@ -533,27 +534,28 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        const SERVER_FILES = [
+            "asp",
+            "aspx",
+            "php",
+            "jsp",
+            "jspx",
+            "cfm",
+            "cfc", // ColdFusion Component
+            "rb", // Ruby file, used in Ruby on Rails for views with ERB
+            "erb", // Embedded Ruby, used in Ruby on Rails views
+            "py" // Python file, used in web frameworks like Django or Flask for views
+        ];
+
         it("should custom server load all server rendered files and reload on save", async function () {
             const testPath = await _setupSimpleProject("", false);
-            const serverFiles = [
-                "asp",
-                "aspx",
-                "php",
-                "jsp",
-                "jspx",
-                "cfm",
-                "cfc", // ColdFusion Component
-                "rb", // Ruby file, used in Ruby on Rails for views with ERB
-                "erb", // Embedded Ruby, used in Ruby on Rails views
-                "py" // Python file, used in web frameworks like Django or Flask for views
-            ];
             function _lpReload() {
                 return testWindow._livePreviewIntegTest.urlLoadCount >= 1 &&
                     testWindow._livePreviewIntegTest.urlLoadCount <= 3; // this should be precisely 1, but for
                 // some timing issues in intel machs alone, this check fails, so new we have a range.
             }
 
-            for(let serverFile of serverFiles) {
+            for(let serverFile of SERVER_FILES) {
                 serverFile =  `${serverFile}.${serverFile}`;
                 await jsPromise(SpecRunnerUtils.createTextFile(`${testPath}/${serverFile}`, "hello", FileSystem));
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([serverFile]),
@@ -574,20 +576,8 @@ define(function (require, exports, module) {
 
         it("should custom server load all server rendered files and hot reload", async function () {
             const testPath = await _setupSimpleProject("", true);
-            const serverFiles = [
-                "asp",
-                "aspx",
-                "php",
-                "jsp",
-                "jspx",
-                "cfm",
-                "cfc", // ColdFusion Component
-                "rb", // Ruby file, used in Ruby on Rails for views with ERB
-                "erb", // Embedded Ruby, used in Ruby on Rails views
-                "py" // Python file, used in web frameworks like Django or Flask for views
-            ];
 
-            for(let serverFile of serverFiles) {
+            for(let serverFile of SERVER_FILES) {
                 serverFile =  `${serverFile}.${serverFile}`;
                 await jsPromise(SpecRunnerUtils.createTextFile(`${testPath}/${serverFile}`, "hello", FileSystem));
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles([serverFile]),
@@ -772,5 +762,114 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        async function _createAnOpenFile(testPath, name) {
+            await jsPromise(SpecRunnerUtils.createTextFile(`${testPath}/${name}`, "hello", FileSystem));
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles([name]),
+                "open" + name);
+        }
+
+        async function _forBannerAppear(label) {
+            await awaitsFor(()=>{
+                return testWindow.$(".live-preview-settings").is(":visible");
+            }, "banner to appear "+label);
+        }
+
+        async function _forBannerClose(label) {
+            await awaitsFor(()=>{
+                return !testWindow.$(".live-preview-settings").is(":visible");
+            }, "banner to close "+label);
+        }
+
+        it("should custom server banner appear on SSR files", async function () {
+            const testPath = await SpecRunnerUtils.getTempTestDirectory(
+                "/spec/LiveDevelopment-MultiBrowser-test-files", true);
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await waitsForLiveDevelopmentToOpen();
+
+            for(let serverFile of SERVER_FILES) {
+                serverFile =  `${serverFile}.${serverFile}`;
+                await _createAnOpenFile(testPath, serverFile);
+                await _forBannerAppear(serverFile);
+                testWindow.$(".close-icon").click();
+                await _forBannerClose(serverFile);
+
+                PreferencesManager.stateManager.set(testWindow._livePreviewIntegTest.STATE_CUSTOM_SERVER_BANNER_ACK,
+                    false, PreferencesManager.stateManager.PROJECT_CONTEXT);
+            }
+            await endPreviewSession();
+        }, 30000);
+
+        it("should custom server banner close on project switch", async function () {
+            const testPath = await SpecRunnerUtils.getTempTestDirectory(
+                "/spec/LiveDevelopment-MultiBrowser-test-files", true);
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await waitsForLiveDevelopmentToOpen();
+
+            const serverFile =  `php.php`;
+            await _createAnOpenFile(testPath, serverFile);
+
+            await _forBannerAppear(serverFile);
+            await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
+            await _forBannerClose("banner close on project switch");
+
+            await endPreviewSession();
+        }, 30000);
+
+        async function _verifyBannerOK() {
+            const testPath = await SpecRunnerUtils.getTempTestDirectory(
+                "/spec/LiveDevelopment-MultiBrowser-test-files", true);
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await waitsForLiveDevelopmentToOpen();
+
+            let serverFile =  `php.php`;
+            await _createAnOpenFile(testPath, serverFile);
+            await _forBannerAppear(serverFile);
+
+            // now edit the settings
+            testWindow.$(".live-preview-settings").click();
+            await SpecRunnerUtils.waitForModalDialog();
+            if(!testWindow.$("#enableCustomServerChk").is(":checked")){
+                testWindow.$("#enableCustomServerChk").click();
+                testWindow.$("#livePreviewServerURL").val("http://localhost:8000");
+            }
+            SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
+
+            await _forBannerClose("banner close on custom server configured");
+
+            // now switching to another ssr file shouldn't open the banner in project
+            serverFile =  `jsp.jsp`;
+            await _createAnOpenFile(testPath, serverFile);
+            await awaits(50);
+            expect(testWindow.$(".live-preview-settings").is(":visible")).toBeFalse();
+
+            await endPreviewSession();
+            return testPath;
+        }
+
+        it("should custom server banner close on setting custom server", async function () {
+            await _verifyBannerOK();
+        }, 30000);
+
+        it("should custom server banner show up in a project only once", async function () {
+            const testPath = await _verifyBannerOK();
+            // switch project
+            await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
+            // now switch back
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await waitsForLiveDevelopmentToOpen();
+            await awaits(100);// give some time to see if the banner comes up
+            expect(testWindow.$(".live-preview-settings").is(":visible")).toBeFalse();
+
+            await endPreviewSession();
+
+        }, 30000);
     });
 });
