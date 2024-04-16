@@ -109,6 +109,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Sematkan atau Lepas Sematan Halaman Pratinjau",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Tinjauan Langsung (gagal memperbarui karena kesalahan sintaks)",
   "LIVE_DEV_SETTINGS": "Pengaturan Pratinjau Langsung…",
+  "LIVE_DEV_SETTINGS_BANNER": "Siapkan server khusus untuk melihat pratinjau langsung PHP, JSP, dan file yang dirender server lainnya",
   "LIVE_DEV_SETTINGS_TITLE": "Pengaturan Pratinjau Langsung",
   "LIVE_DEV_SETTINGS_STARTUP": "Tampilkan Panel Pratinjau Langsung saat Startup",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true untuk mengaktifkan server pengembangan khusus",

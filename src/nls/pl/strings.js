@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Przypnij lub odepnij stronę podglądu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Podgląd na żywo (bez odświeżania - wystąpiły błędy składniowe)",
   "LIVE_DEV_SETTINGS": "Ustawienia podglądu na żywo…",
+  "LIVE_DEV_SETTINGS_BANNER": "Skonfiguruj niestandardowy serwer do podglądu na żywo PHP, JSP i innych plików renderowanych przez serwer",
   "LIVE_DEV_SETTINGS_TITLE": "Ustawienia podglądu na żywo",
   "LIVE_DEV_SETTINGS_STARTUP": "Pokaż panel podglądu na żywo przy uruchomieniu",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true, aby włączyć niestandardowy serwer programistyczny",

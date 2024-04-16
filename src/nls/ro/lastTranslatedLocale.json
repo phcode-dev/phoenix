@@ -109,6 +109,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fixați sau anulați fixarea paginii de previzualizare",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (nu poate fi reînnoit din cauza unei erori de sintaxă)",
   "LIVE_DEV_SETTINGS": "Setări de previzualizare live...",
+  "LIVE_DEV_SETTINGS_BANNER": "Configurați un server personalizat pentru previzualizare live PHP, JSP și alte fișiere randate pe server",
   "LIVE_DEV_SETTINGS_TITLE": "Setări de previzualizare live",
   "LIVE_DEV_SETTINGS_STARTUP": "Afișați panoul de previzualizare live la pornire",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true pentru a activa serverul de dezvoltare personalizat",

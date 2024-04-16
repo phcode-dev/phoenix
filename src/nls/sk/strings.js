@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pripnúť alebo odopnúť stránku s ukážkou",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Živá ukážka (neaktualizuje sa kvôli chybe syntaxe)",
   "LIVE_DEV_SETTINGS": "Nastavenia živého náhľadu…",
+  "LIVE_DEV_SETTINGS_BANNER": "Nastavte si vlastný server na živé ukážky PHP, JSP a iných súborov vykreslených serverom",
   "LIVE_DEV_SETTINGS_TITLE": "Nastavenia živého náhľadu",
   "LIVE_DEV_SETTINGS_STARTUP": "Zobraziť panel živého náhľadu pri spustení",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "pravda, aby umožnil vlastný vývojový server",

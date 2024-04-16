@@ -109,6 +109,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "تثبيت أو إزالة تثبيت صفحة المعاينة",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "المعاينة المباشرة (لا يتم التحديث بسبب خطأ في بناء الجملة)",
   "LIVE_DEV_SETTINGS": "إعدادات المعاينة المباشرة...",
+  "LIVE_DEV_SETTINGS_BANNER": "قم بإعداد خادم مخصص للمعاينة المباشرة لـ PHP وJSP والملفات الأخرى التي يعرضها الخادم",
   "LIVE_DEV_SETTINGS_TITLE": "إعدادات المعاينة المباشرة",
   "LIVE_DEV_SETTINGS_STARTUP": "إظهار لوحة المعاينة المباشرة عند بدء التشغيل",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "صحيح لتمكين خادم التطوير المخصص",

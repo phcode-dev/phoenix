@@ -109,6 +109,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Připnout nebo odebrat stránku náhledu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Živý náhled (neaktualizováno kvůli chybě v syntaxi)",
   "LIVE_DEV_SETTINGS": "Nastavení živého náhledu…",
+  "LIVE_DEV_SETTINGS_BANNER": "Nastavte vlastní server pro živý náhled souborů PHP, JSP a dalších souborů vykreslených serverem",
   "LIVE_DEV_SETTINGS_TITLE": "Nastavení živého náhledu",
   "LIVE_DEV_SETTINGS_STARTUP": "Zobrazit panel živého náhledu při spuštění",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true pro umožnění vlastního vývojového serveru",

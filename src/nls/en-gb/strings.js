@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin or Unpin Preview Page",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (not updating due to syntax error)",
   "LIVE_DEV_SETTINGS": "Live Preview Settings…",
+  "LIVE_DEV_SETTINGS_BANNER": "Set up a custom server to live preview PHP, JSP, and other server-rendered files",
   "LIVE_DEV_SETTINGS_TITLE": "Live Preview Settings",
   "LIVE_DEV_SETTINGS_STARTUP": "Show Live Preview Panel at Startup",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true to enable custom development server",

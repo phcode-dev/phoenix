@@ -109,6 +109,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закріпити або відкріпити сторінку попереднього перегляду",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Preview (не оновлюється, якщо є помилки)",
   "LIVE_DEV_SETTINGS": "Налаштування попереднього перегляду в реальному часі…",
+  "LIVE_DEV_SETTINGS_BANNER": "Налаштуйте спеціальний сервер для попереднього перегляду PHP, JSP та інших серверних файлів",
   "LIVE_DEV_SETTINGS_TITLE": "Налаштування попереднього перегляду",
   "LIVE_DEV_SETTINGS_STARTUP": "Показувати панель попереднього перегляду під час запуску",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true, щоб увімкнути спеціальний сервер розробки",

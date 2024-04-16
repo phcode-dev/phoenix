@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fixar ou desafixar página de visualização",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Visualização ao vivo (não atualizando devido a erro de sintaxe)",
   "LIVE_DEV_SETTINGS": "Configurações de visualização ao vivo…",
+  "LIVE_DEV_SETTINGS_BANNER": "Configure um servidor personalizado para visualização ao vivo de PHP, JSP e outros arquivos renderizados pelo servidor",
   "LIVE_DEV_SETTINGS_TITLE": "Configurações de visualização ao vivo",
   "LIVE_DEV_SETTINGS_STARTUP": "Mostrar painel de visualização ao vivo na inicialização",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true para ativar o servidor de desenvolvimento personalizado",
