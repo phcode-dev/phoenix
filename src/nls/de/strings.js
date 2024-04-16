@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Vorschauseite anheften oder lösen",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live-Vorschau (Es wird aufgrund eines Syntax-Fehlers nicht aktualisiert)",
   "LIVE_DEV_SETTINGS": "Einstellungen für die Live-Vorschau …",
+  "LIVE_DEV_SETTINGS_BANNER": "Richten Sie einen benutzerdefinierten Server ein, um PHP, JSP und andere serverseitig gerenderte Dateien in der Live-Vorschau anzuzeigen.",
   "LIVE_DEV_SETTINGS_TITLE": "Live-Vorschau-Einstellungen",
   "LIVE_DEV_SETTINGS_STARTUP": "Live-Vorschau-Fenster beim Start anzeigen",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true, um benutzerdefinierten Entwicklungsserver zu aktivieren",

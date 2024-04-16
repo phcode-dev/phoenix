@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Blocca o sblocca la pagina di anteprima",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Anteprima Live (non aggiorna a causa di un errore di sintassi)",
   "LIVE_DEV_SETTINGS": "Impostazioni dell'anteprima dal vivo...",
+  "LIVE_DEV_SETTINGS_BANNER": "Configura un server personalizzato per visualizzare in anteprima dal vivo PHP, JSP e altri file renderizzati dal server",
   "LIVE_DEV_SETTINGS_TITLE": "Impostazioni dell'anteprima dal vivo",
   "LIVE_DEV_SETTINGS_STARTUP": "Mostra il pannello di anteprima live all'avvio",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true per abilitare il server di sviluppo personalizzato",

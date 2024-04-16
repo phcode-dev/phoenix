@@ -109,6 +109,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "固定或取消固定預覽頁面",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "即時預覽 (語法錯誤，不更新)",
   "LIVE_DEV_SETTINGS": "即時預覽設定...",
+  "LIVE_DEV_SETTINGS_BANNER": "設定自訂伺服器以即時預覽 PHP、JSP 和其他伺服器渲染的文件",
   "LIVE_DEV_SETTINGS_TITLE": "即時預覽設定",
   "LIVE_DEV_SETTINGS_STARTUP": "啟動時顯示即時預覽面板",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true 啟用自訂開發伺服器",

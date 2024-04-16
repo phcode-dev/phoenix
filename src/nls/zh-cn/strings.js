@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "固定或取消固定预览页面",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "实时预览 (由于语法错误没有更新)",
   "LIVE_DEV_SETTINGS": "实时预览设置...",
+  "LIVE_DEV_SETTINGS_BANNER": "设置自定义服务器以实时预览 PHP、JSP 和其他服务器呈现的文件",
   "LIVE_DEV_SETTINGS_TITLE": "实时预览设置",
   "LIVE_DEV_SETTINGS_STARTUP": "启动时显示实时预览面板",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true 启用自定义开发服务器",

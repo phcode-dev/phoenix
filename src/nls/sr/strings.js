@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Закачите или откачите страницу за преглед",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Живи приказ (не освежава се због грешке у синтакси)",
   "LIVE_DEV_SETTINGS": "Подешавања прегледа уживо…",
+  "LIVE_DEV_SETTINGS_BANNER": "Подесите прилагођени сервер да уживо прегледате ПХП, ЈСП и друге фајлове које приказује сервер",
   "LIVE_DEV_SETTINGS_TITLE": "Подешавања прегледа уживо",
   "LIVE_DEV_SETTINGS_STARTUP": "Прикажи таблу за преглед уживо при покретању",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "труе да омогући прилагођени развојни сервер",

@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fastgør eller frigør forhåndsvisningsside",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live-Forhåndsvisning (opdatering standset grundet syntaksfejl)",
   "LIVE_DEV_SETTINGS": "Indstillinger for Live Preview...",
+  "LIVE_DEV_SETTINGS_BANNER": "Konfigurer en brugerdefineret server til live forhåndsvisning af PHP, JSP og andre server-renderede filer",
   "LIVE_DEV_SETTINGS_TITLE": "Indstillinger for Live Preview",
   "LIVE_DEV_SETTINGS_STARTUP": "Vis Live Preview Panel ved opstart",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "sand for at aktivere tilpasset udviklingsserver",

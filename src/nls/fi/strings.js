@@ -129,6 +129,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Kiinnitä tai irrota esikatselusivu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Esikatselu (ei päivity syntaksivirheen takia)",
   "LIVE_DEV_SETTINGS": "Live-esikatselun asetukset…",
+  "LIVE_DEV_SETTINGS_BANNER": "Määritä mukautettu palvelin PHP:n, JSP:n ja muiden palvelimen tuottamien tiedostojen esikatseluun livenä",
   "LIVE_DEV_SETTINGS_TITLE": "Live-esikatselun asetukset",
   "LIVE_DEV_SETTINGS_STARTUP": "Näytä live-esikatselupaneeli käynnistyksen yhteydessä",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "tosi mahdollistaa mukautetun kehityspalvelimen",
