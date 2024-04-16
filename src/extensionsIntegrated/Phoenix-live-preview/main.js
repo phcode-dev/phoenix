@@ -50,6 +50,8 @@ define(function (require, exports, module) {
         Menus              = require("command/Menus"),
         WorkspaceManager   = require("view/WorkspaceManager"),
         AppInit            = require("utils/AppInit"),
+        ModalBar           = require("widgets/ModalBar").ModalBar,
+        PreferencesManager = require("preferences/PreferencesManager"),
         ProjectManager     = require("project/ProjectManager"),
         MainViewManager    = require("view/MainViewManager"),
         Strings            = require("strings"),
@@ -69,6 +71,11 @@ define(function (require, exports, module) {
         Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
         utils = require('./utils');
+
+    const StateManager = PreferencesManager.stateManager;
+    const STATE_CUSTOM_SERVER_BANNER_ACK = "customServerBannerDone";
+    let customServerModalBar;
+
     const isBrowser = !Phoenix.browser.isTauri;
     const StaticServer = Phoenix.browser.isTauri? NodeStaticServer : BrowserStaticServer;
 
@@ -580,6 +587,10 @@ define(function (require, exports, module) {
             _togglePinUrl();
         }
         LiveDevelopment.closeLivePreview();
+        if(customServerModalBar){
+            customServerModalBar.close();
+            customServerModalBar = null;
+        }
     }
 
     function _activeDocChanged() {
@@ -613,6 +624,9 @@ define(function (require, exports, module) {
     }
 
     async function _currentFileChanged(_event, changedFile) {
+        if(changedFile && _shouldShowCustomServerBar(changedFile.fullPath)){
+            _showCustomServerBar();
+        }
         if(urlPinned){
             return;
         }
@@ -626,10 +640,13 @@ define(function (require, exports, module) {
     }
 
     function _showSettingsDialog() {
-        LivePreviewSettings.showSettingsDialog()
-            .then(()=>{
-                _loadPreview();
-            });
+        return new Promise(resolve=>{
+            LivePreviewSettings.showSettingsDialog()
+                .then(()=>{
+                    _loadPreview();
+                    resolve();
+                });
+        });
     }
 
     function _customServerMetrics() {
@@ -641,6 +658,51 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "hotReload", "yes");
             }
         }
+    }
+
+    function _shouldShowCustomServerBar(fullPath) {
+        const isBannerAck = StateManager.get(STATE_CUSTOM_SERVER_BANNER_ACK, StateManager.PROJECT_CONTEXT);
+        if(isBannerAck || LivePreviewSettings.isUsingCustomServer()){
+            return false;
+        }
+        return utils.isServerRenderedFile(fullPath);
+    }
+
+    function _showCustomServerBar() {
+        if(customServerModalBar){
+            return;
+        }
+        // Show the search bar
+        const searchBarHTML =`<div style="display: flex;justify-content: end;align-items: baseline;">
+            <div style="margin-right: 5px;">
+                ${Strings.LIVE_DEV_SETTINGS_BANNER}
+            </div>
+            <button class="btn btn-mini live-preview-settings" style="margin-right: 5px;">
+                ${Strings.LIVE_DEV_SETTINGS}
+            </button>
+            <div class="close-icon" style="align-self: center;margin-left: 10px;margin-right: 5px;cursor: pointer;"
+                title="${Strings.CLOSE}">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>`;
+        customServerModalBar = new ModalBar(searchBarHTML);
+        const $modal = customServerModalBar.getRoot();
+        $modal.find(".live-preview-settings")
+            .click(()=>{
+                _showSettingsDialog()
+                    .then(()=>{
+                        if(LivePreviewSettings.isUsingCustomServer()){
+                            customServerModalBar.close();
+                            customServerModalBar = null;
+                            StateManager.set(STATE_CUSTOM_SERVER_BANNER_ACK, true, StateManager.PROJECT_CONTEXT);
+                        }
+                    });
+            });
+        $modal.find(".close-icon").click(()=>{
+            customServerModalBar.close();
+            customServerModalBar = null;
+            StateManager.set(STATE_CUSTOM_SERVER_BANNER_ACK, true, StateManager.PROJECT_CONTEXT);
+        });
     }
 
     AppInit.appReady(function () {
