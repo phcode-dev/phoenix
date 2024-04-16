@@ -98,7 +98,8 @@ define(function (require, exports, module) {
     if(Phoenix.isTestWindow) {
         // for integ tests
         window._livePreviewIntegTest = {
-            urlLoadCount: 0
+            urlLoadCount: 0,
+            STATE_CUSTOM_SERVER_BANNER_ACK
         };
     }
 
@@ -692,14 +693,14 @@ define(function (require, exports, module) {
                 _showSettingsDialog()
                     .then(()=>{
                         if(LivePreviewSettings.isUsingCustomServer()){
-                            customServerModalBar.close();
+                            customServerModalBar && customServerModalBar.close();
                             customServerModalBar = null;
                             StateManager.set(STATE_CUSTOM_SERVER_BANNER_ACK, true, StateManager.PROJECT_CONTEXT);
                         }
                     });
             });
         $modal.find(".close-icon").click(()=>{
-            customServerModalBar.close();
+            customServerModalBar && customServerModalBar.close();
             customServerModalBar = null;
             StateManager.set(STATE_CUSTOM_SERVER_BANNER_ACK, true, StateManager.PROJECT_CONTEXT);
         });

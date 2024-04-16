@@ -85,7 +85,11 @@
             throw new Error(errorMessage);
         }
         function _isTestWindow() {
-            const isTestPhoenixWindow = !!(new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
+            // the test window query param will only be acknowledged if we are embedded in the spec runner.
+            // and test windows should be embedded within the same host as phcode.dev/tauri for security
+            const isTestPhoenixWindow = window.parent.location.pathname.endsWith("SpecRunner.html") &&
+                window.parent.location.host === window.location.host &&
+                !!(new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
             const isSpecRunnerWindow = window.location.pathname.endsWith("/SpecRunner.html");
             return isTestPhoenixWindow || isSpecRunnerWindow;
         }
