@@ -676,6 +676,21 @@ a:focus {
     transition: right 167ms, left 167ms;
 }
 
+.css-code-hint-info {
+    visibility: hidden;
+}
+
+.highlight .css-code-hint-info {
+    visibility: visible;
+    position: absolute;
+    right: 0;
+    margin-top:-2px;
+    color: #2ea56c !important;
+    .dark& {
+        color: #146a41 !important;
+    }
+}
+
 #codehint-desc {
 	background: @bc-codehint-desc;
 	position: absolute;

@@ -887,6 +887,7 @@ define({
 
     // extensions/default/MDNDocs
     "DOCS_MORE_LINK": "Read more",
+    "DOCS_MORE_LINK_MDN_TITLE": "Click to read Documentation",
 
     // extensions/default/CodeFolding
     "COLLAPSE_ALL": "Collapse All",
