@@ -27,8 +27,6 @@ define(function (require, exports, module) {
     var AppInit             = brackets.getModule("utils/AppInit"),
         CodeHintManager     = brackets.getModule("editor/CodeHintManager"),
         CSSUtils            = brackets.getModule("language/CSSUtils"),
-        HTMLUtils           = brackets.getModule("language/HTMLUtils"),
-        LanguageManager     = brackets.getModule("language/LanguageManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         TokenUtils          = brackets.getModule("utils/TokenUtils"),
         StringMatch         = brackets.getModule("utils/StringMatch"),
@@ -234,12 +232,11 @@ define(function (require, exports, module) {
         this.cursor = this.editor.getCursorPos();
         this.info = CSSUtils.getInfoAtPos(this.editor, this.cursor);
 
-        var needle = this.info.name,
+        let needle = this.info.name,
             valueNeedle = "",
             context = this.info.context,
             valueArray,
             type,
-            namedFlows,
             result,
             selectInitial = false;
 
@@ -300,7 +297,7 @@ define(function (require, exports, module) {
             });
 
             return {
-                hints: formatHints(result, valueNeedle),
+                hints: formatHints(result),
                 match: null, // the CodeHintManager should not format the results
                 selectInitial: selectInitial
             };
@@ -331,7 +328,7 @@ define(function (require, exports, module) {
             });
 
             return {
-                hints: formatHints(result, needle),
+                hints: formatHints(result),
                 match: null, // the CodeHintManager should not format the results
                 selectInitial: selectInitial,
                 handleWideResults: false

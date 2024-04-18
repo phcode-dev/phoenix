@@ -43,10 +43,6 @@ define(function (require, exports, module) {
         PROP_VALUE = "prop.value",
         IMPORT_URL = "import.url";
 
-    var RESERVED_FLOW_NAMES = ["content", "element"],
-        INVALID_FLOW_NAMES = ["none", "inherit", "default", "auto", "initial"],
-        IGNORED_FLOW_NAMES = RESERVED_FLOW_NAMES.concat(INVALID_FLOW_NAMES);
-
     /**
      * List of all bracket pairs that is keyed by opening brackets, and the inverted list
      * that is keyed by closing brackets.
