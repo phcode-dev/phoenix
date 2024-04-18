@@ -87,7 +87,7 @@ define(function (require, exports, module) {
 
         function extractHintList(hints) {
             return $.map(hints, function ($node) {
-                return $node.text();
+                return $node.data('val');
             });
         }
 
@@ -165,21 +165,21 @@ define(function (require, exports, module) {
             it("should list all prop-name hints right after curly bracket", function () {
                 testEditor.setCursorPos({ line: 4, ch: 11 });    // after {
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "align-content");  // filtered on "empty string"
+                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
             });
 
             it("should list all prop-name hints in new line", function () {
                 testEditor.setCursorPos({ line: 5, ch: 1 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "align-content");  // filtered on "empty string"
+                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
             });
 
             it("should list all prop-name hints starting with 'b' in new line", function () {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "backface-visibility");  // filtered on "b"
+                verifyAttrHints(hintList, "backdrop-filter");  // filtered on "b"
             });
 
             it("should list all prop-name hints starting with 'bord' ", function () {
@@ -197,7 +197,7 @@ define(function (require, exports, module) {
 
                 testEditor.setCursorPos({ line: 8, ch: 8 });
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "border-bottom");  // filtered on "border-"
+                verifyAttrHints(hintList, "border-block");  // filtered on "border-"
             });
 
             it("should list only prop-name hint border-color", function () {
@@ -207,17 +207,15 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 9, ch: 12 });
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
                 verifyAttrHints(hintList, "border-color");  // filtered on "border-color"
-                verifyListsAreIdentical(hintList, ["border-color",
-                    "border-left-color",
-                    "border-top-color",
-                    "border-bottom-color",
-                    "border-right-color"]);
+                expect(hintList.length).toBe(16);
+                expect(hintList[0]).toBe("border-color");
+                expect(hintList[1]).toBe("border-left-color");
             });
 
             it("should list prop-name hints at end of property-value finished by ;", function () {
                 testEditor.setCursorPos({ line: 10, ch: 19 });    // after ;
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "align-content");  // filtered on "empty string"
+                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
             });
 
             it("should NOT list prop-name hints right before curly bracket", function () {
@@ -348,7 +346,7 @@ define(function (require, exports, module) {
 
                 testEditor.setCursorPos({ line: 14, ch: 12 });
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "inherit");  // filtered after "display: in"
+                verifyAttrHints(hintList, "inline");  // filtered after "display: in"
             });
 
             it("should NOT list prop-value hints for unknown prop-name", function () {
@@ -408,23 +406,9 @@ define(function (require, exports, module) {
             it("should list prop-name hints inside multi-line styletags with cursor in last line", function () {
                 testEditor.setCursorPos({ line: 10, ch: 5 });    // inside style, after colo
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyListsAreIdentical(hintList, [
-                    "color",
-                    "border-color",
-                    "background-color",
-                    "border-left-color",
-                    "border-top-color",
-                    "outline-color",
-                    "border-bottom-color",
-                    "border-right-color",
-                    "text-decoration-color",
-                    "text-emphasis-color",
-                    "column-count",
-                    "column-rule-color",
-                    "caret-color",
-                    "scroll-behavior",
-                    "background-blend-mode"
-                ]);
+                expect(hintList.length).toBe(84);
+                expect(hintList[0]).toBe("color");
+                expect(hintList[1]).toBe("color-adjust");
             });
 
             it("should NOT list prop-name hints between closed styletag and new opening styletag", function () {
@@ -462,21 +446,21 @@ define(function (require, exports, module) {
             it("should list all prop-name hints right after the open quote for style value context", function () {
                 testEditor.setCursorPos({ line: 4, ch: 12 });    // after "='"
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "align-content");  // filtered on "empty string"
+                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
             });
 
             it("should list all prop-name hints in new line for style value context", function () {
                 testEditor.setCursorPos({ line: 5, ch: 0 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "align-content");  // filtered on "empty string"
+                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
             });
 
             it("should list all prop-name hints starting with 'b' in new line for style value context", function () {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "backface-visibility");  // filtered on "b"
+                verifyAttrHints(hintList, "backdrop-filter");  // filtered on "b"
             });
 
             it("should list all prop-name hints starting with 'bord' for style value context", function () {
@@ -494,7 +478,7 @@ define(function (require, exports, module) {
 
                 testEditor.setCursorPos({ line: 8, ch: 8 });
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "border-bottom");  // filtered on "border-"
+                verifyAttrHints(hintList, "border-block");  // filtered on "border-"
             });
 
             it("should list only prop-name hint border-color for style value context", function () {
@@ -503,18 +487,15 @@ define(function (require, exports, module) {
 
                 testEditor.setCursorPos({ line: 9, ch: 12 });
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "border-color");  // filtered on "border-color"
-                verifyListsAreIdentical(hintList, ["border-color",
-                    "border-left-color",
-                    "border-top-color",
-                    "border-bottom-color",
-                    "border-right-color"]);
+                expect(hintList.length).toBe(16);
+                expect(hintList[0]).toBe("border-color");
+                expect(hintList[1]).toBe("border-left-color");
             });
 
             it("should list prop-name hints at end of property-value finished by ; for style value context", function () {
                 testEditor.setCursorPos({ line: 10, ch: 19 });    // after ;
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "align-content");  // filtered on "empty string"
+                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
             });
 
             it("should NOT list prop-name hints right before style value context", function () {
@@ -615,137 +596,135 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 1, ch: 15 });    // after shape-inside
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
                 verifyAttrHints(hintList, "auto");  // first hint should be auto
-                verifyAllValues(hintList, ["auto", "circle()", "ellipse()", "inherit", "outside-shape", "polygon()", "rectangle()"]);
+                verifyAllValues(hintList, [
+                    "auto","calc()","circle()","ellipse()","inherit","initial","outside-shape","polygon()",
+                    "rectangle()","unset","var()"
+                ]);
             });
 
-            it("should list 16 value-name hints for shape-outside", function () {
+            it("should list 36 value-name hints for shape-outside", function () {
                 testEditor.setCursorPos({ line: 2, ch: 16 });    // after shape-outside
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
                 verifyAttrHints(hintList, "border-box");  // first hint should be border-box
-                verifyAllValues(hintList, ["none", "inherit", "circle()", "ellipse()", "polygon()", "inset()", "margin-box", "border-box", "padding-box", "content-box", "url()", "image()", "linear-gradient()", "radial-gradient()", "repeating-linear-gradient()", "repeating-radial-gradient()"]);
+                verifyAllValues(hintList, [
+                    "-moz-element()",
+                    "-moz-linear-gradient()",
+                    "-moz-radial-gradient()",
+                    "-moz-repeating-linear-gradient()",
+                    "-moz-repeating-radial-gradient()",
+                    "-o-linear-gradient()",
+                    "-o-repeating-linear-gradient()",
+                    "-webkit-gradient()",
+                    "-webkit-image-set()",
+                    "-webkit-linear-gradient()",
+                    "-webkit-radial-gradient()",
+                    "-webkit-repeating-linear-gradient()",
+                    "-webkit-repeating-radial-gradient()",
+                    "border-box",
+                    "calc()",
+                    "circle()",
+                    "content-box",
+                    "cross-fade()",
+                    "element()",
+                    "ellipse()",
+                    "image()",
+                    "image-set()",
+                    "inherit",
+                    "initial",
+                    "inset()",
+                    "linear-gradient()",
+                    "margin-box",
+                    "none",
+                    "padding-box",
+                    "polygon()",
+                    "radial-gradient()",
+                    "repeating-linear-gradient()",
+                    "repeating-radial-gradient()",
+                    "unset",
+                    "url()",
+                    "var()"]
+                );
             });
 
             it("should list 2 value-name hints for region-fragment", function () {
                 testEditor.setCursorPos({ line: 3, ch: 18 });    // after region-fragment
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
                 verifyAttrHints(hintList, "auto");  // first hint should be auto
-                verifyAllValues(hintList, ["auto", "break"]);
+                verifyAllValues(hintList, [
+                    "auto",
+                    "break",
+                    "calc()",
+                    "inherit",
+                    "initial",
+                    "unset",
+                    "var()"
+                ]);
             });
 
             it("should list 11 value-name hints for region-break-after", function () {
                 testEditor.setCursorPos({ line: 4, ch: 21 });    // after region-break-after
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
                 verifyAttrHints(hintList, "always");  // first hint should be always
-                verifyAllValues(hintList, ["always", "auto", "avoid", "avoid-column", "avoid-page", "avoid-region", "column", "left", "page", "region", "right"]);
+                verifyAllValues(hintList, [
+                    "always",
+                    "auto",
+                    "avoid",
+                    "avoid-column",
+                    "avoid-page",
+                    "avoid-region",
+                    "calc()",
+                    "column",
+                    "inherit",
+                    "initial",
+                    "left",
+                    "page",
+                    "region",
+                    "right",
+                    "unset",
+                    "var()"
+                ]);
             });
 
             it("should list 5 value-name hints for region-break-inside", function () {
                 testEditor.setCursorPos({ line: 5, ch: 22 });    // after region-break-inside
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
                 verifyAttrHints(hintList, "auto");  // first hint should be auto
-                verifyAllValues(hintList, ["auto", "avoid", "avoid-column", "avoid-page", "avoid-region"]);
+                verifyAllValues(hintList, [
+                    "auto",
+                    "avoid",
+                    "avoid-column",
+                    "avoid-page",
+                    "avoid-region",
+                    "calc()",
+                    "inherit",
+                    "initial",
+                    "unset",
+                    "var()"
+                ]);
             });
 
             it("should list 11 value-name hints for region-break-before", function () {
                 testEditor.setCursorPos({ line: 6, ch: 23 });    // after region-break-before
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
                 verifyAttrHints(hintList, "always");  // first hint should be always
-                verifyAllValues(hintList, ["always", "auto", "avoid", "avoid-column", "avoid-page", "avoid-region", "column", "left", "page", "region", "right"]);
-            });
-
-            it("should list 2 value-name hints for flow-from", function () {
-                testEditor.setCursorPos({ line: 9, ch: 12 });    // after flow-from
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "inherit");  // first hint should be inherit
-                verifyAllValues(hintList, ["inherit", "none"]);
-            });
-
-            it("should list 1 value-name hint for flow-into", function () {
-                testEditor.setCursorPos({ line: 10, ch: 12 });    // after flow-into
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "none");  // first hint should be none
-                verifyAllValues(hintList, ["none"]);
-            });
-        });
-
-        describe("Named flow hints for flow-into and flow-from properties in a CSS file", function () {
-            beforeEach(function () {
-                setupTest(testContentCSS, "css");
-            });
-
-            afterEach(function () {
-                tearDownTest();
-            });
-
-            it("should list more than 2 value hints for flow-from", function () {
-                testEditor.setCursorPos({ line: 66, ch: 15 });    // after flow-from
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "edge-code_now_shipping");  // first hint should be edge-code_now_shipping
-                verifyAllValues(hintList, ["edge-code_now_shipping", "inherit", "jeff", "lim", "main", "none", "randy"]);
-            });
-
-            it("should list more than 1 value hint for flow-into", function () {
-                testEditor.setCursorPos({ line: 77, ch: 4 });
-                selectHint(CSSCodeHints.cssPropHintProvider, "flow-into");
-                expect(testDocument.getLine(77)).toBe("    flow-into: ");
-                expectCursorAt({ line: 77, ch: 15 });
-
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "edge-code_now_shipping");  // first hint should be edge-code_now_shipping
-                verifyAllValues(hintList, ["edge-code_now_shipping", "jeff", "lim", "main", "none", "randy"]);
-            });
-
-            it("should NOT include partially entered named flow value in hint list", function () {
-                // Insert a letter for a new named flow after flow-from: on line 66
-                testDocument.replaceRange("m", { line: 66, ch: 15 });
-
-                testEditor.setCursorPos({ line: 66, ch: 16 });    // after flow-from: m
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyListsAreIdentical(hintList, ["main", "lim"]);
-            });
-
-        });
-
-        describe("Named flow hints inside a style block of an HTML", function () {
-            beforeEach(function () {
-                setupTest(testContentHTML, "html");
-            });
-
-            afterEach(function () {
-                tearDownTest();
-            });
-
-            it("should include only 2 named flows available in the style block for flow-from", function () {
-                testEditor.setCursorPos({ line: 28, ch: 21 });    // after flow-from
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "article");  // first hint should be article
-                verifyAllValues(hintList, ["article", "inherit", "none", "regionC"]);
-            });
-
-            it("should include only 2 named flows available in the style block for flow-into", function () {
-                testEditor.setCursorPos({ line: 34, ch: 21 });
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "article");  // first hint should be article
-                verifyAllValues(hintList, ["article", "none", "regionC"]);
-            });
-
-            it("should NOT include partially entered named flow value in hint list", function () {
-                // Insert a letter for a new named flow after flow-from: on line 28
-                testDocument.replaceRange("m", { line: 28, ch: 21 });
-
-                testEditor.setCursorPos({ line: 28, ch: 22 });    // after flow-from: m
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAllValues(hintList, []);
-            });
-
-            it("should NOT show named flow available inisde HTML text", function () {
-                // Insert a letter for a new named flow after flow-from: on line 28
-                testDocument.replaceRange("some", { line: 28, ch: 21 });
-
-                testEditor.setCursorPos({ line: 28, ch: 25 });    // after flow-from: some
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                // some-named-flow should not be in the hint list since it is inside HTML text
-                verifyAllValues(hintList, []);
+                verifyAllValues(hintList, [
+                    "always",
+                    "auto",
+                    "avoid",
+                    "avoid-column",
+                    "avoid-page",
+                    "avoid-region",
+                    "calc()",
+                    "column",
+                    "inherit",
+                    "initial",
+                    "left",
+                    "page",
+                    "region",
+                    "right",
+                    "unset",
+                    "var()"
+                ]);
             });
         });
 

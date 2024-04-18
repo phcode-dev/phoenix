@@ -164,7 +164,7 @@ define(function (require, exports, module) {
         StringMatch.basicMatchSort(hints);
         hints = vendorPrefixesAndGenericToEnd(hints);
         return hints.map(function (token) {
-            var $hintObj = $("<span>").addClass("brackets-css-hints brackets-hints");
+            var $hintObj = $(`<span data-val='${token.label || token.value}'></span>`).addClass("brackets-css-hints brackets-hints");
 
             // highlight the matched portion of each hint
             if (token.stringRanges) {
@@ -188,8 +188,10 @@ define(function (require, exports, module) {
                 const $mdn = $(`<a class="css-code-hint-info" style="text-decoration: none;"
                 href="${token.MDN_URL}" title="${Strings.DOCS_MORE_LINK_MDN_TITLE}">
                 <i class="fa-solid fa-circle-info"></i></a>`);
-                return $(`<span></span>`).append($hintObj).append($mdn);
+                $hintObj = $(`<span data-val='${token.label || token.value}'></span>`).append($hintObj).append($mdn);
             }
+
+            $hintObj.attr("data-val", token.value);
 
             return $hintObj;
         });
@@ -359,7 +361,7 @@ define(function (require, exports, module) {
             ctx;
 
         if (hint.jquery) {
-            hint = hint.text();
+            hint = hint.data("val");
         }
 
         if (this.info.context !== CSSUtils.PROP_NAME && this.info.context !== CSSUtils.PROP_VALUE) {
