@@ -28,7 +28,6 @@ define(function (require, exports, module) {
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         XMLUtils            = brackets.getModule("language/XMLUtils"),
         StringMatch         = brackets.getModule("utils/StringMatch"),
-        ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         ColorUtils          = brackets.getModule("utils/ColorUtils"),
         Strings             = brackets.getModule("strings"),
         _                   = brackets.getModule("thirdparty/lodash"),
@@ -106,7 +105,7 @@ define(function (require, exports, module) {
 
         StringMatch.basicMatchSort(hints);
         return hints.map(function (token) {
-            var $hintObj = $("<span>").addClass("brackets-svg-hints");
+            var $hintObj = $("<span>").addClass("brackets-svg-hints brackets-hints");
 
             // highlight the matched portion of each hint
             if (token.stringRanges) {
@@ -336,8 +335,6 @@ define(function (require, exports, module) {
 
         var hintProvider = new SVGCodeHints();
         CodeHintManager.registerHintProvider(hintProvider, ["svg"], 0);
-
-        ExtensionUtils.loadStyleSheet(module, "styles/brackets-svg-hints.css");
         exports.hintProvider = hintProvider;
     });
 });

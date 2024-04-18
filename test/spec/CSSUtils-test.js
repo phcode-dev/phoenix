@@ -2556,24 +2556,4 @@ define(function (require, exports, module) {
             });
         });
     });
-
-
-    describe("CSS Regions", function () {
-        beforeEach(async function () {
-            await init(this, cssRegionsFileEntry);
-        });
-
-        it("should find named flows", function () {
-            var namedFlows = CSSUtils.extractAllNamedFlows(this.fileContent);
-            expect(namedFlows.length).toBe(5);
-            expect(namedFlows).toContain("main");
-            expect(namedFlows).toContain("jeff");
-            expect(namedFlows).toContain("randy");
-            expect(namedFlows).toContain("lim");
-            expect(namedFlows).toContain("edge-code_now_shipping");
-            expect(namedFlows).not.toContain("inherit");
-            expect(namedFlows).not.toContain("content");
-        });
-
-    });
 });

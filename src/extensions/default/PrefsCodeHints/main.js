@@ -128,7 +128,7 @@ define(function (require, exports, module) {
 
         StringMatch.basicMatchSort(hints);
         return hints.map(function (token) {
-            var $hintItem = $("<span>").addClass("brackets-pref-hints"),
+            var $hintItem = $("<span>").addClass("brackets-pref-hints brackets-hints"),
                 $hintObj  = $("<span>").addClass("hint-obj");
 
             // highlight the matched portion of each hint

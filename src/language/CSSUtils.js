@@ -1720,37 +1720,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Extracts all named flow instances
-     * @param {!string} text to extract from
-     * @return {Array.<string>} array of unique flow names found in the content (empty if none)
-     */
-    function extractAllNamedFlows(text) {
-        var namedFlowRegEx = /(?:flow\-(into|from)\:\s*)([\w\-]+)(?:\s*;)/gi,
-            result = [],
-            names = {},
-            thisMatch;
-
-        // Reduce the content so that matches
-        // inside strings and comments are ignored
-        text = reduceStyleSheetForRegExParsing(text);
-
-        // Find the first match
-        thisMatch = namedFlowRegEx.exec(text);
-
-        // Iterate over the matches and add them to result
-        while (thisMatch) {
-            var thisName = thisMatch[2];
-
-            if (IGNORED_FLOW_NAMES.indexOf(thisName) === -1 && !names.hasOwnProperty(thisName)) {
-                names[thisName] = result.push(thisName);
-            }
-            thisMatch = namedFlowRegEx.exec(text);
-        }
-
-        return result;
-    }
-
-    /**
      * Adds a new rule to the end of the given document, and returns the range of the added rule
      * and the position of the cursor on the indented blank line within it. Note that the range will
      * not include all the inserted text (we insert extra newlines before and after the rule).
@@ -1845,7 +1814,6 @@ define(function (require, exports, module) {
     exports._findAllMatchingSelectorsInText = _findAllMatchingSelectorsInText; // For testing only
     exports.findMatchingRules = findMatchingRules;
     exports.extractAllSelectors = extractAllSelectors;
-    exports.extractAllNamedFlows = extractAllNamedFlows;
     exports.findSelectorAtDocumentPos = findSelectorAtDocumentPos;
     exports.reduceStyleSheetForRegExParsing = reduceStyleSheetForRegExParsing;
     exports.addRuleToDocument = addRuleToDocument;

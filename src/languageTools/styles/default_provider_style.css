@@ -87,6 +87,12 @@ span.brackets-hints-with-type-details {
 
 .brackets-hints .matched-hint {
     font-weight: 500;
+    color: #437900;
+}
+
+.dark .brackets-hints .matched-hint {
+    font-weight: 500;
+    color: #74B120;
 }
 
 #function-hint-container-new {

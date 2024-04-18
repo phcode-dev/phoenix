@@ -197,10 +197,10 @@ define(function (require, exports, module) {
             _addHint = function (name) {
                 var displayName = name.replace(
                     new RegExp(StringUtils.regexEscape(match), "i"),
-                    "<strong>$&</strong>"
+                    "<span class='matched-hint'>$&</span>"
                 );
 
-                view.hints.push({ formattedHint: "<span>" + displayName + "</span>" });
+                view.hints.push({ formattedHint: "<span class='brackets-hints'>" + displayName + "</span>" });
             };
         } else {
             _addHint = function (hint) {
