@@ -110,15 +110,6 @@ define(function (require, exports, module) {
             expect(hintList[0]).toBe(expectedFirstHint);
         }
 
-        // compares lists to ensure they are the same
-        function verifyListsAreIdentical(hintList, values) {
-            var i;
-            expect(hintList.length).toBe(values.length);
-            for (i = 0; i < values.length; i++) {
-                expect(hintList[i]).toBe(values[i]);
-            }
-        }
-
 
         function selectHint(provider, expectedHint, implicitChar) {
             var hintList = expectHints(provider, implicitChar);
