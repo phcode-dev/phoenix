@@ -130,14 +130,14 @@ define(function (require, exports, module) {
         return true;
     };
 
-    function vendorPrefixesToEnd(hints) {
+    function vendorPrefixesAndGenericToEnd(hints) {
         // Two arrays to hold strings: one for non-dash strings, one for dash-starting strings
         const nonDashHints = [];
         const dashHints = [];
 
         // Iterate through the array and partition the strings into the two arrays based on the starting character
         hints.forEach(hint => {
-            if (hint.label.startsWith('-')) {
+            if (hint.label.startsWith('-') || cssWideKeywords.includes(hint.label)) {
                 dashHints.push(hint);
             } else {
                 nonDashHints.push(hint);
@@ -162,7 +162,7 @@ define(function (require, exports, module) {
         });
 
         StringMatch.basicMatchSort(hints);
-        hints = vendorPrefixesToEnd(hints);
+        hints = vendorPrefixesAndGenericToEnd(hints);
         return hints.map(function (token) {
             var $hintObj = $("<span>").addClass("brackets-css-hints brackets-hints");
 
@@ -170,7 +170,7 @@ define(function (require, exports, module) {
             if (token.stringRanges) {
                 token.stringRanges.forEach(function (item) {
                     if (item.matched) {
-                        $hintObj.append($("<span>")
+                        $hintObj.append($(`<span>`)
                             .text(item.text)
                             .addClass("matched-hint"));
                     } else {
@@ -183,6 +183,12 @@ define(function (require, exports, module) {
 
             if (hasColorSwatch) {
                 $hintObj = ColorUtils.formatColorHint($hintObj, token.color);
+            }
+            if(token.MDN_URL) {
+                const $mdn = $(`<a class="css-code-hint-info" style="text-decoration: none;"
+                href="${token.MDN_URL}" title="${Strings.DOCS_MORE_LINK_MDN_TITLE}">
+                <i class="fa-solid fa-circle-info"></i></a>`);
+                return $(`<span></span>`).append($hintObj).append($mdn);
             }
 
             return $hintObj;
@@ -315,6 +321,9 @@ define(function (require, exports, module) {
             result = $.map(properties, function (pvalues, pname) {
                 var result = StringMatch.stringMatch(pname, needle, stringMatcherOptions);
                 if (result) {
+                    if(properties[pname].MDN_URL){
+                        result.MDN_URL = properties[pname].MDN_URL;
+                    }
                     return result;
                 }
             });
