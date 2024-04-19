@@ -30,6 +30,8 @@ define(function (require, exports, module) {
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Strings             = brackets.getModule("strings"),
         NewFileContentManager = brackets.getModule("features/NewFileContentManager"),
+        CSSUtils            = brackets.getModule("language/CSSUtils"),
+        StringMatch         = brackets.getModule("utils/StringMatch"),
         HTMLTags            = require("text!HtmlTags.json"),
         HTMLAttributes      = require("text!HtmlAttributes.json"),
         HTMLTemplate        = require("text!template.html"),
@@ -219,6 +221,52 @@ define(function (require, exports, module) {
         });
     };
 
+    const MAX_CLASS_HINTS = 250;
+    function formatHints(hints) {
+        StringMatch.basicMatchSort(hints);
+        if(hints.length > MAX_CLASS_HINTS) {
+            hints = hints.splice(0, MAX_CLASS_HINTS);
+        }
+        return hints.map(function (token) {
+            let $hintObj = $("<span>").addClass("brackets-html-hints brackets-hints");
+
+            // highlight the matched portion of each hint
+            if (token.stringRanges) {
+                token.stringRanges.forEach(function (item) {
+                    if (item.matched) {
+                        $hintObj.append($("<span>")
+                            .text(item.text)
+                            .addClass("matched-hint"));
+                    } else {
+                        $hintObj.append(item.text);
+                    }
+                });
+            } else {
+                $hintObj.text(token.label);
+            }
+            $hintObj.attr("data-val", token.label);
+            return $hintObj;
+        });
+    }
+
+    function _getAllClassHints(query) {
+        let queryStr = query.queryStr;
+        // "class1 class2" have multiple classes. the last part is the query to hint
+        const segments = queryStr.split(" ");
+        queryStr = segments[segments.length-1];
+        const deferred = $.Deferred();
+        CSSUtils.getAllCssSelectorsInProject({includeClasses: true}).then(hints=>{
+            const result = $.map(hints, function (pvalue) {
+                pvalue = pvalue.slice(1); // remove.
+                return  StringMatch.stringMatch(pvalue, queryStr, { preferPrefixMatches: true });
+            });
+            const validHints = formatHints(result);
+            validHints.alreadyMatched = true;
+            deferred.resolve(validHints);
+        }).catch(console.error);
+        return deferred;
+    }
+
     /**
      * Helper function that determines the possible value hints for a given html tag/attribute name pair
      *
@@ -241,6 +289,10 @@ define(function (require, exports, module) {
         // but in some cases like "type" attribute, we have different properties like
         // "script/type", "link/type" and "button/type".
         var hints = [];
+
+        if(attrName === "class") {
+            return _getAllClassHints(query);
+        }
 
         var tagPlusAttr = tagName + "/" + attrName,
             attrInfo = attributes[tagPlusAttr] || attributes[attrName];
@@ -326,10 +378,10 @@ define(function (require, exports, module) {
                 }
 
                 // If we're at an attribute value, check if it's an attribute name that has hintable values.
-                if (this.tagInfo.attr.name) {
-                    var hints = this._getValueHintsForAttr({queryStr: query},
-                                                           this.tagInfo.tagName,
-                                                           this.tagInfo.attr.name);
+                const attrName = this.tagInfo.attr.name;
+                if (attrName && attrName !== "class") { // class hints are always computed later
+                    let hints = this._getValueHintsForAttr({queryStr: query},
+                        this.tagInfo.tagName, attrName);
                     if (hints instanceof Array) {
                         // If we got synchronous hints, check if we have something we'll actually use
                         var i, foundPrefix = false;
@@ -452,7 +504,7 @@ define(function (require, exports, module) {
                 hints.done(function (asyncHints) {
                     deferred.resolveWith(this, [{
                         hints: asyncHints,
-                        match: query.queryStr,
+                        match: asyncHints.alreadyMatched? null: query.queryStr,
                         selectInitial: true,
                         handleWideResults: false
                     }]);
@@ -487,6 +539,7 @@ define(function (require, exports, module) {
             replaceExistingOne = this.tagInfo.attr.valueAssigned,
             endQuote = "",
             shouldReplace = true,
+            positionWithinAttributeVal = false,
             textAfterCursor;
 
         if (tokenType === HTMLUtils.ATTR_NAME) {
@@ -518,6 +571,18 @@ define(function (require, exports, module) {
                 charCount = this.tagInfo.attr.value.length;
             }
 
+            if(this.tagInfo.attr.name === "class") {
+                // css class hints
+                completion = completion.data("val");
+                // "anotherClass class<cursor>name" . completion = classics , we have to match a prefix after space
+                const textBeforeCursor = this.tagInfo.attr.value.slice(0, offset);
+                let lastSegment = textBeforeCursor.split(" ");
+                lastSegment = lastSegment[lastSegment.length-1];
+                offset = lastSegment.length;
+                charCount = offset;
+                positionWithinAttributeVal = true;
+            }
+
             if (!this.tagInfo.attr.hasEndQuote) {
                 endQuote = this.tagInfo.attr.quoteChar;
                 if (endQuote) {
@@ -542,7 +607,10 @@ define(function (require, exports, module) {
             }
         }
 
-        if (insertedName) {
+        if(positionWithinAttributeVal){
+            this.editor.setCursorPos(start.line, start.ch + completion.length);
+            // we're now inside the double-quotes we just inserted
+        } else if (insertedName) {
             this.editor.setCursorPos(start.line, start.ch + completion.length - 1);
 
             // Since we're now inside the double-quotes we just inserted,
