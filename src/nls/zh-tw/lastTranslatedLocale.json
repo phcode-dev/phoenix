@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "最近開啟的專案",
   "REMOVE_FROM_RECENT_PROJECTS": "從最近的項目中刪除",
   "DOCS_MORE_LINK": "更多資訊",
+  "DOCS_MORE_LINK_MDN_TITLE": "點擊閱讀文檔",
   "COLLAPSE_ALL": "全部收合",
   "EXPAND_ALL": "全部展開",
   "COLLAPSE_CURRENT": "收合目前區塊",

@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "最近的项目",
   "REMOVE_FROM_RECENT_PROJECTS": "从最近的项目中删除",
   "DOCS_MORE_LINK": "更多信息",
+  "DOCS_MORE_LINK_MDN_TITLE": "点击阅读文档",
   "COLLAPSE_ALL": "收起所有",
   "EXPAND_ALL": "展开所有",
   "COLLAPSE_CURRENT": "收起当前",

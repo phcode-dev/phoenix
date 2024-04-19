@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "Ostatnie projekty",
   "REMOVE_FROM_RECENT_PROJECTS": "Usuń z ostatnich projektów",
   "DOCS_MORE_LINK": "Czytaj więcej",
+  "DOCS_MORE_LINK_MDN_TITLE": "Kliknij, aby przeczytać Dokumentację",
   "COLLAPSE_ALL": "Zwiń wszystko",
   "EXPAND_ALL": "Rozwiń wszystko",
   "COLLAPSE_CURRENT": "Zwiń element",

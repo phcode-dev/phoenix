@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "Senaste projekt",
   "REMOVE_FROM_RECENT_PROJECTS": "Ta bort från senaste projekt",
   "DOCS_MORE_LINK": "Läs mer",
+  "DOCS_MORE_LINK_MDN_TITLE": "Klicka för att läsa dokumentation",
   "COLLAPSE_ALL": "Kollapsa alla",
   "EXPAND_ALL": "Expandera alla",
   "COLLAPSE_CURRENT": "Kollapsa nuvarande",

@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "Recent Projects",
   "REMOVE_FROM_RECENT_PROJECTS": "Remove from Recent Projects",
   "DOCS_MORE_LINK": "Read more",
+  "DOCS_MORE_LINK_MDN_TITLE": "Click to read Documentation",
   "COLLAPSE_ALL": "Collapse All",
   "EXPAND_ALL": "Expand All",
   "COLLAPSE_CURRENT": "Collapse Current",

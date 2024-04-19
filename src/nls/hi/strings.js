@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "हाल ही में की परियोजनाएं",
   "REMOVE_FROM_RECENT_PROJECTS": "हाल की परियोजनाओं से हटाएँ",
   "DOCS_MORE_LINK": "अधिक पढ़ें",
+  "DOCS_MORE_LINK_MDN_TITLE": "दस्तावेज़ पढ़ने के लिए क्लिक करें",
   "COLLAPSE_ALL": "सभी को संकुचित करें",
   "EXPAND_ALL": "सभी का विस्तार",
   "COLLAPSE_CURRENT": "वर्तमान संक्षिप्त करें",

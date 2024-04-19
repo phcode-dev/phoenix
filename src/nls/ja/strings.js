@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "最近使用したプロジェクト",
   "REMOVE_FROM_RECENT_PROJECTS": "最近のプロジェクトから削除",
   "DOCS_MORE_LINK": "詳細",
+  "DOCS_MORE_LINK_MDN_TITLE": "クリックしてドキュメントを読む",
   "COLLAPSE_ALL": "すべて折りたたむ",
   "EXPAND_ALL": "すべて展開",
   "COLLAPSE_CURRENT": "現在のコードをたたむ",

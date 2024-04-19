@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "Recente projecten",
   "REMOVE_FROM_RECENT_PROJECTS": "Verwijderen uit recente projecten",
   "DOCS_MORE_LINK": "Lees meer",
+  "DOCS_MORE_LINK_MDN_TITLE": "Klik om documentatie te lezen",
   "COLLAPSE_ALL": "Alles inklappen",
   "EXPAND_ALL": "Alles uitklappen",
   "COLLAPSE_CURRENT": "Huidige inklappen",

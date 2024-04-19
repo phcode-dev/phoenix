@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "Скорошни проекти",
   "REMOVE_FROM_RECENT_PROJECTS": "Премахване от последните проекти",
   "DOCS_MORE_LINK": "Прочетете повече",
+  "DOCS_MORE_LINK_MDN_TITLE": "Кликнете, за да прочетете документацията",
   "COLLAPSE_ALL": "Сгъване на всичко",
   "EXPAND_ALL": "Разгъване на всичко",
   "COLLAPSE_CURRENT": "Сгъване на текущото",

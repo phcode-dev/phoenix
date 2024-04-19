@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "مشاريع حديثه",
   "REMOVE_FROM_RECENT_PROJECTS": "إزالة من المشاريع الأخيرة",
   "DOCS_MORE_LINK": "اقرأ أكثر",
+  "DOCS_MORE_LINK_MDN_TITLE": "انقر لقراءة الوثائق",
   "COLLAPSE_ALL": "انهيار جميع",
   "EXPAND_ALL": "توسيع الكل",
   "COLLAPSE_CURRENT": "انهيار التيار",

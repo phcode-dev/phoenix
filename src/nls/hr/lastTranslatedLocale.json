@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "Nedavni projekti",
   "REMOVE_FROM_RECENT_PROJECTS": "Ukloni iz nedavnih projekata",
   "DOCS_MORE_LINK": "Pročitaj više",
+  "DOCS_MORE_LINK_MDN_TITLE": "Kliknite za čitanje dokumentacije",
   "COLLAPSE_ALL": "Skupi sve",
   "EXPAND_ALL": "Proširi sve",
   "COLLAPSE_CURRENT": "Skupi trenutno",

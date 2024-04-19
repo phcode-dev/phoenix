@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "Proyek Terkini",
   "REMOVE_FROM_RECENT_PROJECTS": "Hapus dari Proyek Terbaru",
   "DOCS_MORE_LINK": "Baca selengkapnya",
+  "DOCS_MORE_LINK_MDN_TITLE": "Klik untuk membaca Dokumentasi",
   "COLLAPSE_ALL": "Ciutkan Semua",
   "EXPAND_ALL": "Melebarkan semua",
   "COLLAPSE_CURRENT": "Ciutkan Arus",

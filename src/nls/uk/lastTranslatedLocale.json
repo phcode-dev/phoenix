@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "Останні проекти",
   "REMOVE_FROM_RECENT_PROJECTS": "Видалити з останніх проектів",
   "DOCS_MORE_LINK": "Докладніше",
+  "DOCS_MORE_LINK_MDN_TITLE": "Натисніть, щоб прочитати документацію",
   "COLLAPSE_ALL": "Закрити всі",
   "EXPAND_ALL": "Розгорнути все",
   "COLLAPSE_CURRENT": "Згорнути струм",

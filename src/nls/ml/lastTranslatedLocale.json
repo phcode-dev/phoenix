@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "സമീപകാല പദ്ധതികൾ",
   "REMOVE_FROM_RECENT_PROJECTS": "സമീപകാല പദ്ധതികളിൽ നിന്ന് നീക്കം ചെയ്യുക",
   "DOCS_MORE_LINK": "കൂടുതല് വായിക്കുക",
+  "DOCS_MORE_LINK_MDN_TITLE": "ഡോക്യുമെൻ്റേഷൻ വായിക്കാൻ ക്ലിക്ക് ചെയ്യുക",
   "COLLAPSE_ALL": "എല്ലാം സങ്കോചിപ്പിക്കുക",
   "EXPAND_ALL": "എല്ലാം വികസിപ്പിക്കുക",
   "COLLAPSE_CURRENT": "കറന്റ് ചുരുക്കുക",
