@@ -10,7 +10,10 @@
     "defaultExtension": "js",
     "language": {
         "javascript": {
-            "linting.prefer": ["ESLint", "JSHint"],
+            "linting.prefer": [
+                "ESLint",
+                "JSHint"
+            ],
             "linting.usePreferredOnly": true
         }
     },
@@ -25,5 +28,9 @@
         }
     },
     "spaceUnits": 4,
-    "useTabChar": false
+    "useTabChar": false,
+    "livePreviewUseDevServer": false,
+    "livePreviewServerURL": "",
+    "livePreviewServerProjectPath": "/",
+    "livePreviewHotReloadSupported": false
 }

@@ -37,6 +37,7 @@ define(function (require, exports, module) {
         LanguageManager     = require("language/LanguageManager"),
         ProjectManager      = require("project/ProjectManager"),
         TokenUtils          = require("utils/TokenUtils"),
+        IndexingWorker      = require("worker/IndexingWorker"),
         _                   = require("thirdparty/lodash");
 
     // Constants
@@ -1816,11 +1817,12 @@ define(function (require, exports, module) {
             return selectors;
         }
         for(let item of selectorList) {
-            if(regex.test(item.selector)){
+            if(regex.test(item) || !item.trim()){
                 // this happens for scss selectors like #${var}-something. we ignore that for now instead of resolving
                 continue;
             }
-            selectors.add(extractSelectorBase(item.selector)); // x:hover or x::some -> x
+            const extracted = extractSelectorBase(item);
+            extracted.trim() && selectors.add(extracted); // x:hover or x::some -> x
         }
         return selectors;
     }
@@ -1845,22 +1847,41 @@ define(function (require, exports, module) {
         }
     }
 
+    const MODE_MAP = {
+        css: "CSS",
+        less: "LESS",
+        scss: "SCSS"
+    };
+
     function _loadFileAndScanCSSSelectorCached(fullPath) {
         return new Promise(resolve=>{
             DocumentManager.getDocumentForPath(fullPath)
                 .done(function (doc) {
                     // Find all matching rules for the given CSS file's content, and add them to the
                     // overall search result
-                    let selectors;
+                    let selectors = new Set();
                     const cachedSelectors = CSSSelectorCache.get(fullPath);
                     if(cachedSelectors){
-                        selectors = cachedSelectors;
-                    } else {
-                        selectors = extractAllSelectors(doc.getText(), doc.getLanguage().getMode());
-                        selectors = _extractSelectorSet(selectors);
-                        CSSSelectorCache.set(fullPath, selectors);
+                        resolve(cachedSelectors);
+                        return;
                     }
-                    resolve(selectors);
+                    const langID = doc.getLanguage().getId();
+                    if(!MODE_MAP[langID]){
+                        console.log("Cannot parse CSS for mode :", langID, "ignoring", fullPath);
+                        resolve(selectors);
+                        return;
+                    }
+                    console.log("scanning file for css selector collation: ", fullPath);
+                    IndexingWorker.execPeer("css_getAllSymbols",
+                        {text: doc.getText(), cssMode: "CSS", filePath: fullPath})
+                        .then((selectorArray)=>{
+                            selectors = _extractSelectorSet(selectorArray);
+                            CSSSelectorCache.set(fullPath, selectors);
+                            resolve(selectors);
+                        }).catch(err=>{
+                            console.warn("CSS language service unable to get selectors for" + fullPath, err);
+                            resolve(selectors);  // still resolve, so the overall result doesn't reject
+                        });
                 })
                 .fail(function (error) {
                     console.warn("Unable to read " + fullPath + " during CSS selector search:", error);
@@ -1923,6 +1944,10 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
+        if(Phoenix.isSpecRunnerWindow){
+            // no unit tests event handlers
+            return;
+        }
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, ()=>{
             CSSSelectorCache.clear();

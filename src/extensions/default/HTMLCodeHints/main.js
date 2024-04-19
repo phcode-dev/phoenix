@@ -258,6 +258,9 @@ define(function (require, exports, module) {
         CSSUtils.getAllCssSelectorsInProject({includeClasses: true}).then(hints=>{
             const result = $.map(hints, function (pvalue) {
                 pvalue = pvalue.slice(1); // remove.
+                if(!pvalue || pvalue.includes("#") || pvalue.includes("\\") || pvalue.includes("/")){
+                    return null;
+                }
                 return  StringMatch.stringMatch(pvalue, queryStr, { preferPrefixMatches: true });
             });
             const validHints = formatHints(result);
