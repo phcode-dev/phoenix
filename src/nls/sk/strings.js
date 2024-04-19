@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "Nedávne projekty",
   "REMOVE_FROM_RECENT_PROJECTS": "Odstrániť z nedávnych projektov",
   "DOCS_MORE_LINK": "Viac",
+  "DOCS_MORE_LINK_MDN_TITLE": "Kliknutím si prečítajte dokumentáciu",
   "COLLAPSE_ALL": "Zbaliť všetko",
   "EXPAND_ALL": "Rozbaliť všetko",
   "COLLAPSE_CURRENT": "Zbaliť prúd",

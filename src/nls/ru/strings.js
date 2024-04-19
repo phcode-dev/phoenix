@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "Предыдущие проекты",
   "REMOVE_FROM_RECENT_PROJECTS": "Удалить из последних проектов",
   "DOCS_MORE_LINK": "Подробнее…",
+  "DOCS_MORE_LINK_MDN_TITLE": "Нажмите, чтобы прочитать документацию",
   "COLLAPSE_ALL": "Свернуть все",
   "EXPAND_ALL": "Развернуть все",
   "COLLAPSE_CURRENT": "Свернуть текущий",

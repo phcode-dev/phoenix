@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "Legutóbbi projektek",
   "REMOVE_FROM_RECENT_PROJECTS": "Eltávolítás a legutóbbi projektekből",
   "DOCS_MORE_LINK": "Olvasd tovább",
+  "DOCS_MORE_LINK_MDN_TITLE": "Kattintson a Dokumentáció elolvasásához",
   "COLLAPSE_ALL": "Összes bezárása",
   "EXPAND_ALL": "Bontsa ki az összeset",
   "COLLAPSE_CURRENT": "Az aktuális összecsukása",

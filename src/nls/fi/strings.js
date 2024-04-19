@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "Viimeaikaiset projektit",
   "REMOVE_FROM_RECENT_PROJECTS": "Poista viimeaikaisista projekteista",
   "DOCS_MORE_LINK": "Lue lisää",
+  "DOCS_MORE_LINK_MDN_TITLE": "Napsauta lukeaksesi dokumentaatiota",
   "COLLAPSE_ALL": "Pienennä kaikki",
   "EXPAND_ALL": "Laajenna kaikki",
   "COLLAPSE_CURRENT": "Pienennä nykyinen",

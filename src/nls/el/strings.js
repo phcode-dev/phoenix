@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "Πρόσφατα Project",
   "REMOVE_FROM_RECENT_PROJECTS": "Κατάργηση από Πρόσφατα Έργα",
   "DOCS_MORE_LINK": "Διαβάστε Περισσότερα",
+  "DOCS_MORE_LINK_MDN_TITLE": "Κάντε κλικ για να διαβάσετε την Τεκμηρίωση",
   "COLLAPSE_ALL": "Σύμπτυξη όλων",
   "EXPAND_ALL": "Ανάπτυξη όλων",
   "COLLAPSE_CURRENT": "Σύμπτυξη ρεύματος",

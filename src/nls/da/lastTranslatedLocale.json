@@ -719,6 +719,7 @@
   "CMD_TOGGLE_RECENT_PROJECTS": "Seneste projekter",
   "REMOVE_FROM_RECENT_PROJECTS": "Fjern fra Seneste projekter",
   "DOCS_MORE_LINK": "Læs mere",
+  "DOCS_MORE_LINK_MDN_TITLE": "Klik for at læse dokumentation",
   "COLLAPSE_ALL": "Skjul alle",
   "EXPAND_ALL": "Udvid alle",
   "COLLAPSE_CURRENT": "Skjul aktuel",

@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "حالیہ پروجیکٹس",
   "REMOVE_FROM_RECENT_PROJECTS": "حالیہ پروجیکٹس سے ہٹا دیں۔",
   "DOCS_MORE_LINK": "مزید پڑھ",
+  "DOCS_MORE_LINK_MDN_TITLE": "دستاویز پڑھنے کے لیے کلک کریں۔",
   "COLLAPSE_ALL": "سبھی کو سکیڑیں۔",
   "EXPAND_ALL": "سبھی کو پھیلائیں۔",
   "COLLAPSE_CURRENT": "کرنٹ کو سمیٹیں۔",

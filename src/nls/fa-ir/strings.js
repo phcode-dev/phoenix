@@ -739,6 +739,7 @@ define({
   "CMD_TOGGLE_RECENT_PROJECTS": "پروژه های اخیر",
   "REMOVE_FROM_RECENT_PROJECTS": "حذف از پروژه های اخیر",
   "DOCS_MORE_LINK": "بیشتر بخوانید",
+  "DOCS_MORE_LINK_MDN_TITLE": "برای خواندن مستندات کلیک کنید",
   "COLLAPSE_ALL": "جمع کردن همه",
   "EXPAND_ALL": "همه را گسترش دهید",
   "COLLAPSE_CURRENT": "جمع کردن جریان",
