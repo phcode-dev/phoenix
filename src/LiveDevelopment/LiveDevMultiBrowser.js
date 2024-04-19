@@ -604,7 +604,7 @@ define(function (require, exports, module) {
      * @param {Document} doc
      */
     function _onDirtyFlagChange(event, doc) {
-        if (!isActive() || !_server || !_liveDocument) {
+        if (!isActive() || !_server || !_liveDocument || !_liveDocument.isRelated) {
             return;
         }
 
