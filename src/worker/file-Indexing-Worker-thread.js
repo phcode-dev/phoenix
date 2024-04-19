@@ -31,6 +31,7 @@ const Phoenix = {
 importScripts('../phoenix/virtualfs.js');
 importScripts('../utils/EventDispatcher.js');
 importScripts('./WorkerComm.js');
+importScripts('./language-service-worker-thread.js');
 
 virtualfs.debugMode = debugMode;
 
