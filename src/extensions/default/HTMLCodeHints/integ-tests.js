@@ -286,18 +286,34 @@ define(function (require, exports, module) {
             await _validateCssEdit("cssLive1.scss");
         });
 
-        it("should be able to add the class name by selecting the code hint", async function () {
-            await openFile("inlineStyle.html", true);
+        async function _testCssClassHintInFile(htmlLikeFile) {
+            await openFile(htmlLikeFile, true);
             await openFile("cssLive.css", true);
             // this prefix is aaa as we need it as the top code hint
             const cssClassName = StringUtils.randomString(5, "aaaaaaaaaaa");
             setText({ line: 0, ch: 0 }, `.${cssClassName}{}\n`);
 
-            await openFile("inlineStyle.html", true);
+            await openFile(htmlLikeFile, true);
             setText({ line: 12, ch: 31 }, ` `);
             await _validateCodeHints({ line: 12, ch: 32 }, [cssClassName], 0);
             expect(EditorManager.getActiveEditor().getToken().string).toBe(`"integratedStyle ${cssClassName}"`);
             await closeSession();
+        }
+
+        it("should be able to add the class name by selecting the code hint in HTML file", async function () {
+            await _testCssClassHintInFile("inlineStyle.html");
+        });
+
+        it("should be able to add the class name by selecting the code hint in HTM file", async function () {
+            await _testCssClassHintInFile("inlineStyle.htm");
+        });
+
+        it("should be able to add the class name by selecting the code hint in XHTML file", async function () {
+            await _testCssClassHintInFile("inlineStyle.xhtml");
+        });
+
+        it("should be able to add the class name by selecting the code hint in PHP file", async function () {
+            await _testCssClassHintInFile("inlineStyle.php");
         });
     });
 });
