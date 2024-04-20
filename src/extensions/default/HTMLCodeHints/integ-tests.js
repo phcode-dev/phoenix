@@ -25,9 +25,10 @@ define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
 
     const SpecRunnerUtils     = brackets.getModule("spec/SpecRunnerUtils"),
+        StringUtils        = brackets.getModule("utils/StringUtils"),
         KeyEvent         = brackets.getModule("utils/KeyEvent");
 
-    describe("LegacyInteg:HTML Code Hints integration tests", function () {
+    describe("integration:HTML Code Hints integration tests", function () {
 
         const testPath = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files");
 
@@ -40,11 +41,12 @@ define(function (require, exports, module) {
             MainViewManager,
             brackets,
             FileSystem,
+            CSSUtils,
             $;
 
 
         beforeAll(async function () {
-            testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             brackets            = testWindow.brackets;
             $                   = testWindow.$;
             FileViewController  = brackets.test.FileViewController;
@@ -54,6 +56,7 @@ define(function (require, exports, module) {
             EditorManager       = brackets.test.EditorManager;
             MainViewManager     = brackets.test.MainViewManager;
             FileSystem          = brackets.test.FileSystem;
+            CSSUtils          = brackets.test.CSSUtils;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
@@ -62,6 +65,7 @@ define(function (require, exports, module) {
             FileViewController  = null;
             ProjectManager      = null;
             testWindow = null;
+            CSSUtils = null;
             brackets = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
@@ -71,12 +75,16 @@ define(function (require, exports, module) {
                 "closing all file");
         }
 
-        it("Should jump to definition on div tag", async function () {
+        async function openFile(fileNameInProject, workingSet) {
             await awaitsForDone(
                 FileViewController.openAndSelectDocument(
-                    testPath + "/jumpToDef.html",
-                    FileViewController.PROJECT_MANAGER
+                    testPath + "/" + fileNameInProject,
+                    workingSet ? FileViewController.WORKING_SET_VIEW:FileViewController.PROJECT_MANAGER
                 ));
+        }
+
+        it("Should jump to definition on div tag", async function () {
+            await openFile("jumpToDef.html");
             const selected = ProjectManager.getSelectedItem();
             expect(selected.fullPath).toBe(testPath + "/jumpToDef.html");
 
@@ -93,11 +101,7 @@ define(function (require, exports, module) {
         });
 
         it("Should jump to definition on css class", async function () {
-            await awaitsForDone(
-                FileViewController.openAndSelectDocument(
-                    testPath + "/jumpToDef.html",
-                    FileViewController.PROJECT_MANAGER
-                ));
+            await openFile("jumpToDef.html");
             const selected = ProjectManager.getSelectedItem();
             expect(selected.fullPath).toBe(testPath + "/jumpToDef.html");
 
@@ -114,11 +118,7 @@ define(function (require, exports, module) {
         });
 
         async function verifySrcJumpToDef(location, targetFileName, jumpShouldFail) {
-            await awaitsForDone(
-                FileViewController.openAndSelectDocument(
-                    testPath + "/jumpToDef.html",
-                    FileViewController.PROJECT_MANAGER
-                ));
+            await openFile("jumpToDef.html");
             const selected = ProjectManager.getSelectedItem();
             expect(selected.fullPath).toBe(testPath + "/jumpToDef.html");
 
@@ -198,5 +198,105 @@ define(function (require, exports, module) {
             await createAndVerifyFileContents("test1.txt", "");
         });
 
+        async function _validateCodeHints(cursor, expectedSomeHintsArray, selectItemNumber) {
+            let editor = EditorManager.getActiveEditor();
+            editor.setCursorPos(cursor);
+
+            await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS),
+                "show code hints");
+
+            await awaitsFor(async function () {
+                for(let hint of expectedSomeHintsArray){
+                    const allSelectors = await CSSUtils.getAllCssSelectorsInProject();
+                    if(!allSelectors.includes("."+hint)){
+                        return false;
+                    }
+                }
+                return true;
+            }, "CSSUtils project selectors to be updated");
+
+            await awaitsFor(function () {
+                return $(".codehint-menu").is(":visible");
+            }, "codehints to be shown");
+
+            await awaitsFor(function () {
+                for(let hint of expectedSomeHintsArray){
+                    if(!$(".codehint-menu").text().includes(hint)){
+                        return false;
+                    }
+                }
+                return true;
+            }, "expected hints to be there");
+
+            if(selectItemNumber >= 0) {
+                $(".code-hints-list-item")[selectItemNumber].click();
+                return;
+            }
+
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return !$(".codehint-menu").is(":visible");
+            }, "codehints to be hidden");
+        }
+
+        it("Should show css class hints in html file", async function () {
+            await openFile("jumpToDef.html", true);
+            await _validateCodeHints({ line: 9, ch: 21 }, ["testClass"]);
+            await closeSession();
+        });
+
+        it("should show inline styles in html document", async function () {
+            await openFile("inlineStyle.html", true);
+            await _validateCodeHints({ line: 12, ch: 19 }, ["integratedStyle"]);
+            await closeSession();
+        });
+
+        function setText(cursor, text) {
+            let editor = EditorManager.getActiveEditor();
+            editor.replaceRange(text, cursor);
+        }
+
+        it("should inline css class hint in unsaved html inline styles", async function () {
+            await openFile("inlineStyle.html", true);
+            setText({ line: 8, ch: 11 }, ".newInlineStyleYo{}");
+            await _validateCodeHints({ line: 12, ch: 19 }, ["newInlineStyleYo"]);
+            await closeSession();
+        });
+
+        async function _validateCssEdit(cssFileName) {
+            await openFile("inlineStyle.html", true);
+            await openFile(cssFileName, true);
+            const cssClassName = StringUtils.randomString(5, "cls");
+            setText({ line: 0, ch: 0 }, `.${cssClassName}{}\n`);
+
+            await openFile("inlineStyle.html", true);
+            await _validateCodeHints({ line: 12, ch: 16 }, [cssClassName]);
+            await closeSession();
+        }
+
+        it("should CSS file edits show up in class list without saving", async function () {
+            await _validateCssEdit("cssLive.css");
+        });
+
+        it("should LESS file edits show up in class list without saving", async function () {
+            await _validateCssEdit("cssLive1.less");
+        });
+
+        it("should SCSS file edits show up in class list without saving", async function () {
+            await _validateCssEdit("cssLive1.scss");
+        });
+
+        it("should be able to add the class name by selecting the code hint", async function () {
+            await openFile("inlineStyle.html", true);
+            await openFile("cssLive.css", true);
+            const cssClassName = StringUtils.randomString(5, "cls");
+            setText({ line: 0, ch: 0 }, `.${cssClassName}{}\n`);
+
+            await openFile("inlineStyle.html", true);
+            setText({ line: 12, ch: 31 }, ` `);
+            await _validateCodeHints({ line: 12, ch: 32 }, [cssClassName], 0);
+            expect(EditorManager.getActiveEditor().getToken().string).toBe(`"integratedStyle ${cssClassName}"`);
+            await closeSession();
+        });
     });
 });
