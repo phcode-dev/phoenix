@@ -1905,11 +1905,12 @@ define(function (require, exports, module) {
 
     const _htmlLikeFileExts = ["htm", "html", "xhtml", "php"];
     function _isHtmlLike(editor) {
-        if (!editor) {
+        const fullPath = editor && editor.document.file.fullPath;
+        if (!editor || !LanguageManager.getLanguageForPath(fullPath)) {
             return false;
         }
-        const fullPath = editor.document.file.fullPath;
-        return (_htmlLikeFileExts.indexOf(LanguageManager.getLanguageForPath(fullPath).getId()) !== -1);
+
+        return (_htmlLikeFileExts.indexOf(LanguageManager.getLanguageForPath(fullPath).getId() || "") !== -1);
     }
 
     function _getAllSelectorsInCurrentHTMLEditor() {
