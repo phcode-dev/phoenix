@@ -290,7 +290,7 @@ define(function (require, exports, module) {
             await openFile("inlineStyle.html", true);
             await openFile("cssLive.css", true);
             // this prefix is aaa as we need it as the top code hint
-            const cssClassName = StringUtils.randomString(5, "aaa");
+            const cssClassName = StringUtils.randomString(5, "aaaaaaaaaaa");
             setText({ line: 0, ch: 0 }, `.${cssClassName}{}\n`);
 
             await openFile("inlineStyle.html", true);
