@@ -270,8 +270,6 @@ define(function (require, exports, module) {
                 CodeHintManager,
                 CommandManager,
                 Commands,
-                DocumentManager,
-                MainViewManager,
                 EditorManager;
 
             it("should hint site root '/'", async function () {
@@ -280,24 +278,13 @@ define(function (require, exports, module) {
                 CodeHintManager = brackets.test.CodeHintManager;
                 CommandManager  = brackets.test.CommandManager;
                 Commands        = brackets.test.Commands;
-                DocumentManager = brackets.test.DocumentManager;
                 EditorManager   = brackets.test.EditorManager;
-                MainViewManager = brackets.test.MainViewManager;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(extensionTestPath);
 
                 workingSet.push(testHtmlPath);
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(workingSet), "openProjectFiles");
 
-                DocumentManager.getDocumentForPath(testHtmlPath).done(function (doc) {
-                    testDocument = doc;
-                });
-
-                await awaitsFor(function () {
-                    return (testDocument);
-                }, "Unable to open test document");
-
-                MainViewManager._edit(MainViewManager.ACTIVE_PANE, testDocument);
                 testEditor = EditorManager.getCurrentFullEditor();
                 testEditor.setCursorPos({ line: 22, ch: 12 });
 
@@ -321,9 +308,7 @@ define(function (require, exports, module) {
                 CodeHintManager  = null;
                 CommandManager   = null;
                 Commands         = null;
-                DocumentManager  = null;
                 EditorManager    = null;
-                MainViewManager  = null;
                 await SpecRunnerUtils.closeTestWindow();
             }, 30000);
         });
