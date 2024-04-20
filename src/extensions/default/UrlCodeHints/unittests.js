@@ -295,7 +295,7 @@ define(function (require, exports, module) {
                     // hints as the scans get complete only. <We had an issue in slow test runners, so this>.
                     await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS));
                     hintList = CodeHintManager._getCodeHintList();
-                    return hintList && hintList.hints.includes("/testfiles/");
+                    return hintList && hintList.hints && hintList.hints.includes("/testfiles/");
                 }, "waiting for code hints to be there", 5000, 100);
                 expect(hintList).toBeTruthy();
                 expect(hintList.hints).toBeTruthy();
