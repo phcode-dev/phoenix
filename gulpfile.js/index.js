@@ -79,7 +79,8 @@ function makeDistAll() {
 }
 
 function makeJSDist() {
-    return src(['src/**/*.js', '!src/**/unittest-files/**/*', "!src/thirdparty/prettier/**/*"])
+    return src(['src/**/*.js', '!src/**/unittest-files/**/*', "!src/thirdparty/prettier/**/*",
+        "!src/thirdparty/language-worker.js"])
         .pipe(sourcemaps.init())
         .pipe(minify({
             ext:{

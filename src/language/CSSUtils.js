@@ -1903,10 +1903,12 @@ define(function (require, exports, module) {
         return selector;
     }
 
+    let globalPrecacheRun = 0;
     function getAllCssSelectorsInProject(options = {
         includeClasses: true,
         includeIDs: true
     }) {
+        globalPrecacheRun ++; // we need to stop the pre cache logic from doing the same cache again
         return new Promise(resolve=>{
             ProjectManager.getAllFiles(ProjectManager.getLanguageFilter(["css", "less", "scss"]))
                 .done(function (cssFiles) {
@@ -1936,9 +1938,16 @@ define(function (require, exports, module) {
     }
 
     async function _populateSelectorCache() {
+        globalPrecacheRun ++;
+        const currentCacheRun = globalPrecacheRun;
         const cssFiles = await jsPromise(ProjectManager.getAllFiles(
             ProjectManager.getLanguageFilter(["css", "less", "scss"])));
         for(let cssFile of cssFiles){
+            if(currentCacheRun !== globalPrecacheRun) {
+                // this is for cases in very large projects where the project switches while a
+                // project wide css parse was in progress.
+                break;
+            }
             await _loadFileAndScanCSSSelectorCached(cssFile.fullPath); // this is serial to not hog processor
         }
     }
