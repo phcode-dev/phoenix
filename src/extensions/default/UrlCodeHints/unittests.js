@@ -27,7 +27,6 @@ define(function (require, exports, module) {
     // Modules from the SpecRunner window
     var MasterDocumentManager     = brackets.getModule("document/DocumentManager"),
         MasterMainViewManager     = brackets.getModule("view/MainViewManager"),
-        FileUtils                 = brackets.getModule("file/FileUtils"),
         SpecRunnerUtils           = brackets.getModule("spec/SpecRunnerUtils"),
         UrlCodeHints              = require("main");
 
