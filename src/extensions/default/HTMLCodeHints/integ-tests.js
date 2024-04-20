@@ -289,7 +289,8 @@ define(function (require, exports, module) {
         it("should be able to add the class name by selecting the code hint", async function () {
             await openFile("inlineStyle.html", true);
             await openFile("cssLive.css", true);
-            const cssClassName = StringUtils.randomString(5, "cls");
+            // this prefix is aaa as we need it as the top code hint
+            const cssClassName = StringUtils.randomString(5, "aaa");
             setText({ line: 0, ch: 0 }, `.${cssClassName}{}\n`);
 
             await openFile("inlineStyle.html", true);
