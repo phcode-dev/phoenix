@@ -491,7 +491,7 @@ define(function (require, exports, module) {
                 fullPath = document.file.fullPath;
 
             var fileType = (document.file instanceof InMemoryFile) ? "newFile" : "existingFile",
-                filelanguageName = lang ? lang._name : "";
+                filelanguageName = lang ? lang._name||"" : "";
 
             Metrics.countEvent(
                 Metrics.EVENT_TYPE.EDITOR,

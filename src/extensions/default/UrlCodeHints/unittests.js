@@ -300,13 +300,15 @@ define(function (require, exports, module) {
                 MainViewManager._edit(MainViewManager.ACTIVE_PANE, testDocument);
                 testEditor = EditorManager.getCurrentFullEditor();
                 testEditor.setCursorPos({ line: 22, ch: 12 });
-                CommandManager.execute(Commands.SHOW_CODE_HINTS);
 
-                let hintList = CodeHintManager._getCodeHintList();
-                await awaitsFor(function () {
+                let hintList;
+                await awaitsFor(async function () {
+                    // we have to exec command in loop as the file system scan may be ongoing and will reflect
+                    // hints as the scans get complete only. <We had an issue in slow test runners, so this>.
+                    await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS));
                     hintList = CodeHintManager._getCodeHintList();
-                    return hintList.hints.includes("/testfiles/");
-                }, "waiting for code hints to be there", 5000);
+                    return hintList && hintList.hints.includes("/testfiles/");
+                }, "waiting for code hints to be there", 5000, 100);
                 expect(hintList).toBeTruthy();
                 expect(hintList.hints).toBeTruthy();
                 expect(hintList.hints).toContain("/testfiles/");
