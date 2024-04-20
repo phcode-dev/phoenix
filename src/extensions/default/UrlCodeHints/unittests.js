@@ -266,10 +266,10 @@ define(function (require, exports, module) {
 
             var testWindow,
                 brackets,
-                workingSet = [],
                 CodeHintManager,
                 CommandManager,
                 Commands,
+                FileViewController,
                 EditorManager;
 
             it("should hint site root '/'", async function () {
@@ -277,15 +277,16 @@ define(function (require, exports, module) {
                 brackets        = testWindow.brackets;
                 CodeHintManager = brackets.test.CodeHintManager;
                 CommandManager  = brackets.test.CommandManager;
+                FileViewController  = brackets.test.FileViewController;
                 Commands        = brackets.test.Commands;
                 EditorManager   = brackets.test.EditorManager;
 
                 await SpecRunnerUtils.loadProjectInTestWindow(extensionTestPath);
 
-                workingSet.push(testHtmlPath);
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(workingSet), "openProjectFiles");
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testHtmlPath, FileViewController.WORKING_SET_VIEW));
 
-                testEditor = EditorManager.getCurrentFullEditor();
+                testEditor = EditorManager.getActiveEditor();
                 testEditor.setCursorPos({ line: 22, ch: 12 });
 
                 let hintList;
@@ -306,6 +307,7 @@ define(function (require, exports, module) {
                 testWindow       = null;
                 brackets         = null;
                 CodeHintManager  = null;
+                FileViewController  = null;
                 CommandManager   = null;
                 Commands         = null;
                 EditorManager    = null;
