@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>inline styles test</title>
+    <style>
+        .integratedStyle {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="integratedStyle">
+        this file has integrated html styles
+    </div>
+</body>
+</html>

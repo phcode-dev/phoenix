@@ -246,7 +246,7 @@ define(function (require, exports, module) {
         });
 
         it("should show inline styles in html document", async function () {
-            await openFile("inlineStyle.html", true);
+            await openFile("htmlOther/inlineStyle.html", true);
             await _validateCodeHints({ line: 12, ch: 19 }, ["integratedStyle"]);
             await closeSession();
         });
@@ -257,19 +257,19 @@ define(function (require, exports, module) {
         }
 
         it("should inline css class hint in unsaved html inline styles", async function () {
-            await openFile("inlineStyle.html", true);
+            await openFile("htmlOther/inlineStyle.html", true);
             setText({ line: 8, ch: 11 }, ".newInlineStyleYo{}");
             await _validateCodeHints({ line: 12, ch: 19 }, ["newInlineStyleYo"]);
             await closeSession();
         });
 
         async function _validateCssEdit(cssFileName) {
-            await openFile("inlineStyle.html", true);
+            await openFile("htmlOther/inlineStyle.html", true);
             await openFile(cssFileName, true);
             const cssClassName = StringUtils.randomString(5, "cls");
             setText({ line: 0, ch: 0 }, `.${cssClassName}{}\n`);
 
-            await openFile("inlineStyle.html", true);
+            await openFile("htmlOther/inlineStyle.html", true);
             await _validateCodeHints({ line: 12, ch: 16 }, [cssClassName]);
             await closeSession();
         }
@@ -300,20 +300,12 @@ define(function (require, exports, module) {
             await closeSession();
         }
 
-        it("should be able to add the class name by selecting the code hint in HTML file", async function () {
-            await _testCssClassHintInFile("inlineStyle.html");
-        });
+        const extensions = ["html", "htm", "xhtml", "php", "asp", "aspx", "jsp"];
 
-        it("should be able to add the class name by selecting the code hint in HTM file", async function () {
-            await _testCssClassHintInFile("inlineStyle.htm");
-        });
-
-        it("should be able to add the class name by selecting the code hint in XHTML file", async function () {
-            await _testCssClassHintInFile("inlineStyle.xhtml");
-        });
-
-        it("should be able to add the class name by selecting the code hint in PHP file", async function () {
-            await _testCssClassHintInFile("inlineStyle.php");
-        });
+        for(let extn of extensions){
+            it(`should be able to add the class name by selecting the code hint in ${extn} file`, async function () {
+                await _testCssClassHintInFile(`htmlOther/inlineStyle.${extn}`);
+            });
+        }
     });
 });
