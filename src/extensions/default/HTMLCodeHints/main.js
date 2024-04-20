@@ -255,7 +255,7 @@ define(function (require, exports, module) {
         const segments = queryStr.split(" ");
         queryStr = segments[segments.length-1];
         const deferred = $.Deferred();
-        CSSUtils.getAllCssSelectorsInProject({includeClasses: true}).then(hints=>{
+        CSSUtils.getAllCssSelectorsInProject({includeClasses: true, scanCurrentHtml: true}).then(hints=>{
             const result = $.map(hints, function (pvalue) {
                 pvalue = pvalue.slice(1); // remove.
                 if(!pvalue || pvalue.includes("#") || pvalue.includes("\\") || pvalue.includes("/")){
