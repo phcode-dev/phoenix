@@ -21,7 +21,7 @@
 
 /*global virtualfs, fs, WorkerComm, CSSLanguageService */
 
-importScripts('../thirdparty/language-worker.js');
+importScripts('../thirdparty/no-minify/language-worker.js');
 
 (function () {
     function getAllSymbols({text, cssMode, filePath}) {
