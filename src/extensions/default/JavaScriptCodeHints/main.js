@@ -210,7 +210,7 @@ define(function (require, exports, module) {
          */
         function formatHints(hints, query) {
             return hints.map(function (token) {
-                var $hintObj    = $("<span>").addClass("brackets-js-hints");
+                var $hintObj    = $("<span>").addClass("brackets-js-hints brackets-hints");
 
                 // level indicates either variable scope or property confidence
                 if (!type.property && !token.builtin && token.depth !== undefined) {

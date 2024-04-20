@@ -1903,10 +1903,50 @@ define(function (require, exports, module) {
         return selector;
     }
 
+    const _htmlLikeFileExts = ["htm", "html", "xhtml", "php"];
+    function _isHtmlLike(editor) {
+        if (!editor) {
+            return false;
+        }
+        const fullPath = editor.document.file.fullPath;
+        return (_htmlLikeFileExts.indexOf(LanguageManager.getLanguageForPath(fullPath).getId()) !== -1);
+    }
+
+    function _getAllSelectorsInCurrentHTMLEditor() {
+        return new Promise(resolve=>{
+            let selectors = new Set();
+            const htmlEditor = EditorManager.getCurrentFullEditor();
+            if (!htmlEditor || !_isHtmlLike(htmlEditor) ) {
+                resolve(selectors);
+                return;
+            }
+
+            // Find all <style> blocks in the HTML file
+            const styleBlocks = HTMLUtils.findStyleBlocks(htmlEditor);
+            let cssText = "";
+
+            styleBlocks.forEach(function (styleBlockInfo) {
+                // Search this one <style> block's content
+                cssText += styleBlockInfo.text;
+            });
+            const fullPath = htmlEditor.document.file.fullPath;
+            IndexingWorker.execPeer("css_getAllSymbols", {text: cssText, cssMode: "CSS", filePath: fullPath})
+                .then((selectorArray)=>{
+                    selectors = _extractSelectorSet(selectorArray);
+                    CSSSelectorCache.set(fullPath, selectors);
+                    resolve(selectors);
+                }).catch(err=>{
+                    console.warn("CSS language service unable to get selectors for" + fullPath, err);
+                    resolve(selectors);  // still resolve, so the overall result doesn't reject
+                });
+        });
+    }
+
     let globalPrecacheRun = 0;
     function getAllCssSelectorsInProject(options = {
         includeClasses: true,
-        includeIDs: true
+        includeIDs: true,
+        scanCurrentHtml: true
     }) {
         globalPrecacheRun ++; // we need to stop the pre cache logic from doing the same cache again
         return new Promise(resolve=>{
@@ -1914,6 +1954,9 @@ define(function (require, exports, module) {
                 .done(function (cssFiles) {
                     // Create an array of promises from the array of cssFiles
                     const promises = cssFiles.map(fileInfo => _loadFileAndScanCSSSelectorCached(fileInfo.fullPath));
+                    if(options.scanCurrentHtml){
+                        promises.push(_getAllSelectorsInCurrentHTMLEditor());
+                    }
                     const mergedSets = new Set();
                     // Use Promise.allSettled to handle all promises
                     Promise.allSettled(promises)
