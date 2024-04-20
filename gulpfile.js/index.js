@@ -80,7 +80,7 @@ function makeDistAll() {
 
 function makeJSDist() {
     return src(['src/**/*.js', '!src/**/unittest-files/**/*', "!src/thirdparty/prettier/**/*",
-        "!src/thirdparty/language-worker.js"])
+        "!src/thirdparty/no-minify/**/*"])
         .pipe(sourcemaps.init())
         .pipe(minify({
             ext:{
@@ -101,6 +101,12 @@ function makeJSPrettierDist() {
     return src(["src/thirdparty/prettier/**/*"])
         .pipe(sourcemaps.init())
         .pipe(dest('dist/thirdparty/prettier'));
+}
+
+function makeNonMinifyDist() {
+    return src(["src/thirdparty/no-minify/**/*"])
+        .pipe(sourcemaps.init())
+        .pipe(dest('dist/thirdparty/no-minify'));
 }
 
 function makeDistNonJS() {
@@ -732,10 +738,12 @@ exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS,
     makeDistAll, releaseDev,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
-    makeDistNonJS, makeJSDist, makeJSPrettierDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseStaging,
+    makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist,
+    _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseStaging,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
-    makeDistNonJS, makeJSDist, makeJSPrettierDist, _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseProd,
+    makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist,
+    _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseProd,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseWebCache = series(makeDistWebCache);
 exports.serve = series(exports.build, serve);

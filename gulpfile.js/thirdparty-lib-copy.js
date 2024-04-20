@@ -93,7 +93,7 @@ let copyThirdPartyLibs = series(
         'node_modules/@phcode/fs/dist/virtualfs.js.map'], 'src/phoenix'),
     // @phcode/language-support  . // replace below with language-worker-debug.js if you wanna debug
     copyFiles.bind(copyFiles, ['node_modules/@phcode/language-support/dist/language-worker.js'],
-        'src/thirdparty/'),
+        'src/thirdparty/no-minify/'),
     copyLicence.bind(copyLicence, 'node_modules/@phcode/language-support/LICENSE-thirdParty', 'language-services'),
     // lessjs
     copyFiles.bind(copyFiles, ['node_modules/less/dist/less.min.js', 'node_modules/less/dist/less.min.js.map'],
