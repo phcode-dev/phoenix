@@ -262,65 +262,6 @@ define(function (require, exports, module) {
             });
         });
 
-        describe("Project root relative Url Code Hints", function () {
-
-            var testWindow,
-                brackets,
-                CodeHintManager,
-                CommandManager,
-                Commands,
-                FileViewController,
-                EditorManager;
-
-            it("should hint site root '/'", async function () {
-                if(Phoenix.browser.isTauri && brackets.platform === "linux") {
-                    // This tests breaks in github actions only in linux desktop builds for no reason i can fid out.
-                    // no problem if we try to run it locally.
-                    // so we disable this tests in linux desktop builds for now.
-                    return;
-                }
-                testWindow = await SpecRunnerUtils.createTestWindowAndRun();
-                brackets        = testWindow.brackets;
-                CodeHintManager = brackets.test.CodeHintManager;
-                CommandManager  = brackets.test.CommandManager;
-                FileViewController  = brackets.test.FileViewController;
-                Commands        = brackets.test.Commands;
-                EditorManager   = brackets.test.EditorManager;
-
-                await SpecRunnerUtils.loadProjectInTestWindow(extensionTestPath);
-
-                await awaitsForDone(
-                    FileViewController.openAndSelectDocument(testHtmlPath, FileViewController.WORKING_SET_VIEW));
-
-                testEditor = EditorManager.getActiveEditor();
-                testEditor.setCursorPos({ line: 22, ch: 12 });
-
-                let hintList;
-                await awaitsFor(async function () {
-                    // we have to exec command in loop as the file system scan may be ongoing and will reflect
-                    // hints as the scans get complete only. <We had an issue in slow test runners, so this>.
-                    await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS));
-                    hintList = CodeHintManager._getCodeHintList();
-                    return hintList && hintList.hints && hintList.hints.includes("/testfiles/");
-                }, "waiting for code hints to be there", 5000, 100);
-                expect(hintList).toBeTruthy();
-                expect(hintList.hints).toBeTruthy();
-                expect(hintList.hints).toContain("/testfiles/");
-
-                // cleanup
-                testEditor       = null;
-                testDocument     = null;
-                testWindow       = null;
-                brackets         = null;
-                CodeHintManager  = null;
-                FileViewController  = null;
-                CommandManager   = null;
-                Commands         = null;
-                EditorManager    = null;
-                await SpecRunnerUtils.closeTestWindow();
-            }, 30000);
-        });
-
         describe("Url Insertion", function () {
 
             // These tests edit doc, so we need to setup/tear-down for each test
@@ -752,6 +693,65 @@ define(function (require, exports, module) {
                 // Filename case from list was inserted (overriding case inserted in page)
                 expect(testDocument.getRange(pos1, pos3)).toEqual("test.html");
             });
+        });
+
+        describe("Project root relative Url Code Hints", function () {
+
+            var testWindow,
+                brackets,
+                CodeHintManager,
+                CommandManager,
+                Commands,
+                FileViewController,
+                EditorManager;
+
+            it("should hint site root '/'", async function () {
+                if(Phoenix.browser.isTauri && Phoenix.platform === "linux") {
+                    // This tests breaks in github actions only in linux desktop builds for no reason i can fid out.
+                    // no problem if we try to run it locally.
+                    // so we disable this tests in linux desktop builds for now.
+                    return;
+                }
+                testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+                brackets        = testWindow.brackets;
+                CodeHintManager = brackets.test.CodeHintManager;
+                CommandManager  = brackets.test.CommandManager;
+                FileViewController  = brackets.test.FileViewController;
+                Commands        = brackets.test.Commands;
+                EditorManager   = brackets.test.EditorManager;
+
+                await SpecRunnerUtils.loadProjectInTestWindow(extensionTestPath);
+
+                await awaitsForDone(
+                    FileViewController.openAndSelectDocument(testHtmlPath, FileViewController.WORKING_SET_VIEW));
+
+                testEditor = EditorManager.getActiveEditor();
+                testEditor.setCursorPos({ line: 22, ch: 12 });
+
+                let hintList;
+                await awaitsFor(async function () {
+                    // we have to exec command in loop as the file system scan may be ongoing and will reflect
+                    // hints as the scans get complete only. <We had an issue in slow test runners, so this>.
+                    await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS));
+                    hintList = CodeHintManager._getCodeHintList();
+                    return hintList && hintList.hints && hintList.hints.includes("/testfiles/");
+                }, "waiting for code hints to be there", 5000, 100);
+                expect(hintList).toBeTruthy();
+                expect(hintList.hints).toBeTruthy();
+                expect(hintList.hints).toContain("/testfiles/");
+
+                // cleanup
+                testEditor       = null;
+                testDocument     = null;
+                testWindow       = null;
+                brackets         = null;
+                CodeHintManager  = null;
+                FileViewController  = null;
+                CommandManager   = null;
+                Commands         = null;
+                EditorManager    = null;
+                await SpecRunnerUtils.closeTestWindow();
+            }, 30000);
         });
 
     }); // describe("Url Code Hinting"
