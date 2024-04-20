@@ -2148,6 +2148,12 @@ define(function (require, exports, module) {
         _$dirtydot = $(".dirty-dot", _$titleWrapper);
     });
 
+    if(Phoenix.isSpecRunnerWindow){
+        _$titleContainerToolbar = $("#titlebar");
+        _$titleWrapper = $(".title-wrapper");
+        _$title = $(".title");
+        _$dirtydot = $(".dirty-dot");
+    }
 
     let firstProjectOpenHandled = false;
     ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, ()=>{
