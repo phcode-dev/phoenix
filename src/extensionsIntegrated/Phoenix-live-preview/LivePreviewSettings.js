@@ -53,7 +53,7 @@ define(function (require, exports, module) {
 
     EventDispatcher.makeEventDispatcher(exports);
 
-    const FRAMEWORK_UNKNOWN = "unknown",
+    const FRAMEWORK_CUSTOM = "Custom",
         FRAMEWORK_DOCUSAURUS = "Docusaurus";
 
     const EVENT_SERVER_CHANGED = "customServerChanged";
@@ -99,7 +99,7 @@ define(function (require, exports, module) {
                 return;
             }
         }
-        $frameworkSelect.val(FRAMEWORK_UNKNOWN);
+        $frameworkSelect.val(FRAMEWORK_CUSTOM);
         $hotReloadChk.prop('checked', false);
     }
 
@@ -108,9 +108,7 @@ define(function (require, exports, module) {
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, liveServerURL, PreferencesManager.PROJECT_SCOPE);
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, serveRoot, PreferencesManager.PROJECT_SCOPE);
         PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, hotReloadSupported, PreferencesManager.PROJECT_SCOPE);
-        if(framework !== FRAMEWORK_UNKNOWN) {
-            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, framework, PreferencesManager.PROJECT_SCOPE);
-        }
+        PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, framework, PreferencesManager.PROJECT_SCOPE);
     }
 
     function showSettingsDialog() {

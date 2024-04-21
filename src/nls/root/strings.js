@@ -169,7 +169,7 @@ define({
     "LIVE_DEV_SETTINGS_RELOAD": "Server supports hot reload",
     "LIVE_DEV_SETTINGS_RELOAD_HELP": "Some servers support hot reload where code changes are pushed to page without a full page reload.\nEnable this feature if you do not want {APP_NAME} to reload the page on every save.",
     "LIVE_DEV_SETTINGS_FRAMEWORK": "Server Framework",
-    "LIVE_DEV_SETTINGS_FRAMEWORK_UNKNOWN": "Unknown",
+    "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Custom",
     "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, currently supports only docusaurus",
 
     "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
