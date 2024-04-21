@@ -169,7 +169,7 @@ define(function (require, exports, module) {
             expect(testWindow.$("#serveRoot").is(":visible")).toBeTrue();
             expect(testWindow.$("#frameworkSelect").is(":visible")).toBeTrue();
             expect(testWindow.$("#hotReloadChk").is(":visible")).toBeTrue();
-            expect(testWindow.$("#frameworkSelect").val()).toBe("unknown");
+            expect(testWindow.$("#frameworkSelect").val()).toBe("Custom");
 
             // close-cancel dialog
             await SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_CANCEL);
@@ -470,7 +470,7 @@ define(function (require, exports, module) {
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, true, PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, "http://localhost:43768", PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, "", PreferencesManager.PROJECT_SCOPE);
-            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "unknown", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "Custom", PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, true, PreferencesManager.PROJECT_SCOPE);
 
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
@@ -499,7 +499,7 @@ define(function (require, exports, module) {
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, true, PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, "http://localhost:43768", PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, sub, PreferencesManager.PROJECT_SCOPE);
-            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "unknown", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "Custom", PreferencesManager.PROJECT_SCOPE);
             PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, supportsHotReload, PreferencesManager.PROJECT_SCOPE);
             await awaits(1000); // this is here so that the preferences json is properly created and loaded
             return testTempDir;
