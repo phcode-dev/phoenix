@@ -955,7 +955,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Klik hier of druk op <b>`{0}`</b> om de code te verfraaien.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>OK</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Klik hier om de . te openen<br/> <b>standaardproject</b> in phoenix.</br> <a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "De geselecteerde map <span class='dialog-filename'>{0}</span> is niet leeg. Weet u zeker dat u de mapinhoud wilt vervangen door het project?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik hier om dit HTML-bestand in de editor te openen. De cursor zal naar de code wijzen die overeenkomt met dit &ltspan&gt",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik hier en zoek dit &ltspan&gt in het HTML-bestand",
   "BUILD_WEBSITE_SECTION": "Website bouwen",
   "LEARN_SECTION": "Leer met voorbeelden",
   "CREATE_EXTENSION_SECTION": "Maak {APP_NAME}-extensies en thema's",

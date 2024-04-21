@@ -955,7 +955,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Clique aqui ou pressione <b>`{0}`</b> para embelezar o código.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>OK</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Clique aqui para abrir o<br/> <b>projeto padrão</b> em phoenix.</br> <a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A pasta selecionada <span class='dialog-filename'>{0}</span> não está vazia. Tem certeza de que deseja substituir o conteúdo da pasta pelo projeto?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Clique aqui para abrir este arquivo HTML no editor. O cursor será apontado para o código correspondente a este &ltspan&gt",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Clique aqui para localizar este &ltspan&gt no arquivo HTML",
   "BUILD_WEBSITE_SECTION": "Criar site",
   "LEARN_SECTION": "Aprenda com exemplos",
   "CREATE_EXTENSION_SECTION": "Criar extensões e temas do {APP_NAME}",

@@ -955,7 +955,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "کوڈ کو خوبصورت بنانے کے لیے یہاں کلک کریں یا <b>`{0}`</b> دبائیں۔</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>ٹھیک ہے</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "کھولنے کے لیے یہاں کلک کریں۔<br/> فینکس میں <b>ڈیفالٹ پروجیکٹ</b> ۔</br> <a href='#' style='float:right;'>ٹھیک ہے</a>",
   "DIRECTORY_REPLACE_MESSAGE": "منتخب فولڈر <span class='dialog-filename'>{0}</span> خالی نہیں ہے۔ کیا آپ واقعی فولڈر کے مواد کو پروجیکٹ کے ساتھ تبدیل کرنا چاہتے ہیں؟",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "اس HTML فائل کو ایڈیٹر میں کھولنے کے لیے یہاں کلک کریں۔ کرسر کو اس &ltspan&gt سے متعلقہ کوڈ کی طرف اشارہ کیا جائے گا۔",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "HTML فائل میں اس &ltspan&gt کو تلاش کریں۔",
   "BUILD_WEBSITE_SECTION": "ویب سائٹ بنائیں",
   "LEARN_SECTION": "مثالوں کے ساتھ سیکھیں۔",
   "CREATE_EXTENSION_SECTION": "{APP_NAME} ایکسٹینشنز اور تھیمز بنائیں",
