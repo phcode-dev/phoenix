@@ -1127,6 +1127,9 @@ define(function (require, exports, module) {
         var result = new $.Deferred(),
             startLoad = new $.Deferred();
 
+        Metrics.valueEvent(Metrics.EVENT_TYPE.PROJECT, "Load",
+            isWelcomeProjectPath(rootPath) ? "default":"other", 1);
+
         // Some legacy code calls this API with a non-canonical path
         rootPath = ProjectModel._ensureTrailingSlash(rootPath);
 
