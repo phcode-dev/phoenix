@@ -35,6 +35,8 @@ define(function (require, exports, module) {
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
 
+    const surveyLinksURL = "https://updates.phcode.io/surveys.json";
+
     // All popup notifications will show immediately on boot, we don't want to interrupt user amidst his work
     // by showing it at a later point in time.
     const BOOT_DIALOG_DELAY = 2000,
@@ -213,12 +215,12 @@ define(function (require, exports, module) {
         }
     }
 
-    function _showGeneralSurvey() {
+    function _showGeneralSurvey(surveyURL) {
         setTimeout(()=>{
             let surveyVersion = 6; // increment this if you want to show this again
             var templateVars = {
                 Strings: Strings,
-                surveyURL: "https://s.surveyplanet.com/g837j5k9"
+                surveyURL
             };
             if(userAlreadyDidAction.generalSurveyShownVersion !== surveyVersion){
                 Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "generalShown", 1);
@@ -247,7 +249,7 @@ define(function (require, exports, module) {
         return totalUsageDays >= 3 || (totalUsageMinutes/60) >= 8;
     }
 
-    function _showPowerUserSurvey() {
+    function _showPowerUserSurvey(surveyURL) {
         if(_isPowerUser()) {
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
             let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
@@ -261,12 +263,27 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerShown", 1);
                 const templateVars = {
                     Strings: Strings,
-                    surveyURL: "https://s.surveyplanet.com/2dgk0hbn"
+                    surveyURL
                 };
                 Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
                 userAlreadyDidAction.lastShownPowerSurveyDate = Date.now();
                 PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
             }, BOOT_DIALOG_DELAY);
+        }
+    }
+
+    async function _showSurveys() {
+        try {
+            if(!navigator.onLine){
+                return;
+            }
+            let surveyJSON = await fetch(surveyLinksURL);
+            surveyJSON = await surveyJSON.json();
+            surveyJSON.newUser && _showGeneralSurvey(surveyJSON.newUser);
+            surveyJSON.powerUser && _showPowerUserSurvey(surveyJSON.powerUser);
+        } catch (e) {
+            console.error("Error fetching survey link", surveyLinksURL);
+            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "fetchError", 1);
         }
     }
 
@@ -279,7 +296,6 @@ define(function (require, exports, module) {
         _showNewProjectNotification();
         _showBeautifyNotification();
         _showRequestStarsPopup();
-        _showGeneralSurvey();
-        _showPowerUserSurvey();
+        _showSurveys();
     };
 });
