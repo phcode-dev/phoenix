@@ -20,7 +20,7 @@
  */
 
 /*jslint regexp: true */
-/*global jsPromise*/
+/*global jsPromise, catchToNull, path*/
 
 /**
  * Set of utilities for simple parsing of CSS text.
@@ -40,8 +40,9 @@ define(function (require, exports, module) {
         IndexingWorker      = require("worker/IndexingWorker"),
         _                   = require("thirdparty/lodash");
 
+    const MAX_CONTENT_LENGTH = 10 * 1024 * 1024; // 10MB
     // Constants
-    var SELECTOR   = "selector",
+    const SELECTOR   = "selector",
         PROP_NAME  = "prop.name",
         PROP_VALUE = "prop.value",
         IMPORT_URL = "import.url";
@@ -1847,7 +1848,7 @@ define(function (require, exports, module) {
         }
     }
 
-    const MODE_MAP = {
+    const CSS_MODE_MAP = {
         css: "CSS",
         less: "LESS",
         scss: "SCSS"
@@ -1866,14 +1867,14 @@ define(function (require, exports, module) {
                         return;
                     }
                     const langID = doc.getLanguage().getId();
-                    if(!MODE_MAP[langID]){
+                    if(!CSS_MODE_MAP[langID]){
                         console.log("Cannot parse CSS for mode :", langID, "ignoring", fullPath);
                         resolve(selectors);
                         return;
                     }
                     console.log("scanning file for css selector collation: ", fullPath);
                     IndexingWorker.execPeer("css_getAllSymbols",
-                        {text: doc.getText(), cssMode: "CSS", filePath: fullPath})
+                        {text: doc.getText(), cssMode: CSS_MODE_MAP[langID], filePath: fullPath})
                         .then((selectorArray)=>{
                             selectors = _extractSelectorSet(selectorArray);
                             CSSSelectorCache.set(fullPath, selectors);
@@ -1913,34 +1914,99 @@ define(function (require, exports, module) {
         return (_htmlLikeFileExts.indexOf(LanguageManager.getLanguageForPath(fullPath).getId() || "") !== -1);
     }
 
-    function _getAllSelectorsInCurrentHTMLEditor() {
-        return new Promise(resolve=>{
-            let selectors = new Set();
-            const htmlEditor = EditorManager.getCurrentFullEditor();
-            if (!htmlEditor || !_isHtmlLike(htmlEditor) ) {
-                resolve(selectors);
+    const cacheInProgress = new Set();
+    async function _precacheExternalStyleSheet(link) {
+        try {
+            if(cacheInProgress.has(link)){
+                return;
+            }
+            cacheInProgress.add(link);
+            const extension = path.extname(new URL(link).pathname).slice(1);
+            if (!extension || !CSS_MODE_MAP[extension]) {
+                console.log(`Not a valid stylesheet type ${extension}, ignoring`, link);
+                return;
+            }
+            const responseHead = await fetch(link, { method: 'HEAD' });
+            const contentLength = responseHead.headers.get('Content-Length');
+            if (contentLength > MAX_CONTENT_LENGTH) {
+                console.log(`Stylesheet is larger than ${MAX_CONTENT_LENGTH}bytes, ignoring`, link);
                 return;
             }
 
-            // Find all <style> blocks in the HTML file
-            const styleBlocks = HTMLUtils.findStyleBlocks(htmlEditor);
-            let cssText = "";
-
-            styleBlocks.forEach(function (styleBlockInfo) {
-                // Search this one <style> block's content
-                cssText += styleBlockInfo.text;
-            });
-            const fullPath = htmlEditor.document.file.fullPath;
-            IndexingWorker.execPeer("css_getAllSymbols", {text: cssText, cssMode: "CSS", filePath: fullPath})
+            const response = await fetch(link);
+            const styleSheetText = await response.text();
+            IndexingWorker.execPeer("css_getAllSymbols",
+                {text: styleSheetText, cssMode: CSS_MODE_MAP[extension], filePath: link})
                 .then((selectorArray)=>{
-                    selectors = _extractSelectorSet(selectorArray);
-                    CSSSelectorCache.set(fullPath, selectors);
-                    resolve(selectors);
+                    CSSSelectorCache.set(link, _extractSelectorSet(selectorArray));
                 }).catch(err=>{
-                    console.warn("CSS language service unable to get selectors for" + fullPath, err);
-                    resolve(selectors);  // still resolve, so the overall result doesn't reject
+                    console.warn("CSS language service unable to get selectors for link" + link, err);
                 });
+        } catch (e) {
+            console.error("Error pre caching externally linked style sheet ", link);
+        }
+        cacheInProgress.delete(link);
+    }
+
+    const MAX_ALLOWED_EXTERNAL_STYLE_SHEETS = 20;
+
+    /**
+     * html files may have embedded link style sheets to external CDN urls. We will parse them to get all selectors.
+     * @param htmlFileContent
+     * @param fileMode
+     * @param fullPath
+     * @return {Promise<void>}
+     * @private
+     */
+    async function _getLinkedCSSFileSelectors(htmlFileContent, fileMode, fullPath) {
+        const linkedFiles = await catchToNull(IndexingWorker.execPeer(
+            "html_getAllLinks", {text: htmlFileContent, htmlMode: fileMode, filePath: fullPath}),
+            "error extracting linked css files from"+ fullPath) || [];
+        let selectors = new Set();
+        let externalStyleSheetCount = 0;
+        for(const link of linkedFiles) {
+            if(externalStyleSheetCount >= MAX_ALLOWED_EXTERNAL_STYLE_SHEETS){
+                break;
+            }
+            if(link.startsWith("http://") || link.startsWith("https://")) {
+                externalStyleSheetCount ++;
+                const cachedSelectors = CSSSelectorCache.get(link);
+                if(cachedSelectors){
+                    cachedSelectors.forEach(value=>{
+                        selectors.add(value);
+                    });
+                } else {
+                    _precacheExternalStyleSheet(link);
+                }
+            }
+        }
+        return selectors;
+    }
+
+    async function _getAllSelectorsInCurrentHTMLEditor() {
+        let selectors = new Set();
+        const htmlEditor = EditorManager.getCurrentFullEditor();
+        if (!htmlEditor || !_isHtmlLike(htmlEditor) ) {
+            return selectors;
+        }
+
+        // Find all <style> blocks in the HTML file
+        const styleBlocks = HTMLUtils.findStyleBlocks(htmlEditor);
+        let cssText = "";
+
+        styleBlocks.forEach(function (styleBlockInfo) {
+            // Search this one <style> block's content
+            cssText += styleBlockInfo.text;
         });
+        const fullPath = htmlEditor.document.file.fullPath;
+        const selectorsPromise = IndexingWorker.execPeer(
+            "css_getAllSymbols", {text: cssText, cssMode: "CSS", filePath: fullPath});
+        const htmlLanguageID = LanguageManager.getLanguageForPath(fullPath).getId();
+        const remoteLinkedSelectors = await _getLinkedCSSFileSelectors(htmlEditor.document.getText(),
+            htmlLanguageID.toUpperCase(), fullPath);
+        selectors = await catchToNull(selectorsPromise, "CSS language service unable to get selectors for" + fullPath);
+        selectors = selectors || new Set();
+        return new Set([...selectors, ...remoteLinkedSelectors]);
     }
 
     let globalPrecacheRun = 0;
