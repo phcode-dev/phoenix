@@ -134,8 +134,8 @@ let copyThirdPartyLibs = series(
     renameFile.bind(renameFile, 'node_modules/idb-keyval/dist/index.js', 'idb-keyval.js', 'src/thirdparty/'),
     copyLicence.bind(copyLicence, 'node_modules/idb-keyval/LICENCE', 'idb-keyval'),
     // lru-cache
-    renameFile.bind(renameFile, 'node_modules/lru-cache/dist/esm/index.js', 'lru-cache.js', 'src/thirdparty/'),
-    renameFile.bind(renameFile, 'node_modules/lru-cache/dist/esm/index.js.map', 'lru-cache.js.map', 'src/thirdparty/'),
+    renameFile.bind(renameFile, 'node_modules/lru-cache/dist/esm/index.js', 'lru-cache.js', 'src/thirdparty/no-minify/'),
+    renameFile.bind(renameFile, 'node_modules/lru-cache/dist/esm/index.js.map', 'lru-cache.js.map', 'src/thirdparty/no-minify/'),
     copyLicence.bind(copyLicence, 'node_modules/lru-cache/LICENSE', 'lru-cache'),
     // bootstrap
     copyFiles.bind(copyFiles, ['node_modules/bootstrap/dist/js/bootstrap.min.js',
