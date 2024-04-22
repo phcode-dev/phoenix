@@ -541,7 +541,13 @@ define(function (require, exports, module) {
                     gutterErrorMessages[line] = gutterMessage;
                     // add squiggly lines
                     if (_shouldMarkTokenAtPosition(editor, error)) {
-                        let mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
+                        let mark;
+                        if(error.endPos){
+                            mark = editor.markText(CODE_MARK_TYPE_INSPECTOR, error.pos, error.endPos,
+                                _getMarkOptions(error));
+                        } else {
+                            mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
+                        }
                         mark.type = error.type;
                         mark.message = error.message;
                     }

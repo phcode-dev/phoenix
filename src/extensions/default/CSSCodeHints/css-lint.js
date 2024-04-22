@@ -56,6 +56,7 @@ define(function (require, exports, module) {
                     lintResult = lintResult.map(function (lintError) {
                         return {
                             pos: { line: lintError.range.start.line, ch: lintError.range.start.character },
+                            endPos: { line: lintError.range.end.line, ch: lintError.range.end.character },
                             message: `${lintError.message} (${lintError.code})`,
                             type: getTypeFromSeverity(lintError.severity)
                         };
