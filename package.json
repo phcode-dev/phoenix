@@ -113,6 +113,7 @@
         "requirejs": "^2.3.6",
         "tern": "^0.24.3",
         "tinycolor2": "^1.4.2",
-        "underscore": "^1.13.4"
+        "underscore": "^1.13.4",
+        "lru-cache": "^10.2.0"
     }
 }
