@@ -19,7 +19,7 @@
 // jshint ignore: start
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
-/*global Phoenix*/
+/*global Phoenix, fs*/
 
 
 /** Setup phoenix shell components
@@ -28,6 +28,7 @@
  * **/
 import initVFS from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
+import { LRUCache } from '../thirdparty/lru-cache.js';
 
 initVFS();
 
@@ -94,6 +95,12 @@ async function openURLInPhoenixWindow(url, {
     nativeWindow.isTauriWindow = false;
     return nativeWindow;
 }
+
+Phoenix.libs = {
+    LRUCache,
+    iconv: fs.utils.iconv,
+    picomatch: fs.utils.picomatch
+};
 
 Phoenix.app = {
     getNodeState: function (cbfn){

@@ -1828,7 +1828,12 @@ define(function (require, exports, module) {
         return selectors;
     }
 
-    const CSSSelectorCache = new Map();
+    const CSSSelectorCache = new Phoenix.libs.LRUCache({
+        maxSize: 100*1024*1024, // 100MB
+        sizeCalculation: (value) => {
+            return value.length;
+        }
+    });
 
     function _projectFileChanged(_evt, entry) {
         if(!entry){
@@ -1863,7 +1868,7 @@ define(function (require, exports, module) {
                     let selectors = new Set();
                     const cachedSelectors = CSSSelectorCache.get(fullPath);
                     if(cachedSelectors){
-                        resolve(cachedSelectors);
+                        resolve(new Set(JSON.parse(cachedSelectors)));
                         return;
                     }
                     const langID = doc.getLanguage().getId();
@@ -1877,7 +1882,7 @@ define(function (require, exports, module) {
                         {text: doc.getText(), cssMode: CSS_MODE_MAP[langID], filePath: fullPath})
                         .then((selectorArray)=>{
                             selectors = _extractSelectorSet(selectorArray);
-                            CSSSelectorCache.set(fullPath, selectors);
+                            CSSSelectorCache.set(fullPath, JSON.stringify(Array.from(selectors)));
                             resolve(selectors);
                         }).catch(err=>{
                             console.warn("CSS language service unable to get selectors for" + fullPath, err);
@@ -1928,8 +1933,8 @@ define(function (require, exports, module) {
             }
             const responseHead = await fetch(link, { method: 'HEAD' });
             const contentLength = responseHead.headers.get('Content-Length');
-            if (contentLength > MAX_CONTENT_LENGTH) {
-                console.log(`Stylesheet is larger than ${MAX_CONTENT_LENGTH}bytes, ignoring`, link);
+            if (!contentLength || contentLength > MAX_CONTENT_LENGTH) {
+                console.log(`Stylesheet is larger than ${MAX_CONTENT_LENGTH}bytes - ${contentLength}, ignoring`, link);
                 return;
             }
 
@@ -1938,7 +1943,8 @@ define(function (require, exports, module) {
             IndexingWorker.execPeer("css_getAllSymbols",
                 {text: styleSheetText, cssMode: CSS_MODE_MAP[extension], filePath: link})
                 .then((selectorArray)=>{
-                    CSSSelectorCache.set(link, _extractSelectorSet(selectorArray));
+                    const selectorJson = JSON.stringify(Array.from(_extractSelectorSet(selectorArray)));
+                    CSSSelectorCache.set(link, selectorJson);
                 }).catch(err=>{
                     console.warn("CSS language service unable to get selectors for link" + link, err);
                 });
@@ -1970,11 +1976,12 @@ define(function (require, exports, module) {
             }
             if(link.startsWith("http://") || link.startsWith("https://")) {
                 externalStyleSheetCount ++;
-                const cachedSelectors = CSSSelectorCache.get(link);
-                if(cachedSelectors){
-                    cachedSelectors.forEach(value=>{
+                let cachedSelectorsArray = CSSSelectorCache.get(link);
+                if(cachedSelectorsArray){
+                    cachedSelectorsArray = JSON.parse(cachedSelectorsArray);
+                    for(let value of cachedSelectorsArray){
                         selectors.add(value);
-                    });
+                    }
                 } else {
                     _precacheExternalStyleSheet(link);
                 }

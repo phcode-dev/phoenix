@@ -21,6 +21,7 @@
 
 define(function (require, exports, module) {
 
+    require("spec/Phoenix-platform-test");
     require("spec/Tauri-platform-test");
     require("spec/utframework-suite-test");
     require("spec/Async-test");
