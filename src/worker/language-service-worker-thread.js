@@ -19,17 +19,25 @@
  *
  */
 
-/*global virtualfs, fs, WorkerComm, CSSLanguageService */
+/*global WorkerComm, CSSLanguageService, HTMLLanguageService */
 
 importScripts('../thirdparty/no-minify/language-worker.js');
 
 (function () {
-    function getAllSymbols({text, cssMode, filePath}) {
+    function CSSGetAllSymbols({text, cssMode, filePath}) {
         if(!CSSLanguageService.CSS_MODES[cssMode]) {
             throw new Error("Language mode not supported "+ cssMode);
         }
         return CSSLanguageService.getAllSymbols(text, cssMode, filePath);
     }
 
-    WorkerComm.setExecHandler("css_getAllSymbols", getAllSymbols);
+    function htmlGetAllLinks({text, htmlMode, filePath}) {
+        if(!HTMLLanguageService.HTML_MODES[htmlMode]) {
+            throw new Error("Language mode not supported "+ htmlMode);
+        }
+        return HTMLLanguageService.getAllDocumentLinks(text, htmlMode, filePath);
+    }
+
+    WorkerComm.setExecHandler("css_getAllSymbols", CSSGetAllSymbols);
+    WorkerComm.setExecHandler("html_getAllLinks", htmlGetAllLinks);
 }());
