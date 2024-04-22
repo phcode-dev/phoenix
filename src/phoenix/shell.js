@@ -28,7 +28,7 @@
  * **/
 import initVFS from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
-import { LRUCache } from '../thirdparty/lru-cache.js';
+import { LRUCache } from '../thirdparty/no-minify/lru-cache.js';
 
 initVFS();
 
