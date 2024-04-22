@@ -35,6 +35,7 @@ define(function (require, exports, module) {
         CSSProperties       = require("text!CSSProperties.json"),
         properties          = JSON.parse(CSSProperties);
 
+    require("./css-lint");
 
     const cssWideKeywords = ['initial', 'inherit', 'unset', 'var()', 'calc()'];
 
