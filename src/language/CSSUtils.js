@@ -1954,7 +1954,7 @@ define(function (require, exports, module) {
         cacheInProgress.delete(link);
     }
 
-    const MAX_ALLOWED_EXTERNAL_STYLE_SHEETS = 20;
+    const MAX_ALLOWED_EXTERNAL_STYLE_SHEETS = 30;
 
     /**
      * html files may have embedded link style sheets to external CDN urls. We will parse them to get all selectors.

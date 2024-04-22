@@ -286,6 +286,14 @@ define(function (require, exports, module) {
             await _validateCssEdit("cssLive1.scss");
         });
 
+        it("should get external https css style sheet", async function () {
+            await openFile("htmlOther/externalStyle.html", true);
+            await awaitsFor(async function () {
+                const allSelectors = await CSSUtils.getAllCssSelectorsInProject();
+                return allSelectors.includes(".devicon-aarch64-original-wordmark");
+            }, "external style sheet hints to be loaded");
+        });
+
         async function _testCssClassHintInFile(htmlLikeFile) {
             await openFile(htmlLikeFile, true);
             await openFile("cssLive.css", true);
