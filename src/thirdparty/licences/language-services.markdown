@@ -2,6 +2,10 @@
 The MIT License (MIT)
 Copyright (c) Microsoft
 
+## vscode-html-languageservice
+The MIT License (MIT)
+Copyright (c) Microsoft
+
 ## test/thirparty/chai
 MIT License
 Copyright (c) 2017 Chai.js Assertion Library
