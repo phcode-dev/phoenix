@@ -2083,7 +2083,8 @@ define(function (require, exports, module) {
         describe("Gutter APIs", function () {
             var leftGutter = "left",
                 rightGutter = "right",
-                lineNumberGutter = "CodeMirror-linenumbers";
+                lineNumberGutter = "CodeMirror-linenumbers",
+                codeInspectionGutter = "code-inspection-gutter";
 
             beforeEach(function () {
                 createTestEditor("hello\nworld\nyo", "javascript");
@@ -2109,7 +2110,7 @@ define(function (require, exports, module) {
                     return gutter.name;
                 });
                 expect(gutters).toEqual(expectedGutters);
-                expect(registeredGutters).toEqual(expectedGutters);
+                expect(registeredGutters).toEqual([...expectedGutters, codeInspectionGutter]);
             });
 
             it("should isGutterRegistered work on multiple gutters", function () {
