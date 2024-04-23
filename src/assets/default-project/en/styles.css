@@ -13,7 +13,7 @@ img {
 
 #starsLeft {
     position: absolute;
-    left: 0px;
+    left: 0;
     top: 5%;
     opacity: 0.7;
     z-index: 2;
@@ -22,7 +22,7 @@ img {
 #starsRight {
     position: absolute;
     z-index: 2;
-    right: 0px;
+    right: 0;
     top: 5%;
     opacity: 0.7;
 }
