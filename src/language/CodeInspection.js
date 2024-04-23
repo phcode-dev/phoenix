@@ -504,7 +504,7 @@ define(function (require, exports, module) {
                 resolve({
                     start: {line: pos.line, ch: token.start},
                     end: {line: pos.line, ch: token.end},
-                    content: hoverMessage
+                    content: `<div class="code-inspection-item">${hoverMessage}</div>`
                 });
                 return;
             }

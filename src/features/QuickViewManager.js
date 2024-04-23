@@ -374,9 +374,9 @@ define(function (require, exports, module) {
                 if(result.editsDoc){
                     popover.editsDoc = true;
                 }
-                let cssClass = `class='quick-view-partition'`;
+                let cssClass = `class='quick-view-partition quick-view-item'`;
                 if(i === (popoverResults.length - 1)) {
-                    cssClass = "";
+                    cssClass = "class='quick-view-item'";
                 }
                 popover.content.append($(`<div ${cssClass} ></div>`).append(result.content));
             }

@@ -86,9 +86,15 @@ define(function (require, exports, module) {
             return QuickView._queryPreviewProviders(editor, pos, token);
         }
 
-        async function expectNoPreviewAtPos(line, ch) {
+        async function expectNoColorOrImagePreviewAtPos(line, ch) {
             var popoverInfo = await getPopoverAtPos(line, ch);
-            expect(popoverInfo).toBeFalsy();
+            if(popoverInfo){
+                let quickViews = popoverInfo.content.find(".quick-view-item").length;
+                if(popoverInfo.content.find(".code-inspection-item").length){
+                    quickViews -= popoverInfo.content.find(".code-inspection-item").length;
+                }
+                expect(quickViews).toBe(0);
+            }
         }
 
         async function checkColorAtPos(expectedColor, line, ch) {
@@ -128,8 +134,8 @@ define(function (require, exports, module) {
             });
 
             it("should NOT show preview of color on words start with #",async function () {
-                await expectNoPreviewAtPos(7, 7);     // cursor on #invalid_hex
-                await expectNoPreviewAtPos(8, 15);    // cursor on #web
+                await expectNoColorOrImagePreviewAtPos(7, 7);     // cursor on #invalid_hex
+                await expectNoColorOrImagePreviewAtPos(8, 15);    // cursor on #web
             });
 
             it("should show preview of valid rgb/rgba colors",async function () {
@@ -149,9 +155,9 @@ define(function (require, exports, module) {
             });
 
             it("should NOT show preview of unsupported rgb/rgba colors",async function () {
-                await expectNoPreviewAtPos(25, 14);    // cursor on rgb(300, 0, 0)
-                await expectNoPreviewAtPos(26, 15);    // cursor on rgb(0, 95.5, 0)
-                await expectNoPreviewAtPos(27, 15);    // cursor on rgba(-0, 0, 0, 0.5)
+                await expectNoColorOrImagePreviewAtPos(25, 14);    // cursor on rgb(300, 0, 0)
+                await expectNoColorOrImagePreviewAtPos(26, 15);    // cursor on rgb(0, 95.5, 0)
+                await expectNoColorOrImagePreviewAtPos(27, 15);    // cursor on rgba(-0, 0, 0, 0.5)
             });
 
             it("should show preview of valid hsl/hsla colors",async function () {
@@ -162,9 +168,9 @@ define(function (require, exports, module) {
             });
 
             it("should NOT show preview of unsupported hsl/hsla colors",async function () {
-                await expectNoPreviewAtPos(38, 14);    // cursor on hsla(90, 100%, 50%, 2)
-                await expectNoPreviewAtPos(39, 14);    // cursor on hsla(0, 200%, 50%, 0.5)
-                await expectNoPreviewAtPos(40, 14);    // cursor on hsla(0.0, 100%, 50%, .5)
+                await expectNoColorOrImagePreviewAtPos(38, 14);    // cursor on hsla(90, 100%, 50%, 2)
+                await expectNoColorOrImagePreviewAtPos(39, 14);    // cursor on hsla(0, 200%, 50%, 0.5)
+                await expectNoColorOrImagePreviewAtPos(40, 14);    // cursor on hsla(0.0, 100%, 50%, .5)
             });
 
             it("should show preview of colors with valid names", async function () {
@@ -179,10 +185,10 @@ define(function (require, exports, module) {
             });
 
             it("should NOT show preview of colors with invalid names", async function () {
-                await expectNoPreviewAtPos(72, 15);    // cursor on redsox
-                await expectNoPreviewAtPos(73, 16);    // cursor on pinky
-                await expectNoPreviewAtPos(74, 16);    // cursor on blue in hyphenated word blue-cheese
-                await expectNoPreviewAtPos(75, 18);    // cursor on white in hyphenated word @bc-bg-highlight
+                await expectNoColorOrImagePreviewAtPos(72, 15);    // cursor on redsox
+                await expectNoColorOrImagePreviewAtPos(73, 16);    // cursor on pinky
+                await expectNoColorOrImagePreviewAtPos(74, 16);    // cursor on blue in hyphenated word blue-cheese
+                await expectNoColorOrImagePreviewAtPos(75, 18);    // cursor on white in hyphenated word @bc-bg-highlight
             });
 
             it("should open quick edit if clicked on colorview",async function () {
@@ -198,16 +204,16 @@ define(function (require, exports, module) {
                 testFile = "test.js";
 
                 it("should NOT show preview of color-named functions and object/array keys", async function () {
-                    await expectNoPreviewAtPos(2, 12);    // cursor on green()
-                    await expectNoPreviewAtPos(4, 22);    // cursor on Math.tan
-                    await expectNoPreviewAtPos(5, 14);    // cursor on tan()
-                    await expectNoPreviewAtPos(5, 38);    // cursor on array[red]
+                    await expectNoColorOrImagePreviewAtPos(2, 12);    // cursor on green()
+                    await expectNoColorOrImagePreviewAtPos(4, 22);    // cursor on Math.tan
+                    await expectNoColorOrImagePreviewAtPos(5, 14);    // cursor on tan()
+                    await expectNoColorOrImagePreviewAtPos(5, 38);    // cursor on array[red]
                 });
                 it("should not show preview of literal color names", async function () {
-                    await expectNoPreviewAtPos(2, 36);  // green
-                    await expectNoPreviewAtPos(3, 21);  // green
-                    await expectNoPreviewAtPos(5, 25);  // red
-                    await expectNoPreviewAtPos(7,  1);  // darkgray
+                    await expectNoColorOrImagePreviewAtPos(2, 36);  // green
+                    await expectNoColorOrImagePreviewAtPos(3, 21);  // green
+                    await expectNoColorOrImagePreviewAtPos(5, 25);  // red
+                    await expectNoColorOrImagePreviewAtPos(7,  1);  // darkgray
                 });
             });
         });
@@ -313,8 +319,8 @@ define(function (require, exports, module) {
 
             it("Should not go into infinite loop on unbalanced parens", async function () {
                 // no preview, and no infinite loop
-                await expectNoPreviewAtPos(189, 30);
-                await expectNoPreviewAtPos(190, 40);
+                await expectNoColorOrImagePreviewAtPos(189, 30);
+                await expectNoColorOrImagePreviewAtPos(190, 40);
             });
         });
 
@@ -417,19 +423,19 @@ define(function (require, exports, module) {
             });
 
             it("Should ignore URLs for common non-image extensions", async function () {
-                await expectNoPreviewAtPos(209, 20); // .html
-                await expectNoPreviewAtPos(210, 20); // .css
-                await expectNoPreviewAtPos(211, 20); // .js
-                await expectNoPreviewAtPos(212, 20); // .json
-                await expectNoPreviewAtPos(213, 20); // .md
-                await expectNoPreviewAtPos(214, 20); // .xml
-                await expectNoPreviewAtPos(215, 20); // .mp3
-                await expectNoPreviewAtPos(216, 20); // .ogv
-                await expectNoPreviewAtPos(217, 20); // .mp4
-                await expectNoPreviewAtPos(218, 20); // .mpeg
-                await expectNoPreviewAtPos(219, 20); // .webm
-                await expectNoPreviewAtPos(220, 20); // .zip
-                await expectNoPreviewAtPos(221, 20); // .tgz
+                await expectNoColorOrImagePreviewAtPos(209, 20); // .html
+                await expectNoColorOrImagePreviewAtPos(210, 20); // .css
+                await expectNoColorOrImagePreviewAtPos(211, 20); // .js
+                await expectNoColorOrImagePreviewAtPos(212, 20); // .json
+                await expectNoColorOrImagePreviewAtPos(213, 20); // .md
+                await expectNoColorOrImagePreviewAtPos(214, 20); // .xml
+                await expectNoColorOrImagePreviewAtPos(215, 20); // .mp3
+                await expectNoColorOrImagePreviewAtPos(216, 20); // .ogv
+                await expectNoColorOrImagePreviewAtPos(217, 20); // .mp4
+                await expectNoColorOrImagePreviewAtPos(218, 20); // .mpeg
+                await expectNoColorOrImagePreviewAtPos(219, 20); // .webm
+                await expectNoColorOrImagePreviewAtPos(220, 20); // .zip
+                await expectNoColorOrImagePreviewAtPos(221, 20); // .tgz
             });
 
             it("Should show image preview for a data URI inside url()", async function () {
