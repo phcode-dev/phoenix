@@ -363,7 +363,8 @@ define(function (require, exports, module) {
                 content: $("<div id='quick-view-popover-root'></div>")
             };
             // Each provider return popover { start, end, content}
-            for(let result of popoverResults){
+            for(let i=0; i<popoverResults.length; i++) {
+                const result = popoverResults[i];
                 if(_isResultBeforePopoverStart(editor, popover, result)){
                     popover.start = result.start;
                 }
@@ -373,7 +374,11 @@ define(function (require, exports, module) {
                 if(result.editsDoc){
                     popover.editsDoc = true;
                 }
-                popover.content.append(result.content);
+                let cssClass = `class='quick-view-partition'`;
+                if(i === (popoverResults.length - 1)) {
+                    cssClass = "";
+                }
+                popover.content.append($(`<div ${cssClass} ></div>`).append(result.content));
             }
 
             let startCoord = editor.charCoords(popover.start),
