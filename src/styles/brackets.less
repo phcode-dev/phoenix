@@ -152,35 +152,67 @@ html, body {
 }
 
 .editor-text-fragment-error{
-    text-decoration-style: wavy;
-    text-decoration-line: underline;
-    text-decoration-color: @error-underline-text;
-    text-decoration-thickness: 1px;
-    text-decoration-skip-ink: none;
+    border-bottom:2px dotted @error-underline-text;
+    display: inline-block;
+    position: relative;
+}
+
+.editor-text-fragment-error:after{
+    content: '';
+    width: 100%;
+    border-bottom:2px dotted @error-underline-text;
+    position: absolute;
+    display:block;
+    bottom: -3px;
+    left: 2px;
 }
 
 .editor-text-fragment-warn{
-    text-decoration-style: wavy;
-    text-decoration-line: underline;
-    text-decoration-color: @warn-underline-text;
-    text-decoration-thickness: 1px;
-    text-decoration-skip-ink: none;
+    border-bottom:2px dotted @warn-underline-text;
+    display: inline-block;
+    position: relative;
+}
+
+.editor-text-fragment-warn:after{
+    content: '';
+    width: 100%;
+    border-bottom:2px dotted @warn-underline-text;
+    position: absolute;
+    display:block;
+    bottom: -3px;
+    left: 2px;
 }
 
 .editor-text-fragment-info{
-    text-decoration-style: dashed;
-    text-decoration-line: underline;
-    text-decoration-color: @info-underline-text;
-    text-decoration-thickness: 1px;
-    text-decoration-skip-ink: none;
+    border-bottom:2px dotted @info-underline-text;
+    display: inline-block;
+    position: relative;
+}
+
+.editor-text-fragment-info:after{
+    content: '';
+    width: 100%;
+    border-bottom:2px dotted @info-underline-text;
+    position: absolute;
+    display:block;
+    bottom: -3px;
+    left: 2px;
 }
 
 .editor-text-fragment-spell-error{
-    text-decoration-style: wavy;
-    text-decoration-line: underline;
-    text-decoration-color: @spell-underline-text;
-    text-decoration-thickness: 1px;
-    text-decoration-skip-ink: none;
+    border-bottom:2px dotted @spell-underline-text;
+    display: inline-block;
+    position: relative;
+}
+
+.editor-text-fragment-spell-error:after{
+    content: '';
+    width: 100%;
+    border-bottom:2px dotted @spell-underline-text;
+    position: absolute;
+    display:block;
+    bottom: -3px;
+    left: 2px;
 }
 
 .hidden-element{
@@ -1938,6 +1970,15 @@ a, img {
         background: @dark-bc-panel-bg;
         box-shadow: 0 4px 15px @dark-bc-shadow-large;
     }
+}
+
+.quick-view-partition {
+    border-bottom: 2px solid @bc-quick-view-separator;
+    .dark & {
+        border-bottom: 2px solid @dark-bc-quick-view-separator;
+    }
+    padding-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 #quick-view-container.active {

@@ -203,19 +203,20 @@ define(function (require, exports, module) {
 
     function filterQuickView(popovers){
         // rgb(10 , 100, 20), hover over these kind of numbers should open color quick view if present over number view
-        let numberQuickView, colorQuickView;
+        let hasColorQuickView = false;
         for(let popover of popovers){
-            if(popover.providerInfo.provider.QUICK_VIEW_NAME === exports.QUICK_VIEW_NAME){
-                numberQuickView = popover;
-            } else if(popover.providerInfo.provider.QUICK_VIEW_NAME === colorGradientProvider.QUICK_VIEW_NAME){
-                colorQuickView = popover;
+            if(popover.providerInfo.provider.QUICK_VIEW_NAME === colorGradientProvider.QUICK_VIEW_NAME){
+                hasColorQuickView = true;
+                break;
             }
         }
-        if(colorQuickView){
-            return [colorQuickView];
+        if(hasColorQuickView){
+            popovers = popovers.filter((popover) => {
+                return popover.providerInfo.provider.QUICK_VIEW_NAME !== exports.QUICK_VIEW_NAME;
+            });
         }
 
-        return [numberQuickView] || popovers;
+        return popovers;
     }
 
     prefs.on("change", PREF_ENABLED_KEY, function () {

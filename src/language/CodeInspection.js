@@ -532,8 +532,6 @@ define(function (require, exports, module) {
             for (let resultProvider of resultProviderEntries) {
                 let errors = (resultProvider.result && resultProvider.result.errors) || [];
                 for (let error of errors) {
-                    // todo: add error.message on hover
-                    // add gutter markers
                     let line = error.pos.line || 0;
                     let ch = error.pos.ch || 0;
                     let gutterMessage = gutterErrorMessages[line] || [];
