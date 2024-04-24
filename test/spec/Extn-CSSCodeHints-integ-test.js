@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, awaitsFor, awaitsForDone, afterAll */
+/*global describe, it, expect, beforeAll, awaitsFor, awaitsForDone, afterAll */
 
 define(function (require, exports, module) {
 
@@ -37,7 +37,7 @@ define(function (require, exports, module) {
             editor,
             testFile = "css-lint-errors.css";
 
-        beforeEach(async function () {
+        beforeAll(async function () {
             // Create a new window that will be shared by ALL tests in this spec.
             if (!testWindow) {
                 testWindow = await SpecRunnerUtils.createTestWindowAndRun();
@@ -90,66 +90,77 @@ define(function (require, exports, module) {
             expect(popoverInfo.content.find(".code-inspection-item").text().trim()).toBe(expectedWarning);
         }
 
-        describe("CSS warnings quick view", function () {
-            it("Should show warning", async function () {
+        function runTests(testTyle) {
+            it(`Should ${testTyle} show warning`, async function () {
                 await checkCSSWarningAtPos("Do not use empty rulesets (emptyRules)", 2, 0);
             });
 
-            it("Should show no warning for imports", async function () {
+            it(`Should ${testTyle} show no warning for imports`, async function () {
                 await expectNoCSSLintQuickViewAtPos(1, 1);
             });
 
-            it("Should show duplicate properties warning", async function () {
+            it(`Should ${testTyle} show duplicate properties warning`, async function () {
                 await checkCSSWarningAtPos("Do not use duplicate style definitions (duplicateProperties)",
                     5, 8);
                 await checkCSSWarningAtPos("Do not use duplicate style definitions (duplicateProperties)",
                     6, 8);
             });
 
-            it("Should show duplicate properties warning", async function () {
+            it(`Should ${testTyle} show duplicate properties warning`, async function () {
                 await checkCSSWarningAtPos("No unit for zero needed (zeroUnits)",
                     10, 11);
             });
 
-            it("Should show no warning for box model", async function () {
+            it(`Should ${testTyle} show no warning for box model`, async function () {
                 // dont use width and height when using padding
                 await expectNoCSSLintQuickViewAtPos(14, 8);
                 await expectNoCSSLintQuickViewAtPos(15, 8);
                 await expectNoCSSLintQuickViewAtPos(16, 8);
             });
 
-            it("Should show unknown properties warning", async function () {
+            it(`Should ${testTyle} show unknown properties warning`, async function () {
                 await checkCSSWarningAtPos("Unknown property: 'doesntExist' (unknownProperties)",
                     20, 8);
             });
 
-            it("Should show ie hack warning", async function () {
+            it(`Should ${testTyle} show ie hack warning`, async function () {
                 await checkCSSWarningAtPos("IE hacks are only necessary when supporting IE7 and older (ieHack)",
                     25, 8);
             });
 
-            it("Should show ignored due to display warning", async function () {
+            it(`Should ${testTyle} show ignored due to display warning`, async function () {
                 await checkCSSWarningAtPos("inline-block is ignored due to the float. If 'float' has a value other than 'none', the box is floated and 'display' is treated as 'block' (propertyIgnoredDueToDisplay)",
                     30, 8);
             });
 
-            it("Should show no warning on !important", async function () {
+            it(`Should ${testTyle} show no warning on !important`, async function () {
                 await expectNoCSSLintQuickViewAtPos(34, 8);
                 await expectNoCSSLintQuickViewAtPos(35, 8);
             });
 
-            it("Should show font-face warning", async function () {
+            it(`Should ${testTyle} show font-face warning`, async function () {
                 await checkCSSWarningAtPos("@font-face rule must define 'src' and 'font-family' properties (fontFaceProperties)",
                     38, 8);
                 await checkCSSWarningAtPos("@font-face rule must define 'src' and 'font-family' properties (fontFaceProperties)",
                     39, 8);
             });
 
-            it("Should show unknown vendor prefix warning", async function () {
+            it(`Should ${testTyle} show unknown vendor prefix warning`, async function () {
                 await checkCSSWarningAtPos("Unknown vendor specific property. (unknownVendorSpecificProperties)Also define the standard property 'border-radius' for compatibility (vendorPrefix)",
                     43, 8);
             });
-        });
+        }
 
+        const testFiles = ["css-lint-errors.css", "less-lint-errors.less", "less-lint-errors.scss"];
+
+        for(let localTestFile of testFiles){
+            describe("CSS warnings quick view", function () {
+                beforeAll(async function () {
+                    await awaitsForDone(SpecRunnerUtils.openProjectFiles([localTestFile]), "open test file: " + testFile);
+                }, 30000);
+
+                runTests(localTestFile);
+            });
+        }
     });
 });
