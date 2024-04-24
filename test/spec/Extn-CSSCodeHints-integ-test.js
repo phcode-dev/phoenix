@@ -162,5 +162,31 @@ define(function (require, exports, module) {
                 runTests(localTestFile);
             });
         }
+
+        describe("less and scss warnings quick view", function () {
+            it(`Should allow comments in less`, async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["less-lint-errors.less"]), "open test file: less-lint-errors.less");
+                await expectNoCSSLintQuickViewAtPos(46, 8);
+            });
+
+            it(`Should less syntax specific show duplicate properties warning`, async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["less-lint-errors.less"]), "open test file: less-lint-errors.less");
+                await checkCSSWarningAtPos("Do not use duplicate style definitions (duplicateProperties)",
+                    49, 14);
+                await checkCSSWarningAtPos("Do not use duplicate style definitions (duplicateProperties)",
+                    50, 14);
+            });
+
+            it(`Should allow comments in scss`, async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["less-lint-errors.scss"]), "open test file: less-lint-errors.scss");
+                await expectNoCSSLintQuickViewAtPos(46, 8);
+            });
+
+            it(`Should allow scss specific syntax`, async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["less-lint-errors.scss"]), "open test file: less-lint-errors.scss");
+                await expectNoCSSLintQuickViewAtPos(48, 12);
+            });
+
+        });
     });
 });

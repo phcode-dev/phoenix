@@ -43,3 +43,11 @@
 .unknown-vendor-prefix-warning {
     -microsoft-border-radius: 5px;
 }
+
+// single line comments are supported in scss
+// below to test scss syntax
+.#{$fa-css-prefix}-border {
+    padding: .2em .25em .15em;
+    border: solid .08em $fa-border-color;
+    border-radius: .1em;
+}
