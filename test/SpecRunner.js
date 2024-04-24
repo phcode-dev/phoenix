@@ -236,6 +236,7 @@ define(function (require, exports, module) {
     require("thirdparty/CodeMirror/addon/mode/multiplex");
     require("thirdparty/CodeMirror/addon/mode/overlay");
     require("thirdparty/CodeMirror/addon/search/searchcursor");
+    require("thirdparty/CodeMirror/addon/comment/comment");
     require("thirdparty/CodeMirror/keymap/sublime");
 
     //load Language Tools Module
