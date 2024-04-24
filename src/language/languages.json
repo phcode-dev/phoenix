@@ -292,15 +292,13 @@
 
     "markdown": {
         "name": "Markdown",
-        "mode": "markdown",
-        "blockComment": ["<!--", "-->"]
+        "mode": "markdown"
     },
 
     "gfm": {
         "name": "Markdown (GitHub)",
         "mode": "gfm",
-        "fileExtensions": ["md", "markdown", "mdown", "mkdn"],
-        "blockComment": ["<!--", "-->"]
+        "fileExtensions": ["md", "markdown", "mdown", "mkdn"]
     },
 
     "yaml": {

@@ -2220,6 +2220,18 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Tries to uncomment the current selection, and if that fails, line-comments it.
+     * This is internal private api used by phoenix line toggle command
+     * @private
+     */
+    Editor.prototype._toggleComment = function () {
+        const indentLineComment = Editor.getIndentLineComment(this.document.file.fullPath);
+        this._codeMirror.toggleComment({
+            indent: indentLineComment
+        });
+    };
+
+    /**
      * Returns the list of gutters current registered on all editors.
      * @return {!Array.<{name: string, priority: number}>}
      */
