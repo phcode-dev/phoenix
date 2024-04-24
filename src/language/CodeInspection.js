@@ -394,21 +394,7 @@ define(function (require, exports, module) {
             console.warn("CodeInspector: Invalid error position: ", error);
             return false;
         }
-        // now we only apply a style if there is not already a higher priority style applied to it.
-        // Ie. If an error style is applied, we don't apply an info style over it as error takes precedence.
-        let markings = editor.findMarksAt(error.pos, CODE_MARK_TYPE_INSPECTOR);
-        let MarkToApplyPriority = _getMarkTypePriority(error.type);
-        let shouldMark = true;
-        for(let mark of markings){
-            let markTypePriority = _getMarkTypePriority(mark.type);
-            if(markTypePriority<=MarkToApplyPriority){
-                mark.clear();
-            } else {
-                // there's something with a higher priority marking the token
-                shouldMark = false;
-            }
-        }
-        return shouldMark;
+        return true;
     }
 
     /**
@@ -498,7 +484,7 @@ define(function (require, exports, module) {
             let codeInspectionMarks = editor.findMarksAt(pos, CODE_MARK_TYPE_INSPECTOR) || [];
             let hoverMessage = '';
             for(let mark of codeInspectionMarks){
-                hoverMessage = `${hoverMessage}${mark.message}\n`;
+                hoverMessage = `${hoverMessage}${mark.message}<br/>`;
             }
             if(hoverMessage){
                 resolve({

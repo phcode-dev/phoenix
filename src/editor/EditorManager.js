@@ -825,4 +825,5 @@ define(function (require, exports, module) {
     exports.focusEditor                   = focusEditor;
     exports.getCurrentlyViewedPath        = getCurrentlyViewedPath;
     exports.setEditorHolder               = setEditorHolder;
+    window.ed = exports;
 });
