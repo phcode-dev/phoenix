@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "इस पहचानकर्ता का नाम नहीं बदल सकता, क्योंकि यह इस फ़ंक्शन के बाहर कहीं और संदर्भित है",
   "ERROR_RENAME_GENERAL": "चयनित पाठ का नाम नहीं बदल सकता",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} लिंट",
   "CMD_ENABLE_QUICK_VIEW": "होवर पर त्वरित दृश्य",
   "CMD_ENABLE_SELECTION_VIEW": "चयन दृश्य",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "रंग संपादित करने के लिए यहां क्लिक करें",

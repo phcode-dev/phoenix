@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "この識別子は、この関数以外の場所で参照されているため名前変更できません",
   "ERROR_RENAME_GENERAL": "選択したテキストの名前を変更できません",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} 糸くず",
   "CMD_ENABLE_QUICK_VIEW": "ホバー・クイックビュー",
   "CMD_ENABLE_SELECTION_VIEW": "選択ビュー",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "ここをクリックして色を編集します",

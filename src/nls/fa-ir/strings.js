@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "نمی توان نام این شناسه را تغییر داد، زیرا در جای دیگری خارج از این تابع به آن ارجاع داده شده است",
   "ERROR_RENAME_GENERAL": "نمی توان نام متن انتخابی را تغییر داد",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} لینت",
   "CMD_ENABLE_QUICK_VIEW": "مشاهده سریع بهنگام اشاره با ماوس",
   "CMD_ENABLE_SELECTION_VIEW": "نمای انتخابی",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "برای ویرایش رنگ اینجا را کلیک کنید",

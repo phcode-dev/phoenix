@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "无法重命名此标识符，因为它在此函数之外的其他地方被引用",
   "ERROR_RENAME_GENERAL": "无法重命名所选文本",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} 棉绒",
   "CMD_ENABLE_QUICK_VIEW": "鼠标悬停时启用快速查看",
   "CMD_ENABLE_SELECTION_VIEW": "选择视图",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "单击此处编辑颜色",

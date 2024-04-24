@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "اس شناخت کنندہ کا نام تبدیل نہیں کیا جا سکتا، کیونکہ یہ اس فنکشن کے باہر کہیں اور حوالہ دیا گیا ہے۔",
   "ERROR_RENAME_GENERAL": "منتخب متن کا نام تبدیل نہیں کیا جا سکتا",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} لنٹ",
   "CMD_ENABLE_QUICK_VIEW": "ہوور پر فوری منظر",
   "CMD_ENABLE_SELECTION_VIEW": "انتخاب کا منظر",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "رنگ میں ترمیم کرنے کے لیے یہاں کلک کریں۔",

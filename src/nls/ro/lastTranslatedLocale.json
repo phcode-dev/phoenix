@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Nu se poate redenumi acest identificator, deoarece este referit în altă parte în afara acestei funcții",
   "ERROR_RENAME_GENERAL": "Nu se poate redenumi textul selectat",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Lint",
   "CMD_ENABLE_QUICK_VIEW": "Activare Quick View",
   "CMD_ENABLE_SELECTION_VIEW": "Vizualizare selecție",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Faceți clic aici pentru a edita culoarea",

@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "이 식별자는 이 함수 외부의 다른 곳에서 참조되므로 이름을 바꿀 수 없습니다.",
   "ERROR_RENAME_GENERAL": "선택한 텍스트의 이름을 바꿀 수 없습니다",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} 린트",
   "CMD_ENABLE_QUICK_VIEW": "QuickView 사용",
   "CMD_ENABLE_SELECTION_VIEW": "선택 보기",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "색상을 수정하려면 여기를 클릭하세요.",

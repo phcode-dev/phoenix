@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Kan ikke omdøbe denne identifikator, da den henvises til andre steder uden for denne funktion",
   "ERROR_RENAME_GENERAL": "Kan ikke omdøbe valgt tekst",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Fnug",
   "CMD_ENABLE_QUICK_VIEW": "Lyn-visning af det du peger på",
   "CMD_ENABLE_SELECTION_VIEW": "Udvalgsvisning",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik her for at redigere farve",

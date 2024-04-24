@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Tento identifikátor nelze přejmenovat, protože se na něj odkazuje jinde mimo tuto funkci",
   "ERROR_RENAME_GENERAL": "Vybraný text nelze přejmenovat",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Lint",
   "CMD_ENABLE_QUICK_VIEW": "Rychlý náhled",
   "CMD_ENABLE_SELECTION_VIEW": "Zobrazení výběru",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klikněte zde pro úpravu barvy",

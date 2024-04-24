@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Tätä tunnistetta ei voi nimetä uudelleen, koska siihen viitataan muualla tämän toiminnon ulkopuolella",
   "ERROR_RENAME_GENERAL": "Valittua tekstiä ei voi nimetä uudelleen",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Nukka",
   "CMD_ENABLE_QUICK_VIEW": "Pikanäkymä osoitettaessa",
   "CMD_ENABLE_SELECTION_VIEW": "Valintanäkymä",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Napsauta tästä muokataksesi väriä",

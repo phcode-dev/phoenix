@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Não é possível renomear este identificador, pois ele é referenciado em outro lugar fora desta função",
   "ERROR_RENAME_GENERAL": "Não é possível renomear o texto selecionado",
   "JSHINT_NAME": "JSHintName",
+  "CSS_LINT_NAME": "{0} Lint",
   "CMD_ENABLE_QUICK_VIEW": "Visualização rápida ao passar o mouse",
   "CMD_ENABLE_SELECTION_VIEW": "Visualização de seleção",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Clique aqui para editar a cor",

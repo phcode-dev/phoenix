@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Impossible de renommer cet identifiant, car il est référencé ailleurs en dehors de cette fonction.",
   "ERROR_RENAME_GENERAL": "Impossible de renommer le texte sélectionné",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Peluches",
   "CMD_ENABLE_QUICK_VIEW": "Affichage rapide au survol",
   "CMD_ENABLE_SELECTION_VIEW": "Vue de sélection",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Cliquez ici pour modifier la couleur",

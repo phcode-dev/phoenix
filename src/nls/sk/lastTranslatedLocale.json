@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Tento identifikátor nie je možné premenovať, pretože sa naň odkazuje inde mimo tejto funkcie",
   "ERROR_RENAME_GENERAL": "Vybratý text nie je možné premenovať",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Lint",
   "CMD_ENABLE_QUICK_VIEW": "Rýchly náhľad",
   "CMD_ENABLE_SELECTION_VIEW": "Zobrazenie výberu",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Ak chcete upraviť farbu, kliknite sem",

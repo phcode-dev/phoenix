@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Cannot rename this identifier, as it is referenced elsewhere outside this function",
   "ERROR_RENAME_GENERAL": "Cannot rename selected text",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Lint",
   "CMD_ENABLE_QUICK_VIEW": "Quick View on Hover",
   "CMD_ENABLE_SELECTION_VIEW": "Selection View",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Click here to edit color",

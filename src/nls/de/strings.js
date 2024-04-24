@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Dieser Bezeichner kann nicht umbenannt werden, da er an anderer Stelle außerhalb dieser Funktion referenziert wird",
   "ERROR_RENAME_GENERAL": "Ausgewählter Text kann nicht umbenannt werden",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Flusen",
   "CMD_ENABLE_QUICK_VIEW": "Schnelle Farbansicht",
   "CMD_ENABLE_SELECTION_VIEW": "Auswahlansicht",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klicken Sie hier, um die Farbe zu bearbeiten",

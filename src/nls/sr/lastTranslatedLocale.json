@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Не може се преименовати овај идентификатор, јер се на њега упућује на другом месту ван ове функције",
   "ERROR_RENAME_GENERAL": "Није могуће преименовати изабрани текст",
   "JSHINT_NAME": "ЈСХинт",
+  "CSS_LINT_NAME": "{0} Линт",
   "CMD_ENABLE_QUICK_VIEW": "Брзи приказ приликом задржавања миша",
   "CMD_ENABLE_SELECTION_VIEW": "Селецтион Виев",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Кликните овде да бисте уредили боју",

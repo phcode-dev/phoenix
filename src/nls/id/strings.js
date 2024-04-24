@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Tidak dapat mengganti nama pengenal ini, karena direferensikan di tempat lain di luar fungsi ini",
   "ERROR_RENAME_GENERAL": "Tidak dapat mengganti nama teks yang dipilih",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Serat",
   "CMD_ENABLE_QUICK_VIEW": "Tampilkan Cepat Saat Hover",
   "CMD_ENABLE_SELECTION_VIEW": "Tampilan Pilihan",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik di sini untuk mengedit warna",

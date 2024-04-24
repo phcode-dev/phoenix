@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Ez az azonosító nem nevezhető át, mivel a függvényen kívül máshol hivatkoznak rá",
   "ERROR_RENAME_GENERAL": "A kiválasztott szöveget nem lehet átnevezni",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Szösz",
   "CMD_ENABLE_QUICK_VIEW": "Gyors Nézet rámutatáskor",
   "CMD_ENABLE_SELECTION_VIEW": "Kijelölés nézet",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kattintson ide a szín szerkesztéséhez",
