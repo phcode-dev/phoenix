@@ -25,17 +25,19 @@ importScripts('../thirdparty/no-minify/language-worker.js');
 
 (function () {
     function CSSGetAllSymbols({text, cssMode, filePath}) {
-        if(!CSSLanguageService.CSS_MODES[cssMode]) {
+        const cssModeID = CSSLanguageService.CSS_MODES[cssMode];
+        if(!cssModeID) {
             throw new Error("Language mode not supported "+ cssMode);
         }
-        return CSSLanguageService.getAllSymbols(text, cssMode, filePath);
+        return CSSLanguageService.getAllSymbols(text, cssModeID, filePath);
     }
 
     function htmlGetAllLinks({text, htmlMode, filePath}) {
-        if(!HTMLLanguageService.HTML_MODES[htmlMode]) {
+        const htmlModeID = HTMLLanguageService.HTML_MODES[htmlMode];
+        if(!htmlModeID) {
             throw new Error("Language mode not supported "+ htmlMode);
         }
-        return HTMLLanguageService.getAllDocumentLinks(text, htmlMode, filePath);
+        return HTMLLanguageService.getAllDocumentLinks(text, htmlModeID, filePath);
     }
 
     WorkerComm.setExecHandler("css_getAllSymbols", CSSGetAllSymbols);
