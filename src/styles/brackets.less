@@ -125,6 +125,10 @@ html, body {
     }
 }
 
+.code-inspection-item {
+    text-align: left;
+}
+
 .editor-text-fragment-hover{
     text-decoration-style: solid;
     text-decoration-line: underline;
@@ -151,13 +155,17 @@ html, body {
     border-right: 2px @bc-primary-btn-border solid;
 }
 
-.editor-text-fragment-error{
+// error class has highest visual precedence, followed by warning, spell error and info.
+// .error.error: This selector has 4x the class name, which increases its specificity compared to single class
+// selectors like .warning or .info. Even if error, warning, and info are used on the same div in any order,
+// the style for .error.error will take precedence due to its higher specificity.
+.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error{
     border-bottom:2px dotted @error-underline-text;
     display: inline-block;
     position: relative;
 }
 
-.editor-text-fragment-error:after{
+.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error:after{
     content: '';
     width: 100%;
     border-bottom:2px dotted @error-underline-text;
@@ -167,13 +175,13 @@ html, body {
     left: 2px;
 }
 
-.editor-text-fragment-warn{
+.editor-text-fragment-warn.editor-text-fragment-warn.editor-text-fragment-warn{
     border-bottom:2px dotted @warn-underline-text;
     display: inline-block;
     position: relative;
 }
 
-.editor-text-fragment-warn:after{
+.editor-text-fragment-warn.editor-text-fragment-warn.editor-text-fragment-warn:after{
     content: '';
     width: 100%;
     border-bottom:2px dotted @warn-underline-text;
@@ -199,13 +207,13 @@ html, body {
     left: 2px;
 }
 
-.editor-text-fragment-spell-error{
+.editor-text-fragment-spell-error.editor-text-fragment-spell-error{
     border-bottom:2px dotted @spell-underline-text;
     display: inline-block;
     position: relative;
 }
 
-.editor-text-fragment-spell-error:after{
+.editor-text-fragment-spell-error.editor-text-fragment-spell-error:after{
     content: '';
     width: 100%;
     border-bottom:2px dotted @spell-underline-text;

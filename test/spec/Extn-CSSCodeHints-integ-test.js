@@ -144,6 +144,11 @@ define(function (require, exports, module) {
                 await checkCSSWarningAtPos("@font-face rule must define 'src' and 'font-family' properties (fontFaceProperties)",
                     39, 8);
             });
+
+            it("Should show unknown vendor prefix warning", async function () {
+                await checkCSSWarningAtPos("Unknown vendor specific property. (unknownVendorSpecificProperties)Also define the standard property 'border-radius' for compatibility (vendorPrefix)",
+                    43, 8);
+            });
         });
 
     });
