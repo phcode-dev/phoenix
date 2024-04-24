@@ -60,6 +60,7 @@ define(function (require, exports, module) {
     require("thirdparty/CodeMirror/addon/selection/active-line");
     require("thirdparty/CodeMirror/addon/selection/mark-selection");
     require("thirdparty/CodeMirror/addon/display/rulers");
+    require("thirdparty/CodeMirror/addon/comment/comment");
     require("thirdparty/CodeMirror/keymap/sublime");
 
     require("utils/EventDispatcher");

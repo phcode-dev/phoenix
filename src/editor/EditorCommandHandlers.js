@@ -550,7 +550,7 @@ define(function (require, exports, module) {
                 });
 
             // Uncomment - remove prefix and suffix.
-            } else {
+            } else if(prefixPos){
                 // Find if the prefix and suffix are at the ch 0 and if they are the only thing in the line.
                 // If both are found we assume that a complete line selection comment added new lines, so we remove them.
                 var line          = doc.getLine(prefixPos.line).trim(),
@@ -634,6 +634,11 @@ define(function (require, exports, module) {
         return _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, [], sel, lineSel.selectionsToTrack, command);
     }
 
+    function _languageHasCommentsDefined(editor) {
+        const language = editor.document.getLanguage();
+        return language && (language.hasLineCommentSyntax() || language.hasBlockCommentSyntax());
+    }
+
     /**
      * @private
      * Generates an array of edits for toggling line comments on the given selections.
@@ -684,6 +689,11 @@ define(function (require, exports, module) {
             return;
         }
 
+        if(!_languageHasCommentsDefined(editor)) {
+            editor._toggleComment();
+            return;
+        }
+
         editor.setSelections(editor.document.doMultipleEdits(_getLineCommentEdits(editor, editor.getSelections(), "line")));
     }
 
@@ -694,6 +704,11 @@ define(function (require, exports, module) {
     function blockComment(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
+            return;
+        }
+
+        if(!_languageHasCommentsDefined(editor)) {
+            editor._toggleComment();
             return;
         }
 
