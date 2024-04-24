@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "ഈ ഐഡന്റിഫയർ പുനർനാമകരണം ചെയ്യാൻ കഴിയില്ല, കാരണം ഈ ഫംഗ്‌ഷന് പുറത്ത് മറ്റെവിടെയെങ്കിലും ഇത് പരാമർശിച്ചിരിക്കുന്നു",
   "ERROR_RENAME_GENERAL": "തിരഞ്ഞെടുത്ത ടെക്‌സ്‌റ്റിന്റെ പേരുമാറ്റാൻ കഴിയില്ല",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} ലിൻ്റ്",
   "CMD_ENABLE_QUICK_VIEW": "ഹോവറിൽ ദ്രുത കാഴ്ച",
   "CMD_ENABLE_SELECTION_VIEW": "തിരഞ്ഞെടുക്കൽ കാഴ്ച",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "നിറം എഡിറ്റ് ചെയ്യാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക",

@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Šo identifikatoru nevar pārdēvēt, jo tas ir norādīts citur ārpus šīs funkcijas",
   "ERROR_RENAME_GENERAL": "Nevar pārdēvēt atlasīto tekstu",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Lint",
   "CMD_ENABLE_QUICK_VIEW": "Ātrais skats uz norādēm",
   "CMD_ENABLE_SELECTION_VIEW": "Atlases skats",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Noklikšķiniet šeit, lai rediģētu krāsu",

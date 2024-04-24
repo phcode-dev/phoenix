@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Невозможно переименовать этот идентификатор, так как он упоминается в другом месте за пределами этой функции.",
   "ERROR_RENAME_GENERAL": "Невозможно переименовать выделенный текст",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Линт",
   "CMD_ENABLE_QUICK_VIEW": "Быстрый просмотр при наведении",
   "CMD_ENABLE_SELECTION_VIEW": "Представление выбора",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Нажмите здесь, чтобы изменить цвет",

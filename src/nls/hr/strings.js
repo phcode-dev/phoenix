@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Nije moguće preimenovati ovaj identifikator jer se spominje negdje drugdje izvan ove funkcije",
   "ERROR_RENAME_GENERAL": "Nije moguće preimenovati odabrani tekst",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} vlakna",
   "CMD_ENABLE_QUICK_VIEW": "Brzi 'lebdeći' (hover) prikaz",
   "CMD_ENABLE_SELECTION_VIEW": "Pregled odabira",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kliknite ovdje za uređivanje boje",

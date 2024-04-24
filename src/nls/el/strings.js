@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Δεν είναι δυνατή η μετονομασία αυτού του αναγνωριστικού, καθώς αναφέρεται αλλού εκτός αυτής της συνάρτησης",
   "ERROR_RENAME_GENERAL": "Δεν είναι δυνατή η μετονομασία του επιλεγμένου κειμένου",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Λιντ",
   "CMD_ENABLE_QUICK_VIEW": "Γρήγορη Προβολή στο Hover",
   "CMD_ENABLE_SELECTION_VIEW": "Προβολή επιλογής",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Κάντε κλικ εδώ για να επεξεργαστείτε το χρώμα",

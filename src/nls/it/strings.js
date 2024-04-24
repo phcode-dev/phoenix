@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Impossibile rinominare questo identificatore, poiché è referenziato altrove al di fuori di questa funzione",
   "ERROR_RENAME_GENERAL": "Impossibile rinominare il testo selezionato",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} pelucchi",
   "CMD_ENABLE_QUICK_VIEW": "Quick Edit al passaggio del mouse",
   "CMD_ENABLE_SELECTION_VIEW": "Vista di selezione",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Fare clic qui per modificare il colore",

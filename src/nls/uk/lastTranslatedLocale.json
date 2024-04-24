@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Неможливо перейменувати цей ідентифікатор, оскільки на нього посилаються деінде за межами цієї функції",
   "ERROR_RENAME_GENERAL": "Неможливо перейменувати виділений текст",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} ворс",
   "CMD_ENABLE_QUICK_VIEW": "Швидкий перегляд під час наведення",
   "CMD_ENABLE_SELECTION_VIEW": "Вид вибору",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Натисніть тут, щоб змінити колір",

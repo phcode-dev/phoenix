@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Nie można zmienić nazwy tego identyfikatora, ponieważ odwołuje się do niego w innym miejscu poza tą funkcją",
   "ERROR_RENAME_GENERAL": "Nie można zmienić nazwy zaznaczonego tekstu",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Lintki",
   "CMD_ENABLE_QUICK_VIEW": "Szybki Podgląd po najechaniu na element",
   "CMD_ENABLE_SELECTION_VIEW": "Widok wyboru",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kliknij tutaj, aby edytować kolor",

@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Bu tanımlayıcı, bu işlevin dışında başka bir yere başvurulduğundan yeniden adlandırılamıyor",
   "ERROR_RENAME_GENERAL": "Seçili metin yeniden adlandırılamıyor",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Tüysüz",
   "CMD_ENABLE_QUICK_VIEW": "Hover'da Hızlı Görünüm",
   "CMD_ENABLE_SELECTION_VIEW": "Seçim Görünümü",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Rengi düzenlemek için buraya tıklayın",

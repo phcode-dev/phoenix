@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "Kan de naam van deze identifier niet wijzigen, omdat er elders buiten deze functie naar wordt verwezen",
   "ERROR_RENAME_GENERAL": "Kan geselecteerde tekst niet hernoemen",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Lint",
   "CMD_ENABLE_QUICK_VIEW": "Snel bekijken bij muis over",
   "CMD_ENABLE_SELECTION_VIEW": "Selectieweergave",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik hier om de kleur te bewerken",

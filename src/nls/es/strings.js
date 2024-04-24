@@ -733,6 +733,7 @@ define({
   "ERROR_RENAME_QUICKEDIT": "No se puede cambiar el nombre de este identificador, ya que se hace referencia en otro lugar fuera de esta función",
   "ERROR_RENAME_GENERAL": "No se puede cambiar el nombre del texto seleccionado",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} pelusa",
   "CMD_ENABLE_QUICK_VIEW": "Vista rápida con cursor",
   "CMD_ENABLE_SELECTION_VIEW": "Vista de selección",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Haga clic aquí para editar el color",

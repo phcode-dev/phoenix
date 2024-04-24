@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "無法重命名此標識符，因為它在此函數之外的其他地方被引用",
   "ERROR_RENAME_GENERAL": "無法重命名所選文本",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} 棉絨",
   "CMD_ENABLE_QUICK_VIEW": "游標停留時快速檢視",
   "CMD_ENABLE_SELECTION_VIEW": "選擇視圖",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "單擊此處編輯顏色",

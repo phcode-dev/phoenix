@@ -713,6 +713,7 @@
   "ERROR_RENAME_QUICKEDIT": "Det går inte att byta namn på denna identifierare, eftersom den hänvisas till någon annanstans utanför denna funktion",
   "ERROR_RENAME_GENERAL": "Kan inte byta namn på markerad text",
   "JSHINT_NAME": "JSHint",
+  "CSS_LINT_NAME": "{0} Lint",
   "CMD_ENABLE_QUICK_VIEW": "Quick View vid hover",
   "CMD_ENABLE_SELECTION_VIEW": "Urvalsvy",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klicka här för att redigera färg",
