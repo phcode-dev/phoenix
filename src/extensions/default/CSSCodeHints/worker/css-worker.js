@@ -22,7 +22,11 @@
 
 (function () {
     function cssLint(params) {
-        return  CSSLanguageService.validateCSS(params.text, params.cssMode, params.filePath, {
+        const cssMode = CSSLanguageService.CSS_MODES[params.cssMode];
+        if(!cssMode) {
+            throw new Error("Language mode not supported "+ params.cssMode);
+        }
+        return  CSSLanguageService.validateCSS(params.text, cssMode, params.filePath, {
             duplicateProperties: "warning",
             zeroUnits: "warning",
             emptyRules: "warning",

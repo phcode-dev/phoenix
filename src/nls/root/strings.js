@@ -877,7 +877,7 @@ define({
     "JSHINT_NAME": "JSHint",
 
     // extension css code hints
-    "CSS_LINT_NAME": "CSS Lint",
+    "CSS_LINT_NAME": "{0} Lint",
 
     // Features/QuickView and quick view extensions
     "CMD_ENABLE_QUICK_VIEW": "Quick View on Hover",

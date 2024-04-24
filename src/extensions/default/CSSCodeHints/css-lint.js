@@ -29,6 +29,8 @@ define(function (require, exports, module) {
     // Load dependent modules
     const CodeInspection     = brackets.getModule("language/CodeInspection"),
         Strings            = brackets.getModule("strings"),
+        LanguageManager = brackets.getModule("language/LanguageManager"),
+        StringUtils           = brackets.getModule("utils/StringUtils"),
         IndexingWorker     = brackets.getModule("worker/IndexingWorker");
 
     IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/css-worker.js`);
@@ -41,15 +43,27 @@ define(function (require, exports, module) {
         }
     }
 
+    const cssMode = {
+        css: "CSS",
+        less: "LESS",
+        scss: "SCSS"
+    };
+
     /**
      * Run JSLint on the current document. Reports results to the main UI. Displays
      * a gold star when no errors are found.
      */
     async function lintOneFile(text, fullPath) {
         return new Promise((resolve)=>{
+            const languageId = LanguageManager.getLanguageForPath(fullPath).getId();
+            if(!cssMode[languageId]){
+                console.error("Unknown language id to lint: ", languageId, fullPath);
+                resolve();
+                return;
+            }
             IndexingWorker.execPeer("cssLint", {
                 text,
-                cssMode: "CSS",
+                cssMode: cssMode[languageId],
                 filePath: fullPath
             }).then(lintResult =>{
                 if (lintResult && lintResult.length) {
@@ -70,8 +84,11 @@ define(function (require, exports, module) {
     }
 
     // Register for JS files
-    CodeInspection.register("css", {
-        name: Strings.CSS_LINT_NAME,
-        scanFileAsync: lintOneFile
-    });
+    const supportedLanguages = ["css", "less", "scss"];
+    for(let language of supportedLanguages){
+        CodeInspection.register(language, {
+            name: StringUtils.format(Strings.CSS_LINT_NAME, cssMode[language]),
+            scanFileAsync: lintOneFile
+        });
+    }
 });
