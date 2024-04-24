@@ -558,12 +558,23 @@ define(function (require, exports, module) {
                 expect(marks.find('span').hasClass('line-icon-problem_type_info')).toBeTrue();
             });
 
+            function _hasClass(marks, className) {
+                let errorFound = false;
+                for(let mark of marks) {
+                    if(mark.className === className){
+                        errorFound = true;
+                        break;
+                    }
+                }
+                return errorFound;
+            }
+
             async function _verifyMixOfErrors(chw, che, chm, numMarksExpected = 1) {
                 let codeInspector1 = createCodeInspector("javascript linter 1", {
                     errors: [
                         {
                             pos: { line: 1, ch: chw },
-                            message: "Some errors here and there",
+                            message: "Some warnings here and there",
                             type: CodeInspection.Type.WARNING
                         }, {
                             pos: { line: 1, ch: che },
@@ -571,7 +582,7 @@ define(function (require, exports, module) {
                             type: CodeInspection.Type.ERROR
                         }, {
                             pos: { line: 1, ch: chm },
-                            message: "Some errors here and there",
+                            message: "Some meta here and there",
                             type: CodeInspection.Type.META
                         }
                     ]
@@ -583,26 +594,27 @@ define(function (require, exports, module) {
                 expect($("#problems-panel").is(":visible")).toBe(true);
                 let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
                 expect(marks.length).toBe(numMarksExpected);
-                expect(marks[0].className).toBe("editor-text-fragment-error");
+
+                expect(_hasClass(marks, "editor-text-fragment-error")).toBe(true);
             }
 
-            it("should underline errors only if warnings and info present in the same location", async function () {
-                await _verifyMixOfErrors(1, 2, 3);
+            it("should have errors if warnings and info present in the same location", async function () {
+                await _verifyMixOfErrors(1, 2, 3, 3);
             });
 
             it("should show errors icon only in gutter if warn and info also present on line", async function () {
-                await _verifyMixOfErrors(1, 2, 3);
+                await _verifyMixOfErrors(1, 2, 3, 3);
 
                 let marks = $(EditorManager.getActiveEditor().getGutterMarker(1, CodeInspection.CODE_INSPECTION_GUTTER));
                 expect(marks.find('span').hasClass('line-icon-problem_type_error')).toBeTrue();
             });
 
             it("should show errors, warning or info underline under text in editor appropriately", async function () {
-                await _verifyMixOfErrors(1, 2, 10, 2);
+                await _verifyMixOfErrors(1, 2, 10, 3);
 
                 let marks = EditorManager.getActiveEditor().getAllMarks("codeInspector");
-                expect(marks[0].className).toBe("editor-text-fragment-error");
-                expect(marks[1].className).toBe("editor-text-fragment-info");
+                expect(_hasClass(marks, "editor-text-fragment-error")).toBe(true);
+                expect(_hasClass(marks, "editor-text-fragment-info")).toBe(true);
             });
 
             it("should ignore async results from previous file", async function () {
