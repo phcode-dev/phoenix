@@ -1,0 +1,45 @@
+@import "no-error.css";
+
+.empty-css-error {}
+
+.duplicate-properties-warning {
+    color: red;
+    color: blue;
+}
+
+.zero-units-warning {
+    width: 0px;
+}
+
+.box-model-no-warning {
+    width: 300px;
+    padding: 50px;
+    border: 5px solid black;
+}
+
+.unknown-properties-warning {
+    doesntExist: 300px;
+}
+
+.ie-hack-warning {
+    color: blue; /* For modern browsers */
+    _color: red; /* This color is only for IE 6 and below */
+}
+
+.property-ignored-due-to-display-warning {
+    display: inline-block;
+    float: right;
+}
+
+.no-warnings-on-important {
+    width: 0 !important;
+    height: 0 !important;
+}
+
+@font-face {
+    font-family: 'needa default font warning';
+}
+
+.unknown-vendor-prefix-warning {
+    -microsoft-border-radius: 5px;
+}

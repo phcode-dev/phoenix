@@ -188,5 +188,14 @@ define(function (require, exports, module) {
             });
 
         });
+
+        it(`Should not lint minified css files`, async function () {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["css-lint-errors.min.css"]), "open test file: css-lint-errors.min.css");
+            // there is an error at 2,0 - Do not use empty rulesets (emptyRules)
+            await expectNoCSSLintQuickViewAtPos(2, 0);
+            await awaitsFor(()=>{
+                return testWindow.$("#status-inspection").attr("title") === "No linter available for CSS";
+            }, "CSS linter to not show for minified files");
+        });
     });
 });
