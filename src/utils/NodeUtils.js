@@ -29,13 +29,13 @@ define(function (require, exports, module) {
     const UTILS_NODE_CONNECTOR = "ph_utils";
 
     let utilsConnector;
-    if(Phoenix.browser.isTauri) {
+    if(Phoenix.isNativeApp) {
         // node not available in browser builds!
         utilsConnector = NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
     }
 
     async function fetchURLText(url, encoding) {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             throw new Error("node not available in browser");
         }
         const {buffer} = await utilsConnector.execPeer("getURLContent", {url});
@@ -47,7 +47,7 @@ define(function (require, exports, module) {
      * @return {Promise<boolean>} Promise resolves to true if strings was updated in node, else false(in browser.)
      */
     async function updateNodeLocaleStrings() {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             // this does nothing in browser builds.
             return false;
         }
@@ -56,7 +56,7 @@ define(function (require, exports, module) {
     }
 
     async function getPhoenixBinaryVersion() {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             throw new Error("getPhoenixBinaryVersion not available in browser");
         }
         const cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
@@ -65,14 +65,14 @@ define(function (require, exports, module) {
     }
 
     async function getLinuxOSFlavorName() {
-        if(Phoenix.platform !== "linux" || !Phoenix.browser.isTauri) {
+        if(Phoenix.platform !== "linux" || !Phoenix.isNativeApp) {
             return null;
         }
         return utilsConnector.execPeer("getLinuxOSFlavorName");
     }
 
     async function openUrlInBrowser(url, browserName) {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             throw new Error("openUrlInBrowser not available in browser");
         }
         return utilsConnector.execPeer("openUrlInBrowser", {url, browserName});

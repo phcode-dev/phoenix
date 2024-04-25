@@ -800,7 +800,7 @@ define(function (require, exports, module) {
     });
     debugMenu.addMenuDivider();
     // Show Developer Tools (optionally enabled)
-    if(Phoenix.browser.isTauri){
+    if(Phoenix.isNativeApp){
         CommandManager.register(Strings.CMD_SHOW_DEV_TOOLS, DEBUG_SHOW_DEVELOPER_TOOLS, _handleShowDeveloperTools);
         debugMenu.addMenuItem(DEBUG_SHOW_DEVELOPER_TOOLS, KeyboardPrefs.showDeveloperTools);
     }
@@ -827,13 +827,13 @@ define(function (require, exports, module) {
     CommandManager.get(DEBUG_UNLOAD_CURRENT_EXTENSION)
         .setEnabled(extensionDevelopment.isProjectLoadedAsExtension());
     CommandManager.get(DEBUG_OPEN_EXTENSION_FOLDER)
-        .setEnabled(Phoenix.browser.isTauri); // only show in tauri
+        .setEnabled(Phoenix.isNativeApp); // only show in tauri
     CommandManager.get(DEBUG_ENABLE_PHNODE_INSPECTOR)
-        .setEnabled(Phoenix.browser.isTauri); // only show in tauri
+        .setEnabled(Phoenix.isNativeApp); // only show in tauri
     CommandManager.get(DEBUG_GET_PHNODE_INSPECTOR_URL)
-        .setEnabled(Phoenix.browser.isTauri); // only show in tauri
+        .setEnabled(Phoenix.isNativeApp); // only show in tauri
     CommandManager.get(DEBUG_OPEN_VIRTUAL_SERVER)
-        .setEnabled(!Phoenix.browser.isTauri); // don't show in tauri as there is no virtual server in tauri
+        .setEnabled(!Phoenix.isNativeApp); // don't show in tauri as there is no virtual server in tauri
 
     _updateLogToConsoleMenuItemChecked();
 

@@ -220,7 +220,7 @@ define(function (require, exports, module) {
     }
 
     function getTestRoot() {
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             return Phoenix.app.getApplicationSupportDirectory() + "test";
         }
         return '/test';

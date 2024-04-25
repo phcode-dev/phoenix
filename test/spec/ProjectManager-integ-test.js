@@ -729,7 +729,7 @@ define(function (require, exports, module) {
         // }, 10000);
 
         describe("Project, file and folder download", function () {
-            if(Phoenix.browser.isTauri) {
+            if(Phoenix.isNativeApp) {
                 it("Not tested: download project is not present desktop local file system", async function () {});
                 return;
             }

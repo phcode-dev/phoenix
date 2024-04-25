@@ -210,7 +210,7 @@ define(function (require, exports, module) {
             });
         });
 
-        if(window.Phoenix.browser.isTauri) {
+        if(window.Phoenix.isNativeApp) {
             // unfortunately, browsers don't allow unattended clip board access as its a secure context. Clipboard API
             // will usually popup a clipboard access popup which the user have to click agree manually. So
             // we do this test only in tauri.

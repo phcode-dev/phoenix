@@ -129,7 +129,7 @@ define(function (require, exports, module) {
             event: function (){window.analytics._initData.push(arguments);}
         };}
         // for google analytics
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             // ga is not inpage in tauri builds. see below explanation in _initGoogleAnalytics
             window.dataLayer = window.dataLayer || [];
             window.gtag = function(){
@@ -154,7 +154,7 @@ define(function (require, exports, module) {
     let tauriGAEvents = new Map();
 
     function _sendGaEvent(eventAct, category, label, count) {
-        if(Phoenix.browser.isTauri) {
+        if(Phoenix.isNativeApp) {
             const key = `${eventAct}:${category}:${label}}`;
             const existingEvent = tauriGAEvents.get(key);
             if(existingEvent) {
@@ -179,7 +179,7 @@ define(function (require, exports, module) {
 
     function _initGoogleAnalytics() {
         // Load google analytics scripts
-        if(Phoenix.browser.isTauri) {
+        if(Phoenix.isNativeApp) {
             // in tauri google analytics is in a hidden window instead of current page as ga only supports http and
             // https urls and not the tauri custom protocol urls. So we have a hidden window that loads ga from a
             // http(s) page which is usually `https://phcode.dev/desktop-metrics.html` or
@@ -213,7 +213,7 @@ define(function (require, exports, module) {
         window.analytics.debugMode = window.debugMode;
         script.onload = function(){
             // replace `your_analytics_account_ID` and `appName` below with your values
-            const appName = Phoenix.browser.isTauri ?
+            const appName = Phoenix.isNativeApp ?
                 brackets.config.coreAnalyticsAppNameDesktop:
                 brackets.config.coreAnalyticsAppName;
             window.initAnalyticsSession( brackets.config.coreAnalyticsID, appName);
@@ -377,7 +377,7 @@ define(function (require, exports, module) {
      */
     async function flushMetrics() {
         try{
-            if(Phoenix.browser.isTauri) {
+            if(Phoenix.isNativeApp) {
                 _sendQueuedTauriGAEvents();
             }
         } catch (e) {

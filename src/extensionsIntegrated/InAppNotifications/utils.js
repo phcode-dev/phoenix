@@ -30,12 +30,12 @@ define(function (require, exports, module) {
     function isValidForThisPlatform(platformFilter) {
         platformFilter = platformFilter.split(",");
         if(platformFilter.includes("all")
-            || (platformFilter.includes(brackets.platform) && Phoenix.browser.isTauri) // win linux and mac is only for tauri and not for browser in platform
-            || (platformFilter.includes("allDesktop") && Phoenix.browser.isTauri)
-            || (platformFilter.includes("firefox") && Phoenix.browser.desktop.isFirefox && !Phoenix.browser.isTauri)
-            || (platformFilter.includes("chrome") && Phoenix.browser.desktop.isChromeBased && !Phoenix.browser.isTauri)
-            || (platformFilter.includes("safari") && Phoenix.browser.desktop.isSafari && !Phoenix.browser.isTauri)
-            || (platformFilter.includes("allBrowser") && !Phoenix.browser.isTauri)){
+            || (platformFilter.includes(brackets.platform) && Phoenix.isNativeApp) // win linux and mac is only for tauri and not for browser in platform
+            || (platformFilter.includes("allDesktop") && Phoenix.isNativeApp)
+            || (platformFilter.includes("firefox") && Phoenix.browser.desktop.isFirefox && !Phoenix.isNativeApp)
+            || (platformFilter.includes("chrome") && Phoenix.browser.desktop.isChromeBased && !Phoenix.isNativeApp)
+            || (platformFilter.includes("safari") && Phoenix.browser.desktop.isSafari && !Phoenix.isNativeApp)
+            || (platformFilter.includes("allBrowser") && !Phoenix.isNativeApp)){
             return true;
         }
         return false;

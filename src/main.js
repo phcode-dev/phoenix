@@ -104,7 +104,7 @@ const callback = function(mutationsList) {
 const mainScripts = document.getElementById('main-scripts-head');
 const config = { childList: true};
 
-if(!Phoenix.browser.isTauri) {
+if(!Phoenix.isNativeApp) {
     // in tauri, there is no splash screen, so we dont do this.
     // Create an observer instance linked to the callback function
     window.scriptObserver = new MutationObserver(callback);

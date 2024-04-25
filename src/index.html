@@ -346,9 +346,9 @@
                     'https://create.phcode.dev': true
                 }
             };
-            window.Phoenix.isDesktopApp = window.Phoenix.browser.isTauri;
+            window.Phoenix.isNativeApp = window.Phoenix.browser.isTauri;
             window.Phoenix.TRUSTED_ORIGINS[location.origin] = true;
-            Phoenix.isSupportedBrowser = Phoenix.browser.isTauri ||
+            Phoenix.isSupportedBrowser = Phoenix.isNativeApp ||
                 (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));
             window.testEnvironment = window.Phoenix.isTestWindow;
 
@@ -440,7 +440,7 @@
         }
 
         async function _resetCacheIfNeeded(force) {
-            if(Phoenix.browser.isTauri || Phoenix.isTestWindow) {
+            if(Phoenix.isNativeApp || Phoenix.isTestWindow) {
                 // no web cache in desktop builds ot test windows
                 return;
             }
@@ -645,7 +645,7 @@
                 document.body.classList.add('dark'); // This will later be overridden by the theme manager as required.
             }
             _addOrRemoveSplashScreenIfNeeded();
-            if(!Phoenix.browser.isTauri && !Phoenix.isTestWindow) {
+            if(!Phoenix.isNativeApp && !Phoenix.isTestWindow) {
                 const currentCacheVersion = localStorage.getItem(window._CURRENT_CACHE_VERSION_KEY);
                 if(currentCacheVersion !== PHOENIX_APP_CACHE_VERSION){
                     // dont load phoenix as the cache is inconsistent, the updater will reload after fixing cache

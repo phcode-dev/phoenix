@@ -96,7 +96,7 @@ define(function (require, exports, module) {
     }
 
     async function _shouldNotShowDialog() {
-        if(!Phoenix.browser.isTauri){
+        if(!Phoenix.isNativeApp){
             // in browser we always show the new project dialog even if there is a different startup project open. This
             // is mainly for users to discover the download native app button in the new project window.
             return false;

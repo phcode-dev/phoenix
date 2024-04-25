@@ -397,7 +397,7 @@ define(function (require, exports, module) {
             ext = LanguageManager.getCompoundFileExtension(name),
             i = name.lastIndexOf("." + ext);
         let hoverPath = ProjectManager.makeProjectRelativeIfPossible(entry.fullPath);
-        if(Phoenix.browser.isTauri) {
+        if(Phoenix.isNativeApp) {
             hoverPath = Phoenix.app.getDisplayPath(entry.fullPath);
         }
         hoverPath = hoverPath || "";

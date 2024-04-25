@@ -100,7 +100,7 @@ define(function (require, exports, module) {
                     console.log(`Browser Persisted storage granted?: ${isPersisted}`);
                 }
             }, PERSIST_STORAGE_DIALOG_DELAY_SECS);
-        } else if(!Phoenix.browser.isTauri){
+        } else if(!Phoenix.isNativeApp){
             console.error("Browser does not support storage persistence APIs");
             _showUnSupportedBrowserDialogue();
         }

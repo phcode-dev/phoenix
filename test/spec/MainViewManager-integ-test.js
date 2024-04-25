@@ -113,7 +113,7 @@ define(function (require, exports, module) {
 
         describe("Title bar", function () {
             it("should have a title bar in browser windows", async function () {
-                if(Phoenix.browser.isTauri) {
+                if(Phoenix.isNativeApp) {
                     return;
                 }
 
@@ -127,7 +127,7 @@ define(function (require, exports, module) {
             });
 
             it("should not have a title bar in tauri windows", async function () {
-                if(!Phoenix.browser.isTauri) {
+                if(!Phoenix.isNativeApp) {
                     return;
                 }
                 const $element = testWindow.$('.title-wrapper .title');

@@ -123,7 +123,7 @@ define(function (require, exports, module) {
         // live previews into its own domain apart from phcode.dev. Since safari doesn't support this, we are left
         // with using phcode.dev domain directly for live previews. That is a large attack surface for untrusted
         // code execution. so we will disable live previews in safari instead of shipping a security vulnerability.
-        return Phoenix.browser.isTauri || !(Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos);
+        return Phoenix.isNativeApp || !(Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos);
     }
 
     /**

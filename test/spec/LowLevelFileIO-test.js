@@ -115,7 +115,7 @@ define(function (require, exports, module) {
         });
 
         it("should getDisplayLocation return correct path in tauri", function () {
-            if(!Phoenix.browser.isTauri) {
+            if(!Phoenix.isNativeApp) {
                 return;
             }
             // tauri paths

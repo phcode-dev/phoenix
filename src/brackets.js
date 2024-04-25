@@ -421,7 +421,7 @@ define(function (require, exports, module) {
         // Add the platform (mac, win or linux) to the body tag so we can have platform-specific CSS rules
         const $body = $("body");
         $body.addClass("platform-" + brackets.platform);
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             $body.addClass("tauri");
         }
 
