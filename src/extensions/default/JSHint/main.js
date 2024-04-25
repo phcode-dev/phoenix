@@ -217,7 +217,7 @@ define(function (require, exports, module) {
 
     function _projectFileChanged(_evt, entry, added, removed) {
         let configFilePath = FileSystem.getFileForPath(ProjectManager.getProjectRoot().fullPath + CONFIG_FILE_NAME);
-        if(entry.fullPath === configFilePath.fullPath
+        if(entry && entry.fullPath === configFilePath.fullPath
             || _isFileInArray(configFilePath, added)){
             _reloadOptions();
         } else if(_isFileInArray(configFilePath, removed)){

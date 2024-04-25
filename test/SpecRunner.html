@@ -286,6 +286,7 @@
           'https://create.phcode.dev': true
         }
       };
+      window.Phoenix.isDesktopApp = window.Phoenix.browser.isTauri;
       window.Phoenix.TRUSTED_ORIGINS[location.origin] = true;
       Phoenix.isSupportedBrowser = Phoenix.browser.isTauri ||
               (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));
