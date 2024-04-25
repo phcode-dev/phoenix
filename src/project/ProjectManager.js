@@ -910,9 +910,11 @@ define(function (require, exports, module) {
             return startupProjectPath;
         }
         startupProjectPath = updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
-        const dirExists = await _dirExists(startupProjectPath);
-        if(dirExists){
-            return startupProjectPath;
+        if(startupProjectPath && _isProjectSafeToStartup(startupProjectPath)){
+            const dirExists = await _dirExists(startupProjectPath);
+            if(dirExists){
+                return startupProjectPath;
+            }
         }
         return getWelcomeProjectPath();
     }
@@ -1914,12 +1916,39 @@ define(function (require, exports, module) {
             .setEnabled(!Phoenix.VFS.isLocalDiscPath(projectRoot.fullPath));
     }
 
+    const UNSAFE_PROJECT_EXIT_PREFIX = "_Unafe_project_exit_";
+    function _flagProjectNotExitedSafely(projectRootPath) {
+        // we store this in local storage as these checks happen in app exit/startup flows where
+        // phstore is not reliable. It's ok to lose this data.
+        localStorage.setItem(UNSAFE_PROJECT_EXIT_PREFIX+projectRootPath, "true");
+    }
+    function _flagProjectExitedSafely(projectRootPath) {
+        localStorage.removeItem(UNSAFE_PROJECT_EXIT_PREFIX+projectRootPath);
+    }
+    function _isProjectSafeToStartup(projectRootPath) {
+        // In some cases, For eg: user tries to open a whole drive with phcode (or any project that makes phcode crash),
+        // phoenix may get stuck and never open again with the bad project as we try to open the same bad project
+        // on restart. So we keep a safe exit flag with each project. We only start the project on boot if it has
+        // been marked safe at previous exit or project switch. So on unsafe exit, the default project will be opened.
+        const unsafeExit = (localStorage.getItem(UNSAFE_PROJECT_EXIT_PREFIX+projectRootPath) === "true");
+        return !unsafeExit;
+    }
+
     exports.on(EVENT_PROJECT_OPEN, (_evt, projectRoot)=>{
         _reloadProjectPreferencesScope();
         _saveProjectPath();
         _setProjectDownloadCommandEnabled(_evt, projectRoot);
+        _flagProjectNotExitedSafely(projectRoot.fullPath);
     });
-    exports.on("beforeAppClose", _unwatchProjectRoot);
+
+    exports.on(EVENT_PROJECT_CLOSE, (_evt, projectRoot)=>{
+        _flagProjectExitedSafely(projectRoot.fullPath);
+    });
+    exports.on("beforeAppClose", ()=> {
+        _saveProjectPath();
+        _flagProjectExitedSafely(getProjectRoot().fullPath);
+        _unwatchProjectRoot();
+    });
 
     // Due to circular dependencies, not safe to call on() directly for other modules' events
     EventDispatcher.on_duringInit(FileViewController, "documentSelectionFocusChange", _documentSelectionFocusChange);
