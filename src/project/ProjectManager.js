@@ -1267,7 +1267,7 @@ define(function (require, exports, module) {
     }
 
     function _filePickerSupported() {
-        return Phoenix.browser.isTauri
+        return Phoenix.isNativeApp
             || window.showOpenFilePicker; // fs access file picker
     }
 

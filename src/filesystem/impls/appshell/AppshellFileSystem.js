@@ -293,7 +293,7 @@ define(function (require, exports, module) {
      */
     function showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback) {
         const wrappedCallback = _wrap(callback);
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             appshell.fs.openTauriFilePickerAsync({
                 multiple: allowMultipleSelection,
                 directory: chooseDirectories,

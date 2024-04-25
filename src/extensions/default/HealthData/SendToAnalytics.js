@@ -115,7 +115,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(PLATFORM, "languageOS", brackets.app.language);
         Metrics.countEvent(PLATFORM, "languageBrackets", brackets.getLocale());
         Metrics.countEvent(PLATFORM, "bracketsVersion", brackets.metadata.version);
-        if(Phoenix.platform === "linux" && Phoenix.browser.isTauri) {
+        if(Phoenix.platform === "linux" && Phoenix.isNativeApp) {
             NodeUtils.getLinuxOSFlavorName()
                 .then(flavor=>{
                     if(flavor){
@@ -160,7 +160,7 @@ define(function (require, exports, module) {
         Metrics.valueEvent(PERFORMANCE, "startup", "PhStore", PhStore._storageBootstrapTime);
         _bugsnagPerformance("PhStore",
             PhStore._storageBootstrapTime); // expensive api, use sparsely
-        if(Phoenix.browser.isTauri) {
+        if(Phoenix.isNativeApp) {
             Metrics.valueEvent(PERFORMANCE, "startup", "tauriBoot", window._tauriBootVars.bootstrapTime);
             _bugsnagPerformance("tauriBootVars",
                 window._tauriBootVars.bootstrapTime); // expensive api, use sparsely

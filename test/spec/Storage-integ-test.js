@@ -87,7 +87,7 @@ define(function (require, exports, module) {
         });
 
         it("Should be able to get and set with lmdb node connector in tauri", async function () {
-            if(!Phoenix.browser.isTauri){
+            if(!Phoenix.isNativeApp){
                 return;
             }
             const key = "test_suite_storage_key";
@@ -104,7 +104,7 @@ define(function (require, exports, module) {
         });
 
         it("Should be able to get and set with lmdb node connector in two node processes in tauri", async function () {
-            if(!Phoenix.browser.isTauri){
+            if(!Phoenix.isNativeApp){
                 return;
             }
             const key = "test_suite_storage_key";
@@ -123,7 +123,7 @@ define(function (require, exports, module) {
         });
 
         it("Should be able to create lmdb dumps in tauri", async function () {
-            if(!Phoenix.browser.isTauri){
+            if(!Phoenix.isNativeApp){
                 return;
             }
             const key = "test_suite_storage_key_dump_test";

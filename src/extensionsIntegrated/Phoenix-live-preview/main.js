@@ -76,8 +76,8 @@ define(function (require, exports, module) {
     const STATE_CUSTOM_SERVER_BANNER_ACK = "customServerBannerDone";
     let customServerModalBar;
 
-    const isBrowser = !Phoenix.browser.isTauri;
-    const StaticServer = Phoenix.browser.isTauri? NodeStaticServer : BrowserStaticServer;
+    const isBrowser = !Phoenix.isNativeApp;
+    const StaticServer = Phoenix.isNativeApp? NodeStaticServer : BrowserStaticServer;
 
     const EVENT_EMBEDDED_IFRAME_WHO_AM_I = 'whoAmIframePhoenix';
     const EVENT_EMBEDDED_IFRAME_FOCUS_EDITOR = 'embeddedIframeFocusEditor';
@@ -127,7 +127,7 @@ define(function (require, exports, module) {
             const iframeDom = $iframe[0];
             iframeDom.contentWindow.postMessage({
                 type: "WHO_AM_I_RESPONSE",
-                isTauri: Phoenix.browser.isTauri
+                isTauri: Phoenix.isNativeApp
             }, "*"); // this is not sensitive info, and is only dispatched if requested by the iframe
         }
     });
@@ -166,7 +166,7 @@ define(function (require, exports, module) {
         // to mitigate DOS attacks coming from the live preview in the future. A malicious project changing its on
         // text only using its own code should be an acceptable risk for now as it cant affect anything else in the
         // system.
-        if(Phoenix.isTestWindow || Phoenix.browser.isTauri){ // for test windows, we trust all test files
+        if(Phoenix.isTestWindow || Phoenix.isNativeApp){ // for test windows, we trust all test files
             return true;
         }
         // In browsers, The url bar will show up as phcode.dev for live previews and there is a chance that
@@ -341,7 +341,7 @@ define(function (require, exports, module) {
     }
 
     function _showOpenBrowserIcons() {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             return;
         }
         // only in desktop builds we show open with browser icons
@@ -428,7 +428,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtn", "click");
         });
 
-        const popoutSupported = Phoenix.browser.isTauri
+        const popoutSupported = Phoenix.isNativeApp
             || Phoenix.browser.desktop.isChromeBased || Phoenix.browser.desktop.isFirefox;
         if(!popoutSupported){
             // live preview can be popped out currently in only chrome based browsers. The cross domain iframe

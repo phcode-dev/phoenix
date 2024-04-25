@@ -706,7 +706,7 @@ define(function (require, exports, module) {
                 EditorManager;
 
             it("should hint site root '/'", async function () {
-                if(Phoenix.browser.isTauri && Phoenix.platform === "linux") {
+                if(Phoenix.isNativeApp && Phoenix.platform === "linux") {
                     // This tests breaks in github actions only in linux desktop builds for no reason i can fid out.
                     // no problem if we try to run it locally.
                     // so we disable this tests in linux desktop builds for now.

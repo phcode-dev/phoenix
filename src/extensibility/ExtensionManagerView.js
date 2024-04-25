@@ -514,7 +514,7 @@ define(function (require, exports, module) {
                 // save to metric id as it is from public extension store.
                 Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "update", id);
                 InstallExtensionDialog.updateUsingDialog(url).done((installResult)=>{
-                    if(Phoenix.browser.isTauri) {
+                    if(Phoenix.isNativeApp) {
                         // in tauri, due to browser cache for asset urls, updates to extensions will still load old
                         // extension through the http cache. So we show a restart app for the update to take effect
                         // message.

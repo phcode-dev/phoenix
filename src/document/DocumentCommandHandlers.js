@@ -2118,7 +2118,7 @@ define(function (require, exports, module) {
 
     let isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
     if (!isTestWindow) {
-        if(Phoenix.browser.isTauri) {
+        if(Phoenix.isNativeApp) {
             attachTauriUnloadHandler();
         } else {
             attachBrowserUnloadHandler();

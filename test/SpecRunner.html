@@ -286,9 +286,9 @@
           'https://create.phcode.dev': true
         }
       };
-      window.Phoenix.isDesktopApp = window.Phoenix.browser.isTauri;
+      window.Phoenix.isNativeApp = window.Phoenix.browser.isTauri;
       window.Phoenix.TRUSTED_ORIGINS[location.origin] = true;
-      Phoenix.isSupportedBrowser = Phoenix.browser.isTauri ||
+      Phoenix.isSupportedBrowser = Phoenix.isNativeApp ||
               (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));
       window.testEnvironment = window.Phoenix.isTestWindow;
 
@@ -445,7 +445,7 @@
       });
 
       const simulateOS = document.getElementById("os-select");
-      if(Phoenix.browser.isTauri) {
+      if(Phoenix.isNativeApp) {
         // only available in browsers
         simulateOS.classList.add("forced-hidden")
       } else {

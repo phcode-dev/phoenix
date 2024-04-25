@@ -364,7 +364,7 @@ define(function (require, exports, module) {
     }
 
     function _handleZoomIn(event) {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             return _handleBrowserZoom(event);
         }
         const currentZoom = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
@@ -375,7 +375,7 @@ define(function (require, exports, module) {
     }
 
     function _handleZoomOut(event) {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             return _handleBrowserZoom(event);
         }
         const currentZoom = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
@@ -576,7 +576,7 @@ define(function (require, exports, module) {
     prefs.definePreference(PREF_DESKTOP_ZOOM_SCALE, "number", DEFAULT_ZOOM_SCALE, {
         description: Strings.DESCRIPTION_DESKTOP_ZOOM_SCALE
     }).on("change", function () {
-        if(Phoenix.browser.isTauri) {
+        if(Phoenix.isNativeApp) {
             const zoomFactor = prefs.get(PREF_DESKTOP_ZOOM_SCALE);
             PhStore.setItem(PhStore._PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY, zoomFactor);
             if(zoomFactor < MIN_ZOOM_SCALE || zoomFactor > MAX_ZOOM_SCALE) {

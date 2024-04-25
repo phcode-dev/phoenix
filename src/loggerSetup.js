@@ -230,7 +230,7 @@
     } else if(Phoenix.browser.isMobile) {
         context = 'mobile';
     }
-    if(Phoenix.browser.isTauri) {
+    if(Phoenix.isNativeApp) {
         context = `tauri-${context}`;
     }
     if(Phoenix.browser.isMobile || Phoenix.browser.isTablet) {
@@ -273,7 +273,7 @@
         Bugsnag.start({
             apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
             context: context,
-            appType: Phoenix.browser && Phoenix.browser.isTauri ? "tauri" : "browser",
+            appType: Phoenix.browser && Phoenix.isNativeApp ? "tauri" : "browser",
             collectUserIp: false,
             appVersion: AppConfig.version,
             enabledReleaseStages: [ 'development', 'production', 'staging',

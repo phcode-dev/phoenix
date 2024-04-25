@@ -104,14 +104,14 @@ define(function (require, exports, module) {
             const OTHER_BASE_PATH = `/x/c/d/`;
             function getExpectedTitle(name) {
 
-                if(Phoenix.browser.isTauri){
+                if(Phoenix.isNativeApp){
                     return window.fs.getTauriPlatformPath(`${TAURI_BASE_PATH}${name}`);
                 }
                 return `${OTHER_BASE_PATH}${name}`;
             }
             function makeFile(name) {
                 let filePath = `${OTHER_BASE_PATH}${name}`;
-                if(Phoenix.browser.isTauri){
+                if(Phoenix.isNativeApp){
                     filePath = `${TAURI_BASE_PATH}${name}`;
                 }
                 return {

@@ -25,7 +25,7 @@ define(function (require, exports, module) {
 
     const NodeConnector = require("NodeConnector");
 
-    if(!Phoenix.browser.isTauri) {
+    if(!Phoenix.isNativeApp) {
         describe("Node Connection", function () {
             it("Should not have node engine", async function () {
                 expect(window.PhNodeEngine).not.toBeDefined();

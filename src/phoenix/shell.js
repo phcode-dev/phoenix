@@ -107,19 +107,19 @@ Phoenix.app = {
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
     registerQuitTimeAppUpdateHandler: function (handler) {
-        if(!Phoenix.browser.isTauri){
+        if(!Phoenix.isNativeApp){
             throw new Error("registerQuitTimeAppUpdateHandler is not supported in browsers");
         }
         quitTimeAppUpdateHandler = handler;
     },
     toggleDevtools: async function () {
-        if(!Phoenix.browser.isTauri){
+        if(!Phoenix.isNativeApp){
             throw new Error("toggle_devtools is not supported in browsers");
         }
         return window.__TAURI__.invoke("toggle_devtools", {});
     },
     closeWindow: async function (forceClose) {
-        if(!Phoenix.browser.isTauri){
+        if(!Phoenix.isNativeApp){
             throw new Error("closeWindow is not supported in browsers");
         }
         let instanceCount = 0;
@@ -151,7 +151,7 @@ Phoenix.app = {
         window.__TAURI__.window.getCurrent().close();
     },
     focusWindow: function () {
-        if(!Phoenix.browser.isTauri){
+        if(!Phoenix.isNativeApp){
             return Promise.reject(new Error("focusWindow is not supported in browsers"));
         }
         window.__TAURI__.window.getCurrent().setAlwaysOnTop(true);
@@ -159,7 +159,7 @@ Phoenix.app = {
         window.__TAURI__.window.getCurrent().setAlwaysOnTop(false);
     },
     clipboardReadText: function () {
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             return window.__TAURI__.clipboard.readText();
         } else if(window.navigator && window.navigator.clipboard){
             return window.navigator.clipboard.readText();
@@ -172,7 +172,7 @@ Phoenix.app = {
      * @return {Promise<{cwd:string,args:string[]}|null>}
      */
     getCommandLineArgs: async function () {
-        if(!Phoenix.browser.isTauri){
+        if(!Phoenix.isNativeApp){
             return null;
         }
         const phoenixURL = new URL(location.href);
@@ -218,7 +218,7 @@ Phoenix.app = {
         if(handlerFn){
             singleInstanceCLIHandler = handlerFn;
         }
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             window.__TAURI__.event.listen("single-instance", ({payload})=> {
                 handlerFn(payload.args, payload.cwd);
             });
@@ -261,7 +261,7 @@ Phoenix.app = {
     },
     clipboardReadFiles: function () {
         return new Promise((resolve, reject)=>{
-            if(Phoenix.browser.isTauri){
+            if(Phoenix.isNativeApp){
                 window.__TAURI__.tauri.invoke('_get_clipboard_files')
                     .then(files =>{
                         if(!files){
@@ -280,7 +280,7 @@ Phoenix.app = {
         });
     },
     copyToClipboard: function (textToCopy) {
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             return window.__TAURI__.clipboard.writeText(textToCopy);
         } else if(window.navigator && window.navigator.clipboard){
             return window.navigator.clipboard.writeText(textToCopy);
@@ -294,14 +294,14 @@ Phoenix.app = {
         return Promise.resolve();
     },
     isFullscreen: function () {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             // use browser full screen api in browsers.
             return Promise.resolve(!!document.fullscreenElement);
         }
         return window.__TAURI__.window.appWindow.isFullscreen();
     },
     setFullscreen: function (enable) {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             // use browser full screen api in browsers.
             if (enable) {
                 return document.documentElement.requestFullscreen();
@@ -343,12 +343,12 @@ Phoenix.app = {
     },
     setWindowTitle: async function (title) {
         window.document.title = title;
-        if(Phoenix.browser.isTauri) {
+        if(Phoenix.isNativeApp) {
             await window.__TAURI__.window.appWindow.setTitle(title);
         }
     },
     getWindowTitle: async function () {
-        if(Phoenix.browser.isTauri) {
+        if(Phoenix.isNativeApp) {
             return window.__TAURI__.window.appWindow.title();
         }
         return window.document.title;
@@ -397,7 +397,7 @@ Phoenix.app = {
      * @return {Promise<boolean>}
      */
     isPrimaryDesktopPhoenixWindow: async function () {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             // there is no primary window concept in browsers. all are primary for now.
             console.error("isPrimaryDesktopPhoenixWindow is not supported in browsers!");
             return true;
@@ -427,7 +427,7 @@ Phoenix.app = {
      * @return {Promise<number>}
      */
     getPhoenixInstanceCount: async function () {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             // there is no primary window concept in browsers. all are primary for now.
             console.error("getPhoenixInstanceCount is not supported in browsers!");
             return true;
@@ -447,7 +447,7 @@ Phoenix.app = {
      * @return {Promise<string>}
      */
     getPlatformArch: async function () {
-        if(!Phoenix.browser.isTauri) {
+        if(!Phoenix.isNativeApp) {
             // there is no primary window concept in browsers. all are primary for now.
             console.error("getPlatformArch is not supported in browsers!");
             return true;
@@ -477,7 +477,7 @@ Phoenix.app = {
     },
     openURLInPhoenixWindow: openURLInPhoenixWindow,
     zoomWebView: function (scaleFactor = 1) {
-        if(!Phoenix.browser.isTauri){
+        if(!Phoenix.isNativeApp){
             throw new Error("zoomWebView is not supported in browsers");
         }
         if(scaleFactor < .1 || scaleFactor > 2) {

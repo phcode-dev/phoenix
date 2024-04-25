@@ -57,8 +57,8 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
     let storageNodeConnector;
     let _testKey;
     let nodeStoragePhoenixApis = {};
-    const isBrowser = !Phoenix.browser.isTauri;
-    const isDesktop = Phoenix.browser.isTauri;
+    const isBrowser = !Phoenix.isNativeApp;
+    const isDesktop = Phoenix.isNativeApp;
     const PHSTORE_DB = "PhStore";
     const PHSTORE_STORE_NAME = "KVStore";
     let idbStore;
@@ -305,7 +305,7 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
             // do things to do that are critical to user experience here
             // We try to set window zoom as early as possible to prevent zoom flicker
             const zoomFactor = PhStore.getItem(_PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY) || 1;
-            if(Phoenix.browser.isTauri){
+            if(Phoenix.isNativeApp){
                 window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: zoomFactor});
             }
         });

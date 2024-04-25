@@ -486,7 +486,7 @@ define(function (require, exports, module) {
 
     let updateInstalledDialogShown = false, updateFailedDialogShown = false;
     AppInit.appReady(function () {
-        if(!Phoenix.browser.isTauri || Phoenix.isTestWindow) {
+        if(!Phoenix.isNativeApp || Phoenix.isTestWindow) {
             // app updates are only for desktop builds
             return;
         }

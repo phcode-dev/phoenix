@@ -74,7 +74,7 @@ define(function (require, exports, module) {
             const {notification, id} = getRandomNotification(platform);
             banner._renderNotifications(notification);
 
-            const isCurrentPlatform = (Phoenix.platform === platform && Phoenix.browser.isTauri);
+            const isCurrentPlatform = (Phoenix.platform === platform && Phoenix.isNativeApp);
             expect(testWindow.$(id).length).toEqual(isCurrentPlatform ? 1 : 0);
         }
 
@@ -95,7 +95,7 @@ define(function (require, exports, module) {
             const {notification, id} = getRandomNotification("allDesktop");
             banner._renderNotifications(notification);
 
-            expect(testWindow.$(id).length).toEqual(Phoenix.browser.isTauri ? 1 : 0);
+            expect(testWindow.$(id).length).toEqual(Phoenix.isNativeApp ? 1 : 0);
         });
 
         it("Should show notification only in any win,linux,mac tauri", async function () {
@@ -103,7 +103,7 @@ define(function (require, exports, module) {
             const {notification, id} = getRandomNotification("win,linux,mac");
             banner._renderNotifications(notification);
 
-            expect(testWindow.$(id).length).toEqual(Phoenix.browser.isTauri ? 1 : 0);
+            expect(testWindow.$(id).length).toEqual(Phoenix.isNativeApp ? 1 : 0);
         });
 
         //firefox,chrome,safari,allBrowser, all
@@ -118,7 +118,7 @@ define(function (require, exports, module) {
             } else if(Phoenix.browser.desktop.isSafari){
                 currentPlatform = "safari";
             }
-            const isCurrentPlatform = (currentPlatform === platform && !Phoenix.browser.isTauri);
+            const isCurrentPlatform = (currentPlatform === platform && !Phoenix.isNativeApp);
             expect(testWindow.$(id).length).toEqual(isCurrentPlatform ? 1 : 0);
         }
 
@@ -139,7 +139,7 @@ define(function (require, exports, module) {
             const {notification, id} = getRandomNotification("allBrowser");
             banner._renderNotifications(notification);
 
-            expect(testWindow.$(id).length).toEqual(!Phoenix.browser.isTauri ? 1 : 0);
+            expect(testWindow.$(id).length).toEqual(!Phoenix.isNativeApp ? 1 : 0);
         });
 
         it("Should show notification only in any firefox,chrome,safari tauri", async function () {
@@ -147,7 +147,7 @@ define(function (require, exports, module) {
             const {notification, id} = getRandomNotification("firefox,chrome,safari");
             banner._renderNotifications(notification);
 
-            expect(testWindow.$(id).length).toEqual(!Phoenix.browser.isTauri ? 1 : 0);
+            expect(testWindow.$(id).length).toEqual(!Phoenix.isNativeApp ? 1 : 0);
         });
 
         it("Should show notification on every boot", async function () {

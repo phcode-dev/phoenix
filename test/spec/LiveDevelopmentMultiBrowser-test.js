@@ -638,7 +638,7 @@ define(function (require, exports, module) {
             expect(testWindow.document.activeElement).toEqual(outerIFrame);
             outerIFrame.contentWindow.postMessage({
                 type: "_TEST_FOCUS_CLICK",
-                isTauri: Phoenix.browser.isTauri
+                isTauri: Phoenix.isNativeApp
             }, "*"); // this is not sensitive info, and is only dispatched if requested by the iframe
 
             // Editor lost focus, it will gain back on click on markdown live preview
@@ -675,7 +675,7 @@ define(function (require, exports, module) {
             // now select some /all text in the markdown and click
             outerIFrame.contentWindow.postMessage({
                 type: "_TEST_SELECT_TEXT_AND_CLICK",
-                isTauri: Phoenix.browser.isTauri
+                isTauri: Phoenix.isNativeApp
             }, "*");
 
             // Editor lost focus,  it should not gain focus as there is an active selection in the markdown
@@ -685,7 +685,7 @@ define(function (require, exports, module) {
             // now clear all selections in the markdown and click
             outerIFrame.contentWindow.postMessage({
                 type: "_TEST_UNSELECT_TEXT_AND_CLICK",
-                isTauri: Phoenix.browser.isTauri
+                isTauri: Phoenix.isNativeApp
             }, "*");
 
             // Editor lost focus,  it should not gain focus as there is an active selection in the markdown
@@ -723,7 +723,7 @@ define(function (require, exports, module) {
 
         it("should embedded html live previews be able to open urls in external browser for a target=_blank", async function () {
             // test is only for tauri. In browser, browser handles the anchor tags
-            if(!Phoenix.browser.isTauri) {
+            if(!Phoenix.isNativeApp) {
                 return;
             }
             let openURLRequested;
@@ -760,7 +760,7 @@ define(function (require, exports, module) {
                 },  "dialog to appear");
             }
             // test is only for tauri. In browser, browser handles the anchor tags
-            if(!Phoenix.browser.isTauri) {
+            if(!Phoenix.isNativeApp) {
                 return;
             }
             let openURLRequested;
@@ -835,7 +835,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should not be able to preview html file not in project - tauri only", async function () {
-            if(!Phoenix.browser.isTauri) {
+            if(!Phoenix.isNativeApp) {
                 return;
             }
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),

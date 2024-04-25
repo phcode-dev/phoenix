@@ -732,6 +732,6 @@ function nodeLoader() {
     });
 }
 
-if(Phoenix.browser.isTauri) {
+if(Phoenix.isNativeApp) {
     nodeLoader();
 }

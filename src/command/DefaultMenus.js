@@ -63,8 +63,8 @@ define(function (require, exports, module) {
         }
     }
 
-    const isBrowser = !Phoenix.browser.isTauri;
-    const isDesktop = Phoenix.browser.isTauri;
+    const isBrowser = !Phoenix.isNativeApp;
+    const isDesktop = Phoenix.isNativeApp;
     const fileNewShortcut = isDesktop ? "Ctrl-N" : ""; // Ctrl-1 universal shortcut is set in keyboard.json
     //`Ctrl-Shift-N` - desktop only. In browser, use can do `ctrl-T` and type phcode.dev using browser shortcuts itself. So we dont make a browser shortcut for this.
     const fileNewWindowShortcut = isDesktop ? "Ctrl-Shift-N" : "";
@@ -113,7 +113,7 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.FILE_NEW_FOLDER);
         menu.addMenuItem(Commands.FILE_NEW_WINDOW, fileNewWindowShortcut);
         menu.addMenuDivider();
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             menu.addMenuItem(Commands.FILE_OPEN, openFileShortcut);
         }
         menu.addMenuItem(Commands.FILE_OPEN_FOLDER, openFolderShortcut);
@@ -130,7 +130,7 @@ define(function (require, exports, module) {
         // menu.addMenuItem(Commands.FILE_PROJECT_SETTINGS); not yet available in phoenix
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_EXTENSION_MANAGER);
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             menu.addMenuDivider();
             menu.addMenuItem(Commands.FILE_QUIT);
         }
@@ -146,7 +146,7 @@ define(function (require, exports, module) {
         // TODO: add js handlers for copy and paste using browser standards.
         menu.addMenuItem(Commands.EDIT_CUT);
         menu.addMenuItem(Commands.EDIT_COPY);
-        if(window.Phoenix.browser.isTauri || !window.Phoenix.browser.desktop.isFirefox){
+        if(window.Phoenix.isNativeApp || !window.Phoenix.browser.desktop.isFirefox){
             menu.addMenuItem(Commands.EDIT_PASTE);
         }
         menu.addMenuDivider();
@@ -288,7 +288,7 @@ define(function (require, exports, module) {
         var workingset_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU);
         workingset_cmenu.addMenuItem(Commands.FILE_SAVE);
         workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
         }
         workingset_cmenu.addMenuDivider();
@@ -322,7 +322,7 @@ define(function (require, exports, module) {
         var project_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.PROJECT_MENU);
         project_cmenu.addMenuItem(Commands.FILE_NEW);
         project_cmenu.addMenuItem(Commands.FILE_NEW_FOLDER);
-        if(Phoenix.browser.isTauri){
+        if(Phoenix.isNativeApp){
             project_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
         }
         project_cmenu.addMenuDivider();
@@ -352,7 +352,7 @@ define(function (require, exports, module) {
         editor_cmenu.addMenuDivider();
         editor_cmenu.addMenuItem(Commands.EDIT_CUT);
         editor_cmenu.addMenuItem(Commands.EDIT_COPY);
-        if(window.Phoenix.browser.isTauri || !window.Phoenix.browser.desktop.isFirefox){
+        if(window.Phoenix.isNativeApp || !window.Phoenix.browser.desktop.isFirefox){
             editor_cmenu.addMenuItem(Commands.EDIT_PASTE);
         }
         editor_cmenu.addMenuDivider();

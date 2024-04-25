@@ -165,7 +165,7 @@ function _setupNavigation() {
 
 function initNewProjectFromURL() {
     _setupNavigation();
-    if(window.parent.Phoenix.browser.isTauri){ // desktop builds
+    if(window.parent.Phoenix.isNativeApp){ // desktop builds
         projectLocation = newProjectExtension.getLocalProjectsPath();
         projectName = PARAM_SUGGESTED_NAME;
         $(document.getElementById("createProjectBtn")).addClass("forced-inVisible");

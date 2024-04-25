@@ -546,7 +546,7 @@ define(function (require, exports, module) {
                 await awaitsForDone(promise, "FILE_CLOSE");
                 const expectedTitle = "DocumentCommandHandlers-test-files " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
                 expect(testWindow.document.title).toBe(expectedTitle);
-                if(Phoenix.browser.isTauri) {
+                if(Phoenix.isNativeApp) {
                     await awaitsFor(async ()=> {
                         const title = await Phoenix.app.getWindowTitle();
                         return title === expectedTitle;
@@ -563,7 +563,7 @@ define(function (require, exports, module) {
                 await awaitsForDone(promise, "FILE_CLOSE");
                 const expectedTitle = "DocumentCommandHandlers-test-files " + WINDOW_TITLE_DOT + " " + brackets.config.app_title;
                 expect(testWindow.document.title).toBe(expectedTitle);
-                if(Phoenix.browser.isTauri) {
+                if(Phoenix.isNativeApp) {
                     await awaitsFor(async ()=> {
                         const title = await Phoenix.app.getWindowTitle();
                         return title === expectedTitle;
@@ -927,7 +927,7 @@ define(function (require, exports, module) {
                 // verify no dot in titlebar
                 const expectedTitle = `DocumentCommandHandlers-test-files ${WINDOW_TITLE_DOT} test.js`;
                 expect(testWindow.document.title).toBe(expectedTitle);
-                if(Phoenix.browser.isTauri) {
+                if(Phoenix.isNativeApp) {
                     await awaitsFor(async ()=> {
                         const title = await Phoenix.app.getWindowTitle();
                         return title === expectedTitle;
@@ -947,7 +947,7 @@ define(function (require, exports, module) {
                 // verify dot in titlebar
                 const expectedTitle = `• DocumentCommandHandlers-test-files ${WINDOW_TITLE_DOT} test.js`;
                 expect(testWindow.document.title).toBe(expectedTitle);
-                if(Phoenix.browser.isTauri) {
+                if(Phoenix.isNativeApp) {
                     await awaitsFor(async ()=> {
                         const title = await Phoenix.app.getWindowTitle();
                         return title === expectedTitle;

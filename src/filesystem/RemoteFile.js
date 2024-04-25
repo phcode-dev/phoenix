@@ -188,7 +188,7 @@ define(function (require, exports, module) {
     }
 
     function _remoteRead(url, encoding, successCB, errorCB) {
-        if(Phoenix.browser.isTauri && !isTauriResource(url)) {
+        if(Phoenix.isNativeApp && !isTauriResource(url)) {
             _nodeConnectorRead(url, encoding, successCB, errorCB);
             return;
         }
