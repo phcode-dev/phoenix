@@ -54,11 +54,11 @@ define(function (require, exports, module) {
      * a gold star when no errors are found.
      */
     async function lintOneFile(text, fullPath) {
-        return new Promise((resolve)=>{
+        return new Promise((resolve, reject)=>{
             const languageId = LanguageManager.getLanguageForPath(fullPath).getId();
             if(!cssMode[languageId]){
                 console.error("Unknown language id to lint: ", languageId, fullPath);
-                resolve();
+                reject(new Error("Unknown CSS language to lint for "+ fullPath));
                 return;
             }
             IndexingWorker.execPeer("cssLint", {
@@ -88,7 +88,10 @@ define(function (require, exports, module) {
     for(let language of supportedLanguages){
         CodeInspection.register(language, {
             name: StringUtils.format(Strings.CSS_LINT_NAME, cssMode[language]),
-            scanFileAsync: lintOneFile
+            scanFileAsync: lintOneFile,
+            canInspect: function (fullPath) {
+                return fullPath && !fullPath.endsWith(".min.css");
+            }
         });
     }
 });

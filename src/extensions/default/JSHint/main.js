@@ -234,6 +234,9 @@ define(function (require, exports, module) {
     // Register for JS files
     CodeInspection.register("javascript", {
         name: Strings.JSHINT_NAME,
-        scanFileAsync: lintOneFile
+        scanFileAsync: lintOneFile,
+        canInspect: function (fullPath) {
+            return fullPath && !fullPath.endsWith(".min.js");
+        }
     });
 });

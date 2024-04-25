@@ -255,6 +255,10 @@ define(function (require, exports, module) {
             return response.promise();
         }
 
+        providerList = providerList.filter(function (provider) {
+            return !provider.canInspect || provider.canInspect(file.fullPath);
+        });
+
         DocumentManager.getDocumentText(file)
             .done(function (fileText) {
                 var perfTimerInspector = PerfUtils.markStart("CodeInspection:\t" + file.fullPath),
@@ -284,6 +288,7 @@ define(function (require, exports, module) {
                                 runPromise.resolve(scanResult);
                             })
                             .catch(function (err) {
+                                err = err || new Error("Unknown error while inspecting "+ file.fullPath);
                                 PerfUtils.finalizeMeasurement(perfTimerProvider);
                                 var errError = {
                                     pos: {line: -1, col: 0},
@@ -305,7 +310,8 @@ define(function (require, exports, module) {
                                 message: StringUtils.format(Strings.LINTER_FAILED, provider.name, err),
                                 type: Type.ERROR
                             };
-                            console.error("[CodeInspection] Provider " + provider.name + " (sync) threw an error: " + err.stack);
+                            console.error("[CodeInspection] Provider " + provider.name +
+                                " (sync) threw an error: " + err && (err.stack || err));
                             runPromise.resolve({errors: [errError]});
                         }
                     }
@@ -558,8 +564,12 @@ define(function (require, exports, module) {
             return;
         }
 
-        var currentDoc = DocumentManager.getCurrentDocument(),
+        let currentDoc = DocumentManager.getCurrentDocument(),
             providerList = currentDoc && getProvidersForPath(currentDoc.file.fullPath);
+
+        providerList = providerList && providerList.filter(function (provider) {
+            return !provider.canInspect || provider.canInspect(currentDoc.file.fullPath);
+        });
 
         if (providerList && providerList.length) {
             var numProblems = 0;
