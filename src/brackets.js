@@ -447,9 +447,11 @@ define(function (require, exports, module) {
             // This call to syncOpenDocuments() *should* be a no-op now that we have
             // file watchers, but is still here as a safety net.
             FileSyncManager.syncOpenDocuments();
-            // This call to refreshFileTree() refreshes the project tree when the window comes back into focus
-            // If any changes are made outside of Phoenix Code, they will be updated when the user returns
-            ProjectManager.refreshFileTree();
+            if(!Phoenix.browser.isTauri) { // dont do this in desktop builds as native fs watchers will take care of external changes
+                // Refresh the project tree when the window comes back into focus
+                // Changes made outside of Phoenix Code will be updated when the user returns
+                ProjectManager.refreshFileTree();
+              }
         });
 
         // Prevent unhandled middle button clicks from triggering native behavior
