@@ -84,7 +84,7 @@ This is the easiest and preferred way to run Phoenix tests.
 * run `npm run build` in the terminal.
   * NB: this will setup all the required files for test 
 * Use chrome/edge browser to navigate to Phoenix[http://localhost:8000/src/index.html](http://localhost:8000/src/index.html)
-* In Phoenix Menu, select `Debug > run Tests` To open the test runner.
+* In Phoenix Menu, select `Debug > Phoenix Code Diagnostic Tools > Run Phoenix Code Tests` To open the test runner.
 * Run tests as required. 
   * NB: To reset test data files, click on `reset and reload tests` option in the test runner.
 * You can use the browser dev tools to debug. 
