@@ -1920,11 +1920,22 @@ define(function (require, exports, module) {
     }
 
     const cacheInProgress = new Set();
+    // block fetches to only happen once every 10 seconds to prevent loading web servers on every code hint type
+    // Cached external links are never fetched again. problem happens when links fetch fails, and can be immediately
+    // retried on next key press. we need to block that and do it once in 10 seconds only.
+    const fetchBlock10Secs = new Phoenix.libs.LRUCache({
+        max: 5000,
+        ttl: 1000 * 10 // in ms
+    });
     async function _precacheExternalStyleSheet(link) {
         try {
-            if(cacheInProgress.has(link)){
+            // dont use fetchBlock10Secs.has as lru cache wont delete ttl expired items for performance.
+            // fetchBlock10Secs.get will return undefined for ttl expired items
+            // we purge this cache anyway on project switch/max entry reached.
+            if(cacheInProgress.has(link) || fetchBlock10Secs.get(link)){
                 return;
             }
+            fetchBlock10Secs.set(link, true);
             cacheInProgress.add(link);
             const extension = path.extname(new URL(link).pathname).slice(1);
             if (!extension || !CSS_MODE_MAP[extension]) {
@@ -2077,6 +2088,7 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, ()=>{
             CSSSelectorCache.clear();
+            fetchBlock10Secs.clear();
             setTimeout(_populateSelectorCache, 2000);
         });
         setTimeout(_populateSelectorCache, 2000);
