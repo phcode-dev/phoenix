@@ -648,6 +648,7 @@ define(function (require, exports, module) {
                 if(fullPath.startsWith("http://") || fullPath.startsWith("https://")){
                     httpFilePath = fullPath;
                 }
+                const shouldUseInbuiltPreview = utils.isMarkdownFile(fullPath) || utils.isSVG(fullPath);
                 const customServeURL = LivePreviewSettings.getCustomServerConfig(fullPath);
                 if(customServeURL){
                     const relativePath = path.relative(projectRoot, fullPath);
@@ -659,6 +660,16 @@ define(function (require, exports, module) {
                         isHTMLFile: utils.isHTMLFile(fullPath),
                         isCustomServer: true,
                         serverSupportsHotReload: LivePreviewSettings.serverSupportsHotReload()
+                    });
+                    return;
+                } else if(LivePreviewSettings.isUsingCustomServer() && !customServeURL && !shouldUseInbuiltPreview){
+                    // this is the case where the file is outside of a custom configured server root (E. `www/`)
+                    // like `notServed/Path.html`. For markdown and SVG, we will still use the inbuilt live preview.
+                    resolve({
+                        URL: getNoPreviewURL(Strings.DESCRIPTION_LIVEDEV_EXCLUDED,
+                            StringUtils.format(Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED,
+                                LivePreviewSettings.getCustomServeRoot())),
+                        isNoPreview: true
                     });
                     return;
                 } else if(!_staticServerInstance || !_staticServerInstance.getBaseUrl()){

@@ -207,6 +207,10 @@ define(function (require, exports, module) {
         };
     }
 
+    function getCustomServeRoot() {
+        return PreferencesManager.get(PREFERENCE_PROJECT_SERVER_PATH) || "/";
+    }
+
     function getCustomServerConfig(fullPath) {
         const customServer = _resolveServer();
         if(!customServer || !ProjectManager.isWithinProject(fullPath)) {
@@ -227,7 +231,8 @@ define(function (require, exports, module) {
             // for docusaurus, we do not have a reliable way to parse the config file and deduce paths, so we always
             // return the root url for now.
             pathRelativeToServeRoot = "";
-        } else if(!isServerRenderedURL){
+        } else if(!isServerRenderedURL || (customServer.pathInProject !== "" &&
+            !relativePath.startsWith(customServer.pathInProject))){ // someNonServePath/design/index.html -> cannot serve this!
             return null;
         }
         // www/design/index.html -> http://localhost:8000/design/index.html
@@ -255,6 +260,7 @@ define(function (require, exports, module) {
 
     exports.showSettingsDialog = showSettingsDialog;
     exports.getCustomServerConfig = getCustomServerConfig;
+    exports.getCustomServeRoot = getCustomServeRoot;
     exports.isUsingCustomServer = isUsingCustomServer;
     exports.getCustomServerFramework = getCustomServerFramework;
     exports.serverSupportsHotReload = serverSupportsHotReload;

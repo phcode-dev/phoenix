@@ -36,6 +36,7 @@ define(function (require, exports, module) {
         EventDispatcher = require("utils/EventDispatcher"),
         CommandManager     = require("command/CommandManager"),
         Commands           = require("command/Commands"),
+        StringUtils       = require("utils/StringUtils"),
         EventManager = require("utils/EventManager"),
         LivePreviewSettings  = require("./LivePreviewSettings"),
         ProjectManager = require("project/ProjectManager"),
@@ -112,10 +113,13 @@ define(function (require, exports, module) {
             encodeURIComponent(`${Strings.DESCRIPTION_LIVEDEV_MAIN_SPAN}`);
     }
 
-    function getNoPreviewURL(){
+    function getNoPreviewURL(
+        heading = Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW,
+        message = Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS
+    ){
         return `${window.Phoenix.baseURL}assets/phoenix-splash/no-preview.html?jsonInput=`+
-            encodeURIComponent(`{"heading":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW}",`
-                +`"details":"${Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS}"}`);
+            encodeURIComponent(`{"heading":"${heading}",`
+                +`"details":"${message}"}`);
     }
 
     function _isLivePreviewSupported() {
@@ -153,6 +157,7 @@ define(function (require, exports, module) {
                         httpFilePath = fullPath;
                     }
                     const customServeURL = LivePreviewSettings.getCustomServerConfig(fullPath);
+                    const shouldUseInbuiltPreview = utils.isMarkdownFile(fullPath) || utils.isSVG(fullPath);
                     if(customServeURL){
                         const relativePath = path.relative(projectRoot, fullPath);
                         resolve({
@@ -165,7 +170,17 @@ define(function (require, exports, module) {
                             serverSupportsHotReload: LivePreviewSettings.serverSupportsHotReload()
                         });
                         return;
-                    } else if(utils.isPreviewableFile(fullPath)){
+                    } else if(LivePreviewSettings.isUsingCustomServer() && !customServeURL && !shouldUseInbuiltPreview){
+                        // this is the case where the file is outside of a custom configured server root (E. `www/`)
+                        // like `notServed/Path.html`. For markdown and SVG, we will still use the inbuilt live preview.
+                        resolve({
+                            URL: getNoPreviewURL(Strings.DESCRIPTION_LIVEDEV_EXCLUDED,
+                                StringUtils.format(Strings.DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED,
+                                    LivePreviewSettings.getCustomServeRoot())),
+                            isNoPreview: true
+                        });
+                        return;
+                    }  else if(utils.isPreviewableFile(fullPath)){
                         const filePath = httpFilePath || path.relative(projectRoot, fullPath);
                         let URL = httpFilePath || `${projectRootUrl}${filePath}`;
                         resolve({
