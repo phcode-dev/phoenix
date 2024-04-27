@@ -481,6 +481,7 @@ define({
   "CLOSE": "Κλείσιμο",
   "ABOUT_TEXT_LINE1": "Κυκλοφορία {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "χρονική σήμανση κατασκευής:",
+  "ABOUT_RELEASE_CREDITS": "Πιστώσεις έκδοσης:",
   "ABOUT_TEXT_LINE3": "Βιβλιοθήκες τρίτων που χρησιμοποιούμε - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Άδειες χρήσης και Αναφορές</a> .",
   "ABOUT_TEXT_LINE4": "Τεκμηρίωση και πηγή στη <a href='https://github.com/phcode-dev/phoenix/'>διεύθυνση https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Κατασκευασμένο με ❤ και JavaScript από:",

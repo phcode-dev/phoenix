@@ -481,6 +481,7 @@ define({
   "CLOSE": "Zamknij",
   "ABOUT_TEXT_LINE1": "Wydaj {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "sygnatura czasowa kompilacji:",
+  "ABOUT_RELEASE_CREDITS": "Twórcy wydania:",
   "ABOUT_TEXT_LINE3": "Biblioteki stron trzecich, z których korzystamy — <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>licencje i atrybucje</a> .",
   "ABOUT_TEXT_LINE4": "Dokumentacja i źródło na <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Wykonane za pomocą ❤ i JavaScript przez:",

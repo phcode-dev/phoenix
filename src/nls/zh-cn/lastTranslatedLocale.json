@@ -461,6 +461,7 @@
   "CLOSE": "关闭",
   "ABOUT_TEXT_LINE1": "发布 {VERSION_MAJOR}。{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "构建时间戳：",
+  "ABOUT_RELEASE_CREDITS": "发行信息：",
   "ABOUT_TEXT_LINE3": "我们使用的第三方库 -<a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>许可和署名</a>。",
   "ABOUT_TEXT_LINE4": "<a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>上的文档和源代码",
   "ABOUT_TEXT_LINE5": "由 ❤ 和 JavaScript 制作：",

@@ -461,6 +461,7 @@
   "CLOSE": "Fechar",
   "ABOUT_TEXT_LINE1": "Liberar {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "construir carimbo de data/hora:",
+  "ABOUT_RELEASE_CREDITS": "Créditos de lançamento:",
   "ABOUT_TEXT_LINE3": "Bibliotecas de terceiros que usamos – <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Licenças e Atribuições</a> .",
   "ABOUT_TEXT_LINE4": "Documentação e fonte em <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Feito com ❤ e JavaScript por:",

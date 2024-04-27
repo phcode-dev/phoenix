@@ -461,6 +461,7 @@
   "CLOSE": "അടയ്ക്കുക",
   "ABOUT_TEXT_LINE1": "റിലീസ് {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "ടൈംസ്റ്റാമ്പ് നിർമ്മിക്കുക:",
+  "ABOUT_RELEASE_CREDITS": "റിലീസ് ക്രെഡിറ്റുകൾ:",
   "ABOUT_TEXT_LINE3": "ഞങ്ങൾ ഉപയോഗിക്കുന്ന മൂന്നാം കക്ഷി ലൈബ്രറികൾ - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>ലൈസൻസുകളും ആട്രിബ്യൂഷനുകളും</a> .",
   "ABOUT_TEXT_LINE4": "ഡോക്യുമെന്റേഷനും ഉറവിടവും <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/ എന്നതിൽ</a>",
   "ABOUT_TEXT_LINE5": "❤, JavaScript എന്നിവ ഉപയോഗിച്ച് നിർമ്മിച്ചത്:",

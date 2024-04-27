@@ -481,6 +481,7 @@ define({
   "CLOSE": "Kapat",
   "ABOUT_TEXT_LINE1": "{VERSION_MAJOR} sürümünü yayınlayın.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "zaman damgası oluştur:",
+  "ABOUT_RELEASE_CREDITS": "Sürüm Kredileri:",
   "ABOUT_TEXT_LINE3": "Kullandığımız Üçüncü Taraf Kitaplıkları - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Lisanslar ve Öznitelikler</a> .",
   "ABOUT_TEXT_LINE4": "<a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/ adresindeki</a> belgeler ve kaynak",
   "ABOUT_TEXT_LINE5": "❤ ve JavaScript ile yapılmıştır:",

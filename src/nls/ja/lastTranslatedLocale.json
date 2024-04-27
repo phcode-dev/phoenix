@@ -461,6 +461,7 @@
   "CLOSE": "閉じる",
   "ABOUT_TEXT_LINE1": "{VERSION_MAJOR} をリリースします。{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "ビルド タイムスタンプ:",
+  "ABOUT_RELEASE_CREDITS": "リリースクレジット:",
   "ABOUT_TEXT_LINE3": "当社が使用するサードパーティ ライブラリ -<a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>ライセンスと帰属</a>。",
   "ABOUT_TEXT_LINE4": "<a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>のドキュメントとソース",
   "ABOUT_TEXT_LINE5": "❤ と JavaScript で作成:",

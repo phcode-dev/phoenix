@@ -461,6 +461,7 @@
   "CLOSE": "بند کریں",
   "ABOUT_TEXT_LINE1": "ریلیز کریں {VERSION_MAJOR}۔{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "ٹائم اسٹیمپ بنائیں:",
+  "ABOUT_RELEASE_CREDITS": "ریلیز کریڈٹ:",
   "ABOUT_TEXT_LINE3": "تیسری پارٹی کی لائبریریاں جو ہم استعمال کرتے ہیں - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>لائسنس اور انتساب</a> ۔",
   "ABOUT_TEXT_LINE4": "دستاویزات اور ماخذ <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a> پر",
   "ABOUT_TEXT_LINE5": "❤ اور JavaScript کے ساتھ بنایا گیا بذریعہ:",

@@ -461,6 +461,7 @@
   "CLOSE": "Затвори",
   "ABOUT_TEXT_LINE1": "Издајте {ВЕРСИОН_МАЈОР}.{ВЕРСИОН_МИНОР} {БУИЛД_ТИПЕ} {ВЕРСИОН}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "временска ознака израде:",
+  "ABOUT_RELEASE_CREDITS": "Заслуге за објављивање:",
   "ABOUT_TEXT_LINE3": "Библиотеке трећих страна које користимо - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Лиценце и атрибуције</a> .",
   "ABOUT_TEXT_LINE4": "Документација и извор на <a href='https://github.com/phcode-dev/phoenix/'>хттпс://гитхуб.цом/пхцоде-дев/пхоеник/</a>",
   "ABOUT_TEXT_LINE5": "Са ❤ и ЈаваСцрипт-ом направио:",

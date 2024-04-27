@@ -481,6 +481,7 @@ define({
   "CLOSE": "Închide",
   "ABOUT_TEXT_LINE1": "Lansare {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "marca temporală a construirii:",
+  "ABOUT_RELEASE_CREDITS": "Credite de lansare:",
   "ABOUT_TEXT_LINE3": "Biblioteci terțe pe care le folosim - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Licențe și Atribuții</a> .",
   "ABOUT_TEXT_LINE4": "Documentație și sursă la <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Realizat cu ❤ și JavaScript de:",

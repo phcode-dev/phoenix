@@ -481,6 +481,7 @@ define({
   "CLOSE": "Zatvoriť",
   "ABOUT_TEXT_LINE1": "Vydanie {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "časová pečiatka zostavy:",
+  "ABOUT_RELEASE_CREDITS": "Kredity za vydanie:",
   "ABOUT_TEXT_LINE3": "Knižnice tretích strán, ktoré používame – <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Licencie a Atribúcie</a> .",
   "ABOUT_TEXT_LINE4": "Dokumentácia a zdroj na <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Vyrobené pomocou ❤ a JavaScript od:",
