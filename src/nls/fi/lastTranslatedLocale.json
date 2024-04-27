@@ -461,6 +461,7 @@
   "CLOSE": "Sulje",
   "ABOUT_TEXT_LINE1": "Julkaisu {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "rakentamisen aikaleima:",
+  "ABOUT_RELEASE_CREDITS": "Julkaisutiedot:",
   "ABOUT_TEXT_LINE3": "Käyttämämme kolmannen osapuolen kirjastot - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>lisenssit ja merkinnät</a> .",
   "ABOUT_TEXT_LINE4": "Dokumentaatio ja lähde osoitteessa <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Tekijä: ❤ ja JavaScript:",

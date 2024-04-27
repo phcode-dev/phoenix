@@ -461,6 +461,7 @@
   "CLOSE": "बंद करना",
   "ABOUT_TEXT_LINE1": "रिलीज़ {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "टाइमस्टैम्प बनाएं:",
+  "ABOUT_RELEASE_CREDITS": "रिलीज़ क्रेडिट:",
   "ABOUT_TEXT_LINE3": "तृतीय पक्ष पुस्तकालय जिनका हम उपयोग करते हैं - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>लाइसेंस और विशेषताएँ</a> ।",
   "ABOUT_TEXT_LINE4": "दस्तावेज़ीकरण और स्रोत <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a> पर",
   "ABOUT_TEXT_LINE5": "द्वारा ❤ और जावास्क्रिप्ट के साथ बनाया गया:",

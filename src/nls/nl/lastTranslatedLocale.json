@@ -461,6 +461,7 @@
   "CLOSE": "Sluiten",
   "ABOUT_TEXT_LINE1": "Laat {VERSION_MAJOR} vrij.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "tijdstempel bouwen:",
+  "ABOUT_RELEASE_CREDITS": "Releasecredits:",
   "ABOUT_TEXT_LINE3": "Bibliotheken van derden die we gebruiken - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Licenties en toeschrijvingen</a> .",
   "ABOUT_TEXT_LINE4": "Documentatie en bron op <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Gemaakt met ❤ en JavaScript door:",

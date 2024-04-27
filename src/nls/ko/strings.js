@@ -481,6 +481,7 @@ define({
   "CLOSE": "닫기",
   "ABOUT_TEXT_LINE1": "{VERSION_MAJOR} 출시.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "빌드 타임스탬프:",
+  "ABOUT_RELEASE_CREDITS": "릴리스 크레딧:",
   "ABOUT_TEXT_LINE3": "우리가 사용하는 타사 라이브러리 - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>라이선스 및 속성</a> .",
   "ABOUT_TEXT_LINE4": "문서 및 소스: <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "❤ 및 JavaScript로 제작:",

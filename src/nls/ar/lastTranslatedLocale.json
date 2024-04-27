@@ -461,6 +461,7 @@
   "CLOSE": "قريب",
   "ABOUT_TEXT_LINE1": "إصدار {VERSION_MAJOR}. {VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "بناء الطابع الزمني:",
+  "ABOUT_RELEASE_CREDITS": "اعتمادات الإصدار:",
   "ABOUT_TEXT_LINE3": "مكتبات الطرف الثالث التي نستخدمها - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>التراخيص والسمات</a> .",
   "ABOUT_TEXT_LINE4": "التوثيق والمصدر على <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "مصنوع من ❤ وجافا سكريبت بواسطة:",

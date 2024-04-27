@@ -481,6 +481,7 @@ define({
   "CLOSE": "Aizvērt",
   "ABOUT_TEXT_LINE1": "Izlaidums {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "izveides laika zīmogs:",
+  "ABOUT_RELEASE_CREDITS": "Izlaiduma kredīti:",
   "ABOUT_TEXT_LINE3": "Mūsu izmantotās trešo pušu bibliotēkas — <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>licences un attiecinājumi</a> .",
   "ABOUT_TEXT_LINE4": "Dokumentācija un avots: <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Izgatavoja, izmantojot ❤ un JavaScript, autors:",

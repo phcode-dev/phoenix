@@ -481,6 +481,7 @@ define({
   "CLOSE": "Закрыть",
   "ABOUT_TEXT_LINE1": "Выпуск {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "метка времени сборки:",
+  "ABOUT_RELEASE_CREDITS": "Кредиты релиза:",
   "ABOUT_TEXT_LINE3": "Используемые нами сторонние библиотеки — <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>лицензии и атрибуты</a> .",
   "ABOUT_TEXT_LINE4": "Документация и источник на <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Сделано с помощью ❤ и JavaScript:",

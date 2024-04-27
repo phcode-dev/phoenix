@@ -481,6 +481,7 @@ define({
   "CLOSE": "Tutup",
   "ABOUT_TEXT_LINE1": "Lepaskan {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "membangun stempel waktu:",
+  "ABOUT_RELEASE_CREDITS": "Kredit Rilis:",
   "ABOUT_TEXT_LINE3": "Perpustakaan Pihak Ketiga yang kami gunakan - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Lisensi dan Atribusi</a> .",
   "ABOUT_TEXT_LINE4": "Dokumentasi dan sumber di <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Dibuat dengan ❤ dan JavaScript oleh:",

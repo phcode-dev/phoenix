@@ -481,6 +481,7 @@ define({
   "CLOSE": "Bezárás",
   "ABOUT_TEXT_LINE1": "Kiadás: {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "építési időbélyeg:",
+  "ABOUT_RELEASE_CREDITS": "Kiadási kreditek:",
   "ABOUT_TEXT_LINE3": "Harmadik fél általunk használt könyvtárak – <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Licencek és forrásmegjelölések</a> .",
   "ABOUT_TEXT_LINE4": "Dokumentáció és forrás: <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Készítette ❤ és JavaScript segítségével:",

@@ -461,6 +461,7 @@
   "CLOSE": "بستن",
   "ABOUT_TEXT_LINE1": "انتشار {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "زمان ساخت:",
+  "ABOUT_RELEASE_CREDITS": "اعتبار انتشار:",
   "ABOUT_TEXT_LINE3": "کتابخانه های شخص ثالثی که ما استفاده می کنیم - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>مجوزها و اسناد</a> .",
   "ABOUT_TEXT_LINE4": "مستندات و منبع در <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "ساخته شده با ❤ و جاوا اسکریپت توسط:",

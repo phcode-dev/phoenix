@@ -461,6 +461,7 @@
   "CLOSE": "Chiudi",
   "ABOUT_TEXT_LINE1": "Rilascio {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "data e ora di costruzione:",
+  "ABOUT_RELEASE_CREDITS": "Crediti di rilascio:",
   "ABOUT_TEXT_LINE3": "Librerie di terze parti che utilizziamo - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Licenze e attribuzioni</a> .",
   "ABOUT_TEXT_LINE4": "Documentazione e fonte su <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Realizzato con ❤ e JavaScript da:",

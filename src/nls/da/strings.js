@@ -481,6 +481,7 @@ define({
   "CLOSE": "Luk",
   "ABOUT_TEXT_LINE1": "Udgiv {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "bygge tidsstempel:",
+  "ABOUT_RELEASE_CREDITS": "Udgivelseskreditter:",
   "ABOUT_TEXT_LINE3": "Tredjepartsbiblioteker, som vi bruger - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'>Licenser og tilskrivninger</a> .",
   "ABOUT_TEXT_LINE4": "Dokumentation og kilde på <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
   "ABOUT_TEXT_LINE5": "Lavet med ❤ og JavaScript af:",
