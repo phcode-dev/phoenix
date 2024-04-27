@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "തത്സമയ പ്രിവ്യൂ ഹൈലൈറ്റ് ക്രമീകരണം",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "ലൈവ് പ്രിവ്യൂ റിവേഴ്‌സ് ഇൻസ്‌പെക്റ്റ് പ്രവർത്തനരഹിതമാക്കുന്നത് തെറ്റാണ്",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "പ്രിവ്യൂ ചെയ്യാൻ ഒന്നുമില്ല!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "ഇഷ്‌ടാനുസൃത സെർവറിന് ഈ ഫയൽ സേവിക്കാൻ കഴിയില്ല",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "'{0}' ഫോൾഡറിൽ നിന്നുള്ള ഫയലുകൾ മാത്രം നൽകുന്നതിന് തത്സമയ പ്രിവ്യൂ ക്രമീകരണം ക്രമീകരിച്ചിരിക്കുന്നു",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "പ്രിവ്യൂ ചെയ്യുന്നതിന് ദയവായി ഒരു HTML ഫയൽ തിരഞ്ഞെടുക്കുക",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "പ്രിവ്യൂ ലഭ്യമല്ല!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "ഈ HTML ഫയൽ നിലവിലെ പ്രോജക്റ്റിന്റെ ഭാഗമല്ല. സുരക്ഷാ കാരണങ്ങളാൽ, പ്രോജക്റ്റ് ഫയലുകൾ മാത്രമേ തത്സമയ പ്രിവ്യൂ ചെയ്യാൻ കഴിയൂ. ഈ ഫയൽ പ്രിവ്യൂ ചെയ്യാൻ, അതിൽ അടങ്ങിയിരിക്കുന്ന ഫോൾഡർ ഒരു പ്രത്യേക പ്രോജക്‌റ്റായി തുറക്കുക.",

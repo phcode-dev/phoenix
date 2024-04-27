@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Élő előnézeti kiemelés beállításai",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false az élő előnézeti fordított ellenőrzés letiltásához",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nincs mit megnézni!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Az egyéni kiszolgáló nem tudja kiszolgálni ezt a fájlt",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Az élő előnézet beállításai úgy vannak beállítva, hogy csak a(z) „{0}” mappából származó fájlokat szolgáltassák ki",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Kérjük, válasszon egy HTML-fájlt az előnézethez",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Az előnézet nem érhető el!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Ez a HTML-fájl nem része az aktuális projektnek. Biztonsági okokból csak a projektfájlokat lehet élőben megtekinteni. A fájl előnézetének megtekintéséhez nyissa meg a fájlt tartalmazó mappát külön projektként.",

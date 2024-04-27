@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "لائیو پیش نظارہ ہائی لائٹ کی ترتیبات",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "لائیو پیش نظارہ ریورس معائنہ کو غیر فعال کرنے کے لئے غلط",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "پیش نظارہ کرنے کے لئے کچھ نہیں!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "کسٹم سرور اس فائل کو پیش نہیں کر سکتا",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "لائیو پیش نظارہ کی ترتیبات صرف فولڈر '{0}' سے فائلیں پیش کرنے کے لیے ترتیب دی گئی ہیں۔",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "براہ کرم پیش نظارہ کرنے کے لیے ایک HTML فائل منتخب کریں۔",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "پیش نظارہ دستیاب نہیں ہے!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "یہ HTML فائل موجودہ پروجیکٹ کا حصہ نہیں ہے۔ سیکورٹی وجوہات کی بنا پر، صرف پروجیکٹ فائلوں کا لائیو پیش نظارہ کیا جا سکتا ہے۔ اس فائل کا جائزہ لینے کے لیے، اس کے فولڈر کو ایک علیحدہ پروجیکٹ کے طور پر کھولیں۔",

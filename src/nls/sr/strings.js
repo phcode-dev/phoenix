@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Ливе Превиев Хигхлигхт подешавања",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "нетачно да бисте онемогућили обрнути преглед прегледа уживо",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Нема шта за преглед!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Прилагођени сервер не може послужити ову датотеку",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Подешавања прегледа уживо су конфигурисана да приказују само датотеке из директоријума „{0}“",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Изаберите ХТМЛ датотеку за преглед",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Преглед недоступан!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Ова ХТМЛ датотека није део тренутног пројекта. Из безбедносних разлога, само датотеке пројекта могу да се прегледају уживо. Да бисте прегледали ову датотеку, отворите њену фасциклу као посебан пројекат.",

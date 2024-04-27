@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Live Preview Highlight postavke",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false za onemogućavanje pregleda uživo obrnuti pregled",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Ništa za pregled!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Prilagođeni poslužitelj ne može poslužiti ovu datoteku",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Postavke pregleda uživo konfigurirane su samo za posluživanje datoteka iz mape '{0}'",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Odaberite HTML datoteku za pregled",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Pregled nedostupan!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Ova HTML datoteka nije dio trenutnog projekta. Iz sigurnosnih razloga, samo projektne datoteke mogu se pregledavati uživo. Da biste pregledali ovu datoteku, otvorite mapu koja sadrži kao zaseban projekt.",

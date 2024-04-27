@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Настройки подсветки предварительного просмотра в реальном времени",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false, чтобы отключить предварительный просмотр в реальном времени",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Нечего превью!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Пользовательский сервер не может обслужить этот файл",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Настройки интерактивного предварительного просмотра настроены на показ только файлов из папки \"{0}\".",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Пожалуйста, выберите файл HTML для предварительного просмотра",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Предварительный просмотр недоступен!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Этот HTML-файл не является частью текущего проекта. По соображениям безопасности предварительный просмотр возможен только для файлов проекта. Чтобы просмотреть этот файл, откройте содержащую его папку как отдельный проект.",

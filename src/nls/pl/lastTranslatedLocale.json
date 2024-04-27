@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Ustawienia podświetlenia podglądu na żywo",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false, aby wyłączyć odwrotną inspekcję podglądu na żywo",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nie ma nic do podglądu!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Serwer niestandardowy nie może obsłużyć tego pliku",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Ustawienia podglądu na żywo są skonfigurowane tak, aby udostępniać tylko pliki z folderu „{0}”",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Wybierz plik HTML do podglądu",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Podgląd niedostępny!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Ten plik HTML nie jest częścią bieżącego projektu. Ze względów bezpieczeństwa podgląd na żywo można oglądać wyłącznie w przypadku plików projektu. Aby wyświetlić podgląd tego pliku, otwórz folder zawierający go jako oddzielny projekt.",

@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "लाइव पूर्वावलोकन हाइलाइट सेटिंग्स",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "लाइव पूर्वावलोकन रिवर्स निरीक्षण को अक्षम करने के लिए गलत",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "पूर्वावलोकन के लिए कुछ नहीं!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "कस्टम सर्वर यह फ़ाइल प्रस्तुत नहीं कर सकता",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "लाइव पूर्वावलोकन सेटिंग को केवल फ़ोल्डर '{0}' से फ़ाइलें दिखाने के लिए कॉन्फ़िगर किया गया है",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "पूर्वावलोकन के लिए कृपया एक HTML फ़ाइल चुनें",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "पूर्वावलोकन अनुपलब्ध!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "यह HTML फ़ाइल वर्तमान प्रोजेक्ट का हिस्सा नहीं है. सुरक्षा कारणों से, केवल प्रोजेक्ट फ़ाइलों का लाइव-पूर्वावलोकन किया जा सकता है। इस फ़ाइल का पूर्वावलोकन करने के लिए, इसके फ़ोल्डर को एक अलग प्रोजेक्ट के रूप में खोलें।",

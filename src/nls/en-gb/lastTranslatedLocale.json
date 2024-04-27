@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Live Preview Highlight settings",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false to disable live preview reverse inspect",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nothing to preview!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Custom Server Cannot Serve This file",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Live preview settings is configured to only serve files from folder '{0}'",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Please select an HTML file to preview",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Preview Unavailable!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "This HTML file is not part of the current project. For security reasons, only project files can be live-previewed. To preview this file, open its containing folder as a separate project.",

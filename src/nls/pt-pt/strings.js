@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Configurações de realce de visualização ao vivo",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false para desabilitar a inspeção reversa da visualização ao vivo",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nada para visualizar!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Servidor personalizado não pode servir este arquivo",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "As configurações de visualização ao vivo estão configuradas para exibir apenas arquivos da pasta '{0}'",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Selecione um arquivo HTML para visualizar",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Visualização indisponível!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Este arquivo HTML não faz parte do projeto atual. Por motivos de segurança, apenas os arquivos do projeto podem ser visualizados ao vivo. Para visualizar este arquivo, abra a pasta que o contém como um projeto separado.",

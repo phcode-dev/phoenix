@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "라이브 미리보기 하이라이트 설정",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "라이브 미리보기 역방향 검사를 비활성화하려면 false",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "미리보기가 없습니다!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "사용자 정의 서버에서 이 파일을 제공할 수 없습니다.",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "실시간 미리보기 설정은 '{0}' 폴더의 파일만 제공하도록 구성되었습니다.",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "미리 볼 HTML 파일을 선택하십시오",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "미리보기를 사용할 수 없습니다!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "이 HTML 파일은 현재 프로젝트의 일부가 아닙니다. 보안상의 이유로 프로젝트 파일만 실시간 미리보기가 가능합니다. 이 파일을 미리 보려면 포함된 폴더를 별도의 프로젝트로 엽니다.",

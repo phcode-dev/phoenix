@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "تنظیمات برجسته پیش نمایش زنده",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false برای غیرفعال کردن پیش نمایش زنده بازرسی معکوس",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "چیزی برای پیش نمایش وجود ندارد!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "سرور سفارشی نمی تواند این فایل را ارائه کند",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "تنظیمات پیش‌نمایش زنده به گونه‌ای پیکربندی شده است که فقط فایل‌های پوشه «{0}» را ارائه کند",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "لطفاً یک فایل HTML را برای پیش نمایش انتخاب کنید",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "پیش نمایش در دسترس نیست!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "این فایل HTML بخشی از پروژه فعلی نیست. به دلایل امنیتی، فقط فایل های پروژه را می توان به صورت زنده پیش نمایش کرد. برای پیش نمایش این فایل، پوشه حاوی آن را به عنوان یک پروژه جداگانه باز کنید.",

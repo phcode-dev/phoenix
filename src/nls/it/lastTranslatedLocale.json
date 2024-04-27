@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Impostazioni di evidenziazione in anteprima dal vivo",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false per disabilitare l'ispezione inversa dell'anteprima dal vivo",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Niente da vedere in anteprima!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Il server personalizzato non può servire questo file",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Le impostazioni dell'anteprima dal vivo sono configurate per servire solo i file dalla cartella '{0}'",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Seleziona un file HTML per l'anteprima",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Anteprima non disponibile!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Questo file HTML non fa parte del progetto corrente. Per motivi di sicurezza, solo i file di progetto possono essere visualizzati in anteprima dal vivo. Per visualizzare l'anteprima di questo file, apri la cartella che lo contiene come progetto separato.",
