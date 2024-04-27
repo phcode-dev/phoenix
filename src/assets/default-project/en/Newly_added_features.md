@@ -7,7 +7,7 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
-<h2><a target="_blank" href="https://docs.phcode.dev/docs/find-in-files/">Search Filters - Advanced find in files</a></h2>
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/find-in-files/">Search Filters - Advanced find in files</a></h2>
 
 `Added on March, 2024`
 
