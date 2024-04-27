@@ -20,7 +20,7 @@ new server settings dialog.
 
 `Added on April, 2024`
 
-CSS class hints are now shown within the HTML files class attribute.
+CSS class hints are now shown within the HTML file's class attribute.
 
 ![image](https://github.com/phcode-dev/phoenix/assets/5336369/112ad909-8fd0-4fc4-8042-041ecade9481)
 

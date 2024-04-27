@@ -625,14 +625,17 @@ define(function (require, exports, module) {
     }
 
     async function _currentFileChanged(_event, changedFile) {
-        if(changedFile && _shouldShowCustomServerBar(changedFile.fullPath)){
+        const fullPath = changedFile.fullPath;
+        if(changedFile && _shouldShowCustomServerBar(fullPath)){
             _showCustomServerBar();
         }
-        if(urlPinned){
+        const shouldUseInbuiltPreview = utils.isMarkdownFile(fullPath) || utils.isSVG(fullPath);
+        if(urlPinned || (LivePreviewSettings.isUsingCustomServer() &&
+            !LivePreviewSettings.getCustomServerConfig(fullPath) && !shouldUseInbuiltPreview)){
             return;
         }
-        if(changedFile && (utils.isPreviewableFile(changedFile.fullPath) ||
-            utils.isServerRenderedFile(changedFile.fullPath))){
+        if(changedFile && (utils.isPreviewableFile(fullPath) ||
+            utils.isServerRenderedFile(fullPath))){
             if(!panelShownAtStartup){
                 _setPanelVisibility(true);
             }
