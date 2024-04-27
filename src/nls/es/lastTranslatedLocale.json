@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Configuración de resaltado de vista previa en vivo",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false para deshabilitar la vista previa en vivo, la inspección inversa",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "¡Nada que previsualizar!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "El servidor personalizado no puede servir este archivo",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "La configuración de vista previa en vivo está configurada para servir solo archivos de la carpeta '{0}'",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Seleccione un archivo HTML para obtener una vista previa",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "¡Vista previa no disponible!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Este archivo HTML no forma parte del proyecto actual. Por razones de seguridad, solo se puede obtener una vista previa en vivo de los archivos del proyecto. Para obtener una vista previa de este archivo, abra la carpeta que lo contiene como un proyecto independiente.",

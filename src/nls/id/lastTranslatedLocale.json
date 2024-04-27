@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Pengaturan Sorotan Pratinjau Langsung",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false untuk menonaktifkan inspeksi terbalik pratinjau langsung",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Tidak ada yang perlu dipratinjau!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Server Khusus Tidak Dapat Melayani File Ini",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Setelan pratinjau langsung dikonfigurasi untuk hanya menyajikan file dari folder '{0}'",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Harap pilih file HTML untuk dipratinjau",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Pratinjau Tidak Tersedia!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "File HTML ini bukan bagian dari proyek saat ini. Demi alasan keamanan, hanya file proyek yang dapat dipratinjau langsung. Untuk melihat pratinjau file ini, buka folder yang memuatnya sebagai proyek terpisah.",

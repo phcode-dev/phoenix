@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Paramètres de surbrillance de l'Aperçu en direct",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "faux pour désactiver l’inspection inverse de l’Aperçu en direct",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Rien à prévoir !",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Le serveur personnalisé ne peut pas servir ce fichier",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Les paramètres d'aperçu en direct sont configurés pour diffuser uniquement les fichiers du dossier « {0} »",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Veuillez sélectionner un fichier HTML pour prévisualiser",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Aperçu indisponible !",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Ce fichier HTML ne fait pas partie du projet en cours. Pour des raisons de sécurité, seuls les fichiers de projet peuvent être prévisualisés en direct. Pour prévisualiser ce fichier, ouvrez son dossier contenant en tant que projet distinct.",

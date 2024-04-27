@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Live-Vorschau Highlight-Einstellungen",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false, um die Reverse-Inspection in der Live-Vorschau zu deaktivieren",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nichts zur Vorschau!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Der benutzerdefinierte Server kann diese Datei nicht bereitstellen",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Die Livevorschau-Einstellungen sind so konfiguriert, dass nur Dateien aus dem Ordner „{0}“ bereitgestellt werden.",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Bitte wählen Sie eine HTML-Datei für die Vorschau aus",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Vorschau nicht verfügbar!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Diese HTML-Datei ist nicht Teil des aktuellen Projekts. Aus Sicherheitsgründen können nur Projektdateien in der Live-Vorschau angezeigt werden. Um eine Vorschau dieser Datei anzuzeigen, öffnen Sie den enthaltenen Ordner als separates Projekt.",

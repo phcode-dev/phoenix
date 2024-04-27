@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Indstillinger for Live Preview Highlight",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "falsk for at deaktivere live preview omvendt inspektion",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Intet at forhåndsvise!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Brugerdefineret server kan ikke betjene denne fil",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Live preview-indstillinger er konfigureret til kun at vise filer fra mappen '{0}'",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Vælg venligst en HTML-fil til forhåndsvisning",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Forhåndsvisning ikke tilgængelig!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Denne HTML-fil er ikke en del af det aktuelle projekt. Af sikkerhedsmæssige årsager kan kun projektfiler vises live. For at få vist denne fil, skal du åbne dens indeholdende mappe som et separat projekt.",

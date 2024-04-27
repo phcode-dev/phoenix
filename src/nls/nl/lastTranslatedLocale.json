@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Instellingen voor live preview-markeringen",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false om live preview reverse inspect uit te schakelen",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Niets om te bekijken!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Aangepaste server kan dit bestand niet weergeven",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Instellingen voor livevoorbeelden zijn zo geconfigureerd dat alleen bestanden uit de map '{0}' worden weergegeven",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Selecteer een HTML-bestand om een voorbeeld te bekijken",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Voorbeeld niet beschikbaar!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Dit HTML-bestand maakt geen deel uit van het huidige project. Om veiligheidsredenen kunnen alleen projectbestanden live worden bekeken. Om een voorbeeld van dit bestand te bekijken, opent u de map die het bevat als een afzonderlijk project.",

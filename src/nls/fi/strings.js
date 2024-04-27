@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Esikatselun korostuksen asetukset",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false reaaliaikaisen esikatselun käänteisen tarkastuksen poistamiseksi käytöstä",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Ei mitään esikatseltavaa!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Mukautettu palvelin ei voi palvella tätä tiedostoa",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Live-esikatseluasetukset on määritetty näyttämään vain kansion {0} tiedostoja",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Valitse esikatselu HTML-tiedosto",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Esikatselu ei saatavilla!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Tämä HTML-tiedosto ei ole osa nykyistä projektia. Turvallisuussyistä vain projektitiedostoja voidaan esikatsella livenä. Voit esikatsella tätä tiedostoa avaamalla sen sisältävän kansion erillisenä projektina.",

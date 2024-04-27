@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Canlı Önizleme Vurgu ayarları",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "canlı önizleme ters incelemeyi devre dışı bırakmak için false",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Önizlenecek bir şey yok!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Özel Sunucu Bu Dosyayı Sunamıyor",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Canlı önizleme ayarları yalnızca '{0}' klasöründeki dosyaları sunacak şekilde yapılandırıldı",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Lütfen önizlemek için bir HTML dosyası seçin",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Önizleme Kullanılamıyor!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Bu HTML dosyası mevcut projenin parçası değil. Güvenlik nedeniyle yalnızca proje dosyalarının canlı önizlemesi yapılabilir. Bu dosyayı önizlemek için içerdiği klasörü ayrı bir proje olarak açın.",

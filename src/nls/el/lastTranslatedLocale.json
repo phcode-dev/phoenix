@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Ρυθμίσεις επισήμανσης ζωντανής προεπισκόπησης",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false για να απενεργοποιήσετε τη ζωντανή προεπισκόπηση αντίστροφη επιθεώρηση",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Δεν υπάρχει τίποτα για προεπισκόπηση!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Ο προσαρμοσμένος διακομιστής δεν μπορεί να εξυπηρετήσει αυτό το αρχείο",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Οι ρυθμίσεις ζωντανής προεπισκόπησης έχουν διαμορφωθεί ώστε να προβάλλουν μόνο αρχεία από το φάκελο \"{0}\"",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Επιλέξτε ένα αρχείο HTML για προεπισκόπηση",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Η προεπισκόπηση δεν είναι διαθέσιμη!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Αυτό το αρχείο HTML δεν αποτελεί μέρος του τρέχοντος έργου. Για λόγους ασφαλείας, είναι δυνατή η ζωντανή προεπισκόπηση μόνο των αρχείων έργου. Για να κάνετε προεπισκόπηση αυτού του αρχείου, ανοίξτε το φάκελο που περιέχει ως ξεχωριστό έργο.",

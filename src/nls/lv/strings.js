@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Tiešraides priekšskatījuma izcelšanas iestatījumi",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false, lai atspējotu tiešā priekšskatījuma apgriezto pārbaudi",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nav ko priekšskatīt!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Pielāgots serveris nevar apkalpot šo failu",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Tiešraides priekšskatījuma iestatījumi ir konfigurēti, lai apkalpotu tikai failus no mapes {0}",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Lūdzu, atlasiet priekšskatīšanai HTML failu",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Priekšskatījums nav pieejams!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Šis HTML fails nav pašreizējā projekta daļa. Drošības apsvērumu dēļ tiešraidē var priekšskatīt tikai projekta failus. Lai priekšskatītu šo failu, atveriet tajā esošo mapi kā atsevišķu projektu.",

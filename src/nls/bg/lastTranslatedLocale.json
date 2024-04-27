@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Настройки за подчертаване на преглед на живо",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "невярно, за да деактивирате обратната проверка на предварителен преглед на живо",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Няма нищо за преглед!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Персонализираният сървър не може да обслужва този файл",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Настройките за преглед на живо са конфигурирани да обслужват само файлове от папка „{0}“",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Моля, изберете HTML файл за преглед",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Визуализацията не е налична!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Този HTML файл не е част от текущия проект. От съображения за сигурност само файловете на проекта могат да бъдат визуализирани на живо. За да визуализирате този файл, отворете съдържащата го папка като отделен проект.",

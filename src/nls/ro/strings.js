@@ -847,6 +847,8 @@ define({
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Previzualizare live Evidențiați setări",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false pentru a dezactiva inspectarea inversă a previzualizării live",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Nimic de previzualizat!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Serverul personalizat nu poate servi acest fișier",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Setările de previzualizare live sunt configurate să difuzeze numai fișiere din dosarul „{0}”",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Vă rugăm să selectați un fișier HTML pentru previzualizare",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Previzualizare indisponibilă!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Acest fișier HTML nu face parte din proiectul curent. Din motive de securitate, numai fișierele de proiect pot fi previzualizate live. Pentru a previzualiza acest fișier, deschideți folderul care îl conține ca proiect separat.",

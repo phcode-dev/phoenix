@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "Inställningar för Live Preview Highlight",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "false för att inaktivera liveförhandsgranskning omvänd inspektera",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "Inget att förhandsgranska!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "Anpassad server kan inte betjäna den här filen",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "Inställningar för liveförhandsgranskning är konfigurerade att endast visa filer från mappen '{0}'",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "Välj en HTML-fil att förhandsgranska",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "Förhandsgranskning ej tillgänglig!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "Denna HTML-fil är inte en del av det aktuella projektet. Av säkerhetsskäl kan endast projektfiler live-förhandsgranskas. För att förhandsgranska den här filen öppnar du dess innehållande mapp som ett separat projekt.",

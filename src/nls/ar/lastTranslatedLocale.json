@@ -827,6 +827,8 @@
   "DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS": "إعدادات تمييز المعاينة المباشرة",
   "DESCRIPTION_LIVEDEV_ENABLE_REVERSE_INSPECT": "خطأ لتعطيل المعاينة المباشرة المعاينة العكسية",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW": "لا شيء للمعاينة!",
+  "DESCRIPTION_LIVEDEV_EXCLUDED": "لا يمكن للخادم المخصص تقديم هذا الملف",
+  "DESCRIPTION_LIVEDEV_NO_PREVIEW_EXCLUDED": "تم تكوين إعدادات المعاينة المباشرة لعرض الملفات من المجلد '{0}' فقط",
   "DESCRIPTION_LIVEDEV_NO_PREVIEW_DETAILS": "الرجاء تحديد ملف HTML للمعاينة",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED": "المعاينة غير متاحة!",
   "DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS": "ملف HTML هذا ليس جزءًا من المشروع الحالي. لأسباب أمنية، يمكن معاينة ملفات المشروع فقط مباشرة. لمعاينة هذا الملف، افتح المجلد الذي يحتوي عليه كمشروع منفصل.",
