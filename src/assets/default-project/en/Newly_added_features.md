@@ -6,6 +6,38 @@ We are continuously adding features every week to improve the life of web develo
 <a href="https://github.com/phcode-dev/phoenix/releases" target="_blank">Check out our release page!</a>
 
 Here's a list of top features recently added to Phoenix:
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/live-preview-settings/">Custom Live Preview Servers</a></h2>
+
+`Added on April, 2024`
+
+Preview PHP, React, and other dynamically rendered files with the
+new server settings dialog.
+
+![Screenshot from 2024-04-12 13-08-34](https://github.com/phcode-dev/phoenix/assets/5336369/69fa0ee4-7262-42af-97d2-26154ec4a3b9)
+
+
+## Advanced HTML/CSS/LESS/SCSS Code Intelligence
+
+`Added on April, 2024`
+
+CSS class hints are now shown within the HTML files class attribute.
+
+![image](https://github.com/phcode-dev/phoenix/assets/5336369/112ad909-8fd0-4fc4-8042-041ecade9481)
+
+Support for the latest CSS/LESS/SCSS syntax. Code intelligence and error
+detection for CSS, SCSS, and LESS files.
+
+![image](https://github.com/phcode-dev/phoenix/assets/5336369/9c083bd3-9e34-418d-a1c8-c152393c37b2)
+
+
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/editor-rulers/">Editor Rulers</a></h2>
+
+`Added on April, 2024`
+
+Add multiple, color-customizable rulers in the editor to better visualize line
+lengths.
+
+![image](https://github.com/phcode-dev/phoenix/assets/5336369/71b8b04c-d2ca-47b8-84bb-53cd0fb4593c)
 
 <h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/find-in-files/">Search Filters - Advanced find in files</a></h2>
 
