@@ -276,7 +276,10 @@ const _createAppDirs = async function () {
 
 
 const CORE_LIB_GUARD_INTERVAL = 5000;
-const _FS_ERROR_MESSAGE = 'Oops. Phoenix could not be started due to missing file system library.';
+const _FS_ERROR_MESSAGE = (Phoenix.isNativeApp && Phoenix.platform === "mac") ?
+    'Oops. Could not start due to missing file system library.\n\nPhoenix Code requires `macOS 12 Monterey` or higher' :
+    'Oops. Could not start due to missing file system library.' +
+    '\n\nPlease use a modern browser (released within the last 4 years).';
 export default function initVFS() {
     if(!window.fs || !window.path || !window.Phoenix){
         window.alert(_FS_ERROR_MESSAGE);
