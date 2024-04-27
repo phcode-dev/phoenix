@@ -617,6 +617,34 @@ define(function (require, exports, module) {
             }
         }, 30000);
 
+        it("should custom server show error page if path outside serve root", async function () {
+            await _setupSimpleProject("doesntExist/", false);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub.html");
+            testWindow.$("#toolbar-go-live").click();
+            testWindow.$("#toolbar-go-live").click();
+            await awaitsFor(()=>{
+                let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
+                if(!iFrame.src) {
+                    return false;
+                }
+                const url = new URL(iFrame.src);
+                const jsonStr = url.searchParams.get("jsonInput");
+                if(!jsonStr){
+                    return false;
+                }
+                const message = JSON.parse(decodeURIComponent(jsonStr));
+                return message.details.includes("Live preview settings is configured to only serve files from folder 'doesntExist/'");
+            }, "Live preview settings is configured to only serve files from folder 'doesntExist/'");
+
+            // should still show markdown previews with internal live preview server!
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "open sub.html");
+            await _waitForIframeMDFile('readme.md');
+
+            await endPreviewSession();
+        }, 30000);
+
         async function _forSVGLivePreview() {
             await awaitsFor(()=>{
                 let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
