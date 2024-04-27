@@ -85,7 +85,18 @@ async function prettify(params) {
     options.rangeStart = options.rangeStart || 0;
     options.rangeEnd = options.rangeEnd || params.text.length;
     await _loadPlugin(options._usePlugin);
-    let { formatted, cursorOffset} = await prettier.formatWithCursor(params.text, options);
+    const pluginName = options._usePlugin;
+    delete options._usePlugin;
+    let formatted, cursorOffset;
+    if(pluginName === "json-stringify") {
+        // json stringify impl of format with cursor has a bug where it will get stuck prettying for like 10 secs
+        // for some rare files. so we use the original prettier without cursor fn
+        formatted = await prettier.format(params.text, options);
+    } else {
+        let prettyResult = await prettier.formatWithCursor(params.text, options);
+        formatted = prettyResult.formatted;
+        cursorOffset = prettyResult.cursorOffset;
+    }
     if(isFullFileBeautify){
         return {
             text: formatted,
