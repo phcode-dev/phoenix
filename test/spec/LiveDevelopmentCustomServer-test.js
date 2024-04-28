@@ -645,6 +645,39 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        it("should custom server show banner on first show only", async function () {
+            await _setupSimpleProject("sub/", false);
+
+            // should still show markdown previews with internal live preview server!
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "open sub.html");
+            await _waitForIframeMDFile('readme.md');
+            expect(testWindow.$(".live-preview-custom-banner").is(":visible")).toBe(false);
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub.html");
+
+            await awaitsFor(()=>{
+                return testWindow.$(".live-preview-custom-banner").is(":visible");
+            }, "banner to show");
+
+            testWindow.$(".custom-server-banner-close-icon").click();
+            expect(testWindow.$(".live-preview-custom-banner").is(":visible")).toBe(false);
+
+            // now switch to readme file
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["readme.md"]),
+                "open sub.html");
+            await _waitForIframeMDFile('readme.md');
+
+            // switch to html file
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub.html");
+            await _waitForIframeURL('http://localhost:43768/sub.html');
+            expect(testWindow.$(".live-preview-custom-banner").is(":visible")).toBe(false);
+
+            await endPreviewSession();
+        }, 30000);
+
         async function _forSVGLivePreview() {
             await awaitsFor(()=>{
                 let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
