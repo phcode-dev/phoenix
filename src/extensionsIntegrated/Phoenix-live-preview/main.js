@@ -122,6 +122,8 @@ define(function (require, exports, module) {
         $firefoxButtonBallast,
         $panelTitle;
 
+    let customLivePreviewBannerShown = false;
+
     StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
         if($iframe && $iframe[0]) {
             const iframeDom = $iframe[0];
@@ -398,6 +400,14 @@ define(function (require, exports, module) {
         $firefoxButtonBallast = $panel.find("#firefoxButtonBallast");
         $panelTitle = $panel.find("#panel-live-preview-title");
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
+
+        $panel.find(".live-preview-settings-banner-btn").on("click", ()=>{
+            CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);
+            Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtnBanner", "click");
+        });
+        $panel.find(".custom-server-banner-close-icon").on("click", ()=>{
+            $panel.find(".live-preview-custom-banner").addClass("forced-hidden");
+        });
         $iframe[0].onload = function () {
             $iframe.attr('srcdoc', null);
         };
@@ -492,6 +502,15 @@ define(function (require, exports, module) {
         _setTitle(relativeOrFullPath, currentPreviewFile,
             previewDetails.isCustomServer ? currentLivePreviewURL : "");
         if(panel.isVisible()) {
+            if(!customLivePreviewBannerShown && LivePreviewSettings.isUsingCustomServer()
+                && previewDetails.isCustomServer) {
+                customLivePreviewBannerShown = true;
+                $panel.find(".live-preview-custom-banner").removeClass("forced-hidden");
+                $panel.find(".live-preview-banner-message").text(
+                    StringUtils.format(Strings.LIVE_PREVIEW_CUSTOM_SERVER_BANNER,
+                        LivePreviewSettings.getCustomServeBaseURL())
+                );
+            }
             let newIframe = $(LIVE_PREVIEW_IFRAME_HTML);
             newIframe.insertAfter($iframe);
             $iframe.remove();
@@ -556,6 +575,7 @@ define(function (require, exports, module) {
     }
 
     async function _projectOpened(_evt) {
+        customLivePreviewBannerShown = false;
         _openReadmeMDIfFirstTime();
         _customServerMetrics();
         if(!LiveDevelopment.isActive()

@@ -211,6 +211,10 @@ define(function (require, exports, module) {
         return PreferencesManager.get(PREFERENCE_PROJECT_SERVER_PATH) || "/";
     }
 
+    function getCustomServeBaseURL() {
+        return PreferencesManager.get(PREFERENCE_PROJECT_SERVER_URL) || "";
+    }
+
     function getCustomServerConfig(fullPath) {
         const customServer = _resolveServer();
         if(!customServer || !ProjectManager.isWithinProject(fullPath)) {
@@ -260,6 +264,7 @@ define(function (require, exports, module) {
 
     exports.showSettingsDialog = showSettingsDialog;
     exports.getCustomServerConfig = getCustomServerConfig;
+    exports.getCustomServeBaseURL = getCustomServeBaseURL;
     exports.getCustomServeRoot = getCustomServeRoot;
     exports.isUsingCustomServer = isUsingCustomServer;
     exports.getCustomServerFramework = getCustomServerFramework;
