@@ -576,6 +576,7 @@ define(function (require, exports, module) {
 
     async function _projectOpened(_evt) {
         customLivePreviewBannerShown = false;
+        $panel.find(".live-preview-custom-banner").addClass("forced-hidden");
         _openReadmeMDIfFirstTime();
         _customServerMetrics();
         if(!LiveDevelopment.isActive()
