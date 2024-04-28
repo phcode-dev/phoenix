@@ -791,6 +791,7 @@ define(function (require, exports, module) {
             refreshPreview();
         });
         LivePreviewSettings.on(LivePreviewSettings.EVENT_SERVER_CHANGED, ()=>{
+            customLivePreviewBannerShown = false;
             refreshPreview();
             _customServerMetrics();
         });
