@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "സെർവർ ഫ്രെയിംവർക്ക്",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "കസ്റ്റം",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "സെർവർ ഫ്രെയിംവർക്ക്, നിലവിൽ ഡോക്യുസോറസിനെ മാത്രമേ പിന്തുണയ്ക്കൂ",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "നിങ്ങളുടെ ഇഷ്‌ടാനുസൃത സെർവറിൽ നിന്ന് പ്രിവ്യൂ നേടുന്നു {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "ബ്രൗസറിന്റെ ഡെവലപ്പർ ടൂളുകൾ തുറന്നതിനാൽ തത്സമയ പ്രിവ്യൂ റദ്ദാക്കി",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "ബ്രൗസറിൽ പേജ് അടച്ചതിനാൽ തത്സമയ പ്രിവ്യൂ റദ്ദാക്കി",
   "LIVE_DEV_NAVIGATED_AWAY": "നിലവിലെ പ്രോജക്‌റ്റിന്റെ ഭാഗമല്ലാത്ത ഒരു പേജിലേക്ക് ബ്രൗസർ നാവിഗേറ്റ് ചെയ്‌തതിനാൽ തത്സമയ പ്രിവ്യൂ റദ്ദാക്കി",

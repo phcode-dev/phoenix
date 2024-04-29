@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "چارچوب سرور",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "سفارشی",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "چارچوب سرور، در حال حاضر فقط از docusaurus پشتیبانی می کند",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "دریافت پیش نمایش از سرور سفارشی شما {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "پیش نمایش زنده لغو شد زیرا از برخی از ابزارهای توسعه مختص مرورگرتان استفاده کرده اید.",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "پیش نمایش زنده لغو شد زیرا پنجره یا زبانه مربوط به صفحه در مرورگر بسته شده.",
   "LIVE_DEV_NAVIGATED_AWAY": "پیش نمایش زنده لغو شد زیرا پنجره یا زبانه موجود در مرورگر آدرس دیگری را پیمایش کرده است.",

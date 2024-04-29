@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Cadru de server",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Personalizat",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, în prezent acceptă doar docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Obținerea previzualizării de pe serverul personalizat {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview a fost revocat din cauza că în browser au fost deschise uneltele pentru dezvoltatori",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Preview a fost revocat din cauza că pagina a fost închisă în browser",
   "LIVE_DEV_NAVIGATED_AWAY": "Live Preview a fost revocat din cauza că browser-ul a navigat spre o pagină care nu face parte din proiectul curent",

@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Cadre de serveur",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Coutume",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, ne prend actuellement en charge que Docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Obtenir un aperçu à partir de votre serveur personnalisé {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Aperçu en direct annulé car les outils de développement du navigateur étaient ouverts",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Aperçu en direct annulé car la page a été fermée dans le navigateur",
   "LIVE_DEV_NAVIGATED_AWAY": "Aperçu en direct annulé car le navigateur a accédé à une page qui ne fait pas partie du projet actuel",

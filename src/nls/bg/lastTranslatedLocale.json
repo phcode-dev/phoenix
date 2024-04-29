@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Сървърна рамка",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Персонализиран",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Сървърна рамка, в момента поддържа само docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Получаване на визуализация от вашия персонализиран сървър {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Прегледът на живо беше прекъснат, тъй като бяха отворени инструментите за разработчици на браузъра.",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Прегледът на живо беше прекъснат, тъй като страницата в браузъра беше затворена.",
   "LIVE_DEV_NAVIGATED_AWAY": "Прегледът на живо беше прекъснат, тъй като бръузърът премина към страница, която не е част от текущия проект.",

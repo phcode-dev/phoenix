@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Серверная платформа",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Обычай",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Серверная платформа, в настоящее время поддерживает только docusaurus.",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Получение предварительного просмотра с вашего пользовательского сервера {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Функция Live Preview была отключена при открытии инструментов разработки в браузере",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Функция Live Preview была отключена при закрытии страницы в браузере",
   "LIVE_DEV_NAVIGATED_AWAY": "Функция Live Preview была отключена при переходе на страницу не принадлежащую проекту",

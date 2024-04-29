@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Servera ietvars",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Pielāgots",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, pašlaik atbalsta tikai docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Notiek priekšskatījuma iegūšana no pielāgotā servera {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Tiešais priekšskatījums tika atcelts, jo bija atvērti pārlūka izstrādātāja rīki",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Tiešais priekšskatījums tika atcelts, jo lapa tika aizvērta pārlūkā",
   "LIVE_DEV_NAVIGATED_AWAY": "Tiešais priekšskatījums tika atcelts, jo pārlūks pārvietojās uz lapu, kas nav daļa no šī projekta",

@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Serverramme",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Brugerdefinerede",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, understøtter i øjeblikket kun docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Sådan får du forhåndsvisning fra din tilpassede server {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live-Forhåndsvisning blev afbrudt fordi udviklerværktøjer blev åbnet i browseren",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live-Forhåndsvisning blev afbrudt fordi siden blev lukket i browseren",
   "LIVE_DEV_NAVIGATED_AWAY": "Live-Forhåndsvisning blev afbrudt fordi browseren navigerede til en side udenfor projektet",

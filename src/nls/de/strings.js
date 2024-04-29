@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Server Framework",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Brauch",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, unterstützt derzeit nur Docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Vorschau von Ihrem benutzerdefinierten Server abrufen {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Die Live-Vorschau wurde abgebrochen, weil die Entwickler-Tools des Browsers geöffnet wurden",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Die Live-Vorschau wurde abgebrochen, weil die Seite im Browser geschlossen wurde",
   "LIVE_DEV_NAVIGATED_AWAY": "Die Live-Vorschau wurde abgebrochen, weil der Browser eine Seite geladen hat, die nicht Teil des aktuellen Projekts ist",

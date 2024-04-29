@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Сервер Фрамеворк",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Обичај",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Сервер Фрамеворк, тренутно подржава само докусаурус",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Преузимање прегледа са вашег прилагођеног сервера {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Живи приказ је отказан јер су развојни алати били отворени у претраживачу",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Живи приказ је отказан јер је страница затворена у претраживачу",
   "LIVE_DEV_NAVIGATED_AWAY": "Живи приказ је отказан јер је претраживач отишао на страницу која није део тренутног пројекта",

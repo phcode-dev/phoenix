@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "إطار الخادم",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "مخصص",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "إطار عمل الخادم، يدعم حاليًا docusaurus فقط",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "الحصول على معاينة من خادمك المخصص {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "تم إلغاء المعاينة المباشرة لأنه تم فتح أدوات مطور المتصفح",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "تم إلغاء المعاينة المباشرة لأن الصفحة كانت مغلقة في المتصفح",
   "LIVE_DEV_NAVIGATED_AWAY": "تم إلغاء المعاينة المباشرة لأن المتصفح انتقل إلى صفحة ليست جزءًا من المشروع الحالي",

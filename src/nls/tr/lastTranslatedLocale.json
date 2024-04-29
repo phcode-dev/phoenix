@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Sunucu Çerçevesi",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Gelenek",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Sunucu Çerçevesi, şu anda yalnızca docusaurus'u desteklemektedir",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Özel sunucunuzdan önizleme alınıyor {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Tarayıcının geliştirici araçları açıldığından Canlı Önizleme iptal edildi",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Sayfa tarayıcıda kapatıldığı için Canlı Önizleme iptal edildi",
   "LIVE_DEV_NAVIGATED_AWAY": "Tarayıcı mevcut projenin parçası olmayan bir sayfaya gittiği için Canlı Önizleme iptal edildi",

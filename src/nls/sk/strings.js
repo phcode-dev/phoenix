@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Server Framework",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Vlastné",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, momentálne podporuje iba docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Získavanie ukážky z vlastného servera {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Živý náhľad bol zrušený kvôli tomu, že boli otvorené vývojárske nástroje v prehliadači",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Živý náhľad bol zrušený kvôli tomu, že stránka bola zatvorená v prehliadači",
   "LIVE_DEV_NAVIGATED_AWAY": "Živý náhľad bol zrušený kvôli tomu, že prehliadač odkazoval na stránku, ktorá nie je súčasťou aktuálneho projektu",
