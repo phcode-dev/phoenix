@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "서버 프레임워크",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "관습",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "서버 프레임워크는 현재 docusaurus만 지원합니다.",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "맞춤 서버에서 미리보기 가져오기 {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "브라우저의 개발 도구가 열려 있기 때문에 실시간 미리보기가 취소되었습니다뷰.",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "브라우저에서 페이지가 닫혀 있으므로 실시간 미리보기가 취소되었습니다.",
   "LIVE_DEV_NAVIGATED_AWAY": "브라우저에서 현재 프로젝트에 포함되지 않은 페이지로 이동했기 때문에 실시간 미리보기가 취소되었습니다.",

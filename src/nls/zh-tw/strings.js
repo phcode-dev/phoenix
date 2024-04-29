@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "伺服器架構",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "風俗",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "伺服器框架，目前僅支援 docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "從您的自訂伺服器{0}取得預覽",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "已取消即時預覽，因為開發者工具被打開了",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "已取消即時預覽，因為頁面被關掉了",
   "LIVE_DEV_NAVIGATED_AWAY": "已取消即時預覽，因為您連到專案外的頁面了",

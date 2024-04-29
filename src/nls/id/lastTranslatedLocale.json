@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Kerangka Server",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Kebiasaan",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Kerangka Server, saat ini hanya mendukung docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Mendapatkan pratinjau dari server khusus Anda {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Tinjauan Langsung dibatalkan karena Alat Pengembang pada peramban sedang dibuka",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Tinjauan Langsung dibatalkan karena halaman telah ditutup pada peramban",
   "LIVE_DEV_NAVIGATED_AWAY": "Tinjauan Langsung dibatalkan karena peramban berpindah ke halaman yang bukan dari proyek",

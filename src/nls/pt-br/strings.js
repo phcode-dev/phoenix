@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Estrutura do servidor",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Personalizado",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, atualmente suporta apenas docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Obtendo visualização do seu servidor personalizado {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "O Live Preview foi cancelado pois as ferramentas de desenvolvedor do navegador foram abertas",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "O Live Preview foi cancelado pois a página foi fechada no navegador",
   "LIVE_DEV_NAVIGATED_AWAY": "O Live Preview foi cancelado pois o navegador foi para uma página que não pertence a este projeto atual",

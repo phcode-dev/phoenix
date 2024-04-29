@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Serverframework",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Aangepast",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework ondersteunt momenteel alleen docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Voorbeeld ophalen van uw aangepaste server {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Voorbeeld is geannuleerd omdat de developer tools in de browser zijn geopend",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Voorbeeld is geannuleerd omdat de pagina gesloten werd in de browser",
   "LIVE_DEV_NAVIGATED_AWAY": "Live Voorbeeld is geannuleerd omdat de browser navigeerde naar een pagina die geen deel uit maakt van het huidige project",

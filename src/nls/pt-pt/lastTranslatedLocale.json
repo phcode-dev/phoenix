@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Estrutura do servidor",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Personalizado",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, atualmente suporta apenas docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Obtendo visualização do seu servidor personalizado {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "A visualização ao vivo foi cancelada porque as ferramentas de desenvolvedor do navegador foram abertas",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "A visualização ao vivo foi cancelada porque a página foi fechada no navegador",
   "LIVE_DEV_NAVIGATED_AWAY": "A visualização ao vivo foi cancelada porque o navegador navegou para uma página que não faz parte do projeto atual",

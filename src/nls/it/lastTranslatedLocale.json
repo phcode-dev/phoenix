@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Struttura del server",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Costume",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, attualmente supporta solo docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Ottenere l'anteprima dal tuo server personalizzato {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "L’Anteprima Live è stata cancellata perché uno strumento di sviluppo è stato aperto nel browser",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "L’Anteprima Live è stata cancellata perché è stato chiuso il browser",
   "LIVE_DEV_NAVIGATED_AWAY": "L’Anteprima Live è stata cancellata perché il browser ha caricato una pagina che non fa parte del progetto corrente",

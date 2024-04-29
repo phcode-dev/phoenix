@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Server Framework",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Zvyk",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, aktuálně podporuje pouze docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Získávání náhledu z vašeho vlastního serveru {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Živý náhled byl zrušen, protože byly otevřeny vývojářské nástroje prohlížeče",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Živý náhled byl zrušen, protože dokument byl zavřen v prohlížeči",
   "LIVE_DEV_NAVIGATED_AWAY": "Živý náhled byl zrušen, protože prohlížeč přešel na stránku, která není součástí projektu",

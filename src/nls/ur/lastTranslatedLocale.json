@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "سرور فریم ورک",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "اپنی مرضی کے مطابق",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "سرور فریم ورک، فی الحال صرف ڈاکوسورس کو سپورٹ کرتا ہے۔",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "اپنے حسب ضرورت سرور سے پیش نظارہ حاصل کرنا {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "لائیو پیش نظارہ منسوخ کر دیا گیا کیونکہ براؤزر کے ڈویلپر ٹولز کھل گئے تھے۔",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "لائیو پیش نظارہ منسوخ کر دیا گیا کیونکہ صفحہ براؤزر میں بند تھا۔",
   "LIVE_DEV_NAVIGATED_AWAY": "لائیو پیش نظارہ منسوخ کر دیا گیا تھا کیونکہ براؤزر ایک ایسے صفحہ پر گیا جو موجودہ پروجیکٹ کا حصہ نہیں ہے۔",

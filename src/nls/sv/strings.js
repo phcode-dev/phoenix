@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Server Framework",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Beställnings",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, stöder för närvarande endast docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Få förhandsgranskning från din anpassade server {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Förhandsvisningen avbröts eftersom webbläsarens utvecklarverktyg öppnades.",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Förhandsvisningen avbröts eftersom sidan stängdes i webbläsaren.",
   "LIVE_DEV_NAVIGATED_AWAY": "Förhandsvisningen avbröts eftersom webbläsaren navigerades till en sida som inte är del av det nuvarande projektet.",

@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "服务器框架",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "风俗",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "服务器框架，目前仅支持 docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "从您的自定义服务器 {0} 获取预览",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "由于浏览器开发人员工具已打开, 实时预览已关闭。",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "由于浏览器中页面已关闭, 实时预览已关闭",
   "LIVE_DEV_NAVIGATED_AWAY": "由于浏览器打开一个不属于本项目的页面, 实时预览已关闭",

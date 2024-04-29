@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "サーバーフレームワーク",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "カスタム",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "サーバーフレームワーク、現在はdocusaurusのみをサポート",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "カスタム サーバー {0} からプレビューを取得しています",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "ブラウザーの開発ツールが開いているため、ライブプレビューはキャンセルされました",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "ブラウザーでページが閉じられたため、ライブプレビューはキャンセルされました",
   "LIVE_DEV_NAVIGATED_AWAY": "ブラウザーで現在のプロジェクトに含まれないページに移動したため、ライブプレビューはキャンセルされました",

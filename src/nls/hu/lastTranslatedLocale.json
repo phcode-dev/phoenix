@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Szerver keretrendszer",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Egyedi",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, jelenleg csak a docusaurust támogatja",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Előnézet letöltése egyéni szerveréről {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Az Élő Előnézet lecsatlakozott mert a bongésző fejlesztő eszközei meg lettek nyitva",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Az Élő Előnézet lecsatlakozott mert az oldal be lett zárva a böngészőben",
   "LIVE_DEV_NAVIGATED_AWAY": "Az Élő Előnézet lecsatlakozott mert a böngésző olyan oldalra lépett amely nem része a jelenlegi projektnek",

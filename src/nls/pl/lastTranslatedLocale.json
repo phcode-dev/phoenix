@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Struktura serwera",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Zwyczaj",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, obecnie obsługuje tylko docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Pobieranie podglądu z niestandardowego serwera {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Podgląd na żywo został wyłączony, ponieważ uruchomiono narzędzia dla programistów w przeglądarce",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Podgląd na żywo został wyłączony, ponieważ strona została zamknięta w przeglądarce",
   "LIVE_DEV_NAVIGATED_AWAY": "Podgląd na żywo został wyłączony, ponieważ została załadowana strona nie należąca do aktualnego projektu",

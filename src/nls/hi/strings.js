@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "सर्वर फ्रेमवर्क",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "रिवाज़",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "सर्वर फ्रेमवर्क, वर्तमान में केवल डॉक्यूसॉरस का समर्थन करता है",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "अपने कस्टम सर्वर {0} से पूर्वावलोकन प्राप्त करना",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "लाइव पूर्वावलोकन रद्द कर दिया गया क्योंकि ब्राउज़र के डेवलपर टूल खोले गए थे",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "लाइव पूर्वावलोकन रद्द कर दिया गया क्योंकि पृष्ठ ब्राउज़र में बंद था",
   "LIVE_DEV_NAVIGATED_AWAY": "लाइव पूर्वावलोकन रद्द कर दिया गया था क्योंकि ब्राउज़र एक ऐसे पृष्ठ पर नेविगेट करता है जो वर्तमान प्रोजेक्ट का हिस्सा नहीं है",

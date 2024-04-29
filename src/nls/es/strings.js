@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Marco del servidor",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Costumbre",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, actualmente solo admite docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Obteniendo vista previa de su servidor personalizado {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Vista previa dinámica se ha detenido porque se han abierto las herramientas de desarrollo",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Vista previa dinámica se ha detenido porque se ha cerrado la página en el navegador",
   "LIVE_DEV_NAVIGATED_AWAY": "Vista previa dinámica se ha detenido porque se ha accedido a una página que no es parte del proyecto actual",

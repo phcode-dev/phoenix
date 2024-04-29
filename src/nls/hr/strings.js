@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Okvir poslužitelja",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Prilagođen",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, trenutno podržava samo docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Dobivanje pregleda s vašeg prilagođenog poslužitelja {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Prikaz uživo je otkazan jer su u pregledniku bili otvoreni razvojni alati",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Prikaz uživo je otkazan jer je stranica zatvorena u pregledniku",
   "LIVE_DEV_NAVIGATED_AWAY": "Prikaz uživo je otkazan jer je preglednik otišao na stranicu koja nije dio trenutnog projekta.",

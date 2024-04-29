@@ -146,6 +146,7 @@ define({
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Palvelinkehys",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Mukautettu",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework tukee tällä hetkellä vain docusaurusia",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Haetaan esikatselua mukautetusta palvelimestasi {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Esikatselu peruutettiin, koska selaimen kehitystyökalut avattiin",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Esikatselu peruutettiin, koska sivu suljettiin selaimessa",
   "LIVE_DEV_NAVIGATED_AWAY": "Esikatselu peruutettiin, koska selain siirtyi sivulle, joka ei kuulu nykyiseen projektiin",

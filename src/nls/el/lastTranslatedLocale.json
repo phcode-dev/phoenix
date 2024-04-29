@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Πλαίσιο διακομιστή",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Εθιμο",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, προς το παρόν υποστηρίζει μόνο το docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Λήψη προεπισκόπησης από τον προσαρμοσμένο διακομιστή σας {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Το Live Preview ακυρώθηκε επειδή τα developer tools του browser ανοίχτηκαν",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Το Live Preview ακυρώθηκε επειδή η σελίδα στον browser έκλεισε",
   "LIVE_DEV_NAVIGATED_AWAY": "Το Live Preview ακυρώθηκε επειδή ο browser πήγε σε μια σελίδα που δεν είναι μέρος του τρέχων project",

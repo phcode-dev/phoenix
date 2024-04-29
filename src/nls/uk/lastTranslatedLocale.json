@@ -126,6 +126,7 @@
   "LIVE_DEV_SETTINGS_FRAMEWORK": "Серверна структура",
   "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Custom",
   "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, наразі підтримує лише docusaurus",
+  "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Отримання попереднього перегляду з вашого спеціального сервера {0}",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview зупинено, оскільки в браузері відкрито панель інструментів розробника",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Preview зупинено, оскільки сторінку закрито в браузері",
   "LIVE_DEV_NAVIGATED_AWAY": "Live Preview зупинено, оскільки браузер перенаправлено на сторінку, що не є частиною поточного проекту",
