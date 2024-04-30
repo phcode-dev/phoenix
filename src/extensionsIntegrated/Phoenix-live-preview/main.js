@@ -793,10 +793,19 @@ define(function (require, exports, module) {
             customServerRefreshedOnce = true;
             refreshPreview();
         });
-        LivePreviewSettings.on(LivePreviewSettings.EVENT_SERVER_CHANGED, ()=>{
+        function _handleNewCustomServer() {
             customLivePreviewBannerShown = false;
             refreshPreview();
             _customServerMetrics();
+        }
+
+        LivePreviewSettings.on(LivePreviewSettings.EVENT_SERVER_CHANGED, _handleNewCustomServer);
+        LivePreviewSettings.on(LivePreviewSettings.EVENT_CUSTOM_SERVER_ENABLED_CHANGED, (_evt, enabled)=>{
+            if(!enabled) {
+                $panel.find(".live-preview-custom-banner").addClass("forced-hidden");
+            } else {
+                _handleNewCustomServer();
+            }
         });
 
         let consecutiveEmptyClientsCount = 0;

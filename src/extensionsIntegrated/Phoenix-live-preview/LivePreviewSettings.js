@@ -56,7 +56,8 @@ define(function (require, exports, module) {
     const FRAMEWORK_CUSTOM = "Custom",
         FRAMEWORK_DOCUSAURUS = "Docusaurus";
 
-    const EVENT_SERVER_CHANGED = "customServerChanged";
+    const EVENT_SERVER_CHANGED = "customServerChanged",
+        EVENT_CUSTOM_SERVER_ENABLED_CHANGED = "customServerEnabledChanged";
 
     const SUPPORTED_FRAMEWORKS = {};
     SUPPORTED_FRAMEWORKS[FRAMEWORK_DOCUSAURUS] = {configFile: "docusaurus.config.js", hotReloadSupported: true};
@@ -264,6 +265,10 @@ define(function (require, exports, module) {
     }
 
     PreferencesManager.on("change", PREFERENCE_PROJECT_SERVER_URL, _serverChanged);
+    PreferencesManager.on("change", PREFERENCE_PROJECT_SERVER_ENABLED, ()=>{
+        exports.trigger(EVENT_CUSTOM_SERVER_ENABLED_CHANGED,
+            PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED));
+    });
 
     exports.showSettingsDialog = showSettingsDialog;
     exports.getCustomServerConfig = getCustomServerConfig;
@@ -275,4 +280,5 @@ define(function (require, exports, module) {
     exports.shouldShowLivePreviewAtStartup = shouldShowLivePreviewAtStartup;
     // events
     exports.EVENT_SERVER_CHANGED = EVENT_SERVER_CHANGED;
+    exports.EVENT_CUSTOM_SERVER_ENABLED_CHANGED = EVENT_CUSTOM_SERVER_ENABLED_CHANGED;
 });
