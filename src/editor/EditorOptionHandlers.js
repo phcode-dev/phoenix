@@ -42,7 +42,7 @@ define(function (require, exports, module) {
     const PREFERENCES_EDITOR_RULERS = "editor.rulers",
         PREFERENCES_EDITOR_RULER_COLORS = "editor.rulerColors",
         PREFERENCES_EDITOR_RULERS_ENABLED = "editor.rulersEnabled";
-    PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS_ENABLED, "boolean", false, {
+    PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS_ENABLED, "boolean", true, {
         description: Strings.DESCRIPTION_RULERS_ENABLED
     });
     PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS, "array", [120], {
@@ -113,7 +113,7 @@ define(function (require, exports, module) {
         if(!_currentTheme){
             _currentTheme = ThemeManager.getCurrentTheme();
         }
-        const defaultColor = (_currentTheme && _currentTheme.dark) ? "#4b4b4b" : "#d0d0d0";
+        const defaultColor = (_currentTheme && _currentTheme.dark) ? "#333333" : "#e0e0e0";
 
         if(!editor._codeMirror.getOption("rulers")){
             let rulerOptions = [];
