@@ -567,7 +567,7 @@ define(function (require, exports, module) {
             fileEntry.exists(function (err, exists) {
                 if (!err && exists) {
                     _setPanelVisibility(true);
-                    CommandManager.execute(Commands.FILE_ADD_TO_WORKING_SET, {fullPath: readmePath});
+                    CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: readmePath});
                     _setProjectReadmePreviewdOnce();
                 }
             });
@@ -646,6 +646,9 @@ define(function (require, exports, module) {
     }
 
     async function _currentFileChanged(_event, changedFile) {
+        if(!changedFile || !changedFile.fullPath){
+            return;
+        }
         const fullPath = changedFile.fullPath;
         if(changedFile && _shouldShowCustomServerBar(fullPath)){
             _showCustomServerBar();

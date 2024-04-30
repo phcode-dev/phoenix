@@ -22,9 +22,25 @@
 // window.AppConfig comes from appConfig.js built by gulp scripts at build time
 
 (function(){
-    const isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    // only log public facing urls and desktop apps directly distributed by us. local host dev time
+    // should not be logged in bugsnag. Don't log any other urls not managed by us.
+    const loggableURLS = [
+        "phtauri://localhost", // mac or linux desktop
+        "https://phtauri.localhost", //windows desktop
+        "https://phcode.dev", // prod
+        "https://create.phcode.dev", // extension authoring prod
+        "https://dev.phcode.dev", // dev url
+        "https://staging.phcode.dev" // staging url
+    ];
+    let isBugsnagLoggableURL = false;
+    for(let loggableURL of loggableURLS){
+        if(window.location.href.startsWith(loggableURL)){
+            isBugsnagLoggableURL = true;
+            break;
+        }
+    }
     const urlParams = new URLSearchParams(window.location.search || "");
-    const isBugsnagEnabled = (!window.testEnvironment && !isLocalHost);
+    const isBugsnagEnabled = (!window.testEnvironment && isBugsnagLoggableURL);
     const MAX_ERR_SENT_RESET_INTERVAL = 60000,
         MAX_ERR_SENT_FIRST_MINUTE = 10,
         MAX_ERR_ALLOWED_IN_MINUTE = 2;
