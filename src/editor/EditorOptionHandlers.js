@@ -42,7 +42,7 @@ define(function (require, exports, module) {
     const PREFERENCES_EDITOR_RULERS = "editor.rulers",
         PREFERENCES_EDITOR_RULER_COLORS = "editor.rulerColors",
         PREFERENCES_EDITOR_RULERS_ENABLED = "editor.rulersEnabled";
-    PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS_ENABLED, "boolean", true, {
+    PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS_ENABLED, "boolean", false, {
         description: Strings.DESCRIPTION_RULERS_ENABLED
     });
     PreferencesManager.definePreference(PREFERENCES_EDITOR_RULERS, "array", [120], {
