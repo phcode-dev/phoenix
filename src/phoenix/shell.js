@@ -106,6 +106,12 @@ Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));
     },
+    getProcessID: function () {
+        if(!Phoenix.isNativeApp){
+            throw new Error("getProcessID is not supported in browsers");
+        }
+        return window.__TAURI__.invoke("get_process_id");
+    },
     registerQuitTimeAppUpdateHandler: function (handler) {
         if(!Phoenix.isNativeApp){
             throw new Error("registerQuitTimeAppUpdateHandler is not supported in browsers");
