@@ -9,12 +9,18 @@
             </td>
         </tr>
         {{#results}}
-        <tr class="{{display}}">
+        <tr class="{{display}} inspector-line">
             <td class="line-number" data-line="{{pos.line}}" data-character="{{pos.ch}}">{{friendlyLine}}</td>
             <td class="line-icon">
                 <i class="{{iconClass}}"></i>
             </td>
             <td class="line-text">{{message}}</td>
+            <td>
+                <button class="btn btn-mini table-copy-err-button" title="{{Strings.COPY_ERROR}}"
+                        data-message="{{message}}">
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+            </td>
             <td class="line-snippet">{{codeSnippet}}</td>
         </tr>
         {{/results}}

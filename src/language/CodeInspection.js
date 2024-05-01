@@ -651,7 +651,7 @@ define(function (require, exports, module) {
                 });
 
                 // Update results table
-                html = Mustache.render(ResultsTemplate, {reportList: allErrors});
+                html = Mustache.render(ResultsTemplate, {Strings: Strings, reportList: allErrors});
 
                 $problemsPanelTable
                     .empty()
@@ -881,9 +881,25 @@ define(function (require, exports, module) {
         problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100);
         $problemsPanel = $("#problems-panel");
 
+        function checkSelectionInsideElement(range, element) {
+            if(!range || range.endOffset === range.startOffset) {
+                return false; // this is a cursor, not a selection.
+            }
+            const startNode = range.startContainer;
+            const endNode = range.endContainer;
+
+            // Checking if the selection's start and end nodes are within the specified element
+            return $.contains(element, startNode) && $.contains(element, endNode);
+        }
+
         var $selectedRow;
         $problemsPanelTable = $problemsPanel.find(".table-container")
             .on("click", "tr", function (e) {
+                if ($(e.target).hasClass('table-copy-err-button')) {
+                    // Retrieve the message from the data attribute of the clicked element
+                    const message = $(e.target).data('message');
+                    message && Phoenix.app.copyToClipboard(message);
+                }
                 if ($selectedRow) {
                     $selectedRow.removeClass("selected");
                 }
@@ -908,6 +924,15 @@ define(function (require, exports, module) {
                     prefs.set(providerName + ".collapsed", !isExpanded);
                     prefs.save();
                 } else {
+                    const selection = window.getSelection();
+                    if (selection.rangeCount > 0) {
+                        const range = selection.getRangeAt(0);
+                        if(checkSelectionInsideElement(range, $problemsPanel[0])){
+                            // some text is selected in the problems panel, user may want to copy the text, so
+                            // dont set focus to the text area.
+                            return;
+                        }
+                    }
                     // This is a problem marker row, show the result on click
                     // Grab the required position data
                     var lineTd    = $selectedRow.find(".line-number");
