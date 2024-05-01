@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "A análise de código está desativada",
   "NO_LINT_AVAILABLE": "Nenhum analisador de código disponível para {0}",
   "NOTHING_TO_LINT": "Nada para analisar",
+  "COPY_ERROR": "Mensagem de erro de cópia",
   "LINTER_TIMED_OUT": "{0} expirou após esperar durante {1} ms",
   "LINTER_FAILED": "{0} terminou com o erro: {1}",
   "FILE_MENU": "Arquivo",

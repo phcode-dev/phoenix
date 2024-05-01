@@ -301,6 +301,7 @@
   "LINT_DISABLED": "Lintování je vypnuto",
   "NO_LINT_AVAILABLE": "Žádný linter není dostupný pro {0}",
   "NOTHING_TO_LINT": "Nic k lintování",
+  "COPY_ERROR": "Kopírovat chybovou zprávu",
   "LINTER_TIMED_OUT": "{0} - vypršel časový limit po uplynutí {1} ms",
   "LINTER_FAILED": "{0} byl(a) ukončen(a) s chybou: {1}",
   "FILE_MENU": "Soubor",

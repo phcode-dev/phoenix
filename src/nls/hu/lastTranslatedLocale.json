@@ -301,6 +301,7 @@
   "LINT_DISABLED": "A szöszölés le van tiltva",
   "NO_LINT_AVAILABLE": "Nem áll rendelkezésre linter a következőhöz: {0}",
   "NOTHING_TO_LINT": "Nincs mit szöszölni",
+  "COPY_ERROR": "Hibaüzenet másolása",
   "LINTER_TIMED_OUT": "A(z) {0} {1} ms várakozás után időtúllépést ért el",
   "LINTER_FAILED": "A(z) {0} hibával leállt: {1}",
   "FILE_MENU": "Fájl",

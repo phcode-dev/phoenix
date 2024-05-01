@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Detektiranje sumnjivog kôda isključeno",
   "NO_LINT_AVAILABLE": "Nijedan detektor sumnjivog kôda nije dostupan za {0}",
   "NOTHING_TO_LINT": "Nije pronađen sumnjivi kôd",
+  "COPY_ERROR": "Kopiraj poruku o pogrešci",
   "LINTER_TIMED_OUT": "{0} je isteklo nakon čekanja od {1} ms",
   "LINTER_FAILED": "{0} prekinuto s pogreškom: {1}",
   "FILE_MENU": "Datoteka",

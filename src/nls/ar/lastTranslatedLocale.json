@@ -301,6 +301,7 @@
   "LINT_DISABLED": "تم تعطيل الفحص",
   "NO_LINT_AVAILABLE": "لا يوجد ضوء متاح لـ {0}",
   "NOTHING_TO_LINT": "لا شيء لينت",
+  "COPY_ERROR": "نسخ رسالة الخطأ",
   "LINTER_TIMED_OUT": "انتهت مهلة {0} بعد الانتظار لمدة {1} مللي ثانية",
   "LINTER_FAILED": "{0} تم إنهاؤه بسبب الخطأ: {1}",
   "FILE_MENU": "ملف",

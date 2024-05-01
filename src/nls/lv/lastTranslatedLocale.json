@@ -301,6 +301,7 @@
   "LINT_DISABLED": "Sintakses pārbaudīšana ir atspējota",
   "NO_LINT_AVAILABLE": "Nav pieejama sintakses pārbaudīšana priekš {0}",
   "NOTHING_TO_LINT": "Nav ko pārbaudīt",
+  "COPY_ERROR": "Kopēt kļūdas ziņojumu",
   "LINTER_TIMED_OUT": "{0} iestājās taimauts pēc {1} ms ilgas gaidīšanas",
   "LINTER_FAILED": "{0} beidzās ar kļūdu: {1}",
   "FILE_MENU": "Datne",

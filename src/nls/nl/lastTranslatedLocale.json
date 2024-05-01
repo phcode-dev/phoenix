@@ -301,6 +301,7 @@
   "LINT_DISABLED": "Linting is uitgeschakeld",
   "NO_LINT_AVAILABLE": "Er is geen linter beschikbaar voor {0}",
   "NOTHING_TO_LINT": "Niets om te linten",
+  "COPY_ERROR": "Kopieer foutmelding",
   "LINTER_TIMED_OUT": "{0} is gestopt na wachten voor {1} ms",
   "LINTER_FAILED": "{0} is gestopt met fout: {1}",
   "FILE_MENU": "Bestand",

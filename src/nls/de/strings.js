@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Das Linten ist nicht aktiviert",
   "NO_LINT_AVAILABLE": "Es ist kein Linter für {0} verfügbar",
   "NOTHING_TO_LINT": "Es gibt nichts zum Linten",
+  "COPY_ERROR": "Fehlermeldung kopieren",
   "LINTER_TIMED_OUT": "{0} hat die Zeitbegrenzung von {1} ms überschritten",
   "LINTER_FAILED": "{0} hat mit einer Fehlermeldung abgebrochen: {1}",
   "FILE_MENU": "Datei",

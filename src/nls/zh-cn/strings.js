@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "JSLint 已被禁用或者无法在此文件工作。",
   "NO_LINT_AVAILABLE": "{0} 没有可用检查器",
   "NOTHING_TO_LINT": "没有可检查文件",
+  "COPY_ERROR": "复制错误消息",
   "LINTER_TIMED_OUT": "{0} 等待 {1} ms 后超时",
   "LINTER_FAILED": "{0} 已终止，错误：{1}",
   "FILE_MENU": "文件",

@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Linting är avaktiverat.",
   "NO_LINT_AVAILABLE": "Ingen linter är tillgänglig för {0}",
   "NOTHING_TO_LINT": "Ingenting att linta",
+  "COPY_ERROR": "Kopiera felmeddelande",
   "LINTER_TIMED_OUT": "{0} har avbrutits efter att ha väntat {1} ms",
   "LINTER_FAILED": "{0} avbröts efter ett fel: {1}",
   "FILE_MENU": "Arkiv",

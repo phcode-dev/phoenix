@@ -301,6 +301,7 @@
   "LINT_DISABLED": "Lint チェックは使用できません",
   "NO_LINT_AVAILABLE": "{0} に使用できる Lint チェッカーがありません",
   "NOTHING_TO_LINT": "Lint チェックするファイルがありません",
+  "COPY_ERROR": "エラーメッセージをコピー",
   "LINTER_TIMED_OUT": "{0} は {1} ミリ秒待機した後でタイムアウトしました",
   "LINTER_FAILED": "{0} は次のエラーにより終了しました : {1}",
   "FILE_MENU": "ファイル",

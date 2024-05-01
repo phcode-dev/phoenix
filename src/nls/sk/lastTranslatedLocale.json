@@ -301,6 +301,7 @@
   "LINT_DISABLED": "Lining je vypnutý",
   "NO_LINT_AVAILABLE": "Pre {0} nie je k dispozícii žiadny linter",
   "NOTHING_TO_LINT": "Nič, čo by sa prášilo",
+  "COPY_ERROR": "Kopírovať chybové hlásenie",
   "LINTER_TIMED_OUT": "{0} vypršal po čakaní {1} ms",
   "LINTER_FAILED": "{0} ukončené s chybou: {1}",
   "FILE_MENU": "Súbor",

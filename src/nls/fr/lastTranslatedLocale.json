@@ -301,6 +301,7 @@
   "LINT_DISABLED": "L’analyse lint est désactivée",
   "NO_LINT_AVAILABLE": "Aucun programme lint disponible pour {0}",
   "NOTHING_TO_LINT": "Rien à analyser",
+  "COPY_ERROR": "Copier le message d'erreur",
   "LINTER_TIMED_OUT": "Délai dépassé pour {0} après une attente de {1} ms",
   "LINTER_FAILED": "{0} arrêté avec l’erreur suivante : {1}",
   "FILE_MENU": "Fichier",

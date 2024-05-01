@@ -301,6 +301,7 @@
   "LINT_DISABLED": "已停用 Lint 功能",
   "NO_LINT_AVAILABLE": "沒有 {0} 適用的 Linter",
   "NOTHING_TO_LINT": "沒有東西好 Lint",
+  "COPY_ERROR": "複製錯誤訊息",
   "LINTER_TIMED_OUT": "{0} 等了 {1} 毫秒後逾時",
   "LINTER_FAILED": "{0} 已終止，錯誤: {1}",
   "FILE_MENU": "檔案",

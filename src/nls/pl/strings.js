@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Linting jest wyłączony.",
   "NO_LINT_AVAILABLE": "Żaden linter nie jest dostępny dla {0}",
   "NOTHING_TO_LINT": "Brak plików do sprawdzenia.",
+  "COPY_ERROR": "Skopiuj komunikat o błędzie",
   "LINTER_TIMED_OUT": "{0} przekroczył limit czasu, czekał {1} ms",
   "LINTER_FAILED": "{0} zakończył z błędem: {1}",
   "FILE_MENU": "Plik",

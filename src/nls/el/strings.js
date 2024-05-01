@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Το Linting είναι απενεργοποιημένο",
   "NO_LINT_AVAILABLE": "Δεν υπάρχει linter διαθέσιμος για {0}",
   "NOTHING_TO_LINT": "Δεν υπάρχει κάτι για να γίνει lint",
+  "COPY_ERROR": "Αντιγραφή μηνύματος λάθους",
   "LINTER_TIMED_OUT": "Το χρονικό όριο του {0} έληξε μετά από αναμονή για {1} ms",
   "LINTER_FAILED": "{0} τερμάτισε με σφάλμα: {1}",
   "FILE_MENU": "Αρχείο",

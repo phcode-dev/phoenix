@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Linting devre dışı",
   "NO_LINT_AVAILABLE": "{0} için linter yok",
   "NOTHING_TO_LINT": "Tüylenecek bir şey yok",
+  "COPY_ERROR": "Hata Mesajını Kopyala",
   "LINTER_TIMED_OUT": "{0}, {1} ms bekledikten sonra zaman aşımına uğradı",
   "LINTER_FAILED": "{0} şu hatayla sonlandırıldı: {1}",
   "FILE_MENU": "Dosya",
