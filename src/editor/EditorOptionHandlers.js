@@ -113,6 +113,10 @@ define(function (require, exports, module) {
         if(!_currentTheme){
             _currentTheme = ThemeManager.getCurrentTheme();
         }
+        if(!_currentTheme){
+            // theme manager can return a null current theme at startup before themes load!
+            return;
+        }
         const defaultColor = (_currentTheme && _currentTheme.dark) ? "#333333" : "#e0e0e0";
 
         if(!editor._codeMirror.getOption("rulers")){
@@ -167,5 +171,5 @@ define(function (require, exports, module) {
         _resetRulers();
     }
 
-    AppInit.htmlReady(_init);
+    AppInit.appReady(_init);
 });

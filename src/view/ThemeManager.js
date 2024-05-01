@@ -342,6 +342,7 @@ define(function (require, exports, module) {
         exports.trigger(EVENT_THEME_LOADED, theme.name);
 
         if (getCurrentTheme() && getCurrentTheme().name === theme.name) {
+            exports.trigger(EVENT_THEME_CHANGE, theme.name);
             refresh(true);
         }
         return theme;
