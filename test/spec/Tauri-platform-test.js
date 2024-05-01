@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, fs, path, Phoenix*/
+/*global describe, it, expect, beforeEach, afterEach, fs, path, Phoenix, jasmine*/
 
 define(function (require, exports, module) {
     if(!window.__TAURI__) {
@@ -117,6 +117,11 @@ define(function (require, exports, module) {
             it("Should be able to spawn tauri windows", async function () {
                 const tauriWindow = await createWebView();
                 await tauriWindow.close();
+            });
+
+            it("Should be able to get process ID", async function () {
+                const processID = await Phoenix.app.getProcessID();
+                expect(processID).toEqual(jasmine.any(Number));
             });
 
             const maxWindows = 25;
