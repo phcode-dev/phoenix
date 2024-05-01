@@ -301,6 +301,7 @@
   "LINT_DISABLED": "Lintning er slået fra",
   "NO_LINT_AVAILABLE": "Ingen linter tilgængelig for {0}",
   "NOTHING_TO_LINT": "Intet at linte",
+  "COPY_ERROR": "Kopiér fejlmeddelelse",
   "LINTER_TIMED_OUT": "{0} har opgivet at vente efter {1} ms",
   "LINTER_FAILED": "{0} afsluttede med fejl: {1}",
   "FILE_MENU": "Filer",

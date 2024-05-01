@@ -301,6 +301,7 @@
   "LINT_DISABLED": "Analisa lint tidak aktif",
   "NO_LINT_AVAILABLE": "Tidak ada program lint yang tersedia untuk {0}",
   "NOTHING_TO_LINT": "Tidak ada yang dapat dianalisis",
+  "COPY_ERROR": "Salin Pesan Kesalahan",
   "LINTER_TIMED_OUT": "{0} telah habis waktunya setelah menunggu selama {1} ms",
   "LINTER_FAILED": "{0} dihentikan dengan kesalahan: {1}",
   "FILE_MENU": "File",

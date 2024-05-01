@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "O linting está desativado",
   "NO_LINT_AVAILABLE": "Nenhum linter disponível para {0}",
   "NOTHING_TO_LINT": "Nada de fiapos",
+  "COPY_ERROR": "Mensagem de erro de cópia",
   "LINTER_TIMED_OUT": "{0} expirou após aguardar {1} ms",
   "LINTER_FAILED": "{0} terminou com erro: {1}",
   "FILE_MENU": "Ficheiro",

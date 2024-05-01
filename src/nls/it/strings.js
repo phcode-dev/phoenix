@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Lint disabilitato",
   "NO_LINT_AVAILABLE": "Lint disponibile {0}",
   "NOTHING_TO_LINT": "Niente dal Lint",
+  "COPY_ERROR": "Copia messaggio di errore",
   "LINTER_TIMED_OUT": "{0} è scaduto dopo aver atteso per {1} ms",
   "LINTER_FAILED": "{0} terminato con errore: {1}",
   "FILE_MENU": "File",

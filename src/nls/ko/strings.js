@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Lint 검사를 사용할 수 없습니다.",
   "NO_LINT_AVAILABLE": "{0} 사용할 수 있는 Lint 검사기가 없습니다.",
   "NOTHING_TO_LINT": "Lint 검사기로 확인할 파일이 없습니다.",
+  "COPY_ERROR": "오류 메시지 복사",
   "LINTER_TIMED_OUT": "{0} 검사기가 {1}ms 대기 후 타임아웃 되었습니다",
   "LINTER_FAILED": "{0} 검사기가 에러때문에 종료되었습니다: {1}",
   "FILE_MENU": "파일",

@@ -301,6 +301,7 @@
   "LINT_DISABLED": "Verificarea codului e dezactivată",
   "NO_LINT_AVAILABLE": "Verificarea codului e indisponibilă pentru {0}",
   "NOTHING_TO_LINT": "Nimic de verificat",
+  "COPY_ERROR": "Copiați mesajul de eroare",
   "LINTER_TIMED_OUT": "Timp de așteptare depășit pentru {0} după o întârziere de {1} ms",
   "LINTER_FAILED": "{0} finisat cu eroarea: {1}",
   "FILE_MENU": "Fișier",

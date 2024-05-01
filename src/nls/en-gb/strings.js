@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Linting is disabled",
   "NO_LINT_AVAILABLE": "No linter available for {0}",
   "NOTHING_TO_LINT": "Nothing to lint",
+  "COPY_ERROR": "Copy Error Message",
   "LINTER_TIMED_OUT": "{0} has timed out after waiting for {1} ms",
   "LINTER_FAILED": "{0} terminated with error: {1}",
   "FILE_MENU": "File",

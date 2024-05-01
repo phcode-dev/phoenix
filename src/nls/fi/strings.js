@@ -321,6 +321,7 @@ define({
   "LINT_DISABLED": "Tarkistus on pois käytöstä",
   "NO_LINT_AVAILABLE": "Tarkistinta ei saatavilla kohteelle {0}",
   "NOTHING_TO_LINT": "Ei tarkistettavaa",
+  "COPY_ERROR": "Kopioi virheilmoitus",
   "LINTER_TIMED_OUT": "{0} on aikakatkaistu {1} ms:n odotuksen jälkeen",
   "LINTER_FAILED": "{0} keskeytyi virheeseen: {1}",
   "FILE_MENU": "Tiedosto",
