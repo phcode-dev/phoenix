@@ -220,6 +220,26 @@ function initCodeEditor() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "default-project");
         openProject(newProjectExtension.getWelcomeProjectPath());
     };
+
+    const banner = document.getElementById("download-phcode-banner");
+    banner.onclick = function() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "getApp.Click", window.top.Phoenix.platform);
+        window.top.Phoenix.app.openURLInDefaultBrowser("https://phcode.io");
+    };
+    if(!window.top.Phoenix.isNativeApp && !window.top.Phoenix.browser.isChromeOS && window.top.Phoenix.browser.isDeskTop) {
+        banner.classList.remove("forced-hidden");
+        document.getElementById("project-items-container").classList.add("even-layout");
+        document.getElementById("download-string").textContent = Strings.DOWNLOAD_DESKTOP_APP;
+        if(window.top.Phoenix.platform === "win"){
+            document.getElementById("windows-logo").classList.remove("forced-hidden");
+        } else if(window.top.Phoenix.platform === "mac"){
+            document.getElementById("mac-logo").classList.remove("forced-hidden");
+            document.getElementById("download-string").textContent = Strings.GET_DESKTOP_APP;
+        } else {
+            document.getElementById("linux-logo").classList.remove("forced-hidden");
+        }
+    }
+
     document.getElementById("newHTMLBtn").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "html5");
         newProjectFromURLScreen(getPhoenixAbsURL("assets/sample-projects/HTML5.zip"),

@@ -84,12 +84,12 @@
             </div>
         </div>
         <div class="project-content-right">
-            <div class="project-content-inner text-center">
+            <div id="project-items-container" class="project-content-inner text-center">
                 <div class="project-head d-flex align-items-center justify-content-between">
-                    <h4 class="tab-title mb-0 localize">{{CMD_PROJECT_NEW}}</h4>
+                    <h4 class="tab-title mb-0 localize">{{START_PROJECT}}</h4>
                     <a id="viewMore" href="#" class="view-all localize">{{VIEW_MORE}}</a>
                 </div>
-                <ul class="project-type-list d-flex">
+                <ul class="project-type-list d-flex" style="padding-bottom: 0;margin-bottom: 0;border-bottom: none;">
                     <li>
                         <a id="defaultProjectButton" href="#" class="tabable" tabindex="1">
                             <img src="images/logo.png" alt="image">
@@ -103,7 +103,7 @@
                         </a>
                     </li>
                     <li>
-                        <a id="exploreBtn" href="#" class="tabable" tabindex="2">
+                        <a id="exploreBtn" href="#" class="tabable" tabindex="3">
                             <img src="images/video-game-gamepad.svg" alt="image">
                             <span class="localize">{{EXPLORE}}</span>
                         </a>
@@ -115,19 +115,15 @@
 <!--                        </a>-->
 <!--                    </li>-->
                 </ul>
-                <div class="project-head d-flex align-items-center justify-content-between">
-                    <h4 class="tab-title mb-0 localize">{{IMPORT_PROJECT}}</h4>
-<!--                    <a href="#" class="view-all">View More</a>-->
-                </div>
                 <ul class="project-type-list d-flex mb-0 pb-0 border-bottom-0">
                     <li>
-                        <a id="openFolderBtn" href="#" class="tabable" tabindex="3">
+                        <a id="openFolderBtn" href="#" class="tabable" tabindex="4">
                             <img src="images/tab-img6.png" alt="image">
                             <span class="localize">{{CMD_OPEN_FOLDER}}</span>
                         </a>
                     </li>
                     <li>
-                        <a id="newGitHubProject" href="#" class="tabable" tabindex="4">
+                        <a id="newGitHubProject" href="#" class="tabable" tabindex="5">
                             <img src="images/tab-img7.png" alt="image">
                             <span class="localize">{{GITHUB_PROJECT}}</span>
                         </a>
@@ -139,6 +135,12 @@
 <!--                        </a>-->
 <!--                    </li>-->
                 </ul>
+                <div id="download-phcode-banner" class="forced-hidden">
+                    <img id="windows-logo" class="forced-hidden" src="../../images/microsoft-windows-logo-svg.svg" width="45px" style="margin-right: 20px"/>
+                    <img id="mac-logo" class="forced-hidden" src="../../images/MacOS_logo.svg" width="45px" style="margin-right: 10px"/>
+                    <img id="linux-logo" class="forced-hidden" src="../../images/linux.svg" width="45px"/>
+                    <span id="download-string" >Download Desktop App</span>
+                </div>
             </div>
         </div>
     </div>
