@@ -1,24 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Phoenix Code Editor</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
-</head>
-<body>
-<iframe src="https://phcode.io" allowfullscreen></iframe>
-</body>
+    <head>
+        <title>Download Phoenix Code</title>
+        <link rel="stylesheet" href="styles.css">
+        <meta name="robots" content="noindex">
+    </head>
+
+    <body>
+        <img id="starsLeft"  src="images/stars-left.svg"/>
+        <div id="mainDiv">
+            <img id="logo"  src="images/phoenix-logo.svg"/>
+            <div id="MainText">
+                <h1>Download Phoenix Code</h1>
+                <span>Phoenix Code is a text editor designed to make coding as intuitive and fun as playing a video game - specially crafted for web developers, designers, and students.</span>
+                <br><br>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <a href="https://phcode.io" style="cursor:pointer;">
+                        <img src="images/microsoft-windows-logo-svg.svg" width="50px" style="margin-right: 20px"/>
+                        <img src="images/MacOS_logo.svg" width="50px" style="margin-right: 10px"/>
+                        <img src="images/linux.svg" width="60px"/>
+                    </a>
+                </div>
+                <br>
+                <a href="https://phcode.io" style="cursor:pointer;">
+                    <button id="load-status-display-btn" class="primary-button">
+                        Download from phcode.io
+                    </button>
+                </a>
+            </div>
+        </div>
+        <img id="cloudLeftTop"  src="images/vector-top-left.png"/>
+        <img id="cloudBottomRight"  src="images/vector-bottom-right.png"/>
+        <img id="starsRight"  src="images/stars-right.svg"/>
+        <img class="clouds" style="z-index: 3; transform: translate(0px, -1.55909px);" src="images/cloud1.svg"/>
+        <img class="clouds" style="z-index: 6; transform: translate(0px, -2.33863px);" src="images/cloud2.svg"/>
+        <img class="clouds" style="z-index: 5; transform: translate(0px, -3.89772px);" src="images/cloud3.svg"/>
+        <img class="clouds" style="z-index: 6; transform: translate(0px, -3.89772px);" src="images/cloud4.svg"/>
+        <div class="night">
+            <div class="shooting_star">
+                <div class="shooting_star"/>
+            </div>
+        </div>
+        <div class="night">
+            <div class="shooting_star">
+                <div class="shooting_star"/>
+            </div>
+        </div>
+        <div class="night">
+            <div class="shooting_star">
+                <div class="shooting_star"/>
+            </div>
+        </div>
+    </body>
 </html>
