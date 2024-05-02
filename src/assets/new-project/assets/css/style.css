@@ -35,6 +35,8 @@ body {
     border-radius: 10px;
     margin-top: 26px;
     cursor: pointer;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 #download-phcode-banner:hover {
