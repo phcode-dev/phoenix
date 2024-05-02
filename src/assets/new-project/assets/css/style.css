@@ -22,6 +22,25 @@ body {
     height: 100%;
 }
 
+.even-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#download-phcode-banner {
+    background-color: #2e3031;
+    color: white;
+    border-radius: 10px;
+    margin-top: 26px;
+    cursor: pointer;
+}
+
+#download-phcode-banner:hover {
+    background-color: #505357;
+}
+
 p {
     font-size: 16px;
     font-weight: 500;
@@ -687,7 +706,6 @@ img {
 
 .project-content-left {
     width: 400px;
-    margin-left: 25px;
 }
 
 .project-type-list {

@@ -208,6 +208,7 @@
           isTablet: _mobileAndTabletCheck(),
           isMobile: _mobileCheck(),
           isDeskTop: !_mobileAndTabletCheck() && !_mobileCheck(),
+          isChromeOS: /CrOS/.test(navigator.userAgent),
           isTauri: !!window.__TAURI__,
           mobile: {
             isAndroid: (navigator.userAgent.match(/Android/i) !== null),
