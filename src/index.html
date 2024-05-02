@@ -640,6 +640,7 @@
         // this function is called onload so it is safe to be deferred loaded inline script as it is guarented to only
         // get executed after all deferred scripts has been loaded
         function _loadPhoenixAfterSplashScreen() {
+            $("#Phoenix-Main .main-view").removeClass("forced-hidden");
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 // Dark mode is enabled
                 document.body.classList.add('dark'); // This will later be overridden by the theme manager as required.
@@ -774,7 +775,7 @@
             title="Phoenix Splash Screen" src="assets/phoenix-splash/index.html"></iframe>
 </div>
 
-<div class="main-view">
+<div class="main-view forced-hidden">
     <div id="notificationUIDefaultAnchor" href="#">
     </div>
     <div id="sidebar" class="sidebar panel quiet-scrollbars horz-resizable right-resizer collapsible" data-minsize="0" data-maxsize="80%" data-forceleft=".content">
