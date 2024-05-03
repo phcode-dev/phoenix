@@ -85,6 +85,13 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("_loadNodeExtensionModule", {moduleNativeDir});
     }
 
+    async function _npmInstallInFolder(moduleNativeDir) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("_npmInstallInFolder not available in browser");
+        }
+        return utilsConnector.execPeer("_npmInstallInFolder", {moduleNativeDir});
+    }
+
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -93,6 +100,7 @@ define(function (require, exports, module) {
 
     // private apis
     exports._loadNodeExtensionModule = _loadNodeExtensionModule;
+    exports._npmInstallInFolder = _npmInstallInFolder;
 
     // public apis
     exports.fetchURLText = fetchURLText;

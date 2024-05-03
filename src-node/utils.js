@@ -1,6 +1,7 @@
 const NodeConnector = require("./node-connector");
-const { exec } = require('child_process');
+const { exec, execFile } = require('child_process');
 const fs = require('fs');
+const path = require('path');
 let openModule, open; // dynamic import when needed
 
 async function _importOpen() {
@@ -62,7 +63,7 @@ async function getLinuxOSFlavorName() {
         });
         return osInfo.PRETTY_NAME;
     } catch (err) {
-        console.error(`Error reading Linux OS Name${osReleaseFile}: ${err.message}`);
+        console.error(`Error reading Linux OS Name ${osReleaseFile}: ${err.message}`);
         return null;
     }
 }
@@ -99,9 +100,54 @@ async function _loadNodeExtensionModule({moduleNativeDir}) {
     require(moduleNativeDir);
 }
 
+/**
+ * Installs npm modules in the specified folder.
+ *
+ * @param {string} moduleNativeDir - The directory where the npm modules will be installed.
+ * @return {Promise<void>} - A Promise that resolves with no value when the installation is complete.
+ * @private
+ */
+async function _npmInstallInFolder({moduleNativeDir}) {
+    const phnodeExePath = process.argv[0];
+    const npmPath = path.resolve(path.dirname(require.resolve("npm")), "bin", "npm-cli.js");
+    console.log("npm path", npmPath, "phnode path", phnodeExePath);
+    // Check if the package.json file exists in the moduleNativeDir
+    // Check if the package.json file exists in the moduleNativeDir
+    const packageJsonPath = path.join(moduleNativeDir, 'package.json');
+    fs.accessSync(packageJsonPath); // this will throw if package.json doesnt exist
+
+    // Check if package-lock.json exists in the moduleNativeDir
+    const packageLockJsonPath = path.join(moduleNativeDir, 'package-lock.json');
+    let packageLockJsonExists = false;
+    try {
+        fs.accessSync(packageLockJsonPath);
+        packageLockJsonExists = true;
+    } catch (error) {
+        console.log("package-lock.json does not exist, it is recommended to check in package-lock.json," +
+            " using npm install instead of npm ci", packageLockJsonPath);
+    }
+
+    const npmInstallMode = packageLockJsonExists ? 'ci' : 'install';
+
+    const nodeArgs = [npmPath, npmInstallMode, moduleNativeDir];
+    return new Promise((resolve, reject) => {
+        console.log(`Running "${phnodeExePath} ${nodeArgs}" in ${moduleNativeDir}`);
+        execFile(phnodeExePath, nodeArgs, { cwd: moduleNativeDir }, (error) => {
+            if (error) {
+                console.error('Error:', error);
+                reject(error);
+            } else {
+                resolve();
+                console.log(`Successfully ran "${nodeArgs}" in ${moduleNativeDir}`);
+            }
+        });
+    });
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
 exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
 exports.openUrlInBrowser = openUrlInBrowser;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
+exports._npmInstallInFolder = _npmInstallInFolder;
