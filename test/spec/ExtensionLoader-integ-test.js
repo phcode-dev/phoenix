@@ -73,6 +73,15 @@ define(function (require, exports, module) {
             CommandManager.execute(DEBUG_LOAD_CURRENT_EXTENSION);
             await awaitsFor(function () { return testWindow.extensionLoaderTestExtensionLoaded; },
                 "Waiting for extension loaded", 30000);
+            if(Phoenix.isNativeApp) {
+                await awaitsFor(function () { return testWindow && testWindow._testNodeExt; },
+                    "Waiting for node extension api", 10000);
+                await awaitsFor(function () {
+                    return testWindow._testNodeExt();
+                }, "Waiting for node extension api to be executed", 10000);
+            }
+            const nodeOutput = await testWindow._testNodeExt();
+            expect(nodeOutput).toBe("hello from node yo!");
             await SpecRunnerUtils.waitForBracketsDoneLoading();
             await awaits(3000);
 

@@ -1,6 +1,7 @@
 const NodeConnector = require("./node-connector");
 const { exec, execFile } = require('child_process');
 const fs = require('fs');
+const fsPromise = require('fs').promises;
 const path = require('path');
 let openModule, open; // dynamic import when needed
 
@@ -114,13 +115,13 @@ async function _npmInstallInFolder({moduleNativeDir}) {
     // Check if the package.json file exists in the moduleNativeDir
     // Check if the package.json file exists in the moduleNativeDir
     const packageJsonPath = path.join(moduleNativeDir, 'package.json');
-    fs.accessSync(packageJsonPath); // this will throw if package.json doesnt exist
+    await fsPromise.access(packageJsonPath); // Throws if package.json doesn't exist
 
     // Check if package-lock.json exists in the moduleNativeDir
     const packageLockJsonPath = path.join(moduleNativeDir, 'package-lock.json');
     let packageLockJsonExists = false;
     try {
-        fs.accessSync(packageLockJsonPath);
+        await fsPromise.access(packageLockJsonPath);
         packageLockJsonExists = true;
     } catch (error) {
         console.log("package-lock.json does not exist, it is recommended to check in package-lock.json," +
