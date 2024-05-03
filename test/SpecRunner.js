@@ -172,6 +172,22 @@ function awaits(waitTimeMs){
 window.jsPromise = jsPromise;
 window.awaitsFor = awaitsFor;
 window.awaits = awaits;
+/**
+ * A safe way to return null on promise fail. This will never reject or throw.
+ * @param promise
+ * @param {string} logError - If a string is passed in, will log the error to console.
+ * @return {*}
+ */
+window.catchToNull = function (promise, logError) {
+    return new Promise(resolve=>{
+        promise.then(resolve)
+            .catch((err)=>{
+                logError && console.error(logError, err);
+                resolve(null);
+            });
+    });
+};
+
 
 Phoenix.baseURL = `${Phoenix.baseURL}../src/`;
 
