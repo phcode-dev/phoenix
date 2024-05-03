@@ -15,6 +15,11 @@
     ],
     "engines": {
         "brackets": ">=0.34.0"
+    },
+    "nodeConfig": {
+        "nodeIsRequired": false,
+        "main": "node/index.js",
+        "npmInstall": "node/"
     }
 }
 
