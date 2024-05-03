@@ -88,8 +88,20 @@ async function openUrlInBrowser({url, browserName}) {
     });
 }
 
+/**
+ * Loads a node extension module asynchronously.
+ *
+ * @param {string} moduleNativeDir - The path to the node extension module.
+ * @return {Promise<void>} - A promise that resolves when the module has been loaded.
+ * @private
+ */
+async function _loadNodeExtensionModule({moduleNativeDir}) {
+    require(moduleNativeDir);
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
 exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
 exports.openUrlInBrowser = openUrlInBrowser;
+exports._loadNodeExtensionModule = _loadNodeExtensionModule;

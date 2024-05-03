@@ -619,7 +619,8 @@
                         location.reload();
                         // force reload handlers should reload themselves.
                     }
-                } else if(location.href.endsWith("/src/") || location.href.endsWith("/dist/") || location.href.endsWith("index.html")){
+                } else if(location.pathname.endsWith("/src/") || location.pathname.endsWith("/dist/")
+                    || location.pathname.endsWith("index.html")){
                     // load phoenix if its any of the non-cached urls.
                     _loadPhoenixMain();
                 }
