@@ -49,11 +49,13 @@
 @accent-string-2: #ffc641;
 @accent-meta: #B39C1D;
 @matching-bracket: #2e5c00;
+@matching-tags: #0b0b0b;
+@matching-refs: #1D2951;
 
 /* Code Styling */
 
 .editor-text-fragment-matching-refs{
-    background-color: @matching-bracket;
+    background-color: @matching-refs;
 }
 
 .cm-atom, .cm-string, .cm-hr {color: #d89333;}
@@ -85,10 +87,15 @@
     }
 }
 
-.CodeMirror-matchingbracket, .CodeMirror-matchingtag {
+.CodeMirror-matchingbracket {
     /* Ensure visibility against gray inline editor background */
     background-color: @matching-bracket;
     color: @foreground !important;
+}
+
+.CodeMirror-matchingtag {
+    /* Ensure visibility against gray inline editor background */
+    background-color: @matching-tags;
 }
 
 .CodeMirror-overwrite .CodeMirror-cursor {
@@ -105,7 +112,7 @@
 
 .CodeMirror.over-gutter, .CodeMirror-activeline {
     .CodeMirror-foldgutter-open:after {
-        color: #888;
+        color: #242424;
     }
 }
 
