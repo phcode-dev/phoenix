@@ -269,6 +269,30 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Filters out extensions that needs node in the browser from being listed.
+     *
+     * @param {Object} registry - The registry object to filter
+     * @return {Object} - The filtered registry object
+     * @private
+     */
+    function _filterIncompatibleEntries(registry) {
+        let filteredRegistry = {};
+        for(let registryKey of Object.keys(registry)){
+            const registryEntry = registry[registryKey];
+            let nodeNeeded = false;
+            if(registryEntry.metadata && registryEntry.metadata.nodeConfig &&
+                registryEntry.metadata.nodeConfig.nodeIsRequired) {
+                nodeNeeded = true;
+            }
+            if(nodeNeeded && !Phoenix.isNativeApp) {
+                continue;
+            }
+            filteredRegistry[registryKey] = registryEntry;
+        }
+        return filteredRegistry;
+    }
+
+    /**
      * Downloads the registry of Brackets extensions and stores the information in our
      * extension info.
      *
@@ -290,6 +314,7 @@ define(function (require, exports, module) {
                 cache: false
             })
                 .done(function (registry) {
+                    registry = _filterIncompatibleEntries(registry);
                     localStorage.setItem(EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY, newVersion);
                     localStorage.setItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY, JSON.stringify(registry));
                     if(!pendingDownloadRegistry.alreadyResolvedFromCache){
@@ -320,7 +345,9 @@ define(function (require, exports, module) {
             // resolve for ui responsiveness and then check for updates.
             setTimeout(()=>{
                 Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "registry", "cachedUse");
-                _populateExtensions(JSON.parse(registryJson));
+                let registry = JSON.parse(registryJson);
+                registry = _filterIncompatibleEntries(registry);
+                _populateExtensions(registry);
                 pendingDownloadRegistry.resolve();
             }, 0);
             pendingDownloadRegistry.alreadyResolvedFromCache = true;
