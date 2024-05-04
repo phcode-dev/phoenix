@@ -79,9 +79,9 @@ define(function (require, exports, module) {
                 await awaitsFor(function () {
                     return testWindow._testNodeExt();
                 }, "Waiting for node extension api to be executed", 10000);
+                const nodeOutput = await testWindow._testNodeExt();
+                expect(nodeOutput).toBe("hello from node yo!");
             }
-            const nodeOutput = await testWindow._testNodeExt();
-            expect(nodeOutput).toBe("hello from node yo!");
             await SpecRunnerUtils.waitForBracketsDoneLoading();
             await awaits(3000);
 

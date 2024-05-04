@@ -124,10 +124,11 @@ define(function (require, exports, module) {
         if(packageJson.nodeConfig.nodeIsRequired && !Phoenix.isNativeApp) {
             return "Extension can only be installed in native builds!";
         }
-        const npmInstallFolder = packageJson.nodeConfig.npmInstall;
+        let npmInstallFolder = packageJson.nodeConfig.npmInstall;
         if(!npmInstallFolder) {
             return null;
         }
+        npmInstallFolder = path.join(nodeExtPath, packageJson.nodeConfig.npmInstall);
         const nodeModulesFolder = path.join(npmInstallFolder, "node_modules");
         let directory = FileSystem.getDirectoryForPath(npmInstallFolder);
         let isExists = await directory.existsAsync();
@@ -143,7 +144,7 @@ define(function (require, exports, module) {
         if(!isExists){
             console.error("Extension cannot be installed; could not find package.json file to npm install in: ",
                 npmInstallFolder);
-            return "Extension is broken, (node package.json not found)";
+            return "Extension is broken, (it's node package.json not found)";
         }
 
         directory = FileSystem.getDirectoryForPath(nodeModulesFolder);
@@ -152,7 +153,8 @@ define(function (require, exports, module) {
             console.error("Could not install extension as the extension has node_modules folder in" +
                 " the package", nodeModulesFolder, "Extensions that defines a nodeConfig.npmInstall" +
                 " path should not package node_modules!");
-            return "Extension is broken, (cannot npm install inside extension folder)";
+            return "Extension is broken. (Err: cannot npm install inside extension folder" +
+                " as it already has node_modules)";
         }
         const npmInstallPlatformPath = Phoenix.fs.getTauriPlatformPath(npmInstallFolder);
         return NodeUtils._npmInstallInFolder(npmInstallPlatformPath);
