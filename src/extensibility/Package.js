@@ -113,7 +113,8 @@ define(function (require, exports, module) {
                     ExtensionLoader.loadExtension(result.name, {
                         // On Windows, it looks like Node converts Unix-y paths to backslashy paths.
                         // We need to convert them back.
-                        baseUrl: window.Phoenix.VFS.getVirtualServingURLForPath(result.installedTo)
+                        baseUrl: window.Phoenix.VFS.getVirtualServingURLForPath(result.installedTo),
+                        nativeDir: result.installedTo
                     }, "main").then(function () {
                         d.resolve(result);
                     }, function () {
@@ -401,7 +402,10 @@ define(function (require, exports, module) {
     function enable(path) {
         const result = new $.Deferred();
         _toggleDisabledExtension(path, true);
-        ExtensionLoader.loadExtension(FileUtils.getBaseName(path), { baseUrl: path }, "main")
+        ExtensionLoader.loadExtension(FileUtils.getBaseName(path), {
+            baseUrl: path,
+            nativeDir: path
+        }, "main")
             .done(result.resolve)
             .fail(result.reject);
         return result.promise();

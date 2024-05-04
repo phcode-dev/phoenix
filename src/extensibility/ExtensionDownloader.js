@@ -126,6 +126,9 @@ define(function (require, exports, module) {
         if(packageJson.nodeConfig.nodeIsRequired && !Phoenix.isNativeApp) {
             return "Extension can only be installed in native builds!";
         }
+        if(!Phoenix.isNativeApp){
+            return null;
+        }
         let nodeMainFile = path.join(nodeExtPath, packageJson.nodeConfig.main);
         let file = FileSystem.getFileForPath(nodeMainFile);
         let isExists = await file.existsAsync();
