@@ -183,6 +183,20 @@ define(function (require, exports, module) {
                 expect(extension.name).toEqual("node-basic-npm-dep");
             });
 
+            it("should install node exten", async function () {
+                const extPath = node_basic_npm_install;
+                let packageData = await jsPromise(Package.installFromURL(
+                    Phoenix.VFS.getVirtualServingURLForPath(extPath), extensionsRoot + "/custom").promise);
+                expect(packageData.installationStatus).toEqual("INSTALLED");
+
+                const nodeModulesInstalled = FileSystem.getDirectoryForPath(packageData.installedTo);
+                const nodeModuleInstalled = await nodeModulesInstalled.existsAsync();
+                expect(nodeModuleInstalled).toEqual(true);
+
+                let extension = await jsPromise(Package.install(packageData.installedTo, packageData.name, false));
+                expect(extension.name).toEqual("node-basic");
+            }, 5000);
+
             it("should not install node extn if npmInstall dir contains node_modules", async function () {
                 await _validateInstallFail(node_basic_not_installable,
                     "Extension is broken. (Err: cannot npm install inside extension folder as it already has node_modules)");
