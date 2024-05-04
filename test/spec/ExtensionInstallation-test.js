@@ -43,6 +43,7 @@ define(function (require, exports, module) {
         node_basic_npm_dep_no_install_src   = testFilePath + "/node-ext/node-basic-npm-dep-no-install.zip",
         node_basic_npm_install_src   = testFilePath + "/node-ext/node-basic-npm-install.zip",
         node_basic_optional_src   = testFilePath + "/node-ext/node-basic-optional.zip",
+        node_basic_optional_npm_install_src   = testFilePath + "/node-ext/node-basic-optional-npm-install.zip",
         node_basic_required_src   = testFilePath + "/node-ext/node-basic-required.zip";
 
     let basicValid          = basicValidSrc, // this will differ for tauri, see before all
@@ -54,6 +55,7 @@ define(function (require, exports, module) {
         node_basic_npm_dep_no_install   = node_basic_npm_dep_no_install_src,
         node_basic_npm_install   = node_basic_npm_install_src,
         node_basic_optional   = node_basic_optional_src,
+        node_basic_optional_npm_install   = node_basic_optional_npm_install_src,
         node_basic_required   = node_basic_required_src;
 
     describe("Extension Installation", function () {
@@ -88,6 +90,7 @@ define(function (require, exports, module) {
                 node_basic_npm_dep_no_install   = tempDirectory + "/node-basic-npm-dep-no-install.zip";
                 node_basic_npm_install   = tempDirectory + "/node-basic-npm-install.zip";
                 node_basic_optional   = tempDirectory + "/node-basic-optional.zip";
+                node_basic_optional_npm_install   = tempDirectory + "/node-basic-optional-npm-install.zip";
                 node_basic_required   = tempDirectory + "/node-basic-required.zip";
                 await SpecRunnerUtils.copy(basicValidSrc, basicValid);
                 await SpecRunnerUtils.copy(missingNameVersionSrc, missingNameVersion);
@@ -98,6 +101,7 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.copy(node_basic_npm_dep_no_install_src, node_basic_npm_dep_no_install);
                 await SpecRunnerUtils.copy(node_basic_npm_install_src, node_basic_npm_install);
                 await SpecRunnerUtils.copy(node_basic_optional_src, node_basic_optional);
+                await SpecRunnerUtils.copy(node_basic_optional_npm_install_src, node_basic_optional_npm_install);
                 await SpecRunnerUtils.copy(node_basic_required_src, node_basic_required);
             }
         });
@@ -220,6 +224,20 @@ define(function (require, exports, module) {
             it("should not install node required extension in browser", async function () {
                 await _validateInstallFail(node_basic_required,
                     "Extension can only be installed in native builds!");
+            });
+
+            it("should install node optional extension in browser", async function () {
+                const extPath = node_basic_optional_npm_install;
+                let packageData = await jsPromise(Package.installFromURL(
+                    Phoenix.VFS.getVirtualServingURLForPath(extPath), extensionsRoot + "/custom").promise);
+                expect(packageData.installationStatus).toEqual("INSTALLED");
+
+                const nodeModulesInstalled = FileSystem.getDirectoryForPath(packageData.installedTo);
+                const nodeModuleInstalled = await nodeModulesInstalled.existsAsync();
+                expect(nodeModuleInstalled).toEqual(true);
+
+                let extension = await jsPromise(Package.install(packageData.installedTo, packageData.name, false));
+                expect(extension.name).toEqual("node-basic-optional");
             });
         }
 

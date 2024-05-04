@@ -4,6 +4,7 @@ This document outlines how to write your own extensions and themes for Phoenix C
 Click on one of the below links and follow the instructions there to start:
 * [Create a theme](https://github.com/phcode-dev/theme-template)
 * [Create an extension](https://github.com/phcode-dev/extension-template)
+* [Create a node.js extension](https://github.com/phcode-dev/extension-node-template)
 
 # API docs
 This is an evolving document, please refer the below links for extension API docs and how tos.
