@@ -118,12 +118,23 @@ define(function (require, exports, module) {
             console.error("Error parsing package json for extension", nodeExtPath, e);
             return null; // let it flow, we are only concerned of node extensions
         }
-        if(!packageJson || !packageJson.nodeConfig){
-            return null; // legacy extensions can be loaded with no package.json
+        if(!packageJson || !packageJson.nodeConfig || !packageJson.nodeConfig.main){
+            // legacy extensions can be loaded with no package.json
+            // else if no node config, or node main is not defined, we just treat it as a non node extension
+            return null;
         }
         if(packageJson.nodeConfig.nodeIsRequired && !Phoenix.isNativeApp) {
             return "Extension can only be installed in native builds!";
         }
+        let nodeMainFile = path.join(nodeExtPath, packageJson.nodeConfig.main);
+        let file = FileSystem.getFileForPath(nodeMainFile);
+        let isExists = await file.existsAsync();
+        if(!isExists){
+            console.error("Extension cannot be installed; could not find node main file: ",
+                nodeMainFile, packageJson.nodeConfig.main);
+            return "Extension is broken, (Err: node main file not found)";
+        }
+
         let npmInstallFolder = packageJson.nodeConfig.npmInstall;
         if(!npmInstallFolder) {
             return null;
@@ -131,11 +142,11 @@ define(function (require, exports, module) {
         npmInstallFolder = path.join(nodeExtPath, packageJson.nodeConfig.npmInstall);
         const nodeModulesFolder = path.join(npmInstallFolder, "node_modules");
         let directory = FileSystem.getDirectoryForPath(npmInstallFolder);
-        let isExists = await directory.existsAsync();
+        isExists = await directory.existsAsync();
         if(!isExists){
             console.error("Extension cannot be installed; could not find folder to run npm install: ",
                 npmInstallFolder);
-            return "Extension is broken, (node source folder not found)";
+            return "Extension is broken, (Err: node source folder not found)";
         }
 
         const nodePackageJson = path.join(npmInstallFolder, "package.json");
@@ -144,7 +155,7 @@ define(function (require, exports, module) {
         if(!isExists){
             console.error("Extension cannot be installed; could not find package.json file to npm install in: ",
                 npmInstallFolder);
-            return "Extension is broken, (it's node package.json not found)";
+            return "Extension is broken, (Err: it's node package.json not found)";
         }
 
         directory = FileSystem.getDirectoryForPath(nodeModulesFolder);

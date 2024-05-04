@@ -37,6 +37,8 @@ define(function (require, exports, module) {
     const basicValidSrc          = testFilePath + "/basic-valid-extension.zip",
         missingNameVersionSrc  = testFilePath + "/missing-name-version.zip",
         node_basic_not_installable_src   = testFilePath + "/node-ext/node-basic-not-installable.zip",
+        node_basic_not_installable_no_main_src   = testFilePath + "/node-ext/node-basic-not-installable-no-main.zip",
+        node_basic_not_installable_no_node_folder_src   = testFilePath + "/node-ext/node-basic-not-installable-no-node-folder.zip",
         node_basic_not_installable_pack_src   = testFilePath + "/node-ext/node-basic-not-installable-pack.zip",
         node_basic_npm_dep_no_install_src   = testFilePath + "/node-ext/node-basic-npm-dep-no-install.zip",
         node_basic_npm_install_src   = testFilePath + "/node-ext/node-basic-npm-install.zip",
@@ -46,6 +48,8 @@ define(function (require, exports, module) {
     let basicValid          = basicValidSrc, // this will differ for tauri, see before all
         missingNameVersion  = missingNameVersionSrc,
         node_basic_not_installable   = node_basic_not_installable_src,
+        node_basic_not_installable_no_main   = node_basic_not_installable_no_main_src,
+        node_basic_not_installable_no_node_folder   = node_basic_not_installable_no_node_folder_src,
         node_basic_not_installable_pack = node_basic_not_installable_pack_src,
         node_basic_npm_dep_no_install   = node_basic_npm_dep_no_install_src,
         node_basic_npm_install   = node_basic_npm_install_src,
@@ -78,6 +82,8 @@ define(function (require, exports, module) {
                 missingNameVersion  = tempDirectory + "/missing-name-version.zip";
                 missingNameVersion  = tempDirectory + "/missing-name-version.zip";
                 node_basic_not_installable   = tempDirectory + "/node-basic-not-installable.zip";
+                node_basic_not_installable_no_main   = tempDirectory + "/node-basic-not-installable-no-main.zip";
+                node_basic_not_installable_no_node_folder   = tempDirectory + "/node-basic-not-installable-no-node-folder.zip";
                 node_basic_not_installable_pack   = tempDirectory + "/node-basic-not-installable-pack.zip";
                 node_basic_npm_dep_no_install   = tempDirectory + "/node-basic-npm-dep-no-install.zip";
                 node_basic_npm_install   = tempDirectory + "/node-basic-npm-install.zip";
@@ -86,6 +92,8 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.copy(basicValidSrc, basicValid);
                 await SpecRunnerUtils.copy(missingNameVersionSrc, missingNameVersion);
                 await SpecRunnerUtils.copy(node_basic_not_installable_src, node_basic_not_installable);
+                await SpecRunnerUtils.copy(node_basic_not_installable_no_main_src, node_basic_not_installable_no_main);
+                await SpecRunnerUtils.copy(node_basic_not_installable_no_node_folder_src, node_basic_not_installable_no_node_folder);
                 await SpecRunnerUtils.copy(node_basic_not_installable_pack_src, node_basic_not_installable_pack);
                 await SpecRunnerUtils.copy(node_basic_npm_dep_no_install_src, node_basic_npm_dep_no_install);
                 await SpecRunnerUtils.copy(node_basic_npm_install_src, node_basic_npm_install);
@@ -165,6 +173,16 @@ define(function (require, exports, module) {
                 expect(extension.name).toEqual("node");
             });
 
+            it("should install node exten with no npm install execution too", async function () {
+                const extPath = node_basic_npm_dep_no_install;
+                let packageData = await jsPromise(Package.installFromURL(
+                    Phoenix.VFS.getVirtualServingURLForPath(extPath), extensionsRoot + "/custom").promise);
+                expect(packageData.installationStatus).toEqual("INSTALLED");
+
+                let extension = await jsPromise(Package.install(packageData.installedTo, packageData.name, false));
+                expect(extension.name).toEqual("node-basic-npm-dep");
+            });
+
             it("should not install node extn if npmInstall dir contains node_modules", async function () {
                 await _validateInstallFail(node_basic_not_installable,
                     "Extension is broken. (Err: cannot npm install inside extension folder as it already has node_modules)");
@@ -172,12 +190,17 @@ define(function (require, exports, module) {
 
             it("should not install node extn if npmInstall present and doesnt contain package.json", async function () {
                 await _validateInstallFail(node_basic_not_installable_pack,
-                    "Extension is broken, (it's node package.json not found)");
+                    "Extension is broken, (Err: it's node package.json not found)");
             });
 
-            it("should not install node extn if npmInstall present and doesnt contain package.json", async function () {
-                await _validateInstallFail(node_basic_not_installable_pack,
-                    "Extension is broken, (it's node package.json not found)");
+            it("should not install node extn if node main file not found", async function () {
+                await _validateInstallFail(node_basic_not_installable_no_main,
+                    "Extension is broken, (Err: node main file not found)");
+            });
+
+            it("should not install node extn if npmInstall present and doesnt contain node folder to npm install", async function () {
+                await _validateInstallFail(node_basic_not_installable_no_node_folder,
+                    "Extension is broken, (Err: node source folder not found)");
             });
         } else {
             it("should not install node required extension in browser", async function () {
