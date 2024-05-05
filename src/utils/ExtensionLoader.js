@@ -753,9 +753,9 @@ define(function (require, exports, module) {
                             }
                         });
                     }).catch((err)=>{
-                    console.error(`Error creating dir ${extDestPath}`, err);
-                    result.reject(err);
-                });
+                        console.error(`Error creating dir ${extDestPath}`, err);
+                        result.reject(err);
+                    });
             });
             // custom extensions are always loaded marked as resolved to prevent the main event loop from taking
             // too long to load
