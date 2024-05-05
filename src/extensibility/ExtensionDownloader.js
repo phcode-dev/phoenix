@@ -27,6 +27,7 @@ define(function (require, exports, module) {
         NodeUtils        = require("utils/NodeUtils"),
         Package  = require("extensibility/Package"),
         FileSystem = require("filesystem/FileSystem"),
+        FileSystemError = require("filesystem/FileSystemError"),
         ZipUtils = require("utils/ZipUtils");
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -203,18 +204,29 @@ define(function (require, exports, module) {
         return d.promise();
     }
 
+    function _markForDeleteOnRestart(extensionDirectory) {
+        let file = FileSystem.getFileForPath(
+            path.join(extensionDirectory.fullPath, ExtensionLoader._DELETED_EXTENSION_FILE_MARKER));
+        return jsPromise(FileUtils.writeText(file, "This extension is marked for delete on restart of phcode", true));
+    }
+
     /**
      * Removes the extension at the given path.
      *
-     * @param {string} path The absolute path to the extension to remove.
+     * @param {string} extensionPath The absolute path to the extension to remove.
      * @return {$.Promise} A promise that's resolved when the extension is removed, or
      *     rejected if there was an error.
      */
-    function remove(path) {
+    function remove(extensionPath) {
         const d = new $.Deferred();
-        FileSystem.getFileForPath(path).unlink(err=>{
-            if(err){
-                d.reject();
+        const extensionDirectory = FileSystem.getDirectoryForPath(extensionPath);
+        extensionDirectory.unlink(err=>{
+            if(err && err !== FileSystemError.NOT_FOUND){ // && err !== enoent
+                // if we cant delete the extension, we will try to mark the extension to be removed on restart.
+                // This can happen in windows with node extensions where nodejs holds fs locks on the node folder.
+                _markForDeleteOnRestart(extensionDirectory)
+                    .then(d.resolve)
+                    .catch(d.reject);
                 return;
             }
             d.resolve();
