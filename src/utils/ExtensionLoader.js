@@ -56,6 +56,8 @@ define(function (require, exports, module) {
 
     const customExtensionLoadPaths = {};
 
+    const _DELETED_EXTENSION_FILE_MARKER = "_phcode_extension_marked_for_delete";
+
     // default async initExtension timeout
     var EXTENSION_LOAD_TIMOUT_SECONDS = 60,
         INIT_EXTENSION_TIMEOUT = EXTENSION_LOAD_TIMOUT_SECONDS * 1000,
@@ -450,6 +452,51 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    async function _removeExtensionsMarkedForDelete(directory, contents) {
+        let extensions = [];
+        let promises = [];
+
+        for (let extensionEntry of contents) {
+            try {
+                if (extensionEntry.isDirectory) {
+                    const extensionName = extensionEntry.name;
+                    let markedRemove = FileSystem.getFileForPath(
+                        path.join(directory, extensionName, _DELETED_EXTENSION_FILE_MARKER));
+
+                    // Push the promise to the array without awaiting it
+                    promises.push(markedRemove.existsAsync().then(deleteMarkerExists => {
+                        if (!deleteMarkerExists) {
+                            extensions.push(extensionName);
+                        } else {
+                            return new Promise((resolve) => {
+                                // this never rejects. if we cant process, we continue with other extensions.
+                                extensionEntry.unlink(err => {
+                                    if (err) {
+                                        console.error("Error removing extension marked for removal:",
+                                            extensionName, extensionEntry.fullPath, err);
+                                        resolve(err);
+                                    } else {
+                                        console.log("Removed extension marked for delete:",
+                                            extensionName, extensionEntry.fullPath);
+                                        resolve();
+                                    }
+                                });
+                            });
+                        }
+                    }));
+                }
+            } catch (e) {
+                console.error("Error processing extension path:", extensionEntry);
+            }
+        }
+
+        // Await all promises concurrently
+        await Promise.all(promises);
+
+        return extensions;
+    }
+
+
     /**
      * @private
      * Loads a file entryPoint from each extension folder within the baseUrl into its own Require.js context
@@ -463,41 +510,33 @@ define(function (require, exports, module) {
     function _loadAll(directory, entryPoint, processExtension) {
         var result = new $.Deferred();
 
-        FileSystem.getDirectoryForPath(directory).getContents(function (err, contents) {
-            if (!err) {
-                var i,
-                    extensions = [];
-
-                for (i = 0; i < contents.length; i++) {
-                    if (contents[i].isDirectory) {
-                        // FUTURE (JRB): read package.json instead of just using the entrypoint "main".
-                        // Also, load sub-extensions defined in package.json.
-                        extensions.push(contents[i].name);
-                    }
-                }
-
-                if (extensions.length === 0) {
-                    result.resolve();
-                    return;
-                }
-
-                Async.doInParallel(extensions, function (item) {
-                    const extConfig = {
-                        // we load user installed extensions in file system from our virtual/asset server URL
-                        baseUrl: Phoenix.VFS.getVirtualServingURLForPath(directory + "/" + item),
-                        nativeDir: directory + "/" + item,
-                        paths: {}
-                    };
-                    console.log("Loading Extension from virtual fs: ", extConfig);
-                    return processExtension(item, extConfig, entryPoint);
-                }).always(function () {
-                    // Always resolve the promise even if some extensions had errors
-                    result.resolve();
-                });
-            } else {
+        FileSystem.getDirectoryForPath(directory).getContents( async function (err, contents) {
+            if (err) {
                 console.error("[Extension] Error -- could not read native directory: " + directory);
                 result.reject();
+                return;
             }
+
+            const extensions = await _removeExtensionsMarkedForDelete(directory, contents);
+
+            if (extensions.length === 0) {
+                result.resolve();
+                return;
+            }
+
+            Async.doInParallel(extensions, function (item) {
+                const extConfig = {
+                    // we load user installed extensions in file system from our virtual/asset server URL
+                    baseUrl: Phoenix.VFS.getVirtualServingURLForPath(directory + "/" + item),
+                    nativeDir: directory + "/" + item,
+                    paths: {}
+                };
+                console.log("Loading Extension from virtual fs: ", extConfig);
+                return processExtension(item, extConfig, entryPoint);
+            }).always(function () {
+                // Always resolve the promise even if some extensions had errors
+                result.resolve();
+            });
         });
 
         return result.promise();
@@ -714,9 +753,9 @@ define(function (require, exports, module) {
                             }
                         });
                     }).catch((err)=>{
-                        console.error(`Error creating dir ${extDestPath}`, err);
-                        result.reject(err);
-                    });
+                    console.error(`Error creating dir ${extDestPath}`, err);
+                    result.reject(err);
+                });
             });
             // custom extensions are always loaded marked as resolved to prevent the main event loop from taking
             // too long to load
@@ -804,6 +843,9 @@ define(function (require, exports, module) {
     // unit tests
     exports._setInitExtensionTimeout = _setInitExtensionTimeout;
     exports._getInitExtensionTimeout = _getInitExtensionTimeout;
+
+    // private internal usage
+    exports._DELETED_EXTENSION_FILE_MARKER = _DELETED_EXTENSION_FILE_MARKER;
 
     // public API
     exports.init = init;

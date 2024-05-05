@@ -282,7 +282,7 @@ define(function (require, exports, module) {
             surveyJSON.newUser && _showGeneralSurvey(surveyJSON.newUser);
             surveyJSON.powerUser && _showPowerUserSurvey(surveyJSON.powerUser);
         } catch (e) {
-            console.error("Error fetching survey link", surveyLinksURL);
+            console.error("Error fetching survey link", surveyLinksURL, e);
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "fetchError", 1);
         }
     }
