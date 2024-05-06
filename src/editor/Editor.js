@@ -1318,6 +1318,67 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Get a (JSON-serializable) representation of the undo history.
+     *
+     * @returns {Array} The history of the editor.
+     */
+    Editor.prototype.getHistory = function () {
+        return this._codeMirror.getHistory();
+    };
+
+    /**
+     * Replace the editor's undo history with the one provided, which must be a value
+     * as returned by getHistory. Note that this will have entirely undefined results
+     * if the editor content isn't also the same as it was when getHistory was called.
+     */
+    Editor.prototype.setHistory = function () {
+        return this._codeMirror.setHistory();
+    };
+
+    /**
+     * Creates a named restore point in undo history. this can be later be restored to undo all
+     * changed till the named restore point in one go.
+     */
+    Editor.prototype.createHistoryRestorePoint = function (restorePointName) {
+        const history = this.getHistory();
+        if(history.done && history.done.length) {
+            history.done[history.done.length -1].restorePointName = restorePointName;
+        }
+    };
+
+    Editor.prototype.restoreHistoryPoint = function (restorePointName) {
+        const history = this.getHistory();
+        if(!history.done && !history.done.length) {
+            return;
+        }
+        let canRestore = false;
+        for(let i = history.done.length -1; i>=0; i--) {
+            // history is a stack
+            const historyEntry = history.done[i];
+            if(historyEntry.restorePointName === restorePointName) {
+                canRestore = true;
+                break;
+            }
+        }
+        if(!canRestore) {
+            return;
+        }
+        const cm = this._codeMirror;
+        const self = this;
+        cm.operation(function () {
+            let newHistory = self.getHistory();
+            let lastHistoryItem = newHistory.done && newHistory.done.length
+                && history.done[history.done.length -1];
+            while(lastHistoryItem && lastHistoryItem.restorePointName !== restorePointName) {
+                cm.undoSelection();
+                newHistory = self.getHistory();
+                lastHistoryItem = newHistory.done && newHistory.done.length
+                    && newHistory.done[newHistory.done.length -1];
+            }
+        });
+    };
+
+    /**
      * Sets the current selection. Start is inclusive, end is exclusive. Places the cursor at the
      * end of the selection range. Optionally centers around the cursor after
      * making the selection

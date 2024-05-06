@@ -32,6 +32,8 @@ define(function (require, exports, module) {
         StringMatch         = brackets.getModule("utils/StringMatch"),
         ColorUtils          = brackets.getModule("utils/ColorUtils"),
         Strings             = brackets.getModule("strings"),
+        KeyEvent            = brackets.getModule("utils/KeyEvent"),
+        LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
         CSSProperties       = require("text!CSSProperties.json"),
         properties          = JSON.parse(CSSProperties);
 
@@ -338,6 +340,64 @@ define(function (require, exports, module) {
         return null;
     };
 
+    let hintSessionId = 0, isInLiveHighlightSession = false;
+
+    CssPropHints.prototype.onClose = function () {
+        console.error("closing hints");
+        if(isInLiveHighlightSession) {
+            this.editor.restoreHistoryPoint(`Live_hint_${hintSessionId}`);
+            isInLiveHighlightSession = false;
+        }
+        hintSessionId++;
+    };
+
+    CssPropHints.prototype.onHighlight = function ($highlightedEl, _$descriptionElem, reason) {
+        if(!reason){
+            console.error("OnHighlight called without reason, should never happen!");
+            hintSessionId++;
+            return;
+        }
+        const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
+        if(!(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument)) {
+            // css live hints only for live previewed page and related files
+            return;
+        }
+        const currentlyEditedFile = this.editor.document.file.fullPath;
+        const livePreviewedFile = currentLivePreviewDetails.liveDocument.doc.file.fullPath;
+        if(currentlyEditedFile !== livePreviewedFile) {
+            const isRelatedFile = currentLivePreviewDetails.liveDocument.isRelated &&
+                currentLivePreviewDetails.liveDocument.isRelated(currentlyEditedFile);
+            if(!isRelatedFile) {
+                // file is neither current html file being live previewed, or any of its
+                // related file. we dont show hints in the case
+                return;
+            }
+        }
+        if(reason.source === CodeHintManager.SELECTION_REASON.SESSION_START){
+            hintSessionId++;
+            this.editor.createHistoryRestorePoint(`Live_hint_${hintSessionId}`);
+            return;
+        }
+        if(reason.source !== CodeHintManager.SELECTION_REASON.KEYBOARD_NAV){
+            return;
+        }
+        const event = reason.event;
+        if(!(event.keyCode === KeyEvent.DOM_VK_UP ||
+            event.keyCode === KeyEvent.DOM_VK_DOWN ||
+            event.keyCode === KeyEvent.DOM_VK_PAGE_UP ||
+            event.keyCode === KeyEvent.DOM_VK_PAGE_DOWN)){
+            return;
+        }
+        const $hintItem = $highlightedEl.find(".brackets-css-hints");
+        const highligtedValue = $highlightedEl.find(".brackets-css-hints").data("val");
+        if(!highligtedValue || !$hintItem.is(":visible")){
+            return;
+        }
+        isInLiveHighlightSession = true;
+        this.editor.restoreHistoryPoint(`Live_hint_${hintSessionId}`);
+        this.insertHint($highlightedEl.find(".brackets-css-hints"), true);
+    };
+
     /**
      * Inserts a given CSS protertyname or -value hint into the current editor context.
      *
@@ -348,7 +408,7 @@ define(function (require, exports, module) {
      * Indicates whether the manager should follow hint insertion with an
      * additional explicit hint request.
      */
-    CssPropHints.prototype.insertHint = function (hint) {
+    CssPropHints.prototype.insertHint = function (hint, isLiveHighlight) {
         var offset = this.info.offset,
             cursor = this.editor.getCursorPos(),
             start = {line: -1, ch: -1},
@@ -359,7 +419,7 @@ define(function (require, exports, module) {
             ctx;
 
         if (hint.jquery) {
-            hint = hint.data("val");
+            hint = hint.data("val") + ""; // font-weight: 400, 400 is returned as number so,
         }
 
         if (this.info.context !== CSSUtils.PROP_NAME && this.info.context !== CSSUtils.PROP_VALUE) {
@@ -430,6 +490,33 @@ define(function (require, exports, module) {
                     ch: start.ch + parenMatch.index + 1 };
                 keepHints = true;
             }
+        }
+
+        if(isLiveHighlight) {
+            // this is via user press up and down arrows when code hints is visible
+            if(this.info.context !== CSSUtils.PROP_VALUE) {
+                // we only do live hints for css property values. else UX is jarring.
+                return keepHints;
+            }
+            if(!this.editor.hasSelection()){
+                this.editor.setSelection(start, end);
+            }
+            this.editor.replaceSelection(hint, 'around', "liveHints");
+            return keepHints;
+        }
+
+        // this is commit flow
+        if(isInLiveHighlightSession) {
+            // end previous highlight session.
+            isInLiveHighlightSession = false;
+            hintSessionId++;
+        }
+
+        console.error("commit hints, this.editor.hasSelection()", this.editor.hasSelection());
+        if(this.editor.hasSelection()){
+            // this is when user commits
+            this.editor.replaceSelection(hint, 'end');
+            return keepHints;
         }
 
         // HACK (tracking adobe/brackets#1688): We talk to the private CodeMirror instance
