@@ -23,7 +23,7 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var KeyBindingManager = require("command/KeyBindingManager"),
+    const KeyBindingManager = require("command/KeyBindingManager"),
         Menus             = require("command/Menus"),
         KeyEvent          = require("utils/KeyEvent"),
         StringUtils       = require("utils/StringUtils"),
@@ -32,7 +32,12 @@ define(function (require, exports, module) {
         PopUpManager      = require("widgets/PopUpManager"),
         Mustache          = require("thirdparty/mustache/mustache");
 
-    var CodeHintListHTML  = require("text!htmlContent/code-hint-list.html");
+    const CodeHintListHTML  = require("text!htmlContent/code-hint-list.html");
+
+    const SELECTION_REASON = {
+        KEYBOARD_NAV: "KeyboardNav",
+        SESSION_START: "sessionStart"
+    };
 
     /**
      * Displays a popup list of hints for a given editor context.
@@ -127,8 +132,9 @@ define(function (require, exports, module) {
      *
      * @private
      * @param {number} index
+     * @param {{source: "KeyboardNav", event}} reason optional reason for selection change
      */
-    CodeHintList.prototype._setSelectedIndex = function (index) {
+    CodeHintList.prototype._setSelectedIndex = function (index, reason) {
         var items = this.$hintMenu.find("li");
 
         // Range check
@@ -150,7 +156,7 @@ define(function (require, exports, module) {
             ViewUtils.scrollElementIntoView($view, $item, false);
 
             if (this.handleHighlight) {
-                this.handleHighlight($item.find("a"), this.$hintMenu.find("#codehint-desc"));
+                this.handleHighlight($item.find("a"), this.$hintMenu.find("#codehint-desc"), reason);
             }
         }
     };
@@ -271,7 +277,7 @@ define(function (require, exports, module) {
                 $parent.append("<div id='codehint-desc' class='dropdown-menu quiet-scrollbars'></div>");
                 $ul.addClass("withDesc");
             }
-            this._setSelectedIndex(selectInitial ? 0 : -1);
+            this._setSelectedIndex(selectInitial ? 0 : -1, {source: SELECTION_REASON.SESSION_START});
         }
     };
 
@@ -380,7 +386,7 @@ define(function (require, exports, module) {
                 }
             }
 
-            self._setSelectedIndex(pos);
+            self._setSelectedIndex(pos, {source: SELECTION_REASON.KEYBOARD_NAV, event});
         }
 
         // Calculate the number of items per scroll page.
@@ -587,6 +593,9 @@ define(function (require, exports, module) {
         this.handleClose = callback;
     };
 
+
+    // private export
+    exports._SELECTION_REASON = SELECTION_REASON;
 
     // Define public API
     exports.CodeHintList = CodeHintList;

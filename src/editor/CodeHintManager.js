@@ -229,15 +229,17 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var Commands            = require("command/Commands"),
+    const Commands            = require("command/Commands"),
         CommandManager      = require("command/CommandManager"),
         EditorManager       = require("editor/EditorManager"),
         Strings             = require("strings"),
         KeyEvent            = require("utils/KeyEvent"),
-        CodeHintList        = require("editor/CodeHintList").CodeHintList,
+        CodeHintListModule  = require("editor/CodeHintList"),
         PreferencesManager  = require("preferences/PreferencesManager");
 
-    var hintProviders    = { "all": [] },
+    const CodeHintList        = CodeHintListModule.CodeHintList;
+
+    let hintProviders    = { "all": [] },
         lastChar         = null,
         sessionProvider  = null,
         sessionEditor    = null,
@@ -505,11 +507,11 @@ define(function (require, exports, module) {
 
             sessionEditor = editor;
             hintList = new CodeHintList(sessionEditor, insertHintOnTab, maxCodeHints);
-            hintList.onHighlight(function ($hint, $hintDescContainer) {
+            hintList.onHighlight(function ($hint, $hintDescContainer, reason) {
                 if (hintList.enableDescription && $hintDescContainer && $hintDescContainer.length) {
                     // If the current hint provider listening for hint item highlight change
                     if (sessionProvider.onHighlight) {
-                        sessionProvider.onHighlight($hint, $hintDescContainer);
+                        sessionProvider.onHighlight($hint, $hintDescContainer, reason);
                     }
 
                     // Update the hint description
@@ -518,7 +520,7 @@ define(function (require, exports, module) {
                     }
                 } else {
                     if (sessionProvider.onHighlight) {
-                        sessionProvider.onHighlight($hint);
+                        sessionProvider.onHighlight($hint, undefined, reason);
                     }
                 }
             });
@@ -530,7 +532,10 @@ define(function (require, exports, module) {
                     _beginSession(previousEditor);
                 }
             });
-            hintList.onClose(_endSession);
+            hintList.onClose(()=>{
+                sessionProvider && sessionProvider.onClose && sessionProvider.onClose();
+                _endSession();
+            });
 
             _updateHintList();
         } else {
@@ -751,4 +756,6 @@ define(function (require, exports, module) {
     exports.isOpen                  = isOpen;
     exports.registerHintProvider    = registerHintProvider;
     exports.hasValidExclusion       = hasValidExclusion;
+
+    exports.SELECTION_REASON        = CodeHintListModule._SELECTION_REASON;
 });
