@@ -39,7 +39,9 @@ define(function (require, exports, module) {
 
     require("./css-lint");
 
+    const MAX_CSS_HINTS = 250;
     const cssWideKeywords = ['initial', 'inherit', 'unset', 'var()', 'calc()'];
+    let computedProperties;
 
     PreferencesManager.definePreference("codehint.CssPropHints", "boolean", true, {
         description: Strings.DESCRIPTION_CSS_PROP_HINTS
@@ -163,6 +165,9 @@ define(function (require, exports, module) {
         });
 
         StringMatch.basicMatchSort(hints);
+        if(hints.length > MAX_CSS_HINTS) {
+            hints = hints.splice(0, MAX_CSS_HINTS);
+        }
         hints = vendorPrefixesAndGenericToEnd(hints);
         return hints.map(function (token) {
             var $hintObj = $(`<span data-val='${token.label || token.value}'></span>`).addClass("brackets-css-hints brackets-hints");
@@ -205,6 +210,28 @@ define(function (require, exports, module) {
             }
         });
         return arr1;
+    }
+
+    function _computeProperties() {
+        const blacklistedValues = {
+            none: true,
+            auto: true
+        };
+        computedProperties = {};
+        for(let propertyKey of Object.keys(properties)) {
+            const property = properties[propertyKey];
+            if(property.type === "color" || !property.values || !property.values.length
+                || propertyKey === "font-family") {
+                computedProperties[propertyKey] = propertyKey;
+                continue;
+            }
+            computedProperties[propertyKey] = propertyKey;
+            for(let value of property.values) {
+                if(!blacklistedValues[value]){
+                    computedProperties[`${propertyKey}: ${value}; `] = propertyKey;
+                }
+            }
+        }
     }
 
     /**
@@ -319,16 +346,21 @@ define(function (require, exports, module) {
 
             lastContext = CSSUtils.PROP_NAME;
             needle = needle.substr(0, this.info.offset);
+            if(!computedProperties){
+                _computeProperties();
+            }
 
-            result = $.map(properties, function (pvalues, pname) {
-                var result = StringMatch.stringMatch(pname, needle, stringMatcherOptions);
-                if (result) {
-                    if(properties[pname].MDN_URL){
-                        result.MDN_URL = properties[pname].MDN_URL;
+            result = [];
+            for(let propertyHint of Object.keys(computedProperties)) {
+                const match = StringMatch.stringMatch(propertyHint, needle, stringMatcherOptions);
+                const propertyKey = computedProperties[propertyHint];
+                if (match) {
+                    if(properties[propertyKey].MDN_URL){
+                        match.MDN_URL = properties[propertyKey].MDN_URL;
                     }
-                    return result;
+                    result.push(match);
                 }
-            });
+            }
 
             return {
                 hints: formatHints(result),
@@ -343,7 +375,6 @@ define(function (require, exports, module) {
     let hintSessionId = 0, isInLiveHighlightSession = false;
 
     CssPropHints.prototype.onClose = function () {
-        console.error("closing hints");
         if(isInLiveHighlightSession) {
             this.editor.restoreHistoryPoint(`Live_hint_${hintSessionId}`);
             isInLiveHighlightSession = false;
@@ -468,7 +499,7 @@ define(function (require, exports, module) {
                     if (TokenUtils.moveNextToken(ctx) && ctx.token.string.length > 0 && !/\S/.test(ctx.token.string)) {
                         newCursor.ch += ctx.token.string.length;
                     }
-                } else {
+                } else if(!hint.endsWith("; ")){
                     hint += ": ";
                 }
             }
@@ -512,7 +543,6 @@ define(function (require, exports, module) {
             hintSessionId++;
         }
 
-        console.error("commit hints, this.editor.hasSelection()", this.editor.hasSelection());
         if(this.editor.hasSelection()){
             // this is when user commits
             this.editor.replaceSelection(hint, 'end');
