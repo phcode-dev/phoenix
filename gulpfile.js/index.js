@@ -396,7 +396,8 @@ const ALLOWED_EXTENSIONS_TO_CACHE = ["js", "html", "htm", "xml", "xhtml", "mjs",
     "zip",
     "png", "svg", "jpg", "jpeg", "gif", "ico", "webp",
     "mustache", "md", "markdown"];
-const DISALLOWED_EXTENSIONS_TO_CACHE = ["map", "nuspec", "partial", "pre", "post", "webmanifest", "rb"];
+const DISALLOWED_EXTENSIONS_TO_CACHE = ["map", "nuspec", "partial", "pre", "post",
+    "webmanifest", "rb", "ts"];
 
 function _isCacheableFile(path) {
     if(path.indexOf(".") === -1){

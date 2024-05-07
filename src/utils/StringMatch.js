@@ -24,7 +24,9 @@
 define(function (require, exports, module) {
 
 
-    var _ = require("thirdparty/lodash");
+    const _ = require("thirdparty/lodash"),
+        // https://www.npmjs.com/package/fuzzball string matching lib
+        fuzzball = Phoenix.libs.fuzzball;
 
     /*
      * Performs matching that is useful for QuickOpen and similar searches.
@@ -735,6 +737,182 @@ define(function (require, exports, module) {
         return result;
     }
 
+    // see scoring explanation at https://www.npmjs.com/package/fuzzball
+    const RANK_MATCH_SCORER = {
+        // ratio // "!" Stripped and lowercased in pre-processing by default
+        // ("this is a test", "This is a test!"); -> 100
+        RATIO: "ratio",
+        //Highest scoring substring of the longer string vs. the shorter string.
+        // ("test", "testing") -> 100, substring of 2nd is a perfect match of the first
+        PARTIAL_RATIO: "partial_ratio",
+        // Tokenized, sorted, and then recombined before scoring.
+        // ("fuzzy wuzzy was a bear", "wuzzy fuzzy was a bear") -> 100
+        TOKEN_SORT_RATIO: "token_sort_ratio",
+        // Highest of 3 scores comparing the set intersection,
+        // intersection + difference 1 to 2, and intersection + difference 2 to 1.
+        // Eg. token_set_ratio("fuzzy was a bear", "fuzzy fuzzy was a bear") -> 100
+        // but token_sort_ratio("fuzzy was a bear", "fuzzy fuzzy was a bear") -> 84
+        TOKEN_SET_RATIO: "token_set_ratio",
+        // Instead of sorting alphabetically, tokens will be sorted by similarity to the smaller set.
+        // Useful if the matching token may have a different first letter, but performs a bit slower.
+        // Eg. token_similarity_sort_ratio('apple cup zebrah horse foo', 'zapple cub horse bebrah bar')
+        //         68
+        // But,token_sort_ratio('apple cup zebrah horse foo', 'zapple cub horse bebrah bar')
+        //         58
+        //      token_set_ratio('apple cup zebrah horse foo', 'zapple cub horse bebrah bar')
+        //         61
+        TOKEN_SIMILARITY_SORT_RATIO: "token_similarity_sort_ratio",
+        // Unmodified Levenshtein distance without any additional ratio calculations.
+        // distance("fuzzy was a bear", "fozzy was a bear") -> 1
+        DISTANCE: "distance",
+        CODE_HINTS: "code-hints"
+    };
+
+    /**
+     * Ranks the matching strings based on the query.
+     *
+     * @param {string} query - The query string to match against.
+     * @param {Array<string>} choices - The list of strings to rank.
+     * @param {{scorer: string}|{}} options - Additional options for ranking.
+     * @param {string} options.scorer - The scoring algorithm to use.
+     *          one of StringMatch.RANK_MATCH_SCORER.* constants
+     * @param {number} options.cutoff - The scoring cutoff below which results are
+     *          treated as no match. default is 0.
+     * @param {number} options.limit - The maximum number of results to return. Default is all.
+     * @return {Array[SearchResult]} - The best matching string ranking, sorted by top ranked
+     */
+    function rankMatchingStrings(query, choices, options) {
+        options = options || {};
+        options.scorer = options.scorer || RANK_MATCH_SCORER.RATIO;
+        options.cutoff = options.cutoff === undefined ? 0: options.cutoff;
+
+        const searchResults = [];
+        if(!query) {
+            // everything is a 100% match if nothing is specified
+            choices = [...choices].sort(); // we still need to sort, not in-place, so cloning
+            for(let i=0; i<choices.length; i++) {
+                if(options.limit && i>= options.limit){
+                    break;
+                }
+                let result = new SearchResult(choices[i]);
+                result.matchGoodness = 100;
+                result.sourceIndex = i;
+                searchResults.push(result);
+            }
+            return searchResults;
+        }
+
+        if(options.scorer === RANK_MATCH_SCORER.CODE_HINTS) {
+            return _rankCodeHints(query, choices, options);
+        }
+
+        const rankedResult = fuzzball.extract(query, choices, {
+            scorer: fuzzball[options.scorer],
+            limit: options.limit
+        });
+        // "pointer", ["pointer: none;", "cursor: pointer;", "pointer-events: none;"]
+        // sample output is of the form:
+        //   [choice, score, index in original array] eg:
+        // [ ["pointer: none;", 74, 0],
+        //   ["cursor: pointer;", 67, 1],
+        //   [ "pointer-events: none;", 54, 2] ]
+        for(let rankResult of rankedResult) {
+            const score = rankResult[1];
+            if(score < options.cutoff) {
+                continue;
+            }
+            let result = new SearchResult(rankResult[0]);
+            result.matchGoodness = rankResult[1];
+            result.sourceIndex = rankResult[2];
+            searchResults.push(result);
+        }
+        return searchResults;
+    }
+
+    function _computeMatchingRanges(query, searchString) {
+        let index = searchString.indexOf(query);
+
+        if (index === -1) {
+            return null;
+        }
+        // now we have to find segment that matches the given query. Eg:
+        // Eg: background-color: blue;
+
+        if(index === 0 && query.length === searchString.length) {
+            // background-color: blue; full match case
+            // match is at beginning
+            return [{
+                text: searchString,
+                matched: true
+            }];
+        }
+        if(index === 0) {
+            // query = backgou , can be split into 2 parts <backgro>und-color: blue;
+            // match is at beginning
+            return [{
+                text: searchString.substr(0, query.length),
+                matched: true
+            }, {
+                text: searchString.substr(query.length),
+                matched: false
+            }];
+        }
+        if((index + query.length) === searchString.length) {
+            // query = blue; , can be split into 2 parts: background-color: <blue;>
+            // match is at the end
+            return [{
+                text: searchString.substr(0, index),
+                matched: false
+            }, {
+                text: searchString.substr(index),
+                matched: true
+            }];
+        }
+        // query = color , can be split into 3 parts: background-<color>: blue;
+        // middle match
+        return [{
+            text: searchString.substr(0, index),
+            matched: false
+        }, {
+            text: searchString.substring(index, index + query.length),
+            matched: true
+        }, {
+            text: searchString.substr(index +  query.length),
+            matched: false
+        }];
+    }
+
+    function _rankCodeHints(query, choices) {
+        query = query || "";
+        let filteredChoices = [];
+        let filteredIndices;
+        if(!query){
+            filteredChoices = choices;
+        } else {
+            filteredIndices = [];
+            const queryLower = query.toLowerCase();
+            choices.forEach((choice, index) => {
+                if (choice.toLowerCase().includes(queryLower)) {
+                    filteredChoices.push(choice);
+                    filteredIndices.push(index);
+                }
+            });
+        }
+
+        const results = rankMatchingStrings(query, filteredChoices, {
+            scorer: RANK_MATCH_SCORER.RATIO,
+            cutoff: 0
+        });
+        if(filteredIndices){
+            for(let i=0; i<results.length; i++) {
+                const result = results[i];
+                result.sourceIndex = filteredIndices[result.sourceIndex];
+                // now find the matching segments.
+                result.stringRanges = _computeMatchingRanges(query, result.label);
+            }
+        }
+        return results;
+    }
 
     /*
      * Match str against the query using the QuickOpen algorithm provided by
@@ -992,4 +1170,6 @@ define(function (require, exports, module) {
     exports.basicMatchSort          = basicMatchSort;
     exports.multiFieldSort          = multiFieldSort;
     exports.StringMatcher           = StringMatcher;
+    exports.rankMatchingStrings     = rankMatchingStrings;
+    exports.RANK_MATCH_SCORER = RANK_MATCH_SCORER;
 });

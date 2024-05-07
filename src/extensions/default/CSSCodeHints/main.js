@@ -42,7 +42,7 @@ define(function (require, exports, module) {
 
     const MAX_CSS_HINTS = 250;
     const cssWideKeywords = ['initial', 'inherit', 'unset', 'var()', 'calc()'];
-    let computedProperties;
+    let computedProperties, computerPropertyKeys;
 
     PreferencesManager.definePreference("codehint.CssPropHints", "boolean", true, {
         description: Strings.DESCRIPTION_CSS_PROP_HINTS
@@ -158,18 +158,14 @@ define(function (require, exports, module) {
      * highlighted.
      *
      * @param {Array.<Object>} hints - the list of hints to format
+     * @param isColorSwatch
      * @return {Array.jQuery} sorted Array of jQuery DOM elements to insert
      */
-    function formatHints(hints) {
-        var hasColorSwatch = hints.some(function (token) {
-            return token.color;
-        });
-
-        StringMatch.basicMatchSort(hints);
+    function formatHints(hints, isColorSwatch) {
+        hints = vendorPrefixesAndGenericToEnd(hints);
         if(hints.length > MAX_CSS_HINTS) {
             hints = hints.splice(0, MAX_CSS_HINTS);
         }
-        hints = vendorPrefixesAndGenericToEnd(hints);
         return hints.map(function (token) {
             var $hintObj = $(`<span data-val='${token.label || token.value}'></span>`).addClass("brackets-css-hints brackets-hints");
 
@@ -185,11 +181,11 @@ define(function (require, exports, module) {
                     }
                 });
             } else {
-                $hintObj.text(token.value);
+                $hintObj.text(token.label || token.value);
             }
 
-            if (hasColorSwatch) {
-                $hintObj = ColorUtils.formatColorHint($hintObj, token.color);
+            if (isColorSwatch) {
+                $hintObj = ColorUtils.formatColorHint($hintObj, token.label || token.value);
             }
             if(token.MDN_URL) {
                 const $mdn = $(`<a class="css-code-hint-info" style="text-decoration: none;"
@@ -233,6 +229,7 @@ define(function (require, exports, module) {
                 }
             }
         }
+        computerPropertyKeys = Object.keys(computedProperties);
     }
 
     /**
@@ -309,26 +306,25 @@ define(function (require, exports, module) {
             }
             valueArray = properties[needle].values;
             type = properties[needle].type;
+            let isColorSwatch = false;
             if (type === "color") {
+                isColorSwatch = true;
                 valueArray = valueArray.concat(ColorUtils.COLOR_NAMES.map(function (color) {
                     return { text: color, color: color };
                 }));
                 valueArray.push("transparent", "currentColor");
             }
 
-            result = $.map(valueArray, function (pvalue) {
-                var result = StringMatch.stringMatch(pvalue.text || pvalue, valueNeedle, stringMatcherOptions);
-                if (result) {
-                    if (pvalue.color) {
-                        result.color = pvalue.color;
-                    }
-
-                    return result;
-                }
+            valueArray = $.map(valueArray, function (pvalue) {
+                return pvalue.text || pvalue;
+            });
+            result = StringMatch.rankMatchingStrings(valueNeedle, valueArray, {
+                scorer: StringMatch.RANK_MATCH_SCORER.CODE_HINTS,
+                limit: MAX_CSS_HINTS
             });
 
             return {
-                hints: formatHints(result),
+                hints: formatHints(result, isColorSwatch),
                 match: null, // the CodeHintManager should not format the results
                 selectInitial: selectInitial
             };
@@ -351,15 +347,15 @@ define(function (require, exports, module) {
                 _computeProperties();
             }
 
-            result = [];
-            for(let propertyHint of Object.keys(computedProperties)) {
-                const match = StringMatch.stringMatch(propertyHint, needle, stringMatcherOptions);
-                const propertyKey = computedProperties[propertyHint];
-                if (match) {
-                    if(properties[propertyKey].MDN_URL){
-                        match.MDN_URL = properties[propertyKey].MDN_URL;
-                    }
-                    result.push(match);
+            result = StringMatch.rankMatchingStrings(needle, computerPropertyKeys, {
+                scorer: StringMatch.RANK_MATCH_SCORER.CODE_HINTS,
+                limit: MAX_CSS_HINTS
+            });
+
+            for(let resultItem of result) {
+                const propertyKey = computerPropertyKeys[resultItem.sourceIndex];
+                if(properties[propertyKey] && properties[propertyKey].MDN_URL){
+                    resultItem.MDN_URL = properties[propertyKey].MDN_URL;
                 }
             }
 
