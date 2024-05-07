@@ -36,6 +36,7 @@ define(function (require, exports, module) {
             expect(Phoenix.libs.iconv).toBeDefined();
             expect(Phoenix.libs.picomatch).toBeDefined();
             expect(Phoenix.libs.picomatch).toBeDefined();
+            expect(Phoenix.libs.fuzzball).toBeDefined();
         });
     });
 });

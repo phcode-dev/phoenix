@@ -101,11 +101,13 @@
         "cross-env": "^7.0.3",
         "devicon": "^2.15.1",
         "file-saver": "^2.0.5",
+        "fuzzball": "^2.1.2",
         "idb-keyval": "^6.2.1",
         "jshint": "^2.13.5",
         "jszip": "^3.8.0",
         "less": "^4.1.3",
         "lodash": "^4.17.21",
+        "lru-cache": "^10.2.0",
         "marked": "^4.0.18",
         "mime-db": "^1.52.0",
         "mustache": "^4.2.0",
@@ -113,7 +115,6 @@
         "requirejs": "^2.3.6",
         "tern": "^0.24.3",
         "tinycolor2": "^1.4.2",
-        "underscore": "^1.13.4",
-        "lru-cache": "^10.2.0"
+        "underscore": "^1.13.4"
     }
 }
