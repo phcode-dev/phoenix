@@ -225,7 +225,7 @@ define(function (require, exports, module) {
             computedProperties[propertyKey] = propertyKey;
             for(let value of property.values) {
                 if(!blacklistedValues[value]){
-                    computedProperties[`${propertyKey}: ${value}; `] = propertyKey;
+                    computedProperties[`${propertyKey}: ${value};`] = propertyKey;
                 }
             }
         }
@@ -497,7 +497,7 @@ define(function (require, exports, module) {
                     if (TokenUtils.moveNextToken(ctx) && ctx.token.string.length > 0 && !/\S/.test(ctx.token.string)) {
                         newCursor.ch += ctx.token.string.length;
                     }
-                } else if(!hint.endsWith("; ")){
+                } else if(!hint.endsWith(";")){
                     hint += ": ";
                 }
             }
@@ -523,7 +523,7 @@ define(function (require, exports, module) {
 
         if(isLiveHighlight) {
             // this is via user press up and down arrows when code hints is visible
-            if(this.info.context !== CSSUtils.PROP_VALUE && !hint.endsWith("; ")) {
+            if(this.info.context !== CSSUtils.PROP_VALUE && !hint.endsWith(";")) {
                 // we only do live hints for css property values. else UX is jarring.
                 // property full statements hints like "display: flex;" will be live previewed tho
                 return keepHints;
