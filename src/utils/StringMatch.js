@@ -779,6 +779,10 @@ define(function (require, exports, module) {
      * @param {number} options.cutoff - The scoring cutoff below which results are
      *          treated as no match. default is 0.
      * @param {number} options.limit - The maximum number of results to return. Default is all.
+     * @param {Array[string]} options.boostPrefixList - Will rank matching items in the choices to top
+     *          if query starts with the array. EG: on typing b, we have to show background-color
+     *          to top. So we pass in ["background-color"] as boost prefix option along with other
+     *          css properties that we want to boost.
      * @return {Array[SearchResult]} - The best matching string ranking, sorted by top ranked
      */
     function rankMatchingStrings(query, choices, options) {
@@ -786,7 +790,7 @@ define(function (require, exports, module) {
         options.scorer = options.scorer || RANK_MATCH_SCORER.RATIO;
         options.cutoff = options.cutoff === undefined ? 0: options.cutoff;
 
-        const searchResults = [];
+        let searchResults = [];
         if(!query) {
             // everything is a 100% match if nothing is specified
             choices = [...choices].sort(); // we still need to sort, not in-place, so cloning
@@ -825,6 +829,9 @@ define(function (require, exports, module) {
             result.matchGoodness = rankResult[1];
             result.sourceIndex = rankResult[2];
             searchResults.push(result);
+        }
+        if(options.boostPrefixList) {
+            searchResults = _boostPrefixList(searchResults, query, options.boostPrefixList);
         }
         return searchResults;
     }
@@ -882,7 +889,38 @@ define(function (require, exports, module) {
         }];
     }
 
-    function _rankCodeHints(query, choices) {
+    function _boostPrefixList(result, query, prefixList) {
+        if(!prefixList){
+            return result;
+        }
+        const filteredPrefixMap = {};
+        for(let prefix of prefixList){
+            if(prefix.startsWith(query)){
+                filteredPrefixMap[prefix] = true;
+            }
+        }
+        const resultsWithoutPrefix = [], resultsWithPrefix = {};
+        for(let i=0; i<result.length; i++) {
+            const resultItem = result[i];
+            if(filteredPrefixMap[resultItem.label]) { // if result matches one of the prefix
+                resultsWithPrefix[resultItem.label] = resultItem;
+                resultItem.matchGoodness = 100; // boosted match
+            } else {
+                resultsWithoutPrefix.push(resultItem);
+            }
+        }
+        // we have to maintain the ordering of the items in prefix list in
+        // items in the result.
+        const orderedPrefixResults = [];
+        for(let prefixItem of prefixList) {
+            if(resultsWithPrefix[prefixItem]){
+                orderedPrefixResults.push(resultsWithPrefix[prefixItem]);
+            }
+        }
+        return [...orderedPrefixResults, ...resultsWithoutPrefix];
+    }
+
+    function _rankCodeHints(query, choices, options) {
         query = query || "";
         let filteredChoices = [];
         let filteredIndices;
@@ -899,9 +937,10 @@ define(function (require, exports, module) {
             });
         }
 
-        const results = rankMatchingStrings(query, filteredChoices, {
+        let results = rankMatchingStrings(query, filteredChoices, {
             scorer: RANK_MATCH_SCORER.RATIO,
-            cutoff: 0
+            cutoff: 0,
+            limit: options.limit
         });
         if(filteredIndices){
             for(let i=0; i<results.length; i++) {
@@ -910,6 +949,9 @@ define(function (require, exports, module) {
                 // now find the matching segments.
                 result.stringRanges = _computeMatchingRanges(query, result.label);
             }
+        }
+        if(options.boostPrefixList) {
+            results = _boostPrefixList(results, query, options.boostPrefixList);
         }
         return results;
     }

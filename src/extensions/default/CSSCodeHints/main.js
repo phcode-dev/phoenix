@@ -40,6 +40,19 @@ define(function (require, exports, module) {
 
     require("./css-lint");
 
+    const BOOSTED_PROPERTIES = [
+        "display", "position", "margin", "padding", "width", "height",
+        "background", "background-color", "color",
+        "font-size", "font-family",
+        "text-align",
+        "line-height",
+        "border", "border-radius", "box-shadow",
+        "transition", "animation", "transform",
+        "overflow",
+        "cursor",
+        "z-index",
+        "flex", "grid"
+    ];
     const MAX_CSS_HINTS = 250;
     const cssWideKeywords = ['initial', 'inherit', 'unset', 'var()', 'calc()'];
     let computedProperties, computerPropertyKeys;
@@ -349,7 +362,8 @@ define(function (require, exports, module) {
 
             result = StringMatch.rankMatchingStrings(needle, computerPropertyKeys, {
                 scorer: StringMatch.RANK_MATCH_SCORER.CODE_HINTS,
-                limit: MAX_CSS_HINTS
+                limit: MAX_CSS_HINTS,
+                boostPrefixList: BOOSTED_PROPERTIES
             });
 
             for(let resultItem of result) {
